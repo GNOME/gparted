@@ -107,7 +107,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				
 				set_device_partitions( temp_device ) ;
 				
-				if ( temp_device .busy )
+				if ( temp_device .highest_busy )
 				{
 					temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
 					sleep( 1 ) ;//this sucks, but it seems that after the commit test, the paths are removed and added again (which takes time..)
@@ -184,9 +184,9 @@ void GParted_Core::set_device_partitions( Device & device )
 							
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				
-				if ( partition_temp .busy )
-					device .busy = true ;
-					
+				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
+					device .highest_busy = partition_temp .partition_number ;
+									
 				break ;
 		
 			case PED_PARTITION_EXTENDED:

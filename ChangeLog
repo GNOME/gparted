@@ -1,3 +1,11 @@
+2004-12-27 Bart Hakvoort  <hakvoort@cvs.gnome.org>
+
+	* include/Device.h,
+	  src/Device.cc,
+	  src/GParted_Core.cc,
+	  src/Win_GParted.cc: Removed the ugly Get_Highest_Logical_Busy() from Device and added a classvariable instead. This one is set in
+	  GParted_Core and used wherever needed. I also removed Device::busy, and used the new variable to check if a device is busy.
+
 2004-12-27 Bart Hakvoort  <gparted@users.sf.net>
 
 	* Added cylsize to Device and made Operation contain a Device instead of only the path and lenght.

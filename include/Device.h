@@ -31,8 +31,7 @@ public:
 	~Device( ) ;
 	
 	void Reset( ) ;
-	int Get_Highest_Logical_Busy( ) ;
-
+	
 	std::vector<Partition> device_partitions ;
 	Sector length;
 	long heads ;
@@ -44,7 +43,7 @@ public:
  	Glib::ustring realpath;
  	Glib::ustring disktype;
 	int max_prims ;
-	bool busy ; 
+	int highest_busy ;
 	bool readonly ; 
 			
 private:

@@ -940,7 +940,7 @@ void Win_GParted::activate_new()
 	}
 }
 
-void Win_GParted::activate_delete()
+void Win_GParted::activate_delete( )
 { 
 	//since logicals are *always* numbered from 5 to <last logical> there can be a shift in numbers after deletion.
 	//e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6, /dev/hda7 is renumbered to /dev/hda6
@@ -948,7 +948,7 @@ void Win_GParted::activate_delete()
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
 	if ( 	selected_partition .type == GParted::LOGICAL &&
 		selected_partition .status != GParted::STAT_NEW && 
-		selected_partition .partition_number < devices [ current_device ] .Get_Highest_Logical_Busy( ) )
+		selected_partition .partition_number < devices [ current_device ] .highest_busy )
 	{	
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _( "Unable to delete partition!") ;
@@ -1156,7 +1156,7 @@ void Win_GParted::activate_apply( )
 		//find out if any of the involved devices is busy
 		bool any_busy = false ;
 		for ( unsigned int t = 0; t < devices .size( ) && ! any_busy; t++ )
-			if ( devices[ t ] .busy )
+			if ( devices[ t ] .highest_busy )
 				for (unsigned int i = 0; i < operations .size( ) && ! any_busy; i++ )
 					if ( operations[ i ] .device .path == devices[ t ] .path )
 						any_busy = true ;

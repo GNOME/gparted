@@ -31,25 +31,8 @@ void Device::Reset( )
 	length = 0 ;
 	heads = sectors = cylinders = cylsize = 0 ;
 	model = path = realpath = disktype = "" ;
-	max_prims = 0 ;
-	busy = readonly = false ; 	
-}
-
-int Device::Get_Highest_Logical_Busy( ) 
-{
-	int highest_logic_busy = -1 ;
-	
-	for ( unsigned int t = 0 ; t < device_partitions .size( ) ; t++ )
-		if ( device_partitions [ t ] .type == GParted::EXTENDED )
-		{
-			for ( unsigned int i = 0 ; i < device_partitions[ t ] .logicals .size( ) ; i++ )
-				if ( device_partitions[ t ] .logicals[ i ] .busy && device_partitions[ t ] .logicals[ i ] .partition_number > highest_logic_busy )
-					highest_logic_busy = device_partitions[ t ] .logicals[ i ] .partition_number ;
-				
-			break ;
-		}
-	
-	return highest_logic_busy ;
+	max_prims = highest_busy = 0 ;
+	readonly = false ; 	
 }
 
 Device::~Device( )
