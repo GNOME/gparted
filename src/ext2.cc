@@ -78,7 +78,7 @@ void ext2::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
 }
 
-bool ext2::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool ext2::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkfs.ext2 " + new_partition .partition ) ;
 }

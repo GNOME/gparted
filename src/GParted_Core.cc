@@ -343,7 +343,7 @@ bool GParted_Core::Create( const Device & device, Partition & new_partition )
 		if ( ! p_filesystem )
 			return true ;
 		
-		return p_filesystem ->Create( device .path, new_partition ) ;
+		return p_filesystem ->Create( new_partition ) ;
 	}
 	
 	return false ;
@@ -364,7 +364,7 @@ bool GParted_Core::Convert_FS( const Glib::ustring & device_path, const Partitio
 	
 	set_proper_filesystem( partition .filesystem ) ;
 
-	return p_filesystem ->Create( device_path, partition ) ;
+	return p_filesystem ->Create( partition ) ;
 }
 
 bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & partition ) 

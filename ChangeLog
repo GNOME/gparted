@@ -1,4 +1,9 @@
 2004-12-28 Bart Hakvoort  <hakvoort@cvs.gnome.org>
+	
+	* The Filesystemclasses: Changed 'bool Create( const Glib::ustring & device_path, const Partition & new_partition )'
+	to 'bool Create( const Partition & new_partition )'. Since i now use external tools for all filesystems, the partitionpath will suffice.
+
+2004-12-28 Bart Hakvoort  <hakvoort@cvs.gnome.org>
 
 	* include/GParted_Core.h,
 	  src/GParted_Core.cc,

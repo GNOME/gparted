@@ -64,7 +64,7 @@ void hfs::Set_Used_Sectors( Partition & partition )
 	pclose( f ) ;
 }
 
-bool hfs::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool hfs::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "hformat " + new_partition .partition ) ;
 }

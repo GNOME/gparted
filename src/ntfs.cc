@@ -74,7 +74,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 	pclose( f ) ;
 }
 
-bool ntfs::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool ntfs::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkntfs -Q " + new_partition .partition ) ;
 }

@@ -77,7 +77,7 @@ void fat32::Set_Used_Sectors( Partition & partition )
 	}
 }
 
-bool fat32::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool fat32::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkdosfs -F32 " + new_partition .partition ) ;
 }

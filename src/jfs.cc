@@ -63,7 +63,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool jfs::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool jfs::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkfs.jfs -q " + new_partition .partition ) ;
 }

@@ -84,7 +84,7 @@ public:
 
 	virtual FS get_filesystem_support( ) = 0 ;
 	virtual void Set_Used_Sectors( Partition & partition ) = 0 ;
-	virtual bool Create( const Glib::ustring device_path, const Partition & new_partition ) = 0 ;
+	virtual bool Create( const Partition & new_partition ) = 0 ;
 	virtual bool Resize( const Partition & partition_new, bool fill_partition = false ) = 0 ;
 	virtual bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) = 0 ;
 	virtual bool Check_Repair( const Partition & partition ) = 0 ;

@@ -46,14 +46,14 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool linux_swap::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool linux_swap::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkswap " + new_partition .partition ) ;
 }
 
 bool linux_swap::Resize( const Partition & partition_new, bool fill_partition )
 {
-	return Create( "", partition_new ) ;
+	return Create( partition_new ) ;
 }
 
 bool linux_swap::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )

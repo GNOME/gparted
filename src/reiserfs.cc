@@ -82,7 +82,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
 }
 	
-bool reiserfs::Create( const Glib::ustring device_path, const Partition & new_partition )
+bool reiserfs::Create( const Partition & new_partition )
 {
 	return ! Execute_Command( "mkreiserfs -q " + new_partition .partition ) ;
 }
