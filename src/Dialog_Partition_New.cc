@@ -217,7 +217,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu()
 	filesystems.push_back( "fat16" );
 	filesystems.push_back( "fat32" );
 	filesystems.push_back( "linux-swap" );
-	filesystems.push_back( "ReiserFS" ); //libreiserfs needed
+	filesystems.push_back( "reiserfs" ); //libreiserfs needed
 	filesystems.push_back( "extended" ); //convenient ;)
 	
 	//fill the filesystem menu with those filesystems (except for extended) 

@@ -16,7 +16,8 @@
  */
  
  /* READ THIS!!
-  * Partition isn't really a partition. It's more like a geometry, a continuous part of the disk. I use ut to represent partitions as well as unallocated spaces
+  * Partition isn't really a partition. It's more like a geometry, a continuous part of the disk. 
+  * I use it to represent partitions as well as unallocated spaces
   */
  
 #ifndef PARTITION
@@ -145,7 +146,7 @@ public:
 	Sector sectors_unused;
 	Gdk::Color color;
 	Glib::ustring color_string;
-	bool inside_extended;//this one is stupid ;-) i use it to check wether unallocated space resides inside extended partition or not.
+	bool inside_extended;//used to check wether partition resides inside extended partition or not.
 	bool busy;
 	Glib::ustring error;
 	Glib::ustring flags;

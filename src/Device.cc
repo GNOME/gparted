@@ -521,10 +521,10 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 		fs = ped_file_system_open( & c_partition ->geom ); //opening a filesystem is *SLOOOWW* :-(
 		
 		if ( fs )
-		{	
+		{
 			constraint = ped_file_system_get_resize_constraint (fs);
 			ped_file_system_close (fs);
-			if ( constraint && constraint->min_size != -1 ) //apperantly the compiler evaluates constraint != NULL before the min_size check. Very nice! :D
+			if ( constraint && constraint->min_size != -1 ) 
 				return constraint->min_size ;
 		}
 		else 
