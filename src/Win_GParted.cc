@@ -999,6 +999,32 @@ void Win_GParted::activate_apply()
 		s3.disconnect();
 		delete ( dialog_progress ) ;
 		thread_operations->join() ;
+		
+		//make list of involved devices which have at least one busy partition..
+		std::vector <Glib::ustring> devicenames ;
+		for (unsigned int t=0; t<operations .size(); t++ )
+			if ( 	std::find( devicenames .begin(), devicenames .end() , operations[ t ] .device ->Get_Path() ) == devicenames .end() &&
+					operations[ t ] .device ->Get_any_busy()
+				)
+				devicenames .push_back( operations[ t ] .device ->Get_Path() ) ;
+		
+		//show warning if necessary
+		if ( devicenames .size() )
+		{
+			os << "<span weight=\"bold\" size=\"larger\">" ;
+			os << _("The kernel was unable to re-read the partition table on :") << "\n";
+			for (unsigned int t=0; t<devicenames .size(); t++ )
+				os << "- " << devicenames[ t ] << "\n";
+			os << "</span>\n\n" << _( "This means Linux won't know anything about the modifications you made until you reboot.") << "\n\n" ;
+			if ( devicenames .size() > 1 )
+				os << _( "You should reboot your computer before doing anything with these devices.") ; 
+			else 
+				os << _( "You should reboot your computer before doing anything with this device.") ; 
+				
+			Gtk::MessageDialog dialog( *this,  os.str()  ,true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true); os.str("") ;
+			dialog.run() ;
+		}					
+		
 				
 		//wipe operations...
 		operations.clear();
@@ -1009,18 +1035,7 @@ void Win_GParted::activate_apply()
 		//then clean up the rest
 		new_count = 1;
 		close_operationslist() ;
-							
-		//show warning is necesarry
-		if ( devices[ current_device ] ->Get_any_busy() )
-		{
-			os << "<span weight=\"bold\" size=\"larger\">" ;
-			os << _("The kernel was unable to re-read the partition table on") << " " << devices[ current_device ] ->Get_Path() ;
-			os << "</span>\n\n" << _( "This means Linux won't know anything about the modifications you made until you reboot.") << "\n\n" ;
-			os << _( "You should reboot your computer before doing anything with")  << " " << devices[ current_device ] ->Get_Path() ;
-			Gtk::MessageDialog dialog( *this,  os.str()  ,true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true); os.str("") ;
-			dialog.run() ;
-		}			
-					
+	
 	}
 	
 }
