@@ -44,7 +44,7 @@ Glib::ustring get_sym_path( const Glib::ustring & real_path )
 		
 	}
 	
-	//it's very unlikely, if not impossible, the program will ever reach this, but just in case.... ;-)
+	//paranoia modus :)
 	fclose (proc_part_file);	
 	return real_path;
 }

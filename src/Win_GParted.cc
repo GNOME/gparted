@@ -54,7 +54,7 @@ Win_GParted::Win_GParted( )
 	vpaned_main .pack1( hpaned_main, true, true ) ;
 	
 	//vpaned_main....
-	vpaned_main.set_position( 1000 ); //let's make sure the operationslist is closed at startup
+	close_operationslist() ;
 	vbox_main.pack_start( vpaned_main );
 	
 	//device info...
