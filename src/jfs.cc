@@ -27,8 +27,8 @@ FS jfs::get_filesystem_support( )
 	
 	fs .filesystem = "jfs" ;
 		
-//	if ( ! system( "which xfs_db 1>/dev/null 2>/dev/null" ) ) 
-//		fs .read = true ;
+	if ( ! system( "which jfs_debugfs 1>/dev/null 2>/dev/null" ) ) 
+		fs .read = true ;
 	
 	if ( ! system( "which mkfs.jfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
@@ -61,6 +61,32 @@ FS jfs::get_filesystem_support( )
 
 void jfs::Set_Used_Sectors( Partition & partition ) 
 {
+	char c_buf[ 512 ] ;
+	FILE *f ;
+	
+	Glib::ustring output ;
+
+        //get free sectors..
+	f = popen( ( "LC_ALL=C echo dm | jfs_debugfs " + partition .partition ) .c_str( ), "r" ) ;
+	while ( fgets( c_buf, 512, f ) )
+	{
+		output = Glib::locale_to_utf8( c_buf ) ;
+		
+		//free sectors
+		if ( output .find( "dn_nfree" ) < output .length( ) )
+		{
+			output = output .substr( output .find( ":" ) +1, output .length( ) ) ;
+					
+			int dec_free_blocks ;
+			std::istringstream hex_free_blocks( output .substr( 0, output .find( "[" ) ) );
+			hex_free_blocks >> std::hex >> dec_free_blocks ;
+				
+			partition .Set_Unused( dec_free_blocks * 8 ) ;//4096 / 512 (i've been told jfs blocksize is _always_ 4K)
+	
+			break ;
+		}
+	}
+	pclose( f ) ;
 }
 
 bool jfs::Create( const Partition & new_partition )
