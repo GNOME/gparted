@@ -101,7 +101,6 @@ private:
 		
 	std::vector <PedPartitionFlag> flags;
 	Glib::ustring temp, error ; //error may contain an errormessage for an specific partition ( see Get_Used_Sectors() ) 		
-	std::ostringstream os;
 	Partition partition_temp ;
  };
  

@@ -36,7 +36,7 @@ class Dialog_Base_Partition : public Gtk::Dialog
 {
 public:
 	
-	Dialog_Base_Partition(   ) ;
+	Dialog_Base_Partition( ) ;
 	~Dialog_Base_Partition() ;
 
 	void Set_Resizer( bool extended ) ;
@@ -63,22 +63,21 @@ protected:
 	Partition selected_partition ;
 	
 	Sector START; //the first sector of the first relevant partition ( this is either current or current -1 )  needed in Get_Resized_Partition()
-	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...
+	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...)
 
-	Gtk::HBox hbox_main;
+	Gtk::HBox hbox_main ;
 	Gtk::Label label_minmax ;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
 	
 	//used to enable/disable OKbutton...
-	int ORIG_BEFORE,ORIG_SIZE, ORIG_AFTER ;
+	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;
 	
 	//signal handlers
 	void on_signal_move( int, int );
 	void on_signal_resize( int, int, Frame_Resizer_Base::ArrowType );
-	void on_spinbutton_value_changed( SPINBUTTON  ) ;
+	void on_spinbutton_value_changed( SPINBUTTON ) ;
 
 	bool fixed_start, GRIP;
-	std::ostringstream os;
 	double before_value ;
 	int x_start, x_end ;
 	
@@ -92,7 +91,6 @@ private:
 	Gtk::Tooltips tooltips;
 	Gtk::Button button_resize_move ;
 	Gtk::Image *image_temp ;
-		
 };
 
 } //GParted

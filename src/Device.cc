@@ -143,13 +143,15 @@ Device::Device( const Glib::ustring & device_path )
 
 void Device::Read_Disk_Layout()
 {
+	Glib::ustring part_path ;
+	
 	//clear partitions
 	this ->device_partitions .clear () ;
 	
 	c_partition = ped_disk_next_partition (  disk, NULL) ;
 	while ( c_partition )
 	{
-		os << this ->path << c_partition ->num ;
+		part_path = this ->path + num_to_str( c_partition ->num ) ;
 			
 		switch( c_partition ->type )
 		{ 
@@ -159,7 +161,7 @@ void Device::Read_Disk_Layout()
 				else
 					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 							
-				partition_temp.Set( os.str(),c_partition ->num , GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , false, ped_partition_is_busy(  c_partition ) );
+				partition_temp.Set( part_path,c_partition ->num , GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , part_path ) , false, ped_partition_is_busy(  c_partition ) );
 				
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
@@ -172,7 +174,7 @@ void Device::Read_Disk_Layout()
 				else
 					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 								
-				partition_temp.Set( os.str(), c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , true, ped_partition_is_busy( c_partition ) );
+				partition_temp.Set( part_path, c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , part_path ) , true, ped_partition_is_busy( c_partition ) );
 																
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
@@ -180,7 +182,7 @@ void Device::Read_Disk_Layout()
 											
 				break;
 			//EXTENDED
-			case 2:	partition_temp.Set( os.str(), c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end , -1, false, ped_partition_is_busy(  c_partition ) );
+			case 2:	partition_temp.Set( part_path, c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end , -1, false, ped_partition_is_busy(  c_partition ) );
 											
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
@@ -207,7 +209,7 @@ void Device::Read_Disk_Layout()
 		}
 			
 		//reset stuff..
-		this ->error = ""; error_message = ""; os.str("");
+		this ->error = error_message = "" ;
 		
 		//next partition (if any)
 		c_partition = ped_disk_next_partition ( disk, c_partition ) ;

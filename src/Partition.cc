@@ -53,8 +53,7 @@ void Partition::Set(	const Glib::ustring & partition,
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
 	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , -1, inside_extended, false); 
-	this ->error = "" ;
-	this ->flags = "" ;
+	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }
 
@@ -93,10 +92,8 @@ void Partition::Update_Number( int new_number )
 {   //of course this fails when we have devicenames with numbers over 99
 	partition_number >= 10 ? partition = partition.substr( 0, partition.length() -2 ) : partition = partition.substr( 0, partition.length() -1 ) ;
 		
-	partition_number = new_number;
-	std::ostringstream os;
-	os << new_number;
-	partition += os.str();
+	this ->partition_number = new_number;
+	this ->partition += num_to_str( partition_number ) ;
 }
 
 long Partition::Get_Length_MB( )

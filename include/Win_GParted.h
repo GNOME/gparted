@@ -150,20 +150,21 @@ private:
 	{
 		Gtk::TreeModelColumn<int> operation_number;
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> >  operation_icon;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
 				
-		treeview_operations_Columns() {	add( operation_number ); add( operation_description );add(operation_icon);}
+		treeview_operations_Columns() {	add( operation_number ); add( operation_description ); add(operation_icon);}
 	};
 	treeview_operations_Columns treeview_operations_columns;
 	
 	
 	//usefull variables which are used by many different functions...
 	sigc::connection s2,s3;//used for disconnecting and destroying a connection ( see optionmenu_devices_changed() and activate_apply() )
-	std::ostringstream os;//for int to string conversions
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
-	unsigned short highest_logic_busy,primary_count, new_count;//primary_count checks for max. of 4 pimary partitions, 
-																								//new_count keeps track of the new created partitions,
-																								//highest_logic_busy contains the number of the highest logical which is busy ( 0 if none is busy)
+	unsigned short highest_logic_busy ;//highest_logic_busy contains the number of the highest logical which is busy ( 0 if none is busy)
+	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
+	unsigned short new_count;//new_count keeps track of the new created partitions
+	Glib::ustring str_temp ; //mostly used for constructing dialogmessages					
+									
 	
 	GParted::Device *temp_device;
 	std::vector <Glib::ustring> str_devices, filesystems;

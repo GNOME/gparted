@@ -90,7 +90,7 @@ private:
 	Gdk::Color color_used, color_unused, color_text;
 
 
-	std::ostringstream os;//for int to string conversions
+	Glib::ustring str_temp ;
 	int temp,selected_partition;
 	Gtk::Entry *entry_temp;
 	Gtk::Label *label_temp;

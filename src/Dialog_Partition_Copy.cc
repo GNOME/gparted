@@ -43,11 +43,11 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
-	frame_resizer_base ->set_x_end( ( Round( (double)  (copied_partition.sector_end - copied_partition.sector_start) / ( (double)total_length/500)  )) ) ;
+	frame_resizer_base ->set_x_end( ( Round( (double) (copied_partition.sector_end - copied_partition.sector_start) / ( (double)total_length/500) )) ) ;
 	frame_resizer_base ->set_used( frame_resizer_base ->get_x_end() ) ;
 	
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0,  TOTAL_MB - copied_partition .Get_Length_MB() -1  ) ;//mind the -1  !!
+	spinbutton_before .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB() -1 ) ;//mind the -1  !!
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size (check for fat16 maxsize of 1023 MB)
@@ -58,20 +58,20 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 		UPPER =  TOTAL_MB;
 	
 	spinbutton_size .set_range(  copied_partition .Get_Length_MB() +1, UPPER ) ;
-	spinbutton_size .set_value(  copied_partition .Get_Length_MB()  ) ;
+	spinbutton_size .set_value(  copied_partition .Get_Length_MB() ) ;
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range(  0, TOTAL_MB - copied_partition .Get_Length_MB() -1  ) ;
 	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB()  ) ;
 	
 	//set contents of label_minmax
-	os << String::ucompose( _("Minimum Size: %1 MB"), copied_partition .Get_Length_MB() +1 ) << "\t\t" ;
-	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( os.str() ) ; os.str("") ;
+	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), copied_partition .Get_Length_MB() +1 ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
+	label_minmax.set_text( str_temp ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
-	this ->selected_partition .inside_extended = selected_partition .inside_extended  ;
+	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
 	selected_partition .inside_extended ? this ->selected_partition .type = GParted::LOGICAL : this ->selected_partition .type = GParted::PRIMARY ;
 	
 	GRIP = false ;

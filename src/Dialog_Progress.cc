@@ -27,17 +27,19 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	this ->count_operations = count_operations ;
 	current_operation_number = 0;
 	
-	fraction =(double) 1 / count_operations ;
+	fraction = (double) 1 / count_operations ;
 	fraction -= 1E-8 ; //minus 1E-8 is to prevent fraction from ever reaching >=1, it needs to be 0.0 < fraction < 1.0
 	
 	label_temp = manage( new Gtk::Label() ) ;
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
-	os << "<span weight=\"bold\" size=\"larger\">" << _( "Applying pending operations" ) << "</span>\n\n" ;
-	os << _("Applying all listed operations.") ;
-	os << "\n";
-	os <<  _("Clicking Cancel will prevent the next operations from being applied.") ;
-	os << "\n";
-	label_temp ->set_markup( os.str() ) ; os.str("") ;
+	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+	str_temp += _( "Applying pending operations" ) ;
+	str_temp += "</span>\n\n" ;
+	str_temp += _("Applying all listed operations.") ;
+	str_temp += "\n";
+	str_temp += _("Clicking Cancel will prevent the next operations from being applied.") ;
+	str_temp += "\n";
+	label_temp ->set_markup( str_temp ) ; 
 	this->get_vbox() ->pack_start( *label_temp, Gtk::PACK_SHRINK );
 	
 	progressbar_current.set_text( _("initializing...") );

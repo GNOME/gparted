@@ -108,9 +108,9 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	GRIP = false ;
 	
 	//set contents of label_minmax
-	os << String::ucompose( _("Minimum Size: %1 MB"), 1 ) << "\t\t" ;
-	os << String::ucompose( _("Maximum Size: %1 MB"), TOTAL_MB ) ;
-	label_minmax.set_text( os.str() ) ; os.str("") ;
+	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), 1 ) +"\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MB"), TOTAL_MB ) ;
+	label_minmax.set_text( str_temp ) ;
 	
 	this ->show_all_children() ;
 }
@@ -128,7 +128,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		case 2	:	part_type = GParted::EXTENDED; 	break;
 	}
 	
-	new_start = START +  (Sector) (spinbutton_before .get_value() * MEGABYTE) ;
+	new_start = START + (Sector) (spinbutton_before .get_value() * MEGABYTE) ;
 	new_end  = new_start + (Sector) (spinbutton_size .get_value() * MEGABYTE) ;
 	
 	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we try to solve this.
@@ -137,9 +137,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	if  ( new_end > selected_partition.sector_end )
 		new_end = selected_partition.sector_end ;
 	
-	os << String::ucompose( _("New Partition #%1"), new_count ) ;
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp .Set( os.str(), new_count, part_type , filesystems[ optionmenu_filesystem.get_history() ], new_start, new_end, -1,  selected_partition.inside_extended, false) ; os.str("") ;
+	part_temp .Set( String::ucompose( _("New Partition #%1"), new_count ), new_count, part_type , filesystems[ optionmenu_filesystem.get_history() ], new_start, new_end, -1,  selected_partition.inside_extended, false) ; 
 	
 	//grow new partition a bit if freespaces are < 1 MB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 
@@ -182,13 +181,13 @@ void Dialog_Partition_New::optionmenu_changed( bool type  )
 		switch ( optionmenu_filesystem .get_history() )
 		{
 			case 1	:	MIN = 32 ;
-							TOTAL_MB > 1023 ? MAX = 1023 : MAX = TOTAL_MB ;
-							break;
+					TOTAL_MB > 1023 ? MAX = 1023 : MAX = TOTAL_MB ;
+					break;
 			case 2	:	MIN = 256 ;
-							MAX = TOTAL_MB ;
-							break;
+					MAX = TOTAL_MB ;
+					break;
 			default	:	MIN = 1 ;
-							MAX = TOTAL_MB ;
+					MAX = TOTAL_MB ;
 		}
 		
 		spinbutton_before .set_range( 0, TOTAL_MB - MIN ) ;
@@ -196,9 +195,9 @@ void Dialog_Partition_New::optionmenu_changed( bool type  )
 		spinbutton_after .set_range( 0, TOTAL_MB  - MIN ) ;
 		
 		//set contents of label_minmax
-		os << String::ucompose( _("Minimum Size: %1 MB"), MIN ) << "\t\t" ;
-		os << String::ucompose( _("Maximum Size: %1 MB"), MAX ) ;
-		label_minmax.set_text( os.str() ) ; os.str("") ;
+		Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), MIN ) + "\t\t" ;
+		str_temp += String::ucompose( _("Maximum Size: %1 MB"), MAX ) ;
+		label_minmax.set_text( str_temp ) ; 
 		
 	}
 	

@@ -48,7 +48,6 @@ private:
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
 	
 	double fraction;
-	std::ostringstream os;
 	int count_operations, current_operation_number;
 	char c_buf[ 1024 ] ; //used by sprintf, which is needed for i18n
 };

@@ -49,8 +49,8 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 	this ->x_end = frame_resizer_base ->get_x_end() ;
 	
 	//store the original values
-	ORIG_BEFORE =	spinbutton_before .get_value_as_int() ;
-	ORIG_SIZE		=	spinbutton_size .get_value_as_int() ;
+	ORIG_BEFORE 	=	spinbutton_before .get_value_as_int() ;
+	ORIG_SIZE	=	spinbutton_size .get_value_as_int() ;
 	ORIG_AFTER	=	spinbutton_after .get_value_as_int() ;
 	
 	GRIP = false ;
@@ -111,7 +111,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	if ( ! fixed_start )
 	{
 		spinbutton_before .set_range( 0, Sector_To_MB(total_length - selected_partition.sectors_used)   -1 ) ;//mind the -1  !!
-		spinbutton_before .set_value(  Sector_To_MB( previous ) ) ;
+		spinbutton_before .set_value( Sector_To_MB( previous ) ) ;
 	}
 	
 	//set values of spinbutton_size 
@@ -133,13 +133,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	spinbutton_size .set_value(  selected_partition .Get_Length_MB()  ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range(  0, Sector_To_MB( total_length )  - LOWER ) ;
-	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
+	spinbutton_after .set_range( 0, Sector_To_MB( total_length ) - LOWER ) ;
+	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	os << String::ucompose( _("Minimum Size: %1 MB"), LOWER ) << "\t\t" ;
-	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( os.str() ) ; os.str("") ;
+	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), LOWER ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
+	label_minmax.set_text( str_temp ) ; 
 }
 
 
@@ -225,9 +225,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	os << String::ucompose( _("Minimum Size: %1 MB"), Sector_To_MB( used ) +1  ) << "\t\t" ;
-	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( os.str() ) ; os.str("") ;
+	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), Sector_To_MB( used ) +1 ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
+	label_minmax.set_text( str_temp ) ;
 	
 }
 

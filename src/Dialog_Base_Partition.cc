@@ -26,8 +26,8 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	
 	frame_resizer_base = NULL;
 	GRIP = false ;
-	this -> fixed_start = false ;
-	this -> set_resizable( false );
+	this ->fixed_start = false ;
+	this ->set_resizable( false );
 	
 	//pack resizer hbox
 	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
@@ -52,29 +52,29 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	
 	//add spinbutton_before
 	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "Free Space Preceding (MB) :") + " \t" ) ) ;
-	table_resize.attach( *label_temp, 0,1,0,1,Gtk::SHRINK);
+	table_resize.attach( *label_temp, 0, 1, 0, 1, Gtk::SHRINK);
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_before, 1,2,0,1,Gtk::FILL);
+	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL);
 	
 	//add spinbutton_size
 	label_temp = manage( new Gtk::Label( _( "New Size (MB) :") ) ) ;
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
-	table_resize.attach( *label_temp, 0,1,1,2 );
+	table_resize.attach( *label_temp, 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_size, 1,2,1,2,Gtk::FILL);
+	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL);
 	
 	//add spinbutton_after
 	label_temp = manage( new Gtk::Label( _( "Free Space Following (MB) :") ) ) ;
-	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
-	table_resize.attach( *label_temp, 0,1,2,3 ) ;
+	label_temp ->set_alignment( Gtk::ALIGN_LEFT );
+	table_resize.attach( *label_temp, 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_after, 1,2,2,3,Gtk::FILL);
+	table_resize.attach( spinbutton_after, 1, 2, 2, 3, Gtk::FILL);
 	
 	
 	if ( ! fixed_start )
@@ -93,7 +93,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT ) ;
 	this ->get_vbox() ->pack_start( *label_temp, Gtk::PACK_SHRINK );
 	
-	this ->get_vbox() ->pack_start( *( manage( new Gtk::Label( "") )  ), Gtk::PACK_SHRINK ); //filler :-P
+	this ->get_vbox() ->pack_start( *( manage( new Gtk::Label( "") ) ), Gtk::PACK_SHRINK ); //filler :-P
 		
 	this->add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;
@@ -103,11 +103,11 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 {
 	if ( extended )
 	{
-		frame_resizer_base = new Frame_Resizer_Extended(  ) ;
+		frame_resizer_base = new Frame_Resizer_Extended( ) ;
 	}
 	else
 	{
-		frame_resizer_base = new Frame_Resizer_Base(  ) ;
+		frame_resizer_base = new Frame_Resizer_Base( ) ;
 		frame_resizer_base ->signal_move .connect ( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_move) );
 	}
 	
@@ -293,7 +293,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  
 		if ( ! fixed_start )
 			frame_resizer_base ->set_x_start( (int)  (spinbutton_before .get_value() / MB_PER_PIXEL + 0.5)  ) ;
 		
-		frame_resizer_base ->set_x_end( (int)  (  500 - ( (double) spinbutton_after .get_value() / MB_PER_PIXEL ) + 0.5 ) ) ;
+		frame_resizer_base ->set_x_end( (int) ( 500 - ( (double) spinbutton_after .get_value() / MB_PER_PIXEL ) + 0.5 ) ) ;
 		
 		this ->x_start = frame_resizer_base ->get_x_start() ;
 		this ->x_end = frame_resizer_base ->get_x_end() ;
