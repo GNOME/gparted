@@ -74,10 +74,19 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	this ->selected_partition .inside_extended = selected_partition .inside_extended  ;
 	selected_partition .inside_extended ? this ->selected_partition .type = GParted::LOGICAL : this ->selected_partition .type = GParted::PRIMARY ;
 	
-			
 	GRIP = false ;
 }
 
-
+Partition Dialog_Partition_Copy::Get_New_Partition() 
+{
+	//first call baseclass to get the correct new partition
+	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
+	
+	//set proper name and status for partition
+//	selected_partition.partition = String::ucompose( _("copy from %1"), selected_partition .partition );
+	selected_partition.status = GParted::STAT_COPY ;
+	
+	return selected_partition ;
+}
 
 } //GParted

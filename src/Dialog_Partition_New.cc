@@ -135,10 +135,11 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	if  ( new_end > selected_partition.sector_end )
 		new_end = selected_partition.sector_end ;
 	
-	os << "New Partition #" << new_count;
-	part_temp.Set( os.str(), new_count, part_type , filesystems[ optionmenu_filesystem.get_history() ], new_start, new_end, -1,  selected_partition.inside_extended, false) ; os.str("") ;
+	os << String::ucompose( _("New Partition #%1"), new_count ) ;
+	part_temp .status = GParted::STAT_NEW ;
+	part_temp .Set( os.str(), new_count, part_type , filesystems[ optionmenu_filesystem.get_history() ], new_start, new_end, -1,  selected_partition.inside_extended, false) ; os.str("") ;
 	
-	//THIS SHOULD PROBABLY BE A SETTING IN USERSPACE! ( grow new partition a bit if freespaces are < 1 MB )
+	//grow new partition a bit if freespaces are < 1 MB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 
 		part_temp.sector_start = selected_partition.sector_start ;
 	if ( (selected_partition.sector_end - part_temp.sector_end) < MEGABYTE ) 

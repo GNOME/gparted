@@ -28,10 +28,9 @@ class Dialog_Partition_Copy : public Dialog_Base_Partition
 public:
 	Dialog_Partition_Copy() ;
 	void Set_Data( Partition & selected_partition, Partition & copied_partition );
-	
+	Partition Get_New_Partition() ;
 
 private:
-
 
 };
 

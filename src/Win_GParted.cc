@@ -429,7 +429,7 @@ void Win_GParted::Refresh_Visual( )
 	
 		treerow = *(liststore_operations->append());
 		treerow[ treeview_operations_columns.operation_number ] = t +1;
-		treerow[ treeview_operations_columns.operation_description ] = operations[t].Get_String() ;
+		treerow[ treeview_operations_columns.operation_description ] = operations[t] .str_operation ;
 		switch ( operations[t].operationtype )
 		{		
 			case GParted::DELETE				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
@@ -508,8 +508,7 @@ bool Win_GParted::Quit_Check_Operations()
 	if ( operations.size() )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Quit GParted?" ) + "</span>\n\n" ;
-	//	os << operations.size() << " ";
-	//	operations.size() == 1 ? os << "operation is currently pending..." : os << "operations are currently pending..." ;
+	
 		if ( operations .size() != 1 )
 			os << String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
 		else
@@ -570,7 +569,7 @@ void Win_GParted::Set_Valid_Operations()
 			allow_resize( true ) ;
 			
 			//only allow copying of real partitions
-			if ( selected_partition .partition.substr( 0, 3 ) != "New" && selected_partition .partition.substr( 0, 4 ) != "copy" )
+			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY )
 				allow_copy( true ) ;
 		}
 				
@@ -747,7 +746,7 @@ void Win_GParted::activate_resize()
 		dialog.hide() ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 		
 		//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new size and position ( unless it's an EXTENDED )
-		if ( selected_partition .partition.substr( 0, 3 ) == "New" && selected_partition.type != GParted::EXTENDED )
+		if ( selected_partition .status == GParted::STAT_NEW && selected_partition.type != GParted::EXTENDED )
 		{
 			//remove operation which creates this partition
 			for ( unsigned int t=0;t<operations.size() ; t++ )
@@ -836,7 +835,7 @@ void Win_GParted::activate_delete()
 	//e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6, /dev/hda7 is renumbered to /dev/hda6
 	//the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted the OS cannot find /dev/hda7 anymore and the results aren't that pretty
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
-	if ( selected_partition.type == GParted::LOGICAL &&  selected_partition .partition.substr( 0, 3 ) != "New"  && selected_partition.partition_number < highest_logic_busy )
+	if ( selected_partition.type == GParted::LOGICAL &&  selected_partition .status != GParted::STAT_NEW  && selected_partition.partition_number < highest_logic_busy )
 	{	
 		os << "<span weight=\"bold\" size=\"larger\">" << _( "Unable to delete partition!")  << "</span>\n\n" ;
 		os << String::ucompose( _("Please unmount any logical partitions having a number higher than %1"), selected_partition.partition_number ) ;
@@ -869,7 +868,7 @@ void Win_GParted::activate_delete()
 		
 		//if deleted one is NEW, it doesn't make sense to add it to the operationslist, we erase its creation
 		//and possible modifications like resize etc.. from the operationslist.   Calling Refresh_Visual will wipe every memory of its existence ;-)
-		if ( selected_partition .partition.substr( 0, 3 ) == "New" )
+		if ( selected_partition .status == GParted::STAT_NEW )
 		{
 			//remove all operations done on this new partition (this includes creation)	
 			for ( int t=0;t<(int) operations.size() ; t++ ) //i removed the unsigned 'cause t will be negative at times...
@@ -885,7 +884,7 @@ void Win_GParted::activate_delete()
 			//determine lowest possible new_count
 			new_count = 0 ; 
 			for ( unsigned int t=0;t<operations.size() ; t++ )
-				if ( operations[t] .partition_new .partition .substr( 0, 3 ) == "New" && operations[t] .partition_new .partition_number > new_count )
+				if ( operations[t] .partition_new .status == GParted::STAT_NEW && operations[t] .partition_new .partition_number > new_count )
 					new_count = operations[t] .partition_new .partition_number ;
 			
 			new_count += 1 ;
@@ -953,7 +952,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new filesystem
-	if ( selected_partition .partition.substr( 0, 3 ) == "New"  )
+	if ( selected_partition .status == GParted::STAT_NEW  )
 	{
 		//remove operation which creates this partition
 		for ( unsigned int t=0;t<operations.size() ; t++ )
@@ -1002,7 +1001,7 @@ void Win_GParted::activate_apply()
 		dialog.hide() ; //hide confirmationdialog
 		
 		apply = true;
-		dialog_progress = new Dialog_Progress ( operations.size(), operations.front().Get_String() ) ;
+		dialog_progress = new Dialog_Progress ( operations.size(), operations.front() .str_operation ) ;
 		s3 = dispatcher_next_operation.connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Next_Operation) );
 		thread_operations = Glib::Thread::create(SigC::slot_class(*this, &Win_GParted::apply_operations_thread), true);
 		
@@ -1082,7 +1081,7 @@ void Win_GParted::apply_operations_thread()
 		
 		if ( t < operations .size() -1 )
 		{
-			dialog_progress ->current_operation = operations[ t +1 ] .Get_String() ;
+			dialog_progress ->current_operation = operations[ t +1 ] .str_operation ;
 			dispatcher_next_operation() ;
 		}
 	}

@@ -63,6 +63,12 @@ enum PartitionType {
 	UNALLOCATED		=	3
 };
 
+enum PartitionStatus {
+	STAT_REAL	=	1,
+	STAT_NEW	=	2,
+	STAT_COPY	=	3
+};
+
 /*
 enum FileSystem {
 	ext2				=	0,
@@ -113,6 +119,7 @@ public:
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
+	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	Glib::ustring filesystem;// ext2, ext3, ntfs, etc....
 	Sector sector_start;
 	Sector sector_end;

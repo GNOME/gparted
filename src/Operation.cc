@@ -31,6 +31,13 @@ Operation::Operation( Device *device, Device *source_device, const Partition & p
 	this->partition_original = partition_original;
 	this->partition_new = partition_new;
 	this->operationtype = operationtype;
+	
+	str_operation = Get_String() ;
+	
+	//not the nicest place to put this, but definetly the most efficient :)
+	if ( operationtype == COPY )
+		this->partition_new .partition = String::ucompose( _("copy of %1"), this->partition_new .partition );	
+	
 }
 
 
@@ -172,7 +179,7 @@ std::vector<Partition> Operation::Apply_Delete_To_Visual( std::vector<Partition>
 	 
 	
 	//if deleted partition was logical we have to decrease the partitionnumbers of the logicals with higher numbers by one (only if its a real partition)
-	if ( partition_original.type == GParted::LOGICAL && partition_original.partition.substr( 0, 3 ) != "New"  )
+	if ( partition_original.type == GParted::LOGICAL && partition_original .status != GParted::STAT_NEW )
 		for ( t=0;t<partitions.size() ;t++)
 			if ( partitions[t].type == GParted::LOGICAL && partitions[t].partition_number > partition_original.partition_number  )
 				partitions[t].Update_Number( partitions[t].partition_number -1 );
@@ -235,10 +242,6 @@ std::vector<Partition> Operation::Apply_Create_To_Visual( std::vector<Partition>
 		partition_temp.Set_Unallocated(  partition_new.sector_start, partition_new.sector_end , true );	
 		partitions.insert( partitions.begin() + t +1, partition_temp );
 	}
-	
-	//set proper name for partition if COPY
-	if ( operationtype == GParted::COPY )
-		partitions[ t ] .partition = "copy from " + partitions[ t ] .partition ;
 	
 	return partitions;
 }

@@ -41,8 +41,7 @@ class Operation
 	
 public:
 	Operation( Device *device, Device *source_device, const Partition &, const Partition &,OperationType );
-	Glib::ustring Get_String();
-	
+		
 	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
 	std::vector<Partition> Apply_Operation_To_Visual( std::vector<Partition> & partitions );
@@ -54,6 +53,7 @@ public:
 	Glib::ustring device_path, source_device_path ;
 	OperationType operationtype;
 	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )
+	Glib::ustring str_operation ;
 
 private:
 	std::vector<Partition> Apply_Delete_To_Visual( std::vector<Partition> & partitions );
@@ -62,6 +62,7 @@ private:
 	std::vector<Partition> Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
 	std::vector<Partition> Apply_Convert_To_Visual( std::vector<Partition> & partitions );
 
+	Glib::ustring Get_String(); //only used during in c'tor
 	void Show_Error( const Glib::ustring & message  ) ;
 
 	Partition partition_original; //the original situation

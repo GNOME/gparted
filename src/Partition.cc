@@ -23,6 +23,7 @@ namespace GParted
 Partition::Partition( )
 {
 	this ->error = ""; //just to be sure...
+	this ->status = GParted::STAT_REAL ;
 }
 
 void Partition::Set(	const Glib::ustring & partition,
@@ -52,7 +53,9 @@ void Partition::Set(	const Glib::ustring & partition,
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
 	this ->Set( "Unallocated", -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , -1, inside_extended, false); 
-	this ->error = "" ;this ->flags = "" ;
+	this ->error = "" ;
+	this ->flags = "" ;
+	this ->status = GParted::STAT_REAL ;
 }
 
 Glib::ustring Partition::Get_Color( const Glib::ustring & filesystem ) 

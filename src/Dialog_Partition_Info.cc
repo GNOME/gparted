@@ -155,11 +155,11 @@ void Dialog_Partition_Info::Display_Info()
 	
 	label ->set_text( label ->get_text() + (Glib::ustring) _( "Flags:" ) + "\n\n" ) ;	os << partition .flags << "\n\n";
 	
-	if ( partition.type != GParted::UNALLOCATED && partition .partition.substr( 0, 3 ) != "New" )
+	if ( partition.type != GParted::UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		label ->set_text( label ->get_text() + (Glib::ustring) _("Path:" ) + "\n" ) ; 	os << partition.partition << "\n";
 		
-		//get realpath
+		//get realpath (this sucks)
 		char real_path[4096] ;
 		realpath( partition.partition.c_str() , real_path );
 		
