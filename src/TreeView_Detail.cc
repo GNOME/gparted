@@ -29,7 +29,7 @@ TreeView_Detail::TreeView_Detail( )
 		
 	//append columns
 	this->append_column( _("Partition"), treeview_detail_columns.partition );
-	this->append_column( _("Type"), treeview_detail_columns.type_square );
+	this->append_column( _("Filesystem"), treeview_detail_columns.type_square );
 	this->append_column( _("Size(MB)"), treeview_detail_columns.size );
 	this->append_column( _("Used(MB)"), treeview_detail_columns.used );
 	this->append_column( _("Unused(MB)"), treeview_detail_columns.unused );

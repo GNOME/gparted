@@ -1145,41 +1145,28 @@ void Win_GParted::activate_apply()
 		thread ->join( ) ;
 		conn .disconnect( ) ;
 		
-		//make list of involved devices which have at least one busy partition..
-		std::vector <Glib::ustring> devicenames ;
-		for ( unsigned int t = 0; t < devices .size( ); t++ )
+		//find out if any of the  involved devices is busy
+		bool any_busy = false ;
+		for ( unsigned int t = 0; t < devices .size( ) && ! any_busy; t++ )
 			if ( devices[ t ] .busy )
-				for (unsigned int i = 0; i < operations .size( ); i++ )
+				for (unsigned int i = 0; i < operations .size( ) && ! any_busy; i++ )
 					if ( operations[ i ] .device_path == devices[ t ] .path )
-					{
-						devicenames .push_back( devices[ t ] .path ) ;
-						break ;
-					}
-				
+						any_busy = true ;
 				
 		//show warning if necessary
-		if ( devicenames .size( ) )
+		if ( any_busy )
 		{
-			str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-			/*TO TRANSLATORS: after the colon (:) a list of devices will be shown */
-			str_temp += _("The kernel was unable to re-read the partition table on:") ;
-			str_temp += "\n";
-			for (unsigned int t=0; t<devicenames .size( ); t++ )
-				str_temp += "- " + devicenames[ t ] + "\n";
-			
+			str_temp = "<span weight=\"bold\" size=\"larger\">" ;	
+			str_temp += _("At least one operation was applied to a busy device.") ;
 			str_temp += "</span>\n\n" ;
-			str_temp += _( "This means Linux won't know anything about the modifications you made until you reboot.") ;
-			str_temp += "\n\n" ;
-			if ( devicenames .size( ) > 1 )
-				str_temp += _( "You should reboot your computer before doing anything with these devices.") ; 
-			else 
-				str_temp += _( "You should reboot your computer before doing anything with this device.") ; 
-				
+			str_temp += _("A busy device is a device with at least one mounted partition.") ;
+			str_temp += "\n";
+			str_temp += _("Since making changes to a busy device may confuse the kernel it is advisable to reboot your computer.") ;
+
 			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true );
 			dialog .run( ) ;
-		}					
-		
-				
+		}			
+					
 		//wipe operations...
 		operations.clear( ) ;
 		liststore_operations ->clear( ) ;
