@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-07 11:10-0500\n"
-"PO-Revision-Date: 2004-11-07 22:40-0400\n"
+"POT-Creation-Date: 2004-11-19 11:53-0500\n"
+"PO-Revision-Date: 2004-11-19 22:40-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -74,20 +74,20 @@ msgstr "Free Space Following (MB):"
 msgid "NOTE: values on disk may differ slightly from the values entered here."
 msgstr "NOTE: values on disk may differ slightly from the values entered here."
 
-#: src/Dialog_Base_Partition.cc:151
+#: src/Dialog_Base_Partition.cc:150
 msgid "Resize"
 msgstr "Resize"
 
-#: src/Dialog_Base_Partition.cc:153 src/Win_GParted.cc:133
-#: src/Win_GParted.cc:168 src/Win_GParted.cc:870
+#: src/Dialog_Base_Partition.cc:150 src/Win_GParted.cc:133
+#: src/Win_GParted.cc:168 src/Win_GParted.cc:823
 msgid "Resize/Move"
 msgstr "Resize/Move"
 
-#: src/Dialog_Base_Partition.cc:172
+#: src/Dialog_Base_Partition.cc:169
 msgid "Minimum Size: %1 MB"
 msgstr "Minimum Size: %1 MB"
 
-#: src/Dialog_Base_Partition.cc:173
+#: src/Dialog_Base_Partition.cc:170
 msgid "Maximum Size: %1 MB"
 msgstr "Maximum Size: %1 MB"
 
@@ -111,7 +111,7 @@ msgstr "Libparted message:"
 #: src/Dialog_Partition_Info.cc:119 src/Dialog_Partition_Info.cc:138
 #: src/Dialog_Partition_Info.cc:147 src/Dialog_Partition_Info.cc:152
 #: src/VBox_VisualDisk.cc:157 src/VBox_VisualDisk.cc:169
-#: src/Win_GParted.cc:415 src/Win_GParted.cc:463
+#: src/Win_GParted.cc:378 src/Win_GParted.cc:426
 msgid "%1 MB"
 msgstr "%1 MB"
 
@@ -203,15 +203,15 @@ msgid "Create as:"
 msgstr "Create as:"
 
 #. fill partitiontype menu
-#: src/Dialog_Partition_New.cc:58 src/Operation.cc:61
+#: src/Dialog_Partition_New.cc:58 src/Operation.cc:58
 msgid "Primary Partition"
 msgstr "Primary Partition"
 
-#: src/Dialog_Partition_New.cc:59 src/Operation.cc:52 src/Operation.cc:62
+#: src/Dialog_Partition_New.cc:59 src/Operation.cc:49 src/Operation.cc:59
 msgid "Logical Partition"
 msgstr "Logical Partition"
 
-#: src/Dialog_Partition_New.cc:60 src/Operation.cc:63
+#: src/Dialog_Partition_New.cc:60 src/Operation.cc:60
 msgid "Extended Partition"
 msgstr "Extended Partition"
 
@@ -219,117 +219,133 @@ msgstr "Extended Partition"
 msgid "New Partition #%1"
 msgstr "New Partition #%1"
 
-#: src/Dialog_Partition_Resize_Move.cc:68
-msgid "Resize %1"
-msgstr "Resize %1"
-
-#: src/Dialog_Partition_Resize_Move.cc:75
+#: src/Dialog_Partition_Resize_Move.cc:69
 msgid "Resize/Move %1"
 msgstr "Resize/Move %1"
 
-#: src/Dialog_Progress.cc:28 src/Dialog_Progress.cc:37
+#: src/Dialog_Partition_Resize_Move.cc:74
+msgid "Resize %1"
+msgstr "Resize %1"
+
+#: src/Dialog_Progress.cc:28 src/Dialog_Progress.cc:35
 msgid "Applying pending operations"
 msgstr "Applying pending operations"
 
-#: src/Dialog_Progress.cc:39
+#: src/Dialog_Progress.cc:37
 msgid "Applying all listed operations."
 msgstr "Applying all listed operations."
 
-#: src/Dialog_Progress.cc:41
+#: src/Dialog_Progress.cc:39
 msgid "Clicking Cancel will prevent the next operations from being applied."
 msgstr "Clicking Cancel will prevent the next operations from being applied."
 
-#: src/Dialog_Progress.cc:45
-msgid "initializing..."
-msgstr "initializing..."
-
-#: src/Dialog_Progress.cc:52
+#: src/Dialog_Progress.cc:62
 msgid "Completed Operations"
 msgstr "Completed Operations"
 
-#: src/Dialog_Progress.cc:54 src/Dialog_Progress.cc:69
+#: src/Dialog_Progress.cc:68
+msgid "Details"
+msgstr "Details"
+
+#: src/Dialog_Progress.cc:85
 msgid "%1 of %2 operations completed"
 msgstr "%1 of %2 operations completed"
 
-#: src/Dialog_Progress.cc:81
+#: src/Dialog_Progress.cc:111
 msgid "about %1 minute and %2 seconds left"
 msgstr "about %1 minute and %2 seconds left"
 
-#: src/Dialog_Progress.cc:83
+#: src/Dialog_Progress.cc:113
 msgid "about %1 minutes and %2 seconds left"
 msgstr "about %1 minutes and %2 seconds left"
 
-#: src/Operation.cc:39
-msgid "copy of %1"
-msgstr "copy of %1"
+#: src/GParted_Core.cc:134
+msgid "Unable to detect filesystem! Possible reasons are:"
+msgstr "Unable to detect filesystem! Possible reasons are:"
 
-#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: src/Operation.cc:57
-msgid "Delete %1 (%2, %3 MB) from %4"
-msgstr "Delete %1 (%2, %3 MB) from %4"
+#: src/GParted_Core.cc:136
+msgid "The filesystem is damaged"
+msgstr "The filesystem is damaged"
 
-#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: src/Operation.cc:67
-msgid "Create %1 #%2 (%3, %4 MB) on %5"
-msgstr "Create %1 #%2 (%3, %4 MB) on %5"
+#: src/GParted_Core.cc:138
+msgid "The filesystem is unknown to libparted"
+msgstr "The filesystem is unknown to libparted"
 
-#: src/Operation.cc:73
-msgid "Move %1 forward by %2 MB"
-msgstr "Move %1 forward by %2 MB"
+#: src/GParted_Core.cc:140
+msgid "There is no filesystem available (unformatted)"
+msgstr "There is no filesystem available (unformatted)"
 
-#: src/Operation.cc:75
-msgid "Move %1 backward by %2 MB"
-msgstr "Move %1 backward by %2 MB"
-
-#: src/Operation.cc:84
-msgid "Resize %1 from %2 MB to %3 MB"
-msgstr "Resize %1 from %2 MB to %3 MB"
-
-#: src/Operation.cc:86
-msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr "and Resize %1 from %2 MB to %3 MB"
-
-#: src/Operation.cc:89
-msgid "Sorry, changes are too small to make sense"
-msgstr "Sorry, changes are too small to make sense"
-
-#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: src/Operation.cc:93
-msgid "Convert %1 from %2 to %3"
-msgstr "Convert %1 from %2 to %3"
-
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
-#: src/Operation.cc:95
-msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr "Copy %1 to %2 (start at %3 MB)"
-
-#: src/Operation.cc:123
+#: src/GParted_Core.cc:251
 msgid "Error while deleting %1"
 msgstr "Error while deleting %1"
 
-#: src/Operation.cc:128
+#: src/GParted_Core.cc:256
 msgid "Error while creating %1"
 msgstr "Error while creating %1"
 
-#: src/Operation.cc:133
+#: src/GParted_Core.cc:261
 msgid "Error while resizing/moving %1"
 msgstr "Error while resizing/moving %1"
 
-#: src/Operation.cc:138
+#: src/GParted_Core.cc:266
 msgid "Error while converting filesystem of %1"
 msgstr "Error while converting filesystem of %1"
 
-#: src/Operation.cc:143
+#: src/GParted_Core.cc:271
 msgid "Error while copying %1"
 msgstr "Error while copying %1"
 
-#: src/Operation.cc:292
+#: src/GParted_Core.cc:539
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
 msgstr ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
+
+#: src/Operation.cc:36
+msgid "copy of %1"
+msgstr "copy of %1"
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
+#: src/Operation.cc:54
+msgid "Delete %1 (%2, %3 MB) from %4"
+msgstr "Delete %1 (%2, %3 MB) from %4"
+
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
+#: src/Operation.cc:64
+msgid "Create %1 #%2 (%3, %4 MB) on %5"
+msgstr "Create %1 #%2 (%3, %4 MB) on %5"
+
+#: src/Operation.cc:70
+msgid "Move %1 forward by %2 MB"
+msgstr "Move %1 forward by %2 MB"
+
+#: src/Operation.cc:72
+msgid "Move %1 backward by %2 MB"
+msgstr "Move %1 backward by %2 MB"
+
+#: src/Operation.cc:81
+msgid "Resize %1 from %2 MB to %3 MB"
+msgstr "Resize %1 from %2 MB to %3 MB"
+
+#: src/Operation.cc:83
+msgid "and Resize %1 from %2 MB to %3 MB"
+msgstr "and Resize %1 from %2 MB to %3 MB"
+
+#: src/Operation.cc:86
+msgid "Sorry, changes are too small to make sense"
+msgstr "Sorry, changes are too small to make sense"
+
+#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
+#: src/Operation.cc:90
+msgid "Convert %1 from %2 to %3"
+msgstr "Convert %1 from %2 to %3"
+
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
+#: src/Operation.cc:92
+msgid "Copy %1 to %2 (start at %3 MB)"
+msgstr "Copy %1 to %2 (start at %3 MB)"
 
 #: src/Partition.cc:67
 msgid "Unallocated"
@@ -459,43 +475,51 @@ msgstr "Hide operations list"
 msgid "Clear operationslist"
 msgstr "Clear operations list"
 
-#: src/Win_GParted.cc:427
+#: src/Win_GParted.cc:354
+msgid "No devices were detected"
+msgstr "No devices were detected"
+
+#: src/Win_GParted.cc:356
+msgid "You have probably encountered a bug. GParted will quit now."
+msgstr "You have probably encountered a bug. GParted will quit now."
+
+#: src/Win_GParted.cc:390
 msgid "Scanning all devices..."
 msgstr "Scanning all devices..."
 
-#: src/Win_GParted.cc:536
+#: src/Win_GParted.cc:499
 msgid "%1 operations pending"
 msgstr "%1 operations pending"
 
-#: src/Win_GParted.cc:538
+#: src/Win_GParted.cc:501
 msgid "1 operation pending"
 msgstr "1 operation pending"
 
-#: src/Win_GParted.cc:588
+#: src/Win_GParted.cc:551
 msgid "Quit GParted?"
 msgstr "Quit GParted?"
 
-#: src/Win_GParted.cc:591
+#: src/Win_GParted.cc:554
 msgid "%1 operations are currently pending."
 msgstr "%1 operations are currently pending."
 
-#: src/Win_GParted.cc:593
+#: src/Win_GParted.cc:556
 msgid "1 operation is currently pending."
 msgstr "1 operation is currently pending."
 
-#: src/Win_GParted.cc:796
+#: src/Win_GParted.cc:749
 msgid "Sorry, not yet implemented."
 msgstr "Sorry, not yet implemented."
 
-#: src/Win_GParted.cc:798
+#: src/Win_GParted.cc:751
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Please visit http://gparted.sf.net for more information and support."
 
-#: src/Win_GParted.cc:840
+#: src/Win_GParted.cc:793
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "It is not possible to create more than %1 primary partitions"
 
-#: src/Win_GParted.cc:842
+#: src/Win_GParted.cc:795
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -503,11 +527,11 @@ msgstr ""
 "If you want more partitions, you should first create an extended partition. "
 "Such a partition can contain other partitions."
 
-#: src/Win_GParted.cc:858
+#: src/Win_GParted.cc:811
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Are you sure you want to resize/move this partition?"
 
-#: src/Win_GParted.cc:860
+#: src/Win_GParted.cc:813
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -517,77 +541,77 @@ msgstr ""
 "partition is very error-prone. It is advisable to first convert the "
 "filesystem to fat32."
 
-#: src/Win_GParted.cc:979
+#: src/Win_GParted.cc:931
 msgid "Unable to delete partition!"
 msgstr "Unable to delete partition!"
 
-#: src/Win_GParted.cc:981
+#: src/Win_GParted.cc:933
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Please unmount any logical partitions having a number higher than %1"
 
-#: src/Win_GParted.cc:988
+#: src/Win_GParted.cc:940
 msgid "Are you sure you want to delete %1?"
 msgstr "Are you sure you want to delete %1?"
 
-#: src/Win_GParted.cc:992
+#: src/Win_GParted.cc:944
 msgid "After deletion this partition is no longer available for copying."
 msgstr "After deletion this partition is no longer available for copying."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:997
+#: src/Win_GParted.cc:949
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Delete %1 (%2, %3 MB)"
 
-#: src/Win_GParted.cc:1057
+#: src/Win_GParted.cc:1006
 msgid "Are you sure you want to convert this filesystem to %1?"
 msgstr "Are you sure you want to convert this filesystem to %1?"
 
-#: src/Win_GParted.cc:1058
+#: src/Win_GParted.cc:1007
 msgid "This operation will destroy all data on %1"
 msgstr "This operation will destroy all data on %1"
 
-#: src/Win_GParted.cc:1076 src/Win_GParted.cc:1078
+#: src/Win_GParted.cc:1025 src/Win_GParted.cc:1027
 msgid "Can not convert this filesystem to fat16."
 msgstr "Cannot convert this filesystem to fat16."
 
-#: src/Win_GParted.cc:1076
+#: src/Win_GParted.cc:1025
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
 msgstr "A fat16 filesystem requires a partition of at least 32 MB."
 
-#: src/Win_GParted.cc:1078
+#: src/Win_GParted.cc:1027
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 msgstr "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 
-#: src/Win_GParted.cc:1080
+#: src/Win_GParted.cc:1029
 msgid "Can not convert this filesystem to fat32."
 msgstr "Cannot convert this filesystem to fat32."
 
-#: src/Win_GParted.cc:1080
+#: src/Win_GParted.cc:1029
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
 msgstr "A fat32 filesystem requires a partition of at least 256 MB."
 
-#: src/Win_GParted.cc:1133
+#: src/Win_GParted.cc:1082
 msgid "Could not unmount %1"
 msgstr "Could not unmount %1"
 
-#: src/Win_GParted.cc:1177
+#: src/Win_GParted.cc:1110
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Are you sure you want to apply the pending operations?"
 
-#: src/Win_GParted.cc:1179
+#: src/Win_GParted.cc:1112
 msgid "It is recommended to backup valueable data before proceeding."
 msgstr "It is recommended to backup valuable data before proceeding."
 
-#: src/Win_GParted.cc:1182
+#: src/Win_GParted.cc:1115
 msgid "Apply operations to harddisk"
 msgstr "Apply operations to hard disk"
 
 #. TO TRANSLATORS: after the colon (:) a list of devices will be shown
-#: src/Win_GParted.cc:1222
+#: src/Win_GParted.cc:1158
 msgid "The kernel was unable to re-read the partition table on:"
 msgstr "The kernel was unable to re-read the partition table on:"
 
-#: src/Win_GParted.cc:1228
+#: src/Win_GParted.cc:1164
 msgid ""
 "This means Linux won't know anything about the modifications you made until "
 "you reboot."
@@ -595,13 +619,13 @@ msgstr ""
 "This means the operating system will not know about the modifications you "
 "made until you reboot."
 
-#: src/Win_GParted.cc:1231
+#: src/Win_GParted.cc:1167
 msgid ""
 "You should reboot your computer before doing anything with these devices."
 msgstr ""
 "You should reboot your computer before doing anything with these devices."
 
-#: src/Win_GParted.cc:1233
+#: src/Win_GParted.cc:1169
 msgid "You should reboot your computer before doing anything with this device."
 msgstr ""
 "You should reboot your computer before doing anything with this device."
