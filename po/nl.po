@@ -2,17 +2,18 @@
 # Copyright (C) 2004 Free Software Foundation
 # This file is distributed under the same license as the gparted package.
 # Daniel van Eeden <daniel_e@dds.nl>, 2004.
+# Tino Meinen <a.t.meinen@chello.nl>, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-23 11:58+0200\n"
-"PO-Revision-Date: 2004-09-23 23:21+0200\n"
-"Last-Translator: Daniel van Eeden <daniel_e@dds.nl>\n"
+"POT-Creation-Date: 2004-09-29 20:27+0200\n"
+"PO-Revision-Date: 2004-09-30 04:17+0200\n"
+"Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #. ==== GUI =========================
 #: gparted.desktop.in.h:1 src/Dialog_About.cc:33 src/Win_GParted.cc:35
@@ -21,12 +22,12 @@ msgstr "GParted"
 
 #: gparted.desktop.in.h:2
 msgid "Gnome Partition Editor"
-msgstr "Gnome Partitie Bewerker"
+msgstr "Gnome Partitiebewerker"
 
 #. TO TRANSLATORS: this is the dialog title
 #: src/Dialog_About.cc:23
 msgid "About GParted"
-msgstr "Info over GParted"
+msgstr "Over GParted"
 
 #: src/Dialog_About.cc:37
 msgid "Gnome Partition Editor based on libparted"
@@ -36,7 +37,7 @@ msgstr "Gnome partitiebewerker gebaseerd op libparted"
 msgid "Copyright (c)"
 msgstr "Copyright ©"
 
-#: src/Dialog_About.cc:65
+#: src/Dialog_About.cc:62
 msgid "Credits"
 msgstr "Met dank aan"
 
@@ -45,145 +46,182 @@ msgstr "Met dank aan"
 msgid "Written by"
 msgstr "Geschreven door"
 
+#. documented by
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:77
-msgid "Documented by"
-msgstr "Gedocumenteerd door"
+#. notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
+#. translated by
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names
+#: src/Dialog_About.cc:83
+msgid "translator_credits"
+msgstr ""
+"Daniel van Eeden\n"
+"Tino Meinen\n"
+"\n"
+"Kijk voor meer info op http://nl.gnome.org/"
+
+msgid "translator-credits"
+msgstr ""
+"Daniel van Eeden\n"
+"Tino Meinen\n"
+"\n"
+"Kijk voor meer info op http://nl.gnome.org/"
 
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:79
+#: src/Dialog_About.cc:90
 msgid "Translated by"
 msgstr "Vertaald door"
 
+# vrije ruimte voor
+# vrije ruimte achter
 #. add spinbutton_before
 #: src/Dialog_Base_Partition.cc:54
-msgid "Free Space Preceding"
-msgstr "Vrije ruimte ervoor"
+msgid "Free Space Preceding (MB) :"
+msgstr "Vrije ruimte ervoor (MB) :"
 
 #. add spinbutton_size
 #: src/Dialog_Base_Partition.cc:62
-msgid "New Size"
-msgstr "Nieuwe grootte"
+msgid "New Size (MB) :"
+msgstr "Nieuwe grootte (MB) :"
 
 #. add spinbutton_after
 #: src/Dialog_Base_Partition.cc:71
-msgid "Free Space Following"
-msgstr "Vrije ruimte erna"
+msgid "Free Space Following (MB) :"
+msgstr "Vrije ruimte erachter (MB) :"
 
 #: src/Dialog_Base_Partition.cc:92
 msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr "LET OP: waardes op schijf kunnen enigzins veschillen met de waardes die hier zijn ingevuld."
+msgstr ""
+"LET OP: waardes op schijf kunnen enigzins veschillen met de waardes die hier "
+"zijn ingevuld."
 
-#. TO TRANSLATORS: dialogtitle. used as  Resize /dev/hda1
-#: src/Dialog_Base_Partition.cc:159 src/Dialog_Partition_Resize_Move.cc:69
+# herschalen
+#: src/Dialog_Base_Partition.cc:159
 msgid "Resize"
 msgstr "Veranderen van grootte"
 
-#. TO TRANSLATORS: dialogtitle. used as  Resize/Move /dev/hda1
-#: src/Dialog_Base_Partition.cc:161 src/Dialog_Partition_Resize_Move.cc:77
-#: src/Win_GParted.cc:114 src/Win_GParted.cc:149 src/Win_GParted.cc:712
+# kortere vertaling?
+#: src/Dialog_Base_Partition.cc:161 src/Win_GParted.cc:122
+#: src/Win_GParted.cc:157 src/Win_GParted.cc:774
 msgid "Resize/Move"
 msgstr "Vergroot/Verklein/Verplaats"
 
 #. prevents on spinbutton_changed from getting activated prematurely
-#. TO TRANSLATORS: dialogtitle, looks like Paste /dev/hda3
-#: src/Dialog_Partition_Copy.cc:34
-msgid "Paste"
-msgstr "Plakken"
+#: src/Dialog_Partition_Copy.cc:33
+msgid "Paste %1"
+msgstr "Plak %1"
 
 #. set contents of label_minmax
-#: src/Dialog_Partition_Copy.cc:69 src/Dialog_Partition_New.cc:109
-#: src/Dialog_Partition_New.cc:196 src/Dialog_Partition_Resize_Move.cc:142
-#: src/Dialog_Partition_Resize_Move.cc:230
-msgid "Minimum Size"
-msgstr "Minimum grootte"
+#: src/Dialog_Partition_Copy.cc:68 src/Dialog_Partition_New.cc:111
+#: src/Dialog_Partition_New.cc:199 src/Dialog_Partition_Resize_Move.cc:140
+#: src/Dialog_Partition_Resize_Move.cc:228
+msgid "Minimum Size: %1 MB"
+msgstr "Minimale grootte: %1 MB"
 
-#: src/Dialog_Partition_Copy.cc:70 src/Dialog_Partition_New.cc:110
-#: src/Dialog_Partition_New.cc:197 src/Dialog_Partition_Resize_Move.cc:143
-#: src/Dialog_Partition_Resize_Move.cc:231
-msgid "Maximum Size"
-msgstr "Maximum grootte"
+#: src/Dialog_Partition_Copy.cc:69 src/Dialog_Partition_New.cc:112
+#: src/Dialog_Partition_New.cc:200 src/Dialog_Partition_Resize_Move.cc:141
+#: src/Dialog_Partition_Resize_Move.cc:229
+msgid "Maximum Size: %1 MB"
+msgstr "Maximale grootte: %1 MB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
 #: src/Dialog_Partition_Info.cc:30
-msgid "Information about"
-msgstr "Informatie over"
+msgid "Information about %1"
+msgstr "Informatie over %1"
 
 #: src/Dialog_Partition_Info.cc:45
-msgid "Libparted message"
-msgstr "Libparted bericht"
+msgid "Libparted message:"
+msgstr "Libparted bericht:"
 
+#. set text of pangolayout
+#. create  pangolayout and see if it fits in the visual partition
+#. the label...
+#: src/Dialog_Partition_Info.cc:126 src/Dialog_Partition_Info.cc:146
+#: src/Dialog_Partition_Info.cc:155 src/Dialog_Partition_Info.cc:161
+#: src/VBox_VisualDisk.cc:139 src/VBox_VisualDisk.cc:150
+#: src/Win_GParted.cc:387 src/Win_GParted.cc:406
+msgid "%1 MB"
+msgstr "%1 MB"
+
+#. filesystem
 #. filesystems to choose from
-#: src/Dialog_Partition_Info.cc:140 src/Dialog_Partition_New.cc:79
-msgid "Filesystem"
-msgstr "Bestandssysteem"
+#: src/Dialog_Partition_Info.cc:141 src/Dialog_Partition_New.cc:80
+msgid "Filesystem:"
+msgstr "Bestandssysteem:"
 
-#: src/Dialog_Partition_Info.cc:141 src/TreeView_Detail.cc:36
-#: src/Win_GParted.cc:209
-msgid "Size"
-msgstr "Grootte"
+#. size
+#: src/Dialog_Partition_Info.cc:145 src/Win_GParted.cc:231
+msgid "Size:"
+msgstr "Grootte:"
 
-#: src/Dialog_Partition_Info.cc:146 src/TreeView_Detail.cc:37
-msgid "Used"
-msgstr "Gebruikt"
+#. used
+#: src/Dialog_Partition_Info.cc:154
+msgid "Used:"
+msgstr "Gebruikt:"
 
-#: src/Dialog_Partition_Info.cc:147 src/TreeView_Detail.cc:38
-msgid "Unused"
-msgstr "Ongebruikt"
+# Ongebruikt
+#. unused
+#: src/Dialog_Partition_Info.cc:160
+msgid "Unused:"
+msgstr "Vrij:"
 
-#: src/Dialog_Partition_Info.cc:156 src/TreeView_Detail.cc:39
-msgid "Flags"
-msgstr "Vlaggen"
+# Markeringen
+#: src/Dialog_Partition_Info.cc:169
+msgid "Flags:"
+msgstr "Vlaggen:"
 
-#: src/Dialog_Partition_Info.cc:160 src/Win_GParted.cc:209
-msgid "Path"
-msgstr "Pad"
+#. path
+#: src/Dialog_Partition_Info.cc:179 src/Win_GParted.cc:236
+msgid "Path:"
+msgstr "Pad:"
 
-#: src/Dialog_Partition_Info.cc:169 src/Win_GParted.cc:213
-msgid "Real Path"
-msgstr "Werkelijk pad"
+#: src/Dialog_Partition_Info.cc:189 src/Win_GParted.cc:243
+msgid "Real Path:"
+msgstr "Werkelijk pad:"
 
-#: src/Dialog_Partition_Info.cc:174
-msgid "Status"
-msgstr "Status"
+#. status
+#: src/Dialog_Partition_Info.cc:194
+msgid "Status:"
+msgstr "Status:"
 
-#: src/Dialog_Partition_Info.cc:178
+#: src/Dialog_Partition_Info.cc:198
 msgid "Not busy (There are no mounted logical partitions)"
-msgstr "Niet bezig (Er zijn geen logische partities gemount)"
+msgstr "Niet bezig (Er zijn geen logische partities aangekoppeld)"
 
-#: src/Dialog_Partition_Info.cc:180
+#: src/Dialog_Partition_Info.cc:200
 msgid "Not active"
-msgstr "Niet aktief"
+msgstr "Niet actief"
 
-#: src/Dialog_Partition_Info.cc:182
+#: src/Dialog_Partition_Info.cc:202
 msgid "Not mounted"
-msgstr "Niet gemount"
+msgstr "Niet aangekoppeld"
 
-#. splitter :P
-#: src/Dialog_Partition_Info.cc:190
-msgid "First Sector"
-msgstr "Eerste sector"
-
-#: src/Dialog_Partition_Info.cc:191
-msgid "Last Sector"
-msgstr "Laatste sector"
-
-#: src/Dialog_Partition_Info.cc:192 src/Win_GParted.cc:227
-msgid "Total Sectors"
-msgstr "Totaal aantal sectoren"
-
+#. first sector
 #: src/Dialog_Partition_Info.cc:211
+msgid "First Sector:"
+msgstr "Eerste sector:"
+
+#. last sector
+#: src/Dialog_Partition_Info.cc:216
+msgid "Last Sector:"
+msgstr "Laatste sector:"
+
+#. total sectors
+#: src/Dialog_Partition_Info.cc:221 src/Win_GParted.cc:279
+msgid "Total Sectors:"
+msgstr "Totaal aantal sectoren:"
+
+# minimaal/minstens/tenminste
+#: src/Dialog_Partition_Info.cc:230
 msgid "Busy  (At least one logical partition is mounted)"
-msgstr "Bezig (Tenminste een logische partitie is gemount)"
+msgstr "Bezig (Er is minstens één logische partitie aangekoppeld)"
 
-#: src/Dialog_Partition_Info.cc:218
+#: src/Dialog_Partition_Info.cc:237
 msgid "Active"
-msgstr "Aktief"
+msgstr "Actief"
 
-#. TO TRANSLATORS: used as: mounted on <mountpoint>
-#: src/Dialog_Partition_Info.cc:240 src/Dialog_Partition_Info.cc:251
-msgid "Mounted on"
-msgstr "Gemount op"
+#: src/Dialog_Partition_Info.cc:259 src/Dialog_Partition_Info.cc:270
+msgid "Mounted on %1"
+msgstr "Aangekoppeld op %1"
 
 #. TO TRANSLATORS: dialogtitle
 #: src/Dialog_Partition_New.cc:26
@@ -192,119 +230,141 @@ msgstr "Nieuwe partitie aanmaken"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
 #: src/Dialog_Partition_New.cc:52
-msgid "Create as"
-msgstr "Aanmaken als"
+msgid "Create as:"
+msgstr "Aanmaken als:"
 
+#: src/Dialog_Partition_New.cc:140
+msgid "New Partition #%1"
+msgstr "Nieuwe partitie #%1"
+
+#: src/Dialog_Partition_Resize_Move.cc:68
+msgid "Resize %1"
+msgstr "%1 veranderen van grootte"
+
+#: src/Dialog_Partition_Resize_Move.cc:75
+msgid "Resize/Move %1"
+msgstr "%1 vergroten/verkleinen/verplaatsen"
+
+# dit is een kop in het dialoogvenster
+# Bewerkingen in de wachtrij uitvoeren
 #: src/Dialog_Progress.cc:25 src/Dialog_Progress.cc:35
 msgid "Applying pending operations"
 msgstr "Uitvoeren van bewerkingen in wachtrij"
 
+# uitleg onder de kop
 #: src/Dialog_Progress.cc:36
-msgid "All listed operations are applied to disk."
-msgstr "Alle bewerkingen in de lijst zijn uitgevoerd op schijf."
+msgid "Applying all listed operations."
+msgstr "Alle gemaakte bewerkingen worden nu uitgevoerd."
 
 #: src/Dialog_Progress.cc:38
 msgid "Clicking Cancel will prevent the next operations from being applied."
-msgstr "Het klikken op Annuleren voorkomt dat de volgende bewerkingen worden uitgevoerd."
+msgstr ""
+"Het klikken op Annuleren voorkomt dat de volgende bewerkingen worden "
+"uitgevoerd."
 
 #: src/Dialog_Progress.cc:43
 msgid "initializing..."
-msgstr "initializeren..."
+msgstr "initialiseren..."
 
+# titel van de voortgangsbalk
 #: src/Dialog_Progress.cc:51
 msgid "Completed Operations"
-msgstr "Bewerkingen compleet"
+msgstr "Voltooide bewerkingen"
 
-#: src/Dialog_Progress.cc:54 src/Dialog_Progress.cc:74
-#, c-format
-msgid "%d of %d operations complete"
-msgstr "%d van %d bewerkingen compleet."
+#: src/Dialog_Progress.cc:54 src/Dialog_Progress.cc:73
+msgid "%1 of %2 operations completed"
+msgstr "%1 van %2 bewerkingen voltooid"
+
+#: src/Dialog_Progress.cc:85
+msgid "about %1 minute and %2 seconds left"
+msgstr "ongeveer %1 minuut en %2 seconden te gaan"
 
 #: src/Dialog_Progress.cc:87
-#, c-format
-msgid "about %d minute and %d seconds left"
-msgstr "ongeveer %d minuten en %d secondes te gaan"
+msgid "about %1 minutes and %2 seconds left"
+msgstr "ongeveer %1 minuten en %2 seconden te gaan"
 
-#: src/Dialog_Progress.cc:89
-#, c-format
-msgid "about %d minutes and %d seconds left"
-msgstr "ongeveer %d minuten en %d secondes te gaan"
+#: src/Operation.cc:39
+msgid "copy of %1"
+msgstr "kopiëren van %1"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: src/Operation.cc:48 src/Operation.cc:50
-#, c-format
-msgid "Delete %s (%s, %ld MB) from %s"
-msgstr "Verwijder %s (%s, %ld MB) van %s"
+#: src/Operation.cc:54 src/Operation.cc:57
+msgid "Delete %1 (%2, %3 MB) from %4"
+msgstr "%1 verwijderen (%2, %3 MB) van %4"
+
+# logisch station
+#: src/Operation.cc:54
+msgid "Logical Partition"
+msgstr "Logische partitie"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: src/Operation.cc:61
-#, c-format
-msgid "Create %s Partition #%d (%s, %ld MB) on %s"
-msgstr "Maak %s partitie #%d aan (%s, %ld MB) op %s"
+#: src/Operation.cc:68
+msgid "Create %1 Partition #%2 (%3, %4 MB) on %5"
+msgstr "%1 partitie #%2 aanmaken (%3, %4 MB) op %5"
 
-#: src/Operation.cc:70
-#, c-format
-msgid "Move %s up by %ld MB "
-msgstr "Verplaats %s omhoog met %ld MB "
+# voorwaards/naar voren
+#: src/Operation.cc:76
+msgid "Move %1 forward by %2 MB "
+msgstr "%1 voorwaards verplaatsen met %2 MB"
 
-#: src/Operation.cc:72
-#, c-format
-msgid "Move %s down by %ld MB "
-msgstr "Verplaats %s naar beneden met %ld MB "
+# achterwaards/naar achteren
+#: src/Operation.cc:78
+msgid "Move %1 backward by %2 MB "
+msgstr "%1 achterwaards verplaatsen met %2 MB"
 
-#: src/Operation.cc:83
-#, c-format
-msgid "Resize %s from %ld MB to %ld MB"
-msgstr "Veranderen van grootte van %s van %ld MB naar %ld MB"
+#: src/Operation.cc:87
+msgid "Resize %1 from %2 MB to %3 MB"
+msgstr "%1 van grootte veranderen van %2 MB naar %3 MB"
 
-#: src/Operation.cc:85
-#, c-format
-msgid "and Resize from %ld MB to %ld MB"
-msgstr "en veranderen van grootte van %ld MB naar %ld MB"
+#: src/Operation.cc:89
+msgid "and Resize %1 from %2 MB to %3 MB"
+msgstr "en %1 van grootte veranderen van %2 MB naar %3 MB"
 
-#: src/Operation.cc:90
+#: src/Operation.cc:93
 msgid "Sorry, changes are too small to make sense"
 msgstr "Sorry, veranderingen zijn onwaarschijnlijk klein."
 
 #. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: src/Operation.cc:93
-#, c-format
-msgid "Convert %s from %s to %s"
-msgstr "Converteren van %s van %s naar %s"
-
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 from /dev/hda to /dev/hdd (start at 2500 MB)
 #: src/Operation.cc:97
-#, c-format
-msgid "Copy %s to %s (start at %ld MB)"
-msgstr "Kopieer %s naar %s (begin op %ld MB)"
+msgid "Convert %1 from %2 to %3"
+msgstr "%1 omzetten van %2 naar %3"
 
-#: src/Operation.cc:129
-msgid "Error while deleting"
-msgstr "Fout tijdens verwijderen"
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
+#: src/Operation.cc:100
+msgid "Copy %1 to %2 (start at %3 MB)"
+msgstr "%1 naar %2 kopiëren (beginnen bij %3 MB)"
 
-#: src/Operation.cc:134
-msgid "Error while creating"
-msgstr "Fout bij aanmaken"
+#: src/Operation.cc:131
+msgid "Error while deleting %1"
+msgstr "Fout bij verwijderen van %1"
 
-#: src/Operation.cc:139
-msgid "Error while resizing/moving"
-msgstr "Fout bij het veranderen van grootte en/of verplaatsen"
+#: src/Operation.cc:136
+msgid "Error while creating %1"
+msgstr "Fout bij aanmaken van %1"
 
-#: src/Operation.cc:144
-msgid "Error while converting filesystem of"
-msgstr "Fout tijdens het converteren van bestandssysteem van"
+#: src/Operation.cc:141
+msgid "Error while resizing/moving %1"
+msgstr "Fout bij het veranderen van grootte en/of verplaatsen van %1"
 
-#: src/Operation.cc:149
-msgid "Error while copying"
-msgstr "Fout tijdens kopieëren"
+#: src/Operation.cc:146
+msgid "Error while converting filesystem of %1"
+msgstr "Fout bij het omzetten van het bestandssysteem van %1"
 
-#: src/Operation.cc:433
+#: src/Operation.cc:151
+msgid "Error while copying %1"
+msgstr "Fout bij het kopieëren van %1"
+
+#: src/Operation.cc:431
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
-msgstr ""
-"Onthoudt dat een mislukking van deze bewerking invloed kan hebben "
-"op ander bewerkingen uit de lijst"
+msgstr "Onthoudt dat een mislukking van deze bewerking invloed kan hebben op andere bewerkingen uit de lijst"
+
+# vrije ruimte op de harde schijf waar een partitie op aangemaakt
+# kan worden
+#: src/Partition.cc:55
+msgid "Unallocated"
+msgstr "Vrij"
 
 #. append columns
 #: src/TreeView_Detail.cc:34
@@ -315,209 +375,243 @@ msgstr "Partitie"
 msgid "Type"
 msgstr "Type"
 
-#: src/Win_GParted.cc:85
+#: src/TreeView_Detail.cc:36
+msgid "Size"
+msgstr "Grootte"
+
+#: src/TreeView_Detail.cc:37
+msgid "Used"
+msgstr "Gebruikt"
+
+#: src/TreeView_Detail.cc:38
+msgid "Unused"
+msgstr "Ongebruikt"
+
+#: src/TreeView_Detail.cc:39
+msgid "Flags"
+msgstr "Vlaggen"
+
+#: src/VBox_VisualDisk.cc:208
+msgid "used"
+msgstr "gebruikt"
+
+#: src/VBox_VisualDisk.cc:209
+msgid "unused"
+msgstr "ongebruikt"
+
+#: src/Win_GParted.cc:88
 msgid "_Refresh devices"
 msgstr "He_rlaad apparaten"
 
-#: src/Win_GParted.cc:88
+#: src/Win_GParted.cc:91
 msgid "_GParted"
 msgstr "_GParted"
 
-#: src/Win_GParted.cc:94
+#: src/Win_GParted.cc:95 src/Win_GParted.cc:218
+msgid "Harddisk Information"
+msgstr "Informatie over harde schijf"
+
+#: src/Win_GParted.cc:96
+msgid "_View"
+msgstr "Beel_d"
+
+#: src/Win_GParted.cc:102
 msgid "About"
 msgstr "Info"
 
-#: src/Win_GParted.cc:95
+#: src/Win_GParted.cc:103
 msgid "_Help"
 msgstr "_Hulp"
 
-#: src/Win_GParted.cc:106
+#: src/Win_GParted.cc:114
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Maak een nieuwe partitie aan in de geselecteerde ongebruikte ruimte"
 
-#: src/Win_GParted.cc:109
+#: src/Win_GParted.cc:117
 msgid "Delete the selected partition"
-msgstr "Verwijder geselecteerde partitie"
+msgstr "Verwijder de geselecteerde partitie"
 
-#: src/Win_GParted.cc:116
+#: src/Win_GParted.cc:124
 msgid "Resize/Move the selected partition"
 msgstr "Verplaats, vergroot of verklein de geselecteerde partitie"
 
-#: src/Win_GParted.cc:122
+#: src/Win_GParted.cc:130
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopieër de geselecteerde partitie naar het klembord"
 
-#: src/Win_GParted.cc:125
+#: src/Win_GParted.cc:133
 msgid "Paste the partition from the clipboard"
 msgstr "Plak de partitie vanaf het klembord"
 
-#: src/Win_GParted.cc:131
+#: src/Win_GParted.cc:139
 msgid "Undo last operation"
-msgstr "Laatste bewerking ongedaanmaken"
+msgstr "Laatste bewerking ongedaan maken"
 
-#: src/Win_GParted.cc:134
+# 'uitvoeren' hier toch beter dan 'toepassen'
+#: src/Win_GParted.cc:142
 msgid "Apply all operations"
-msgstr "Uitvoeren alle bewerkingen"
+msgstr "Alle bewerkingen uitvoeren"
 
-#: src/Win_GParted.cc:155
+# _Converteren naar
+#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
+#: src/Win_GParted.cc:164
 msgid "_Convert to"
-msgstr "_Converteer naar"
+msgstr "_Omzetten naar"
 
-#: src/Win_GParted.cc:209
-msgid "Model"
-msgstr "Model"
+#. model
+#: src/Win_GParted.cc:226
+msgid "Model:"
+msgstr "Model:"
 
-#: src/Win_GParted.cc:227
-msgid "DiskType"
-msgstr "SchijfType"
+#. disktype
+#: src/Win_GParted.cc:259
+msgid "DiskType:"
+msgstr "SchijfType:"
 
-#: src/Win_GParted.cc:227
-msgid "Heads"
-msgstr "Koppen"
+#. heads
+#: src/Win_GParted.cc:264
+msgid "Heads:"
+msgstr "Koppen:"
 
-#: src/Win_GParted.cc:227
-msgid "Sectors/Track"
-msgstr "Sectoren/Tracks"
+#. sectors/track
+#: src/Win_GParted.cc:269
+msgid "Sectors/Track:"
+msgstr "Sectoren/Spoor:"
 
-#: src/Win_GParted.cc:227
-msgid "Cylinders"
-msgstr "Cylinders"
+#. cylinders
+#: src/Win_GParted.cc:274
+msgid "Cylinders:"
+msgstr "Cylinders:"
 
-#: src/Win_GParted.cc:239
-msgid "Harddisk Information"
-msgstr "Hardeschijf informatie"
-
-#: src/Win_GParted.cc:270
+#: src/Win_GParted.cc:310
 msgid "Hide operationslist"
-msgstr "Verberg de lijst met bewerkingen"
+msgstr "De lijst met bewerkingen verbergen"
 
-#: src/Win_GParted.cc:279
+#: src/Win_GParted.cc:319
 msgid "Clear operationslist"
-msgstr "Maak de lijst met bewerkingen leeg"
+msgstr "De lijst met bewerkingen wissen"
 
-#: src/Win_GParted.cc:451
-msgid "operations pending"
-msgstr "bewerkingen in wachtrij"
+#: src/Win_GParted.cc:489
+msgid "%1 operations pending"
+msgstr "%1 bewerkingen in wachtrij"
 
-#: src/Win_GParted.cc:451
-msgid "operation pending"
-msgstr "bewerking in wachtrij"
+#: src/Win_GParted.cc:491
+msgid "1 operation pending"
+msgstr "1 bewerking in wachtrij"
 
-#: src/Win_GParted.cc:508
+#: src/Win_GParted.cc:545
 msgid "Quit GParted?"
-msgstr "GParted verlaten?"
+msgstr "GParted afsluiten?"
 
-#: src/Win_GParted.cc:662
+#: src/Win_GParted.cc:548
+msgid "%1 operations are currently pending."
+msgstr "Er staan momenteel %1 bewerkingen in de wachtrij."
+
+#: src/Win_GParted.cc:550
+msgid "1 operation is currently pending."
+msgstr "Er staat momenteel 1 bewerking in de wachtrij."
+
+#: src/Win_GParted.cc:724
 msgid "Sorry, not yet implemented."
-msgstr "Sorry, nog niet geimplementeerd."
+msgstr "Sorry, nog niet geïmplementeerd."
 
-#: src/Win_GParted.cc:662
+#: src/Win_GParted.cc:724
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Bezoek http://gparted.sf.net/ voor meer informatie en ondersteuning."
 
-#: src/Win_GParted.cc:705
+#: src/Win_GParted.cc:767
 msgid "Are you sure you want to resize/move this partition?"
-msgstr "Weet u zeker dat u deze partitie wilte verkleinen/vergroten/verplaaten?"
+msgstr "Weet u zeker dat u deze partitie wilt verkleinen/vergroten/verplaaten?"
 
-#: src/Win_GParted.cc:706
+#: src/Win_GParted.cc:768
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
 "filesystem to fat32."
-msgstr ""
-""
+msgstr "Een FAT16 partitie van grootte veranderen is behoorlijk verraderlijk! Met name het groter maken levert vaak fouten op. U kunt beter eerst het bestandssyteem omzetten naar FAT32."
 
-#: src/Win_GParted.cc:778
-msgid "It's not possible to create more then four primary partitions"
-msgstr "Het is niet mogelijk om meer dan vier primaire partities aan te maken"
+#: src/Win_GParted.cc:840 src/Win_GParted.cc:867
+msgid "It is not possible to create more than %1 primary partitions"
+msgstr "Het is niet mogelijk om meer dan %1 primaire partities aan te maken"
 
-#: src/Win_GParted.cc:779
-msgid ""
-"If you want more then four partitions you should create an extended "
-"partition. Such an partition can contain at least 24 other partitions."
-msgstr ""
-"Als u meer dan vier partities wenst dient u een uitgebreide partitie aan "
-"te maken. Zo'n partitie kan tenminste 24 andere partities bevatten."
-
-#: src/Win_GParted.cc:804
-#, c-format
-msgid "It is not possible to create more then %d primary partitions"
-msgstr "Het is niet mogelijk om meer dan %d primaire partities aan te maken"
-
-#: src/Win_GParted.cc:806
+#: src/Win_GParted.cc:842 src/Win_GParted.cc:869
 msgid ""
 "If you want more partitions you should first create an extended partition. "
-"Such an partition can contain other partitions."
-msgstr ""
-"Als u meer partities wilt aanmaken dient u eerst een uitgebreide partitie te maken. "
-"Zo'n partitie kan andere partities bevatten."
+"Such a partition can contain other partitions."
+msgstr "Als u meer partities wilt aanmaken dient u eerst een uitgebreide partitie te maken. Zo'n partitie kan andere partities bevatten."
 
-#: src/Win_GParted.cc:835
+#: src/Win_GParted.cc:897
 msgid "Unable to delete partition!"
 msgstr "Verwijderen van partitie mislukt!"
 
-#: src/Win_GParted.cc:835
-msgid "Please unmount any logical partitions having a number higher than"
-msgstr "Unmount alle logische partities met een nummer hoger dan"
+# alle logische partities afkoppelen die een nummer hebben hoger dan
+# ...met een hoger nummer dan
+#: src/Win_GParted.cc:898
+msgid "Please unmount any logical partitions having a number higher than %1"
+msgstr "U moet alle logische partities met een nummer hoger dan %1, afkoppelen"
 
-#: src/Win_GParted.cc:839
-msgid "Are you sure you want to delete"
-msgstr "Weet u zeker dat u wilt verwijderen"
+#: src/Win_GParted.cc:904
+msgid "Are you sure you want to delete %1 ?"
+msgstr "Weet u zeker dat u %1 wilt verwijderen?"
 
-#: src/Win_GParted.cc:841
+#: src/Win_GParted.cc:906
 msgid "After deletion this partition is no longer available for copying."
-msgstr "Na verwijdering is deze partitie niet langer beschikbaar voor kopieëren."
+msgstr ""
+"Na verwijdering is deze partitie niet langer beschikbaar voor kopieëren."
 
-#: src/Win_GParted.cc:844
-msgid "Delete"
-msgstr "Verwijderen"
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB)
+#: src/Win_GParted.cc:910
+msgid "Delete %1 (%2, %3 MB)"
+msgstr "%1 verwijderen (%2, %3 MB)"
 
-#. standard warning..
-#: src/Win_GParted.cc:905
-msgid "Are you sure you want to convert this filesystem to"
-msgstr "Weet u zeker dat u dit bestandssysteem wilt converteren naar"
+#: src/Win_GParted.cc:972
+msgid "Are you sure you want to convert this filesystem to %1 ?"
+msgstr "Weet u zeker dat u dit bestandssysteem wilt omzetten naar %1?"
 
-#: src/Win_GParted.cc:905
-msgid "This operation will destroy all data on"
-msgstr "Deze bewerking zal alle data vernietigen op"
+#: src/Win_GParted.cc:973
+msgid "This operation will destroy all data on %1"
+msgstr "Deze bewerking zal alle data op %1 vernietigen"
 
-#: src/Win_GParted.cc:920 src/Win_GParted.cc:922
+#: src/Win_GParted.cc:991 src/Win_GParted.cc:993
 msgid "Can not convert this filesystem to fat16."
-msgstr "Kan dit bestandssysteem niet converteren naar FAT16."
+msgstr "Kan dit bestandssysteem niet omzetten naar FAT16."
 
-#: src/Win_GParted.cc:920
+#: src/Win_GParted.cc:991
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
 msgstr "Een FAT16 bestandssysteem vereist een partitie van tenminste 32 MB."
 
-#: src/Win_GParted.cc:922
+#: src/Win_GParted.cc:993
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
-msgstr "Een partitie met een FAT16 bestandsssyteem heeft een maximum grootte van 1023 MB."
+msgstr "Een partitie met een FAT16 bestandsssyteem heeft een maximale grootte van 1023 MB."
 
-#: src/Win_GParted.cc:924
+#: src/Win_GParted.cc:995
 msgid "Can not convert this filesystem to fat32."
-msgstr "Kan dit bestandssysteem niet converteren naar FAT32."
+msgstr "Kan dit bestandssysteem niet omzetten naar FAT32."
 
-#: src/Win_GParted.cc:924
+#: src/Win_GParted.cc:995
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
 msgstr "Een FAT32 bestandssyteem vereist een partitie van tenminste 256 MB."
 
-#: src/Win_GParted.cc:978
+#: src/Win_GParted.cc:1050
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Weet u zeker dat u de bewerkingen in de wachtrij wilt uitvoeren?"
 
-#: src/Win_GParted.cc:978
+#: src/Win_GParted.cc:1050
 msgid "It is recommended to backup valueable data before proceeding."
-msgstr "Het wordt aanbevolen om een backup te maken van belangrijke data voordat u verder gaat."
+msgstr ""
+"Het wordt aanbevolen om een backup te maken van belangrijke data voordat u "
+"verder gaat."
 
-#: src/Win_GParted.cc:979
+#: src/Win_GParted.cc:1051
 msgid "Apply operations to harddisk"
-msgstr "Voer bewerkingen uit op de hardeschijf"
+msgstr "Bewerkingen toepassen op de harde schijf"
 
-#: src/Win_GParted.cc:1015
+#. TO TRANSLATORS: after the colon (:) a list of devices will be shown
+#: src/Win_GParted.cc:1088
 msgid "The kernel was unable to re-read the partition table on :"
-msgstr "De kernel was niet in staat om de partitie table te opnieuw te lezen op :"
+msgstr "De kernel was niet in staat om opnieuw de partitietabel te lezen op: "
 
-#: src/Win_GParted.cc:1018
+#: src/Win_GParted.cc:1091
 msgid ""
 "This means Linux won't know anything about the modifications you made until "
 "you reboot."
@@ -525,13 +619,45 @@ msgstr ""
 "Dit betekent dat Linux niets weet over de aangebrachte veranderingen totdat "
 "u herstart."
 
-#: src/Win_GParted.cc:1020
+# devices zijn hier /dev/hda ? 
+# in dat geval klinkt apparaten niet zo logisch.
+# stations misschien?
+#: src/Win_GParted.cc:1093
 msgid ""
 "You should reboot your computer before doing anything with these devices."
-msgstr ""
-"U dient uw computer te herstartten voordat u gebruik maakt van dit apparaat."
+msgstr "U dient uw computer te herstarten voordat u iets met deze apparaten doet."
 
-#: src/Win_GParted.cc:1022
+#: src/Win_GParted.cc:1095
 msgid "You should reboot your computer before doing anything with this device."
-msgstr "U dient uw computer te herstarten voordat u iets doet met dit apparaat."
+msgstr "U dient uw computer te herstarten voordat u iets met dit apparaat doet."
 
+#: src/main.cc:35
+msgid "Root privileges are required for running GParted"
+msgstr "Systeembeheerdersrechten (root) zijn vereist om GParted te kunnen uitvoeren"
+
+#: src/main.cc:35
+msgid "Since GParted can be a weapon of mass destruction only root may run it."
+msgstr "Omdat GParted een massavernietigingswapen kan zijn mag het alleen door root gebruikt worden."
+
+#~ msgid "Documented by"
+#~ msgstr "Gedocumenteerd door"
+
+#~ msgid "All listed operations are applied to disk."
+#~ msgstr "Alle bewerkingen in de lijst zijn uitgevoerd op schijf."
+
+#~ msgid "Move %s up by %ld MB "
+#~ msgstr "Verplaats %s omhoog met %ld MB "
+
+#~ msgid "It's not possible to create more then four primary partitions"
+#~ msgstr ""
+#~ "Het is niet mogelijk om meer dan vier primaire partities aan te maken"
+
+#~ msgid ""
+#~ "If you want more then four partitions you should create an extended "
+#~ "partition. Such an partition can contain at least 24 other partitions."
+#~ msgstr ""
+#~ "Als u meer dan vier partities wenst dient u een uitgebreide partitie aan "
+#~ "te maken. Zo'n partitie kan tenminste 24 andere partities bevatten."
+
+#~ msgid "Delete"
+#~ msgstr "Verwijderen"
