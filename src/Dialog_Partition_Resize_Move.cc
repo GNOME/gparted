@@ -129,8 +129,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	else //only grow..
 		fs .MIN = selected_partition .Get_Length_MB( ) ;
 		
-	if ( ! fs .MAX || fs .MAX > TOTAL_MB )
-		fs .MAX = TOTAL_MB ;
+	//if ( ! fs .MAX || fs .MAX > TOTAL_MB )
+	//	fs .MAX = TOTAL_MB ;
+	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF/2 ;
 	
 	//set values of spinbutton_before
 	if ( ! fixed_start )

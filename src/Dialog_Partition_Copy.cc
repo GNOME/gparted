@@ -20,9 +20,15 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS )
+Dialog_Partition_Copy::Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS, Sector cylinder_size )
 {
 	this ->FILESYSTEMS = FILESYSTEMS ;
+	
+	//some disk have a small cylindersize, for safetyreasons i keep this size at >=1
+	if ( cylinder_size < 2048 )
+		cylinder_size = 2048 ;
+	
+	BUF = Sector_To_MB( cylinder_size ) ;
 	
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
@@ -50,8 +56,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_x_end( ( Round( (double) (copied_partition .sector_end - copied_partition .sector_start) / ( (double)total_length/500) )) ) ;
 	frame_resizer_base ->set_used( Round( (double) copied_partition .sectors_used / ( (double)total_length/500) ) ) ;
 	
-	if ( ! fs .MAX )
-		fs .MAX = TOTAL_MB ;
+	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
 	
 	fs .MIN = copied_partition .Get_Length_MB( ) +1 ;
 	

@@ -470,7 +470,7 @@ bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib:
 	return return_value ;	
 }
 
-std::vector<FS> GParted_Core::get_fs( )
+const std::vector<FS> & GParted_Core::get_fs( ) const 
 {
 	return FILESYSTEMS ;
 }

@@ -1,5 +1,10 @@
 2004-12-15 Bart Hakvoort  <gparted@users.sf.net>
 
+	* Gparted_Core::get_fs now returns a const reference.
+	* in copy and resizedialog filesystems with MAX set now have a max size of MAX - one cylinder .
+
+2004-12-15 Bart Hakvoort  <gparted@users.sf.net>
+
 	* (all filesystem classes): fixed bug with thousand separator (#161362).
 	* ext2.cc,
 	  ext3.cc: fixed bug with incorrect used/unused space after copying.

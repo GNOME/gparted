@@ -57,7 +57,7 @@ public:
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
 
-	std::vector<FS> get_fs( ) ;
+	const std::vector<FS> & get_fs( ) const ;
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 
 private:

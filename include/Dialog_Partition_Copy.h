@@ -26,7 +26,7 @@ namespace GParted
 class Dialog_Partition_Copy : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS ) ;
+	Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS, Sector cylinder_size ) ;
 	void Set_Data( const Partition & selected_partition, const Partition & copied_partition );
 	Partition Get_New_Partition( ) ;
 

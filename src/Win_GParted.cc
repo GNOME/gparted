@@ -927,7 +927,7 @@ void Win_GParted::activate_paste()
 {
 	if ( ! max_amount_prim_reached( ) )
 	{
-		Dialog_Partition_Copy dialog( gparted_core .get_fs( ) ) ;
+		Dialog_Partition_Copy dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 		copied_partition .error .clear( ) ; //we don't need the errors of the source partition.
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
