@@ -431,12 +431,14 @@ bool GParted_Core::Resize( const Glib::ustring & device_path, const Partition & 
 
 bool GParted_Core::Copy( const Glib::ustring & dest_device_path, const Glib::ustring & src_part_path, Partition & partition_dest ) 
 {
-	if ( Create_Empty_Partition( dest_device_path, partition_dest, true ) > 0 )
-	{
-		set_proper_filesystem( partition_dest .filesystem ) ;
-		
-		return p_filesystem ->Copy( src_part_path, partition_dest .partition ) ;
-	}
+	set_proper_filesystem( partition_dest .filesystem ) ;
+	
+	Partition src_partition ;
+	src_partition .partition = src_part_path ;
+	
+	if ( p_filesystem ->Check_Repair( src_partition ) )
+		if ( Create_Empty_Partition( dest_device_path, partition_dest, true ) > 0 )
+			return p_filesystem ->Copy( src_part_path, partition_dest .partition ) ;
 	
 	return false ;
 }

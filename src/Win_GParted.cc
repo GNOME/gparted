@@ -567,7 +567,9 @@ void Win_GParted::Set_Valid_Operations()
 			if ( cylinder_size < 1 )
 				cylinder_size = 1 ;
 			
-			if ( (copied_partition .Get_Length_MB( ) + cylinder_size) < selected_partition .Get_Length_MB( ) )
+			if (	(copied_partition .Get_Length_MB( ) + cylinder_size) < selected_partition .Get_Length_MB( ) ||
+				(copied_partition .filesystem == "xfs" && (copied_partition .Get_Used_MB( ) + cylinder_size) < selected_partition .Get_Length_MB( ) )
+			)
 				allow_paste( true ) ;
 		}			
 		

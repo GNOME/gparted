@@ -36,8 +36,6 @@ Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_siz
 
 void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, const Partition & copied_partition )
 {
-	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
-	
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .partition ) ) ;
 	
 	//set partition color
@@ -48,27 +46,34 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	total_length = selected_partition .sector_end - selected_partition .sector_start ;
 	TOTAL_MB = selected_partition .Get_Length_MB( ) ;
 	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	long COPIED_LENGTH_MB = copied_partition .Get_Length_MB( ) ;
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
-	frame_resizer_base ->set_x_end( ( Round( (double) (copied_partition .sector_end - copied_partition .sector_start) / ( (double)total_length/500) )) ) ;
-	frame_resizer_base ->set_used( Round( (double) copied_partition .sectors_used / ( (double)total_length/500) ) ) ;
-	
+	int x_end = Round( COPIED_LENGTH_MB / ( (double)TOTAL_MB/500 ) ) ; //> 500 px only possible with xfs...
+	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
+	frame_resizer_base ->set_used( Round( copied_partition .Get_Used_MB( ) / ( (double)TOTAL_MB/500) ) ) ;
+		
 	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
 	
-	fs .MIN = copied_partition .Get_Length_MB( ) +1 ;
+	if ( fs .filesystem == "xfs" ) //bit hackisch, but most effective, since it's a unique situation
+		fs .MIN = copied_partition .Get_Used_MB( ) + (BUF * 2) ;
+	else
+		fs .MIN = COPIED_LENGTH_MB +1 ;
 	
+	GRIP = true ;
 	//set values of spinbutton_before
 	spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
 	spinbutton_size .set_range( fs .MIN, fs .MAX ) ;
-	spinbutton_size .set_value( fs .MIN ) ;
+	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
-	spinbutton_after .set_value( TOTAL_MB - fs .MIN ) ;
+	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
+	GRIP = false ;
 	
 	frame_resizer_base ->set_size_limits( (int) ( fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
 	
@@ -79,8 +84,6 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
 	selected_partition .inside_extended ? this ->selected_partition .type = GParted::LOGICAL : this ->selected_partition .type = GParted::PRIMARY ;
-	
-	GRIP = false ;
 }
 
 Partition Dialog_Partition_Copy::Get_New_Partition() 

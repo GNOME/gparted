@@ -51,7 +51,7 @@ FS xfs::get_filesystem_support( )
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
+	if ( ! system( "which xfsdump xfsrestore mount umount 1>/dev/null 2>/dev/null" ) && fs .check && fs .create )
 		fs .copy = true ;
 	
 	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
@@ -111,14 +111,20 @@ bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	if ( ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
-	{
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, true ) ;
-	}
+	bool return_value = false ;
 	
-	return false ;
+	system( "mkdir /tmp/gparted_tmp_xfs_src_mountpoint /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+	
+	if (	! Execute_Command( "mkfs.xfs -f " + dest_part_path ) &&
+		! Execute_Command( "mount " + src_part_path + " /tmp/gparted_tmp_xfs_src_mountpoint" ) &&
+		! Execute_Command( "mount " + dest_part_path + " /tmp/gparted_tmp_xfs_dest_mountpoint" )
+	)
+		return_value = ! Execute_Command( "xfsdump -J - /tmp/gparted_tmp_xfs_src_mountpoint | xfsrestore -J - /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+		
+	Execute_Command( "umount " + src_part_path + " " + dest_part_path ) ;
+	system( "rmdir /tmp/gparted_tmp_xfs_src_mountpoint /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+	
+	return return_value ;
 }
 
 bool xfs::Check_Repair( const Partition & partition )

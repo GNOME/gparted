@@ -1,3 +1,12 @@
+2004-12-20 Bart Hakvoort  <gparted@users.sf.net>
+
+	* src/Dialog_Partition_Copy.cc,
+	  src/Win_GParted.cc,
+	  src/xfs.cc: xfs copy now uses xfsdump and xfsrestore. icw some hacks in the other 2 files, it's now possible to shrink an xfs partition
+	  while doing the copy. Although i'd rather preffered 'real' (in place) resizing i figured it's better then nothing.
+	  Also the sourcefilesystem is now checked before the actual copy is performed. If damaged beyond repair, the copy won't start.
+	* src/Dialog_Partition_Resize_Move.cc: removed commented code.
+
 2004-12-18 Bart Hakvoort  <gparted@users.sf.net>
 
 	* include/Dialog_Filesystems.h,
