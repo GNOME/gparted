@@ -42,61 +42,56 @@ Glib::ustring Operation::Get_String()
 		
 	switch ( operationtype )
 	{
-		case DELETE				:	
-												if (partition_original.type == GParted::LOGICAL)
-													/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-													sprintf( c_buf, _("Delete %s (%s, %ld MB) from %s"), "Logical Partition", partition_original.filesystem.c_str(), partition_original .Get_Length_MB(), device ->Get_Path().c_str() ) ;
-												else
-													sprintf( c_buf, _("Delete %s (%s, %ld MB) from %s"), partition_original.partition .c_str(), partition_original.filesystem.c_str(), partition_original .Get_Length_MB(), device ->Get_Path().c_str() ) ;
-												os << c_buf ;
-												break;
+		case DELETE				:	if (partition_original.type == GParted::LOGICAL)
+															/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
+															os << String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), _("Logical Partition") , partition_original .filesystem, partition_original .Get_Length_MB(), device ->Get_Path() ) ;
+														else
+															/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
+															os << String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), partition_original .partition, partition_original .filesystem, partition_original .Get_Length_MB(), device ->Get_Path() ) ;
+										
+														break;
 		case CREATE				:	switch( partition_new.type )
-												{
-													case GParted::PRIMARY	:	temp = "Primary"; 		break;
-													case GParted::LOGICAL	:	temp = "Logical"; 		break;	
-													case GParted::EXTENDED	:	temp = "Extended"; 		break;
-													default	:																			break;
-												}
-												/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
-												sprintf( c_buf, _("Create %s Partition #%d (%s, %ld MB) on %s"), temp .c_str(), partition_new.partition_number, partition_new.filesystem .c_str() , partition_new .Get_Length_MB(), device ->Get_Path() .c_str() ) ;
-												os << c_buf ;
-												break;
-		case RESIZE_MOVE		:	//if startsector has changed >= 1 MB we consider it a move
-												diff = Abs( partition_new .sector_start - partition_original .sector_start ) ;
+														{
+															case GParted::PRIMARY			:	temp = "Primary"; 		break;
+															case GParted::LOGICAL			:	temp = "Logical";	 		break;	
+															case GParted::EXTENDED	:	temp = "Extended"; 		break;
+															default											:	break;
+														}
+														/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
+														os << String::ucompose( _("Create %1 Partition #%2 (%3, %4 MB) on %5"), temp , partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB(), device ->Get_Path() ) ;
+														break;
+		case RESIZE_MOVE	:	//if startsector has changed >= 1 MB we consider it a move
+														diff = Abs( partition_new .sector_start - partition_original .sector_start ) ;
 		
-												if (  diff >= MEGABYTE ) 
-												{
-													if ( partition_new .sector_start > partition_original .sector_start )
-														sprintf( c_buf, _("Move %s up by %ld MB "), partition_new.partition .c_str(), Sector_To_MB( diff ) ) ;
-													else
-														sprintf( c_buf, _("Move %s down by %ld MB "), partition_new.partition .c_str(), Sector_To_MB( diff ) ) ;
-													
-													os << c_buf ;
-												}
+														if (  diff >= MEGABYTE ) 
+														{
+															if ( partition_new .sector_start > partition_original .sector_start )
+																os << String::ucompose( _("Move %1 forward by %2 MB "), partition_new.partition, Sector_To_MB( diff ) ) ;
+															else
+																os << String::ucompose( _("Move %1 backward by %2 MB "), partition_new.partition, Sector_To_MB( diff ) ) ;
+														}
 												
-												//check if size has changed ( we only consider changes >= 1 MB )
-												diff = Abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
+														//check if size has changed ( we only consider changes >= 1 MB )
+														diff = Abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
 												
-												if ( diff >= MEGABYTE )
-												{
-													if ( os.str() == "" ) 
-														sprintf( c_buf, _("Resize %s from %ld MB to %ld MB"), partition_new.partition .c_str(),  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
-													else
-														sprintf( c_buf, _("and Resize from %ld MB to %ld MB"), partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+														if ( diff >= MEGABYTE )
+														{
+															if ( os.str() == "" ) 
+																	os << String::ucompose( _("Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+															else
+																	os << String::ucompose( _("and Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+															//os << c_buf ;
+														}
+														if ( os.str() == "" )
+															os << _("Sorry, changes are too small to make sense");
 													
-													os << c_buf ;
-												}
-												if ( os.str() == "" )
-													os << _("Sorry, changes are too small to make sense");
-												break;
+														break;
 		case CONVERT			:	/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
-												sprintf( c_buf, _("Convert %s from %s to %s"), partition_original .partition .c_str(), partition_original .filesystem .c_str() , partition_new .filesystem .c_str() ) ;
-												os << c_buf ;
-												break;
-		case COPY					:   /*TO TRANSLATORS: looks like  Copy /dev/hda4 from /dev/hda to /dev/hdd (start at 2500 MB) */
-												sprintf( c_buf, _("Copy %s to %s (start at %ld MB)"), partition_new .partition .c_str(),  device ->Get_Path() .c_str(), Sector_To_MB( partition_new .sector_start ) ) ;
-												os << c_buf ;
-												break ;
+														os << String::ucompose( _(	"Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
+														break;
+		case COPY					:   /*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
+														os << String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device ->Get_Path(), Sector_To_MB( partition_new .sector_start ) ) ;
+														break ;
 	}
 	
 	return os.str();
@@ -124,31 +119,31 @@ void Operation::Apply_To_Disk( PedTimer * timer  )
 
 	switch ( operationtype )
 	{
-		case DELETE				:   result = device ->Delete_Partition( partition_original ) ;
-												if ( ! result )
-													Show_Error( (Glib::ustring) _("Error while deleting")  + " " + partition_original.partition ) ;
-													
-												break;
+		case DELETE				:  result = device ->Delete_Partition( partition_original ) ;
+														if ( ! result )
+															Show_Error( String::ucompose( _("Error while deleting %1"), partition_original.partition ) ) ;
+														
+														break;
 		case CREATE				:	result = device ->Create_Partition_With_Filesystem( partition_new, timer ) ;
-												if ( ! result ) 
-													Show_Error( (Glib::ustring) _("Error while creating")  + " " + partition_new.partition ) ;
+														if ( ! result ) 
+															Show_Error( String::ucompose( _("Error while creating %1"), partition_new.partition ) );
 												
-												break;
-		case RESIZE_MOVE		:	result = device ->Move_Resize_Partition( partition_original, partition_new, timer ) ;
-												if ( ! result ) 
-													Show_Error( (Glib::ustring) _("Error while resizing/moving")  + " " + partition_new.partition ) ;
+														break;
+		case RESIZE_MOVE	:	result = device ->Move_Resize_Partition( partition_original, partition_new, timer ) ;
+														if ( ! result ) 
+															Show_Error( String::ucompose( _("Error while resizing/moving %1"), partition_new.partition ) ) ;
 												
-												break;
+														break;
 		case CONVERT			:	result = device ->Set_Partition_Filesystem( partition_new, timer ) ;
-												if ( ! result ) 
-													Show_Error( (Glib::ustring) _("Error while converting filesystem of")  + " " + partition_new.partition ) ;
+														if ( ! result ) 
+															Show_Error( String::ucompose( _("Error while converting filesystem of %1"), partition_new.partition ) ) ;
 												
-												break;
+														break;
 		case COPY					:	result = device ->Copy_Partition( source_device, partition_new, timer ) ;
-												if ( ! result ) 
-													Show_Error( (Glib::ustring) _("Error while copying")  + " " + partition_new .partition ) ;
+														if ( ! result ) 
+															Show_Error( String::ucompose( _("Error while copying %1"), partition_new .partition ) ) ;
 												
-												break;
+														break;
 	}
 	
 }

@@ -30,8 +30,7 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 	
-	/*TO TRANSLATORS: dialogtitle, looks like Paste /dev/hda3 */
-	this ->set_title( (Glib::ustring) _( "Paste" ) + " " + copied_partition .partition ) ;
+	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .partition ) ) ;
 	
 	//set partition color
 	frame_resizer_base ->set_rgb_partition_color( copied_partition .color ) ;
@@ -66,8 +65,8 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB()  ) ;
 	
 	//set contents of label_minmax
-	os << _("Minimum Size") << ": " << copied_partition .Get_Length_MB() +1 ; 
-	os << " MB\t\t" << _( "Maximum Size" ) << ": " << Sector_To_MB( total_length ) << " MB" ; 
+	os << String::ucompose( _("Minimum Size: %1 MB"), copied_partition .Get_Length_MB() +1 ) << "\t\t" ;
+	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
 	label_minmax.set_text( os.str() ) ; os.str("") ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )

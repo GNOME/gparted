@@ -152,6 +152,7 @@ void Win_GParted::init_popupmenu()
 	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE, sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
 	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
+	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
 	menu_popup.items().push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Convert to"), *image, menu_convert ) ) ;
 	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO, sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
@@ -206,11 +207,11 @@ void Win_GParted::init_device_info()
 	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings(10 ) ;
 	label = manage( new Gtk::Label() ) ;
-	os << " <b>"  << _("Model") << ":\n " << _("Size") << ":\n " << _("Path") << ":\n " ;  
+	os << " <b>"  << _("Model:") << "\n " << _("Size:") << "\n " << _("Path:") << "\n " ;  
 	
 	//only show realpath if it's different from the short path...(hereby i assume if one device has a realpath, they all have. i guess this makes sense)
 	if ( devices[ current_device ] ->Get_Path() != devices[ current_device ] ->Get_RealPath() )
-		os << _("Real Path") << ":\n " ;
+		os << _("Real Path:") << "\n " ;
 	
 	os << "</b>" ;
 	label ->set_markup( os.str() ) ; os.str("") ;
@@ -224,7 +225,7 @@ void Win_GParted::init_device_info()
 	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings(10 ) ;
 	label = manage( new Gtk::Label() ) ;
-	os << " <b>"  << _("DiskType") << ":\n " << _("Heads") << ":\n " << _("Sectors/Track") << ":\n " << _("Cylinders") << ":\n "<< _("Total Sectors") << ":\n ";  
+	os << " <b>"  << _("DiskType:") << "\n " << _("Heads:") << "\n " << _("Sectors/Track:") << "\n " << _("Cylinders:") << "\n "<< _("Total Sectors:") << "\n ";  
 	os << "</b>" ;
 	label ->set_markup( os.str() ) ; os.str("") ;
 	table ->attach( *label, 0,1,0,1,Gtk::SHRINK);
@@ -236,7 +237,7 @@ void Win_GParted::init_device_info()
 	//add the vbox to the expander
 	expander_device_info.add( *vbox );
 	expander_device_info.set_use_markup( true );
-	expander_device_info.set_label( "<b>" + (Glib::ustring) _( "Harddisk Information" ) + ":</b>" );
+	expander_device_info.set_label( "<b>" + (Glib::ustring) _( "Harddisk Information:" ) + "</b>" );
 	
 	//and add the expander to vbox_info
 	vbox_info.set_spacing( 5 );
@@ -432,25 +433,26 @@ void Win_GParted::Refresh_Visual( )
 		switch ( operations[t].operationtype )
 		{		
 			case GParted::DELETE				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
-																break;
-			case	GParted::CREATE				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
-																break;
+																				break;
+			case	GParted::CREATE					:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+																				break;
 			case	GParted::RESIZE_MOVE	:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
-																break;
-			case	GParted::CONVERT			:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
-																break;
-			case	GParted::COPY					:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
-																break;
+																				break;
+			case	GParted::CONVERT				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+																				break;
+			case	GParted::COPY						:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+																				break;
 		}
 		
 	}
 	
 	//set new statusbartext
 	statusbar .pop() ;
-	os << operations.size() << " " ;
-	operations.size() != 1 ? os << _( "operations pending" ) : os << _( "operation pending" ) ;
-	statusbar .push( os.str() );os.str("");
-	
+	if ( operations.size() != 1 )
+		statusbar .push( String::ucompose( _("%1 operations pending"), operations.size() ) .c_str() );
+	else
+		statusbar .push( _( "1 operation pending" ) );
+		
 	if ( ! operations.size() ) 
 	{
 		allow_undo( false );
@@ -467,16 +469,16 @@ void Win_GParted::Refresh_Visual( )
 		
 		switch ( partitions[t].type )
 		{
-			case GParted::PRIMARY		:	primary_count++;
-															break;
-			case GParted::EXTENDED		:	any_extended = true;
-															primary_count++;
-															break;
-			case GParted::LOGICAL		:	any_logic = true;
-															if ( partitions[t].busy && partitions[t].partition_number > highest_logic_busy )
-																highest_logic_busy = partitions[t].partition_number ;
-															break;
-			default									:	break;
+			case GParted::PRIMARY	:	primary_count++;
+												break;
+			case GParted::EXTENDED	:	any_extended = true;
+												primary_count++;
+												break;
+			case GParted::LOGICAL	:	any_logic = true;
+												if ( partitions[t].busy && partitions[t].partition_number > highest_logic_busy )
+													highest_logic_busy = partitions[t].partition_number ;
+												break;
+			default						:	break;
 		}
 	}
 	
@@ -506,8 +508,12 @@ bool Win_GParted::Quit_Check_Operations()
 	if ( operations.size() )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Quit GParted?" ) + "</span>\n\n" ;
-		os << operations.size() << " ";
-		operations.size() == 1 ? os << "operation is currently pending..." : os << "operations are currently pending..." ;
+	//	os << operations.size() << " ";
+	//	operations.size() == 1 ? os << "operation is currently pending..." : os << "operations are currently pending..." ;
+		if ( operations .size() != 1 )
+			os << String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
+		else
+			os << _("1 operation is currently pending.");
 				
 		Gtk::MessageDialog dialog( *this, os.str() , true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true);os.str("");
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
@@ -775,9 +781,10 @@ void Win_GParted::activate_paste()
 	if ( ! selected_partition.inside_extended && primary_count >= 4 )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
-		os << _( "It's not possible to create more then four primary partitions") << "</span>\n\n" ;
-		os << _( "If you want more then four partitions you should create an extended partition. Such an partition can contain at least 24 other partitions.") ;
-				
+		os << String::ucompose( _("It is not possible to create more then %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
+		os <<  "</span>\n\n" ;
+		os << _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
+										
 		Gtk::MessageDialog dialog( *this, os.str() ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true); os.str("") ;
 		dialog.run();
 		return;
@@ -801,9 +808,9 @@ void Win_GParted::activate_new()
 	if ( ! selected_partition.inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
-		sprintf( c_buf, _("It is not possible to create more then %d primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
-		os << c_buf << "</span>\n\n" ;
-		os << _( "If you want more partitions you should first create an extended partition. Such an partition can contain other partitions.") ;
+		os << String::ucompose( _("It is not possible to create more then %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
+		os <<  "</span>\n\n" ;
+		os << _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
 				
 		Gtk::MessageDialog dialog( *this, os.str() ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true); os.str("") ;
 		dialog.run();
@@ -831,17 +838,20 @@ void Win_GParted::activate_delete()
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
 	if ( selected_partition.type == GParted::LOGICAL &&  selected_partition .partition.substr( 0, 3 ) != "New"  && selected_partition.partition_number < highest_logic_busy )
 	{	
-		os << " " << selected_partition.partition_number ;
-		Gtk::MessageDialog dialog( *this, "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Unable to delete partition!") + "</span>\n\n" + (Glib::ustring) _( "Please unmount any logical partitions having a number higher than")  + os.str() ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);os.str("");
-		dialog.run() ; return;
+		os << "<span weight=\"bold\" size=\"larger\">" << _( "Unable to delete partition!")  << "</span>\n\n" ;
+		os << String::ucompose( _("Please unmount any logical partitions having a number higher than %1"), selected_partition.partition_number ) ;
+		Gtk::MessageDialog dialog( *this, os .str(), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true); os.str("");
+		dialog.run() ;
+		return;
 	}
 	
-	os << "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Are you sure you want to delete" ) + " " + selected_partition.partition + " ?</span>" ;
+	os << "<span weight=\"bold\" size=\"larger\">" << String::ucompose( _( "Are you sure you want to delete %1 ?"), selected_partition.partition )  << "</span>" ;
 	if ( selected_partition .partition == copied_partition .partition )
-		os << "\n\n" + (Glib::ustring) _( "After deletion this partition is no longer available for copying.") ;
+		os << "\n\n" << _( "After deletion this partition is no longer available for copying.") ;
 	
 	Gtk::MessageDialog dialog( *this, os.str() ,true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true); os.str("");
-	dialog.set_title( _("Delete") + (Glib::ustring)" " + selected_partition.partition + " (" + selected_partition.filesystem + ")" );
+	/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) */
+	dialog .set_title( String::ucompose( _("Delete %1 (%2, %3 MB)"), selected_partition .partition, selected_partition .filesystem, selected_partition .Get_Length_MB() ) );
 	dialog.add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 	dialog.add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
 	
@@ -902,7 +912,12 @@ void Win_GParted::activate_info()
 void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 {
 	//standard warning..
-	Gtk::MessageDialog dialog( *this, "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Are you sure you want to convert this filesystem to") + " " + new_fs + " ?</span>\n\n" + (Glib::ustring) _( "This operation will destroy all data on") + " " + selected_partition .partition ,true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true);
+	os << "<span weight=\"bold\" size=\"larger\">" ;
+	os << String::ucompose( _("Are you sure you want to convert this filesystem to %1 ?"), new_fs ) << "</span>\n\n" ;
+	os << String::ucompose( _("This operation will destroy all data on %1"), selected_partition .partition ) ;
+	
+	Gtk::MessageDialog dialog( *this, os.str(), true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true); os.str("");
+	
 	dialog. add_button( Gtk::Stock::CONVERT, Gtk::RESPONSE_OK ) ;
 	dialog. show_all_children() ;
 	
@@ -1012,6 +1027,7 @@ void Win_GParted::activate_apply()
 		if ( devicenames .size() )
 		{
 			os << "<span weight=\"bold\" size=\"larger\">" ;
+			/*TO TRANSLATORS: after the colon (:) a list of devices will be shown */
 			os << _("The kernel was unable to re-read the partition table on :") << "\n";
 			for (unsigned int t=0; t<devicenames .size(); t++ )
 				os << "- " << devicenames[ t ] << "\n";

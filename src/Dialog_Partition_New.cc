@@ -49,7 +49,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	hbox_main .pack_start( table_create, Gtk::PACK_SHRINK );
 	
 	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices> */
-	label_type.set_text( (Glib::ustring) _("Create as") + ":\t" );
+	label_type.set_text( (Glib::ustring) _("Create as:") + "\t" );
 	table_create.attach( label_type, 0,1,0,1,Gtk::SHRINK);
 	
 	//fill partitiontype menu
@@ -76,7 +76,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	table_create.attach( optionmenu_type, 1,2,0,1,Gtk::FILL);
 	
 	//filesystems to choose from 
-	label_filesystem.set_text( (Glib::ustring) _("Filesystem") + ":\t" );
+	label_filesystem.set_text( (Glib::ustring) _("Filesystem:") + "\t" );
 	table_create.attach( label_filesystem, 0,1,1,2,Gtk::SHRINK);
 	
 	Build_Filesystems_Menu() ;
@@ -106,8 +106,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	GRIP = false ;
 	
 	//set contents of label_minmax
-	os << _("Minimum Size") << ": " << 1 << " MB\t\t"; 
-	os << _("Maximum Size") << ": " << TOTAL_MB << " MB" ; 
+	os << String::ucompose( _("Minimum Size: %1 MB"), 1 ) << "\t\t" ;
+	os << String::ucompose( _("Maximum Size: %1 MB"), TOTAL_MB ) ;
 	label_minmax.set_text( os.str() ) ; os.str("") ;
 	
 	this ->show_all_children() ;
@@ -193,8 +193,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type  )
 		spinbutton_after .set_range( 0, TOTAL_MB  - MIN ) ;
 		
 		//set contents of label_minmax
-		os << _("Minimum Size") << ": " << MIN << " MB\t\t"; 
-		os << _("Maximum Size") << ": " << MAX << " MB" ; 
+		os << String::ucompose( _("Minimum Size: %1 MB"), MIN ) << "\t\t" ;
+		os << String::ucompose( _("Maximum Size: %1 MB"), MAX ) ;
 		label_minmax.set_text( os.str() ) ; os.str("") ;
 		
 	}

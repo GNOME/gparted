@@ -51,7 +51,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "Free Space Preceding") + " (MB) :\t" ) ) ;
+	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "Free Space Preceding (MB) :") + " \t" ) ) ;
 	table_resize.attach( *label_temp, 0,1,0,1,Gtk::SHRINK);
 		
 	spinbutton_before .set_numeric( true );
@@ -59,7 +59,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	table_resize.attach( spinbutton_before, 1,2,0,1,Gtk::FILL);
 	
 	//add spinbutton_size
-	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "New Size") + " (MB) :" ) ) ;
+	label_temp = manage( new Gtk::Label( _( "New Size (MB) :") ) ) ;
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
 	table_resize.attach( *label_temp, 0,1,1,2 );
 
@@ -68,7 +68,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	table_resize.attach( spinbutton_size, 1,2,1,2,Gtk::FILL);
 	
 	//add spinbutton_after
-	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "Free Space Following") + " (MB) :" ) ) ;
+	label_temp = manage( new Gtk::Label( _( "Free Space Following (MB) :") ) ) ;
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
 	table_resize.attach( *label_temp, 0,1,2,3 ) ;
 	

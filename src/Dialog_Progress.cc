@@ -33,7 +33,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	label_temp = manage( new Gtk::Label() ) ;
 	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
 	os << "<span weight=\"bold\" size=\"larger\">" << _( "Applying pending operations" ) << "</span>\n\n" ;
-	os << _("All listed operations are applied to disk.") ;
+	os << _("Applying all listed operations.") ;
 	os << "\n";
 	os <<  _("Clicking Cancel will prevent the next operations from being applied.") ;
 	os << "\n";
@@ -51,8 +51,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	label_all_operations.set_markup( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>");
 	this->get_vbox() ->pack_start( label_all_operations, Gtk::PACK_SHRINK );
 	
-	sprintf( c_buf, _("%d of %d operations complete"), 0, count_operations ) ;
-	progressbar_all.set_text( c_buf ) ;
+	progressbar_all.set_text( String::ucompose( _("%1 of %2 operations completed"), 0, count_operations ) ) ;
 
 	this->get_vbox() ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
@@ -71,8 +70,7 @@ void Dialog_Progress::Set_Next_Operation(  )
 { 
 	progressbar_all.set_fraction( progressbar_all.get_fraction() + fraction );
 	
-	sprintf( c_buf, _("%d of %d operations complete"), ++current_operation_number, count_operations ) ;
-	progressbar_all.set_text( c_buf ) ;
+	progressbar_all.set_text( String::ucompose( _("%1 of %2 operations completed"), ++current_operation_number, count_operations ) ) ;
 
 	label_current.set_markup( "<i>" + current_operation + "</i>" ) ;
 	progressbar_current.set_fraction( 0 );
@@ -84,9 +82,7 @@ void Dialog_Progress::Set_Progress_Current_Operation( )
 	progressbar_current.set_fraction( fraction_current );
 
 	if ( time_left > 59 && time_left < 120 )
-		sprintf( c_buf, _("about %d minute and %d seconds left"), time_left/60, time_left % 60 ) ;
+			progressbar_current.set_text( String::ucompose( _("about %1 minute and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 	else
-		sprintf( c_buf, _("about %d minutes and %d seconds left"), time_left/60, time_left % 60 ) ;
-	
-	progressbar_current.set_text( c_buf ) ; 
+			progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 }

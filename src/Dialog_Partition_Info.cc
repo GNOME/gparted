@@ -27,7 +27,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	this->set_resizable( false );
 	
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
-	this->set_title( (Glib::ustring) _( "Information about") + " " + partition.partition );
+	this->set_title( String::ucompose( _( "Information about %1"), partition.partition ) );
 	 
 	init_drawingarea() ;
 	
@@ -42,7 +42,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		
 		image = manage( new Gtk::Image( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON ) );
 		label = manage( new Gtk::Label( ) ) ;
-		label ->set_markup( "<b> " + (Glib::ustring) _( "Libparted message" ) + ": </b>" ) ;
+		label ->set_markup( "<b> " + (Glib::ustring) _( "Libparted message:" ) + " </b>" ) ;
 		
 		hbox = manage( new Gtk::HBox() );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
@@ -137,27 +137,27 @@ void Dialog_Partition_Info::Display_Info()
 	
 	label = manage( new Gtk::Label( "<b>" ) ) ;
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Filesystem" ) + ":\n" ) ; 	os << partition.filesystem << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Size" ) + ":\n" ) ;				os << this -> partition .Get_Length_MB() << " MB\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _( "Filesystem:" ) + "\n" ) ; 	os << partition.filesystem << "\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _( "Size:" ) + "\n" ) ;				os << String::ucompose( _("%1 MB"), this -> partition .Get_Length_MB() ) << "\n";
 	
 	
 	if ( partition.sectors_used != -1 )
 	{ 
-		label ->set_text( label ->get_text() + (Glib::ustring) _( "Used" ) + ":\n" ) ;
-		label ->set_text( label ->get_text() + (Glib::ustring) _( "Unused" ) + ":\n" ) ;
+		label ->set_text( label ->get_text() + (Glib::ustring) _( "Used:" ) + "\n" ) ;
+		label ->set_text( label ->get_text() + (Glib::ustring) _( "Unused:" ) + "\n" ) ;
 		
-		os << this ->partition .Get_Used_MB() << " MB\n";
-		os << this ->partition .Get_Unused_MB() << " MB\n" ;
-				
+		os << String::ucompose( _("%1 MB"), this -> partition .Get_Used_MB() ) << "\n";
+		os << String::ucompose( _("%1 MB"), this -> partition .Get_Unused_MB() ) << "\n";	
+			
 		int percent_used =(int)  (  (double) partition.Get_Used_MB()  / partition .Get_Length_MB() *100 +0.5 ) ;
 		os_percent << "\n\n( " <<  percent_used << "% )\n( " << 100 - percent_used << "% )\n\n\n";
 	}
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Flags" ) + ":\n\n" ) ;	os << partition .flags << "\n\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _( "Flags:" ) + "\n\n" ) ;	os << partition .flags << "\n\n";
 	
 	if ( partition.type != GParted::UNALLOCATED && partition .partition.substr( 0, 3 ) != "New" )
 	{
-		label ->set_text( label ->get_text() + (Glib::ustring) _("Path" ) + ":\n" ) ; 	os << partition.partition << "\n";
+		label ->set_text( label ->get_text() + (Glib::ustring) _("Path:" ) + "\n" ) ; 	os << partition.partition << "\n";
 		
 		//get realpath
 		char real_path[4096] ;
@@ -166,12 +166,12 @@ void Dialog_Partition_Info::Display_Info()
 		//only show realpath if it's diffent from the short path...
 		if ( partition.partition != real_path )
 		{
-			label ->set_text( label ->get_text() + (Glib::ustring) _("Real Path" )  + ":\n" ) ;
+			label ->set_text( label ->get_text() + (Glib::ustring) _("Real Path:" )  + "\n" ) ;
 			os << (Glib::ustring) real_path << "\n";
 			os_percent << "\n" ;
 		}
 		
-		label ->set_text( label ->get_text() + (Glib::ustring) _("Status" )  + ":\n" ) ;
+		label ->set_text( label ->get_text() + (Glib::ustring) _("Status:" )  + "\n" ) ;
 		if ( partition.busy )
 			Find_Status() ;
 		else if ( partition.type == GParted::EXTENDED )
@@ -187,9 +187,9 @@ void Dialog_Partition_Info::Display_Info()
 	
 	label ->set_text( label ->get_text() + "\n" ) ;		os << "\n"; //splitter :P
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _("First Sector" ) + ":\n" ) ;	os << partition.sector_start << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _("Last Sector" ) + ":\n" ) ;		os << partition.sector_end << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _("Total Sectors" ) + ":\n" ) ;	os << partition.sector_end - partition.sector_start << "\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _("First Sector:" ) + "\n" ) ;	os << partition.sector_start << "\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _("Last Sector:" ) + "\n" ) ;		os << partition.sector_end << "\n";
+	label ->set_text( label ->get_text() + (Glib::ustring) _("Total Sectors:" ) + "\n" ) ;	os << partition.sector_end - partition.sector_start << "\n";
 	
 	label ->set_text( label ->get_text() + "</b>" ) ;
 	label ->set_use_markup( true ) ;
@@ -236,8 +236,8 @@ void Dialog_Partition_Info::Find_Status()
 		if ( partition_real_path == real_path )
 		{
 			mountpoint = line.substr( line.find( ' ' ) +1, line .length()  ) ;
-			/*TO TRANSLATORS: used as: mounted on <mountpoint>*/
-			os << _("Mounted on") << " "  <<  mountpoint .substr( 0, mountpoint .find( ' ' ) )  << "\n";
+			
+			os << String::ucompose( _("Mounted on %1"), mountpoint .substr( 0, mountpoint .find( ' ' ) ) ) << "\n";
 			break ;
 		}
 		
@@ -248,8 +248,7 @@ void Dialog_Partition_Info::Find_Status()
 
 	//sometimes rootdevices are not listed as paths. I'll take a guess and just enter / here...( we'll look into this when complaints start coming in :P )
 	if ( mountpoint.empty() )
-		os << _("Mounted on") << " /\n";
-
+		os << String::ucompose( _("Mounted on %1"), "/") << "\n";
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info()

@@ -65,7 +65,6 @@ private:
 	void Show_Error( const Glib::ustring & message  ) ;
 
 	Partition partition_original; //the original situation
-	char c_buf[ 1024 ] ; //used by sprintf, which is needed for i18n
 };
 
 } //GParted

@@ -30,6 +30,9 @@
 #include <sstream>
 #include <iostream>
 
+//compose library, dedicated to the translators :P
+#include "../compose/ucompose.hpp"
+
 #define MEGABYTE 2048  //try it: 2048 * 512 / 1024 /1024 == 1    :P
 
 namespace GParted

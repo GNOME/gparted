@@ -168,8 +168,7 @@ private:
 	
 	GParted::Device *temp_device;
 	std::vector <Glib::ustring> str_devices, filesystems;
-	char c_buf[ 1024 ] ; //used by sprintf, which is needed for i18n
-			
+				
 	//stuff for progress overview
 	Dialog_Progress *dialog_progress;
 	Glib::Thread *thread_operations;

@@ -65,16 +65,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	//see if we need a fixed_start
 	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" )
 	{
-		/*TO TRANSLATORS: dialogtitle. used as  Resize /dev/hda1 */
-		this ->set_title( (Glib::ustring) _("Resize") + " " + selected_partition .partition ) ;
+		this ->set_title( String::ucompose( _("Resize %1"), selected_partition .partition) ) ;
 		this ->fixed_start = true;
 		frame_resizer_base ->set_fixed_start( true ) ;
 		spinbutton_before .set_sensitive( false ) ;
 	}
 	else
 	{
-		/*TO TRANSLATORS: dialogtitle. used as  Resize/Move /dev/hda1 */
-		this ->set_title( (Glib::ustring) _("Resize/Move") + " " + selected_partition .partition ) ;
+		this ->set_title( String::ucompose( _("Resize/Move %1"), selected_partition .partition ) ) ;
 		frame_resizer_base ->set_fixed_start( false ) ;
 	}
 	
@@ -139,8 +137,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	os << _("Minimum Size") << ": " << LOWER << " MB\t\t"; 
-	os << _("Maximum Size") << ": " << Sector_To_MB( total_length )  << " MB" ; 
+	os << String::ucompose( _("Minimum Size: %1 MB"), LOWER ) << "\t\t" ;
+	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
 	label_minmax.set_text( os.str() ) ; os.str("") ;
 }
 
@@ -227,8 +225,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	os << _("Minimum Size") << ": " << Sector_To_MB( used ) +1 << " MB\t\t"; 
-	os << _("Maximum Size") << ": " << TOTAL_MB << " MB" ; 
+	os << String::ucompose( _("Minimum Size: %1 MB"), Sector_To_MB( used ) +1  ) << "\t\t" ;
+	os << String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
 	label_minmax.set_text( os.str() ) ; os.str("") ;
 	
 }

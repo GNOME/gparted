@@ -27,6 +27,9 @@
 
 #include <sstream>
 
+//compose library, dedicated to the translators :P
+#include "../compose/ucompose.hpp"
+
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
