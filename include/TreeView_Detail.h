@@ -28,7 +28,6 @@
 #include <gdkmm/pixbuf.h>
 
 #include <vector>
-#include <sstream>
 
 namespace GParted
 {

@@ -25,8 +25,6 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 
-#include <sstream>
-
 //compose library, dedicated to the translators :P
 #include "../compose/ucompose.hpp"
 

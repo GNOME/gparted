@@ -38,7 +38,6 @@
 #include <gtkmm/stock.h>
 
 #include <fstream>
-#include <sstream>
 
 namespace GParted
 {

@@ -30,8 +30,6 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/drawingarea.h>
 
-#include <sstream>
-
 #define BORDER 8
 
 namespace GParted
