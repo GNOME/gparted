@@ -20,15 +20,11 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_size )
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, long cylinder_size )
 {
 	this ->fs = fs ;
 	
-	//some disk have a small cylindersize, for safetyreasons i keep this size at >=1
-	if ( cylinder_size < 2048 )
-		cylinder_size = 2048 ;
-	
-	BUF = Sector_To_MB( cylinder_size ) ;
+	BUF = cylinder_size ;
 	
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;

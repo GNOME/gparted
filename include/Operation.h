@@ -39,15 +39,14 @@ class Operation
 {
 	
 public:
-	Operation( const Glib::ustring device_path, Sector device_length, const Partition &, const Partition &, OperationType );
-		
+	Operation( const Device & device, const Partition &, const Partition &, OperationType );		
+
 	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
 	void Apply_Operation_To_Visual( std::vector<Partition> & partitions );
 	
 	//public variables
-	Glib::ustring device_path ;
-	Sector device_length ;
+	Device device ;
 	OperationType operationtype;
 	Partition partition_original; //the original situation
 	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )

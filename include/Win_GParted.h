@@ -43,7 +43,6 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/liststore.h>
 
-#include <dlfcn.h>
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 
 namespace GParted
@@ -55,13 +54,13 @@ public:
 	Win_GParted( );
 
 private:
-	void init_menubar() ;
-	void init_toolbar() ;
-	void init_popupmenu() ;
-	void init_convert_menu() ;
-	void init_device_info() ;
-	void init_operationslist() ;
-	void init_hpaned_main() ;
+	void init_menubar( ) ;
+	void init_toolbar( ) ;
+	void init_popupmenu( ) ;
+	void init_convert_menu( ) ;
+	void init_device_info( ) ;
+	void init_operationslist( ) ;
+	void init_hpaned_main( ) ;
 
 	void Refresh_OptionMenu( ) ;
 	void Show_Pulsebar( ) ;
@@ -74,54 +73,52 @@ private:
 	
 	void Add_Operation( OperationType, const Partition & );
 	void Refresh_Visual( );
-	bool Quit_Check_Operations();
-	void Set_Valid_Operations() ; //determines which operations are allowed on selected_partition 
-	void Set_Valid_Convert_Filesystems() ; //determines to which filesystems a partition can be converted
+	bool Quit_Check_Operations( );
+	void Set_Valid_Operations( ) ; //determines which operations are allowed on selected_partition 
+	void Set_Valid_Convert_Filesystems( ) ; //determines to which filesystems a partition can be converted
 	
-
 	//convenience functions
-	void allow_new( bool b )	{ menu_popup.items()[0].set_sensitive( b ); toolbar_main.get_nth_item(0) ->set_sensitive( b ); }
-	void allow_delete( bool b )	{ menu_popup.items()[1].set_sensitive( b ); toolbar_main.get_nth_item(1) ->set_sensitive( b ); }
-	void allow_resize( bool b ) 	{ menu_popup.items()[3].set_sensitive( b ); toolbar_main.get_nth_item(3) ->set_sensitive( b ); }
-	void allow_copy( bool b )	{ menu_popup.items()[5].set_sensitive( b ); toolbar_main.get_nth_item(5) ->set_sensitive( b ); }
-	void allow_paste( bool b )	{ menu_popup.items()[6].set_sensitive( b ); toolbar_main.get_nth_item(6) ->set_sensitive( b ); }
-	void allow_convert( bool b )	{ menu_popup.items()[8].set_sensitive( b ); }
-	void allow_unmount( bool b )	{ menu_popup.items()[10].set_sensitive( b ); }
-	void allow_undo( bool b )	{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
-	void allow_apply( bool b )	{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
+	void allow_new( bool b )	{ menu_popup .items( )[ 0 ] .set_sensitive( b ); toolbar_main .get_nth_item( 0 ) ->set_sensitive( b ); }
+	void allow_delete( bool b )	{ menu_popup .items( )[ 1 ] .set_sensitive( b ); toolbar_main .get_nth_item( 1 ) ->set_sensitive( b ); }
+	void allow_resize( bool b ) 	{ menu_popup .items( )[ 3 ] .set_sensitive( b ); toolbar_main .get_nth_item( 3 ) ->set_sensitive( b ); }
+	void allow_copy( bool b )	{ menu_popup .items( )[ 5 ] .set_sensitive( b ); toolbar_main .get_nth_item( 5 ) ->set_sensitive( b ); }
+	void allow_paste( bool b )	{ menu_popup .items( )[ 6 ] .set_sensitive( b ); toolbar_main .get_nth_item( 6 ) ->set_sensitive( b ); }
+	void allow_convert( bool b )	{ menu_popup .items( )[ 8 ] .set_sensitive( b ); }
+	void allow_unmount( bool b )	{ menu_popup .items( )[ 10 ] .set_sensitive( b ); }
+	void allow_undo( bool b )	{ toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); }
+	void allow_apply( bool b )	{ toolbar_main .get_nth_item( 9 ) ->set_sensitive( b ); }
 		
 	void find_devices_thread( )	{ gparted_core .get_devices( devices ) ; pulse = false ; }
 	
 	//signal handlers
-	void open_operationslist() ;
-	void close_operationslist() ;
-	void clear_operationslist() ;
+	void open_operationslist( ) ;
+	void close_operationslist( ) ;
+	void clear_operationslist( ) ;
 	void optionmenu_devices_changed( );
 		
-	
-	void menu_gparted_refresh_devices();
-	void menu_gparted_filesystems();
-	void menu_gparted_quit();
-	void menu_view_harddisk_info();
-	void menu_view_operations();
-	void menu_help_contents();
-	void menu_help_about();
+	void menu_gparted_refresh_devices( );
+	void menu_gparted_filesystems( );
+	void menu_gparted_quit( );
+	void menu_view_harddisk_info( );
+	void menu_view_operations( );
+	void menu_help_contents( );
+	void menu_help_about( );
 
 	void mouse_click( GdkEventButton*, const Partition & );
-	bool max_amount_prim_reached() ;
+	bool max_amount_prim_reached( ) ;
 	
-	void activate_resize(); 
-	void activate_copy();
-	void activate_paste();
-	void activate_new();
-	void activate_delete();
-	void activate_info();
+	void activate_resize( ); 
+	void activate_copy( );
+	void activate_paste( );
+	void activate_new( );
+	void activate_delete( );
+	void activate_info( );
 	void activate_convert( const Glib::ustring & new_fs );
 	void activate_unmount( ) ;
 	
-	void activate_undo();
-	void activate_apply();
-	void apply_operations_thread();
+	void activate_undo( );
+	void activate_apply( );
+	void apply_operations_thread( );
 
 //private variables
 	unsigned int current_device ;
@@ -166,10 +163,9 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
 				
-		treeview_operations_Columns() {	add( operation_number ); add( operation_description ); add(operation_icon);}
+		treeview_operations_Columns( ) { add( operation_number ); add( operation_description ); add( operation_icon ); } 
 	};
 	treeview_operations_Columns treeview_operations_columns;
-	
 	
 	//usefull variables which are used by many different functions...
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
@@ -188,7 +184,6 @@ private:
 	Glib::Dispatcher dispatcher;
 	sigc::connection conn ; 
 	bool apply, pulse ;
-	
 };
 
 } //GParted

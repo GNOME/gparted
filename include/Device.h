@@ -38,6 +38,7 @@ public:
 	long heads ;
 	long sectors ;
 	long cylinders ;
+	long cylsize ;
 	Glib::ustring model;
  	Glib::ustring path;
  	Glib::ustring realpath;

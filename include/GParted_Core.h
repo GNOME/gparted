@@ -49,10 +49,10 @@ public:
 
 	void Apply_Operation_To_Disk( Operation & operation );
 	
-	bool Create( const Glib::ustring & device_path, Partition & new_partition ) ;
+	bool Create( const Device & device, Partition & new_partition ) ;
 	bool Convert_FS( const Glib::ustring & device_path, const Partition & partition ) ;
 	bool Delete( const Glib::ustring & device_path, const Partition & partition ) ;
-	bool Resize( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ; 
+	bool Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) ; 
 	bool Copy( const Glib::ustring & dest_device_path, const Glib::ustring & src_part_path, Partition & partition_dest ) ; 
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
@@ -73,8 +73,7 @@ private:
 
 	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
-	long Get_Cylinder_Size( const Glib::ustring & device_path ) ;
-	
+		
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer;
 	
 	std::vector<FS> FILESYSTEMS ;

@@ -19,11 +19,9 @@
 namespace GParted
 {
 	
-Operation::Operation( const Glib::ustring device_path, Sector device_length, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
+Operation::Operation( const Device & device, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
 {
-	this ->device_path = device_path ;
-	this ->device_length = device_length ;
-	
+	this ->device = device ;
 	this ->partition_original = partition_original;
 	this ->partition_new = partition_new;
 	this ->operationtype = operationtype;
@@ -51,7 +49,7 @@ Glib::ustring Operation::Get_String( )
 						temp = partition_original .partition ;
 
 					/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device_path ) ;
+					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device .path ) ;
 
 		case CREATE	:	switch( partition_new.type )
 					{
@@ -61,7 +59,7 @@ Glib::ustring Operation::Get_String( )
 						default			:	break;
 					}
 					/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
-					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device_path ) ;
+					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device .path ) ;
 		case RESIZE_MOVE:	//if startsector has changed >= 1 MB we consider it a move
 					diff = Abs( partition_new .sector_start - partition_original .sector_start ) ;
 					if (  diff >= MEGABYTE ) 
@@ -89,7 +87,7 @@ Glib::ustring Operation::Get_String( )
 		case CONVERT	:	/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
 					return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
 		case COPY	:	/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
-					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device_path, Sector_To_MB( partition_new .sector_start ) ) ;
+					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device .path, Sector_To_MB( partition_new .sector_start ) ) ;
 		default		:	return "";			
 	}
 		
@@ -178,7 +176,7 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions .erase( partitions .begin( ) + Get_Index_Original( partitions ) );
 		
-		Insert_Unallocated( partitions, 0, device_length -1, false ) ;
+		Insert_Unallocated( partitions, 0, device .length -1, false ) ;
 	}
 	else
 	{
@@ -204,7 +202,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions[ Get_Index_Original( partitions ) ] = partition_new ;
 				
-		Insert_Unallocated( partitions, 0, device_length -1, false ) ;
+		Insert_Unallocated( partitions, 0, device .length -1, false ) ;
 	}
 	else
 	{
@@ -231,7 +229,7 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	partitions[ ext ] .sector_start = partition_new .sector_start ;
 	partitions[ ext ] .sector_end = partition_new .sector_end ;
 	
-	Insert_Unallocated( partitions, 0, device_length -1, false ) ;
+	Insert_Unallocated( partitions, 0, device .length -1, false ) ;
 	
 	//stuff INSIDE extended partition
 	ext = 0 ;

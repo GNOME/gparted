@@ -13,7 +13,7 @@ GParted_Core::GParted_Core( )
 	textbuffer = Gtk::TextBuffer::create( ) ;
 
 	//get valid flags ...
-	for ( PedPartitionFlag flag = ped_partition_flag_next ( (PedPartitionFlag) 0 ) ; flag ; flag = ped_partition_flag_next ( flag ) )
+	for ( PedPartitionFlag flag = ped_partition_flag_next( (PedPartitionFlag) NULL ) ; flag ; flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;	
 }
 
@@ -93,8 +93,13 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .sectors 	=	device ->bios_geom .sectors ;
 			temp_device .cylinders	=	device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
+			temp_device .cylsize 	=	Sector_To_MB( temp_device .heads * temp_device .sectors ) ;
+			
+			//make sure cylsize is at least 1 MB
+			if ( temp_device .cylsize < 1 )
+				temp_device .cylsize = 1 ;
 						
-			//normal  harddisk
+			//normal harddisk
 			if ( disk )
 			{
 				temp_device .disktype =	disk ->type ->name ;
@@ -300,37 +305,37 @@ void GParted_Core::Apply_Operation_To_Disk( Operation & operation )
 	switch ( operation .operationtype )
 	{
 		case DELETE:
-			if ( ! Delete( operation .device_path, operation .partition_original ) ) 
+			if ( ! Delete( operation .device .path, operation .partition_original ) ) 
 				Show_Error( String::ucompose( _("Error while deleting %1"), operation .partition_original .partition ) ) ;
 														
 			break;
 		case CREATE:
-			if ( ! Create( operation .device_path, operation .partition_new ) ) 
+			if ( ! Create( operation .device, operation .partition_new ) ) 
 				Show_Error( String::ucompose( _("Error while creating %1"), operation .partition_new .partition ) );
 											
 			break;
 		case RESIZE_MOVE:
-			if ( ! Resize( operation .device_path, operation .partition_original, operation .partition_new ) )
+			if ( ! Resize( operation .device, operation .partition_original, operation .partition_new ) )
 				Show_Error( String::ucompose( _("Error while resizing/moving %1"), operation .partition_new .partition ) ) ;
 											
 			break;
 		case CONVERT:
-			if ( ! Convert_FS( operation .device_path, operation .partition_new ) ) 
+			if ( ! Convert_FS( operation .device .path, operation .partition_new ) ) 
 				Show_Error( String::ucompose( _("Error while converting filesystem of %1"), operation .partition_new .partition ) ) ;
 										
 			break;
 		case COPY:
-			if ( ! Copy( operation .device_path, operation .copied_partition_path, operation .partition_new ) ) 
+			if ( ! Copy( operation .device .path, operation .copied_partition_path, operation .partition_new ) ) 
 				Show_Error( String::ucompose( _("Error while copying %1"), operation .partition_new .partition ) ) ;
 	}
 }
 
-bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_partition ) 
+bool GParted_Core::Create( const Device & device, Partition & new_partition ) 
 {
 	if ( new_partition .type == GParted::EXTENDED )   
-		return Create_Empty_Partition( device_path, new_partition ) ;
+		return Create_Empty_Partition( device .path, new_partition ) ;
 	
-	else if ( Create_Empty_Partition( device_path, new_partition, ( new_partition .Get_Length_MB( ) - Get_Cylinder_Size( device_path ) ) < get_fs( new_partition .filesystem ) .MIN ) > 0 )
+	else if ( Create_Empty_Partition( device .path, new_partition, ( new_partition .Get_Length_MB( ) - device .cylsize ) < get_fs( new_partition .filesystem ) .MIN ) > 0 )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
@@ -338,7 +343,7 @@ bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_pa
 		if ( ! p_filesystem )
 			return true ;
 		
-		return p_filesystem ->Create( device_path, new_partition ) ;
+		return p_filesystem ->Create( device .path, new_partition ) ;
 	}
 	
 	return false ;
@@ -382,17 +387,17 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 	return return_value ;
 }
 
-bool GParted_Core::Resize( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) 
+bool GParted_Core::Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) 
 {
 	if ( partition_old .type == GParted::EXTENDED )
-		return Resize_Container_Partition( device_path, partition_old, partition_new, false ) ;
+		return Resize_Container_Partition( device .path, partition_old, partition_new, false ) ;
 	
 	//these 3 still use libparted's resizer.
 	else if (	partition_old .filesystem == "linux-swap" ||
 			partition_old .filesystem == "fat16" ||
 			partition_old .filesystem == "fat32"
 		)
-		return Resize_Normal_Using_Libparted( device_path, partition_old, partition_new ) ;
+		return Resize_Normal_Using_Libparted( device .path, partition_old, partition_new ) ;
 
 	//use custom resize tools..(afaik only resize, no moves)
 	else 
@@ -404,15 +409,15 @@ bool GParted_Core::Resize( const Glib::ustring & device_path, const Partition & 
 			//shrinking
 			if ( partition_new .sector_end < partition_old .sector_end )
 			{
-				p_filesystem ->cylinder_size = Get_Cylinder_Size( device_path ) ;
+				p_filesystem ->cylinder_size = device .cylsize ;
 				
 				if ( p_filesystem ->Resize( partition_new ) )
-					Resize_Container_Partition( device_path, partition_old, partition_new ) ;
+					Resize_Container_Partition( device .path, partition_old, partition_new ) ;
 			}
 							
 			//growing
 			if ( partition_new .sector_end > partition_old .sector_end )
-				Resize_Container_Partition( device_path, partition_old, partition_new ) ;
+				Resize_Container_Partition( device .path, partition_old, partition_new ) ;
 					
 			
 			p_filesystem ->Check_Repair( partition_new ) ;
@@ -727,20 +732,6 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 
 	if ( p_filesystem )
 		p_filesystem ->textbuffer = textbuffer ;
-}
-
-long GParted_Core::Get_Cylinder_Size( const Glib::ustring & device_path ) 
-{
-	long cylinder_size = 0 ;
-	
-	if ( open_device( device_path, device ) )
-	{
-		cylinder_size = Sector_To_MB( device ->bios_geom .heads * device ->bios_geom .sectors ) ;
-		
-		close_device_and_disk( device, disk ) ;
-	}
-	
-	return cylinder_size ;
 }
 
 } //GParted
