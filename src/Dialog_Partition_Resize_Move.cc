@@ -20,10 +20,10 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS, Sector cylinder_size )
 {
 	this ->FILESYSTEMS = FILESYSTEMS ;
-	BUF = 5 ; 
+	BUF = Sector_To_MB( cylinder_size ) *2 ;
 }
 
 void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions )

@@ -36,20 +36,20 @@ class TreeView_Detail : public Gtk::TreeView
 {
 public:
 	TreeView_Detail( );
-	void Load_Partitions( std::vector<Partition> & partitions ) ;
+	void Load_Partitions( const std::vector<Partition> & partitions ) ;
 	void Set_Selected( const Partition & partition );
 
 	//signals for interclass communication
-	sigc::signal<void,GdkEventButton *,const Partition &> signal_mouse_click;
+	sigc::signal<void, GdkEventButton *, const Partition & > signal_mouse_click;
 
 private:
-	void Create_Row( const Gtk::TreeRow &, Partition &);
+	void Create_Row( const Gtk::TreeRow & treerow, const Partition & partition );
 
 	//overridden signal
 	virtual bool on_button_press_event(GdkEventButton *);
 	
-	Gtk::TreeRow row,childrow;
-	Gtk::TreeIter iter,iter_child;
+	Gtk::TreeRow row, childrow;
+	Gtk::TreeIter iter, iter_child;
 
 	Glib::RefPtr<Gtk::TreeStore> treestore_detail;
 	Glib::RefPtr<Gtk::TreeSelection> treeselection;
@@ -69,7 +69,7 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> flags;
 		Gtk::TreeModelColumn< Partition >  partition_struct; //hidden column ( see also on_button_press_event )
 		
-		treeview_detail_Columns() {
+		treeview_detail_Columns( ) {
 			add( partition ); add( type ); add( type_square ); add( size );  add( used ); add( unused ); add( color ); add( text_color ); add( status_icon ); add( flags ); add(partition_struct);
 		}
 	};

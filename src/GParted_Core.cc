@@ -3,26 +3,12 @@
 namespace GParted
 {
 	
-//AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me)
-Glib::ustring error_message;
-PedExceptionOption PedException_Handler (PedException* ex)
-{
-	error_message = Glib::locale_to_utf8( ex ->message ) ;
-	
-	std::cout << "\nLIBPARTED MESSAGE ----------------------\n" << error_message << "\n---------------------------\n";
-	
-	return PED_EXCEPTION_UNHANDLED ;
-}
-	
-	
-	
 GParted_Core::GParted_Core( ) 
 {
 	device = NULL ;
 	disk = NULL ;
 	c_partition = NULL ;
-	ped_exception_set_handler( PedException_Handler ) ; 
-	
+		
 	p_filesystem = NULL ;
 	textbuffer = Gtk::TextBuffer::create( ) ;
 
@@ -52,6 +38,10 @@ void GParted_Core::find_supported_filesystems( )
 	
 	reiserfs fs_reiserfs;
 	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support( ) ) ;
+	
+	//unknown filesystem (default when no match is found)
+	FS fs ; fs .filesystem = "unknown" ;
+	FILESYSTEMS .push_back( fs ) ;
 }
 
 void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
@@ -110,7 +100,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 void GParted_Core::set_device_partitions( Device & device, bool deep_scan ) 
 {
 	Partition partition_temp ;
-	Glib::ustring part_path, error ;
+	Glib::ustring part_path ;
 	int EXT_INDEX = -1 ;
 	
 	//clear partitions
@@ -131,13 +121,13 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 				else
 				{
 					temp = "unknown" ;
-					error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
-					error += "\n-"; 
-					error += _( "The filesystem is damaged" ) ;
-					error += "\n-" ; 
-					error += _( "The filesystem is unknown to libparted" ) ;
-					error += "\n-"; 
-					error += _( "There is no filesystem available (unformatted)" ) ; 
+					partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+					partition_temp .error += "\n-"; 
+					partition_temp .error += _( "The filesystem is damaged" ) ;
+					partition_temp .error += "\n-" ; 
+					partition_temp .error += _( "The filesystem is unknown to libparted" ) ;
+					partition_temp .error += "\n-"; 
+					partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
 							
 				}				
 				partition_temp .Set( 	part_path,
@@ -148,11 +138,21 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 							c_partition ->type,
 							ped_partition_is_busy( c_partition ) );
 					
-				if ( deep_scan )
-					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
+				if ( deep_scan && partition_temp .filesystem != "linux-swap" )
+				{
+					Set_Used_Sectors( partition_temp ) ;
+					
+					//the 'Unknow' filesystem warning overrules this one
+					if ( partition_temp .sectors_used == -1 && partition_temp .error .empty( ) )
+					{
+						partition_temp .error = _("Unable to read the contents of this filesystem!") ;
+						partition_temp .error += "\n" ;
+						partition_temp .error += ("As a result you won't be able to resize this partition.") ;
+					}
+				}
 							
 				partition_temp .flags = Get_Flags( c_partition ) ;									
-				partition_temp .error = error .empty( ) ? error_message : error ;
+				
 				
 				if ( partition_temp .busy )
 					device .busy = true ;
@@ -203,16 +203,13 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 				device .device_partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
 		}
 		
-		//reset stuff..
-		error = error_message = "" ;
-		
 		//next partition (if any)
 		c_partition = ped_disk_next_partition ( disk, c_partition ) ;
 	}
 	
 }
 
-int GParted_Core::get_estimated_time( Operation & operation )
+int GParted_Core::get_estimated_time( const Operation & operation )
 {
 	switch ( operation .operationtype )
 	{
@@ -269,13 +266,9 @@ void GParted_Core::Apply_Operation_To_Disk( Operation & operation )
 		case COPY:
 			if ( ! Copy( operation .device_path, operation .copied_partition_path, operation .partition_new ) ) 
 				Show_Error( String::ucompose( _("Error while copying %1"), operation .partition_new .partition ) ) ;
-									
 	}
-	
-	
 }
 
-	
 bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_partition ) 
 {
 	if ( new_partition .type == GParted::EXTENDED )   
@@ -316,16 +309,45 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 	return return_value ;
 }
 
-bool GParted_Core::Resize(const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) 
+bool GParted_Core::Resize( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) 
 {
 	if ( partition_old .type == GParted::EXTENDED )
-		return Resize_Extended( device_path, partition_new ) ;
+		return Resize_Container_Partition( device_path, partition_old, partition_new ) ;
 	
+	//these 3 still use libparted's resizer.
+	else if (	partition_old .filesystem == "linux-swap" ||
+			partition_old .filesystem == "fat16" ||
+			partition_old .filesystem == "fat32"
+		)
+		return Resize_Normal_Using_Libparted( device_path, partition_old, partition_new ) ;
+
+	//use custom resize tools..(afaik only resize, no moves)
 	else 
 	{
 		set_proper_filesystem( partition_new .filesystem ) ;
-		
-		return p_filesystem ->Resize( device_path, partition_old, partition_new ) ;
+				
+		if ( p_filesystem ->Check_Repair( partition_new ) )
+		{		
+			//shrinking
+			if ( partition_new .sector_end < partition_old .sector_end )
+			{
+				p_filesystem ->cylinder_size = Get_Cylinder_Size( device_path ) ;
+				
+				if ( p_filesystem ->Resize( partition_new ) )
+					Resize_Container_Partition( device_path, partition_old, partition_new ) ;
+			}
+							
+			//growing
+			if ( partition_new .sector_end > partition_old .sector_end )
+				Resize_Container_Partition( device_path, partition_old, partition_new ) ;
+					
+			
+			p_filesystem ->Check_Repair( partition_new ) ;
+			
+			p_filesystem ->Resize( partition_new, true ) ; //expand filesystem to fit exactly in partition
+			
+			return p_filesystem ->Check_Repair( partition_new ) ;
+		}
 	}
 	
 	return false ;
@@ -383,64 +405,32 @@ Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path )
 }	
 
 
-Sector GParted_Core::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path)
+void GParted_Core::Set_Used_Sectors( Partition & partition )
 {
-	/* This is quite an unreliable process, atm i try two different methods, but since both are far from perfect the results are 
-	 * questionable. 
-	 * - first i try geometry.get_used() in libpartedpp, i implemented this function to check the minimal size when resizing a partition. Disadvantage 
-	*   of this method is the fact it won't work on mounted filesystems. Besides that, its SLOW
-	 * - if the former method fails ( result is -1 ) i'll try to read the output from the df command ( df -k --sync <partition path> )
-	 * - if this fails the filesystem on the partition is ( more or less ) unknown to the operating system and therefore the unused sectors cannot be calcualted
-	 * - as soon as i have my internetconnection back i should ask people with more experience on this stuff for advice !
-	*/
+	if ( partition .filesystem == "unknown" || partition .filesystem == "linux-swap" )
+		partition .Set_Unused( -1 ) ;
 	
-	//check if there is a (known) filesystem
-	if ( ! c_partition ->fs_type )
-		return -1;
-	
-	//used sectors are not relevant for swapspace
-	if ( (Glib::ustring) c_partition ->fs_type ->name == "linux-swap" )
-		return -1;
-	
-	//METHOD #1           
-	//the getused method doesn't work on mounted partitions and for some filesystems ( i *guess* this is called check by andrew )
-	if ( ! ped_partition_is_busy( c_partition ) && Get_FS( c_partition ->fs_type ->name, FILESYSTEMS ) .create )
-	{ 		
-		PedFileSystem *fs = NULL;
-		PedConstraint *constraint = NULL;
-	
-		fs = ped_file_system_open( & c_partition ->geom ); 	
-				
-		if ( fs )
-		{
-			constraint = ped_file_system_get_resize_constraint (fs);
-			ped_file_system_close (fs);
-			if ( constraint && constraint->min_size != -1 ) 
-				return constraint->min_size ;
-		}
-	}
-		
-	//METHOD #2
-	//this ony works for mounted ( and therefore known to the OS ) filesystems. My method is quite crude, keep in mind it's only temporary ;-)
-	if ( ped_partition_is_busy( c_partition ) )
+	else if ( partition .busy )
 	{
-		Glib::ustring buf;
-		system( ("df -k --sync " + sym_path + " | grep " + sym_path + " > /tmp/.tmp_gparted") .c_str( ) );
+		system( ("df -k --sync " + partition .partition + " | grep " + partition .partition + " > /tmp/.tmp_gparted") .c_str( ) );
 		std::ifstream file_input( "/tmp/.tmp_gparted" );
 		
-		file_input >> buf; //skip first value
-		file_input >> buf;
-		if ( buf != "0" && ! buf .empty( ) ) 
-		{ 
-			file_input >> buf;
-			file_input .close( ); system( "rm -f /tmp/.tmp_gparted" );		
-			return atoi( buf .c_str( ) ) * 1024/512 ;
-		}
-		file_input .close( ); system( "rm -f /tmp/.tmp_gparted" );
+		//we need the 4th value
+		file_input >> temp; file_input >> temp; file_input >> temp;file_input >> temp;
+		if ( ! temp .empty( ) ) 
+			partition .Set_Unused( atoi( temp .c_str( ) ) * 1024/512 ) ;
+		
+		file_input .close( );
+		system( "rm -f /tmp/.tmp_gparted" );
 	}
 	
-	
-	return -1 ; //all methods were unsuccesfull
+	else if ( Get_FS( partition .filesystem, FILESYSTEMS ) .read )
+	{
+		set_proper_filesystem( partition .filesystem ) ;
+		
+		p_filesystem ->disk = disk ;
+		p_filesystem ->Set_Used_Sectors( partition ) ;
+	}
 }
 
 int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy )
@@ -491,28 +481,70 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 	return new_partition .partition_number ;
 }
 
-bool GParted_Core::Resize_Extended( const Glib::ustring & device_path, const Partition & extended ) 
+bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new )
 {
 	bool return_value = false ;
 	
+	PedConstraint *constraint = NULL ;
+	c_partition = NULL ;
+		
 	if ( open_device_and_disk( device_path, device, disk ) )
 	{
-		PedPartition *c_part = NULL ;
-		PedConstraint *constraint = NULL ;
+		if ( partition_old .type == GParted::EXTENDED )
+			c_partition = ped_disk_extended_partition( disk ) ;
+		else		
+			c_partition = ped_disk_get_partition_by_sector( disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
 		
-		c_part = ped_disk_extended_partition( disk ) ;
-		if ( c_part )
+		if ( c_partition )
 		{
-			constraint = ped_constraint_any ( device );
+			constraint = ped_constraint_any( device );
 			if ( constraint )
 			{
-				if ( ped_disk_set_partition_geom ( disk, c_part, constraint, extended .sector_start, extended .sector_end ) )
-				{
-					ped_partition_set_system ( c_part, NULL );
+				if ( ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) 					   )
 					return_value = Commit( disk ) ;
-				}		
+									
+				ped_constraint_destroy ( constraint );
+			}
 					
-				ped_constraint_destroy (constraint);
+				
+		}
+		
+		close_device_and_disk( device, disk ) ;
+	}
+	
+	sleep( 1 ) ; //the OS needs time to re-add the devicenode..
+		
+	return return_value ;
+}
+
+bool GParted_Core::Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new )
+{
+	bool return_value = false ;
+	
+	PedFileSystem *fs = NULL ;
+	PedConstraint *constraint = NULL ;
+	c_partition = NULL ;
+	
+	if ( open_device_and_disk( device_path, device, disk ) )
+	{
+		c_partition = ped_disk_get_partition_by_sector( disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+		if ( c_partition )
+		{
+			fs = ped_file_system_open ( & c_partition ->geom );
+			if ( fs )
+			{
+				constraint = ped_file_system_get_resize_constraint ( fs );
+				if ( constraint )
+				{
+					if ( 	ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) &&
+						ped_file_system_resize ( fs, & c_partition ->geom, NULL )
+                                           )
+							return_value = Commit( disk ) ;
+										
+					ped_constraint_destroy ( constraint );
+				}
+				
+				ped_file_system_close ( fs );
 			}
 		}
 		
@@ -568,6 +600,20 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 
 	if ( p_filesystem )
 		p_filesystem ->textbuffer = textbuffer ;
+}
+
+long GParted_Core::Get_Cylinder_Size( const Glib::ustring & device_path ) 
+{
+	long cylinder_size = 0 ;
+	
+	if ( open_device( device_path, device ) )
+	{
+		cylinder_size = Sector_To_MB( device ->bios_geom .heads * device ->bios_geom .sectors ) ;
+		
+		close_device_and_disk( device, disk ) ;
+	}
+	
+	return cylinder_size ;
 }
 
 } //GParted

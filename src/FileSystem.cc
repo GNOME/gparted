@@ -21,14 +21,20 @@
 namespace GParted
 {
 	
+FileSystem::FileSystem( )
+{
+	disk = NULL;
+	cylinder_size = 0 ;
+}
+	
 bool FileSystem::Execute_Command( Glib::ustring command ) 
 {	
 	Glib::Dispatcher dispatcher;
 	sigc::connection conn = dispatcher .connect( sigc::mem_fun(*this, &FileSystem::Update_Textview) );
 	
 	//stderr to stdout
-	command += " 2>&1" ;
-	
+	//command += " 2>&1" ;
+	std::cout << command << std::endl ;
 	output = command + "\n\n" ;
 	dispatcher ( ) ;
 	
@@ -46,6 +52,7 @@ bool FileSystem::Execute_Command( Glib::ustring command )
 	
 	output = "" ;
 	dispatcher ( ) ;
+	
 	
 	return true ;
 }

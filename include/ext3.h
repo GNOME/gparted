@@ -28,9 +28,11 @@ class ext3 : public FileSystem
 {
 public:
 	FS get_filesystem_support( ) ;
+	void Set_Used_Sectors( Partition & partition ) ;
 	bool Create( const Glib::ustring device_path, const Partition & new_partition ) ;
-	bool Resize( const Glib::ustring device_path, const Partition & partition_old, const Partition & partition_new ) ;
+	bool Resize( const Partition & partition_new, bool fill_partition = false ) ;
 	bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) ;
+	bool Check_Repair( const Partition & partition ) ;
 	int get_estimated_time( long MB_to_Consider ) ;
 };
 

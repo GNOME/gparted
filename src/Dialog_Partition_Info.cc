@@ -27,7 +27,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	this ->set_resizable( false );
 	
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
-	this->set_title( String::ucompose( _( "Information about %1"), partition.partition ) );
+	this ->set_title( String::ucompose( _( "Information about %1"), partition .partition ) );
 	 
 	init_drawingarea( ) ;
 	
@@ -44,7 +44,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 				
 		hbox = manage( new Gtk::HBox( ) );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-		hbox ->pack_start( * mk_label( "<b> " + (Glib::ustring) _( "Libparted message:" ) + " </b>" ), Gtk::PACK_SHRINK ) ;
+		hbox ->pack_start( * mk_label( "<b> " + (Glib::ustring) _( "Warning:" ) + " </b>" ), Gtk::PACK_SHRINK ) ;
 		
 		frame ->set_label_widget( *hbox ) ;
 		frame ->add( * mk_label( "<i>" +  partition.error + "</i>", true, true, true ) ) ;

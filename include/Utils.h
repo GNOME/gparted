@@ -43,12 +43,14 @@ typedef long long Sector;
 struct FS
 {
 	Glib::ustring filesystem ;
+	bool read ; //can we get the amount of used sectors?
 	bool create ;
 	bool resize ; //only endpoint
 	bool move ; //startpoint and endpoint
-	bool check ;
+	bool check ; //some checktool available?
+	bool copy ;
 	
-	FS( ) {create = resize = move = check = false ;} 
+	FS( ) {read = create = resize = move = check = copy = false ;} 
 };
 
 	

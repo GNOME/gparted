@@ -56,38 +56,37 @@ void Partition::Set(	const Glib::ustring & partition,
 	this ->busy = busy;
 }
 
-void Partition::Set_Used( Sector used ) 
+void Partition::Set_Unused( Sector sectors_unused )
 {
-	this ->sectors_used = used;
-	this ->sectors_unused = ( used == -1 ) ? -1 : ( sector_end - sector_start) - used ;
+	this ->sectors_unused = sectors_unused ;
+	this ->sectors_used = ( sectors_unused == -1 ) ? -1 : ( sector_end - sector_start) - sectors_unused ;
 }
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , inside_extended, false); 
+	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , inside_extended, false ); 
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }
 
 void Partition::Update_Number( int new_number )
 {   //of course this fails when we have devicenames with numbers over 99
-	partition_number >= 10 ? partition = partition.substr( 0, partition.length() -2 ) : partition = partition.substr( 0, partition.length() -1 ) ;
-		
+	partition = partition .substr( 0, partition .length( ) - ( partition_number >= 10 ? 2 : 1 ) ) ;	
 	this ->partition_number = new_number;
 	this ->partition += num_to_str( partition_number ) ;
 }
 
-long Partition::Get_Length_MB( )
+const long Partition::Get_Length_MB( ) const
 {
-	return Sector_To_MB( this ->sector_end - this ->sector_start) ;
+	return Sector_To_MB( sector_end - sector_start ) ;
 }
 
-long Partition::Get_Used_MB( )
+const long Partition::Get_Used_MB( ) const
 { 
-	return Sector_To_MB( this ->sectors_used) ;
+	return Sector_To_MB( this ->sectors_used ) ;
 }
 
-long Partition::Get_Unused_MB( )
+const long Partition::Get_Unused_MB( ) const
 {
 	return Get_Length_MB( ) - Get_Used_MB( ) ;
 }

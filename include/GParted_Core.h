@@ -41,7 +41,7 @@ public:
 	void find_supported_filesystems( ) ; 
 	void get_devices( std::vector<Device> & devices, bool deep_scan ) ;
 	
-	int get_estimated_time( Operation & operation ) ;
+	int get_estimated_time( const Operation & operation ) ;
 
 	void Apply_Operation_To_Disk( Operation & operation );
 	
@@ -57,13 +57,15 @@ public:
 private:
 	void set_device_partitions( Device & device, bool deep_scan = true ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
-	Sector Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path );
+	void Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;
 	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy = false ) ;
-	bool Resize_Extended( const Glib::ustring & device_path, const Partition & extended ) ;
+	bool Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
+	bool Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
 
 	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
+	long Get_Cylinder_Size( const Glib::ustring & device_path ) ;
 	
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer;
 	

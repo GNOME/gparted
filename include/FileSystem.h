@@ -78,21 +78,26 @@ namespace GParted
 class FileSystem
 {
 public:
+	FileSystem( ) ;
 	virtual ~FileSystem( ) { }
 
 	virtual FS get_filesystem_support( ) = 0 ;
+	virtual void Set_Used_Sectors( Partition & partition ) = 0 ;
 	virtual bool Create( const Glib::ustring device_path, const Partition & new_partition ) = 0 ;
-	virtual bool Resize( const Glib::ustring device_path, const Partition & partition_old, const Partition & partition_new ) = 0 ;
+	virtual bool Resize( const Partition & partition_new, bool fill_partition = false ) = 0 ;
 	virtual bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) = 0 ;
+	virtual bool Check_Repair( const Partition & partition ) = 0 ;
 	virtual int get_estimated_time( long MB_to_Consider ) = 0 ;
-
+	
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer ;
+	
+	PedDisk *disk ; //see GParted_Core::Set_Used_Sectors() ...
+	long cylinder_size ; //see GParted_Core::Resize()
 	
 protected:
 	bool Execute_Command( Glib::ustring command ) ;
 	
 	PedDevice *device ;
-	PedDisk *disk ;
 	
 private:
 	void Update_Textview( ) ;

@@ -54,8 +54,6 @@ public:
 	Glib::ustring str_operation ;
 	Glib::ustring copied_partition_path ; //for copy operation..
 
-	
-	
 private:
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end );
 	int Get_Index_Original( std::vector<Partition> & partitions ) ;

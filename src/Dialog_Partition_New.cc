@@ -42,6 +42,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
 	this ->FILESYSTEMS = FILESYSTEMS ;
+	this ->FILESYSTEMS .erase( this ->FILESYSTEMS .end( ) ) ;//remove dummy "unknown"
 	
 	FS fs ; fs.filesystem = "extended" ;
 	this ->FILESYSTEMS .push_back( fs ) ;
@@ -169,14 +170,14 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		if (optionmenu_type.get_history() == GParted::EXTENDED )
 		{
 			menu_filesystem.items().push_back(Gtk::Menu_Helpers::MenuElem( "extended") ) ;
-			optionmenu_filesystem.set_history(  6  )   ;
+			optionmenu_filesystem.set_history( 6 ) ;
 			optionmenu_filesystem.set_sensitive( false );
 		}
 		else if ( menu_filesystem.items() .size() > 6 ) 
 		{
 			menu_filesystem.items() .remove( menu_filesystem.items() .back() );
 			optionmenu_filesystem.set_sensitive( true );
-			optionmenu_filesystem.set_history(  0  )  ;
+			optionmenu_filesystem.set_history( 0 )  ;
 		}
 	
 	}

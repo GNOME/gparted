@@ -66,16 +66,16 @@ public:
 			const bool inside_extended,
 			const bool busy ) ;
 
-	void Set_Used( Sector used ) ;
+	void Set_Unused( Sector sectors_unused ) ;
 
 	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );
 
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
-	long Get_Length_MB( );
-	long Get_Used_MB( );
-	long Get_Unused_MB( );
+	const long Get_Length_MB( ) const ;
+	const long Get_Used_MB( ) const ;
+	const long Get_Unused_MB( ) const ;
 		
 	//some public members
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )

@@ -585,7 +585,7 @@ void Win_GParted::Set_Valid_Operations()
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( copied_partition .partition != "NONE" && copied_partition .Get_Length_MB() < selected_partition .Get_Length_MB() )
+		if ( copied_partition .partition != "NONE" && copied_partition .Get_Length_MB( ) < selected_partition .Get_Length_MB( ) )
 			allow_paste( true ) ;
 		
 		return ;
@@ -611,7 +611,9 @@ void Win_GParted::Set_Valid_Operations()
 			allow_resize( true ) ;
 			
 			//only allow copying of real partitions
-			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY )
+			if ( 	selected_partition .status != GParted::STAT_NEW &&
+				selected_partition .status != GParted::STAT_COPY &&
+				Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .copy )
 				allow_copy( true ) ;
 		}
 				
@@ -833,13 +835,13 @@ void Win_GParted::activate_resize()
 	
 	std::vector <Partition> partitions = devices[ current_device ] .device_partitions ;
 	
-	if ( operations.size() )
-		for (unsigned int t=0;t<operations.size();t++ )
-			if ( operations[t]. device_path == devices[ current_device ] .path )
+	if ( operations .size( ) )
+		for (unsigned int t = 0 ; t < operations .size( ) ; t++ )
+			if ( operations[ t ] .device_path == devices[ current_device ] .path )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ) ) ;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .length / devices[ current_device ] .cylinders  ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{

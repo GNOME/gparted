@@ -26,79 +26,67 @@ FS ext2::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "ext2" ;
-	fs .create = true ;
-	fs .resize = true ;
+	if ( ! system( "which dumpe2fs 1>/dev/null 2>/dev/null" ) ) 
+		fs .read = true ;
+	
+	if ( ! system( "which mkfs.ext2 1>/dev/null 2>/dev/null" ) ) 
+		fs .create = true ;
+	
+	if ( ! system( "which e2fsck 1>/dev/null 2>/dev/null" ) ) 
+		fs .check = true ;
+	
+	//resizing is a delicate process which requires 3 commands..
+	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
+		fs .resize = true ;
+	
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+		fs .copy = true ;
 		
 	return fs ;
 }
 
-bool ext2::Create( const Glib::ustring device_path, const Partition & new_partition )
+void ext2::Set_Used_Sectors( Partition & partition ) 
 {
-	bool return_value = false ;
+	char c_buf[ 512 ] ;
+	FILE *f ;
 	
-	if ( open_device_and_disk( device_path, device, disk ) )
-	{	
-		PedPartition *c_part = NULL ;
-		PedFileSystemType *fs_type = NULL ;
-		PedFileSystem *fs = NULL ;
+	Glib::ustring output ;
+	Sector free_blocks = -1, blocksize = -1 ;
+
+        //get free blocks..
+	f = popen( ( "dumpe2fs -h " + partition .partition ) .c_str( ), "r" ) ;
+	while ( fgets( c_buf, 512, f ) )
+	{
+		output = Glib::locale_to_utf8( c_buf ) ;
 		
-		c_part = ped_disk_get_partition_by_sector( disk, (new_partition .sector_end + new_partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs_type = ped_file_system_type_get( "ext2" ) ;
-			if ( fs_type )
-			{
-				fs = ped_file_system_create( & c_part ->geom, fs_type, NULL );
-				if ( fs )
-				{
-					if ( ped_partition_set_system( c_part, fs_type ) )
-						return_value = Commit( disk ) ;
-					
-					ped_file_system_close( fs );
-				}
-			}
-		}
+		//free blocks
+		if ( output .find( "Free blocks" ) < output .length( ) )
+			free_blocks = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			
+		//blocksize
+		if ( output .find( "Block size:" ) < output .length( ) )
+			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 		
-		close_device_and_disk( device, disk ) ;
 	}
-		
-	return return_value ;
+	pclose( f ) ;
+	
+	if ( free_blocks > -1 && blocksize > -1 )
+		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
 }
 
-bool ext2::Resize( const Glib::ustring device_path, const Partition & partition_old, const Partition & partition_new )
+bool ext2::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	bool return_value = false ;
+	return Execute_Command( "mkfs.ext2 " + new_partition .partition ) ;
+}
+
+bool ext2::Resize( const Partition & partition_new, bool fill_partition )
+{
+	Glib::ustring str_temp = "resize2fs " + partition_new .partition ;
 	
-	PedPartition *c_part = NULL ;
-	PedFileSystem *fs = NULL ;
-	PedConstraint *constraint = NULL ;
+	if ( ! fill_partition )
+		str_temp += " " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
 	
-	if ( open_device_and_disk( device_path, device, disk ) )
-	{
-		c_part = ped_disk_get_partition_by_sector( disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs = ped_file_system_open ( & c_part->geom );
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint ( fs );
-				if ( constraint )
-				{
-					if ( 	ped_disk_set_partition_geom ( disk, c_part, constraint, partition_new .sector_start, partition_new .sector_end ) &&
-						ped_file_system_resize ( fs, & c_part->geom, NULL ) )
-							return_value = Commit( disk ) ;
-										
-					ped_constraint_destroy ( constraint );
-				}
-				
-				ped_file_system_close ( fs );
-			}
-		}
-		
-		close_device_and_disk( device, disk ) ;
-	}
-	
-	return return_value ;
+	return Execute_Command( str_temp ) ;
 }
 
 bool ext2::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
@@ -106,9 +94,14 @@ bool ext2::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest
 	return Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
+bool ext2::Check_Repair( const Partition & partition )
+{
+	return Execute_Command( "e2fsck -fy " + partition .partition ) ;
+}
+
 int ext2::get_estimated_time( long MB_to_Consider )
 {
-	return 1 + MB_to_Consider / 500 ;
+	return -1 ;
 }
 	
 

@@ -54,7 +54,7 @@ class VBox_VisualDisk : public Gtk::VBox
 	
 public:
 	VBox_VisualDisk( const std::vector<Partition> & partitions, const Sector device_length );
-	~VBox_VisualDisk();
+	~VBox_VisualDisk( );
 	void Set_Selected( const Partition & );
 
 	
@@ -64,7 +64,7 @@ public:
 	
 private:
 	void Build_Visual_Disk( ) ; //i still dream of some fully resizeable visualdisk.... 
-	void Create_Visual_Partition( Partition & partition ) ; 
+	void Create_Visual_Partition( const Partition & partition ) ; 
 	void Prepare_Legend( std::vector<Glib::ustring> & legend, const std::vector<Partition> & partitions ) ;
 	void Build_Legend( ) ;
 		

@@ -26,7 +26,7 @@ namespace GParted
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS ) ;
+	Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS, Sector cylinder_size ) ;
 	void Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions ) ;
 
 private:
