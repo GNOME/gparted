@@ -773,8 +773,8 @@ void Win_GParted::activate_copy()
 
 void Win_GParted::activate_paste()
 {
-	//Display error if user tries to create a fifth primary partition 
-	if ( ! selected_partition.inside_extended && primary_count >= 4 )
+	//Display error if user tries to create more primary partitions than the partition table can hold. 
+	if ( ! selected_partition.inside_extended && primary_count >=devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions()  )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
 		os << String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
@@ -800,7 +800,7 @@ void Win_GParted::activate_paste()
 
 void Win_GParted::activate_new()
 {
-	//Display error if user tries to create more primary partitions then the partition table can hold. 
+	//Display error if user tries to create more primary partitions than the partition table can hold. 
 	if ( ! selected_partition.inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
