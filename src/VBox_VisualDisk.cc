@@ -205,8 +205,8 @@ void VBox_VisualDisk::Build_Legend(  )
 		hbox_legend = manage( new Gtk::HBox() );
 		frame_disk_legend ->add( *hbox_legend );
 	
-		Add_Legend_Item( " " + (Glib::ustring) _( "used" ) + "\t", color_used  ) ;
-		Add_Legend_Item( " " + (Glib::ustring) _( "unused") + " ", color_unused ) ;
+		Add_Legend_Item( (Glib::ustring) _( "used" ) + "    ", color_used  ) ;
+		Add_Legend_Item( (Glib::ustring) _( "unused") + " ", color_unused ) ;
 	}
 		
 }

@@ -350,8 +350,8 @@ void Win_GParted::Find_Devices()
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK   );
 		
 		//the label...
-		os << Sector_To_MB( devices[i] ->Get_Length() ) ;
-		label = manage( new Gtk::Label( " " + devices[i] ->Get_Path() + "\t (" + os.str() + " MB)" ) ); os.str("") ;
+		label = manage( new Gtk::Label( " " + devices[i] ->Get_Path() + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] ->Get_Length() ) ) + ")" ) ) ;
+		
 		label ->set_alignment( Gtk::ALIGN_LEFT   );
 		hbox ->pack_start( *label, Gtk::PACK_SHRINK   );
 	
