@@ -59,6 +59,7 @@ public:
 
 private:
 	void set_device_partitions( Device & device, bool deep_scan = true ) ;
+	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	void Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;

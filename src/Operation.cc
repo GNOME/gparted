@@ -108,10 +108,10 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 	}
 }
 
-void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end )
+void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
 	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( 0, 0, partitions .front( ) .inside_extended ) ;
+	UNALLOCATED .Set_Unallocated( 0, 0, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty( ) )
@@ -178,11 +178,10 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions .erase( partitions .begin( ) + Get_Index_Original( partitions ) );
 		
-		Insert_Unallocated( partitions, 0, device_length -1 ) ;
+		Insert_Unallocated( partitions, 0, device_length -1, false ) ;
 	}
 	else
 	{
-		//unsigned int ext = Get_Index_Extended( partitions ) ;
 		unsigned int ext = 0 ;
 		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) + Get_Index_Original( partitions[ ext ] .logicals ) );
@@ -195,7 +194,7 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 					partitions[ ext ] .logicals[ t ] .Update_Number( partitions[ ext ] .logicals[ t ] .partition_number -1 );
 				
 				
-		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end ) ;
+		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
 	}
 }
 
@@ -205,7 +204,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions[ Get_Index_Original( partitions ) ] = partition_new ;
 				
-		Insert_Unallocated( partitions, 0, device_length -1 ) ;
+		Insert_Unallocated( partitions, 0, device_length -1, false ) ;
 	}
 	else
 	{
@@ -213,7 +212,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
 		partitions[ ext ] .logicals[ Get_Index_Original( partitions[ ext ] .logicals ) ] = partition_new ;
 		
-		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end ) ;
+		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
 	}
 }
 
@@ -232,7 +231,7 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	partitions[ ext ] .sector_start = partition_new .sector_start ;
 	partitions[ ext ] .sector_end = partition_new .sector_end ;
 	
-	Insert_Unallocated( partitions, 0, device_length -1 ) ;
+	Insert_Unallocated( partitions, 0, device_length -1, false ) ;
 	
 	//stuff INSIDE extended partition
 	ext = 0 ;
@@ -244,7 +243,7 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .back( ) .type == GParted::UNALLOCATED )
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .end( ) -1 ) ;
 	
-	Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end ) ;
+	Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
 }
 
 } //GParted

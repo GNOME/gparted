@@ -203,29 +203,11 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 				EXT_INDEX = device .device_partitions .size ( ) ;
 				break ;
 		
-			case PED_PARTITION_FREESPACE:
-			case 5: //freespace inside extended (there's no enumvalue for that..)
-				partition_temp .Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
-				break ;
-			
-			case PED_PARTITION_METADATA:
-				if ( device .device_partitions .size( ) && device .device_partitions .back( ) .type == GParted::UNALLOCATED )
-					device .device_partitions .back( ) .sector_end = c_partition ->geom .end ;
-				
-				break ;
-				
-			case 9: //metadata inside extended (there's no enumvalue for that..)
-				if ( 	device .device_partitions[ EXT_INDEX ] .logicals .size( ) &&
-					device .device_partitions[ EXT_INDEX ] .logicals .back( ) .type == GParted::UNALLOCATED
-				   )
-					device .device_partitions[ EXT_INDEX ] .logicals .back( ) .sector_end = c_partition ->geom .end ;
-		
-				break ;
-			
 			default:	break;
 		}
 		
-		if ( partition_temp .Get_Length_MB( ) >= 1 ) // check for unallocated < 1MB, and metadatasituations (see PED_PARTITION_METADATA and 9 )
+		//if there's an end, there's a partition ;)
+		if ( partition_temp .sector_end > -1 )
 		{
 			if ( ! partition_temp .inside_extended )
 				device .device_partitions .push_back( partition_temp );
@@ -235,6 +217,56 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 		
 		//next partition (if any)
 		c_partition = ped_disk_next_partition ( disk, c_partition ) ;
+	}
+	
+	if ( EXT_INDEX > -1 )
+		Insert_Unallocated( device .device_partitions[ EXT_INDEX ] .logicals, device .device_partitions[ EXT_INDEX ] .sector_start, device .device_partitions[ EXT_INDEX ] .sector_end, true ) ;
+	
+	Insert_Unallocated( device .device_partitions, 0, device .length -1, false ) ; 
+}
+
+void GParted_Core::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
+{
+	Partition UNALLOCATED ;
+	UNALLOCATED .Set_Unallocated( 0, 0, inside_extended ) ;
+	
+	//if there are no partitions at all..
+	if ( partitions .empty( ) )
+	{
+		UNALLOCATED .sector_start = start ;
+		UNALLOCATED .sector_end = end ;
+		
+		partitions .push_back( UNALLOCATED );
+		
+		return ;
+	}
+		
+	//start <---> first partition start
+	if ( (partitions .front( ) .sector_start - start) >= MEGABYTE )
+	{
+		UNALLOCATED .sector_start = start ;
+		UNALLOCATED .sector_end = partitions .front( ) .sector_start -1 ;
+		
+		partitions .insert( partitions .begin( ), UNALLOCATED );
+	}
+	
+	//look for gaps in between
+	for ( unsigned int t =0 ; t < partitions .size( ) -1 ; t++ )
+		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEGABYTE )
+		{
+			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
+			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
+		
+			partitions .insert( partitions .begin( ) + ++t, UNALLOCATED );
+		}
+		
+	//last partition end <---> end
+	if ( (end - partitions .back( ) .sector_end ) >= MEGABYTE )
+	{
+		UNALLOCATED .sector_start = partitions .back( ) .sector_end +1 ;
+		UNALLOCATED .sector_end = end ;
+		
+		partitions .push_back( UNALLOCATED );
 	}
 }
 
