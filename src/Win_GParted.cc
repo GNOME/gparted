@@ -362,7 +362,7 @@ void Win_GParted::Find_Supported_Filesystems()
 	fs .filesystem = "reiserfs" ;	FILESYSTEMS .push_back( fs ) ; 
 	if ( (test_handle = dlopen("libreiserfs.so", RTLD_NOW)) ) 
 	{
-		FILESYSTEMS .back() .supported = FILESYSTEMS .back() .create =  true ;
+		FILESYSTEMS .back() .supported = FILESYSTEMS .back() .create = true ;
 		dlclose( test_handle ) ;
 		test_handle = NULL ;
 	}
@@ -379,8 +379,11 @@ void Win_GParted::Find_Devices( bool deep_scan )
 	ped_device_probe_all( );
 	
 	PedDevice *device = ped_device_get_next ( NULL );
-	while ( device )
-	{  
+	
+	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
+	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
+	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ). is_ascii( ) )
+	{ 
 		temp_device = new GParted::Device( device ->path, &FILESYSTEMS );
 		if ( temp_device ->Get_Length() > 0 )
 		{
@@ -392,7 +395,6 @@ void Win_GParted::Find_Devices( bool deep_scan )
 		
 		device = ped_device_get_next ( device ) ;
 	}
-	
 }
 
 void Win_GParted::Refresh_OptionMenu( ) 

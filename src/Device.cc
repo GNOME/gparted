@@ -54,48 +54,11 @@ Glib::ustring get_sym_path( const Glib::ustring & real_path )
 
 //AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me)
 Glib::ustring error_message;
-bool show_libparted_message = true ;
 PedExceptionOption PedException_Handler (PedException* ex)
 {
-	error_message = ex -> message ;
+	error_message = ex ->message ;
+	std::cout << error_message << "\n---------------------------\n" ;
 	
-	if ( show_libparted_message )
-	{
-		Gtk::HBox *hbox_filler;
-		
-		Glib::ustring message = "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Libparted message" ) + "</span>\n\n" ;
-		message += (Glib::ustring) _( "This message directly comes from libparted and has little to do with GParted. However, the message might contain useful information, so you might decide to read it.") + "\n";
-		message += _( "If you don't want to see these messages any longer, it's safe to disable them.") ;
-				
-		Gtk::MessageDialog dialog( message, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true); 
-		Gtk::Frame frame_libparted_message ;
-		frame_libparted_message .set_size_request( 400, -1 );
-		frame_libparted_message .set_label_widget( * mk_label("<b>" + (Glib::ustring) _( "Libparted message") + ": </b>" ) ) ;
-		
-		frame_libparted_message .set_border_width( 5 ) ;
-		hbox_filler = manage( new Gtk::HBox() ) ;
-		hbox_filler ->pack_start ( * mk_label( "\t\t" ), Gtk::PACK_SHRINK ) ; //filler
-		hbox_filler ->pack_start ( frame_libparted_message, Gtk::PACK_SHRINK ) ;
-		
-		dialog .get_vbox() ->pack_start( *hbox_filler, Gtk::PACK_SHRINK ) ;
-		
-		frame_libparted_message.add ( * mk_label( "<i>" + error_message + "</i>", true, false, true ) ) ;
-			
-		Gtk::CheckButton checkbutton_message( _( "Hide libparted messages for this session" ) ) ;
-		checkbutton_message .set_border_width( 5 ) ;
-		
-		hbox_filler = manage( new Gtk::HBox() ) ;
-		hbox_filler ->pack_start ( * mk_label( "\t\t" ), Gtk::PACK_SHRINK ) ;
-		hbox_filler ->pack_start ( checkbutton_message, Gtk::PACK_SHRINK ) ;
-		
-		dialog .get_vbox() ->pack_start( *hbox_filler, Gtk::PACK_SHRINK ) ;
-		
-		dialog .show_all_children() ;
-		dialog .run();
-			
-		show_libparted_message = ! checkbutton_message .get_active() ;
-	}
-		
 	return PED_EXCEPTION_UNHANDLED ;
 }
 
@@ -399,7 +362,7 @@ bool Device::Resize_Extended( const Partition & partition , PedTimer *timer)
 	if ( ! constraint )
 		return false;
 
-	if ( ! ped_disk_set_partition_geom (disk, c_part, constraint,  partition.sector_start, partition.sector_end ) )
+	if ( ! ped_disk_set_partition_geom ( disk, c_part, constraint, partition.sector_start, partition.sector_end ) )
 	{
 		ped_constraint_destroy (constraint);
 		return false ;
@@ -414,13 +377,10 @@ bool Device::Resize_Extended( const Partition & partition , PedTimer *timer)
 
 bool Device::Commit() 
 {
-	bool return_value =  ped_disk_commit_to_dev( disk ) ;
+	bool return_value = ped_disk_commit_to_dev( disk ) ;
 	
-	//i don't want this annoying "warning couldn't reread blabla" message all the time. (I throw one myself if necessary)
-	ped_exception_fetch_all() ;
 	ped_disk_commit_to_os( disk ) ;
-	ped_exception_leave_all() ;
-	
+		
 	return return_value ;
 }
 
@@ -514,17 +474,8 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 		PedFileSystem *fs = NULL;
 		PedConstraint *constraint = NULL;
 	
-		//prevent messagebox from showing up (the error wil be stored in the infodialog)
-		if ( show_libparted_message )
-		{
-			show_libparted_message = false ;
-			fs = ped_file_system_open( & c_partition ->geom ); 
-			show_libparted_message = true ;
-		}
-		else
-			fs = ped_file_system_open( & c_partition ->geom ); 	
-		
-		
+		fs = ped_file_system_open( & c_partition ->geom ); 	
+				
 		if ( fs )
 		{
 			constraint = ped_file_system_get_resize_constraint (fs);
@@ -577,12 +528,12 @@ bool Device::open_device_and_disk()
 	device = ped_device_get( this->realpath .c_str() );
 	if ( device )
 		disk = ped_disk_new( device );
-	
+		
 	if ( ! device || ! disk )
-	{
+	{ 
 		if ( device ) 
 			{ ped_device_destroy( device ) ; device = NULL ; }
-				
+		
 		return false;
 	}
 	
