@@ -1,5 +1,10 @@
 2004-11-17 Bart Hakvoort  <gparted@users.sf.net>
 
+	* src/ext3.cc: availability of 'tune2fs' command wasn't detected correctly. fixed
+	* src/fat32.cc: make use of dosfs tools (mkdosfs -F32) instead of libparted's Fat-creator.
+	
+2004-11-17 Bart Hakvoort  <gparted@users.sf.net>
+
 	* Rewrote a large part of gparteds internal code. Filesystemssupport is now much more separated from the rest of gparted and
 	  adding support for other filesystems should be a piece of cake now (hope that's true :P)
 	  It still needs a lot of love, but the foundations are laid =)

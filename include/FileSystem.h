@@ -93,7 +93,7 @@ protected:
 	
 	PedDevice *device ;
 	PedDisk *disk ;
-
+	
 private:
 	void Update_Textview( ) ;
 

@@ -27,7 +27,7 @@ FS ext3::get_filesystem_support( )
 	
 	fs .filesystem = "ext3" ;
 	
-	if ( ! system( "which tune2fs 1>/dev/null 2>/dev/null" ) ) ;
+	if ( ! system( "which tune2fs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
 	
 	fs .resize = true ;
