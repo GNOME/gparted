@@ -22,7 +22,8 @@ namespace GParted
 	
 Win_GParted::Win_GParted( )
 {
-	copied_partition .partition = "NONE" ;
+	copied_partition .Reset( ) ;
+	selected_partition .Reset( ) ;
 	new_count = 1;
 	current_device = 0 ;
 	vbox_visual_disk = NULL;
@@ -66,9 +67,6 @@ Win_GParted::Win_GParted( )
 	statusbar .add( *pulsebar );
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
-	//popupmenu...
-	init_popupmenu( ) ;
-		
 	this ->show_all_children( );
 	
 	//make sure harddisk information and operationlist are closed..
@@ -92,11 +90,15 @@ void Win_GParted::init_menubar()
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
+	//operations
+	init_operations_menu( ) ;
+	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_Operations"), menu_operations ) );
+	
 	//view
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
-	menubar_main.items().push_back( Gtk::Menu_Helpers::MenuElem(_("_View"), *menu ) );
+	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
 	
 	//help
 	menu = manage( new Gtk::Menu() ) ;
@@ -145,33 +147,33 @@ void Win_GParted::init_toolbar()
 	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
 	
 	//initizialize and pack optionmenu_devices
-	optionmenu_devices.set_menu( menu_devices );
-	optionmenu_devices.signal_changed().connect( sigc::mem_fun(*this, &Win_GParted::optionmenu_devices_changed) );
-	hbox_toolbar.pack_start( optionmenu_devices , Gtk::PACK_SHRINK );
+	optionmenu_devices .set_menu( * manage( new Gtk::Menu( ) ) );
+	optionmenu_devices .signal_changed( ) .connect( sigc::mem_fun(*this, &Win_GParted::optionmenu_devices_changed) );
+	hbox_toolbar .pack_start( optionmenu_devices, Gtk::PACK_SHRINK );
 }
 
-void Win_GParted::init_popupmenu() 
+void Win_GParted::init_operations_menu( ) 
 {
-	//fill menu_popup
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW, sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ), sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	//fill menu_operations
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW, sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ), sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), *image, sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY, sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE, sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), *image, sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY, sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE, sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
 	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
-	menu_popup.items().push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Convert to"), *image, menu_convert ) ) ;
-	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::MenuElem( _("Unmount"), sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO, sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
-	init_convert_menu() ;
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Convert to"), *image, menu_convert ) ) ;
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Unmount"), sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_operations .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO, sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
+	init_convert_menu( ) ;
 	
-	menu_popup .accelerate( *this ) ;  
+	menu_operations .accelerate( *this ) ;  
 }
 
 void Win_GParted::init_convert_menu()
@@ -335,7 +337,7 @@ void Win_GParted::init_hpaned_main( )
 void Win_GParted::Refresh_OptionMenu( ) 
 {
 	//fill optionmenu_devices
-	menu_devices .items( ) .clear( ) ;
+	optionmenu_devices .get_menu( ) ->items( ) .clear( ) ;
 	for ( unsigned int i = 0 ; i < devices .size( ) ; i++ )
 	{ 
 		hbox = manage( new Gtk::HBox( ) );
@@ -348,11 +350,11 @@ void Win_GParted::Refresh_OptionMenu( )
 		hbox ->pack_start( *mk_label( " " + devices[ i ] .path + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[ i ] .length ) ) + ")" ), Gtk::PACK_SHRINK );
 	
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
-		menu_devices .items().push_back( *menu_item );
+		optionmenu_devices .get_menu( ) ->items( ) .push_back( *menu_item );
 	}
 	
-	menu_devices .show_all_children( );
-	
+	optionmenu_devices .get_menu( ) ->show_all_children( );	
+
 	optionmenu_devices .set_history( current_device ) ;
 }
 
@@ -365,7 +367,7 @@ void Win_GParted::Show_Pulsebar( )
 	toolbar_main .set_sensitive( false ) ;
 	menubar_main .set_sensitive( false ) ;
 	optionmenu_devices .set_sensitive( false ) ;
-	menu_popup .set_sensitive( false ) ;
+	menu_operations .set_sensitive( false ) ;
 		
 	//the actual 'pulsing'
 	pulse = true ; 
@@ -388,7 +390,7 @@ void Win_GParted::Show_Pulsebar( )
 	toolbar_main .set_sensitive( true ) ;
 	menubar_main .set_sensitive( true ) ;
 	optionmenu_devices .set_sensitive( true ) ;
-	menu_popup .set_sensitive( true ) ;
+	menu_operations .set_sensitive( true ) ;
 }
 
 void Win_GParted::Fill_Label_Device_Info( ) 
@@ -511,8 +513,10 @@ void Win_GParted::Refresh_Visual( )
 
 	//treeview details
 	treeview_detail .Load_Partitions( partitions ) ;
-
-	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false ); allow_paste( false );	
+	
+	//no partition can be selected after a refresh..
+	selected_partition .Reset( ) ;
+	Set_Valid_Operations( ) ;
 }
 
 bool Win_GParted::Quit_Check_Operations( )
@@ -540,8 +544,15 @@ bool Win_GParted::Quit_Check_Operations( )
 void Win_GParted::Set_Valid_Operations( )
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_convert( false ); allow_unmount( false ) ;
-		
+	allow_paste( false ); allow_convert( false ); allow_unmount( false ) ; allow_info( false ) ;
+	
+	//no partition selected...	
+	if ( selected_partition .partition .empty( ) )
+		return ;
+	
+	//if there's something, there's some info ;)
+	allow_info( true ) ;	
+	
 	//only unmount is allowed
 	if ( selected_partition .busy )
 	{
@@ -557,7 +568,7 @@ void Win_GParted::Set_Valid_Operations( )
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( copied_partition .partition != "NONE" && ! devices[ current_device ] .readonly )
+		if ( ! copied_partition .partition .empty( ) && ! devices[ current_device ] .readonly )
 		{
 			if (	(copied_partition .Get_Length_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) ||
 				(copied_partition .filesystem == "xfs" && (copied_partition .Get_Used_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) )
@@ -625,7 +636,7 @@ void Win_GParted::open_operationslist( )
 			Gtk::Main::iteration( );
 	}
 	
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
 }
 
 void Win_GParted::close_operationslist( ) 
@@ -640,7 +651,7 @@ void Win_GParted::close_operationslist( )
 	}
 	
 	hbox_operations .hide( ) ;
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist( ) 
@@ -718,7 +729,7 @@ void Win_GParted::menu_gparted_quit( )
 
 void Win_GParted::menu_view_harddisk_info( )
 { 
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 0 ] ) ->get_active( ) )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 0 ] ) ->get_active( ) )
 	{ //open harddisk information
 		hpaned_main .get_child1( ) ->show( ) ;		
 		for ( int t = hpaned_main .get_position( ) ; t < 250 ; t +=15 )
@@ -742,7 +753,7 @@ void Win_GParted::menu_view_harddisk_info( )
 
 void Win_GParted::menu_view_operations( )
 {
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->get_active( ) )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 1 ] ) ->get_active( ) )
 		open_operationslist( ) ;
 	else 
 		close_operationslist( ) ;
@@ -783,7 +794,7 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 		if ( selected_partition .type != GParted::UNALLOCATED )
 			Set_Valid_Convert_Filesystems( ) ;
 		
-		menu_popup .popup( event ->button, event ->time );
+		menu_operations .popup( event ->button, event ->time );
 	}
 }
 
@@ -977,7 +988,7 @@ void Win_GParted::activate_delete( )
 		
 		//if deleted partition was on the clipboard we erase it...
 		if ( selected_partition .partition == copied_partition .partition )
-			copied_partition .partition = "NONE" ;
+			copied_partition .Reset( ) ;
 			
 		//if deleted one is NEW, it doesn't make sense to add it to the operationslist, we erase its creation
 		//and possible modifications like resize etc.. from the operationslist.   Calling Refresh_Visual will wipe every memory of its existence ;-)

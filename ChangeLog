@@ -1,5 +1,11 @@
 2005-01-09 Bart Hakvoort  <hakvoort@cvs.gnome.org>
 
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: Added menu 'Operations' to menubar. This menu is a duplicate of the popupmenu and imho a bit unnecessary, but lots of
+	  people requested this.. :)  Besides this, i removed 'menu_devices' and performed a few other cleanups.
+
+2005-01-09 Bart Hakvoort  <hakvoort@cvs.gnome.org>
+
 	* src/GParted_Core.cc,
 	  src/Win_GParted.cc: call GParted_Core::find_supported_filesystems( ) in GParted_Core::GParted_Core() instead of Win_GParted::Win_GParted().
 	  Also replaced 0xFFFF with GDK_Delete to improve readability of the source.
