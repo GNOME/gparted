@@ -1,5 +1,15 @@
 2004-09-29 Bart Hakvoort  <gparted@users.sf.net>
 
+	* include/Dialog_Partition_Info.h,
+	  src/Dialog_Partition_Info: removed Gtk::Label * mk_label( const Glib::ustring & text )
+	* include/Partition.h: added inline Gtk::Label * mk_label( const Glib::ustring & text )
+	  and inline Glib::ustring num_to_str( Sector number )
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: fixed aligment problems with some languages in harddisk-info
+
+
+2004-09-29 Bart Hakvoort  <gparted@users.sf.net>
+
 	* src/VBox_VisualDisk.cc,
 	  src/Win_GParted.cc: minor i18n related tweaks.
 

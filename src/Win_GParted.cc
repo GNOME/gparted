@@ -210,6 +210,7 @@ void Win_GParted::init_convert_menu()
 void Win_GParted::init_device_info()
 {
 	vbox_info.set_spacing( 5 );
+	int top =0, bottom = 1;
 	
 	//title
 	label = manage( new Gtk::Label() ) ;
@@ -217,35 +218,68 @@ void Win_GParted::init_device_info()
 	label ->set_markup( " <b>" + (Glib::ustring) _( "Harddisk Information" ) + ":</b>" ) ;
 	vbox_info .pack_start( *label, Gtk::PACK_SHRINK );
 	
-	//global device info
+	//GENERAL DEVICE INFO
 	table = manage( new Gtk::Table() ) ;
-	table ->set_col_spacings(10 ) ;
-	label = manage( new Gtk::Label() ) ;
-	os << " <b>"  << _("Model:") << "\n " << _("Size:") << "\n " << _("Path:") << "\n " ;  
+	table ->set_col_spacings( 10 ) ;
 	
-	//only show realpath if it's different from the short path...(hereby i assume if one device has a realpath, they all have. i guess this makes sense)
+	//model
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Model:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//size
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Size:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//path
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//only show realpath if it's different from the short path
 	if ( devices[ current_device ] ->Get_Path() != devices[ current_device ] ->Get_RealPath() )
-		os << _("Real Path:") << "\n " ;
+	{
+		table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+		device_info .push_back( mk_label( "" ) ) ;
+		table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	}
 	
-	os << "</b>" ;
-	label ->set_markup( os.str() ) ; os.str("") ;
-	table ->attach( *label, 0,1,0,1,Gtk::SHRINK);
-	
-	label_device_info1 .set_selectable( true ) ;
-	table ->attach( label_device_info1, 1,2,0,1,Gtk::SHRINK);
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 	
-	//detailed device info
+	//DETAILED DEVICE INFO 
+	top =0; bottom = 1;
 	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings(10 ) ;
-	label = manage( new Gtk::Label() ) ;
-	os << " <b>"  << _("DiskType:") << "\n " << _("Heads:") << "\n " << _("Sectors/Track:") << "\n " << _("Cylinders:") << "\n "<< _("Total Sectors:") ; 
-	os << "</b>" ;
-	label ->set_markup( os.str() ) ; os.str("") ;
-	table ->attach( *label, 0,1,0,1,Gtk::SHRINK);
 	
-	label_device_info2 .set_selectable( true ) ;
-	table ->attach( label_device_info2, 1,2,0,1,Gtk::SHRINK);
+	//one blank line
+	table ->attach( * mk_label( "" ), 1,2, top++, bottom++,Gtk::FILL);
+	
+	//disktype
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "DiskType:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//heads
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Heads:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//sectors/track
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Sectors/Track:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//cylinders
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Cylinders:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
+	//total sectors
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
 
@@ -365,25 +399,23 @@ void Win_GParted::Find_Devices()
 
 void Win_GParted::Fill_Label_Device_Info( ) 
 {
+	short t=0;
+	
 	//global info...
-	os << devices[ current_device ] ->Get_Model() << "\n" ;
-	os << Sector_To_MB( devices[ current_device ] ->Get_Length() ) << " MB\n" ;
-	os << devices[ current_device ] ->Get_Path() << "\n" ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_Model() ) ;
+	device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] ->Get_Length() ) ) ) ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_Path() ) ;
 	
 	//only show realpath if it's diffent from the short path...
 	if ( devices[ current_device ] ->Get_Path() != devices[ current_device ] ->Get_RealPath() )
-		os << devices[ current_device ] ->Get_RealPath() << "\n" ;
-	
-	label_device_info1.set_text( os.str() ) ;  os.str("") ;
+		device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_RealPath() ) ;
 	
 	//detailed info
-	os << devices[ current_device ] ->Get_DiskType() << "\n" ;
-	os << devices[ current_device ] ->Get_Heads() << "\n" ;
-	os << devices[ current_device ] ->Get_Sectors() << "\n" ;
-	os << devices[ current_device ] ->Get_Cylinders() << "\n" ;
-	os << devices[ current_device ] ->Get_Length() ;
-	
-	label_device_info2.set_text( os.str() ) ;  os.str("") ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_DiskType() ) ;
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Heads() ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Sectors() ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Cylinders() ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Length() ) );
 }
 
 bool Win_GParted::on_delete_event(GdkEventAny *event)

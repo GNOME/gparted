@@ -270,14 +270,6 @@ void Dialog_Partition_Info::Find_Status()
 		os << String::ucompose( _("Mounted on %1"), "/") ;
 }
 
-Gtk::Label * Dialog_Partition_Info::mk_label( const Glib::ustring & text ) 
-{
-	label = manage( new Gtk::Label() ) ;
-	label ->set_markup( text ) ;
-	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
-	return label ;
-}
-
 Dialog_Partition_Info::~Dialog_Partition_Info()
 {
 	this ->get_colormap() ->free_colors( color_used, 1 ) ;

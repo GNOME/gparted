@@ -158,7 +158,7 @@ private:
 	
 	
 	//usefull variables which are used by many different functions...
-	sigc::connection s2,s3;//usefull for disconnecting and destroying a connection ( see optionmenu_devices_changed() and activate_apply() )
+	sigc::connection s2,s3;//used for disconnecting and destroying a connection ( see optionmenu_devices_changed() and activate_apply() )
 	std::ostringstream os;//for int to string conversions
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
 	unsigned short highest_logic_busy,primary_count, new_count;//primary_count checks for max. of 4 pimary partitions, 
@@ -167,6 +167,7 @@ private:
 	
 	GParted::Device *temp_device;
 	std::vector <Glib::ustring> str_devices, filesystems;
+	std::vector <Gtk::Label *> device_info;
 				
 	//stuff for progress overview
 	Dialog_Progress *dialog_progress;
