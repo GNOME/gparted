@@ -44,6 +44,7 @@ public:
  	Glib::ustring disktype;
 	int max_prims ;
 	bool busy ; 
+	bool readonly ; 
 			
 private:
 		

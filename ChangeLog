@@ -1,3 +1,11 @@
+2004-11-29 Bart Hakvoort  <gparted@users.sf.net>
+
+	* Every devicescan now tests on beforehand if the kernel is able to reread the partitiontable. If the kernel is unable to do
+	  this, i disallow most operations. This may seem weird and even a bad thing to do, but the fact is it protects
+	  the innocent user from a lot of potential damage. Till the linuxkernel is able to reread partitiontables no matter what, this seems
+	  to be the best option. Of course a dialog with information will popup whenever such a situation is encountered.
+	  In a next release i might consider adding an 'advanced mode' for users who know what they're doing.
+
 2004-11-28  Alessio Frusciante  <algol@firenze.linux.it>
 
 	* configure.in: Added "it" (Italian) to ALL_LINGUAS. 

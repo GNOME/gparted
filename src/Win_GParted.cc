@@ -586,7 +586,7 @@ void Win_GParted::Set_Valid_Operations()
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( copied_partition .partition != "NONE" )
+		if ( copied_partition .partition != "NONE" && ! devices[ current_device ] .readonly )
 		{
 			//calculate cylindersize
 			long cylinder_size = Sector_To_MB( devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
@@ -615,7 +615,7 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		if ( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .resize )
+		if ( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .resize && ! devices[ current_device ] .readonly )
 		{
 			allow_resize( true ) ;
 			
@@ -636,7 +636,8 @@ void Win_GParted::Set_Valid_Operations()
 		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
 			allow_delete( true ) ;
 		
-		allow_resize( true ); 
+		if ( ! devices[ current_device ] .readonly )
+			allow_resize( true ); 
 	}		
 	
 }
@@ -722,6 +723,29 @@ void Win_GParted::menu_gparted_refresh_devices()
 	
 	//and refresh the device info...
 	Fill_Label_Device_Info( ) ;
+	
+	//show read-only warning if necessary
+	Glib::ustring readonly_paths ;
+	
+	for ( unsigned int t = 0 ; t < devices .size( ) ; t++ )
+		if ( devices[ t ] .readonly )
+			readonly_paths += "\n- " + devices[ t ] .path ;
+		
+	if ( ! readonly_paths .empty( ) )
+	{
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += _("The kernel is unable to re-read the partitiontables on the following devices:") ;
+		str_temp += readonly_paths ;
+		str_temp += "</span>\n\n" ;
+		
+		str_temp += _("Because of this you will only have limited access to these decices.") ;
+		str_temp += "\n" ;
+		str_temp += _("Unmount all mounted partitions on a device to get full access.") ;
+		
+		
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true ) ;
+		dialog.run( ) ;
+	}
 }
 
 void Win_GParted::menu_gparted_quit()
@@ -941,7 +965,7 @@ void Win_GParted::activate_new()
 	else if ( ! max_amount_prim_reached( ) )
 	{	
 		Dialog_Partition_New dialog;
-		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ) ) ;
+		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ), devices [ current_device ] .readonly ) ;
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run( ) == Gtk::RESPONSE_OK )

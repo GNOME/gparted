@@ -32,7 +32,7 @@ void Device::Reset( )
 	heads = sectors = cylinders = 0 ;
 	model = path = realpath = disktype = "" ;
 	max_prims = 0 ;
-	busy = false ; 	
+	busy = readonly = false ; 	
 }
 
 int Device::Get_Highest_Logical_Busy( ) 

@@ -94,9 +94,9 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 			{
 				temp_device .disktype =	disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( disk ) ;
+				temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
 				
 				set_device_partitions( temp_device, deep_scan ) ;
-				
 			}
 			//harddisk without disklabel
 			else
@@ -225,7 +225,6 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 		//next partition (if any)
 		c_partition = ped_disk_next_partition ( disk, c_partition ) ;
 	}
-	
 }
 
 int GParted_Core::get_estimated_time( const Operation & operation )

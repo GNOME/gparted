@@ -37,7 +37,7 @@ Dialog_Partition_New::Dialog_Partition_New( )
 	frame_resizer_base ->set_used( 0 ) ;
 }
 
-void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS )
+void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted )
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
@@ -83,10 +83,10 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	//filesystems to choose from 
 	table_create.attach( * mk_label( (Glib::ustring) _("Filesystem:") + "\t" ), 0,1,1,2,Gtk::FILL);
 	
-	Build_Filesystems_Menu() ;
+	Build_Filesystems_Menu( only_unformatted ) ;
 	 
-	optionmenu_filesystem.set_menu( menu_filesystem );
-	optionmenu_filesystem.signal_changed().connect( sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), false) );
+	optionmenu_filesystem .set_menu( menu_filesystem );
+	optionmenu_filesystem .signal_changed().connect( sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), false) );
 	table_create.attach( optionmenu_filesystem, 1,2,1,2,Gtk::FILL);
 	
 	//set some widely used values...
@@ -95,24 +95,25 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	TOTAL_MB = this ->selected_partition .Get_Length_MB() ;
 	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
 	
-	//set spinbuttons
+	//set spinbuttons initial values( seems a bit redundant )
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely	
 	
-	spinbutton_before .set_range( 0, TOTAL_MB -1 ) ;//mind the -1  !!
+	spinbutton_before .set_range( 0, TOTAL_MB -1 ) ;
 	spinbutton_before .set_value( 0 ) ;
 	
 	spinbutton_size .set_range( 1, TOTAL_MB ) ;
 	spinbutton_size .set_value( TOTAL_MB ) ;
 	
-	spinbutton_after .set_range( 0, TOTAL_MB -1 ) ;//mind the -1  !!
+	spinbutton_after .set_range( 0, TOTAL_MB -1 ) ;
 	spinbutton_after .set_value( 0 ) ;
 	
 	GRIP = false ;
 	
-	//set contents of label_minmax
-	Set_MinMax_Text( 1, TOTAL_MB ) ;
-	
-	this ->show_all_children() ;
+	//set first enabled filesystem
+	optionmenu_filesystem .set_history( first_creatable_fs ) ;
+	optionmenu_changed( false ) ;
+		
+	this ->show_all_children( ) ;
 }
 
 Partition Dialog_Partition_New::Get_New_Partition()
@@ -161,8 +162,6 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	return part_temp;
 }
 
-
-
 void Dialog_Partition_New::optionmenu_changed( bool type )
 {
 	//optionmenu_type
@@ -178,7 +177,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		{
 			menu_filesystem .items( ) .remove( menu_filesystem .items( ) .back( ) ) ;
 			optionmenu_filesystem .set_sensitive( true ) ;
-			optionmenu_filesystem .set_history( 0 ) ;
+			optionmenu_filesystem .set_history( first_creatable_fs ) ;
 		}
 	}
 	
@@ -211,9 +210,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		
 		//set contents of label_minmax
 		Set_MinMax_Text( MIN, MAX ) ;
-		
 	}
-	
 	
 	//set fitting resizer colors
 	//backgroundcolor..
@@ -224,19 +221,30 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	color_temp .set( Get_Color( FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
-	frame_resizer_base ->Draw_Partition() ;
+	if ( this ->is_realized( ) )
+		frame_resizer_base ->Draw_Partition( ) ;
 }
 
-void Dialog_Partition_New::Build_Filesystems_Menu() 
+void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
 {
 	//fill the filesystem menu with the filesystems (except for extended) 
-	for ( unsigned int t=0 ; t < FILESYSTEMS .size() -1 ; t++ ) 
+	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
 	{
-		menu_filesystem .items() .push_back( Gtk::Menu_Helpers::MenuElem( FILESYSTEMS[ t ] .filesystem ) ) ;
-		menu_filesystem .items()[ t ] .set_sensitive( FILESYSTEMS[ t ] .create ) ;	
+		menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( FILESYSTEMS[ t ] .filesystem ) ) ;
+		menu_filesystem .items( )[ t ] .set_sensitive( FILESYSTEMS[ t ] .create && ! only_unformatted ) ;	
 	}
 	
+	//unformatted is always available
+	menu_filesystem .items( ) .back( ) .set_sensitive( true ) ;
 	
+	//find and set first enabled filesystem
+	for ( unsigned int t = 0 ; t < menu_filesystem .items( ) .size( ) ; t++ )
+		if ( menu_filesystem .items( )[ t ] .sensitive( ) )
+		{
+			first_creatable_fs = t ;
+			break ;
+		}
+		
 	//check if selected unallocated is big enough for fs'es with min. size
 	//fat16
 	if ( this ->selected_partition .Get_Length_MB() < 32 )
