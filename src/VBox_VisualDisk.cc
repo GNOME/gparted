@@ -30,20 +30,19 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	//create frame which contains the visual disk
 	frame_disk_legend = manage( new Gtk::Frame( ) ) ;
 	frame_disk_legend ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
-	frame_disk_legend ->set_border_width( 5 );
-	hbox_disk_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
+	hbox_disk_main .pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 	
 	hbox_disk = NULL ;
 	hbox_extended = NULL ;
 	
-	this->set_border_width( 10 );
-	this->set_spacing( 8 );
-	this->pack_start( hbox_disk_main, Gtk::PACK_SHRINK );
+	this ->set_border_width( 10 );
+	this ->set_spacing( 12 );
+	this ->pack_start( hbox_disk_main, Gtk::PACK_SHRINK );
 	
 	//set and allocated some standard colors
-	color_used.set( "#F8F8BA" ); 	this ->get_colormap( ) ->alloc_color( color_used ) ;//bleach yellow ;)
-	color_unused.set( "white" );  	this ->get_colormap( ) ->alloc_color( color_unused ) ;
-	color_text.set( "black" );  	this ->get_colormap( ) ->alloc_color( color_text ) ;
+	color_used .set( "#F8F8BA" ); 	this ->get_colormap( ) ->alloc_color( color_used ) ;//bleach yellow ;)
+	color_unused .set( "white" );  	this ->get_colormap( ) ->alloc_color( color_unused ) ;
+	color_text .set( "black" );  	this ->get_colormap( ) ->alloc_color( color_text ) ;
 	
 	
 	//since disksegments have minimal sizes ( unallocated 15 and partitions 20 pixels ) i do some checking to prevent the visual disk from growing to much
@@ -192,9 +191,10 @@ void VBox_VisualDisk::Build_Legend( )
 { 
 	//add the hboxes and frame_legenda
 	frame_disk_legend = manage( new Gtk::Frame( ) ) ;
-	hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
+	hbox_legend_main .pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 	
 	hbox_legend = manage( new Gtk::HBox( ) );
+	hbox_legend ->set_border_width( 2 ) ;
 	frame_disk_legend ->add( *hbox_legend ) ;
 	this ->pack_start( hbox_legend_main );
 	
@@ -230,6 +230,7 @@ void VBox_VisualDisk::Build_Legend( )
 		hbox_legend_main .pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 		
 		hbox_legend = manage( new Gtk::HBox( ) );
+		hbox_legend ->set_border_width( 2 ) ;
 		frame_disk_legend ->add( *hbox_legend );
 		
 		hbox_legend ->pack_start( * mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
