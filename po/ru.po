@@ -1,0 +1,609 @@
+# Russian translation to gparted.
+# Copyright (C) 2004 Free Software Foundation
+# This file is distributed under the same license as the gparted package.
+# Alexander Shiyan <shc@users.sourceforge.net>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gparted\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-09-30 14:33+0300\n"
+"PO-Revision-Date: 2004-12-03 14:04+0300\n"
+"Last-Translator: Alexander Shiyan <shc@users.sourceforge.net>\n"
+"Language-Team: Russian <ru@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#. ==== GUI =========================
+#: gparted.desktop.in.h:1 src/Dialog_About.cc:33 src/Win_GParted.cc:35
+msgid "GParted"
+msgstr "GParted"
+
+#: gparted.desktop.in.h:2
+msgid "Gnome Partition Editor"
+msgstr "Редактор разделов диска для GNOME"
+
+#. TO TRANSLATORS: this is the dialog title
+#: src/Dialog_About.cc:23
+msgid "About GParted"
+msgstr "О программе GParted"
+
+#: src/Dialog_About.cc:37
+msgid "Gnome Partition Editor based on libparted"
+msgstr "Редактор разделов диска для GNOME, основанный на libparted"
+
+#: src/Dialog_About.cc:41
+msgid "Copyright (c)"
+msgstr "Авторские права ©"
+
+#: src/Dialog_About.cc:62
+msgid "Credits"
+msgstr "Команда"
+
+#. TO TRANSLATORS: tablabel in aboutdialog
+#: src/Dialog_About.cc:75
+msgid "Written by"
+msgstr "Автор"
+
+#. documented by
+#. TO TRANSLATORS: tablabel in aboutdialog
+#. notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
+#. translated by
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names
+#: src/Dialog_About.cc:83
+msgid "translator_credits"
+msgstr "Александр Шиян <shc@users.sourceforge.net>"
+
+#. TO TRANSLATORS: tablabel in aboutdialog
+#: src/Dialog_About.cc:90
+msgid "Translated by"
+msgstr "Перевод"
+
+#. add spinbutton_before
+#: src/Dialog_Base_Partition.cc:54
+msgid "Free Space Preceding (MB) :"
+msgstr "Свободное место до (Мб) :"
+
+#. add spinbutton_size
+#: src/Dialog_Base_Partition.cc:62
+msgid "New Size (MB) :"
+msgstr "Новый размер (Мб) :"
+
+#. add spinbutton_after
+#: src/Dialog_Base_Partition.cc:71
+msgid "Free Space Following (MB) :"
+msgstr "Свободное место после (Мб) :"
+
+#: src/Dialog_Base_Partition.cc:92
+msgid "NOTE: values on disk may differ slightly from the values entered here."
+msgstr "ПАМЯТКА: значения на диске могут немного отличаться от введенныхзначений."
+
+#: src/Dialog_Base_Partition.cc:159
+msgid "Resize"
+msgstr "Изменить размер"
+
+#: src/Dialog_Base_Partition.cc:161 src/Win_GParted.cc:122
+#: src/Win_GParted.cc:157 src/Win_GParted.cc:774
+msgid "Resize/Move"
+msgstr "Изменить размер/Переместить"
+
+#. prevents on spinbutton_changed from getting activated prematurely
+#: src/Dialog_Partition_Copy.cc:33
+msgid "Paste %1"
+msgstr "Вставка %1"
+
+#. set contents of label_minmax
+#: src/Dialog_Partition_Copy.cc:68 src/Dialog_Partition_New.cc:111
+#: src/Dialog_Partition_New.cc:199 src/Dialog_Partition_Resize_Move.cc:140
+#: src/Dialog_Partition_Resize_Move.cc:228
+msgid "Minimum Size: %1 MB"
+msgstr "Минимальный размер: %1 Мб"
+
+#: src/Dialog_Partition_Copy.cc:69 src/Dialog_Partition_New.cc:112
+#: src/Dialog_Partition_New.cc:200 src/Dialog_Partition_Resize_Move.cc:141
+#: src/Dialog_Partition_Resize_Move.cc:229
+msgid "Maximum Size: %1 MB"
+msgstr "Максимальный размер: %1 Мб"
+
+#. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
+#: src/Dialog_Partition_Info.cc:30
+msgid "Information about %1"
+msgstr "Информация о %1"
+
+#: src/Dialog_Partition_Info.cc:45
+msgid "Libparted message:"
+msgstr "Сообщения libparted:"
+
+#. set text of pangolayout
+#. create  pangolayout and see if it fits in the visual partition
+#. the label...
+#: src/Dialog_Partition_Info.cc:126 src/Dialog_Partition_Info.cc:146
+#: src/Dialog_Partition_Info.cc:155 src/Dialog_Partition_Info.cc:161
+#: src/VBox_VisualDisk.cc:139 src/VBox_VisualDisk.cc:150
+#: src/Win_GParted.cc:387 src/Win_GParted.cc:406
+msgid "%1 MB"
+msgstr "%1 Мб"
+
+#. filesystem
+#. filesystems to choose from
+#: src/Dialog_Partition_Info.cc:141 src/Dialog_Partition_New.cc:80
+msgid "Filesystem:"
+msgstr "Файловая система:"
+
+#. size
+#: src/Dialog_Partition_Info.cc:145 src/Win_GParted.cc:231
+msgid "Size:"
+msgstr "Размер:"
+
+#. used
+#: src/Dialog_Partition_Info.cc:154
+msgid "Used:"
+msgstr "Использовано:"
+
+#. unused
+#: src/Dialog_Partition_Info.cc:160
+msgid "Unused:"
+msgstr "Свободно:"
+
+#: src/Dialog_Partition_Info.cc:169
+msgid "Flags:"
+msgstr "Флаги:"
+
+#. path
+#: src/Dialog_Partition_Info.cc:179 src/Win_GParted.cc:236
+msgid "Path:"
+msgstr "Путь:"
+
+#: src/Dialog_Partition_Info.cc:189 src/Win_GParted.cc:243
+msgid "Real Path:"
+msgstr "Полный путь:"
+
+#. status
+#: src/Dialog_Partition_Info.cc:194
+msgid "Status:"
+msgstr "Статус:"
+
+#: src/Dialog_Partition_Info.cc:198
+msgid "Not busy (There are no mounted logical partitions)"
+msgstr "Не занятый (Нет подключенных логических разделов)"
+
+#: src/Dialog_Partition_Info.cc:200
+msgid "Not active"
+msgstr "Не активный"
+
+#: src/Dialog_Partition_Info.cc:202
+msgid "Not mounted"
+msgstr "Не подключенный"
+
+#. first sector
+#: src/Dialog_Partition_Info.cc:211
+msgid "First Sector:"
+msgstr "Первый сектор:"
+
+#. last sector
+#: src/Dialog_Partition_Info.cc:216
+msgid "Last Sector:"
+msgstr "Последний сектор:"
+
+#. total sectors
+#: src/Dialog_Partition_Info.cc:221 src/Win_GParted.cc:279
+msgid "Total Sectors:"
+msgstr "Всего секторов:"
+
+#: src/Dialog_Partition_Info.cc:230
+msgid "Busy  (At least one logical partition is mounted)"
+msgstr "Занятый (По крайней мере один логический раздел подключен)"
+
+#: src/Dialog_Partition_Info.cc:237
+msgid "Active"
+msgstr "Активный"
+
+#: src/Dialog_Partition_Info.cc:259 src/Dialog_Partition_Info.cc:270
+msgid "Mounted on %1"
+msgstr "Подключенный к %1"
+
+#. TO TRANSLATORS: dialogtitle
+#: src/Dialog_Partition_New.cc:26
+msgid "Create new Partition"
+msgstr "Создать новый раздел"
+
+#. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
+#: src/Dialog_Partition_New.cc:52
+msgid "Create as:"
+msgstr "Создать как:"
+
+#: src/Dialog_Partition_New.cc:140
+msgid "New Partition #%1"
+msgstr "Новый раздел №%1"
+
+#: src/Dialog_Partition_Resize_Move.cc:68
+msgid "Resize %1"
+msgstr "Изменение размера %1"
+
+#: src/Dialog_Partition_Resize_Move.cc:75
+msgid "Resize/Move %1"
+msgstr "Изменение размера/Перемещение %1"
+
+#: src/Dialog_Progress.cc:25 src/Dialog_Progress.cc:35
+msgid "Applying pending operations"
+msgstr "Применить ожидающие операции"
+
+#: src/Dialog_Progress.cc:36
+msgid "Applying all listed operations."
+msgstr "Применить все перечисленные операции."
+
+#: src/Dialog_Progress.cc:38
+msgid "Clicking Cancel will prevent the next operations from being applied."
+msgstr "Нажатие на \"Отмена\" отменит дейстаие следующих операций."
+
+#: src/Dialog_Progress.cc:43
+msgid "initializing..."
+msgstr "инициализация..."
+
+#: src/Dialog_Progress.cc:51
+msgid "Completed Operations"
+msgstr "Завершение операций"
+
+#: src/Dialog_Progress.cc:54 src/Dialog_Progress.cc:73
+msgid "%1 of %2 operations completed"
+msgstr "%1 из %2 операций завершено"
+
+#: src/Dialog_Progress.cc:85
+msgid "about %1 minute and %2 seconds left"
+msgstr "осталось примерно %1 минута и %2 секунд"
+
+#: src/Dialog_Progress.cc:87
+msgid "about %1 minutes and %2 seconds left"
+msgstr "осталось примерно %1 минут и %2 секунд"
+
+#: src/Operation.cc:39
+msgid "copy of %1"
+msgstr "копирование %1"
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
+#: src/Operation.cc:54 src/Operation.cc:57
+msgid "Delete %1 (%2, %3 MB) from %4"
+msgstr "Удаление  %1 (%2, %3 Мб) с %4"
+
+#: src/Operation.cc:54
+msgid "Logical Partition"
+msgstr "Логический раздел"
+
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
+#: src/Operation.cc:68
+msgid "Create %1 Partition #%2 (%3, %4 MB) on %5"
+msgstr "Создание %1 раздела #%2 (%3, %4 Мб) на %5"
+
+#: src/Operation.cc:76
+msgid "Move %1 forward by %2 MB "
+msgstr "Перемещение %1 вперед на %2 Мб "
+
+#: src/Operation.cc:78
+msgid "Move %1 backward by %2 MB "
+msgstr "Перемещение %1 назад на %2 Мб "
+
+#: src/Operation.cc:87
+msgid "Resize %1 from %2 MB to %3 MB"
+msgstr "Изменение размера %1 с %2 Мб до %3 Мб"
+
+#: src/Operation.cc:89
+msgid "and Resize %1 from %2 MB to %3 MB"
+msgstr "и изменение размера %1 с %2 Мб до %3 Мб"
+
+#: src/Operation.cc:93
+msgid "Sorry, changes are too small to make sense"
+msgstr "Извините, изменения слишком малы"
+
+#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
+#: src/Operation.cc:97
+msgid "Convert %1 from %2 to %3"
+msgstr "Преобразование %1 с %2 на %3"
+
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
+#: src/Operation.cc:100
+msgid "Copy %1 to %2 (start at %3 MB)"
+msgstr "Копирование %1 на %2 (начиная с %3 Мб)"
+
+#: src/Operation.cc:131
+msgid "Error while deleting %1"
+msgstr "Ошибка при удалении %1"
+
+#: src/Operation.cc:136
+msgid "Error while creating %1"
+msgstr "Ошибка при создании %1"
+
+#: src/Operation.cc:141
+msgid "Error while resizing/moving %1"
+msgstr "Ошибка при изменении размера/перемещении %1"
+
+#: src/Operation.cc:146
+msgid "Error while converting filesystem of %1"
+msgstr "Ошибка при преобразовании файловой системы %1"
+
+#: src/Operation.cc:151
+msgid "Error while copying %1"
+msgstr "Ошибка при копировании %1"
+
+#: src/Operation.cc:431
+msgid ""
+"Be aware that the failure to apply this operation could affect other "
+"operations on the list."
+msgstr ""
+"Помните, что ошибка при этой операции не затрагивает остальные "
+"операции в списке."
+
+#: src/Partition.cc:55
+msgid "Unallocated"
+msgstr "Не разделено"
+
+#. append columns
+#: src/TreeView_Detail.cc:34
+msgid "Partition"
+msgstr "Раздел"
+
+#: src/TreeView_Detail.cc:35
+msgid "Type"
+msgstr "Тип"
+
+#: src/TreeView_Detail.cc:36
+msgid "Size"
+msgstr "Размер"
+
+#: src/TreeView_Detail.cc:37
+msgid "Used"
+msgstr "Использовано"
+
+#: src/TreeView_Detail.cc:38
+msgid "Unused"
+msgstr "Свободно"
+
+#: src/TreeView_Detail.cc:39
+msgid "Flags"
+msgstr "Флаги"
+
+#: src/VBox_VisualDisk.cc:208
+msgid "used"
+msgstr "используется"
+
+#: src/VBox_VisualDisk.cc:209
+msgid "unused"
+msgstr "не используется"
+
+#: src/Win_GParted.cc:88
+msgid "_Refresh devices"
+msgstr "_Обновить устройства"
+
+#: src/Win_GParted.cc:91
+msgid "_GParted"
+msgstr "_GParted"
+
+#: src/Win_GParted.cc:95 src/Win_GParted.cc:218
+msgid "Harddisk Information"
+msgstr "Информация о жестком диске"
+
+#: src/Win_GParted.cc:96
+msgid "_View"
+msgstr "_Вид"
+
+#: src/Win_GParted.cc:102
+msgid "About"
+msgstr "О программе"
+
+#: src/Win_GParted.cc:103
+msgid "_Help"
+msgstr "_Справка"
+
+#: src/Win_GParted.cc:114
+msgid "Create a new partition in the selected unallocated space"
+msgstr "Создать новый раздел в выбранной свободной области"
+
+#: src/Win_GParted.cc:117
+msgid "Delete the selected partition"
+msgstr "Удалить выделенный раздел"
+
+#: src/Win_GParted.cc:124
+msgid "Resize/Move the selected partition"
+msgstr "Изменить размер/Переместить выбранный раздел"
+
+#: src/Win_GParted.cc:130
+msgid "Copy the selected partition to the clipboard"
+msgstr "Копировать выбранный раздел в буфер"
+
+#: src/Win_GParted.cc:133
+msgid "Paste the partition from the clipboard"
+msgstr "Вставить раздел из буфера"
+
+#: src/Win_GParted.cc:139
+msgid "Undo last operation"
+msgstr "Откат последней операции"
+
+#: src/Win_GParted.cc:142
+msgid "Apply all operations"
+msgstr "Применить все операции"
+
+#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
+#: src/Win_GParted.cc:164
+msgid "_Convert to"
+msgstr "_Преобразовать в"
+
+#. model
+#: src/Win_GParted.cc:226
+msgid "Model:"
+msgstr "Модель:"
+
+#. disktype
+#: src/Win_GParted.cc:259
+msgid "DiskType:"
+msgstr "Тип диска:"
+
+#. heads
+#: src/Win_GParted.cc:264
+msgid "Heads:"
+msgstr "Головок:"
+
+#. sectors/track
+#: src/Win_GParted.cc:269
+msgid "Sectors/Track:"
+msgstr "Секторов/Дорожек:"
+
+#. cylinders
+#: src/Win_GParted.cc:274
+msgid "Cylinders:"
+msgstr "Цилиндров:"
+
+#: src/Win_GParted.cc:310
+msgid "Hide operationslist"
+msgstr "Скрыть список операций"
+
+#: src/Win_GParted.cc:319
+msgid "Clear operationslist"
+msgstr "Очистить список операций"
+
+#: src/Win_GParted.cc:489
+msgid "%1 operations pending"
+msgstr "%1 незаконченных операций"
+
+#: src/Win_GParted.cc:491
+msgid "1 operation pending"
+msgstr "1 незаконченная операция"
+
+#: src/Win_GParted.cc:545
+msgid "Quit GParted?"
+msgstr "Выйти из GParted?"
+
+#: src/Win_GParted.cc:548
+msgid "%1 operations are currently pending."
+msgstr "Осталось %1 незаконченных операций."
+
+#: src/Win_GParted.cc:550
+msgid "1 operation is currently pending."
+msgstr "Осталась 1 незаконченная операция."
+
+#: src/Win_GParted.cc:724
+msgid "Sorry, not yet implemented."
+msgstr "Извините, это пока не реализовано."
+
+#: src/Win_GParted.cc:724
+msgid "Please visit http://gparted.sf.net for more information and support."
+msgstr "Для получения большей информации и поддержки, посетите сайт http://gparted.sf.net."
+
+#: src/Win_GParted.cc:767
+msgid "Are you sure you want to resize/move this partition?"
+msgstr "Вы действительно хотите изменить размер/переместить этот раздел?"
+
+#: src/Win_GParted.cc:768
+msgid ""
+"Resizing a fat16 partition can be quite tricky! Especially growing such a "
+"partition is very error-prone. It is advisable to first convert the "
+"filesystem to fat32."
+msgstr ""
+"Изменение размера раздела типа fat16 может проходить очень сложно и привести к"
+"различным ошибкам. Рекомендуется сначала преобразовать файловую систему в fat32."
+
+#: src/Win_GParted.cc:840 src/Win_GParted.cc:867
+msgid "It is not possible to create more than %1 primary partitions"
+msgstr "Создать более %1 первичных разделов невозможно."
+
+#: src/Win_GParted.cc:842 src/Win_GParted.cc:869
+msgid ""
+"If you want more partitions you should first create an extended partition. "
+"Such a partition can contain other partitions."
+msgstr ""
+"Если вам необходимо болшее число разделов, создайте сперва расширенный раздел. "
+"Такой раздел может содержать другие разделы."
+
+#: src/Win_GParted.cc:897
+msgid "Unable to delete partition!"
+msgstr "Не удается удалить раздел!"
+
+#: src/Win_GParted.cc:898
+msgid "Please unmount any logical partitions having a number higher than %1"
+msgstr "Пожалуйста, размонтируйте все логические разделы, имеющие номера больше %1"
+
+#: src/Win_GParted.cc:904
+msgid "Are you sure you want to delete %1 ?"
+msgstr "Вы действительно хотите удалить %1 ?"
+
+#: src/Win_GParted.cc:906
+msgid "After deletion this partition is no longer available for copying."
+msgstr "После удаления, этот раздел будет недоступен для копирования."
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB)
+#: src/Win_GParted.cc:910
+msgid "Delete %1 (%2, %3 MB)"
+msgstr "Удаление %1 (%2, %3 Мб)"
+
+#: src/Win_GParted.cc:972
+msgid "Are you sure you want to convert this filesystem to %1 ?"
+msgstr "Вы действительно хотите преобразовать эту файловую систему на %1 ?"
+
+#: src/Win_GParted.cc:973
+msgid "This operation will destroy all data on %1"
+msgstr "Эта операция уничтожит все ваши данные на %1"
+
+#: src/Win_GParted.cc:991 src/Win_GParted.cc:993
+msgid "Can not convert this filesystem to fat16."
+msgstr "Не удается преобразовать эту файловую систему в fat16."
+
+#: src/Win_GParted.cc:991
+msgid "A fat16 filesystem requires a partition of at least 32 MB."
+msgstr "Файловая система fat16 требует, чтобы размер раздела был не менее 32 Мб."
+
+#: src/Win_GParted.cc:993
+msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
+msgstr "Максимальный размер роздела с файловой системой fat16 должен быть 1023 Мб."
+
+#: src/Win_GParted.cc:995
+msgid "Can not convert this filesystem to fat32."
+msgstr "Не удается преобразовать эту файловую систему в fat32."
+
+#: src/Win_GParted.cc:995
+msgid "A fat32 filesystem requires a partition of at least 256 MB."
+msgstr "Файловая система fat32 требует, чтобы размер раздела был не менее 256 Мб."
+
+#: src/Win_GParted.cc:1050
+msgid "Are you sure you want to apply the pending operations?"
+msgstr "Вы уверены что хотите применить незавершенные операции?"
+
+#: src/Win_GParted.cc:1050
+msgid "It is recommended to backup valueable data before proceeding."
+msgstr "Перед продолжением, рекомендуеться сделать резервную копию важных данных."
+
+#: src/Win_GParted.cc:1051
+msgid "Apply operations to harddisk"
+msgstr "Применить операции для жеского диска"
+
+#. TO TRANSLATORS: after the colon (:) a list of devices will be shown
+#: src/Win_GParted.cc:1088
+msgid "The kernel was unable to re-read the partition table on :"
+msgstr "Ядро не может перечитать таблицу разделов на :"
+
+#: src/Win_GParted.cc:1091
+msgid ""
+"This means Linux won't know anything about the modifications you made until "
+"you reboot."
+msgstr ""
+"Это означает, что Linux не будет видеть всех внесенных Вами изменений до перезапуска системы."
+
+#: src/Win_GParted.cc:1093
+msgid "You should reboot your computer before doing anything with these devices."
+msgstr ""
+"Вы должны перезапустить компьютер перед тем, как что либо делать с этими устройствами."
+
+#: src/Win_GParted.cc:1095
+msgid "You should reboot your computer before doing anything with this device."
+msgstr ""
+"Вы должны перезапустить компьютер перед тем, как что либо делать с этим устройством."
+
+#: src/main.cc:35
+msgid "Root privileges are required for running GParted"
+msgstr "Для запуска GParted требуются права администратора (root)."
+
+#: src/main.cc:35
+msgid "Since GParted can be a weapon of mass destruction only root may run it."
+msgstr ""
+"Поскольку использование GParted может привести систему в нерабочее состояние, "
+"только администратор (root) может запустить его."
