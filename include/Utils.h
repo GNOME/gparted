@@ -62,14 +62,14 @@ struct FS
 
 	
 //globally used convenience functions
-inline long Sector_To_MB( Sector sectors ) 
-{
-	 return (long) ( (double) sectors * 512/1024/1024 +0.5) ;
-}
-
 inline long Round( double double_value )
 {
-	 return (long) ( double_value + 0.5) ;
+	 return static_cast<long> ( double_value + 0.5 ) ;
+}
+
+inline long Sector_To_MB( Sector sectors ) 
+{
+	 return Round( sectors * 0.000488281250 ) ; // that's what 512/1024/1024 gives you :)
 }
 
 inline Sector Abs( Sector sectors )
