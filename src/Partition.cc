@@ -61,11 +61,11 @@ void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool in
 Glib::ustring Partition::Get_Color( const Glib::ustring & filesystem ) 
 { // very ugly, but somehow i can't figure out a more efficient way. must be lack of sleep or so... :-)
 	//purple teints
-	if		 	( filesystem == "ext2" ) 					return "purple"  ;														
-	else if 	( filesystem == "ext3" ) 					return "#C994EB";									
+	if		 	( filesystem == "ext2" ) 					return "#9DB8D2" ;													
+	else if 	( filesystem == "ext3" ) 					return "#7590AE";								
 	
 	//brown
-	else if 	( filesystem == "linux-swap" )		return "brown"	;					
+	else if 	( filesystem == "linux-swap" )		return "#C1665A" ;				
 		
 	//greenisch stuff..
 	else if 	( filesystem == "fat16" ) 					return "green"	 ;			
