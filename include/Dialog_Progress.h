@@ -25,8 +25,6 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 
-//compose library, dedicated to the translators :P
-#include "../compose/ucompose.hpp"
 
 class Dialog_Progress : public Gtk::Dialog
 {
@@ -47,7 +45,6 @@ private:
 	
 	double fraction;
 	int count_operations, current_operation_number;
-	char c_buf[ 1024 ] ; //used by sprintf, which is needed for i18n
 };
 
 #endif //DIALOG_PARTITION_PROGRESS

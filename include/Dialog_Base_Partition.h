@@ -37,10 +37,10 @@ class Dialog_Base_Partition : public Gtk::Dialog
 public:
 	
 	Dialog_Base_Partition( ) ;
-	~Dialog_Base_Partition() ;
+	~Dialog_Base_Partition( ) ;
 
 	void Set_Resizer( bool extended ) ;
-	Partition Get_New_Partition() ;
+	Partition Get_New_Partition( ) ;
 	
 protected:
 	enum SPINBUTTON {
@@ -77,7 +77,7 @@ protected:
 	void on_signal_resize( int, int, Frame_Resizer_Base::ArrowType );
 	void on_spinbutton_value_changed( SPINBUTTON ) ;
 
-	bool fixed_start, GRIP;
+	bool fixed_start, GRIP ;
 	double before_value ;
 	int x_start, x_end ;
 	

@@ -22,6 +22,7 @@
 //my guess is, it's best to keep the amount of info minimal and wait for users requests
 
 #include "../include/Partition.h"
+#include "../include/i18n.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>

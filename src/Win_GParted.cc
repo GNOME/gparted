@@ -26,6 +26,9 @@ Win_GParted::Win_GParted( )
 	new_count = 1;
 	current_device = source_device = 0 ;
 	vbox_visual_disk = NULL;
+	
+	//store filesystems in vector and find out if their respective libs are installed
+	Find_Supported_Filesystems() ;
 		
 	//locate all available devices and store them in devices vector
 	Find_Devices() ;
@@ -170,37 +173,24 @@ void Win_GParted::init_popupmenu()
 
 void Win_GParted::init_convert_menu()
 {
-	filesystems.push_back( "ext2" );
-	filesystems.push_back( "fat16" );
-	filesystems.push_back( "fat32" );
-	filesystems.push_back( "linux-swap" );
-	filesystems.push_back( "reiserfs" ); 
-	
-	for ( unsigned int t=0;t < filesystems.size() ;t++ )
+	for ( unsigned int t=0;t < FILESYSTEMS .size() ;t++ )
 	{
-		if ( filesystems[ t ] != selected_partition .filesystem )
-		{
-			color .set( selected_partition .Get_Color( filesystems[ t ] ) );
-			hbox = manage( new Gtk::HBox() );
+		color .set( selected_partition .Get_Color( FILESYSTEMS[ t ] .filesystem ) );
+		hbox = manage( new Gtk::HBox() );
 			
-			//the colored square
-			entry =  manage ( new Gtk::Entry() );
-			entry->set_sensitive( false );
-			entry->set_size_request( 12,12);
-			entry->modify_base( entry->get_state(), color );
-			hbox ->pack_start( *entry, Gtk::PACK_SHRINK   );
+		//the colored square
+		entry =  manage ( new Gtk::Entry() );
+		entry->set_sensitive( false );
+		entry->set_size_request( 12, 12 );
+		entry->modify_base( entry->get_state(), color );
+		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
-			//the label...
-			label = manage( new Gtk::Label( " " + filesystems[ t ] ) );
-			label ->set_alignment( Gtk::ALIGN_LEFT   );
+		//the label...
+		hbox ->pack_start( * mk_label( " " + FILESYSTEMS[ t ] .filesystem ), Gtk::PACK_SHRINK );	
 				
-			hbox ->pack_start( *label, Gtk::PACK_SHRINK   );
-	
-			menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
-			menu_convert.items().push_back( *menu_item);
-			menu_convert.items() .back() .signal_activate() .connect(  sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), filesystems[ t ] ) ) ;
-	
-		}			
+		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
+		menu_convert.items().push_back( *menu_item);
+		menu_convert.items() .back() .signal_activate() .connect(  sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), FILESYSTEMS[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -345,6 +335,33 @@ void Win_GParted::init_hpaned_main()
 	hpaned_main.pack2( *scrollwindow, true,true );
 }
 
+void Win_GParted::Find_Supported_Filesystems()
+{
+	FS fs; 
+	static void * test_handle = NULL ;
+	
+	//built-in filesystems
+	fs .supported = true ;
+	fs .create = true ;
+	
+	fs .filesystem = "ext2" ;	FILESYSTEMS .push_back( fs ) ;
+	fs .filesystem = "ext3" ;	FILESYSTEMS .push_back( fs ) ; FILESYSTEMS .back() .create = false ; 
+	fs .filesystem = "fat16" ;	FILESYSTEMS .push_back( fs ) ; 
+	fs .filesystem = "fat32" ;	FILESYSTEMS .push_back( fs ) ; 
+	fs .filesystem = "linux-swap" ;	FILESYSTEMS .push_back( fs ) ; 
+	
+	//optional filesystems (depends if fitting libary is installed)
+	fs .supported = fs .create = false ;
+	
+	fs .filesystem = "reiserfs" ;	FILESYSTEMS .push_back( fs ) ; 
+	if ( (test_handle = dlopen("libreiserfs.so", RTLD_NOW)) ) 
+	{
+		FILESYSTEMS .back() .supported = FILESYSTEMS .back() .create =  true ;
+		dlclose( test_handle ) ;
+		test_handle = NULL ;
+	}
+}
+
 void Win_GParted::Find_Devices() 
 {
 	for ( unsigned int t=0;t<devices.size() ; t++ )
@@ -358,16 +375,16 @@ void Win_GParted::Find_Devices()
 	//construct a list of device objects
 	PedDevice *device = ped_device_get_next (NULL);
 		
-	while (  device )
+	while ( device )
 	{  
-		str_devices.push_back( device ->path  ) ;
+		str_devices.push_back( device ->path ) ;
 		device = ped_device_get_next (device) ;
 	}
 	
 	for ( unsigned int t=0;t<str_devices.size() ; t++ )
 	{
-		temp_device = new GParted::Device( str_devices[t] );
-		temp_device ->Get_Length() > 0 ? devices.push_back( temp_device ) : delete temp_device  ;
+		temp_device = new GParted::Device( str_devices[t], &FILESYSTEMS );
+		temp_device ->Get_Length() > 0 ? devices.push_back( temp_device ) : delete temp_device ;
 	}
 	
 	str_devices.clear() ;
@@ -380,13 +397,13 @@ void Win_GParted::Find_Devices()
 		
 		//the image...
 		image = manage( new Gtk::Image( "/usr/share/icons/gnome/24x24/devices/gnome-dev-harddisk.png" ) );
-		hbox ->pack_start( *image, Gtk::PACK_SHRINK   );
+		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
 		
 		//the label...
 		label = manage( new Gtk::Label( " " + devices[i] ->Get_Path() + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] ->Get_Length() ) ) + ")" ) ) ;
 		
-		label ->set_alignment( Gtk::ALIGN_LEFT   );
-		hbox ->pack_start( *label, Gtk::PACK_SHRINK   );
+		label ->set_alignment( Gtk::ALIGN_LEFT );
+		hbox ->pack_start( *label, Gtk::PACK_SHRINK );
 	
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_devices .items().push_back( *menu_item );
@@ -454,7 +471,7 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 
 void Win_GParted::Refresh_Visual( )
 {
-	std::vector<Partition> partitions = devices[current_device] ->Get_Partitions()  ; 
+	std::vector<Partition> partitions = devices[current_device] ->Get_Partitions() ; 
 	liststore_operations ->clear();
 	
 	//make all operations visible
@@ -593,12 +610,7 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		if (	selected_partition.filesystem == "ext2"		 ||
-			selected_partition.filesystem == "ext3"		 ||
-			selected_partition.filesystem == "fat16"	 ||
-			selected_partition.filesystem == "fat32"	 ||
-			selected_partition.filesystem == "linux-swap" 
-		   )	
+		if ( Supported( selected_partition .filesystem, &FILESYSTEMS ) )
 		{
 			allow_resize( true ) ;
 			
@@ -625,10 +637,13 @@ void Win_GParted::Set_Valid_Operations()
 void Win_GParted::Set_Valid_Convert_Filesystems() 
 {
 	//disable conversion to the same filesystem
-	for ( unsigned int t=0;t<filesystems .size() ; t++ )
-		filesystems[ t ] == selected_partition .filesystem ? menu_convert.items()[ t ] .set_sensitive( false ) : menu_convert.items()[ t ] .set_sensitive( true ) ;
-	
-	menu_convert.items() .back() .set_sensitive( false ) ; //disable reiserfs for the time being...
+	for ( unsigned int t=0;t<FILESYSTEMS .size() ; t++ )
+	{
+		if ( FILESYSTEMS[ t ] .filesystem == selected_partition .filesystem || ! FILESYSTEMS[ t ] .create )
+			menu_convert .items()[ t ] .set_sensitive( false ) ;
+		else 
+			menu_convert .items()[ t ] .set_sensitive( true ) ;
+	}
 }
 
 void Win_GParted::close_operationslist() 
@@ -877,7 +892,7 @@ void Win_GParted::activate_new()
 	}
 	
 	Dialog_Partition_New dialog;
-	dialog.Set_Data( selected_partition, any_extended, new_count ) ;
+	dialog.Set_Data( selected_partition, any_extended, new_count, FILESYSTEMS ) ;
 	dialog.set_transient_for( *this );
 	
 	if ( dialog.run() == Gtk::RESPONSE_OK )
@@ -1025,7 +1040,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 		{
 			if ( operations[t] .partition_new .partition == selected_partition .partition )
 			{
-				operations.erase( operations .begin() + t ) ;
+				operations.erase( operations .begin() +t ) ;
 				
 				//And add the new partition to the end of the operations list (NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
@@ -1043,7 +1058,7 @@ void Win_GParted::activate_undo()
 {
 	//when undoing an creation it's safe to decrease the newcount by one
 	if ( operations.back() .operationtype == GParted::CREATE )
-		new_count -- ;
+		new_count-- ;
 	
 	operations.erase( operations.end() );
 	
@@ -1134,7 +1149,7 @@ void Win_GParted::activate_apply()
 Dialog_Progress *dp;
 Glib::Dispatcher dispatcher_current_operation;
 
-void progress_callback(PedTimer * timer, void *context  )
+void progress_callback(PedTimer * timer, void *context )
 {
 	if (  time(NULL) - timer ->start  > 0 )
 	{

@@ -41,7 +41,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
 
-#include <fstream>
+#include <dlfcn.h>
 
 namespace GParted
 {
@@ -49,7 +49,7 @@ namespace GParted
 class Win_GParted : public Gtk::Window
 {
 public:
-	Win_GParted(   );
+	Win_GParted( );
 
 private:
 	void init_menubar() ;
@@ -60,6 +60,7 @@ private:
 	void init_operationslist() ;
 	void init_hpaned_main() ;
 
+	void Find_Supported_Filesystems() ;
 	void Find_Devices() ;
 	
 	//Fill txtview_device_info_buffer with some information about the selected device
@@ -166,9 +167,10 @@ private:
 	Glib::ustring str_temp ; //mostly used for constructing dialogmessages					
 									
 	
-	GParted::Device *temp_device;
-	std::vector <Glib::ustring> str_devices, filesystems;
-	std::vector <Gtk::Label *> device_info;
+	GParted::Device *temp_device ;
+	std::vector <Glib::ustring> str_devices ;
+	std::vector <Gtk::Label *> device_info ;
+	std::vector <FS> FILESYSTEMS ;
 				
 	//stuff for progress overview
 	Dialog_Progress *dialog_progress;

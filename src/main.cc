@@ -17,6 +17,7 @@
  
 #include "../include/Win_GParted.h"
 
+
 int main( int argc, char *argv[] )
 {
 	//initialize thread system
@@ -42,3 +43,5 @@ int main( int argc, char *argv[] )
 
 	return 0;
 }
+
+

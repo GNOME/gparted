@@ -49,7 +49,7 @@ Glib::ustring get_sym_path( const Glib::ustring & real_path )
 	return real_path;
 }
 
-//AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me
+//AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me)
 Glib::ustring error_message;
 bool show_libparted_message = true ;
 PedExceptionOption PedException_Handler (PedException* ex)
@@ -114,9 +114,11 @@ Device::Device()
 {
 }
 	
-Device::Device( const Glib::ustring & device_path )
+Device::Device( const Glib::ustring & device_path, std::vector<FS> *filesystems )
 {
 	ped_exception_set_handler( PedException_Handler ) ; 
+	
+	this ->FILESYSTEMS = filesystems ;
 		
 	this ->realpath	= device_path ; //this one is used by open_device_and_disk
 	
@@ -224,7 +226,7 @@ bool Device::Delete_Partition( const Partition & partition )
 	else
 		c_partition = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 	
-	if ( ! ped_disk_delete_partition( disk, c_partition )  )
+	if ( ! ped_disk_delete_partition( disk, c_partition ) )
 		return false;
 	
 	return Commit() ;
@@ -420,7 +422,7 @@ bool Device::Commit()
 {
 	bool return_value =  ped_disk_commit_to_dev( disk ) ;
 	
-	//i don't want this annoying "warning couldn't reread blabla" message all the time. I throw one myself if necessary )
+	//i don't want this annoying "warning couldn't reread blabla" message all the time. (I throw one myself if necessary)
 	ped_exception_fetch_all() ;
 	ped_disk_commit_to_os( disk ) ;
 	ped_exception_leave_all() ;
@@ -498,7 +500,7 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	 * questionable. 
 	 * - first i try geometry.get_used() in libpartedpp, i implemented this function to check the minimal size when resizing a partition. Disadvantage 
 	*   of this method is the fact it won't work on mounted filesystems. Besides that, its SLOW
-	 * - if the former method fails ( result is -1 ) i'll try to read the output from the df command ( 	df -k --sync <partition path> )
+	 * - if the former method fails ( result is -1 ) i'll try to read the output from the df command ( df -k --sync <partition path> )
 	 * - if this fails the filesystem on the partition is ( more or less ) unknown to the operating system and therefore the unused sectors cannot be calcualted
 	 * - as soon as i have my internetconnection back i should ask people with more experience on this stuff for advice !
 	*/
@@ -513,12 +515,21 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	
 	//METHOD #1           
 	//the getused method doesn't work on mounted partitions and for some filesystems ( i *guess* this is called check by andrew )
-	if ( ! ped_partition_is_busy( c_partition ) && (Glib::ustring) c_partition ->fs_type ->name != "ntfs" )
+	if ( ! ped_partition_is_busy( c_partition ) && Supported( c_partition ->fs_type ->name, FILESYSTEMS ) )
 	{ 		
 		PedFileSystem *fs = NULL;
 		PedConstraint *constraint = NULL;
+	
+		//prevent messagebox from showing up, but stores the error in "error"
+		if ( show_libparted_message )
+		{
+			show_libparted_message = false ;
+			fs = ped_file_system_open( & c_partition ->geom ); 
+			show_libparted_message = true ;
+		}
+		else
+			fs = ped_file_system_open( & c_partition ->geom ); 	
 		
-		fs = ped_file_system_open( & c_partition ->geom ); //opening a filesystem is *SLOOOWW* :-(
 		
 		if ( fs )
 		{
@@ -533,7 +544,7 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	}
 		
 	//METHOD #2
-	//this ony works for mounted ( and therefore known to the OS ) filesystems. My method is quite crude, keep in mind it's only temporarely ;-)
+	//this ony works for mounted ( and therefore known to the OS ) filesystems. My method is quite crude, keep in mind it's only temporary ;-)
 	Glib::ustring buf;
 	system( ("df -k --sync " + sym_path + " | grep " + sym_path + " > /tmp/.tmp_gparted").c_str() );
 	std::ifstream file_input( "/tmp/.tmp_gparted" );
@@ -552,6 +563,15 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	return -1 ; //all methods were unsuccesfull
 
 }
+/*
+bool Device::Supported( const Glib::ustring & filesystem ) 
+{
+	for (unsigned int t=0 ; t < FILESYSTEMS ->size() ; t++ )
+		if ( (*FILESYSTEMS)[ t ] .filesystem == filesystem && (*FILESYSTEMS)[ t ] .supported )
+			return true ;
+	
+	return false ;
+}*/
 
 Glib::ustring Device::Get_Flags( PedPartition *c_partition )
 {

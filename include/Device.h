@@ -39,6 +39,7 @@
 
 #include <fstream>
 
+
 namespace GParted
 {
 	
@@ -47,7 +48,7 @@ class Device
 	 
 public:
 	Device() ;
-	Device( const Glib::ustring & device_path);
+	Device( const Glib::ustring & device_path, std::vector<FS> *filesystems );
 	~Device() ;
 	//this function creates a fresh list with al the partitions and free spaces
 	void Read_Disk_Layout() ;
@@ -76,6 +77,7 @@ public:
 private:
 	//make a try to get the amount of used sectors on a filesystem ( see comments in implementation )
 	Sector Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path );
+	//bool Supported( const Glib::ustring & filesystem ) ;
 
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;	
 
@@ -83,7 +85,8 @@ private:
 	void close_device_and_disk() ;
 	bool Resize_Extended( const Partition & partition, PedTimer *timer) ;
 		
-	std::vector<Partition> device_partitions;
+	std::vector<Partition> device_partitions ;
+	std::vector<FS> * FILESYSTEMS ;
 	Sector length;
 	long heads ;
 	long sectors ;

@@ -30,25 +30,23 @@ class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_New() ;
-	void Set_Data( const Partition & partition, bool any_extended, unsigned short  new_count );
+	void Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS );
 	Partition Get_New_Partition() ;//overridden function
 	
 private:
 	void Build_Filesystems_Menu() ;
-	//bool Check_Restrictions() ;
-
+	
 	Gtk::Table table_create;
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
-	Gtk::Label label_type,label_filesystem,label_start,label_size;
 	Gtk::Menu menu_type, menu_filesystem;
 
-	std::vector <Glib::ustring> filesystems ;
+	std::vector<FS> FILESYSTEMS ;
 	
 	//signal handlers
 	void optionmenu_changed( bool );
 
 	Gdk::Color color_temp;
-	unsigned short  new_count ;
+	unsigned short new_count ;
 };
 
 } //GParted

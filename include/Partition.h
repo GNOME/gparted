@@ -23,57 +23,16 @@
 #ifndef PARTITION
 #define PARTITION
 
+#include "../include/Utils.h"
 #include "../include/i18n.h"
 
-#include <gtkmm/label.h>
-#include <glibmm/ustring.h>
 #include <gdkmm/colormap.h>
 
 #include <sstream>
 #include <iostream>
 
-//compose library, dedicated to the translators :P
-#include "../compose/ucompose.hpp"
-
-#define MEGABYTE 2048  //try it: 2048 * 512 / 1024 /1024 == 1    :P
-
 namespace GParted
 {
-typedef long long Sector;//one day this won't be sufficient,  oh how i dream of that day... :-P
-
-//------------global used convenience functions----------------------------	
-inline long Sector_To_MB( Sector sectors ) 
-{
-	 return (long) ( (double) sectors * 512/1024/1024 +0.5) ;
-}
-
-inline long Round( double double_value )
-{
-	 return (long) ( double_value + 0.5) ;
-}
-
-inline Sector Abs( Sector sectors )
-{
-	return sectors < 0 ? sectors - 2*sectors : sectors ;
-}
-
-inline Gtk::Label * mk_label( const Glib::ustring & text ) 
-{
-	Gtk::Label * label = manage( new Gtk::Label() ) ;
-	label ->set_markup( text ) ;
-	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
-	return label ;
-}
-
-inline Glib::ustring num_to_str( Sector number )
-{
-	std::ostringstream os;
-	os .imbue(std::locale(""));
-	os << number ;
-	return os .str() ;
-}
-//----------------------------------------------------------------------------------------------
-	
 	
 enum PartitionType {
 	PRIMARY		=	0,
@@ -88,22 +47,7 @@ enum PartitionStatus {
 	STAT_COPY	=	3
 };
 
-/*
-enum FileSystem {
-	ext2		=	0,
-	ext3		=	1,
-	linux_swap	=	2,
-	reiserfs		=	3,
-	hfs		=	4,
-	jfs		=	5,
-	hp_ufs		=	6,
-	sun_ufs		=	7,
-	xfs		=	8,
-	fat16		=	9,
-	fat32		=	10,
-	ntfs		=	11
-};
-*/	
+	
 class Partition
 {
 public:
