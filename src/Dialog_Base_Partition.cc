@@ -115,12 +115,12 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 }
 
 Partition Dialog_Base_Partition::Get_New_Partition() 
-{
-	//no need to set the start of a fixed_start one ;-)
-	if ( ! fixed_start )
-		selected_partition.sector_start = START + (Sector) spinbutton_before .get_value() * MEGABYTE ;	
+{ 	
+	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
+		selected_partition .sector_start = START + (Sector) spinbutton_before .get_value() * MEGABYTE ;	
 	
-	selected_partition.sector_end = selected_partition.sector_start + (Sector) spinbutton_size.get_value() * MEGABYTE ;
+	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
+		selected_partition .sector_end = selected_partition .sector_start + (Sector) spinbutton_size .get_value() * MEGABYTE ;
 
 	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition.sector_start < START )
@@ -136,7 +136,7 @@ Partition Dialog_Base_Partition::Get_New_Partition()
 	
 	//set new value of unused..
 	if ( selected_partition .sectors_used != -1 )
-		selected_partition .sectors_unused = ( selected_partition .sector_end - selected_partition .sector_start)  - selected_partition .sectors_used ;
+		selected_partition .sectors_unused = ( selected_partition .sector_end - selected_partition .sector_start) - selected_partition .sectors_used ;
 	
 	return selected_partition ;
 }
