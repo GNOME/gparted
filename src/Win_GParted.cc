@@ -1042,7 +1042,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 	
 	//check for some limits...
-	fs = gparted_core .get_fs( selected_partition .filesystem ) ;
+	fs = gparted_core .get_fs( new_fs ) ;
 	
 	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
 	{
