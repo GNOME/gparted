@@ -1,0 +1,237 @@
+/* Copyright (C) 2004 Bart
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
+#include "../include/Dialog_Partition_Resize_Move.h"
+
+namespace GParted
+{
+
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(  )
+{
+}
+
+void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions )
+{
+	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
+	
+	this ->selected_partition = selected_partition ;
+	
+	if ( selected_partition .type == GParted::EXTENDED )
+	{
+		Set_Resizer( true ) ;	
+		Resize_Move_Extended( partitions ) ;
+	}
+	else
+	{
+		Set_Resizer( false ) ;	
+		Resize_Move_Normal( partitions ) ;
+	}
+	
+	//set partition color
+	frame_resizer_base ->set_rgb_partition_color( selected_partition .color ) ;
+	
+	//set some initial values... ( i believe i only use these for fat16 checks.. *sigh* )
+	this ->x_start = frame_resizer_base ->get_x_start() ;
+	this ->x_end = frame_resizer_base ->get_x_end() ;
+	
+	//store the original values
+	ORIG_BEFORE =	spinbutton_before .get_value_as_int() ;
+	ORIG_SIZE		=	spinbutton_size .get_value_as_int() ;
+	ORIG_AFTER	=	spinbutton_after .get_value_as_int() ;
+	
+	GRIP = false ;
+	
+	Set_Confirm_Button( RESIZE_MOVE ) ;	
+	this ->show_all_children() ;
+}
+
+void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
+{
+		
+	//see if we need a fixed_start
+	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" )
+	{
+		/*TO TRANSLATORS: dialogtitle. used as  Resize /dev/hda1 */
+		this ->set_title( (Glib::ustring) _("Resize") + " " + selected_partition .partition ) ;
+		this ->fixed_start = true;
+		frame_resizer_base ->set_fixed_start( true ) ;
+		spinbutton_before .set_sensitive( false ) ;
+	}
+	else
+	{
+		/*TO TRANSLATORS: dialogtitle. used as  Resize/Move /dev/hda1 */
+		this ->set_title( (Glib::ustring) _("Resize/Move") + " " + selected_partition .partition ) ;
+		frame_resizer_base ->set_fixed_start( false ) ;
+	}
+	
+	//calculate total size in MB's of previous, current and next partition
+	//first find index of partition
+	unsigned int t;
+	for ( t=0;t< partitions.size(); t++ )
+		if ( partitions[t].sector_start == selected_partition.sector_start && partitions[t].type != GParted::EXTENDED )
+			break;
+	
+	Sector previous, next ;
+	previous = next = 0 ;
+	//also check the partitions filesystem ( if this is ext2/3 then previous should be 0 )	
+	if ( t  >= 1 &&  partitions[t -1].type == GParted::UNALLOCATED && selected_partition.filesystem != "ext2" && selected_partition.filesystem != "ext3" && partitions[t -1] .inside_extended == selected_partition.inside_extended )
+	{ 
+		previous = partitions[t -1].sector_end - partitions[t -1].sector_start ;
+		START = partitions[t -1].sector_start ;
+	} 
+	else
+		START = selected_partition.sector_start ;
+
+	if ( t +1 < partitions.size() && partitions[t +1].type == GParted::UNALLOCATED && partitions[t +1] .inside_extended == selected_partition.inside_extended )
+		next = partitions[t +1].sector_end - partitions[t +1].sector_start ;
+	
+	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
+	TOTAL_MB = Sector_To_MB( total_length ) ;
+	
+	MB_PER_PIXEL = (double) TOTAL_MB / 500  ;
+		
+	//now calculate proportional length of partition 
+	frame_resizer_base ->set_x_start( Round( (double)  previous / ( (double)total_length/500)  )  ) ;
+	frame_resizer_base ->set_x_end( ( Round( (double)  (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500)  )) + frame_resizer_base ->get_x_start()  ) ;
+	frame_resizer_base ->set_used( Round( (double)  selected_partition.sectors_used / ( (double)total_length/500)  )  ) ;
+	
+	//set values of spinbutton_before
+	if ( ! fixed_start )
+	{
+		spinbutton_before .set_range( 0, Sector_To_MB(total_length - selected_partition.sectors_used)   -1 ) ;//mind the -1  !!
+		spinbutton_before .set_value(  Sector_To_MB( previous ) ) ;
+	}
+	
+	//set values of spinbutton_size 
+	//since some filesystems have upper and lower limits we need to check for this
+	double LOWER, UPPER;
+	if ( selected_partition.filesystem == "fat16"  && selected_partition .Get_Used_MB() < 32 )
+		LOWER = 32 +1 ;
+	else if ( selected_partition.filesystem == "fat32"  && selected_partition .Get_Used_MB() < 256 )
+		LOWER = 256 +1; //when shrinking to 256 the filesystem converts to fat16, thats why i added the 1
+	else
+		LOWER = selected_partition .Get_Used_MB() +1;
+	
+	if ( selected_partition.filesystem == "fat16" && Sector_To_MB( total_length ) > 1023 )
+		UPPER = 1023 ;
+	else
+		UPPER =  Sector_To_MB( total_length ) ;
+	
+	spinbutton_size .set_range( LOWER , UPPER ) ;
+	spinbutton_size .set_value(  selected_partition .Get_Length_MB()  ) ;
+	
+	//set values of spinbutton_after
+	spinbutton_after .set_range(  0, Sector_To_MB( total_length )  - LOWER ) ;
+	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
+	
+	//set contents of label_minmax
+	os << _("Minimum Size") << ": " << LOWER << " MB\t\t"; 
+	os << _("Maximum Size") << ": " << Sector_To_MB( total_length )  << " MB" ; 
+	label_minmax.set_text( os.str() ) ; os.str("") ;
+}
+
+
+void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Partition> & partitions )
+{
+	//calculate total size in MB's of previous, current and next partition
+	//first find index of partition
+	unsigned int t;
+	for ( t=0;t< partitions.size(); t++ )
+		if ( partitions[t].type == GParted::EXTENDED )
+			break;
+	
+	Sector previous, next ;
+	previous = next = 0 ;
+	//calculate length and start of previous
+	if ( t > 0 && partitions[t -1].type == GParted::UNALLOCATED )
+	{
+		previous = partitions[t -1].sector_end - partitions[t -1].sector_start ;
+		START = partitions[t -1].sector_start ;
+	} 
+	else
+		START = selected_partition.sector_start ;
+	
+	//calculate length of next (in this case next should be the first partition OUTSIDE the extended .. )
+	for ( t+=1;t<partitions.size() ; t++ )
+	{
+		if ( ! partitions[t].inside_extended ) 
+		{
+			if ( partitions[t].type == GParted::UNALLOCATED )
+				next = partitions[t].sector_end - partitions[t].sector_start ;
+			
+			break ;
+		}
+	}
+	
+	//now we have enough data to calculate some important values..
+	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
+	TOTAL_MB = Sector_To_MB( total_length ) ;
+	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	
+	//calculate proportional length of partition ( in pixels )
+	frame_resizer_base ->set_x_start( Round( (double)  previous / ( (double)total_length/500)  )  ) ;
+	frame_resizer_base ->set_x_end( ( Round( (double)  (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500)  )) + frame_resizer_base ->get_x_start()  ) ;
+	
+	//used is a bit different here... we consider start of first logical to end last logical as used space
+	Sector first =0, used =0 ;
+	for ( t=0;t< partitions.size(); t++ )
+	{
+		if ( partitions[t].type == GParted::LOGICAL )
+		{
+			if ( first == 0 )
+				first = partitions[t] .sector_start ;
+			
+			used = partitions[t] .sector_end - first;
+		}
+	}
+
+	frame_resizer_base ->set_used_start( Round( (double)  (first - START) / ( (double)total_length/500)  ) ) ;
+	frame_resizer_base ->set_used( Round( (double)  used / ( (double)total_length/500)  )  ) ;
+	
+	//set values of spinbutton_before (we assume there is no fixed start.)
+	if ( first == 0 ) //no logicals
+		spinbutton_before .set_range( 0, TOTAL_MB  - 1) ;
+	else
+		spinbutton_before .set_range( 0, Sector_To_MB (first - START) ) ;
+	
+	spinbutton_before .set_value( Sector_To_MB ( previous )  ) ;
+	
+	//set values of spinbutton_size
+	if ( first == 0 ) //no logicals
+		spinbutton_size .set_range(  1 , TOTAL_MB ) ;
+	else
+		spinbutton_size .set_range(  Sector_To_MB( used ) , TOTAL_MB ) ;
+	
+	spinbutton_size .set_value(  selected_partition .Get_Length_MB() ) ;
+	
+	//set values of spinbutton_after
+	if ( first == 0 ) //no logicals
+		spinbutton_after .set_range(  0, TOTAL_MB -1 ) ;
+	else
+		spinbutton_after .set_range(  0, Sector_To_MB( total_length + START - first - used) ) ;
+	
+	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
+	
+	//set contents of label_minmax
+	os << _("Minimum Size") << ": " << Sector_To_MB( used ) +1 << " MB\t\t"; 
+	os << _("Maximum Size") << ": " << TOTAL_MB << " MB" ; 
+	label_minmax.set_text( os.str() ) ; os.str("") ;
+	
+}
+
+
+} //GParted

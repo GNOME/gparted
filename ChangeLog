@@ -1,0 +1,71 @@
+
+**changes**
+- replaced some 'dunglish' terms with more decent english. (Thanks to Tino Meinen)
+- cleaned up autoconf stuff a bit
+- gparted now gets installed in the sbin/ instead of bin/ (1023181)
+- maximum amount of primary partition isn't static anymore, it gets asked from the partition table.
+- lots of internal code cleanups. this improved performance and stability.
+- doubleclick now invokes infodialog
+
+**fixes**
+- sometimes creating new fat filesystems in very small spaces resulted in errors. fixed.
+- use copies from buildfiles instead of symlinks to them. (Thanks to Kristof Vansant)
+- when performing operations on just copied partitions, there was a chance the operation would be executed on another partition. fixed.
+- fixed a rare bug that caused incorrect partitiontable display after an operation went wrong.
+- some errormessages were not entirely threadsafe, fixed (hopefully :P )
+
+--------------------------------------------------------------------------
+
+GParted-0.0.4	04 Sep 2004		:
+
+- fixed another bug with hotpluggable stuff (usbdevices etc...)
+- fixed "random" chrasher while performing actions on a device with a mounted partition.
+- better alignment of information in deviceinfo and partitioninfo. (there were some problems with certain fonts)
+- changed checking for filesystemlimits in new partition dialog a bit.
+- fixed small bug in new partition dialog which made it possible to add fat16 partition > 1023MB
+- time left in progressbar shows now minutes and seconds
+- implemented copy'n paste functionality
+- fixed small bug with resizer
+- internal code cleanups, gained some performance
+- made the operationtitles a bit more informative
+- fixed bug with converting non-existent (new) partitions
+- implemented new operationslist
+- lots of small stuff
+
+-------------------------------------------------------
+
+GParted-0.0.3	26 Aug 2004		:
+
+- and as always, lots of small fixed/changes..
+- fixed bug with resizing extended partition
+- fixed bug which occasionally occurred when deleting filesystems with errors on them
+- fixed small bug with deleting new logical partitions while a partition with a higher number is mounted
+- added read-only support for partition flags (e.g. lba, boot, etc...)
+- implemented conversion between filesystems. (no big deal, all data is destroyed in the process)
+- compiling/running tested on 64bits arch, went perfectly :)
+- fixed another small bug with re-reading devices (optionmenu wasn't updated)
+- Early check for errors on filesystem. Disable appropiate actions and explain in Info
+- When a device can't be read it isn't listed anymore.
+
+------------------------------------------------------
+
+GParted-0.0.2	18 Aug 2004   :
+
+- new create dialog
+- far more compliant with HIG
+- unallocated space now visible in treeview
+- fixed bug with re-reading devices (segfault)
+- fixed bug with new extended (segfault)
+- a couple of other small things, fixes and improvements 
+
+---------------------------------------------
+
+GParted-0.0.1	12 Aug 2004   :
+
+***FIRST RELEASE!
+- Create (ext2, linux-swap, fat16, fat32)
+- resize (ext2, ext3, linux-swap, fat16, fat32 )
+- move	(linux-swap, fat16, fat32)
+- Full operationslist with undo
+- much more little stuff
+- basicly working, but not tested very well
