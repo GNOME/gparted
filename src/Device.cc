@@ -539,19 +539,22 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 		
 	//METHOD #2
 	//this ony works for mounted ( and therefore known to the OS ) filesystems. My method is quite crude, keep in mind it's only temporary ;-)
-	Glib::ustring buf;
-	system( ("df -k --sync " + sym_path + " | grep " + sym_path + " > /tmp/.tmp_gparted").c_str() );
-	std::ifstream file_input( "/tmp/.tmp_gparted" );
-	
-	file_input >> buf; //skip first value
-	file_input >> buf;
-	if ( buf != "0" && ! buf.empty() ) 
-	{ 
+	if ( ped_partition_is_busy( c_partition ) )
+	{
+		Glib::ustring buf;
+		system( ("df -k --sync " + sym_path + " | grep " + sym_path + " > /tmp/.tmp_gparted").c_str() );
+		std::ifstream file_input( "/tmp/.tmp_gparted" );
+		
+		file_input >> buf; //skip first value
 		file_input >> buf;
-		file_input.close(); system( "rm -f /tmp/.tmp_gparted" );		
-		return atoi( buf.c_str() ) * 1024/512 ;
+		if ( buf != "0" && ! buf.empty() ) 
+		{ 
+			file_input >> buf;
+			file_input.close(); system( "rm -f /tmp/.tmp_gparted" );		
+			return atoi( buf.c_str() ) * 1024/512 ;
+		}
+		file_input.close(); system( "rm -f /tmp/.tmp_gparted" );
 	}
-	file_input.close(); system( "rm -f /tmp/.tmp_gparted" );
 	
 	
 	return -1 ; //all methods were unsuccesfull

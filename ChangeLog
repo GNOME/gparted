@@ -1,5 +1,10 @@
 2004-10-16 Bart Hakvoort  <gparted@users.sf.net>
 	
+	* src/Device.cc: when the libary of an optional filesystem (atm only reiserfs) wasn't installed, every scan printed an error 
+	in the console (df couldn't find the partition listed). Fixed by checking if partition is busy before using df.
+
+2004-10-16 Bart Hakvoort  <gparted@users.sf.net>
+	
 	* src/Dialog_Progress.cc: changed dialogwidth from 500 to 600 pixels. (icw certain languages the operation didn't fit)
 
 2004-10-16 Bart Hakvoort  <gparted@users.sf.net>
