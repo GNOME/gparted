@@ -17,6 +17,9 @@
  
 #include "../include/Dialog_Progress.h"
 
+namespace GParted
+{
+
 Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & first_operation )
 {
 	this ->set_size_request( 500, 275 ) ;
@@ -30,8 +33,6 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	fraction = (double) 1 / count_operations ;
 	fraction -= 1E-8 ; //minus 1E-8 is to prevent fraction from ever reaching >=1, it needs to be 0.0 < fraction < 1.0
 	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += _( "Applying pending operations" ) ;
 	str_temp += "</span>\n\n" ;
@@ -39,8 +40,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	str_temp += "\n";
 	str_temp += _("Clicking Cancel will prevent the next operations from being applied.") ;
 	str_temp += "\n";
-	label_temp ->set_markup( str_temp ) ; 
-	this->get_vbox() ->pack_start( *label_temp, Gtk::PACK_SHRINK );
+	this->get_vbox() ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
 	progressbar_current.set_text( _("initializing...") );
 	this->get_vbox() ->pack_start( progressbar_current , Gtk::PACK_SHRINK);
@@ -49,9 +49,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	label_current.set_markup( "<i>" + first_operation + "</i>" ) ;
 	this->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK );
 		
-	label_all_operations.set_alignment( Gtk::ALIGN_LEFT   );
-	label_all_operations.set_markup( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>");
-	this->get_vbox() ->pack_start( label_all_operations, Gtk::PACK_SHRINK );
+	this->get_vbox() ->pack_start( * mk_label( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>" ), Gtk::PACK_SHRINK );
 	
 	progressbar_all.set_text( String::ucompose( _("%1 of %2 operations completed"), 0, count_operations ) ) ;
 
@@ -88,3 +86,5 @@ void Dialog_Progress::Set_Progress_Current_Operation( )
 	else
 		progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 }
+
+}//GParted

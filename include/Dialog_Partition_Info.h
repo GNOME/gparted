@@ -42,24 +42,23 @@ namespace GParted
 class Dialog_Partition_Info : public Gtk::Dialog
 {
 public:
-	Dialog_Partition_Info( const Partition & );
+	Dialog_Partition_Info( const Partition & partition );
 	~Dialog_Partition_Info();
 
 private:
-	void init_drawingarea() ;
-	void Display_Info();
-	Glib::ustring Find_Status() ;
+	void init_drawingarea( ) ;
+	void Display_Info( );
+	Glib::ustring Find_Status( ) ;
 
 	//signalhandlers
-	void drawingarea_on_realize(  );
-	bool drawingarea_on_expose( GdkEventExpose *  );
+	void drawingarea_on_realize( );
+	bool drawingarea_on_expose( GdkEventExpose *ev );
 
 	Partition partition ;
 
 	Gtk::HBox *hbox ;
 	Gtk::DrawingArea drawingarea ;
 	Gtk::Frame *frame ;
-	Gtk::Label *label ;
 	Gtk::Image *image;
 	Gtk::Table *table;
 

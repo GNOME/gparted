@@ -202,10 +202,7 @@ void Win_GParted::init_device_info()
 	int top =0, bottom = 1;
 	
 	//title
-	label = manage( new Gtk::Label() ) ;
-	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
-	label ->set_markup( " <b>" + (Glib::ustring) _( "Harddisk Information" ) + ":</b>" ) ;
-	vbox_info .pack_start( *label, Gtk::PACK_SHRINK );
+	vbox_info .pack_start( * mk_label( " <b>" + (Glib::ustring) _( "Harddisk Information" ) + ":</b>" ), Gtk::PACK_SHRINK );
 	
 	//GENERAL DEVICE INFO
 	table = manage( new Gtk::Table() ) ;
@@ -400,10 +397,7 @@ void Win_GParted::Find_Devices()
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
 		
 		//the label...
-		label = manage( new Gtk::Label( " " + devices[i] ->Get_Path() + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] ->Get_Length() ) ) + ")" ) ) ;
-		
-		label ->set_alignment( Gtk::ALIGN_LEFT );
-		hbox ->pack_start( *label, Gtk::PACK_SHRINK );
+		hbox ->pack_start( *mk_label( " " + devices[i] ->Get_Path() + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] ->Get_Length() ) ) + ")" ), Gtk::PACK_SHRINK );
 	
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_devices .items().push_back( *menu_item );
@@ -789,11 +783,10 @@ void Win_GParted::activate_resize()
 		//pffff this whole mess only for this f*cked up filesystem :-(
 		Gtk::Button button_resize_move ;
 		Gtk::HBox hbox_resize_move;
-		Gtk::Label label_resize_move( _("Resize/Move") );
-		
+				
 		image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 		hbox_resize_move .pack_start( *image, Gtk::PACK_SHRINK ) ;
-		hbox_resize_move .pack_start( label_resize_move, Gtk::PACK_SHRINK ) ;
+		hbox_resize_move .pack_start( * mk_label( _("Resize/Move") ), Gtk::PACK_SHRINK ) ;
 		button_resize_move .add( hbox_resize_move ) ;
 				
 		dialog .add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;

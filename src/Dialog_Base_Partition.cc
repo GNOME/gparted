@@ -85,7 +85,7 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	//pack warning about small differences in values..
 	this ->get_vbox() ->pack_start( * mk_label( "\n <i>" + (Glib::ustring) _( "NOTE: values on disk may differ slightly from the values entered here.") + "</i>" ), Gtk::PACK_SHRINK );
 	
-	this ->get_vbox() ->pack_start( *( manage( new Gtk::Label( "") ) ), Gtk::PACK_SHRINK ); //filler :-P
+	this ->get_vbox() ->pack_start( * mk_label( "" ), Gtk::PACK_SHRINK ); //filler :-P
 		
 	this->add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;

@@ -186,7 +186,7 @@ void VBox_VisualDisk::Build_Legend(  )
 		if ( legende_allow )
 		{
 			Add_Legend_Item( partitions[ i ] .filesystem + "    " , partitions[ i ] .color ) ;			
-		
+				
 			//make sure this color isn't added to the legende again.
 			legende.push_back( partitions[i].filesystem );
 		}
@@ -194,21 +194,16 @@ void VBox_VisualDisk::Build_Legend(  )
 		legende_allow = true;
 	}
 	
-	//remove trailing whitespaces of last label_temp...
-	if ( label_temp )
-		label_temp ->set_text( label_temp ->get_text() .substr( 0, label_temp ->get_text() .length() -3)  ) ;
-	
-	
 	//if there are any partitions add used/unused
 	if ( ! only_unallocated )
 	{
 		frame_disk_legend = manage( new Gtk::Frame() ) ;
-		hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING   );
+		hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 		
 		hbox_legend = manage( new Gtk::HBox() );
 		frame_disk_legend ->add( *hbox_legend );
 	
-		Add_Legend_Item( (Glib::ustring) _( "used" ) + "    ", color_used  ) ;
+		Add_Legend_Item( (Glib::ustring) _( "used" ) + "    ", color_used ) ;
 		Add_Legend_Item( (Glib::ustring) _( "unused") + " ", color_unused ) ;
 	}
 		
@@ -217,15 +212,14 @@ void VBox_VisualDisk::Build_Legend(  )
 void VBox_VisualDisk::Add_Legend_Item( const Glib::ustring & filesystem, const Gdk::Color & color )
 {
 	//the colored square
-	entry_temp =  manage ( new Gtk::Entry() );
-	entry_temp->set_sensitive( false );
-	entry_temp->set_size_request( 15,15);
-	entry_temp->modify_base( entry_temp->get_state(), color );
+	entry_temp = manage ( new Gtk::Entry() );
+	entry_temp ->set_sensitive( false );
+	entry_temp ->set_size_request( 15,15);
+	entry_temp ->modify_base( entry_temp->get_state(), color );
 	hbox_legend ->pack_start( *entry_temp, Gtk::PACK_SHRINK   );
 						
 	//and the label
-	label_temp = manage( new Gtk::Label( " " + filesystem ) );
-	hbox_legend ->pack_start( *label_temp, Gtk::PACK_SHRINK   );
+	hbox_legend ->pack_start( * mk_label( " " + filesystem, false, false ), Gtk::PACK_SHRINK );
 }
 
 void VBox_VisualDisk::Set_Selected( const Partition & partition )

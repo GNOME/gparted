@@ -91,8 +91,6 @@ private:
 	Glib::ustring str_temp ;
 	int temp,selected_partition;
 	Gtk::Entry *entry_temp;
-	Gtk::Label *label_temp;
-		
 };
 
 } //GParted

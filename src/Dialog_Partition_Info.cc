@@ -22,9 +22,9 @@ namespace GParted
 
 Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 {
-	this -> partition = partition ;
+	this ->partition = partition ;
 
-	this->set_resizable( false );
+	this ->set_resizable( false );
 	
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
 	this->set_title( String::ucompose( _( "Information about %1"), partition.partition ) );
@@ -41,20 +41,13 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		frame ->set_border_width( 10 );
 		
 		image = manage( new Gtk::Image( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON ) );
-		label = manage( new Gtk::Label( ) ) ;
-		label ->set_markup( "<b> " + (Glib::ustring) _( "Libparted message:" ) + " </b>" ) ;
-		
+				
 		hbox = manage( new Gtk::HBox() );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-		hbox ->pack_start( *label, Gtk::PACK_SHRINK ) ;
+		hbox ->pack_start( * mk_label( "<b> " + (Glib::ustring) _( "Libparted message:" ) + " </b>" ), Gtk::PACK_SHRINK ) ;
 		
 		frame ->set_label_widget( *hbox ) ;
-		
-		label = manage( new Gtk::Label( ) ) ;
-		label ->set_markup( "<i>" +  partition.error + "</i>") ;
-		label ->set_selectable( true ) ;
-		label ->set_line_wrap( true ) ;
-		frame ->add( *label );
+		frame ->add( * mk_label( "<i>" +  partition.error + "</i>", true, true, true ) );
 		
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}

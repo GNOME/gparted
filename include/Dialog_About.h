@@ -24,13 +24,16 @@
 #define DIALOG_ABOUT
 
 #include "../include/i18n.h"
+#include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
-#include <gtkmm/label.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/notebook.h>
 
+namespace GParted
+{
+	
 class Dialog_About : public Gtk::Dialog
 {
 public:
@@ -40,9 +43,10 @@ public:
 private:
 	void Show_Credits() ;
 
-	Gtk::Label *label_temp ;
 	Gtk::Button button_credits;
 };
+
+} //GParted
 
 
 #endif

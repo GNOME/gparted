@@ -63,11 +63,17 @@ inline Sector Abs( Sector sectors )
 	return sectors < 0 ? sectors - 2*sectors : sectors ;
 }
 
-inline Gtk::Label * mk_label( const Glib::ustring & text ) 
+inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true, bool align_left = true, bool wrap = false ) 
 {
-	Gtk::Label * label = manage( new Gtk::Label() ) ;
-	label ->set_markup( text ) ;
-	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
+	Gtk::Label * label = manage( new Gtk::Label( text ) ) ;
+	
+	label ->set_use_markup( use_markup ) ;
+	
+	if ( align_left )
+		label ->set_alignment( Gtk::ALIGN_LEFT ) ;
+	
+	label ->set_line_wrap( wrap ) ;
+	
 	return label ;
 }
 

@@ -19,32 +19,37 @@
 #define DIALOG_PARTITION_PROGRESS
 
 #include "../include/i18n.h"
+#include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 
+namespace GParted
+{
 
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
 	Dialog_Progress( int, const Glib::ustring & );
-	~Dialog_Progress();
+	~Dialog_Progress( );
 
 	void Set_Next_Operation( );
-	void Set_Progress_Current_Operation();
+	void Set_Progress_Current_Operation( );
 	
 	Glib::ustring current_operation;
 	float fraction_current;
 	int time_left ;
 	
 private:
-	Gtk::Label label_all_operations, label_current, *label_temp;
+	Gtk::Label label_current ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
 	
 	double fraction;
 	int count_operations, current_operation_number;
 };
+
+}//GParted
 
 #endif //DIALOG_PARTITION_PROGRESS

@@ -17,6 +17,9 @@
  
 #include "../include/Dialog_About.h"
 
+namespace GParted
+{
+
 Dialog_About::Dialog_About()
 {
 	/*TO TRANSLATORS: this is the dialog title */
@@ -25,26 +28,11 @@ Dialog_About::Dialog_About()
 	this ->set_resizable( false );
 	this ->set_has_separator( false ) ;
 	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_markup( "\n<span size='small'>logo here ;)</span>\n" ) ;
-	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
-	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_markup( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>" ) ;
-	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
-	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_text( "\n" + (Glib::ustring) _( "Gnome Partition Editor based on libparted" ) + "\n" ) ;
-	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
-	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_markup( "<span size='small'>" + (Glib::ustring) _( "Copyright (c)" ) + " 2004 Bart Hakvoort</span>" ) ;
-	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
-	
-	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_markup( "<span size='small'>http://gparted.sourceforge.net</span>" ) ;
-	label_temp -> set_selectable( true ) ;
-	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "\n<span size='small'>logo here ;)</span>\n", true, false ), Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>", true, false ) ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "\n" + (Glib::ustring) _( "Gnome Partition Editor based on libparted" ) + "\n", false, false ) ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>" + (Glib::ustring) _( "Copyright (c)" ) + " 2004 Bart Hakvoort</span>", true, false ) ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>http://gparted.sourceforge.net</span>", true, false ) ,Gtk::PACK_SHRINK );
 	
 	button_credits.add_pixlabel( "/usr/share/icons/hicolor/16x16/stock/generic/stock_about.png", "Credits", 0, 0.5 ) ;
 	button_credits.signal_clicked() .connect( sigc::mem_fun( this, &Dialog_About::Show_Credits ) ) ;
@@ -54,7 +42,6 @@ Dialog_About::Dialog_About()
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 	
 	this ->show_all_children() ;
-	
 }
 
 void Dialog_About::Show_Credits()
@@ -62,34 +49,30 @@ void Dialog_About::Show_Credits()
 	Gtk::Dialog dialog( _("Credits"), *this ) ;
 	Gtk::Notebook notebook_credits;
 	Gtk::VBox vbox_written, vbox_translators ;
-	Gtk::Label label_writers, label_translators ;
-		
+			
 	//written by
 	vbox_written .set_border_width( 5 ) ;
-	label_writers .set_text( "Bart Hakvoort <gparted@users.sf.net>");
-	label_writers .set_selectable( true ); 
-	label_writers .set_alignment( Gtk::ALIGN_LEFT ) ;
-	vbox_written .pack_start( label_writers, Gtk::PACK_SHRINK ) ;
+	vbox_written .pack_start( * mk_label( "Bart Hakvoort <gparted@users.sf.net>", false ), Gtk::PACK_SHRINK ) ;
 	notebook_credits .set_size_request( -1, 200 ) ;
 	
 	/*TO TRANSLATORS: tablabel in aboutdialog */
 	notebook_credits .append_page( vbox_written, _("Written by") ) ;
 	
 	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names */
-	label_translators .set_text( _( "translator-credits") ) ; 
-	label_translators .set_selectable( true ); 
-	if ( label_translators .get_text() != "translator-credits" )
+	Glib::ustring str_credits = _("translator-credits") ;
+	if ( str_credits != "translator-credits" )
 	{
-		label_translators .set_alignment( Gtk::ALIGN_LEFT ) ;
-		vbox_translators .pack_start( label_translators, Gtk::PACK_SHRINK ) ;
+		vbox_translators .pack_start( * mk_label( str_credits ), Gtk::PACK_SHRINK ) ;
 		/*TO TRANSLATORS: tablabel in aboutdialog */
 		notebook_credits .append_page( vbox_translators, _("Translated by") ) ;
 	}
 	
-	dialog .get_vbox()->pack_start(  notebook_credits, Gtk::PACK_SHRINK );
+	dialog .get_vbox() ->pack_start( notebook_credits, Gtk::PACK_SHRINK );
 	dialog .add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 	
 	dialog .set_resizable( false );
 	dialog .show_all_children() ;
 	dialog .run() ;
 }
+
+}//GParted

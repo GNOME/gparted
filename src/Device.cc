@@ -17,6 +17,9 @@
  
 #include "../include/Device.h"
 
+namespace GParted
+{
+
 /*
  *	This is ridiculous!, if i use this one as a member function realpath starts complaining and won't compile :-S
  */
@@ -58,41 +61,31 @@ PedExceptionOption PedException_Handler (PedException* ex)
 	
 	if ( show_libparted_message )
 	{
-		Gtk::Label *label_temp;
 		Gtk::HBox *hbox_filler;
 		
 		Glib::ustring message = "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Libparted message" ) + "</span>\n\n" ;
 		message += (Glib::ustring) _( "This message directly comes from libparted and has little to do with GParted. However, the message might contain useful information, so you might decide to read it.") + "\n";
 		message += _( "If you don't want to see these messages any longer, it's safe to disable them.") ;
 				
-		Gtk::MessageDialog dialog(  message,true,Gtk::MESSAGE_WARNING , Gtk::BUTTONS_OK, true); 
+		Gtk::MessageDialog dialog( message, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true); 
 		Gtk::Frame frame_libparted_message ;
 		frame_libparted_message .set_size_request( 400, -1 );
-		label_temp = manage( new Gtk::Label("<b>" + (Glib::ustring) _( "Libparted message") + ": </b>" ) ) ;
-		label_temp ->set_use_markup( true ) ;
-		frame_libparted_message .set_label_widget( *label_temp ) ;
+		frame_libparted_message .set_label_widget( * mk_label("<b>" + (Glib::ustring) _( "Libparted message") + ": </b>" ) ) ;
 		
 		frame_libparted_message .set_border_width( 5 ) ;
-		label_temp = manage( new Gtk::Label( ) ) ;
-		label_temp ->set_size_request( 55, -1 ) ; //used like a simple filler ( remember this html cursus :-P )
 		hbox_filler = manage( new Gtk::HBox() ) ;
-		hbox_filler ->pack_start ( *label_temp, Gtk::PACK_SHRINK ) ;
+		hbox_filler ->pack_start ( * mk_label( "\t\t" ), Gtk::PACK_SHRINK ) ; //filler
 		hbox_filler ->pack_start ( frame_libparted_message, Gtk::PACK_SHRINK ) ;
 		
 		dialog .get_vbox() ->pack_start( *hbox_filler, Gtk::PACK_SHRINK ) ;
 		
-		Gtk::Label label_libparted_message( "<i>" + error_message + "</i>" ) ;
-		label_libparted_message .set_selectable( true ) ;
-		label_libparted_message .set_use_markup( true ) ;
-		label_libparted_message .set_line_wrap( true ) ;
-		frame_libparted_message.add ( label_libparted_message ) ;
+		frame_libparted_message.add ( * mk_label( "<i>" + error_message + "</i>", true, false, true ) ) ;
 			
 		Gtk::CheckButton checkbutton_message( _( "Hide libparted messages for this session" ) ) ;
 		checkbutton_message .set_border_width( 5 ) ;
-		label_temp = manage( new Gtk::Label(  ) ) ;
-		label_temp ->set_size_request( 55, -1 ) ;
+		
 		hbox_filler = manage( new Gtk::HBox() ) ;
-		hbox_filler ->pack_start ( *label_temp, Gtk::PACK_SHRINK ) ;
+		hbox_filler ->pack_start ( * mk_label( "\t\t" ), Gtk::PACK_SHRINK ) ;
 		hbox_filler ->pack_start ( checkbutton_message, Gtk::PACK_SHRINK ) ;
 		
 		dialog .get_vbox() ->pack_start( *hbox_filler, Gtk::PACK_SHRINK ) ;
@@ -106,10 +99,7 @@ PedExceptionOption PedException_Handler (PedException* ex)
 	return PED_EXCEPTION_UNHANDLED ;
 }
 
-
-namespace GParted
-{
-
+//--------------Device----------------------------------------------
 Device::Device()
 {
 }
