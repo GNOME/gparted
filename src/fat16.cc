@@ -27,7 +27,10 @@ FS fat16::get_filesystem_support( )
 	
 	fs .filesystem = "fat16" ;
 	fs .read = true ; //provided by libparted
-	fs .create = true ;
+	
+	//find out if we can create fat16 filesystems
+	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 
+		fs .create = true ;
 	
 	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = true ;
@@ -41,7 +44,7 @@ FS fat16::get_filesystem_support( )
 	
 	
 	fs .MIN = 32 ;
-	fs .MAX = 1023 ;
+	fs .MAX = 4096 ;
 	
 	return fs ;
 }
@@ -77,35 +80,7 @@ void fat16::Set_Used_Sectors( Partition & partition )
 	
 bool fat16::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	bool return_value = false ;
-	
-	if ( open_device_and_disk( device_path, device, disk ) )
-	{	
-		PedPartition *c_part = NULL ;
-		PedFileSystemType *fs_type = NULL ;
-		PedFileSystem *fs = NULL ;
-		
-		c_part = ped_disk_get_partition_by_sector( disk, (new_partition .sector_end + new_partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs_type = ped_file_system_type_get( "fat16" ) ;
-			if ( fs_type )
-			{
-				fs = ped_file_system_create( & c_part ->geom, fs_type, NULL );
-				if ( fs )
-				{
-					if ( ped_partition_set_system(c_part, fs_type ) )
-						return_value = Commit( disk ) ;
-					
-					ped_file_system_close( fs );
-				}
-			}
-		}
-		
-		close_device_and_disk( device, disk) ;
-	}
-		
-	return return_value ;
+	return ! Execute_Command( "mkdosfs -F16 " + new_partition .partition ) ;
 }
 
 bool fat16::Resize( const Partition & partition_new, bool fill_partition )
