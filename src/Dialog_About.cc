@@ -65,18 +65,32 @@ void Dialog_About::Show_Credits()
 	Gtk::Dialog dialog( _("Credits"), *this ) ;
 	Gtk::Notebook notebook_credits;
 	Gtk::VBox vbox_written, vbox_documented, vbox_translators ;
-	Gtk::Label label_writers( "Bart Hakvoort (gparted@users.sourceforge.net)");
-	
+	Gtk::Label label_writers, label_translators ;
+		
+	//written by
 	vbox_written .set_border_width( 5 ) ;
+	label_writers .set_text( "Bart Hakvoort (gparted@users.sf.net)");
+	label_writers .set_alignment( Gtk::ALIGN_LEFT ) ;
 	vbox_written .pack_start( label_writers, Gtk::PACK_SHRINK ) ;
-	
 	notebook_credits .set_size_request( -1, 200 ) ;
 	/*TO TRANSLATORS: tablabel in aboutdialog */
 	notebook_credits .append_page( vbox_written, _("Written by") ) ;
+	
+	//documented by
 	/*TO TRANSLATORS: tablabel in aboutdialog */
 	notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
-	/*TO TRANSLATORS: tablabel in aboutdialog */
-	notebook_credits .append_page( vbox_translators, _("Translated by") ) ;
+	
+	//translated by
+	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names */
+	label_translators .set_text( _( "translator_credits") ) ; 
+	
+	if ( label_translators .get_text() != "translator_credits" )
+	{
+		label_translators .set_alignment( Gtk::ALIGN_LEFT ) ;
+		vbox_translators .pack_start( label_translators, Gtk::PACK_SHRINK ) ;
+		/*TO TRANSLATORS: tablabel in aboutdialog */
+		notebook_credits .append_page( vbox_translators, _("Translated by") ) ;
+	}
 	
 	dialog .get_vbox()->pack_start(  notebook_credits, Gtk::PACK_SHRINK );
 	dialog .add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
