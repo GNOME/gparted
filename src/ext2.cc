@@ -59,7 +59,7 @@ void ext2::Set_Used_Sectors( Partition & partition )
 	Sector free_blocks = -1, blocksize = -1 ;
 
         //get free blocks..
-	f = popen( ( "LANG=C dumpe2fs -h " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LC_ALL=C dumpe2fs -h " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
@@ -86,7 +86,7 @@ bool ext2::Create( const Glib::ustring device_path, const Partition & new_partit
 
 bool ext2::Resize( const Partition & partition_new, bool fill_partition )
 {
-	Glib::ustring str_temp = "resize2fs " + partition_new .partition ;
+	Glib::ustring str_temp = "LC_NUMERIC=C resize2fs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 		str_temp += " " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
@@ -96,7 +96,14 @@ bool ext2::Resize( const Partition & partition_new, bool fill_partition )
 
 bool ext2::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	if ( ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	{
+		Partition partition ;
+		partition .partition = dest_part_path ;
+		return Resize( partition, true ) ;
+	}
+	
+	return false ;
 }
 
 bool ext2::Check_Repair( const Partition & partition )

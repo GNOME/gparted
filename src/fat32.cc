@@ -90,7 +90,7 @@ bool fat32::Resize( const Partition & partition_new, bool fill_partition )
 
 bool fat32::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	return ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
 bool fat32::Check_Repair( const Partition & partition )

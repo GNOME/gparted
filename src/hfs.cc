@@ -48,7 +48,7 @@ void hfs::Set_Used_Sectors( Partition & partition )
 	Glib::ustring output ;
 	
         //get free bytes..
-	f = popen( ( "LANG=C echo 'quit' | hfs " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LC_ALL=C echo 'quit' | hfs " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
@@ -76,7 +76,7 @@ bool hfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool hfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	return ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
 bool hfs::Check_Repair( const Partition & partition )

@@ -43,7 +43,6 @@ FS fat16::get_filesystem_support( )
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	
-	
 	fs .MIN = 32 ;
 	fs .MAX = 4096 ;
 	
@@ -92,7 +91,7 @@ bool fat16::Resize( const Partition & partition_new, bool fill_partition )
 
 bool fat16::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	return ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
 bool fat16::Check_Repair( const Partition & partition )

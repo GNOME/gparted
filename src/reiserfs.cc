@@ -63,7 +63,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	Sector free_blocks = -1, blocksize = -1 ;
 
         //get free blocks..
-	f = popen( ( "LANG=C debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LC_ALL=C debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
@@ -89,7 +89,7 @@ bool reiserfs::Create( const Glib::ustring device_path, const Partition & new_pa
 
 bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 {
-	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .partition ;
+	Glib::ustring str_temp = "LC_NUMERIC=C echo y | resize_reiserfs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
@@ -99,22 +99,23 @@ bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {	
-	//copy partition
-	bool ret_val = ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	if ( ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	{
+		Partition partition ;
+		partition .partition = dest_part_path ;
+		return Resize( partition, true ) ;
+	}
 	
-	//and set proper used/unused
-	Execute_Command( "resize_reiserfs " + dest_part_path ) ;
-	
-	return ret_val ;
+	return false ;
 }
 
 bool reiserfs::Check_Repair( const Partition & partition )
 {
 	//according to the manpage it should return 0 or 1 on succes, instead it returns 256 on succes.. 
-	//blah, don't have time for this. Just check for both options, we'll fix this in 0.0.8 with our much improved errorhandling
+	//blah, don't have time for this. Just check for both options, we'll fix this later with our much improved errorhandling
 	int t = Execute_Command( "reiserfsck -y --fix-fixable " + partition .partition ) ;
 	
-	return ( t <=1 || t == 256 ) ;
+	return ( t <= 1 || t == 256 ) ;
 }
 
 int reiserfs::get_estimated_time( long MB_to_Consider )

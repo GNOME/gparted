@@ -68,7 +68,7 @@ void xfs::Set_Used_Sectors( Partition & partition )
 	Sector free_blocks = -1, blocksize = -1 ;
 
         //get free blocks..
-	f = popen( ( "LANG=C xfs_db -c 'sb 0' -c print -r " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LC_ALL=C xfs_db -c 'sb 0' -c print -r " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
@@ -111,7 +111,7 @@ bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	if ( ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	if ( ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
 	{
 		Partition partition ;
 		partition .partition = dest_part_path ;
