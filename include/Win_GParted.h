@@ -89,9 +89,10 @@ private:
 	void close_operationslist() ;
 	void clear_operationslist() ;
 	void optionmenu_devices_changed( );
-	
+		
 	void menu_gparted_refresh_devices();
 	void menu_gparted_quit();
+	void menu_view_harddisk_info();
 	void menu_help_contents();
 	void menu_help_about();
 
