@@ -20,7 +20,7 @@
 namespace GParted
 {
 	
-Dialog_Base_Partition::Dialog_Base_Partition(   )
+Dialog_Base_Partition::Dialog_Base_Partition( )
 {
 	this ->set_has_separator( false ) ;
 	
@@ -147,7 +147,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 	{
 		case NEW	:	this->add_button( Gtk::Stock::ADD,Gtk::RESPONSE_OK );
 					break ;
-		case RESIZE_MOVE:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" ) 
+		case RESIZE_MOVE:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" || selected_partition.filesystem == "reiserfs") 
 						str_temp = _("Resize") ;
 					else
 						str_temp = _("Resize/Move") ;
@@ -225,7 +225,16 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 		return ;
 	}
 	
-	
+	//check for lower limit reiserfs
+	if ( selected_partition.filesystem == "reiserfs" &&  ( x_end - x_start ) * MB_PER_PIXEL < 40 )
+	{ 
+		frame_resizer_base ->set_x_start( this ->x_start );
+		frame_resizer_base ->set_x_end( this ->x_end );
+				
+		frame_resizer_base ->Draw_Partition() ;
+		GRIP = false ;
+		return ;
+	}
 	
 	spinbutton_size .set_value( ( x_end - x_start ) * MB_PER_PIXEL ) ;
 	

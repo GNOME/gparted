@@ -63,7 +63,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 {
 		
 	//see if we need a fixed_start
-	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" )
+	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" || selected_partition.filesystem == "reiserfs" )
 	{
 		this ->set_title( String::ucompose( _("Resize %1"), selected_partition .partition) ) ;
 		this ->fixed_start = true;
@@ -85,8 +85,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	Sector previous, next ;
 	previous = next = 0 ;
-	//also check the partitions filesystem ( if this is ext2/3 then previous should be 0 )	
-	if ( t  >= 1 &&  partitions[t -1].type == GParted::UNALLOCATED && selected_partition.filesystem != "ext2" && selected_partition.filesystem != "ext3" && partitions[t -1] .inside_extended == selected_partition.inside_extended )
+	//also check the partitions filesystem ( if this is ext2/3 or reiserfs then previous should be 0 )	
+	if ( t  >= 1 &&  partitions[t -1].type == GParted::UNALLOCATED && selected_partition.filesystem != "ext2" && selected_partition.filesystem != "ext3" && selected_partition.filesystem != "reiserfs" && partitions[t -1] .inside_extended == selected_partition.inside_extended )
 	{ 
 		previous = partitions[t -1].sector_end - partitions[t -1].sector_start ;
 		START = partitions[t -1].sector_start ;
@@ -117,10 +117,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	//set values of spinbutton_size 
 	//since some filesystems have upper and lower limits we need to check for this
 	long LOWER, UPPER;
-	if ( selected_partition.filesystem == "fat16"  && selected_partition .Get_Used_MB() < 32 )
+	if ( selected_partition.filesystem == "fat16" && selected_partition .Get_Used_MB() < 32 )
 		LOWER = 32 +1 ;
-	else if ( selected_partition.filesystem == "fat32"  && selected_partition .Get_Used_MB() < 256 )
+	else if ( selected_partition.filesystem == "fat32" && selected_partition .Get_Used_MB() < 256 )
 		LOWER = 256 +1; //when shrinking to 256 the filesystem converts to fat16, thats why i added the 1
+	else if ( selected_partition.filesystem == "reiserfs" && selected_partition .Get_Used_MB() < 40 )
+		LOWER = 40 ;
 	else
 		LOWER = selected_partition .Get_Used_MB() +1;
 	
@@ -130,7 +132,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 		UPPER =  Sector_To_MB( total_length ) ;
 	
 	spinbutton_size .set_range( LOWER , UPPER ) ;
-	spinbutton_size .set_value(  selected_partition .Get_Length_MB()  ) ;
+	spinbutton_size .set_value( selected_partition .Get_Length_MB() ) ;
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range( 0, Sector_To_MB( total_length ) - LOWER ) ;
