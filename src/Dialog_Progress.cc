@@ -20,7 +20,7 @@
 namespace GParted
 {
 
-Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & first_operation )
+Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBuffer> textbuffer )
 {
 	this ->set_size_request( 600, 275 ) ;
 	this ->set_resizable( false ) ;
@@ -28,11 +28,9 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	this ->set_title( _("Applying pending operations") ) ;
 	
 	this ->count_operations = count_operations ;
-	current_operation_number = 0;
-	
+	current_operation_number = 0 ;
 	fraction = (double) 1 / count_operations ;
-	fraction -= 1E-8 ; //minus 1E-8 is to prevent fraction from ever reaching >=1, it needs to be 0.0 < fraction < 1.0
-	
+		
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += _( "Applying pending operations" ) ;
 	str_temp += "</span>\n\n" ;
@@ -40,51 +38,110 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	str_temp += "\n";
 	str_temp += _("Clicking Cancel will prevent the next operations from being applied.") ;
 	str_temp += "\n";
-	this->get_vbox() ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
-	progressbar_current.set_text( _("initializing...") );
-	this->get_vbox() ->pack_start( progressbar_current , Gtk::PACK_SHRINK);
+	progressbar_current .set_pulse_step( 0.01 ) ;
+	this->get_vbox( ) ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
 	
-	label_current.set_alignment( Gtk::ALIGN_LEFT   );
-	label_current.set_markup( "<i>" + first_operation + "</i>" ) ;
-	this->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK );
+	label_current .set_alignment( Gtk::ALIGN_LEFT );
+	this ->get_vbox( ) ->pack_start( label_current, Gtk::PACK_SHRINK );
+	
+	textview_details .set_sensitive( false ) ;
+	textview_details .set_size_request( -1, 100 ) ;
+	textview_details .set_wrap_mode( Gtk::WRAP_WORD ) ;
+	
+	textbuffer ->signal_insert( ) .connect( sigc::mem_fun( this, &Dialog_Progress::signal_textbuffer_insert ) ) ;
+	textview_details .set_buffer( textbuffer ) ;
 		
-	this->get_vbox() ->pack_start( * mk_label( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>" ), Gtk::PACK_SHRINK );
+	scrolledwindow .set_shadow_type( Gtk::SHADOW_ETCHED_IN ) ;
+	scrolledwindow .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
+	scrolledwindow .add( textview_details ) ;
 	
-	progressbar_all.set_text( String::ucompose( _("%1 of %2 operations completed"), 0, count_operations ) ) ;
-
-	this->get_vbox() ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( scrolledwindow, Gtk::PACK_SHRINK );
+		
+	this ->get_vbox( ) ->pack_start( * mk_label( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>" ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
-	this->get_vbox() ->set_spacing( 5 ) ;
-	this->get_vbox() ->set_border_width( 15 ) ;
+	this ->get_vbox( ) ->set_spacing( 5 ) ;
+	this ->get_vbox( ) ->set_border_width( 15 ) ;
 	
-	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	this->show_all_children() ;
+	tglbtn_details .set_label( _("Details") ) ;
+	tglbtn_details .signal_toggled( ) .connect( sigc::mem_fun( this, &Dialog_Progress::tglbtn_details_toggled ) ) ;
+	
+	this ->get_action_area( ) ->set_layout( Gtk::BUTTONBOX_EDGE ) ;
+	this ->get_action_area( ) ->pack_start( tglbtn_details ) ;
+	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	
+	this ->show_all_children( ) ;
+	scrolledwindow .hide( ) ;
 }
 
-void Dialog_Progress::Set_Next_Operation( )
-{ 
-	progressbar_all.set_fraction( progressbar_all.get_fraction() + fraction );
-	
-	progressbar_all.set_text( String::ucompose( _("%1 of %2 operations completed"), ++current_operation_number, count_operations ) ) ;
-
-	label_current.set_markup( "<i>" + current_operation + "</i>" ) ;
-	progressbar_current.set_fraction( 0 );
-	progressbar_current.set_text( "initializing..." );
-}
-
-void Dialog_Progress::Set_Progress_Current_Operation( )
+void Dialog_Progress::Set_Operation( )
 {
-	progressbar_current.set_fraction( fraction_current );
+	//all operations
+	if ( current_operation_number && (progressbar_all .get_fraction( ) + fraction) <= 1.0 )
+		progressbar_all .set_fraction( progressbar_all .get_fraction( ) + fraction );
+	
+	progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), current_operation_number++, count_operations ) ) ;
 
-	if ( time_left > 59 && time_left < 120 )
-		progressbar_current.set_text( String::ucompose( _("about %1 minute and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
+	//new operation
+	conn .disconnect( ) ;
+		
+	label_current .set_markup( "<i>" + current_operation + "</i>" ) ;
+	
+	progressbar_current .set_fraction( 0 );
+	progressbar_current .set_text( "initializing..." );
+	
+	if ( TIME_LEFT > 0 )
+	{
+		fraction_current = (double) 1 / TIME_LEFT ;
+		conn = Glib::signal_timeout( ) .connect( sigc::mem_fun( *this, &Dialog_Progress::Show_Progress ), 1000 );
+	}
 	else
-		progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
+		conn = Glib::signal_timeout( ) .connect( sigc::mem_fun( *this, &Dialog_Progress::Pulse ), 10 );
 }
+
+bool Dialog_Progress::Show_Progress( ) 
+{
+	if ( (progressbar_current .get_fraction( ) + fraction_current) <= 1.0 )
+	{
+		progressbar_current .set_fraction( progressbar_current .get_fraction( ) + fraction_current );
+	
+		if ( TIME_LEFT > 59 && TIME_LEFT < 120 )
+			progressbar_current .set_text( String::ucompose( _("about %1 minute and %2 seconds left"), TIME_LEFT/60, TIME_LEFT % 60 ) ) ;
+		else
+			progressbar_current .set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), TIME_LEFT/60, TIME_LEFT % 60 ) ) ;
+		
+		TIME_LEFT-- ;
+	}
+		
+	return true ;
+}
+
+void Dialog_Progress::tglbtn_details_toggled( ) 
+{
+	if ( tglbtn_details .get_active( ) )
+	{
+		scrolledwindow .show( ) ;
+		this ->set_size_request( 600, 375 ) ;
+	}
+	else
+	{
+		scrolledwindow .hide( ) ;
+		this ->set_size_request( 600, 275 ) ;
+	}
+}
+
+void Dialog_Progress::signal_textbuffer_insert( const Gtk::TextBuffer::iterator & iter, const Glib::ustring & text, int ) 
+{
+	Gtk::TextBuffer::iterator temp = iter ;
+	textview_details .scroll_to( temp, 0 ) ;
+}
+
 
 Dialog_Progress::~Dialog_Progress()
 {
+	conn .disconnect( ) ;
 }
 
 

@@ -145,12 +145,9 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 { 
 	switch( button_type )
 	{
-		case NEW	:	this->add_button( Gtk::Stock::ADD,Gtk::RESPONSE_OK );
+		case NEW	:	this->add_button( Gtk::Stock::ADD, Gtk::RESPONSE_OK );
 					break ;
-		case RESIZE_MOVE:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" || selected_partition.filesystem == "reiserfs") 
-						str_temp = _("Resize") ;
-					else
-						str_temp = _("Resize/Move") ;
+		case RESIZE_MOVE:	str_temp = fixed_start ? _("Resize") : _("Resize/Move") ;
 											
 					image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 					hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
@@ -158,7 +155,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 					button_resize_move .add( hbox_resize_move ) ;
 														
 					this ->add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;
-					button_resize_move .set_sensitive(  false ) ;
+					button_resize_move .set_sensitive( false ) ;
 					break ;
 			
 		case PASTE	:	this->add_button( Gtk::Stock::PASTE,Gtk::RESPONSE_OK );
@@ -273,7 +270,6 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 {  
 	if ( ! GRIP )
 	{
-		//i expect libparted soon to be able to move startpoint of ext2/3 as well, so everything is ready for it. Till then this rudimentary check
 		fixed_start ? before_value = 0 : before_value = spinbutton_before .get_value() ;
 			
 		//Balance the spinbuttons

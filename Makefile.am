@@ -1,4 +1,4 @@
-SUBDIRS = include src po
+SUBDIRS = include src po 
 
 @INTLTOOL_DESKTOP_RULE@
 

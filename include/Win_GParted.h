@@ -29,6 +29,7 @@
 #include "../include/Dialog_Partition_Resize_Move.h"
 #include "../include/Dialog_About.h"
 #include "../include/Dialog_Partition_Copy.h"
+#include "../include/GParted_Core.h"
 
 #include <sigc++/class_slot.h>
 #include <gtkmm/main.h>
@@ -39,7 +40,6 @@
 #include <gtkmm/statusbar.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/liststore.h>
-#include <gtkmm/scrolledwindow.h>
 
 #include <dlfcn.h>
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
@@ -61,7 +61,6 @@ private:
 	void init_operationslist() ;
 	void init_hpaned_main() ;
 
-	void Find_Supported_Filesystems() ;
 	void Find_Devices( bool deep_scan = true ) ;
 	void Refresh_OptionMenu( ) ;
 	void Show_Pulsebar( ) ;
@@ -123,9 +122,9 @@ private:
 	void apply_operations_thread();
 
 //private variables
-	unsigned int current_device, source_device; //source_device is used to store the device the copied_partition is from....
+	unsigned int current_device ;
 	Partition selected_partition, copied_partition;
-	std::vector <Device * > devices;
+	std::vector <Device> devices;
 	std::vector <Operation> operations;
 
 //gui stuff
@@ -176,11 +175,10 @@ private:
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	Glib::ustring str_temp ; //mostly used for constructing dialogmessages					
 									
-	
+	GParted_Core gparted_core ;
 	GParted::Device *temp_device ;
 	std::vector <Gtk::Label *> device_info ;
-	std::vector <FS> FILESYSTEMS ;
-				
+					
 	//stuff for progress overview and pulsebar
 	Dialog_Progress *dialog_progress;
 	Glib::Thread *thread ;

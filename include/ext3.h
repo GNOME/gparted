@@ -14,29 +14,27 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
+ 
+ 
+#ifndef EXT3
+#define EXT3
 
-#ifndef DIALOG_PARTITION_RESIZE_MOVE
-#define DIALOG_PARTITION_RESIZE_MOVE
-
-#include "../include/Dialog_Base_Partition.h"
+#include "../include/FileSystem.h"
 
 namespace GParted
 {
 
-class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
+class ext3 : public FileSystem
 {
 public:
-	Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS ) ;
-	void Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions ) ;
-
-private:
-	void Resize_Move_Normal( const std::vector <Partition> & partitions ) ;
-	void Resize_Move_Extended( const std::vector <Partition> & partitions ) ;
-
-	short BUF ; //added to the min. size a filesystem can be..( safety reasons )
-	
+	FS get_filesystem_support( ) ;
+	bool Create( const Glib::ustring device_path, const Partition & new_partition ) ;
+	bool Resize( const Glib::ustring device_path, const Partition & partition_old, const Partition & partition_new ) ;
+	bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) ;
+	int get_estimated_time( long MB_to_Consider ) ;
 };
+
 
 } //GParted
 
-#endif //DIALOG_PARTITION_RESIZE_MOVE
+#endif //EXT3

@@ -19,14 +19,10 @@
 namespace GParted
 {
 	
-Operation::Operation( Device *device, Device *source_device, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
+Operation::Operation( const Glib::ustring device_path, Sector device_length, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
 {
-	this ->device = device;
-	this ->device_path = device ->Get_Path( ) ;
-	
-	//this is only used when operationtype == COPY
-	this ->source_device = source_device;
-	this ->source_device_path = source_device ->Get_Path( ) ;
+	this ->device_path = device_path ;
+	this ->device_length = device_length ;
 	
 	this ->partition_original = partition_original;
 	this ->partition_new = partition_new;
@@ -34,10 +30,11 @@ Operation::Operation( Device *device, Device *source_device, const Partition & p
 	
 	str_operation = Get_String( ) ;
 	
-	//not the nicest place to put this, but definetly the most efficient :)
 	if ( operationtype == COPY )
+	{
+		copied_partition_path = partition_new .partition ;
 		this ->partition_new .partition = String::ucompose( _("copy of %1"), this ->partition_new .partition );	
-	
+	}
 }
 
 
@@ -54,7 +51,7 @@ Glib::ustring Operation::Get_String( )
 						temp = partition_original .partition ;
 
 					/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB(), device ->Get_Path() ) ;
+					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device_path ) ;
 
 		case CREATE	:	switch( partition_new.type )
 					{
@@ -64,7 +61,7 @@ Glib::ustring Operation::Get_String( )
 						default			:	break;
 					}
 					/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
-					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB(), device ->Get_Path() ) ;
+					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device_path ) ;
 		case RESIZE_MOVE:	//if startsector has changed >= 1 MB we consider it a move
 					diff = Abs( partition_new .sector_start - partition_original .sector_start ) ;
 					if (  diff >= MEGABYTE ) 
@@ -92,7 +89,7 @@ Glib::ustring Operation::Get_String( )
 		case CONVERT	:	/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
 					return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
 		case COPY	:	/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
-					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device ->Get_Path( ), Sector_To_MB( partition_new .sector_start ) ) ;
+					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device_path, Sector_To_MB( partition_new .sector_start ) ) ;
 		default		:	return "";			
 	}
 		
@@ -109,42 +106,6 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 		case CONVERT	:
 		case COPY	:	Apply_Create_To_Visual( partitions ); 		break ;
 	}
-}
-
-void Operation::Apply_To_Disk( PedTimer * timer )
-{ 
-	Glib::ustring buf;
-	bool result; //for some weird reason it won't work otherwise .. ( this one really beats me :-S )
-
-	switch ( operationtype )
-	{
-		case DELETE	:	result = device ->Delete_Partition( partition_original ) ;
-					if ( ! result )
-						Show_Error( String::ucompose( _("Error while deleting %1"), partition_original.partition ) ) ;
-														
-					break;
-		case CREATE	:	result = device ->Create_Partition_With_Filesystem( partition_new, timer ) ;
-					if ( ! result ) 
-						Show_Error( String::ucompose( _("Error while creating %1"), partition_new.partition ) );
-											
-					break;
-		case RESIZE_MOVE:	result = device ->Move_Resize_Partition( partition_original, partition_new, timer ) ;
-					if ( ! result ) 
-						Show_Error( String::ucompose( _("Error while resizing/moving %1"), partition_new.partition ) ) ;
-											
-					break;
-		case CONVERT	:	result = device ->Set_Partition_Filesystem( partition_new, timer ) ;
-					if ( ! result ) 
-						Show_Error( String::ucompose( _("Error while converting filesystem of %1"), partition_new.partition ) ) ;
-										
-					break;
-		case COPY	:	result = device ->Copy_Partition( source_device, partition_new, timer ) ;
-					if ( ! result ) 
-						Show_Error( String::ucompose( _("Error while copying %1"), partition_new .partition ) ) ;
-									
-					break;
-	}
-	
 }
 
 void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end )
@@ -217,7 +178,7 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions .erase( partitions .begin( ) + Get_Index_Original( partitions ) );
 		
-		Insert_Unallocated( partitions, 0, device ->Get_Length( ) -1 ) ;
+		Insert_Unallocated( partitions, 0, device_length -1 ) ;
 	}
 	else
 	{
@@ -244,7 +205,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 	{
 		partitions[ Get_Index_Original( partitions ) ] = partition_new ;
 				
-		Insert_Unallocated( partitions, 0, device ->Get_Length( ) -1 ) ;
+		Insert_Unallocated( partitions, 0, device_length -1 ) ;
 	}
 	else
 	{
@@ -271,7 +232,7 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	partitions[ ext ] .sector_start = partition_new .sector_start ;
 	partitions[ ext ] .sector_end = partition_new .sector_end ;
 	
-	Insert_Unallocated( partitions, 0, device ->Get_Length( ) -1 ) ;
+	Insert_Unallocated( partitions, 0, device_length -1 ) ;
 	
 	//stuff INSIDE extended partition
 	ext = 0 ;
@@ -285,17 +246,5 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	
 	Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end ) ;
 }
-
-void Operation::Show_Error( Glib::ustring message ) 
-{
-	message = "<span weight=\"bold\" size=\"larger\">" + message + "</span>\n\n" ;
-	message += _( "Be aware that the failure to apply this operation could affect other operations on the list." ) ;
-	Gtk::MessageDialog dialog( message ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
-	
-	gdk_threads_enter( );
-	dialog .run( );
-	gdk_threads_leave( );
-}
-
 
 } //GParted

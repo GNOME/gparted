@@ -24,13 +24,13 @@ Win_GParted::Win_GParted( )
 {
 	copied_partition .partition = "NONE" ;
 	new_count = 1;
-	current_device = source_device = 0 ;
+	current_device = 0 ;
 	vbox_visual_disk = NULL;
 	pulse = false ;
 	
 	//store filesystems in vector and find out if their respective libs are installed
-	Find_Supported_Filesystems() ;
-		
+	gparted_core .find_supported_filesystems( ) ;
+	
 	//locate all available devices and store them in devices vector
 	Find_Devices( false ) ;
 	Refresh_OptionMenu( ) ;
@@ -86,7 +86,7 @@ Win_GParted::Win_GParted( )
 	close_operationslist( ) ;
 	
 	conn = dispatcher .connect( sigc::mem_fun( *this, &Win_GParted::menu_gparted_refresh_devices ) );
-	dispatcher ( ) ;
+	dispatcher( ) ;
 }
 
 void Win_GParted::init_menubar() 
@@ -184,9 +184,9 @@ void Win_GParted::init_popupmenu()
 
 void Win_GParted::init_convert_menu()
 {
-	for ( unsigned int t=0; t < FILESYSTEMS .size() ; t++ )
+	for ( unsigned int t=0; t < gparted_core .get_fs( ) .size() ; t++ )
 	{
-		color .set( Get_Color( FILESYSTEMS[ t ] .filesystem ) );
+		color .set( Get_Color( gparted_core .get_fs( )[ t ] .filesystem ) );
 		hbox = manage( new Gtk::HBox() );
 			
 		//the colored square
@@ -197,11 +197,11 @@ void Win_GParted::init_convert_menu()
 		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
 		//the label...
-		hbox ->pack_start( * mk_label( " " + FILESYSTEMS[ t ] .filesystem ), Gtk::PACK_SHRINK );	
+		hbox ->pack_start( * mk_label( " " + gparted_core .get_fs( )[ t ] .filesystem ), Gtk::PACK_SHRINK );	
 				
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_convert.items().push_back( *menu_item);
-		menu_convert.items() .back() .signal_activate() .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), FILESYSTEMS[ t ] .filesystem ) ) ;
+		menu_convert.items() .back() .signal_activate() .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_fs( )[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -235,7 +235,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
 	
 	//only show realpath if it's different from the short path
-	if ( devices[ current_device ] ->Get_Path() != devices[ current_device ] ->Get_RealPath() )
+	if ( devices[ current_device ] .path != devices[ current_device ] .realpath )
 	{
 		table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
 		device_info .push_back( mk_label( "" ) ) ;
@@ -343,59 +343,22 @@ void Win_GParted::init_hpaned_main()
 	hpaned_main.pack2( *scrollwindow, true,true );
 }
 
-void Win_GParted::Find_Supported_Filesystems()
-{
-	FS fs; 
-	static void * test_handle = NULL ;
-	
-	//built-in filesystems
-	fs .supported = true ;
-	fs .create = true ;
-	
-	fs .filesystem = "ext2" ;	FILESYSTEMS .push_back( fs ) ;
-	fs .filesystem = "ext3" ;	FILESYSTEMS .push_back( fs ) ; FILESYSTEMS .back() .create = false ; 
-	fs .filesystem = "fat16" ;	FILESYSTEMS .push_back( fs ) ; 
-	fs .filesystem = "fat32" ;	FILESYSTEMS .push_back( fs ) ; 
-	fs .filesystem = "linux-swap" ;	FILESYSTEMS .push_back( fs ) ; 
-	
-	//optional filesystems (depends if fitting libary is installed)
-	fs .supported = fs .create = false ;
-	
-	fs .filesystem = "reiserfs" ;	FILESYSTEMS .push_back( fs ) ; 
-	if ( (test_handle = dlopen("libreiserfs.so", RTLD_NOW)) ) 
-	{
-		FILESYSTEMS .back() .supported = FILESYSTEMS .back() .create = true ;
-		dlclose( test_handle ) ;
-		test_handle = NULL ;
-	}
-}
-
 void Win_GParted::Find_Devices( bool deep_scan ) 
 {
-	for ( unsigned int t = 0 ; t < devices .size( ) ; t++ )
-		delete devices[ t ] ;
+	gparted_core .get_devices( devices, deep_scan ) ;
 	
-	devices .clear( ) ;
-	
-	//try to find all available devices and put these in a list
-	ped_device_probe_all( );
-	
-	PedDevice *device = ped_device_get_next ( NULL );
-	
-	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
-	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
-	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ). is_ascii( ) )
-	{ 
-		temp_device = new GParted::Device( device ->path, &FILESYSTEMS );
-		if ( temp_device ->Get_Length() > 0 )
-		{
-			temp_device ->Read_Disk_Layout( deep_scan ) ;
-			devices .push_back( temp_device ) ;
-		}
-		else
-			delete temp_device ;
+	//paranoia check.. :) <---NOT threadsave..
+	if ( devices .empty( ) )
+	{
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += _("No devices were detected") ;
+		str_temp += "</span>\n\n" ;
+		str_temp += _( "You have probably encountered a bug. GParted will quit now.") ;
+										
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
+		dialog .run( ) ;
 		
-		device = ped_device_get_next ( device ) ;
+		exit( 0 ) ;
 	}
 }
 
@@ -412,7 +375,7 @@ void Win_GParted::Refresh_OptionMenu( )
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
 		
 		//the label...
-		hbox ->pack_start( *mk_label( " " + devices[i] ->Get_Path() + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] ->Get_Length() ) ) + ")" ), Gtk::PACK_SHRINK );
+		hbox ->pack_start( *mk_label( " " + devices[i] .path + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[i] .length ) ) + ")" ), Gtk::PACK_SHRINK );
 	
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_devices .items().push_back( *menu_item );
@@ -459,20 +422,20 @@ void Win_GParted::Fill_Label_Device_Info( )
 	short t=0;
 	
 	//global info...
-	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_Model() ) ;
-	device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] ->Get_Length() ) ) ) ;
-	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_Path() ) ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
+	device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] .length ) ) ) ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
 	
 	//only show realpath if it's diffent from the short path...
-	if ( devices[ current_device ] ->Get_Path() != devices[ current_device ] ->Get_RealPath() )
-		device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_RealPath() ) ;
+	if ( devices[ current_device ] .path != devices[ current_device ] .realpath )
+		device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
 	
 	//detailed info
-	device_info[ t++ ] ->set_text( devices[ current_device ] ->Get_DiskType() ) ;
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Heads() ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Sectors() ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Cylinders() ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] ->Get_Length() ) );
+	device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .heads ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .sectors ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .cylinders ) );
+	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .length ) );
 }
 
 bool Win_GParted::on_delete_event(GdkEventAny *event)
@@ -482,8 +445,8 @@ bool Win_GParted::on_delete_event(GdkEventAny *event)
 
 void Win_GParted::Add_Operation( OperationType operationtype, const Partition & new_partition)
 {
-	Operation operation( devices[ current_device ], devices[ source_device ], selected_partition, new_partition, operationtype );
-	
+	Operation operation( devices[ current_device ] .path, devices[ current_device ] .length, selected_partition, new_partition, operationtype );
+		
 	operations.push_back( operation );
 	
 	allow_undo( true );
@@ -502,13 +465,13 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 
 void Win_GParted::Refresh_Visual( )
 {
-	std::vector<Partition> partitions = devices[current_device] ->Get_Partitions() ; 
+	std::vector<Partition> partitions = devices[current_device] .device_partitions ; 
 	liststore_operations ->clear();
 	
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size( ); t++ )
 	{	
-		if ( operations[ t ] .device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
+		if ( operations[ t ] .device_path == devices[ current_device ] .path )
 			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
 		treerow = *(liststore_operations ->append( ));
@@ -570,7 +533,7 @@ void Win_GParted::Refresh_Visual( )
 		delete ( vbox_visual_disk );
 	}
 	
-	vbox_visual_disk = new VBox_VisualDisk ( partitions, devices[ current_device ] ->Get_Length( ) ) ;
+	vbox_visual_disk = new VBox_VisualDisk ( partitions, devices[ current_device ] .length ) ;
 	vbox_visual_disk ->signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) ) ;
 	hbox_visual .pack_start( *vbox_visual_disk, Gtk::PACK_EXPAND_PADDING ) ;
 	hbox_visual .show_all_children( ) ;
@@ -643,7 +606,7 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		if ( Supported( selected_partition .filesystem, &FILESYSTEMS ) )
+		if ( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .resize )
 		{
 			allow_resize( true ) ;
 			
@@ -670,9 +633,9 @@ void Win_GParted::Set_Valid_Operations()
 void Win_GParted::Set_Valid_Convert_Filesystems() 
 {
 	//disable conversion to the same filesystem
-	for ( unsigned int t=0;t<FILESYSTEMS .size() ; t++ )
+	for ( unsigned int t = 0 ; t < gparted_core .get_fs( ) .size( ) ; t++ )
 	{
-		if ( FILESYSTEMS[ t ] .filesystem == selected_partition .filesystem || ! FILESYSTEMS[ t ] .create )
+		if ( gparted_core .get_fs( )[ t ] .filesystem == selected_partition .filesystem || ! gparted_core .get_fs( )[ t ] .create )
 			menu_convert .items()[ t ] .set_sensitive( false ) ;
 		else 
 			menu_convert .items()[ t ] .set_sensitive( true ) ;
@@ -736,16 +699,6 @@ void Win_GParted::menu_gparted_refresh_devices()
 	Show_Pulsebar( ) ;	
 	
 	Refresh_OptionMenu( ) ;
-		
-	//refresh de pointer to the device in every operation
-	for ( unsigned int t=0; t< operations.size() ; t++ )
-		for ( unsigned int i=0; i< devices.size() ; i++ )
-		{
-			if ( operations[t] .device_path == devices[ i ] ->Get_Path() )
-				operations[t] .device = devices[ i ] ; 
-			if ( operations[t] .source_device_path == devices[ i ] ->Get_Path() )
-				operations[t] .source_device = devices[ i ] ; 
-		}
 		
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
 	if ( current_device >= devices .size() )
@@ -834,10 +787,10 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 bool Win_GParted::max_amount_prim_reached( ) 
 {
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
-	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions( ) )
+	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] .max_prims )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions( ) ) ;
+		str_temp += String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] .max_prims ) ;
 		str_temp += "</span>\n\n" ;
 		str_temp += _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
 										
@@ -878,15 +831,15 @@ void Win_GParted::activate_resize()
 		
 	}
 	
-	std::vector <Partition> partitions = devices[ current_device ] ->Get_Partitions( ) ;
+	std::vector <Partition> partitions = devices[ current_device ] .device_partitions ;
 	
 	if ( operations.size() )
 		for (unsigned int t=0;t<operations.size();t++ )
-			if ( operations[t]. device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
+			if ( operations[t]. device_path == devices[ current_device ] .path )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
-	Dialog_Partition_Resize_Move dialog;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ) ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{
@@ -929,7 +882,6 @@ void Win_GParted::activate_resize()
 void Win_GParted::activate_copy()
 {
 	copied_partition = selected_partition ;
-	source_device = current_device ;
 }
 
 void Win_GParted::activate_paste()
@@ -953,7 +905,7 @@ void Win_GParted::activate_new()
 	if ( ! max_amount_prim_reached( ) )
 	{	
 		Dialog_Partition_New dialog;
-		dialog .Set_Data( selected_partition, any_extended, new_count, FILESYSTEMS ) ;
+		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ) ) ;
 		dialog .set_transient_for( *this );
 		
 		if ( dialog.run() == Gtk::RESPONSE_OK )
@@ -973,7 +925,7 @@ void Win_GParted::activate_delete()
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
 	if ( 	selected_partition .type == GParted::LOGICAL &&
 		selected_partition .status != GParted::STAT_NEW && 
-		selected_partition .partition_number < devices [ current_device ] -> Get_Highest_Logical_Busy( ) )
+		selected_partition .partition_number < devices [ current_device ] .Get_Highest_Logical_Busy( ) )
 	{	
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _( "Unable to delete partition!") ;
@@ -1005,11 +957,8 @@ void Win_GParted::activate_delete()
 		
 		//if deleted partition was on the clipboard we erase it...
 		if ( selected_partition .partition == copied_partition .partition )
-		{
 			copied_partition .partition = "NONE" ;
-			source_device = current_device ;
-		}
-		
+			
 		//if deleted one is NEW, it doesn't make sense to add it to the operationslist, we erase its creation
 		//and possible modifications like resize etc.. from the operationslist.   Calling Refresh_Visual will wipe every memory of its existence ;-)
 		if ( selected_partition .status == GParted::STAT_NEW )
@@ -1155,22 +1104,6 @@ void Win_GParted::activate_undo()
 	
 }
 
-
-//-------AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me)------------
-Dialog_Progress *dp;
-Glib::Dispatcher dispatcher_set_progress;
-
-void progress_callback( PedTimer * timer, void *context )
-{
-	if (  time(NULL) - timer ->start  > 0 )
-	{
-		dp ->time_left = timer ->predicted_end - time(NULL) ;
-		dp ->fraction_current =  timer ->frac ;
-		dispatcher_set_progress() ;
-	}
-}
-//---------------------------------------------------------------------------------------
-
 void Win_GParted::activate_apply()
 {
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
@@ -1179,22 +1112,21 @@ void Win_GParted::activate_apply()
 	str_temp += _( "It is recommended to backup valueable data before proceeding.") ;
 	
 	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true);
-	dialog.set_title( _( "Apply operations to harddisk" ) );
+	dialog .set_title( _( "Apply operations to harddisk" ) );
 	
-	dialog.add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	dialog.add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );
+	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	dialog .add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );
 	
-	dialog.show_all_children( ) ;
-	if ( dialog.run() == Gtk::RESPONSE_OK )
+	dialog .show_all_children( ) ;
+	if ( dialog.run( ) == Gtk::RESPONSE_OK )
 	{
-		dialog.hide() ; //hide confirmationdialog
+		dialog .hide( ) ; //hide confirmationdialog
 		
 		apply = true;
-		dialog_progress = new Dialog_Progress ( operations.size(), operations.front() .str_operation ) ;
-		dp = dialog_progress ;
-		conn = dispatcher .connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Next_Operation) );
-		dispatcher_set_progress .connect( sigc::mem_fun( *dialog_progress, &Dialog_Progress::Set_Progress_Current_Operation ) );
+		dialog_progress = new Dialog_Progress ( operations .size( ), gparted_core .get_textbuffer( ) ) ;
 		
+		conn = dispatcher .connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Operation) );
+				
 		thread = Glib::Thread::create(SigC::slot_class(*this, &Win_GParted::apply_operations_thread), true);
 		
 		dialog_progress ->set_transient_for( *this );
@@ -1208,32 +1140,36 @@ void Win_GParted::activate_apply()
 		
 		//make list of involved devices which have at least one busy partition..
 		std::vector <Glib::ustring> devicenames ;
-		for (unsigned int t=0; t<operations .size(); t++ )
-			if ( 	std::find( devicenames .begin(), devicenames .end() , operations[ t ] .device ->Get_Path() ) == devicenames .end() &&
-				operations[ t ] .device ->Get_any_busy()
-				)
-				devicenames .push_back( operations[ t ] .device ->Get_Path() ) ;
-		
+		for ( unsigned int t = 0; t < devices .size( ); t++ )
+			if ( devices[ t ] .Get_any_busy( ) )
+				for (unsigned int i = 0; i < operations .size( ); i++ )
+					if ( operations[ i ] .device_path == devices[ t ] .path )
+					{
+						devicenames .push_back( devices[ t ] .path ) ;
+						break ;
+					}
+				
+				
 		//show warning if necessary
-		if ( devicenames .size() )
+		if ( devicenames .size( ) )
 		{
 			str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 			/*TO TRANSLATORS: after the colon (:) a list of devices will be shown */
 			str_temp += _("The kernel was unable to re-read the partition table on:") ;
 			str_temp += "\n";
-			for (unsigned int t=0; t<devicenames .size(); t++ )
+			for (unsigned int t=0; t<devicenames .size( ); t++ )
 				str_temp += "- " + devicenames[ t ] + "\n";
 			
 			str_temp += "</span>\n\n" ;
 			str_temp += _( "This means Linux won't know anything about the modifications you made until you reboot.") ;
 			str_temp += "\n\n" ;
-			if ( devicenames .size() > 1 )
+			if ( devicenames .size( ) > 1 )
 				str_temp += _( "You should reboot your computer before doing anything with these devices.") ; 
 			else 
 				str_temp += _( "You should reboot your computer before doing anything with this device.") ; 
 				
-			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true);
-			dialog.run() ;
+			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true );
+			dialog .run( ) ;
 		}					
 		
 				
@@ -1247,22 +1183,18 @@ void Win_GParted::activate_apply()
 		
 		//reread devices and their layouts...
 		menu_gparted_refresh_devices( ) ;
-	
 	}
-	
 }
 
 void Win_GParted::apply_operations_thread( )
 { 
-	for ( unsigned int t=0;t<operations.size() && apply ;t++ )
-	{ 	
-		operations[t] .Apply_To_Disk( ped_timer_new( progress_callback, NULL ) );
+	for ( unsigned int t = 0 ; t < operations .size( ) && apply ; t++ )
+	{ 			
+		dialog_progress ->current_operation = operations[ t ] .str_operation ;
+		dialog_progress ->TIME_LEFT = gparted_core .get_estimated_time( operations[ t ] ) ;
+		dispatcher( ) ;
 		
-		if ( t < operations .size() -1 )
-		{
-			dialog_progress ->current_operation = operations[ t +1 ] .str_operation ;
-			dispatcher( ) ;
-		}
+		gparted_core .Apply_Operation_To_Disk( operations[ t ] );
 	}
 	
 	dialog_progress ->response( Gtk::RESPONSE_OK );

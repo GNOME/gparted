@@ -119,15 +119,15 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	PartitionType part_type = GParted::UNALLOCATED; //paranoia ;P
 	Sector new_start, new_end;
 		
-	switch ( optionmenu_type.get_history() )
+	switch ( optionmenu_type .get_history( ) )
 	{
 		case 0:	part_type = GParted::PRIMARY;  break;
 		case 1:	part_type = GParted::LOGICAL;  break;
 		case 2:	part_type = GParted::EXTENDED; break;
 	}
 	
-	new_start = START + (Sector) (spinbutton_before .get_value() * MEGABYTE) ;
-	new_end  = new_start + (Sector) (spinbutton_size .get_value() * MEGABYTE) ;
+	new_start = START + (Sector) (spinbutton_before .get_value( ) * MEGABYTE) ;
+	new_end  = new_start + (Sector) (spinbutton_size .get_value( ) * MEGABYTE) ;
 	
 	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we try to solve this.
 	if ( new_start < selected_partition.sector_start )
@@ -136,7 +136,11 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		new_end = selected_partition.sector_end ;
 	
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp .Set( String::ucompose( _("New Partition #%1"), new_count ), new_count, part_type , FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem, new_start, new_end, selected_partition.inside_extended, false) ; 
+	part_temp .Set(	String::ucompose( _("New Partition #%1"), new_count ),
+			new_count, part_type,
+			FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] .filesystem,
+			new_start, new_end, 
+			selected_partition .inside_extended, false) ; 
 	
 	//grow new partition a bit if freespaces are < 1 MB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 

@@ -77,6 +77,7 @@ protected:
 	void on_signal_resize( int, int, Frame_Resizer_Base::ArrowType );
 	void on_spinbutton_value_changed( SPINBUTTON ) ;
 
+	std::vector<FS> FILESYSTEMS ;
 	bool fixed_start, GRIP ;
 	double before_value ;
 	int x_start, x_end ;

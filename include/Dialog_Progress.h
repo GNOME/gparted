@@ -25,6 +25,10 @@
 #include <gtkmm/progressbar.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
+#include <gtkmm/togglebutton.h>
+#include <gtkmm/textview.h>
+#include <gtkmm/textbuffer.h>
+#include <gtkmm/scrolledwindow.h>
 
 namespace GParted
 {
@@ -32,22 +36,30 @@ namespace GParted
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress( int, const Glib::ustring & );
+	Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBuffer> textbuffer );
 	~Dialog_Progress( );
 
-	void Set_Next_Operation( );
-	void Set_Progress_Current_Operation( );
-	
+	void Set_Operation( );
+		
 	Glib::ustring current_operation;
-	float fraction_current;
-	int time_left ;
-	
+	int TIME_LEFT ;
+		
 private:
+	bool Show_Progress( ) ;
+	bool Pulse( ) { progressbar_current .pulse( ) ; return true ; }
+	void tglbtn_details_toggled( ) ;
+
 	Gtk::Label label_current ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
+	Gtk::ToggleButton tglbtn_details ;
+	Gtk::TextView textview_details ;
+	Gtk::ScrolledWindow scrolledwindow ;
 	
-	double fraction;
+	void signal_textbuffer_insert( const Gtk::TextBuffer::iterator & iter, const Glib::ustring & text, int ) ;
+	
+	double fraction, fraction_current;
 	int count_operations, current_operation_number;
+	sigc::connection conn ;
 };
 
 }//GParted

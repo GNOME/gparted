@@ -28,8 +28,16 @@ gparted_SOURCES = \
 	Dialog_About.cc\
 	Frame_Resizer_Base.cc\
 	Frame_Resizer_Extended.cc\
-	Dialog_Base_Partition.cc
-
+	Dialog_Base_Partition.cc\
+	GParted_Core.cc\
+	FileSystem.cc\
+	ext2.cc\
+	ext3.cc\
+	fat16.cc\
+	fat32.cc\
+	linux_swap.cc\
+	reiserfs.cc
+	
 gparted_LDFLAGS = -lparted -lgthread-2.0 
 
 gparted_LDADD = \

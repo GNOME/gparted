@@ -43,9 +43,14 @@ typedef long long Sector;
 struct FS
 {
 	Glib::ustring filesystem ;
-	bool supported ; //open/resize/copy
-	bool create ; //create (duh =) )
+	bool create ;
+	bool resize ; //only endpoint
+	bool move ; //startpoint and endpoint
+	bool check ;
+	
+	FS( ) {create = resize = move = check = false ;} 
 };
+
 	
 //globally used convenience functions
 inline long Sector_To_MB( Sector sectors ) 
@@ -91,13 +96,15 @@ inline Glib::ustring num_to_str( Sector number )
 	return os .str() ;
 }
 
-inline bool Supported( const Glib::ustring & filesystem, std::vector<FS> *FILESYSTEMS ) 
+inline FS Get_FS( const Glib::ustring & filesystem, const std::vector<FS> & FILESYSTEMS ) 
 {
-	for (unsigned int t=0 ; t < FILESYSTEMS ->size() ; t++ )
-		if ( (*FILESYSTEMS)[ t ] .filesystem == filesystem && (*FILESYSTEMS)[ t ] .supported )
-			return true ;
+	unsigned int t = 0 ;
 	
-	return false ;
+	for ( t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
+		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
+			break ;
+	
+	return FILESYSTEMS[ t ] ;
 }
 
 inline Glib::ustring Get_Color( const Glib::ustring & filesystem ) 

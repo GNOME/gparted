@@ -37,7 +37,7 @@ Dialog_About::Dialog_About()
 	button_credits.add_pixlabel( "/usr/share/icons/hicolor/16x16/stock/generic/stock_about.png", "Credits", 0, 0.5 ) ;
 	button_credits.signal_clicked() .connect( sigc::mem_fun( this, &Dialog_About::Show_Credits ) ) ;
 	
-	this ->get_action_area() ->set_layout( Gtk::BUTTONBOX_EDGE   ) ;
+	this ->get_action_area() ->set_layout( Gtk::BUTTONBOX_EDGE ) ;
 	this ->get_action_area() ->pack_start( button_credits ) ;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 	

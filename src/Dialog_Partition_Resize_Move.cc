@@ -20,8 +20,9 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS )
 {
+	this ->FILESYSTEMS = FILESYSTEMS ;
 	BUF = 5 ; 
 }
 
@@ -63,17 +64,17 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
 	//see if we need a fixed_start
-	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" || selected_partition.filesystem == "reiserfs" )
+	if ( Get_FS( selected_partition .filesystem, FILESYSTEMS ) .move )
+	{
+		this ->set_title( String::ucompose( _("Resize/Move %1"), selected_partition .partition ) ) ;
+		frame_resizer_base ->set_fixed_start( false ) ;
+	}
+	else
 	{
 		this ->set_title( String::ucompose( _("Resize %1"), selected_partition .partition) ) ;
 		this ->fixed_start = true;
 		frame_resizer_base ->set_fixed_start( true ) ;
 		spinbutton_before .set_sensitive( false ) ;
-	}
-	else
-	{
-		this ->set_title( String::ucompose( _("Resize/Move %1"), selected_partition .partition ) ) ;
-		frame_resizer_base ->set_fixed_start( false ) ;
 	}
 	
 	//calculate total size in MB's of previous, current and next partition
@@ -85,11 +86,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	Sector previous, next ;
 	previous = next = 0 ;
-	//also check the partitions filesystem ( if this is ext2/3 or reiserfs then previous should be 0 )	
-	if (	t >= 1 && partitions[t -1].type == GParted::UNALLOCATED &&
-		selected_partition.filesystem != "ext2" &&
-		selected_partition.filesystem != "ext3" &&
-		selected_partition.filesystem != "reiserfs" )
+	//also check the partitions filesystem ( if this is a 'resize-only' then previous should be 0 )	
+	if ( t >= 1 && partitions[t -1].type == GParted::UNALLOCATED && ! this ->fixed_start )
 	{ 
 		previous = partitions[t -1] .sector_end - partitions[t -1] .sector_start ;
 		START = partitions[t -1] .sector_start ;

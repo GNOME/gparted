@@ -39,21 +39,23 @@ class Operation
 {
 	
 public:
-	Operation( Device *device, Device *source_device, const Partition &, const Partition &,OperationType );
+	Operation( const Glib::ustring device_path, Sector device_length, const Partition &, const Partition &, OperationType );
 		
 	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
 	void Apply_Operation_To_Visual( std::vector<Partition> & partitions );
 	
-	void Apply_To_Disk( PedTimer * timer );
-	
 	//public variables
-	Device *device, *source_device;  //source_device is only used in copy operations
-	Glib::ustring device_path, source_device_path ;
+	Glib::ustring device_path ;
+	Sector device_length ;
 	OperationType operationtype;
+	Partition partition_original; //the original situation
 	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )
 	Glib::ustring str_operation ;
+	Glib::ustring copied_partition_path ; //for copy operation..
 
+	
+	
 private:
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end );
 	int Get_Index_Original( std::vector<Partition> & partitions ) ;
@@ -63,10 +65,7 @@ private:
 	void Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions );
 	void Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
 	
-	Glib::ustring Get_String(); //only used during in c'tor
-	void Show_Error( Glib::ustring message ) ;
-
-	Partition partition_original; //the original situation
+	Glib::ustring Get_String( ); //only used in c'tor
 };
 
 } //GParted
