@@ -16,6 +16,12 @@ GParted_Core::GParted_Core( )
 	for ( PedPartitionFlag flag = ped_partition_flag_next( (PedPartitionFlag) NULL ) ; flag ; flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;	
 	
+	//throw libpartedversion to the stdout to see which version is actually used.
+	std::cout << "======================" << std::endl ;
+	std::cout << "libparted : " << ped_get_version( ) << std::endl ;
+	std::cout << "======================" << std::endl ;
+	
+	//initialize filesystemlist
 	find_supported_filesystems( ) ;
 }
 
