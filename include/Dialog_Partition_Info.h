@@ -48,6 +48,7 @@ private:
 	void init_drawingarea() ;
 	void Display_Info();
 	void Find_Status() ;
+	Gtk::Label * mk_label( const Glib::ustring & text ) ;
 
 	//signalhandlers
 	void drawingarea_on_realize(  );

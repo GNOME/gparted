@@ -136,7 +136,7 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 		visual_partitions.back()  ->drawingarea ->signal_expose_event().connect(  sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_expose), visual_partitions.back() ));
 		
 		//create  pangolayout and see if it fits in the visual partition
-		os << partitions[i].partition << "\n" << partitions[ i ] .Get_Length_MB() << " MB";
+		os << partitions[i].partition << "\n" << String::ucompose( _("%1 MB"), partitions[i] .Get_Length_MB() ) ;
 		visual_partitions.back()  ->pango_layout = visual_partitions.back()  ->drawingarea ->create_pango_layout ( os.str() ) ;os.str("");
 		
 		visual_partitions.back()  ->pango_layout ->get_pixel_size( x, y ) ;
@@ -147,8 +147,8 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 		if ( partitions[i].type != GParted::UNALLOCATED )
 			os << partitions[i].filesystem << "\n" ;
 
-		os << partitions[ i ] .Get_Length_MB() ;		
-		tooltips.set_tip( *(visual_partitions.back()  ->drawingarea) ,partitions[i].partition + "\n" + os.str() + " MB" );os.str("");
+		os << partitions[i].partition + "\n" + String::ucompose( _("%1 MB"), partitions[i] .Get_Length_MB() ) ;
+		tooltips.set_tip( *(visual_partitions.back()  ->drawingarea) ,os.str() ) ; os.str("");
 		
 		partitions[i].inside_extended ? hbox_extended ->pack_start( *(visual_partitions.back()  ->drawingarea) , Gtk::PACK_SHRINK ) : hbox_disk ->pack_start( *(visual_partitions.back()  ->drawingarea) , Gtk::PACK_SHRINK ) ;
 

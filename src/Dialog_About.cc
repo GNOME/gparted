@@ -67,6 +67,7 @@ void Dialog_About::Show_Credits()
 	//written by
 	vbox_written .set_border_width( 5 ) ;
 	label_writers .set_text( "Bart Hakvoort <gparted@users.sf.net>");
+	label_writers .set_selectable( true ); 
 	label_writers .set_alignment( Gtk::ALIGN_LEFT ) ;
 	vbox_written .pack_start( label_writers, Gtk::PACK_SHRINK ) ;
 	notebook_credits .set_size_request( -1, 200 ) ;
@@ -80,7 +81,7 @@ void Dialog_About::Show_Credits()
 	//translated by
 	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names */
 	label_translators .set_text( _( "translator_credits") ) ; 
-	
+	label_translators .set_selectable( true ); 
 	if ( label_translators .get_text() != "translator_credits" )
 	{
 		label_translators .set_alignment( Gtk::ALIGN_LEFT ) ;

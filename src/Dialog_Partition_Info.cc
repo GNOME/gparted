@@ -123,100 +123,118 @@ void Dialog_Partition_Info::init_drawingarea()
 	color_partition = partition.color ;							this ->get_colormap() ->alloc_color( color_partition ) ;	 
 	
 	//set text of pangolayout
-	os << partition .partition << "\n" << this -> partition .Get_Length_MB() << " MB";
+	os << partition .partition <<"\n" << String::ucompose( _("%1 MB"), partition .Get_Length_MB() ) ;
 	pango_layout = drawingarea .create_pango_layout ( os.str() ) ;os.str("");
 	
 }
 
 void Dialog_Partition_Info::Display_Info()
 {  
+	int top =0, bottom = 1;
+	
 	table = manage( new Gtk::Table() ) ;
 	table ->set_border_width( 5 ) ;
 	table ->set_col_spacings(10 ) ;
 	this ->get_vbox() ->pack_start( *table , Gtk::PACK_SHRINK ) ;
 	
-	label = manage( new Gtk::Label( "<b>" ) ) ;
+	//filesystem
+	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Filesystem:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	table ->attach( * mk_label( partition .filesystem ), 1,2, top++, bottom++, Gtk::FILL);
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Filesystem:" ) + "\n" ) ; 	os << partition.filesystem << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Size:" ) + "\n" ) ;				os << String::ucompose( _("%1 MB"), this -> partition .Get_Length_MB() ) << "\n";
-	
+	//size
+	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Size:" ) + "</b>" ), 0,1,top, bottom,Gtk::FILL);
+	table ->attach( * mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Length_MB() ) ) , 1,2, top++, bottom++,Gtk::FILL);
 	
 	if ( partition.sectors_used != -1 )
-	{ 
-		label ->set_text( label ->get_text() + (Glib::ustring) _( "Used:" ) + "\n" ) ;
-		label ->set_text( label ->get_text() + (Glib::ustring) _( "Unused:" ) + "\n" ) ;
-		
-		os << String::ucompose( _("%1 MB"), this -> partition .Get_Used_MB() ) << "\n";
-		os << String::ucompose( _("%1 MB"), this -> partition .Get_Unused_MB() ) << "\n";	
-			
+	{
+		//calculate relative diskusage
 		int percent_used =(int)  (  (double) partition.Get_Used_MB()  / partition .Get_Length_MB() *100 +0.5 ) ;
-		os_percent << "\n\n( " <<  percent_used << "% )\n( " << 100 - percent_used << "% )\n\n\n";
+				
+		//used
+		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+		table ->attach( * mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Used_MB() ) ) , 1,2, top, bottom,Gtk::FILL);
+		os << percent_used ;
+		table ->attach( * mk_label( "\t\t\t( " + os.str() + "% )"), 1,2, top++, bottom++,Gtk::FILL); os.str("") ;
+		
+		//unused
+		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Unused:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+		table ->attach( * mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Unused_MB() ) ) , 1,2, top, bottom,Gtk::FILL);
+		os << 100 - percent_used ;
+		table ->attach( * mk_label( "\t\t\t( " + os.str() + "% )"), 1,2, top++, bottom++,Gtk::FILL); os.str("") ;
 	}
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _( "Flags:" ) + "\n\n" ) ;	os << partition .flags << "\n\n";
+	//flags
+	if ( partition.type != GParted::UNALLOCATED )
+	{
+		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Flags:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+		table ->attach( * mk_label( partition .flags ), 1,2, top++, bottom++,Gtk::FILL);
+	}
+	
+	//one blank line
+	table ->attach( * mk_label( "" ), 1,2, top++, bottom++,Gtk::FILL);
 	
 	if ( partition.type != GParted::UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
-		label ->set_text( label ->get_text() + (Glib::ustring) _("Path:" ) + "\n" ) ; 	os << partition.partition << "\n";
+		//path
+		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Path:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+		table ->attach( * mk_label( partition .partition ), 1,2, top++, bottom++,Gtk::FILL);
 		
-		//get realpath (this sucks)
+		//realpath (this sucks)
 		char real_path[4096] ;
 		realpath( partition.partition.c_str() , real_path );
 		
 		//only show realpath if it's diffent from the short path...
 		if ( partition.partition != real_path )
 		{
-			label ->set_text( label ->get_text() + (Glib::ustring) _("Real Path:" )  + "\n" ) ;
-			os << (Glib::ustring) real_path << "\n";
-			os_percent << "\n" ;
+			table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+			table ->attach( * mk_label( real_path ), 1,2, top++, bottom++,Gtk::FILL);
 		}
 		
-		label ->set_text( label ->get_text() + (Glib::ustring) _("Status:" )  + "\n" ) ;
+		//status
+		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
 		if ( partition.busy )
 			Find_Status() ;
 		else if ( partition.type == GParted::EXTENDED )
-			os << (Glib::ustring) _("Not busy (There are no mounted logical partitions)" ) + "\n";
+			os << (Glib::ustring) _("Not busy (There are no mounted logical partitions)" ) ;
 		else if ( partition.filesystem == "linux-swap" )
-			os << (Glib::ustring) _("Not active" ) + "\n";
+			os << (Glib::ustring) _("Not active" ) ;
 		else 
-			os << (Glib::ustring) _("Not mounted" ) + "\n";
+			os << (Glib::ustring) _("Not mounted" ) ;
 		
-		os_percent << "\n\n" ;
-		
-	}		
+		table ->attach( * mk_label( os.str()  ), 1,2, top++, bottom++,Gtk::FILL); os.str( "") ;
+	}
 	
-	label ->set_text( label ->get_text() + "\n" ) ;		os << "\t\t\t\t\n"; //splitter and gives the second column a min. width (needed for %)
+	//one blank line
+	table ->attach( * mk_label( "" ), 1,2, top++, bottom++,Gtk::FILL);
 	
-	label ->set_text( label ->get_text() + (Glib::ustring) _("First Sector:" ) + "\n" ) ;	os << partition.sector_start << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _("Last Sector:" ) + "\n" ) ;		os << partition.sector_end << "\n";
-	label ->set_text( label ->get_text() + (Glib::ustring) _("Total Sectors:" ) + "\n" ) ;	os << partition.sector_end - partition.sector_start << "\n";
+	//first sector
+	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "First Sector:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+	os << partition.sector_start ;
+	table ->attach( * mk_label( os.str()  ), 1,2, top++, bottom++,Gtk::FILL); os.str( "") ;
 	
-	label ->set_text( label ->get_text() + "</b>" ) ;
-	label ->set_use_markup( true ) ;
-	table ->attach( *label, 0,1,0,1,Gtk::SHRINK);
+	//last sector
+	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Last Sector:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+	os << partition.sector_end ;
+	table ->attach( * mk_label( os.str()  ), 1,2, top++, bottom++,Gtk::FILL); os.str( "") ;
 	
-	label = manage( new Gtk::Label( ) ) ;
-	label ->set_markup( os.str() ) ; os.str("") ; 
-	table ->attach( *label, 1,2,0,1,Gtk::SHRINK);
-	
-	label = manage( new Gtk::Label( ) ) ;
-	label ->set_alignment( Gtk::ALIGN_RIGHT ) ;
-	label ->set_markup( os_percent.str() + "\n\n\n\n"  ) ; os_percent.str("") ; 
-	table ->attach( *label, 1,2,0,1,Gtk::FILL);
+	//total sectors
+	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
+	os << partition.sector_end - partition.sector_start ;
+	table ->attach( * mk_label( os.str()  ), 1,2, top++, bottom++,Gtk::FILL); os.str( "") ;
 }
 
 void Dialog_Partition_Info::Find_Status() 
 {
 	if ( partition.type == GParted::EXTENDED )
 	{
-		os <<   _("Busy  (At least one logical partition is mounted)" ) << "\n";
+		os <<   _("Busy  (At least one logical partition is mounted)" ) ;
 		return ;
 	}
 	
 	
 	if ( partition.filesystem == "linux-swap" )
 	{
-		os << _("Active") << "\n";
+		os << _("Active") ;
 		return ;
 	}
 	
@@ -238,7 +256,7 @@ void Dialog_Partition_Info::Find_Status()
 		{
 			mountpoint = line.substr( line.find( ' ' ) +1, line .length()  ) ;
 			
-			os << String::ucompose( _("Mounted on %1"), mountpoint .substr( 0, mountpoint .find( ' ' ) ) ) << "\n";
+			os << String::ucompose( _("Mounted on %1"), mountpoint .substr( 0, mountpoint .find( ' ' ) ) ) ;
 			break ;
 		}
 		
@@ -249,7 +267,15 @@ void Dialog_Partition_Info::Find_Status()
 
 	//sometimes rootdevices are not listed as paths. I'll take a guess and just enter / here...( we'll look into this when complaints start coming in :P )
 	if ( mountpoint.empty() )
-		os << String::ucompose( _("Mounted on %1"), "/") << "\n";
+		os << String::ucompose( _("Mounted on %1"), "/") ;
+}
+
+Gtk::Label * Dialog_Partition_Info::mk_label( const Glib::ustring & text ) 
+{
+	label = manage( new Gtk::Label() ) ;
+	label ->set_markup( text ) ;
+	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
+	return label ;
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
