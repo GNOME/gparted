@@ -624,16 +624,14 @@ void Win_GParted::Set_Valid_Operations()
 		allow_delete( true ) ;
 		allow_convert( true ) ;
 		
-		//find out if resizing/moving and copying is possible
+		//find out if resizing/moving is possible
 		if ( (fs .grow || fs .shrink) && ! devices[ current_device ] .readonly ) 
-		{
 			allow_resize( true ) ;
 			
-			//only allow copying of real partitions
-			if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
-				allow_copy( true ) ;
-		}
-				
+		//only allow copying of real partitions
+		if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
+			allow_copy( true ) ;	
+						
 		return ;
 	}
 }

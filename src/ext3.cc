@@ -44,7 +44,7 @@ FS ext3::get_filesystem_support( )
 			fs .shrink = true ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow) 
 		fs .copy = true ;
 		
 	return fs ;
@@ -71,7 +71,6 @@ void ext3::Set_Used_Sectors( Partition & partition )
 		//blocksize
 		if ( output .find( "Block size" ) < output .length( ) )
 			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-		
 	}
 	pclose( f ) ;
 	
