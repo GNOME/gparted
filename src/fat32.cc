@@ -89,7 +89,7 @@ bool fat32::Copy( const Glib::ustring & src_part_path, const Glib::ustring & des
 
 bool fat32::Check_Repair( const Partition & partition )
 {
-	return false ;
+	return ! Execute_Command( "dosfsck -aw " + partition .partition ) ;
 }
 
 int fat32::get_estimated_time( long MB_to_Consider )

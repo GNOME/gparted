@@ -112,7 +112,7 @@ bool fat16::Copy( const Glib::ustring & src_part_path, const Glib::ustring & des
 
 bool fat16::Check_Repair( const Partition & partition )
 {
-	return false ;
+	return ! Execute_Command( "dosfsck -aw " + partition .partition ) ;
 }
 
 int fat16::get_estimated_time( long MB_to_Consider )
