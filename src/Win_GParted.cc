@@ -958,7 +958,8 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 			{
 				operations.erase( operations .begin() + t ) ;
 				
-				//And add the new partition to the end of the operations list
+				//And add the new partition to the end of the operations list (NOTE: in this case we set status to STAT_NEW)
+				part_temp .status = STAT_NEW ;
 				Add_Operation( GParted::CREATE, part_temp);
 					
 				break;
