@@ -143,67 +143,63 @@ void Device::Read_Disk_Layout( bool deep_scan )
 	{
 		partition_temp .Reset( ) ;
 		part_path = this ->path + num_to_str( c_partition ->num ) ;
-			
-		switch ( c_partition ->type )
-		{ 
-			//NORMAL (PRIMARY)
-			case 0 : if ( c_partition ->fs_type )
-					temp = c_partition ->fs_type ->name ;
-				else
-					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
-							
-				partition_temp.Set( part_path, c_partition ->num, GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, false, ped_partition_is_busy( c_partition ) );
-				
-				if ( deep_scan )
-					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
+		
+		//PRIMARY or LOGICAL
+		if ( c_partition ->type == 0 || c_partition ->type == 1 )
+		{
+			if ( c_partition ->fs_type )
+				temp = c_partition ->fs_type ->name ;
+			else
+			{
+				temp = "unknown" ;
+				this ->error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+				this ->error += "\n-"; 
+				this ->error += _( "The filesystem is damaged" ) ;
+				this ->error += "\n-" ; 
+				this ->error += _( "The filesystem is unknown to libparted" ) ;
+				this ->error += "\n-"; 
+				this ->error += _( "There is no filesystem available (unformatted)" ) ; 
 						
-				partition_temp .flags = Get_Flags( c_partition ) ;									
-				partition_temp .error = this ->error ;
-				device_partitions.push_back( partition_temp );
-										
-				break;	
-			//LOGICAL
-			case 1:	if ( c_partition ->fs_type )
-					temp = c_partition ->fs_type ->name ;
-				else
-					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
-								
-				partition_temp.Set( part_path, c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, true, ped_partition_is_busy( c_partition ) );
-						
-				if ( deep_scan )												
-					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
-				partition_temp .flags = Get_Flags( c_partition ) ;									
-				partition_temp .error = this ->error ;
-				device_partitions.push_back( partition_temp );
+			}				
+			partition_temp.Set( 	part_path,
+						c_partition ->num,
+						c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
+						temp, c_partition ->geom .start,
+						c_partition ->geom .end,
+						c_partition ->type ,
+						ped_partition_is_busy( c_partition ) );
 				
-				break;
-			//EXTENDED
-			case 2:	partition_temp.Set( part_path, c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end, false, ped_partition_is_busy( c_partition ) );
-											
-				partition_temp .flags = Get_Flags( c_partition ) ;									
-				partition_temp .error = this ->error ;
-				device_partitions.push_back( partition_temp );
-				break;
-			//FREESPACE OUTSIDE EXTENDED
-			case 4:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
-				{
-					partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
-					device_partitions.push_back( partition_temp );
-				}
-					
-				break ;
-			//FREESPACE INSIDE EXTENDED
-			case 5:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
-				{
-					partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, true );
-					device_partitions.push_back( partition_temp );
-				}
-							
-				break ;
-			//METADATA  (do nothing)
-			default:	break;
+			if ( deep_scan )
+				partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
+						
+			partition_temp .flags = Get_Flags( c_partition ) ;									
+			partition_temp .error = this ->error ;//most likely useless, but paranoia me leaves it here.. =)
 		}
+		
+		//EXTENDED
+		else if ( c_partition ->type == 2 )
+		{
+			partition_temp.Set( 	part_path ,
+						c_partition ->num ,
+						GParted::EXTENDED ,
+						"extended" ,
+						c_partition ->geom .start ,
+						c_partition ->geom .end ,
+						false ,
+						ped_partition_is_busy( c_partition ) );
 			
+			partition_temp .flags = Get_Flags( c_partition ) ;									
+		}
+		
+		//FREESPACE  
+		else if ( (c_partition ->type == 4 || c_partition ->type == 5) && (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
+		{
+			partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
+		}
+		
+		if ( partition_temp .sector_start != -1 ) //paranoia check for unallocted space < 1 MB..
+			device_partitions.push_back( partition_temp );
+		
 		//reset stuff..
 		this ->error = error_message = "" ;
 		
@@ -514,7 +510,7 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 		PedFileSystem *fs = NULL;
 		PedConstraint *constraint = NULL;
 	
-		//prevent messagebox from showing up, but stores the error in "error"
+		//prevent messagebox from showing up (the error wil be stored in the infodialog)
 		if ( show_libparted_message )
 		{
 			show_libparted_message = false ;
