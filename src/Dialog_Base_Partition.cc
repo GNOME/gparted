@@ -117,7 +117,7 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	//connect signals
 	frame_resizer_base ->signal_resize .connect ( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_resize) );
 		
-	hbox_resizer .pack_start( *frame_resizer_base, Gtk::PACK_SHRINK );
+	hbox_resizer .pack_start( *frame_resizer_base, Gtk::PACK_EXPAND_PADDING );
 	
 	this ->show_all_children() ;
 }

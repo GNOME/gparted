@@ -50,7 +50,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	
 	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices> */
 	label_type.set_text( (Glib::ustring) _("Create as:") + "\t" );
-	table_create.attach( label_type, 0,1,0,1,Gtk::SHRINK);
+	label_type .set_alignment( Gtk::ALIGN_LEFT ) ;
+	table_create.attach( label_type, 0,1,0,1,Gtk::FILL);
 	
 	//fill partitiontype menu
 	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( "Primary") ) ;
@@ -77,7 +78,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	
 	//filesystems to choose from 
 	label_filesystem.set_text( (Glib::ustring) _("Filesystem:") + "\t" );
-	table_create.attach( label_filesystem, 0,1,1,2,Gtk::SHRINK);
+	label_filesystem .set_alignment( Gtk::ALIGN_LEFT ) ;
+	table_create.attach( label_filesystem, 0,1,1,2,Gtk::FILL);
 	
 	Build_Filesystems_Menu() ;
 	 
