@@ -55,7 +55,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 	Sector free_sectors = -1 ;
 
         //get free sectors..
-	f = popen( ( "ntfscluster --force " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LANG=C ntfscluster --force " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;

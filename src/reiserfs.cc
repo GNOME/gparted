@@ -58,7 +58,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	Sector free_blocks = -1, blocksize = -1 ;
 
         //get free blocks..
-	f = popen( ( "debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LANG=C debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
