@@ -6,8 +6,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #ifdef ENABLE_NLS
-#include <libintl.h> 
-#define _(String) gettext(String)
+#include <glibmm/i18n.h>
 #endif /* ENABLE_NLS */
 
 #endif /* I18N */
