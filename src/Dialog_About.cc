@@ -58,7 +58,8 @@ void Dialog_About::Show_Credits()
 	/*TO TRANSLATORS: tablabel in aboutdialog */
 	notebook_credits .append_page( vbox_written, _("Written by") ) ;
 	
-	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names */
+	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
+	    It's a good idea to provide the url of your translationteam as well. Thanks! */
 	Glib::ustring str_credits = _("translator-credits") ;
 	if ( str_credits != "translator-credits" )
 	{
