@@ -136,7 +136,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		new_end = selected_partition.sector_end ;
 	
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp .Set( String::ucompose( _("New Partition #%1"), new_count ), new_count, part_type , FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem, new_start, new_end, -1, selected_partition.inside_extended, false) ; 
+	part_temp .Set( String::ucompose( _("New Partition #%1"), new_count ), new_count, part_type , FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem, new_start, new_end, selected_partition.inside_extended, false) ; 
 	
 	//grow new partition a bit if freespaces are < 1 MB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 

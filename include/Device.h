@@ -51,7 +51,7 @@ public:
 	Device( const Glib::ustring & device_path, std::vector<FS> *filesystems );
 	~Device() ;
 	//this function creates a fresh list with al the partitions and free spaces
-	void Read_Disk_Layout() ;
+	void Read_Disk_Layout( bool deep_scan = true ) ;
 	bool Delete_Partition( const Partition & partition ) ;
 	bool Create_Partition_With_Filesystem( Partition & new_part, PedTimer *timer) ;
 	bool Move_Resize_Partition( const Partition & partition_original, const Partition & partition_new , PedTimer *timer) ;
@@ -77,8 +77,7 @@ public:
 private:
 	//make a try to get the amount of used sectors on a filesystem ( see comments in implementation )
 	Sector Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path );
-	//bool Supported( const Glib::ustring & filesystem ) ;
-
+	
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;	
 
 	bool open_device_and_disk() ;

@@ -128,24 +128,23 @@ Device::Device( const Glib::ustring & device_path, std::vector<FS> *filesystems 
 	//get valid flags for this device
 	for ( PedPartitionFlag flag = ped_partition_flag_next ( (PedPartitionFlag) 0 ) ; flag ; flag = ped_partition_flag_next ( flag ) )
 		flags .push_back( flag ) ;
-	
-	Read_Disk_Layout() ; 
-	
+		
 }
 
-void Device::Read_Disk_Layout()
+void Device::Read_Disk_Layout( bool deep_scan )
 {
 	Glib::ustring part_path ;
 	
 	//clear partitions
-	this ->device_partitions .clear () ;
+	this ->device_partitions .clear() ;
 	
-	c_partition = ped_disk_next_partition (  disk, NULL) ;
+	c_partition = ped_disk_next_partition( disk, NULL ) ;
 	while ( c_partition )
 	{
+		partition_temp .Reset( ) ;
 		part_path = this ->path + num_to_str( c_partition ->num ) ;
 			
-		switch( c_partition ->type )
+		switch ( c_partition ->type )
 		{ 
 			//NORMAL (PRIMARY)
 			case 0 : if ( c_partition ->fs_type )
@@ -153,8 +152,11 @@ void Device::Read_Disk_Layout()
 				else
 					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 							
-				partition_temp.Set( part_path,c_partition ->num , GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , part_path ) , false, ped_partition_is_busy(  c_partition ) );
+				partition_temp.Set( part_path, c_partition ->num, GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, false, ped_partition_is_busy( c_partition ) );
 				
+				if ( deep_scan )
+					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
+						
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
 				device_partitions.push_back( partition_temp );
@@ -166,15 +168,17 @@ void Device::Read_Disk_Layout()
 				else
 					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 								
-				partition_temp.Set( part_path, c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , part_path ) , true, ped_partition_is_busy( c_partition ) );
-																
+				partition_temp.Set( part_path, c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, true, ped_partition_is_busy( c_partition ) );
+						
+				if ( deep_scan )												
+					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
 				device_partitions.push_back( partition_temp );
-											
+				
 				break;
 			//EXTENDED
-			case 2:	partition_temp.Set( part_path, c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end , -1, false, ped_partition_is_busy(  c_partition ) );
+			case 2:	partition_temp.Set( part_path, c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end, false, ped_partition_is_busy( c_partition ) );
 											
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;
@@ -183,7 +187,7 @@ void Device::Read_Disk_Layout()
 			//FREESPACE OUTSIDE EXTENDED
 			case 4:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
 				{
-					partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, false );
+					partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
 					device_partitions.push_back( partition_temp );
 				}
 					
@@ -191,7 +195,7 @@ void Device::Read_Disk_Layout()
 			//FREESPACE INSIDE EXTENDED
 			case 5:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
 				{
-					partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, true );
+					partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, true );
 					device_partitions.push_back( partition_temp );
 				}
 							
@@ -553,15 +557,6 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	return -1 ; //all methods were unsuccesfull
 
 }
-/*
-bool Device::Supported( const Glib::ustring & filesystem ) 
-{
-	for (unsigned int t=0 ; t < FILESYSTEMS ->size() ; t++ )
-		if ( (*FILESYSTEMS)[ t ] .filesystem == filesystem && (*FILESYSTEMS)[ t ] .supported )
-			return true ;
-	
-	return false ;
-}*/
 
 Glib::ustring Device::Get_Flags( PedPartition *c_partition )
 {
@@ -578,12 +573,12 @@ bool Device::open_device_and_disk()
 {
 	device = ped_device_get( this->realpath .c_str() );
 	if ( device )
-		disk 	= 	ped_disk_new( device );
+		disk = ped_disk_new( device );
 	
-	if ( ! device || ! disk  )
+	if ( ! device || ! disk )
 	{
 		if ( device ) 
-			{ ped_device_destroy( device ) ;	device = NULL ; }
+			{ ped_device_destroy( device ) ; device = NULL ; }
 				
 		return false;
 	}

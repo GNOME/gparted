@@ -51,8 +51,10 @@ enum PartitionStatus {
 class Partition
 {
 public:
-	Partition();
-	~Partition() ;
+	Partition( ) ;
+	~Partition( ) ;
+
+	void Reset( ) ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
 	void Set( 	const Glib::ustring & partition,
@@ -61,13 +63,14 @@ public:
 			const Glib::ustring & filesystem,
 			const Sector & sector_start,
 			const Sector & sector_end,
-			const Sector & sectors_used,
 			const bool inside_extended,
 			const bool busy ) ;
 
+	void Set_Used( Sector used ) ;
+
 	
 	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );
-	
+
 	//get color associated with filesystem 
 	Glib::ustring Get_Color( const Glib::ustring & filesystem );	
 

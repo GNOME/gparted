@@ -1,3 +1,13 @@
+2004-10-11 Bart Hakvoort  <gparted@users.sf.net>
+
+	* include/Device.h,
+	  src/Device.cc: made 'deep-scan' optional in Read_Disk_Layout. Removed obsolete (already) commented function.
+	* include/Partition.h,
+	  src/Partition.cc: Took used sectors out of Set() and added a Set_Used() function instead. Also added Reset() .
+	* src/Dialog_Partition_New.cc: minor change to make use of the new Set() in Partition..
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: show pulsing progressbar while refreshing devices.
+
 2004-10-08 Bart Hakvoort  <gparted@users.sf.net>
 
 	* src/Partition.cc: changed color of reiserfs from blue to purple highlight. + some cosmetics.

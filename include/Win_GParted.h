@@ -61,14 +61,16 @@ private:
 	void init_hpaned_main() ;
 
 	void Find_Supported_Filesystems() ;
-	void Find_Devices() ;
+	void Find_Devices( bool deep_scan = true ) ;
+	void Refresh_OptionMenu( ) ;
+	void Show_Pulsebar( ) ;
 	
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( );
 
 	//overridden signalhandler
-	virtual bool on_delete_event(GdkEventAny* ) ;
-
+	virtual bool on_delete_event( GdkEventAny* ) ;
+	
 	void Add_Operation( OperationType, const Partition & );
 	void Refresh_Visual( );
 	bool Quit_Check_Operations();
@@ -86,11 +88,14 @@ private:
 	void allow_undo( bool b )	{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
 	void allow_apply( bool b )	{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
 	
+	void find_devices_thread( )	{ Find_Devices( ) ; pulse = false ; }
+	
 	//signal handlers
 	void close_operationslist() ;
 	void clear_operationslist() ;
 	void optionmenu_devices_changed( );
 		
+	
 	void menu_gparted_refresh_devices();
 	void menu_gparted_quit();
 	void menu_view_harddisk_info();
@@ -136,6 +141,7 @@ private:
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
 	Gtk::Entry *entry;
+	Gtk::ProgressBar *pulsebar ;
 	
 	Gdk::Color color ;
 			
@@ -168,15 +174,14 @@ private:
 									
 	
 	GParted::Device *temp_device ;
-	std::vector <Glib::ustring> str_devices ;
 	std::vector <Gtk::Label *> device_info ;
 	std::vector <FS> FILESYSTEMS ;
 				
 	//stuff for progress overview
 	Dialog_Progress *dialog_progress;
-	Glib::Thread *thread_operations;
+	Glib::Thread *thread ;
 	Glib::Dispatcher dispatcher_next_operation;
-	bool apply;
+	bool apply, pulse ;
 	
 };
 

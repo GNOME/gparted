@@ -22,8 +22,17 @@ namespace GParted
 	
 Partition::Partition( )
 {
-	this ->error = ""; //just to be sure...
-	this ->status = GParted::STAT_REAL ;
+	Reset( ) ;
+}
+
+void Partition::Reset( )
+{
+	partition = filesystem = error = flags = color_string = "" ; 
+	status = GParted::STAT_REAL ;
+	type = GParted::UNALLOCATED ;
+	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
+	color.set( "black" ) ;
+	inside_extended = busy = false ;
 }
 
 void Partition::Set(	const Glib::ustring & partition,
@@ -32,7 +41,6 @@ void Partition::Set(	const Glib::ustring & partition,
 			const Glib::ustring & filesystem,
 			const Sector & sector_start,
 			const Sector & sector_end,
-			const Sector & sectors_used,
 			const bool inside_extended,
 			const bool busy )
 {
@@ -42,17 +50,21 @@ void Partition::Set(	const Glib::ustring & partition,
 	this ->filesystem = filesystem;
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
-	this ->sectors_used = sectors_used;
-	sectors_used != -1 ? this ->sectors_unused = ( sector_end - sector_start) - sectors_used : this ->sectors_unused = -1 ;
 	this ->color.set( Get_Color( filesystem ) );
 	this ->color_string = Get_Color( filesystem );
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
 }
 
+void Partition::Set_Used( Sector used ) 
+{
+	this ->sectors_used = used;
+	this ->sectors_unused = ( sector_end - sector_start) - used ;
+}
+
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , -1, inside_extended, false); 
+	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , inside_extended, false); 
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }

@@ -26,12 +26,14 @@ Win_GParted::Win_GParted( )
 	new_count = 1;
 	current_device = source_device = 0 ;
 	vbox_visual_disk = NULL;
+	pulse = false ;
 	
 	//store filesystems in vector and find out if their respective libs are installed
 	Find_Supported_Filesystems() ;
 		
 	//locate all available devices and store them in devices vector
-	Find_Devices() ;
+	Find_Devices( ) ;
+	Refresh_OptionMenu( ) ;
 		
 	//==== GUI =========================
 	this->set_title( _("GParted") );
@@ -67,6 +69,9 @@ Win_GParted::Win_GParted( )
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 	
 	//statusbar... 
+	pulsebar = manage( new Gtk::ProgressBar() );
+	pulsebar ->set_pulse_step( 0.01 );
+	statusbar .add( *pulsebar );
 	vbox_main.pack_start( statusbar, Gtk::PACK_SHRINK );
 	
 	//popupmenu...
@@ -89,7 +94,7 @@ void Win_GParted::init_menubar()
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
 	menu ->items() .push_back(Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image , sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
-	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT , sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
+	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main.items().push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
 	//view
@@ -173,16 +178,16 @@ void Win_GParted::init_popupmenu()
 
 void Win_GParted::init_convert_menu()
 {
-	for ( unsigned int t=0;t < FILESYSTEMS .size() ;t++ )
+	for ( unsigned int t=0; t < FILESYSTEMS .size() ; t++ )
 	{
 		color .set( selected_partition .Get_Color( FILESYSTEMS[ t ] .filesystem ) );
 		hbox = manage( new Gtk::HBox() );
 			
 		//the colored square
 		entry =  manage ( new Gtk::Entry() );
-		entry->set_sensitive( false );
-		entry->set_size_request( 12, 12 );
-		entry->modify_base( entry->get_state(), color );
+		entry ->set_sensitive( false );
+		entry ->set_size_request( 12, 12 );
+		entry ->modify_base( entry->get_state(), color );
 		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
 		//the label...
@@ -190,7 +195,7 @@ void Win_GParted::init_convert_menu()
 				
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_convert.items().push_back( *menu_item);
-		menu_convert.items() .back() .signal_activate() .connect(  sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), FILESYSTEMS[ t ] .filesystem ) ) ;
+		menu_convert.items() .back() .signal_activate() .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), FILESYSTEMS[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -359,33 +364,35 @@ void Win_GParted::Find_Supported_Filesystems()
 	}
 }
 
-void Win_GParted::Find_Devices() 
+void Win_GParted::Find_Devices( bool deep_scan ) 
 {
 	for ( unsigned int t=0;t<devices.size() ; t++ )
 		delete devices[ t ] ;
 	
 	devices.clear() ;
 	
-	//try to find all available devices...
+	//try to find all available devices and put these in a list
 	ped_device_probe_all ();
 	
-	//construct a list of device objects
 	PedDevice *device = ped_device_get_next (NULL);
-		
 	while ( device )
 	{  
-		str_devices.push_back( device ->path ) ;
+		temp_device = new GParted::Device( device ->path, &FILESYSTEMS );
+		if ( temp_device ->Get_Length() > 0 )
+		{
+			temp_device ->Read_Disk_Layout( deep_scan ) ;
+			devices.push_back( temp_device ) ;
+		}
+		else
+			delete temp_device ;
+		
 		device = ped_device_get_next (device) ;
 	}
 	
-	for ( unsigned int t=0;t<str_devices.size() ; t++ )
-	{
-		temp_device = new GParted::Device( str_devices[t], &FILESYSTEMS );
-		temp_device ->Get_Length() > 0 ? devices.push_back( temp_device ) : delete temp_device ;
-	}
-	
-	str_devices.clear() ;
+}
 
+void Win_GParted::Refresh_OptionMenu( ) 
+{
 	//fill optionmenu_devices
 	menu_devices.items() .clear() ;
 	for ( unsigned int i=0;i<devices.size();i++ )
@@ -404,7 +411,38 @@ void Win_GParted::Find_Devices()
 	}
 	
 	menu_devices .show_all_children();
+}
+
+void Win_GParted::Show_Pulsebar( ) 
+{
+	pulsebar ->show( );
+	statusbar .push( _("Scanning all devices...") ) ;
 	
+	//disable all input stuff
+	toolbar_main .set_sensitive( false ) ;
+	menubar_main .set_sensitive( false ) ;
+	optionmenu_devices .set_sensitive( false ) ;
+	menu_popup .set_sensitive( false ) ;
+		
+	//the actual 'pulsing'
+	pulse = true ; 
+	while ( pulse )
+	{
+		pulsebar ->pulse();
+		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+		usleep(10000);
+	}
+	
+	thread ->join( ) ;
+	
+	pulsebar ->hide( );
+	statusbar .pop( ) ;
+		
+	//enable all disabled stuff
+	toolbar_main .set_sensitive( true ) ;
+	menubar_main .set_sensitive( true ) ;
+	optionmenu_devices .set_sensitive( true ) ;
+	menu_popup .set_sensitive( true ) ;
 }
 
 void Win_GParted::Fill_Label_Device_Info( ) 
@@ -679,8 +717,12 @@ void Win_GParted::optionmenu_devices_changed( )
 void Win_GParted::menu_gparted_refresh_devices()
 {
 	//find out if there was any change in available devices (think about flexible media like zipdisks/usbsticks/whatever ;-) )
-	Find_Devices() ;
+	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
 	
+	Show_Pulsebar( ) ;	
+	
+	Refresh_OptionMenu( ) ;
+		
 	//refresh de pointer to the device in every operation
 	for ( unsigned int t=0; t< operations.size() ; t++ )
 		for ( unsigned int i=0; i< devices.size() ; i++ )
@@ -755,7 +797,7 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 	treeview_detail .Set_Selected( partition );
 	vbox_visual_disk ->Set_Selected( partition );
 	
-	if ( event->type == GDK_2BUTTON_PRESS )
+	if ( event->type == GDK_2BUTTON_PRESS && ! pulse )
 		activate_info() ;
 	else if ( event->button == 3 )  //right-click
 	{
@@ -1022,7 +1064,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	
 	//ok we made it :P lets create an fitting partition object
 	Partition part_temp;
-	part_temp .Set( selected_partition .partition, selected_partition .partition_number, selected_partition .type, new_fs, selected_partition .sector_start, selected_partition .sector_end, -1, selected_partition .inside_extended, false ) ;
+	part_temp .Set( selected_partition .partition, selected_partition .partition_number, selected_partition .type, new_fs, selected_partition .sector_start, selected_partition .sector_end, /*-1,*/ selected_partition .inside_extended, false ) ;
 	
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new filesystem
@@ -1083,7 +1125,7 @@ void Win_GParted::activate_apply()
 		apply = true;
 		dialog_progress = new Dialog_Progress ( operations.size(), operations.front() .str_operation ) ;
 		s3 = dispatcher_next_operation.connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Next_Operation) );
-		thread_operations = Glib::Thread::create(SigC::slot_class(*this, &Win_GParted::apply_operations_thread), true);
+		thread = Glib::Thread::create(SigC::slot_class(*this, &Win_GParted::apply_operations_thread), true);
 		
 		dialog_progress->set_transient_for( *this );
 		while ( dialog_progress->run() != Gtk::RESPONSE_OK  ) 
@@ -1092,7 +1134,7 @@ void Win_GParted::activate_apply()
 		//after hiding the progressdialog
 		s3.disconnect();
 		delete ( dialog_progress ) ;
-		thread_operations->join() ;
+		thread ->join() ;
 		
 		//make list of involved devices which have at least one busy partition..
 		std::vector <Glib::ustring> devicenames ;
@@ -1127,13 +1169,13 @@ void Win_GParted::activate_apply()
 				
 		//wipe operations...
 		operations.clear();
+		close_operationslist() ;
+							
+		//reset new_count to 1
+		new_count = 1;
 		
 		//reread devices and their layouts...
 		menu_gparted_refresh_devices() ;
-					
-		//then clean up the rest
-		new_count = 1;
-		close_operationslist() ;
 	
 	}
 	
