@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-27 18:07-0400\n"
-"PO-Revision-Date: 2004-09-27 22:40-0400\n"
+"POT-Creation-Date: 2004-09-29 12:53-0400\n"
+"PO-Revision-Date: 2004-09-29 22:40-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgid "Credits"
 msgstr "Credits"
 
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:74
+#: src/Dialog_About.cc:75
 msgid "Written by"
 msgstr "Written by"
 
@@ -52,12 +52,12 @@ msgstr "Written by"
 #. notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
 #. translated by
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names
-#: src/Dialog_About.cc:82
+#: src/Dialog_About.cc:83
 msgid "translator_credits"
 msgstr "Adam Weinberger <adamw@gnome.org>"
 
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:89
+#: src/Dialog_About.cc:90
 msgid "Translated by"
 msgstr "Translated by"
 
@@ -85,7 +85,7 @@ msgid "Resize"
 msgstr "Resize"
 
 #: src/Dialog_Base_Partition.cc:161 src/Win_GParted.cc:122
-#: src/Win_GParted.cc:157 src/Win_GParted.cc:742
+#: src/Win_GParted.cc:157 src/Win_GParted.cc:774
 msgid "Resize/Move"
 msgstr "Resize/Move"
 
@@ -116,78 +116,91 @@ msgstr "Information about %1"
 msgid "Libparted message:"
 msgstr "Libparted message:"
 
-#. filesystems to choose from
-#: src/Dialog_Partition_Info.cc:140 src/Dialog_Partition_New.cc:80
-msgid "Filesystem:"
-msgstr "Filesystem:"
-
-#: src/Dialog_Partition_Info.cc:141 src/Win_GParted.cc:224
-msgid "Size:"
-msgstr "Size:"
-
-#: src/Dialog_Partition_Info.cc:141 src/Dialog_Partition_Info.cc:149
-#: src/Dialog_Partition_Info.cc:150
+#. set text of pangolayout
+#. create  pangolayout and see if it fits in the visual partition
+#. the label...
+#: src/Dialog_Partition_Info.cc:126 src/Dialog_Partition_Info.cc:146
+#: src/Dialog_Partition_Info.cc:155 src/Dialog_Partition_Info.cc:161
+#: src/VBox_VisualDisk.cc:139 src/VBox_VisualDisk.cc:150
+#: src/Win_GParted.cc:387 src/Win_GParted.cc:406
 msgid "%1 MB"
 msgstr "%1 MB"
 
-#: src/Dialog_Partition_Info.cc:146
+#. filesystem
+#. filesystems to choose from
+#: src/Dialog_Partition_Info.cc:141 src/Dialog_Partition_New.cc:80
+msgid "Filesystem:"
+msgstr "Filesystem:"
+
+#. size
+#: src/Dialog_Partition_Info.cc:145 src/Win_GParted.cc:231
+msgid "Size:"
+msgstr "Size:"
+
+#. used
+#: src/Dialog_Partition_Info.cc:154
 msgid "Used:"
 msgstr "Used:"
 
-#: src/Dialog_Partition_Info.cc:147
+#. unused
+#: src/Dialog_Partition_Info.cc:160
 msgid "Unused:"
 msgstr "Unused:"
 
-#: src/Dialog_Partition_Info.cc:156
+#: src/Dialog_Partition_Info.cc:169
 msgid "Flags:"
 msgstr "Flags:"
 
-#: src/Dialog_Partition_Info.cc:160 src/Win_GParted.cc:224
+#. path
+#: src/Dialog_Partition_Info.cc:179 src/Win_GParted.cc:236
 msgid "Path:"
 msgstr "Path:"
 
-#: src/Dialog_Partition_Info.cc:169 src/Win_GParted.cc:228
+#: src/Dialog_Partition_Info.cc:189 src/Win_GParted.cc:243
 msgid "Real Path:"
 msgstr "Real Path:"
 
-#: src/Dialog_Partition_Info.cc:174
+#. status
+#: src/Dialog_Partition_Info.cc:194
 msgid "Status:"
 msgstr "Status:"
 
-#: src/Dialog_Partition_Info.cc:178
+#: src/Dialog_Partition_Info.cc:198
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Not busy (There are no mounted logical partitions)"
 
-#: src/Dialog_Partition_Info.cc:180
+#: src/Dialog_Partition_Info.cc:200
 msgid "Not active"
 msgstr "Not active"
 
-#: src/Dialog_Partition_Info.cc:182
+#: src/Dialog_Partition_Info.cc:202
 msgid "Not mounted"
 msgstr "Not mounted"
 
-#. splitter and gives the second column a min. width (needed for %)
-#: src/Dialog_Partition_Info.cc:190
+#. first sector
+#: src/Dialog_Partition_Info.cc:211
 msgid "First Sector:"
 msgstr "First Sector:"
 
-#: src/Dialog_Partition_Info.cc:191
+#. last sector
+#: src/Dialog_Partition_Info.cc:216
 msgid "Last Sector:"
 msgstr "Last Sector:"
 
-#: src/Dialog_Partition_Info.cc:192 src/Win_GParted.cc:242
+#. total sectors
+#: src/Dialog_Partition_Info.cc:221 src/Win_GParted.cc:279
 msgid "Total Sectors:"
 msgstr "Total Sectors:"
 
-#: src/Dialog_Partition_Info.cc:212
+#: src/Dialog_Partition_Info.cc:230
 msgid "Busy  (At least one logical partition is mounted)"
 msgstr "Busy  (At least one logical partition is mounted)"
 
-#: src/Dialog_Partition_Info.cc:219
+#: src/Dialog_Partition_Info.cc:237
 msgid "Active"
 msgstr "Active"
 
-#: src/Dialog_Partition_Info.cc:241 src/Dialog_Partition_Info.cc:252
+#: src/Dialog_Partition_Info.cc:259 src/Dialog_Partition_Info.cc:270
 msgid "Mounted on %1"
 msgstr "Mounted on %1"
 
@@ -350,6 +363,14 @@ msgstr "Unused"
 msgid "Flags"
 msgstr "Flags"
 
+#: src/VBox_VisualDisk.cc:208
+msgid "used"
+msgstr "used"
+
+#: src/VBox_VisualDisk.cc:209
+msgid "unused"
+msgstr "unused"
+
 #: src/Win_GParted.cc:88
 msgid "_Refresh devices"
 msgstr "_Refresh devices"
@@ -358,7 +379,7 @@ msgstr "_Refresh devices"
 msgid "_GParted"
 msgstr "_GParted"
 
-#: src/Win_GParted.cc:95 src/Win_GParted.cc:217
+#: src/Win_GParted.cc:95 src/Win_GParted.cc:218
 msgid "Harddisk Information"
 msgstr "Hard disk Information:"
 
@@ -407,67 +428,72 @@ msgstr "Apply all operations"
 msgid "_Convert to"
 msgstr "_Convert to"
 
-#: src/Win_GParted.cc:224
+#. model
+#: src/Win_GParted.cc:226
 msgid "Model:"
 msgstr "Model:"
 
-#: src/Win_GParted.cc:242
+#. disktype
+#: src/Win_GParted.cc:259
 msgid "DiskType:"
 msgstr "DiskType:"
 
-#: src/Win_GParted.cc:242
+#. heads
+#: src/Win_GParted.cc:264
 msgid "Heads:"
 msgstr "Heads:"
 
-#: src/Win_GParted.cc:242
+#. sectors/track
+#: src/Win_GParted.cc:269
 msgid "Sectors/Track:"
 msgstr "Sectors/Track:"
 
-#: src/Win_GParted.cc:242
+#. cylinders
+#: src/Win_GParted.cc:274
 msgid "Cylinders:"
 msgstr "Cylinders:"
 
-#: src/Win_GParted.cc:276
+#: src/Win_GParted.cc:310
 msgid "Hide operationslist"
 msgstr "Hide operations list"
 
-#: src/Win_GParted.cc:285
+#: src/Win_GParted.cc:319
 msgid "Clear operationslist"
 msgstr "Clear operations list"
 
-#: src/Win_GParted.cc:457
+#: src/Win_GParted.cc:489
 msgid "%1 operations pending"
 msgstr "%1 operations pending"
 
-#: src/Win_GParted.cc:459
+#: src/Win_GParted.cc:491
 msgid "1 operation pending"
 msgstr "1 operation pending"
 
-#: src/Win_GParted.cc:513
+#: src/Win_GParted.cc:545
 msgid "Quit GParted?"
 msgstr "Quit GParted?"
 
-#: src/Win_GParted.cc:516
+#: src/Win_GParted.cc:548
 msgid "%1 operations are currently pending."
 msgstr "%1 operations are currently pending."
 
-#: src/Win_GParted.cc:518
+#: src/Win_GParted.cc:550
 msgid "1 operation is currently pending."
 msgstr "1 operation is currently pending."
 
-#: src/Win_GParted.cc:692
+#: src/Win_GParted.cc:724
 msgid "Sorry, not yet implemented."
 msgstr "Sorry, not yet implemented."
 
-#: src/Win_GParted.cc:692
+#: src/Win_GParted.cc:724
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Please visit http://gparted.sf.net for more information and support."
 
-#: src/Win_GParted.cc:735
+#: src/Win_GParted.cc:767
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Are you sure you want to resize/move this partition?"
 
-#: src/Win_GParted.cc:736
+#: src/Win_GParted.cc:768
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -477,11 +503,11 @@ msgstr ""
 "partition is very error-prone. It is advisable to first convert the "
 "filesystem to fat32."
 
-#: src/Win_GParted.cc:808 src/Win_GParted.cc:835
+#: src/Win_GParted.cc:840 src/Win_GParted.cc:867
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "It is not possible to create more than %1 primary partitions"
 
-#: src/Win_GParted.cc:810 src/Win_GParted.cc:837
+#: src/Win_GParted.cc:842 src/Win_GParted.cc:869
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -489,73 +515,73 @@ msgstr ""
 "If you want more partitions, you should first create an extended partition. "
 "Such a partition can contain other partitions."
 
-#: src/Win_GParted.cc:865
+#: src/Win_GParted.cc:897
 msgid "Unable to delete partition!"
 msgstr "Unable to delete partition!"
 
-#: src/Win_GParted.cc:866
+#: src/Win_GParted.cc:898
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Please unmount any logical partitions having a number higher than %1"
 
-#: src/Win_GParted.cc:872
+#: src/Win_GParted.cc:904
 msgid "Are you sure you want to delete %1 ?"
 msgstr "Are you sure you want to delete %1 ?"
 
-#: src/Win_GParted.cc:874
+#: src/Win_GParted.cc:906
 msgid "After deletion this partition is no longer available for copying."
 msgstr "After deletion this partition is no longer available for copying."
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:878
+#: src/Win_GParted.cc:910
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Delete %1 (%2, %3 MB)"
 
-#: src/Win_GParted.cc:940
+#: src/Win_GParted.cc:972
 msgid "Are you sure you want to convert this filesystem to %1 ?"
 msgstr "Are you sure you want to convert this filesystem to %1?"
 
-#: src/Win_GParted.cc:941
+#: src/Win_GParted.cc:973
 msgid "This operation will destroy all data on %1"
 msgstr "This operation will destroy all data on %1"
 
-#: src/Win_GParted.cc:959 src/Win_GParted.cc:961
+#: src/Win_GParted.cc:991 src/Win_GParted.cc:993
 msgid "Can not convert this filesystem to fat16."
 msgstr "Cannot convert this filesystem to fat16."
 
-#: src/Win_GParted.cc:959
+#: src/Win_GParted.cc:991
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
 msgstr "A fat16 filesystem requires a partition of at least 32 MB."
 
-#: src/Win_GParted.cc:961
+#: src/Win_GParted.cc:993
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 msgstr "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 
-#: src/Win_GParted.cc:963
+#: src/Win_GParted.cc:995
 msgid "Can not convert this filesystem to fat32."
 msgstr "Cannot convert this filesystem to fat32."
 
-#: src/Win_GParted.cc:963
+#: src/Win_GParted.cc:995
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
 msgstr "A fat32 filesystem requires a partition of at least 256 MB."
 
-#: src/Win_GParted.cc:1018
+#: src/Win_GParted.cc:1050
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Are you sure you want to apply the pending operations?"
 
-#: src/Win_GParted.cc:1018
+#: src/Win_GParted.cc:1050
 msgid "It is recommended to backup valueable data before proceeding."
 msgstr "It is recommended to backup valuable data before proceeding."
 
-#: src/Win_GParted.cc:1019
+#: src/Win_GParted.cc:1051
 msgid "Apply operations to harddisk"
 msgstr "Apply operations to hard disk"
 
 #. TO TRANSLATORS: after the colon (:) a list of devices will be shown
-#: src/Win_GParted.cc:1056
+#: src/Win_GParted.cc:1088
 msgid "The kernel was unable to re-read the partition table on :"
 msgstr "The kernel was unable to re-read the partition table on :"
 
-#: src/Win_GParted.cc:1059
+#: src/Win_GParted.cc:1091
 msgid ""
 "This means Linux won't know anything about the modifications you made until "
 "you reboot."
@@ -563,13 +589,13 @@ msgstr ""
 "This means the operating system will not know about the modifications you "
 "made until you reboot."
 
-#: src/Win_GParted.cc:1061
+#: src/Win_GParted.cc:1093
 msgid ""
 "You should reboot your computer before doing anything with these devices."
 msgstr ""
 "You should reboot your computer before doing anything with these devices."
 
-#: src/Win_GParted.cc:1063
+#: src/Win_GParted.cc:1095
 msgid "You should reboot your computer before doing anything with this device."
 msgstr ""
 "You should reboot your computer before doing anything with this device."
