@@ -80,14 +80,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 				break ;
 		}
 			
-				
 		device = ped_device_get_next( device ) ;
 	}
 	close_device_and_disk( device, disk ) ;
 	
 	//and sort the devices by name.. (this prevents some very weird errors ;) )
 	sort( device_paths .begin( ), device_paths .end( ) ) ;
-	
 	
 	for ( unsigned int t = 0 ; t < device_paths .size( ) ; t++ ) 
 	{ 
@@ -110,13 +108,13 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 				temp_device .disktype =	disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( disk ) ;
 				
-				if ( deep_scan )
+				set_device_partitions( temp_device, deep_scan ) ;
+				
+				if ( deep_scan && temp_device .busy )
 				{
 					temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
 					sleep( 1 ) ;//this sucks, but it seems that after the commit test, the paths are removed and added again (which takes time..)
 				}
-				
-				set_device_partitions( temp_device, deep_scan ) ;
 			}
 			//harddisk without disklabel
 			else
