@@ -42,7 +42,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
 	this ->FILESYSTEMS = FILESYSTEMS ;
-	this ->FILESYSTEMS .erase( this ->FILESYSTEMS .end( ) ) ;//remove dummy "unknown"
+	this ->FILESYSTEMS .back( ) .filesystem = _("Unformatted") ;
+	this ->FILESYSTEMS .back( ) .create = true ;
 	
 	FS fs ; fs.filesystem = "extended" ;
 	this ->FILESYSTEMS .push_back( fs ) ;
@@ -167,13 +168,13 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	//optionmenu_type
 	if ( type )
 	{
-		if ( optionmenu_type .get_history( ) == GParted::EXTENDED )
+		if ( optionmenu_type .get_history( ) == GParted::EXTENDED && menu_filesystem .items( ) .size( ) < FILESYSTEMS .size( ) )
 		{
 			menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( "extended" ) ) ;
 			optionmenu_filesystem .set_history( menu_filesystem .items( ) .size( ) -1 ) ;
 			optionmenu_filesystem .set_sensitive( false ) ;
 		}
-		else if ( menu_filesystem .items( ) .size( ) == FILESYSTEMS .size( ) ) 
+		else if ( optionmenu_type .get_history( ) != GParted::EXTENDED && menu_filesystem .items( ) .size( ) == FILESYSTEMS .size( ) ) 
 		{
 			menu_filesystem .items( ) .remove( menu_filesystem .items( ) .back( ) ) ;
 			optionmenu_filesystem .set_sensitive( true ) ;
@@ -185,8 +186,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	if ( ! type )
 	{
 		//needed vor upper limit check (see also Dialog_Base_Partition::on_signal_resize )
-		//BART: i don't understand previous sentence, but i think this one's needed for correct color..
-		selected_partition .filesystem = FILESYSTEMS[ optionmenu_filesystem .get_history() ] .filesystem ; 
+		selected_partition .filesystem = FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] .filesystem ; 
 		
 		//set new spinbutton ranges
 		long MIN, MAX;

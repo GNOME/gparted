@@ -1,5 +1,11 @@
 2004-11-28 Bart Hakvoort  <gparted@users.sf.net>
 
+	* src/Dialog_Partition_New.cc: selecting 'extended partition' twice caused a segfault. i cannot believe i didn't detect this bug earlier :| Fixed.
+	  also made it possible to create an unformatted partition.
+	* src/GParted_Core.cc: backend support for creating partition without filesystem (unformatted).
+
+2004-11-28 Bart Hakvoort  <gparted@users.sf.net>
+
 	* src/Dialog_Disklabel.cc,
 	  src/GParted_Core.cc: minor stringchanges (typos)
 

@@ -297,6 +297,10 @@ bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_pa
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
+		//most likely this means the user created an unformatted partition, however in theory, it could also screw some errorhandling.
+		if ( ! p_filesystem )
+			return true ;
+		
 		return p_filesystem ->Create( device_path, new_partition ) ;
 	}
 	
