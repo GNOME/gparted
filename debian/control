@@ -8,5 +8,12 @@ Build-Depends: debmake
 Package: gparted
 Architecture: any
 Depends: ${shlibs:Depends}
-Description: Missing
- Missing
+Recommends: e2fsprogs, jfsutils, xfsprogs, ntfsprogs, dosfstools, hfsutils, reiserfsprogs
+Description: Gnome Partition Editor
+ It is a graphical editor which uses libparted to detect and manipulate
+ devices and partitiontables while several (optional) filesystem tools
+ provide support for filesystems not included in libparted. These optional
+ packages will be detected at runtime.
+
+ It currently supports ext2, ext3 Reiser3, FAT, NTFS, XFS, JFS, HFS and
+ Linux swap.
