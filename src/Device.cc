@@ -240,7 +240,7 @@ int Device::Create_Empty_Partition( const Partition & new_partition, PedConstrai
 		case 0	:	type = PED_PARTITION_NORMAL; 		break;
 		case 1	:	type = PED_PARTITION_LOGICAL; 		break;
 		case 2	:	type = PED_PARTITION_EXTENDED; 	break;
-		default	:	break;
+		default	:	type = PED_PARTITION_FREESPACE;	break ; //will never happen ;)
 	}
 	c_part = ped_partition_new ( disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
 	
