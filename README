@@ -1,9 +1,10 @@
-GParted stands for Gnome Partition Editor and is a graphical frontend to libparted. Among other features it supports creating, resizing, moving and copying of partitions.
+GParted stands for Gnome Partition Editor.
 
-The first goal of GParted is to provide all libparted's features as outlined at http://www.gnu.org/software/parted/#features.
-When this is done and GParted is stable enough for normal use, i will look into support for other filesystems such as ntfs .
+It uses libparted to detect and manipulate devices and partitiontables while several (optional) filesystemtools
+provide support for filesystems not included in libparted.
+These optional packages will be detected at runtime and don't require a rebuild of GParted.
 
-GParted is written in C++ and uses gtkmm as Graphical Toolkit. The general approach is to keep the GUI as simple as possible. That's why i try to conform to the GNOME Human Interface Guidelines . 
+GParted is written in C++ and uses gtkmm as Graphical Toolkit. The general approach 
+is to keep the GUI as simple as possible. That's why i try to conform to the GNOME Human Interface Guidelines. 
 
-
-Visit http://gparted.sourceforge.net/ for more information
+Visit http://gparted.sourceforge.net for more information
