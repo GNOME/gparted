@@ -37,35 +37,35 @@ TreeView_Detail::TreeView_Detail( )
 	
 		
 	//status_icon
-	this->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon,false );
+	this->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
 	
 	//colored text in Partition column (used for darkgrey unallocated)
-	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>(  this->get_column( 0 ) ->get_first_cell_renderer()   );
-	this->get_column( 0 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns.text_color);
+	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( 0 ) ->get_first_cell_renderer( ) );
+	this->get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
 	
-	//colored square in Type column
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( 1 ) ->get_first_cell_renderer() );
-	this->get_column( 1 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns. color);
+	//colored square in Filesystem column
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this ->get_column( 1 ) ->get_first_cell_renderer( ) );
+	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns. color);
 	
-	//colored text in Type column
-	this->get_column( 1 ) ->pack_start( treeview_detail_columns .type, false );
+	//colored text in Filesystem column
+	this ->get_column( 1 ) ->pack_start( treeview_detail_columns .type, true );
 	
 	//this sucks :) get_cell_renderers doesn't return them in some order, so i have to check manually...
-	std::vector <Gtk::CellRenderer *> renderers = this->get_column( 1 ) ->get_cell_renderers( ) ;
+	std::vector <Gtk::CellRenderer *> renderers = this ->get_column( 1 ) ->get_cell_renderers( ) ;
 	
-	if ( renderers .front() != this->get_column( 1 ) ->get_first_cell_renderer() )	
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .front() ) ;
+	if ( renderers .front( ) != this ->get_column( 1 ) ->get_first_cell_renderer( ) )	
+		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .front( ) ) ;
 	else 
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
+		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back( ) ) ;
 	
-	this->get_column( 1 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns. text_color);
+	this ->get_column( 1 ) ->add_attribute(cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
 	
 	
 	//set alignment of numeric columns to right
-	for( short t=2;t<5;t++)
+	for( short t = 2 ; t < 5 ; t++ )
 	{
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( t ) ->get_first_cell_renderer() );
-		cell_renderer_text->property_xalign () = 1;
+		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this ->get_column( t ) ->get_first_cell_renderer( ) );
+		cell_renderer_text ->property_xalign( ) = 1;
 	}
 	
 }
@@ -92,6 +92,8 @@ void TreeView_Detail::Load_Partitions( const std::vector<Partition> & partitions
 	
 	//show logical partitions ( if any )
 	this ->expand_all( );
+	
+	this ->columns_autosize( );
 }
 
 void TreeView_Detail::Set_Selected( const Partition & partition )

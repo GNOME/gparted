@@ -672,8 +672,6 @@ void Win_GParted::open_operationslist()
 
 void Win_GParted::close_operationslist() 
 {
-	treeview_detail .columns_autosize() ; //seemed a nice place for it..
-	
 	int x,y; this ->get_size( x, y );
 	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
 	for ( int t = vpaned_main .get_position( ) ; t < y ; t+=5 )
