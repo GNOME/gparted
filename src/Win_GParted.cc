@@ -231,7 +231,7 @@ void Win_GParted::init_device_info()
 	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings(10 ) ;
 	label = manage( new Gtk::Label() ) ;
-	os << " <b>"  << _("DiskType:") << "\n " << _("Heads:") << "\n " << _("Sectors/Track:") << "\n " << _("Cylinders:") << "\n "<< _("Total Sectors:") << "\n ";  
+	os << " <b>"  << _("DiskType:") << "\n " << _("Heads:") << "\n " << _("Sectors/Track:") << "\n " << _("Cylinders:") << "\n "<< _("Total Sectors:") ; 
 	os << "</b>" ;
 	label ->set_markup( os.str() ) ; os.str("") ;
 	table ->attach( *label, 0,1,0,1,Gtk::SHRINK);
@@ -373,7 +373,7 @@ void Win_GParted::Fill_Label_Device_Info( )
 	os << devices[ current_device ] ->Get_Heads() << "\n" ;
 	os << devices[ current_device ] ->Get_Sectors() << "\n" ;
 	os << devices[ current_device ] ->Get_Cylinders() << "\n" ;
-	os << devices[ current_device ] ->Get_Length() << "\n" ;
+	os << devices[ current_device ] ->Get_Length() ;
 	
 	label_device_info2.set_text( os.str() ) ;  os.str("") ;
 }
