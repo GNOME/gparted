@@ -31,6 +31,7 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
 #include "../include/Dialog_Disklabel.h"
+#include "../include/Dialog_Filesystems.h" 
 
 #include <sigc++/class_slot.h>
 #include <gtkmm/main.h>
@@ -100,6 +101,7 @@ private:
 		
 	
 	void menu_gparted_refresh_devices();
+	void menu_gparted_filesystems();
 	void menu_gparted_quit();
 	void menu_view_harddisk_info();
 	void menu_view_operations();

@@ -93,12 +93,14 @@ void Win_GParted::init_menubar()
 {
 	//fill menubar_main and connect callbacks 
 	//gparted
-	menu = manage( new Gtk::Menu() ) ;
+	menu = manage( new Gtk::Menu( ) ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back(Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image , sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
-	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
-	menubar_main.items().push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image , sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Filesystems"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_filesystems ) ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
+	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
 	//view
 	menu = manage( new Gtk::Menu() ) ;
@@ -730,6 +732,19 @@ void Win_GParted::menu_gparted_refresh_devices()
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true ) ;
 		dialog.run( ) ;
+	}
+}
+
+void Win_GParted::menu_gparted_filesystems( )
+{
+	Dialog_Filesystems dialog ;
+	dialog .set_transient_for( *this ) ;
+	
+	dialog .Load_Filesystems( gparted_core .get_fs( ) ) ;
+	while ( dialog .run( ) == Gtk::RESPONSE_OK )
+	{
+		gparted_core .find_supported_filesystems( ) ;
+		dialog .Load_Filesystems( gparted_core .get_fs( ) ) ;
 	}
 }
 

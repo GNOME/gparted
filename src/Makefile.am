@@ -17,6 +17,7 @@ gparted_SOURCES = \
 	Dialog_About.cc\
 	Dialog_Base_Partition.cc\
 	Dialog_Disklabel.cc \
+	Dialog_Filesystems.cc \
 	Dialog_Partition_Copy.cc\
 	Dialog_Partition_Info.cc\
 	Dialog_Partition_New.cc\
