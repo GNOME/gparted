@@ -91,6 +91,7 @@ private:
 	void find_devices_thread( )	{ Find_Devices( ) ; pulse = false ; }
 	
 	//signal handlers
+	void open_operationslist() ;
 	void close_operationslist() ;
 	void clear_operationslist() ;
 	void optionmenu_devices_changed( );
@@ -99,6 +100,7 @@ private:
 	void menu_gparted_refresh_devices();
 	void menu_gparted_quit();
 	void menu_view_harddisk_info();
+	void menu_view_operations();
 	void menu_help_contents();
 	void menu_help_about();
 

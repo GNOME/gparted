@@ -58,21 +58,20 @@ Win_GParted::Win_GParted( )
 	vpaned_main .pack1( hpaned_main, true, true ) ;
 	
 	//vpaned_main....
-	close_operationslist() ;
 	vbox_main.pack_start( vpaned_main );
 	
 	//device info...
 	init_device_info() ;
 	
 	//operationslist...
-	init_operationslist() ;
+	init_operationslist( ) ;
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 	
 	//statusbar... 
 	pulsebar = manage( new Gtk::ProgressBar() );
 	pulsebar ->set_pulse_step( 0.01 );
 	statusbar .add( *pulsebar );
-	vbox_main.pack_start( statusbar, Gtk::PACK_SHRINK );
+	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
 	//popupmenu...
 	init_popupmenu() ;
@@ -82,8 +81,9 @@ Win_GParted::Win_GParted( )
 
 	this ->show_all_children();
 	
-	//make sure harddisk information is closed..
-	hpaned_main .get_child1() ->hide() ;
+	//make sure harddisk information and operationlist are closed..
+	hpaned_main .get_child1( ) ->hide( ) ;
+	close_operationslist( ) ;
 }
 
 void Win_GParted::init_menubar() 
@@ -100,6 +100,7 @@ void Win_GParted::init_menubar()
 	//view
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main.items().push_back( Gtk::Menu_Helpers::MenuElem(_("_View"), *menu ) );
 	
 	//help
@@ -483,17 +484,8 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 	Refresh_Visual( );
 	
 	if ( operations.size() == 1 ) //first operation, open operationslist
-	{
-		int x,y; this ->get_size( x, y );
-		y -= 300;
-		
-		for ( int t=vpaned_main.get_position() ; t > y ; t-=3 )
-		{
-			vpaned_main.set_position( t );
-			while (Gtk::Main::events_pending())  Gtk::Main::iteration();
-		}
-	}
-
+		open_operationslist( ) ;
+	
 	//make scrollwindow focus on the last operation in the list	
 	Gtk::TreeIter iter = liststore_operations->children().end() ;
 	iter-- ;
@@ -678,6 +670,21 @@ void Win_GParted::Set_Valid_Convert_Filesystems()
 	}
 }
 
+void Win_GParted::open_operationslist() 
+{
+	hbox_operations .show( ) ;
+	int x,y; this ->get_size( x, y );
+	y -= 300;
+		
+	for ( int t=vpaned_main.get_position() ; t > y ; t-=3 )
+	{
+		vpaned_main.set_position( t );
+		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+	}
+	
+	( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->set_active( true ) ;
+}
+
 void Win_GParted::close_operationslist() 
 {
 	treeview_detail .columns_autosize() ; //seemed a nice place for it..
@@ -689,17 +696,15 @@ void Win_GParted::close_operationslist()
 		vpaned_main.set_position( t );
 		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
 	}
-
+	
+	hbox_operations .hide( ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist() 
 {
-	if ( operations.size() )
-	{
-		operations .clear() ;
-		Refresh_Visual() ;
-		close_operationslist() ;
-	}
+	operations .clear() ;
+	Refresh_Visual() ;
 }
 
 void Win_GParted::optionmenu_devices_changed( )
@@ -767,6 +772,14 @@ void Win_GParted::menu_view_harddisk_info()
 		}
 		hpaned_main .get_child1() ->hide() ;
 	}
+}
+
+void Win_GParted::menu_view_operations()
+{
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->get_active() )
+		open_operationslist( ) ;
+	else 
+		close_operationslist( ) ;
 }
 
 void Win_GParted::menu_help_contents()

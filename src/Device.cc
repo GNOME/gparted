@@ -193,12 +193,12 @@ void Device::Read_Disk_Layout( bool deep_scan )
 		
 		
 			case PED_PARTITION_FREESPACE:
+			case 5: //freespace inside extended (there's no enumvalue for that..)
 				partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
 				break ;
 		
-		
-			case PED_PARTITION_METADATA:
-				break;
+			
+			default:	break;
 		}
 		
 		if ( partition_temp .sector_start != -1 ) //paranoia check for unallocted space < 1 MB..
