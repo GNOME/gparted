@@ -288,9 +288,20 @@ bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_pa
 }
 
 bool GParted_Core::Convert_FS( const Glib::ustring & device_path, const Partition & partition )
-{
-	set_proper_filesystem( partition .filesystem ) ;
+{	
+	//remove all filesystem signatures...
+	if ( open_device_and_disk( device_path, device, disk ) )
+	{
+		c_partition = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 		
+		if ( c_partition )
+			ped_file_system_clobber ( & c_partition ->geom ) ;
+			
+		close_device_and_disk( device, disk ) ;	
+	}
+	
+	set_proper_filesystem( partition .filesystem ) ;
+
 	return p_filesystem ->Create( device_path, partition ) ;
 }
 
@@ -470,6 +481,9 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 				
 				if ( ped_disk_add_partition ( disk, c_part, constraint ) && Commit( disk ) )
 				{
+					//remove all filesystem signatures...
+					ped_file_system_clobber ( & c_part ->geom ) ;
+					
 					sleep( 1 ) ;//the OS needs some time to create the devicenode in /dev
 					
 					new_partition .partition = ped_partition_get_path( c_part ) ;

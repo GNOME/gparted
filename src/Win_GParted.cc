@@ -586,8 +586,16 @@ void Win_GParted::Set_Valid_Operations()
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( copied_partition .partition != "NONE" && copied_partition .Get_Length_MB( ) < selected_partition .Get_Length_MB( ) )
-			allow_paste( true ) ;
+		if ( copied_partition .partition != "NONE" )
+		{
+			//calculate cylindersize
+			long cylinder_size = Sector_To_MB( devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+			if ( cylinder_size < 1 )
+				cylinder_size = 1 ;
+			
+			if ( (copied_partition .Get_Length_MB( ) + cylinder_size) < selected_partition .Get_Length_MB( ) )
+				allow_paste( true ) ;
+		}			
 		
 		return ;
 	}
@@ -846,7 +854,7 @@ void Win_GParted::activate_resize()
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .length / devices[ current_device ] .cylinders  ) ;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors  ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{
@@ -1161,7 +1169,7 @@ void Win_GParted::activate_apply()
 			str_temp += "</span>\n\n" ;
 			str_temp += _("A busy device is a device with at least one mounted partition.") ;
 			str_temp += "\n";
-			str_temp += _("Since making changes to a busy device may confuse the kernel it is advisable to reboot your computer.") ;
+			str_temp += _("Because making changes to a busy device may confuse the kernel, you are advised to reboot your computer.") ;
 
 			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true );
 			dialog .run( ) ;

@@ -72,7 +72,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 
 bool ntfs::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	return Execute_Command( "mkntfs " + new_partition .partition ) ;
+	return Execute_Command( "mkntfs -Q " + new_partition .partition ) ;
 }
 
 bool ntfs::Resize( const Partition & partition_new, bool fill_partition )
@@ -95,7 +95,9 @@ bool ntfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest
 
 bool ntfs::Check_Repair( const Partition & partition )
 {
-	return Execute_Command( "ntfsfix " + partition .partition ) ;
+	//according to Szaka it's best to use ntfsresize to check the partition for errors
+	//since --info is read-only i'll leave it out. just calling ntfsresize --force has also a tendency of fixing stuff :)
+	return Execute_Command( "echo y | ntfsresize -f " + partition .partition ) ;
 }
 
 int ntfs::get_estimated_time( long MB_to_Consider )

@@ -23,6 +23,11 @@ namespace GParted
 Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS, Sector cylinder_size )
 {
 	this ->FILESYSTEMS = FILESYSTEMS ;
+	
+	//some disk have a small cylindersize, for safetyreasons i keep this size at >=1
+	if ( cylinder_size < 2048 )
+		cylinder_size = 2048 ;
+	
 	BUF = Sector_To_MB( cylinder_size ) *2 ;
 }
 
@@ -111,14 +116,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	//since some filesystems have upper and lower limits we need to check for this
 	long LOWER, UPPER;
-	if ( selected_partition.filesystem == "fat16" && selected_partition .Get_Used_MB() < 32 )
-		LOWER = 32 +BUF ;
-	else if ( selected_partition.filesystem == "fat32" && selected_partition .Get_Used_MB() < 256 )
-		LOWER = 256 +BUF; 
-	else if ( selected_partition.filesystem == "reiserfs" && selected_partition .Get_Used_MB() < 40 )
+	if ( selected_partition .filesystem == "fat16" && selected_partition .Get_Used_MB( ) < 32 )
+		LOWER = 32 ;
+	else if ( selected_partition .filesystem == "fat32" && selected_partition .Get_Used_MB( ) < 256 )
+		LOWER = 256 ; 
+	else if ( selected_partition .filesystem == "reiserfs" && selected_partition .Get_Used_MB( ) < 40 )
 		LOWER = 40 ;
 	else
-		LOWER = selected_partition .Get_Used_MB() +BUF;
+		LOWER = selected_partition .Get_Used_MB( ) ;
+	
+	LOWER += BUF ;
 	
 	//in certain (rare) case LOWER is a bit too high...
 	if ( LOWER > selected_partition .Get_Length_MB( ) )
@@ -139,7 +146,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	//set values of spinbutton_size 
 	spinbutton_size .set_range( LOWER, UPPER ) ;
-	spinbutton_size .set_value( selected_partition .Get_Length_MB() ) ;
+	spinbutton_size .set_value( selected_partition .Get_Length_MB( ) ) ;
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range( 0, Sector_To_MB( total_length ) - LOWER ) ;

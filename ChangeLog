@@ -1,5 +1,16 @@
 2004-11-24 Bart Hakvoort  <gparted@users.sf.net>
 
+	* src/Dialog_Partition_Resize_Move.cc: fixed small bug with resizing and lower limits.
+	* src/GParted_Core.cc: use ped_file_system_clobber before creating a filesystem on a partition.
+	* src/Win_GParted.cc: pasting is now only allowed if unallocated >= copied partition + cylindersize.
+	  Instead of dividing length device by amount of cylinders i use heads * sectors/track to get cylindersize.
+	  Changed device busy warning a bit to more decent english (adamw)
+	* src/ntfs.cc: readded '-Q' to mkntfs. The error about an 'unknown filesystem' was related to detection problems and not to
+	  faulty creation of the filesystem. Should be solved anyway by implementing ped_file_system_clobber.
+	  Also removed ntfsfix since it didn't do anything relevant. Instead i use ntfsresize, because this contains relevant checks (szaka)
+
+2004-11-24 Bart Hakvoort  <gparted@users.sf.net>
+
 	* src/TreeView_Detail.cc: renamed columnheader from 'Type' to 'Filesystem'. Dunno why it was called 'Type' (maybe some PM legacy =)  )
 	* src/Win_GParted.cc: Made device busy warning a bit more sensible.
 
@@ -30,7 +41,7 @@
 	  src/GParted_Core.cc,
 	  src/Makefile.am,
 	  include/ntfs.h,
-	  src/ntfs.cc: added full ntfs support. (couldn't test it very will due to the absence of a win32 box :P )
+	  src/ntfs.cc: added full ntfs support. (couldn't test it very well due to the absence of a win32 box :P )
 
 2004-11-22 Bart Hakvoort  <gparted@users.sf.net>
 
