@@ -31,55 +31,48 @@ Win_GParted::Win_GParted( )
 	//store filesystems in vector and find out if their respective libs are installed
 	gparted_core .find_supported_filesystems( ) ;
 	
-	//locate all available devices and store them in devices vector
-	Find_Devices( false ) ;
-	Refresh_OptionMenu( ) ;
-		
 	//==== GUI =========================
-	this->set_title( _("GParted") );
-	this->set_default_size( -1,500 );
+	this ->set_title( _("GParted") );
+	this ->set_default_size( 775, 500 );
 		
 	//Pack the main box
-	this->add( vbox_main ); 
+	this ->add( vbox_main ); 
 	
 	//menubar....
-	init_menubar() ;
+	init_menubar( ) ;
 	vbox_main .pack_start( menubar_main, Gtk::PACK_SHRINK );
 	
 	//toolbar....
-	init_toolbar() ;
+	init_toolbar( ) ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
 	//hbox_visual...  ( contains the visual represenation of the disks )
 	vbox_main.pack_start( hbox_visual, Gtk::PACK_SHRINK );
 		
 	//hpaned_main (NOTE: added to vpaned_main)
-	init_hpaned_main() ;
+	init_hpaned_main( ) ;
 	vpaned_main .pack1( hpaned_main, true, true ) ;
 	
 	//vpaned_main....
-	vbox_main.pack_start( vpaned_main );
+	vbox_main .pack_start( vpaned_main );
 	
 	//device info...
-	init_device_info() ;
+	init_device_info( ) ;
 	
 	//operationslist...
 	init_operationslist( ) ;
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 	
 	//statusbar... 
-	pulsebar = manage( new Gtk::ProgressBar() );
+	pulsebar = manage( new Gtk::ProgressBar( ) );
 	pulsebar ->set_pulse_step( 0.01 );
 	statusbar .add( *pulsebar );
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
 	//popupmenu...
-	init_popupmenu() ;
+	init_popupmenu( ) ;
 		
-	//initizialize for the first time...
-	optionmenu_devices_changed();
-
-	this ->show_all_children();
+	this ->show_all_children( );
 	
 	//make sure harddisk information and operationlist are closed..
 	hpaned_main .get_child1( ) ->hide( ) ;
@@ -236,14 +229,11 @@ void Win_GParted::init_device_info()
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
 	
-	//only show realpath if it's different from the short path
-	if ( devices[ current_device ] .path != devices[ current_device ] .realpath )
-	{
-		table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
-		device_info .push_back( mk_label( "" ) ) ;
-		table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
-	}
-	
+	//real path
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	device_info .push_back( mk_label( "" ) ) ;
+	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+		
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 	
 	//DETAILED DEVICE INFO 
@@ -345,25 +335,6 @@ void Win_GParted::init_hpaned_main()
 	hpaned_main.pack2( *scrollwindow, true,true );
 }
 
-void Win_GParted::Find_Devices( bool deep_scan ) 
-{
-	gparted_core .get_devices( devices, deep_scan ) ;
-	
-	//paranoia check.. :) 
-	if ( devices .empty( ) )
-	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += _("No devices were detected") ;
-		str_temp += "</span>\n\n" ;
-		str_temp += _("You have probably encountered a bug. GParted will quit now.") ;
-										
-		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
-		dialog .run( ) ; //<---NOT threadsave..
-		
-		exit( 0 ) ;
-	}
-}
-
 void Win_GParted::Refresh_OptionMenu( ) 
 {
 	//fill optionmenu_devices
@@ -403,9 +374,11 @@ void Win_GParted::Show_Pulsebar( )
 	pulse = true ; 
 	while ( pulse )
 	{
-		pulsebar ->pulse();
-		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
-		usleep(10000);
+		pulsebar ->pulse( );
+		while ( Gtk::Main::events_pending( ) )
+			Gtk::Main::iteration( );
+		
+		usleep( 10000 );
 	}
 	
 	thread ->join( ) ;
@@ -423,16 +396,13 @@ void Win_GParted::Show_Pulsebar( )
 
 void Win_GParted::Fill_Label_Device_Info( ) 
 {
-	short t=0;
+	short t = 0;
 	
 	//global info...
 	device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
 	device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] .length ) ) ) ;
 	device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
-	
-	//only show realpath if it's diffent from the short path...
-	if ( devices[ current_device ] .path != devices[ current_device ] .realpath )
-		device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
+	device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
 	
 	//detailed info
 	device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;

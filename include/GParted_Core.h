@@ -43,7 +43,7 @@ class GParted_Core
 public:
 	GParted_Core( ) ;
 	void find_supported_filesystems( ) ; 
-	void get_devices( std::vector<Device> & devices, bool deep_scan ) ;
+	void get_devices( std::vector<Device> & devices ) ;
 	
 	int get_estimated_time( const Operation & operation ) ;
 
@@ -61,7 +61,7 @@ public:
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 
 private:
-	void set_device_partitions( Device & device, bool deep_scan = true ) ;
+	void set_device_partitions( Device & device ) ;
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	void Set_Used_Sectors( Partition & partition );

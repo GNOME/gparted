@@ -56,7 +56,7 @@ void GParted_Core::find_supported_filesystems( )
 	FILESYSTEMS .push_back( fs ) ;
 }
 
-void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
+void GParted_Core::get_devices( std::vector<Device> & devices )
 {
 	devices .clear( ) ;
 	
@@ -73,13 +73,8 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ) .is_ascii( ) )
 	{
 		if ( open_device( device ->path, device ) )
-		{
 			device_paths .push_back( get_sym_path( device ->path ) ) ;
-			
-			if ( ! deep_scan )
-				break ;
-		}
-			
+					
 		device = ped_device_get_next( device ) ;
 	}
 	close_device_and_disk( device, disk ) ;
@@ -108,9 +103,9 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 				temp_device .disktype =	disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( disk ) ;
 				
-				set_device_partitions( temp_device, deep_scan ) ;
+				set_device_partitions( temp_device ) ;
 				
-				if ( deep_scan && temp_device .busy )
+				if ( temp_device .busy )
 				{
 					temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
 					sleep( 1 ) ;//this sucks, but it seems that after the commit test, the paths are removed and added again (which takes time..)
@@ -134,7 +129,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	}
 }
 
-void GParted_Core::set_device_partitions( Device & device, bool deep_scan ) 
+void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
 	
@@ -172,7 +167,7 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 							c_partition ->type,
 							ped_partition_is_busy( c_partition ) );
 					
-				if ( deep_scan && partition_temp .filesystem != "linux-swap" )
+				if ( partition_temp .filesystem != "linux-swap" )
 				{
 					Set_Used_Sectors( partition_temp ) ;
 					

@@ -63,7 +63,6 @@ private:
 	void init_operationslist() ;
 	void init_hpaned_main() ;
 
-	void Find_Devices( bool deep_scan = true ) ;
 	void Refresh_OptionMenu( ) ;
 	void Show_Pulsebar( ) ;
 	
@@ -91,7 +90,7 @@ private:
 	void allow_undo( bool b )	{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
 	void allow_apply( bool b )	{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
 		
-	void find_devices_thread( )	{ Find_Devices( ) ; pulse = false ; }
+	void find_devices_thread( )	{ gparted_core .get_devices( devices ) ; pulse = false ; }
 	
 	//signal handlers
 	void open_operationslist() ;
