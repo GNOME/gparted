@@ -201,7 +201,13 @@ void Win_GParted::init_convert_menu()
 
 void Win_GParted::init_device_info()
 {
-	vbox = manage( new Gtk::VBox() ) ;
+	vbox_info.set_spacing( 5 );
+	
+	//title
+	label = manage( new Gtk::Label() ) ;
+	label ->set_alignment( Gtk::ALIGN_LEFT ) ;
+	label ->set_markup( " <b>" + (Glib::ustring) _( "Harddisk Information:" ) + "</b>" ) ;
+	vbox_info .pack_start( *label, Gtk::PACK_SHRINK );
 	
 	//global device info
 	table = manage( new Gtk::Table() ) ;
@@ -219,7 +225,7 @@ void Win_GParted::init_device_info()
 	
 	label_device_info1 .set_selectable( true ) ;
 	table ->attach( label_device_info1, 1,2,0,1,Gtk::SHRINK);
-	vbox ->pack_start( *table, Gtk::PACK_SHRINK ) ;
+	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 	
 	//detailed device info
 	table = manage( new Gtk::Table() ) ;
@@ -232,16 +238,7 @@ void Win_GParted::init_device_info()
 	
 	label_device_info2 .set_selectable( true ) ;
 	table ->attach( label_device_info2, 1,2,0,1,Gtk::SHRINK);
-	vbox ->pack_start( *table, Gtk::PACK_SHRINK ) ;
-	
-	//add the vbox to the expander
-	expander_device_info.add( *vbox );
-	expander_device_info.set_use_markup( true );
-	expander_device_info.set_label( "<b>" + (Glib::ustring) _( "Harddisk Information:" ) + "</b>" );
-	
-	//and add the expander to vbox_info
-	vbox_info.set_spacing( 5 );
-	vbox_info.pack_start( expander_device_info, Gtk::PACK_SHRINK );
+	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
 
 void Win_GParted::init_operationslist() 
@@ -306,7 +303,7 @@ void Win_GParted::init_hpaned_main()
 	scrollwindow ->add ( treeview_detail );
 	hpaned_main.pack2( *scrollwindow, true,true );
 	
-	hpaned_main.set_position( 260 );
+	hpaned_main.set_position( 220 );
 }
 
 void Win_GParted::Find_Devices() 

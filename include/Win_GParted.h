@@ -36,7 +36,6 @@
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/menubar.h>
-#include <gtkmm/expander.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/liststore.h>
@@ -127,7 +126,6 @@ private:
 	Gtk::Menu menu_devices,menu_popup, menu_convert, *menu ;
 	Gtk::ToolButton *toolbutton;
 	Gtk::Statusbar statusbar;
-	Gtk::Expander expander_device_info ;
 	Gtk::Image *image ;
 	Gtk::ScrolledWindow *scrollwindow;
 	Gtk::Label label_device_info1, label_device_info2, *label;
