@@ -1,3 +1,13 @@
+2004-10-30 Bart Hakvoort  <gparted@users.sf.net>
+
+	* configure.in: added checks for libuuid and libdl. Also refined libparted check a bit.
+	* include/Partition.h,
+	  src/Partition.cc: removed Get_Color()
+	* include/Utils.h: added inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
+	* src/Dialog_Partition_New.cc,
+	  src/Win_GParted.cc: make use of Get_Color from Utils.h
+	* src/Device.cc: fixed a crasher with (at least) pl_PL locale.
+
 2004-10-25 Vincent van Adrighem  <adrighem@gnome.org>
 
 	* debian/*: Added a debian subdir. This dir contains buildscripts

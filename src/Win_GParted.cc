@@ -184,7 +184,7 @@ void Win_GParted::init_convert_menu()
 {
 	for ( unsigned int t=0; t < FILESYSTEMS .size() ; t++ )
 	{
-		color .set( selected_partition .Get_Color( FILESYSTEMS[ t ] .filesystem ) );
+		color .set( Get_Color( FILESYSTEMS[ t ] .filesystem ) );
 		hbox = manage( new Gtk::HBox() );
 			
 		//the colored square

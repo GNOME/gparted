@@ -56,7 +56,8 @@ Glib::ustring get_sym_path( const Glib::ustring & real_path )
 Glib::ustring error_message;
 PedExceptionOption PedException_Handler (PedException* ex)
 {
-	error_message = ex ->message ;
+	error_message = Glib::locale_to_utf8( ex ->message ) ;
+	
 	std::cout << error_message << "\n---------------------------\n" ;
 	
 	return PED_EXCEPTION_UNHANDLED ;

@@ -28,7 +28,7 @@ Dialog_Partition_New::Dialog_Partition_New( )
 	Set_Confirm_Button( NEW ) ;
 	
 	//set partition color
-	color_temp .set( selected_partition .Get_Color( "ext2" ) ) ;
+	color_temp .set( Get_Color( "ext2" ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
 	//set the resizer..
@@ -209,7 +209,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
 	
 	//partitioncolor..
-	color_temp .set( selected_partition .Get_Color( FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem ) ) ;
+	color_temp .set( Get_Color( FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
 	frame_resizer_base ->Draw_Partition() ;

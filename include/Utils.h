@@ -100,6 +100,37 @@ inline bool Supported( const Glib::ustring & filesystem, std::vector<FS> *FILESY
 	return false ;
 }
 
+inline Glib::ustring Get_Color( const Glib::ustring & filesystem ) 
+{ 
+	//blue teints
+	if	( filesystem == "ext2" )	return "#9DB8D2" ;													
+	else if ( filesystem == "ext3" )	return "#7590AE" ;								
+	
+	//redbrown
+	else if ( filesystem == "linux-swap" )	return "#C1665A" ;				
+		
+	//greenisch stuff..
+	else if ( filesystem == "fat16" ) 	return "green"	 ;			
+	else if	( filesystem == "fat32" )	return "#18D918" ;							
+	else if ( filesystem == "ntfs" )	return "#42E5AC" ;				
+	
+	//purple something..
+	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
+	
+	//libparted can only detect  these, i decided to "yellow them" :^)
+	else if	( filesystem == "HFS" )		return "yellow"	 ;	
+	else if	( filesystem == "JFS" )		return "yellow"	 ;	
+	else if	( filesystem == "UFS" )		return "yellow"	 ;	
+	else if	( filesystem == "XFS" )		return "yellow"	 ;	
+	
+	//darkgrey and ligthblue
+	else if ( filesystem == "unallocated" ) return "darkgrey";
+	else if ( filesystem == "extended" )	return "#7DFCFE" ;
+	
+	//unknown filesystem	( damaged,  unknown or simply no filesystem )	
+	else return "black";
+}
+
 
 
 }//GParted

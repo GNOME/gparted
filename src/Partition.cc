@@ -69,37 +69,6 @@ void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool in
 	this ->status = GParted::STAT_REAL ;
 }
 
-Glib::ustring Partition::Get_Color( const Glib::ustring & filesystem ) 
-{ // very ugly, but somehow i can't figure out a more efficient way. must be lack of sleep or so... :-)
-	//blue teints
-	if	( filesystem == "ext2" )	return "#9DB8D2" ;													
-	else if ( filesystem == "ext3" )	return "#7590AE" ;								
-	
-	//redbrown
-	else if ( filesystem == "linux-swap" )	return "#C1665A" ;				
-		
-	//greenisch stuff..
-	else if ( filesystem == "fat16" ) 	return "green"	 ;			
-	else if	( filesystem == "fat32" )	return "#18D918" ;							
-	else if ( filesystem == "ntfs" )	return "#42E5AC" ;				
-	
-	//purple something..
-	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
-	
-	//libparted can only detect  these, i decided to "yellow them" :^)
-	else if	( filesystem == "HFS" )		return "yellow"	 ;	
-	else if	( filesystem == "JFS" )		return "yellow"	 ;	
-	else if	( filesystem == "UFS" )		return "yellow"	 ;	
-	else if	( filesystem == "XFS" )		return "yellow"	 ;	
-	
-	//darkgrey and ligthblue
-	else if ( filesystem == "unallocated" ) return "darkgrey";
-	else if ( filesystem == "extended" )	return "#7DFCFE" ;
-	
-	//unknown filesystem	( damaged,  unknown or simply no filesystem )	
-	else return "black";
-}
-
 void Partition::Update_Number( int new_number )
 {   //of course this fails when we have devicenames with numbers over 99
 	partition_number >= 10 ? partition = partition.substr( 0, partition.length() -2 ) : partition = partition.substr( 0, partition.length() -1 ) ;

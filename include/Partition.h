@@ -72,8 +72,7 @@ public:
 	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );
 
 	//get color associated with filesystem 
-	Glib::ustring Get_Color( const Glib::ustring & filesystem );	
-
+	
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
