@@ -111,21 +111,23 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	frame_resizer_base ->set_x_end( ( Round( (double) (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500) )) + frame_resizer_base ->get_x_start() ) ;
 	frame_resizer_base ->set_used( Round( (double) selected_partition.sectors_used / ( (double)total_length/500) ) ) ;
 	
-	//since some filesystems have upper and lower limits we need to check for this
-	if ( selected_partition .Get_Used_MB( ) > fs .MIN )
-		fs .MIN = selected_partition .Get_Used_MB( ) ;
-	
-	//if fs. MIN is 0 here (means used == 0 as well) it's safe to have BUF / 2
-	fs .MIN += fs .MIN ? BUF : BUF/2 ;
-	
-	//in certain (rare) cases fs .MIN is a bit too high...
-	if ( fs .MIN > selected_partition .Get_Length_MB( ) )
+	if ( fs .shrink )
+	{
+		//since some filesystems have lower limits we need to check for this
+		if ( selected_partition .Get_Used_MB( ) > fs .MIN )
+			fs .MIN = selected_partition .Get_Used_MB( ) ;
+		
+		//if fs. MIN is 0 here (means used == 0 as well) it's safe to have BUF / 2
+		fs .MIN += fs .MIN ? BUF : BUF/2 ;
+		
+		//in certain (rare) cases fs .MIN is a bit too high...
+		if ( fs .MIN > selected_partition .Get_Length_MB( ) )
+			fs .MIN = selected_partition .Get_Length_MB( ) ;
+	}
+	else //only grow..
 		fs .MIN = selected_partition .Get_Length_MB( ) ;
-	
-	if ( ! fs .MAX )
-		fs .MAX = TOTAL_MB ;
-	
-	if ( fs .MAX > TOTAL_MB )
+		
+	if ( ! fs .MAX || fs .MAX > TOTAL_MB )
 		fs .MAX = TOTAL_MB ;
 	
 	//set values of spinbutton_before

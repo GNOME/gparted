@@ -37,10 +37,10 @@ FS ntfs::get_filesystem_support( )
 	
 	//resizing is a delicate process which requires 3 commands..
 	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
-		fs .resize = true ;
+		fs .grow = fs .shrink = true ;
 	
-	//we need resize to set correct used/unused after cloning
-	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .resize ) 
+	//we need ntfsresize to set correct used/unused after cloning
+	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .grow ) 
 		fs .copy = true ;
 	
 	return fs ;

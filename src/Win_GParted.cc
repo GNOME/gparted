@@ -617,14 +617,13 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		if ( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .resize && ! devices[ current_device ] .readonly )
+		fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
+		if ( (fs .grow || fs .shrink) && ! devices[ current_device ] .readonly ) 
 		{
 			allow_resize( true ) ;
 			
 			//only allow copying of real partitions
-			if ( 	selected_partition .status != GParted::STAT_NEW &&
-				selected_partition .status != GParted::STAT_COPY &&
-				Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) .copy )
+			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY && fs .copy )
 				allow_copy( true ) ;
 		}
 				
@@ -801,8 +800,7 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 {
 	selected_partition = partition;
 	
-	Set_Valid_Operations () ;
-	
+	Set_Valid_Operations( ) ;
 	
 	treeview_detail .Set_Selected( partition );
 	vbox_visual_disk ->Set_Selected( partition );
@@ -858,7 +856,7 @@ void Win_GParted::activate_resize()
 		hbox_resize_move .pack_start( * mk_label( _("Resize/Move") ), Gtk::PACK_SHRINK ) ;
 		button_resize_move .add( hbox_resize_move ) ;
 				
-		dialog .add_action_widget ( button_resize_move, Gtk::RESPONSE_OK ) ;
+		dialog .add_action_widget( button_resize_move, Gtk::RESPONSE_OK ) ;
 		dialog .show_all_children( ) ;
 		
 		if ( dialog.run( ) == Gtk::RESPONSE_CANCEL )
@@ -1076,7 +1074,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 	
 	//check for some limits...
-	FS fs = Get_FS( new_fs, gparted_core .get_fs( ) ) ;
+	fs = Get_FS( new_fs, gparted_core .get_fs( ) ) ;
 	
 	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
 	{

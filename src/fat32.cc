@@ -36,7 +36,8 @@ FS fat32::get_filesystem_support( )
 		fs .check = true ;
 		
 	//resizing of start and endpoint are provided by libparted
-	fs .resize = true ;
+	fs .grow = true ;
+	fs .shrink = true ;
 	fs .move = true ;
 		
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 

@@ -45,7 +45,8 @@ struct FS
 	Glib::ustring filesystem ;
 	bool read ; //can we get the amount of used sectors?
 	bool create ;
-	bool resize ; //only endpoint
+	bool grow ;
+	bool shrink ;
 	bool move ; //startpoint and endpoint
 	bool check ; //some checktool available?
 	bool copy ;
@@ -54,7 +55,7 @@ struct FS
 	
 	FS( )
 	{
-		read = create = resize = move = check = copy = false ;
+		read = create = grow = shrink = move = check = copy = false ;
 		MIN = 0 ;
 		MAX = 0 ;
 	} 

@@ -37,7 +37,7 @@ FS ext2::get_filesystem_support( )
 	
 	//resizing is a delicate process which requires 3 commands..
 	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
-		fs .resize = true ;
+		fs .grow = fs .shrink = true ;
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;

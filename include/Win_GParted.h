@@ -174,7 +174,8 @@ private:
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
-	Glib::ustring str_temp ; //mostly used for constructing dialogmessages					
+	Glib::ustring str_temp ; //mostly used for constructing dialogmessages
+	FS fs ;
 									
 	GParted_Core gparted_core ;
 	GParted::Device *temp_device ;

@@ -28,7 +28,8 @@ FS linux_swap::get_filesystem_support( )
 	fs .filesystem = "linux-swap" ;
 	fs .read = false ; //used/unused isn't relevant for swapspace
 	fs .create = true ;
-	fs .resize = true ;
+	fs .grow = true ;
+	fs .shrink = true ;
 	fs .move = true ;
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 

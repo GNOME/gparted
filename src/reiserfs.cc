@@ -38,10 +38,10 @@ FS reiserfs::get_filesystem_support( )
 		
 	//resizing is a delicate process which requires 3 commands..
 	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
-		fs .resize = true ;
+		fs .grow = fs .shrink = true ;
 	
 	//we need to call resize_reiserfs after a copy to get proper used/unused
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .resize ) 
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
 		fs .copy = true ;
 	
 	fs .MIN = 32 ;
