@@ -25,8 +25,6 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/tooltips.h>
-#include <gtkmm/label.h>
-#include <gtkmm/entry.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/drawingarea.h>
 
@@ -67,8 +65,7 @@ public:
 private:
 	void Build_Visual_Disk( int ) ; //i still dream of some fully resizeable visualdisk.... 
 	void Build_Legend( ) ;
-	void Add_Legend_Item( const Glib::ustring & filesystem, const Gdk::Color & color );
-	
+		
 	//signal handlers
 	void drawingarea_on_realize( Visual_Partition *  );
 	bool drawingarea_on_expose( GdkEventExpose *, Visual_Partition* );
@@ -90,7 +87,6 @@ private:
 
 	Glib::ustring str_temp ;
 	int temp,selected_partition;
-	Gtk::Entry *entry_temp;
 };
 
 } //GParted

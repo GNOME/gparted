@@ -86,16 +86,16 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 	{
 		visual_partition = new Visual_Partition() ;
 		visual_partitions.push_back( visual_partition ) ;
-		visual_partitions.back()  ->index = i ;
-		visual_partitions.back()  ->sector_start = partitions[i].sector_start ;
+		visual_partitions.back() ->index = i ;
+		visual_partitions.back() ->sector_start = partitions[i].sector_start ;
 		
 		if ( partitions[i].type == GParted::EXTENDED )
 		{
-			visual_partitions.back()  ->drawingarea = NULL ;//it's just a dummy ;-)  ( see Set_Selected() )
-			visual_partitions.back()  ->length = 0 ; //keeps total_length clean
+			visual_partitions.back() ->drawingarea = NULL ;//it's just a dummy ;-)  ( see Set_Selected() )
+			visual_partitions.back() ->length = 0 ; //keeps total_length clean
 						
 			eventbox_extended = manage( new Gtk::EventBox() ) ;
-			eventbox_extended ->set_size_request(  -1 , 60 );
+			eventbox_extended ->set_size_request( -1, 60 );
 			eventbox_extended ->modify_bg( eventbox_extended ->get_state(), partitions[i].color  );
 			hbox_disk ->pack_start( *eventbox_extended, Gtk::PACK_SHRINK ) ;
 			
@@ -111,7 +111,7 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 			partitions[i] .type == GParted::UNALLOCATED ? visual_partitions.back() ->length = 15 : visual_partitions.back() ->length = 20 ; 
 		
 		if ( partitions[i].inside_extended )
-			{ visual_partitions.back() ->height = 34 ; visual_partitions.back() ->text_y = 10 ; }
+			{ visual_partitions.back() ->height = 34 ; visual_partitions.back() ->text_y = 9 ; }
 		else
 			{ visual_partitions.back() ->height = 44 ;visual_partitions.back() ->text_y = 15 ; }
 		
@@ -121,11 +121,11 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 			visual_partitions.back() ->used = (int) ( (visual_partitions.back() ->length - (BORDER *2)) / (double) ( ( partitions[i].sector_end - partitions[i].sector_start) / (double)partitions[i].sectors_used ) ) ;
 	
 	
-		visual_partitions.back() ->color_fs =  partitions[i].color; 
+		visual_partitions.back() ->color_fs = partitions[i] .color; 
 		this ->get_colormap() ->alloc_color(visual_partitions.back() ->color_fs);
 		
 		visual_partitions.back() ->drawingarea = manage( new Gtk::DrawingArea() ) ;
-		visual_partitions.back() ->drawingarea ->set_size_request(  visual_partitions.back()  ->length+1  ,60 );
+		visual_partitions.back() ->drawingarea ->set_size_request( visual_partitions.back() ->length +1, 60 );
 		visual_partitions.back() ->drawingarea ->set_events(Gdk::BUTTON_PRESS_MASK);
 
 		//connect signal handlers		
@@ -135,7 +135,7 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 		
 		//create  pangolayout and see if it fits in the visual partition
 		str_temp = partitions[i] .partition + "\n" + String::ucompose( _("%1 MB"), partitions[i] .Get_Length_MB() ) ;
-		visual_partitions.back() ->pango_layout = visual_partitions.back()  ->drawingarea ->create_pango_layout ( str_temp ) ;
+		visual_partitions.back() ->pango_layout = visual_partitions.back() ->drawingarea ->create_pango_layout ( str_temp ) ;
 		
 		visual_partitions.back() ->pango_layout ->get_pixel_size( x, y ) ;
 		if ( visual_partitions.back() ->length - BORDER * 2 -2 < x )
@@ -160,38 +160,38 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 }
 
 
-void VBox_VisualDisk::Build_Legend(  ) 
+void VBox_VisualDisk::Build_Legend( ) 
 { 
 	//add the hboxes and frame_legenda
 	frame_disk_legend = manage( new Gtk::Frame() ) ;
-	hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING   );
+	hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 	
 	hbox_legend = manage( new Gtk::HBox() );
 	frame_disk_legend ->add( *hbox_legend ) ;
-	this->pack_start( hbox_legend_main  );
+	this ->pack_start( hbox_legend_main );
 	
 	std::vector<Glib::ustring> legende;
-	bool legende_allow = true, only_unallocated = true;
+	bool only_unallocated = true;
 		
 	for ( unsigned int i=0;i<partitions.size();i++ )
 	{
 		if ( partitions[i].type != GParted::UNALLOCATED && partitions[i].type != GParted::EXTENDED )
 			only_unallocated = false;
 		
-		//check if filesystem is already in legende
-		for ( unsigned int t=0;t<legende.size();t++) //not very nice, but very effective :P
-			if ( partitions[i].filesystem == legende[t] )
-				{ legende_allow = false; break; }
-			
-		if ( legende_allow )
+		if ( std::find( legende .begin(), legende .end(), partitions[i] .filesystem ) == legende .end() )
 		{
-			Add_Legend_Item( partitions[ i ] .filesystem + "    " , partitions[ i ] .color ) ;			
-				
-			//make sure this color isn't added to the legende again.
-			legende.push_back( partitions[i].filesystem );
+			if ( legende .size() )
+				hbox_legend ->pack_start( * mk_label( "    " ), Gtk::PACK_SHRINK );
+			else
+				hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
+			
+			hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, partitions[i] .color_string ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * mk_label( partitions[i] .filesystem + " " ), Gtk::PACK_SHRINK );
+			
+			//make sure this color isn't added to the legend again.
+			legende .push_back( partitions[i] .filesystem );
 		}
 			
-		legende_allow = true;
 	}
 	
 	//if there are any partitions add used/unused
@@ -202,24 +202,13 @@ void VBox_VisualDisk::Build_Legend(  )
 		
 		hbox_legend = manage( new Gtk::HBox() );
 		frame_disk_legend ->add( *hbox_legend );
-	
-		Add_Legend_Item( (Glib::ustring) _( "used" ) + "    ", color_used ) ;
-		Add_Legend_Item( (Glib::ustring) _( "unused") + " ", color_unused ) ;
+		
+		hbox_legend ->pack_start( * mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * mk_label( "used    " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, "white" ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * mk_label( "unused " ), Gtk::PACK_SHRINK );
 	}
 		
-}
-
-void VBox_VisualDisk::Add_Legend_Item( const Glib::ustring & filesystem, const Gdk::Color & color )
-{
-	//the colored square
-	entry_temp = manage ( new Gtk::Entry() );
-	entry_temp ->set_sensitive( false );
-	entry_temp ->set_size_request( 15,15);
-	entry_temp ->modify_base( entry_temp->get_state(), color );
-	hbox_legend ->pack_start( *entry_temp, Gtk::PACK_SHRINK   );
-						
-	//and the label
-	hbox_legend ->pack_start( * mk_label( " " + filesystem, false, false ), Gtk::PACK_SHRINK );
 }
 
 void VBox_VisualDisk::Set_Selected( const Partition & partition )
@@ -235,7 +224,7 @@ void VBox_VisualDisk::Set_Selected( const Partition & partition )
 		return; //extended can not be selected in visualdisk (yet )
 	 
 	//now set new selected one
-	for ( unsigned int t=0;t< visual_partitions.size() ; t++ )
+	for ( unsigned int t = 0;t < visual_partitions.size() ; t++ )
 	{
 		if ( visual_partitions[t] ->sector_start == partition.sector_start && visual_partitions[t] ->drawingarea != NULL )
 		{
@@ -255,8 +244,8 @@ void VBox_VisualDisk::drawingarea_on_realize(  Visual_Partition* vp  )
 	
 	vp ->drawingarea ->get_window() ->set_background( vp ->color_fs );
 	//eventmasks necessary for tooltips
-	vp ->drawingarea ->add_events(Gdk::ENTER_NOTIFY_MASK   );
-	vp ->drawingarea ->add_events(Gdk::LEAVE_NOTIFY_MASK   );
+	vp ->drawingarea ->add_events( Gdk::ENTER_NOTIFY_MASK );
+	vp ->drawingarea ->add_events( Gdk::LEAVE_NOTIFY_MASK );
 	
 }
 
@@ -264,10 +253,10 @@ bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * ev, Visual_Partiti
 { 
 	vp ->drawingarea ->get_window() ->clear() ;
 	
-	if ( vp ->used != -1  ) //if not unknown or unallocated
+	if ( vp ->used != -1 ) //if not unknown or unallocated
 	{
 		vp ->gc ->set_foreground( color_used );
-		vp ->drawingarea ->get_window() ->draw_rectangle( vp ->gc, true, BORDER,BORDER,vp ->used , vp ->height );
+		vp ->drawingarea ->get_window() ->draw_rectangle( vp ->gc, true, BORDER,BORDER, vp ->used, vp ->height );
 		
 		vp ->gc ->set_foreground( color_unused );
 		vp ->drawingarea ->get_window() ->draw_rectangle( vp ->gc, true, BORDER + vp ->used, BORDER, vp ->length - vp ->used - BORDER *2 , vp ->height );
@@ -296,7 +285,7 @@ VBox_VisualDisk::~VBox_VisualDisk()
 {
 	for ( unsigned int t=0;t< visual_partitions.size() ; t++ ) 
 	{
-		this ->get_colormap() ->free_colors( visual_partitions[t] ->color_fs , 1 ) ;
+		this ->get_colormap() ->free_colors( visual_partitions[t] ->color_fs, 1 ) ;
 		delete visual_partitions[t] ;
 	}
 		
