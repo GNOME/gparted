@@ -30,7 +30,7 @@ class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_New() ;
-	void Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted );
+	void Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted, int cylinder_size );
 	Partition Get_New_Partition() ;//overridden function
 
 private:
@@ -41,6 +41,7 @@ private:
 	Gtk::Menu menu_type, menu_filesystem;
 
 	std::vector<FS> FILESYSTEMS ;
+	int cylinder_size ;
 	
 	//signal handlers
 	void optionmenu_changed( bool );

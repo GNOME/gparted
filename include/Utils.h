@@ -55,7 +55,7 @@ struct FS
 	FS( )
 	{
 		read = create = resize = move = check = copy = false ;
-		MIN = 1 ;
+		MIN = 0 ;
 		MAX = 0 ;
 	} 
 };

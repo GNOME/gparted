@@ -37,14 +37,15 @@ Dialog_Partition_New::Dialog_Partition_New( )
 	frame_resizer_base ->set_used( 0 ) ;
 }
 
-void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted )
+void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted, int cylinder_size )
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
+	this ->cylinder_size = cylinder_size ;
 	this ->FILESYSTEMS = FILESYSTEMS ;
 	this ->FILESYSTEMS .back( ) .filesystem = _("Unformatted") ;
 	this ->FILESYSTEMS .back( ) .create = true ;
-	
+		
 	FS fs ; fs.filesystem = "extended" ;
 	this ->FILESYSTEMS .push_back( fs ) ;
 	
@@ -112,7 +113,11 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	//set first enabled filesystem
 	optionmenu_filesystem .set_history( first_creatable_fs ) ;
 	optionmenu_changed( false ) ;
-		
+	
+	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
+	if ( selected_partition .Get_Length_MB( ) < cylinder_size )
+		frame_resizer_base ->set_sensitive( false ) ;
+			
 	this ->show_all_children( ) ;
 }
 
@@ -185,17 +190,24 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	if ( ! type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] ;
+		if ( fs .MIN < cylinder_size )
+			fs .MIN = cylinder_size ; 
+		
+		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
+			fs .MIN = selected_partition .Get_Length_MB( ) ;
+				
+		fs .MAX = ( fs .MAX && ( fs .MAX - cylinder_size ) < TOTAL_MB ) ? fs .MAX - cylinder_size : TOTAL_MB ;
 		
 		//needed vor upper limit check (see also Dialog_Base_Partition::on_signal_resize )
 		selected_partition .filesystem = fs .filesystem ; 
 		
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
-		spinbutton_size .set_range( fs .MIN, fs .MAX ? fs .MAX : TOTAL_MB ) ;
+		spinbutton_size .set_range( fs .MIN, fs .MAX ) ;
 		spinbutton_after .set_range( 0, TOTAL_MB  - fs .MIN ) ;
 				
 		//set contents of label_minmax
-		Set_MinMax_Text( fs .MIN, fs .MAX ? fs .MAX : TOTAL_MB ) ;
+		Set_MinMax_Text( fs .MIN, fs .MAX ) ;
 	}
 	
 	//set fitting resizer colors

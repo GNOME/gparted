@@ -958,7 +958,13 @@ void Win_GParted::activate_new()
 	else if ( ! max_amount_prim_reached( ) )
 	{	
 		Dialog_Partition_New dialog;
-		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ), devices [ current_device ] .readonly ) ;
+		
+		//calculate cylindersize
+			long cylinder_size = Sector_To_MB( devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+			if ( cylinder_size < 1 )
+				cylinder_size = 1 ;
+			
+		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ), devices [ current_device ] .readonly, cylinder_size ) ;
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run( ) == Gtk::RESPONSE_OK )

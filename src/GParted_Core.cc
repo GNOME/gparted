@@ -303,7 +303,7 @@ bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_pa
 	if ( new_partition .type == GParted::EXTENDED )   
 		return Create_Empty_Partition( device_path, new_partition ) ;
 	
-	else if ( Create_Empty_Partition( device_path, new_partition ) > 0 )
+	else if ( Create_Empty_Partition( device_path, new_partition, ( new_partition .Get_Length_MB( ) - Get_Cylinder_Size( device_path ) ) < Get_FS( new_partition .filesystem, FILESYSTEMS ) .MIN ) > 0 )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
