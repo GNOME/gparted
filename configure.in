@@ -1,19 +1,16 @@
 AC_INIT(configure.in)
-AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(gparted, 0.1)
+AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
 AC_ISC_POSIX
-CFLAGS=""
-AC_SUBST(CFLAGS)
-CXXFLAGS=""
-AC_SUBST(CXXFLAGS)
 AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_CC_STDC
 AC_HEADER_STDC
+
 AM_PROG_LIBTOOL
-PKG_CHECK_MODULES(GTKMM, gtkmm-2.4,,exit)
+PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 )
 AC_CHECK_LIB(parted, ped_device_probe_all,  [], AC_MSG_ERROR([*** libparted >= 1.6.13 not installed - please install first ***]), -luuid -ldl)
 AC_SUBST(GTKMM_LIBS)
 AC_SUBST(GTKMM_CFLAGS)
@@ -22,12 +19,6 @@ AC_SUBST(GTKMM_CFLAGS)
 dnl Set PACKAGE SOURCE DIR in config.h.
 packagesrcdir=`cd $srcdir && pwd`
 
-dnl Set PACKAGE PREFIX
-if test "x${prefix}" = "xNONE"; then
-  packageprefix=${ac_default_prefix}
-else
-  packageprefix=${prefix}
-fi
 
 AC_OUTPUT([
 Makefile
