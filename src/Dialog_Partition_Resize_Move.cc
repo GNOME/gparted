@@ -65,6 +65,8 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
 	fs = Get_FS( selected_partition .filesystem, FILESYSTEMS ) ;
+	if ( ! selected_partition .error .empty( ) )
+		fs .shrink = false ;
 	
 	//see if we need a fixed_start
 	if ( fs .move )

@@ -50,13 +50,12 @@ struct FS
 	bool move ; //startpoint and endpoint
 	bool check ; //some checktool available?
 	bool copy ;
-	bool grow_only ; //xfs,jfs (only used in Parted_Core::set_device_partitions)
 	int MIN ; 
 	int MAX ;
 	
 	FS( )
 	{
-		read = create = grow = shrink = move = check = copy = grow_only = false ;
+		read = create = grow = shrink = move = check = copy = false ;
 		MIN = 0 ;
 		MAX = 0 ;
 	} 

@@ -35,9 +35,14 @@ FS ntfs::get_filesystem_support( )
 	if ( ! system( "which ntfsfix 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = true ;
 	
-	//resizing is a delicate process which requires 3 commands..
-	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
-		fs .grow = fs .shrink = true ;
+	//resizing is a delicate process ...
+	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	{
+		fs .grow = true ;
+		
+		if ( fs .read ) //needed to determine a min filesystemsize..
+			fs .shrink = true ;
+	}
 	
 	//we need ntfsresize to set correct used/unused after cloning
 	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .grow ) 

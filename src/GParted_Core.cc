@@ -182,19 +182,12 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 					if ( partition_temp .sectors_used == -1 && partition_temp .error .empty( ) )
 					{
 						partition_temp .error = _("Unable to read the contents of this filesystem!") ;
-						
-						fs = Get_FS( partition_temp .filesystem, FILESYSTEMS ) ;
-						
-						if ( ! fs .grow_only )
-						{
-							partition_temp .error += "\n" ;
-							partition_temp .error += ("As a result you won't be able to resize this partition.") ;
-						}
+						partition_temp .error += "\n" ;
+						partition_temp .error += _("Because of this some operations may be unavailable.") ;
 					}
 				}
 							
 				partition_temp .flags = Get_Flags( c_partition ) ;									
-				
 				
 				if ( partition_temp .busy )
 					device .busy = true ;

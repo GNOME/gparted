@@ -603,9 +603,9 @@ void Win_GParted::Set_Valid_Operations()
 	}
 	
 	//EXTENDED
-	else if ( selected_partition .type == GParted::EXTENDED )
+	if ( selected_partition .type == GParted::EXTENDED )
 	{
-		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
+		if (  ! any_logic ) //deletion is only allowed when there are no logical partitions inside.
 			allow_delete( true ) ;
 		
 		if ( ! devices[ current_device ] .readonly )
@@ -614,31 +614,11 @@ void Win_GParted::Set_Valid_Operations()
 		return ;
 	}	
 	
-	fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
-	
-	//FIXME too much redundacy here (just not in the mood to fix it now :P )
-	//if there was an error reading the filesystem we allow delete and convert ( see also Device::Get_Used_Sectors() )
-	//since growing doesn't affect the space already in use, we allow resinzing of 'grow-only' filesystems
-	if ( ! selected_partition .error .empty( ) )
-	{
-		allow_delete( true ) ;
-		allow_convert( true ) ;
-		
-		if ( fs .grow && ! fs .shrink && ! devices[ current_device ] .readonly )
-		{
-			allow_resize( true ); 
-			
-			//only allow copying of real partitions
-			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY && fs .copy )
-				allow_copy( true ) ;
-		}
-		
-		return;
-	}
-		
 	//PRIMARY and LOGICAL
-	if (  selected_partition .type != GParted::EXTENDED )
+	if (  selected_partition .type == GParted::PRIMARY || selected_partition .type == GParted::LOGICAL )
 	{
+		fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
+		
 		allow_delete( true ) ;
 		allow_convert( true ) ;
 		
@@ -648,7 +628,7 @@ void Win_GParted::Set_Valid_Operations()
 			allow_resize( true ) ;
 			
 			//only allow copying of real partitions
-			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY && fs .copy )
+			if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
 				allow_copy( true ) ;
 		}
 				
@@ -872,9 +852,8 @@ void Win_GParted::activate_resize()
 		dialog .add_action_widget( button_resize_move, Gtk::RESPONSE_OK ) ;
 		dialog .show_all_children( ) ;
 		
-		if ( dialog.run( ) == Gtk::RESPONSE_CANCEL )
+		if ( dialog .run( ) == Gtk::RESPONSE_CANCEL )
 			return ;
-		
 	}
 	
 	std::vector <Partition> partitions = devices[ current_device ] .device_partitions ;
@@ -885,7 +864,7 @@ void Win_GParted::activate_resize()
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors  ) ;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{
@@ -898,30 +877,29 @@ void Win_GParted::activate_resize()
 		
 	dialog .set_transient_for( *this ) ;	
 			
-	if ( dialog.run() == Gtk::RESPONSE_OK )
+	if ( dialog .run( ) == Gtk::RESPONSE_OK )
 	{
-		dialog.hide() ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+		dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 		
 		//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new size and position ( unless it's an EXTENDED )
 		if ( selected_partition .status == GParted::STAT_NEW && selected_partition.type != GParted::EXTENDED )
 		{
 			//remove operation which creates this partition
-			for ( unsigned int t=0;t<operations.size() ; t++ )
+			for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
 			{
-				if ( operations[t] .partition_new .partition == selected_partition .partition )
+				if ( operations[ t ] .partition_new .partition == selected_partition .partition )
 				{
-					operations.erase( operations .begin() + t ) ;
+					operations.erase( operations .begin( ) + t ) ;
 					
 					//And add the new partition to the end of the operations list
-					Add_Operation( GParted::CREATE, dialog.Get_New_Partition() );
+					Add_Operation( GParted::CREATE, dialog .Get_New_Partition( ) );
 					
 					break;
 				}
 			}
 		}
 		else//normal move/resize on existing partition
-			Add_Operation( GParted::RESIZE_MOVE, dialog.Get_New_Partition() );
-		
+			Add_Operation( GParted::RESIZE_MOVE, dialog .Get_New_Partition( ) );
 	}
 }
 

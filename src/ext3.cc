@@ -35,9 +35,14 @@ FS ext3::get_filesystem_support( )
 	if ( ! system( "which e2fsck 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = true ;
 	
-	//resizing is a delicate process which requires 3 commands..
-	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
-		fs .grow = fs .shrink = true ;
+	//resizing is a delicate process ...
+	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	{
+		fs .grow = true ;
+		
+		if ( fs .read ) //needed to determine a min filesystemsize..
+			fs .shrink = true ;
+	}
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;

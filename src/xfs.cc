@@ -26,8 +26,7 @@ FS xfs::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "xfs" ;
-	fs .grow_only = true ;
-	
+		
 	if ( ! system( "which xfs_db 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = true ;
 	
