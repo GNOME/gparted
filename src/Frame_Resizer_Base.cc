@@ -72,7 +72,7 @@ void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::Color & c
 	this ->get_colormap( ) ->alloc_color( color_unused ) ;
 }
 
-void Frame_Resizer_Base::set_x_start( int x_start) 
+void Frame_Resizer_Base::set_x_start( int x_start ) 
 {  
 	this ->X_START = x_start +10;//space for leftgripper
 } 
@@ -82,7 +82,7 @@ void Frame_Resizer_Base::set_x_end( int x_end )
 	this ->X_END = x_end +26 ; //space for leftgripper + 2 * BORDER
 }
 
-void Frame_Resizer_Base::set_used( int  used)
+void Frame_Resizer_Base::set_used( int used )
 {   
 	this  ->USED = used ;
 }
@@ -95,7 +95,7 @@ void Frame_Resizer_Base::set_fixed_start( bool fixed_start )
 void Frame_Resizer_Base::set_used_start( int used_start ) 
 {
 	if ( used_start <= 0 )
-		this ->USED_START = 10	;
+		this ->USED_START = 10;
 	else
 		this ->USED_START = used_start +10;
 }
@@ -113,7 +113,7 @@ int Frame_Resizer_Base::get_used( )
 
 int Frame_Resizer_Base::get_x_start( ) 
 {
-	return X_START -10  ;
+	return X_START -10 ;
 }
 
 int Frame_Resizer_Base::get_x_end( ) 
@@ -123,9 +123,9 @@ int Frame_Resizer_Base::get_x_end( )
 
 void Frame_Resizer_Base::drawingarea_on_realize( )
 {
-	gc = Gdk::GC::create( drawingarea .get_window( ) );
-	
-	drawingarea .get_window( ) ->set_background( color_background );
+	gc_drawingarea = Gdk::GC::create( drawingarea .get_window( ) );
+	pixmap = Gdk::Pixmap::create( drawingarea .get_window( ), drawingarea .get_allocation( ). get_width( ), drawingarea. get_allocation( ). get_height( ) );
+	gc_pixmap = Gdk::GC::create( pixmap );
 	
 	drawingarea .add_events( Gdk::POINTER_MOTION_MASK );
 	drawingarea .add_events( Gdk::BUTTON_PRESS_MASK );
@@ -144,7 +144,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	if ( ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) //no need to check this while resizing or moving
 	{ 
 		//check if pointer is over a gripper
-		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )	//left grip
+		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45 )	//left grip
 			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
 		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
 			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
@@ -160,13 +160,13 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 && (X_END - ev ->x) <= MAX_SIZE && (X_END - ev ->x) >= MIN_SIZE )
 		{
 			X_START = static_cast<int> ( ev ->x ) ;
-			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_resize .emit( X_START -10, X_END -26, ARROW_LEFT ) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_RIGHT && ev ->x <= 526 && ev ->x >= X_START + USED + BORDER *2 && (ev ->x - X_START) <= MAX_SIZE && (ev ->x - X_START) >= MIN_SIZE )
 		{
 			X_END = static_cast<int> ( ev ->x ) ;
-			signal_resize.emit( X_START -10, X_END -26, ARROW_RIGHT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_resize .emit( X_START -10, X_END -26, ARROW_RIGHT ) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_MOVE )
@@ -182,7 +182,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 			
 			X_START_MOVE = static_cast<int> ( ev ->x ) ;		
 			
-			signal_move.emit( X_START -10, X_END -26) ;	//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_move .emit( X_START -10, X_END -26) ;	//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		Draw_Partition( ) ;
@@ -195,9 +195,9 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 {
 	GRIP_MOVE = false; GRIP_RIGHT = false; GRIP_LEFT = false ;
 	
-	if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  ) //left grip
+	if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45 ) //left grip
 		GRIP_LEFT = true ;
-	else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 ) //right grip
+	else if ( ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 ) //right grip
 		GRIP_RIGHT = true ;
 	else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )															//move grip
 		{ GRIP_MOVE = true ; X_START_MOVE = static_cast<int> ( ev ->x ); }
@@ -207,7 +207,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 
 bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev ) 
 {
-	GRIP_LEFT = false ; GRIP_RIGHT = false ; GRIP_MOVE = false;
+	GRIP_LEFT = GRIP_RIGHT = GRIP_MOVE = false;
 	
 	return true;
 }
@@ -228,30 +228,35 @@ void Frame_Resizer_Base::Draw_Partition( )
 	
 	if ( drawingarea .get_window( ) )
 	{
-		drawingarea .get_window( ) ->clear( ) ;
+		//i couldn't find a clear() for a pixmap, that's why ;)
+		gc_pixmap ->set_foreground( color_background );
+		pixmap ->draw_rectangle( gc_pixmap, true, 0, 0, 536, 50 );
 		
 		//the two rectangles on each side of the partition
-		gc ->set_foreground( color_arrow_rectangle );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, 0, 0, 10, 50 );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, 526, 0, 10, 50 );
+		gc_pixmap ->set_foreground( color_arrow_rectangle );
+		pixmap ->draw_rectangle( gc_pixmap, true, 0, 0, 10, 50 );
+		pixmap ->draw_rectangle( gc_pixmap, true, 526, 0, 10, 50 );
 		
 		//partition
-		gc ->set_foreground( color_partition );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START, 0, X_END - X_START, 50 );
+		gc_pixmap ->set_foreground( color_partition );
+		pixmap ->draw_rectangle( gc_pixmap, true, X_START, 0, X_END - X_START, 50 );
 		
 		//used
-		gc ->set_foreground( color_used );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START +BORDER, BORDER, USED, 34 );
+		gc_pixmap ->set_foreground( color_used );
+		pixmap ->draw_rectangle( gc_pixmap, true, X_START +BORDER, BORDER, USED, 34 );
 		
 		//unused
-		gc ->set_foreground( color_unused );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START +BORDER +USED, BORDER, UNUSED, 34 );
+		gc_pixmap ->set_foreground( color_unused );
+		pixmap ->draw_rectangle( gc_pixmap, true, X_START +BORDER +USED, BORDER, UNUSED, 34 );
 		
 		//resize grips
 		if ( ! fixed_start )
 			Draw_Resize_Grip( ARROW_LEFT ) ;
 		
 		Draw_Resize_Grip( ARROW_RIGHT ) ;
+		
+		//and draw everything to "real" screen..
+		drawingarea .get_window( ) ->draw_drawable( gc_drawingarea, pixmap, 0, 0, 0, 0 ) ;
 	}
 }
 
@@ -259,27 +264,23 @@ void Frame_Resizer_Base::Draw_Resize_Grip( ArrowType arrow_type )
 {
 	if ( arrow_type == ARROW_LEFT )
 	{
-		arrow_points[0] .set_x( X_START ) ;
-		arrow_points[1] .set_x( X_START -10 ) ;
-		arrow_points[2] .set_x( X_START ) ;
+		arrow_points[ 0 ] .set_x( X_START ) ;
+		arrow_points[ 1 ] .set_x( X_START -10 ) ;
+		arrow_points[ 2 ] .set_x( X_START ) ;
 	}
 	else
 	{
-		arrow_points[0] .set_x( X_END )  ;
-		arrow_points[1] .set_x( X_END +10 ) ; 
-		arrow_points[2] .set_x( X_END )  ;
+		arrow_points[ 0 ] .set_x( X_END )  ;
+		arrow_points[ 1 ] .set_x( X_END +10 ) ; 
+		arrow_points[ 2 ] .set_x( X_END )  ;
 	}
 	
 	//attach resize arrows to the partition
-	gc ->set_foreground(  color_arrow_rectangle );
+	gc_pixmap ->set_foreground( color_arrow_rectangle );
+	pixmap ->draw_rectangle( gc_pixmap, false, arrow_type == ARROW_LEFT ? X_START -10 : X_END +1, 5, 9, 40 ) ;
 	
-	if ( arrow_type == ARROW_LEFT )
-		drawingarea .get_window( ) ->draw_rectangle( gc, false, X_START -10 , 5, 9, 40 );
-	else
-		drawingarea .get_window( ) ->draw_rectangle( gc, false, X_END +1, 5, 9, 40 );
-	
-	gc ->set_foreground( color_arrow );
-	drawingarea .get_window( ) ->draw_polygon( gc , true, arrow_points  );
+	gc_pixmap ->set_foreground( color_arrow );
+	pixmap ->draw_polygon( gc_pixmap, true, arrow_points );
 }
 
 Frame_Resizer_Base::~Frame_Resizer_Base( )

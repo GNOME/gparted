@@ -35,7 +35,7 @@ public:
 	};
 	
 	Frame_Resizer_Base( ) ;
-	~Frame_Resizer_Base() ;
+	~Frame_Resizer_Base( ) ;
 
 	void set_rgb_partition_color( const Gdk::Color & ) ;
 	void override_default_rgb_unused_color( const Gdk::Color & ) ;
@@ -47,14 +47,13 @@ public:
 	void set_used_start( int used_start ) ;
 	void set_size_limits( int min_size, int max_size ) ;
 
-	int get_used();
-	int get_x_start() ;
-	int get_x_end() ;
+	int get_used( );
+	int get_x_start( ) ;
+	int get_x_end( ) ;
 
-	virtual void Draw_Partition() ;
+	virtual void Draw_Partition( ) ;
 
-
-	//public signal  (emitted upon resize/move)
+	//public signals  (emitted upon resize/move)
 	sigc::signal<void,int,int, ArrowType> signal_resize;
 	sigc::signal<void,int,int> signal_move;
 
@@ -72,10 +71,12 @@ protected:
 		
 	void Draw_Resize_Grip( ArrowType ) ;
 
-	Gtk::DrawingArea drawingarea;
-	Glib::RefPtr<Gdk::GC> gc;
+	Gtk::DrawingArea drawingarea ;
+	Glib::RefPtr<Gdk::GC> gc_drawingarea ;
+	Glib::RefPtr<Gdk::Pixmap> pixmap ;
+	Glib::RefPtr<Gdk::GC> gc_pixmap ;
 
-	Gdk::Color color_used, color_unused, color_arrow, color_background,color_partition,color_arrow_rectangle;
+	Gdk::Color color_used, color_unused, color_arrow, color_background, color_partition, color_arrow_rectangle;
 
 	std::vector <Gdk::Point> arrow_points;
 	
@@ -85,7 +86,7 @@ protected:
 	bool fixed_start; //a fixed start disables moving the start and thereby the whole move functionality..
 
 private:
-	void init() ;
+	void init( ) ;
 
 };
 

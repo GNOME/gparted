@@ -17,13 +17,13 @@
  
 #include "../include/Frame_Resizer_Extended.h"
 
-Frame_Resizer_Extended::Frame_Resizer_Extended(  )
+Frame_Resizer_Extended::Frame_Resizer_Extended( )
 {
 }
 
 bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion *ev ) 
 {
-	if ( ! GRIP_LEFT && ! GRIP_RIGHT  ) //no need to check this while resizing 
+	if ( ! GRIP_LEFT && ! GRIP_RIGHT ) //no need to check this while resizing 
 	{ 
 		//check if pointer is over a gripper
 		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45 ) //left grip
@@ -56,23 +56,28 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 
 void Frame_Resizer_Extended::Draw_Partition( ) 
 {
-	drawingarea .get_window( ) ->clear( ) ;
+	//i couldn't find a clear() for a pixmap, that's why ;)
+	gc_pixmap ->set_foreground( color_background );
+	pixmap ->draw_rectangle( gc_pixmap, true, 0, 0, 536, 50 );
 	
 	//the two rectangles on each side of the partition
-	gc ->set_foreground( color_arrow_rectangle );
-	drawingarea .get_window( ) ->draw_rectangle( gc, true, 0, 0, 10, 50 );
-	drawingarea .get_window( ) ->draw_rectangle( gc, true, 526, 0, 10, 50 );
+	gc_pixmap ->set_foreground( color_arrow_rectangle );
+	pixmap ->draw_rectangle( gc_pixmap, true, 0, 0, 10, 50 );
+	pixmap ->draw_rectangle( gc_pixmap, true, 526, 0, 10, 50 );
 	
 	//used
-	gc ->set_foreground( color_used );
-	drawingarea .get_window( ) ->draw_rectangle( gc, true, USED_START + BORDER, BORDER, USED, 34 );
+	gc_pixmap ->set_foreground( color_used );
+	pixmap ->draw_rectangle( gc_pixmap, true, USED_START + BORDER, BORDER, USED, 34 );
 	
 	//partition
-	gc ->set_foreground( color_partition );
+	gc_pixmap ->set_foreground( color_partition );
 	for( short t = 0; t < 9 ; t++ )
-		drawingarea .get_window( ) ->draw_rectangle( gc, false, X_START +t, t, X_END - X_START -t*2, 50 - t*2 );
+		pixmap ->draw_rectangle( gc_pixmap, false, X_START +t, t, X_END - X_START -t*2, 50 - t*2 );
 			
 	//resize grips
 	Draw_Resize_Grip( ARROW_LEFT ) ;
 	Draw_Resize_Grip( ARROW_RIGHT ) ;
+	
+	//and draw everything to "real" screen..
+	drawingarea .get_window( ) ->draw_drawable( gc_drawingarea, pixmap, 0, 0, 0, 0 ) ;
 }

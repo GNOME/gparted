@@ -25,15 +25,13 @@ class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:
 	Frame_Resizer_Extended( ) ;
-	
 
 private:
 	int UNUSED_BEFORE ;
 	//overridden signal handler
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion* ) ;
 
-	virtual void Draw_Partition() ;
-
+	virtual void Draw_Partition( ) ;
 };
 
 #endif // FRAME_RESIZER_EXTENDED
