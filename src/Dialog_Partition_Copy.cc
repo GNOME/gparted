@@ -83,7 +83,6 @@ Partition Dialog_Partition_Copy::Get_New_Partition()
 	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
 	
 	//set proper name and status for partition
-//	selected_partition.partition = String::ucompose( _("copy from %1"), selected_partition .partition );
 	selected_partition.status = GParted::STAT_COPY ;
 	
 	return selected_partition ;
