@@ -104,9 +104,9 @@ inline FS Get_FS( const Glib::ustring & filesystem, const std::vector<FS> & FILE
 	
 	for ( t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
 		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
-			break ;
+			return FILESYSTEMS[ t ] ;
 	
-	return FILESYSTEMS[ t ] ;
+	return FILESYSTEMS .back( ) ;
 }
 
 inline Glib::ustring Get_Color( const Glib::ustring & filesystem ) 
