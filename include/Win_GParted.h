@@ -66,7 +66,7 @@ private:
 	void Show_Pulsebar( ) ;
 	
 	//Fill txtview_device_info_buffer with some information about the selected device
-	void Fill_Label_Device_Info( );
+	void Fill_Label_Device_Info( bool clear = false );
 
 	//overridden signalhandler
 	virtual bool on_delete_event( GdkEventAny* ) ;

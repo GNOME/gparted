@@ -8,7 +8,6 @@ GParted_Core::GParted_Core( )
 	device = NULL ;
 	disk = NULL ;
 	c_partition = NULL ;
-		
 	p_filesystem = NULL ;
 	textbuffer = Gtk::TextBuffer::create( ) ;
 
@@ -70,7 +69,7 @@ void GParted_Core::find_supported_filesystems( )
 void GParted_Core::get_devices( std::vector<Device> & devices )
 {
 	devices .clear( ) ;
-	
+		
 	//try to find all available devices and put these in a list
 	ped_device_probe_all( );
 	

@@ -54,11 +54,11 @@ TreeView_Detail::TreeView_Detail( )
 	std::vector <Gtk::CellRenderer *> renderers = this ->get_column( 1 ) ->get_cell_renderers( ) ;
 	
 	if ( renderers .front( ) != this ->get_column( 1 ) ->get_first_cell_renderer( ) )	
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .front( ) ) ;
+		cell_renderer_text = dynamic_cast <Gtk::CellRendererText*> ( renderers .front( ) ) ;
 	else 
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back( ) ) ;
+		cell_renderer_text = dynamic_cast <Gtk::CellRendererText*> ( renderers .back( ) ) ;
 	
-	this ->get_column( 1 ) ->add_attribute(cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
+	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
 	
 	
 	//set alignment of numeric columns to right
@@ -108,13 +108,12 @@ void TreeView_Detail::Set_Selected( const Partition & partition )
 			partition .sector_end <=partition_temp .sector_end &&
 			partition.inside_extended == partition_temp.inside_extended )
 		{
-			this ->set_cursor( (Gtk::TreePath) row );
+			this ->set_cursor( static_cast <Gtk::TreePath> ( row ) );
 			return;
 		}
 		
 		//logicals
 		if ( row .children( ) .size( ) > 0 ) //this is the row with the extended partition, search it's childrows...
-		{
 			for( iter_child = row .children( ) .begin( ) ; iter_child != row.children( ) .end( ) ; iter_child++ )
 			{
 				childrow = *iter_child;
@@ -123,15 +122,17 @@ void TreeView_Detail::Set_Selected( const Partition & partition )
 				if ( partition .sector_start >= partition_temp .sector_start && partition .sector_end <= partition_temp .sector_end )
 				{
 					this ->expand_all( );
-					this ->set_cursor( (Gtk::TreePath) childrow );
+					this ->set_cursor( static_cast <Gtk::TreePath> ( childrow ) );
 					return;
 				}
 			}
-		}
 
 	}
-	
-	
+}
+
+void TreeView_Detail::Clear( )
+{
+	treestore_detail ->clear( ) ;
 }
 
 void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition & partition )

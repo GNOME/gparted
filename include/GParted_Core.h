@@ -86,7 +86,6 @@ private:
 	PedPartition *c_partition ;
 	Glib::ustring temp ;
 	Partition partition_temp ;
-	
 	FS fs ;
 };
 

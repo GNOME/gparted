@@ -38,6 +38,7 @@ public:
 	TreeView_Detail( );
 	void Load_Partitions( const std::vector<Partition> & partitions ) ;
 	void Set_Selected( const Partition & partition );
+	void Clear( ) ;
 
 	//signals for interclass communication
 	sigc::signal<void, GdkEventButton *, const Partition & > signal_mouse_click;

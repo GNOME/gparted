@@ -249,12 +249,12 @@ void Win_GParted::init_device_info()
 	table ->attach( * mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//disktype
-	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "DiskType:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "DiskType:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//heads
-	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Heads:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Heads:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
@@ -264,12 +264,12 @@ void Win_GParted::init_device_info()
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//cylinders
-	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Cylinders:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Cylinders:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//total sectors
-	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
@@ -336,13 +336,14 @@ void Win_GParted::init_hpaned_main( )
 	//connect signal and add treeview_detail
 	treeview_detail .signal_mouse_click .connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) );
 	scrollwindow ->add( treeview_detail );
-	hpaned_main.pack2( *scrollwindow, true,true );
+	hpaned_main.pack2( *scrollwindow, true, true );
 }
 
 void Win_GParted::Refresh_OptionMenu( ) 
 {
-	//fill optionmenu_devices
 	optionmenu_devices .get_menu( ) ->items( ) .clear( ) ;
+	
+	//fill optionmenu_devices
 	for ( unsigned int i = 0 ; i < devices .size( ) ; i++ )
 	{ 
 		hbox = manage( new Gtk::HBox( ) );
@@ -350,16 +351,16 @@ void Win_GParted::Refresh_OptionMenu( )
 		//the image...
 		image = manage( new Gtk::Image( "/usr/share/icons/gnome/24x24/devices/gnome-dev-harddisk.png" ) );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
-		
+			
 		//the label...
 		hbox ->pack_start( *mk_label( " " + devices[ i ] .path + "\t(" + String::ucompose( _("%1 MB"), Sector_To_MB( devices[ i ] .length ) ) + ")" ), Gtk::PACK_SHRINK );
-	
+		
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		optionmenu_devices .get_menu( ) ->items( ) .push_back( *menu_item );
 	}
+		
+	hbox_toolbar .show_all_children( );	
 	
-	optionmenu_devices .get_menu( ) ->show_all_children( );	
-
 	optionmenu_devices .set_history( current_device ) ;
 }
 
@@ -398,22 +399,29 @@ void Win_GParted::Show_Pulsebar( )
 	menu_partition .set_sensitive( true ) ;
 }
 
-void Win_GParted::Fill_Label_Device_Info( ) 
+void Win_GParted::Fill_Label_Device_Info( bool clear ) 
 {
-	short t = 0;
-	
-	//global info...
-	device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
-	device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] .length ) ) ) ;
-	device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
-	device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
-	
-	//detailed info
-	device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .heads ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .sectors ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .cylinders ) );
-	device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .length ) );
+	if ( clear )
+		for ( unsigned int t = 0 ; t < device_info .size( ) ; t++ )
+			device_info[ t ] ->set_text( "" ) ;
+		
+	else
+	{		
+		short t = 0;
+		
+		//global info...
+		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
+		device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Sector_To_MB( devices[ current_device ] .length ) ) ) ;
+		device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
+		device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
+		
+		//detailed info
+		device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;
+		device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .heads ) );
+		device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .sectors ) );
+		device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .cylinders ) );
+		device_info[ t++ ] ->set_text( num_to_str( devices[ current_device ] .length ) );
+	}
 }
 
 bool Win_GParted::on_delete_event( GdkEventAny *event )
@@ -436,9 +444,9 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 		open_operationslist( ) ;
 	
 	//make scrollwindow focus on the last operation in the list	
-	Gtk::TreeIter iter = liststore_operations->children().end() ;
+	Gtk::TreeIter iter = liststore_operations ->children( ) .end( ) ;
 	iter-- ;
-	treeview_operations .set_cursor( (Gtk::TreePath) (Gtk::TreeRow) *iter);
+	treeview_operations .set_cursor( static_cast <Gtk::TreePath> ( static_cast <Gtk::TreeRow> ( *iter ) ) ) ;
 }
 
 void Win_GParted::Refresh_Visual( )
@@ -688,8 +696,6 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	if ( current_device >= devices .size( ) )
 		current_device = 0 ;
 	
-	Refresh_OptionMenu( ) ;	
-	
 	//show read-only warning if necessary
 	Glib::ustring readonly_paths ;
 	
@@ -710,6 +716,56 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true ) ;
 		dialog .run( ) ;
+	}
+	
+	//see if there are any pending operations on non-existent devices
+	//NOTE that this isn't 100% foolproof since some stuff (e.g. sourcedevice of copy) may slip through.
+	//but anyone who removes the sourcedevice before applying the operations gets what he/she deserves :-)
+	unsigned int i ;
+	for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
+	{
+		for ( i = 0 ; i < devices .size( ) && devices[ i ] .path != operations[ t ] .device .path ; i++ ) {}
+			
+		if ( i >= devices .size( ) )
+			operations .erase( operations .begin( ) + t-- ) ;//decrease t bij one..
+	}
+		
+	//if no devices were detected we disable some stuff and show a message in the statusbar
+	if ( devices .empty( ) )
+	{	
+		optionmenu_devices .hide( ) ;
+		
+		menubar_main .items( )[ 2 ] .set_sensitive( false ) ;
+		menubar_main .items( )[ 3 ] .set_sensitive( false ) ;
+		toolbar_main .set_sensitive( false ) ;
+		optionmenu_devices .set_sensitive( false ) ;
+		
+		Fill_Label_Device_Info( true ) ;
+		
+		if ( vbox_visual_disk != NULL )
+		{
+			hbox_visual .remove( *vbox_visual_disk );
+			delete( vbox_visual_disk ) ;
+			vbox_visual_disk = NULL ;
+		}
+		
+		treeview_detail .Clear( ) ;
+		
+		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
+		liststore_operations ->clear( ) ;
+		close_operationslist( ) ;
+		operations .clear( ) ;
+		
+		statusbar .pop( ) ;
+		statusbar .push( _( "No devices detected" ) );
+	}
+	
+	else //at least one device detected
+	{
+		menubar_main .items( )[ 2 ] .set_sensitive( true ) ;
+		menubar_main .items( )[ 3 ] .set_sensitive( true ) ;
+		
+		Refresh_OptionMenu( ) ;	
 	}
 }
 
@@ -821,7 +877,7 @@ bool Win_GParted::max_amount_prim_reached( )
 	return false ;
 }
 
-void Win_GParted::activate_resize()
+void Win_GParted::activate_resize( )
 {
 	//show warning when one tries to resize a fat16 filesystem
 	if ( selected_partition .filesystem == "fat16" )
