@@ -26,17 +26,19 @@ FS reiserfs::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "reiserfs" ;
-		
-	static void * test_handle = NULL ;
-	if ( (test_handle = dlopen("libreiserfs.so", RTLD_NOW)) ) 
-	{
+	
+	if ( ! system( "which debugreiserfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = true ;
+	
+	if ( ! system( "which mkfs.reiserfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
+	
+	if ( ! system( "which reiserfsck 1>/dev/null 2>/dev/null" ) ) 
+		fs .check = true ;
+		
+	//resizing is a delicate process which requires 3 commands..
+	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
 		fs .resize = true ;
-				
-		dlclose( test_handle ) ;
-		test_handle = NULL ;
-	}
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
@@ -46,69 +48,45 @@ FS reiserfs::get_filesystem_support( )
 
 void reiserfs::Set_Used_Sectors( Partition & partition ) 
 {
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
-	PedPartition *c_part = NULL ;
+	char c_buf[ 512 ] ;
+	FILE *f ;
 	
-	if ( disk )
+	Glib::ustring output ;
+	Sector free_blocks = -1, blocksize = -1 ;
+
+        //get free blocks..
+	f = popen( ( "debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
+	while ( fgets( c_buf, 512, f ) )
 	{
-		c_part = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs = ped_file_system_open( & c_part ->geom ); 	
-					
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint ( fs ) ;
-				if ( constraint )
-				{
-					partition .Set_Unused( (partition .sector_end - partition .sector_start) - constraint ->min_size ) ;
-					
-					ped_constraint_destroy ( constraint );
-				}
-												
-				ped_file_system_close( fs ) ;
-			}
-		}
+		output = Glib::locale_to_utf8( c_buf ) ;
+		
+		//blocksize
+		if ( output .find( "Blocksize" ) < output .length( ) )
+			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+		
+		//free blocks
+		if ( output .find( "Free blocks" ) < output .length( ) )
+			free_blocks = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 	}
+	pclose( f ) ;
+	
+	if ( free_blocks > -1 && blocksize > -1 )
+		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
 }
 	
 bool reiserfs::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	bool return_value = false ;
-	
-	if ( open_device_and_disk( device_path, device, disk ) )
-	{	
-		PedPartition *c_part = NULL ;
-		PedFileSystemType *fs_type = NULL ;
-		PedFileSystem *fs = NULL ;
-		
-		c_part = ped_disk_get_partition_by_sector( disk, (new_partition .sector_end + new_partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs_type = ped_file_system_type_get( "reiserfs" ) ;
-			if ( fs_type )
-			{
-				fs = ped_file_system_create( & c_part ->geom, fs_type, NULL );
-				if ( fs )
-				{
-					if ( ped_partition_set_system(c_part, fs_type ) )
-						return_value = Commit( disk ) ;
-					
-					ped_file_system_close( fs );
-				}
-			}
-		}
-		
-		close_device_and_disk( device, disk ) ;
-	}
-		
-	return return_value ;
+	return Execute_Command( "mkfs.reiserfs -q " + new_partition .partition ) ;
 }
 
 bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 {
-	return false ;
+	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .partition ;
+	
+	if ( ! fill_partition )
+		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
+	
+	return Execute_Command( str_temp ) ;
 }
 
 bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
@@ -118,12 +96,12 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & 
 
 bool reiserfs::Check_Repair( const Partition & partition )
 {
-	return false ;
+	return Execute_Command( "reiserfsck -y --fix-fixable " + partition .partition ) ;
 }
 
 int reiserfs::get_estimated_time( long MB_to_Consider )
 {
-	return 1 + MB_to_Consider / 1000 ;
+	return -1 ;
 }
 	
 

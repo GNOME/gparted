@@ -64,7 +64,7 @@ void ext3::Set_Used_Sectors( Partition & partition )
 			free_blocks = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 			
 		//blocksize
-		if ( output .find( "Block size:" ) < output .length( ) )
+		if ( output .find( "Block size" ) < output .length( ) )
 			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 		
 	}
