@@ -61,7 +61,7 @@ private:
 	void Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;
 	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy = false ) ;
-	bool Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
+	bool Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new, bool fixed_start = true ) ;
 	bool Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
 
 	void Show_Error( Glib::ustring message ) ;

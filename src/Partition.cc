@@ -31,7 +31,7 @@ void Partition::Reset( )
 	status = GParted::STAT_REAL ;
 	type = GParted::UNALLOCATED ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
-	color.set( "black" ) ;
+	color .set( "black" ) ;
 	inside_extended = busy = false ;
 	logicals .clear( ) ;
 }
@@ -58,8 +58,11 @@ void Partition::Set(	const Glib::ustring & partition,
 
 void Partition::Set_Unused( Sector sectors_unused )
 {
-	this ->sectors_unused = sectors_unused ;
-	this ->sectors_used = ( sectors_unused == -1 ) ? -1 : ( sector_end - sector_start) - sectors_unused ;
+	if ( sectors_unused < ( sector_end - sector_start ) )
+	{
+		this ->sectors_unused = sectors_unused ;
+		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : ( sector_end - sector_start) - sectors_unused ;
+	}
 }
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )

@@ -1,3 +1,11 @@
+2004-11-24 Bart Hakvoort  <gparted@users.sf.net>
+
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: fixed nasty error with resizing 'fixed-start filesystems'.
+	* src/Partition.cc: added a check to prevent unused space from being bigger then total space.
+	* src/ntfs.cc: removed -Q from mkntfs. -Q bypassed some safetychecks to gain performance and (so i heard later) also had a
+	  tendency of failing ;) (Adrighem)
+
 2004-11-23 Bart Hakvoort  <gparted@users.sf.net>
 
 	* src/Dialog_Partition_New.cc,

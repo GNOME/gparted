@@ -307,6 +307,8 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 		
 		return_value = ( ped_disk_delete_partition( disk, c_partition ) && Commit( disk ) ) ;
 		close_device_and_disk( device, disk ) ;
+		
+		sleep( 1 ) ;//paranoia give the OS some time to update nodes in /dev
 	}
 	
 	return return_value ;
@@ -315,7 +317,7 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 bool GParted_Core::Resize( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) 
 {
 	if ( partition_old .type == GParted::EXTENDED )
-		return Resize_Container_Partition( device_path, partition_old, partition_new ) ;
+		return Resize_Container_Partition( device_path, partition_old, partition_new, false ) ;
 	
 	//these 3 still use libparted's resizer.
 	else if (	partition_old .filesystem == "linux-swap" ||
@@ -484,7 +486,7 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 	return new_partition .partition_number ;
 }
 
-bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new )
+bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new, bool fixed_start )
 {
 	bool return_value = false ;
 	
@@ -501,6 +503,17 @@ bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path
 		if ( c_partition )
 		{
 			constraint = ped_constraint_any( device );
+			
+			if ( fixed_start && constraint ) //create a constraint which keeps de startpoint intact and rounds the end to a cylinderboundary
+			{
+				ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) ;
+				ped_constraint_destroy ( constraint );
+				constraint = NULL ;
+				
+				ped_geometry_set_start ( & c_partition ->geom, partition_new .sector_start ) ;
+				constraint = ped_constraint_exact ( & c_partition ->geom ) ;
+			}
+			
 			if ( constraint )
 			{
 				if ( ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
