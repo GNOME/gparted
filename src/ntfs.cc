@@ -72,7 +72,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 
 bool ntfs::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	return Execute_Command( "mkntfs -Q " + new_partition .partition ) ;
+	return ! Execute_Command( "mkntfs -Q " + new_partition .partition ) ;
 }
 
 bool ntfs::Resize( const Partition & partition_new, bool fill_partition )
@@ -82,22 +82,24 @@ bool ntfs::Resize( const Partition & partition_new, bool fill_partition )
 	if ( ! fill_partition )
 		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
 	
-	return Execute_Command( str_temp ) ;
+	return ! Execute_Command( str_temp ) ;
 }
 
 bool ntfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	Execute_Command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path ) ;
+	bool ret_val = ! Execute_Command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path ) ;
 	
 	//resize to full to set correct used/unused
-	return Execute_Command( "echo y | ntfsresize -f " + dest_part_path ) ;
+	Execute_Command( "echo y | ntfsresize -f " + dest_part_path ) ;
+	
+	return ret_val ;
 }
 
 bool ntfs::Check_Repair( const Partition & partition )
 {
 	//according to Szaka it's best to use ntfsresize to check the partition for errors
 	//since --info is read-only i'll leave it out. just calling ntfsresize --force has also a tendency of fixing stuff :)
-	return Execute_Command( "echo y | ntfsresize -f " + partition .partition ) ;
+	return ! Execute_Command( "echo y | ntfsresize -f " + partition .partition ) ;
 }
 
 int ntfs::get_estimated_time( long MB_to_Consider )

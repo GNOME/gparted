@@ -76,7 +76,7 @@ void ext2::Set_Used_Sectors( Partition & partition )
 
 bool ext2::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	return Execute_Command( "mkfs.ext2 " + new_partition .partition ) ;
+	return ! Execute_Command( "mkfs.ext2 " + new_partition .partition ) ;
 }
 
 bool ext2::Resize( const Partition & partition_new, bool fill_partition )
@@ -86,17 +86,17 @@ bool ext2::Resize( const Partition & partition_new, bool fill_partition )
 	if ( ! fill_partition )
 		str_temp += " " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
 	
-	return Execute_Command( str_temp ) ;
+	return ! Execute_Command( str_temp ) ;
 }
 
 bool ext2::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
 bool ext2::Check_Repair( const Partition & partition )
 {
-	return Execute_Command( "e2fsck -fy " + partition .partition ) ;
+	return Execute_Command( "e2fsck -fy " + partition .partition ) <= 1 ;
 }
 
 int ext2::get_estimated_time( long MB_to_Consider )

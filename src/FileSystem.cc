@@ -27,7 +27,7 @@ FileSystem::FileSystem( )
 	cylinder_size = 0 ;
 }
 	
-bool FileSystem::Execute_Command( Glib::ustring command ) 
+int FileSystem::Execute_Command( Glib::ustring command ) 
 {	
 	Glib::Dispatcher dispatcher;
 	sigc::connection conn = dispatcher .connect( sigc::mem_fun(*this, &FileSystem::Update_Textview) );
@@ -48,13 +48,10 @@ bool FileSystem::Execute_Command( Glib::ustring command )
 		//dispatcher ( ) ;disabled for the moment. Hier moet ik nog eens fris naar kijken. (anjuta had zo'n ingebouwde terminal, hoe deed die dat?? !!!
 	}
 	
-        pclose( f ) ;
-	
 	output = "" ;
-	dispatcher ( ) ;
+	dispatcher( ) ;
 	
-	
-	return true ;
+        return pclose( f ) ;
 }
 
 void FileSystem::Update_Textview( ) 

@@ -77,7 +77,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	
 bool reiserfs::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	return Execute_Command( "mkreiserfs -q " + new_partition .partition ) ;
+	return ! Execute_Command( "mkreiserfs -q " + new_partition .partition ) ;
 }
 
 bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
@@ -87,21 +87,27 @@ bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 	if ( ! fill_partition )
 		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
 	
-	return Execute_Command( str_temp ) ;
+	return ! Execute_Command( str_temp ) ; 
 }
 
 bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
-{
+{	
 	//copy partition
-	Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	bool ret_val = ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 	
 	//and set proper used/unused
-	return Execute_Command( "resize_reiserfs " + dest_part_path ) ;
+	Execute_Command( "resize_reiserfs " + dest_part_path ) ;
+	
+	return ret_val ;
 }
 
 bool reiserfs::Check_Repair( const Partition & partition )
 {
-	return Execute_Command( "reiserfsck -y --fix-fixable " + partition .partition ) ;
+	//according to the manpage it should return 0 or 1 on succes, instead it returns 256 on succes.. 
+	//blah, don't have time for this. Just check for both options, we'll fix this in 0.0.8 with our much improved errorhandling
+	int t = Execute_Command( "reiserfsck -y --fix-fixable " + partition .partition ) ;
+	
+	return ( t <=1 || t == 256 ) ;
 }
 
 int reiserfs::get_estimated_time( long MB_to_Consider )

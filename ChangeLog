@@ -1,3 +1,9 @@
+2004-11-30 Bart Hakvoort  <gparted@users.sf.net>
+
+	* include/FileSystem.h,
+	  src/FileSystem.cc: Execute_Command() now returns exit status of executed command
+	* the filesystemclasses: returnvalue (bool) is now set according to the return status of the command
+	
 2004-11-29 Bart Hakvoort  <gparted@users.sf.net>
 
 	* src/GParted_Core.cc: It seemed some kernels remove and re-add blockdevicepaths after the commit_to_os. This caused trouble at some points

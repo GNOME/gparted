@@ -95,7 +95,7 @@ public:
 	long cylinder_size ; //see GParted_Core::Resize()
 	
 protected:
-	bool Execute_Command( Glib::ustring command ) ;
+	int Execute_Command( Glib::ustring command ) ;
 	
 	PedDevice *device ;
 	
