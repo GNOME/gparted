@@ -20,9 +20,9 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS, Sector cylinder_size )
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_size )
 {
-	this ->FILESYSTEMS = FILESYSTEMS ;
+	this ->fs = fs ;
 	
 	//some disk have a small cylindersize, for safetyreasons i keep this size at >=1
 	if ( cylinder_size < 2048 )
@@ -36,8 +36,6 @@ Dialog_Partition_Copy::Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS, Secto
 
 void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, const Partition & copied_partition )
 {
-	fs = Get_FS( copied_partition .filesystem, FILESYSTEMS ) ;
-	
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 	
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .partition ) ) ;

@@ -20,9 +20,9 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( std::vector<FS> FILESYSTEMS, Sector cylinder_size )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, Sector cylinder_size )
 {
-	this ->FILESYSTEMS = FILESYSTEMS ;
+	this ->fs = fs ;
 	
 	//some disk have a small cylindersize, for safetyreasons i keep this size at >=1
 	if ( cylinder_size < 2048 )
@@ -64,7 +64,6 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
-	fs = Get_FS( selected_partition .filesystem, FILESYSTEMS ) ;
 	if ( ! selected_partition .error .empty( ) )
 		fs .shrink = false ;
 	

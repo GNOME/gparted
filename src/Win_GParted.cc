@@ -879,7 +879,7 @@ void Win_GParted::activate_resize()
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+	Dialog_Partition_Resize_Move dialog( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{
@@ -927,7 +927,7 @@ void Win_GParted::activate_paste()
 {
 	if ( ! max_amount_prim_reached( ) )
 	{
-		Dialog_Partition_Copy dialog( gparted_core .get_fs( ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+		Dialog_Partition_Copy dialog( Get_FS( copied_partition .filesystem, gparted_core .get_fs( ) ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 		copied_partition .error .clear( ) ; //we don't need the errors of the source partition.
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
