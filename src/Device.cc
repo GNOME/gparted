@@ -144,57 +144,61 @@ void Device::Read_Disk_Layout( bool deep_scan )
 		partition_temp .Reset( ) ;
 		part_path = this ->path + num_to_str( c_partition ->num ) ;
 		
-		//PRIMARY or LOGICAL
-		if ( c_partition ->type == 0 || c_partition ->type == 1 )
+		switch ( c_partition ->type )
 		{
-			if ( c_partition ->fs_type )
-				temp = c_partition ->fs_type ->name ;
-			else
-			{
-				temp = "unknown" ;
-				this ->error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
-				this ->error += "\n-"; 
-				this ->error += _( "The filesystem is damaged" ) ;
-				this ->error += "\n-" ; 
-				this ->error += _( "The filesystem is unknown to libparted" ) ;
-				this ->error += "\n-"; 
-				this ->error += _( "There is no filesystem available (unformatted)" ) ; 
-						
-			}				
-			partition_temp.Set( 	part_path,
-						c_partition ->num,
-						c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
-						temp, c_partition ->geom .start,
-						c_partition ->geom .end,
-						c_partition ->type ,
-						ped_partition_is_busy( c_partition ) );
-				
-			if ( deep_scan )
-				partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
-						
-			partition_temp .flags = Get_Flags( c_partition ) ;									
-			partition_temp .error = this ->error ;//most likely useless, but paranoia me leaves it here.. =)
-		}
+			case PED_PARTITION_NORMAL:
+			case PED_PARTITION_LOGICAL:
+				if ( c_partition ->fs_type )
+					temp = c_partition ->fs_type ->name ;
+				else
+				{
+					temp = "unknown" ;
+					this ->error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+					this ->error += "\n-"; 
+					this ->error += _( "The filesystem is damaged" ) ;
+					this ->error += "\n-" ; 
+					this ->error += _( "The filesystem is unknown to libparted" ) ;
+					this ->error += "\n-"; 
+					this ->error += _( "There is no filesystem available (unformatted)" ) ; 
+							
+				}				
+				partition_temp.Set( 	part_path,
+							c_partition ->num,
+							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
+							temp, c_partition ->geom .start,
+							c_partition ->geom .end,
+							c_partition ->type ,
+							ped_partition_is_busy( c_partition ) );
+					
+				if ( deep_scan )
+					partition_temp .Set_Used( Get_Used_Sectors( c_partition, part_path ) ) ;
+							
+				partition_temp .flags = Get_Flags( c_partition ) ;									
+				partition_temp .error = this ->error ;//most likely useless, but paranoia me leaves it here.. =)
+				break ;
 		
-		//EXTENDED
-		else if ( c_partition ->type == 2 )
-		{
-			partition_temp.Set( 	part_path ,
-						c_partition ->num ,
-						GParted::EXTENDED ,
-						"extended" ,
-						c_partition ->geom .start ,
-						c_partition ->geom .end ,
-						false ,
-						ped_partition_is_busy( c_partition ) );
 			
-			partition_temp .flags = Get_Flags( c_partition ) ;									
-		}
+			case PED_PARTITION_EXTENDED:
+				partition_temp.Set( 	part_path ,
+							c_partition ->num ,
+							GParted::EXTENDED ,
+							"extended" ,
+							c_partition ->geom .start ,
+							c_partition ->geom .end ,
+							false ,
+							ped_partition_is_busy( c_partition ) );
+				
+				partition_temp .flags = Get_Flags( c_partition ) ;
+				break ;
 		
-		//FREESPACE  
-		else if ( (c_partition ->type == 4 || c_partition ->type == 5) && (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
-		{
-			partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
+		
+			case PED_PARTITION_FREESPACE:
+				partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
+				break ;
+		
+		
+			case PED_PARTITION_METADATA:
+				break;
 		}
 		
 		if ( partition_temp .sector_start != -1 ) //paranoia check for unallocted space < 1 MB..
