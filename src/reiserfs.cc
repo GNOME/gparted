@@ -89,7 +89,7 @@ bool reiserfs::Create( const Partition & new_partition )
 
 bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 {
-	Glib::ustring str_temp = "LC_NUMERIC=C echo y | resize_reiserfs " + partition_new .partition ;
+	Glib::ustring str_temp = "echo y | LC_NUMERIC=C resize_reiserfs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;

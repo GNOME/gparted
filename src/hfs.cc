@@ -48,7 +48,7 @@ void hfs::Set_Used_Sectors( Partition & partition )
 	Glib::ustring output ;
 	
         //get free bytes..
-	f = popen( ( "LC_ALL=C echo 'quit' | hfs " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "echo 'quit' | LC_ALL=C hfs " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
