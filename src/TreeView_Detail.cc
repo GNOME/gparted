@@ -22,9 +22,6 @@ namespace GParted
 
 TreeView_Detail::TreeView_Detail( )
 {
-	//set locale for this stream to standard.
-	os.imbue(std::locale(""));
-	
 	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
 	this->set_model( treestore_detail );
 	this->set_rules_hint(true);
@@ -32,12 +29,13 @@ TreeView_Detail::TreeView_Detail( )
 		
 	//append columns
 	this->append_column( _("Partition"), treeview_detail_columns.partition );
-	this->append_column( _("Type"), treeview_detail_columns.type );
+	this->append_column( _("Type"), treeview_detail_columns.type_square );
 	this->append_column( (Glib::ustring) _("Size") + "(MB)", treeview_detail_columns.size );
 	this->append_column( (Glib::ustring) _("Used") + "(MB)", treeview_detail_columns.used );
 	this->append_column( (Glib::ustring) _("Unused") + "(MB)", treeview_detail_columns.unused );
 	this->append_column( _("Flags"), treeview_detail_columns.flags );
 	
+		
 	//status_icon
 	this->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon,false );
 	
@@ -45,9 +43,23 @@ TreeView_Detail::TreeView_Detail( )
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>(  this->get_column( 0 ) ->get_first_cell_renderer()   );
 	this->get_column( 0 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns.text_color);
 	
-	//colored text in Type column
+	//colored square in Type column
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( 1 ) ->get_first_cell_renderer() );
-	this->get_column( 1 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns.color);
+	this->get_column( 1 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns. color);
+	
+	//colored text in Type column
+	this->get_column( 1 ) ->pack_start( treeview_detail_columns .type, false );
+	
+	//this sucks :) get_cell_renderers doesn't return them in some order, so i have to check manually...
+	std::vector <Gtk::CellRenderer *> renderers = this->get_column( 1 ) ->get_cell_renderers()  ;
+	
+	if ( renderers .front() != this->get_column( 1 ) ->get_first_cell_renderer() )	
+		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .front() ) ;
+	else 
+		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
+	
+	this->get_column( 1 ) ->add_attribute(cell_renderer_text->property_foreground(), treeview_detail_columns. text_color);
+	
 	
 	//set alignment of numeric columns to right
 	for( short t=2;t<5;t++)
@@ -78,7 +90,6 @@ void TreeView_Detail::Load_Partitions( std::vector<Partition> & partitions )
 	
 	//show logical partitions ( if any )
 	this->expand_all();
-
 }
 
 void TreeView_Detail::Set_Selected( const Partition & partition )
@@ -126,27 +137,35 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, Partition & part
 	treerow[treeview_detail_columns.color] =	partition.color_string;
 
 	partition .type == GParted::UNALLOCATED ? treerow[treeview_detail_columns.text_color] = "darkgrey" : treerow[treeview_detail_columns.text_color] = "black" ;
-	treerow[treeview_detail_columns.type] = partition.filesystem;
+	treerow[treeview_detail_columns.type] = partition.filesystem ;
+	treerow[ treeview_detail_columns .type_square ] = "██" ;
 	
-	os << partition .Get_Length_MB() ;
-	treerow[treeview_detail_columns.size] = os.str() ; os.str("");
+	//size
+	treerow[treeview_detail_columns.size] = num_to_str( partition .Get_Length_MB() ) ;
 
-	partition.sectors_used != -1 ?  os << partition .Get_Used_MB() : os << "---" ;
-	treerow[treeview_detail_columns.used] = os.str() ; os.str("") ;
+	//used
+	if ( partition.sectors_used != -1 )
+		treerow[treeview_detail_columns.used] = num_to_str( partition .Get_Used_MB() ) ;
+	else
+		treerow[treeview_detail_columns.used] = "---" ;
 
-	partition.sectors_unused != -1 ? os << partition .Get_Unused_MB() : os << "---" ;
-	treerow[treeview_detail_columns.unused] =  os.str() ; os.str("") ;
+	//unused
+	if ( partition .sectors_unused != -1 )
+		treerow[treeview_detail_columns.unused] = num_to_str(partition .Get_Unused_MB() ) ;
+	else
+		treerow[treeview_detail_columns.unused] = "---" ;
 	
+	//flags	
 	treerow[treeview_detail_columns.flags] = " " + partition .flags ;
 	
+	//hidden column (partition object)
 	treerow[treeview_detail_columns.partition_struct] = partition;
 }
 
 bool TreeView_Detail::on_button_press_event(GdkEventButton* event)
 { 
 	//Call base class, to allow normal handling,
-  	//such as allowing the row to be selected by the right-click:
-  	bool return_value = TreeView::on_button_press_event(event);
+   	bool return_value = TreeView::on_button_press_event(event);
 
 	iter = treeselection->get_selected();
 		
