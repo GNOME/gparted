@@ -23,7 +23,13 @@ int main( int argc, char *argv[] )
 	Glib::thread_init();
 	
 	Gtk::Main kit(argc, argv);
-	
+	 
+	//i18n
+	setlocale (LC_ALL, "");
+	bindtextdomain (GETTEXT_PACKAGE, GPARTEDLOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+
 	//check UID
 	if ( getuid() != 0 )
 	{

@@ -20,13 +20,10 @@
 
 #include "../include/Partition.h"
 #include "../include/Device.h"
+#include "../include/i18n.h"
 
 #include <gtkmm/messagedialog.h>
 #include <glibmm/ustring.h>
-
-//i18n stuff ....
-#include <libintl.h>
-#define _(String) gettext(String)
 
 namespace GParted
 {

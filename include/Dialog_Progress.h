@@ -18,16 +18,14 @@
 #ifndef DIALOG_PARTITION_PROGRESS
 #define DIALOG_PARTITION_PROGRESS
 
+#include "../include/i18n.h"
+
 #include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 
 #include <sstream>
-
-//i18n stuff ....
-#include <libintl.h>
-#define _(String) gettext(String)
 
 class Dialog_Progress : public Gtk::Dialog
 {

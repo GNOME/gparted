@@ -23,16 +23,14 @@
 #ifndef DIALOG_ABOUT
 #define DIALOG_ABOUT
 
+#include "../include/i18n.h"
+
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 #include <gtkmm/label.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/notebook.h>
 
-//i18n stuff ....
-#include <libintl.h>
-#define _(String) gettext(String)
- 
 class Dialog_About : public Gtk::Dialog
 {
 public:

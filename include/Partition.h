@@ -22,15 +22,13 @@
 #ifndef PARTITION
 #define PARTITION
 
+#include "../include/i18n.h"
+
 #include <glibmm/ustring.h>
 #include <gdkmm/colormap.h>
 
 #include <sstream>
 #include <iostream>
-
-//i18n stuff ....
-#include <libintl.h>
-#define _(String) gettext(String)
 
 #define MEGABYTE 2048  //try it: 2048 * 512 / 1024 /1024 == 1    :P
 

@@ -1,5 +1,6 @@
 INCLUDES =\
-	$(GTKMM_CFLAGS)
+	$(GTKMM_CFLAGS) \
+	-DGPARTEDLOCALEDIR=\""$(gpartedlocaledir)"\"
 
 AM_CFLAGS =\
 	 -Wall\

@@ -3,6 +3,8 @@ AM_INIT_AUTOMAKE(gparted, 0.1)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
+AC_PROG_INTLTOOL
+
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_CXX
@@ -19,10 +21,21 @@ AC_SUBST(GTKMM_CFLAGS)
 dnl Set PACKAGE SOURCE DIR in config.h.
 packagesrcdir=`cd $srcdir && pwd`
 
+dnl i18n stuff ...
+GETTEXT_PACKAGE=gparted
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[description])
+
+ALL_LINGUAS=""
+AM_GLIB_GNU_GETTEXT
+
+gpartedlocaledir='${prefix}/${DATADIRNAME}/locale'
+AC_SUBST(gpartedlocaledir)
 
 AC_OUTPUT([
 Makefile
 include/Makefile
 src/Makefile
+po/Makefile.in
 ])
 
