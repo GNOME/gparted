@@ -134,7 +134,7 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, Partition & part
 		treerow[treeview_detail_columns.status_icon] = render_icon(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 
 	treerow[treeview_detail_columns.partition] = partition.partition;
-	treerow[treeview_detail_columns.color] =	partition.color_string;
+	treerow[treeview_detail_columns.color] = Get_Color( partition .filesystem ) ;
 
 	partition .type == GParted::UNALLOCATED ? treerow[treeview_detail_columns.text_color] = "darkgrey" : treerow[treeview_detail_columns.text_color] = "black" ;
 	treerow[treeview_detail_columns.type] = partition.filesystem ;

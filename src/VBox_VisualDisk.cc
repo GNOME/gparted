@@ -185,7 +185,7 @@ void VBox_VisualDisk::Build_Legend( )
 			else
 				hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
 			
-			hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, partitions[i] .color_string ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( partitions[i] .filesystem ) ), Gtk::PACK_SHRINK );
 			hbox_legend ->pack_start( * mk_label( partitions[i] .filesystem + " " ), Gtk::PACK_SHRINK );
 			
 			//make sure this color isn't added to the legend again.

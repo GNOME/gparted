@@ -27,7 +27,7 @@ Partition::Partition( )
 
 void Partition::Reset( )
 {
-	partition = filesystem = error = flags = color_string = "" ; 
+	partition = filesystem = error = flags = "" ;
 	status = GParted::STAT_REAL ;
 	type = GParted::UNALLOCATED ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
@@ -51,7 +51,6 @@ void Partition::Set(	const Glib::ustring & partition,
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
 	this ->color.set( Get_Color( filesystem ) );
-	this ->color_string = Get_Color( filesystem );
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
 }

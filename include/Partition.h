@@ -68,11 +68,8 @@ public:
 
 	void Set_Used( Sector used ) ;
 
-	
 	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );
 
-	//get color associated with filesystem 
-	
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
@@ -91,7 +88,6 @@ public:
 	Sector sectors_used;
 	Sector sectors_unused;
 	Gdk::Color color;
-	Glib::ustring color_string;
 	bool inside_extended;//used to check wether partition resides inside extended partition or not.
 	bool busy;
 	Glib::ustring error;
