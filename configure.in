@@ -1,33 +1,37 @@
-AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gparted, 0.1)
+AC_INIT(src/main.cc)
+AM_INIT_AUTOMAKE(gparted, 0.0.4)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
-AC_PROG_INTLTOOL
 
-AC_ISC_POSIX
+dnl======================
+dnl checks for programs 
+dnl======================
 AC_PROG_CC
 AC_PROG_CXX
-AM_PROG_CC_STDC
-AC_HEADER_STDC
-
 AM_PROG_LIBTOOL
-PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 )
-AC_CHECK_LIB(parted, ped_device_probe_all,  [], AC_MSG_ERROR([*** libparted >= 1.6.13 not installed - please install first ***]), -luuid -ldl)
-AC_SUBST(GTKMM_LIBS)
-AC_SUBST(GTKMM_CFLAGS)
 
-
-dnl Set PACKAGE SOURCE DIR in config.h.
-packagesrcdir=`cd $srcdir && pwd`
-
-dnl i18n stuff ...
+dnl======================
+dnl i18n stuff 
+dnl======================
 GETTEXT_PACKAGE=gparted
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",[description])
 
 ALL_LINGUAS="pt_BR sv"
+
 AM_GLIB_GNU_GETTEXT
+AC_PROG_INTLTOOL
+
+
+dnl======================
+dnl checks for libs 
+dnl======================
+PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 )
+AC_CHECK_LIB(parted, ped_device_probe_all,  [], AC_MSG_ERROR([*** libparted >= 1.6.13 not installed - please install first ***]), -luuid -ldl)
+AC_SUBST(GTKMM_LIBS)
+AC_SUBST(GTKMM_CFLAGS)
+
 
 AC_OUTPUT([
 Makefile
@@ -35,4 +39,3 @@ include/Makefile
 src/Makefile
 po/Makefile.in
 ])
-
