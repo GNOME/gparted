@@ -469,16 +469,16 @@ void Win_GParted::Refresh_Visual( )
 		treerow[ treeview_operations_columns.operation_description ] = operations[t] .str_operation ;
 		switch ( operations[t].operationtype )
 		{		
-			case GParted::DELETE		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
-							  break;
-			case	GParted::CREATE		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
-							  break;
-			case	GParted::RESIZE_MOVE	: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
-							  break;
-			case	GParted::CONVERT	: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
-							  break;
-			case	GParted::COPY		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
-							  break;
+			case GParted::DELETE	:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
+							break;
+			case GParted::CREATE	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+							break;
+			case GParted::RESIZE_MOVE: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+							break;
+			case GParted::CONVERT	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+							break;
+			case GParted::COPY	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+							break;
 		}
 		
 	}
