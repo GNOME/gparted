@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-11-26 11:14+0100\n"
-"PO-Revision-Date: 2004-11-26 15:36+0100\n"
+"POT-Creation-Date: 2004-12-01 11:41+0100\n"
+"PO-Revision-Date: 2004-12-01 19:44+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgid "Resize"
 msgstr "Změnit velikost"
 
 #: src/Dialog_Base_Partition.cc:150 src/Win_GParted.cc:133
-#: src/Win_GParted.cc:168 src/Win_GParted.cc:838
+#: src/Win_GParted.cc:168 src/Win_GParted.cc:865
 msgid "Resize/Move"
 msgstr "Změnit velikost/Přesunout"
 
@@ -90,6 +90,40 @@ msgstr "Minimální velikost: %1 MB"
 #: src/Dialog_Base_Partition.cc:170
 msgid "Maximum Size: %1 MB"
 msgstr "Maximální velikost: %1 MB"
+
+#: src/Dialog_Disklabel.cc:25 src/Dialog_Disklabel.cc:44
+msgid "No recognizable disklabel detected on %1"
+msgstr "Na %1 nebyl nalezen známý popis disku"
+
+#: src/Dialog_Disklabel.cc:48
+msgid ""
+"A disklabel is a file at the beginning of the disk that indicates where each "
+"partition begins and how many sectors it occupies."
+msgstr "Popis disku je soubor na začátku disku, který ukazuje, kde každý oddíl začíná a kolik sektorů zabírá."
+
+#: src/Dialog_Disklabel.cc:50
+msgid "You need a disklabel if you want to create partitions on this disk."
+msgstr "Pokud na tomto disku chcete vytvářet oddíly, potřebujete popis disku."
+
+#: src/Dialog_Disklabel.cc:52
+msgid "By default GParted creates an msdos disklabel."
+msgstr "Implicitně GParted vytváří popis disku msdos."
+
+#: src/Dialog_Disklabel.cc:58
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: src/Dialog_Disklabel.cc:66
+msgid "Select new labeltype:"
+msgstr "Zvolte typ nového popisu:"
+
+#: src/Dialog_Disklabel.cc:88
+msgid "WARNING: Creating a new disklabel will erase all data on %1!"
+msgstr "VAROVÁNÍ: Vytvoření nového popisu disku vymaže všechna data na %1!"
+
+#: src/Dialog_Disklabel.cc:94
+msgid "Create"
+msgstr "Vytvořit"
 
 #. prevents on spinbutton_changed from getting activated prematurely
 #: src/Dialog_Partition_Copy.cc:33
@@ -117,7 +151,7 @@ msgstr "%1 MB"
 
 #. filesystem
 #. filesystems to choose from
-#: src/Dialog_Partition_Info.cc:133 src/Dialog_Partition_New.cc:83
+#: src/Dialog_Partition_Info.cc:133 src/Dialog_Partition_New.cc:84
 msgid "Filesystem:"
 msgstr "Systém souborů:"
 
@@ -197,25 +231,29 @@ msgstr "Připojen na %1"
 msgid "Create new Partition"
 msgstr "Vytvořit nový oddíl"
 
+#: src/Dialog_Partition_New.cc:45
+msgid "Unformatted"
+msgstr "Neformátováno"
+
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: src/Dialog_Partition_New.cc:56
+#: src/Dialog_Partition_New.cc:57
 msgid "Create as:"
 msgstr "Vytvořit jako:"
 
 #. fill partitiontype menu
-#: src/Dialog_Partition_New.cc:59 src/Operation.cc:58
+#: src/Dialog_Partition_New.cc:60 src/Operation.cc:58
 msgid "Primary Partition"
 msgstr "Primární oddíl"
 
-#: src/Dialog_Partition_New.cc:60 src/Operation.cc:49 src/Operation.cc:59
+#: src/Dialog_Partition_New.cc:61 src/Operation.cc:49 src/Operation.cc:59
 msgid "Logical Partition"
 msgstr "Logický oddíl"
 
-#: src/Dialog_Partition_New.cc:61 src/Operation.cc:60
+#: src/Dialog_Partition_New.cc:62 src/Operation.cc:60
 msgid "Extended Partition"
 msgstr "Rozšířený oddíl"
 
-#: src/Dialog_Partition_New.cc:140
+#: src/Dialog_Partition_New.cc:142
 msgid "New Partition #%1"
 msgstr "Nový oddíl č. %1"
 
@@ -259,51 +297,55 @@ msgstr "zbývá asi %1 minuta a %2 sekund"
 msgid "about %1 minutes and %2 seconds left"
 msgstr "zbývá asi %1 minut a %2 sekund"
 
-#: src/GParted_Core.cc:126
+#: src/GParted_Core.cc:109
+msgid "unrecognized"
+msgstr "nerozpoznáno"
+
+#: src/GParted_Core.cc:147
 msgid "unknown"
 msgstr "neznámé"
 
-#: src/GParted_Core.cc:127
+#: src/GParted_Core.cc:148
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Nemohu detekovat systém souborů! Možné důvody jsou:"
 
-#: src/GParted_Core.cc:129
+#: src/GParted_Core.cc:150
 msgid "The filesystem is damaged"
 msgstr "Systém souborů je poškozen"
 
-#: src/GParted_Core.cc:131
+#: src/GParted_Core.cc:152
 msgid "The filesystem is unknown to libparted"
 msgstr "Systém souborů není znám v libparted"
 
-#: src/GParted_Core.cc:133
+#: src/GParted_Core.cc:154
 msgid "There is no filesystem available (unformatted)"
 msgstr "Systém souborů není k dispozici (nenaformátován)"
 
-#: src/GParted_Core.cc:151
+#: src/GParted_Core.cc:172
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Nemohu číst obsah tohoto systému souborů!"
 
-#: src/GParted_Core.cc:251
+#: src/GParted_Core.cc:271
 msgid "Error while deleting %1"
 msgstr "Chyba při odstraňování %1"
 
-#: src/GParted_Core.cc:256
+#: src/GParted_Core.cc:276
 msgid "Error while creating %1"
 msgstr "Chyba při vytváření %1"
 
-#: src/GParted_Core.cc:261
+#: src/GParted_Core.cc:281
 msgid "Error while resizing/moving %1"
 msgstr "Chyba při změně velikosti/přesunu %1"
 
-#: src/GParted_Core.cc:266
+#: src/GParted_Core.cc:286
 msgid "Error while converting filesystem of %1"
 msgstr "Chyba při převodu systému souborů %1"
 
-#: src/GParted_Core.cc:271
+#: src/GParted_Core.cc:291
 msgid "Error while copying %1"
 msgstr "Chyba při kopírování %1"
 
-#: src/GParted_Core.cc:600
+#: src/GParted_Core.cc:646
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
@@ -527,19 +569,32 @@ msgstr "Momentálně je nevyřízeno %1 operací."
 msgid "1 operation is currently pending."
 msgstr "Momentálně je nevyřízena %1 operací."
 
-#: src/Win_GParted.cc:764
+#: src/Win_GParted.cc:737
+msgid ""
+"The kernel is unable to re-read the partitiontables on the following devices:"
+msgstr "Jádro nemohlo znovu načíst tabulky oddílů na následujících zařízeních:"
+
+#: src/Win_GParted.cc:741
+msgid "Because of this you will only have limited access to these devices."
+msgstr "Proto budete mít k těmto zařízením jen omezený přístup."
+
+#: src/Win_GParted.cc:743
+msgid "Unmount all mounted partitions on a device to get full access."
+msgstr "Získejte úplný přístup odpojením všech připojených oddílů na zařízení."
+
+#: src/Win_GParted.cc:791
 msgid "Sorry, not yet implemented."
 msgstr "Lituji, ještě nebylo implementováno."
 
-#: src/Win_GParted.cc:766
+#: src/Win_GParted.cc:793
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Pro více informací a podporu prosím navštivte http://gparted.sf.net"
 
-#: src/Win_GParted.cc:808
+#: src/Win_GParted.cc:835
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Není možné vytvořit více než %1 primárních oddílů"
 
-#: src/Win_GParted.cc:810
+#: src/Win_GParted.cc:837
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -547,11 +602,11 @@ msgstr ""
 "Pokud chcete více oddílů, měli byste nejdříve vytvořit rozšířený oddíl. "
 "Takový oddíl může obsahovat další oddíly."
 
-#: src/Win_GParted.cc:826
+#: src/Win_GParted.cc:853
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Opravdu chcete změnit velikost/přesunout tento oddíl?"
 
-#: src/Win_GParted.cc:828
+#: src/Win_GParted.cc:855
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -561,84 +616,90 @@ msgstr ""
 "takového oddílu je velice náchylné k chybám. Doporučuje se nejdříve sysstém "
 "souborů převést na fat32."
 
-#: src/Win_GParted.cc:946
+#: src/Win_GParted.cc:957
+msgid "Error while setting new disklabel"
+msgstr "Chyba při nastavování nového popisu disku"
+
+#: src/Win_GParted.cc:991
 msgid "Unable to delete partition!"
 msgstr "Nemohu odstranit oddíl!"
 
-#: src/Win_GParted.cc:948
+#: src/Win_GParted.cc:993
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odpojte prosím logické oddíly, které mají větší číslo než %1"
 
-#: src/Win_GParted.cc:955
+#: src/Win_GParted.cc:1000
 msgid "Are you sure you want to delete %1?"
 msgstr "Opravdu chcete odstranit %1?"
 
-#: src/Win_GParted.cc:959
+#: src/Win_GParted.cc:1004
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po odstranění tento oddíl už nebude k dispozici pro kopírování."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:964
+#: src/Win_GParted.cc:1009
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Odstranit %1 (%2, %3 MB)"
 
-#: src/Win_GParted.cc:1021
+#: src/Win_GParted.cc:1066
 msgid "Are you sure you want to convert this filesystem to %1?"
 msgstr "Opravdu chcete převést tento systém souborů na %1?"
 
-#: src/Win_GParted.cc:1022
+#: src/Win_GParted.cc:1067
 msgid "This operation will destroy all data on %1"
 msgstr "Tato operace zničí všechna data na %1"
 
-#: src/Win_GParted.cc:1040 src/Win_GParted.cc:1042
+#: src/Win_GParted.cc:1085 src/Win_GParted.cc:1087
 msgid "Can not convert this filesystem to fat16."
 msgstr "Nemohu převést tento systém souborů na fat16."
 
-#: src/Win_GParted.cc:1040
+#: src/Win_GParted.cc:1085
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
 msgstr "Systém souborů fat16 vyžaduje oddíl alespoň 32 MB."
 
-#: src/Win_GParted.cc:1042
+#: src/Win_GParted.cc:1087
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 msgstr "Oddíl se systémem souborů fat16 má maximální velikost 1023 MB."
 
-#: src/Win_GParted.cc:1044
+#: src/Win_GParted.cc:1089
 msgid "Can not convert this filesystem to fat32."
 msgstr "Nemohu převést tento systém souborů na fat32."
 
-#: src/Win_GParted.cc:1044
+#: src/Win_GParted.cc:1089
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
 msgstr "Systém souborů fat32 vyžaduje oddíl alespoň 256 MB."
 
-#: src/Win_GParted.cc:1097
+#: src/Win_GParted.cc:1142
 msgid "Could not unmount %1"
 msgstr "Nemohu odpojit %1"
 
-#: src/Win_GParted.cc:1125
+#: src/Win_GParted.cc:1170
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Opravdu chcete provést nevyřízené operace?"
 
-#: src/Win_GParted.cc:1127
+#: src/Win_GParted.cc:1172
 msgid "It is recommended to backup valueable data before proceeding."
 msgstr "Doporučuje před pokračováním se zazálohovat cenná data."
 
-#: src/Win_GParted.cc:1130
+#: src/Win_GParted.cc:1175
 msgid "Apply operations to harddisk"
 msgstr "Provést operace na disku"
 
-#: src/Win_GParted.cc:1168
+#: src/Win_GParted.cc:1213
 msgid "At least one operation was applied to a busy device."
 msgstr "Alespoň jedna operace byla provedena na používaném zařízení."
 
-#: src/Win_GParted.cc:1170
+#: src/Win_GParted.cc:1215
 msgid "A busy device is a device with at least one mounted partition."
 msgstr "Používané zařízení je zařízení s alespoň jedním připojeným oddílem."
 
-#: src/Win_GParted.cc:1172
+#: src/Win_GParted.cc:1217
 msgid ""
 "Because making changes to a busy device may confuse the kernel, you are "
 "advised to reboot your computer."
-msgstr "Protože změny používaného zařízení mohou zmást jádro, doporučuje se restartovat váš počítač."
+msgstr ""
+"Protože změny používaného zařízení mohou zmást jádro, doporučuje se "
+"restartovat váš počítač."
 
 #: src/main.cc:36
 msgid "Root privileges are required for running GParted"
@@ -651,9 +712,6 @@ msgstr ""
 
 #~ msgid "Type"
 #~ msgstr "Typ"
-
-#~ msgid "The kernel was unable to re-read the partition table on:"
-#~ msgstr "Jádro nemohlo znovu načíst tabulku oddílů na:"
 
 #~ msgid ""
 #~ "This means Linux won't know anything about the modifications you made "
