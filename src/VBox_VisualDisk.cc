@@ -62,101 +62,112 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	}
 	
 	//draw visual disk and its legend
-	Build_Visual_Disk( 750 - Round( extra_pixels ) ) ;
-
-	Build_Legend( ) ;		
+	this ->SCREEN_WIDTH = 750 - Round( extra_pixels ) ;
 	
+	Build_Visual_Disk( ) ;
+	Build_Legend( ) ;		
 }
 
-void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH ) 
+void VBox_VisualDisk::Build_Visual_Disk( ) 
 {
 	//since there is a 5 pixel space between every partition.... ( extended adds 2 *5 more, but that doesn't matter that much.
 	//NOTE that a part < 20 will also grow to 20, so length in pixels may vary across different devices.. 
-	SCREEN_WIDTH -= ( (partitions .size() -1) *5 ) ;
+	this ->SCREEN_WIDTH -= ( (partitions .size() -1) *5 ) ;
 	
 	//create hbox_disk and add to frame
 	hbox_disk = manage( new Gtk::HBox() ) ;
 	hbox_disk ->set_spacing( 5 );
-	frame_disk_legend ->add ( *hbox_disk );
+	frame_disk_legend ->add( *hbox_disk );
 	
 	
 	//walk through all partitions....
-	int x,y;//for pango_layout check
 	for ( unsigned int i=0;i<partitions.size();i++ )
 	{
-		visual_partition = new Visual_Partition() ;
-		visual_partitions.push_back( visual_partition ) ;
-		visual_partitions.back() ->index = i ;
-		visual_partitions.back() ->sector_start = partitions[i].sector_start ;
+		Create_Visual_Partition( partitions[i] ) ;
 		
-		if ( partitions[i].type == GParted::EXTENDED )
-		{
-			visual_partitions.back() ->drawingarea = NULL ;//it's just a dummy ;-)  ( see Set_Selected() )
-			visual_partitions.back() ->length = 0 ; //keeps total_length clean
-						
-			eventbox_extended = manage( new Gtk::EventBox() ) ;
-			eventbox_extended ->set_size_request( -1, 60 );
-			eventbox_extended ->modify_bg( eventbox_extended ->get_state(), partitions[i].color  );
-			hbox_disk ->pack_start( *eventbox_extended, Gtk::PACK_SHRINK ) ;
-			
-			hbox_extended = manage( new Gtk::HBox() ) ;
-			hbox_extended ->set_border_width( 5 );
-			hbox_extended ->set_spacing( 5 );
-			eventbox_extended ->add( *hbox_extended ) ;
-			continue;
-		}
-		
-		visual_partitions.back() ->length = (int) (SCREEN_WIDTH / (double) ( device_length / (double)  ( partitions[i].sector_end - partitions[i].sector_start) ) );
-		if ( visual_partitions.back()  ->length < 20 )//we need a min. size. Otherwise some small partitions wouldn't be visible
-			partitions[i] .type == GParted::UNALLOCATED ? visual_partitions.back() ->length = 15 : visual_partitions.back() ->length = 20 ; 
-		
-		if ( partitions[i].inside_extended )
-			{ visual_partitions.back() ->height = 34 ; visual_partitions.back() ->text_y = 9 ; }
-		else
-			{ visual_partitions.back() ->height = 44 ;visual_partitions.back() ->text_y = 15 ; }
-		
-		if (  partitions[i].type == GParted::UNALLOCATED )  
-			visual_partitions.back() ->used = -1;
-		else 
-			visual_partitions.back() ->used = (int) ( (visual_partitions.back() ->length - (BORDER *2)) / (double) ( ( partitions[i].sector_end - partitions[i].sector_start) / (double)partitions[i].sectors_used ) ) ;
-	
-	
-		visual_partitions.back() ->color_fs = partitions[i] .color; 
-		this ->get_colormap() ->alloc_color(visual_partitions.back() ->color_fs);
-		
-		visual_partitions.back() ->drawingarea = manage( new Gtk::DrawingArea() ) ;
-		visual_partitions.back() ->drawingarea ->set_size_request( visual_partitions.back() ->length +1, 60 );
-		visual_partitions.back() ->drawingarea ->set_events(Gdk::BUTTON_PRESS_MASK);
-
-		//connect signal handlers		
-		visual_partitions.back() ->drawingarea ->signal_button_press_event().connect(  sigc::bind<Partition>(sigc::mem_fun(*this, &VBox_VisualDisk::on_drawingarea_button_press), partitions[i] ) );
-		visual_partitions.back() ->drawingarea ->signal_realize().connect( sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_realize), visual_partitions.back() ) );
-		visual_partitions.back() ->drawingarea ->signal_expose_event().connect(  sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_expose), visual_partitions.back() ));
-		
-		//create  pangolayout and see if it fits in the visual partition
-		str_temp = partitions[i] .partition + "\n" + String::ucompose( _("%1 MB"), partitions[i] .Get_Length_MB() ) ;
-		visual_partitions.back() ->pango_layout = visual_partitions.back() ->drawingarea ->create_pango_layout ( str_temp ) ;
-		
-		visual_partitions.back() ->pango_layout ->get_pixel_size( x, y ) ;
-		if ( visual_partitions.back() ->length - BORDER * 2 -2 < x )
-			visual_partitions.back() ->pango_layout ->set_text( "" ) ;
-		
-		//tooltip
-		str_temp = "" ;
-		if ( partitions[i].type != GParted::UNALLOCATED )
-			str_temp = partitions[i] .filesystem + "\n" ;
-
-		str_temp += partitions[i] .partition + "\n" + String::ucompose( _("%1 MB"), partitions[i] .Get_Length_MB() ) ;
-		tooltips.set_tip( *(visual_partitions.back() ->drawingarea), str_temp ) ;
-		
-		if ( partitions[i] .inside_extended )
-			hbox_extended ->pack_start( *(visual_partitions.back() ->drawingarea), Gtk::PACK_SHRINK ) ;
-		else
-			hbox_disk ->pack_start( *(visual_partitions.back() ->drawingarea), Gtk::PACK_SHRINK ) ;
-
+		if ( partitions[i].type != GParted::EXTENDED )
+			hbox_disk ->pack_start( *( visual_partitions.back() ->drawingarea), Gtk::PACK_SHRINK ) ;
 	}
 	
 	this ->show_all_children() ;
+}
+
+void VBox_VisualDisk::Create_Visual_Partition( Partition & partition )
+{
+	int x,y;//for pango_layout check
+	
+	visual_partition = new Visual_Partition() ;
+	visual_partitions.push_back( visual_partition ) ;
+	visual_partitions.back() ->index = visual_partitions .size() -1 ; //   <----  BELACHELIJK!! DOE DAAR IETS AAN!!!
+	visual_partitions.back() ->sector_start = partition .sector_start ;
+		
+	if ( partition .type == GParted::EXTENDED )
+	{
+		visual_partitions.back() ->drawingarea = NULL ;//it's just a dummy ;-)  ( see Set_Selected() )
+		visual_partitions.back() ->length = 0 ; //keeps total_length clean
+					
+		eventbox_extended = manage( new Gtk::EventBox() ) ;
+		eventbox_extended ->set_size_request( -1, 60 );
+		eventbox_extended ->modify_bg( eventbox_extended ->get_state(), partition .color );
+		hbox_disk ->pack_start( *eventbox_extended, Gtk::PACK_SHRINK ) ;
+			
+		hbox_extended = manage( new Gtk::HBox() ) ;
+		hbox_extended ->set_border_width( 5 );
+		hbox_extended ->set_spacing( 5 );
+		eventbox_extended ->add( *hbox_extended ) ;
+		
+		for ( unsigned int t=0;t<partition .logicals .size();t++ )
+		{
+			Create_Visual_Partition( partition .logicals[ t ] ) ;
+			hbox_extended ->pack_start( *( visual_partitions.back() ->drawingarea), Gtk::PACK_SHRINK ) ;
+		}
+		
+			
+		return ;
+	}
+		
+	visual_partitions.back() ->length = (int) (SCREEN_WIDTH / (double) ( device_length / (double)  ( partition .sector_end - partition .sector_start) ) );
+	if ( visual_partitions.back()  ->length < 20 )//we need a min. size. Otherwise some small partitions wouldn't be visible
+		partition .type == GParted::UNALLOCATED ? visual_partitions.back() ->length = 15 : visual_partitions.back() ->length = 20 ; 
+		
+	if ( partition .inside_extended )
+		{ visual_partitions.back() ->height = 34 ; visual_partitions.back() ->text_y = 9 ; }
+	else
+		{ visual_partitions.back() ->height = 44 ;visual_partitions.back() ->text_y = 15 ; }
+	
+	if (  partition .type == GParted::UNALLOCATED )  
+		visual_partitions.back() ->used = -1;
+	else 
+		visual_partitions.back() ->used = (int) ( (visual_partitions.back() ->length - (BORDER *2)) / (double) ( ( partition .sector_end - partition .sector_start) / (double)partition .sectors_used ) ) ;
+	
+	
+	visual_partitions.back() ->color_fs = partition .color; 
+	this ->get_colormap() ->alloc_color(visual_partitions.back() ->color_fs);
+		
+	visual_partitions.back() ->drawingarea = manage( new Gtk::DrawingArea() ) ;
+	visual_partitions.back() ->drawingarea ->set_size_request( visual_partitions.back() ->length +1, 60 );
+	visual_partitions.back() ->drawingarea ->set_events(Gdk::BUTTON_PRESS_MASK);
+
+	//connect signal handlers		
+	visual_partitions.back() ->drawingarea ->signal_button_press_event().connect( sigc::bind<Partition>(sigc::mem_fun(*this, &VBox_VisualDisk::on_drawingarea_button_press), partition ) );
+	visual_partitions.back() ->drawingarea ->signal_realize().connect( sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_realize), visual_partitions.back() ) );
+	visual_partitions.back() ->drawingarea ->signal_expose_event().connect( sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_expose), visual_partitions.back() ));
+		
+	//create  pangolayout and see if it fits in the visual partition
+	str_temp = partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB() ) ;
+	visual_partitions.back() ->pango_layout = visual_partitions.back() ->drawingarea ->create_pango_layout ( str_temp ) ;
+		
+	visual_partitions.back() ->pango_layout ->get_pixel_size( x, y ) ;
+	if ( visual_partitions.back() ->length - BORDER * 2 -2 < x )
+		visual_partitions.back() ->pango_layout ->set_text( "" ) ;
+		
+	//tooltip
+	str_temp = "" ;
+	if ( partition .type != GParted::UNALLOCATED )
+		str_temp = partition .filesystem + "\n" ;
+
+	str_temp += partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB() ) ;
+	tooltips.set_tip( *(visual_partitions.back() ->drawingarea), str_temp ) ;
 }
 
 
@@ -234,11 +245,10 @@ void VBox_VisualDisk::Set_Selected( const Partition & partition )
 		}
 	}
 	
-	
 }
 
 
-void VBox_VisualDisk::drawingarea_on_realize(  Visual_Partition* vp  )
+void VBox_VisualDisk::drawingarea_on_realize( Visual_Partition* vp )
 {
 	vp ->gc = Gdk::GC::create( vp ->drawingarea ->get_window() );
 	
@@ -249,7 +259,7 @@ void VBox_VisualDisk::drawingarea_on_realize(  Visual_Partition* vp  )
 	
 }
 
-bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * ev, Visual_Partition* vp  )
+bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * ev, Visual_Partition* vp )
 { 
 	vp ->drawingarea ->get_window() ->clear() ;
 	

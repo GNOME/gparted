@@ -51,7 +51,7 @@ TreeView_Detail::TreeView_Detail( )
 	this->get_column( 1 ) ->pack_start( treeview_detail_columns .type, false );
 	
 	//this sucks :) get_cell_renderers doesn't return them in some order, so i have to check manually...
-	std::vector <Gtk::CellRenderer *> renderers = this->get_column( 1 ) ->get_cell_renderers()  ;
+	std::vector <Gtk::CellRenderer *> renderers = this->get_column( 1 ) ->get_cell_renderers( ) ;
 	
 	if ( renderers .front() != this->get_column( 1 ) ->get_first_cell_renderer() )	
 		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .front() ) ;
@@ -74,7 +74,7 @@ void TreeView_Detail::Load_Partitions( std::vector<Partition> & partitions )
 {
 	treestore_detail ->clear() ;
 	
-	for ( unsigned int i=0;i<partitions.size();i++ ) 
+/*	for ( unsigned int i=0;i<partitions.size();i++ ) 
 	{
 		if ( ! partitions[ i ] .inside_extended )
 		{
@@ -85,6 +85,23 @@ void TreeView_Detail::Load_Partitions( std::vector<Partition> & partitions )
 		{
 			childrow = *(treestore_detail->append( row.children() ));
 			Create_Row( childrow, partitions[i] );
+		}
+	}
+*/
+
+	for ( unsigned int i=0;i<partitions.size();i++ ) 
+	{
+		row = *(treestore_detail->append());
+		Create_Row( row, partitions[i] );
+		
+		if ( partitions[i] .type == GParted::EXTENDED )
+		{
+			for ( unsigned int t=0;t<partitions[i] .logicals .size();t++ ) 
+			{
+				childrow = *(treestore_detail->append( row.children() ));
+				Create_Row( childrow, partitions[i] .logicals[ t ] );
+			}
+			
 		}
 	}
 	

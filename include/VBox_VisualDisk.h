@@ -63,13 +63,14 @@ public:
 	
 	
 private:
-	void Build_Visual_Disk( int ) ; //i still dream of some fully resizeable visualdisk.... 
+	void Build_Visual_Disk( ) ; //i still dream of some fully resizeable visualdisk.... 
+	void Create_Visual_Partition( Partition & partition ) ;  
 	void Build_Legend( ) ;
 		
 	//signal handlers
-	void drawingarea_on_realize( Visual_Partition *  );
+	void drawingarea_on_realize( Visual_Partition * );
 	bool drawingarea_on_expose( GdkEventExpose *, Visual_Partition* );
-	bool on_drawingarea_button_press( GdkEventButton *, const  Partition & );
+	bool on_drawingarea_button_press( GdkEventButton *, const Partition & );
 
 	std::vector<Partition> partitions;
 	Sector device_length;	
@@ -86,7 +87,7 @@ private:
 
 
 	Glib::ustring str_temp ;
-	int temp,selected_partition;
+	int temp, selected_partition, SCREEN_WIDTH;
 };
 
 } //GParted

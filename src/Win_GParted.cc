@@ -504,15 +504,15 @@ void Win_GParted::Refresh_Visual( )
 	liststore_operations ->clear();
 	
 	//make all operations visible
-	for (unsigned int t=0;t<operations.size();t++ )
-	{
-		if ( operations[t]. device ->Get_Path() == devices[ current_device ] ->Get_Path() )
-			partitions = operations[t].Apply_Operation_To_Visual( partitions ) ;
-	
-		treerow = *(liststore_operations->append());
-		treerow[ treeview_operations_columns.operation_number ] = t +1;
-		treerow[ treeview_operations_columns.operation_description ] = operations[t] .str_operation ;
-		switch ( operations[t].operationtype )
+	for ( unsigned int t = 0 ; t < operations .size( ); t++ )
+	{	
+		if ( operations[ t ] .device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
+			partitions = operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
+			
+		treerow = *(liststore_operations ->append( ));
+		treerow[ treeview_operations_columns .operation_number ] = t +1;
+		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] .str_operation ;
+		switch ( operations[ t ] .operationtype )
 		{		
 			case GParted::DELETE	:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
 							break;
@@ -529,13 +529,13 @@ void Win_GParted::Refresh_Visual( )
 	}
 	
 	//set new statusbartext
-	statusbar .pop() ;
-	if ( operations.size() != 1 )
-		statusbar .push( String::ucompose( _("%1 operations pending"), operations.size() ) .c_str() );
+	statusbar .pop( ) ;
+	if ( operations .size( ) != 1 )
+		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size( ) ) .c_str( ) );
 	else
 		statusbar .push( _( "1 operation pending" ) );
 		
-	if ( ! operations.size() ) 
+	if ( ! operations .size( ) ) 
 	{
 		allow_undo( false );
 		allow_apply( false );
@@ -543,22 +543,19 @@ void Win_GParted::Refresh_Visual( )
 			
 	//count primary's, check for extended and logic and see if any logical is busy
 	any_logic = any_extended = false;
-	primary_count = highest_logic_busy = 0;
-	for (unsigned int t=0;t<partitions.size();t++ )
+	primary_count = 0;
+	for ( unsigned int t = 0 ; t < partitions .size( ) ; t++ )
 	{
 		if ( partitions[ t ] .partition == copied_partition .partition )
 			copied_partition = partitions[ t ] ;
 		
-		switch ( partitions[t].type )
+		switch ( partitions[ t ] .type )
 		{
 			case GParted::PRIMARY	:	primary_count++;
 							break;
 			case GParted::EXTENDED	: 	any_extended = true;
 							primary_count++;
-							break;
-			case GParted::LOGICAL	:	any_logic = true;
-							if ( partitions[t].busy && partitions[t].partition_number > highest_logic_busy )
-								highest_logic_busy = partitions[t].partition_number ;
+							any_logic = partitions[ t ] .logicals .size( ) -1 ;
 							break;
 			default			:	break;
 		}
@@ -608,11 +605,11 @@ void Win_GParted::Set_Valid_Operations()
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false ); allow_paste( false ); allow_convert( false );
 		
 	//we can't perform any operation on a busy (mounted) filesystem
-	if ( selected_partition.busy )
+	if ( selected_partition .busy )
 		return;
 	
 	//UNALLOCATED
-	if ( selected_partition.type == GParted::UNALLOCATED )
+	if ( selected_partition .type == GParted::UNALLOCATED )
 	{
 		allow_new( true );
 		
@@ -632,7 +629,7 @@ void Win_GParted::Set_Valid_Operations()
 	}
 		
 	//PRIMARY and LOGICAL
-	if (  selected_partition.type != GParted::EXTENDED )
+	if (  selected_partition .type != GParted::EXTENDED )
 	{
 		allow_delete( true ) ;
 		allow_convert( true ) ;
@@ -652,7 +649,7 @@ void Win_GParted::Set_Valid_Operations()
 	
 	
 	//EXTENDED
-	else if ( selected_partition.type == GParted::EXTENDED )
+	else if ( selected_partition .type == GParted::EXTENDED )
 	{
 		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
 			allow_delete( true ) ;
@@ -826,6 +823,23 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 	}
 }
 
+bool Win_GParted::max_amount_prim_reached( ) 
+{
+	//Display error if user tries to create more primary partitions than the partition table can hold. 
+	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions( ) )
+	{
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions( ) ) ;
+		str_temp += "</span>\n\n" ;
+		str_temp += _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
+										
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
+		dialog.run( ) ;
+		return true ;
+	}
+	
+	return false ;
+}
 
 void Win_GParted::activate_resize()
 {
@@ -848,24 +862,33 @@ void Win_GParted::activate_resize()
 		hbox_resize_move .pack_start( * mk_label( _("Resize/Move") ), Gtk::PACK_SHRINK ) ;
 		button_resize_move .add( hbox_resize_move ) ;
 				
-		dialog .add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;
-		dialog .show_all_children() ;
+		dialog .add_action_widget ( button_resize_move, Gtk::RESPONSE_OK ) ;
+		dialog .show_all_children( ) ;
 		
-		if ( dialog.run() == Gtk::RESPONSE_CANCEL )
+		if ( dialog.run( ) == Gtk::RESPONSE_CANCEL )
 			return ;
 		
 	}
 	
-	std::vector <Partition> partitions = devices[ current_device ] -> Get_Partitions() ;
+	std::vector <Partition> partitions = devices[ current_device ] ->Get_Partitions( ) ;
 	
 	if ( operations.size() )
 		for (unsigned int t=0;t<operations.size();t++ )
-			if ( operations[t]. device ->Get_Path() == devices[ current_device ] ->Get_Path() )
+			if ( operations[t]. device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
 				partitions = operations[t].Apply_Operation_To_Visual( partitions ) ;
 	
 	
 	Dialog_Partition_Resize_Move dialog;
-	dialog.Set_Data( selected_partition, partitions);
+			
+	if ( selected_partition .type == GParted::LOGICAL )
+	{
+		unsigned int ext = 0 ;
+		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
+		dialog .Set_Data( selected_partition, partitions[ ext ] .logicals );
+	}
+	else
+		dialog .Set_Data( selected_partition, partitions );
+		
 	dialog .set_transient_for( *this ) ;	
 			
 	if ( dialog.run() == Gtk::RESPONSE_OK )
@@ -903,57 +926,35 @@ void Win_GParted::activate_copy()
 
 void Win_GParted::activate_paste()
 {
-	//Display error if user tries to create more primary partitions than the partition table can hold. 
-	if ( ! selected_partition.inside_extended && primary_count >=devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions()  )
+	if ( ! max_amount_prim_reached( ) )
 	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
-		str_temp += "</span>\n\n" ;
-		str_temp += _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
-										
-		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		dialog.run();
-		return;
+		Dialog_Partition_Copy dialog ;
+		dialog .Set_Data( selected_partition, copied_partition ) ;
+		dialog .set_transient_for( *this );
+		
+		if ( dialog.run() == Gtk::RESPONSE_OK )
+		{
+			dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+			Add_Operation( GParted::COPY, dialog .Get_New_Partition( ) );		
+		}
 	}
-	
-	Dialog_Partition_Copy dialog ;
-	dialog .Set_Data( selected_partition, copied_partition ) ;
-	dialog.set_transient_for( *this );
-	
-	if ( dialog.run() == Gtk::RESPONSE_OK )
-	{
-		dialog.hide() ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
-		Add_Operation( GParted::COPY, dialog.Get_New_Partition() );		
-	}
-	
 }
 
 void Win_GParted::activate_new()
 {
-	//Display error if user tries to create more primary partitions than the partition table can hold. 
-	if ( ! selected_partition.inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() )
-	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
-		str_temp += "</span>\n\n" ;
-		str_temp += _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
-				
-		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		dialog.run();
-		return;
-	}
-	
-	Dialog_Partition_New dialog;
-	dialog.Set_Data( selected_partition, any_extended, new_count, FILESYSTEMS ) ;
-	dialog.set_transient_for( *this );
-	
-	if ( dialog.run() == Gtk::RESPONSE_OK )
-	{
-		dialog.hide() ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
-		new_count++;
-		Add_Operation( GParted::CREATE, dialog.Get_New_Partition() );
-	}
+	if ( ! max_amount_prim_reached( ) )
+	{	
+		Dialog_Partition_New dialog;
+		dialog .Set_Data( selected_partition, any_extended, new_count, FILESYSTEMS ) ;
+		dialog .set_transient_for( *this );
 		
+		if ( dialog.run() == Gtk::RESPONSE_OK )
+		{
+			dialog .hide( ) ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+			new_count++ ;
+			Add_Operation( GParted::CREATE, dialog .Get_New_Partition( ) );
+		}
+	}
 }
 
 void Win_GParted::activate_delete()
@@ -962,19 +963,21 @@ void Win_GParted::activate_delete()
 	//e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6, /dev/hda7 is renumbered to /dev/hda6
 	//the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted the OS cannot find /dev/hda7 anymore and the results aren't that pretty
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
-	if ( selected_partition.type == GParted::LOGICAL &&  selected_partition .status != GParted::STAT_NEW  && selected_partition.partition_number < highest_logic_busy )
+	if ( 	selected_partition .type == GParted::LOGICAL &&
+		selected_partition .status != GParted::STAT_NEW && 
+		selected_partition .partition_number < devices [ current_device ] -> Get_Highest_Logical_Busy( ) )
 	{	
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _( "Unable to delete partition!") ;
 		str_temp += "</span>\n\n" ;
 		str_temp += String::ucompose( _("Please unmount any logical partitions having a number higher than %1"), selected_partition.partition_number ) ;
-		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		dialog.run() ;
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
+		dialog .run( ) ;
 		return;
 	}
 	
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _( "Are you sure you want to delete %1?"), selected_partition.partition ) + "</span>" ;
+	str_temp += String::ucompose( _( "Are you sure you want to delete %1?"), selected_partition .partition ) + "</span>" ;
 	if ( selected_partition .partition == copied_partition .partition )
 	{
 		str_temp += "\n\n" ;
@@ -1008,12 +1011,12 @@ void Win_GParted::activate_delete()
 			{
 				if ( operations[t] .partition_new .partition == selected_partition .partition )
 				{
-					operations.erase( operations .begin() + t ) ;
+					operations.erase( operations .begin( ) + t ) ;
 					t-- ;
 				}
 			}
 				
-			
+		
 			//determine lowest possible new_count
 			new_count = 0 ; 
 			for ( unsigned int t=0;t<operations.size() ; t++ )
@@ -1021,7 +1024,7 @@ void Win_GParted::activate_delete()
 					new_count = operations[t] .partition_new .partition_number ;
 			
 			new_count += 1 ;
-				
+			
 			Refresh_Visual( ); 
 				
 			if ( ! operations .size() )
@@ -1029,8 +1032,6 @@ void Win_GParted::activate_delete()
 		}
 		else //deletion of a real partition...
 			Add_Operation( GParted::DELETE, selected_partition ); //in this case selected_partition is just a "dummy" 
-		
-		
 	}
 }
 

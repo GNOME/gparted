@@ -98,10 +98,11 @@ Device::Device( const Glib::ustring & device_path, std::vector<FS> *filesystems 
 void Device::Read_Disk_Layout( bool deep_scan )
 {
 	Glib::ustring part_path ;
+	int EXT_INDEX = -1 ;
 	
 	//clear partitions
-	this ->device_partitions .clear() ;
-	
+	this ->device_partitions .clear( ) ;
+		
 	c_partition = ped_disk_next_partition( disk, NULL ) ;
 	while ( c_partition )
 	{
@@ -131,7 +132,7 @@ void Device::Read_Disk_Layout( bool deep_scan )
 							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
 							temp, c_partition ->geom .start,
 							c_partition ->geom .end,
-							c_partition ->type ,
+							c_partition ->type,
 							ped_partition_is_busy( c_partition ) );
 					
 				if ( deep_scan )
@@ -139,6 +140,7 @@ void Device::Read_Disk_Layout( bool deep_scan )
 							
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = this ->error ;//most likely useless, but paranoia me leaves it here.. =)
+								
 				break ;
 		
 			
@@ -153,6 +155,7 @@ void Device::Read_Disk_Layout( bool deep_scan )
 							ped_partition_is_busy( c_partition ) );
 				
 				partition_temp .flags = Get_Flags( c_partition ) ;
+				EXT_INDEX = device_partitions .size ( ) ;
 				break ;
 		
 		
@@ -160,13 +163,29 @@ void Device::Read_Disk_Layout( bool deep_scan )
 			case 5: //freespace inside extended (there's no enumvalue for that..)
 				partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
 				break ;
+			
+			case PED_PARTITION_METADATA:
+				if ( device_partitions .size( ) && device_partitions .back( ) .type == GParted::UNALLOCATED )
+					device_partitions .back( ) .sector_end = c_partition ->geom .end ;
+				
+				break ;
+				
+			case 9: //metadata inside extended (there's no enumvalue for that..)
+				if ( device_partitions[ EXT_INDEX ] .logicals .size( ) && device_partitions[ EXT_INDEX ] .logicals .back( ) .type == GParted::UNALLOCATED )
+					device_partitions[ EXT_INDEX ] .logicals .back( ) .sector_end = c_partition ->geom .end ;
 		
+				break ;
 			
 			default:	break;
 		}
 		
-		if ( partition_temp .Get_Length_MB( ) >= 1 ) //paranoia check for unallocated < 1MB
-			device_partitions.push_back( partition_temp );
+		if ( partition_temp .Get_Length_MB( ) >= 1 ) // check for unallocated < 1MB, and metadatasituations (see PED_PARTITION_METADATA and 9 )
+		{
+			if ( ! partition_temp .inside_extended )
+				device_partitions.push_back( partition_temp );
+			else
+				device_partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
+		}
 		
 		//reset stuff..
 		this ->error = error_message = "" ;
@@ -447,6 +466,23 @@ bool Device::Get_any_busy()
 int Device::Get_Max_Amount_Of_Primary_Partitions() 
 {
 	return ped_disk_get_max_primary_partition_count( disk ) ;
+}
+
+int Device::Get_Highest_Logical_Busy( ) 
+{
+	int highest_logic_busy = -1 ;
+	
+	for ( unsigned int t = 0 ; t < device_partitions .size( ) ; t++ )
+		if ( device_partitions [ t ] .type == GParted::EXTENDED )
+		{
+			for ( unsigned int i = 0 ; i < device_partitions[ t ] .logicals .size( ) ; i++ )
+				if ( device_partitions[ t ] .logicals[ i ] .busy && device_partitions[ t ] .logicals[ i ] .partition_number > highest_logic_busy )
+					highest_logic_busy = device_partitions[ t ] .logicals[ i ] .partition_number ;
+				
+			break ;
+		}
+	
+	return highest_logic_busy ;
 }
 
 Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path)

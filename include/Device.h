@@ -39,7 +39,6 @@
 
 #include <fstream>
 
-
 namespace GParted
 {
 	
@@ -54,7 +53,7 @@ public:
 	void Read_Disk_Layout( bool deep_scan = true ) ;
 	bool Delete_Partition( const Partition & partition ) ;
 	bool Create_Partition_With_Filesystem( Partition & new_part, PedTimer *timer) ;
-	bool Move_Resize_Partition( const Partition & partition_original, const Partition & partition_new , PedTimer *timer) ;
+	bool Move_Resize_Partition( const Partition & partition_original, const Partition & partition_new, PedTimer *timer) ;
 	bool Set_Partition_Filesystem( const Partition & new_partition, PedTimer * timer);
 	bool Copy_Partition( Device *source_device, const Partition & source_partition, PedTimer * timer ) ;
 	int Create_Empty_Partition( const Partition & new_partition, PedConstraint * constraint = NULL ) ;
@@ -73,7 +72,8 @@ public:
 	Glib::ustring Get_DiskType() ;
 	bool Get_any_busy() ;
 	int Get_Max_Amount_Of_Primary_Partitions() ;
-
+	int Get_Highest_Logical_Busy( ) ;
+	
 private:
 	//make a try to get the amount of used sectors on a filesystem ( see comments in implementation )
 	Sector Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path );

@@ -62,7 +62,6 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
-		
 	//see if we need a fixed_start
 	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" || selected_partition.filesystem == "reiserfs" )
 	{
@@ -81,13 +80,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	//first find index of partition
 	unsigned int t;
 	for ( t=0;t< partitions.size(); t++ )
-		if ( partitions[t].sector_start == selected_partition.sector_start && partitions[t].type != GParted::EXTENDED )
+		if ( partitions[t].sector_start == selected_partition.sector_start )
 			break;
 	
 	Sector previous, next ;
 	previous = next = 0 ;
 	//also check the partitions filesystem ( if this is ext2/3 or reiserfs then previous should be 0 )	
-	if ( t >= 1 && partitions[t -1].type == GParted::UNALLOCATED && selected_partition.filesystem != "ext2" && selected_partition.filesystem != "ext3" && selected_partition.filesystem != "reiserfs" && partitions[t -1] .inside_extended == selected_partition.inside_extended )
+	if (	t >= 1 && partitions[t -1].type == GParted::UNALLOCATED &&
+		selected_partition.filesystem != "ext2" &&
+		selected_partition.filesystem != "ext3" &&
+		selected_partition.filesystem != "reiserfs" )
 	{ 
 		previous = partitions[t -1] .sector_end - partitions[t -1] .sector_start ;
 		START = partitions[t -1] .sector_start ;
@@ -95,7 +97,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	else
 		START = selected_partition .sector_start ;
 
-	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::UNALLOCATED && partitions[t +1] .inside_extended == selected_partition .inside_extended )
+	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::UNALLOCATED )
 		next = partitions[t +1].sector_end - partitions[t +1].sector_start ;
 	
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
@@ -154,10 +156,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 {
 	//calculate total size in MB's of previous, current and next partition
 	//first find index of partition
-	unsigned int t;
-	for ( t=0;t< partitions.size(); t++ )
-		if ( partitions[t].type == GParted::EXTENDED )
-			break;
+	unsigned int t = 0;
+	while ( t < partitions .size( ) && partitions[ t ] .type != GParted::EXTENDED ) t++ ;
 	
 	Sector previous, next ;
 	previous = next = 0 ;
@@ -168,19 +168,11 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 		START = partitions[t -1].sector_start ;
 	} 
 	else
-		START = selected_partition.sector_start ;
+		START = selected_partition .sector_start ;
 	
-	//calculate length of next (in this case next should be the first partition OUTSIDE the extended .. )
-	for ( t+=1;t<partitions.size() ; t++ )
-	{
-		if ( ! partitions[t].inside_extended ) 
-		{
-			if ( partitions[t].type == GParted::UNALLOCATED )
-				next = partitions[t].sector_end - partitions[t].sector_start ;
-			
-			break ;
-		}
-	}
+	//calculate length of next
+	if ( t +1 < partitions .size( ) && partitions[ t +1 ] .type == GParted::UNALLOCATED )
+		next = partitions[ t +1 ] .sector_end - partitions[ t +1 ] .sector_start ;
 	
 	//now we have enough data to calculate some important values..
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
@@ -193,14 +185,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first =0, used =0 ;
-	for ( t=0;t< partitions.size(); t++ )
+	for ( unsigned int i = 0 ; i < partitions[ t ] .logicals .size( ) ; i++ )
 	{
-		if ( partitions[t].type == GParted::LOGICAL )
+		if ( partitions[ t ] .logicals[ i ] .type == GParted::LOGICAL )
 		{
 			if ( first == 0 )
-				first = partitions[t] .sector_start ;
+				first = partitions[ t ] .logicals[ i ] .sector_start ;
 			
-			used = partitions[t] .sector_end - first;
+			used = partitions[ t ] .logicals[ i ] .sector_end - first;
 		}
 	}
 

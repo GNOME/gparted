@@ -55,12 +55,14 @@ public:
 	Glib::ustring str_operation ;
 
 private:
-	std::vector<Partition> Apply_Delete_To_Visual( std::vector<Partition> & partitions );
-	std::vector<Partition> Apply_Create_To_Visual( std::vector<Partition> & partitions );
-	std::vector<Partition> Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions );
-	std::vector<Partition> Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
-	std::vector<Partition> Apply_Convert_To_Visual( std::vector<Partition> & partitions );
-
+	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end );
+	int Get_Index_Original( std::vector<Partition> & partitions ) ;
+	
+	void Apply_Delete_To_Visual( std::vector<Partition> & partitions );
+	void Apply_Create_To_Visual( std::vector<Partition> & partitions );
+	void Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions );
+	void Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
+	
 	Glib::ustring Get_String(); //only used during in c'tor
 	void Show_Error( Glib::ustring message ) ;
 

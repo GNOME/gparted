@@ -33,6 +33,7 @@ void Partition::Reset( )
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color.set( "black" ) ;
 	inside_extended = busy = false ;
+	logicals .clear( ) ;
 }
 
 void Partition::Set(	const Glib::ustring & partition,

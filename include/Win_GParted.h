@@ -105,6 +105,7 @@ private:
 	void menu_help_about();
 
 	void mouse_click( GdkEventButton*, const Partition & );
+	bool max_amount_prim_reached() ;
 	
 	void activate_resize(); 
 	void activate_copy();
@@ -168,7 +169,6 @@ private:
 	
 	//usefull variables which are used by many different functions...
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
-	unsigned short highest_logic_busy ;//highest_logic_busy contains the number of the highest logical which is busy ( 0 if none is busy)
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	Glib::ustring str_temp ; //mostly used for constructing dialogmessages					

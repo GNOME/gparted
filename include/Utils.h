@@ -127,10 +127,9 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	else if ( filesystem == "unallocated" ) return "darkgrey";
 	else if ( filesystem == "extended" )	return "#7DFCFE" ;
 	
-	//unknown filesystem	( damaged,  unknown or simply no filesystem )	
+	//unknown filesystem ( damaged,  unknown or simply no filesystem )	
 	else return "black";
 }
-
 
 
 }//GParted

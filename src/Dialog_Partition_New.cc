@@ -143,6 +143,14 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		part_temp.sector_start = selected_partition.sector_start ;
 	if ( (selected_partition.sector_end - part_temp.sector_end) < MEGABYTE ) 
 		part_temp.sector_end = selected_partition.sector_end ;
+	
+	//if new is extended...
+	if ( part_temp .type == GParted::EXTENDED )
+	{
+		Partition UNALLOCATED ;
+		UNALLOCATED .Set_Unallocated( part_temp .sector_start, part_temp .sector_end, true ) ;
+		part_temp .logicals .push_back( UNALLOCATED ) ;
+	}
 
 	return part_temp;
 }

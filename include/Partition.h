@@ -93,6 +93,8 @@ public:
 	Glib::ustring error;
 	Glib::ustring flags;
 	
+	std::vector<Partition> logicals ;
+	
 private:
 	
 
