@@ -500,13 +500,11 @@ bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path
 			constraint = ped_constraint_any( device );
 			if ( constraint )
 			{
-				if ( ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) 					   )
+				if ( ped_disk_set_partition_geom ( disk, c_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
 					return_value = Commit( disk ) ;
 									
 				ped_constraint_destroy ( constraint );
 			}
-					
-				
 		}
 		
 		close_device_and_disk( device, disk ) ;

@@ -30,7 +30,7 @@ FS reiserfs::get_filesystem_support( )
 	if ( ! system( "which debugreiserfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = true ;
 	
-	if ( ! system( "which mkfs.reiserfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! system( "which mkreiserfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
 	
 	if ( ! system( "which reiserfsck 1>/dev/null 2>/dev/null" ) ) 
@@ -40,7 +40,8 @@ FS reiserfs::get_filesystem_support( )
 	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
 		fs .resize = true ;
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	//we need to call resize_reiserfs after a copy to get proper used/unused
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .resize ) 
 		fs .copy = true ;
 	
 	return fs ;
@@ -76,7 +77,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	
 bool reiserfs::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	return Execute_Command( "mkfs.reiserfs -q " + new_partition .partition ) ;
+	return Execute_Command( "mkreiserfs -q " + new_partition .partition ) ;
 }
 
 bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
@@ -91,7 +92,11 @@ bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	//copy partition
+	Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	
+	//and set proper used/unused
+	return Execute_Command( "resize_reiserfs " + dest_part_path ) ;
 }
 
 bool reiserfs::Check_Repair( const Partition & partition )
