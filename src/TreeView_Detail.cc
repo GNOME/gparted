@@ -22,7 +22,7 @@ namespace GParted
 
 TreeView_Detail::TreeView_Detail( )
 {
-	//set locale for this stream to standard. this prevent weird locals from f*ucking up my conversions :^)
+	//set locale for this stream to standard.
 	os.imbue(std::locale(""));
 	
 	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
@@ -69,7 +69,7 @@ void TreeView_Detail::Load_Partitions( std::vector<Partition> & partitions )
 			row = *(treestore_detail->append());
 			Create_Row( row, partitions[i] );
 		}
-		else if (  partitions[ i ] .inside_extended )
+		else 
 		{
 			childrow = *(treestore_detail->append( row.children() ));
 			Create_Row( childrow, partitions[i] );
