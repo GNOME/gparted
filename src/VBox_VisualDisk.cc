@@ -142,6 +142,7 @@ void VBox_VisualDisk::Build_Visual_Disk( int SCREEN_WIDTH )
 			visual_partitions.back() ->pango_layout ->set_text( "" ) ;
 		
 		//tooltip
+		str_temp = "" ;
 		if ( partitions[i].type != GParted::UNALLOCATED )
 			str_temp = partitions[i] .filesystem + "\n" ;
 
