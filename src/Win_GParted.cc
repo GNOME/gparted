@@ -376,7 +376,6 @@ void Win_GParted::Show_Pulsebar( )
 	menu_partition .set_sensitive( false ) ;
 		
 	//the actual 'pulsing'
-	pulse = true ; 
 	while ( pulse )
 	{
 		pulsebar ->pulse( );
@@ -482,7 +481,7 @@ void Win_GParted::Refresh_Visual( )
 	//set new statusbartext
 	statusbar .pop( ) ;
 	if ( operations .size( ) != 1 )
-		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size( ) ) .c_str( ) );
+		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size( ) ) );
 	else
 		statusbar .push( _( "1 operation pending" ) );
 		
@@ -688,6 +687,7 @@ void Win_GParted::optionmenu_devices_changed( )
 void Win_GParted::menu_gparted_refresh_devices( )
 {
 	//find out if there was any change in available devices (think about flexible media like zipdisks/usbsticks/whatever ;-) )
+	pulse = true ;//set to true before creating the thread to prevent _possible_ infinite loop in Show_Pulsebar( )
 	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
 	
 	Show_Pulsebar( ) ;	
