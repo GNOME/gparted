@@ -179,7 +179,6 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 			optionmenu_filesystem .set_sensitive( true ) ;
 			optionmenu_filesystem .set_history( 0 ) ;
 		}
-	
 	}
 	
 	//optionmenu_filesystem

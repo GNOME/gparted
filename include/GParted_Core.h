@@ -52,6 +52,8 @@ public:
 	bool Resize( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ; 
 	bool Copy( const Glib::ustring & dest_device_path, const Glib::ustring & src_part_path, Partition & partition_dest ) ; 
 
+	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
+
 	std::vector<FS> get_fs( ) ;
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 

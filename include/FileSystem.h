@@ -33,20 +33,20 @@ inline bool open_device( const Glib::ustring & device_path, PedDevice *& device 
 	return device ;
 }
 	
-inline bool open_device_and_disk( const Glib::ustring & device_path, PedDevice *& device, PedDisk *& disk ) 
+inline bool open_device_and_disk( const Glib::ustring & device_path, PedDevice *& device, PedDisk *& disk, bool strict = true ) 
 {
-	
 	if ( open_device( device_path, device ) )
 		disk = ped_disk_new( device );
-		
-	if ( ! disk )
+	
+	//if ! disk and writeable it's probably a HD without disklabel. We return true here and deal with them in GParted_Core::get_devices
+	if ( ! disk && ( strict || device ->read_only ) )
 	{
 		ped_device_destroy( device ) ;
 		device = NULL ; 
 		
 		return false;
-	}
-	
+	}	
+		
 	return true ;
 }
 

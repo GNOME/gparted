@@ -30,7 +30,7 @@ void Device::Reset( )
 	device_partitions .clear( ) ;
 	length = 0 ;
 	heads = sectors = cylinders = 0 ;
-	model = path = realpath = disktype ;
+	model = path = realpath = disktype = "" ;
 	max_prims = 0 ;
 	busy = false ; 	
 }

@@ -50,7 +50,7 @@ void GParted_Core::find_supported_filesystems( )
 void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 {
 	devices .clear( ) ;
-		
+	
 	//try to find all available devices and put these in a list
 	ped_device_probe_all( );
 	
@@ -65,7 +65,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	{
 		if ( open_device( device ->path, device ) )
 			device_paths .push_back( get_sym_path( device ->path ) ) ;
-			
+				
 		device = ped_device_get_next ( device ) ;
 	}
 	close_device_and_disk( device, disk ) ;
@@ -76,28 +76,44 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	
 	for ( unsigned int t = 0 ; t < device_paths .size( ) ; t++ ) 
 	{ 
-		if ( open_device_and_disk( device_paths[ t ], device, disk ) )
+		if ( open_device_and_disk( device_paths[ t ], device, disk, false ) )
 		{
 			temp_device .Reset( ) ;
 			
+			//device info..
 			temp_device .path 	=	device_paths[ t ] ;
 			temp_device .realpath	= 	device ->path ; 
 			temp_device .model 	=	device ->model ;
-			temp_device .disktype	= 	disk ->type ->name ;
 			temp_device .heads 	=	device ->bios_geom .heads ;
 			temp_device .sectors 	=	device ->bios_geom .sectors ;
 			temp_device .cylinders	=	device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
-			temp_device .max_prims	= 	ped_disk_get_max_primary_partition_count( disk ) ;
-			
-			set_device_partitions( temp_device, deep_scan ) ;
-			
+						
+			//normal  harddisk
+			if ( disk )
+			{
+				temp_device .disktype =	disk ->type ->name ;
+				temp_device .max_prims = ped_disk_get_max_primary_partition_count( disk ) ;
+				
+				set_device_partitions( temp_device, deep_scan ) ;
+				
+			}
+			//harddisk without disklabel
+			else
+			{
+				temp_device .disktype = _("unrecognised") ;
+				temp_device .max_prims = -1 ;
+				
+				Partition partition_temp ;
+				partition_temp .Set_Unallocated( 0, temp_device .length, false );
+				temp_device .device_partitions .push_back( partition_temp );
+			}
+				
 			devices .push_back( temp_device ) ;
 			
 			close_device_and_disk( device, disk ) ;
 		}
 	}
-		
 }
 
 void GParted_Core::set_device_partitions( Device & device, bool deep_scan ) 
@@ -379,6 +395,28 @@ bool GParted_Core::Copy( const Glib::ustring & dest_device_path, const Glib::ust
 	}
 	
 	return false ;
+}
+
+bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
+{
+	bool return_value = false ;
+	
+	if ( open_device_and_disk( device_path, device, disk, false ) )
+	{
+		PedDiskType *type = NULL ;
+		type = ped_disk_type_get( disklabel .c_str( ) ) ;
+		
+		if ( type )
+		{
+			disk = ped_disk_new_fresh ( device, type);
+		
+			return_value = Commit( disk ) ;
+		}
+		
+		close_device_and_disk( device, disk ) ;
+	}
+	
+	return return_value ;	
 }
 
 std::vector<FS> GParted_Core::get_fs( )

@@ -1,4 +1,4 @@
-/*	Copyright (C) 2004 Bart
+/* Copyright (C) 2004 Bart
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,41 +15,44 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef DEVICE
-#define DEVICE
 
-#include "../include/Partition.h"
+ 
+#ifndef DIALOG_DISKLABEL
+#define DIALOG_DISKLABEL
+
+#include "../include/i18n.h"
+#include "../include/Utils.h"
+
+#include <gtkmm/dialog.h>
+#include <gtkmm/button.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/expander.h>
+#include <gtkmm/optionmenu.h>
+#include <gtkmm/menu.h>
 
 namespace GParted
 {
 	
-class Device
+class Dialog_Disklabel : public Gtk::Dialog
 {
-	 
 public:
-	Device( ) ;
-	~Device( ) ;
+	Dialog_Disklabel( const Glib::ustring & device_path ) ;
 	
-	void Reset( ) ;
-	int Get_Highest_Logical_Busy( ) ;
-
-	std::vector<Partition> device_partitions ;
-	Sector length;
-	long heads ;
-	long sectors ;
-	long cylinders ;
-	Glib::ustring model;
- 	Glib::ustring path;
- 	Glib::ustring realpath;
- 	Glib::ustring disktype;
-	int max_prims ;
-	bool busy ; 
-			
+	Glib::ustring Get_Disklabel( ) ;
+	
 private:
-		
+	Gtk::Expander expander_advanced ;
+	Gtk::HBox *hbox ;
+	Gtk::VBox *vbox ;
+	Gtk::Image image ;
+	Gtk::OptionMenu optionmenu_labeltypes ;
+	Gtk::Menu menu_labeltypes ;
 
+	Glib::ustring str_temp ;
+	std::vector <Glib::ustring> labeltypes ;
 };
- 
+
 } //GParted
- 
-#endif //DEVICE
+
+
+#endif //DIALOG_DISKLABEL

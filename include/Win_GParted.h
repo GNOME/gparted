@@ -30,6 +30,7 @@
 #include "../include/Dialog_About.h"
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
+#include "../include/Dialog_Disklabel.h"
 
 #include <sigc++/class_slot.h>
 #include <gtkmm/main.h>

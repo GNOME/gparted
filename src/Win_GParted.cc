@@ -714,11 +714,14 @@ void Win_GParted::menu_gparted_refresh_devices()
 	Refresh_OptionMenu( ) ;
 		
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
-	if ( current_device >= devices .size() )
+	if ( current_device >= devices .size( ) )
 		current_device = 0 ;	
 				
 	//rebuild visualdisk and treeview
 	Refresh_Visual( );
+	
+	//and refresh the device info...
+	Fill_Label_Device_Info( ) ;
 }
 
 void Win_GParted::menu_gparted_quit()
@@ -917,13 +920,31 @@ void Win_GParted::activate_paste()
 
 void Win_GParted::activate_new()
 {
-	if ( ! max_amount_prim_reached( ) )
+	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
+	if ( devices [ current_device ] .max_prims == -1 )
+	{	
+		Dialog_Disklabel dialog( devices [ current_device ] .path ) ;
+		dialog .set_transient_for( *this );
+		
+		if ( dialog .run( ) == Gtk::RESPONSE_OK )
+		{
+			if ( ! gparted_core .Set_Disklabel( devices [ current_device ] .path, dialog .Get_Disklabel( ) ) )
+			{
+				Gtk::MessageDialog dialog( *this, _("Error while setting new disklabel"), true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
+				dialog .run( ) ;
+			}
+			
+			menu_gparted_refresh_devices( ) ;
+		}
+	}
+		
+	else if ( ! max_amount_prim_reached( ) )
 	{	
 		Dialog_Partition_New dialog;
 		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ) ) ;
 		dialog .set_transient_for( *this );
 		
-		if ( dialog.run() == Gtk::RESPONSE_OK )
+		if ( dialog .run( ) == Gtk::RESPONSE_OK )
 		{
 			dialog .hide( ) ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 			new_count++ ;
