@@ -19,7 +19,6 @@
  
 /* UTILS
  * Some stuff i need in a lot of places so i dropped in all together in one file.
- * If you think this approach sucks, dont tell me, i know =)
  */
 
 #ifndef UTILS
@@ -92,7 +91,7 @@ inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true
 	if ( text_color != "black" )
 	{
 		Gdk::Color color( text_color ) ;
-		label ->modify_fg( label ->get_state(), color ) ;
+		label ->modify_fg( label ->get_state( ), color ) ;
 	}
 	
 	return label ;
@@ -101,20 +100,9 @@ inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true
 inline Glib::ustring num_to_str( Sector number )
 {
 	std::ostringstream os;
-	os .imbue( std::locale("") );
+	os .imbue( std::locale( "" ) );
 	os << number ;
-	return os .str() ;
-}
-
-inline FS Get_FS( const Glib::ustring & filesystem, const std::vector<FS> & FILESYSTEMS ) 
-{
-	unsigned int t = 0 ;
-	
-	for ( t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
-		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
-			return FILESYSTEMS[ t ] ;
-	
-	return FILESYSTEMS .back( ) ;
+	return os .str( ) ;
 }
 
 //use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..

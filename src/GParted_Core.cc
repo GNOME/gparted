@@ -330,7 +330,7 @@ bool GParted_Core::Create( const Glib::ustring & device_path, Partition & new_pa
 	if ( new_partition .type == GParted::EXTENDED )   
 		return Create_Empty_Partition( device_path, new_partition ) ;
 	
-	else if ( Create_Empty_Partition( device_path, new_partition, ( new_partition .Get_Length_MB( ) - Get_Cylinder_Size( device_path ) ) < Get_FS( new_partition .filesystem, FILESYSTEMS ) .MIN ) > 0 )
+	else if ( Create_Empty_Partition( device_path, new_partition, ( new_partition .Get_Length_MB( ) - Get_Cylinder_Size( device_path ) ) < get_fs( new_partition .filesystem ) .MIN ) > 0 )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
@@ -462,9 +462,18 @@ bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib:
 	return return_value ;	
 }
 
-const std::vector<FS> & GParted_Core::get_fs( ) const 
+const std::vector<FS> & GParted_Core::get_filesystems( ) const 
 {
 	return FILESYSTEMS ;
+}
+
+const FS & GParted_Core::get_fs( const Glib::ustring & filesystem ) const 
+{
+	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
+		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
+			return FILESYSTEMS[ t ] ;
+	
+	return FILESYSTEMS .back( ) ;
 }
 
 Glib::RefPtr<Gtk::TextBuffer> GParted_Core::get_textbuffer( )
@@ -504,8 +513,8 @@ Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path )
 
 void GParted_Core::Set_Used_Sectors( Partition & partition )
 {
-	//if ( partition .filesystem == "unknown" )
-	if ( Get_FS( partition .filesystem, FILESYSTEMS ) .filesystem == "unknown" )
+	//because 'unknown' is translated we need to call get_fs instead of using partition .filesystem directly
+	if ( get_fs( partition .filesystem ) .filesystem == "unknown" )
 		partition .Set_Unused( -1 ) ;
 	
 	else if ( partition .busy )
@@ -522,7 +531,7 @@ void GParted_Core::Set_Used_Sectors( Partition & partition )
 		system( "rm -f /tmp/.tmp_gparted" );
 	}
 	
-	else if ( Get_FS( partition .filesystem, FILESYSTEMS ) .read )
+	else if ( get_fs( partition .filesystem ) .read )
 	{
 		set_proper_filesystem( partition .filesystem ) ;
 		

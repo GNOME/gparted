@@ -179,9 +179,9 @@ void Win_GParted::init_popupmenu()
 
 void Win_GParted::init_convert_menu()
 {
-	for ( unsigned int t=0; t < gparted_core .get_fs( ) .size( ) -1 ; t++ )
+	for ( unsigned int t=0; t < gparted_core .get_filesystems( ) .size( ) -1 ; t++ )
 	{
-		color .set( Get_Color( gparted_core .get_fs( )[ t ] .filesystem ) );
+		color .set( Get_Color( gparted_core .get_filesystems( )[ t ] .filesystem ) );
 		hbox = manage( new Gtk::HBox( ) );
 			
 		//the colored square
@@ -192,11 +192,11 @@ void Win_GParted::init_convert_menu()
 		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
 		//the label...
-		hbox ->pack_start( * mk_label( " " + gparted_core .get_fs( )[ t ] .filesystem ), Gtk::PACK_SHRINK );	
+		hbox ->pack_start( * mk_label( " " + gparted_core .get_filesystems( )[ t ] .filesystem ), Gtk::PACK_SHRINK );	
 				
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_convert.items( ) .push_back( *menu_item );
-		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_fs( )[ t ] .filesystem ) ) ;
+		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_filesystems( )[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -591,7 +591,7 @@ void Win_GParted::Set_Valid_Operations()
 	//PRIMARY and LOGICAL
 	if (  selected_partition .type == GParted::PRIMARY || selected_partition .type == GParted::LOGICAL )
 	{
-		fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
+		fs = gparted_core .get_fs( selected_partition .filesystem ) ;
 		
 		allow_delete( true ) ;
 		allow_convert( true ) ;
@@ -611,9 +611,9 @@ void Win_GParted::Set_Valid_Operations()
 void Win_GParted::Set_Valid_Convert_Filesystems() 
 {
 	//disable conversion to the same filesystem
-	for ( unsigned int t = 0 ; t < gparted_core .get_fs( ) .size( ) -1 ; t++ )
+	for ( unsigned int t = 0 ; t < gparted_core .get_filesystems( ) .size( ) -1 ; t++ )
 	{
-		if ( gparted_core .get_fs( )[ t ] .filesystem == selected_partition .filesystem || ! gparted_core .get_fs( )[ t ] .create )
+		if ( gparted_core .get_filesystems( )[ t ] .filesystem == selected_partition .filesystem || ! gparted_core .get_filesystems( )[ t ] .create )
 			menu_convert .items( )[ t ] .set_sensitive( false ) ;
 		else 
 			menu_convert .items( )[ t ] .set_sensitive( true ) ;
@@ -710,11 +710,11 @@ void Win_GParted::menu_gparted_filesystems( )
 	Dialog_Filesystems dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog .Load_Filesystems( gparted_core .get_fs( ) ) ;
+	dialog .Load_Filesystems( gparted_core .get_filesystems( ) ) ;
 	while ( dialog .run( ) == Gtk::RESPONSE_OK )
 	{
 		gparted_core .find_supported_filesystems( ) ;
-		dialog .Load_Filesystems( gparted_core .get_fs( ) ) ;
+		dialog .Load_Filesystems( gparted_core .get_filesystems( ) ) ;
 	}
 }
 
@@ -848,8 +848,7 @@ void Win_GParted::activate_resize()
 			if ( operations[ t ] .device_path == devices[ current_device ] .path )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
-	
-	Dialog_Partition_Resize_Move dialog( Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 			
 	if ( selected_partition .type == GParted::LOGICAL )
 	{
@@ -897,7 +896,7 @@ void Win_GParted::activate_paste()
 {
 	if ( ! max_amount_prim_reached( ) )
 	{
-		Dialog_Partition_Copy dialog( Get_FS( copied_partition .filesystem, gparted_core .get_fs( ) ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
+		Dialog_Partition_Copy dialog( gparted_core .get_fs( selected_partition .filesystem ), devices[ current_device ] .heads * devices[ current_device ] .sectors ) ;
 		copied_partition .error .clear( ) ; //we don't need the errors of the source partition.
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
@@ -939,7 +938,7 @@ void Win_GParted::activate_new()
 			if ( cylinder_size < 1 )
 				cylinder_size = 1 ;
 			
-		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_fs( ), devices [ current_device ] .readonly, cylinder_size ) ;
+		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_filesystems( ), devices [ current_device ] .readonly, cylinder_size ) ;
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run( ) == Gtk::RESPONSE_OK )
@@ -1051,7 +1050,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 	
 	//check for some limits...
-	fs = Get_FS( new_fs, gparted_core .get_fs( ) ) ;
+	fs = gparted_core .get_fs( selected_partition .filesystem ) ;
 	
 	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
 	{
@@ -1072,7 +1071,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	
 	//ok we made it :P lets create an fitting partition object
 	Partition part_temp;
-	part_temp .Set( selected_partition .partition, selected_partition .partition_number, selected_partition .type, new_fs, selected_partition .sector_start, selected_partition .sector_end, /*-1,*/ selected_partition .inside_extended, false ) ;
+	part_temp .Set( selected_partition .partition, selected_partition .partition_number, selected_partition .type, new_fs, selected_partition .sector_start, selected_partition .sector_end, selected_partition .inside_extended, false ) ;
 	
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new filesystem
