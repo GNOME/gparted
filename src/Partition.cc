@@ -36,18 +36,18 @@ void Partition::Set(	const Glib::ustring & partition,
 			const bool inside_extended,
 			const bool busy )
 {
-	this->partition = partition;
-	this->partition_number = partition_number;
-	this->type = type;
-	this->filesystem = filesystem;
-	this->sector_start = sector_start;
-	this->sector_end = sector_end;
-	this->sectors_used = sectors_used;
-	sectors_used != -1 ?   this->sectors_unused = ( sector_end - sector_start)  - sectors_used  :  this->sectors_unused = -1 ;
-	this->color.set( Get_Color( filesystem ) );
-	this->color_string = Get_Color( filesystem );
-	this->inside_extended = inside_extended;
-	this->busy = busy;
+	this ->partition = partition;
+	this ->partition_number = partition_number;
+	this ->type = type;
+	this ->filesystem = filesystem;
+	this ->sector_start = sector_start;
+	this ->sector_end = sector_end;
+	this ->sectors_used = sectors_used;
+	sectors_used != -1 ? this ->sectors_unused = ( sector_end - sector_start) - sectors_used : this ->sectors_unused = -1 ;
+	this ->color.set( Get_Color( filesystem ) );
+	this ->color_string = Get_Color( filesystem );
+	this ->inside_extended = inside_extended;
+	this ->busy = busy;
 }
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
@@ -59,32 +59,32 @@ void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool in
 
 Glib::ustring Partition::Get_Color( const Glib::ustring & filesystem ) 
 { // very ugly, but somehow i can't figure out a more efficient way. must be lack of sleep or so... :-)
-	//purple teints
-	if		( filesystem == "ext2" )	return "#9DB8D2" ;													
-	else if 	( filesystem == "ext3" )	return "#7590AE";								
+	//blue teints
+	if	( filesystem == "ext2" )	return "#9DB8D2" ;													
+	else if ( filesystem == "ext3" )	return "#7590AE" ;								
 	
-	//brown
-	else if 	( filesystem == "linux-swap" )	return "#C1665A" ;				
+	//redbrown
+	else if ( filesystem == "linux-swap" )	return "#C1665A" ;				
 		
 	//greenisch stuff..
-	else if 	( filesystem == "fat16" ) 	return "green"	 ;			
-	else if	( filesystem == "fat32" ) 		return "#18D918";							
-	else if 	( filesystem == "ntfs" )	return "#42E5AC";				
+	else if ( filesystem == "fat16" ) 	return "green"	 ;			
+	else if	( filesystem == "fat32" )	return "#18D918" ;							
+	else if ( filesystem == "ntfs" )	return "#42E5AC" ;				
 	
-	//blue
-	else if	( filesystem == "reiserfs" )		return "blue"		 ;						
+	//purple something..
+	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
 	
 	//libparted can only detect  these, i decided to "yellow them" :^)
-	else if	( filesystem == "HFS" )			return "yellow"	 ;	
-	else if	( filesystem == "JFS" )			return "yellow"	 ;	
-	else if	( filesystem == "UFS" )			return "yellow"	 ;	
-	else if	( filesystem == "XFS" )			return "yellow"	 ;	
+	else if	( filesystem == "HFS" )		return "yellow"	 ;	
+	else if	( filesystem == "JFS" )		return "yellow"	 ;	
+	else if	( filesystem == "UFS" )		return "yellow"	 ;	
+	else if	( filesystem == "XFS" )		return "yellow"	 ;	
 	
 	//darkgrey and ligthblue
-	else if 	( filesystem == "unallocated" ) return "darkgrey" ;
-	else if 	( filesystem == "extended" )	return "#7DFCFE" ;
+	else if ( filesystem == "unallocated" ) return "darkgrey";
+	else if ( filesystem == "extended" )	return "#7DFCFE" ;
 	
-	//unknown filesystem	( damaged, or simply unknown )	
+	//unknown filesystem	( damaged,  unknown or simply no filesystem )	
 	else return "black";
 }
 
