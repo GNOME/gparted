@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted 0.0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-01 00:45+0200\n"
-"PO-Revision-Date: 2004-10-01 01:17+0200\n"
+"POT-Creation-Date: 2004-10-01 16:06+0200\n"
+"PO-Revision-Date: 2004-10-01 16:50+0200\n"
 "Last-Translator: Hendrik Brandt <eru@gmx.li>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,9 @@ msgstr "Anschließender freier Speicherplatz (in MB):"
 
 #: src/Dialog_Base_Partition.cc:92
 msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr "HINWEIS: Die Werte auf dem Datenträger können sich etwas von den hier eingegebenen Werten unterscheiden."
+msgstr ""
+"HINWEIS: Die Werte auf dem Datenträger können sich etwas von den hier "
+"eingegebenen Werten unterscheiden."
 
 #: src/Dialog_Base_Partition.cc:159
 msgid "Resize"
@@ -235,7 +237,8 @@ msgstr "Alle aufgelisteten Operationen ausführen."
 
 #: src/Dialog_Progress.cc:38
 msgid "Clicking Cancel will prevent the next operations from being applied."
-msgstr "Durch Auswählen von »Abbrechen« wird die nächste Operation nicht ausgeführt."
+msgstr ""
+"Durch Auswählen von »Abbrechen« wird die nächste Operation nicht ausgeführt."
 
 #: src/Dialog_Progress.cc:43
 msgid "initializing..."
@@ -273,63 +276,64 @@ msgstr "Logische Partition"
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
 #: src/Operation.cc:68
 msgid "Create %1 Partition #%2 (%3, %4 MB) on %5"
-msgstr ""
+msgstr "%1 Partition Nr. %2 (%3, %4 MB) auf %5 erstellen"
 
 #: src/Operation.cc:76
 msgid "Move %1 forward by %2 MB "
-msgstr ""
+msgstr "%1 um %2 MB vorwärts schieben"
 
 #: src/Operation.cc:78
 msgid "Move %1 backward by %2 MB "
-msgstr ""
+msgstr "%1 um %2 MB rückwärts schieben"
 
 #: src/Operation.cc:87
 msgid "Resize %1 from %2 MB to %3 MB"
-msgstr ""
+msgstr "Größe von %1 von %2 MB auf %3 MB ändern"
 
 #: src/Operation.cc:89
 msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr ""
+msgstr "und Größe von %1 von %2 MB auf %3 MB ändern"
 
 #: src/Operation.cc:93
 msgid "Sorry, changes are too small to make sense"
-msgstr ""
+msgstr "Leider sin die von Ihnen vorgenommenen Änderungen zu klein um sinnvoll angewendet zu werden"
 
 #. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
 #: src/Operation.cc:97
 msgid "Convert %1 from %2 to %3"
-msgstr ""
+msgstr "%1 von %2 nach %3 konvertieren"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
 #: src/Operation.cc:100
 msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr ""
+msgstr "%1 nach %2 kopieren (beginnend ab %3 MB)"
 
 #: src/Operation.cc:131
 msgid "Error while deleting %1"
-msgstr ""
+msgstr "Fehler beim Löschen von %1"
 
 #: src/Operation.cc:136
 msgid "Error while creating %1"
-msgstr ""
+msgstr "Fehler beim Erstellen von %1"
 
 #: src/Operation.cc:141
 msgid "Error while resizing/moving %1"
-msgstr ""
+msgstr "Fehler bei der Größenänderung/beim Verschieben von %1"
 
 #: src/Operation.cc:146
 msgid "Error while converting filesystem of %1"
-msgstr ""
+msgstr "Fehler beim Umwandeln des Dateisystems von %1"
 
 #: src/Operation.cc:151
 msgid "Error while copying %1"
-msgstr ""
+msgstr "Fehler beim Kopieren von %1"
 
 #: src/Operation.cc:431
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
-msgstr ""
+msgstr "Bitte beachten Sie, dass ein Fehler beim Ausführen dieser Operation auf noch folgende "
+"Operationen unerwünschte Auswirkungen haben könnte."
 
 #: src/Partition.cc:55
 msgid "Unallocated"
@@ -370,7 +374,7 @@ msgstr "unbenutzt"
 
 #: src/Win_GParted.cc:88
 msgid "_Refresh devices"
-msgstr "Geräte _aktualisieren"
+msgstr "Laufwerke _aktualisieren"
 
 #: src/Win_GParted.cc:91
 msgid "_GParted"
@@ -472,127 +476,134 @@ msgstr "Wollen Sie GParted wirklich beenden?"
 
 #: src/Win_GParted.cc:548
 msgid "%1 operations are currently pending."
-msgstr ""
+msgstr "%1 Operationen wurden noch nicht ausgeführt."
 
 #: src/Win_GParted.cc:550
 msgid "1 operation is currently pending."
-msgstr ""
+msgstr "Eine Operation wurden noch nicht ausgeführt."
 
 #: src/Win_GParted.cc:724
 msgid "Sorry, not yet implemented."
-msgstr ""
+msgstr "Diese Funktion ist noch nicht implementiert."
 
 #: src/Win_GParted.cc:724
 msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr ""
+msgstr "Bitte besuchen Sie für weitere Informationen und Unterstützung die Internet-Seite: "
+"http://gparted.sf.net"
 
 #: src/Win_GParted.cc:767
 msgid "Are you sure you want to resize/move this partition?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diese Partition in der Größe ändern/Verschieben möchten?"
 
 #: src/Win_GParted.cc:768
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
 "filesystem to fat32."
-msgstr ""
+msgstr "Eine FAT16-Partition in der Größe zu ändern kann sehr kompliziert sein! "
+"Besonders das Vergrößern einer solchen Partition ist sehr fehleranfällig. "
+"Es wird empfohlen, dass Sie zunächst das Dateisystem in FAT32 umwandeln."
 
 #: src/Win_GParted.cc:840 src/Win_GParted.cc:867
 msgid "It is not possible to create more than %1 primary partitions"
-msgstr ""
+msgstr "Es ist nicht möglich mehr als %1 primäre Partitionen zu erstellen"
 
 #: src/Win_GParted.cc:842 src/Win_GParted.cc:869
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
-msgstr ""
+msgstr "Wenn Sie weitere Partitionen anlegen möchten, sollten Sie zunächst eine "
+"erweiterte Partition erstellen. Diese kann dann weitere logische Partitionen "
+"aufnehmen."
 
 #: src/Win_GParted.cc:897
 msgid "Unable to delete partition!"
-msgstr ""
+msgstr "Partition konnte nicht gelöscht werden!"
 
 #: src/Win_GParted.cc:898
 msgid "Please unmount any logical partitions having a number higher than %1"
-msgstr ""
+msgstr "Bitte hängen Sie jede logische Partition mit einer Nummer größer als %1 aus."
 
 #: src/Win_GParted.cc:904
 msgid "Are you sure you want to delete %1 ?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie %1 löschen möchten?"
 
 #: src/Win_GParted.cc:906
 msgid "After deletion this partition is no longer available for copying."
-msgstr ""
+msgstr "Nachdem diese Partition gelöscht wurde steht Sie nicht mehr zum Kopieren zur Verfügung."
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB)
 #: src/Win_GParted.cc:910
 msgid "Delete %1 (%2, %3 MB)"
-msgstr ""
+msgstr "Löschen von %1 (%2, %3 MB)"
 
 #: src/Win_GParted.cc:972
 msgid "Are you sure you want to convert this filesystem to %1 ?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie dieses Dateisystem in %1 umwandeln wollen?"
 
 #: src/Win_GParted.cc:973
 msgid "This operation will destroy all data on %1"
-msgstr ""
+msgstr "Dieser Vorgang wird alle Daten auf %1 löschen!"
 
 #: src/Win_GParted.cc:991 src/Win_GParted.cc:993
 msgid "Can not convert this filesystem to fat16."
-msgstr ""
+msgstr "Dieses Dateisystem kann nicht zu FAT16 umgewandelt werden."
 
 #: src/Win_GParted.cc:991
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
-msgstr ""
+msgstr "Eine Partition mit FAT16-Dateisystem muss mindestens eine Größe von 32 MB besitzen."
 
 #: src/Win_GParted.cc:993
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
-msgstr ""
+msgstr "Eine Partition mit FAT16-Dateisystem darf maximal eine Größe von 1023 MB besitzen."
 
 #: src/Win_GParted.cc:995
 msgid "Can not convert this filesystem to fat32."
-msgstr ""
+msgstr "Dieses Dateisystem kann nicht in FAT32 umgewandelt werden."
 
 #: src/Win_GParted.cc:995
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
-msgstr ""
+msgstr "Eine Partition mit FAT32-Dateisystem muss mindestens eine Größe von 256 MB besitzen."
 
 #: src/Win_GParted.cc:1050
 msgid "Are you sure you want to apply the pending operations?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie die ausstehenden Operationen ausführen wollen?"
 
 #: src/Win_GParted.cc:1050
 msgid "It is recommended to backup valueable data before proceeding."
-msgstr ""
+msgstr "Es wird empfohlen, dass Sie wichtige Daten vor dem Fortfahren sichern."
 
 #: src/Win_GParted.cc:1051
 msgid "Apply operations to harddisk"
-msgstr ""
+msgstr "Operationen auf Festplatte anwenden"
 
 #. TO TRANSLATORS: after the colon (:) a list of devices will be shown
 #: src/Win_GParted.cc:1088
 msgid "The kernel was unable to re-read the partition table on :"
-msgstr ""
+msgstr "Der Systemkern konnte die Partitionstabelle nicht lesen von:"
 
 #: src/Win_GParted.cc:1091
 msgid ""
 "This means Linux won't know anything about the modifications you made until "
 "you reboot."
-msgstr ""
+msgstr "Das bedeutet, dass Linux bis zum nächsten Neustart keine Kenntnis von den von Ihnen "
+"vorgenommenen Änderungen hat."
 
 #: src/Win_GParted.cc:1093
 msgid ""
 "You should reboot your computer before doing anything with these devices."
-msgstr ""
+msgstr "Sie sollten Ihren Rechner neu starten, bevor Sie mit diesen Laufwerken arbeiten."
 
 #: src/Win_GParted.cc:1095
 msgid "You should reboot your computer before doing anything with this device."
-msgstr ""
+msgstr "Sie sollten Ihren Rechner neu starten, bevor Sie mit diesem Laufwerk arbeiten."
 
 #: src/main.cc:35
 msgid "Root privileges are required for running GParted"
-msgstr ""
+msgstr "Sie benötigen Administratorrechte um GParted zu starten"
 
 #: src/main.cc:35
 msgid "Since GParted can be a weapon of mass destruction only root may run it."
-msgstr ""
+msgstr "Da GParted eine Massenvernichtungswaffe für Ihre Daten sein kann, darf lediglich "
+"der Systemadministrator es verwenden!"
 
