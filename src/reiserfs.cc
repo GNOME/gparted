@@ -44,6 +44,8 @@ FS reiserfs::get_filesystem_support( )
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .resize ) 
 		fs .copy = true ;
 	
+	fs .MIN = 40 ;
+	
 	return fs ;
 }
 

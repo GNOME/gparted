@@ -200,35 +200,12 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 {  
 	GRIP = true ;
 	
-	//check for upper/lower limit fat16
-	if ( selected_partition.filesystem == "fat16" && ( ( x_end - x_start ) * MB_PER_PIXEL > 1023 || ( x_end - x_start ) * MB_PER_PIXEL < 32 ) )
-	{ 
+	if ( ( x_end - x_start ) * MB_PER_PIXEL < fs .MIN || ( fs .MAX && ( x_end - x_start ) * MB_PER_PIXEL > fs .MAX ) )
+	{
 		frame_resizer_base ->set_x_start( this ->x_start );
 		frame_resizer_base ->set_x_end( this ->x_end );
 				
-		frame_resizer_base ->Draw_Partition() ;
-		GRIP = false ;
-		return ;
-	}
-	
-	//check for lower limit fat32
-	if ( selected_partition.filesystem == "fat32" &&  ( x_end - x_start ) * MB_PER_PIXEL < 256 )
-	{ 
-		frame_resizer_base ->set_x_start( this ->x_start );
-		frame_resizer_base ->set_x_end( this ->x_end );
-				
-		frame_resizer_base ->Draw_Partition() ;
-		GRIP = false ;
-		return ;
-	}
-	
-	//check for lower limit reiserfs
-	if ( selected_partition.filesystem == "reiserfs" &&  ( x_end - x_start ) * MB_PER_PIXEL < 40 )
-	{ 
-		frame_resizer_base ->set_x_start( this ->x_start );
-		frame_resizer_base ->set_x_end( this ->x_end );
-				
-		frame_resizer_base ->Draw_Partition() ;
+		frame_resizer_base ->Draw_Partition( ) ;
 		GRIP = false ;
 		return ;
 	}

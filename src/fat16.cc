@@ -39,6 +39,10 @@ FS fat16::get_filesystem_support( )
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	
+	
+	fs .MIN = 32 ;
+	fs .MAX = 1023 ;
+	
 	return fs ;
 }
 

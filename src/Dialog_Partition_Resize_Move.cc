@@ -68,8 +68,10 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
+	fs = Get_FS( selected_partition .filesystem, FILESYSTEMS ) ;
+	
 	//see if we need a fixed_start
-	if ( Get_FS( selected_partition .filesystem, FILESYSTEMS ) .move )
+	if ( fs .move )
 	{
 		this ->set_title( String::ucompose( _("Resize/Move %1"), selected_partition .partition ) ) ;
 		frame_resizer_base ->set_fixed_start( false ) ;
@@ -113,30 +115,17 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	frame_resizer_base ->set_x_end( ( Round( (double) (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500) )) + frame_resizer_base ->get_x_start() ) ;
 	frame_resizer_base ->set_used( Round( (double) selected_partition.sectors_used / ( (double)total_length/500) ) ) ;
 	
-	
 	//since some filesystems have upper and lower limits we need to check for this
-	long LOWER, UPPER;
-	if ( selected_partition .filesystem == "fat16" && selected_partition .Get_Used_MB( ) < 32 )
-		LOWER = 32 ;
-	else if ( selected_partition .filesystem == "fat32" && selected_partition .Get_Used_MB( ) < 256 )
-		LOWER = 256 ; 
-	else if ( selected_partition .filesystem == "reiserfs" && selected_partition .Get_Used_MB( ) < 40 )
-		LOWER = 40 ;
-	else
-		LOWER = selected_partition .Get_Used_MB( ) ;
-	
+	long LOWER = ( selected_partition .Get_Used_MB( ) < fs .MIN ) ? fs .MIN : selected_partition .Get_Used_MB( ) ;
+		
 	LOWER += BUF ;
 	
-	//in certain (rare) case LOWER is a bit too high...
+	//in certain (rare) cases LOWER is a bit too high...
 	if ( LOWER > selected_partition .Get_Length_MB( ) )
 		LOWER = selected_partition .Get_Length_MB( ) ;
 	
-	if ( selected_partition.filesystem == "fat16" && Sector_To_MB( total_length ) > 1023 )
-		UPPER = 1023 ;
-	else
-		UPPER =  Sector_To_MB( total_length ) ;
-	
-	
+	long UPPER = fs .MAX ? fs .MAX : Sector_To_MB( total_length ) ;
+		
 	//set values of spinbutton_before
 	if ( ! fixed_start )
 	{

@@ -1,3 +1,10 @@
+2004-12-09 Bart Hakvoort  <gparted@users.sf.net>
+
+	* added MIN and MAX to filesystemstruct to set min. and max sizes of a filesystem. So instead of checking per filesystem
+	  i now simply check the fs.MIN or fs.MAX. this results in less and cleaner code. Also this will come in handy when adding
+	  support for new filesystems. (This also fixed several minor bugs with filesystemsizes and gained some improvement in resizer
+	  performance)
+
 2004-12-07 Bart Hakvoort  <gparted@users.sf.net>
 
 	* src/VBox_VisualDisk.cc: placed a small (2px) border around the legend.

@@ -42,6 +42,8 @@ FS fat32::get_filesystem_support( )
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	
+	fs .MIN = 256 ;
+	
 	return fs ;
 }
 

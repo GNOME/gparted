@@ -923,7 +923,7 @@ void Win_GParted::activate_paste()
 {
 	if ( ! max_amount_prim_reached( ) )
 	{
-		Dialog_Partition_Copy dialog ;
+		Dialog_Partition_Copy dialog( gparted_core .get_fs( ) ) ;
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
 		
@@ -1059,35 +1059,34 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1?"), new_fs ) + "</span>\n\n" ;
 	str_temp += String::ucompose( _("This operation will destroy all data on %1"), selected_partition .partition ) ;
 	
-	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true);
+	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true );
 	
 	dialog. add_button( Gtk::Stock::CONVERT, Gtk::RESPONSE_OK ) ;
-	dialog. show_all_children() ;
+	dialog. show_all_children( ) ;
 	
-	if ( dialog.run() == Gtk::RESPONSE_CANCEL )
+	if ( dialog .run( ) == Gtk::RESPONSE_CANCEL )
 		return ;
 	
-	dialog.hide() ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+	dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 	
-	//check for the FAT limits...
-	if ( new_fs  == "fat16" || new_fs  == "fat32" )
+	//check for some limits...
+	FS fs = Get_FS( new_fs, gparted_core .get_fs( ) ) ;
+	
+	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
 	{
-		str_temp = "" ;
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += String::ucompose( _("Can not convert this filesystem to %1."), new_fs ) ;
+		str_temp += "</span>\n\n" ;
 		
-		if ( new_fs == "fat16" && selected_partition.Get_Length_MB() < 32 )
-			str_temp =  (Glib::ustring) _("Can not convert this filesystem to fat16.") + "</span>\n\n" + (Glib::ustring) _( "A fat16 filesystem requires a partition of at least 32 MB.") ;
-		else	if ( new_fs == "fat16" && selected_partition.Get_Length_MB() > 1023 )	
-			str_temp = (Glib::ustring) _("Can not convert this filesystem to fat16.") + "</span>\n\n" + (Glib::ustring) _( "A partition with a fat16 filesystem has a maximum size of 1023 MB.");
-		else	if ( new_fs == "fat32" && selected_partition.Get_Length_MB() < 256 )	
-			str_temp = (Glib::ustring) _("Can not convert this filesystem to fat32.") + "</span>\n\n" + (Glib::ustring) _( "A fat32 filesystem requires a partition of at least 256 MB.");
+		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
+			str_temp += String::ucompose( _( "A %1 filesystem requires a partition of at least %2 MB."), new_fs, fs .MIN ) ;
+		else
+			str_temp += String::ucompose( _( "A partition with a %1 filesystem has a maximum size of %2 MB."), new_fs, fs .MAX ) ;
 		
-		if ( ! str_temp .empty() )
-		{
-			Gtk::MessageDialog dialog( *this, "<span weight=\"bold\" size=\"larger\">" + str_temp ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-			dialog.run() ;
-			return ;
-		}
-	
+		
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
+		dialog .run( ) ;
+		return ;
 	}
 	
 	//ok we made it :P lets create an fitting partition object

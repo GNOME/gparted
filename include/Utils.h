@@ -49,8 +49,15 @@ struct FS
 	bool move ; //startpoint and endpoint
 	bool check ; //some checktool available?
 	bool copy ;
+	int MIN ; 
+	int MAX ;
 	
-	FS( ) {read = create = resize = move = check = copy = false ;} 
+	FS( )
+	{
+		read = create = resize = move = check = copy = false ;
+		MIN = 1 ;
+		MAX = 0 ;
+	} 
 };
 
 	

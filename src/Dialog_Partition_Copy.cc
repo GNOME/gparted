@@ -20,14 +20,18 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy()
+Dialog_Partition_Copy::Dialog_Partition_Copy( std::vector<FS> FILESYSTEMS )
 {
+	this ->FILESYSTEMS = FILESYSTEMS ;
+	
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
 }
 
 void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, const Partition & copied_partition )
 {
+	fs = Get_FS( copied_partition .filesystem, FILESYSTEMS ) ;
+	
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 	
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .partition ) ) ;
@@ -54,14 +58,8 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	spinbutton_before .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB( ) -1 ) ;//mind the -1  !!
 	spinbutton_before .set_value( 0 ) ;
 		
-	//set values of spinbutton_size (check for fat16 maxsize of 1023 MB)
-	long UPPER;
-	if ( copied_partition .filesystem == "fat16" && Sector_To_MB( total_length ) > 1023 )
-		UPPER = 1023 ;
-	else
-		UPPER = TOTAL_MB ;
-	
-	spinbutton_size .set_range( copied_partition .Get_Length_MB( ) +1, UPPER ) ;
+	//set values of spinbutton_size
+	spinbutton_size .set_range( copied_partition .Get_Length_MB( ) +1, fs .MAX ? fs .MAX : TOTAL_MB ) ;
 	spinbutton_size .set_value( copied_partition .Get_Length_MB( ) ) ;
 	
 	//set values of spinbutton_after
@@ -69,7 +67,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB( ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( copied_partition .Get_Length_MB( ) +1, UPPER ) ;
+	Set_MinMax_Text( copied_partition .Get_Length_MB( ) +1, fs .MAX ? fs .MAX : TOTAL_MB ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

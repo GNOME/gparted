@@ -81,6 +81,7 @@ protected:
 	bool fixed_start, GRIP ;
 	double before_value ;
 	int x_start, x_end ;
+	FS fs ;
 	
 private:
 	void Check_Change() ;

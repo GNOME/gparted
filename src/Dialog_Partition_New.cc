@@ -184,41 +184,27 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	//optionmenu_filesystem
 	if ( ! type )
 	{
+		fs = FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] ;
+		
 		//needed vor upper limit check (see also Dialog_Base_Partition::on_signal_resize )
-		selected_partition .filesystem = FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] .filesystem ; 
+		selected_partition .filesystem = fs .filesystem ; 
 		
 		//set new spinbutton ranges
-		long MIN, MAX;
-		switch ( optionmenu_filesystem .get_history() )
-		{
-			case 2:		MIN = 32 ;
-					TOTAL_MB > 1023 ? MAX = 1023 : MAX = TOTAL_MB ;
-					break;
-			case 3:		MIN = 256 ;
-					MAX = TOTAL_MB ;
-					break;
-			case 5:		MIN = 40 ;
-					MAX = TOTAL_MB ;
-					break;
-			default:	MIN = 1 ;
-					MAX = TOTAL_MB ;
-		}
-		
-		spinbutton_before .set_range( 0, TOTAL_MB - MIN ) ;
-		spinbutton_size .set_range( MIN, MAX ) ;
-		spinbutton_after .set_range( 0, TOTAL_MB  - MIN ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
+		spinbutton_size .set_range( fs .MIN, fs .MAX ? fs .MAX : TOTAL_MB ) ;
+		spinbutton_after .set_range( 0, TOTAL_MB  - fs .MIN ) ;
 				
 		//set contents of label_minmax
-		Set_MinMax_Text( MIN, MAX ) ;
+		Set_MinMax_Text( fs .MIN, fs .MAX ? fs .MAX : TOTAL_MB ) ;
 	}
 	
 	//set fitting resizer colors
 	//backgroundcolor..
-	optionmenu_type.get_history() == 2 ? color_temp .set( "darkgrey" ) : color_temp .set( "white" ) ;
+	optionmenu_type .get_history( ) == 2 ? color_temp .set( "darkgrey" ) : color_temp .set( "white" ) ;
 	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
 	
 	//partitioncolor..
-	color_temp .set( Get_Color( FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem ) ) ;
+	color_temp .set( Get_Color( fs .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
 	frame_resizer_base ->Draw_Partition( ) ;
@@ -230,22 +216,11 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
 	{
 		menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( FILESYSTEMS[ t ] .filesystem ) ) ;
-		menu_filesystem .items( )[ t ] .set_sensitive( FILESYSTEMS[ t ] .create && ! only_unformatted ) ;	
+		menu_filesystem .items( )[ t ] .set_sensitive( ! only_unformatted && FILESYSTEMS[ t ] .create && this ->selected_partition .Get_Length_MB() >= FILESYSTEMS[ t ] .MIN ) ;	
 	}
 	
 	//unformatted is always available
 	menu_filesystem .items( ) .back( ) .set_sensitive( true ) ;
-	
-	//check if selected unallocated is big enough for fs'es with min. size
-	//fat16
-	if ( this ->selected_partition .Get_Length_MB() < 32 )
-		menu_filesystem .items()[ 2 ] .set_sensitive( false ) ;
-	//fat32
-	if ( this ->selected_partition .Get_Length_MB() < 256 )
-		menu_filesystem .items()[ 3 ] .set_sensitive( false ) ;
-	//reiserfs
-	if ( this ->selected_partition .Get_Length_MB() < 40 )
-		menu_filesystem .items()[ 5 ] .set_sensitive( false ) ;
 	
 	//find and set first enabled filesystem
 	for ( unsigned int t = 0 ; t < menu_filesystem .items( ) .size( ) ; t++ )
