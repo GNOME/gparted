@@ -194,7 +194,7 @@ void VBox_VisualDisk::Build_Legend( )
 	frame_disk_legend = manage( new Gtk::Frame( ) ) ;
 	hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 	
-	hbox_legend = manage( new Gtk::HBox ( ) );
+	hbox_legend = manage( new Gtk::HBox( ) );
 	frame_disk_legend ->add( *hbox_legend ) ;
 	this ->pack_start( hbox_legend_main );
 	
@@ -204,9 +204,8 @@ void VBox_VisualDisk::Build_Legend( )
 	bool hide_used_unused = true;
 	for ( unsigned int t = 0 ; t < legend .size( ) ; t++ )
 	{
-		if ( legend[ t ] != "unallocated" && legend[ t ] != "extended" && legend[ t ] != "linux-swap" )
+		if ( legend[ t ] != "---" && legend[ t ] != "extended" && legend[ t ] != "linux-swap" )
 			hide_used_unused = false ;
-		
 		
 		if ( t )
 			hbox_legend ->pack_start( * mk_label( "    " ), Gtk::PACK_SHRINK );
@@ -214,7 +213,14 @@ void VBox_VisualDisk::Build_Legend( )
 			hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
 			
 		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
-		hbox_legend ->pack_start( * mk_label( legend[ t ] + " " ), Gtk::PACK_SHRINK );
+		
+		if ( legend[ t ] == "---" )
+		{
+			str_temp = _("unallocated") ;
+			hbox_legend ->pack_start( * mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
+		}
+		else
+			hbox_legend ->pack_start( * mk_label( legend[ t ] + " " ), Gtk::PACK_SHRINK );
 	}
 	
 	//if there are any partitions add used/unused
@@ -227,11 +233,12 @@ void VBox_VisualDisk::Build_Legend( )
 		frame_disk_legend ->add( *hbox_legend );
 		
 		hbox_legend ->pack_start( * mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
-		hbox_legend ->pack_start( * mk_label( "used    " ), Gtk::PACK_SHRINK );
+		str_temp = _("used") ;
+		hbox_legend ->pack_start( * mk_label( str_temp + "    " ), Gtk::PACK_SHRINK );
 		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, "white" ), Gtk::PACK_SHRINK );
-		hbox_legend ->pack_start( * mk_label( "unused " ), Gtk::PACK_SHRINK );
+		str_temp = _("unused") ;
+		hbox_legend ->pack_start( * mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
 	}
-		
 }
 
 void VBox_VisualDisk::Set_Selected( const Partition & partition )

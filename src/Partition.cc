@@ -67,7 +67,7 @@ void Partition::Set_Unused( Sector sectors_unused )
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "unallocated", sector_start, sector_end , inside_extended, false ); 
+	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "---", sector_start, sector_end , inside_extended, false ); 
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }

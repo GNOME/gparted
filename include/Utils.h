@@ -133,7 +133,7 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	else if	( filesystem == "XFS" )		return "yellow"	 ;	
 	
 	//darkgrey and ligthblue
-	else if ( filesystem == "unallocated" ) return "darkgrey";
+	else if ( filesystem == "---" )		return "darkgrey";
 	else if ( filesystem == "extended" )	return "#7DFCFE" ;
 	
 	//unknown filesystem ( damaged,  unknown or simply no filesystem )	

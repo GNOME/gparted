@@ -123,7 +123,7 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 					temp = c_partition ->fs_type ->name ;
 				else
 				{
-					temp = "unknown" ;
+					temp = _("unknown") ;
 					partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
 					partition_temp .error += "\n-"; 
 					partition_temp .error += _( "The filesystem is damaged" ) ;
@@ -412,7 +412,8 @@ Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path )
 
 void GParted_Core::Set_Used_Sectors( Partition & partition )
 {
-	if ( partition .filesystem == "unknown" || partition .filesystem == "linux-swap" )
+	//if ( partition .filesystem == "unknown" )
+	if ( Get_FS( partition .filesystem, FILESYSTEMS ) .filesystem == "unknown" )
 		partition .Set_Unused( -1 ) ;
 	
 	else if ( partition .busy )

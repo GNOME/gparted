@@ -137,7 +137,7 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 	//hereby i assume these 2 are mutual exclusive. is this wise?? Time (and bugreports) will tell :)
 	if ( partition .busy )
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
-	else if ( partition .filesystem == "unknown" || partition .error != "" )
+	else if ( partition .error != "" )
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
