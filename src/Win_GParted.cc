@@ -777,7 +777,7 @@ void Win_GParted::activate_paste()
 	if ( ! selected_partition.inside_extended && primary_count >= 4 )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
-		os << String::ucompose( _("It is not possible to create more then %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
+		os << String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
 		os <<  "</span>\n\n" ;
 		os << _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
 										
@@ -804,7 +804,7 @@ void Win_GParted::activate_new()
 	if ( ! selected_partition.inside_extended && primary_count >= devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() )
 	{
 		os << "<span weight=\"bold\" size=\"larger\">" ;
-		os << String::ucompose( _("It is not possible to create more then %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
+		os << String::ucompose( _("It is not possible to create more than %1 primary partitions"), devices[ current_device ] ->Get_Max_Amount_Of_Primary_Partitions() ) ;
 		os <<  "</span>\n\n" ;
 		os << _( "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions.") ;
 				
