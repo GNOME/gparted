@@ -185,7 +185,7 @@ void Dialog_Partition_Info::Display_Info()
 		
 	}		
 	
-	label ->set_text( label ->get_text() + "\n" ) ;		os << "\n"; //splitter :P
+	label ->set_text( label ->get_text() + "\n" ) ;		os << "\t\t\t\t\n"; //splitter and gives the second column a min. width (needed for %)
 	
 	label ->set_text( label ->get_text() + (Glib::ustring) _("First Sector:" ) + "\n" ) ;	os << partition.sector_start << "\n";
 	label ->set_text( label ->get_text() + (Glib::ustring) _("Last Sector:" ) + "\n" ) ;		os << partition.sector_end << "\n";
@@ -200,8 +200,9 @@ void Dialog_Partition_Info::Display_Info()
 	table ->attach( *label, 1,2,0,1,Gtk::SHRINK);
 	
 	label = manage( new Gtk::Label( ) ) ;
+	label ->set_alignment( Gtk::ALIGN_RIGHT ) ;
 	label ->set_markup( os_percent.str() + "\n\n\n\n"  ) ; os_percent.str("") ; 
-	table ->attach( *label, 1,2,0,1,Gtk::SHRINK);
+	table ->attach( *label, 1,2,0,1,Gtk::FILL);
 }
 
 void Dialog_Partition_Info::Find_Status() 
