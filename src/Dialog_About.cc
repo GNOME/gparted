@@ -63,7 +63,8 @@ void Dialog_About::Show_Credits()
 	Glib::ustring str_credits = _("translator-credits") ;
 	if ( str_credits != "translator-credits" )
 	{
-		vbox_translators .pack_start( * mk_label( str_credits ), Gtk::PACK_SHRINK ) ;
+		vbox_translators .set_border_width( 5 ) ;
+		vbox_translators .pack_start( * mk_label( str_credits, false ), Gtk::PACK_SHRINK ) ;
 		/*TO TRANSLATORS: tablabel in aboutdialog */
 		notebook_credits .append_page( vbox_translators, _("Translated by") ) ;
 	}
