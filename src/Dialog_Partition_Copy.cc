@@ -51,7 +51,7 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size (check for fat16 maxsize of 1023 MB)
-	double UPPER;
+	long UPPER;
 	if ( copied_partition.filesystem == "fat16" && Sector_To_MB( total_length ) > 1023 )
 		UPPER = 1023 ;
 	else
@@ -65,9 +65,7 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB()  ) ;
 	
 	//set contents of label_minmax
-	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), copied_partition .Get_Length_MB() +1 ) + "\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( str_temp ) ;
+	Set_MinMax_Text( copied_partition .Get_Length_MB() +1, UPPER ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

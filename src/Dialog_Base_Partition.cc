@@ -51,26 +51,21 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	label_temp = manage( new Gtk::Label( (Glib::ustring) _( "Free Space Preceding (MB) :") + " \t" ) ) ;
-	table_resize.attach( *label_temp, 0, 1, 0, 1, Gtk::SHRINK);
+	table_resize.attach( * mk_label( (Glib::ustring) _( "Free Space Preceding (MB) :") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK);
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL);
 	
 	//add spinbutton_size
-	label_temp = manage( new Gtk::Label( _( "New Size (MB) :") ) ) ;
-	label_temp ->set_alignment( Gtk::ALIGN_LEFT   );
-	table_resize.attach( *label_temp, 0, 1, 1, 2 );
+	table_resize.attach( * mk_label( _( "New Size (MB) :" ) ), 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL);
 	
 	//add spinbutton_after
-	label_temp = manage( new Gtk::Label( _( "Free Space Following (MB) :") ) ) ;
-	label_temp ->set_alignment( Gtk::ALIGN_LEFT );
-	table_resize.attach( *label_temp, 0, 1, 2, 3 ) ;
+	table_resize.attach( * mk_label( _( "Free Space Following (MB) :") ), 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
@@ -87,11 +82,8 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	spinbutton_size .signal_value_changed().connect( sigc::bind<SPINBUTTON>( sigc::mem_fun( *this, &Dialog_Base_Partition::on_spinbutton_value_changed), SIZE) ) ;
 	spinbutton_after .signal_value_changed().connect( sigc::bind<SPINBUTTON>( sigc::mem_fun( *this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER) ) ;
 	
-	//pack label which warns about small differences in values..
-	label_temp = manage( new Gtk::Label( ) );
-	label_temp ->set_markup( "\n <i>" + (Glib::ustring) _( "NOTE: values on disk may differ slightly from the values entered here.") + "</i>" );
-	label_temp ->set_alignment( Gtk::ALIGN_LEFT ) ;
-	this ->get_vbox() ->pack_start( *label_temp, Gtk::PACK_SHRINK );
+	//pack warning about small differences in values..
+	this ->get_vbox() ->pack_start( * mk_label( "\n <i>" + (Glib::ustring) _( "NOTE: values on disk may differ slightly from the values entered here.") + "</i>" ), Gtk::PACK_SHRINK );
 	
 	this ->get_vbox() ->pack_start( *( manage( new Gtk::Label( "") ) ), Gtk::PACK_SHRINK ); //filler :-P
 		
@@ -156,13 +148,13 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case NEW	:	this->add_button( Gtk::Stock::ADD,Gtk::RESPONSE_OK );
 					break ;
 		case RESIZE_MOVE:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" ) 
-						label_temp = manage( new Gtk::Label( _("Resize") ) ) ;
+						str_temp = _("Resize") ;
 					else
-						label_temp = manage( new Gtk::Label( _("Resize/Move") ) ) ;
+						str_temp = _("Resize/Move") ;
 											
 					image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 					hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
-					hbox_resize_move .pack_start( *label_temp, Gtk::PACK_EXPAND_PADDING ) ;
+					hbox_resize_move .pack_start( * mk_label( str_temp ), Gtk::PACK_EXPAND_PADDING ) ;
 					button_resize_move .add( hbox_resize_move ) ;
 														
 					this ->add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;
@@ -173,6 +165,13 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 					break ;
 	}
 	
+}
+
+void Dialog_Base_Partition::Set_MinMax_Text( long min, long max )
+{
+	str_temp = String::ucompose( _("Minimum Size: %1 MB"), min ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MB"), max ) ;
+	label_minmax .set_text( str_temp ) ; 
 }
 
 void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
@@ -261,7 +260,7 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 	GRIP = false ;
 }
 
-void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  )
+void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 {  
 	if ( ! GRIP )
 	{
@@ -283,7 +282,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  
 			case AFTER	:	if ( ! fixed_start )
 							spinbutton_before .set_value( TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value() );
 			
-							spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
+						spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
 				
 						break;
 		}
@@ -291,7 +290,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  
 		
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			frame_resizer_base ->set_x_start( (int)  (spinbutton_before .get_value() / MB_PER_PIXEL + 0.5)  ) ;
+			frame_resizer_base ->set_x_start( (int) (spinbutton_before .get_value() / MB_PER_PIXEL + 0.5) ) ;
 		
 		frame_resizer_base ->set_x_end( (int) ( 500 - ( (double) spinbutton_after .get_value() / MB_PER_PIXEL ) + 0.5 ) ) ;
 		

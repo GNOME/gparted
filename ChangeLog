@@ -1,5 +1,13 @@
 2004-10-0i2 Bart Hakvoort  <gparted@users.sf.net>
 
+	* include/Dialog_Base_Partition.h,
+	  src/Dialog_Base_Partition.cc: added void Set_MinMax_Text( long min, long max )
+	* src/Dialog_Partition_Copy.cc: fix incorrect upper limit for fat16 in label
+	* src/Dialog_Partition_New.cc: make use of this function, instead of accessing the label directly 
+	* src/Dialog_Partition_Resize_Move.cc: fix incorrect upper limit for fat16 in label
+
+2004-10-0i2 Bart Hakvoort  <gparted@users.sf.net>
+
 	* removed all stringstreams from the project (they were possibly responsible for rare chrashes in certain locales)
 	Note that i left 1 in include/Partition.h, this one is needed for int-->string conversions and won't pose a thread.
 

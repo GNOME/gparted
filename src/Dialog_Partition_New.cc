@@ -108,9 +108,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	GRIP = false ;
 	
 	//set contents of label_minmax
-	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), 1 ) +"\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MB"), TOTAL_MB ) ;
-	label_minmax.set_text( str_temp ) ;
+	Set_MinMax_Text( 1, TOTAL_MB ) ;
 	
 	this ->show_all_children() ;
 }
@@ -195,9 +193,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type  )
 		spinbutton_after .set_range( 0, TOTAL_MB  - MIN ) ;
 		
 		//set contents of label_minmax
-		Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), MIN ) + "\t\t" ;
-		str_temp += String::ucompose( _("Maximum Size: %1 MB"), MAX ) ;
-		label_minmax.set_text( str_temp ) ; 
+		Set_MinMax_Text( MIN, MAX ) ;
 		
 	}
 	

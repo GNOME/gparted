@@ -116,7 +116,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	//set values of spinbutton_size 
 	//since some filesystems have upper and lower limits we need to check for this
-	double LOWER, UPPER;
+	long LOWER, UPPER;
 	if ( selected_partition.filesystem == "fat16"  && selected_partition .Get_Used_MB() < 32 )
 		LOWER = 32 +1 ;
 	else if ( selected_partition.filesystem == "fat32"  && selected_partition .Get_Used_MB() < 256 )
@@ -137,9 +137,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), LOWER ) + "\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( str_temp ) ; 
+	Set_MinMax_Text( LOWER, UPPER ) ;
 }
 
 
@@ -225,9 +223,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	spinbutton_after .set_value(  Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	Glib::ustring str_temp = String::ucompose( _("Minimum Size: %1 MB"), Sector_To_MB( used ) +1 ) + "\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MB"), Sector_To_MB( total_length ) ) ;
-	label_minmax.set_text( str_temp ) ;
+	Set_MinMax_Text( Sector_To_MB( used ) +1, Sector_To_MB( total_length ) ) ;
 	
 }
 

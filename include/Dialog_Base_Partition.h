@@ -56,6 +56,7 @@ protected:
 	};
 	
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;
+	void Set_MinMax_Text( long min, long max ) ;
 
 	double MB_PER_PIXEL ;
 	long TOTAL_MB ;
@@ -66,7 +67,6 @@ protected:
 	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...)
 
 	Gtk::HBox hbox_main ;
-	Gtk::Label label_minmax ;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
 	
 	//used to enable/disable OKbutton...
@@ -82,15 +82,17 @@ protected:
 	int x_start, x_end ;
 	
 private:
-	void Check_Change() ;	
-
+	void Check_Change() ;
+	
 	Gtk::VBox vbox_resize_move;
-	Gtk::Label *label_temp;
+	Gtk::Label label_minmax ;
 	Gtk::Table table_resize;
 	Gtk::HBox hbox_table, hbox_resizer, hbox_resize_move;
 	Gtk::Tooltips tooltips;
 	Gtk::Button button_resize_move ;
 	Gtk::Image *image_temp ;
+
+	Glib::ustring str_temp ;
 };
 
 } //GParted
