@@ -545,7 +545,7 @@ void GParted_Core::Set_Used_Sectors( Partition & partition )
 		//we need the 4th value
 		file_input >> temp; file_input >> temp; file_input >> temp;file_input >> temp;
 		if ( ! temp .empty( ) ) 
-			partition .Set_Unused( atoi( temp .c_str( ) ) * 1024/512 ) ;
+			partition .Set_Unused( atol( temp .c_str( ) ) * 2 ) ;//  1024/512
 		
 		file_input .close( );
 		system( "rm -f /tmp/.tmp_gparted" );

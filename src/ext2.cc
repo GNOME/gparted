@@ -66,11 +66,11 @@ void ext2::Set_Used_Sectors( Partition & partition )
 		
 		//free blocks
 		if ( output .find( "Free blocks" ) < output .length( ) )
-			free_blocks = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			free_blocks = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 			
 		//blocksize
 		if ( output .find( "Block size" ) < output .length( ) )
-			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			blocksize = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 	}
 	pclose( f ) ;
 	

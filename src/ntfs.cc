@@ -67,7 +67,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		//free sectors
 		if ( output .find( "sectors of free space" ) < output .length( ) )
 		{
-			partition .Set_Unused( atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ) ;
+			partition .Set_Unused( atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ) ;
 			break ;
 		}
 	}

@@ -70,11 +70,11 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 		
 		//blocksize
 		if ( output .find( "blksize" ) < output .length( ) )
-			blocksize = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			blocksize = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 		
 		//free blocks
 		if ( output .find( "free blocks" ) < output .length( ) )
-			free_blocks = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			free_blocks = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
 	}
 	pclose( f ) ;
 	

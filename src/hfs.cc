@@ -57,7 +57,7 @@ void hfs::Set_Used_Sectors( Partition & partition )
 		{
 			output = output .substr( 0, output .find( " bytes free" ) ) ;
 			
-			partition .Set_Unused( atoi( (output .substr( output .find_last_of( ' ' ) ) ) .c_str( ) ) / 512 ) ;
+			partition .Set_Unused( atol( (output .substr( output .find_last_of( ' ' ) ) ) .c_str( ) ) / 512 ) ;
 			break ;
 		}
 	}

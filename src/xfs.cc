@@ -75,11 +75,11 @@ void xfs::Set_Used_Sectors( Partition & partition )
 		
 		//free blocks
 		if ( output .find( "fdblocks" ) < output .length( ) )
-			free_blocks = atoi( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			free_blocks = atol( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
 			
 		//blocksize
 		if ( output .find( "blocksize" ) < output .length( ) )
-			blocksize = atoi( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
+			blocksize = atol( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
 		
 	}
 	pclose( f ) ;
