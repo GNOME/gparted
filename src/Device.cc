@@ -22,15 +22,17 @@ namespace GParted
 
 Device::Device( )
 {
+	Reset( ) ;	
 }
 
-bool Device::Get_any_busy( ) 
+void Device::Reset( )
 {
-	for ( unsigned int t=0;t<device_partitions.size(); t++ )
-		if ( device_partitions[t].busy )
-			return true;
-		
-	return false;
+	device_partitions .clear( ) ;
+	length = 0 ;
+	heads = sectors = cylinders = 0 ;
+	model = path = realpath = disktype ;
+	max_prims = 0 ;
+	busy = false ; 	
 }
 
 int Device::Get_Highest_Logical_Busy( ) 
@@ -50,7 +52,7 @@ int Device::Get_Highest_Logical_Busy( )
 	return highest_logic_busy ;
 }
 
-Device::~Device()
+Device::~Device( )
 {
 }
 

@@ -1,3 +1,16 @@
+2004-11-19 Bart Hakvoort  <gparted@users.sf.net>
+
+	* include/Device.h,
+	  src/Device.cc: Removed bool Get_Any_Busy() in favor of public bool busy which is set in gparted_core.
+	  This also fixed a small bug with incorrect mountdetection of logical partitions.
+	  Also added a Reset() function to properly reset the contents of a device. to zero/empty .
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: 'busyness' of a device is now determined in get_devices().
+	  Renamed get_partitions() to set_device_partitions to reflect its proper function.
+	  When a new partition is created to contain a copied filesystem the size is now properly set. This fixes
+	  a very annoying bug which no one knew about except for me =) .
+	* src/Win_GParted.cc: use boolean busy from device instead of Get_Any_Busy() .
+
 2004-11-17 Bart Hakvoort  <gparted@users.sf.net>
 
 	* src/ext3.cc: availability of 'tune2fs' command wasn't detected correctly. fixed

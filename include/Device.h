@@ -27,10 +27,10 @@ class Device
 {
 	 
 public:
-	Device() ;
-	~Device() ;
+	Device( ) ;
+	~Device( ) ;
 	
-	bool Get_any_busy( ) ;
+	void Reset( ) ;
 	int Get_Highest_Logical_Busy( ) ;
 
 	std::vector<Partition> device_partitions ;
@@ -43,6 +43,7 @@ public:
  	Glib::ustring realpath;
  	Glib::ustring disktype;
 	int max_prims ;
+	bool busy ; 
 		
 private:
 		

@@ -85,6 +85,8 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	{ 
 		if ( open_device_and_disk( device_paths[ t ], device, disk ) )
 		{
+			temp_device .Reset( ) ;
+			
 			temp_device .path 	=	device_paths[ t ] ;
 			temp_device .realpath	= 	device ->path ; 
 			temp_device .model 	=	device ->model ;
@@ -95,7 +97,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
 			temp_device .max_prims	= 	ped_disk_get_max_primary_partition_count( disk ) ;
 			
-			get_partitions( temp_device .device_partitions, temp_device .path, deep_scan ) ;
+			set_device_partitions( temp_device, deep_scan ) ;
 			
 			devices .push_back( temp_device ) ;
 			
@@ -105,20 +107,20 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 		
 }
 
-void GParted_Core::get_partitions( std::vector<Partition> & partitions, const Glib::ustring & device_path, bool deep_scan ) 
+void GParted_Core::set_device_partitions( Device & device, bool deep_scan ) 
 {
 	Partition partition_temp ;
 	Glib::ustring part_path, error ;
 	int EXT_INDEX = -1 ;
 	
 	//clear partitions
-	partitions .clear( ) ;
+	device .device_partitions .clear( ) ;
 	
 	c_partition = ped_disk_next_partition( disk, NULL ) ;
 	while ( c_partition )
 	{
 		partition_temp .Reset( ) ;
-		part_path = device_path + num_to_str( c_partition ->num ) ;
+		part_path = device .path + num_to_str( c_partition ->num ) ;
 		
 		switch ( c_partition ->type )
 		{
@@ -138,7 +140,7 @@ void GParted_Core::get_partitions( std::vector<Partition> & partitions, const Gl
 					error += _( "There is no filesystem available (unformatted)" ) ; 
 							
 				}				
-				partition_temp.Set( 	part_path,
+				partition_temp .Set( 	part_path,
 							c_partition ->num,
 							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
 							temp, c_partition ->geom .start,
@@ -151,10 +153,12 @@ void GParted_Core::get_partitions( std::vector<Partition> & partitions, const Gl
 							
 				partition_temp .flags = Get_Flags( c_partition ) ;									
 				partition_temp .error = error .empty( ) ? error_message : error ;
-												
+				
+				if ( partition_temp .busy )
+					device .busy = true ;
+					
 				break ;
 		
-			
 			case PED_PARTITION_EXTENDED:
 				partition_temp.Set( 	part_path ,
 							c_partition ->num ,
@@ -166,24 +170,25 @@ void GParted_Core::get_partitions( std::vector<Partition> & partitions, const Gl
 							ped_partition_is_busy( c_partition ) );
 				
 				partition_temp .flags = Get_Flags( c_partition ) ;
-				EXT_INDEX = partitions .size ( ) ;
+				EXT_INDEX = device .device_partitions .size ( ) ;
 				break ;
-		
 		
 			case PED_PARTITION_FREESPACE:
 			case 5: //freespace inside extended (there's no enumvalue for that..)
-				partition_temp.Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
+				partition_temp .Set_Unallocated( c_partition ->geom .start, c_partition ->geom .end, c_partition ->type == 4 ? false : true );
 				break ;
 			
 			case PED_PARTITION_METADATA:
-				if ( partitions .size( ) && partitions .back( ) .type == GParted::UNALLOCATED )
-					partitions .back( ) .sector_end = c_partition ->geom .end ;
+				if ( device .device_partitions .size( ) && device .device_partitions .back( ) .type == GParted::UNALLOCATED )
+					device .device_partitions .back( ) .sector_end = c_partition ->geom .end ;
 				
 				break ;
 				
 			case 9: //metadata inside extended (there's no enumvalue for that..)
-				if ( partitions[ EXT_INDEX ] .logicals .size( ) && partitions[ EXT_INDEX ] .logicals .back( ) .type == GParted::UNALLOCATED )
-					partitions[ EXT_INDEX ] .logicals .back( ) .sector_end = c_partition ->geom .end ;
+				if ( 	device .device_partitions[ EXT_INDEX ] .logicals .size( ) &&
+					device .device_partitions[ EXT_INDEX ] .logicals .back( ) .type == GParted::UNALLOCATED
+				   )
+					device .device_partitions[ EXT_INDEX ] .logicals .back( ) .sector_end = c_partition ->geom .end ;
 		
 				break ;
 			
@@ -193,9 +198,9 @@ void GParted_Core::get_partitions( std::vector<Partition> & partitions, const Gl
 		if ( partition_temp .Get_Length_MB( ) >= 1 ) // check for unallocated < 1MB, and metadatasituations (see PED_PARTITION_METADATA and 9 )
 		{
 			if ( ! partition_temp .inside_extended )
-				partitions.push_back( partition_temp );
+				device .device_partitions .push_back( partition_temp );
 			else
-				partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
+				device .device_partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
 		}
 		
 		//reset stuff..
@@ -328,7 +333,7 @@ bool GParted_Core::Resize(const Glib::ustring & device_path, const Partition & p
 
 bool GParted_Core::Copy( const Glib::ustring & dest_device_path, const Glib::ustring & src_part_path, Partition & partition_dest ) 
 {
-	if ( Create_Empty_Partition( dest_device_path, partition_dest ) > 0 )
+	if ( Create_Empty_Partition( dest_device_path, partition_dest, true ) > 0 )
 	{
 		set_proper_filesystem( partition_dest .filesystem ) ;
 		
@@ -438,10 +443,10 @@ Sector GParted_Core::Get_Used_Sectors( PedPartition *c_partition, const Glib::us
 	return -1 ; //all methods were unsuccesfull
 }
 
-int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition )
+int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy )
 {
 	new_partition .partition_number = 0 ;
-	
+		
 	if ( open_device_and_disk( device_path, device, disk ) )
 	{
 		PedPartitionType type;
@@ -461,19 +466,25 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 		if ( c_part )
 		{
 			constraint = ped_constraint_any ( device );
+			
 			if ( constraint )
 			{
+				if ( copy )
+					constraint ->min_size = new_partition .sector_end - new_partition .sector_start ;
+				
 				if ( ped_disk_add_partition ( disk, c_part, constraint ) && Commit( disk ) )
 				{
 					sleep( 1 ) ;//the OS needs some time to create the devicenode in /dev
+					
 					new_partition .partition = ped_partition_get_path( c_part ) ;
 					new_partition .partition_number = c_part ->num ;
 				}
 			
 				ped_constraint_destroy ( constraint );
 			}
+			
 		}
-		
+				
 		close_device_and_disk( device, disk ) ;
 	}
 		

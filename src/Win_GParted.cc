@@ -1141,7 +1141,7 @@ void Win_GParted::activate_apply()
 		//make list of involved devices which have at least one busy partition..
 		std::vector <Glib::ustring> devicenames ;
 		for ( unsigned int t = 0; t < devices .size( ); t++ )
-			if ( devices[ t ] .Get_any_busy( ) )
+			if ( devices[ t ] .busy )
 				for (unsigned int i = 0; i < operations .size( ); i++ )
 					if ( operations[ i ] .device_path == devices[ t ] .path )
 					{

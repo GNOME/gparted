@@ -40,7 +40,7 @@ public:
 	GParted_Core( ) ;
 	void find_supported_filesystems( ) ; 
 	void get_devices( std::vector<Device> & devices, bool deep_scan ) ;
-	void get_partitions( std::vector<Partition> & partitions, const Glib::ustring & device_path, bool deep_scan = true ) ;
+	
 	int get_estimated_time( Operation & operation ) ;
 
 	void Apply_Operation_To_Disk( Operation & operation );
@@ -55,10 +55,11 @@ public:
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 
 private:
+	void set_device_partitions( Device & device, bool deep_scan = true ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	Sector Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring & sym_path );
 	Glib::ustring Get_Flags( PedPartition *c_partition ) ;
-	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition ) ;
+	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy = false ) ;
 	bool Resize_Extended( const Glib::ustring & device_path, const Partition & extended ) ;
 
 	void Show_Error( Glib::ustring message ) ;
