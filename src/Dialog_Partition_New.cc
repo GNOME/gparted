@@ -54,9 +54,9 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	table_create.attach( label_type, 0,1,0,1,Gtk::FILL);
 	
 	//fill partitiontype menu
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( "Primary") ) ;
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( "Logical") ) ;
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( "Extended") ) ;
+	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Primary Partition") ) ) ;
+	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Logical Partition") ) ) ;
+	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
 	
 	//determine which PartitionType is allowed
 	if ( partition.inside_extended )
