@@ -51,21 +51,21 @@ Dialog_Base_Partition::Dialog_Base_Partition(   )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	table_resize.attach( * mk_label( (Glib::ustring) _( "Free Space Preceding (MB) :") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK);
+	table_resize.attach( * mk_label( (Glib::ustring) _( "Free Space Preceding (MB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK);
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL);
 	
 	//add spinbutton_size
-	table_resize.attach( * mk_label( _( "New Size (MB) :" ) ), 0, 1, 1, 2 );
+	table_resize.attach( * mk_label( _( "New Size (MB):" ) ), 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL);
 	
 	//add spinbutton_after
-	table_resize.attach( * mk_label( _( "Free Space Following (MB) :") ), 0, 1, 2, 3 ) ;
+	table_resize.attach( * mk_label( _( "Free Space Following (MB):") ), 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );

@@ -915,7 +915,7 @@ void Win_GParted::activate_delete()
 	}
 	
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _( "Are you sure you want to delete %1 ?"), selected_partition.partition ) + "</span>" ;
+	str_temp += String::ucompose( _( "Are you sure you want to delete %1?"), selected_partition.partition ) + "</span>" ;
 	if ( selected_partition .partition == copied_partition .partition )
 	{
 		str_temp += "\n\n" ;
@@ -986,7 +986,7 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 {
 	//standard warning..
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1 ?"), new_fs ) + "</span>\n\n" ;
+	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1?"), new_fs ) + "</span>\n\n" ;
 	str_temp += String::ucompose( _("This operation will destroy all data on %1"), selected_partition .partition ) ;
 	
 	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true);
@@ -1107,7 +1107,7 @@ void Win_GParted::activate_apply()
 		{
 			str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 			/*TO TRANSLATORS: after the colon (:) a list of devices will be shown */
-			str_temp += _("The kernel was unable to re-read the partition table on :") ;
+			str_temp += _("The kernel was unable to re-read the partition table on:") ;
 			str_temp += "\n";
 			for (unsigned int t=0; t<devicenames .size(); t++ )
 				str_temp += "- " + devicenames[ t ] + "\n";
