@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-29 12:53-0400\n"
-"PO-Revision-Date: 2004-09-29 22:40-0400\n"
+"POT-Creation-Date: 2004-10-01 20:16-0400\n"
+"PO-Revision-Date: 2004-10-01 22:40-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -43,21 +43,17 @@ msgid "Credits"
 msgstr "Credits"
 
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:75
+#: src/Dialog_About.cc:76
 msgid "Written by"
 msgstr "Written by"
 
-#. documented by
-#. TO TRANSLATORS: tablabel in aboutdialog
-#. notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
-#. translated by
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names
-#: src/Dialog_About.cc:83
-msgid "translator_credits"
+#: src/Dialog_About.cc:79
+msgid "translator-credits"
 msgstr "Adam Weinberger <adamw@gnome.org>"
 
 #. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:90
+#: src/Dialog_About.cc:86
 msgid "Translated by"
 msgstr "Translated by"
 
@@ -214,6 +210,19 @@ msgstr "Create new Partition"
 msgid "Create as:"
 msgstr "Create as:"
 
+#. fill partitiontype menu
+#: src/Dialog_Partition_New.cc:57 src/Operation.cc:61
+msgid "Primary Partition"
+msgstr "Primary Partition"
+
+#: src/Dialog_Partition_New.cc:58 src/Operation.cc:52 src/Operation.cc:62
+msgid "Logical Partition"
+msgstr "Logical Partition"
+
+#: src/Dialog_Partition_New.cc:59 src/Operation.cc:63
+msgid "Extended Partition"
+msgstr "Extended Partition"
+
 #: src/Dialog_Partition_New.cc:140
 msgid "New Partition #%1"
 msgstr "New Partition #%1"
@@ -263,70 +272,66 @@ msgid "copy of %1"
 msgstr "copy of %1"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: src/Operation.cc:54 src/Operation.cc:57
+#: src/Operation.cc:57
 msgid "Delete %1 (%2, %3 MB) from %4"
 msgstr "Delete %1 (%2, %3 MB) from %4"
 
-#: src/Operation.cc:54
-msgid "Logical Partition"
-msgstr "Logical Partition"
-
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: src/Operation.cc:68
-msgid "Create %1 Partition #%2 (%3, %4 MB) on %5"
-msgstr "Create %1 Partition #%2 (%3, %4 MB) on %5"
+#: src/Operation.cc:67
+msgid "Create %1 #%2 (%3, %4 MB) on %5"
+msgstr "Create %1 #%2 (%3, %4 MB) on %5"
 
-#: src/Operation.cc:76
-msgid "Move %1 forward by %2 MB "
-msgstr "Move %1 forward by %2 MB "
+#: src/Operation.cc:73
+msgid "Move %1 forward by %2 MB"
+msgstr "Move %1 forward by %2 MB"
 
-#: src/Operation.cc:78
-msgid "Move %1 backward by %2 MB "
-msgstr "Move %1 backward by %2 MB "
+#: src/Operation.cc:75
+msgid "Move %1 backward by %2 MB"
+msgstr "Move %1 backward by %2 MB"
 
-#: src/Operation.cc:87
+#: src/Operation.cc:84
 msgid "Resize %1 from %2 MB to %3 MB"
 msgstr "Resize %1 from %2 MB to %3 MB"
 
-#: src/Operation.cc:89
+#: src/Operation.cc:86
 msgid "and Resize %1 from %2 MB to %3 MB"
 msgstr "and Resize %1 from %2 MB to %3 MB"
 
-#: src/Operation.cc:93
+#: src/Operation.cc:89
 msgid "Sorry, changes are too small to make sense"
 msgstr "Sorry, changes are too small to make sense"
 
 #. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: src/Operation.cc:97
+#: src/Operation.cc:93
 msgid "Convert %1 from %2 to %3"
 msgstr "Convert %1 from %2 to %3"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
-#: src/Operation.cc:100
+#: src/Operation.cc:95
 msgid "Copy %1 to %2 (start at %3 MB)"
 msgstr "Copy %1 to %2 (start at %3 MB)"
 
-#: src/Operation.cc:131
+#: src/Operation.cc:125
 msgid "Error while deleting %1"
 msgstr "Error while deleting %1"
 
-#: src/Operation.cc:136
+#: src/Operation.cc:130
 msgid "Error while creating %1"
 msgstr "Error while creating %1"
 
-#: src/Operation.cc:141
+#: src/Operation.cc:135
 msgid "Error while resizing/moving %1"
 msgstr "Error while resizing/moving %1"
 
-#: src/Operation.cc:146
+#: src/Operation.cc:140
 msgid "Error while converting filesystem of %1"
 msgstr "Error while converting filesystem of %1"
 
-#: src/Operation.cc:151
+#: src/Operation.cc:145
 msgid "Error while copying %1"
 msgstr "Error while copying %1"
 
-#: src/Operation.cc:431
+#: src/Operation.cc:425
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
@@ -339,27 +344,27 @@ msgid "Unallocated"
 msgstr "Unallocated"
 
 #. append columns
-#: src/TreeView_Detail.cc:34
+#: src/TreeView_Detail.cc:31
 msgid "Partition"
 msgstr "Partition"
 
-#: src/TreeView_Detail.cc:35
+#: src/TreeView_Detail.cc:32
 msgid "Type"
 msgstr "Type"
 
+#: src/TreeView_Detail.cc:33
+msgid "Size(MB)"
+msgstr "Size(MB)"
+
+#: src/TreeView_Detail.cc:34
+msgid "Used(MB)"
+msgstr "Used(MB)"
+
+#: src/TreeView_Detail.cc:35
+msgid "Unused(MB)"
+msgstr "Unused(MB)"
+
 #: src/TreeView_Detail.cc:36
-msgid "Size"
-msgstr "Size"
-
-#: src/TreeView_Detail.cc:37
-msgid "Used"
-msgstr "Used"
-
-#: src/TreeView_Detail.cc:38
-msgid "Unused"
-msgstr "Unused"
-
-#: src/TreeView_Detail.cc:39
 msgid "Flags"
 msgstr "Flags"
 
