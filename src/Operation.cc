@@ -49,12 +49,12 @@ Glib::ustring Operation::Get_String()
 	switch ( operationtype )
 	{
 		case DELETE	:	if (partition_original.type == GParted::LOGICAL)
-						temp =  _("Logical Partition") ;
+						temp = _("Logical Partition") ;
 					else
 						temp = partition_original .partition ;
 
 					/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"),temp , partition_original .filesystem, partition_original .Get_Length_MB(), device ->Get_Path() ) ;
+					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB(), device ->Get_Path() ) ;
 
 		case CREATE	:	switch( partition_new.type )
 					{
@@ -103,11 +103,11 @@ std::vector<Partition> Operation::Apply_Operation_To_Visual( std::vector<Partiti
 {
 	switch ( operationtype )
 	{
-		case DELETE				:	return Apply_Delete_To_Visual( partitions );
-		case CREATE				:	return Apply_Create_To_Visual( partitions );
-		case RESIZE_MOVE		:	return Apply_Resize_Move_To_Visual( partitions );	
-		case CONVERT			:   return Apply_Convert_To_Visual( partitions ) ;
-		case COPY					:	return Apply_Create_To_Visual( partitions );
+		case DELETE	:	return Apply_Delete_To_Visual( partitions );
+		case CREATE	:	return Apply_Create_To_Visual( partitions );
+		case RESIZE_MOVE:	return Apply_Resize_Move_To_Visual( partitions );	
+		case CONVERT	:   	return Apply_Convert_To_Visual( partitions ) ;
+		case COPY	:	return Apply_Create_To_Visual( partitions );
 	}
 	
 	return partitions;
