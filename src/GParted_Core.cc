@@ -101,7 +101,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 			//harddisk without disklabel
 			else
 			{
-				temp_device .disktype = _("unrecognised") ;
+				temp_device .disktype = _("unrecognized") ;
 				temp_device .max_prims = -1 ;
 				
 				Partition partition_temp ;

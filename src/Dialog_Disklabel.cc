@@ -22,7 +22,7 @@ namespace GParted
 
 Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 {
-	this ->set_title( String::ucompose( _("No recognisable disklabel detected on %1"), device_path ) );
+	this ->set_title( String::ucompose( _("No recognizable disklabel detected on %1"), device_path ) );
 	this ->set_has_separator( false ) ;
 	this ->set_resizable( false );
 	
@@ -41,7 +41,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 	hbox ->pack_start( *vbox, Gtk::PACK_SHRINK );
 	
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("No recognisable disklabel detected on %1"), device_path ) ;
+	str_temp += String::ucompose( _("No recognizable disklabel detected on %1"), device_path ) ;
 	str_temp += "</span>\n" ;
 	vbox ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
@@ -49,7 +49,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 	str_temp += "\n" ;
 	str_temp += _("You need a disklabel if you want to create partitions on this disk.") ;
 	str_temp += "\n\n" ;
-	str_temp += _("By default GParted creates a msdos disklabel.") ;
+	str_temp += _("By default GParted creates an msdos disklabel.") ;
 	str_temp += "\n" ;
 	vbox ->pack_start( * mk_label( str_temp, true, true, true ), Gtk::PACK_SHRINK );
 		
