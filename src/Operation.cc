@@ -99,7 +99,7 @@ Glib::ustring Operation::Get_String( )
 }
 
 
-std::vector<Partition> Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
+void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 {
 	switch ( operationtype )
 	{
@@ -109,8 +109,6 @@ std::vector<Partition> Operation::Apply_Operation_To_Visual( std::vector<Partiti
 		case CONVERT	:
 		case COPY	:	Apply_Create_To_Visual( partitions ); 		break ;
 	}
-	
-	return partitions;
 }
 
 void Operation::Apply_To_Disk( PedTimer * timer )
@@ -269,11 +267,14 @@ void Operation::Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions
 void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions )
 { 
 	//stuff OUTSIDE extended partition
-	partitions[ Get_Index_Original( partitions ) ] = partition_new ;
+	unsigned int ext = Get_Index_Original( partitions ) ;
+	partitions[ ext ] .sector_start = partition_new .sector_start ;
+	partitions[ ext ] .sector_end = partition_new .sector_end ;
+	
 	Insert_Unallocated( partitions, 0, device ->Get_Length( ) -1 ) ;
 	
 	//stuff INSIDE extended partition
-	unsigned int ext = 0 ;
+	ext = 0 ;
 	while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
 	
 	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .front( ) .type == GParted::UNALLOCATED )

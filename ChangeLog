@@ -1,3 +1,14 @@
+2004-11-07 Bart Hakvoort  <gparted@users.sf.net>
+
+	* include/Operation.h,
+	  src/Operation.cc: make use of reference arguments instead of return values in some functions.
+	  Also fixed a small bug with deletion of a virtual (new) logical partition.
+	* include/VBox_VisualDisk.h,
+	  src/VBox_VisualDisk.cc: logical filesystems weren't shown in the legend, fixed.
+	* src/Frame_Resizer_Base.cc: fixed small bug with custom cursors.
+	* src/TreeView_Detail.cc: removed obsolete, already commented code.
+	* src/Win_GParted.cc: make use of reference arguments instead of return values in some functions. (see Operation)
+
 2004-11-06 Bart Hakvoort  <gparted@users.sf.net>
 
 	* include/Win_GParted.h,

@@ -210,7 +210,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev
 
 bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 {
-	if ( ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE && (ev ->y > 50 - BORDER || ev ->y < BORDER)  ) 
+	if ( ev ->mode != GDK_CROSSING_GRAB && ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) 
 		drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;	
 	
 	return true;

@@ -74,21 +74,6 @@ void TreeView_Detail::Load_Partitions( std::vector<Partition> & partitions )
 {
 	treestore_detail ->clear() ;
 	
-/*	for ( unsigned int i=0;i<partitions.size();i++ ) 
-	{
-		if ( ! partitions[ i ] .inside_extended )
-		{
-			row = *(treestore_detail->append());
-			Create_Row( row, partitions[i] );
-		}
-		else 
-		{
-			childrow = *(treestore_detail->append( row.children() ));
-			Create_Row( childrow, partitions[i] );
-		}
-	}
-*/
-
 	for ( unsigned int i=0;i<partitions.size();i++ ) 
 	{
 		row = *(treestore_detail->append());

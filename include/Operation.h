@@ -43,7 +43,7 @@ public:
 		
 	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
-	std::vector<Partition> Apply_Operation_To_Visual( std::vector<Partition> & partitions );
+	void Apply_Operation_To_Visual( std::vector<Partition> & partitions );
 	
 	void Apply_To_Disk( PedTimer * timer );
 	

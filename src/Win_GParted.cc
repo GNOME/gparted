@@ -509,7 +509,7 @@ void Win_GParted::Refresh_Visual( )
 	for ( unsigned int t = 0 ; t < operations .size( ); t++ )
 	{	
 		if ( operations[ t ] .device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
-			partitions = operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
+			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
 		treerow = *(liststore_operations ->append( ));
 		treerow[ treeview_operations_columns .operation_number ] = t +1;
@@ -883,7 +883,7 @@ void Win_GParted::activate_resize()
 	if ( operations.size() )
 		for (unsigned int t=0;t<operations.size();t++ )
 			if ( operations[t]. device ->Get_Path( ) == devices[ current_device ] ->Get_Path( ) )
-				partitions = operations[t].Apply_Operation_To_Visual( partitions ) ;
+				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	
 	Dialog_Partition_Resize_Move dialog;

@@ -170,48 +170,54 @@ void VBox_VisualDisk::Create_Visual_Partition( Partition & partition )
 	tooltips.set_tip( *(visual_partitions.back() ->drawingarea), str_temp ) ;
 }
 
+void VBox_VisualDisk::Prepare_Legend( std::vector<Glib::ustring> & legend, const std::vector<Partition> & partitions ) 
+{
+	for ( unsigned int t = 0 ; t < partitions .size( ) ; t++ )
+	{
+		if ( std::find( legend .begin( ), legend .end( ), partitions[ t ] .filesystem ) == legend .end( ) )
+			legend .push_back( partitions[ t ]  .filesystem );
+		
+		if ( partitions[ t ] .type == GParted::EXTENDED )
+			Prepare_Legend( legend, partitions[ t ]  .logicals ) ;
+	}
+}
 
 void VBox_VisualDisk::Build_Legend( ) 
 { 
 	//add the hboxes and frame_legenda
-	frame_disk_legend = manage( new Gtk::Frame() ) ;
+	frame_disk_legend = manage( new Gtk::Frame( ) ) ;
 	hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 	
-	hbox_legend = manage( new Gtk::HBox() );
+	hbox_legend = manage( new Gtk::HBox ( ) );
 	frame_disk_legend ->add( *hbox_legend ) ;
 	this ->pack_start( hbox_legend_main );
 	
-	std::vector<Glib::ustring> legende;
+	std::vector<Glib::ustring> legend ;
+	Prepare_Legend( legend, partitions ) ;
+	
 	bool hide_used_unused = true;
-		
-	for ( unsigned int i=0;i<partitions.size();i++ )
+	for ( unsigned int t = 0 ; t < legend .size( ) ; t++ )
 	{
-		if ( partitions[i] .type != GParted::UNALLOCATED && partitions[i] .type != GParted::EXTENDED && partitions[i] .filesystem != "linux-swap" )
-			hide_used_unused = false;
+		if ( legend[ t ] != "unallocated" && legend[ t ] != "extended" && legend[ t ] != "linux-swap" )
+			hide_used_unused = false ;
 		
-		if ( std::find( legende .begin(), legende .end(), partitions[i] .filesystem ) == legende .end() )
-		{
-			if ( legende .size() )
-				hbox_legend ->pack_start( * mk_label( "    " ), Gtk::PACK_SHRINK );
-			else
-				hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
+		
+		if ( t )
+			hbox_legend ->pack_start( * mk_label( "    " ), Gtk::PACK_SHRINK );
+		else
+			hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
 			
-			hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( partitions[i] .filesystem ) ), Gtk::PACK_SHRINK );
-			hbox_legend ->pack_start( * mk_label( partitions[i] .filesystem + " " ), Gtk::PACK_SHRINK );
-			
-			//make sure this color isn't added to the legend again.
-			legende .push_back( partitions[i] .filesystem );
-		}
-			
+		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * mk_label( legend[ t ] + " " ), Gtk::PACK_SHRINK );
 	}
 	
 	//if there are any partitions add used/unused
 	if ( ! hide_used_unused )
 	{
-		frame_disk_legend = manage( new Gtk::Frame() ) ;
-		hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
+		frame_disk_legend = manage( new Gtk::Frame( ) ) ;
+		hbox_legend_main .pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
 		
-		hbox_legend = manage( new Gtk::HBox() );
+		hbox_legend = manage( new Gtk::HBox( ) );
 		frame_disk_legend ->add( *hbox_legend );
 		
 		hbox_legend ->pack_start( * mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
