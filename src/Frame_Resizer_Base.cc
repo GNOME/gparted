@@ -36,18 +36,18 @@ void Frame_Resizer_Base::init()
 		
 	this ->add( drawingarea ) ;
 	
-	color_used.set( "#F8F8BA" );						this ->get_colormap() ->alloc_color( color_used ) ;
-	color_unused.set( "white" );							this ->get_colormap() ->alloc_color( color_unused ) ;
-	color_arrow.set( "black" );							this ->get_colormap() ->alloc_color( color_arrow ) ;
-	color_background.set( "darkgrey" );			this ->get_colormap() ->alloc_color( color_background ) ;
+	color_used.set( "#F8F8BA" );			this ->get_colormap() ->alloc_color( color_used ) ;
+	color_unused.set( "white" );			this ->get_colormap() ->alloc_color( color_unused ) ;
+	color_arrow.set( "black" );			this ->get_colormap() ->alloc_color( color_arrow ) ;
+	color_background.set( "darkgrey" );		this ->get_colormap() ->alloc_color( color_background ) ;
 	color_arrow_rectangle.set( "lightgrey" );	this ->get_colormap() ->alloc_color( color_arrow_rectangle ) ;
 	
-	 cursor_resize 	= 	new Gdk::Cursor( Gdk::SB_H_DOUBLE_ARROW ) ; 
-	 cursor_normal 	= 	new Gdk::Cursor( Gdk::LEFT_PTR ) ;
-	 cursor_move		= 	new Gdk::Cursor( Gdk::FLEUR  ) ; 
+	cursor_resize = new Gdk::Cursor( Gdk::SB_H_DOUBLE_ARROW ) ; 
+	cursor_normal = new Gdk::Cursor( Gdk::LEFT_PTR ) ;
+	cursor_move   = new Gdk::Cursor( Gdk::FLEUR ) ; 
 	  
-	 GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
-	 X_END = 0;
+	GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
+	X_END = 0;
 	 
 	Gdk::Point p;
 	p.set_y( 15); 	arrow_points.push_back( p ) ;
@@ -138,9 +138,9 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	if ( ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) //no need to check this while resizing or moving
 	{ 
 		//check if pointer is over a gripper
-		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )		//left grip
+		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )	//left grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
-		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )							//right grip
+		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
 		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )															//move grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_move ) ;
@@ -155,7 +155,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2  )
 		{
 			X_START =(int) ev -> x ;
-			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ;	//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_RIGHT && ev ->x >= X_START + USED + BORDER *2 && ev ->x <= 526 )
@@ -191,9 +191,9 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 {
 	GRIP_MOVE = false; GRIP_RIGHT = false; GRIP_LEFT = false ;
 	
-	if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )		//left grip
+	if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  ) //left grip
 		GRIP_LEFT = true ;
-	else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )							//right grip
+	else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 ) //right grip
 		GRIP_RIGHT = true ;
 	else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )															//move grip
 		{ GRIP_MOVE = true ; X_START_MOVE = (int)ev ->x; }

@@ -30,11 +30,11 @@ class Frame_Resizer_Base : public Gtk::Frame, virtual public sigc::trackable
 public:
 	
 	enum ArrowType {
-		ARROW_LEFT		=	0,
-		ARROW_RIGHT	=	1
+		ARROW_LEFT	= 0,
+		ARROW_RIGHT	= 1
 	};
 	
-	Frame_Resizer_Base(  ) ;
+	Frame_Resizer_Base( ) ;
 	~Frame_Resizer_Base() ;
 
 	void set_rgb_partition_color( const Gdk::Color & ) ;
@@ -45,8 +45,6 @@ public:
 	void set_used( int );
 	void set_fixed_start( bool ) ;
 	void set_used_start( int used_start ) ;
-
-	
 
 	int get_used();
 	int get_x_start() ;
@@ -64,8 +62,8 @@ protected:
 	bool GRIP_LEFT, GRIP_RIGHT, GRIP_MOVE ;
 
 	//signal handlers
-	void drawingarea_on_realize(  );
-	bool drawingarea_on_expose( GdkEventExpose *  );
+	void drawingarea_on_realize( );
+	bool drawingarea_on_expose( GdkEventExpose * );
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion* ) ;
 	bool drawingarea_on_button_press_event( GdkEventButton* ) ;
 	bool drawingarea_on_button_release_event( GdkEventButton* ) ;

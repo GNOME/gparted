@@ -27,9 +27,9 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	if ( ! GRIP_LEFT && ! GRIP_RIGHT  ) //no need to check this while resizing 
 	{ 
 		//check if pointer is over a gripper
-		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )		//left grip
+		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  ) //left grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
-		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )							//right grip
+		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 ) //right grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
 		else																																						//normal pointer 
 			drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;		
@@ -40,13 +40,13 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= 510 && ev->x <= X_END - BORDER *2 && ( ev ->x <= USED_START || USED == 0 ) ) 
 		{
 			X_START =(int) ev -> x ;
-			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ;	//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_RIGHT && ev ->x <= 526 && ev->x >= X_START + BORDER *2 && ev ->x >= USED_START + USED + BORDER *2 )
 		{
 			X_END = (int) ev ->x ;
-			signal_resize.emit( X_START -10, X_END -26, ARROW_RIGHT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
+			signal_resize.emit( X_START -10, X_END -26, ARROW_RIGHT) ;//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		Draw_Partition() ;

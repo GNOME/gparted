@@ -44,15 +44,15 @@ public:
 	
 protected:
 	enum SPINBUTTON {
-		BEFORE		=	0,
-		SIZE				=	1,
-		AFTER 		=	2
+		BEFORE	= 0,
+		SIZE	= 1,
+		AFTER	= 2
 	};	
 	
 	enum CONFIRMBUTTON {
-		RESIZE_MOVE		=	0,
-		NEW					=	1,
-		PASTE					=	2
+		RESIZE_MOVE	= 0,
+		NEW		= 1,
+		PASTE		= 2
 	};
 	
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;

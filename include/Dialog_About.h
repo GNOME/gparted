@@ -38,7 +38,7 @@ public:
 	
 	
 private:
-	void	Show_Credits() ;
+	void Show_Credits() ;
 
 	Gtk::Label *label_temp ;
 	Gtk::Button button_credits;

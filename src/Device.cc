@@ -118,20 +118,20 @@ Device::Device( const Glib::ustring & device_path )
 {
 	ped_exception_set_handler( PedException_Handler ) ; 
 		
-	this ->realpath 	=	device_path ; //this one is used by open_device_and_disk
+	this ->realpath	= device_path ; //this one is used by open_device_and_disk
 	
 	this ->length = 0;//lazy check.. if something goes wrong while reading the device, length will stay zero and i will know it ( see Win_GParted::Find_Devices )
 	
 	if ( ! open_device_and_disk() )
 		return ;
 		
-	this ->model 		=	device ->model ;
-	this ->path 		=	get_sym_path( device ->path ) ;
-	this ->disktype 	= 	disk ->type ->name ;
-	this ->heads 		=	device ->bios_geom.heads ;
+	this ->model 	=	device ->model ;
+	this ->path 	=	get_sym_path( device ->path ) ;
+	this ->disktype = 	disk ->type ->name ;
+	this ->heads 	=	device ->bios_geom.heads ;
 	this ->sectors 	=	device ->bios_geom.sectors ;
-	this ->cylinders	=	device ->bios_geom.cylinders ;
-	this ->length 		=	heads * sectors * cylinders ;
+	this ->cylinders=	device ->bios_geom.cylinders ;
+	this ->length 	=	heads * sectors * cylinders ;
 	
 	//get valid flags for this device
 	for ( PedPartitionFlag flag = ped_partition_flag_next ( (PedPartitionFlag) 0 ) ; flag ; flag = ped_partition_flag_next ( flag ) )
@@ -154,55 +154,54 @@ void Device::Read_Disk_Layout()
 		switch( c_partition ->type )
 		{ 
 			//NORMAL (PRIMARY)
-			case 0 :	if ( c_partition ->fs_type )
-								temp = c_partition ->fs_type ->name ;
-							else
-								{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
+			case 0 : if ( c_partition ->fs_type )
+					temp = c_partition ->fs_type ->name ;
+				else
+					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 							
-							partition_temp.Set( os.str(),c_partition ->num , GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , false, ped_partition_is_busy(  c_partition ) );
-							
-							partition_temp .flags = Get_Flags( c_partition ) ;									
-							partition_temp .error = this ->error ;
-							device_partitions.push_back( partition_temp );
-											
-							break;	
+				partition_temp.Set( os.str(),c_partition ->num , GParted::PRIMARY, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , false, ped_partition_is_busy(  c_partition ) );
+				
+				partition_temp .flags = Get_Flags( c_partition ) ;									
+				partition_temp .error = this ->error ;
+				device_partitions.push_back( partition_temp );
+										
+				break;	
 			//LOGICAL
 			case 1:	if ( c_partition ->fs_type )
-								temp = c_partition ->fs_type ->name ;
-							else
-								{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
+					temp = c_partition ->fs_type ->name ;
+				else
+					{temp = "unknown" ; this ->error = (Glib::ustring) _( "Unable to detect filesystem! Possible reasons are:" ) + "\n-" + (Glib::ustring) _( "The filesystem is damaged" ) + "\n-"  + (Glib::ustring) _( "The filesystem is unknown to libparted" ) + "\n-" + (Glib::ustring) _( "There is no filesystem available (unformatted)" ) ; }
 								
-							partition_temp.Set( os.str(), c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , true, ped_partition_is_busy( c_partition ) );
+				partition_temp.Set( os.str(), c_partition ->num, GParted::LOGICAL, temp, c_partition ->geom .start, c_partition ->geom .end, Get_Used_Sectors( c_partition , os.str() ) , true, ped_partition_is_busy( c_partition ) );
 																
-							partition_temp .flags = Get_Flags( c_partition ) ;									
-							partition_temp .error = this ->error ;
-							device_partitions.push_back( partition_temp );
-												
-							break;
+				partition_temp .flags = Get_Flags( c_partition ) ;									
+				partition_temp .error = this ->error ;
+				device_partitions.push_back( partition_temp );
+											
+				break;
 			//EXTENDED
 			case 2:	partition_temp.Set( os.str(), c_partition ->num, GParted::EXTENDED, "extended", c_partition ->geom .start, c_partition ->geom .end , -1, false, ped_partition_is_busy(  c_partition ) );
 											
-							partition_temp .flags = Get_Flags( c_partition ) ;									
-							partition_temp .error = this ->error ;
-							device_partitions.push_back( partition_temp );
-				
-							break;
+				partition_temp .flags = Get_Flags( c_partition ) ;									
+				partition_temp .error = this ->error ;
+				device_partitions.push_back( partition_temp );
+				break;
 			//FREESPACE OUTSIDE EXTENDED
 			case 4:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
-							{
-								partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, false );
-								device_partitions.push_back( partition_temp );
-							}
+				{
+					partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, false );
+					device_partitions.push_back( partition_temp );
+				}
 					
-							break ;
+				break ;
 			//FREESPACE INSIDE EXTENDED
 			case 5:	if ( (c_partition ->geom .end - c_partition ->geom .start) > MEGABYTE )
-							{
-								partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, true );
-								device_partitions.push_back( partition_temp );
-							}
+				{
+					partition_temp.Set_Unallocated( c_partition ->geom .start , c_partition ->geom .end, true );
+					device_partitions.push_back( partition_temp );
+				}
 							
-							break ;
+				break ;
 			//METADATA  (do nothing)
 			default:	break;
 		}
@@ -211,7 +210,7 @@ void Device::Read_Disk_Layout()
 		this ->error = ""; error_message = ""; os.str("");
 		
 		//next partition (if any)
-		c_partition = ped_disk_next_partition (  disk, c_partition ) ;
+		c_partition = ped_disk_next_partition ( disk, c_partition ) ;
 	}
 	
 }
@@ -237,8 +236,8 @@ int Device::Create_Empty_Partition( const Partition & new_partition, PedConstrai
 	//create new partition
 	switch ( new_partition .type )
 	{
-		case 0	:	type = PED_PARTITION_NORMAL; 		break;
-		case 1	:	type = PED_PARTITION_LOGICAL; 		break;
+		case 0	:	type = PED_PARTITION_NORMAL; 	break;
+		case 1	:	type = PED_PARTITION_LOGICAL; 	break;
 		case 2	:	type = PED_PARTITION_EXTENDED; 	break;
 		default	:	type = PED_PARTITION_FREESPACE;	break ; //will never happen ;)
 	}
@@ -346,11 +345,11 @@ bool Device::Set_Partition_Filesystem( const Partition & new_partition, PedTimer
 
 bool Device::Copy_Partition( Device *source_device, const Partition & source_partition, PedTimer * timer) 
 {
-	PedPartition *c_part_src = NULL;
-	PedFileSystem *src_fs = NULL;
-	PedPartition *c_part = NULL;
-	PedFileSystem *dst_fs = NULL;
-	PedFileSystemType*	dst_fs_type = NULL;
+	PedPartition *c_part_src	= NULL;
+	PedFileSystem *src_fs		= NULL;
+	PedPartition *c_part		= NULL;
+	PedFileSystem *dst_fs		= NULL;
+	PedFileSystemType *dst_fs_type	= NULL;
 	
 	//prepare source for reading
 	if ( source_device ->Get_Path() == this ->path )
@@ -496,7 +495,7 @@ Sector Device::Get_Used_Sectors( PedPartition *c_partition, const Glib::ustring 
 	/* This is quite an unreliable process, atm i try two different methods, but since both are far from perfect the results are 
 	 * questionable. 
 	 * - first i try geometry.get_used() in libpartedpp, i implemented this function to check the minimal size when resizing a partition. Disadvantage 
-     *   of this method is the fact it won't work on mounted filesystems. Besides that, its SLOW
+	*   of this method is the fact it won't work on mounted filesystems. Besides that, its SLOW
 	 * - if the former method fails ( result is -1 ) i'll try to read the output from the df command ( 	df -k --sync <partition path> )
 	 * - if this fails the filesystem on the partition is ( more or less ) unknown to the operating system and therefore the unused sectors cannot be calcualted
 	 * - as soon as i have my internetconnection back i should ask people with more experience on this stuff for advice !

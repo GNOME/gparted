@@ -110,7 +110,7 @@ void Win_GParted::init_toolbar()
 	
 	//NEW and DELETE
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_new) );		toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_new) );	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Create a new partition in the selected unallocated space") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::DELETE));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );	toolbar_main.append(*toolbutton);
@@ -126,19 +126,19 @@ void Win_GParted::init_toolbar()
 	
 	//COPY and PASTE
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::COPY));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );		toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Copy the selected partition to the clipboard") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::PASTE));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );		toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Paste the partition from the clipboard") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	
 	//UNDO and APPLY
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::UNDO));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );		toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );	toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Undo last operation") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );		toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );	toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
 	
 	//initizialize and pack optionmenu_devices
@@ -425,7 +425,7 @@ bool Win_GParted::on_delete_event(GdkEventAny *event)
 
 void Win_GParted::Add_Operation( OperationType operationtype, const Partition & new_partition)
 {
-	Operation operation( devices[ current_device ] ,  devices[ source_device ] , selected_partition, new_partition, operationtype );
+	Operation operation( devices[ current_device ], devices[ source_device ], selected_partition, new_partition, operationtype );
 	
 	operations.push_back( operation );
 	
@@ -436,7 +436,7 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 	
 	if ( operations.size() == 1 ) //first operation, open operationslist
 	{
-		int x,y;	this ->get_size( x, y );
+		int x,y; this ->get_size( x, y );
 		y -= 300;
 		
 		for ( int t=vpaned_main.get_position() ; t > y ; t-=3 )
@@ -469,16 +469,16 @@ void Win_GParted::Refresh_Visual( )
 		treerow[ treeview_operations_columns.operation_description ] = operations[t] .str_operation ;
 		switch ( operations[t].operationtype )
 		{		
-			case GParted::DELETE				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
-																				break;
-			case	GParted::CREATE					:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
-																				break;
-			case	GParted::RESIZE_MOVE	:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
-																				break;
-			case	GParted::CONVERT				:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
-																				break;
-			case	GParted::COPY						:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
-																				break;
+			case GParted::DELETE		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
+							  break;
+			case	GParted::CREATE		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+							  break;
+			case	GParted::RESIZE_MOVE	: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+							  break;
+			case	GParted::CONVERT	: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+							  break;
+			case	GParted::COPY		: treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+							  break;
 		}
 		
 	}
@@ -507,15 +507,15 @@ void Win_GParted::Refresh_Visual( )
 		switch ( partitions[t].type )
 		{
 			case GParted::PRIMARY	:	primary_count++;
-												break;
-			case GParted::EXTENDED	:	any_extended = true;
-												primary_count++;
-												break;
+							break;
+			case GParted::EXTENDED	: 	any_extended = true;
+							primary_count++;
+							break;
 			case GParted::LOGICAL	:	any_logic = true;
-												if ( partitions[t].busy && partitions[t].partition_number > highest_logic_busy )
-													highest_logic_busy = partitions[t].partition_number ;
-												break;
-			default						:	break;
+							if ( partitions[t].busy && partitions[t].partition_number > highest_logic_busy )
+								highest_logic_busy = partitions[t].partition_number ;
+							break;
+			default			:	break;
 		}
 	}
 	
@@ -535,7 +535,7 @@ void Win_GParted::Refresh_Visual( )
 	//treeview details
 	treeview_detail .Load_Partitions( partitions ) ;
 
-	allow_new( false );	allow_delete( false );allow_resize( false );allow_copy( false );allow_paste( false );	
+	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false ); allow_paste( false );	
 }
 
 bool Win_GParted::Quit_Check_Operations()
@@ -594,12 +594,12 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		if  (	selected_partition.filesystem == "ext2"			 ||
-				selected_partition.filesystem == "ext3"			 ||
-				selected_partition.filesystem == "fat16"		 ||
-				selected_partition.filesystem == "fat32"		 ||
-				selected_partition.filesystem == "linux-swap" 
-			)	
+		if (	selected_partition.filesystem == "ext2"		 ||
+			selected_partition.filesystem == "ext3"		 ||
+			selected_partition.filesystem == "fat16"	 ||
+			selected_partition.filesystem == "fat32"	 ||
+			selected_partition.filesystem == "linux-swap" 
+		   )	
 		{
 			allow_resize( true ) ;
 			
@@ -618,7 +618,7 @@ void Win_GParted::Set_Valid_Operations()
 		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
 			allow_delete( true ) ;
 		
-			allow_resize( true ); 
+		allow_resize( true ); 
 	}		
 	
 }
@@ -636,7 +636,7 @@ void Win_GParted::close_operationslist()
 {
 	treeview_detail .columns_autosize() ; //seemed a nice place for it..
 	
-	int x,y;	this ->get_size( x, y );
+	int x,y; this ->get_size( x, y );
 	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
 	for ( int t=vpaned_main.get_position() ; t < y ; t+=3 )
 	{
@@ -685,7 +685,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
 	if ( current_device >= devices .size() )
-			current_device = 0 ;	
+		current_device = 0 ;	
 				
 	//rebuild visualdisk and treeview
 	Refresh_Visual( );

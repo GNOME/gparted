@@ -85,14 +85,14 @@ private:
 	bool Resize_Extended( const Partition & partition, PedTimer *timer) ;
 		
 	std::vector<Partition> device_partitions;
-	Sector 			length;
+	Sector length;
 	long heads ;
 	long sectors ;
 	long cylinders ;
-	Glib::ustring 	model;
- 	Glib::ustring 	path;
- 	Glib::ustring 	realpath;
- 	Glib::ustring 	disktype;
+	Glib::ustring model;
+ 	Glib::ustring path;
+ 	Glib::ustring realpath;
+ 	Glib::ustring disktype;
 	 
 	//private variables
 	PedDevice *device ;

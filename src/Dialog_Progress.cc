@@ -82,7 +82,7 @@ void Dialog_Progress::Set_Progress_Current_Operation( )
 	progressbar_current.set_fraction( fraction_current );
 
 	if ( time_left > 59 && time_left < 120 )
-			progressbar_current.set_text( String::ucompose( _("about %1 minute and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
+		progressbar_current.set_text( String::ucompose( _("about %1 minute and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 	else
-			progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
+		progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 }

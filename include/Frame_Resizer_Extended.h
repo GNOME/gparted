@@ -21,14 +21,10 @@
 
 #include "../include/Frame_Resizer_Base.h"
  
- class Frame_Resizer_Extended : public Frame_Resizer_Base
+class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:
-	Frame_Resizer_Extended(  ) ;
-	
-
-	
-
+	Frame_Resizer_Extended( ) ;
 	
 
 private:
@@ -37,12 +33,6 @@ private:
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion* ) ;
 
 	virtual void Draw_Partition() ;
-
-		
-	
-
-	
-
 
 };
 

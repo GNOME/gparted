@@ -153,25 +153,24 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 { 
 	switch( button_type )
 	{
-		case NEW				:	this->add_button( Gtk::Stock::ADD,Gtk::RESPONSE_OK );
-											break ;
-		case RESIZE_MOVE	:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" ) 
-												label_temp = manage( new Gtk::Label( _("Resize") ) ) ;
-											else
-												label_temp = manage( new Gtk::Label( _("Resize/Move") ) ) ;
+		case NEW	:	this->add_button( Gtk::Stock::ADD,Gtk::RESPONSE_OK );
+					break ;
+		case RESIZE_MOVE:	if ( selected_partition.filesystem == "ext2" || selected_partition.filesystem == "ext3" ) 
+						label_temp = manage( new Gtk::Label( _("Resize") ) ) ;
+					else
+						label_temp = manage( new Gtk::Label( _("Resize/Move") ) ) ;
 											
-											image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
-											hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
-											hbox_resize_move .pack_start( *label_temp, Gtk::PACK_EXPAND_PADDING ) ;
-											button_resize_move .add( hbox_resize_move ) ;
+					image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
+					hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
+					hbox_resize_move .pack_start( *label_temp, Gtk::PACK_EXPAND_PADDING ) ;
+					button_resize_move .add( hbox_resize_move ) ;
 														
-											this ->add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;
-											button_resize_move .set_sensitive(  false ) ;
-											break ;
+					this ->add_action_widget ( button_resize_move,Gtk::RESPONSE_OK ) ;
+					button_resize_move .set_sensitive(  false ) ;
+					break ;
 			
-		case PASTE				:	this->add_button( Gtk::Stock::PASTE,Gtk::RESPONSE_OK );
-											break ;
-				
+		case PASTE	:	this->add_button( Gtk::Stock::PASTE,Gtk::RESPONSE_OK );
+					break ;
 	}
 	
 }
@@ -273,20 +272,20 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  
 		switch ( spinbutton )
 		{
 			case BEFORE	:	spinbutton_after.set_value( TOTAL_MB - spinbutton_size.get_value() - before_value) ;
-										spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
+						spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
 							
-										break;
-			case SIZE			:	spinbutton_after.set_value( TOTAL_MB - before_value - spinbutton_size.get_value() );
-										if ( ! fixed_start )
-											spinbutton_before .set_value( TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value() );
+						break;
+			case SIZE	:	spinbutton_after.set_value( TOTAL_MB - before_value - spinbutton_size.get_value() );
+						if ( ! fixed_start )
+							spinbutton_before .set_value( TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value() );
 				
-										break;
-			case AFTER		:	if ( ! fixed_start )
-											spinbutton_before .set_value( TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value() );
+						break;
+			case AFTER	:	if ( ! fixed_start )
+							spinbutton_before .set_value( TOTAL_MB - spinbutton_size.get_value() - spinbutton_after.get_value() );
 			
-										spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
+							spinbutton_size.set_value( TOTAL_MB - before_value - spinbutton_after.get_value( ) ) ;
 				
-										break;
+						break;
 		}
 			
 		
@@ -307,10 +306,10 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton  
 
 void Dialog_Base_Partition::Check_Change()
 {
-	if  ( 	ORIG_BEFORE 	==	spinbutton_before .get_value_as_int()	&&
-			ORIG_SIZE			==	spinbutton_size .get_value_as_int()		&& 
-			ORIG_AFTER		==	spinbutton_after .get_value_as_int() 
-		)
+	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int()	&&
+		ORIG_SIZE == spinbutton_size .get_value_as_int()	&& 
+		ORIG_AFTER== spinbutton_after .get_value_as_int() 
+	)
 		button_resize_move .set_sensitive( false ) ;
 	else
 		button_resize_move .set_sensitive( true ) ;

@@ -29,11 +29,11 @@ namespace GParted
 {
 		
 enum OperationType {
-        DELETE				=	0,
-		CREATE				=	1,
-		RESIZE_MOVE		=	2,
-		CONVERT			=	3,
-		COPY					=	4
+        DELETE		= 0,
+	CREATE		= 1,
+	RESIZE_MOVE	= 2,
+	CONVERT		= 3,
+	COPY		= 4
 };
 
 class Operation
@@ -46,7 +46,7 @@ public:
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
 	std::vector<Partition> Apply_Operation_To_Visual( std::vector<Partition> & partitions );
 	
-	void Apply_To_Disk( PedTimer * );
+	void Apply_To_Disk( PedTimer * timer );
 	
 	//public variables
 	Device *device, *source_device;  //source_device is only used in copy operations

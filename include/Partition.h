@@ -75,10 +75,10 @@ inline Glib::ustring num_to_str( Sector number )
 	
 	
 enum PartitionType {
-	PRIMARY				=	0,
-	LOGICAL				=	1,
-	EXTENDED			=	2,
-	UNALLOCATED		=	3
+	PRIMARY		=	0,
+	LOGICAL		=	1,
+	EXTENDED	=	2,
+	UNALLOCATED	=	3
 };
 
 enum PartitionStatus {
@@ -89,18 +89,18 @@ enum PartitionStatus {
 
 /*
 enum FileSystem {
-	ext2				=	0,
-	ext3				=	1,
+	ext2		=	0,
+	ext3		=	1,
 	linux_swap	=	2,
-	reiserfs			=	3,
-	hfs				=	4,
-	jfs					=	5,
-	hp_ufs			=	6,
-	sun_ufs			=	7,
-	xfs				=	8,
-	fat16				=	9,
-	fat32				=	10,
-	ntfs				=	11
+	reiserfs		=	3,
+	hfs		=	4,
+	jfs		=	5,
+	hp_ufs		=	6,
+	sun_ufs		=	7,
+	xfs		=	8,
+	fat16		=	9,
+	fat32		=	10,
+	ntfs		=	11
 };
 */	
 class Partition
@@ -110,15 +110,15 @@ public:
 	~Partition() ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
-	void Set(	const Glib::ustring & partition,
-					const int partition_number,
-					const PartitionType type,
-					const Glib::ustring & filesystem,
-					const Sector & sector_start,
-					const Sector & sector_end,
-					const Sector & sectors_used,
-					const bool inside_extended,
-					const bool busy ) ;
+	void Set( 	const Glib::ustring & partition,
+			const int partition_number,
+			const PartitionType type,
+			const Glib::ustring & filesystem,
+			const Sector & sector_start,
+			const Sector & sector_end,
+			const Sector & sectors_used,
+			const bool inside_extended,
+			const bool busy ) ;
 
 	
 	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );

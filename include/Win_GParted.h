@@ -76,14 +76,14 @@ private:
 	
 
 	//convenience functions
-	void allow_new( bool b )			{ menu_popup.items()[0].set_sensitive( b ); toolbar_main.get_nth_item(0) ->set_sensitive( b ); }
-	void allow_delete( bool b ) 		{ menu_popup.items()[1].set_sensitive( b ); toolbar_main.get_nth_item(1) ->set_sensitive( b ); }
-	void allow_resize( bool b ) 	 	{ menu_popup.items()[3].set_sensitive( b ); toolbar_main.get_nth_item(3) ->set_sensitive( b ); }
-	void allow_copy( bool b )			{ menu_popup.items()[5].set_sensitive( b ); toolbar_main.get_nth_item(5) ->set_sensitive( b ); }
-	void allow_paste( bool b )			{ menu_popup.items()[6].set_sensitive( b ); toolbar_main.get_nth_item(6) ->set_sensitive( b ); }
-	void allow_convert( bool b )		{ menu_popup.items()[8].set_sensitive( b ); }
-	void allow_undo( bool b )			{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
-	void allow_apply( bool b ) 			{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
+	void allow_new( bool b )	{ menu_popup.items()[0].set_sensitive( b ); toolbar_main.get_nth_item(0) ->set_sensitive( b ); }
+	void allow_delete( bool b )	{ menu_popup.items()[1].set_sensitive( b ); toolbar_main.get_nth_item(1) ->set_sensitive( b ); }
+	void allow_resize( bool b ) 	{ menu_popup.items()[3].set_sensitive( b ); toolbar_main.get_nth_item(3) ->set_sensitive( b ); }
+	void allow_copy( bool b )	{ menu_popup.items()[5].set_sensitive( b ); toolbar_main.get_nth_item(5) ->set_sensitive( b ); }
+	void allow_paste( bool b )	{ menu_popup.items()[6].set_sensitive( b ); toolbar_main.get_nth_item(6) ->set_sensitive( b ); }
+	void allow_convert( bool b )	{ menu_popup.items()[8].set_sensitive( b ); }
+	void allow_undo( bool b )	{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
+	void allow_apply( bool b )	{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
 	
 	//signal handlers
 	void close_operationslist() ;
@@ -96,7 +96,7 @@ private:
 	void menu_help_contents();
 	void menu_help_about();
 
-	void mouse_click( GdkEventButton*,  const Partition & );
+	void mouse_click( GdkEventButton*, const Partition & );
 	
 	void activate_resize(); 
 	void activate_copy();

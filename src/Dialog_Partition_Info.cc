@@ -114,13 +114,13 @@ void Dialog_Partition_Info::init_drawingarea()
 	unused  	= 375 - used - (BORDER *2) ;
 	
 	//allocate some colors
-	color_used.set( "#F8F8BA" );						this ->get_colormap() ->alloc_color( color_used ) ;
+	color_used.set( "#F8F8BA" ); this ->get_colormap() ->alloc_color( color_used ) ;
 	
 	partition .type == GParted::EXTENDED ?  color_unused.set( "darkgrey" ) : color_unused.set( "white" ) ;
 	this ->get_colormap() ->alloc_color( color_unused ) ;
 
-	color_text.set( "black" );								this ->get_colormap() ->alloc_color( color_text ) ;
-	color_partition = partition.color ;							this ->get_colormap() ->alloc_color( color_partition ) ;	 
+	color_text.set( "black" );		this ->get_colormap() ->alloc_color( color_text ) ;
+	color_partition = partition.color ;	this ->get_colormap() ->alloc_color( color_partition ) ;	 
 	
 	//set text of pangolayout
 	os << partition .partition <<"\n" << String::ucompose( _("%1 MB"), partition .Get_Length_MB() ) ;
