@@ -13,32 +13,32 @@ AM_CXXFLAGS =\
 sbin_PROGRAMS = gparted
 
 gparted_SOURCES = \
-	main.cc\
-	Win_GParted.cc\
-	TreeView_Detail.cc\
+	Device.cc\
+	Dialog_About.cc\
+	Dialog_Base_Partition.cc\
+	Dialog_Disklabel.cc \
 	Dialog_Partition_Copy.cc\
 	Dialog_Partition_Info.cc\
 	Dialog_Partition_New.cc\
-	Operation.cc\
-	Partition.cc\
-	Dialog_Progress.cc\
-	Device.cc\
-	VBox_VisualDisk.cc\
 	Dialog_Partition_Resize_Move.cc\
-	Dialog_About.cc\
+	Dialog_Progress.cc\
+	FileSystem.cc\
 	Frame_Resizer_Base.cc\
 	Frame_Resizer_Extended.cc\
-	Dialog_Base_Partition.cc\
 	GParted_Core.cc\
-	FileSystem.cc\
+	Operation.cc\
+	Partition.cc\
+	TreeView_Detail.cc\
+	VBox_VisualDisk.cc\
+	Win_GParted.cc\
 	ext2.cc\
 	ext3.cc\
 	fat16.cc\
 	fat32.cc\
 	linux_swap.cc\
-	reiserfs.cc\
+	main.cc\
 	ntfs.cc\
-	Dialog_Disklabel.cc
+	reiserfs.cc
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 
 
