@@ -42,6 +42,9 @@ void GParted_Core::find_supported_filesystems( )
 	ntfs fs_ntfs;
 	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support( ) ) ;
 	
+	xfs fs_xfs;
+	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support( ) ) ;
+	
 	//unknown filesystem (default when no match is found)
 	FS fs ; fs .filesystem = "unknown" ;
 	FILESYSTEMS .push_back( fs ) ;
@@ -707,6 +710,8 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 		p_filesystem = new reiserfs( ) ;
 	else if ( filesystem == "ntfs" )
 		p_filesystem = new ntfs( ) ;
+	else if ( filesystem == "xfs" )
+		p_filesystem = new xfs( ) ;
 	else
 		p_filesystem = NULL ;
 

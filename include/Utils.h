@@ -117,6 +117,7 @@ inline FS Get_FS( const Glib::ustring & filesystem, const std::vector<FS> & FILE
 	return FILESYSTEMS .back( ) ;
 }
 
+//use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..
 inline Glib::ustring Get_Color( const Glib::ustring & filesystem ) 
 { 
 	//blue teints
@@ -133,18 +134,19 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	
 	//purple something..
 	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
-	
+		
+	else if	( filesystem == "xfs" )		return "#EED680" ;
+		
 	//libparted can only detect  these, i decided to "yellow them" :^)
 	else if	( filesystem == "HFS" )		return "yellow"	 ;	
 	else if	( filesystem == "JFS" )		return "yellow"	 ;	
 	else if	( filesystem == "UFS" )		return "yellow"	 ;	
-	else if	( filesystem == "XFS" )		return "yellow"	 ;	
-	
+		
 	//darkgrey and ligthblue
 	else if ( filesystem == "---" )		return "darkgrey";
 	else if ( filesystem == "extended" )	return "#7DFCFE" ;
 	
-	//unknown filesystem ( damaged,  unknown or simply no filesystem )	
+	//unknown filesystem ( damaged, unknown or simply no filesystem )	
 	else return "black";
 }
 

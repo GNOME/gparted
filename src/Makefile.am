@@ -38,7 +38,8 @@ gparted_SOURCES = \
 	linux_swap.cc\
 	main.cc\
 	ntfs.cc\
-	reiserfs.cc
+	reiserfs.cc\
+	xfs.cc
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 
 

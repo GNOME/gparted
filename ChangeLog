@@ -1,5 +1,10 @@
 2004-12-13 Bart Hakvoort  <gparted@users.sf.net>
 
+	* Added support for xfs. this means creating and growing xfs filesystems. Shrinking requires some hacking with dump_xfs etc..
+	  i'll add that at a later point. :)
+
+2004-12-13 Bart Hakvoort  <gparted@users.sf.net>
+
 	* Replaced boolean 'resize' with 'shrink' and 'grow'. It seems some filesystems only support growing (e.g. xfs) so i need
 	  two flags to control the behaviour of the filesystemclasses.
 
