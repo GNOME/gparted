@@ -1,0 +1,571 @@
+# Ukrainian translation to gparted.
+# Copyright (C) 2004 Free Software Foundation
+# This file is distributed under the same license as the gparted package.
+# Maxim Dziumanenko <mvd@mylinux.com.ua>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gparted\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-09-28 14:25+0300\n"
+"PO-Revision-Date: 2004-09-28 15:24+0300\n"
+"Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
+"Language-Team: Ukrainian <uk@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. ==== GUI =========================
+#: gparted.desktop.in.h:1 src/Dialog_About.cc:33 src/Win_GParted.cc:35
+msgid "GParted"
+msgstr "GParted"
+
+#: gparted.desktop.in.h:2
+msgid "Gnome Partition Editor"
+msgstr "Редактор розділів дисків для GNOME"
+
+#. TO TRANSLATORS: this is the dialog title
+#: src/Dialog_About.cc:23
+msgid "About GParted"
+msgstr "Про програму GParted"
+
+#: src/Dialog_About.cc:37
+msgid "Gnome Partition Editor based on libparted"
+msgstr "Редактор розділів дисків для GNOME, оснований на libparted"
+
+#: src/Dialog_About.cc:41
+msgid "Copyright (c)"
+msgstr "Авторські права ©"
+
+#: src/Dialog_About.cc:62
+msgid "Credits"
+msgstr "Подяки"
+
+#. TO TRANSLATORS: tablabel in aboutdialog
+#: src/Dialog_About.cc:74
+msgid "Written by"
+msgstr "Автор"
+
+#. documented by
+#. TO TRANSLATORS: tablabel in aboutdialog
+#. notebook_credits .append_page( vbox_documented, _("Documented by") ) ;
+#. translated by
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names
+#: src/Dialog_About.cc:82
+msgid "translator_credits"
+msgstr "Максим Дзюманенко <mvd@mylinux.com.ua>"
+
+#. TO TRANSLATORS: tablabel in aboutdialog
+#: src/Dialog_About.cc:89
+msgid "Translated by"
+msgstr "Переклад"
+
+#. add spinbutton_before
+#: src/Dialog_Base_Partition.cc:54
+msgid "Free Space Preceding (MB) :"
+msgstr "Вільний простір попереду (Мб) :"
+
+#. add spinbutton_size
+#: src/Dialog_Base_Partition.cc:62
+msgid "New Size (MB) :"
+msgstr "Новий розмір (Мб) :"
+
+#. add spinbutton_after
+#: src/Dialog_Base_Partition.cc:71
+msgid "Free Space Following (MB) :"
+msgstr "Вільний простір після (Мб) :"
+
+#: src/Dialog_Base_Partition.cc:92
+msgid "NOTE: values on disk may differ slightly from the values entered here."
+msgstr "ПРИМІТКА: значення на диску можуть трохи відрізнятись від введених тут значень."
+
+#: src/Dialog_Base_Partition.cc:159
+msgid "Resize"
+msgstr "Змінити розмір"
+
+#: src/Dialog_Base_Partition.cc:161 src/Win_GParted.cc:122
+#: src/Win_GParted.cc:157 src/Win_GParted.cc:742
+msgid "Resize/Move"
+msgstr "Змінити розмір/Перемістити"
+
+#. prevents on spinbutton_changed from getting activated prematurely
+#: src/Dialog_Partition_Copy.cc:33
+msgid "Paste %1"
+msgstr "Вставка %1"
+
+#. set contents of label_minmax
+#: src/Dialog_Partition_Copy.cc:68 src/Dialog_Partition_New.cc:111
+#: src/Dialog_Partition_New.cc:199 src/Dialog_Partition_Resize_Move.cc:140
+#: src/Dialog_Partition_Resize_Move.cc:228
+msgid "Minimum Size: %1 MB"
+msgstr "Мінімальний розмір: %1 Мб"
+
+#: src/Dialog_Partition_Copy.cc:69 src/Dialog_Partition_New.cc:112
+#: src/Dialog_Partition_New.cc:200 src/Dialog_Partition_Resize_Move.cc:141
+#: src/Dialog_Partition_Resize_Move.cc:229
+msgid "Maximum Size: %1 MB"
+msgstr "Максимальний розмір: %1 Мб"
+
+#. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
+#: src/Dialog_Partition_Info.cc:30
+msgid "Information about %1"
+msgstr "Інформація про %1"
+
+#: src/Dialog_Partition_Info.cc:45
+msgid "Libparted message:"
+msgstr "Повідомлення від libparted:"
+
+#. filesystems to choose from
+#: src/Dialog_Partition_Info.cc:140 src/Dialog_Partition_New.cc:80
+msgid "Filesystem:"
+msgstr "Файлова система:"
+
+#: src/Dialog_Partition_Info.cc:141 src/Win_GParted.cc:224
+msgid "Size:"
+msgstr "Розмір:"
+
+#: src/Dialog_Partition_Info.cc:141 src/Dialog_Partition_Info.cc:149
+#: src/Dialog_Partition_Info.cc:150
+msgid "%1 MB"
+msgstr "%1 Мб"
+
+#: src/Dialog_Partition_Info.cc:146
+msgid "Used:"
+msgstr "Використано:"
+
+#: src/Dialog_Partition_Info.cc:147
+msgid "Unused:"
+msgstr "Вільно:"
+
+#: src/Dialog_Partition_Info.cc:156
+msgid "Flags:"
+msgstr "Ознаки:"
+
+#: src/Dialog_Partition_Info.cc:160 src/Win_GParted.cc:224
+msgid "Path:"
+msgstr "Шлях:"
+
+#: src/Dialog_Partition_Info.cc:169 src/Win_GParted.cc:228
+msgid "Real Path:"
+msgstr "Справжній шлях:"
+
+#: src/Dialog_Partition_Info.cc:174
+msgid "Status:"
+msgstr "Статус:"
+
+#: src/Dialog_Partition_Info.cc:178
+msgid "Not busy (There are no mounted logical partitions)"
+msgstr "Не зайнятий (не містить підключених логічних розділів)"
+
+#: src/Dialog_Partition_Info.cc:180
+msgid "Not active"
+msgstr "Не активний"
+
+#: src/Dialog_Partition_Info.cc:182
+msgid "Not mounted"
+msgstr "Не підключений"
+
+#. splitter and gives the second column a min. width (needed for %)
+#: src/Dialog_Partition_Info.cc:190
+msgid "First Sector:"
+msgstr "Перший сектор:"
+
+#: src/Dialog_Partition_Info.cc:191
+msgid "Last Sector:"
+msgstr "Останній сектор:"
+
+#: src/Dialog_Partition_Info.cc:192 src/Win_GParted.cc:242
+msgid "Total Sectors:"
+msgstr "Загалом секторів:"
+
+#: src/Dialog_Partition_Info.cc:212
+msgid "Busy  (At least one logical partition is mounted)"
+msgstr "Зайнятий (принаймні один розділ є підключеним)"
+
+#: src/Dialog_Partition_Info.cc:219
+msgid "Active"
+msgstr "Активний"
+
+#: src/Dialog_Partition_Info.cc:241 src/Dialog_Partition_Info.cc:252
+msgid "Mounted on %1"
+msgstr "Підключений у %1"
+
+#. TO TRANSLATORS: dialogtitle
+#: src/Dialog_Partition_New.cc:26
+msgid "Create new Partition"
+msgstr "Створення нового розділу"
+
+#. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
+#: src/Dialog_Partition_New.cc:52
+msgid "Create as:"
+msgstr "Створити як:"
+
+#: src/Dialog_Partition_New.cc:140
+msgid "New Partition #%1"
+msgstr "Новий розділ №%1"
+
+#: src/Dialog_Partition_Resize_Move.cc:68
+msgid "Resize %1"
+msgstr "Зміна розміру %1"
+
+#: src/Dialog_Partition_Resize_Move.cc:75
+msgid "Resize/Move %1"
+msgstr "Зміна розміру/Переміщення %1"
+
+#: src/Dialog_Progress.cc:25 src/Dialog_Progress.cc:35
+msgid "Applying pending operations"
+msgstr "Застосовуються незавершені операції"
+
+#: src/Dialog_Progress.cc:36
+msgid "Applying all listed operations."
+msgstr "Застосовуються усі перелічені операції."
+
+#: src/Dialog_Progress.cc:38
+msgid "Clicking Cancel will prevent the next operations from being applied."
+msgstr "Натискання на \"Скасувати\" перешкодить застосуванню наступних операцій."
+
+#: src/Dialog_Progress.cc:43
+msgid "initializing..."
+msgstr "ініціалізація..."
+
+#: src/Dialog_Progress.cc:51
+msgid "Completed Operations"
+msgstr "Завершені операції"
+
+#: src/Dialog_Progress.cc:54 src/Dialog_Progress.cc:73
+msgid "%1 of %2 operations completed"
+msgstr "%1 з %2 операцій завершено"
+
+#: src/Dialog_Progress.cc:85
+msgid "about %1 minute and %2 seconds left"
+msgstr "залишилось близько %1 хвилини та %2 секунд"
+
+#: src/Dialog_Progress.cc:87
+msgid "about %1 minutes and %2 seconds left"
+msgstr "залишилось близько %1 хвилин та %2 секунд"
+
+#: src/Operation.cc:39
+msgid "copy of %1"
+msgstr "копіювання %1"
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
+#: src/Operation.cc:54 src/Operation.cc:57
+msgid "Delete %1 (%2, %3 MB) from %4"
+msgstr "Видалення  %1 (%2, %3 Мб) з %4"
+
+#: src/Operation.cc:54
+msgid "Logical Partition"
+msgstr "Логічний розділ"
+
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
+#: src/Operation.cc:68
+msgid "Create %1 Partition #%2 (%3, %4 MB) on %5"
+msgstr "Створення "
+
+#: src/Operation.cc:76
+msgid "Move %1 forward by %2 MB "
+msgstr ""
+
+#: src/Operation.cc:78
+msgid "Move %1 backward by %2 MB "
+msgstr ""
+
+#: src/Operation.cc:87
+msgid "Resize %1 from %2 MB to %3 MB"
+msgstr ""
+
+#: src/Operation.cc:89
+msgid "and Resize %1 from %2 MB to %3 MB"
+msgstr ""
+
+#: src/Operation.cc:93
+msgid "Sorry, changes are too small to make sense"
+msgstr ""
+
+#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
+#: src/Operation.cc:97
+msgid "Convert %1 from %2 to %3"
+msgstr ""
+
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
+#: src/Operation.cc:100
+msgid "Copy %1 to %2 (start at %3 MB)"
+msgstr ""
+
+#: src/Operation.cc:131
+msgid "Error while deleting %1"
+msgstr ""
+
+#: src/Operation.cc:136
+msgid "Error while creating %1"
+msgstr ""
+
+#: src/Operation.cc:141
+msgid "Error while resizing/moving %1"
+msgstr ""
+
+#: src/Operation.cc:146
+msgid "Error while converting filesystem of %1"
+msgstr ""
+
+#: src/Operation.cc:151
+msgid "Error while copying %1"
+msgstr ""
+
+#: src/Operation.cc:431
+msgid ""
+"Be aware that the failure to apply this operation could affect other "
+"operations on the list."
+msgstr ""
+
+#: src/Partition.cc:55
+msgid "Unallocated"
+msgstr ""
+
+#. append columns
+#: src/TreeView_Detail.cc:34
+msgid "Partition"
+msgstr ""
+
+#: src/TreeView_Detail.cc:35
+msgid "Type"
+msgstr ""
+
+#: src/TreeView_Detail.cc:36
+msgid "Size"
+msgstr ""
+
+#: src/TreeView_Detail.cc:37
+msgid "Used"
+msgstr ""
+
+#: src/TreeView_Detail.cc:38
+msgid "Unused"
+msgstr ""
+
+#: src/TreeView_Detail.cc:39
+msgid "Flags"
+msgstr ""
+
+#: src/Win_GParted.cc:88
+msgid "_Refresh devices"
+msgstr ""
+
+#: src/Win_GParted.cc:91
+msgid "_GParted"
+msgstr ""
+
+#: src/Win_GParted.cc:95 src/Win_GParted.cc:217
+msgid "Harddisk Information"
+msgstr ""
+
+#: src/Win_GParted.cc:96
+msgid "_View"
+msgstr ""
+
+#: src/Win_GParted.cc:102
+msgid "About"
+msgstr ""
+
+#: src/Win_GParted.cc:103
+msgid "_Help"
+msgstr ""
+
+#: src/Win_GParted.cc:114
+msgid "Create a new partition in the selected unallocated space"
+msgstr ""
+
+#: src/Win_GParted.cc:117
+msgid "Delete the selected partition"
+msgstr ""
+
+#: src/Win_GParted.cc:124
+msgid "Resize/Move the selected partition"
+msgstr ""
+
+#: src/Win_GParted.cc:130
+msgid "Copy the selected partition to the clipboard"
+msgstr ""
+
+#: src/Win_GParted.cc:133
+msgid "Paste the partition from the clipboard"
+msgstr ""
+
+#: src/Win_GParted.cc:139
+msgid "Undo last operation"
+msgstr ""
+
+#: src/Win_GParted.cc:142
+msgid "Apply all operations"
+msgstr ""
+
+#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
+#: src/Win_GParted.cc:164
+msgid "_Convert to"
+msgstr ""
+
+#: src/Win_GParted.cc:224
+msgid "Model:"
+msgstr ""
+
+#: src/Win_GParted.cc:242
+msgid "DiskType:"
+msgstr ""
+
+#: src/Win_GParted.cc:242
+msgid "Heads:"
+msgstr ""
+
+#: src/Win_GParted.cc:242
+msgid "Sectors/Track:"
+msgstr ""
+
+#: src/Win_GParted.cc:242
+msgid "Cylinders:"
+msgstr ""
+
+#: src/Win_GParted.cc:276
+msgid "Hide operationslist"
+msgstr ""
+
+#: src/Win_GParted.cc:285
+msgid "Clear operationslist"
+msgstr ""
+
+#: src/Win_GParted.cc:457
+msgid "%1 operations pending"
+msgstr ""
+
+#: src/Win_GParted.cc:459
+msgid "1 operation pending"
+msgstr ""
+
+#: src/Win_GParted.cc:513
+msgid "Quit GParted?"
+msgstr ""
+
+#: src/Win_GParted.cc:516
+msgid "%1 operations are currently pending."
+msgstr ""
+
+#: src/Win_GParted.cc:518
+msgid "1 operation is currently pending."
+msgstr ""
+
+#: src/Win_GParted.cc:692
+msgid "Sorry, not yet implemented."
+msgstr ""
+
+#: src/Win_GParted.cc:692
+msgid "Please visit http://gparted.sf.net for more information and support."
+msgstr ""
+
+#: src/Win_GParted.cc:735
+msgid "Are you sure you want to resize/move this partition?"
+msgstr ""
+
+#: src/Win_GParted.cc:736
+msgid ""
+"Resizing a fat16 partition can be quite tricky! Especially growing such a "
+"partition is very error-prone. It is advisable to first convert the "
+"filesystem to fat32."
+msgstr ""
+
+#: src/Win_GParted.cc:808 src/Win_GParted.cc:835
+msgid "It is not possible to create more than %1 primary partitions"
+msgstr ""
+
+#: src/Win_GParted.cc:810 src/Win_GParted.cc:837
+msgid ""
+"If you want more partitions you should first create an extended partition. "
+"Such a partition can contain other partitions."
+msgstr ""
+
+#: src/Win_GParted.cc:865
+msgid "Unable to delete partition!"
+msgstr ""
+
+#: src/Win_GParted.cc:866
+msgid "Please unmount any logical partitions having a number higher than %1"
+msgstr ""
+
+#: src/Win_GParted.cc:872
+msgid "Are you sure you want to delete %1 ?"
+msgstr ""
+
+#: src/Win_GParted.cc:874
+msgid "After deletion this partition is no longer available for copying."
+msgstr ""
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB)
+#: src/Win_GParted.cc:878
+msgid "Delete %1 (%2, %3 MB)"
+msgstr ""
+
+#: src/Win_GParted.cc:940
+msgid "Are you sure you want to convert this filesystem to %1 ?"
+msgstr ""
+
+#: src/Win_GParted.cc:941
+msgid "This operation will destroy all data on %1"
+msgstr ""
+
+#: src/Win_GParted.cc:959 src/Win_GParted.cc:961
+msgid "Can not convert this filesystem to fat16."
+msgstr ""
+
+#: src/Win_GParted.cc:959
+msgid "A fat16 filesystem requires a partition of at least 32 MB."
+msgstr ""
+
+#: src/Win_GParted.cc:961
+msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
+msgstr ""
+
+#: src/Win_GParted.cc:963
+msgid "Can not convert this filesystem to fat32."
+msgstr ""
+
+#: src/Win_GParted.cc:963
+msgid "A fat32 filesystem requires a partition of at least 256 MB."
+msgstr ""
+
+#: src/Win_GParted.cc:1018
+msgid "Are you sure you want to apply the pending operations?"
+msgstr ""
+
+#: src/Win_GParted.cc:1018
+msgid "It is recommended to backup valueable data before proceeding."
+msgstr ""
+
+#: src/Win_GParted.cc:1019
+msgid "Apply operations to harddisk"
+msgstr ""
+
+#. TO TRANSLATORS: after the colon (:) a list of devices will be shown
+#: src/Win_GParted.cc:1056
+msgid "The kernel was unable to re-read the partition table on :"
+msgstr ""
+
+#: src/Win_GParted.cc:1059
+msgid ""
+"This means Linux won't know anything about the modifications you made until "
+"you reboot."
+msgstr ""
+
+#: src/Win_GParted.cc:1061
+msgid ""
+"You should reboot your computer before doing anything with these devices."
+msgstr ""
+
+#: src/Win_GParted.cc:1063
+msgid "You should reboot your computer before doing anything with this device."
+msgstr ""
+
+#: src/main.cc:35
+msgid "Root privileges are required for running GParted"
+msgstr ""
+
+#: src/main.cc:35
+msgid "Since GParted can be a weapon of mass destruction only root may run it."
+msgstr ""
