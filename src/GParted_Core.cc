@@ -94,7 +94,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 			{
 				temp_device .disktype =	disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( disk ) ;
-				temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
+				
+				if ( deep_scan )
+				{
+					temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
+					sleep( 1 ) ;//this sucks, but it seems that after the commit test, the paths are removed and added again (which takes time..)
+				}
 				
 				set_device_partitions( temp_device, deep_scan ) ;
 			}

@@ -738,7 +738,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		str_temp += readonly_paths ;
 		str_temp += "</span>\n\n" ;
 		
-		str_temp += _("Because of this you will only have limited access to these decices.") ;
+		str_temp += _("Because of this you will only have limited access to these devices.") ;
 		str_temp += "\n" ;
 		str_temp += _("Unmount all mounted partitions on a device to get full access.") ;
 		

@@ -1,5 +1,11 @@
 2004-11-29 Bart Hakvoort  <gparted@users.sf.net>
 
+	* src/GParted_Core.cc: It seemed some kernels remove and re-add blockdevicepaths after the commit_to_os. This caused trouble at some points
+	  where the path was required. I decided to sleep 1 sec after each scan. So rescanning devices will take 1 extra second per device :|
+	* src/Win_GParted.cc: fixed typo in string.
+
+2004-11-29 Bart Hakvoort  <gparted@users.sf.net>
+
 	* Every devicescan now tests on beforehand if the kernel is able to reread the partitiontable. If the kernel is unable to do
 	  this, i disallow most operations. This may seem weird and even a bad thing to do, but the fact is it protects
 	  the innocent user from a lot of potential damage. Till the linuxkernel is able to reread partitiontables no matter what, this seems
