@@ -22,7 +22,7 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & first_operation )
 {
-	this ->set_size_request( 500, 275 ) ;
+	this ->set_size_request( 600, 275 ) ;
 	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
 	this ->set_title( _("Applying pending operations") ) ;
