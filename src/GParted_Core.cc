@@ -79,9 +79,6 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	}
 	close_device_and_disk( device, disk ) ;
 	
-	//and sort the devices by name.. (this prevents some very weird errors ;) )
-	sort( device_paths .begin( ), device_paths .end( ) ) ;
-	
 	for ( unsigned int t = 0 ; t < device_paths .size( ) ; t++ ) 
 	{ 
 		if ( open_device_and_disk( device_paths[ t ], device, disk, false ) )
