@@ -347,16 +347,16 @@ void Win_GParted::Find_Devices( bool deep_scan )
 {
 	gparted_core .get_devices( devices, deep_scan ) ;
 	
-	//paranoia check.. :) <---NOT threadsave..
+	//paranoia check.. :) 
 	if ( devices .empty( ) )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _("No devices were detected") ;
 		str_temp += "</span>\n\n" ;
-		str_temp += _( "You have probably encountered a bug. GParted will quit now.") ;
+		str_temp += _("You have probably encountered a bug. GParted will quit now.") ;
 										
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
-		dialog .run( ) ;
+		dialog .run( ) ; //<---NOT threadsave..
 		
 		exit( 0 ) ;
 	}
@@ -382,6 +382,8 @@ void Win_GParted::Refresh_OptionMenu( )
 	}
 	
 	menu_devices .show_all_children();
+	
+	optionmenu_devices .set_history( current_device ) ;
 }
 
 void Win_GParted::Show_Pulsebar( ) 
@@ -710,17 +712,11 @@ void Win_GParted::menu_gparted_refresh_devices()
 	
 	Show_Pulsebar( ) ;	
 	
-	Refresh_OptionMenu( ) ;
-		
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
 	if ( current_device >= devices .size( ) )
-		current_device = 0 ;	
-				
-	//rebuild visualdisk and treeview
-	Refresh_Visual( );
+		current_device = 0 ;
 	
-	//and refresh the device info...
-	Fill_Label_Device_Info( ) ;
+	Refresh_OptionMenu( ) ;	
 	
 	//show read-only warning if necessary
 	Glib::ustring readonly_paths ;
@@ -739,7 +735,6 @@ void Win_GParted::menu_gparted_refresh_devices()
 		str_temp += _("Because of this you will only have limited access to these devices.") ;
 		str_temp += "\n" ;
 		str_temp += _("Unmount all mounted partitions on a device to get full access.") ;
-		
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true ) ;
 		dialog.run( ) ;

@@ -57,20 +57,26 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 	Device temp_device ;
 	std::vector <Glib::ustring> device_paths ;
 	
-	device = ped_device_get_next ( NULL );
+	device = ped_device_get_next( NULL );
 	
 	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
 	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
-	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ). is_ascii( ) )
+	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ) .is_ascii( ) )
 	{
 		if ( open_device( device ->path, device ) )
+		{
 			device_paths .push_back( get_sym_path( device ->path ) ) ;
+			
+			if ( ! deep_scan )
+				break ;
+		}
+			
 				
-		device = ped_device_get_next ( device ) ;
+		device = ped_device_get_next( device ) ;
 	}
 	close_device_and_disk( device, disk ) ;
 	
-	//and sort the devices on name.. (this prevents some very weird errors ;) )
+	//and sort the devices by name.. (this prevents some very weird errors ;) )
 	sort( device_paths .begin( ), device_paths .end( ) ) ;
 	
 	
