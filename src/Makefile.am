@@ -41,6 +41,7 @@ gparted_SOURCES = \
 	linux_swap.cc\
 	main.cc\
 	ntfs.cc\
+	reiser4.cc \
 	reiserfs.cc\
 	xfs.cc
 	

@@ -42,6 +42,9 @@ void GParted_Core::find_supported_filesystems( )
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support( ) ) ;
 	
+	reiser4 fs_reiser4;
+	FILESYSTEMS .push_back( fs_reiser4 .get_filesystem_support( ) ) ;
+	
 	reiserfs fs_reiserfs;
 	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support( ) ) ;
 	
@@ -717,6 +720,8 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 		p_filesystem = new jfs( ) ;
 	else if ( filesystem == "linux-swap" )
 		p_filesystem = new linux_swap( ) ;
+	else if ( filesystem == "reiser4" )
+		p_filesystem = new reiser4( ) ;
 	else if ( filesystem == "reiserfs" )
 		p_filesystem = new reiserfs( ) ;
 	else if ( filesystem == "ntfs" )

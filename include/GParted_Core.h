@@ -29,6 +29,7 @@
 #include "../include/xfs.h"
 #include "../include/jfs.h"
 #include "../include/hfs.h"
+#include "../include/reiser4.h"
 
 #include <glibmm/ustring.h>
 

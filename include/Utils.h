@@ -121,7 +121,8 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	else if ( filesystem == "ntfs" )	return "#42E5AC" ;				
 	
 	//purple something..
-	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
+	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;
+	else if	( filesystem == "reiser4" )	return "#887FA3" ;						
 	
 	//darkyellow
 	else if	( filesystem == "xfs" )		return "#EED680" ;
