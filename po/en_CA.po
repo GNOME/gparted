@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-01 02:35-0500\n"
-"PO-Revision-Date: 2005-02-01 22:40-0400\n"
+"POT-Creation-Date: 2005-02-02 00:41-0500\n"
+"PO-Revision-Date: 2005-02-02 22:40-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@FreeBSD.org>\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgid "Resize"
 msgstr "Resize"
 
 #: src/Dialog_Base_Partition.cc:149 src/Win_GParted.cc:132
-#: src/Win_GParted.cc:167 src/Win_GParted.cc:842
+#: src/Win_GParted.cc:167 src/Win_GParted.cc:898
 msgid "Resize/Move"
 msgstr "Resize/Move"
 
@@ -120,7 +120,7 @@ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr "WARNING: Creating a new disklabel will erase all data on %1!"
 
 #: src/Dialog_Disklabel.cc:94 src/Dialog_Filesystems.cc:32
-#: src/Win_GParted.cc:1120
+#: src/Win_GParted.cc:1176
 msgid "Create"
 msgstr "Create"
 
@@ -167,7 +167,7 @@ msgstr "Warning:"
 #: src/Dialog_Partition_Info.cc:119 src/Dialog_Partition_Info.cc:137
 #: src/Dialog_Partition_Info.cc:146 src/Dialog_Partition_Info.cc:151
 #: src/VBox_VisualDisk.cc:160 src/VBox_VisualDisk.cc:172
-#: src/Win_GParted.cc:355 src/Win_GParted.cc:407
+#: src/Win_GParted.cc:356 src/Win_GParted.cc:414
 msgid "%1 MB"
 msgstr "%1 MB"
 
@@ -320,60 +320,60 @@ msgstr "about %1 minute and %2 seconds left"
 msgid "about %1 minutes and %2 seconds left"
 msgstr "about %1 minutes and %2 seconds left"
 
-#: src/GParted_Core.cc:127
+#: src/GParted_Core.cc:126
 msgid "unrecognized"
 msgstr "unrecognized"
 
 #. no filesystem found....
-#: src/GParted_Core.cc:161
+#: src/GParted_Core.cc:160
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Unable to detect filesystem! Possible reasons are:"
 
-#: src/GParted_Core.cc:163
+#: src/GParted_Core.cc:162
 msgid "The filesystem is damaged"
 msgstr "The filesystem is damaged"
 
-#: src/GParted_Core.cc:165
+#: src/GParted_Core.cc:164
 msgid "The filesystem is unknown to libparted"
 msgstr "The filesystem is unknown to libparted"
 
-#: src/GParted_Core.cc:167
+#: src/GParted_Core.cc:166
 msgid "There is no filesystem available (unformatted)"
 msgstr "There is no filesystem available (unformatted)"
 
-#: src/GParted_Core.cc:169
+#: src/GParted_Core.cc:168
 msgid "unknown"
 msgstr "unknown"
 
-#: src/GParted_Core.cc:203
+#: src/GParted_Core.cc:202
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Unable to read the contents of this filesystem!"
 
-#: src/GParted_Core.cc:205
+#: src/GParted_Core.cc:204
 msgid "Because of this some operations may be unavailable."
 msgstr "Because of this, some operations may be unavailable."
 
-#: src/GParted_Core.cc:333
+#: src/GParted_Core.cc:332
 msgid "Error while deleting %1"
 msgstr "Error while deleting %1"
 
-#: src/GParted_Core.cc:338
+#: src/GParted_Core.cc:337
 msgid "Error while creating %1"
 msgstr "Error while creating %1"
 
-#: src/GParted_Core.cc:343
+#: src/GParted_Core.cc:342
 msgid "Error while resizing/moving %1"
 msgstr "Error while resizing/moving %1"
 
-#: src/GParted_Core.cc:348
+#: src/GParted_Core.cc:347
 msgid "Error while converting filesystem of %1"
 msgstr "Error while converting filesystem of %1"
 
-#: src/GParted_Core.cc:353
+#: src/GParted_Core.cc:352
 msgid "Error while copying %1"
 msgstr "Error while copying %1"
 
-#: src/GParted_Core.cc:715
+#: src/GParted_Core.cc:714
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
@@ -573,58 +573,62 @@ msgstr "Hide operations list"
 msgid "Clear operationslist"
 msgstr "Clear operations list"
 
-#: src/Win_GParted.cc:369
+#: src/Win_GParted.cc:370
 msgid "Scanning all devices..."
 msgstr "Scanning all devices..."
 
-#: src/Win_GParted.cc:477
+#: src/Win_GParted.cc:485
 msgid "%1 operations pending"
 msgstr "%1 operations pending"
 
-#: src/Win_GParted.cc:479
+#: src/Win_GParted.cc:487
 msgid "1 operation pending"
 msgstr "1 operation pending"
 
-#: src/Win_GParted.cc:531
+#: src/Win_GParted.cc:539
 msgid "Quit GParted?"
 msgstr "Quit GParted?"
 
-#: src/Win_GParted.cc:534
+#: src/Win_GParted.cc:542
 msgid "%1 operations are currently pending."
 msgstr "%1 operations are currently pending."
 
-#: src/Win_GParted.cc:536
+#: src/Win_GParted.cc:544
 msgid "1 operation is currently pending."
 msgstr "1 operation is currently pending."
 
-#: src/Win_GParted.cc:703
+#: src/Win_GParted.cc:709
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr ""
 "The kernel is unable to re-read the partition tables on the following "
 "devices:"
 
-#: src/Win_GParted.cc:707
+#: src/Win_GParted.cc:713
 msgid "Because of this you will only have limited access to these devices."
 msgstr "Because of this, you will only have limited access to these devices."
 
-#: src/Win_GParted.cc:709
+#: src/Win_GParted.cc:715
 msgid "Unmount all mounted partitions on a device to get full access."
 msgstr "Unmount all mounted partitions on a device to get full access."
 
-#: src/Win_GParted.cc:769
+#: src/Win_GParted.cc:760
+msgid "No devices detected"
+msgstr "No devices detected"
+
+#: src/Win_GParted.cc:825
 msgid "Sorry, not yet implemented."
 msgstr "Sorry, not yet implemented."
 
-#: src/Win_GParted.cc:771
+#: src/Win_GParted.cc:827
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Please visit http://gparted.sf.net for more information and support."
 
-#: src/Win_GParted.cc:812
+#: src/Win_GParted.cc:868
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "It is not possible to create more than %1 primary partitions"
 
-#: src/Win_GParted.cc:814
+#: src/Win_GParted.cc:870
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -632,11 +636,11 @@ msgstr ""
 "If you want more partitions, you should first create an extended partition. "
 "Such a partition can contain other partitions."
 
-#: src/Win_GParted.cc:830
+#: src/Win_GParted.cc:886
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Are you sure you want to resize/move this partition?"
 
-#: src/Win_GParted.cc:832
+#: src/Win_GParted.cc:888
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -646,80 +650,80 @@ msgstr ""
 "partition is very error-prone. It is advisable to first convert the "
 "filesystem to fat32."
 
-#: src/Win_GParted.cc:953
+#: src/Win_GParted.cc:1009
 msgid "Unable to delete partition!"
 msgstr "Unable to delete partition!"
 
-#: src/Win_GParted.cc:955
+#: src/Win_GParted.cc:1011
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Please unmount any logical partitions having a number higher than %1"
 
-#: src/Win_GParted.cc:962
+#: src/Win_GParted.cc:1018
 msgid "Are you sure you want to delete %1?"
 msgstr "Are you sure you want to delete %1?"
 
-#: src/Win_GParted.cc:966
+#: src/Win_GParted.cc:1022
 msgid "After deletion this partition is no longer available for copying."
 msgstr "After deletion this partition is no longer available for copying."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:971
+#: src/Win_GParted.cc:1027
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Delete %1 (%2, %3 MB)"
 
-#: src/Win_GParted.cc:1022
+#: src/Win_GParted.cc:1078
 msgid "Are you sure you want to convert this filesystem to %1?"
 msgstr "Are you sure you want to convert this filesystem to %1?"
 
-#: src/Win_GParted.cc:1023 src/Win_GParted.cc:1117
+#: src/Win_GParted.cc:1079 src/Win_GParted.cc:1173
 msgid "This operation will destroy all data on %1"
 msgstr "This operation will destroy all data on %1"
 
-#: src/Win_GParted.cc:1041
+#: src/Win_GParted.cc:1097
 msgid "Can not convert this filesystem to %1."
 msgstr "Cannot convert this filesystem to %1."
 
-#: src/Win_GParted.cc:1045
+#: src/Win_GParted.cc:1101
 msgid "A %1 filesystem requires a partition of at least %2 MB."
 msgstr "A %1 filesystem requires a partition of at least %2 MB."
 
-#: src/Win_GParted.cc:1047
+#: src/Win_GParted.cc:1103
 msgid "A partition with a %1 filesystem has a maximum size of %2 MB."
 msgstr "A partition with a %1 filesystem has a maximum size of %2 MB."
 
-#: src/Win_GParted.cc:1097
+#: src/Win_GParted.cc:1153
 msgid "Could not unmount %1"
 msgstr "Could not unmount %1"
 
-#: src/Win_GParted.cc:1115
+#: src/Win_GParted.cc:1171
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Are you sure you want to create a %1 disklabel on %2?"
 
-#: src/Win_GParted.cc:1124
+#: src/Win_GParted.cc:1180
 msgid "Error while setting new disklabel"
 msgstr "Error while setting new disklabel"
 
-#: src/Win_GParted.cc:1149
+#: src/Win_GParted.cc:1205
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Are you sure you want to apply the pending operations?"
 
-#: src/Win_GParted.cc:1151
+#: src/Win_GParted.cc:1207
 msgid "It is recommended to backup valueable data before proceeding."
 msgstr "It is recommended to backup valuable data before proceeding."
 
-#: src/Win_GParted.cc:1154
+#: src/Win_GParted.cc:1210
 msgid "Apply operations to harddisk"
 msgstr "Apply operations to hard disk"
 
-#: src/Win_GParted.cc:1192
+#: src/Win_GParted.cc:1248
 msgid "At least one operation was applied to a busy device."
 msgstr "At least one operation was applied to a busy device."
 
-#: src/Win_GParted.cc:1194
+#: src/Win_GParted.cc:1250
 msgid "A busy device is a device with at least one mounted partition."
 msgstr "A busy device is a device with at least one mounted partition."
 
-#: src/Win_GParted.cc:1196
+#: src/Win_GParted.cc:1252
 msgid ""
 "Because making changes to a busy device may confuse the kernel, you are "
 "advised to reboot your computer."
