@@ -8,6 +8,6 @@ DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 desktopdir = $(datadir)/applications
 desktop_DATA = $(DESKTOP_FILES)
 
-EXTRA_DIST =			\
+EXTRA_DIST =				\
 	$(DESKTOP_IN_FILES)	\
-	$(DESKTOP_FILES)       
+	$(DESKTOP_FILES)     

@@ -1,6 +1,6 @@
 INCLUDES =\
 	$(GTKMM_CFLAGS) \
-	-DGPARTEDLOCALEDIR=\""$(gpartedlocaledir)"\"
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" 
 
 AM_CFLAGS =\
 	 -Wall\
