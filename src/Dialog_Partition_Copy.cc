@@ -39,12 +39,16 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	START = selected_partition.sector_start ;
 	total_length = selected_partition.sector_end - selected_partition.sector_start ;
 	TOTAL_MB = selected_partition .Get_Length_MB() ;
-	MB_PER_PIXEL = (double) TOTAL_MB / 500    ;
+	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
 	frame_resizer_base ->set_x_end( ( Round( (double) (copied_partition.sector_end - copied_partition.sector_start) / ( (double)total_length/500) )) ) ;
 	frame_resizer_base ->set_used( frame_resizer_base ->get_x_end() ) ;
+	
+	//used to store current positions (see Dialog_Base_Partition::on_signal_resize)
+	this ->x_start = frame_resizer_base ->get_x_start( ) ;
+	this ->x_end = frame_resizer_base ->get_x_end( ) ;
 	
 	//set values of spinbutton_before
 	spinbutton_before .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB() -1 ) ;//mind the -1  !!
@@ -55,14 +59,14 @@ void Dialog_Partition_Copy::Set_Data( Partition & selected_partition, Partition 
 	if ( copied_partition.filesystem == "fat16" && Sector_To_MB( total_length ) > 1023 )
 		UPPER = 1023 ;
 	else
-		UPPER =  TOTAL_MB;
+		UPPER = TOTAL_MB ;
 	
-	spinbutton_size .set_range(  copied_partition .Get_Length_MB() +1, UPPER ) ;
-	spinbutton_size .set_value(  copied_partition .Get_Length_MB() ) ;
+	spinbutton_size .set_range( copied_partition .Get_Length_MB() +1, UPPER ) ;
+	spinbutton_size .set_value( copied_partition .Get_Length_MB() ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range(  0, TOTAL_MB - copied_partition .Get_Length_MB() -1  ) ;
-	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB()  ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB() -1 ) ;
+	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB() ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( copied_partition .Get_Length_MB() +1, UPPER ) ;

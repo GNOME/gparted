@@ -25,7 +25,7 @@
  
 #define BORDER 8
 
-class Frame_Resizer_Base : public Gtk::Frame, virtual public sigc::trackable
+class Frame_Resizer_Base : public Gtk::Frame
 {
 public:
 	

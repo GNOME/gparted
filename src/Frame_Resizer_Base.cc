@@ -61,14 +61,14 @@ void Frame_Resizer_Base::init()
 void Frame_Resizer_Base::set_rgb_partition_color( const Gdk::Color & color )
 {
 	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
-	this->color_partition = color ;
+	this ->color_partition = color ;
 	this ->get_colormap() ->alloc_color( color_partition ) ;
 }
 
 void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::Color & color ) 
 {
 	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
-	this->color_unused = color ;
+	this ->color_unused = color ;
 	this ->get_colormap() ->alloc_color( color_unused ) ;
 }
 
@@ -142,7 +142,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
 		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
-		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )															//move grip
+		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )					//move grip
 			drawingarea .get_parent_window() ->set_cursor( *cursor_move ) ;
 		else																																						//normal pointer 
 			drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;		
@@ -152,7 +152,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	//here's where the real work is done ;-)
 	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE) 
 	{ 
-		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2  )
+		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 )
 		{
 			X_START =(int) ev -> x ;
 			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
@@ -216,29 +216,29 @@ bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 	return true;
 }
 
-void Frame_Resizer_Base::Draw_Partition(  )   
+void Frame_Resizer_Base::Draw_Partition( )   
 {
 	UNUSED = X_END - X_START - BORDER * 2 - USED ;
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 	
-	drawingarea .get_window() ->clear () ;
+	drawingarea .get_window() ->clear() ;
 	
 	//the two rectangles on each side of the partition
-	gc ->set_foreground(  color_arrow_rectangle );
+	gc ->set_foreground( color_arrow_rectangle );
 	drawingarea .get_window() ->draw_rectangle( gc, true, 0,0,10,50 );
 	drawingarea .get_window() ->draw_rectangle( gc, true, 526,0,10,50 );
 	
 	//partition
-	gc ->set_foreground(  color_partition );
+	gc ->set_foreground( color_partition );
 	drawingarea .get_window() ->draw_rectangle( gc, true, X_START,0,X_END - X_START,50 );
 	
 	//used
-	gc ->set_foreground(  color_used );
+	gc ->set_foreground( color_used );
 	drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER, BORDER, USED ,34 );
 	
 	//unused
-	gc ->set_foreground(  color_unused );
+	gc ->set_foreground( color_unused );
 	drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER +USED, BORDER, UNUSED,34 );
 	
 	//resize grips
@@ -253,26 +253,26 @@ void Frame_Resizer_Base::Draw_Resize_Grip( ArrowType arrow_type )
 {
 	if ( arrow_type == ARROW_LEFT )
 	{
-		arrow_points[0] .set_x( X_START) ;
-		arrow_points[1] .set_x( X_START -10) ;
-		arrow_points[2] .set_x( X_START) ;
+		arrow_points[0] .set_x( X_START ) ;
+		arrow_points[1] .set_x( X_START -10 ) ;
+		arrow_points[2] .set_x( X_START ) ;
 	}
 	else
 	{
-		arrow_points[0] .set_x( X_END)  ;
-		arrow_points[1] .set_x( X_END +10) ; 
-		arrow_points[2] .set_x( X_END)  ;
+		arrow_points[0] .set_x( X_END )  ;
+		arrow_points[1] .set_x( X_END +10 ) ; 
+		arrow_points[2] .set_x( X_END )  ;
 	}
 	
 	//attach resize arrows to the partition
 	gc ->set_foreground(  color_arrow_rectangle );
 	
 	if ( arrow_type == ARROW_LEFT )
-		drawingarea .get_window() ->draw_rectangle( gc, false, X_START -10 , 5, 9 , 40 );
+		drawingarea .get_window() ->draw_rectangle( gc, false, X_START -10 , 5, 9, 40 );
 	else
-		drawingarea .get_window() ->draw_rectangle( gc, false, X_END +1, 5, 9 , 40 );
+		drawingarea .get_window() ->draw_rectangle( gc, false, X_END +1, 5, 9, 40 );
 	
-	gc ->set_foreground(  color_arrow );
+	gc ->set_foreground( color_arrow );
 	drawingarea .get_window() ->draw_polygon( gc , true, arrow_points  );
 	
 }
