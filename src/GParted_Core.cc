@@ -134,6 +134,36 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	}
 }
 
+Glib::ustring GParted_Core::Get_Filesystem( ) 
+{
+	//standard libparted filesystems..
+	if ( c_partition ->fs_type )
+		return c_partition ->fs_type ->name ;
+	
+	//other filesystems libparted couldn't detect (i've send patches for these filesystems to the parted guys)
+	char buf[512] ;
+	ped_device_open( device );
+
+	//reiser4
+	ped_geometry_read ( & c_partition ->geom, buf, 128, 1) ;
+	strcpy( buf, strcmp( buf, "ReIsEr4" ) == 0 ? "reiser4" : "" ) ;
+
+	ped_device_close( device );
+	if ( strlen( buf ) ) 
+		return buf ;		
+		
+	//no filesystem found....
+	partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+	partition_temp .error += "\n-"; 
+	partition_temp .error += _( "The filesystem is damaged" ) ;
+	partition_temp .error += "\n-" ; 
+	partition_temp .error += _( "The filesystem is unknown to libparted" ) ;
+	partition_temp .error += "\n-"; 
+	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
+		
+	return _("unknown") ;
+}
+
 void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
@@ -150,24 +180,10 @@ void GParted_Core::set_device_partitions( Device & device )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				if ( c_partition ->fs_type )
-					temp = c_partition ->fs_type ->name ;
-				else
-				{
-					temp = _("unknown") ;
-					partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
-					partition_temp .error += "\n-"; 
-					partition_temp .error += _( "The filesystem is damaged" ) ;
-					partition_temp .error += "\n-" ; 
-					partition_temp .error += _( "The filesystem is unknown to libparted" ) ;
-					partition_temp .error += "\n-"; 
-					partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
-							
-				}				
 				partition_temp .Set( 	device .path + num_to_str( c_partition ->num ),
 							c_partition ->num,
 							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
-							temp, c_partition ->geom .start,
+							Get_Filesystem( ), c_partition ->geom .start,
 							c_partition ->geom .end,
 							c_partition ->type,
 							ped_partition_is_busy( c_partition ) );

@@ -63,6 +63,7 @@ public:
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 
 private:
+	Glib::ustring Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
 	void set_device_partitions( Device & device ) ;
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
