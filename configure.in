@@ -29,8 +29,13 @@ AC_PROG_INTLTOOL
 dnl======================
 dnl checks for libs 
 dnl======================
+AC_PATH_PROG(PARTED_PATH, parted, [], /sbin /usr/sbin /usr/local/sbin)
+if ! (( ($( $PARTED_PATH --version | cut -d. -f3 )) > 12 )) 2>/dev/null
+then
+	AC_MSG_ERROR([*** libparted >= 1.6.13 not installed - get it from http://www.gnu.org/software/parted/ ***])
+fi
+
 PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 )
-AC_CHECK_LIB(parted, ped_device_probe_all,  [], AC_MSG_ERROR([*** libparted >= 1.6.13 not installed - please install first ***]), -luuid -ldl)
 AC_SUBST(GTKMM_LIBS)
 AC_SUBST(GTKMM_CFLAGS)
 
