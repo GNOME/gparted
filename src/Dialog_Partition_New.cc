@@ -74,7 +74,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	}
 	
 	optionmenu_type.set_menu( menu_type );
-	optionmenu_type.set_size_request( 150, -1 ); //150 is the ideal width for this table column, (when one widget is set, the rest wil take this width as well)
+	optionmenu_type.set_size_request( 160, -1 ); //160 is the ideal width for this table column, (when one widget is set, the rest wil take this width as well)
 	optionmenu_type.signal_changed().connect( sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), true) );
 	table_create.attach( optionmenu_type, 1,2,0,1,Gtk::FILL);
 	

@@ -171,12 +171,12 @@ void VBox_VisualDisk::Build_Legend( )
 	this ->pack_start( hbox_legend_main );
 	
 	std::vector<Glib::ustring> legende;
-	bool only_unallocated = true;
+	bool hide_used_unused = true;
 		
 	for ( unsigned int i=0;i<partitions.size();i++ )
 	{
-		if ( partitions[i].type != GParted::UNALLOCATED && partitions[i].type != GParted::EXTENDED )
-			only_unallocated = false;
+		if ( partitions[i] .type != GParted::UNALLOCATED && partitions[i] .type != GParted::EXTENDED && partitions[i] .filesystem != "linux-swap" )
+			hide_used_unused = false;
 		
 		if ( std::find( legende .begin(), legende .end(), partitions[i] .filesystem ) == legende .end() )
 		{
@@ -195,7 +195,7 @@ void VBox_VisualDisk::Build_Legend( )
 	}
 	
 	//if there are any partitions add used/unused
-	if ( ! only_unallocated )
+	if ( ! hide_used_unused )
 	{
 		frame_disk_legend = manage( new Gtk::Frame() ) ;
 		hbox_legend_main.pack_start( *frame_disk_legend, Gtk::PACK_EXPAND_PADDING );
