@@ -27,10 +27,14 @@ FS linux_swap::get_filesystem_support( )
 	
 	fs .filesystem = "linux-swap" ;
 	fs .read = false ; //used/unused isn't relevant for swapspace
-	fs .create = true ;
-	fs .grow = true ;
-	fs .shrink = true ;
-	fs .move = true ;
+	
+	if ( ! system( "which mkswap 1>/dev/null 2>/dev/null" ) ) 
+	{
+		fs .create = true ;
+		fs .grow = true ;
+		fs .shrink = true ;
+		fs .move = true ;
+	}
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
@@ -44,41 +48,12 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 
 bool linux_swap::Create( const Glib::ustring device_path, const Partition & new_partition )
 {
-	bool return_value = false ;
-	
-	if ( open_device_and_disk( device_path, device, disk ) )
-	{	
-		PedPartition *c_part = NULL ;
-		PedFileSystemType *fs_type = NULL ;
-		PedFileSystem *fs = NULL ;
-		
-		c_part = ped_disk_get_partition_by_sector( disk, (new_partition .sector_end + new_partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs_type = ped_file_system_type_get( "linux-swap" ) ;
-			if ( fs_type )
-			{
-				fs = ped_file_system_create( & c_part ->geom, fs_type, NULL );
-				if ( fs )
-				{
-					if ( ped_partition_set_system(c_part, fs_type ) )
-						return_value = Commit( disk ) ;
-					
-					ped_file_system_close( fs );
-				}
-			}
-		}
-		
-		close_device_and_disk( device, disk ) ;
-	}
-		
-	return return_value ;
+	return ! Execute_Command( "mkswap " + new_partition .partition ) ;
 }
 
 bool linux_swap::Resize( const Partition & partition_new, bool fill_partition )
 {
-	//handled in GParted_Core::Resize_Normal_Using_Libparted
-	return false ;
+	return Create( "", partition_new ) ;
 }
 
 bool linux_swap::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
@@ -88,7 +63,7 @@ bool linux_swap::Copy( const Glib::ustring & src_part_path, const Glib::ustring 
 
 bool linux_swap::Check_Repair( const Partition & partition )
 {
-	return false ;
+	return true ;
 }
 
 int linux_swap::get_estimated_time( long MB_to_Consider )

@@ -392,14 +392,11 @@ bool GParted_Core::Resize( const Device & device, const Partition & partition_ol
 	if ( partition_old .type == GParted::EXTENDED )
 		return Resize_Container_Partition( device .path, partition_old, partition_new, false ) ;
 	
-	//these 3 still use libparted's resizer.
-	else if (	partition_old .filesystem == "linux-swap" ||
-			partition_old .filesystem == "fat16" ||
-			partition_old .filesystem == "fat32"
-		)
+	//these 2 still use libparted's resizer.
+	else if ( partition_old .filesystem == "fat16" || partition_old .filesystem == "fat32" )
 		return Resize_Normal_Using_Libparted( device .path, partition_old, partition_new ) ;
 
-	//use custom resize tools..(afaik only resize, no moves)
+	//use custom resize tools..
 	else 
 	{
 		set_proper_filesystem( partition_new .filesystem ) ;
@@ -407,17 +404,16 @@ bool GParted_Core::Resize( const Device & device, const Partition & partition_ol
 		if ( p_filesystem ->Check_Repair( partition_new ) )
 		{		
 			//shrinking
-			if ( partition_new .sector_end < partition_old .sector_end )
+			if ( partition_new .Get_Length_MB( ) < partition_old .Get_Length_MB( ) )
 			{
 				p_filesystem ->cylinder_size = device .cylsize ;
 				
 				if ( p_filesystem ->Resize( partition_new ) )
-					Resize_Container_Partition( device .path, partition_old, partition_new ) ;
+					Resize_Container_Partition( device .path, partition_old, partition_new, ! get_fs( partition_new .filesystem ) .move ) ;
 			}
-							
-			//growing
-			if ( partition_new .sector_end > partition_old .sector_end )
-				Resize_Container_Partition( device .path, partition_old, partition_new ) ;
+			//growing/moving
+			else
+				Resize_Container_Partition( device .path, partition_old, partition_new, ! get_fs( partition_new .filesystem ) .move ) ;
 					
 			
 			p_filesystem ->Check_Repair( partition_new ) ;
@@ -567,7 +563,7 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 		c_part = ped_partition_new ( disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
 		if ( c_part )
 		{
-			constraint = ped_constraint_any ( device );
+			constraint = ped_constraint_any( device );
 			
 			if ( constraint )
 			{
