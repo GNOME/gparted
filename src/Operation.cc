@@ -115,36 +115,36 @@ std::vector<Partition> Operation::Apply_Operation_To_Visual( std::vector<Partiti
 
 void Operation::Apply_To_Disk( PedTimer * timer  )
 { 
-		Glib::ustring buf;
+	Glib::ustring buf;
 	bool result; //for some weird reason it won't work otherwise .. ( this one really beats me :-S )
 
 	switch ( operationtype )
 	{
-		case DELETE				:  result = device ->Delete_Partition( partition_original ) ;
-														if ( ! result )
-															Show_Error( String::ucompose( _("Error while deleting %1"), partition_original.partition ) ) ;
+		case DELETE	:	result = device ->Delete_Partition( partition_original ) ;
+					if ( ! result )
+						Show_Error( String::ucompose( _("Error while deleting %1"), partition_original.partition ) ) ;
 														
-														break;
-		case CREATE				:	result = device ->Create_Partition_With_Filesystem( partition_new, timer ) ;
-														if ( ! result ) 
-															Show_Error( String::ucompose( _("Error while creating %1"), partition_new.partition ) );
-												
-														break;
-		case RESIZE_MOVE	:	result = device ->Move_Resize_Partition( partition_original, partition_new, timer ) ;
-														if ( ! result ) 
-															Show_Error( String::ucompose( _("Error while resizing/moving %1"), partition_new.partition ) ) ;
-												
-														break;
-		case CONVERT			:	result = device ->Set_Partition_Filesystem( partition_new, timer ) ;
-														if ( ! result ) 
-															Show_Error( String::ucompose( _("Error while converting filesystem of %1"), partition_new.partition ) ) ;
-												
-														break;
-		case COPY					:	result = device ->Copy_Partition( source_device, partition_new, timer ) ;
-														if ( ! result ) 
-															Show_Error( String::ucompose( _("Error while copying %1"), partition_new .partition ) ) ;
-												
-														break;
+					break;
+		case CREATE	:	result = device ->Create_Partition_With_Filesystem( partition_new, timer ) ;
+					if ( ! result ) 
+						Show_Error( String::ucompose( _("Error while creating %1"), partition_new.partition ) );
+											
+					break;
+		case RESIZE_MOVE:	result = device ->Move_Resize_Partition( partition_original, partition_new, timer ) ;
+					if ( ! result ) 
+						Show_Error( String::ucompose( _("Error while resizing/moving %1"), partition_new.partition ) ) ;
+											
+					break;
+		case CONVERT	:	result = device ->Set_Partition_Filesystem( partition_new, timer ) ;
+					if ( ! result ) 
+						Show_Error( String::ucompose( _("Error while converting filesystem of %1"), partition_new.partition ) ) ;
+										
+					break;
+		case COPY	:	result = device ->Copy_Partition( source_device, partition_new, timer ) ;
+					if ( ! result ) 
+						Show_Error( String::ucompose( _("Error while copying %1"), partition_new .partition ) ) ;
+									
+					break;
 	}
 	
 }
