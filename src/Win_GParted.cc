@@ -490,7 +490,6 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 	Gtk::TreeIter iter = liststore_operations->children().end() ;
 	iter-- ;
 	treeview_operations .set_cursor( (Gtk::TreePath) (Gtk::TreeRow) *iter);
-	
 }
 
 void Win_GParted::Refresh_Visual( )
@@ -676,7 +675,7 @@ void Win_GParted::open_operationslist()
 	int x,y; this ->get_size( x, y );
 	y -= 300;
 		
-	for ( int t=vpaned_main.get_position() ; t > y ; t-=3 )
+	for ( int t=vpaned_main.get_position() ; t > y ; t-=5 )
 	{
 		vpaned_main.set_position( t );
 		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
@@ -691,7 +690,7 @@ void Win_GParted::close_operationslist()
 	
 	int x,y; this ->get_size( x, y );
 	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
-	for ( int t=vpaned_main.get_position() ; t < y ; t+=3 )
+	for ( int t=vpaned_main.get_position() ; t < y ; t+=5 )
 	{
 		vpaned_main.set_position( t );
 		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
@@ -1182,6 +1181,7 @@ void Win_GParted::activate_apply()
 				
 		//wipe operations...
 		operations.clear();
+		liststore_operations ->clear();
 		close_operationslist() ;
 							
 		//reset new_count to 1
