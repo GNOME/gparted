@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted 0.0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-22 22:00+0200\n"
-"PO-Revision-Date: 2004-10-22 22:02+0200\n"
+"POT-Creation-Date: 2004-10-23 15:28+0200\n"
+"PO-Revision-Date: 2004-10-23 15:31+0200\n"
 "Last-Translator: Hendrik Brandt <eru@gmx.li>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr "Übersetzung von"
 #. add spinbutton_before
 #: src/Dialog_Base_Partition.cc:54
 msgid "Free Space Preceding (MB):"
-msgstr "Ursprünglicher freier Speicherplatz (in MB):"
+msgstr "Vorhergehender freier Speicherplatz (in MB):"
 
 #. add spinbutton_size
 #: src/Dialog_Base_Partition.cc:61
@@ -72,19 +72,16 @@ msgstr "Anschließender freier Speicherplatz (in MB):"
 
 #. pack warning about small differences in values..
 #: src/Dialog_Base_Partition.cc:86
-#, fuzzy
 msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr ""
-"HINWEIS: Die Werte auf dem Datenträger können sich etwas von den hier "
+msgstr "HINWEIS: Die Werte auf dem Datenträger können sich etwas von den hier "
 "eingegebenen Werten unterscheiden."
 
 #: src/Dialog_Base_Partition.cc:151
-#, fuzzy
 msgid "Resize"
 msgstr "Größe ändern"
 
 #: src/Dialog_Base_Partition.cc:153 src/Win_GParted.cc:133
-#: src/Win_GParted.cc:168 src/Win_GParted.cc:846
+#: src/Win_GParted.cc:168 src/Win_GParted.cc:848
 msgid "Resize/Move"
 msgstr "Größe ändern/Verschieben"
 
@@ -114,7 +111,7 @@ msgstr "Meldung von libparted:"
 #: src/Dialog_Partition_Info.cc:119 src/Dialog_Partition_Info.cc:138
 #: src/Dialog_Partition_Info.cc:147 src/Dialog_Partition_Info.cc:152
 #: src/VBox_VisualDisk.cc:137 src/VBox_VisualDisk.cc:149
-#: src/Win_GParted.cc:411 src/Win_GParted.cc:459
+#: src/Win_GParted.cc:413 src/Win_GParted.cc:461
 msgid "%1 MB"
 msgstr "%1 MB"
 
@@ -460,47 +457,47 @@ msgstr "Liste der Operationen verbergen"
 msgid "Clear operationslist"
 msgstr "Liste der Operationen leeren"
 
-#: src/Win_GParted.cc:423
+#: src/Win_GParted.cc:425
 msgid "Scanning all devices..."
 msgstr "Alle Geräte werden abgefragt..."
 
-#: src/Win_GParted.cc:532
+#: src/Win_GParted.cc:534
 msgid "%1 operations pending"
 msgstr "%1 ausstehende Operationen"
 
-#: src/Win_GParted.cc:534
+#: src/Win_GParted.cc:536
 msgid "1 operation pending"
 msgstr "Eine ausstehende Operation"
 
-#: src/Win_GParted.cc:587
+#: src/Win_GParted.cc:589
 msgid "Quit GParted?"
 msgstr "Wollen Sie GParted wirklich beenden?"
 
-#: src/Win_GParted.cc:590
+#: src/Win_GParted.cc:592
 msgid "%1 operations are currently pending."
 msgstr "%1 Operationen wurden noch nicht ausgeführt."
 
-#: src/Win_GParted.cc:592
+#: src/Win_GParted.cc:594
 msgid "1 operation is currently pending."
 msgstr "Eine Operation wurden noch nicht ausgeführt."
 
-#: src/Win_GParted.cc:789
+#: src/Win_GParted.cc:791
 msgid "Sorry, not yet implemented."
 msgstr "Diese Funktion ist noch nicht implementiert."
 
-#: src/Win_GParted.cc:791
+#: src/Win_GParted.cc:793
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr ""
 "Bitte besuchen Sie für weitere Informationen und Unterstützung die Internet-"
 "Seite: http://gparted.sf.net"
 
-#: src/Win_GParted.cc:834
+#: src/Win_GParted.cc:836
 msgid "Are you sure you want to resize/move this partition?"
 msgstr ""
 "Sind Sie sicher, dass Sie diese Partition in der Größe ändern/Verschieben "
 "möchten?"
 
-#: src/Win_GParted.cc:836
+#: src/Win_GParted.cc:838
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -510,11 +507,11 @@ msgstr ""
 "Besonders das Vergrößern einer solchen Partition ist sehr fehleranfällig. Es "
 "wird empfohlen, dass Sie zunächst das Dateisystem in FAT32 umwandeln."
 
-#: src/Win_GParted.cc:908 src/Win_GParted.cc:935
+#: src/Win_GParted.cc:910 src/Win_GParted.cc:937
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Es ist nicht möglich mehr als %1 primäre Partitionen zu erstellen"
 
-#: src/Win_GParted.cc:910 src/Win_GParted.cc:937
+#: src/Win_GParted.cc:912 src/Win_GParted.cc:939
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -523,83 +520,83 @@ msgstr ""
 "erweiterte Partition erstellen. Diese kann dann weitere logische Partitionen "
 "aufnehmen."
 
-#: src/Win_GParted.cc:966
+#: src/Win_GParted.cc:968
 msgid "Unable to delete partition!"
 msgstr "Partition konnte nicht gelöscht werden!"
 
-#: src/Win_GParted.cc:968
+#: src/Win_GParted.cc:970
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Bitte hängen Sie jede logische Partition mit einer Nummer größer als %1 aus."
 
-#: src/Win_GParted.cc:975
+#: src/Win_GParted.cc:977
 msgid "Are you sure you want to delete %1?"
 msgstr "Sind Sie sicher, dass Sie %1 löschen möchten?"
 
-#: src/Win_GParted.cc:979
+#: src/Win_GParted.cc:981
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Nachdem diese Partition gelöscht wurde steht Sie nicht mehr zum Kopieren zur "
 "Verfügung."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:984
+#: src/Win_GParted.cc:986
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Löschen von %1 (%2, %3 MB)"
 
-#: src/Win_GParted.cc:1046
+#: src/Win_GParted.cc:1048
 msgid "Are you sure you want to convert this filesystem to %1?"
 msgstr "Sind Sie sicher, dass Sie dieses Dateisystem in %1 umwandeln wollen?"
 
-#: src/Win_GParted.cc:1047
+#: src/Win_GParted.cc:1049
 msgid "This operation will destroy all data on %1"
 msgstr "Dieser Vorgang wird alle Daten auf %1 löschen!"
 
-#: src/Win_GParted.cc:1065 src/Win_GParted.cc:1067
+#: src/Win_GParted.cc:1067 src/Win_GParted.cc:1069
 msgid "Can not convert this filesystem to fat16."
 msgstr "Dieses Dateisystem kann nicht zu FAT16 umgewandelt werden."
 
-#: src/Win_GParted.cc:1065
+#: src/Win_GParted.cc:1067
 msgid "A fat16 filesystem requires a partition of at least 32 MB."
 msgstr ""
 "Eine Partition mit FAT16-Dateisystem muss mindestens eine Größe von 32 MB "
 "besitzen."
 
-#: src/Win_GParted.cc:1067
+#: src/Win_GParted.cc:1069
 msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
 msgstr ""
 "Eine Partition mit FAT16-Dateisystem darf maximal eine Größe von 1023 MB "
 "besitzen."
 
-#: src/Win_GParted.cc:1069
+#: src/Win_GParted.cc:1071
 msgid "Can not convert this filesystem to fat32."
 msgstr "Dieses Dateisystem kann nicht in FAT32 umgewandelt werden."
 
-#: src/Win_GParted.cc:1069
+#: src/Win_GParted.cc:1071
 msgid "A fat32 filesystem requires a partition of at least 256 MB."
 msgstr ""
 "Eine Partition mit FAT32-Dateisystem muss mindestens eine Größe von 256 MB "
 "besitzen."
 
-#: src/Win_GParted.cc:1141
+#: src/Win_GParted.cc:1143
 msgid "Are you sure you want to apply the pending operations?"
 msgstr ""
 "Sind Sie sicher, dass Sie die ausstehenden Operationen ausführen wollen?"
 
-#: src/Win_GParted.cc:1143
+#: src/Win_GParted.cc:1145
 msgid "It is recommended to backup valueable data before proceeding."
 msgstr "Es wird empfohlen, dass Sie wichtige Daten vor dem Fortfahren sichern."
 
-#: src/Win_GParted.cc:1146
+#: src/Win_GParted.cc:1148
 msgid "Apply operations to harddisk"
 msgstr "Operationen auf Festplatte anwenden"
 
 #. TO TRANSLATORS: after the colon (:) a list of devices will be shown
-#: src/Win_GParted.cc:1186
+#: src/Win_GParted.cc:1188
 msgid "The kernel was unable to re-read the partition table on:"
 msgstr "Der Systemkern konnte die Partitionstabelle nicht lesen von:"
 
-#: src/Win_GParted.cc:1192
+#: src/Win_GParted.cc:1194
 msgid ""
 "This means Linux won't know anything about the modifications you made until "
 "you reboot."
@@ -607,14 +604,14 @@ msgstr ""
 "Das bedeutet, dass Linux bis zum nächsten Neustart keine Kenntnis von den "
 "von Ihnen vorgenommenen Änderungen hat."
 
-#: src/Win_GParted.cc:1195
+#: src/Win_GParted.cc:1197
 msgid ""
 "You should reboot your computer before doing anything with these devices."
 msgstr ""
 "Sie sollten Ihren Rechner neu starten, bevor Sie mit diesen Laufwerken "
 "arbeiten."
 
-#: src/Win_GParted.cc:1197
+#: src/Win_GParted.cc:1199
 msgid "You should reboot your computer before doing anything with this device."
 msgstr ""
 "Sie sollten Ihren Rechner neu starten, bevor Sie mit diesem Laufwerk "
