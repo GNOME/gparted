@@ -80,6 +80,7 @@ private:
 	PedDisk *disk ;
 	PedPartition *c_partition ;
 	Glib::ustring temp ;
+	Partition partition_temp ;
 };
 
 } //GParted

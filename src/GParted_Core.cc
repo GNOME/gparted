@@ -129,8 +129,6 @@ void GParted_Core::get_devices( std::vector<Device> & devices, bool deep_scan )
 
 void GParted_Core::set_device_partitions( Device & device, bool deep_scan ) 
 {
-	Partition partition_temp ;
-	Glib::ustring part_path ;
 	int EXT_INDEX = -1 ;
 	
 	//clear partitions
@@ -140,7 +138,6 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 	while ( c_partition )
 	{
 		partition_temp .Reset( ) ;
-		part_path = device .path + num_to_str( c_partition ->num ) ;
 		
 		switch ( c_partition ->type )
 		{
@@ -160,7 +157,7 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 					partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
 							
 				}				
-				partition_temp .Set( 	part_path,
+				partition_temp .Set( 	device .path + num_to_str( c_partition ->num ),
 							c_partition ->num,
 							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
 							temp, c_partition ->geom .start,
@@ -190,7 +187,7 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 				break ;
 		
 			case PED_PARTITION_EXTENDED:
-				partition_temp.Set( 	part_path ,
+				partition_temp.Set( 	device .path + num_to_str( c_partition ->num ),
 							c_partition ->num ,
 							GParted::EXTENDED ,
 							"extended" ,
@@ -227,16 +224,16 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 
 void GParted_Core::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
-	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( 0, 0, inside_extended ) ;
+	partition_temp .Reset( ) ;
+	partition_temp .Set_Unallocated( 0, 0, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty( ) )
 	{
-		UNALLOCATED .sector_start = start ;
-		UNALLOCATED .sector_end = end ;
+		partition_temp .sector_start = start ;
+		partition_temp .sector_end = end ;
 		
-		partitions .push_back( UNALLOCATED );
+		partitions .push_back( partition_temp );
 		
 		return ;
 	}
@@ -244,29 +241,29 @@ void GParted_Core::Insert_Unallocated( std::vector<Partition> & partitions, Sect
 	//start <---> first partition start
 	if ( (partitions .front( ) .sector_start - start) >= MEGABYTE )
 	{
-		UNALLOCATED .sector_start = start ;
-		UNALLOCATED .sector_end = partitions .front( ) .sector_start -1 ;
+		partition_temp .sector_start = start ;
+		partition_temp .sector_end = partitions .front( ) .sector_start -1 ;
 		
-		partitions .insert( partitions .begin( ), UNALLOCATED );
+		partitions .insert( partitions .begin( ), partition_temp );
 	}
 	
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size( ) -1 ; t++ )
 		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEGABYTE )
 		{
-			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
-			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
+			partition_temp .sector_start = partitions[ t ] .sector_end +1 ;
+			partition_temp .sector_end = partitions[ t +1 ] .sector_start -1 ;
 		
-			partitions .insert( partitions .begin( ) + ++t, UNALLOCATED );
+			partitions .insert( partitions .begin( ) + ++t, partition_temp );
 		}
 		
 	//last partition end <---> end
 	if ( (end - partitions .back( ) .sector_end ) >= MEGABYTE )
 	{
-		UNALLOCATED .sector_start = partitions .back( ) .sector_end +1 ;
-		UNALLOCATED .sector_end = end ;
+		partition_temp .sector_start = partitions .back( ) .sector_end +1 ;
+		partition_temp .sector_end = end ;
 		
-		partitions .push_back( UNALLOCATED );
+		partitions .push_back( partition_temp );
 	}
 }
 
