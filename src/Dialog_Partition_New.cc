@@ -207,7 +207,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		spinbutton_before .set_range( 0, TOTAL_MB - MIN ) ;
 		spinbutton_size .set_range( MIN, MAX ) ;
 		spinbutton_after .set_range( 0, TOTAL_MB  - MIN ) ;
-		
+				
 		//set contents of label_minmax
 		Set_MinMax_Text( MIN, MAX ) ;
 	}
@@ -221,8 +221,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	color_temp .set( Get_Color( FILESYSTEMS[ optionmenu_filesystem.get_history() ] .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
-	if ( this ->is_realized( ) )
-		frame_resizer_base ->Draw_Partition( ) ;
+	frame_resizer_base ->Draw_Partition( ) ;
 }
 
 void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
@@ -237,14 +236,6 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//unformatted is always available
 	menu_filesystem .items( ) .back( ) .set_sensitive( true ) ;
 	
-	//find and set first enabled filesystem
-	for ( unsigned int t = 0 ; t < menu_filesystem .items( ) .size( ) ; t++ )
-		if ( menu_filesystem .items( )[ t ] .sensitive( ) )
-		{
-			first_creatable_fs = t ;
-			break ;
-		}
-		
 	//check if selected unallocated is big enough for fs'es with min. size
 	//fat16
 	if ( this ->selected_partition .Get_Length_MB() < 32 )
@@ -256,6 +247,13 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	if ( this ->selected_partition .Get_Length_MB() < 40 )
 		menu_filesystem .items()[ 5 ] .set_sensitive( false ) ;
 	
+	//find and set first enabled filesystem
+	for ( unsigned int t = 0 ; t < menu_filesystem .items( ) .size( ) ; t++ )
+		if ( menu_filesystem .items( )[ t ] .sensitive( ) )
+		{
+			first_creatable_fs = t ;
+			break ;
+		}
 }
 
 

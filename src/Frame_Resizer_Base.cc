@@ -222,30 +222,33 @@ void Frame_Resizer_Base::Draw_Partition( )
 	if ( UNUSED < 0 )
 		UNUSED = 0 ;
 	
-	drawingarea .get_window() ->clear() ;
-	
-	//the two rectangles on each side of the partition
-	gc ->set_foreground( color_arrow_rectangle );
-	drawingarea .get_window() ->draw_rectangle( gc, true, 0,0,10,50 );
-	drawingarea .get_window() ->draw_rectangle( gc, true, 526,0,10,50 );
-	
-	//partition
-	gc ->set_foreground( color_partition );
-	drawingarea .get_window() ->draw_rectangle( gc, true, X_START,0,X_END - X_START,50 );
-	
-	//used
-	gc ->set_foreground( color_used );
-	drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER, BORDER, USED ,34 );
-	
-	//unused
-	gc ->set_foreground( color_unused );
-	drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER +USED, BORDER, UNUSED,34 );
-	
-	//resize grips
-	if ( ! fixed_start )
-		Draw_Resize_Grip( ARROW_LEFT ) ;
-	
-	Draw_Resize_Grip( ARROW_RIGHT ) ;
+	if ( drawingarea .get_window( ) )
+	{
+		drawingarea .get_window() ->clear() ;
+		
+		//the two rectangles on each side of the partition
+		gc ->set_foreground( color_arrow_rectangle );
+		drawingarea .get_window() ->draw_rectangle( gc, true, 0,0,10,50 );
+		drawingarea .get_window() ->draw_rectangle( gc, true, 526,0,10,50 );
+		
+		//partition
+		gc ->set_foreground( color_partition );
+		drawingarea .get_window() ->draw_rectangle( gc, true, X_START,0,X_END - X_START,50 );
+		
+		//used
+		gc ->set_foreground( color_used );
+		drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER, BORDER, USED ,34 );
+		
+		//unused
+		gc ->set_foreground( color_unused );
+		drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER +USED, BORDER, UNUSED,34 );
+		
+		//resize grips
+		if ( ! fixed_start )
+			Draw_Resize_Grip( ARROW_LEFT ) ;
+		
+		Draw_Resize_Grip( ARROW_RIGHT ) ;
+	}
 	
 }
 
