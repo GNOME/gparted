@@ -58,15 +58,11 @@ Dialog_Progress::Dialog_Progress( int count_operations, const Glib::ustring & fi
 	this->get_vbox() ->set_spacing( 5 ) ;
 	this->get_vbox() ->set_border_width( 15 ) ;
 	
-	this->add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );//doesn't work for current operation
+	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this->show_all_children() ;
 }
 
-Dialog_Progress::~Dialog_Progress()
-{
-}
-
-void Dialog_Progress::Set_Next_Operation(  )
+void Dialog_Progress::Set_Next_Operation( )
 { 
 	progressbar_all.set_fraction( progressbar_all.get_fraction() + fraction );
 	
@@ -78,7 +74,7 @@ void Dialog_Progress::Set_Next_Operation(  )
 }
 
 void Dialog_Progress::Set_Progress_Current_Operation( )
-{ 
+{
 	progressbar_current.set_fraction( fraction_current );
 
 	if ( time_left > 59 && time_left < 120 )
@@ -86,5 +82,10 @@ void Dialog_Progress::Set_Progress_Current_Operation( )
 	else
 		progressbar_current.set_text( String::ucompose( _("about %1 minutes and %2 seconds left"), time_left/60, time_left % 60 ) ) ;
 }
+
+Dialog_Progress::~Dialog_Progress()
+{
+}
+
 
 }//GParted

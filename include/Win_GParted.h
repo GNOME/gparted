@@ -167,7 +167,6 @@ private:
 	
 	
 	//usefull variables which are used by many different functions...
-	sigc::connection s2,s3;//used for disconnecting and destroying a connection ( see optionmenu_devices_changed() and activate_apply() )
 	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
 	unsigned short highest_logic_busy ;//highest_logic_busy contains the number of the highest logical which is busy ( 0 if none is busy)
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
@@ -179,10 +178,11 @@ private:
 	std::vector <Gtk::Label *> device_info ;
 	std::vector <FS> FILESYSTEMS ;
 				
-	//stuff for progress overview
+	//stuff for progress overview and pulsebar
 	Dialog_Progress *dialog_progress;
 	Glib::Thread *thread ;
-	Glib::Dispatcher dispatcher_next_operation;
+	Glib::Dispatcher dispatcher;
+	sigc::connection conn ; 
 	bool apply, pulse ;
 	
 };

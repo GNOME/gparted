@@ -32,7 +32,7 @@ Win_GParted::Win_GParted( )
 	Find_Supported_Filesystems() ;
 		
 	//locate all available devices and store them in devices vector
-	Find_Devices( ) ;
+	Find_Devices( false ) ;
 	Refresh_OptionMenu( ) ;
 		
 	//==== GUI =========================
@@ -84,6 +84,9 @@ Win_GParted::Win_GParted( )
 	//make sure harddisk information and operationlist are closed..
 	hpaned_main .get_child1( ) ->hide( ) ;
 	close_operationslist( ) ;
+	
+	conn = dispatcher .connect( sigc::mem_fun( *this, &Win_GParted::menu_gparted_refresh_devices ) );
+	dispatcher ( ) ;
 }
 
 void Win_GParted::init_menubar() 
@@ -367,27 +370,27 @@ void Win_GParted::Find_Supported_Filesystems()
 
 void Win_GParted::Find_Devices( bool deep_scan ) 
 {
-	for ( unsigned int t=0;t<devices.size() ; t++ )
+	for ( unsigned int t = 0 ; t < devices .size( ) ; t++ )
 		delete devices[ t ] ;
 	
-	devices.clear() ;
+	devices .clear( ) ;
 	
 	//try to find all available devices and put these in a list
-	ped_device_probe_all ();
+	ped_device_probe_all( );
 	
-	PedDevice *device = ped_device_get_next (NULL);
+	PedDevice *device = ped_device_get_next ( NULL );
 	while ( device )
 	{  
 		temp_device = new GParted::Device( device ->path, &FILESYSTEMS );
 		if ( temp_device ->Get_Length() > 0 )
 		{
 			temp_device ->Read_Disk_Layout( deep_scan ) ;
-			devices.push_back( temp_device ) ;
+			devices .push_back( temp_device ) ;
 		}
 		else
 			delete temp_device ;
 		
-		device = ped_device_get_next (device) ;
+		device = ped_device_get_next ( device ) ;
 	}
 	
 }
@@ -435,6 +438,7 @@ void Win_GParted::Show_Pulsebar( )
 	}
 	
 	thread ->join( ) ;
+	conn .disconnect( ) ;
 	
 	pulsebar ->hide( );
 	statusbar .pop( ) ;
@@ -561,15 +565,14 @@ void Win_GParted::Refresh_Visual( )
 	//vbox visual
 	if ( vbox_visual_disk != NULL )
 	{
-		hbox_visual.remove( *vbox_visual_disk );
-		s2.disconnect();
+		hbox_visual .remove( *vbox_visual_disk );
 		delete ( vbox_visual_disk );
 	}
 	
-	vbox_visual_disk = new VBox_VisualDisk (  partitions, devices[ current_device ] ->Get_Length() );
-	s2 = vbox_visual_disk->signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click) );
-	hbox_visual.pack_start( *vbox_visual_disk, Gtk::PACK_EXPAND_PADDING );
-	hbox_visual .show_all_children();
+	vbox_visual_disk = new VBox_VisualDisk ( partitions, devices[ current_device ] ->Get_Length( ) ) ;
+	vbox_visual_disk ->signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) ) ;
+	hbox_visual .pack_start( *vbox_visual_disk, Gtk::PACK_EXPAND_PADDING ) ;
+	hbox_visual .show_all_children( ) ;
 
 	//treeview details
 	treeview_detail .Load_Partitions( partitions ) ;
@@ -1116,6 +1119,22 @@ void Win_GParted::activate_undo()
 	
 }
 
+
+//-------AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me)------------
+Dialog_Progress *dp;
+Glib::Dispatcher dispatcher_set_progress;
+
+void progress_callback( PedTimer * timer, void *context )
+{
+	if (  time(NULL) - timer ->start  > 0 )
+	{
+		dp ->time_left = timer ->predicted_end - time(NULL) ;
+		dp ->fraction_current =  timer ->frac ;
+		dispatcher_set_progress() ;
+	}
+}
+//---------------------------------------------------------------------------------------
+
 void Win_GParted::activate_apply()
 {
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
@@ -1123,36 +1142,39 @@ void Win_GParted::activate_apply()
 	str_temp += "</span>\n\n" ;
 	str_temp += _( "It is recommended to backup valueable data before proceeding.") ;
 	
-	Gtk::MessageDialog dialog( *this, str_temp,true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true);
+	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true);
 	dialog.set_title( _( "Apply operations to harddisk" ) );
 	
-	dialog.add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
+	dialog.add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog.add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );
 	
-	dialog.show_all_children();
+	dialog.show_all_children( ) ;
 	if ( dialog.run() == Gtk::RESPONSE_OK )
 	{
 		dialog.hide() ; //hide confirmationdialog
 		
 		apply = true;
 		dialog_progress = new Dialog_Progress ( operations.size(), operations.front() .str_operation ) ;
-		s3 = dispatcher_next_operation.connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Next_Operation) );
+		dp = dialog_progress ;
+		conn = dispatcher .connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Next_Operation) );
+		dispatcher_set_progress .connect( sigc::mem_fun( *dialog_progress, &Dialog_Progress::Set_Progress_Current_Operation ) );
+		
 		thread = Glib::Thread::create(SigC::slot_class(*this, &Win_GParted::apply_operations_thread), true);
 		
-		dialog_progress->set_transient_for( *this );
-		while ( dialog_progress->run() != Gtk::RESPONSE_OK  ) 
-			apply = false;//finish current operation . then stop applying operations
+		dialog_progress ->set_transient_for( *this );
+		while ( dialog_progress ->run( ) != Gtk::RESPONSE_OK ) 
+			apply = false ;//finish current operation . then stop applying operations
 			
 		//after hiding the progressdialog
-		s3.disconnect();
 		delete ( dialog_progress ) ;
-		thread ->join() ;
+		thread ->join( ) ;
+		conn .disconnect( ) ;
 		
 		//make list of involved devices which have at least one busy partition..
 		std::vector <Glib::ustring> devicenames ;
 		for (unsigned int t=0; t<operations .size(); t++ )
 			if ( 	std::find( devicenames .begin(), devicenames .end() , operations[ t ] .device ->Get_Path() ) == devicenames .end() &&
-					operations[ t ] .device ->Get_any_busy()
+				operations[ t ] .device ->Get_any_busy()
 				)
 				devicenames .push_back( operations[ t ] .device ->Get_Path() ) ;
 		
@@ -1180,53 +1202,34 @@ void Win_GParted::activate_apply()
 		
 				
 		//wipe operations...
-		operations.clear();
-		liststore_operations ->clear();
-		close_operationslist() ;
+		operations.clear( ) ;
+		liststore_operations ->clear( ) ;
+		close_operationslist( ) ;
 							
 		//reset new_count to 1
-		new_count = 1;
+		new_count = 1 ;
 		
 		//reread devices and their layouts...
-		menu_gparted_refresh_devices() ;
+		menu_gparted_refresh_devices( ) ;
 	
 	}
 	
 }
-//-------AFAIK it's not possible to use a C++ memberfunction as a callback for a C libary function (if you know otherwise, PLEASE contact me------------
-Dialog_Progress *dp;
-Glib::Dispatcher dispatcher_current_operation;
 
-void progress_callback(PedTimer * timer, void *context )
-{
-	if (  time(NULL) - timer ->start  > 0 )
-	{
-		dp ->time_left = timer ->predicted_end - time(NULL) ;
-		dp ->fraction_current =  timer ->frac ;
-		dispatcher_current_operation() ;
-	}
-}
-//---------------------------------------------------------------------------------------
-
-void Win_GParted::apply_operations_thread()
+void Win_GParted::apply_operations_thread( )
 { 
-	dp = dialog_progress ;
-	sigc::connection signal = dispatcher_current_operation.connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Progress_Current_Operation) );
-	PedTimer *timer = ped_timer_new( progress_callback, NULL ) ;
-	
 	for ( unsigned int t=0;t<operations.size() && apply ;t++ )
 	{ 	
-		operations[t] .Apply_To_Disk( timer );
+		operations[t] .Apply_To_Disk( ped_timer_new( progress_callback, NULL ) );
 		
 		if ( t < operations .size() -1 )
 		{
 			dialog_progress ->current_operation = operations[ t +1 ] .str_operation ;
-			dispatcher_next_operation() ;
+			dispatcher( ) ;
 		}
 	}
 	
-	dialog_progress->response( Gtk::RESPONSE_OK );
-	signal.disconnect() ;
+	dialog_progress ->response( Gtk::RESPONSE_OK );
 }
 
 
