@@ -602,11 +602,37 @@ void Win_GParted::Set_Valid_Operations()
 		return ;
 	}
 	
+	//EXTENDED
+	else if ( selected_partition .type == GParted::EXTENDED )
+	{
+		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
+			allow_delete( true ) ;
+		
+		if ( ! devices[ current_device ] .readonly )
+			allow_resize( true ); 
+		
+		return ;
+	}	
+	
+	fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
+	
+	//FIXME too much redundacy here (just not in the mood to fix it now :P )
 	//if there was an error reading the filesystem we allow delete and convert ( see also Device::Get_Used_Sectors() )
-	if ( selected_partition .error != "" )
+	//since growing doesn't affect the space already in use, we allow resinzing of 'grow-only' filesystems
+	if ( ! selected_partition .error .empty( ) )
 	{
 		allow_delete( true ) ;
 		allow_convert( true ) ;
+		
+		if ( fs .grow && ! fs .shrink && ! devices[ current_device ] .readonly )
+		{
+			allow_resize( true ); 
+			
+			//only allow copying of real partitions
+			if ( selected_partition .status != GParted::STAT_NEW && selected_partition .status != GParted::STAT_COPY && fs .copy )
+				allow_copy( true ) ;
+		}
+		
 		return;
 	}
 		
@@ -617,7 +643,6 @@ void Win_GParted::Set_Valid_Operations()
 		allow_convert( true ) ;
 		
 		//find out if resizing/moving and copying is possible
-		fs = Get_FS( selected_partition .filesystem, gparted_core .get_fs( ) ) ;
 		if ( (fs .grow || fs .shrink) && ! devices[ current_device ] .readonly ) 
 		{
 			allow_resize( true ) ;
@@ -629,18 +654,6 @@ void Win_GParted::Set_Valid_Operations()
 				
 		return ;
 	}
-	
-	
-	//EXTENDED
-	else if ( selected_partition .type == GParted::EXTENDED )
-	{
-		if (  ! any_logic ) //deletion is only allowed when there are nog logical partitions inside.
-			allow_delete( true ) ;
-		
-		if ( ! devices[ current_device ] .readonly )
-			allow_resize( true ); 
-	}		
-	
 }
 
 void Win_GParted::Set_Valid_Convert_Filesystems() 
@@ -922,6 +935,7 @@ void Win_GParted::activate_paste()
 	if ( ! max_amount_prim_reached( ) )
 	{
 		Dialog_Partition_Copy dialog( gparted_core .get_fs( ) ) ;
+		copied_partition .error .clear( ) ; //we don't need the errors of the source partition.
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
 		

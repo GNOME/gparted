@@ -27,6 +27,8 @@
 #include "../include/reiserfs.h"
 #include "../include/ntfs.h"
 #include "../include/xfs.h"
+#include "../include/jfs.h"
+#include "../include/hfs.h"
 
 #include <glibmm/ustring.h>
 
@@ -82,6 +84,8 @@ private:
 	PedPartition *c_partition ;
 	Glib::ustring temp ;
 	Partition partition_temp ;
+	
+	FS fs ;
 };
 
 } //GParted

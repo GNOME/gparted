@@ -24,6 +24,7 @@
 #include <gtkmm/textbuffer.h>
 
 #include <parted/parted.h>
+#include <fstream>
 
 //Some functions used by both (sub)Filesystems and GParted_Core-------------------------------------------------
 inline bool open_device( const Glib::ustring & device_path, PedDevice *& device )

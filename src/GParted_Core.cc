@@ -33,6 +33,12 @@ void GParted_Core::find_supported_filesystems( )
 	fat32 fs_fat32;
 	FILESYSTEMS .push_back( fs_fat32 .get_filesystem_support( ) ) ;
 	
+	hfs fs_hfs;
+	FILESYSTEMS .push_back( fs_hfs .get_filesystem_support( ) ) ;
+	
+	jfs fs_jfs;
+	FILESYSTEMS .push_back( fs_jfs .get_filesystem_support( ) ) ;
+	
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support( ) ) ;
 	
@@ -176,8 +182,14 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 					if ( partition_temp .sectors_used == -1 && partition_temp .error .empty( ) )
 					{
 						partition_temp .error = _("Unable to read the contents of this filesystem!") ;
-						partition_temp .error += "\n" ;
-						partition_temp .error += ("As a result you won't be able to resize this partition.") ;
+						
+						fs = Get_FS( partition_temp .filesystem, FILESYSTEMS ) ;
+						
+						if ( ! fs .grow_only )
+						{
+							partition_temp .error += "\n" ;
+							partition_temp .error += ("As a result you won't be able to resize this partition.") ;
+						}
 					}
 				}
 							
@@ -704,6 +716,10 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 		p_filesystem = new fat16( ) ;
 	else if ( filesystem == "fat32" )
 		p_filesystem = new fat32( ) ;
+	else if ( filesystem == "hfs" )
+		p_filesystem = new hfs( ) ;
+	else if ( filesystem == "jfs" )
+		p_filesystem = new jfs( ) ;
 	else if ( filesystem == "linux-swap" )
 		p_filesystem = new linux_swap( ) ;
 	else if ( filesystem == "reiserfs" )

@@ -52,7 +52,6 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 	FILE *f ;
 	
 	Glib::ustring output ;
-	Sector free_sectors = -1 ;
 
         //get free sectors..
 	f = popen( ( "LANG=C ntfscluster --force " + partition .partition ) .c_str( ), "r" ) ;
@@ -62,12 +61,12 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		
 		//free sectors
 		if ( output .find( "sectors of free space" ) < output .length( ) )
-			free_sectors = atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+		{
+			partition .Set_Unused( atoi( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ) ;
+			break ;
+		}
 	}
 	pclose( f ) ;
-	
-	if ( free_sectors > -1  )
-		partition .Set_Unused( free_sectors ) ;
 }
 
 bool ntfs::Create( const Glib::ustring device_path, const Partition & new_partition )

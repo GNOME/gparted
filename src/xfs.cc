@@ -26,6 +26,8 @@ FS xfs::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "xfs" ;
+	fs .grow_only = true ;
+	
 	if ( ! system( "which xfs_db 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = true ;
 	
@@ -35,8 +37,8 @@ FS xfs::get_filesystem_support( )
 	if ( ! system( "which xfs_repair 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = true ;
 	
-	//resizing of xfs requires xfs_db, xfs_growfs, xfs_repair, mount, umount and xfs support in the kernel
-	if ( ! system( "which xfs_growfs mount umount 1>/dev/null 2>/dev/null" ) && fs .read && fs .check ) 
+	//resizing of xfs requires xfs_growfs, xfs_repair, mount, umount and xfs support in the kernel
+	if ( ! system( "which xfs_growfs mount umount 1>/dev/null 2>/dev/null" ) && fs .check ) 
 	{
 		Glib::ustring line ;
 		std::ifstream input( "/proc/filesystems" ) ;
@@ -50,7 +52,7 @@ FS xfs::get_filesystem_support( )
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
 		fs .copy = true ;
 	
 	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
@@ -110,7 +112,14 @@ bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 
 bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	if ( ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	{
+		Partition partition ;
+		partition .partition = dest_part_path ;
+		return Resize( partition, true ) ;
+	}
+	
+	return false ;
 }
 
 bool xfs::Check_Repair( const Partition & partition )

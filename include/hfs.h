@@ -16,15 +16,15 @@
  */
  
  
-#ifndef XFS
-#define XFS
+#ifndef HFS
+#define HFS
 
 #include "../include/FileSystem.h"
 
 namespace GParted
 {
 
-class xfs : public FileSystem
+class hfs : public FileSystem
 {
 public:
 	FS get_filesystem_support( ) ;
@@ -38,4 +38,4 @@ public:
 
 } //GParted
 
-#endif //XFS
+#endif //HFS

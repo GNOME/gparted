@@ -50,12 +50,13 @@ struct FS
 	bool move ; //startpoint and endpoint
 	bool check ; //some checktool available?
 	bool copy ;
+	bool grow_only ; //xfs,jfs (only used in Parted_Core::set_device_partitions)
 	int MIN ; 
 	int MAX ;
 	
 	FS( )
 	{
-		read = create = grow = shrink = move = check = copy = false ;
+		read = create = grow = shrink = move = check = copy = grow_only = false ;
 		MIN = 0 ;
 		MAX = 0 ;
 	} 
@@ -134,13 +135,15 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	
 	//purple something..
 	else if	( filesystem == "reiserfs" )	return "#ADA7C8" ;						
-		
+	
+	//darkyellow
 	else if	( filesystem == "xfs" )		return "#EED680" ;
 		
-	//libparted can only detect  these, i decided to "yellow them" :^)
-	else if	( filesystem == "HFS" )		return "yellow"	 ;	
-	else if	( filesystem == "JFS" )		return "yellow"	 ;	
-	else if	( filesystem == "UFS" )		return "yellow"	 ;	
+	else if	( filesystem == "jfs" )		return "#E0C39E" ;
+		
+	else if	( filesystem == "hfs" )		return "#E0B6AF" ;
+		
+	else if	( filesystem == "ufs" )		return "#D1940C" ;	
 		
 	//darkgrey and ligthblue
 	else if ( filesystem == "---" )		return "darkgrey";
