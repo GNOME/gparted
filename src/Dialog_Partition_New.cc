@@ -116,13 +116,13 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 Partition Dialog_Partition_New::Get_New_Partition()
 {
 	Partition part_temp ;
-	PartitionType part_type;
+	PartitionType part_type = GParted::UNALLOCATED; //paranoia ;P
 	Sector new_start, new_end;
 		
 	switch ( optionmenu_type.get_history() )
 	{
 		case 0	:	part_type = GParted::PRIMARY;  	break;
-		case 1	:	part_type = GParted::LOGICAL; 		break;
+		case 1	:	part_type = GParted::LOGICAL; 	break;
 		case 2	:	part_type = GParted::EXTENDED; 	break;
 	}
 	
