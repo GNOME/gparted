@@ -22,7 +22,7 @@ namespace GParted
 
 Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 {
-	this ->set_title( String::ucompose( _("No recognizable disklabel detected on %1"), device_path ) );
+	this ->set_title( String::ucompose( _("Set Disklabel on %1"), device_path ) );
 	this ->set_has_separator( false ) ;
 	this ->set_resizable( false );
 	
@@ -41,7 +41,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 	hbox ->pack_start( *vbox, Gtk::PACK_SHRINK );
 	
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("No recognizable disklabel detected on %1"), device_path ) ;
+	str_temp += String::ucompose( _("Set Disklabel on %1"), device_path ) ;
 	str_temp += "</span>\n" ;
 	vbox ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	

@@ -56,7 +56,7 @@ public:
 private:
 	void init_menubar( ) ;
 	void init_toolbar( ) ;
-	void init_operations_menu( ) ;
+	void init_partition_menu( ) ;
 	void init_convert_menu( ) ;
 	void init_device_info( ) ;
 	void init_operationslist( ) ;
@@ -78,14 +78,14 @@ private:
 	void Set_Valid_Convert_Filesystems( ) ; //determines to which filesystems a partition can be converted
 	
 	//convenience functions
-	void allow_new( bool b )	{ menu_operations .items( )[ 0 ] .set_sensitive( b ); toolbar_main .get_nth_item( 0 ) ->set_sensitive( b ); }
-	void allow_delete( bool b )	{ menu_operations .items( )[ 1 ] .set_sensitive( b ); toolbar_main .get_nth_item( 1 ) ->set_sensitive( b ); }
-	void allow_resize( bool b ) 	{ menu_operations .items( )[ 3 ] .set_sensitive( b ); toolbar_main .get_nth_item( 3 ) ->set_sensitive( b ); }
-	void allow_copy( bool b )	{ menu_operations .items( )[ 5 ] .set_sensitive( b ); toolbar_main .get_nth_item( 5 ) ->set_sensitive( b ); }
-	void allow_paste( bool b )	{ menu_operations .items( )[ 6 ] .set_sensitive( b ); toolbar_main .get_nth_item( 6 ) ->set_sensitive( b ); }
-	void allow_convert( bool b )	{ menu_operations .items( )[ 8 ] .set_sensitive( b ); }
-	void allow_unmount( bool b )	{ menu_operations .items( )[ 10 ] .set_sensitive( b ); }
-	void allow_info( bool b )	{ menu_operations .items( )[ 12 ] .set_sensitive( b ); }
+	void allow_new( bool b )	{ menu_partition .items( )[ 0 ] .set_sensitive( b ); toolbar_main .get_nth_item( 0 ) ->set_sensitive( b ); }
+	void allow_delete( bool b )	{ menu_partition .items( )[ 1 ] .set_sensitive( b ); toolbar_main .get_nth_item( 1 ) ->set_sensitive( b ); }
+	void allow_resize( bool b ) 	{ menu_partition .items( )[ 3 ] .set_sensitive( b ); toolbar_main .get_nth_item( 3 ) ->set_sensitive( b ); }
+	void allow_copy( bool b )	{ menu_partition .items( )[ 5 ] .set_sensitive( b ); toolbar_main .get_nth_item( 5 ) ->set_sensitive( b ); }
+	void allow_paste( bool b )	{ menu_partition .items( )[ 6 ] .set_sensitive( b ); toolbar_main .get_nth_item( 6 ) ->set_sensitive( b ); }
+	void allow_convert( bool b )	{ menu_partition .items( )[ 8 ] .set_sensitive( b ); }
+	void allow_unmount( bool b )	{ menu_partition .items( )[ 10 ] .set_sensitive( b ); }
+	void allow_info( bool b )	{ menu_partition .items( )[ 12 ] .set_sensitive( b ); }
 	void allow_undo( bool b )	{ toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); }
 	void allow_apply( bool b )	{ toolbar_main .get_nth_item( 9 ) ->set_sensitive( b ); }
 		
@@ -116,6 +116,7 @@ private:
 	void activate_info( );
 	void activate_convert( const Glib::ustring & new_fs );
 	void activate_unmount( ) ;
+	void activate_disklabel( ) ;
 	
 	void activate_undo( );
 	void activate_apply( );
@@ -135,7 +136,7 @@ private:
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::OptionMenu optionmenu_devices;
-	Gtk::Menu menu_operations, menu_convert, *menu ;
+	Gtk::Menu menu_partition, menu_convert, *menu ;
 	Gtk::ToolButton *toolbutton;
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
