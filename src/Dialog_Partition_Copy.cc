@@ -72,7 +72,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( static_cast<int> (fs .MIN / MB_PER_PIXEL), static_cast<int> (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( Round(fs .MIN / MB_PER_PIXEL), Round(fs .MAX / MB_PER_PIXEL) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
@@ -80,7 +80,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
-	selected_partition .inside_extended ? this ->selected_partition .type = GParted::LOGICAL : this ->selected_partition .type = GParted::PRIMARY ;
+	this ->selected_partition .type = selected_partition .inside_extended ? GParted::LOGICAL : GParted::PRIMARY ;
 }
 
 Partition Dialog_Partition_Copy::Get_New_Partition( ) 
@@ -89,7 +89,7 @@ Partition Dialog_Partition_Copy::Get_New_Partition( )
 	selected_partition = Dialog_Base_Partition::Get_New_Partition( ) ;
 	
 	//set proper name and status for partition
-	selected_partition.status = GParted::STAT_COPY ;
+	selected_partition .status = GParted::STAT_COPY ;
 	
 	return selected_partition ;
 }

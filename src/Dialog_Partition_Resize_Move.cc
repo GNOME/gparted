@@ -141,7 +141,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
 	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
-	frame_resizer_base ->set_size_limits( static_cast<int> (fs .MIN / MB_PER_PIXEL), static_cast<int> (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( Round( fs .MIN / MB_PER_PIXEL ), Round( fs .MAX / MB_PER_PIXEL ) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;

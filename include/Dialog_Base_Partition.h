@@ -83,7 +83,7 @@ protected:
 	short BUF ; //used in resize and copy ( safety reasons )
 	
 private:
-	void Check_Change() ;
+	void Check_Change( ) ;
 	
 	Gtk::VBox vbox_resize_move;
 	Gtk::Label label_minmax ;

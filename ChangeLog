@@ -1,3 +1,11 @@
+2005-01-22 Bart Hakvoort  <hakvoort@cvs.gnome.org>
+
+	* include/Dialog_Base_Partition.h,
+	  src/Dialog_Base_Partition.cc,
+	  src/Dialog_Partition_Copy.cc,
+	  src/Dialog_Partition_Resize_Move.cc: Fixed bug in copy functionality (due to unset ORIG_START startsector wasn't set correctly). Also have ORIG*
+	  initialized in ctor of dialogbase to prevent such errors from ever happening again (this one only showed up with gcc-3.3.5) .
+
 2005-01-19 Bart Hakvoort  <hakvoort@cvs.gnome.org>
 
 	* src/GParted_Core.cc: removed sleep( 1 ). This isn't needed anymore now the layout is scanned before the re-readtest. (saves seconds at scantime :) )
