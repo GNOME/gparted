@@ -31,8 +31,8 @@ Dialog_About::Dialog_About()
 	this ->get_vbox() ->pack_start( * mk_label( "\n<span size='small'>logo here ;)</span>\n", true, false ), Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>", true, false ) ,Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "\n" + (Glib::ustring) _( "Gnome Partition Editor based on libparted" ) + "\n", false, false ) ,Gtk::PACK_SHRINK );
-	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>" + (Glib::ustring) _( "Copyright (c)" ) + " 2004 Bart Hakvoort</span>", true, false ) ,Gtk::PACK_SHRINK );
-	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>http://gparted.sourceforge.net</span>", true, false ) ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>Copyright © 2004 Bart Hakvoort</span>", true, false ), Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>http://gparted.sourceforge.net</span>", true, false ), Gtk::PACK_SHRINK );
 	
 	button_credits.add_pixlabel( "/usr/share/icons/hicolor/16x16/stock/generic/stock_about.png", "Credits", 0, 0.5 ) ;
 	button_credits.signal_clicked() .connect( sigc::mem_fun( this, &Dialog_About::Show_Credits ) ) ;
