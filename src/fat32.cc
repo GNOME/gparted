@@ -31,11 +31,14 @@ FS fat32::get_filesystem_support( )
 	//find out if we can create fat32 filesystems
 	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
+	
+	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
+		fs .check = true ;
 		
-	//resing of start and endpoint are provided by libparted
+	//resizing of start and endpoint are provided by libparted
 	fs .resize = true ;
 	fs .move = true ;
-	
+		
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	

@@ -28,9 +28,14 @@ FS fat16::get_filesystem_support( )
 	fs .filesystem = "fat16" ;
 	fs .read = true ; //provided by libparted
 	fs .create = true ;
+	
+	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
+		fs .check = true ;
+		
+	//resizing of start and endpoint are provided by libparted
 	fs .resize = true ;
 	fs .move = true ;
-	
+		
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	
