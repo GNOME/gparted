@@ -201,7 +201,7 @@ void Device::Read_Disk_Layout( bool deep_scan )
 			default:	break;
 		}
 		
-		if ( partition_temp .sector_start != -1 ) //paranoia check for unallocted space < 1 MB..
+		if ( partition_temp .Get_Length_MB( ) >= 1 ) //paranoia check for unallocated < 1MB
 			device_partitions.push_back( partition_temp );
 		
 		//reset stuff..

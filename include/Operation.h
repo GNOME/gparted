@@ -23,7 +23,6 @@
 #include "../include/i18n.h"
 
 #include <gtkmm/messagedialog.h>
-#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -63,7 +62,7 @@ private:
 	std::vector<Partition> Apply_Convert_To_Visual( std::vector<Partition> & partitions );
 
 	Glib::ustring Get_String(); //only used during in c'tor
-	void Show_Error( const Glib::ustring & message  ) ;
+	void Show_Error( Glib::ustring message ) ;
 
 	Partition partition_original; //the original situation
 };

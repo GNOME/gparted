@@ -59,7 +59,7 @@ void Partition::Set(	const Glib::ustring & partition,
 void Partition::Set_Used( Sector used ) 
 {
 	this ->sectors_used = used;
-	this ->sectors_unused = ( sector_end - sector_start) - used ;
+	this ->sectors_unused = ( used == -1 ) ? -1 : ( sector_end - sector_start) - used ;
 }
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )

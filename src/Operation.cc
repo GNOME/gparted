@@ -90,7 +90,7 @@ Glib::ustring Operation::Get_String()
 					
 					return temp;
 		case CONVERT	:	/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
-					return String::ucompose( _(	"Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
+					return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
 		case COPY	:	/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
 					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device ->Get_Path(), Sector_To_MB( partition_new .sector_start ) ) ;
 		default		:	return "";			
@@ -113,7 +113,7 @@ std::vector<Partition> Operation::Apply_Operation_To_Visual( std::vector<Partiti
 	return partitions;
 }
 
-void Operation::Apply_To_Disk( PedTimer * timer  )
+void Operation::Apply_To_Disk( PedTimer * timer )
 { 
 	Glib::ustring buf;
 	bool result; //for some weird reason it won't work otherwise .. ( this one really beats me :-S )
@@ -265,8 +265,8 @@ std::vector<Partition> Operation::Apply_Resize_Move_To_Visual( std::vector<Parti
 	}
 	
 	//determine correct perimeters of moving/resizing space
-	Sector START	=	partition_original.sector_start ;
-	Sector END		=	partition_original.sector_end ;
+	Sector START	= partition_original.sector_start ;
+	Sector END	= partition_original.sector_end ;
 	
 	
 	//now we have the index of the original partition we can remove the surrounding partitions ( if UNALLOCATED and inside_extended is the same )
@@ -302,11 +302,10 @@ std::vector<Partition> Operation::Apply_Resize_Move_To_Visual( std::vector<Parti
 }
 
 std::vector<Partition> Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions )
-{//WOW! look at this crap! there has to be an easier way to accomplish the same. When it's a bit cooler ( its over 30 C here ) i'll look into it :^)
-	unsigned int  t;
-	Partition partition_temp;
-	
-	//look for index of partition
+{
+	unsigned int t, INDEX =0;
+		
+	//look for index of partition and set the extended partition's new size.
 	for ( t=0;t<partitions.size() ;t++)
 	{ 
 		if ( partitions[t].type == GParted::EXTENDED )
@@ -314,91 +313,89 @@ std::vector<Partition> Operation::Apply_Resize_Move_Extended_To_Visual( std::vec
 			partition_original = partitions[t] ;
 			partitions[t].sector_start = partition_new.sector_start ;
 			partitions[t].sector_end = partition_new.sector_end ;
-						
+			INDEX = t ;
+				
 			break;
 		}
 	}
 	
-	//now check t -1 
-	//remove if unallocated
-	if ( t > 0 && partitions[ t -1 ].type == GParted::UNALLOCATED )
+	
+	/* remove all relevant unallocated spaces...
+	 * E.G. partitions looks like: P-P-U-E-U-L-L-U-U <--- last U is OUTSIDE extended!!
+	 *                                                   1-2 - 3- 4- 5 -6-7- 8 - 9
+	 * now we check 3, 5, 8 and 9 . If any of them is unallocated we remove it. In this case all of them.. :)
+	 */
+	
+	//check 3
+	if ( partitions[ INDEX -1 ] .type == GParted::UNALLOCATED )
+		partitions .erase( partitions .begin() + --INDEX ) ;
+	
+	//check 5
+	if ( partitions[ INDEX +1 ] .type == GParted::UNALLOCATED )
+		partitions .erase( partitions .begin() + INDEX +1 ) ;
+	
+	//find index of last logic
+	for ( t = partitions.size() -1 ; ! partitions[ t ] .inside_extended && t > INDEX ; t-- ) {}
+	
+	//check 8
+	if ( t > INDEX && partitions[ t ] .type == GParted::UNALLOCATED )
+		partitions .erase( partitions .begin() + t ) ;
+	else
+		t++ ;
+		
+	//check 9
+	if ( t < partitions .size( ) && partitions[ t ] .type == GParted::UNALLOCATED )
+		partitions .erase( partitions .begin() + t ) ;
+		
+		
+	
+	//and insert new unallocated spaces at fitting places
+	Sector TEMP ;
+	Partition partition_temp ;
+	
+	//check 3
+	TEMP = INDEX > 0 ? partitions[ INDEX -1 ] .sector_end +1 : 0 ;
+	if ( ( partitions[ INDEX ] .sector_start - TEMP ) > MEGABYTE )
 	{
-		partitions.erase( partitions.begin() + t -1 );
-		t-- ;
+		partition_temp.Set_Unallocated( TEMP, partitions[ INDEX ] .sector_start -1, false ) ;
+		partitions.insert( partitions.begin() + INDEX, partition_temp );
+		INDEX++;
 	}
 	
-	//make spaces >= 1 MB unallocated
-	if ( t > 0 && ( partitions[ t ] .sector_start - partitions[ t -1 ] .sector_end ) >= MEGABYTE )
+	//check 5
+	if ( (INDEX +1) < partitions .size() && partitions[ INDEX +1 ] .type == GParted::LOGICAL )
+		TEMP = partitions[ INDEX +1 ] .sector_start -1 ;
+	else
+		TEMP = partition_new .sector_end ;
+	
+	if ( ( TEMP - partitions[ INDEX ] .sector_start ) > MEGABYTE )
 	{
-		partition_temp.Set_Unallocated(  partitions[ t -1 ] .sector_end +1, partitions[ t ] .sector_start -1 ,false );	
-		partitions.insert( partitions.begin() + t , partition_temp );
+		partition_temp.Set_Unallocated( partitions[ INDEX ] .sector_start, TEMP, true ) ;
+		partitions.insert( partitions.begin() +INDEX +1, partition_temp );
+	}
+	
+	
+	//find index of last logic
+	for ( t = partitions .size( ) -1 ; ! partitions[ t ] .inside_extended && t > INDEX ; t-- ) { }
+	
+	//check 8
+	if ( partitions[ t ] .type != GParted::UNALLOCATED && ( partition_new .sector_end - partitions[ t ] .sector_end ) > MEGABYTE )
+	{
+		partition_temp.Set_Unallocated( partitions[ t ] .sector_end +1, partition_new .sector_end, true ) ;	
+		partitions.insert( partitions.begin() +t +1, partition_temp );
 		t++ ;
 	}
-	else if ( t == 0 && partitions[ t ] .sector_start >= MEGABYTE )
+	
+	//check 9
+	t++ ;
+	TEMP = t < partitions .size() ? partitions[ t ] .sector_start -1 : device ->Get_Length() -1;
+	
+	if ( ( TEMP - partition_new .sector_end ) > MEGABYTE )
 	{
-		partition_temp.Set_Unallocated(  0, partitions[ t ] .sector_start -1 ,false );	
-		partitions.insert( partitions.begin() + t , partition_temp );
-		t++ ;
+		partition_temp.Set_Unallocated( partition_new .sector_end +1, TEMP -1, false ) ;
+		partitions.insert( partitions.begin() +t, partition_temp );
 	}
 	
-		
-	//now check t +1  
-	if ( t +1 < partitions.size()  && partitions[ t +1 ].type == GParted::UNALLOCATED )
-		partitions.erase( partitions.begin() + t +1 );
-		
-	//make spaces >= 1 MB unallocated
-	if ( t+1 < partitions.size() && partitions[ t +1 ].inside_extended && (partitions[ t +1 ] .sector_start - partitions[ t ] .sector_start) >= MEGABYTE )
-	{
-		partition_temp.Set_Unallocated(  partitions[ t ] .sector_start, partitions[ t +1 ] .sector_start -1  , true );	
-		partitions.insert( partitions.begin() + t +1 , partition_temp );
-	}
-	
-	//nothing inside extended, so we can add an unallocated with the size of extended( which is always >= 1 MB )
-	else if (  t +1 >= partitions.size() || ! partitions[ t +1 ].inside_extended )
-	{
-		partition_temp.Set_Unallocated(  partitions[ t ] .sector_start, partitions[ t ] .sector_end  , true );	
-		partitions.insert( partitions.begin() + t +1 , partition_temp );
-	}
-
-	// now we look to the other side of the extended partition..
-		
-	//find index of last partition that is still inside extended
-	t++ ; //set index to first logical
-	while ( t +1 < partitions.size() && partitions[ t +1 ].inside_extended )
-		t++ ;
-	
-	//if this is unallocated space we remove it
-	if ( partitions[ t ].type == GParted::UNALLOCATED && partitions[ t -1 ].type != GParted::EXTENDED  ) //in case there is only unallocated inside extended
-	{
-		partitions.erase( partitions.begin() + t );
-		t-- ;
-	}
-	
-	//decide if we have to insert new unallocated space
-	if ( (partition_new .sector_end - partitions[ t ] .sector_end) >= MEGABYTE )
-	{
-		partition_temp.Set_Unallocated(  partitions[ t ] .sector_end +1,  partition_new .sector_end , true );	
-		partitions.insert( partitions.begin() + t +1 , partition_temp );
-		t++ ;
-	}
-
-	//and the last step ( pfieuw ;) )  checks on first partition outside extended
-	if ( t +1 < partitions.size() && partitions[ t +1 ].type == GParted::UNALLOCATED )
-		partitions.erase( partitions.begin() + t +1 );
-		
-
-	if ( t +1 < partitions.size() && (partitions[ t +1 ] .sector_start - partition_new.sector_end) >= MEGABYTE )
-	{
-		partition_temp.Set_Unallocated(  partition_new .sector_end +1, partitions[ t +1 ] .sector_start -1 , false );	
-		partitions.insert( partitions.begin() + t +1 , partition_temp );
-	}
-	
-	//nothing after extended
-	else if  ( t +1 >= partitions.size() && ( device ->Get_Length() - partition_new .sector_end) >= MEGABYTE )
-	{
-		partition_temp.Set_Unallocated(  partition_new .sector_end +1, device ->Get_Length() -1 , false );	
-		partitions.insert( partitions.begin() + t +1 , partition_temp );
-	}
 	
 	return partitions ;
 }
@@ -420,13 +417,15 @@ std::vector<Partition> Operation::Apply_Convert_To_Visual( std::vector<Partition
 	
 }
 
-void Operation::Show_Error( const Glib::ustring & message ) 
+void Operation::Show_Error( Glib::ustring message ) 
 {
-	Gtk::MessageDialog dialog( "<span weight=\"bold\" size=\"larger\">" + message + "</span>\n\n" + _( "Be aware that the failure to apply this operation could affect other operations on the list." ) ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+	message = "<span weight=\"bold\" size=\"larger\">" + message + "</span>\n\n" ;
+	message += _( "Be aware that the failure to apply this operation could affect other operations on the list." ) ;
+	Gtk::MessageDialog dialog( message ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
 	
-	gdk_threads_enter();
-	dialog .run();
-	gdk_threads_leave();
+	gdk_threads_enter( );
+	dialog .run( );
+	gdk_threads_leave( );
 }
 
 
