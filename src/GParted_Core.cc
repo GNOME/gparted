@@ -39,6 +39,9 @@ void GParted_Core::find_supported_filesystems( )
 	reiserfs fs_reiserfs;
 	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support( ) ) ;
 	
+	ntfs fs_ntfs;
+	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support( ) ) ;
+	
 	//unknown filesystem (default when no match is found)
 	FS fs ; fs .filesystem = "unknown" ;
 	FILESYSTEMS .push_back( fs ) ;
@@ -593,6 +596,8 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 		p_filesystem = new linux_swap( ) ;
 	else if ( filesystem == "reiserfs" )
 		p_filesystem = new reiserfs( ) ;
+	else if ( filesystem == "ntfs" )
+		p_filesystem = new ntfs( ) ;
 	else
 		p_filesystem = NULL ;
 

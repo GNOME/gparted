@@ -36,7 +36,8 @@ gparted_SOURCES = \
 	fat16.cc\
 	fat32.cc\
 	linux_swap.cc\
-	reiserfs.cc
+	reiserfs.cc\
+	ntfs.cc
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 
 

@@ -25,6 +25,7 @@
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
 #include "../include/reiserfs.h"
+#include "../include/ntfs.h"
 
 #include <glibmm/ustring.h>
 
