@@ -15,6 +15,8 @@ GParted_Core::GParted_Core( )
 	//get valid flags ...
 	for ( PedPartitionFlag flag = ped_partition_flag_next( (PedPartitionFlag) NULL ) ; flag ; flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;	
+	
+	find_supported_filesystems( ) ;
 }
 
 void GParted_Core::find_supported_filesystems( )

@@ -28,9 +28,6 @@ Win_GParted::Win_GParted( )
 	vbox_visual_disk = NULL;
 	pulse = false ;
 	
-	//store filesystems in vector and find out if their respective libs are installed
-	gparted_core .find_supported_filesystems( ) ;
-	
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
 	this ->set_default_size( 775, 500 );
@@ -157,7 +154,7 @@ void Win_GParted::init_popupmenu()
 {
 	//fill menu_popup
 	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW, sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
-	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, Gtk::AccelKey( 0xFFFF, Gdk::BUTTON1_MASK ), sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
+	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ), sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
 	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
 	menu_popup.items().push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), *image, sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
