@@ -41,15 +41,16 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	START = selected_partition .sector_start ;
 	total_length = selected_partition .sector_end - selected_partition .sector_start ;
 	TOTAL_MB = selected_partition .Get_Length_MB( ) ;
-	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
+	
 	long COPIED_LENGTH_MB = copied_partition .Get_Length_MB( ) ;
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
-	int x_end = Round( COPIED_LENGTH_MB / ( (double)TOTAL_MB/500 ) ) ; //> 500 px only possible with xfs...
+	int x_end = Round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
-	frame_resizer_base ->set_used( Round( copied_partition .Get_Used_MB( ) / ( (double)TOTAL_MB/500) ) ) ;
-		
+	frame_resizer_base ->set_used( Round( copied_partition .Get_Used_MB( ) / ( TOTAL_MB/500.00) ) ) ;
+	
 	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
 	
 	if ( fs .filesystem == "xfs" ) //bit hackisch, but most effective, since it's a unique situation
@@ -71,7 +72,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( (int) ( fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( static_cast<int> (fs .MIN / MB_PER_PIXEL), static_cast<int> (fs .MAX / MB_PER_PIXEL) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
@@ -82,10 +83,10 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	selected_partition .inside_extended ? this ->selected_partition .type = GParted::LOGICAL : this ->selected_partition .type = GParted::PRIMARY ;
 }
 
-Partition Dialog_Partition_Copy::Get_New_Partition() 
+Partition Dialog_Partition_Copy::Get_New_Partition( ) 
 {
 	//first call baseclass to get the correct new partition
-	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
+	selected_partition = Dialog_Base_Partition::Get_New_Partition( ) ;
 	
 	//set proper name and status for partition
 	selected_partition.status = GParted::STAT_COPY ;

@@ -995,7 +995,7 @@ void Win_GParted::activate_delete( )
 		if ( selected_partition .status == GParted::STAT_NEW )
 		{
 			//remove all operations done on this new partition (this includes creation)	
-			for ( int t = 0 ; t < (int) operations .size( ) ; t++ ) //I removed the unsigned because t will be negative at times...
+			for ( int t = 0 ; t < static_cast<int> ( operations .size( ) ) ; t++ ) //I removed the unsigned because t will be negative at times...
 				if ( operations[ t ] .partition_new .partition == selected_partition .partition )
 					operations.erase( operations .begin( ) + t-- ) ;
 				

@@ -103,8 +103,8 @@ void Dialog_Partition_Info::init_drawingarea( )
 	
 	//calculate proportional width of used and unused
 	used = unused = 0 ;
-	used 	= (int) ( ( (375 - BORDER *2) / ( (double) (partition .sector_end - partition .sector_start) / partition .sectors_used ) )+0.5 ) ;
-	unused	= 375 - used - (BORDER *2) ;
+	used = Round( (375 - BORDER *2) / ( static_cast<double> (partition .sector_end - partition .sector_start) / partition .sectors_used ) ) ;
+	unused = 375 - used - BORDER *2 ;
 	
 	//allocate some colors
 	color_used.set( "#F8F8BA" ); this ->get_colormap( ) ->alloc_color( color_used ) ;
@@ -117,7 +117,6 @@ void Dialog_Partition_Info::init_drawingarea( )
 	
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout ( partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB( ) ) ) ;
-	
 }
 
 void Dialog_Partition_Info::Display_Info( )
@@ -140,8 +139,8 @@ void Dialog_Partition_Info::Display_Info( )
 	if ( partition.sectors_used != -1 )
 	{
 		//calculate relative diskusage
-		int percent_used = (int) ( (double) partition.Get_Used_MB( ) / partition .Get_Length_MB( ) *100 +0.5 ) ;
-				
+		int percent_used = Round( static_cast<double> (partition .Get_Used_MB( ) ) / partition .Get_Length_MB( ) *100 ) ;
+						
 		//used
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL ) ;
 		table ->attach( * mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Used_MB( ) ) ), 1, 2, top, bottom, Gtk::FILL ) ;
@@ -218,13 +217,11 @@ Glib::ustring Dialog_Partition_Info::Find_Status( )
 	else if ( partition .filesystem == "linux-swap" )
 		return _("Active") ;
 		
-	
 	//try to find the mountpoint in /proc/mounts
 	//get realpath
 	char real_path[ 4096 ] ;
 	realpath( partition .partition .c_str( ), real_path );
 	Glib::ustring mountpoint, partition_real_path = real_path ; //because root partition is listed as /dev/root we need te compare against te real path..
-	
 	
 	std::ifstream file_mounts( "/proc/mounts" ) ;
 	std::string line ;
@@ -241,8 +238,6 @@ Glib::ustring Dialog_Partition_Info::Find_Status( )
 			
 			break ;
 		}
-		
-		
 	}
 	
 	file_mounts .close( ) ;
@@ -252,7 +247,6 @@ Glib::ustring Dialog_Partition_Info::Find_Status( )
 		mountpoint = "/" ;
 	
 	return String::ucompose( _("Mounted on %1"), mountpoint ) ;
-		
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info( )
@@ -262,6 +256,5 @@ Dialog_Partition_Info::~Dialog_Partition_Info( )
 	this ->get_colormap( ) ->free_colors( color_text, 1 ) ;
 	this ->get_colormap( ) ->free_colors( color_partition, 1 ) ;
 }
-
 
 } //GParted

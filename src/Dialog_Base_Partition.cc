@@ -41,7 +41,6 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING);
 	
-		
 	//fill table
 	table_resize .set_border_width( 5 ) ;
 	table_resize .set_row_spacings( 5 ) ;
@@ -70,7 +69,6 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_after, 1, 2, 2, 3, Gtk::FILL);
-	
 	
 	if ( ! fixed_start )
 		before_value = spinbutton_before .get_value() ;
@@ -114,13 +112,13 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	this ->show_all_children( ) ;
 }
 
-Partition Dialog_Base_Partition::Get_New_Partition() 
+Partition Dialog_Base_Partition::Get_New_Partition( ) 
 { 	
-	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
+	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int( ) )
 		selected_partition .sector_start = START + (Sector) spinbutton_before .get_value() * MEGABYTE ;	
 	
-	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
-		selected_partition .sector_end = selected_partition .sector_start + (Sector) spinbutton_size .get_value() * MEGABYTE ;
+	if ( ORIG_AFTER != spinbutton_after .get_value_as_int( ) )
+		selected_partition .sector_end = selected_partition .sector_start + (Sector) spinbutton_size .get_value( ) * MEGABYTE ;
 
 	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition.sector_start < START )
@@ -161,7 +159,6 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case PASTE	:	this->add_button( Gtk::Stock::PASTE,Gtk::RESPONSE_OK );
 					break ;
 	}
-	
 }
 
 void Dialog_Base_Partition::Set_MinMax_Text( long min, long max )
@@ -256,9 +253,9 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 		
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			frame_resizer_base ->set_x_start( (int) ( spinbutton_before .get_value( ) / MB_PER_PIXEL + 0.5 ) ) ;
+			frame_resizer_base ->set_x_start( Round( spinbutton_before .get_value( ) / MB_PER_PIXEL ) ) ;
 		
-		frame_resizer_base ->set_x_end( (int) ( 500 - ( (double) spinbutton_after .get_value( ) / MB_PER_PIXEL ) + 0.5 ) ) ;
+		frame_resizer_base ->set_x_end( 500 - Round( spinbutton_after .get_value( ) / MB_PER_PIXEL ) ) ;
 		
 		frame_resizer_base ->Draw_Partition( ) ;
 		
@@ -266,11 +263,11 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 	}
 }
 
-void Dialog_Base_Partition::Check_Change()
+void Dialog_Base_Partition::Check_Change( )
 {
-	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int()	&&
-		ORIG_SIZE == spinbutton_size .get_value_as_int()	&& 
-		ORIG_AFTER== spinbutton_after .get_value_as_int() 
+	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int( )	&&
+		ORIG_SIZE == spinbutton_size .get_value_as_int( )	&& 
+		ORIG_AFTER== spinbutton_after .get_value_as_int( ) 
 	)
 		button_resize_move .set_sensitive( false ) ;
 	else

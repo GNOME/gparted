@@ -16,7 +16,7 @@
  */
  
 #include "../include/Dialog_Progress.h"
-
+#include <iostream>
 namespace GParted
 {
 
@@ -29,8 +29,8 @@ Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBu
 	
 	this ->count_operations = count_operations ;
 	current_operation_number = 0 ;
-	fraction = (double) 1 / count_operations ;
-		
+	fraction = 1.00 / count_operations ;
+			
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += _( "Applying pending operations" ) ;
 	str_temp += "</span>\n\n" ;
@@ -94,7 +94,7 @@ void Dialog_Progress::Set_Operation( )
 	
 	if ( TIME_LEFT > 0 )
 	{
-		fraction_current = (double) 1 / TIME_LEFT ;
+		fraction_current = 1.00 / TIME_LEFT ;
 		conn = Glib::signal_timeout( ) .connect( sigc::mem_fun( *this, &Dialog_Progress::Show_Progress ), 1000 );
 	}
 	else
@@ -137,7 +137,6 @@ void Dialog_Progress::signal_textbuffer_insert( const Gtk::TextBuffer::iterator 
 	Gtk::TextBuffer::iterator temp = iter ;
 	textview_details .scroll_to( temp, 0 ) ;
 }
-
 
 Dialog_Progress::~Dialog_Progress()
 {

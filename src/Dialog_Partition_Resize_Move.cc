@@ -80,8 +80,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	//calculate total size in MB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t;
-	for ( t=0;t< partitions.size(); t++ )
-		if ( partitions[t].sector_start == selected_partition.sector_start )
+	for ( t = 0 ; t < partitions .size( ) ; t++ )
+		if ( partitions[ t ] .sector_start == selected_partition .sector_start )
 			break;
 	
 	Sector previous, next ;
@@ -101,13 +101,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
 	TOTAL_MB = Sector_To_MB( total_length ) ;
 	
-	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 		
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_start( Round( (double) previous / ( (double)total_length/500) ) ) ;
-	frame_resizer_base ->set_x_end( ( Round( (double) (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500) )) + frame_resizer_base ->get_x_start() ) ;
-	frame_resizer_base ->set_used( Round( (double) selected_partition.sectors_used / ( (double)total_length/500) ) ) ;
-	
+	frame_resizer_base ->set_x_start( Round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_end( Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
+	frame_resizer_base ->set_used( Round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
+		
 	if ( fs .shrink )
 	{
 		//since some filesystems have lower limits we need to check for this
@@ -141,12 +141,11 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
 	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
-	frame_resizer_base ->set_size_limits( (int) (fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( static_cast<int> (fs .MIN / MB_PER_PIXEL), static_cast<int> (fs .MAX / MB_PER_PIXEL) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
 }
-
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Partition> & partitions )
 {
@@ -173,11 +172,11 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	//now we have enough data to calculate some important values..
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
 	TOTAL_MB = Sector_To_MB( total_length ) ;
-	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
-	frame_resizer_base ->set_x_start( Round( (double) previous / ( (double)total_length/500) ) ) ;
-	frame_resizer_base ->set_x_end( ( Round( (double) (selected_partition.sector_end - selected_partition.sector_start) / ( (double)total_length/500) ) ) + frame_resizer_base ->get_x_start() ) ;
+	frame_resizer_base ->set_x_start( Round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_end( Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first =0, used =0 ;
@@ -192,8 +191,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 		}
 	}
 
-	frame_resizer_base ->set_used_start( Round( (double) (first - START) / ( (double)total_length/500) ) ) ;
-	frame_resizer_base ->set_used( Round( (double) used / ( (double)total_length/500) ) ) ;
+	frame_resizer_base ->set_used_start( Round( (first - START) / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_used( Round( used / ( total_length / 500.00 ) ) ) ;
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
@@ -222,6 +221,5 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	//set contents of label_minmax
 	Set_MinMax_Text( first == 0 ? BUF/2 : Sector_To_MB( used ), Sector_To_MB( total_length ) ) ;
 }
-
 
 } //GParted

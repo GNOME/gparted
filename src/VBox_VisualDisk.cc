@@ -46,14 +46,14 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	
 	
 	//since disksegments have minimal sizes ( unallocated 15 and partitions 20 pixels ) i do some checking to prevent the visual disk from growing to much
-	Sector sectors_per_pixel = Round( (double) device_length / 750 ) ;
-	
-	double width, extra_pixels = 0 ;
+	Sector sectors_per_pixel = Round( device_length / 750.00 ) ;
+		
+	double extra_pixels = 0 ;
 	
 	for ( unsigned int t = 0; t < partitions .size( ) ; t++ )
 	{
-		width = (double) (partitions[ t ] .sector_end - partitions[ t ] .sector_start) / sectors_per_pixel ;
-		
+		double width = static_cast<double> (partitions[ t ] .sector_end - partitions[ t ] .sector_start) / sectors_per_pixel ;
+				
 		if ( (partitions[ t ] .type == GParted::PRIMARY || partitions[ t ] .type == GParted::LOGICAL) && width < 20  )
 			extra_pixels += (20 - width) ;
 		else if ( partitions[ t ] .type == GParted::UNALLOCATED && width < 15 )
@@ -120,12 +120,11 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 			Create_Visual_Partition( partition .logicals[ t ] ) ;
 			hbox_extended ->pack_start( *( visual_partitions .back( ) ->drawingarea ), Gtk::PACK_SHRINK ) ;
 		}
-		
-			
+					
 		return ;
 	}
-		
-	visual_partitions .back( ) ->length = (int) (SCREEN_WIDTH / (double) ( device_length / (double)  ( partition .sector_end - partition .sector_start) ) );
+	
+	visual_partitions .back( ) ->length = static_cast<int> ( SCREEN_WIDTH / ( device_length / static_cast<double> (partition .sector_end - partition .sector_start) ) );
 	if ( visual_partitions .back( )  ->length < 20 )//we need a min. size. Otherwise some small partitions wouldn't be visible
 		visual_partitions .back( ) ->length = ( partition .type == GParted::UNALLOCATED ) ? 15 : 20 ;
 		
@@ -143,9 +142,8 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 	if (  partition .type == GParted::UNALLOCATED )  
 		visual_partitions .back( ) ->used = -1;
 	else 
-		visual_partitions .back( ) ->used = (int) ( (visual_partitions .back( ) ->length - (BORDER *2)) / (double) ( ( partition .sector_end - partition .sector_start) / (double)partition .sectors_used ) ) ;
-	
-	
+		visual_partitions .back( ) ->used = static_cast<int> ( (visual_partitions .back( ) ->length - (BORDER *2)) / ( static_cast<double> (partition .sector_end - partition .sector_start) / partition .sectors_used ) );
+		
 	visual_partitions.back( ) ->color_fs = partition .color; 
 	this ->get_colormap( ) ->alloc_color( visual_partitions .back( ) ->color_fs );
 		
@@ -250,23 +248,20 @@ void VBox_VisualDisk::Set_Selected( const Partition & partition )
 	if ( temp >= 0 ) //prevent segfault at firsttime selection
 		drawingarea_on_expose( NULL, visual_partitions[ temp ] ) ; 	
 		
-	
 	if ( partition.type == GParted::EXTENDED )
 		return; //extended can not be selected in visualdisk (yet )
 	 
 	//now set new selected one
 	for ( unsigned int t = 0;t < visual_partitions.size() ; t++ )
 	{
-		if ( visual_partitions[t] ->sector_start == partition.sector_start && visual_partitions[t] ->drawingarea != NULL )
+		if ( visual_partitions[ t ] ->sector_start == partition .sector_start && visual_partitions[ t ] ->drawingarea != NULL )
 		{
 			selected_partition = t;
 			drawingarea_on_expose( NULL, visual_partitions[ t ] ) ; 	
 			return;
 		}
 	}
-	
 }
-
 
 void VBox_VisualDisk::drawingarea_on_realize( Visual_Partition* vp )
 {
@@ -325,10 +320,6 @@ VBox_VisualDisk::~VBox_VisualDisk( )
 	this ->get_colormap( ) ->free_colors( color_used, 1 ) ;
 	this ->get_colormap( ) ->free_colors( color_unused, 1 ) ;
 	this ->get_colormap( ) ->free_colors( color_text, 1 ) ;
-
 }
-
-
-
 
 } //GParted

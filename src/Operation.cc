@@ -35,7 +35,6 @@ Operation::Operation( const Device & device, const Partition & partition_origina
 	}
 }
 
-
 Glib::ustring Operation::Get_String( )
 {
 	Glib::ustring temp ;
@@ -92,7 +91,6 @@ Glib::ustring Operation::Get_String( )
 	}
 		
 }
-
 
 void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 {
@@ -153,7 +151,7 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 
 int Operation::Get_Index_Original( std::vector<Partition> & partitions )
 {
-	for ( int t = 0 ; t < (int)partitions .size( ) ; t++ )
+	for ( int t = 0 ; t < static_cast<int> ( partitions .size( ) ) ; t++ )
 		if ( partition_original .sector_start >= partitions[ t ] .sector_start && partition_original .sector_end <= partitions[ t ] .sector_end )
 		{
 			//remove unallocated space preceding the original partition
@@ -161,7 +159,7 @@ int Operation::Get_Index_Original( std::vector<Partition> & partitions )
 				partitions .erase( partitions .begin( ) + --t );
 						
 			//remove unallocated space following the original partition
-			if ( t +1 < (int)partitions .size( ) && partitions[ t +1 ] .type == GParted::UNALLOCATED )
+			if ( t +1 < static_cast<int> ( partitions .size( ) ) && partitions[ t +1 ] .type == GParted::UNALLOCATED )
 				partitions .erase( partitions .begin( ) + t +1 );
 			
 			return t ;

@@ -17,13 +17,13 @@
  
 #include "../include/Frame_Resizer_Base.h"
 
-Frame_Resizer_Base::Frame_Resizer_Base()
+Frame_Resizer_Base::Frame_Resizer_Base( )
 {
 	this ->fixed_start = false ;
 	init( ) ;
 }
 
-void Frame_Resizer_Base::init() 
+void Frame_Resizer_Base::init( ) 
 {
 	drawingarea .set_size_request( 536, 50 );
 
@@ -58,19 +58,18 @@ void Frame_Resizer_Base::init()
 	this ->show_all_children( );
 }
 
-
 void Frame_Resizer_Base::set_rgb_partition_color( const Gdk::Color & color )
 {
-	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_partition, 1 ) ;
 	this ->color_partition = color ;
-	this ->get_colormap() ->alloc_color( color_partition ) ;
+	this ->get_colormap( ) ->alloc_color( color_partition ) ;
 }
 
 void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::Color & color ) 
 {
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_unused, 1 ) ;
 	this ->color_unused = color ;
-	this ->get_colormap() ->alloc_color( color_unused ) ;
+	this ->get_colormap( ) ->alloc_color( color_unused ) ;
 }
 
 void Frame_Resizer_Base::set_x_start( int x_start) 
@@ -107,36 +106,36 @@ void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
 	this ->MAX_SIZE = max_size + 16 ; 
 }
 
-int Frame_Resizer_Base::get_used()
+int Frame_Resizer_Base::get_used( )
 {
 	return USED ;
 }
 
-int Frame_Resizer_Base::get_x_start() 
+int Frame_Resizer_Base::get_x_start( ) 
 {
 	return X_START -10  ;
 }
 
-int Frame_Resizer_Base::get_x_end() 
+int Frame_Resizer_Base::get_x_end( ) 
 {
 	return X_END -26 ;
 }
 
-void Frame_Resizer_Base::drawingarea_on_realize(  )
+void Frame_Resizer_Base::drawingarea_on_realize( )
 {
-	gc = Gdk::GC::create( drawingarea .get_window() );
+	gc = Gdk::GC::create( drawingarea .get_window( ) );
 	
-	drawingarea .get_window() ->set_background(color_background);
+	drawingarea .get_window( ) ->set_background( color_background );
 	
-	drawingarea.add_events(Gdk::POINTER_MOTION_MASK );
-	drawingarea.add_events(Gdk::BUTTON_PRESS_MASK );
-	drawingarea.add_events(Gdk::BUTTON_RELEASE_MASK );
-	drawingarea.add_events(Gdk::LEAVE_NOTIFY_MASK );
+	drawingarea .add_events( Gdk::POINTER_MOTION_MASK );
+	drawingarea .add_events( Gdk::BUTTON_PRESS_MASK );
+	drawingarea .add_events( Gdk::BUTTON_RELEASE_MASK );
+	drawingarea .add_events( Gdk::LEAVE_NOTIFY_MASK );
 }
 
-bool Frame_Resizer_Base::drawingarea_on_expose( GdkEventExpose * ev  )
+bool Frame_Resizer_Base::drawingarea_on_expose( GdkEventExpose * ev )
 { 
-	Draw_Partition() ;
+	Draw_Partition( ) ;
 	return true;
 }
 
@@ -146,35 +145,34 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	{ 
 		//check if pointer is over a gripper
 		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45  )	//left grip
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
 		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
 		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )					//move grip
-			drawingarea .get_parent_window() ->set_cursor( *cursor_move ) ;
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_move ) ;
 		else																																						//normal pointer 
-			drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;		
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_normal ) ;		
 	}
 
-	
 	//here's where the real work is done ;-)
-	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE) 
+	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE ) 
 	{ 
 		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 && (X_END - ev ->x) <= MAX_SIZE && (X_END - ev ->x) >= MIN_SIZE )
 		{
-			X_START =(int) ev -> x ;
+			X_START = static_cast<int> ( ev ->x ) ;
 			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_RIGHT && ev ->x <= 526 && ev ->x >= X_START + USED + BORDER *2 && (ev ->x - X_START) <= MAX_SIZE && (ev ->x - X_START) >= MIN_SIZE )
 		{
-			X_END = (int) ev ->x ;
+			X_END = static_cast<int> ( ev ->x ) ;
 			signal_resize.emit( X_START -10, X_END -26, ARROW_RIGHT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
 		else if ( GRIP_MOVE )
 		{
-			temp_x = X_START + ((int) ev ->x - X_START_MOVE);
-			temp_y = X_END + ( (int) ev ->x - X_START_MOVE);
+			temp_x = X_START + static_cast<int> ( ev ->x - X_START_MOVE );
+			temp_y = X_END + static_cast<int> ( ev ->x - X_START_MOVE );
 			
 			if ( temp_x >= 10 && temp_y <= 526 )
 			{
@@ -182,16 +180,15 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 				X_END =  temp_y ;
 			}
 			
-			X_START_MOVE = (int) ev ->x ;		
+			X_START_MOVE = static_cast<int> ( ev ->x ) ;		
 			
 			signal_move.emit( X_START -10, X_END -26) ;	//-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
-		Draw_Partition() ;
+		Draw_Partition( ) ;
 	}
 
 	return true;
-	
 }
 
 bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev ) 
@@ -203,7 +200,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_press_event( GdkEventButton *ev )
 	else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 ) //right grip
 		GRIP_RIGHT = true ;
 	else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )															//move grip
-		{ GRIP_MOVE = true ; X_START_MOVE = (int)ev ->x; }
+		{ GRIP_MOVE = true ; X_START_MOVE = static_cast<int> ( ev ->x ); }
 	
 	return true;
 }
@@ -218,7 +215,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev
 bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 {
 	if ( ev ->mode != GDK_CROSSING_GRAB && ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) 
-		drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;	
+		drawingarea .get_parent_window( ) ->set_cursor( *cursor_normal ) ;	
 	
 	return true;
 }
@@ -231,24 +228,24 @@ void Frame_Resizer_Base::Draw_Partition( )
 	
 	if ( drawingarea .get_window( ) )
 	{
-		drawingarea .get_window() ->clear() ;
+		drawingarea .get_window( ) ->clear( ) ;
 		
 		//the two rectangles on each side of the partition
 		gc ->set_foreground( color_arrow_rectangle );
-		drawingarea .get_window() ->draw_rectangle( gc, true, 0,0,10,50 );
-		drawingarea .get_window() ->draw_rectangle( gc, true, 526,0,10,50 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, true, 0, 0, 10, 50 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, true, 526, 0, 10, 50 );
 		
 		//partition
 		gc ->set_foreground( color_partition );
-		drawingarea .get_window() ->draw_rectangle( gc, true, X_START,0,X_END - X_START,50 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START, 0, X_END - X_START, 50 );
 		
 		//used
 		gc ->set_foreground( color_used );
-		drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER, BORDER, USED ,34 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START +BORDER, BORDER, USED, 34 );
 		
 		//unused
 		gc ->set_foreground( color_unused );
-		drawingarea .get_window() ->draw_rectangle( gc, true, X_START + BORDER +USED, BORDER, UNUSED,34 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, true, X_START +BORDER +USED, BORDER, UNUSED, 34 );
 		
 		//resize grips
 		if ( ! fixed_start )
@@ -256,7 +253,6 @@ void Frame_Resizer_Base::Draw_Partition( )
 		
 		Draw_Resize_Grip( ARROW_RIGHT ) ;
 	}
-	
 }
 
 void Frame_Resizer_Base::Draw_Resize_Grip( ArrowType arrow_type ) 
@@ -278,24 +274,22 @@ void Frame_Resizer_Base::Draw_Resize_Grip( ArrowType arrow_type )
 	gc ->set_foreground(  color_arrow_rectangle );
 	
 	if ( arrow_type == ARROW_LEFT )
-		drawingarea .get_window() ->draw_rectangle( gc, false, X_START -10 , 5, 9, 40 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, false, X_START -10 , 5, 9, 40 );
 	else
-		drawingarea .get_window() ->draw_rectangle( gc, false, X_END +1, 5, 9, 40 );
+		drawingarea .get_window( ) ->draw_rectangle( gc, false, X_END +1, 5, 9, 40 );
 	
 	gc ->set_foreground( color_arrow );
-	drawingarea .get_window() ->draw_polygon( gc , true, arrow_points  );
-	
+	drawingarea .get_window( ) ->draw_polygon( gc , true, arrow_points  );
 }
 
-
-Frame_Resizer_Base::~Frame_Resizer_Base()
+Frame_Resizer_Base::~Frame_Resizer_Base( )
 { 
-	this ->get_colormap() ->free_colors( color_used, 1 ) ;
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap() ->free_colors( color_arrow, 1 ) ;
-	this ->get_colormap() ->free_colors( color_background, 1 ) ;
-	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
-	this ->get_colormap() ->free_colors( color_arrow_rectangle, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_used, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_unused, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_arrow, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_background, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_partition, 1 ) ;
+	this ->get_colormap( ) ->free_colors( color_arrow_rectangle, 1 ) ;
 	
 	if ( cursor_resize )
 		delete cursor_resize ;

@@ -113,10 +113,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				set_device_partitions( temp_device ) ;
 				
 				if ( temp_device .highest_busy )
-				{
 					temp_device .readonly = ! ped_disk_commit_to_os( disk ) ;
-					sleep( 1 ) ;//this sucks, but it seems that after the commit test, the paths are removed and added again (which takes time..)
-				}
 			}
 			//harddisk without disklabel
 			else

@@ -87,8 +87,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = this ->selected_partition .Get_Length_MB() ;
-	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
+	TOTAL_MB = this ->selected_partition .Get_Length_MB( ) ;
+	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled filesystem
 	optionmenu_filesystem .set_history( first_creatable_fs ) ;
@@ -183,7 +183,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 				
 		fs .MAX = ( fs .MAX && ( fs .MAX - cylinder_size ) < TOTAL_MB ) ? fs .MAX - cylinder_size : TOTAL_MB ;
 		
-		frame_resizer_base ->set_size_limits( (int) (fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+		frame_resizer_base ->set_size_limits( static_cast<int> (fs .MIN / MB_PER_PIXEL), static_cast<int> (fs .MAX / MB_PER_PIXEL) +1 ) ;
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
@@ -226,7 +226,5 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			break ;
 		}
 }
-
-
 
 } //GParted
