@@ -30,7 +30,7 @@ Dialog_About::Dialog_About()
 	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
 	
 	label_temp = manage( new Gtk::Label() ) ;
-	label_temp -> set_markup( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " 0.0.4</b></span>" ) ;
+	label_temp -> set_markup( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>" ) ;
 	this ->get_vbox()->pack_start( *label_temp ,Gtk::PACK_SHRINK );
 	
 	label_temp = manage( new Gtk::Label() ) ;
