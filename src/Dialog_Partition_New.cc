@@ -27,13 +27,7 @@ Dialog_Partition_New::Dialog_Partition_New( )
 	Set_Resizer( false ) ;
 	Set_Confirm_Button( NEW ) ;
 	
-	//set partition color
-	color_temp .set( Get_Color( "ext2" ) ) ;
-	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
-	
-	//set the resizer..
-	frame_resizer_base ->set_x_start( 0 ) ;
-	frame_resizer_base ->set_x_end( 500 ) ;
+	//set used (in pixels)...
 	frame_resizer_base ->set_used( 0 ) ;
 }
 
@@ -46,49 +40,49 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	this ->FILESYSTEMS .back( ) .filesystem = _("Unformatted") ;
 	this ->FILESYSTEMS .back( ) .create = true ;
 		
-	FS fs ; fs.filesystem = "extended" ;
-	this ->FILESYSTEMS .push_back( fs ) ;
+	FS fs_tmp ; fs_tmp .filesystem = "extended" ;
+	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 	
-	//add table with selection menu;s...
+	//add table with selection menu's...
 	table_create .set_border_width( 10 ) ;
-	table_create.set_row_spacings( 5 ) ;
+	table_create .set_row_spacings( 5 ) ;
 	hbox_main .pack_start( table_create, Gtk::PACK_SHRINK );
 	
 	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices> */
 	table_create.attach( * mk_label( (Glib::ustring) _("Create as:") + "\t" ), 0, 1, 0, 1, Gtk::FILL);
 	
 	//fill partitiontype menu
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Primary Partition") ) ) ;
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Logical Partition") ) ) ;
-	menu_type.items().push_back(Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
+	menu_type .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Primary Partition") ) ) ;
+	menu_type .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Logical Partition") ) ) ;
+	menu_type .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
 	
 	//determine which PartitionType is allowed
-	if ( partition.inside_extended )
+	if ( partition .inside_extended )
 	{
-		menu_type.items()[0] .set_sensitive( false ); 
-		menu_type.items()[2] .set_sensitive( false );
-		menu_type.set_active( 1 );
+		menu_type .items( )[ 0 ] .set_sensitive( false ); 
+		menu_type .items( )[ 2 ] .set_sensitive( false );
+		menu_type .set_active( 1 );
 	}
 	else
 	{
-		menu_type.items()[1] .set_sensitive( false ); 
+		menu_type .items( )[ 1 ] .set_sensitive( false ); 
 		if ( any_extended )
-			menu_type.items()[2] .set_sensitive( false );
+			menu_type .items( )[ 2 ] .set_sensitive( false );
 	}
 	
-	optionmenu_type.set_menu( menu_type );
-	optionmenu_type.set_size_request( 160, -1 ); //160 is the ideal width for this table column, (when one widget is set, the rest wil take this width as well)
-	optionmenu_type.signal_changed().connect( sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), true) );
-	table_create.attach( optionmenu_type, 1,2,0,1,Gtk::FILL);
+	optionmenu_type .set_menu( menu_type );
+	optionmenu_type .set_size_request( 160, -1 ); //160 is the ideal width for this table column, (when one widget is set, the rest wil take this width as well)
+	optionmenu_type .signal_changed( ) .connect( sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
+	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
 	//filesystems to choose from 
-	table_create.attach( * mk_label( (Glib::ustring) _("Filesystem:") + "\t" ), 0,1,1,2,Gtk::FILL);
+	table_create.attach( * mk_label( (Glib::ustring) _("Filesystem:") + "\t" ), 0, 1, 1, 2, Gtk::FILL );
 	
 	Build_Filesystems_Menu( only_unformatted ) ;
 	 
 	optionmenu_filesystem .set_menu( menu_filesystem );
-	optionmenu_filesystem .signal_changed().connect( sigc::bind<bool>(sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), false) );
-	table_create.attach( optionmenu_filesystem, 1,2,1,2,Gtk::FILL);
+	optionmenu_filesystem .signal_changed( ) .connect( sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
+	table_create .attach( optionmenu_filesystem, 1, 2, 1, 2, Gtk::FILL );
 	
 	//set some widely used values...
 	START = partition.sector_start ;
@@ -96,26 +90,17 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	TOTAL_MB = this ->selected_partition .Get_Length_MB() ;
 	MB_PER_PIXEL = (double) TOTAL_MB / 500 ;
 	
-	//set spinbuttons initial values( seems a bit redundant )
-	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely	
-	
-	spinbutton_before .set_range( 0, TOTAL_MB -1 ) ;
-	spinbutton_before .set_value( 0 ) ;
-	
-	spinbutton_size .set_range( 1, TOTAL_MB ) ;
-	spinbutton_size .set_value( TOTAL_MB ) ;
-	
-	spinbutton_after .set_range( 0, TOTAL_MB -1 ) ;
-	spinbutton_after .set_value( 0 ) ;
-	
-	GRIP = false ;
-	
 	//set first enabled filesystem
 	optionmenu_filesystem .set_history( first_creatable_fs ) ;
 	optionmenu_changed( false ) ;
 	
+	//set spinbuttons initial values
+	spinbutton_after .set_value( 0 ) ;
+	spinbutton_size .set_value( fs .MAX ) ; 
+	spinbutton_before .set_value( 0 ) ;
+	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
-	if ( selected_partition .Get_Length_MB( ) < cylinder_size )
+	if ( TOTAL_MB < cylinder_size )
 		frame_resizer_base ->set_sensitive( false ) ;
 			
 	this ->show_all_children( ) ;
@@ -198,9 +183,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 				
 		fs .MAX = ( fs .MAX && ( fs .MAX - cylinder_size ) < TOTAL_MB ) ? fs .MAX - cylinder_size : TOTAL_MB ;
 		
-		//needed vor upper limit check (see also Dialog_Base_Partition::on_signal_resize )
-		selected_partition .filesystem = fs .filesystem ; 
-		
+		frame_resizer_base ->set_size_limits( (int) (fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
 		spinbutton_size .set_range( fs .MIN, fs .MAX ) ;

@@ -50,24 +50,25 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_x_end( ( Round( (double) (copied_partition .sector_end - copied_partition .sector_start) / ( (double)total_length/500) )) ) ;
 	frame_resizer_base ->set_used( frame_resizer_base ->get_x_end( ) ) ;
 	
-	//used to store current positions (see Dialog_Base_Partition::on_signal_resize)
-	this ->x_start = frame_resizer_base ->get_x_start( ) ;
-	this ->x_end = frame_resizer_base ->get_x_end( ) ;
+	if ( ! fs .MAX )
+		fs .MAX = TOTAL_MB ;
 	
 	//set values of spinbutton_before
 	spinbutton_before .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB( ) -1 ) ;//mind the -1  !!
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
-	spinbutton_size .set_range( copied_partition .Get_Length_MB( ) +1, fs .MAX ? fs .MAX : TOTAL_MB ) ;
+	spinbutton_size .set_range( copied_partition .Get_Length_MB( ) +1, fs .MAX ) ;
 	spinbutton_size .set_value( copied_partition .Get_Length_MB( ) ) ;
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range( 0, TOTAL_MB - copied_partition .Get_Length_MB( ) -1 ) ;
 	spinbutton_after .set_value( TOTAL_MB - copied_partition .Get_Length_MB( ) ) ;
 	
+	frame_resizer_base ->set_size_limits( (int) (fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	
 	//set contents of label_minmax
-	Set_MinMax_Text( copied_partition .Get_Length_MB( ) +1, fs .MAX ? fs .MAX : TOTAL_MB ) ;
+	Set_MinMax_Text( copied_partition .Get_Length_MB( ) +1, fs .MAX ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

@@ -51,10 +51,6 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 	//set partition color
 	frame_resizer_base ->set_rgb_partition_color( selected_partition .color ) ;
 	
-	//set some initial values... ( i believe i only use these for fat16 checks.. *sigh* )
-	this ->x_start = frame_resizer_base ->get_x_start( ) ;
-	this ->x_end = frame_resizer_base ->get_x_end( ) ;
-	
 	//store the original values
 	ORIG_BEFORE 	= spinbutton_before .get_value_as_int( ) ;
 	ORIG_SIZE	= spinbutton_size .get_value_as_int( ) ;
@@ -116,33 +112,41 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	frame_resizer_base ->set_used( Round( (double) selected_partition.sectors_used / ( (double)total_length/500) ) ) ;
 	
 	//since some filesystems have upper and lower limits we need to check for this
-	long LOWER = ( selected_partition .Get_Used_MB( ) < fs .MIN ) ? fs .MIN : selected_partition .Get_Used_MB( ) ;
-		
-	LOWER += BUF ;
+	if ( selected_partition .Get_Used_MB( ) > fs .MIN )
+		fs .MIN = selected_partition .Get_Used_MB( ) ;
 	
-	//in certain (rare) cases LOWER is a bit too high...
-	if ( LOWER > selected_partition .Get_Length_MB( ) )
-		LOWER = selected_partition .Get_Length_MB( ) ;
+	//if fs. MIN is 0 here (means used == 0 as well) it's safe to have BUF / 2
+	fs .MIN += fs .MIN ? BUF : BUF/2 ;
 	
-	long UPPER = fs .MAX ? fs .MAX : Sector_To_MB( total_length ) ;
-		
+	//in certain (rare) cases fs .MIN is a bit too high...
+	if ( fs .MIN > selected_partition .Get_Length_MB( ) )
+		fs .MIN = selected_partition .Get_Length_MB( ) ;
+	
+	if ( ! fs .MAX )
+		fs .MAX = TOTAL_MB ;
+	
+	if ( fs .MAX > TOTAL_MB )
+		fs .MAX = TOTAL_MB ;
+	
 	//set values of spinbutton_before
 	if ( ! fixed_start )
 	{
-		spinbutton_before .set_range( 0, Sector_To_MB( total_length ) - LOWER ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
 		spinbutton_before .set_value( Sector_To_MB( previous ) ) ;
 	}
 	
 	//set values of spinbutton_size 
-	spinbutton_size .set_range( LOWER, UPPER ) ;
+	spinbutton_size .set_range( fs .MIN, fs .MAX ) ;
 	spinbutton_size .set_value( selected_partition .Get_Length_MB( ) ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, Sector_To_MB( total_length ) - LOWER ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
 	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
+	frame_resizer_base ->set_size_limits( (int) (fs .MIN / MB_PER_PIXEL), (int) (fs .MAX / MB_PER_PIXEL) +1 ) ;
+	
 	//set contents of label_minmax
-	Set_MinMax_Text( LOWER, UPPER ) ;
+	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
 }
 
 
@@ -195,7 +199,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
-		spinbutton_before .set_range( 0, TOTAL_MB - 1 ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - BUF/2 ) ;
 	else
 		spinbutton_before .set_range( 0, Sector_To_MB (first - START) ) ;
 	
@@ -203,23 +207,22 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	
 	//set values of spinbutton_size
 	if ( first == 0 ) //no logicals
-		spinbutton_size .set_range( 1, TOTAL_MB ) ;
+		spinbutton_size .set_range( BUF/2, TOTAL_MB ) ;
 	else
 		spinbutton_size .set_range( Sector_To_MB( used ), TOTAL_MB ) ;
 	
-	spinbutton_size .set_value( selected_partition .Get_Length_MB() ) ;
+	spinbutton_size .set_value( selected_partition .Get_Length_MB( ) ) ;
 	
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
-		spinbutton_after .set_range( 0, TOTAL_MB -1 ) ;
+		spinbutton_after .set_range( 0, TOTAL_MB - BUF/2 ) ;
 	else
 		spinbutton_after .set_range( 0, Sector_To_MB( total_length + START - first - used) ) ;
 	
 	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( Sector_To_MB( used ) +1, Sector_To_MB( total_length ) ) ;
-	
+	Set_MinMax_Text( first == 0 ? BUF/2 : Sector_To_MB( used ), Sector_To_MB( total_length ) ) ;
 }
 
 

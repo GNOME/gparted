@@ -20,27 +20,27 @@
 Frame_Resizer_Base::Frame_Resizer_Base()
 {
 	this ->fixed_start = false ;
-	init() ;
+	init( ) ;
 }
 
 void Frame_Resizer_Base::init() 
 {
-	drawingarea.set_size_request( 536, 50 );
+	drawingarea .set_size_request( 536, 50 );
 
-	drawingarea.signal_realize().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_realize) ) ;
-	drawingarea.signal_expose_event().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_expose) ) ;
-	drawingarea.signal_motion_notify_event().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_mouse_motion) ) ;
-	drawingarea.signal_button_press_event().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_press_event) ) ;
-	drawingarea.signal_button_release_event().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_release_event) ) ;
-	drawingarea.signal_leave_notify_event().connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_leave_notify) ) ;
+	drawingarea .signal_realize( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_realize) ) ;
+	drawingarea .signal_expose_event( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_expose) ) ;
+	drawingarea .signal_motion_notify_event( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_mouse_motion) ) ;
+	drawingarea .signal_button_press_event( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_press_event) ) ;
+	drawingarea .signal_button_release_event( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_button_release_event) ) ;
+	drawingarea .signal_leave_notify_event( ) .connect( sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_leave_notify) ) ;
 		
 	this ->add( drawingarea ) ;
 	
-	color_used.set( "#F8F8BA" );			this ->get_colormap() ->alloc_color( color_used ) ;
-	color_unused.set( "white" );			this ->get_colormap() ->alloc_color( color_unused ) ;
-	color_arrow.set( "black" );			this ->get_colormap() ->alloc_color( color_arrow ) ;
-	color_background.set( "darkgrey" );		this ->get_colormap() ->alloc_color( color_background ) ;
-	color_arrow_rectangle.set( "lightgrey" );	this ->get_colormap() ->alloc_color( color_arrow_rectangle ) ;
+	color_used .set( "#F8F8BA" );			this ->get_colormap( ) ->alloc_color( color_used ) ;
+	color_unused .set( "white" );			this ->get_colormap( ) ->alloc_color( color_unused ) ;
+	color_arrow .set( "black" );			this ->get_colormap( ) ->alloc_color( color_arrow ) ;
+	color_background .set( "darkgrey" );		this ->get_colormap( ) ->alloc_color( color_background ) ;
+	color_arrow_rectangle .set( "lightgrey" );	this ->get_colormap( ) ->alloc_color( color_arrow_rectangle ) ;
 	
 	cursor_resize = new Gdk::Cursor( Gdk::SB_H_DOUBLE_ARROW ) ; 
 	cursor_normal = new Gdk::Cursor( Gdk::LEFT_PTR ) ;
@@ -48,13 +48,14 @@ void Frame_Resizer_Base::init()
 	  
 	GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
 	X_END = 0;
-	 
-	Gdk::Point p;
-	p.set_y( 15); 	arrow_points.push_back( p ) ;
-	p.set_y( 25); 	arrow_points.push_back( p ) ;
-	p.set_y( 35); 	arrow_points.push_back( p ) ;
+	set_size_limits( 0, 500 ) ;
 	
-	this ->show_all_children();
+	Gdk::Point p;
+	p .set_y( 15 ); 	arrow_points .push_back( p ) ;
+	p .set_y( 25 ); 	arrow_points .push_back( p ) ;
+	p .set_y( 35 ); 	arrow_points .push_back( p ) ;
+	
+	this ->show_all_children( );
 }
 
 
@@ -98,6 +99,12 @@ void Frame_Resizer_Base::set_used_start( int used_start )
 		this ->USED_START = 10	;
 	else
 		this ->USED_START = used_start +10;
+}
+
+void Frame_Resizer_Base::set_size_limits( int min_size, int max_size )
+{
+	this ->MIN_SIZE = min_size + 16 ;
+	this ->MAX_SIZE = max_size + 16 ; 
 }
 
 int Frame_Resizer_Base::get_used()
@@ -152,13 +159,13 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 	//here's where the real work is done ;-)
 	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE) 
 	{ 
-		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 )
+		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 && (X_END - ev ->x) <= MAX_SIZE && (X_END - ev ->x) >= MIN_SIZE )
 		{
 			X_START =(int) ev -> x ;
 			signal_resize.emit( X_START -10, X_END -26, ARROW_LEFT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )
 		}
 		
-		else if ( GRIP_RIGHT && ev ->x >= X_START + USED + BORDER *2 && ev ->x <= 526 )
+		else if ( GRIP_RIGHT && ev ->x <= 526 && ev ->x >= X_START + USED + BORDER *2 && (ev ->x - X_START) <= MAX_SIZE && (ev ->x - X_START) >= MIN_SIZE )
 		{
 			X_END = (int) ev ->x ;
 			signal_resize.emit( X_START -10, X_END -26, ARROW_RIGHT) ; //-10/-26 to get the real value ( this way gripper calculations are invisible outside this class )

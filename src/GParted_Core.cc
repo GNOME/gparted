@@ -172,7 +172,7 @@ void GParted_Core::set_device_partitions( Device & device, bool deep_scan )
 				{
 					Set_Used_Sectors( partition_temp ) ;
 					
-					//the 'Unknow' filesystem warning overrules this one
+					//the 'Unknown' filesystem warning overrules this one
 					if ( partition_temp .sectors_used == -1 && partition_temp .error .empty( ) )
 					{
 						partition_temp .error = _("Unable to read the contents of this filesystem!") ;

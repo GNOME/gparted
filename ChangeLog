@@ -1,26 +1,30 @@
+2004-12-12 Bart Hakvoort  <gparted@users.sf.net>
+
+	* The fixes from 12-09 unearthed a number of long forgotten issues and annoyances. Hopefully they're all resolved now.
+
 2004-12-09 Bart Hakvoort  <gparted@users.sf.net>
 
 	* Fixed a bunch of issues with min. and max. sizes of filesystems.
 
 2004-12-10  Gil Osher  <dolfin@rpg.org.il>
 
- * configure.in: Added 'he' (Hebrew) to ALL_LINGUAS.
+	* configure.in: Added 'he' (Hebrew) to ALL_LINGUAS.
 
 2004-12-09 Bart Hakvoort  <gparted@users.sf.net>
 
- * src/fat16: use mkdosfs -F16 instead of libparted to create fat16 filesystems 
+	* src/fat16: use mkdosfs -F16 instead of libparted to create fat16 filesystems 
 
 2004-12-09 Bart Hakvoort  <gparted@users.sf.net>
 
- * src/ext2.cc,
-   src/ext3.cc,
-   src/ntfs.cc,
-   src/reiserfs.cc: added LANG=C to the commands which read the used space of a filesystem. This prevent errors with some locales.
+	 * src/ext2.cc,
+	   src/ext3.cc,
+	   src/ntfs.cc,
+	   src/reiserfs.cc: added LANG=C to the commands which read the used space of a filesystem. This prevent errors with some locales.
 
 2004-12-09 Bart Hakvoort  <gparted@users.sf.net>
 
- * added MIN and MAX to filesystemstruct to set min. and max sizes of a filesystem. So instead of checking per filesystem
-   i now simply check the fs.MIN or fs.MAX. this results in less and cleaner code. Also this will come in handy when adding
+	* added MIN and MAX to filesystemstruct to set min. and max sizes of a filesystem. So instead of checking per filesystem
+	  i now simply check the fs.MIN or fs.MAX. this results in less and cleaner code. Also this will come in handy when adding
 	  support for new filesystems. (This also fixed several minor bugs with filesystemsizes and gained some improvement in resizer
 	  performance)
 
@@ -36,9 +40,9 @@
 
 	* README: updated description to reflect current situation.
 
-2004-12-07	Amanpreet Singh Alam <amanpreetalam@yahoo.com>
+2004-12-07 Amanpreet Singh Alam <amanpreetalam@yahoo.com>
 
-	*configure.in: pa is aeed ALL_LINGUAS
+	* configure.in: pa is aeed ALL_LINGUAS
 
 2004-12-03 Bart Hakvoort  <gparted@users.sf.net>
 

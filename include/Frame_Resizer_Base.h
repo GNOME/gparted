@@ -45,6 +45,7 @@ public:
 	void set_used( int );
 	void set_fixed_start( bool ) ;
 	void set_used_start( int used_start ) ;
+	void set_size_limits( int min_size, int max_size ) ;
 
 	int get_used();
 	int get_x_start() ;
@@ -58,7 +59,7 @@ public:
 	sigc::signal<void,int,int> signal_move;
 
 protected:
-	int X_START, USED, UNUSED, X_END, X_START_MOVE, USED_START;
+	int X_START, USED, UNUSED, X_END, X_START_MOVE, USED_START, MIN_SIZE, MAX_SIZE;
 	bool GRIP_LEFT, GRIP_RIGHT, GRIP_MOVE ;
 
 	//signal handlers
