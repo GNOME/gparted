@@ -11,4 +11,9 @@ which gnome-autogen.sh || {
     echo "You need to install gnome-common from the GNOME CVS"
     exit 1
 }
+
+#i needed to put this one here on order to fix an weird depcomp error
+aclocal
+
+
 USE_GNOME2_MACROS=1 USE_COMMON_DOC_BUILD=yes . gnome-autogen.sh
