@@ -184,24 +184,24 @@ void Win_GParted::init_popupmenu()
 
 void Win_GParted::init_convert_menu()
 {
-	for ( unsigned int t=0; t < gparted_core .get_fs( ) .size() ; t++ )
+	for ( unsigned int t=0; t < gparted_core .get_fs( ) .size( ) -1 ; t++ )
 	{
 		color .set( Get_Color( gparted_core .get_fs( )[ t ] .filesystem ) );
-		hbox = manage( new Gtk::HBox() );
+		hbox = manage( new Gtk::HBox( ) );
 			
 		//the colored square
-		entry =  manage ( new Gtk::Entry() );
+		entry =  manage ( new Gtk::Entry( ) );
 		entry ->set_sensitive( false );
 		entry ->set_size_request( 12, 12 );
-		entry ->modify_base( entry->get_state(), color );
+		entry ->modify_base( entry ->get_state( ), color );
 		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
 		//the label...
 		hbox ->pack_start( * mk_label( " " + gparted_core .get_fs( )[ t ] .filesystem ), Gtk::PACK_SHRINK );	
 				
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
-		menu_convert.items().push_back( *menu_item);
-		menu_convert.items() .back() .signal_activate() .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_fs( )[ t ] .filesystem ) ) ;
+		menu_convert.items( ) .push_back( *menu_item );
+		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_fs( )[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -546,12 +546,12 @@ void Win_GParted::Refresh_Visual( )
 
 bool Win_GParted::Quit_Check_Operations()
 {
-	if ( operations.size() )
+	if ( operations .size( ) )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Quit GParted?" ) + "</span>\n\n" ;
 	
-		if ( operations .size() != 1 )
-			str_temp += String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
+		if ( operations .size( ) != 1 )
+			str_temp += String::ucompose( _("%1 operations are currently pending."), operations .size( ) ) ;
 		else
 			str_temp += _("1 operation is currently pending.");
 				
@@ -559,7 +559,8 @@ bool Win_GParted::Quit_Check_Operations()
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
 		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 		
-		if ( dialog.run() == Gtk::RESPONSE_CANCEL ) return false;//don't close GParted
+		if ( dialog .run( ) == Gtk::RESPONSE_CANCEL )
+			return false;//don't close GParted
 	}
 
 	return true; //close GParted
@@ -635,12 +636,12 @@ void Win_GParted::Set_Valid_Operations()
 void Win_GParted::Set_Valid_Convert_Filesystems() 
 {
 	//disable conversion to the same filesystem
-	for ( unsigned int t = 0 ; t < gparted_core .get_fs( ) .size( ) ; t++ )
+	for ( unsigned int t = 0 ; t < gparted_core .get_fs( ) .size( ) -1 ; t++ )
 	{
 		if ( gparted_core .get_fs( )[ t ] .filesystem == selected_partition .filesystem || ! gparted_core .get_fs( )[ t ] .create )
-			menu_convert .items()[ t ] .set_sensitive( false ) ;
+			menu_convert .items( )[ t ] .set_sensitive( false ) ;
 		else 
-			menu_convert .items()[ t ] .set_sensitive( true ) ;
+			menu_convert .items( )[ t ] .set_sensitive( true ) ;
 	}
 }
 
@@ -650,13 +651,14 @@ void Win_GParted::open_operationslist()
 	int x,y; this ->get_size( x, y );
 	y -= 300;
 		
-	for ( int t=vpaned_main.get_position() ; t > y ; t-=5 )
+	for ( int t = vpaned_main .get_position( ) ; t > y ; t-=5 )
 	{
-		vpaned_main.set_position( t );
-		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+		vpaned_main .set_position( t );
+		while ( Gtk::Main::events_pending( ) ) 
+			Gtk::Main::iteration( );
 	}
 	
-	( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->set_active( true ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
 }
 
 void Win_GParted::close_operationslist() 
@@ -665,26 +667,27 @@ void Win_GParted::close_operationslist()
 	
 	int x,y; this ->get_size( x, y );
 	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
-	for ( int t=vpaned_main.get_position() ; t < y ; t+=5 )
+	for ( int t = vpaned_main .get_position( ) ; t < y ; t+=5 )
 	{
-		vpaned_main.set_position( t );
-		while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+		vpaned_main .set_position( t );
+		while ( Gtk::Main::events_pending( ) )
+			Gtk::Main::iteration( );
 	}
 	
 	hbox_operations .hide( ) ;
-	( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->set_active( false ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist() 
 {
-	operations .clear() ;
-	Refresh_Visual() ;
+	operations .clear( ) ;
+	Refresh_Visual( ) ;
 }
 
 void Win_GParted::optionmenu_devices_changed( )
 {	
 	//set new current device
-	current_device = optionmenu_devices.get_history() ;
+	current_device = optionmenu_devices .get_history( ) ;
 	
 	//refresh label_device_info
 	Fill_Label_Device_Info( );
@@ -712,35 +715,37 @@ void Win_GParted::menu_gparted_refresh_devices()
 
 void Win_GParted::menu_gparted_quit()
 {
-	if ( Quit_Check_Operations() )
-		this->hide();
+	if ( Quit_Check_Operations( ) )
+		this ->hide( );
 }
 
 void Win_GParted::menu_view_harddisk_info()
 { 
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 0 ] ) ->get_active() )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 0 ] ) ->get_active( ) )
 	{ //open harddisk information
-		hpaned_main .get_child1() ->show() ;		
-		for ( int t=hpaned_main .get_position() ; t < 250 ; t +=15 )
+		hpaned_main .get_child1( ) ->show( ) ;		
+		for ( int t = hpaned_main .get_position( ) ; t < 250 ; t +=15 )
 		{
-			hpaned_main.set_position( t );
-			while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+			hpaned_main .set_position( t );
+			while ( Gtk::Main::events_pending( ) )
+				Gtk::Main::iteration( );
 		}
 	}
 	else 
 	{ 	//close harddisk information
-		for ( int t=hpaned_main .get_position() ;  t > 0 ; t -=15 )
+		for ( int t=hpaned_main .get_position( ) ;  t > 0 ; t -=15 )
 		{
-			hpaned_main.set_position( t );
-			while (Gtk::Main::events_pending())  Gtk::Main::iteration();
+			hpaned_main .set_position( t );
+			while ( Gtk::Main::events_pending( ) )
+				Gtk::Main::iteration( );
 		}
-		hpaned_main .get_child1() ->hide() ;
+		hpaned_main .get_child1( ) ->hide( ) ;
 	}
 }
 
 void Win_GParted::menu_view_operations()
 {
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items() [ 1 ] .get_submenu() ->items() [ 1 ] ) ->get_active() )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->get_active( ) )
 		open_operationslist( ) ;
 	else 
 		close_operationslist( ) ;
@@ -751,8 +756,8 @@ void Win_GParted::menu_help_contents()
 	str_temp =  _("Sorry, not yet implemented.") ;
 	str_temp += "\n" ;
 	str_temp += _( "Please visit http://gparted.sf.net for more information and support.") ;
-	Gtk::MessageDialog dialog( *this, str_temp, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true);
-	dialog.run();
+	Gtk::MessageDialog dialog( *this, str_temp, false, Gtk::MESSAGE_INFO, Gtk::BUTTONS_OK, true );
+	dialog .run( );
 }
 
 
@@ -761,28 +766,28 @@ void Win_GParted::menu_help_about()
 	Dialog_About dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog.run();
+	dialog .run( );
 }
 
 void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partition )
 {
 	selected_partition = partition;
 	
-	Set_Valid_Operations() ;
+	Set_Valid_Operations () ;
 	
 	
 	treeview_detail .Set_Selected( partition );
 	vbox_visual_disk ->Set_Selected( partition );
 	
-	if ( event->type == GDK_2BUTTON_PRESS && ! pulse )
-		activate_info() ;
-	else if ( event->button == 3 )  //right-click
+	if ( event ->type == GDK_2BUTTON_PRESS && ! pulse )
+		activate_info( ) ;
+	else if ( event ->button == 3 )  //right-click
 	{
 		//prepare convert menu
-		if ( selected_partition.type != GParted::UNALLOCATED )
-			Set_Valid_Convert_Filesystems() ;
+		if ( selected_partition .type != GParted::UNALLOCATED )
+			Set_Valid_Convert_Filesystems( ) ;
 		
-		menu_popup.popup( event->button, event->time );
+		menu_popup .popup( event ->button, event ->time );
 	}
 }
 

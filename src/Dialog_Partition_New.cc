@@ -167,17 +167,17 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	//optionmenu_type
 	if ( type )
 	{
-		if (optionmenu_type.get_history() == GParted::EXTENDED )
+		if ( optionmenu_type .get_history( ) == GParted::EXTENDED )
 		{
-			menu_filesystem.items().push_back(Gtk::Menu_Helpers::MenuElem( "extended") ) ;
-			optionmenu_filesystem.set_history( 6 ) ;
-			optionmenu_filesystem.set_sensitive( false );
+			menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( "extended" ) ) ;
+			optionmenu_filesystem .set_history( menu_filesystem .items( ) .size( ) -1 ) ;
+			optionmenu_filesystem .set_sensitive( false ) ;
 		}
-		else if ( menu_filesystem.items() .size() > 6 ) 
+		else if ( menu_filesystem .items( ) .size( ) == FILESYSTEMS .size( ) ) 
 		{
-			menu_filesystem.items() .remove( menu_filesystem.items() .back() );
-			optionmenu_filesystem.set_sensitive( true );
-			optionmenu_filesystem.set_history( 0 )  ;
+			menu_filesystem .items( ) .remove( menu_filesystem .items( ) .back( ) ) ;
+			optionmenu_filesystem .set_sensitive( true ) ;
+			optionmenu_filesystem .set_history( 0 ) ;
 		}
 	
 	}
