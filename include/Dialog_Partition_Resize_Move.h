@@ -26,12 +26,14 @@ namespace GParted
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Resize_Move(  ) ;
+	Dialog_Partition_Resize_Move( ) ;
 	void Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions ) ;
 
 private:
 	void Resize_Move_Normal( const std::vector <Partition> & partitions ) ;
 	void Resize_Move_Extended( const std::vector <Partition> & partitions ) ;
+
+	short BUF ; //added to the min. size a filesystem can be..( safety reasons )
 	
 };
 
