@@ -141,20 +141,6 @@ bool Frame_Resizer_Base::drawingarea_on_expose( GdkEventExpose * ev )
 
 bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev ) 
 {
-	if ( ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) //no need to check this while resizing or moving
-	{ 
-		//check if pointer is over a gripper
-		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45 )	//left grip
-			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
-		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
-			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
-		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )					//move grip
-			drawingarea .get_parent_window( ) ->set_cursor( *cursor_move ) ;
-		else																																						//normal pointer 
-			drawingarea .get_parent_window( ) ->set_cursor( *cursor_normal ) ;		
-	}
-
-	//here's where the real work is done ;-)
 	if ( GRIP_LEFT || GRIP_RIGHT || GRIP_MOVE ) 
 	{ 
 		if ( GRIP_LEFT && ev ->x >= 10 && ev ->x <= X_END - USED - BORDER * 2 && (X_END - ev ->x) <= MAX_SIZE && (X_END - ev ->x) >= MIN_SIZE )
@@ -177,7 +163,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 			if ( temp_x >= 10 && temp_y <= 526 )
 			{
 				X_START = temp_x ;
-				X_END =  temp_y ;
+				X_END = temp_y ;
 			}
 			
 			X_START_MOVE = static_cast<int> ( ev ->x ) ;		
@@ -186,6 +172,19 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion *ev )
 		}
 		
 		Draw_Partition( ) ;
+	}
+	
+	else
+	{ 
+		//check if pointer is over a gripper
+		if ( ! fixed_start && ev ->x >= X_START -10 && ev ->x <= X_START && ev ->y >= 5 && ev ->y <= 45 )	//left grip
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
+		else if (  ev ->x >= X_END && ev ->x <= X_END + 10 && ev ->y >= 5 && ev ->y <= 45 )			//right grip
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_resize ) ;
+		else if ( ! fixed_start && ev ->x >= X_START && ev ->x <= X_END )					//move grip
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_move ) ;
+		else																																						//normal pointer 
+			drawingarea .get_parent_window( ) ->set_cursor( *cursor_normal ) ;		
 	}
 
 	return true;
