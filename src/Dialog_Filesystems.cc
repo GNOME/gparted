@@ -26,8 +26,8 @@ Dialog_Filesystems::Dialog_Filesystems( )
 	this ->set_has_separator( false ) ;
 	this ->set_resizable( false ) ;
 	
-	treestore_filesystems = Gtk::TreeStore::create( treeview_filesystems_columns );
-	treeview_filesystems .set_model( treestore_filesystems );
+	liststore_filesystems = Gtk::ListStore::create( treeview_filesystems_columns );
+	treeview_filesystems .set_model( liststore_filesystems );
 	treeview_filesystems .append_column( _("Filesystem"), treeview_filesystems_columns .filesystem );
 	treeview_filesystems .append_column( _("Create"), treeview_filesystems_columns .create );
 	treeview_filesystems .append_column( _("Grow"), treeview_filesystems_columns .grow );
@@ -35,6 +35,7 @@ Dialog_Filesystems::Dialog_Filesystems( )
 	treeview_filesystems .append_column( _("Move"), treeview_filesystems_columns .move );
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 		
+	treeview_filesystems .get_selection( ) ->set_mode( Gtk::SELECTION_NONE );
 	this ->get_vbox( ) ->pack_start( treeview_filesystems ) ;
 	
 	this ->add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK );
@@ -44,7 +45,7 @@ Dialog_Filesystems::Dialog_Filesystems( )
 
 void Dialog_Filesystems::Load_Filesystems( const std::vector< FS > & FILESYSTEMS )
 {
-	treestore_filesystems ->clear( ) ;
+	liststore_filesystems ->clear( ) ;
 	
 	for ( unsigned short t = 0; t < FILESYSTEMS .size( ) -1 ; t++ )
 		Show_Filesystem( FILESYSTEMS[ t ] ) ;
@@ -52,7 +53,7 @@ void Dialog_Filesystems::Load_Filesystems( const std::vector< FS > & FILESYSTEMS
 		
 void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 {
-	treerow = *( treestore_filesystems ->append( ) );
+	treerow = *( liststore_filesystems ->append( ) );
 	treerow[ treeview_filesystems_columns .filesystem ] = fs .filesystem ;
 	treerow[ treeview_filesystems_columns .create ] = render_icon( fs .create ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
 	treerow[ treeview_filesystems_columns .grow ] = render_icon( fs .grow ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 

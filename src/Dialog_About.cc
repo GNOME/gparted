@@ -24,13 +24,13 @@ Dialog_About::Dialog_About()
 {
 	/*TO TRANSLATORS: this is the dialog title */
 	this ->set_title( _( "About GParted" ) );
-	this ->set_size_request( -1, 220 ) ;
+	this ->set_size_request( 250, 220 ) ;
 	this ->set_resizable( false );
 	this ->set_has_separator( false ) ;
 	
 	this ->get_vbox() ->pack_start( * mk_label( "\n<span size='small'>logo here ;)</span>\n", true, false ), Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>", true, false ) ,Gtk::PACK_SHRINK );
-	this ->get_vbox() ->pack_start( * mk_label( "\n" + (Glib::ustring) _( "Gnome Partition Editor based on libparted" ) + "\n", false, false ) ,Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( * mk_label( "\n" + (Glib::ustring) _( "Gnome Partition Editor" ) + "\n", false, false ) ,Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>Copyright © 2004 Bart Hakvoort</span>", true, false ), Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>http://gparted.sourceforge.net</span>", true, false ), Gtk::PACK_SHRINK );
 	

@@ -24,7 +24,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
+#include <gtkmm/liststore.h>
 
 namespace GParted
 {
@@ -42,7 +42,7 @@ private:
 
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
-	Glib::RefPtr<Gtk::TreeStore> treestore_filesystems;
+	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
 	
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
 	{
