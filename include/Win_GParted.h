@@ -42,6 +42,7 @@
 #include <gtkmm/scrolledwindow.h>
 
 #include <dlfcn.h>
+#include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 
 namespace GParted
 {
@@ -85,9 +86,10 @@ private:
 	void allow_copy( bool b )	{ menu_popup.items()[5].set_sensitive( b ); toolbar_main.get_nth_item(5) ->set_sensitive( b ); }
 	void allow_paste( bool b )	{ menu_popup.items()[6].set_sensitive( b ); toolbar_main.get_nth_item(6) ->set_sensitive( b ); }
 	void allow_convert( bool b )	{ menu_popup.items()[8].set_sensitive( b ); }
+	void allow_unmount( bool b )	{ menu_popup.items()[10].set_sensitive( b ); }
 	void allow_undo( bool b )	{ toolbar_main.get_nth_item(8) ->set_sensitive( b ); }
 	void allow_apply( bool b )	{ toolbar_main.get_nth_item(9) ->set_sensitive( b ); }
-	
+		
 	void find_devices_thread( )	{ Find_Devices( ) ; pulse = false ; }
 	
 	//signal handlers
@@ -113,7 +115,8 @@ private:
 	void activate_new();
 	void activate_delete();
 	void activate_info();
-	void activate_convert( const Glib::ustring & new_fs  );
+	void activate_convert( const Glib::ustring & new_fs );
+	void activate_unmount( ) ;
 	
 	void activate_undo();
 	void activate_apply();

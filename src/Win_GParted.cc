@@ -174,6 +174,8 @@ void Win_GParted::init_popupmenu()
 	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
 	menu_popup.items().push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Convert to"), *image, menu_convert ) ) ;
 	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_popup.items().push_back( Gtk::Menu_Helpers::MenuElem( _("Unmount"), sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
+	menu_popup.items().push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	menu_popup.items().push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO, sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
 	init_convert_menu() ;
 	
@@ -602,11 +604,17 @@ bool Win_GParted::Quit_Check_Operations()
 
 void Win_GParted::Set_Valid_Operations()
 {
-	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false ); allow_paste( false ); allow_convert( false );
+	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
+	allow_paste( false ); allow_convert( false ); allow_unmount( false ) ;
 		
-	//we can't perform any operation on a busy (mounted) filesystem
+	//only unmount is allowed
 	if ( selected_partition .busy )
+	{
+		if ( selected_partition .filesystem != "linux-swap" && selected_partition .type != GParted::EXTENDED )
+			allow_unmount( true ) ;
+		
 		return;
+	}
 	
 	//UNALLOCATED
 	if ( selected_partition .type == GParted::UNALLOCATED )
@@ -1105,6 +1113,31 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	}
 	else//normal converting of an existing partition
 		Add_Operation( GParted::CONVERT, part_temp ) ;
+}
+
+void  Win_GParted::activate_unmount( ) 
+{
+	char c_buf[ 512 ] ;
+	Glib::ustring output ;
+
+        FILE *f = popen( ( "umount " + selected_partition .partition + " 2>&1" ) .c_str( ), "r" ) ;
+	
+	while ( fgets( c_buf, 512, f ) )
+		output += c_buf ;
+	
+        pclose( f ) ;
+	
+	if ( ! output .empty( ) ) 
+	{
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += String::ucompose( _("Could not unmount %1"), selected_partition .partition ) ;
+		str_temp += "</span>\n\n" ;
+				
+		Gtk::MessageDialog dialog( *this, str_temp + output, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
+		dialog.run( ) ;
+	} 
+	else
+		menu_gparted_refresh_devices( ) ;
 }
 
 void Win_GParted::activate_undo()

@@ -1,5 +1,10 @@
 2004-11-06 Bart Hakvoort  <gparted@users.sf.net>
 
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: added umount option. Also include unistd.h to solve some issues with gcc 3.2.x
+
+2004-11-06 Bart Hakvoort  <gparted@users.sf.net>
+
 	* instead of listing all partition in one list, logical partitions are now stored in a sublist in extended partition object.
 	This makes partitionhandling in gparted more natural and transparant. It also allowed me to clean up this ugly Operation class ;)
 
