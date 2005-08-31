@@ -1204,7 +1204,7 @@ void Win_GParted::activate_apply( )
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += _( "Are you sure you want to apply the pending operations?" ) ;
 	str_temp += "</span>\n\n" ;
-	str_temp += _( "It is recommended to backup valueable data before proceeding.") ;
+	str_temp += _( "It is recommended to backup valuable data before proceeding.") ;
 	
 	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true );
 	dialog .set_title( _( "Apply operations to harddisk" ) );
