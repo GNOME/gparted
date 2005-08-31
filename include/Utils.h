@@ -55,8 +55,7 @@ struct FS
 	FS( )
 	{
 		read = create = grow = shrink = move = check = copy = false ;
-		MIN = 0 ;
-		MAX = 0 ;
+		MIN = MAX = 0 ;
 	} 
 };
 
@@ -99,10 +98,9 @@ inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true
 
 inline Glib::ustring num_to_str( Sector number )
 {
-	std::ostringstream os;
-	os .imbue( std::locale( "" ) );
-	os << number ;
-	return os .str( ) ;
+	std::stringstream ss;
+	ss << number ;
+	return ss .str( ) ;
 }
 
 //use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..

@@ -124,7 +124,7 @@ namespace UStringPrivate
     os << obj;
 
     std::wstring str = os.str();
-    
+   
     return Glib::convert(std::string(reinterpret_cast<const char *>(str.data()),
 				     str.size() * sizeof(wchar_t)),
 			 "UTF-8", "WCHAR_T");
@@ -157,7 +157,7 @@ namespace UStringPrivate
   inline Composition &Composition::arg(const T &obj)
   {
     Glib::ustring rep = stringify(obj);
-    
+  
     if (!rep.empty()) {		// manipulators don't produce output
       for (specification_map::const_iterator i = specs.lower_bound(arg_no),
 	     end = specs.upper_bound(arg_no); i != end; ++i) {
@@ -179,7 +179,8 @@ namespace UStringPrivate
     : arg_no(1)
   {
 #if __GNUC__ >= 3
-    os.imbue(std::locale("")); // use the user's locale for the stream
+	//plors: i've uncommented this one since it caused a crasher at line 124 for some locales (e.g. nl_BE)
+    //os.imbue(std::locale("")); // use the user's locale for the stream
 #endif
     std::string::size_type b = 0, i = 0;
   

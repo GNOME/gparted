@@ -80,7 +80,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	
 	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
 	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
-	while ( device && strlen( device ->path ) > 6 && ( (Glib::ustring) device ->path ) .is_ascii( ) )
+	while ( device && strlen( device ->path ) > 6 && static_cast<Glib::ustring>( device ->path ) .is_ascii( ) )
 	{
 		if ( open_device( device ->path, device ) )
 			device_paths .push_back( get_sym_path( device ->path ) ) ;
@@ -108,7 +108,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			//make sure cylsize is at least 1 MB
 			if ( temp_device .cylsize < 1 )
 				temp_device .cylsize = 1 ;
-						
+				
 			//normal harddisk
 			if ( disk )
 			{
@@ -130,7 +130,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				partition_temp .Set_Unallocated( 0, temp_device .length, false );
 				temp_device .device_partitions .push_back( partition_temp );
 			}
-				
+					
 			devices .push_back( temp_device ) ;
 			
 			close_device_and_disk( device, disk ) ;
@@ -183,7 +183,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		switch ( c_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
-			case PED_PARTITION_LOGICAL:
+			case PED_PARTITION_LOGICAL:             
 				partition_temp .Set( 	device .path + num_to_str( c_partition ->num ),
 							c_partition ->num,
 							c_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
@@ -191,7 +191,7 @@ void GParted_Core::set_device_partitions( Device & device )
 							c_partition ->geom .end,
 							c_partition ->type,
 							ped_partition_is_busy( c_partition ) );
-					
+						
 				if ( partition_temp .filesystem != "linux-swap" )
 				{
 					Set_Used_Sectors( partition_temp ) ;
