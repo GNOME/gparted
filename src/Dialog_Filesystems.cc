@@ -39,7 +39,7 @@ Dialog_Filesystems::Dialog_Filesystems( )
 	this ->get_vbox( ) ->pack_start( treeview_filesystems ) ;
 	
 	this ->add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK );
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
 	this ->show_all_children( ) ;
 }
 
