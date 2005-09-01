@@ -22,7 +22,6 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBuffer> textbuffer )
 {
-	this ->set_size_request( 600, 275 ) ;
 	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
 	this ->set_title( _("Applying pending operations") ) ;
@@ -41,6 +40,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBu
 	this ->get_vbox( ) ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
 	progressbar_current .set_pulse_step( 0.01 ) ;
+	progressbar_current .set_size_request( 500, -1 ) ;
 	this->get_vbox( ) ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
 	
 	label_current .set_alignment( Gtk::ALIGN_LEFT );
@@ -58,12 +58,10 @@ Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBu
 	scrolledwindow .add( textview_details ) ;
 	
 	this ->get_vbox( ) ->pack_start( scrolledwindow, Gtk::PACK_SHRINK );
-		
-	this ->get_vbox( ) ->pack_start( * mk_label( "<b>\n" + (Glib::ustring) _( "Completed Operations" ) + ":</b>" ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( * mk_label( "<b>\n" + static_cast<Glib::ustring>( _( "Completed Operations" ) ) + ":</b>" ), Gtk::PACK_SHRINK );
 	this ->get_vbox( ) ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
 	this ->get_vbox( ) ->set_spacing( 5 ) ;
-	this ->get_vbox( ) ->set_border_width( 15 ) ;
 	
 	tglbtn_details .set_label( _("Details") ) ;
 	tglbtn_details .signal_toggled( ) .connect( sigc::mem_fun( this, &Dialog_Progress::tglbtn_details_toggled ) ) ;
@@ -121,15 +119,9 @@ bool Dialog_Progress::Show_Progress( )
 void Dialog_Progress::tglbtn_details_toggled( ) 
 {
 	if ( tglbtn_details .get_active( ) )
-	{
 		scrolledwindow .show( ) ;
-		this ->set_size_request( 600, 375 ) ;
-	}
 	else
-	{
 		scrolledwindow .hide( ) ;
-		this ->set_size_request( 600, 275 ) ;
-	}
 }
 
 void Dialog_Progress::signal_textbuffer_insert( const Gtk::TextBuffer::iterator & iter, const Glib::ustring & text, int ) 
