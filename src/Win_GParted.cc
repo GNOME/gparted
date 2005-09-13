@@ -249,7 +249,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//disktype
-	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "DiskType:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * mk_label( " <b>" + (Glib::ustring) _( "DiskLabelType:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
 	device_info .push_back( mk_label( "" ) ) ;
 	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
 	
@@ -1162,7 +1162,7 @@ void  Win_GParted::activate_unmount( )
 
 void Win_GParted::activate_disklabel( )
 {
-	Dialog_Disklabel dialog( devices[ current_device ] .path ) ;
+	Dialog_Disklabel dialog( devices[ current_device ] .path, gparted_core .get_disklabeltypes( ) ) ;
 	dialog .set_transient_for( *this );
 		
 	if ( dialog .run( ) == Gtk::RESPONSE_OK )

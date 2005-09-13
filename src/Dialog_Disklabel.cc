@@ -20,7 +20,7 @@
 namespace GParted
 {
 
-Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
+Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std::vector <Glib::ustring> & disklabeltypes )
 {
 	this ->set_title( String::ucompose( _("Set Disklabel on %1"), device_path ) );
 	this ->set_has_separator( false ) ;
@@ -45,7 +45,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 	str_temp += "</span>\n" ;
 	vbox ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
-	str_temp = _("A disklabel is a file at the beginning of the disk that indicates where each partition begins and how many sectors it occupies.") ;
+	str_temp = _("A disklabel is a piece of data stored at a well known place on the disk, that indicates where each partition begins and how many sectors it occupies.") ;
 	str_temp += "\n" ;
 	str_temp += _("You need a disklabel if you want to create partitions on this disk.") ;
 	str_temp += "\n\n" ;
@@ -69,14 +69,8 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path )
 	expander_advanced .add( *hbox ) ;
 	
 	//create and add optionmenu
-	labeltypes .push_back( "msdos" ) ;
-	labeltypes .push_back( "bsd" ) ;
-	labeltypes .push_back( "loop" ) ;
-	labeltypes .push_back( "gpt" ) ;
-	labeltypes .push_back( "mac" ) ;
-	labeltypes .push_back( "pc98" ) ;
-	labeltypes .push_back( "sun" ) ;
-		
+	this ->labeltypes = disklabeltypes ;
+	
 	for ( unsigned int t = 0 ; t < labeltypes .size( ) ; t++ )
 		menu_labeltypes .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( labeltypes[ t ] + "\t" ) ) ;
 	

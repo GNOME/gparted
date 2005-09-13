@@ -36,7 +36,7 @@ namespace GParted
 class Dialog_Disklabel : public Gtk::Dialog
 {
 public:
-	Dialog_Disklabel( const Glib::ustring & device_path ) ;
+	Dialog_Disklabel( const Glib::ustring & device_path, const std::vector <Glib::ustring> & disklabeltypes ) ;
 	
 	Glib::ustring Get_Disklabel( ) ;
 	

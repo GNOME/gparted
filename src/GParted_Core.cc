@@ -508,6 +508,21 @@ Glib::RefPtr<Gtk::TextBuffer> GParted_Core::get_textbuffer( )
 	return textbuffer ;
 }
 
+std::vector<Glib::ustring>  GParted_Core::get_disklabeltypes( ) 
+{
+	std::vector<Glib::ustring> disklabeltypes ;
+	
+	//msdos should be first in the list
+	disklabeltypes .push_back( "msdos" ) ;
+	
+	 PedDiskType *disk_type ;
+	 for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) ) 
+		 if ( static_cast<Glib::ustring>( disk_type->name ) != "msdos" )
+			disklabeltypes .push_back( disk_type->name ) ;
+
+	 return disklabeltypes ;
+}
+
 Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path ) 
 { 
 	int major, minor, size;

@@ -62,6 +62,7 @@ public:
 	const std::vector<FS> & get_filesystems( ) const ;
 	const FS & get_fs( const Glib::ustring & filesystem ) const ;
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
+	std::vector<Glib::ustring> get_disklabeltypes( ) ;
 
 private:
 	Glib::ustring Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
