@@ -60,7 +60,7 @@ Glib::ustring Operation::Get_String( )
 					/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
 					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device .path ) ;
 		case RESIZE_MOVE:	//if startsector has changed >= 1 MB we consider it a move
-					diff = Abs( partition_new .sector_start - partition_original .sector_start ) ;
+					diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
 					if (  diff >= MEGABYTE ) 
 					{
 						if ( partition_new .sector_start > partition_original .sector_start )
@@ -70,8 +70,8 @@ Glib::ustring Operation::Get_String( )
 					}
 									
 					//check if size has changed ( we only consider changes >= 1 MB )
-					diff = Abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
-												
+					diff = std::abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
+											
 					if ( diff >= MEGABYTE )
 					{
 						if ( temp .empty( ) ) 

@@ -37,6 +37,7 @@ gparted_SOURCES = \
 	fat16.cc\
 	fat32.cc\
 	hfs.cc\
+	hfsplus.cc\
 	jfs.cc\
 	linux_swap.cc\
 	main.cc\

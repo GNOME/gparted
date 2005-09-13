@@ -179,8 +179,8 @@ namespace UStringPrivate
     : arg_no(1)
   {
 #if __GNUC__ >= 3
-	//plors: i've uncommented this one since it caused a crasher at line 124 for some locales (e.g. nl_BE)
-    //os.imbue(std::locale("")); // use the user's locale for the stream
+	  //see #157871
+	//os.imbue(std::locale("")); // use the user's locale for the stream
 #endif
     std::string::size_type b = 0, i = 0;
   

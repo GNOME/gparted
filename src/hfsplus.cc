@@ -16,31 +16,23 @@
  */
  
  
-#include "../include/hfs.h"
+#include "../include/hfsplus.h"
 
 namespace GParted
 {
 
-FS hfs::get_filesystem_support( )
+FS hfsplus::get_filesystem_support( )
 {
 	FS fs ;
-		
-	fs .filesystem = "hfs" ;
+	
+	fs .filesystem = "hfs+" ;
 	
 	fs .read = true ; //provided by libparted
-	
-	if ( ! system( "which hformat 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
-	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
-		fs .copy = true ;
-	
-	fs .MAX = 2048 ;
 	
 	return fs ;
 }
 
-void hfs::Set_Used_Sectors( Partition & partition ) 
+void hfsplus::Set_Used_Sectors( Partition & partition ) 
 {
 	PedFileSystem *fs = NULL;
 	PedConstraint *constraint = NULL;
@@ -69,27 +61,27 @@ void hfs::Set_Used_Sectors( Partition & partition )
 	}
 }
 
-bool hfs::Create( const Partition & new_partition )
-{
-	return ! Execute_Command( "hformat " + new_partition .partition ) ;
-}
-
-bool hfs::Resize( const Partition & partition_new, bool fill_partition )
+bool hfsplus::Create( const Partition & new_partition )
 {
 	return true ;
 }
 
-bool hfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
-{
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
-}
-
-bool hfs::Check_Repair( const Partition & partition )
+bool hfsplus::Resize( const Partition & partition_new, bool fill_partition )
 {
 	return true ;
 }
 
-int hfs::get_estimated_time( long MB_to_Consider )
+bool hfsplus::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+{
+	return true ;
+}
+
+bool hfsplus::Check_Repair( const Partition & partition )
+{
+	return true ;
+}
+
+int hfsplus::get_estimated_time( long MB_to_Consider )
 {
 	return -1 ;
 }

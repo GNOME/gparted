@@ -15,33 +15,27 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#include "../include/Win_GParted.h"
+ 
+#ifndef HFSPLUS
+#define HFSPLUS
 
+#include "../include/FileSystem.h"
 
-int main( int argc, char *argv[ ] )
+namespace GParted
 {
-	//initialize thread system
-	Glib::thread_init( );
-	
-	Gtk::Main kit( argc, argv );
-		 
-	//i18n
-	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR );
-	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" );
-	textdomain( GETTEXT_PACKAGE );
 
-	//check UID
-	if ( getuid( ) != 0 )
-	{
-		Gtk::MessageDialog dialog( "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Root privileges are required for running GParted" ) + "</span>\n\n" +  (Glib::ustring) _( "Since GParted can be a weapon of mass destruction only root may run it.") ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		dialog .run( ) ;
-		exit( 0 );
-	}
-	
-	GParted::Win_GParted win_gparted; 
-	Gtk::Main::run( win_gparted );
+class hfsplus : public FileSystem
+{
+public:
+	FS get_filesystem_support( ) ;
+	void Set_Used_Sectors( Partition & partition ) ;
+	bool Create( const Partition & new_partition ) ;
+	bool Resize( const Partition & partition_new, bool fill_partition = false ) ;
+	bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) ;
+	bool Check_Repair( const Partition & partition ) ;
+	int get_estimated_time( long MB_to_Consider ) ;
+};
 
-	return 0;
-}
+} //GParted
 
-
+#endif //HFSPLUS

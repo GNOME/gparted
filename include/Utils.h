@@ -71,11 +71,6 @@ inline long Sector_To_MB( Sector sectors )
 	 return Round( sectors * 0.000488281250 ) ; // that's what 512/1024/1024 gives you :)
 }
 
-inline Sector Abs( Sector sectors )
-{
-	return sectors < 0 ? sectors - 2*sectors : sectors ;
-}
-
 inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true, bool align_left = true, bool wrap = false, const Glib::ustring & text_color = "black" ) 
 {
 	Gtk::Label * label = manage( new Gtk::Label( text ) ) ;
@@ -96,9 +91,10 @@ inline Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true
 	return label ;
 }
 
-inline Glib::ustring num_to_str( Sector number )
+inline Glib::ustring num_to_str( Sector number, bool use_C_locale = false )
 {
-	std::stringstream ss;
+	std::stringstream ss ;
+	//ss.imbue( std::locale( use_C_locale ? "C" : "" ) ) ; see #157871
 	ss << number ;
 	return ss .str( ) ;
 }
@@ -128,6 +124,7 @@ inline Glib::ustring Get_Color( const Glib::ustring & filesystem )
 	else if	( filesystem == "jfs" )		return "#E0C39E" ;
 		
 	else if	( filesystem == "hfs" )		return "#E0B6AF" ;
+	else if	( filesystem == "hfs+" )		return "#C0A39E" ;
 		
 	else if	( filesystem == "ufs" )		return "#D1940C" ;	
 		

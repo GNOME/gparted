@@ -26,14 +26,16 @@ FS fat16::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "fat16" ;
-	fs .read = true ; //provided by libparted
-	
+		
 	//find out if we can create fat16 filesystems
 	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .create = true ;
 	
 	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
+	{
 		fs .check = true ;
+		fs .read = true ;
+	}
 		
 	//resizing of start and endpoint are provided by libparted
 	fs .grow = true ;
@@ -43,7 +45,7 @@ FS fat16::get_filesystem_support( )
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
 		fs .copy = true ;
 	
-	fs .MIN = 32 ;
+	fs .MIN = 16 ;
 	fs .MAX = 4096 ;
 	
 	return fs ;
@@ -51,31 +53,33 @@ FS fat16::get_filesystem_support( )
 
 void fat16::Set_Used_Sectors( Partition & partition ) 
 {
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
-	PedPartition *c_part = NULL ;
+	char c_buf[ 512 ] ;
+	FILE *f ;
 	
-	if ( disk )
+	Glib::ustring output ;
+	Sector free_clusters = -1, bytes_per_cluster = -1 ;
+
+        //get free blocks..
+	f = popen( ( "LC_ALL=C echo 2 | dosfsck -v " + partition .partition ) .c_str( ), "r" ) ;
+	while ( fgets( c_buf, 512, f ) )
 	{
-		c_part = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
-		if ( c_part )
+		output = Glib::locale_to_utf8( c_buf ) ;
+		
+		//bytes per cluster
+		if ( output .find( "bytes per cluster" ) < output .length( ) )
+			bytes_per_cluster = atol( output .substr( 0, output .find( "b" ) ) .c_str( )  ) ;
+		
+		//free clusters
+		if ( output .find( partition .partition ) < output .length( ) )
 		{
-			fs = ped_file_system_open( & c_part ->geom ); 	
-					
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint ( fs ) ;
-				if ( constraint )
-				{
-					partition .Set_Unused( (partition .sector_end - partition .sector_start) - constraint ->min_size ) ;
-					
-					ped_constraint_destroy ( constraint );
-				}
-												
-				ped_file_system_close( fs ) ;
-			}
+			output = output .substr( output .find( "," ) +2, output .length( ) ) ;
+			free_clusters = atol( output .substr( output .find( "/" ) +1, output .find( " " ) ) .c_str( ) ) - atol( output .substr( 0, output .find( "/" ) ) .c_str( ) ) ;
 		}
 	}
+	pclose( f ) ;
+	
+	if ( free_clusters > -1 && bytes_per_cluster > -1 )
+		partition .Set_Unused( free_clusters * bytes_per_cluster / 512 ) ;
 }
 	
 bool fat16::Create( const Partition & new_partition )
@@ -91,7 +95,7 @@ bool fat16::Resize( const Partition & partition_new, bool fill_partition )
 
 bool fat16::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-	return ! Execute_Command( "LC_NUMERIC=C dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
+	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
 }
 
 bool fat16::Check_Repair( const Partition & partition )

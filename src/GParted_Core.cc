@@ -43,6 +43,9 @@ void GParted_Core::find_supported_filesystems( )
 	hfs fs_hfs;
 	FILESYSTEMS .push_back( fs_hfs .get_filesystem_support( ) ) ;
 	
+	hfsplus fs_hfsplus;
+	FILESYSTEMS .push_back( fs_hfsplus .get_filesystem_support( ) ) ;
+	
 	jfs fs_jfs;
 	FILESYSTEMS .push_back( fs_jfs .get_filesystem_support( ) ) ;
 	
@@ -311,7 +314,7 @@ int GParted_Core::get_estimated_time( const Operation & operation )
 		case GParted::RESIZE_MOVE:
 			set_proper_filesystem( operation .partition_new .filesystem ) ;
 			if ( p_filesystem )
-				return p_filesystem ->get_estimated_time( Abs( operation .partition_original .Get_Length_MB( ) - operation .partition_new .Get_Length_MB( ) ) ) ;
+				return p_filesystem ->get_estimated_time( std::abs( operation .partition_original .Get_Length_MB( ) - operation .partition_new .Get_Length_MB( ) ) ) ;
 			
 			break ;
 		
@@ -736,6 +739,8 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 		p_filesystem = new fat32( ) ;
 	else if ( filesystem == "hfs" )
 		p_filesystem = new hfs( ) ;
+	else if ( filesystem == "hfs+" )
+		p_filesystem = new hfsplus( ) ;
 	else if ( filesystem == "jfs" )
 		p_filesystem = new jfs( ) ;
 	else if ( filesystem == "linux-swap" )

@@ -84,7 +84,7 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 
 bool reiser4::Create( const Partition & new_partition )
 {
-	return ! Execute_Command( "mkfs.reiser4 -y " + new_partition .partition ) ;
+	return ! Execute_Command( "mkfs.reiser4 --yes " + new_partition .partition ) ;
 }
 
 bool reiser4::Resize( const Partition & partition_new, bool fill_partition )
@@ -114,7 +114,7 @@ bool reiser4::Copy( const Glib::ustring & src_part_path, const Glib::ustring & d
 
 bool reiser4::Check_Repair( const Partition & partition )
 {
-	return ! Execute_Command( "fsck.reiser4 -y --fix " + partition .partition ) ;
+	return ! Execute_Command( "fsck.reiser4 --yes --fix " + partition .partition ) ;
 }
 
 int reiser4::get_estimated_time( long MB_to_Consider )
