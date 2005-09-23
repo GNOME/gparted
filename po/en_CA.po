@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-31 17:24-0400\n"
+"POT-Creation-Date: 2005-09-23 09:53-0400\n"
 "PO-Revision-Date: 2005-08-31 22:40-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
@@ -93,11 +93,11 @@ msgstr "Set Disklabel on %1"
 
 #: src/Dialog_Disklabel.cc:48
 msgid ""
-"A disklabel is a file at the beginning of the disk that indicates where each "
-"partition begins and how many sectors it occupies."
+"A disklabel is a piece of data stored at a well known place on the disk, "
+"that indicates where each partition begins and how many sectors it occupies."
 msgstr ""
-"A disklabel is a file at the beginning of the disk that indicates where each "
-"partition begins and how many sectors it occupies."
+"A disklabel is a piece of data, stored at a known place on the disk, "
+"that indicates where each partition begins and how many sectors it occupies."
 
 #: src/Dialog_Disklabel.cc:50
 msgid "You need a disklabel if you want to create partitions on this disk."
@@ -115,11 +115,11 @@ msgstr "Advanced"
 msgid "Select new labeltype:"
 msgstr "Select new label type:"
 
-#: src/Dialog_Disklabel.cc:88
+#: src/Dialog_Disklabel.cc:82
 msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr "WARNING: Creating a new disklabel will erase all data on %1!"
 
-#: src/Dialog_Disklabel.cc:94 src/Dialog_Filesystems.cc:32
+#: src/Dialog_Disklabel.cc:88 src/Dialog_Filesystems.cc:32
 #: src/Win_GParted.cc:1176
 msgid "Create"
 msgstr "Create"
@@ -288,92 +288,92 @@ msgstr "Resize/Move %1"
 msgid "Resize %1"
 msgstr "Resize %1"
 
-#: src/Dialog_Progress.cc:28 src/Dialog_Progress.cc:35
+#: src/Dialog_Progress.cc:27 src/Dialog_Progress.cc:34
 msgid "Applying pending operations"
 msgstr "Applying pending operations"
 
-#: src/Dialog_Progress.cc:37
+#: src/Dialog_Progress.cc:36
 msgid "Applying all listed operations."
 msgstr "Applying all listed operations."
 
-#: src/Dialog_Progress.cc:39
+#: src/Dialog_Progress.cc:38
 msgid "Clicking Cancel will prevent the next operations from being applied."
 msgstr "Clicking Cancel will prevent the next operations from being applied."
 
-#: src/Dialog_Progress.cc:62
+#: src/Dialog_Progress.cc:61
 msgid "Completed Operations"
 msgstr "Completed Operations"
 
-#: src/Dialog_Progress.cc:68
+#: src/Dialog_Progress.cc:66
 msgid "Details"
 msgstr "Details"
 
-#: src/Dialog_Progress.cc:85
+#: src/Dialog_Progress.cc:83
 msgid "%1 of %2 operations completed"
 msgstr "%1 of %2 operations completed"
 
-#: src/Dialog_Progress.cc:111
+#: src/Dialog_Progress.cc:109
 msgid "about %1 minute and %2 seconds left"
 msgstr "about %1 minute and %2 seconds left"
 
-#: src/Dialog_Progress.cc:113
+#: src/Dialog_Progress.cc:111
 msgid "about %1 minutes and %2 seconds left"
 msgstr "about %1 minutes and %2 seconds left"
 
-#: src/GParted_Core.cc:126
+#: src/GParted_Core.cc:129
 msgid "unrecognized"
 msgstr "unrecognized"
 
 #. no filesystem found....
-#: src/GParted_Core.cc:160
+#: src/GParted_Core.cc:163
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Unable to detect filesystem! Possible reasons are:"
 
-#: src/GParted_Core.cc:162
+#: src/GParted_Core.cc:165
 msgid "The filesystem is damaged"
 msgstr "The filesystem is damaged"
 
-#: src/GParted_Core.cc:164
+#: src/GParted_Core.cc:167
 msgid "The filesystem is unknown to libparted"
 msgstr "The filesystem is unknown to libparted"
 
-#: src/GParted_Core.cc:166
+#: src/GParted_Core.cc:169
 msgid "There is no filesystem available (unformatted)"
 msgstr "There is no filesystem available (unformatted)"
 
-#: src/GParted_Core.cc:168
+#: src/GParted_Core.cc:171
 msgid "unknown"
 msgstr "unknown"
 
-#: src/GParted_Core.cc:202
+#: src/GParted_Core.cc:205
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Unable to read the contents of this filesystem!"
 
-#: src/GParted_Core.cc:204
+#: src/GParted_Core.cc:207
 msgid "Because of this some operations may be unavailable."
 msgstr "Because of this, some operations may be unavailable."
 
-#: src/GParted_Core.cc:332
+#: src/GParted_Core.cc:335
 msgid "Error while deleting %1"
 msgstr "Error while deleting %1"
 
-#: src/GParted_Core.cc:337
+#: src/GParted_Core.cc:340
 msgid "Error while creating %1"
 msgstr "Error while creating %1"
 
-#: src/GParted_Core.cc:342
+#: src/GParted_Core.cc:345
 msgid "Error while resizing/moving %1"
 msgstr "Error while resizing/moving %1"
 
-#: src/GParted_Core.cc:347
+#: src/GParted_Core.cc:350
 msgid "Error while converting filesystem of %1"
 msgstr "Error while converting filesystem of %1"
 
-#: src/GParted_Core.cc:352
+#: src/GParted_Core.cc:355
 msgid "Error while copying %1"
 msgstr "Error while copying %1"
 
-#: src/GParted_Core.cc:714
+#: src/GParted_Core.cc:732
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
@@ -547,8 +547,8 @@ msgstr "Model:"
 
 #. disktype
 #: src/Win_GParted.cc:252
-msgid "DiskType:"
-msgstr "DiskType:"
+msgid "DiskLabelType:"
+msgstr "DiskLabelType:"
 
 #. heads
 #: src/Win_GParted.cc:257
