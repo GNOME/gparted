@@ -1,4 +1,4 @@
-SUBDIRS = include src po 
+SUBDIRS = include src po compose
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -10,4 +10,5 @@ desktop_DATA = $(DESKTOP_FILES)
 
 EXTRA_DIST =				\
 	$(DESKTOP_IN_FILES)	\
-	$(DESKTOP_FILES)     
+	$(DESKTOP_FILES)      \
+	intltool-extract.in  intltool-merge.in  intltool-update.in
