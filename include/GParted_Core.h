@@ -77,6 +77,7 @@ private:
 
 	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
+	void set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
 		
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer;
 	

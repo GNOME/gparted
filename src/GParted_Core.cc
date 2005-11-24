@@ -365,9 +365,12 @@ bool GParted_Core::Create( const Device & device, Partition & new_partition )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
-		//most likely this means the user created an unformatted partition, however in theory, it could also screw some errorhandling.
+		//most likely this means the user created an unformatted partition,
+		//however in theory, it could also screw some errorhandling.
 		if ( ! p_filesystem )
 			return true ;
+
+		set_partition_type( device .path, new_partition ) ;
 		
 		return p_filesystem ->Create( new_partition ) ;
 	}
@@ -387,6 +390,8 @@ bool GParted_Core::Convert_FS( const Glib::ustring & device_path, const Partitio
 			
 		close_device_and_disk( device, disk ) ;	
 	}
+
+	set_partition_type( device_path, partition ) ;
 	
 	set_proper_filesystem( partition .filesystem ) ;
 
@@ -773,6 +778,29 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 
 	if ( p_filesystem )
 		p_filesystem ->textbuffer = textbuffer ;
+}
+
+
+void GParted_Core::set_partition_type( const Glib::ustring & device_path, const Partition & partition ) 
+{
+	if ( open_device_and_disk( device_path, device, disk ) )
+	{
+		PedFileSystemType * fs_type = ped_file_system_type_get( partition .filesystem .c_str() ) ;
+
+		//default is Linux (83)
+		if ( ! fs_type )
+			fs_type = ped_file_system_type_get( "ext2" ) ;
+
+		if ( fs_type )
+		{
+			c_partition = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
+
+			if ( c_partition && ped_partition_set_system( c_partition, fs_type ) && Commit( disk ) )
+				sleep( 1 ) ; //paranoia: give the OS some time to update nodes in /dev
+		}
+
+		close_device_and_disk( device, disk ) ;
+	}
 }
 
 } //GParted
