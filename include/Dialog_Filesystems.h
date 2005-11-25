@@ -18,7 +18,7 @@
 #ifndef DIALOG_FILESYSTEMS
 #define DIALOG_FILESYSTEMS
 
-#include "include/Utils.h"
+#include "../include/Utils.h"
 #include "../include/i18n.h"
 
 #include <gtkmm/dialog.h>

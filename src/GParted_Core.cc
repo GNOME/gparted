@@ -606,7 +606,7 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 			default	:	type = PED_PARTITION_FREESPACE;	break ; //will never happen ;)
 		}
 		
-		c_part = ped_partition_new ( disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
+		c_part = ped_partition_new( disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
 		if ( c_part )
 		{
 			constraint = ped_constraint_any( device );
@@ -616,7 +616,7 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 				if ( copy )
 					constraint ->min_size = new_partition .sector_end - new_partition .sector_start ;
 				
-				if ( ped_disk_add_partition ( disk, c_part, constraint ) && Commit( disk ) )
+				if ( ped_disk_add_partition( disk, c_part, constraint ) && Commit( disk ) )
 				{
 					//remove all filesystem signatures...
 					ped_file_system_clobber ( & c_part ->geom ) ;
@@ -627,7 +627,7 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 					new_partition .partition_number = c_part ->num ;
 				}
 			
-				ped_constraint_destroy ( constraint );
+				ped_constraint_destroy( constraint );
 			}
 			
 		}
@@ -796,7 +796,7 @@ void GParted_Core::set_partition_type( const Glib::ustring & device_path, const 
 			c_partition = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 
 			if ( c_partition && ped_partition_set_system( c_partition, fs_type ) && Commit( disk ) )
-				sleep( 1 ) ; //paranoia: give the OS some time to update nodes in /dev
+				sleep( 1 ) ; //the OS needs some time to update nodes in /dev
 		}
 
 		close_device_and_disk( device, disk ) ;
