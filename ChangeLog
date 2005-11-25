@@ -1,4 +1,12 @@
 2005-11-25 Bart Hakvoort <hakvoort@cvs.gnome.org>
+	* include/Makefile.am,
+	  include/Win_GParted.h,
+	  src/Makefile.am: removed Dialog_About.[h,cc]
+	* src/Win_GParted.cc: from now on we use Gtk::AboutDialog instead of
+	  our own AboutDialog. Also use Gtk::Stock items instead of hardcoded
+	  paths to images (about and harddisk).
+
+2005-11-25 Bart Hakvoort <hakvoort@cvs.gnome.org>
 	* gparted-0.0.9
 
 2005-11-25 Bart Hakvoort <hakvoort@cvs.gnome.org>

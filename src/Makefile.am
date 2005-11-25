@@ -15,7 +15,6 @@ bin_PROGRAMS = gparted
 
 gparted_SOURCES = \
 	Device.cc\
-	Dialog_About.cc\
 	Dialog_Base_Partition.cc\
 	Dialog_Disklabel.cc \
 	Dialog_Filesystems.cc \

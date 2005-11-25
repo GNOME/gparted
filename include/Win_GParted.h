@@ -27,7 +27,6 @@
 #include "../include/Operation.h"
 #include "../include/Dialog_Progress.h"
 #include "../include/Dialog_Partition_Resize_Move.h"
-#include "../include/Dialog_About.h"
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
 #include "../include/Dialog_Disklabel.h"

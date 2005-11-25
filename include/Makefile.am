@@ -8,7 +8,6 @@ EXTRA_DIST = \
 	i18n.h\
         Partition.h  \
 	VBox_VisualDisk.h \
-	Dialog_About.h   \
         Dialog_Partition_Info.h\
 	ext3.h  \
 	Frame_Resizer_Extended.h\

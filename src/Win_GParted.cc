@@ -17,6 +17,8 @@
  
 #include "../include/Win_GParted.h"
 
+#include <gtkmm/aboutdialog.h>
+
 namespace GParted
 {
 	
@@ -31,9 +33,12 @@ Win_GParted::Win_GParted( )
 	
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
-	this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
 	this ->set_default_size( 775, 500 );
-		
+	
+	try {
+		this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
+	} catch ( Glib::Exception & e ) { std::cout << e .what() << std::endl ; } 
+	
 	//Pack the main box
 	this ->add( vbox_main ); 
 	
@@ -109,8 +114,8 @@ void Win_GParted::init_menubar( )
 	//help
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items( ) .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
-	image = manage( new Gtk::Image( "/usr/share/icons/hicolor/16x16/stock/generic/stock_about.png" ) );
-	menu ->items( ) .push_back(Gtk::Menu_Helpers::ImageMenuElem( _("About"), *image, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
+
 	menubar_main.items( ) .push_back( Gtk::Menu_Helpers::MenuElem(_("_Help"), *menu ) );
 }
 
@@ -350,7 +355,7 @@ void Win_GParted::Refresh_OptionMenu( )
 		hbox = manage( new Gtk::HBox( ) );
 		
 		//the image...
-		image = manage( new Gtk::Image( "/usr/share/icons/gnome/24x24/devices/gnome-dev-harddisk.png" ) );
+		image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR) );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
 			
 		//the label...
@@ -833,10 +838,38 @@ void Win_GParted::menu_help_contents( )
 
 void Win_GParted::menu_help_about( )
 {
-	Dialog_About dialog ;
+	std::vector<Glib::ustring> strings ;
+	
+	Gtk::AboutDialog dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog .run( );
+	dialog .set_name( _("GParted") ) ;
+	dialog .set_logo( this ->get_icon( ) ) ;
+	dialog .set_version( VERSION ) ;
+	dialog .set_comments( _( "Gnome Partition Editor" ) ) ;
+	dialog .set_copyright( "Copyright © 2004-2005 Bart Hakvoort" ) ;
+
+	//authors
+	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
+	dialog .set_authors( strings ) ;
+	strings .clear( ) ;
+
+	//artists
+	strings .push_back( "http://gparted.sourceforge.net/artwork.php" ) ;
+	dialog .set_artists( strings ) ;
+	strings .clear( ) ;
+
+	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
+	  It's a good idea to provide the url of your translationteam as well. Thanks! */
+	Glib::ustring str_credits = _("translator-credits") ;
+	if ( str_credits != "translator-credits" )
+		dialog .set_translator_credits( str_credits ) ;
+
+
+  	//the url is not clickable because this would introduce an new dep (gnome-vfsmm) 
+	dialog .set_website( "http://gparted.sourceforge.net" ) ;
+
+	dialog .run( ) ;
 }
 
 void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partition )
