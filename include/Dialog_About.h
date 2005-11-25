@@ -44,6 +44,7 @@ private:
 	void Show_Credits() ;
 
 	Gtk::Button button_credits;
+	Gtk::Image *image ;
 };
 
 } //GParted

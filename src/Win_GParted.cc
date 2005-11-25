@@ -31,6 +31,7 @@ Win_GParted::Win_GParted( )
 	
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
+	this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
 	this ->set_default_size( 775, 500 );
 		
 	//Pack the main box

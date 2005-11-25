@@ -1,13 +1,14 @@
-INCLUDES =\
-	$(GTKMM_CFLAGS) \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\" 
+INCLUDES =						\
+	$(GTKMM_CFLAGS) 				\
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\ 
+	-DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"		
 
-AM_CFLAGS =\
-	 -Wall\
+AM_CFLAGS =	\
+	 -Wall	\
 	 -g
 
-AM_CXXFLAGS =\
-	 -Wall\
+AM_CXXFLAGS =	\
+	 -Wall	\
 	 -g
 
 bin_PROGRAMS = gparted
@@ -48,6 +49,5 @@ gparted_SOURCES = \
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 
 
-gparted_LDADD = \
-	$(GTKMM_LIBS)
+gparted_LDADD = $(GTKMM_LIBS)
 

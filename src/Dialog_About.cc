@@ -28,7 +28,9 @@ Dialog_About::Dialog_About()
 	this ->set_resizable( false );
 	this ->set_has_separator( false ) ;
 	
-	this ->get_vbox() ->pack_start( * mk_label( "\n<span size='small'>logo here ;)</span>\n", true, false ), Gtk::PACK_SHRINK );
+	image = manage( new Gtk::Image( GNOME_ICONDIR "/gparted.png" ) );
+	this ->get_vbox() ->pack_start( *image, Gtk::PACK_SHRINK );
+	
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='xx-large'><b>" + (Glib::ustring) _( "GParted" ) + " " + VERSION + "</b></span>", true, false ) ,Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "\n" + (Glib::ustring) _( "Gnome Partition Editor" ) + "\n", false, false ) ,Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( * mk_label( "<span size='small'>Copyright © 2004 Bart Hakvoort</span>", true, false ), Gtk::PACK_SHRINK );
