@@ -28,26 +28,26 @@ FS reiserfs::get_filesystem_support( )
 	fs .filesystem = "reiserfs" ;
 	
 	if ( ! system( "which debugreiserfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .read = true ;
+		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which mkreiserfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which reiserfsck 1>/dev/null 2>/dev/null" ) ) 
-		fs .check = true ;
+		fs .check = GParted::FS::EXTERNAL ;
 		
 	//resizing is a delicate process ...
-	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .check != GParted::FS::NONE ) 
 	{
-		fs .grow = true ;
+		fs .grow = GParted::FS::EXTERNAL ;
 		
-		if ( fs .read ) //needed to determine a min filesystemsize..
-			fs .shrink = true ;
+		if ( fs .read != GParted::FS::NONE ) //needed to determine a min filesystemsize..
+			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	
 	//we need to call resize_reiserfs after a copy to get proper used/unused
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
-		fs .copy = true ;
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow != GParted::FS::NONE ) 
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 ;
 	

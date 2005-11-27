@@ -61,7 +61,7 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partition> & partitions )
 {
 	if ( ! selected_partition .error .empty( ) )
-		fs .shrink = false ;
+		fs .shrink = GParted::FS::NONE ;
 	
 	//see if we need a fixed_start
 	if ( fs .move )

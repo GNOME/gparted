@@ -28,29 +28,19 @@ FS reiser4::get_filesystem_support( )
 	fs .filesystem = "reiser4" ;
 	
 	if ( ! system( "which debugfs.reiser4 1>/dev/null 2>/dev/null" ) ) 
-		fs .read = true ;
+		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which mkfs.reiser4 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which fsck.reiser4 1>/dev/null 2>/dev/null" ) ) 
-		fs .check = true ;
+		fs .check = GParted::FS::EXTERNAL ;
 	
-	/*IT SEEMS RESIZE AND COPY AREN'T IMPLEMENTED YET IN THE TOOLS...
-	  SEE http://marc.theaimsgroup.com/?t=109883161600003&r=1&w=2 for more information.. (it seems NameSys is getting commercial? :| )
-	//resizing is a delicate process ...
-	if ( ! system( "which resizefs.reiser4 1>/dev/null 2>/dev/null" ) && fs .check ) 
-	{
-		fs .grow = true ;
-		
-		if ( fs .read ) //needed to determine a min filesystemsize..
-			fs .shrink = true ;
-	}
-	
-	//we need to call resize_reiserfs after a copy to get proper used/unused
-	if ( ! system( "which cpfs.reiser4 1>/dev/null 2>/dev/null" ) && fs .grow ) 
-		fs .copy = true ;
+	/*
+	 * IT SEEMS RESIZE AND COPY AREN'T IMPLEMENTED YET IN THE TOOLS...
+	 * SEE http://marc.theaimsgroup.com/?t=109883161600003&r=1&w=2 for more information.. (it seems NameSys is getting commercial? :| )
 	*/
+	  
 	return fs ;
 }
 
@@ -88,27 +78,12 @@ bool reiser4::Create( const Partition & new_partition )
 }
 
 bool reiser4::Resize( const Partition & partition_new, bool fill_partition )
-{/*
-	Glib::ustring str_temp = "LC_NUMERIC=C echo y | resize_reiserfs " + partition_new .partition ;
-	
-	if ( ! fill_partition )
-		str_temp += " -s " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size ) + "M" ;
-	
-	return ! Execute_Command( str_temp ) ; */
+{
 	return true ;
 }
 
 bool reiser4::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
-/*	if ( ! Execute_Command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path ) )
-	{
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, true ) ;
-	}
-	
-	return false ;*/
-	
 	return true ;
 }
 

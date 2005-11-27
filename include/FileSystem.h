@@ -26,54 +26,6 @@
 #include <parted/parted.h>
 #include <fstream>
 
-//Some functions used by both (sub)Filesystems and GParted_Core-------------------------------------------------
-inline bool open_device( const Glib::ustring & device_path, PedDevice *& device )
-{
-	device = ped_device_get( device_path .c_str( ) );
-	
-	return device ;
-}
-	
-inline bool open_device_and_disk( const Glib::ustring & device_path, PedDevice *& device, PedDisk *& disk, bool strict = true ) 
-{
-	if ( open_device( device_path, device ) )
-		disk = ped_disk_new( device );
-	
-	//if ! disk and writeable it's probably a HD without disklabel.
-	//We return true here and deal with them in GParted_Core::get_devices
-	if ( ! disk && ( strict || device ->read_only ) )
-	{
-		ped_device_destroy( device ) ;
-		device = NULL ; 
-		
-		return false;
-	}	
-		
-	return true ;
-}
-
-inline void close_device_and_disk( PedDevice *& device, PedDisk *& disk )
-{
-	if ( device )
-		ped_device_destroy( device ) ;
-		
-	if ( disk )
-		ped_disk_destroy( disk ) ;
-	
-	device = NULL ;
-	disk = NULL ;
-}	
-
-inline bool Commit( PedDisk *& disk ) 
-{
-	bool return_value = ped_disk_commit_to_dev( disk ) ;
-	
-	ped_disk_commit_to_os( disk ) ;
-		
-	return return_value ;
-}
-//---------------------------------------------------------------------------------------------------------------
-
 namespace GParted
 {
 
@@ -93,13 +45,10 @@ public:
 	
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer ;
 	
-	PedDisk *disk ; //see GParted_Core::Set_Used_Sectors() ...
 	long cylinder_size ; //see GParted_Core::Resize()
 	
 protected:
 	int Execute_Command( Glib::ustring command ) ;
-	
-	PedDevice *device ;
 	
 private:
 	void Update_Textview( ) ;

@@ -38,7 +38,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	this ->cylinder_size = cylinder_size ;
 	this ->FILESYSTEMS = FILESYSTEMS ;
 	this ->FILESYSTEMS .back( ) .filesystem = _("Unformatted") ;
-	this ->FILESYSTEMS .back( ) .create = true ;
+	this ->FILESYSTEMS .back( ) .create = GParted::FS::LIBPARTED ;
 		
 	FS fs_tmp ; fs_tmp .filesystem = "extended" ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;

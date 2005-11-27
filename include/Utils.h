@@ -41,20 +41,27 @@ typedef long long Sector;
 //struct to store filesystems
 struct FS
 {
+	enum Support
+	{
+		NONE		= 0,
+		LIBPARTED	= 1,
+		EXTERNAL	= 2
+	};
+
 	Glib::ustring filesystem ;
-	bool read ; //can we get the amount of used sectors?
-	bool create ;
-	bool grow ;
-	bool shrink ;
-	bool move ; //startpoint and endpoint
-	bool check ; //some checktool available?
-	bool copy ;
+	Support read ; //can we get the amount of used sectors?
+	Support create ;
+	Support grow ;
+	Support shrink ;
+	Support move ; //startpoint and endpoint
+	Support check ; //some checktool available?
+	Support copy ;
 	int MIN ; 
 	int MAX ;
 	
 	FS( )
 	{
-		read = create = grow = shrink = move = check = copy = false ;
+		read = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
 	} 
 };

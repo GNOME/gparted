@@ -55,11 +55,21 @@ void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 {
 	treerow = *( liststore_filesystems ->append( ) );
 	treerow[ treeview_filesystems_columns .filesystem ] = fs .filesystem ;
-	treerow[ treeview_filesystems_columns .create ] = render_icon( fs .create ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
-	treerow[ treeview_filesystems_columns .grow ] = render_icon( fs .grow ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
-	treerow[ treeview_filesystems_columns .shrink ] = render_icon( fs .shrink ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
-	treerow[ treeview_filesystems_columns .move ] = render_icon( fs .move ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
-	treerow[ treeview_filesystems_columns .copy ] = render_icon( fs .copy ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_MENU ); 
+	
+	treerow[ treeview_filesystems_columns .create ] = 
+		render_icon( fs .create != GParted::FS::NONE ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR); 
+	
+	treerow[ treeview_filesystems_columns .grow ] = 
+		render_icon( fs .grow != GParted::FS::NONE ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ); 
+	
+	treerow[ treeview_filesystems_columns .shrink ] = 
+		render_icon( fs .shrink != GParted::FS::NONE ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ); 
+	
+	treerow[ treeview_filesystems_columns .move ] = 
+		render_icon( fs .move != GParted::FS::NONE ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ); 
+	
+	treerow[ treeview_filesystems_columns .copy ] = 
+		render_icon( fs .copy != GParted::FS::NONE ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ); 
 }
 
 Dialog_Filesystems::~Dialog_Filesystems( ) 

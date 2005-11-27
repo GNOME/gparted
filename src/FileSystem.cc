@@ -23,7 +23,6 @@ namespace GParted
 	
 FileSystem::FileSystem( )
 {
-	disk = NULL;
 	cylinder_size = 0 ;
 }
 	

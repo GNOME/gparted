@@ -70,7 +70,8 @@ private:
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	void Set_Used_Sectors( Partition & partition );
-	Glib::ustring Get_Flags( PedPartition *c_partition ) ;
+	void LP_Set_Used_Sectors( Partition & partition );
+	Glib::ustring Get_Flags( ) ;
 	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy = false ) ;
 	bool Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new, bool fixed_start ) ;
 	bool Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
@@ -79,17 +80,23 @@ private:
 	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
 	void set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
 		
+	bool open_device( const Glib::ustring & device_path ) ;
+	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
+	void close_device_and_disk( ) ;
+	bool commit( ) ;
+
 	Glib::RefPtr<Gtk::TextBuffer> textbuffer;
 	
 	std::vector<FS> FILESYSTEMS ;
 	FileSystem * p_filesystem ;
 	std::vector <PedPartitionFlag> flags;
-	PedDevice *device ;
-	PedDisk *disk ;
-	PedPartition *c_partition ;
 	Glib::ustring temp ;
 	Partition partition_temp ;
 	FS fs ;
+	
+	PedDevice *lp_device ;
+	PedDisk *lp_disk ;
+	PedPartition *lp_partition ;
 };
 
 } //GParted

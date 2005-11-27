@@ -28,13 +28,13 @@ FS jfs::get_filesystem_support( )
 	fs .filesystem = "jfs" ;
 		
 	if ( ! system( "which jfs_debugfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .read = true ;
+		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which mkfs.jfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which jfs_fsck 1>/dev/null 2>/dev/null" ) ) 
-		fs .check = true ;
+		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing of jfs requires mount, umount and jfs support in the kernel
 	if ( ! system( "which mount umount 1>/dev/null 2>/dev/null" ) ) 
@@ -44,15 +44,15 @@ FS jfs::get_filesystem_support( )
 		while ( input >> line )
 			if ( line == "jfs" )
 			{
-				fs .grow = true ;
+				fs .grow = GParted::FS::EXTERNAL ;
 				break ;
 			}
 		
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow) 
-		fs .copy = true ;
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow != GParted::FS::NONE ) 
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 16 ;
 	

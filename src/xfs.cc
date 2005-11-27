@@ -28,31 +28,31 @@ FS xfs::get_filesystem_support( )
 	fs .filesystem = "xfs" ;
 		
 	if ( ! system( "which xfs_db 1>/dev/null 2>/dev/null" ) ) 
-		fs .read = true ;
+		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which mkfs.xfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which xfs_repair 1>/dev/null 2>/dev/null" ) ) 
-		fs .check = true ;
+		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing of xfs requires xfs_growfs, xfs_repair, mount, umount and xfs support in the kernel
-	if ( ! system( "which xfs_growfs mount umount 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! system( "which xfs_growfs mount umount 1>/dev/null 2>/dev/null" ) && fs .check != GParted::FS::NONE ) 
 	{
 		Glib::ustring line ;
 		std::ifstream input( "/proc/filesystems" ) ;
 		while ( input >> line )
 			if ( line == "xfs" )
 			{
-				fs .grow = true ;
+				fs .grow = GParted::FS::EXTERNAL ;
 				break ;
 			}
 		
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which xfsdump xfsrestore mount umount 1>/dev/null 2>/dev/null" ) && fs .check && fs .create )
-		fs .copy = true ;
+	if ( ! system( "which xfsdump xfsrestore mount umount 1>/dev/null 2>/dev/null" ) && fs .check != GParted::FS::NONE && fs .create != GParted::FS::NONE )
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
 	

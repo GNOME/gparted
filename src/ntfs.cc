@@ -27,26 +27,26 @@ FS ntfs::get_filesystem_support( )
 	
 	fs .filesystem = "ntfs" ;
 	if ( ! system( "which ntfscluster 1>/dev/null 2>/dev/null" ) ) 
-		fs .read = true ;
+		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which mkntfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which ntfsfix 1>/dev/null 2>/dev/null" ) ) 
-		fs .check = true ;
+		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing is a delicate process ...
-	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .check != GParted::FS::NONE ) 
 	{
-		fs .grow = true ;
+		fs .grow = GParted::FS::EXTERNAL ;
 		
-		if ( fs .read ) //needed to determine a min filesystemsize..
-			fs .shrink = true ;
+		if ( fs .read != GParted::FS::NONE ) //needed to determine a min filesystemsize..
+			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	
 	//we need ntfsresize to set correct used/unused after cloning
-	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .grow ) 
-		fs .copy = true ;
+	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .grow != GParted::FS::NONE ) 
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	return fs ;
 }

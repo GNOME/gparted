@@ -27,13 +27,13 @@ FS hfs::get_filesystem_support( )
 		
 	fs .filesystem = "hfs" ;
 	
-	fs .read = true ; //provided by libparted
+	fs .read = GParted::FS::LIBPARTED; //provided by libparted
 	
 	if ( ! system( "which hformat 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
-		fs .copy = true ;
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MAX = 2048 ;
 	
@@ -42,31 +42,6 @@ FS hfs::get_filesystem_support( )
 
 void hfs::Set_Used_Sectors( Partition & partition ) 
 {
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
-	PedPartition *c_part = NULL ;
-	
-	if ( disk )
-	{
-		c_part = ped_disk_get_partition_by_sector( disk, (partition .sector_end + partition .sector_start) / 2 ) ;
-		if ( c_part )
-		{
-			fs = ped_file_system_open( & c_part ->geom ); 	
-					
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint ( fs ) ;
-				if ( constraint )
-				{
-					partition .Set_Unused( (partition .sector_end - partition .sector_start) - constraint ->min_size ) ;
-					
-					ped_constraint_destroy ( constraint );
-				}
-												
-				ped_file_system_close( fs ) ;
-			}
-		}
-	}
 }
 
 bool hfs::Create( const Partition & new_partition )

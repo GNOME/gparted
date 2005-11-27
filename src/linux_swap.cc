@@ -26,18 +26,17 @@ FS linux_swap::get_filesystem_support( )
 	FS fs ;
 	
 	fs .filesystem = "linux-swap" ;
-	fs .read = false ; //used/unused isn't relevant for swapspace
 	
 	if ( ! system( "which mkswap 1>/dev/null 2>/dev/null" ) ) 
 	{
-		fs .create = true ;
-		fs .grow = true ;
-		fs .shrink = true ;
-		fs .move = true ;
+		fs .create = GParted::FS::EXTERNAL ;
+		fs .grow = GParted::FS::EXTERNAL ;
+		fs .shrink = GParted::FS::EXTERNAL ;
+		fs .move = GParted::FS::EXTERNAL ;
 	}
 	
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
-		fs .copy = true ;
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	return fs ;
 }

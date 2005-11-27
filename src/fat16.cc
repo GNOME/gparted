@@ -29,21 +29,21 @@ FS fat16::get_filesystem_support( )
 		
 	//find out if we can create fat16 filesystems
 	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 
-		fs .create = true ;
+		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
 	{
-		fs .check = true ;
-		fs .read = true ;
+		fs .check = GParted::FS::EXTERNAL ;
+		fs .read = GParted::FS::EXTERNAL ;
 	}
 		
 	//resizing of start and endpoint are provided by libparted
-	fs .grow = true ;
-	fs .shrink = true ;
-	fs .move = true ;
+	fs .grow = GParted::FS::LIBPARTED ;
+	fs .shrink = GParted::FS::LIBPARTED ;
+	fs .move = GParted::FS::LIBPARTED ;
 		
 	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
-		fs .copy = true ;
+		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 16 ;
 	fs .MAX = 4096 ;
