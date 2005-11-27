@@ -96,6 +96,12 @@ void Win_GParted::init_menubar( )
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
+	//edit
+	menu = manage( new Gtk::Menu( ) ) ;
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::APPLY, sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
+	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
+	
 	//view
 	menu = manage( new Gtk::Menu( ) ) ;
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
@@ -653,8 +659,8 @@ void Win_GParted::open_operationslist( )
 		while ( Gtk::Main::events_pending( ) ) 
 			Gtk::Main::iteration( );
 	}
-	
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
+
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
 }
 
 void Win_GParted::close_operationslist( ) 
@@ -669,7 +675,7 @@ void Win_GParted::close_operationslist( )
 	}
 	
 	hbox_operations .hide( ) ;
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
+	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist( ) 
@@ -796,7 +802,7 @@ void Win_GParted::menu_gparted_quit( )
 
 void Win_GParted::menu_view_harddisk_info( )
 { 
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 0 ] ) ->get_active( ) )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 0 ] ) ->get_active( ) )
 	{ //open harddisk information
 		hpaned_main .get_child1( ) ->show( ) ;		
 		for ( int t = hpaned_main .get_position( ) ; t < 250 ; t +=15 )
@@ -820,7 +826,7 @@ void Win_GParted::menu_view_harddisk_info( )
 
 void Win_GParted::menu_view_operations( )
 {
-	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->get_active( ) )
+	if ( ( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 1 ] ) ->get_active( ) )
 		open_operationslist( ) ;
 	else 
 		close_operationslist( ) ;
