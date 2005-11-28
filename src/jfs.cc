@@ -51,7 +51,7 @@ FS jfs::get_filesystem_support( )
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow != GParted::FS::NONE ) 
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 16 ;

@@ -438,11 +438,11 @@ bool GParted_Core::Resize( const Device & device, const Partition & partition_ol
 				p_filesystem ->cylinder_size = device .cylsize ;
 				
 				if ( p_filesystem ->Resize( partition_new ) )
-					Resize_Container_Partition( device .path, partition_old, partition_new, get_fs( partition_new .filesystem ) .move != GParted::FS::NONE ) ;
+					Resize_Container_Partition( device .path, partition_old, partition_new, ! get_fs( partition_new .filesystem ) .move ) ;
 			}
 			//growing/moving
 			else
-				Resize_Container_Partition( device .path, partition_old, partition_new, get_fs( partition_new .filesystem ) .move != GParted::FS::NONE ) ;
+				Resize_Container_Partition( device .path, partition_old, partition_new, ! get_fs( partition_new .filesystem ) .move ) ;
 					
 			
 			p_filesystem ->Check_Repair( partition_new ) ;

@@ -36,15 +36,15 @@ FS ext2::get_filesystem_support( )
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing is a delicate process ...
-	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .check != GParted::FS::NONE ) 
+	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .check ) 
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
-		if ( fs .read != GParted::FS::NONE ) //needed to determine a min filesystemsize..
+		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow != GParted::FS::NONE ) 
+	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
 		fs .copy = GParted::FS::EXTERNAL ;
 		
 	return fs ;
