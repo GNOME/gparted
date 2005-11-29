@@ -1,4 +1,9 @@
 2005-11-29 Bart Hakvoort <hakvoort@cvs.gnome.org>
+	* src/jfs.cc: fixed 'broken pipe' warning
+	* src/fat16.cc,
+	  src/fat32.cc: removed unnecessary 'echo 2 |' from freespace scan.
+
+2005-11-29 Bart Hakvoort <hakvoort@cvs.gnome.org>
 	* include/GParted_Core.h,
 	  src/GParted_Core.cc: implemented a 'wait_for_node()' function after
 	  reading http://bugs.gentoo.org/show_bug.cgi?id=102343. I couldn't

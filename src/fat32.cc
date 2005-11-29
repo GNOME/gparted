@@ -59,7 +59,7 @@ void fat32::Set_Used_Sectors( Partition & partition )
 	Sector free_clusters = -1, bytes_per_cluster = -1 ;
 
         //get free blocks..
-	f = popen( ( "LC_ALL=C echo 2 | dosfsck -v " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "LC_ALL=C dosfsck -v " + partition .partition ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;

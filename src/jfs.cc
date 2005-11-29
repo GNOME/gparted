@@ -67,7 +67,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 	Glib::ustring output ;
 
         //get free sectors..
-	f = popen( ( "echo dm | LC_ALL=C jfs_debugfs " + partition .partition ) .c_str( ), "r" ) ;
+	f = popen( ( "echo dm | LC_ALL=C jfs_debugfs " + partition .partition + " | grep dn_nfree" ) .c_str( ), "r" ) ;
 	while ( fgets( c_buf, 512, f ) )
 	{
 		output = Glib::locale_to_utf8( c_buf ) ;
