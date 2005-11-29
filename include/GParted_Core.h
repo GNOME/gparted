@@ -78,7 +78,8 @@ private:
 
 	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
-	void set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
+	bool set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
+	bool wait_for_node( const Glib::ustring & node ) ;
 		
 	bool open_device( const Glib::ustring & device_path ) ;
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;

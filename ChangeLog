@@ -1,3 +1,11 @@
+2005-11-29 Bart Hakvoort <hakvoort@cvs.gnome.org>
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: implemented a 'wait_for_node()' function after
+	  reading http://bugs.gentoo.org/show_bug.cgi?id=102343. I couldn't
+	  reproduce the bug myself, but i hope this wil solve it.
+	  Also made 'set_partition_type()' return a boolean for improved
+	  errorchecking.
+
 2005-11-28 Bart Hakvoort <hakvoort@cvs.gnome.org>
 	* decided to use the Supported enum a bit more efficient in checks
 	  ( doh, big deal :P )

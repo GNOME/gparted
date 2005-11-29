@@ -370,9 +370,7 @@ bool GParted_Core::Create( const Device & device, Partition & new_partition )
 		if ( ! p_filesystem )
 			return true ;
 
-		set_partition_type( device .path, new_partition ) ;
-		
-		return p_filesystem ->Create( new_partition ) ;
+		return set_partition_type( device .path, new_partition ) && p_filesystem ->Create( new_partition ) ;
 	}
 	
 	return false ;
@@ -391,11 +389,9 @@ bool GParted_Core::Convert_FS( const Glib::ustring & device_path, const Partitio
 		close_device_and_disk( ) ;	
 	}
 
-	set_partition_type( device_path, partition ) ;
-	
 	set_proper_filesystem( partition .filesystem ) ;
-
-	return p_filesystem ->Create( partition ) ;
+	
+	return set_partition_type( device_path, partition ) && p_filesystem ->Create( partition ) ;
 }
 
 bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & partition ) 
@@ -412,7 +408,6 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 		return_value = ( ped_disk_delete_partition( lp_disk, lp_partition ) && commit( ) ) ;
 		close_device_and_disk( ) ;
 		
-		sleep( 1 ) ;//paranoia: give the OS some time to update nodes in /dev
 	}
 	
 	return return_value ;
@@ -646,12 +641,13 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 				if ( ped_disk_add_partition( lp_disk, c_part, constraint ) && commit( ) )
 				{
 					//remove all filesystem signatures...
-					ped_file_system_clobber ( & c_part ->geom ) ;
-					
-					sleep( 1 ) ;//the OS needs some time to create the devicenode in /dev
-					
+					ped_file_system_clobber( & c_part ->geom ) ;
+				
 					new_partition .partition = ped_partition_get_path( c_part ) ;
 					new_partition .partition_number = c_part ->num ;
+					
+					if ( ! wait_for_node( new_partition .partition ) )
+						return 0 ;
 				}
 			
 				ped_constraint_destroy( constraint );
@@ -685,29 +681,27 @@ bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path
 			
 			if ( fixed_start && constraint ) //create a constraint which keeps de startpoint intact and rounds the end to a cylinderboundary
 			{
-				ped_disk_set_partition_geom ( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) ;
-				ped_constraint_destroy ( constraint );
+				ped_disk_set_partition_geom( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) ;
+				ped_constraint_destroy( constraint );
 				constraint = NULL ;
 				
-				ped_geometry_set_start ( & lp_partition ->geom, partition_new .sector_start ) ;
-				constraint = ped_constraint_exact ( & lp_partition ->geom ) ;
+				ped_geometry_set_start( & lp_partition ->geom, partition_new .sector_start ) ;
+				constraint = ped_constraint_exact( & lp_partition ->geom ) ;
 			}
 			
 			if ( constraint )
 			{
-				if ( ped_disk_set_partition_geom ( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
+				if ( ped_disk_set_partition_geom( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
 					return_value = commit( ) ;
 									
-				ped_constraint_destroy ( constraint );
+				ped_constraint_destroy( constraint );
 			}
 		}
 		
 		close_device_and_disk( ) ;
 	}
 	
-	sleep( 1 ) ; //the OS needs time to re-add the devicenode..
-		
-	return return_value ;
+	return wait_for_node( partition_new .partition ) && return_value ;
 }
 
 bool GParted_Core::Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new )
@@ -808,8 +802,10 @@ void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
 }
 
 
-void GParted_Core::set_partition_type( const Glib::ustring & device_path, const Partition & partition ) 
+bool GParted_Core::set_partition_type( const Glib::ustring & device_path, const Partition & partition ) 
 {
+	bool return_value = false ;
+	
 	if ( open_device_and_disk( device_path ) )
 	{
 		PedFileSystemType * fs_type = ped_file_system_type_get( partition .filesystem .c_str() ) ;
@@ -823,11 +819,30 @@ void GParted_Core::set_partition_type( const Glib::ustring & device_path, const 
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 
 			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit( ) )
-				sleep( 1 ) ; //the OS needs some time to update nodes in /dev
+				return_value = wait_for_node( partition .partition ) ;
 		}
 
 		close_device_and_disk( ) ;
 	}
+
+	return return_value ;
+}
+	
+bool GParted_Core::wait_for_node( const Glib::ustring & node ) 
+{
+	//we'll loop for 10 seconds or till 'node' appeares...
+	for( short t = 0 ; t < 50 ; t++ )
+	{
+		if ( access( node .c_str(), F_OK ) == 0 )
+		{ 
+			sleep( 1 ) ; //apperantly the node isn't available immediatly after access returns succesfully :/
+			return true ;
+		}
+		else
+			usleep( 200000 ) ; //200 milliseconds
+	}
+
+	return false ;
 }
 
 bool GParted_Core::open_device( const Glib::ustring & device_path )
