@@ -1155,7 +1155,14 @@ void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
 	
 	//ok we made it :P lets create an fitting partition object
 	Partition part_temp;
-	part_temp .Set( selected_partition .partition, selected_partition .partition_number, selected_partition .type, new_fs, selected_partition .sector_start, selected_partition .sector_end, selected_partition .inside_extended, false ) ;
+	part_temp .Set( devices[ current_device ] .path, 
+			selected_partition .partition, 
+			selected_partition .partition_number, 
+			selected_partition .type, new_fs, 
+			selected_partition .sector_start,
+			selected_partition .sector_end, 
+			selected_partition .inside_extended, 
+			false ) ;
 	
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new filesystem

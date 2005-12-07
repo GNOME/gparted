@@ -57,7 +57,8 @@ public:
 	void Reset( ) ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
-	void Set( 	const Glib::ustring & partition,
+	void Set( 	const Glib::ustring & device_path,
+			const Glib::ustring & partition,
 			const int partition_number,
 			const PartitionType type,
 			const FILESYSTEM filesystem,
@@ -68,7 +69,7 @@ public:
 
 	void Set_Unused( Sector sectors_unused ) ;
 
-	void Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended );
+	void Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended );
 
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
@@ -79,6 +80,7 @@ public:
 		
 	//some public members
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )
+	Glib::ustring device_path ;
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..

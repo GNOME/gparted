@@ -1,5 +1,21 @@
 2005-12-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* include/Partition.h,
+	  src/Partition.cc: from now on each partition has a reference to it's
+	  device.
+	* src/Win_GParted.cc,
+	  src/Dialog_Partition_New.cc: make use of new Set() from partition
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: since ped_file_system_clobber() ignored reiser4
+	  i've implemented a custom 'filesystem signature remover'.
+	  Also made use of the fact a partition now knows on which device it
+	  lives.
+	* src/Operation.cc: the get_string() didn't use
+	  Get_Filesystem_String() and thus returned faulty strings. Also did
+	  some cleanups.
+	
+2005-12-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/GParted_Core.cc: made warning a bit more informative
 	
 2005-12-07 Bart Hakvoort <hakvoort@cvs.gnome.org>

@@ -37,7 +37,8 @@ void Partition::Reset( )
 	logicals .clear( ) ;
 }
 
-void Partition::Set(	const Glib::ustring & partition,
+void Partition::Set(	const Glib::ustring & device_path,
+			const Glib::ustring & partition,
 			const int partition_number,
 			const PartitionType type,
 			const FILESYSTEM filesystem,
@@ -46,6 +47,7 @@ void Partition::Set(	const Glib::ustring & partition,
 			const bool inside_extended,
 			const bool busy )
 {
+	this ->device_path = device_path ;
 	this ->partition = partition;
 	this ->partition_number = partition_number;
 	this ->type = type;
@@ -66,9 +68,9 @@ void Partition::Set_Unused( Sector sectors_unused )
 	}
 }
 
-void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
+void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( Get_Filesystem_String( GParted::FS_UNALLOCATED ), -1, GParted::TYPE_UNALLOCATED, GParted::FS_UNALLOCATED, sector_start, sector_end, inside_extended, false ); 
+	this ->Set( device_path, Get_Filesystem_String( GParted::FS_UNALLOCATED ), -1, GParted::TYPE_UNALLOCATED, GParted::FS_UNALLOCATED, sector_start, sector_end, inside_extended, false ); 
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }

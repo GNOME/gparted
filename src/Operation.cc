@@ -49,19 +49,35 @@ Glib::ustring Operation::Get_String( )
 				temp = partition_original .partition ;
 
 			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-			return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device .path ) ;
+			return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), 
+						 temp,
+						 Get_Filesystem_String( partition_original .filesystem ), 
+						 partition_original .Get_Length_MB( ), 
+						 device .path ) ;
 
 		case CREATE	:
 			switch( partition_new.type )
 			{
-				case GParted::TYPE_PRIMARY	:	temp = _("Primary Partition"); break;
-				case GParted::TYPE_LOGICAL	:	temp = _("Logical Partition") ; break;	
-				case GParted::TYPE_EXTENDED	:	temp = _("Extended Partition"); break;
+				case GParted::TYPE_PRIMARY	:
+					temp = _("Primary Partition");
+					break;
+				case GParted::TYPE_LOGICAL	:
+					temp = _("Logical Partition") ;
+					break;	
+				case GParted::TYPE_EXTENDED	:
+					temp = _("Extended Partition");
+					break;
 			
-				default			:	break;
+				default	:
+					break;
 			}
 			/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
-			return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device .path ) ;
+			return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"),
+						 temp, 
+						 partition_new.partition_number, 
+						 Get_Filesystem_String( partition_new.filesystem ), 
+						 partition_new .Get_Length_MB( ), 
+						 device .path ) ;
 			
 		case RESIZE_MOVE:
 			//if startsector has changed >= 1 MB we consider it a move
@@ -80,9 +96,15 @@ Glib::ustring Operation::Get_String( )
 			if ( diff >= MEGABYTE )
 			{
 				if ( temp .empty( ) ) 
-					temp = String::ucompose( _("Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+					temp = String::ucompose( _("Resize %1 from %2 MB to %3 MB"), 
+								 partition_new.partition,
+								 partition_original .Get_Length_MB(),
+								 partition_new .Get_Length_MB() ) ;
 				else
-					temp += " " + String::ucompose( _("and Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+					temp += " " + String::ucompose( _("and Resize %1 from %2 MB to %3 MB"),
+									partition_new.partition,
+									partition_original .Get_Length_MB(),
+									partition_new .Get_Length_MB() ) ;
 			}
 			
 			if ( temp .empty( ) )
@@ -92,11 +114,17 @@ Glib::ustring Operation::Get_String( )
 					
 		case CONVERT	:
 			/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
-			return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
+			return String::ucompose( _( "Convert %1 from %2 to %3"),
+						 partition_original .partition,
+						 Get_Filesystem_String( partition_original .filesystem ),
+						 Get_Filesystem_String( partition_new .filesystem ) ) ;
 			
 		case COPY	:
 			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
-			return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device .path, Sector_To_MB( partition_new .sector_start ) ) ;
+			return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"),
+						 partition_new .partition,
+						 device .path,
+						 Sector_To_MB( partition_new .sector_start ) ) ;
 			
 		default		:
 			return "";			
@@ -119,7 +147,7 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
 	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( 0, 0, inside_extended ) ;
+	UNALLOCATED .Set_Unallocated( device .path, 0, 0, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty( ) )

@@ -132,7 +132,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		new_end = selected_partition.sector_end ;
 	
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp .Set(	String::ucompose( _("New Partition #%1"), new_count ),
+	part_temp .Set(	selected_partition .device_path,
+			String::ucompose( _("New Partition #%1"), new_count ),
 			new_count, part_type,
 			FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] .filesystem,
 			new_start, new_end, 
@@ -148,7 +149,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	if ( part_temp .type == GParted::TYPE_EXTENDED )
 	{
 		Partition UNALLOCATED ;
-		UNALLOCATED .Set_Unallocated( part_temp .sector_start, part_temp .sector_end, true ) ;
+		UNALLOCATED .Set_Unallocated( part_temp .device_path, part_temp .sector_start, part_temp .sector_end, true ) ;
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}
 

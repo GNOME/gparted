@@ -52,10 +52,10 @@ public:
 	void Apply_Operation_To_Disk( Operation & operation );
 	
 	bool Create( const Device & device, Partition & new_partition ) ;
-	bool Convert_FS( const Glib::ustring & device_path, const Partition & partition ) ;
-	bool Delete( const Glib::ustring & device_path, const Partition & partition ) ;
+	bool Convert_FS( const Partition & partition ) ;
+	bool Delete( const Partition & partition ) ;
 	bool Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) ; 
-	bool Copy( const Glib::ustring & dest_device_path, const Glib::ustring & src_part_path, Partition & partition_dest ) ; 
+	bool Copy( const Glib::ustring & src_part_path, Partition & partition_dest ) ; 
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
 
@@ -67,19 +67,20 @@ public:
 private:
 	GParted::FILESYSTEM Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
 	void set_device_partitions( Device & device ) ;
-	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
+	void Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	void Set_Used_Sectors( Partition & partition );
 	void LP_Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( ) ;
-	int Create_Empty_Partition( const Glib::ustring & device_path, Partition & new_partition, bool copy = false ) ;
-	bool Resize_Container_Partition( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new, bool fixed_start ) ;
-	bool Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
+	int Create_Empty_Partition( Partition & new_partition, bool copy = false ) ;
+	bool Resize_Container_Partition( const Partition & partition_old, const Partition & partition_new, bool fixed_start ) ;
+	bool Resize_Normal_Using_Libparted( const Partition & partition_old, const Partition & partition_new ) ;
 
 	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
-	bool set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
+	bool set_partition_type( const Partition & partition ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
+	bool erase_filesystem_signatures( const Partition & partition ) ;
 		
 	bool open_device( const Glib::ustring & device_path ) ;
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
