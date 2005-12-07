@@ -65,7 +65,7 @@ void GParted_Core::find_supported_filesystems( )
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support( ) ) ;
 	
 	//unknown filesystem (default when no match is found)
-	FS fs ; fs .filesystem = "unknown" ;
+	FS fs ; fs .filesystem = GParted::FS_UNKNOWN ;
 	FILESYSTEMS .push_back( fs ) ;
 }
 
@@ -141,23 +141,50 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	}
 }
 
-Glib::ustring GParted_Core::Get_Filesystem( ) 
+GParted::FILESYSTEM GParted_Core::Get_Filesystem( ) 
 {
 	//standard libparted filesystems..
-	if ( lp_partition ->fs_type )
-		return lp_partition ->fs_type ->name ;
+	if ( lp_partition && lp_partition ->fs_type )
+	{
+		if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "extended" )
+			return GParted::FS_EXTENDED ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext2" )
+			return GParted::FS_EXT2 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext3" )
+			return GParted::FS_EXT3 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "linux-swap" )
+			return GParted::FS_LINUX_SWAP ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat16" )
+			return GParted::FS_FAT16 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat32" )
+			return GParted::FS_FAT32 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ntfs" )
+			return GParted::FS_NTFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "reiserfs" )
+			return GParted::FS_REISERFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "xfs" )
+			return GParted::FS_XFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "jfs" )
+			return GParted::FS_JFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs" )
+			return GParted::FS_HFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs+" )
+			return GParted::FS_HFSPLUS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ufs" )
+			return GParted::FS_UFS ;
+	}
+	
 	
 	//other filesystems libparted couldn't detect (i've send patches for these filesystems to the parted guys)
 	char buf[512] ;
 	ped_device_open( lp_device );
 
 	//reiser4
-	ped_geometry_read ( & lp_partition ->geom, buf, 128, 1) ;
-	strcpy( buf, strcmp( buf, "ReIsEr4" ) == 0 ? "reiser4" : "" ) ;
-
+	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
 	ped_device_close( lp_device );
-	if ( strlen( buf ) ) 
-		return buf ;		
+	
+	if ( static_cast<Glib::ustring>( buf ) == "ReIsEr4" )
+		return GParted::FS_REISER4 ;		
 		
 	//no filesystem found....
 	partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
@@ -167,8 +194,8 @@ Glib::ustring GParted_Core::Get_Filesystem( )
 	partition_temp .error += _( "The filesystem is unknown to libparted" ) ;
 	partition_temp .error += "\n-"; 
 	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
-		
-	return _("unknown") ;
+
+	return GParted::FS_UNKNOWN ;
 }
 
 void GParted_Core::set_device_partitions( Device & device ) 
@@ -189,13 +216,13 @@ void GParted_Core::set_device_partitions( Device & device )
 			case PED_PARTITION_LOGICAL:             
 				partition_temp .Set( 	device .path + num_to_str( lp_partition ->num ),
 							lp_partition ->num,
-							lp_partition ->type == 0 ? GParted::PRIMARY : GParted::LOGICAL ,
+							lp_partition ->type == 0 ? GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
 							Get_Filesystem( ), lp_partition ->geom .start,
 							lp_partition ->geom .end,
 							lp_partition ->type,
 							ped_partition_is_busy( lp_partition ) );
 						
-				if ( partition_temp .filesystem != "linux-swap" )
+				if ( partition_temp .filesystem != GParted::FS_LINUX_SWAP )
 				{
 					Set_Used_Sectors( partition_temp ) ;
 					
@@ -218,8 +245,8 @@ void GParted_Core::set_device_partitions( Device & device )
 			case PED_PARTITION_EXTENDED:
 				partition_temp.Set( 	device .path + num_to_str( lp_partition ->num ),
 							lp_partition ->num ,
-							GParted::EXTENDED ,
-							"extended" ,
+							GParted::TYPE_EXTENDED ,
+							GParted::FS_EXTENDED ,
 							lp_partition ->geom .start ,
 							lp_partition ->geom .end ,
 							false ,
@@ -229,7 +256,8 @@ void GParted_Core::set_device_partitions( Device & device )
 				EXT_INDEX = device .device_partitions .size ( ) ;
 				break ;
 		
-			default:	break;
+			default:
+				break;
 		}
 		
 		//if there's an end, there's a partition ;)
@@ -242,7 +270,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		}
 		
 		//next partition (if any)
-		lp_partition = ped_disk_next_partition ( lp_disk, lp_partition ) ;
+		lp_partition = ped_disk_next_partition( lp_disk, lp_partition ) ;
 	}
 	
 	if ( EXT_INDEX > -1 )
@@ -358,7 +386,7 @@ void GParted_Core::Apply_Operation_To_Disk( Operation & operation )
 
 bool GParted_Core::Create( const Device & device, Partition & new_partition ) 
 {
-	if ( new_partition .type == GParted::EXTENDED )   
+	if ( new_partition .type == GParted::TYPE_EXTENDED )   
 		return Create_Empty_Partition( device .path, new_partition ) ;
 	
 	else if ( Create_Empty_Partition( device .path, new_partition, ( new_partition .Get_Length_MB( ) - device .cylsize ) < get_fs( new_partition .filesystem ) .MIN ) > 0 )
@@ -400,7 +428,7 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 	
 	if ( open_device_and_disk( device_path ) )
 	{
-		if ( partition .type == GParted::EXTENDED )
+		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition .sector_end + partition .sector_start) / 2 ) ;
@@ -415,7 +443,7 @@ bool GParted_Core::Delete( const Glib::ustring & device_path, const Partition & 
 
 bool GParted_Core::Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) 
 {
-	if ( partition_old .type == GParted::EXTENDED )
+	if ( partition_old .type == GParted::TYPE_EXTENDED )
 		return Resize_Container_Partition( device .path, partition_old, partition_new, false ) ;
 	
 	//lazy check (only grow). it's possbile one day this should be separated in checks for grow,shrink,move ..
@@ -492,7 +520,7 @@ const std::vector<FS> & GParted_Core::get_filesystems( ) const
 	return FILESYSTEMS ;
 }
 
-const FS & GParted_Core::get_fs( const Glib::ustring & filesystem ) const 
+const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
 {
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
 		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
@@ -554,7 +582,7 @@ Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path )
 void GParted_Core::Set_Used_Sectors( Partition & partition )
 {
 	//because 'unknown' is translated we need to call get_fs instead of using partition .filesystem directly
-	if ( get_fs( partition .filesystem ) .filesystem == "unknown" )
+	if ( get_fs( partition .filesystem ) .filesystem == GParted::FS_UNKNOWN )
 		partition .Set_Unused( -1 ) ;
 	
 	else if ( partition .busy )
@@ -573,12 +601,16 @@ void GParted_Core::Set_Used_Sectors( Partition & partition )
 	else
 		switch( get_fs( partition .filesystem ) .read )
 		{
-			case GParted::FS::EXTERNAL	: set_proper_filesystem( partition .filesystem ) ;
-							  p_filesystem ->Set_Used_Sectors( partition ) ;
-							  break ;
-			case GParted::FS::LIBPARTED	: LP_Set_Used_Sectors( partition ) ;
-							  break ;
-			case GParted::FS::NONE		: break ; 
+			case GParted::FS::EXTERNAL	:
+				set_proper_filesystem( partition .filesystem ) ;
+				p_filesystem ->Set_Used_Sectors( partition ) ;
+				break ;
+			case GParted::FS::LIBPARTED	:
+				LP_Set_Used_Sectors( partition ) ;
+				break ;
+
+			default:
+				partition .Set_Unused( -1 ) ;
 		}
 }
 
@@ -595,12 +627,12 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 					
 			if ( fs )
 			{
-				constraint = ped_file_system_get_resize_constraint ( fs ) ;
+				constraint = ped_file_system_get_resize_constraint( fs ) ;
 				if ( constraint )
 				{
 					partition .Set_Unused( (partition .sector_end - partition .sector_start) - constraint ->min_size ) ;
 					
-					ped_constraint_destroy ( constraint );
+					ped_constraint_destroy( constraint );
 				}
 												
 				ped_file_system_close( fs ) ;
@@ -622,10 +654,18 @@ int GParted_Core::Create_Empty_Partition( const Glib::ustring & device_path, Par
 		//create new partition
 		switch ( new_partition .type )
 		{
-			case 0	:	type = PED_PARTITION_NORMAL; 	break ;
-			case 1	:	type = PED_PARTITION_LOGICAL; 	break ;
-			case 2	:	type = PED_PARTITION_EXTENDED; 	break ;
-			default	:	type = PED_PARTITION_FREESPACE;	break ; //will never happen ;)
+			case GParted::TYPE_PRIMARY:
+				type = PED_PARTITION_NORMAL ;
+				break ;
+			case GParted::TYPE_LOGICAL:
+				type = PED_PARTITION_LOGICAL ;
+				break ;
+			case GParted::TYPE_EXTENDED:
+				type = PED_PARTITION_EXTENDED ;
+				break ;
+				
+			default	:
+				type = PED_PARTITION_FREESPACE;
 		}
 		
 		c_part = ped_partition_new( lp_disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
@@ -670,7 +710,7 @@ bool GParted_Core::Resize_Container_Partition( const Glib::ustring & device_path
 		
 	if ( open_device_and_disk( device_path ) )
 	{
-		if ( partition_old .type == GParted::EXTENDED )
+		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
@@ -763,40 +803,29 @@ void GParted_Core::Show_Error( Glib::ustring message )
 	gdk_threads_leave( );
 }
 
-void GParted_Core::set_proper_filesystem( const Glib::ustring & filesystem )
+void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 {
-	//ugly, stupid, *aaargh*  :-)	
-	
 	if ( ! p_filesystem )
 		delete p_filesystem ;
 		
-	if ( filesystem == "ext2" )	
-		p_filesystem = new ext2( ) ; 
-	else if ( filesystem == "ext3" )
-		p_filesystem = new ext3( ) ;
-	else if ( filesystem == "fat16" )
-		p_filesystem = new fat16( ) ;
-	else if ( filesystem == "fat32" )
-		p_filesystem = new fat32( ) ;
-	else if ( filesystem == "hfs" )
-		p_filesystem = new hfs( ) ;
-	else if ( filesystem == "hfs+" )
-		p_filesystem = new hfsplus( ) ;
-	else if ( filesystem == "jfs" )
-		p_filesystem = new jfs( ) ;
-	else if ( filesystem == "linux-swap" )
-		p_filesystem = new linux_swap( ) ;
-	else if ( filesystem == "reiser4" )
-		p_filesystem = new reiser4( ) ;
-	else if ( filesystem == "reiserfs" )
-		p_filesystem = new reiserfs( ) ;
-	else if ( filesystem == "ntfs" )
-		p_filesystem = new ntfs( ) ;
-	else if ( filesystem == "xfs" )
-		p_filesystem = new xfs( ) ;
-	else
-		p_filesystem = NULL ;
+	switch( filesystem )
+	{
+		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
+		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
+		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
+		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
+		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
+		case FS_NTFS		: p_filesystem = new ntfs() ; 		break ;
+		case FS_REISERFS	: p_filesystem = new reiserfs() ; 	break ;
+		case FS_REISER4		: p_filesystem = new reiser4() ;	break ;
+		case FS_XFS		: p_filesystem = new xfs() ; 		break ;
+		case FS_JFS		: p_filesystem = new jfs() ; 		break ;
+		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
+		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
 
+		default			: p_filesystem = NULL ;
+	}
+	
 	if ( p_filesystem )
 		p_filesystem ->textbuffer = textbuffer ;
 }
@@ -808,7 +837,7 @@ bool GParted_Core::set_partition_type( const Glib::ustring & device_path, const 
 	
 	if ( open_device_and_disk( device_path ) )
 	{
-		PedFileSystemType * fs_type = ped_file_system_type_get( partition .filesystem .c_str() ) ;
+		PedFileSystemType * fs_type = ped_file_system_type_get( Get_Filesystem_String( partition .filesystem ) .c_str() ) ;
 
 		//default is Linux (83)
 		if ( ! fs_type )

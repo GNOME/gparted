@@ -25,7 +25,7 @@ FS fat16::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "fat16" ;
+	fs .filesystem = GParted::FS_FAT16 ;
 		
 	//find out if we can create fat16 filesystems
 	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 

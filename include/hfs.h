@@ -16,8 +16,8 @@
  */
  
  
-#ifndef HFS
-#define HFS
+#ifndef DEFINE_HFS
+#define DEFINE_HFS
 
 #include "../include/FileSystem.h"
 

@@ -65,7 +65,7 @@ public:
 private:
 	void Build_Visual_Disk( ) ; //i still dream of some fully resizeable visualdisk.... 
 	void Create_Visual_Partition( const Partition & partition ) ; 
-	void Prepare_Legend( std::vector<Glib::ustring> & legend, const std::vector<Partition> & partitions ) ;
+	void Prepare_Legend( std::vector<GParted::FILESYSTEM> & legend, const std::vector<Partition> & partitions ) ;
 	void Build_Legend( ) ;
 		
 	//signal handlers

@@ -33,7 +33,7 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 	
 	this ->selected_partition = selected_partition ;
 	
-	if ( selected_partition .type == GParted::EXTENDED )
+	if ( selected_partition .type == GParted::TYPE_EXTENDED )
 	{
 		Set_Resizer( true ) ;	
 		Resize_Move_Extended( partitions ) ;
@@ -87,7 +87,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	Sector previous, next ;
 	previous = next = 0 ;
 	//also check the partitions filesystem ( if this is a 'resize-only' then previous should be 0 )	
-	if ( t >= 1 && partitions[t -1].type == GParted::UNALLOCATED && ! this ->fixed_start )
+	if ( t >= 1 && partitions[t -1].type == GParted::TYPE_UNALLOCATED && ! this ->fixed_start )
 	{ 
 		previous = partitions[t -1] .sector_end - partitions[t -1] .sector_start ;
 		START = partitions[t -1] .sector_start ;
@@ -95,7 +95,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	else
 		START = selected_partition .sector_start ;
 
-	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::UNALLOCATED )
+	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
 		next = partitions[t +1].sector_end - partitions[t +1].sector_start ;
 	
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
@@ -152,12 +152,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	//calculate total size in MB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t = 0;
-	while ( t < partitions .size( ) && partitions[ t ] .type != GParted::EXTENDED ) t++ ;
+	while ( t < partitions .size( ) && partitions[ t ] .type != GParted::TYPE_EXTENDED ) t++ ;
 	
 	Sector previous, next ;
 	previous = next = 0 ;
 	//calculate length and start of previous
-	if ( t > 0 && partitions[t -1].type == GParted::UNALLOCATED )
+	if ( t > 0 && partitions[t -1].type == GParted::TYPE_UNALLOCATED )
 	{
 		previous = partitions[t -1].sector_end - partitions[t -1].sector_start ;
 		START = partitions[t -1].sector_start ;
@@ -166,7 +166,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 		START = selected_partition .sector_start ;
 	
 	//calculate length of next
-	if ( t +1 < partitions .size( ) && partitions[ t +1 ] .type == GParted::UNALLOCATED )
+	if ( t +1 < partitions .size( ) && partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
 		next = partitions[ t +1 ] .sector_end - partitions[ t +1 ] .sector_start ;
 	
 	//now we have enough data to calculate some important values..
@@ -182,7 +182,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	Sector first =0, used =0 ;
 	for ( unsigned int i = 0 ; i < partitions[ t ] .logicals .size( ) ; i++ )
 	{
-		if ( partitions[ t ] .logicals[ i ] .type == GParted::LOGICAL )
+		if ( partitions[ t ] .logicals[ i ] .type == GParted::TYPE_LOGICAL )
 		{
 			if ( first == 0 )
 				first = partitions[ t ] .logicals[ i ] .sector_start ;

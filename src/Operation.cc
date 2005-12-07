@@ -42,52 +42,64 @@ Glib::ustring Operation::Get_String( )
 		
 	switch ( operationtype )
 	{
-		case DELETE	:	if (partition_original.type == GParted::LOGICAL)
-						temp = _("Logical Partition") ;
-					else
-						temp = partition_original .partition ;
+		case DELETE	:
+			if (partition_original.type == GParted::TYPE_LOGICAL)
+				temp = _("Logical Partition") ;
+			else
+				temp = partition_original .partition ;
 
-					/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
-					return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device .path ) ;
+			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
+			return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), temp, partition_original .filesystem, partition_original .Get_Length_MB( ), device .path ) ;
 
-		case CREATE	:	switch( partition_new.type )
-					{
-						case GParted::PRIMARY	:	temp = _("Primary Partition"); break;
-						case GParted::LOGICAL	:	temp = _("Logical Partition") ; break;	
-						case GParted::EXTENDED	:	temp = _("Extended Partition"); break;
-						default			:	break;
-					}
-					/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
-					return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device .path ) ;
-		case RESIZE_MOVE:	//if startsector has changed >= 1 MB we consider it a move
-					diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
-					if (  diff >= MEGABYTE ) 
-					{
-						if ( partition_new .sector_start > partition_original .sector_start )
-							temp = String::ucompose( _("Move %1 forward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
-						else
-							temp = String::ucompose( _("Move %1 backward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
-					}
+		case CREATE	:
+			switch( partition_new.type )
+			{
+				case GParted::TYPE_PRIMARY	:	temp = _("Primary Partition"); break;
+				case GParted::TYPE_LOGICAL	:	temp = _("Logical Partition") ; break;	
+				case GParted::TYPE_EXTENDED	:	temp = _("Extended Partition"); break;
+			
+				default			:	break;
+			}
+			/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda */
+			return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"), temp, partition_new.partition_number, partition_new.filesystem , partition_new .Get_Length_MB( ), device .path ) ;
+			
+		case RESIZE_MOVE:
+			//if startsector has changed >= 1 MB we consider it a move
+			diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
+			if (  diff >= MEGABYTE ) 
+			{
+				if ( partition_new .sector_start > partition_original .sector_start )
+					temp = String::ucompose( _("Move %1 forward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
+				else
+					temp = String::ucompose( _("Move %1 backward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
+			}
 									
-					//check if size has changed ( we only consider changes >= 1 MB )
-					diff = std::abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
+			//check if size has changed ( we only consider changes >= 1 MB )
+			diff = std::abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
 											
-					if ( diff >= MEGABYTE )
-					{
-						if ( temp .empty( ) ) 
-							temp = String::ucompose( _("Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
-						else
-							temp += " " + String::ucompose( _("and Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
-					}
-					if ( temp .empty( ) )
-						temp = _("Sorry, changes are too small to make sense");
+			if ( diff >= MEGABYTE )
+			{
+				if ( temp .empty( ) ) 
+					temp = String::ucompose( _("Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+				else
+					temp += " " + String::ucompose( _("and Resize %1 from %2 MB to %3 MB"), partition_new.partition,  partition_original .Get_Length_MB(), partition_new .Get_Length_MB() ) ;
+			}
+			
+			if ( temp .empty( ) )
+				temp = _("Sorry, changes are too small to make sense");
 					
-					return temp;
-		case CONVERT	:	/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
-					return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
-		case COPY	:	/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
-					return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device .path, Sector_To_MB( partition_new .sector_start ) ) ;
-		default		:	return "";			
+			return temp;
+					
+		case CONVERT	:
+			/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
+			return String::ucompose( _( "Convert %1 from %2 to %3"), partition_original .partition, partition_original .filesystem, partition_new .filesystem ) ;
+			
+		case COPY	:
+			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
+			return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"), partition_new .partition,  device .path, Sector_To_MB( partition_new .sector_start ) ) ;
+			
+		default		:
+			return "";			
 	}
 		
 }
@@ -151,15 +163,15 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 
 int Operation::Get_Index_Original( std::vector<Partition> & partitions )
 {
-	for ( int t = 0 ; t < static_cast<int> ( partitions .size( ) ) ; t++ )
+	for ( int t = 0 ; t < static_cast<int>( partitions .size( ) ) ; t++ )
 		if ( partition_original .sector_start >= partitions[ t ] .sector_start && partition_original .sector_end <= partitions[ t ] .sector_end )
 		{
 			//remove unallocated space preceding the original partition
-			if ( t -1 >= 0 && partitions[ t -1 ] .type == GParted::UNALLOCATED ) 
+			if ( t -1 >= 0 && partitions[ t -1 ] .type == GParted::TYPE_UNALLOCATED ) 
 				partitions .erase( partitions .begin( ) + --t );
 						
 			//remove unallocated space following the original partition
-			if ( t +1 < static_cast<int> ( partitions .size( ) ) && partitions[ t +1 ] .type == GParted::UNALLOCATED )
+			if ( t +1 < static_cast<int>( partitions .size( ) ) && partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
 				partitions .erase( partitions .begin( ) + t +1 );
 			
 			return t ;
@@ -179,7 +191,7 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 	else
 	{
 		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
+		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) + Get_Index_Original( partitions[ ext ] .logicals ) );
 		
 		
@@ -205,7 +217,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 	else
 	{
 		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
+		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
 		partitions[ ext ] .logicals[ Get_Index_Original( partitions[ ext ] .logicals ) ] = partition_new ;
 		
 		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
@@ -214,7 +226,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 
 void Operation::Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions)
 {
-	if ( partition_original .type == GParted::EXTENDED )
+	if ( partition_original .type == GParted::TYPE_EXTENDED )
 		Apply_Resize_Move_Extended_To_Visual( partitions ) ;
 	else 
 		Apply_Create_To_Visual( partitions ) ;
@@ -231,12 +243,12 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	
 	//stuff INSIDE extended partition
 	ext = 0 ;
-	while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
+	while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
 	
-	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .front( ) .type == GParted::UNALLOCATED )
+	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .front( ) .type == GParted::TYPE_UNALLOCATED )
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) ) ;
 	
-	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .back( ) .type == GParted::UNALLOCATED )
+	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .back( ) .type == GParted::TYPE_UNALLOCATED )
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .end( ) -1 ) ;
 	
 	Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;

@@ -54,9 +54,9 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	{
 		double width = static_cast<double> (partitions[ t ] .sector_end - partitions[ t ] .sector_start) / sectors_per_pixel ;
 				
-		if ( (partitions[ t ] .type == GParted::PRIMARY || partitions[ t ] .type == GParted::LOGICAL) && width < 20  )
+		if ( (partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL) && width < 20  )
 			extra_pixels += (20 - width) ;
-		else if ( partitions[ t ] .type == GParted::UNALLOCATED && width < 15 )
+		else if ( partitions[ t ] .type == GParted::TYPE_UNALLOCATED && width < 15 )
 			extra_pixels += (15 - width) ;
 	}
 	
@@ -84,7 +84,7 @@ void VBox_VisualDisk::Build_Visual_Disk( )
 	{
 		Create_Visual_Partition( partitions[ i ] ) ;
 		
-		if ( partitions[ i ].type != GParted::EXTENDED )
+		if ( partitions[ i ].type != GParted::TYPE_EXTENDED )
 			hbox_disk ->pack_start( *( visual_partitions .back( ) ->drawingarea ), Gtk::PACK_SHRINK ) ;
 	}
 	
@@ -100,7 +100,7 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 	visual_partitions .back( ) ->index = visual_partitions .size( ) -1 ; //   <----  BELACHELIJK!! DOE DAAR IETS AAN!!!
 	visual_partitions .back( ) ->sector_start = partition .sector_start ;
 		
-	if ( partition .type == GParted::EXTENDED )
+	if ( partition .type == GParted::TYPE_EXTENDED )
 	{
 		visual_partitions.back( ) ->drawingarea = NULL ;//it's just a dummy ;-)  ( see Set_Selected() )
 		visual_partitions.back( ) ->length = 0 ; //keeps total_length clean
@@ -124,9 +124,9 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 		return ;
 	}
 	
-	visual_partitions .back( ) ->length = static_cast<int> ( SCREEN_WIDTH / ( device_length / static_cast<double> (partition .sector_end - partition .sector_start) ) );
+	visual_partitions .back( ) ->length = static_cast<int> ( SCREEN_WIDTH / ( device_length / static_cast<double>(partition .sector_end - partition .sector_start) ) );
 	if ( visual_partitions .back( )  ->length < 20 )//we need a min. size. Otherwise some small partitions wouldn't be visible
-		visual_partitions .back( ) ->length = ( partition .type == GParted::UNALLOCATED ) ? 15 : 20 ;
+		visual_partitions .back( ) ->length = ( partition .type == GParted::TYPE_UNALLOCATED ) ? 15 : 20 ;
 		
 	if ( partition .inside_extended )
 	{
@@ -139,10 +139,10 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 		visual_partitions .back( ) ->text_y = 15 ;
 	}
 	
-	if (  partition .type == GParted::UNALLOCATED )  
+	if (  partition .type == GParted::TYPE_UNALLOCATED )  
 		visual_partitions .back( ) ->used = -1;
 	else 
-		visual_partitions .back( ) ->used = static_cast<int> ( (visual_partitions .back( ) ->length - (BORDER *2)) / ( static_cast<double> (partition .sector_end - partition .sector_start) / partition .sectors_used ) );
+		visual_partitions .back( ) ->used = static_cast<int>( (visual_partitions .back( ) ->length - (BORDER *2)) / ( static_cast<double>(partition .sector_end - partition .sector_start) / partition .sectors_used ) );
 		
 	visual_partitions.back( ) ->color_fs = partition .color; 
 	this ->get_colormap( ) ->alloc_color( visual_partitions .back( ) ->color_fs );
@@ -156,7 +156,7 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 	visual_partitions .back( ) ->drawingarea ->signal_realize( ) .connect( sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_realize), visual_partitions .back( ) ) );
 	visual_partitions .back( ) ->drawingarea ->signal_expose_event( ) .connect( sigc::bind<Visual_Partition *>(sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_expose), visual_partitions .back( ) ));
 		
-	//create  pangolayout and see if it fits in the visual partition
+	//create pangolayout and see if it fits in the visual partition
 	str_temp = partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB( ) ) ;
 	visual_partitions .back( ) ->pango_layout = visual_partitions .back( ) ->drawingarea ->create_pango_layout ( str_temp ) ;
 		
@@ -166,22 +166,22 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 		
 	//tooltip
 	str_temp = "" ;
-	if ( partition .type != GParted::UNALLOCATED )
-		str_temp = partition .filesystem + "\n" ;
+	if ( partition .type != GParted::TYPE_UNALLOCATED )
+		str_temp = Get_Filesystem_String( partition .filesystem ) + "\n" ;
 
 	str_temp += partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB( ) ) ;
 	tooltips .set_tip( *( visual_partitions.back( ) ->drawingarea ), str_temp ) ;
 }
 
-void VBox_VisualDisk::Prepare_Legend( std::vector<Glib::ustring> & legend, const std::vector<Partition> & partitions ) 
+void VBox_VisualDisk::Prepare_Legend( std::vector<GParted::FILESYSTEM> & legend, const std::vector<Partition> & partitions ) 
 {
 	for ( unsigned int t = 0 ; t < partitions .size( ) ; t++ )
 	{
 		if ( std::find( legend .begin( ), legend .end( ), partitions[ t ] .filesystem ) == legend .end( ) )
-			legend .push_back( partitions[ t ]  .filesystem );
+			legend .push_back( partitions[ t ] .filesystem );
 		
-		if ( partitions[ t ] .type == GParted::EXTENDED )
-			Prepare_Legend( legend, partitions[ t ]  .logicals ) ;
+		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			Prepare_Legend( legend, partitions[ t ] .logicals ) ;
 	}
 }
 
@@ -196,13 +196,13 @@ void VBox_VisualDisk::Build_Legend( )
 	frame_disk_legend ->add( *hbox_legend ) ;
 	this ->pack_start( hbox_legend_main );
 	
-	std::vector<Glib::ustring> legend ;
+	std::vector<GParted::FILESYSTEM> legend ;
 	Prepare_Legend( legend, partitions ) ;
 	
 	bool hide_used_unused = true;
 	for ( unsigned int t = 0 ; t < legend .size( ) ; t++ )
 	{
-		if ( legend[ t ] != "---" && legend[ t ] != "extended" && legend[ t ] != "linux-swap" )
+		if ( legend[ t ] != GParted::FS_UNALLOCATED && legend[ t ] != GParted::FS_EXTENDED && legend[ t ] != GParted::FS_LINUX_SWAP )
 			hide_used_unused = false ;
 		
 		if ( t )
@@ -212,13 +212,13 @@ void VBox_VisualDisk::Build_Legend( )
 			
 		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
 		
-		if ( legend[ t ] == "---" )
+		if ( legend[ t ] == GParted::FS_UNALLOCATED )
 		{
-			str_temp = _("unallocated") ;
+			str_temp = Get_Filesystem_String( GParted::FS_UNALLOCATED ) ;//_("unallocated") ;
 			hbox_legend ->pack_start( * mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
 		}
 		else
-			hbox_legend ->pack_start( * mk_label( legend[ t ] + " " ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * mk_label( Get_Filesystem_String( legend[ t ] ) + " " ), Gtk::PACK_SHRINK );
 	}
 	
 	//if there are any partitions add used/unused
@@ -248,7 +248,7 @@ void VBox_VisualDisk::Set_Selected( const Partition & partition )
 	if ( temp >= 0 ) //prevent segfault at firsttime selection
 		drawingarea_on_expose( NULL, visual_partitions[ temp ] ) ; 	
 		
-	if ( partition.type == GParted::EXTENDED )
+	if ( partition.type == GParted::TYPE_EXTENDED )
 		return; //extended can not be selected in visualdisk (yet )
 	 
 	//now set new selected one
@@ -271,7 +271,6 @@ void VBox_VisualDisk::drawingarea_on_realize( Visual_Partition* vp )
 	//eventmasks necessary for tooltips
 	vp ->drawingarea ->add_events( Gdk::ENTER_NOTIFY_MASK );
 	vp ->drawingarea ->add_events( Gdk::LEAVE_NOTIFY_MASK );
-	
 }
 
 bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * ev, Visual_Partition* vp )

@@ -25,7 +25,7 @@ FS ext2::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "ext2" ;
+	fs .filesystem = GParted::FS_EXT2 ;
 	if ( ! system( "which dumpe2fs 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = GParted::FS::EXTERNAL ;
 	

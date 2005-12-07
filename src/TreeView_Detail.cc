@@ -79,7 +79,7 @@ void TreeView_Detail::Load_Partitions( const std::vector<Partition> & partitions
 		row = *( treestore_detail ->append( ) );
 		Create_Row( row, partitions[ i ] );
 		
-		if ( partitions[ i ] .type == GParted::EXTENDED )
+		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
 		{
 			for ( unsigned int t = 0 ; t < partitions[ i ] .logicals .size( ) ; t++ ) 
 			{
@@ -146,8 +146,8 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
 	treerow[ treeview_detail_columns .color ] = Get_Color( partition .filesystem ) ;
 
-	treerow[ treeview_detail_columns .text_color ] = ( partition .type == GParted::UNALLOCATED ) ? "darkgrey" : "black" ;
-	treerow[ treeview_detail_columns .type ] = partition .filesystem ;
+	treerow[ treeview_detail_columns .text_color ] = ( partition .type == GParted::TYPE_UNALLOCATED ) ? "darkgrey" : "black" ;
+	treerow[ treeview_detail_columns .type ] = Get_Filesystem_String( partition .filesystem ) ;
 	treerow[ treeview_detail_columns .type_square ] = "██" ;
 	
 	//size

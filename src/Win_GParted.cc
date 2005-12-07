@@ -208,11 +208,11 @@ void Win_GParted::init_convert_menu()
 		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
 			
 		//the label...
-		hbox ->pack_start( * mk_label( " " + gparted_core .get_filesystems( )[ t ] .filesystem ), Gtk::PACK_SHRINK );	
+		hbox ->pack_start( * mk_label( " " + Get_Filesystem_String( gparted_core .get_filesystems( )[ t ] .filesystem ) ), Gtk::PACK_SHRINK );	
 				
 		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
 		menu_convert.items( ) .push_back( *menu_item );
-		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_filesystems( )[ t ] .filesystem ) ) ;
+		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<GParted::FILESYSTEM>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_filesystems( )[ t ] .filesystem ) ) ;
 	}
 	
 	menu_convert.show_all_children() ;
@@ -513,13 +513,18 @@ void Win_GParted::Refresh_Visual( )
 		
 		switch ( partitions[ t ] .type )
 		{
-			case GParted::PRIMARY	:	primary_count++;
-							break;
-			case GParted::EXTENDED	: 	any_extended = true;
-							primary_count++;
-							any_logic = partitions[ t ] .logicals .size( ) -1 ;
-							break;
-			default			:	break;
+			case GParted::TYPE_PRIMARY	:
+				primary_count++;
+				break;
+				
+			case GParted::TYPE_EXTENDED	:
+				any_extended = true;
+				primary_count++;
+				any_logic = partitions[ t ] .logicals .size( ) -1 ;
+				break;
+				
+			default				:
+				break;
 		}
 	}
 	
@@ -580,14 +585,14 @@ void Win_GParted::Set_Valid_Operations( )
 	//only unmount is allowed
 	if ( selected_partition .busy )
 	{
-		if ( selected_partition .filesystem != "linux-swap" && selected_partition .type != GParted::EXTENDED )
+		if ( selected_partition .filesystem != GParted::FS_LINUX_SWAP && selected_partition .type != GParted::TYPE_EXTENDED )
 			allow_unmount( true ) ;
 		
 		return;
 	}
 	
 	//UNALLOCATED
-	if ( selected_partition .type == GParted::UNALLOCATED )
+	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
 	{
 		allow_new( true );
 		
@@ -595,7 +600,7 @@ void Win_GParted::Set_Valid_Operations( )
 		if ( ! copied_partition .partition .empty( ) && ! devices[ current_device ] .readonly )
 		{
 			if (	(copied_partition .Get_Length_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) ||
-				(copied_partition .filesystem == "xfs" && (copied_partition .Get_Used_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) )
+				(copied_partition .filesystem == GParted::FS_XFS && (copied_partition .Get_Used_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) )
 			)
 				allow_paste( true ) ;
 		}			
@@ -604,7 +609,7 @@ void Win_GParted::Set_Valid_Operations( )
 	}
 	
 	//EXTENDED
-	if ( selected_partition .type == GParted::EXTENDED )
+	if ( selected_partition .type == GParted::TYPE_EXTENDED )
 	{
 		if (  ! any_logic ) //deletion is only allowed when there are no logical partitions inside.
 			allow_delete( true ) ;
@@ -616,7 +621,7 @@ void Win_GParted::Set_Valid_Operations( )
 	}	
 	
 	//PRIMARY and LOGICAL
-	if (  selected_partition .type == GParted::PRIMARY || selected_partition .type == GParted::LOGICAL )
+	if (  selected_partition .type == GParted::TYPE_PRIMARY || selected_partition .type == GParted::TYPE_LOGICAL )
 	{
 		fs = gparted_core .get_fs( selected_partition .filesystem ) ;
 		
@@ -892,7 +897,7 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 	else if ( event ->button == 3 )  //right-click
 	{
 		//prepare convert menu
-		if ( selected_partition .type != GParted::UNALLOCATED )
+		if ( selected_partition .type != GParted::TYPE_UNALLOCATED )
 			Set_Valid_Convert_Filesystems( ) ;
 		
 		menu_partition .popup( event ->button, event ->time );
@@ -920,7 +925,7 @@ bool Win_GParted::max_amount_prim_reached( )
 void Win_GParted::activate_resize( )
 {
 	//show warning when one tries to resize a fat16 filesystem
-	if ( selected_partition .filesystem == "fat16" )
+	if ( selected_partition .filesystem == GParted::FS_FAT16 )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _( "Are you sure you want to resize/move this partition?" ) ;
@@ -954,10 +959,10 @@ void Win_GParted::activate_resize( )
 	
 	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), devices[ current_device ] .cylsize ) ;
 			
-	if ( selected_partition .type == GParted::LOGICAL )
+	if ( selected_partition .type == GParted::TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::EXTENDED ) ext++ ;
+		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
 		dialog .Set_Data( selected_partition, partitions[ ext ] .logicals );
 	}
 	else
@@ -970,7 +975,7 @@ void Win_GParted::activate_resize( )
 		dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 		
 		//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new size and position ( unless it's an EXTENDED )
-		if ( selected_partition .status == GParted::STAT_NEW && selected_partition.type != GParted::EXTENDED )
+		if ( selected_partition .status == GParted::STAT_NEW && selected_partition.type != GParted::TYPE_EXTENDED )
 		{
 			//remove operation which creates this partition
 			for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
@@ -1041,7 +1046,7 @@ void Win_GParted::activate_delete( )
 	//e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6, /dev/hda7 is renumbered to /dev/hda6
 	//the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted the OS cannot find /dev/hda7 anymore and the results aren't that pretty
 	//it seems best to check for this and prohibit deletion with some explanation to the user.
-	if ( 	selected_partition .type == GParted::LOGICAL &&
+	if ( 	selected_partition .type == GParted::TYPE_LOGICAL &&
 		selected_partition .status != GParted::STAT_NEW && 
 		selected_partition .partition_number < devices [ current_device ] .highest_busy )
 	{	
@@ -1111,11 +1116,11 @@ void Win_GParted::activate_info( )
 	dialog .run( );
 }
 
-void Win_GParted::activate_convert( const Glib::ustring & new_fs )
+void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
 {
 	//standard warning..
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1?"), new_fs ) + "</span>\n\n" ;
+	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1?"), Get_Filesystem_String( new_fs ) ) + "</span>\n\n" ;
 	str_temp += String::ucompose( _("This operation will destroy all data on %1"), selected_partition .partition ) ;
 	
 	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true );
@@ -1134,13 +1139,13 @@ void Win_GParted::activate_convert( const Glib::ustring & new_fs )
 	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("Can not convert this filesystem to %1."), new_fs ) ;
+		str_temp += String::ucompose( _("Can not convert this filesystem to %1."), Get_Filesystem_String( new_fs ) ) ;
 		str_temp += "</span>\n\n" ;
 		
 		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
-			str_temp += String::ucompose( _( "A %1 filesystem requires a partition of at least %2 MB."), new_fs, fs .MIN ) ;
+			str_temp += String::ucompose( _( "A %1 filesystem requires a partition of at least %2 MB."), Get_Filesystem_String( new_fs ), fs .MIN ) ;
 		else
-			str_temp += String::ucompose( _( "A partition with a %1 filesystem has a maximum size of %2 MB."), new_fs, fs .MAX ) ;
+			str_temp += String::ucompose( _( "A partition with a %1 filesystem has a maximum size of %2 MB."), Get_Filesystem_String( new_fs ), fs .MAX ) ;
 		
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );

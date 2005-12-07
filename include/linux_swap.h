@@ -16,8 +16,8 @@
  */
  
  
-#ifndef LINUX_SWAP
-#define LINUX_SWAP
+#ifndef DEFINE_LINUX_SWAP
+#define DEFINE_LINUX_SWAP
 
 #include "../include/FileSystem.h"
 

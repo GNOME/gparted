@@ -16,8 +16,8 @@
  */
  
  
-#ifndef HFSPLUS
-#define HFSPLUS
+#ifndef DEFINE_HFSPLUS
+#define DEFINE_HFSPLUS
 
 #include "../include/FileSystem.h"
 

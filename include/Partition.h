@@ -24,7 +24,6 @@
 #define PARTITION
 
 #include "../include/Utils.h"
-#include "../include/i18n.h"
 
 #include <gdkmm/colormap.h>
 
@@ -34,11 +33,12 @@
 namespace GParted
 {
 	
+
 enum PartitionType {
-	PRIMARY		=	0,
-	LOGICAL		=	1,
-	EXTENDED	=	2,
-	UNALLOCATED	=	3
+	TYPE_PRIMARY		=	0,
+	TYPE_LOGICAL		=	1,
+	TYPE_EXTENDED		=	2,
+	TYPE_UNALLOCATED	=	3 
 };
 
 enum PartitionStatus {
@@ -60,7 +60,7 @@ public:
 	void Set( 	const Glib::ustring & partition,
 			const int partition_number,
 			const PartitionType type,
-			const Glib::ustring & filesystem,
+			const FILESYSTEM filesystem,
 			const Sector & sector_start,
 			const Sector & sector_end,
 			const bool inside_extended,
@@ -82,7 +82,7 @@ public:
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
-	Glib::ustring filesystem;// ext2, ext3, ntfs, etc....
+	FILESYSTEM filesystem ;
 	Sector sector_start;
 	Sector sector_end;
 	Sector sectors_used;

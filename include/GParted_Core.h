@@ -60,12 +60,12 @@ public:
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
 
 	const std::vector<FS> & get_filesystems( ) const ;
-	const FS & get_fs( const Glib::ustring & filesystem ) const ;
+	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
 	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 	std::vector<Glib::ustring> get_disklabeltypes( ) ;
 
 private:
-	Glib::ustring Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
+	GParted::FILESYSTEM Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
 	void set_device_partitions( Device & device ) ;
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
@@ -77,7 +77,7 @@ private:
 	bool Resize_Normal_Using_Libparted( const Glib::ustring & device_path, const Partition & partition_old, const Partition & partition_new ) ;
 
 	void Show_Error( Glib::ustring message ) ;
-	void set_proper_filesystem( const Glib::ustring & filesystem ) ;
+	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Glib::ustring & device_path, const Partition & partition ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 		

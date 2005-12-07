@@ -16,8 +16,8 @@
  */
  
  
-#ifndef JFS
-#define JFS
+#ifndef DEFINE_JFS
+#define DEFINE_JFS
 
 #include "../include/FileSystem.h"
 

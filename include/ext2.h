@@ -16,8 +16,8 @@
  */
  
  
-#ifndef EXT2
-#define EXT2
+#ifndef DEFINE_EXT2
+#define DEFINE_EXT2
 
 #include "../include/FileSystem.h"
 

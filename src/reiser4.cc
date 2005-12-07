@@ -25,7 +25,7 @@ FS reiser4::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "reiser4" ;
+	fs .filesystem = GParted::FS_REISER4 ;
 	
 	if ( ! system( "which debugfs.reiser4 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = GParted::FS::EXTERNAL ;

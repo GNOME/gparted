@@ -16,8 +16,8 @@
  */
  
  
-#ifndef FILESYSTEM
-#define FILESYSTEM
+#ifndef DEFINE_FILESYSTEM
+#define DEFINE_FILESYSTEM
 
 #include "../include/Partition.h"
 
@@ -59,4 +59,4 @@ private:
 
 } //GParted
 
-#endif //FILESYSTEM
+#endif //DEFINE_FILESYSTEM

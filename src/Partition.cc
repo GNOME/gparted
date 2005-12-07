@@ -27,9 +27,10 @@ Partition::Partition( )
 
 void Partition::Reset( )
 {
-	partition = filesystem = error = flags = "" ;
+	partition = error = flags = "" ;
 	status = GParted::STAT_REAL ;
-	type = GParted::UNALLOCATED ;
+	type = GParted::TYPE_UNALLOCATED ;
+	filesystem = GParted::FS_UNALLOCATED ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color .set( "black" ) ;
 	inside_extended = busy = false ;
@@ -39,7 +40,7 @@ void Partition::Reset( )
 void Partition::Set(	const Glib::ustring & partition,
 			const int partition_number,
 			const PartitionType type,
-			const Glib::ustring & filesystem,
+			const FILESYSTEM filesystem,
 			const Sector & sector_start,
 			const Sector & sector_end,
 			const bool inside_extended,
@@ -67,7 +68,7 @@ void Partition::Set_Unused( Sector sectors_unused )
 
 void Partition::Set_Unallocated( Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( _("Unallocated"), -1, GParted::UNALLOCATED, "---", sector_start, sector_end , inside_extended, false ); 
+	this ->Set( Get_Filesystem_String( GParted::FS_UNALLOCATED ), -1, GParted::TYPE_UNALLOCATED, GParted::FS_UNALLOCATED, sector_start, sector_end, inside_extended, false ); 
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }

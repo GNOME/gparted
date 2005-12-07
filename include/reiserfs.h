@@ -16,12 +16,10 @@
  */
  
  
-#ifndef REISERFS
-#define REISERFS
+#ifndef DEFINE_REISERFS
+#define DEFINE_REISERFS
 
 #include "../include/FileSystem.h"
-
-#include <dlfcn.h>
 
 namespace GParted
 {

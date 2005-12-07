@@ -25,7 +25,7 @@ FS hfs::get_filesystem_support( )
 {
 	FS fs ;
 		
-	fs .filesystem = "hfs" ;
+	fs .filesystem = GParted::FS_HFS ;
 	
 	fs .read = GParted::FS::LIBPARTED; //provided by libparted
 	

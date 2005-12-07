@@ -16,8 +16,8 @@
  */
  
  
-#ifndef NTFS
-#define NTFS
+#ifndef DEFINE_NTFS
+#define DEFINE_NTFS
 
 #include "../include/FileSystem.h"
 

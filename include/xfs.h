@@ -16,8 +16,8 @@
  */
  
  
-#ifndef XFS
-#define XFS
+#ifndef DEFINE_XFS
+#define DEFINE_XFS
 
 #include "../include/FileSystem.h"
 

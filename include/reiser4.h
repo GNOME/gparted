@@ -16,8 +16,8 @@
  */
  
  
-#ifndef REISER4
-#define REISER4
+#ifndef DEFINE_REISER4
+#define DEFINE_REISER4
 
 #include "../include/FileSystem.h"
 

@@ -67,7 +67,7 @@ void Dialog_Partition_Info::drawingarea_on_realize( )
 
 bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 {
-	if ( partition .type != GParted::UNALLOCATED ) 
+	if ( partition .type != GParted::TYPE_UNALLOCATED ) 
 	{
 		//used
 		gc ->set_foreground( color_used );
@@ -109,7 +109,7 @@ void Dialog_Partition_Info::init_drawingarea( )
 	//allocate some colors
 	color_used.set( "#F8F8BA" ); this ->get_colormap( ) ->alloc_color( color_used ) ;
 	
-	partition .type == GParted::EXTENDED ? color_unused .set( "darkgrey" ) : color_unused .set( "white" ) ;
+	partition .type == GParted::TYPE_EXTENDED ? color_unused .set( "darkgrey" ) : color_unused .set( "white" ) ;
 	this ->get_colormap( ) ->alloc_color( color_unused ) ;
 
 	color_text .set( "black" );		this ->get_colormap( ) ->alloc_color( color_text ) ;
@@ -130,7 +130,7 @@ void Dialog_Partition_Info::Display_Info( )
 	
 	//filesystem
 	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Filesystem:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
-	table ->attach( * mk_label( partition .filesystem ), 1, 2, top++, bottom++, Gtk::FILL);
+	table ->attach( * mk_label( Get_Filesystem_String( partition .filesystem ) ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//size
 	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Size:" ) + "</b>" ), 0,1,top, bottom,Gtk::FILL);
@@ -139,7 +139,7 @@ void Dialog_Partition_Info::Display_Info( )
 	if ( partition.sectors_used != -1 )
 	{
 		//calculate relative diskusage
-		int percent_used = Round( static_cast<double> (partition .Get_Used_MB( ) ) / partition .Get_Length_MB( ) *100 ) ;
+		int percent_used = Round( static_cast<double>(partition .Get_Used_MB( ) ) / partition .Get_Length_MB( ) *100 ) ;
 						
 		//used
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL ) ;
@@ -153,7 +153,7 @@ void Dialog_Partition_Info::Display_Info( )
 	}
 	
 	//flags
-	if ( partition.type != GParted::UNALLOCATED )
+	if ( partition.type != GParted::TYPE_UNALLOCATED )
 	{
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Flags:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
 		table ->attach( * mk_label( partition .flags ), 1, 2, top++, bottom++, Gtk::FILL ) ;
@@ -162,7 +162,7 @@ void Dialog_Partition_Info::Display_Info( )
 	//one blank line
 	table ->attach( * mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
-	if ( partition .type != GParted::UNALLOCATED && partition .status != GParted::STAT_NEW )
+	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		//path
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Path:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
@@ -184,9 +184,9 @@ void Dialog_Partition_Info::Display_Info( )
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ), 0,1, top, bottom, Gtk::FILL) ;
 		if ( partition.busy )
 			str_temp = Find_Status( ) ;
-		else if ( partition.type == GParted::EXTENDED )
+		else if ( partition.type == GParted::TYPE_EXTENDED )
 			str_temp = _("Not busy (There are no mounted logical partitions)" ) ;
-		else if ( partition.filesystem == "linux-swap" )
+		else if ( partition.filesystem == GParted::FS_LINUX_SWAP )
 			str_temp = _("Not active" ) ;
 		else 
 			str_temp = _("Not mounted" ) ;
@@ -212,9 +212,9 @@ void Dialog_Partition_Info::Display_Info( )
 
 Glib::ustring Dialog_Partition_Info::Find_Status( ) 
 {
-	if ( partition .type == GParted::EXTENDED )
+	if ( partition .type == GParted::TYPE_EXTENDED )
 		return  _("Busy  (At least one logical partition is mounted)" ) ;
-	else if ( partition .filesystem == "linux-swap" )
+	else if ( partition .filesystem == FS_LINUX_SWAP )
 		return _("Active") ;
 		
 	//try to find the mountpoint in /proc/mounts

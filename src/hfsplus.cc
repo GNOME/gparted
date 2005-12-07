@@ -25,7 +25,7 @@ FS hfsplus::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "hfs+" ;
+	fs .filesystem = GParted::FS_HFSPLUS ;
 	
 	fs .read = GParted::FS::LIBPARTED ; //provided by libparted
 	

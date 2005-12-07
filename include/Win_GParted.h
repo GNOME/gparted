@@ -141,7 +141,7 @@ private:
 	void activate_new( );
 	void activate_delete( );
 	void activate_info( );
-	void activate_convert( const Glib::ustring & new_fs );
+	void activate_convert( GParted::FILESYSTEM new_fs );
 	void activate_unmount( ) ;
 	void activate_disklabel( ) ;
 	

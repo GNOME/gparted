@@ -16,8 +16,8 @@
  */
  
  
-#ifndef FAT16
-#define FAT16
+#ifndef DEFINE_FAT16
+#define DEFINE_FAT16
 
 #include "../include/FileSystem.h"
 

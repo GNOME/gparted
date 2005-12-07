@@ -53,7 +53,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
 	
-	if ( fs .filesystem == "xfs" ) //bit hackisch, but most effective, since it's a unique situation
+	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
 		fs .MIN = copied_partition .Get_Used_MB( ) + (BUF * 2) ;
 	else
 		fs .MIN = COPIED_LENGTH_MB +1 ;
@@ -80,7 +80,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
-	this ->selected_partition .type = selected_partition .inside_extended ? GParted::LOGICAL : GParted::PRIMARY ;
+	this ->selected_partition .type = selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
 }
 
 Partition Dialog_Partition_Copy::Get_New_Partition( ) 

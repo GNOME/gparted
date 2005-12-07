@@ -25,7 +25,7 @@ FS reiserfs::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "reiserfs" ;
+	fs .filesystem = GParted::FS_REISERFS ;
 	
 	if ( ! system( "which debugreiserfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = GParted::FS::EXTERNAL ;

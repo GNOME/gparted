@@ -25,7 +25,7 @@ FS fat32::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "fat32" ;
+	fs .filesystem = GParted::FS_FAT32 ;
 		
 	//find out if we can create fat32 filesystems
 	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 

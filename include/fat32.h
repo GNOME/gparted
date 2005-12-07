@@ -16,8 +16,8 @@
  */
  
  
-#ifndef FAT32
-#define FAT32
+#ifndef DEFINE_FAT32
+#define DEFINE_FAT32
 
 #include "../include/FileSystem.h"
 

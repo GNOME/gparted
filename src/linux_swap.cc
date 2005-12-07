@@ -25,7 +25,7 @@ FS linux_swap::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "linux-swap" ;
+	fs .filesystem = GParted::FS_LINUX_SWAP ;
 	
 	if ( ! system( "which mkswap 1>/dev/null 2>/dev/null" ) ) 
 	{

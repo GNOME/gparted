@@ -25,7 +25,7 @@ FS jfs::get_filesystem_support( )
 {
 	FS fs ;
 	
-	fs .filesystem = "jfs" ;
+	fs .filesystem = GParted::FS_JFS ;
 		
 	if ( ! system( "which jfs_debugfs 1>/dev/null 2>/dev/null" ) ) 
 		fs .read = GParted::FS::EXTERNAL ;

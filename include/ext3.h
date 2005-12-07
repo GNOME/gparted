@@ -16,8 +16,8 @@
  */
  
  
-#ifndef EXT3
-#define EXT3
+#ifndef DEFINE_EXT3
+#define DEFINE_EXT3
 
 #include "../include/FileSystem.h"
 
