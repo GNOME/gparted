@@ -232,6 +232,8 @@ void GParted_Core::set_device_partitions( Device & device )
 						partition_temp .error = _("Unable to read the contents of this filesystem!") ;
 						partition_temp .error += "\n" ;
 						partition_temp .error += _("Because of this some operations may be unavailable.") ;
+						partition_temp .error += "\n\n" ;
+						partition_temp .error += _("Did you install the correct plugin for this filesystem?") ;
 					}
 				}
 							
