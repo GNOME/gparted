@@ -94,6 +94,7 @@ public:
 	bool busy;
 	Glib::ustring error;
 	Glib::ustring flags;
+	Glib::ustring mountpoint ;
 	
 	std::vector<Partition> logicals ;
 	

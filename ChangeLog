@@ -1,3 +1,14 @@
+2005-12-08 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* include/Partition.h,
+	  src/Partition.cc: added 'Glib::ustring mountpoint'
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: implemented set_mountpoints() to set mountpoint
+	  in partitions.
+	* include/Dialog_Partition_Info.h,
+	  src/Dialog_Partition_Info.cc: use Partition::mountpoint instead of
+	  finding it ourselves.
+
 2005-12-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/Partition.h,

@@ -67,6 +67,7 @@ public:
 private:
 	GParted::FILESYSTEM Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
 	void set_device_partitions( Device & device ) ;
+	void set_mountpoints( std::vector<Partition> & partitions, bool first_time = true ) ;
 	void Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
 	void Set_Used_Sectors( Partition & partition );
@@ -96,6 +97,10 @@ private:
 	Partition partition_temp ;
 	FS fs ;
 	
+	//used in set_mountpoints()
+	std::map<Glib::ustring, Glib::ustring> mount_info ;
+	std::map<Glib::ustring, Glib::ustring>::iterator iter ;
+
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;
 	PedPartition *lp_partition ;

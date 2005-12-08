@@ -48,7 +48,6 @@ public:
 private:
 	void init_drawingarea( ) ;
 	void Display_Info( );
-	Glib::ustring Find_Status( ) ;
 
 	//signalhandlers
 	void drawingarea_on_realize( );
@@ -68,7 +67,6 @@ private:
 	Gdk::Color color_partition, color_used, color_unused, color_text ;
 
 	int used,unused ;
-	 
 };
 
 } //GParted

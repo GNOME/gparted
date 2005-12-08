@@ -119,9 +119,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
 				set_device_partitions( temp_device ) ;
-				
+
 				if ( temp_device .highest_busy )
+				{
+					set_mountpoints( temp_device .device_partitions ) ;
 					temp_device .readonly = ! ped_disk_commit_to_os( lp_disk ) ;
+				}
 			}
 			//harddisk without disklabel
 			else
@@ -283,6 +286,46 @@ void GParted_Core::set_device_partitions( Device & device )
 	Insert_Unallocated( device .path, device .device_partitions, 0, device .length -1, false ) ; 
 }
 
+void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool first_time ) 
+{
+	if ( first_time )
+	{
+		char node[255], mountpoint[255] ;
+		std::string line ;
+		std::ifstream input( "/proc/mounts" ) ;
+
+		while ( getline( input, line ) )
+			if ( line .length() > 0 && line[ 0 ] == '/' && sscanf( line .c_str(),"%s %s", node, mountpoint ) == 2 )
+				mount_info[ node ] = mountpoint ;
+		
+		input .close() ;
+	}
+
+
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	{
+		if ( partitions[ t ] .busy && partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
+		{
+			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			{
+				iter = mount_info .find( partitions[ t ] .partition );
+				if ( iter != mount_info .end() )
+				{
+					partitions[ t ] .mountpoint = iter ->second ;
+					mount_info .erase( iter ) ;
+				}
+				else 
+					partitions[ t ] .mountpoint = "/" ;
+			}
+			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+				set_mountpoints( partitions[ t ] .logicals, false ) ;
+		}
+	}
+
+	if ( first_time )
+		mount_info .clear() ;
+}
+	
 void GParted_Core::Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
 	partition_temp .Reset( ) ;

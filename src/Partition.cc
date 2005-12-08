@@ -27,7 +27,7 @@ Partition::Partition( )
 
 void Partition::Reset( )
 {
-	partition = error = flags = "" ;
+	partition = error = flags = mountpoint = "" ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;

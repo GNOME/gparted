@@ -183,7 +183,14 @@ void Dialog_Partition_Info::Display_Info( )
 		Glib::ustring str_temp ;
 		table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ), 0,1, top, bottom, Gtk::FILL) ;
 		if ( partition.busy )
-			str_temp = Find_Status( ) ;
+		{
+			if ( partition .type == GParted::TYPE_EXTENDED )
+				str_temp =  _("Busy  (At least one logical partition is mounted)" ) ;
+			else if ( partition .filesystem == FS_LINUX_SWAP )
+				str_temp = _("Active") ;
+			else
+				str_temp = String::ucompose( _("Mounted on %1"), partition .mountpoint ) ;
+		}
 		else if ( partition.type == GParted::TYPE_EXTENDED )
 			str_temp = _("Not busy (There are no mounted logical partitions)" ) ;
 		else if ( partition.filesystem == GParted::FS_LINUX_SWAP )
@@ -208,45 +215,6 @@ void Dialog_Partition_Info::Display_Info( )
 	//total sectors
 	table ->attach( * mk_label( "<b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
 	table ->attach( * mk_label( num_to_str( partition .sector_end - partition .sector_start ) ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-}
-
-Glib::ustring Dialog_Partition_Info::Find_Status( ) 
-{
-	if ( partition .type == GParted::TYPE_EXTENDED )
-		return  _("Busy  (At least one logical partition is mounted)" ) ;
-	else if ( partition .filesystem == FS_LINUX_SWAP )
-		return _("Active") ;
-		
-	//try to find the mountpoint in /proc/mounts
-	//get realpath
-	char real_path[ 4096 ] ;
-	realpath( partition .partition .c_str( ), real_path );
-	Glib::ustring mountpoint, partition_real_path = real_path ; //because root partition is listed as /dev/root we need te compare against te real path..
-	
-	std::ifstream file_mounts( "/proc/mounts" ) ;
-	std::string line ;
-	
-	while ( getline( file_mounts, line ) )
-	{
-		realpath( line .substr( 0, line.find( ' ' ) ) .c_str( ), real_path );
-		
-		if ( partition_real_path == real_path )
-		{
-			//this is so cool =)
-			mountpoint = line.substr( line .find( ' ' ) +1, line .length( ) ) ;
-			mountpoint = mountpoint .substr( 0, mountpoint .find( ' ' ) ) ;
-			
-			break ;
-		}
-	}
-	
-	file_mounts .close( ) ;
-
-	//sometimes rootdevices are not listed as paths. I'll take a guess and just enter / here...( we'll look into this when complaints start coming in :P )
-	if ( mountpoint .empty( ) )
-		mountpoint = "/" ;
-	
-	return String::ucompose( _("Mounted on %1"), mountpoint ) ;
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info( )
