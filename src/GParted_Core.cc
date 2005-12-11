@@ -88,7 +88,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	while ( lp_device && strlen( lp_device ->path ) > 6 && static_cast<Glib::ustring>( lp_device ->path ) .is_ascii( ) )
 	{
 		if ( open_device( lp_device ->path ) )
-			device_paths .push_back( get_sym_path( lp_device ->path ) ) ;
+			device_paths .push_back( get_short_path( lp_device ->path ) ) ;
 					
 		lp_device = ped_device_get_next( lp_device ) ;
 	}
@@ -625,33 +625,34 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( )
 	 return disklabeltypes ;
 }
 
-Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path ) 
+Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path ) 
 { 
-	int major, minor, size;
-	char temp[4096], device_name[4096], short_path[4096] ;
-	
-	FILE* proc_part_file = fopen ( "/proc/partitions", "r" );
-	if ( ! proc_part_file )
-		return real_path;
-		
-	//skip first 2 useless rules of /proc/partitions
-	fgets( temp, 256, proc_part_file ); fgets( temp, 256, proc_part_file );
+	int major, minor ;
+	char resolved_path[255] ;
+	Glib::ustring short_path = real_path ;
 
-	while ( fgets( temp, 4096, proc_part_file ) && sscanf(temp, "%d %d %d %255s", &major, &minor, &size, device_name ) == 4 )
+	std::string line ;
+	std::ifstream input( "/proc/partitions" ) ;
+
+	if ( input )
 	{
-		strcpy( short_path, "/dev/" ); strcat( short_path, device_name );
-		realpath( short_path, device_name );
-	
-		if ( real_path == device_name ) { 
-			fclose ( proc_part_file );
-		  	return ( Glib::ustring( short_path ) );
+		while ( getline( input, line ) )
+		{
+			if ( sscanf( line .c_str(), "%d %d", &major, &minor ) == 2 && minor == 0 )
+			{
+				line = "/dev/" + line .substr( line .find_last_of( ' ', line .length() ) +1 ) ;
+				if ( realpath( line .c_str(), resolved_path ) && real_path == resolved_path )
+				{
+					short_path = resolved_path ;
+					break ;
+				}
+			}
 		}
-		
+
+		input .close() ;
 	}
-	
-	//paranoia modus :)
-	fclose ( proc_part_file );	
-	return real_path;
+
+	return short_path ;
 }	
 
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )

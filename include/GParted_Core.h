@@ -70,7 +70,7 @@ private:
 	void set_mountpoints( std::vector<Partition> & partitions, bool first_time = true ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
 	void Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
-	Glib::ustring get_sym_path( const Glib::ustring & real_path ) ;
+	Glib::ustring get_short_path( const Glib::ustring & real_path ) ;
 	void LP_Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( ) ;
 	int Create_Empty_Partition( Partition & new_partition, bool copy = false ) ;
