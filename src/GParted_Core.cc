@@ -1,5 +1,7 @@
 #include "../include/GParted_Core.h"
 
+#include <sys/statvfs.h>	
+
 namespace GParted
 {
 	
@@ -121,10 +123,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				set_device_partitions( temp_device ) ;
 
 				if ( temp_device .highest_busy )
-				{
 					set_mountpoints( temp_device .device_partitions ) ;
+				
+				set_used_sectors( temp_device .device_partitions ) ;
+				
+				if ( temp_device .highest_busy )
 					temp_device .readonly = ! ped_disk_commit_to_os( lp_disk ) ;
-				}
 			}
 			//harddisk without disklabel
 			else
@@ -226,21 +230,6 @@ void GParted_Core::set_device_partitions( Device & device )
 							lp_partition ->type,
 							ped_partition_is_busy( lp_partition ) );
 						
-				if ( partition_temp .filesystem != GParted::FS_LINUX_SWAP )
-				{
-					Set_Used_Sectors( partition_temp ) ;
-					
-					//the 'Unknown' filesystem warning overrules this one
-					if ( partition_temp .sectors_used == -1 && partition_temp .error .empty( ) )
-					{
-						partition_temp .error = _("Unable to read the contents of this filesystem!") ;
-						partition_temp .error += "\n" ;
-						partition_temp .error += _("Because of this some operations may be unavailable.") ;
-						partition_temp .error += "\n\n" ;
-						partition_temp .error += _("Did you install the correct plugin for this filesystem?") ;
-					}
-				}
-							
 				partition_temp .flags = Get_Flags( ) ;									
 				
 				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
@@ -324,6 +313,54 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool fi
 
 	if ( first_time )
 		mount_info .clear() ;
+}
+
+void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
+{
+	struct statvfs sfs ; 
+	
+	temp = _("Unable to read the contents of this filesystem!") ;
+	temp += "\n" ;
+	temp += _("Because of this some operations may be unavailable.") ;
+	temp += "\n\n" ;
+	temp += _("Did you install the correct plugin for this filesystem?") ;
+	
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	{
+		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP && partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
+		{
+			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			{
+				if ( partitions[ t ] .busy )
+				{
+					if ( statvfs( partitions[ t ] .mountpoint .c_str(), &sfs ) == 0 )
+						partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
+				}
+				else
+				{
+					switch( get_fs( partitions[ t ] .filesystem ) .read )
+					{
+						case GParted::FS::EXTERNAL	:
+							set_proper_filesystem( partitions[ t ] .filesystem ) ;
+							p_filesystem ->Set_Used_Sectors( partitions[ t ] ) ;
+							break ;
+						case GParted::FS::LIBPARTED	:
+							LP_Set_Used_Sectors( partitions[ t ] ) ;
+							break ;
+
+						default:
+							break ;
+					}
+				}
+
+				if ( partitions[ t ] .sectors_used == -1 )
+					partitions[ t ] .error = temp ;
+				
+			}
+			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+				set_used_sectors( partitions[ t ] .logicals ) ;
+		}
+	}
 }
 	
 void GParted_Core::Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
@@ -616,42 +653,6 @@ Glib::ustring GParted_Core::get_sym_path( const Glib::ustring & real_path )
 	fclose ( proc_part_file );	
 	return real_path;
 }	
-
-
-void GParted_Core::Set_Used_Sectors( Partition & partition )
-{
-	//because 'unknown' is translated we need to call get_fs instead of using partition .filesystem directly
-	if ( get_fs( partition .filesystem ) .filesystem == GParted::FS_UNKNOWN )
-		partition .Set_Unused( -1 ) ;
-	
-	else if ( partition .busy )
-	{
-		system( ("df -k --sync " + partition .partition + " | grep " + partition .partition + " > /tmp/.tmp_gparted") .c_str( ) );
-		std::ifstream file_input( "/tmp/.tmp_gparted" );
-		
-		//we need the 4th value
-		file_input >> temp; file_input >> temp; file_input >> temp;file_input >> temp;
-		if ( ! temp .empty( ) ) 
-			partition .Set_Unused( atol( temp .c_str( ) ) * 2 ) ;//  1024/512
-		
-		file_input .close( );
-		system( "rm -f /tmp/.tmp_gparted" );
-	}
-	else
-		switch( get_fs( partition .filesystem ) .read )
-		{
-			case GParted::FS::EXTERNAL	:
-				set_proper_filesystem( partition .filesystem ) ;
-				p_filesystem ->Set_Used_Sectors( partition ) ;
-				break ;
-			case GParted::FS::LIBPARTED	:
-				LP_Set_Used_Sectors( partition ) ;
-				break ;
-
-			default:
-				partition .Set_Unused( -1 ) ;
-		}
-}
 
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 {
