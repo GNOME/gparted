@@ -782,8 +782,11 @@ bool GParted_Core::Resize_Container_Partition( const Partition & partition_old, 
 		
 		close_device_and_disk( ) ;
 	}
-	
-	return wait_for_node( partition_new .partition ) && return_value ;
+
+	if ( partition_old .type == GParted::TYPE_EXTENDED )
+		return return_value ;
+	else
+		return wait_for_node( partition_new .partition ) && return_value ;
 }
 
 bool GParted_Core::Resize_Normal_Using_Libparted( const Partition & partition_old, const Partition & partition_new )
