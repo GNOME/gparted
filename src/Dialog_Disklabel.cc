@@ -43,7 +43,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += String::ucompose( _("Set Disklabel on %1"), device_path ) ;
 	str_temp += "</span>\n" ;
-	vbox ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
+	vbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
 	str_temp = _("A disklabel is a piece of data stored at a well known place on the disk, that indicates where each partition begins and how many sectors it occupies.") ;
 	str_temp += "\n" ;
@@ -51,7 +51,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	str_temp += "\n\n" ;
 	str_temp += _("By default GParted creates an msdos disklabel.") ;
 	str_temp += "\n" ;
-	vbox ->pack_start( * mk_label( str_temp, true, true, true ), Gtk::PACK_SHRINK );
+	vbox ->pack_start( * Utils::mk_label( str_temp, true, true, true ), Gtk::PACK_SHRINK );
 		
 	//advanced
 	str_temp = "<b>" ;
@@ -65,7 +65,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	hbox ->set_border_width( 5 ) ;
 	str_temp = _("Select new labeltype:") ;
 	str_temp += "\t" ;
-	hbox ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
+	hbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	expander_advanced .add( *hbox ) ;
 	
 	//create and add optionmenu
@@ -82,7 +82,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	str_temp += String::ucompose( _("WARNING: Creating a new disklabel will erase all data on %1!"), device_path ) ;
 	str_temp += "\n</i>";
 	
-	this ->get_vbox( ) ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );	
+	this ->get_vbox( ) ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );	
 		
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->add_button( _("Create"), Gtk::RESPONSE_OK );
@@ -94,7 +94,5 @@ Glib::ustring Dialog_Disklabel::Get_Disklabel( )
 {
 	return labeltypes[ optionmenu_labeltypes .get_history( ) ] ;
 }
-
-
 
 }//GParted

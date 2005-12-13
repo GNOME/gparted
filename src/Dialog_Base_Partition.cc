@@ -51,21 +51,21 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	table_resize.attach( * mk_label( (Glib::ustring) _( "Free Space Preceding (MB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK );
+	table_resize.attach( * Utils::mk_label( (Glib::ustring) _( "Free Space Preceding (MB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK );
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL );
 	
 	//add spinbutton_size
-	table_resize.attach( * mk_label( _( "New Size (MB):" ) ), 0, 1, 1, 2 );
+	table_resize.attach( * Utils::mk_label( _( "New Size (MB):" ) ), 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL );
 	
 	//add spinbutton_after
-	table_resize.attach( * mk_label( _( "Free Space Following (MB):") ), 0, 1, 2, 3 ) ;
+	table_resize.attach( * Utils::mk_label( _( "Free Space Following (MB):") ), 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
@@ -82,9 +82,9 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	spinbutton_after .signal_value_changed( ) .connect( sigc::bind<SPINBUTTON>( sigc::mem_fun( *this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER) ) ;
 	
 	//pack warning about small differences in values..
-	this ->get_vbox( ) ->pack_start( * mk_label( "\n <i>" + (Glib::ustring) _( "NOTE: values on disk may differ slightly from the values entered here.") + "</i>" ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( * Utils::mk_label( "\n <i>" + (Glib::ustring) _( "NOTE: values on disk may differ slightly from the values entered here.") + "</i>" ), Gtk::PACK_SHRINK );
 	
-	this ->get_vbox( ) ->pack_start( * mk_label( "" ), Gtk::PACK_SHRINK ); //filler :-P
+	this ->get_vbox( ) ->pack_start( * Utils::mk_label( "" ), Gtk::PACK_SHRINK ); //filler :-P
 		
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->show_all_children( ) ;
@@ -146,7 +146,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 					break ;
 		case RESIZE_MOVE:	image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 					hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
-					hbox_resize_move .pack_start( * mk_label( fixed_start ? _("Resize") : _("Resize/Move") ), Gtk::PACK_EXPAND_PADDING ) ;
+					hbox_resize_move .pack_start( * Utils::mk_label( fixed_start ? _("Resize") : _("Resize/Move") ), Gtk::PACK_EXPAND_PADDING ) ;
 					button_resize_move .add( hbox_resize_move ) ;
 														
 					this ->add_action_widget ( button_resize_move, Gtk::RESPONSE_OK ) ;
@@ -247,9 +247,9 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 		
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			frame_resizer_base ->set_x_start( Round( spinbutton_before .get_value( ) / MB_PER_PIXEL ) ) ;
+			frame_resizer_base ->set_x_start( Utils::Round( spinbutton_before .get_value( ) / MB_PER_PIXEL ) ) ;
 		
-		frame_resizer_base ->set_x_end( 500 - Round( spinbutton_after .get_value( ) / MB_PER_PIXEL ) ) ;
+		frame_resizer_base ->set_x_end( 500 - Utils::Round( spinbutton_after .get_value( ) / MB_PER_PIXEL ) ) ;
 		
 		frame_resizer_base ->Draw_Partition( ) ;
 		

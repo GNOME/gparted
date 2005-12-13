@@ -51,7 +51,7 @@ Glib::ustring Operation::Get_String( )
 			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda */
 			return String::ucompose( _("Delete %1 (%2, %3 MB) from %4"), 
 						 temp,
-						 Get_Filesystem_String( partition_original .filesystem ), 
+						 Utils::Get_Filesystem_String( partition_original .filesystem ), 
 						 partition_original .Get_Length_MB( ), 
 						 device .path ) ;
 
@@ -75,7 +75,7 @@ Glib::ustring Operation::Get_String( )
 			return String::ucompose( _("Create %1 #%2 (%3, %4 MB) on %5"),
 						 temp, 
 						 partition_new.partition_number, 
-						 Get_Filesystem_String( partition_new.filesystem ), 
+						 Utils::Get_Filesystem_String( partition_new.filesystem ), 
 						 partition_new .Get_Length_MB( ), 
 						 device .path ) ;
 			
@@ -85,9 +85,9 @@ Glib::ustring Operation::Get_String( )
 			if (  diff >= MEGABYTE ) 
 			{
 				if ( partition_new .sector_start > partition_original .sector_start )
-					temp = String::ucompose( _("Move %1 forward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
+					temp = String::ucompose( _("Move %1 forward by %2 MB"), partition_new.partition, Utils::Sector_To_MB( diff ) ) ;
 				else
-					temp = String::ucompose( _("Move %1 backward by %2 MB"), partition_new.partition, Sector_To_MB( diff ) ) ;
+					temp = String::ucompose( _("Move %1 backward by %2 MB"), partition_new.partition, Utils::Sector_To_MB( diff ) ) ;
 			}
 									
 			//check if size has changed ( we only consider changes >= 1 MB )
@@ -116,15 +116,15 @@ Glib::ustring Operation::Get_String( )
 			/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
 			return String::ucompose( _( "Convert %1 from %2 to %3"),
 						 partition_original .partition,
-						 Get_Filesystem_String( partition_original .filesystem ),
-						 Get_Filesystem_String( partition_new .filesystem ) ) ;
+						 Utils::Get_Filesystem_String( partition_original .filesystem ),
+						 Utils::Get_Filesystem_String( partition_new .filesystem ) ) ;
 			
 		case COPY	:
 			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB) */
 			return String::ucompose( _("Copy %1 to %2 (start at %3 MB)"),
 						 partition_new .partition,
 						 device .path,
-						 Sector_To_MB( partition_new .sector_start ) ) ;
+						 Utils::Sector_To_MB( partition_new .sector_start ) ) ;
 			
 		default		:
 			return "";			

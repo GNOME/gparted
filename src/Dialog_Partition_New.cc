@@ -50,7 +50,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	hbox_main .pack_start( table_create, Gtk::PACK_SHRINK );
 	
 	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices> */
-	table_create.attach( * mk_label( (Glib::ustring) _("Create as:") + "\t" ), 0, 1, 0, 1, Gtk::FILL);
+	table_create.attach( * Utils::mk_label( (Glib::ustring) _("Create as:") + "\t" ), 0, 1, 0, 1, Gtk::FILL);
 	
 	//fill partitiontype menu
 	menu_type .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Primary Partition") ) ) ;
@@ -77,7 +77,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_exten
 	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
 	//filesystems to choose from 
-	table_create.attach( * mk_label( (Glib::ustring) _("Filesystem:") + "\t" ), 0, 1, 1, 2, Gtk::FILL );
+	table_create.attach( * Utils::mk_label( (Glib::ustring) _("Filesystem:") + "\t" ), 0, 1, 1, 2, Gtk::FILL );
 	
 	Build_Filesystems_Menu( only_unformatted ) ;
 	 
@@ -163,7 +163,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	{
 		if ( optionmenu_type .get_history( ) == GParted::TYPE_EXTENDED && menu_filesystem .items( ) .size( ) < FILESYSTEMS .size( ) )
 		{
-			menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( Get_Filesystem_String( GParted::FS_EXTENDED ) ) ) ;
+			menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( Utils::Get_Filesystem_String( GParted::FS_EXTENDED ) ) ) ;
 			optionmenu_filesystem .set_history( menu_filesystem .items( ) .size( ) -1 ) ;
 			optionmenu_filesystem .set_sensitive( false ) ;
 		}
@@ -204,7 +204,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
 	
 	//partitioncolor..
-	color_temp .set( Get_Color( fs .filesystem ) ) ;
+	color_temp .set( Utils::Get_Color( fs .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
 	frame_resizer_base ->Draw_Partition( ) ;
@@ -215,7 +215,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//fill the filesystem menu with the filesystems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
 	{
-		menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( Get_Filesystem_String( FILESYSTEMS[ t ] .filesystem ) ) ) ;
+		menu_filesystem .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( Utils::Get_Filesystem_String( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items( )[ t ] .set_sensitive( ! only_unformatted && FILESYSTEMS[ t ] .create && this ->selected_partition .Get_Length_MB() >= FILESYSTEMS[ t ] .MIN ) ;	
 	}
 	

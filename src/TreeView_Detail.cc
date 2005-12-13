@@ -144,24 +144,24 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
-	treerow[ treeview_detail_columns .color ] = Get_Color( partition .filesystem ) ;
+	treerow[ treeview_detail_columns .color ] = Utils::Get_Color( partition .filesystem ) ;
 
 	treerow[ treeview_detail_columns .text_color ] = ( partition .type == GParted::TYPE_UNALLOCATED ) ? "darkgrey" : "black" ;
-	treerow[ treeview_detail_columns .type ] = Get_Filesystem_String( partition .filesystem ) ;
+	treerow[ treeview_detail_columns .type ] = Utils::Get_Filesystem_String( partition .filesystem ) ;
 	treerow[ treeview_detail_columns .type_square ] = "██" ;
 	
 	//size
-	treerow[ treeview_detail_columns .size ] = num_to_str( partition .Get_Length_MB( ) ) ;
+	treerow[ treeview_detail_columns .size ] = Utils::num_to_str( partition .Get_Length_MB( ) ) ;
 
 	//used
 	if ( partition .sectors_used != -1 )
-		treerow[ treeview_detail_columns .used ] = num_to_str( partition .Get_Used_MB( ) ) ;
+		treerow[ treeview_detail_columns .used ] = Utils::num_to_str( partition .Get_Used_MB( ) ) ;
 	else
 		treerow[ treeview_detail_columns .used ] = "---" ;
 
 	//unused
 	if ( partition .sectors_unused != -1 )
-		treerow[ treeview_detail_columns .unused ] = num_to_str( partition .Get_Unused_MB( ) ) ;
+		treerow[ treeview_detail_columns .unused ] = Utils::num_to_str( partition .Get_Unused_MB( ) ) ;
 	else
 		treerow[ treeview_detail_columns .unused ] = "---" ;
 	

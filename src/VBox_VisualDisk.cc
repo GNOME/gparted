@@ -46,7 +46,7 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	
 	
 	//since disksegments have minimal sizes ( unallocated 15 and partitions 20 pixels ) i do some checking to prevent the visual disk from growing to much
-	Sector sectors_per_pixel = Round( device_length / 750.00 ) ;
+	Sector sectors_per_pixel = Utils::Round( device_length / 750.00 ) ;
 		
 	double extra_pixels = 0 ;
 	
@@ -61,7 +61,7 @@ VBox_VisualDisk::VBox_VisualDisk( const std::vector<Partition> & partitions, con
 	}
 	
 	//draw visual disk and its legend
-	this ->SCREEN_WIDTH = 750 - Round( extra_pixels ) ;
+	this ->SCREEN_WIDTH = 750 - Utils::Round( extra_pixels ) ;
 	
 	Build_Visual_Disk( ) ;
 	Build_Legend( ) ;		
@@ -167,7 +167,7 @@ void VBox_VisualDisk::Create_Visual_Partition( const Partition & partition )
 	//tooltip
 	str_temp = "" ;
 	if ( partition .type != GParted::TYPE_UNALLOCATED )
-		str_temp = Get_Filesystem_String( partition .filesystem ) + "\n" ;
+		str_temp = Utils::Get_Filesystem_String( partition .filesystem ) + "\n" ;
 
 	str_temp += partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB( ) ) ;
 	tooltips .set_tip( *( visual_partitions.back( ) ->drawingarea ), str_temp ) ;
@@ -206,19 +206,19 @@ void VBox_VisualDisk::Build_Legend( )
 			hide_used_unused = false ;
 		
 		if ( t )
-			hbox_legend ->pack_start( * mk_label( "    " ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * Utils::mk_label( "    " ), Gtk::PACK_SHRINK );
 		else
-			hbox_legend ->pack_start( * mk_label( " " ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
 			
-		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( "██ ", false, false, false, Utils::Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
 		
 		if ( legend[ t ] == GParted::FS_UNALLOCATED )
 		{
-			str_temp = Get_Filesystem_String( GParted::FS_UNALLOCATED ) ;//_("unallocated") ;
-			hbox_legend ->pack_start( * mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
+			str_temp = Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ) ;//_("unallocated") ;
+			hbox_legend ->pack_start( * Utils::mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
 		}
 		else
-			hbox_legend ->pack_start( * mk_label( Get_Filesystem_String( legend[ t ] ) + " " ), Gtk::PACK_SHRINK );
+			hbox_legend ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( legend[ t ] ) + " " ), Gtk::PACK_SHRINK );
 	}
 	
 	//if there are any partitions add used/unused
@@ -231,12 +231,12 @@ void VBox_VisualDisk::Build_Legend( )
 		hbox_legend ->set_border_width( 2 ) ;
 		frame_disk_legend ->add( *hbox_legend );
 		
-		hbox_legend ->pack_start( * mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
 		str_temp = _("used") ;
-		hbox_legend ->pack_start( * mk_label( str_temp + "    " ), Gtk::PACK_SHRINK );
-		hbox_legend ->pack_start( * mk_label( "██ ", false, false, false, "white" ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( str_temp + "    " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( "██ ", false, false, false, "white" ), Gtk::PACK_SHRINK );
 		str_temp = _("unused") ;
-		hbox_legend ->pack_start( * mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
 	}
 }
 

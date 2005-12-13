@@ -37,7 +37,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBu
 	str_temp += "\n";
 	str_temp += _("Clicking Cancel will prevent the next operations from being applied.") ;
 	str_temp += "\n";
-	this ->get_vbox( ) ->pack_start( * mk_label( str_temp ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
 	progressbar_current .set_pulse_step( 0.01 ) ;
 	progressbar_current .set_size_request( 500, -1 ) ;
@@ -58,7 +58,7 @@ Dialog_Progress::Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBu
 	scrolledwindow .add( textview_details ) ;
 	
 	this ->get_vbox( ) ->pack_start( scrolledwindow, Gtk::PACK_SHRINK );
-	this ->get_vbox( ) ->pack_start( * mk_label( "<b>\n" + static_cast<Glib::ustring>( _( "Completed Operations" ) ) + ":</b>" ), Gtk::PACK_SHRINK );
+	this ->get_vbox( ) ->pack_start( * Utils::mk_label( "<b>\n" + static_cast<Glib::ustring>( _( "Completed Operations" ) ) + ":</b>" ), Gtk::PACK_SHRINK );
 	this ->get_vbox( ) ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
 	this ->get_vbox( ) ->set_spacing( 5 ) ;

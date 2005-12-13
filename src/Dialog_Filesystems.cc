@@ -54,7 +54,7 @@ void Dialog_Filesystems::Load_Filesystems( const std::vector< FS > & FILESYSTEMS
 void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 {
 	treerow = *( liststore_filesystems ->append( ) );
-	treerow[ treeview_filesystems_columns .filesystem ] = Get_Filesystem_String( fs .filesystem ) ;
+	treerow[ treeview_filesystems_columns .filesystem ] = Utils::Get_Filesystem_String( fs .filesystem ) ;
 	
 	treerow[ treeview_filesystems_columns .create ] = 
 		render_icon( fs .create ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR); 

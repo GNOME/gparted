@@ -108,7 +108,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
-			temp_device .cylsize 	=	Sector_To_MB( temp_device .heads * temp_device .sectors ) ;
+			temp_device .cylsize 	=	Utils::Sector_To_MB( temp_device .heads * temp_device .sectors ) ;
 			
 			//make sure cylsize is at least 1 MB
 			if ( temp_device .cylsize < 1 )
@@ -222,7 +222,7 @@ void GParted_Core::set_device_partitions( Device & device )
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:             
 				partition_temp .Set( 	device .path,
-							device .path + num_to_str( lp_partition ->num ),
+							device .path + Utils::num_to_str( lp_partition ->num ),
 							lp_partition ->num,
 							lp_partition ->type == 0 ? GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
 							Get_Filesystem( ), lp_partition ->geom .start,
@@ -239,7 +239,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		
 			case PED_PARTITION_EXTENDED:
 				partition_temp.Set( 	device .path,
-							device .path + num_to_str( lp_partition ->num ),
+							device .path + Utils::num_to_str( lp_partition ->num ),
 							lp_partition ->num ,
 							GParted::TYPE_EXTENDED ,
 							GParted::FS_EXTENDED ,
@@ -882,7 +882,7 @@ bool GParted_Core::set_partition_type( const Partition & partition )
 	
 	if ( open_device_and_disk( partition .device_path ) )
 	{
-		PedFileSystemType * fs_type = ped_file_system_type_get( Get_Filesystem_String( partition .filesystem ) .c_str() ) ;
+		PedFileSystemType * fs_type = ped_file_system_type_get( Utils::Get_Filesystem_String( partition .filesystem ) .c_str() ) ;
 
 		//default is Linux (83)
 		if ( ! fs_type )

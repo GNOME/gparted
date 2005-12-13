@@ -88,7 +88,7 @@ bool ext2::Resize( const Partition & partition_new, bool fill_partition )
 	Glib::ustring str_temp = "resize2fs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
-		str_temp += " " + num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
+		str_temp += " " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
 	
 	return ! Execute_Command( str_temp ) ;
 }

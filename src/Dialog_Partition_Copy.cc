@@ -47,9 +47,9 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
-	int x_end = Round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
+	int x_end = Utils::Round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
-	frame_resizer_base ->set_used( Round( copied_partition .Get_Used_MB( ) / ( TOTAL_MB/500.00) ) ) ;
+	frame_resizer_base ->set_used( Utils::Round( copied_partition .Get_Used_MB( ) / ( TOTAL_MB/500.00) ) ) ;
 	
 	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
 	
@@ -72,7 +72,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( Round(fs .MIN / MB_PER_PIXEL), Round(fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( Utils::Round(fs .MIN / MB_PER_PIXEL), Utils::Round(fs .MAX / MB_PER_PIXEL) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;

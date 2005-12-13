@@ -99,14 +99,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 		next = partitions[t +1].sector_end - partitions[t +1].sector_start ;
 	
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
-	TOTAL_MB = Sector_To_MB( total_length ) ;
+	TOTAL_MB = Utils::Sector_To_MB( total_length ) ;
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 		
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_start( Round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
-	frame_resizer_base ->set_used( Round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_start( Utils::Round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_end( Utils::Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
+	frame_resizer_base ->set_used( Utils::Round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
 		
 	if ( fs .shrink )
 	{
@@ -130,7 +130,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	if ( ! fixed_start )
 	{
 		spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
-		spinbutton_before .set_value( Sector_To_MB( previous ) ) ;
+		spinbutton_before .set_value( Utils::Sector_To_MB( previous ) ) ;
 	}
 	
 	//set values of spinbutton_size 
@@ -139,9 +139,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 	
 	//set values of spinbutton_after
 	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
-	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
+	spinbutton_after .set_value( Utils::Sector_To_MB( next ) ) ;
 	
-	frame_resizer_base ->set_size_limits( Round( fs .MIN / MB_PER_PIXEL ), Round( fs .MAX / MB_PER_PIXEL ) +1 ) ;
+	frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / MB_PER_PIXEL ), Utils::Round( fs .MAX / MB_PER_PIXEL ) +1 ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
@@ -171,12 +171,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	
 	//now we have enough data to calculate some important values..
 	total_length = previous + (selected_partition.sector_end - selected_partition.sector_start) + next;
-	TOTAL_MB = Sector_To_MB( total_length ) ;
+	TOTAL_MB = Utils::Sector_To_MB( total_length ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
-	frame_resizer_base ->set_x_start( Round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
+	frame_resizer_base ->set_x_start( Utils::Round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_end( Utils::Round( (selected_partition .sector_end - selected_partition .sector_start) / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start( ) ) ;
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first =0, used =0 ;
@@ -191,22 +191,22 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 		}
 	}
 
-	frame_resizer_base ->set_used_start( Round( (first - START) / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_used( Round( used / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_used_start( Utils::Round( (first - START) / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_used( Utils::Round( used / ( total_length / 500.00 ) ) ) ;
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
 		spinbutton_before .set_range( 0, TOTAL_MB - BUF/2 ) ;
 	else
-		spinbutton_before .set_range( 0, Sector_To_MB (first - START) ) ;
+		spinbutton_before .set_range( 0, Utils::Sector_To_MB (first - START) ) ;
 	
-	spinbutton_before .set_value( Sector_To_MB ( previous ) ) ;
+	spinbutton_before .set_value( Utils::Sector_To_MB ( previous ) ) ;
 	
 	//set values of spinbutton_size
 	if ( first == 0 ) //no logicals
 		spinbutton_size .set_range( BUF/2, TOTAL_MB ) ;
 	else
-		spinbutton_size .set_range( Sector_To_MB( used ), TOTAL_MB ) ;
+		spinbutton_size .set_range( Utils::Sector_To_MB( used ), TOTAL_MB ) ;
 	
 	spinbutton_size .set_value( selected_partition .Get_Length_MB( ) ) ;
 	
@@ -214,12 +214,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Part
 	if ( first == 0 ) //no logicals
 		spinbutton_after .set_range( 0, TOTAL_MB - BUF/2 ) ;
 	else
-		spinbutton_after .set_range( 0, Sector_To_MB( total_length + START - first - used) ) ;
+		spinbutton_after .set_range( 0, Utils::Sector_To_MB( total_length + START - first - used) ) ;
 	
-	spinbutton_after .set_value( Sector_To_MB( next ) ) ;
+	spinbutton_after .set_value( Utils::Sector_To_MB( next ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( first == 0 ? BUF/2 : Sector_To_MB( used ), Sector_To_MB( total_length ) ) ;
+	Set_MinMax_Text( first == 0 ? BUF/2 : Utils::Sector_To_MB( used ), Utils::Sector_To_MB( total_length ) ) ;
 }
 
 } //GParted
