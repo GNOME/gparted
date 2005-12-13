@@ -279,15 +279,19 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool fi
 {
 	if ( first_time )
 	{
-		char node[255], mountpoint[255] ;
-		std::string line ;
 		std::ifstream input( "/proc/mounts" ) ;
 
-		while ( getline( input, line ) )
+		if ( input )
+		{
+			char node[255], mountpoint[255] ;
+			std::string line ;
+			
+			while ( getline( input, line ) )
 			if ( line .length() > 0 && line[ 0 ] == '/' && sscanf( line .c_str(),"%s %s", node, mountpoint ) == 2 )
 				mount_info[ node ] = mountpoint ;
 		
-		input .close() ;
+			input .close() ;
+		}
 	}
 
 

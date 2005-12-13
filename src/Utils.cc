@@ -18,7 +18,6 @@
 #include "../include/Utils.h"
 
 #include <sstream>
-//#include <vector>
 
 namespace GParted
 {
