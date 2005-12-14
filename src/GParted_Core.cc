@@ -270,9 +270,13 @@ void GParted_Core::set_device_partitions( Device & device )
 	}
 	
 	if ( EXT_INDEX > -1 )
-		Insert_Unallocated( device .path, device .device_partitions[ EXT_INDEX ] .logicals, device .device_partitions[ EXT_INDEX ] .sector_start, device .device_partitions[ EXT_INDEX ] .sector_end, true ) ;
+		insert_unallocated( device .path,
+				    device .device_partitions[ EXT_INDEX ] .logicals,
+				    device .device_partitions[ EXT_INDEX ] .sector_start,
+				    device .device_partitions[ EXT_INDEX ] .sector_end,
+				    true ) ;
 	
-	Insert_Unallocated( device .path, device .device_partitions, 0, device .length -1, false ) ; 
+	insert_unallocated( device .path, device .device_partitions, 0, device .length -1, false ) ; 
 }
 
 void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool first_time ) 
@@ -367,7 +371,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	}
 }
 	
-void GParted_Core::Insert_Unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
+void GParted_Core::insert_unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
 	partition_temp .Reset( ) ;
 	partition_temp .Set_Unallocated( device_path, 0, 0, inside_extended ) ;

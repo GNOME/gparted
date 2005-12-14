@@ -208,6 +208,15 @@ int Operation::Get_Index_Original( std::vector<Partition> & partitions )
 	return -1 ; 
 }
 
+int Operation::get_index_extended( const std::vector<Partition> & partitions ) 
+{
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			return t ;
+
+	return -1 ;
+}
+	
 void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 {
 	if ( ! partition_original .inside_extended )
@@ -218,12 +227,11 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 	}
 	else
 	{
-		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
+		unsigned int ext = get_index_extended( partitions ) ;
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) + Get_Index_Original( partitions[ ext ] .logicals ) );
 		
-		
-		//if deleted partition was logical we have to decrease the partitionnumbers of the logicals with higher numbers by one (only if its a real partition)
+		//if deleted partition was logical we have to decrease the partitionnumbers of the logicals
+		//with higher numbers by one (only if its a real partition)
 		if ( partition_original .status != GParted::STAT_NEW )
 			for ( unsigned int t = 0 ; t < partitions[ ext ] .logicals .size( ) ; t++ )
 				if ( partitions[ ext ] .logicals[ t ] .partition_number > partition_original .partition_number )
@@ -244,8 +252,7 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 	}
 	else
 	{
-		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
+		unsigned int ext = get_index_extended( partitions ) ;
 		partitions[ ext ] .logicals[ Get_Index_Original( partitions[ ext ] .logicals ) ] = partition_new ;
 		
 		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
@@ -270,8 +277,7 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	Insert_Unallocated( partitions, 0, device .length -1, false ) ;
 	
 	//stuff INSIDE extended partition
-	ext = 0 ;
-	while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
+	ext = get_index_extended( partitions ) ;
 	
 	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .front( ) .type == GParted::TYPE_UNALLOCATED )
 		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) ) ;

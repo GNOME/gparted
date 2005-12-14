@@ -56,6 +56,7 @@ public:
 private:
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );
 	int Get_Index_Original( std::vector<Partition> & partitions ) ;
+	int get_index_extended( const std::vector<Partition> & partitions ) ;
 	
 	void Apply_Delete_To_Visual( std::vector<Partition> & partitions );
 	void Apply_Create_To_Visual( std::vector<Partition> & partitions );
