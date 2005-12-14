@@ -36,18 +36,20 @@ FS jfs::get_filesystem_support( )
 	if ( ! system( "which jfs_fsck 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	//resizing of jfs requires mount, umount and jfs support in the kernel
-	if ( ! system( "which mount umount 1>/dev/null 2>/dev/null" ) ) 
+	//resizing of jfs requires jfs support in the kernel
+	std::ifstream input( "/proc/filesystems" ) ;
+
+	if ( input )
 	{
 		Glib::ustring line ;
-		std::ifstream input( "/proc/filesystems" ) ;
+
 		while ( input >> line )
 			if ( line == "jfs" )
 			{
 				fs .grow = GParted::FS::EXTERNAL ;
 				break ;
 			}
-		
+	
 		input .close( ) ;
 	}
 	
@@ -97,15 +99,17 @@ bool jfs::Create( const Partition & new_partition )
 bool jfs::Resize( const Partition & partition_new, bool fill_partition )
 {
 	bool return_value = false ;
+	Glib::ustring error ;
+	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_jfs_mountpoint" ;
 	
 	//jfs kan only grow if the partition is mounted..
-	system( "mkdir /tmp/gparted_tmp_jfs_mountpoint" ) ;
-	if ( ! Execute_Command( "mount " + partition_new .partition + " /tmp/gparted_tmp_jfs_mountpoint" ) )
+	system( ("mkdir " + TEMP_MP) .c_str() ) ;
+	if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error ) )
 	{
-		return_value = ! Execute_Command( "mount -o remount,resize /tmp/gparted_tmp_jfs_mountpoint" ) ;
-		Execute_Command( "umount " + partition_new .partition ) ;
+		return_value = Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) ;
+		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
 	}
-	system( "rmdir /tmp/gparted_tmp_jfs_mountpoint" ) ;
+	system( ("rmdir " + TEMP_MP) .c_str() ) ;
 	
 	return return_value ;
 }

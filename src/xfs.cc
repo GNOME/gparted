@@ -36,8 +36,8 @@ FS xfs::get_filesystem_support( )
 	if ( ! system( "which xfs_repair 1>/dev/null 2>/dev/null" ) ) 
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	//resizing of xfs requires xfs_growfs, xfs_repair, mount, umount and xfs support in the kernel
-	if ( ! system( "which xfs_growfs mount umount 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	//resizing of xfs requires xfs_growfs, xfs_repair and xfs support in the kernel
+	if ( ! system( "which xfs_growfs 1>/dev/null 2>/dev/null" ) && fs .check ) 
 	{
 		Glib::ustring line ;
 		std::ifstream input( "/proc/filesystems" ) ;
@@ -51,7 +51,7 @@ FS xfs::get_filesystem_support( )
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which xfsdump xfsrestore mount umount 1>/dev/null 2>/dev/null" ) && fs .check && fs .create )
+	if ( ! system( "which xfsdump xfsrestore 1>/dev/null 2>/dev/null" ) && fs .check && fs .create )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
@@ -96,15 +96,17 @@ bool xfs::Create( const Partition & new_partition )
 bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 {
 	bool return_value = false ;
+	Glib::ustring error ;
+	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_xfs_mountpoint" ;
 	
 	//xfs kan only grow if the partition is mounted..
-	system( "mkdir /tmp/gparted_tmp_xfs_mountpoint" ) ;
-	if ( ! Execute_Command( "mount " + partition_new .partition + " /tmp/gparted_tmp_xfs_mountpoint" ) )
+	system( ("mkdir " + TEMP_MP) .c_str() ) ;
+	if ( Utils::mount( partition_new .partition, TEMP_MP, "xfs", error ) )
 	{
-		return_value = ! Execute_Command( "xfs_growfs /tmp/gparted_tmp_xfs_mountpoint" ) ;
-		Execute_Command( "umount " + partition_new .partition ) ;
+		return_value = ! Execute_Command( "xfs_growfs " + TEMP_MP ) ;
+		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
 	}
-	system( "rmdir /tmp/gparted_tmp_xfs_mountpoint" ) ;
+	system( ("rmdir " + TEMP_MP) .c_str() ) ;
 	
 	return return_value ;
 }
@@ -112,17 +114,21 @@ bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
 {
 	bool return_value = false ;
+	Glib::ustring error ;
+	Glib::ustring SRC = "/tmp/gparted_tmp_xfs_src_mountpoint" ;
+	Glib::ustring DST = "/tmp/gparted_tmp_xfs_dest_mountpoint" ;
 	
-	system( "mkdir /tmp/gparted_tmp_xfs_src_mountpoint /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+	system( ("mkdir " + SRC + " " + DST) .c_str() ) ;
 	
 	if (	! Execute_Command( "mkfs.xfs -f " + dest_part_path ) &&
-		! Execute_Command( "mount " + src_part_path + " /tmp/gparted_tmp_xfs_src_mountpoint" ) &&
-		! Execute_Command( "mount " + dest_part_path + " /tmp/gparted_tmp_xfs_dest_mountpoint" )
+		Utils::mount( src_part_path, SRC, "xfs", error, MS_NOATIME | MS_RDONLY ) &&
+		Utils::mount( dest_part_path, DST, "xfs", error ) 
 	)
-		return_value = ! Execute_Command( "xfsdump -J - /tmp/gparted_tmp_xfs_src_mountpoint | xfsrestore -J - /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+		return_value = ! Execute_Command( "xfsdump -J - " + SRC + " | xfsrestore -J - " + DST ) ;
 		
-	Execute_Command( "umount " + src_part_path + " " + dest_part_path ) ;
-	system( "rmdir /tmp/gparted_tmp_xfs_src_mountpoint /tmp/gparted_tmp_xfs_dest_mountpoint" ) ;
+	Utils::unmount( src_part_path, SRC, error ) ;
+	Utils::unmount( dest_part_path, DST, error ) ;
+	system( ("rmdir " + SRC + " " + DST) .c_str() ) ;
 	
 	return return_value ;
 }

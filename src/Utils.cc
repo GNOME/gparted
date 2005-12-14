@@ -18,6 +18,9 @@
 #include "../include/Utils.h"
 
 #include <sstream>
+#include <fstream>
+#include <cerrno>
+
 
 namespace GParted
 {
@@ -111,6 +114,108 @@ Glib::ustring Utils::Get_Filesystem_String( FILESYSTEM filesystem )
 					  
 		default			: return "" ;
 	}
+}
+
+bool Utils::mount( const Glib::ustring & node,
+		   const Glib::ustring & mountpoint,
+		   const Glib::ustring & filesystem,
+		   Glib::ustring & error, 
+		   unsigned long flags,
+		   const Glib::ustring & data ) 
+{
+	if ( ! ::mount( node .c_str(), mountpoint .c_str(), filesystem .c_str(), flags, data .c_str() ) )
+	{
+		std::ifstream proc_mounts( "/proc/mounts" ) ;
+
+		if ( proc_mounts )
+		{
+			bool hit = false ;
+			char c_node[255], c_mountpoint[255] ;
+			std::string line ;
+
+			//search for relevant line in /proc/mounts
+			while ( getline( proc_mounts, line ) )
+			{
+				if ( line .length() > 0 && line[ 0 ] == '/' &&
+		     		     sscanf( line .c_str(),"%s %s", c_node, c_mountpoint ) == 2 &&
+		     		     c_node == node && c_mountpoint == mountpoint
+				   )
+				{
+					hit = true ;
+					break ;
+				}
+			}
+			
+			proc_mounts .close() ;
+
+			//append 'line' to /etc/mtab
+			if ( hit )
+			{
+				std::ofstream mtab( "/etc/mtab", std::ios::app ) ;
+
+				if ( mtab )
+				{
+					mtab << line << '\n' ;
+					mtab .close() ;
+
+					return true ;
+				}
+			}
+		}
+	}
+	else
+		error = Glib::strerror( errno ) ;
+
+	
+	return false ;
+}
+
+bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) 
+{
+	if ( ! umount( mountpoint .c_str() ) )
+	{
+		//search in /etc/mtab voor node and mountpoint and delete that line
+		Glib::ustring mtab_minus_mount ;
+		bool hit = false ;
+		std::ifstream mtab_in( "/etc/mtab" ) ;
+
+		if ( mtab_in )
+		{
+			char c_node[255], c_mountpoint[255] ;
+			std::string line ;
+
+			while ( getline( mtab_in, line ) )
+			{
+				if ( line .length() > 0 && line[ 0 ] == '/' &&
+		     		     sscanf( line .c_str(),"%s %s", c_node, c_mountpoint ) == 2 &&
+		     		     c_node == node && c_mountpoint == mountpoint
+				   )
+					hit = true ;
+				else
+					mtab_minus_mount += line + '\n';
+			}
+
+			mtab_in .close() ;
+		}
+
+		if ( hit )
+		{
+			std::ofstream mtab_out( "/etc/mtab" ) ;
+
+			if ( mtab_out )
+			{
+				mtab_out << mtab_minus_mount ;
+				mtab_out .close() ;
+
+				return true ;
+			}
+		}
+	}
+	else
+		error = Glib::strerror( errno ) ;
+
+	
+	return false ;
 }
 
 } //GParted..

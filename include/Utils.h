@@ -30,6 +30,7 @@
 #include <glibmm/ustring.h>
 
 #include <iostream>
+#include <sys/mount.h>
 
 namespace GParted
 {
@@ -93,10 +94,21 @@ class Utils
 public:
 	static long Round( double double_value ) ;
 	static long Sector_To_MB( Sector sectors ) ;
-	static Gtk::Label * mk_label( const Glib::ustring & text, bool use_markup = true, bool align_left = true, bool wrap = false, const Glib::ustring & text_color = "black" ) ;
+	static Gtk::Label * mk_label( const Glib::ustring & text,
+				      bool use_markup = true,
+				      bool align_left = true,
+				      bool wrap = false,
+				      const Glib::ustring & text_color = "black" ) ;
 	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;
 	static Glib::ustring Get_Color( FILESYSTEM filesystem ) ;
 	static Glib::ustring Get_Filesystem_String( FILESYSTEM filesystem ) ;
+	static bool mount( const Glib::ustring & node, 
+			   const Glib::ustring & mountpoint, 
+			   const Glib::ustring & filesystem,
+			   Glib::ustring & error,
+			   unsigned long flags = 0, 
+			   const Glib::ustring & data = "" ) ;
+	static bool unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) ;
 };
 	
 

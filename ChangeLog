@@ -1,5 +1,14 @@
 2005-12-14 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* include/Utils.h,
+	  src/Utils.cc: added mount() and unmount()
+	* src/Win_GParted.cc,
+	  src/jfs.cc,
+	  src/xfs.cc: use Utils::mount and Utils::umount instead of wrapping
+	  CLI tools.
+
+2005-12-14 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/Partition.cc: since we now have the device_path in Partition we
 	  don't need to 'calculate' it anymore.
 

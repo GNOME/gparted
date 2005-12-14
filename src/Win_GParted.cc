@@ -1189,25 +1189,17 @@ void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
 
 void  Win_GParted::activate_unmount( ) 
 {
-	char c_buf[ 512 ] ;
-	Glib::ustring output ;
+	Glib::ustring error ;
 
-        FILE *f = popen( ( "umount " + selected_partition .partition + " 2>&1" ) .c_str( ), "r" ) ;
-	
-	while ( fgets( c_buf, 512, f ) )
-		output += c_buf ;
-	
-        pclose( f ) ;
-	
-	if ( ! output .empty( ) ) 
+	if ( ! Utils::unmount( selected_partition .partition, selected_partition .mountpoint, error ) )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += String::ucompose( _("Could not unmount %1"), selected_partition .partition ) ;
 		str_temp += "</span>\n\n" ;
 				
-		Gtk::MessageDialog dialog( *this, str_temp + output, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
+		Gtk::MessageDialog dialog( *this, str_temp + error, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
 		dialog.run( ) ;
-	} 
+	}
 	else
 		menu_gparted_refresh_devices( ) ;
 }
