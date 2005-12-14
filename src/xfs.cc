@@ -100,13 +100,13 @@ bool xfs::Resize( const Partition & partition_new, bool fill_partition )
 	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_xfs_mountpoint" ;
 	
 	//xfs kan only grow if the partition is mounted..
-	system( ("mkdir " + TEMP_MP) .c_str() ) ;
+	mkdir( TEMP_MP .c_str(), 0 ) ;
 	if ( Utils::mount( partition_new .partition, TEMP_MP, "xfs", error ) )
 	{
 		return_value = ! Execute_Command( "xfs_growfs " + TEMP_MP ) ;
 		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
 	}
-	system( ("rmdir " + TEMP_MP) .c_str() ) ;
+	rmdir( TEMP_MP .c_str() ) ;
 	
 	return return_value ;
 }
@@ -118,7 +118,8 @@ bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_
 	Glib::ustring SRC = "/tmp/gparted_tmp_xfs_src_mountpoint" ;
 	Glib::ustring DST = "/tmp/gparted_tmp_xfs_dest_mountpoint" ;
 	
-	system( ("mkdir " + SRC + " " + DST) .c_str() ) ;
+	mkdir( SRC .c_str(), 0 ) ;
+	mkdir( DST .c_str(), 0 ) ;
 	
 	if (	! Execute_Command( "mkfs.xfs -f " + dest_part_path ) &&
 		Utils::mount( src_part_path, SRC, "xfs", error, MS_NOATIME | MS_RDONLY ) &&
@@ -128,8 +129,10 @@ bool xfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_
 		
 	Utils::unmount( src_part_path, SRC, error ) ;
 	Utils::unmount( dest_part_path, DST, error ) ;
-	system( ("rmdir " + SRC + " " + DST) .c_str() ) ;
 	
+	rmdir( SRC .c_str() ) ;
+	rmdir( DST .c_str() ) ;
+		
 	return return_value ;
 }
 

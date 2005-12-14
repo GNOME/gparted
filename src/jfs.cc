@@ -103,13 +103,13 @@ bool jfs::Resize( const Partition & partition_new, bool fill_partition )
 	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_jfs_mountpoint" ;
 	
 	//jfs kan only grow if the partition is mounted..
-	system( ("mkdir " + TEMP_MP) .c_str() ) ;
+	mkdir( TEMP_MP .c_str(), 0 ) ;
 	if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error ) )
 	{
 		return_value = Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) ;
 		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
 	}
-	system( ("rmdir " + TEMP_MP) .c_str() ) ;
+	rmdir( TEMP_MP .c_str() ) ;
 	
 	return return_value ;
 }

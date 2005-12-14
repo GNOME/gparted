@@ -25,6 +25,7 @@
 
 #include <parted/parted.h>
 #include <fstream>
+#include <sys/stat.h>
 
 namespace GParted
 {
