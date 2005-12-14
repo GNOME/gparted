@@ -70,16 +70,24 @@ void Partition::Set_Unused( Sector sectors_unused )
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( device_path, Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ), -1, GParted::TYPE_UNALLOCATED, GParted::FS_UNALLOCATED, sector_start, sector_end, inside_extended, false ); 
+	this ->Set( device_path,
+		    Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ),
+		    -1,
+		    GParted::TYPE_UNALLOCATED,
+		    GParted::FS_UNALLOCATED,
+		    sector_start,
+		    sector_end,
+		    inside_extended,
+		    false ); 
+	
 	this ->error = this ->flags = "" ;
 	this ->status = GParted::STAT_REAL ;
 }
 
 void Partition::Update_Number( int new_number )
-{   //of course this fails when we have devicenames with numbers over 99
-	partition = partition .substr( 0, partition .length( ) - ( partition_number >= 10 ? 2 : 1 ) ) ;	
+{   
 	this ->partition_number = new_number;
-	this ->partition += Utils::num_to_str( partition_number ) ;
+	this ->partition = device_path + Utils::num_to_str( partition_number ) ;
 }
 
 const long Partition::Get_Length_MB( ) const
