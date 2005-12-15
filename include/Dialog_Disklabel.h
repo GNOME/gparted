@@ -16,19 +16,16 @@
  */
  
 
- 
 #ifndef DIALOG_DISKLABEL
 #define DIALOG_DISKLABEL
 
-#include "../include/i18n.h"
 #include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/expander.h>
-#include <gtkmm/optionmenu.h>
-#include <gtkmm/menu.h>
+#include <gtkmm/comboboxtext.h>
 
 namespace GParted
 {
@@ -36,7 +33,7 @@ namespace GParted
 class Dialog_Disklabel : public Gtk::Dialog
 {
 public:
-	Dialog_Disklabel( const Glib::ustring & device_path, const std::vector <Glib::ustring> & disklabeltypes ) ;
+	Dialog_Disklabel( const Glib::ustring & device_path, const std::vector<Glib::ustring> & disklabeltypes ) ;
 	
 	Glib::ustring Get_Disklabel( ) ;
 	
@@ -45,11 +42,9 @@ private:
 	Gtk::HBox *hbox ;
 	Gtk::VBox *vbox ;
 	Gtk::Image image ;
-	Gtk::OptionMenu optionmenu_labeltypes ;
-	Gtk::Menu menu_labeltypes ;
-
+	Gtk::ComboBoxText combo_labeltypes ;
 	Glib::ustring str_temp ;
-	std::vector <Glib::ustring> labeltypes ;
+	std::vector<Glib::ustring> labeltypes ;
 };
 
 } //GParted

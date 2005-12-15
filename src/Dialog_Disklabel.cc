@@ -68,14 +68,14 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	hbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	expander_advanced .add( *hbox ) ;
 	
-	//create and add optionmenu
+	//create and add combo with labeltypes
 	this ->labeltypes = disklabeltypes ;
 	
 	for ( unsigned int t = 0 ; t < labeltypes .size( ) ; t++ )
-		menu_labeltypes .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( labeltypes[ t ] + "\t" ) ) ;
+		combo_labeltypes .append_text( labeltypes[ t ] ) ;
 	
-	optionmenu_labeltypes .set_menu( menu_labeltypes ) ;
-	hbox ->pack_start( optionmenu_labeltypes, Gtk::PACK_SHRINK ) ;
+	combo_labeltypes .set_active( 0 ) ;
+	hbox ->pack_start( combo_labeltypes, Gtk::PACK_SHRINK ) ;
 		
 	//standard warning	
 	str_temp = "\n <i>" ;
@@ -92,7 +92,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 
 Glib::ustring Dialog_Disklabel::Get_Disklabel( ) 
 {
-	return labeltypes[ optionmenu_labeltypes .get_history( ) ] ;
+	return labeltypes[ combo_labeltypes .get_active_row_number() ] ;
 }
 
 }//GParted
