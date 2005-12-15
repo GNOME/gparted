@@ -731,9 +731,6 @@ int GParted_Core::Create_Empty_Partition( Partition & new_partition, bool copy )
 				{
 					new_partition .partition = ped_partition_get_path( c_part ) ;
 					new_partition .partition_number = c_part ->num ;
-					
-					if ( ! wait_for_node( new_partition .partition ) )
-						return 0 ;
 				}
 			
 				ped_constraint_destroy( constraint );
@@ -744,11 +741,16 @@ int GParted_Core::Create_Empty_Partition( Partition & new_partition, bool copy )
 		close_device_and_disk( ) ;
 	}
 
-	//remove all filesystem signatures...
-	if ( new_partition .partition_number > 0 )
-		erase_filesystem_signatures( new_partition ) ;
-		
-	return new_partition .partition_number ;
+	if ( new_partition .type == GParted::TYPE_EXTENDED ||
+	     (
+	     	new_partition .partition_number > 0 &&
+	     	wait_for_node( new_partition .partition ) &&
+	     	erase_filesystem_signatures( new_partition )
+	     )
+	   )
+		return new_partition .partition_number ;
+	else
+		return 0 ;	
 }
 
 bool GParted_Core::Resize_Container_Partition( const Partition & partition_old, const Partition & partition_new, bool fixed_start )
