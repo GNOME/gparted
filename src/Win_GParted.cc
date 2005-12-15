@@ -197,16 +197,12 @@ void Win_GParted::init_convert_menu()
 {
 	for ( unsigned int t=0; t < gparted_core .get_filesystems( ) .size( ) -1 ; t++ )
 	{
-		color .set( Utils::Get_Color( gparted_core .get_filesystems( )[ t ] .filesystem ) );
 		hbox = manage( new Gtk::HBox( ) );
 			
 		//the colored square
-		entry =  manage ( new Gtk::Entry( ) );
-		entry ->set_sensitive( false );
-		entry ->set_size_request( 12, 12 );
-		entry ->modify_base( entry ->get_state( ), color );
-		hbox ->pack_start( *entry, Gtk::PACK_SHRINK );
-			
+		image = manage( new Gtk::Image( Utils::get_color_as_pixbuf( gparted_core .get_filesystems()[ t ] .filesystem, 16, 16 ) ) ) ;
+		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
+		
 		//the label...
 		hbox ->pack_start( * Utils::mk_label( " " + Utils::Get_Filesystem_String( gparted_core .get_filesystems( )[ t ] .filesystem ) ), Gtk::PACK_SHRINK );	
 				

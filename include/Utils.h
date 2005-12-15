@@ -45,6 +45,7 @@ enum FILESYSTEM
 	FS_UNKNOWN	= 1,
 	FS_UNFORMATTED	= 2, 
 	FS_EXTENDED	= 3,
+	
 	FS_EXT2		= 4,
 	FS_EXT3		= 5,
 	FS_LINUX_SWAP	= 6,
@@ -57,7 +58,10 @@ enum FILESYSTEM
 	FS_JFS		= 13,
 	FS_HFS		= 14,
 	FS_HFSPLUS	= 15,
-	FS_UFS		= 16 
+	FS_UFS		= 16,
+
+	FS_USED		= 17,
+	FS_UNUSED	= 18
 };
 
 //struct to store filesysteminformation
@@ -101,6 +105,7 @@ public:
 				      const Glib::ustring & text_color = "black" ) ;
 	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;
 	static Glib::ustring Get_Color( FILESYSTEM filesystem ) ;
+	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
 	static Glib::ustring Get_Filesystem_String( FILESYSTEM filesystem ) ;
 	static bool mount( const Glib::ustring & node, 
 			   const Glib::ustring & mountpoint, 

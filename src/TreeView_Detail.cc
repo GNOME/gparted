@@ -23,51 +23,37 @@ namespace GParted
 TreeView_Detail::TreeView_Detail( )
 {
 	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
-	this->set_model( treestore_detail );
-	this->set_rules_hint(true);
-	this->treeselection = this->get_selection();
+	this ->set_model( treestore_detail );
+	this ->set_rules_hint( true );
+	this ->treeselection = this ->get_selection();
 		
 	//append columns
-	this->append_column( _("Partition"), treeview_detail_columns.partition );
-	this->append_column( _("Filesystem"), treeview_detail_columns.type_square );
-	this->append_column( _("Size(MB)"), treeview_detail_columns.size );
-	this->append_column( _("Used(MB)"), treeview_detail_columns.used );
-	this->append_column( _("Unused(MB)"), treeview_detail_columns.unused );
-	this->append_column( _("Flags"), treeview_detail_columns.flags );
+	this->append_column( _("Partition"), treeview_detail_columns .partition );
+	this->append_column( _("Filesystem"), treeview_detail_columns .color );
+	this->append_column( _("Size(MB)"), treeview_detail_columns .size );
+	this->append_column( _("Used(MB)"), treeview_detail_columns .used );
+	this->append_column( _("Unused(MB)"), treeview_detail_columns .unused );
+	this->append_column( _("Flags"), treeview_detail_columns .flags );
 	
 		
 	//status_icon
-	this->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
+	this ->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
 	
-	//colored text in Partition column (used for darkgrey unallocated)
+	//filesystem text
+	this ->get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
+	
+	//colored text in Partition column 
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( 0 ) ->get_first_cell_renderer( ) );
-	this->get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
-	
-	//colored square in Filesystem column
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this ->get_column( 1 ) ->get_first_cell_renderer( ) );
-	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns. color);
-	
-	//colored text in Filesystem column
-	this ->get_column( 1 ) ->pack_start( treeview_detail_columns .type, true );
-	
-	//this sucks :) get_cell_renderers doesn't return them in some order, so i have to check manually...
-	std::vector <Gtk::CellRenderer *> renderers = this ->get_column( 1 ) ->get_cell_renderers( ) ;
-	
-	if ( renderers .front( ) != this ->get_column( 1 ) ->get_first_cell_renderer( ) )	
-		cell_renderer_text = dynamic_cast <Gtk::CellRendererText*> ( renderers .front( ) ) ;
-	else 
-		cell_renderer_text = dynamic_cast <Gtk::CellRendererText*> ( renderers .back( ) ) ;
-	
-	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground( ), treeview_detail_columns .text_color );
-	
+	this->get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
+			
+	//colored text in Filesystem column 
+	std::vector<Gtk::CellRenderer *> renderers = this ->get_column( 1 ) ->get_cell_renderers() ;
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
+	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
 	
 	//set alignment of numeric columns to right
 	for( short t = 2 ; t < 5 ; t++ )
-	{
-		cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this ->get_column( t ) ->get_first_cell_renderer( ) );
-		cell_renderer_text ->property_xalign( ) = 1;
-	}
-	
+		dynamic_cast<Gtk::CellRendererText*>( this ->get_column( t ) ->get_first_cell_renderer() ) ->property_xalign() = 1 ;
 }
 
 void TreeView_Detail::Load_Partitions( const std::vector<Partition> & partitions ) 
@@ -144,11 +130,10 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
-	treerow[ treeview_detail_columns .color ] = Utils::Get_Color( partition .filesystem ) ;
+	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
 	treerow[ treeview_detail_columns .text_color ] = ( partition .type == GParted::TYPE_UNALLOCATED ) ? "darkgrey" : "black" ;
-	treerow[ treeview_detail_columns .type ] = Utils::Get_Filesystem_String( partition .filesystem ) ;
-	treerow[ treeview_detail_columns .type_square ] = "██" ;
+	treerow[ treeview_detail_columns .filesystem ] = Utils::Get_Filesystem_String( partition .filesystem ) ;
 	
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::num_to_str( partition .Get_Length_MB( ) ) ;

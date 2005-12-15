@@ -200,26 +200,22 @@ void VBox_VisualDisk::Build_Legend( )
 	Prepare_Legend( legend, partitions ) ;
 	
 	bool hide_used_unused = true;
+	hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
 	for ( unsigned int t = 0 ; t < legend .size( ) ; t++ )
 	{
 		if ( legend[ t ] != GParted::FS_UNALLOCATED && legend[ t ] != GParted::FS_EXTENDED && legend[ t ] != GParted::FS_LINUX_SWAP )
 			hide_used_unused = false ;
-		
+
 		if ( t )
 			hbox_legend ->pack_start( * Utils::mk_label( "    " ), Gtk::PACK_SHRINK );
-		else
-			hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
-			
-		hbox_legend ->pack_start( * Utils::mk_label( "██ ", false, false, false, Utils::Get_Color( legend[ t ] ) ), Gtk::PACK_SHRINK );
+				
+		image = manage( new Gtk::Image( Utils::get_color_as_pixbuf( legend[ t ], 16, 16 ) ) ) ;
+		hbox_legend ->pack_start( *image, Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
 		
-		if ( legend[ t ] == GParted::FS_UNALLOCATED )
-		{
-			str_temp = Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ) ;//_("unallocated") ;
-			hbox_legend ->pack_start( * Utils::mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
-		}
-		else
-			hbox_legend ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( legend[ t ] ) + " " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( legend[ t ] ) ), Gtk::PACK_SHRINK );
 	}
+	hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
 	
 	//if there are any partitions add used/unused
 	if ( ! hide_used_unused )
@@ -231,12 +227,24 @@ void VBox_VisualDisk::Build_Legend( )
 		hbox_legend ->set_border_width( 2 ) ;
 		frame_disk_legend ->add( *hbox_legend );
 		
-		hbox_legend ->pack_start( * Utils::mk_label( " ██ ", false, false, false, "#F8F8BA" ), Gtk::PACK_SHRINK );
-		str_temp = _("used") ;
-		hbox_legend ->pack_start( * Utils::mk_label( str_temp + "    " ), Gtk::PACK_SHRINK );
-		hbox_legend ->pack_start( * Utils::mk_label( "██ ", false, false, false, "white" ), Gtk::PACK_SHRINK );
-		str_temp = _("unused") ;
-		hbox_legend ->pack_start( * Utils::mk_label( str_temp + " " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
+		
+		//used
+		image = manage( new Gtk::Image( Utils::get_color_as_pixbuf( GParted::FS_USED, 16, 16 ) ) ) ;
+		hbox_legend ->pack_start( *image, Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( GParted::FS_USED ) ), Gtk::PACK_SHRINK );
+		
+		hbox_legend ->pack_start( * Utils::mk_label( "    " ), Gtk::PACK_SHRINK );
+
+		//unused
+		image = manage( new Gtk::Image( Utils::get_color_as_pixbuf( GParted::FS_UNUSED, 16, 16 ) ) ) ;
+		hbox_legend ->pack_start( *image, Gtk::PACK_SHRINK );
+		hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
+
+		hbox_legend ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( GParted::FS_UNUSED ) ), Gtk::PACK_SHRINK );
+
+		hbox_legend ->pack_start( * Utils::mk_label( " " ), Gtk::PACK_SHRINK );
 	}
 }
 

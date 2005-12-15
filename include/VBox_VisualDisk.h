@@ -27,6 +27,7 @@
 #include <gtkmm/tooltips.h>
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/drawingarea.h>
+#include <gtkmm/image.h>
 
 #define BORDER 8
 
@@ -80,6 +81,7 @@ private:
 	Gtk::HBox hbox_disk_main, *hbox_disk, *hbox_extended, hbox_legend_main, *hbox_legend;
 	Gtk::CheckButton checkbutton_filesystem;
 	Gtk::Tooltips tooltips;
+	Gtk::Image *image ;
 		
 	Visual_Partition *visual_partition;
 	std::vector <Visual_Partition *> visual_partitions;

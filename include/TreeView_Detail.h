@@ -59,19 +59,22 @@ private:
 	struct treeview_detail_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> partition;
-		Gtk::TreeModelColumn<Glib::ustring> type;
-		Gtk::TreeModelColumn<Glib::ustring> type_square;
+		Gtk::TreeModelColumn<Glib::ustring> filesystem;
 		Gtk::TreeModelColumn<Glib::ustring> size;
 		Gtk::TreeModelColumn<Glib::ustring> used;
 		Gtk::TreeModelColumn<Glib::ustring> unused;
-		Gtk::TreeModelColumn<Glib::ustring> color;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > color;
 		Gtk::TreeModelColumn<Glib::ustring> text_color;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> >  status_icon;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
 		Gtk::TreeModelColumn<Glib::ustring> flags;
-		Gtk::TreeModelColumn< Partition >  partition_struct; //hidden column ( see also on_button_press_event )
+		Gtk::TreeModelColumn<Partition> partition_struct; //hidden column ( see also on_button_press_event )
 		
-		treeview_detail_Columns( ) {
-			add( partition ); add( type ); add( type_square ); add( size );  add( used ); add( unused ); add( color ); add( text_color ); add( status_icon ); add( flags ); add(partition_struct);
+		treeview_detail_Columns( )
+		{
+			add( partition ); add( filesystem ); 
+			add( size ); add( used ); add( unused );
+			add( color ); add( text_color ); add( status_icon );
+			add( flags ); add(partition_struct);
 		}
 	};
 	

@@ -173,11 +173,8 @@ private:
 	Gtk::Button *button;
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
-	Gtk::Entry *entry;
 	Gtk::ProgressBar *pulsebar ;
 	
-	Gdk::Color color ;
-			
 	VBox_VisualDisk *vbox_visual_disk;
 	TreeView_Detail treeview_detail;
 	

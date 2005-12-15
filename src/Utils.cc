@@ -68,14 +68,14 @@ Glib::ustring Utils::Get_Color( FILESYSTEM filesystem )
 { 
 	switch( filesystem )
 	{
-		case FS_UNALLOCATED	: return "darkgrey" ; 
-		case FS_UNKNOWN		: return "black" ;
-		case FS_UNFORMATTED	: return "black" ;
+		case FS_UNALLOCATED	: return "#A9A9A9" ;
+		case FS_UNKNOWN		: return "#000000" ;
+		case FS_UNFORMATTED	: return "#000000" ;
 		case FS_EXTENDED	: return "#7DFCFE" ;
 		case FS_EXT2		: return "#9DB8D2" ;
 		case FS_EXT3		: return "#7590AE" ;
 		case FS_LINUX_SWAP	: return "#C1665A" ;
-		case FS_FAT16		: return "green" ;
+		case FS_FAT16		: return "#00FF00" ;
 		case FS_FAT32		: return "#18D918" ;
 		case FS_NTFS		: return "#42E5AC" ;
 		case FS_REISERFS	: return "#ADA7C8" ;
@@ -85,9 +85,27 @@ Glib::ustring Utils::Get_Color( FILESYSTEM filesystem )
 		case FS_HFS		: return "#E0B6AF" ;
 		case FS_HFSPLUS		: return "#C0A39E" ;
 		case FS_UFS		: return "#D1940C" ;
+		case FS_USED		: return "#F8F8BA" ;
+		case FS_UNUSED		: return "#FFFFFF" ;
 
-		default			: return "black" ;
+		default			: return "#000000" ;
 	}
+}
+
+Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) 
+{
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, false, 8, width, height ) ;
+
+	if ( pixbuf )
+	{
+		std::stringstream hex( Get_Color( filesystem ) .substr( 1 ) + "00" ) ;
+		unsigned long dec ;
+		hex >> std::hex >> dec ;
+
+		pixbuf ->fill( dec ) ;
+	}
+
+	return pixbuf ;
 }
 
 Glib::ustring Utils::Get_Filesystem_String( FILESYSTEM filesystem )
@@ -111,6 +129,8 @@ Glib::ustring Utils::Get_Filesystem_String( FILESYSTEM filesystem )
 		case FS_HFS		: return "hfs" ;
 		case FS_HFSPLUS		: return "hfs+" ;
 		case FS_UFS		: return "ufs" ;
+		case FS_USED		: return _("used") ;
+		case FS_UNUSED		: return _("unused") ;
 					  
 		default			: return "" ;
 	}
