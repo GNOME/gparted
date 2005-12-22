@@ -77,6 +77,8 @@ public:
 	const long Get_Length_MB( ) const ;
 	const long Get_Used_MB( ) const ;
 	const long Get_Unused_MB( ) const ;
+
+	bool operator==( const Partition & partition ) ;
 		
 	//some public members
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )

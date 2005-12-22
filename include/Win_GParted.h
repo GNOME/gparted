@@ -39,7 +39,6 @@
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/statusbar.h>
-#include <gtkmm/radiobutton.h>
 #include <gtkmm/liststore.h>
 
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
@@ -159,7 +158,7 @@ private:
 	Gtk::HPaned hpaned_main;
 	Gtk::VPaned vpaned_main;
 	Gtk::VBox vbox_main,vbox_info, *vbox;
-	Gtk::HBox hbox_toolbar,hbox_visual, hbox_operations, *hbox;
+	Gtk::HBox hbox_toolbar, hbox_operations, *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::OptionMenu optionmenu_devices;
@@ -175,7 +174,7 @@ private:
 	Gtk::MenuItem *menu_item;
 	Gtk::ProgressBar *pulsebar ;
 	
-	VBox_VisualDisk *vbox_visual_disk;
+	VBox_VisualDisk vbox_visual_disk;
 	TreeView_Detail treeview_detail;
 	
 	//operations list
@@ -189,7 +188,12 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
 				
-		treeview_operations_Columns( ) { add( operation_number ); add( operation_description ); add( operation_icon ); } 
+		treeview_operations_Columns() 
+		{ 
+			add( operation_number );
+			add( operation_description );
+			add( operation_icon );
+		} 
 	};
 	treeview_operations_Columns treeview_operations_columns;
 	

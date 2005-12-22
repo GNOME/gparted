@@ -28,7 +28,6 @@ Win_GParted::Win_GParted( )
 	selected_partition .Reset( ) ;
 	new_count = 1;
 	current_device = 0 ;
-	vbox_visual_disk = NULL;
 	pulse = false ;
 	
 	//==== GUI =========================
@@ -50,8 +49,9 @@ Win_GParted::Win_GParted( )
 	init_toolbar( ) ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
-	//hbox_visual...  ( contains the visual represenation of the disks )
-	vbox_main.pack_start( hbox_visual, Gtk::PACK_SHRINK );
+	//vbox_visual_disk...  ( contains the visual represenation of the disks )
+	vbox_visual_disk .signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) ) ;
+	vbox_main .pack_start( vbox_visual_disk, Gtk::PACK_SHRINK ) ;
 		
 	//hpaned_main (NOTE: added to vpaned_main)
 	init_hpaned_main( ) ;
@@ -459,41 +459,45 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 void Win_GParted::Refresh_Visual( )
 {
 	std::vector<Partition> partitions = devices[ current_device ] .device_partitions ; 
-	liststore_operations ->clear( );
+	liststore_operations ->clear();
 	
 	//make all operations visible
-	for ( unsigned int t = 0 ; t < operations .size( ); t++ )
+	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 	{	
 		if ( operations[ t ] .device .path == devices[ current_device ] .path )
 			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
-		treerow = *( liststore_operations ->append( ) );
+		treerow = *( liststore_operations ->append() );
 		treerow[ treeview_operations_columns .operation_number ] = t +1;
 		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] .str_operation ;
 		switch ( operations[ t ] .operationtype )
 		{		
-			case GParted::DELETE	:	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
-							break;
-			case GParted::CREATE	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
-							break;
-			case GParted::RESIZE_MOVE: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
-							break;
-			case GParted::CONVERT	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
-							break;
-			case GParted::COPY	: 	treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
-							break;
+			case GParted::DELETE	:
+				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
+				break;
+			case GParted::CREATE	: 
+				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+				break;
+			case GParted::RESIZE_MOVE:
+				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+				break;
+			case GParted::CONVERT	:
+				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+				break;
+			case GParted::COPY	:
+				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+				break;
 		}
-		
 	}
 	
 	//set new statusbartext
-	statusbar .pop( ) ;
-	if ( operations .size( ) != 1 )
-		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size( ) ) );
+	statusbar .pop() ;
+	if ( operations .size() != 1 )
+		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size() ) );
 	else
 		statusbar .push( _( "1 operation pending" ) );
 		
-	if ( ! operations .size( ) ) 
+	if ( ! operations .size() ) 
 	{
 		allow_undo( false );
 		allow_apply( false );
@@ -502,7 +506,7 @@ void Win_GParted::Refresh_Visual( )
 	//count primary's, check for extended and logic and see if any logical is busy
 	any_logic = any_extended = false;
 	primary_count = 0;
-	for ( unsigned int t = 0 ; t < partitions .size( ) ; t++ )
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .partition == copied_partition .partition )
 			copied_partition = partitions[ t ] ;
@@ -516,7 +520,7 @@ void Win_GParted::Refresh_Visual( )
 			case GParted::TYPE_EXTENDED	:
 				any_extended = true;
 				primary_count++;
-				any_logic = partitions[ t ] .logicals .size( ) -1 ;
+				any_logic = partitions[ t ] .logicals .size() -1 ;
 				break;
 				
 			default				:
@@ -525,33 +529,24 @@ void Win_GParted::Refresh_Visual( )
 	}
 	
 	//vbox visual
-	if ( vbox_visual_disk != NULL )
-	{
-		hbox_visual .remove( *vbox_visual_disk );
-		delete ( vbox_visual_disk );
-	}
-	
-	vbox_visual_disk = new VBox_VisualDisk ( partitions, devices[ current_device ] .length ) ;
-	vbox_visual_disk ->signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) ) ;
-	hbox_visual .pack_start( *vbox_visual_disk, Gtk::PACK_EXPAND_PADDING ) ;
-	hbox_visual .show_all_children( ) ;
+	vbox_visual_disk .load_partitions( partitions, devices[ current_device ] .length ) ;
 
 	//treeview details
 	treeview_detail .Load_Partitions( partitions ) ;
 	
 	//no partition can be selected after a refresh..
-	selected_partition .Reset( ) ;
-	Set_Valid_Operations( ) ;
+	selected_partition .Reset() ;
+	Set_Valid_Operations() ;
 }
 
 bool Win_GParted::Quit_Check_Operations( )
 {
-	if ( operations .size( ) )
+	if ( operations .size() )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Quit GParted?" ) + "</span>\n\n" ;
 	
-		if ( operations .size( ) != 1 )
-			str_temp += String::ucompose( _("%1 operations are currently pending."), operations .size( ) ) ;
+		if ( operations .size() != 1 )
+			str_temp += String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
 		else
 			str_temp += _("1 operation is currently pending.");
 				
@@ -559,7 +554,7 @@ bool Win_GParted::Quit_Check_Operations( )
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
 		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 		
-		if ( dialog .run( ) == Gtk::RESPONSE_CANCEL )
+		if ( dialog .run() == Gtk::RESPONSE_CANCEL )
 			return false;//don't close GParted
 	}
 
@@ -703,20 +698,19 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	pulse = true ;//set to true before creating the thread to prevent _possible_ infinite loop in Show_Pulsebar( )
 	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
 	
-	Show_Pulsebar( ) ;	
-	
+	Show_Pulsebar() ;	
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
-	if ( current_device >= devices .size( ) )
+	if ( current_device >= devices .size() )
 		current_device = 0 ;
-	
+
 	//show read-only warning if necessary
 	Glib::ustring readonly_paths ;
 	
-	for ( unsigned int t = 0 ; t < devices .size( ) ; t++ )
+	for ( unsigned int t = 0 ; t < devices .size() ; t++ )
 		if ( devices[ t ] .readonly )
 			readonly_paths += "\n- " + devices[ t ] .path ;
 		
-	if ( ! readonly_paths .empty( ) )
+	if ( ! readonly_paths .empty() )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _("The kernel is unable to re-read the partitiontables on the following devices:") ;
@@ -744,32 +738,28 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	}
 		
 	//if no devices were detected we disable some stuff and show a message in the statusbar
-	if ( devices .empty( ) )
+	if ( devices .empty() )
 	{	
-		optionmenu_devices .hide( ) ;
+		optionmenu_devices .hide() ;
 		
-		menubar_main .items( )[ 2 ] .set_sensitive( false ) ;
-		menubar_main .items( )[ 3 ] .set_sensitive( false ) ;
+		menubar_main .items()[ 1 ] .set_sensitive( false ) ;
+		menubar_main .items()[ 2 ] .set_sensitive( false ) ;
+		menubar_main .items()[ 3 ] .set_sensitive( false ) ;
+		menubar_main .items()[ 4 ] .set_sensitive( false ) ;
 		toolbar_main .set_sensitive( false ) ;
 		optionmenu_devices .set_sensitive( false ) ;
 		
 		Fill_Label_Device_Info( true ) ;
 		
-		if ( vbox_visual_disk != NULL )
-		{
-			hbox_visual .remove( *vbox_visual_disk );
-			delete( vbox_visual_disk ) ;
-			vbox_visual_disk = NULL ;
-		}
-		
-		treeview_detail .Clear( ) ;
+		vbox_visual_disk .clear() ;
+		treeview_detail .Clear() ;
 		
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
 		liststore_operations ->clear( ) ;
-		close_operationslist( ) ;
-		operations .clear( ) ;
+		close_operationslist() ;
+		operations .clear() ;
 		
-		statusbar .pop( ) ;
+		statusbar .pop() ;
 		statusbar .push( _( "No devices detected" ) );
 	}
 	
@@ -886,7 +876,8 @@ void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partitio
 	Set_Valid_Operations( ) ;
 	
 	treeview_detail .Set_Selected( partition );
-	vbox_visual_disk ->Set_Selected( partition );
+	
+	vbox_visual_disk .set_selected( partition ) ;
 	
 	if ( event ->type == GDK_2BUTTON_PRESS && ! pulse )
 		activate_info( ) ;

@@ -85,7 +85,7 @@ void TreeView_Detail::Load_Partitions( const std::vector<Partition> & partitions
 void TreeView_Detail::Set_Selected( const Partition & partition )
 { 
 	//look for appropiate row
-	for( iter = treestore_detail ->children( ) .begin( ) ; iter != treestore_detail ->children( ) .end( ) ; iter++ )
+	for( iter = treestore_detail ->children() .begin() ; iter != treestore_detail ->children() .end() ; iter++ )
 	{
 		row = *iter;
 		partition_temp = row[ treeview_detail_columns.partition_struct ] ;
@@ -99,15 +99,15 @@ void TreeView_Detail::Set_Selected( const Partition & partition )
 		}
 		
 		//logicals
-		if ( row .children( ) .size( ) > 0 ) //this is the row with the extended partition, search it's childrows...
-			for( iter_child = row .children( ) .begin( ) ; iter_child != row.children( ) .end( ) ; iter_child++ )
+		if ( row .children() .size( ) > 0 ) //this is the row with the extended partition, search it's childrows...
+			for( iter_child = row .children() .begin() ; iter_child != row.children() .end() ; iter_child++ )
 			{
 				childrow = *iter_child;
 				partition_temp = childrow[ treeview_detail_columns.partition_struct ] ;
 						
 				if ( partition .sector_start >= partition_temp .sector_start && partition .sector_end <= partition_temp .sector_end )
 				{
-					this ->expand_all( );
+					this ->expand_all();
 					this ->set_cursor( static_cast <Gtk::TreePath> ( childrow ) );
 					return;
 				}

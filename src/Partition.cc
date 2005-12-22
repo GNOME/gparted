@@ -105,6 +105,13 @@ const long Partition::Get_Unused_MB( ) const
 	return Get_Length_MB( ) - Get_Used_MB( ) ;
 }
 
+bool Partition::operator==( const Partition & partition ) 
+{
+	return this ->partition_number == partition .partition_number && 
+	       this ->sector_start == partition .sector_start && 
+	       this ->type == partition .type ;
+}
+
 Partition::~Partition( )
 {
 }

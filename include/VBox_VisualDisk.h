@@ -19,78 +19,111 @@
 #define VBOX_VISUALDISK
 
 #include "../include/Partition.h"
-#include "../include/Device.h"
 
 #include <gtkmm/box.h>
 #include <gtkmm/frame.h>
-#include <gtkmm/eventbox.h>
-#include <gtkmm/tooltips.h>
-#include <gtkmm/checkbutton.h>
 #include <gtkmm/drawingarea.h>
-#include <gtkmm/image.h>
 
-#define BORDER 8
 
 namespace GParted
 {
 
 class VBox_VisualDisk : public Gtk::VBox
 {
-	//struct which contains visual information about the partitions. This prevents recalculation of everything after an expose en therefore saves performance..
-	struct Visual_Partition
-	{
-		//2 attributes used for selection ( see Set_Selected() an drawingarea_on_expose() for more info )
-		Sector sector_start; 
-		int index;
-		
-		int length; //pixels
-		int used;  //pixels
-		int height;  //pixels
-		int text_y; //pixels
-		Gdk::Color color_fs;
-		Gtk::DrawingArea *drawingarea;
-		Glib::RefPtr<Gdk::GC> gc;
-		Glib::RefPtr<Pango::Layout> pango_layout;
-	};
-	
 public:
-	VBox_VisualDisk( const std::vector<Partition> & partitions, const Sector device_length );
-	~VBox_VisualDisk( );
-	void Set_Selected( const Partition & );
+	VBox_VisualDisk();
+	~VBox_VisualDisk();
+	
+	void load_partitions( const std::vector<Partition> & partitions, const Sector device_length );
+	void set_selected( const Partition & partition ) ;
+	void clear() ;
 
-	
 	//public signal for interclass communication
-	sigc::signal<void,GdkEventButton *, const Partition &> signal_mouse_click;
-	
+	sigc::signal<void, GdkEventButton *, const Partition &> signal_mouse_click;
 	
 private:
-	void Build_Visual_Disk( ) ; //i still dream of some fully resizeable visualdisk.... 
-	void Create_Visual_Partition( const Partition & partition ) ; 
-	void Prepare_Legend( std::vector<GParted::FILESYSTEM> & legend, const std::vector<Partition> & partitions ) ;
-	void Build_Legend( ) ;
-		
-	//signal handlers
-	void drawingarea_on_realize( Visual_Partition * );
-	bool drawingarea_on_expose( GdkEventExpose *, Visual_Partition* );
-	bool on_drawingarea_button_press( GdkEventButton *, const Partition & );
+	struct visual_partition ; 
 
-	std::vector<Partition> partitions;
-	Sector device_length;	
+	//private functions	
+	int get_total_separator_px( const std::vector<Partition> & partitions ) ;
+	
+	void set_static_data( const std::vector<Partition> & partitions, std::vector<visual_partition> & visual_partitions, Sector length ) ;
+	int calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) ;
+	void calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) ;
+	void calc_used_unused( std::vector<visual_partition> & visual_partitions ) ;
+	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
+	
+	void build_legend( const std::vector<Partition> & partitions ) ;
+	void prepare_legend( const std::vector<Partition> & partitions, std::vector<GParted::FILESYSTEM> & legend) ;
+	Gtk::HBox * create_legend_item( GParted::FILESYSTEM fs ) ;
+	
+	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
+	
+	bool set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) ;
+	void set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) ;
+	
+	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
+	
+	//signalhandlers
+	void drawingarea_on_realize();
+	bool drawingarea_on_expose( GdkEventExpose * event );
+	bool on_drawingarea_button_press( GdkEventButton * event );
+	void on_resize( Gtk::Allocation & allocation ) ;
 
-	Gtk::Frame *frame_disk_legend ;
-	Gtk::HBox hbox_disk_main, *hbox_disk, *hbox_extended, hbox_legend_main, *hbox_legend;
-	Gtk::CheckButton checkbutton_filesystem;
-	Gtk::Tooltips tooltips;
-	Gtk::Image *image ;
+	//variables
+	struct visual_partition
+	{
+		double fraction ;
+		double fraction_used ;
+
+		int x_start, length ;
+		int y_start, height ;
+		int x_used_start, used_length ;
+		int x_unused_start, unused_length ;
+		int y_used_unused_start, used_unused_height ;
+		int x_text, y_text ;
+
+		bool selected ;
+
+		Gdk::Color color ;
+		Glib::RefPtr<Pango::Layout> pango_layout;
+
+		//real partition
+		Partition partition ;
 		
-	Visual_Partition *visual_partition;
-	std::vector <Visual_Partition *> visual_partitions;
-	Gtk::EventBox * eventbox_extended;
+		std::vector<visual_partition> logicals ;
+
+		visual_partition()
+		{
+			fraction = fraction_used =
+			x_start = length =
+			y_start = height =
+			x_used_start = used_length =
+			x_unused_start = unused_length =
+			y_used_unused_start = used_unused_height =
+			x_text = y_text = 0 ;
+			
+			selected = false ;
+
+			pango_layout .clear() ;
+		}
+
+		~visual_partition()
+		{
+			pango_layout .clear() ;
+			logicals .clear() ;
+		}
+	};
+
+	std::vector<visual_partition> visual_partitions ;
+	visual_partition selected_vp ;
+	int TOT_SEP, MIN_SIZE ;
+
+	Gtk::Frame *frame ;
+	Gtk::DrawingArea drawingarea;
+	Gtk::HBox hbox_legend ;
+	Glib::RefPtr<Gdk::GC> gc;
 	Gdk::Color color_used, color_unused, color_text;
-
-
-	Glib::ustring str_temp ;
-	int temp, selected_partition, SCREEN_WIDTH;
 };
 
 } //GParted
