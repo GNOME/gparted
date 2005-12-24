@@ -122,7 +122,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	else if ( partition .error != "" )
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
-
+	
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
@@ -171,7 +171,7 @@ void TreeView_Detail::on_selection_changed()
 {
 	if ( ! block && treeselection ->get_selected() != 0 )
 	{
-		row = (Gtk::TreeRow) * treeselection ->get_selected() ;
+		row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
 		signal_partition_selected .emit( row[ treeview_detail_columns .partition_struct ], true ) ;
 	}
 }

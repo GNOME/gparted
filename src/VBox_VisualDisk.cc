@@ -138,11 +138,8 @@ int VBox_VisualDisk::calc_length( std::vector<visual_partition> & visual_partiti
 		visual_partitions[ t ] .length = Utils::Round( length_px * visual_partitions[ t ] .fraction ) ;
 			
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
-		{
-			int ext_length = calc_length( visual_partitions[ t ] .logicals, visual_partitions[ t ] .length - (2 * BORDER) ) ;
-				
-			visual_partitions[ t ] .length = ext_length + (2 * BORDER) ;
-		}
+			visual_partitions[ t ] .length = 
+				calc_length( visual_partitions[ t ] .logicals, visual_partitions[ t ] .length - (2 * BORDER) ) + (2 * BORDER) ;
 		else if ( visual_partitions[ t ] .length < MIN_SIZE )
 			visual_partitions[ t ] .length = MIN_SIZE ;
 	
