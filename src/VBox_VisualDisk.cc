@@ -371,7 +371,6 @@ bool VBox_VisualDisk::set_selected( std::vector<visual_partition> & visual_parti
 
 		if ( visual_partitions[ t ] .logicals .size() > 0  ) 
 			visual_partitions[ t ] .selected &= ! set_selected( visual_partitions[ t ] .logicals, x, y ) ;
-
 	}
 
 	return found ;

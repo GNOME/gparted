@@ -34,7 +34,7 @@ int FileSystem::Execute_Command( Glib::ustring command )
 	//stderr to stdout
 	//command += " 2>&1" ;
 	std::cout << command << std::endl ;
-	output = command + "\n\n" ;
+	cmd_output = command + "\n\n" ;
 	dispatcher ( ) ;
 	
 	char c_buf[ 512 ] ;
@@ -47,7 +47,7 @@ int FileSystem::Execute_Command( Glib::ustring command )
 		//dispatcher ( ) ;disabled for the moment. Hier moet ik nog eens fris naar kijken. (anjuta had zo'n ingebouwde terminal, hoe deed die dat?? !!!
 	}
 	
-	output = "" ;
+	cmd_output = "" ;
 	dispatcher( ) ;
 	
         return pclose( f ) ;
@@ -56,7 +56,7 @@ int FileSystem::Execute_Command( Glib::ustring command )
 void FileSystem::Update_Textview( ) 
 {	
 	//std::cout << output << std::endl;
-	textbuffer ->set_text( output ) ;
+	textbuffer ->set_text( cmd_output ) ;
 	//textbuffer ->insert( textbuffer ->end( ), output ) ;
 }
 

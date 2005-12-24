@@ -52,28 +52,34 @@ FS ext3::get_filesystem_support( )
 
 void ext3::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
-	Sector free_blocks = -1, blocksize = -1 ;
-
-        //get free blocks..
-	f = popen( ( "LC_ALL=C dumpe2fs -h " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
+	try
 	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//free blocks
-		if ( output .find( "Free blocks" ) < output .length( ) )
-			free_blocks = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-			
-		//blocksize
-		if ( output .find( "Block size" ) < output .length( ) )
-			blocksize = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
+		Glib::spawn_command_line_sync("dumpe2fs -h " + partition .partition, &output ) ;
 	}
-	pclose( f ) ;
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	} 
+
+	index = output .find( "Free blocks:" ) ;
+	if ( index < output .length() )
+	{
+		output = output.substr( index );
+		free_blocks = atol( output .substr( 13, output .find( "\n" ) - 13 ) .c_str() ) ;
+	}
+	else
+		free_blocks = -1 ;
 	
+	index = output .find( "Block size:" ) ;
+	if ( index < output.length() )
+	{
+		output = output.substr( index );
+		blocksize = atol( output .substr( 12, output .find( "\n" ) - 12 ) .c_str() ) ;
+	}
+	else
+		blocksize = -1 ;
+
 	if ( free_blocks > -1 && blocksize > -1 )
 		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
 }

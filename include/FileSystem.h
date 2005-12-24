@@ -33,10 +33,10 @@ namespace GParted
 class FileSystem
 {
 public:
-	FileSystem( ) ;
-	virtual ~FileSystem( ) { }
+	FileSystem() ;
+	virtual ~FileSystem() {}
 
-	virtual FS get_filesystem_support( ) = 0 ;
+	virtual FS get_filesystem_support() = 0 ;
 	virtual void Set_Used_Sectors( Partition & partition ) = 0 ;
 	virtual bool Create( const Partition & new_partition ) = 0 ;
 	virtual bool Resize( const Partition & partition_new, bool fill_partition = false ) = 0 ;
@@ -50,11 +50,15 @@ public:
 	
 protected:
 	int Execute_Command( Glib::ustring command ) ;
+
+	std::string output ;
+	Sector free_blocks, blocksize ;
+	unsigned int index ;
 	
 private:
-	void Update_Textview( ) ;
+	void Update_Textview() ;
 
-	Glib::ustring output ;
+	Glib::ustring cmd_output ;
 
 };
 

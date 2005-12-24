@@ -860,7 +860,7 @@ void GParted_Core::Show_Error( Glib::ustring message )
 
 void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 {
-	if ( ! p_filesystem )
+	if ( p_filesystem )
 		delete p_filesystem ;
 		
 	switch( filesystem )
