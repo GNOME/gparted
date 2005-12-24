@@ -22,106 +22,100 @@ namespace GParted
 
 TreeView_Detail::TreeView_Detail( )
 {
-	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
-	this ->set_model( treestore_detail );
-	this ->set_rules_hint( true );
-	this ->treeselection = this ->get_selection();
-		
-	//append columns
-	this->append_column( _("Partition"), treeview_detail_columns .partition );
-	this->append_column( _("Filesystem"), treeview_detail_columns .color );
-	this->append_column( _("Size(MB)"), treeview_detail_columns .size );
-	this->append_column( _("Used(MB)"), treeview_detail_columns .used );
-	this->append_column( _("Unused(MB)"), treeview_detail_columns .unused );
-	this->append_column( _("Flags"), treeview_detail_columns .flags );
+	block = false ;
 	
-		
+	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
+	set_model( treestore_detail );
+	set_rules_hint( true );
+	treeselection = get_selection();
+	treeselection ->signal_changed() .connect( sigc::mem_fun( *this, &TreeView_Detail::on_selection_changed ) );
+
+	//append columns
+	append_column( _("Partition"), treeview_detail_columns .partition );
+	append_column( _("Filesystem"), treeview_detail_columns .color );
+	append_column( _("Size(MB)"), treeview_detail_columns .size );
+	append_column( _("Used(MB)"), treeview_detail_columns .used );
+	append_column( _("Unused(MB)"), treeview_detail_columns .unused );
+	append_column( _("Flags"), treeview_detail_columns .flags );
+	
 	//status_icon
-	this ->get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
+	get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
 	
 	//filesystem text
-	this ->get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
+	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
 	
 	//colored text in Partition column 
-	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( this->get_column( 0 ) ->get_first_cell_renderer( ) );
-	this->get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
+	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 0 ) ->get_first_cell_renderer( ) );
+	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
 			
 	//colored text in Filesystem column 
-	std::vector<Gtk::CellRenderer *> renderers = this ->get_column( 1 ) ->get_cell_renderers() ;
+	std::vector<Gtk::CellRenderer *> renderers = get_column( 1 ) ->get_cell_renderers() ;
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
-	this ->get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
+	get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
 	
 	//set alignment of numeric columns to right
 	for( short t = 2 ; t < 5 ; t++ )
-		dynamic_cast<Gtk::CellRendererText*>( this ->get_column( t ) ->get_first_cell_renderer() ) ->property_xalign() = 1 ;
+		dynamic_cast<Gtk::CellRendererText*>( get_column( t ) ->get_first_cell_renderer() ) ->property_xalign() = 1 ;
 }
 
-void TreeView_Detail::Load_Partitions( const std::vector<Partition> & partitions ) 
+void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 
 {
-	treestore_detail ->clear( ) ;
+	treestore_detail ->clear() ;
 	
-	for ( unsigned int i = 0 ; i < partitions .size( ) ; i++ ) 
+	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
 	{
-		row = *( treestore_detail ->append( ) );
-		Create_Row( row, partitions[ i ] );
+		row = *( treestore_detail ->append() );
+		create_row( row, partitions[ i ] );
 		
 		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
 		{
-			for ( unsigned int t = 0 ; t < partitions[ i ] .logicals .size( ) ; t++ ) 
+			for ( unsigned int t = 0 ; t < partitions[ i ] .logicals .size() ; t++ ) 
 			{
-				childrow = *( treestore_detail ->append( row.children( ) ) );
-				Create_Row( childrow, partitions[ i ] .logicals[ t ] );
+				childrow = *( treestore_detail ->append( row.children() ) );
+				create_row( childrow, partitions[ i ] .logicals[ t ] );
 			}
-			
 		}
 	}
 	
 	//show logical partitions ( if any )
-	this ->expand_all( );
+	expand_all();
 	
-	this ->columns_autosize( );
+	columns_autosize();
 }
 
-void TreeView_Detail::Set_Selected( const Partition & partition )
-{ 
-	//look for appropiate row
-	for( iter = treestore_detail ->children() .begin() ; iter != treestore_detail ->children() .end() ; iter++ )
+void TreeView_Detail::set_selected( const Partition & partition )
+{
+	block = true ;
+	set_selected( treestore_detail ->children(), partition ) ;
+	block = false ;
+}
+
+void TreeView_Detail::clear()
+{
+	treestore_detail ->clear() ;
+}
+
+bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended ) 
+{
+	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
-		row = *iter;
-		partition_temp = row[ treeview_detail_columns.partition_struct ] ;
-		//primary's
-		if (	partition .sector_start >= partition_temp .sector_start &&
-			partition .sector_end <=partition_temp .sector_end &&
-			partition.inside_extended == partition_temp.inside_extended )
+		if ( static_cast<Partition>( rows[ t ] [ treeview_detail_columns .partition_struct ] ) == partition )
 		{
-			this ->set_cursor( static_cast <Gtk::TreePath> ( row ) );
-			return;
+			if ( inside_extended )
+				expand_all() ;
+			
+			set_cursor( static_cast<Gtk::TreePath>( rows[ t ] ) ) ;
+			return true ;
 		}
 		
-		//logicals
-		if ( row .children() .size( ) > 0 ) //this is the row with the extended partition, search it's childrows...
-			for( iter_child = row .children() .begin() ; iter_child != row.children() .end() ; iter_child++ )
-			{
-				childrow = *iter_child;
-				partition_temp = childrow[ treeview_detail_columns.partition_struct ] ;
-						
-				if ( partition .sector_start >= partition_temp .sector_start && partition .sector_end <= partition_temp .sector_end )
-				{
-					this ->expand_all();
-					this ->set_cursor( static_cast <Gtk::TreePath> ( childrow ) );
-					return;
-				}
-			}
-
+		if ( rows[ t ] .children() .size() > 0 && set_selected( rows[ t ] .children(), partition, true ) )
+			return true ;
 	}
+	
+	return false ;
 }
 
-void TreeView_Detail::Clear( )
-{
-	treestore_detail ->clear( ) ;
-}
-
-void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition & partition )
+void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition & partition )
 {
 	//hereby i assume these 2 are mutual exclusive. is this wise?? Time (and bugreports) will tell :)
 	if ( partition .busy )
@@ -132,24 +126,20 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
-	treerow[ treeview_detail_columns .text_color ] = ( partition .type == GParted::TYPE_UNALLOCATED ) ? "darkgrey" : "black" ;
+	treerow[ treeview_detail_columns .text_color ] = partition .type == GParted::TYPE_UNALLOCATED ? "darkgrey" : "black" ;
 	treerow[ treeview_detail_columns .filesystem ] = Utils::Get_Filesystem_String( partition .filesystem ) ;
 	
 	//size
-	treerow[ treeview_detail_columns .size ] = Utils::num_to_str( partition .Get_Length_MB( ) ) ;
+	treerow[ treeview_detail_columns .size ] = Utils::num_to_str( partition .Get_Length_MB() ) ;
 
 	//used
-	if ( partition .sectors_used != -1 )
-		treerow[ treeview_detail_columns .used ] = Utils::num_to_str( partition .Get_Used_MB( ) ) ;
-	else
-		treerow[ treeview_detail_columns .used ] = "---" ;
+	treerow[ treeview_detail_columns .used ] =
+		partition .sectors_used == -1 ? "---" : Utils::num_to_str( partition .Get_Used_MB() ) ;
 
 	//unused
-	if ( partition .sectors_unused != -1 )
-		treerow[ treeview_detail_columns .unused ] = Utils::num_to_str( partition .Get_Unused_MB( ) ) ;
-	else
-		treerow[ treeview_detail_columns .unused ] = "---" ;
-	
+	treerow[ treeview_detail_columns .unused ] = 
+		partition .sectors_unused == -1 ? "---" : Utils::num_to_str( partition .Get_Unused_MB() ) ;
+
 	//flags	
 	treerow[ treeview_detail_columns .flags ] = " " + partition .flags ;
 	
@@ -157,20 +147,33 @@ void TreeView_Detail::Create_Row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .partition_struct ] = partition;
 }
 
-bool TreeView_Detail::on_button_press_event( GdkEventButton* event )
-{ 
+bool TreeView_Detail::on_button_press_event( GdkEventButton * event )
+{
 	//Call base class, to allow normal handling,
-   	bool return_value = TreeView::on_button_press_event( event );
+	bool handled = Gtk::TreeView::on_button_press_event( event ) ;
 
-	iter = treeselection ->get_selected( );
-		
-	if ( *iter != 0 )
-	{
-		row = *iter;
-		signal_mouse_click .emit( event, row[ treeview_detail_columns .partition_struct ] );
-	}
-		
-	return return_value;
+	//right-click
+	if ( event ->button == 3 )  
+		signal_popup_menu .emit( event ->button, event ->time ) ;
+
+	return handled ;
 }
 
+void TreeView_Detail::on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) 
+{
+	//Call base class, to allow normal handling,
+	Gtk::TreeView::on_row_activated( path, column ) ;
+
+	signal_partition_activated .emit() ;
+}
+
+void TreeView_Detail::on_selection_changed() 
+{
+	if ( ! block && treeselection ->get_selected() != 0 )
+	{
+		row = (Gtk::TreeRow) * treeselection ->get_selected() ;
+		signal_partition_selected .emit( row[ treeview_detail_columns .partition_struct ], true ) ;
+	}
+}
+	
 } //GParted

@@ -414,8 +414,15 @@ bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * event )
 
 bool VBox_VisualDisk::on_drawingarea_button_press( GdkEventButton * event )
 {
-	if ( set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) )
-		signal_mouse_click .emit( event, selected_vp .partition );
+	set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) ;
+	draw_partitions( visual_partitions ) ;
+	
+	signal_partition_selected .emit( selected_vp .partition, false ) ;	
+
+	if ( event ->type == GDK_2BUTTON_PRESS  )
+		signal_partition_activated .emit() ;
+	else if ( event ->button == 3 )  
+		signal_popup_menu .emit( event ->button, event ->time ) ;
 
 	return true ;
 }

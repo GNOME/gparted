@@ -39,7 +39,9 @@ public:
 	void clear() ;
 
 	//public signal for interclass communication
-	sigc::signal<void, GdkEventButton *, const Partition &> signal_mouse_click;
+	sigc::signal< void, const Partition &, bool > signal_partition_selected ;
+	sigc::signal< void > signal_partition_activated ;
+	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 	
 private:
 	struct visual_partition ; 

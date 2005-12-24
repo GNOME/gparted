@@ -131,7 +131,10 @@ private:
 	void menu_help_contents( );
 	void menu_help_about( );
 
-	void mouse_click( GdkEventButton*, const Partition & );
+	void on_partition_selected( const Partition & partition, bool src_is_treeview ) ;
+	void on_partition_activated() ;
+	void on_partition_popup_menu( unsigned int button, unsigned int time ) ;
+	
 	bool max_amount_prim_reached( ) ;
 	
 	void activate_resize( ); 

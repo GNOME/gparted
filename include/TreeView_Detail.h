@@ -35,25 +35,31 @@ namespace GParted
 class TreeView_Detail : public Gtk::TreeView
 {
 public:
-	TreeView_Detail( );
-	void Load_Partitions( const std::vector<Partition> & partitions ) ;
-	void Set_Selected( const Partition & partition );
-	void Clear( ) ;
+	TreeView_Detail();
+	void load_partitions( const std::vector<Partition> & partitions ) ;
+	void set_selected( const Partition & partition );
+	void clear() ;
 
 	//signals for interclass communication
-	sigc::signal<void, GdkEventButton *, const Partition & > signal_mouse_click;
+	sigc::signal< void, const Partition &, bool > signal_partition_selected ;
+	sigc::signal< void > signal_partition_activated ;
+	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 
 private:
-	void Create_Row( const Gtk::TreeRow & treerow, const Partition & partition );
+	bool set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended = false ) ;
+	void create_row( const Gtk::TreeRow & treerow, const Partition & partition );
 
-	//overridden signal
-	virtual bool on_button_press_event(GdkEventButton *);
+	//(overridden) signals
+	bool on_button_press_event( GdkEventButton * event );
+	void on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) ;
+	void on_selection_changed() ;
 	
 	Gtk::TreeRow row, childrow;
-	Gtk::TreeIter iter, iter_child;
 
 	Glib::RefPtr<Gtk::TreeStore> treestore_detail;
 	Glib::RefPtr<Gtk::TreeSelection> treeselection;
+
+	bool block ;
 
 	//columns for this treeview
 	struct treeview_detail_Columns : public Gtk::TreeModelColumnRecord             
@@ -79,8 +85,6 @@ private:
 	};
 	
 	treeview_detail_Columns treeview_detail_columns;
-	Partition partition_temp ; //used in Set_Selected to make the check a bit more readable
-
 };
 
 } //GParted

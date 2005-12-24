@@ -50,7 +50,9 @@ Win_GParted::Win_GParted( )
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
 	//vbox_visual_disk...  ( contains the visual represenation of the disks )
-	vbox_visual_disk .signal_mouse_click.connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) ) ;
+	vbox_visual_disk .signal_partition_selected .connect( sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
+	vbox_visual_disk .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) ) ;
+	vbox_visual_disk .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
 	vbox_main .pack_start( vbox_visual_disk, Gtk::PACK_SHRINK ) ;
 		
 	//hpaned_main (NOTE: added to vpaned_main)
@@ -341,8 +343,10 @@ void Win_GParted::init_hpaned_main( )
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 	
-	//connect signal and add treeview_detail
-	treeview_detail .signal_mouse_click .connect( sigc::mem_fun( this, &Win_GParted::mouse_click ) );
+	//connect signals and add treeview_detail
+	treeview_detail .signal_partition_selected .connect( sigc::mem_fun( this, &Win_GParted::on_partition_selected ) );
+	treeview_detail .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) );
+	treeview_detail .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
 	scrollwindow ->add( treeview_detail );
 	hpaned_main.pack2( *scrollwindow, true, true );
 }
@@ -532,7 +536,7 @@ void Win_GParted::Refresh_Visual( )
 	vbox_visual_disk .load_partitions( partitions, devices[ current_device ] .length ) ;
 
 	//treeview details
-	treeview_detail .Load_Partitions( partitions ) ;
+	treeview_detail .load_partitions( partitions ) ;
 	
 	//no partition can be selected after a refresh..
 	selected_partition .Reset() ;
@@ -752,7 +756,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		Fill_Label_Device_Info( true ) ;
 		
 		vbox_visual_disk .clear() ;
-		treeview_detail .Clear() ;
+		treeview_detail .clear() ;
 		
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
 		liststore_operations ->clear( ) ;
@@ -869,26 +873,27 @@ void Win_GParted::menu_help_about( )
 	dialog .run( ) ;
 }
 
-void Win_GParted::mouse_click( GdkEventButton *event, const Partition & partition )
+void Win_GParted::on_partition_selected( const Partition & partition, bool src_is_treeview ) 
 {
 	selected_partition = partition;
 	
-	Set_Valid_Operations( ) ;
+	Set_Valid_Operations() ;
 	
-	treeview_detail .Set_Selected( partition );
-	
-	vbox_visual_disk .set_selected( partition ) ;
-	
-	if ( event ->type == GDK_2BUTTON_PRESS && ! pulse )
-		activate_info( ) ;
-	else if ( event ->button == 3 )  //right-click
-	{
-		//prepare convert menu
-		if ( selected_partition .type != GParted::TYPE_UNALLOCATED )
-			Set_Valid_Convert_Filesystems( ) ;
-		
-		menu_partition .popup( event ->button, event ->time );
-	}
+	if ( src_is_treeview )
+		vbox_visual_disk .set_selected( partition ) ;
+	else
+		treeview_detail .set_selected( partition ) ;
+}
+
+void Win_GParted::on_partition_activated() 
+{
+	if ( ! pulse )
+		activate_info() ;
+}
+
+void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int time ) 
+{
+	menu_partition .popup( button, time );
 }
 
 bool Win_GParted::max_amount_prim_reached( ) 

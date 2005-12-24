@@ -51,21 +51,21 @@ enum PartitionStatus {
 class Partition
 {
 public:
-	Partition( ) ;
-	~Partition( ) ;
+	Partition() ;
+	~Partition() ;
 
-	void Reset( ) ;
+	void Reset() ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
 	void Set( 	const Glib::ustring & device_path,
 			const Glib::ustring & partition,
-			const int partition_number,
-			const PartitionType type,
-			const FILESYSTEM filesystem,
-			const Sector & sector_start,
-			const Sector & sector_end,
-			const bool inside_extended,
-			const bool busy ) ;
+			int partition_number,
+			PartitionType type,
+			FILESYSTEM filesystem,
+			Sector sector_start,
+			Sector sector_end,
+			bool inside_extended,
+			bool busy ) ;
 
 	void Set_Unused( Sector sectors_unused ) ;
 
@@ -74,11 +74,11 @@ public:
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
-	const long Get_Length_MB( ) const ;
-	const long Get_Used_MB( ) const ;
-	const long Get_Unused_MB( ) const ;
+	long Get_Length_MB() const ;
+	long Get_Used_MB() const ;
+	long Get_Unused_MB() const ;
 
-	bool operator==( const Partition & partition ) ;
+	bool operator==( const Partition & partition ) const ;
 		
 	//some public members
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )
@@ -92,7 +92,7 @@ public:
 	Sector sectors_used;
 	Sector sectors_unused;
 	Gdk::Color color;
-	bool inside_extended;//used to check wether partition resides inside extended partition or not.
+	bool inside_extended;
 	bool busy;
 	Glib::ustring error;
 	Glib::ustring flags;

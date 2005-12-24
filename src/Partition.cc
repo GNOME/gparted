@@ -20,12 +20,12 @@
 namespace GParted
 {
 	
-Partition::Partition( )
+Partition::Partition()
 {
-	Reset( ) ;
+	Reset() ;
 }
 
-void Partition::Reset( )
+void Partition::Reset()
 {
 	partition = error = flags = mountpoint = "" ;
 	status = GParted::STAT_REAL ;
@@ -34,18 +34,18 @@ void Partition::Reset( )
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color .set( "black" ) ;
 	inside_extended = busy = false ;
-	logicals .clear( ) ;
+	logicals .clear() ;
 }
 
 void Partition::Set(	const Glib::ustring & device_path,
 			const Glib::ustring & partition,
-			const int partition_number,
-			const PartitionType type,
-			const FILESYSTEM filesystem,
-			const Sector & sector_start,
-			const Sector & sector_end,
-			const bool inside_extended,
-			const bool busy )
+			int partition_number,
+			PartitionType type,
+			FILESYSTEM filesystem,
+			Sector sector_start,
+			Sector sector_end,
+			bool inside_extended,
+			bool busy )
 {
 	this ->device_path = device_path ;
 	this ->partition = partition;
@@ -90,29 +90,29 @@ void Partition::Update_Number( int new_number )
 	this ->partition = device_path + Utils::num_to_str( partition_number ) ;
 }
 
-const long Partition::Get_Length_MB( ) const
+long Partition::Get_Length_MB() const
 {
 	return Utils::Sector_To_MB( sector_end - sector_start ) ;
 }
 
-const long Partition::Get_Used_MB( ) const
+long Partition::Get_Used_MB() const
 { 
 	return Utils::Sector_To_MB( this ->sectors_used ) ;
 }
 
-const long Partition::Get_Unused_MB( ) const
+long Partition::Get_Unused_MB() const
 {
-	return Get_Length_MB( ) - Get_Used_MB( ) ;
+	return Get_Length_MB() - Get_Used_MB( ) ;
 }
 
-bool Partition::operator==( const Partition & partition ) 
+bool Partition::operator==( const Partition & partition ) const
 {
 	return this ->partition_number == partition .partition_number && 
 	       this ->sector_start == partition .sector_start && 
 	       this ->type == partition .type ;
 }
 
-Partition::~Partition( )
+Partition::~Partition()
 {
 }
 
