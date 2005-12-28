@@ -34,7 +34,7 @@ public:
 	VBox_VisualDisk();
 	~VBox_VisualDisk();
 	
-	void load_partitions( const std::vector<Partition> & partitions, const Sector device_length );
+	void load_partitions( const std::vector<Partition> & partitions, Sector device_length );
 	void set_selected( const Partition & partition ) ;
 	void clear() ;
 
@@ -108,6 +108,7 @@ private:
 			selected = false ;
 
 			pango_layout .clear() ;
+			logicals .clear() ;
 		}
 
 		~visual_partition()

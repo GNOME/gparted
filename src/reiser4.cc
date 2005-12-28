@@ -46,30 +46,31 @@ FS reiser4::get_filesystem_support( )
 
 void reiser4::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
-	Sector free_blocks = -1, blocksize = -1 ;
+	argv .push_back( "debugfs.reiser4" ) ;
+	argv .push_back( partition .partition ) ;
 
-        //get free blocks..
-	f = popen( ( "LC_ALL=C debugfs.reiser4 " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
-	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//blocksize
-		if ( output .find( "blksize" ) < output .length( ) )
-			blocksize = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-		
-		//free blocks
-		if ( output .find( "free blocks" ) < output .length( ) )
-			free_blocks = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-	}
-	pclose( f ) ;
+	envp .push_back( "LC_ALL=C" ) ;
 	
-	if ( free_blocks > -1 && blocksize > -1 )
-		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
+	try
+	{
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	} 
+
+	index = output .find( "free blocks" ) ;
+	if ( index >= output .length() || sscanf( output.substr( index ) .c_str(), "free blocks: %Ld", &N ) != 1 )   
+		N = -1 ;
+	
+	index = output .find( "blksize" ) ;
+	if ( index >= output.length() || sscanf( output.substr( index ) .c_str(), "blksize: %Ld", &S ) != 1 )  
+		S = -1 ;
+
+	if ( N > -1 && S > -1 )
+		partition .Set_Unused( N * S / 512 ) ;
 }
 
 bool reiser4::Create( const Partition & new_partition )

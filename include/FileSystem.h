@@ -51,8 +51,10 @@ public:
 protected:
 	int Execute_Command( Glib::ustring command ) ;
 
+	//those are used in several Set_Used_Sectors()..
+	std::vector<std::string> argv, envp ;
 	std::string output ;
-	Sector free_blocks, blocksize ;
+	Sector N, S ;
 	unsigned int index ;
 	
 private:

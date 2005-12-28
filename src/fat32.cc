@@ -52,33 +52,36 @@ FS fat32::get_filesystem_support( )
 
 void fat32::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
-	Sector free_clusters = -1, bytes_per_cluster = -1 ;
+	argv .push_back( "dosfsck" ) ;
+	argv .push_back( "-v" ) ;
+	argv .push_back( partition .partition ) ;
 
-        //get free blocks..
-	f = popen( ( "LC_ALL=C dosfsck -v " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
-	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//bytes per cluster
-		if ( output .find( "bytes per cluster" ) < output .length( ) )
-			bytes_per_cluster = atol( output .substr( 0, output .find( "b" ) ) .c_str( )  ) ;
-		
-		//free clusters
-		if ( output .find( partition .partition ) < output .length( ) )
-		{
-			output = output .substr( output .find( "," ) +2, output .length( ) ) ;
-			free_clusters = atol( output .substr( output .find( "/" ) +1, output .find( " " ) ) .c_str( ) ) - atol( output .substr( 0, output .find( "/" ) ) .c_str( ) ) ;
-		}
-	}
-	pclose( f ) ;
+	envp .push_back( "LC_ALL=C" ) ;
 	
-	if ( free_clusters > -1 && bytes_per_cluster > -1 )
-		partition .Set_Unused( free_clusters * bytes_per_cluster / 512 ) ;
+	try
+	{
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	} 
+
+	//free clusters
+	index = output .find( ",", output .find( partition .partition ) + partition .partition .length() ) +1 ;
+	if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld / %Ld", &S, &N ) == 2 ) 
+		N -= S ;
+	else
+		N = -1 ;
+
+	//bytes per cluster
+	index = output .rfind( "\n", output .find( "bytes per cluster" ) ) +1 ;
+	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 ) 
+		S = -1 ;
+
+	if ( N > -1 && S > -1 )
+		partition .Set_Unused( N * S / 512 ) ;
 }
 
 bool fat32::Create( const Partition & new_partition )

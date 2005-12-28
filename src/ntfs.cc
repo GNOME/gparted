@@ -53,25 +53,28 @@ FS ntfs::get_filesystem_support( )
 
 void ntfs::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
+	argv .push_back( "ntfscluster" ) ;
+	argv .push_back( "--force" ) ;
+	argv .push_back( partition .partition ) ;
 
-        //get free sectors..
-	f = popen( ( "LC_ALL=C ntfscluster --force " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
+	envp .push_back( "LC_ALL=C" ) ;
+	
+	try
 	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//free sectors
-		if ( output .find( "sectors of free space" ) < output .length( ) )
-		{
-			partition .Set_Unused( atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ) ;
-			break ;
-		}
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
 	}
-	pclose( f ) ;
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	} 
+
+	index = output .find( "sectors of free space" ) ;
+	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "sectors of free space : %Ld", &N ) != 1 ) 
+		N = -1 ;
+
+	if ( N > -1 )
+		partition .Set_Unused( N ) ;
 }
 
 bool ntfs::Create( const Partition & new_partition )

@@ -56,30 +56,31 @@ FS reiserfs::get_filesystem_support( )
 
 void reiserfs::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
-	Sector free_blocks = -1, blocksize = -1 ;
+	argv .push_back( "debugreiserfs" ) ;
+	argv .push_back( partition .partition ) ;
 
-        //get free blocks..
-	f = popen( ( "LC_ALL=C debugreiserfs " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
-	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//blocksize
-		if ( output .find( "Blocksize" ) < output .length( ) )
-			blocksize = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-		
-		//free blocks
-		if ( output .find( "Free blocks" ) < output .length( ) )
-			free_blocks = atol( (output .substr( output .find( ":" ) +1, output .length( ) ) ) .c_str( ) ) ;
-	}
-	pclose( f ) ;
+	envp .push_back( "LC_ALL=C" ) ;
 	
-	if ( free_blocks > -1 && blocksize > -1 )
-		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
+	try
+	{
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	} 
+
+	index = output .find( "Blocksize" ) ;
+	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "Blocksize: %Ld", &S ) != 1 )
+		S = -1 ;
+
+	index = output .find( ":", output .find( "Free blocks" ) ) +1 ;
+	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &N ) != 1 )
+		N = -1 ;
+
+	if ( N > -1 && S > -1 )
+		partition .Set_Unused( N * S / 512 ) ;
 }
 	
 bool reiserfs::Create( const Partition & new_partition )

@@ -59,7 +59,7 @@ VBox_VisualDisk::VBox_VisualDisk()
 	this ->pack_start( hbox_legend );
 }
 	
-void VBox_VisualDisk::load_partitions( const std::vector<Partition> & partitions, const Sector device_length )
+void VBox_VisualDisk::load_partitions( const std::vector<Partition> & partitions, Sector device_length )
 {
 	clear() ;	
 
@@ -452,7 +452,7 @@ void VBox_VisualDisk::free_colors( std::vector<visual_partition> & visual_partit
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		this ->get_colormap( ) ->free_color( visual_partitions[ t ] .color ) ;
+		this ->get_colormap() ->free_color( visual_partitions[ t ] .color ) ;
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			free_colors( visual_partitions[ t ] .logicals ) ;
@@ -464,9 +464,9 @@ VBox_VisualDisk::~VBox_VisualDisk()
 	clear() ;
 
 	//free the allocated colors
-	this ->get_colormap( ) ->free_colors( color_used, 1 ) ;
-	this ->get_colormap( ) ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap( ) ->free_colors( color_text, 1 ) ;
+	this ->get_colormap() ->free_colors( color_used, 1 ) ;
+	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
+	this ->get_colormap() ->free_colors( color_text, 1 ) ;
 }
 
 } //GParted

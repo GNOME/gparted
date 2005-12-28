@@ -52,9 +52,15 @@ FS ext3::get_filesystem_support( )
 
 void ext3::Set_Used_Sectors( Partition & partition ) 
 {
+	argv .push_back( "dumpe2fs" ) ;
+	argv .push_back( "-h" ) ;
+	argv .push_back( partition .partition ) ;
+
+	envp .push_back( "LC_ALL=C" ) ;
+	
 	try
 	{
-		Glib::spawn_command_line_sync("dumpe2fs -h " + partition .partition, &output ) ;
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
 	}
 	catch ( Glib::Exception & e )
 	{ 
@@ -63,25 +69,15 @@ void ext3::Set_Used_Sectors( Partition & partition )
 	} 
 
 	index = output .find( "Free blocks:" ) ;
-	if ( index < output .length() )
-	{
-		output = output.substr( index );
-		free_blocks = atol( output .substr( 13, output .find( "\n" ) - 13 ) .c_str() ) ;
-	}
-	else
-		free_blocks = -1 ;
+	if ( index >= output .length() || sscanf( output.substr( index ) .c_str(), "Free blocks: %Ld", &N ) != 1 )   
+		N = -1 ;
 	
 	index = output .find( "Block size:" ) ;
-	if ( index < output.length() )
-	{
-		output = output.substr( index );
-		blocksize = atol( output .substr( 12, output .find( "\n" ) - 12 ) .c_str() ) ;
-	}
-	else
-		blocksize = -1 ;
-
-	if ( free_blocks > -1 && blocksize > -1 )
-		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
+	if ( index >= output.length() || sscanf( output.substr( index ) .c_str(), "Block size: %Ld", &S ) != 1 )  
+		S = -1 ;
+	
+	if ( N > -1 && S > -1 )
+		partition .Set_Unused( N * S / 512 ) ;
 }
 	
 bool ext3::Create( const Partition & new_partition )

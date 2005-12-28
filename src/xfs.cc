@@ -61,31 +61,37 @@ FS xfs::get_filesystem_support( )
 
 void xfs::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
-	Sector free_blocks = -1, blocksize = -1 ;
+	argv .push_back( "xfs_db" ) ;
+	argv .push_back( "-c" ) ;
+	argv .push_back( "sb 0" ) ;
+	argv .push_back( "-c print blocksize" ) ;
+	argv .push_back( "-c print fdblocks" ) ;
+	argv .push_back( "-r" ) ;
+	argv .push_back( partition .partition ) ;
 
-        //get free blocks..
-	f = popen( ( "LC_ALL=C xfs_db -c 'sb 0' -c print -r " + partition .partition ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
-	{
-		output = Glib::locale_to_utf8( c_buf ) ;
-		
-		//free blocks
-		if ( output .find( "fdblocks" ) < output .length( ) )
-			free_blocks = atol( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
-			
-		//blocksize
-		if ( output .find( "blocksize" ) < output .length( ) )
-			blocksize = atol( (output .substr( output .find( "=" ) +1, output .length( ) ) ) .c_str( ) ) ;
-		
-	}
-	pclose( f ) ;
+	envp .push_back( "LC_ALL=C" ) ;
 	
-	if ( free_blocks > -1 && blocksize > -1 )
-		partition .Set_Unused( free_blocks * blocksize / 512 ) ;
+	try
+	{
+		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return ;
+	}
+	
+	//blocksize
+	if ( sscanf( output .c_str(), "blocksize = %Ld", &S ) != 1 )
+		S = -1 ;
+
+	//free blocks
+	output = output .substr( output .find( "fdblocks" ) ) ;
+	if ( sscanf( output .c_str(), "fdblocks = %Ld", &N ) != 1 )
+		N = -1 ;
+
+	if ( N > -1 && S > -1 )
+		partition .Set_Unused( N * S / 512 ) ;
 }
 
 bool xfs::Create( const Partition & new_partition )
