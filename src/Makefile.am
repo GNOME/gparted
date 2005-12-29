@@ -3,13 +3,9 @@ INCLUDES =						\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\ 
 	-DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"		
 
-AM_CFLAGS =	\
-	 -Wall	\
-	 -g
+AM_CFLAGS = -Wall	
 
-AM_CXXFLAGS =	\
-	 -Wall	\
-	 -g
+AM_CXXFLAGS = -Wall	
 
 bin_PROGRAMS = gparted
 
