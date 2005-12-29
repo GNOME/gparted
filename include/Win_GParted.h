@@ -40,6 +40,7 @@
 #include <gtkmm/menubar.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/combobox.h>
 
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 
@@ -60,7 +61,7 @@ private:
 	void init_operationslist( ) ;
 	void init_hpaned_main( ) ;
 
-	void Refresh_OptionMenu( ) ;
+	void refresh_combo_devices() ;
 	void Show_Pulsebar( ) ;
 	
 	//Fill txtview_device_info_buffer with some information about the selected device
@@ -121,7 +122,7 @@ private:
 	void open_operationslist( ) ;
 	void close_operationslist( ) ;
 	void clear_operationslist( ) ;
-	void optionmenu_devices_changed( );
+	void combo_devices_changed( );
 		
 	void menu_gparted_refresh_devices( );
 	void menu_gparted_filesystems( );
@@ -164,7 +165,7 @@ private:
 	Gtk::HBox hbox_toolbar, hbox_operations, *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
-	Gtk::OptionMenu optionmenu_devices;
+	Gtk::ComboBox combo_devices ;
 	Gtk::Menu menu_partition, menu_convert, *menu ;
 	Gtk::ToolButton *toolbutton;
 	Gtk::Statusbar statusbar;
@@ -176,13 +177,31 @@ private:
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
 	Gtk::ProgressBar *pulsebar ;
+	Gtk::TreeRow treerow;
 	
 	VBox_VisualDisk vbox_visual_disk;
 	TreeView_Detail treeview_detail;
+
+	//device combo
+	Glib::RefPtr<Gtk::ListStore> liststore_devices ;
+
+	struct treeview_devices_Columns : public Gtk::TreeModelColumnRecord
+	{
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon ;
+		Gtk::TreeModelColumn<Glib::ustring> device ;
+		Gtk::TreeModelColumn<Glib::ustring> size ;
+
+		treeview_devices_Columns()
+		{
+			add( icon ) ;
+			add( device ) ;
+			add( size ) ;
+		}
+	};
+	treeview_devices_Columns treeview_devices_columns ;
 	
 	//operations list
 	Gtk::TreeView treeview_operations;
-	Gtk::TreeRow treerow;
 	Glib::RefPtr<Gtk::ListStore> liststore_operations;
 	
 	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
@@ -201,7 +220,7 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	//usefull variables which are used by many different functions...
-	bool any_logic,any_extended;//used in some checks (e.g. see optionmenu_devices_changed()
+	bool any_logic,any_extended;//used in some checks 
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	Glib::ustring str_temp ; //mostly used for constructing dialogmessages
@@ -209,7 +228,7 @@ private:
 									
 	GParted_Core gparted_core ;
 	GParted::Device *temp_device ;
-	std::vector <Gtk::Label *> device_info ;
+	std::vector<Gtk::Label *> device_info ;
 					
 	//stuff for progress overview and pulsebar
 	Dialog_Progress *dialog_progress;

@@ -28,7 +28,7 @@ Win_GParted::Win_GParted( )
 	selected_partition .Reset( ) ;
 	new_count = 1;
 	current_device = 0 ;
-	pulse = false ;
+	pulse = false ; 
 	
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
@@ -170,10 +170,17 @@ void Win_GParted::init_toolbar( )
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );	toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
 	
-	//initizialize and pack optionmenu_devices
-	optionmenu_devices .set_menu( * manage( new Gtk::Menu( ) ) );
-	optionmenu_devices .signal_changed( ) .connect( sigc::mem_fun(*this, &Win_GParted::optionmenu_devices_changed) );
-	hbox_toolbar .pack_start( optionmenu_devices, Gtk::PACK_SHRINK );
+	//initialize and pack combo_devices
+	liststore_devices = Gtk::ListStore::create( treeview_devices_columns ) ;
+	combo_devices .set_model( liststore_devices ) ;
+
+	combo_devices .pack_start( treeview_devices_columns .icon ) ;
+	combo_devices .pack_start( treeview_devices_columns .device ) ;
+	combo_devices .pack_start( treeview_devices_columns .size ) ;
+	
+	combo_devices .signal_changed() .connect( sigc::mem_fun(*this, &Win_GParted::combo_devices_changed) );
+
+	hbox_toolbar .pack_start( combo_devices, Gtk::PACK_SHRINK ) ;
 }
 
 void Win_GParted::init_partition_menu( ) 
@@ -356,29 +363,22 @@ void Win_GParted::init_hpaned_main( )
 	hpaned_main.pack2( *scrollwindow, true, true );
 }
 
-void Win_GParted::Refresh_OptionMenu( ) 
+void Win_GParted::refresh_combo_devices()
 {
-	optionmenu_devices .get_menu( ) ->items( ) .clear( ) ;
+	liststore_devices ->clear() ;
 	
-	//fill optionmenu_devices
+	//fill combo_devices
 	for ( unsigned int i = 0 ; i < devices .size( ) ; i++ )
 	{ 
-		hbox = manage( new Gtk::HBox( ) );
-		
-		//the image...
-		image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR) );
-		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
-			
-		//the label...
-		hbox ->pack_start( *Utils::mk_label( " " + devices[ i ] .path + "\t(" + String::ucompose( _("%1 MB"), Utils::Sector_To_MB( devices[ i ] .length ) ) + ")" ), Gtk::PACK_SHRINK );
-		
-		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
-		optionmenu_devices .get_menu( ) ->items( ) .push_back( *menu_item );
+		treerow = *( liststore_devices ->append() ) ;
+		treerow[ treeview_devices_columns .icon ] =
+			render_icon( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
+		treerow[ treeview_devices_columns .device ] = devices[ i ] .path ;
+		treerow[ treeview_devices_columns .size ] = 
+			 "(" + String::ucompose( _("%1 MB"), Utils::Sector_To_MB( devices[ i ] .length ) ) + ")" ;
 	}
 		
-	hbox_toolbar .show_all_children( );	
-	
-	optionmenu_devices .set_history( current_device ) ;
+	combo_devices .set_active( current_device ) ;
 }
 
 void Win_GParted::Show_Pulsebar( ) 
@@ -389,7 +389,7 @@ void Win_GParted::Show_Pulsebar( )
 	//disable all input stuff
 	toolbar_main .set_sensitive( false ) ;
 	menubar_main .set_sensitive( false ) ;
-	optionmenu_devices .set_sensitive( false ) ;
+	combo_devices .set_sensitive( false ) ;
 	menu_partition .set_sensitive( false ) ;
 	treeview_detail .set_sensitive( false ) ;
 	vbox_visual_disk .set_sensitive( false ) ;
@@ -413,7 +413,7 @@ void Win_GParted::Show_Pulsebar( )
 	//enable all disabled stuff
 	toolbar_main .set_sensitive( true ) ;
 	menubar_main .set_sensitive( true ) ;
-	optionmenu_devices .set_sensitive( true ) ;
+	combo_devices .set_sensitive( true ) ;
 	menu_partition .set_sensitive( true ) ;
 	treeview_detail .set_sensitive( true ) ;
 	vbox_visual_disk .set_sensitive( true ) ;
@@ -693,10 +693,10 @@ void Win_GParted::clear_operationslist( )
 	Refresh_Visual( ) ;
 }
 
-void Win_GParted::optionmenu_devices_changed( )
+void Win_GParted::combo_devices_changed( )
 {	
 	//set new current device
-	current_device = optionmenu_devices .get_history( ) ;
+	current_device = combo_devices .get_active_row_number() ;
 	
 	//refresh label_device_info
 	Fill_Label_Device_Info( );
@@ -711,7 +711,8 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	pulse = true ;//set to true before creating the thread to prevent _possible_ infinite loop in Show_Pulsebar( )
 	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
 	
-	Show_Pulsebar() ;	
+	Show_Pulsebar() ;
+	
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
@@ -753,22 +754,23 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	//if no devices were detected we disable some stuff and show a message in the statusbar
 	if ( devices .empty() )
 	{	
-		optionmenu_devices .hide() ;
+		combo_devices .hide() ;
 		
 		menubar_main .items()[ 1 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 2 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 3 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 4 ] .set_sensitive( false ) ;
 		toolbar_main .set_sensitive( false ) ;
-		optionmenu_devices .set_sensitive( false ) ;
-		
+		vbox_visual_disk .set_sensitive( false ) ;
+		treeview_detail .set_sensitive( false ) ;
+
 		Fill_Label_Device_Info( true ) ;
 		
 		vbox_visual_disk .clear() ;
 		treeview_detail .clear() ;
 		
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
-		liststore_operations ->clear( ) ;
+		liststore_operations ->clear() ;
 		close_operationslist() ;
 		operations .clear() ;
 		
@@ -778,10 +780,18 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	
 	else //at least one device detected
 	{
-		menubar_main .items( )[ 2 ] .set_sensitive( true ) ;
-		menubar_main .items( )[ 3 ] .set_sensitive( true ) ;
+		combo_devices .show() ;
 		
-		Refresh_OptionMenu( ) ;	
+		menubar_main .items()[ 1 ] .set_sensitive( true ) ;
+		menubar_main .items()[ 2 ] .set_sensitive( true ) ;
+		menubar_main .items()[ 3 ] .set_sensitive( true ) ;
+		menubar_main .items()[ 4 ] .set_sensitive( true ) ;
+
+		toolbar_main .set_sensitive( true ) ;
+		vbox_visual_disk .set_sensitive( true ) ;
+		treeview_detail .set_sensitive( true ) ;
+		
+		refresh_combo_devices() ;	
 	}
 }
 
