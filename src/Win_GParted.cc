@@ -383,7 +383,7 @@ void Win_GParted::Refresh_OptionMenu( )
 
 void Win_GParted::Show_Pulsebar( ) 
 {
-	pulsebar ->show( );
+	pulsebar ->show();
 	statusbar .push( _("Scanning all devices...") ) ;
 	
 	//disable all input stuff
@@ -391,28 +391,32 @@ void Win_GParted::Show_Pulsebar( )
 	menubar_main .set_sensitive( false ) ;
 	optionmenu_devices .set_sensitive( false ) ;
 	menu_partition .set_sensitive( false ) ;
+	treeview_detail .set_sensitive( false ) ;
+	vbox_visual_disk .set_sensitive( false ) ;
 		
 	//the actual 'pulsing'
 	while ( pulse )
 	{
-		pulsebar ->pulse( );
-		while ( Gtk::Main::events_pending( ) )
-			Gtk::Main::iteration( );
+		pulsebar ->pulse();
+		while ( Gtk::Main::events_pending() )
+			Gtk::Main::iteration();
 		
 		usleep( 10000 );
 	}
 	
-	thread ->join( ) ;
-	conn .disconnect( ) ;
+	thread ->join() ;
+	conn .disconnect() ;
 	
-	pulsebar ->hide( );
-	statusbar .pop( ) ;
+	pulsebar ->hide();
+	statusbar .pop() ;
 		
 	//enable all disabled stuff
 	toolbar_main .set_sensitive( true ) ;
 	menubar_main .set_sensitive( true ) ;
 	optionmenu_devices .set_sensitive( true ) ;
 	menu_partition .set_sensitive( true ) ;
+	treeview_detail .set_sensitive( true ) ;
+	vbox_visual_disk .set_sensitive( true ) ;
 }
 
 void Win_GParted::Fill_Label_Device_Info( bool clear ) 

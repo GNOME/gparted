@@ -73,32 +73,35 @@ void GParted_Core::find_supported_filesystems( )
 
 void GParted_Core::get_devices( std::vector<Device> & devices )
 {
-	devices .clear( ) ;
+	devices .clear() ;
 		
 	//try to find all available devices and put these in a list
-	ped_device_probe_all( );
+	ped_device_probe_all();
 	
 	Device temp_device ;
-	std::vector <Glib::ustring> device_paths ;
+	std::vector<Glib::ustring> device_paths ;
 	
 	lp_device = ped_device_get_next( NULL );
 	
 	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
 	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
-	while ( lp_device && strlen( lp_device ->path ) > 6 && static_cast<Glib::ustring>( lp_device ->path ) .is_ascii( ) )
+	while ( lp_device ) 
 	{
-		if ( open_device( lp_device ->path ) )
+		if ( strlen( lp_device ->path ) > 6 && 
+		     static_cast<Glib::ustring>( lp_device ->path ) .is_ascii() &&
+		     open_device( lp_device ->path )
+		   )
 			device_paths .push_back( get_short_path( lp_device ->path ) ) ;
 					
 		lp_device = ped_device_get_next( lp_device ) ;
 	}
-	close_device_and_disk( ) ;
+	close_device_and_disk() ;
 	
-	for ( unsigned int t = 0 ; t < device_paths .size( ) ; t++ ) 
+	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( open_device_and_disk( device_paths[ t ], false ) )
 		{
-			temp_device .Reset( ) ;
+			temp_device .Reset() ;
 			
 			//device info..
 			temp_device .path 	=	device_paths[ t ] ;
@@ -634,24 +637,25 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( )
 }
 
 Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path ) 
-{ 
-	int major, minor ;
-	char resolved_path[255] ;
-	Glib::ustring short_path = real_path ;
-
+{
+	char c_str[255] ;
 	std::string line ;
+		
+	temp = real_path ;
+	
 	std::ifstream input( "/proc/partitions" ) ;
-
 	if ( input )
 	{
 		while ( getline( input, line ) )
 		{
-			if ( sscanf( line .c_str(), "%d %d", &major, &minor ) == 2 && minor == 0 )
+			if ( sscanf( line .c_str(), "%*d %*d %*d %255s", c_str ) == 1 )
 			{
-				line = "/dev/" + line .substr( line .find_last_of( ' ', line .length() ) +1 ) ;
-				if ( realpath( line .c_str(), resolved_path ) && real_path == resolved_path )
+				line = "/dev/" ; 
+				line += c_str ;
+
+				if ( realpath( line .c_str(), c_str ) && real_path == c_str )
 				{
-					short_path = resolved_path ;
+					temp = c_str ;
 					break ;
 				}
 			}
@@ -660,7 +664,7 @@ Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path )
 		input .close() ;
 	}
 
-	return short_path ;
+	return temp ;
 }	
 
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
