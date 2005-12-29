@@ -1,3 +1,8 @@
+2005-12-29 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/GParted_Core.cc: because lp_partition didn't get initialized the
+	  libpartedscan for free space would always fail. fixed.
+
 2005-12-28 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* replaced popen() with Glib::spawn_command_line_sync() + general

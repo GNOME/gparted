@@ -667,9 +667,11 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 {
 	PedFileSystem *fs = NULL;
 	PedConstraint *constraint = NULL;
-	
+
 	if ( lp_disk )
 	{
+		lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition .sector_end + partition .sector_start) / 2 ) ;
+		
 		if ( lp_partition )
 		{
 			fs = ped_file_system_open( & lp_partition ->geom ); 	
