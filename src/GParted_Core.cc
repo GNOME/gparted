@@ -923,9 +923,9 @@ bool GParted_Core::wait_for_node( const Glib::ustring & node )
 	//we'll loop for 10 seconds or till 'node' appeares...
 	for( short t = 0 ; t < 50 ; t++ )
 	{
-		if ( access( node .c_str(), F_OK ) == 0 )
+		if ( Glib::file_test( node, Glib::FILE_TEST_EXISTS ) )
 		{ 
-			sleep( 1 ) ; //apperantly the node isn't available immediatly after access returns succesfully :/
+			sleep( 1 ) ; //apperantly the node isn't available immediatly after file_test returns succesfully :/
 			return true ;
 		}
 		else
