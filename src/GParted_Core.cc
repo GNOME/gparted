@@ -96,7 +96,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 		lp_device = ped_device_get_next( lp_device ) ;
 	}
 	close_device_and_disk() ;
-	
+
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( open_device_and_disk( device_paths[ t ], false ) )

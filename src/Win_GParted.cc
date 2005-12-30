@@ -174,9 +174,9 @@ void Win_GParted::init_toolbar( )
 	liststore_devices = Gtk::ListStore::create( treeview_devices_columns ) ;
 	combo_devices .set_model( liststore_devices ) ;
 
-	combo_devices .pack_start( treeview_devices_columns .icon ) ;
+	combo_devices .pack_start( treeview_devices_columns .icon, false ) ;
 	combo_devices .pack_start( treeview_devices_columns .device ) ;
-	combo_devices .pack_start( treeview_devices_columns .size ) ;
+	combo_devices .pack_start( treeview_devices_columns .size, false ) ;
 	
 	combo_devices .signal_changed() .connect( sigc::mem_fun(*this, &Win_GParted::combo_devices_changed) );
 
@@ -712,7 +712,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
 	
 	Show_Pulsebar() ;
-	
+		
 	//check if current_device is still available (think about hotpluggable shit like usbdevices)
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
