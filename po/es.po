@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-10 22:50+0100\n"
-"PO-Revision-Date: 2005-12-10 22:51+0100\n"
+"POT-Creation-Date: 2005-12-30 22:35+0100\n"
+"PO-Revision-Date: 2005-12-30 22:35+0100\n"
 "Last-Translator: Jorge González González <jorge.gonzalez.gonzalez@hispalinux."
 "es>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -22,12 +22,12 @@ msgstr ""
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:35
-#: ../src/Win_GParted.cc:857
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:34
+#: ../src/Win_GParted.cc:866
 msgid "GParted"
 msgstr "GParted"
 
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:860
+#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:869
 msgid "Gnome Partition Editor"
 msgstr "Editor de particiones de Gnome"
 
@@ -57,8 +57,8 @@ msgstr ""
 msgid "Resize"
 msgstr "Redimensionar"
 
-#: ../src/Dialog_Base_Partition.cc:149 ../src/Win_GParted.cc:144
-#: ../src/Win_GParted.cc:179 ../src/Win_GParted.cc:943
+#: ../src/Dialog_Base_Partition.cc:149 ../src/Win_GParted.cc:151
+#: ../src/Win_GParted.cc:193 ../src/Win_GParted.cc:954
 msgid "Resize/Move"
 msgstr "Redimensionar/Mover"
 
@@ -108,15 +108,15 @@ msgstr ""
 "datos en %1."
 
 #: ../src/Dialog_Disklabel.cc:88 ../src/Dialog_Filesystems.cc:32
-#: ../src/Win_GParted.cc:1228
+#: ../src/Win_GParted.cc:1231
 msgid "Create"
 msgstr "Crear"
 
-#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:94
+#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:101
 msgid "Filesystems"
 msgstr "Sistemas de archivos"
 
-#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:32
+#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:35
 msgid "Filesystem"
 msgstr "Sistema de archivos"
 
@@ -150,12 +150,10 @@ msgid "Warning:"
 msgstr "Atención:"
 
 #. set text of pangolayout
-#. create pangolayout and see if it fits in the visual partition
-#. the label...
 #: ../src/Dialog_Partition_Info.cc:119 ../src/Dialog_Partition_Info.cc:137
 #: ../src/Dialog_Partition_Info.cc:146 ../src/Dialog_Partition_Info.cc:151
-#: ../src/VBox_VisualDisk.cc:160 ../src/VBox_VisualDisk.cc:172
-#: ../src/Win_GParted.cc:368 ../src/Win_GParted.cc:425
+#: ../src/VBox_VisualDisk.cc:128 ../src/Win_GParted.cc:378
+#: ../src/Win_GParted.cc:434
 msgid "%1 MB"
 msgstr "%1 MiB"
 
@@ -166,7 +164,7 @@ msgid "Filesystem:"
 msgstr "Sistema de archivos:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:136 ../src/Win_GParted.cc:239
+#: ../src/Dialog_Partition_Info.cc:136 ../src/Win_GParted.cc:249
 msgid "Size:"
 msgstr "Tamaño:"
 
@@ -185,12 +183,12 @@ msgid "Flags:"
 msgstr "Opciones:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:168 ../src/Win_GParted.cc:244
+#: ../src/Dialog_Partition_Info.cc:168 ../src/Win_GParted.cc:254
 msgid "Path:"
 msgstr "Ruta:"
 
 #. real path
-#: ../src/Dialog_Partition_Info.cc:178 ../src/Win_GParted.cc:249
+#: ../src/Dialog_Partition_Info.cc:178 ../src/Win_GParted.cc:259
 msgid "Real Path:"
 msgstr "Ruta real:"
 
@@ -233,7 +231,7 @@ msgid "Last Sector:"
 msgstr "Último sector:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:216 ../src/Win_GParted.cc:284
+#: ../src/Dialog_Partition_Info.cc:216 ../src/Win_GParted.cc:294
 msgid "Total Sectors:"
 msgstr "Sectores totales:"
 
@@ -306,61 +304,61 @@ msgstr "falta aproximadamente %1 minuto y %2 segundos restantes"
 msgid "about %1 minutes and %2 seconds left"
 msgstr "faltan aproximadamente %1 minutos y %2 segundos"
 
-#: ../src/GParted_Core.cc:132
+#: ../src/GParted_Core.cc:139
 msgid "unrecognized"
 msgstr "no reconocido"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:193
+#: ../src/GParted_Core.cc:200
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr ""
 "Imposible detectar el sistema de archivos. Las razones posiblemente son:"
 
-#: ../src/GParted_Core.cc:195
+#: ../src/GParted_Core.cc:202
 msgid "The filesystem is damaged"
 msgstr "El sistema de archivos está dañado"
 
-#: ../src/GParted_Core.cc:197
+#: ../src/GParted_Core.cc:204
 msgid "The filesystem is unknown to libparted"
 msgstr "El sistema de archivos es desconocido para libparted"
 
-#: ../src/GParted_Core.cc:199
+#: ../src/GParted_Core.cc:206
 msgid "There is no filesystem available (unformatted)"
 msgstr "No hay ningún sistema de archivos disponible (sin formato)"
 
-#: ../src/GParted_Core.cc:236
+#: ../src/GParted_Core.cc:333
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Imposible leer el contenido de este sistema de archivos."
 
-#: ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:335
 msgid "Because of this some operations may be unavailable."
 msgstr "Debido a esto, algunas operaciones pueden no estar disponibles."
 
-#: ../src/GParted_Core.cc:240
+#: ../src/GParted_Core.cc:337
 msgid "Did you install the correct plugin for this filesystem?"
 msgstr "¿Instaló el plugin correcto para este sistema de archivos?"
 
-#: ../src/GParted_Core.cc:410
+#: ../src/GParted_Core.cc:458
 msgid "Error while deleting %1"
 msgstr "Error al borrar %1"
 
-#: ../src/GParted_Core.cc:415
+#: ../src/GParted_Core.cc:463
 msgid "Error while creating %1"
 msgstr "Error al crear %1"
 
-#: ../src/GParted_Core.cc:420
+#: ../src/GParted_Core.cc:468
 msgid "Error while resizing/moving %1"
 msgstr "Error al redimensionar/mover %1"
 
-#: ../src/GParted_Core.cc:425
+#: ../src/GParted_Core.cc:473
 msgid "Error while converting filesystem of %1"
 msgstr "Error al convertir el sistema de ficheros de %1"
 
-#: ../src/GParted_Core.cc:430
+#: ../src/GParted_Core.cc:478
 msgid "Error while copying %1"
 msgstr "Error al copiar %1"
 
-#: ../src/GParted_Core.cc:838
+#: ../src/GParted_Core.cc:859
 msgid ""
 "Be aware that the failure to apply this operation could affect other "
 "operations on the list."
@@ -413,210 +411,222 @@ msgid "Copy %1 to %2 (start at %3 MB)"
 msgstr "Copiar %1 a %2 (empezar en %3 MiB)"
 
 #. append columns
-#: ../src/TreeView_Detail.cc:31
+#: ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "Partición"
 
-#: ../src/TreeView_Detail.cc:33
+#: ../src/TreeView_Detail.cc:36
 msgid "Size(MB)"
 msgstr "Tamaño(MiB)"
 
-#: ../src/TreeView_Detail.cc:34
+#: ../src/TreeView_Detail.cc:37
 msgid "Used(MB)"
 msgstr "Usado(MiB)"
 
-#: ../src/TreeView_Detail.cc:35
+#: ../src/TreeView_Detail.cc:38
 msgid "Unused(MB)"
 msgstr "Libre(MiB)"
 
-#: ../src/TreeView_Detail.cc:36
+#: ../src/TreeView_Detail.cc:39
 msgid "Flags"
 msgstr "Opciones"
 
-#: ../src/VBox_VisualDisk.cc:235
+#: ../src/Utils.cc:115
+msgid "unallocated"
+msgstr "sin asignar"
+
+#: ../src/Utils.cc:116
+msgid "unknown"
+msgstr "desconocido"
+
+#: ../src/Utils.cc:117
+msgid "unformatted"
+msgstr "sin formatear"
+
+#: ../src/Utils.cc:132
 msgid "used"
 msgstr "usado"
 
-#: ../src/VBox_VisualDisk.cc:238
+#: ../src/Utils.cc:133
 msgid "unused"
 msgstr "sin usar"
 
-#: ../src/Win_GParted.cc:92
+#: ../src/Win_GParted.cc:99
 msgid "_Refresh devices"
 msgstr "_Refrescar dispositivos"
 
-#: ../src/Win_GParted.cc:97
+#: ../src/Win_GParted.cc:104
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:103
+#: ../src/Win_GParted.cc:110
 msgid "_Edit"
 msgstr "_Editar"
 
 #. title
-#: ../src/Win_GParted.cc:107 ../src/Win_GParted.cc:227
+#: ../src/Win_GParted.cc:114 ../src/Win_GParted.cc:237
 msgid "Harddisk Information"
 msgstr "Información del disco duro"
 
-#: ../src/Win_GParted.cc:108
+#: ../src/Win_GParted.cc:115
 msgid "Operations"
 msgstr "Operaciones"
 
-#: ../src/Win_GParted.cc:109
+#: ../src/Win_GParted.cc:116
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/Win_GParted.cc:113
+#: ../src/Win_GParted.cc:120
 msgid "Set Disklabel"
 msgstr "Establecer tabla de particiones"
 
-#: ../src/Win_GParted.cc:114
+#: ../src/Win_GParted.cc:121
 msgid "_Device"
 msgstr "_Dispositivo"
 
-#: ../src/Win_GParted.cc:118
+#: ../src/Win_GParted.cc:125
 msgid "_Partition"
 msgstr "_Partición"
 
-#: ../src/Win_GParted.cc:125
+#: ../src/Win_GParted.cc:132
 msgid "_Help"
 msgstr "A_yuda"
 
-#: ../src/Win_GParted.cc:136
+#: ../src/Win_GParted.cc:143
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Crear una partición nueva en el espacio libre seleccionado"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:146
 msgid "Delete the selected partition"
 msgstr "Borrar la partición seleccionada"
 
-#: ../src/Win_GParted.cc:146
+#: ../src/Win_GParted.cc:153
 msgid "Resize/Move the selected partition"
 msgstr "Redimensionar/mover la partición seleccionada"
 
-#: ../src/Win_GParted.cc:152
+#: ../src/Win_GParted.cc:159
 msgid "Copy the selected partition to the clipboard"
 msgstr "Copiar la partición seleccionada al portapapeles"
 
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:162
 msgid "Paste the partition from the clipboard"
 msgstr "Pegar la partición desde el portapapeles"
 
-#: ../src/Win_GParted.cc:161
+#: ../src/Win_GParted.cc:168
 msgid "Undo last operation"
 msgstr "Deshacer la última operación"
 
-#: ../src/Win_GParted.cc:164
+#: ../src/Win_GParted.cc:171
 msgid "Apply all operations"
 msgstr "Ejecutar todas las operaciones"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
-#: ../src/Win_GParted.cc:186
+#: ../src/Win_GParted.cc:200
 msgid "_Convert to"
 msgstr "_Convertir a"
 
-#: ../src/Win_GParted.cc:188
+#: ../src/Win_GParted.cc:202
 msgid "Unmount"
 msgstr "Desmontar"
 
 #. model
-#: ../src/Win_GParted.cc:234
+#: ../src/Win_GParted.cc:244
 msgid "Model:"
 msgstr "Modelo:"
 
 #. disktype
-#: ../src/Win_GParted.cc:264
+#: ../src/Win_GParted.cc:274
 msgid "DiskLabelType:"
 msgstr "Tipo de tabla de particiones:"
 
 #. heads
-#: ../src/Win_GParted.cc:269
+#: ../src/Win_GParted.cc:279
 msgid "Heads:"
 msgstr "Cabezales:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:274
+#: ../src/Win_GParted.cc:284
 msgid "Sectors/Track:"
 msgstr "Sectores/Pista:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:279
+#: ../src/Win_GParted.cc:289
 msgid "Cylinders:"
 msgstr "Cilindros:"
 
-#: ../src/Win_GParted.cc:315
+#: ../src/Win_GParted.cc:325
 msgid "Hide operationslist"
 msgstr "Ocultar la lista de operaciones"
 
-#: ../src/Win_GParted.cc:324
+#: ../src/Win_GParted.cc:334
 msgid "Clear operationslist"
 msgstr "Limpiar la lista de operaciones"
 
-#: ../src/Win_GParted.cc:382
+#: ../src/Win_GParted.cc:387
 msgid "Scanning all devices..."
 msgstr "Escrutando todos los dispositivos..."
 
-#: ../src/Win_GParted.cc:496
+#: ../src/Win_GParted.cc:509
 msgid "%1 operations pending"
 msgstr "%1 operaciones pendientes"
 
-#: ../src/Win_GParted.cc:498
+#: ../src/Win_GParted.cc:511
 msgid "1 operation pending"
 msgstr "1 operación pendiente"
 
-#: ../src/Win_GParted.cc:555
+#: ../src/Win_GParted.cc:559
 msgid "Quit GParted?"
 msgstr "¿Desea salir de GParted?"
 
-#: ../src/Win_GParted.cc:558
+#: ../src/Win_GParted.cc:562
 msgid "%1 operations are currently pending."
 msgstr "hay %1 operaciones pendientes."
 
-#: ../src/Win_GParted.cc:560
+#: ../src/Win_GParted.cc:564
 msgid "1 operation is currently pending."
 msgstr "hay 1 operación pendiente."
 
-#: ../src/Win_GParted.cc:726
+#: ../src/Win_GParted.cc:730
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr ""
 "El núcleo no pudo releer la tabla de particiones de los siguientes "
 "dispositivos:"
 
-#: ../src/Win_GParted.cc:730
+#: ../src/Win_GParted.cc:734
 msgid "Because of this you will only have limited access to these devices."
 msgstr "A causa de esto, sólo tendrá acceso limitado a esos dispositivos."
 
-#: ../src/Win_GParted.cc:732
+#: ../src/Win_GParted.cc:736
 msgid "Unmount all mounted partitions on a device to get full access."
 msgstr ""
 "Desmonte todas las particiones montadas en el dispositivo para tener acceso "
 "total."
 
-#: ../src/Win_GParted.cc:777
+#: ../src/Win_GParted.cc:778
 msgid "No devices detected"
 msgstr "No se detectó ningún dispositivo"
 
-#: ../src/Win_GParted.cc:842
+#: ../src/Win_GParted.cc:851
 msgid "Sorry, not yet implemented."
 msgstr "Lo siento, todavía no está implementado."
 
-#: ../src/Win_GParted.cc:844
+#: ../src/Win_GParted.cc:853
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr ""
 "Visite http://gparted.sf.net para más información y asistencia técnica."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:875
+#: ../src/Win_GParted.cc:884
 msgid "translator-credits"
 msgstr "Jorge González <jorge.gonzalez.gonzalez@hispalinux.es>, 2004, 2005"
 
-#: ../src/Win_GParted.cc:913
+#: ../src/Win_GParted.cc:924
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "No es posible crear más de %1 particiones primarias"
 
-#: ../src/Win_GParted.cc:915
+#: ../src/Win_GParted.cc:926
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -624,11 +634,11 @@ msgstr ""
 "Si desea más particiones debe crear primero una partición extendida. Este "
 "tipo de partición puede contener otras particiones."
 
-#: ../src/Win_GParted.cc:931
+#: ../src/Win_GParted.cc:942
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "¿Está seguro de querer redimensionar/mover esta partición?"
 
-#: ../src/Win_GParted.cc:933
+#: ../src/Win_GParted.cc:944
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -638,86 +648,86 @@ msgstr ""
 "una partición de este tipo es muy proclive a errores. Es recomendable "
 "convertir primero el sistema de ficheros a fat32."
 
-#: ../src/Win_GParted.cc:1054
+#: ../src/Win_GParted.cc:1065
 msgid "Unable to delete partition!"
 msgstr "No se pudo borrar la partición."
 
-#: ../src/Win_GParted.cc:1056
+#: ../src/Win_GParted.cc:1067
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Por favor, desmonte todas las particiones lógicas que tengan un número mayor "
 "de %1"
 
-#: ../src/Win_GParted.cc:1063
+#: ../src/Win_GParted.cc:1074
 msgid "Are you sure you want to delete %1?"
 msgstr "¿Seguro que quiere borrar %1?"
 
-#: ../src/Win_GParted.cc:1067
+#: ../src/Win_GParted.cc:1078
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Después de borrar esta partición, no estará disponible para copiar."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: ../src/Win_GParted.cc:1072
+#: ../src/Win_GParted.cc:1083
 msgid "Delete %1 (%2, %3 MB)"
 msgstr "Borrar %1 (%2, %3 MiB)"
 
-#: ../src/Win_GParted.cc:1123
+#: ../src/Win_GParted.cc:1134
 msgid "Are you sure you want to convert this filesystem to %1?"
 msgstr "¿Seguro que quiere convertir este sistema de ficheros a %1?"
 
-#: ../src/Win_GParted.cc:1124 ../src/Win_GParted.cc:1225
+#: ../src/Win_GParted.cc:1135 ../src/Win_GParted.cc:1228
 msgid "This operation will destroy all data on %1"
 msgstr "Esta operación destruirá todos los datos en %1"
 
-#: ../src/Win_GParted.cc:1142
+#: ../src/Win_GParted.cc:1153
 msgid "Can not convert this filesystem to %1."
 msgstr "No se puede convertir este sistema de ficheros a %1."
 
-#: ../src/Win_GParted.cc:1146
+#: ../src/Win_GParted.cc:1157
 msgid "A %1 filesystem requires a partition of at least %2 MB."
 msgstr "Un sistema de archivos %1 requiere una partición de al menos %2 MiB."
 
-#: ../src/Win_GParted.cc:1148
+#: ../src/Win_GParted.cc:1159
 msgid "A partition with a %1 filesystem has a maximum size of %2 MB."
 msgstr ""
 "Una partición con un sistema de archivos %1 tiene un tamaño máximo de %2 MiB."
 
-#: ../src/Win_GParted.cc:1205
+#: ../src/Win_GParted.cc:1208
 msgid "Could not unmount %1"
 msgstr "No se pudo desmontar %1"
 
-#: ../src/Win_GParted.cc:1223
+#: ../src/Win_GParted.cc:1226
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "¿Está seguro de querer crear una tabla de particiones %1 en %2?"
 
-#: ../src/Win_GParted.cc:1232
+#: ../src/Win_GParted.cc:1235
 msgid "Error while setting new disklabel"
 msgstr "Error al crear la nueva tabla de particiones del disco"
 
-#: ../src/Win_GParted.cc:1257
+#: ../src/Win_GParted.cc:1260
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "¿Está seguro de querer ejecutar todas las operaciones pendientes?"
 
-#: ../src/Win_GParted.cc:1259
+#: ../src/Win_GParted.cc:1262
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "Se recomienda hacer una copia de seguridad de sus datos de valor antes de "
 "continuar."
 
-#: ../src/Win_GParted.cc:1262
+#: ../src/Win_GParted.cc:1265
 msgid "Apply operations to harddisk"
 msgstr "Realizar operaciones sobre el disco duro"
 
-#: ../src/Win_GParted.cc:1300
+#: ../src/Win_GParted.cc:1303
 msgid "At least one operation was applied to a busy device."
 msgstr "Al menos una operación se realizó sobre un dispositivo ocupado."
 
-#: ../src/Win_GParted.cc:1302
+#: ../src/Win_GParted.cc:1305
 msgid "A busy device is a device with at least one mounted partition."
 msgstr ""
 "Un dispositivo ocupado es un dispositivo con al menos una partición montada."
 
-#: ../src/Win_GParted.cc:1304
+#: ../src/Win_GParted.cc:1307
 msgid ""
 "Because making changes to a busy device may confuse the kernel, you are "
 "advised to reboot your computer."
@@ -735,14 +745,5 @@ msgstr ""
 "Ya que GParted puede ser un arma de destrucción masiva, sólo el root puede "
 "ejecutarlo."
 
-#~ msgid "Unformatted"
-#~ msgstr "Sin formato"
-
-#~ msgid "unknown"
-#~ msgstr "desconocido"
-
 #~ msgid "Unallocated"
 #~ msgstr "Espacio libre"
-
-#~ msgid "unallocated"
-#~ msgstr "sin asignar"
