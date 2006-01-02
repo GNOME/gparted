@@ -52,7 +52,7 @@ public:
 	void Apply_Operation_To_Disk( Operation & operation );
 	
 	bool Create( const Device & device, Partition & new_partition ) ;
-	bool Convert_FS( const Partition & partition ) ;
+	bool format( const Partition & partition ) ;
 	bool Delete( const Partition & partition ) ;
 	bool Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) ; 
 	bool Copy( const Glib::ustring & src_part_path, Partition & partition_dest ) ; 

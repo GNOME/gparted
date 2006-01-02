@@ -31,7 +31,7 @@ enum OperationType {
         DELETE		= 0,
 	CREATE		= 1,
 	RESIZE_MOVE	= 2,
-	CONVERT		= 3,
+	FORMAT		= 3,
 	COPY		= 4
 };
 

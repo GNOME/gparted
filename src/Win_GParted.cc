@@ -186,46 +186,86 @@ void Win_GParted::init_toolbar( )
 void Win_GParted::init_partition_menu( ) 
 {
 	//fill menu_partition
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW, sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ), sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW,
+							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, 
+							  Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ),
+							  sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
+
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), *image, sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY, sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE, sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), 
+							  *image, 
+							  sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
+	
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY,
+							  sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
+	
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE,
+							  sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
+	
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
 	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Convert to"), *image, menu_convert ) ) ;
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Unmount"), sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu_partition .items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO, sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
-	init_convert_menu( ) ;
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::ImageMenuElem( _("_Format to"),
+							  *image,
+							  * create_format_menu() ) ) ;
+	
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("Unmount"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
+	
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	
+	menu_partition .items() .push_back( 
+			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO,
+							  sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
 	
 	menu_partition .accelerate( *this ) ;  
 }
 
-void Win_GParted::init_convert_menu()
+Gtk::Menu * Win_GParted::create_format_menu()
 {
-	for ( unsigned int t=0; t < gparted_core .get_filesystems( ) .size( ) -1 ; t++ )
+	menu = manage( new Gtk::Menu() ) ;
+
+	for ( unsigned int t =0; t < gparted_core .get_filesystems() .size() -1 ; t++ )
 	{
-		hbox = manage( new Gtk::HBox( ) );
+		hbox = manage( new Gtk::HBox() );
 			
 		//the colored square
-		image = manage( new Gtk::Image( Utils::get_color_as_pixbuf( gparted_core .get_filesystems()[ t ] .filesystem, 16, 16 ) ) ) ;
-		hbox ->pack_start( *image, Gtk::PACK_SHRINK );
+		hbox ->pack_start( * manage( new Gtk::Image(
+					Utils::get_color_as_pixbuf( 
+						gparted_core .get_filesystems()[ t ] .filesystem, 16, 16 ) ) ),
+				   Gtk::PACK_SHRINK ) ;			
 		
 		//the label...
-		hbox ->pack_start( * Utils::mk_label( " " + Utils::Get_Filesystem_String( gparted_core .get_filesystems( )[ t ] .filesystem ) ), Gtk::PACK_SHRINK );	
+		hbox ->pack_start( * Utils::mk_label(
+					" " + 
+					Utils::Get_Filesystem_String( gparted_core .get_filesystems()[ t ] .filesystem ) ),
+				   Gtk::PACK_SHRINK );	
 				
-		menu_item = manage( new Gtk::MenuItem( *hbox ) ) ;
-		menu_convert.items( ) .push_back( *menu_item );
-		menu_convert.items( ) .back( ) .signal_activate( ) .connect( sigc::bind<GParted::FILESYSTEM>(sigc::mem_fun(*this, &Win_GParted::activate_convert), gparted_core .get_filesystems( )[ t ] .filesystem ) ) ;
+		menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) );
+		if ( gparted_core .get_filesystems()[ t ] .create )
+			menu ->items() .back() .signal_activate() .connect( 
+				sigc::bind<GParted::FILESYSTEM>(sigc::mem_fun(*this, &Win_GParted::activate_format),
+				gparted_core .get_filesystems()[ t ] .filesystem ) ) ;
+		else
+			menu ->items() .back() .set_sensitive( false ) ;
 	}
 	
-	menu_convert.show_all_children() ;
+	return menu ;
 }
 
 void Win_GParted::init_device_info()
@@ -486,19 +526,24 @@ void Win_GParted::Refresh_Visual( )
 		switch ( operations[ t ] .operationtype )
 		{		
 			case GParted::DELETE	:
-				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);	
+				treerow[ treeview_operations_columns.operation_icon ] =
+					render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU );	
 				break;
 			case GParted::CREATE	: 
-				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+				treerow[ treeview_operations_columns.operation_icon ] =
+					render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 				break;
 			case GParted::RESIZE_MOVE:
-				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+				treerow[ treeview_operations_columns.operation_icon ] =
+					render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 				break;
-			case GParted::CONVERT	:
-				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+			case GParted::FORMAT	:
+				treerow[ treeview_operations_columns.operation_icon ] =
+					render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 				break;
 			case GParted::COPY	:
-				treerow[ treeview_operations_columns.operation_icon ] =render_icon(Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+				treerow[ treeview_operations_columns.operation_icon ] =
+					render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 				break;
 		}
 	}
@@ -577,7 +622,7 @@ bool Win_GParted::Quit_Check_Operations( )
 void Win_GParted::Set_Valid_Operations( )
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_convert( false ); allow_unmount( false ) ; allow_info( false ) ;
+	allow_paste( false ); allow_format( false ); allow_unmount( false ) ; allow_info( false ) ;
 	
 	//no partition selected...	
 	if ( selected_partition .partition .empty( ) )
@@ -630,7 +675,7 @@ void Win_GParted::Set_Valid_Operations( )
 		fs = gparted_core .get_fs( selected_partition .filesystem ) ;
 		
 		allow_delete( true ) ;
-		allow_convert( true ) ;
+		allow_format( true ) ;
 		
 		//find out if resizing/moving is possible
 		if ( (fs .grow || fs .shrink ) && ! devices[ current_device ] .readonly ) 
@@ -641,18 +686,6 @@ void Win_GParted::Set_Valid_Operations( )
 			allow_copy( true ) ;	
 						
 		return ;
-	}
-}
-
-void Win_GParted::Set_Valid_Convert_Filesystems( ) 
-{
-	//disable conversion to the same filesystem
-	for ( unsigned int t = 0 ; t < gparted_core .get_filesystems( ) .size( ) -1 ; t++ )
-	{
-		if ( gparted_core .get_filesystems( )[ t ] .filesystem == selected_partition .filesystem || ! gparted_core .get_filesystems( )[ t ] .create )
-			menu_convert .items( )[ t ] .set_sensitive( false ) ;
-		else 
-			menu_convert .items( )[ t ] .set_sensitive( true ) ;
 	}
 }
 
@@ -800,11 +833,16 @@ void Win_GParted::menu_gparted_filesystems( )
 	Dialog_Filesystems dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog .Load_Filesystems( gparted_core .get_filesystems( ) ) ;
-	while ( dialog .run( ) == Gtk::RESPONSE_OK )
+	dialog .Load_Filesystems( gparted_core .get_filesystems() ) ;
+	while ( dialog .run() == Gtk::RESPONSE_OK )
 	{
-		gparted_core .find_supported_filesystems( ) ;
-		dialog .Load_Filesystems( gparted_core .get_filesystems( ) ) ;
+		gparted_core .find_supported_filesystems() ;
+		dialog .Load_Filesystems( gparted_core .get_filesystems() ) ;
+
+		//recreate format menu...
+		menu_partition .items()[ 8 ] .remove_submenu() ;
+		menu_partition .items()[ 8 ] .set_submenu( * create_format_menu() ) ;
+		menu_partition .show_all_children() ;
 	}
 }
 
@@ -1051,116 +1089,119 @@ void Win_GParted::activate_new( )
 	}
 }
 
-void Win_GParted::activate_delete( )
+void Win_GParted::activate_delete()
 { 
-	//since logicals are *always* numbered from 5 to <last logical> there can be a shift in numbers after deletion.
-	//e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6, /dev/hda7 is renumbered to /dev/hda6
-	//the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted the OS cannot find /dev/hda7 anymore and the results aren't that pretty
-	//it seems best to check for this and prohibit deletion with some explanation to the user.
-	if ( 	selected_partition .type == GParted::TYPE_LOGICAL &&
+	/* since logicals are *always* numbered from 5 to <last logical> there can be a shift
+	 * in numbers after deletion.
+	 * e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6,
+	 * /dev/hda7 is renumbered to /dev/hda6
+	 * the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted 
+	 * the OS cannot find /dev/hda7 anymore and the results aren't that pretty.
+	 * It seems best to check for this and prohibit deletion with some explanation to the user.*/
+	 if ( 	selected_partition .type == GParted::TYPE_LOGICAL &&
 		selected_partition .status != GParted::STAT_NEW && 
-		selected_partition .partition_number < devices [ current_device ] .highest_busy )
+		selected_partition .partition_number < devices[ current_device ] .highest_busy )
 	{	
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += _( "Unable to delete partition!") ;
 		str_temp += "</span>\n\n" ;
-		str_temp += String::ucompose( _("Please unmount any logical partitions having a number higher than %1"), selected_partition .partition_number ) ;
+		str_temp += String::ucompose( 
+				_("Please unmount any logical partitions having a number higher than %1"),
+				selected_partition .partition_number ) ;
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true ) ;
-		dialog .run( ) ;
+		dialog .run() ;
 		return;
 	}
 	
-	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _( "Are you sure you want to delete %1?"), selected_partition .partition ) + "</span>" ;
+	//if partition is on the clipboard...
 	if ( selected_partition .partition == copied_partition .partition )
 	{
-		str_temp += "\n\n" ;
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += String::ucompose( _( "Are you sure you want to delete %1?"), 
+					      selected_partition .partition ) + "</span>\n\n" ;
 		str_temp += _( "After deletion this partition is no longer available for copying.") ;
-	}
-	
-	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true);
-	/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB) */
-	dialog .set_title( String::ucompose( _("Delete %1 (%2, %3 MB)"), selected_partition .partition, selected_partition .filesystem, selected_partition .Get_Length_MB() ) );
-	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
-	
-	dialog .show_all_children( );
-	if ( dialog .run( ) == Gtk::RESPONSE_OK )
-	{
-		dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 		
-		//if deleted partition was on the clipboard we erase it...
-		if ( selected_partition .partition == copied_partition .partition )
-			copied_partition .Reset( ) ;
-			
-		//if deleted one is NEW, it doesn't make sense to add it to the operationslist, we erase its creation
-		//and possible modifications like resize etc.. from the operationslist.   Calling Refresh_Visual will wipe every memory of its existence ;-)
-		if ( selected_partition .status == GParted::STAT_NEW )
-		{
-			//remove all operations done on this new partition (this includes creation)	
-			for ( int t = 0 ; t < static_cast<int> ( operations .size( ) ) ; t++ ) //I removed the unsigned because t will be negative at times...
-				if ( operations[ t ] .partition_new .partition == selected_partition .partition )
-					operations.erase( operations .begin( ) + t-- ) ;
-				
-			//determine lowest possible new_count
-			new_count = 0 ; 
-			for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
-				if ( operations[ t ] .partition_new .status == GParted::STAT_NEW && operations[ t ] .partition_new .partition_number > new_count )
-					new_count = operations[ t ] .partition_new .partition_number ;
-			
-			new_count += 1 ;
-			
-			Refresh_Visual( ); 
-				
-			if ( ! operations .size( ) )
-				close_operationslist( ) ;
-		}
-		else //deletion of a real partition...
-			Add_Operation( GParted::DELETE, selected_partition ); //in this case selected_partition is just a "dummy" 
+		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true );
+		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB) */
+		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3 MB)"), 
+						     selected_partition .partition, 
+						     selected_partition .filesystem,
+						     selected_partition .Get_Length_MB() ) );
+		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
+	
+		dialog .show_all_children() ;
+
+		if ( dialog .run() != Gtk::RESPONSE_OK )
+			return ;
 	}
+	
+	//if deleted partition was on the clipboard we erase it...
+	if ( selected_partition .partition == copied_partition .partition )
+		copied_partition .Reset() ;
+			
+	/* if deleted one is NEW, it doesn't make sense to add it to the operationslist,
+	 * we erase its creation and possible modifications like resize etc.. from the operationslist.
+	 * Calling Refresh_Visual will wipe every memory of its existence ;-)*/
+	if ( selected_partition .status == GParted::STAT_NEW )
+	{
+		//remove all operations done on this new partition (this includes creation)	
+		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
+			if ( operations[ t ] .partition_new .partition == selected_partition .partition )
+				operations.erase( operations .begin() + t-- ) ;
+				
+		//determine lowest possible new_count
+		new_count = 0 ; 
+		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+			if ( operations[ t ] .partition_new .status == GParted::STAT_NEW &&
+			     operations[ t ] .partition_new .partition_number > new_count )
+				new_count = operations[ t ] .partition_new .partition_number ;
+			
+		new_count += 1 ;
+			
+		Refresh_Visual(); 
+				
+		if ( ! operations .size() )
+			close_operationslist() ;
+	}
+	else //deletion of a real partition...(now selected_partition is just a dummy)
+		Add_Operation( GParted::DELETE, selected_partition );
 }
 
 void Win_GParted::activate_info( )
 {
 	Dialog_Partition_Info dialog( selected_partition );
 	dialog .set_transient_for( *this );
-	dialog .run( );
+	dialog .run();
 }
 
-void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
+void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 {
-	//standard warning..
-	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("Are you sure you want to convert this filesystem to %1?"), Utils::Get_Filesystem_String( new_fs ) ) + "</span>\n\n" ;
-	str_temp += String::ucompose( _("This operation will destroy all data on %1"), selected_partition .partition ) ;
-	
-	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_CANCEL, true );
-	
-	dialog. add_button( Gtk::Stock::CONVERT, Gtk::RESPONSE_OK ) ;
-	dialog. show_all_children( ) ;
-	
-	if ( dialog .run( ) == Gtk::RESPONSE_CANCEL )
-		return ;
-	
-	dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
-	
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 	
-	if ( selected_partition .Get_Length_MB( ) < fs .MIN || ( fs .MAX && selected_partition .Get_Length_MB( ) > fs .MAX ) )
+	if ( selected_partition .Get_Length_MB() < fs .MIN ||
+	     fs .MAX && selected_partition .Get_Length_MB() > fs .MAX ) 
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("Can not convert this filesystem to %1."), Utils::Get_Filesystem_String( new_fs ) ) ;
+		str_temp += String::ucompose( 
+				_("Can not format this filesystem to %1."),
+				Utils::Get_Filesystem_String( new_fs ) ) ;
 		str_temp += "</span>\n\n" ;
 		
 		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
-			str_temp += String::ucompose( _( "A %1 filesystem requires a partition of at least %2 MB."), Utils::Get_Filesystem_String( new_fs ), fs .MIN ) ;
+			str_temp += String::ucompose( 
+					_( "A %1 filesystem requires a partition of at least %2 MB."),
+					Utils::Get_Filesystem_String( new_fs ),
+					fs .MIN ) ;
 		else
-			str_temp += String::ucompose( _( "A partition with a %1 filesystem has a maximum size of %2 MB."), Utils::Get_Filesystem_String( new_fs ), fs .MAX ) ;
-		
+			str_temp += String::ucompose( 
+					_( "A partition with a %1 filesystem has a maximum size of %2 MB."),
+					Utils::Get_Filesystem_String( new_fs ),
+					fs .MAX ) ;
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
-		dialog .run( ) ;
+		dialog .run() ;
 		return ;
 	}
 	
@@ -1176,17 +1217,19 @@ void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
 			false ) ;
 	
 	
-	//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new filesystem
-	if ( selected_partition .status == GParted::STAT_NEW  )
+	//if selected_partition is NEW we simply remove the NEW operation from the list and
+	//add it again with the new filesystem
+	if ( selected_partition .status == GParted::STAT_NEW )
 	{
 		//remove operation which creates this partition
-		for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
+		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 		{
 			if ( operations[ t ] .partition_new .partition == selected_partition .partition )
 			{
-				operations .erase( operations .begin( ) +t ) ;
+				operations .erase( operations .begin() +t ) ;
 				
-				//And add the new partition to the end of the operations list (NOTE: in this case we set status to STAT_NEW)
+				//And add the new partition to the end of the operations list
+				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
 				Add_Operation( GParted::CREATE, part_temp );
 					
@@ -1194,8 +1237,8 @@ void Win_GParted::activate_convert( GParted::FILESYSTEM new_fs )
 			}
 		}
 	}
-	else//normal converting of an existing partition
-		Add_Operation( GParted::CONVERT, part_temp ) ;
+	else//normal formatting of an existing partition
+		Add_Operation( GParted::FORMAT, part_temp ) ;
 }
 
 void  Win_GParted::activate_unmount( ) 

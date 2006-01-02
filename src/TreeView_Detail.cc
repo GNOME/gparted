@@ -45,17 +45,24 @@ TreeView_Detail::TreeView_Detail( )
 	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
 	
 	//colored text in Partition column 
-	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 0 ) ->get_first_cell_renderer( ) );
-	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
-			
-	//colored text in Filesystem column 
-	std::vector<Gtk::CellRenderer *> renderers = get_column( 1 ) ->get_cell_renderers() ;
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
-	get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(), treeview_detail_columns .text_color );
+	Gtk::CellRendererText *cell_renderer_text = 
+		dynamic_cast<Gtk::CellRendererText*>( get_column( 0 ) ->get_first_cell_renderer() );
+	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
+					 treeview_detail_columns .text_color );
 	
+	//colored text in Filesystem column 
+	std::vector<Gtk::CellRenderer*> renderers = get_column( 1 ) ->get_cell_renderers() ;
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
+	get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(),
+					 treeview_detail_columns .text_color );
+	
+	//pixbuf and text are both left aligned
+	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = 0 ;
+	cell_renderer_text ->property_xalign() = 0 ;
+
 	//set alignment of numeric columns to right
 	for( short t = 2 ; t < 5 ; t++ )
-		dynamic_cast<Gtk::CellRendererText*>( get_column( t ) ->get_first_cell_renderer() ) ->property_xalign() = 1 ;
+		get_column_cell_renderer( t ) ->property_xalign() = 1 ;
 }
 
 void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 

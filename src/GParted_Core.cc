@@ -427,7 +427,7 @@ int GParted_Core::get_estimated_time( const Operation & operation )
 			return 2 ; //i guess it'll never take more then 2 secs to delete a partition ;)
 		
 		case GParted::CREATE:
-		case GParted::CONVERT:
+		case GParted::FORMAT:
 			set_proper_filesystem( operation .partition_new .filesystem ) ;
 			if ( p_filesystem )
 				return p_filesystem ->get_estimated_time( operation .partition_new .Get_Length_MB( ) ) ;
@@ -468,9 +468,9 @@ void GParted_Core::Apply_Operation_To_Disk( Operation & operation )
 				Show_Error( String::ucompose( _("Error while resizing/moving %1"), operation .partition_new .partition ) ) ;
 											
 			break;
-		case CONVERT:
-			if ( ! Convert_FS( operation .partition_new ) ) 
-				Show_Error( String::ucompose( _("Error while converting filesystem of %1"), operation .partition_new .partition ) ) ;
+		case FORMAT:
+			if ( ! format( operation .partition_new ) ) 
+				Show_Error( String::ucompose( _("Error while formattting filesystem of %1"), operation .partition_new .partition ) ) ;
 										
 			break;
 		case COPY:
@@ -499,7 +499,7 @@ bool GParted_Core::Create( const Device & device, Partition & new_partition )
 	return false ;
 }
 
-bool GParted_Core::Convert_FS( const Partition & partition )
+bool GParted_Core::format( const Partition & partition )
 {	
 	//remove all filesystem signatures...
 	erase_filesystem_signatures( partition ) ;

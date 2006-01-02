@@ -112,11 +112,10 @@ Glib::ustring Operation::Get_String( )
 					
 			return temp;
 					
-		case CONVERT	:
-			/*TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap */
-			return String::ucompose( _( "Convert %1 from %2 to %3"),
+		case FORMAT	:
+			/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
+			return String::ucompose( _("Format %1 as %2"),
 						 partition_original .partition,
-						 Utils::Get_Filesystem_String( partition_original .filesystem ),
 						 Utils::Get_Filesystem_String( partition_new .filesystem ) ) ;
 			
 		case COPY	:
@@ -139,7 +138,7 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 		case DELETE	:	Apply_Delete_To_Visual( partitions ) ;		break ;
 		case RESIZE_MOVE:	Apply_Resize_Move_To_Visual( partitions );	break ;
 		case CREATE	:
-		case CONVERT	:
+		case FORMAT	:
 		case COPY	:	Apply_Create_To_Visual( partitions ); 		break ;
 	}
 }
