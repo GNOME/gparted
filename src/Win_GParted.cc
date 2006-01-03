@@ -1185,7 +1185,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	{
 		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 		str_temp += String::ucompose( 
-				_("Can not format this filesystem to %1."),
+				_("Cannot format this filesystem to %1."),
 				Utils::Get_Filesystem_String( new_fs ) ) ;
 		str_temp += "</span>\n\n" ;
 		
