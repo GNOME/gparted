@@ -25,11 +25,6 @@
 
 #include "../include/Utils.h"
 
-#include <gdkmm/colormap.h>
-
-#include <sstream>
-#include <iostream>
-
 namespace GParted
 {
 	
@@ -77,6 +72,7 @@ public:
 	long Get_Length_MB() const ;
 	long Get_Used_MB() const ;
 	long Get_Unused_MB() const ;
+	Sector get_length() const ;
 
 	bool operator==( const Partition & partition ) const ;
 		

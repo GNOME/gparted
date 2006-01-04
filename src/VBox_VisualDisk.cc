@@ -125,7 +125,7 @@ void VBox_VisualDisk::set_static_data( const std::vector<Partition> & partitions
 	   			         partitions[ t ] .sector_end - partitions[ t ] .sector_start ) ;
 		else
 			visual_partitions .back() .pango_layout = drawingarea .create_pango_layout( 
-				partitions[ t ] .partition + "\n" + String::ucompose( _("%1 MB"), partitions[ t ] .Get_Length_MB() ) ) ;
+				partitions[ t ] .partition + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ; 
 	}
 }
 

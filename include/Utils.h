@@ -114,6 +114,7 @@ public:
 			   unsigned long flags = 0, 
 			   const Glib::ustring & data = "" ) ;
 	static bool unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) ;
+	static Glib::ustring format_size( Sector size ) ;
 };
 	
 

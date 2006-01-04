@@ -134,21 +134,22 @@ void Dialog_Partition_Info::Display_Info( )
 	
 	//size
 	table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Size:" ) + "</b>" ), 0,1,top, bottom,Gtk::FILL);
-	table ->attach( * Utils::mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Length_MB( ) ) ), 1, 2, top++, bottom++,Gtk::FILL );
+	table ->attach( * Utils::mk_label( Utils::format_size( this ->partition .get_length() ) ), 1, 2, top++, bottom++,Gtk::FILL );
 	
 	if ( partition.sectors_used != -1 )
 	{
 		//calculate relative diskusage
-		int percent_used = Utils::Round( static_cast<double>(partition .Get_Used_MB( ) ) / partition .Get_Length_MB( ) *100 ) ;
+		int percent_used = 
+			Utils::Round( static_cast<double>(partition .Get_Used_MB() ) / partition .Get_Length_MB() *100 ) ;
 						
 		//used
-		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Used_MB( ) ) ), 1, 2, top, bottom, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Utils::format_size( this ->partition .sectors_used ) ), 1, 2, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"), 1, 2, top++, bottom++, Gtk::FILL ) ; 
 		
 		//unused
 		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Unused:" ) + "</b>" ), 0,1, top, bottom,Gtk::FILL);
-		table ->attach( * Utils::mk_label( String::ucompose( _("%1 MB"), this ->partition .Get_Unused_MB( ) ) ), 1, 2, top, bottom, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Utils::format_size( this ->partition .sectors_unused ) ), 1, 2, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( 100 - percent_used ) + "% )"), 1, 2, top++, bottom++, Gtk::FILL ) ; 
 	}
 	

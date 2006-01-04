@@ -414,8 +414,7 @@ void Win_GParted::refresh_combo_devices()
 		treerow[ treeview_devices_columns .icon ] =
 			render_icon( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 		treerow[ treeview_devices_columns .device ] = devices[ i ] .path ;
-		treerow[ treeview_devices_columns .size ] = 
-			 "(" + String::ucompose( _("%1 MB"), Utils::Sector_To_MB( devices[ i ] .length ) ) + ")" ;
+		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length ) + ")" ; 
 	}
 		
 	combo_devices .set_active( current_device ) ;
@@ -471,7 +470,7 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		
 		//global info...
 		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
-		device_info[ t++ ] ->set_text( String::ucompose( _("%1 MB"), Utils::Sector_To_MB( devices[ current_device ] .length ) ) ) ;
+		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length ) ) ;
 		device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
 		device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
 		

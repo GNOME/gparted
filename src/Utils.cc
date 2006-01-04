@@ -20,6 +20,7 @@
 #include <sstream>
 #include <fstream>
 #include <cerrno>
+#include <iomanip>
 
 
 namespace GParted
@@ -236,6 +237,25 @@ bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoin
 
 	
 	return false ;
+}
+
+Glib::ustring Utils::format_size( Sector size ) 
+{
+	size *= 512 ;
+	std::stringstream ss ;	
+	ss .imbue( std::locale( "" ) ) ;
+	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
+
+	if ( size < 1073741824 )
+	{
+		ss << static_cast<double>( size / 1048567.0 ) ;
+		return String::ucompose( _("%1 MB"), ss .str() ) ;
+	}
+	else
+	{
+		ss << static_cast<double>( size / 1073741824.0 ) ;
+		return String::ucompose( _("%1 GB"), ss .str() ) ;
+	}
 }
 
 } //GParted..

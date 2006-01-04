@@ -135,11 +135,14 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 {
 	switch ( operationtype )
 	{
-		case DELETE	:	Apply_Delete_To_Visual( partitions ) ;		break ;
-		case RESIZE_MOVE:	Apply_Resize_Move_To_Visual( partitions );	break ;
+		case DELETE	:	Apply_Delete_To_Visual( partitions ) ;
+					break ;
+		case RESIZE_MOVE:	Apply_Resize_Move_To_Visual( partitions ) ;
+					break ;
 		case CREATE	:
 		case FORMAT	:
-		case COPY	:	Apply_Create_To_Visual( partitions ); 		break ;
+		case COPY	:	Apply_Create_To_Visual( partitions ) ;
+					break ;
 	}
 }
 

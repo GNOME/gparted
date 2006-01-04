@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
- #include "../include/TreeView_Detail.h"
- 
+#include "../include/TreeView_Detail.h"
+
 namespace GParted
 { 
 
@@ -33,9 +33,9 @@ TreeView_Detail::TreeView_Detail( )
 	//append columns
 	append_column( _("Partition"), treeview_detail_columns .partition );
 	append_column( _("Filesystem"), treeview_detail_columns .color );
-	append_column( _("Size(MB)"), treeview_detail_columns .size );
-	append_column( _("Used(MB)"), treeview_detail_columns .used );
-	append_column( _("Unused(MB)"), treeview_detail_columns .unused );
+	append_column( _("Size"), treeview_detail_columns .size );
+	append_column( _("Used"), treeview_detail_columns .used );
+	append_column( _("Unused"), treeview_detail_columns .unused );
 	append_column( _("Flags"), treeview_detail_columns .flags );
 	
 	//status_icon
@@ -63,6 +63,13 @@ TreeView_Detail::TreeView_Detail( )
 	//set alignment of numeric columns to right
 	for( short t = 2 ; t < 5 ; t++ )
 		get_column_cell_renderer( t ) ->property_xalign() = 1 ;
+	
+	//expand columns and centeralign the headertext
+	for( short t = 2 ; t < 6 ; t++ )
+	{
+		get_column( t ) ->set_expand( true ) ;
+		get_column( t ) ->set_alignment( 0.5 ) ;
+	}
 }
 
 void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 
@@ -133,19 +140,22 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
-	treerow[ treeview_detail_columns .text_color ] = partition .type == GParted::TYPE_UNALLOCATED ? "darkgrey" : "black" ;
-	treerow[ treeview_detail_columns .filesystem ] = Utils::Get_Filesystem_String( partition .filesystem ) ;
+	treerow[ treeview_detail_columns .text_color ] = 
+		partition .type == GParted::TYPE_UNALLOCATED ? "darkgrey" : "black" ;
+	
+	treerow[ treeview_detail_columns .filesystem ] = 
+		Utils::Get_Filesystem_String( partition .filesystem ) ;
 	
 	//size
-	treerow[ treeview_detail_columns .size ] = Utils::num_to_str( partition .Get_Length_MB() ) ;
-
+	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length() ) ;
+	
 	//used
 	treerow[ treeview_detail_columns .used ] =
-		partition .sectors_used == -1 ? "---" : Utils::num_to_str( partition .Get_Used_MB() ) ;
+		partition .sectors_used == -1 ? "---" : Utils::format_size( partition .sectors_used ) ;
 
 	//unused
 	treerow[ treeview_detail_columns .unused ] = 
-		partition .sectors_unused == -1 ? "---" : Utils::num_to_str( partition .Get_Unused_MB() ) ;
+		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused ) ;
 
 	//flags	
 	treerow[ treeview_detail_columns .flags ] = " " + partition .flags ;

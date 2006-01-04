@@ -54,17 +54,18 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->filesystem = filesystem;
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
-	this ->color.set( Utils::Get_Color( filesystem ) );
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
+	
+	this ->color.set( Utils::Get_Color( filesystem ) );
 }
 
 void Partition::Set_Unused( Sector sectors_unused )
 {
-	if ( sectors_unused < ( sector_end - sector_start ) )
+	if ( sectors_unused < get_length() )
 	{
 		this ->sectors_unused = sectors_unused ;
-		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : ( sector_end - sector_start) - sectors_unused ;
+		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_length() - sectors_unused ;
 	}
 }
 
@@ -103,6 +104,11 @@ long Partition::Get_Used_MB() const
 long Partition::Get_Unused_MB() const
 {
 	return Get_Length_MB() - Get_Used_MB( ) ;
+}
+
+Sector Partition::get_length() const
+{
+	return sector_end - sector_start + 1 ;
 }
 
 bool Partition::operator==( const Partition & partition ) const
