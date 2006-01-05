@@ -27,7 +27,7 @@ Partition::Partition()
 
 void Partition::Reset()
 {
-	partition = error = flags = mountpoint = "" ;
+	partition = realpath = error = flags = mountpoint = "" ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;
@@ -48,7 +48,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 			bool busy )
 {
 	this ->device_path = device_path ;
-	this ->partition = partition;
+	this ->partition = realpath = partition;
 	this ->partition_number = partition_number;
 	this ->type = type;
 	this ->filesystem = filesystem;

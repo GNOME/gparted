@@ -510,7 +510,7 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 
 void Win_GParted::Refresh_Visual( )
 {
-	std::vector<Partition> partitions = devices[ current_device ] .device_partitions ; 
+	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
 	liststore_operations ->clear();
 	
 	//make all operations visible
@@ -998,7 +998,7 @@ void Win_GParted::activate_resize( )
 			return ;
 	}
 	
-	std::vector <Partition> partitions = devices[ current_device ] .device_partitions ;
+	std::vector <Partition> partitions = devices[ current_device ] .partitions ;
 	
 	if ( operations .size( ) )
 		for (unsigned int t = 0 ; t < operations .size( ) ; t++ )

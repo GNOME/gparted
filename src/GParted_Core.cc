@@ -81,10 +81,13 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	Device temp_device ;
 	std::vector<Glib::ustring> device_paths ;
 	
-	lp_device = ped_device_get_next( NULL );
+	init_maps() ;
 	
-	//in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a 'ghost' device that has no name or contains
-	//random garbage. Those 2 checks try to prevent such a ghostdevice from being initialized.. (tested over a 1000 times with and without cd)
+	/* in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a
+	 * 'ghost' device that has no name or contains random garbage.
+	 * Those checks try to prevent such a ghostdevice from being initialized..
+	 */
+	lp_device = ped_device_get_next( NULL );
 	while ( lp_device ) 
 	{
 		if ( strlen( lp_device ->path ) > 6 && 
@@ -97,6 +100,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	}
 	close_device_and_disk() ;
 
+	
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( open_device_and_disk( device_paths[ t ], false ) )
@@ -124,11 +128,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
 				set_device_partitions( temp_device ) ;
+				set_short_paths( temp_device .partitions ) ;
 
 				if ( temp_device .highest_busy )
-					set_mountpoints( temp_device .device_partitions ) ;
+					set_mountpoints( temp_device .partitions ) ;
 				
-				set_used_sectors( temp_device .device_partitions ) ;
+				set_used_sectors( temp_device .partitions ) ;
 				
 				if ( temp_device .highest_busy )
 					temp_device .readonly = ! ped_disk_commit_to_os( lp_disk ) ;
@@ -141,17 +146,58 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				
 				Partition partition_temp ;
 				partition_temp .Set_Unallocated( temp_device .path, 0, temp_device .length, false );
-				temp_device .device_partitions .push_back( partition_temp );
+				temp_device .partitions .push_back( partition_temp );
 			}
 					
 			devices .push_back( temp_device ) ;
 			
-			close_device_and_disk( ) ;
+			close_device_and_disk() ;
 		}
+	}
+
+	//clear leftover information...	
+	mount_info .clear() ;
+	short_paths .clear() ;
+}
+
+void GParted_Core::init_maps() 
+{
+	//initialize mountpoints..
+	std::ifstream input( "/proc/mounts" ) ;
+	if ( input )
+	{
+		char node[255], mountpoint[255] ;
+		std::string line ;
+			
+		while ( getline( input, line ) )
+		if ( line .length() > 0 && line[ 0 ] == '/' && sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 )
+			mount_info[ node ] = mountpoint ;
+		
+		input .close() ;
+	}
+
+	//initialize shortpaths...
+	std::ifstream proc_partitions( "/proc/partitions" ) ;
+	if ( proc_partitions )
+	{
+		char c_str[255] ;
+		std::string line ;
+		
+		while ( getline( proc_partitions, line ) )
+			if ( sscanf( line .c_str(), "%*d %*d %*d %255s", c_str ) == 1 )
+			{
+				line = "/dev/" ; 
+				line += c_str ;
+
+				if ( realpath( line .c_str(), c_str ) )
+					short_paths[ line ] = c_str ;
+			}
+
+		proc_partitions .close() ;
 	}
 }
 
-GParted::FILESYSTEM GParted_Core::Get_Filesystem( ) 
+GParted::FILESYSTEM GParted_Core::get_filesystem() 
 {
 	//standard libparted filesystems..
 	if ( lp_partition && lp_partition ->fs_type )
@@ -213,46 +259,46 @@ void GParted_Core::set_device_partitions( Device & device )
 	int EXT_INDEX = -1 ;
 	
 	//clear partitions
-	device .device_partitions .clear( ) ;
+	device .partitions .clear() ;
 	
 	lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
 	while ( lp_partition )
 	{
-		partition_temp .Reset( ) ;
-		
+		partition_temp .Reset() ;
+	
 		switch ( lp_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:             
-				partition_temp .Set( 	device .path,
-							device .path + Utils::num_to_str( lp_partition ->num ),
-							lp_partition ->num,
-							lp_partition ->type == 0 ? GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
-							Get_Filesystem( ), lp_partition ->geom .start,
-							lp_partition ->geom .end,
-							lp_partition ->type,
-							ped_partition_is_busy( lp_partition ) );
+				partition_temp .Set( device .path,
+						     ped_partition_get_path( lp_partition ),
+						     lp_partition ->num,
+						     lp_partition ->type == 0 ? GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
+						     get_filesystem(),
+						     lp_partition ->geom .start,
+						     lp_partition ->geom .end,
+						     lp_partition ->type,
+						     ped_partition_is_busy( lp_partition ) );
 						
-				partition_temp .flags = Get_Flags( ) ;									
-				
+				partition_temp .flags = Get_Flags() ;									
 				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
 					device .highest_busy = partition_temp .partition_number ;
 									
 				break ;
 		
 			case PED_PARTITION_EXTENDED:
-				partition_temp.Set( 	device .path,
-							device .path + Utils::num_to_str( lp_partition ->num ),
-							lp_partition ->num ,
-							GParted::TYPE_EXTENDED ,
-							GParted::FS_EXTENDED ,
-							lp_partition ->geom .start ,
-							lp_partition ->geom .end ,
-							false ,
-							ped_partition_is_busy( lp_partition ) );
+				partition_temp.Set( device .path,
+						    device .path + Utils::num_to_str( lp_partition ->num ),
+						    lp_partition ->num,
+						    GParted::TYPE_EXTENDED,
+						    GParted::FS_EXTENDED,
+						    lp_partition ->geom .start,
+						    lp_partition ->geom .end,
+						    false,
+						    ped_partition_is_busy( lp_partition ) );
 				
-				partition_temp .flags = Get_Flags( ) ;
-				EXT_INDEX = device .device_partitions .size ( ) ;
+				partition_temp .flags = Get_Flags() ;
+				EXT_INDEX = device .partitions .size() ;
 				break ;
 		
 			default:
@@ -263,9 +309,9 @@ void GParted_Core::set_device_partitions( Device & device )
 		if ( partition_temp .sector_end > -1 )
 		{
 			if ( ! partition_temp .inside_extended )
-				device .device_partitions .push_back( partition_temp );
+				device .partitions .push_back( partition_temp );
 			else
-				device .device_partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
+				device .partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
 		}
 		
 		//next partition (if any)
@@ -274,34 +320,16 @@ void GParted_Core::set_device_partitions( Device & device )
 	
 	if ( EXT_INDEX > -1 )
 		insert_unallocated( device .path,
-				    device .device_partitions[ EXT_INDEX ] .logicals,
-				    device .device_partitions[ EXT_INDEX ] .sector_start,
-				    device .device_partitions[ EXT_INDEX ] .sector_end,
+				    device .partitions[ EXT_INDEX ] .logicals,
+				    device .partitions[ EXT_INDEX ] .sector_start,
+				    device .partitions[ EXT_INDEX ] .sector_end,
 				    true ) ;
 	
-	insert_unallocated( device .path, device .device_partitions, 0, device .length -1, false ) ; 
+	insert_unallocated( device .path, device .partitions, 0, device .length -1, false ) ; 
 }
 
-void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool first_time ) 
+void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
 {
-	if ( first_time )
-	{
-		std::ifstream input( "/proc/mounts" ) ;
-
-		if ( input )
-		{
-			char node[255], mountpoint[255] ;
-			std::string line ;
-			
-			while ( getline( input, line ) )
-			if ( line .length() > 0 && line[ 0 ] == '/' && sscanf( line .c_str(),"%s %s", node, mountpoint ) == 2 )
-				mount_info[ node ] = mountpoint ;
-		
-			input .close() ;
-		}
-	}
-
-
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .busy && partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
@@ -318,13 +346,35 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions, bool fi
 					partitions[ t ] .mountpoint = "/" ;
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-				set_mountpoints( partitions[ t ] .logicals, false ) ;
+				set_mountpoints( partitions[ t ] .logicals ) ;
 		}
 	}
-
-	if ( first_time )
-		mount_info .clear() ;
 }
+
+void GParted_Core::set_short_paths( std::vector<Partition> & partitions ) 
+{
+	for ( unsigned int t =0 ; t < partitions .size() ; t++ )
+	{
+		partitions[ t ] .partition = get_short_path( partitions[ t ] .partition ) ;
+
+		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			set_short_paths( partitions[ t ] .logicals ) ;
+	}
+}
+
+Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path ) 
+{
+	temp = real_path ;
+	
+	iter = short_paths .find( real_path );
+	if ( iter != short_paths .end() )
+	{
+		temp = iter ->second ;
+		short_paths .erase( iter ) ;
+	}
+
+	return temp ;
+}	
 
 void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
 {
@@ -635,37 +685,6 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( )
 
 	 return disklabeltypes ;
 }
-
-Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path ) 
-{
-	char c_str[255] ;
-	std::string line ;
-		
-	temp = real_path ;
-	
-	std::ifstream input( "/proc/partitions" ) ;
-	if ( input )
-	{
-		while ( getline( input, line ) )
-		{
-			if ( sscanf( line .c_str(), "%*d %*d %*d %255s", c_str ) == 1 )
-			{
-				line = "/dev/" ; 
-				line += c_str ;
-
-				if ( realpath( line .c_str(), c_str ) && real_path == c_str )
-				{
-					temp = c_str ;
-					break ;
-				}
-			}
-		}
-
-		input .close() ;
-	}
-
-	return temp ;
-}	
 
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 {

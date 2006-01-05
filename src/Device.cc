@@ -20,14 +20,14 @@
 namespace GParted
 {
 
-Device::Device( )
+Device::Device()
 {
-	Reset( ) ;	
+	Reset() ;	
 }
 
-void Device::Reset( )
+void Device::Reset()
 {
-	device_partitions .clear( ) ;
+	partitions .clear() ;
 	length = 0 ;
 	heads = sectors = cylinders = cylsize = 0 ;
 	model = path = realpath = disktype = "" ;
@@ -35,7 +35,7 @@ void Device::Reset( )
 	readonly = false ; 	
 }
 
-Device::~Device( )
+Device::~Device()
 {
 }
 

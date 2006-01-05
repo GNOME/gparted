@@ -169,15 +169,11 @@ void Dialog_Partition_Info::Display_Info( )
 		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Path:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( partition .partition ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 		
-		//realpath (this sucks)
-		char real_path[4096] ;
-		realpath( partition .partition .c_str( ) , real_path ) ;
-		
 		//only show realpath if it's diffent from the short path...
-		if ( partition.partition != real_path )
+		if ( partition .partition != partition .realpath )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( real_path ), 1,2, top++, bottom++, Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( partition .realpath ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 		}
 		
 		//status

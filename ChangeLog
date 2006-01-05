@@ -1,3 +1,18 @@
+2006-01-05 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* include/Device.h,
+	  src/Device.cc: replaced 'device_partitions' with 'partitions'
+	* src/Win_GParted.cc: use new Device::partitions
+	* include/Partition.h,
+	  src/Partition.cc: added 'realpath'
+	* src/Dialog_Partition_Info.cc: use Partition::realpath..
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc:use ped_partition_get_path() instead of
+	  constructing it ourselves. (#325800)
+	  Also use global maps for mountpoints and
+	  shortpaths to prevent fileaccess from happening more then once per
+	  scan.
+
 2006-01-04 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/Partition.h,

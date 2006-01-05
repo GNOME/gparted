@@ -27,12 +27,12 @@ class Device
 {
 	 
 public:
-	Device( ) ;
-	~Device( ) ;
+	Device() ;
+	~Device() ;
 	
-	void Reset( ) ;
+	void Reset() ;
 	
-	std::vector<Partition> device_partitions ;
+	std::vector<Partition> partitions ;
 	Sector length;
 	long heads ;
 	long sectors ;

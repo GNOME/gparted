@@ -32,8 +32,6 @@
 #include "../include/hfsplus.h"
 #include "../include/reiser4.h"
 
-#include <glibmm/ustring.h>
-
 #include <vector>
 #include <fstream>
 
@@ -65,9 +63,11 @@ public:
 	std::vector<Glib::ustring> get_disklabeltypes( ) ;
 
 private:
-	GParted::FILESYSTEM Get_Filesystem( ) ; //temporary function.. asa new checks ripple through in libparted i'll remove it.
+	GParted::FILESYSTEM get_filesystem() ; 
 	void set_device_partitions( Device & device ) ;
-	void set_mountpoints( std::vector<Partition> & partitions, bool first_time = true ) ;
+	void init_maps() ;
+	void set_mountpoints( std::vector<Partition> & partitions ) ;
+	void set_short_paths( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
 	void insert_unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
 	Glib::ustring get_short_path( const Glib::ustring & real_path ) ;
@@ -97,8 +97,8 @@ private:
 	Partition partition_temp ;
 	FS fs ;
 	
-	//used in set_mountpoints()
 	std::map<Glib::ustring, Glib::ustring> mount_info ;
+	std::map<Glib::ustring, Glib::ustring> short_paths ;
 	std::map<Glib::ustring, Glib::ustring>::iterator iter ;
 
 	PedDevice *lp_device ;

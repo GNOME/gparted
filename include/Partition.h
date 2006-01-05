@@ -78,6 +78,7 @@ public:
 		
 	//some public members
 	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )
+	Glib::ustring realpath ;
 	Glib::ustring device_path ;
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
