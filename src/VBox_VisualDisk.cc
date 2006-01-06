@@ -452,7 +452,7 @@ void VBox_VisualDisk::free_colors( std::vector<visual_partition> & visual_partit
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		this ->get_colormap() ->free_color( visual_partitions[ t ] .color ) ;
+		this ->get_colormap() ->free_colors( visual_partitions[ t ] .color, 1 ) ;
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			free_colors( visual_partitions[ t ] .logicals ) ;
