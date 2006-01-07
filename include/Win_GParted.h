@@ -102,8 +102,11 @@ private:
 	void allow_unmount( bool b )	{ 
 		menu_partition .items( )[ 10 ] .set_sensitive( b ); }
 	
+	void allow_disable_swap( bool b )	{ 
+		menu_partition .items( )[ 11 ] .set_sensitive( b ); }
+	
 	void allow_info( bool b )	{
-		menu_partition .items( )[ 12 ] .set_sensitive( b ); }
+		menu_partition .items( )[ 13 ] .set_sensitive( b ); }
 	
 	void allow_undo( bool b )	{ 
 		toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); 
@@ -116,7 +119,7 @@ private:
 	void find_devices_thread( )	{ 
 		gparted_core .get_devices( devices ) ;
 		pulse = false ; }
-	
+
 	//signal handlers
 	void open_operationslist( ) ;
 	void close_operationslist( ) ;
@@ -137,15 +140,16 @@ private:
 	
 	bool max_amount_prim_reached( ) ;
 	
-	void activate_resize( ); 
-	void activate_copy( );
-	void activate_paste( );
-	void activate_new( );
-	void activate_delete( );
-	void activate_info( );
+	void activate_resize(); 
+	void activate_copy();
+	void activate_paste();
+	void activate_new();
+	void activate_delete();
+	void activate_info();
 	void activate_format( GParted::FILESYSTEM new_fs );
-	void activate_unmount( ) ;
-	void activate_disklabel( ) ;
+	void activate_unmount() ;
+	void activate_disable_swap() ;
+	void activate_disklabel() ;
 	
 	void activate_undo( );
 	void activate_apply( );
@@ -175,7 +179,7 @@ private:
 	Gtk::Button *button;
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
-	Gtk::ProgressBar *pulsebar ;
+	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
 	
 	VBox_VisualDisk vbox_visual_disk;

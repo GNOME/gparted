@@ -19,6 +19,9 @@
 
 #include <gtkmm/aboutdialog.h>
 
+#include <cerrno>
+#include <sys/swap.h>
+
 namespace GParted
 {
 	
@@ -75,9 +78,8 @@ Win_GParted::Win_GParted( )
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 	
 	//statusbar... 
-	pulsebar = manage( new Gtk::ProgressBar( ) );
-	pulsebar ->set_pulse_step( 0.01 );
-	statusbar .add( *pulsebar );
+	pulsebar .set_pulse_step( 0.01 );
+	statusbar .add( pulsebar );
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
 	this ->show_all_children( );
@@ -87,7 +89,7 @@ Win_GParted::Win_GParted( )
 	close_operationslist( ) ;
 	
 	conn = dispatcher .connect( sigc::mem_fun( *this, &Win_GParted::menu_gparted_refresh_devices ) );
-	dispatcher( ) ;
+	dispatcher() ;
 }
 
 void Win_GParted::init_menubar( ) 
@@ -226,6 +228,10 @@ void Win_GParted::init_partition_menu( )
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("Unmount"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
+	
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("Deactivate"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_disable_swap ) ) );
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	
@@ -422,7 +428,7 @@ void Win_GParted::refresh_combo_devices()
 
 void Win_GParted::Show_Pulsebar( ) 
 {
-	pulsebar ->show();
+	pulsebar .show();
 	statusbar .push( _("Scanning all devices...") ) ;
 	
 	//disable all input stuff
@@ -436,7 +442,7 @@ void Win_GParted::Show_Pulsebar( )
 	//the actual 'pulsing'
 	while ( pulse )
 	{
-		pulsebar ->pulse();
+		pulsebar .pulse();
 		while ( Gtk::Main::events_pending() )
 			Gtk::Main::iteration();
 		
@@ -446,7 +452,7 @@ void Win_GParted::Show_Pulsebar( )
 	thread ->join() ;
 	conn .disconnect() ;
 	
-	pulsebar ->hide();
+	pulsebar .hide();
 	statusbar .pop() ;
 		
 	//enable all disabled stuff
@@ -622,9 +628,10 @@ void Win_GParted::Set_Valid_Operations( )
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_unmount( false ) ; allow_info( false ) ;
+	allow_disable_swap( false ) ;
 	
 	//no partition selected...	
-	if ( selected_partition .partition .empty( ) )
+	if ( selected_partition .partition .empty() )
 		return ;
 	
 	//if there's something, there's some info ;)
@@ -633,8 +640,13 @@ void Win_GParted::Set_Valid_Operations( )
 	//only unmount is allowed
 	if ( selected_partition .busy )
 	{
-		if ( selected_partition .filesystem != GParted::FS_LINUX_SWAP && selected_partition .type != GParted::TYPE_EXTENDED )
-			allow_unmount( true ) ;
+		if ( selected_partition .type != GParted::TYPE_EXTENDED )
+		{
+			if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+				allow_disable_swap( true ) ;
+			else
+				allow_unmount( true ) ;
+		}
 		
 		return;
 	}
@@ -645,10 +657,10 @@ void Win_GParted::Set_Valid_Operations( )
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( ! copied_partition .partition .empty( ) && ! devices[ current_device ] .readonly )
+		if ( ! copied_partition .partition .empty() && ! devices[ current_device ] .readonly )
 		{
-			if (	(copied_partition .Get_Length_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) ||
-				(copied_partition .filesystem == GParted::FS_XFS && (copied_partition .Get_Used_MB( ) + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB( ) )
+			if (	(copied_partition .Get_Length_MB() + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB() ||
+				(copied_partition .filesystem == GParted::FS_XFS && (copied_partition .Get_Used_MB() + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB() )
 			)
 				allow_paste( true ) ;
 		}			
@@ -659,7 +671,7 @@ void Win_GParted::Set_Valid_Operations( )
 	//EXTENDED
 	if ( selected_partition .type == GParted::TYPE_EXTENDED )
 	{
-		if (  ! any_logic ) //deletion is only allowed when there are no logical partitions inside.
+		if ( ! any_logic ) //deletion is only allowed when there are no logical partitions inside.
 			allow_delete( true ) ;
 		
 		if ( ! devices[ current_device ] .readonly )
@@ -1253,8 +1265,28 @@ void  Win_GParted::activate_unmount( )
 		Gtk::MessageDialog dialog( *this, str_temp + error, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
 		dialog.run( ) ;
 	}
-	else
-		menu_gparted_refresh_devices( ) ;
+		
+	menu_gparted_refresh_devices() ;
+}
+
+void Win_GParted::activate_disable_swap() 
+{
+	if ( swapoff( selected_partition .partition .c_str() ) )
+	{
+		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
+		str_temp += _("Could not deactivate swap") ;
+		str_temp += "</span>\n\n" ;
+				 
+		Gtk::MessageDialog dialog( *this,
+					   str_temp + Glib::strerror( errno ),
+					   true,
+					   Gtk::MESSAGE_ERROR, 
+					   Gtk::BUTTONS_OK,
+					   true );
+		dialog.run() ;
+	}
+	
+	menu_gparted_refresh_devices() ;
 }
 
 void Win_GParted::activate_disklabel( )

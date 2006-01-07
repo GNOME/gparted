@@ -24,7 +24,8 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 {
 	this ->partition = partition ;
 
-	this ->set_resizable( false );
+	this ->set_resizable( false ) ;
+	this ->set_has_separator( false ) ;
 	
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
 	this ->set_title( String::ucompose( _( "Information about %1"), partition .partition ) );

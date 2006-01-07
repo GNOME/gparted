@@ -1,5 +1,15 @@
 2006-01-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* src/Dialog_Partition_Info.cc: removed separator in accordance to the
+	  HIG
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: it's now possible to deactivate swap from within
+	  gparted.
+	* src/GParted_Core.cc: sleep one second after deletion of a partition to
+	  give the kernel some time to reread the partitiontable.
+	
+2006-01-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/Utils.cc: commented 'ss .imbue( std::locale( "" ) )' (#157871)
 	* src/Win_GParted.cc,
 	  src/TreeView_Detail.cc,

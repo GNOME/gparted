@@ -570,9 +570,10 @@ bool GParted_Core::Delete( const Partition & partition )
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 		
-		return_value = ( ped_disk_delete_partition( lp_disk, lp_partition ) && commit( ) ) ;
+		return_value = ( ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ) ;
+		sleep( 1 ) ; //give the kernel some time to reread the partitiontable
 	
-		close_device_and_disk( ) ;
+		close_device_and_disk() ;
 	}
 	
 	return return_value ;
