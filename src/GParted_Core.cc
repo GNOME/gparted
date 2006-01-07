@@ -745,7 +745,15 @@ int GParted_Core::Create_Empty_Partition( Partition & new_partition, bool copy )
 		c_part = ped_partition_new( lp_disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
 		if ( c_part )
 		{
-			constraint = ped_constraint_any( lp_device );
+			if ( new_partition .strict )
+			{
+				PedGeometry *geom = ped_geometry_new( lp_device, new_partition .sector_start, new_partition .get_length() ) ;
+
+				if ( geom )
+					constraint = ped_constraint_exact( geom ) ;
+			}
+			else
+				constraint = ped_constraint_any( lp_device );
 			
 			if ( constraint )
 			{

@@ -33,7 +33,7 @@ void Partition::Reset()
 	filesystem = GParted::FS_UNALLOCATED ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color .set( "black" ) ;
-	inside_extended = busy = false ;
+	inside_extended = busy = strict = false ;
 	logicals .clear() ;
 }
 

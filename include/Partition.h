@@ -96,6 +96,8 @@ public:
 	Glib::ustring mountpoint ;
 	
 	std::vector<Partition> logicals ;
+
+	bool strict ;
 	
 private:
 	

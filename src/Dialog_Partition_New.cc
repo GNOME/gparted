@@ -29,6 +29,14 @@ Dialog_Partition_New::Dialog_Partition_New( )
 	
 	//set used (in pixels)...
 	frame_resizer_base ->set_used( 0 ) ;
+	
+	//checkbutton..
+	checkbutton_round_to_cylinders .set_label( _("Round to cylinders") ) ;
+	checkbutton_round_to_cylinders .set_active( true ) ;
+	checkbutton_round_to_cylinders .signal_clicked() .connect( 
+		sigc::bind<bool>( sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), false ) ) ;
+
+	this ->get_vbox() ->pack_start( checkbutton_round_to_cylinders, Gtk::PACK_SHRINK ) ;
 }
 
 void Dialog_Partition_New::Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector<FS> & FILESYSTEMS, bool only_unformatted, int cylinder_size )
@@ -125,7 +133,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	new_start = START + (Sector) (spinbutton_before .get_value( ) * MEGABYTE) ;
 	new_end  = new_start + (Sector) (spinbutton_size .get_value( ) * MEGABYTE) ;
 	
-	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we try to solve this.
+	/* due to loss of precision during calcs from Sector -> MB and back, it is possible the new 
+	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
 	if ( new_start < selected_partition.sector_start )
 		new_start = selected_partition.sector_start ;
 	if  ( new_end > selected_partition.sector_end )
@@ -153,6 +162,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}
 
+	part_temp .strict = ! checkbutton_round_to_cylinders .get_active() ;
+
 	return part_temp;
 }
 
@@ -178,9 +189,15 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	//optionmenu_filesystem
 	if ( ! type )
 	{
-		fs = FILESYSTEMS[ optionmenu_filesystem .get_history( ) ] ;
-		if ( fs .MIN < cylinder_size )
-			fs .MIN = cylinder_size ; 
+		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
+
+		if ( checkbutton_round_to_cylinders .get_active() )
+		{
+			if ( fs .MIN < cylinder_size )
+				fs .MIN = cylinder_size ;
+		}
+		else if ( fs .MIN < 1 )
+			fs .MIN = 1 ;
 		
 		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
 			fs .MIN = selected_partition .Get_Length_MB( ) ;
@@ -200,7 +217,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	
 	//set fitting resizer colors
 	//backgroundcolor..
-	optionmenu_type .get_history( ) == 2 ? color_temp .set( "darkgrey" ) : color_temp .set( "white" ) ;
+	color_temp .set( optionmenu_type .get_history() == 2 ? "darkgrey" : "white" ) ;
 	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
 	
 	//partitioncolor..

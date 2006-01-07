@@ -243,7 +243,7 @@ Glib::ustring Utils::format_size( Sector size )
 {
 	size *= 512 ;
 	std::stringstream ss ;	
-	ss .imbue( std::locale( "" ) ) ;
+	//ss .imbue( std::locale( "" ) ) ;  see #157871
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
 
 	if ( size < 1073741824 )

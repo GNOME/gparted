@@ -57,8 +57,8 @@ TreeView_Detail::TreeView_Detail( )
 					 treeview_detail_columns .text_color );
 	
 	//pixbuf and text are both left aligned
-	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = 0 ;
-	cell_renderer_text ->property_xalign() = 0 ;
+	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = Gtk::ALIGN_LEFT ;
+	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
 
 	//set alignment of numeric columns to right
 	for( short t = 2 ; t < 5 ; t++ )

@@ -20,8 +20,8 @@
 
 #include "../include/Dialog_Base_Partition.h"
 
-#include <gtkmm/messagedialog.h>
 #include <gtkmm/optionmenu.h>
+#include <gtkmm/checkbutton.h>
 
 namespace GParted
 {
@@ -30,7 +30,7 @@ class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_New() ;
-	void Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector <FS> & FILESYSTEMS, bool only_unformatted, int cylinder_size );
+	void Set_Data( const Partition & partition, bool any_extended, unsigned short new_count, const std::vector<FS> & FILESYSTEMS, bool only_unformatted, int cylinder_size );
 	Partition Get_New_Partition() ;//overridden function
 
 private:
@@ -38,6 +38,7 @@ private:
 	
 	Gtk::Table table_create;
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
+	Gtk::CheckButton checkbutton_round_to_cylinders ;
 	Gtk::Menu menu_type, menu_filesystem;
 
 	std::vector<FS> FILESYSTEMS ;

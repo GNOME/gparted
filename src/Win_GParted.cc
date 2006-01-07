@@ -497,15 +497,15 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 	allow_undo( true );
 	allow_apply( true );
 	
-	Refresh_Visual( );
+	Refresh_Visual();
 	
-	if ( operations .size( ) == 1 ) //first operation, open operationslist
-		open_operationslist( ) ;
+	if ( operations .size() == 1 ) //first operation, open operationslist
+		open_operationslist() ;
 	
 	//make scrollwindow focus on the last operation in the list	
-	Gtk::TreeIter iter = liststore_operations ->children( ) .end( ) ;
+	Gtk::TreeIter iter = liststore_operations ->children() .end() ;
 	iter-- ;
-	treeview_operations .set_cursor( static_cast <Gtk::TreePath> ( static_cast <Gtk::TreeRow> ( *iter ) ) ) ;
+	treeview_operations .set_cursor( static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( *iter ) ) ) ;
 }
 
 void Win_GParted::Refresh_Visual( )
