@@ -62,7 +62,7 @@ private:
 	void init_hpaned_main( ) ;
 
 	void refresh_combo_devices() ;
-	void Show_Pulsebar( ) ;
+	void show_pulsebar( const Glib::ustring & status_message ) ;
 	
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
@@ -116,10 +116,11 @@ private:
 		toolbar_main .get_nth_item( 9 ) ->set_sensitive( b ); 
 		( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_sensitive( b ) ; }
 		
-	void find_devices_thread( )	{ 
-		gparted_core .get_devices( devices ) ;
-		pulse = false ; }
-
+	//threads..
+	void thread_refresh_devices() ;
+	void thread_unmount_partition() ;
+	void thread_deactivate_swap() ;
+		
 	//signal handlers
 	void open_operationslist( ) ;
 	void close_operationslist( ) ;

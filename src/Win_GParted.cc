@@ -413,7 +413,6 @@ void Win_GParted::refresh_combo_devices()
 {
 	liststore_devices ->clear() ;
 	
-	//fill combo_devices
 	for ( unsigned int i = 0 ; i < devices .size( ) ; i++ )
 	{ 
 		treerow = *( liststore_devices ->append() ) ;
@@ -426,10 +425,10 @@ void Win_GParted::refresh_combo_devices()
 	combo_devices .set_active( current_device ) ;
 }
 
-void Win_GParted::Show_Pulsebar( ) 
+void Win_GParted::show_pulsebar( const Glib::ustring & status_message ) 
 {
 	pulsebar .show();
-	statusbar .push( _("Scanning all devices...") ) ;
+	statusbar .push( status_message) ;
 	
 	//disable all input stuff
 	toolbar_main .set_sensitive( false ) ;
@@ -749,15 +748,20 @@ void Win_GParted::combo_devices_changed( )
 	Refresh_Visual( );
 }
 
+void Win_GParted::thread_refresh_devices() 
+{
+	gparted_core .get_devices( devices ) ;
+	pulse = false ;
+}
+
 void Win_GParted::menu_gparted_refresh_devices( )
 {
-	//find out if there was any change in available devices (think about flexible media like zipdisks/usbsticks/whatever ;-) )
-	pulse = true ;//set to true before creating the thread to prevent _possible_ infinite loop in Show_Pulsebar( )
-	thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::find_devices_thread ), true );
-	
-	Show_Pulsebar() ;
+	pulse = true ;	
+	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_refresh_devices ), true ) ;
+
+	show_pulsebar( _("Scanning all devices...") ) ;
 		
-	//check if current_device is still available (think about hotpluggable shit like usbdevices)
+	//check if current_device is still available (think about hotpluggable stuff like usbdevices)
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
 
@@ -955,8 +959,7 @@ void Win_GParted::on_partition_selected( const Partition & partition, bool src_i
 
 void Win_GParted::on_partition_activated() 
 {
-	if ( ! pulse )
-		activate_info() ;
+	activate_info() ;
 }
 
 void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int time ) 
@@ -1252,35 +1255,62 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		Add_Operation( GParted::FORMAT, part_temp ) ;
 }
 
+void Win_GParted::thread_unmount_partition() 
+{
+	if ( Utils::unmount( selected_partition .partition, selected_partition .mountpoint, str_temp ) )
+		str_temp .clear() ;
+	
+	pulse = false ;
+}
+
 void  Win_GParted::activate_unmount( ) 
 {
-	Glib::ustring error ;
+	pulse = true ;
+	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), true ) ;
 
-	if ( ! Utils::unmount( selected_partition .partition, selected_partition .mountpoint, error ) )
+	show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .partition ) ) ;
+
+	if ( ! str_temp .empty() )
 	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += String::ucompose( _("Could not unmount %1"), selected_partition .partition ) ;
-		str_temp += "</span>\n\n" ;
-				
-		Gtk::MessageDialog dialog( *this, str_temp + error, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true );
-		dialog.run( ) ;
+		Gtk::MessageDialog dialog( *this, 
+					   "<span weight=\"bold\" size=\"larger\">" +
+					   String::ucompose( _("Could not unmount %1"), selected_partition .partition ) +
+					   "</span>\n\n" + str_temp,
+					   true,
+					   Gtk::MESSAGE_ERROR,
+					   Gtk::BUTTONS_OK,
+					   true );
+		dialog.run() ;
 	}
-		
+	
 	menu_gparted_refresh_devices() ;
 }
 
-void Win_GParted::activate_disable_swap() 
+void Win_GParted::thread_deactivate_swap() 
 {
 	if ( swapoff( selected_partition .partition .c_str() ) )
+		str_temp = Glib::strerror( errno ) ;
+	else
+		str_temp .clear() ;
+
+	pulse = false ;
+}
+	
+void Win_GParted::activate_disable_swap() 
+{
+	pulse = true ;
+	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_deactivate_swap ), true ) ;
+
+	show_pulsebar( String::ucompose( _("Deactivating swap on %1"), selected_partition .partition ) ) ;
+
+	if ( ! str_temp .empty() )
 	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-		str_temp += _("Could not deactivate swap") ;
-		str_temp += "</span>\n\n" ;
-				 
-		Gtk::MessageDialog dialog( *this,
-					   str_temp + Glib::strerror( errno ),
+		Gtk::MessageDialog dialog( *this, 
+					   "<span weight=\"bold\" size=\"larger\">" +
+					   static_cast<Glib::ustring>( _("Could not deactivate swap") ) +
+					   "</span>\n\n" + str_temp,
 					   true,
-					   Gtk::MESSAGE_ERROR, 
+					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK,
 					   true );
 		dialog.run() ;
