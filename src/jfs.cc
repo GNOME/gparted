@@ -18,6 +18,8 @@
  
 #include "../include/jfs.h"
 
+#include <cerrno>
+
 namespace GParted
 {
 
@@ -115,7 +117,7 @@ bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 bool jfs::Resize( const Partition & partition_new,
 		  std::vector<OperationDetails> & operation_details,
 		  bool fill_partition )
-{//FIXME (no jfs on my laptop, so couldn't test it properly) 
+{
 	if ( fill_partition )
 		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
 	else
@@ -125,14 +127,79 @@ bool jfs::Resize( const Partition & partition_new,
 	Glib::ustring error ;
 	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_jfs_mountpoint" ;
 	
-	//jfs kan only grow if the partition is mounted..
-	mkdir( TEMP_MP .c_str(), 0 ) ;
-	if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error ) )
+	//create mountpoint...
+	operation_details .back() .sub_details .push_back(
+		OperationDetails( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
-		return_value = Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) ;
-		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
+		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+		
+		//mount partition
+		operation_details .back() .sub_details .push_back(
+			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .partition, TEMP_MP ) ) ) ;
+		if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error ) )
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			
+			//remount the partition to resize the filesystem
+			operation_details .back() .sub_details .push_back(
+				OperationDetails( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
+							partition_new .partition, TEMP_MP ) ) ) ;
+			if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) )
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+				
+				//and unmount it...
+				operation_details .back() .sub_details .push_back(
+					OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
+				if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
+				{
+					operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+					return_value = true ;
+				}
+				else
+				{
+					operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+					operation_details .back() .sub_details .back() .sub_details .push_back(
+						OperationDetails( error, OperationDetails::NONE ) ) ;
+				}
+			}
+			else
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+				operation_details .back() .sub_details .back() .sub_details .push_back(
+					OperationDetails( error, OperationDetails::NONE ) ) ;
+			}
+		}
+		else
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .sub_details .back() .sub_details .push_back(
+				OperationDetails( error, OperationDetails::NONE ) ) ;
+		}
+
+		//remove the mountpoint..
+		operation_details .back() .sub_details .push_back(
+			OperationDetails( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+		if ( ! rmdir( TEMP_MP .c_str() ) )
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+		}
+		else
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .sub_details .back() .sub_details .push_back(
+				OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
+
+			return_value = false ;
+		}
 	}
-	rmdir( TEMP_MP .c_str() ) ;
+	else
+	{
+		operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .sub_details .back() .sub_details .push_back(
+			OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
+	}
 	
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
@@ -140,7 +207,7 @@ bool jfs::Resize( const Partition & partition_new,
 
 bool jfs::Copy( const Glib::ustring & src_part_path, 
 		const Glib::ustring & dest_part_path,
-		std::vector<OperationDetails> & operation_details  )
+		std::vector<OperationDetails> & operation_details )
 {
 	operation_details .push_back( OperationDetails( 
 				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
