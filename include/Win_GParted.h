@@ -68,7 +68,7 @@ private:
 	void Fill_Label_Device_Info( bool clear = false );
 
 	//overridden signalhandler
-	virtual bool on_delete_event( GdkEventAny* ) ;
+	bool on_delete_event( GdkEventAny* ) ;
 	
 	void Add_Operation( OperationType, const Partition & );
 	void Refresh_Visual( );
@@ -139,7 +139,7 @@ private:
 	void on_partition_activated() ;
 	void on_partition_popup_menu( unsigned int button, unsigned int time ) ;
 	
-	bool max_amount_prim_reached( ) ;
+	bool max_amount_prim_reached() ;
 	
 	void activate_resize(); 
 	void activate_copy();
@@ -152,9 +152,8 @@ private:
 	void activate_disable_swap() ;
 	void activate_disklabel() ;
 	
-	void activate_undo( );
-	void activate_apply( );
-	void apply_operations_thread( );
+	void activate_undo();
+	void activate_apply();
 
 //private variables
 	unsigned int current_device ;
@@ -210,13 +209,11 @@ private:
 	
 	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
 	{
-		Gtk::TreeModelColumn<int> operation_number;
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
 				
 		treeview_operations_Columns() 
 		{ 
-			add( operation_number );
 			add( operation_description );
 			add( operation_icon );
 		} 
@@ -235,11 +232,10 @@ private:
 	std::vector<Gtk::Label *> device_info ;
 					
 	//stuff for progress overview and pulsebar
-	Dialog_Progress *dialog_progress;
 	Glib::Thread *thread ;
 	Glib::Dispatcher dispatcher;
 	sigc::connection conn ; 
-	bool apply, pulse ;
+	bool pulse ;
 };
 
 } //GParted

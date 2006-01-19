@@ -44,31 +44,62 @@ void hfs::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool hfs::Create( const Partition & new_partition )
+bool hfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "hformat " + new_partition .partition ) ;
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_HFS ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "hformat" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool hfs::Resize( const Partition & partition_new, bool fill_partition )
+bool hfs::Resize( const Partition & partition_new,
+		  std::vector<OperationDetails> & operation_details,
+		  bool fill_partition )
 {
 	return true ;
 }
 
-bool hfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool hfs::Copy( const Glib::ustring & src_part_path,
+		const Glib::ustring & dest_part_path,
+		std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
-}
-
-bool hfs::Check_Repair( const Partition & partition )
-{
-	return true ;
-}
-
-int hfs::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
 	
+	argv .clear() ;
+	argv .push_back( "dd" ) ;
+	argv .push_back( "bs=8192" ) ;
+	argv .push_back( "if=" + src_part_path ) ;
+	argv .push_back( "of=" + dest_part_path ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;	
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
+
+bool hfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+{
+	return true ;
+}
 
 } //GParted
 

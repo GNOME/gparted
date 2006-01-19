@@ -77,45 +77,100 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( N ) ;
 }
 
-bool ntfs::Create( const Partition & new_partition )
+bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "mkntfs -Q " + new_partition .partition ) ;
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_NTFS ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "mkntfs" ) ;
+	argv .push_back( "-Q" ) ;
+	argv .push_back( "-vv" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool ntfs::Resize( const Partition & partition_new, bool fill_partition )
-{
+bool ntfs::Resize( const Partition & partition_new, 
+		   std::vector<OperationDetails> & operation_details,
+		   bool fill_partition )
+{//FIXME probeer dmv piping y the echoen in ntfsresize
+	//-contact szaka en probeer een --yes oid in de API te krijgen
+	//-perform eerst testruns e.d. in ntfsresize te bouwen..
+	if ( fill_partition )
+		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	else
+		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
+	
 	Glib::ustring str_temp = "echo y | ntfsresize -f " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
 	
-	return ! Execute_Command( str_temp ) ;
+	if ( ! Execute_Command( str_temp ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool ntfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool ntfs::Copy( const Glib::ustring & src_part_path,
+		 const Glib::ustring & dest_part_path, 
+		 std::vector<OperationDetails> & operation_details )
 {
-	if ( ! Execute_Command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path ) )
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "ntfsclone" ) ;
+	argv .push_back( "-f" ) ;
+	argv .push_back( "--overwrite" ) ;
+	argv .push_back( dest_part_path ) ;
+	argv .push_back( src_part_path ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+	
 		Partition partition ;
 		partition .partition = dest_part_path ;
-		return Resize( partition, true ) ;
+		return Resize( partition, operation_details, true ) ;
 	}
-	
+		
+	operation_details .back() .status = OperationDetails::ERROR ;
 	return false ;
 }
 
-bool ntfs::Check_Repair( const Partition & partition )
+bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	//according to Szaka it's best to use ntfsresize to check the partition for errors
 	//since --info is read-only i'll leave it out. just calling ntfsresize --force has also a tendency of fixing stuff :)
-	return Resize( partition, true ) ;
+	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+//FIXME.. ook hier kan eea verbeterd/verduidelijkt..	
+	if ( Resize( partition, operation_details .back() .sub_details, true ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
-
-int ntfs::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
-	
 
 } //GParted
 

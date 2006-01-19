@@ -32,6 +32,7 @@
 #include "../include/hfsplus.h"
 #include "../include/reiser4.h"
 
+#include <parted/parted.h>
 #include <vector>
 #include <fstream>
 
@@ -45,21 +46,25 @@ public:
 	void find_supported_filesystems( ) ; 
 	void get_devices( std::vector<Device> & devices ) ;
 	
-	int get_estimated_time( const Operation & operation ) ;
-
-	void Apply_Operation_To_Disk( Operation & operation );
+	bool apply_operation_to_disk( Operation & operation );
 	
-	bool Create( const Device & device, Partition & new_partition ) ;
-	bool format( const Partition & partition ) ;
-	bool Delete( const Partition & partition ) ;
-	bool Resize( const Device & device, const Partition & partition_old, const Partition & partition_new ) ; 
-	bool Copy( const Glib::ustring & src_part_path, Partition & partition_dest ) ; 
+	bool create( const Device & device,
+		     Partition & new_partition,
+		     std::vector<OperationDetails> & operation_details ) ;
+	bool format( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool resize( const Device & device, 
+		     const Partition & partition_old,
+		     const Partition & partition_new,
+		     std::vector<OperationDetails> & operation_detail ) ; 
+	bool copy( const Glib::ustring & src_part_path,
+		   Partition & partition_dest,
+		   std::vector<OperationDetails> & operation_details ) ; 
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
-
+	
 	const std::vector<FS> & get_filesystems( ) const ;
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
-	Glib::RefPtr<Gtk::TextBuffer> get_textbuffer( ) ;
 	std::vector<Glib::ustring> get_disklabeltypes( ) ;
 
 private:
@@ -73,13 +78,20 @@ private:
 	Glib::ustring get_short_path( const Glib::ustring & real_path ) ;
 	void LP_Set_Used_Sectors( Partition & partition );
 	Glib::ustring Get_Flags( ) ;
-	int Create_Empty_Partition( Partition & new_partition, bool copy = false ) ;
-	bool Resize_Container_Partition( const Partition & partition_old, const Partition & partition_new, bool fixed_start ) ;
-	bool Resize_Normal_Using_Libparted( const Partition & partition_old, const Partition & partition_new ) ;
+	int create_empty_partition( Partition & new_partition,
+				    std::vector<OperationDetails> & operation_details,	    
+				    bool copy = false ) ;
+	bool resize_container_partition( const Partition & partition_old,
+					 const Partition & partition_new,
+					 bool fixed_start,
+					 std::vector<OperationDetails> & operation_details ) ;
+	bool resize_normal_using_libparted( const Partition & partition_old,
+					    const Partition & partition_new,
+					    std::vector<OperationDetails> & operation_detail ) ;
 
-	void Show_Error( Glib::ustring message ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
-	bool set_partition_type( const Partition & partition ) ;
+	bool set_partition_type( const Partition & partition,
+				 std::vector<OperationDetails> & operation_details ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 		
@@ -88,8 +100,6 @@ private:
 	void close_device_and_disk( ) ;
 	bool commit( ) ;
 
-	Glib::RefPtr<Gtk::TextBuffer> textbuffer;
-	
 	std::vector<FS> FILESYSTEMS ;
 	FileSystem * p_filesystem ;
 	std::vector <PedPartitionFlag> flags;

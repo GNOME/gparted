@@ -18,11 +18,7 @@
 #ifndef OPERATION
 #define OPERATION
 
-#include "../include/Partition.h"
 #include "../include/Device.h"
-#include "../include/i18n.h"
-
-#include <gtkmm/messagedialog.h>
 
 namespace GParted
 {
@@ -35,10 +31,37 @@ enum OperationType {
 	COPY		= 4
 };
 
+struct OperationDetails
+{
+	enum Status {
+		NONE	= -1,
+		EXECUTE	= 0,
+		SUCCES	= 1,
+		ERROR	= 2
+	};
+	
+	OperationDetails()
+	{
+		status = EXECUTE ;
+	}
+
+	OperationDetails( const Glib::ustring & description, Status status = EXECUTE )
+	{
+		this ->description = description ;
+		this ->status = status ;
+	}
+
+	Glib::ustring description ;
+	Status status ; 
+
+	std::vector<OperationDetails> sub_details ; 	
+};
+
 class Operation
 {
 	
 public:
+	Operation() ;
 	Operation( const Device & device, const Partition &, const Partition &, OperationType );		
 
 	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
@@ -48,10 +71,13 @@ public:
 	//public variables
 	Device device ;
 	OperationType operationtype;
+	Glib::RefPtr<Gdk::Pixbuf> operation_icon ;
 	Partition partition_original; //the original situation
 	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )
 	Glib::ustring str_operation ;
 	Glib::ustring copied_partition_path ; //for copy operation..
+	
+	OperationDetails operation_details ;
 
 private:
 	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );

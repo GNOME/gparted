@@ -19,6 +19,10 @@
 namespace GParted
 {
 	
+Operation::Operation()
+{
+}
+	
 Operation::Operation( const Device & device, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
 {
 	this ->device = device ;

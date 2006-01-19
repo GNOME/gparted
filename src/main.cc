@@ -17,6 +17,7 @@
  
 #include "../include/Win_GParted.h"
 
+#include <gtkmm/messagedialog.h>
 
 int main( int argc, char *argv[ ] )
 {

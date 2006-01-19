@@ -21,21 +21,18 @@
 namespace GParted
 {
 	
-FileSystem::FileSystem( )
+FileSystem::FileSystem()
 {
 	cylinder_size = 0 ;
 }
 	
 int FileSystem::Execute_Command( Glib::ustring command ) 
 {	
-	Glib::Dispatcher dispatcher;
-	sigc::connection conn = dispatcher .connect( sigc::mem_fun(*this, &FileSystem::Update_Textview) );
 	
 	//stderr to stdout
 	//command += " 2>&1" ;
 	std::cout << command << std::endl ;
 	cmd_output = command + "\n\n" ;
-	dispatcher ( ) ;
 	
 	char c_buf[ 512 ] ;
 	FILE *f = popen( command .c_str( ), "r" ) ;
@@ -44,20 +41,48 @@ int FileSystem::Execute_Command( Glib::ustring command )
 	{
 		//output = Glib::locale_to_utf8( c_buf ) ;
 		//std::cout << output << std::endl ;
-		//dispatcher ( ) ;disabled for the moment. Hier moet ik nog eens fris naar kijken. (anjuta had zo'n ingebouwde terminal, hoe deed die dat?? !!!
 	}
 	
 	cmd_output = "" ;
-	dispatcher( ) ;
 	
         return pclose( f ) ;
 }
 
-void FileSystem::Update_Textview( ) 
-{	
-	//std::cout << output << std::endl;
-	textbuffer ->set_text( cmd_output ) ;
-	//textbuffer ->insert( textbuffer ->end( ), output ) ;
+int FileSystem::execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) 
+{
+	Glib::ustring temp ;
+	for ( unsigned int t = 0 ; t < argv .size() ; t++ )
+		temp += argv[ t ] + " " ;
+
+	operation_details .push_back( OperationDetails( temp, OperationDetails::NONE ) ) ;
+
+	envp .clear() ;
+	envp .push_back( "LC_ALL=C" ) ;
+	
+	try
+	{
+		Glib::spawn_sync( ".",
+				  argv,
+				  envp,
+				  Glib::SPAWN_SEARCH_PATH,
+				  sigc::slot< void >(),
+				  &output,
+				  &error,
+				  &exit_status ) ;
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		std::cout << e .what() << std::endl ;
+		return -1 ;
+	} 
+	
+	if ( ! output .empty() )
+		operation_details .back() .sub_details .push_back( OperationDetails( output, OperationDetails::NONE ) ) ;
+	
+	if ( ! error .empty() )
+		operation_details .back() .sub_details .push_back( OperationDetails( error, OperationDetails::NONE ) ) ;
+
+	return exit_status ;
 }
 
 } //GParted

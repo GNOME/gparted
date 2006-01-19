@@ -80,41 +80,101 @@ void ext3::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( N * S / 512 ) ;
 }
 	
-bool ext3::Create( const Partition & new_partition )
+bool ext3::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "mkfs.ext3 " + new_partition .partition ) ;
-}
-
-bool ext3::Resize( const Partition & partition_new, bool fill_partition )
-{
-	Glib::ustring str_temp = "resize2fs " + partition_new .partition ;
-	
-	if ( ! fill_partition )
-		str_temp += " " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
-	
-	return ! Execute_Command( str_temp ) ;
-}
-
-bool ext3::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
-{
-	if ( ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_EXT3 ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "mkfs.ext3" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
+
+bool ext3::Resize( const Partition & partition_new,
+		   std::vector<OperationDetails> & operation_details,
+		   bool fill_partition )
+{
+	if ( fill_partition )
+		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	else
+		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
+
+	argv .clear() ;
+	argv .push_back( "resize2fs" ) ;
+	argv .push_back( partition_new .partition ) ;
+
+	if ( ! fill_partition )
+		argv .push_back( Utils::num_to_str( partition_new .Get_Length_MB() - cylinder_size, true ) + "M" ) ; 
+		
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
+
+bool ext3::Copy( const Glib::ustring & src_part_path,
+		 const Glib::ustring & dest_part_path,
+		 std::vector<OperationDetails> & operation_details )
+{
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "dd" ) ;
+	argv .push_back( "bs=8192" ) ;
+	argv .push_back( "if=" + src_part_path ) ;
+	argv .push_back( "of=" + dest_part_path ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		
 		Partition partition ;
 		partition .partition = dest_part_path ;
-		return Resize( partition, true ) ;
+		return Resize( partition, operation_details, true ) ; 
 	}
 	
+	operation_details .back() .status = OperationDetails::ERROR ;
 	return false ;
 }
 
-bool ext3::Check_Repair( const Partition & partition )
+bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	return Execute_Command( "e2fsck -fy " + partition .partition ) <= 1 ;
-}
+	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "e2fsck" ) ;
+	argv .push_back( "-f" ) ;
+	argv .push_back( "-y" ) ;
+	argv .push_back( "-v" ) ;
+	argv .push_back( partition .partition ) ;
 
-int ext3::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
+	if ( 1 >= execute_command( argv, operation_details .back() .sub_details ) >= 0 )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 	
 } //GParted

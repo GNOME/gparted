@@ -73,31 +73,62 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( N * S / 512 ) ;
 }
 
-bool reiser4::Create( const Partition & new_partition )
+bool reiser4::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "mkfs.reiser4 --yes " + new_partition .partition ) ;
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_REISER4 ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "mkfs.reiser4" ) ;
+	argv .push_back( "--yes" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool reiser4::Resize( const Partition & partition_new, bool fill_partition )
+bool reiser4::Resize( const Partition & partition_new,
+		      std::vector<OperationDetails> & operation_details,
+		      bool fill_partition )
 {
 	return true ;
 }
 
-bool reiser4::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool reiser4::Copy( const Glib::ustring & src_part_path, 
+		    const Glib::ustring & dest_part_path,
+		    std::vector<OperationDetails> & operation_details )
 {
 	return true ;
 }
 
-bool reiser4::Check_Repair( const Partition & partition )
+bool reiser4::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "fsck.reiser4 --yes --fix " + partition .partition ) ;
-}
-
-int reiser4::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
+	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
+	argv .clear() ;
+	argv .push_back( "fsck.reiser4" ) ;
+	argv .push_back( "--yes" ) ;
+	argv .push_back( "--fix" ) ;
+	argv .push_back( partition .partition ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
 
 } //GParted
 

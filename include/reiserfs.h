@@ -29,11 +29,14 @@ class reiserfs : public FileSystem
 public:
 	FS get_filesystem_support( ) ;
 	void Set_Used_Sectors( Partition & partition ) ;
-	bool Create( const Partition & new_partition ) ;
-	bool Resize( const Partition & partition_new, bool fill_partition = false ) ;
-	bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) ;
-	bool Check_Repair( const Partition & partition ) ;
-	int get_estimated_time( long MB_to_Consider ) ;
+	bool Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details ) ;
+	bool Resize( const Partition & partition_new,
+		     std::vector<OperationDetails> & operation_details,
+		     bool fill_partition = false ) ;
+	bool Copy( const Glib::ustring & src_part_path,
+		   const Glib::ustring & dest_part_path,
+		   std::vector<OperationDetails> & operation_details ) ;
+	bool Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
 };
 
 } //GParted

@@ -36,31 +36,29 @@ void hfsplus::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool hfsplus::Create( const Partition & new_partition )
+bool hfsplus::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
 	return true ;
 }
 
-bool hfsplus::Resize( const Partition & partition_new, bool fill_partition )
+bool hfsplus::Resize( const Partition & partition_new, 
+		      std::vector<OperationDetails> & operation_details,
+		      bool fill_partition )
 {
 	return true ;
 }
 
-bool hfsplus::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool hfsplus::Copy( const Glib::ustring & src_part_path,
+		    const Glib::ustring & dest_part_path,
+		    std::vector<OperationDetails> & operation_details )
 {
 	return true ;
 }
 
-bool hfsplus::Check_Repair( const Partition & partition )
+bool hfsplus::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	return true ;
 }
-
-int hfsplus::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
-	
 
 } //GParted
 

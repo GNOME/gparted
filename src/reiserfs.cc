@@ -83,47 +83,102 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( N * S / 512 ) ;
 }
 	
-bool reiserfs::Create( const Partition & new_partition )
+bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "mkreiserfs -q " + new_partition .partition ) ;
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_REISERFS ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "mkreiserfs" ) ;
+	argv .push_back( "-f" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool reiserfs::Resize( const Partition & partition_new, bool fill_partition )
-{
+bool reiserfs::Resize( const Partition & partition_new,
+		       std::vector<OperationDetails> & operation_details,
+		       bool fill_partition )
+{//FIXME implement use of execute_command() for improved feedback
+	if ( fill_partition )
+		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	else
+		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
+	
 	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
 	
-	return ! Execute_Command( str_temp ) ; 
+	if ( ! Execute_Command( str_temp ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool reiserfs::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool reiserfs::Copy( const Glib::ustring & src_part_path,
+		     const Glib::ustring & dest_part_path,
+		     std::vector<OperationDetails> & operation_details )
 {	
-	if ( ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) )
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "dd" ) ;
+	argv .push_back( "bs=8192" ) ;
+	argv .push_back( "if=" + src_part_path ) ;
+	argv .push_back( "of=" + dest_part_path ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		
 		Partition partition ;
 		partition .partition = dest_part_path ;
-		return Resize( partition, true ) ;
+		return Resize( partition, operation_details, true ) ; 
 	}
 	
+	operation_details .back() .status = OperationDetails::ERROR ;
 	return false ;
 }
 
-bool reiserfs::Check_Repair( const Partition & partition )
+bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
+	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "reiserfsck" ) ;
+	argv .push_back( "--y" ) ;
+	argv .push_back( "--fix-fixable" ) ;
+	argv .push_back( partition .partition ) ;
+
 	//according to the manpage it should return 0 or 1 on succes, instead it returns 256 on succes.. 
-	//blah, don't have time for this. Just check for both options, we'll fix this later with our much improved errorhandling
-	int t = Execute_Command( "reiserfsck -y --fix-fixable " + partition .partition ) ;
-	
-	return ( t <= 1 || t == 256 ) ;
+	//blah, don't have time for this. Just check for both options
+	exit_status = execute_command( argv, operation_details .back() .sub_details ) ;
+	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
-
-int reiserfs::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
-	
-
 
 } //GParted

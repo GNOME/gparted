@@ -18,6 +18,7 @@
 #include "../include/Win_GParted.h"
 
 #include <gtkmm/aboutdialog.h>
+#include <gtkmm/messagedialog.h>
 
 #include <cerrno>
 #include <sys/swap.h>
@@ -350,9 +351,8 @@ void Win_GParted::init_operationslist( )
 	liststore_operations = Gtk::ListStore::create( treeview_operations_columns );
 	treeview_operations .set_model( liststore_operations );
 	treeview_operations .set_headers_visible( false );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_number );
+	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
 	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
-	treeview_operations .get_column( 0 ) ->pack_start( treeview_operations_columns .operation_icon, false );
 	treeview_operations .get_selection( ) ->set_mode( Gtk::SELECTION_NONE );
 
 	//init scrollwindow_operations
@@ -497,6 +497,30 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 {
 	Operation operation( devices[ current_device ], selected_partition, new_partition, operationtype );
 		
+	switch ( operationtype )
+	{		
+		case GParted::DELETE	:
+			operation .operation_icon =
+				render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU );	
+			break;
+		case GParted::CREATE	: 
+			operation .operation_icon =
+				render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
+			break;
+		case GParted::RESIZE_MOVE:
+			operation .operation_icon =
+				render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
+			break;
+		case GParted::FORMAT	:
+			operation .operation_icon =
+				render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+			break;
+		case GParted::COPY	:
+			operation .operation_icon =
+				render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
+			break;
+	}
+	
 	operations.push_back( operation );
 	
 	allow_undo( true );
@@ -525,31 +549,8 @@ void Win_GParted::Refresh_Visual( )
 			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
 		treerow = *( liststore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_number ] = t +1;
 		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] .str_operation ;
-		switch ( operations[ t ] .operationtype )
-		{		
-			case GParted::DELETE	:
-				treerow[ treeview_operations_columns.operation_icon ] =
-					render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU );	
-				break;
-			case GParted::CREATE	: 
-				treerow[ treeview_operations_columns.operation_icon ] =
-					render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
-				break;
-			case GParted::RESIZE_MOVE:
-				treerow[ treeview_operations_columns.operation_icon ] =
-					render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
-				break;
-			case GParted::FORMAT	:
-				treerow[ treeview_operations_columns.operation_icon ] =
-					render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
-				break;
-			case GParted::COPY	:
-				treerow[ treeview_operations_columns.operation_icon ] =
-					render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
-				break;
-		}
+		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] .operation_icon ;
 	}
 	
 	//set new statusbartext
@@ -1360,37 +1361,29 @@ void Win_GParted::activate_undo( )
 
 void Win_GParted::activate_apply( )
 {
-	str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += _( "Are you sure you want to apply the pending operations?" ) ;
-	str_temp += "</span>\n\n" ;
-	str_temp += _( "It is recommended to backup valuable data before proceeding.") ;
-	
-	Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true );
+	Gtk::MessageDialog dialog( *this,
+				   _( "Are you sure you want to apply the pending operations?" ),
+				   false,
+				   Gtk::MESSAGE_WARNING,
+				   Gtk::BUTTONS_NONE,
+				   true );
+	dialog .set_secondary_text( _( "It is recommended to backup valuable data before proceeding.") ) ;
 	dialog .set_title( _( "Apply operations to harddisk" ) );
 	
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );
 	
-	dialog .show_all_children( ) ;
-	if ( dialog.run( ) == Gtk::RESPONSE_OK )
+	dialog .show_all_children() ;
+	if ( dialog.run() == Gtk::RESPONSE_OK )
 	{
-		dialog .hide( ) ; //hide confirmationdialog
+		dialog .hide() ; //hide confirmationdialog
 		
-		apply = true;
-		dialog_progress = new Dialog_Progress ( operations .size( ), gparted_core .get_textbuffer( ) ) ;
-		
-		conn = dispatcher .connect( sigc::mem_fun(*dialog_progress, &Dialog_Progress::Set_Operation) );
-				
-		thread = Glib::Thread::create( SigC::slot_class( *this, &Win_GParted::apply_operations_thread ), true );
-		
-		dialog_progress ->set_transient_for( *this );
-		while ( dialog_progress ->run( ) != Gtk::RESPONSE_OK ) 
-			apply = false ;//finish current operation . then stop applying operations
-			
-		//after hiding the progressdialog
-		delete ( dialog_progress ) ;
-		thread ->join( ) ;
-		conn .disconnect( ) ;
+		Dialog_Progress dialog_progress( operations ) ;
+		dialog_progress .signal_apply_operation .connect(
+			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
+ 
+		for ( ; dialog_progress .run() != Gtk::RESPONSE_OK ; ) {}
+		dialog_progress .hide() ;
 		
 		//find out if any of the involved devices is busy
 		bool any_busy = false ;
@@ -1411,35 +1404,20 @@ void Win_GParted::activate_apply( )
 			str_temp += _("Because making changes to a busy device may confuse the kernel, you are advised to reboot your computer.") ;
 
 			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true );
-			dialog .run( ) ;
+			dialog .run() ;
 		}			
 					
 		//wipe operations...
-		operations.clear( ) ;
-		liststore_operations ->clear( ) ;
-		close_operationslist( ) ;
+		operations.clear() ;
+		liststore_operations ->clear() ;
+		close_operationslist() ;
 							
 		//reset new_count to 1
 		new_count = 1 ;
 		
 		//reread devices and their layouts...
-		menu_gparted_refresh_devices( ) ;
+		menu_gparted_refresh_devices() ;
 	}
 }
-
-void Win_GParted::apply_operations_thread( )
-{ 
-	for ( unsigned int t = 0 ; t < operations .size( ) && apply ; t++ )
-	{ 			
-		dialog_progress ->current_operation = operations[ t ] .str_operation ;
-		dialog_progress ->TIME_LEFT = gparted_core .get_estimated_time( operations[ t ] ) ;
-		dispatcher( ) ;
-		
-		gparted_core .Apply_Operation_To_Disk( operations[ t ] );
-	}
-	
-	dialog_progress ->response( Gtk::RESPONSE_OK );
-}
-
 
 } // GParted

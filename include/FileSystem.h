@@ -19,11 +19,8 @@
 #ifndef DEFINE_FILESYSTEM
 #define DEFINE_FILESYSTEM
 
-#include "../include/Partition.h"
+#include "../include/Operation.h"
 
-#include <gtkmm/textbuffer.h>
-
-#include <parted/parted.h>
 #include <fstream>
 #include <sys/stat.h>
 
@@ -38,28 +35,29 @@ public:
 
 	virtual FS get_filesystem_support() = 0 ;
 	virtual void Set_Used_Sectors( Partition & partition ) = 0 ;
-	virtual bool Create( const Partition & new_partition ) = 0 ;
-	virtual bool Resize( const Partition & partition_new, bool fill_partition = false ) = 0 ;
-	virtual bool Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path ) = 0 ;
-	virtual bool Check_Repair( const Partition & partition ) = 0 ;
-	virtual int get_estimated_time( long MB_to_Consider ) = 0 ;
-	
-	Glib::RefPtr<Gtk::TextBuffer> textbuffer ;
+	virtual bool Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details ) = 0 ;
+	virtual bool Resize( const Partition & partition_new,
+			     std::vector<OperationDetails> & operation_details,
+			     bool fill_partition = false ) = 0 ;
+	virtual bool Copy( const Glib::ustring & src_part_path,
+			   const Glib::ustring & dest_part_path,
+			   std::vector<OperationDetails> & operation_details ) = 0 ;
+	virtual bool Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) = 0 ;
 	
 	long cylinder_size ; //see GParted_Core::Resize()
 	
 protected:
 	int Execute_Command( Glib::ustring command ) ;
+	int execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) ;
 
 	//those are used in several Set_Used_Sectors()..
 	std::vector<std::string> argv, envp ;
-	std::string output ;
+	std::string output, error ;
 	Sector N, S ;
 	unsigned int index ;
+	int exit_status ;
 	
 private:
-	void Update_Textview() ;
-
 	Glib::ustring cmd_output ;
 
 };

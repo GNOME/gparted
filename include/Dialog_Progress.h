@@ -20,15 +20,14 @@
 
 #include "../include/i18n.h"
 #include "../include/Utils.h"
+#include "../include/Operation.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/label.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/textbuffer.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
+#include <gtkmm/expander.h>
 
 namespace GParted
 {
@@ -36,30 +35,52 @@ namespace GParted
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress( int count_operations, Glib::RefPtr<Gtk::TextBuffer> textbuffer );
-	~Dialog_Progress( );
-
-	void Set_Operation( );
-		
-	Glib::ustring current_operation;
-	int TIME_LEFT ;
+	Dialog_Progress( const std::vector<Operation> & operations ) ;
+	~Dialog_Progress();
+	
+	sigc::signal< bool, Operation & > signal_apply_operation ;
 		
 private:
-	bool Show_Progress( ) ;
-	bool Pulse( ) { progressbar_current .pulse( ) ; return true ; }
-	void tglbtn_details_toggled( ) ;
+	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
+	void on_signal_show() ;
+	void thread_apply_operation( Operation * operation ) ;
 
 	Gtk::Label label_current ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
-	Gtk::ToggleButton tglbtn_details ;
-	Gtk::TextView textview_details ;
+	Gtk::TreeView treeview_operations ;
+	Gtk::TreeRow treerow ;
 	Gtk::ScrolledWindow scrolledwindow ;
+	Gtk::Expander expander_details ;
 	
-	void signal_textbuffer_insert( const Gtk::TextBuffer::iterator & iter, const Glib::ustring & text, int ) ;
+	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
+	Glib::RefPtr<Gdk::Pixbuf> icon_succes ;
+	Glib::RefPtr<Gdk::Pixbuf> icon_error ;
+
+	Glib::RefPtr<Gtk::TreeStore> treestore_operations;
 	
-	double fraction, fraction_current;
-	int count_operations, current_operation_number;
-	sigc::connection conn ;
+	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
+	{
+		Gtk::TreeModelColumn<Glib::ustring> operation_description;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
+		Gtk::TreeModelColumn<OperationDetails::Status> hidden_status ;
+				
+		treeview_operations_Columns() 
+		{ 
+			add( operation_description );
+			add( operation_icon );
+			add( status_icon ) ;
+			add( hidden_status ) ;
+		} 
+	};
+	treeview_operations_Columns treeview_operations_columns;
+	
+	std::vector<Operation> operations ;
+	bool pulse, succes ;
+	Glib::Thread *thread ;
+	double fraction ;
+	unsigned int t ;
+	Glib::ustring str_temp ;
 };
 
 }//GParted

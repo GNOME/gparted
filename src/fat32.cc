@@ -53,6 +53,7 @@ FS fat32::get_filesystem_support( )
 void fat32::Set_Used_Sectors( Partition & partition ) 
 {
 	argv .push_back( "dosfsck" ) ;
+	argv .push_back( "-a" ) ;
 	argv .push_back( "-v" ) ;
 	argv .push_back( partition .partition ) ;
 
@@ -84,33 +85,82 @@ void fat32::Set_Used_Sectors( Partition & partition )
 		partition .Set_Unused( N * S / 512 ) ;
 }
 
-bool fat32::Create( const Partition & new_partition )
+bool fat32::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "mkdosfs -F32 " + new_partition .partition ) ;
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::Get_Filesystem_String( GParted::FS_FAT32 ) ) ) ) ;
+	argv .clear() ;
+	argv .push_back( "mkdosfs" ) ;
+	argv .push_back( "-F32" ) ;
+	argv .push_back( "-v" ) ;
+	argv .push_back( new_partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
-bool fat32::Resize( const Partition & partition_new, bool fill_partition )
+bool fat32::Resize( const Partition & partition_new,
+		    std::vector<OperationDetails> & operation_details,
+		    bool fill_partition )
 {
 	//handled in GParted_Core::Resize_Normal_Using_Libparted
 	return false ;
 }
 
-bool fat32::Copy( const Glib::ustring & src_part_path, const Glib::ustring & dest_part_path )
+bool fat32::Copy( const Glib::ustring & src_part_path, 
+		  const Glib::ustring & dest_part_path,
+		  std::vector<OperationDetails> & operation_details )
 {
-	return ! Execute_Command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path ) ;
-}
-
-bool fat32::Check_Repair( const Partition & partition )
-{
-	return ! Execute_Command( "dosfsck -aw " + partition .partition ) ;
-}
-
-int fat32::get_estimated_time( long MB_to_Consider )
-{
-	return -1 ;
-}
-
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
 	
+	argv .clear() ;
+	argv .push_back( "dd" ) ;
+	argv .push_back( "bs=8192" ) ;
+	argv .push_back( "if=" + src_part_path ) ;
+	argv .push_back( "of=" + dest_part_path ) ;
 
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;	
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
+
+bool fat32::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+{
+	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	
+	argv .clear() ;
+	argv .push_back( "dosfsck" ) ;
+	argv .push_back( "-a" ) ;
+	argv .push_back( "-w" ) ;
+	argv .push_back( "-v" ) ;
+	argv .push_back( partition .partition ) ;
+
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
 
 } //GParted
