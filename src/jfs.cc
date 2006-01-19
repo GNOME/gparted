@@ -148,27 +148,29 @@ bool jfs::Resize( const Partition & partition_new,
 			if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
-				
-				//and unmount it...
-				operation_details .back() .sub_details .push_back(
-					OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
-				if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
-				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
-					return_value = true ;
-				}
-				else
-				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-					operation_details .back() .sub_details .back() .sub_details .push_back(
-						OperationDetails( error, OperationDetails::NONE ) ) ;
-				}
+				return_value = true ;
 			}
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
 				operation_details .back() .sub_details .back() .sub_details .push_back(
 					OperationDetails( error, OperationDetails::NONE ) ) ;
+			}
+			
+			//and unmount it...
+			operation_details .back() .sub_details .push_back(
+				OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
+			if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			}
+			else
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+				operation_details .back() .sub_details .back() .sub_details .push_back(
+					OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+				return_value = false ;
 			}
 		}
 		else
@@ -177,7 +179,7 @@ bool jfs::Resize( const Partition & partition_new,
 			operation_details .back() .sub_details .back() .sub_details .push_back(
 				OperationDetails( error, OperationDetails::NONE ) ) ;
 		}
-
+		
 		//remove the mountpoint..
 		operation_details .back() .sub_details .push_back(
 			OperationDetails( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;

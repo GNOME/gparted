@@ -72,7 +72,9 @@ int FileSystem::execute_command( std::vector<std::string> argv, std::vector<Oper
 	}
 	catch ( Glib::Exception & e )
 	{ 
-		std::cout << e .what() << std::endl ;
+		if ( ! e .what() .empty() )
+			operation_details .back() .sub_details .push_back( OperationDetails( e .what(), OperationDetails::NONE ) ) ;
+		
 		return -1 ;
 	} 
 	

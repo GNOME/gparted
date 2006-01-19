@@ -18,6 +18,8 @@
  
 #include "../include/xfs.h"
 
+#include <cerrno>
+
 namespace GParted
 {
 
@@ -118,7 +120,7 @@ bool xfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 bool xfs::Resize( const Partition & partition_new,
 		  std::vector<OperationDetails> & operation_details,
 		  bool fill_partition )
-{//FIXME
+{
 	if ( fill_partition )
 		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
 	else
@@ -127,15 +129,81 @@ bool xfs::Resize( const Partition & partition_new,
 	bool return_value = false ;
 	Glib::ustring error ;
 	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_xfs_mountpoint" ;
-	
-	//xfs kan only grow if the partition is mounted..
-	mkdir( TEMP_MP .c_str(), 0 ) ;
-	if ( Utils::mount( partition_new .partition, TEMP_MP, "xfs", error ) )
+
+	//create mountpoint...
+	operation_details .back() .sub_details .push_back(
+		OperationDetails( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
-		return_value = ! Execute_Command( "xfs_growfs " + TEMP_MP ) ;
-		Utils::unmount( partition_new .partition, TEMP_MP, error ) ;
+		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+		
+		//mount partition
+		operation_details .back() .sub_details .push_back(
+			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .partition, TEMP_MP ) ) ) ;
+		if ( Utils::mount( partition_new .partition, TEMP_MP, "xfs", error ) )
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			
+			//grow the mounted filesystem..
+			operation_details .back() .sub_details .push_back( OperationDetails( _("grow mounted filesystem") ) ) ;
+			argv .clear() ;
+			argv .push_back( "xfs_growfs" ) ;
+			argv .push_back( TEMP_MP ) ;
+			if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+				return_value = true ;
+			}
+			else
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			}
+			
+			//and unmount it...
+			operation_details .back() .sub_details .push_back(
+				OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
+			if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			}
+			else
+			{
+				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+				operation_details .back() .sub_details .back() .sub_details .push_back(
+					OperationDetails( error, OperationDetails::NONE ) ) ;
+
+				return_value = false ;
+			}
+		}
+		else
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .sub_details .back() .sub_details .push_back(
+				OperationDetails( error, OperationDetails::NONE ) ) ;
+		}
+				
+		//remove the mountpoint..
+		operation_details .back() .sub_details .push_back(
+			OperationDetails( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+		if ( ! rmdir( TEMP_MP .c_str() ) )
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+		}
+		else
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .sub_details .back() .sub_details .push_back(
+				OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
+
+			return_value = false ;
+		}
 	}
-	rmdir( TEMP_MP .c_str() ) ;
+	else
+	{
+		operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .sub_details .back() .sub_details .push_back(
+			OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
+	}
 	
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
