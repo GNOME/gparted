@@ -102,29 +102,52 @@ bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails
 bool ntfs::Resize( const Partition & partition_new, 
 		   std::vector<OperationDetails> & operation_details,
 		   bool fill_partition )
-{//FIXME probeer dmv piping y the echoen in ntfsresize
-	//-contact szaka en probeer een --yes oid in de API te krijgen
-	//-perform eerst testruns e.d. in ntfsresize te bouwen..
+{
 	if ( fill_partition )
 		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
 	else
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 	
-	Glib::ustring str_temp = "echo y | ntfsresize -f " + partition_new .partition ;
+	bool return_value = false ;
+	Glib::ustring str_temp = "echo y | ntfsresize -P --force " + partition_new .partition ;
 	
 	if ( ! fill_partition )
-		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
+		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB() - cylinder_size, true ) + "M" ;
 	
-	if ( ! Execute_Command( str_temp ) )
+	//simulation..
+	operation_details .back() .sub_details .push_back( OperationDetails( _("run simulation") ) ) ;
+
+	argv .clear() ;
+	argv .push_back( "sh" ) ;
+	argv .push_back( "-c" ) ;
+	argv .push_back( str_temp + " --no-action" ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
 	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
+		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+
+		//real resize (use description from 'main' operation)
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( operation_details .back() .description ) ) ;
+
+		argv .erase( argv .end() ) ;
+		argv .push_back( str_temp ) ;
+		if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			return_value = true ;
+		}
+		else
+		{
+			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+		}
 	}
 	else
 	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
+		operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
 	}
+	
+	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	return return_value ;
 }
 
 bool ntfs::Copy( const Glib::ustring & src_part_path,
@@ -140,7 +163,6 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 	argv .push_back( "--overwrite" ) ;
 	argv .push_back( dest_part_path ) ;
 	argv .push_back( src_part_path ) ;
-
 	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
@@ -156,11 +178,12 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 
 bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	//according to Szaka it's best to use ntfsresize to check the partition for errors
-	//since --info is read-only i'll leave it out. just calling ntfsresize --force has also a tendency of fixing stuff :)
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
-//FIXME.. ook hier kan eea verbeterd/verduidelijkt..	
-	if ( Resize( partition, operation_details .back() .sub_details, true ) )
+
+	argv .clear() ;
+	argv .push_back( "ntfsfix" ) ;
+	argv .push_back( partition .partition ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

@@ -19,30 +19,32 @@
 
 #include <gtkmm/messagedialog.h>
 
-int main( int argc, char *argv[ ] )
+int main( int argc, char *argv[] )
 {
 	//initialize thread system
-	Glib::thread_init( );
+	Glib::thread_init() ;
 	
-	Gtk::Main kit( argc, argv );
+	Gtk::Main kit( argc, argv ) ;
 		 
 	//i18n
-	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR );
-	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" );
-	textdomain( GETTEXT_PACKAGE );
+	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
+	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
+	textdomain( GETTEXT_PACKAGE ) ;
 
 	//check UID
-	if ( getuid( ) != 0 )
+	if ( getuid() != 0 )
 	{
-		Gtk::MessageDialog dialog( "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Root privileges are required for running GParted" ) + "</span>\n\n" +  (Glib::ustring) _( "Since GParted can be a weapon of mass destruction only root may run it.") ,true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
-		dialog .run( ) ;
-		exit( 0 );
+		Gtk::MessageDialog dialog( _("Root privileges are required for running GParted"), false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK ) ;
+		dialog .set_secondary_text( _( "Since GParted can be a weapon of mass destruction only root may run it.") ) ;
+		
+		dialog .run() ;
+		exit( 0 ) ;
 	}
 	
-	GParted::Win_GParted win_gparted; 
-	Gtk::Main::run( win_gparted );
+	GParted::Win_GParted win_gparted ; 
+	Gtk::Main::run( win_gparted ) ;
 
-	return 0;
+	return 0 ;
 }
 
 
