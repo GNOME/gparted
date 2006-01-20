@@ -77,7 +77,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 		spinbutton_before .set_sensitive( false ) ;
 	}
 	
-	//calculate total size in MB's of previous, current and next partition
+	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t;
 	for ( t = 0 ; t < partitions .size( ) ; t++ )
@@ -149,7 +149,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector <Partit
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector <Partition> & partitions )
 {
-	//calculate total size in MB's of previous, current and next partition
+	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t = 0;
 	while ( t < partitions .size( ) && partitions[ t ] .type != GParted::TYPE_EXTENDED ) t++ ;

@@ -117,7 +117,7 @@ void Dialog_Partition_Info::init_drawingarea( )
 	color_partition = partition .color ;	this ->get_colormap( ) ->alloc_color( color_partition ) ;	 
 	
 	//set text of pangolayout
-	pango_layout = drawingarea .create_pango_layout ( partition .partition + "\n" + String::ucompose( _("%1 MB"), partition .Get_Length_MB( ) ) ) ;
+	pango_layout = drawingarea .create_pango_layout ( partition .partition + "\n" + String::ucompose( _("%1 MiB"), partition .Get_Length_MB( ) ) ) ;
 }
 
 void Dialog_Partition_Info::Display_Info( )

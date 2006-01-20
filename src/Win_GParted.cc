@@ -1137,8 +1137,8 @@ void Win_GParted::activate_delete()
 		str_temp += _( "After deletion this partition is no longer available for copying.") ;
 		
 		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true );
-		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB) */
-		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3 MB)"), 
+		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
+		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3 MiB)"), 
 						     selected_partition .partition, 
 						     selected_partition .filesystem,
 						     selected_partition .Get_Length_MB() ) );
@@ -1206,12 +1206,12 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		
 		if ( selected_partition .Get_Length_MB( ) < fs .MIN )
 			str_temp += String::ucompose( 
-					_( "A %1 filesystem requires a partition of at least %2 MB."),
+					_( "A %1 filesystem requires a partition of at least %2 MiB."),
 					Utils::Get_Filesystem_String( new_fs ),
 					fs .MIN ) ;
 		else
 			str_temp += String::ucompose( 
-					_( "A partition with a %1 filesystem has a maximum size of %2 MB."),
+					_( "A partition with a %1 filesystem has a maximum size of %2 MiB."),
 					Utils::Get_Filesystem_String( new_fs ),
 					fs .MAX ) ;
 		

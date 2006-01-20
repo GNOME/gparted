@@ -133,7 +133,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 	new_start = START + (Sector) (spinbutton_before .get_value( ) * MEGABYTE) ;
 	new_end  = new_start + (Sector) (spinbutton_size .get_value( ) * MEGABYTE) ;
 	
-	/* due to loss of precision during calcs from Sector -> MB and back, it is possible the new 
+	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
 	if ( new_start < selected_partition.sector_start )
 		new_start = selected_partition.sector_start ;
@@ -148,7 +148,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 			new_start, new_end, 
 			selected_partition .inside_extended, false) ; 
 	
-	//grow new partition a bit if freespaces are < 1 MB
+	//grow new partition a bit if freespaces are < 1 MiB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 
 		part_temp.sector_start = selected_partition.sector_start ;
 	if ( (selected_partition.sector_end - part_temp.sector_end) < MEGABYTE ) 

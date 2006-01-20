@@ -51,21 +51,21 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	table_resize.attach( * Utils::mk_label( (Glib::ustring) _( "Free Space Preceding (MB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK );
+	table_resize.attach( * Utils::mk_label( (Glib::ustring) _( "Free Space Preceding (MiB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK );
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL );
 	
 	//add spinbutton_size
-	table_resize.attach( * Utils::mk_label( _( "New Size (MB):" ) ), 0, 1, 1, 2 );
+	table_resize.attach( * Utils::mk_label( _( "New Size (MiB):" ) ), 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL );
 	
 	//add spinbutton_after
-	table_resize.attach( * Utils::mk_label( _( "Free Space Following (MB):") ), 0, 1, 2, 3 ) ;
+	table_resize.attach( * Utils::mk_label( _( "Free Space Following (MiB):") ), 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
@@ -117,7 +117,7 @@ Partition Dialog_Base_Partition::Get_New_Partition( )
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int( ) )
 		selected_partition .sector_end = selected_partition .sector_start + spinbutton_size .get_value_as_int( ) * MEGABYTE ;
 
-	//due to loss of precision during calcs from Sector -> MB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
+	//due to loss of precision during calcs from Sector -> MiB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition .sector_start < START )
 		selected_partition .sector_start = START ;
 	if ( selected_partition .sector_end > (START + total_length) ) 
@@ -164,8 +164,8 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 
 void Dialog_Base_Partition::Set_MinMax_Text( long min, long max )
 {
-	str_temp = String::ucompose( _("Minimum Size: %1 MB"), min ) + "\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MB"), max ) ;
+	str_temp = String::ucompose( _("Minimum Size: %1 MiB"), min ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum Size: %1 MiB"), max ) ;
 	label_minmax .set_text( str_temp ) ; 
 }
 

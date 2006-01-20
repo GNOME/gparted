@@ -249,12 +249,12 @@ Glib::ustring Utils::format_size( Sector size )
 	if ( size < 1073741824 )
 	{
 		ss << static_cast<double>( size / 1048567.0 ) ;
-		return String::ucompose( _("%1 MB"), ss .str() ) ;
+		return String::ucompose( _("%1 MiB"), ss .str() ) ;
 	}
 	else
 	{
 		ss << static_cast<double>( size / 1073741824.0 ) ;
-		return String::ucompose( _("%1 GB"), ss .str() ) ;
+		return String::ucompose( _("%1 GiB"), ss .str() ) ;
 	}
 }
 

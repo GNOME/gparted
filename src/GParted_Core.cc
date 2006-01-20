@@ -116,7 +116,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
 			temp_device .cylsize 	=	Utils::Sector_To_MB( temp_device .heads * temp_device .sectors ) ;
 			
-			//make sure cylsize is at least 1 MB
+			//make sure cylsize is at least 1 MiB
 			if ( temp_device .cylsize < 1 )
 				temp_device .cylsize = 1 ;
 				
