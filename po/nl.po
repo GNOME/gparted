@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-20 19:26+0100\n"
-"PO-Revision-Date: 2006-01-21 02:46+0100\n"
+"POT-Creation-Date: 2006-01-21 19:13+0100\n"
+"PO-Revision-Date: 2006-01-22 01:15+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,19 +42,19 @@ msgstr "Gnome Partitiebewerker"
 # vrije ruimte achter(aan)
 #. add spinbutton_before
 #: ../src/Dialog_Base_Partition.cc:54
-msgid "Free Space Preceding (MB):"
-msgstr "Vrije ruimte ervoor (MB):"
+msgid "Free Space Preceding (MiB):"
+msgstr "Vrije ruimte ervoor (MiB):"
 
 #. add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:61
-msgid "New Size (MB):"
-msgstr "Nieuwe grootte (MB):"
+msgid "New Size (MiB):"
+msgstr "Nieuwe grootte (MiB):"
 
 # volgend op/erachter
 #. add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:68
-msgid "Free Space Following (MB):"
-msgstr "Vrije ruimte erachter (MB):"
+msgid "Free Space Following (MiB):"
+msgstr "Vrije ruimte erachter (MiB):"
 
 # herschalen
 #: ../src/Dialog_Base_Partition.cc:151
@@ -69,12 +69,12 @@ msgid "Resize/Move"
 msgstr "Verplaatsen/Grootte wijzigen"
 
 #: ../src/Dialog_Base_Partition.cc:167
-msgid "Minimum Size: %1 MB"
-msgstr "Minimale grootte: %1 MB"
+msgid "Minimum Size: %1 MiB"
+msgstr "Minimale grootte: %1 MiB"
 
 #: ../src/Dialog_Base_Partition.cc:168
-msgid "Maximum Size: %1 MB"
-msgstr "Maximale grootte: %1 MB"
+msgid "Maximum Size: %1 MiB"
+msgstr "Maximale grootte: %1 MiB"
 
 #: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
 msgid "Set Disklabel on %1"
@@ -157,8 +157,8 @@ msgstr "Waarschuwing:"
 
 #. set text of pangolayout
 #: ../src/Dialog_Partition_Info.cc:120 ../src/Utils.cc:252
-msgid "%1 MB"
-msgstr "%1 MB"
+msgid "%1 MiB"
+msgstr "%1 MiB"
 
 #. filesystem
 #. filesystems to choose from
@@ -299,7 +299,9 @@ msgstr "Alle gemaakte bewerkingen worden nu uitgevoerd."
 #: ../src/Dialog_Progress.cc:41
 msgid ""
 "Depending on the amount and type of operations this might take a long time."
-msgstr "Afhankelijk van het aantal en soort bewerkingen, kan dit enige tijd gaan duren."
+msgstr ""
+"Afhankelijk van het aantal en soort bewerkingen, kan dit enige tijd gaan "
+"duren."
 
 # titel van de voortgangsbalk
 #: ../src/Dialog_Progress.cc:45
@@ -398,33 +400,38 @@ msgstr "partitietype instellen"
 msgid "copy of %1"
 msgstr "kopiëren van %1"
 
-#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MiB) from /dev/hda
 #: ../src/Operation.cc:56
-msgid "Delete %1 (%2, %3 MB) from %4"
-msgstr "%1 verwijderen (%2, %3 MB) van %4"
+msgid "Delete %1 (%2, %3 MiB) from %4"
+msgstr "%1 verwijderen (%2, %3 MiB) van %4"
 
-#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MiB) on /dev/hda
 #: ../src/Operation.cc:79
-msgid "Create %1 #%2 (%3, %4 MB) on %5"
-msgstr "%1 partitie #%2 (%3, %4 MB) aanmaken op %5"
+msgid "Create %1 #%2 (%3, %4 MiB) on %5"
+msgstr "%1 partitie #%2 (%3, %4 MiB) aanmaken op %5"
 
-# voorwaarts/naar voren
+# omdat de grafische representatie van de schijf toch geen direct verband
+# heeft met de fysieke indeling van de schijf, zijn 'naar voren' als
+# 'naar achteren' net zo goed/fout als 'naar links' en 'naar rechts'.
+# Bij de laatste is het voor de gebruiker echter meteen duidelijk wat er
+# gebeurt omdat het grafisch weergeeft wat er gebeurt.
+# voorwaarts/naar voren/naar rechts
 #: ../src/Operation.cc:92
-msgid "Move %1 forward by %2 MB"
-msgstr "%1 voorwaarts verplaatsen met %2 MB"
+msgid "Move %1 forward by %2 MiB"
+msgstr "%1 naar rechts verplaatsen met %2 MiB"
 
-# achterwaarts/naar achteren
+# achterwaarts/naar achteren/naar links
 #: ../src/Operation.cc:94
-msgid "Move %1 backward by %2 MB"
-msgstr "%1 achterwaarts verplaatsen met %2 MB"
+msgid "Move %1 backward by %2 MiB"
+msgstr "%1 naar links verplaatsen met %2 MiB"
 
 #: ../src/Operation.cc:103
-msgid "Resize %1 from %2 MB to %3 MB"
-msgstr "%1 van grootte veranderen van %2 MB naar %3 MB"
+msgid "Resize %1 from %2 MiB to %3 MiB"
+msgstr "%1 van grootte veranderen van %2 MiB naar %3 MiB"
 
 #: ../src/Operation.cc:108
-msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr "en %1 van grootte veranderen van %2 MB naar %3 MB"
+msgid "and Resize %1 from %2 MiB to %3 MiB"
+msgstr "en %1 van grootte veranderen van %2 MiB naar %3 MiB"
 
 #: ../src/Operation.cc:115
 msgid "Sorry, changes are too small to make sense"
@@ -435,10 +442,10 @@ msgstr "Sorry, veranderingen zijn onwaarschijnlijk klein."
 msgid "Format %1 as %2"
 msgstr "Formatteer %1 als %2"
 
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MiB)
 #: ../src/Operation.cc:127
-msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr "%1 naar %2 kopiëren (beginnen bij %3 MB)"
+msgid "Copy %1 to %2 (start at %3 MiB)"
+msgstr "%1 naar %2 kopiëren (beginnen bij %3 MiB)"
 
 #. append columns
 #: ../src/TreeView_Detail.cc:34
@@ -490,8 +497,8 @@ msgid "unused"
 msgstr "vrij"
 
 #: ../src/Utils.cc:257
-msgid "%1 GB"
-msgstr "%1 GB"
+msgid "%1 GiB"
+msgstr "%1 GiB"
 
 # het is ietwat inconsequent om de devices hier te vertalen als
 # 'stations', we gebruiken al apparaten/schijven
@@ -726,23 +733,22 @@ msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Na verwijdering is deze partitie niet langer beschikbaar voor kopiëren."
 
-#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
+#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
 #: ../src/Win_GParted.cc:1141
-msgid "Delete %1 (%2, %3 MB)"
-msgstr "%1 verwijderen (%2, %3 MB)"
+msgid "Delete %1 (%2, %3 MiB)"
+msgstr "%1 verwijderen (%2, %3 MiB)"
 
 #: ../src/Win_GParted.cc:1203
 msgid "Cannot format this filesystem to %1."
 msgstr "Kan dit bestandssysteem niet formatteren als %1."
 
 #: ../src/Win_GParted.cc:1209
-msgid "A %1 filesystem requires a partition of at least %2 MB."
-msgstr "Een %1 bestandssysteem vereist een partitie van tenminste %2 MB."
+msgid "A %1 filesystem requires a partition of at least %2 MiB."
+msgstr "Een %1 bestandssysteem vereist een partitie van tenminste %2 MiB."
 
 #: ../src/Win_GParted.cc:1214
-msgid "A partition with a %1 filesystem has a maximum size of %2 MB."
-msgstr ""
-"Een partitie met een %1 bestandsssyteem heeft een maximale grootte van %2 MB."
+msgid "A partition with a %1 filesystem has a maximum size of %2 MiB."
+msgstr "Een partitie met een %1 bestandsssyteem heeft een maximale grootte van %2 MiB."
 
 #: ../src/Win_GParted.cc:1272
 msgid "Unmounting %1"
@@ -812,7 +818,7 @@ msgid "Root privileges are required for running GParted"
 msgstr ""
 "Om GParted te kunnen uitvoeren zijn systeembeheerdersrechten (root) vereist."
 
-#: ../src/main.cc:37
+#: ../src/main.cc:38
 msgid "Since GParted can be a weapon of mass destruction only root may run it."
 msgstr ""
 "Omdat GParted een massavernietigingswapen kan zijn mag het alleen door root "
