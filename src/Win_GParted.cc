@@ -1067,17 +1067,19 @@ void Win_GParted::activate_copy( )
 
 void Win_GParted::activate_paste( )
 {
-	if ( ! max_amount_prim_reached( ) )
+	if ( ! max_amount_prim_reached() )
 	{
-		Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ), devices[ current_device ] .cylsize ) ;
-		copied_partition .error .clear( ) ; //we don't need the errors of the source partition.
+		Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
+					      devices[ current_device ] .cylsize ) ;
+		//we don't need the errors of the source partition.
+		copied_partition .error .clear() ;
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
 		
-		if ( dialog .run( ) == Gtk::RESPONSE_OK )
+		if ( dialog .run() == Gtk::RESPONSE_OK )
 		{
-			dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
-			Add_Operation( GParted::COPY, dialog .Get_New_Partition( ) );		
+			dialog .hide() ;
+			Add_Operation( GParted::COPY, dialog .Get_New_Partition() );		
 		}
 	}
 }

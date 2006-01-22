@@ -44,7 +44,7 @@ public:
 			   std::vector<OperationDetails> & operation_details ) = 0 ;
 	virtual bool Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) = 0 ;
 	
-	long cylinder_size ; //see GParted_Core::Resize()
+	Sector cylinder_size ; //see GParted_Core::resize()
 	
 protected:
 	int execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) ;

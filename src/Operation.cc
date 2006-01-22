@@ -30,7 +30,7 @@ Operation::Operation( const Device & device, const Partition & partition_origina
 	this ->partition_new = partition_new;
 	this ->operationtype = operationtype;
 	
-	str_operation = Get_String( ) ;
+	str_operation = Get_String() ;
 	
 	if ( operationtype == COPY )
 	{

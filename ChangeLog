@@ -1,5 +1,12 @@
 2006-01-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* correct partitiontype of destination is now set while copying
+	* resizing now return correct status (sometimes it would report
+	  succes even when some of the suboperationes failed)
+	* fixed some issues with resizing and cylindersizes.
+	
+2006-01-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* removed Execute_Command() and replaced it by execute_command().
 	  The latter uses Glib::spawn_sync instead of popen().
 	  also made the filesystems call execute_command rather than calling

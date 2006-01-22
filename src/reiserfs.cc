@@ -110,15 +110,9 @@ bool reiserfs::Resize( const Partition & partition_new,
 	
 	if ( ! fill_partition )
 	{
-		/* FIXME:i need to find a better solution for this 'cylinder problem'
-		 * till then we do it the 'dirty way'
-		 * (this only matters while shrinking a filesystem, so maybe we should solve this
-		 * in the resizedialog...)
-		 */
-		long bytes = Utils::Round( Utils::sector_to_unit( cylinder_size * MEBIBYTE, GParted::UNIT_BYTE ) ) ;
-		
 		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit( partition_new .get_length(), GParted::UNIT_BYTE ) ) - bytes, true ) ;
+		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit(
+				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
 	
 	argv .clear() ;

@@ -107,7 +107,7 @@ bool ext2::Resize( const Partition & partition_new,
 	
 	if ( ! fill_partition )
 		argv .push_back( Utils::num_to_str( Utils::Round( Utils::sector_to_unit( 
-			partition_new .get_length(), GParted::UNIT_MIB ) ) - cylinder_size, true ) + "M" ) ; 
+			partition_new .get_length() - cylinder_size, GParted::UNIT_MIB ) ), true ) + "M" ) ; 
 		
 	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{

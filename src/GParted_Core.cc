@@ -559,51 +559,48 @@ bool GParted_Core::resize( const Device & device,
 			   const Partition & partition_new,
 			   std::vector<OperationDetails> & operation_details ) 
 {
+	//extended partition
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 		return resize_container_partition( partition_old, partition_new, false, operation_details ) ;
 	
-	//lazy check (only grow). it's possbile one day this should be separated in checks for grow,shrink,move ..
+	//resize using libparted..
 	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED )
 		return resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
-	else //use custom resize tools..
+
+	//use custom resize tools..
+	bool succes = false ;
+	set_proper_filesystem( partition_new .filesystem ) ;
+
+	if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
 	{
-		set_proper_filesystem( partition_new .filesystem ) ;
-				
-		if ( p_filesystem ->Check_Repair( partition_new, operation_details ) )
-		{//FIXME  hier moet betere errorchecking!! momenteel kan er iets fout gaan en wordt de operatie toch
-			//als geslaagd gerapporteerd. ik ben er groot voorstander van om alles weer te fixen mbv resize e.d.
-			//maar de status moet wel correct zijn!
-			//shrinking
-			if ( partition_new .Get_Length_MB() < partition_old .Get_Length_MB() )
-			{
-				p_filesystem ->cylinder_size = device .cylsize ;
-				
-				if ( p_filesystem ->Resize( partition_new, operation_details ) )
-					resize_container_partition( 
-							partition_old,
-							partition_new,
-							! get_fs( partition_new .filesystem ) .move,
-							operation_details ) ;
-			}
-			//growing/moving
-			else
-				resize_container_partition( 
-						partition_old,
-						partition_new,
-						! get_fs( partition_new .filesystem ) .move,
-						operation_details ) ;
-					
+		succes = true ;
 			
-			p_filesystem ->Check_Repair( partition_new, operation_details ) ;
-			
-			//expand filesystem to fit exactly in partition
-			p_filesystem ->Resize( partition_new, operation_details, true ) ;
-			
-			return p_filesystem ->Check_Repair( partition_new, operation_details ) ;
+		if ( partition_new .get_length() < partition_old .get_length() )
+		{
+			p_filesystem ->cylinder_size = MEBIBYTE * device .cylsize ;
+			succes = p_filesystem ->Resize( partition_new, operation_details ) ;
 		}
+						
+		if ( succes )
+			succes = resize_container_partition(
+					partition_old,
+			     		partition_new,
+					! get_fs( partition_new .filesystem ) .move,
+					operation_details ) ;
+			
+		//these 3 are always executed, however, if 1 of them fails the whole operation fails
+		if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+			succes = false ;
+
+		//expand filesystem to fit exactly in partition
+		if ( ! p_filesystem ->Resize( partition_new, operation_details, true ) )
+			succes = false ;
+			
+		if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+			succes = false ;
 	}
-	
-	return false ;
+		
+	return succes ;
 }
 
 bool GParted_Core::copy( const Glib::ustring & src_part_path,
@@ -614,12 +611,13 @@ bool GParted_Core::copy( const Glib::ustring & src_part_path,
 	
 	Partition src_partition ;
 	src_partition .partition = src_part_path ;
-//FIXME set correct type of dest partition	
-	if ( p_filesystem ->Check_Repair( src_partition, operation_details ) )
-		if ( create_empty_partition( partition_dest, operation_details, true ) > 0 )
-			return p_filesystem ->Copy( src_part_path, partition_dest .partition, operation_details ) ;
 	
-	return false ;
+	return ( p_filesystem &&
+		 p_filesystem ->Check_Repair( src_partition, operation_details ) &&
+	     	 create_empty_partition( partition_dest, operation_details, true ) > 0 &&
+	     	 set_partition_type( partition_dest, operation_details ) &&
+	     	 p_filesystem ->Copy( src_part_path, partition_dest .partition, operation_details ) &&
+	     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
 }
 
 bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 

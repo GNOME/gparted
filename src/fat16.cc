@@ -143,7 +143,7 @@ bool fat16::Check_Repair( const Partition & partition, std::vector<OperationDeta
 	argv .push_back( "-v" ) ;
 	argv .push_back( partition .partition ) ;
 
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	if ( 1 >= execute_command( argv, operation_details .back() .sub_details ) >= 0 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

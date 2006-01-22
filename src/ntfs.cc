@@ -106,7 +106,8 @@ bool ntfs::Resize( const Partition & partition_new,
 	if ( ! fill_partition )
 	{
 		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit( partition_new .get_length(), GParted::UNIT_BYTE ) ), true ) ;
+		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit(
+				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
 	
 	//simulation..

@@ -37,7 +37,7 @@ public:
 	long heads ;
 	long sectors ;
 	long cylinders ;
-	long cylsize ;
+	long cylsize ;//FIXME we should store this one as a Sector
 	Glib::ustring model;
  	Glib::ustring path;
  	Glib::ustring realpath;
