@@ -59,28 +59,21 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "debugreiserfs" ) ;
 	argv .push_back( partition .partition ) ;
 
-	envp .push_back( "LC_ALL=C" ) ;
-	
-	try
+	if ( ! execute_command( argv, output ) )
 	{
-		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+		index = output .find( "Blocksize" ) ;
+		if ( index >= output .length() || 
+		     sscanf( output .substr( index ) .c_str(), "Blocksize: %Ld", &S ) != 1 )
+			S = -1 ;
+
+		index = output .find( ":", output .find( "Free blocks" ) ) +1 ;
+		if ( index >= output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "%Ld", &N ) != 1 )
+			N = -1 ;
+
+		if ( N > -1 && S > -1 )
+			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
-	catch ( Glib::Exception & e )
-	{ 
-		std::cout << e .what() << std::endl ;
-		return ;
-	} 
-
-	index = output .find( "Blocksize" ) ;
-	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "Blocksize: %Ld", &S ) != 1 )
-		S = -1 ;
-
-	index = output .find( ":", output .find( "Free blocks" ) ) +1 ;
-	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &N ) != 1 )
-		N = -1 ;
-
-	if ( N > -1 && S > -1 )
-		partition .Set_Unused( N * S / 512 ) ;
 }
 	
 bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

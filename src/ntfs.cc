@@ -57,24 +57,16 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "--force" ) ;
 	argv .push_back( partition .partition ) ;
 
-	envp .push_back( "LC_ALL=C" ) ;
-	
-	try
+	if ( ! execute_command( argv, output ) )
 	{
-		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+		index = output .find( "sectors of free space" ) ;
+		if ( index >= output .length() || 
+		     sscanf( output .substr( index ) .c_str(), "sectors of free space : %Ld", &N ) != 1 ) 
+			N = -1 ;
+
+		if ( N > -1 )
+			partition .Set_Unused( N ) ;
 	}
-	catch ( Glib::Exception & e )
-	{ 
-		std::cout << e .what() << std::endl ;
-		return ;
-	} 
-
-	index = output .find( "sectors of free space" ) ;
-	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "sectors of free space : %Ld", &N ) != 1 ) 
-		N = -1 ;
-
-	if ( N > -1 )
-		partition .Set_Unused( N ) ;
 }
 
 bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

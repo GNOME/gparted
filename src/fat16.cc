@@ -58,32 +58,23 @@ void fat16::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "-v" ) ;
 	argv .push_back( partition .partition ) ;
 
-	envp .push_back( "LC_ALL=C" ) ;
-	
-	try
+	if ( 1 >= execute_command( argv, output ) >= 0 )
 	{
-		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
+		//free clusters
+		index = output .find( ",", output .find( partition .partition ) + partition .partition .length() ) +1 ;
+		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
+			N -= S ;
+		else
+			N = -1 ;
+
+		//bytes per cluster
+		index = output .rfind( "\n", output .find( "bytes per cluster" ) ) +1 ;
+		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 )
+			S = -1 ;
+	
+		if ( N > -1 && S > -1 )
+			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
-	catch ( Glib::Exception & e )
-	{ 
-		std::cout << e .what() << std::endl ;
-		return ;
-	} 
-
-	//free clusters
-	index = output .find( ",", output .find( partition .partition ) + partition .partition .length() ) +1 ;
-	if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
-		N -= S ;
-	else
-		N = -1 ;
-
-	//bytes per cluster
-	index = output .rfind( "\n", output .find( "bytes per cluster" ) ) +1 ;
-	if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 )
-		S = -1 ;
-
-	if ( N > -1 && S > -1 )
-		partition .Set_Unused( N * S / 512 ) ;
 }
 	
 bool fat16::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

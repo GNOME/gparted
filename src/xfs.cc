@@ -71,29 +71,20 @@ void xfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "-r" ) ;
 	argv .push_back( partition .partition ) ;
 
-	envp .push_back( "LC_ALL=C" ) ;
-	
-	try
+	if ( ! execute_command( argv, output ) )
 	{
-		Glib::spawn_sync( ".", argv, envp, Glib::SPAWN_SEARCH_PATH, sigc::slot< void >(), &output ) ;
-	}
-	catch ( Glib::Exception & e )
-	{ 
-		std::cout << e .what() << std::endl ;
-		return ;
-	}
-	
-	//blocksize
-	if ( sscanf( output .c_str(), "blocksize = %Ld", &S ) != 1 )
-		S = -1 ;
+		//blocksize
+		if ( sscanf( output .c_str(), "blocksize = %Ld", &S ) != 1 )
+			S = -1 ;
 
-	//free blocks
-	output = output .substr( output .find( "fdblocks" ) ) ;
-	if ( sscanf( output .c_str(), "fdblocks = %Ld", &N ) != 1 )
-		N = -1 ;
+		//free blocks
+		output = output .substr( output .find( "fdblocks" ) ) ;
+		if ( sscanf( output .c_str(), "fdblocks = %Ld", &N ) != 1 )
+			N = -1 ;
 
-	if ( N > -1 && S > -1 )
-		partition .Set_Unused( N * S / 512 ) ;
+		if ( N > -1 && S > -1 )
+			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+	}
 }
 
 bool xfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

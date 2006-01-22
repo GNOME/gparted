@@ -1,5 +1,12 @@
 2006-01-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* removed Execute_Command() and replaced it by execute_command().
+	  The latter uses Glib::spawn_sync instead of popen().
+	  also made the filesystems call execute_command rather than calling
+	  Glib::spawn_sync themselves.
+
+2006-01-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* implemented Utils::sector_to_unit() and use it in several places
 	* (finally) fixed errors with ntfsresizing (had a lot to do with
 	  difference between MB and MiB)

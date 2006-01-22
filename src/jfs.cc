@@ -65,32 +65,27 @@ FS jfs::get_filesystem_support( )
 
 void jfs::Set_Used_Sectors( Partition & partition ) 
 {
-	char c_buf[ 512 ] ;
-	FILE *f ;
-	
-	Glib::ustring output ;
+	argv .push_back( "sh" ) ;
+	argv .push_back( "-c" ) ;
+	argv .push_back( "echo dm | jfs_debugfs " + partition .partition ) ;
 
-        //get free sectors..
-	f = popen( ( "echo dm | LC_ALL=C jfs_debugfs " + partition .partition + " | grep dn_nfree" ) .c_str( ), "r" ) ;
-	while ( fgets( c_buf, 512, f ) )
+	if ( ! execute_command( argv, output ) )
 	{
-		output = Glib::locale_to_utf8( c_buf ) ;
+		//blocksize
+		index = output .find( "Block Size:" ) ;
+		if ( index >= output .length() || 
+		     sscanf( output .substr( index ) .c_str(), "Block Size: %Ld", &S ) != 1 ) 
+			S = -1 ;
 		
-		//free sectors
-		if ( output .find( "dn_nfree" ) < output .length( ) )
-		{
-			output = output .substr( output .find( ":" ) +1, output .length( ) ) ;
-					
-			int dec_free_blocks ;
-			std::istringstream hex_free_blocks( output .substr( 0, output .find( "[" ) ) );
-			hex_free_blocks >> std::hex >> dec_free_blocks ;
-				
-			partition .Set_Unused( dec_free_blocks * 8 ) ;//4096 / 512 (i've been told jfs blocksize is _always_ 4K)
-	
-			break ;
-		}
+		//free blocks
+		index = output .find( "dn_nfree:" ) ;
+		if ( index >= output .length() || 
+		     sscanf( output .substr( index ) .c_str(), "dn_nfree: %Lx", &N ) != 1 ) 
+			N = -1 ;
+
+		if ( S > -1 && N > -1 )
+			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
-	pclose( f ) ;
 }
 
 bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

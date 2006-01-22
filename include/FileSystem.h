@@ -47,18 +47,17 @@ public:
 	long cylinder_size ; //see GParted_Core::Resize()
 	
 protected:
-	int Execute_Command( Glib::ustring command ) ;
 	int execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) ;
+	int execute_command( std::vector<std::string> argv, std::string & output ) ;
 
-	//those are used in several Set_Used_Sectors()..
-	std::vector<std::string> argv, envp ;
+	//those are used in several places..
+	std::vector<std::string> argv ;
 	std::string output, error ;
 	Sector N, S ;
 	unsigned int index ;
 	int exit_status ;
 	
 private:
-	Glib::ustring cmd_output ;
 
 };
 
