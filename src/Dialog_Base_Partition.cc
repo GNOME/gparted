@@ -112,10 +112,10 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 Partition Dialog_Base_Partition::Get_New_Partition( ) 
 { 	
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int( ) )
-		selected_partition .sector_start = START + spinbutton_before .get_value_as_int( ) * MEGABYTE ;	
+		selected_partition .sector_start = START + spinbutton_before .get_value_as_int( ) * MEBIBYTE ;	
 	
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int( ) )
-		selected_partition .sector_end = selected_partition .sector_start + spinbutton_size .get_value_as_int( ) * MEGABYTE ;
+		selected_partition .sector_end = selected_partition .sector_start + spinbutton_size .get_value_as_int( ) * MEBIBYTE ;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition .sector_start < START )
@@ -124,9 +124,9 @@ Partition Dialog_Base_Partition::Get_New_Partition( )
 		selected_partition .sector_end = START + total_length ;
 	
 	//grow a bit into small freespace ( < 1MB ) 
-	if (  (selected_partition .sector_start - START) < MEGABYTE )
+	if (  (selected_partition .sector_start - START) < MEBIBYTE )
 		selected_partition .sector_start = START ;
-	if ( ( START + total_length - selected_partition .sector_end ) < MEGABYTE )
+	if ( ( START + total_length - selected_partition .sector_end ) < MEBIBYTE )
 		selected_partition .sector_end = START + total_length ;
 	
 	//set new value of unused..

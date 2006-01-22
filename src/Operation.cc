@@ -86,18 +86,22 @@ Glib::ustring Operation::Get_String( )
 		case RESIZE_MOVE:
 			//if startsector has changed >= 1 MiB we consider it a move
 			diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
-			if (  diff >= MEGABYTE ) 
+			if (  diff >= MEBIBYTE ) 
 			{
 				if ( partition_new .sector_start > partition_original .sector_start )
-					temp = String::ucompose( _("Move %1 forward by %2 MiB"), partition_new.partition, Utils::Sector_To_MB( diff ) ) ;
+					temp = String::ucompose( _("Move %1 forward by %2 MiB"), 
+								 partition_new.partition,
+								 Utils::Round( Utils::sector_to_unit( diff, GParted::UNIT_MIB ) ) ) ;
 				else
-					temp = String::ucompose( _("Move %1 backward by %2 MiB"), partition_new.partition, Utils::Sector_To_MB( diff ) ) ;
+					temp = String::ucompose( _("Move %1 backward by %2 MiB"),
+								 partition_new.partition,
+								 Utils::Round( Utils::sector_to_unit( diff, GParted::UNIT_MIB ) ) ) ;
 			}
 									
 			//check if size has changed ( we only consider changes >= 1 MiB )
 			diff = std::abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
 											
-			if ( diff >= MEGABYTE )
+			if ( diff >= MEBIBYTE )
 			{
 				if ( temp .empty( ) ) 
 					temp = String::ucompose( _("Resize %1 from %2 MiB to %3 MiB"), 
@@ -127,7 +131,7 @@ Glib::ustring Operation::Get_String( )
 			return String::ucompose( _("Copy %1 to %2 (start at %3 MiB)"),
 						 partition_new .partition,
 						 device .path,
-						 Utils::Sector_To_MB( partition_new .sector_start ) ) ;
+						 Utils::Round( Utils::sector_to_unit( partition_new .sector_start, GParted::UNIT_MIB ) ) ) ;
 			
 		default		:
 			return "";			
@@ -167,7 +171,7 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front( ) .sector_start - start) >= MEGABYTE )
+	if ( (partitions .front( ) .sector_start - start) >= MEBIBYTE )
 	{
 		UNALLOCATED .sector_start = start ;
 		UNALLOCATED .sector_end = partitions .front( ) .sector_start -1 ;
@@ -177,7 +181,7 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 	
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size( ) -1 ; t++ )
-		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEGABYTE )
+		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEBIBYTE )
 		{
 			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
 			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
@@ -186,7 +190,7 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 		}
 		
 	//last partition end <---> end
-	if ( (end - partitions .back( ) .sector_end ) >= MEGABYTE )
+	if ( (end - partitions .back( ) .sector_end ) >= MEBIBYTE )
 	{
 		UNALLOCATED .sector_start = partitions .back( ) .sector_end +1 ;
 		UNALLOCATED .sector_end = end ;

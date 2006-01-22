@@ -107,7 +107,7 @@ bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDet
 bool reiserfs::Resize( const Partition & partition_new,
 		       std::vector<OperationDetails> & operation_details,
 		       bool fill_partition )
-{//FIXME implement use of execute_command() for improved feedback
+{ 
 	if ( fill_partition )
 		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
 	else
@@ -116,9 +116,23 @@ bool reiserfs::Resize( const Partition & partition_new,
 	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .partition ;
 	
 	if ( ! fill_partition )
-		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB( ) - cylinder_size, true ) + "M" ;
+	{
+		/* FIXME:i need to find a better solution for this 'cylinder problem'
+		 * till then we do it the 'dirty way'
+		 * (this only matters while shrinking a filesystem, so maybe we should solve this
+		 * in the resizedialog...)
+		 */
+		long bytes = Utils::Round( Utils::sector_to_unit( cylinder_size * MEBIBYTE, GParted::UNIT_BYTE ) ) ;
+		
+		str_temp += " -s " ;
+		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit( partition_new .get_length(), GParted::UNIT_BYTE ) ) - bytes, true ) ;
+	}
 	
-	if ( ! Execute_Command( str_temp ) )
+	argv .clear() ;
+	argv .push_back( "sh" ) ;
+	argv .push_back( "-c" ) ;
+	argv .push_back( str_temp ) ;
+	if ( ! execute_command( argv, operation_details .back() .sub_details ) )	
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

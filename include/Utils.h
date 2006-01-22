@@ -37,7 +37,11 @@ namespace GParted
 
 typedef long long Sector;
 
-#define MEGABYTE 2048  //try it: 2048 * 512 / 1024 /1024 == 1    :P	
+//sizeunits defined in sectors of 512 bytes..
+#define KIBIBYTE 2
+#define MEBIBYTE 2048  
+#define GIBIBYTE 2097152
+#define TEBIBYTE 2147483648U 
 
 enum FILESYSTEM
 {
@@ -64,6 +68,17 @@ enum FILESYSTEM
 	FS_UNUSED	= 18
 };
 
+enum SIZE_UNIT
+{
+	UNIT_SECTOR	= 0,
+	UNIT_BYTE	= 1,
+	
+	UNIT_KIB	= 2,
+	UNIT_MIB	= 3,
+	UNIT_GIB	= 4,
+	UNIT_TIB	= 5,
+};
+
 //struct to store filesysteminformation
 struct FS
 {
@@ -85,7 +100,7 @@ struct FS
 	int MIN ; 
 	int MAX ;
 	
-	FS( )
+	FS()
 	{
 		read = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
@@ -96,8 +111,7 @@ struct FS
 class Utils
 {
 public:
-	static long Round( double double_value ) ;
-	static long Sector_To_MB( Sector sectors ) ;
+	static Sector Round( double double_value ) ;
 	static Gtk::Label * mk_label( const Glib::ustring & text,
 				      bool use_markup = true,
 				      bool align_left = true,
@@ -115,6 +129,7 @@ public:
 			   const Glib::ustring & data = "" ) ;
 	static bool unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) ;
 	static Glib::ustring format_size( Sector size ) ;
+	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;
 };
 	
 

@@ -93,12 +93,12 @@ void Partition::Update_Number( int new_number )
 
 long Partition::Get_Length_MB() const
 {
-	return Utils::Sector_To_MB( sector_end - sector_start ) ;
+	return Utils::Round( Utils::sector_to_unit( get_length(), GParted::UNIT_MIB ) ) ;
 }
 
 long Partition::Get_Used_MB() const
 { 
-	return Utils::Sector_To_MB( this ->sectors_used ) ;
+	return Utils::Round( Utils::sector_to_unit( sectors_used, GParted::UNIT_MIB ) ) ;
 }
 
 long Partition::Get_Unused_MB() const

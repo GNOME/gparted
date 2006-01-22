@@ -130,8 +130,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		default	:	part_type = GParted::TYPE_UNALLOCATED ;
 	}
 	
-	new_start = START + (Sector) (spinbutton_before .get_value( ) * MEGABYTE) ;
-	new_end  = new_start + (Sector) (spinbutton_size .get_value( ) * MEGABYTE) ;
+	new_start = START + (Sector) (spinbutton_before .get_value( ) * MEBIBYTE) ;
+	new_end  = new_start + (Sector) (spinbutton_size .get_value( ) * MEBIBYTE) ;
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
@@ -149,9 +149,9 @@ Partition Dialog_Partition_New::Get_New_Partition()
 			selected_partition .inside_extended, false) ; 
 	
 	//grow new partition a bit if freespaces are < 1 MiB
-	if ( (part_temp.sector_start - selected_partition.sector_start) < MEGABYTE ) 
+	if ( (part_temp.sector_start - selected_partition.sector_start) < MEBIBYTE ) 
 		part_temp.sector_start = selected_partition.sector_start ;
-	if ( (selected_partition.sector_end - part_temp.sector_end) < MEGABYTE ) 
+	if ( (selected_partition.sector_end - part_temp.sector_end) < MEBIBYTE ) 
 		part_temp.sector_end = selected_partition.sector_end ;
 	
 	//if new is extended...

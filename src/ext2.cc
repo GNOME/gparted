@@ -111,9 +111,10 @@ bool ext2::Resize( const Partition & partition_new,
 	argv .clear() ;
 	argv .push_back( "resize2fs" ) ;
 	argv .push_back( partition_new .partition ) ;
-
+	
 	if ( ! fill_partition )
-		argv .push_back( Utils::num_to_str( partition_new .Get_Length_MB() - cylinder_size, true ) + "M" ) ; 
+		argv .push_back( Utils::num_to_str( Utils::Round( Utils::sector_to_unit( 
+			partition_new .get_length(), GParted::UNIT_MIB ) ) - cylinder_size, true ) + "M" ) ; 
 		
 	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
 	{

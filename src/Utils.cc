@@ -22,18 +22,12 @@
 #include <cerrno>
 #include <iomanip>
 
-
 namespace GParted
 {
 	
-long Utils::Round( double double_value )
+Sector Utils::Round( double double_value )
 {
-	 return static_cast<long>( double_value + 0.5 ) ;
-}
-
-long Utils::Sector_To_MB( Sector sectors ) 
-{
-	 return Round( sectors * 0.000488281250 ) ; // that's what 512/1024/1024 gives you :)
+	 return static_cast<Sector>( double_value + 0.5 ) ;
 }
 
 Gtk::Label * Utils::mk_label( const Glib::ustring & text, bool use_markup, bool align_left, bool wrap, const Glib::ustring & text_color ) 
@@ -241,20 +235,58 @@ bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoin
 
 Glib::ustring Utils::format_size( Sector size ) 
 {
-	size *= 512 ;
 	std::stringstream ss ;	
 	//ss .imbue( std::locale( "" ) ) ;  see #157871
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
 
-	if ( size < 1073741824 )
+	if ( size < KIBIBYTE )
 	{
-		ss << static_cast<double>( size / 1048567.0 ) ;
+		ss << sector_to_unit( size, UNIT_BYTE ) ;
+		return String::ucompose( _("%1 B"), ss .str() ) ;
+	}
+	else if ( size < MEBIBYTE ) 
+	{
+		ss << sector_to_unit( size, UNIT_KIB ) ;
+		return String::ucompose( _("%1 KiB"), ss .str() ) ;
+	}
+	else if ( size < GIBIBYTE ) 
+	{
+		ss << sector_to_unit( size, UNIT_MIB ) ;
 		return String::ucompose( _("%1 MiB"), ss .str() ) ;
+	}
+	else if ( size < TEBIBYTE ) 
+	{
+		ss << sector_to_unit( size, UNIT_GIB ) ;
+		return String::ucompose( _("%1 GiB"), ss .str() ) ;
 	}
 	else
 	{
-		ss << static_cast<double>( size / 1073741824.0 ) ;
-		return String::ucompose( _("%1 GiB"), ss .str() ) ;
+		ss << sector_to_unit( size, UNIT_TIB ) ;
+		return String::ucompose( _("%1 TiB"), ss .str() ) ;
+	}
+}
+
+double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) 
+{
+	/* NOTE: this could have been done more efficient by using static numbers.
+	 * However, the performancegain would be unnoticable and this way its easier to read/debug
+	 */
+	switch ( size_unit )
+	{
+		case UNIT_BYTE	:
+			return sectors * 512 ;
+		
+		case UNIT_KIB	:
+			return sector_to_unit( sectors, UNIT_BYTE ) / 1024 ;
+		case UNIT_MIB	:
+			return sector_to_unit( sectors, UNIT_KIB ) / 1024 ;
+		case UNIT_GIB	:
+			return sector_to_unit( sectors, UNIT_MIB ) / 1024 ;
+		case UNIT_TIB	:
+			return sector_to_unit( sectors, UNIT_GIB ) / 1024 ;
+		
+		default:
+			return sectors ;
 	}
 }
 

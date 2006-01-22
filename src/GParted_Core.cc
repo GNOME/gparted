@@ -114,7 +114,8 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
-			temp_device .cylsize 	=	Utils::Sector_To_MB( temp_device .heads * temp_device .sectors ) ;
+			temp_device .cylsize 	=	Utils::Round( Utils::sector_to_unit( 
+								temp_device .heads * temp_device .sectors, GParted::UNIT_MIB ) ) ;
 			
 			//make sure cylsize is at least 1 MiB
 			if ( temp_device .cylsize < 1 )
@@ -440,7 +441,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path, std::v
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front( ) .sector_start - start) >= MEGABYTE )
+	if ( (partitions .front( ) .sector_start - start) >= MEBIBYTE )
 	{
 		partition_temp .sector_start = start ;
 		partition_temp .sector_end = partitions .front( ) .sector_start -1 ;
@@ -450,7 +451,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path, std::v
 	
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size( ) -1 ; t++ )
-		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEGABYTE )
+		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEBIBYTE )
 		{
 			partition_temp .sector_start = partitions[ t ] .sector_end +1 ;
 			partition_temp .sector_end = partitions[ t +1 ] .sector_start -1 ;
@@ -459,7 +460,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path, std::v
 		}
 		
 	//last partition end <---> end
-	if ( (end - partitions .back( ) .sector_end ) >= MEGABYTE )
+	if ( (end - partitions .back( ) .sector_end ) >= MEBIBYTE )
 	{
 		partition_temp .sector_start = partitions .back( ) .sector_end +1 ;
 		partition_temp .sector_end = end ;
@@ -748,9 +749,9 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 			if ( constraint )
 			{
 				if ( copy )
-					constraint ->min_size = new_partition .sector_end - new_partition .sector_start ;
+					constraint ->min_size = new_partition .get_length() ;
 				
-				if ( ped_disk_add_partition( lp_disk, c_part, constraint ) && commit( ) )
+				if ( ped_disk_add_partition( lp_disk, c_part, constraint ) && commit() )
 				{
 					new_partition .partition = ped_partition_get_path( c_part ) ;
 					new_partition .partition_number = c_part ->num ;
@@ -761,7 +762,7 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 			
 		}
 				
-		close_device_and_disk( ) ;
+		close_device_and_disk() ;
 	}
 
 	if ( new_partition .type == GParted::TYPE_EXTENDED ||
@@ -820,7 +821,7 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 			if ( constraint )
 			{
 				if ( ped_disk_set_partition_geom( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
-					return_value = commit( ) ;
+					return_value = commit() ;
 									
 				ped_constraint_destroy( constraint );
 			}

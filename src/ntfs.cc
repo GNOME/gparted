@@ -112,7 +112,10 @@ bool ntfs::Resize( const Partition & partition_new,
 	Glib::ustring str_temp = "echo y | ntfsresize -P --force " + partition_new .partition ;
 	
 	if ( ! fill_partition )
-		str_temp += " -s " + Utils::num_to_str( partition_new .Get_Length_MB() - cylinder_size, true ) + "M" ;
+	{
+		str_temp += " -s " ;
+		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit( partition_new .get_length(), GParted::UNIT_BYTE ) ), true ) ;
+	}
 	
 	//simulation..
 	operation_details .back() .sub_details .push_back( OperationDetails( _("run simulation") ) ) ;
@@ -129,8 +132,7 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .back() .sub_details .push_back( 
 			OperationDetails( operation_details .back() .description ) ) ;
 
-		argv .erase( argv .end() ) ;
-		argv .push_back( str_temp ) ;
+		argv .back() = str_temp ;
 		if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
