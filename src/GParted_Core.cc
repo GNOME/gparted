@@ -190,7 +190,7 @@ void GParted_Core::init_maps()
 				line += c_str ;
 
 				if ( realpath( line .c_str(), c_str ) )
-					short_paths[ line ] = c_str ;
+					short_paths[ c_str ] = line ;
 			}
 
 		proc_partitions .close() ;
