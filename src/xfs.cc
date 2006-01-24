@@ -153,7 +153,7 @@ bool xfs::Resize( const Partition & partition_new,
 			
 			//and unmount it...
 			operation_details .back() .sub_details .push_back(
-				OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
+				OperationDetails( String::ucompose( _("unmount %1"), partition_new .partition ) ) ) ;
 			if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -265,7 +265,7 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 						
 						//unmount destination partition
 						operation_details .back() .sub_details .push_back(
-							OperationDetails( String::ucompose( _("umount %1"), dest_part_path ) ) ) ;
+							OperationDetails( String::ucompose( _("unmount %1"), dest_part_path ) ) ) ;
 						if ( Utils::unmount( dest_part_path, DST, error ) )
 						{
 							operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -288,7 +288,7 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 					
 					//unmount source partition
 					operation_details .back() .sub_details .push_back(
-						OperationDetails( String::ucompose( _("umount %1"), src_part_path ) ) ) ;
+						OperationDetails( String::ucompose( _("unmount %1"), src_part_path ) ) ) ;
 					if ( Utils::unmount( src_part_path, SRC, error ) )
 					{
 						operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;

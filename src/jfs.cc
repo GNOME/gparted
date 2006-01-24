@@ -152,7 +152,7 @@ bool jfs::Resize( const Partition & partition_new,
 			
 			//and unmount it...
 			operation_details .back() .sub_details .push_back(
-				OperationDetails( String::ucompose( _("umount %1"), partition_new .partition ) ) ) ;
+				OperationDetails( String::ucompose( _("unmount %1"), partition_new .partition ) ) ) ;
 			if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
