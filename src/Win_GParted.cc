@@ -16,6 +16,7 @@
  */
  
 #include "../include/Win_GParted.h"
+#include "../include/Dialog_Progress.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
@@ -741,6 +742,7 @@ void Win_GParted::combo_devices_changed( )
 {	
 	//set new current device
 	current_device = combo_devices .get_active_row_number() ;
+	this ->set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .path ) );
 	
 	//refresh label_device_info
 	Fill_Label_Device_Info( );
@@ -761,7 +763,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_refresh_devices ), true ) ;
 
 	show_pulsebar( _("Scanning all devices...") ) ;
-		
+	
 	//check if current_device is still available (think about hotpluggable stuff like usbdevices)
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
@@ -803,6 +805,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	//if no devices were detected we disable some stuff and show a message in the statusbar
 	if ( devices .empty() )
 	{	
+		this ->set_title( _("GParted") );
 		combo_devices .hide() ;
 		
 		menubar_main .items()[ 1 ] .set_sensitive( false ) ;

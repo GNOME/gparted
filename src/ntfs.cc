@@ -24,19 +24,19 @@ namespace GParted
 FS ntfs::get_filesystem_support( )
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_NTFS ;
-	if ( ! system( "which ntfscluster 1>/dev/null 2>/dev/null" ) ) 
+	
+	if ( ! Glib::find_program_in_path( "ntfscluster" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkntfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which ntfsfix 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "ntfsfix" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing is a delicate process ...
-	if ( ! system( "which ntfsresize 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
@@ -45,7 +45,7 @@ FS ntfs::get_filesystem_support( )
 	}
 	
 	//we need ntfsresize to set correct used/unused after cloning
-	if ( ! system( "which ntfsclone 1>/dev/null 2>/dev/null" ) && fs .grow ) 
+	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	return fs ;

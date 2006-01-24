@@ -21,13 +21,12 @@
 namespace GParted
 {
 
-FS linux_swap::get_filesystem_support( )
+FS linux_swap::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_LINUX_SWAP ;
 	
-	if ( ! system( "which mkswap 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkswap" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;
 		fs .grow = GParted::FS::EXTERNAL ;
@@ -35,7 +34,7 @@ FS linux_swap::get_filesystem_support( )
 		fs .move = GParted::FS::EXTERNAL ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	return fs ;

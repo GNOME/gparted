@@ -25,7 +25,6 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Operation.h"
-#include "../include/Dialog_Progress.h"
 #include "../include/Dialog_Partition_Resize_Move.h"
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
@@ -41,6 +40,8 @@
 #include <gtkmm/statusbar.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/combobox.h>
+#include <gtkmm/progressbar.h>
+#include <gtkmm/scrolledwindow.h>
 
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 

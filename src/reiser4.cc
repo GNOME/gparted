@@ -21,25 +21,24 @@
 namespace GParted
 {
 
-FS reiser4::get_filesystem_support( )
+FS reiser4::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_REISER4 ;
 	
-	if ( ! system( "which debugfs.reiser4 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkfs.reiser4 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which fsck.reiser4 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "fsck.reiser4" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	/*
 	 * IT SEEMS RESIZE AND COPY AREN'T IMPLEMENTED YET IN THE TOOLS...
-	 * SEE http://marc.theaimsgroup.com/?t=109883161600003&r=1&w=2 for more information.. (it seems NameSys is getting commercial? :| )
-	*/
+	 * SEE http://marc.theaimsgroup.com/?t=109883161600003&r=1&w=2 for more information.. 
+	 */
 	  
 	return fs ;
 }

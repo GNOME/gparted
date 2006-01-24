@@ -88,7 +88,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	expander_details .set_use_markup( true ) ;
 	expander_details .add( scrolledwindow ) ;
 	
-	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET );
+	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_SHRINK ) ; 
 	this ->get_vbox() ->set_spacing( 5 ) ;
 	
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_NONE ) ;
@@ -231,6 +231,19 @@ void Dialog_Progress::thread_apply_operation( Operation * operation )
 	succes = signal_apply_operation .emit( *operation ) ;
 
 	pulse = false ;
+}
+
+void Dialog_Progress::on_response( int response_id ) 
+{
+	if ( pulse && ( response_id == Gtk::RESPONSE_DELETE_EVENT || response_id == Gtk::RESPONSE_CANCEL ) )
+	{
+		//FIXME i guess this is the best place to implement the cancel. there are 2 ways to trigger this:
+		//press the 'cancel' button
+		//close the dialog by pressing the cross
+		std::cout << "CANCEL!! yet to be implemented... ;)" << std::endl ;
+	}
+
+	Gtk::Dialog::on_response( response_id ) ;
 }
 
 Dialog_Progress::~Dialog_Progress()

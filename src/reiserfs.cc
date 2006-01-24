@@ -21,23 +21,22 @@
 namespace GParted
 {
 
-FS reiserfs::get_filesystem_support( )
+FS reiserfs::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_REISERFS ;
 	
-	if ( ! system( "which debugreiserfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "debugreiserfs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkreiserfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which reiserfsck 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "reiserfsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 		
 	//resizing is a delicate process ...
-	if ( ! system( "which resize_reiserfs 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! Glib::find_program_in_path( "resize_reiserfs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
@@ -46,7 +45,7 @@ FS reiserfs::get_filesystem_support( )
 	}
 	
 	//we need to call resize_reiserfs after a copy to get proper used/unused
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 ;

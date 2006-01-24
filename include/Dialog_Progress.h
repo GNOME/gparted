@@ -44,6 +44,8 @@ private:
 	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
 	void on_signal_show() ;
 	void thread_apply_operation( Operation * operation ) ;
+	
+	void on_response( int response_id ) ;
 
 	Gtk::Label label_current ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;

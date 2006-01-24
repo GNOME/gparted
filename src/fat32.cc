@@ -24,14 +24,13 @@ namespace GParted
 FS fat32::get_filesystem_support( )
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_FAT32 ;
 		
 	//find out if we can create fat32 filesystems
-	if ( ! system( "which mkdosfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which dosfsck 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
 	{
 		fs .check = GParted::FS::EXTERNAL ;
 		fs .read = GParted::FS::EXTERNAL ;
@@ -42,9 +41,9 @@ FS fat32::get_filesystem_support( )
 	fs .shrink = GParted::FS::LIBPARTED ;
 	fs .move = GParted::FS::LIBPARTED ;
 		
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
-
+	
 	fs .MIN = 32 ; //smaller fs'es will cause windows scandisk to fail..
 	
 	return fs ;

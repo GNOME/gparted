@@ -24,19 +24,19 @@ namespace GParted
 FS ext3::get_filesystem_support( )
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_EXT3 ;
-	if ( ! system( "which dumpe2fs 1>/dev/null 2>/dev/null" ) ) 
+	
+	if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkfs.ext3 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkfs.ext3" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which e2fsck 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing is a delicate process ...
-	if ( ! system( "which resize2fs 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
@@ -44,9 +44,9 @@ FS ext3::get_filesystem_support( )
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
-
+		
 	return fs ;
 }
 

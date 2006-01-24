@@ -21,18 +21,18 @@
 namespace GParted
 {
 
-FS hfs::get_filesystem_support( )
+FS hfs::get_filesystem_support()
 {
 	FS fs ;
 		
 	fs .filesystem = GParted::FS_HFS ;
 	
 	fs .read = GParted::FS::LIBPARTED; //provided by libparted
-	
-	if ( ! system( "which hformat 1>/dev/null 2>/dev/null" ) ) 
+
+	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MAX = 2048 ;

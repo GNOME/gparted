@@ -23,24 +23,22 @@
 namespace GParted
 {
 
-FS jfs::get_filesystem_support( )
+FS jfs::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_JFS ;
 		
-	if ( ! system( "which jfs_debugfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkfs.jfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which jfs_fsck 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "jfs_fsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing of jfs requires jfs support in the kernel
 	std::ifstream input( "/proc/filesystems" ) ;
-
 	if ( input )
 	{
 		Glib::ustring line ;
@@ -52,10 +50,10 @@ FS jfs::get_filesystem_support( )
 				break ;
 			}
 	
-		input .close( ) ;
+		input .close() ;
 	}
 	
-	if ( ! system( "which dd 1>/dev/null 2>/dev/null" ) && fs .grow ) 
+	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 16 ;
@@ -68,7 +66,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "sh" ) ;
 	argv .push_back( "-c" ) ;
 	argv .push_back( "echo dm | jfs_debugfs " + partition .partition ) ;
-
+	
 	if ( ! execute_command( argv, output ) )
 	{
 		//blocksize
@@ -120,7 +118,7 @@ bool jfs::Resize( const Partition & partition_new,
 	
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_jfs_mountpoint" ;
+	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_jfs_mountpoint" ;
 	
 	//create mountpoint...
 	operation_details .back() .sub_details .push_back(

@@ -26,20 +26,19 @@ namespace GParted
 FS xfs::get_filesystem_support( )
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_XFS ;
-		
-	if ( ! system( "which xfs_db 1>/dev/null 2>/dev/null" ) ) 
+	
+	if ( ! Glib::find_program_in_path( "xfs_db" ) .empty() ) 	
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which mkfs.xfs 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() ) 	
 		fs .create = GParted::FS::EXTERNAL ;
 	
-	if ( ! system( "which xfs_repair 1>/dev/null 2>/dev/null" ) ) 
+	if ( ! Glib::find_program_in_path( "xfs_repair" ) .empty() ) 	
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing of xfs requires xfs_growfs, xfs_repair and xfs support in the kernel
-	if ( ! system( "which xfs_growfs 1>/dev/null 2>/dev/null" ) && fs .check ) 
+	if ( ! Glib::find_program_in_path( "xfs_growfs" ) .empty() && fs .check ) 	
 	{
 		Glib::ustring line ;
 		std::ifstream input( "/proc/filesystems" ) ;
@@ -53,7 +52,9 @@ FS xfs::get_filesystem_support( )
 		input .close( ) ;
 	}
 	
-	if ( ! system( "which xfsdump xfsrestore 1>/dev/null 2>/dev/null" ) && fs .check && fs .create )
+	if ( ! Glib::find_program_in_path( "xfsdump" ) .empty() &&
+	     ! Glib::find_program_in_path( "xfsrestore" ) .empty() &&
+	     fs .check && fs .create ) 	
 		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
@@ -70,7 +71,7 @@ void xfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "-c print fdblocks" ) ;
 	argv .push_back( "-r" ) ;
 	argv .push_back( partition .partition ) ;
-
+	
 	if ( ! execute_command( argv, output ) )
 	{
 		//blocksize
@@ -119,7 +120,7 @@ bool xfs::Resize( const Partition & partition_new,
 
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring TEMP_MP = "/tmp/gparted_tmp_xfs_mountpoint" ;
+	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_xfs_mountpoint" ;
 
 	//create mountpoint...
 	operation_details .back() .sub_details .push_back(
@@ -209,8 +210,8 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 	
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring SRC = "/tmp/gparted_tmp_xfs_src_mountpoint" ;
-	Glib::ustring DST = "/tmp/gparted_tmp_xfs_dest_mountpoint" ;
+	Glib::ustring SRC = Glib::get_tmp_dir() + "/gparted_tmp_xfs_src_mountpoint" ;
+	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mountpoint" ;
 	
 	//create xfs filesystem on destination..
 	Partition partition ;
