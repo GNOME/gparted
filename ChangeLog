@@ -1,5 +1,12 @@
 2006-01-24 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* src/Utils.cc: use realpath() to get absolute path to 'real'
+	  /etc/mtab.
+	  unmount if something went wrong while adding the line to '/etc/mtab'
+	* src/Dialog_Progress.cc: replaced PACK_SHRINK with PACK_EXPAND_WIDGET
+	
+2006-01-24 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/GParted_Core.cc: swapped 'line' and 'c_str' to make
 	  get_short_path() work properly.
 	

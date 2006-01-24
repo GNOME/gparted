@@ -166,16 +166,24 @@ bool Utils::mount( const Glib::ustring & node,
 			//append 'line' to /etc/mtab
 			if ( hit )
 			{
-				std::ofstream mtab( "/etc/mtab", std::ios::app ) ;
-
-				if ( mtab )
+				//in some situations (some livecd's e.g.) /etc/mtab is a (sym)link.
+				char real_path[255] ;
+				if ( realpath( "/etc/mtab", real_path ) )
 				{
-					mtab << line << '\n' ;
-					mtab .close() ;
+					std::ofstream mtab( real_path, std::ios::app ) ;
 
-					return true ;
+					if ( mtab )
+					{
+						mtab << line << '\n' ;
+						mtab .close() ;
+	
+						return true ;
+					}
 				}
 			}
+
+			//something went wrong while adding the line to mtab
+			umount( mountpoint .c_str() ) ;
 		}
 	}
 	else

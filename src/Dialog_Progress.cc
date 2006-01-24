@@ -88,7 +88,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	expander_details .set_use_markup( true ) ;
 	expander_details .add( scrolledwindow ) ;
 	
-	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_SHRINK ) ; 
+	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
 	this ->get_vbox() ->set_spacing( 5 ) ;
 	
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_NONE ) ;
