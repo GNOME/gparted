@@ -53,7 +53,6 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}
 		
-		
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ;
 	this ->show_all_children( ) ;
 }
@@ -63,7 +62,6 @@ void Dialog_Partition_Info::drawingarea_on_realize( )
 	gc = Gdk::GC::create( drawingarea .get_window( ) ) ;
 	
 	drawingarea .get_window( ) ->set_background( color_partition ) ;
-	
 }
 
 bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
@@ -72,23 +70,23 @@ bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 	{
 		//used
 		gc ->set_foreground( color_used );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, BORDER, BORDER, used, 34 ) ;
+		drawingarea .get_window() ->draw_rectangle( gc, true, BORDER, BORDER, used, 44 ) ;
 		
 		//unused
 		gc ->set_foreground( color_unused );
-		drawingarea .get_window( ) ->draw_rectangle( gc, true, BORDER + used, BORDER, unused, 34 ) ;
+		drawingarea .get_window() ->draw_rectangle( gc, true, BORDER + used, BORDER, unused, 44 ) ;
 	}
 	
 	//text
 	gc ->set_foreground( color_text );
-	drawingarea .get_window( ) ->draw_layout( gc, BORDER +5, BORDER +1 ,pango_layout ) ;
+	drawingarea .get_window() ->draw_layout( gc, 180, BORDER + 6, pango_layout ) ;
 	
 	return true;
 }
 
 void Dialog_Partition_Info::init_drawingarea( ) 
 {
-	drawingarea .set_size_request( 375, 50 ) ;
+	drawingarea .set_size_request( 400, 60 ) ;
 	drawingarea .signal_realize( ).connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_realize) ) ;
 	drawingarea .signal_expose_event( ).connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_expose) ) ;
 	
@@ -104,20 +102,25 @@ void Dialog_Partition_Info::init_drawingarea( )
 	
 	//calculate proportional width of used and unused
 	used = unused = 0 ;
-	used = Utils::Round( (375 - BORDER *2) / ( static_cast<double> (partition .sector_end - partition .sector_start) / partition .sectors_used ) ) ;
-	unused = 375 - used - BORDER *2 ;
+	used = Utils::Round( (400 - BORDER *2) / ( static_cast<double>(partition .sector_end - partition .sector_start) / partition .sectors_used ) ) ;
+	unused = 400 - used - BORDER *2 ;
 	
 	//allocate some colors
-	color_used.set( "#F8F8BA" ); this ->get_colormap( ) ->alloc_color( color_used ) ;
+	color_used.set( "#F8F8BA" );
+	this ->get_colormap() ->alloc_color( color_used ) ;
 	
-	partition .type == GParted::TYPE_EXTENDED ? color_unused .set( "darkgrey" ) : color_unused .set( "white" ) ;
-	this ->get_colormap( ) ->alloc_color( color_unused ) ;
+	color_unused .set( partition .type == GParted::TYPE_EXTENDED ? "darkgrey" : "white" ) ;
+	this ->get_colormap() ->alloc_color( color_unused ) ;
 
-	color_text .set( "black" );		this ->get_colormap( ) ->alloc_color( color_text ) ;
-	color_partition = partition .color ;	this ->get_colormap( ) ->alloc_color( color_partition ) ;	 
+	color_text .set( "black" );
+	this ->get_colormap() ->alloc_color( color_text ) ;
+	
+	color_partition = partition .color ;
+	this ->get_colormap() ->alloc_color( color_partition ) ;	 
 	
 	//set text of pangolayout
-	pango_layout = drawingarea .create_pango_layout ( partition .partition + "\n" + String::ucompose( _("%1 MiB"), partition .Get_Length_MB( ) ) ) ;
+	pango_layout = drawingarea .create_pango_layout( 
+		partition .partition + "\n" + Utils::format_size( partition .get_length() ) ) ;
 }
 
 void Dialog_Partition_Info::Display_Info( )
@@ -186,8 +189,10 @@ void Dialog_Partition_Info::Display_Info( )
 				str_temp =  _("Busy  (At least one logical partition is mounted)" ) ;
 			else if ( partition .filesystem == FS_LINUX_SWAP )
 				str_temp = _("Active") ;
-			else
+			else if ( ! partition .mountpoint .empty() )
 				str_temp = String::ucompose( _("Mounted on %1"), partition .mountpoint ) ;
+			else 
+				str_temp = _("Unable to find mountpoint") ;
 		}
 		else if ( partition.type == GParted::TYPE_EXTENDED )
 			str_temp = _("Not busy (There are no mounted logical partitions)" ) ;

@@ -162,18 +162,37 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 
 void GParted_Core::init_maps() 
 {
+	std::string line ;
+
 	//initialize mountpoints..
-	std::ifstream input( "/proc/mounts" ) ;
-	if ( input )
+	char node[255], mountpoint[255] ;
+	std::ifstream proc_mounts( "/proc/mounts" ) ;
+	if ( proc_mounts )
 	{
-		char node[255], mountpoint[255] ;
-		std::string line ;
-			
-		while ( getline( input, line ) )
-		if ( line .length() > 0 && line[ 0 ] == '/' && sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 )
-			mount_info[ node ] = mountpoint ;
+		while ( getline( proc_mounts, line ) )
+			if ( line .length() > 0 &&
+			     line[ 0 ] == '/' &&
+			     sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 )
+				mount_info[ node ] = mountpoint ;
 		
-		input .close() ;
+		proc_mounts .close() ;
+	}
+	
+	//above list lacks the root mountpoint, try to get it from /etc/mtab
+	std::ifstream etc_mtab( "/etc/mtab" ) ;
+	if ( etc_mtab )
+	{
+		while ( getline( etc_mtab, line ) )
+			if ( line .length() > 0 &&
+			     line[ 0 ] == '/' &&
+			     sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 &&
+			     static_cast<Glib::ustring>( mountpoint ) == "/" )
+			{
+				mount_info[ node ] = mountpoint ;
+				break ;
+			}
+			
+		etc_mtab .close() ;
 	}
 
 	//initialize shortpaths...
@@ -181,7 +200,6 @@ void GParted_Core::init_maps()
 	if ( proc_partitions )
 	{
 		char c_str[255] ;
-		std::string line ;
 		
 		while ( getline( proc_partitions, line ) )
 			if ( sscanf( line .c_str(), "%*d %*d %*d %255s", c_str ) == 1 )
@@ -342,8 +360,6 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 					partitions[ t ] .mountpoint = iter ->second ;
 					mount_info .erase( iter ) ;
 				}
-				else 
-					partitions[ t ] .mountpoint = "/" ;
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_mountpoints( partitions[ t ] .logicals ) ;
