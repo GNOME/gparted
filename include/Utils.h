@@ -30,7 +30,6 @@
 #include <glibmm/ustring.h>
 
 #include <iostream>
-#include <sys/mount.h>
 
 namespace GParted
 {

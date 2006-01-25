@@ -19,6 +19,7 @@
 #include "../include/jfs.h"
 
 #include <cerrno>
+#include <sys/mount.h>
 
 namespace GParted
 {

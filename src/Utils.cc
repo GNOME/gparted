@@ -21,6 +21,7 @@
 #include <fstream>
 #include <cerrno>
 #include <iomanip>
+#include <sys/mount.h>
 
 namespace GParted
 {
@@ -145,16 +146,15 @@ bool Utils::mount( const Glib::ustring & node,
 		if ( proc_mounts )
 		{
 			bool hit = false ;
-			char c_node[255], c_mountpoint[255] ;
+			char c_node[255] ;
 			std::string line ;
 
 			//search for relevant line in /proc/mounts
 			while ( getline( proc_mounts, line ) )
 			{
 				if ( line .length() > 0 && line[ 0 ] == '/' &&
-		     		     sscanf( line .c_str(),"%s %s", c_node, c_mountpoint ) == 2 &&
-		     		     c_node == node && c_mountpoint == mountpoint
-				   )
+		     		     sscanf( line .c_str(),"%255s", c_node ) == 1 &&
+		     		     c_node == node )
 				{
 					hit = true ;
 					break ;
@@ -166,19 +166,14 @@ bool Utils::mount( const Glib::ustring & node,
 			//append 'line' to /etc/mtab
 			if ( hit )
 			{
-				//in some situations (some livecd's e.g.) /etc/mtab is a (sym)link.
-				char real_path[255] ;
-				if ( realpath( "/etc/mtab", real_path ) )
-				{
-					std::ofstream mtab( real_path, std::ios::app ) ;
+				std::ofstream mtab( "/etc/mtab", std::ios::app ) ;
 
-					if ( mtab )
-					{
-						mtab << line << '\n' ;
-						mtab .close() ;
+				if ( mtab )
+				{
+					mtab << line << '\n' ;
+					mtab .close() ;
 	
-						return true ;
-					}
+					return true ;
 				}
 			}
 

@@ -19,6 +19,7 @@
 #include "../include/xfs.h"
 
 #include <cerrno>
+#include <sys/mount.h>
 
 namespace GParted
 {
