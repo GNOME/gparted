@@ -30,6 +30,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
 	succes = true ;
+	cancel = false ;
 
 	fraction = 1.00 / operations .size() ;
 			
@@ -91,7 +92,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
 	this ->get_vbox() ->set_spacing( 5 ) ;
 	
-	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_NONE ) ;
+	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
 	
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
@@ -151,9 +152,9 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 
 void Dialog_Progress::on_signal_show()
 {
-	for ( t = 0 ; t < operations .size() && succes ; t++ )
+	for ( t = 0 ; t < operations .size() && succes && ! cancel ; t++ )
 	{
-		label_current .set_markup( "<i>" + operations[ t ] .str_operation + "</i>" ) ;
+		label_current .set_markup( "<i>" + operations[ t ] .str_operation + "</i>\n" ) ;
 		
 		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
 		progressbar_all .set_fraction( fraction * t ) ;
@@ -163,8 +164,7 @@ void Dialog_Progress::on_signal_show()
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treestore_operations ->children()[ t ] ) ) ;
 		
 		pulse = true ;
-		thread = Glib::Thread::create( sigc::bind<Operation *>( 
-				sigc::mem_fun( *this, &Dialog_Progress::thread_apply_operation ), &( operations[ t ] ) ), true );
+		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
 		
 		treerow = treestore_operations ->children()[ t ] ;
 		while ( pulse )
@@ -179,24 +179,30 @@ void Dialog_Progress::on_signal_show()
 			usleep( 10000 ) ;
 		}
 
-		thread ->join() ;
-
 		//final updates for this operation
 		update_operation_details( treerow, operations[ t ] .operation_details ) ;
 		static_cast<Gtk::TreeRow>( treestore_operations ->children()[ t ] )
 			[ treeview_operations_columns .status_icon ] = succes ? icon_succes : icon_error ;
 	}
-
+	
 	//replace 'cancel' with 'close'
-	std::vector<Gtk::Widget *> children  = this ->get_action_area() ->get_children() ;
+	std::vector<Gtk::Widget *> children = this ->get_action_area() ->get_children() ;
 	this ->get_action_area() ->remove( * children .back() ) ;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK );
 
-	//hide 'current operation' stuff
-	children = this ->get_vbox() ->get_children() ;
-	children[ 1 ] ->hide() ;
-	progressbar_current .hide() ;
-	label_current .hide() ;
+	if ( cancel )
+	{
+		progressbar_current .set_text( _("Operation cancelled") ) ;
+		progressbar_current .set_fraction( 0.0 ) ;
+	}
+	else
+	{
+		//hide 'current operation' stuff
+		children = this ->get_vbox() ->get_children() ;
+		children[ 1 ] ->hide() ;
+		progressbar_current .hide() ;
+		label_current .hide() ;
+	}
 
 	//deal with succes/error...
 	if ( succes )
@@ -206,44 +212,63 @@ void Dialog_Progress::on_signal_show()
 	}
 	else 
 	{
-		progressbar_all .set_text( _("Not all operations were succesfully completed") ) ;
 		expander_details .set_expanded( true ) ;
 
-		Gtk::MessageDialog dialog( *this,
-					   _("An error occurred while applying the operations"),
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true ) ;
-		str_temp = _("The following operation could not be applied to disk:") ;
-		str_temp += "\n<i>" ;
-		str_temp += label_current .get_text() ;
-		str_temp += "</i>\n\n" ;
-		str_temp += _("See the details for more information") ;
+		if ( ! cancel )
+		{
+			Gtk::MessageDialog dialog( *this,
+						   _("An error occurred while applying the operations"),
+						   false,
+						   Gtk::MESSAGE_ERROR,
+						   Gtk::BUTTONS_OK,
+						   true ) ;
+			str_temp = _("The following operation could not be applied to disk:") ;
+			str_temp += "\n<i>" ;
+			str_temp += label_current .get_text() ;
+			str_temp += "</i>\n\n" ;
+			str_temp += _("See the details for more information") ;
 		
-		dialog .set_secondary_text( str_temp, true ) ;
-		dialog .run() ;
+			dialog .set_secondary_text( str_temp, true ) ;
+			dialog .run() ;
+		}
 	}
 }
 
-void Dialog_Progress::thread_apply_operation( Operation * operation ) 
+void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 
 {
-	succes = signal_apply_operation .emit( *operation ) ;
+	Dialog_Progress *dp = static_cast<Dialog_Progress *>( p_dialog_progress ) ;
+	
+	dp ->succes = dp ->signal_apply_operation .emit( dp ->operations[ dp ->t ] ) ;
 
-	pulse = false ;
+	dp ->pulse = false ;
+
+	return NULL ;
 }
 
 void Dialog_Progress::on_response( int response_id ) 
 {
-	if ( pulse && ( response_id == Gtk::RESPONSE_DELETE_EVENT || response_id == Gtk::RESPONSE_CANCEL ) )
+	if ( response_id == Gtk::RESPONSE_CANCEL )
 	{
-		//FIXME i guess this is the best place to implement the cancel. there are 2 ways to trigger this:
-		//press the 'cancel' button
-		//close the dialog by pressing the cross
-		std::cout << "CANCEL!! yet to be implemented... ;)" << std::endl ;
-	}
+		Gtk::MessageDialog dialog( *this,
+					   _("Are you sure you want to cancel the current operation?"),
+					   false,
+					   Gtk::MESSAGE_QUESTION,
+					   Gtk::BUTTONS_NONE,
+					   true ) ;
+		
+		dialog .set_secondary_text( _("Cancelling an operation may cause SEVERE filesystem damage.") ) ;
 
-	Gtk::Dialog::on_response( response_id ) ;
+		dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
+		dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
+	
+		if ( dialog .run() == Gtk::RESPONSE_CANCEL )
+		{
+			pthread_cancel( pthread ) ;
+			cancel = true ;
+			pulse = false ;
+			succes = false ;
+		}
+	}
 }
 
 Dialog_Progress::~Dialog_Progress()

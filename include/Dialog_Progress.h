@@ -43,7 +43,7 @@ public:
 private:
 	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
 	void on_signal_show() ;
-	void thread_apply_operation( Operation * operation ) ;
+	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
 	
 	void on_response( int response_id ) ;
 
@@ -78,8 +78,8 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	std::vector<Operation> operations ;
-	bool pulse, succes ;
-	Glib::Thread *thread ;
+	bool pulse, succes, cancel ;
+	pthread_t pthread ;
 	double fraction ;
 	unsigned int t ;
 	Glib::ustring str_temp ;
