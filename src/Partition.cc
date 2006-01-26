@@ -87,8 +87,11 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector secto
 
 void Partition::Update_Number( int new_number )
 {   
+	this ->partition =
+		partition .substr( 0, partition .find( Utils::num_to_str( partition_number ) ) ) +
+		Utils::num_to_str( new_number ) ;
+	
 	this ->partition_number = new_number;
-	this ->partition = device_path + Utils::num_to_str( partition_number ) ;
 }
 
 long Partition::Get_Length_MB() const
