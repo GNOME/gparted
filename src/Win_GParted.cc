@@ -923,7 +923,7 @@ void Win_GParted::menu_help_about( )
 	dialog .set_name( _("GParted") ) ;
 	dialog .set_logo( this ->get_icon( ) ) ;
 	dialog .set_version( VERSION ) ;
-	dialog .set_comments( _( "Gnome Partition Editor" ) ) ;
+	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
 	dialog .set_copyright( "Copyright © 2004-2005 Bart Hakvoort" ) ;
 
 	//authors

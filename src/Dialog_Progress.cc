@@ -192,7 +192,7 @@ void Dialog_Progress::on_signal_show()
 
 	if ( cancel )
 	{
-		progressbar_current .set_text( _("Operation cancelled") ) ;
+		progressbar_current .set_text( _("Operation canceled") ) ;
 		progressbar_current .set_fraction( 0.0 ) ;
 	}
 	else
@@ -256,7 +256,7 @@ void Dialog_Progress::on_response( int response_id )
 					   Gtk::BUTTONS_NONE,
 					   true ) ;
 		
-		dialog .set_secondary_text( _("Cancelling an operation may cause SEVERE filesystem damage.") ) ;
+		dialog .set_secondary_text( _("Canceling an operation may cause SEVERE filesystem damage.") ) ;
 
 		dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
 		dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
