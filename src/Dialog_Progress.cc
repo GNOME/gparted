@@ -26,6 +26,7 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 {
+	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
@@ -52,7 +53,6 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	this ->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK );
 	
 	this ->get_vbox() ->pack_start( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Completed Operations:") ) + "</b>" ), Gtk::PACK_SHRINK );
-	progressbar_all .set_size_request( 500, -1 ) ;
 	this ->get_vbox() ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
 	//create some icons here, instead of recreating them every time
@@ -87,6 +87,8 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 
 	expander_details .set_label( "<b>" + static_cast<Glib::ustring>( _("Details") ) + "</b>" ) ;
 	expander_details .set_use_markup( true ) ;
+	expander_details .property_expanded() .signal_changed() .connect(
+   		sigc::mem_fun(*this, &Dialog_Progress::on_expander_changed) );
 	expander_details .add( scrolledwindow ) ;
 	
 	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
@@ -231,7 +233,12 @@ void Dialog_Progress::on_signal_show()
 			dialog .set_secondary_text( str_temp, true ) ;
 			dialog .run() ;
 		}
-	}
+	} 
+}
+
+void Dialog_Progress::on_expander_changed() 
+{
+	this ->set_resizable( expander_details .get_expanded() ) ;
 }
 
 void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 

@@ -1384,6 +1384,7 @@ void Win_GParted::activate_apply( )
 		dialog .hide() ; //hide confirmationdialog
 		
 		Dialog_Progress dialog_progress( operations ) ;
+		dialog_progress .set_transient_for( *this ) ;
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
  

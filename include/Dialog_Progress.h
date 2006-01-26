@@ -43,6 +43,7 @@ public:
 private:
 	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
 	void on_signal_show() ;
+	void on_expander_changed() ;
 	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
 	
 	void on_response( int response_id ) ;
