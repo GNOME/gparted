@@ -22,14 +22,8 @@
 #include "../include/VBox_VisualDisk.h"
 #include "../include/Partition.h"
 #include "../include/TreeView_Detail.h"
-#include "../include/Dialog_Partition_Info.h"
-#include "../include/Dialog_Partition_New.h"
 #include "../include/Operation.h"
-#include "../include/Dialog_Partition_Resize_Move.h"
-#include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
-#include "../include/Dialog_Disklabel.h"
-#include "../include/Dialog_Filesystems.h" 
 
 #include <sigc++/class_slot.h>
 #include <gtkmm/main.h>
@@ -42,6 +36,8 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/scrolledwindow.h>
+#include <gtkmm/window.h>
+#include <gtkmm/table.h>
 
 #include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 

@@ -26,13 +26,9 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/label.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/table.h>
-
-#include <vector>
-#include <fstream>
 
 #define BORDER 8
  
@@ -46,11 +42,11 @@ public:
 	~Dialog_Partition_Info();
 
 private:
-	void init_drawingarea( ) ;
-	void Display_Info( );
+	void init_drawingarea() ;
+	void Display_Info();
 
 	//signalhandlers
-	void drawingarea_on_realize( );
+	void drawingarea_on_realize();
 	bool drawingarea_on_expose( GdkEventExpose *ev );
 
 	Partition partition ;

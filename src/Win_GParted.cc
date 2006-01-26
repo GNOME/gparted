@@ -17,6 +17,12 @@
  
 #include "../include/Win_GParted.h"
 #include "../include/Dialog_Progress.h"
+#include "../include/Dialog_Filesystems.h" 
+#include "../include/Dialog_Disklabel.h"
+#include "../include/Dialog_Partition_Resize_Move.h"
+#include "../include/Dialog_Partition_Copy.h"
+#include "../include/Dialog_Partition_New.h"
+#include "../include/Dialog_Partition_Info.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
