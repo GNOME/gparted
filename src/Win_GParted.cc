@@ -1394,7 +1394,7 @@ void Win_GParted::activate_apply( )
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
  
-		for ( ; dialog_progress .run() != Gtk::RESPONSE_OK ; ) {}
+		for ( ; dialog_progress .run() == Gtk::RESPONSE_CANCEL ; ) {}
 		dialog_progress .hide() ;
 		
 		//find out if any of the involved devices is busy

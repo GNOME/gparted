@@ -252,31 +252,42 @@ void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress
 	return NULL ;
 }
 
+void Dialog_Progress::on_cancel()
+{
+	Gtk::MessageDialog dialog( *this,
+				   _("Are you sure you want to cancel the current operation?"),
+				   false,
+				   Gtk::MESSAGE_QUESTION,
+				   Gtk::BUTTONS_NONE,
+				   true ) ;
+		
+	dialog .set_secondary_text( _("Canceling an operation may cause SEVERE filesystem damage.") ) ;
+
+	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
+	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
+	
+	if ( dialog .run() == Gtk::RESPONSE_CANCEL )
+	{
+		pthread_cancel( pthread ) ;
+		cancel = true ;
+		pulse = false ;
+		succes = false ;
+	}
+}
+
 void Dialog_Progress::on_response( int response_id ) 
 {
 	if ( response_id == Gtk::RESPONSE_CANCEL )
-	{
-		Gtk::MessageDialog dialog( *this,
-					   _("Are you sure you want to cancel the current operation?"),
-					   false,
-					   Gtk::MESSAGE_QUESTION,
-					   Gtk::BUTTONS_NONE,
-					   true ) ;
-		
-		dialog .set_secondary_text( _("Canceling an operation may cause SEVERE filesystem damage.") ) ;
-
-		dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
-		dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
-	
-		if ( dialog .run() == Gtk::RESPONSE_CANCEL )
-		{
-			pthread_cancel( pthread ) ;
-			cancel = true ;
-			pulse = false ;
-			succes = false ;
-		}
-	}
+		on_cancel() ;
 }
+
+bool Dialog_Progress::on_delete_event( GdkEventAny * event ) 
+{
+	//it seems this get only called at runtime
+	on_cancel() ;
+	return true ;
+}
+
 
 Dialog_Progress::~Dialog_Progress()
 {

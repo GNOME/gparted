@@ -45,8 +45,10 @@ private:
 	void on_signal_show() ;
 	void on_expander_changed() ;
 	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
+	void on_cancel() ;
 	
 	void on_response( int response_id ) ;
+	bool on_delete_event( GdkEventAny * event ) ;
 
 	Gtk::Label label_current ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
