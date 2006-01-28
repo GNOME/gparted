@@ -44,6 +44,7 @@ private:
 	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
 	void on_signal_show() ;
 	void on_expander_changed() ;
+	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
 	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
 	void on_cancel() ;
 	

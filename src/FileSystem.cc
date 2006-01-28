@@ -32,7 +32,7 @@ int FileSystem::execute_command( std::vector<std::string> argv, std::vector<Oper
 	for ( unsigned int t = 0 ; t < argv .size() ; t++ )
 		temp += argv[ t ] + " " ;
 
-	operation_details .push_back( OperationDetails( temp, OperationDetails::NONE ) ) ;
+	operation_details .push_back( OperationDetails( "<b><i>" + temp + "</i></b>", OperationDetails::NONE ) ) ;
 
 	try
 	{
@@ -53,10 +53,10 @@ int FileSystem::execute_command( std::vector<std::string> argv, std::vector<Oper
 	} 
 	
 	if ( ! output .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetails( output, OperationDetails::NONE ) ) ;
+		operation_details .back() .sub_details .push_back( OperationDetails( "<i>" + output + "</i>", OperationDetails::NONE ) ) ;
 	
 	if ( ! error .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetails( error, OperationDetails::NONE ) ) ;
+		operation_details .back() .sub_details .push_back( OperationDetails( "<i>" + error + "</i>", OperationDetails::NONE ) ) ;
 
 	return exit_status ;
 }

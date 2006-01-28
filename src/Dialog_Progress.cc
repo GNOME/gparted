@@ -74,12 +74,15 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	{
 		treerow = *( treestore_operations ->append() );
 		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] .operation_icon ;
-		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] .str_operation ; 
+		treerow[ treeview_operations_columns .operation_description ] = "<b>" + operations[ t ] .str_operation + "</b>" ; 
 
 		this ->operations[ t ] .operation_details .description = operations[ t ] .str_operation ;
 	}
 	
 	treeview_operations .get_column( 1 ) ->set_expand( true ) ;
+	treeview_operations .get_column( 1 ) ->set_cell_data_func( 
+		* ( treeview_operations .get_column( 1 ) ->get_first_cell_renderer() ),
+		sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) ) ;
 	
 	scrolledwindow .set_shadow_type( Gtk::SHADOW_ETCHED_IN ) ;
 	scrolledwindow .set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC ) ;
@@ -239,6 +242,12 @@ void Dialog_Progress::on_signal_show()
 void Dialog_Progress::on_expander_changed() 
 {
 	this ->set_resizable( expander_details .get_expanded() ) ;
+}
+
+void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter )
+{
+	dynamic_cast<Gtk::CellRendererText *>( renderer ) ->property_markup() = 
+		static_cast<Gtk::TreeRow>( * iter )[ treeview_operations_columns .operation_description ] ;
 }
 
 void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 
