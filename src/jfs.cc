@@ -147,8 +147,10 @@ bool jfs::Resize( const Partition & partition_new,
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				operation_details .back() .sub_details .back() .sub_details .push_back(
-					OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+				if ( ! error .empty() )
+					operation_details .back() .sub_details .back() .sub_details .push_back(
+						OperationDetails( error, OperationDetails::NONE ) ) ;
 			}
 			
 			//and unmount it...
@@ -161,8 +163,10 @@ bool jfs::Resize( const Partition & partition_new,
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				operation_details .back() .sub_details .back() .sub_details .push_back(
-					OperationDetails( error, OperationDetails::NONE ) ) ;
+			
+				if ( ! error .empty() )
+					operation_details .back() .sub_details .back() .sub_details .push_back(
+						OperationDetails( error, OperationDetails::NONE ) ) ;
 				
 				return_value = false ;
 			}
@@ -170,8 +174,10 @@ bool jfs::Resize( const Partition & partition_new,
 		else
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-			operation_details .back() .sub_details .back() .sub_details .push_back(
-				OperationDetails( error, OperationDetails::NONE ) ) ;
+			
+			if ( ! error .empty() )
+				operation_details .back() .sub_details .back() .sub_details .push_back(
+					OperationDetails( error, OperationDetails::NONE ) ) ;
 		}
 		
 		//remove the mountpoint..

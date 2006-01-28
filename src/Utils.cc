@@ -190,24 +190,24 @@ bool Utils::mount( const Glib::ustring & node,
 
 bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) 
 {
+	//FIXME this function should only accept 'node' and unmount _all_ mounts of that node
 	if ( ! umount( mountpoint .c_str() ) )
 	{
-		//search in /etc/mtab voor node and mountpoint and delete that line
+		//search in /etc/mtab for node and delete that line
 		Glib::ustring mtab_minus_mount ;
 		bool hit = false ;
+		
 		std::ifstream mtab_in( "/etc/mtab" ) ;
-
 		if ( mtab_in )
 		{
-			char c_node[255], c_mountpoint[255] ;
+			char c_node[255] ;
 			std::string line ;
 
 			while ( getline( mtab_in, line ) )
 			{
 				if ( line .length() > 0 && line[ 0 ] == '/' &&
-		     		     sscanf( line .c_str(),"%s %s", c_node, c_mountpoint ) == 2 &&
-		     		     c_node == node && c_mountpoint == mountpoint
-				   )
+		     		     sscanf( line .c_str(),"%255s", c_node ) == 1 &&
+		     		     c_node == node )
 					hit = true ;
 				else
 					mtab_minus_mount += line + '\n';
@@ -219,7 +219,6 @@ bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoin
 		if ( hit )
 		{
 			std::ofstream mtab_out( "/etc/mtab" ) ;
-
 			if ( mtab_out )
 			{
 				mtab_out << mtab_minus_mount ;

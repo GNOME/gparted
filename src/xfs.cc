@@ -162,8 +162,10 @@ bool xfs::Resize( const Partition & partition_new,
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				operation_details .back() .sub_details .back() .sub_details .push_back(
-					OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+				if ( ! error .empty() )
+					operation_details .back() .sub_details .back() .sub_details .push_back(
+						OperationDetails( error, OperationDetails::NONE ) ) ;
 
 				return_value = false ;
 			}
@@ -171,8 +173,10 @@ bool xfs::Resize( const Partition & partition_new,
 		else
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-			operation_details .back() .sub_details .back() .sub_details .push_back(
-				OperationDetails( error, OperationDetails::NONE ) ) ;
+			
+			if ( ! error .empty() )
+				operation_details .back() .sub_details .back() .sub_details .push_back(
+					OperationDetails( error, OperationDetails::NONE ) ) ;
 		}
 				
 		//remove the mountpoint..
@@ -274,8 +278,10 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 						else
 						{
 							operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-							operation_details .back() .sub_details .back() .sub_details .push_back(
-								OperationDetails( error, OperationDetails::NONE ) ) ;
+							
+							if ( ! error .empty() )
+								operation_details .back() .sub_details .back() .sub_details .push_back(
+									OperationDetails( error, OperationDetails::NONE ) ) ;
 			
 							return_value = false ;
 						}
@@ -283,8 +289,10 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 					else
 					{
 						operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-						operation_details .back() .sub_details .back() .sub_details .push_back(
-							OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+						if ( ! error .empty() )
+							operation_details .back() .sub_details .back() .sub_details .push_back(
+								OperationDetails( error, OperationDetails::NONE ) ) ;
 					}
 					
 					//unmount source partition
@@ -297,8 +305,10 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 					else
 					{
 						operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-						operation_details .back() .sub_details .back() .sub_details .push_back(
-							OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+						if ( ! error .empty() )
+							operation_details .back() .sub_details .back() .sub_details .push_back(
+								OperationDetails( error, OperationDetails::NONE ) ) ;
 			
 						return_value = false ;
 					}
@@ -306,8 +316,10 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 				else
 				{
 					operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-					operation_details .back() .sub_details .back() .sub_details .push_back(
-						OperationDetails( error, OperationDetails::NONE ) ) ;
+				
+					if ( ! error .empty() )
+						operation_details .back() .sub_details .back() .sub_details .push_back(
+							OperationDetails( error, OperationDetails::NONE ) ) ;
 				}
 		
 				//remove destination mountpoint..
