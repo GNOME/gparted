@@ -67,7 +67,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 	argv .push_back( "sh" ) ;
 	argv .push_back( "-c" ) ;
 	argv .push_back( "echo dm | jfs_debugfs " + partition .partition ) ;
-	
+
 	if ( ! execute_command( argv, output ) )
 	{
 		//blocksize

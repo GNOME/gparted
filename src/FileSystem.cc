@@ -65,6 +65,7 @@ int FileSystem::execute_command( std::vector<std::string> argv, std::string & ou
 {
 	std::vector<std::string> envp ;
 	envp .push_back( "LC_ALL=C" ) ;
+	envp .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
 	
 	try
 	{
