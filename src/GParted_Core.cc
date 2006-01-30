@@ -166,14 +166,23 @@ void GParted_Core::init_maps()
 
 	//initialize mountpoints..
 	char node[255], mountpoint[255] ;
+	unsigned int index ;
 	std::ifstream proc_mounts( "/proc/mounts" ) ;
 	if ( proc_mounts )
 	{
 		while ( getline( proc_mounts, line ) )
 			if ( line .length() > 0 &&
 			     line[ 0 ] == '/' &&
-			     sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 )
-				mount_info[ node ] = mountpoint ;
+			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 )
+			{
+				//see if mountpoint contains spaces and deal with it
+				line = mountpoint ;
+				index = line .find( "\\040" ) ;
+				if ( index < line .length() )
+					line .replace( index, 4, " " ) ;
+				
+				mount_info[ node ] = line ;
+			}
 		
 		proc_mounts .close() ;
 	}
@@ -185,10 +194,10 @@ void GParted_Core::init_maps()
 		while ( getline( etc_mtab, line ) )
 			if ( line .length() > 0 &&
 			     line[ 0 ] == '/' &&
-			     sscanf( line .c_str(), "%s %s", node, mountpoint ) == 2 &&
+			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
 			     static_cast<Glib::ustring>( mountpoint ) == "/" )
 			{
-				mount_info[ node ] = mountpoint ;
+				mount_info[ node ] = "/" ;
 				break ;
 			}
 			
