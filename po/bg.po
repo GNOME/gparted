@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-12-13 09:07+0200\n"
-"PO-Revision-Date: 2005-12-13 00:19+0200\n"
+"POT-Creation-Date: 2006-01-31 10:19+0200\n"
+"PO-Revision-Date: 2006-01-31 10:19+0200\n"
 "Last-Translator: Rostislav Raykov <zbrox@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,65 +16,47 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:932
+msgid "GNOME Partition Editor"
+msgstr "Редактор на дялове на диск за GNOME"
+
 #. ==== GUI =========================
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:35
-#: ../src/Win_GParted.cc:857
+#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:45
+#: ../src/Win_GParted.cc:814 ../src/Win_GParted.cc:929
 msgid "GParted"
 msgstr "GParted"
 
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:860
-msgid "Gnome Partition Editor"
-msgstr "Редактор на дялове на твърд диск за GNOME"
-
-#: ../include/Utils.h:162
-msgid "unallocated"
-msgstr "неразпределени"
-
-#: ../include/Utils.h:163
-msgid "unknown"
-msgstr "непознат"
-
-#: ../include/Utils.h:164
-msgid "unformatted"
-msgstr "неформатиран"
-
 #. add spinbutton_before
 #: ../src/Dialog_Base_Partition.cc:54
-msgid "Free Space Preceding (MB):"
-msgstr "Свободно място отпред (MB):"
+msgid "Free Space Preceding (MiB):"
+msgstr "Свободно място отпред (MiB):"
 
 #. add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:61
-msgid "New Size (MB):"
-msgstr "Нов размер (MB):"
+msgid "New Size (MiB):"
+msgstr "Нов размер (MiB):"
 
 #. add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:68
-msgid "Free Space Following (MB):"
-msgstr "Свободно място отзад (MB):"
+msgid "Free Space Following (MiB):"
+msgstr "Свободно място отзад (MiB):"
 
-#. pack warning about small differences in values..
-#: ../src/Dialog_Base_Partition.cc:85
-msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr ""
-"ЗАБЕЛЕЖКА: реалните стойности може малко да се различават от въведените тук."
-
-#: ../src/Dialog_Base_Partition.cc:149
+#: ../src/Dialog_Base_Partition.cc:151
 msgid "Resize"
 msgstr "Преоразмеряване"
 
-#: ../src/Dialog_Base_Partition.cc:149 ../src/Win_GParted.cc:144
-#: ../src/Win_GParted.cc:179 ../src/Win_GParted.cc:943
+#: ../src/Dialog_Base_Partition.cc:151 ../src/Win_GParted.cc:161
+#: ../src/Win_GParted.cc:211 ../src/Win_GParted.cc:1016
 msgid "Resize/Move"
 msgstr "Преоразмеряване/Преместване"
 
-#: ../src/Dialog_Base_Partition.cc:163
-msgid "Minimum Size: %1 MB"
-msgstr "Минимален размер: %1 MB"
+#: ../src/Dialog_Base_Partition.cc:167
+msgid "Minimum Size: %1 MiB"
+msgstr "Минимален размер: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:164
-msgid "Maximum Size: %1 MB"
-msgstr "Максимален размер: %1 MB"
+#: ../src/Dialog_Base_Partition.cc:168
+msgid "Maximum Size: %1 MiB"
+msgstr "Максимален размер: %1 MiB"
 
 #: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
 msgid "Set Disklabel on %1"
@@ -95,7 +77,7 @@ msgstr ""
 
 #: ../src/Dialog_Disklabel.cc:52
 msgid "By default GParted creates an msdos disklabel."
-msgstr "По подразбиране GParted създава таблица с дялове съвместима с MSDOS."
+msgstr "По подразбиране GParted създава таблица с дялове съвместима с MS DOS."
 
 #: ../src/Dialog_Disklabel.cc:58
 msgid "Advanced"
@@ -109,18 +91,18 @@ msgstr "Избор на нов вид таблица с дялове:"
 msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: Създаването на нова таблица с дялове ще изтрие всички данни "
-"на %1!"
+"върху %1!"
 
 #: ../src/Dialog_Disklabel.cc:88 ../src/Dialog_Filesystems.cc:32
-#: ../src/Win_GParted.cc:1228
+#: ../src/Win_GParted.cc:1347
 msgid "Create"
 msgstr "Създаване"
 
-#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:94
+#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:111
 msgid "Filesystems"
 msgstr "Файлови системи"
 
-#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:32
+#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:35
 msgid "Filesystem"
 msgstr "Файлова система"
 
@@ -145,99 +127,93 @@ msgid "Paste %1"
 msgstr "Поставяне на %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:30
+#: ../src/Dialog_Partition_Info.cc:31
 msgid "Information about %1"
 msgstr "Информация относно %1"
 
-#: ../src/Dialog_Partition_Info.cc:47
+#: ../src/Dialog_Partition_Info.cc:48
 msgid "Warning:"
 msgstr "Предупреждение:"
 
-#. set text of pangolayout
-#. create pangolayout and see if it fits in the visual partition
-#. the label...
-#: ../src/Dialog_Partition_Info.cc:119 ../src/Dialog_Partition_Info.cc:137
-#: ../src/Dialog_Partition_Info.cc:146 ../src/Dialog_Partition_Info.cc:151
-#: ../src/VBox_VisualDisk.cc:160 ../src/VBox_VisualDisk.cc:172
-#: ../src/Win_GParted.cc:368 ../src/Win_GParted.cc:425
-msgid "%1 MB"
-msgstr "%1 MB"
-
 #. filesystem
 #. filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:132 ../src/Dialog_Partition_New.cc:80
+#: ../src/Dialog_Partition_Info.cc:136 ../src/Dialog_Partition_New.cc:88
 msgid "Filesystem:"
 msgstr "Файлова система:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:136 ../src/Win_GParted.cc:239
+#: ../src/Dialog_Partition_Info.cc:140 ../src/Win_GParted.cc:303
 msgid "Size:"
 msgstr "Размер:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:145
+#: ../src/Dialog_Partition_Info.cc:150
 msgid "Used:"
 msgstr "Използвани:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:150
+#: ../src/Dialog_Partition_Info.cc:155
 msgid "Unused:"
 msgstr "Свободни:"
 
-#: ../src/Dialog_Partition_Info.cc:158
+#: ../src/Dialog_Partition_Info.cc:163
 msgid "Flags:"
 msgstr "Флагове:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:168 ../src/Win_GParted.cc:244
+#: ../src/Dialog_Partition_Info.cc:173 ../src/Win_GParted.cc:308
 msgid "Path:"
 msgstr "Път:"
 
 #. real path
-#: ../src/Dialog_Partition_Info.cc:178 ../src/Win_GParted.cc:249
+#: ../src/Dialog_Partition_Info.cc:179 ../src/Win_GParted.cc:313
 msgid "Real Path:"
 msgstr "Реален път:"
 
-#: ../src/Dialog_Partition_Info.cc:184
+#: ../src/Dialog_Partition_Info.cc:185
 msgid "Status:"
 msgstr "Състояние:"
 
-#: ../src/Dialog_Partition_Info.cc:188
+#: ../src/Dialog_Partition_Info.cc:189
 msgid "Busy  (At least one logical partition is mounted)"
 msgstr "Зает (поне един логически дял е монтиран)"
 
-#: ../src/Dialog_Partition_Info.cc:190
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Active"
 msgstr "Активен"
 
-#: ../src/Dialog_Partition_Info.cc:192
+#: ../src/Dialog_Partition_Info.cc:193
 msgid "Mounted on %1"
-msgstr "Монтиран на %1"
+msgstr "Монтиран върху %1"
 
 #: ../src/Dialog_Partition_Info.cc:195
+msgid "Unable to find mountpoint"
+msgstr "Неуспех при откриване на точката за монтиране"
+
+#: ../src/Dialog_Partition_Info.cc:198
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Не е зает (не са монтирани логически дялове)"
 
-#: ../src/Dialog_Partition_Info.cc:197
+#: ../src/Dialog_Partition_Info.cc:200
 msgid "Not active"
 msgstr "Неактивен"
 
-#: ../src/Dialog_Partition_Info.cc:199
+#: ../src/Dialog_Partition_Info.cc:202
 msgid "Not mounted"
 msgstr "Не е монтиран"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:208
+#: ../src/Dialog_Partition_Info.cc:211
 msgid "First Sector:"
 msgstr "Първи сектор:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:212
+#: ../src/Dialog_Partition_Info.cc:215
 msgid "Last Sector:"
 msgstr "Последен сектор:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:216 ../src/Win_GParted.cc:284
+#: ../src/Dialog_Partition_Info.cc:219 ../src/Win_GParted.cc:348
 msgid "Total Sectors:"
 msgstr "Общо сектори:"
 
@@ -246,26 +222,31 @@ msgstr "Общо сектори:"
 msgid "Create new Partition"
 msgstr "Създаване на нов дял"
 
+#. checkbutton..
+#: ../src/Dialog_Partition_New.cc:34
+msgid "Round to cylinders"
+msgstr "Закръгляне към цилиндри"
+
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:53
+#: ../src/Dialog_Partition_New.cc:61
 msgid "Create as:"
 msgstr "Създаване като:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:56 ../src/Operation.cc:62
+#: ../src/Dialog_Partition_New.cc:64 ../src/Operation.cc:66
 msgid "Primary Partition"
 msgstr "Основен дял"
 
-#: ../src/Dialog_Partition_New.cc:57 ../src/Operation.cc:47
-#: ../src/Operation.cc:65
+#: ../src/Dialog_Partition_New.cc:65 ../src/Operation.cc:51
+#: ../src/Operation.cc:69
 msgid "Logical Partition"
 msgstr "Логически дял"
 
-#: ../src/Dialog_Partition_New.cc:58 ../src/Operation.cc:68
+#: ../src/Dialog_Partition_New.cc:66 ../src/Operation.cc:72
 msgid "Extended Partition"
 msgstr "Разширен дял"
 
-#: ../src/Dialog_Partition_New.cc:136
+#: ../src/Dialog_Partition_New.cc:145
 msgid "New Partition #%1"
 msgstr "Нов дял #%1"
 
@@ -277,354 +258,414 @@ msgstr "Преоразмеряване/Преместване на %1"
 msgid "Resize %1"
 msgstr "Преоразмеряване на %1"
 
-#: ../src/Dialog_Progress.cc:27 ../src/Dialog_Progress.cc:34
+#: ../src/Dialog_Progress.cc:31 ../src/Dialog_Progress.cc:39
 msgid "Applying pending operations"
 msgstr "Прилагане на чакащите операции"
 
-#: ../src/Dialog_Progress.cc:36
+#: ../src/Dialog_Progress.cc:41
 msgid "Applying all listed operations."
 msgstr "Прилагане на всички изписани операции."
 
-#: ../src/Dialog_Progress.cc:38
-msgid "Clicking Cancel will prevent the next operations from being applied."
+#: ../src/Dialog_Progress.cc:43
+msgid ""
+"Depending on the amount and type of operations this might take a long time."
 msgstr ""
-"С натискането на „Отказ“ ще предотвратите изпълнението на следващите "
-"операции."
+"В зависимост от количеството и вида на операциите, това може да отнеме много "
+"време."
 
-#: ../src/Dialog_Progress.cc:61
-msgid "Completed Operations"
-msgstr "Завършени операции"
+#: ../src/Dialog_Progress.cc:47
+msgid "Current Operation:"
+msgstr "Текуща операция:"
 
-#: ../src/Dialog_Progress.cc:66
+#: ../src/Dialog_Progress.cc:55
+msgid "Completed Operations:"
+msgstr "Завършени операции:"
+
+#: ../src/Dialog_Progress.cc:91
 msgid "Details"
 msgstr "Подробности"
 
-#: ../src/Dialog_Progress.cc:83
+#: ../src/Dialog_Progress.cc:164
 msgid "%1 of %2 operations completed"
 msgstr "Завършени са %1 от общо %2 операции"
 
-#: ../src/Dialog_Progress.cc:109
-msgid "about %1 minute and %2 seconds left"
-msgstr "остават около %1 минута и %2 секунди"
+#: ../src/Dialog_Progress.cc:200
+msgid "Operation canceled"
+msgstr "Операцията е прекратена"
 
-#: ../src/Dialog_Progress.cc:111
-msgid "about %1 minutes and %2 seconds left"
-msgstr "остават около %1 минути и %2 секунди"
+#: ../src/Dialog_Progress.cc:215
+msgid "All operations succesfully completed"
+msgstr "Всички операции са завършени успешно!"
 
-#: ../src/GParted_Core.cc:136
+#: ../src/Dialog_Progress.cc:225
+msgid "An error occurred while applying the operations"
+msgstr "Възникна грешка по време на прилагането на операциите"
+
+#: ../src/Dialog_Progress.cc:230
+msgid "The following operation could not be applied to disk:"
+msgstr "Следната операция не може да бъде приложена към диска:"
+
+#: ../src/Dialog_Progress.cc:234
+msgid "See the details for more information"
+msgstr "За повече информация, вижте подробностите"
+
+#: ../src/Dialog_Progress.cc:267
+msgid "Are you sure you want to cancel the current operation?"
+msgstr "Сигурни ли сте, че искате да прекратите текущата операция?"
+
+#: ../src/Dialog_Progress.cc:273
+msgid "Canceling an operation may cause SEVERE filesystem damage."
+msgstr "Отказването на операция може СИЛНО да повреди файловата система."
+
+#: ../src/Dialog_Progress.cc:275
+msgid "Continue Operation"
+msgstr "Продължаване на операцията"
+
+#: ../src/Dialog_Progress.cc:276
+msgid "Cancel Operation"
+msgstr "Прекратяване на операция"
+
+#: ../src/GParted_Core.cc:144
 msgid "unrecognized"
 msgstr "неразпозната"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:197
+#: ../src/GParted_Core.cc:273
 msgid "Unable to detect filesystem! Possible reasons are:"
-msgstr "Неуспех при засичане на файловата система! Възможните причини са:"
+msgstr "Неуспех при откриване на файловата система! Възможните причини са:"
 
-#: ../src/GParted_Core.cc:199
+#: ../src/GParted_Core.cc:275
 msgid "The filesystem is damaged"
 msgstr "Файловата система е повредена"
 
-#: ../src/GParted_Core.cc:201
+#: ../src/GParted_Core.cc:277
 msgid "The filesystem is unknown to libparted"
 msgstr "Файловата система е непозната за libparted"
 
-#: ../src/GParted_Core.cc:203
+#: ../src/GParted_Core.cc:279
 msgid "There is no filesystem available (unformatted)"
-msgstr "Няма налична файлова система (неформатиран дял)"
+msgstr "Липсва файлова система (неформатиран дял)"
 
-#: ../src/GParted_Core.cc:322
+#: ../src/GParted_Core.cc:408
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Невъзможност да се прочете съдържанието на тази файлова система!"
 
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:410
 msgid "Because of this some operations may be unavailable."
 msgstr "По тази причина някои операции няма да бъдат достъпни."
 
-#: ../src/GParted_Core.cc:326
+#: ../src/GParted_Core.cc:412
 msgid "Did you install the correct plugin for this filesystem?"
 msgstr "Инсталирахте ли правилната приставка за тази файлова система?"
 
-#: ../src/GParted_Core.cc:447
-msgid "Error while deleting %1"
-msgstr "Грешка при изтриване на %1"
+#: ../src/GParted_Core.cc:732
+msgid "create empty partition"
+msgstr "създаване на празен дял"
 
-#: ../src/GParted_Core.cc:452
-msgid "Error while creating %1"
-msgstr "Грешка при създаване на %1"
+#: ../src/GParted_Core.cc:816
+msgid "resize partition"
+msgstr "оразмеряване на дял"
 
-#: ../src/GParted_Core.cc:457
-msgid "Error while resizing/moving %1"
-msgstr "Грешка при преоразмеряването/преместването на %1"
+#: ../src/GParted_Core.cc:874
+msgid "resize partition and filesystem using libparted"
+msgstr "преоразмеряване на дяла и файловата система чрез libparted"
 
-#: ../src/GParted_Core.cc:462
-msgid "Error while converting filesystem of %1"
-msgstr "Грешка при конвертирането на файловата система на %1"
+#: ../src/GParted_Core.cc:951
+msgid "set partitiontype"
+msgstr "задаване на вида на дял"
 
-#: ../src/GParted_Core.cc:467
-msgid "Error while copying %1"
-msgstr "Грешка при копирането на %1"
-
-#: ../src/GParted_Core.cc:843
-msgid ""
-"Be aware that the failure to apply this operation could affect other "
-"operations on the list."
-msgstr ""
-"Неуспех при прилагането на тази операция, може да се отрази на другите "
-"операции от списъка."
-
-#: ../src/Operation.cc:34
+#: ../src/Operation.cc:38
 msgid "copy of %1"
 msgstr "копиране на %1"
 
-#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: ../src/Operation.cc:52
-msgid "Delete %1 (%2, %3 MB) from %4"
-msgstr "Изтриване на %1 (%2, %3 MB) от %4"
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MiB) from /dev/hda
+#: ../src/Operation.cc:56
+msgid "Delete %1 (%2, %3 MiB) from %4"
+msgstr "Изтриване на %1 (%2, %3 MiB) от %4"
 
-#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: ../src/Operation.cc:75
-msgid "Create %1 #%2 (%3, %4 MB) on %5"
-msgstr "Създаване на %1 #%2 (%3, %4 MB) на %5"
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MiB) on /dev/hda
+#: ../src/Operation.cc:79
+msgid "Create %1 #%2 (%3, %4 MiB) on %5"
+msgstr "Създаване на %1 #%2 (%3, %4 MiB) на %5"
 
-#: ../src/Operation.cc:88
-msgid "Move %1 forward by %2 MB"
-msgstr "Преместване на %1 напред с %2 MB"
+#: ../src/Operation.cc:92
+msgid "Move %1 forward by %2 MiB"
+msgstr "Преместване на %1 напред с %2 MiB"
 
-#: ../src/Operation.cc:90
-msgid "Move %1 backward by %2 MB"
-msgstr "Преместване на %1 назад с %2 MB"
+#: ../src/Operation.cc:96
+msgid "Move %1 backward by %2 MiB"
+msgstr "Преместване на %1 назад с %2 MiB"
 
-#: ../src/Operation.cc:99
-msgid "Resize %1 from %2 MB to %3 MB"
-msgstr "Преоразмеряване на %1 от %2 MB на %3 MB"
+#: ../src/Operation.cc:107
+msgid "Resize %1 from %2 MiB to %3 MiB"
+msgstr "Преоразмеряване на %1 от %2 MiB на %3 MiB"
 
-#: ../src/Operation.cc:104
-msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr "и преоразмеряване на %1 от %2 MB на %3 MB"
+#: ../src/Operation.cc:112
+msgid "and Resize %1 from %2 MiB to %3 MiB"
+msgstr "и преоразмеряване на %1 от %2 MiB на %3 MiB"
 
-#: ../src/Operation.cc:111
+#: ../src/Operation.cc:119
 msgid "Sorry, changes are too small to make sense"
 msgstr "Промените са прекалено малки, за да бъдат извършени"
 
-#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: ../src/Operation.cc:117
-msgid "Convert %1 from %2 to %3"
-msgstr "Конвертиране на %1 от %2 към %3"
+#. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
+#: ../src/Operation.cc:125
+msgid "Format %1 as %2"
+msgstr "Форматиране на %1 като %2"
 
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
-#: ../src/Operation.cc:124
-msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr "Копиране на %1 към %2 (начало при %3 MB)"
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MiB)
+#: ../src/Operation.cc:131
+msgid "Copy %1 to %2 (start at %3 MiB)"
+msgstr "Копиране на %1 към %2 (начало при %3 MiB)"
 
 #. append columns
-#: ../src/TreeView_Detail.cc:31
+#: ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "Дял"
 
-#: ../src/TreeView_Detail.cc:33
-msgid "Size(MB)"
-msgstr "Размер(MB)"
-
-#: ../src/TreeView_Detail.cc:34
-msgid "Used(MB)"
-msgstr "Използвани(MB)"
-
-#: ../src/TreeView_Detail.cc:35
-msgid "Unused(MB)"
-msgstr "Свободни(MB)"
-
 #: ../src/TreeView_Detail.cc:36
+msgid "Size"
+msgstr "Размер"
+
+#: ../src/TreeView_Detail.cc:37
+msgid "Used"
+msgstr "Използвани"
+
+#: ../src/TreeView_Detail.cc:38
+msgid "Unused"
+msgstr "Свободни"
+
+#: ../src/TreeView_Detail.cc:39
 msgid "Flags"
 msgstr "Флагове"
 
-#: ../src/VBox_VisualDisk.cc:235
+#: ../src/Utils.cc:111
+msgid "unallocated"
+msgstr "неразпределени"
+
+#: ../src/Utils.cc:112
+msgid "unknown"
+msgstr "непознат"
+
+#: ../src/Utils.cc:113
+msgid "unformatted"
+msgstr "неформатиран"
+
+#: ../src/Utils.cc:128
 msgid "used"
 msgstr "използвани"
 
-#: ../src/VBox_VisualDisk.cc:238
+#: ../src/Utils.cc:129
 msgid "unused"
 msgstr "свободни"
 
-#: ../src/Win_GParted.cc:92
+#: ../src/Utils.cc:247
+msgid "%1 B"
+msgstr "%1 B"
+
+#: ../src/Utils.cc:252
+msgid "%1 KiB"
+msgstr "%1 KiB"
+
+#: ../src/Utils.cc:257
+msgid "%1 MiB"
+msgstr "%1 MiB"
+
+#: ../src/Utils.cc:262
+msgid "%1 GiB"
+msgstr "%1 GiB"
+
+#: ../src/Utils.cc:267
+msgid "%1 TiB"
+msgstr "%1 TiB"
+
+#: ../src/Win_GParted.cc:109
 msgid "_Refresh devices"
 msgstr "_Опресняване на устройствата"
 
-#: ../src/Win_GParted.cc:97
+#: ../src/Win_GParted.cc:114
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:103
+#: ../src/Win_GParted.cc:120
 msgid "_Edit"
 msgstr "_Редактиране"
 
 #. title
-#: ../src/Win_GParted.cc:107 ../src/Win_GParted.cc:227
+#: ../src/Win_GParted.cc:124 ../src/Win_GParted.cc:291
 msgid "Harddisk Information"
 msgstr "Информация за твърдия диск"
 
-#: ../src/Win_GParted.cc:108
+#: ../src/Win_GParted.cc:125
 msgid "Operations"
 msgstr "Операции"
 
-#: ../src/Win_GParted.cc:109
+#: ../src/Win_GParted.cc:126
 msgid "_View"
 msgstr "_Изглед"
 
-#: ../src/Win_GParted.cc:113
+#: ../src/Win_GParted.cc:130
 msgid "Set Disklabel"
 msgstr "Създаване на таблица с дялове"
 
-#: ../src/Win_GParted.cc:114
+#: ../src/Win_GParted.cc:131
 msgid "_Device"
 msgstr "_Устройство"
 
-#: ../src/Win_GParted.cc:118
+#: ../src/Win_GParted.cc:135
 msgid "_Partition"
 msgstr "_Дял"
 
-#: ../src/Win_GParted.cc:125
+#: ../src/Win_GParted.cc:142
 msgid "_Help"
 msgstr "Помощ"
 
-#: ../src/Win_GParted.cc:136
+#: ../src/Win_GParted.cc:153
 msgid "Create a new partition in the selected unallocated space"
 msgstr "_Създаване на нов дял в избраното неразпределено място"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:156
 msgid "Delete the selected partition"
 msgstr "Изтриване на избрания дял"
 
-#: ../src/Win_GParted.cc:146
+#: ../src/Win_GParted.cc:163
 msgid "Resize/Move the selected partition"
 msgstr "Преоразмеряване/Преместване на избрания дял"
 
-#: ../src/Win_GParted.cc:152
+#: ../src/Win_GParted.cc:169
 msgid "Copy the selected partition to the clipboard"
 msgstr "Копиране на избрания дял в буфера"
 
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:172
 msgid "Paste the partition from the clipboard"
 msgstr "Поставяне на дяла от буфера"
 
-#: ../src/Win_GParted.cc:161
+#: ../src/Win_GParted.cc:178
 msgid "Undo last operation"
 msgstr "Отменяне на последната операция"
 
-#: ../src/Win_GParted.cc:164
+#: ../src/Win_GParted.cc:181
 msgid "Apply all operations"
 msgstr "Прилагане на всички операции"
 
-#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
-#: ../src/Win_GParted.cc:186
-msgid "_Convert to"
-msgstr "_Конвертиране към"
+#: ../src/Win_GParted.cc:230
+msgid "_Format to"
+msgstr "_Форматиране като"
 
-#: ../src/Win_GParted.cc:188
+#: ../src/Win_GParted.cc:237
 msgid "Unmount"
 msgstr "Демонтиране"
 
+#: ../src/Win_GParted.cc:241
+msgid "Deactivate"
+msgstr "Деактивиране"
+
 #. model
-#: ../src/Win_GParted.cc:234
+#: ../src/Win_GParted.cc:298
 msgid "Model:"
 msgstr "Модел:"
 
 #. disktype
-#: ../src/Win_GParted.cc:264
+#: ../src/Win_GParted.cc:328
 msgid "DiskLabelType:"
 msgstr "Вид таблица с дялове:"
 
 #. heads
-#: ../src/Win_GParted.cc:269
+#: ../src/Win_GParted.cc:333
 msgid "Heads:"
 msgstr "Глави:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:274
+#: ../src/Win_GParted.cc:338
 msgid "Sectors/Track:"
 msgstr "Сектори/Писти:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:279
+#: ../src/Win_GParted.cc:343
 msgid "Cylinders:"
 msgstr "Цилиндри:"
 
-#: ../src/Win_GParted.cc:315
+#: ../src/Win_GParted.cc:378
 msgid "Hide operationslist"
 msgstr "Скриване на списъка с операциите"
 
-#: ../src/Win_GParted.cc:324
+#: ../src/Win_GParted.cc:387
 msgid "Clear operationslist"
 msgstr "Изчистване списъка с операциите"
 
-#: ../src/Win_GParted.cc:382
-msgid "Scanning all devices..."
-msgstr "Проверка на всички устройства..."
-
-#: ../src/Win_GParted.cc:496
+#: ../src/Win_GParted.cc:566
 msgid "%1 operations pending"
 msgstr "%1 чакащи операции"
 
-#: ../src/Win_GParted.cc:498
+#: ../src/Win_GParted.cc:568
 msgid "1 operation pending"
 msgstr "Една чакаща операция"
 
-#: ../src/Win_GParted.cc:555
+#: ../src/Win_GParted.cc:616
 msgid "Quit GParted?"
 msgstr "Затваряне на GParted?"
 
-#: ../src/Win_GParted.cc:558
+#: ../src/Win_GParted.cc:619
 msgid "%1 operations are currently pending."
-msgstr "В момента %1 операции изчакват."
+msgstr "%1 операции изчакват в момента."
 
-#: ../src/Win_GParted.cc:560
+#: ../src/Win_GParted.cc:621
 msgid "1 operation is currently pending."
-msgstr "В момента има 1 операция изчаква."
+msgstr "1 операция изчаква в момента."
 
-#: ../src/Win_GParted.cc:726
+#: ../src/Win_GParted.cc:751
+msgid "%1 - GParted"
+msgstr "%1 - GParted"
+
+#: ../src/Win_GParted.cc:771
+msgid "Scanning all devices..."
+msgstr "Проверка на всички устройства..."
+
+#: ../src/Win_GParted.cc:787
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr ""
 "Ядрото не може да препрочете таблицата с дялове на следните устройства:"
 
-#: ../src/Win_GParted.cc:730
+#: ../src/Win_GParted.cc:791
 msgid "Because of this you will only have limited access to these devices."
 msgstr "Затова ще имате само ограничен достъп до тези устройства."
 
-#: ../src/Win_GParted.cc:732
+#: ../src/Win_GParted.cc:793
 msgid "Unmount all mounted partitions on a device to get full access."
 msgstr ""
 "Демонтирайте всички монтирани дялове на устройството, за да получите пълен "
 "достъп."
 
-#: ../src/Win_GParted.cc:777
+#: ../src/Win_GParted.cc:836
 msgid "No devices detected"
 msgstr "Не са засечени устройства"
 
-#: ../src/Win_GParted.cc:842
+#: ../src/Win_GParted.cc:914
 msgid "Sorry, not yet implemented."
 msgstr "За жалост още не е реализирано."
 
-#: ../src/Win_GParted.cc:844
+#: ../src/Win_GParted.cc:916
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Посетете http://gparted.sf.net за повече информация и поддръжка."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:875
+#: ../src/Win_GParted.cc:947
 msgid "translator-credits"
 msgstr ""
-"Ростислав \"zbrox\" Райков <zbrox@i-space.org>\n"
+"Ростислав „zbrox“ Райков <zbrox@i-space.org>\n"
 "Александър Шопов <ash@contact.bg>\n"
 "\n"
 "Проектът за превод на GNOME има нужда от подкрепа.\n"
 "Научете повече за нас на http://gnome.cult.bg\n"
 "Докладвайте за грешки на http://gnome.cult.bg/bugs"
 
-#: ../src/Win_GParted.cc:913
+#: ../src/Win_GParted.cc:986
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Не е възможно да се създадат повече от %1 основни дяла."
 
-#: ../src/Win_GParted.cc:915
+#: ../src/Win_GParted.cc:988
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -632,11 +673,11 @@ msgstr ""
 "Ако искате повече, първо трябва да създадете разширен дял. Той може да "
 "съдържа други дялове."
 
-#: ../src/Win_GParted.cc:931
+#: ../src/Win_GParted.cc:1004
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Сигурни ли сте, че искате да преоразмерите/преместите този дял?"
 
-#: ../src/Win_GParted.cc:933
+#: ../src/Win_GParted.cc:1006
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -644,99 +685,171 @@ msgid ""
 msgstr ""
 "Преоразмеряването на дял с FAT16 може да бъде опасно! Особено рискова "
 "операция е увеличаването размера на такъв дял. Препоръчително е първо да "
-"конвертирате файловата система към FAT32."
+"преобразувате файловата система към FAT32."
 
-#: ../src/Win_GParted.cc:1054
+#: ../src/Win_GParted.cc:1132
 msgid "Unable to delete partition!"
-msgstr "Не може да се изтрие дялът!"
+msgstr "Дялът не може да се изтрие!"
 
-#: ../src/Win_GParted.cc:1056
+#: ../src/Win_GParted.cc:1135
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Демонтирайте всички логически дялове, които имат номер по-голям от %1"
 
-#: ../src/Win_GParted.cc:1063
+#: ../src/Win_GParted.cc:1146
 msgid "Are you sure you want to delete %1?"
 msgstr "Сигурни ли сте, че искате да изтриете %1?"
 
-#: ../src/Win_GParted.cc:1067
+#: ../src/Win_GParted.cc:1148
 msgid "After deletion this partition is no longer available for copying."
 msgstr "След изтриване този дял не може да се копира."
 
-#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: ../src/Win_GParted.cc:1072
-msgid "Delete %1 (%2, %3 MB)"
-msgstr "Изтриване на %1 (%2, %3 MB)"
+#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
+#: ../src/Win_GParted.cc:1152
+msgid "Delete %1 (%2, %3 MiB)"
+msgstr "Изтриване на %1 (%2, %3 MiB)"
 
-#: ../src/Win_GParted.cc:1123
-msgid "Are you sure you want to convert this filesystem to %1?"
-msgstr "Сигурни ли сте, че искате да конвертирате тази файлова система към %1?"
+#: ../src/Win_GParted.cc:1214
+msgid "Cannot format this filesystem to %1."
+msgstr "Тази файлова система не може да се форматира като %1."
 
-#: ../src/Win_GParted.cc:1124 ../src/Win_GParted.cc:1225
-msgid "This operation will destroy all data on %1"
-msgstr "Тази операция ще унищожи всички данни на %1"
+#: ../src/Win_GParted.cc:1220
+msgid "A %1 filesystem requires a partition of at least %2 MiB."
+msgstr "Файлова система от вида %1 изисква дял, голям поне %2 MiB."
 
-#: ../src/Win_GParted.cc:1142
-msgid "Can not convert this filesystem to %1."
-msgstr "Тази файлова система не може да се конвертира към %1."
+#: ../src/Win_GParted.cc:1225
+msgid "A partition with a %1 filesystem has a maximum size of %2 MiB."
+msgstr "Дял с файлова система от вид %1 има максимален размер от %2 MiB."
 
-#: ../src/Win_GParted.cc:1146
-msgid "A %1 filesystem requires a partition of at least %2 MB."
-msgstr "Файлова система от вид %1 изисква дял голям поне %2 MB."
+#: ../src/Win_GParted.cc:1283
+msgid "Unmounting %1"
+msgstr "Демонтиране на %1"
 
-#: ../src/Win_GParted.cc:1148
-msgid "A partition with a %1 filesystem has a maximum size of %2 MB."
-msgstr "Дял с файлова система от вид %1 има максимален размер от %2 MB."
-
-#: ../src/Win_GParted.cc:1205
+#: ../src/Win_GParted.cc:1289
 msgid "Could not unmount %1"
 msgstr "Не може да се демонтира %1"
 
-#: ../src/Win_GParted.cc:1223
+#: ../src/Win_GParted.cc:1316
+msgid "Deactivating swap on %1"
+msgstr "Изключване на страницирането върху %1"
+
+#: ../src/Win_GParted.cc:1322
+msgid "Could not deactivate swap"
+msgstr "Неуспех при спирането на страницирането"
+
+#: ../src/Win_GParted.cc:1342
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr ""
 "Сигурни ли сте, че искате да създадете таблица с дялове от вида %1 на %2?"
 
-#: ../src/Win_GParted.cc:1232
+#: ../src/Win_GParted.cc:1344
+msgid "This operation will destroy all data on %1"
+msgstr "Тази операция ще унищожи всички данни на %1"
+
+#: ../src/Win_GParted.cc:1351
 msgid "Error while setting new disklabel"
 msgstr "Грешка при създаване на новата таблица с дялове"
 
-#: ../src/Win_GParted.cc:1257
+#: ../src/Win_GParted.cc:1376
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Сигурни ли сте, че искате да приложите чакащите операции?"
 
-#: ../src/Win_GParted.cc:1259
+#: ../src/Win_GParted.cc:1381
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "Преди да продължите е препоръчително да направите резервно копие на важните "
 "данни."
 
-#: ../src/Win_GParted.cc:1262
+#: ../src/Win_GParted.cc:1382
 msgid "Apply operations to harddisk"
 msgstr "Прилагане на операциите към твърдия диск."
 
-#: ../src/Win_GParted.cc:1300
+#: ../src/Win_GParted.cc:1412
 msgid "At least one operation was applied to a busy device."
 msgstr "Поне една операция беше приложена към заето устройство."
 
-#: ../src/Win_GParted.cc:1302
+#: ../src/Win_GParted.cc:1414
 msgid "A busy device is a device with at least one mounted partition."
 msgstr "Заети са тези устройства, които имат поне един монтиран дял."
 
-#: ../src/Win_GParted.cc:1304
+#: ../src/Win_GParted.cc:1416
 msgid ""
 "Because making changes to a busy device may confuse the kernel, you are "
 "advised to reboot your computer."
 msgstr ""
-"Препоръчително е да рестартирате компютъра, тъй като промените по заето "
+"Препоръчително е да рестартирате компютъра, защото промените по заето "
 "устройство може да объркат ядрото."
 
-#: ../src/main.cc:36
+#: ../src/ext2.cc:78 ../src/ext3.cc:79 ../src/fat16.cc:82 ../src/fat32.cc:81
+#: ../src/hfs.cc:50 ../src/jfs.cc:93 ../src/linux_swap.cc:50 ../src/ntfs.cc:75
+#: ../src/reiser4.cc:71 ../src/reiserfs.cc:81 ../src/xfs.cc:95
+msgid "create new %1 filesystem"
+msgstr "създаване на нова файлова система, от вида %1"
+
+#: ../src/ext2.cc:100 ../src/ext3.cc:101 ../src/jfs.cc:116 ../src/ntfs.cc:99
+#: ../src/reiserfs.cc:104 ../src/xfs.cc:118
+msgid "grow filesystem to fill the partition"
+msgstr "увеличаване на файловата система, за да запълни дяла"
+
+#: ../src/ext2.cc:102 ../src/ext3.cc:103 ../src/jfs.cc:118 ../src/ntfs.cc:101
+#: ../src/reiserfs.cc:106 ../src/xfs.cc:120
+msgid "resize the filesystem"
+msgstr "преоразмеряване на дял"
+
+#: ../src/ext2.cc:129 ../src/ext3.cc:130 ../src/fat16.cc:114
+#: ../src/fat32.cc:113 ../src/hfs.cc:79 ../src/jfs.cc:215
+#: ../src/linux_swap.cc:79 ../src/ntfs.cc:153 ../src/reiserfs.cc:138
+#: ../src/xfs.cc:214
+msgid "copy contents of %1 to %2"
+msgstr "копиране на съдържанието на %1 в %2"
+
+#: ../src/ext2.cc:152 ../src/ext3.cc:153 ../src/fat16.cc:136
+#: ../src/fat32.cc:135 ../src/jfs.cc:238 ../src/ntfs.cc:176
+#: ../src/reiser4.cc:105 ../src/reiserfs.cc:161 ../src/xfs.cc:378
+msgid "check filesystem for errors and (if possible) fix them"
+msgstr "проверка на файловата система за грешки и (ако е възможно) поправяне"
+
+#: ../src/jfs.cc:126 ../src/xfs.cc:128 ../src/xfs.cc:228 ../src/xfs.cc:235
+msgid "create temporary mountpoint (%1)"
+msgstr "съзадаване на временна точка за монтиране (%1)"
+
+#: ../src/jfs.cc:133 ../src/xfs.cc:135 ../src/xfs.cc:242 ../src/xfs.cc:249
+msgid "mount %1 on %2"
+msgstr "монтиране на %1 при %2"
+
+#: ../src/jfs.cc:140
+msgid "remount %1 on %2 with the 'resize' flag enabled"
+msgstr "монтиране наново на %1 при %2, с включена опция за преоразмеряване"
+
+#: ../src/jfs.cc:158 ../src/xfs.cc:157 ../src/xfs.cc:273 ../src/xfs.cc:300
+msgid "unmount %1"
+msgstr "демонтиране на %1"
+
+#: ../src/jfs.cc:185 ../src/xfs.cc:184 ../src/xfs.cc:327 ../src/xfs.cc:350
+msgid "remove temporary mountpoint (%1)"
+msgstr "премахване на временната точка за монтиране (%1)"
+
+#: ../src/main.cc:37
 msgid "Root privileges are required for running GParted"
 msgstr ""
 "Нужни за права на системен администратор (root), за да бъде пуснат GParted"
 
-#: ../src/main.cc:36
+#: ../src/main.cc:38
 msgid "Since GParted can be a weapon of mass destruction only root may run it."
 msgstr ""
 "Само системният администратор може да стартира GParted, защото чрез нея може "
 "да се унищожат важни данни."
+
+#. simulation..
+#: ../src/ntfs.cc:114
+msgid "run simulation"
+msgstr "пускане на симулация"
+
+#. grow the mounted filesystem..
+#: ../src/xfs.cc:141
+msgid "grow mounted filesystem"
+msgstr "увеличаване на монтираната файлова система"
+
+#. copy filesystem..
+#: ../src/xfs.cc:255
+msgid "copy filesystem"
+msgstr "копиране на файлова система"
