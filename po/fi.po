@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-23 20:13+0200\n"
-"PO-Revision-Date: 2006-02-01 00:35+0200\n"
+"POT-Creation-Date: 2006-02-01 20:19+0200\n"
+"PO-Revision-Date: 2006-02-01 20:20+0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:932
+msgid "GNOME Partition Editor"
+msgstr "Gnomen levyosioiden muokkain"
+
 #. ==== GUI =========================
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:38
-#: ../src/Win_GParted.cc:920
+#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:45
+#: ../src/Win_GParted.cc:814 ../src/Win_GParted.cc:929
 msgid "GParted"
 msgstr "GParted"
-
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:923
-msgid "Gnome Partition Editor"
-msgstr "Gnomen levyosioiden muokkain"
 
 #. add spinbutton_before
 #: ../src/Dialog_Base_Partition.cc:54
@@ -45,8 +45,8 @@ msgstr "Vapaa tila jälkeen (MiB):"
 msgid "Resize"
 msgstr "Muuta kokoa"
 
-#: ../src/Dialog_Base_Partition.cc:151 ../src/Win_GParted.cc:154
-#: ../src/Win_GParted.cc:204 ../src/Win_GParted.cc:1007
+#: ../src/Dialog_Base_Partition.cc:151 ../src/Win_GParted.cc:161
+#: ../src/Win_GParted.cc:211 ../src/Win_GParted.cc:1016
 msgid "Resize/Move"
 msgstr "Muuta kokoa tai siirrä"
 
@@ -91,11 +91,11 @@ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr "VAROITUS: Uuden osiotaulun luominen tuhoaa kaiken tiedon levyllä %1!"
 
 #: ../src/Dialog_Disklabel.cc:88 ../src/Dialog_Filesystems.cc:32
-#: ../src/Win_GParted.cc:1338
+#: ../src/Win_GParted.cc:1347
 msgid "Create"
 msgstr "Luo"
 
-#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:104
+#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:111
 msgid "Filesystems"
 msgstr "Tiedostojärjestelmät"
 
@@ -132,86 +132,85 @@ msgstr "Tietoja kohteesta %1"
 msgid "Warning:"
 msgstr "Varoitus:"
 
-#. set text of pangolayout
-#: ../src/Dialog_Partition_Info.cc:120 ../src/Utils.cc:255
-msgid "%1 MiB"
-msgstr "%1 MiB"
-
 #. filesystem
 #. filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:133 ../src/Dialog_Partition_New.cc:88
+#: ../src/Dialog_Partition_Info.cc:136 ../src/Dialog_Partition_New.cc:88
 msgid "Filesystem:"
 msgstr "Tiedostojärjestelmä:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:137 ../src/Win_GParted.cc:296
+#: ../src/Dialog_Partition_Info.cc:140 ../src/Win_GParted.cc:303
 msgid "Size:"
 msgstr "Koko:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:147
+#: ../src/Dialog_Partition_Info.cc:150
 msgid "Used:"
 msgstr "Käytössä:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:152
+#: ../src/Dialog_Partition_Info.cc:155
 msgid "Unused:"
 msgstr "Käyttämättä:"
 
-#: ../src/Dialog_Partition_Info.cc:160
+#: ../src/Dialog_Partition_Info.cc:163
 msgid "Flags:"
 msgstr "Liput:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:170 ../src/Win_GParted.cc:301
+#: ../src/Dialog_Partition_Info.cc:173 ../src/Win_GParted.cc:308
 msgid "Path:"
 msgstr "Polku:"
 
 #. real path
-#: ../src/Dialog_Partition_Info.cc:176 ../src/Win_GParted.cc:306
+#: ../src/Dialog_Partition_Info.cc:179 ../src/Win_GParted.cc:313
 msgid "Real Path:"
 msgstr "Todellinen polku:"
 
-#: ../src/Dialog_Partition_Info.cc:182
+#: ../src/Dialog_Partition_Info.cc:185
 msgid "Status:"
 msgstr "Tila:"
 
-#: ../src/Dialog_Partition_Info.cc:186
+#: ../src/Dialog_Partition_Info.cc:189
 msgid "Busy  (At least one logical partition is mounted)"
 msgstr "Varattu (Ainakin yksi loogin osio on liitetty)"
 
-#: ../src/Dialog_Partition_Info.cc:188
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Active"
 msgstr "Aktiivinen"
 
-#: ../src/Dialog_Partition_Info.cc:190
+#: ../src/Dialog_Partition_Info.cc:193
 msgid "Mounted on %1"
 msgstr "Liitetty kohtaan %1"
 
-#: ../src/Dialog_Partition_Info.cc:193
+#: ../src/Dialog_Partition_Info.cc:195
+msgid "Unable to find mountpoint"
+msgstr "Liitoskohtaa ei löydy"
+
+#: ../src/Dialog_Partition_Info.cc:198
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Ei varattu (Loogisia osioita ei ole liitettynä)"
 
-#: ../src/Dialog_Partition_Info.cc:195
+#: ../src/Dialog_Partition_Info.cc:200
 msgid "Not active"
 msgstr "Ei aktiivinen"
 
-#: ../src/Dialog_Partition_Info.cc:197
+#: ../src/Dialog_Partition_Info.cc:202
 msgid "Not mounted"
 msgstr "Ei liitetty"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:206
+#: ../src/Dialog_Partition_Info.cc:211
 msgid "First Sector:"
 msgstr "Ensimmäinen sektori:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:210
+#: ../src/Dialog_Partition_Info.cc:215
 msgid "Last Sector:"
 msgstr "Viimeinen sektori:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:214 ../src/Win_GParted.cc:341
+#: ../src/Dialog_Partition_Info.cc:219 ../src/Win_GParted.cc:348
 msgid "Total Sectors:"
 msgstr "Sektoreita yhteensä:"
 
@@ -256,102 +255,119 @@ msgstr "Muuta kokoa tai siirrä %1"
 msgid "Resize %1"
 msgstr "Muuta kokoa %1"
 
-#: ../src/Dialog_Progress.cc:30 ../src/Dialog_Progress.cc:37
+#: ../src/Dialog_Progress.cc:31 ../src/Dialog_Progress.cc:39
 msgid "Applying pending operations"
 msgstr "Toteutetaan tekemättömät toimenpiteet"
 
-#: ../src/Dialog_Progress.cc:39
+#: ../src/Dialog_Progress.cc:41
 msgid "Applying all listed operations."
 msgstr "Toteutetaan kaikki listatut toimenpiteet"
 
-#: ../src/Dialog_Progress.cc:41
+#: ../src/Dialog_Progress.cc:43
 msgid ""
 "Depending on the amount and type of operations this might take a long time."
 msgstr ""
 "Riippuen toimenpiteiden määrästä ja tyypistä tämä saataa kestää pitkäänkin."
 
-#: ../src/Dialog_Progress.cc:45
+#: ../src/Dialog_Progress.cc:47
 msgid "Current Operation:"
 msgstr "Tämänhetkinen toimenpide:"
 
-#: ../src/Dialog_Progress.cc:53
+#: ../src/Dialog_Progress.cc:55
 msgid "Completed Operations:"
 msgstr "Valmistuneet toimenpiteet:"
 
-#: ../src/Dialog_Progress.cc:87
+#: ../src/Dialog_Progress.cc:91
 msgid "Details"
 msgstr "Yksityiskohdat"
 
-#: ../src/Dialog_Progress.cc:158
+#: ../src/Dialog_Progress.cc:164
 msgid "%1 of %2 operations completed"
 msgstr "%1/%2 toimenpidettä valmistunut"
 
-#: ../src/Dialog_Progress.cc:204
+#: ../src/Dialog_Progress.cc:200
+msgid "Operation canceled"
+msgstr "Toiminto peruttu"
+
+#: ../src/Dialog_Progress.cc:215
 msgid "All operations succesfully completed"
 msgstr "Kaikki toimenpiteet valmistuivat onnistuneesti"
 
-#: ../src/Dialog_Progress.cc:209
-msgid "Not all operations were succesfully completed"
-msgstr "Kaikkia toimenpiteitä ei voitu suorittaa onnistuneesti"
-
-#: ../src/Dialog_Progress.cc:213
+#: ../src/Dialog_Progress.cc:225
 msgid "An error occurred while applying the operations"
 msgstr "Tapahtui virhe suoritettaessa toimenpiteitä"
 
-#: ../src/Dialog_Progress.cc:218
+#: ../src/Dialog_Progress.cc:230
 msgid "The following operation could not be applied to disk:"
 msgstr "Seuraavaa levyn toimenpidettä ei voitu toteuttaa:"
 
-#: ../src/Dialog_Progress.cc:222
+#: ../src/Dialog_Progress.cc:234
 msgid "See the details for more information"
 msgstr "Katso lisätiedot jos kaipaat enemmän tietoa"
+
+#: ../src/Dialog_Progress.cc:267
+msgid "Are you sure you want to cancel the current operation?"
+msgstr "Haluatko varmasti perua tämänhetkisen toimenpiteen?"
+
+#: ../src/Dialog_Progress.cc:273
+msgid "Canceling an operation may cause SEVERE filesystem damage."
+msgstr "Toimenpiteen peruminen saattaa aiheuttaa tuhoisaa jälkeä "
+"tiedostojärjestelmissä."
+
+#: ../src/Dialog_Progress.cc:275
+msgid "Continue Operation"
+msgstr "Jatka toiminpidettä"
+
+#: ../src/Dialog_Progress.cc:276
+msgid "Cancel Operation"
+msgstr "Peru toimenpide"
 
 #: ../src/GParted_Core.cc:144
 msgid "unrecognized"
 msgstr "tunnistamaton"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:246
+#: ../src/GParted_Core.cc:273
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Tiedostojärjestelmän tyyppiä ei voitu tunnistaa! Mahdollisia syitä:"
 
-#: ../src/GParted_Core.cc:248
+#: ../src/GParted_Core.cc:275
 msgid "The filesystem is damaged"
 msgstr "Tiedostojärjestelmä on vaurioitunut"
 
-#: ../src/GParted_Core.cc:250
+#: ../src/GParted_Core.cc:277
 msgid "The filesystem is unknown to libparted"
 msgstr "Kirjasto libparted ei tunne tätä tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:252
+#: ../src/GParted_Core.cc:279
 msgid "There is no filesystem available (unformatted)"
 msgstr "Osiolla ei ole tiedostojärjestelmää (alustamaton)"
 
-#: ../src/GParted_Core.cc:383
+#: ../src/GParted_Core.cc:408
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Tiedostojärjestelmän sisältöä ei voitu lukea!"
 
-#: ../src/GParted_Core.cc:385
+#: ../src/GParted_Core.cc:410
 msgid "Because of this some operations may be unavailable."
 msgstr "Tästä johtuen osa toiminnoista ei ole käytettävissä."
 
-#: ../src/GParted_Core.cc:387
+#: ../src/GParted_Core.cc:412
 msgid "Did you install the correct plugin for this filesystem?"
 msgstr "Oletko asentanut oikean liitännäisen tät tiedostojärjestelmää varten?"
 
-#: ../src/GParted_Core.cc:707
+#: ../src/GParted_Core.cc:732
 msgid "create empty partition"
 msgstr "luo tyhjä osio"
 
-#: ../src/GParted_Core.cc:791
+#: ../src/GParted_Core.cc:816
 msgid "resize partition"
 msgstr "muuta osion kokoa"
 
-#: ../src/GParted_Core.cc:849
+#: ../src/GParted_Core.cc:874
 msgid "resize partition and filesystem using libparted"
 msgstr "muuta osion ja tiedostojärjestelmän kokoa käyttäen libpartedia"
 
-#: ../src/GParted_Core.cc:926
+#: ../src/GParted_Core.cc:951
 msgid "set partitiontype"
 msgstr "aseta osion tyyppi"
 
@@ -420,220 +436,228 @@ msgstr "Vapaana"
 msgid "Flags"
 msgstr "Liput"
 
-#: ../src/Utils.cc:110
+#: ../src/Utils.cc:111
 msgid "unallocated"
 msgstr "varaamaton"
 
-#: ../src/Utils.cc:111
+#: ../src/Utils.cc:112
 msgid "unknown"
 msgstr "tuntematon"
 
-#: ../src/Utils.cc:112
+#: ../src/Utils.cc:113
 msgid "unformatted"
 msgstr "alustamaton"
 
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:128
 msgid "used"
 msgstr "käytetty"
 
-#: ../src/Utils.cc:128
+#: ../src/Utils.cc:129
 msgid "unused"
 msgstr "käyttämätön"
 
-#: ../src/Utils.cc:245
+#: ../src/Utils.cc:247
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:250
+#: ../src/Utils.cc:252
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:260
+#: ../src/Utils.cc:257
+msgid "%1 MiB"
+msgstr "%1 MiB"
+
+#: ../src/Utils.cc:262
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:265
+#: ../src/Utils.cc:267
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:102
+#: ../src/Win_GParted.cc:109
 msgid "_Refresh devices"
 msgstr "_Päivitä laitelista"
 
-#: ../src/Win_GParted.cc:107
+#: ../src/Win_GParted.cc:114
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:113
+#: ../src/Win_GParted.cc:120
 msgid "_Edit"
 msgstr "_Muokkaa"
 
 #. title
-#: ../src/Win_GParted.cc:117 ../src/Win_GParted.cc:284
+#: ../src/Win_GParted.cc:124 ../src/Win_GParted.cc:291
 msgid "Harddisk Information"
 msgstr "Tietoja kiintolevystä"
 
-#: ../src/Win_GParted.cc:118
+#: ../src/Win_GParted.cc:125
 msgid "Operations"
 msgstr "Toiminnot"
 
-#: ../src/Win_GParted.cc:119
+#: ../src/Win_GParted.cc:126
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/Win_GParted.cc:123
+#: ../src/Win_GParted.cc:130
 msgid "Set Disklabel"
 msgstr "Aseta osiotaulu"
 
-#: ../src/Win_GParted.cc:124
+#: ../src/Win_GParted.cc:131
 msgid "_Device"
 msgstr "_Laite"
 
-#: ../src/Win_GParted.cc:128
+#: ../src/Win_GParted.cc:135
 msgid "_Partition"
 msgstr "_Osio"
 
-#: ../src/Win_GParted.cc:135
+#: ../src/Win_GParted.cc:142
 msgid "_Help"
 msgstr "O_hje"
 
-#: ../src/Win_GParted.cc:146
+#: ../src/Win_GParted.cc:153
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Luo uusi osio valittuun, varaamattomaan tilaan"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:156
 msgid "Delete the selected partition"
 msgstr "Poista valittu osio"
 
-#: ../src/Win_GParted.cc:156
+#: ../src/Win_GParted.cc:163
 msgid "Resize/Move the selected partition"
 msgstr "Muuta valitun osion kokoa tai siirrä sitä"
 
-#: ../src/Win_GParted.cc:162
+#: ../src/Win_GParted.cc:169
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopioi valittu osio leikepöydälle"
 
-#: ../src/Win_GParted.cc:165
+#: ../src/Win_GParted.cc:172
 msgid "Paste the partition from the clipboard"
 msgstr "Liitä osio leikepöydältä"
 
-#: ../src/Win_GParted.cc:171
+#: ../src/Win_GParted.cc:178
 msgid "Undo last operation"
 msgstr "Peru viimeisin toimenpide"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:181
 msgid "Apply all operations"
 msgstr "Toteuta kaikki toimenpiteet"
 
-#: ../src/Win_GParted.cc:223
+#: ../src/Win_GParted.cc:230
 msgid "_Format to"
 msgstr "_Alusta muotoon"
 
-#: ../src/Win_GParted.cc:230
+#: ../src/Win_GParted.cc:237
 msgid "Unmount"
 msgstr "Irrota osio"
 
-#: ../src/Win_GParted.cc:234
+#: ../src/Win_GParted.cc:241
 msgid "Deactivate"
 msgstr "Poista käytöstä"
 
 #. model
-#: ../src/Win_GParted.cc:291
+#: ../src/Win_GParted.cc:298
 msgid "Model:"
 msgstr "Malli:"
 
 #. disktype
-#: ../src/Win_GParted.cc:321
+#: ../src/Win_GParted.cc:328
 msgid "DiskLabelType:"
 msgstr "Osoitaulutyyppi:"
 
 #. heads
-#: ../src/Win_GParted.cc:326
+#: ../src/Win_GParted.cc:333
 msgid "Heads:"
 msgstr "Lukupäitä:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:331
+#: ../src/Win_GParted.cc:338
 msgid "Sectors/Track:"
 msgstr "Sektoreita/ura:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:336
+#: ../src/Win_GParted.cc:343
 msgid "Cylinders:"
 msgstr "Sylintereitä:"
 
-#: ../src/Win_GParted.cc:371
+#: ../src/Win_GParted.cc:378
 msgid "Hide operationslist"
 msgstr "Piilota toimenpidelista"
 
-#: ../src/Win_GParted.cc:380
+#: ../src/Win_GParted.cc:387
 msgid "Clear operationslist"
 msgstr "Tyhjennä toimenpidelista"
 
-#: ../src/Win_GParted.cc:559
+#: ../src/Win_GParted.cc:566
 msgid "%1 operations pending"
 msgstr "%1 toimenpidettä tekemättä"
 
-#: ../src/Win_GParted.cc:561
+#: ../src/Win_GParted.cc:568
 msgid "1 operation pending"
 msgstr "1 toimenpide tekemättä"
 
-#: ../src/Win_GParted.cc:609
+#: ../src/Win_GParted.cc:616
 msgid "Quit GParted?"
 msgstr "Lopeta GParted?"
 
-#: ../src/Win_GParted.cc:612
+#: ../src/Win_GParted.cc:619
 msgid "%1 operations are currently pending."
 msgstr "%1 toimenpidettä on vielä tekemättä."
 
-#: ../src/Win_GParted.cc:614
+#: ../src/Win_GParted.cc:621
 msgid "1 operation is currently pending."
 msgstr "1 toimenpide on vielä tekemättä."
 
-#: ../src/Win_GParted.cc:763
+#: ../src/Win_GParted.cc:751
+msgid "%1 - GParted"
+msgstr "%1 - GParted"
+
+#: ../src/Win_GParted.cc:771
 msgid "Scanning all devices..."
 msgstr "Tutkitaan laitteita..."
 
-#: ../src/Win_GParted.cc:779
+#: ../src/Win_GParted.cc:787
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "Ydin ei voi lukea uudestaan seuraavien laitteiden osiotauluja:"
 
-#: ../src/Win_GParted.cc:783
+#: ../src/Win_GParted.cc:791
 msgid "Because of this you will only have limited access to these devices."
 msgstr "Tästä johtuen näiden laitteiden käsittely on rajoitettua."
 
-#: ../src/Win_GParted.cc:785
+#: ../src/Win_GParted.cc:793
 msgid "Unmount all mounted partitions on a device to get full access."
 msgstr ""
 "Irrota kaikki liitetyt osiot levyltä, jos haluat käsitellä sitä kokonaan."
 
-#: ../src/Win_GParted.cc:827
+#: ../src/Win_GParted.cc:836
 msgid "No devices detected"
 msgstr "Laitteita ei löytynyt"
 
-#: ../src/Win_GParted.cc:905
+#: ../src/Win_GParted.cc:914
 msgid "Sorry, not yet implemented."
 msgstr "Ei vielä toteutettu."
 
-#: ../src/Win_GParted.cc:907
+#: ../src/Win_GParted.cc:916
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Käy sivulla http://gparted.sf.net/ jos haluat lisätietoja tai tukea."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:938
+#: ../src/Win_GParted.cc:947
 msgid "translator-credits"
 msgstr ""
 "Ilkka Tuohela, 2005\n"
 "\n"
 "http://gnome.fi/"
 
-#: ../src/Win_GParted.cc:977
+#: ../src/Win_GParted.cc:986
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Ei ole mahdollista luoda enemmän kuin %1 ensisijaista osiota"
 
-#: ../src/Win_GParted.cc:979
+#: ../src/Win_GParted.cc:988
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions."
@@ -641,11 +665,11 @@ msgstr ""
 "Jos tarvitset enemmän osioita, tulee ensin luoda laajennettu osio, joka voi "
 "sisältää muita osioita."
 
-#: ../src/Win_GParted.cc:995
+#: ../src/Win_GParted.cc:1004
 msgid "Are you sure you want to resize/move this partition?"
 msgstr "Haluatko varmasti muuttaa osion kokoa tai siirtää sitä?"
 
-#: ../src/Win_GParted.cc:997
+#: ../src/Win_GParted.cc:1006
 msgid ""
 "Resizing a fat16 partition can be quite tricky! Especially growing such a "
 "partition is very error-prone. It is advisable to first convert the "
@@ -655,88 +679,88 @@ msgstr ""
 "koon kasvattaminen on hyvin virheherkkää. On suositeltavaa, että muunnat "
 "tiedostojärjestelmän ensin FAT32-muotoon."
 
-#: ../src/Win_GParted.cc:1123
+#: ../src/Win_GParted.cc:1132
 msgid "Unable to delete partition!"
 msgstr "Osiota ei voitu poistaa!"
 
-#: ../src/Win_GParted.cc:1126
+#: ../src/Win_GParted.cc:1135
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Irrota kaikki loogiset osiot, joiden osionumero on suurempi kuin %1"
 
-#: ../src/Win_GParted.cc:1137
+#: ../src/Win_GParted.cc:1146
 msgid "Are you sure you want to delete %1?"
 msgstr "Haluatko varmasti poistaa osion %1?"
 
-#: ../src/Win_GParted.cc:1139
+#: ../src/Win_GParted.cc:1148
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Poiston jälkeen tätä osiota ei voi enää kopioida."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1143
+#: ../src/Win_GParted.cc:1152
 msgid "Delete %1 (%2, %3 MiB)"
 msgstr "Poista %1 (%2, %3 MiB)"
 
-#: ../src/Win_GParted.cc:1205
+#: ../src/Win_GParted.cc:1214
 msgid "Cannot format this filesystem to %1."
 msgstr "Tiedostojärjestelmää ei voi alustaa muotoon %1"
 
-#: ../src/Win_GParted.cc:1211
+#: ../src/Win_GParted.cc:1220
 msgid "A %1 filesystem requires a partition of at least %2 MiB."
 msgstr "Tiedostojärjestelmä %1 vaatii vähintään %2 MiB tilaa."
 
-#: ../src/Win_GParted.cc:1216
+#: ../src/Win_GParted.cc:1225
 msgid "A partition with a %1 filesystem has a maximum size of %2 MiB."
 msgstr "Tiedostojärjestelmän %1 sisältävän osion maksimikoko on %2 MiB."
 
-#: ../src/Win_GParted.cc:1274
+#: ../src/Win_GParted.cc:1283
 msgid "Unmounting %1"
 msgstr "Irrotetaan osio %1"
 
-#: ../src/Win_GParted.cc:1280
+#: ../src/Win_GParted.cc:1289
 msgid "Could not unmount %1"
 msgstr "Osiota %1 ei voitu irrottaa"
 
-#: ../src/Win_GParted.cc:1307
+#: ../src/Win_GParted.cc:1316
 msgid "Deactivating swap on %1"
 msgstr "Poistataan sivutusosio %1 käytöstä"
 
-#: ../src/Win_GParted.cc:1313
+#: ../src/Win_GParted.cc:1322
 msgid "Could not deactivate swap"
 msgstr "Sivutusosiota ei voitu poistaa käytöstä"
 
-#: ../src/Win_GParted.cc:1333
+#: ../src/Win_GParted.cc:1342
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Haluatko varmasti luoda %1 osiotaulun kohteeseen %2?"
 
-#: ../src/Win_GParted.cc:1335
+#: ../src/Win_GParted.cc:1344
 msgid "This operation will destroy all data on %1"
 msgstr "Tämä toimenpide tuhoaa kaiken tiedon kohdassa %1"
 
-#: ../src/Win_GParted.cc:1342
+#: ../src/Win_GParted.cc:1351
 msgid "Error while setting new disklabel"
 msgstr "Virhe asetettaessa uutta osiotaulua"
 
-#: ../src/Win_GParted.cc:1367
+#: ../src/Win_GParted.cc:1376
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Haluatko varmasti toteuttaa kaikki tekemättömät toimenpiteet?"
 
-#: ../src/Win_GParted.cc:1372
+#: ../src/Win_GParted.cc:1381
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "On suositeltavaa varmuuskopioida tärkeät tiedot ennen jatkamista."
 
-#: ../src/Win_GParted.cc:1373
+#: ../src/Win_GParted.cc:1382
 msgid "Apply operations to harddisk"
 msgstr "Toteuta toimenpiteet kiintolevylle"
 
-#: ../src/Win_GParted.cc:1402
+#: ../src/Win_GParted.cc:1412
 msgid "At least one operation was applied to a busy device."
 msgstr "Ainakin yksi toimenpide suoritettiin varatulle laitteelle."
 
-#: ../src/Win_GParted.cc:1404
+#: ../src/Win_GParted.cc:1414
 msgid "A busy device is a device with at least one mounted partition."
 msgstr "Varattu laite on sellainen, jossa on ainakin yksi liitetty osio."
 
-#: ../src/Win_GParted.cc:1406
+#: ../src/Win_GParted.cc:1416
 msgid ""
 "Because making changes to a busy device may confuse the kernel, you are "
 "advised to reboot your computer."
@@ -744,52 +768,52 @@ msgstr ""
 "Koska muutosten tekeminen varattuun laitteeseen saattaa hämmentää "
 "käyttöjärjestelmän ydintä, on suositeltava käynnistää tietokone uudestaan."
 
-#: ../src/ext2.cc:78 ../src/ext3.cc:79 ../src/fat16.cc:83 ../src/fat32.cc:82
-#: ../src/hfs.cc:50 ../src/jfs.cc:94 ../src/linux_swap.cc:51 ../src/ntfs.cc:75
-#: ../src/reiser4.cc:72 ../src/reiserfs.cc:82 ../src/xfs.cc:93
+#: ../src/ext2.cc:78 ../src/ext3.cc:79 ../src/fat16.cc:82 ../src/fat32.cc:81
+#: ../src/hfs.cc:50 ../src/jfs.cc:93 ../src/linux_swap.cc:50 ../src/ntfs.cc:75
+#: ../src/reiser4.cc:71 ../src/reiserfs.cc:81 ../src/xfs.cc:95
 msgid "create new %1 filesystem"
 msgstr "luo uusi %1-tiedostojärjestelmä"
 
-#: ../src/ext2.cc:100 ../src/ext3.cc:101 ../src/jfs.cc:117 ../src/ntfs.cc:99
-#: ../src/reiserfs.cc:105 ../src/xfs.cc:116
+#: ../src/ext2.cc:100 ../src/ext3.cc:101 ../src/jfs.cc:116 ../src/ntfs.cc:99
+#: ../src/reiserfs.cc:104 ../src/xfs.cc:118
 msgid "grow filesystem to fill the partition"
 msgstr "Kasvata tiedostojärjestelmää täyttämään osio"
 
-#: ../src/ext2.cc:102 ../src/ext3.cc:103 ../src/jfs.cc:119 ../src/ntfs.cc:101
-#: ../src/reiserfs.cc:107 ../src/xfs.cc:118
+#: ../src/ext2.cc:102 ../src/ext3.cc:103 ../src/jfs.cc:118 ../src/ntfs.cc:101
+#: ../src/reiserfs.cc:106 ../src/xfs.cc:120
 msgid "resize the filesystem"
 msgstr "muuta tiedostojärjestelmän kokoa"
 
-#: ../src/ext2.cc:129 ../src/ext3.cc:130 ../src/fat16.cc:115
-#: ../src/fat32.cc:114 ../src/hfs.cc:79 ../src/jfs.cc:210
-#: ../src/linux_swap.cc:80 ../src/ntfs.cc:153 ../src/reiserfs.cc:139
-#: ../src/xfs.cc:208
+#: ../src/ext2.cc:129 ../src/ext3.cc:130 ../src/fat16.cc:114
+#: ../src/fat32.cc:113 ../src/hfs.cc:79 ../src/jfs.cc:215
+#: ../src/linux_swap.cc:79 ../src/ntfs.cc:153 ../src/reiserfs.cc:138
+#: ../src/xfs.cc:214
 msgid "copy contents of %1 to %2"
 msgstr "kopioi %1 sisältö kohteeseen %2"
 
-#: ../src/ext2.cc:152 ../src/ext3.cc:153 ../src/fat16.cc:137
-#: ../src/fat32.cc:136 ../src/jfs.cc:233 ../src/ntfs.cc:176
-#: ../src/reiser4.cc:106 ../src/reiserfs.cc:162 ../src/xfs.cc:364
+#: ../src/ext2.cc:152 ../src/ext3.cc:153 ../src/fat16.cc:136
+#: ../src/fat32.cc:135 ../src/jfs.cc:238 ../src/ntfs.cc:176
+#: ../src/reiser4.cc:105 ../src/reiserfs.cc:161 ../src/xfs.cc:378
 msgid "check filesystem for errors and (if possible) fix them"
 msgstr "tarkista tiedostojärjestelmä virheiden varalta ja yritä korjata ne"
 
-#: ../src/jfs.cc:127 ../src/xfs.cc:126 ../src/xfs.cc:222 ../src/xfs.cc:229
+#: ../src/jfs.cc:126 ../src/xfs.cc:128 ../src/xfs.cc:228 ../src/xfs.cc:235
 msgid "create temporary mountpoint (%1)"
 msgstr "luo väliaikainen liitoskohta (%1)"
 
-#: ../src/jfs.cc:134 ../src/xfs.cc:133 ../src/xfs.cc:236 ../src/xfs.cc:243
+#: ../src/jfs.cc:133 ../src/xfs.cc:135 ../src/xfs.cc:242 ../src/xfs.cc:249
 msgid "mount %1 on %2"
 msgstr "liitä %1 kohtaan %2"
 
-#: ../src/jfs.cc:141
+#: ../src/jfs.cc:140
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "liitä %1 uudestaan kohtaan %2 'resize'-valitsin asetettuna"
 
-#: ../src/jfs.cc:157 ../src/xfs.cc:155 ../src/xfs.cc:267 ../src/xfs.cc:290
-msgid "umount %1"
+#: ../src/jfs.cc:158 ../src/xfs.cc:157 ../src/xfs.cc:273 ../src/xfs.cc:300
+msgid "unmount %1"
 msgstr "irrota osio %1"
 
-#: ../src/jfs.cc:180 ../src/xfs.cc:178 ../src/xfs.cc:313 ../src/xfs.cc:336
+#: ../src/jfs.cc:185 ../src/xfs.cc:184 ../src/xfs.cc:327 ../src/xfs.cc:350
 msgid "remove temporary mountpoint (%1)"
 msgstr "poista väliaikainen liitoskohta (%1)"
 
@@ -809,14 +833,17 @@ msgid "run simulation"
 msgstr "suorita simulaatio"
 
 #. grow the mounted filesystem..
-#: ../src/xfs.cc:139
+#: ../src/xfs.cc:141
 msgid "grow mounted filesystem"
 msgstr "kasvata liitettyä tiedostojärjestelmää"
 
 #. copy filesystem..
-#: ../src/xfs.cc:249
+#: ../src/xfs.cc:255
 msgid "copy filesystem"
 msgstr "kopioi tiedostojärjestelmä"
+
+#~ msgid "Not all operations were succesfully completed"
+#~ msgstr "Kaikkia toimenpiteitä ei voitu suorittaa onnistuneesti"
 
 #~ msgid ""
 #~ "NOTE: values on disk may differ slightly from the values entered here."
