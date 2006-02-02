@@ -34,13 +34,14 @@
 namespace GParted
 {
 	
-Win_GParted::Win_GParted( )
+Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 {
 	copied_partition .Reset( ) ;
 	selected_partition .Reset( ) ;
 	new_count = 1;
 	current_device = 0 ;
 	pulse = false ; 
+	gparted_core .set_user_devices( user_devices ) ;
 	
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
@@ -459,8 +460,6 @@ void Win_GParted::refresh_combo_devices()
 
 	if ( menu ->items() .size() )
 		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_submenu( *menu ) ;
-		
-	menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( menu ->items() .size() ) ;
 	
 	combo_devices .set_active( current_device ) ;
 }
@@ -865,6 +864,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		this ->set_title( _("GParted") );
 		combo_devices .hide() ;
 		
+		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 1 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 2 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 3 ] .set_sensitive( false ) ;
@@ -891,6 +891,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	{
 		combo_devices .show() ;
 		
+		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( true ) ;
 		menubar_main .items()[ 1 ] .set_sensitive( true ) ;
 		menubar_main .items()[ 2 ] .set_sensitive( true ) ;
 		menubar_main .items()[ 3 ] .set_sensitive( true ) ;

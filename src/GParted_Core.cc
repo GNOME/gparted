@@ -69,45 +69,58 @@ void GParted_Core::find_supported_filesystems( )
 	FS fs ; fs .filesystem = GParted::FS_UNKNOWN ;
 	FILESYSTEMS .push_back( fs ) ;
 }
+	
+void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
+{
+	this ->device_paths = user_devices ;
+	this ->probe_devices = ! user_devices .size() ;
+}
+	
+bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
+{
+	if ( device_path .length() > 6 && device_path .is_ascii() && open_device( device_path ) )
+	{
+		close_device_and_disk() ;
+		return true ;
+	}
+
+	return false ;
+}
 
 void GParted_Core::get_devices( std::vector<Device> & devices )
 {
 	devices .clear() ;
-		
-	//try to find all available devices and put these in a list
-	ped_device_probe_all();
-	
 	Device temp_device ;
-	std::vector<Glib::ustring> device_paths ;
 	
 	init_maps() ;
 	
-	/* in certain cases (e.g. when there's a cd in the cdrom-drive) ped_device_probe_all will find a
-	 * 'ghost' device that has no name or contains random garbage.
-	 * Those checks try to prevent such a ghostdevice from being initialized..
-	 */
-	lp_device = ped_device_get_next( NULL );
-	while ( lp_device ) 
+	//only probe if no devices were specified as arguments..
+	if ( probe_devices )
 	{
-		if ( strlen( lp_device ->path ) > 6 && 
-		     static_cast<Glib::ustring>( lp_device ->path ) .is_ascii() &&
-		     open_device( lp_device ->path )
-		   )
-			device_paths .push_back( get_short_path( lp_device ->path ) ) ;
-					
-		lp_device = ped_device_get_next( lp_device ) ;
+		device_paths .clear() ;
+		
+		//try to find all available devices
+		ped_device_probe_all();
+		
+		lp_device = ped_device_get_next( NULL );
+		while ( lp_device ) 
+		{
+			device_paths .push_back( lp_device ->path ) ;
+						
+			lp_device = ped_device_get_next( lp_device ) ;
+		}
+		close_device_and_disk() ;
 	}
-	close_device_and_disk() ;
 
 	
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
-		if ( open_device_and_disk( device_paths[ t ], false ) )
+		if ( check_device_path( device_paths[ t ] ) && open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
 			
 			//device info..
-			temp_device .path 	=	device_paths[ t ] ;
+			temp_device .path 	=	get_short_path( device_paths[ t ] ) ;
 			temp_device .realpath	= 	lp_device ->path ; 
 			temp_device .model 	=	lp_device ->model ;
 			temp_device .heads 	=	lp_device ->bios_geom .heads ;
@@ -115,7 +128,8 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
 			temp_device .cylsize 	=	Utils::Round( Utils::sector_to_unit( 
-								temp_device .heads * temp_device .sectors, GParted::UNIT_MIB ) ) ;
+								temp_device .heads * temp_device .sectors, 
+								GParted::UNIT_MIB ) ) ;
 			
 			//make sure cylsize is at least 1 MiB
 			if ( temp_device .cylsize < 1 )

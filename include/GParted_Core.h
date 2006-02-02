@@ -43,7 +43,8 @@ class GParted_Core
 {
 public:
 	GParted_Core( ) ;
-	void find_supported_filesystems( ) ; 
+	void find_supported_filesystems( ) ;
+	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void get_devices( std::vector<Device> & devices ) ;
 	
 	bool apply_operation_to_disk( Operation & operation );
@@ -69,6 +70,7 @@ public:
 
 private:
 	GParted::FILESYSTEM get_filesystem() ; 
+	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
 	void init_maps() ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
@@ -106,6 +108,8 @@ private:
 	Glib::ustring temp ;
 	Partition partition_temp ;
 	FS fs ;
+	std::vector<Glib::ustring> device_paths ;
+	bool probe_devices ;
 	
 	std::map<Glib::ustring, Glib::ustring> mount_info ;
 	std::map<Glib::ustring, Glib::ustring> short_paths ;

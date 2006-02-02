@@ -47,7 +47,7 @@ namespace GParted
 class Win_GParted : public Gtk::Window
 {
 public:
-	Win_GParted( );
+	Win_GParted( const std::vector<Glib::ustring> & user_devices ) ;
 
 private:
 	void init_menubar( ) ;

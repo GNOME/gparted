@@ -34,14 +34,24 @@ int main( int argc, char *argv[] )
 	//check UID
 	if ( getuid() != 0 )
 	{
-		Gtk::MessageDialog dialog( _("Root privileges are required for running GParted"), false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK ) ;
-		dialog .set_secondary_text( _( "Since GParted can be a weapon of mass destruction only root may run it.") ) ;
+		Gtk::MessageDialog dialog( _("Root privileges are required for running GParted"), 
+					   false,
+					   Gtk::MESSAGE_ERROR,
+					   Gtk::BUTTONS_OK ) ;
+		dialog .set_secondary_text(
+				_("Since GParted can be a weapon of mass destruction only root may run it.") ) ;
 		
 		dialog .run() ;
 		exit( 0 ) ;
 	}
+
+	//deal with arguments..
+	std::vector<Glib::ustring> user_devices ;
 	
-	GParted::Win_GParted win_gparted ; 
+	for ( int t = 1 ; t < argc ; t++ )
+		user_devices .push_back( argv[ t ] ) ;
+	
+	GParted::Win_GParted win_gparted( user_devices ) ; 
 	Gtk::Main::run( win_gparted ) ;
 
 	return 0 ;
