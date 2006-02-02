@@ -123,6 +123,7 @@ private:
 	void close_operationslist( ) ;
 	void clear_operationslist( ) ;
 	void combo_devices_changed( );
+	void radio_devices_changed( unsigned int item ) ;
 		
 	void menu_gparted_refresh_devices( );
 	void menu_gparted_filesystems( );

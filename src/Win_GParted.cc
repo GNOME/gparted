@@ -26,6 +26,7 @@
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/radiobuttongroup.h>
 
 #include <cerrno>
 #include <sys/swap.h>
@@ -107,6 +108,10 @@ void Win_GParted::init_menubar( )
 	menu = manage( new Gtk::Menu( ) ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+	
+	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Devices"), *image ) ) ; 
+	
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Filesystems"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_filesystems ) ) );
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
@@ -149,35 +154,45 @@ void Win_GParted::init_toolbar( )
 	
 	//NEW and DELETE
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_new) );	toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_new) );
+	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Create a new partition in the selected unallocated space") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::DELETE));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );	toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );
+	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Delete the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	
 	//RESIZE/MOVE
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, _("Resize/Move") ));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) ); 	toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
+	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Resize/Move the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	
 	//COPY and PASTE
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::COPY));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );	toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );
+	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Copy the selected partition to the clipboard") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::PASTE));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );	toolbar_main.append(*toolbutton);
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );
+	toolbar_main.append(*toolbutton);
 	toolbutton ->set_tooltip(tooltips, _("Paste the partition from the clipboard") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	
 	//UNDO and APPLY
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::UNDO));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );	toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );
+	toolbar_main.append(*toolbutton);
+	toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Undo last operation") );		
+	
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );	toolbar_main.append(*toolbutton); toolbutton ->set_sensitive( false );
+	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );
+	toolbar_main.append(*toolbutton);
+	toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
 	
 	//initialize and pack combo_devices
@@ -420,15 +435,33 @@ void Win_GParted::refresh_combo_devices()
 {
 	liststore_devices ->clear() ;
 	
+	menu = manage( new Gtk::Menu() ) ;
+	Gtk::RadioButtonGroup radio_group ;
+	
 	for ( unsigned int i = 0 ; i < devices .size( ) ; i++ )
-	{ 
+	{
+		//combo...
 		treerow = *( liststore_devices ->append() ) ;
 		treerow[ treeview_devices_columns .icon ] =
 			render_icon( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 		treerow[ treeview_devices_columns .device ] = devices[ i ] .path ;
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length ) + ")" ; 
+	
+		//devices submenu....
+		menu ->items() .push_back( Gtk::Menu_Helpers::RadioMenuElem( 
+			radio_group,
+			devices[ i ] .path + "\t(" + Utils::format_size( devices[ i ] .length ) + ")",
+			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ) ;
 	}
+				
+
+	menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .remove_submenu() ;
+
+	if ( menu ->items() .size() )
+		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_submenu( *menu ) ;
 		
+	menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( menu ->items() .size() ) ;
+	
 	combo_devices .set_active( current_device ) ;
 }
 
@@ -735,26 +768,44 @@ void Win_GParted::close_operationslist( )
 	}
 	
 	hbox_operations .hide( ) ;
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items() [ 1 ] ) ->set_active( false ) ;
+	static_cast<Gtk::CheckMenuItem *>( 
+		& menubar_main .items( ) [ 2 ] .get_submenu( ) ->
+	  	items() [ 1 ] ) ->set_active( false ) ;
 }
 
-void Win_GParted::clear_operationslist( ) 
+void Win_GParted::clear_operationslist() 
 {
-	operations .clear( ) ;
-	Refresh_Visual( ) ;
+	operations .clear() ;
+	Refresh_Visual() ;
 }
 
-void Win_GParted::combo_devices_changed( )
-{	
+void Win_GParted::combo_devices_changed()
+{
 	//set new current device
 	current_device = combo_devices .get_active_row_number() ;
 	this ->set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .path ) );
 	
 	//refresh label_device_info
-	Fill_Label_Device_Info( );
+	Fill_Label_Device_Info();
 	
 	//rebuild visualdisk and treeview
-	Refresh_Visual( );
+	Refresh_Visual();
+	
+	//uodate radiobuttons..
+	if ( menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() )
+		static_cast<Gtk::RadioMenuItem *>( 
+			& menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() ->
+			items()[ current_device ] ) ->set_active( true ) ;
+}
+
+void Win_GParted::radio_devices_changed( unsigned int item ) 
+{
+	if ( static_cast<Gtk::RadioMenuItem *>( 
+	     	& menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() ->
+		items()[ item ] ) ->get_active() )
+	{
+		combo_devices .set_active( item ) ;
+	}
 }
 
 void Win_GParted::thread_refresh_devices() 

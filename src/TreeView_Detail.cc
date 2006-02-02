@@ -33,6 +33,7 @@ TreeView_Detail::TreeView_Detail( )
 	//append columns
 	append_column( _("Partition"), treeview_detail_columns .partition );
 	append_column( _("Filesystem"), treeview_detail_columns .color );
+	append_column( _("Mountpoint"), treeview_detail_columns .mountpoint );
 	append_column( _("Size"), treeview_detail_columns .size );
 	append_column( _("Used"), treeview_detail_columns .used );
 	append_column( _("Unused"), treeview_detail_columns .unused );
@@ -61,11 +62,11 @@ TreeView_Detail::TreeView_Detail( )
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
 
 	//set alignment of numeric columns to right
-	for( short t = 2 ; t < 5 ; t++ )
+	for( short t = 3 ; t < 6 ; t++ )
 		get_column_cell_renderer( t ) ->property_xalign() = 1 ;
-	
+
 	//expand columns and centeralign the headertext
-	for( short t = 2 ; t < 6 ; t++ )
+	for( short t = 3 ; t < 7 ; t++ )
 	{
 		get_column( t ) ->set_expand( true ) ;
 		get_column( t ) ->set_alignment( 0.5 ) ;
@@ -145,6 +146,9 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	
 	treerow[ treeview_detail_columns .filesystem ] = 
 		Utils::Get_Filesystem_String( partition .filesystem ) ;
+	
+	//mountpoint
+	treerow[ treeview_detail_columns .mountpoint ] = partition .mountpoint ;
 	
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length() ) ;
