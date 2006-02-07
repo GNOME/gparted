@@ -1,3 +1,12 @@
+2006-02-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/Win_GParted.cc: removed warning about busy device. It's not
+	  really needed and it confuses people.
+	* include/Operation.h: set default status of operationdetails to NONE
+	* include/Dialog_Progress.h,
+	  src/Dialog_Progress.cc: implemented export of operationdetails to
+	  external file. This can be very usefull for debugging. (#329968)
+	
 2006-02-02 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/GParted_Core.h,

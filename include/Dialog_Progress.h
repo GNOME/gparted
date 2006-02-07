@@ -29,6 +29,8 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/expander.h>
 
+#include <fstream>
+
 namespace GParted
 {
 
@@ -47,6 +49,8 @@ private:
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
 	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
 	void on_cancel() ;
+	void on_save() ;
+	void echo_operation_details( const OperationDetails & operation_details, std::ofstream & out ) ;
 	
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;

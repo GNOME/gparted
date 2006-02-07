@@ -42,7 +42,7 @@ struct OperationDetails
 	
 	OperationDetails()
 	{
-		status = EXECUTE ;
+		status = NONE ;
 	}
 
 	OperationDetails( const Glib::ustring & description, Status status = EXECUTE )

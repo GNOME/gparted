@@ -1446,31 +1446,15 @@ void Win_GParted::activate_apply( )
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
  
-		for ( ; dialog_progress .run() == Gtk::RESPONSE_CANCEL ; ) {}
+		int response ;
+		do
+		{
+			response = dialog_progress .run() ;
+		}
+		while ( response == Gtk::RESPONSE_CANCEL || response == Gtk::RESPONSE_OK ) ;
+		
 		dialog_progress .hide() ;
 		
-		//find out if any of the involved devices is busy
-		bool any_busy = false ;
-		for ( unsigned int t = 0; t < devices .size( ) && ! any_busy; t++ )
-			if ( devices[ t ] .highest_busy )
-				for (unsigned int i = 0; i < operations .size( ) && ! any_busy; i++ )
-					if ( operations[ i ] .device .path == devices[ t ] .path )
-						any_busy = true ;
-				
-		//show warning if necessary
-		if ( any_busy )
-		{
-			str_temp = "<span weight=\"bold\" size=\"larger\">" ;	
-			str_temp += _("At least one operation was applied to a busy device.") ;
-			str_temp += "</span>\n\n" ;
-			str_temp += _("A busy device is a device with at least one mounted partition.") ;
-			str_temp += "\n";
-			str_temp += _("Because making changes to a busy device may confuse the kernel, you are advised to reboot your computer.") ;
-
-			Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK, true );
-			dialog .run() ;
-		}			
-					
 		//wipe operations...
 		operations.clear() ;
 		liststore_operations ->clear() ;

@@ -20,6 +20,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/filechooserdialog.h>
 
 namespace GParted
 {
@@ -72,11 +73,13 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	//fill 'er up
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
+		this ->operations[ t ] .operation_details .description = "<b>" + operations[ t ] .str_operation + "</b>" ;
+		
 		treerow = *( treestore_operations ->append() );
 		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] .operation_icon ;
-		treerow[ treeview_operations_columns .operation_description ] = "<b>" + operations[ t ] .str_operation + "</b>" ; 
-
-		this ->operations[ t ] .operation_details .description = operations[ t ] .str_operation ;
+		treerow[ treeview_operations_columns .operation_description ] =
+			this ->operations[ t ] .operation_details .description ; 
+		treerow[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ; 
 	}
 	
 	treeview_operations .get_column( 1 ) ->set_expand( true ) ;
@@ -106,53 +109,46 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow, 
 					        const OperationDetails & operation_details ) 
 {
-	Gtk::TreeRow treerow_child ;
-	
 	//append new rows (if any)
 	for ( unsigned int t = treerow .children() .size() ; t < operation_details .sub_details .size() ; t++ )
 	{
-		treerow_child = *( treestore_operations ->append( treerow .children() ) ) ;
+		Gtk::TreeRow treerow_child = *( treestore_operations ->append( treerow .children() ) ) ;
 		
 		treerow_child[ treeview_operations_columns .operation_description ] =
 			operation_details .sub_details[ t ] .description ;
 		
 		treerow_child[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ;
 	}
-
-	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
+	
+	//check status and update if necessary
+	if ( operation_details .status != treerow[ treeview_operations_columns .hidden_status ] )
 	{
-		treerow_child = treerow .children()[ t ] ;
+		treerow[ treeview_operations_columns .hidden_status ] =	operation_details .status ;
 
-		if ( operation_details .sub_details[ t ] .status != treerow_child[ treeview_operations_columns .hidden_status ] )
+		switch ( operation_details .status )
 		{
-			treerow_child[ treeview_operations_columns .hidden_status ] =
-				operation_details .sub_details[ t ] .status ;
-
-			switch ( operation_details .sub_details[ t ] .status )
-			{
-				case OperationDetails::EXECUTE:
-					treerow_child[ treeview_operations_columns .status_icon ] = icon_execute ;
+			case OperationDetails::EXECUTE:
+				treerow[ treeview_operations_columns .status_icon ] = icon_execute ;
 					
-					break ;
-				case OperationDetails::SUCCES:
-					treerow_child[ treeview_operations_columns .status_icon ] = icon_succes ;
+				break ;
+			case OperationDetails::SUCCES:
+				treerow[ treeview_operations_columns .status_icon ] = icon_succes ;
+				
+				break ;
+			case OperationDetails::ERROR:
+				treerow[ treeview_operations_columns .status_icon ] = icon_error ;
+				
+				break ;
 					
-					break ;
-				case OperationDetails::ERROR:
-					treerow_child[ treeview_operations_columns .status_icon ] = icon_error ;
-					
-					break ;
-					
-				default : 
-					//plain, old-fashioned paranoia ;)
-					treerow_child[ treeview_operations_columns .hidden_status ] =
-						OperationDetails::NONE ;
-					break ;
-			}
+			default : 
+				treerow[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ;
+				break ;
 		}
-		
-		update_operation_details( treerow_child, operation_details .sub_details[ t ] ) ;
 	}
+
+	//and update the children..
+	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
+		update_operation_details( treerow .children()[ t ], operation_details .sub_details[ t ] ) ;
 }
 
 void Dialog_Progress::on_signal_show()
@@ -164,14 +160,19 @@ void Dialog_Progress::on_signal_show()
 		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
 		progressbar_all .set_fraction( fraction * t ) ;
 		
-		static_cast<Gtk::TreeRow>( treestore_operations ->children()[ t ] )
-			[ treeview_operations_columns .status_icon ] = icon_execute ;
-		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treestore_operations ->children()[ t ] ) ) ;
+		treerow = treestore_operations ->children()[ t ] ;
+
+		//set status to 'execute'
+		operations[ t ] .operation_details .status = OperationDetails::EXECUTE ;
+		update_operation_details( treerow, operations[ t ] .operation_details ) ;
+
+		//set focus...
+		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 		
+		//and start..
 		pulse = true ;
 		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
 		
-		treerow = treestore_operations ->children()[ t ] ;
 		while ( pulse )
 		{
 			update_operation_details( treerow, operations[ t ] .operation_details ) ;
@@ -184,16 +185,19 @@ void Dialog_Progress::on_signal_show()
 			usleep( 10000 ) ;
 		}
 
-		//final updates for this operation
+		//set status (succes/error) for this operation
+		operations[ t ] .operation_details .status =
+			succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 		update_operation_details( treerow, operations[ t ] .operation_details ) ;
-		static_cast<Gtk::TreeRow>( treestore_operations ->children()[ t ] )
-			[ treeview_operations_columns .status_icon ] = succes ? icon_succes : icon_error ;
 	}
+	
+	//add save button
+	this ->add_button( _("_Save Details"), Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
 	
 	//replace 'cancel' with 'close'
 	std::vector<Gtk::Widget *> children = this ->get_action_area() ->get_children() ;
 	this ->get_action_area() ->remove( * children .back() ) ;
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK );
+	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 
 	if ( cancel )
 	{
@@ -284,10 +288,98 @@ void Dialog_Progress::on_cancel()
 	}
 }
 
+void Dialog_Progress::on_save()
+{
+	Gtk::FileChooserDialog dialog( _("Save Details"), Gtk::FILE_CHOOSER_ACTION_SAVE ) ;
+	dialog .set_transient_for( *this ) ;
+	dialog .set_current_folder( Glib::get_home_dir() ) ;
+	dialog .set_current_name( "gparted_details.htm" ) ;
+	dialog .set_do_overwrite_confirmation( true ) ;
+	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ; 
+	dialog .add_button( Gtk::Stock::SAVE, Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
+
+	if ( dialog .run() == Gtk::RESPONSE_OK )
+	{
+		std::ofstream out( dialog .get_filename() .c_str() ) ;
+		if ( out )
+		{
+			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
+			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+			{
+				echo_operation_details( operations[ t ] .operation_details, out ) ;
+				out << "<BR>========================================<BR><BR>" << std::endl ;
+			}
+				
+			out .close() ;
+		}
+	}
+}
+
+void Dialog_Progress::echo_operation_details( const OperationDetails & operation_details, std::ofstream & out ) 
+{
+	//replace '\n' with '<br>'
+	Glib::ustring temp = operation_details .description ;
+	for ( unsigned int index = temp .find( "\n" ) ; index < temp .length() ; index = temp .find( "\n" ) )
+		temp .replace( index, 1, "<BR>" ) ;
+	
+	//and export everything to some kind of html...
+	out << "<TABLE border=0>" << std::endl ;
+	out << "<TR>" << std::endl ;
+	out << "<TD colspan=2>" << std::endl ;
+	out << temp ;
+	
+	//show status...
+	if ( operation_details .status != OperationDetails::NONE )
+	{
+		out << "&nbsp;&nbsp;&nbsp;&nbsp;" ;
+		switch ( operation_details .status )
+		{
+			case OperationDetails::EXECUTE:
+				out << "( EXECUTING )" ;
+				break ;
+			case OperationDetails::SUCCES:
+				out << "( SUCCES )" ;
+				break ;
+			case OperationDetails::ERROR:
+				out << "( ERROR )" ;
+				break ;
+
+			default:
+				break ;
+		}
+	}
+	
+	out << std::endl ;
+	out << "</TD>" << std::endl ;
+	out << "</TR>" << std::endl ;
+	
+	if ( operation_details .sub_details. size() )
+	{
+		out << "<TR>" << std::endl ;
+		out << "<TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>" << std::endl ;
+		out << "<TD>" << std::endl ;
+
+		for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
+			echo_operation_details( operation_details .sub_details[ t ], out ) ;
+
+		out << "</TD>" << std::endl ;
+		out << "</TR>" << std::endl ;
+	}
+	
+	out << "</TABLE>" << std::endl ;
+}
+
 void Dialog_Progress::on_response( int response_id ) 
 {
-	if ( response_id == Gtk::RESPONSE_CANCEL )
-		on_cancel() ;
+	switch ( response_id )
+	{
+		case Gtk::RESPONSE_OK:
+			on_save() ;
+			break ;
+		case Gtk::RESPONSE_CANCEL:
+			on_cancel() ;
+			break ;
+	}
 }
 
 bool Dialog_Progress::on_delete_event( GdkEventAny * event ) 
