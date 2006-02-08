@@ -255,7 +255,7 @@ void Win_GParted::init_partition_menu( )
 	
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("Deactivate"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_disable_swap ) ) );
+						     sigc::mem_fun( *this, &Win_GParted::activate_toggle_swap ) ) );
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	
@@ -638,21 +638,27 @@ void Win_GParted::Refresh_Visual( )
 	
 	//no partition can be selected after a refresh..
 	selected_partition .Reset() ;
-	Set_Valid_Operations() ;
+	set_valid_operations() ;
 }
 
 bool Win_GParted::Quit_Check_Operations( )
 {
 	if ( operations .size() )
 	{
-		str_temp = "<span weight=\"bold\" size=\"larger\">" + (Glib::ustring) _( "Quit GParted?" ) + "</span>\n\n" ;
-	
+		Gtk::MessageDialog dialog( *this,
+					   _("Quit GParted?"),
+					   false,
+					   Gtk::MESSAGE_QUESTION,
+					   Gtk::BUTTONS_NONE,
+					   true );
+
 		if ( operations .size() != 1 )
-			str_temp += String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
+			str_temp = String::ucompose( _("%1 operations are currently pending."), operations .size() ) ;
 		else
-			str_temp += _("1 operation is currently pending.");
+			str_temp = _("1 operation is currently pending.");
+	
+		dialog .set_secondary_text( str_temp ) ;
 				
-		Gtk::MessageDialog dialog( *this, str_temp, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_NONE, true);
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
 		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
 		
@@ -663,31 +669,39 @@ bool Win_GParted::Quit_Check_Operations( )
 	return true; //close GParted
 }
 
-void Win_GParted::Set_Valid_Operations( )
+void Win_GParted::set_valid_operations( )
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_unmount( false ) ; allow_info( false ) ;
-	allow_disable_swap( false ) ;
+	allow_toggle_swap( false ) ;
+	
+       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) ->set_label( _("Deactivate") ) ;
 	
 	//no partition selected...	
 	if ( selected_partition .partition .empty() )
 		return ;
 	
 	//if there's something, there's some info ;)
-	allow_info( true ) ;	
+	allow_info( true ) ;
+
+	//deal with swap...
+	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+	{
+		allow_toggle_swap( true ) ;
+
+		if ( selected_partition .busy )
+			return ;
+		else
+       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) 
+				->set_label( _("Activate") ) ;
+	}
 	
 	//only unmount is allowed
-	if ( selected_partition .busy )
+	if ( selected_partition .busy && selected_partition .type != GParted::TYPE_EXTENDED )
 	{
-		if ( selected_partition .type != GParted::TYPE_EXTENDED )
-		{
-			if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
-				allow_disable_swap( true ) ;
-			else
-				allow_unmount( true ) ;
-		}
+		allow_unmount( true ) ;
 		
-		return;
+		return ;
 	}
 	
 	//UNALLOCATED
@@ -1011,7 +1025,7 @@ void Win_GParted::on_partition_selected( const Partition & partition, bool src_i
 {
 	selected_partition = partition;
 	
-	Set_Valid_Operations() ;
+	set_valid_operations() ;
 	
 	if ( src_is_treeview )
 		vbox_visual_disk .set_selected( partition ) ;
@@ -1350,33 +1364,44 @@ void  Win_GParted::activate_unmount( )
 	menu_gparted_refresh_devices() ;
 }
 
-void Win_GParted::thread_deactivate_swap() 
+void Win_GParted::thread_toggle_swap() 
 {
-	if ( swapoff( selected_partition .partition .c_str() ) )
-		str_temp = Glib::strerror( errno ) ;
+	bool succes = false ;
+	
+	if ( selected_partition .busy )
+		succes = ! swapoff( selected_partition .partition .c_str() ) ;
 	else
-		str_temp .clear() ;
+		succes = ! swapon( selected_partition .partition .c_str(), 0 ) ;
 
+	if ( succes )
+		str_temp .clear() ;
+	else
+		str_temp = Glib::strerror( errno ) ;
+	
 	pulse = false ;
 }
 	
-void Win_GParted::activate_disable_swap() 
+void Win_GParted::activate_toggle_swap() 
 {
 	pulse = true ;
-	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_deactivate_swap ), true ) ;
+	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), true ) ;
 
-	show_pulsebar( String::ucompose( _("Deactivating swap on %1"), selected_partition .partition ) ) ;
+	show_pulsebar( 
+		String::ucompose( selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
+		selected_partition .partition ) ) ;
 
 	if ( ! str_temp .empty() )
 	{
-		Gtk::MessageDialog dialog( *this, 
-					   "<span weight=\"bold\" size=\"larger\">" +
-					   static_cast<Glib::ustring>( _("Could not deactivate swap") ) +
-					   "</span>\n\n" + str_temp,
-					   true,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true );
+		Gtk::MessageDialog dialog( 
+			*this,
+			selected_partition .busy ? _("Could not deactivate swap") : _("Could not activate swap"),
+			false,
+			Gtk::MESSAGE_ERROR,
+			Gtk::BUTTONS_OK,
+			true ) ;
+
+		dialog .set_secondary_text( str_temp ) ;
+		
 		dialog.run() ;
 	}
 	

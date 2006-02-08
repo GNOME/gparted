@@ -70,7 +70,7 @@ private:
 	void Add_Operation( OperationType, const Partition & );
 	void Refresh_Visual( );
 	bool Quit_Check_Operations( );
-	void Set_Valid_Operations( ) ; //determines which operations are allowed on selected_partition 
+	void set_valid_operations() ;
 	
 	//convenience functions
 	void allow_new( bool b )	{ 
@@ -99,7 +99,7 @@ private:
 	void allow_unmount( bool b )	{ 
 		menu_partition .items( )[ 10 ] .set_sensitive( b ); }
 	
-	void allow_disable_swap( bool b )	{ 
+	void allow_toggle_swap( bool b )	{ 
 		menu_partition .items( )[ 11 ] .set_sensitive( b ); }
 	
 	void allow_info( bool b )	{
@@ -116,7 +116,7 @@ private:
 	//threads..
 	void thread_refresh_devices() ;
 	void thread_unmount_partition() ;
-	void thread_deactivate_swap() ;
+	void thread_toggle_swap() ;
 		
 	//signal handlers
 	void open_operationslist( ) ;
@@ -147,7 +147,7 @@ private:
 	void activate_info();
 	void activate_format( GParted::FILESYSTEM new_fs );
 	void activate_unmount() ;
-	void activate_disable_swap() ;
+	void activate_toggle_swap() ;
 	void activate_disklabel() ;
 	
 	void activate_undo();
