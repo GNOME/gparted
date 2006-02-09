@@ -442,7 +442,11 @@ void VBox_VisualDisk::on_resize( Gtk::Allocation & allocation )
 		MIN_SIZE-- ;
 	}
 	while ( TOTAL <= 0 && MIN_SIZE > 0 ) ; 
-		
+
+	//due to rounding a few px may be lost (max. 2), lets add these to the last partition.
+	if ( allocation .get_width() > calced )
+		visual_partitions .back() .length += ( allocation .get_width() - calced ) ;
+	
 	calc_position_and_height( visual_partitions, 0, 0 ) ;
 	calc_used_unused( visual_partitions ) ;
 	calc_text( visual_partitions ) ;

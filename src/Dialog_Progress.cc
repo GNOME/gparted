@@ -67,7 +67,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
 	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
 	treeview_operations .append_column( "", treeview_operations_columns .status_icon );
-	treeview_operations .set_size_request( -1, 250 ) ;
+	treeview_operations .set_size_request( 500, 250 ) ;
 	treeview_operations .set_rules_hint( true ) ;
 
 	//fill 'er up
