@@ -605,8 +605,8 @@ void Win_GParted::Refresh_Visual( )
 		allow_apply( false );
 	}
 			
-	//count primary's, check for extended and logic and see if any logical is busy
-	any_logic = any_extended = false;
+	//count primary's and check for extended
+	any_extended = false;
 	primary_count = 0;
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -622,7 +622,6 @@ void Win_GParted::Refresh_Visual( )
 			case GParted::TYPE_EXTENDED	:
 				any_extended = true;
 				primary_count++;
-				any_logic = partitions[ t ] .logicals .size() -1 ;
 				break;
 				
 			default				:
@@ -724,7 +723,9 @@ void Win_GParted::set_valid_operations( )
 	//EXTENDED
 	if ( selected_partition .type == GParted::TYPE_EXTENDED )
 	{
-		if ( ! any_logic ) //deletion is only allowed when there are no logical partitions inside.
+		//deletion is only allowed when there are no logical partitions inside.
+		if ( selected_partition .logicals .size() == 1 &&
+		     selected_partition .logicals .back() .type == GParted::TYPE_UNALLOCATED ) 
 			allow_delete( true ) ;
 		
 		if ( ! devices[ current_device ] .readonly )
@@ -1024,7 +1025,7 @@ void Win_GParted::menu_help_about( )
 void Win_GParted::on_partition_selected( const Partition & partition, bool src_is_treeview ) 
 {
 	selected_partition = partition;
-	
+
 	set_valid_operations() ;
 	
 	if ( src_is_treeview )
@@ -1159,24 +1160,30 @@ void Win_GParted::activate_paste( )
 	}
 }
 
-void Win_GParted::activate_new( )
+void Win_GParted::activate_new()
 {
 	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
 	if ( devices [ current_device ] .max_prims == -1 )
-		activate_disklabel( ) ;
+		activate_disklabel() ;
 			
-	else if ( ! max_amount_prim_reached( ) )
+	else if ( ! max_amount_prim_reached() )
 	{	
 		Dialog_Partition_New dialog;
 		
-		dialog .Set_Data( selected_partition, any_extended, new_count, gparted_core .get_filesystems( ), devices[ current_device ] .readonly, devices[ current_device ] .cylsize ) ;
+		dialog .Set_Data( selected_partition, 
+				  any_extended,
+				  new_count,
+				  gparted_core .get_filesystems(),
+				  devices[ current_device ] .readonly,
+				  devices[ current_device ] .cylsize ) ;
+		
 		dialog .set_transient_for( *this );
 		
-		if ( dialog .run( ) == Gtk::RESPONSE_OK )
+		if ( dialog .run() == Gtk::RESPONSE_OK )
 		{
-			dialog .hide( ) ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+			dialog .hide() ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
 			new_count++ ;
-			Add_Operation( GParted::CREATE, dialog .Get_New_Partition( ) );
+			Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
 		}
 	}
 }

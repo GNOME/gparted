@@ -75,6 +75,7 @@ TreeView_Detail::TreeView_Detail( )
 
 void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 
 {
+	bool mount_info = false ;
 	treestore_detail ->clear() ;
 	
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
@@ -88,9 +89,17 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 			{
 				childrow = *( treestore_detail ->append( row.children() ) );
 				create_row( childrow, partitions[ i ] .logicals[ t ] );
+		
+				if ( ! partitions[ i ] .logicals[ t ] .mountpoint .empty() )
+					mount_info = true ;
 			}
 		}
+
+		if ( ! partitions[ i ] .mountpoint .empty() )
+			mount_info = true ;
 	}
+
+	get_column( 2 ) ->set_visible( mount_info ) ;
 	
 	//show logical partitions ( if any )
 	expand_all();
