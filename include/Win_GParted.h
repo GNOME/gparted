@@ -26,7 +26,6 @@
 #include "../include/GParted_Core.h"
 
 #include <sigc++/class_slot.h>
-#include <gtkmm/main.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>

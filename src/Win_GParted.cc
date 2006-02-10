@@ -27,6 +27,7 @@
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
+#include <gtkmm/main.h>
 
 #include <cerrno>
 #include <sys/swap.h>

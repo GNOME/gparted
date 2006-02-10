@@ -16,6 +16,7 @@
  */
  
 #include "../include/TreeView_Detail.h"
+#include <gtkmm/main.h>
 
 namespace GParted
 { 
@@ -40,8 +41,8 @@ TreeView_Detail::TreeView_Detail( )
 	append_column( _("Flags"), treeview_detail_columns .flags );
 	
 	//status_icon
-	get_column( 0 ) ->pack_start( treeview_detail_columns.status_icon, false );
-	
+	get_column( 0 ) ->pack_start( treeview_detail_columns .status_icon, false );
+
 	//filesystem text
 	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
 	
@@ -79,7 +80,7 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 	treestore_detail ->clear() ;
 	
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
-	{
+	{	
 		row = *( treestore_detail ->append() );
 		create_row( row, partitions[ i ] );
 		
@@ -101,10 +102,8 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 
 	get_column( 2 ) ->set_visible( mount_info ) ;
 	
-	//show logical partitions ( if any )
-	expand_all();
-	
 	columns_autosize();
+	expand_all() ;
 }
 
 void TreeView_Detail::set_selected( const Partition & partition )
@@ -148,6 +147,11 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
 	
 	treerow[ treeview_detail_columns .partition ] = partition .partition;
+
+	//this fixes a weird issue (see #169683 for more info)
+	if ( partition .type == GParted::TYPE_EXTENDED && partition .busy ) 
+		treerow[ treeview_detail_columns .partition ] = treerow[ treeview_detail_columns .partition ] + "   " ;
+
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
 	treerow[ treeview_detail_columns .text_color ] = 
