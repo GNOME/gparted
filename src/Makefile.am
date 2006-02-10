@@ -27,7 +27,7 @@ gparted_SOURCES = \
 	Partition.cc\
 	TreeView_Detail.cc\
 	Utils.cc\
-	VBox_VisualDisk.cc\
+	FrameVisualDisk.cc\
 	Win_GParted.cc\
 	ext2.cc\
 	ext3.cc\

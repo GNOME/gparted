@@ -15,9 +15,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "../include/VBox_VisualDisk.h"
-
-#include <gtkmm/image.h>
+#include "../include/FrameVisualDisk.h"
 
 #define BORDER 8
 #define SEP 5
@@ -26,10 +24,10 @@
 namespace GParted
 {
 
-VBox_VisualDisk::VBox_VisualDisk()
+FrameVisualDisk::FrameVisualDisk()
 {
-	this ->set_border_width( 10 );
-	this ->set_spacing( 5 );
+	this ->set_border_width( 5 ) ;
+	this ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
 	
 	//set and allocated some standard colors
 	color_used .set( Utils::Get_Color( GParted::FS_USED ) );
@@ -44,22 +42,16 @@ VBox_VisualDisk::VBox_VisualDisk()
 	//prepare drawingarea and frame and pack them	
 	drawingarea .set_events( Gdk::BUTTON_PRESS_MASK );
 	
-	drawingarea .signal_realize() .connect( sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_realize) ) ;
-	drawingarea .signal_expose_event() .connect( sigc::mem_fun(*this, &VBox_VisualDisk::drawingarea_on_expose) ) ;
-	drawingarea .signal_button_press_event() .connect( sigc::mem_fun( *this, &VBox_VisualDisk::on_drawingarea_button_press) ) ;
+	drawingarea .signal_realize() .connect( sigc::mem_fun(*this, &FrameVisualDisk::drawingarea_on_realize) ) ;
+	drawingarea .signal_expose_event() .connect( sigc::mem_fun(*this, &FrameVisualDisk::drawingarea_on_expose) ) ;
+	drawingarea .signal_button_press_event() .connect( sigc::mem_fun( *this, &FrameVisualDisk::on_drawingarea_button_press) ) ;
 	
 	drawingarea .set_size_request( -1, HEIGHT ) ;
 
-	frame = manage( new Gtk::Frame() ) ;
-	frame ->add( drawingarea );
-	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
-	this ->pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;
-
-	//pack hbox which holds the legend
-	this ->pack_start( hbox_legend );
+	this ->add( drawingarea ) ;
 }
 	
-void VBox_VisualDisk::load_partitions( const std::vector<Partition> & partitions, Sector device_length )
+void FrameVisualDisk::load_partitions( const std::vector<Partition> & partitions, Sector device_length )
 {
 	clear() ;	
 
@@ -67,27 +59,24 @@ void VBox_VisualDisk::load_partitions( const std::vector<Partition> & partitions
 	set_static_data( partitions, visual_partitions, device_length ) ;
 
 	drawingarea .queue_resize() ;
-
-	build_legend( partitions ) ;
 }
 
-void VBox_VisualDisk::set_selected( const Partition & partition ) 
+void FrameVisualDisk::set_selected( const Partition & partition ) 
 {
 	set_selected( visual_partitions, partition ) ;
 	
 	draw_partitions( visual_partitions ) ;
 }
 
-void VBox_VisualDisk::clear()
+void FrameVisualDisk::clear()
 {
 	free_colors( visual_partitions ) ;
 	visual_partitions .clear() ;
-	hbox_legend .children() .clear() ;
 	
 	drawingarea .queue_resize() ;
 }
 	
-int VBox_VisualDisk::get_total_separator_px( const std::vector<Partition> & partitions ) 
+int FrameVisualDisk::get_total_separator_px( const std::vector<Partition> & partitions ) 
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
@@ -97,7 +86,7 @@ int VBox_VisualDisk::get_total_separator_px( const std::vector<Partition> & part
 	return ( partitions .size() -1 ) * SEP ;
 }	
 
-void VBox_VisualDisk::set_static_data( const std::vector<Partition> & partitions, std::vector<visual_partition> & visual_partitions, Sector length ) 
+void FrameVisualDisk::set_static_data( const std::vector<Partition> & partitions, std::vector<visual_partition> & visual_partitions, Sector length ) 
 {
 	Sector p_length ;
 	visual_partition vp ;
@@ -129,7 +118,7 @@ void VBox_VisualDisk::set_static_data( const std::vector<Partition> & partitions
 	}
 }
 
-int VBox_VisualDisk::calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) 
+int FrameVisualDisk::calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) 
 {
 	int calced_length = 0 ;
 
@@ -149,7 +138,7 @@ int VBox_VisualDisk::calc_length( std::vector<visual_partition> & visual_partiti
 	return calced_length + (visual_partitions .size() - 1) * SEP ;
 }
 
-void VBox_VisualDisk::calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) 
+void FrameVisualDisk::calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
@@ -166,7 +155,7 @@ void VBox_VisualDisk::calc_position_and_height( std::vector<visual_partition> & 
 	}
 }
 
-void VBox_VisualDisk::calc_used_unused( std::vector<visual_partition> & visual_partitions ) 
+void FrameVisualDisk::calc_used_unused( std::vector<visual_partition> & visual_partitions ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
@@ -194,7 +183,7 @@ void VBox_VisualDisk::calc_used_unused( std::vector<visual_partition> & visual_p
 	}
 }
 	
-void VBox_VisualDisk::calc_text( std::vector<visual_partition> & visual_partitions ) 
+void FrameVisualDisk::calc_text( std::vector<visual_partition> & visual_partitions ) 
 {
 	int length, height ;
 	
@@ -221,66 +210,7 @@ void VBox_VisualDisk::calc_text( std::vector<visual_partition> & visual_partitio
 	}
 }
 
-void VBox_VisualDisk::build_legend( const std::vector<Partition> & partitions ) 
-{
-	std::vector<GParted::FILESYSTEM> legend ;
-	prepare_legend( partitions, legend ) ;
-
-	frame = manage( new Gtk::Frame() ) ;
-	hbox_legend .pack_start( *frame, Gtk::PACK_EXPAND_PADDING );
-	
-	Gtk::HBox * hbox = manage( new Gtk::HBox( false, 15 ) );
-	hbox ->set_border_width( 3 ) ;
-	frame ->add( *hbox ) ;
-	
-	bool hide_used_unused = true;
-	for ( unsigned int t = 0 ; t < legend .size() ; t++ )
-	{
-		hbox ->pack_start( * create_legend_item( legend[ t ] ), Gtk::PACK_SHRINK ) ;
-		
-		if ( legend[ t ] != GParted::FS_UNALLOCATED && legend[ t ] != GParted::FS_EXTENDED && legend[ t ] != GParted::FS_LINUX_SWAP )
-			hide_used_unused = false ;
-	}
-
-	if ( ! hide_used_unused )
-	{
-		frame = manage( new Gtk::Frame() ) ;
-		hbox_legend .pack_start( *frame, Gtk::PACK_EXPAND_PADDING );
-	
-		hbox = manage( new Gtk::HBox( false, 15 ) );
-		hbox ->set_border_width( 3 ) ;
-		frame ->add( *hbox ) ;
-
-		hbox ->pack_start( * create_legend_item( GParted::FS_USED ), Gtk::PACK_SHRINK ) ;
-		hbox ->pack_start( * create_legend_item( GParted::FS_UNUSED ), Gtk::PACK_SHRINK ) ;
-	}
-
-	hbox_legend .show_all_children() ;
-}
-	
-void VBox_VisualDisk::prepare_legend( const std::vector<Partition> & partitions, std::vector<GParted::FILESYSTEM> & legend ) 
-{
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
-	{
-		if ( std::find( legend .begin(), legend .end(), partitions[ t ] .filesystem ) == legend .end() )
-			legend .push_back( partitions[ t ] .filesystem );
-		
-		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			prepare_legend( partitions[ t ] .logicals, legend ) ;
-	}
-}
-
-Gtk::HBox * VBox_VisualDisk::create_legend_item( GParted::FILESYSTEM fs ) 
-{
-	Gtk::HBox * hbox = manage( new Gtk::HBox( false, 5 ) ) ;
-	hbox ->pack_start( * manage( new Gtk::Image( Utils::get_color_as_pixbuf( fs, 16, 16 ) ) ), Gtk::PACK_SHRINK );
-		
-	hbox ->pack_start( * Utils::mk_label( Utils::Get_Filesystem_String( fs ) ), Gtk::PACK_SHRINK );
-
-	return hbox ;
-}
-	
-void VBox_VisualDisk::draw_partitions( const std::vector<visual_partition> & visual_partitions ) 
+void FrameVisualDisk::draw_partitions( const std::vector<visual_partition> & visual_partitions ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
@@ -353,7 +283,7 @@ void VBox_VisualDisk::draw_partitions( const std::vector<visual_partition> & vis
 	}
 }
 
-bool VBox_VisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) 
+bool FrameVisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) 
 {
 	bool found = false ;
 	
@@ -376,7 +306,7 @@ bool VBox_VisualDisk::set_selected( std::vector<visual_partition> & visual_parti
 	return found ;
 }
 
-void VBox_VisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) 
+void FrameVisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
@@ -393,22 +323,22 @@ void VBox_VisualDisk::set_selected( std::vector<visual_partition> & visual_parti
 	}
 }
 
-void VBox_VisualDisk::drawingarea_on_realize()
+void FrameVisualDisk::drawingarea_on_realize()
 {
 	gc = Gdk::GC::create( drawingarea .get_window() );
 	
 	//connect here to prevent premature signalling (only relevant at startup)
-	drawingarea .signal_size_allocate() .connect( sigc::mem_fun( *this, &VBox_VisualDisk::on_resize ) ) ;
+	drawingarea .signal_size_allocate() .connect( sigc::mem_fun( *this, &FrameVisualDisk::on_resize ) ) ;
 }
 
-bool VBox_VisualDisk::drawingarea_on_expose( GdkEventExpose * event )
+bool FrameVisualDisk::drawingarea_on_expose( GdkEventExpose * event )
 {
 	draw_partitions( visual_partitions ) ;
 
 	return true ;
 }
 
-bool VBox_VisualDisk::on_drawingarea_button_press( GdkEventButton * event )
+bool FrameVisualDisk::on_drawingarea_button_press( GdkEventButton * event )
 {
 	set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) ;
 	draw_partitions( visual_partitions ) ;
@@ -423,7 +353,7 @@ bool VBox_VisualDisk::on_drawingarea_button_press( GdkEventButton * event )
 	return true ;
 }
 
-void VBox_VisualDisk::on_resize( Gtk::Allocation & allocation ) 
+void FrameVisualDisk::on_resize( Gtk::Allocation & allocation ) 
 {
 	MIN_SIZE = 20 ;
 
@@ -452,7 +382,7 @@ void VBox_VisualDisk::on_resize( Gtk::Allocation & allocation )
 	calc_text( visual_partitions ) ;
 }
 
-void VBox_VisualDisk::free_colors( std::vector<visual_partition> & visual_partitions ) 
+void FrameVisualDisk::free_colors( std::vector<visual_partition> & visual_partitions ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
@@ -463,7 +393,7 @@ void VBox_VisualDisk::free_colors( std::vector<visual_partition> & visual_partit
 	}
 }
 
-VBox_VisualDisk::~VBox_VisualDisk()
+FrameVisualDisk::~FrameVisualDisk()
 {
 	clear() ;
 

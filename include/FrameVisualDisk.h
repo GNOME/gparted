@@ -15,12 +15,11 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef  VBOX_VISUALDISK
-#define VBOX_VISUALDISK
+#ifndef FRAME_VISUALDISK
+#define FRAME_VISUALDISK
 
 #include "../include/Partition.h"
 
-#include <gtkmm/box.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 
@@ -28,11 +27,11 @@
 namespace GParted
 {
 
-class VBox_VisualDisk : public Gtk::VBox
+class FrameVisualDisk : public Gtk::Frame
 {
 public:
-	VBox_VisualDisk();
-	~VBox_VisualDisk();
+	FrameVisualDisk();
+	~FrameVisualDisk();
 	
 	void load_partitions( const std::vector<Partition> & partitions, Sector device_length );
 	void set_selected( const Partition & partition ) ;
@@ -54,10 +53,6 @@ private:
 	void calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) ;
 	void calc_used_unused( std::vector<visual_partition> & visual_partitions ) ;
 	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
-	
-	void build_legend( const std::vector<Partition> & partitions ) ;
-	void prepare_legend( const std::vector<Partition> & partitions, std::vector<GParted::FILESYSTEM> & legend) ;
-	Gtk::HBox * create_legend_item( GParted::FILESYSTEM fs ) ;
 	
 	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
 	
@@ -122,12 +117,10 @@ private:
 	visual_partition selected_vp ;
 	int TOT_SEP, MIN_SIZE ;
 
-	Gtk::Frame *frame ;
 	Gtk::DrawingArea drawingarea;
-	Gtk::HBox hbox_legend ;
 	Glib::RefPtr<Gdk::GC> gc;
 	Gdk::Color color_used, color_unused, color_text;
 };
 
 } //GParted
-#endif //VBOX_VISUALDISK
+#endif //FRAME_VISUALDISK
