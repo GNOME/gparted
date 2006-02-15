@@ -93,7 +93,7 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 	
 	bool return_value = false ;
-	Glib::ustring str_temp = "ntfsresize -P --force " + partition_new .partition ;
+	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 	{
@@ -113,8 +113,7 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .back() .sub_details .push_back( 
 			OperationDetails( operation_details .back() .description ) ) ;
 
-		if ( ! execute_command( "echo y | " + str_temp,
-					operation_details .back() .sub_details .back() .sub_details ) )
+		if ( ! execute_command( str_temp, operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 			return_value = true ;
@@ -158,7 +157,7 @@ bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetai
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 
-	if ( ! execute_command( "ntfsfix " + partition .partition, operation_details .back() .sub_details ) ) 
+	if ( ! execute_command( "ntfsresize -i -f -v " + partition .partition, operation_details .back() .sub_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
