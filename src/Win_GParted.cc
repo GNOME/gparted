@@ -251,11 +251,11 @@ void Win_GParted::init_partition_menu( )
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("Unmount"),
+			Gtk::Menu_Helpers::MenuElem( _("unmount"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
 	
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("Deactivate"),
+			Gtk::Menu_Helpers::MenuElem( _("swapoff"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_toggle_swap ) ) );
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
@@ -675,7 +675,7 @@ void Win_GParted::set_valid_operations( )
 	allow_paste( false ); allow_format( false ); allow_unmount( false ) ; allow_info( false ) ;
 	allow_toggle_swap( false ) ;
 	
-       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) ->set_label( _("Deactivate") ) ;
+       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) ->set_label( _("swapoff") ) ;
 	
 	//no partition selected...	
 	if ( selected_partition .partition .empty() )
@@ -693,7 +693,7 @@ void Win_GParted::set_valid_operations( )
 			return ;
 		else
        			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) 
-				->set_label( _("Activate") ) ;
+				->set_label( _("swapon") ) ;
 	}
 	
 	//only unmount is allowed
@@ -773,19 +773,23 @@ void Win_GParted::open_operationslist( )
 
 void Win_GParted::close_operationslist( ) 
 {
+//FIXME: when started like 'gparted bla' it wil crash in this function
+//most likely this has something to do with the removal of the legend which rendered
+//the '210' incorrect. This static numbering sucks anyway, so i should find a way to open and
+//close the operationslist without these static numbers. See also open_operationslist()
 	int x,y; this ->get_size( x, y );
 	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
-	for ( int t = vpaned_main .get_position( ) ; t < y ; t+=5 )
+	for ( int t = vpaned_main .get_position() ; t < y ; t+=5 )
 	{
 		vpaned_main .set_position( t );
-		while ( Gtk::Main::events_pending( ) )
-			Gtk::Main::iteration( );
+		while ( Gtk::Main::events_pending() )
+			Gtk::Main::iteration();
 	}
 	
-	hbox_operations .hide( ) ;
+	hbox_operations .hide() ;
 	static_cast<Gtk::CheckMenuItem *>( 
-		& menubar_main .items( ) [ 2 ] .get_submenu( ) ->
-	  	items() [ 1 ] ) ->set_active( false ) ;
+		& menubar_main .items()[ 2 ] .get_submenu() ->
+	  	items()[ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist() 
@@ -876,7 +880,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		
 	//if no devices were detected we disable some stuff and show a message in the statusbar
 	if ( devices .empty() )
-	{	
+	{
 		this ->set_title( _("GParted") );
 		combo_devices .hide() ;
 		
@@ -902,7 +906,6 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		statusbar .pop() ;
 		statusbar .push( _( "No devices detected" ) );
 	}
-	
 	else //at least one device detected
 	{
 		combo_devices .show() ;
@@ -1341,64 +1344,67 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		Add_Operation( GParted::FORMAT, part_temp ) ;
 }
 
-void Win_GParted::thread_unmount_partition() 
+void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 
 {
-	if ( Utils::unmount( selected_partition .partition, selected_partition .mountpoint, str_temp ) )
-		str_temp .clear() ;
-	
+	//FIXME: umount all targets of this device.. the aim is to get it free..
+	*succes = ! Utils::execute_command( "umount " + selected_partition .partition, str_temp, *error ) ;
+
 	pulse = false ;
 }
 
-void  Win_GParted::activate_unmount( ) 
+void  Win_GParted::activate_unmount() 
 {
+	bool succes = false ;
+	Glib::ustring error ;
+	
 	pulse = true ;
-	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), true ) ;
+	thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+			sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
 
 	show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .partition ) ) ;
-
-	if ( ! str_temp .empty() )
+	
+	if ( ! succes )
 	{
 		Gtk::MessageDialog dialog( *this, 
-					   "<span weight=\"bold\" size=\"larger\">" +
-					   String::ucompose( _("Could not unmount %1"), selected_partition .partition ) +
-					   "</span>\n\n" + str_temp,
-					   true,
+					   String::ucompose( _("Could not unmount %1"), selected_partition .partition ),
+					   false,
 					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK,
 					   true );
+
+		dialog .set_secondary_text( error ) ;
+		
 		dialog.run() ;
 	}
 	
 	menu_gparted_refresh_devices() ;
 }
 
-void Win_GParted::thread_toggle_swap() 
+void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error ) 
 {
-	bool succes = false ;
-	
 	if ( selected_partition .busy )
-		succes = ! swapoff( selected_partition .partition .c_str() ) ;
+		*succes = ! Utils::execute_command( "swapoff " + selected_partition .partition, str_temp, *error ) ;
 	else
-		succes = ! swapon( selected_partition .partition .c_str(), 0 ) ;
+		*succes = ! Utils::execute_command( "swapon " + selected_partition .partition, str_temp, *error ) ;
 
-	if ( succes )
-		str_temp .clear() ;
-	else
-		str_temp = Glib::strerror( errno ) ;
-	
 	pulse = false ;
 }
 	
 void Win_GParted::activate_toggle_swap() 
 {
+	bool succes = false ;
+	Glib::ustring error ;
+
 	pulse = true ;
-	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), true ) ;
+	
+	thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+			sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), &succes, &error ), true ) ;
 
 	show_pulsebar( 
 		String::ucompose( selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
 		selected_partition .partition ) ) ;
 
-	if ( ! str_temp .empty() )
+	if ( ! succes )
 	{
 		Gtk::MessageDialog dialog( 
 			*this,
@@ -1408,7 +1414,7 @@ void Win_GParted::activate_toggle_swap()
 			Gtk::BUTTONS_OK,
 			true ) ;
 
-		dialog .set_secondary_text( str_temp ) ;
+		dialog .set_secondary_text( error ) ;
 		
 		dialog.run() ;
 	}

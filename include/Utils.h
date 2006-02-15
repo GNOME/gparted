@@ -120,15 +120,12 @@ public:
 	static Glib::ustring Get_Color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
 	static Glib::ustring Get_Filesystem_String( FILESYSTEM filesystem ) ;
-	static bool mount( const Glib::ustring & node, 
-			   const Glib::ustring & mountpoint, 
-			   const Glib::ustring & filesystem,
-			   Glib::ustring & error,
-			   unsigned long flags = 0, 
-			   const Glib::ustring & data = "" ) ;
-	static bool unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) ;
 	static Glib::ustring format_size( Sector size ) ;
 	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;
+	static int execute_command( const Glib::ustring & command,
+				    Glib::ustring & output,
+				    Glib::ustring & error,
+				    bool use_C_locale = false ) ;
 };
 	
 

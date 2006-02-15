@@ -1,3 +1,11 @@
+2006-02-15 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* wrap mount/umount/swapon/swapoff instead of implementing it
+	  ourselves (#330641)
+	* moved execute_command() to Utils and made the filesystems use it. All
+	  in all this decreased the size of the binary with 10% and made stuff
+	  more readable.
+
 2006-02-11 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* removed legend after discussion with usability guys

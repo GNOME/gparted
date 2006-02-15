@@ -114,8 +114,8 @@ private:
 		
 	//threads..
 	void thread_refresh_devices() ;
-	void thread_unmount_partition() ;
-	void thread_toggle_swap() ;
+	void thread_unmount_partition( bool * succes, Glib::ustring * error ) ;
+	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
 		
 	//signal handlers
 	void open_operationslist( ) ;

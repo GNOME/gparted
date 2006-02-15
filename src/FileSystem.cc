@@ -25,63 +25,20 @@ FileSystem::FileSystem()
 {
 	cylinder_size = 0 ;
 }
-	
-int FileSystem::execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) 
+
+int FileSystem::execute_command( const Glib::ustring & command, std::vector<OperationDetails> & operation_details ) 
 {
-	Glib::ustring temp ;
-	for ( unsigned int t = 0 ; t < argv .size() ; t++ )
-		temp += argv[ t ] + " " ;
+	operation_details .push_back( OperationDetails( "<b><i>" + command + "</i></b>", OperationDetails::NONE ) ) ;
 
-	operation_details .push_back( OperationDetails( "<b><i>" + temp + "</i></b>", OperationDetails::NONE ) ) ;
+	int exit_status = Utils::execute_command( command, output, error ) ;
 
-	try
-	{
-		Glib::spawn_sync( ".",
-				  argv,
-				  Glib::SPAWN_SEARCH_PATH,
-				  sigc::slot< void >(),
-				  &output,
-				  &error,
-				  &exit_status ) ;
-	}
-	catch ( Glib::Exception & e )
-	{ 
-		if ( ! e .what() .empty() )
-			operation_details .back() .sub_details .push_back( OperationDetails( e .what(), OperationDetails::NONE ) ) ;
-		
-		return -1 ;
-	} 
-	
 	if ( ! output .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetails( "<i>" + output + "</i>", OperationDetails::NONE ) ) ;
+		operation_details .back() .sub_details .push_back(
+				OperationDetails( "<i>" + output + "</i>", OperationDetails::NONE ) ) ;
 	
 	if ( ! error .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetails( "<i>" + error + "</i>", OperationDetails::NONE ) ) ;
-
-	return exit_status ;
-}
-
-int FileSystem::execute_command( std::vector<std::string> argv, std::string & output ) 
-{
-	std::vector<std::string> envp ;
-	envp .push_back( "LC_ALL=C" ) ;
-	envp .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
-	
-	try
-	{
-		Glib::spawn_sync( ".", 
-				  argv,
-				  envp,
-				  Glib::SPAWN_SEARCH_PATH,
-				  sigc::slot<void>(),
-				  &output,
-				  &error, //dummy
-				  &exit_status) ;
-	}
-	catch ( Glib::Exception & e )
-	{ 
-		std::cout << e .what() << std::endl ;
-	}
+		operation_details .back() .sub_details .push_back( 
+				OperationDetails( "<i>" + error + "</i>", OperationDetails::NONE ) ) ;
 
 	return exit_status ;
 }

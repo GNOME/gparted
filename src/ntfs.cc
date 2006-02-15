@@ -53,11 +53,7 @@ FS ntfs::get_filesystem_support( )
 
 void ntfs::Set_Used_Sectors( Partition & partition ) 
 {
-	argv .push_back( "ntfscluster" ) ;
-	argv .push_back( "--force" ) ;
-	argv .push_back( partition .partition ) ;
-
-	if ( ! execute_command( argv, output ) )
+	if ( ! Utils::execute_command( "ntfscluster --force " + partition .partition, output, error, true ) )
 	{
 		index = output .find( "sectors of free space" ) ;
 		if ( index >= output .length() || 
@@ -74,12 +70,8 @@ bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_NTFS ) ) ) ) ;
-	argv .clear() ;
-	argv .push_back( "mkntfs" ) ;
-	argv .push_back( "-Q" ) ;
-	argv .push_back( "-vv" ) ;
-	argv .push_back( new_partition .partition ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	
+	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .partition, operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -101,7 +93,7 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 	
 	bool return_value = false ;
-	Glib::ustring str_temp = "echo y | ntfsresize -P --force " + partition_new .partition ;
+	Glib::ustring str_temp = "ntfsresize -P --force " + partition_new .partition ;
 	
 	if ( ! fill_partition )
 	{
@@ -113,11 +105,7 @@ bool ntfs::Resize( const Partition & partition_new,
 	//simulation..
 	operation_details .back() .sub_details .push_back( OperationDetails( _("run simulation") ) ) ;
 
-	argv .clear() ;
-	argv .push_back( "sh" ) ;
-	argv .push_back( "-c" ) ;
-	argv .push_back( str_temp + " --no-action" ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
+	if ( ! execute_command( str_temp + " --no-action", operation_details .back() .sub_details .back() .sub_details ) )
 	{
 		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 
@@ -125,8 +113,8 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .back() .sub_details .push_back( 
 			OperationDetails( operation_details .back() .description ) ) ;
 
-		argv .back() = str_temp ;
-		if ( ! execute_command( argv, operation_details .back() .sub_details .back() .sub_details ) )
+		if ( ! execute_command( "echo y | " + str_temp,
+					operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 			return_value = true ;
@@ -152,13 +140,8 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 	operation_details .push_back( OperationDetails( 
 				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
 	
-	argv .clear() ;
-	argv .push_back( "ntfsclone" ) ;
-	argv .push_back( "-f" ) ;
-	argv .push_back( "--overwrite" ) ;
-	argv .push_back( dest_part_path ) ;
-	argv .push_back( src_part_path ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path,
+				 operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 	
@@ -175,10 +158,7 @@ bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetai
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 
-	argv .clear() ;
-	argv .push_back( "ntfsfix" ) ;
-	argv .push_back( partition .partition ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) ) 
+	if ( ! execute_command( "ntfsfix " + partition .partition, operation_details .back() .sub_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

@@ -18,10 +18,7 @@
 #include "../include/Utils.h"
 
 #include <sstream>
-#include <fstream>
-#include <cerrno>
 #include <iomanip>
-#include <sys/mount.h>
 
 namespace GParted
 {
@@ -132,109 +129,6 @@ Glib::ustring Utils::Get_Filesystem_String( FILESYSTEM filesystem )
 	}
 }
 
-bool Utils::mount( const Glib::ustring & node,
-		   const Glib::ustring & mountpoint,
-		   const Glib::ustring & filesystem,
-		   Glib::ustring & error, 
-		   unsigned long flags,
-		   const Glib::ustring & data ) 
-{
-	if ( ! ::mount( node .c_str(), mountpoint .c_str(), filesystem .c_str(), flags, data .c_str() ) )
-	{
-		std::ifstream proc_mounts( "/proc/mounts" ) ;
-
-		if ( proc_mounts )
-		{
-			bool hit = false ;
-			char c_node[255] ;
-			std::string line ;
-
-			//search for relevant line in /proc/mounts
-			while ( getline( proc_mounts, line ) )
-			{
-				if ( line .length() > 0 && line[ 0 ] == '/' &&
-		     		     sscanf( line .c_str(),"%255s", c_node ) == 1 &&
-		     		     c_node == node )
-				{
-					hit = true ;
-					break ;
-				}
-			}
-			
-			proc_mounts .close() ;
-
-			//append 'line' to /etc/mtab
-			if ( hit )
-			{
-				std::ofstream mtab( "/etc/mtab", std::ios::app ) ;
-
-				if ( mtab )
-				{
-					mtab << line << '\n' ;
-					mtab .close() ;
-	
-					return true ;
-				}
-			}
-
-			//something went wrong while adding the line to mtab
-			umount( mountpoint .c_str() ) ;
-		}
-	}
-	else
-		error = Glib::strerror( errno ) ;
-
-	
-	return false ;
-}
-
-bool Utils::unmount( const Glib::ustring & node, const Glib::ustring & mountpoint, Glib::ustring & error ) 
-{
-	//FIXME this function should only accept 'node' and unmount _all_ mounts of that node
-	if ( ! umount( mountpoint .c_str() ) )
-	{
-		//search in /etc/mtab for node and delete that line
-		Glib::ustring mtab_minus_mount ;
-		bool hit = false ;
-		
-		std::ifstream mtab_in( "/etc/mtab" ) ;
-		if ( mtab_in )
-		{
-			char c_node[255] ;
-			std::string line ;
-
-			while ( getline( mtab_in, line ) )
-			{
-				if ( line .length() > 0 && line[ 0 ] == '/' &&
-		     		     sscanf( line .c_str(),"%255s", c_node ) == 1 &&
-		     		     c_node == node )
-					hit = true ;
-				else
-					mtab_minus_mount += line + '\n';
-			}
-
-			mtab_in .close() ;
-		}
-
-		if ( hit )
-		{
-			std::ofstream mtab_out( "/etc/mtab" ) ;
-			if ( mtab_out )
-			{
-				mtab_out << mtab_minus_mount ;
-				mtab_out .close() ;
-
-				return true ;
-			}
-		}
-	}
-	else
-		error = Glib::strerror( errno ) ;
-
-	
-	return false ;
-}
-
 Glib::ustring Utils::format_size( Sector size ) 
 {
 	std::stringstream ss ;	
@@ -290,6 +184,59 @@ double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit )
 		default:
 			return sectors ;
 	}
+}
+
+int Utils::execute_command( const Glib::ustring & command,
+		     	    Glib::ustring & output,
+			    Glib::ustring & error,
+		     	    bool use_C_locale )
+{
+	int exit_status = -1 ;
+	std::string std_out, std_error ;
+
+	try
+	{
+		if ( use_C_locale )
+		{
+			std::vector<std::string> envp, argv;
+			envp .push_back( "LC_ALL=C" ) ;
+			envp .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
+
+			argv .push_back( "sh" ) ;
+			argv .push_back( "-c" ) ;
+			argv .push_back( command ) ;
+
+			Glib::spawn_sync( ".", 
+					  argv,
+					  envp,
+					  Glib::SPAWN_SEARCH_PATH,
+					  sigc::slot<void>(),
+					  &std_out,
+					  &std_error, 
+					  &exit_status ) ;
+		}
+		else
+		{
+			Glib::spawn_command_line_sync( "sh -c '" + command + "'",
+						       &std_out,
+						       &std_error,
+						       &exit_status ) ;
+		}
+	}
+	catch ( Glib::Exception & e )
+	{ 
+		 error = e .what() ;
+
+		 //spit exceptions to stdout..
+		 std::cout << error << std::endl ;
+			 
+		 return -1 ;
+	}
+
+	output = std_out ;
+	error = std_error ;
+
+	return exit_status ;
 }
 
 } //GParted..

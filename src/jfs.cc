@@ -19,7 +19,6 @@
 #include "../include/jfs.h"
 
 #include <cerrno>
-#include <sys/mount.h>
 
 namespace GParted
 {
@@ -38,20 +37,25 @@ FS jfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "jfs_fsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	//resizing of jfs requires jfs support in the kernel
-	std::ifstream input( "/proc/filesystems" ) ;
-	if ( input )
+	//resizing of jfs requires mount, unmount, check/repair functionality and jfs support in the kernel
+	if ( ! Glib::find_program_in_path( "mount" ) .empty() &&
+	     ! Glib::find_program_in_path( "umount" ) .empty() &&
+	     fs .check )
 	{
-		Glib::ustring line ;
+		std::ifstream input( "/proc/filesystems" ) ;
+		if ( input )
+		{
+			Glib::ustring line ;
 
-		while ( input >> line )
-			if ( line == "jfs" )
-			{
-				fs .grow = GParted::FS::EXTERNAL ;
-				break ;
-			}
+			while ( input >> line )
+				if ( line == "jfs" )
+				{
+					fs .grow = GParted::FS::EXTERNAL ;
+					break ;
+				}
 	
-		input .close() ;
+			input .close() ;
+		}
 	}
 	
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
@@ -64,11 +68,7 @@ FS jfs::get_filesystem_support()
 
 void jfs::Set_Used_Sectors( Partition & partition ) 
 {
-	argv .push_back( "sh" ) ;
-	argv .push_back( "-c" ) ;
-	argv .push_back( "echo dm | jfs_debugfs " + partition .partition ) ;
-
-	if ( ! execute_command( argv, output ) )
+	if ( ! Utils::execute_command( "echo dm | jfs_debugfs " + partition .partition, output, error, true ) )
 	{
 		//blocksize
 		index = output .find( "Block Size:" ) ;
@@ -92,11 +92,8 @@ bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_JFS ) ) ) ) ;
-	argv .clear() ;
-	argv .push_back( "mkfs.jfs" ) ;
-	argv .push_back( "-q" ) ;
-	argv .push_back( new_partition .partition ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	
+	if ( ! execute_command( "mkfs.jfs -q " + new_partition .partition, operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -127,11 +124,13 @@ bool jfs::Resize( const Partition & partition_new,
 	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
 		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
-		
+
 		//mount partition
 		operation_details .back() .sub_details .push_back(
 			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .partition, TEMP_MP ) ) ) ;
-		if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error ) )
+		
+		if ( ! execute_command( "mount -v -t jfs " + partition_new .partition + " " + TEMP_MP,
+					operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 			
@@ -139,7 +138,9 @@ bool jfs::Resize( const Partition & partition_new,
 			operation_details .back() .sub_details .push_back(
 				OperationDetails( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
 							partition_new .partition, TEMP_MP ) ) ) ;
-			if ( Utils::mount( partition_new .partition, TEMP_MP, "jfs", error, MS_REMOUNT, "resize" ) )
+			
+			if ( ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .partition + " " + TEMP_MP,
+						operation_details .back() .sub_details .back() .sub_details ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 				return_value = true ;
@@ -147,37 +148,26 @@ bool jfs::Resize( const Partition & partition_new,
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				
-				if ( ! error .empty() )
-					operation_details .back() .sub_details .back() .sub_details .push_back(
-						OperationDetails( error, OperationDetails::NONE ) ) ;
 			}
 			
 			//and unmount it...
 			operation_details .back() .sub_details .push_back(
 				OperationDetails( String::ucompose( _("unmount %1"), partition_new .partition ) ) ) ;
-			if ( Utils::unmount( partition_new .partition, TEMP_MP, error ) )
+		
+			if ( ! execute_command( "umount -v " + partition_new .partition,
+						operation_details .back() .sub_details .back() .sub_details ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
 			}
 			else
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-			
-				if ( ! error .empty() )
-					operation_details .back() .sub_details .back() .sub_details .push_back(
-						OperationDetails( error, OperationDetails::NONE ) ) ;
-				
 				return_value = false ;
 			}
 		}
 		else
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-			
-			if ( ! error .empty() )
-				operation_details .back() .sub_details .back() .sub_details .push_back(
-					OperationDetails( error, OperationDetails::NONE ) ) ;
 		}
 		
 		//remove the mountpoint..
@@ -214,13 +204,8 @@ bool jfs::Copy( const Glib::ustring & src_part_path,
 	operation_details .push_back( OperationDetails( 
 				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
 	
-	argv .clear() ;
-	argv .push_back( "dd" ) ;
-	argv .push_back( "bs=8192" ) ;
-	argv .push_back( "if=" + src_part_path ) ;
-	argv .push_back( "of=" + dest_part_path ) ;
-
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path,
+				operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
@@ -237,12 +222,7 @@ bool jfs::Check_Repair( const Partition & partition, std::vector<OperationDetail
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	argv .clear() ;
-	argv .push_back( "jfs_fsck" ) ;
-	argv .push_back( "-f" ) ;
-	argv .push_back( partition .partition ) ;
-
-	if ( 1 >= execute_command( argv, operation_details .back() .sub_details ) >= 0 )
+	if ( 1 >= execute_command( "jfs_fsck -f " + partition .partition, operation_details .back() .sub_details ) >= 0 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

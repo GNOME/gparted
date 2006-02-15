@@ -46,13 +46,12 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 
 bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_LINUX_SWAP ) ) ) ) ;
-	argv .clear() ;
-	argv .push_back( "mkswap" ) ;
-	argv .push_back( new_partition .partition ) ;
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	operation_details .push_back( 
+			OperationDetails( String::ucompose(
+						_("create new %1 filesystem"),
+						Utils::Get_Filesystem_String( GParted::FS_LINUX_SWAP ) ) ) ) ;
+	
+	if ( ! execute_command( "mkswap " + new_partition .partition, operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -78,13 +77,8 @@ bool linux_swap::Copy( const Glib::ustring & src_part_path,
 	operation_details .push_back( OperationDetails( 
 				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
 	
-	argv .clear() ;
-	argv .push_back( "dd" ) ;
-	argv .push_back( "bs=8192" ) ;
-	argv .push_back( "if=" + src_part_path ) ;
-	argv .push_back( "of=" + dest_part_path ) ;
-
-	if ( ! execute_command( argv, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path,
+				 operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;	

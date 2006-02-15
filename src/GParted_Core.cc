@@ -603,6 +603,7 @@ bool GParted_Core::resize( const Device & device,
 		return resize_container_partition( partition_old, partition_new, false, operation_details ) ;
 	
 	//resize using libparted..
+	//FIXME: let's add some checks before and after calling resize_normal_using_libparted()
 	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED )
 		return resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
 

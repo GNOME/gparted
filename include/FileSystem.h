@@ -47,15 +47,12 @@ public:
 	Sector cylinder_size ; //see GParted_Core::resize()
 	
 protected:
-	int execute_command( std::vector<std::string> argv, std::vector<OperationDetails> & operation_details ) ;
-	int execute_command( std::vector<std::string> argv, std::string & output ) ;
+	int execute_command( const Glib::ustring & command, std::vector<OperationDetails> & operation_details ) ;
 
 	//those are used in several places..
-	std::vector<std::string> argv ;
-	std::string output, error ;
+	Glib::ustring output, error ;
 	Sector N, S ;
 	unsigned int index ;
-	int exit_status ;
 	
 private:
 
