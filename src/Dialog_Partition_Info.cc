@@ -183,14 +183,15 @@ void Dialog_Partition_Info::Display_Info( )
 		//status
 		Glib::ustring str_temp ;
 		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ), 0,1, top, bottom, Gtk::FILL) ;
-		if ( partition.busy )
+		if ( partition .busy )
 		{
 			if ( partition .type == GParted::TYPE_EXTENDED )
 				str_temp =  _("Busy  (At least one logical partition is mounted)" ) ;
 			else if ( partition .filesystem == FS_LINUX_SWAP )
 				str_temp = _("Active") ;
-			else if ( ! partition .mountpoint .empty() )
-				str_temp = String::ucompose( _("Mounted on %1"), partition .mountpoint ) ;
+			else if ( partition .mountpoints .size() )
+				str_temp = String::ucompose( _("Mounted on %1"),
+							     Glib::build_path( ", ", partition .mountpoints ) ) ;
 			else 
 				str_temp = _("Unable to find mountpoint") ;
 		}

@@ -1346,15 +1346,16 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 
 {
-	//FIXME: umount all targets of this device.. the aim is to get it free..
-	*succes = ! Utils::execute_command( "umount " + selected_partition .partition, str_temp, *error ) ;
+	*succes = true ; 
+	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() && *succes ; t++ )
+		*succes = ! Utils::execute_command( "umount -v " + selected_partition .mountpoints[ t ], str_temp, *error ) ;
 
 	pulse = false ;
 }
 
 void  Win_GParted::activate_unmount() 
 {
-	bool succes = false ;
+	bool succes ;
 	Glib::ustring error ;
 	
 	pulse = true ;
@@ -1383,9 +1384,9 @@ void  Win_GParted::activate_unmount()
 void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error ) 
 {
 	if ( selected_partition .busy )
-		*succes = ! Utils::execute_command( "swapoff " + selected_partition .partition, str_temp, *error ) ;
+		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .partition, str_temp, *error ) ;
 	else
-		*succes = ! Utils::execute_command( "swapon " + selected_partition .partition, str_temp, *error ) ;
+		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .partition, str_temp, *error ) ;
 
 	pulse = false ;
 }

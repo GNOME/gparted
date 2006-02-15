@@ -195,7 +195,7 @@ void GParted_Core::init_maps()
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;
 				
-				mount_info[ node ] = line ;
+				mount_info[ node ] .push_back( line ) ;
 			}
 		
 		proc_mounts .close() ;
@@ -211,7 +211,7 @@ void GParted_Core::init_maps()
 			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
 			     static_cast<Glib::ustring>( mountpoint ) == "/" )
 			{
-				mount_info[ node ] = "/" ;
+				mount_info[ node ] .push_back( "/" ) ;
 				break ;
 			}
 			
@@ -377,11 +377,11 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		{
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
 			{
-				iter = mount_info .find( partitions[ t ] .partition );
-				if ( iter != mount_info .end() )
+				iter_mp = mount_info .find( partitions[ t ] .partition );
+				if ( iter_mp != mount_info .end() )
 				{
-					partitions[ t ] .mountpoint = iter ->second ;
-					mount_info .erase( iter ) ;
+					partitions[ t ] .mountpoints = iter_mp ->second ;
+					mount_info .erase( iter_mp ) ;
 				}
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
@@ -433,7 +433,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 			{
 				if ( partitions[ t ] .busy )
 				{
-					if ( statvfs( partitions[ t ] .mountpoint .c_str(), &sfs ) == 0 )
+					if ( statvfs( partitions[ t ] .mountpoints .back() .c_str(), &sfs ) == 0 )
 						partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
 				}
 				else

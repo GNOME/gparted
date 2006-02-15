@@ -99,21 +99,22 @@ private:
 		
 	bool open_device( const Glib::ustring & device_path ) ;
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
-	void close_device_and_disk( ) ;
-	bool commit( ) ;
+	void close_device_and_disk() ;
+	bool commit() ;
 
 	std::vector<FS> FILESYSTEMS ;
 	FileSystem * p_filesystem ;
-	std::vector <PedPartitionFlag> flags;
+	std::vector<PedPartitionFlag> flags;
 	Glib::ustring temp ;
 	Partition partition_temp ;
 	FS fs ;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	
-	std::map<Glib::ustring, Glib::ustring> mount_info ;
-	std::map<Glib::ustring, Glib::ustring> short_paths ;
-	std::map<Glib::ustring, Glib::ustring>::iterator iter ;
+	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
+	std::map< Glib::ustring, Glib::ustring > short_paths ;
+	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;
