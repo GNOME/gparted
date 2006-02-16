@@ -32,11 +32,8 @@ dnl======================
 AC_CHECK_LIB(uuid, uuid_generate, [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
 AC_CHECK_LIB(dl, dlopen,          [], AC_MSG_ERROR([*** dl library (libdl) not found]))
 
-AC_PATH_PROG(PARTED_PATH, parted, [], /sbin /usr/sbin /usr/local/sbin)
-if ! (( ($( $PARTED_PATH --version | cut -d. -f3 | cut -d' ' -f1 )) >= 25 )) 2>/dev/null
-then
-	AC_MSG_ERROR([*** libparted >= 1.6.25 not installed - get it from http://www.gnu.org/software/parted/ ***])
-fi
+AC_CHECK_LIB(parted, ped_get_version, [], AC_MSG_ERROR([*** parted library (libparted) not found]))
+AC_CHECK_DECL(PED_DEVICE_UBD, [], AC_MSG_ERROR([*** Requires libparted >= 1.6.25]), [#include <parted/parted.h>])
 
 PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 > 2.6 )
 AC_SUBST(GTKMM_LIBS)
