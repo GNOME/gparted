@@ -1384,9 +1384,9 @@ void  Win_GParted::activate_unmount()
 void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error ) 
 {
 	if ( selected_partition .busy )
-		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .partition, str_temp, *error ) ;
+		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .partition + " && sync", str_temp, *error ) ;
 	else
-		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .partition, str_temp, *error ) ;
+		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .partition + " && sync", str_temp, *error ) ;
 
 	pulse = false ;
 }
