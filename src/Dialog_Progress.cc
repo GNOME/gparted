@@ -172,7 +172,7 @@ void Dialog_Progress::on_signal_show()
 		//and start..
 		pulse = true ;
 		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
-		
+	
 		while ( pulse )
 		{
 			update_operation_details( treerow, operations[ t ] .operation_details ) ;

@@ -221,7 +221,6 @@ private:
 	bool any_extended;//used in some checks 
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
-	Glib::ustring str_temp ; //mostly used for constructing dialogmessages
 	FS fs ;
 									
 	GParted_Core gparted_core ;

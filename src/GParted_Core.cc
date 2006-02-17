@@ -53,14 +53,14 @@ void GParted_Core::find_supported_filesystems( )
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support( ) ) ;
 	
+	ntfs fs_ntfs;
+	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support( ) ) ;
+	
 	reiser4 fs_reiser4;
 	FILESYSTEMS .push_back( fs_reiser4 .get_filesystem_support( ) ) ;
 	
 	reiserfs fs_reiserfs;
 	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support( ) ) ;
-	
-	ntfs fs_ntfs;
-	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support( ) ) ;
 	
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support( ) ) ;
@@ -751,7 +751,7 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 	if ( open_device_and_disk( new_partition .device_path ) )
 	{
 		PedPartitionType type;
-		PedPartition *c_part = NULL ;
+		lp_partition = NULL ;
 		PedConstraint *constraint = NULL ;
 		
 		//create new partition
@@ -771,8 +771,8 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 				type = PED_PARTITION_FREESPACE;
 		}
 		
-		c_part = ped_partition_new( lp_disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
-		if ( c_part )
+		lp_partition = ped_partition_new( lp_disk, type, NULL, new_partition .sector_start, new_partition .sector_end ) ;
+		if ( lp_partition )
 		{
 			if ( new_partition .strict )
 			{
@@ -789,10 +789,23 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 				if ( copy )
 					constraint ->min_size = new_partition .get_length() ;
 				
-				if ( ped_disk_add_partition( lp_disk, c_part, constraint ) && commit() )
+				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
 				{
-					new_partition .partition = ped_partition_get_path( c_part ) ;
-					new_partition .partition_number = c_part ->num ;
+					new_partition .partition = ped_partition_get_path( lp_partition ) ;
+					new_partition .partition_number = lp_partition ->num ;
+
+					Sector start = lp_partition ->geom .start ;
+					Sector end = lp_partition ->geom .end ;
+					
+					operation_details .back() .sub_details .push_back( 
+						OperationDetails( 
+							"<i>" +
+							String::ucompose( _("path: %1"), new_partition .partition ) + "\n" +
+							String::ucompose( _("start: %1"), start ) + "\n" +
+							String::ucompose( _("end: %1"), end ) + "\n" +
+							String::ucompose( _("size: %1"), Utils::format_size( end - start + 1 ) ) + 
+							"</i>",
+							OperationDetails::NONE ) ) ;
 				}
 			
 				ped_constraint_destroy( constraint );
@@ -829,6 +842,15 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 					       std::vector<OperationDetails> & operation_details )
 {
 	operation_details .push_back( OperationDetails( _("resize partition") ) ) ;
+
+	operation_details .back() .sub_details .push_back( 
+		OperationDetails(
+			"<i>" +
+			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
+			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
+			String::ucompose( _("old size: %1"), Utils::format_size( partition_old .get_length() ) ) + 
+			"</i>",
+		OperationDetails::NONE ) ) ;
 	
 	bool return_value = false ;
 	
@@ -840,15 +862,21 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk,
+									 (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
 		
 		if ( lp_partition )
 		{
 			constraint = ped_constraint_any( lp_device );
 			
-			if ( fixed_start && constraint ) //create a constraint which keeps de startpoint intact and rounds the end to a cylinderboundary
-			{
-				ped_disk_set_partition_geom( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) ;
+			if ( fixed_start && constraint )
+			{ 
+				//create a constraint which keeps de startpoint intact and rounds the end to a cylinderboundary
+				ped_disk_set_partition_geom( lp_disk,
+							     lp_partition,
+							     constraint,
+							     partition_new .sector_start,
+							     partition_new .sector_end ) ;
 				ped_constraint_destroy( constraint );
 				constraint = NULL ;
 				
@@ -858,16 +886,37 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 			
 			if ( constraint )
 			{
-				if ( ped_disk_set_partition_geom( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) )
+				if ( ped_disk_set_partition_geom( lp_disk,
+								  lp_partition,
+								  constraint,
+								  partition_new .sector_start,
+								  partition_new .sector_end ) )
 					return_value = commit() ;
 									
 				ped_constraint_destroy( constraint );
 			}
 		}
 		
-		close_device_and_disk( ) ;
+		close_device_and_disk() ;
 	}
-
+	
+	if ( return_value )
+	{
+		//use start/end vars since lp_partition ->geom loses his values after a functioncall :/
+		//this is actually quite weird, but i don't have time to investigate it more thorough.
+		Sector start = lp_partition ->geom .start ;
+		Sector end = lp_partition ->geom .end ;
+		
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				"<i>" +
+				String::ucompose( _("new start: %1"), start ) + "\n" +
+				String::ucompose( _("new end: %1"), end ) + "\n" +
+				String::ucompose( _("new size: %1"), Utils::format_size( end - start + 1 ) ) + 
+				"</i>",
+			OperationDetails::NONE ) ) ;
+	}
+	
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 	{
 		operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
@@ -899,33 +948,38 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 		lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition_old .sector_end + partition_old .sector_start) / 2 ) ;
 		if ( lp_partition )
 		{
-			fs = ped_file_system_open ( & lp_partition ->geom );
+			fs = ped_file_system_open( & lp_partition ->geom );
 			if ( fs )
 			{
-				constraint = ped_file_system_get_resize_constraint ( fs );
+				constraint = ped_file_system_get_resize_constraint( fs );
 				if ( constraint )
 				{
-					if ( ped_disk_set_partition_geom ( lp_disk, lp_partition, constraint, partition_new .sector_start, partition_new .sector_end ) &&
-						ped_file_system_resize ( fs, & lp_partition ->geom, NULL )
+					if ( ped_disk_set_partition_geom( lp_disk,
+									  lp_partition,
+									  constraint,
+									  partition_new .sector_start,
+									  partition_new .sector_end ) 
+					     &&
+					     ped_file_system_resize( fs, & lp_partition ->geom, NULL )
                                            )
-							return_value = commit( ) ;
+							return_value = commit() ;
 										
-					ped_constraint_destroy ( constraint );
+					ped_constraint_destroy( constraint );
 				}
 				
-				ped_file_system_close ( fs );
+				ped_file_system_close( fs );
 			}
 		}
 		
-		close_device_and_disk( ) ;
+		close_device_and_disk() ;
 	}
 	
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
 }
 
-Glib::ustring GParted_Core::Get_Flags( )
-{
+Glib::ustring GParted_Core::Get_Flags()
+{//FIXME: this is ugly, i guess we'd better use a vector in partition to store the flags..
 	temp = "";
 		
 	for ( unsigned short t = 0; t < flags .size( ) ; t++ )
@@ -959,7 +1013,6 @@ void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 	}
 }
 
-
 bool GParted_Core::set_partition_type( const Partition & partition,
 	   			       std::vector<OperationDetails> & operation_details )
 {
@@ -979,11 +1032,11 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 		{
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, (partition .sector_end + partition .sector_start) / 2 ) ;
 
-			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit( ) )
+			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit() )
 				return_value = wait_for_node( partition .partition ) ;
 		}
 
-		close_device_and_disk( ) ;
+		close_device_and_disk() ;
 	}
 
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
@@ -1027,7 +1080,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 			}
 		}
 		
-		close_device_and_disk( ) ;	
+		close_device_and_disk() ;	
 	}
 
 	return return_value ;
@@ -1035,7 +1088,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 
 bool GParted_Core::open_device( const Glib::ustring & device_path )
 {
-	lp_device = ped_device_get( device_path .c_str( ) );
+	lp_device = ped_device_get( device_path .c_str() );
 	
 	return lp_device ;
 }
@@ -1058,7 +1111,7 @@ bool GParted_Core::open_device_and_disk( const Glib::ustring & device_path, bool
 	return true ;
 }
 
-void GParted_Core::close_device_and_disk( )
+void GParted_Core::close_device_and_disk()
 {
 	if ( lp_device )
 		ped_device_destroy( lp_device ) ;
@@ -1070,7 +1123,7 @@ void GParted_Core::close_device_and_disk( )
 	lp_disk = NULL ;
 }	
 
-bool GParted_Core::commit( ) 
+bool GParted_Core::commit() 
 {
 	bool return_value = ped_disk_commit_to_dev( lp_disk ) ;
 	

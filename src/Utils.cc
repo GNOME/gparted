@@ -134,7 +134,7 @@ Glib::ustring Utils::format_size( Sector size )
 	std::stringstream ss ;	
 	//ss .imbue( std::locale( "" ) ) ;  see #157871
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
-
+	
 	if ( size < KIBIBYTE )
 	{
 		ss << sector_to_unit( size, UNIT_BYTE ) ;

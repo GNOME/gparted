@@ -96,6 +96,8 @@ struct FS
 	Support move ; //startpoint and endpoint
 	Support check ; //some checktool available?
 	Support copy ;
+
+	//FIXME: these 2 should hold 'Sectors' instead if MiB's
 	int MIN ; 
 	int MAX ;
 	
