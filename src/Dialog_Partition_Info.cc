@@ -161,7 +161,10 @@ void Dialog_Partition_Info::Display_Info( )
 	if ( partition.type != GParted::TYPE_UNALLOCATED )
 	{
 		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Flags:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( partition .flags ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ) ),
+				1, 2, 
+				top++, bottom++,
+				Gtk::FILL ) ;
 	}
 	
 	//one blank line

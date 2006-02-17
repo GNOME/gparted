@@ -1,6 +1,6 @@
 INCLUDES =						\
 	$(GTKMM_CFLAGS) 				\
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\ 
+	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
 	-DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"		
 
 AM_CFLAGS = -Wall	

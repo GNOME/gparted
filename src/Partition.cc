@@ -27,7 +27,7 @@ Partition::Partition()
 
 void Partition::Reset()
 {
-	partition = realpath = error = flags = "" ;
+	partition = realpath = error = "" ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;
@@ -35,6 +35,7 @@ void Partition::Reset()
 	color .set( "black" ) ;
 	inside_extended = busy = strict = false ;
 	logicals .clear() ;
+	flags .clear() ;
 	mountpoints .clear() ;
 }
 
@@ -72,18 +73,19 @@ void Partition::Set_Unused( Sector sectors_unused )
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended )
 {
-	this ->Set( device_path,
-		    Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ),
-		    -1,
-		    GParted::TYPE_UNALLOCATED,
-		    GParted::FS_UNALLOCATED,
-		    sector_start,
-		    sector_end,
-		    inside_extended,
-		    false ); 
+	Reset() ;
+		
+	Set( device_path,
+	     Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ),
+	     -1,
+	     GParted::TYPE_UNALLOCATED,
+	     GParted::FS_UNALLOCATED,
+	     sector_start,
+	     sector_end,
+	     inside_extended,
+	     false ); 
 	
-	this ->error = this ->flags = "" ;
-	this ->status = GParted::STAT_REAL ;
+	status = GParted::STAT_REAL ;
 }
 
 void Partition::Update_Number( int new_number )

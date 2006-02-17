@@ -76,10 +76,14 @@ private:
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_short_paths( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
-	void insert_unallocated( const Glib::ustring & device_path, std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended ) ;
+	void insert_unallocated( const Glib::ustring & device_path,
+				 std::vector<Partition> & partitions,
+				 Sector start,
+				 Sector end,
+				 bool inside_extended ) ;
 	Glib::ustring get_short_path( const Glib::ustring & real_path ) ;
 	void LP_Set_Used_Sectors( Partition & partition );
-	Glib::ustring Get_Flags( ) ;
+	void set_flags( Partition & partition ) ;
 	int create_empty_partition( Partition & new_partition,
 				    std::vector<OperationDetails> & operation_details,	    
 				    bool copy = false ) ;

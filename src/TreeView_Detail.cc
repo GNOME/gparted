@@ -176,7 +176,8 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused ) ;
 
 	//flags	
-	treerow[ treeview_detail_columns .flags ] = " " + partition .flags ;
+	treerow[ treeview_detail_columns .flags ] = 
+		Glib::build_path( ", ", partition .flags ) ;
 	
 	//hidden column (partition object)
 	treerow[ treeview_detail_columns .partition_struct ] = partition;

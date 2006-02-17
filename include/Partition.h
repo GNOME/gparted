@@ -93,7 +93,7 @@ public:
 	bool inside_extended;
 	bool busy;
 	Glib::ustring error;
-	Glib::ustring flags;
+	std::vector<Glib::ustring> flags ;
 	std::vector<Glib::ustring> mountpoints ;
 	
 	std::vector<Partition> logicals ;

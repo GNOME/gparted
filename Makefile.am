@@ -1,4 +1,4 @@
-SUBDIRS = include src po compose pixmaps
+SUBDIRS = compose include pixmaps po src
 
 @INTLTOOL_DESKTOP_RULE@
 
