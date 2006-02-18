@@ -609,15 +609,25 @@ bool GParted_Core::resize( const Device & device,
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 		return resize_container_partition( partition_old, partition_new, false, operation_details ) ;
 	
-	//resize using libparted..
-	//FIXME: let's add some checks before and after calling resize_normal_using_libparted()
-	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED )
-		return resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
-
-	//use custom resize tools..
 	bool succes = false ;
 	set_proper_filesystem( partition_new .filesystem ) ;
+	
+	//resize using libparted..
+	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED )
+	{
+		if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
+		{
+			succes = resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
 
+			//always check after a resize, but if it failes the whole operation failes 
+			if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+				succes = false ;
+		}
+		
+		return succes ;
+	}
+
+	//use custom resize tools..
 	if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
 	{
 		succes = true ;
@@ -645,9 +655,11 @@ bool GParted_Core::resize( const Device & device,
 			
 		if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
 			succes = false ;
+
+		return succes ;
 	}
 		
-	return succes ;
+	return false ;
 }
 
 bool GParted_Core::copy( const Glib::ustring & src_part_path,
