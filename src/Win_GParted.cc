@@ -225,7 +225,7 @@ void Win_GParted::init_partition_menu( )
 	
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
 	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::ImageMenuElem( _("Resize/Move"), 
+			Gtk::Menu_Helpers::ImageMenuElem( _("_Resize/Move"), 
 							  *image, 
 							  sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
 	
