@@ -170,7 +170,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	}
 
 	//clear leftover information...	
-	mount_info .clear() ;
+	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	short_paths .clear() ;
 }
 
@@ -178,6 +178,9 @@ void GParted_Core::init_maps()
 {
 	std::string line ;
 
+	short_paths .clear() ;
+	mount_info .clear() ;
+	
 	//initialize mountpoints..
 	char node[255], mountpoint[255] ;
 	unsigned int index ;
@@ -185,9 +188,9 @@ void GParted_Core::init_maps()
 	if ( proc_mounts )
 	{
 		while ( getline( proc_mounts, line ) )
-			if ( line .length() > 0 &&
-			     line[ 0 ] == '/' &&
-			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 )
+			if ( Glib::str_has_prefix( line, "/" ) &&
+			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
+			     static_cast<Glib::ustring>( node ) != "/dev/root" )
 			{
 				//see if mountpoint contains spaces and deal with it
 				line = mountpoint ;
@@ -206,8 +209,7 @@ void GParted_Core::init_maps()
 	if ( etc_mtab )
 	{
 		while ( getline( etc_mtab, line ) )
-			if ( line .length() > 0 &&
-			     line[ 0 ] == '/' &&
+			if ( Glib::str_has_prefix( line, "/" ) &&
 			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
 			     static_cast<Glib::ustring>( mountpoint ) == "/" )
 			{
@@ -330,7 +332,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		
 			case PED_PARTITION_EXTENDED:
 				partition_temp.Set( device .path,
-						    device .path + Utils::num_to_str( lp_partition ->num ),
+						    ped_partition_get_path( lp_partition ), 
 						    lp_partition ->num,
 						    GParted::TYPE_EXTENDED,
 						    GParted::FS_EXTENDED,
@@ -380,10 +382,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 			{
 				iter_mp = mount_info .find( partitions[ t ] .partition );
 				if ( iter_mp != mount_info .end() )
-				{
 					partitions[ t ] .mountpoints = iter_mp ->second ;
-					mount_info .erase( iter_mp ) ;
-				}
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_mountpoints( partitions[ t ] .logicals ) ;
@@ -404,16 +403,11 @@ void GParted_Core::set_short_paths( std::vector<Partition> & partitions )
 
 Glib::ustring GParted_Core::get_short_path( const Glib::ustring & real_path ) 
 {
-	temp = real_path ;
-	
 	iter = short_paths .find( real_path );
 	if ( iter != short_paths .end() )
-	{
-		temp = iter ->second ;
-		short_paths .erase( iter ) ;
-	}
+		return iter ->second ;
 
-	return temp ;
+	return real_path ;
 }	
 
 void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
@@ -728,6 +722,16 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( )
 			disklabeltypes .push_back( disk_type->name ) ;
 
 	 return disklabeltypes ;
+}
+
+std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
+{
+	std::vector<Glib::ustring> mountpoints ;
+
+	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
+		mountpoints .insert( mountpoints .end(), iter_mp ->second .begin(), iter_mp ->second .end() ) ;
+
+	return mountpoints ;
 }
 
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )

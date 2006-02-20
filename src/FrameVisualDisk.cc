@@ -54,7 +54,7 @@ FrameVisualDisk::FrameVisualDisk()
 void FrameVisualDisk::load_partitions( const std::vector<Partition> & partitions, Sector device_length )
 {
 	clear() ;	
-
+	
 	TOT_SEP = get_total_separator_px( partitions ) ;
 	set_static_data( partitions, visual_partitions, device_length ) ;
 

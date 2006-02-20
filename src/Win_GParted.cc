@@ -1337,11 +1337,34 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 
 {
+	std::vector<Glib::ustring> errors, failed_mountpoints, mountpoints = gparted_core .get_all_mountpoints() ;
 	Glib::ustring dummy ;
-	
+
 	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() && *succes ; t++ )
-		*succes = ! Utils::execute_command( "umount -v " + selected_partition .mountpoints[ t ], dummy, *error ) ;
+	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() ; t++ )
+		if ( std::count( mountpoints .begin(), mountpoints .end(), selected_partition .mountpoints[ t ] ) <= 1 ) 
+		{
+			if ( Utils::execute_command( "umount -v " + selected_partition .mountpoints[ t ],
+							    dummy,
+							    *error ) )
+			{
+				*succes = false ;
+				errors .push_back( *error ) ;	
+			}
+		}
+		else
+			failed_mountpoints .push_back( selected_partition .mountpoints[ t ] ) ;
+
+	
+	if ( *succes && failed_mountpoints .size() )
+	{
+		*succes = false ;
+		*error = _("The partition could not be unmounted from the following mountpoints:") ;
+		*error += "\n\n<i>" + Glib::build_path( "\n", failed_mountpoints ) + "</i>\n\n" ;
+		*error +=  _("Most likely other partitions are also mounted on these mountpoints. You are advised to unmount them manually.") ;
+	}
+	else
+		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;
 
 	pulse = false ;
 }
@@ -1366,7 +1389,7 @@ void  Win_GParted::activate_unmount()
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		dialog .set_secondary_text( error ) ;
+		dialog .set_secondary_text( error, true ) ;
 		
 		dialog.run() ;
 	}

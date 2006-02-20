@@ -67,6 +67,7 @@ public:
 	const std::vector<FS> & get_filesystems( ) const ;
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
 	std::vector<Glib::ustring> get_disklabeltypes( ) ;
+	std::vector<Glib::ustring> get_all_mountpoints() ;
 
 private:
 	GParted::FILESYSTEM get_filesystem() ; 
