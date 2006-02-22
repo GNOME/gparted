@@ -49,13 +49,13 @@ public:
 	Win_GParted( const std::vector<Glib::ustring> & user_devices ) ;
 
 private:
-	void init_menubar( ) ;
-	void init_toolbar( ) ;
-	void init_partition_menu( ) ;
-	Gtk::Menu * create_format_menu( ) ;
-	void init_device_info( ) ;
-	void init_operationslist( ) ;
-	void init_hpaned_main( ) ;
+	void init_menubar() ;
+	void init_toolbar() ;
+	void init_partition_menu() ;
+	Gtk::Menu * create_format_menu() ;
+	void init_device_info() ;
+	void init_operationslist() ;
+	void init_hpaned_main() ;
 
 	void refresh_combo_devices() ;
 	void show_pulsebar( const Glib::ustring & status_message ) ;
@@ -67,50 +67,52 @@ private:
 	bool on_delete_event( GdkEventAny* ) ;
 	
 	void Add_Operation( OperationType, const Partition & );
-	void Refresh_Visual( );
-	bool Quit_Check_Operations( );
+	void Refresh_Visual();
+	bool Quit_Check_Operations();
 	void set_valid_operations() ;
 	
 	//convenience functions
 	void allow_new( bool b )	{ 
-		menu_partition .items( )[ 0 ] .set_sensitive( b );
+		menu_partition .items()[ 0 ] .set_sensitive( b );
 		toolbar_main .get_nth_item( 0 ) ->set_sensitive( b ); }
 		
 	void allow_delete( bool b )	{ 
-		menu_partition .items( )[ 1 ] .set_sensitive( b ); 
+		menu_partition .items()[ 1 ] .set_sensitive( b ); 
 		toolbar_main .get_nth_item( 1 ) ->set_sensitive( b ); }
 		
 	void allow_resize( bool b ) 	{ 
-		menu_partition .items( )[ 3 ] .set_sensitive( b ); 
+		menu_partition .items()[ 3 ] .set_sensitive( b ); 
 		toolbar_main .get_nth_item( 3 ) ->set_sensitive( b ); }
 		
 	void allow_copy( bool b )	{ 
-		menu_partition .items( )[ 5 ] .set_sensitive( b ); 
+		menu_partition .items()[ 5 ] .set_sensitive( b ); 
 		toolbar_main .get_nth_item( 5 ) ->set_sensitive( b ); }
 		
 	void allow_paste( bool b )	{ 
-		menu_partition .items( )[ 6 ] .set_sensitive( b ); 
+		menu_partition .items()[ 6 ] .set_sensitive( b ); 
 		toolbar_main .get_nth_item( 6 ) ->set_sensitive( b ); }
 		
 	void allow_format( bool b )	{ 
-		menu_partition .items( )[ 8 ] .set_sensitive( b ); }
+		menu_partition .items()[ 8 ] .set_sensitive( b ); }
 	
 	void allow_unmount( bool b )	{ 
-		menu_partition .items( )[ 10 ] .set_sensitive( b ); }
+		menu_partition .items()[ 10 ] .set_sensitive( b ); }
 	
 	void allow_toggle_swap( bool b )	{ 
-		menu_partition .items( )[ 11 ] .set_sensitive( b ); }
+		menu_partition .items()[ 11 ] .set_sensitive( b ); }
 	
 	void allow_info( bool b )	{
-		menu_partition .items( )[ 13 ] .set_sensitive( b ); }
+		menu_partition .items()[ 13 ] .set_sensitive( b ); }
 	
 	void allow_undo( bool b )	{ 
 		toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); 
-		( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 0 ] ) ->set_sensitive( b ) ; }
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 0 ] )
+			->set_sensitive( b ) ; }
 		
 	void allow_apply( bool b )	{ 
 		toolbar_main .get_nth_item( 9 ) ->set_sensitive( b ); 
-		( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 1 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_sensitive( b ) ; }
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 1 ] )
+			->set_sensitive( b ) ; }
 		
 	//threads..
 	void thread_refresh_devices() ;
@@ -118,19 +120,20 @@ private:
 	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
 		
 	//signal handlers
-	void open_operationslist( ) ;
-	void close_operationslist( ) ;
-	void clear_operationslist( ) ;
-	void combo_devices_changed( );
+	void open_operationslist() ;
+	void close_operationslist() ;
+	void clear_operationslist() ;
+	void combo_devices_changed();
 	void radio_devices_changed( unsigned int item ) ;
+	void on_signal_show() ;
 		
-	void menu_gparted_refresh_devices( );
-	void menu_gparted_filesystems( );
-	void menu_gparted_quit( );
-	void menu_view_harddisk_info( );
-	void menu_view_operations( );
-	void menu_help_contents( );
-	void menu_help_about( );
+	void menu_gparted_refresh_devices();
+	void menu_gparted_filesystems();
+	void menu_gparted_quit();
+	void menu_view_harddisk_info();
+	void menu_view_operations();
+	void menu_help_contents();
+	void menu_help_about();
 
 	void on_partition_selected( const Partition & partition, bool src_is_treeview ) ;
 	void on_partition_activated() ;
@@ -222,6 +225,7 @@ private:
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	FS fs ;
+	bool OPERATIONSLIST_OPEN ;
 									
 	GParted_Core gparted_core ;
 	GParted::Device *temp_device ;
@@ -229,8 +233,6 @@ private:
 					
 	//stuff for progress overview and pulsebar
 	Glib::Thread *thread ;
-	Glib::Dispatcher dispatcher;
-	sigc::connection conn ; 
 	bool pulse ;
 };
 

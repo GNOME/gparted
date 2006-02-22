@@ -1,3 +1,12 @@
+2006-02-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/FrameVisualDisk.cc: prevent crasher when visual_disks is empty.
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: load devices at startup on signal_show instead
+	  of dispatching it from the c'tor.
+	  Also did some cleanups in the behaviour of opening and closing of
+	  the operationslist.
+
 2006-02-20 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/GParted_Core.h,

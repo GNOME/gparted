@@ -29,19 +29,17 @@
 #include <gtkmm/radiobuttongroup.h>
 #include <gtkmm/main.h>
 
-#include <cerrno>
-#include <sys/swap.h>
-
 namespace GParted
 {
 	
 Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 {
-	copied_partition .Reset( ) ;
-	selected_partition .Reset( ) ;
+	copied_partition .Reset() ;
+	selected_partition .Reset() ;
 	new_count = 1;
 	current_device = 0 ;
 	pulse = false ; 
+	OPERATIONSLIST_OPEN = true ;
 	gparted_core .set_user_devices( user_devices ) ;
 	
 	//==== GUI =========================
@@ -60,12 +58,14 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	//Pack the main box
 	this ->add( vbox_main ); 
 	
+	this ->signal_show() .connect( sigc::mem_fun(*this, &Win_GParted::on_signal_show) );
+	
 	//menubar....
-	init_menubar( ) ;
+	init_menubar() ;
 	vbox_main .pack_start( menubar_main, Gtk::PACK_SHRINK );
 	
 	//toolbar....
-	init_toolbar( ) ;
+	init_toolbar() ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
 	//frame_visualdisk...  ( contains the visual represenation of the disks )
@@ -75,17 +75,17 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	vbox_main .pack_start( frame_visualdisk, Gtk::PACK_SHRINK ) ;
 		
 	//hpaned_main (NOTE: added to vpaned_main)
-	init_hpaned_main( ) ;
+	init_hpaned_main() ;
 	vpaned_main .pack1( hpaned_main, true, true ) ;
 	
 	//vpaned_main....
 	vbox_main .pack_start( vpaned_main );
 	
 	//device info...
-	init_device_info( ) ;
+	init_device_info() ;
 	
 	//operationslist...
-	init_operationslist( ) ;
+	init_operationslist() ;
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 	
 	//statusbar... 
@@ -93,63 +93,59 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	statusbar .add( pulsebar );
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
-	this ->show_all_children( );
+	this ->show_all_children();
 	
-	//make sure harddisk information and operationlist are closed..
-	hpaned_main .get_child1( ) ->hide( ) ;
-	close_operationslist( ) ;
-	
-	conn = dispatcher .connect( sigc::mem_fun( *this, &Win_GParted::menu_gparted_refresh_devices ) );
-	dispatcher() ;
+	//make sure harddisk information is closed..
+	hpaned_main .get_child1() ->hide() ;
 }
 
-void Win_GParted::init_menubar( ) 
+void Win_GParted::init_menubar() 
 {
 	//fill menubar_main and connect callbacks 
 	//gparted
-	menu = manage( new Gtk::Menu( ) ) ;
+	menu = manage( new Gtk::Menu() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Devices"), *image ) ) ; 
 	
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Filesystems"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_filesystems ) ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
-	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Filesystems"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_filesystems ) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
+	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
 	//edit
-	menu = manage( new Gtk::Menu( ) ) ;
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::APPLY, sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
-	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
+	menu = manage( new Gtk::Menu() ) ;
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::APPLY, sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
+	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
 	
 	//view
 	menu = manage( new Gtk::Menu( ) ) ;
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
-	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
+	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
 	
 	//device
-	menu = manage( new Gtk::Menu( ) ) ;
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("Set Disklabel"), sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
-	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
+	menu = manage( new Gtk::Menu() ) ;
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Set Disklabel"), sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
+	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
 		
 	//partition
-	init_partition_menu( ) ;
-	menubar_main .items( ) .push_back( Gtk::Menu_Helpers::MenuElem( _("_Partition"), menu_partition ) );
+	init_partition_menu() ;
+	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Partition"), menu_partition ) );
 	
 	//help
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items( ) .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
+	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
 	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
 
-	menubar_main.items( ) .push_back( Gtk::Menu_Helpers::MenuElem(_("_Help"), *menu ) );
+	menubar_main.items() .push_back( Gtk::Menu_Helpers::MenuElem(_("_Help"), *menu ) );
 }
 
-void Win_GParted::init_toolbar( ) 
+void Win_GParted::init_toolbar() 
 {
 	//initialize and pack toolbar_main 
 	hbox_toolbar.pack_start( toolbar_main );
@@ -489,7 +485,6 @@ void Win_GParted::show_pulsebar( const Glib::ustring & status_message )
 	}
 	
 	thread ->join() ;
-	conn .disconnect() ;
 	
 	pulsebar .hide();
 	statusbar .pop() ;
@@ -753,41 +748,44 @@ void Win_GParted::set_valid_operations()
 	}
 }
 
-void Win_GParted::open_operationslist( ) 
+void Win_GParted::open_operationslist() 
 {
-	hbox_operations .show( ) ;
-	int x,y; this ->get_size( x, y );
-	y -= 300;
-		
-	for ( int t = vpaned_main .get_position( ) ; t > y ; t-=5 )
+	if ( ! OPERATIONSLIST_OPEN )
 	{
-		vpaned_main .set_position( t );
-		while ( Gtk::Main::events_pending( ) ) 
-			Gtk::Main::iteration( );
-	}
+		OPERATIONSLIST_OPEN = true ;
+		hbox_operations .show() ;
+	
+		for ( int t = vpaned_main .get_height() ; t > ( vpaned_main .get_height() - 100 ) ; t -= 5 )
+		{
+			vpaned_main .set_position( t );
+			while ( Gtk::Main::events_pending() ) 
+				Gtk::Main::iteration() ;
+		}
 
-	( (Gtk::CheckMenuItem *) & menubar_main .items( ) [ 2 ] .get_submenu( ) ->items( ) [ 1 ] ) ->set_active( true ) ;
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 1 ] )
+			->set_active( true ) ;
+	}
 }
 
-void Win_GParted::close_operationslist( ) 
+void Win_GParted::close_operationslist() 
 {
-//FIXME: when started like 'gparted bla' it wil crash in this function
-//most likely this has something to do with the removal of the legend which rendered
-//the '210' incorrect. This static numbering sucks anyway, so i should find a way to open and
-//close the operationslist without these static numbers. See also open_operationslist()
-	int x,y; this ->get_size( x, y );
-	y -= 210 ; //height of whole app - menubar - visualdisk - statusbar ....
-	for ( int t = vpaned_main .get_position() ; t < y ; t+=5 )
+	if ( OPERATIONSLIST_OPEN )
 	{
-		vpaned_main .set_position( t );
-		while ( Gtk::Main::events_pending() )
-			Gtk::Main::iteration();
+		OPERATIONSLIST_OPEN = false ;
+		
+		for ( int t = vpaned_main .get_position() ; t < vpaned_main .get_height() ; t += 5 )
+		{
+			vpaned_main .set_position( t ) ;
+		
+			while ( Gtk::Main::events_pending() )
+				Gtk::Main::iteration();
+		}
+		
+		hbox_operations .hide() ;
+
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 1 ] )
+			->set_active( false ) ;
 	}
-	
-	hbox_operations .hide() ;
-	static_cast<Gtk::CheckMenuItem *>( 
-		& menubar_main .items()[ 2 ] .get_submenu() ->
-	  	items()[ 1 ] ) ->set_active( false ) ;
 }
 
 void Win_GParted::clear_operationslist() 
@@ -823,6 +821,14 @@ void Win_GParted::radio_devices_changed( unsigned int item )
 	{
 		combo_devices .set_active( item ) ;
 	}
+}
+
+void Win_GParted::on_signal_show()
+{
+	vpaned_main .set_position( vpaned_main .get_height() ) ;
+	close_operationslist() ;
+
+	menu_gparted_refresh_devices() ;
 }
 
 void Win_GParted::thread_refresh_devices() 

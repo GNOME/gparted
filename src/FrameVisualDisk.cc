@@ -368,13 +368,13 @@ void FrameVisualDisk::on_resize( Gtk::Allocation & allocation )
 			calced = calc_length( visual_partitions, TOTAL ) ;
 		}
 		while ( calced > allocation .get_width() && TOTAL > 0 ) ; 
-
+		
 		MIN_SIZE-- ;
 	}
 	while ( TOTAL <= 0 && MIN_SIZE > 0 ) ; 
-
+	
 	//due to rounding a few px may be lost (max. 2), lets add these to the last partition.
-	if ( allocation .get_width() > calced )
+	if ( allocation .get_width() > calced && visual_partitions .size() )
 		visual_partitions .back() .length += ( allocation .get_width() - calced ) ;
 	
 	calc_position_and_height( visual_partitions, 0, 0 ) ;
