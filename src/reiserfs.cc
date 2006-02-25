@@ -48,7 +48,7 @@ FS reiserfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
-	fs .MIN = 32 ;
+	fs .MIN = 32 * MEBIBYTE ;
 	
 	return fs ;
 }

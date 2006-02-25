@@ -97,21 +97,6 @@ void Partition::Update_Number( int new_number )
 	this ->partition_number = new_number;
 }
 
-long Partition::Get_Length_MB() const
-{
-	return Utils::Round( Utils::sector_to_unit( get_length(), GParted::UNIT_MIB ) ) ;
-}
-
-long Partition::Get_Used_MB() const
-{ 
-	return Utils::Round( Utils::sector_to_unit( sectors_used, GParted::UNIT_MIB ) ) ;
-}
-
-long Partition::Get_Unused_MB() const
-{
-	return Get_Length_MB() - Get_Used_MB( ) ;
-}
-
 Sector Partition::get_length() const
 {
 	return sector_end - sector_start + 1 ;

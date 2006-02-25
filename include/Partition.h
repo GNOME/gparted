@@ -69,10 +69,6 @@ public:
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
-	//FIXME the 3 *MB function are obsolete and should be replaced by Utils::sector_to_unit()
-	long Get_Length_MB() const ;
-	long Get_Used_MB() const ;
-	long Get_Unused_MB() const ;
 	Sector get_length() const ;
 
 	bool operator==( const Partition & partition ) const ;

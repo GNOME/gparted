@@ -43,7 +43,7 @@ Glib::ustring Operation::Get_String( )
 {
 	Glib::ustring temp ;
 	Sector diff ;
-		
+
 	switch ( operationtype )
 	{
 		case DELETE	:
@@ -52,11 +52,11 @@ Glib::ustring Operation::Get_String( )
 			else
 				temp = partition_original .partition ;
 
-			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MiB) from /dev/hda */
-			return String::ucompose( _("Delete %1 (%2, %3 MiB) from %4"), 
+			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
+			return String::ucompose( _("Delete %1 (%2, %3) from %4"), 
 						 temp,
 						 Utils::Get_Filesystem_String( partition_original .filesystem ), 
-						 partition_original .Get_Length_MB( ), 
+						 Utils::format_size( partition_original .get_length() ),
 						 device .path ) ;
 
 		case CREATE	:
@@ -75,49 +75,45 @@ Glib::ustring Operation::Get_String( )
 				default	:
 					break;
 			}
-			/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MiB) on /dev/hda */
-			return String::ucompose( _("Create %1 #%2 (%3, %4 MiB) on %5"),
+			/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda */
+			return String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
 						 temp, 
 						 partition_new.partition_number, 
 						 Utils::Get_Filesystem_String( partition_new.filesystem ), 
-						 partition_new .Get_Length_MB( ), 
+						 Utils::format_size( partition_new .get_length() ),
 						 device .path ) ;
 			
 		case RESIZE_MOVE:
-			//if startsector has changed >= 1 MiB we consider it a move
+			//if startsector has changed we consider it a move
 			diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
-			if (  diff >= MEBIBYTE ) 
+			if (  diff ) 
 			{
 				if ( partition_new .sector_start > partition_original .sector_start )
-					temp = String::ucompose( _("Move %1 forward by %2 MiB"), 
-								 partition_new.partition,
-								 Utils::Round( Utils::sector_to_unit( diff, GParted::UNIT_MIB ) ) ) ;
+					temp = String::ucompose( _("Move %1 forward by %2"), 
+								 partition_new .partition,
+								 Utils::format_size( diff ) ) ;
 				else
-					temp = String::ucompose( _("Move %1 backward by %2 MiB"),
-								 partition_new.partition,
-								 Utils::Round( Utils::sector_to_unit( diff, GParted::UNIT_MIB ) ) ) ;
-			}
-									
-			//check if size has changed ( we only consider changes >= 1 MiB )
-			diff = std::abs( (partition_original .sector_end - partition_original .sector_start) - (partition_new .sector_end - partition_new .sector_start)  ) ;
-											
-			if ( diff >= MEBIBYTE )
-			{
-				if ( temp .empty( ) ) 
-					temp = String::ucompose( _("Resize %1 from %2 MiB to %3 MiB"), 
-								 partition_new.partition,
-								 partition_original .Get_Length_MB(),
-								 partition_new .Get_Length_MB() ) ;
-				else
-					temp += " " + String::ucompose( _("and Resize %1 from %2 MiB to %3 MiB"),
-									partition_new.partition,
-									partition_original .Get_Length_MB(),
-									partition_new .Get_Length_MB() ) ;
+					temp = String::ucompose( _("Move %1 backward by %2"),
+								 partition_new .partition,
+								 Utils::format_size( diff ) ) ;
 			}
 			
-			if ( temp .empty( ) )
-				temp = _("Sorry, changes are too small to make sense");
-					
+			//check if size has changed
+			diff = std::abs( partition_original .get_length() - partition_new .get_length() ) ;
+			if ( diff )
+			{
+				if ( temp .empty() ) 
+					temp = String::ucompose( _("Resize %1 from %2 to %3"), 
+								 partition_new.partition,
+						 Utils::format_size( partition_original .get_length() ),
+						 Utils::format_size( partition_new .get_length() ) ) ;
+				else
+					temp += " " + String::ucompose( _("and Resize %1 from %2 to %3"),
+									partition_new.partition,
+						 Utils::format_size( partition_original .get_length() ),
+						 Utils::format_size( partition_new .get_length() ) ) ;
+			}
+			
 			return temp;
 					
 		case FORMAT	:
@@ -127,11 +123,11 @@ Glib::ustring Operation::Get_String( )
 						 Utils::Get_Filesystem_String( partition_new .filesystem ) ) ;
 			
 		case COPY	:
-			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MiB) */
-			return String::ucompose( _("Copy %1 to %2 (start at %3 MiB)"),
+			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
+			return String::ucompose( _("Copy %1 to %2 (start at %3)"),
 						 partition_new .partition,
 						 device .path,
-						 Utils::Round( Utils::sector_to_unit( partition_new .sector_start, GParted::UNIT_MIB ) ) ) ;
+						 Utils::format_size( partition_new .sector_start ) ) ;
 			
 		default		:
 			return "";			

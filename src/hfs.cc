@@ -35,7 +35,7 @@ FS hfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
-	fs .MAX = 2048 ;
+	fs .MAX = 2048 * MEBIBYTE ;
 	
 	return fs ;
 }

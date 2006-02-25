@@ -144,7 +144,7 @@ void Dialog_Partition_Info::Display_Info( )
 	{
 		//calculate relative diskusage
 		int percent_used = 
-			Utils::Round( static_cast<double>(partition .Get_Used_MB() ) / partition .Get_Length_MB() *100 ) ;
+			Utils::Round( partition .sectors_used / static_cast<double>( partition .get_length() ) * 100 ) ;
 						
 		//used
 		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Used:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;

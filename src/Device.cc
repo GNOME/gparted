@@ -28,8 +28,8 @@ Device::Device()
 void Device::Reset()
 {
 	partitions .clear() ;
-	length = 0 ;
-	heads = sectors = cylinders = cylsize = 0 ;
+	length = cylsize = 0 ;
+	heads = sectors = cylinders = 0 ;
 	model = path = realpath = disktype = "" ;
 	max_prims = highest_busy = 0 ;
 	readonly = false ; 	

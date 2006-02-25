@@ -705,9 +705,13 @@ void Win_GParted::set_valid_operations()
 		//find out if there is a copied partition and if it fits inside this unallocated space
 		if ( ! copied_partition .partition .empty() && ! devices[ current_device ] .readonly )
 		{
-			if (	(copied_partition .Get_Length_MB() + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB() ||
-				(copied_partition .filesystem == GParted::FS_XFS && (copied_partition .Get_Used_MB() + devices[ current_device ] .cylsize) < selected_partition .Get_Length_MB() )
-			)
+			Sector required_size ;
+			if ( copied_partition .filesystem == GParted::FS_XFS )
+				required_size = copied_partition .sectors_used ;
+			else
+				required_size = copied_partition .get_length() ;
+
+			if ( ( required_size + devices[ current_device ] .cylsize ) <= selected_partition .get_length() )
 				allow_paste( true ) ;
 		}			
 		
@@ -1091,7 +1095,8 @@ void Win_GParted::activate_resize()
 			if ( operations[ t ] .device .path == devices[ current_device ] .path )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), devices[ current_device ] .cylsize ) ;
+	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), 
+					     devices[ current_device ] .cylsize ) ;
 			
 	if ( selected_partition .type == GParted::TYPE_LOGICAL )
 	{
@@ -1281,8 +1286,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 	
-	if ( selected_partition .Get_Length_MB() < fs .MIN ||
-	     fs .MAX && selected_partition .Get_Length_MB() > fs .MAX ) 
+	if ( selected_partition .get_length() < fs .MIN ||
+	     fs .MAX && selected_partition .get_length() > fs .MAX ) 
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _("Cannot format this filesystem to %1."),
@@ -1292,14 +1297,16 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		if ( selected_partition .Get_Length_MB() < fs .MIN )
-			dialog .set_secondary_text( String::ucompose( _( "A %1 filesystem requires a partition of at least %2 MiB."),
-								      Utils::Get_Filesystem_String( new_fs ),
-								      fs .MIN ) );
+		if ( selected_partition .get_length() < fs .MIN )
+			dialog .set_secondary_text( String::ucompose( 
+						_( "A %1 filesystem requires a partition of at least %2."),
+						Utils::Get_Filesystem_String( new_fs ),
+						Utils::format_size( fs .MIN ) ) );
 		else
-			dialog .set_secondary_text( String::ucompose( _( "A partition with a %1 filesystem has a maximum size of %2 MiB."),
-								      Utils::Get_Filesystem_String( new_fs ),
-								      fs .MAX ) );
+			dialog .set_secondary_text( String::ucompose( 
+						_( "A partition with a %1 filesystem has a maximum size of %2."),
+						Utils::Get_Filesystem_String( new_fs ),
+						Utils::format_size( fs .MAX ) ) );
 		
 		dialog .run() ;
 		return ;

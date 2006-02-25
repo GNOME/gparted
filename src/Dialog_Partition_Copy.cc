@@ -20,7 +20,7 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, long cylinder_size )
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_size )
 {
 	this ->fs = fs ;
 	
@@ -40,42 +40,49 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set some widely used values...
 	START = selected_partition .sector_start ;
 	total_length = selected_partition .sector_end - selected_partition .sector_start ;
-	TOTAL_MB = selected_partition .Get_Length_MB( ) ;
+	TOTAL_MB = Utils::Round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
-	long COPIED_LENGTH_MB = copied_partition .Get_Length_MB( ) ;
+	long COPIED_LENGTH_MB = Utils::Round( Utils::sector_to_unit( copied_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
 	int x_end = Utils::Round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
-	frame_resizer_base ->set_used( Utils::Round( copied_partition .Get_Used_MB( ) / ( TOTAL_MB/500.00) ) ) ;
+	frame_resizer_base ->set_used( 
+		Utils::Round( Utils::sector_to_unit( 
+				copied_partition .sectors_used, GParted::UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 	
-	fs .MAX = ( ! fs .MAX || fs .MAX > TOTAL_MB ) ? TOTAL_MB : fs .MAX -= BUF ;
+	fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX -= BUF ;
 	
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs .MIN = copied_partition .Get_Used_MB( ) + (BUF * 2) ;
+		fs .MIN = copied_partition .sectors_used + (BUF * 2) ;
 	else
-		fs .MIN = COPIED_LENGTH_MB +1 ;
+		fs .MIN = (COPIED_LENGTH_MB +1) * MEBIBYTE ;
 	
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0, TOTAL_MB - fs .MIN ) ;
+	spinbutton_before .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
-	spinbutton_size .set_range( fs .MIN, fs .MAX ) ;
+	spinbutton_size .set_range(
+		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - fs .MIN ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( Utils::Round(fs .MIN / MB_PER_PIXEL), Utils::Round(fs .MAX / MB_PER_PIXEL) +1 ) ;
+	frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+					      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) +1 ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( fs .MIN, fs .MAX ) ;
+	Set_MinMax_Text( 
+		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
@@ -83,10 +90,10 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	this ->selected_partition .type = selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
 }
 
-Partition Dialog_Partition_Copy::Get_New_Partition( ) 
+Partition Dialog_Partition_Copy::Get_New_Partition() 
 {
 	//first call baseclass to get the correct new partition
-	selected_partition = Dialog_Base_Partition::Get_New_Partition( ) ;
+	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
 	
 	//set proper name and status for partition
 	selected_partition .status = GParted::STAT_COPY ;

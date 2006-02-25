@@ -62,7 +62,7 @@ FS xfs::get_filesystem_support( )
 	     fs .check && fs .create ) 	
 		fs .copy = GParted::FS::EXTERNAL ;
 	
-	fs .MIN = 32 ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
+	fs .MIN = 32 * MEBIBYTE ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
 	
 	return fs ;
 }

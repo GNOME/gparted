@@ -44,7 +44,7 @@ FS fat32::get_filesystem_support( )
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
-	fs .MIN = 32 ; //smaller fs'es will cause windows scandisk to fail..
+	fs .MIN = 32 * MEBIBYTE ; //smaller fs'es will cause windows scandisk to fail..
 	
 	return fs ;
 }

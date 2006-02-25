@@ -164,22 +164,19 @@ Glib::ustring Utils::format_size( Sector size )
 
 double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) 
 {
-	/* NOTE: this could have been done more efficient by using static numbers.
-	 * However, the performancegain would be unnoticable and this way its easier to read/debug
-	 */
 	switch ( size_unit )
 	{
 		case UNIT_BYTE	:
 			return sectors * 512 ;
 		
 		case UNIT_KIB	:
-			return sector_to_unit( sectors, UNIT_BYTE ) / 1024 ;
+			return sectors / static_cast<double>( KIBIBYTE ) ;
 		case UNIT_MIB	:
-			return sector_to_unit( sectors, UNIT_KIB ) / 1024 ;
+			return sectors / static_cast<double>( MEBIBYTE ) ;
 		case UNIT_GIB	:
-			return sector_to_unit( sectors, UNIT_MIB ) / 1024 ;
+			return sectors / static_cast<double>( GIBIBYTE ) ;
 		case UNIT_TIB	:
-			return sector_to_unit( sectors, UNIT_GIB ) / 1024 ;
+			return sectors / static_cast<double>( TEBIBYTE ) ;
 		
 		default:
 			return sectors ;

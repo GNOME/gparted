@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-FS fat16::get_filesystem_support( )
+FS fat16::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_FAT16 ;
@@ -44,8 +44,8 @@ FS fat16::get_filesystem_support( )
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 	
-	fs .MIN = 16 ;
-	fs .MAX = 4096 ;
+	fs .MIN = 16 * MEBIBYTE ;
+	fs .MAX = 4096 * MEBIBYTE ;
 	
 	return fs ;
 }
@@ -69,6 +69,7 @@ void fat16::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	//FIXME: all fs classes should send 'error' to stdout here.
 }
 	
 bool fat16::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

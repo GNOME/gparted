@@ -127,13 +127,11 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
 			temp_device .length 	=	temp_device .heads * temp_device .sectors * temp_device .cylinders ;
-			temp_device .cylsize 	=	Utils::Round( Utils::sector_to_unit( 
-								temp_device .heads * temp_device .sectors, 
-								GParted::UNIT_MIB ) ) ;
+			temp_device .cylsize 	=	temp_device .heads * temp_device .sectors ; 
 			
 			//make sure cylsize is at least 1 MiB
-			if ( temp_device .cylsize < 1 )
-				temp_device .cylsize = 1 ;
+			if ( temp_device .cylsize < MEBIBYTE )
+				temp_device .cylsize = MEBIBYTE ;
 				
 			//normal harddisk
 			if ( lp_disk )
@@ -545,7 +543,7 @@ bool GParted_Core::create( const Device & device,
 	else if ( create_empty_partition(
 		  	new_partition,
 			operation_details,
-			( new_partition .Get_Length_MB() - device .cylsize ) < get_fs( new_partition .filesystem ) .MIN ) > 0 )
+			( new_partition .get_length() - device .cylsize ) < get_fs( new_partition .filesystem ) .MIN * MEBIBYTE ) > 0 )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
@@ -628,7 +626,7 @@ bool GParted_Core::resize( const Device & device,
 			
 		if ( partition_new .get_length() < partition_old .get_length() )
 		{
-			p_filesystem ->cylinder_size = MEBIBYTE * device .cylsize ;
+			p_filesystem ->cylinder_size = device .cylsize ;
 			succes = p_filesystem ->Resize( partition_new, operation_details ) ;
 		}
 						
