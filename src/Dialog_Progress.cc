@@ -232,9 +232,9 @@ void Dialog_Progress::on_signal_show()
 						   Gtk::BUTTONS_OK,
 						   true ) ;
 			str_temp = _("The following operation could not be applied to disk:") ;
-			str_temp += "\n<i>" ;
+			str_temp += "\n\n<i>" ;
 			str_temp += label_current .get_text() ;
-			str_temp += "</i>\n\n" ;
+			str_temp += "</i>\n" ;
 			str_temp += _("See the details for more information") ;
 		
 			dialog .set_secondary_text( str_temp, true ) ;

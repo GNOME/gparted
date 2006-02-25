@@ -42,8 +42,8 @@ namespace GParted
 class GParted_Core
 {
 public:
-	GParted_Core( ) ;
-	void find_supported_filesystems( ) ;
+	GParted_Core() ;
+	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void get_devices( std::vector<Device> & devices ) ;
 	
@@ -64,9 +64,9 @@ public:
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
 	
-	const std::vector<FS> & get_filesystems( ) const ;
+	const std::vector<FS> & get_filesystems() const ;
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
-	std::vector<Glib::ustring> get_disklabeltypes( ) ;
+	std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::vector<Glib::ustring> get_all_mountpoints() ;
 
 private:
@@ -106,6 +106,8 @@ private:
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
 	void close_device_and_disk() ;
 	bool commit() ;
+
+	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
 	std::vector<FS> FILESYSTEMS ;
 	FileSystem * p_filesystem ;

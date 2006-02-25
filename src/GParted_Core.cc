@@ -2,68 +2,75 @@
 
 #include <sys/statvfs.h>	
 
+Glib::ustring ped_error ; //see e.g. ped_exception_handler()
+
 namespace GParted
 {
 	
-GParted_Core::GParted_Core( ) 
+GParted_Core::GParted_Core() 
 {
 	lp_device = NULL ;
 	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
 
+	ped_exception_set_handler( ped_exception_handler ) ; 
+
+
 	//get valid flags ...
-	for ( PedPartitionFlag flag = ped_partition_flag_next( (PedPartitionFlag) NULL ) ; flag ; flag = ped_partition_flag_next( flag ) )
+	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( NULL ) ) ;
+	      flag ;
+	      flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;	
 	
 	//throw libpartedversion to the stdout to see which version is actually used.
 	std::cout << "======================" << std::endl ;
-	std::cout << "libparted : " << ped_get_version( ) << std::endl ;
+	std::cout << "libparted : " << ped_get_version() << std::endl ;
 	std::cout << "======================" << std::endl ;
 	
 	//initialize filesystemlist
-	find_supported_filesystems( ) ;
+	find_supported_filesystems() ;
 }
 
-void GParted_Core::find_supported_filesystems( )
+void GParted_Core::find_supported_filesystems()
 {
-	FILESYSTEMS .clear( ) ;
+	FILESYSTEMS .clear() ;
 	
 	ext2 fs_ext2;
-	FILESYSTEMS .push_back( fs_ext2 .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_ext2 .get_filesystem_support() ) ;
 	
 	ext3 fs_ext3;
-	FILESYSTEMS .push_back( fs_ext3 .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_ext3 .get_filesystem_support() ) ;
 	
 	fat16 fs_fat16;
-	FILESYSTEMS .push_back( fs_fat16 .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_fat16 .get_filesystem_support() ) ;
 	
 	fat32 fs_fat32;
-	FILESYSTEMS .push_back( fs_fat32 .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_fat32 .get_filesystem_support() ) ;
 	
 	hfs fs_hfs;
-	FILESYSTEMS .push_back( fs_hfs .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_hfs .get_filesystem_support() ) ;
 	
 	hfsplus fs_hfsplus;
-	FILESYSTEMS .push_back( fs_hfsplus .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_hfsplus .get_filesystem_support() ) ;
 	
 	jfs fs_jfs;
-	FILESYSTEMS .push_back( fs_jfs .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_jfs .get_filesystem_support() ) ;
 	
 	linux_swap fs_linux_swap;
-	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support() ) ;
 	
 	ntfs fs_ntfs;
-	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support() ) ;
 	
 	reiser4 fs_reiser4;
-	FILESYSTEMS .push_back( fs_reiser4 .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_reiser4 .get_filesystem_support() ) ;
 	
 	reiserfs fs_reiserfs;
-	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support() ) ;
 	
 	xfs fs_xfs;
-	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support( ) ) ;
+	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 	
 	//unknown filesystem (default when no match is found)
 	FS fs ; fs .filesystem = GParted::FS_UNKNOWN ;
@@ -773,6 +780,7 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
+	ped_error .clear() ;
 		
 	if ( open_device_and_disk( new_partition .device_path ) )
 	{
@@ -848,22 +856,28 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 		close_device_and_disk() ;
 	}
 
-	if ( new_partition .type == GParted::TYPE_EXTENDED ||
-	     (
-	     	new_partition .partition_number > 0 &&
-	     	wait_for_node( new_partition .partition ) &&
-	     	erase_filesystem_signatures( new_partition )
+	if ( new_partition .partition_number > 0 &&
+	     (	
+		new_partition .type == GParted::TYPE_EXTENDED ||
+	     	(
+	     	   wait_for_node( new_partition .partition ) &&
+	     	   erase_filesystem_signatures( new_partition )
+	     	)
 	     )
 	   )
 	{
-		operation_details .back() .status = new_partition .partition_number > 0 ? 
-			OperationDetails::SUCCES : OperationDetails::ERROR ;
+		operation_details .back() .status = OperationDetails::SUCCES ;
 		
 		return new_partition .partition_number ;
 	}
 	else
-	{
+	{		
+		if ( ! ped_error .empty() )
+			operation_details .back() .sub_details .push_back( 
+				OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+		
 		operation_details .back() .status = OperationDetails::ERROR ;	
+		
 		return 0 ;
 	}
 }
@@ -888,6 +902,7 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 	
 	PedConstraint *constraint = NULL ;
 	lp_partition = NULL ;
+	ped_error .clear() ;
 		
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
@@ -916,7 +931,7 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 				ped_geometry_set_start( & lp_partition ->geom, partition_new .sector_start ) ;
 				constraint = ped_constraint_exact( & lp_partition ->geom ) ;
 			}
-			
+
 			if ( constraint )
 			{
 				if ( ped_disk_set_partition_geom( lp_disk,
@@ -949,6 +964,9 @@ bool GParted_Core::resize_container_partition( const Partition & partition_old,
 				"</i>",
 			OperationDetails::NONE ) ) ;
 	}
+	else if ( ! ped_error .empty() )
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
 	
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 	{
@@ -975,6 +993,7 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 	PedFileSystem *fs = NULL ;
 	PedConstraint *constraint = NULL ;
 	lp_partition = NULL ;
+	ped_error .clear() ;
 	
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
@@ -1010,6 +1029,11 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 	}
 	
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+        
+	if ( ! return_value && ! ped_error .empty() )
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+	
 	return return_value ;
 }
 
@@ -1166,6 +1190,14 @@ bool GParted_Core::commit()
 	ped_disk_commit_to_os( lp_disk ) ;
 		
 	return return_value ;
+}
+	
+PedExceptionOption GParted_Core::ped_exception_handler( PedException * e ) 
+{
+        std::cout << e ->message << std::endl ;
+	ped_error = e ->message ;
+        
+	return PED_EXCEPTION_UNHANDLED ;
 }
 
 
