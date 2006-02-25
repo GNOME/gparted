@@ -51,7 +51,8 @@ FS fat32::get_filesystem_support( )
 
 void fat32::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( 1 >= Utils::execute_command( "dosfsck -a -v " + partition .partition, output, error, true ) >= 0 )
+	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .partition, output, error, true ) ;
+	if ( exit_status == 0 || exit_status == 1 )
 	{
 		//free clusters
 		index = output .find( ",", output .find( partition .partition ) + partition .partition .length() ) +1 ;
@@ -68,6 +69,8 @@ void fat32::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool fat32::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
@@ -120,8 +123,9 @@ bool fat32::Check_Repair( const Partition & partition, std::vector<OperationDeta
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	if ( 1 >= execute_command( "dosfsck -a -w -v " + partition .partition,
-				   operation_details .back() .sub_details ) >= 0 )
+	exit_status = execute_command( "dosfsck -a -w -v " + partition .partition,
+				       operation_details .back() .sub_details ) ;
+	if ( exit_status == 0 || exit_status == 1 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

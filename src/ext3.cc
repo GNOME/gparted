@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-FS ext3::get_filesystem_support( )
+FS ext3::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_EXT3 ;
@@ -67,6 +67,8 @@ void ext3::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool ext3::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

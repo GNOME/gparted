@@ -70,6 +70,8 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 	
 bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
@@ -145,8 +147,8 @@ bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationD
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	int exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .partition,
-				           operation_details .back() .sub_details ) ;
+	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .partition,
+				       operation_details .back() .sub_details ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

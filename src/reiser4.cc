@@ -60,6 +60,8 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool reiser4::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

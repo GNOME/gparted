@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-FS ntfs::get_filesystem_support( )
+FS ntfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_NTFS ;
@@ -63,6 +63,8 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 )
 			partition .Set_Unused( N ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

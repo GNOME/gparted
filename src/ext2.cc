@@ -20,7 +20,7 @@
 namespace GParted
 {
 
-FS ext2::get_filesystem_support( )
+FS ext2::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_EXT2 ;
@@ -66,6 +66,8 @@ void ext2::Set_Used_Sectors( Partition & partition )
 		if ( N > -1 && S > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool ext2::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )

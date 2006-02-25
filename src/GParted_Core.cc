@@ -420,9 +420,11 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP && partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
+		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
 		{
-			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
+			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
 			{
 				if ( partitions[ t ] .busy )
 				{
@@ -446,7 +448,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					}
 				}
 
-				if ( partitions[ t ] .sectors_used == -1 )
+				if ( partitions[ t ] .sectors_used == -1 && partitions[ t ] .error .empty() )
 					partitions[ t ] .error = temp ;
 				
 			}

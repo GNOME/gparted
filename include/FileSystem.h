@@ -52,6 +52,7 @@ protected:
 	//those are used in several places..
 	Glib::ustring output, error ;
 	Sector N, S ;
+	int exit_status ;
 	unsigned int index ;
 	
 private:

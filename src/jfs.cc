@@ -85,6 +85,8 @@ void jfs::Set_Used_Sectors( Partition & partition )
 		if ( S > -1 && N > -1 )
 			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
 	}
+	else
+		partition .error = error ;
 }
 
 bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
@@ -221,8 +223,9 @@ bool jfs::Copy( const Glib::ustring & src_part_path,
 bool jfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
-	
-	if ( 1 >= execute_command( "jfs_fsck -f " + partition .partition, operation_details .back() .sub_details ) >= 0 )
+
+	exit_status = execute_command( "jfs_fsck -f " + partition .partition, operation_details .back() .sub_details ) ;
+	if ( exit_status == 0 || exit_status == 1 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
