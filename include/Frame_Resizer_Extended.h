@@ -16,7 +16,7 @@
  */
  
  
-#ifndef  FRAME_RESIZER_EXTENDED
+#ifndef FRAME_RESIZER_EXTENDED
 #define FRAME_RESIZER_EXTENDED
 
 #include "../include/Frame_Resizer_Base.h"
@@ -24,14 +24,17 @@
 class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:
-	Frame_Resizer_Extended( ) ;
+	Frame_Resizer_Extended() ;
+	
+	void set_used_start( int used_start ) ;
 
 private:
-	int UNUSED_BEFORE ;
-	//overridden signal handler
-	virtual bool drawingarea_on_mouse_motion( GdkEventMotion* ) ;
+	int USED_START ;
 
-	virtual void Draw_Partition( ) ;
+	//overridden signal handler
+	virtual bool drawingarea_on_mouse_motion( GdkEventMotion * ev ) ;
+
+	virtual void Draw_Partition() ;
 };
 
-#endif // FRAME_RESIZER_EXTENDED
+#endif //FRAME_RESIZER_EXTENDED

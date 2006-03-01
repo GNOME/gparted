@@ -159,7 +159,8 @@ bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetai
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 
-	if ( ! execute_command( "ntfsresize -i -f -v " + partition .partition, operation_details .back() .sub_details ) ) 
+	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .partition,
+				operation_details .back() .sub_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

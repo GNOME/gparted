@@ -227,7 +227,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 				fs .MAX - cylinder_size : TOTAL_MB * MEBIBYTE ;
 		
 		frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-						      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) +1 ) ;
+						      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 

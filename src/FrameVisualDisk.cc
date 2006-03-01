@@ -23,7 +23,7 @@
 
 namespace GParted
 {
-
+//FIXME: left border of extended partition seems to be 1px bigger than it's rightborder..
 FrameVisualDisk::FrameVisualDisk()
 {
 	this ->set_border_width( 5 ) ;

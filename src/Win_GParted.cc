@@ -689,10 +689,11 @@ void Win_GParted::set_valid_operations()
 				->set_label( _("swapon") ) ;
 	}
 	
-	//only unmount is allowed
-	if ( selected_partition .busy && selected_partition .type != GParted::TYPE_EXTENDED )
+	//only unmount/swapoff is allowed (if ! extended)
+	if ( selected_partition .busy )
 	{
-		allow_unmount( true ) ;
+		if ( selected_partition .type != GParted::TYPE_EXTENDED )
+			allow_unmount( true ) ;
 		
 		return ;
 	}
@@ -1088,7 +1089,7 @@ bool Win_GParted::max_amount_prim_reached()
 
 void Win_GParted::activate_resize()
 {
-	std::vector <Partition> partitions = devices[ current_device ] .partitions ;
+	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
 	
 	if ( operations .size() )
 		for (unsigned int t = 0 ; t < operations .size() ; t++ )

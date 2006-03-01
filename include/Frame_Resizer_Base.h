@@ -15,59 +15,55 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
- 
-#ifndef  FRAME_RESIZER_BASE
+#ifndef FRAME_RESIZER_BASE
 #define FRAME_RESIZER_BASE
 
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 #include <gdkmm/cursor.h>
  
-#define BORDER 8
-
 class Frame_Resizer_Base : public Gtk::Frame
 {
 public:
-	
 	enum ArrowType {
 		ARROW_LEFT	= 0,
 		ARROW_RIGHT	= 1
 	};
-	
-	Frame_Resizer_Base( ) ;
-	~Frame_Resizer_Base( ) ;
 
-	void set_rgb_partition_color( const Gdk::Color & ) ;
-	void override_default_rgb_unused_color( const Gdk::Color & ) ;
+	Frame_Resizer_Base() ;
+	~Frame_Resizer_Base() ;
+
+	void set_rgb_partition_color( const Gdk::Color & color ) ;
+	void override_default_rgb_unused_color( const Gdk::Color & color ) ;
 	
-	void set_x_start( int ) ;
-	void set_x_end( int ) ;
-	void set_used( int );
-	void set_fixed_start( bool ) ;
-	void set_used_start( int used_start ) ;
+	void set_x_start( int x_start ) ;
+	void set_x_end( int x_end ) ;
+	void set_used( int used );
+	void set_fixed_start( bool fixed_start ) ;
 	void set_size_limits( int min_size, int max_size ) ;
 
-	int get_used( );
-	int get_x_start( ) ;
-	int get_x_end( ) ;
+	int get_used();
+	int get_x_start() ;
+	int get_x_end() ;
 
-	virtual void Draw_Partition( ) ;
+	virtual void Draw_Partition() ;
 
 	//public signals  (emitted upon resize/move)
 	sigc::signal<void,int,int, ArrowType> signal_resize;
 	sigc::signal<void,int,int> signal_move;
 
 protected:
-	int X_START, USED, UNUSED, X_END, X_START_MOVE, USED_START, MIN_SIZE, MAX_SIZE;
+	int BORDER, GRIPPER ;
+	int X_START, USED, UNUSED, X_END, X_START_MOVE, MIN_SIZE, MAX_SIZE;
 	bool GRIP_LEFT, GRIP_RIGHT, GRIP_MOVE ;
 
 	//signal handlers
-	void drawingarea_on_realize( );
-	bool drawingarea_on_expose( GdkEventExpose * );
-	virtual bool drawingarea_on_mouse_motion( GdkEventMotion* ) ;
-	bool drawingarea_on_button_press_event( GdkEventButton* ) ;
-	bool drawingarea_on_button_release_event( GdkEventButton* ) ;
-	bool drawingarea_on_leave_notify( GdkEventCrossing* ) ;
+	void drawingarea_on_realize();
+	bool drawingarea_on_expose( GdkEventExpose * ev );
+	virtual bool drawingarea_on_mouse_motion( GdkEventMotion * ev ) ;
+	bool drawingarea_on_button_press_event( GdkEventButton * ev ) ;
+	bool drawingarea_on_button_release_event( GdkEventButton * ev ) ;
+	bool drawingarea_on_leave_notify( GdkEventCrossing * ev ) ;
 		
 	void Draw_Resize_Grip( ArrowType ) ;
 
@@ -78,7 +74,7 @@ protected:
 
 	Gdk::Color color_used, color_unused, color_arrow, color_background, color_partition, color_arrow_rectangle;
 
-	std::vector <Gdk::Point> arrow_points;
+	std::vector<Gdk::Point> arrow_points;
 	
 	Gdk::Cursor *cursor_resize, *cursor_normal, *cursor_move;
 	
@@ -86,7 +82,7 @@ protected:
 	bool fixed_start; //a fixed start disables moving the start and thereby the whole move functionality..
 
 private:
-	void init( ) ;
+	void init() ;
 
 };
 

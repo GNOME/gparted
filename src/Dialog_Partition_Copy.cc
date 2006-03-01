@@ -77,7 +77,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	GRIP = false ;
 	
 	frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-					      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) +1 ) ;
+					      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
@@ -87,7 +87,8 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
-	this ->selected_partition .type = selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
+	this ->selected_partition .type = 
+		selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
 }
 
 Partition Dialog_Partition_Copy::Get_New_Partition() 

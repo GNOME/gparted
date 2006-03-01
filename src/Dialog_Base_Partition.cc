@@ -31,13 +31,13 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	ORIG_BEFORE = ORIG_SIZE = ORIG_AFTER = -1 ;
 	
 	//pack resizer hbox
-	this ->get_vbox( ) ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
 	
 	//add label_minmax
-	this ->get_vbox( ) ->pack_start( label_minmax, Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( label_minmax, Gtk::PACK_SHRINK );
 	
 	//pack hbox_main
-	this ->get_vbox( ) ->pack_start( hbox_main, Gtk::PACK_SHRINK );
+	this ->get_vbox() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
 	
 	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
@@ -51,7 +51,10 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	table_resize.attach( * Utils::mk_label( (Glib::ustring) _( "Free Space Preceding (MiB):") + " \t" ), 0, 1, 0, 1, Gtk::SHRINK );
+	table_resize .attach(
+		* Utils::mk_label( static_cast<Glib::ustring>( _( "Free Space Preceding (MiB):") ) + " \t" ),
+		0, 1, 0, 1,
+		Gtk::SHRINK );
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
@@ -72,29 +75,32 @@ Dialog_Base_Partition::Dialog_Base_Partition( )
 	table_resize.attach( spinbutton_after, 1, 2, 2, 3, Gtk::FILL );
 	
 	if ( ! fixed_start )
-		before_value = spinbutton_before .get_value( ) ;
+		before_value = spinbutton_before .get_value() ;
 	
 	//connect signalhandlers of the spinbuttons
 	if ( ! fixed_start )
 		spinbutton_before .signal_value_changed() .connect( 
-			sigc::bind<SPINBUTTON>( sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), BEFORE ) ) ;
+			sigc::bind<SPINBUTTON>( 
+				sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), BEFORE ) ) ;
 	
 	spinbutton_size .signal_value_changed() .connect(
-		sigc::bind<SPINBUTTON>( sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), SIZE ) ) ;
+		sigc::bind<SPINBUTTON>( 
+			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), SIZE ) ) ;
 	spinbutton_after .signal_value_changed() .connect(
-		sigc::bind<SPINBUTTON>( sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
+		sigc::bind<SPINBUTTON>( 
+			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	this ->show_all_children( ) ;
+	this ->show_all_children() ;
 }
 
 void Dialog_Base_Partition::Set_Resizer( bool extended )
 {
 	if ( extended )
-		frame_resizer_base = new Frame_Resizer_Extended( ) ;
+		frame_resizer_base = new Frame_Resizer_Extended() ;
 	else
 	{
-		frame_resizer_base = new Frame_Resizer_Base( ) ;
+		frame_resizer_base = new Frame_Resizer_Base() ;
 		frame_resizer_base ->signal_move .connect( sigc::mem_fun( this, &Dialog_Base_Partition::on_signal_move ) );
 	}
 	
@@ -106,18 +112,20 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 		
 	hbox_resizer .pack_start( *frame_resizer_base, Gtk::PACK_EXPAND_PADDING );
 	
-	this ->show_all_children( ) ;
+	this ->show_all_children() ;
 }
 
-Partition Dialog_Base_Partition::Get_New_Partition( ) 
+Partition Dialog_Base_Partition::Get_New_Partition() 
 { 	
-	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int( ) )
-		selected_partition .sector_start = START + spinbutton_before .get_value_as_int( ) * MEBIBYTE ;	
+	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
+		selected_partition .sector_start = START + spinbutton_before .get_value_as_int() * MEBIBYTE ;	
 	
-	if ( ORIG_AFTER != spinbutton_after .get_value_as_int( ) )
-		selected_partition .sector_end = selected_partition .sector_start + spinbutton_size .get_value_as_int( ) * MEBIBYTE ;
+	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
+		selected_partition .sector_end = 
+			selected_partition .sector_start + spinbutton_size .get_value_as_int() * MEBIBYTE ;
 
-	//due to loss of precision during calcs from Sector -> MiB and back, it is possible the new partition thinks it's bigger then it can be. Here we solve this.
+	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
+	//the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition .sector_start < START )
 		selected_partition .sector_start = START ;
 	if ( selected_partition .sector_end > (START + total_length) ) 
@@ -131,8 +139,7 @@ Partition Dialog_Base_Partition::Get_New_Partition( )
 	
 	//set new value of unused..
 	if ( selected_partition .sectors_used != -1 )
-		selected_partition .sectors_unused =
-			(selected_partition .sector_end - selected_partition .sector_start) - selected_partition .sectors_used ;
+		selected_partition .sectors_unused = selected_partition .get_length() - selected_partition .sectors_used ;
 	
 	return selected_partition ;
 }
@@ -148,7 +155,8 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case RESIZE_MOVE:
 			image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 			hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
-			hbox_resize_move .pack_start( * Utils::mk_label( fixed_start ? _("Resize") : _("Resize/Move") ), Gtk::PACK_EXPAND_PADDING ) ;
+			hbox_resize_move .pack_start( * Utils::mk_label( fixed_start ? _("Resize") : _("Resize/Move") ),
+						      Gtk::PACK_EXPAND_PADDING ) ;
 			button_resize_move .add( hbox_resize_move ) ;
 														
 			this ->add_action_widget ( button_resize_move, Gtk::RESPONSE_OK ) ;
@@ -178,12 +186,12 @@ void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 	if ( x_end == 500 )
 	{
 		spinbutton_after .set_value( 0 ) ;
-		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value( ) ) ;
+		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() ) ;
 	}
 	else
-		spinbutton_after .set_value( TOTAL_MB - spinbutton_before .get_value( ) - spinbutton_size .get_value( ) ) ;
+		spinbutton_after .set_value( TOTAL_MB - spinbutton_before .get_value() - spinbutton_size .get_value() ) ;
 	
-	Check_Change( ) ;
+	Check_Change() ;
 	
 	GRIP = false ;
 }
@@ -204,20 +212,21 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 			spinbutton_size .set_value( TOTAL_MB - before_value ) ;
 		}
 		else
-			spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value( ) ) ;
+			spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value() ) ;
 	}
 	else if ( arrow == Frame_Resizer_Base::ARROW_LEFT ) //don't touch freespace after, leave it as it is
 	{
 		if ( x_start == 0 )
 		{
 			spinbutton_before .set_value( 0 );
-			spinbutton_size .set_value( TOTAL_MB - spinbutton_after.get_value( ) ) ;
+			spinbutton_size .set_value( TOTAL_MB - spinbutton_after.get_value() ) ;
 		}
 		else
-			spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value( ) - spinbutton_after .get_value( ) ) ;
+			spinbutton_before .set_value(
+				TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() ) ;
 	}
 		
-	Check_Change( ) ;
+	Check_Change() ;
 	
 	GRIP = false ;
 }
@@ -239,12 +248,14 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 			case SIZE	:
 				spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value() );
 				if ( ! fixed_start )
-					spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
+					spinbutton_before .set_value( 
+						TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
 				
 				break;
 			case AFTER	:
 				if ( ! fixed_start )
-					spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
+					spinbutton_before .set_value( 
+						TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() );
 			
 				spinbutton_size .set_value( TOTAL_MB - before_value - spinbutton_after .get_value() ) ;
 				
@@ -263,7 +274,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 	}
 }
 
-void Dialog_Base_Partition::Check_Change( )
+void Dialog_Base_Partition::Check_Change()
 {
 	button_resize_move .set_sensitive(
 		ORIG_BEFORE != spinbutton_before .get_value_as_int()	||
