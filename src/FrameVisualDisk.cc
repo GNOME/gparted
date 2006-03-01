@@ -23,7 +23,7 @@
 
 namespace GParted
 {
-//FIXME: left border of extended partition seems to be 1px bigger than it's rightborder..
+
 FrameVisualDisk::FrameVisualDisk()
 {
 	this ->set_border_width( 5 ) ;
@@ -334,7 +334,7 @@ void FrameVisualDisk::drawingarea_on_realize()
 bool FrameVisualDisk::drawingarea_on_expose( GdkEventExpose * event )
 {
 	draw_partitions( visual_partitions ) ;
-
+	
 	return true ;
 }
 
@@ -374,6 +374,7 @@ void FrameVisualDisk::on_resize( Gtk::Allocation & allocation )
 	while ( TOTAL <= 0 && MIN_SIZE > 0 ) ; 
 	
 	//due to rounding a few px may be lost (max. 2), lets add these to the last partition.
+	//FIXME: instead of adding all leftover px to the last partition we should spread them over all partitions
 	if ( allocation .get_width() > calced && visual_partitions .size() )
 		visual_partitions .back() .length += ( allocation .get_width() - calced ) ;
 	

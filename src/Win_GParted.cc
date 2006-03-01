@@ -572,7 +572,7 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 	treeview_operations .set_cursor( static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( *iter ) ) ) ;
 }
 
-void Win_GParted::Refresh_Visual( )
+void Win_GParted::Refresh_Visual()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
 	liststore_operations ->clear();
@@ -633,7 +633,10 @@ void Win_GParted::Refresh_Visual( )
 	
 	//no partition can be selected after a refresh..
 	selected_partition .Reset() ;
-	set_valid_operations() ;
+	set_valid_operations() ; 
+			
+	while ( Gtk::Main::events_pending() ) 
+		Gtk::Main::iteration() ;
 }
 
 bool Win_GParted::Quit_Check_Operations()

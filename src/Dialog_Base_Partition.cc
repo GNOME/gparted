@@ -23,7 +23,7 @@ namespace GParted
 Dialog_Base_Partition::Dialog_Base_Partition( )
 {
 	this ->set_has_separator( false ) ;
-	
+//FIXME: somehow the 'off by a few' MiB's warning disappeared. I need to display it whenever the round to cylinders isn't checked.
 	frame_resizer_base = NULL;
 	GRIP = false ;
 	this ->fixed_start = false ;
