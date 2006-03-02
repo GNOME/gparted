@@ -48,7 +48,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		hbox ->pack_start( * Utils::mk_label( "<b> " + (Glib::ustring) _( "Warning:" ) + " </b>" ), Gtk::PACK_SHRINK ) ;
 		
 		frame ->set_label_widget( *hbox ) ;
-		frame ->add( * Utils::mk_label( "<i>" +  partition.error + "</i>", true, true, true ) ) ;
+		frame ->add( * Utils::mk_label( "<i>" + partition.error + "</i>", true, true, true ) ) ;
 		
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}

@@ -59,6 +59,7 @@ private:
 	bool set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) ;
 	void set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) ;
 	
+	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
 	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
 	
 	//signalhandlers

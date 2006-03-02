@@ -357,7 +357,7 @@ void FrameVisualDisk::on_resize( Gtk::Allocation & allocation )
 {
 	MIN_SIZE = 20 ;
 
-	int calced, TOTAL ;
+	int calced = 0, TOTAL ;
 	do
 	{
 		TOTAL = allocation .get_width() - TOT_SEP ;
@@ -372,15 +372,43 @@ void FrameVisualDisk::on_resize( Gtk::Allocation & allocation )
 		MIN_SIZE-- ;
 	}
 	while ( TOTAL <= 0 && MIN_SIZE > 0 ) ; 
+
+	//due to rounding a few px may be lost. here we salvage them.. 
+	if ( visual_partitions .size() && calced > 0 )
+	{
+		int px_left = allocation .get_width() - calced ;
+
+		while ( px_left > 0 )
+			px_left = spreadout_leftover_px( visual_partitions, px_left ) ;
+	}
 	
-	//due to rounding a few px may be lost (max. 2), lets add these to the last partition.
-	//FIXME: instead of adding all leftover px to the last partition we should spread them over all partitions
-	if ( allocation .get_width() > calced && visual_partitions .size() )
-		visual_partitions .back() .length += ( allocation .get_width() - calced ) ;
-	
+	//and calculate the rest..
 	calc_position_and_height( visual_partitions, 0, 0 ) ;
 	calc_used_unused( visual_partitions ) ;
 	calc_text( visual_partitions ) ;
+}
+	
+int FrameVisualDisk::spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) 
+{
+	int extended = -1 ;
+
+	for ( unsigned int t = 0 ; t < visual_partitions .size() && pixels > 0 ; t++ )
+		if ( ! visual_partitions[ t ] .logicals .size() )
+		{
+			visual_partitions[ t ] .length++ ;
+			pixels-- ;
+		}
+		else
+			extended = t ;
+
+	if ( extended > -1 && pixels > 0 )
+	{	
+		int actually_used = pixels - spreadout_leftover_px( visual_partitions[ extended ] .logicals, pixels ) ; 
+		visual_partitions[ extended ] .length += actually_used ;
+		pixels -= actually_used ;
+	}
+	
+	return pixels ;
 }
 
 void FrameVisualDisk::free_colors( std::vector<visual_partition> & visual_partitions ) 

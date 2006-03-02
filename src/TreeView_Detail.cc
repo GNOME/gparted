@@ -140,7 +140,8 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partiti
 
 void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition & partition )
 {
-	//hereby i assume these 2 are mutual exclusive. is this wise?? Time (and bugreports) will tell :)
+	//FIXME: this approach is too simplistic, we need to display the lock AND the warning icon if necessary
+	//e.g. if statvfs in the core fails, we need to display both icons...
 	if ( partition .busy )
 		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	else if ( partition .error != "" )

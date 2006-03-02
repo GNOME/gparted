@@ -1,5 +1,6 @@
 #include "../include/GParted_Core.h"
 
+#include <cerrno>
 #include <sys/statvfs.h>	
 
 Glib::ustring ped_error ; //see e.g. ped_exception_handler()
@@ -437,6 +438,9 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 				{
 					if ( statvfs( partitions[ t ] .mountpoints .back() .c_str(), &sfs ) == 0 )
 						partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
+					else
+						partitions[ t ] .error = 
+							"statvfs (" + partitions[ t ] .mountpoints .back() + "): " + Glib::strerror( errno );
 				}
 				else
 				{
@@ -761,8 +765,7 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 				constraint = ped_file_system_get_resize_constraint( fs ) ;
 				if ( constraint )
 				{
-					partition .Set_Unused( 
-						(partition .sector_end - partition .sector_start) - constraint ->min_size ) ;
+					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
 					
 					ped_constraint_destroy( constraint );
 				}
