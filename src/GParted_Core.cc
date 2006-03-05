@@ -389,6 +389,8 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				iter_mp = mount_info .find( partitions[ t ] .partition );
 				if ( iter_mp != mount_info .end() )
 					partitions[ t ] .mountpoints = iter_mp ->second ;
+				else 
+					partitions[ t ] .error = _("Unable to find mountpoint") ;
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_mountpoints( partitions[ t ] .logicals ) ;
@@ -436,11 +438,14 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 			{
 				if ( partitions[ t ] .busy )
 				{
-					if ( statvfs( partitions[ t ] .mountpoints .back() .c_str(), &sfs ) == 0 )
-						partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
-					else
-						partitions[ t ] .error = 
-							"statvfs (" + partitions[ t ] .mountpoints .back() + "): " + Glib::strerror( errno );
+					if ( partitions[ t ] .mountpoints .size() > 0  )
+					{
+						if ( statvfs( partitions[ t ] .mountpoints .back() .c_str(), &sfs ) == 0 )
+							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
+						else
+							partitions[ t ] .error = 
+								"statvfs (" + partitions[ t ] .mountpoints .back() + "): " + Glib::strerror( errno );
+					}
 				}
 				else
 				{

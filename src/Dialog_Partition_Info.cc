@@ -195,8 +195,6 @@ void Dialog_Partition_Info::Display_Info( )
 			else if ( partition .mountpoints .size() )
 				str_temp = String::ucompose( _("Mounted on %1"),
 							     Glib::build_path( ", ", partition .mountpoints ) ) ;
-			else 
-				str_temp = _("Unable to find mountpoint") ;
 		}
 		else if ( partition.type == GParted::TYPE_EXTENDED )
 			str_temp = _("Not busy (There are no mounted logical partitions)" ) ;

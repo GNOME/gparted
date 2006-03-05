@@ -1069,7 +1069,8 @@ bool Win_GParted::max_amount_prim_reached()
 {
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
 	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] .max_prims )
-	{
+	{//FIXME..maybe we should mention the fact the user needs to remove an primary before
+	 //he can add an extended..
 		Gtk::MessageDialog dialog( 
 			*this,
 			String::ucompose( _("It is not possible to create more than %1 primary partitions"),
