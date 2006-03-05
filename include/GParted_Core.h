@@ -73,6 +73,7 @@ private:
 	GParted::FILESYSTEM get_filesystem() ; 
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
+	void read_mountpoints_from_file( const Glib::ustring & filename ) ;
 	void init_maps() ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_short_paths( std::vector<Partition> & partitions ) ;

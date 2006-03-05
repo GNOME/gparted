@@ -180,20 +180,16 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	short_paths .clear() ;
 }
 
-void GParted_Core::init_maps() 
+void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename ) 
 {
 	std::string line ;
-
-	short_paths .clear() ;
-	mount_info .clear() ;
-	
-	//initialize mountpoints..
 	char node[255], mountpoint[255] ;
 	unsigned int index ;
-	std::ifstream proc_mounts( "/proc/mounts" ) ;
-	if ( proc_mounts )
+	
+	std::ifstream file( filename .c_str() ) ;
+	if ( file )
 	{
-		while ( getline( proc_mounts, line ) )
+		while ( getline( file, line ) )
 			if ( Glib::str_has_prefix( line, "/" ) &&
 			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
 			     static_cast<Glib::ustring>( node ) != "/dev/root" )
@@ -206,27 +202,31 @@ void GParted_Core::init_maps()
 				
 				mount_info[ node ] .push_back( line ) ;
 			}
-		
-		proc_mounts .close() ;
-	}
-	
-	//above list lacks the root mountpoint, try to get it from /etc/mtab
-	std::ifstream etc_mtab( "/etc/mtab" ) ;
-	if ( etc_mtab )
-	{
-		while ( getline( etc_mtab, line ) )
-			if ( Glib::str_has_prefix( line, "/" ) &&
-			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
-			     static_cast<Glib::ustring>( mountpoint ) == "/" )
-			{
-				mount_info[ node ] .push_back( "/" ) ;
-				break ;
-			}
 			
-		etc_mtab .close() ;
+		file .close() ;
+	}
+}
+
+void GParted_Core::init_maps() 
+{
+	short_paths .clear() ;
+	mount_info .clear() ;
+
+	read_mountpoints_from_file( "/proc/mounts" ) ;
+	read_mountpoints_from_file( "/etc/mtab" ) ;
+	
+	//sort the mountpoints and remove duplicates..
+	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
+	{
+		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
+		
+		iter_mp ->second .erase( 
+				std::unique( iter_mp ->second .begin(), iter_mp ->second .end() ),
+				iter_mp ->second .end() ) ;
 	}
 
 	//initialize shortpaths...
+	std::string line ;
 	std::ifstream proc_partitions( "/proc/partitions" ) ;
 	if ( proc_partitions )
 	{
