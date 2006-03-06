@@ -64,7 +64,7 @@ private:
 	//columns for this treeview
 	struct treeview_detail_Columns : public Gtk::TreeModelColumnRecord             
 	{
-		Gtk::TreeModelColumn<Glib::ustring> partition;
+		Gtk::TreeModelColumn<Glib::ustring> path;
 		Gtk::TreeModelColumn<Glib::ustring> filesystem;
 		Gtk::TreeModelColumn<Glib::ustring> mountpoint;
 		Gtk::TreeModelColumn<Glib::ustring> size;
@@ -73,15 +73,16 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > color;
 		Gtk::TreeModelColumn<Glib::ustring> text_color;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > error_icon;
 		Gtk::TreeModelColumn<Glib::ustring> flags;
-		Gtk::TreeModelColumn<Partition> partition_struct; //hidden column ( see also on_button_press_event )
+		Gtk::TreeModelColumn<Partition> partition; //hidden column 
 		
-		treeview_detail_Columns( )
+		treeview_detail_Columns()
 		{
-			add( partition ); add( filesystem ); add( mountpoint ) ;
+			add( path ); add( filesystem ); add( mountpoint ) ;
 			add( size ); add( used ); add( unused );
 			add( color ); add( text_color ); add( status_icon );
-			add( flags ); add(partition_struct);
+			add( error_icon ) ; add( flags ); add( partition );
 		}
 	};
 	

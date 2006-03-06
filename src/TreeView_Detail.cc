@@ -16,12 +16,11 @@
  */
  
 #include "../include/TreeView_Detail.h"
-#include <gtkmm/main.h>
 
 namespace GParted
 { 
 
-TreeView_Detail::TreeView_Detail( )
+TreeView_Detail::TreeView_Detail()
 {
 	block = false ;
 	
@@ -32,7 +31,7 @@ TreeView_Detail::TreeView_Detail( )
 	treeselection ->signal_changed() .connect( sigc::mem_fun( *this, &TreeView_Detail::on_selection_changed ) );
 
 	//append columns
-	append_column( _("Partition"), treeview_detail_columns .partition );
+	append_column( _("Partition"), treeview_detail_columns .path );
 	append_column( _("Filesystem"), treeview_detail_columns .color );
 	append_column( _("Mountpoint"), treeview_detail_columns .mountpoint );
 	append_column( _("Size"), treeview_detail_columns .size );
@@ -40,7 +39,8 @@ TreeView_Detail::TreeView_Detail( )
 	append_column( _("Unused"), treeview_detail_columns .unused );
 	append_column( _("Flags"), treeview_detail_columns .flags );
 	
-	//status_icon
+	//icons
+	get_column( 0 ) ->pack_start( treeview_detail_columns .error_icon, false );
 	get_column( 0 ) ->pack_start( treeview_detail_columns .status_icon, false );
 
 	//filesystem text
@@ -122,7 +122,7 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partiti
 {
 	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
-		if ( static_cast<Partition>( rows[ t ] [ treeview_detail_columns .partition_struct ] ) == partition )
+		if ( static_cast<Partition>( rows[ t ] [ treeview_detail_columns .partition ] ) == partition )
 		{
 			if ( inside_extended )
 				expand_all() ;
@@ -140,18 +140,19 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partiti
 
 void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition & partition )
 {
-	//FIXME: this approach is too simplistic, we need to display the lock AND the warning icon if necessary
-	//e.g. if statvfs in the core fails, we need to display both icons...
 	if ( partition .busy )
-		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
-	else if ( partition .error != "" )
-		treerow[ treeview_detail_columns .status_icon ] = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
+		treerow[ treeview_detail_columns .status_icon ] = 
+			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
-	treerow[ treeview_detail_columns .partition ] = partition .partition;
+	if ( ! partition .error .empty() )
+		treerow[ treeview_detail_columns .error_icon ] = 
+			render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
+	
+	treerow[ treeview_detail_columns .path ] = partition .partition ;
 
 	//this fixes a weird issue (see #169683 for more info)
 	if ( partition .type == GParted::TYPE_EXTENDED && partition .busy ) 
-		treerow[ treeview_detail_columns .partition ] = treerow[ treeview_detail_columns .partition ] + "   " ;
+		treerow[ treeview_detail_columns .path ] = treerow[ treeview_detail_columns .path ] + "   " ;
 
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
@@ -181,7 +182,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		Glib::build_path( ", ", partition .flags ) ;
 	
 	//hidden column (partition object)
-	treerow[ treeview_detail_columns .partition_struct ] = partition;
+	treerow[ treeview_detail_columns .partition ] = partition;
 }
 
 bool TreeView_Detail::on_button_press_event( GdkEventButton * event )
@@ -209,7 +210,7 @@ void TreeView_Detail::on_selection_changed()
 	if ( ! block && treeselection ->get_selected() != 0 )
 	{
 		row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
-		signal_partition_selected .emit( row[ treeview_detail_columns .partition_struct ], true ) ;
+		signal_partition_selected .emit( row[ treeview_detail_columns .partition ], true ) ;
 	}
 }
 	
