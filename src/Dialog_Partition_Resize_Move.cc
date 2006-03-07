@@ -79,9 +79,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
-	unsigned int t;//FIXME: use Partition::== here
+	unsigned int t;
 	for ( t = 0 ; t < partitions .size() ; t++ )
-		if ( partitions[ t ] .sector_start == selected_partition .sector_start )
+		if ( partitions[ t ] == selected_partition )
 			break;
 
 	Sector previous, next ;
@@ -89,16 +89,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//also check the partitions filesystem ( if this is a 'resize-only' then previous should be 0 )	
 	if ( t >= 1 && partitions[t -1].type == GParted::TYPE_UNALLOCATED && ! this ->fixed_start )
 	{ 
-		previous = partitions[t -1] .sector_end - partitions[t -1] .sector_start ;
+		previous = partitions[t -1] .get_length() ;
 		START = partitions[t -1] .sector_start ;
 	} 
 	else
 		START = selected_partition .sector_start ;
 
 	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
-		next = partitions[t +1].sector_end - partitions[t +1].sector_start ;
+		next = partitions[t +1] .get_length() ;
 	
-	total_length = previous + selected_partition.get_length() + next;
+	total_length = previous + selected_partition .get_length() + next;
 	TOTAL_MB = Utils::Round( Utils::sector_to_unit( total_length, GParted::UNIT_MIB ) ) ;
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
@@ -166,16 +166,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	//calculate length and start of previous
 	if ( t > 0 && partitions[t -1].type == GParted::TYPE_UNALLOCATED )
 	{
-		previous = partitions[t -1].sector_end - partitions[t -1].sector_start ;
-		START = partitions[t -1].sector_start ;
+		previous = partitions[t -1] .get_length() ;
+		START = partitions[t -1] .sector_start ;
 	} 
 	else
 		START = selected_partition .sector_start ;
 	
 	//calculate length of next
 	if ( t +1 < partitions .size() && partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
-		next = partitions[ t +1 ] .sector_end - partitions[ t +1 ] .sector_start ;
-	
+		next = partitions[ t +1 ] .get_length() ;
+		
 	//now we have enough data to calculate some important values..
 	total_length = previous + selected_partition .get_length() + next;
 	TOTAL_MB = Utils::Round( Utils::sector_to_unit( total_length, UNIT_MIB ) ) ;

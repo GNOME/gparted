@@ -39,7 +39,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	//set some widely used values...
 	START = selected_partition .sector_start ;
-	total_length = selected_partition .sector_end - selected_partition .sector_start ;
+	total_length = selected_partition .get_length() ;
 	TOTAL_MB = Utils::Round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
