@@ -43,14 +43,16 @@ TreeView_Detail::TreeView_Detail()
 	get_column( 0 ) ->pack_start( treeview_detail_columns .error_icon, false );
 	get_column( 0 ) ->pack_start( treeview_detail_columns .status_icon, false );
 
-	//filesystem text
-	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
-	
+	//PARTITION
 	//colored text in Partition column 
 	Gtk::CellRendererText *cell_renderer_text = 
 		dynamic_cast<Gtk::CellRendererText*>( get_column( 0 ) ->get_first_cell_renderer() );
 	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
 					 treeview_detail_columns .text_color );
+	
+	//FILESYSTEM
+	//filesystem text
+	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
 	
 	//colored text in Filesystem column 
 	std::vector<Gtk::CellRenderer*> renderers = get_column( 1 ) ->get_cell_renderers() ;
@@ -61,6 +63,12 @@ TreeView_Detail::TreeView_Detail()
 	//pixbuf and text are both left aligned
 	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = Gtk::ALIGN_LEFT ;
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
+	
+	//MOUNTPOINT
+	//colored text in mountpoint column 
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 2 ) ->get_first_cell_renderer() );
+	get_column( 2 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
+					 treeview_detail_columns .mount_text_color );
 
 	//set alignment of numeric columns to right
 	for( short t = 3 ; t < 6 ; t++ )
@@ -163,8 +171,8 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		Utils::Get_Filesystem_String( partition .filesystem ) ;
 	
 	//mountpoint
-	treerow[ treeview_detail_columns .mountpoint ] =
-		Glib::build_path( ", ", partition .mountpoints ) ;
+	treerow[ treeview_detail_columns .mount_text_color ] = partition .busy ? "black" : "darkgrey" ;
+	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .mountpoints ) ;
 		
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length() ) ;

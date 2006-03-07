@@ -149,10 +149,7 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				
 				set_device_partitions( temp_device ) ;
 				set_short_paths( temp_device .partitions ) ;
-
-				if ( temp_device .highest_busy )
-					set_mountpoints( temp_device .partitions ) ;
-				
+				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions ) ;
 				
 				if ( temp_device .highest_busy )
@@ -178,9 +175,11 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	//clear leftover information...	
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	short_paths .clear() ;
+	fstab_info .clear() ;
 }
 
-void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename ) 
+void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
+					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
 {
 	std::string line ;
 	char node[255], mountpoint[255] ;
@@ -200,7 +199,7 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename )
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;
 				
-				mount_info[ node ] .push_back( line ) ;
+				map[ node ] .push_back( line ) ;
 			}
 			
 		file .close() ;
@@ -211,11 +210,13 @@ void GParted_Core::init_maps()
 {
 	short_paths .clear() ;
 	mount_info .clear() ;
+	fstab_info .clear() ;
 
-	read_mountpoints_from_file( "/proc/mounts" ) ;
-	read_mountpoints_from_file( "/etc/mtab" ) ;
+	read_mountpoints_from_file( "/proc/mounts", mount_info ) ;
+	read_mountpoints_from_file( "/etc/mtab", mount_info ) ;
+	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
-	//sort the mountpoints and remove duplicates..
+	//sort the mountpoints and remove duplicates.. (no need to do this for fstab_info)
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
 	{
 		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
@@ -382,9 +383,11 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .busy && partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
+		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
+		       partitions[ t ] .type == GParted::TYPE_LOGICAL ) &&
+		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
 		{
-			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY || partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			if ( partitions[ t ] .busy )
 			{
 				iter_mp = mount_info .find( partitions[ t ] .partition );
 				if ( iter_mp != mount_info .end() )
@@ -392,9 +395,15 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				else 
 					partitions[ t ] .error = _("Unable to find mountpoint") ;
 			}
-			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-				set_mountpoints( partitions[ t ] .logicals ) ;
+			else
+			{
+				iter_mp = fstab_info .find( partitions[ t ] .partition );
+				if ( iter_mp != fstab_info .end() )
+					partitions[ t ] .mountpoints = iter_mp ->second ;
+			}
 		}
+		else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			set_mountpoints( partitions[ t ] .logicals ) ;
 	}
 }
 
@@ -440,11 +449,11 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 				{
 					if ( partitions[ t ] .mountpoints .size() > 0  )
 					{ 
-						if ( statvfs( partitions[ t ] .mountpoints .back() .c_str(), &sfs ) == 0 )
+						if ( statvfs( partitions[ t ] .mountpoints .front() .c_str(), &sfs ) == 0 )
 							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
 						else
 							partitions[ t ] .error = 
-								"statvfs (" + partitions[ t ] .mountpoints .back() + "): " + Glib::strerror( errno );
+								"statvfs (" + partitions[ t ] .mountpoints .front() + "): " + Glib::strerror( errno );
 					}
 				}
 				else

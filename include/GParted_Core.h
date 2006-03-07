@@ -73,7 +73,8 @@ private:
 	GParted::FILESYSTEM get_filesystem() ; 
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
-	void read_mountpoints_from_file( const Glib::ustring & filename ) ;
+	void read_mountpoints_from_file( const Glib::ustring & filename,
+					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	void init_maps() ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_short_paths( std::vector<Partition> & partitions ) ;
@@ -120,6 +121,7 @@ private:
 	bool probe_devices ;
 	
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
+	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 	std::map< Glib::ustring, Glib::ustring > short_paths ;
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;

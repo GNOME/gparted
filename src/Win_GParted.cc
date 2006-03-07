@@ -69,9 +69,12 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
 	//frame_visualdisk...  ( contains the visual represenation of the disks )
-	frame_visualdisk .signal_partition_selected .connect( sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
-	frame_visualdisk .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) ) ;
-	frame_visualdisk .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
+	frame_visualdisk .signal_partition_selected .connect( 
+			sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
+	frame_visualdisk .signal_partition_activated .connect( 
+			sigc::mem_fun( this, &Win_GParted::on_partition_activated ) ) ;
+	frame_visualdisk .signal_popup_menu .connect( 
+			sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
 	vbox_main .pack_start( frame_visualdisk, Gtk::PACK_SHRINK ) ;
 		
 	//hpaned_main (NOTE: added to vpaned_main)
@@ -1113,38 +1116,39 @@ void Win_GParted::activate_resize()
 		
 	dialog .set_transient_for( *this ) ;	
 			
-	if ( dialog .run( ) == Gtk::RESPONSE_OK )
+	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{
-		dialog .hide( ) ;//i want to be sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+		dialog .hide() ;
 		
-		//if selected_partition is NEW we simply remove the NEW operation from the list and add it again with the new size and position ( unless it's an EXTENDED )
-		if ( selected_partition .status == GParted::STAT_NEW && selected_partition.type != GParted::TYPE_EXTENDED )
+		//if selected_partition is NEW we simply remove the NEW operation from the list and add 
+		//it again with the new size and position ( unless it's an EXTENDED )
+		if ( selected_partition .status == GParted::STAT_NEW && selected_partition .type != GParted::TYPE_EXTENDED )
 		{
 			//remove operation which creates this partition
-			for ( unsigned int t = 0 ; t < operations .size( ) ; t++ )
+			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
 				if ( operations[ t ] .partition_new .partition == selected_partition .partition )
 				{
-					operations.erase( operations .begin( ) + t ) ;
+					operations.erase( operations .begin() + t ) ;
 					
 					//And add the new partition to the end of the operations list
-					Add_Operation( GParted::CREATE, dialog .Get_New_Partition( ) );
+					Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
 					
 					break;
 				}
 			}
 		}
 		else//normal move/resize on existing partition
-			Add_Operation( GParted::RESIZE_MOVE, dialog .Get_New_Partition( ) );
+			Add_Operation( GParted::RESIZE_MOVE, dialog .Get_New_Partition() );
 	}
 }
 
-void Win_GParted::activate_copy( )
+void Win_GParted::activate_copy()
 {
 	copied_partition = selected_partition ;
 }
 
-void Win_GParted::activate_paste( )
+void Win_GParted::activate_paste()
 {
 	if ( ! max_amount_prim_reached() )
 	{
@@ -1184,7 +1188,8 @@ void Win_GParted::activate_new()
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )
 		{
-			dialog .hide() ;//make sure the dialog is gone _before_ operationslist shows up (only matters if first operation)
+			dialog .hide() ;
+			
 			new_count++ ;
 			Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
 		}
