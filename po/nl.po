@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-06 03:05+0100\n"
-"PO-Revision-Date: 2006-03-06 05:39+0100\n"
+"POT-Creation-Date: 2006-03-07 11:12+0100\n"
+"PO-Revision-Date: 2006-03-07 15:06+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -113,7 +113,7 @@ msgstr ""
 "op %1 worden verwijderd!"
 
 #: ../src/Dialog_Disklabel.cc:88 ../src/Dialog_Filesystems.cc:32
-#: ../src/Win_GParted.cc:1481
+#: ../src/Win_GParted.cc:1480
 msgid "Create"
 msgstr "Aanmaken"
 
@@ -121,7 +121,7 @@ msgstr "Aanmaken"
 msgid "Filesystems"
 msgstr "Bestandssystemen"
 
-#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:36
+#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:35
 msgid "Filesystem"
 msgstr "Bestandssysteem"
 
@@ -519,19 +519,19 @@ msgid "Copy %1 to %2 (start at %3)"
 msgstr "%1 naar %2 kopiëren (beginnen bij %3)"
 
 #. append columns
-#: ../src/TreeView_Detail.cc:35
+#: ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "Partitie"
 
-#: ../src/TreeView_Detail.cc:37
+#: ../src/TreeView_Detail.cc:36
 msgid "Mountpoint"
 msgstr "Koppelpunt"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:37
 msgid "Size"
 msgstr "Grootte"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:38
 msgid "Used"
 msgstr "Gebruikt"
 
@@ -540,11 +540,11 @@ msgstr "Gebruikt"
 # aangemaakt kan worden noemen we nu 'ongebruikt' omdat dat
 # ruimte is die helemaal niet gebruikt wordt.
 # De partitie zelf wordt onderverdeeld in gebruikte en vrije ruimte.
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:39
 msgid "Unused"
 msgstr "Vrij"
 
-#: ../src/TreeView_Detail.cc:41
+#: ../src/TreeView_Detail.cc:40
 msgid "Flags"
 msgstr "Vlaggen"
 
@@ -772,7 +772,10 @@ msgstr ""
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
-msgstr "Hierdoor zult u slechts beperkte toegang hebben tot deze schijven. Koppel alle partities op een schijf los om volledige toegang tot de schijf te krijgen."
+msgstr ""
+"Hierdoor zult u slechts beperkte toegang hebben tot deze schijven. Koppel "
+"alle partities op een schijf los om volledige toegang tot de schijf te "
+"krijgen."
 
 #: ../src/Win_GParted.cc:919
 msgid "No devices detected"
@@ -797,113 +800,118 @@ msgstr ""
 "\n"
 "Kijk voor meer informatie op http://nl.gnome.org/"
 
-#: ../src/Win_GParted.cc:1076
+# hoofdbericht
+#: ../src/Win_GParted.cc:1075
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Het is niet mogelijk om meer dan %1 primaire partities aan te maken"
 
-#: ../src/Win_GParted.cc:1084
+# verklarende tekst
+#: ../src/Win_GParted.cc:1083
 msgid ""
 "If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions."
-msgstr ""
-"Als u meer partities wilt aanmaken dient u eerst een uitgebreide partitie "
-"aan te maken. Zo'n partitie kan andere partities bevatten."
+"Such a partition can contain other partitions. Because an extended partition "
+"is also a primary partition it might be necessary to remove a primary "
+"partition first."
+msgstr "Als u meer partities wilt hebben moet u eerst een uitgebreide partitie aanmaken. Zo'n partitie kan dan andere partities bevatten. Omdat een uitgebreide partitie tevens een primaire partitie is, moet u wellicht eerst een andere primaire partitie verwijderen."
 
-#: ../src/Win_GParted.cc:1209
+#: ../src/Win_GParted.cc:1208
 msgid "Unable to delete %1!"
 msgstr "Kan partitie %1 niet verwijderen!"
 
 # alle logische partities afkoppelen die een nummer hebben hoger dan
 # ...met een hoger nummer dan
-#: ../src/Win_GParted.cc:1216
+#: ../src/Win_GParted.cc:1215
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "U moet alle logische partities met een nummer hoger dan %1, afkoppelen"
 
-#: ../src/Win_GParted.cc:1227
+#: ../src/Win_GParted.cc:1226
 msgid "Are you sure you want to delete %1?"
 msgstr "Weet u zeker dat u %1 wilt verwijderen?"
 
-#: ../src/Win_GParted.cc:1234
+#: ../src/Win_GParted.cc:1233
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Na verwijdering is deze partitie niet langer beschikbaar voor kopiëren."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1237
+#: ../src/Win_GParted.cc:1236
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 verwijderen (%2, %3)"
 
-#: ../src/Win_GParted.cc:1298
+#: ../src/Win_GParted.cc:1297
 msgid "Cannot format this filesystem to %1."
 msgstr "Kan dit bestandssysteem niet formatteren als %1."
 
-#: ../src/Win_GParted.cc:1307
+#: ../src/Win_GParted.cc:1306
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "Een %1 bestandssysteem vereist een partitie van tenminste %2."
 
-#: ../src/Win_GParted.cc:1312
+#: ../src/Win_GParted.cc:1311
 msgid "A partition with a %1 filesystem has a maximum size of %2."
-msgstr "Een partitie met een %1 bestandsssyteem heeft een maximale grootte van %2."
+msgstr ""
+"Een partitie met een %1 bestandsssyteem heeft een maximale grootte van %2."
 
 # aankoppelpunten/koppelpunten/koppelingspunten
-#: ../src/Win_GParted.cc:1380
+#: ../src/Win_GParted.cc:1379
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "De partitie kon niet worden losgekoppeld van de volgende koppelpunten:"
 
-#: ../src/Win_GParted.cc:1382
+#: ../src/Win_GParted.cc:1381
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
-msgstr "Waarschijnlijk zijn er nog andere partities aan deze koppelpunten aangekoppeld. Het is het beste om deze partities handmatig af te koppelen."
+msgstr ""
+"Waarschijnlijk zijn er nog andere partities aan deze koppelpunten "
+"aangekoppeld. Het is het beste om deze partities handmatig af te koppelen."
 
-#: ../src/Win_GParted.cc:1399
+#: ../src/Win_GParted.cc:1398
 msgid "Unmounting %1"
 msgstr "%1 loskoppelen"
 
-#: ../src/Win_GParted.cc:1404
+#: ../src/Win_GParted.cc:1403
 msgid "Could not unmount %1"
 msgstr "Kon %1 niet loskoppelen"
 
-#: ../src/Win_GParted.cc:1441
+#: ../src/Win_GParted.cc:1440
 msgid "Deactivating swap on %1"
 msgstr "Deactiveren van wisselgeheugen (swap) op %1"
 
-#: ../src/Win_GParted.cc:1441
+#: ../src/Win_GParted.cc:1440
 msgid "Activating swap on %1"
 msgstr "Activeren van wisselgeheugen (swap) op %1"
 
-#: ../src/Win_GParted.cc:1448
+#: ../src/Win_GParted.cc:1447
 msgid "Could not deactivate swap"
 msgstr "Kon wisselgeheugen (swap) niet deactiveren"
 
-#: ../src/Win_GParted.cc:1448
+#: ../src/Win_GParted.cc:1447
 msgid "Could not activate swap"
 msgstr "Kon wisselgeheugen (swap) niet activeren"
 
-#: ../src/Win_GParted.cc:1470
+#: ../src/Win_GParted.cc:1469
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Weet u zeker dat u een schijflabel %1 wilt aanmaken op %2?"
 
-#: ../src/Win_GParted.cc:1478
+#: ../src/Win_GParted.cc:1477
 msgid "This operation will destroy all data on %1!"
 msgstr "Deze bewerking zal alle data op %1 vernietigen!"
 
-#: ../src/Win_GParted.cc:1487
+#: ../src/Win_GParted.cc:1486
 msgid "Error while setting new disklabel"
 msgstr "Fout bij het instellen van een nieuw disklabel"
 
-#: ../src/Win_GParted.cc:1516
+#: ../src/Win_GParted.cc:1515
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Weet u zeker dat u de bewerkingen in de wachtrij wilt uitvoeren?"
 
 # data/gegevens/informatie
-#: ../src/Win_GParted.cc:1521
+#: ../src/Win_GParted.cc:1520
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "Het wordt aanbevolen om een backup te maken van belangrijke data voordat u "
 "doorgaat."
 
-#: ../src/Win_GParted.cc:1522
+#: ../src/Win_GParted.cc:1521
 msgid "Apply operations to harddisk"
 msgstr "Bewerkingen toepassen op de harde schijf"
 
