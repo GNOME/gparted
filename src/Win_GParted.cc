@@ -209,7 +209,7 @@ void Win_GParted::init_toolbar()
 	hbox_toolbar .pack_start( combo_devices, Gtk::PACK_SHRINK ) ;
 }
 
-void Win_GParted::init_partition_menu( ) 
+void Win_GParted::init_partition_menu() 
 {
 	//fill menu_partition
 	menu_partition .items() .push_back( 
@@ -251,11 +251,7 @@ void Win_GParted::init_partition_menu( )
 	
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("unmount"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_unmount ) ) );
-	
-	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("swapoff"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_toggle_swap ) ) );
+						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	
@@ -368,7 +364,7 @@ void Win_GParted::init_device_info()
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
 
-void Win_GParted::init_operationslist( ) 
+void Win_GParted::init_operationslist() 
 {
 	//create listview for pending operations
 	liststore_operations = Gtk::ListStore::create( treeview_operations_columns );
@@ -376,7 +372,7 @@ void Win_GParted::init_operationslist( )
 	treeview_operations .set_headers_visible( false );
 	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
 	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
-	treeview_operations .get_selection( ) ->set_mode( Gtk::SELECTION_NONE );
+	treeview_operations .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 
 	//init scrollwindow_operations
 	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
@@ -670,11 +666,12 @@ bool Win_GParted::Quit_Check_Operations()
 
 void Win_GParted::set_valid_operations()
 {
+	//FIXME: we shouldn't allow NEW partitions to be activated (swap/mount)
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_format( false ); allow_unmount( false ) ; allow_info( false ) ;
-	allow_toggle_swap( false ) ;
+	allow_paste( false ); allow_format( false ); allow_info( false ) ;
+	allow_toggle_swap_mount_state( false ) ;
 	
-       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) ->set_label( _("swapoff") ) ;
+       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
 	
 	//no partition selected...	
 	if ( selected_partition .partition .empty() )
@@ -686,20 +683,30 @@ void Win_GParted::set_valid_operations()
 	//deal with swap...
 	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
 	{
-		allow_toggle_swap( true ) ;
+		allow_toggle_swap_mount_state( true ) ;
 
 		if ( selected_partition .busy )
+		{
+			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
+				->set_label( _("swapoff") ) ;
+
 			return ;
+		}
 		else
-       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 11 ] .get_child() ) 
+       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
 				->set_label( _("swapon") ) ;
 	}
 	
-	//only unmount/swapoff is allowed (if ! extended)
+	//only unmount is allowed (if ! extended)
 	if ( selected_partition .busy )
 	{
 		if ( selected_partition .type != GParted::TYPE_EXTENDED )
-			allow_unmount( true ) ;
+		{
+			allow_toggle_swap_mount_state( true ) ;
+
+			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
+				->set_label( _("unmount") ) ;
+		}
 		
 		return ;
 	}
@@ -754,6 +761,14 @@ void Win_GParted::set_valid_operations()
 		//only allow copying of real partitions
 		if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
 			allow_copy( true ) ;	
+			
+		if ( selected_partition .mountpoints .size() )
+		{
+			allow_toggle_swap_mount_state( true ) ;
+
+			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
+				->set_label( _("mount") ) ;
+		}
 						
 		return ;
 	}
@@ -1367,8 +1382,8 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 		if ( std::count( mountpoints .begin(), mountpoints .end(), selected_partition .mountpoints[ t ] ) <= 1 ) 
 		{
 			if ( Utils::execute_command( "umount -v " + selected_partition .mountpoints[ t ],
-							    dummy,
-							    *error ) )
+						     dummy,
+						     *error ) )
 			{
 				*succes = false ;
 				errors .push_back( *error ) ;	
@@ -1390,33 +1405,26 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 
 	pulse = false ;
 }
-
-void  Win_GParted::activate_unmount() 
+	
+void Win_GParted::thread_mount_partition( bool * succes, Glib::ustring * error ) 
 {
-	bool succes ;
-	Glib::ustring error ;
+	Glib::ustring dummy ;
+	std::vector<Glib::ustring> errors ;
 	
-	pulse = true ;
-	thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
-			sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
+	*succes = true ; 
+	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() ; t++ )
+		if ( Utils::execute_command( "mount -v " + selected_partition .partition + " " + selected_partition .mountpoints[ t ],
+					      dummy,
+					      *error ) )
+		{
+			*succes = false ;
+			errors .push_back( *error ) ;
+		}
 
-	show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .partition ) ) ;
-	
-	if ( ! succes )
-	{
-		Gtk::MessageDialog dialog( *this, 
-					   String::ucompose( _("Could not unmount %1"), selected_partition .partition ),
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true );
+	if ( ! *succes )
+		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;
 
-		dialog .set_secondary_text( error, true ) ;
-		
-		dialog.run() ;
-	}
-	
-	menu_gparted_refresh_devices() ;
+	pulse = false ;
 }
 
 void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error ) 
@@ -1431,35 +1439,71 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 	pulse = false ;
 }
 	
-void Win_GParted::activate_toggle_swap() 
-{
+void Win_GParted::toggle_swap_mount_state() 
+{	
 	bool succes = false ;
 	Glib::ustring error ;
 
 	pulse = true ;
-	
-	thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+
+	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+	{
+		thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
 			sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), &succes, &error ), true ) ;
 
-	show_pulsebar( 
-		String::ucompose( selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
-		selected_partition .partition ) ) ;
+		show_pulsebar( 
+			String::ucompose( selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
+				  	  selected_partition .partition ) ) ;
 
-	if ( ! succes )
-	{
-		Gtk::MessageDialog dialog( 
-			*this,
-			selected_partition .busy ? _("Could not deactivate swap") : _("Could not activate swap"),
-			false,
-			Gtk::MESSAGE_ERROR,
-			Gtk::BUTTONS_OK,
-			true ) ;
+		if ( ! succes )
+		{
+			Gtk::MessageDialog dialog( 
+				*this,
+				selected_partition .busy ? _("Could not deactivate swap") : _("Could not activate swap"),
+				false,
+				Gtk::MESSAGE_ERROR,
+				Gtk::BUTTONS_OK,
+				true ) ;
 
-		dialog .set_secondary_text( error ) ;
-		
-		dialog.run() ;
+			dialog .set_secondary_text( error ) ;
+			
+			dialog.run() ;
+		}
 	}
-	
+	else
+	{
+		if ( selected_partition .busy )
+		{
+			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+				sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
+
+			show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .partition ) ) ;
+		}
+		else
+		{
+			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+				sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ), &succes, &error ), true ) ;
+
+			show_pulsebar( String::ucompose( _("mounting %1"), selected_partition .partition ) ) ;
+		}
+
+		
+		if ( ! succes )
+		{
+			Gtk::MessageDialog dialog( *this, 
+						   String::ucompose( selected_partition .busy ? _("Could not unmount %1") : _("Could not mount %1"),
+							   	     selected_partition .partition ),
+						   false,
+						   Gtk::MESSAGE_ERROR,
+						   Gtk::BUTTONS_OK,
+						   true );
+
+			dialog .set_secondary_text( error, true ) ;
+		
+			dialog.run() ;
+		}
+	}
+
 	menu_gparted_refresh_devices() ;
 }
 
