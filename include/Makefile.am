@@ -1,35 +1,35 @@
 gparted_includedir = $(pkgincludedir)
 
 EXTRA_DIST = \
-	Device.h \
-	Dialog_Partition_Copy.h\
-	ext2.h\
-        Frame_Resizer_Base.h\
-	i18n.h\
-        Partition.h  \
-	DrawingAreaVisualDisk.h \
-        Dialog_Partition_Info.h\
-	ext3.h  \
-	Frame_Resizer_Extended.h\
-	jfs.h \
-	reiser4.h   \
-	Win_GParted.h \
-	Dialog_Base_Partition.h\
-	Dialog_Partition_New.h    \
-	fat16.h    \
-	GParted_Core.h    \
-        linux_swap.h \
-	reiserfs.h  \
-	xfs.h \
-	Dialog_Disklabel.h \
-	Dialog_Partition_Resize_Move.h \
-	fat32.h  \
-	hfs.h  \
-	ntfs.h  \
-	TreeView_Detail.h \
-	Dialog_Filesystems.h \
-	Dialog_Progress.h  \
-	FileSystem.h  \
-	hfsplus.h \
-	Operation.h \
-	Utils.h
+	Device.h 			\
+	Dialog_Base_Partition.h		\
+	Dialog_Disklabel.h 		\
+	Dialog_Filesystems.h 		\
+	Dialog_Partition_Copy.h		\
+        Dialog_Partition_Info.h		\
+	Dialog_Partition_New.h    	\
+	Dialog_Partition_Resize_Move.h 	\
+	Dialog_Progress.h  		\
+	DrawingAreaVisualDisk.h 	\
+	FileSystem.h  			\
+        Frame_Resizer_Base.h		\
+	Frame_Resizer_Extended.h	\
+	GParted_Core.h    		\
+	Operation.h 			\
+        Partition.h  			\
+	TreeView_Detail.h 		\
+	Utils.h 			\
+	Win_GParted.h 			\
+	ext2.h				\
+	ext3.h  			\
+	fat16.h    			\
+	fat32.h  			\
+	hfs.h  				\
+	hfsplus.h 			\
+	i18n.h				\
+	jfs.h 				\
+        linux_swap.h 			\
+	ntfs.h  			\
+	reiser4.h   			\
+	reiserfs.h  			\
+	xfs.h
