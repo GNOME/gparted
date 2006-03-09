@@ -15,29 +15,27 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef FRAME_VISUALDISK
-#define FRAME_VISUALDISK
+#ifndef DRAWINGAREA_VISUALDISK
+#define DRAWINGAREA_VISUALDISK
 
 #include "../include/Partition.h"
 
-#include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
-
 
 namespace GParted
 {
 
-class FrameVisualDisk : public Gtk::Frame
+class DrawingAreaVisualDisk : public Gtk::DrawingArea
 {
 public:
-	FrameVisualDisk();
-	~FrameVisualDisk();
+	DrawingAreaVisualDisk();
+	~DrawingAreaVisualDisk();
 	
 	void load_partitions( const std::vector<Partition> & partitions, Sector device_length );
 	void set_selected( const Partition & partition ) ;
 	void clear() ;
 
-	//public signal for interclass communication
+	//public signals for interclass communication
 	sigc::signal< void, const Partition &, bool > signal_partition_selected ;
 	sigc::signal< void > signal_partition_activated ;
 	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
@@ -48,12 +46,16 @@ private:
 	//private functions	
 	int get_total_separator_px( const std::vector<Partition> & partitions ) ;
 	
-	void set_static_data( const std::vector<Partition> & partitions, std::vector<visual_partition> & visual_partitions, Sector length ) ;
+	void set_static_data( const std::vector<Partition> & partitions, 
+			      std::vector<visual_partition> & visual_partitions,
+			      Sector length ) ;
 	int calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) ;
 	void calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) ;
 	void calc_used_unused( std::vector<visual_partition> & visual_partitions ) ;
 	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
 	
+	void draw_partition( const visual_partition & vp ) ;
+	void draw_selection_effects( const visual_partition & vp ) ;
 	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
 	
 	bool set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) ;
@@ -62,11 +64,11 @@ private:
 	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
 	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
 	
-	//signalhandlers
-	void drawingarea_on_realize();
-	bool drawingarea_on_expose( GdkEventExpose * event );
-	bool on_drawingarea_button_press( GdkEventButton * event );
-	void on_resize( Gtk::Allocation & allocation ) ;
+	//overridden signalhandlers
+	void on_realize() ;
+	bool on_expose_event( GdkEventExpose * event ) ;
+	bool on_button_press_event( GdkEventButton * event ) ;
+	void on_size_allocate( Gtk::Allocation & allocation ) ;
 
 	//variables
 	struct visual_partition
@@ -118,10 +120,9 @@ private:
 	visual_partition selected_vp ;
 	int TOT_SEP, MIN_SIZE ;
 
-	Gtk::DrawingArea drawingarea;
 	Glib::RefPtr<Gdk::GC> gc;
 	Gdk::Color color_used, color_unused, color_text;
 };
 
 } //GParted
-#endif //FRAME_VISUALDISK
+#endif //DRAWINGAREA_VISUALDISK

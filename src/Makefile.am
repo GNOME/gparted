@@ -19,6 +19,7 @@ gparted_SOURCES = \
 	Dialog_Partition_New.cc\
 	Dialog_Partition_Resize_Move.cc\
 	Dialog_Progress.cc\
+	DrawingAreaVisualDisk.cc\
 	FileSystem.cc\
 	Frame_Resizer_Base.cc\
 	Frame_Resizer_Extended.cc\
@@ -27,7 +28,6 @@ gparted_SOURCES = \
 	Partition.cc\
 	TreeView_Detail.cc\
 	Utils.cc\
-	FrameVisualDisk.cc\
 	Win_GParted.cc\
 	ext2.cc\
 	ext3.cc\

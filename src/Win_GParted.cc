@@ -68,15 +68,15 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	init_toolbar() ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
 	
-	//frame_visualdisk...  ( contains the visual represenation of the disks )
-	frame_visualdisk .signal_partition_selected .connect( 
+	//drawingarea_visualdisk...  ( contains the visual represenation of the disks )
+	drawingarea_visualdisk .signal_partition_selected .connect( 
 			sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
-	frame_visualdisk .signal_partition_activated .connect( 
+	drawingarea_visualdisk .signal_partition_activated .connect( 
 			sigc::mem_fun( this, &Win_GParted::on_partition_activated ) ) ;
-	frame_visualdisk .signal_popup_menu .connect( 
+	drawingarea_visualdisk .signal_popup_menu .connect( 
 			sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
-	vbox_main .pack_start( frame_visualdisk, Gtk::PACK_SHRINK ) ;
-		
+	vbox_main .pack_start( drawingarea_visualdisk, Gtk::PACK_SHRINK ) ;
+	
 	//hpaned_main (NOTE: added to vpaned_main)
 	init_hpaned_main() ;
 	vpaned_main .pack1( hpaned_main, true, true ) ;
@@ -475,7 +475,7 @@ void Win_GParted::show_pulsebar( const Glib::ustring & status_message )
 	combo_devices .set_sensitive( false ) ;
 	menu_partition .set_sensitive( false ) ;
 	treeview_detail .set_sensitive( false ) ;
-	frame_visualdisk .set_sensitive( false ) ;
+	drawingarea_visualdisk .set_sensitive( false ) ;
 		
 	//the actual 'pulsing'
 	while ( pulse )
@@ -498,7 +498,7 @@ void Win_GParted::show_pulsebar( const Glib::ustring & status_message )
 	combo_devices .set_sensitive( true ) ;
 	menu_partition .set_sensitive( true ) ;
 	treeview_detail .set_sensitive( true ) ;
-	frame_visualdisk .set_sensitive( true ) ;
+	drawingarea_visualdisk .set_sensitive( true ) ;
 }
 
 void Win_GParted::Fill_Label_Device_Info( bool clear ) 
@@ -629,7 +629,7 @@ void Win_GParted::Refresh_Visual()
 	}
 	
 	//frame visualdisk
-	frame_visualdisk .load_partitions( partitions, devices[ current_device ] .length ) ;
+	drawingarea_visualdisk .load_partitions( partitions, devices[ current_device ] .length ) ;
 
 	//treeview details
 	treeview_detail .load_partitions( partitions ) ;
@@ -905,12 +905,12 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		menubar_main .items()[ 3 ] .set_sensitive( false ) ;
 		menubar_main .items()[ 4 ] .set_sensitive( false ) ;
 		toolbar_main .set_sensitive( false ) ;
-		frame_visualdisk .set_sensitive( false ) ;
+		drawingarea_visualdisk .set_sensitive( false ) ;
 		treeview_detail .set_sensitive( false ) ;
 
 		Fill_Label_Device_Info( true ) ;
 		
-		frame_visualdisk .clear() ;
+		drawingarea_visualdisk .clear() ;
 		treeview_detail .clear() ;
 		
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
@@ -932,7 +932,7 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		menubar_main .items()[ 4 ] .set_sensitive( true ) ;
 
 		toolbar_main .set_sensitive( true ) ;
-		frame_visualdisk .set_sensitive( true ) ;
+		drawingarea_visualdisk .set_sensitive( true ) ;
 		treeview_detail .set_sensitive( true ) ;
 		
 		refresh_combo_devices() ;	
@@ -1053,7 +1053,7 @@ void Win_GParted::on_partition_selected( const Partition & partition, bool src_i
 	set_valid_operations() ;
 	
 	if ( src_is_treeview )
-		frame_visualdisk .set_selected( partition ) ;
+		drawingarea_visualdisk .set_selected( partition ) ;
 	else
 		treeview_detail .set_selected( partition ) ;
 }

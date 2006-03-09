@@ -19,7 +19,7 @@
 #define WIN_GPARTED
 
 #include "../include/Device.h"
-#include "../include/FrameVisualDisk.h"
+#include "../include/DrawingAreaVisualDisk.h"
 #include "../include/Partition.h"
 #include "../include/TreeView_Detail.h"
 #include "../include/Operation.h"
@@ -182,7 +182,7 @@ private:
 	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
 	
-	FrameVisualDisk frame_visualdisk;
+	DrawingAreaVisualDisk drawingarea_visualdisk ;
 	TreeView_Detail treeview_detail;
 
 	//device combo
