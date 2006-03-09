@@ -666,10 +666,9 @@ bool Win_GParted::Quit_Check_Operations()
 
 void Win_GParted::set_valid_operations()
 {
-	//FIXME: we shouldn't allow NEW partitions to be activated (swap/mount)
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_format( false ); allow_info( false ) ;
-	allow_toggle_swap_mount_state( false ) ;
+	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
+	allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
 	
@@ -683,7 +682,8 @@ void Win_GParted::set_valid_operations()
 	//deal with swap...
 	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
 	{
-		allow_toggle_swap_mount_state( true ) ;
+		if ( selected_partition .status == GParted::STAT_REAL )
+			allow_toggle_swap_mount_state( true ) ;
 
 		if ( selected_partition .busy )
 		{
