@@ -321,11 +321,6 @@ void Win_GParted::init_device_info()
 	device_info .push_back( Utils::mk_label( "" ) ) ;
 	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
 	
-	//real path
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
-	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
-		
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 	
 	//DETAILED DEVICE INFO 
@@ -441,13 +436,13 @@ void Win_GParted::refresh_combo_devices()
 		treerow = *( liststore_devices ->append() ) ;
 		treerow[ treeview_devices_columns .icon ] =
 			render_icon( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-		treerow[ treeview_devices_columns .device ] = devices[ i ] .path ;
+		treerow[ treeview_devices_columns .device ] = devices[ i ] .get_path() ;
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length ) + ")" ; 
 	
 		//devices submenu....
 		menu ->items() .push_back( Gtk::Menu_Helpers::RadioMenuElem( 
 			radio_group,
-			devices[ i ] .path + "\t(" + Utils::format_size( devices[ i ] .length ) + ")",
+			devices[ i ] .get_path() + "\t(" + Utils::format_size( devices[ i ] .length ) + ")",
 			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ) ;
 	}
 				
@@ -510,8 +505,7 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		//global info...
 		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
 		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length ) ) ;
-		device_info[ t++ ] ->set_text( devices[ current_device ] .path ) ;
-		device_info[ t++ ] ->set_text( devices[ current_device ] .realpath ) ;
+		device_info[ t++ ] ->set_text( Glib::build_path( "\n", devices[ current_device ] .get_paths() ) ) ;
 		
 		//detailed info
 		device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;
@@ -578,8 +572,8 @@ void Win_GParted::Refresh_Visual()
 	
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
-	{	
-		if ( operations[ t ] .device .path == devices[ current_device ] .path )
+	{	//FIXME: overload == operator for Device and use that instead of this..
+		if ( operations[ t ] .device .get_path() == devices[ current_device ] .get_path() )
 			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
 		treerow = *( liststore_operations ->append() );
@@ -605,7 +599,7 @@ void Win_GParted::Refresh_Visual()
 	primary_count = 0;
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .partition == copied_partition .partition )
+		if ( partitions[ t ] .get_path() == copied_partition .get_path() )
 			copied_partition = partitions[ t ] ;
 		
 		switch ( partitions[ t ] .type )
@@ -673,7 +667,7 @@ void Win_GParted::set_valid_operations()
        	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
 	
 	//no partition selected...	
-	if ( selected_partition .partition .empty() )
+	if ( ! selected_partition .get_paths() .size() )
 		return ;
 	
 	//if there's something, there's some info ;)
@@ -717,7 +711,7 @@ void Win_GParted::set_valid_operations()
 		allow_new( true );
 		
 		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( ! copied_partition .partition .empty() && ! devices[ current_device ] .readonly )
+		if ( ! copied_partition .get_path() .empty() && ! devices[ current_device ] .readonly )
 		{
 			Sector required_size ;
 			if ( copied_partition .filesystem == GParted::FS_XFS )
@@ -824,7 +818,7 @@ void Win_GParted::combo_devices_changed()
 {
 	//set new current device
 	current_device = combo_devices .get_active_row_number() ;
-	this ->set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .path ) );
+	set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .get_path() ) );
 	
 	//refresh label_device_info
 	Fill_Label_Device_Info();
@@ -876,10 +870,10 @@ void Win_GParted::menu_gparted_refresh_devices( )
 
 	//show read-only warning if necessary
 	Glib::ustring readonly_paths ;
-	
+	//FIXME: push relevant devices in vector en construct error using Glib::build_path
 	for ( unsigned int t = 0 ; t < devices .size() ; t++ )
 		if ( devices[ t ] .readonly )
-			readonly_paths += "\n- " + devices[ t ] .path ;
+			readonly_paths += "\n- " + devices[ t ] .get_path() ;
 		
 	if ( ! readonly_paths .empty() )
 	{
@@ -901,8 +895,8 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	//but anyone who removes the sourcedevice before applying the operations gets what he/she deserves :-)
 	unsigned int i ;
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-	{
-		for ( i = 0 ; i < devices .size() && devices[ i ] .path != operations[ t ] .device .path ; i++ ) {}
+	{//FIXME same as above, use Device::==
+		for ( i = 0 ; i < devices .size() && devices[ i ] .get_path() != operations[ t ] .device .get_path() ; i++ ) {}
 			
 		if ( i >= devices .size() )
 			operations .erase( operations .begin() + t-- ) ;//decrease t bij one..
@@ -1111,10 +1105,10 @@ bool Win_GParted::max_amount_prim_reached()
 void Win_GParted::activate_resize()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
-	
+//FIXME use DEvice::== 	
 	if ( operations .size() )
 		for (unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] .device .path == devices[ current_device ] .path )
+			if ( operations[ t ] .device .get_path() == devices[ current_device ] .get_path() )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), 
@@ -1142,7 +1136,7 @@ void Win_GParted::activate_resize()
 			//remove operation which creates this partition
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				if ( operations[ t ] .partition_new .partition == selected_partition .partition )
+				if ( operations[ t ] .partition_new == selected_partition )
 				{
 					operations.erase( operations .begin() + t ) ;
 					
@@ -1225,7 +1219,7 @@ void Win_GParted::activate_delete()
 		selected_partition .partition_number < devices[ current_device ] .highest_busy )
 	{	
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( _( "Unable to delete %1!"), selected_partition .partition ),
+					   String::ucompose( _( "Unable to delete %1!"), selected_partition .get_path() ),
 					   false,
 					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK,
@@ -1239,12 +1233,12 @@ void Win_GParted::activate_delete()
 		return;
 	}
 	
-	//if partition is on the clipboard...
-	if ( selected_partition .partition == copied_partition .partition )
+	//if partition is on the clipboard...(NOTE: we can't use Partition::== here..)
+	if ( selected_partition .get_path() == copied_partition .get_path() )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _( "Are you sure you want to delete %1?"), 
-					      		     selected_partition .partition ),
+					      		     selected_partition .get_path() ),
 					   false,
 					   Gtk::MESSAGE_QUESTION,
 					   Gtk::BUTTONS_NONE,
@@ -1254,7 +1248,7 @@ void Win_GParted::activate_delete()
 		
 		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
 		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3)"), 
-						     selected_partition .partition, 
+						     selected_partition .get_path(), 
 						     Utils::Get_Filesystem_String( selected_partition .filesystem ),
 						     Utils::format_size( selected_partition .get_length() ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
@@ -1267,7 +1261,7 @@ void Win_GParted::activate_delete()
 	}
 	
 	//if deleted partition was on the clipboard we erase it...
-	if ( selected_partition .partition == copied_partition .partition )
+	if ( selected_partition .get_path() == copied_partition .get_path() )
 		copied_partition .Reset() ;
 			
 	/* if deleted one is NEW, it doesn't make sense to add it to the operationslist,
@@ -1277,7 +1271,7 @@ void Win_GParted::activate_delete()
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[ t ] .partition_new .partition == selected_partition .partition )
+			if ( operations[ t ] .partition_new .get_path() == selected_partition .get_path() )
 				operations.erase( operations .begin() + t-- ) ;
 				
 		//determine lowest possible new_count
@@ -1337,9 +1331,9 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	}
 	
 	//ok we made it.  lets create an fitting partition object
-	Partition part_temp;
-	part_temp .Set( devices[ current_device ] .path, 
-			selected_partition .partition, 
+	Partition part_temp ;
+	part_temp .Set( devices[ current_device ] .get_path(), 
+			selected_partition .get_path(), 
 			selected_partition .partition_number, 
 			selected_partition .type, new_fs, 
 			selected_partition .sector_start,
@@ -1355,7 +1349,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		//remove operation which creates this partition
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 		{
-			if ( operations[ t ] .partition_new .partition == selected_partition .partition )
+			if ( operations[ t ] .partition_new == selected_partition )
 			{
 				operations .erase( operations .begin() +t ) ;
 				
@@ -1413,7 +1407,7 @@ void Win_GParted::thread_mount_partition( bool * succes, Glib::ustring * error )
 	
 	*succes = true ; 
 	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() ; t++ )
-		if ( Utils::execute_command( "mount -v " + selected_partition .partition + " " + selected_partition .mountpoints[ t ],
+		if ( Utils::execute_command( "mount -v " + selected_partition .get_path() + " " + selected_partition .mountpoints[ t ],
 					      dummy,
 					      *error ) )
 		{
@@ -1432,9 +1426,9 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 	Glib::ustring dummy ;
 	
 	if ( selected_partition .busy )
-		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .partition + " && sync", dummy, *error ) ;
+		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path() + " && sync", dummy, *error ) ;
 	else
-		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .partition + " && sync", dummy, *error ) ;
+		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .get_path() + " && sync", dummy, *error ) ;
 
 	pulse = false ;
 }
@@ -1452,8 +1446,9 @@ void Win_GParted::toggle_swap_mount_state()
 			sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), &succes, &error ), true ) ;
 
 		show_pulsebar( 
-			String::ucompose( selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
-				  	  selected_partition .partition ) ) ;
+			String::ucompose( 
+				selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
+				selected_partition .get_path() ) ) ;
 
 		if ( ! succes )
 		{
@@ -1477,14 +1472,14 @@ void Win_GParted::toggle_swap_mount_state()
 			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
 				sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
 
-			show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .partition ) ) ;
+			show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .get_path() ) ) ;
 		}
 		else
 		{
 			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
 				sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ), &succes, &error ), true ) ;
 
-			show_pulsebar( String::ucompose( _("mounting %1"), selected_partition .partition ) ) ;
+			show_pulsebar( String::ucompose( _("mounting %1"), selected_partition .get_path() ) ) ;
 		}
 
 		
@@ -1492,7 +1487,7 @@ void Win_GParted::toggle_swap_mount_state()
 		{
 			Gtk::MessageDialog dialog( *this, 
 						   String::ucompose( selected_partition .busy ? _("Could not unmount %1") : _("Could not mount %1"),
-							   	     selected_partition .partition ),
+							   	     selected_partition .get_path() ),
 						   false,
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,
@@ -1509,7 +1504,7 @@ void Win_GParted::toggle_swap_mount_state()
 
 void Win_GParted::activate_disklabel()
 {
-	Dialog_Disklabel dialog( devices[ current_device ] .path, gparted_core .get_disklabeltypes() ) ;
+	Dialog_Disklabel dialog( devices[ current_device ] .get_path(), gparted_core .get_disklabeltypes() ) ;
 	dialog .set_transient_for( *this );
 		
 	if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -1517,19 +1512,19 @@ void Win_GParted::activate_disklabel()
 		Gtk::MessageDialog m_dialog( *this,
 		  			     String::ucompose( _("Are you sure you want to create a %1 disklabel on %2?"),
 					  		       dialog .Get_Disklabel(),
-					  		       devices[ current_device ] .path ),
+					  		       devices[ current_device ] .get_path() ),
 					     false,
 					     Gtk::MESSAGE_QUESTION,
 					     Gtk::BUTTONS_CANCEL,
 					     true ) ;
 
 		m_dialog .set_secondary_text( String::ucompose( _("This operation will destroy all data on %1!"),
-								devices[ current_device ] .path ) ) ;
+								devices[ current_device ] .get_path() ) ) ;
 
 		m_dialog .add_button( _("Create"), Gtk::RESPONSE_OK );
 		
 		if ( m_dialog .run() == Gtk::RESPONSE_OK && 
-		     ! gparted_core .Set_Disklabel( devices[ current_device ] .path, dialog .Get_Disklabel() ) )
+		     ! gparted_core .Set_Disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
 		{
 			Gtk::MessageDialog dialog( *this,
 						   _("Error while setting new disklabel"),

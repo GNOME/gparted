@@ -23,7 +23,10 @@ Operation::Operation()
 {
 }
 	
-Operation::Operation( const Device & device, const Partition & partition_original, const Partition & partition_new, OperationType operationtype )
+Operation::Operation( const Device & device,
+		      const Partition & partition_original,
+		      const Partition & partition_new,
+		      OperationType operationtype )
 {
 	this ->device = device ;
 	this ->partition_original = partition_original;
@@ -34,8 +37,10 @@ Operation::Operation( const Device & device, const Partition & partition_origina
 	
 	if ( operationtype == COPY )
 	{
-		copied_partition_path = partition_new .partition ;
-		this ->partition_new .partition = String::ucompose( _("copy of %1"), this ->partition_new .partition );	
+		copied_partition_path = partition_new .get_path() ;
+		this ->partition_new .add_path(  
+			String::ucompose( _("copy of %1"), this ->partition_new .get_path() ),
+			true ) ;
 	}
 }
 
@@ -50,14 +55,14 @@ Glib::ustring Operation::Get_String( )
 			if (partition_original.type == GParted::TYPE_LOGICAL)
 				temp = _("Logical Partition") ;
 			else
-				temp = partition_original .partition ;
+				temp = partition_original .get_path() ;
 
 			/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
 			return String::ucompose( _("Delete %1 (%2, %3) from %4"), 
 						 temp,
 						 Utils::Get_Filesystem_String( partition_original .filesystem ), 
 						 Utils::format_size( partition_original .get_length() ),
-						 device .path ) ;
+						 device .get_path() ) ;
 
 		case CREATE	:
 			switch( partition_new.type )
@@ -78,10 +83,10 @@ Glib::ustring Operation::Get_String( )
 			/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda */
 			return String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
 						 temp, 
-						 partition_new.partition_number, 
-						 Utils::Get_Filesystem_String( partition_new.filesystem ), 
+						 partition_new .partition_number, 
+						 Utils::Get_Filesystem_String( partition_new .filesystem ), 
 						 Utils::format_size( partition_new .get_length() ),
-						 device .path ) ;
+						 device .get_path() ) ;
 			
 		case RESIZE_MOVE:
 			//if startsector has changed we consider it a move
@@ -90,11 +95,11 @@ Glib::ustring Operation::Get_String( )
 			{
 				if ( partition_new .sector_start > partition_original .sector_start )
 					temp = String::ucompose( _("Move %1 forward by %2"), 
-								 partition_new .partition,
+								 partition_new .get_path(),
 								 Utils::format_size( diff ) ) ;
 				else
 					temp = String::ucompose( _("Move %1 backward by %2"),
-								 partition_new .partition,
+								 partition_new .get_path(),
 								 Utils::format_size( diff ) ) ;
 			}
 			
@@ -104,12 +109,12 @@ Glib::ustring Operation::Get_String( )
 			{
 				if ( temp .empty() ) 
 					temp = String::ucompose( _("Resize %1 from %2 to %3"), 
-								 partition_new.partition,
+								 partition_new .get_path(),
 						 Utils::format_size( partition_original .get_length() ),
 						 Utils::format_size( partition_new .get_length() ) ) ;
 				else
 					temp += " " + String::ucompose( _("and Resize %1 from %2 to %3"),
-									partition_new.partition,
+									partition_new .get_path(),
 						 Utils::format_size( partition_original .get_length() ),
 						 Utils::format_size( partition_new .get_length() ) ) ;
 			}
@@ -119,14 +124,14 @@ Glib::ustring Operation::Get_String( )
 		case FORMAT	:
 			/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
 			return String::ucompose( _("Format %1 as %2"),
-						 partition_original .partition,
+						 partition_original .get_path(),
 						 Utils::Get_Filesystem_String( partition_new .filesystem ) ) ;
 			
 		case COPY	:
 			/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 			return String::ucompose( _("Copy %1 to %2 (start at %3)"),
-						 partition_new .partition,
-						 device .path,
+						 partition_new .get_path(),
+						 device .get_path(),
 						 Utils::format_size( partition_new .sector_start ) ) ;
 			
 		default		:
@@ -153,7 +158,7 @@ void Operation::Apply_Operation_To_Visual( std::vector<Partition> & partitions )
 void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
 {
 	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( device .path, 0, 0, inside_extended ) ;
+	UNALLOCATED .Set_Unallocated( device .get_path(), 0, 0, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty( ) )
@@ -244,7 +249,10 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 					partitions[ ext ] .logicals[ t ] .Update_Number( partitions[ ext ] .logicals[ t ] .partition_number -1 );
 				
 				
-		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
+		Insert_Unallocated( partitions[ ext ] .logicals,
+				    partitions[ ext ] .sector_start,
+				    partitions[ ext ] .sector_end,
+				    true ) ;
 	}
 }
 
@@ -261,7 +269,10 @@ void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 		unsigned int ext = get_index_extended( partitions ) ;
 		partitions[ ext ] .logicals[ Get_Index_Original( partitions[ ext ] .logicals ) ] = partition_new ;
 		
-		Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
+		Insert_Unallocated( partitions[ ext ] .logicals,
+				    partitions[ ext ] .sector_start,
+				    partitions[ ext ] .sector_end,
+				    true ) ;
 	}
 }
 
@@ -285,13 +296,18 @@ void Operation::Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & p
 	//stuff INSIDE extended partition
 	ext = get_index_extended( partitions ) ;
 	
-	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .front( ) .type == GParted::TYPE_UNALLOCATED )
-		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) ) ;
+	if ( partitions[ ext ] .logicals .size() &&
+	     partitions[ ext ] .logicals .front() .type == GParted::TYPE_UNALLOCATED )
+		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin() ) ;
 	
-	if ( partitions[ ext ] .logicals .size( ) && partitions[ ext ] .logicals .back( ) .type == GParted::TYPE_UNALLOCATED )
-		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .end( ) -1 ) ;
+	if ( partitions[ ext ] .logicals .size() &&
+	     partitions[ ext ] .logicals .back() .type == GParted::TYPE_UNALLOCATED )
+		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .end() -1 ) ;
 	
-	Insert_Unallocated( partitions[ ext ] .logicals, partitions[ ext ] .sector_start, partitions[ ext ] .sector_end, true ) ;
+	Insert_Unallocated( partitions[ ext ] .logicals,
+			    partitions[ ext ] .sector_start,
+			    partitions[ ext ] .sector_end,
+			    true ) ;
 }
 
 } //GParted

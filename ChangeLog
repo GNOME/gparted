@@ -1,3 +1,13 @@
+2006-03-14 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* changed the way devices and partitions store their devicepaths.
+	  Instead of holding a 'realpath' and a symbolic path we store paths
+	  in a list. This allows for improved detection of mountpoins, free
+	  space, etc..
+
+	  Also fixed a nasty bug which showed up when you copy a partition
+	  from one device to another. (thanks to mario for the report)
+
 2006-03-09 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/Makefile.am,

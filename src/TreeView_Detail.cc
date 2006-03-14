@@ -156,7 +156,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .error_icon ] = 
 			render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
 	
-	treerow[ treeview_detail_columns .path ] = partition .partition ;
+	treerow[ treeview_detail_columns .path ] = partition .get_path() ;
 
 	//this fixes a weird issue (see #169683 for more info)
 	if ( partition .type == GParted::TYPE_EXTENDED && partition .busy ) 

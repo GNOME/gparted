@@ -53,7 +53,7 @@ FS ntfs::get_filesystem_support()
 
 void ntfs::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "ntfscluster --force " + partition .partition, output, error, true ) )
+	if ( ! Utils::execute_command( "ntfscluster --force " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "sectors of free space" ) ;
 		if ( index >= output .length() || 
@@ -73,7 +73,7 @@ bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_NTFS ) ) ) ) ;
 	
-	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -95,7 +95,7 @@ bool ntfs::Resize( const Partition & partition_new,
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 	
 	bool return_value = false ;
-	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .partition ;
+	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 	{
@@ -146,9 +146,7 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 	
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, operation_details, true ) ;
+		return Resize( Partition( dest_part_path ), operation_details, true ) ;
 	}
 		
 	operation_details .back() .status = OperationDetails::ERROR ;
@@ -159,7 +157,7 @@ bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetai
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 
-	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .partition,
+	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(),
 				operation_details .back() .sub_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

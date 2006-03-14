@@ -28,7 +28,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	this ->set_has_separator( false ) ;
 	
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
-	this ->set_title( String::ucompose( _( "Information about %1"), partition .partition ) );
+	this ->set_title( String::ucompose( _( "Information about %1"), partition .get_path() ) );
 	 
 	init_drawingarea( ) ;
 	
@@ -102,6 +102,7 @@ void Dialog_Partition_Info::init_drawingarea( )
 	
 	//calculate proportional width of used and unused
 	used = unused = 0 ;
+	//FIXME: use Partition::get_length()..
 	used = Utils::Round( (400 - BORDER *2) / ( static_cast<double>(partition .sector_end - partition .sector_start) / partition .sectors_used ) ) ;
 	unused = 400 - used - BORDER *2 ;
 	
@@ -120,7 +121,7 @@ void Dialog_Partition_Info::init_drawingarea( )
 	
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
-		partition .partition + "\n" + Utils::format_size( partition .get_length() ) ) ;
+		partition .get_path() + "\n" + Utils::format_size( partition .get_length() ) ) ;
 }
 
 void Dialog_Partition_Info::Display_Info( )
@@ -173,19 +174,21 @@ void Dialog_Partition_Info::Display_Info( )
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		//path
-		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Path:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( partition .partition ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-		
-		//only show realpath if it's diffent from the short path...
-		if ( partition .partition != partition .realpath )
-		{
-			table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Real Path:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( partition .realpath ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-		}
+		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Path:" ) + "</b>" ),
+				0, 1,
+				top, bottom,
+				Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ) ),
+				1, 2,
+				top++, bottom++,
+				Gtk::FILL ) ;
 		
 		//status
 		Glib::ustring str_temp ;
-		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ), 0,1, top, bottom, Gtk::FILL) ;
+		table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Status:" ) + "</b>" ),
+				0, 1,
+				top, bottom,
+				Gtk::FILL) ;
 		if ( partition .busy )
 		{
 			if ( partition .type == GParted::TYPE_EXTENDED )
@@ -219,15 +222,16 @@ void Dialog_Partition_Info::Display_Info( )
 	
 	//total sectors
 	table ->attach( * Utils::mk_label( "<b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL ) ;
+	//FIXME: use Partition::get_length() here..
 	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_end - partition .sector_start ) ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 }
 
-Dialog_Partition_Info::~Dialog_Partition_Info( )
+Dialog_Partition_Info::~Dialog_Partition_Info()
 {
-	this ->get_colormap( ) ->free_colors( color_used, 1 ) ;
-	this ->get_colormap( ) ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap( ) ->free_colors( color_text, 1 ) ;
-	this ->get_colormap( ) ->free_colors( color_partition, 1 ) ;
+	this ->get_colormap() ->free_colors( color_used, 1 ) ;
+	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
+	this ->get_colormap() ->free_colors( color_text, 1 ) ;
+	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
 }
 
 } //GParted

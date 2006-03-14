@@ -66,12 +66,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//see if we need a fixed_start
 	if ( fs .move )
 	{
-		this ->set_title( String::ucompose( _("Resize/Move %1"), selected_partition .partition ) ) ;
+		set_title( String::ucompose( _("Resize/Move %1"), selected_partition .get_path() ) ) ;
 		frame_resizer_base ->set_fixed_start( false ) ;
 	}
 	else
 	{
-		this ->set_title( String::ucompose( _("Resize %1"), selected_partition .partition) ) ;
+		set_title( String::ucompose( _("Resize %1"), selected_partition .get_path() ) ) ;
 		this ->fixed_start = true;
 		frame_resizer_base ->set_fixed_start( true ) ;
 		spinbutton_before .set_sensitive( false ) ;

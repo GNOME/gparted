@@ -70,7 +70,7 @@ FS xfs::get_filesystem_support()
 void xfs::Set_Used_Sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( 
-			"xfs_db -c 'sb 0' -c 'print blocksize' -c 'print fdblocks' -r " + partition .partition,
+			"xfs_db -c 'sb 0' -c 'print blocksize' -c 'print fdblocks' -r " + partition .get_path(),
 			output,
 			error,
 			true ) )
@@ -97,7 +97,7 @@ bool xfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_XFS ) ) ) ) ;
 	
-	if ( ! execute_command( "mkfs.xfs -f " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -131,9 +131,9 @@ bool xfs::Resize( const Partition & partition_new,
 		
 		//mount partition
 		operation_details .back() .sub_details .push_back(
-			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .partition, TEMP_MP ) ) ) ;
+			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .get_path(), TEMP_MP ) ) ) ;
 
-		if ( ! execute_command( "mount -v -t xfs " + partition_new .partition + " " + TEMP_MP,
+		if ( ! execute_command( "mount -v -t xfs " + partition_new .get_path() + " " + TEMP_MP,
 					operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -154,9 +154,9 @@ bool xfs::Resize( const Partition & partition_new,
 			
 			//and unmount it...
 			operation_details .back() .sub_details .push_back(
-				OperationDetails( String::ucompose( _("unmount %1"), partition_new .partition ) ) ) ;
+				OperationDetails( String::ucompose( _("unmount %1"), partition_new .get_path() ) ) ) ;
 
-			if ( ! execute_command( "umount -v " + partition_new .partition,
+			if ( ! execute_command( "umount -v " + partition_new .get_path(),
 						operation_details .back() .sub_details .back() .sub_details ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -212,8 +212,7 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mountpoint" ;
 	
 	//create xfs filesystem on destination..
-	Partition partition ;
-	partition .partition = dest_part_path ;
+	Partition partition( dest_part_path ) ;
 	if ( Create( partition, operation_details .back() .sub_details ) )
 	{
 		//create source mountpoint...
@@ -358,7 +357,7 @@ bool xfs::Check_Repair( const Partition & partition, std::vector<OperationDetail
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	if ( ! execute_command ( "xfs_repair -v " + partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command ( "xfs_repair -v " + partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

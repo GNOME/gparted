@@ -52,7 +52,7 @@ FS ext3::get_filesystem_support()
 
 void ext3::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "dumpe2fs -h " + partition .partition, output, error, true ) )
+	if ( ! Utils::execute_command( "dumpe2fs -h " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "Free blocks:" ) ;
 		if ( index >= output .length() ||
@@ -77,7 +77,7 @@ bool ext3::Create( const Partition & new_partition, std::vector<OperationDetails
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_EXT3 ) ) ) ) ;
 	
-	if ( ! execute_command( "mkfs.ext3 " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.ext3 " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -98,7 +98,7 @@ bool ext3::Resize( const Partition & partition_new,
 	else
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 
-	Glib::ustring str_temp = "resize2fs " + partition_new .partition ;
+	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::Round( Utils::sector_to_unit( 
@@ -128,9 +128,7 @@ bool ext3::Copy( const Glib::ustring & src_part_path,
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, operation_details, true ) ; 
+		return Resize( Partition( dest_part_path ), operation_details, true ) ; 
 	}
 	
 	operation_details .back() .status = OperationDetails::ERROR ;
@@ -140,9 +138,9 @@ bool ext3::Copy( const Glib::ustring & src_part_path,
 bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	//FIXME: i still need to check if the 1 >= x >= 0 structure actually works!
 	
-	
-	if ( 1 >= execute_command( "e2fsck -f -y -v " + partition .partition,
+	if ( 1 >= execute_command( "e2fsck -f -y -v " + partition .get_path(),
 				   operation_details .back() .sub_details ) >= 0 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

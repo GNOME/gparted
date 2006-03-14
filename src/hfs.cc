@@ -50,7 +50,7 @@ bool hfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_HFS ) ) ) ) ;
 	
-	if ( ! execute_command( "hformat " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "hformat " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

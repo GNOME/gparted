@@ -68,7 +68,7 @@ FS jfs::get_filesystem_support()
 
 void jfs::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "echo dm | jfs_debugfs " + partition .partition, output, error, true ) )
+	if ( ! Utils::execute_command( "echo dm | jfs_debugfs " + partition .get_path(), output, error, true ) )
 	{
 		//blocksize
 		index = output .find( "Block Size:" ) ;
@@ -95,7 +95,7 @@ bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_JFS ) ) ) ) ;
 	
-	if ( ! execute_command( "mkfs.jfs -q " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -129,9 +129,9 @@ bool jfs::Resize( const Partition & partition_new,
 
 		//mount partition
 		operation_details .back() .sub_details .push_back(
-			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .partition, TEMP_MP ) ) ) ;
+			OperationDetails( String::ucompose( _("mount %1 on %2"), partition_new .get_path(), TEMP_MP ) ) ) ;
 		
-		if ( ! execute_command( "mount -v -t jfs " + partition_new .partition + " " + TEMP_MP,
+		if ( ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + TEMP_MP,
 					operation_details .back() .sub_details .back() .sub_details ) )
 		{
 			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -139,9 +139,9 @@ bool jfs::Resize( const Partition & partition_new,
 			//remount the partition to resize the filesystem
 			operation_details .back() .sub_details .push_back(
 				OperationDetails( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
-							partition_new .partition, TEMP_MP ) ) ) ;
+							partition_new .get_path(), TEMP_MP ) ) ) ;
 			
-			if ( ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .partition + " " + TEMP_MP,
+			if ( ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + TEMP_MP,
 						operation_details .back() .sub_details .back() .sub_details ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -154,9 +154,9 @@ bool jfs::Resize( const Partition & partition_new,
 			
 			//and unmount it...
 			operation_details .back() .sub_details .push_back(
-				OperationDetails( String::ucompose( _("unmount %1"), partition_new .partition ) ) ) ;
+				OperationDetails( String::ucompose( _("unmount %1"), partition_new .get_path() ) ) ) ;
 		
-			if ( ! execute_command( "umount -v " + partition_new .partition,
+			if ( ! execute_command( "umount -v " + partition_new .get_path(),
 						operation_details .back() .sub_details .back() .sub_details ) )
 			{
 				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
@@ -211,9 +211,7 @@ bool jfs::Copy( const Glib::ustring & src_part_path,
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, operation_details, true ) ; 
+		return Resize( Partition( dest_part_path ), operation_details, true ) ; 
 	}
 	
 	operation_details .back() .status = OperationDetails::ERROR ;
@@ -224,7 +222,7 @@ bool jfs::Check_Repair( const Partition & partition, std::vector<OperationDetail
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 
-	exit_status = execute_command( "jfs_fsck -f " + partition .partition, operation_details .back() .sub_details ) ;
+	exit_status = execute_command( "jfs_fsck -f " + partition .get_path(), operation_details .back() .sub_details ) ;
 	if ( exit_status == 0 || exit_status == 1 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

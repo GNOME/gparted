@@ -29,9 +29,13 @@ class Device
 public:
 	Device() ;
 	~Device() ;
+
+	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
+	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
+	Glib::ustring get_path() ;
+	std::vector<Glib::ustring> get_paths() ;
 	
 	void Reset() ;
-	
 	std::vector<Partition> partitions ;
 	Sector length;
 	long heads ;
@@ -39,16 +43,18 @@ public:
 	long cylinders ;
 	Sector cylsize ;
 	Glib::ustring model;
- 	Glib::ustring path;
- 	Glib::ustring realpath;
  	Glib::ustring disktype;
 	int max_prims ;
 	int highest_busy ;
 	bool readonly ; 
 			
 private:
-		
+	void sort_paths_and_remove_duplicates() ;
 
+	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
+	
+	std::vector<Glib::ustring> paths ;
+		
 };
  
 } //GParted

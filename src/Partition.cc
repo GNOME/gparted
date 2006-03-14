@@ -24,10 +24,18 @@ Partition::Partition()
 {
 	Reset() ;
 }
+	
+Partition::Partition( const Glib::ustring & path ) 
+{
+	Reset() ;
+
+	paths .push_back( path ) ;
+}
 
 void Partition::Reset()
 {
-	partition = realpath = error = "" ;
+	paths .clear() ;
+	error .clear() ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;
@@ -50,7 +58,9 @@ void Partition::Set(	const Glib::ustring & device_path,
 			bool busy )
 {
 	this ->device_path = device_path ;
-	this ->partition = realpath = partition;
+
+	paths .push_back( partition ) ;
+
 	this ->partition_number = partition_number;
 	this ->type = type;
 	this ->filesystem = filesystem;
@@ -59,7 +69,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
 	
-	this ->color.set( Utils::Get_Color( filesystem ) );
+	this ->color .set( Utils::Get_Color( filesystem ) );
 }
 
 void Partition::Set_Unused( Sector sectors_unused )
@@ -71,10 +81,13 @@ void Partition::Set_Unused( Sector sectors_unused )
 	}
 }
 
-void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended )
+void Partition::Set_Unallocated( const Glib::ustring & device_path,
+				 Sector sector_start,
+				 Sector sector_end,
+				 bool inside_extended )
 {
 	Reset() ;
-		
+	
 	Set( device_path,
 	     Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ),
 	     -1,
@@ -89,17 +102,57 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path, Sector secto
 }
 
 void Partition::Update_Number( int new_number )
-{   
-	this ->partition =
-		partition .substr( 0, partition .find( Utils::num_to_str( partition_number ) ) ) +
-		Utils::num_to_str( new_number ) ;
+{  
+	unsigned int index ;
+	for ( unsigned int t = 0 ; t < paths .size() ; t++ )
+	{
+		index = paths[ t ] .rfind( Utils::num_to_str( partition_number ) ) ;
+
+		if ( index < paths[ t ] .length() )
+			paths[ t ] .replace( index,
+				       Utils::num_to_str( partition_number ) .length(),
+				       Utils::num_to_str( new_number ) ) ;
+	}
+
+	partition_number = new_number;
+}
 	
-	this ->partition_number = new_number;
+void Partition::add_path( const Glib::ustring & path, bool clear_paths ) 
+{
+	if ( clear_paths )
+		paths .clear() ;
+
+	paths .push_back( path ) ;
+
+	sort_paths_and_remove_duplicates() ;
+}
+	
+void Partition::add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths )
+{
+	if ( clear_paths )
+		this ->paths .clear() ;
+
+	this ->paths .insert( this ->paths .end(), paths .begin(), paths .end() ) ;
+
+	sort_paths_and_remove_duplicates() ;
 }
 
-Sector Partition::get_length() const
+Sector Partition::get_length() const 
 {
 	return sector_end - sector_start + 1 ;
+}
+
+Glib::ustring Partition::get_path() const
+{
+	if ( paths .size() > 0 )
+		return paths .front() ;
+	
+	return "" ;
+}
+
+std::vector<Glib::ustring> Partition::get_paths() const
+{
+	return paths ;
 }
 
 bool Partition::operator==( const Partition & partition ) const
@@ -107,6 +160,21 @@ bool Partition::operator==( const Partition & partition ) const
 	return this ->partition_number == partition .partition_number && 
 	       this ->sector_start == partition .sector_start && 
 	       this ->type == partition .type ;
+}
+
+void Partition::sort_paths_and_remove_duplicates()
+{
+	//remove duplicates
+	std::sort( paths .begin(), paths .end() ) ;
+	paths .erase( std::unique( paths .begin(), paths .end() ), paths .end() ) ;
+
+	//sort on length
+	std::sort( paths .begin(), paths .end(), compare_paths ) ;
+}
+
+bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
+{
+	return A .length() < B .length() ;
 }
 
 Partition::~Partition()

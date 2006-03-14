@@ -45,7 +45,7 @@ FS reiser4::get_filesystem_support()
 
 void reiser4::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .partition, output, error, true ) )
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "free blocks" ) ;
 		if ( index >= output .length() ||
@@ -70,7 +70,7 @@ bool reiser4::Create( const Partition & new_partition, std::vector<OperationDeta
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_REISER4 ) ) ) ) ;
 	
-	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -100,7 +100,7 @@ bool reiser4::Check_Repair( const Partition & partition, std::vector<OperationDe
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	if ( ! execute_command( "fsck.reiser4 --yes --fix " + partition .partition,
+	if ( ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(),
 				operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

@@ -77,14 +77,13 @@ private:
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	void init_maps() ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
-	void set_short_paths( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
 				 std::vector<Partition> & partitions,
 				 Sector start,
 				 Sector end,
 				 bool inside_extended ) ;
-	Glib::ustring get_short_path( const Glib::ustring & real_path ) ;
+	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	void LP_Set_Used_Sectors( Partition & partition );
 	void set_flags( Partition & partition ) ;
 	int create_empty_partition( Partition & new_partition,
@@ -122,7 +121,7 @@ private:
 	
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
-	std::map< Glib::ustring, Glib::ustring > short_paths ;
+	std::map< Glib::ustring, Glib::ustring > alternate_paths ;
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 

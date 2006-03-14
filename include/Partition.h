@@ -47,6 +47,7 @@ class Partition
 {
 public:
 	Partition() ;
+	Partition( const Glib::ustring & path ) ;
 	~Partition() ;
 
 	void Reset() ;
@@ -64,18 +65,23 @@ public:
 
 	void Set_Unused( Sector sectors_unused ) ;
 
-	void Set_Unallocated( const Glib::ustring & device_path, Sector sector_start, Sector sector_end, bool inside_extended );
+	void Set_Unallocated( const Glib::ustring & device_path, 
+			      Sector sector_start,
+			      Sector sector_end,
+			      bool inside_extended );
 
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
-	Sector get_length() const ;
+	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
+	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
+	Sector get_length() const ; 
+	Glib::ustring get_path() const ;
+	std::vector<Glib::ustring> get_paths() const ;
 
 	bool operator==( const Partition & partition ) const ;
 		
 	//some public members
-	Glib::ustring partition;//the symbolic path (e.g. /dev/hda1 )
-	Glib::ustring realpath ;
 	Glib::ustring device_path ;
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
@@ -90,15 +96,19 @@ public:
 	bool busy;
 	Glib::ustring error;
 	std::vector<Glib::ustring> flags ;
-	std::vector<Glib::ustring> mountpoints ;
+	std::vector<Glib::ustring> mountpoints ;//FIXME: it's better to make this one private as well to prevent segfaults
+	//when callong mountpoints .front() on an empty list.
 	
 	std::vector<Partition> logicals ;
 
 	bool strict ;
 	
 private:
-	
+	void sort_paths_and_remove_duplicates() ;
 
+	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
+	
+	std::vector<Glib::ustring> paths ;
 };
 
 }//GParted

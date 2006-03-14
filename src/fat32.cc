@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-FS fat32::get_filesystem_support( )
+FS fat32::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_FAT32 ;
@@ -51,11 +51,11 @@ FS fat32::get_filesystem_support( )
 
 void fat32::Set_Used_Sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .partition, output, error, true ) ;
+	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 )
 	{
 		//free clusters
-		index = output .find( ",", output .find( partition .partition ) + partition .partition .length() ) +1 ;
+		index = output .find( ",", output .find( partition .get_path() ) + partition .get_path() .length() ) +1 ;
 		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
 			N -= S ;
 		else
@@ -79,7 +79,7 @@ bool fat32::Create( const Partition & new_partition, std::vector<OperationDetail
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_FAT32 ) ) ) ) ;
 	
-	if ( ! execute_command( "mkdosfs -F32 -v " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkdosfs -F32 -v " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -123,7 +123,7 @@ bool fat32::Check_Repair( const Partition & partition, std::vector<OperationDeta
 {
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	exit_status = execute_command( "dosfsck -a -w -v " + partition .partition,
+	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(),
 				       operation_details .back() .sub_details ) ;
 	if ( exit_status == 0 || exit_status == 1 )
 	{

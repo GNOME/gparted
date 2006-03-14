@@ -32,7 +32,7 @@ Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_siz
 
 void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, const Partition & copied_partition )
 {
-	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .partition ) ) ;
+	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .get_path() ) ) ;
 	
 	//set partition color
 	frame_resizer_base ->set_rgb_partition_color( copied_partition .color ) ;
@@ -86,6 +86,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
+	this ->selected_partition .device_path = selected_partition .device_path ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
 	this ->selected_partition .type = 
 		selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;

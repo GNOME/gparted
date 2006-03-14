@@ -55,7 +55,7 @@ FS reiserfs::get_filesystem_support()
 
 void reiserfs::Set_Used_Sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "debugreiserfs " + partition .partition, output, error, true ) )
+	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "Blocksize" ) ;
 		if ( index >= output .length() || 
@@ -80,7 +80,7 @@ bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDet
 								_("create new %1 filesystem"),
 								Utils::Get_Filesystem_String( GParted::FS_REISERFS ) ) ) ) ;
 	
-	if ( ! execute_command( "mkreiserfs -f " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkreiserfs -f " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -101,7 +101,7 @@ bool reiserfs::Resize( const Partition & partition_new,
 	else
 		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
 
-	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .partition ;
+	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 	{
@@ -134,9 +134,7 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path,
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
-		Partition partition ;
-		partition .partition = dest_part_path ;
-		return Resize( partition, operation_details, true ) ; 
+		return Resize( Partition( dest_part_path ), operation_details, true ) ; 
 	}
 	
 	operation_details .back() .status = OperationDetails::ERROR ;
@@ -145,9 +143,10 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path,
 
 bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
+	//FIXME: change this description to 'check filesystem on /dev/blabla for er.. etc..'
 	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
 	
-	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .partition,
+	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .get_path(),
 				       operation_details .back() .sub_details ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{

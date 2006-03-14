@@ -28,15 +28,17 @@ Sector Utils::Round( double double_value )
 	 return static_cast<Sector>( double_value + 0.5 ) ;
 }
 
-Gtk::Label * Utils::mk_label( const Glib::ustring & text, bool use_markup, bool align_left, bool wrap, const Glib::ustring & text_color ) 
+Gtk::Label * Utils::mk_label( const Glib::ustring & text,
+			      bool use_markup,
+			      bool align_left,
+			      bool wrap,
+			      const Glib::ustring & text_color ) 
 {
-	Gtk::Label * label = manage( new Gtk::Label( text ) ) ;
+	Gtk::Label * label = manage( new Gtk::Label( text,
+						     align_left ? Gtk::ALIGN_LEFT : Gtk::ALIGN_CENTER,
+						     Gtk::ALIGN_TOP ) ) ;
 	
 	label ->set_use_markup( use_markup ) ;
-	
-	if ( align_left )
-		label ->set_alignment( Gtk::ALIGN_LEFT ) ;
-	
 	label ->set_line_wrap( wrap ) ;
 	
 	if ( text_color != "black" )

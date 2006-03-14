@@ -84,6 +84,8 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 {
 	Sector p_length ;
 	visual_partition vp ;
+//FIXME: any particular reason why Partition::get_length() isn't used in this function?
+//i'm also not sure why we use 'vp' this way.. Lets either use it or drop it :)
 	
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -109,7 +111,7 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 	   			         partitions[ t ] .sector_end - partitions[ t ] .sector_start ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .partition + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ; 
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ; 
 	}
 }
 

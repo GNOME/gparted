@@ -51,7 +51,7 @@ bool linux_swap::Create( const Partition & new_partition, std::vector<OperationD
 						_("create new %1 filesystem"),
 						Utils::Get_Filesystem_String( GParted::FS_LINUX_SWAP ) ) ) ) ;
 	
-	if ( ! execute_command( "mkswap " + new_partition .partition, operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkswap " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
