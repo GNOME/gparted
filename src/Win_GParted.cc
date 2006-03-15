@@ -756,7 +756,7 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
 			allow_copy( true ) ;	
 			
-		if ( selected_partition .mountpoints .size() )
+		if ( selected_partition .get_mountpoints() .size() )
 		{
 			allow_toggle_swap_mount_state( true ) ;
 
@@ -1372,10 +1372,12 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 	Glib::ustring dummy ;
 
 	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() ; t++ )
-		if ( std::count( mountpoints .begin(), mountpoints .end(), selected_partition .mountpoints[ t ] ) <= 1 ) 
+	for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
+		if ( std::count( mountpoints .begin(),
+				 mountpoints .end(),
+				 selected_partition .get_mountpoints()[ t ] ) <= 1 ) 
 		{
-			if ( Utils::execute_command( "umount -v " + selected_partition .mountpoints[ t ],
+			if ( Utils::execute_command( "umount -v " + selected_partition .get_mountpoints()[ t ],
 						     dummy,
 						     *error ) )
 			{
@@ -1384,7 +1386,7 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 			}
 		}
 		else
-			failed_mountpoints .push_back( selected_partition .mountpoints[ t ] ) ;
+			failed_mountpoints .push_back( selected_partition .get_mountpoints()[ t ] ) ;
 
 	
 	if ( *succes && failed_mountpoints .size() )
@@ -1406,10 +1408,11 @@ void Win_GParted::thread_mount_partition( bool * succes, Glib::ustring * error )
 	std::vector<Glib::ustring> errors ;
 	
 	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition .mountpoints .size() ; t++ )
-		if ( Utils::execute_command( "mount -v " + selected_partition .get_path() + " " + selected_partition .mountpoints[ t ],
-					      dummy,
-					      *error ) )
+	for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
+		if ( Utils::execute_command( 
+			"mount -v " + selected_partition .get_path() + " " + selected_partition .get_mountpoints()[ t ],
+			dummy,
+			*error ) )
 		{
 			*succes = false ;
 			errors .push_back( *error ) ;

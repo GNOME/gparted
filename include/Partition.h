@@ -78,6 +78,9 @@ public:
 	Sector get_length() const ; 
 	Glib::ustring get_path() const ;
 	std::vector<Glib::ustring> get_paths() const ;
+	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints = false ) ;
+	Glib::ustring get_mountpoint() const ; 
+	std::vector<Glib::ustring> get_mountpoints() const ;
 
 	bool operator==( const Partition & partition ) const ;
 		
@@ -96,8 +99,6 @@ public:
 	bool busy;
 	Glib::ustring error;
 	std::vector<Glib::ustring> flags ;
-	std::vector<Glib::ustring> mountpoints ;//FIXME: it's better to make this one private as well to prevent segfaults
-	//when callong mountpoints .front() on an empty list.
 	
 	std::vector<Partition> logicals ;
 
@@ -109,6 +110,7 @@ private:
 	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
 	
 	std::vector<Glib::ustring> paths ;
+	std::vector<Glib::ustring> mountpoints ;
 };
 
 }//GParted

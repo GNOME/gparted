@@ -99,12 +99,12 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 				childrow = *( treestore_detail ->append( row.children() ) );
 				create_row( childrow, partitions[ i ] .logicals[ t ] );
 		
-				if ( partitions[ i ] .logicals[ t ] .mountpoints .size() )
+				if ( partitions[ i ] .logicals[ t ] .get_mountpoints() .size() )
 					mount_info = true ;
 			}
 		}
 
-		if ( partitions[ i ] .mountpoints .size() )
+		if ( partitions[ i ] .get_mountpoints() .size() )
 			mount_info = true ;
 	}
 
@@ -172,7 +172,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	
 	//mountpoint
 	treerow[ treeview_detail_columns .mount_text_color ] = partition .busy ? "black" : "darkgrey" ;
-	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .mountpoints ) ;
+	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
 		
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length() ) ;

@@ -195,9 +195,9 @@ void Dialog_Partition_Info::Display_Info( )
 				str_temp =  _("Busy  (At least one logical partition is mounted)" ) ;
 			else if ( partition .filesystem == FS_LINUX_SWAP )
 				str_temp = _("Active") ;
-			else if ( partition .mountpoints .size() )
+			else if ( partition .get_mountpoints() .size() )
 				str_temp = String::ucompose( _("Mounted on %1"),
-							     Glib::build_path( ", ", partition .mountpoints ) ) ;
+							     Glib::build_path( ", ", partition .get_mountpoints() ) ) ;
 		}
 		else if ( partition.type == GParted::TYPE_EXTENDED )
 			str_temp = _("Not busy (There are no mounted logical partitions)" ) ;

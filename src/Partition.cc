@@ -172,6 +172,27 @@ void Partition::sort_paths_and_remove_duplicates()
 	std::sort( paths .begin(), paths .end(), compare_paths ) ;
 }
 
+void Partition::add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints ) 
+{
+	if ( clear_mountpoints )
+		this ->mountpoints .clear() ;
+
+	this ->mountpoints .insert( this ->mountpoints .end(), mountpoints .begin(), mountpoints .end() ) ;
+}
+
+Glib::ustring Partition::get_mountpoint() const 
+{
+	if ( mountpoints .size() > 0 )
+		return mountpoints .front() ;
+
+	return "" ;
+}
+
+std::vector<Glib::ustring> Partition::get_mountpoints() const 
+{
+	return mountpoints ;
+}
+
 bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
 {
 	return A .length() < B .length() ;
