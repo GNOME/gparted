@@ -572,8 +572,8 @@ void Win_GParted::Refresh_Visual()
 	
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
-	{	//FIXME: overload == operator for Device and use that instead of this..
-		if ( operations[ t ] .device .get_path() == devices[ current_device ] .get_path() )
+	{	
+		if ( operations[ t ] .device == devices[ current_device ] )
 			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 			
 		treerow = *( liststore_operations ->append() );
@@ -857,7 +857,7 @@ void Win_GParted::thread_refresh_devices()
 	pulse = false ;
 }
 
-void Win_GParted::menu_gparted_refresh_devices( )
+void Win_GParted::menu_gparted_refresh_devices()
 {
 	pulse = true ;	
 	thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_refresh_devices ), true ) ;
@@ -869,17 +869,17 @@ void Win_GParted::menu_gparted_refresh_devices( )
 		current_device = 0 ;
 
 	//show read-only warning if necessary
-	Glib::ustring readonly_paths ;
-	//FIXME: push relevant devices in vector en construct error using Glib::build_path
+	std::vector<Glib::ustring> readonly_paths ;
 	for ( unsigned int t = 0 ; t < devices .size() ; t++ )
 		if ( devices[ t ] .readonly )
-			readonly_paths += "\n- " + devices[ t ] .get_path() ;
+			readonly_paths .push_back( "\n- " + devices[ t ] .get_path() ) ;
 		
-	if ( ! readonly_paths .empty() )
+	if ( readonly_paths .size() > 0 )
 	{
 		Gtk::MessageDialog dialog(
 			*this,
-			_("The kernel is unable to re-read the partitiontables on the following devices:") + readonly_paths,
+			_("The kernel is unable to re-read the partitiontables on the following devices:") + 
+			Glib::build_path( "", readonly_paths ),
 			false,
 			Gtk::MESSAGE_WARNING,
 			Gtk::BUTTONS_OK,
@@ -893,10 +893,11 @@ void Win_GParted::menu_gparted_refresh_devices( )
 	//see if there are any pending operations on non-existent devices
 	//NOTE that this isn't 100% foolproof since some stuff (e.g. sourcedevice of copy) may slip through.
 	//but anyone who removes the sourcedevice before applying the operations gets what he/she deserves :-)
+	//FIXME: this actually sucks ;) see if we can use STL predicates here..
 	unsigned int i ;
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-	{//FIXME same as above, use Device::==
-		for ( i = 0 ; i < devices .size() && devices[ i ] .get_path() != operations[ t ] .device .get_path() ; i++ ) {}
+	{
+		for ( i = 0 ; i < devices .size() && devices[ i ] != operations[ t ] .device ; i++ ) {}
 			
 		if ( i >= devices .size() )
 			operations .erase( operations .begin() + t-- ) ;//decrease t bij one..
@@ -1105,10 +1106,10 @@ bool Win_GParted::max_amount_prim_reached()
 void Win_GParted::activate_resize()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
-//FIXME use DEvice::== 	
+	
 	if ( operations .size() )
 		for (unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] .device .get_path() == devices[ current_device ] .get_path() )
+			if ( operations[ t ] .device == devices[ current_device ] )
 				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
 	
 	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), 
