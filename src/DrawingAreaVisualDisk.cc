@@ -82,25 +82,18 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 					     std::vector<visual_partition> & visual_partitions,
 					     Sector length ) 
 {
-	Sector p_length ;
-	visual_partition vp ;
-//FIXME: any particular reason why Partition::get_length() isn't used in this function?
-//i'm also not sure why we use 'vp' this way.. Lets either use it or drop it :)
-	
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		visual_partitions .push_back( vp ) ;
+		visual_partitions .push_back( visual_partition() ) ;
 
 		visual_partitions .back() .partition = partitions[ t ] ; 
-		
-		p_length = partitions[ t ] .sector_end - partitions[ t ] .sector_start ;
-		visual_partitions .back() .fraction = p_length / static_cast<double>( length ) ;
+		visual_partitions .back() .fraction = partitions[ t ] .get_length() / static_cast<double>( length ) ;
 
 		if ( partitions[ t ] .type == GParted::TYPE_UNALLOCATED || partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			visual_partitions .back() .fraction_used = -1 ;
 		else if ( partitions[ t ] .sectors_used > 0 )
 			visual_partitions .back() .fraction_used = 
-				partitions[ t ] .sectors_used / static_cast<double>( p_length ) ;
+				partitions[ t ] .sectors_used / static_cast<double>( partitions[ t ] .get_length() ) ;
 	
 		visual_partitions .back() .color = partitions[ t ] .color; 
 		this ->get_colormap() ->alloc_color( visual_partitions .back() .color );
@@ -111,7 +104,7 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 	   			         partitions[ t ] .sector_end - partitions[ t ] .sector_start ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ; 
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ;
 	}
 }
 
