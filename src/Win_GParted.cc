@@ -1497,6 +1497,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	bool succes = false ;
 	Glib::ustring error ;
 	
+	pulse = true ;
+
 	thread = Glib::Thread::create( sigc::bind<Glib::ustring, bool *, Glib::ustring *>( 
 						sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ),
 						selected_partition .get_mountpoints()[ index ],
