@@ -99,7 +99,7 @@ private:
 		menu_partition .items()[ 10 ] .set_sensitive( b ); }
 	
 	void allow_info( bool b )	{
-		menu_partition .items()[ 12 ] .set_sensitive( b ); }
+		menu_partition .items()[ 13 ] .set_sensitive( b ); }
 	
 	void allow_undo( bool b )	{ 
 		toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); 
@@ -114,7 +114,7 @@ private:
 	//threads..
 	void thread_refresh_devices() ;
 	void thread_unmount_partition( bool * succes, Glib::ustring * error ) ;
-	void thread_mount_partition( bool * succes, Glib::ustring * error ) ;
+	void thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) ;
 	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
 		
 	//signal handlers
@@ -147,6 +147,7 @@ private:
 	void activate_info();
 	void activate_format( GParted::FILESYSTEM new_fs );
 	void toggle_swap_mount_state() ;
+	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
 	
 	void activate_undo();

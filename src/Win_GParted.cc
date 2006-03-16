@@ -252,7 +252,11 @@ void Win_GParted::init_partition_menu()
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("unmount"),
 						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
-	
+		
+	/*TO TRANSLATORS: menuitem which holds a submenu with mountpoints.. */
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("mount on"), * manage( new Gtk::Menu() ) ) ) ;
+
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
 	
 	menu_partition .items() .push_back( 
@@ -293,7 +297,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 	
 	return menu ;
 }
-
+	
 void Win_GParted::init_device_info()
 {
 	vbox_info.set_spacing( 5 );
@@ -665,7 +669,9 @@ void Win_GParted::set_valid_operations()
 	allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
-	
+	menu_partition .items()[ 10 ] .show() ;
+	menu_partition .items()[ 11 ] .hide() ;	
+
 	//no partition selected...	
 	if ( ! selected_partition .get_paths() .size() )
 		return ;
@@ -692,16 +698,11 @@ void Win_GParted::set_valid_operations()
 	}
 	
 	//only unmount is allowed (if ! extended)
-	if ( selected_partition .busy )
+	if ( selected_partition .busy )	
 	{
 		if ( selected_partition .type != GParted::TYPE_EXTENDED )
-		{
 			allow_toggle_swap_mount_state( true ) ;
 
-			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
-				->set_label( _("unmount") ) ;
-		}
-		
 		return ;
 	}
 	
@@ -759,12 +760,19 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition .get_mountpoints() .size() )
 		{
 			allow_toggle_swap_mount_state( true ) ;
+			
+			menu = menu_partition .items()[ 11 ] .get_submenu() ;
+			menu ->items() .clear() ;
+			for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
+				menu ->items() .push_back( 
+					Gtk::Menu_Helpers::MenuElem( 
+						selected_partition .get_mountpoints()[ t ], 
+						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) );
+			
 
-			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
-				->set_label( _("mount") ) ;
+			menu_partition .items()[ 10 ] .hide() ;
+			menu_partition .items()[ 11 ] .show() ;	
 		}
-						
-		return ;
 	}
 }
 
@@ -949,7 +957,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 	}
 }
 
-void Win_GParted::menu_gparted_filesystems( )
+void Win_GParted::menu_gparted_filesystems()
 {
 	Dialog_Filesystems dialog ;
 	dialog .set_transient_for( *this ) ;
@@ -973,7 +981,7 @@ void Win_GParted::menu_gparted_quit()
 		this ->hide();
 }
 
-void Win_GParted::menu_view_harddisk_info( )
+void Win_GParted::menu_view_harddisk_info()
 { 
 	if ( static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 0 ] ) ->get_active() )
 	{	//open harddisk information
@@ -1403,24 +1411,14 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 	pulse = false ;
 }
 	
-void Win_GParted::thread_mount_partition( bool * succes, Glib::ustring * error ) 
+void Win_GParted::thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) 
 {
 	Glib::ustring dummy ;
 	std::vector<Glib::ustring> errors ;
-	
-	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
-		if ( Utils::execute_command( 
-			"mount -v " + selected_partition .get_path() + " " + selected_partition .get_mountpoints()[ t ],
-			dummy,
-			*error ) )
-		{
-			*succes = false ;
-			errors .push_back( *error ) ;
-		}
 
-	if ( ! *succes )
-		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;
+	*succes = ! Utils::execute_command( "mount -v " + selected_partition .get_path() + " " + mountpoint,
+					    dummy,
+					    *error ) ;
 
 	pulse = false ;
 }
@@ -1469,29 +1467,17 @@ void Win_GParted::toggle_swap_mount_state()
 			dialog.run() ;
 		}
 	}
-	else
+	else if ( selected_partition .busy )
 	{
-		if ( selected_partition .busy )
-		{
-			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
-				sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
+		thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
+			sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), true ) ;
 
-			show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .get_path() ) ) ;
-		}
-		else
-		{
-			thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
-				sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ), &succes, &error ), true ) ;
-
-			show_pulsebar( String::ucompose( _("mounting %1"), selected_partition .get_path() ) ) ;
-		}
-
-		
+		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .get_path() ) ) ;
+	
 		if ( ! succes )
 		{
 			Gtk::MessageDialog dialog( *this, 
-						   String::ucompose( selected_partition .busy ? _("Could not unmount %1") : _("Could not mount %1"),
-							   	     selected_partition .get_path() ),
+						   String::ucompose( _("Could not unmount %1"), selected_partition .get_path() ),
 						   false,
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,
@@ -1501,6 +1487,41 @@ void Win_GParted::toggle_swap_mount_state()
 		
 			dialog.run() ;
 		}
+	}
+
+	menu_gparted_refresh_devices() ;
+}
+	
+void Win_GParted::activate_mount_partition( unsigned int index ) 
+{
+	bool succes = false ;
+	Glib::ustring error ;
+	
+	thread = Glib::Thread::create( sigc::bind<Glib::ustring, bool *, Glib::ustring *>( 
+						sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ),
+						selected_partition .get_mountpoints()[ index ],
+						&succes,
+						&error ),
+				       true ) ;
+
+	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
+					 selected_partition .get_path(),
+					 selected_partition .get_mountpoints()[ index ] ) ) ;
+
+	if ( ! succes )
+	{
+		Gtk::MessageDialog dialog( *this, 
+					   String::ucompose( _("Could not mount %1 on %2"),
+						   	     selected_partition .get_path(),
+							     selected_partition .get_mountpoints()[ index ] ),
+					   false,
+					   Gtk::MESSAGE_ERROR,
+					   Gtk::BUTTONS_OK,
+					   true );
+
+		dialog .set_secondary_text( error, true ) ;
+	
+		dialog.run() ;
 	}
 
 	menu_gparted_refresh_devices() ;
