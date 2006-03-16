@@ -220,7 +220,9 @@ bool jfs::Copy( const Glib::ustring & src_part_path,
 
 bool jfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+						  partition .get_path() ) ) ) ;
 
 	exit_status = execute_command( "jfs_fsck -f " + partition .get_path(), operation_details .back() .sub_details ) ;
 	if ( exit_status == 0 || exit_status == 1 )

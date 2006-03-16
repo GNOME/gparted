@@ -46,7 +46,7 @@ FS ext3::get_filesystem_support()
 	
 	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
 		fs .copy = GParted::FS::EXTERNAL ;
-		
+	
 	return fs ;
 }
 
@@ -137,11 +137,13 @@ bool ext3::Copy( const Glib::ustring & src_part_path,
 
 bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
-	//FIXME: i still need to check if the 1 >= x >= 0 structure actually works!
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+						  partition .get_path() ) ) ) ;
 	
-	if ( 1 >= execute_command( "e2fsck -f -y -v " + partition .get_path(),
-				   operation_details .back() .sub_details ) >= 0 )
+	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(),
+				       operation_details .back() .sub_details ) ;
+	if ( exit_status == 0 || exit_status == 1 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

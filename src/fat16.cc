@@ -54,8 +54,7 @@ void fat16::Set_Used_Sectors( Partition & partition )
 {
 	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 )
-	{//FIXME: does the output of these commands always display the path we've used for the input?
-	 //if not, we need to check for all paths in the output..
+	{
 		//free clusters
 		index = output .find( ",", output .find( partition .get_path() ) + partition .get_path() .length() ) +1 ;
 		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
@@ -123,7 +122,9 @@ bool fat16::Copy( const Glib::ustring & src_part_path,
 
 bool fat16::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+						  partition .get_path() ) ) ) ;
 
 	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(),
 				   operation_details .back() .sub_details ) ;

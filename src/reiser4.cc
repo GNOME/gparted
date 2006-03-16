@@ -98,7 +98,9 @@ bool reiser4::Copy( const Glib::ustring & src_part_path,
 
 bool reiser4::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("check filesystem for errors and (if possible) fix them") ) ) ;
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+						  partition .get_path() ) ) ) ;
 	
 	if ( ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(),
 				operation_details .back() .sub_details ) )
