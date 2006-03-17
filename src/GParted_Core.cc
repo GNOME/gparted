@@ -195,8 +195,9 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
 			     static_cast<Glib::ustring>( node ) != "/dev/root" )
 			{
-				//see if mountpoint contains spaces and deal with it
 				line = mountpoint ;
+				
+				//see if mountpoint contains spaces and deal with it
 				index = line .find( "\\040" ) ;
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;

@@ -192,7 +192,7 @@ int Utils::execute_command( const Glib::ustring & command,
 {
 	int exit_status = -1 ;
 	std::string std_out, std_error ;
-
+	
 	try
 	{
 		if ( use_C_locale )

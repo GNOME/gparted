@@ -448,6 +448,9 @@ void Win_GParted::refresh_combo_devices()
 			radio_group,
 			devices[ i ] .get_path() + "\t(" + Utils::format_size( devices[ i ] .length ) + ")",
 			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ) ;
+		
+		//FIXME: the (size) needs the be rightaligned while the path should remain left-aligned
+		//i guess this takes 2 labels to achieve..
 	}
 				
 
@@ -764,12 +767,15 @@ void Win_GParted::set_valid_operations()
 			menu = menu_partition .items()[ 11 ] .get_submenu() ;
 			menu ->items() .clear() ;
 			for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
+			{
 				menu ->items() .push_back( 
 					Gtk::Menu_Helpers::MenuElem( 
 						selected_partition .get_mountpoints()[ t ], 
 						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) );
-			
 
+				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
+			}
+			
 			menu_partition .items()[ 10 ] .hide() ;
 			menu_partition .items()[ 11 ] .show() ;	
 		}
@@ -1386,7 +1392,7 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 				 mountpoints .end(),
 				 selected_partition .get_mountpoints()[ t ] ) <= 1 ) 
 		{
-			if ( Utils::execute_command( "umount -v " + selected_partition .get_mountpoints()[ t ],
+			if ( Utils::execute_command( "umount -v \"" + selected_partition .get_mountpoints()[ t ] + "\"",
 						     dummy,
 						     *error ) )
 			{
@@ -1415,8 +1421,8 @@ void Win_GParted::thread_mount_partition( Glib::ustring mountpoint, bool * succe
 {
 	Glib::ustring dummy ;
 	std::vector<Glib::ustring> errors ;
-
-	*succes = ! Utils::execute_command( "mount -v " + selected_partition .get_path() + " " + mountpoint,
+	
+	*succes = ! Utils::execute_command( "mount -v " + selected_partition .get_path() + " \"" + mountpoint + "\"",
 					    dummy,
 					    *error ) ;
 
