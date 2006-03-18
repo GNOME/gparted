@@ -258,6 +258,13 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 
 void Operation::Apply_Create_To_Visual( std::vector<Partition> & partitions )
 { 
+	//FIXME (segfault): gdb bt suggest this function. steps to reproduce on 'voyager':
+	//-shrink /dev/hda5
+	//-create a small partition in the middle of the new unallocated space
+	//-grow /dev/hda5 again
+	//-grow the new partition
+	//perform steps in sequence without applying
+
 	if ( ! partition_original .inside_extended )
 	{
 		partitions[ Get_Index_Original( partitions ) ] = partition_new ;

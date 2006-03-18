@@ -1355,7 +1355,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			selected_partition .sector_end, 
 			selected_partition .inside_extended, 
 			false ) ;
-	
+	 
+	part_temp .status = GParted::STAT_FORMATTED ;
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and
 	//add it again with the new filesystem

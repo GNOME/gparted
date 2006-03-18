@@ -37,9 +37,10 @@ enum PartitionType {
 };
 
 enum PartitionStatus {
-	STAT_REAL	=	1,
-	STAT_NEW	=	2,
-	STAT_COPY	=	3
+	STAT_REAL	=	0,
+	STAT_NEW	=	1,
+	STAT_COPY	=	2,
+	STAT_FORMATTED	=	3
 };
 
 	

@@ -55,7 +55,6 @@ private:
 	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
 	
 	void draw_partition( const visual_partition & vp ) ;
-	void draw_selection_effects( const visual_partition & vp ) ;
 	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
 	
 	bool set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) ;

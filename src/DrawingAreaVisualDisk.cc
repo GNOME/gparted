@@ -18,10 +18,9 @@
 #include "../include/DrawingAreaVisualDisk.h"
 
 #define MAIN_BORDER 5
-#define BORDER 6
+#define BORDER 4
 #define SEP 5
 #define HEIGHT 70 + 2 * MAIN_BORDER
-#define SHADOW 4
 
 namespace GParted
 {
@@ -30,13 +29,13 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 {
 	//set and allocated some standard colors
 	color_used .set( Utils::Get_Color( GParted::FS_USED ) );
-	this ->get_colormap() ->alloc_color( color_used ) ;
+	get_colormap() ->alloc_color( color_used ) ;
 	
 	color_unused .set( Utils::Get_Color( GParted::FS_UNUSED ) );
-	this ->get_colormap() ->alloc_color( color_unused ) ;
+	get_colormap() ->alloc_color( color_unused ) ;
 	
 	color_text .set( "black" );
-	this ->get_colormap() ->alloc_color( color_text ) ;
+	get_colormap() ->alloc_color( color_text ) ;
 
 	set_events( Gdk::BUTTON_PRESS_MASK );
 	
@@ -96,12 +95,12 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 				partitions[ t ] .sectors_used / static_cast<double>( partitions[ t ] .get_length() ) ;
 	
 		visual_partitions .back() .color = partitions[ t ] .color; 
-		this ->get_colormap() ->alloc_color( visual_partitions .back() .color );
+		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			set_static_data( partitions[ t ] .logicals, 
 				      	 visual_partitions .back() .logicals,
-	   			         partitions[ t ] .sector_end - partitions[ t ] .sector_start ) ;
+	   			         partitions[ t ] .get_length() ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
 				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ;
@@ -248,100 +247,28 @@ void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp )
 					    vp .y_text,
 					    vp .pango_layout ) ;
 	}
-}
-
-void DrawingAreaVisualDisk::draw_selection_effects( const visual_partition & vp )
-{
-	gc ->set_foreground( color_text );
-
-	//bottom shadow
-	get_window() ->draw_rectangle( gc,
-				       true,
-				       vp .x_start + SHADOW,
-				       vp .y_start + vp .height,
-				       vp .length,
-				       SHADOW ) ;
-
-	//righthand shadow
-	get_window() ->draw_rectangle( gc,
-				       true,
-				       vp .x_start + vp .length,
-				       vp .y_start + SHADOW,
-				       SHADOW,
-				       vp .height ) ;
-			
-
-	//if selected contains logicals we need to add more shadows and color 
-	if ( vp .logicals .size() > 0 )
+	 
+	//selection
+	if ( vp .selected )
 	{
-		//inner shadows
-		for ( unsigned int t = 0 ; t < vp .logicals .size() ; t++ )
-		{
-			//top shadows
-			get_window() ->draw_rectangle( gc,
-						       true,
-						       vp .logicals[ t ] .x_start - SHADOW,
-						       vp .logicals[ t ] .y_start - SHADOW,
-						       vp .logicals[ t ] .length,
-						       SHADOW ) ;
-							
-			//lefthand shadows
-			get_window() ->draw_rectangle( gc,
-						       true,
-						       vp .logicals[ t ] .x_start - SHADOW,
-						       vp .logicals[ t ] .y_start,
-						       SHADOW,
-						       vp .logicals[ t ] .height - SHADOW ) ;
-		}
-			
-		//create extra 'extended' to create the illusion of floating above the logicals
-		gc ->set_foreground( vp .color );
-
-		//bottomline..
+		gc ->set_foreground( color_used ) ;
 		get_window() ->draw_rectangle( gc,
-					       true,
-					       vp .x_start + BORDER + SHADOW,
-					       vp .y_start + vp .height - BORDER,
-					       vp .length - BORDER * 2,
-					       SHADOW ) ;
-
-		//small rectangles on the righthandside of each logical..
-		for ( unsigned int t = 0 ; t < vp .logicals .size() ; t++ )
-			get_window() ->draw_rectangle( gc,
-						       true,
-						       vp .logicals[ t ] .x_start + vp .logicals[ t ] .length - SHADOW,
-						       vp .logicals[ t ] .y_start,
-						       SHADOW,
-						       vp .logicals[ t ] .height - SHADOW ) ;
+					       false,
+					       vp .x_start + BORDER/2 ,
+					       vp .y_start + BORDER/2 ,
+					       vp .length - BORDER,
+			       		       vp .height - BORDER ) ;
 	}
 }
 
 void DrawingAreaVisualDisk::draw_partitions( const std::vector<visual_partition> & visual_partitions ) 
 {
-	visual_partition vp ;
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		vp = visual_partitions[ t ] ;
+		draw_partition( visual_partitions[ t ] ) ;
 
-		if ( vp .selected )
-		{
-			vp .x_start -= SHADOW ;
-			vp .y_start -= SHADOW ;
-			vp .x_used_start -= SHADOW ;
-			vp .x_unused_start -= SHADOW ;
-			vp .y_used_unused_start -= SHADOW ;
-			
-			vp .x_text -= SHADOW ;
-			vp .y_text -= SHADOW ;
-		}
-
-		draw_partition( vp ) ;
-
-		if ( vp .logicals .size() > 0 )
-			draw_partitions( vp .logicals ) ;
-		
-		if ( vp .selected )
-			draw_selection_effects( vp ) ;
+		if ( visual_partitions[ t ] .logicals .size() > 0 )
+			draw_partitions( visual_partitions[ t ] .logicals ) ;
 	}
 }
 
@@ -392,6 +319,10 @@ void DrawingAreaVisualDisk::on_realize()
 	Gtk::DrawingArea::on_realize() ;
 
 	gc = Gdk::GC::create( get_window() );
+	gc ->set_line_attributes( 2,
+				  Gdk::LINE_ON_OFF_DASH,
+				  Gdk::CAP_BUTT,
+				  Gdk::JOIN_MITER ) ;
 }
 	
 bool DrawingAreaVisualDisk::on_expose_event( GdkEventExpose * event )
@@ -487,7 +418,7 @@ void DrawingAreaVisualDisk::free_colors( std::vector<visual_partition> & visual_
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		this ->get_colormap() ->free_colors( visual_partitions[ t ] .color, 1 ) ;
+		get_colormap() ->free_colors( visual_partitions[ t ] .color, 1 ) ;
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			free_colors( visual_partitions[ t ] .logicals ) ;
@@ -499,9 +430,9 @@ DrawingAreaVisualDisk::~DrawingAreaVisualDisk()
 	clear() ;
 
 	//free the allocated colors
-	this ->get_colormap() ->free_colors( color_used, 1 ) ;
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap() ->free_colors( color_text, 1 ) ;
+	get_colormap() ->free_colors( color_used, 1 ) ;
+	get_colormap() ->free_colors( color_unused, 1 ) ;
+	get_colormap() ->free_colors( color_text, 1 ) ;
 }
 
 } //GParted
