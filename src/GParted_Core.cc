@@ -562,7 +562,8 @@ bool GParted_Core::apply_operation_to_disk( Operation & operation )
 		case COPY: 
 			return copy( operation .copied_partition_path,
 				     operation .partition_new,
-				     operation .operation_details .sub_details ) ; 
+				     operation .partition_new .get_length() - operation .device .cylsize,
+				     operation .operation_details .sub_details ) ;
 	}
 	
 	return false ;
@@ -577,10 +578,7 @@ bool GParted_Core::create( const Device & device,
 	{
 		return create_empty_partition( new_partition, operation_details ) ;
 	}
-	else if ( create_empty_partition(
-		  	new_partition,
-			operation_details,
-			( new_partition .get_length() - device .cylsize ) < get_fs( new_partition .filesystem ) .MIN * MEBIBYTE ) > 0 )
+	else if ( create_empty_partition( new_partition, operation_details, get_fs( new_partition .filesystem ) .MIN ) )
 	{
 		set_proper_filesystem( new_partition .filesystem ) ;
 		
@@ -693,16 +691,19 @@ bool GParted_Core::resize( const Device & device,
 
 bool GParted_Core::copy( const Glib::ustring & src_part_path,
 			 Partition & partition_dest,
+			 Sector min_size,
 			 std::vector<OperationDetails> & operation_details ) 
 {
 	set_proper_filesystem( partition_dest .filesystem ) ;
 	Partition src_partition( src_part_path ) ;
-	
+//FIXME: some filesystems (e.g. fat*) can be copied using libparted..
 	return ( p_filesystem &&
 		 p_filesystem ->Check_Repair( src_partition, operation_details ) &&
-	     	 create_empty_partition( partition_dest, operation_details, true ) > 0 &&
+	     	 create_empty_partition( partition_dest, operation_details, min_size ) > 0 &&
 	     	 set_partition_type( partition_dest, operation_details ) &&
 	     	 p_filesystem ->Copy( src_part_path, partition_dest .get_path(), operation_details ) &&
+		 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
+		 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
 	     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
 }
 
@@ -800,7 +801,7 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 
 int GParted_Core::create_empty_partition( Partition & new_partition,
 					  std::vector<OperationDetails> & operation_details,
-					  bool copy )
+					  Sector min_size )
 {
 	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
 	
@@ -852,10 +853,8 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 			
 			if ( constraint )
 			{
-				//FIXME: i should use the length of the copied partition as min_size
-				//maybe we can set the used from new_partition to this size?
-				if ( copy )
-					constraint ->min_size = new_partition .get_length() ;
+				if ( min_size > 0 )
+					constraint ->min_size = min_size ;
 			
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
 				{

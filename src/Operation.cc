@@ -44,7 +44,7 @@ Operation::Operation( const Device & device,
 	}
 }
 
-Glib::ustring Operation::Get_String( )
+Glib::ustring Operation::Get_String()
 {
 	Glib::ustring temp ;
 	Sector diff ;
@@ -161,7 +161,7 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 	UNALLOCATED .Set_Unallocated( device .get_path(), 0, 0, inside_extended ) ;
 	
 	//if there are no partitions at all..
-	if ( partitions .empty( ) )
+	if ( partitions .empty() )
 	{
 		UNALLOCATED .sector_start = start ;
 		UNALLOCATED .sector_end = end ;
@@ -172,28 +172,28 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front( ) .sector_start - start) >= MEBIBYTE )
+	if ( (partitions .front() .sector_start - start) >= MEBIBYTE )
 	{
 		UNALLOCATED .sector_start = start ;
-		UNALLOCATED .sector_end = partitions .front( ) .sector_start -1 ;
+		UNALLOCATED .sector_end = partitions .front() .sector_start -1 ;
 		
-		partitions .insert( partitions .begin( ), UNALLOCATED );
+		partitions .insert( partitions .begin(), UNALLOCATED );
 	}
 	
 	//look for gaps in between
-	for ( unsigned int t =0 ; t < partitions .size( ) -1 ; t++ )
+	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
 		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEBIBYTE )
 		{
 			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
 			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
 		
-			partitions .insert( partitions .begin( ) + ++t, UNALLOCATED );
+			partitions .insert( partitions .begin() + ++t, UNALLOCATED );
 		}
 		
 	//last partition end <---> end
-	if ( (end - partitions .back( ) .sector_end ) >= MEBIBYTE )
+	if ( (end - partitions .back() .sector_end ) >= MEBIBYTE )
 	{
-		UNALLOCATED .sector_start = partitions .back( ) .sector_end +1 ;
+		UNALLOCATED .sector_start = partitions .back() .sector_end +1 ;
 		UNALLOCATED .sector_end = end ;
 		
 		partitions .push_back( UNALLOCATED );
@@ -202,16 +202,18 @@ void Operation::Insert_Unallocated( std::vector<Partition> & partitions, Sector 
 
 int Operation::Get_Index_Original( std::vector<Partition> & partitions )
 {
-	for ( int t = 0 ; t < static_cast<int>( partitions .size( ) ) ; t++ )
-		if ( partition_original .sector_start >= partitions[ t ] .sector_start && partition_original .sector_end <= partitions[ t ] .sector_end )
+	for ( int t = 0 ; t < static_cast<int>( partitions .size() ) ; t++ )
+		if ( partition_original .sector_start >= partitions[ t ] .sector_start &&
+		     partition_original .sector_end <= partitions[ t ] .sector_end )
 		{
 			//remove unallocated space preceding the original partition
 			if ( t -1 >= 0 && partitions[ t -1 ] .type == GParted::TYPE_UNALLOCATED ) 
-				partitions .erase( partitions .begin( ) + --t );
+				partitions .erase( partitions .begin() + --t );
 						
 			//remove unallocated space following the original partition
-			if ( t +1 < static_cast<int>( partitions .size( ) ) && partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
-				partitions .erase( partitions .begin( ) + t +1 );
+			if ( t +1 < static_cast<int>( partitions .size() ) &&
+			     partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
+				partitions .erase( partitions .begin() + t +1 );
 			
 			return t ;
 		}
@@ -232,14 +234,14 @@ void Operation::Apply_Delete_To_Visual( std::vector<Partition> & partitions )
 {
 	if ( ! partition_original .inside_extended )
 	{
-		partitions .erase( partitions .begin( ) + Get_Index_Original( partitions ) );
+		partitions .erase( partitions .begin() + Get_Index_Original( partitions ) );
 		
 		Insert_Unallocated( partitions, 0, device .length -1, false ) ;
 	}
 	else
 	{
 		unsigned int ext = get_index_extended( partitions ) ;
-		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin( ) + Get_Index_Original( partitions[ ext ] .logicals ) );
+		partitions[ ext ] .logicals .erase( partitions[ ext ] .logicals .begin() + Get_Index_Original( partitions[ ext ] .logicals ) );
 		
 		//if deleted partition was logical we have to decrease the partitionnumbers of the logicals
 		//with higher numbers by one (only if its a real partition)

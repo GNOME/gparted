@@ -19,7 +19,7 @@
 #define OPERATION
 
 #include "../include/Device.h"
-
+//FIXME: i guess it's better to split Operation in several (sub)classes for increased efficiency/clearity
 namespace GParted
 {
 		
@@ -64,7 +64,8 @@ public:
 	Operation() ;
 	Operation( const Device & device, const Partition &, const Partition &, OperationType );		
 
-	//this one can be a little confusing, it *DOES NOT* change any visual representation. It only applies the operation to the list with partitions.
+	//this one can be a little confusing, it *DOES NOT* change any visual representation.
+	//It only applies the operation to the list with partitions.
 	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
 	void Apply_Operation_To_Visual( std::vector<Partition> & partitions );
 	
@@ -75,7 +76,9 @@ public:
 	Partition partition_original; //the original situation
 	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )
 	Glib::ustring str_operation ;
-	Glib::ustring copied_partition_path ; //for copy operation..
+
+	//for copy operation..
+	Glib::ustring copied_partition_path ; 
 	
 	OperationDetails operation_details ;
 
@@ -89,7 +92,7 @@ private:
 	void Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions );
 	void Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
 	
-	Glib::ustring Get_String( ); //only used in c'tor
+	Glib::ustring Get_String(); //only used in c'tor
 };
 
 } //GParted

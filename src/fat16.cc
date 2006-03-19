@@ -96,8 +96,7 @@ bool fat16::Resize( const Partition & partition_new,
 		    std::vector<OperationDetails> & operation_details,
 		    bool fill_partition )
 {
-	//handled in GParted_Core::resize_normal_using_libparted
-	return false ;
+	return true ;
 }
 
 bool fat16::Copy( const Glib::ustring & src_part_path,

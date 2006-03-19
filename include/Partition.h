@@ -81,6 +81,7 @@ public:
 	std::vector<Glib::ustring> get_paths() const ;
 	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints = false ) ;
 	Glib::ustring get_mountpoint() const ; 
+	void clear_mountpoints() ;
 	std::vector<Glib::ustring> get_mountpoints() const ;
 
 	bool operator==( const Partition & partition ) const ;

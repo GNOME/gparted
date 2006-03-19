@@ -60,6 +60,7 @@ public:
 		     std::vector<OperationDetails> & operation_detail ) ; 
 	bool copy( const Glib::ustring & src_part_path,
 		   Partition & partition_dest,
+		   Sector min_size,
 		   std::vector<OperationDetails> & operation_details ) ; 
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
@@ -88,14 +89,14 @@ private:
 	void set_flags( Partition & partition ) ;
 	int create_empty_partition( Partition & new_partition,
 				    std::vector<OperationDetails> & operation_details,	    
-				    bool copy = false ) ;
+				    Sector min_size = 0 ) ;
 	bool resize_container_partition( const Partition & partition_old,
 					 const Partition & partition_new,
 					 bool fixed_start,
 					 std::vector<OperationDetails> & operation_details ) ;
 	bool resize_normal_using_libparted( const Partition & partition_old,
 					    const Partition & partition_new,
-					    std::vector<OperationDetails> & operation_detail ) ;
+					    std::vector<OperationDetails> & operation_details ) ;
 
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,

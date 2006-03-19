@@ -193,6 +193,11 @@ std::vector<Glib::ustring> Partition::get_mountpoints() const
 	return mountpoints ;
 }
 
+void Partition::clear_mountpoints()
+{
+	mountpoints .clear() ;
+}
+
 bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
 {
 	return A .length() < B .length() ;

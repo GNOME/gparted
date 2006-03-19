@@ -1178,8 +1178,9 @@ void Win_GParted::activate_paste()
 	{
 		Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
 					      devices[ current_device ] .cylsize ) ;
-		//we don't need the errors of the source partition.
+		//we don't need the errors/mountpoints of the source partition.
 		copied_partition .error .clear() ;
+		copied_partition .clear_mountpoints() ;
 		dialog .Set_Data( selected_partition, copied_partition ) ;
 		dialog .set_transient_for( *this );
 		

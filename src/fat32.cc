@@ -95,8 +95,7 @@ bool fat32::Resize( const Partition & partition_new,
 		    std::vector<OperationDetails> & operation_details,
 		    bool fill_partition )
 {
-	//handled in GParted_Core::Resize_Normal_Using_Libparted
-	return false ;
+	return true ;
 }
 
 bool fat32::Copy( const Glib::ustring & src_part_path, 

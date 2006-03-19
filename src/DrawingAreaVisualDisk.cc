@@ -343,7 +343,8 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 	
 	signal_partition_selected .emit( selected_vp .partition, false ) ;	
 
-	if ( event ->type == GDK_2BUTTON_PRESS  )
+	if ( event ->type == GDK_2BUTTON_PRESS ) //FIXME: only emit the signal if a partition was selected
+						 //right now it's possible to 'activate' a seperator.
 		signal_partition_activated .emit() ;
 	else if ( event ->button == 3 )  
 		signal_popup_menu .emit( event ->button, event ->time ) ;

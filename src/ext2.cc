@@ -126,12 +126,13 @@ bool ext2::Copy( const Glib::ustring & src_part_path,
 				 operation_details .back() .sub_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
-		
-		return Resize( Partition( dest_part_path ), operation_details, true ) ; 
+		return true ;	
 	}
-	
-	operation_details .back() .status = OperationDetails::ERROR ;
-	return false ;
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
 bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
