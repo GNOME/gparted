@@ -444,20 +444,26 @@ void Win_GParted::refresh_combo_devices()
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length ) + ")" ; 
 	
 		//devices submenu....
-		menu ->items() .push_back( Gtk::Menu_Helpers::RadioMenuElem( 
-			radio_group,
-			devices[ i ] .get_path() + "\t(" + Utils::format_size( devices[ i ] .length ) + ")",
-			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ) ;
+		hbox = manage( new Gtk::HBox() ) ;
+		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_SHRINK ) ;
+		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length ) + ")",
+					              true,
+						      Gtk::ALIGN_RIGHT ),
+				   Gtk::PACK_EXPAND_WIDGET ) ;
 		
-		//FIXME: the (size) needs the be rightaligned while the path should remain left-aligned
-		//i guess this takes 2 labels to achieve..
+		menu ->items() .push_back( * manage( new Gtk::RadioMenuItem( radio_group ) ) ) ;
+		menu ->items() .back() .add( *hbox ) ;
+		menu ->items() .back() .signal_activate() .connect( 
+			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ;
 	}
 				
-
 	menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .remove_submenu() ;
 
 	if ( menu ->items() .size() )
+	{
+		menu ->show_all() ;
 		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_submenu( *menu ) ;
+	}
 	
 	combo_devices .set_active( current_device ) ;
 }

@@ -114,7 +114,7 @@ public:
 	static Sector Round( double double_value ) ;
 	static Gtk::Label * mk_label( const Glib::ustring & text,
 				      bool use_markup = true,
-				      bool align_left = true,
+			      	      Gtk::AlignmentEnum alignment = Gtk::ALIGN_LEFT,
 				      bool wrap = false,
 				      const Glib::ustring & text_color = "black" ) ;
 	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;

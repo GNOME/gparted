@@ -54,6 +54,7 @@ void DrawingAreaVisualDisk::load_partitions( const std::vector<Partition> & part
 
 void DrawingAreaVisualDisk::set_selected( const Partition & partition ) 
 {
+	selected_vp = NULL ;
 	set_selected( visual_partitions, partition ) ;
 	
 	queue_draw() ;
@@ -63,6 +64,7 @@ void DrawingAreaVisualDisk::clear()
 {
 	free_colors( visual_partitions ) ;
 	visual_partitions .clear() ;
+	selected_vp = NULL ;
 	
 	queue_resize() ;
 }
@@ -210,7 +212,7 @@ void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp )
 	get_window() ->draw_rectangle( gc, 
 			 	       true,
 				       vp .x_start,
-				       vp .y_start, 
+				       vp .y_start,
 				       vp .length,
 				       vp .height );
 			
@@ -247,18 +249,6 @@ void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp )
 					    vp .y_text,
 					    vp .pango_layout ) ;
 	}
-	 
-	//selection
-	if ( vp .selected )
-	{
-		gc ->set_foreground( color_used ) ;
-		get_window() ->draw_rectangle( gc,
-					       false,
-					       vp .x_start + BORDER/2 ,
-					       vp .y_start + BORDER/2 ,
-					       vp .length - BORDER,
-			       		       vp .height - BORDER ) ;
-	}
 }
 
 void DrawingAreaVisualDisk::draw_partitions( const std::vector<visual_partition> & visual_partitions ) 
@@ -272,45 +262,34 @@ void DrawingAreaVisualDisk::draw_partitions( const std::vector<visual_partition>
 	}
 }
 
-bool DrawingAreaVisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) 
+void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & visual_partitions, int x, int y ) 
 {
-	bool found = false ;
-	
-	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
+	for ( unsigned int t = 0 ; t < visual_partitions .size() && ! selected_vp ; t++ )
 	{
-		if ( visual_partitions[ t ] .x_start <= x && 
+		if ( visual_partitions[ t ] .logicals .size() > 0  ) 
+			set_selected( visual_partitions[ t ] .logicals, x, y ) ;
+		
+		if ( ! selected_vp &&
+		     visual_partitions[ t ] .x_start <= x && 
 		     x < visual_partitions[ t ] .x_start + visual_partitions[ t ] .length &&
 		     visual_partitions[ t ] .y_start <= y &&
 		     y < visual_partitions[ t ] .y_start + visual_partitions[ t ] .height )
 		{
-			visual_partitions[ t ] .selected = true ;
-			selected_vp = visual_partitions[ t ] ;
-			found = true ;
+			selected_vp = & visual_partitions[ t ] ;
 		}
-		else
-			visual_partitions[ t ] .selected = false ;
-
-		if ( visual_partitions[ t ] .logicals .size() > 0  ) 
-			visual_partitions[ t ] .selected &= ! set_selected( visual_partitions[ t ] .logicals, x, y ) ;
 	}
-
-	return found ;
 }
 
-void DrawingAreaVisualDisk::set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) 
+void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & visual_partitions,
+					  const Partition & partition ) 
 {
-	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
+	for ( unsigned int t = 0 ; t < visual_partitions .size() && ! selected_vp ; t++ )
 	{
-		if ( visual_partitions[ t ] .partition == partition )
-		{
-			visual_partitions[ t ] .selected = true ;
-			selected_vp = visual_partitions[ t ] ;
-		}
-		else
-			visual_partitions[ t ] .selected = false ;
-
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			set_selected( visual_partitions[ t ] .logicals, partition ) ;
+
+		if ( ! selected_vp && visual_partitions[ t ] .partition == partition )
+			selected_vp = & visual_partitions[ t ] ;
 	}
 }
 
@@ -330,6 +309,18 @@ bool DrawingAreaVisualDisk::on_expose_event( GdkEventExpose * event )
 	bool ret_val = Gtk::DrawingArea::on_expose_event( event ) ;
 	
 	draw_partitions( visual_partitions ) ;
+	 
+	//selection 
+	if ( selected_vp )
+	{
+		gc ->set_foreground( color_used ) ;
+		get_window() ->draw_rectangle( gc,
+					       false,
+					       selected_vp ->x_start + BORDER/2 ,
+					       selected_vp ->y_start + BORDER/2 ,
+					       selected_vp ->length - BORDER,
+			       		       selected_vp ->height - BORDER ) ;
+	}
 
 	return ret_val ;
 }
@@ -338,17 +329,20 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 {
 	bool ret_val = Gtk::DrawingArea::on_button_press_event( event ) ;
 
+	selected_vp = NULL ;
 	set_selected( visual_partitions, static_cast<int>( event ->x ), static_cast<int>( event ->y ) ) ;
 	queue_draw() ;
 	
-	signal_partition_selected .emit( selected_vp .partition, false ) ;	
+	if ( selected_vp )
+	{
+		signal_partition_selected .emit( selected_vp ->partition, false ) ;	
 
-	if ( event ->type == GDK_2BUTTON_PRESS ) //FIXME: only emit the signal if a partition was selected
-						 //right now it's possible to 'activate' a seperator.
-		signal_partition_activated .emit() ;
-	else if ( event ->button == 3 )  
-		signal_popup_menu .emit( event ->button, event ->time ) ;
-
+		if ( event ->type == GDK_2BUTTON_PRESS ) 
+			signal_partition_activated .emit() ;
+		else if ( event ->button == 3 )  
+			signal_popup_menu .emit( event ->button, event ->time ) ;
+	}
+	
 	return ret_val ;
 }
 

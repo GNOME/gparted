@@ -30,13 +30,11 @@ Sector Utils::Round( double double_value )
 
 Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 			      bool use_markup,
-			      bool align_left,
+			      Gtk::AlignmentEnum alignment,
 			      bool wrap,
 			      const Glib::ustring & text_color ) 
 {
-	Gtk::Label * label = manage( new Gtk::Label( text,
-						     align_left ? Gtk::ALIGN_LEFT : Gtk::ALIGN_CENTER,
-						     Gtk::ALIGN_TOP ) ) ;
+	Gtk::Label * label = manage( new Gtk::Label( text, alignment, Gtk::ALIGN_TOP ) ) ;
 	
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;
@@ -44,7 +42,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 	if ( text_color != "black" )
 	{
 		Gdk::Color color( text_color ) ;
-		label ->modify_fg( label ->get_state( ), color ) ;
+		label ->modify_fg( label ->get_state(), color ) ;
 	}
 	
 	return label ;
@@ -55,7 +53,7 @@ Glib::ustring Utils::num_to_str( Sector number, bool use_C_locale )
 	std::stringstream ss ;
 	//ss.imbue( std::locale( use_C_locale ? "C" : "" ) ) ; see #157871
 	ss << number ;
-	return ss .str( ) ;
+	return ss .str() ;
 }
 
 //use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..

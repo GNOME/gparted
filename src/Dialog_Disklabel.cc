@@ -51,7 +51,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	str_temp += "\n\n" ;
 	str_temp += _("By default GParted creates an msdos disklabel.") ;
 	str_temp += "\n" ;
-	vbox ->pack_start( * Utils::mk_label( str_temp, true, true, true ), Gtk::PACK_SHRINK );
+	vbox ->pack_start( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, true ), Gtk::PACK_SHRINK );
 		
 	//advanced
 	str_temp = "<b>" ;

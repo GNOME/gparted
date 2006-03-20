@@ -49,7 +49,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 				   Gtk::PACK_SHRINK ) ;
 		
 		frame ->set_label_widget( *hbox ) ;
-		frame ->add( * Utils::mk_label( "<i>" + partition.error + "</i>", true, true, true ) ) ;
+		frame ->add( * Utils::mk_label( "<i>" + partition.error + "</i>", true, Gtk::ALIGN_LEFT, true ) ) ;
 		
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}

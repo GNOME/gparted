@@ -57,8 +57,8 @@ private:
 	void draw_partition( const visual_partition & vp ) ;
 	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
 	
-	bool set_selected( std::vector<visual_partition> & visual_partitions, int x, int y ) ;
-	void set_selected( std::vector<visual_partition> & visual_partitions, const Partition & partition ) ;
+	void set_selected( const std::vector<visual_partition> & visual_partitions, int x, int y ) ;
+	void set_selected( const std::vector<visual_partition> & visual_partitions, const Partition & partition ) ;
 	
 	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
 	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
@@ -82,8 +82,6 @@ private:
 		int y_used_unused_start, used_unused_height ;
 		int x_text, y_text ;
 
-		bool selected ;
-
 		Gdk::Color color ;
 		Glib::RefPtr<Pango::Layout> pango_layout;
 
@@ -102,8 +100,6 @@ private:
 			y_used_unused_start = used_unused_height =
 			x_text = y_text = 0 ;
 			
-			selected = false ;
-
 			pango_layout .clear() ;
 			logicals .clear() ;
 		}
@@ -116,7 +112,7 @@ private:
 	};
 
 	std::vector<visual_partition> visual_partitions ;
-	visual_partition selected_vp ;
+	const visual_partition * selected_vp ;
 	int TOT_SEP, MIN_SIZE ;
 
 	Glib::RefPtr<Gdk::GC> gc;
