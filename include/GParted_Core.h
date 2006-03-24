@@ -47,7 +47,7 @@ public:
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void get_devices( std::vector<Device> & devices ) ;
 	
-	bool apply_operation_to_disk( Operation & operation );
+	bool apply_operation_to_disk( Operation * operation );
 	
 	bool create( const Device & device,
 		     Partition & new_partition,

@@ -27,7 +27,8 @@ Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, Secto
 	BUF = cylinder_size * 2 ;
 }
 
-void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition, const std::vector<Partition> & partitions )
+void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition,
+					     const std::vector<Partition> & partitions )
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 	
@@ -94,7 +95,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	} 
 	else
 		START = selected_partition .sector_start ;
-
+	
 	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
 		next = partitions[t +1] .get_length() ;
 	
@@ -164,7 +165,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	Sector previous, next ;
 	previous = next = 0 ;
 	//calculate length and start of previous
-	if ( t > 0 && partitions[t -1].type == GParted::TYPE_UNALLOCATED )
+	if ( t > 0 && partitions[t -1] .type == GParted::TYPE_UNALLOCATED )
 	{
 		previous = partitions[t -1] .get_length() ;
 		START = partitions[t -1] .sector_start ;

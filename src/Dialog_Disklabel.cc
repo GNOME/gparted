@@ -63,7 +63,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	
 	hbox = manage( new Gtk::HBox( false, 5 ) ) ;
 	hbox ->set_border_width( 5 ) ;
-	str_temp = _("Select new labeltype:") ;
+	str_temp = _("Select new labeltype:") ;//FIXME: this label shouldn't be topaligned..
 	str_temp += "\t" ;
 	hbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	expander_advanced .add( *hbox ) ;

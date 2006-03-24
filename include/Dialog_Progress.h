@@ -37,10 +37,10 @@ namespace GParted
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress( const std::vector<Operation> & operations ) ;
+	Dialog_Progress( const std::vector<Operation *> & operations ) ;
 	~Dialog_Progress();
 	
-	sigc::signal< bool, Operation & > signal_apply_operation ;
+	sigc::signal< bool, Operation * > signal_apply_operation ;
 		
 private:
 	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
@@ -85,7 +85,7 @@ private:
 	};
 	treeview_operations_Columns treeview_operations_columns;
 	
-	std::vector<Operation> operations ;
+	std::vector<Operation *> operations ;
 	bool pulse, succes, cancel ;
 	pthread_t pthread ;
 	double fraction ;

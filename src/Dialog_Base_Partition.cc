@@ -20,10 +20,11 @@
 namespace GParted
 {
 	
-Dialog_Base_Partition::Dialog_Base_Partition( )
+Dialog_Base_Partition::Dialog_Base_Partition()
 {
 	this ->set_has_separator( false ) ;
-//FIXME: somehow the 'off by a few' MiB's warning disappeared. I need to display it whenever the round to cylinders isn't checked.
+//FIXME: somehow the 'off by a few' MiB's warning disappeared.
+//I need to display it whenever the round to cylinders isn't checked.
 	frame_resizer_base = NULL;
 	GRIP = false ;
 	this ->fixed_start = false ;
@@ -128,14 +129,14 @@ Partition Dialog_Base_Partition::Get_New_Partition()
 	//the new partition thinks it's bigger then it can be. Here we solve this.
 	if ( selected_partition .sector_start < START )
 		selected_partition .sector_start = START ;
-	if ( selected_partition .sector_end > (START + total_length) ) 
-		selected_partition .sector_end = START + total_length ;
+	if ( selected_partition .sector_end > (START + total_length -1) ) 
+		selected_partition .sector_end = START + total_length -1 ;
 	
-	//grow a bit into small freespace ( < 1MB ) 
-	if (  (selected_partition .sector_start - START) < MEBIBYTE )
+	//grow a bit into small freespace ( < 1MiB ) 
+	if ( (selected_partition .sector_start - START) < MEBIBYTE )
 		selected_partition .sector_start = START ;
-	if ( ( START + total_length - selected_partition .sector_end ) < MEBIBYTE )
-		selected_partition .sector_end = START + total_length ;
+	if ( ( START + total_length -1 - selected_partition .sector_end ) < MEBIBYTE )
+		selected_partition .sector_end = START + total_length -1 ;
 	
 	//set new value of unused..
 	if ( selected_partition .sectors_used != -1 )

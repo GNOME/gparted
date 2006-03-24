@@ -17,12 +17,11 @@
  
 #ifndef DIALOG_FILESYSTEMS
 #define DIALOG_FILESYSTEMS
-
+//FIXME add more info ( at least 'detect' which will be any filesystem we _can_ detect (and should therefore have
+//it's own class) )
 #include "../include/Utils.h"
-#include "../include/i18n.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 
@@ -33,9 +32,9 @@ class Dialog_Filesystems : public Gtk::Dialog
 {
 public:
 	
-	Dialog_Filesystems( ) ;
+	Dialog_Filesystems() ;
 	void Load_Filesystems( const std::vector< FS > & FILESYSTEMS ) ;
-	~Dialog_Filesystems( ) ;
+	~Dialog_Filesystems() ;
 	
 private:
 	void Show_Filesystem( const FS & fs ) ;
@@ -53,7 +52,11 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy;
 				
-		treeview_filesystems_Columns( ) { add( filesystem ); add( create ); add( grow ); add( shrink ); add( move ); add( copy ); }
+		treeview_filesystems_Columns() 
+		{ 
+			add( filesystem ); add( create ); add( grow );
+			add( shrink ); add( move ); add( copy );
+		}
 	};
 	
 	treeview_filesystems_Columns treeview_filesystems_columns ;

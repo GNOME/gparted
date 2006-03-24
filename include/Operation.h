@@ -19,7 +19,7 @@
 #define OPERATION
 
 #include "../include/Device.h"
-//FIXME: i guess it's better to split Operation in several (sub)classes for increased efficiency/clearity
+
 namespace GParted
 {
 		
@@ -62,37 +62,30 @@ class Operation
 	
 public:
 	Operation() ;
-	Operation( const Device & device, const Partition &, const Partition &, OperationType );		
-
-	//this one can be a little confusing, it *DOES NOT* change any visual representation.
-	//It only applies the operation to the list with partitions.
-	//this new list can be used to change the visual representation. For real writing to disk, see Apply_To_Disk()
-	void Apply_Operation_To_Visual( std::vector<Partition> & partitions );
+	virtual ~Operation() {}
 	
+	virtual void apply_to_visual( std::vector<Partition> & partitions ) = 0 ;
+
 	//public variables
 	Device device ;
-	OperationType operationtype;
-	Glib::RefPtr<Gdk::Pixbuf> operation_icon ;
-	Partition partition_original; //the original situation
-	Partition partition_new; //the new situation ( can be an whole new partition or simply the old one with a new size or.... )
-	Glib::ustring str_operation ;
+	OperationType type ;
+	Partition partition_original ; 
+	Partition partition_new ;
 
-	//for copy operation..
-	Glib::ustring copied_partition_path ; 
-	
+	Glib::RefPtr<Gdk::Pixbuf> icon ;
+	Glib::ustring description ;
+
 	OperationDetails operation_details ;
 
-private:
-	void Insert_Unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );
-	int Get_Index_Original( std::vector<Partition> & partitions ) ;
-	int get_index_extended( const std::vector<Partition> & partitions ) ;
+protected:
+	int find_index_original( const std::vector<Partition> & partitions ) ;
+	int find_index_extended( const std::vector<Partition> & partitions ) ;
+	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );
 	
-	void Apply_Delete_To_Visual( std::vector<Partition> & partitions );
-	void Apply_Create_To_Visual( std::vector<Partition> & partitions );
-	void Apply_Resize_Move_To_Visual( std::vector<Partition> & partitions );
-	void Apply_Resize_Move_Extended_To_Visual( std::vector<Partition> & partitions );
-	
-	Glib::ustring Get_String(); //only used in c'tor
+	virtual void create_description() = 0 ;
+
+	int index ;
+	int index_extended ;
 };
 
 } //GParted

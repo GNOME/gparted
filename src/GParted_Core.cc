@@ -1,4 +1,27 @@
+/* Copyright (C) 2004 Bart 'plors' Hakvoort
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+ 
+#include "../include/Win_GParted.h"
 #include "../include/GParted_Core.h"
+#include "../include/OperationCopy.h"
+#include "../include/OperationCreate.h"
+#include "../include/OperationDelete.h"
+#include "../include/OperationFormat.h"
+#include "../include/OperationResizeMove.h"
 
 #include <cerrno>
 #include <sys/statvfs.h>	
@@ -542,28 +565,28 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 }
 
-bool GParted_Core::apply_operation_to_disk( Operation & operation )
+bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
-	switch ( operation .operationtype )
+	switch ( operation ->type )
 	{
 		case DELETE:
-			return Delete( operation .partition_original, operation .operation_details .sub_details ) ;
+			return Delete( operation ->partition_original, operation ->operation_details .sub_details ) ;
 		case CREATE:
-			return create( operation .device, 
-				       operation .partition_new,
-				       operation .operation_details .sub_details ) ;
+			return create( operation ->device, 
+				       operation ->partition_new,
+				       operation ->operation_details .sub_details ) ;
 		case RESIZE_MOVE:
-			return resize( operation .device,
-				       operation .partition_original,
-				       operation .partition_new,
-				       operation .operation_details .sub_details ) ;
+			return resize( operation ->device,
+				       operation ->partition_original,
+				       operation ->partition_new,
+				       operation ->operation_details .sub_details ) ;
 		case FORMAT:
-			return format( operation .partition_new, operation .operation_details .sub_details ) ;
+			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
 		case COPY: 
-			return copy( operation .copied_partition_path,
-				     operation .partition_new,
-				     operation .partition_new .get_length() - operation .device .cylsize,
-				     operation .operation_details .sub_details ) ;
+			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied .get_path(),
+				     operation ->partition_new,
+				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
+				     operation ->operation_details .sub_details ) ;
 	}
 	
 	return false ;

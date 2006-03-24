@@ -16,6 +16,11 @@ EXTRA_DIST = \
 	Frame_Resizer_Extended.h	\
 	GParted_Core.h    		\
 	Operation.h 			\
+	OperationCopy.h			\
+	OperationCreate.h		\
+	OperationDelete.h		\
+	OperationFormat.h		\
+	OperationResizeMove.h		\
         Partition.h  			\
 	TreeView_Detail.h 		\
 	Utils.h 			\

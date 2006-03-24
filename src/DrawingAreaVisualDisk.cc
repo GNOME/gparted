@@ -19,7 +19,7 @@
 
 #define MAIN_BORDER 5
 #define BORDER 4
-#define SEP 5
+#define SEP 4
 #define HEIGHT 70 + 2 * MAIN_BORDER
 
 namespace GParted

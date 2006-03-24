@@ -25,6 +25,11 @@ gparted_SOURCES = \
 	Frame_Resizer_Extended.cc	\
 	GParted_Core.cc			\
 	Operation.cc			\
+	OperationCopy.cc		\
+	OperationCreate.cc		\
+	OperationDelete.cc		\
+	OperationFormat.cc		\
+	OperationResizeMove.cc		\
 	Partition.cc			\
 	TreeView_Detail.cc		\
 	Utils.cc			\

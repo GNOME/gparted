@@ -25,7 +25,7 @@
 namespace GParted
 {
 
-Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
+Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 {
 	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
@@ -73,12 +73,12 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation> & operations )
 	//fill 'er up
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
-		this ->operations[ t ] .operation_details .description = "<b>" + operations[ t ] .str_operation + "</b>" ;
+		this ->operations[ t ] ->operation_details .description = "<b>" + operations[ t ] ->description + "</b>" ;
 		
 		treerow = *( treestore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] .operation_icon ;
+		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
 		treerow[ treeview_operations_columns .operation_description ] =
-			this ->operations[ t ] .operation_details .description ; 
+			this ->operations[ t ] ->operation_details .description ; 
 		treerow[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ; 
 	}
 	
@@ -155,7 +155,7 @@ void Dialog_Progress::on_signal_show()
 {
 	for ( t = 0 ; t < operations .size() && succes && ! cancel ; t++ )
 	{
-		label_current .set_markup( "<i>" + operations[ t ] .str_operation + "</i>\n" ) ;
+		label_current .set_markup( "<i>" + operations[ t ] ->description + "</i>\n" ) ;
 		
 		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
 		progressbar_all .set_fraction( fraction * t ) ;
@@ -163,8 +163,8 @@ void Dialog_Progress::on_signal_show()
 		treerow = treestore_operations ->children()[ t ] ;
 
 		//set status to 'execute'
-		operations[ t ] .operation_details .status = OperationDetails::EXECUTE ;
-		update_operation_details( treerow, operations[ t ] .operation_details ) ;
+		operations[ t ] ->operation_details .status = OperationDetails::EXECUTE ;
+		update_operation_details( treerow, operations[ t ] ->operation_details ) ;
 
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
@@ -175,7 +175,7 @@ void Dialog_Progress::on_signal_show()
 	
 		while ( pulse )
 		{
-			update_operation_details( treerow, operations[ t ] .operation_details ) ;
+			update_operation_details( treerow, operations[ t ] ->operation_details ) ;
 
 			progressbar_current .pulse() ;
 			
@@ -186,9 +186,9 @@ void Dialog_Progress::on_signal_show()
 		}
 
 		//set status (succes/error) for this operation
-		operations[ t ] .operation_details .status =
+		operations[ t ] ->operation_details .status =
 			succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
-		update_operation_details( treerow, operations[ t ] .operation_details ) ;
+		update_operation_details( treerow, operations[ t ] ->operation_details ) ;
 	}
 	
 	//add save button
@@ -259,7 +259,7 @@ void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress
 	Dialog_Progress *dp = static_cast<Dialog_Progress *>( p_dialog_progress ) ;
 	
 	dp ->succes = dp ->signal_apply_operation .emit( dp ->operations[ dp ->t ] ) ;
-
+	
 	dp ->pulse = false ;
 
 	return NULL ;
@@ -306,7 +306,7 @@ void Dialog_Progress::on_save()
 			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				echo_operation_details( operations[ t ] .operation_details, out ) ;
+				echo_operation_details( operations[ t ] ->operation_details, out ) ;
 				out << "<BR>========================================<BR><BR>" << std::endl ;
 			}
 				

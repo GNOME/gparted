@@ -17,10 +17,12 @@
  
 #include "../include/Dialog_Filesystems.h" 
 
+#include <gtkmm/stock.h>
+
 namespace GParted
 {
 
-Dialog_Filesystems::Dialog_Filesystems( ) 
+Dialog_Filesystems::Dialog_Filesystems() 
 {
 	this ->set_title( _("Filesystems") ) ;
 	this ->set_has_separator( false ) ;
@@ -35,25 +37,25 @@ Dialog_Filesystems::Dialog_Filesystems( )
 	treeview_filesystems .append_column( _("Move"), treeview_filesystems_columns .move );
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 		
-	treeview_filesystems .get_selection( ) ->set_mode( Gtk::SELECTION_NONE );
-	this ->get_vbox( ) ->pack_start( treeview_filesystems ) ;
+	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
+	this ->get_vbox() ->pack_start( treeview_filesystems ) ;
 	
 	this ->add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK );
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
-	this ->show_all_children( ) ;
+	this ->show_all_children() ;
 }
 
 void Dialog_Filesystems::Load_Filesystems( const std::vector< FS > & FILESYSTEMS )
 {
-	liststore_filesystems ->clear( ) ;
+	liststore_filesystems ->clear() ;
 	
-	for ( unsigned short t = 0; t < FILESYSTEMS .size( ) -1 ; t++ )
+	for ( unsigned short t = 0; t < FILESYSTEMS .size() -1 ; t++ )
 		Show_Filesystem( FILESYSTEMS[ t ] ) ;
 }
 		
 void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 {
-	treerow = *( liststore_filesystems ->append( ) );
+	treerow = *( liststore_filesystems ->append() );
 	treerow[ treeview_filesystems_columns .filesystem ] = Utils::Get_Filesystem_String( fs .filesystem ) ;
 	
 	treerow[ treeview_filesystems_columns .create ] = 
@@ -72,7 +74,7 @@ void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 		render_icon( fs .copy ? Gtk::Stock::APPLY : Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ); 
 }
 
-Dialog_Filesystems::~Dialog_Filesystems( ) 
+Dialog_Filesystems::~Dialog_Filesystems() 
 {
 }
 

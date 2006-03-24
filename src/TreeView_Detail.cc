@@ -152,6 +152,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .status_icon ] = 
 			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
+	//FIXME: we should display warningicon in the same column as mounticon if partition is unmounted..
 	if ( ! partition .error .empty() )
 		treerow[ treeview_detail_columns .error_icon ] = 
 			render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );

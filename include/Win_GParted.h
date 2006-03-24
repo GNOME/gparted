@@ -63,10 +63,8 @@ private:
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
-	//overridden signalhandler
-	bool on_delete_event( GdkEventAny* ) ;
 	
-	void Add_Operation( OperationType, const Partition & );
+	void Add_Operation( OperationType operationtype, const Partition & new_partition, int index = -1 ) ;
 	void Refresh_Visual();
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;
@@ -124,6 +122,7 @@ private:
 	void combo_devices_changed();
 	void radio_devices_changed( unsigned int item ) ;
 	void on_signal_show() ;
+	bool on_delete_event( GdkEventAny* ) ;
 		
 	void menu_gparted_refresh_devices();
 	void menu_gparted_filesystems();
@@ -151,13 +150,14 @@ private:
 	void activate_disklabel() ;
 	
 	void activate_undo();
+	void remove_operation( int index = -1, bool remove_all = false ) ;
 	void activate_apply();
 
 //private variables
 	unsigned int current_device ;
 	Partition selected_partition, copied_partition;
 	std::vector<Device> devices;
-	std::vector<Operation> operations;
+	std::vector<Operation *> operations;
 
 //gui stuff
 	Gtk::HPaned hpaned_main;
@@ -219,7 +219,7 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	//usefull variables which are used by many different functions...
-	bool any_extended;//used in some checks 
+	int index_extended ; //position of the extended partition (-1 means there isn't one)
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	FS fs ;

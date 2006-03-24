@@ -23,6 +23,11 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Dialog_Partition_Info.h"
+#include "../include/OperationCopy.h"
+#include "../include/OperationCreate.h"
+#include "../include/OperationDelete.h"
+#include "../include/OperationFormat.h"
+#include "../include/OperationResizeMove.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
@@ -531,41 +536,55 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 
 bool Win_GParted::on_delete_event( GdkEventAny *event )
 {
-	return ! Quit_Check_Operations( );
+	return ! Quit_Check_Operations();
 }	
 
-void Win_GParted::Add_Operation( OperationType operationtype, const Partition & new_partition)
+void Win_GParted::Add_Operation( OperationType operationtype, const Partition & new_partition, int index )
 {
-	Operation operation( devices[ current_device ], selected_partition, new_partition, operationtype );
-		
+	Operation * operation ;
 	switch ( operationtype )
 	{		
 		case GParted::DELETE	:
-			operation .operation_icon =
-				render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU );	
+			operation = new OperationDelete( devices[ current_device ], selected_partition ) ;
+			operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
 			break;
 		case GParted::CREATE	: 
-			operation .operation_icon =
-				render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
+			operation = new OperationCreate( devices[ current_device ],
+							 selected_partition,
+							 new_partition ) ;
+			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 			break;
 		case GParted::RESIZE_MOVE:
-			operation .operation_icon =
-				render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
+			operation = new OperationResizeMove( devices[ current_device ],
+							     selected_partition,
+							     new_partition );
+			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 			break;
 		case GParted::FORMAT	:
-			operation .operation_icon =
-				render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+			operation = new OperationFormat( devices[ current_device ],
+							 selected_partition,
+							 new_partition );
+			operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 			break;
 		case GParted::COPY	:
-			operation .operation_icon =
-				render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
+			operation = new OperationCopy( devices[ current_device ],
+					 	       selected_partition,
+						       new_partition,
+						       copied_partition ) ;
+			operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 			break;
 	}
-	
-	operations.push_back( operation );
-	
-	allow_undo( true );
-	allow_apply( true );
+
+	if ( operation )
+	{
+		if ( index >= 0 && index < static_cast<int>( operations .size() ) )
+			operations .insert( operations .begin() + index, operation ) ;
+		else
+			operations .push_back( operation );
+
+		allow_undo( true ) ;
+		allow_apply( true ) ;
+	}
 	
 	Refresh_Visual();
 	
@@ -573,9 +592,9 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 		open_operationslist() ;
 	
 	//make scrollwindow focus on the last operation in the list	
-	Gtk::TreeIter iter = liststore_operations ->children() .end() ;
-	iter-- ;
-	treeview_operations .set_cursor( static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( *iter ) ) ) ;
+	treeview_operations .set_cursor(
+		static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( 
+				*(--liststore_operations ->children() .end()) ) ) ) ;
 }
 
 void Win_GParted::Refresh_Visual()
@@ -586,12 +605,12 @@ void Win_GParted::Refresh_Visual()
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 	{	
-		if ( operations[ t ] .device == devices[ current_device ] )
-			operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
+		if ( operations[ t ] ->device == devices[ current_device ] )
+			operations[ t ] ->apply_to_visual( partitions ) ;
 			
 		treerow = *( liststore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] .str_operation ;
-		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] .operation_icon ;
+		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] ->description ;
+		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
 	}
 	
 	//set new statusbartext
@@ -608,7 +627,7 @@ void Win_GParted::Refresh_Visual()
 	}
 			
 	//count primary's and check for extended
-	any_extended = false;
+	index_extended = -1 ;
 	primary_count = 0;
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -622,7 +641,7 @@ void Win_GParted::Refresh_Visual()
 				break;
 				
 			case GParted::TYPE_EXTENDED	:
-				any_extended = true;
+				index_extended = t ;
 				primary_count++;
 				break;
 				
@@ -657,7 +676,8 @@ bool Win_GParted::Quit_Check_Operations()
 					   true );
 
 		if ( operations .size() != 1 )
-			dialog .set_secondary_text( String::ucompose( _("%1 operations are currently pending."), operations .size() ) ) ;
+			dialog .set_secondary_text( String::ucompose( _("%1 operations are currently pending."), 
+							  	      operations .size() ) ) ;
 		else
 			dialog .set_secondary_text( _("1 operation is currently pending.") ) ;
 	
@@ -830,7 +850,8 @@ void Win_GParted::close_operationslist()
 
 void Win_GParted::clear_operationslist() 
 {
-	operations .clear() ;
+	remove_operation( -1, true ) ;
+
 	Refresh_Visual() ;
 }
 
@@ -917,10 +938,10 @@ void Win_GParted::menu_gparted_refresh_devices()
 	unsigned int i ;
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
-		for ( i = 0 ; i < devices .size() && devices[ i ] != operations[ t ] .device ; i++ ) {}
-			
+		for ( i = 0 ; i < devices .size() && devices[ i ] != operations[ t ] ->device ; i++ ) {}
+		
 		if ( i >= devices .size() )
-			operations .erase( operations .begin() + t-- ) ;//decrease t bij one..
+			remove_operation( t-- ) ;
 	}
 		
 	//if no devices were detected we disable some stuff and show a message in the statusbar
@@ -946,7 +967,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
 		liststore_operations ->clear() ;
 		close_operationslist() ;
-		operations .clear() ;
+		remove_operation( -1, true ) ;
 		
 		statusbar .pop() ;
 		statusbar .push( _( "No devices detected" ) );
@@ -1129,8 +1150,8 @@ void Win_GParted::activate_resize()
 	
 	if ( operations .size() )
 		for (unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] .device == devices[ current_device ] )
-				operations[ t ] .Apply_Operation_To_Visual( partitions ) ;
+			if ( operations[ t ] ->device == devices[ current_device ] )
+				operations[ t ] ->apply_to_visual( partitions ) ;
 	
 	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), 
 					     devices[ current_device ] .cylsize ) ;
@@ -1138,7 +1159,7 @@ void Win_GParted::activate_resize()
 	if ( selected_partition .type == GParted::TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;
-		while ( ext < partitions .size( ) && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
+		while ( ext < partitions .size() && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
 		dialog .Set_Data( selected_partition, partitions[ ext ] .logicals );
 	}
 	else
@@ -1157,11 +1178,16 @@ void Win_GParted::activate_resize()
 			//remove operation which creates this partition
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				if ( operations[ t ] .partition_new == selected_partition )
+				if ( operations[ t ] ->partition_new == selected_partition )
 				{
-					operations.erase( operations .begin() + t ) ;
+					remove_operation( t ) ;
 					
 					//And add the new partition to the end of the operations list
+					//change 'selected_partition' into a suitable 'partition_original') 
+					selected_partition .Set_Unallocated( devices[ current_device ] .get_path(),
+									     selected_partition .sector_start,
+									     selected_partition .sector_end,
+									     selected_partition .inside_extended ) ;
 					Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
 					
 					break;
@@ -1209,7 +1235,7 @@ void Win_GParted::activate_new()
 		Dialog_Partition_New dialog;
 		
 		dialog .Set_Data( selected_partition, 
-				  any_extended,
+				  index_extended > -1,
 				  new_count,
 				  gparted_core .get_filesystems(),
 				  devices[ current_device ] .readonly,
@@ -1289,19 +1315,21 @@ void Win_GParted::activate_delete()
 	/* if deleted one is NEW, it doesn't make sense to add it to the operationslist,
 	 * we erase its creation and possible modifications like resize etc.. from the operationslist.
 	 * Calling Refresh_Visual will wipe every memory of its existence ;-)*/
+	//FIXME: afaik all allowed operation on STAT_NEW will replace the new partition
+	//therefore it's impossible to have >1 operations on a STAT_NEW and contains this check unnecessary overkill
 	if ( selected_partition .status == GParted::STAT_NEW )
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[ t ] .partition_new .get_path() == selected_partition .get_path() )
-				operations.erase( operations .begin() + t-- ) ;
+			if ( operations[ t ] ->partition_new .get_path() == selected_partition .get_path() )
+				remove_operation( t-- ) ;
 				
 		//determine lowest possible new_count
 		new_count = 0 ; 
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] .partition_new .status == GParted::STAT_NEW &&
-			     operations[ t ] .partition_new .partition_number > new_count )
-				new_count = operations[ t ] .partition_new .partition_number ;
+			if ( operations[ t ] ->partition_new .status == GParted::STAT_NEW &&
+			     operations[ t ] ->partition_new .partition_number > new_count )
+				new_count = operations[ t ] ->partition_new .partition_number ;
 			
 		new_count += 1 ;
 			
@@ -1357,7 +1385,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	part_temp .Set( devices[ current_device ] .get_path(), 
 			selected_partition .get_path(), 
 			selected_partition .partition_number, 
-			selected_partition .type, new_fs, 
+			selected_partition .type,
+			new_fs, 
 			selected_partition .sector_start,
 			selected_partition .sector_end, 
 			selected_partition .inside_extended, 
@@ -1372,14 +1401,15 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		//remove operation which creates this partition
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 		{
-			if ( operations[ t ] .partition_new == selected_partition )
+			if ( operations[ t ] ->partition_new == selected_partition )
 			{
-				operations .erase( operations .begin() +t ) ;
+				remove_operation( t ) ;
 				
 				//And add the new partition to the end of the operations list
 				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
-				Add_Operation( GParted::CREATE, part_temp );
+				
+				Add_Operation( GParted::CREATE, part_temp, t );
 					
 				break;
 			}
@@ -1583,15 +1613,36 @@ void Win_GParted::activate_disklabel()
 void Win_GParted::activate_undo()
 {
 	//when undoing an creation it's safe to decrease the newcount by one
-	if ( operations .back() .operationtype == GParted::CREATE )
+	if ( operations .back() ->type == GParted::CREATE )
 		new_count-- ;
-	
-	operations.erase( operations .end() );
+
+	remove_operation() ;		
 	
 	Refresh_Visual();
 	
 	if ( ! operations .size() )
 		close_operationslist() ;
+}
+	
+void Win_GParted::remove_operation( int index, bool remove_all ) 
+{
+	if ( remove_all )
+	{
+		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+			delete operations[ t ] ;
+
+		operations .clear() ;
+	}
+	else if ( index == -1  && operations .size() > 0 )
+	{
+		delete operations .back() ;
+		operations .pop_back() ;
+	}
+	else if ( index > -1 && index < static_cast<int>( operations .size() ) )
+	{
+		delete operations[ index ] ;
+		operations .erase( operations .begin() + index ) ;
+	}
 }
 
 void Win_GParted::activate_apply()
@@ -1628,7 +1679,7 @@ void Win_GParted::activate_apply()
 		dialog_progress .hide() ;
 		
 		//wipe operations...
-		operations.clear() ;
+		remove_operation( -1, true ) ;
 		liststore_operations ->clear() ;
 		close_operationslist() ;
 							
