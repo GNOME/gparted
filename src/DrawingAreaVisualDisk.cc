@@ -27,6 +27,8 @@ namespace GParted
 
 DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 {
+	selected_vp = NULL ;
+
 	//set and allocated some standard colors
 	color_used .set( Utils::Get_Color( GParted::FS_USED ) );
 	get_colormap() ->alloc_color( color_used ) ;
