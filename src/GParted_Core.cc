@@ -108,13 +108,7 @@ void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_dev
 	
 bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
 {
-	if ( device_path .length() > 6 && device_path .is_ascii() && open_device( device_path ) )
-	{
-		close_device_and_disk() ;
-		return true ;
-	}
-
-	return false ;
+	return ( device_path .length() > 6 && device_path .is_ascii() ) ;
 }
 
 void GParted_Core::get_devices( std::vector<Device> & devices )
@@ -146,7 +140,9 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
-		if ( check_device_path( device_paths[ t ] ) && open_device_and_disk( device_paths[ t ], false ) )
+		if ( check_device_path( device_paths[ t ] ) &&
+		     open_device_and_disk( device_paths[ t ], false ) &&
+		     lp_device )
 		{
 			temp_device .Reset() ;
 			
