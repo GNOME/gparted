@@ -1315,8 +1315,6 @@ void Win_GParted::activate_delete()
 	/* if deleted one is NEW, it doesn't make sense to add it to the operationslist,
 	 * we erase its creation and possible modifications like resize etc.. from the operationslist.
 	 * Calling Refresh_Visual will wipe every memory of its existence ;-)*/
-	//FIXME: afaik all allowed operation on STAT_NEW will replace the new partition
-	//therefore it's impossible to have >1 operations on a STAT_NEW and contains this check unnecessary overkill
 	if ( selected_partition .status == GParted::STAT_NEW )
 	{
 		//remove all operations done on this new partition (this includes creation)	

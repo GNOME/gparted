@@ -1202,20 +1202,22 @@ bool GParted_Core::open_device( const Glib::ustring & device_path )
 	
 bool GParted_Core::open_device_and_disk( const Glib::ustring & device_path, bool strict ) 
 {
+	lp_device = NULL ;
+	lp_disk = NULL ;
+
 	if ( open_device( device_path ) )
+	{
 		lp_disk = ped_disk_new( lp_device );
 	
-	//if ! disk and writeable it's probably a HD without disklabel.
-	//We return true here and deal with them in GParted_Core::get_devices
-	if ( ! lp_disk && ( strict || lp_device ->read_only ) )
-	{
-		ped_device_destroy( lp_device ) ;
-		lp_device = NULL ; 
+		//if ! disk and writeable it's probably a HD without disklabel.
+		//We return true here and deal with them in GParted_Core::get_devices
+		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
+			return true ;
 		
-		return false;
-	}	
-		
-	return true ;
+		close_device_and_disk() ;
+	}
+
+	return false ;
 }
 
 void GParted_Core::close_device_and_disk()

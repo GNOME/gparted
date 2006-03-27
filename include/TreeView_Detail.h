@@ -70,11 +70,11 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> size;
 		Gtk::TreeModelColumn<Glib::ustring> used;
 		Gtk::TreeModelColumn<Glib::ustring> unused;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > color;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > color ;
 		Gtk::TreeModelColumn<Glib::ustring> text_color;
 		Gtk::TreeModelColumn<Glib::ustring> mount_text_color;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > error_icon;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon1 ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon2 ;
 		Gtk::TreeModelColumn<Glib::ustring> flags;
 		Gtk::TreeModelColumn<Partition> partition; //hidden column 
 		
@@ -82,8 +82,8 @@ private:
 		{
 			add( path ); add( filesystem ); add( mountpoint ) ;
 			add( size ); add( used ); add( unused ); add( color );
-			add( text_color ); add( mount_text_color ); add( status_icon );
-			add( error_icon ) ; add( flags ); add( partition );
+			add( text_color ); add( mount_text_color ); add( icon1 );
+			add( icon2 ) ; add( flags ); add( partition );
 		}
 	};
 	

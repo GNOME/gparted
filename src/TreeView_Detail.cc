@@ -40,8 +40,8 @@ TreeView_Detail::TreeView_Detail()
 	append_column( _("Flags"), treeview_detail_columns .flags );
 	
 	//icons
-	get_column( 0 ) ->pack_start( treeview_detail_columns .error_icon, false );
-	get_column( 0 ) ->pack_start( treeview_detail_columns .status_icon, false );
+	get_column( 0 ) ->pack_start( treeview_detail_columns .icon2, false );
+	get_column( 0 ) ->pack_start( treeview_detail_columns .icon1, false );
 
 	//PARTITION
 	//colored text in Partition column 
@@ -149,13 +149,19 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partiti
 void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition & partition )
 {
 	if ( partition .busy )
-		treerow[ treeview_detail_columns .status_icon ] = 
+		treerow[ treeview_detail_columns .icon1 ] = 
 			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
-	//FIXME: we should display warningicon in the same column as mounticon if partition is unmounted..
 	if ( ! partition .error .empty() )
-		treerow[ treeview_detail_columns .error_icon ] = 
-			render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
+	{
+		if ( ! static_cast< Glib::RefPtr<Gdk::Pixbuf> >( treerow[ treeview_detail_columns .icon1 ] )  )
+			treerow[ treeview_detail_columns .icon1 ] = 
+				render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
+		else
+			treerow[ treeview_detail_columns .icon2 ] = 
+				render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON );
+	}
+
 	
 	treerow[ treeview_detail_columns .path ] = partition .get_path() ;
 
