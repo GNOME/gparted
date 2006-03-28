@@ -33,6 +33,9 @@ OperationCopy::OperationCopy( const Device & device,
 	this ->partition_copied = partition_copied ;
 
 	create_description() ;
+	
+	this ->partition_new .add_path(  
+		String::ucompose( _("copy of %1"), this ->partition_new .get_path() ), true ) ;
 }
 	
 void OperationCopy::apply_to_visual( std::vector<Partition> & partitions ) 
