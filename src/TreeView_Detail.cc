@@ -175,7 +175,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		partition .type == GParted::TYPE_UNALLOCATED ? "darkgrey" : "black" ;
 	
 	treerow[ treeview_detail_columns .filesystem ] = 
-		Utils::Get_Filesystem_String( partition .filesystem ) ;
+		Utils::get_filesystem_string( partition .filesystem ) ;
 	
 	//mountpoint
 	treerow[ treeview_detail_columns .mount_text_color ] = partition .busy ? "black" : "darkgrey" ;

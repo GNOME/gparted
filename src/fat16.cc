@@ -68,7 +68,7 @@ void fat16::Set_Used_Sectors( Partition & partition )
 			S = -1 ;
 	
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -78,7 +78,7 @@ bool fat16::Create( const Partition & new_partition, std::vector<OperationDetail
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_FAT16 ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_FAT16 ) ) ) ) ;
 	
 	if ( ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

@@ -83,7 +83,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 			N = -1 ;
 
 		if ( S > -1 && N > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -93,7 +93,7 @@ bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_JFS ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_JFS ) ) ) ) ;
 	
 	if ( ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

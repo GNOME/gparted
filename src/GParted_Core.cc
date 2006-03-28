@@ -272,6 +272,8 @@ void GParted_Core::init_maps()
 			}
 
 		proc_partitions .close() ;
+		alternate_paths[ "/dev/hda5" ] = "/dev/bladieblaaaaa" ;
+		alternate_paths[ "/dev/hda" ] = "/dev/nog_een_testje" ;
 	}
 }
 
@@ -1125,7 +1127,7 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 	if ( open_device_and_disk( partition .device_path ) )
 	{
 		PedFileSystemType * fs_type = 
-			ped_file_system_type_get( Utils::Get_Filesystem_String( partition .filesystem ) .c_str() ) ;
+			ped_file_system_type_get( Utils::get_filesystem_string( partition .filesystem ) .c_str() ) ;
 
 		//default is Linux (83)
 		if ( ! fs_type )

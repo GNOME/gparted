@@ -265,9 +265,9 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 		
 		//And apply the changes to the visual view...
 		if ( ! fixed_start )
-			frame_resizer_base ->set_x_start( Utils::Round( spinbutton_before .get_value() / MB_PER_PIXEL ) ) ;
+			frame_resizer_base ->set_x_start( Utils::round( spinbutton_before .get_value() / MB_PER_PIXEL ) ) ;
 		
-		frame_resizer_base ->set_x_end( 500 - Utils::Round( spinbutton_after .get_value() / MB_PER_PIXEL ) ) ;
+		frame_resizer_base ->set_x_end( 500 - Utils::round( spinbutton_after .get_value() / MB_PER_PIXEL ) ) ;
 		
 		frame_resizer_base ->Draw_Partition() ;
 		

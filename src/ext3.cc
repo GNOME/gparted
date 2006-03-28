@@ -65,7 +65,7 @@ void ext3::Set_Used_Sectors( Partition & partition )
 			S = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -75,7 +75,7 @@ bool ext3::Create( const Partition & new_partition, std::vector<OperationDetails
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_EXT3 ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_EXT3 ) ) ) ) ;
 	
 	if ( ! execute_command( "mkfs.ext3 " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
@@ -101,7 +101,7 @@ bool ext3::Resize( const Partition & partition_new,
 	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
-		str_temp += " " + Utils::num_to_str( Utils::Round( Utils::sector_to_unit( 
+		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
 					partition_new .get_length() - cylinder_size, GParted::UNIT_MIB ) ), true ) + "M" ; 
 		
 	if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )

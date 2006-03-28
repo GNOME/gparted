@@ -111,7 +111,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::Round( Utils::sector_to_unit( this ->selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled filesystem
@@ -120,7 +120,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ; 
+	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ; 
 	spinbutton_before .set_value( 0 ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
@@ -194,7 +194,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		     menu_filesystem .items() .size() < FILESYSTEMS .size() )
 		{
 			menu_filesystem .items() .push_back( 
-				Gtk::Menu_Helpers::MenuElem( Utils::Get_Filesystem_String( GParted::FS_EXTENDED ) ) ) ;
+				Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( GParted::FS_EXTENDED ) ) ) ;
 			optionmenu_filesystem .set_history( menu_filesystem .items() .size() -1 ) ;
 			optionmenu_filesystem .set_sensitive( false ) ;
 		}
@@ -226,22 +226,22 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		fs .MAX = ( fs .MAX && ( fs .MAX - cylinder_size ) < (TOTAL_MB * MEBIBYTE) ) ?
 				fs .MAX - cylinder_size : TOTAL_MB * MEBIBYTE ;
 		
-		frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-						      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 
-			0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 		spinbutton_size .set_range(
-				Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-				Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+				Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+				Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 		spinbutton_after .set_range(
-			0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 				
 		//set contents of label_minmax
 		Set_MinMax_Text(
-			Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-			Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+			Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+			Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	}
 	
 	//set fitting resizer colors
@@ -250,7 +250,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
 	
 	//partitioncolor..
-	color_temp .set( Utils::Get_Color( fs .filesystem ) ) ;
+	color_temp .set( Utils::get_color( fs .filesystem ) ) ;
 	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
 	
 	frame_resizer_base ->Draw_Partition() ;
@@ -262,7 +262,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
 	{
 		menu_filesystem .items() .push_back( 
-			Gtk::Menu_Helpers::MenuElem( Utils::Get_Filesystem_String( FILESYSTEMS[ t ] .filesystem ) ) ) ;
+			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items()[ t ] .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
 			this ->selected_partition .get_length() >= FILESYSTEMS[ t ] .MIN ) ;	

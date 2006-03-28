@@ -40,17 +40,17 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set some widely used values...
 	START = selected_partition .sector_start ;
 	total_length = selected_partition .get_length() ;
-	TOTAL_MB = Utils::Round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
-	long COPIED_LENGTH_MB = Utils::Round( Utils::sector_to_unit( copied_partition .get_length(), GParted::UNIT_MIB ) ) ;
+	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
-	int x_end = Utils::Round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
+	int x_end = Utils::round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
 	frame_resizer_base ->set_used( 
-		Utils::Round( Utils::sector_to_unit( 
+		Utils::round( Utils::sector_to_unit( 
 				copied_partition .sectors_used, GParted::UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 	
 	fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX -= BUF ;
@@ -62,27 +62,27 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
 	spinbutton_size .set_range(
-		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-					      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
-		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

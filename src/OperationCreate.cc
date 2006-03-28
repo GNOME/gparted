@@ -88,7 +88,7 @@ void OperationCreate::create_description()
 	description = String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
 				 	description, 
 					partition_new .partition_number, 
-					Utils::Get_Filesystem_String( partition_new .filesystem ), 
+					Utils::get_filesystem_string( partition_new .filesystem ), 
 					Utils::format_size( partition_new .get_length() ),
 					device .get_path() ) ;
 }

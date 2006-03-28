@@ -49,7 +49,8 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 				   Gtk::PACK_SHRINK ) ;
 		
 		frame ->set_label_widget( *hbox ) ;
-		frame ->add( * Utils::mk_label( "<i>" + partition.error + "</i>", true, Gtk::ALIGN_LEFT, true ) ) ;
+		frame ->add( * Utils::mk_label( 
+				"<i>" + partition .error + "</i>", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true ) ) ;
 		
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}
@@ -103,7 +104,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	
 	//calculate proportional width of used and unused
 	used = unused = 0 ;
-	used = Utils::Round( 
+	used = Utils::round( 
 		(400 - BORDER *2) / ( static_cast<double>( partition .get_length() ) / partition .sectors_used ) ) ;
 	
 	unused = 400 - used - BORDER *2 ;
@@ -140,7 +141,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::Get_Filesystem_String( partition .filesystem ) ),
+	table ->attach( * Utils::mk_label( Utils::get_filesystem_string( partition .filesystem ) ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -159,7 +160,7 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//calculate relative diskusage
 		int percent_used = 
-			Utils::Round( partition .sectors_used / static_cast<double>( partition .get_length() ) * 100 ) ;
+			Utils::round( partition .sectors_used / static_cast<double>( partition .get_length() ) * 100 ) ;
 						
 		//used
 		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Used:") ) + "</b>" ),
@@ -209,7 +210,10 @@ void Dialog_Partition_Info::Display_Info()
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		//path
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>",
+						   true,
+						   Gtk::ALIGN_LEFT,
+						   Gtk::ALIGN_TOP ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;

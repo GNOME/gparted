@@ -85,7 +85,7 @@ void xfs::Set_Used_Sectors( Partition & partition )
 			N = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -95,7 +95,7 @@ bool xfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_XFS ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_XFS ) ) ) ) ;
 	
 	if ( ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

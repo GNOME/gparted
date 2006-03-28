@@ -59,7 +59,7 @@ void OperationFormat::create_description()
 	/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
 	description = String::ucompose( _("Format %1 as %2"),
 					partition_original .get_path(),
-					Utils::Get_Filesystem_String( partition_new .filesystem ) ) ;
+					Utils::get_filesystem_string( partition_new .filesystem ) ) ;
 }
 
 } //GParted

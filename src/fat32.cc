@@ -67,7 +67,7 @@ void fat32::Set_Used_Sectors( Partition & partition )
 			S = -1 ;
 	
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -77,7 +77,7 @@ bool fat32::Create( const Partition & new_partition, std::vector<OperationDetail
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_FAT32 ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_FAT32 ) ) ) ) ;
 	
 	if ( ! execute_command( "mkdosfs -F32 -v " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

@@ -71,7 +71,7 @@ bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_NTFS ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_NTFS ) ) ) ) ;
 	
 	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
@@ -100,7 +100,7 @@ bool ntfs::Resize( const Partition & partition_new,
 	if ( ! fill_partition )
 	{
 		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit(
+		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
 				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
 	

@@ -111,16 +111,17 @@ struct FS
 class Utils
 {
 public:
-	static Sector Round( double double_value ) ;
+	static Sector round( double double_value ) ;
 	static Gtk::Label * mk_label( const Glib::ustring & text,
 				      bool use_markup = true,
-			      	      Gtk::AlignmentEnum alignment = Gtk::ALIGN_LEFT,
+			      	      Gtk::AlignmentEnum x_align = Gtk::ALIGN_LEFT,
+			      	      Gtk::AlignmentEnum y_align = Gtk::ALIGN_CENTER,
 				      bool wrap = false,
 				      const Glib::ustring & text_color = "black" ) ;
 	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;
-	static Glib::ustring Get_Color( FILESYSTEM filesystem ) ;
+	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
-	static Glib::ustring Get_Filesystem_String( FILESYSTEM filesystem ) ;
+	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
 	static Glib::ustring format_size( Sector size ) ;
 	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;
 	static int execute_command( const Glib::ustring & command,

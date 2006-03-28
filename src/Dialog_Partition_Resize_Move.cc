@@ -100,15 +100,15 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		next = partitions[t +1] .get_length() ;
 	
 	total_length = previous + selected_partition .get_length() + next;
-	TOTAL_MB = Utils::Round( Utils::sector_to_unit( total_length, GParted::UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, GParted::UNIT_MIB ) ) ;
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 		
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_start( Utils::Round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_x_end( 
-		Utils::Round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
-	frame_resizer_base ->set_used( Utils::Round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
+		Utils::round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
+	frame_resizer_base ->set_used( Utils::round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
 		
 	if ( fs .shrink )
 	{
@@ -131,28 +131,28 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//set values of spinbutton_before
 	if ( ! fixed_start )
 	{
-		spinbutton_before .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
-		spinbutton_before .set_value( Utils::Round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_value( Utils::round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
 	}
 	
 	//set values of spinbutton_size 
 	spinbutton_size .set_range( 
-		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( 
-		Utils::Round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
-	spinbutton_after .set_value( Utils::Round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_value( Utils::round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
 	
-	frame_resizer_base ->set_size_limits( Utils::Round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-					      Utils::Round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
-		Utils::Round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
-		Utils::Round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 }
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Partition> & partitions )
@@ -179,12 +179,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 		
 	//now we have enough data to calculate some important values..
 	total_length = previous + selected_partition .get_length() + next;
-	TOTAL_MB = Utils::Round( Utils::sector_to_unit( total_length, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
-	frame_resizer_base ->set_x_start( Utils::Round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( Utils::Round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
+	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_x_end( Utils::round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first =0, used =0 ;
@@ -200,39 +200,39 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	}
 
 	dynamic_cast<Frame_Resizer_Extended *>( frame_resizer_base ) ->
-		set_used_start( Utils::Round( (first - START) / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_used( Utils::Round( used / ( total_length / 500.00 ) ) ) ;
+		set_used_start( Utils::round( (first - START) / ( total_length / 500.00 ) ) ) ;
+	frame_resizer_base ->set_used( Utils::round( used / ( total_length / 500.00 ) ) ) ;
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
-		spinbutton_before .set_range( 0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ) ) ;
 	else
-		spinbutton_before .set_range( 0, Utils::Round( Utils::sector_to_unit( first - START, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 0, Utils::round( Utils::sector_to_unit( first - START, GParted::UNIT_MIB ) ) ) ;
 	
-	spinbutton_before .set_value( Utils::Round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_before .set_value( Utils::round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_size
 	if ( first == 0 ) //no logicals
-		spinbutton_size .set_range( Utils::Round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ), TOTAL_MB ) ;
+		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ), TOTAL_MB ) ;
 	else
-		spinbutton_size .set_range( Utils::Round( Utils::sector_to_unit( used, GParted::UNIT_MIB ) ), TOTAL_MB ) ;
+		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( used, GParted::UNIT_MIB ) ), TOTAL_MB ) ;
 	
 	spinbutton_size .set_value(
-		Utils::Round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
 		spinbutton_after .set_range( 
-			0, TOTAL_MB - Utils::Round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, GParted::UNIT_MIB ) ) ) ;
 	else
 		spinbutton_after .set_range( 
-			0, Utils::Round( Utils::sector_to_unit( total_length + START - first - used, GParted::UNIT_MIB ) ) ) ;
+			0, Utils::round( Utils::sector_to_unit( total_length + START - first - used, GParted::UNIT_MIB ) ) ) ;
 	
-	spinbutton_after .set_value( Utils::Round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_value( Utils::round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( Utils::Round( Utils::sector_to_unit( first == 0 ? BUF/2 : used, GParted::UNIT_MIB ) ),
-			 Utils::Round( Utils::sector_to_unit( total_length, GParted::UNIT_MIB ) ) ) ;
+	Set_MinMax_Text( Utils::round( Utils::sector_to_unit( first == 0 ? BUF/2 : used, GParted::UNIT_MIB ) ),
+			 Utils::round( Utils::sector_to_unit( total_length, GParted::UNIT_MIB ) ) ) ;
 }
 
 } //GParted

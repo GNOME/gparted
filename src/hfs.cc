@@ -48,7 +48,7 @@ bool hfs::Create( const Partition & new_partition, std::vector<OperationDetails>
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_HFS ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_HFS ) ) ) ) ;
 	
 	if ( ! execute_command( "hformat " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

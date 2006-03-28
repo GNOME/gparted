@@ -58,7 +58,7 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 			S = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -68,7 +68,7 @@ bool reiser4::Create( const Partition & new_partition, std::vector<OperationDeta
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_REISER4 ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_REISER4 ) ) ) ) ;
 	
 	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{

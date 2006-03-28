@@ -68,7 +68,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 			N = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::Round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
 		partition .error = error ;
@@ -78,7 +78,7 @@ bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDet
 {
 	operation_details .push_back( OperationDetails( String::ucompose(
 								_("create new %1 filesystem"),
-								Utils::Get_Filesystem_String( GParted::FS_REISERFS ) ) ) ) ;
+								Utils::get_filesystem_string( GParted::FS_REISERFS ) ) ) ) ;
 	
 	if ( ! execute_command( "mkreiserfs -f " + new_partition .get_path(), operation_details .back() .sub_details ) )
 	{
@@ -106,7 +106,7 @@ bool reiserfs::Resize( const Partition & partition_new,
 	if ( ! fill_partition )
 	{
 		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::Round( Utils::sector_to_unit(
+		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
 				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
 	

@@ -23,18 +23,20 @@
 namespace GParted
 {
 	
-Sector Utils::Round( double double_value )
+Sector Utils::round( double double_value )
 {
 	 return static_cast<Sector>( double_value + 0.5 ) ;
 }
 
 Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 			      bool use_markup,
-			      Gtk::AlignmentEnum alignment,
+			      Gtk::AlignmentEnum x_align,
+			      Gtk::AlignmentEnum y_align,
 			      bool wrap,
 			      const Glib::ustring & text_color ) 
 {
-	Gtk::Label * label = manage( new Gtk::Label( text, alignment, Gtk::ALIGN_TOP ) ) ;
+
+	Gtk::Label * label = manage( new Gtk::Label( text, x_align, y_align ) ) ;
 	
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;
@@ -57,7 +59,7 @@ Glib::ustring Utils::num_to_str( Sector number, bool use_C_locale )
 }
 
 //use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..
-Glib::ustring Utils::Get_Color( FILESYSTEM filesystem ) 
+Glib::ustring Utils::get_color( FILESYSTEM filesystem ) 
 { 
 	switch( filesystem )
 	{
@@ -91,7 +93,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int
 
 	if ( pixbuf )
 	{
-		std::stringstream hex( Get_Color( filesystem ) .substr( 1 ) + "00" ) ;
+		std::stringstream hex( get_color( filesystem ) .substr( 1 ) + "00" ) ;
 		unsigned long dec ;
 		hex >> std::hex >> dec ;
 
@@ -101,7 +103,7 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int
 	return pixbuf ;
 }
 
-Glib::ustring Utils::Get_Filesystem_String( FILESYSTEM filesystem )
+Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 {
 	switch( filesystem )
 	{

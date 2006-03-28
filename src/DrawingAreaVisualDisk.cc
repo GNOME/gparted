@@ -30,10 +30,10 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 	selected_vp = NULL ;
 
 	//set and allocated some standard colors
-	color_used .set( Utils::Get_Color( GParted::FS_USED ) );
+	color_used .set( Utils::get_color( GParted::FS_USED ) );
 	get_colormap() ->alloc_color( color_used ) ;
 	
-	color_unused .set( Utils::Get_Color( GParted::FS_UNUSED ) );
+	color_unused .set( Utils::get_color( GParted::FS_UNUSED ) );
 	get_colormap() ->alloc_color( color_unused ) ;
 	
 	color_text .set( "black" );
@@ -117,7 +117,7 @@ int DrawingAreaVisualDisk::calc_length( std::vector<visual_partition> & visual_p
 
 	for ( int t = 0 ; t < static_cast<int>( visual_partitions .size() ) ; t++ )
 	{
-		visual_partitions[ t ] .length = Utils::Round( length_px * visual_partitions[ t ] .fraction ) ;
+		visual_partitions[ t ] .length = Utils::round( length_px * visual_partitions[ t ] .fraction ) ;
 			
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			visual_partitions[ t ] .length = 
@@ -162,7 +162,7 @@ void DrawingAreaVisualDisk::calc_used_unused( std::vector<visual_partition> & vi
 		
 			if ( visual_partitions[ t ] .fraction_used )
 				visual_partitions[ t ] .used_length =
-					Utils::Round( ( visual_partitions[ t ] .length - (2*BORDER) ) * visual_partitions[ t ] .fraction_used ) ;
+					Utils::round( ( visual_partitions[ t ] .length - (2*BORDER) ) * visual_partitions[ t ] .fraction_used ) ;
 
 			//unused
 			visual_partitions[ t ] .x_unused_start = 
@@ -193,10 +193,10 @@ void DrawingAreaVisualDisk::calc_text( std::vector<visual_partition> & visual_pa
 			if ( length < visual_partitions[ t ] .length - (2 * BORDER) - 2 )
 			{
 				visual_partitions[ t ] .x_text = visual_partitions[ t ] .x_start + 
-					Utils::Round( (visual_partitions[ t ] .length / 2) - (length / 2) ) ;
+					Utils::round( (visual_partitions[ t ] .length / 2) - (length / 2) ) ;
 
 				visual_partitions[ t ] .y_text = visual_partitions[ t ] .y_start + 
-					Utils::Round( (visual_partitions[ t ] .height / 2) - (height / 2) ) ;
+					Utils::round( (visual_partitions[ t ] .height / 2) - (height / 2) ) ;
 			}
 			else
 				visual_partitions[ t ] .x_text = visual_partitions[ t ] .y_text = 0 ;

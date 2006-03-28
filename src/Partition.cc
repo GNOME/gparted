@@ -69,7 +69,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
 	
-	this ->color .set( Utils::Get_Color( filesystem ) );
+	this ->color .set( Utils::get_color( filesystem ) );
 }
 
 void Partition::Set_Unused( Sector sectors_unused )
@@ -89,7 +89,7 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 	Reset() ;
 	
 	Set( device_path,
-	     Utils::Get_Filesystem_String( GParted::FS_UNALLOCATED ),
+	     Utils::get_filesystem_string( GParted::FS_UNALLOCATED ),
 	     -1,
 	     GParted::TYPE_UNALLOCATED,
 	     GParted::FS_UNALLOCATED,

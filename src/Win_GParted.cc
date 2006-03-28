@@ -288,7 +288,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 		//the label...
 		hbox ->pack_start( * Utils::mk_label(
 					" " + 
-					Utils::Get_Filesystem_String( gparted_core .get_filesystems()[ t ] .filesystem ) ),
+					Utils::get_filesystem_string( gparted_core .get_filesystems()[ t ] .filesystem ) ),
 				   Gtk::PACK_SHRINK );	
 				
 		menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) );
@@ -306,64 +306,93 @@ Gtk::Menu * Win_GParted::create_format_menu()
 void Win_GParted::init_device_info()
 {
 	vbox_info.set_spacing( 5 );
-	int top =0, bottom = 1;
+	int top = 0, bottom = 1;
 	
 	//title
-	vbox_info .pack_start( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Harddisk Information" ) + ":</b>" ), Gtk::PACK_SHRINK );
+	vbox_info .pack_start( 
+		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Harddisk Information") ) + ":</b>" ),
+		Gtk::PACK_SHRINK );
 	
 	//GENERAL DEVICE INFO
 	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings( 10 ) ;
 	
 	//model
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Model:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Model:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//size
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Size:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//path
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Path:" ) + "</b>" ) , 0,1,top, bottom ,Gtk::FILL);
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>",
+					   true,
+					   Gtk::ALIGN_LEFT,
+					   Gtk::ALIGN_TOP ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back(), 1,2, top++, bottom++, Gtk::FILL);
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 	
 	//DETAILED DEVICE INFO 
-	top = 0; bottom = 1;
-	table = manage( new Gtk::Table( ) ) ;
+	top = 0 ; bottom = 1;
+	table = manage( new Gtk::Table() ) ;
 	table ->set_col_spacings( 10 ) ;
 	
 	//one blank line
 	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//disktype
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "DiskLabelType:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("DiskLabelType:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL );
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//heads
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Heads:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Heads:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//sectors/track
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Sectors/Track:" ) + "</b>" ) , 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/Track:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//cylinders
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Cylinders:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Cylinders:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//total sectors
-	table ->attach( * Utils::mk_label( " <b>" + (Glib::ustring) _( "Total Sectors:" ) + "</b>" ), 0, 1, top, bottom, Gtk::FILL );
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total Sectors:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL );
 	device_info .push_back( Utils::mk_label( "" ) ) ;
-	table ->attach( * device_info .back( ), 1, 2, top++, bottom++, Gtk::FILL );
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
@@ -1297,7 +1326,7 @@ void Win_GParted::activate_delete()
 		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
 		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3)"), 
 						     selected_partition .get_path(), 
-						     Utils::Get_Filesystem_String( selected_partition .filesystem ),
+						     Utils::get_filesystem_string( selected_partition .filesystem ),
 						     Utils::format_size( selected_partition .get_length() ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
@@ -1357,7 +1386,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _("Cannot format this filesystem to %1."),
-						   	     Utils::Get_Filesystem_String( new_fs ) ) ,
+						   	     Utils::get_filesystem_string( new_fs ) ) ,
 					   false,
 					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK,
@@ -1366,12 +1395,12 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		if ( selected_partition .get_length() < fs .MIN )
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A %1 filesystem requires a partition of at least %2."),
-						Utils::Get_Filesystem_String( new_fs ),
+						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MIN ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A partition with a %1 filesystem has a maximum size of %2."),
-						Utils::Get_Filesystem_String( new_fs ),
+						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MAX ) ) );
 		
 		dialog .run() ;
