@@ -1,5 +1,10 @@
 2006-03-28 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* src/GParted_Core.cc: it appeared i had to free the result of
+	  ped_partition_get_path in order to prevent a memleak.
+
+2006-03-28 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/OperationCopy.cc: name a copied partition 'copy of <source>'.
 
 2006-03-28 Bart Hakvoort <hakvoort@cvs.gnome.org>

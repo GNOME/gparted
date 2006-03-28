@@ -335,6 +335,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
+	char * lp_path ;//we have to free the result of ped_partition_get_path()..
 	
 	//clear partitions
 	device .partitions .clear() ;
@@ -347,9 +348,10 @@ void GParted_Core::set_device_partitions( Device & device )
 		switch ( lp_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
-			case PED_PARTITION_LOGICAL:             
+			case PED_PARTITION_LOGICAL:  
+				lp_path = ped_partition_get_path( lp_partition ) ;
 				partition_temp .Set( device .get_path(),
-						     ped_partition_get_path( lp_partition ),
+						     lp_path,
 						     lp_partition ->num,
 						     lp_partition ->type == 0 ?
 						     		GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
@@ -357,7 +359,8 @@ void GParted_Core::set_device_partitions( Device & device )
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
 						     lp_partition ->type,
-						     ped_partition_is_busy( lp_partition ) );
+						     ped_partition_is_busy( lp_partition ) ) ;
+				free( lp_path ) ;
 						
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
@@ -368,15 +371,17 @@ void GParted_Core::set_device_partitions( Device & device )
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
+				lp_path = ped_partition_get_path( lp_partition ) ;
 				partition_temp .Set( device .get_path(),
-					 	     ped_partition_get_path( lp_partition ), 
+					 	     lp_path, 
 						     lp_partition ->num,
 						     GParted::TYPE_EXTENDED,
 						     GParted::FS_EXTENDED,
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
 						     false,
-						     ped_partition_is_busy( lp_partition ) );
+						     ped_partition_is_busy( lp_partition ) ) ;
+				free( lp_path ) ;
 				
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
@@ -878,7 +883,11 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 			
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
 				{
-					new_partition .add_path( ped_partition_get_path( lp_partition ), true ) ;
+					//we have to free the result of ped_partition_get_path()..
+					char * lp_path = ped_partition_get_path( lp_partition ) ;
+					new_partition .add_path( lp_path, true ) ;
+					free( lp_path ) ;
+
 					new_partition .partition_number = lp_partition ->num ;
 
 					Sector start = lp_partition ->geom .start ;
