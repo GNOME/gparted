@@ -272,8 +272,6 @@ void GParted_Core::init_maps()
 			}
 
 		proc_partitions .close() ;
-		alternate_paths[ "/dev/hda5" ] = "/dev/bladieblaaaaa" ;
-		alternate_paths[ "/dev/hda" ] = "/dev/nog_een_testje" ;
 	}
 }
 
