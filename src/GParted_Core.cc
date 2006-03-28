@@ -1257,5 +1257,10 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
         
 	return PED_EXCEPTION_UNHANDLED ;
 }
+
+GParted_Core::~GParted_Core() 
+{
+	delete p_filesystem ;
+}
 	
 } //GParted

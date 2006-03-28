@@ -43,6 +43,7 @@ class GParted_Core
 {
 public:
 	GParted_Core() ;
+	~GParted_Core() ;
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void get_devices( std::vector<Device> & devices ) ;
