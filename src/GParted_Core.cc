@@ -585,6 +585,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		case FORMAT:
 			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
 		case COPY: 
+			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
 			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied .get_path(),
 				     operation ->partition_new,
 				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
@@ -719,17 +720,24 @@ bool GParted_Core::copy( const Glib::ustring & src_part_path,
 			 Sector min_size,
 			 std::vector<OperationDetails> & operation_details ) 
 {
-	set_proper_filesystem( partition_dest .filesystem ) ;
-	Partition src_partition( src_part_path ) ;
 //FIXME: some filesystems (e.g. fat*) can be copied using libparted..
-	return ( p_filesystem &&
-		 p_filesystem ->Check_Repair( src_partition, operation_details ) &&
-	     	 create_empty_partition( partition_dest, operation_details, min_size ) > 0 &&
-	     	 set_partition_type( partition_dest, operation_details ) &&
-	     	 p_filesystem ->Copy( src_part_path, partition_dest .get_path(), operation_details ) &&
-		 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
-		 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
-	     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
+
+	set_proper_filesystem( partition_dest .filesystem ) ;
+	if ( p_filesystem && p_filesystem ->Check_Repair( Partition( src_part_path ), operation_details ) )
+	{
+		bool succes = true ;
+		if ( partition_dest .status == GParted::STAT_NEW )
+			succes = create_empty_partition( partition_dest, operation_details, min_size ) ;
+
+		return ( succes &&
+			 set_partition_type( partition_dest, operation_details ) &&
+			 p_filesystem ->Copy( src_part_path, partition_dest .get_path(), operation_details ) &&
+			 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
+			 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
+	     		 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
+	}
+
+	return false ;
 }
 
 bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
@@ -827,7 +835,7 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 int GParted_Core::create_empty_partition( Partition & new_partition,
 					  std::vector<OperationDetails> & operation_details,
 					  Sector min_size )
-{
+{//FIXME:make this one return a boolean...
 	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
@@ -1162,9 +1170,11 @@ bool GParted_Core::wait_for_node( const Glib::ustring & node )
 	//we'll loop for 10 seconds or till 'node' appeares...
 	for( short t = 0 ; t < 50 ; t++ )
 	{
+		//FIXME: find a better way to check if a file exists
+		//the current way is suboptimal (at best)
 		if ( Glib::file_test( node, Glib::FILE_TEST_EXISTS ) )
 		{ 
-			sleep( 1 ) ; //apperantly the node isn't available immediatly after file_test returns succesfully :/
+			sleep( 2 ) ; //apperantly the node isn't available immediatly after file_test returns succesfully :/
 			return true ;
 		}
 		else
@@ -1260,7 +1270,8 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
-	delete p_filesystem ;
+	if ( p_filesystem )
+		delete p_filesystem ;
 }
 	
 } //GParted

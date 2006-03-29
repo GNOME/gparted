@@ -65,6 +65,7 @@ public:
 			bool busy ) ;
 
 	void Set_Unused( Sector sectors_unused ) ;
+	void set_used( Sector sectors_used ) ;
 
 	void Set_Unallocated( const Glib::ustring & device_path, 
 			      Sector sector_start,
@@ -85,6 +86,7 @@ public:
 	std::vector<Glib::ustring> get_mountpoints() const ;
 
 	bool operator==( const Partition & partition ) const ;
+	bool operator!=( const Partition & partition ) const ;
 		
 	//some public members
 	Glib::ustring device_path ;

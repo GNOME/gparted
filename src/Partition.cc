@@ -80,6 +80,15 @@ void Partition::Set_Unused( Sector sectors_unused )
 		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_length() - sectors_unused ;
 	}
 }
+	
+void Partition::set_used( Sector sectors_used ) 
+{
+	if ( sectors_used < get_length() )
+	{
+		this ->sectors_used = sectors_used ;
+		this ->sectors_unused = ( sectors_used == -1 ) ? -1 : get_length() - sectors_used ;
+	}
+}
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
 				 Sector sector_start,
@@ -160,6 +169,11 @@ bool Partition::operator==( const Partition & partition ) const
 	return this ->partition_number == partition .partition_number && 
 	       this ->sector_start == partition .sector_start && 
 	       this ->type == partition .type ;
+}
+
+bool Partition::operator!=( const Partition & partition ) const
+{
+	return ! ( *this == partition ) ;
 }
 
 void Partition::sort_paths_and_remove_duplicates()

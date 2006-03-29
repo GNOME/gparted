@@ -834,6 +834,13 @@ void Win_GParted::set_valid_operations()
 			menu_partition .items()[ 10 ] .hide() ;
 			menu_partition .items()[ 11 ] .show() ;	
 		}
+
+		//see if there is an copied partition and if it passes all tests
+		if ( ! copied_partition .get_path() .empty() &&
+		     copied_partition .get_length() <= selected_partition .get_length() &&
+		     selected_partition .status == GParted::STAT_REAL &&
+		     copied_partition != selected_partition )
+		     allow_paste( true ) ;
 	}
 }
 
@@ -1235,21 +1242,36 @@ void Win_GParted::activate_copy()
 
 void Win_GParted::activate_paste()
 {
-	if ( ! max_amount_prim_reached() )
+	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
 	{
-		Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
-					      devices[ current_device ] .cylsize ) ;
-		//we don't need the errors/mountpoints of the source partition.
-		copied_partition .error .clear() ;
-		copied_partition .clear_mountpoints() ;
-		dialog .Set_Data( selected_partition, copied_partition ) ;
-		dialog .set_transient_for( *this );
-		
-		if ( dialog .run() == Gtk::RESPONSE_OK )
+
+		if ( ! max_amount_prim_reached() )
 		{
-			dialog .hide() ;
-			Add_Operation( GParted::COPY, dialog .Get_New_Partition() );		
+			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
+						      devices[ current_device ] .cylsize ) ;
+			//we don't need the errors/mountpoints of the source partition.
+			copied_partition .error .clear() ;
+			copied_partition .clear_mountpoints() ;
+			dialog .Set_Data( selected_partition, copied_partition ) ;
+			dialog .set_transient_for( *this );
+		
+			if ( dialog .run() == Gtk::RESPONSE_OK )
+			{
+				dialog .hide() ;
+				Add_Operation( GParted::COPY, dialog .Get_New_Partition() );		
+			}
 		}
+	}
+	else
+	{
+		Partition partition_new = selected_partition ;
+		partition_new .filesystem = copied_partition .filesystem ;
+		partition_new .color = copied_partition .color ;
+		partition_new .set_used( copied_partition .sectors_used ) ;
+		partition_new .error .clear() ;
+		partition_new .status = GParted::STAT_COPY ;
+
+		Add_Operation( GParted::COPY, partition_new ) ;
 	}
 }
 

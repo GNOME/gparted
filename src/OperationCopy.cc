@@ -35,7 +35,7 @@ OperationCopy::OperationCopy( const Device & device,
 	create_description() ;
 	
 	this ->partition_new .add_path(  
-		String::ucompose( _("copy of %1"), this ->partition_new .get_path() ), true ) ;
+		String::ucompose( _("copy of %1"), this ->partition_copied .get_path() ), true ) ;
 }
 	
 void OperationCopy::apply_to_visual( std::vector<Partition> & partitions ) 
@@ -74,11 +74,22 @@ void OperationCopy::apply_to_visual( std::vector<Partition> & partitions )
 
 void OperationCopy::create_description() 
 {
-	/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
-	description = String::ucompose( _("Copy %1 to %2 (start at %3)"),
-				        partition_new .get_path(),
-				        device .get_path(),
-				        Utils::format_size( partition_new .sector_start ) ) ;
+	if ( partition_original .type == GParted::TYPE_UNALLOCATED )
+	{
+		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
+		description = String::ucompose( _("Copy %1 to %2 (start at %3)"),
+					        partition_copied .get_path(),
+					        device .get_path(),
+					        Utils::format_size( partition_new .sector_start ) ) ;
+	}
+	else
+	{
+		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1 */
+		description = String::ucompose( _("Copy %1 to %2"),
+					        partition_copied .get_path(),
+						partition_original .get_path() ) ;
+	}
+
 }
 
 } //GParted
