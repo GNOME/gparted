@@ -147,14 +147,14 @@ void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & par
 
 void OperationResizeMove::remove_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) 
 {
-	//remove unallocated space preceding the original partition
-	if ( index_orig -1 >= 0 && partitions[ index_orig -1 ] .type == GParted::TYPE_UNALLOCATED )
-		partitions .erase( partitions .begin() + ( index_orig -1 ) ) ;
-
 	//remove unallocated space following the original partition
 	if ( index_orig +1 < static_cast<int>( partitions .size() ) &&
 	     partitions[ index_orig +1 ] .type == GParted::TYPE_UNALLOCATED )
 		partitions .erase( partitions .begin() + index_orig +1 );
+	
+	//remove unallocated space preceding the original partition
+	if ( index_orig -1 >= 0 && partitions[ index_orig -1 ] .type == GParted::TYPE_UNALLOCATED )
+		partitions .erase( partitions .begin() + ( index_orig -1 ) ) ;
 }
 
 } //GParted

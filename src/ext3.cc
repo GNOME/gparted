@@ -144,7 +144,7 @@ bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetai
 	
 	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(),
 				       operation_details .back() .sub_details ) ;
-	if ( exit_status == 0 || exit_status == 1 )
+	if ( exit_status >= 0 && exit_status <= 2 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
