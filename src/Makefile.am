@@ -19,6 +19,7 @@ gparted_SOURCES = \
 	Dialog_Partition_New.cc		\
 	Dialog_Partition_Resize_Move.cc	\
 	Dialog_Progress.cc		\
+	DialogManageFlags.cc		\
 	DrawingAreaVisualDisk.cc	\
 	FileSystem.cc			\
 	Frame_Resizer_Base.cc		\

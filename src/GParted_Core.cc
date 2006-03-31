@@ -44,7 +44,7 @@ GParted_Core::GParted_Core()
 	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( NULL ) ) ;
 	      flag ;
 	      flag = ped_partition_flag_next( flag ) )
-		flags .push_back( flag ) ;	
+		flags .push_back( flag ) ;
 	
 	//throw libpartedversion to the stdout to see which version is actually used.
 	std::cout << "======================" << std::endl ;
@@ -769,14 +769,14 @@ const std::vector<FS> & GParted_Core::get_filesystems() const
 
 const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
 {
-	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ )
+	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
 		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
 			return FILESYSTEMS[ t ] ;
 	
-	return FILESYSTEMS .back( ) ;
+	return FILESYSTEMS .back() ;
 }
 
-std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( ) 
+std::vector<Glib::ustring> GParted_Core::get_disklabeltypes() 
 {
 	std::vector<Glib::ustring> disklabeltypes ;
 	
@@ -800,7 +800,63 @@ std::vector<Glib::ustring> GParted_Core::get_all_mountpoints()
 
 	return mountpoints ;
 }
+	
+std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition & partition ) 
+{
+	std::map<Glib::ustring, bool> flag_info ;
 
+	if ( open_device_and_disk( partition .device_path ) )
+	{
+		lp_partition = NULL ;
+		if ( partition .type == GParted::TYPE_EXTENDED )
+			lp_partition = ped_disk_extended_partition( lp_disk ) ;
+		else
+			lp_partition = ped_disk_get_partition_by_sector( 
+						lp_disk,
+						(partition .sector_end + partition .sector_start) / 2 ) ;
+	
+		if ( lp_partition )
+		{
+			for ( unsigned int t = 0 ; t < flags .size() ; t++ )
+				if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) )
+					flag_info[ ped_partition_flag_get_name( flags[ t ] ) ] =
+						ped_partition_get_flag( lp_partition, flags[ t ] ) ;
+		}
+	
+		close_device_and_disk() ;
+	}
+
+	return flag_info ;
+}
+	
+bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
+{
+	bool succes = false ;
+
+	if ( open_device_and_disk( partition .device_path ) )
+	{
+		lp_partition = NULL ;
+		if ( partition .type == GParted::TYPE_EXTENDED )
+			lp_partition = ped_disk_extended_partition( lp_disk ) ;
+		else
+			lp_partition = ped_disk_get_partition_by_sector( 
+						lp_disk,
+						(partition .sector_end + partition .sector_start) / 2 ) ;
+	
+		if ( lp_partition )
+		{
+			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
+
+			if ( lp_flag > 0 && ped_partition_set_flag( lp_partition, lp_flag, state ) )
+				succes = commit() ;
+		}
+	
+		close_device_and_disk() ;
+	}
+
+	return succes ;
+}
+	
 void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 {
 	PedFileSystem *fs = NULL;
@@ -1104,7 +1160,8 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 void GParted_Core::set_flags( Partition & partition )
 {
 	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-		if ( ped_partition_get_flag( lp_partition, flags[ t ] ) )
+		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
+		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
 			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
 }
 

@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	Dialog_Partition_New.h    	\
 	Dialog_Partition_Resize_Move.h 	\
 	Dialog_Progress.h  		\
+	DialogManageFlags.h  		\
 	DrawingAreaVisualDisk.h 	\
 	FileSystem.h  			\
         Frame_Resizer_Base.h		\

@@ -70,6 +70,8 @@ public:
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
 	std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::vector<Glib::ustring> get_all_mountpoints() ;
+	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
+	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
 
 private:
 	GParted::FILESYSTEM get_filesystem() ; 

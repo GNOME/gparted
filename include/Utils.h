@@ -65,7 +65,7 @@ enum FILESYSTEM
 
 	FS_USED		= 17,
 	FS_UNUSED	= 18
-};
+} ;
 
 enum SIZE_UNIT
 {
@@ -75,8 +75,8 @@ enum SIZE_UNIT
 	UNIT_KIB	= 2,
 	UNIT_MIB	= 3,
 	UNIT_GIB	= 4,
-	UNIT_TIB	= 5,
-};
+	UNIT_TIB	= 5
+} ;
 
 //struct to store filesysteminformation
 struct FS
@@ -105,7 +105,7 @@ struct FS
 		read = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
 	} 
-};
+} ;
 
 
 class Utils

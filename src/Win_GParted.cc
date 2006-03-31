@@ -23,6 +23,7 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Dialog_Partition_Info.h"
+#include "../include/DialogManageFlags.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCreate.h"
 #include "../include/OperationDelete.h"
@@ -262,7 +263,13 @@ void Win_GParted::init_partition_menu()
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("mount on"), * manage( new Gtk::Menu() ) ) ) ;
 
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("manage flags"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) );
+
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO,
@@ -724,7 +731,7 @@ void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
-	allow_info( false ) ;
+	allow_manage_flags( false ) ; allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
 	menu_partition .items()[ 10 ] .show() ;
@@ -736,6 +743,10 @@ void Win_GParted::set_valid_operations()
 	
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
+	
+	//flag managing..
+	if ( selected_partition .type != GParted::TYPE_UNALLOCATED && selected_partition .status == GParted::STAT_REAL )
+		allow_manage_flags( true ) ; 
 
 	//deal with swap...
 	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
@@ -754,7 +765,7 @@ void Win_GParted::set_valid_operations()
        			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
 				->set_label( _("swapon") ) ;
 	}
-	
+
 	//only unmount is allowed (if ! extended)
 	if ( selected_partition .busy )	
 	{
@@ -794,8 +805,8 @@ void Win_GParted::set_valid_operations()
 			allow_delete( true ) ;
 		
 		if ( ! devices[ current_device ] .readonly )
-			allow_resize( true ); 
-		
+			allow_resize( true ) ; 
+
 		return ;
 	}	
 	
@@ -1657,6 +1668,23 @@ void Win_GParted::activate_disklabel()
 			
 		menu_gparted_refresh_devices() ;
 	}
+}
+	
+void Win_GParted::activate_manage_flags() 
+{
+	DialogManageFlags dialog( selected_partition ) ;
+	dialog .set_transient_for( *this ) ;
+
+	dialog .signal_get_flags .connect(
+		sigc::mem_fun( &gparted_core, &GParted_Core::get_available_flags ) ) ;
+	dialog .signal_toggle_flag .connect(
+		sigc::mem_fun( &gparted_core, &GParted_Core::toggle_flag ) ) ;
+
+	dialog .run() ;
+	dialog .hide() ;
+
+	if ( dialog .any_change )
+		menu_gparted_refresh_devices() ;
 }
 
 void Win_GParted::activate_undo()
