@@ -90,9 +90,9 @@ private:
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	void LP_Set_Used_Sectors( Partition & partition );
 	void set_flags( Partition & partition ) ;
-	int create_empty_partition( Partition & new_partition,
-				    std::vector<OperationDetails> & operation_details,	    
-				    Sector min_size = 0 ) ;
+	bool create_empty_partition( Partition & new_partition,
+				     std::vector<OperationDetails> & operation_details,	    
+				     Sector min_size = 0 ) ;
 	bool resize_container_partition( const Partition & partition_old,
 					 const Partition & partition_new,
 					 bool fixed_start,

@@ -888,10 +888,10 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 	}
 }
 
-int GParted_Core::create_empty_partition( Partition & new_partition,
-					  std::vector<OperationDetails> & operation_details,
-					  Sector min_size )
-{//FIXME:make this one return a boolean...
+bool GParted_Core::create_empty_partition( Partition & new_partition,
+					   std::vector<OperationDetails> & operation_details,
+					   Sector min_size )
+{
 	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
@@ -988,7 +988,7 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
-		return new_partition .partition_number ;
+		return new_partition .partition_number > 0 ;
 	}
 	else
 	{		
@@ -998,7 +998,7 @@ int GParted_Core::create_empty_partition( Partition & new_partition,
 		
 		operation_details .back() .status = OperationDetails::ERROR ;	
 		
-		return 0 ;
+		return false ;
 	}
 }
 
