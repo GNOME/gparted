@@ -119,8 +119,12 @@ void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & par
 	{
 		remove_adjacent_unallocated( partitions, index_extended ) ;
 		
-		partitions[ index_extended ] .sector_start = partition_new .sector_start ;
-		partitions[ index_extended ] .sector_end = partition_new .sector_end ;
+		index_extended = find_index_extended( partitions ) ;
+		if ( index_extended >= 0 )
+		{
+			partitions[ index_extended ] .sector_start = partition_new .sector_start ;
+			partitions[ index_extended ] .sector_end = partition_new .sector_end ;
+		}
 	
 		insert_unallocated( partitions, 0, device .length -1, false ) ;
 	}
