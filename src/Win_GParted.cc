@@ -64,8 +64,6 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	//Pack the main box
 	this ->add( vbox_main ); 
 	
-	this ->signal_show() .connect( sigc::mem_fun(*this, &Win_GParted::on_signal_show) );
-	
 	//menubar....
 	init_menubar() ;
 	vbox_main .pack_start( menubar_main, Gtk::PACK_SHRINK );
@@ -931,8 +929,10 @@ void Win_GParted::radio_devices_changed( unsigned int item )
 	}
 }
 
-void Win_GParted::on_signal_show()
-{//FIXME: why not simply override Widget::on_show() ?
+void Win_GParted::on_show()
+{
+	Gtk::Window::on_show() ;
+	
 	vpaned_main .set_position( vpaned_main .get_height() ) ;
 	close_operationslist() ;
 

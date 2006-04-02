@@ -63,7 +63,6 @@ private:
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
-	
 	void Add_Operation( OperationType operationtype, const Partition & new_partition, int index = -1 ) ;
 	void Refresh_Visual();
 	bool Quit_Check_Operations();
@@ -124,8 +123,8 @@ private:
 	void clear_operationslist() ;
 	void combo_devices_changed();
 	void radio_devices_changed( unsigned int item ) ;
-	void on_signal_show() ;
 	bool on_delete_event( GdkEventAny* ) ;
+	void on_show() ;
 		
 	void menu_gparted_refresh_devices();
 	void menu_gparted_filesystems();

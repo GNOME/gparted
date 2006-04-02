@@ -17,8 +17,7 @@
  
 #ifndef DIALOG_FILESYSTEMS
 #define DIALOG_FILESYSTEMS
-//FIXME add more info ( at least 'detect' which will be any filesystem we _can_ detect (and should therefore have
-//it's own class) )
+//FIXME: add classes for all fs'es we can detect so they show up here.
 #include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
@@ -31,9 +30,8 @@ namespace GParted
 class Dialog_Filesystems : public Gtk::Dialog
 {
 public:
-	
 	Dialog_Filesystems() ;
-	void Load_Filesystems( const std::vector< FS > & FILESYSTEMS ) ;
+	void Load_Filesystems( const std::vector<FS> & FILESYSTEMS ) ;
 	~Dialog_Filesystems() ;
 	
 private:
@@ -46,20 +44,30 @@ private:
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> filesystem;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > detect ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > read ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 				
 		treeview_filesystems_Columns() 
 		{ 
-			add( filesystem ); add( create ); add( grow );
-			add( shrink ); add( move ); add( copy );
+			add( filesystem );
+			add( detect ) ;
+			add( read ) ;
+			add( create ) ;
+			add( grow ) ;
+			add( shrink ) ;
+			add( move ) ;
+			add( copy ) ;
 		}
 	};
 	
 	treeview_filesystems_Columns treeview_filesystems_columns ;
+
+	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no ;
 };
 
 } //GParted
