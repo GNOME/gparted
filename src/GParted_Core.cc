@@ -185,9 +185,13 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
 				set_device_partitions( temp_device ) ;
+
+				if ( ! Glib::find_program_in_path( "pmount" ) .empty() )
+					disable_automount( temp_device .partitions ) ;
+				
 				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions ) ;
-				
+			
 				if ( temp_device .highest_busy )
 					temp_device .readonly = ! ped_disk_commit_to_os( lp_disk ) ;
 			}
@@ -431,6 +435,24 @@ void GParted_Core::set_device_partitions( Device & device )
 				    true ) ;
 	
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, false ) ; 
+}
+	
+void GParted_Core::disable_automount( const std::vector<Partition> & partitions ) 
+{
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	{
+		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			disable_automount( partitions[ t ] .logicals ) ;
+
+		if ( std::find( pmount_locked_partitions .begin(),
+				pmount_locked_partitions .end(),
+				partitions[ t ] .get_path() ) == pmount_locked_partitions .end() )
+		{
+			Utils::execute_command(	"pmount --lock " + partitions[ t ] .get_path() + " " + Utils::num_to_str( getpid() ) ) ;
+
+			pmount_locked_partitions .push_back( partitions[ t ] .get_path() ) ;
+		}
+	}
 }
 
 void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
@@ -1002,7 +1024,7 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 	     	)
 	     )
 	   )
-	{
+	{ 
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		
 		return new_partition .partition_number > 0 ;
@@ -1331,7 +1353,7 @@ bool GParted_Core::commit()
 	bool return_value = ped_disk_commit_to_dev( lp_disk ) ;
 	
 	ped_disk_commit_to_os( lp_disk ) ;
-		
+	
 	return return_value ;
 }
 	
@@ -1347,6 +1369,9 @@ GParted_Core::~GParted_Core()
 {
 	if ( p_filesystem )
 		delete p_filesystem ;
+			
+	for ( unsigned int t = 0 ; t < pmount_locked_partitions .size() ; t++ )
+		Utils::execute_command( "pmount --unlock " + pmount_locked_partitions[ t ] + " " + Utils::num_to_str( getpid() ) ) ;
 }
 	
 } //GParted

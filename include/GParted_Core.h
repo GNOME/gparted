@@ -66,6 +66,7 @@ private:
 	GParted::FILESYSTEM get_filesystem() ; 
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
+	void disable_automount( const std::vector<Partition> & partitions ) ;
 	void read_mountpoints_from_file( const Glib::ustring & filename,
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	void init_maps() ;
@@ -117,6 +118,8 @@ private:
 	std::map< Glib::ustring, Glib::ustring > alternate_paths ;
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+
+	std::vector<Glib::ustring> pmount_locked_partitions ;
 
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;
