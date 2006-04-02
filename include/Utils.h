@@ -124,6 +124,7 @@ public:
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
 	static Glib::ustring format_size( Sector size ) ;
 	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;
+	static int execute_command( const Glib::ustring & command ) ;
 	static int execute_command( const Glib::ustring & command,
 				    Glib::ustring & output,
 				    Glib::ustring & error,

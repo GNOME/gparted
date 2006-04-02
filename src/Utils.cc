@@ -184,6 +184,12 @@ double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit )
 			return sectors ;
 	}
 }
+	
+int Utils::execute_command( const Glib::ustring & command ) 
+{
+	Glib::ustring dummy ;
+	return execute_command( command, dummy, dummy ) ;
+}
 
 int Utils::execute_command( const Glib::ustring & command,
 		     	    Glib::ustring & output,

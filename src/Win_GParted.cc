@@ -1532,9 +1532,13 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 	Glib::ustring dummy ;
 	
 	if ( selected_partition .busy )
-		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path() + " && sync", dummy, *error ) ;
+		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path() + " && sync",
+						    dummy,
+						    *error ) ;
 	else
-		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .get_path() + " && sync", dummy, *error ) ;
+		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .get_path() + " && sync",
+						    dummy,
+						    *error ) ;
 
 	pulse = false ;
 }
