@@ -19,18 +19,18 @@
 
 #include <gtkmm/main.h>
 #include <gtkmm/stock.h>
+#include <gdkmm/cursor.h>
 
 namespace GParted
 {
 
-DialogManageFlags::DialogManageFlags( const Partition & partition )
+DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib::ustring, bool> flag_info )
 {
 	any_change = false ;
 
 	set_title( String::ucompose( _("Manage flags on %1"), partition .get_path() ) );
 	set_has_separator( false ) ;
-	set_size_request( 300, -1 ) ;
-	set_resizable( false );
+	set_default_size( -1, 250 ) ;
 	
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += String::ucompose( _("Manage flags on %1"), partition .get_path() ) ;
@@ -49,31 +49,22 @@ DialogManageFlags::DialogManageFlags( const Partition & partition )
 	static_cast<Gtk::CellRendererToggle *>( treeview_flags .get_column_cell_renderer( 0 ) ) 
 		->signal_toggled() .connect( sigc::mem_fun( *this, &DialogManageFlags::on_flag_toggled ) ) ;
 
+	treeview_flags .set_size_request( 300, -1 ) ;
 	get_vbox() ->pack_start( treeview_flags, Gtk::PACK_SHRINK ) ;
 
 	this ->partition = partition ;
+	this ->flag_info = flag_info ;
 	
+	load_treeview() ;
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
 		
 	show_all_children() ;
 }
 
-void DialogManageFlags::on_show()
-{
-	Dialog::on_show() ;
-
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration() ;
-
-	load_flags() ;
-}
-
-void DialogManageFlags::load_flags()
+void DialogManageFlags::load_treeview()
 {
 	liststore_flags ->clear() ;
 
-	std::map<Glib::ustring, bool> flag_info = signal_get_flags .emit( partition ) ;
-	
 	for ( std::map<Glib::ustring, bool>::iterator iter = flag_info .begin() ; iter != flag_info .end() ; ++iter )
 	{
 		row = *( liststore_flags ->append() ) ;
@@ -84,6 +75,11 @@ void DialogManageFlags::load_flags()
 
 void DialogManageFlags::on_flag_toggled( const Glib::ustring & path ) 
 {
+	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;
+	set_sensitive( false ) ;
+	while ( Gtk::Main::events_pending() )
+		Gtk::Main::iteration() ;
+	
 	any_change = true ;
 
 	row = *( liststore_flags ->get_iter( path ) ) ;
@@ -91,7 +87,11 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 
 	signal_toggle_flag .emit( partition, row[ treeview_flags_columns .flag ], row[ treeview_flags_columns .status ] ) ;
 
-	load_flags() ;
+	flag_info = signal_get_flags .emit( partition ) ;
+	load_treeview() ;
+	
+	set_sensitive( true ) ;
+	get_window() ->set_cursor() ;
 }
 
 }//GParted

@@ -31,7 +31,7 @@ namespace GParted
 class DialogManageFlags : public Gtk::Dialog
 {
 public:
-	DialogManageFlags( const Partition & partition ) ;
+	DialogManageFlags( const Partition & partition, std::map<Glib::ustring, bool> flag_info ) ;
 
 	sigc::signal< std::map<Glib::ustring, bool>, const Partition & > signal_get_flags ;
 	sigc::signal< bool, const Partition &, const Glib::ustring &, bool > signal_toggle_flag ;
@@ -39,9 +39,7 @@ public:
 	bool any_change ;
 	
 private:
-	void on_show() ;
-
-	void load_flags() ;
+	void load_treeview() ;
 	void on_flag_toggled( const Glib::ustring & path ) ;
 	
 	
@@ -64,6 +62,7 @@ private:
 	treeview_flags_Columns treeview_flags_columns ;	
 
 	Partition partition ;
+	std::map<Glib::ustring, bool> flag_info ;
 };
 
 } //GParted

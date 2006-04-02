@@ -932,7 +932,7 @@ void Win_GParted::radio_devices_changed( unsigned int item )
 }
 
 void Win_GParted::on_signal_show()
-{
+{//FIXME: why not simply override Widget::on_show() ?
 	vpaned_main .set_position( vpaned_main .get_height() ) ;
 	close_operationslist() ;
 
@@ -1672,17 +1672,22 @@ void Win_GParted::activate_disklabel()
 	
 void Win_GParted::activate_manage_flags() 
 {
-	DialogManageFlags dialog( selected_partition ) ;
-	dialog .set_transient_for( *this ) ;
+	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;
+	while ( Gtk::Main::events_pending() )
+		Gtk::Main::iteration() ;
 
+	DialogManageFlags dialog( selected_partition, gparted_core .get_available_flags( selected_partition ) ) ;
+	dialog .set_transient_for( *this ) ;
 	dialog .signal_get_flags .connect(
 		sigc::mem_fun( &gparted_core, &GParted_Core::get_available_flags ) ) ;
 	dialog .signal_toggle_flag .connect(
 		sigc::mem_fun( &gparted_core, &GParted_Core::toggle_flag ) ) ;
 
+	get_window() ->set_cursor() ;
+	
 	dialog .run() ;
 	dialog .hide() ;
-
+	
 	if ( dialog .any_change )
 		menu_gparted_refresh_devices() ;
 }
