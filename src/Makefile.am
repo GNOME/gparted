@@ -47,6 +47,7 @@ gparted_SOURCES = \
 	ntfs.cc				\
 	reiser4.cc 			\
 	reiserfs.cc			\
+	ufs.cc			\
 	xfs.cc
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 

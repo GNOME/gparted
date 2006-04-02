@@ -23,6 +23,20 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 
+#include "../include/ext2.h"
+#include "../include/ext3.h"
+#include "../include/fat16.h"
+#include "../include/fat32.h"
+#include "../include/linux_swap.h"
+#include "../include/reiserfs.h"
+#include "../include/ntfs.h"
+#include "../include/xfs.h"
+#include "../include/jfs.h"
+#include "../include/hfs.h"
+#include "../include/hfsplus.h"
+#include "../include/reiser4.h"
+#include "../include/ufs.h"
+
 #include <cerrno>
 #include <sys/statvfs.h>	
 
@@ -91,6 +105,9 @@ void GParted_Core::find_supported_filesystems()
 	
 	reiserfs fs_reiserfs;
 	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support() ) ;
+	
+	ufs fs_ufs;
+	FILESYSTEMS .push_back( fs_ufs .get_filesystem_support() ) ;
 	
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
@@ -1184,6 +1201,7 @@ void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 		case FS_JFS		: p_filesystem = new jfs() ; 		break ;
 		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
 		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
+		case FS_UFS		: p_filesystem = new ufs() ;	 	break ;
 
 		default			: p_filesystem = NULL ;
 	}

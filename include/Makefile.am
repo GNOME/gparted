@@ -38,4 +38,5 @@ EXTRA_DIST = \
 	ntfs.h  			\
 	reiser4.h   			\
 	reiserfs.h  			\
+	ufs.h  			\
 	xfs.h

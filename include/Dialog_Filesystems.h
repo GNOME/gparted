@@ -17,7 +17,7 @@
  
 #ifndef DIALOG_FILESYSTEMS
 #define DIALOG_FILESYSTEMS
-//FIXME: add classes for all fs'es we can detect so they show up here.
+
 #include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>

@@ -18,19 +18,8 @@
 #ifndef GPARTED_CORE
 #define GPARTED_CORE
 
+#include "../include/FileSystem.h"
 #include "../include/Operation.h"
-#include "../include/ext2.h"
-#include "../include/ext3.h"
-#include "../include/fat16.h"
-#include "../include/fat32.h"
-#include "../include/linux_swap.h"
-#include "../include/reiserfs.h"
-#include "../include/ntfs.h"
-#include "../include/xfs.h"
-#include "../include/jfs.h"
-#include "../include/hfs.h"
-#include "../include/hfsplus.h"
-#include "../include/reiser4.h"
 
 #include <parted/parted.h>
 #include <vector>
