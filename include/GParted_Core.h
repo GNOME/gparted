@@ -94,7 +94,7 @@ private:
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;
-	bool wait_for_node( const Glib::ustring & node ) ;
+	bool wait_for_node( const Glib::ustring & node, bool disable_automount = false ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 		
 	bool open_device( const Glib::ustring & device_path ) ;
@@ -120,6 +120,7 @@ private:
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 
 	std::vector<Glib::ustring> pmount_locked_partitions ;
+	Glib::ustring PID ;
 
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;

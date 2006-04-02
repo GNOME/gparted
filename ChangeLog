@@ -1,6 +1,14 @@
 2006-04-02 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/GParted_Core.h,
+	  src/GParted_Core.cc: improved disabling of automounting. It's still
+	  somewhat crude, but right now it's ok for some semi-public testing.
+	  I'll do some cleanups tomorrow morning.
+	* src/Dialog_Progress.cc: added FIXME
+
+2006-04-02 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* include/GParted_Core.h,
 	  src/GParted_Core.cc: an initial solution for the automount problem.
 	  I still need to add something to prevent just created partitions from
 	  getting mounted. (see #324220 for more info)

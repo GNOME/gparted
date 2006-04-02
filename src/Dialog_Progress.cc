@@ -249,9 +249,9 @@ void Dialog_Progress::on_expander_changed()
 }
 
 void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter )
-{
+{//FIXME: markup tags in the text should be escaped (e.g. <device> will interfere with the real tags)
 	dynamic_cast<Gtk::CellRendererText *>( renderer ) ->property_markup() = 
-		static_cast<Gtk::TreeRow>( * iter )[ treeview_operations_columns .operation_description ] ;
+		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
 }
 
 void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 
