@@ -38,6 +38,7 @@ Dialog_Filesystems::Dialog_Filesystems()
 	treeview_filesystems .append_column( _("Shrink"), treeview_filesystems_columns .shrink );
 	treeview_filesystems .append_column( _("Move"), treeview_filesystems_columns .move );
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
+	treeview_filesystems .append_column( _("Check"), treeview_filesystems_columns .check );
 		
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	get_vbox() ->pack_start( treeview_filesystems ) ;
@@ -46,7 +47,7 @@ Dialog_Filesystems::Dialog_Filesystems()
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
 	icon_no = render_icon( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
 	
-	add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK );
+	add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK ) ;
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
 	show_all_children() ;
 }
@@ -71,6 +72,7 @@ void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .shrink ] = fs .shrink ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .move ] = fs .move ? icon_yes : icon_no ;  
 	treerow[ treeview_filesystems_columns .copy ] = fs .copy ? icon_yes : icon_no ; 
+	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
 }
 
 Dialog_Filesystems::~Dialog_Filesystems() 

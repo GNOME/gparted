@@ -51,8 +51,7 @@ GParted_Core::GParted_Core()
 	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
-	
-	PID = Utils::num_to_str( getpid() ) ;
+	DISABLE_AUTOMOUNT = false ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
@@ -65,6 +64,15 @@ GParted_Core::GParted_Core()
 	//throw libpartedversion to the stdout to see which version is actually used.
 	std::cout << "======================" << std::endl ;
 	std::cout << "libparted : " << ped_get_version() << std::endl ;
+
+	//see if we can disable automounting
+	if ( ! Glib::find_program_in_path( "hal-find-by-property" ) .empty() &&
+	     ! Glib::find_program_in_path( "hal-set-property" ) .empty() )
+	{
+		DISABLE_AUTOMOUNT = true ;
+		std::cout << "automounting disabled" << std::endl ;
+	}
+
 	std::cout << "======================" << std::endl ;
 	
 	//initialize filesystemlist
@@ -156,7 +164,9 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
-	
+//FIXME: i guess this is the correct place to remove devices from disabled_automount_devices..
+//this is necessary for people who remove and replug their usbdevice without restarting gparted
+//all devices not in device_paths yet availabl in disable_automount_devices should be removed..
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( check_device_path( device_paths[ t ] ) &&
@@ -186,11 +196,8 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
+				disable_automount( temp_device ) ;
 				set_device_partitions( temp_device ) ;
-
-				if ( ! Glib::find_program_in_path( "pmount" ) .empty() )
-					disable_automount( temp_device .partitions ) ;
-				
 				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions ) ;
 			
@@ -439,21 +446,34 @@ void GParted_Core::set_device_partitions( Device & device )
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, false ) ; 
 }
 	
-void GParted_Core::disable_automount( const std::vector<Partition> & partitions ) 
+void GParted_Core::disable_automount( const Device & device ) 
 {
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	if ( DISABLE_AUTOMOUNT )
 	{
-		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			disable_automount( partitions[ t ] .logicals ) ;
-
-		if ( partitions[ t ] .type != GParted::TYPE_UNALLOCATED &&
-		     std::find( pmount_locked_partitions .begin(),
-				pmount_locked_partitions .end(),
-				partitions[ t ] .get_path() ) == pmount_locked_partitions .end() )
+		if ( disabled_automount_devices .find( device .get_path() ) == disabled_automount_devices .end() )
 		{
-			Utils::execute_command(	"pmount --lock " + partitions[ t ] .get_path() + " " + PID ) ;
+			//get HAL device-id
+			Glib::ustring hal_id, error ;
+			bool found = false ;
 
-			pmount_locked_partitions .push_back( partitions[ t ] .get_path() ) ;
+			for ( unsigned int t = 0 ; t < device .get_paths() .size() && ! found ; t++ )
+				found = ! Utils::execute_command(
+						"hal-find-by-property --key 'block.device' --string '" +
+						device .get_paths()[ t ] + "'",
+						hal_id,
+						error ) ;
+
+			if ( found )
+			{
+				if ( ! hal_id .empty() && hal_id[ hal_id .length() -1 ] == '\n' )
+					hal_id .erase( hal_id .length() -1, 1 ) ;
+					
+				Utils::execute_command( "hal-set-property --udi '" + hal_id + 
+							"' --key 'storage.automount_enabled_hint' --bool false" ) ;
+			}
+			
+			//found or not found.. we're done with this device..
+			disabled_automount_devices[ device. get_path() ] = hal_id ;
 		}
 	}
 }
@@ -685,10 +705,6 @@ bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDet
 			lp_partition = ped_disk_get_partition_by_sector( 
 						lp_disk,
 						(partition .sector_end + partition .sector_start) / 2 ) ;
-		
-		//remove the lock (if it exists)
-		if ( ! Glib::find_program_in_path( "pmount" ) .empty() )
-			Utils::execute_command( "pmount --unlock " + partition .get_path() + " " + PID ) ;
 		
 		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
 		sleep( 1 ) ; //give the kernel some time to reread the partitiontable
@@ -1026,7 +1042,7 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 	     (	
 		new_partition .type == GParted::TYPE_EXTENDED ||
 	     	(
-	     	   wait_for_node( new_partition .get_path(), ! Glib::find_program_in_path( "pmount" ) .empty() ) && 
+	     	   wait_for_node( new_partition .get_path() ) && 
 	     	   erase_filesystem_signatures( new_partition )
 	     	)
 	     )
@@ -1269,38 +1285,21 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 	return return_value ;
 }
 	
-bool GParted_Core::wait_for_node( const Glib::ustring & node, bool disable_automount ) 
+bool GParted_Core::wait_for_node( const Glib::ustring & node ) 
 {
 	//we'll loop for 10 seconds or till 'node' appeares...
-	if ( disable_automount )
+	for( short t = 0 ; t < 50 ; t++ )
 	{
-		for( short t = 0 ; t < 50 ; t++ )
+		//FIXME: find a better way to check if a file exists
+		//the current way is suboptimal (at best)
+		if ( Glib::file_test( node, Glib::FILE_TEST_EXISTS ) )
 		{
-			if ( ! Utils::execute_command( "pmount --lock " + node + " " + PID ) )
-			{
-				//apperantly the node isn't available immediatly after file_test returns succesfully :/
-				sleep( 2 ) ; 
-				return true ;
-			}
-			else
-				usleep( 200000 ) ;
+			//same issue
+			sleep( 2 ) ; 
+			return true ;
 		}
-	}
-	else
-	{
-		for( short t = 0 ; t < 50 ; t++ )
-		{
-			//FIXME: find a better way to check if a file exists
-			//the current way is suboptimal (at best)
-			if ( Glib::file_test( node, Glib::FILE_TEST_EXISTS ) )
-			{
-				//same issue
-				sleep( 2 ) ; 
-				return true ;
-			}
-			else
-				usleep( 200000 ) ; //200 milliseconds
-		}
+		else
+			usleep( 200000 ) ; //200 milliseconds
 	}
 
 	return false ;
@@ -1394,9 +1393,6 @@ GParted_Core::~GParted_Core()
 {
 	if ( p_filesystem )
 		delete p_filesystem ;
-			
-	for ( unsigned int t = 0 ; t < pmount_locked_partitions .size() ; t++ )
-		Utils::execute_command( "pmount --unlock " + pmount_locked_partitions[ t ] + " " + PID ) ;
 }
 	
 } //GParted

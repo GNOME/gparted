@@ -240,7 +240,7 @@ int Utils::execute_command( const Glib::ustring & command,
 
 	output = std_out ;
 	error = std_error ;
-
+	
 	return exit_status ;
 }
 

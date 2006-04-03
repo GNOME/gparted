@@ -66,7 +66,7 @@ private:
 	GParted::FILESYSTEM get_filesystem() ; 
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
-	void disable_automount( const std::vector<Partition> & partitions ) ;
+	void disable_automount( const Device & device ) ;
 	void read_mountpoints_from_file( const Glib::ustring & filename,
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	void init_maps() ;
@@ -94,7 +94,7 @@ private:
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;
-	bool wait_for_node( const Glib::ustring & node, bool disable_automount = false ) ;
+	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 		
 	bool open_device( const Glib::ustring & device_path ) ;
@@ -119,8 +119,9 @@ private:
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 
-	std::vector<Glib::ustring> pmount_locked_partitions ;
-	Glib::ustring PID ;
+	//disabling automount stuff
+	bool DISABLE_AUTOMOUNT ;
+	std::map<Glib::ustring, Glib::ustring> disabled_automount_devices ;
 
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;

@@ -51,6 +51,7 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
 				
 		treeview_filesystems_Columns() 
 		{ 
@@ -62,6 +63,7 @@ private:
 			add( shrink ) ;
 			add( move ) ;
 			add( copy ) ;
+			add( check ) ;
 		}
 	};
 	
