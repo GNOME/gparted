@@ -164,9 +164,12 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
-//FIXME: i guess this is the correct place to remove devices from disabled_automount_devices..
-//this is necessary for people who remove and replug their usbdevice without restarting gparted
-//all devices not in device_paths yet availabl in disable_automount_devices should be removed..
+	
+	//remove non-existing devices from disabled_automount_devices..
+	for ( iter = disabled_automount_devices .begin() ; iter != disabled_automount_devices .end() ; ++iter )
+		if ( std::find( device_paths .begin(), device_paths .end(), iter ->first ) == device_paths .end() )
+			disabled_automount_devices .erase( iter ) ;
+
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( check_device_path( device_paths[ t ] ) &&
