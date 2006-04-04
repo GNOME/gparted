@@ -948,6 +948,9 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 			}
 		}
 	}
+				
+	if ( partition .sectors_used == -1 )
+		partition .error = ped_error ;
 }
 
 bool GParted_Core::create_empty_partition( Partition & new_partition,
