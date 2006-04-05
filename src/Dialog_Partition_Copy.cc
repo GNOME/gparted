@@ -53,7 +53,11 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 		Utils::round( Utils::sector_to_unit( 
 				copied_partition .sectors_used, GParted::UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 	
-	fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX -= BUF ;
+	if ( fs .grow )
+		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX -= BUF ;
+	else
+		fs .MAX = copied_partition .get_length() ;
+
 	
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
 		fs .MIN = copied_partition .sectors_used + (BUF * 2) ;
