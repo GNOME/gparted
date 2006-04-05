@@ -109,30 +109,44 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	frame_resizer_base ->set_x_end( 
 		Utils::round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
 	frame_resizer_base ->set_used( Utils::round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
-		
+
+	//set MIN
 	if ( fs .shrink )
 	{
 		//since some filesystems have lower limits we need to check for this
 		if ( selected_partition .sectors_used > fs .MIN )
 			fs .MIN = selected_partition .sectors_used ;
-		
+
 		//if fs. MIN is 0 here (means used == 0 as well) it's safe to have BUF / 2
 		fs .MIN += fs .MIN ? BUF : BUF/2 ;
-		
-		//in certain (rare) cases fs .MIN is a bit too high...
+
+		//in certain (rare) cases fs .MIN is (now) larger than 'selected_partition'..
 		if ( fs .MIN > selected_partition .get_length() )
 			fs .MIN = selected_partition .get_length() ;
 	}
-	else //only grow..
+	else
 		fs .MIN = selected_partition .get_length() ;
-		
-	fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? ( TOTAL_MB * MEBIBYTE ) : fs .MAX -= BUF/2 ;
+	
+	//set MAX
+	if ( fs .grow )
+	{
+		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) 
+			fs .MAX = TOTAL_MB * MEBIBYTE ;
+		else
+			fs .MAX -= BUF/2 ;
+	}
+	else
+		fs .MAX = selected_partition .get_length() ;
+
 	
 	//set values of spinbutton_before
 	if ( ! fixed_start )
 	{
-		spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
-		spinbutton_before .set_value( Utils::round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 
+			0,
+			TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+		spinbutton_before .set_value( 
+			Utils::round( Utils::sector_to_unit( previous, GParted::UNIT_MIB ) ) ) ;
 	}
 	
 	//set values of spinbutton_size 
@@ -143,8 +157,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
-	spinbutton_after .set_value( Utils::round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
+	Sector after_min = ( ! fs .grow && ! fs .move ) ? next : 0 ;
+	spinbutton_after .set_range( 
+		Utils::round( Utils::sector_to_unit( after_min, GParted::UNIT_MIB ) ),
+		TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_value( 
+		Utils::round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
 	
 	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
 					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;

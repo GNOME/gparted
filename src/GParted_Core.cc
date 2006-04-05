@@ -731,7 +731,9 @@ bool GParted_Core::resize( const Device & device,
 	set_proper_filesystem( partition_new .filesystem ) ;
 	
 	//resize using libparted..
-	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED )
+	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED ||
+	     get_fs( partition_old .filesystem ) .shrink == GParted::FS::LIBPARTED ||
+	     get_fs( partition_old .filesystem ) .move == GParted::FS::LIBPARTED )
 	{
 		if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
 		{

@@ -817,7 +817,7 @@ void Win_GParted::set_valid_operations()
 		allow_format( true ) ;
 		
 		//find out if resizing/moving is possible
-		if ( (fs .grow || fs .shrink ) && ! devices[ current_device ] .readonly ) 
+		if ( (fs .grow || fs .shrink || fs .move ) && ! devices[ current_device ] .readonly ) 
 			allow_resize( true ) ;
 			
 		//only allow copying of real partitions

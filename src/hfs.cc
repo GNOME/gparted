@@ -27,7 +27,8 @@ FS hfs::get_filesystem_support()
 		
 	fs .filesystem = GParted::FS_HFS ;
 	
-	fs .read = GParted::FS::LIBPARTED; //provided by libparted
+	fs .read = GParted::FS::LIBPARTED ; 
+	fs .shrink = GParted::FS::LIBPARTED ; 
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
