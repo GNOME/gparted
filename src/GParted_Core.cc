@@ -358,7 +358,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	partition_temp .error += "\n-"; 
 	partition_temp .error += _( "The filesystem is damaged" ) ;
 	partition_temp .error += "\n-" ; 
-	partition_temp .error += _( "The filesystem is unknown to libparted" ) ;
+	partition_temp .error += _( "The filesystem is unknown to GParted" ) ;
 	partition_temp .error += "\n-"; 
 	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
 
