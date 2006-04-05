@@ -17,7 +17,7 @@
  
 #include "../include/Win_GParted.h"
 #include "../include/Dialog_Progress.h"
-#include "../include/Dialog_Filesystems.h" 
+#include "../include/DialogFeatures.h" 
 #include "../include/Dialog_Disklabel.h"
 #include "../include/Dialog_Partition_Resize_Move.h"
 #include "../include/Dialog_Partition_Copy.h"
@@ -118,7 +118,7 @@ void Win_GParted::init_menubar()
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Devices"), *image ) ) ; 
 	
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Filesystems"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_filesystems ) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
@@ -130,7 +130,7 @@ void Win_GParted::init_menubar()
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
 	
 	//view
-	menu = manage( new Gtk::Menu( ) ) ;
+	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
@@ -1037,16 +1037,16 @@ void Win_GParted::menu_gparted_refresh_devices()
 	}
 }
 
-void Win_GParted::menu_gparted_filesystems()
+void Win_GParted::menu_gparted_features()
 {
-	Dialog_Filesystems dialog ;
+	DialogFeatures dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog .Load_Filesystems( gparted_core .get_filesystems() ) ;
+	dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 	while ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		gparted_core .find_supported_filesystems() ;
-		dialog .Load_Filesystems( gparted_core .get_filesystems() ) ;
+		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 
 		//recreate format menu...
 		menu_partition .items()[ 8 ] .remove_submenu() ;

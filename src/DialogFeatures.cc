@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004-2006 Bart 'plors' Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,16 +15,16 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#include "../include/Dialog_Filesystems.h" 
+#include "../include/DialogFeatures.h" 
 
 #include <gtkmm/stock.h>
 
 namespace GParted
 {
 
-Dialog_Filesystems::Dialog_Filesystems() 
+DialogFeatures::DialogFeatures() 
 {
-	set_title( _("Filesystems") ) ;
+	set_title( _("Features") ) ;
 	set_has_separator( false ) ;
 	set_resizable( false ) ;
 	
@@ -52,15 +52,15 @@ Dialog_Filesystems::Dialog_Filesystems()
 	show_all_children() ;
 }
 
-void Dialog_Filesystems::Load_Filesystems( const std::vector<FS> & FILESYSTEMS )
+void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 {
 	liststore_filesystems ->clear() ;
 	
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() -1 ; t++ )
-		Show_Filesystem( FILESYSTEMS[ t ] ) ;
+		show_filesystem( FILESYSTEMS[ t ] ) ;
 }
 		
-void Dialog_Filesystems::Show_Filesystem( const FS & fs )
+void DialogFeatures::show_filesystem( const FS & fs )
 {
 	treerow = *( liststore_filesystems ->append() );
 	treerow[ treeview_filesystems_columns .filesystem ] = Utils::get_filesystem_string( fs .filesystem ) ;
@@ -75,7 +75,7 @@ void Dialog_Filesystems::Show_Filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
 }
 
-Dialog_Filesystems::~Dialog_Filesystems() 
+DialogFeatures::~DialogFeatures() 
 {
 }
 

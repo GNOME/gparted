@@ -13,12 +13,12 @@ gparted_SOURCES = \
 	Device.cc			\
 	Dialog_Base_Partition.cc	\
 	Dialog_Disklabel.cc 		\
-	Dialog_Filesystems.cc		\
 	Dialog_Partition_Copy.cc	\
 	Dialog_Partition_Info.cc	\
 	Dialog_Partition_New.cc		\
 	Dialog_Partition_Resize_Move.cc	\
 	Dialog_Progress.cc		\
+	DialogFeatures.cc		\
 	DialogManageFlags.cc		\
 	DrawingAreaVisualDisk.cc	\
 	FileSystem.cc			\
@@ -47,7 +47,7 @@ gparted_SOURCES = \
 	ntfs.cc				\
 	reiser4.cc 			\
 	reiserfs.cc			\
-	ufs.cc			\
+	ufs.cc				\
 	xfs.cc
 	
 gparted_LDFLAGS = -lparted -lgthread-2.0 

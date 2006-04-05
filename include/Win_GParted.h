@@ -127,7 +127,7 @@ private:
 	void on_show() ;
 		
 	void menu_gparted_refresh_devices();
-	void menu_gparted_filesystems();
+	void menu_gparted_features();
 	void menu_gparted_quit();
 	void menu_view_harddisk_info();
 	void menu_view_operations();

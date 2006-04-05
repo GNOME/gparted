@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004-2006 Bart 'plors' Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
  
-#ifndef DIALOG_FILESYSTEMS
-#define DIALOG_FILESYSTEMS
+#ifndef DIALOG_FEATURES
+#define DIALOG_FEATURES
 
 #include "../include/Utils.h"
 
@@ -27,15 +27,16 @@
 namespace GParted
 {
 
-class Dialog_Filesystems : public Gtk::Dialog
+class DialogFeatures : public Gtk::Dialog
 {
 public:
-	Dialog_Filesystems() ;
-	void Load_Filesystems( const std::vector<FS> & FILESYSTEMS ) ;
-	~Dialog_Filesystems() ;
+	DialogFeatures() ;
+	~DialogFeatures() ;
+
+	void load_filesystems( const std::vector<FS> & FILESYSTEMS ) ;
 	
 private:
-	void Show_Filesystem( const FS & fs ) ;
+	void show_filesystem( const FS & fs ) ;
 
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
@@ -74,4 +75,4 @@ private:
 
 } //GParted
 
-#endif //DIALOG_FILESYSTEMS
+#endif //DIALOG_FEATURES

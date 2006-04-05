@@ -4,12 +4,12 @@ EXTRA_DIST = \
 	Device.h 			\
 	Dialog_Base_Partition.h		\
 	Dialog_Disklabel.h 		\
-	Dialog_Filesystems.h 		\
 	Dialog_Partition_Copy.h		\
         Dialog_Partition_Info.h		\
 	Dialog_Partition_New.h    	\
 	Dialog_Partition_Resize_Move.h 	\
 	Dialog_Progress.h  		\
+	DialogFeatures.h 		\
 	DialogManageFlags.h  		\
 	DrawingAreaVisualDisk.h 	\
 	FileSystem.h  			\
@@ -38,5 +38,5 @@ EXTRA_DIST = \
 	ntfs.h  			\
 	reiser4.h   			\
 	reiserfs.h  			\
-	ufs.h  			\
+	ufs.h  				\
 	xfs.h
