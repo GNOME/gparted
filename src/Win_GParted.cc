@@ -1656,7 +1656,7 @@ void Win_GParted::activate_disklabel()
 		m_dialog .set_secondary_text( String::ucompose( _("This operation will destroy all data on %1!"),
 								devices[ current_device ] .get_path() ) ) ;
 
-		m_dialog .add_button( _("Create"), Gtk::RESPONSE_OK );
+		m_dialog .add_button( _("Create"), Gtk::RESPONSE_OK ) ;
 		
 		if ( m_dialog .run() == Gtk::RESPONSE_OK && 
 		     ! gparted_core .Set_Disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
@@ -1669,6 +1669,9 @@ void Win_GParted::activate_disklabel()
 						   true ) ;
 			dialog .run() ;
 		}
+
+		m_dialog .hide() ;
+		dialog .hide() ;
 			
 		menu_gparted_refresh_devices() ;
 	}
