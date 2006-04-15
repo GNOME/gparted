@@ -972,6 +972,7 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 		PedPartitionType type;
 		lp_partition = NULL ;
 		PedConstraint *constraint = NULL ;
+		PedFileSystemType* fs_type = NULL ;
 		
 		//create new partition
 		switch ( new_partition .type )
@@ -989,10 +990,13 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 			default	:
 				type = PED_PARTITION_FREESPACE;
 		}
-		
+
+		if ( new_partition .type != GParted::TYPE_EXTENDED )
+			fs_type = ped_file_system_type_get( "ext2" ) ;
+
 		lp_partition = ped_partition_new( lp_disk,
 						  type,
-						  NULL,
+						  fs_type,
 						  new_partition .sector_start,
 						  new_partition .sector_end ) ;
 	
