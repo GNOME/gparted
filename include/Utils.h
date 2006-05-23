@@ -84,8 +84,9 @@ struct FS
 	enum Support
 	{
 		NONE		= 0,
-		LIBPARTED	= 1,
-		EXTERNAL	= 2
+		GPARTED		= 1,
+		LIBPARTED	= 2,
+		EXTERNAL	= 3
 	};
 
 	FILESYSTEM filesystem ;

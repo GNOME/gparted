@@ -34,18 +34,15 @@ FS ext2::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	//resizing is a delicate process ...
 	if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
+		fs .copy = GParted::FS::GPARTED ;
 		
 		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	
-	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
-		fs .copy = GParted::FS::EXTERNAL ;
-		
 	return fs ;
 }
 
@@ -119,20 +116,7 @@ bool ext2::Copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path,
 		 std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
-	
-	if ( ! execute_command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path,
-				 operation_details .back() .sub_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;	
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return true ;
 }
 
 bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
@@ -143,7 +127,10 @@ bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetai
 	
 	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(),
 				       operation_details .back() .sub_details ) ;
-	if ( exit_status >= 0 && exit_status <= 2 )
+	
+	//exitstatus 256 isn't documented, but it's returned when the 'FILESYSTEM IS MODIFIED'
+	//this is quite normal (especially after a copy) so we let the function return true...
+	if ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

@@ -43,16 +43,21 @@ struct OperationDetails
 	OperationDetails()
 	{
 		status = NONE ;
+		fraction = -1 ;
 	}
 
 	OperationDetails( const Glib::ustring & description, Status status = EXECUTE )
 	{
 		this ->description = description ;
 		this ->status = status ;
+
+		fraction = -1 ;
 	}
 
 	Glib::ustring description ;
 	Status status ; 
+	double fraction ;
+	Glib::ustring progress_text ;
 
 	std::vector<OperationDetails> sub_details ; 	
 };

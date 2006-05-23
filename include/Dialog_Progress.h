@@ -56,6 +56,7 @@ private:
 	bool on_delete_event( GdkEventAny * event ) ;
 
 	Gtk::Label label_current ;
+	Gtk::Label label_current_sub ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
 	Gtk::TreeView treeview_operations ;
 	Gtk::TreeRow treerow ;
@@ -86,7 +87,7 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	std::vector<Operation *> operations ;
-	bool pulse, succes, cancel ;
+	bool running, succes, cancel, pulse ;
 	pthread_t pthread ;
 	double fraction ;
 	unsigned int t ;

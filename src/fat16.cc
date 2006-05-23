@@ -41,8 +41,7 @@ FS fat16::get_filesystem_support()
 	fs .shrink = GParted::FS::LIBPARTED ;
 	fs .move = GParted::FS::LIBPARTED ;
 		
-	if ( ! Glib::find_program_in_path( "dd" ) .empty() )
-		fs .copy = GParted::FS::EXTERNAL ;
+	fs .copy = GParted::FS::GPARTED ;
 	
 	fs .MIN = 16 * MEBIBYTE ;
 	fs .MAX = 4096 * MEBIBYTE ;
@@ -103,20 +102,7 @@ bool fat16::Copy( const Glib::ustring & src_part_path,
 		  const Glib::ustring & dest_part_path,
 		  std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
-	
-	if ( ! execute_command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path,
-				 operation_details .back() .sub_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;	
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return true ;
 }
 
 bool fat16::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )

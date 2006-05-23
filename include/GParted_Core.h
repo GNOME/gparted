@@ -48,7 +48,7 @@ public:
 		     const Partition & partition_old,
 		     const Partition & partition_new,
 		     std::vector<OperationDetails> & operation_detail ) ; 
-	bool copy( const Glib::ustring & src_part_path,
+	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
 		   Sector min_size,
 		   std::vector<OperationDetails> & operation_details ) ; 
@@ -91,6 +91,10 @@ private:
 					    const Partition & partition_new,
 					    std::vector<OperationDetails> & operation_details ) ;
 
+	bool copy_filesystem( const Partition & partition_src,
+			      const Partition & partition_dest,
+			      std::vector<OperationDetails> & operation_details ) ;
+						
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;

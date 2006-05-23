@@ -203,9 +203,6 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 		const Glib::ustring & dest_part_path,
 		std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
-	
 	bool return_value = false ;
 	Glib::ustring error ;
 	Glib::ustring SRC = Glib::get_tmp_dir() + "/gparted_tmp_xfs_src_mountpoint" ;

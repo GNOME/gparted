@@ -138,9 +138,6 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
 		 std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
-	
 	if ( ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path,
 				 operation_details .back() .sub_details ) )
 	{

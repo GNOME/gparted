@@ -39,14 +39,11 @@ FS reiserfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "resize_reiserfs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
+		fs .copy = GParted::FS::GPARTED ;
 		
 		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
-	
-	//we need to call resize_reiserfs after a copy to get proper used/unused
-	if ( ! Glib::find_program_in_path( "dd" ) .empty() && fs .grow )
-		fs .copy = GParted::FS::EXTERNAL ;
 	
 	fs .MIN = 32 * MEBIBYTE ;
 	
@@ -109,8 +106,9 @@ bool reiserfs::Resize( const Partition & partition_new,
 		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
 				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
-	
-	if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )
+
+	exit_status = execute_command( str_temp, operation_details .back() .sub_details ) ;
+	if ( exit_status == 0 || exit_status == 256 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
@@ -126,20 +124,7 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path,
 		     const Glib::ustring & dest_part_path,
 		     std::vector<OperationDetails> & operation_details )
 {	
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy contents of %1 to %2"), src_part_path, dest_part_path ) ) ) ;
-	
-	if ( ! execute_command( "dd bs=8192 if=" + src_part_path + " of=" + dest_part_path,
-				operation_details .back() .sub_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;	
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return true ;
 }
 
 bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )

@@ -651,7 +651,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
 		case COPY: 
 			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied .get_path(),
+			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 				     operation ->partition_new,
 				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
 				     operation ->operation_details .sub_details ) ;
@@ -782,26 +782,53 @@ bool GParted_Core::resize( const Device & device,
 	return false ;
 }
 
-bool GParted_Core::copy( const Glib::ustring & src_part_path,
+bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dest,
 			 Sector min_size,
 			 std::vector<OperationDetails> & operation_details ) 
 {
-//FIXME: some filesystems (e.g. fat*) can be copied using libparted..
-
 	set_proper_filesystem( partition_dest .filesystem ) ;
-	if ( p_filesystem && p_filesystem ->Check_Repair( Partition( src_part_path ), operation_details ) )
+	if ( p_filesystem && p_filesystem ->Check_Repair( partition_src, operation_details ) )
 	{
 		bool succes = true ;
 		if ( partition_dest .status == GParted::STAT_NEW )
 			succes = create_empty_partition( partition_dest, operation_details, min_size ) ;
 
-		return ( succes &&
-			 set_partition_type( partition_dest, operation_details ) &&
-			 p_filesystem ->Copy( src_part_path, partition_dest .get_path(), operation_details ) &&
-			 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
-			 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
-	     		 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
+		if ( succes && set_partition_type( partition_dest, operation_details ) )
+		{
+			operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy filesystem of %1 to %2"),
+						  partition_src .get_path(),
+						  partition_dest .get_path() ) ) ) ;
+
+			switch ( get_fs( partition_dest .filesystem ) .copy )
+			{
+				case  GParted::FS::GPARTED :
+						succes = copy_filesystem( partition_src,
+									  partition_dest,
+									  operation_details ) ;
+						break ;
+				
+				case  GParted::FS::LIBPARTED :
+						//FIXME: see if copying through libparted has any advantages
+						break ;
+
+				case  GParted::FS::EXTERNAL :
+						succes = p_filesystem ->Copy( partition_src .get_path(),
+								     	      partition_dest .get_path(),
+									      operation_details ) ;
+						break ;
+
+				default :
+						succes = false ;
+						break ;
+			}
+			
+			return ( succes &&	
+			     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
+			     	 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
+			     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
+		}
 	}
 
 	return false ;
@@ -1027,19 +1054,17 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 					free( lp_path ) ;
 
 					new_partition .partition_number = lp_partition ->num ;
-
-					Sector start = lp_partition ->geom .start ;
-					Sector end = lp_partition ->geom .end ;
+					new_partition .sector_start = lp_partition ->geom .start ;
+					new_partition .sector_end = lp_partition ->geom .end ;
 					
-					operation_details .back() .sub_details .push_back( 
-						OperationDetails( 
-							"<i>" +
-							String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
-							String::ucompose( _("start: %1"), start ) + "\n" +
-							String::ucompose( _("end: %1"), end ) + "\n" +
-							String::ucompose( _("size: %1"), Utils::format_size( end - start + 1 ) ) + 
-							"</i>",
-							OperationDetails::NONE ) ) ;
+					operation_details .back() .sub_details .push_back( OperationDetails( 
+						"<i>" +
+						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
+						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
+						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
+						String::ucompose( _("size: %1"), Utils::format_size( new_partition .get_length() ) ) + 
+						"</i>",
+						OperationDetails::NONE ) ) ;
 				}
 			
 				ped_constraint_destroy( constraint );
@@ -1231,6 +1256,112 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 	return return_value ;
 }
 
+bool GParted_Core::copy_filesystem( const Partition & partition_src,
+				    const Partition & partition_dest,
+				    std::vector<OperationDetails> & operation_details ) 
+{//FIXME: try to increase speed by copying more sectors at once, this should probably become a userspace setting
+	bool succes = false ;
+
+	char buf[1024] ;
+	PedDevice *lp_device_src, *lp_device_dest ;
+//FIXME: adapt open_device() so we don't have to call ped_device_get() here
+//(same goes for close_device() and ped_device_destroy()
+	lp_device_src = ped_device_get( partition_src .device_path .c_str() );
+
+	if ( partition_src .device_path != partition_dest .device_path )
+		lp_device_dest = ped_device_get( partition_dest .device_path .c_str() );
+	else
+		lp_device_dest = lp_device_src ;
+
+	if ( lp_device_src && lp_device_dest && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dest ) )
+	{
+		ped_device_sync( lp_device_dest ) ;
+
+		//add an empty sub which we will constantly update in the loop
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( "", OperationDetails::NONE ) ) ;
+
+		Glib::ustring error_message ;
+		Sector t = 0 ;
+		for ( ; t < partition_src .get_length() ; t++ )
+		{
+			if ( ! ped_device_read( lp_device_src, buf, partition_src .sector_start + t, 1 ) )
+			{
+				error_message = "<i>" + String::ucompose( _("Error while reading sector %1"),
+							  	  	  partition_src .sector_start + t ) + "</i>" ;
+
+				break ;
+			}
+				
+			if ( ! ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t, 1 ) )
+			{
+				error_message = "<i>" + String::ucompose( _("Error while writing sector %1"),
+							  	  	  partition_src .sector_start + t ) + "</i>" ;
+
+				break ;
+			}
+
+			if ( t % MEBIBYTE == 0 )
+			{
+				operation_details .back() .sub_details .back() .progress_text =
+					String::ucompose( _("%1 of %2 copied"),
+							  Utils::format_size( t +1 ),
+							  Utils::format_size( partition_src .get_length() ) ) ; 
+				
+				operation_details .back() .sub_details .back() .description =
+					"<i>" + operation_details .back() .sub_details .back() .progress_text + "</i>" ;
+
+				operation_details .back() .sub_details .back() .fraction =
+					t / static_cast<double>( partition_src .get_length() ) ;
+			}
+		}
+
+		//final description
+		operation_details .back() .sub_details .back() .description =
+			"<i>" +
+			String::ucompose( _("%1 of %2 copied"),
+					  Utils::format_size( t +1 ),
+					  Utils::format_size( partition_src .get_length() ) ) + 
+					  "</i>" ;
+		//reset fraction to -1 to make room for a new one (or a pulsebar)
+		operation_details .back() .sub_details .back() .fraction = -1 ;
+
+		if ( t == partition_src .get_length() )
+		{
+			succes = true ;
+		}
+		else
+		{
+			if ( ! error_message .empty() )
+				operation_details .back() .sub_details .push_back( 
+					OperationDetails( error_message, OperationDetails::NONE ) ) ;
+
+			if ( ! ped_error .empty() )
+				operation_details .back() .sub_details .push_back( 
+					OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+		}
+		
+		//close the devices..
+		ped_device_close( lp_device_src ) ;
+
+		if ( partition_src .device_path != partition_dest .device_path )
+			ped_device_close( lp_device_dest ) ;
+
+		//detroy the devices..
+		ped_device_destroy( lp_device_src ) ; 
+
+		if ( partition_src .device_path != partition_dest .device_path )
+			ped_device_destroy( lp_device_dest ) ;
+	}
+	else
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( _("An error occured while opening the devices"), OperationDetails::NONE ) ) ;
+
+
+	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	return succes ;
+}
+
 void GParted_Core::set_flags( Partition & partition )
 {
 	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
@@ -1344,7 +1475,8 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 
 	return return_value ;
 }
-
+//FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
+//basicly we should get rid of these global lp_device and lp_disk
 bool GParted_Core::open_device( const Glib::ustring & device_path )
 {
 	lp_device = ped_device_get( device_path .c_str() );

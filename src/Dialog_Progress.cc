@@ -45,13 +45,14 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	str_temp += "\n";
 	this ->get_vbox() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
-	this ->get_vbox() ->pack_start( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Current Operation:") ) + "</b>" ), Gtk::PACK_SHRINK );
-	
+	label_current .set_alignment( Gtk::ALIGN_LEFT );
+	this ->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK ) ;
+
 	progressbar_current .set_pulse_step( 0.01 ) ;
 	this->get_vbox() ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
 	
-	label_current .set_alignment( Gtk::ALIGN_LEFT );
-	this ->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK );
+	label_current_sub .set_alignment( Gtk::ALIGN_LEFT );
+	this ->get_vbox() ->pack_start( label_current_sub, Gtk::PACK_SHRINK );
 	
 	this ->get_vbox() ->pack_start( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Completed Operations:") ) + "</b>" ), Gtk::PACK_SHRINK );
 	this ->get_vbox() ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
@@ -146,6 +147,19 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 		}
 	}
 
+	//check description and update if necessary
+	if ( operation_details .description != treerow[ treeview_operations_columns .operation_description ] )
+		treerow[ treeview_operations_columns .operation_description ] = operation_details .description ;
+
+	if ( operation_details .fraction >= 0 )
+	{
+		pulse = false ;
+		progressbar_current .set_fraction( operation_details .fraction ) ;
+		progressbar_current .set_text( operation_details .progress_text ) ;
+	}
+	else
+		pulse = true ;
+
 	//and update the children..
 	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
 		update_operation_details( treerow .children()[ t ], operation_details .sub_details[ t ] ) ;
@@ -155,7 +169,7 @@ void Dialog_Progress::on_signal_show()
 {
 	for ( t = 0 ; t < operations .size() && succes && ! cancel ; t++ )
 	{
-		label_current .set_markup( "<i>" + operations[ t ] ->description + "</i>\n" ) ;
+		label_current .set_markup( "<b>" + operations[ t ] ->description + "</b>" ) ;
 		
 		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
 		progressbar_all .set_fraction( fraction * t ) ;
@@ -170,19 +184,30 @@ void Dialog_Progress::on_signal_show()
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 		
 		//and start..
-		pulse = true ;
+		running = true ;
 		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
-	
-		while ( pulse )
-		{
-			update_operation_details( treerow, operations[ t ] ->operation_details ) ;
 
-			progressbar_current .pulse() ;
+		int ms = 200 ;
+		while ( running )
+		{
+			if ( ms >= 200 )
+			{
+				update_operation_details( treerow, operations[ t ] ->operation_details ) ;
+				if ( operations[ t ] ->operation_details .sub_details .size() > 0 )
+					label_current_sub .set_markup( 
+						"<i>" + 
+						operations[ t ] ->operation_details .sub_details .back() .description +
+						"</i>\n" ) ;
+				ms = 0 ;
+			}
+			if ( pulse )
+				progressbar_current .pulse() ;
 			
 			while ( Gtk::Main::events_pending() )
 				Gtk::Main::iteration();
 
 			usleep( 10000 ) ;
+			ms += 10 ;
 		}
 
 		//set status (succes/error) for this operation
@@ -207,10 +232,9 @@ void Dialog_Progress::on_signal_show()
 	else
 	{
 		//hide 'current operation' stuff
-		children = this ->get_vbox() ->get_children() ;
-		children[ 1 ] ->hide() ;
-		progressbar_current .hide() ;
 		label_current .hide() ;
+		progressbar_current .hide() ;
+		label_current_sub .hide() ;
 	}
 
 	//deal with succes/error...
@@ -260,7 +284,7 @@ void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress
 	
 	dp ->succes = dp ->signal_apply_operation .emit( dp ->operations[ dp ->t ] ) ;
 	
-	dp ->pulse = false ;
+	dp ->running = false ;
 
 	return NULL ;
 }
@@ -283,7 +307,7 @@ void Dialog_Progress::on_cancel()
 	{
 		pthread_cancel( pthread ) ;
 		cancel = true ;
-		pulse = false ;
+		running = false ;
 		succes = false ;
 	}
 }
