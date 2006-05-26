@@ -1355,7 +1355,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 	}
 	else
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( _("An error occured while opening the devices"), OperationDetails::NONE ) ) ;
+			OperationDetails( _("An error occurred while opening the devices"), OperationDetails::NONE ) ) ;
 
 
 	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
