@@ -23,7 +23,8 @@ namespace GParted
 OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
-			      const Partition & partition_copied )
+			      const Partition & partition_copied,
+			      Sector block_size )
 {
 	type = GParted::COPY ;
 
@@ -31,6 +32,7 @@ OperationCopy::OperationCopy( const Device & device,
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 	this ->partition_copied = partition_copied ;
+	this ->block_size = block_size ;
 
 	create_description() ;
 	
@@ -89,7 +91,6 @@ void OperationCopy::create_description()
 					        partition_copied .get_path(),
 						partition_original .get_path() ) ;
 	}
-
 }
 
 } //GParted

@@ -573,7 +573,13 @@ bool Win_GParted::on_delete_event( GdkEventAny *event )
 	return ! Quit_Check_Operations();
 }	
 
-void Win_GParted::Add_Operation( OperationType operationtype, const Partition & new_partition, int index )
+//FIXME: i guess it's better if we just create the operations in the activate_* functions instead
+//of doing it here. now we're adding more and more functionality (e.g. blocksize) to the operations
+//the current approach doesn't suffice anymore.
+void Win_GParted::Add_Operation( OperationType operationtype,
+				 const Partition & new_partition,
+				 Sector block_size, 
+				 int index )
 {
 	Operation * operation ;
 	switch ( operationtype )
@@ -604,7 +610,8 @@ void Win_GParted::Add_Operation( OperationType operationtype, const Partition & 
 			operation = new OperationCopy( devices[ current_device ],
 					 	       selected_partition,
 						       new_partition,
-						       copied_partition ) ;
+						       copied_partition,
+						       block_size ) ;
 			operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 			break;
 	}
@@ -1269,7 +1276,7 @@ void Win_GParted::activate_paste()
 			if ( dialog .run() == Gtk::RESPONSE_OK )
 			{
 				dialog .hide() ;
-				Add_Operation( GParted::COPY, dialog .Get_New_Partition() );		
+				Add_Operation( GParted::COPY, dialog .Get_New_Partition(), dialog .get_block_size() );
 			}
 		}
 	}
@@ -1281,8 +1288,11 @@ void Win_GParted::activate_paste()
 		partition_new .set_used( copied_partition .sectors_used ) ;
 		partition_new .error .clear() ;
 		partition_new .status = GParted::STAT_COPY ;
-
-		Add_Operation( GParted::COPY, partition_new ) ;
+ 
+		//FIXME: in this case there's no window presented to the user, so he cannot choose the blocksize
+		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
+		//except the blocksize disabled?
+		Add_Operation( GParted::COPY, partition_new, 32 ) ;
 	}
 }
 
@@ -1469,7 +1479,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
 				
-				Add_Operation( GParted::CREATE, part_temp, t );
+				Add_Operation( GParted::CREATE, part_temp, -1, t );
 					
 				break;
 			}

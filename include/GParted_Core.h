@@ -51,6 +51,7 @@ public:
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
 		   Sector min_size,
+		   Sector block_size,
 		   std::vector<OperationDetails> & operation_details ) ; 
 
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
@@ -93,7 +94,8 @@ private:
 
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dest,
-			      std::vector<OperationDetails> & operation_details ) ;
+			      std::vector<OperationDetails> & operation_details,
+			      Sector block_size ) ;
 						
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,

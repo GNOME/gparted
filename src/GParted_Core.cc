@@ -654,6 +654,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 				     operation ->partition_new,
 				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
+				     static_cast<OperationCopy*>( operation ) ->block_size,
 				     operation ->operation_details .sub_details ) ;
 	}
 	
@@ -785,6 +786,7 @@ bool GParted_Core::resize( const Device & device,
 bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dest,
 			 Sector min_size,
+			 Sector block_size,
 			 std::vector<OperationDetails> & operation_details ) 
 {
 	set_proper_filesystem( partition_dest .filesystem ) ;
@@ -806,7 +808,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 				case  GParted::FS::GPARTED :
 						succes = copy_filesystem( partition_src,
 									  partition_dest,
-									  operation_details ) ;
+									  operation_details,
+									  block_size ) ;
 						break ;
 				
 				case  GParted::FS::LIBPARTED :
@@ -1258,11 +1261,17 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dest,
-				    std::vector<OperationDetails> & operation_details ) 
-{//FIXME: try to increase speed by copying more sectors at once, this should probably become a userspace setting
+				    std::vector<OperationDetails> & operation_details,
+				    Sector block_size ) 
+{
+	operation_details .back() .sub_details .push_back( OperationDetails( 
+		"<i>" + String::ucompose( _("Use a blocksize of %1 (%2 sectors)"),
+				  	  Utils::format_size( block_size ),
+				  	  block_size ) + "</i>",
+		OperationDetails::NONE ) ) ;
+	
 	bool succes = false ;
-
-	char buf[1024] ;
+	char buf[block_size * 512] ; 
 	PedDevice *lp_device_src, *lp_device_dest ;
 //FIXME: adapt open_device() so we don't have to call ped_device_get() here
 //(same goes for close_device() and ped_device_destroy()
@@ -1283,25 +1292,25 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 		Glib::ustring error_message ;
 		Sector t = 0 ;
-		for ( ; t < partition_src .get_length() ; t++ )
+		for ( ; t < partition_src .get_length() - block_size ; t+=block_size )
 		{
-			if ( ! ped_device_read( lp_device_src, buf, partition_src .sector_start + t, 1 ) )
+			if ( ! ped_device_read( lp_device_src, buf, partition_src .sector_start + t, block_size ) )
 			{
-				error_message = "<i>" + String::ucompose( _("Error while reading sector %1"),
+				error_message = "<i>" + String::ucompose( _("Error while reading block at sector %1"),
 							  	  	  partition_src .sector_start + t ) + "</i>" ;
 
 				break ;
 			}
 				
-			if ( ! ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t, 1 ) )
+			if ( ! ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t, block_size ) )
 			{
-				error_message = "<i>" + String::ucompose( _("Error while writing sector %1"),
+				error_message = "<i>" + String::ucompose( _("Error while writing block at sector %1"),
 							  	  	  partition_src .sector_start + t ) + "</i>" ;
 
 				break ;
 			}
 
-			if ( t % MEBIBYTE == 0 )
+			if ( t % ( block_size * 100 ) == 0 )
 			{
 				operation_details .back() .sub_details .back() .progress_text =
 					String::ucompose( _("%1 of %2 copied"),
@@ -1316,13 +1325,27 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			}
 		}
 
+		//copy the last couple of sectors..
+		Sector last_sectors = partition_src .get_length() - t ;
+		if ( ped_device_read( lp_device_src, buf, partition_src .sector_start + t, last_sectors ) )
+		{
+			if ( ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t , last_sectors ) )
+				t += last_sectors ;
+			else
+				error_message = "<i>" + String::ucompose( _("Error while writing block at sector %1"),
+							  	  	  partition_src .sector_start + t ) + "</i>" ;
+		}
+		else
+			error_message = "<i>" + String::ucompose( _("Error while reading block at sector %1"),
+						  	  	  partition_src .sector_start + t ) + "</i>" ;
+				
 		//final description
 		operation_details .back() .sub_details .back() .description =
 			"<i>" +
 			String::ucompose( _("%1 of %2 copied"),
 					  Utils::format_size( t +1 ),
 					  Utils::format_size( partition_src .get_length() ) ) + 
-					  "</i>" ;
+			"</i>" ;
 		//reset fraction to -1 to make room for a new one (or a pulsebar)
 		operation_details .back() .sub_details .back() .fraction = -1 ;
 
