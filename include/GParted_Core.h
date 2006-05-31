@@ -39,21 +39,6 @@ public:
 	
 	bool apply_operation_to_disk( Operation * operation );
 	
-	bool create( const Device & device,
-		     Partition & new_partition,
-		     std::vector<OperationDetails> & operation_details ) ;
-	bool format( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
-	bool Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
-	bool resize( const Device & device, 
-		     const Partition & partition_old,
-		     const Partition & partition_new,
-		     std::vector<OperationDetails> & operation_detail ) ; 
-	bool copy( const Partition & partition_src,
-		   Partition & partition_dest,
-		   Sector min_size,
-		   Sector block_size,
-		   std::vector<OperationDetails> & operation_details ) ; 
-
 	bool Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
 	
 	const std::vector<FS> & get_filesystems() const ;
@@ -62,8 +47,30 @@ public:
 	std::vector<Glib::ustring> get_all_mountpoints() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
-
+	
 private:
+	bool create( const Device & device,
+		     Partition & new_partition,
+		     std::vector<OperationDetails> & operation_details ) ;
+	bool format( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool resize_move( const Device & device,
+			  const Partition & partition_old,
+			  Partition & partition_new,
+			  std::vector<OperationDetails> & operation_details ) ;
+	bool move_partition( const Partition & partition_old,
+			     Partition & partition_new,
+			     std::vector<OperationDetails> & operation_details ) ;
+	bool resize( const Device & device, 
+		     const Partition & partition_old,
+		     Partition & partition_new,
+		     std::vector<OperationDetails> & operation_detail ) ; 
+	bool copy( const Partition & partition_src,
+		   Partition & partition_dest,
+		   Sector min_size,
+		   Sector block_size,
+		   std::vector<OperationDetails> & operation_details ) ; 
+
 	GParted::FILESYSTEM get_filesystem() ; 
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	void set_device_partitions( Device & device ) ;
@@ -85,18 +92,17 @@ private:
 				     std::vector<OperationDetails> & operation_details,	    
 				     Sector min_size = 0 ) ;
 	bool resize_container_partition( const Partition & partition_old,
-					 const Partition & partition_new,
+					 Partition & partition_new,
 					 bool fixed_start,
-					 std::vector<OperationDetails> & operation_details ) ;
+					 std::vector<OperationDetails> & operation_details,
+					 Sector min_size = 0 ) ;
 	bool resize_normal_using_libparted( const Partition & partition_old,
-					    const Partition & partition_new,
+					    Partition & partition_new,
 					    std::vector<OperationDetails> & operation_details ) ;
-
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dest,
 			      std::vector<OperationDetails> & operation_details,
 			      Sector block_size ) ;
-						
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;
@@ -105,6 +111,7 @@ private:
 		
 	bool open_device( const Glib::ustring & device_path ) ;
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
+	void close_disk() ;
 	void close_device_and_disk() ;
 	bool commit() ;
 

@@ -39,8 +39,10 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .append_column( _("Move"), treeview_filesystems_columns .move );
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 	treeview_filesystems .append_column( _("Check"), treeview_filesystems_columns .check );
-		
+	//FIXME: add info about the relevant project (e.g an url to the projectpage)
+	//of course this url has to be selectable and (if possible) clickable
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
+	treeview_filesystems .set_rules_hint( true ) ;
 	get_vbox() ->pack_start( treeview_filesystems ) ;
 
 	//initialize icons
