@@ -770,7 +770,7 @@ bool GParted_Core::move_partition( const Partition & partition_old,
 			     	   Partition & partition_new,
 				   std::vector<OperationDetails> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( _("Moving partition and filesystem. EXPERIMENTAL!!") ) ) ;
+	operation_details .push_back( OperationDetails( _("Moving partition and filesystem.") ) ) ;
 //FIXME: add support for dynamic blocksizes..	
 	bool succes = false ;
 	char buf[1024] ;
