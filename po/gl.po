@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-16 22:58+0200\n"
-"PO-Revision-Date: 2006-04-16 23:00+0200\n"
+"POT-Creation-Date: 2006-06-10 22:31+0200\n"
+"PO-Revision-Date: 2006-06-10 22:33+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
 "MIME-Version: 1.0\n"
@@ -19,13 +19,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.2\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1121
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1128
 msgid "GNOME Partition Editor"
 msgstr "Editor de particións de Gnome"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:52
-#: ../src/Win_GParted.cc:997 ../src/Win_GParted.cc:1118
+#: ../src/Win_GParted.cc:1004 ../src/Win_GParted.cc:1125
 msgid "GParted"
 msgstr "GParted"
 
@@ -95,13 +95,17 @@ msgstr ""
 "datos en %1!"
 
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1659
+#: ../src/Win_GParted.cc:1669
 msgid "Create"
 msgstr "Crear"
 
 #: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
 msgstr "Pegar %1"
+
+#: ../src/Dialog_Partition_Copy.cc:95
+msgid "Blocksize (sectors):"
+msgstr "Tamaño de bloques (sectores):"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
 #: ../src/Dialog_Partition_Info.cc:31
@@ -240,64 +244,60 @@ msgstr ""
 "Dependendo da cantidade e do tipo de operacións isto pode tomar un tempo "
 "largo."
 
-#: ../src/Dialog_Progress.cc:48
-msgid "Current Operation:"
-msgstr "Operación actual:"
-
-#: ../src/Dialog_Progress.cc:56
+#: ../src/Dialog_Progress.cc:57
 msgid "Completed Operations:"
 msgstr "Operacións completadas:"
 
-#: ../src/Dialog_Progress.cc:94
+#: ../src/Dialog_Progress.cc:95
 msgid "Details"
 msgstr "Detalles"
 
-#: ../src/Dialog_Progress.cc:160
+#: ../src/Dialog_Progress.cc:174
 msgid "%1 of %2 operations completed"
 msgstr "%1 de %2 operacións completadas"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:195
+#: ../src/Dialog_Progress.cc:220
 msgid "_Save Details"
 msgstr "_Gardar detalles"
 
-#: ../src/Dialog_Progress.cc:204
+#: ../src/Dialog_Progress.cc:229
 msgid "Operation canceled"
 msgstr "Operación cancelada"
 
-#: ../src/Dialog_Progress.cc:219
+#: ../src/Dialog_Progress.cc:243
 msgid "All operations succesfully completed"
 msgstr "Todas as operacións completáronse correctamente"
 
-#: ../src/Dialog_Progress.cc:229
+#: ../src/Dialog_Progress.cc:253
 msgid "An error occurred while applying the operations"
 msgstr "Ocorreu un erro ao aplicar as operacións"
 
-#: ../src/Dialog_Progress.cc:234
+#: ../src/Dialog_Progress.cc:258
 msgid "The following operation could not be applied to disk:"
 msgstr "A seguinte operación non se puido aplicar ao disco:"
 
-#: ../src/Dialog_Progress.cc:238
+#: ../src/Dialog_Progress.cc:262
 msgid "See the details for more information"
 msgstr "Para obter máis información vexa os detalles"
 
-#: ../src/Dialog_Progress.cc:271
+#: ../src/Dialog_Progress.cc:295
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Está seguro de que quere cancelar a operación actual?"
 
-#: ../src/Dialog_Progress.cc:277
+#: ../src/Dialog_Progress.cc:301
 msgid "Canceling an operation may cause SEVERE filesystem damage."
 msgstr "Cancelar a operación pode causar danos GRAVES ao sistema de fichieros."
 
-#: ../src/Dialog_Progress.cc:279
+#: ../src/Dialog_Progress.cc:303
 msgid "Continue Operation"
 msgstr "Continuar operación"
 
-#: ../src/Dialog_Progress.cc:280
+#: ../src/Dialog_Progress.cc:304
 msgid "Cancel Operation"
 msgstr "Cancelar operación"
 
-#: ../src/Dialog_Progress.cc:293
+#: ../src/Dialog_Progress.cc:317
 msgid "Save Details"
 msgstr "Gardar detalles"
 
@@ -346,105 +346,133 @@ msgid "unrecognized"
 msgstr "non recoñecido"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:357
+#: ../src/GParted_Core.cc:358
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Imposible detectar o sistema de ficheiros! As razóns posiblemente son:"
 
-#: ../src/GParted_Core.cc:359
+#: ../src/GParted_Core.cc:360
 msgid "The filesystem is damaged"
 msgstr "O sistema de ficheiros está danado"
 
-#: ../src/GParted_Core.cc:361
+#: ../src/GParted_Core.cc:362
 msgid "The filesystem is unknown to GParted"
 msgstr "O sistema de ficheiros é descoñecido para GParted"
 
-#: ../src/GParted_Core.cc:363
+#: ../src/GParted_Core.cc:364
 msgid "There is no filesystem available (unformatted)"
 msgstr "Non hai ningún sistema de ficheiros (sen formato)"
 
-#: ../src/GParted_Core.cc:505
+#: ../src/GParted_Core.cc:506
 msgid "Unable to find mountpoint"
 msgstr "Imposible atopar o punto de montaxe"
 
-#: ../src/GParted_Core.cc:534
+#: ../src/GParted_Core.cc:535
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Imposible ler o contido deste sistema de ficheiros!"
 
-#: ../src/GParted_Core.cc:536
+#: ../src/GParted_Core.cc:537
 msgid "Because of this some operations may be unavailable."
 msgstr "Porque algunhas operacións poden non estar dispoñibles."
 
-#: ../src/GParted_Core.cc:538
+#: ../src/GParted_Core.cc:539
 msgid "Did you install the correct plugin for this filesystem?"
 msgstr "Instalou o complemento correcto para este sistema de ficheiros?"
 
-#: ../src/GParted_Core.cc:965
+#: ../src/GParted_Core.cc:773
+msgid "Moving partition and filesystem."
+msgstr "Movendo partición e sistema de ficheiros"
+
+#: ../src/GParted_Core.cc:949
+msgid "copy filesystem of %1 to %2"
+msgstr "copiar sistema de ficheiros de %1 a %2"
+
+#: ../src/GParted_Core.cc:1142
 msgid "create empty partition"
 msgstr "crear unha partición baleira"
 
-#: ../src/GParted_Core.cc:1037
+#: ../src/GParted_Core.cc:1212
 msgid "path: %1"
 msgstr "ruta: %1"
 
-#: ../src/GParted_Core.cc:1038
+#: ../src/GParted_Core.cc:1213
 msgid "start: %1"
 msgstr "comezo: %1"
 
-#: ../src/GParted_Core.cc:1039
+#: ../src/GParted_Core.cc:1214
 msgid "end: %1"
 msgstr "fin: %1"
 
-#: ../src/GParted_Core.cc:1040
+#: ../src/GParted_Core.cc:1215
 msgid "size: %1"
 msgstr "tamaño: %1"
 
-#: ../src/GParted_Core.cc:1084
+#: ../src/GParted_Core.cc:1260
 msgid "resize partition"
 msgstr "redimensionar partición"
 
-#: ../src/GParted_Core.cc:1089
+#: ../src/GParted_Core.cc:1265
 msgid "old start: %1"
 msgstr "antigo comezo: %1"
 
-#: ../src/GParted_Core.cc:1090
+#: ../src/GParted_Core.cc:1266
 msgid "old end: %1"
 msgstr "antigo fin: %1"
 
-#: ../src/GParted_Core.cc:1091
+#: ../src/GParted_Core.cc:1267
 msgid "old size: %1"
 msgstr "antigo tamaño: %1"
 
-#: ../src/GParted_Core.cc:1155
+#: ../src/GParted_Core.cc:1332
 msgid "new start: %1"
 msgstr "novo comezo: %1"
 
-#: ../src/GParted_Core.cc:1156
+#: ../src/GParted_Core.cc:1333
 msgid "new end: %1"
 msgstr "novo fin: %1"
 
-#: ../src/GParted_Core.cc:1157
+#: ../src/GParted_Core.cc:1334
 msgid "new size: %1"
 msgstr "novo tamaño: %1"
 
-#: ../src/GParted_Core.cc:1183
+#: ../src/GParted_Core.cc:1360
 msgid "resize partition and filesystem using libparted"
 msgstr "redimensionar a partición e o sistema de ficheiros usando libparted"
 
-#: ../src/GParted_Core.cc:1270
+#: ../src/GParted_Core.cc:1425
+msgid "Use a blocksize of %1 (%2 sectors)"
+msgstr "Usar tamaño de bloque de %1 (%2 sectores)"
+
+#: ../src/GParted_Core.cc:1456 ../src/GParted_Core.cc:1496
+msgid "Error while reading block at sector %1"
+msgstr "Erro lendo o bloque no sector %1"
+
+#: ../src/GParted_Core.cc:1464 ../src/GParted_Core.cc:1492
+msgid "Error while writing block at sector %1"
+msgstr "Erro escribindo o bloque no sector %1"
+
+#: ../src/GParted_Core.cc:1473 ../src/GParted_Core.cc:1502
+msgid "%1 of %2 copied"
+msgstr "%1 de %2 copiado"
+
+#: ../src/GParted_Core.cc:1538
+msgid "An error occurred while opening the devices"
+msgstr "Ocorreu un erro ao abrir os dispositivos"
+
+#: ../src/GParted_Core.cc:1581
 msgid "set partitiontype"
 msgstr "establecer o tipo de partición"
 
-#: ../src/OperationCopy.cc:38
+#: ../src/OperationCopy.cc:40
 msgid "copy of %1"
 msgstr "copiar de %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:80
+#: ../src/OperationCopy.cc:82
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Copiar %1 a %2 (compezar en %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:88
+#: ../src/OperationCopy.cc:90
 msgid "Copy %1 to %2"
 msgstr "Copiar %1 a %2"
 
@@ -624,7 +652,7 @@ msgstr "_Redimensionar/Mover"
 msgid "_Format to"
 msgstr "_Formatar como"
 
-#: ../src/Win_GParted.cc:257 ../src/Win_GParted.cc:734
+#: ../src/Win_GParted.cc:257 ../src/Win_GParted.cc:741
 msgid "unmount"
 msgstr "desmontar"
 
@@ -669,47 +697,47 @@ msgstr "Agochar a lista de operacións"
 msgid "Clear operationslist"
 msgstr "Limpar a lista de operacións"
 
-#: ../src/Win_GParted.cc:653
+#: ../src/Win_GParted.cc:660
 msgid "%1 operations pending"
 msgstr "%1 operacións pendentes"
 
-#: ../src/Win_GParted.cc:655
+#: ../src/Win_GParted.cc:662
 msgid "1 operation pending"
 msgstr "1 operación pendente"
 
-#: ../src/Win_GParted.cc:706
+#: ../src/Win_GParted.cc:713
 msgid "Quit GParted?"
 msgstr "Saír de GParted?"
 
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:720
 msgid "%1 operations are currently pending."
 msgstr "%1 operacións están actualmente pendentes."
 
-#: ../src/Win_GParted.cc:716
+#: ../src/Win_GParted.cc:723
 msgid "1 operation is currently pending."
 msgstr "1 operación está actualmente pendente."
 
-#: ../src/Win_GParted.cc:758
+#: ../src/Win_GParted.cc:765
 msgid "swapoff"
 msgstr "desactivar intercambio"
 
-#: ../src/Win_GParted.cc:764
+#: ../src/Win_GParted.cc:771
 msgid "swapon"
 msgstr "activar intercambio"
 
-#: ../src/Win_GParted.cc:907
+#: ../src/Win_GParted.cc:914
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:953
+#: ../src/Win_GParted.cc:960
 msgid "Scanning all devices..."
 msgstr "Analizando todos os dispositivos..."
 
-#: ../src/Win_GParted.cc:969
+#: ../src/Win_GParted.cc:976
 msgid "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "O núcleo non puido reler a táboa de particións dos seguintes dispositivos:"
 
-#: ../src/Win_GParted.cc:976
+#: ../src/Win_GParted.cc:983
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -717,31 +745,31 @@ msgstr ""
 "A causa disto, só terá acceso limitado a esos dispositivos. Desmonte todas "
 "as particións montadas no dispositivo para ter acceso completo."
 
-#: ../src/Win_GParted.cc:1020
+#: ../src/Win_GParted.cc:1027
 msgid "No devices detected"
 msgstr "Ningún dispositivo detectado"
 
-#: ../src/Win_GParted.cc:1099
+#: ../src/Win_GParted.cc:1106
 msgid "Sorry, not yet implemented."
 msgstr "Síntoo, todavía non está implementado."
 
-#: ../src/Win_GParted.cc:1105
+#: ../src/Win_GParted.cc:1112
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Visite http://gparted.sf.net para máis información e soporte."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1136
+#: ../src/Win_GParted.cc:1143
 msgid "translator-credits"
 msgstr ""
 "Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Proxecto Trasno | Proxecto Trisquel"
 
-#: ../src/Win_GParted.cc:1176
+#: ../src/Win_GParted.cc:1183
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Non é posible crear máis de %1 particións primarias"
 
-#: ../src/Win_GParted.cc:1184
+#: ../src/Win_GParted.cc:1191
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -753,44 +781,44 @@ msgstr ""
 "extendida é tamén unha partición primaria quizais sexa necesario eliminar "
 "unha partición primaria primeiro."
 
-#: ../src/Win_GParted.cc:1332
+#: ../src/Win_GParted.cc:1342
 msgid "Unable to delete %1!"
 msgstr "Imposible eliminar %1!"
 
-#: ../src/Win_GParted.cc:1339
+#: ../src/Win_GParted.cc:1349
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Desmonte todas as particións lóxicas que teñan un número maior de %1"
 
-#: ../src/Win_GParted.cc:1350
+#: ../src/Win_GParted.cc:1360
 msgid "Are you sure you want to delete %1?"
 msgstr "Está seguro de que quere eliminar %1?"
 
-#: ../src/Win_GParted.cc:1357
+#: ../src/Win_GParted.cc:1367
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Despois de borrar esta partición, non estará dispoñible para copiar."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1360
+#: ../src/Win_GParted.cc:1370
 msgid "Delete %1 (%2, %3)"
 msgstr "Borrar %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1421
+#: ../src/Win_GParted.cc:1431
 msgid "Cannot format this filesystem to %1."
 msgstr "Non se pode formatar este sistema de ficheiros como %1."
 
-#: ../src/Win_GParted.cc:1430
+#: ../src/Win_GParted.cc:1440
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "Un sistema de ficheiros %1 require unha partición de polo menos %2."
 
-#: ../src/Win_GParted.cc:1435
+#: ../src/Win_GParted.cc:1445
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "Unha partición cun sistema de ficheiros %1 ten un tamaño máximo de %2."
 
-#: ../src/Win_GParted.cc:1508
+#: ../src/Win_GParted.cc:1518
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "A partición non puido ser desmontada dos seguintes puntos de montaxe:"
 
-#: ../src/Win_GParted.cc:1510
+#: ../src/Win_GParted.cc:1520
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
@@ -798,100 +826,93 @@ msgstr ""
 "Debido a que parece que tamén hai montadas outras particións nestes puntos "
 "de montaxe, avísaselle para que as desmonte manualmente."
 
-#: ../src/Win_GParted.cc:1560
+#: ../src/Win_GParted.cc:1570
 msgid "Deactivating swap on %1"
 msgstr "Desactivado o espazo de intercambio en %1"
 
-#: ../src/Win_GParted.cc:1560
+#: ../src/Win_GParted.cc:1570
 msgid "Activating swap on %1"
 msgstr "Activando o espazo de intercambio en %1"
 
-#: ../src/Win_GParted.cc:1567
+#: ../src/Win_GParted.cc:1577
 msgid "Could not deactivate swap"
 msgstr "Non se puido desactivar o espazo de intercambio"
 
-#: ../src/Win_GParted.cc:1567
+#: ../src/Win_GParted.cc:1577
 msgid "Could not activate swap"
 msgstr "Non se puido activar o espazo de intercambio"
 
-#: ../src/Win_GParted.cc:1583
+#: ../src/Win_GParted.cc:1593
 msgid "Unmounting %1"
 msgstr "Desmontando %1"
 
-#: ../src/Win_GParted.cc:1588
+#: ../src/Win_GParted.cc:1598
 msgid "Could not unmount %1"
 msgstr "Non se pode desmontar %1"
 
-#: ../src/Win_GParted.cc:1617
+#: ../src/Win_GParted.cc:1627
 msgid "mounting %1 on %2"
 msgstr "montando %1 en %2"
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1634
 msgid "Could not mount %1 on %2"
 msgstr "Non se puido montar %1 en %2"
 
-#: ../src/Win_GParted.cc:1648
+#: ../src/Win_GParted.cc:1658
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Está seguro de que quere crear unha táboa de particións %1 en %2?"
 
-#: ../src/Win_GParted.cc:1656
+#: ../src/Win_GParted.cc:1666
 msgid "This operation will destroy all data on %1!"
 msgstr "Esta operación destruirá todos os datos en %1!"
 
-#: ../src/Win_GParted.cc:1665
+#: ../src/Win_GParted.cc:1675
 msgid "Error while setting new disklabel"
 msgstr "Erro ao crear a nova táboa de particións"
 
-#: ../src/Win_GParted.cc:1740
+#: ../src/Win_GParted.cc:1750
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Está seguro de que quere aplicar as operacións pendentes?"
 
-#: ../src/Win_GParted.cc:1745
+#: ../src/Win_GParted.cc:1755
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "É recomendable facer unha copia de seguranza dos seus datos de valor antes "
 "de continuar."
 
-#: ../src/Win_GParted.cc:1746
+#: ../src/Win_GParted.cc:1756
 msgid "Apply operations to harddisk"
 msgstr "Aplicar as operacións ao disco duro"
 
-#: ../src/ext2.cc:76 ../src/ext3.cc:77 ../src/fat16.cc:80 ../src/fat32.cc:79
-#: ../src/hfs.cc:51 ../src/jfs.cc:95 ../src/linux_swap.cc:51 ../src/ntfs.cc:73
-#: ../src/reiser4.cc:73 ../src/reiserfs.cc:80 ../src/xfs.cc:97
+#: ../src/ext2.cc:79 ../src/ext3.cc:74 ../src/fat16.cc:79 ../src/fat32.cc:80
+#: ../src/hfs.cc:50 ../src/jfs.cc:95 ../src/linux_swap.cc:50 ../src/ntfs.cc:73
+#: ../src/reiser4.cc:72 ../src/reiserfs.cc:77 ../src/xfs.cc:97
 msgid "create new %1 filesystem"
 msgstr "crear un sistema de ficheiros %1 novo"
 
-#: ../src/ext2.cc:96 ../src/ext3.cc:97 ../src/jfs.cc:115 ../src/ntfs.cc:93
-#: ../src/reiserfs.cc:100 ../src/xfs.cc:117
+#: ../src/ext2.cc:99 ../src/ext3.cc:94 ../src/jfs.cc:115 ../src/ntfs.cc:93
+#: ../src/reiserfs.cc:97 ../src/xfs.cc:117
 msgid "grow filesystem to fill the partition"
 msgstr "aumentar o tamaño do sistema de ficheiros ata encher a partición"
 
-#: ../src/ext2.cc:98 ../src/ext3.cc:99 ../src/jfs.cc:117 ../src/ntfs.cc:95
-#: ../src/reiserfs.cc:102 ../src/xfs.cc:119
+#: ../src/ext2.cc:101 ../src/ext3.cc:96 ../src/jfs.cc:117 ../src/ntfs.cc:95
+#: ../src/reiserfs.cc:99 ../src/xfs.cc:119
 msgid "resize the filesystem"
 msgstr "redimensionar o sistema de ficheiros"
 
-#: ../src/ext2.cc:123 ../src/ext3.cc:124 ../src/fat16.cc:107
-#: ../src/fat32.cc:106 ../src/hfs.cc:78 ../src/hfsplus.cc:60 ../src/jfs.cc:207
-#: ../src/linux_swap.cc:78 ../src/ntfs.cc:142 ../src/reiser4.cc:100
-#: ../src/reiserfs.cc:130 ../src/xfs.cc:207
-msgid "copy contents of %1 to %2"
-msgstr "copiar o contido de %1 en %2"
-
-#: ../src/ext2.cc:141 ../src/ext3.cc:142 ../src/fat16.cc:125
-#: ../src/fat32.cc:124 ../src/jfs.cc:226 ../src/ntfs.cc:160
-#: ../src/reiser4.cc:118 ../src/reiserfs.cc:148 ../src/xfs.cc:359
+#: ../src/ext2.cc:131 ../src/ext3.cc:126 ../src/fat16.cc:111
+#: ../src/fat32.cc:112 ../src/jfs.cc:212 ../src/ntfs.cc:157
+#: ../src/reiser4.cc:104 ../src/reiserfs.cc:133 ../src/xfs.cc:356
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr ""
 "comprobar o sistema de ficheiros %1 para saber se hai erros e (se é posible) "
 "amañalos"
 
-#: ../src/jfs.cc:125 ../src/xfs.cc:127 ../src/xfs.cc:220 ../src/xfs.cc:227
+#: ../src/jfs.cc:125 ../src/xfs.cc:127 ../src/xfs.cc:217 ../src/xfs.cc:224
 msgid "create temporary mountpoint (%1)"
 msgstr "crear un punto de montaxe temporal (%1)"
 
-#: ../src/jfs.cc:132 ../src/xfs.cc:134 ../src/xfs.cc:234 ../src/xfs.cc:243
+#: ../src/jfs.cc:132 ../src/xfs.cc:134 ../src/xfs.cc:231 ../src/xfs.cc:240
 msgid "mount %1 on %2"
 msgstr "montar %1 en %2"
 
@@ -899,11 +920,11 @@ msgstr "montar %1 en %2"
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "volver a montar %1 en %2 coa opción 'redimensionar' activada"
 
-#: ../src/jfs.cc:157 ../src/xfs.cc:157 ../src/xfs.cc:267 ../src/xfs.cc:287
+#: ../src/jfs.cc:157 ../src/xfs.cc:157 ../src/xfs.cc:264 ../src/xfs.cc:284
 msgid "unmount %1"
 msgstr "desmontar %1"
 
-#: ../src/jfs.cc:177 ../src/xfs.cc:177 ../src/xfs.cc:307 ../src/xfs.cc:330
+#: ../src/jfs.cc:177 ../src/xfs.cc:177 ../src/xfs.cc:304 ../src/xfs.cc:327
 msgid "remove temporary mountpoint (%1)"
 msgstr "borrar o punto de montaxe temporal (%1)"
 
@@ -928,7 +949,7 @@ msgid "grow mounted filesystem"
 msgstr "aumentar o sistema de ficheiros montado"
 
 #. copy filesystem..
-#: ../src/xfs.cc:251
+#: ../src/xfs.cc:248
 msgid "copy filesystem"
 msgstr "copiar o sistema de ficheiros"
 
