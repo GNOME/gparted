@@ -133,11 +133,6 @@ void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_dev
 	this ->probe_devices = ! user_devices .size() ;
 }
 	
-bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
-{
-	return ( device_path .length() > 6 && device_path .is_ascii() ) ;
-}
-
 void GParted_Core::get_devices( std::vector<Device> & devices )
 {
 	devices .clear() ;
@@ -232,6 +227,154 @@ void GParted_Core::get_devices( std::vector<Device> & devices )
 	alternate_paths .clear() ;
 	fstab_info .clear() ;
 }
+
+bool GParted_Core::apply_operation_to_disk( Operation * operation )
+{
+	switch ( operation ->type )
+	{
+		case DELETE:
+			return Delete( operation ->partition_original, operation ->operation_details .sub_details ) ;
+		case CREATE:
+			return create( operation ->device, 
+				       operation ->partition_new,
+				       operation ->operation_details .sub_details ) ;
+		case RESIZE_MOVE:
+			return resize_move( operation ->device,
+				       	    operation ->partition_original,
+					    operation ->partition_new,
+					    operation ->operation_details .sub_details ) ;
+		case FORMAT:
+			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
+		case COPY: 
+			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
+			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
+				     operation ->partition_new,
+				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
+				     static_cast<OperationCopy*>( operation ) ->block_size,
+				     operation ->operation_details .sub_details ) ;
+	}
+
+	return false ;
+}
+
+bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
+{
+	bool return_value = false ;
+	
+	if ( open_device_and_disk( device_path, false ) )
+	{
+		PedDiskType *type = NULL ;
+		type = ped_disk_type_get( disklabel .c_str() ) ;
+		
+		if ( type )
+		{
+			lp_disk = ped_disk_new_fresh( lp_device, type );
+		
+			return_value = commit() ;
+		}
+		
+		close_device_and_disk() ;
+	}
+	
+	return return_value ;	
+}
+	
+bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
+{
+	bool succes = false ;
+
+	if ( open_device_and_disk( partition .device_path ) )
+	{
+		lp_partition = NULL ;
+		if ( partition .type == GParted::TYPE_EXTENDED )
+			lp_partition = ped_disk_extended_partition( lp_disk ) ;
+		else
+			lp_partition = ped_disk_get_partition_by_sector( 
+						lp_disk,
+						(partition .sector_end + partition .sector_start) / 2 ) ;
+	
+		if ( lp_partition )
+		{
+			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
+
+			if ( lp_flag > 0 && ped_partition_set_flag( lp_partition, lp_flag, state ) )
+				succes = commit() ;
+		}
+	
+		close_device_and_disk() ;
+	}
+
+	return succes ;
+}
+
+const std::vector<FS> & GParted_Core::get_filesystems() const 
+{
+	return FILESYSTEMS ;
+}
+
+const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
+{
+	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
+		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
+			return FILESYSTEMS[ t ] ;
+	
+	return FILESYSTEMS .back() ;
+}
+
+std::vector<Glib::ustring> GParted_Core::get_disklabeltypes() 
+{
+	std::vector<Glib::ustring> disklabeltypes ;
+	
+	//msdos should be first in the list
+	disklabeltypes .push_back( "msdos" ) ;
+	
+	 PedDiskType *disk_type ;
+	 for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) ) 
+		 if ( static_cast<Glib::ustring>( disk_type->name ) != "msdos" )
+			disklabeltypes .push_back( disk_type->name ) ;
+
+	 return disklabeltypes ;
+}
+
+std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
+{
+	std::vector<Glib::ustring> mountpoints ;
+
+	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
+		mountpoints .insert( mountpoints .end(), iter_mp ->second .begin(), iter_mp ->second .end() ) ;
+
+	return mountpoints ;
+}
+	
+std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition & partition ) 
+{
+	std::map<Glib::ustring, bool> flag_info ;
+
+	if ( open_device_and_disk( partition .device_path ) )
+	{
+		lp_partition = NULL ;
+		if ( partition .type == GParted::TYPE_EXTENDED )
+			lp_partition = ped_disk_extended_partition( lp_disk ) ;
+		else
+			lp_partition = ped_disk_get_partition_by_sector( 
+						lp_disk,
+						(partition .sector_end + partition .sector_start) / 2 ) ;
+	
+		if ( lp_partition )
+		{
+			for ( unsigned int t = 0 ; t < flags .size() ; t++ )
+				if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) )
+					flag_info[ ped_partition_flag_get_name( flags[ t ] ) ] =
+						ped_partition_get_flag( lp_partition, flags[ t ] ) ;
+		}
+	
+		close_device_and_disk() ;
+	}
+
+	return flag_info ;
+}
+
+//private functions...
 
 void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
@@ -364,6 +507,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
 
 	return GParted::FS_UNKNOWN ;
+}
+
+bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
+{
+	return ( device_path .length() > 6 && device_path .is_ascii() ) ;
 }
 
 void GParted_Core::set_device_partitions( Device & device ) 
@@ -636,35 +784,6 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 }
 
-bool GParted_Core::apply_operation_to_disk( Operation * operation )
-{
-	switch ( operation ->type )
-	{
-		case DELETE:
-			return Delete( operation ->partition_original, operation ->operation_details .sub_details ) ;
-		case CREATE:
-			return create( operation ->device, 
-				       operation ->partition_new,
-				       operation ->operation_details .sub_details ) ;
-		case RESIZE_MOVE:
-			return resize_move( operation ->device,
-				       	    operation ->partition_original,
-					    operation ->partition_new,
-					    operation ->operation_details .sub_details ) ;
-		case FORMAT:
-			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
-		case COPY: 
-			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
-				     operation ->partition_new,
-				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
-				     static_cast<OperationCopy*>( operation ) ->block_size,
-				     operation ->operation_details .sub_details ) ;
-	}
-
-	return false ;
-}
-
 bool GParted_Core::create( const Device & device,
 			   Partition & new_partition,
 			   std::vector<OperationDetails> & operation_details ) 
@@ -684,6 +803,142 @@ bool GParted_Core::create( const Device & device,
 	}
 	
 	return false ;
+}
+
+bool GParted_Core::create_partition( Partition & new_partition,
+				     std::vector<OperationDetails> & operation_details,
+				     Sector min_size )
+{
+	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
+	
+	new_partition .partition_number = 0 ;
+	ped_error .clear() ;
+		
+	if ( open_device_and_disk( new_partition .device_path ) )
+	{
+		PedPartitionType type;
+		lp_partition = NULL ;
+		PedConstraint *constraint = NULL ;
+		PedFileSystemType* fs_type = NULL ;
+		
+		//create new partition
+		switch ( new_partition .type )
+		{
+			case GParted::TYPE_PRIMARY:
+				type = PED_PARTITION_NORMAL ;
+				break ;
+			case GParted::TYPE_LOGICAL:
+				type = PED_PARTITION_LOGICAL ;
+				break ;
+			case GParted::TYPE_EXTENDED:
+				type = PED_PARTITION_EXTENDED ;
+				break ;
+				
+			default	:
+				type = PED_PARTITION_FREESPACE;
+		}
+
+		if ( new_partition .type != GParted::TYPE_EXTENDED )
+			fs_type = ped_file_system_type_get( "ext2" ) ;
+
+		lp_partition = ped_partition_new( lp_disk,
+						  type,
+						  fs_type,
+						  new_partition .sector_start,
+						  new_partition .sector_end ) ;
+	
+		if ( lp_partition )
+		{
+			if ( new_partition .strict )
+			{
+				PedGeometry *geom = ped_geometry_new( lp_device,
+								      new_partition .sector_start,
+								      new_partition .get_length() ) ;
+
+				if ( geom )
+					constraint = ped_constraint_exact( geom ) ;
+			}
+			else
+				constraint = ped_constraint_any( lp_device );
+			
+			if ( constraint )
+			{
+				if ( min_size > 0 )
+					constraint ->min_size = min_size ;
+			
+				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
+				{
+					//we have to free the result of ped_partition_get_path()..
+					char * lp_path = ped_partition_get_path( lp_partition ) ;
+					new_partition .add_path( lp_path, true ) ;
+					free( lp_path ) ;
+
+					new_partition .partition_number = lp_partition ->num ;
+					new_partition .sector_start = lp_partition ->geom .start ;
+					new_partition .sector_end = lp_partition ->geom .end ;
+					
+					operation_details .back() .sub_details .push_back( OperationDetails( 
+						"<i>" +
+						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
+						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
+						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
+						String::ucompose( _("size: %1"), Utils::format_size( new_partition .get_length() ) ) + 
+						"</i>",
+						OperationDetails::NONE ) ) ;
+				}
+			
+				ped_constraint_destroy( constraint );
+			}
+		}
+				
+		close_device_and_disk() ;
+	}
+
+
+	if ( new_partition .partition_number > 0 &&
+	     (	
+		new_partition .type == GParted::TYPE_EXTENDED ||
+	     	(
+	     	   wait_for_node( new_partition .get_path() ) && 
+	     	   erase_filesystem_signatures( new_partition )
+	     	)
+	     )
+	   )
+	{ 
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		
+		return true ;
+	}
+	else
+	{		
+		if ( ! ped_error .empty() )
+			operation_details .back() .sub_details .push_back( 
+				OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+		
+		operation_details .back() .status = OperationDetails::ERROR ;	
+		
+		return false ;
+	} 
+}
+	
+bool GParted_Core::create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
+	
+	set_proper_filesystem( partition .filesystem ) ;
+
+	if ( p_filesystem && p_filesystem ->Create( partition, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
 bool GParted_Core::format( const Partition & partition, std::vector<OperationDetails> & operation_details )
@@ -724,48 +979,54 @@ bool GParted_Core::resize_move( const Device & device,
 {
 	if ( partition_new .sector_start != partition_old .sector_start &&
 	     get_fs( partition_old .filesystem ) .move == GParted::FS::GPARTED )
-	{
-		if ( partition_new .get_length() > partition_old .get_length() )
-		{
-			//first do the move 
-			Partition temp = partition_new ;
-			temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
-			if ( move_partition( partition_old, temp, operation_details ) )
-			{
-				//now the partition is moved, we can grow it..
-				partition_new .sector_start = temp .sector_start ;
-				return resize( device, temp, partition_new, operation_details ) ;
-			}
-
-			return false ;
-		}
-		else if ( partition_new .get_length() < partition_old .get_length() )
-		{
-			//first shrink the partition
-			Partition temp = partition_old ;
-			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
-			if ( resize( device, partition_old, temp, operation_details ) )
-			{
-				//now we can move it
-				partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
-				return move_partition( temp, partition_new, operation_details ) ; 
-			}
-
-			return false ;
-		}
-		else
-			return move_partition( partition_old, partition_new, operation_details ) ;
-	}
+		return move( device, partition_old, partition_new, operation_details ) ;
 	else
 		return resize( device, partition_old, partition_new, operation_details ) ;
 }
 
-bool GParted_Core::move_partition( const Partition & partition_old,
-			     	   Partition & partition_new,
-				   std::vector<OperationDetails> & operation_details ) 
+bool GParted_Core::move( const Device & device,
+			 const Partition & partition_old,
+		   	 Partition & partition_new,
+		   	 std::vector<OperationDetails> & operation_details ) 
+{
+	if ( partition_new .get_length() > partition_old .get_length() )
+	{
+		//first do the move 
+		Partition temp = partition_new ;
+		temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
+		if ( move_partition_and_filesystem( partition_old, temp, operation_details ) )
+		{
+			//now the partition is moved, we can grow it..
+			partition_new .sector_start = temp .sector_start ;
+			return resize( device, temp, partition_new, operation_details ) ;
+		}
+
+		return false ;
+	}
+	else if ( partition_new .get_length() < partition_old .get_length() )
+	{
+		//first shrink the partition
+		Partition temp = partition_old ;
+		temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
+		if ( resize( device, partition_old, temp, operation_details ) )
+		{
+			//now we can move it
+			partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
+			return move_partition_and_filesystem( temp, partition_new, operation_details ) ; 
+		}
+
+		return false ;
+	}
+	else
+		return move_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
+}
+
+bool GParted_Core::move_partition_and_filesystem( const Partition & partition_old,
+		   		     	          Partition & partition_new,
+						  std::vector<OperationDetails> & operation_details ) 
 {
 	operation_details .push_back( OperationDetails( _("Moving partition and filesystem.") ) ) ;
-//FIXME: add support for dynamic blocksizes..	
+	//FIXME: add support for dynamic blocksizes..	
 	bool succes = false ;
 	char buf[1024] ;
 	if ( open_device_and_disk( partition_old .device_path ) )
@@ -919,389 +1180,6 @@ bool GParted_Core::resize( const Device & device,
 		
 	return false ;
 }
-	
-bool GParted_Core::resize_filesystem( const Partition & partition_old,
-				      const Partition & partition_new,
-				      std::vector<OperationDetails> & operation_details,
-				      Sector cylinder_size,
-				      bool fill_partition ) 
-{
-	if ( ! fill_partition )
-	{
-		if ( partition_new .get_length() < partition_old .get_length() )
-			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
-		else if ( partition_new .get_length() > partition_old .get_length() )
-			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
-		else
-			operation_details .push_back( 
-				OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
-	}
-
-	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
-	if ( p_filesystem && p_filesystem ->Resize( partition_new, operation_details .back() .sub_details, fill_partition ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
-}
-	
-bool GParted_Core::maximize_filesystem( const Partition & partition,
-					std::vector<OperationDetails> & operation_details ) 
-{
-	operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
-	
-	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
-}
-
-bool GParted_Core::copy( const Partition & partition_src,
-			 Partition & partition_dest,
-			 Sector min_size,
-			 Sector block_size,
-			 std::vector<OperationDetails> & operation_details ) 
-{
-	if ( check_repair( partition_src, operation_details ) )
-	{
-		bool succes = true ;
-		if ( partition_dest .status == GParted::STAT_NEW )
-			succes = create_partition( partition_dest, operation_details, min_size ) ;
-
-		if ( succes && set_partition_type( partition_dest, operation_details ) )
-		{
-			operation_details .push_back( OperationDetails( 
-				String::ucompose( _("copy filesystem of %1 to %2"),
-						  partition_src .get_path(),
-						  partition_dest .get_path() ) ) ) ;
-						
-
-			switch ( get_fs( partition_dest .filesystem ) .copy )
-			{
-				case  GParted::FS::GPARTED :
-						succes = copy_filesystem( partition_src,
-									  partition_dest,
-									  operation_details,
-									  block_size ) ;
-						break ;
-				
-				case  GParted::FS::LIBPARTED :
-						//FIXME: see if copying through libparted has any advantages
-						break ;
-
-				case  GParted::FS::EXTERNAL :
-						set_proper_filesystem( partition_dest .filesystem ) ;
-						succes = p_filesystem &&
-							 p_filesystem ->Copy( partition_src .get_path(),
-								     	      partition_dest .get_path(),
-									      operation_details .back() .sub_details ) ;
-						break ;
-
-				default :
-						succes = false ;
-						break ;
-			}
-
-			operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
-
-			return ( succes &&	
-			     	 check_repair( partition_dest, operation_details ) &&
-			     	 maximize_filesystem( partition_dest, operation_details ) &&
-			     	 check_repair( partition_dest, operation_details ) ) ;
-		}
-	}
-
-	return false ;
-}
-
-bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
-{
-	bool return_value = false ;
-	
-	if ( open_device_and_disk( device_path, false ) )
-	{
-		PedDiskType *type = NULL ;
-		type = ped_disk_type_get( disklabel .c_str() ) ;
-		
-		if ( type )
-		{
-			lp_disk = ped_disk_new_fresh( lp_device, type );
-		
-			return_value = commit() ;
-		}
-		
-		close_device_and_disk() ;
-	}
-	
-	return return_value ;	
-}
-
-const std::vector<FS> & GParted_Core::get_filesystems() const 
-{
-	return FILESYSTEMS ;
-}
-
-const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
-{
-	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
-		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
-			return FILESYSTEMS[ t ] ;
-	
-	return FILESYSTEMS .back() ;
-}
-
-std::vector<Glib::ustring> GParted_Core::get_disklabeltypes() 
-{
-	std::vector<Glib::ustring> disklabeltypes ;
-	
-	//msdos should be first in the list
-	disklabeltypes .push_back( "msdos" ) ;
-	
-	 PedDiskType *disk_type ;
-	 for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) ) 
-		 if ( static_cast<Glib::ustring>( disk_type->name ) != "msdos" )
-			disklabeltypes .push_back( disk_type->name ) ;
-
-	 return disklabeltypes ;
-}
-
-std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
-{
-	std::vector<Glib::ustring> mountpoints ;
-
-	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
-		mountpoints .insert( mountpoints .end(), iter_mp ->second .begin(), iter_mp ->second .end() ) ;
-
-	return mountpoints ;
-}
-	
-std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition & partition ) 
-{
-	std::map<Glib::ustring, bool> flag_info ;
-
-	if ( open_device_and_disk( partition .device_path ) )
-	{
-		lp_partition = NULL ;
-		if ( partition .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
-	
-		if ( lp_partition )
-		{
-			for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-				if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) )
-					flag_info[ ped_partition_flag_get_name( flags[ t ] ) ] =
-						ped_partition_get_flag( lp_partition, flags[ t ] ) ;
-		}
-	
-		close_device_and_disk() ;
-	}
-
-	return flag_info ;
-}
-	
-bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
-{
-	bool succes = false ;
-
-	if ( open_device_and_disk( partition .device_path ) )
-	{
-		lp_partition = NULL ;
-		if ( partition .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
-	
-		if ( lp_partition )
-		{
-			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
-
-			if ( lp_flag > 0 && ped_partition_set_flag( lp_partition, lp_flag, state ) )
-				succes = commit() ;
-		}
-	
-		close_device_and_disk() ;
-	}
-
-	return succes ;
-}
-	
-void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
-{
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
-
-	if ( lp_disk )
-	{
-		lp_partition = ped_disk_get_partition_by_sector( 
-					lp_disk,
-					(partition .sector_end + partition .sector_start) / 2 ) ;
-		
-		if ( lp_partition )
-		{
-			fs = ped_file_system_open( & lp_partition ->geom ); 	
-					
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint( fs ) ;
-				if ( constraint )
-				{
-					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
-					
-					ped_constraint_destroy( constraint );
-				}
-												
-				ped_file_system_close( fs ) ;
-			}
-		}
-	}
-				
-	if ( partition .sectors_used == -1 )
-		partition .error = ped_error ;
-}
-
-bool GParted_Core::create_partition( Partition & new_partition,
-				     std::vector<OperationDetails> & operation_details,
-				     Sector min_size )
-{
-	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
-	
-	new_partition .partition_number = 0 ;
-	ped_error .clear() ;
-		
-	if ( open_device_and_disk( new_partition .device_path ) )
-	{
-		PedPartitionType type;
-		lp_partition = NULL ;
-		PedConstraint *constraint = NULL ;
-		PedFileSystemType* fs_type = NULL ;
-		
-		//create new partition
-		switch ( new_partition .type )
-		{
-			case GParted::TYPE_PRIMARY:
-				type = PED_PARTITION_NORMAL ;
-				break ;
-			case GParted::TYPE_LOGICAL:
-				type = PED_PARTITION_LOGICAL ;
-				break ;
-			case GParted::TYPE_EXTENDED:
-				type = PED_PARTITION_EXTENDED ;
-				break ;
-				
-			default	:
-				type = PED_PARTITION_FREESPACE;
-		}
-
-		if ( new_partition .type != GParted::TYPE_EXTENDED )
-			fs_type = ped_file_system_type_get( "ext2" ) ;
-
-		lp_partition = ped_partition_new( lp_disk,
-						  type,
-						  fs_type,
-						  new_partition .sector_start,
-						  new_partition .sector_end ) ;
-	
-		if ( lp_partition )
-		{
-			if ( new_partition .strict )
-			{
-				PedGeometry *geom = ped_geometry_new( lp_device,
-								      new_partition .sector_start,
-								      new_partition .get_length() ) ;
-
-				if ( geom )
-					constraint = ped_constraint_exact( geom ) ;
-			}
-			else
-				constraint = ped_constraint_any( lp_device );
-			
-			if ( constraint )
-			{
-				if ( min_size > 0 )
-					constraint ->min_size = min_size ;
-			
-				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
-				{
-					//we have to free the result of ped_partition_get_path()..
-					char * lp_path = ped_partition_get_path( lp_partition ) ;
-					new_partition .add_path( lp_path, true ) ;
-					free( lp_path ) ;
-
-					new_partition .partition_number = lp_partition ->num ;
-					new_partition .sector_start = lp_partition ->geom .start ;
-					new_partition .sector_end = lp_partition ->geom .end ;
-					
-					operation_details .back() .sub_details .push_back( OperationDetails( 
-						"<i>" +
-						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
-						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
-						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
-						String::ucompose( _("size: %1"), Utils::format_size( new_partition .get_length() ) ) + 
-						"</i>",
-						OperationDetails::NONE ) ) ;
-				}
-			
-				ped_constraint_destroy( constraint );
-			}
-		}
-				
-		close_device_and_disk() ;
-	}
-
-
-	if ( new_partition .partition_number > 0 &&
-	     (	
-		new_partition .type == GParted::TYPE_EXTENDED ||
-	     	(
-	     	   wait_for_node( new_partition .get_path() ) && 
-	     	   erase_filesystem_signatures( new_partition )
-	     	)
-	     )
-	   )
-	{ 
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		
-		return true ;
-	}
-	else
-	{		
-		if ( ! ped_error .empty() )
-			operation_details .back() .sub_details .push_back( 
-				OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
-		
-		operation_details .back() .status = OperationDetails::ERROR ;	
-		
-		return false ;
-	} 
-}
-	
-bool GParted_Core::create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
-{
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
-	
-	set_proper_filesystem( partition .filesystem ) ;
-
-	if ( p_filesystem && p_filesystem ->Create( partition, operation_details .back() .sub_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
-}
 
 bool GParted_Core::resize_partition( const Partition & partition_old,
 				     Partition & partition_new,
@@ -1410,6 +1288,47 @@ bool GParted_Core::resize_partition( const Partition & partition_old,
 		return return_value ;
 	}
 }
+	
+bool GParted_Core::resize_filesystem( const Partition & partition_old,
+				      const Partition & partition_new,
+				      std::vector<OperationDetails> & operation_details,
+				      Sector cylinder_size,
+				      bool fill_partition ) 
+{
+	if ( ! fill_partition )
+	{
+		if ( partition_new .get_length() < partition_old .get_length() )
+			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
+		else if ( partition_new .get_length() > partition_old .get_length() )
+			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
+		else
+			operation_details .push_back( 
+				OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+	}
+
+	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
+	if ( p_filesystem && p_filesystem ->Resize( partition_new, operation_details .back() .sub_details, fill_partition ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
+}
+	
+//FIXME: perform checks in maximize_filesystem(), resize_filesystem() and check_repair() to see if 
+//the specified action is supported. if not, return true, but set status of operation to NOT_AVAILABLE
+//(or maybe we should simply skip the entire suboperation?)
+bool GParted_Core::maximize_filesystem( const Partition & partition,
+					std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	
+	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
+}
 
 bool GParted_Core::resize_normal_using_libparted( const Partition & partition_old,
 						  Partition & partition_new,
@@ -1472,6 +1391,64 @@ bool GParted_Core::resize_normal_using_libparted( const Partition & partition_ol
 			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
 	
 	return return_value ;
+}
+
+bool GParted_Core::copy( const Partition & partition_src,
+			 Partition & partition_dest,
+			 Sector min_size,
+			 Sector block_size,
+			 std::vector<OperationDetails> & operation_details ) 
+{
+	if ( check_repair( partition_src, operation_details ) )
+	{
+		bool succes = true ;
+		if ( partition_dest .status == GParted::STAT_NEW )
+			succes = create_partition( partition_dest, operation_details, min_size ) ;
+
+		if ( succes && set_partition_type( partition_dest, operation_details ) )
+		{
+			operation_details .push_back( OperationDetails( 
+				String::ucompose( _("copy filesystem of %1 to %2"),
+						  partition_src .get_path(),
+						  partition_dest .get_path() ) ) ) ;
+						
+
+			switch ( get_fs( partition_dest .filesystem ) .copy )
+			{
+				case  GParted::FS::GPARTED :
+						succes = copy_filesystem( partition_src,
+									  partition_dest,
+									  operation_details,
+									  block_size ) ;
+						break ;
+				
+				case  GParted::FS::LIBPARTED :
+						//FIXME: see if copying through libparted has any advantages
+						break ;
+
+				case  GParted::FS::EXTERNAL :
+						set_proper_filesystem( partition_dest .filesystem ) ;
+						succes = p_filesystem &&
+							 p_filesystem ->Copy( partition_src .get_path(),
+								     	      partition_dest .get_path(),
+									      operation_details .back() .sub_details ) ;
+						break ;
+
+				default :
+						succes = false ;
+						break ;
+			}
+
+			operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+
+			return ( succes &&	
+			     	 check_repair( partition_dest, operation_details ) &&
+			     	 maximize_filesystem( partition_dest, operation_details ) &&
+			     	 check_repair( partition_dest, operation_details ) ) ;
+		}
+	}
+
+	return false ;
 }
 
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
@@ -1620,42 +1597,6 @@ bool GParted_Core::check_repair( const Partition & partition, std::vector<Operat
 	}
 }
 
-void GParted_Core::set_flags( Partition & partition )
-{
-	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
-		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
-			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
-}
-
-void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )
-{
-	if ( p_filesystem )
-		delete p_filesystem ;
-		
-	switch( filesystem )
-	{
-		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
-		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
-		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
-		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
-		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
-		case FS_NTFS		: p_filesystem = new ntfs() ; 		break ;
-		case FS_REISERFS	: p_filesystem = new reiserfs() ; 	break ;
-		case FS_REISER4		: p_filesystem = new reiser4() ;	break ;
-		case FS_XFS		: p_filesystem = new xfs() ; 		break ;
-		case FS_JFS		: p_filesystem = new jfs() ; 		break ;
-		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
-		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
-		case FS_UFS		: p_filesystem = new ufs() ;	 	break ;
-
-		default			: p_filesystem = NULL ;
-	}
-
-	if ( p_filesystem )
-		p_filesystem ->cylinder_size = cylinder_size ;
-}
-
 bool GParted_Core::set_partition_type( const Partition & partition,
 	   			       std::vector<OperationDetails> & operation_details )
 {
@@ -1687,6 +1628,34 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
+}
+
+void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )
+{
+	if ( p_filesystem )
+		delete p_filesystem ;
+		
+	switch( filesystem )
+	{
+		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
+		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
+		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
+		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
+		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
+		case FS_NTFS		: p_filesystem = new ntfs() ; 		break ;
+		case FS_REISERFS	: p_filesystem = new reiserfs() ; 	break ;
+		case FS_REISER4		: p_filesystem = new reiser4() ;	break ;
+		case FS_XFS		: p_filesystem = new xfs() ; 		break ;
+		case FS_JFS		: p_filesystem = new jfs() ; 		break ;
+		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
+		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
+		case FS_UFS		: p_filesystem = new ufs() ;	 	break ;
+
+		default			: p_filesystem = NULL ;
+	}
+
+	if ( p_filesystem )
+		p_filesystem ->cylinder_size = cylinder_size ;
 }
 	
 bool GParted_Core::wait_for_node( const Glib::ustring & node ) 
@@ -1736,6 +1705,49 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 
 	return return_value ;
 }
+	
+void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
+{
+	PedFileSystem *fs = NULL;
+	PedConstraint *constraint = NULL;
+
+	if ( lp_disk )
+	{
+		lp_partition = ped_disk_get_partition_by_sector( 
+					lp_disk,
+					(partition .sector_end + partition .sector_start) / 2 ) ;
+		
+		if ( lp_partition )
+		{
+			fs = ped_file_system_open( & lp_partition ->geom ); 	
+					
+			if ( fs )
+			{
+				constraint = ped_file_system_get_resize_constraint( fs ) ;
+				if ( constraint )
+				{
+					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
+					
+					ped_constraint_destroy( constraint );
+				}
+												
+				ped_file_system_close( fs ) ;
+			}
+		}
+	}
+				
+	if ( partition .sectors_used == -1 )
+		partition .error = ped_error ;
+}
+
+void GParted_Core::set_flags( Partition & partition )
+{
+	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
+		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
+		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
+			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
+}
+//
 //FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
 //basicly we should get rid of these global lp_device and lp_disk
 bool GParted_Core::open_device( const Glib::ustring & device_path )
