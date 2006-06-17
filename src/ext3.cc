@@ -86,18 +86,13 @@ bool ext3::Resize( const Partition & partition_new,
 		   std::vector<OperationDetails> & operation_details,
 		   bool fill_partition )
 {
-	if ( fill_partition )
-		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
-	else
-		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
-
 	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
 					partition_new .get_length() - cylinder_size, GParted::UNIT_MIB ) ), true ) + "M" ; 
 		
-	if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )
+	if ( ! execute_command( str_temp, operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

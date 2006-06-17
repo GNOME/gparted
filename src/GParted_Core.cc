@@ -892,13 +892,9 @@ bool GParted_Core::resize( const Device & device,
 	if ( check_repair( partition_new, operation_details ) )
 	{
 		succes = true ;
-		set_proper_filesystem( partition_new .filesystem ) ;
-			
+		//FIXME, find another way to resolve this cylsize problem...	
 		if ( partition_new .get_length() < partition_old .get_length() )
-		{
-			p_filesystem ->cylinder_size = device .cylsize ;
-			succes = p_filesystem ->Resize( partition_new, operation_details ) ;
-		}
+			succes = resize_filesystem( partition_old, partition_new, operation_details, device .cylsize ) ;
 						
 		if ( succes )
 			succes = resize_partition(
@@ -912,7 +908,7 @@ bool GParted_Core::resize( const Device & device,
 			succes = false ;
 
 		//expand filesystem to fit exactly in partition
-		if ( ! p_filesystem ->Resize( partition_new, operation_details, true ) )
+		if ( ! resize_filesystem( partition_old, partition_new, operation_details, device .cylsize, true ) )
 			succes = false ;
 			
 		if ( ! check_repair( partition_new, operation_details ) )
@@ -922,6 +918,35 @@ bool GParted_Core::resize( const Device & device,
 	}
 		
 	return false ;
+}
+	
+bool GParted_Core::resize_filesystem( const Partition & partition_old,
+				      const Partition & partition_new,
+				      std::vector<OperationDetails> & operation_details,
+				      Sector cylinder_size,
+				      bool fill_partition ) 
+{
+	if ( fill_partition )
+		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	else if ( partition_new .get_length() < partition_old .get_length() )
+		operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
+	else if ( partition_new .get_length() > partition_old .get_length() )
+		operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
+	else
+		operation_details .push_back( 
+			OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+
+	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
+	if ( p_filesystem && p_filesystem ->Resize( partition_new, operation_details .back() .sub_details, fill_partition ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
 bool GParted_Core::copy( const Partition & partition_src,
@@ -1272,7 +1297,13 @@ bool GParted_Core::resize_partition( const Partition & partition_old,
 				     std::vector<OperationDetails> & operation_details,
 				     Sector min_size )
 {
-	operation_details .push_back( OperationDetails( _("resize partition") ) ) ;
+	if ( partition_new .get_length() < partition_old .get_length() )
+		operation_details .push_back( OperationDetails( _("shrink partition") ) ) ;
+	else if ( partition_new .get_length() > partition_old .get_length() )
+		operation_details .push_back( OperationDetails( _("grow partition") ) ) ;
+	else
+		operation_details .push_back( 
+			OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
 
 	operation_details .back() .sub_details .push_back( 
 		OperationDetails(
@@ -1585,7 +1616,7 @@ void GParted_Core::set_flags( Partition & partition )
 			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
 }
 
-void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
+void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )
 {
 	if ( p_filesystem )
 		delete p_filesystem ;
@@ -1608,6 +1639,9 @@ void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 
 		default			: p_filesystem = NULL ;
 	}
+
+	if ( p_filesystem )
+		p_filesystem ->cylinder_size = cylinder_size ;
 }
 
 bool GParted_Core::set_partition_type( const Partition & partition,

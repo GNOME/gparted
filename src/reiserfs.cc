@@ -89,11 +89,6 @@ bool reiserfs::Resize( const Partition & partition_new,
 		       std::vector<OperationDetails> & operation_details,
 		       bool fill_partition )
 { 
-	if ( fill_partition )
-		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
-	else
-		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
-
 	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
@@ -103,7 +98,7 @@ bool reiserfs::Resize( const Partition & partition_new,
 				partition_new .get_length() - cylinder_size, GParted::UNIT_BYTE ) ), true ) ;
 	}
 
-	exit_status = execute_command( str_temp, operation_details .back() .sub_details ) ;
+	exit_status = execute_command( str_temp, operation_details ) ;
 	if ( exit_status == 0 || exit_status == 256 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

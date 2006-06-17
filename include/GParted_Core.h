@@ -65,6 +65,12 @@ private:
 		     const Partition & partition_old,
 		     Partition & partition_new,
 		     std::vector<OperationDetails> & operation_detail ) ; 
+	bool resize_filesystem( const Partition & partition_old,
+				const Partition & partition_new,
+				std::vector<OperationDetails> & operation_details,
+				Sector cylinder_size = 0,
+				bool fill_partition = false ) ;
+				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
 		   Sector min_size,
@@ -105,7 +111,7 @@ private:
 			      std::vector<OperationDetails> & operation_details,
 			      Sector block_size ) ;
 	bool check_repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
-	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
+	void set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size = 0 ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;

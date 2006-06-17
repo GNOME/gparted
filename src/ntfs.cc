@@ -85,11 +85,6 @@ bool ntfs::Resize( const Partition & partition_new,
 		   std::vector<OperationDetails> & operation_details,
 		   bool fill_partition )
 {
-	if ( fill_partition )
-		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
-	else
-		operation_details .push_back( OperationDetails( _("resize the filesystem") ) ) ;
-	
 	bool return_value = false ;
 	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
 	
@@ -101,32 +96,30 @@ bool ntfs::Resize( const Partition & partition_new,
 	}
 	
 	//simulation..
-	operation_details .back() .sub_details .push_back( OperationDetails( _("run simulation") ) ) ;
+	operation_details .push_back( OperationDetails( _("run simulation") ) ) ;
 
-	if ( ! execute_command( str_temp + " --no-action", operation_details .back() .sub_details .back() .sub_details ) )
+	if ( ! execute_command( str_temp + " --no-action", operation_details .back() .sub_details ) )
 	{
-		operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = OperationDetails::SUCCES ;
 
-		//real resize (use description from 'main' operation)
-		operation_details .back() .sub_details .push_back( 
-			OperationDetails( operation_details .back() .description ) ) ;
+		//real resize
+		operation_details .push_back( OperationDetails( _("real resize") ) ) ;
 
-		if ( ! execute_command( str_temp, operation_details .back() .sub_details .back() .sub_details ) )
+		if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )
 		{
-			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			operation_details .back() .status = OperationDetails::SUCCES ;
 			return_value = true ;
 		}
 		else
 		{
-			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .status = OperationDetails::ERROR ;
 		}
 	}
 	else
 	{
-		operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .status = OperationDetails::ERROR ;
 	}
 	
-	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
 }
 
