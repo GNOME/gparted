@@ -91,11 +91,7 @@ void jfs::Set_Used_Sectors( Partition & partition )
 
 bool jfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::get_filesystem_string( GParted::FS_JFS ) ) ) ) ;
-	
-	if ( ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

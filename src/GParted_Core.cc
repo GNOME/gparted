@@ -661,7 +661,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				     static_cast<OperationCopy*>( operation ) ->block_size,
 				     operation ->operation_details .sub_details ) ;
 	}
-	
+
 	return false ;
 }
 
@@ -672,19 +672,15 @@ bool GParted_Core::create( const Device & device,
 	
 	if ( new_partition .type == GParted::TYPE_EXTENDED )   
 	{
-		return create_empty_partition( new_partition, operation_details ) ;
+		return create_partition( new_partition, operation_details ) ;
 	}
-	else if ( create_empty_partition( new_partition, operation_details, get_fs( new_partition .filesystem ) .MIN ) )
+	else if ( create_partition( new_partition, operation_details, get_fs( new_partition .filesystem ) .MIN ) )
 	{
-		set_proper_filesystem( new_partition .filesystem ) ;
-		
-		//most likely this means the user created an unformatted partition,
-		//however in theory, it could also screw some errorhandling.
-		if ( ! p_filesystem )
+		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
 			return true ;
-		
-		return set_partition_type( new_partition, operation_details ) &&
-		       p_filesystem ->Create( new_partition, operation_details ) ;
+		else
+			return set_partition_type( new_partition, operation_details ) &&
+		       	       create_filesystem( new_partition, operation_details ) ;
 	}
 	
 	return false ;
@@ -852,7 +848,7 @@ bool GParted_Core::move_partition( const Partition & partition_old,
 
 
 			ped_device_close( lp_device );
-			//FIXME: errorhandling moet stukken beter voordat we committen!
+			//FIXME: errorhandling needs to be improved!
 			succes = resize_container_partition( partition_old,
 							     partition_new,
 							     false,
@@ -941,7 +937,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	{
 		bool succes = true ;
 		if ( partition_dest .status == GParted::STAT_NEW )
-			succes = create_empty_partition( partition_dest, operation_details, min_size ) ;
+			succes = create_partition( partition_dest, operation_details, min_size ) ;
 
 		if ( succes && set_partition_type( partition_dest, operation_details ) )
 		{
@@ -1135,9 +1131,9 @@ void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
 		partition .error = ped_error ;
 }
 
-bool GParted_Core::create_empty_partition( Partition & new_partition,
-					   std::vector<OperationDetails> & operation_details,
-					   Sector min_size )
+bool GParted_Core::create_partition( Partition & new_partition,
+				     std::vector<OperationDetails> & operation_details,
+				     Sector min_size )
 {
 	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
 	
@@ -1249,6 +1245,26 @@ bool GParted_Core::create_empty_partition( Partition & new_partition,
 		
 		return false ;
 	} 
+}
+	
+bool GParted_Core::create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( String::ucompose(
+								_("create new %1 filesystem"),
+								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
+	
+	set_proper_filesystem( partition .filesystem ) ;
+
+	if ( p_filesystem && p_filesystem ->Create( partition, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
 bool GParted_Core::resize_container_partition( const Partition & partition_old,

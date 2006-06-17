@@ -45,12 +45,7 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 
 bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( 
-			OperationDetails( String::ucompose(
-						_("create new %1 filesystem"),
-						Utils::get_filesystem_string( GParted::FS_LINUX_SWAP ) ) ) ) ;
-	
-	if ( ! execute_command( "mkswap " + new_partition .get_path(), operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkswap " + new_partition .get_path(), operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

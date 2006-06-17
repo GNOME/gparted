@@ -68,11 +68,7 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 
 bool reiser4::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::get_filesystem_string( GParted::FS_REISER4 ) ) ) ) ;
-	
-	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

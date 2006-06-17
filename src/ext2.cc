@@ -75,11 +75,7 @@ void ext2::Set_Used_Sectors( Partition & partition )
 
 bool ext2::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::get_filesystem_string( GParted::FS_EXT2 ) ) ) ) ;
-	
-	if ( ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;

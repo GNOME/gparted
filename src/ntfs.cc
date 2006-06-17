@@ -69,11 +69,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 
 bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
-								_("create new %1 filesystem"),
-								Utils::get_filesystem_string( GParted::FS_NTFS ) ) ) ) ;
-	
-	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details .back() .sub_details ) )
+	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details ) )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
