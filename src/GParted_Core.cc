@@ -691,10 +691,8 @@ bool GParted_Core::format( const Partition & partition, std::vector<OperationDet
 	//remove all filesystem signatures...
 	erase_filesystem_signatures( partition ) ;
 	
-	set_proper_filesystem( partition .filesystem ) ;
-	
 	return set_partition_type( partition, operation_details ) &&
-				   p_filesystem ->Create( partition, operation_details ) ;
+				   create_filesystem( partition, operation_details ) ;
 }
 
 bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
