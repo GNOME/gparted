@@ -68,16 +68,7 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 
 bool reiser4::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details ) ;
 }
 
 bool reiser4::Resize( const Partition & partition_new,
@@ -96,16 +87,7 @@ bool reiser4::Copy( const Glib::ustring & src_part_path,
 
 bool reiser4::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(), operation_details ) ;
 }
 
 } //GParted

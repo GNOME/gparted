@@ -75,16 +75,7 @@ void ext2::Set_Used_Sectors( Partition & partition )
 
 bool ext2::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operation_details ) ;
 }
 
 bool ext2::Resize( const Partition & partition_new,
@@ -97,16 +88,7 @@ bool ext2::Resize( const Partition & partition_new,
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
 					partition_new .get_length() - cylinder_size, GParted::UNIT_MIB ) ), true ) + "M" ; 
 		
-	if ( ! execute_command( str_temp, operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( str_temp, operation_details ) ;
 }
 
 bool ext2::Copy( const Glib::ustring & src_part_path, 
@@ -122,16 +104,7 @@ bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetai
 	
 	//exitstatus 256 isn't documented, but it's returned when the 'FILESYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
-	if ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
 }
 
 } //GParted

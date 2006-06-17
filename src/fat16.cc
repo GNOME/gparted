@@ -75,16 +75,7 @@ void fat16::Set_Used_Sectors( Partition & partition )
 	
 bool fat16::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operation_details ) ;
 }
 
 bool fat16::Resize( const Partition & partition_new,
@@ -104,16 +95,8 @@ bool fat16::Copy( const Glib::ustring & src_part_path,
 bool fat16::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operation_details ) ;
-	if ( exit_status == 0 || exit_status == 1 )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+
+	return ( exit_status == 0 || exit_status == 1 ) ;
 }
 
 } //GParted

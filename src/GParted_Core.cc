@@ -908,7 +908,7 @@ bool GParted_Core::resize( const Device & device,
 			succes = false ;
 
 		//expand filesystem to fit exactly in partition
-		if ( ! resize_filesystem( partition_old, partition_new, operation_details, device .cylsize, true ) )
+		if ( ! maximize_filesystem( partition_new, operation_details ) )
 			succes = false ;
 			
 		if ( ! check_repair( partition_new, operation_details ) )
@@ -926,15 +926,16 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 				      Sector cylinder_size,
 				      bool fill_partition ) 
 {
-	if ( fill_partition )
-		operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
-	else if ( partition_new .get_length() < partition_old .get_length() )
-		operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
-	else if ( partition_new .get_length() > partition_old .get_length() )
-		operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
-	else
-		operation_details .push_back( 
-			OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+	if ( ! fill_partition )
+	{
+		if ( partition_new .get_length() < partition_old .get_length() )
+			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
+		else if ( partition_new .get_length() > partition_old .get_length() )
+			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
+		else
+			operation_details .push_back( 
+				OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+	}
 
 	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
 	if ( p_filesystem && p_filesystem ->Resize( partition_new, operation_details .back() .sub_details, fill_partition ) )
@@ -947,6 +948,14 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 		operation_details .back() .status = OperationDetails::ERROR ;
 		return false ;
 	}
+}
+	
+bool GParted_Core::maximize_filesystem( const Partition & partition,
+					std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	
+	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
 }
 
 bool GParted_Core::copy( const Partition & partition_src,
@@ -968,7 +977,6 @@ bool GParted_Core::copy( const Partition & partition_src,
 						  partition_src .get_path(),
 						  partition_dest .get_path() ) ) ) ;
 						
-			set_proper_filesystem( partition_dest .filesystem ) ;
 
 			switch ( get_fs( partition_dest .filesystem ) .copy )
 			{
@@ -984,19 +992,23 @@ bool GParted_Core::copy( const Partition & partition_src,
 						break ;
 
 				case  GParted::FS::EXTERNAL :
-						succes = p_filesystem ->Copy( partition_src .get_path(),
+						set_proper_filesystem( partition_dest .filesystem ) ;
+						succes = p_filesystem &&
+							 p_filesystem ->Copy( partition_src .get_path(),
 								     	      partition_dest .get_path(),
-									      operation_details ) ;
+									      operation_details .back() .sub_details ) ;
 						break ;
 
 				default :
 						succes = false ;
 						break ;
 			}
-			
+
+			operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+
 			return ( succes &&	
 			     	 check_repair( partition_dest, operation_details ) &&
-			     	 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
+			     	 maximize_filesystem( partition_dest, operation_details ) &&
 			     	 check_repair( partition_dest, operation_details ) ) ;
 		}
 	}

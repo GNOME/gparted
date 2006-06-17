@@ -46,16 +46,7 @@ void hfs::Set_Used_Sectors( Partition & partition )
 
 bool hfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "hformat " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "hformat " + new_partition .get_path(), operation_details ) ;
 }
 
 bool hfs::Resize( const Partition & partition_new,

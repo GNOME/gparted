@@ -45,16 +45,7 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 
 bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkswap " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkswap " + new_partition .get_path(), operation_details ) ;
 }
 
 bool linux_swap::Resize( const Partition & partition_new, 

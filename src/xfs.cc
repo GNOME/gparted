@@ -93,16 +93,7 @@ void xfs::Set_Used_Sectors( Partition & partition )
 
 bool xfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operation_details ) ;
 }
 
 bool xfs::Resize( const Partition & partition_new,
@@ -200,106 +191,107 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 	
 	//create xfs filesystem on destination..
 	Partition partition( dest_part_path ) ;
-	if ( Create( partition, operation_details .back() .sub_details ) )
+	if ( Create( partition, operation_details ) )
 	{
 		//create source mountpoint...
-		operation_details .back() .sub_details .push_back(
+		operation_details .push_back( 
 			OperationDetails( String::ucompose( _("create temporary mountpoint (%1)"), SRC ) ) ) ;
 		if ( ! mkdir( SRC .c_str(), 0 ) )
 		{
-			operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+			operation_details .back() .status = OperationDetails::SUCCES ;
 			
 			//create destination mountpoint...
-			operation_details .back() .sub_details .push_back(
+			operation_details .push_back(
 				OperationDetails( String::ucompose( _("create temporary mountpoint (%1)"), DST ) ) ) ;
 			if ( ! mkdir( DST .c_str(), 0 ) )
 			{
-				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+				operation_details .back() .status = OperationDetails::SUCCES ;
 
 				//mount source partition
-				operation_details .back() .sub_details .push_back(
+				operation_details .push_back(
 					OperationDetails( String::ucompose( _("mount %1 on %2"), src_part_path, SRC ) ) ) ;
 				
 				if ( ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part_path + " " + SRC,
-							operation_details .back() .sub_details .back() .sub_details ) )
+							operation_details .back() .sub_details ) )
 				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+					operation_details .back() .status = OperationDetails::SUCCES ;
 
 					//mount destination partition
-					operation_details .back() .sub_details .push_back(
+					operation_details .push_back(
 					OperationDetails( String::ucompose( _("mount %1 on %2"), dest_part_path, DST ) ) ) ;
 			
 					if ( ! execute_command( "mount -v -t xfs " + dest_part_path + " " + DST,
-								operation_details .back() .sub_details .back() .sub_details ) )
+								operation_details .back() .sub_details ) )
 					{
-						operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+						operation_details .back() .status = OperationDetails::SUCCES ;
 	
 						//copy filesystem..
-						operation_details .back() .sub_details .push_back( OperationDetails( _("copy filesystem") ) ) ;
+						operation_details .push_back( OperationDetails( _("copy filesystem") ) ) ;
 						
 						if ( ! execute_command( 
 							 "xfsdump -J - " + SRC + " | xfsrestore -J - " + DST,
-							 operation_details .back() .sub_details .back() .sub_details ) )
+							 operation_details .back() .sub_details ) )
 						{
-							operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+							operation_details .back() .status = OperationDetails::SUCCES ;
 							return_value = true ;
 						}
 						else
 						{
-							operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+							operation_details .back() .status = OperationDetails::ERROR ;
 						}
 						
 						//unmount destination partition
-						operation_details .back() .sub_details .push_back(
-							OperationDetails( String::ucompose( _("unmount %1"), dest_part_path ) ) ) ;
+						operation_details .push_back(
+							OperationDetails( String::ucompose( _("unmount %1"),
+											    dest_part_path ) ) ) ;
 					
 						if ( ! execute_command( "umount -v  " + dest_part_path,
-									operation_details .back() .sub_details .back() .sub_details ) )
+									operation_details .back() .sub_details ) )
 						{
-							operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+							operation_details .back() .status = OperationDetails::SUCCES ;
 						}
 						else
 						{
-							operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+							operation_details .back() .status = OperationDetails::ERROR ;
 							return_value = false ;
 						}
 					}
 					else
 					{
-						operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+						operation_details .back() .status = OperationDetails::ERROR ;
 					}
 					
 					//unmount source partition
-					operation_details .back() .sub_details .push_back(
+					operation_details .push_back(
 						OperationDetails( String::ucompose( _("unmount %1"), src_part_path ) ) ) ;
 				
 					if ( ! execute_command( "umount -v  " + src_part_path,
-								operation_details .back() .sub_details .back() .sub_details ) )
+								operation_details .back() .sub_details ) )
 					{
-						operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+						operation_details .back() .status = OperationDetails::SUCCES ;
 					}
 					else
 					{
-						operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+						operation_details .back() .status = OperationDetails::ERROR ;
 						return_value = false ;
 					}
 				}
 				else
 				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
+					operation_details .back() .status = OperationDetails::ERROR ;
 				}
 		
 				//remove destination mountpoint..
-				operation_details .back() .sub_details .push_back(
+				operation_details .push_back(
 					OperationDetails( String::ucompose( _("remove temporary mountpoint (%1)"), DST ) ) ) ;
 				if ( ! rmdir( DST .c_str() ) )
 				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+					operation_details .back() .status = OperationDetails::SUCCES ;
 				}
 				else
 				{
-					operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-					operation_details .back() .sub_details .back() .sub_details .push_back(
+					operation_details .back() .status = OperationDetails::ERROR ;
+					operation_details .back() .sub_details .push_back(
 						OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
 	
 					return_value = false ;
@@ -307,22 +299,22 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 			}
 			else
 			{
-				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				operation_details .back() .sub_details .back() .sub_details .push_back(
+				operation_details .back() .status = OperationDetails::ERROR ;
+				operation_details .back() .sub_details .push_back(
 					OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
 			}
 			
 			//remove source mountpoint..
-			operation_details .back() .sub_details .push_back(
+			operation_details .push_back(
 				OperationDetails( String::ucompose( _("remove temporary mountpoint (%1)"), SRC ) ) ) ;
 			if ( ! rmdir( SRC .c_str() ) )
 			{
-				operation_details .back() .sub_details .back() .status = OperationDetails::SUCCES ;
+				operation_details .back() .status = OperationDetails::SUCCES ;
 			}
 			else
 			{
-				operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-				operation_details .back() .sub_details .back() .sub_details .push_back(
+				operation_details .back() .status = OperationDetails::ERROR ;
+				operation_details .back() .sub_details .push_back(
 					OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
 
 				return_value = false ;
@@ -330,28 +322,18 @@ bool xfs::Copy( const Glib::ustring & src_part_path,
 		}
 		else
 		{
-			operation_details .back() .sub_details .back() .status = OperationDetails::ERROR ;
-			operation_details .back() .sub_details .back() .sub_details .push_back(
+			operation_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .sub_details .push_back(
 				OperationDetails( Glib::strerror( errno ), OperationDetails::NONE ) ) ;
 		}
 	}
 
-	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
 }
 
 bool xfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "xfs_repair -v " + partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "xfs_repair -v " + partition .get_path(), operation_details ) ;
 }
 
 } //GParted

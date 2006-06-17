@@ -69,16 +69,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 
 bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details ) ;
 }
 
 bool ntfs::Resize( const Partition & partition_new, 
@@ -127,31 +118,12 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
 		 std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path,
-				 operation_details .back() .sub_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;	
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path, operation_details ) ;
 }
 
 bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operation_details ) ) 
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operation_details ) ; 
 }
 
 } //GParted

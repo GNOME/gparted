@@ -70,6 +70,8 @@ private:
 				std::vector<OperationDetails> & operation_details,
 				Sector cylinder_size = 0,
 				bool fill_partition = false ) ;
+	bool maximize_filesystem( const Partition & partition,
+				  std::vector<OperationDetails> & operation_details ) ;
 				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,

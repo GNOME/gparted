@@ -73,16 +73,7 @@ void reiserfs::Set_Used_Sectors( Partition & partition )
 	
 bool reiserfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
 {
-	if ( ! execute_command( "mkreiserfs -f " + new_partition .get_path(), operation_details ) )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	return ! execute_command( "mkreiserfs -f " + new_partition .get_path(), operation_details ) ;
 }
 
 bool reiserfs::Resize( const Partition & partition_new,
@@ -99,16 +90,8 @@ bool reiserfs::Resize( const Partition & partition_new,
 	}
 
 	exit_status = execute_command( str_temp, operation_details ) ;
-	if ( exit_status == 0 || exit_status == 256 )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+
+	return ( exit_status == 0 || exit_status == 256 ) ;
 }
 
 bool reiserfs::Copy( const Glib::ustring & src_part_path,
@@ -121,16 +104,8 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path,
 bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
 	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .get_path(), operation_details ) ;
-	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
-	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
-	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+	
+	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }
 
 } //GParted
