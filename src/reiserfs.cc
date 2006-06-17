@@ -125,12 +125,7 @@ bool reiserfs::Copy( const Glib::ustring & src_part_path,
 
 bool reiserfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
-						  partition .get_path() ) ) ) ;
-	
-	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .get_path(),
-				       operation_details .back() .sub_details ) ;
+	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .get_path(), operation_details ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;

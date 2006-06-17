@@ -847,11 +847,11 @@ bool GParted_Core::move_partition( const Partition & partition_old,
 
 			ped_device_close( lp_device );
 			//FIXME: errorhandling needs to be improved!
-			succes = resize_container_partition( partition_old,
-							     partition_new,
-							     false,
-							     operation_details,
-							     partition_old .get_length() ) ;
+			succes = resize_partition( partition_old,
+					           partition_new,
+						   false,
+						   operation_details,
+						   partition_old .get_length() ) ;
 		}
 
 		close_device_and_disk() ;
@@ -867,22 +867,21 @@ bool GParted_Core::resize( const Device & device,
 {
 	//extended partition
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
-		return resize_container_partition( partition_old, partition_new, false, operation_details ) ;
+		return resize_partition( partition_old, partition_new, false, operation_details ) ;
 	
 	bool succes = false ;
-	set_proper_filesystem( partition_new .filesystem ) ;
 	
 	//resize using libparted..
 	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED ||
 	     get_fs( partition_old .filesystem ) .shrink == GParted::FS::LIBPARTED ||
 	     get_fs( partition_old .filesystem ) .move == GParted::FS::LIBPARTED )
 	{
-		if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
+		if ( check_repair( partition_new, operation_details ) )
 		{
 			succes = resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
 
 			//always check after a resize, but if it failes the whole operation failes 
-			if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+			if ( ! check_repair( partition_new, operation_details ) )
 				succes = false ;
 		}
 		
@@ -890,9 +889,10 @@ bool GParted_Core::resize( const Device & device,
 	}
 
 	//use custom resize tools..
-	if ( p_filesystem && p_filesystem ->Check_Repair( partition_new, operation_details ) )
+	if ( check_repair( partition_new, operation_details ) )
 	{
 		succes = true ;
+		set_proper_filesystem( partition_new .filesystem ) ;
 			
 		if ( partition_new .get_length() < partition_old .get_length() )
 		{
@@ -901,21 +901,21 @@ bool GParted_Core::resize( const Device & device,
 		}
 						
 		if ( succes )
-			succes = resize_container_partition(
+			succes = resize_partition(
 					partition_old,
 			     		partition_new,
 					! get_fs( partition_new .filesystem ) .move,
 					operation_details ) ;
 			
 		//these 3 are always executed, however, if 1 of them fails the whole operation fails
-		if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+		if ( ! check_repair( partition_new, operation_details ) )
 			succes = false ;
 
 		//expand filesystem to fit exactly in partition
 		if ( ! p_filesystem ->Resize( partition_new, operation_details, true ) )
 			succes = false ;
 			
-		if ( ! p_filesystem ->Check_Repair( partition_new, operation_details ) )
+		if ( ! check_repair( partition_new, operation_details ) )
 			succes = false ;
 
 		return succes ;
@@ -930,8 +930,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Sector block_size,
 			 std::vector<OperationDetails> & operation_details ) 
 {
-	set_proper_filesystem( partition_dest .filesystem ) ;
-	if ( p_filesystem && p_filesystem ->Check_Repair( partition_src, operation_details ) )
+	if ( check_repair( partition_src, operation_details ) )
 	{
 		bool succes = true ;
 		if ( partition_dest .status == GParted::STAT_NEW )
@@ -943,6 +942,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 				String::ucompose( _("copy filesystem of %1 to %2"),
 						  partition_src .get_path(),
 						  partition_dest .get_path() ) ) ) ;
+						
+			set_proper_filesystem( partition_dest .filesystem ) ;
 
 			switch ( get_fs( partition_dest .filesystem ) .copy )
 			{
@@ -969,9 +970,9 @@ bool GParted_Core::copy( const Partition & partition_src,
 			}
 			
 			return ( succes &&	
-			     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) &&
+			     	 check_repair( partition_dest, operation_details ) &&
 			     	 p_filesystem ->Resize( partition_dest, operation_details, true ) &&
-			     	 p_filesystem ->Check_Repair( partition_dest, operation_details ) ) ;
+			     	 check_repair( partition_dest, operation_details ) ) ;
 		}
 	}
 
@@ -1265,11 +1266,11 @@ bool GParted_Core::create_filesystem( const Partition & partition, std::vector<O
 	}
 }
 
-bool GParted_Core::resize_container_partition( const Partition & partition_old,
-					       Partition & partition_new,
-					       bool fixed_start,
-					       std::vector<OperationDetails> & operation_details,
-					       Sector min_size )
+bool GParted_Core::resize_partition( const Partition & partition_old,
+				     Partition & partition_new,
+				     bool fixed_start,
+				     std::vector<OperationDetails> & operation_details,
+				     Sector min_size )
 {
 	operation_details .push_back( OperationDetails( _("resize partition") ) ) ;
 
@@ -1554,6 +1555,26 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return succes ;
+}
+	
+bool GParted_Core::check_repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( 
+				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+						  partition .get_path() ) ) ) ;
+	
+	set_proper_filesystem( partition .filesystem ) ;
+
+	if ( p_filesystem && p_filesystem ->Check_Repair( partition, operation_details .back() .sub_details ) )
+	{
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
+	else
+	{
+		operation_details .back() .status = OperationDetails::ERROR ;
+		return false ;
+	}
 }
 
 void GParted_Core::set_flags( Partition & partition )

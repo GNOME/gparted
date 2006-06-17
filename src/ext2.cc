@@ -123,12 +123,7 @@ bool ext2::Copy( const Glib::ustring & src_part_path,
 
 bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
-						  partition .get_path() ) ) ) ;
-	
-	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(),
-				       operation_details .back() .sub_details ) ;
+	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operation_details ) ;
 	
 	//exitstatus 256 isn't documented, but it's returned when the 'FILESYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...

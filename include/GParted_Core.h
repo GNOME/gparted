@@ -92,11 +92,11 @@ private:
 			       std::vector<OperationDetails> & operation_details,	    
 			       Sector min_size = 0 ) ;
 	bool create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
-	bool resize_container_partition( const Partition & partition_old,
-					 Partition & partition_new,
-					 bool fixed_start,
-					 std::vector<OperationDetails> & operation_details,
-					 Sector min_size = 0 ) ;
+	bool resize_partition( const Partition & partition_old,
+			       Partition & partition_new,
+			       bool fixed_start,
+			       std::vector<OperationDetails> & operation_details,
+			       Sector min_size = 0 ) ;
 	bool resize_normal_using_libparted( const Partition & partition_old,
 					    Partition & partition_new,
 					    std::vector<OperationDetails> & operation_details ) ;
@@ -104,6 +104,7 @@ private:
 			      const Partition & partition_dest,
 			      std::vector<OperationDetails> & operation_details,
 			      Sector block_size ) ;
+	bool check_repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;

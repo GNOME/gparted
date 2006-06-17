@@ -149,12 +149,7 @@ bool ntfs::Copy( const Glib::ustring & src_part_path,
 
 bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( 
-				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
-						  partition .get_path() ) ) ) ;
-
-	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(),
-				operation_details .back() .sub_details ) ) 
+	if ( ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operation_details ) ) 
 	{
 		operation_details .back() .status = OperationDetails::SUCCES ;
 		return true ;
