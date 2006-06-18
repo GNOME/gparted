@@ -1031,16 +1031,26 @@ bool GParted_Core::move( const Device & device,
 		   	 Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
+	//FIXME: look very carefully at this function and see where things (like checking and fsmaximizing) are 
+	//missing.
 	if ( partition_new .get_length() > partition_old .get_length() )
 	{
 		//first do the move 
 		Partition temp = partition_new ;
 		temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
-		if ( move_partition_and_filesystem( partition_old, temp, operation_details ) )
+		if ( move_filesystem( partition_old, temp, operation_details ) )
 		{
-			//now the partition is moved, we can grow it..
-			partition_new .sector_start = temp .sector_start ;
-			return resize( device, temp, partition_new, operation_details ) ;
+			//now move the partition
+			if ( resize_partition( partition_old,
+					       temp,
+					       false,
+					       operation_details,
+					       temp .get_length() ) )
+			{
+				//now the partition and the filesystem are moved, we can grow it..
+				partition_new .sector_start = temp .sector_start ;
+				return resize( device, temp, partition_new, operation_details ) ;
+			}
 		}
 
 		return false ;
@@ -1054,23 +1064,32 @@ bool GParted_Core::move( const Device & device,
 		{
 			//now we can move it
 			partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
-			return move_partition_and_filesystem( temp, partition_new, operation_details ) ; 
+			return move_filesystem( temp, partition_new, operation_details ) &&
+			       resize_partition( temp,
+			       			 partition_new,
+						 false,
+						 operation_details,
+						 partition_new .get_length() ) ;
 		}
 
 		return false ;
 	}
 	else
-		return move_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
+		return move_filesystem( partition_old, partition_new, operation_details ) &&
+		       resize_partition( partition_old,
+		       			 partition_new,
+					 false,
+					 operation_details,
+					 partition_new .get_length() ) ;
 }
 
-bool GParted_Core::move_partition_and_filesystem( const Partition & partition_old,
-		   		     	          Partition & partition_new,
-						  std::vector<OperationDetails> & operation_details ) 
+bool GParted_Core::move_filesystem( const Partition & partition_old,
+		   		    Partition & partition_new,
+				    std::vector<OperationDetails> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( _("Moving partition and filesystem.") ) ) ;
-	//FIXME: add support for dynamic blocksizes..	
+	operation_details .push_back( OperationDetails( _("move filesystem.") ) ) ;
+
 	bool succes = false ;
-	char buf[1024] ;
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
 		//calculate correct geom voor new location (rounded to cylinder)
@@ -1084,10 +1103,10 @@ bool GParted_Core::move_partition_and_filesystem( const Partition & partition_ol
 			//calculate a new partition just to get a correct geometry
 			//(we could use lp_partition as it is, but this feels safer)
 			lp_partition = ped_partition_new( lp_disk,
-						    lp_partition ->type,
-						    lp_partition ->fs_type,
-						    partition_new .sector_start,
-						    partition_new .sector_end ) ;
+						    	  lp_partition ->type,
+						    	  lp_partition ->fs_type,
+						    	  partition_new .sector_start,
+						    	  partition_new .sector_end ) ;
 
 			if ( lp_partition )
 			{
@@ -1115,51 +1134,137 @@ bool GParted_Core::move_partition_and_filesystem( const Partition & partition_ol
 		close_disk() ;	
 		
 		//do the move..
+		Sector blocksize = 32 ;
+		Glib::ustring error_message ;
+
 		if ( succes && ped_device_open( lp_device ) )
 		{
 			ped_device_sync( lp_device ) ;
+		
+			//add an empty sub which we will constantly update in the loop
+			operation_details .back() .sub_details .push_back( 
+				OperationDetails( "", OperationDetails::NONE ) ) ;
+
 			if ( partition_new .sector_start < partition_old .sector_start )	
-				for ( Sector t = 0 ; t < partition_old .get_length() ; t++ )
+			{
+				Sector t = 0 ;
+				for ( ; t < partition_old .get_length() - blocksize ; t+=blocksize )
 				{
-					if ( ! ped_device_read( lp_device, buf, partition_old .sector_start + t, 1 ) )
-						std::cout << "read failed" << std::endl ;
-	
-					if ( ! ped_device_write( lp_device, buf, partition_new .sector_start +t, 1 ) )
-						std::cout << "write fails" << std::endl ;
-	
-					if ( t % 1000 == 0 )
-						std::cout << t << " of " << partition_old .get_length() << " done " << std::endl ;
-				}
-			else
-				for ( Sector t = 0 ; t < partition_old .get_length() ; t++ )
-				{
-					if ( ! ped_device_read( lp_device, buf, partition_old .sector_end - t, 1 ) )
-						std::cout << "read failed" << std::endl ;
-	
-					if ( ! ped_device_write( 
-							lp_device,
-							buf,
-							partition_new .sector_start + partition_old .get_length() -1 - t,
-							1 ) )
-						std::cout << "write fails" << std::endl ;
-	
-					if ( t % 1000 == 0 )
-						std::cout << t << " of " << partition_old .get_length() << " done " << std::endl ;
+					if ( ! copy_block( lp_device,
+						    	   lp_device,
+						    	   partition_old .sector_start +t,
+						    	   partition_new .sector_start +t,
+						    	   blocksize,
+						    	   error_message ) )
+					{
+						succes = false ;
+						break ;
+					}
+					
+					if ( t % (blocksize * 100) == 0 )
+					{
+						operation_details .back() .sub_details .back() .progress_text =
+							String::ucompose( _("%1 of %2 moved"),
+							  		  Utils::format_size( t +1 ),
+							  		  Utils::format_size( partition_old .get_length() ) ) ; 
+				
+						operation_details .back() .sub_details .back() .description =
+							"<i>" + 
+							operation_details .back() .sub_details .back() .progress_text + 
+							"</i>" ;
+
+						operation_details .back() .sub_details .back() .fraction =
+							t / static_cast<double>( partition_old .get_length() ) ;
+					}
 				}
 
+				//copy the last couple of sectors..
+				if ( succes )
+				{
+					Sector last_sectors = partition_old .get_length() -1 - t + blocksize ;
+					succes = copy_block( lp_device,
+						    	     lp_device,
+						    	     partition_old .sector_start +t,
+						    	     partition_new .sector_start +t,
+						    	     last_sectors,
+						    	     error_message ) ;
+				}
+			}
+			else //move to the right..
+			{	
+				Sector t = blocksize ;
+				for ( ; t < partition_old .get_length() - blocksize  ; t+=blocksize )
+				{
+					if ( ! copy_block( lp_device,
+						    	   lp_device,
+						    	   partition_old .sector_start +1 - t,
+						    	   partition_new .sector_start +1 - t,
+						    	   blocksize,
+						    	   error_message ) )
+					{
+						succes = false ;
+						break ;
+					}
+				
+					if ( t % (blocksize * 100) == 0 )
+					{
+						operation_details .back() .sub_details .back() .progress_text =
+							String::ucompose( _("%1 of %2 moved"),
+							  		  Utils::format_size( t +1 ),
+							  		  Utils::format_size( partition_old .get_length() ) ) ; 
+				
+						operation_details .back() .sub_details .back() .description =
+							"<i>" + 
+							operation_details .back() .sub_details .back() .progress_text + 
+							"</i>" ;
 
-			ped_device_close( lp_device );
-			//FIXME: errorhandling needs to be improved!
-			succes = resize_partition( partition_old,
-					           partition_new,
-						   false,
-						   operation_details,
-						   partition_old .get_length() ) ;
+						operation_details .back() .sub_details .back() .fraction =
+							t / static_cast<double>( partition_old .get_length() ) ;
+					}
+				}
+
+				//copy the last couple of sectors..
+				if ( succes )
+				{
+					Sector last_sectors = partition_old .get_length() -1 - t + blocksize ;
+					succes = copy_block( lp_device,
+						    	     lp_device,
+						    	     partition_old .sector_start,
+						    	     partition_new .sector_start,
+						    	     last_sectors,
+						    	     error_message ) ;
+				}
+			}
+
+			//final description
+			operation_details .back() .sub_details .back() .description =
+				"<i>" +
+				String::ucompose( _("%1 of %2 moved"),
+						  Utils::format_size( partition_old .get_length() ),
+						  Utils::format_size( partition_old .get_length() ) ) + 
+				"</i>" ;
+			
+			//reset fraction to -1 to make room for a new one (or a pulsebar)
+			operation_details .back() .sub_details .back() .fraction = -1 ;
+
+			if( ! succes )
+			{
+				if ( ! error_message .empty() )
+					operation_details .back() .sub_details .push_back( 
+						OperationDetails( error_message, OperationDetails::NONE ) ) ;
+
+				if ( ! ped_error .empty() )
+					operation_details .back() .sub_details .push_back( 
+						OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+			}
+
+
 		}
 
 		close_device_and_disk() ;
 	}
 
+	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return succes ;
 }
 
@@ -1229,13 +1334,22 @@ bool GParted_Core::resize_partition( const Partition & partition_old,
 				     std::vector<OperationDetails> & operation_details,
 				     Sector min_size )
 {
+	operation_details .push_back( OperationDetails( _("resize/move partition") ) ) ;
+	/*FIXME: try to find fitting descriptions for all situations
 	if ( partition_new .get_length() < partition_old .get_length() )
 		operation_details .push_back( OperationDetails( _("shrink partition") ) ) ;
 	else if ( partition_new .get_length() > partition_old .get_length() )
 		operation_details .push_back( OperationDetails( _("grow partition") ) ) ;
+	else if ( partition_new .sector_start != partition_old .sector_start )
+		operation_details .push_back( OperationDetails( _("move partition") ) ) ;
 	else
-		operation_details .push_back( 
-			OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+	{
+		operation_details .push_back( OperationDetails( _("resize/move partition") ) ) ;
+		operation_details .back() .sub_details .push_back( 
+			"<i>" + 
+			OperationDetails( _("new and old partition have the same size and positition. continuing anyway") ) +
+			"</i>" ) ;
+	}*/
 
 	operation_details .back() .sub_details .push_back( 
 		OperationDetails(
@@ -1560,7 +1674,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		}
 
 		//copy the last couple of sectors..
-		Sector last_sectors = partition_src .get_length() - t ;
+		Sector last_sectors = partition_src .get_length() - t ;//FIXME: most likely this is incorrect, look at move_filesystem to see how they do it.
 		if ( ped_device_read( lp_device_src, buf, partition_src .sector_start + t, last_sectors ) )
 		{
 			if ( ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t , last_sectors ) )
@@ -1670,6 +1784,34 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 
 	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return return_value ;
+}
+	
+bool GParted_Core::copy_block( PedDevice * lp_device_src,
+			       PedDevice * lp_device_dst,
+			       Sector offset_src,
+			       Sector offset_dst,
+			       Sector blocksize,
+			       Glib::ustring & error_message ) 
+{
+	char buf[blocksize * 512] ;
+
+	if ( ! ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
+	{
+		error_message = 
+			"<i>" + String::ucompose( _("Error while reading block at sector %1"), offset_src ) + "</i>" ;
+
+		return false ;
+	}
+				
+	if ( ! ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
+	{
+		error_message =
+			"<i>" + String::ucompose( _("Error while writing block at sector %1"), offset_dst ) + "</i>" ;
+
+		return false ;
+	}
+
+	return true ;
 }
 
 void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )

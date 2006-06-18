@@ -91,9 +91,9 @@ private:
 		   const Partition & partition_old,
 		   Partition & partition_new,
 		   std::vector<OperationDetails> & operation_details ) ;
-	bool move_partition_and_filesystem( const Partition & partition_old,
-			     		    Partition & partition_new,
-			     		    std::vector<OperationDetails> & operation_details ) ;
+	bool move_filesystem( const Partition & partition_old,
+			      Partition & partition_new,
+			      std::vector<OperationDetails> & operation_details ) ;
 	bool resize( const Device & device, 
 		     const Partition & partition_old,
 		     Partition & partition_new,
@@ -129,6 +129,12 @@ private:
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetails> & operation_details ) ;
 
+	bool copy_block( PedDevice * lp_device_src,
+			 PedDevice * lp_device_dst,
+			 Sector offset_src,
+			 Sector offset_dst,
+			 Sector blocksize,
+			 Glib::ustring & error_message ) ; 
 	void set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size = 0 ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
