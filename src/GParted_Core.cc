@@ -133,7 +133,7 @@ void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_dev
 	this ->probe_devices = ! user_devices .size() ;
 }
 	
-void GParted_Core::get_devices( std::vector<Device> & devices )
+void GParted_Core::set_devices( std::vector<Device> & devices )
 {
 	devices .clear() ;
 	Device temp_device ;
@@ -257,7 +257,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 	return false ;
 }
 
-bool GParted_Core::Set_Disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
+bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
 {
 	bool return_value = false ;
 	
@@ -376,35 +376,6 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 
 //private functions...
 
-void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
-					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
-{
-	std::string line ;
-	char node[255], mountpoint[255] ;
-	unsigned int index ;
-	
-	std::ifstream file( filename .c_str() ) ;
-	if ( file )
-	{
-		while ( getline( file, line ) )
-			if ( Glib::str_has_prefix( line, "/" ) &&
-			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
-			     static_cast<Glib::ustring>( node ) != "/dev/root" )
-			{
-				line = mountpoint ;
-				
-				//see if mountpoint contains spaces and deal with it
-				index = line .find( "\\040" ) ;
-				if ( index < line .length() )
-					line .replace( index, 4, " " ) ;
-				
-				map[ node ] .push_back( line ) ;
-			}
-			
-		file .close() ;
-	}
-}
-
 void GParted_Core::init_maps() 
 {
 	alternate_paths .clear() ;
@@ -451,67 +422,81 @@ void GParted_Core::init_maps()
 	}
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem() 
+void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
+					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
 {
-	//standard libparted filesystems..
-	if ( lp_partition && lp_partition ->fs_type )
+	std::string line ;
+	char node[255], mountpoint[255] ;
+	unsigned int index ;
+	
+	std::ifstream file( filename .c_str() ) ;
+	if ( file )
 	{
-		if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "extended" )
-			return GParted::FS_EXTENDED ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext2" )
-			return GParted::FS_EXT2 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext3" )
-			return GParted::FS_EXT3 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "linux-swap" )
-			return GParted::FS_LINUX_SWAP ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat16" )
-			return GParted::FS_FAT16 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat32" )
-			return GParted::FS_FAT32 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ntfs" )
-			return GParted::FS_NTFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "reiserfs" )
-			return GParted::FS_REISERFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "xfs" )
-			return GParted::FS_XFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "jfs" )
-			return GParted::FS_JFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs" )
-			return GParted::FS_HFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs+" )
-			return GParted::FS_HFSPLUS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ufs" )
-			return GParted::FS_UFS ;
+		while ( getline( file, line ) )
+			if ( Glib::str_has_prefix( line, "/" ) &&
+			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
+			     static_cast<Glib::ustring>( node ) != "/dev/root" )
+			{
+				line = mountpoint ;
+				
+				//see if mountpoint contains spaces and deal with it
+				index = line .find( "\\040" ) ;
+				if ( index < line .length() )
+					line .replace( index, 4, " " ) ;
+				
+				map[ node ] .push_back( line ) ;
+			}
+			
+		file .close() ;
 	}
-	
-	
-	//other filesystems libparted couldn't detect (i've send patches for these filesystems to the parted guys)
-	char buf[512] ;
-
-	ped_device_open( lp_device );
-
-	//reiser4
-	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
-	ped_device_close( lp_device );
-	
-	if ( static_cast<Glib::ustring>( buf ) == "ReIsEr4" )
-		return GParted::FS_REISER4 ;		
-		
-	//no filesystem found....
-	partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
-	partition_temp .error += "\n-"; 
-	partition_temp .error += _( "The filesystem is damaged" ) ;
-	partition_temp .error += "\n-" ; 
-	partition_temp .error += _( "The filesystem is unknown to GParted" ) ;
-	partition_temp .error += "\n-"; 
-	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
-
-	return GParted::FS_UNKNOWN ;
 }
 
 bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
 {
 	return ( device_path .length() > 6 && device_path .is_ascii() ) ;
+}
+
+std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustring & path ) 
+{
+	std::vector<Glib::ustring> paths ;
+	
+	iter = alternate_paths .find( path ) ;
+	if ( iter != alternate_paths .end() )
+		paths .push_back( iter ->second ) ;
+
+	return paths ;
+}
+
+void GParted_Core::disable_automount( const Device & device ) 
+{
+	if ( DISABLE_AUTOMOUNT )
+	{
+		if ( disabled_automount_devices .find( device .get_path() ) == disabled_automount_devices .end() )
+		{
+			//get HAL device-id
+			Glib::ustring hal_id, error ;
+			bool found = false ;
+
+			for ( unsigned int t = 0 ; t < device .get_paths() .size() && ! found ; t++ )
+				found = ! Utils::execute_command(
+						"hal-find-by-property --key 'block.device' --string '" +
+						device .get_paths()[ t ] + "'",
+						hal_id,
+						error ) ;
+
+			if ( found )
+			{
+				if ( ! hal_id .empty() && hal_id[ hal_id .length() -1 ] == '\n' )
+					hal_id .erase( hal_id .length() -1, 1 ) ;
+					
+				Utils::execute_command( "hal-set-property --udi '" + hal_id + 
+							"' --key 'storage.automount_enabled_hint' --bool false" ) ;
+			}
+			
+			//found or not found.. we're done with this device..
+			disabled_automount_devices[ device. get_path() ] = hal_id ;
+		}
+	}
 }
 
 void GParted_Core::set_device_partitions( Device & device ) 
@@ -597,144 +582,65 @@ void GParted_Core::set_device_partitions( Device & device )
 	
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, false ) ; 
 }
-	
-void GParted_Core::disable_automount( const Device & device ) 
+
+GParted::FILESYSTEM GParted_Core::get_filesystem() 
 {
-	if ( DISABLE_AUTOMOUNT )
+	//standard libparted filesystems..
+	if ( lp_partition && lp_partition ->fs_type )
 	{
-		if ( disabled_automount_devices .find( device .get_path() ) == disabled_automount_devices .end() )
-		{
-			//get HAL device-id
-			Glib::ustring hal_id, error ;
-			bool found = false ;
-
-			for ( unsigned int t = 0 ; t < device .get_paths() .size() && ! found ; t++ )
-				found = ! Utils::execute_command(
-						"hal-find-by-property --key 'block.device' --string '" +
-						device .get_paths()[ t ] + "'",
-						hal_id,
-						error ) ;
-
-			if ( found )
-			{
-				if ( ! hal_id .empty() && hal_id[ hal_id .length() -1 ] == '\n' )
-					hal_id .erase( hal_id .length() -1, 1 ) ;
-					
-				Utils::execute_command( "hal-set-property --udi '" + hal_id + 
-							"' --key 'storage.automount_enabled_hint' --bool false" ) ;
-			}
-			
-			//found or not found.. we're done with this device..
-			disabled_automount_devices[ device. get_path() ] = hal_id ;
-		}
+		if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "extended" )
+			return GParted::FS_EXTENDED ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext2" )
+			return GParted::FS_EXT2 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext3" )
+			return GParted::FS_EXT3 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "linux-swap" )
+			return GParted::FS_LINUX_SWAP ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat16" )
+			return GParted::FS_FAT16 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat32" )
+			return GParted::FS_FAT32 ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ntfs" )
+			return GParted::FS_NTFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "reiserfs" )
+			return GParted::FS_REISERFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "xfs" )
+			return GParted::FS_XFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "jfs" )
+			return GParted::FS_JFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs" )
+			return GParted::FS_HFS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs+" )
+			return GParted::FS_HFSPLUS ;
+		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ufs" )
+			return GParted::FS_UFS ;
 	}
+	
+	
+	//other filesystems libparted couldn't detect (i've send patches for these filesystems to the parted guys)
+	char buf[512] ;
+
+	ped_device_open( lp_device );
+
+	//reiser4
+	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
+	ped_device_close( lp_device );
+	
+	if ( static_cast<Glib::ustring>( buf ) == "ReIsEr4" )
+		return GParted::FS_REISER4 ;		
+		
+	//no filesystem found....
+	partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+	partition_temp .error += "\n-"; 
+	partition_temp .error += _( "The filesystem is damaged" ) ;
+	partition_temp .error += "\n-" ; 
+	partition_temp .error += _( "The filesystem is unknown to GParted" ) ;
+	partition_temp .error += "\n-"; 
+	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
+
+	return GParted::FS_UNKNOWN ;
 }
 
-void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
-{
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
-	{
-		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
-		       partitions[ t ] .type == GParted::TYPE_LOGICAL ) &&
-		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
-		{
-			if ( partitions[ t ] .busy )
-			{
-				for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
-				{
-					iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
-					if ( iter_mp != mount_info .end() )
-					{
-						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
-						break ;
-					}
-				}
-
-				if ( partitions[ t ] .get_mountpoints() .empty() )
-					partitions[ t ] .error = _("Unable to find mountpoint") ;
-			}
-			else
-			{
-				iter_mp = fstab_info .find( partitions[ t ] .get_path() );
-				if ( iter_mp != fstab_info .end() )
-					partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
-			}
-		}
-		else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			set_mountpoints( partitions[ t ] .logicals ) ;
-	}
-}
-	
-std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustring & path ) 
-{
-	std::vector<Glib::ustring> paths ;
-	
-	iter = alternate_paths .find( path ) ;
-	if ( iter != alternate_paths .end() )
-		paths .push_back( iter ->second ) ;
-
-	return paths ;
-}
-
-void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
-{
-	struct statvfs sfs ; 
-	
-	temp = _("Unable to read the contents of this filesystem!") ;
-	temp += "\n" ;
-	temp += _("Because of this some operations may be unavailable.") ;
-	temp += "\n\n" ;
-	temp += _("Did you install the correct plugin for this filesystem?") ;
-	
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
-	{
-		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
-		{
-			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
-			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
-			{
-				if ( partitions[ t ] .busy )
-				{
-					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
-					{ 
-						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
-							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
-						else
-							partitions[ t ] .error = 
-								"statvfs (" + 
-								partitions[ t ] .get_mountpoint() + 
-								"): " + 
-								Glib::strerror( errno ) ;
-					}
-				}
-				else
-				{
-					switch( get_fs( partitions[ t ] .filesystem ) .read )
-					{
-						case GParted::FS::EXTERNAL	:
-							set_proper_filesystem( partitions[ t ] .filesystem ) ;
-							p_filesystem ->Set_Used_Sectors( partitions[ t ] ) ;
-							break ;
-						case GParted::FS::LIBPARTED	:
-							LP_Set_Used_Sectors( partitions[ t ] ) ;
-							break ;
-
-						default:
-							break ;
-					}
-				}
-
-				if ( partitions[ t ] .sectors_used == -1 && partitions[ t ] .error .empty() )
-					partitions[ t ] .error = temp ;
-				
-			}
-			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-				set_used_sectors( partitions[ t ] .logicals ) ;
-		}
-	}
-}
-	
 void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 				       std::vector<Partition> & partitions,
 				       Sector start,
@@ -782,6 +688,142 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 		
 		partitions .push_back( partition_temp );
 	}
+}
+	
+void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
+{
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	{
+		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
+		       partitions[ t ] .type == GParted::TYPE_LOGICAL ) &&
+		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
+		{
+			if ( partitions[ t ] .busy )
+			{
+				for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
+				{
+					iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
+					if ( iter_mp != mount_info .end() )
+					{
+						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+						break ;
+					}
+				}
+
+				if ( partitions[ t ] .get_mountpoints() .empty() )
+					partitions[ t ] .error = _("Unable to find mountpoint") ;
+			}
+			else
+			{
+				iter_mp = fstab_info .find( partitions[ t ] .get_path() );
+				if ( iter_mp != fstab_info .end() )
+					partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+			}
+		}
+		else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+			set_mountpoints( partitions[ t ] .logicals ) ;
+	}
+}
+	
+void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
+{
+	struct statvfs sfs ; 
+	
+	temp = _("Unable to read the contents of this filesystem!") ;
+	temp += "\n" ;
+	temp += _("Because of this some operations may be unavailable.") ;
+	temp += "\n\n" ;
+	temp += _("Did you install the correct plugin for this filesystem?") ;
+	
+	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	{
+		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
+		{
+			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
+			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			{
+				if ( partitions[ t ] .busy )
+				{
+					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
+					{ 
+						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
+							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
+						else
+							partitions[ t ] .error = 
+								"statvfs (" + 
+								partitions[ t ] .get_mountpoint() + 
+								"): " + 
+								Glib::strerror( errno ) ;
+					}
+				}
+				else
+				{
+					switch( get_fs( partitions[ t ] .filesystem ) .read )
+					{
+						case GParted::FS::EXTERNAL	:
+							set_proper_filesystem( partitions[ t ] .filesystem ) ;
+							p_filesystem ->Set_Used_Sectors( partitions[ t ] ) ;
+							break ;
+						case GParted::FS::LIBPARTED	:
+							LP_set_used_sectors( partitions[ t ] ) ;
+							break ;
+
+						default:
+							break ;
+					}
+				}
+
+				if ( partitions[ t ] .sectors_used == -1 && partitions[ t ] .error .empty() )
+					partitions[ t ] .error = temp ;
+				
+			}
+			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
+				set_used_sectors( partitions[ t ] .logicals ) ;
+		}
+	}
+}
+
+void GParted_Core::LP_set_used_sectors( Partition & partition )
+{
+	PedFileSystem *fs = NULL;
+	PedConstraint *constraint = NULL;
+
+	if ( lp_disk )
+	{
+		lp_partition = ped_disk_get_partition_by_sector( 
+					lp_disk,
+					(partition .sector_end + partition .sector_start) / 2 ) ;
+		
+		if ( lp_partition )
+		{
+			fs = ped_file_system_open( & lp_partition ->geom ); 	
+					
+			if ( fs )
+			{
+				constraint = ped_file_system_get_resize_constraint( fs ) ;
+				if ( constraint )
+				{
+					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
+					
+					ped_constraint_destroy( constraint );
+				}
+												
+				ped_file_system_close( fs ) ;
+			}
+		}
+	}
+				
+	if ( partition .sectors_used == -1 )
+		partition .error = ped_error ;
+}
+
+void GParted_Core::set_flags( Partition & partition )
+{
+	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
+		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
+		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
+			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
 }
 
 bool GParted_Core::create( const Device & device,
@@ -1139,7 +1181,7 @@ bool GParted_Core::resize( const Device & device,
 	{
 		if ( check_repair( partition_new, operation_details ) )
 		{
-			succes = resize_normal_using_libparted( partition_old, partition_new, operation_details ) ;
+			succes = LP_resize_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
 
 			//always check after a resize, but if it failes the whole operation failes 
 			if ( ! check_repair( partition_new, operation_details ) )
@@ -1330,9 +1372,9 @@ bool GParted_Core::maximize_filesystem( const Partition & partition,
 	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
 }
 
-bool GParted_Core::resize_normal_using_libparted( const Partition & partition_old,
-						  Partition & partition_new,
-						  std::vector<OperationDetails> & operation_details )
+bool GParted_Core::LP_resize_partition_and_filesystem( const Partition & partition_old,
+						       Partition & partition_new,
+						       std::vector<OperationDetails> & operation_details )
 {
 	operation_details .push_back( OperationDetails( _("resize partition and filesystem using libparted") ) ) ;
 	
@@ -1706,48 +1748,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	return return_value ;
 }
 	
-void GParted_Core::LP_Set_Used_Sectors( Partition & partition )
-{
-	PedFileSystem *fs = NULL;
-	PedConstraint *constraint = NULL;
-
-	if ( lp_disk )
-	{
-		lp_partition = ped_disk_get_partition_by_sector( 
-					lp_disk,
-					(partition .sector_end + partition .sector_start) / 2 ) ;
-		
-		if ( lp_partition )
-		{
-			fs = ped_file_system_open( & lp_partition ->geom ); 	
-					
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint( fs ) ;
-				if ( constraint )
-				{
-					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
-					
-					ped_constraint_destroy( constraint );
-				}
-												
-				ped_file_system_close( fs ) ;
-			}
-		}
-	}
-				
-	if ( partition .sectors_used == -1 )
-		partition .error = ped_error ;
-}
-
-void GParted_Core::set_flags( Partition & partition )
-{
-	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
-		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
-		     ped_partition_get_flag( lp_partition, flags[ t ] ) )
-			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
-}
-//
 //FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
 //basicly we should get rid of these global lp_device and lp_disk
 bool GParted_Core::open_device( const Glib::ustring & device_path )

@@ -948,7 +948,7 @@ void Win_GParted::on_show()
 
 void Win_GParted::thread_refresh_devices() 
 {
-	gparted_core .get_devices( devices ) ;
+	gparted_core .set_devices( devices ) ;
 	pulse = false ;
 }
 
@@ -1669,7 +1669,7 @@ void Win_GParted::activate_disklabel()
 		m_dialog .add_button( _("Create"), Gtk::RESPONSE_OK ) ;
 		
 		if ( m_dialog .run() == Gtk::RESPONSE_OK && 
-		     ! gparted_core .Set_Disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
+		     ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
 		{
 			Gtk::MessageDialog dialog( *this,
 						   _("Error while setting new disklabel"),
