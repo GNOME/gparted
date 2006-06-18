@@ -98,11 +98,11 @@ private:
 		     const Partition & partition_old,
 		     Partition & partition_new,
 		     std::vector<OperationDetails> & operation_detail ) ; 
-	bool resize_partition( const Partition & partition_old,
-			       Partition & partition_new,
-			       bool fixed_start,
-			       std::vector<OperationDetails> & operation_details,
-			       Sector min_size = 0 ) ;
+	bool resize_move_partition( const Partition & partition_old,
+			       	    Partition & partition_new,
+				    bool fixed_start,
+				    std::vector<OperationDetails> & operation_details,
+				    Sector min_size = 0 ) ;
 	bool resize_filesystem( const Partition & partition_old,
 				const Partition & partition_new,
 				std::vector<OperationDetails> & operation_details,

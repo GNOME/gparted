@@ -1041,11 +1041,11 @@ bool GParted_Core::move( const Device & device,
 		if ( move_filesystem( partition_old, temp, operation_details ) )
 		{
 			//now move the partition
-			if ( resize_partition( partition_old,
-					       temp,
-					       false,
-					       operation_details,
-					       temp .get_length() ) )
+			if ( resize_move_partition( partition_old,
+					       	     temp,
+						     false,
+						     operation_details,
+						     temp .get_length() ) )
 			{
 				//now the partition and the filesystem are moved, we can grow it..
 				partition_new .sector_start = temp .sector_start ;
@@ -1065,22 +1065,22 @@ bool GParted_Core::move( const Device & device,
 			//now we can move it
 			partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
 			return move_filesystem( temp, partition_new, operation_details ) &&
-			       resize_partition( temp,
-			       			 partition_new,
-						 false,
-						 operation_details,
-						 partition_new .get_length() ) ;
+			       resize_move_partition( temp,
+			       			      partition_new,
+						      false,
+						      operation_details,
+						      partition_new .get_length() ) ;
 		}
 
 		return false ;
 	}
 	else
 		return move_filesystem( partition_old, partition_new, operation_details ) &&
-		       resize_partition( partition_old,
-		       			 partition_new,
-					 false,
-					 operation_details,
-					 partition_new .get_length() ) ;
+		       resize_move_partition( partition_old,
+		       			      partition_new,
+					      false,
+					      operation_details,
+					      partition_new .get_length() ) ;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
@@ -1275,7 +1275,7 @@ bool GParted_Core::resize( const Device & device,
 {
 	//extended partition
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
-		return resize_partition( partition_old, partition_new, false, operation_details ) ;
+		return resize_move_partition( partition_old, partition_new, false, operation_details ) ;
 	
 	bool succes = false ;
 	
@@ -1305,7 +1305,7 @@ bool GParted_Core::resize( const Device & device,
 			succes = resize_filesystem( partition_old, partition_new, operation_details, device .cylsize ) ;
 						
 		if ( succes )
-			succes = resize_partition(
+			succes = resize_move_partition(
 					partition_old,
 			     		partition_new,
 					! get_fs( partition_new .filesystem ) .move,
@@ -1328,11 +1328,11 @@ bool GParted_Core::resize( const Device & device,
 	return false ;
 }
 
-bool GParted_Core::resize_partition( const Partition & partition_old,
-				     Partition & partition_new,
-				     bool fixed_start,
-				     std::vector<OperationDetails> & operation_details,
-				     Sector min_size )
+bool GParted_Core::resize_move_partition( const Partition & partition_old,
+				     	  Partition & partition_new,
+					  bool fixed_start,
+					  std::vector<OperationDetails> & operation_details,
+					  Sector min_size )
 {
 	operation_details .push_back( OperationDetails( _("resize/move partition") ) ) ;
 	/*FIXME: try to find fitting descriptions for all situations
