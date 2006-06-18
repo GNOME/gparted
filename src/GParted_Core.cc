@@ -1134,7 +1134,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		close_disk() ;	
 		
 		//do the move..
-		Sector blocksize = 32 ;
+		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
 
 		if ( succes && ped_device_open( lp_device ) )
@@ -1191,7 +1191,8 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				}
 			}
 			else //move to the right..
-			{	
+			{//FIXME: why is this so much slower than moving to the left or a simple copy? most likely there's
+			//an error in the algorithm
 				Sector t = blocksize ;
 				for ( ; t < partition_old .get_length() - blocksize  ; t+=blocksize )
 				{
@@ -1619,7 +1620,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		OperationDetails::NONE ) ) ;
 	
 	bool succes = false ;
-	char buf[block_size * 512] ; 
 	PedDevice *lp_device_src, *lp_device_dest ;
 //FIXME: adapt open_device() so we don't have to call ped_device_get() here
 //(same goes for close_device() and ped_device_destroy()
@@ -1642,21 +1642,15 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		Sector t = 0 ;
 		for ( ; t < partition_src .get_length() - block_size ; t+=block_size )
 		{
-			if ( ! ped_device_read( lp_device_src, buf, partition_src .sector_start + t, block_size ) )
-			{
-				error_message = "<i>" + String::ucompose( _("Error while reading block at sector %1"),
-							  	  	  partition_src .sector_start + t ) + "</i>" ;
-
+			if ( ! copy_block( lp_device_src,
+			 	    	   lp_device_dest,
+			 	    	   partition_src .sector_start + t,
+				    	   partition_dest .sector_start + t,
+				    	   block_size,
+				    	   error_message ) )
 				break ;
-			}
-				
-			if ( ! ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t, block_size ) )
-			{
-				error_message = "<i>" + String::ucompose( _("Error while writing block at sector %1"),
-							  	  	  partition_src .sector_start + t ) + "</i>" ;
 
-				break ;
-			}
+
 
 			if ( t % ( block_size * 100 ) == 0 )
 			{
@@ -1675,18 +1669,14 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 		//copy the last couple of sectors..
 		Sector last_sectors = partition_src .get_length() - t ;//FIXME: most likely this is incorrect, look at move_filesystem to see how they do it.
-		if ( ped_device_read( lp_device_src, buf, partition_src .sector_start + t, last_sectors ) )
-		{
-			if ( ped_device_write( lp_device_dest, buf, partition_dest .sector_start + t , last_sectors ) )
-				t += last_sectors ;
-			else
-				error_message = "<i>" + String::ucompose( _("Error while writing block at sector %1"),
-							  	  	  partition_src .sector_start + t ) + "</i>" ;
-		}
-		else
-			error_message = "<i>" + String::ucompose( _("Error while reading block at sector %1"),
-						  	  	  partition_src .sector_start + t ) + "</i>" ;
-				
+		if ( copy_block( lp_device_src,
+		 	    	 lp_device_dest,
+			 	 partition_src .sector_start + t,
+				 partition_dest .sector_start + t,
+				 last_sectors,
+				 error_message ) )
+			t += last_sectors ;
+
 		//final description
 		operation_details .back() .sub_details .back() .description =
 			"<i>" +
