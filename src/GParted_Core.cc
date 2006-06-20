@@ -1031,21 +1031,22 @@ bool GParted_Core::move( const Device & device,
 		   	 Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
-	//FIXME: look very carefully at this function and see where things (like checking and fsmaximizing) are 
 	//missing.
 	if ( partition_new .get_length() > partition_old .get_length() )
 	{
 		//first do the move 
 		Partition temp = partition_new ;
 		temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
-		if ( move_filesystem( partition_old, temp, operation_details ) )
+		if ( check_repair( partition_old, operation_details ) &&
+		     move_filesystem( partition_old, temp, operation_details ) )
 		{
 			//now move the partition
-			if ( resize_move_partition( partition_old,
-					       	     temp,
-						     false,
-						     operation_details,
-						     temp .get_length() ) )
+			if ( check_repair( temp, operation_details ) &&
+			     resize_move_partition( partition_old,
+					       	    temp,
+						    false,
+						    operation_details,
+						    temp .get_length() ) )
 			{
 				//now the partition and the filesystem are moved, we can grow it..
 				partition_new .sector_start = temp .sector_start ;
@@ -1069,18 +1070,21 @@ bool GParted_Core::move( const Device & device,
 			       			      partition_new,
 						      false,
 						      operation_details,
-						      partition_new .get_length() ) ;
+						      partition_new .get_length() ) &&
+			       check_repair( partition_new, operation_details ) ;
 		}
 
 		return false ;
 	}
 	else
-		return move_filesystem( partition_old, partition_new, operation_details ) &&
+		return check_repair( partition_old, operation_details ) &&
+		       move_filesystem( partition_old, partition_new, operation_details ) &&
 		       resize_move_partition( partition_old,
 		       			      partition_new,
 					      false,
 					      operation_details,
-					      partition_new .get_length() ) ;
+					      partition_new .get_length() ) &&
+		       check_repair( partition_new, operation_details ) ;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
@@ -1132,7 +1136,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		}
 		//we don't need disk anymore..	
 		close_disk() ;	
-		
+	//FIXME: only move is startsectors are different from each other...	
 		//do the move..
 		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
