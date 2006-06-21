@@ -1071,6 +1071,8 @@ bool GParted_Core::move( const Device & device,
 						      false,
 						      operation_details,
 						      partition_new .get_length() ) &&
+			       check_repair( partition_new, operation_details ) &&
+			       maximize_filesystem( partition_new, operation_details ) && 
 			       check_repair( partition_new, operation_details ) ;
 		}
 
@@ -1084,6 +1086,8 @@ bool GParted_Core::move( const Device & device,
 					      false,
 					      operation_details,
 					      partition_new .get_length() ) &&
+		       check_repair( partition_new, operation_details ) &&
+		       maximize_filesystem( partition_new, operation_details ) && 
 		       check_repair( partition_new, operation_details ) ;
 }
 
@@ -1196,7 +1200,8 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			}
 			else //move to the right..
 			{//FIXME: why is this so much slower than moving to the left or a simple copy? most likely there's
-			//an error in the algorithm
+			//an error in the algorithm (also.. there are (fixable)errors in the e2fsck output right
+			//after the move if we move to the right..)
 				Sector t = blocksize ;
 				for ( ; t < partition_old .get_length() - blocksize  ; t+=blocksize )
 				{
