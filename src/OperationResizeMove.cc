@@ -28,8 +28,6 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 	this ->device = device ;
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
-
-	create_description() ;
 }
 	
 void OperationResizeMove::apply_to_visual( std::vector<Partition> & partitions ) 
@@ -44,36 +42,72 @@ void OperationResizeMove::apply_to_visual( std::vector<Partition> & partitions )
 
 void OperationResizeMove::create_description() 
 {
-	//FIXME:make messages more informative by specifying shrink/grow instead of resize. 
-	//if startsector has changed we consider it a move
-	Sector diff = std::abs( partition_new .sector_start - partition_original .sector_start ) ;
-	if ( diff ) 
+	//i'm not too happy with this, but i think it is the correct way from a i18n POV
+	enum Action
 	{
-		if ( diff > 0 )
-			description = String::ucompose( _("Move %1 forward by %2"), 
-						 	partition_new .get_path(),
-						 	Utils::format_size( diff ) ) ;
-		else
-			description = String::ucompose( _("Move %1 backward by %2"),
-							partition_new .get_path(),
-							Utils::format_size( diff ) ) ;
-	}
-			
-	//check if size has changed
-	diff = std::abs( partition_original .get_length() - partition_new .get_length() ) ;
-	if ( diff )
+		NONE			= 0,
+		MOVE_RIGHT	 	= 1,
+		MOVE_LEFT		= 2,
+		GROW 			= 3,
+		SHRINK			= 4,
+		MOVE_RIGHT_GROW		= 5,
+		MOVE_RIGHT_SHRINK	= 6,
+		MOVE_LEFT_GROW		= 7,
+		MOVE_LEFT_SHRINK	= 8
+	} ;
+	Action action = NONE ;
+
+	if ( partition_new .get_length() > partition_original .get_length() )
+		action = GROW ;
+	else if ( partition_new .get_length() < partition_original .get_length() )
+		action = SHRINK ;
+
+	if ( partition_new .sector_start > partition_original .sector_start &&
+	     partition_new .sector_end > partition_original .sector_end )
+		action = action == GROW ? MOVE_RIGHT_GROW : action == SHRINK ? MOVE_RIGHT_SHRINK : MOVE_RIGHT ;
+	else if ( partition_new .sector_start < partition_original .sector_start &&
+	     partition_new .sector_end < partition_original .sector_end )
+		action = action == GROW ? MOVE_LEFT_GROW : action == SHRINK ? MOVE_LEFT_SHRINK : MOVE_LEFT ;
+
+	switch ( action )
 	{
-		if ( description .empty() ) 
-			description = String::ucompose( _("Resize %1 from %2 to %3"), 
-						 	partition_new .get_path(),
-							Utils::format_size( partition_original .get_length() ),
-							Utils::format_size( partition_new .get_length() ) ) ;
-		else
-			description += " " + String::ucompose( _("and Resize %1 from %2 to %3"),
-							       partition_new .get_path(),
-							       Utils::format_size( partition_original .get_length() ),
-							       Utils::format_size( partition_new .get_length() ) ) ;
+		case NONE		:
+			description = String::ucompose( _("resize/move %1"), partition_original .get_path() ) ;
+			description += " (" ;
+			description += _("new and old partition have the same size and positition. continuing anyway") ;
+			description += ")" ;
+			break ;
+		case MOVE_RIGHT		:
+			description = String::ucompose( _("Move %1 to the right"), partition_original .get_path() ) ;
+			break ;
+		case MOVE_LEFT		:
+			description = String::ucompose( _("Move %1 to the left"), partition_original .get_path() ) ;
+			break ;
+		case GROW 		:
+			description = _("Grow %1 from %2 to %3") ;
+			break ;
+		case SHRINK		:
+			description = _("Shrink %1 from %2 to %3") ;
+			break ;
+		case MOVE_RIGHT_GROW	:
+			description = _("Move %1 to the right and grow it from %2 to %3") ;
+			break ;
+		case MOVE_RIGHT_SHRINK	:
+			description = _("Move %1 to the right and shrink it from %2 to %3") ;
+			break ;
+		case MOVE_LEFT_GROW	:
+			description = _("Move %1 to the left and grow it from %2 to %3") ;
+			break ;
+		case MOVE_LEFT_SHRINK	:
+			description = _("Move %1 to the left and shrink it from %2 to %3") ;
+			break ;
 	}
+
+	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
+		description = String::ucompose( description,
+						partition_original .get_path(),
+						Utils::format_size( partition_original .get_length() ),
+						Utils::format_size( partition_new .get_length() ) ) ;
 }
 
 void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )

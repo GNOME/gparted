@@ -70,6 +70,7 @@ public:
 	virtual ~Operation() {}
 	
 	virtual void apply_to_visual( std::vector<Partition> & partitions ) = 0 ;
+	virtual void create_description() = 0 ;
 
 	//public variables
 	Device device ;
@@ -87,8 +88,6 @@ protected:
 	int find_index_extended( const std::vector<Partition> & partitions ) ;
 	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );
 	
-	virtual void create_description() = 0 ;
-
 	int index ;
 	int index_extended ;
 };

@@ -148,6 +148,9 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 	}
 
 	//check description and update if necessary
+	//FIXME: it feels quite inefficient to do this for every row, maybe we should add a new status which indicates
+	//this row may be changed and should be checked...(otoh, if/when we start displaying the output of the command
+	//in realtime almost every row is going to need this and such a status might become useless...)
 	if ( operation_details .description != treerow[ treeview_operations_columns .operation_description ] )
 		treerow[ treeview_operations_columns .operation_description ] = operation_details .description ;
 
@@ -160,8 +163,9 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 	else
 		pulse = true ;
 
-	//and update the children..
-	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
+	//and update the children.. (since sometimes freshly added treerows are not appended yet to the children() list
+	//we also check if t < treerow .children() .size())
+	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() && t < treerow .children() .size() ; t++ )
 		update_operation_details( treerow .children()[ t ], operation_details .sub_details[ t ] ) ;
 }
 
@@ -187,7 +191,7 @@ void Dialog_Progress::on_signal_show()
 		running = true ;
 		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
 
-		int ms = 200 ;
+		int ms = 200 ; //'refreshrate' of the treeview..
 		while ( running )
 		{
 			if ( ms >= 200 )

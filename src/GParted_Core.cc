@@ -147,7 +147,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		
 		//try to find all available devices
 		ped_device_probe_all();
-		
+	//FIXME: since parted 1.7.1 i detect an unusable /dev/md/0 device (voyager), take a look at this and
+	//find out how to filter it from the list
 		lp_device = ped_device_get_next( NULL );
 		while ( lp_device ) 
 		{
@@ -226,6 +227,12 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	alternate_paths .clear() ;
 	fstab_info .clear() ;
+}
+
+bool GParted_Core::snap_to_cylinder( Partition & partition ) 
+{
+	//FIXME: insert here basicly the functionality of snap_to_boundaries from parted.c
+	return true ;
 }
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
@@ -1031,27 +1038,24 @@ bool GParted_Core::move( const Device & device,
 		   	 Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
-	//missing.
+	//FIXME: sometimes (e.g. when moving a 8mib partition) we get a shrink to 0 because somewhere (i guess in the fsclasses) the newsize is calculated as size - cylsize...
+	//take a look at this and see at which leven this should be solved.
 	if ( partition_new .get_length() > partition_old .get_length() )
 	{
 		//first do the move 
 		Partition temp = partition_new ;
 		temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
 		if ( check_repair( partition_old, operation_details ) &&
-		     move_filesystem( partition_old, temp, operation_details ) )
+		     move_filesystem( partition_old, temp, operation_details ) &&
+		     resize_move_partition( partition_old,
+					    temp,
+					    false,
+					    operation_details,
+					    temp .get_length() ) )
 		{
-			//now move the partition
-			if ( check_repair( temp, operation_details ) &&
-			     resize_move_partition( partition_old,
-					       	    temp,
-						    false,
-						    operation_details,
-						    temp .get_length() ) )
-			{
-				//now the partition and the filesystem are moved, we can grow it..
-				partition_new .sector_start = temp .sector_start ;
-				return resize( device, temp, partition_new, operation_details ) ;
-			}
+			//now the partition and the filesystem are moved, we can grow it..
+			partition_new .sector_start = temp .sector_start ;
+			return resize( device, temp, partition_new, operation_details ) ;
 		}
 
 		return false ;
@@ -1095,53 +1099,51 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		   		    Partition & partition_new,
 				    std::vector<OperationDetails> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( _("move filesystem.") ) ) ;
+	//FIXME: i think it's best if we check at this level (in each function) if there are real changes.
+	//if not, then display the suboperation (in this case 'move filesystem') and add a child (italic) with
+	//something like 'new and old partition have the same positition. skipping move' and return true..
+	if ( partition_new .sector_start < partition_old .sector_start )
+		operation_details .push_back( OperationDetails( _("move filesystem to the left") ) ) ;
+	else
+		operation_details .push_back( OperationDetails( _("move filesystem to the right") ) ) ;
 
 	bool succes = false ;
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
 		//calculate correct geom voor new location (rounded to cylinder)
+		//we could use the geom set bij snap_to_cylinder, but this one is 100% reliable, while snap_to_cylinder 
+		//exists merely for informative purposes
 		lp_partition = NULL ;
 		lp_partition = ped_disk_get_partition_by_sector(
 					lp_disk,
 					(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
-		
+
 		if ( lp_partition )
 		{
-			//calculate a new partition just to get a correct geometry
-			//(we could use lp_partition as it is, but this feels safer)
-			lp_partition = ped_partition_new( lp_disk,
-						    	  lp_partition ->type,
-						    	  lp_partition ->fs_type,
-						    	  partition_new .sector_start,
-						    	  partition_new .sector_end ) ;
+			PedConstraint *constraint = NULL ;
+			constraint = ped_constraint_any( lp_device ) ;
 
-			if ( lp_partition )
+			if ( constraint )
 			{
-				PedConstraint *constraint = NULL ;
-				constraint = ped_constraint_any( lp_device ) ;
-
-				if ( constraint )
+				if ( ped_disk_set_partition_geom( lp_disk,
+								  lp_partition,
+								  constraint,
+								  partition_new .sector_start,
+								  partition_new .sector_end ) )
 				{
-					if ( ped_disk_set_partition_geom( lp_disk,
-									  lp_partition,
-									  constraint,
-									  partition_new .sector_start,
-									  partition_new .sector_end ) )
-					{
-						partition_new .sector_start = lp_partition ->geom .start ;
-						partition_new .sector_end = lp_partition ->geom .end ;
-						succes = true ;
-					}
-					
-					ped_constraint_destroy( constraint );
+					partition_new .sector_start = lp_partition ->geom .start ;
+					partition_new .sector_end = lp_partition ->geom .end ;
+					succes = true ;
 				}
+					
+				ped_constraint_destroy( constraint );
 			}
 		}
 		//we don't need disk anymore..	
 		close_disk() ;	
-	//FIXME: only move is startsectors are different from each other...	
+
 		//do the move..
+		//FIXME: test all kinds of moving/resizing combi's with different blocksizes
 		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
 
@@ -1153,7 +1155,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			operation_details .back() .sub_details .push_back( 
 				OperationDetails( "", OperationDetails::NONE ) ) ;
 
-			if ( partition_new .sector_start < partition_old .sector_start )	
+			if ( partition_new .sector_start < partition_old .sector_start ) //move to the left
 			{
 				Sector t = 0 ;
 				for ( ; t < partition_old .get_length() - blocksize ; t+=blocksize )
@@ -1199,16 +1201,17 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				}
 			}
 			else //move to the right..
-			{//FIXME: why is this so much slower than moving to the left or a simple copy? most likely there's
-			//an error in the algorithm (also.. there are (fixable)errors in the e2fsck output right
-			//after the move if we move to the right..)
+			{//FIXME: moving to the right still appears slower than moving to the left...
+			//most likely this has something to do with the fact we're reading from right to left, i guess the
+			//headers of the disk have to move more.. (check this with the parted people)
+			//since reading from RTL is only needed in case of overlap we could check for this...
 				Sector t = blocksize ;
 				for ( ; t < partition_old .get_length() - blocksize  ; t+=blocksize )
 				{
 					if ( ! copy_block( lp_device,
 						    	   lp_device,
-						    	   partition_old .sector_start +1 - t,
-						    	   partition_new .sector_start +1 - t,
+						    	   partition_old .sector_end - t,
+						    	   partition_new .sector_end - t,
 						    	   blocksize,
 						    	   error_message ) )
 					{
@@ -1257,7 +1260,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			//reset fraction to -1 to make room for a new one (or a pulsebar)
 			operation_details .back() .sub_details .back() .fraction = -1 ;
 
-			if( ! succes )
+			if ( ! succes )
 			{
 				if ( ! error_message .empty() )
 					operation_details .back() .sub_details .push_back( 
@@ -1267,8 +1270,6 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 					operation_details .back() .sub_details .push_back( 
 						OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
 			}
-
-
 		}
 
 		close_device_and_disk() ;
@@ -1318,7 +1319,7 @@ bool GParted_Core::resize( const Device & device,
 			succes = resize_move_partition(
 					partition_old,
 			     		partition_new,
-					! get_fs( partition_new .filesystem ) .move,
+					! get_fs( partition_new .filesystem ) .move,//FIXME: is this still valid?
 					operation_details ) ;
 			
 		//these 3 are always executed, however, if 1 of them fails the whole operation fails
@@ -1344,22 +1345,80 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					  std::vector<OperationDetails> & operation_details,
 					  Sector min_size )
 {
-	operation_details .push_back( OperationDetails( _("resize/move partition") ) ) ;
-	/*FIXME: try to find fitting descriptions for all situations
-	if ( partition_new .get_length() < partition_old .get_length() )
-		operation_details .push_back( OperationDetails( _("shrink partition") ) ) ;
-	else if ( partition_new .get_length() > partition_old .get_length() )
-		operation_details .push_back( OperationDetails( _("grow partition") ) ) ;
-	else if ( partition_new .sector_start != partition_old .sector_start )
-		operation_details .push_back( OperationDetails( _("move partition") ) ) ;
-	else
+	//i'm not too happy with this, but i think it is the correct way from a i18n POV
+	enum Action
 	{
-		operation_details .push_back( OperationDetails( _("resize/move partition") ) ) ;
+		NONE			= 0,
+		MOVE_RIGHT	 	= 1,
+		MOVE_LEFT		= 2,
+		GROW 			= 3,
+		SHRINK			= 4,
+		MOVE_RIGHT_GROW		= 5,
+		MOVE_RIGHT_SHRINK	= 6,
+		MOVE_LEFT_GROW		= 7,
+		MOVE_LEFT_SHRINK	= 8
+	} ;
+	Action action = NONE ;
+
+	if ( partition_new .get_length() > partition_old .get_length() )
+		action = GROW ;
+	else if ( partition_new .get_length() < partition_old .get_length() )
+		action = SHRINK ;
+
+	if ( partition_new .sector_start > partition_old .sector_start &&
+	     partition_new .sector_end > partition_old .sector_end )
+		action = action == GROW ? MOVE_RIGHT_GROW : action == SHRINK ? MOVE_RIGHT_SHRINK : MOVE_RIGHT ;
+	else if ( partition_new .sector_start < partition_old .sector_start &&
+	     partition_new .sector_end < partition_old .sector_end )
+		action = action == GROW ? MOVE_LEFT_GROW : action == SHRINK ? MOVE_LEFT_SHRINK : MOVE_LEFT ;
+
+	Glib::ustring description ;	
+	switch ( action )
+	{
+		case NONE		:
+			description = _("resize/move partition") ;
+			break ;
+		case MOVE_RIGHT		:
+			description = _("move partition to the right") ;
+			break ;
+		case MOVE_LEFT		:
+			description = _("move partition to the left") ;
+			break ;
+		case GROW 		:
+			description = _("grow partition from %1 to %2") ;
+			break ;
+		case SHRINK		:
+			description = _("shrink partition from %1 to %2") ;
+			break ;
+		case MOVE_RIGHT_GROW	:
+			description = _("move partition to the right and grow it from %1 to %2") ;
+			break ;
+		case MOVE_RIGHT_SHRINK	:
+			description = _("move partition to the right and shrink it from %1 to %2") ;
+			break ;
+		case MOVE_LEFT_GROW	:
+			description = _("move partition to the left and grow it from %1 to %2") ;
+			break ;
+		case MOVE_LEFT_SHRINK	:
+			description = _("move partition to the left and shrink it from %1 to %2") ;
+			break ;
+	}
+
+	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
+		description = String::ucompose( description,
+						Utils::format_size( partition_old .get_length() ),
+						Utils::format_size( partition_new .get_length() ) ) ;
+
+	operation_details .push_back( OperationDetails( description ) ) ;
+
+	
+	if ( action == NONE )
 		operation_details .back() .sub_details .push_back( 
-			"<i>" + 
-			OperationDetails( _("new and old partition have the same size and positition. continuing anyway") ) +
-			"</i>" ) ;
-	}*/
+			OperationDetails(
+				Glib::ustring( "<i>" ) +
+				_("new and old partition have the same size and positition. continuing anyway") +
+				Glib::ustring( "</i>" ),
+			OperationDetails::NONE ) ) ;
 
 	operation_details .back() .sub_details .push_back( 
 		OperationDetails(
@@ -1370,6 +1429,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			"</i>",
 		OperationDetails::NONE ) ) ;
 	
+	//finally the actual resize/move
 	bool return_value = false ;
 	
 	PedConstraint *constraint = NULL ;
@@ -1467,7 +1527,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
 		else if ( partition_new .get_length() > partition_old .get_length() )
 			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
-		else
+		else//FIXME: incorrect, should say 'resize/move filesystem' and add the same size blabla as submessage..
 			operation_details .push_back( 
 				OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
 	}

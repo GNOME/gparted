@@ -26,8 +26,6 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;
-
-	create_description() ;
 }
 	
 void OperationDelete::apply_to_visual( std::vector<Partition> & partitions ) 

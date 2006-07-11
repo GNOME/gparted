@@ -616,8 +616,11 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 			break;
 	}
 
-	if ( operation )
+	//FIXME: do this in two separate steps and be more verbose in case of error..
+	if ( operation && gparted_core .snap_to_cylinder( operation ->partition_new ) )
 	{
+		operation ->create_description() ;
+
 		if ( index >= 0 && index < static_cast<int>( operations .size() ) )
 			operations .insert( operations .begin() + index, operation ) ;
 		else
@@ -1292,6 +1295,7 @@ void Win_GParted::activate_paste()
 		//FIXME: in this case there's no window presented to the user, so he cannot choose the blocksize
 		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
 		//except the blocksize disabled?
+		//bleh, this will be fixed as soon as the algorith to determine the optimal blocksize is in place
 		Add_Operation( GParted::COPY, partition_new, 32 ) ;
 	}
 }

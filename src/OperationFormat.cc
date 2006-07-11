@@ -29,8 +29,6 @@ OperationFormat::OperationFormat( const Device & device,
 	this ->device = device ;
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
-
-	create_description() ;
 }
 	
 void OperationFormat::apply_to_visual( std::vector<Partition> & partitions ) 

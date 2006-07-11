@@ -34,8 +34,6 @@ OperationCopy::OperationCopy( const Device & device,
 	this ->partition_copied = partition_copied ;
 	this ->block_size = block_size ;
 
-	create_description() ;
-	
 	this ->partition_new .add_path(  
 		String::ucompose( _("copy of %1"), this ->partition_copied .get_path() ), true ) ;
 }
