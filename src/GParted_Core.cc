@@ -153,7 +153,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		while ( lp_device ) 
 		{
 			device_paths .push_back( lp_device ->path ) ;
-						
+
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
 		close_device_and_disk() ;
@@ -229,9 +229,40 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	fstab_info .clear() ;
 }
 
-bool GParted_Core::snap_to_cylinder( Partition & partition ) 
+bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition ) 
 {
-	//FIXME: insert here basicly the functionality of snap_to_boundaries from parted.c
+	if ( ! partition .strict )
+	{
+		Sector diff = partition .sector_start % device .cylsize ;
+		if ( diff )
+		{
+			if ( diff < ( device .cylsize / 2 ) )
+				partition .sector_start -= diff ;
+			else
+				partition .sector_start += (device .cylsize - diff ) ;
+		}
+	
+		diff = (partition .sector_end +1) % device .cylsize ;
+		if ( diff )
+		{
+			if ( diff < ( device .cylsize / 2 ) )
+				partition .sector_end -= diff ;
+			else
+				partition .sector_end += (device .cylsize - diff ) ;
+		}
+	
+		if ( partition .sector_start < 0 )
+			partition .sector_start = 0 ;
+		if ( partition .sector_end > device .length )
+			partition .sector_end = device .length -1 ;
+	
+		//FIXME: it would be perfect if we could check for overlapping with adjacent partitions as well,
+		//however, finding the adjacent partitions is not as easy as it seems and at this moment all the dialogs
+		//already perform these checks. A perfect 'fixme-later' ;)
+		
+		//FIXME: what kind of errorchecking could we do here? maybe checking if partitionlenght > used?
+	}
+
 	return true ;
 }
 

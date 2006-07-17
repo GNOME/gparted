@@ -617,7 +617,7 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 	}
 
 	//FIXME: do this in two separate steps and be more verbose in case of error..
-	if ( operation && gparted_core .snap_to_cylinder( operation ->partition_new ) )
+	if ( operation && gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new ) )
 	{
 		operation ->create_description() ;
 

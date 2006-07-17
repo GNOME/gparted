@@ -38,7 +38,7 @@ public:
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
 	
-	bool snap_to_cylinder( Partition & partition ) ;
+	bool snap_to_cylinder( const Device & device, Partition & partition ) ;
 	bool apply_operation_to_disk( Operation * operation );
 	
 	bool set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
