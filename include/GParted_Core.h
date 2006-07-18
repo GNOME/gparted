@@ -111,9 +111,9 @@ private:
 				bool fill_partition = false ) ;
 	bool maximize_filesystem( const Partition & partition,
 				  std::vector<OperationDetails> & operation_details ) ;
-	bool LP_resize_partition_and_filesystem( const Partition & partition_old,
-					         Partition & partition_new,
-					         std::vector<OperationDetails> & operation_details ) ;
+	bool LP_resize_move_partition_and_filesystem( const Partition & partition_old,
+					              Partition & partition_new,
+						      std::vector<OperationDetails> & operation_details ) ;
 				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,

@@ -1070,7 +1070,7 @@ bool GParted_Core::move( const Device & device,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
 	//FIXME: sometimes (e.g. when moving a 8mib partition) we get a shrink to 0 because somewhere (i guess in the fsclasses) the newsize is calculated as size - cylsize...
-	//take a look at this and see at which leven this should be solved.
+	//take a look at this and see at which level this should be solved.
 	if ( partition_new .get_length() > partition_old .get_length() )
 	{
 		//first do the move 
@@ -1328,7 +1328,7 @@ bool GParted_Core::resize( const Device & device,
 	{
 		if ( check_repair( partition_new, operation_details ) )
 		{
-			succes = LP_resize_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
+			succes = LP_resize_move_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
 
 			//always check after a resize, but if it failes the whole operation failes 
 			if ( ! check_repair( partition_new, operation_details ) )
@@ -1558,9 +1558,16 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
 		else if ( partition_new .get_length() > partition_old .get_length() )
 			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
-		else//FIXME: incorrect, should say 'resize/move filesystem' and add the same size blabla as submessage..
-			operation_details .push_back( 
-				OperationDetails( _("new and old partition have the same size. continuing anyway") ) ) ;
+		else
+		{
+			operation_details .push_back( OperationDetails( _("resize filesystem") ) ) ;
+			operation_details .back() .sub_details .push_back( 
+				OperationDetails(
+					Glib::ustring( "<i>" ) +
+					_("new and old filesystem have the same size and positition. continuing anyway") +
+					Glib::ustring( "</i>" ),
+				OperationDetails::NONE ) ) ;
+		}
 	}
 
 	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
@@ -1587,12 +1594,97 @@ bool GParted_Core::maximize_filesystem( const Partition & partition,
 	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
 }
 
-bool GParted_Core::LP_resize_partition_and_filesystem( const Partition & partition_old,
-						       Partition & partition_new,
-						       std::vector<OperationDetails> & operation_details )
+bool GParted_Core::LP_resize_move_partition_and_filesystem( const Partition & partition_old,
+							    Partition & partition_new,
+							    std::vector<OperationDetails> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("resize partition and filesystem using libparted") ) ) ;
+//FIXME: i really should focus on decoupling partition and fs resize when using libparted.
+//that would make things a LOT more clear and consistent.
+	//i'm not too happy with this, but i think it is the correct way from a i18n POV
+	enum Action
+	{
+		NONE			= 0,
+		MOVE_RIGHT	 	= 1,
+		MOVE_LEFT		= 2,
+		GROW 			= 3,
+		SHRINK			= 4,
+		MOVE_RIGHT_GROW		= 5,
+		MOVE_RIGHT_SHRINK	= 6,
+		MOVE_LEFT_GROW		= 7,
+		MOVE_LEFT_SHRINK	= 8
+	} ;
+	Action action = NONE ;
+
+	if ( partition_new .get_length() > partition_old .get_length() )
+		action = GROW ;
+	else if ( partition_new .get_length() < partition_old .get_length() )
+		action = SHRINK ;
+
+	if ( partition_new .sector_start > partition_old .sector_start &&
+	     partition_new .sector_end > partition_old .sector_end )
+		action = action == GROW ? MOVE_RIGHT_GROW : action == SHRINK ? MOVE_RIGHT_SHRINK : MOVE_RIGHT ;
+	else if ( partition_new .sector_start < partition_old .sector_start &&
+	     partition_new .sector_end < partition_old .sector_end )
+		action = action == GROW ? MOVE_LEFT_GROW : action == SHRINK ? MOVE_LEFT_SHRINK : MOVE_LEFT ;
+
+	Glib::ustring description ;	
+	switch ( action )
+	{
+		case NONE		:
+			description = _("resize/move partition and filesytem using libparted") ;
+			break ;
+		case MOVE_RIGHT		:
+			description = _("move partition and filesytem to the right using libparted") ;
+			break ;
+		case MOVE_LEFT		:
+			description = _("move partition and filesytem to the left using libparted") ;
+			break ;
+		case GROW 		:
+			description = _("grow partition and filesytem from %1 to %2 using libparted") ;
+			break ;
+		case SHRINK		:
+			description = _("shrink partition and filesytem from %1 to %2 using libparted") ;
+			break ;
+		case MOVE_RIGHT_GROW	:
+			description = _("move partition and filesytem to the right and grow it from %1 to %2 using libparted") ;
+			break ;
+		case MOVE_RIGHT_SHRINK	:
+			description = _("move partition and filesytem to the right and shrink it from %1 to %2 using libparted") ;
+			break ;
+		case MOVE_LEFT_GROW	:
+			description = _("move partition and filesytem to the left and grow it from %1 to %2 using libparted") ;
+			break ;
+		case MOVE_LEFT_SHRINK	:
+			description = _("move partition and filesytem to the left and shrink it from %1 to %2 using libparted") ;
+			break ;
+	}
+
+	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
+		description = String::ucompose( description,
+						Utils::format_size( partition_old .get_length() ),
+						Utils::format_size( partition_new .get_length() ) ) ;
+
+	operation_details .push_back( OperationDetails( description ) ) ;
+
 	
+	if ( action == NONE )
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				Glib::ustring( "<i>" ) +
+				_("new and old partition have the same size and positition. continuing anyway") +
+				Glib::ustring( "</i>" ),
+			OperationDetails::NONE ) ) ;
+
+	operation_details .back() .sub_details .push_back( 
+		OperationDetails(
+			"<i>" +
+			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
+			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
+			String::ucompose( _("old size: %1"), Utils::format_size( partition_old .get_length() ) ) + 
+			"</i>",
+		OperationDetails::NONE ) ) ;
+	
+	//finally the actual resize/move
 	bool return_value = false ;
 	
 	PedFileSystem *fs = NULL ;
@@ -1628,6 +1720,21 @@ bool GParted_Core::LP_resize_partition_and_filesystem( const Partition & partiti
 						{
 							partition_new .sector_start = lp_partition ->geom .start ;
 							partition_new .sector_end = lp_partition ->geom .end ; 
+
+							operation_details .back() .sub_details .push_back( 
+								OperationDetails(
+									"<i>" +
+									String::ucompose( _("new start: %1"), 
+											  partition_new .sector_start ) +
+									"\n" +
+									String::ucompose( _("new end: %1"),
+											  partition_new .sector_end ) +
+									"\n" +
+									String::ucompose( 
+										_("new size: %1"),
+										 Utils::format_size( partition_new .get_length() ) ) + 
+									"</i>",
+								OperationDetails::NONE ) ) ;
 						}
 					}
 

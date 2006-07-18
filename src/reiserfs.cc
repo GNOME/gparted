@@ -44,7 +44,7 @@ FS reiserfs::get_filesystem_support()
 		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
-	
+
 	fs .MIN = 32 * MEBIBYTE ;
 	
 	return fs ;
