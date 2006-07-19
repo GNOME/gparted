@@ -1593,13 +1593,23 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 	}
 }
 	
-//FIXME: perform checks in maximize_filesystem(), resize_filesystem() and check_repair() to see if 
-//the specified action is supported. if not, return true, but set status of operation to NOT_AVAILABLE
-//(or maybe we should simply skip the entire suboperation?) maybe only maximize and check_repair are relevant..
 bool GParted_Core::maximize_filesystem( const Partition & partition,
 					std::vector<OperationDetails> & operation_details ) 
 {
 	operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+
+	if ( get_fs( partition .filesystem ) .grow == GParted::FS::NONE )
+	{
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				Glib::ustring( "<i>" ) +
+				_("growing is not available for this filesystem") +
+				Glib::ustring( "</i>" ),
+			OperationDetails::NONE ) ) ;
+
+		operation_details .back() .status = OperationDetails::N_A ;
+		return true ;
+	}
 	
 	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
 }
@@ -1946,6 +1956,19 @@ bool GParted_Core::check_repair( const Partition & partition, std::vector<Operat
 				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
 	
+	if ( get_fs( partition .filesystem ) .check == GParted::FS::NONE )
+	{
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				Glib::ustring( "<i>" ) +
+				_("checking is not available for this filesystem") +
+				Glib::ustring( "</i>" ),
+			OperationDetails::NONE ) ) ;
+
+		operation_details .back() .status = OperationDetails::N_A ;
+		return true ;
+	}
+
 	set_proper_filesystem( partition .filesystem ) ;
 
 	if ( p_filesystem && p_filesystem ->Check_Repair( partition, operation_details .back() .sub_details ) )

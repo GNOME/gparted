@@ -37,7 +37,8 @@ struct OperationDetails
 		NONE	= -1,
 		EXECUTE	= 0,
 		SUCCES	= 1,
-		ERROR	= 2
+		ERROR	= 2,
+		N_A	= 3
 	};
 	
 	OperationDetails()
