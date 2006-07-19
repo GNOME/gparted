@@ -80,8 +80,9 @@ void xfs::Set_Used_Sectors( Partition & partition )
 			S = -1 ;
 
 		//free blocks
-		output = output .substr( output .find( "fdblocks" ) ) ;
-		if ( sscanf( output .c_str(), "fdblocks = %Ld", &N ) != 1 )
+		index = output .find( "fdblocks" ) ;
+		if ( index > output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "fdblocks = %Ld", &N ) != 1 )
 			N = -1 ;
 
 		if ( N > -1 && S > -1 )
