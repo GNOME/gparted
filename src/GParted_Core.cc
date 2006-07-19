@@ -1184,7 +1184,6 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		close_disk() ;	
 
 		//do the move..
-		//FIXME: test all kinds of moving/resizing combi's with different blocksizes
 		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
 

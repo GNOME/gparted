@@ -249,6 +249,7 @@ void Dialog_Progress::on_signal_show()
 	//deal with succes/error...
 	if ( succes )
 	{
+		//FIXME: display amount of warnings between braces after this text, deal properly with plurality
 		progressbar_all .set_text( _("All operations succesfully completed") ) ;
 		progressbar_all .set_fraction( 1.0 ) ;
 	}
