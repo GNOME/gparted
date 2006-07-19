@@ -35,7 +35,12 @@ FS reiser4::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "fsck.reiser4" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	fs .copy = GParted::FS::GPARTED ;
+
+	if ( fs .check )
+	{
+		fs .copy = GParted::FS::GPARTED ;
+		fs .move = GParted::FS::GPARTED ;
+	}
 	
 	/*
 	 * IT SEEMS RESIZE AND COPY AREN'T IMPLEMENTED YET IN THE TOOLS...

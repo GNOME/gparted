@@ -45,8 +45,11 @@ FS ntfs::get_filesystem_support()
 	}
 	
 	//we need ntfsresize to set correct used/unused after cloning
-	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() && fs .grow )
+	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
+
+	if ( fs .check )
+		fs .move = GParted::FS::GPARTED ;
 	
 	return fs ;
 }

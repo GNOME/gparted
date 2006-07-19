@@ -58,8 +58,12 @@ FS jfs::get_filesystem_support()
 		}
 	}
 
-	if ( fs .grow )
+
+	if ( fs .check )
+	{
+		fs .move = GParted::FS::GPARTED ;
 		fs .copy = GParted::FS::GPARTED ;
+	}
 	
 	fs .MIN = 16 * MEBIBYTE ;
 	

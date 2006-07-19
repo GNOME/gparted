@@ -27,6 +27,9 @@ FS ufs::get_filesystem_support()
 	
 	fs .filesystem = GParted::FS_UFS ;
 	
+	fs .copy = GParted::FS::GPARTED ;
+	fs .move = GParted::FS::GPARTED ;
+	
 	return fs ;
 }
 

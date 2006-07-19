@@ -39,10 +39,15 @@ FS reiserfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "resize_reiserfs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
-		fs .copy = GParted::FS::GPARTED ;
 		
 		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
+	}
+
+	if ( fs .check )
+	{
+		fs .copy = GParted::FS::GPARTED ;
+		fs .move = GParted::FS::GPARTED ;
 	}
 
 	fs .MIN = 32 * MEBIBYTE ;

@@ -37,17 +37,16 @@ FS ext2::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
-		fs .copy = GParted::FS::GPARTED ;
 		
 		if ( fs .read ) //needed to determine a min filesystemsize..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 
-	//FIXME: think about what is needed for moving (actually not much, maybe even nothing.)
-	//from now on moving is defined as moving a complete filesystem, withour modifying the size.
-	//see of this definition has any effects on already existing code.
-	fs .move = GParted::FS::GPARTED ;
-	
+	if ( fs .check )
+	{
+		fs .copy = GParted::FS::GPARTED ;
+		fs .move = GParted::FS::GPARTED ;
+	}
 	
 	return fs ;
 }

@@ -31,6 +31,7 @@ FS hfsplus::get_filesystem_support( )
 	fs .shrink = GParted::FS::LIBPARTED ; 
 	
 	fs .copy = GParted::FS::GPARTED ;
+	fs .move = GParted::FS::GPARTED ;
 	
 	return fs ;
 }

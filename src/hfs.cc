@@ -34,6 +34,7 @@ FS hfs::get_filesystem_support()
 		fs .create = GParted::FS::EXTERNAL ;
 	
 	fs .copy = GParted::FS::GPARTED ;
+	fs .move = GParted::FS::GPARTED ;
 	
 	fs .MAX = 2048 * MEBIBYTE ;
 	

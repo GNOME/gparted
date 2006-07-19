@@ -1595,7 +1595,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 	
 //FIXME: perform checks in maximize_filesystem(), resize_filesystem() and check_repair() to see if 
 //the specified action is supported. if not, return true, but set status of operation to NOT_AVAILABLE
-//(or maybe we should simply skip the entire suboperation?)
+//(or maybe we should simply skip the entire suboperation?) maybe only maximize and check_repair are relevant..
 bool GParted_Core::maximize_filesystem( const Partition & partition,
 					std::vector<OperationDetails> & operation_details ) 
 {
