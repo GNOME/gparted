@@ -1130,13 +1130,23 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		   		    Partition & partition_new,
 				    std::vector<OperationDetails> & operation_details ) 
 {
-	//FIXME: i think it's best if we check at this level (in each function) if there are real changes.
-	//if not, then display the suboperation (in this case 'move filesystem') and add a child (italic) with
-	//something like 'new and old partition have the same positition. skipping move' and return true..
 	if ( partition_new .sector_start < partition_old .sector_start )
 		operation_details .push_back( OperationDetails( _("move filesystem to the left") ) ) ;
-	else
+	else if ( partition_new .sector_start > partition_old .sector_start )
 		operation_details .push_back( OperationDetails( _("move filesystem to the right") ) ) ;
+	else
+	{
+		operation_details .push_back( OperationDetails( _("move filesystem") ) ) ;
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				Glib::ustring( "<i>" ) +
+				_("new and old filesystem have the same positition. skipping this operation") +
+				Glib::ustring( "</i>" ),
+			OperationDetails::NONE ) ) ;
+
+		operation_details .back() .status = OperationDetails::SUCCES ;
+		return true ;
+	}
 
 	bool succes = false ;
 	if ( open_device_and_disk( partition_old .device_path ) )
