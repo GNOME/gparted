@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-03 23:39+0300\n"
-"PO-Revision-Date: 2006-07-03 23:42+0300\n"
+"POT-Creation-Date: 2006-07-19 13:11+0300\n"
+"PO-Revision-Date: 2006-07-19 13:22+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,13 +16,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1128
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1131
 msgid "GNOME Partition Editor"
 msgstr "Gnomen levyosioiden muokkain"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:52
-#: ../src/Win_GParted.cc:1004 ../src/Win_GParted.cc:1125
+#: ../src/Win_GParted.cc:1007 ../src/Win_GParted.cc:1128
 msgid "GParted"
 msgstr "GParted"
 
@@ -89,7 +89,7 @@ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr "VAROITUS: Uuden osiotaulun luominen tuhoaa kaiken tiedon levyllä %1!"
 
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1669
+#: ../src/Win_GParted.cc:1673
 msgid "Create"
 msgstr "Luo"
 
@@ -199,16 +199,16 @@ msgid "Create as:"
 msgstr "Luo muodossa:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:71 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:71 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "Ensisijainen osio"
 
-#: ../src/Dialog_Partition_New.cc:72 ../src/OperationCreate.cc:78
-#: ../src/OperationDelete.cc:77
+#: ../src/Dialog_Partition_New.cc:72 ../src/OperationCreate.cc:76
+#: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "Looginen osio"
 
-#: ../src/Dialog_Partition_New.cc:73 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:73 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "Laajennettu osio"
 
@@ -246,54 +246,54 @@ msgstr "Valmistuneet toimenpiteet:"
 msgid "Details"
 msgstr "Yksityiskohdat"
 
-#: ../src/Dialog_Progress.cc:174
+#: ../src/Dialog_Progress.cc:178
 msgid "%1 of %2 operations completed"
 msgstr "%1/%2 toimenpidettä valmistunut"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:220
+#: ../src/Dialog_Progress.cc:224
 msgid "_Save Details"
 msgstr "Tallenna yksityiskohdat"
 
-#: ../src/Dialog_Progress.cc:229
+#: ../src/Dialog_Progress.cc:233
 msgid "Operation canceled"
 msgstr "Toiminto peruttu"
 
-#: ../src/Dialog_Progress.cc:243
+#: ../src/Dialog_Progress.cc:247
 msgid "All operations succesfully completed"
 msgstr "Kaikki toimenpiteet valmistuivat onnistuneesti"
 
-#: ../src/Dialog_Progress.cc:253
+#: ../src/Dialog_Progress.cc:257
 msgid "An error occurred while applying the operations"
 msgstr "Tapahtui virhe suoritettaessa toimenpiteitä"
 
-#: ../src/Dialog_Progress.cc:258
+#: ../src/Dialog_Progress.cc:262
 msgid "The following operation could not be applied to disk:"
 msgstr "Seuraavaa levyn toimenpidettä ei voitu toteuttaa:"
 
-#: ../src/Dialog_Progress.cc:262
+#: ../src/Dialog_Progress.cc:266
 msgid "See the details for more information"
 msgstr "Katso lisätiedot jos kaipaat enemmän tietoa"
 
-#: ../src/Dialog_Progress.cc:295
+#: ../src/Dialog_Progress.cc:299
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Haluatko varmasti perua tämänhetkisen toimenpiteen?"
 
-#: ../src/Dialog_Progress.cc:301
+#: ../src/Dialog_Progress.cc:305
 msgid "Canceling an operation may cause SEVERE filesystem damage."
 msgstr ""
 "Toimenpiteen peruminen saattaa aiheuttaa tuhoisaa jälkeä "
 "tiedostojärjestelmissä."
 
-#: ../src/Dialog_Progress.cc:303
+#: ../src/Dialog_Progress.cc:307
 msgid "Continue Operation"
 msgstr "Jatka toiminpidettä"
 
-#: ../src/Dialog_Progress.cc:304
+#: ../src/Dialog_Progress.cc:308
 msgid "Cancel Operation"
 msgstr "Peru toimenpide"
 
-#: ../src/Dialog_Progress.cc:317
+#: ../src/Dialog_Progress.cc:321
 msgid "Save Details"
 msgstr "Tallenna yksityiskohdat"
 
@@ -337,200 +337,322 @@ msgstr "Tarkista"
 msgid "Manage flags on %1"
 msgstr "Hallitse osion %1 lippuja"
 
-#: ../src/GParted_Core.cc:208
+#: ../src/GParted_Core.cc:209
 msgid "unrecognized"
 msgstr "tunnistamaton"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:633
+#: ../src/GParted_Core.cc:671
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Tiedostojärjestelmän tyyppiä ei voitu tunnistaa! Mahdollisia syitä:"
 
-#: ../src/GParted_Core.cc:635
+#: ../src/GParted_Core.cc:673
 msgid "The filesystem is damaged"
 msgstr "Tiedostojärjestelmä on vaurioitunut"
 
-#: ../src/GParted_Core.cc:637
+#: ../src/GParted_Core.cc:675
 msgid "The filesystem is unknown to GParted"
 msgstr "Gparted ei tunnista tätä tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:639
+#: ../src/GParted_Core.cc:677
 msgid "There is no filesystem available (unformatted)"
 msgstr "Osiolla ei ole tiedostojärjestelmää (alustamaton)"
 
-#: ../src/GParted_Core.cc:714
+#: ../src/GParted_Core.cc:752
 msgid "Unable to find mountpoint"
 msgstr "Liitoskohtaa ei löydy"
 
-#: ../src/GParted_Core.cc:732
+#: ../src/GParted_Core.cc:770
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Tiedostojärjestelmän sisältöä ei voitu lukea!"
 
-#: ../src/GParted_Core.cc:734
+#: ../src/GParted_Core.cc:772
 msgid "Because of this some operations may be unavailable."
 msgstr "Tästä johtuen osa toiminnoista ei ole käytettävissä."
 
-#: ../src/GParted_Core.cc:736
+#: ../src/GParted_Core.cc:774
 msgid "Did you install the correct plugin for this filesystem?"
 msgstr "Oletko asentanut oikean liitännäisen tät tiedostojärjestelmää varten?"
 
-#: ../src/GParted_Core.cc:854
+#: ../src/GParted_Core.cc:892
 msgid "create empty partition"
 msgstr "luo tyhjä osio"
 
-#: ../src/GParted_Core.cc:924
+#: ../src/GParted_Core.cc:962
 msgid "path: %1"
 msgstr "polku: %1"
 
-#: ../src/GParted_Core.cc:925
+#: ../src/GParted_Core.cc:963
 msgid "start: %1"
 msgstr "alkaa: %1"
 
-#: ../src/GParted_Core.cc:926
+#: ../src/GParted_Core.cc:964
 msgid "end: %1"
 msgstr "loppuu: %1"
 
-#: ../src/GParted_Core.cc:927
+#: ../src/GParted_Core.cc:965
 msgid "size: %1"
 msgstr "koko: %1"
 
-#: ../src/GParted_Core.cc:969
+#: ../src/GParted_Core.cc:1007
 msgid "create new %1 filesystem"
 msgstr "luo uusi %1-tiedostojärjestelmä"
 
-#: ../src/GParted_Core.cc:1098
-msgid "move filesystem."
-msgstr "siirrä tiedostojärjestelmä."
+#: ../src/GParted_Core.cc:1137
+msgid "move filesystem to the left"
+msgstr "siirrä tiedostojärjestelmää vasemmalle"
 
-#: ../src/GParted_Core.cc:1175 ../src/GParted_Core.cc:1222
-#: ../src/GParted_Core.cc:1252
+#: ../src/GParted_Core.cc:1139
+msgid "move filesystem to the right"
+msgstr "siirrä tiedostojärjestelmää oikealle"
+
+#: ../src/GParted_Core.cc:1208 ../src/GParted_Core.cc:1256
+#: ../src/GParted_Core.cc:1286
 msgid "%1 of %2 moved"
 msgstr "%1/%2 siirretty"
 
-#: ../src/GParted_Core.cc:1347
+#: ../src/GParted_Core.cc:1410
 msgid "resize/move partition"
 msgstr "siirrä tai muuta osion kokoa"
 
-#: ../src/GParted_Core.cc:1367
+#: ../src/GParted_Core.cc:1413
+msgid "move partition to the right"
+msgstr "siirrä osiota oikealle"
+
+#: ../src/GParted_Core.cc:1416
+msgid "move partition to the left"
+msgstr "siirrä osiota vasemmalle"
+
+#: ../src/GParted_Core.cc:1419
+msgid "grow partition from %1 to %2"
+msgstr "kasvata osio koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1422
+msgid "shrink partition from %1 to %2"
+msgstr "kutista osio koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1425
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr "siirrä osiota oikealle ja kasvata koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1428
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr "siirrä osiota oikealle ja kutista koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1431
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr "siirrä osiota vasemmalle ja kasvata koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1434
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr "siirrä osiota vasemmalle ja kutista koosta %1 kokoon %2"
+
+#: ../src/GParted_Core.cc:1450 ../src/GParted_Core.cc:1674
+#: ../src/OperationResizeMove.cc:77
+msgid ""
+"new and old partition have the same size and positition. continuing anyway"
+msgstr ""
+"uuden ja vanhan osion koko ja sijainti ovat samat, jatketaan siitä huolimatta"
+
+#: ../src/GParted_Core.cc:1457 ../src/GParted_Core.cc:1681
 msgid "old start: %1"
 msgstr "vanha alku: %1"
 
-#: ../src/GParted_Core.cc:1368
+#: ../src/GParted_Core.cc:1458 ../src/GParted_Core.cc:1682
 msgid "old end: %1"
 msgstr "vanha loppu: %1"
 
-#: ../src/GParted_Core.cc:1369
+#: ../src/GParted_Core.cc:1459 ../src/GParted_Core.cc:1683
 msgid "old size: %1"
 msgstr "vanha koko: %1"
 
-#: ../src/GParted_Core.cc:1434
+#: ../src/GParted_Core.cc:1525 ../src/GParted_Core.cc:1727
 msgid "new start: %1"
 msgstr "Uusi alku: %1"
 
-#: ../src/GParted_Core.cc:1435
+#: ../src/GParted_Core.cc:1526 ../src/GParted_Core.cc:1730
 msgid "new end: %1"
 msgstr "uusi loppu: %1"
 
-#: ../src/GParted_Core.cc:1436
+#: ../src/GParted_Core.cc:1527 ../src/GParted_Core.cc:1734
 msgid "new size: %1"
 msgstr "uusi koko: %1"
 
-#: ../src/GParted_Core.cc:1467
+#: ../src/GParted_Core.cc:1558
 msgid "shrink filesystem"
 msgstr "kutista tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:1469
+#: ../src/GParted_Core.cc:1560
 msgid "grow filesystem"
 msgstr "kasvata tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:1472
-msgid "new and old partition have the same size. continuing anyway"
-msgstr "uuden ja vanhan osion koko on sama, jatketaan siitä huolimatta"
+#: ../src/GParted_Core.cc:1563
+msgid "resize filesystem"
+msgstr "muuta tiedostojärjestelmän kokoa"
 
-#: ../src/GParted_Core.cc:1494
+#: ../src/GParted_Core.cc:1567
+msgid ""
+"new and old filesystem have the same size and positition. continuing anyway"
+msgstr ""
+"uuden ja vanhan tiedostojärjestelmän koko on ja sijainti ovat samat, "
+"jatketaan siitä huolimatta"
+
+#: ../src/GParted_Core.cc:1592
 msgid "grow filesystem to fill the partition"
 msgstr "Kasvata tiedostojärjestelmää täyttämään osio"
 
-#: ../src/GParted_Core.cc:1503
-msgid "resize partition and filesystem using libparted"
-msgstr "muuta osion ja tiedostojärjestelmän kokoa käyttäen libpartedia"
+#: ../src/GParted_Core.cc:1634
+msgid "resize/move partition and filesytem using libparted"
+msgstr "siirrä tai muuta osion ja tiedostojärjestelmän kokoa käyttäen libpartedia"
 
-#: ../src/GParted_Core.cc:1577
+#: ../src/GParted_Core.cc:1637
+msgid "move partition and filesytem to the right using libparted"
+msgstr "siirrä osiota ja tiedostojärjestelmää oikealle käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1640
+msgid "move partition and filesytem to the left using libparted"
+msgstr "siirrä osiota ja tiedostojärjestelmää vasemmalle käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1643
+msgid "grow partition and filesytem from %1 to %2 using libparted"
+msgstr "kasvata osion ja tiedostojärjestelmän kokoa koosta %1 kokoon %2 "
+"käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1646
+msgid "shrink partition and filesytem from %1 to %2 using libparted"
+msgstr "pienennä osion ja tiedostojärjestelmän kokoa koosta %1 kokoon %2 "
+"käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1649
+msgid ""
+"move partition and filesytem to the right and grow it from %1 to %2 using "
+"libparted"
+msgstr ""
+"siirrä osiota ja tiedostojärjestelmää oikealle ja kasvata koosta %1 kokoon "
+"%2 käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1652
+msgid ""
+"move partition and filesytem to the right and shrink it from %1 to %2 using "
+"libparted"
+msgstr ""
+"siirrä osiota ja tiedostojärjestelmää oikealle ja kutista koosta %1 kokoon "
+"%2 käyttäen libpartedia"
+
+
+#: ../src/GParted_Core.cc:1655
+msgid ""
+"move partition and filesytem to the left and grow it from %1 to %2 using "
+"libparted"
+msgstr ""
+"siirrä osiota ja tiedostojärjestelmää vasemmalle ja kasvata koosta %1 "
+"kokoon %2 käyttäen libpartedia"
+
+#: ../src/GParted_Core.cc:1658
+msgid ""
+"move partition and filesytem to the left and shrink it from %1 to %2 using "
+"libparted"
+msgstr ""
+"siirrä osiota ja tiedostojärjestelmää vasemmalle ja kutista koosta %1 "
+"kokoon %2 käyttäen libpartedia"
+
+
+#: ../src/GParted_Core.cc:1775
 msgid "copy filesystem of %1 to %2"
 msgstr "kopioi %1 sisältö kohteeseen %2"
 
-#: ../src/GParted_Core.cc:1626
+#: ../src/GParted_Core.cc:1824
 msgid "Use a blocksize of %1 (%2 sectors)"
 msgstr "käytä lohkokokoa %1 (%2 sektoria)"
 
-#: ../src/GParted_Core.cc:1667 ../src/GParted_Core.cc:1692
+#: ../src/GParted_Core.cc:1865 ../src/GParted_Core.cc:1890
 msgid "%1 of %2 copied"
 msgstr "%1/%2 kopioitu"
 
-#: ../src/GParted_Core.cc:1728
+#: ../src/GParted_Core.cc:1926
 msgid "An error occurred while opening the devices"
 msgstr "Tapahtui virhe avattaessa laitteita"
 
-#: ../src/GParted_Core.cc:1738
+#: ../src/GParted_Core.cc:1936
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "tarkista tiedostojärjestelmä %1 virheiden varalta ja yritä korjata ne"
 
-#: ../src/GParted_Core.cc:1758
+#: ../src/GParted_Core.cc:1956
 msgid "set partitiontype"
 msgstr "aseta osion tyyppi"
 
-#: ../src/GParted_Core.cc:1800
+#: ../src/GParted_Core.cc:1998
 msgid "Error while reading block at sector %1"
 msgstr "Virhe luettaessa lohkoa sektorista %1"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:2006
 msgid "Error while writing block at sector %1"
 msgstr "Virhe kirjoitettaessa lohkoa sektorissa %1"
 
-#: ../src/OperationCopy.cc:40
+#: ../src/OperationCopy.cc:38
 msgid "copy of %1"
 msgstr "kopio osiosta %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:82
+#: ../src/OperationCopy.cc:80
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Kopioi %1 kohtaan %2 (alku kohdassa %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:90
+#: ../src/OperationCopy.cc:88
 msgid "Copy %1 to %2"
 msgstr "Kopioi %1 kohtaan %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:88
+#: ../src/OperationCreate.cc:86
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Luo %1 #%2 (%3, %4) levylle %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:82
+#: ../src/OperationDelete.cc:80
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Poista %1 (%2, %3) levyltä %4"
 
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:60
+#: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
 msgstr "Alusta %1 muodossa %2"
 
-#: ../src/OperationResizeMove.cc:53
-msgid "Move %1 forward by %2"
-msgstr "Siirrä %1 eteenpäin %2 verran"
+#: ../src/OperationResizeMove.cc:75
+msgid "resize/move %1"
+msgstr "muuta kokoa tai siirrä %1"
 
-#: ../src/OperationResizeMove.cc:57
-msgid "Move %1 backward by %2"
-msgstr "Siirrä %1 taaksepäin %2 verran"
+#: ../src/OperationResizeMove.cc:81
+msgid "Move %1 to the right"
+msgstr "siirrä %1 vasemmalle"
 
-#: ../src/OperationResizeMove.cc:67
-msgid "Resize %1 from %2 to %3"
-msgstr "Muuta %1 kokoa, %2 -> %3"
+#: ../src/OperationResizeMove.cc:84
+msgid "Move %1 to the left"
+msgstr "siirrä %1 oikealle"
 
-#: ../src/OperationResizeMove.cc:72
-msgid "and Resize %1 from %2 to %3"
-msgstr "ja muuta %1 kokoa, %2 -> %3"
+#: ../src/OperationResizeMove.cc:87
+msgid "Grow %1 from %2 to %3"
+msgstr "Kasvata %1 koosta %2 kokoon %3"
+
+#: ../src/OperationResizeMove.cc:90
+msgid "Shrink %1 from %2 to %3"
+msgstr "Kutista %1 koosta %2 kokoon %3"
+
+#: ../src/OperationResizeMove.cc:93
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr "Siirrä %1 oikealle ja kasvata sen kokoa koosta %2 kokoon %3"
+
+#: ../src/OperationResizeMove.cc:96
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr "Siirrä %1 oikealle ja kutista sen kokoa koosta %2 kokoon %3"
+
+#: ../src/OperationResizeMove.cc:99
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr "Siirrä %1 vasemmalle ja kasvata sen kokoa koosta %2 kokoon %3"
+
+#: ../src/OperationResizeMove.cc:102
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr "Siirrä %1 vasemmalle ja kutista sen kokoa koosta %2 kokoon %3"
 
 #. append columns
 #: ../src/TreeView_Detail.cc:34
@@ -677,7 +799,7 @@ msgstr "_Muuta kokoa tai siirrä"
 msgid "_Format to"
 msgstr "_Alusta muotoon"
 
-#: ../src/Win_GParted.cc:257 ../src/Win_GParted.cc:741
+#: ../src/Win_GParted.cc:257 ../src/Win_GParted.cc:744
 msgid "unmount"
 msgstr "unmount"
 
@@ -722,48 +844,48 @@ msgstr "Piilota toimenpidelista"
 msgid "Clear operationslist"
 msgstr "Tyhjennä toimenpidelista"
 
-#: ../src/Win_GParted.cc:660
+#: ../src/Win_GParted.cc:663
 msgid "%1 operations pending"
 msgstr "%1 toimenpidettä tekemättä"
 
-#: ../src/Win_GParted.cc:662
+#: ../src/Win_GParted.cc:665
 msgid "1 operation pending"
 msgstr "1 toimenpide tekemättä"
 
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:716
 msgid "Quit GParted?"
 msgstr "Lopeta GParted?"
 
-#: ../src/Win_GParted.cc:720
+#: ../src/Win_GParted.cc:723
 msgid "%1 operations are currently pending."
 msgstr "%1 toimenpidettä on vielä tekemättä."
 
-#: ../src/Win_GParted.cc:723
+#: ../src/Win_GParted.cc:726
 msgid "1 operation is currently pending."
 msgstr "1 toimenpide on vielä tekemättä."
 
-#: ../src/Win_GParted.cc:765
+#: ../src/Win_GParted.cc:768
 msgid "swapoff"
 msgstr "swapoff"
 
-#: ../src/Win_GParted.cc:771
+#: ../src/Win_GParted.cc:774
 msgid "swapon"
 msgstr "sawpon"
 
-#: ../src/Win_GParted.cc:914
+#: ../src/Win_GParted.cc:917
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:960
+#: ../src/Win_GParted.cc:963
 msgid "Scanning all devices..."
 msgstr "Tutkitaan laitteita..."
 
-#: ../src/Win_GParted.cc:976
+#: ../src/Win_GParted.cc:979
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "Ydin ei voi lukea uudestaan seuraavien laitteiden osiotauluja:"
 
-#: ../src/Win_GParted.cc:983
+#: ../src/Win_GParted.cc:986
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -771,32 +893,32 @@ msgstr ""
 "Tästä johtuen näiden laitteiden käsittely on rajoitettua. Irrota kaikki "
 "liitetyt osiot laitteelta, jos haluat käsitellä laitetta rajatta."
 
-#: ../src/Win_GParted.cc:1027
+#: ../src/Win_GParted.cc:1030
 msgid "No devices detected"
 msgstr "Laitteita ei löytynyt"
 
-#: ../src/Win_GParted.cc:1106
+#: ../src/Win_GParted.cc:1109
 msgid "Sorry, not yet implemented."
 msgstr "Ei vielä toteutettu."
 
-#: ../src/Win_GParted.cc:1112
+#: ../src/Win_GParted.cc:1115
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Käy sivulla http://gparted.sf.net/ jos haluat lisätietoja tai tukea."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1143
+#: ../src/Win_GParted.cc:1146
 msgid "translator-credits"
 msgstr ""
 "Ilkka Tuohela, 2005\n"
 "\n"
 "http://gnome.fi/"
 
-#: ../src/Win_GParted.cc:1183
+#: ../src/Win_GParted.cc:1186
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Ei ole mahdollista luoda enemmän kuin %1 ensisijaista osiota"
 
-#: ../src/Win_GParted.cc:1191
+#: ../src/Win_GParted.cc:1194
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -807,44 +929,44 @@ msgstr ""
 "Tällainen osio voi sisältää muita osioita. Koska laajennettu osio on samalla "
 "ensisijainen osio, voi olla että joku ensisijainen osio täytyy poistaa ensin."
 
-#: ../src/Win_GParted.cc:1342
+#: ../src/Win_GParted.cc:1346
 msgid "Unable to delete %1!"
 msgstr "Osiota %1 ei voi poistaa!"
 
-#: ../src/Win_GParted.cc:1349
+#: ../src/Win_GParted.cc:1353
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Irrota kaikki loogiset osiot, joiden osionumero on suurempi kuin %1"
 
-#: ../src/Win_GParted.cc:1360
+#: ../src/Win_GParted.cc:1364
 msgid "Are you sure you want to delete %1?"
 msgstr "Haluatko varmasti poistaa osion %1?"
 
-#: ../src/Win_GParted.cc:1367
+#: ../src/Win_GParted.cc:1371
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Poiston jälkeen tätä osiota ei voi enää kopioida."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1370
+#: ../src/Win_GParted.cc:1374
 msgid "Delete %1 (%2, %3)"
 msgstr "Poista %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1431
+#: ../src/Win_GParted.cc:1435
 msgid "Cannot format this filesystem to %1."
 msgstr "Tiedostojärjestelmää ei voi alustaa muotoon %1"
 
-#: ../src/Win_GParted.cc:1440
+#: ../src/Win_GParted.cc:1444
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "Tiedostojärjestelmä %1 vaatii vähintään %2 tilaa."
 
-#: ../src/Win_GParted.cc:1445
+#: ../src/Win_GParted.cc:1449
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "Tiedostojärjestelmän %1 sisältävän osion maksimikoko on %2."
 
-#: ../src/Win_GParted.cc:1518
+#: ../src/Win_GParted.cc:1522
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "Osoita ei voi irrottaa seuraavista liitospisteistä:"
 
-#: ../src/Win_GParted.cc:1520
+#: ../src/Win_GParted.cc:1524
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
@@ -852,59 +974,59 @@ msgstr ""
 "Luultavasti näihin liitoskohtiin on liitetty muitakin osioita. On "
 "suositeltavaa irrottaa ne käsin."
 
-#: ../src/Win_GParted.cc:1570
+#: ../src/Win_GParted.cc:1574
 msgid "Deactivating swap on %1"
 msgstr "Poistataan sivutusosio %1 käytöstä"
 
-#: ../src/Win_GParted.cc:1570
+#: ../src/Win_GParted.cc:1574
 msgid "Activating swap on %1"
 msgstr "Otetaan sivutusosio %1 käyttöön"
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1581
 msgid "Could not deactivate swap"
 msgstr "Sivutusosiota ei voitu poistaa käytöstä"
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1581
 msgid "Could not activate swap"
 msgstr "Sivutusosiota ei voitu ottaa käyttöön"
 
-#: ../src/Win_GParted.cc:1593
+#: ../src/Win_GParted.cc:1597
 msgid "Unmounting %1"
 msgstr "Irrotetaan osio %1"
 
-#: ../src/Win_GParted.cc:1598
+#: ../src/Win_GParted.cc:1602
 msgid "Could not unmount %1"
 msgstr "Osiota %1 ei voitu irrottaa"
 
-#: ../src/Win_GParted.cc:1627
+#: ../src/Win_GParted.cc:1631
 msgid "mounting %1 on %2"
 msgstr "liitetään %1 kohtaan %2"
 
-#: ../src/Win_GParted.cc:1634
+#: ../src/Win_GParted.cc:1638
 msgid "Could not mount %1 on %2"
 msgstr "Osiota %1 ei voitu liittää kohtaan %2"
 
-#: ../src/Win_GParted.cc:1658
+#: ../src/Win_GParted.cc:1662
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Haluatko varmasti luoda %1 osiotaulun kohteeseen %2?"
 
-#: ../src/Win_GParted.cc:1666
+#: ../src/Win_GParted.cc:1670
 msgid "This operation will destroy all data on %1!"
 msgstr "Tämä toimenpide tuhoaa kaiken tiedon kohdassa %1"
 
-#: ../src/Win_GParted.cc:1675
+#: ../src/Win_GParted.cc:1679
 msgid "Error while setting new disklabel"
 msgstr "Virhe asetettaessa uutta osiotaulua"
 
-#: ../src/Win_GParted.cc:1750
+#: ../src/Win_GParted.cc:1754
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Haluatko varmasti toteuttaa kaikki tekemättömät toimenpiteet?"
 
-#: ../src/Win_GParted.cc:1755
+#: ../src/Win_GParted.cc:1759
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "On suositeltavaa varmuuskopioida tärkeät tiedot ennen jatkamista."
 
-#: ../src/Win_GParted.cc:1756
+#: ../src/Win_GParted.cc:1760
 msgid "Apply operations to harddisk"
 msgstr "Toteuta toimenpiteet kiintolevylle"
 
@@ -958,11 +1080,17 @@ msgstr "kasvata liitettyä tiedostojärjestelmää"
 msgid "copy filesystem"
 msgstr "kopioi tiedostojärjestelmä"
 
+#~ msgid "Move %1 forward by %2"
+#~ msgstr "Siirrä %1 eteenpäin %2 verran"
+
+#~ msgid "Move %1 backward by %2"
+#~ msgstr "Siirrä %1 taaksepäin %2 verran"
+
+#~ msgid "and Resize %1 from %2 to %3"
+#~ msgstr "ja muuta %1 kokoa, %2 -> %3"
+
 #~ msgid "Current Operation:"
 #~ msgstr "Tämänhetkinen toimenpide:"
-
-#~ msgid "resize the filesystem"
-#~ msgstr "muuta tiedostojärjestelmän kokoa"
 
 #~ msgid "Filesystems"
 #~ msgstr "Tiedostojärjestelmät"
@@ -1055,9 +1183,6 @@ msgstr "kopioi tiedostojärjestelmä"
 
 #~ msgid "Translated by"
 #~ msgstr "Kääntäjät"
-
-#~ msgid "Convert %1 from %2 to %3"
-#~ msgstr "Muunnetaan %1 tyypistä %2 tyyppiin %3"
 
 #~ msgid "Unallocated"
 #~ msgstr "Varaamaton"
