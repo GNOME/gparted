@@ -1084,8 +1084,6 @@ bool GParted_Core::move( const Device & device,
 		   	 Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
-	//FIXME: sometimes (e.g. when moving a 8mib partition) we get a shrink to 0 because somewhere (i guess in the fsclasses) the newsize is calculated as size - cylsize...
-	//take a look at this and see at which level this should be solved.
 	if ( partition_new .get_length() > partition_old .get_length() )
 	{
 		//first do the move 
@@ -1344,7 +1342,10 @@ bool GParted_Core::resize( const Device & device,
 		return resize_move_partition( partition_old, partition_new, false, operation_details ) ;
 	
 	bool succes = false ;
-	
+//FIXME, i don't think this is valid anymore now we have filesystems (hfs and hfs+ e.g.) which do a move through GPARTED
+//and a shrink through LIBPARTED...
+//how about (fake)decoupling partition and resize through libparted by simply doing it twice?
+//it would hardly do anything to performance and it would greatly improve consitency in the core.
 	//resize using libparted..
 	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED ||
 	     get_fs( partition_old .filesystem ) .shrink == GParted::FS::LIBPARTED ||
@@ -1374,7 +1375,8 @@ bool GParted_Core::resize( const Device & device,
 			succes = resize_move_partition(
 					partition_old,
 			     		partition_new,
-					! get_fs( partition_new .filesystem ) .move,//FIXME: is this still valid?
+					get_fs( partition_new .filesystem ) .move,//FIXME, still not sure about this one
+					//see other FIXME's in this function.
 					operation_details ) ;
 			
 		//these 3 are always executed, however, if 1 of them fails the whole operation fails

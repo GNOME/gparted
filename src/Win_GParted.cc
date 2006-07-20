@@ -619,7 +619,8 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 	if ( operation )
 	{ 
 		Glib::ustring error ;
-		if ( operation ->type == GParted::DELETE ||
+		if ( operation ->type == GParted::DELETE || 
+		     operation ->type == GParted::FORMAT || 
 		     gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new, error ) )
 		{
 			operation ->create_description() ;
