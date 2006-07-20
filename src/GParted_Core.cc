@@ -229,7 +229,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	fstab_info .clear() ;
 }
 
-bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition ) 
+bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 
 {
 	if ( ! partition .strict )
 	{
@@ -255,12 +255,27 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 			partition .sector_start = 0 ;
 		if ( partition .sector_end > device .length )
 			partition .sector_end = device .length -1 ;
-	
+
+		//ok, do some basic checks on the partition..
+		if ( partition .get_length() <= 0 )
+		{
+			error = String::ucompose( _("A partition cannot have a length of %1 sectors"),
+						  partition .get_length() ) ;
+			return false ;
+		}
+
+		if ( partition .get_length() < partition .sectors_used )
+		{
+			error = String::ucompose( 
+				_("A partition with used sectors (%1) greater than it's length (%2) is not valid"),
+				partition .sectors_used,
+				partition .get_length() ) ;
+			return false ;
+		}
+
 		//FIXME: it would be perfect if we could check for overlapping with adjacent partitions as well,
 		//however, finding the adjacent partitions is not as easy as it seems and at this moment all the dialogs
 		//already perform these checks. A perfect 'fixme-later' ;)
-		
-		//FIXME: what kind of errorchecking could we do here? maybe checking if partitionlenght > used?
 	}
 
 	return true ;

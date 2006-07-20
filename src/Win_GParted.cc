@@ -616,29 +616,45 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 			break;
 	}
 
-	//FIXME: do this in two separate steps and be more verbose in case of error..
-	if ( operation && gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new ) )
-	{
-		operation ->create_description() ;
+	if ( operation )
+	{ 
+		Glib::ustring error ;
+		if ( operation ->type == GParted::DELETE ||
+		     gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new, error ) )
+		{
+			operation ->create_description() ;
 
-		if ( index >= 0 && index < static_cast<int>( operations .size() ) )
-			operations .insert( operations .begin() + index, operation ) ;
+			if ( index >= 0 && index < static_cast<int>( operations .size() ) )
+				operations .insert( operations .begin() + index, operation ) ;
+			else
+				operations .push_back( operation );
+
+			allow_undo( true ) ;
+			allow_apply( true ) ;
+
+			Refresh_Visual();
+			
+			if ( operations .size() == 1 ) //first operation, open operationslist
+				open_operationslist() ;
+			
+			//make scrollwindow focus on the last operation in the list	
+			treeview_operations .set_cursor(
+				static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( 
+						*(--liststore_operations ->children() .end()) ) ) ) ;
+		}
 		else
-			operations .push_back( operation );
+		{
+			Gtk::MessageDialog dialog( *this,
+				   _("Could not add this operation to the list."),
+				   false,
+				   Gtk::MESSAGE_ERROR,
+				   Gtk::BUTTONS_OK,
+				   true );
+			dialog .set_secondary_text( error ) ;
 
-		allow_undo( true ) ;
-		allow_apply( true ) ;
+			dialog .run() ;
+		}
 	}
-	
-	Refresh_Visual();
-	
-	if ( operations .size() == 1 ) //first operation, open operationslist
-		open_operationslist() ;
-	
-	//make scrollwindow focus on the last operation in the list	
-	treeview_operations .set_cursor(
-		static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( 
-				*(--liststore_operations ->children() .end()) ) ) ) ;
 }
 
 void Win_GParted::Refresh_Visual()

@@ -148,7 +148,10 @@ void Partition::add_paths( const std::vector<Glib::ustring> & paths, bool clear_
 
 Sector Partition::get_length() const 
 {
-	return sector_end - sector_start + 1 ;
+	if ( sector_start >= 0 && sector_end >= 0 )
+		return sector_end - sector_start + 1 ;
+	else
+		return -1 ;
 }
 
 Glib::ustring Partition::get_path() const
