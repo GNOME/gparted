@@ -41,8 +41,6 @@ FS fat32::get_filesystem_support()
 	fs .shrink = GParted::FS::LIBPARTED ;
 	fs .move = GParted::FS::LIBPARTED ;
 		
-//FIXME: find a way to decouple FS and partitionresizing when using libparted..
-//this is especially important while copying fat* FS's 
 	fs .copy = GParted::FS::GPARTED ;
 	
 	fs .MIN = 32 * MEBIBYTE ; //smaller fs'es will cause windows scandisk to fail..

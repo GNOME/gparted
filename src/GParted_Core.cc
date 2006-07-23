@@ -1072,8 +1072,12 @@ bool GParted_Core::resize_move( const Device & device,
 			  	Partition & partition_new,
 			  	std::vector<OperationDetails> & operation_details ) 
 {
-	if ( partition_new .sector_start != partition_old .sector_start &&
-	     get_fs( partition_old .filesystem ) .move == GParted::FS::GPARTED )
+	//extended is a special case..
+	if ( partition_old .type == GParted::TYPE_EXTENDED )
+		return resize_move_partition( partition_old, partition_new, operation_details ) ;
+
+	//see if we need move or resize..
+	if ( partition_new .sector_start != partition_old .sector_start )
 		return move( device, partition_old, partition_new, operation_details ) ;
 	else
 		return resize( device, partition_old, partition_new, operation_details ) ;
@@ -1084,63 +1088,64 @@ bool GParted_Core::move( const Device & device,
 		   	 Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
-	if ( partition_new .get_length() > partition_old .get_length() )
+	if ( calculate_exact_geom( partition_old, partition_new, operation_details ) )
 	{
-		//first do the move 
-		Partition temp = partition_new ;
-		temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
-		if ( check_repair( partition_old, operation_details ) &&
-		     move_filesystem( partition_old, temp, operation_details ) &&
-		     resize_move_partition( partition_old,
-					    temp,
-					    false,
-					    operation_details,
-					    temp .get_length() ) )
+		if ( partition_new .get_length() > partition_old .get_length() )
 		{
-			//now the partition and the filesystem are moved, we can grow it..
-			partition_new .sector_start = temp .sector_start ;
-			return resize( device, temp, partition_new, operation_details ) ;
+			//first do the move 
+			Partition temp = partition_new ;
+			temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
+			if ( check_repair( partition_old, operation_details ) &&
+			     calculate_exact_geom( partition_old, temp, operation_details ) &&
+			     move_filesystem( partition_old, temp, operation_details ) &&
+			     resize_move_partition( partition_old,
+						    temp,
+						    operation_details ) )
+			{
+				//now the partition and the filesystem are moved, we can grow it..
+				partition_new .sector_start = temp .sector_start ;
+				return resize( device, temp, partition_new, operation_details ) ;
+			}
+	
+			return false ;
 		}
-
-		return false ;
-	}
-	else if ( partition_new .get_length() < partition_old .get_length() )
-	{
-		//first shrink the partition
-		Partition temp = partition_old ;
-		temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
-		if ( resize( device, partition_old, temp, operation_details ) )
+		else if ( partition_new .get_length() < partition_old .get_length() )
 		{
-			//now we can move it
-			partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
-			return move_filesystem( temp, partition_new, operation_details ) &&
-			       resize_move_partition( temp,
+			//first shrink the partition
+			Partition temp = partition_old ;
+			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
+			if ( resize( device, partition_old, temp, operation_details, true ) )
+			{
+				//now we can move it
+				partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
+				return calculate_exact_geom( temp, partition_new, operation_details ) &&
+				       move_filesystem( temp, partition_new, operation_details ) &&
+				       resize_move_partition( temp,
+				       			      partition_new,
+							      operation_details ) &&
+				       check_repair( partition_new, operation_details ) &&
+				       maximize_filesystem( partition_new, operation_details ) && 
+				       check_repair( partition_new, operation_details ) ;
+			}
+	
+			return false ;
+		}
+		else
+			return check_repair( partition_old, operation_details ) &&
+			       move_filesystem( partition_old, partition_new, operation_details ) &&
+			       resize_move_partition( partition_old,
 			       			      partition_new,
-						      false,
-						      operation_details,
-						      partition_new .get_length() ) &&
+						      operation_details ) &&
 			       check_repair( partition_new, operation_details ) &&
 			       maximize_filesystem( partition_new, operation_details ) && 
 			       check_repair( partition_new, operation_details ) ;
-		}
-
-		return false ;
 	}
-	else
-		return check_repair( partition_old, operation_details ) &&
-		       move_filesystem( partition_old, partition_new, operation_details ) &&
-		       resize_move_partition( partition_old,
-		       			      partition_new,
-					      false,
-					      operation_details,
-					      partition_new .get_length() ) &&
-		       check_repair( partition_new, operation_details ) &&
-		       maximize_filesystem( partition_new, operation_details ) && 
-		       check_repair( partition_new, operation_details ) ;
+
+	return false ;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
-		   		    Partition & partition_new,
+		   		    const Partition & partition_new,
 				    std::vector<OperationDetails> & operation_details ) 
 {
 	if ( partition_new .sector_start < partition_old .sector_start )
@@ -1162,50 +1167,50 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	}
 
 	bool succes = false ;
+	switch ( get_fs( partition_old .filesystem ) .move )
+	{
+		case GParted::FS::NONE:
+			break ;
+		case GParted::FS::GPARTED:
+			succes = move_filesystem_using_gparted( partition_old,
+							        partition_new,
+							        operation_details .back() .sub_details ) ;
+			break ;
+		case GParted::FS::LIBPARTED:
+			succes = resize_move_filesystem_using_libparted( partition_old,
+									 partition_new,
+								  	 operation_details .back() .sub_details ) ;
+			break ;
+		case GParted::FS::EXTERNAL:
+			break ;
+	}
+
+	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	return succes ;
+}
+
+
+bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_old,
+		      		    		  const Partition & partition_new,
+				    		  std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( 
+				OperationDetails( _("using internal algorithm"), OperationDetails::NONE ) ) ;
+
+	bool succes = true ; //FIXME: default to true is too dangerous, just image opening the device fails and this function
+	//return true. then the partition will be moved and the result would be a disaster.
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
-		//calculate correct geom voor new location (rounded to cylinder)
-		//we could use the geom set bij snap_to_cylinder, but this one is 100% reliable, while snap_to_cylinder 
-		//exists merely for informative purposes
-		lp_partition = NULL ;
-		lp_partition = ped_disk_get_partition_by_sector(
-					lp_disk,
-					(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
-
-		if ( lp_partition )
-		{
-			PedConstraint *constraint = NULL ;
-			constraint = ped_constraint_any( lp_device ) ;
-
-			if ( constraint )
-			{
-				if ( ped_disk_set_partition_geom( lp_disk,
-								  lp_partition,
-								  constraint,
-								  partition_new .sector_start,
-								  partition_new .sector_end ) )
-				{
-					partition_new .sector_start = lp_partition ->geom .start ;
-					partition_new .sector_end = lp_partition ->geom .end ;
-					succes = true ;
-				}
-					
-				ped_constraint_destroy( constraint );
-			}
-		}
-		//we don't need disk anymore..	
-		close_disk() ;	
-
 		//do the move..
 		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
 
-		if ( succes && ped_device_open( lp_device ) )
+		if ( ped_device_open( lp_device ) )
 		{
 			ped_device_sync( lp_device ) ;
 		
 			//add an empty sub which we will constantly update in the loop
-			operation_details .back() .sub_details .push_back( 
+			operation_details .push_back( 
 				OperationDetails( "", OperationDetails::NONE ) ) ;
 
 			if ( partition_new .sector_start < partition_old .sector_start ) //move to the left
@@ -1226,17 +1231,15 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 					
 					if ( t % (blocksize * 100) == 0 )
 					{
-						operation_details .back() .sub_details .back() .progress_text =
+						operation_details .back() .progress_text =
 							String::ucompose( _("%1 of %2 moved"),
 							  		  Utils::format_size( t +1 ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .sub_details .back() .description =
-							"<i>" + 
-							operation_details .back() .sub_details .back() .progress_text + 
-							"</i>" ;
+						operation_details .back() .description =
+							"<i>" + operation_details .back() .progress_text + "</i>" ;
 
-						operation_details .back() .sub_details .back() .fraction =
+						operation_details .back() .fraction =
 							t / static_cast<double>( partition_old .get_length() ) ;
 					}
 				}
@@ -1274,17 +1277,15 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				
 					if ( t % (blocksize * 100) == 0 )
 					{
-						operation_details .back() .sub_details .back() .progress_text =
+						operation_details .back() .progress_text =
 							String::ucompose( _("%1 of %2 moved"),
 							  		  Utils::format_size( t +1 ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .sub_details .back() .description =
-							"<i>" + 
-							operation_details .back() .sub_details .back() .progress_text + 
-							"</i>" ;
+						operation_details .back() .description =
+							"<i>" + operation_details .back() .progress_text + "</i>" ;
 
-						operation_details .back() .sub_details .back() .fraction =
+						operation_details .back() .fraction =
 							t / static_cast<double>( partition_old .get_length() ) ;
 					}
 				}
@@ -1303,7 +1304,9 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			}
 
 			//final description
-			operation_details .back() .sub_details .back() .description =
+			//FIXME: this description doesn't have to be correct, in case of an error we should display how
+			//much data really has been moved...
+			operation_details .back() .description =
 				"<i>" +
 				String::ucompose( _("%1 of %2 moved"),
 						  Utils::format_size( partition_old .get_length() ),
@@ -1311,16 +1314,16 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				"</i>" ;
 			
 			//reset fraction to -1 to make room for a new one (or a pulsebar)
-			operation_details .back() .sub_details .back() .fraction = -1 ;
+			operation_details .back() .fraction = -1 ;
 
 			if ( ! succes )
 			{
 				if ( ! error_message .empty() )
-					operation_details .back() .sub_details .push_back( 
+					operation_details .push_back( 
 						OperationDetails( error_message, OperationDetails::NONE ) ) ;
 
 				if ( ! ped_error .empty() )
-					operation_details .back() .sub_details .push_back( 
+					operation_details .push_back( 
 						OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
 			}
 		}
@@ -1328,55 +1331,73 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		close_device_and_disk() ;
 	}
 
-	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
 	return succes ;
+}
+
+bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
+		  	      		            	   const Partition & partition_new,
+						    	   std::vector<OperationDetails> & operation_details ) 
+{
+	operation_details .push_back( OperationDetails( _("using libparted"), OperationDetails::NONE ) ) ;
+
+	bool return_value = false ;
+	if ( open_device_and_disk( partition_old .device_path ) )
+	{
+		PedPartition * lp_partition = NULL ;
+		PedFileSystem *	fs = NULL ;
+		PedGeometry * lp_geom = NULL ;	
+		
+		lp_partition = ped_disk_get_partition_by_sector( 
+						lp_disk,
+						(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+		if ( lp_partition )
+		{
+			fs = ped_file_system_open( & lp_partition ->geom );
+			if ( fs )
+			{
+				lp_geom = ped_geometry_new( lp_device,
+							    partition_new .sector_start,
+							    partition_new .get_length() ) ;
+				if ( lp_geom )
+					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit() ;
+				
+				ped_file_system_close( fs );
+			}
+		}
+
+		close_device_and_disk() ;
+	}
+
+	if ( ! return_value && ! ped_error .empty() )
+		operation_details .push_back( OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+
+	return return_value ;
 }
 
 bool GParted_Core::resize( const Device & device,
 			   const Partition & partition_old, 
 			   Partition & partition_new,
-			   std::vector<OperationDetails> & operation_details ) 
+			   std::vector<OperationDetails> & operation_details,
+			   bool strict ) 
 {
-	//extended partition
-	if ( partition_old .type == GParted::TYPE_EXTENDED )
-		return resize_move_partition( partition_old, partition_new, false, operation_details ) ;
-	
 	bool succes = false ;
-//FIXME, i don't think this is valid anymore now we have filesystems (hfs and hfs+ e.g.) which do a move through GPARTED
-//and a shrink through LIBPARTED...
-//how about (fake)decoupling partition and resize through libparted by simply doing it twice?
-//it would hardly do anything to performance and it would greatly improve consitency in the core.
-	//resize using libparted..
-	if ( get_fs( partition_old .filesystem ) .grow == GParted::FS::LIBPARTED ||
-	     get_fs( partition_old .filesystem ) .shrink == GParted::FS::LIBPARTED ||
-	     get_fs( partition_old .filesystem ) .move == GParted::FS::LIBPARTED )
-	{
-		if ( check_repair( partition_new, operation_details ) )
-		{
-			succes = LP_resize_move_partition_and_filesystem( partition_old, partition_new, operation_details ) ;
-
-			//always check after a resize, but if it failes the whole operation failes 
-			if ( ! check_repair( partition_new, operation_details ) )
-				succes = false ;
-		}
-		
-		return succes ;
-	}
-
-	//use custom resize tools..
 	if ( check_repair( partition_new, operation_details ) )
 	{
 		succes = true ;
+
+		if ( ! strict )
+			succes = calculate_exact_geom( partition_old, partition_new, operation_details, true ) ;
+
 		//FIXME, find another way to resolve this cylsize problem...	
-		if ( partition_new .get_length() < partition_old .get_length() )
+		//i think we don't need cylsize here anymore.. now partition_new is _exact_ we don't have to buffer
+		//for security.
+		if ( succes && partition_new .get_length() < partition_old .get_length() )
 			succes = resize_filesystem( partition_old, partition_new, operation_details, device .cylsize ) ;
 						
 		if ( succes )
 			succes = resize_move_partition(
 					partition_old,
 			     		partition_new,
-					get_fs( partition_new .filesystem ) .move,//FIXME, still not sure about this one
-					//see other FIXME's in this function.
 					operation_details ) ;
 			
 		//these 3 are always executed, however, if 1 of them fails the whole operation fails
@@ -1397,10 +1418,8 @@ bool GParted_Core::resize( const Device & device,
 }
 
 bool GParted_Core::resize_move_partition( const Partition & partition_old,
-				     	  Partition & partition_new,
-					  bool fixed_start,
-					  std::vector<OperationDetails> & operation_details,
-					  Sector min_size )
+				     	  const Partition & partition_new,
+					  std::vector<OperationDetails> & operation_details )
 {
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
@@ -1504,25 +1523,10 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		
 		if ( lp_partition )
 		{
-			constraint = ped_constraint_any( lp_device );
-			
-			if ( fixed_start && constraint )
-			{ 
-				//create a constraint which keeps de startpoint intact and rounds the end to a cylinder
-				ped_disk_set_partition_geom( lp_disk,
-							     lp_partition,
-							     constraint,
-							     partition_new .sector_start,
-							     partition_new .sector_end ) ;
-				ped_constraint_destroy( constraint );
-				constraint = NULL ;
-				
-				ped_geometry_set_start( & lp_partition ->geom, partition_new .sector_start ) ;
-				constraint = ped_constraint_exact( & lp_partition ->geom ) ;
-			}
-			else if ( min_size > 0 )
-				constraint ->min_size = min_size ;//at this moment min_size and fixed start are mut. excl.
-								  //this might change in the (near) future.
+			PedGeometry *geom = ped_geometry_new( lp_device,
+							      partition_new .sector_start,
+							      partition_new .get_length() ) ;
+			constraint = ped_constraint_exact( geom ) ;
 
 			if ( constraint )
 			{
@@ -1542,15 +1546,12 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	
 	if ( return_value )
 	{
-		partition_new .sector_start = lp_partition ->geom .start ;
-		partition_new .sector_end = lp_partition ->geom .end ;
-		
 		operation_details .back() .sub_details .push_back( 
 			OperationDetails(
 				"<i>" +
-				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
-				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
-				String::ucompose( _("new size: %1"), Utils::format_size( partition_new .get_length() ) ) + 
+				String::ucompose( _("new start: %1"), lp_partition ->geom .start ) + "\n" +
+				String::ucompose( _("new end: %1"), lp_partition ->geom .end ) + "\n" +
+				String::ucompose( _("new size: %1"), Utils::format_size( lp_partition ->geom .length ) ) + 
 				"</i>",
 			OperationDetails::NONE ) ) ;
 	}
@@ -1578,10 +1579,16 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 				      Sector cylinder_size,
 				      bool fill_partition ) 
 {
+	//by default 'grow' to accomodate expand_filesystem()
+	GParted::FS::Support action = get_fs( partition_old .filesystem ) .grow ;
+
 	if ( ! fill_partition )
 	{
 		if ( partition_new .get_length() < partition_old .get_length() )
+		{
 			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
+			action = get_fs( partition_old .filesystem ) .shrink ;
+		}
 		else if ( partition_new .get_length() > partition_old .get_length() )
 			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
 		else
@@ -1596,17 +1603,29 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 		}
 	}
 
-	set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
-	if ( p_filesystem && p_filesystem ->Resize( partition_new, operation_details .back() .sub_details, fill_partition ) )
+	bool succes = false ;
+	switch ( action )
 	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
-		return true ;
+		case GParted::FS::NONE:
+			break ;
+		case GParted::FS::GPARTED:
+			break ;
+		case GParted::FS::LIBPARTED:
+			succes = resize_move_filesystem_using_libparted( partition_old,
+									 partition_new,
+								  	 operation_details .back() .sub_details ) ;
+			break ;
+		case GParted::FS::EXTERNAL:
+			set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
+			succes = ( p_filesystem && 
+				   p_filesystem ->Resize( partition_new,
+				   			  operation_details .back() .sub_details,
+							  fill_partition ) ) ;
+			break ;
 	}
-	else
-	{
-		operation_details .back() .status = OperationDetails::ERROR ;
-		return false ;
-	}
+
+	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	return succes ;
 }
 	
 bool GParted_Core::maximize_filesystem( const Partition & partition,
@@ -1628,169 +1647,6 @@ bool GParted_Core::maximize_filesystem( const Partition & partition,
 	}
 	
 	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
-}
-
-bool GParted_Core::LP_resize_move_partition_and_filesystem( const Partition & partition_old,
-							    Partition & partition_new,
-							    std::vector<OperationDetails> & operation_details )
-{
-//FIXME: i really should focus on decoupling partition and fs resize when using libparted.
-//that would make things a LOT more clear and consistent.
-	//i'm not too happy with this, but i think it is the correct way from a i18n POV
-	enum Action
-	{
-		NONE			= 0,
-		MOVE_RIGHT	 	= 1,
-		MOVE_LEFT		= 2,
-		GROW 			= 3,
-		SHRINK			= 4,
-		MOVE_RIGHT_GROW		= 5,
-		MOVE_RIGHT_SHRINK	= 6,
-		MOVE_LEFT_GROW		= 7,
-		MOVE_LEFT_SHRINK	= 8
-	} ;
-	Action action = NONE ;
-
-	if ( partition_new .get_length() > partition_old .get_length() )
-		action = GROW ;
-	else if ( partition_new .get_length() < partition_old .get_length() )
-		action = SHRINK ;
-
-	if ( partition_new .sector_start > partition_old .sector_start &&
-	     partition_new .sector_end > partition_old .sector_end )
-		action = action == GROW ? MOVE_RIGHT_GROW : action == SHRINK ? MOVE_RIGHT_SHRINK : MOVE_RIGHT ;
-	else if ( partition_new .sector_start < partition_old .sector_start &&
-	     partition_new .sector_end < partition_old .sector_end )
-		action = action == GROW ? MOVE_LEFT_GROW : action == SHRINK ? MOVE_LEFT_SHRINK : MOVE_LEFT ;
-
-	Glib::ustring description ;	
-	switch ( action )
-	{
-		case NONE		:
-			description = _("resize/move partition and filesytem using libparted") ;
-			break ;
-		case MOVE_RIGHT		:
-			description = _("move partition and filesytem to the right using libparted") ;
-			break ;
-		case MOVE_LEFT		:
-			description = _("move partition and filesytem to the left using libparted") ;
-			break ;
-		case GROW 		:
-			description = _("grow partition and filesytem from %1 to %2 using libparted") ;
-			break ;
-		case SHRINK		:
-			description = _("shrink partition and filesytem from %1 to %2 using libparted") ;
-			break ;
-		case MOVE_RIGHT_GROW	:
-			description = _("move partition and filesytem to the right and grow it from %1 to %2 using libparted") ;
-			break ;
-		case MOVE_RIGHT_SHRINK	:
-			description = _("move partition and filesytem to the right and shrink it from %1 to %2 using libparted") ;
-			break ;
-		case MOVE_LEFT_GROW	:
-			description = _("move partition and filesytem to the left and grow it from %1 to %2 using libparted") ;
-			break ;
-		case MOVE_LEFT_SHRINK	:
-			description = _("move partition and filesytem to the left and shrink it from %1 to %2 using libparted") ;
-			break ;
-	}
-
-	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
-		description = String::ucompose( description,
-						Utils::format_size( partition_old .get_length() ),
-						Utils::format_size( partition_new .get_length() ) ) ;
-
-	operation_details .push_back( OperationDetails( description ) ) ;
-
-	
-	if ( action == NONE )
-		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				Glib::ustring( "<i>" ) +
-				_("new and old partition have the same size and positition. continuing anyway") +
-				Glib::ustring( "</i>" ),
-			OperationDetails::NONE ) ) ;
-
-	operation_details .back() .sub_details .push_back( 
-		OperationDetails(
-			"<i>" +
-			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
-			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
-			String::ucompose( _("old size: %1"), Utils::format_size( partition_old .get_length() ) ) + 
-			"</i>",
-		OperationDetails::NONE ) ) ;
-	
-	//finally the actual resize/move
-	bool return_value = false ;
-	
-	PedFileSystem *fs = NULL ;
-	PedConstraint *constraint = NULL ;
-	lp_partition = NULL ;
-	ped_error .clear() ;
-	
-	if ( open_device_and_disk( partition_old .device_path ) )
-	{
-		lp_partition = ped_disk_get_partition_by_sector( 
-					lp_disk,
-					(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
-		if ( lp_partition )
-		{
-			fs = ped_file_system_open( & lp_partition ->geom );
-			if ( fs )
-			{
-				constraint = ped_file_system_get_resize_constraint( fs );
-				if ( constraint )
-				{
-					if ( ped_disk_set_partition_geom( lp_disk,
-									  lp_partition,
-									  constraint,
-									  partition_new .sector_start,
-									  partition_new .sector_end ) 
-					     &&
-					     ped_file_system_resize( fs, & lp_partition ->geom, NULL )
-                                           )
-					{
-						return_value = commit() ;
-
-						if ( return_value )
-						{
-							partition_new .sector_start = lp_partition ->geom .start ;
-							partition_new .sector_end = lp_partition ->geom .end ; 
-
-							operation_details .back() .sub_details .push_back( 
-								OperationDetails(
-									"<i>" +
-									String::ucompose( _("new start: %1"), 
-											  partition_new .sector_start ) +
-									"\n" +
-									String::ucompose( _("new end: %1"),
-											  partition_new .sector_end ) +
-									"\n" +
-									String::ucompose( 
-										_("new size: %1"),
-										 Utils::format_size( partition_new .get_length() ) ) + 
-									"</i>",
-								OperationDetails::NONE ) ) ;
-						}
-					}
-
-					ped_constraint_destroy( constraint );
-				}
-				
-				ped_file_system_close( fs );
-			}
-		}
-		
-		close_device_and_disk() ;
-	}
-	
-	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
-        
-	if ( ! return_value && ! ped_error .empty() )
-		operation_details .back() .sub_details .push_back( 
-			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
-	
-	return return_value ;
 }
 
 bool GParted_Core::copy( const Partition & partition_src,
@@ -2058,6 +1914,106 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 	}
 
 	return true ;
+}
+
+//FIXME: after all it might be a good idea to pass a min_size here..
+//when moving we don't want the calculated geom to be smaller then the actual fs..
+bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
+			       	         Partition & partition_new,
+				         std::vector<OperationDetails> & operation_details,
+				         bool fixed_start ) 
+{
+	operation_details .push_back( OperationDetails( 
+		String::ucompose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
+
+	if ( fixed_start )
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( _("fixed start"), OperationDetails::NONE ) ) ;
+	
+	operation_details .back() .sub_details .push_back( 
+		OperationDetails(
+			"<i>" +
+			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
+			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
+			String::ucompose( _("requested size: %1"), Utils::format_size( partition_new .get_length() ) ) + 
+			"</i>",
+		OperationDetails::NONE ) ) ;
+	
+	ped_error .clear() ;
+	bool succes = false ;
+	if ( open_device_and_disk( partition_old .device_path ) )
+	{
+		lp_partition = NULL ;
+
+		if ( partition_old .type == GParted::TYPE_EXTENDED )
+			lp_partition = ped_disk_extended_partition( lp_disk ) ;
+		else		
+			lp_partition = ped_disk_get_partition_by_sector(
+							lp_disk,
+							(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+
+		if ( lp_partition )
+		{
+			PedConstraint *constraint = NULL ;
+			constraint = ped_constraint_any( lp_device ) ;
+			
+			if ( constraint && fixed_start )
+			{ 
+				//create a constraint which keeps de startpoint intact and rounds the end to a cylinder
+				ped_disk_set_partition_geom( lp_disk,
+							     lp_partition,
+							     constraint,
+							     partition_new .sector_start,
+							     partition_new .sector_end ) ;
+				ped_constraint_destroy( constraint );
+				constraint = NULL ;
+				
+				ped_geometry_set_start( & lp_partition ->geom, partition_new .sector_start ) ;
+				constraint = ped_constraint_exact( & lp_partition ->geom ) ;
+			}
+
+			if ( constraint )
+			{
+				constraint ->min_size = partition_new .sectors_used ;
+
+				//FIXME: if we insert a weird partitionnew geom here (e.g. start > end) 
+				//ped_disk_set_partition_geom() will still return true (althoug an lp exception is written
+				//to stdout.. see if this also affect create_partition and resize_move_partition
+				if ( ped_disk_set_partition_geom( lp_disk,
+								  lp_partition,
+								  constraint,
+								  partition_new .sector_start,
+								  partition_new .sector_end ) )
+				{
+					partition_new .sector_start = lp_partition ->geom .start ;
+					partition_new .sector_end = lp_partition ->geom .end ;
+					succes = true ;
+				}
+					
+				ped_constraint_destroy( constraint );
+			}
+		}
+
+		close_device_and_disk() ;	
+	}
+
+	if ( succes ) 
+	{
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails(
+				"<i>" +
+				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
+				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
+				String::ucompose( _("new size: %1"), Utils::format_size( partition_new .get_length() ) ) + 
+				"</i>",
+			OperationDetails::NONE ) ) ;
+	}
+	else if ( ! ped_error .empty() ) 
+		operation_details .back() .sub_details .push_back( 
+			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+
+	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	return succes ;
 }
 
 void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )

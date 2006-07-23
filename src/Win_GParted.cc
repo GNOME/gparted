@@ -108,6 +108,8 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 
 void Win_GParted::init_menubar() 
 {
+	//FIXME: store menuindex in variables, so we don't have to use these numbers everywhere
+	//see my local version of the installerpatch for details.
 	//fill menubar_main and connect callbacks 
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;

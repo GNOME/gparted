@@ -93,17 +93,22 @@ private:
 		   Partition & partition_new,
 		   std::vector<OperationDetails> & operation_details ) ;
 	bool move_filesystem( const Partition & partition_old,
-			      Partition & partition_new,
+			      const Partition & partition_new,
 			      std::vector<OperationDetails> & operation_details ) ;
+	bool move_filesystem_using_gparted( const Partition & partition_old,
+			      		    const Partition & partition_new,
+					    std::vector<OperationDetails> & operation_details ) ;
+	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
+				      		     const Partition & partition_new,
+					      	     std::vector<OperationDetails> & operation_details ) ;
 	bool resize( const Device & device, 
 		     const Partition & partition_old,
 		     Partition & partition_new,
-		     std::vector<OperationDetails> & operation_detail ) ; 
+		     std::vector<OperationDetails> & operation_detail,
+		     bool strict = false ) ; 
 	bool resize_move_partition( const Partition & partition_old,
-			       	    Partition & partition_new,
-				    bool fixed_start,
-				    std::vector<OperationDetails> & operation_details,
-				    Sector min_size = 0 ) ;
+			       	    const Partition & partition_new,
+				    std::vector<OperationDetails> & operation_details ) ;
 	bool resize_filesystem( const Partition & partition_old,
 				const Partition & partition_new,
 				std::vector<OperationDetails> & operation_details,
@@ -111,9 +116,6 @@ private:
 				bool fill_partition = false ) ;
 	bool maximize_filesystem( const Partition & partition,
 				  std::vector<OperationDetails> & operation_details ) ;
-	bool LP_resize_move_partition_and_filesystem( const Partition & partition_old,
-					              Partition & partition_new,
-						      std::vector<OperationDetails> & operation_details ) ;
 				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
@@ -136,6 +138,10 @@ private:
 			 Sector offset_dst,
 			 Sector blocksize,
 			 Glib::ustring & error_message ) ; 
+	bool calculate_exact_geom( const Partition & partition_old,
+			           Partition & partition_new,
+				   std::vector<OperationDetails> & operation_details,
+				   bool fixed_start = false ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size = 0 ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
