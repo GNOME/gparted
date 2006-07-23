@@ -977,7 +977,9 @@ bool GParted_Core::create_partition( Partition & new_partition,
 						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
 						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
-						String::ucompose( _("size: %1"), Utils::format_size( new_partition .get_length() ) ) + 
+						String::ucompose( _("size: %1 (%2)"),
+					  			  new_partition .get_length(),
+					  			  Utils::format_size( new_partition .get_length() ) ) + 
 						"</i>",
 						OperationDetails::NONE ) ) ;
 				}
@@ -1080,25 +1082,25 @@ bool GParted_Core::resize_move( const Device & device,
 	
 		//see if we need move or resize..
 		if ( partition_new .sector_start == partition_old .sector_start )
-			return resize( device, partition_old, partition_new, operation_details ) ;
+			return resize( partition_old, partition_new, operation_details ) ;
 		else if ( partition_new .get_length() > partition_old .get_length() )
 		{
 			//first move, then grow...
 			Partition temp = partition_new ;
-			temp .sector_end = temp .sector_start + partition_old .get_length() ;
+			temp .sector_end = temp .sector_start + partition_old .get_length() -1 ;
 			
 			return calculate_exact_geom( partition_old, temp, operation_details, temp .get_length() ) &&
 			       move( device, partition_old, temp, operation_details ) &&
-			       resize( device, temp, partition_new, operation_details ) ;
+			       resize( temp, partition_new, operation_details ) ;
 		}
 		else if ( partition_new .get_length() < partition_old .get_length() )
 		{
 			//first shrink, then move..
 			Partition temp = partition_old ;
-			temp .sector_end = partition_old .sector_start + partition_new .get_length() ;
+			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
 			
 			return calculate_exact_geom( partition_old, temp, operation_details ) &&
-			       resize( device, partition_old, temp, operation_details ) &&
+			       resize( partition_old, temp, operation_details ) &&
 			       calculate_exact_geom( temp, partition_new, operation_details, temp .get_length() ) &&
 			       move( device, temp, partition_new, operation_details ) ;
 		}
@@ -1355,8 +1357,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	return return_value ;
 }
 
-bool GParted_Core::resize( const Device & device,
-			   const Partition & partition_old, 
+bool GParted_Core::resize( const Partition & partition_old, 
 			   const Partition & partition_new,
 			   std::vector<OperationDetails> & operation_details )
 {
@@ -1365,11 +1366,8 @@ bool GParted_Core::resize( const Device & device,
 	{
 		succes = true ;
 
-		//FIXME, find another way to resolve this cylsize problem...	
-		//i think we don't need cylsize here anymore.. now partition_new is _exact_ we don't have to buffer
-		//for security.
 		if ( succes && partition_new .get_length() < partition_old .get_length() )
-			succes = resize_filesystem( partition_old, partition_new, operation_details, device .cylsize ) ;
+			succes = resize_filesystem( partition_old, partition_new, operation_details ) ;
 						
 		if ( succes )
 			succes = resize_move_partition(
@@ -1385,9 +1383,6 @@ bool GParted_Core::resize( const Device & device,
 		if ( ! maximize_filesystem( partition_new, operation_details ) )
 			succes = false ;
 			
-		if ( ! check_repair( partition_new, operation_details ) )
-			succes = false ;
-
 		return succes ;
 	}
 		
@@ -1478,7 +1473,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			"<i>" +
 			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
 			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
-			String::ucompose( _("old size: %1"), Utils::format_size( partition_old .get_length() ) ) + 
+			String::ucompose( _("old size: %1 (%2)"),
+					  partition_old .get_length(),
+					  Utils::format_size( partition_old .get_length() ) ) + 
 			"</i>",
 		OperationDetails::NONE ) ) ;
 	
@@ -1528,7 +1525,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				"<i>" +
 				String::ucompose( _("new start: %1"), lp_partition ->geom .start ) + "\n" +
 				String::ucompose( _("new end: %1"), lp_partition ->geom .end ) + "\n" +
-				String::ucompose( _("new size: %1"), Utils::format_size( lp_partition ->geom .length ) ) + 
+				String::ucompose( _("new size: %1 (%2)"),
+					 	  lp_partition ->geom .length,
+					  	  Utils::format_size( lp_partition ->geom .length ) ) + 
 				"</i>",
 			OperationDetails::NONE ) ) ;
 	}
@@ -1549,11 +1548,10 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		return return_value ;
 	}
 }
-	
+
 bool GParted_Core::resize_filesystem( const Partition & partition_old,
 				      const Partition & partition_new,
 				      std::vector<OperationDetails> & operation_details,
-				      Sector cylinder_size,
 				      bool fill_partition ) 
 {
 	//by default 'grow' to accomodate expand_filesystem()
@@ -1593,7 +1591,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 								  	 operation_details .back() .sub_details ) ;
 			break ;
 		case GParted::FS::EXTERNAL:
-			set_proper_filesystem( partition_new .filesystem, cylinder_size ) ;
+			set_proper_filesystem( partition_new .filesystem ) ;
 			succes = ( p_filesystem && 
 				   p_filesystem ->Resize( partition_new,
 				   			  operation_details .back() .sub_details,
@@ -1623,7 +1621,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition,
 		return true ;
 	}
 	
-	return resize_filesystem( partition, partition, operation_details, 0, true ) ;
+	return resize_filesystem( partition, partition, operation_details, true ) ;
 }
 
 bool GParted_Core::copy( const Partition & partition_src,
@@ -1910,7 +1908,9 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			"<i>" +
 			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
 			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
-			String::ucompose( _("requested size: %1"), Utils::format_size( partition_new .get_length() ) ) + 
+			String::ucompose( _("requested size: %1 (%2)"),
+					  partition_new .get_length(),
+					  Utils::format_size( partition_new .get_length() ) ) + 
 			"</i>",
 		OperationDetails::NONE ) ) ;
 	
@@ -1965,7 +1965,9 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				"<i>" +
 				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
 				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
-				String::ucompose( _("new size: %1"), Utils::format_size( partition_new .get_length() ) ) + 
+				String::ucompose( _("new size: %1 (%2)"),
+					 	  partition_new .get_length(),
+					  	  Utils::format_size( partition_new .get_length() ) ) + 
 				"</i>",
 			OperationDetails::NONE ) ) ;
 	}
@@ -1977,7 +1979,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	return succes ;
 }
 
-void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size )
+void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 {
 	if ( p_filesystem )
 		delete p_filesystem ;
@@ -2000,9 +2002,6 @@ void GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem, Sector 
 
 		default			: p_filesystem = NULL ;
 	}
-
-	if ( p_filesystem )
-		p_filesystem ->cylinder_size = cylinder_size ;
 }
 	
 bool GParted_Core::wait_for_node( const Glib::ustring & node ) 

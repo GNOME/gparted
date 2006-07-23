@@ -101,8 +101,7 @@ private:
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
 					      	     std::vector<OperationDetails> & operation_details ) ;
-	bool resize( const Device & device, 
-		     const Partition & partition_old,
+	bool resize( const Partition & partition_old,
 		     const Partition & partition_new,
 		     std::vector<OperationDetails> & operation_detail ) ;
 	bool resize_move_partition( const Partition & partition_old,
@@ -111,7 +110,6 @@ private:
 	bool resize_filesystem( const Partition & partition_old,
 				const Partition & partition_new,
 				std::vector<OperationDetails> & operation_details,
-				Sector cylinder_size = 0,
 				bool fill_partition = false ) ;
 	bool maximize_filesystem( const Partition & partition,
 				  std::vector<OperationDetails> & operation_details ) ;
@@ -141,7 +139,7 @@ private:
 			           Partition & partition_new,
 				   std::vector<OperationDetails> & operation_details,
 				   Sector min_size = -1 ) ;
-	void set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size = 0 ) ;
+	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 

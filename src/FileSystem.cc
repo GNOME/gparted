@@ -23,7 +23,6 @@ namespace GParted
 	
 FileSystem::FileSystem()
 {
-	cylinder_size = 0 ;
 }
 
 int FileSystem::execute_command( const Glib::ustring & command, std::vector<OperationDetails> & operation_details ) 
