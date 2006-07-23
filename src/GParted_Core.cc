@@ -1072,77 +1072,57 @@ bool GParted_Core::resize_move( const Device & device,
 			  	Partition & partition_new,
 			  	std::vector<OperationDetails> & operation_details ) 
 {
-	//extended is a special case..
-	if ( partition_old .type == GParted::TYPE_EXTENDED )
-		return calculate_exact_geom( partition_old, partition_new, operation_details ) &&
-		       resize_move_partition( partition_old, partition_new, operation_details ) ;
+	if ( calculate_exact_geom( partition_old, partition_new, operation_details ) )
+	{
+		//extended is a special case..
+		if ( partition_old .type == GParted::TYPE_EXTENDED )
+			return resize_move_partition( partition_old, partition_new, operation_details ) ;
+	
+		//see if we need move or resize..
+		if ( partition_new .sector_start == partition_old .sector_start )
+			return resize( device, partition_old, partition_new, operation_details ) ;
+		else if ( partition_new .get_length() > partition_old .get_length() )
+		{
+			//first move, then grow...
+			Partition temp = partition_new ;
+			temp .sector_end = temp .sector_start + partition_old .get_length() ;
+			
+			return calculate_exact_geom( partition_old, temp, operation_details, temp .get_length() ) &&
+			       move( device, partition_old, temp, operation_details ) &&
+			       resize( device, temp, partition_new, operation_details ) ;
+		}
+		else if ( partition_new .get_length() < partition_old .get_length() )
+		{
+			//first shrink, then move..
+			Partition temp = partition_old ;
+			temp .sector_end = partition_old .sector_start + partition_new .get_length() ;
+			
+			return calculate_exact_geom( partition_old, temp, operation_details ) &&
+			       resize( device, partition_old, temp, operation_details ) &&
+			       calculate_exact_geom( temp, partition_new, operation_details, temp .get_length() ) &&
+			       move( device, temp, partition_new, operation_details ) ;
+		}
+		else
+			return calculate_exact_geom( 
+					partition_old, partition_new, operation_details, partition_old .get_length() ) &&
+			       move( device, partition_old, partition_new, operation_details ) ;
+	}
 
-	//see if we need move or resize..
-	if ( partition_new .sector_start != partition_old .sector_start )
-		return move( device, partition_old, partition_new, operation_details ) ;
-	else
-		return resize( device, partition_old, partition_new, operation_details ) ;
+	return false ;
 }
 
 bool GParted_Core::move( const Device & device,
 			 const Partition & partition_old,
-		   	 Partition & partition_new,
+		   	 const Partition & partition_new,
 		   	 std::vector<OperationDetails> & operation_details ) 
 {
-	if ( calculate_exact_geom( partition_old, partition_new, operation_details ) )
-	{
-		if ( partition_new .get_length() > partition_old .get_length() )
-		{
-			//first do the move 
-			Partition temp = partition_new ;
-			temp .sector_end = partition_new .sector_start + partition_old .get_length() ;
-			if ( check_repair( partition_old, operation_details ) &&
-			     calculate_exact_geom( partition_old, temp, operation_details ) &&
-			     move_filesystem( partition_old, temp, operation_details ) &&
-			     resize_move_partition( partition_old,
-						    temp,
-						    operation_details ) )
-			{
-				//now the partition and the filesystem are moved, we can grow it..
-				partition_new .sector_start = temp .sector_start ;
-				return resize( device, temp, partition_new, operation_details ) ;
-			}
-	
-			return false ;
-		}
-		else if ( partition_new .get_length() < partition_old .get_length() )
-		{
-			//first shrink the partition
-			Partition temp = partition_old ;
-			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
-			if ( resize( device, partition_old, temp, operation_details, true ) )
-			{
-				//now we can move it
-				partition_new .sector_end = partition_new .sector_start + temp .get_length() -1 ;
-				return calculate_exact_geom( temp, partition_new, operation_details ) &&
-				       move_filesystem( temp, partition_new, operation_details ) &&
-				       resize_move_partition( temp,
-				       			      partition_new,
-							      operation_details ) &&
-				       check_repair( partition_new, operation_details ) &&
-				       maximize_filesystem( partition_new, operation_details ) && 
-				       check_repair( partition_new, operation_details ) ;
-			}
-	
-			return false ;
-		}
-		else
-			return check_repair( partition_old, operation_details ) &&
-			       move_filesystem( partition_old, partition_new, operation_details ) &&
-			       resize_move_partition( partition_old,
-			       			      partition_new,
-						      operation_details ) &&
-			       check_repair( partition_new, operation_details ) &&
-			       maximize_filesystem( partition_new, operation_details ) && 
-			       check_repair( partition_new, operation_details ) ;
-	}
-
-	return false ;
+	return check_repair( partition_old, operation_details ) &&
+	       move_filesystem( partition_old, partition_new, operation_details ) &&
+	       resize_move_partition( partition_old,
+	       			      partition_new,
+				      operation_details ) &&
+	       check_repair( partition_new, operation_details ) &&
+	       maximize_filesystem( partition_new, operation_details ) ;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
@@ -1377,17 +1357,13 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 
 bool GParted_Core::resize( const Device & device,
 			   const Partition & partition_old, 
-			   Partition & partition_new,
-			   std::vector<OperationDetails> & operation_details,
-			   bool strict ) 
+			   const Partition & partition_new,
+			   std::vector<OperationDetails> & operation_details )
 {
 	bool succes = false ;
 	if ( check_repair( partition_new, operation_details ) )
 	{
 		succes = true ;
-
-		if ( ! strict )
-			succes = calculate_exact_geom( partition_old, partition_new, operation_details, true ) ;
 
 		//FIXME, find another way to resolve this cylsize problem...	
 		//i think we don't need cylsize here anymore.. now partition_new is _exact_ we don't have to buffer
@@ -1917,19 +1893,17 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 	return true ;
 }
 
-//FIXME: after all it might be a good idea to pass a min_size here..
-//when moving we don't want the calculated geom to be smaller then the actual fs..
 bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			       	         Partition & partition_new,
 				         std::vector<OperationDetails> & operation_details,
-				         bool fixed_start ) 
+				         Sector min_size ) 
 {
 	operation_details .push_back( OperationDetails( 
 		String::ucompose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
 
-	if ( fixed_start )
+	if ( min_size >= 0 )
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( _("fixed start"), OperationDetails::NONE ) ) ;
+			OperationDetails( String::ucompose( _("minimum size: %1"), min_size ), OperationDetails::NONE ) ) ;
 	
 	operation_details .back() .sub_details .push_back( 
 		OperationDetails(
@@ -1958,24 +1932,10 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			PedConstraint *constraint = NULL ;
 			constraint = ped_constraint_any( lp_device ) ;
 			
-			if ( constraint && fixed_start )
-			{ 
-				//create a constraint which keeps de startpoint intact and rounds the end to a cylinder
-				ped_disk_set_partition_geom( lp_disk,
-							     lp_partition,
-							     constraint,
-							     partition_new .sector_start,
-							     partition_new .sector_end ) ;
-				ped_constraint_destroy( constraint );
-				constraint = NULL ;
-				
-				ped_geometry_set_start( & lp_partition ->geom, partition_new .sector_start ) ;
-				constraint = ped_constraint_exact( & lp_partition ->geom ) ;
-			}
-
 			if ( constraint )
 			{
-				constraint ->min_size = partition_new .sectors_used ;
+				if ( min_size >= 0 )
+					constraint ->min_size = min_size ;
 
 				//FIXME: if we insert a weird partitionnew geom here (e.g. start > end) 
 				//ped_disk_set_partition_geom() will still return true (althoug an lp exception is written

@@ -90,7 +90,7 @@ private:
 			  std::vector<OperationDetails> & operation_details ) ;
 	bool move( const Device & device, 
 		   const Partition & partition_old,
-		   Partition & partition_new,
+		   const Partition & partition_new,
 		   std::vector<OperationDetails> & operation_details ) ;
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
@@ -103,9 +103,8 @@ private:
 					      	     std::vector<OperationDetails> & operation_details ) ;
 	bool resize( const Device & device, 
 		     const Partition & partition_old,
-		     Partition & partition_new,
-		     std::vector<OperationDetails> & operation_detail,
-		     bool strict = false ) ; 
+		     const Partition & partition_new,
+		     std::vector<OperationDetails> & operation_detail ) ;
 	bool resize_move_partition( const Partition & partition_old,
 			       	    const Partition & partition_new,
 				    std::vector<OperationDetails> & operation_details ) ;
@@ -141,7 +140,7 @@ private:
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
 				   std::vector<OperationDetails> & operation_details,
-				   bool fixed_start = false ) ;
+				   Sector min_size = -1 ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem, Sector cylinder_size = 0 ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
