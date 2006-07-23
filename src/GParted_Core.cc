@@ -1074,7 +1074,8 @@ bool GParted_Core::resize_move( const Device & device,
 {
 	//extended is a special case..
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
-		return resize_move_partition( partition_old, partition_new, operation_details ) ;
+		return calculate_exact_geom( partition_old, partition_new, operation_details ) &&
+		       resize_move_partition( partition_old, partition_new, operation_details ) ;
 
 	//see if we need move or resize..
 	if ( partition_new .sector_start != partition_old .sector_start )
