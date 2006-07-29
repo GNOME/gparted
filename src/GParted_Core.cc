@@ -1229,9 +1229,6 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 						 rest_sectors,
 						 error_message ) )
 					t += rest_sectors ;
-
-				if ( t == partition_old .get_length() )
-					succes = true ;
 			}
 			else //move to the right..
 			{//FIXME: moving to the right still appears slower than moving to the left...
@@ -1277,9 +1274,6 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 						 rest_sectors,
 						 error_message ) )
 				     	t += rest_sectors ;
-
-				if ( t == partition_old .get_length() )
-					succes = true ;
 			}
 
 			//final description
@@ -1289,7 +1283,9 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 			//reset fraction to -1 to make room for a new one (or a pulsebar)
 			operation_details .back() .fraction = -1 ;
 
-			if ( ! succes )
+			if ( t == partition_old .get_length() )
+				succes = true ;
+			else
 			{
 				if ( ! error_message .empty() )
 					operation_details .push_back( 
@@ -1632,7 +1628,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 				case  GParted::FS::GPARTED :
 						succes = copy_filesystem( partition_src,
 									  partition_dest,
-									  operation_details,
+									  operation_details .back() .sub_details,
 									  block_size ) ;
 						break ;
 				
@@ -1657,8 +1653,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 			return ( succes &&	
 			     	 check_repair( partition_dest, operation_details ) &&
-			     	 maximize_filesystem( partition_dest, operation_details ) &&
-			     	 check_repair( partition_dest, operation_details ) ) ;
+			     	 maximize_filesystem( partition_dest, operation_details ) ) ;
 		}
 	}
 
@@ -1668,12 +1663,10 @@ bool GParted_Core::copy( const Partition & partition_src,
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dest,
 				    std::vector<OperationDetail> & operation_details,
-				    Sector block_size ) 
+				    Sector blocksize ) 
 {
-	operation_details .back() .sub_details .push_back( OperationDetail( 
-		String::ucompose( _("Use a blocksize of %1 (%2 sectors)"),
-				  Utils::format_size( block_size ),
-				  block_size ),
+	operation_details .push_back( OperationDetail( 
+		String::ucompose( _("Use a blocksize of %1 (%2 sectors)"), Utils::format_size( blocksize ), blocksize ),
 		STATUS_NONE,
 		FONT_ITALIC ) ) ;
 	
@@ -1693,70 +1686,67 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		ped_device_sync( lp_device_dest ) ;
 
 		//add an empty sub which we will constantly update in the loop
-		operation_details .back() .sub_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
+		operation_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
 
 		Glib::ustring error_message ;
-		Sector t = 0 ;
-		for ( ; t < partition_src .get_length() - block_size ; t+=block_size )
+		Sector t ;
+		Sector rest_sectors = partition_src .get_length() % blocksize ;
+		for ( t = 0 ; t < partition_src .get_length() - rest_sectors ; t+=blocksize )
 		{
 			if ( ! copy_block( lp_device_src,
 			 	    	   lp_device_dest,
 			 	    	   partition_src .sector_start + t,
 				    	   partition_dest .sector_start + t,
-				    	   block_size,
+				    	   blocksize,
 				    	   error_message ) )
 				break ;
 
-
-
-			if ( t % ( block_size * 100 ) == 0 )
+			if ( t % ( blocksize * 100 ) == 0 )
 			{
-				operation_details .back() .sub_details .back() .progress_text =
+				operation_details .back() .progress_text =
 					String::ucompose( _("%1 of %2 copied"),
-							  Utils::format_size( t +1 ),
+							  Utils::format_size( t +blocksize ),
 							  Utils::format_size( partition_src .get_length() ) ) ; 
-				
-				operation_details .back() .sub_details .back() .set_description( 
-					operation_details .back() .sub_details .back() .progress_text,
+					
+				operation_details .back() .set_description( 
+					String::ucompose( _("%1 of %2 moved"),
+							  t +blocksize,
+							  partition_src .get_length() ),
 					FONT_ITALIC ) ;
 
-				operation_details .back() .sub_details .back() .fraction =
+				operation_details .back() .fraction =
 					t / static_cast<double>( partition_src .get_length() ) ;
 			}
 		}
 
-		//copy the last couple of sectors..
-		Sector last_sectors = partition_src .get_length() - t ;//FIXME: most likely this is incorrect, look at move_filesystem to see how they do it.
-		if ( copy_block( lp_device_src,
-		 	    	 lp_device_dest,
-			 	 partition_src .sector_start + t,
-				 partition_dest .sector_start + t,
-				 last_sectors,
+		if ( rest_sectors > 0 &&
+		     partition_src .get_length() -t == rest_sectors &&
+		     copy_block( lp_device_src,
+				 lp_device_dest,
+				 partition_src .sector_start +t,
+				 partition_dest .sector_start +t,
+				 rest_sectors,
 				 error_message ) )
-			t += last_sectors ;
+			t += rest_sectors ;
+
 
 		//final description
-		operation_details .back() .sub_details .back() .set_description( 
-			String::ucompose( _("%1 of %2 copied"),
-					  Utils::format_size( t +1 ),
-					  Utils::format_size( partition_src .get_length() ) ),
-			FONT_ITALIC ) ;
+		operation_details .back() .set_description( 
+			String::ucompose( _("%1 of %2 copied"), t, partition_src .get_length() ), FONT_ITALIC ) ;
 
 		//reset fraction to -1 to make room for a new one (or a pulsebar)
-		operation_details .back() .sub_details .back() .fraction = -1 ;
+		operation_details .back() .fraction = -1 ;
 
 		if ( t == partition_src .get_length() )
-		{
 			succes = true ;
-		}
 		else
 		{
 			if ( ! error_message .empty() )
-				operation_details .back() .sub_details .push_back( 
+				operation_details .push_back( 
 					OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 
 			if ( ! ped_error .empty() )
-				operation_details .back() .sub_details .push_back( 
+				operation_details .push_back( 
 					OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 		
@@ -1773,11 +1763,9 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			ped_device_destroy( lp_device_dest ) ;
 	}
 	else
-		operation_details .back() .sub_details .push_back( 
+		operation_details .push_back( 
 			OperationDetail( _("An error occurred while opening the devices"), STATUS_NONE ) ) ;
 
-
-	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
 }
 	
