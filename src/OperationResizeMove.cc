@@ -24,7 +24,7 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_orig,
 				  	  const Partition & partition_new )
 {
-	type = GParted::RESIZE_MOVE ;
+	type = OPERATION_RESIZE_MOVE ;
 	this ->device = device ;
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;

@@ -23,14 +23,13 @@
 
 namespace GParted
 {
-	//FIXME: enumvalues should get more descriptive names e.g. TYPE_DELETE...
 	//FIXME: stop using GParted:: in front of our own enums.. it's not necessary and clutters the code
 enum OperationType {
-        DELETE		= 0,
-	CREATE		= 1,
-	RESIZE_MOVE	= 2,
-	FORMAT		= 3,
-	COPY		= 4
+        OPERATION_DELETE	= 0,
+	OPERATION_CREATE	= 1,
+	OPERATION_RESIZE_MOVE	= 2,
+	OPERATION_FORMAT	= 3,
+	OPERATION_COPY		= 4
 };
 
 class Operation

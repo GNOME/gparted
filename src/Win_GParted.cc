@@ -586,29 +586,29 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 	Operation * operation ;
 	switch ( operationtype )
 	{		
-		case GParted::DELETE	:
+		case OPERATION_DELETE	:
 			operation = new OperationDelete( devices[ current_device ], selected_partition ) ;
 			operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
 			break;
-		case GParted::CREATE	: 
+		case OPERATION_CREATE	: 
 			operation = new OperationCreate( devices[ current_device ],
 							 selected_partition,
 							 new_partition ) ;
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 			break;
-		case GParted::RESIZE_MOVE:
+		case OPERATION_RESIZE_MOVE:
 			operation = new OperationResizeMove( devices[ current_device ],
 							     selected_partition,
 							     new_partition );
 			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 			break;
-		case GParted::FORMAT	:
+		case OPERATION_FORMAT	:
 			operation = new OperationFormat( devices[ current_device ],
 							 selected_partition,
 							 new_partition );
 			operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 			break;
-		case GParted::COPY	:
+		case OPERATION_COPY	:
 			operation = new OperationCopy( devices[ current_device ],
 					 	       selected_partition,
 						       new_partition,
@@ -621,8 +621,8 @@ void Win_GParted::Add_Operation( OperationType operationtype,
 	if ( operation )
 	{ 
 		Glib::ustring error ;
-		if ( operation ->type == GParted::DELETE || 
-		     operation ->type == GParted::FORMAT || 
+		if ( operation ->type == OPERATION_DELETE || 
+		     operation ->type == OPERATION_FORMAT || 
 		     gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new, error ) )
 		{
 			operation ->create_description() ;
@@ -1264,14 +1264,14 @@ void Win_GParted::activate_resize()
 									     selected_partition .sector_start,
 									     selected_partition .sector_end,
 									     selected_partition .inside_extended ) ;
-					Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
+					Add_Operation( OPERATION_CREATE, dialog .Get_New_Partition() );
 					
 					break;
 				}
 			}
 		}
 		else//normal move/resize on existing partition
-			Add_Operation( GParted::RESIZE_MOVE, dialog .Get_New_Partition() );
+			Add_Operation( OPERATION_RESIZE_MOVE, dialog .Get_New_Partition() );
 	}
 }
 
@@ -1298,7 +1298,7 @@ void Win_GParted::activate_paste()
 			if ( dialog .run() == Gtk::RESPONSE_OK )
 			{
 				dialog .hide() ;
-				Add_Operation( GParted::COPY, dialog .Get_New_Partition(), dialog .get_block_size() );
+				Add_Operation( OPERATION_COPY, dialog .Get_New_Partition(), dialog .get_block_size() );
 			}
 		}
 	}
@@ -1315,7 +1315,7 @@ void Win_GParted::activate_paste()
 		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
 		//except the blocksize disabled?
 		//bleh, this will be fixed as soon as the algorith to determine the optimal blocksize is in place
-		Add_Operation( GParted::COPY, partition_new, 32 ) ;
+		Add_Operation( OPERATION_COPY, partition_new, 32 ) ;
 	}
 }
 
@@ -1343,7 +1343,7 @@ void Win_GParted::activate_new()
 			dialog .hide() ;
 			
 			new_count++ ;
-			Add_Operation( GParted::CREATE, dialog .Get_New_Partition() );
+			Add_Operation( OPERATION_CREATE, dialog .Get_New_Partition() );
 		}
 	}
 }
@@ -1432,7 +1432,7 @@ void Win_GParted::activate_delete()
 			close_operationslist() ;
 	}
 	else //deletion of a real partition...(now selected_partition is just a dummy)
-		Add_Operation( GParted::DELETE, selected_partition );
+		Add_Operation( OPERATION_DELETE, selected_partition );
 }
 
 void Win_GParted::activate_info()
@@ -1502,14 +1502,14 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
 				
-				Add_Operation( GParted::CREATE, part_temp, -1, t );
+				Add_Operation( OPERATION_CREATE, part_temp, -1, t );
 					
 				break;
 			}
 		}
 	}
 	else//normal formatting of an existing partition
-		Add_Operation( GParted::FORMAT, part_temp ) ;
+		Add_Operation( OPERATION_FORMAT, part_temp ) ;
 }
 
 void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 
@@ -1735,7 +1735,7 @@ void Win_GParted::activate_manage_flags()
 void Win_GParted::activate_undo()
 {
 	//when undoing an creation it's safe to decrease the newcount by one
-	if ( operations .back() ->type == GParted::CREATE )
+	if ( operations .back() ->type == OPERATION_CREATE )
 		new_count-- ;
 
 	remove_operation() ;		

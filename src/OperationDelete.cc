@@ -22,7 +22,7 @@ namespace GParted
 
 OperationDelete::OperationDelete( const Device & device, const Partition & partition_orig )
 {
-	type = GParted::DELETE ;
+	type = OPERATION_DELETE ;
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;

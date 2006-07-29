@@ -26,7 +26,7 @@ OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_copied,
 			      Sector block_size )
 {
-	type = GParted::COPY ;
+	type = OPERATION_COPY ;
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;

@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef OPERATION_COPY
-#define OPERATION_COPY
+#ifndef OPERATIONCOPY
+#define OPERATIONCOPY
 
 #include "../include/Operation.h"
 
@@ -43,4 +43,4 @@ private:
 
 } //GParted
 
-#endif //OPERATION_COPY
+#endif //OPERATIONCOPY

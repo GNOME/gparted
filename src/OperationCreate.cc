@@ -24,7 +24,7 @@ OperationCreate::OperationCreate( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
 {
-	type = GParted::CREATE ;
+	type = OPERATION_CREATE ;
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;

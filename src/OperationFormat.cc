@@ -24,7 +24,7 @@ OperationFormat::OperationFormat( const Device & device,
 				  const Partition & partition_orig,
 				  const Partition & partition_new )
 {
-	type = GParted::FORMAT ;
+	type = OPERATION_FORMAT ;
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;

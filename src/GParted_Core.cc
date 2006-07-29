@@ -284,21 +284,21 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
 	switch ( operation ->type )
-	{
-		case DELETE:
+	{	     
+		case OPERATION_DELETE:
 			return Delete( operation ->partition_original, operation ->operation_detail .sub_details ) ;
-		case CREATE:
+		case OPERATION_CREATE:
 			return create( operation ->device, 
 				       operation ->partition_new,
 				       operation ->operation_detail .sub_details ) ;
-		case RESIZE_MOVE:
+		case OPERATION_RESIZE_MOVE:
 			return resize_move( operation ->device,
 				       	    operation ->partition_original,
 					    operation ->partition_new,
 					    operation ->operation_detail .sub_details ) ;
-		case FORMAT:
+		case OPERATION_FORMAT:
 			return format( operation ->partition_new, operation ->operation_detail .sub_details ) ;
-		case COPY: 
+		case OPERATION_COPY: 
 			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
 			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 				     operation ->partition_new,
