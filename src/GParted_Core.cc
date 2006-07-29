@@ -1176,14 +1176,10 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 {
 	operation_details .push_back( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
 
-	bool succes = true ; //FIXME: default to true is too dangerous, just imagine opening the device fails and this function
-	//returns true. then the partition will be moved and the result would be a disaster.
+	bool succes = false ; 
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
-		//do the move..
-		Sector blocksize = 32 ;//FIXME: write an algorithm to determine the optimal blocksize
 		Glib::ustring error_message ;
-
 		if ( ped_device_open( lp_device ) )
 		{
 			ped_device_sync( lp_device ) ;
@@ -1191,31 +1187,32 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 			//add an empty sub which we will constantly update in the loop
 			operation_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
 
+			Sector blocksize = 32; //FIXME: write an algorithm to determine the optimal blocksize
+			Sector t ;
 			if ( partition_new .sector_start < partition_old .sector_start ) //move to the left
 			{
-				Sector t = 0 ;
-				for ( ; t < partition_old .get_length() - blocksize ; t+=blocksize )
+				Sector rest_sectors = partition_old .get_length() % blocksize ;
+				for ( t = 0 ; t < partition_old .get_length() - rest_sectors ; t+=blocksize )
 				{
 					if ( ! copy_block( lp_device,
 						    	   lp_device,
 						    	   partition_old .sector_start +t,
 						    	   partition_new .sector_start +t,
 						    	   blocksize,
-						    	   error_message ) )
-					{
-						succes = false ;
+						    	   error_message ) ) 
 						break ;
-					}
 					
 					if ( t % (blocksize * 100) == 0 )
 					{
 						operation_details .back() .progress_text =
 							String::ucompose( _("%1 of %2 moved"),
-							  		  Utils::format_size( t +1 ),
+							  		  Utils::format_size( t +blocksize ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .set_description(
-							operation_details .back() .progress_text, 
+						operation_details .back() .set_description( 
+							String::ucompose( _("%1 of %2 moved"),
+									  t +blocksize,
+									  partition_old .get_length() ),
 							FONT_ITALIC ) ;
 
 						operation_details .back() .fraction =
@@ -1223,74 +1220,71 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 					}
 				}
 
-				//copy the last couple of sectors..
-				if ( succes )
-				{
-					Sector last_sectors = partition_old .get_length() -1 - t + blocksize ;
-					succes = copy_block( lp_device,
-						    	     lp_device,
-						    	     partition_old .sector_start +t,
-						    	     partition_new .sector_start +t,
-						    	     last_sectors,
-						    	     error_message ) ;
-				}
+				if ( rest_sectors > 0 &&
+				     partition_old .get_length() -t == rest_sectors &&
+				     copy_block( lp_device,
+						 lp_device,
+						 partition_old .sector_start +t,
+						 partition_new .sector_start +t,
+						 rest_sectors,
+						 error_message ) )
+					t += rest_sectors ;
+
+				if ( t == partition_old .get_length() )
+					succes = true ;
 			}
 			else //move to the right..
 			{//FIXME: moving to the right still appears slower than moving to the left...
 			//most likely this has something to do with the fact we're reading from right to left, i guess the
 			//headers of the disk have to move more.. (check this with the parted people)
 			//since reading from RTL is only needed in case of overlap we could check for this...
-				Sector t = blocksize ;
-				for ( ; t < partition_old .get_length() - blocksize  ; t+=blocksize )
+				Sector rest_sectors = partition_old .get_length() % blocksize ;
+				for ( t = 0 ; t < partition_old .get_length() - rest_sectors ; t+=blocksize )
 				{
 					if ( ! copy_block( lp_device,
 						    	   lp_device,
-						    	   partition_old .sector_end - t,
-						    	   partition_new .sector_end - t,
+						    	   partition_old .sector_end +1 -blocksize -t,
+						    	   partition_new .sector_end +1 -blocksize -t,
 						    	   blocksize,
 						    	   error_message ) )
-					{
-						succes = false ;
 						break ;
-					}
-				
+
 					if ( t % (blocksize * 100) == 0 )
 					{
 						operation_details .back() .progress_text =
 							String::ucompose( _("%1 of %2 moved"),
-							  		  Utils::format_size( t +1 ),
+							  		  Utils::format_size( t +blocksize ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .set_description(
-							operation_details .back() .progress_text,
+						operation_details .back() .set_description( 
+							String::ucompose( _("%1 of %2 moved"),
+									  t +blocksize,
+									  partition_old .get_length() ),
 							FONT_ITALIC ) ;
-
+			
 						operation_details .back() .fraction =
 							t / static_cast<double>( partition_old .get_length() ) ;
 					}
+
 				}
 
-				//copy the last couple of sectors..
-				if ( succes )
-				{
-					Sector last_sectors = partition_old .get_length() -1 - t + blocksize ;
-					succes = copy_block( lp_device,
-						    	     lp_device,
-						    	     partition_old .sector_start,
-						    	     partition_new .sector_start,
-						    	     last_sectors,
-						    	     error_message ) ;
-				}
+				if ( rest_sectors > 0 &&
+				     partition_old .get_length() -t == rest_sectors &&
+				     copy_block( lp_device,
+						 lp_device,
+						 partition_old .sector_start,
+						 partition_new .sector_start,
+						 rest_sectors,
+						 error_message ) )
+				     	t += rest_sectors ;
+
+				if ( t == partition_old .get_length() )
+					succes = true ;
 			}
 
 			//final description
-			//FIXME: this description doesn't have to be correct, in case of an error we should display how
-			//much data really has been moved...
 			operation_details .back() .set_description( 
-				String::ucompose( _("%1 of %2 moved"),
-						  Utils::format_size( partition_old .get_length() ),
-						  Utils::format_size( partition_old .get_length() ) ),
-				FONT_ITALIC ) ;
+				String::ucompose( _("%1 of %2 moved"), t, partition_old .get_length() ), FONT_ITALIC ) ;
 			
 			//reset fraction to -1 to make room for a new one (or a pulsebar)
 			operation_details .back() .fraction = -1 ;
