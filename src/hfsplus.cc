@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-FS hfsplus::get_filesystem_support( )
+FS hfsplus::get_filesystem_support()
 {
 	FS fs ;
 	
@@ -40,13 +40,13 @@ void hfsplus::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool hfsplus::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
+bool hfsplus::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
 bool hfsplus::Resize( const Partition & partition_new, 
-		      std::vector<OperationDetails> & operation_details,
+		      std::vector<OperationDetail> & operation_details,
 		      bool fill_partition )
 {
 	return true ;
@@ -54,12 +54,12 @@ bool hfsplus::Resize( const Partition & partition_new,
 
 bool hfsplus::Copy( const Glib::ustring & src_part_path,
 		    const Glib::ustring & dest_part_path,
-		    std::vector<OperationDetails> & operation_details )
+		    std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
-bool hfsplus::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool hfsplus::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }

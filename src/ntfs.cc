@@ -70,13 +70,13 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		partition .error = error ;
 }
 
-bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
+bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
 {
 	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details ) ;
 }
 
 bool ntfs::Resize( const Partition & partition_new, 
-		   std::vector<OperationDetails> & operation_details,
+		   std::vector<OperationDetail> & operation_details,
 		   bool fill_partition )
 {
 	bool return_value = false ;
@@ -90,28 +90,28 @@ bool ntfs::Resize( const Partition & partition_new,
 	}
 	
 	//simulation..
-	operation_details .push_back( OperationDetails( _("run simulation") ) ) ;
+	operation_details .push_back( OperationDetail( _("run simulation") ) ) ;
 
 	if ( ! execute_command( str_temp + " --no-action", operation_details .back() .sub_details ) )
 	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = STATUS_SUCCES ;
 
 		//real resize
-		operation_details .push_back( OperationDetails( _("real resize") ) ) ;
+		operation_details .push_back( OperationDetail( _("real resize") ) ) ;
 
 		if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )
 		{
-			operation_details .back() .status = OperationDetails::SUCCES ;
+			operation_details .back() .status = STATUS_SUCCES ;
 			return_value = true ;
 		}
 		else
 		{
-			operation_details .back() .status = OperationDetails::ERROR ;
+			operation_details .back() .status = STATUS_ERROR ;
 		}
 	}
 	else
 	{
-		operation_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .status = STATUS_ERROR ;
 	}
 	
 	return return_value ;
@@ -119,12 +119,12 @@ bool ntfs::Resize( const Partition & partition_new,
 
 bool ntfs::Copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
-		 std::vector<OperationDetails> & operation_details )
+		 std::vector<OperationDetail> & operation_details )
 {
 	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path, operation_details ) ;
 }
 
-bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {
 	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operation_details ) ; 
 }

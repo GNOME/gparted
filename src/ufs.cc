@@ -37,13 +37,13 @@ void ufs::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool ufs::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
+bool ufs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
 bool ufs::Resize( const Partition & partition_new, 
-		      std::vector<OperationDetails> & operation_details,
+		      std::vector<OperationDetail> & operation_details,
 		      bool fill_partition )
 {
 	return true ;
@@ -51,12 +51,12 @@ bool ufs::Resize( const Partition & partition_new,
 
 bool ufs::Copy( const Glib::ustring & src_part_path,
 		    const Glib::ustring & dest_part_path,
-		    std::vector<OperationDetails> & operation_details )
+		    std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
-bool ufs::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool ufs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }

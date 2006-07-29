@@ -75,13 +75,13 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	//fill 'er up
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
-		this ->operations[ t ] ->operation_details .description = "<b>" + operations[ t ] ->description + "</b>" ;
+		this ->operations[ t ] ->operation_detail .set_description( operations[ t ] ->description, FONT_BOLD ) ;
 		
 		treerow = *( treestore_operations ->append() );
 		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
 		treerow[ treeview_operations_columns .operation_description ] =
-			this ->operations[ t ] ->operation_details .description ; 
-		treerow[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ; 
+			this ->operations[ t ] ->operation_detail .get_description() ; 
+		treerow[ treeview_operations_columns .hidden_status ] = STATUS_NONE ; 
 	}
 	
 	treeview_operations .get_column( 1 ) ->set_expand( true ) ;
@@ -109,45 +109,46 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 }
 
 void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow, 
-					        const OperationDetails & operation_details ) 
+					        const OperationDetail & operation_detail ) 
 {
 	//append new rows (if any)
-	for ( unsigned int t = treerow .children() .size() ; t < operation_details .sub_details .size() ; t++ )
+	for ( unsigned int t = treerow .children() .size() ; t < operation_detail .sub_details .size() ; t++ )
 	{
 		Gtk::TreeRow treerow_child = *( treestore_operations ->append( treerow .children() ) ) ;
+	//FIXME, consider adding a textwidget to the tree for storing the text. simply storing text directly in the tree
+	//doesn't work with HUGE amounts of text.
+		treerow_child[ treeview_operations_columns .operation_description ] = 
+			operation_detail .sub_details[ t ] .get_description() ;
 		
-		treerow_child[ treeview_operations_columns .operation_description ] =
-			operation_details .sub_details[ t ] .description ;
-		
-		treerow_child[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ;
+		treerow_child[ treeview_operations_columns .hidden_status ] = STATUS_NONE ;
 	}
 	
 	//check status and update if necessary
-	if ( operation_details .status != treerow[ treeview_operations_columns .hidden_status ] )
+	if ( operation_detail .status != treerow[ treeview_operations_columns .hidden_status ] )
 	{
-		treerow[ treeview_operations_columns .hidden_status ] =	operation_details .status ;
+		treerow[ treeview_operations_columns .hidden_status ] =	operation_detail .status ;
 
-		switch ( operation_details .status )
+		switch ( operation_detail .status )
 		{
-			case OperationDetails::EXECUTE:
+			case STATUS_EXECUTE:
 				treerow[ treeview_operations_columns .status_icon ] = icon_execute ;
 					
 				break ;
-			case OperationDetails::SUCCES:
+			case STATUS_SUCCES:
 				treerow[ treeview_operations_columns .status_icon ] = icon_succes ;
 				
 				break ;
-			case OperationDetails::ERROR:
+			case STATUS_ERROR:
 				treerow[ treeview_operations_columns .status_icon ] = icon_error ;
 				
 				break ;
-			case OperationDetails::N_A:
+			case STATUS_N_A:
 				treerow[ treeview_operations_columns .status_icon ] = icon_n_a ;
 				
 				break ;
 
 			default : 
-				treerow[ treeview_operations_columns .hidden_status ] = OperationDetails::NONE ;
+				treerow[ treeview_operations_columns .hidden_status ] = STATUS_NONE ;
 				break ;
 		}
 	}
@@ -156,22 +157,22 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 	//FIXME: it feels quite inefficient to do this for every row, maybe we should add a new status which indicates
 	//this row may be changed and should be checked...(otoh, if/when we start displaying the output of the command
 	//in realtime almost every row is going to need this and such a status might become useless...)
-	if ( operation_details .description != treerow[ treeview_operations_columns .operation_description ] )
-		treerow[ treeview_operations_columns .operation_description ] = operation_details .description ;
+	if ( operation_detail .get_description() != treerow[ treeview_operations_columns .operation_description ] )
+		treerow[ treeview_operations_columns .operation_description ] = operation_detail .get_description() ;
 
-	if ( operation_details .fraction >= 0 )
+	if ( operation_detail .fraction >= 0 )
 	{
 		pulse = false ;
-		progressbar_current .set_fraction( operation_details .fraction ) ;
-		progressbar_current .set_text( operation_details .progress_text ) ;
+		progressbar_current .set_fraction( operation_detail .fraction ) ;
+		progressbar_current .set_text( operation_detail .progress_text ) ;
 	}
 	else
 		pulse = true ;
 
 	//and update the children.. (since sometimes freshly added treerows are not appended yet to the children() list
 	//we also check if t < treerow .children() .size())
-	for ( unsigned int t = 0 ; t < operation_details .sub_details .size() && t < treerow .children() .size() ; t++ )
-		update_operation_details( treerow .children()[ t ], operation_details .sub_details[ t ] ) ;
+	for ( unsigned int t = 0 ; t < operation_detail .sub_details .size() && t < treerow .children() .size() ; t++ )
+		update_operation_details( treerow .children()[ t ], operation_detail .sub_details[ t ] ) ;
 }
 
 void Dialog_Progress::on_signal_show()
@@ -186,8 +187,8 @@ void Dialog_Progress::on_signal_show()
 		treerow = treestore_operations ->children()[ t ] ;
 
 		//set status to 'execute'
-		operations[ t ] ->operation_details .status = OperationDetails::EXECUTE ;
-		update_operation_details( treerow, operations[ t ] ->operation_details ) ;
+		operations[ t ] ->operation_detail .status = STATUS_EXECUTE ;
+		update_operation_details( treerow, operations[ t ] ->operation_detail ) ;
 
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
@@ -201,11 +202,11 @@ void Dialog_Progress::on_signal_show()
 		{
 			if ( ms >= 200 )
 			{
-				update_operation_details( treerow, operations[ t ] ->operation_details ) ;
-				if ( operations[ t ] ->operation_details .sub_details .size() > 0 )
+				update_operation_details( treerow, operations[ t ] ->operation_detail ) ;
+				if ( operations[ t ] ->operation_detail .sub_details .size() > 0 )
 					label_current_sub .set_markup( 
 						"<i>" + 
-						operations[ t ] ->operation_details .sub_details .back() .description +
+						operations[ t ] ->operation_detail .sub_details .back() .get_description() +
 						"</i>\n" ) ;
 				ms = 0 ;
 			}
@@ -220,9 +221,8 @@ void Dialog_Progress::on_signal_show()
 		}
 
 		//set status (succes/error) for this operation
-		operations[ t ] ->operation_details .status =
-			succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
-		update_operation_details( treerow, operations[ t ] ->operation_details ) ;
+		operations[ t ] ->operation_detail .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
+		update_operation_details( treerow, operations[ t ] ->operation_detail ) ;
 	}
 	
 	//add save button
@@ -283,7 +283,7 @@ void Dialog_Progress::on_expander_changed()
 }
 
 void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter )
-{//FIXME: markup tags in the text should be escaped (e.g. <device> will interfere with the real tags)
+{
 	dynamic_cast<Gtk::CellRendererText *>( renderer ) ->property_markup() = 
 		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
 }
@@ -340,7 +340,7 @@ void Dialog_Progress::on_save()
 			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				echo_operation_details( operations[ t ] ->operation_details, out ) ;
+				echo_operation_details( operations[ t ] ->operation_detail, out ) ;
 				out << "<BR>========================================<BR><BR>" << std::endl ;
 			}
 				
@@ -349,12 +349,12 @@ void Dialog_Progress::on_save()
 	}
 }
 
-void Dialog_Progress::echo_operation_details( const OperationDetails & operation_details, std::ofstream & out ) 
+void Dialog_Progress::echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) 
 {
 	//replace '\n' with '<br>'
-	Glib::ustring temp = operation_details .description ;
+	Glib::ustring temp = operation_detail .get_description() ;
 	for ( unsigned int index = temp .find( "\n" ) ; index < temp .length() ; index = temp .find( "\n" ) )
-		temp .replace( index, 1, "<BR>" ) ;
+		temp .replace( index, 1, "<BR />" ) ;
 	
 	//and export everything to some kind of html...
 	out << "<TABLE border=0>" << std::endl ;
@@ -363,18 +363,18 @@ void Dialog_Progress::echo_operation_details( const OperationDetails & operation
 	out << temp ;
 	
 	//show status...
-	if ( operation_details .status != OperationDetails::NONE )
+	if ( operation_detail .status != STATUS_NONE )
 	{
 		out << "&nbsp;&nbsp;&nbsp;&nbsp;" ;
-		switch ( operation_details .status )
+		switch ( operation_detail .status )
 		{
-			case OperationDetails::EXECUTE:
+			case STATUS_EXECUTE:
 				out << "( EXECUTING )" ;
 				break ;
-			case OperationDetails::SUCCES:
+			case STATUS_SUCCES:
 				out << "( SUCCES )" ;
 				break ;
-			case OperationDetails::ERROR:
+			case STATUS_ERROR:
 				out << "( ERROR )" ;
 				break ;
 
@@ -387,14 +387,14 @@ void Dialog_Progress::echo_operation_details( const OperationDetails & operation
 	out << "</TD>" << std::endl ;
 	out << "</TR>" << std::endl ;
 	
-	if ( operation_details .sub_details. size() )
+	if ( operation_detail .sub_details. size() )
 	{
 		out << "<TR>" << std::endl ;
 		out << "<TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>" << std::endl ;
 		out << "<TD>" << std::endl ;
 
-		for ( unsigned int t = 0 ; t < operation_details .sub_details .size() ; t++ )
-			echo_operation_details( operation_details .sub_details[ t ], out ) ;
+		for ( unsigned int t = 0 ; t < operation_detail .sub_details .size() ; t++ )
+			echo_operation_details( operation_detail .sub_details[ t ], out ) ;
 
 		out << "</TD>" << std::endl ;
 		out << "</TR>" << std::endl ;

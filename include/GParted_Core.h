@@ -74,60 +74,60 @@ private:
 	//operationstuff...
 	bool create( const Device & device,
 		     Partition & new_partition,
-		     std::vector<OperationDetails> & operation_details ) ;
+		     std::vector<OperationDetail> & operation_details ) ;
 	bool create_partition( Partition & new_partition,
-			       std::vector<OperationDetails> & operation_details,	    
+			       std::vector<OperationDetail> & operation_details,	    
 			       Sector min_size = 0 ) ;
-	bool create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool create_filesystem( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 
-	bool format( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool format( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 
-	bool Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool Delete( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 	
 	bool resize_move( const Device & device,
 			  const Partition & partition_old,
 			  Partition & partition_new,
-			  std::vector<OperationDetails> & operation_details ) ;
+			  std::vector<OperationDetail> & operation_details ) ;
 	bool move( const Device & device, 
 		   const Partition & partition_old,
 		   const Partition & partition_new,
-		   std::vector<OperationDetails> & operation_details ) ;
+		   std::vector<OperationDetail> & operation_details ) ;
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
-			      std::vector<OperationDetails> & operation_details ) ;
+			      std::vector<OperationDetail> & operation_details ) ;
 	bool move_filesystem_using_gparted( const Partition & partition_old,
 			      		    const Partition & partition_new,
-					    std::vector<OperationDetails> & operation_details ) ;
+					    std::vector<OperationDetail> & operation_details ) ;
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
-					      	     std::vector<OperationDetails> & operation_details ) ;
+					      	     std::vector<OperationDetail> & operation_details ) ;
 	bool resize( const Partition & partition_old,
 		     const Partition & partition_new,
-		     std::vector<OperationDetails> & operation_detail ) ;
+		     std::vector<OperationDetail> & operation_detail ) ;
 	bool resize_move_partition( const Partition & partition_old,
 			       	    const Partition & partition_new,
-				    std::vector<OperationDetails> & operation_details ) ;
+				    std::vector<OperationDetail> & operation_details ) ;
 	bool resize_filesystem( const Partition & partition_old,
 				const Partition & partition_new,
-				std::vector<OperationDetails> & operation_details,
+				std::vector<OperationDetail> & operation_details,
 				bool fill_partition = false ) ;
 	bool maximize_filesystem( const Partition & partition,
-				  std::vector<OperationDetails> & operation_details ) ;
+				  std::vector<OperationDetail> & operation_details ) ;
 				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
 		   Sector min_size,
 		   Sector block_size,
-		   std::vector<OperationDetails> & operation_details ) ; 
+		   std::vector<OperationDetail> & operation_details ) ; 
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dest,
-			      std::vector<OperationDetails> & operation_details,
+			      std::vector<OperationDetail> & operation_details,
 			      Sector block_size ) ;
 
-	bool check_repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+	bool check_repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 
 	bool set_partition_type( const Partition & partition,
-				 std::vector<OperationDetails> & operation_details ) ;
+				 std::vector<OperationDetail> & operation_details ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,
@@ -137,7 +137,7 @@ private:
 			 Glib::ustring & error_message ) ; 
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
-				   std::vector<OperationDetails> & operation_details,
+				   std::vector<OperationDetail> & operation_details,
 				   Sector min_size = -1 ) ;
 	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;

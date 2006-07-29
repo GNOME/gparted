@@ -286,25 +286,25 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 	switch ( operation ->type )
 	{
 		case DELETE:
-			return Delete( operation ->partition_original, operation ->operation_details .sub_details ) ;
+			return Delete( operation ->partition_original, operation ->operation_detail .sub_details ) ;
 		case CREATE:
 			return create( operation ->device, 
 				       operation ->partition_new,
-				       operation ->operation_details .sub_details ) ;
+				       operation ->operation_detail .sub_details ) ;
 		case RESIZE_MOVE:
 			return resize_move( operation ->device,
 				       	    operation ->partition_original,
 					    operation ->partition_new,
-					    operation ->operation_details .sub_details ) ;
+					    operation ->operation_detail .sub_details ) ;
 		case FORMAT:
-			return format( operation ->partition_new, operation ->operation_details .sub_details ) ;
+			return format( operation ->partition_new, operation ->operation_detail .sub_details ) ;
 		case COPY: 
 			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
 			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 				     operation ->partition_new,
 				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
 				     static_cast<OperationCopy*>( operation ) ->block_size,
-				     operation ->operation_details .sub_details ) ;
+				     operation ->operation_detail .sub_details ) ;
 	}
 
 	return false ;
@@ -881,7 +881,7 @@ void GParted_Core::set_flags( Partition & partition )
 
 bool GParted_Core::create( const Device & device,
 			   Partition & new_partition,
-			   std::vector<OperationDetails> & operation_details ) 
+			   std::vector<OperationDetail> & operation_details ) 
 {
 	
 	if ( new_partition .type == GParted::TYPE_EXTENDED )   
@@ -901,10 +901,10 @@ bool GParted_Core::create( const Device & device,
 }
 
 bool GParted_Core::create_partition( Partition & new_partition,
-				     std::vector<OperationDetails> & operation_details,
+				     std::vector<OperationDetail> & operation_details,
 				     Sector min_size )
 {
-	operation_details .push_back( OperationDetails( _("create empty partition") ) ) ;
+	operation_details .push_back( OperationDetail( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
 	ped_error .clear() ;
@@ -972,16 +972,15 @@ bool GParted_Core::create_partition( Partition & new_partition,
 					new_partition .sector_start = lp_partition ->geom .start ;
 					new_partition .sector_end = lp_partition ->geom .end ;
 					
-					operation_details .back() .sub_details .push_back( OperationDetails( 
-						"<i>" +
+					operation_details .back() .sub_details .push_back( OperationDetail( 
 						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
 						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
 					  			  new_partition .get_length(),
-					  			  Utils::format_size( new_partition .get_length() ) ) + 
-						"</i>",
-						OperationDetails::NONE ) ) ;
+					  			  Utils::format_size( new_partition .get_length() ) ),
+						STATUS_NONE,
+						FONT_ITALIC ) ) ;
 				}
 			
 				ped_constraint_destroy( constraint );
@@ -1002,7 +1001,7 @@ bool GParted_Core::create_partition( Partition & new_partition,
 	     )
 	   )
 	{ 
-		operation_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = STATUS_SUCCES ;
 		
 		return true ;
 	}
@@ -1010,17 +1009,17 @@ bool GParted_Core::create_partition( Partition & new_partition,
 	{		
 		if ( ! ped_error .empty() )
 			operation_details .back() .sub_details .push_back( 
-				OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+				OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 		
-		operation_details .back() .status = OperationDetails::ERROR ;	
+		operation_details .back() .status = STATUS_ERROR ;	
 		
 		return false ;
 	} 
 }
 	
-bool GParted_Core::create_filesystem( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+bool GParted_Core::create_filesystem( const Partition & partition, std::vector<OperationDetail> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( String::ucompose(
+	operation_details .push_back( OperationDetail( String::ucompose(
 								_("create new %1 filesystem"),
 								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
 	
@@ -1028,17 +1027,17 @@ bool GParted_Core::create_filesystem( const Partition & partition, std::vector<O
 
 	if ( p_filesystem && p_filesystem ->Create( partition, operation_details .back() .sub_details ) )
 	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = STATUS_SUCCES ;
 		return true ;
 	}
 	else
 	{
-		operation_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .status = STATUS_ERROR ;
 		return false ;
 	}
 }
 
-bool GParted_Core::format( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool GParted_Core::format( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {	
 	//remove all filesystem signatures...
 	erase_filesystem_signatures( partition ) ;
@@ -1047,7 +1046,7 @@ bool GParted_Core::format( const Partition & partition, std::vector<OperationDet
 				   create_filesystem( partition, operation_details ) ;
 }
 
-bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDetail> & operation_details ) 
 {
 	bool return_value = false ;
 	
@@ -1072,7 +1071,7 @@ bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDet
 bool GParted_Core::resize_move( const Device & device,
 				const Partition & partition_old,
 			  	Partition & partition_new,
-			  	std::vector<OperationDetails> & operation_details ) 
+			  	std::vector<OperationDetail> & operation_details ) 
 {
 	if ( calculate_exact_geom( partition_old, partition_new, operation_details ) )
 	{
@@ -1116,7 +1115,7 @@ bool GParted_Core::resize_move( const Device & device,
 bool GParted_Core::move( const Device & device,
 			 const Partition & partition_old,
 		   	 const Partition & partition_new,
-		   	 std::vector<OperationDetails> & operation_details ) 
+		   	 std::vector<OperationDetail> & operation_details ) 
 {
 	return check_repair( partition_old, operation_details ) &&
 	       move_filesystem( partition_old, partition_new, operation_details ) &&
@@ -1129,23 +1128,21 @@ bool GParted_Core::move( const Device & device,
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
 		   		    const Partition & partition_new,
-				    std::vector<OperationDetails> & operation_details ) 
+				    std::vector<OperationDetail> & operation_details ) 
 {
 	if ( partition_new .sector_start < partition_old .sector_start )
-		operation_details .push_back( OperationDetails( _("move filesystem to the left") ) ) ;
+		operation_details .push_back( OperationDetail( _("move filesystem to the left") ) ) ;
 	else if ( partition_new .sector_start > partition_old .sector_start )
-		operation_details .push_back( OperationDetails( _("move filesystem to the right") ) ) ;
+		operation_details .push_back( OperationDetail( _("move filesystem to the right") ) ) ;
 	else
 	{
-		operation_details .push_back( OperationDetails( _("move filesystem") ) ) ;
+		operation_details .push_back( OperationDetail( _("move filesystem") ) ) ;
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				Glib::ustring( "<i>" ) +
-				_("new and old filesystem have the same positition. skipping this operation") +
-				Glib::ustring( "</i>" ),
-			OperationDetails::NONE ) ) ;
+			OperationDetail( _("new and old filesystem have the same positition. skipping this operation"),
+					  STATUS_NONE,
+					  FONT_ITALIC ) ) ;
 
-		operation_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = STATUS_SUCCES ;
 		return true ;
 	}
 
@@ -1168,20 +1165,19 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			break ;
 	}
 
-	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
 }
 
 
 bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_old,
 		      		    		  const Partition & partition_new,
-				    		  std::vector<OperationDetails> & operation_details ) 
+				    		  std::vector<OperationDetail> & operation_details ) 
 {
-	operation_details .push_back( 
-				OperationDetails( _("using internal algorithm"), OperationDetails::NONE ) ) ;
+	operation_details .push_back( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
 
-	bool succes = true ; //FIXME: default to true is too dangerous, just image opening the device fails and this function
-	//return true. then the partition will be moved and the result would be a disaster.
+	bool succes = true ; //FIXME: default to true is too dangerous, just imagine opening the device fails and this function
+	//returns true. then the partition will be moved and the result would be a disaster.
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
 		//do the move..
@@ -1193,8 +1189,7 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 			ped_device_sync( lp_device ) ;
 		
 			//add an empty sub which we will constantly update in the loop
-			operation_details .push_back( 
-				OperationDetails( "", OperationDetails::NONE ) ) ;
+			operation_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
 
 			if ( partition_new .sector_start < partition_old .sector_start ) //move to the left
 			{
@@ -1219,8 +1214,9 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 							  		  Utils::format_size( t +1 ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .description =
-							"<i>" + operation_details .back() .progress_text + "</i>" ;
+						operation_details .back() .set_description(
+							operation_details .back() .progress_text, 
+							FONT_ITALIC ) ;
 
 						operation_details .back() .fraction =
 							t / static_cast<double>( partition_old .get_length() ) ;
@@ -1265,8 +1261,9 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 							  		  Utils::format_size( t +1 ),
 							  		  Utils::format_size( partition_old .get_length() ) ) ; 
 				
-						operation_details .back() .description =
-							"<i>" + operation_details .back() .progress_text + "</i>" ;
+						operation_details .back() .set_description(
+							operation_details .back() .progress_text,
+							FONT_ITALIC ) ;
 
 						operation_details .back() .fraction =
 							t / static_cast<double>( partition_old .get_length() ) ;
@@ -1289,12 +1286,11 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 			//final description
 			//FIXME: this description doesn't have to be correct, in case of an error we should display how
 			//much data really has been moved...
-			operation_details .back() .description =
-				"<i>" +
+			operation_details .back() .set_description( 
 				String::ucompose( _("%1 of %2 moved"),
 						  Utils::format_size( partition_old .get_length() ),
-						  Utils::format_size( partition_old .get_length() ) ) + 
-				"</i>" ;
+						  Utils::format_size( partition_old .get_length() ) ),
+				FONT_ITALIC ) ;
 			
 			//reset fraction to -1 to make room for a new one (or a pulsebar)
 			operation_details .back() .fraction = -1 ;
@@ -1303,11 +1299,11 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 			{
 				if ( ! error_message .empty() )
 					operation_details .push_back( 
-						OperationDetails( error_message, OperationDetails::NONE ) ) ;
+						OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 
 				if ( ! ped_error .empty() )
 					operation_details .push_back( 
-						OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+						OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 			}
 		}
 
@@ -1319,9 +1315,9 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 
 bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
 		  	      		            	   const Partition & partition_new,
-						    	   std::vector<OperationDetails> & operation_details ) 
+						    	   std::vector<OperationDetail> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( _("using libparted"), OperationDetails::NONE ) ) ;
+	operation_details .push_back( OperationDetail( _("using libparted"), STATUS_NONE ) ) ;
 
 	bool return_value = false ;
 	if ( open_device_and_disk( partition_old .device_path ) )
@@ -1352,14 +1348,14 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	}
 
 	if ( ! return_value && ! ped_error .empty() )
-		operation_details .push_back( OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+		operation_details .push_back( OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 
 	return return_value ;
 }
 
 bool GParted_Core::resize( const Partition & partition_old, 
 			   const Partition & partition_new,
-			   std::vector<OperationDetails> & operation_details )
+			   std::vector<OperationDetail> & operation_details )
 {
 	bool succes = false ;
 	if ( check_repair( partition_new, operation_details ) )
@@ -1391,7 +1387,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 
 bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				     	  const Partition & partition_new,
-					  std::vector<OperationDetails> & operation_details )
+					  std::vector<OperationDetail> & operation_details )
 {
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
@@ -1457,27 +1453,24 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 						Utils::format_size( partition_old .get_length() ),
 						Utils::format_size( partition_new .get_length() ) ) ;
 
-	operation_details .push_back( OperationDetails( description ) ) ;
+	operation_details .push_back( OperationDetail( description ) ) ;
 
 	
 	if ( action == NONE )
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				Glib::ustring( "<i>" ) +
-				_("new and old partition have the same size and positition. continuing anyway") +
-				Glib::ustring( "</i>" ),
-			OperationDetails::NONE ) ) ;
+			OperationDetail( _("new and old partition have the same size and positition. continuing anyway"),
+					  STATUS_NONE,
+					  FONT_ITALIC ) ) ;
 
 	operation_details .back() .sub_details .push_back( 
-		OperationDetails(
-			"<i>" +
+		OperationDetail(
 			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
 			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
 			String::ucompose( _("old size: %1 (%2)"),
 					  partition_old .get_length(),
-					  Utils::format_size( partition_old .get_length() ) ) + 
-			"</i>",
-		OperationDetails::NONE ) ) ;
+					  Utils::format_size( partition_old .get_length() ) ),
+		STATUS_NONE, 
+		FONT_ITALIC ) ) ;
 	
 	//finally the actual resize/move
 	bool return_value = false ;
@@ -1521,29 +1514,28 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	if ( return_value )
 	{
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				"<i>" +
+			OperationDetail(
 				String::ucompose( _("new start: %1"), lp_partition ->geom .start ) + "\n" +
 				String::ucompose( _("new end: %1"), lp_partition ->geom .end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
 					 	  lp_partition ->geom .length,
-					  	  Utils::format_size( lp_partition ->geom .length ) ) + 
-				"</i>",
-			OperationDetails::NONE ) ) ;
+					  	  Utils::format_size( lp_partition ->geom .length ) ),
+			STATUS_NONE, 
+			FONT_ITALIC ) ) ;
 	}
 	else if ( ! ped_error .empty() )
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+			OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 	
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 	{
-		operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+		operation_details .back() .status = return_value ? STATUS_SUCCES : STATUS_ERROR ;
 		return return_value ;
 	}
 	else
 	{
 		return_value &= wait_for_node( partition_new .get_path() ) ;
-		operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+		operation_details .back() .status = return_value ? STATUS_SUCCES : STATUS_ERROR ;
 
 		return return_value ;
 	}
@@ -1551,7 +1543,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 bool GParted_Core::resize_filesystem( const Partition & partition_old,
 				      const Partition & partition_new,
-				      std::vector<OperationDetails> & operation_details,
+				      std::vector<OperationDetail> & operation_details,
 				      bool fill_partition ) 
 {
 	//by default 'grow' to accomodate expand_filesystem()
@@ -1561,20 +1553,19 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 	{
 		if ( partition_new .get_length() < partition_old .get_length() )
 		{
-			operation_details .push_back( OperationDetails( _("shrink filesystem") ) ) ;
+			operation_details .push_back( OperationDetail( _("shrink filesystem") ) ) ;
 			action = get_fs( partition_old .filesystem ) .shrink ;
 		}
 		else if ( partition_new .get_length() > partition_old .get_length() )
-			operation_details .push_back( OperationDetails( _("grow filesystem") ) ) ;
+			operation_details .push_back( OperationDetail( _("grow filesystem") ) ) ;
 		else
 		{
-			operation_details .push_back( OperationDetails( _("resize filesystem") ) ) ;
+			operation_details .push_back( OperationDetail( _("resize filesystem") ) ) ;
 			operation_details .back() .sub_details .push_back( 
-				OperationDetails(
-					Glib::ustring( "<i>" ) +
-					_("new and old filesystem have the same size and positition. continuing anyway") +
-					Glib::ustring( "</i>" ),
-				OperationDetails::NONE ) ) ;
+				OperationDetail( 
+					_("new and old filesystem have the same size and positition. continuing anyway"),
+					STATUS_NONE,
+					FONT_ITALIC ) ) ;
 		}
 	}
 
@@ -1599,25 +1590,23 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			break ;
 	}
 
-	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
 }
 	
 bool GParted_Core::maximize_filesystem( const Partition & partition,
-					std::vector<OperationDetails> & operation_details ) 
+					std::vector<OperationDetail> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( _("grow filesystem to fill the partition") ) ) ;
+	operation_details .push_back( OperationDetail( _("grow filesystem to fill the partition") ) ) ;
 
 	if ( get_fs( partition .filesystem ) .grow == GParted::FS::NONE )
 	{
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				Glib::ustring( "<i>" ) +
-				_("growing is not available for this filesystem") +
-				Glib::ustring( "</i>" ),
-			OperationDetails::NONE ) ) ;
+			OperationDetail( _("growing is not available for this filesystem"),
+					  STATUS_NONE,
+					  FONT_ITALIC ) ) ;
 
-		operation_details .back() .status = OperationDetails::N_A ;
+		operation_details .back() .status = STATUS_N_A ;
 		return true ;
 	}
 	
@@ -1628,7 +1617,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dest,
 			 Sector min_size,
 			 Sector block_size,
-			 std::vector<OperationDetails> & operation_details ) 
+			 std::vector<OperationDetail> & operation_details ) 
 {
 	if ( check_repair( partition_src, operation_details ) )
 	{
@@ -1638,7 +1627,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 		if ( succes && set_partition_type( partition_dest, operation_details ) )
 		{
-			operation_details .push_back( OperationDetails( 
+			operation_details .push_back( OperationDetail( 
 				String::ucompose( _("copy filesystem of %1 to %2"),
 						  partition_src .get_path(),
 						  partition_dest .get_path() ) ) ) ;
@@ -1670,7 +1659,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 						break ;
 			}
 
-			operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+			operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 
 			return ( succes &&	
 			     	 check_repair( partition_dest, operation_details ) &&
@@ -1684,14 +1673,15 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dest,
-				    std::vector<OperationDetails> & operation_details,
+				    std::vector<OperationDetail> & operation_details,
 				    Sector block_size ) 
 {
-	operation_details .back() .sub_details .push_back( OperationDetails( 
-		"<i>" + String::ucompose( _("Use a blocksize of %1 (%2 sectors)"),
-				  	  Utils::format_size( block_size ),
-				  	  block_size ) + "</i>",
-		OperationDetails::NONE ) ) ;
+	operation_details .back() .sub_details .push_back( OperationDetail( 
+		String::ucompose( _("Use a blocksize of %1 (%2 sectors)"),
+				  Utils::format_size( block_size ),
+				  block_size ),
+		STATUS_NONE,
+		FONT_ITALIC ) ) ;
 	
 	bool succes = false ;
 	PedDevice *lp_device_src, *lp_device_dest ;
@@ -1709,8 +1699,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		ped_device_sync( lp_device_dest ) ;
 
 		//add an empty sub which we will constantly update in the loop
-		operation_details .back() .sub_details .push_back( 
-			OperationDetails( "", OperationDetails::NONE ) ) ;
+		operation_details .back() .sub_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
 
 		Glib::ustring error_message ;
 		Sector t = 0 ;
@@ -1733,8 +1722,9 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 							  Utils::format_size( t +1 ),
 							  Utils::format_size( partition_src .get_length() ) ) ; 
 				
-				operation_details .back() .sub_details .back() .description =
-					"<i>" + operation_details .back() .sub_details .back() .progress_text + "</i>" ;
+				operation_details .back() .sub_details .back() .set_description( 
+					operation_details .back() .sub_details .back() .progress_text,
+					FONT_ITALIC ) ;
 
 				operation_details .back() .sub_details .back() .fraction =
 					t / static_cast<double>( partition_src .get_length() ) ;
@@ -1752,12 +1742,12 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			t += last_sectors ;
 
 		//final description
-		operation_details .back() .sub_details .back() .description =
-			"<i>" +
+		operation_details .back() .sub_details .back() .set_description( 
 			String::ucompose( _("%1 of %2 copied"),
 					  Utils::format_size( t +1 ),
-					  Utils::format_size( partition_src .get_length() ) ) + 
-			"</i>" ;
+					  Utils::format_size( partition_src .get_length() ) ),
+			FONT_ITALIC ) ;
+
 		//reset fraction to -1 to make room for a new one (or a pulsebar)
 		operation_details .back() .sub_details .back() .fraction = -1 ;
 
@@ -1769,11 +1759,11 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		{
 			if ( ! error_message .empty() )
 				operation_details .back() .sub_details .push_back( 
-					OperationDetails( error_message, OperationDetails::NONE ) ) ;
+					OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 
 			if ( ! ped_error .empty() )
 				operation_details .back() .sub_details .push_back( 
-					OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+					OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 		
 		//close the devices..
@@ -1790,29 +1780,25 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 	}
 	else
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( _("An error occurred while opening the devices"), OperationDetails::NONE ) ) ;
+			OperationDetail( _("An error occurred while opening the devices"), STATUS_NONE ) ) ;
 
 
-	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
 }
 	
-bool GParted_Core::check_repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) 
+bool GParted_Core::check_repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) 
 {
-	operation_details .push_back( OperationDetails( 
+	operation_details .push_back( OperationDetail( 
 				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
 	
 	if ( get_fs( partition .filesystem ) .check == GParted::FS::NONE )
 	{
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				Glib::ustring( "<i>" ) +
-				_("checking is not available for this filesystem") +
-				Glib::ustring( "</i>" ),
-			OperationDetails::NONE ) ) ;
+			OperationDetail( _("checking is not available for this filesystem"), STATUS_NONE, FONT_ITALIC ) ) ;
 
-		operation_details .back() .status = OperationDetails::N_A ;
+		operation_details .back() .status = STATUS_N_A ;
 		return true ;
 	}
 
@@ -1820,20 +1806,20 @@ bool GParted_Core::check_repair( const Partition & partition, std::vector<Operat
 
 	if ( p_filesystem && p_filesystem ->Check_Repair( partition, operation_details .back() .sub_details ) )
 	{
-		operation_details .back() .status = OperationDetails::SUCCES ;
+		operation_details .back() .status = STATUS_SUCCES ;
 		return true ;
 	}
 	else
 	{
-		operation_details .back() .status = OperationDetails::ERROR ;
+		operation_details .back() .status = STATUS_ERROR ;
 		return false ;
 	}
 }
 
 bool GParted_Core::set_partition_type( const Partition & partition,
-	   			       std::vector<OperationDetails> & operation_details )
+	   			       std::vector<OperationDetail> & operation_details )
 {
-	operation_details .push_back( OperationDetails( _("set partitiontype") ) ) ;
+	operation_details .push_back( OperationDetail( _("set partitiontype") ) ) ;
 	
 	bool return_value = false ;
 	
@@ -1859,7 +1845,7 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 		close_device_and_disk() ;
 	}
 
-	operation_details .back() .status = return_value ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	operation_details .back() .status = return_value ? STATUS_SUCCES : STATUS_ERROR ;
 	return return_value ;
 }
 	
@@ -1874,16 +1860,14 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 
 	if ( ! ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
 	{
-		error_message = 
-			"<i>" + String::ucompose( _("Error while reading block at sector %1"), offset_src ) + "</i>" ;
+		error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
 
 		return false ;
 	}
 				
 	if ( ! ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
 	{
-		error_message =
-			"<i>" + String::ucompose( _("Error while writing block at sector %1"), offset_dst ) + "</i>" ;
+		error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
 
 		return false ;
 	}
@@ -1893,26 +1877,25 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 
 bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			       	         Partition & partition_new,
-				         std::vector<OperationDetails> & operation_details,
+				         std::vector<OperationDetail> & operation_details,
 				         Sector min_size ) 
 {
-	operation_details .push_back( OperationDetails( 
+	operation_details .push_back( OperationDetail( 
 		String::ucompose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
 
 	if ( min_size >= 0 )
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( String::ucompose( _("minimum size: %1"), min_size ), OperationDetails::NONE ) ) ;
+			OperationDetail( String::ucompose( _("minimum size: %1"), min_size ), STATUS_NONE ) ) ;
 	
 	operation_details .back() .sub_details .push_back( 
-		OperationDetails(
-			"<i>" +
+		OperationDetail(
 			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
 			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
 			String::ucompose( _("requested size: %1 (%2)"),
 					  partition_new .get_length(),
-					  Utils::format_size( partition_new .get_length() ) ) + 
-			"</i>",
-		OperationDetails::NONE ) ) ;
+					  Utils::format_size( partition_new .get_length() ) ),
+		STATUS_NONE,
+		FONT_ITALIC ) ) ;
 	
 	ped_error .clear() ;
 	bool succes = false ;
@@ -1961,21 +1944,20 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	if ( succes ) 
 	{
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails(
-				"<i>" +
+			OperationDetail(
 				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
 				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
 					 	  partition_new .get_length(),
-					  	  Utils::format_size( partition_new .get_length() ) ) + 
-				"</i>",
-			OperationDetails::NONE ) ) ;
+					  	  Utils::format_size( partition_new .get_length() ) ),
+			STATUS_NONE,
+			FONT_ITALIC ) ) ;
 	}
 	else if ( ! ped_error .empty() ) 
 		operation_details .back() .sub_details .push_back( 
-			OperationDetails( "<i>" + ped_error + "</i>", OperationDetails::NONE ) ) ;
+			OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 
-	operation_details .back() .status = succes ? OperationDetails::SUCCES : OperationDetails::ERROR ;
+	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
 }
 
@@ -2054,6 +2036,9 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	
 //FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
 //basicly we should get rid of these global lp_device and lp_disk
+//also, it would be cool to create another open_device_and_disk() which also accepts an operation_details....
+//we don't have to show the opening as an operation in itself, but we could use it to report errors which might
+//occur while opening the device or disk.
 bool GParted_Core::open_device( const Glib::ustring & device_path )
 {
 	lp_device = ped_device_get( device_path .c_str() );

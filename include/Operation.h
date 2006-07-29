@@ -19,48 +19,18 @@
 #define OPERATION
 
 #include "../include/Device.h"
+#include "../include/OperationDetail.h"
 
 namespace GParted
 {
-		
+	//FIXME: enumvalues should get more descriptive names e.g. TYPE_DELETE...
+	//FIXME: stop using GParted:: in front of our own enums.. it's not necessary and clutters the code
 enum OperationType {
         DELETE		= 0,
 	CREATE		= 1,
 	RESIZE_MOVE	= 2,
 	FORMAT		= 3,
 	COPY		= 4
-};
-
-struct OperationDetails
-{
-	enum Status {
-		NONE	= -1,
-		EXECUTE	= 0,
-		SUCCES	= 1,
-		ERROR	= 2,
-		N_A	= 3
-	};
-	
-	OperationDetails()
-	{
-		status = NONE ;
-		fraction = -1 ;
-	}
-
-	OperationDetails( const Glib::ustring & description, Status status = EXECUTE )
-	{
-		this ->description = description ;
-		this ->status = status ;
-
-		fraction = -1 ;
-	}
-
-	Glib::ustring description ;
-	Status status ; 
-	double fraction ;
-	Glib::ustring progress_text ;
-
-	std::vector<OperationDetails> sub_details ; 	
 };
 
 class Operation
@@ -82,7 +52,7 @@ public:
 	Glib::RefPtr<Gdk::Pixbuf> icon ;
 	Glib::ustring description ;
 
-	OperationDetails operation_details ;
+	OperationDetail operation_detail ;
 
 protected:
 	int find_index_original( const std::vector<Partition> & partitions ) ;

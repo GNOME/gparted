@@ -27,16 +27,16 @@ namespace GParted
 class reiser4 : public FileSystem
 {
 public:
-	FS get_filesystem_support( ) ;
+	FS get_filesystem_support() ;
 	void Set_Used_Sectors( Partition & partition ) ;
-	bool Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details ) ;
+	bool Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details ) ;
 	bool Resize( const Partition & partition_new,
-		     std::vector<OperationDetails> & operation_details,
+		     std::vector<OperationDetail> & operation_details,
 		     bool fill_partition = false ) ;
 	bool Copy( const Glib::ustring & src_part_path,
 		   const Glib::ustring & dest_part_path,
-		   std::vector<OperationDetails> & operation_details ) ;
-	bool Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details ) ;
+		   std::vector<OperationDetail> & operation_details ) ;
+	bool Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 };
 
 } //GParted

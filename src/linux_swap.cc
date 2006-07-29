@@ -43,13 +43,13 @@ void linux_swap::Set_Used_Sectors( Partition & partition )
 {
 }
 
-bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
+bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
 {
 	return ! execute_command( "mkswap " + new_partition .get_path(), operation_details ) ;
 }
 
 bool linux_swap::Resize( const Partition & partition_new, 
-			 std::vector<OperationDetails> & operation_details,
+			 std::vector<OperationDetail> & operation_details,
 			 bool fill_partition )
 {
 	return Create( partition_new, operation_details ) ;
@@ -57,12 +57,12 @@ bool linux_swap::Resize( const Partition & partition_new,
 
 bool linux_swap::Copy( const Glib::ustring & src_part_path,
 		       const Glib::ustring & dest_part_path,
-		       std::vector<OperationDetails> & operation_details )
+		       std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
-bool linux_swap::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool linux_swap::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }

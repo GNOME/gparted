@@ -73,13 +73,13 @@ void ext3::Set_Used_Sectors( Partition & partition )
 		partition .error = error ;
 }
 
-bool ext3::Create( const Partition & new_partition, std::vector<OperationDetails> & operation_details )
+bool ext3::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
 {
 	return ! execute_command( "mkfs.ext3 " + new_partition .get_path(), operation_details ) ;
 }
 
 bool ext3::Resize( const Partition & partition_new,
-		   std::vector<OperationDetails> & operation_details,
+		   std::vector<OperationDetail> & operation_details,
 		   bool fill_partition )
 {
 	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
@@ -93,12 +93,12 @@ bool ext3::Resize( const Partition & partition_new,
 
 bool ext3::Copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path,
-		 std::vector<OperationDetails> & operation_details )
+		 std::vector<OperationDetail> & operation_details )
 {
 	return true ;
 }
 
-bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetails> & operation_details )
+bool ext3::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
 {
 	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operation_details ) ;
 

@@ -29,6 +29,7 @@ gparted_SOURCES = \
 	OperationCopy.cc		\
 	OperationCreate.cc		\
 	OperationDelete.cc		\
+	OperationDetail.cc		\
 	OperationFormat.cc		\
 	OperationResizeMove.cc		\
 	Partition.cc			\

@@ -43,14 +43,14 @@ public:
 	sigc::signal< bool, Operation * > signal_apply_operation ;
 		
 private:
-	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetails & operation_details ) ;
+	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetail & operation_detail ) ;
 	void on_signal_show() ;
 	void on_expander_changed() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
 	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
 	void on_cancel() ;
 	void on_save() ;
-	void echo_operation_details( const OperationDetails & operation_details, std::ofstream & out ) ;
+	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
 	
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;
@@ -75,7 +75,7 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
-		Gtk::TreeModelColumn<OperationDetails::Status> hidden_status ;
+		Gtk::TreeModelColumn<OperationDetailStatus> hidden_status ;
 				
 		treeview_operations_Columns() 
 		{ 
