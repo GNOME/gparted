@@ -67,7 +67,7 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 			partition .Set_Unused( N ) ;
 	}
 	else
-		partition .error = error ;
+		partition .messages .push_back( error ) ;
 }
 
 bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )

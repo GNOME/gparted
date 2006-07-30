@@ -66,6 +66,7 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_succes ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_error ;
+	Glib::RefPtr<Gdk::Pixbuf> icon_info ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_n_a ;
 
 	Glib::RefPtr<Gtk::TreeStore> treestore_operations;

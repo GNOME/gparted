@@ -61,6 +61,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	icon_execute = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 	icon_succes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 	icon_error = render_icon( Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
+	icon_info = render_icon( Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 	icon_n_a = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 	
 	treestore_operations = Gtk::TreeStore::create( treeview_operations_columns );
@@ -140,6 +141,10 @@ void Dialog_Progress::update_operation_details( const Gtk::TreeRow & treerow,
 				break ;
 			case STATUS_ERROR:
 				treerow[ treeview_operations_columns .status_icon ] = icon_error ;
+				
+				break ;
+			case STATUS_INFO:
+				treerow[ treeview_operations_columns .status_icon ] = icon_info ;
 				
 				break ;
 			case STATUS_N_A:

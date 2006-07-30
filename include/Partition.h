@@ -103,7 +103,7 @@ public:
 	Gdk::Color color;
 	bool inside_extended;
 	bool busy;
-	Glib::ustring error;
+	std::vector<Glib::ustring> messages ;
 	std::vector<Glib::ustring> flags ;
 	
 	std::vector<Partition> logicals ;

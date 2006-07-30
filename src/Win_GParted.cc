@@ -1289,8 +1289,8 @@ void Win_GParted::activate_paste()
 		{
 			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
 						      devices[ current_device ] .cylsize ) ;
-			//we don't need the errors/mountpoints of the source partition.
-			copied_partition .error .clear() ;
+			//we don't need the messages/mountpoints of the source partition.
+			copied_partition .messages .clear() ;
 			copied_partition .clear_mountpoints() ;
 			dialog .Set_Data( selected_partition, copied_partition ) ;
 			dialog .set_transient_for( *this );
@@ -1308,7 +1308,7 @@ void Win_GParted::activate_paste()
 		partition_new .filesystem = copied_partition .filesystem ;
 		partition_new .color = copied_partition .color ;
 		partition_new .set_used( copied_partition .sectors_used ) ;
-		partition_new .error .clear() ;
+		partition_new .messages .clear() ;
 		partition_new .status = GParted::STAT_COPY ;
  
 		//FIXME: in this case there's no window presented to the user, so he cannot choose the blocksize

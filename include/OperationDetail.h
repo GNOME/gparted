@@ -31,7 +31,8 @@ enum OperationDetailStatus {
 	STATUS_EXECUTE	= 1,
 	STATUS_SUCCES	= 2,
 	STATUS_ERROR	= 3,
-	STATUS_N_A	= 4
+	STATUS_INFO	= 4,
+	STATUS_N_A	= 5
 };
 
 enum Font {

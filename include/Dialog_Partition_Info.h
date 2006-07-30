@@ -52,6 +52,7 @@ private:
 	Partition partition ;
 
 	Gtk::HBox *hbox ;
+	Gtk::VBox *vbox ;
 	Gtk::DrawingArea drawingarea ;
 	Gtk::Frame *frame ;
 	Gtk::Image *image;

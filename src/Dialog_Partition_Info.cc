@@ -35,8 +35,8 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	//add label for detail and fill with relevant info
 	Display_Info() ;
 	
-	//display error (if any)
-	if ( partition .error != "" )
+	//display messages (if any)
+	if ( partition .messages .size() > 0 )
 	{
 		frame = manage( new Gtk::Frame() );
 		frame ->set_border_width( 10 );
@@ -45,12 +45,23 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 				
 		hbox = manage( new Gtk::HBox() );
 		hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-		hbox ->pack_start( * Utils::mk_label( "<b> " + static_cast<Glib::ustring>(_( "Warning:") ) + " </b>" ),
+		hbox ->pack_start( * Utils::mk_label( "<b> " + Glib::ustring(_("Warning:") ) + " </b>" ),
 				   Gtk::PACK_SHRINK ) ;
-		
+
+
 		frame ->set_label_widget( *hbox ) ;
-		frame ->add( * Utils::mk_label( 
-				"<i>" + partition .error + "</i>", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true ) ) ;
+		//FIXME: for more clarity we should add a listview here with alternating rowcolors..
+		//that way it's easier to tell messages apart..
+		vbox = manage( new Gtk::VBox( false, 4 ) );
+		vbox ->set_border_width( 5 ) ;
+		for ( unsigned int t = 0 ; t < partition .messages .size() ; t++ )
+			vbox ->pack_start( * Utils::mk_label( "<i>" + partition .messages[t] + "</i>",
+					 		      true,
+					 		      Gtk::ALIGN_LEFT,
+					 		      Gtk::ALIGN_CENTER,
+					 		      true ),
+					   Gtk::PACK_SHRINK ) ;
+		frame ->add( *vbox ) ;
 		
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}
@@ -137,7 +148,7 @@ void Dialog_Partition_Info::Display_Info()
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
 	
 	//filesystem
-	table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Filesystem:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Filesystem:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -147,7 +158,7 @@ void Dialog_Partition_Info::Display_Info()
 			Gtk::FILL ) ;
 	
 	//size
-	table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL) ;
@@ -163,7 +174,7 @@ void Dialog_Partition_Info::Display_Info()
 			Utils::round( partition .sectors_used / static_cast<double>( partition .get_length() ) * 100 ) ;
 						
 		//used
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Used:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -177,7 +188,7 @@ void Dialog_Partition_Info::Display_Info()
 				Gtk::FILL ) ; 
 		
 		//unused
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Unused:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -194,7 +205,7 @@ void Dialog_Partition_Info::Display_Info()
 	//flags
 	if ( partition.type != GParted::TYPE_UNALLOCATED )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Flags:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -210,7 +221,7 @@ void Dialog_Partition_Info::Display_Info()
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		//path
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>",
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>",
 						   true,
 						   Gtk::ALIGN_LEFT,
 						   Gtk::ALIGN_TOP ),
@@ -224,7 +235,7 @@ void Dialog_Partition_Info::Display_Info()
 		
 		//status
 		Glib::ustring str_temp ;
-		table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Status:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>" ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -252,7 +263,7 @@ void Dialog_Partition_Info::Display_Info()
 	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//first sector
-	table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("First Sector:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First Sector:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -262,7 +273,7 @@ void Dialog_Partition_Info::Display_Info()
 			Gtk::FILL ) ;
 	
 	//last sector
-	table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Last Sector:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last Sector:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -272,7 +283,7 @@ void Dialog_Partition_Info::Display_Info()
 			Gtk::FILL ) ; 
 	
 	//total sectors
-	table ->attach( * Utils::mk_label( "<b>" + static_cast<Glib::ustring>( _("Total Sectors:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total Sectors:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;

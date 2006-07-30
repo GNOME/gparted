@@ -40,7 +40,7 @@
 #include <cerrno>
 #include <sys/statvfs.h>	
 
-Glib::ustring ped_error ; //see e.g. ped_exception_handler()
+std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
 namespace GParted
 {
@@ -283,31 +283,49 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
+	bool succes = false ;
+	libparted_messages .clear() ;
+
 	switch ( operation ->type )
 	{	     
 		case OPERATION_DELETE:
-			return Delete( operation ->partition_original, operation ->operation_detail .sub_details ) ;
+			succes = Delete( operation ->partition_original, operation ->operation_detail .sub_details ) ;
+			break ;
 		case OPERATION_CREATE:
-			return create( operation ->device, 
-				       operation ->partition_new,
-				       operation ->operation_detail .sub_details ) ;
+			succes = create( operation ->device, 
+				         operation ->partition_new,
+				         operation ->operation_detail .sub_details ) ;
+			break ;
 		case OPERATION_RESIZE_MOVE:
-			return resize_move( operation ->device,
-				       	    operation ->partition_original,
-					    operation ->partition_new,
-					    operation ->operation_detail .sub_details ) ;
+			succes = resize_move( operation ->device,
+				       	      operation ->partition_original,
+					      operation ->partition_new,
+					      operation ->operation_detail .sub_details ) ;
+			break ;
 		case OPERATION_FORMAT:
-			return format( operation ->partition_new, operation ->operation_detail .sub_details ) ;
+			succes = format( operation ->partition_new, operation ->operation_detail .sub_details ) ;
+			break ;
 		case OPERATION_COPY: 
 			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-			return copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
-				     operation ->partition_new,
-				     static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
-				     static_cast<OperationCopy*>( operation ) ->block_size,
-				     operation ->operation_detail .sub_details ) ;
+			succes = copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
+				       operation ->partition_new,
+				       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
+				       static_cast<OperationCopy*>( operation ) ->block_size,
+				       operation ->operation_detail .sub_details ) ;
+			break ;
 	}
 
-	return false ;
+	if ( ! succes && libparted_messages .size() > 0 )
+	{
+		operation ->operation_detail .sub_details .push_back( 
+			OperationDetail( _("libparted messages"), STATUS_INFO ) ) ;
+
+		for ( unsigned int t = 0 ; t < libparted_messages .size() ; t++ )
+			operation ->operation_detail .sub_details .back() .sub_details .push_back(
+				OperationDetail( libparted_messages[ t ], STATUS_NONE, FONT_ITALIC ) ) ;
+	}
+
+	return succes ;
 }
 
 bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
@@ -563,6 +581,7 @@ void GParted_Core::set_device_partitions( Device & device )
 	lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
 	while ( lp_partition )
 	{
+		libparted_messages .clear() ;
 		partition_temp .Reset() ;
 	
 		switch ( lp_partition ->type )
@@ -612,6 +631,10 @@ void GParted_Core::set_device_partitions( Device & device )
 			default:
 				break;
 		}
+
+		partition_temp .messages .insert( partition_temp .messages .end(),
+						  libparted_messages. begin(),
+						  libparted_messages .end() ) ;
 		
 		//if there's an end, there's a partition ;)
 		if ( partition_temp .sector_end > -1 )
@@ -621,7 +644,7 @@ void GParted_Core::set_device_partitions( Device & device )
 			else
 				device .partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
 		}
-		
+
 		//next partition (if any)
 		lp_partition = ped_disk_next_partition( lp_disk, lp_partition ) ;
 	}
@@ -683,14 +706,16 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		return GParted::FS_REISER4 ;		
 		
 	//no filesystem found....
-	partition_temp .error = _( "Unable to detect filesystem! Possible reasons are:" ) ;
-	partition_temp .error += "\n-"; 
-	partition_temp .error += _( "The filesystem is damaged" ) ;
-	partition_temp .error += "\n-" ; 
-	partition_temp .error += _( "The filesystem is unknown to GParted" ) ;
-	partition_temp .error += "\n-"; 
-	partition_temp .error += _( "There is no filesystem available (unformatted)" ) ; 
-
+	temp = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+	temp += "\n-"; 
+	temp += _( "The filesystem is damaged" ) ;
+	temp += "\n-" ; 
+	temp += _( "The filesystem is unknown to GParted" ) ;
+	temp += "\n-"; 
+	temp += _( "There is no filesystem available (unformatted)" ) ; 
+	
+	partition_temp .messages .push_back( temp ) ;
+	
 	return GParted::FS_UNKNOWN ;
 }
 
@@ -764,7 +789,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				}
 
 				if ( partitions[ t ] .get_mountpoints() .empty() )
-					partitions[ t ] .error = _("Unable to find mountpoint") ;
+					partitions[ t ] .messages .push_back( _("Unable to find mountpoint") ) ;
 			}
 			else
 			{
@@ -785,8 +810,6 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	temp = _("Unable to read the contents of this filesystem!") ;
 	temp += "\n" ;
 	temp += _("Because of this some operations may be unavailable.") ;
-	temp += "\n\n" ;
-	temp += _("Did you install the correct plugin for this filesystem?") ;
 	
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -799,15 +822,15 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 				if ( partitions[ t ] .busy )
 				{
 					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
-					{ 
+					{
 						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
 							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
 						else
-							partitions[ t ] .error = 
+							partitions[ t ] .messages .push_back( 
 								"statvfs (" + 
 								partitions[ t ] .get_mountpoint() + 
 								"): " + 
-								Glib::strerror( errno ) ;
+								Glib::strerror( errno ) ) ;
 					}
 				}
 				else
@@ -827,8 +850,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					}
 				}
 
-				if ( partitions[ t ] .sectors_used == -1 && partitions[ t ] .error .empty() )
-					partitions[ t ] .error = temp ;
+				if ( partitions[ t ] .sectors_used == -1 )
+					partitions[ t ] .messages .push_back( temp ) ;
 				
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
@@ -866,9 +889,6 @@ void GParted_Core::LP_set_used_sectors( Partition & partition )
 			}
 		}
 	}
-				
-	if ( partition .sectors_used == -1 )
-		partition .error = ped_error ;
 }
 
 void GParted_Core::set_flags( Partition & partition )
@@ -883,7 +903,6 @@ bool GParted_Core::create( const Device & device,
 			   Partition & new_partition,
 			   std::vector<OperationDetail> & operation_details ) 
 {
-	
 	if ( new_partition .type == GParted::TYPE_EXTENDED )   
 	{
 		return create_partition( new_partition, operation_details ) ;
@@ -907,7 +926,6 @@ bool GParted_Core::create_partition( Partition & new_partition,
 	operation_details .push_back( OperationDetail( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
-	ped_error .clear() ;
 		
 	if ( open_device_and_disk( new_partition .device_path ) )
 	{
@@ -1007,10 +1025,6 @@ bool GParted_Core::create_partition( Partition & new_partition,
 	}
 	else
 	{		
-		if ( ! ped_error .empty() )
-			operation_details .back() .sub_details .push_back( 
-				OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
-		
 		operation_details .back() .status = STATUS_ERROR ;	
 		
 		return false ;
@@ -1064,7 +1078,7 @@ bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDet
 	
 		close_device_and_disk() ;
 	}
-	
+
 	return return_value ;
 }
 	
@@ -1290,10 +1304,6 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 				if ( ! error_message .empty() )
 					operation_details .push_back( 
 						OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-
-				if ( ! ped_error .empty() )
-					operation_details .push_back( 
-						OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 			}
 		}
 
@@ -1336,9 +1346,6 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 
 		close_device_and_disk() ;
 	}
-
-	if ( ! return_value && ! ped_error .empty() )
-		operation_details .push_back( OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 
 	return return_value ;
 }
@@ -1467,7 +1474,6 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	
 	PedConstraint *constraint = NULL ;
 	lp_partition = NULL ;
-	ped_error .clear() ;
 		
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
@@ -1513,9 +1519,6 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
 	}
-	else if ( ! ped_error .empty() )
-		operation_details .back() .sub_details .push_back( 
-			OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 	
 	if ( partition_old .type == GParted::TYPE_EXTENDED )
 	{
@@ -1744,10 +1747,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			if ( ! error_message .empty() )
 				operation_details .push_back( 
 					OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-
-			if ( ! ped_error .empty() )
-				operation_details .push_back( 
-					OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 		
 		//close the devices..
@@ -1879,7 +1878,6 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		STATUS_NONE,
 		FONT_ITALIC ) ) ;
 	
-	ped_error .clear() ;
 	bool succes = false ;
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
@@ -1905,6 +1903,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				//FIXME: if we insert a weird partitionnew geom here (e.g. start > end) 
 				//ped_disk_set_partition_geom() will still return true (althoug an lp exception is written
 				//to stdout.. see if this also affect create_partition and resize_move_partition
+				//sended a patch to fix this to libparted list. will probably be in 1.7.2
 				if ( ped_disk_set_partition_geom( lp_disk,
 								  lp_partition,
 								  constraint,
@@ -1935,9 +1934,6 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
 	}
-	else if ( ! ped_error .empty() ) 
-		operation_details .back() .sub_details .push_back( 
-			OperationDetail( ped_error, STATUS_NONE, FONT_ITALIC ) ) ;
 
 	operation_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	return succes ;
@@ -2018,9 +2014,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	
 //FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
 //basicly we should get rid of these global lp_device and lp_disk
-//also, it would be cool to create another open_device_and_disk() which also accepts an operation_details....
-//we don't have to show the opening as an operation in itself, but we could use it to report errors which might
-//occur while opening the device or disk.
 bool GParted_Core::open_device( const Glib::ustring & device_path )
 {
 	lp_device = ped_device_get( device_path .c_str() );
@@ -2078,8 +2071,9 @@ bool GParted_Core::commit()
 PedExceptionOption GParted_Core::ped_exception_handler( PedException * e ) 
 {
         std::cout << e ->message << std::endl ;
-	ped_error = e ->message ;
-        
+
+        libparted_messages .push_back( e->message ) ;
+
 	return PED_EXCEPTION_UNHANDLED ;
 }
 

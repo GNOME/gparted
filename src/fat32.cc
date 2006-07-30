@@ -69,7 +69,7 @@ void fat32::Set_Used_Sectors( Partition & partition )
 			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
 	}
 	else
-		partition .error = error ;
+		partition .messages .push_back( error ) ;
 }
 
 bool fat32::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )

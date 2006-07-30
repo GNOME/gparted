@@ -35,7 +35,7 @@ Partition::Partition( const Glib::ustring & path )
 void Partition::Reset()
 {
 	paths .clear() ;
-	error .clear() ;
+	messages .clear() ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;
