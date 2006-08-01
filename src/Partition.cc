@@ -210,6 +210,11 @@ std::vector<Glib::ustring> Partition::get_mountpoints() const
 	return mountpoints ;
 }
 
+Sector Partition::get_sector() const 
+{
+	return (sector_start + sector_end) / 2 ; 
+}
+
 void Partition::clear_mountpoints()
 {
 	mountpoints .clear() ;

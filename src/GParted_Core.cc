@@ -295,9 +295,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 		if ( open_device_and_disk( operation ->partition_original .device_path ) )
 		{
-			lp_partition = ped_disk_get_partition_by_sector(
-				lp_disk,
-				(operation ->partition_original .sector_end + operation ->partition_original .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk,
+									 operation ->partition_original .get_sector() ) ;
 		
 			if ( lp_partition )
 			{
@@ -400,9 +399,7 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 	
 		if ( lp_partition )
 		{
@@ -467,9 +464,7 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 	
 		if ( lp_partition )
 		{
@@ -907,9 +902,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition )
 
 	if ( lp_disk )
 	{
-		lp_partition = ped_disk_get_partition_by_sector( 
-					lp_disk,
-					(partition .sector_end + partition .sector_start) / 2 ) ;
+		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
 		if ( lp_partition )
 		{
@@ -1109,9 +1102,7 @@ bool GParted_Core::Delete( const Partition & partition, std::vector<OperationDet
 		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
 		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
 		sleep( 1 ) ; //give the kernel some time to reread the partitiontable
@@ -1366,9 +1357,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 		PedFileSystem *	fs = NULL ;
 		PedGeometry * lp_geom = NULL ;	
 		
-		lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
 		if ( lp_partition )
 		{
 			fs = ped_file_system_open( & lp_partition ->geom );
@@ -1520,9 +1509,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
-			lp_partition = ped_disk_get_partition_by_sector(
-						lp_disk,
-						(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
 		
 		if ( lp_partition )
 		{
@@ -1854,9 +1841,7 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 
 		if ( fs_type )
 		{
-			lp_partition = ped_disk_get_partition_by_sector( 
-						lp_disk,
-						(partition .sector_end + partition .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit() )
 				return_value = wait_for_node( partition .get_path() ) ;
@@ -1925,9 +1910,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
-			lp_partition = ped_disk_get_partition_by_sector(
-							lp_disk,
-							(partition_old .sector_end + partition_old .sector_start) / 2 ) ;
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
 
 		if ( lp_partition )
 		{
@@ -2029,9 +2012,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	
 	if ( open_device_and_disk( partition .device_path ) )
 	{
-		lp_partition = ped_disk_get_partition_by_sector(
-					lp_disk,
-					(partition .sector_end + partition .sector_start) / 2 ) ;
+		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 		if ( lp_partition && ped_file_system_clobber( & lp_partition ->geom ) )
 		{

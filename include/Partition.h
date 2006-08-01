@@ -86,6 +86,7 @@ public:
 	Glib::ustring get_mountpoint() const ; 
 	void clear_mountpoints() ;
 	std::vector<Glib::ustring> get_mountpoints() const ;
+	Sector get_sector() const ;
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
