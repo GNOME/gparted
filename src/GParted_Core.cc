@@ -699,31 +699,31 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	//standard libparted filesystems..
 	if ( lp_partition && lp_partition ->fs_type )
 	{
-		if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "extended" )
+		if ( Glib::ustring( lp_partition ->fs_type ->name ) == "extended" )
 			return GParted::FS_EXTENDED ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext2" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext2" )
 			return GParted::FS_EXT2 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ext3" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext3" )
 			return GParted::FS_EXT3 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "linux-swap" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" )
 			return GParted::FS_LINUX_SWAP ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat16" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat16" )
 			return GParted::FS_FAT16 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "fat32" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat32" )
 			return GParted::FS_FAT32 ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ntfs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ntfs" )
 			return GParted::FS_NTFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "reiserfs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "reiserfs" )
 			return GParted::FS_REISERFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "xfs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "xfs" )
 			return GParted::FS_XFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "jfs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "jfs" )
 			return GParted::FS_JFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "hfs" )
 			return GParted::FS_HFS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "hfs+" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "hfs+" )
 			return GParted::FS_HFSPLUS ;
-		else if ( static_cast<Glib::ustring>( lp_partition ->fs_type ->name ) == "ufs" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ufs" )
 			return GParted::FS_UFS ;
 	}
 	
@@ -1826,8 +1826,9 @@ bool GParted_Core::check_repair( const Partition & partition, std::vector<Operat
 bool GParted_Core::set_partition_type( const Partition & partition,
 	   			       std::vector<OperationDetail> & operation_details )
 {
-	operation_details .push_back( OperationDetail( _("set partitiontype") ) ) ;
-//FIXME: be a little bit more verbose..	
+	operation_details .push_back( OperationDetail( 
+			String::ucompose( _("set partitiontype on %1"), partition .get_path() ) ) ) ;
+	
 	bool return_value = false ;
 	
 	if ( open_device_and_disk( partition .device_path ) )
@@ -1844,7 +1845,15 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit() )
+			{
+				operation_details .back() .sub_details .push_back( 
+					OperationDetail( String::ucompose( _("new partitiontype: %1"),
+									   lp_partition ->fs_type ->name ),
+							 STATUS_NONE,
+							 FONT_ITALIC ) ) ;
+
 				return_value = wait_for_node( partition .get_path() ) ;
+			}
 		}
 
 		close_device_and_disk() ;
