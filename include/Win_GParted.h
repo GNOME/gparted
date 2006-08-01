@@ -63,10 +63,7 @@ private:
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
-	void Add_Operation( OperationType operationtype,
-			    const Partition & new_partition,
-			    Sector block_size = -1,
-			    int index = -1 ) ;
+	void Add_Operation( Operation * operation, int index = -1 ) ;
 	void Refresh_Visual();
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;

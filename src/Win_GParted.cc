@@ -575,49 +575,8 @@ bool Win_GParted::on_delete_event( GdkEventAny *event )
 	return ! Quit_Check_Operations();
 }	
 
-//FIXME: i guess it's better if we just create the operations in the activate_* functions instead
-//of doing it here. now we're adding more and more functionality (e.g. blocksize) to the operations
-//the current approach doesn't suffice anymore.
-void Win_GParted::Add_Operation( OperationType operationtype,
-				 const Partition & new_partition,
-				 Sector block_size, 
-				 int index )
+void Win_GParted::Add_Operation( Operation * operation, int index )
 {
-	Operation * operation ;
-	switch ( operationtype )
-	{		
-		case OPERATION_DELETE	:
-			operation = new OperationDelete( devices[ current_device ], selected_partition ) ;
-			operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
-			break;
-		case OPERATION_CREATE	: 
-			operation = new OperationCreate( devices[ current_device ],
-							 selected_partition,
-							 new_partition ) ;
-			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
-			break;
-		case OPERATION_RESIZE_MOVE:
-			operation = new OperationResizeMove( devices[ current_device ],
-							     selected_partition,
-							     new_partition );
-			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
-			break;
-		case OPERATION_FORMAT	:
-			operation = new OperationFormat( devices[ current_device ],
-							 selected_partition,
-							 new_partition );
-			operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
-			break;
-		case OPERATION_COPY	:
-			operation = new OperationCopy( devices[ current_device ],
-					 	       selected_partition,
-						       new_partition,
-						       copied_partition,
-						       block_size ) ;
-			operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
-			break;
-	}
-
 	if ( operation )
 	{ 
 		Glib::ustring error ;
@@ -1264,14 +1223,27 @@ void Win_GParted::activate_resize()
 									     selected_partition .sector_start,
 									     selected_partition .sector_end,
 									     selected_partition .inside_extended ) ;
-					Add_Operation( OPERATION_CREATE, dialog .Get_New_Partition() );
-					
+
+					Operation * operation = new OperationCreate( devices[ current_device ],
+							 			     selected_partition,
+							 			     dialog .Get_New_Partition() ) ;
+					operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
+
+					Add_Operation( operation ) ;
+
 					break;
 				}
 			}
 		}
 		else//normal move/resize on existing partition
-			Add_Operation( OPERATION_RESIZE_MOVE, dialog .Get_New_Partition() );
+		{
+			Operation * operation = new OperationResizeMove( devices[ current_device ],
+					 			         selected_partition,
+							     		 dialog .Get_New_Partition() );
+			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
+
+			Add_Operation( operation ) ;
+		}
 	}
 }
 
@@ -1298,7 +1270,16 @@ void Win_GParted::activate_paste()
 			if ( dialog .run() == Gtk::RESPONSE_OK )
 			{
 				dialog .hide() ;
-				Add_Operation( OPERATION_COPY, dialog .Get_New_Partition(), dialog .get_block_size() );
+
+				Operation * operation = new OperationCopy( devices[ current_device ],
+					 	       			   selected_partition,
+						       			   dialog .Get_New_Partition(),
+						       			   copied_partition,
+						       			   dialog .get_block_size() ) ;
+				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
+
+				Add_Operation( operation ) ;
+
 			}
 		}
 	}
@@ -1314,7 +1295,14 @@ void Win_GParted::activate_paste()
 		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
 		//except the blocksize disabled?
 		//bleh, this will be fixed as soon as the algorith to determine the optimal blocksize is in place
-		Add_Operation( OPERATION_COPY, partition_new, 32 ) ;
+		Operation * operation = new OperationCopy( devices[ current_device ],
+					 	       	   selected_partition,
+							   partition_new,
+						       	   copied_partition,
+							   32 ) ;
+		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
+
+		Add_Operation( operation ) ;
 	}
 }
 
@@ -1342,7 +1330,12 @@ void Win_GParted::activate_new()
 			dialog .hide() ;
 			
 			new_count++ ;
-			Add_Operation( OPERATION_CREATE, dialog .Get_New_Partition() );
+			Operation *operation = new OperationCreate( devices[ current_device ],
+							 	    selected_partition,
+							 	    dialog .Get_New_Partition() ) ;
+			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
+
+			Add_Operation( operation );
 		}
 	}
 }
@@ -1430,8 +1423,13 @@ void Win_GParted::activate_delete()
 		if ( ! operations .size() )
 			close_operationslist() ;
 	}
-	else //deletion of a real partition...(now selected_partition is just a dummy)
-		Add_Operation( OPERATION_DELETE, selected_partition );
+	else //deletion of a real partition...
+	{
+		Operation * operation = new OperationDelete( devices[ current_device ], selected_partition ) ;
+		operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
+
+		Add_Operation( operation ) ;
+	}
 }
 
 void Win_GParted::activate_info()
@@ -1497,18 +1495,30 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			{
 				remove_operation( t ) ;
 				
-				//And add the new partition to the end of the operations list
+				//And insert the new partition at the old position in the operations list
 				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
 				
-				Add_Operation( OPERATION_CREATE, part_temp, -1, t );
+				Operation * operation = new OperationCreate( devices[ current_device ],
+									     selected_partition,
+								 	     part_temp ) ;
+				operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
+
+				Add_Operation( operation, t ) ;
 					
 				break;
 			}
 		}
 	}
 	else//normal formatting of an existing partition
-		Add_Operation( OPERATION_FORMAT, part_temp ) ;
+	{
+		Operation *operation = new OperationFormat( devices[ current_device ],
+				 			    selected_partition,
+						 	    part_temp );
+		operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+
+		Add_Operation( operation ) ;
+	}
 }
 
 void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 

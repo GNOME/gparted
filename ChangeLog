@@ -1,5 +1,12 @@
 2006-08-01 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* include/Win_GParted.h,
+	  src/Win_GParted.cc: construct operations in the activate*()
+	  functions instead of in Add_Operation(). This approach allows for
+	  more customization of operations.
+
+2006-08-01 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/GParted_Core.cc: made set_partition_type() a bit more verbose
 	  and did some cleanups.
 
