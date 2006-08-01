@@ -283,37 +283,77 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
-	bool succes = false ;
+	bool succes = true ;
 	libparted_messages .clear() ;
+	
+	if ( operation ->partition_original .status == GParted::STAT_COPY )
+	{
+		succes = false ;
+		operation ->operation_detail .sub_details .push_back( 
+			OperationDetail( String::ucompose( _("find real path of %1"),
+							   operation ->partition_original .get_path() ) ) ) ;
 
-	switch ( operation ->type )
-	{	     
-		case OPERATION_DELETE:
-			succes = Delete( operation ->partition_original, operation ->operation_detail .sub_details ) ;
-			break ;
-		case OPERATION_CREATE:
-			succes = create( operation ->device, 
-				         operation ->partition_new,
-				         operation ->operation_detail .sub_details ) ;
-			break ;
-		case OPERATION_RESIZE_MOVE:
-			succes = resize_move( operation ->device,
-				       	      operation ->partition_original,
-					      operation ->partition_new,
-					      operation ->operation_detail .sub_details ) ;
-			break ;
-		case OPERATION_FORMAT:
-			succes = format( operation ->partition_new, operation ->operation_detail .sub_details ) ;
-			break ;
-		case OPERATION_COPY: 
-			operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-			succes = copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
-				       operation ->partition_new,
-				       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
-				       static_cast<OperationCopy*>( operation ) ->block_size,
-				       operation ->operation_detail .sub_details ) ;
-			break ;
+		if ( open_device_and_disk( operation ->partition_original .device_path ) )
+		{
+			lp_partition = ped_disk_get_partition_by_sector(
+				lp_disk,
+				(operation ->partition_original .sector_end + operation ->partition_original .sector_start) / 2 ) ;
+		
+			if ( lp_partition )
+			{
+				char * lp_path = ped_partition_get_path( lp_partition ) ;
+				
+				operation ->partition_original .add_path( lp_path, true ) ;
+				operation ->partition_new .add_path( lp_path, true ) ;
+
+				free( lp_path ) ;
+				succes = true ;
+
+				operation ->operation_detail .sub_details .back() .sub_details .push_back( 
+					OperationDetail( String::ucompose( _("path: %1"),
+									   operation ->partition_new .get_path() ),
+							 STATUS_NONE,
+							 FONT_ITALIC ) ) ;
+			}
+
+			close_device_and_disk() ;
+		}
+
+		operation ->operation_detail .sub_details .back() .status = succes ? STATUS_SUCCES : STATUS_ERROR ;
 	}
+
+	if ( succes )
+		switch ( operation ->type )
+		{	     
+			case OPERATION_DELETE:
+				succes = Delete( operation ->partition_original,
+						 operation ->operation_detail .sub_details ) ;
+				break ;
+			case OPERATION_CREATE:
+				succes = create( operation ->device, 
+					         operation ->partition_new,
+					         operation ->operation_detail .sub_details ) ;
+				break ;
+			case OPERATION_RESIZE_MOVE:
+				succes = resize_move( operation ->device,
+					       	      operation ->partition_original,
+						      operation ->partition_new,
+						      operation ->operation_detail .sub_details ) ;
+				break ;
+			case OPERATION_FORMAT:
+				succes = format( operation ->partition_new,
+						 operation ->operation_detail .sub_details ) ;
+				break ;
+			case OPERATION_COPY: 
+				//when copying to an existing partition we have to change the 'copy of..' to a valid path
+				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
+				succes = copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
+					       operation ->partition_new,
+					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
+					       static_cast<OperationCopy*>( operation ) ->block_size,
+					       operation ->operation_detail .sub_details ) ;
+				break ;
+		}
 
 	if ( ! succes && libparted_messages .size() > 0 )
 	{
@@ -1615,7 +1655,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	if ( check_repair( partition_src, operation_details ) )
 	{
 		bool succes = true ;
-		if ( partition_dest .status == GParted::STAT_NEW )
+		if ( partition_dest .status == GParted::STAT_COPY )
 			succes = create_partition( partition_dest, operation_details, min_size ) ;
 
 		if ( succes && set_partition_type( partition_dest, operation_details ) )
@@ -1675,8 +1715,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 	
 	bool succes = false ;
 	PedDevice *lp_device_src, *lp_device_dest ;
-//FIXME: adapt open_device() so we don't have to call ped_device_get() here
-//(same goes for close_device() and ped_device_destroy()
+
 	lp_device_src = ped_device_get( partition_src .device_path .c_str() );
 
 	if ( partition_src .device_path != partition_dest .device_path )
@@ -1801,7 +1840,7 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 	   			       std::vector<OperationDetail> & operation_details )
 {
 	operation_details .push_back( OperationDetail( _("set partitiontype") ) ) ;
-	
+//FIXME: be a little bit more verbose..	
 	bool return_value = false ;
 	
 	if ( open_device_and_disk( partition .device_path ) )
@@ -2012,8 +2051,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	return return_value ;
 }
 	
-//FIXME open_device( _and_disk) and the close functions should take an PedDevice * and PedDisk * as argument
-//basicly we should get rid of these global lp_device and lp_disk
 bool GParted_Core::open_device( const Glib::ustring & device_path )
 {
 	lp_device = ped_device_get( device_path .c_str() );

@@ -116,7 +116,7 @@ Partition Dialog_Partition_Copy::Get_New_Partition()
 	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
 	
 	//set proper name and status for partition
-	selected_partition .status = GParted::STAT_NEW ;
+	selected_partition .status = GParted::STAT_COPY ;
 	
 	return selected_partition ;
 }

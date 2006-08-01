@@ -1309,7 +1309,6 @@ void Win_GParted::activate_paste()
 		partition_new .color = copied_partition .color ;
 		partition_new .set_used( copied_partition .sectors_used ) ;
 		partition_new .messages .clear() ;
-		partition_new .status = GParted::STAT_COPY ;
  
 		//FIXME: in this case there's no window presented to the user, so he cannot choose the blocksize
 		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
