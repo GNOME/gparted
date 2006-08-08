@@ -209,7 +209,8 @@ void Dialog_Progress::on_signal_show()
 			{
 				update_operation_details( treerow, operations[ t ] ->operation_detail ) ;
 				if ( operations[ t ] ->operation_detail .sub_details .size() > 0 )
-					label_current_sub .set_markup( 
+					label_current_sub .set_markup(//FIXME: move this to  update_operation_details and
+					//show every sub that has STATUS_EXECUTE...
 						"<i>" + 
 						operations[ t ] ->operation_detail .sub_details .back() .get_description() +
 						"</i>\n" ) ;

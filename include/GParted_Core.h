@@ -117,17 +117,37 @@ private:
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dest,
 		   Sector min_size,
-		   Sector block_size,
 		   std::vector<OperationDetail> & operation_details ) ; 
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dest,
-			      std::vector<OperationDetail> & operation_details,
-			      Sector block_size ) ;
+			      std::vector<OperationDetail> & operation_details ) ;
 
 	bool check_repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetail> & operation_details ) ;
+
+	enum CopyType
+	{
+		START_TO_END = 0,
+		END_TO_START = 1
+	} ;
+	bool find_optimal_blocksize( const Partition & partition_old,
+		      		     const Partition & partition_new,
+				     CopyType copytype,
+				     Sector & optimal_blocksize,
+				     Sector & offset,
+				     std::vector<OperationDetail> & operation_details ) ;
+
+	bool copy_blocks( const Glib::ustring & src_device,
+			  const Glib::ustring & dst_device,
+			  Sector src_start,
+			  Sector dst_start,
+			  Sector blocksize,
+			  Sector sectors,
+			  std::vector<OperationDetail> & operation_details,
+			  CopyType copytype,
+			  bool show_progress = true ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,
@@ -166,6 +186,7 @@ private:
 	std::map< Glib::ustring, Glib::ustring > alternate_paths ;
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+	
 
 	//disabling automount stuff
 	bool DISABLE_AUTOMOUNT ;

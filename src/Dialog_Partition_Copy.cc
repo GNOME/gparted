@@ -88,18 +88,6 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
 		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 
-
-	//allow the user to set the size of the blocks which will be copied at once
-	hbox_block_size .set_spacing( 10 ) ;
-	this ->get_vbox() ->pack_start( hbox_block_size ) ;
-	hbox_block_size .pack_start( * Utils::mk_label( _("Blocksize (sectors):") ), Gtk::PACK_SHRINK ) ;
-
-	spinbutton_block_size .set_numeric( true ) ;
-	spinbutton_block_size .set_increments( 1, 10 ) ;
-	spinbutton_block_size .set_range( 1, MEBIBYTE ) ;
-	spinbutton_block_size .set_value( 32 ) ;
-	hbox_block_size .pack_start( spinbutton_block_size, Gtk::PACK_SHRINK ) ;
-
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .device_path = selected_partition .device_path ;
@@ -119,10 +107,6 @@ Partition Dialog_Partition_Copy::Get_New_Partition()
 	selected_partition .status = GParted::STAT_COPY ;
 	
 	return selected_partition ;
-}
-Sector Dialog_Partition_Copy::get_block_size() 
-{
-	return spinbutton_block_size .get_value_as_int() ;
 }
 
 } //GParted

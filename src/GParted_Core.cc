@@ -349,7 +349,6 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				succes = copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 					       operation ->partition_new,
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
-					       static_cast<OperationCopy*>( operation ) ->block_size,
 					       operation ->operation_detail .sub_details ) ;
 				break ;
 		}
@@ -1221,127 +1220,19 @@ bool GParted_Core::move_filesystem_using_gparted( const Partition & partition_ol
 {
 	operation_details .push_back( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
 
-	bool succes = false ; 
-	if ( open_device_and_disk( partition_old .device_path ) )
-	{
-		Glib::ustring error_message ;
-		if ( ped_device_open( lp_device ) )
-		{
-			ped_device_sync( lp_device ) ;
-		
-			//add an empty sub which we will constantly update in the loop
-			operation_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
+	CopyType copytype = partition_new .sector_start < partition_old .sector_start ? START_TO_END : END_TO_START ;
+	Sector optimal_blocksize, offset ;
 
-			Sector blocksize = 32; //FIXME: write an algorithm to determine the optimal blocksize
-			Sector t ;
-			if ( partition_new .sector_start < partition_old .sector_start ) //move to the left
-			{
-				Sector rest_sectors = partition_old .get_length() % blocksize ;
-				for ( t = 0 ; t < partition_old .get_length() - rest_sectors ; t+=blocksize )
-				{
-					if ( ! copy_block( lp_device,
-						    	   lp_device,
-						    	   partition_old .sector_start +t,
-						    	   partition_new .sector_start +t,
-						    	   blocksize,
-						    	   error_message ) ) 
-						break ;
-					
-					if ( t % (blocksize * 100) == 0 )
-					{
-						operation_details .back() .progress_text =
-							String::ucompose( _("%1 of %2 moved"),
-							  		  Utils::format_size( t +blocksize ),
-							  		  Utils::format_size( partition_old .get_length() ) ) ; 
-				
-						operation_details .back() .set_description( 
-							String::ucompose( _("%1 of %2 moved"),
-									  t +blocksize,
-									  partition_old .get_length() ),
-							FONT_ITALIC ) ;
-
-						operation_details .back() .fraction =
-							t / static_cast<double>( partition_old .get_length() ) ;
-					}
-				}
-
-				if ( rest_sectors > 0 &&
-				     partition_old .get_length() -t == rest_sectors &&
-				     copy_block( lp_device,
-						 lp_device,
-						 partition_old .sector_start +t,
-						 partition_new .sector_start +t,
-						 rest_sectors,
-						 error_message ) )
-					t += rest_sectors ;
-			}
-			else //move to the right..
-			{//FIXME: moving to the right still appears slower than moving to the left...
-			//most likely this has something to do with the fact we're reading from right to left, i guess the
-			//headers of the disk have to move more.. (check this with the parted people)
-			//since reading from RTL is only needed in case of overlap we could check for this...
-				Sector rest_sectors = partition_old .get_length() % blocksize ;
-				for ( t = 0 ; t < partition_old .get_length() - rest_sectors ; t+=blocksize )
-				{
-					if ( ! copy_block( lp_device,
-						    	   lp_device,
-						    	   partition_old .sector_end +1 -blocksize -t,
-						    	   partition_new .sector_end +1 -blocksize -t,
-						    	   blocksize,
-						    	   error_message ) )
-						break ;
-
-					if ( t % (blocksize * 100) == 0 )
-					{
-						operation_details .back() .progress_text =
-							String::ucompose( _("%1 of %2 moved"),
-							  		  Utils::format_size( t +blocksize ),
-							  		  Utils::format_size( partition_old .get_length() ) ) ; 
-				
-						operation_details .back() .set_description( 
-							String::ucompose( _("%1 of %2 moved"),
-									  t +blocksize,
-									  partition_old .get_length() ),
-							FONT_ITALIC ) ;
-			
-						operation_details .back() .fraction =
-							t / static_cast<double>( partition_old .get_length() ) ;
-					}
-
-				}
-
-				if ( rest_sectors > 0 &&
-				     partition_old .get_length() -t == rest_sectors &&
-				     copy_block( lp_device,
-						 lp_device,
-						 partition_old .sector_start,
-						 partition_new .sector_start,
-						 rest_sectors,
-						 error_message ) )
-				     	t += rest_sectors ;
-			}
-
-			//final description
-			operation_details .back() .set_description( 
-				String::ucompose( _("%1 of %2 moved"), t, partition_old .get_length() ), FONT_ITALIC ) ;
-			
-			//reset fraction to -1 to make room for a new one (or a pulsebar)
-			operation_details .back() .fraction = -1 ;
-
-			if ( t == partition_old .get_length() )
-				succes = true ;
-			else
-			{
-				if ( ! error_message .empty() )
-					operation_details .push_back( 
-						OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-			}
-		}
-
-		close_device_and_disk() ;
-	}
-
-	return succes ;
+	return find_optimal_blocksize( partition_old, partition_new, copytype, optimal_blocksize, offset, operation_details )
+	       &&
+	       copy_blocks( partition_old .device_path,
+	  		    partition_new .device_path,
+	  		    partition_old .sector_start + offset,
+	  		    partition_new .sector_start + offset,
+	  		    optimal_blocksize,
+	  		    partition_old .get_length() - offset,
+	  		    operation_details,
+	  		    copytype ) ; 
 }
 
 bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
@@ -1636,7 +1527,6 @@ bool GParted_Core::maximize_filesystem( const Partition & partition,
 bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dest,
 			 Sector min_size,
-			 Sector block_size,
 			 std::vector<OperationDetail> & operation_details ) 
 {
 	if ( check_repair( partition_src, operation_details ) )
@@ -1658,8 +1548,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 				case  GParted::FS::GPARTED :
 						succes = copy_filesystem( partition_src,
 									  partition_dest,
-									  operation_details .back() .sub_details,
-									  block_size ) ;
+									  operation_details .back() .sub_details ) ;
 						break ;
 				
 				case  GParted::FS::LIBPARTED :
@@ -1691,107 +1580,26 @@ bool GParted_Core::copy( const Partition & partition_src,
 }
 
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
-				    const Partition & partition_dest,
-				    std::vector<OperationDetail> & operation_details,
-				    Sector blocksize ) 
+				    const Partition & partition_dst,
+				    std::vector<OperationDetail> & operation_details )
 {
-	operation_details .push_back( OperationDetail( 
-		String::ucompose( _("Use a blocksize of %1 (%2 sectors)"), Utils::format_size( blocksize ), blocksize ),
-		STATUS_NONE,
-		FONT_ITALIC ) ) ;
-	
-	bool succes = false ;
-	PedDevice *lp_device_src, *lp_device_dest ;
+	Sector optimal_blocksize, offset ;
 
-	lp_device_src = ped_device_get( partition_src .device_path .c_str() );
-
-	if ( partition_src .device_path != partition_dest .device_path )
-		lp_device_dest = ped_device_get( partition_dest .device_path .c_str() );
-	else
-		lp_device_dest = lp_device_src ;
-
-	if ( lp_device_src && lp_device_dest && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dest ) )
-	{
-		ped_device_sync( lp_device_dest ) ;
-
-		//add an empty sub which we will constantly update in the loop
-		operation_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
-
-		Glib::ustring error_message ;
-		Sector t ;
-		Sector rest_sectors = partition_src .get_length() % blocksize ;
-		for ( t = 0 ; t < partition_src .get_length() - rest_sectors ; t+=blocksize )
-		{
-			if ( ! copy_block( lp_device_src,
-			 	    	   lp_device_dest,
-			 	    	   partition_src .sector_start + t,
-				    	   partition_dest .sector_start + t,
-				    	   blocksize,
-				    	   error_message ) )
-				break ;
-
-			if ( t % ( blocksize * 100 ) == 0 )
-			{
-				operation_details .back() .progress_text =
-					String::ucompose( _("%1 of %2 copied"),
-							  Utils::format_size( t +blocksize ),
-							  Utils::format_size( partition_src .get_length() ) ) ; 
-					
-				operation_details .back() .set_description( 
-					String::ucompose( _("%1 of %2 moved"),
-							  t +blocksize,
-							  partition_src .get_length() ),
-					FONT_ITALIC ) ;
-
-				operation_details .back() .fraction =
-					t / static_cast<double>( partition_src .get_length() ) ;
-			}
-		}
-
-		if ( rest_sectors > 0 &&
-		     partition_src .get_length() -t == rest_sectors &&
-		     copy_block( lp_device_src,
-				 lp_device_dest,
-				 partition_src .sector_start +t,
-				 partition_dest .sector_start +t,
-				 rest_sectors,
-				 error_message ) )
-			t += rest_sectors ;
-
-
-		//final description
-		operation_details .back() .set_description( 
-			String::ucompose( _("%1 of %2 copied"), t, partition_src .get_length() ), FONT_ITALIC ) ;
-
-		//reset fraction to -1 to make room for a new one (or a pulsebar)
-		operation_details .back() .fraction = -1 ;
-
-		if ( t == partition_src .get_length() )
-			succes = true ;
-		else
-		{
-			if ( ! error_message .empty() )
-				operation_details .push_back( 
-					OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-		}
-		
-		//close the devices..
-		ped_device_close( lp_device_src ) ;
-
-		if ( partition_src .device_path != partition_dest .device_path )
-			ped_device_close( lp_device_dest ) ;
-
-		//detroy the devices..
-		ped_device_destroy( lp_device_src ) ; 
-
-		if ( partition_src .device_path != partition_dest .device_path )
-			ped_device_destroy( lp_device_dest ) ;
-	}
-	else
-		operation_details .push_back( 
-			OperationDetail( _("An error occurred while opening the devices"), STATUS_NONE ) ) ;
-
-	return succes ;
+	return find_optimal_blocksize( partition_src,
+				       partition_dst,
+				       START_TO_END,
+				       optimal_blocksize,
+				       offset,
+				       operation_details )
+	       &&
+	       copy_blocks( partition_src .device_path,
+	  		    partition_dst .device_path,
+	  		    partition_src .sector_start + offset,
+	  		    partition_dst .sector_start + offset,
+	  		    optimal_blocksize,
+	  		    partition_src .get_length() - offset,
+	  		    operation_details,
+			    START_TO_END ) ; 
 }
 	
 bool GParted_Core::check_repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) 
@@ -1863,6 +1671,207 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 	return return_value ;
 }
 	
+bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
+		      		     	   const Partition & partition_new,
+					   CopyType copytype,
+					   Sector & optimal_blocksize,
+					   Sector & offset,
+					   std::vector<OperationDetail> & operation_details ) 
+{//FIXME, this probing is actually quite clumsy and suboptimal..
+//find out if there is a better way to determine a (close to) optimal blocksize...
+	bool succes = true ;
+
+	optimal_blocksize = 32 ;//sensible default?
+	offset = 0 ;
+
+	if ( partition_old .get_length() > 100000 )
+	{
+		operation_details .push_back( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
+		
+		std::clock_t clockticks_start, smallest_ticks = -1  ;
+
+		std::vector<Sector> blocksizes ;
+		blocksizes .push_back( 1 ) ;
+		blocksizes .push_back( 32 ) ;
+		blocksizes .push_back( 128 ) ;
+		blocksizes .push_back( 256 ) ;
+		blocksizes .push_back( 512 ) ;
+		
+		for ( unsigned int t = 0 ; t < blocksizes .size() && succes ; t++ )
+		{
+			clockticks_start = std::clock() ;
+
+			succes = copy_blocks( partition_old .device_path,
+					      partition_new .device_path,
+					      partition_old .sector_start + offset,
+					      partition_new .sector_start + offset,
+					      blocksizes[ t ],
+					      20000,
+					      operation_details .back() .sub_details,
+					      copytype,
+					      false ) ;
+
+			if ( (std::clock() - clockticks_start) < smallest_ticks || smallest_ticks == -1 )
+			{
+				smallest_ticks = std::clock() - clockticks_start ;
+				optimal_blocksize = blocksizes[ t ] ;
+			}
+
+			operation_details .back() .sub_details .back() .sub_details .push_back( OperationDetail( 
+				String::ucompose( _("%1 clockticks"), std::clock() - clockticks_start ),
+				STATUS_NONE,
+				FONT_ITALIC ) ) ;
+
+			offset += 20000 ;
+		}
+		
+		operation_details .back() .sub_details .push_back( OperationDetail( 
+			String::ucompose( _("optimal blocksize is %1 sectors (%2)"),
+					  optimal_blocksize,
+					  Utils::format_size( optimal_blocksize ) ) ,
+			STATUS_NONE ) ) ;
+	}
+	
+	return succes ; 
+}
+
+bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
+		  	        const Glib::ustring & dst_device,
+		  	        Sector src_start,
+		  	        Sector dst_start,
+		  	        Sector blocksize,
+		  	        Sector sectors,
+		  	        std::vector<OperationDetail> & operation_details,
+		  	        CopyType copytype,
+				bool show_progress ) 
+{
+	operation_details .push_back( OperationDetail( 
+		String::ucompose( _("copy %1 sectors using a blocksize of %2 sectors"), sectors, blocksize ), STATUS_NONE ) ) ;
+	
+	bool succes = false ;
+	PedDevice *lp_device_src, *lp_device_dst ;
+
+	lp_device_src = ped_device_get( src_device .c_str() );
+
+	if ( src_device != dst_device )
+		lp_device_dst = ped_device_get( dst_device .c_str() );
+	else
+		lp_device_dst = lp_device_src ;
+
+	Glib::ustring error_message ;
+	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
+	{
+		ped_device_sync( lp_device_dst ) ;
+		//add an empty sub which we will constantly update in the loop
+		operation_details .back() .sub_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
+	
+		Sector t ;
+		if ( copytype == START_TO_END )
+		{
+			Sector rest_sectors = sectors % blocksize ;
+			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
+			{
+				if ( ! copy_block( lp_device_src,
+						   lp_device_dst,
+						   src_start +t,
+						   dst_start +t,
+						   blocksize,
+						   error_message ) ) 
+					break ;
+			//FIXME: the stuff in the if-block should get its own function and should display remaining time.
+				if ( show_progress && t % (blocksize * 100) == 0 )
+				{
+					operation_details .back() .sub_details .back() .progress_text =
+						String::ucompose( _("%1 of %2 copied"),
+								  Utils::format_size( t +blocksize ),
+								  Utils::format_size( sectors ) ) ; 
+			
+					operation_details .back() .sub_details .back() .set_description( 
+						String::ucompose( _("%1 of %2 copied"), t +blocksize, sectors ), FONT_ITALIC ) ;
+
+					operation_details .back() .sub_details .back() .fraction = 
+									t / static_cast<double>( sectors ) ;
+				}
+			}
+
+			if ( rest_sectors > 0 &&
+			     sectors -t == rest_sectors &&
+			     copy_block( lp_device_src,
+					 lp_device_dst,
+					 src_start +t,
+					 dst_start +t,
+					 rest_sectors,
+					 error_message ) )
+				t += rest_sectors ;
+		}
+		else if ( copytype == END_TO_START )
+		{
+			Sector rest_sectors = sectors % blocksize ;
+			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
+			{
+				if ( ! copy_block( lp_device_src,
+						   lp_device_dst,
+						   src_start + sectors -blocksize -t,
+						   dst_start + sectors -blocksize -t,
+						   blocksize,
+						   error_message ) )
+					break ;
+
+				if ( show_progress && t % (blocksize * 100) == 0 )
+				{
+					operation_details .back() .sub_details .back() .progress_text =
+						String::ucompose( _("%1 of %2 copied"),
+								  Utils::format_size( t +blocksize ),
+								  Utils::format_size( sectors ) ) ; 
+			
+					operation_details .back() .sub_details .back() .set_description( 
+						String::ucompose( _("%1 of %2 copied"), t +blocksize, sectors ), FONT_ITALIC ) ;
+		
+					operation_details .back() .sub_details .back() .fraction =
+									t / static_cast<double>( sectors ) ;
+				}
+			}
+
+			if ( rest_sectors > 0 &&
+			     sectors -t == rest_sectors &&
+			     copy_block( lp_device_src,
+					 lp_device_dst,
+					 src_start,
+					 dst_start,
+					 rest_sectors,
+					 error_message ) )
+				t += rest_sectors ;
+		}
+	
+
+		//final description
+		operation_details .back() .sub_details .back() .set_description( 
+			String::ucompose( _("%1 of %2 copied"), t, sectors ), FONT_ITALIC ) ;
+			
+		//reset fraction to -1 to make room for a new one (or a pulsebar)
+		operation_details .back() .sub_details .back() .fraction = -1 ;
+
+		if ( t == sectors )
+			succes = true ;
+	
+		if ( ! succes && ! error_message .empty() )
+			operation_details .back() .sub_details .push_back( 
+				OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
+
+		//close and destroy the devices..
+		ped_device_close( lp_device_src ) ;
+		ped_device_destroy( lp_device_src ) ; 
+
+		if ( src_device != dst_device )
+		{
+			ped_device_close( lp_device_dst ) ;
+			ped_device_destroy( lp_device_dst ) ;
+		}
+	}
+
+	return succes ;
+}
+
 bool GParted_Core::copy_block( PedDevice * lp_device_src,
 			       PedDevice * lp_device_dst,
 			       Sector offset_src,

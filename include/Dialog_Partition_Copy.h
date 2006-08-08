@@ -30,11 +30,8 @@ public:
 	void Set_Data( const Partition & selected_partition, const Partition & copied_partition );
 
 	Partition Get_New_Partition() ;
-	Sector get_block_size() ;
 
 private:
-	Gtk::HBox hbox_block_size ;
-	Gtk::SpinButton spinbutton_block_size ;
 };
 
 }//GParted

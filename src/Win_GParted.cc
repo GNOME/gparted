@@ -1274,8 +1274,7 @@ void Win_GParted::activate_paste()
 				Operation * operation = new OperationCopy( devices[ current_device ],
 					 	       			   selected_partition,
 						       			   dialog .Get_New_Partition(),
-						       			   copied_partition,
-						       			   dialog .get_block_size() ) ;
+						       			   copied_partition ) ;
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation ) ;
@@ -1291,15 +1290,10 @@ void Win_GParted::activate_paste()
 		partition_new .set_used( copied_partition .sectors_used ) ;
 		partition_new .messages .clear() ;
  
-		//FIXME: in this case there's no window presented to the user, so he cannot choose the blocksize
-		//i guess this means we have to present a window with the choice (maybe the copydialog, with everything
-		//except the blocksize disabled?
-		//bleh, this will be fixed as soon as the algorith to determine the optimal blocksize is in place
 		Operation * operation = new OperationCopy( devices[ current_device ],
 					 	       	   selected_partition,
 							   partition_new,
-						       	   copied_partition,
-							   32 ) ;
+						       	   copied_partition ) ;
 		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;

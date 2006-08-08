@@ -23,8 +23,7 @@ namespace GParted
 OperationCopy::OperationCopy( const Device & device,
 			      const Partition & partition_orig,
 			      const Partition & partition_new,
-			      const Partition & partition_copied,
-			      Sector block_size )
+			      const Partition & partition_copied )
 {
 	type = OPERATION_COPY ;
 
@@ -32,7 +31,6 @@ OperationCopy::OperationCopy( const Device & device,
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 	this ->partition_copied = partition_copied ;
-	this ->block_size = block_size ;
 
 	this ->partition_new .add_path(  
 		String::ucompose( _("copy of %1"), this ->partition_copied .get_path() ), true ) ;

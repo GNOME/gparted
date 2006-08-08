@@ -29,13 +29,11 @@ public:
 	OperationCopy( const Device & device,
 		       const Partition & partition_orig,
 		       const Partition & partition_new,
-		       const Partition & partition_copied,
-		       Sector block_size ) ;
+		       const Partition & partition_copied ) ;
 	
 	void apply_to_visual( std::vector<Partition> & partitions ) ;
 
 	Partition partition_copied ;
-	Sector block_size ;
 
 private:
 	void create_description() ;

@@ -61,7 +61,7 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partition> & partitions )
 {
-	//little bit of paranoia ;)
+	//little bit of paranoia ;)//FIXME: partition with STAT_NEW should not be restricted ;)
 	if ( selected_partition .sectors_used == -1 )
 		fs .shrink = GParted::FS::NONE ;
 	
