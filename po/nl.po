@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-04 19:56+0200\n"
-"PO-Revision-Date: 2006-08-05 15:14+0200\n"
+"POT-Creation-Date: 2006-08-07 19:53+0200\n"
+"PO-Revision-Date: 2006-08-08 16:39+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -395,14 +395,17 @@ msgstr "niet herkend"
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Een partitie kan geen lengte van %1 sectoren hebben"
 
+# ongeldig/niet geldig
 #: ../src/GParted_Core.cc:270
 msgid ""
 "A partition with used sectors (%1) greater than it's length (%2) is not valid"
-msgstr ""
+msgstr "Een partitie met gebruikte sectoren (%1) groter dan de lengte (%2) is niet geldig"
 
+# statusbericht?
+# zoek het echte/daadwerkelijke pad van %1
 #: ../src/GParted_Core.cc:293
 msgid "find real path of %1"
-msgstr ""
+msgstr "zoeken naar het daadwerkelijke pad van %1"
 
 #: ../src/GParted_Core.cc:312 ../src/GParted_Core.cc:1027
 msgid "path: %1"
@@ -465,12 +468,10 @@ msgstr "grootte: %1 (%2)"
 msgid "create new %1 filesystem"
 msgstr "nieuw %1 bestandssysteem aanmaken"
 
-# laten groeien/groter maken/uitbreiden/laten uitzetten
 #: ../src/GParted_Core.cc:1179
 msgid "move filesystem to the left"
-msgstr "bestandssysteem laten naar links verplaatsen"
+msgstr "bestandssysteem naar links verplaatsen"
 
-# laten groeien/groter maken/uitbreiden/laten uitzetten
 #: ../src/GParted_Core.cc:1181
 msgid "move filesystem to the right"
 msgstr "bestandssysteem naar rechts verplaatsen"
@@ -482,12 +483,12 @@ msgstr "bestandssysteem verplaatsen"
 #: ../src/GParted_Core.cc:1186
 msgid ""
 "new and old filesystem have the same positition. skipping this operation"
-msgstr ""
+msgstr "nieuwe en oude bestandssysteem hebben dezelfde positie. deze bewerking wordt overgeslagen"
 
 # gebruik makend van intern algoritme/gebruik intern algoritme
 #: ../src/GParted_Core.cc:1222
 msgid "using internal algorithm"
-msgstr ""
+msgstr "gebruik intern algoritme"
 
 #: ../src/GParted_Core.cc:1253 ../src/GParted_Core.cc:1258
 #: ../src/GParted_Core.cc:1297 ../src/GParted_Core.cc:1302
@@ -498,13 +499,12 @@ msgstr "%1 van %2 verplaatst"
 # gebruik makend van/gebruik/libparted gebruiken
 #: ../src/GParted_Core.cc:1351
 msgid "using libparted"
-msgstr ""
+msgstr "gebruik libparted"
 
 # van grootte veranderen/grootte van partitie wijzigen
 #: ../src/GParted_Core.cc:1449
-#, fuzzy
 msgid "resize/move partition"
-msgstr "partitie herschalen"
+msgstr "partitie verplaatsen/herschalen"
 
 #: ../src/GParted_Core.cc:1452
 msgid "move partition to the right"
@@ -542,7 +542,7 @@ msgstr "partitie naar links verplaatsen en verkleinen van %1 naar %2"
 #: ../src/GParted_Core.cc:1487 ../src/OperationResizeMove.cc:77
 msgid ""
 "new and old partition have the same size and positition. continuing anyway"
-msgstr ""
+msgstr "nieuwe en oude partitie hebben dezelfde grootte en positie. zal doorgaan"
 
 # oud/nieuw oude/nieuwe vorige/nieuwe
 #: ../src/GParted_Core.cc:1493
@@ -577,16 +577,16 @@ msgstr "bestandssysteem verkleinen"
 msgid "grow filesystem"
 msgstr "bestandssysteem vergroten"
 
-# herschalen
+# herschalen/ groter of kleiner maken
 #: ../src/GParted_Core.cc:1583
-#, fuzzy
 msgid "resize filesystem"
-msgstr "het bestandssysteem vergroten/verkleinen"
+msgstr "bestandssysteem herschalen"
 
+# grootte/afmeting
 #: ../src/GParted_Core.cc:1586
 msgid ""
 "new and old filesystem have the same size and positition. continuing anyway"
-msgstr ""
+msgstr "nieuwe en oude bestandssysteem hebben dezelfde grootte en positie. zal doorgaan"
 
 # laten groeien/groter maken/uitbreiden/laten uitzetten
 #: ../src/GParted_Core.cc:1620
@@ -594,10 +594,10 @@ msgid "grow filesystem to fill the partition"
 msgstr "bestandssysteem laten groeien tot de partitie is opgevuld"
 
 #: ../src/GParted_Core.cc:1625
-#, fuzzy
 msgid "growing is not available for this filesystem"
-msgstr "Kan dit bestandssysteem niet formatteren als %1."
+msgstr "kan dit bestandssysteem niet laten groeien"
 
+# bestandssysteem kopieren van 1 naar 2
 #: ../src/GParted_Core.cc:1651
 msgid "copy filesystem of %1 to %2"
 msgstr "bestandssysteem van %1 kopiëren naar %2"
@@ -651,21 +651,18 @@ msgstr "nieuwe grootte en positie berekenen van %1"
 msgid "minimum size: %1"
 msgstr "minimum grootte: %1"
 
-# oud/nieuw oude/nieuwe vorige/nieuwe
 #: ../src/GParted_Core.cc:1906
-#, fuzzy
 msgid "requested start: %1"
-msgstr "oude begin: %1"
+msgstr "gevraagd begin: %1"
 
 #: ../src/GParted_Core.cc:1907
-#, fuzzy
 msgid "requested end: %1"
-msgstr "oude eind: %1"
+msgstr "gevraagd eind: %1"
 
 # gevraagde/aangevraagde/verzochte
 #: ../src/GParted_Core.cc:1908
 msgid "requested size: %1 (%2)"
-msgstr ""
+msgstr "gevraagde grootte: %1 (%2)"
 
 #: ../src/OperationCopy.cc:38
 msgid "copy of %1"
@@ -684,7 +681,7 @@ msgstr "%1 kopiëren naar %2"
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
 #: ../src/OperationCreate.cc:86
 msgid "Create %1 #%2 (%3, %4) on %5"
-msgstr "%1 partitie #%2 (%3, %4) aanmaken op %5"
+msgstr "%1 #%2 (%3, %4) aanmaken op %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
 #: ../src/OperationDelete.cc:80
@@ -697,7 +694,6 @@ msgid "Format %1 as %2"
 msgstr "%1 formatteren als %2"
 
 #: ../src/OperationResizeMove.cc:75
-#, fuzzy
 msgid "resize/move %1"
 msgstr "%1 verplaatsen/herschalen"
 
@@ -710,16 +706,12 @@ msgid "Move %1 to the left"
 msgstr "%1 naar links verplaatsen"
 
 #: ../src/OperationResizeMove.cc:87
-#, fuzzy
 msgid "Grow %1 from %2 to %3"
-msgstr "%1 omzetten van %2 naar %3"
+msgstr "%1 vergroten van %2 naar %3"
 
-# 1 herschalen van 2 naar 3/
-# /grootte van 1 veranderen van 2 naar 3
 #: ../src/OperationResizeMove.cc:90
-#, fuzzy
 msgid "Shrink %1 from %2 to %3"
-msgstr "%1 herschalen van %2 naar %3"
+msgstr "%1 verkleinen van %2 naar %3"
 
 #: ../src/OperationResizeMove.cc:93
 msgid "Move %1 to the right and grow it from %2 to %3"
