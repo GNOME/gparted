@@ -20,7 +20,7 @@ EXTRA_DIST = \
 	OperationCopy.h			\
 	OperationCreate.h		\
 	OperationDelete.h		\
-	OperationDetail.cc		\
+	OperationDetail.h		\
 	OperationFormat.h		\
 	OperationResizeMove.h		\
         Partition.h  			\
