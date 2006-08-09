@@ -58,7 +58,6 @@ private:
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	bool check_device_path( const Glib::ustring & device_path ) ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
-	void disable_automount( const Device & device ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
 	void insert_unallocated( const Glib::ustring & device_path,
@@ -187,11 +186,6 @@ private:
 	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 	
-
-	//disabling automount stuff
-	bool DISABLE_AUTOMOUNT ;
-	std::map<Glib::ustring, Glib::ustring> disabled_automount_devices ;
-
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;
 	PedPartition *lp_partition ;

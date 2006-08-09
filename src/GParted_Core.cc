@@ -51,9 +51,23 @@ GParted_Core::GParted_Core()
 	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
-	DISABLE_AUTOMOUNT = false ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
+	
+	//disable automount //FIXME: temporary hack, till i find a better solution...
+	std::ofstream fdi_file( "/usr/share/hal/fdi/policy/gparted-disable-automount.fdi" ) ;
+	if ( fdi_file )
+	{
+		fdi_file << "<deviceinfo version='0.2'>" ;
+		fdi_file << "<device>" ;
+		fdi_file << "<match key='@block.storage_device:storage.hotpluggable' bool='true'>" ;
+		fdi_file << "<merge key='volume.ignore' type='bool'>true</merge>" ;
+		fdi_file << "</match>" ;
+		fdi_file << "</device>" ;
+		fdi_file << "</deviceinfo>" ;
+
+		fdi_file .close() ;
+	}	
 
 	//get valid flags ...
 	for ( PedPartitionFlag flag = ped_partition_flag_next( static_cast<PedPartitionFlag>( NULL ) ) ;
@@ -64,15 +78,6 @@ GParted_Core::GParted_Core()
 	//throw libpartedversion to the stdout to see which version is actually used.
 	std::cout << "======================" << std::endl ;
 	std::cout << "libparted : " << ped_get_version() << std::endl ;
-
-	//see if we can disable automounting
-	if ( ! Glib::find_program_in_path( "hal-find-by-property" ) .empty() &&
-	     ! Glib::find_program_in_path( "hal-set-property" ) .empty() )
-	{
-		DISABLE_AUTOMOUNT = true ;
-		std::cout << "automounting disabled" << std::endl ;
-	}
-
 	std::cout << "======================" << std::endl ;
 	
 	//initialize filesystemlist
@@ -161,11 +166,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
 	
-	//remove non-existing devices from disabled_automount_devices..
-	for ( iter = disabled_automount_devices .begin() ; iter != disabled_automount_devices .end() ; ++iter )
-		if ( std::find( device_paths .begin(), device_paths .end(), iter ->first ) == device_paths .end() )
-			disabled_automount_devices .erase( iter ) ;
-
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
 		if ( check_device_path( device_paths[ t ] ) &&
@@ -195,7 +195,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
-				disable_automount( temp_device ) ;
 				set_device_partitions( temp_device ) ;
 				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions ) ;
@@ -570,38 +569,6 @@ std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustrin
 		paths .push_back( iter ->second ) ;
 
 	return paths ;
-}
-
-void GParted_Core::disable_automount( const Device & device ) 
-{
-	if ( DISABLE_AUTOMOUNT )
-	{
-		if ( disabled_automount_devices .find( device .get_path() ) == disabled_automount_devices .end() )
-		{
-			//get HAL device-id
-			Glib::ustring hal_id, error ;
-			bool found = false ;
-
-			for ( unsigned int t = 0 ; t < device .get_paths() .size() && ! found ; t++ )
-				found = ! Utils::execute_command(
-						"hal-find-by-property --key 'block.device' --string '" +
-						device .get_paths()[ t ] + "'",
-						hal_id,
-						error ) ;
-
-			if ( found )
-			{
-				if ( ! hal_id .empty() && hal_id[ hal_id .length() -1 ] == '\n' )
-					hal_id .erase( hal_id .length() -1, 1 ) ;
-					
-				Utils::execute_command( "hal-set-property --udi '" + hal_id + 
-							"' --key 'storage.automount_enabled_hint' --bool false" ) ;
-			}
-			
-			//found or not found.. we're done with this device..
-			disabled_automount_devices[ device. get_path() ] = hal_id ;
-		}
-	}
 }
 
 void GParted_Core::set_device_partitions( Device & device ) 
@@ -2117,6 +2084,9 @@ GParted_Core::~GParted_Core()
 {
 	if ( p_filesystem )
 		delete p_filesystem ;
+
+	//remove .fdi file..
+	remove( "/usr/share/hal/fdi/policy/gparted-disable-automount.fdi" ) ;
 }
 	
 } //GParted
