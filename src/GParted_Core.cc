@@ -1367,6 +1367,10 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	
 	PedConstraint *constraint = NULL ;
 	lp_partition = NULL ;
+
+	//sometimes the lp_partition ->geom .start,end and length values display random numbers
+	//after going out of the 'if ( lp_partition)' scope. That's why we use some variables here.
+	Sector new_start = -1, new_end = -1 ;
 		
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
@@ -1389,7 +1393,12 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 								  constraint,
 								  partition_new .sector_start,
 								  partition_new .sector_end ) )
+				{
+					new_start = lp_partition ->geom .start ;
+					new_end = lp_partition ->geom .end ;
+
 					return_value = commit() ;
+				}
 									
 				ped_constraint_destroy( constraint );
 			}
@@ -1402,11 +1411,11 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	{
 		operation_details .back() .sub_details .push_back( 
 			OperationDetail(
-				String::ucompose( _("new start: %1"), lp_partition ->geom .start ) + "\n" +
-				String::ucompose( _("new end: %1"), lp_partition ->geom .end ) + "\n" +
+				String::ucompose( _("new start: %1"), new_start ) + "\n" +
+				String::ucompose( _("new end: %1"), new_end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
-					 	  lp_partition ->geom .length,
-					  	  Utils::format_size( lp_partition ->geom .length ) ),
+					 	  new_end - new_start + 1,
+					  	  Utils::format_size( new_end - new_start + 1 ) ),
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
 	}
