@@ -121,7 +121,7 @@ private:
 			      const Partition & partition_dest,
 			      std::vector<OperationDetail> & operation_details ) ;
 
-	bool check_repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
+	bool check_repair_filesystem( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
 
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetail> & operation_details ) ;
@@ -158,7 +158,7 @@ private:
 			           Partition & partition_new,
 				   std::vector<OperationDetail> & operation_details,
 				   Sector min_size = -1 ) ;
-	void set_proper_filesystem( const FILESYSTEM & filesystem ) ;
+	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 
