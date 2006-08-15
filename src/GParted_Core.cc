@@ -1654,6 +1654,19 @@ bool GParted_Core::set_partition_type( const Partition & partition,
 	return return_value ;
 }
 	
+void GParted_Core::set_progress_info( Sector total,
+				      Sector done,
+				      std::time_t time_start,
+				      OperationDetail & operationdetail ) 
+{//FIXME, add time remaining to the progress_text (remaining xx:xx:xx)
+	operationdetail .progress_text = 
+		String::ucompose( _("%1 of %2 copied"), Utils::format_size( done ), Utils::format_size( total ) ) ; 
+			
+	operationdetail .set_description( String::ucompose( _("%1 of %2 copied"), done, total ), FONT_ITALIC ) ;
+
+	operationdetail .fraction = done / static_cast<double>( total ) ;
+}
+	
 bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
 		      		     	   const Partition & partition_new,
 					   CopyType copytype,
@@ -1740,7 +1753,6 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		lp_device_dst = ped_device_get( dst_device .c_str() );
 	else
 		lp_device_dst = lp_device_src ;
-
 	Glib::ustring error_message ;
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
@@ -1748,6 +1760,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		//add an empty sub which we will constantly update in the loop
 		operation_details .back() .sub_details .push_back( OperationDetail( "", STATUS_NONE ) ) ;
 	
+		std::time_t time_start = std::time(NULL) ;
 		Sector t ;
 		if ( copytype == START_TO_END )
 		{
@@ -1761,20 +1774,12 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 						   blocksize,
 						   error_message ) ) 
 					break ;
-			//FIXME: the stuff in the if-block should get its own function and should display remaining time.
-				if ( show_progress && t % (blocksize * 100) == 0 )
-				{
-					operation_details .back() .sub_details .back() .progress_text =
-						String::ucompose( _("%1 of %2 copied"),
-								  Utils::format_size( t +blocksize ),
-								  Utils::format_size( sectors ) ) ; 
 			
-					operation_details .back() .sub_details .back() .set_description( 
-						String::ucompose( _("%1 of %2 copied"), t +blocksize, sectors ), FONT_ITALIC ) ;
-
-					operation_details .back() .sub_details .back() .fraction = 
-									t / static_cast<double>( sectors ) ;
-				}
+				if ( show_progress && (std::time(NULL) - time_start) > 1 )
+					set_progress_info( sectors,
+							   t + blocksize,
+							   time_start,
+							   operation_details .back() .sub_details .back() ) ;
 			}
 
 			if ( rest_sectors > 0 &&
@@ -1800,19 +1805,11 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 						   error_message ) )
 					break ;
 
-				if ( show_progress && t % (blocksize * 100) == 0 )
-				{
-					operation_details .back() .sub_details .back() .progress_text =
-						String::ucompose( _("%1 of %2 copied"),
-								  Utils::format_size( t +blocksize ),
-								  Utils::format_size( sectors ) ) ; 
-			
-					operation_details .back() .sub_details .back() .set_description( 
-						String::ucompose( _("%1 of %2 copied"), t +blocksize, sectors ), FONT_ITALIC ) ;
-		
-					operation_details .back() .sub_details .back() .fraction =
-									t / static_cast<double>( sectors ) ;
-				}
+				if ( show_progress && (std::time(NULL) - time_start) > 1 )
+					set_progress_info( sectors,
+							   t + blocksize,
+							   time_start,
+							   operation_details .back() .sub_details .back() ) ;
 			}
 
 			if ( rest_sectors > 0 &&

@@ -126,6 +126,8 @@ private:
 	bool set_partition_type( const Partition & partition,
 				 std::vector<OperationDetail> & operation_details ) ;
 
+	void set_progress_info( Sector total, Sector done, std::time_t time_start, OperationDetail & operationdetail ) ;
+
 	enum CopyType
 	{
 		START_TO_END = 0,
