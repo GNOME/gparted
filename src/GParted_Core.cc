@@ -352,7 +352,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				break ;
 		}
 
-	if ( ! succes && libparted_messages .size() > 0 )
+	if ( libparted_messages .size() > 0 )
 	{
 		operation ->operation_detail .sub_details .push_back( 
 			OperationDetail( _("libparted messages"), STATUS_INFO ) ) ;
@@ -1658,13 +1658,38 @@ void GParted_Core::set_progress_info( Sector total,
 				      Sector done,
 				      std::time_t time_start,
 				      OperationDetail & operationdetail ) 
-{//FIXME, add time remaining to the progress_text (remaining xx:xx:xx)
-	operationdetail .progress_text = 
-		String::ucompose( _("%1 of %2 copied"), Utils::format_size( done ), Utils::format_size( total ) ) ; 
+{
+	operationdetail .fraction = done / static_cast<double>( total ) ;
+
+	double sec_per_frac = (std::time( NULL ) - time_start) / static_cast<double>( operationdetail .fraction ) ;
+
+	std::time_t time_remaining = Utils::round( (1.0 - operationdetail .fraction) * sec_per_frac ) ;
+
+	//format it a bit..
+	Glib::ustring time ;
+	
+	int unit = static_cast<int>( time_remaining / 3600 ) ;
+	if ( unit < 10 )
+		time += "0" ;
+	time += Utils::num_to_str( unit ) + ":" ;
+	time_remaining %= 3600 ;
+
+	unit = static_cast<int>( time_remaining / 60 ) ;
+	if ( unit < 10 )
+		time += "0" ;
+	time += Utils::num_to_str( unit ) + ":" ;
+	time_remaining %= 60 ;
+
+	if ( time_remaining < 10 )
+		time += "0" ;
+	time += Utils::num_to_str( time_remaining ) ;
+
+	operationdetail .progress_text = String::ucompose( _("%1 of %2 copied (%3 remaining)"),
+							   Utils::format_size( done ),
+							   Utils::format_size( total ),
+							   time ) ; 
 			
 	operationdetail .set_description( String::ucompose( _("%1 of %2 copied"), done, total ), FONT_ITALIC ) ;
-
-	operationdetail .fraction = done / static_cast<double>( total ) ;
 }
 	
 bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
