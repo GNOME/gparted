@@ -41,30 +41,28 @@ FS hfs::get_filesystem_support()
 	return fs ;
 }
 
-void hfs::Set_Used_Sectors( Partition & partition ) 
+void hfs::set_used_sectors( Partition & partition ) 
 {
 }
 
-bool hfs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "hformat " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "hformat " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool hfs::Resize( const Partition & partition_new,
-		  std::vector<OperationDetail> & operation_details,
-		  bool fill_partition )
+bool hfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	return true ;
 }
 
-bool hfs::Copy( const Glib::ustring & src_part_path,
+bool hfs::copy( const Glib::ustring & src_part_path,
 		const Glib::ustring & dest_part_path,
-		std::vector<OperationDetail> & operation_details )
+		OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool hfs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool hfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

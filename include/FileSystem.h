@@ -34,18 +34,18 @@ public:
 	virtual ~FileSystem() {}
 
 	virtual FS get_filesystem_support() = 0 ;
-	virtual void Set_Used_Sectors( Partition & partition ) = 0 ;
-	virtual bool Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details ) = 0 ;
-	virtual bool Resize( const Partition & partition_new,
-			     std::vector<OperationDetail> & operation_details,
+	virtual void set_used_sectors( Partition & partition ) = 0 ;
+	virtual bool create( const Partition & new_partition, OperationDetail & operationdetail ) = 0 ;
+	virtual bool resize( const Partition & partition_new,
+			     OperationDetail & operationdetail,
 			     bool fill_partition = false ) = 0 ;
-	virtual bool Copy( const Glib::ustring & src_part_path,
+	virtual bool copy( const Glib::ustring & src_part_path,
 			   const Glib::ustring & dest_part_path,
-			   std::vector<OperationDetail> & operation_details ) = 0 ;
-	virtual bool Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) = 0 ;
+			   OperationDetail & operationdetail ) = 0 ;
+	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
 	
 protected:
-	int execute_command( const Glib::ustring & command, std::vector<OperationDetail> & operation_details ) ;
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
 
 	//those are used in several places..
 	Glib::ustring output, error ;

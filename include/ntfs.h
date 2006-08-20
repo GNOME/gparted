@@ -28,15 +28,13 @@ class ntfs : public FileSystem
 {
 public:
 	FS get_filesystem_support() ;
-	void Set_Used_Sectors( Partition & partition ) ;
-	bool Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details ) ;
-	bool Resize( const Partition & partition_new,
-		     std::vector<OperationDetail> & operation_details,
-		     bool fill_partition = false ) ;
-	bool Copy( const Glib::ustring & src_part_path, 
+	void set_used_sectors( Partition & partition ) ;
+	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
+	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
+	bool copy( const Glib::ustring & src_part_path, 
 		   const Glib::ustring & dest_part_path,
-		   std::vector<OperationDetail> & operation_details ) ;
-	bool Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details ) ;
+		   OperationDetail & operationdetail ) ;
+	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 };
 
 } //GParted

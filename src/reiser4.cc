@@ -50,7 +50,7 @@ FS reiser4::get_filesystem_support()
 	return fs ;
 }
 
-void reiser4::Set_Used_Sectors( Partition & partition ) 
+void reiser4::set_used_sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
@@ -71,28 +71,26 @@ void reiser4::Set_Used_Sectors( Partition & partition )
 		partition .messages .push_back( error ) ;
 }
 
-bool reiser4::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool reiser4::Resize( const Partition & partition_new,
-		      std::vector<OperationDetail> & operation_details,
-		      bool fill_partition )
+bool reiser4::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	return true ;
 }
 
-bool reiser4::Copy( const Glib::ustring & src_part_path, 
+bool reiser4::copy( const Glib::ustring & src_part_path, 
 		    const Glib::ustring & dest_part_path,
-		    std::vector<OperationDetail> & operation_details )
+		    OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool reiser4::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(), operation_details ) ;
+	return ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(), operationdetail ) ;
 }
 
 } //GParted

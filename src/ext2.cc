@@ -51,7 +51,7 @@ FS ext2::get_filesystem_support()
 	return fs ;
 }
 
-void ext2::Set_Used_Sectors( Partition & partition ) 
+void ext2::set_used_sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( "dumpe2fs -h " + partition .get_path(), output, error, true ) )
 	{
@@ -72,14 +72,12 @@ void ext2::Set_Used_Sectors( Partition & partition )
 		partition .messages .push_back( error ) ;
 }
 
-bool ext2::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkfs.ext2 " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool ext2::Resize( const Partition & partition_new,
-		   std::vector<OperationDetail> & operation_details,
-		   bool fill_partition )
+bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
 	
@@ -87,19 +85,19 @@ bool ext2::Resize( const Partition & partition_new,
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
 					partition_new .get_length(), GParted::UNIT_KIB ) ) -1, true ) + "K" ; 
 		
-	return ! execute_command( str_temp, operation_details ) ;
+	return ! execute_command( str_temp, operationdetail ) ;
 }
 
-bool ext2::Copy( const Glib::ustring & src_part_path, 
+bool ext2::copy( const Glib::ustring & src_part_path, 
 		 const Glib::ustring & dest_part_path,
-		 std::vector<OperationDetail> & operation_details )
+		 OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool ext2::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operation_details ) ;
+	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operationdetail ) ;
 	
 	//exitstatus 256 isn't documented, but it's returned when the 'FILESYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...

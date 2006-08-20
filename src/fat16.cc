@@ -49,7 +49,7 @@ FS fat16::get_filesystem_support()
 	return fs ;
 }
 
-void fat16::Set_Used_Sectors( Partition & partition ) 
+void fat16::set_used_sectors( Partition & partition ) 
 {
 	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 )
@@ -73,28 +73,26 @@ void fat16::Set_Used_Sectors( Partition & partition )
 		partition .messages .push_back( error ) ;
 }
 	
-bool fat16::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool fat16::Resize( const Partition & partition_new,
-		    std::vector<OperationDetail> & operation_details,
-		    bool fill_partition )
+bool fat16::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	return true ;
 }
 
-bool fat16::Copy( const Glib::ustring & src_part_path,
+bool fat16::copy( const Glib::ustring & src_part_path,
 		  const Glib::ustring & dest_part_path,
-		  std::vector<OperationDetail> & operation_details )
+		  OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool fat16::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operation_details ) ;
+	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operationdetail ) ;
 
 	return ( exit_status == 0 || exit_status == 1 ) ;
 }

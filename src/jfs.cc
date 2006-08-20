@@ -70,7 +70,7 @@ FS jfs::get_filesystem_support()
 	return fs ;
 }
 
-void jfs::Set_Used_Sectors( Partition & partition ) 
+void jfs::set_used_sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( "echo dm | jfs_debugfs " + partition .get_path(), output, error, true ) )
 	{
@@ -93,83 +93,81 @@ void jfs::Set_Used_Sectors( Partition & partition )
 		partition .messages .push_back( error ) ;
 }
 
-bool jfs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool jfs::Resize( const Partition & partition_new,
-		  std::vector<OperationDetail> & operation_details,
-		  bool fill_partition )
+bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool return_value = false ;
 	Glib::ustring error ;
 	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_jfs_mountpoint" ;
 	
 	//create mountpoint...
-	operation_details .push_back(
-		OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
 	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
-		operation_details .back() .status = STATUS_SUCCES ;
+		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 
 		//mount partition
-		operation_details .push_back(
+		operationdetail .add_child(
 			OperationDetail( String::ucompose( _("mount %1 on %2"), partition_new .get_path(), TEMP_MP ) ) ) ;
 		
 		if ( ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + TEMP_MP,
-					operation_details .back() .sub_details ) )
+					operationdetail .get_last_child() ) )
 		{
-			operation_details .back() .status = STATUS_SUCCES ;
+			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			
 			//remount the partition to resize the filesystem
-			operation_details .push_back(
+			operationdetail .add_child(
 				OperationDetail( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
-							partition_new .get_path(), TEMP_MP ) ) ) ;
+								   partition_new .get_path(),
+								   TEMP_MP ) ) ) ;
 			
 			if ( ! execute_command( 
 					"mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + TEMP_MP,
-					operation_details .back() .sub_details ) )
+					operationdetail .get_last_child() ) )
 			{
-				operation_details .back() .status = STATUS_SUCCES ;
+				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 				return_value = true ;
 			}
 			else
 			{
-				operation_details .back() .status = STATUS_ERROR ;
+				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 			}
 			
 			//and unmount it...
-			operation_details .push_back(
+			operationdetail .add_child(
 				OperationDetail( String::ucompose( _("unmount %1"), partition_new .get_path() ) ) ) ;
 		
 			if ( ! execute_command( "umount -v " + partition_new .get_path(),
-						operation_details .back() .sub_details ) )
+						operationdetail .get_last_child() ) )
 			{
-				operation_details .back() .status = STATUS_SUCCES ;
+				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			}
 			else
 			{
-				operation_details .back() .status = STATUS_ERROR ;
+				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 				return_value = false ;
 			}
 		}
 		else
 		{
-			operation_details .back() .status = STATUS_ERROR ;
+			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
 		
 		//remove the mountpoint..
-		operation_details .push_back(
+		operationdetail .add_child(
 			OperationDetail( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
 		if ( ! rmdir( TEMP_MP .c_str() ) )
 		{
-			operation_details .back() .status = STATUS_SUCCES ;
+			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 		}
 		else
 		{
-			operation_details .back() .status = STATUS_ERROR ;
-			operation_details .back() .sub_details .push_back(
+			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+			operationdetail .get_last_child() .add_child( 
 				OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
 
 			return_value = false ;
@@ -177,24 +175,24 @@ bool jfs::Resize( const Partition & partition_new,
 	}
 	else
 	{
-		operation_details .back() .status = STATUS_ERROR ;
-		operation_details .back() .sub_details .push_back(
+		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+		operationdetail .get_last_child() .add_child( 
 			OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
 	}
 	
 	return return_value ;
 }
 
-bool jfs::Copy( const Glib::ustring & src_part_path, 
+bool jfs::copy( const Glib::ustring & src_part_path, 
 		const Glib::ustring & dest_part_path,
-		std::vector<OperationDetail> & operation_details )
+		OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool jfs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool jfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "jfs_fsck -f " + partition .get_path(), operation_details ) ;
+	exit_status = execute_command( "jfs_fsck -f " + partition .get_path(), operationdetail ) ;
 
 	return ( exit_status == 0 || exit_status == 1 ) ;
 }

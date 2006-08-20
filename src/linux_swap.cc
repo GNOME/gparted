@@ -39,30 +39,39 @@ FS linux_swap::get_filesystem_support()
 	return fs ;
 }
 
-void linux_swap::Set_Used_Sectors( Partition & partition ) 
+void linux_swap::set_used_sectors( Partition & partition ) 
 {
 }
 
-bool linux_swap::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkswap " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkswap " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool linux_swap::Resize( const Partition & partition_new, 
-			 std::vector<OperationDetail> & operation_details,
-			 bool fill_partition )
+bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	return Create( partition_new, operation_details ) ;
+	operationdetail .add_child( OperationDetail( 
+		String::ucompose( _("create new %1 filesystem"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
+	if ( create( partition_new, operationdetail .get_last_child() ) ) 
+	{
+		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		return true ;
+	}
+	else
+	{
+		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+		return false ;
+	}
 }
 
-bool linux_swap::Copy( const Glib::ustring & src_part_path,
+bool linux_swap::copy( const Glib::ustring & src_part_path,
 		       const Glib::ustring & dest_part_path,
-		       std::vector<OperationDetail> & operation_details )
+		       OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool linux_swap::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool linux_swap::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

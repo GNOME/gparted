@@ -51,15 +51,30 @@ public:
 			 Font font = FONT_NORMAL ) ;
 	void set_description( const Glib::ustring & description, Font font = FONT_NORMAL ) ;
 	Glib::ustring get_description() const ;
+	void set_status( OperationDetailStatus status ) ;
+	OperationDetailStatus get_status() const ;
+	void set_treepath( const Glib::ustring & treepath ) ;
+	Glib::ustring get_treepath() const ;
+	
+	void add_child( const OperationDetail & operationdetail ) ;
+	std::vector<OperationDetail> & get_childs() ;
+	const std::vector<OperationDetail> & get_childs() const ;
+	OperationDetail & get_last_child() ;
 
-	OperationDetailStatus status ; 
 	double fraction ;
 	Glib::ustring progress_text ;
-
-	std::vector<OperationDetail> sub_details ; 	
+	
+	sigc::signal< void, const OperationDetail & > signal_update ;
 
 private:
+	void on_update( const OperationDetail & operationdetail ) ;
+	
 	Glib::ustring description ;
+	OperationDetailStatus status ; 
+
+	Glib::ustring treepath ;
+	
+	std::vector<OperationDetail> sub_details ; 	
 };
 
 } //GParted

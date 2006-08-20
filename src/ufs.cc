@@ -33,30 +33,28 @@ FS ufs::get_filesystem_support()
 	return fs ;
 }
 
-void ufs::Set_Used_Sectors( Partition & partition ) 
+void ufs::set_used_sectors( Partition & partition ) 
 {
 }
 
-bool ufs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
-{
-	return true ;
-}
-
-bool ufs::Resize( const Partition & partition_new, 
-		      std::vector<OperationDetail> & operation_details,
-		      bool fill_partition )
+bool ufs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return true ;
 }
 
-bool ufs::Copy( const Glib::ustring & src_part_path,
-		    const Glib::ustring & dest_part_path,
-		    std::vector<OperationDetail> & operation_details )
+bool ufs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	return true ;
 }
 
-bool ufs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool ufs::copy( const Glib::ustring & src_part_path,
+		const Glib::ustring & dest_part_path,
+		OperationDetail & operationdetail )
+{
+	return true ;
+}
+
+bool ufs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

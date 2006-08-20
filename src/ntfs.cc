@@ -54,7 +54,7 @@ FS ntfs::get_filesystem_support()
 	return fs ;
 }
 
-void ntfs::Set_Used_Sectors( Partition & partition ) 
+void ntfs::set_used_sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( "ntfscluster --force " + partition .get_path(), output, error, true ) )
 	{
@@ -70,14 +70,12 @@ void ntfs::Set_Used_Sectors( Partition & partition )
 		partition .messages .push_back( error ) ;
 }
 
-bool ntfs::Create( const Partition & new_partition, std::vector<OperationDetail> & operation_details )
+bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operation_details ) ;
+	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operationdetail ) ;
 }
 
-bool ntfs::Resize( const Partition & partition_new, 
-		   std::vector<OperationDetail> & operation_details,
-		   bool fill_partition )
+bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool return_value = false ;
 	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
@@ -90,43 +88,43 @@ bool ntfs::Resize( const Partition & partition_new,
 	}
 	
 	//simulation..
-	operation_details .push_back( OperationDetail( _("run simulation") ) ) ;
+	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
 
-	if ( ! execute_command( str_temp + " --no-action", operation_details .back() .sub_details ) )
+	if ( ! execute_command( str_temp + " --no-action", operationdetail .get_last_child() ) )
 	{
-		operation_details .back() .status = STATUS_SUCCES ;
+		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 
 		//real resize
-		operation_details .push_back( OperationDetail( _("real resize") ) ) ;
+		operationdetail .add_child( OperationDetail( _("real resize") ) ) ;
 
-		if ( ! execute_command( str_temp, operation_details .back() .sub_details ) )
+		if ( ! execute_command( str_temp, operationdetail .get_last_child() ) )
 		{
-			operation_details .back() .status = STATUS_SUCCES ;
+			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			return_value = true ;
 		}
 		else
 		{
-			operation_details .back() .status = STATUS_ERROR ;
+			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
 	}
 	else
 	{
-		operation_details .back() .status = STATUS_ERROR ;
+		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 	}
 	
 	return return_value ;
 }
 
-bool ntfs::Copy( const Glib::ustring & src_part_path,
+bool ntfs::copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
-		 std::vector<OperationDetail> & operation_details )
+		 OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path, operation_details ) ;
+	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path, operationdetail ) ;
 }
 
-bool ntfs::Check_Repair( const Partition & partition, std::vector<OperationDetail> & operation_details )
+bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operation_details ) ; 
+	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operationdetail ) ; 
 }
 
 } //GParted

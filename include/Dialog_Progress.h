@@ -43,7 +43,8 @@ public:
 	sigc::signal< bool, Operation * > signal_apply_operation ;
 		
 private:
-	void update_operation_details( const Gtk::TreeRow & treerow, const OperationDetail & operation_detail ) ;
+	void on_signal_update( const OperationDetail & operationdetail ) ;
+	void dispatcher_on_update_gui_elements() ;
 	void on_signal_show() ;
 	void on_expander_changed() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
@@ -89,11 +90,15 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	std::vector<Operation *> operations ;
+	OperationDetail operationdetail ;
 	bool running, succes, cancel, pulse ;
 	pthread_t pthread ;
 	double fraction ;
 	unsigned int t ;
 	Glib::ustring str_temp ;
+
+	Glib::Dispatcher dispatcher_update_gui_elements ;
+	Glib::ustring label_current_sub_text ;
 };
 
 }//GParted

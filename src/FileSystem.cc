@@ -25,17 +25,17 @@ FileSystem::FileSystem()
 {
 }
 
-int FileSystem::execute_command( const Glib::ustring & command, std::vector<OperationDetail> & operation_details ) 
+int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) 
 {
-	operation_details .push_back( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+	operationdetail .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 
 	int exit_status = Utils::execute_command( command, output, error ) ;
 
 	if ( ! output .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
 	
 	if ( ! error .empty() )
-		operation_details .back() .sub_details .push_back( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
 
 	return exit_status ;
 }
