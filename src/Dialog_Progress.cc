@@ -328,7 +328,7 @@ void Dialog_Progress::on_save()
 	dialog .set_transient_for( *this ) ;
 	dialog .set_current_folder( Glib::get_home_dir() ) ;
 	dialog .set_current_name( "gparted_details.htm" ) ;
-//	dialog .set_do_overwrite_confirmation( true ) ; FIXME: since gtkmm-2.8.. 
+	dialog .set_do_overwrite_confirmation( true ) ; 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ; 
 	dialog .add_button( Gtk::Stock::SAVE, Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
 
