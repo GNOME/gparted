@@ -62,7 +62,9 @@ void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partitio
 void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partition> & partitions )
 {
 	//little bit of paranoia ;)
-	if ( selected_partition .sectors_used == -1 && selected_partition .status != STAT_NEW )
+	if ( selected_partition .sectors_used == -1 && 
+	     selected_partition .status != STAT_NEW &&
+	     selected_partition .filesystem != FS_LINUX_SWAP )
 		fs .shrink = GParted::FS::NONE ;
 	
 	//see if we need a fixed_start
