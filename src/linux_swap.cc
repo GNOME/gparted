@@ -31,10 +31,10 @@ FS linux_swap::get_filesystem_support()
 		fs .create = GParted::FS::EXTERNAL ;
 		fs .grow = GParted::FS::EXTERNAL ;
 		fs .shrink = GParted::FS::EXTERNAL ;
-		fs .move = GParted::FS::EXTERNAL ;
 	}
 	
 	fs .copy = GParted::FS::GPARTED ;
+	fs .move = GParted::FS::GPARTED ;
 	
 	return fs ;
 }
