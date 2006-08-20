@@ -972,7 +972,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 			{
 				if ( min_size > 0 )
 					constraint ->min_size = min_size ;
-			
+		
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
 				{
 					//we have to free the result of ped_partition_get_path()..
@@ -1002,25 +1002,16 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		close_device_and_disk() ;
 	}
 
-
 	if ( new_partition .partition_number > 0 &&
-	     (	
-		new_partition .type == GParted::TYPE_EXTENDED ||
-	     	(
-	     	   wait_for_node( new_partition .get_path() ) && 
-	     	   erase_filesystem_signatures( new_partition )
-	     	)
-	     )
-	   )
+	     erase_filesystem_signatures( new_partition ) &&
+	     ( new_partition .type == GParted::TYPE_EXTENDED || wait_for_node( new_partition .get_path() ) ) )
 	{ 
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		
 		return true ;
 	}
 	else
 	{		
 		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;	
-		
 		return false ;
 	} 
 }
@@ -1071,7 +1062,6 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
 		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
-		sleep( 1 ) ; //give the kernel some time to reread the partitiontable
 	
 		close_device_and_disk() ;
 	}
@@ -1223,8 +1213,9 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 							    partition_new .sector_start,
 							    partition_new .get_length() ) ;
 				if ( lp_geom )
-					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit() ;
-				
+					return_value = ped_file_system_resize( fs, lp_geom, NULL ) &&
+						       commit( partition_new .get_path() ) ;
+
 				ped_file_system_close( fs );
 			}
 		}
@@ -1386,7 +1377,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					new_start = lp_partition ->geom .start ;
 					new_end = lp_partition ->geom .end ;
 
-					return_value = commit() ;
+					return_value = commit( partition_new .type == TYPE_EXTENDED ? 
+									"" : partition_new .get_path() ) ;
 				}
 									
 				ped_constraint_destroy( constraint );
@@ -1409,18 +1401,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			FONT_ITALIC ) ) ;
 	}
 	
-	if ( partition_old .type == GParted::TYPE_EXTENDED )
-	{
-		operationdetail .get_last_child() .set_status(  return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
-		return return_value ;
-	}
-	else
-	{
-		return_value &= wait_for_node( partition_new .get_path() ) ;
-		operationdetail .get_last_child() .set_status(  return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
-
-		return return_value ;
-	}
+	operationdetail .get_last_child() .set_status(  return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
+	
+	return return_value ;
 }
 
 bool GParted_Core::resize_filesystem( const Partition & partition_old,
@@ -1624,7 +1607,9 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		{
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
-			if ( lp_partition && ped_partition_set_system( lp_partition, fs_type ) && commit() )
+			if ( lp_partition &&
+			     ped_partition_set_system( lp_partition, fs_type ) && 
+			     commit( partition .get_path() ) )
 			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail( String::ucompose( _("new partitiontype: %1"),
@@ -1632,7 +1617,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 							 STATUS_NONE,
 							 FONT_ITALIC ) ) ;
 
-				return_value = wait_for_node( partition .get_path() ) ;
+				return_value = true ;
 			}
 		}
 
@@ -2100,12 +2085,15 @@ void GParted_Core::close_device_and_disk()
 	lp_device = NULL ;
 }	
 
-bool GParted_Core::commit() 
+bool GParted_Core::commit( const Glib::ustring & node ) 
 {
 	bool return_value = ped_disk_commit_to_dev( lp_disk ) ;
 	
 	ped_disk_commit_to_os( lp_disk ) ;
-	
+
+	if ( ! node .empty() && return_value )
+		return_value = wait_for_node( node ) ;
+
 	return return_value ;
 }
 	

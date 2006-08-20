@@ -162,7 +162,7 @@ private:
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
 	void close_disk() ;
 	void close_device_and_disk() ;
-	bool commit() ;
+	bool commit( const Glib::ustring & node = "" ) ;
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 

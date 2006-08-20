@@ -1,6 +1,13 @@
 2006-08-20 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
-	* src/Dialog_Partition_Resize_Move.cc: due to some restrictions it as
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: fixed some issues with combi move+shrink on
+	  fat* and hfs* filesystems. 
+	  Also call wait_for_node() from commit() if 'node' was provided.
+
+2006-08-20 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/Dialog_Partition_Resize_Move.cc: due to some restrictions it was
 	  no longer possible to shrink swap filesystems. fixed.
 
 2006-08-20 Bart Hakvoort <hakvoort@cvs.gnome.org>
