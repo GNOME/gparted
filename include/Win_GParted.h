@@ -69,47 +69,51 @@ private:
 	void set_valid_operations() ;
 	
 	//convenience functions
-	void allow_new( bool b )	{ 
-		menu_partition .items()[ 0 ] .set_sensitive( b );
-		toolbar_main .get_nth_item( 0 ) ->set_sensitive( b ); }
-		
-	void allow_delete( bool b )	{ 
-		menu_partition .items()[ 1 ] .set_sensitive( b ); 
-		toolbar_main .get_nth_item( 1 ) ->set_sensitive( b ); }
-		
-	void allow_resize( bool b ) 	{ 
-		menu_partition .items()[ 3 ] .set_sensitive( b ); 
-		toolbar_main .get_nth_item( 3 ) ->set_sensitive( b ); }
-		
-	void allow_copy( bool b )	{ 
-		menu_partition .items()[ 5 ] .set_sensitive( b ); 
-		toolbar_main .get_nth_item( 5 ) ->set_sensitive( b ); }
-		
-	void allow_paste( bool b )	{ 
-		menu_partition .items()[ 6 ] .set_sensitive( b ); 
-		toolbar_main .get_nth_item( 6 ) ->set_sensitive( b ); }
-		
-	void allow_format( bool b )	{ 
-		menu_partition .items()[ 8 ] .set_sensitive( b ); }
-	
-	void allow_toggle_swap_mount_state( bool b )	{ 
-		menu_partition .items()[ 10 ] .set_sensitive( b ); }
+	void toggle_item( bool state, int menu_item, int toolbar_item = -1 )
+        {
+                if ( menu_item >= 0 && menu_item < static_cast<int>( menu_partition .items() .size() ) )
+                        menu_partition .items()[ menu_item ] .set_sensitive( state ) ;
 
-	void allow_manage_flags( bool b ) {
-		menu_partition .items()[ 13 ] .set_sensitive( b ) ; }
-	
-	void allow_info( bool b )	{
-		menu_partition .items()[ 15 ] .set_sensitive( b ); }
-	
-	void allow_undo( bool b )	{ 
-		toolbar_main .get_nth_item( 8 ) ->set_sensitive( b ); 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 0 ] )
-			->set_sensitive( b ) ; }
+                if ( toolbar_item >= 0 && toolbar_item < toolbar_main .get_n_items() )
+                        toolbar_main .get_nth_item( toolbar_item ) ->set_sensitive( state ) ;
+        }
+
+	void allow_new( bool state )	{ 
+		toggle_item( state, MENU_NEW, TOOLBAR_NEW ) ; }
 		
-	void allow_apply( bool b )	{ 
-		toolbar_main .get_nth_item( 9 ) ->set_sensitive( b ); 
+	void allow_delete( bool state )	{ 
+		toggle_item( state, MENU_DEL, TOOLBAR_DEL ) ; } 
+		
+	void allow_resize( bool state ) 	{ 
+		toggle_item( state, MENU_RESIZE_MOVE, TOOLBAR_RESIZE_MOVE ) ; }
+		
+	void allow_copy( bool state )	{ 
+		toggle_item( state, MENU_COPY, TOOLBAR_COPY ) ; }
+		
+	void allow_paste( bool state )	{ 
+		toggle_item( state, MENU_PASTE, TOOLBAR_PASTE ) ; }
+		
+	void allow_format( bool state )	{ 
+		toggle_item( state, MENU_FORMAT ) ; }
+	
+	void allow_toggle_swap_mount_state( bool state )	{ 
+		toggle_item( state, MENU_TOGGLE_MOUNT_SWAP ) ; }
+
+	void allow_manage_flags( bool state ) {
+		toggle_item( state, MENU_FLAGS ) ; } 
+	
+	void allow_info( bool state )	{
+		toggle_item( state, MENU_INFO ) ; } 
+	
+	void allow_undo( bool state )	{ 
+		toggle_item( state, -1, TOOLBAR_UNDO ) ; 
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 0 ] )
+			->set_sensitive( state ) ; }
+		
+	void allow_apply( bool state )	{ 
+		toggle_item( state, -1, TOOLBAR_APPLY ) ; 
 		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 1 ] )
-			->set_sensitive( b ) ; }
+			->set_sensitive( state ) ; }
 		
 	//threads..
 	void thread_refresh_devices() ;
@@ -221,6 +225,21 @@ private:
 	};
 	treeview_operations_Columns treeview_operations_columns;
 	
+	//indices for partitionmenu and toolbar
+        int
+        MENU_NEW, TOOLBAR_NEW,
+        MENU_DEL, TOOLBAR_DEL,
+        MENU_RESIZE_MOVE, TOOLBAR_RESIZE_MOVE,
+        MENU_COPY, TOOLBAR_COPY,
+        MENU_PASTE, TOOLBAR_PASTE,
+        MENU_FORMAT,
+        MENU_TOGGLE_MOUNT_SWAP,
+        MENU_MOUNT,
+        MENU_FLAGS,
+        MENU_INFO,
+        TOOLBAR_UNDO,
+        TOOLBAR_APPLY ;
+
 	//usefull variables which are used by many different functions...
 	int index_extended ; //position of the extended partition (-1 means there isn't one)
 	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions

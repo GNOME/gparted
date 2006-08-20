@@ -48,6 +48,19 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	OPERATIONSLIST_OPEN = true ;
 	gparted_core .set_user_devices( user_devices ) ;
 	
+	MENU_NEW = TOOLBAR_NEW =
+        MENU_DEL = TOOLBAR_DEL =
+        MENU_RESIZE_MOVE = TOOLBAR_RESIZE_MOVE =
+        MENU_COPY = TOOLBAR_COPY =
+        MENU_PASTE = TOOLBAR_PASTE =
+        MENU_FORMAT =
+        MENU_TOGGLE_MOUNT_SWAP =
+        MENU_MOUNT =
+        MENU_FLAGS =
+        MENU_INFO =
+        TOOLBAR_UNDO =
+        TOOLBAR_APPLY = -1 ;
+
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
 	this ->set_default_size( 775, 500 );
@@ -108,8 +121,6 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 
 void Win_GParted::init_menubar() 
 {
-	//FIXME: store menuindex in variables, so we don't have to use these numbers everywhere
-	//see my local version of the installerpatch for details.
 	//fill menubar_main and connect callbacks 
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
@@ -156,49 +167,60 @@ void Win_GParted::init_menubar()
 
 void Win_GParted::init_toolbar() 
 {
+	int index = 0 ;
 	//initialize and pack toolbar_main 
 	hbox_toolbar.pack_start( toolbar_main );
 	
 	//NEW and DELETE
-	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_new) );
-	toolbar_main.append(*toolbutton);
+	toolbutton = Gtk::manage( new Gtk::ToolButton( Gtk::Stock::NEW ) );
+	toolbutton ->signal_clicked() .connect( sigc::mem_fun( *this, &Win_GParted::activate_new ) );
+	toolbar_main .append( *toolbutton );
+	TOOLBAR_NEW = index++ ;
 	toolbutton ->set_tooltip(tooltips, _("Create a new partition in the selected unallocated space") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::DELETE));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_DEL = index++ ;
 	toolbutton ->set_tooltip(tooltips, _("Delete the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
+	index++ ;
 	
 	//RESIZE/MOVE
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
 	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, _("Resize/Move") ));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_RESIZE_MOVE = index++ ;
 	toolbutton ->set_tooltip(tooltips, _("Resize/Move the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
-	
+	index++ ;
+
 	//COPY and PASTE
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::COPY));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_COPY = index++ ;
 	toolbutton ->set_tooltip(tooltips, _("Copy the selected partition to the clipboard") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::PASTE));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_PASTE = index++ ;
 	toolbutton ->set_tooltip(tooltips, _("Paste the partition from the clipboard") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
+	index++ ;
 	
 	//UNDO and APPLY
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::UNDO));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_UNDO = index++ ;
 	toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Undo last operation") );		
 	
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );
 	toolbar_main.append(*toolbutton);
+	TOOLBAR_APPLY = index++ ;
 	toolbutton ->set_sensitive( false );
 	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
 	
@@ -217,34 +239,44 @@ void Win_GParted::init_toolbar()
 
 void Win_GParted::init_partition_menu() 
 {
+	int index = 0 ;
 	//fill menu_partition
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW,
 							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
+	MENU_NEW = index++ ;
+	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, 
 							  Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ),
 							  sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
+	MENU_DEL = index++ ;
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::ImageMenuElem( _("_Resize/Move"), 
 							  *image, 
 							  sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
+	MENU_RESIZE_MOVE = index++ ;
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	index++ ;
 	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY,
 							  sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
+	MENU_COPY = index++ ;
 	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE,
 							  sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
+	MENU_PASTE = index++ ;
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
 	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
@@ -252,28 +284,36 @@ void Win_GParted::init_partition_menu()
 			Gtk::Menu_Helpers::ImageMenuElem( _("_Format to"),
 							  *image,
 							  * create_format_menu() ) ) ;
+	MENU_FORMAT = index++ ;
 	
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	index++ ;
 	
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("unmount"),
 						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
+	MENU_TOGGLE_MOUNT_SWAP = index++ ;
 		
 	/*TO TRANSLATORS: menuitem which holds a submenu with mountpoints.. */
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("mount on"), * manage( new Gtk::Menu() ) ) ) ;
+	MENU_MOUNT = index++ ;
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	index++ ;
 
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("manage flags"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) );
+	MENU_FLAGS = index++ ;
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	index++ ;
 	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO,
 							  sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
+	MENU_INFO = index++ ;
 	
 	menu_partition .accelerate( *this ) ;  
 }
@@ -719,9 +759,11 @@ void Win_GParted::set_valid_operations()
 	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
 	allow_manage_flags( false ) ; allow_info( false ) ;
 	
-       	dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) ->set_label( _("unmount") ) ;
-	menu_partition .items()[ 10 ] .show() ;
-	menu_partition .items()[ 11 ] .hide() ;	
+       	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+		->set_label( _("unmount") ) ;
+
+	menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .show() ;
+	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
 
 	//no partition selected...	
 	if ( ! selected_partition .get_paths() .size() )
@@ -742,13 +784,13 @@ void Win_GParted::set_valid_operations()
 
 		if ( selected_partition .busy )
 		{
-			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
+			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
 				->set_label( _("swapoff") ) ;
 
 			return ;
 		}
 		else
-       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ 10 ] .get_child() ) 
+       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
 				->set_label( _("swapon") ) ;
 	}
 
@@ -816,7 +858,7 @@ void Win_GParted::set_valid_operations()
 		{
 			allow_toggle_swap_mount_state( true ) ;
 			
-			menu = menu_partition .items()[ 11 ] .get_submenu() ;
+			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
 			menu ->items() .clear() ;
 			for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
 			{
@@ -828,8 +870,8 @@ void Win_GParted::set_valid_operations()
 				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
 			}
 			
-			menu_partition .items()[ 10 ] .hide() ;
-			menu_partition .items()[ 11 ] .show() ;	
+			menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .hide() ;
+			menu_partition .items()[ MENU_MOUNT ] .show() ;	
 		}
 
 		//see if there is an copied partition and if it passes all tests
@@ -1037,8 +1079,8 @@ void Win_GParted::menu_gparted_features()
 		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 
 		//recreate format menu...
-		menu_partition .items()[ 8 ] .remove_submenu() ;
-		menu_partition .items()[ 8 ] .set_submenu( * create_format_menu() ) ;
+		menu_partition .items()[ MENU_FORMAT ] .remove_submenu() ;
+		menu_partition .items()[ MENU_FORMAT ] .set_submenu( * create_format_menu() ) ;
 		menu_partition .show_all_children() ;
 	}
 }
