@@ -221,12 +221,7 @@ int Utils::execute_command( const Glib::ustring & command,
 					  &exit_status ) ;
 		}
 		else
-		{
-			Glib::spawn_command_line_sync( "sh -c '" + command + "'",
-						       &std_out,
-						       &std_error,
-						       &exit_status ) ;
-		}
+			Glib::spawn_command_line_sync( "sh -c '" + command + "'", &std_out, &std_error, &exit_status ) ;
 	}
 	catch ( Glib::Exception & e )
 	{ 
