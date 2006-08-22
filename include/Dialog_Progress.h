@@ -75,16 +75,14 @@ private:
 	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
+		Gtk::TreeModelColumn<Glib::ustring> elapsed_time ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > status_icon;
-		Gtk::TreeModelColumn<OperationDetailStatus> hidden_status ;
 				
 		treeview_operations_Columns() 
 		{ 
 			add( operation_description );
-			add( operation_icon );
+			add( elapsed_time );
 			add( status_icon ) ;
-			add( hidden_status ) ;
 		} 
 	};
 	treeview_operations_Columns treeview_operations_columns;

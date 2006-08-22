@@ -163,6 +163,32 @@ Glib::ustring Utils::format_size( Sector size )
 		return String::ucompose( _("%1 TiB"), ss .str() ) ;
 	}
 }
+	
+Glib::ustring Utils::format_time( std::time_t seconds ) 
+{
+	Glib::ustring time ;
+	
+	int unit = static_cast<int>( seconds / 3600 ) ;
+	if ( unit > 0 )
+	{
+		if ( unit < 10 )
+			time += "0" ;
+		time += num_to_str( unit ) + ":" ;
+		seconds %= 3600 ;
+	}
+
+	unit = static_cast<int>( seconds / 60 ) ;
+	if ( unit < 10 )
+		time += "0" ;
+	time += num_to_str( unit ) + ":" ;
+	seconds %= 60 ;
+
+	if ( seconds < 10 )
+		time += "0" ;
+	time += num_to_str( seconds ) ;
+
+	return time ;
+}
 
 double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) 
 {

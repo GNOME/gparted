@@ -1,5 +1,17 @@
 2006-08-21 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* include/Utils.h,
+	  src/Utils.cc: added format_time()
+	* include/OperationDetail.h,
+	  src/OperationDetail.cc: keep track of elapsed time between
+	  STATUS_EXECUTE and STATUS_[ERROR|SUCCES]
+	* include/Dialog_Progress.h,
+	  src/Dialog_Progress.cc: show elapsed time in the details per (sub)
+	  process
+	* src/GParted_Core.cc: use Utils::format_time() 
+
+2006-08-21 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/FileSystem.cc: added nice -n 19, so that all extensive
 	  filesystemoperations will be 'nice' :)
 	* src/OperationDetail.cc,

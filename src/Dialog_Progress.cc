@@ -71,11 +71,16 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	treestore_operations = Gtk::TreeStore::create( treeview_operations_columns );
 	treeview_operations .set_model( treestore_operations );
 	treeview_operations .set_headers_visible( false );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
-	treeview_operations .append_column( "", treeview_operations_columns .status_icon );
-	treeview_operations .set_size_request( 500, 250 ) ;
 	treeview_operations .set_rules_hint( true ) ;
+	treeview_operations .set_size_request( 500, 250 ) ;
+	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
+	treeview_operations .append_column( "", treeview_operations_columns .elapsed_time );
+	treeview_operations .append_column( "", treeview_operations_columns .status_icon );
+
+	treeview_operations .get_column( 0 ) ->set_expand( true ) ;
+	treeview_operations .get_column( 0 ) ->set_cell_data_func( 
+		* ( treeview_operations .get_column( 0 ) ->get_first_cell_renderer() ),
+		sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) ) ;
 
 	//fill 'er up
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
@@ -84,16 +89,9 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		this ->operations[ t ] ->operation_detail .set_treepath( Utils::num_to_str( t ) ) ;
 		
 		treerow = *( treestore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
 		treerow[ treeview_operations_columns .operation_description ] =
 			this ->operations[ t ] ->operation_detail .get_description() ; 
-		treerow[ treeview_operations_columns .hidden_status ] = STATUS_NONE ; 
 	}
-	
-	treeview_operations .get_column( 1 ) ->set_expand( true ) ;
-	treeview_operations .get_column( 1 ) ->set_cell_data_func( 
-		* ( treeview_operations .get_column( 1 ) ->get_first_cell_renderer() ),
-		sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) ) ;
 	
 	scrolledwindow .set_shadow_type( Gtk::SHADOW_ETCHED_IN ) ;
 	scrolledwindow .set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC ) ;
@@ -123,6 +121,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		Gtk::TreeRow treerow = *iter ;
 
 		treerow[ treeview_operations_columns .operation_description ] = operationdetail .get_description() ;
+		treerow[ treeview_operations_columns .elapsed_time ] = operationdetail .get_elapsed_time() ;
 
 		switch ( operationdetail .get_status() )
 		{
@@ -161,11 +160,10 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	{
 		unsigned int pos = operationdetail .get_treepath() .rfind( ":" ) ;
 		if ( pos >= 0 && pos < operationdetail .get_treepath() .length() )
-			iter= treestore_operations ->get_iter( 
-				operationdetail .get_treepath() .substr( 0,
-									 operationdetail .get_treepath() .rfind( ":" ) ) ) ;
+			iter = treestore_operations ->get_iter( operationdetail .get_treepath() 
+							.substr( 0, operationdetail .get_treepath() .rfind( ":" ) ) ) ;
 		else
-			iter= treestore_operations ->get_iter( operationdetail .get_treepath() ) ;
+			iter = treestore_operations ->get_iter( operationdetail .get_treepath() ) ;
 
 		if ( iter)
 		{
@@ -361,6 +359,8 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 	out << "<TR>" << std::endl ;
 	out << "<TD colspan=2>" << std::endl ;
 	out << temp ;
+	if ( ! operationdetail .get_elapsed_time() .empty() )
+		out << "&nbsp;&nbsp;" << operationdetail .get_elapsed_time() ;
 	
 	//show status...
 	if ( operationdetail .get_status() != STATUS_NONE )

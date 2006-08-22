@@ -24,16 +24,18 @@ namespace GParted
 
 OperationDetail::OperationDetail()
 {
-	status = STATUS_NONE ;
+	set_status( STATUS_NONE ) ;
 	fraction = -1 ;
+	time_elapsed = -1 ;
 }
 
 OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font )
 {
 	set_description( description, font ) ;
-	this ->status = status ;
+	set_status( status ) ;
 
 	fraction = -1 ;
+	time_elapsed = -1 ;
 }
 
 void OperationDetail::set_description( const Glib::ustring & description, Font font )
@@ -54,8 +56,7 @@ void OperationDetail::set_description( const Glib::ustring & description, Font f
 		 	break ;
 	}
 
-	if ( ! treepath .empty() )
-		on_update( *this ) ;
+	on_update( *this ) ;
 }
 
 Glib::ustring OperationDetail::get_description() const
@@ -64,9 +65,24 @@ Glib::ustring OperationDetail::get_description() const
 }
 	
 void OperationDetail::set_status( OperationDetailStatus status ) 
-{
+{	
 	if ( this ->status != STATUS_ERROR )
 	{
+		switch ( status )
+		{
+			case STATUS_EXECUTE:
+				time_elapsed = -1 ;
+				time_start = std::time( NULL ) ;
+				break ;
+			case STATUS_ERROR:
+			case STATUS_SUCCES:
+				time_elapsed = std::time( NULL ) - time_start ;
+				break ;
+
+			default:
+				break ;
+		}
+
 		this ->status = status ;
 		on_update( *this ) ;
 	}
@@ -85,6 +101,14 @@ void OperationDetail::set_treepath( const Glib::ustring & treepath )
 Glib::ustring OperationDetail::get_treepath() const
 {
 	return treepath ;
+}
+	
+Glib::ustring OperationDetail::get_elapsed_time() const 
+{
+	if ( time_elapsed >= 0 ) 
+		return Utils::format_time( time_elapsed ) ;
+	
+	return "" ;
 }
 
 void OperationDetail::add_child( const OperationDetail & operationdetail ) 
@@ -118,7 +142,8 @@ OperationDetail & OperationDetail::get_last_child()
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {
-	signal_update .emit( operationdetail ) ;
+	if ( ! treepath .empty() )
+		signal_update .emit( operationdetail ) ;
 }
 
 } //GParted

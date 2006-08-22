@@ -55,6 +55,7 @@ public:
 	OperationDetailStatus get_status() const ;
 	void set_treepath( const Glib::ustring & treepath ) ;
 	Glib::ustring get_treepath() const ;
+	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;
 	std::vector<OperationDetail> & get_childs() ;
@@ -75,6 +76,7 @@ private:
 	Glib::ustring treepath ;
 	
 	std::vector<OperationDetail> sub_details ; 	
+	std::time_t time_start, time_elapsed ;
 };
 
 } //GParted

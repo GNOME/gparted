@@ -1639,29 +1639,10 @@ void GParted_Core::set_progress_info( Sector total,
 
 	std::time_t time_remaining = Utils::round( (1.0 - operationdetail .fraction) * sec_per_frac ) ;
 
-	//format it a bit..
-	Glib::ustring time ;
-	
-	int unit = static_cast<int>( time_remaining / 3600 ) ;
-	if ( unit < 10 )
-		time += "0" ;
-	time += Utils::num_to_str( unit ) + ":" ;
-	time_remaining %= 3600 ;
-
-	unit = static_cast<int>( time_remaining / 60 ) ;
-	if ( unit < 10 )
-		time += "0" ;
-	time += Utils::num_to_str( unit ) + ":" ;
-	time_remaining %= 60 ;
-
-	if ( time_remaining < 10 )
-		time += "0" ;
-	time += Utils::num_to_str( time_remaining ) ;
-
 	operationdetail .progress_text = String::ucompose( _("%1 of %2 copied (%3 remaining)"),
 							   Utils::format_size( done ),
 							   Utils::format_size( total ),
-							   time ) ; 
+							   Utils::format_time( time_remaining) ) ; 
 			
 	operationdetail .set_description( String::ucompose( _("%1 of %2 copied"), done, total ), FONT_ITALIC ) ;
 }
