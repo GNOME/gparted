@@ -253,9 +253,6 @@ int Utils::execute_command( const Glib::ustring & command,
 	{ 
 		 error = e .what() ;
 
-		 //spit exceptions to stdout..
-		 std::cout << error << std::endl ;
-			 
 		 return -1 ;
 	}
 
