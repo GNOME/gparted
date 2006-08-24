@@ -1664,7 +1664,8 @@ bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
 	{
 		operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 		
-		std::clock_t clockticks_start, smallest_ticks = -1  ;
+		Glib::Timer timer ;
+		double smallest_time = -1 ;
 
 		std::vector<Sector> blocksizes ;
 		blocksizes .push_back( 1 ) ;
@@ -1675,7 +1676,8 @@ bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
 		
 		for ( unsigned int t = 0 ; t < blocksizes .size() && succes ; t++ )
 		{
-			clockticks_start = std::clock() ;
+			timer .reset() ;
+			timer .start() ;
 
 			succes = copy_blocks( partition_old .device_path,
 					      partition_new .device_path,
@@ -1685,15 +1687,16 @@ bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
 					      20000,
 					      operationdetail .get_last_child(),
 					      copytype ) ;
-
-			if ( (std::clock() - clockticks_start) < smallest_ticks || smallest_ticks == -1 )
+			timer .stop() ;
+			
+			if ( timer .elapsed() <  smallest_time || smallest_time == -1 )
 			{
-				smallest_ticks = std::clock() - clockticks_start ;
+				smallest_time = timer .elapsed() ;
 				optimal_blocksize = blocksizes[ t ] ;
 			}
 
 			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
-				String::ucompose( _("%1 clockticks"), std::clock() - clockticks_start ),
+				String::ucompose( _("%1 seconds"), timer .elapsed() ),
 				STATUS_NONE,
 				FONT_ITALIC ) ) ;
 

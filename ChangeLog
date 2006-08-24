@@ -1,4 +1,10 @@
 2006-08-24 Bart Hakvoort <hakvoort@cvs.gnome.org>
+	
+	* src/GParted_Core.cc: use Glib::timer instead of std::time stuff for
+	  the probing, this is more accurate since the resolution is much
+	  higher (microseconds instead of seconds)
+
+2006-08-24 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* src/OperationDetail.cc: catch markup exceptions
 	* src/Utils.cc: cleanups 
