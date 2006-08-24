@@ -6,32 +6,32 @@ msgid ""
 ""
 msgstr "Project-Id-Version: gparted 0.2.5 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-27 03:28+0200\n"
-"PO-Revision-Date: 2006-05-27 21:13+0930\n"
+"POT-Creation-Date: 2006-08-24 04:00+0200\n"
+"PO-Revision-Date: 2006-08-24 20:53+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
-"X-Generator: LocFactoryEditor 1.6b36\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.6fc1\n"
 
 #: ../gparted.desktop.in.h:1
-#: ../src/Win_GParted.cc:1121
+#: ../src/Win_GParted.cc:1151
 msgid "GNOME Partition Editor"
 msgstr "Bộ hiệu chỉnh phân vùng Gnome"
 
 #.==== GUI =========================
 #: ../gparted.desktop.in.h:2
-#: ../src/Win_GParted.cc:52
-#: ../src/Win_GParted.cc:997
-#: ../src/Win_GParted.cc:1118
+#: ../src/Win_GParted.cc:65
+#: ../src/Win_GParted.cc:1027
+#: ../src/Win_GParted.cc:1148
 msgid "GParted"
 msgstr "GParted"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free Space Preceding (MiB):"
-msgstr "Chỗ rảnh trước đó (MiB):"
+msgstr "Chỗ rảnh nằm trước (MiB):"
 
 #.add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:65
@@ -41,16 +41,16 @@ msgstr "Cỡ mới (MiB):"
 #.add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:72
 msgid "Free Space Following (MiB):"
-msgstr "Chỗ rảnh sau đó (MiB):"
+msgstr "Chỗ rảnh nằm sau (MiB):"
 
 #: ../src/Dialog_Base_Partition.cc:159
 msgid "Resize"
 msgstr "Đổi cỡ"
 
 #: ../src/Dialog_Base_Partition.cc:159
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:190
 msgid "Resize/Move"
-msgstr "Đổi cỡ/Di chuyển"
+msgstr "Đổi cỡ/Chuyển"
 
 #: ../src/Dialog_Base_Partition.cc:176
 msgid "Minimum Size: %1 MiB"
@@ -69,12 +69,11 @@ msgstr "Đặt nhãn đĩa trên %1"
 msgid ""
 "A disklabel is a piece of data stored at a well known place on the disk, "
 "that indicates where each partition begins and how many sectors it occupies."
-msgstr "Nhãn đĩa là một phần dữ liệu được lưu vào nơi thường trên đĩa, mà ngụ ý nơi "
-"mỗi phân vùng bắt đầu và bao nhiều hình quạt nó chiếm."
+msgstr "Nhãn đĩa là một phần dữ liệu được lưu vào nơi nổi tiếng trên đĩa, mà ngụ ý nơi mỗi phân vùng bắt đầu và bao nhiều hình quạt nó chiếm."
 
 #: ../src/Dialog_Disklabel.cc:50
 msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Cần một nhãn đĩa nếu bạn muốn tạo phân vùng trên đĩa này."
+msgstr "Cần thiết một nhãn đĩa nếu bạn muốn tạo phân vùng trên đĩa này."
 
 #: ../src/Dialog_Disklabel.cc:52
 msgid "By default GParted creates an msdos disklabel."
@@ -90,11 +89,11 @@ msgstr "Chọn kiểu nhãn mới:"
 
 #: ../src/Dialog_Disklabel.cc:83
 msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr "•• CẢNH BÁO: việc tạo một nhãn đĩa mới sẽ xóa bỏ mọi dữ liệu trên %1. ••"
+msgstr "CẢNH BÁO : việc tạo một nhãn đĩa mới sẽ xóa bỏ mọi dữ liệu trên %1 !"
 
 #: ../src/Dialog_Disklabel.cc:89
 #: ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1659
+#: ../src/Win_GParted.cc:1737
 msgid "Create"
 msgstr "Tạo"
 
@@ -109,86 +108,86 @@ msgstr "Thông tin về %1"
 
 #: ../src/Dialog_Partition_Info.cc:48
 msgid "Warning:"
-msgstr "Cảnh báo:"
+msgstr "Cảnh báo :"
 
 # Type: text
 # Description
 #.filesystem
 #.filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:140
+#: ../src/Dialog_Partition_Info.cc:151
 #: ../src/Dialog_Partition_New.cc:100
 msgid "Filesystem:"
 msgstr "Hê thống tập tin:"
 
 #.size
-#: ../src/Dialog_Partition_Info.cc:150
-#: ../src/Win_GParted.cc:334
+#: ../src/Dialog_Partition_Info.cc:161
+#: ../src/Win_GParted.cc:376
 msgid "Size:"
 msgstr "Cỡ :"
 
 #.used
-#: ../src/Dialog_Partition_Info.cc:166
+#: ../src/Dialog_Partition_Info.cc:177
 msgid "Used:"
 msgstr "Dùng:"
 
 #.unused
-#: ../src/Dialog_Partition_Info.cc:180
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Unused:"
 msgstr "Rảnh:"
 
-#: ../src/Dialog_Partition_Info.cc:197
+#: ../src/Dialog_Partition_Info.cc:208
 msgid "Flags:"
 msgstr "Cờ :"
 
 #.path
-#: ../src/Dialog_Partition_Info.cc:213
-#: ../src/Win_GParted.cc:342
+#: ../src/Dialog_Partition_Info.cc:224
+#: ../src/Win_GParted.cc:384
 msgid "Path:"
 msgstr "Đường dẫn:"
 
-#: ../src/Dialog_Partition_Info.cc:227
+#: ../src/Dialog_Partition_Info.cc:238
 msgid "Status:"
 msgstr "Trạng thái:"
 
-#: ../src/Dialog_Partition_Info.cc:234
+#: ../src/Dialog_Partition_Info.cc:245
 msgid "Busy (At least one logical partition is mounted)"
-msgstr "Bận (ít nhất một phân vùng hợp lý đã gắn)"
+msgstr "Bận (ít nhất một phân vùng hợp lý đã lắp)"
 
-#: ../src/Dialog_Partition_Info.cc:236
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Active"
 msgstr "Hoạt động"
 
-#: ../src/Dialog_Partition_Info.cc:238
+#: ../src/Dialog_Partition_Info.cc:249
 msgid "Mounted on %1"
 msgstr "Đã lắp vào %1"
 
-#: ../src/Dialog_Partition_Info.cc:242
+#: ../src/Dialog_Partition_Info.cc:253
 msgid "Not busy (There are no mounted logical partitions)"
-msgstr "Không bận (không có phân vùng hợp lý đã gắn)"
+msgstr "Không bận (không có phân vùng hợp lý đã lắp)"
 
-#: ../src/Dialog_Partition_Info.cc:244
+#: ../src/Dialog_Partition_Info.cc:255
 msgid "Not active"
 msgstr "Không hoạt động"
 
-#: ../src/Dialog_Partition_Info.cc:246
+#: ../src/Dialog_Partition_Info.cc:257
 msgid "Not mounted"
 msgstr "Chưa lắp"
 
 #.first sector
-#: ../src/Dialog_Partition_Info.cc:255
+#: ../src/Dialog_Partition_Info.cc:266
 msgid "First Sector:"
-msgstr "Quạt đầu:"
+msgstr "Rãnh ghi đầu :"
 
 #.last sector
-#: ../src/Dialog_Partition_Info.cc:265
+#: ../src/Dialog_Partition_Info.cc:276
 msgid "Last Sector:"
-msgstr "Quạt cuối cùng:"
+msgstr "Rãnh ghi cuối:"
 
 #.total sectors
-#: ../src/Dialog_Partition_Info.cc:275
-#: ../src/Win_GParted.cc:395
+#: ../src/Dialog_Partition_Info.cc:286
+#: ../src/Win_GParted.cc:437
 msgid "Total Sectors:"
-msgstr "Quạt tổng số:"
+msgstr "Rãnh ghi tổng:"
 
 # Type: text
 # Description
@@ -209,18 +208,18 @@ msgstr "Tạo là:"
 
 #.fill partitiontype menu
 #: ../src/Dialog_Partition_New.cc:71
-#: ../src/OperationCreate.cc:75
+#: ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "Phân vùng chính"
 
 #: ../src/Dialog_Partition_New.cc:72
-#: ../src/OperationCreate.cc:78
-#: ../src/OperationDelete.cc:77
+#: ../src/OperationCreate.cc:76
+#: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "Phân vùng hợp lý"
 
 #: ../src/Dialog_Partition_New.cc:73
-#: ../src/OperationCreate.cc:81
+#: ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "Phân vùng đã mở rộng"
 
@@ -230,87 +229,88 @@ msgstr "Phân vùng đã mở rộng"
 msgid "New Partition #%1"
 msgstr "Phân vùng mới #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:70
+#: ../src/Dialog_Partition_Resize_Move.cc:73
 msgid "Resize/Move %1"
-msgstr "Đổi cỡ/Di chuyển %1"
+msgstr "Đổi cỡ/Chuyển %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:75
+#: ../src/Dialog_Partition_Resize_Move.cc:78
 msgid "Resize %1"
 msgstr "Đổi cỡ %1"
 
 #: ../src/Dialog_Progress.cc:32
-#: ../src/Dialog_Progress.cc:40
+#: ../src/Dialog_Progress.cc:43
 msgid "Applying pending operations"
 msgstr "Đang áp dụng các thao tác bị hoãn"
 
-#: ../src/Dialog_Progress.cc:42
+#: ../src/Dialog_Progress.cc:45
 msgid "Applying all listed operations."
 msgstr "Đang áp dụng các thao tác đã liệt kê."
 
-#: ../src/Dialog_Progress.cc:44
+#: ../src/Dialog_Progress.cc:47
 msgid ""
 "Depending on the amount and type of operations this might take a long time."
 msgstr "Phụ thuộc vào lượng và kiểu thao tác, có thể mất thời gian nhiều."
 
-#: ../src/Dialog_Progress.cc:57
+#: ../src/Dialog_Progress.cc:60
 msgid "Completed Operations:"
 msgstr "Thao tác hoàn tất:"
 
-#: ../src/Dialog_Progress.cc:95
+#: ../src/Dialog_Progress.cc:100
 msgid "Details"
 msgstr "Chi tiết"
 
-#: ../src/Dialog_Progress.cc:174
+#: ../src/Dialog_Progress.cc:196
 msgid "%1 of %2 operations completed"
-msgstr "%1 trên %2 thao tác hoàn thành"
+msgstr "%1 trên %2 thao tác hoàn tất"
 
 #.add save button
-#: ../src/Dialog_Progress.cc:220
+#: ../src/Dialog_Progress.cc:227
 msgid "_Save Details"
 msgstr "_Lưu chi tiết"
 
-#: ../src/Dialog_Progress.cc:229
+#: ../src/Dialog_Progress.cc:236
 msgid "Operation canceled"
 msgstr "Thao tác bị thôi"
 
-#: ../src/Dialog_Progress.cc:243
+#.FIXME: display amount of warnings between braces after this text, deal properly with plurality
+#: ../src/Dialog_Progress.cc:251
 msgid "All operations succesfully completed"
 msgstr "Mọi thao tác hoàn tất"
 
-#: ../src/Dialog_Progress.cc:253
+#: ../src/Dialog_Progress.cc:261
 msgid "An error occurred while applying the operations"
 msgstr "Gặp lỗi khi áp dụng những thao tác"
 
-#: ../src/Dialog_Progress.cc:258
+#: ../src/Dialog_Progress.cc:266
 msgid "The following operation could not be applied to disk:"
-msgstr "Không thể áp dụng thao tác này vào đĩa:"
+msgstr "Không thể áp dụng vào đĩa thao tác theo đây:"
 
-#: ../src/Dialog_Progress.cc:262
+#: ../src/Dialog_Progress.cc:270
 msgid "See the details for more information"
-msgstr "Hãy xem chi tiết để tìm thông tin thêm"
+msgstr "Xem chi tiết để tìm thông tin thêm"
 
-#: ../src/Dialog_Progress.cc:295
+#: ../src/Dialog_Progress.cc:303
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Bạn có chắc muốn thôi thao tác hiện thời không?"
 
-#: ../src/Dialog_Progress.cc:301
+#: ../src/Dialog_Progress.cc:309
 msgid "Canceling an operation may cause SEVERE filesystem damage."
 msgstr "Việc thôi thao tác có thể gây RẤT NHIỀU thiệt hại cho hệ thống tập tin."
 
-#: ../src/Dialog_Progress.cc:303
+#: ../src/Dialog_Progress.cc:311
 msgid "Continue Operation"
 msgstr "Tiếp tục thao tác"
 
-#: ../src/Dialog_Progress.cc:304
+#: ../src/Dialog_Progress.cc:312
 msgid "Cancel Operation"
 msgstr "Thôi thao tác"
 
-#: ../src/Dialog_Progress.cc:317
+#: ../src/Dialog_Progress.cc:325
 msgid "Save Details"
 msgstr "Lưu chi tiết"
 
 #: ../src/DialogFeatures.cc:27
-#: ../src/Win_GParted.cc:121
+#: ../src/Win_GParted.cc:134
 msgid "Features"
 msgstr "Tính năng"
 
@@ -337,7 +337,7 @@ msgstr "Nhỏ hơn"
 
 #: ../src/DialogFeatures.cc:39
 msgid "Move"
-msgstr "Di chuyển"
+msgstr "Chuyển"
 
 #: ../src/DialogFeatures.cc:40
 msgid "Copy"
@@ -350,170 +350,345 @@ msgstr "Kiểm tra"
 #: ../src/DialogManageFlags.cc:31
 #: ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
-msgstr "Quản lý các cờ trên %1"
+msgstr "Quản lý cờ trên %1"
 
-#: ../src/GParted_Core.cc:213
+#: ../src/GParted_Core.cc:208
 msgid "unrecognized"
-msgstr "chưa nhân ra"
+msgstr "chưa nhân diện"
 
-#.no filesystem found....
-#: ../src/GParted_Core.cc:357
-msgid "Unable to detect filesystem! Possible reasons are:"
-msgstr "Không thể phát hiện hệ thống tập tin. Có thể vì:"
+#: ../src/GParted_Core.cc:263
+msgid "A partition cannot have a length of %1 sectors"
+msgstr "Không cho phép phân vùng có độ dài %1 rãnh ghi"
 
-#: ../src/GParted_Core.cc:359
-msgid "The filesystem is damaged"
-msgstr "Hệ thống tập tin bị hỏng"
+#: ../src/GParted_Core.cc:271
+msgid ""
+"A partition with used sectors (%1) greater than it's length (%2) is not valid"
+msgstr "Không hợp lệ khi phân vùng có số rãnh ghi đã dùng (%1) hơn độ dài (%2)"
 
-#: ../src/GParted_Core.cc:361
-msgid "The filesystem is unknown to GParted"
-msgstr "GParted không biết hệ thống tập tin này"
+#: ../src/GParted_Core.cc:294
+msgid "find real path of %1"
+msgstr "tìm đường dẫn thật của %1"
 
-#: ../src/GParted_Core.cc:363
-msgid "There is no filesystem available (unformatted)"
-msgstr "Không có hệ thống tập tin nào sẵn sàng (chưa định dạng nó)"
-
-#: ../src/GParted_Core.cc:505
-msgid "Unable to find mountpoint"
-msgstr "Không thể tìm thấy điểm lắp"
-
-#: ../src/GParted_Core.cc:534
-msgid "Unable to read the contents of this filesystem!"
-msgstr "Không thể đọc nội dung của hệ thống tập tin này."
-
-#: ../src/GParted_Core.cc:536
-msgid "Because of this some operations may be unavailable."
-msgstr "Như thế thì có lẽ một số thao tác không sẵn sàng."
-
-#: ../src/GParted_Core.cc:538
-msgid "Did you install the correct plugin for this filesystem?"
-msgstr "Bạn có cài đặt bộ cầm phít thích hợp cho hệ thống tập tin này chưa?"
-
-#: ../src/GParted_Core.cc:800
-msgid "copy filesystem of %1 to %2"
-msgstr "chép hệ thống tập tin của %1 sang %2"
-
-# Type: text
-# Description
-#: ../src/GParted_Core.cc:992
-msgid "create empty partition"
-msgstr "tạo phân vùng rỗng"
-
-#: ../src/GParted_Core.cc:1062
+#: ../src/GParted_Core.cc:313
+#: ../src/GParted_Core.cc:988
 msgid "path: %1"
 msgstr "đường dẫn: %1"
 
-#: ../src/GParted_Core.cc:1063
+#: ../src/GParted_Core.cc:357
+msgid "libparted messages"
+msgstr "thông điệp libparted"
+
+#.no filesystem found....
+#: ../src/GParted_Core.cc:709
+msgid "Unable to detect filesystem! Possible reasons are:"
+msgstr "Không thể phát hiện hệ thống tập tin. Ly do có thể:"
+
+#: ../src/GParted_Core.cc:711
+msgid "The filesystem is damaged"
+msgstr "Hệ thống tập tin bị hỏng"
+
+#: ../src/GParted_Core.cc:713
+msgid "The filesystem is unknown to GParted"
+msgstr "GParted không biết hệ thống tập tin này"
+
+#: ../src/GParted_Core.cc:715
+msgid "There is no filesystem available (unformatted)"
+msgstr "Không có hệ thống tập tin nào sẵn sàng (chưa định dạng)"
+
+#: ../src/GParted_Core.cc:792
+msgid "Unable to find mountpoint"
+msgstr "Không tìm thấy điểm lắp"
+
+#: ../src/GParted_Core.cc:810
+msgid "Unable to read the contents of this filesystem!"
+msgstr "Không thể đọc nội dung của hệ thống tập tin này."
+
+#: ../src/GParted_Core.cc:812
+msgid "Because of this some operations may be unavailable."
+msgstr "Như thế thì một số thao tác có thể là không sẵn sàng."
+
+# Type: text
+# Description
+#: ../src/GParted_Core.cc:920
+msgid "create empty partition"
+msgstr "tạo phân vùng trống"
+
+#: ../src/GParted_Core.cc:989
 msgid "start: %1"
 msgstr "đầu : %1"
 
-#: ../src/GParted_Core.cc:1064
+#: ../src/GParted_Core.cc:990
 msgid "end: %1"
 msgstr "cuối: %1"
 
-#: ../src/GParted_Core.cc:1065
-msgid "size: %1"
-msgstr "cỡ : %1"
+#: ../src/GParted_Core.cc:991
+msgid "size: %1 (%2)"
+msgstr "cỡ: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1109
-msgid "resize partition"
-msgstr "đổi cỡ vùng"
+#: ../src/GParted_Core.cc:1022
+#: ../src/linux_swap.cc:54
+#: ../src/xfs.cc:193
+msgid "create new %1 filesystem"
+msgstr "tạo hệ thống tập tin %1 mới"
 
-#: ../src/GParted_Core.cc:1114
+#: ../src/GParted_Core.cc:1133
+msgid "move filesystem to the left"
+msgstr "chuyển hệ thống tập tin sang trái"
+
+#: ../src/GParted_Core.cc:1135
+msgid "move filesystem to the right"
+msgstr "chuyển hệ thống tập tin sang phải"
+
+#: ../src/GParted_Core.cc:1138
+msgid "move filesystem"
+msgstr "chuyển hệ thống tập tin"
+
+#: ../src/GParted_Core.cc:1140
+msgid ""
+"new and old filesystem have the same positition. skipping this operation"
+msgstr "hệ thống tập tin cả mới lẫn cũ đều có cùng một vị trí nên bỏ qua thao tác này"
+
+#: ../src/GParted_Core.cc:1176
+msgid "using internal algorithm"
+msgstr "dùng thuật toán nội bộ"
+
+#: ../src/GParted_Core.cc:1197
+msgid "using libparted"
+msgstr "dùng libparted"
+
+#: ../src/GParted_Core.cc:1293
+msgid "resize/move partition"
+msgstr "đổi cỡ/chuyển phân vùng"
+
+#: ../src/GParted_Core.cc:1296
+msgid "move partition to the right"
+msgstr "chuyển phân vùng sang phải"
+
+#: ../src/GParted_Core.cc:1299
+msgid "move partition to the left"
+msgstr "chuyển phân vùng sang trái"
+
+#: ../src/GParted_Core.cc:1302
+msgid "grow partition from %1 to %2"
+msgstr "tăng phân vùng từ %1 lên %2"
+
+#: ../src/GParted_Core.cc:1305
+msgid "shrink partition from %1 to %2"
+msgstr "giảm phân vùng từ %1 xuống %2"
+
+#: ../src/GParted_Core.cc:1308
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr "chuyển phân vùng sang phải và tăng nó từ %1 lên %2"
+
+#: ../src/GParted_Core.cc:1311
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr "chuyển phân vùng sang phải và giảm nó từ %1 xuống %2"
+
+#: ../src/GParted_Core.cc:1314
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr "chuyển phân vùng sang trái và tăng nó từ %1 lên %2"
+
+#: ../src/GParted_Core.cc:1317
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr "chuyển phân vùng sang trái và giảm nó từ %1 xuống %2"
+
+#: ../src/GParted_Core.cc:1331
+#: ../src/OperationResizeMove.cc:77
+msgid ""
+"new and old partition have the same size and positition. continuing anyway"
+msgstr "phân vùng cả mới lẫn cũ đều có cùng một kích cỡ và vị trí ... vẫn còn tiếp tục"
+
+#: ../src/GParted_Core.cc:1337
 msgid "old start: %1"
 msgstr "đầu cũ : %1"
 
-#: ../src/GParted_Core.cc:1115
+#: ../src/GParted_Core.cc:1338
 msgid "old end: %1"
 msgstr "cuối cũ : %1"
 
-#: ../src/GParted_Core.cc:1116
-msgid "old size: %1"
-msgstr "cỡ cũ : %1"
+#: ../src/GParted_Core.cc:1339
+msgid "old size: %1 (%2)"
+msgstr "cỡ cũ : %1 (%2)"
 
 # Type: string
 # Description
-#: ../src/GParted_Core.cc:1180
+#: ../src/GParted_Core.cc:1395
+#: ../src/GParted_Core.cc:1938
 msgid "new start: %1"
 msgstr "đầu mới: %1"
 
-#: ../src/GParted_Core.cc:1181
+#: ../src/GParted_Core.cc:1396
+#: ../src/GParted_Core.cc:1939
 msgid "new end: %1"
 msgstr "cuối mới: %1"
 
-#: ../src/GParted_Core.cc:1182
-msgid "new size: %1"
-msgstr "cỡ mới: %1"
+#: ../src/GParted_Core.cc:1397
+#: ../src/GParted_Core.cc:1940
+msgid "new size: %1 (%2)"
+msgstr "cỡ mới: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1208
-msgid "resize partition and filesystem using libparted"
-msgstr "thay đổi phân vùng và hệ thống tập tin bằng libparted"
+#: ../src/GParted_Core.cc:1421
+msgid "shrink filesystem"
+msgstr "giảm hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1290
-msgid "Error while reading sector %1"
-msgstr "Gặp lỗi khi đọc rãnh ghi %1"
+#: ../src/GParted_Core.cc:1425
+msgid "grow filesystem"
+msgstr "tăng hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1298
-msgid "Error while writing sector %1"
-msgstr "Gặp lỗi khi ghi rãnh ghi %1"
+#: ../src/GParted_Core.cc:1428
+msgid "resize filesystem"
+msgstr "đổi cỡ hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1307
-#: ../src/GParted_Core.cc:1322
+#: ../src/GParted_Core.cc:1431
+msgid ""
+"new and old filesystem have the same size and positition. continuing anyway"
+msgstr "hệ thống tập tin cả mới lẫn cũ đều có cùng một kích cỡ và vị trí ... vẫn còn tiếp tục"
+
+#: ../src/GParted_Core.cc:1463
+msgid "grow filesystem to fill the partition"
+msgstr "tăng kích cỡ của hệ thống tập tin để chiếm toàn bộ phân vùng"
+
+#: ../src/GParted_Core.cc:1468
+msgid "growing is not available for this filesystem"
+msgstr "khả năng tăng kích cỡ không phải sẵn sàng cho hệ thống tập tin này"
+
+#: ../src/GParted_Core.cc:1493
+msgid "copy filesystem of %1 to %2"
+msgstr "chép hệ thống tập tin của %1 sang %2"
+
+#: ../src/GParted_Core.cc:1559
+msgid "check filesystem on %1 for errors and (if possible) fix them"
+msgstr "kiểm tra xem hệ thống tập tin trên %1 có lỗi và (nếu có thể) sửa hết"
+
+#: ../src/GParted_Core.cc:1567
+msgid "checking is not available for this filesystem"
+msgstr "khả năng kiểm tra không phải sẵn sàng cho hệ thống tập tin này"
+
+#: ../src/GParted_Core.cc:1593
+msgid "set partitiontype on %1"
+msgstr "đặt kiểu_vùng trên %1"
+
+#: ../src/GParted_Core.cc:1615
+msgid "new partitiontype: %1"
+msgstr "kiểu_vùng mới: %1"
+
+#: ../src/GParted_Core.cc:1642
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 trên %2 đã sao chép (%3 còn lại)"
+
+#: ../src/GParted_Core.cc:1647
+#: ../src/GParted_Core.cc:1816
 msgid "%1 of %2 copied"
-msgstr "%1 trên %2 đã được sao chép"
+msgstr "%1 trên %2 đã sao chép"
 
-#: ../src/GParted_Core.cc:1358
-msgid "An error occurred while opening the devices"
-msgstr "Gặp lỗi khi mở những thiết bị"
+#: ../src/GParted_Core.cc:1665
+msgid "finding optimal blocksize"
+msgstr "đang tìm kích cỡ khối tối ưu"
 
-#: ../src/GParted_Core.cc:1401
-msgid "set partitiontype"
-msgstr "đặt kiểu_vùng"
+#: ../src/GParted_Core.cc:1696
+msgid "%1 clockticks"
+msgstr "%1 nhịp đồng hồ"
 
-#: ../src/OperationCopy.cc:38
+#: ../src/GParted_Core.cc:1704
+msgid "optimal blocksize is %1 sectors (%2)"
+msgstr "kích cỡ khối tối ưu là %1 rãnh ghi (%2)"
+
+#: ../src/GParted_Core.cc:1723
+msgid "copy %1 sectors using a blocksize of %2 sectors"
+msgstr "sao chép %1 rãnh ghi, dùng kích cỡ khối là %1 rãnh ghi"
+
+#: ../src/GParted_Core.cc:1855
+msgid "Error while reading block at sector %1"
+msgstr "Gặp lỗi khi đọc khối tại rãnh ghi %1"
+
+#: ../src/GParted_Core.cc:1862
+msgid "Error while writing block at sector %1"
+msgstr "Gặp lỗi khi ghi khối tại rãnh ghi %1"
+
+#: ../src/GParted_Core.cc:1876
+msgid "calculate new size and position of %1"
+msgstr "tính kích cỡ và vị trí mới của %1"
+
+#: ../src/GParted_Core.cc:1880
+msgid "minimum size: %1"
+msgstr "cỡ tối thiểu : %1"
+
+#: ../src/GParted_Core.cc:1884
+msgid "requested start: %1"
+msgstr "yêu cầu đầu : %1"
+
+#: ../src/GParted_Core.cc:1885
+msgid "requested end: %1"
+msgstr "yêu cầu cuối: %1"
+
+#: ../src/GParted_Core.cc:1886
+msgid "requested size: %1 (%2)"
+msgstr "yêu cầu cỡ : %1 (%2)"
+
+#: ../src/OperationCopy.cc:36
 msgid "copy of %1"
 msgstr "bản sao của %1"
 
 #.TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:80
+#: ../src/OperationCopy.cc:78
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Chép %1 vào %2 (bắt đầu tại %3)"
 
 #.TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:88
+#: ../src/OperationCopy.cc:86
 msgid "Copy %1 to %2"
 msgstr "Chép %1 vào %2"
 
 #.TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:88
+#: ../src/OperationCreate.cc:86
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Tạo %1 #%2 (%3, %4) trên %5"
 
 #.TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:82
+#: ../src/OperationDelete.cc:80
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Xóa bỏ %1 (%2, %3) ra %4"
 
 #.TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:60
+#: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
 msgstr "Định dạng %1 dạng %2"
 
-#: ../src/OperationResizeMove.cc:53
-msgid "Move %1 forward by %2"
-msgstr "Di chuyển %1 tới cách đó %2"
+#: ../src/OperationResizeMove.cc:75
+msgid "resize/move %1"
+msgstr "đổi cỡ/chuyển %1"
 
-#: ../src/OperationResizeMove.cc:57
-msgid "Move %1 backward by %2"
-msgstr "Di chuyển %1 lùi cách đó %2"
+#: ../src/OperationResizeMove.cc:81
+msgid "Move %1 to the right"
+msgstr "Chuyển %1 sang phải"
 
-#: ../src/OperationResizeMove.cc:67
-msgid "Resize %1 from %2 to %3"
-msgstr "Thay đổi kích cỡ %1 từ %2 đến %3"
+#: ../src/OperationResizeMove.cc:84
+msgid "Move %1 to the left"
+msgstr "Chuyển %1 sang trái"
 
-#: ../src/OperationResizeMove.cc:72
-msgid "and Resize %1 from %2 to %3"
-msgstr "và thay đổi kích cỡ %1 từ %2 đến %3"
+#: ../src/OperationResizeMove.cc:87
+msgid "Grow %1 from %2 to %3"
+msgstr "Tăng %1 từ %2 lên %3"
+
+#: ../src/OperationResizeMove.cc:90
+msgid "Shrink %1 from %2 to %3"
+msgstr "Giảm %1 từ %2 xuống %3"
+
+#: ../src/OperationResizeMove.cc:93
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr "Chuyển %1 sang phải và tăng nó từ %2 lên %3"
+
+#: ../src/OperationResizeMove.cc:96
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr "Chuyển %1 sang phải và giảm nó từ %2 xuống %3"
+
+#: ../src/OperationResizeMove.cc:99
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr "Chuyển %1 sang trái và tăng nó từ %2 lên %3"
+
+#: ../src/OperationResizeMove.cc:102
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr "Chuyển %1 sang trái và giảm nó từ %2 xuống %3"
 
 #.append columns
 #: ../src/TreeView_Detail.cc:34
@@ -546,7 +721,7 @@ msgstr "chưa cấp phát"
 
 #: ../src/Utils.cc:111
 msgid "unknown"
-msgstr "không biết"
+msgstr "không rõ"
 
 #: ../src/Utils.cc:112
 msgid "unformatted"
@@ -554,7 +729,7 @@ msgstr "chưa định dạng"
 
 #: ../src/Utils.cc:127
 msgid "used"
-msgstr "dừng"
+msgstr "dùng"
 
 # Type: text
 # Description
@@ -583,415 +758,374 @@ msgstr "%1 GiB"
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:115
+#: ../src/Win_GParted.cc:128
 msgid "_Refresh devices"
 msgstr "_Cập nhật các thiết bị"
 
-#: ../src/Win_GParted.cc:118
+#: ../src/Win_GParted.cc:131
 msgid "Devices"
 msgstr "Thiết bị"
 
-#: ../src/Win_GParted.cc:124
+#: ../src/Win_GParted.cc:137
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:130
+#: ../src/Win_GParted.cc:143
 msgid "_Edit"
-msgstr "_Hiệu chỉnh"
+msgstr "_Sửa"
 
-#: ../src/Win_GParted.cc:134
-#: ../src/Win_GParted.cc:318
+#: ../src/Win_GParted.cc:147
+#: ../src/Win_GParted.cc:360
 msgid "Harddisk Information"
-msgstr "Thông tin về đĩa cứng"
+msgstr "Thông tin đĩa cứng"
 
-#: ../src/Win_GParted.cc:135
+#: ../src/Win_GParted.cc:148
 msgid "Operations"
 msgstr "Thao tác"
 
-#: ../src/Win_GParted.cc:136
+#: ../src/Win_GParted.cc:149
 msgid "_View"
 msgstr "_Xem"
 
-#: ../src/Win_GParted.cc:140
+#: ../src/Win_GParted.cc:153
 msgid "Set Disklabel"
 msgstr "Đặt nhãn đĩa"
 
-#: ../src/Win_GParted.cc:141
+#: ../src/Win_GParted.cc:154
 msgid "_Device"
 msgstr "Thiết _bị"
 
-#: ../src/Win_GParted.cc:145
+#: ../src/Win_GParted.cc:158
 msgid "_Partition"
 msgstr "_Phân vùng"
 
-#: ../src/Win_GParted.cc:152
+#: ../src/Win_GParted.cc:165
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: ../src/Win_GParted.cc:164
+#: ../src/Win_GParted.cc:179
 msgid "Create a new partition in the selected unallocated space"
-msgstr "Tạo phân vùng mới trong sức chứa không được cấp phát mà được chọn"
+msgstr "Tạo phân vùng mới trong sức chứa chưa cấp phát đã chọn"
 
-#: ../src/Win_GParted.cc:168
+#: ../src/Win_GParted.cc:184
 msgid "Delete the selected partition"
-msgstr "Xóa bỏ phân vùng được chọn"
+msgstr "Xóa bỏ phân vùng đã chọn"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:194
 msgid "Resize/Move the selected partition"
-msgstr "Thay đổi kích thước / Di chuyển phân vùng được chọn"
+msgstr "Thay đổi kích cỡ / di chuyển phân vùng đã chọn"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:203
 msgid "Copy the selected partition to the clipboard"
-msgstr "Sao chép phân vùng được chọn vào bảng tạm"
+msgstr "Sao chép phân vùng đã chọn vào bảng tạm"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:208
 msgid "Paste the partition from the clipboard"
 msgstr "Dán phân vùng chọn từ bảng tạm"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:218
 msgid "Undo last operation"
-msgstr "Hồi lại hành động cuối cùng"
+msgstr "Hủy bước cuối cùng"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:225
 msgid "Apply all operations"
 msgstr "Áp dụng mọi thao tác"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:260
 msgid "_Resize/Move"
-msgstr "_Đổi cỡ/Di chuyển"
+msgstr "Đổi cỡ/Chu_yển"
 
-#: ../src/Win_GParted.cc:250
+#: ../src/Win_GParted.cc:284
 msgid "_Format to"
-msgstr "_Định dạng sang"
+msgstr "Định _dạng sang"
 
-#: ../src/Win_GParted.cc:257
-#: ../src/Win_GParted.cc:734
+#: ../src/Win_GParted.cc:293
+#: ../src/Win_GParted.cc:763
 msgid "unmount"
 msgstr "tháo lắp"
 
-#: ../src/Win_GParted.cc:262
+#: ../src/Win_GParted.cc:299
 msgid "mount on"
-msgstr "gắn kết trên"
+msgstr "lắp vào"
 
-#: ../src/Win_GParted.cc:267
+#: ../src/Win_GParted.cc:306
 msgid "manage flags"
-msgstr "quản lý các cờ"
+msgstr "quản lý cờ"
 
 #.model
-#: ../src/Win_GParted.cc:326
+#: ../src/Win_GParted.cc:368
 msgid "Model:"
 msgstr "Mô hình:"
 
 #.disktype
-#: ../src/Win_GParted.cc:363
+#: ../src/Win_GParted.cc:405
 msgid "DiskLabelType:"
 msgstr "Kiểu nhãn đĩa:"
 
 #.heads
-#: ../src/Win_GParted.cc:371
+#: ../src/Win_GParted.cc:413
 msgid "Heads:"
-msgstr "Dầu:"
+msgstr "Dầu :"
 
 #.sectors/track
-#: ../src/Win_GParted.cc:379
+#: ../src/Win_GParted.cc:421
 msgid "Sectors/Track:"
-msgstr "Quạt/Rãnh:"
+msgstr "Rãnh ghi/Rãnh:"
 
 #.cylinders
-#: ../src/Win_GParted.cc:387
+#: ../src/Win_GParted.cc:429
 msgid "Cylinders:"
 msgstr "Trụ :"
 
-#: ../src/Win_GParted.cc:428
+#: ../src/Win_GParted.cc:470
 msgid "Hide operationslist"
 msgstr "Ẩn danh sách thao tác"
 
-#: ../src/Win_GParted.cc:437
+#: ../src/Win_GParted.cc:479
 msgid "Clear operationslist"
 msgstr "Xóa danh sách thao tác"
 
-#: ../src/Win_GParted.cc:653
+#: ../src/Win_GParted.cc:650
+msgid "Could not add this operation to the list."
+msgstr "Không thể tham thao tác này vào danh sách."
+
+#: ../src/Win_GParted.cc:681
 msgid "%1 operations pending"
 msgstr "%1 thao tác bị hoãn"
 
-#: ../src/Win_GParted.cc:655
+#: ../src/Win_GParted.cc:683
 msgid "1 operation pending"
 msgstr "1 thao tác bị hoãn"
 
-#: ../src/Win_GParted.cc:706
+#: ../src/Win_GParted.cc:734
 msgid "Quit GParted?"
 msgstr "Thoát GParted không?"
 
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:741
 msgid "%1 operations are currently pending."
 msgstr "%1 thao tác bị hoãn hiện thời."
 
-#: ../src/Win_GParted.cc:716
+#: ../src/Win_GParted.cc:744
 msgid "1 operation is currently pending."
 msgstr "1 thao tác bị hoãn hiện thời."
 
-#: ../src/Win_GParted.cc:758
+#: ../src/Win_GParted.cc:788
 msgid "swapoff"
-msgstr "trao đổi bật"
+msgstr "tắt trao đổi"
 
-#: ../src/Win_GParted.cc:764
+#: ../src/Win_GParted.cc:794
 msgid "swapon"
-msgstr "trao đổi tắt"
+msgstr "bật trao đổi"
 
 # Name: don't translate / Tên: đừng dịch
 # Variable: don't translate / Biến: đừng dịch
-#: ../src/Win_GParted.cc:907
+#: ../src/Win_GParted.cc:937
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:953
+#: ../src/Win_GParted.cc:983
 msgid "Scanning all devices..."
 msgstr "Đang quét mọi thiết bị..."
 
 # Type: text
 # Description
-#: ../src/Win_GParted.cc:969
+#: ../src/Win_GParted.cc:999
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
-msgstr "Hạt nhân không thể đọc lại những bảng phân vùng trên những thiết này:"
+msgstr "Hạt nhân không thể đọc lại các bảng phân vùng trên những thiết bị này:"
 
-#: ../src/Win_GParted.cc:976
+#: ../src/Win_GParted.cc:1006
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
-msgstr "Như thế thì truy cập bạn vào những thiết bị này sẽ bị giới hạn. Hãy tháo gắn "
-"kết mọi phân vùng đã gắn vào mỗi thiết bị, để có truy cập đầy đủ."
+msgstr "Như thế thì truy cập của bạn vào những thiết bị này sẽ bị giới hạn. Hãy tháo lắp mọi phân vùng đã lắp vào mỗi thiết bị, để giành khả năng truy cập đầy đủ."
 
-#: ../src/Win_GParted.cc:1020
+#: ../src/Win_GParted.cc:1050
 msgid "No devices detected"
-msgstr "Chưa phát hiện thiết bị nào."
+msgstr "Chưa phát hiện thiết bị nào"
 
-#: ../src/Win_GParted.cc:1099
+#: ../src/Win_GParted.cc:1129
 msgid "Sorry, not yet implemented."
-msgstr "Tiếc là chưa thực hiện nó."
+msgstr "Tiếc là chưa thực hiện.."
 
-#: ../src/Win_GParted.cc:1105
+#: ../src/Win_GParted.cc:1135
 msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr "Xin hãy ghé thăm <http://gparted.sf.net > để có thêm thông tin chi tiết và "
-"sự hỗ trợ."
+msgstr "Xin hãy ghé thăm « http://gparted.sf.net » để tìm thông tin thêm và sự hỗ trợ."
 
 #.TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #.It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1136
+#: ../src/Win_GParted.cc:1166
 msgid "translator-credits"
 msgstr "Nhóm Việt hóa Gnome <gnomevi-list@lists.sourceforge.net>"
 
-#: ../src/Win_GParted.cc:1176
+#: ../src/Win_GParted.cc:1206
 msgid "It is not possible to create more than %1 primary partitions"
-msgstr "Không thể tạo hơn %1 phân vùng chính."
+msgstr "Không thể tạo hơn %1 phân vùng chính"
 
-#: ../src/Win_GParted.cc:1184
+#: ../src/Win_GParted.cc:1214
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
 "is also a primary partition it might be necessary to remove a primary "
 "partition first."
-msgstr "Nếu bạn muốn có nhiều phân vùng hơn, trước tiên bạn nên tạo một phân vùng đã "
-"kéo dài. Phân vùng như vậy có thể chứa phân vùng khác. Vì phân vùng đã kéo "
-"dài cũng là phân vùng chính, có lẽ cần thiết gỡ bỏ một phân vùng chính trước "
-"hết."
+msgstr "Nếu bạn muốn có phân vùng thêm, trước tiên bạn nên tạo một phân vùng đã mở rộng Phân vùng như vậy có khả năng chứa phân vùng khác. Vì phân vùng đã mở rộng cũng là phân vùng chính, có lẽ cần thiết gỡ bỏ một phân vùng chính trước tiên."
 
-#: ../src/Win_GParted.cc:1332
+#: ../src/Win_GParted.cc:1393
 msgid "Unable to delete %1!"
-msgstr "• Không thể xoá bỏ %1. •"
+msgstr "Không thể xoá bỏ %1."
 
-#: ../src/Win_GParted.cc:1339
+#: ../src/Win_GParted.cc:1400
 msgid "Please unmount any logical partitions having a number higher than %1"
-msgstr "Bạn hãy tháo lắp phân vùng hợp lý nào có số cao hơn %1."
+msgstr "Bạn hãy tháo lắp phân vùng hợp lý nào có số hiệu cao hơn %1."
 
-#: ../src/Win_GParted.cc:1350
+#: ../src/Win_GParted.cc:1411
 msgid "Are you sure you want to delete %1?"
 msgstr "Bạn có chắc muốn xóa bỏ %1 không?"
 
-#: ../src/Win_GParted.cc:1357
+#: ../src/Win_GParted.cc:1418
 msgid "After deletion this partition is no longer available for copying."
-msgstr "Sau khi xóa bỏ thì phân vùng nào sẽ không là sẵn sàng sao chép."
+msgstr "Sau khi xóa bỏ thì phân vùng này không còn sẵn sàng lại để sao chép."
 
 #.TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1360
+#: ../src/Win_GParted.cc:1421
 msgid "Delete %1 (%2, %3)"
 msgstr "Xoá bỏ %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1421
+#: ../src/Win_GParted.cc:1487
 msgid "Cannot format this filesystem to %1."
 msgstr "Không thể định dạng hệ thống tập tin này sang %1."
 
-#: ../src/Win_GParted.cc:1430
+#: ../src/Win_GParted.cc:1496
 msgid "A %1 filesystem requires a partition of at least %2."
-msgstr "Hệ thống tập tin %1 cần thiết một phân vùng có kích cỡ ít nhất %2."
+msgstr "Hệ thống tập tin kiểu %1 cần thiết một phân vùng có kích cỡ ít nhất %2."
 
-#: ../src/Win_GParted.cc:1435
+#: ../src/Win_GParted.cc:1501
 msgid "A partition with a %1 filesystem has a maximum size of %2."
-msgstr "Một phân vùng trên hệ thống tập tin dạng %1 thì có kích cỡ tối đa là %2."
+msgstr "Một phân vùng trên hệ thống tập tin kiểu %1 thì có kích cỡ tối đa là %2."
 
-#: ../src/Win_GParted.cc:1508
+#: ../src/Win_GParted.cc:1586
 msgid "The partition could not be unmounted from the following mountpoints:"
-msgstr "Không thể tháo gắn kết phân vùng ra những điểm gắn theo đây:"
+msgstr "Không thể tháo lắp phân vùng đó ra những điểm lắp theo đây:"
 
-#: ../src/Win_GParted.cc:1510
+#: ../src/Win_GParted.cc:1588
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
-msgstr "Rất có thể là phân vùng khác cũng được gắn vào những điểm gắn này. Khuyên "
-"bạn tự tháo gắn kết chúng."
+msgstr "Rất có thể là phân vùng khác cũng được lắp vào những điểm gắn này. Khuyên bạn tự tháo lắp hết."
 
-#: ../src/Win_GParted.cc:1560
+#: ../src/Win_GParted.cc:1638
 msgid "Deactivating swap on %1"
-msgstr "Đang tắt swap trên %1"
+msgstr "Đang tắt khả năng trao đổi trên %1"
 
-#: ../src/Win_GParted.cc:1560
+#: ../src/Win_GParted.cc:1638
 msgid "Activating swap on %1"
-msgstr "Đang kích hoạt khả năng trao đổi trên %1..."
+msgstr "Đang bật khả năng trao đổi trên %1"
 
-#: ../src/Win_GParted.cc:1567
+#: ../src/Win_GParted.cc:1645
 msgid "Could not deactivate swap"
-msgstr "Không thể tắt swap"
+msgstr "Không thể tắt khả năng trao đổi"
 
-#: ../src/Win_GParted.cc:1567
+#: ../src/Win_GParted.cc:1645
 msgid "Could not activate swap"
-msgstr "Không thể kích hoạt khả năng trao đổi"
+msgstr "Không thể bật khả năng trao đổi"
 
-#: ../src/Win_GParted.cc:1583
+#: ../src/Win_GParted.cc:1661
 msgid "Unmounting %1"
-msgstr "Đang tháo lắp %1..."
+msgstr "Đang tháo lắp %1"
 
-#: ../src/Win_GParted.cc:1588
+#: ../src/Win_GParted.cc:1666
 msgid "Could not unmount %1"
-msgstr "Không thể tháo lắp %1."
+msgstr "Không thể tháo lắp %1"
 
-#: ../src/Win_GParted.cc:1617
+#: ../src/Win_GParted.cc:1695
 msgid "mounting %1 on %2"
-msgstr "đang gắn kết %1 trên %2"
+msgstr "đang lắp %1 vào %2"
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1702
 msgid "Could not mount %1 on %2"
-msgstr "Không thể gắn kết %1 trên %2"
+msgstr "Không thể lắp %1 vào %2"
 
-#: ../src/Win_GParted.cc:1648
+#: ../src/Win_GParted.cc:1726
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Bạn có chắc muốn tạo một nhãn đĩa %1 trên %2 không?"
 
-#: ../src/Win_GParted.cc:1656
+#: ../src/Win_GParted.cc:1734
 msgid "This operation will destroy all data on %1!"
-msgstr "• Thao tác này sẽ xoá bỏ hoàn toàn mọi dữ liệu trên %1. •"
+msgstr "Thao tác này sẽ xoá bỏ hoàn toàn mọi dữ liệu trên %1 !"
 
-#: ../src/Win_GParted.cc:1665
+#: ../src/Win_GParted.cc:1743
 msgid "Error while setting new disklabel"
 msgstr "Gặp lỗi khi đặt nhãn đĩa mới"
 
-#: ../src/Win_GParted.cc:1740
+#: ../src/Win_GParted.cc:1818
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Bạn có chắc muốn áp dụng các thao tác bị hoãn không?"
 
-#: ../src/Win_GParted.cc:1745
+#: ../src/Win_GParted.cc:1823
 msgid "It is recommended to backup valuable data before proceeding."
-msgstr "Đề nghị bạn lưu trữ các dữ liệu quan trọng trước khi tiếp tục."
+msgstr "Khuyên bạn sao lưu các dữ liệu quan trọng trước khi tiếp tục."
 
-#: ../src/Win_GParted.cc:1746
+#: ../src/Win_GParted.cc:1824
 msgid "Apply operations to harddisk"
-msgstr "Áp dụng thao tác vào đĩa cứng"
+msgstr "Áp dụng các thao tác vào đĩa cứng"
 
-#: ../src/ext2.cc:73
-#: ../src/ext3.cc:74
-#: ../src/fat16.cc:79
-#: ../src/fat32.cc:80
-#: ../src/hfs.cc:50
-#: ../src/jfs.cc:95
-#: ../src/linux_swap.cc:50
-#: ../src/ntfs.cc:73
-#: ../src/reiser4.cc:72
-#: ../src/reiserfs.cc:77
-#: ../src/xfs.cc:97
-msgid "create new %1 filesystem"
-msgstr "tạo hệ thống tập tin %1 mới"
-
-#: ../src/ext2.cc:93
-#: ../src/ext3.cc:94
-#: ../src/jfs.cc:115
-#: ../src/ntfs.cc:93
-#: ../src/reiserfs.cc:97
-#: ../src/xfs.cc:117
-msgid "grow filesystem to fill the partition"
-msgstr "tạo ra hệ thống tập tin để chiếm toàn bộ phân vùng"
-
-#: ../src/ext2.cc:95
-#: ../src/ext3.cc:96
-#: ../src/jfs.cc:117
-#: ../src/ntfs.cc:95
-#: ../src/reiserfs.cc:99
-#: ../src/xfs.cc:119
-msgid "resize the filesystem"
-msgstr "thay đổi kích cỡ của hệ thống tập tin"
-
-#: ../src/ext2.cc:125
-#: ../src/ext3.cc:126
-#: ../src/fat16.cc:111
-#: ../src/fat32.cc:112
-#: ../src/jfs.cc:212
-#: ../src/ntfs.cc:157
-#: ../src/reiser4.cc:104
-#: ../src/reiserfs.cc:133
-#: ../src/xfs.cc:356
-msgid "check filesystem on %1 for errors and (if possible) fix them"
-msgstr "kiểm tra xem hệ thống tập tin trên %1 có lỗi và (nếu có thể) sửa hết"
-
-#: ../src/jfs.cc:125
-#: ../src/xfs.cc:127
-#: ../src/xfs.cc:217
-#: ../src/xfs.cc:224
+#.create mountpoint...
+#: ../src/jfs.cc:108
+#: ../src/xfs.cc:110
+#: ../src/xfs.cc:201
+#: ../src/xfs.cc:208
 msgid "create temporary mountpoint (%1)"
 msgstr "tạo điểm lắp tạm thời (%1)"
 
-#: ../src/jfs.cc:132
-#: ../src/xfs.cc:134
-#: ../src/xfs.cc:231
-#: ../src/xfs.cc:240
+#: ../src/jfs.cc:115
+#: ../src/xfs.cc:117
+#: ../src/xfs.cc:215
+#: ../src/xfs.cc:224
 msgid "mount %1 on %2"
-msgstr "Lắp %1 trên %2"
+msgstr "lắp %1 vào %2"
 
-#: ../src/jfs.cc:141
+#: ../src/jfs.cc:124
 msgid "remount %1 on %2 with the 'resize' flag enabled"
-msgstr "lắp lại %1 trên %2 với cờ « đổi cỡ » được bật"
+msgstr "lắp lại %1 vào %2 với cờ « đổi cỡ » được bật"
 
-#: ../src/jfs.cc:157
-#: ../src/xfs.cc:157
-#: ../src/xfs.cc:264
-#: ../src/xfs.cc:284
+#: ../src/jfs.cc:142
+#: ../src/xfs.cc:139
+#: ../src/xfs.cc:248
+#: ../src/xfs.cc:269
 msgid "unmount %1"
 msgstr "tháo lắp %1"
 
-#: ../src/jfs.cc:177
-#: ../src/xfs.cc:177
-#: ../src/xfs.cc:304
-#: ../src/xfs.cc:327
+#: ../src/jfs.cc:162
+#: ../src/xfs.cc:159
+#: ../src/xfs.cc:289
+#: ../src/xfs.cc:312
 msgid "remove temporary mountpoint (%1)"
 msgstr "gỡ bỏ điểm lắp tạm thời (%1)"
 
 #: ../src/main.cc:38
 msgid "Root privileges are required for running GParted"
-msgstr "Cần thiết quyền truy cập người chủ để chạy GParted."
+msgstr "Cần thiết quyền truy cập người chủ để chạy được GParted"
 
 #: ../src/main.cc:43
 msgid "Since GParted can be a weapon of mass destruction only root may run it."
-msgstr "Vì GParted có thể thực hiện thay đổi quan trọng, chỉ cho phép người chủ chạy "
-"nó."
+msgstr "Vì trình GParted có thể thực hiện thay đổi quan trọng, chỉ cho phép người chủ chạy nó."
 
 #.simulation..
-#: ../src/ntfs.cc:108
+#: ../src/ntfs.cc:91
 msgid "run simulation"
 msgstr "chạy mô phỏng"
 
+#.real resize
+#: ../src/ntfs.cc:98
+msgid "real resize"
+msgstr "đổi cỡ thật"
+
 #.grow the mounted filesystem..
-#: ../src/xfs.cc:142
+#: ../src/xfs.cc:125
 msgid "grow mounted filesystem"
 msgstr "tạo ra hệ thống tập tin đã lắp"
 
 #.copy filesystem..
-#: ../src/xfs.cc:248
+#: ../src/xfs.cc:232
 msgid "copy filesystem"
 msgstr "sao chép hệ thống tập tin"
