@@ -120,7 +120,7 @@ private:
 
 	bool set_partition_type( const Partition & partition, OperationDetail & operationdetail ) ;
 
-	void set_progress_info( Sector total, Sector done, std::time_t time_start, OperationDetail & operationdetail ) ;
+	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail ) ;
 
 	enum CopyType
 	{

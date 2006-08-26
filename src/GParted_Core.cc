@@ -1061,7 +1061,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
-		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
+		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( partition .device_path ) ;
 	
 		close_device_and_disk() ;
 	}
@@ -1098,7 +1098,7 @@ bool GParted_Core::resize_move( const Device & device,
 			//first shrink, then move..
 			Partition temp = partition_old ;
 			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
-		//FIXME: shrink and move of fat32 fs in 1 operation throws path not found errors	
+		
 			return calculate_exact_geom( partition_old, temp, operationdetail ) &&
 			       resize( partition_old, temp, operationdetail ) &&
 			       calculate_exact_geom( temp, partition_new, operationdetail, temp .get_length() ) &&
@@ -1630,12 +1630,12 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	
 void GParted_Core::set_progress_info( Sector total,
 				      Sector done,
-				      std::time_t time_start,
+				      const Glib::Timer & timer,
 				      OperationDetail & operationdetail ) 
 {
 	operationdetail .fraction = done / static_cast<double>( total ) ;
 
-	double sec_per_frac = (std::time( NULL ) - time_start) / static_cast<double>( operationdetail .fraction ) ;
+	double sec_per_frac = timer .elapsed() / operationdetail .fraction ;
 
 	std::time_t time_remaining = Utils::round( (1.0 - operationdetail .fraction) * sec_per_frac ) ;
 
@@ -1653,63 +1653,54 @@ bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
 					   Sector & optimal_blocksize,
 					   Sector & offset,
 					   OperationDetail & operationdetail ) 
-{//FIXME, this probing is actually quite clumsy and suboptimal..
-//find out if there is a better way to determine a (close to) optimal blocksize...
+{
+	//FIXME: find out if there is a better way to determine a (close to) optimal blocksize...
 	bool succes = true ;
 
-	optimal_blocksize = 32 ;//sensible default?
-	offset = 0 ;
+	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
-	if ( partition_old .get_length() > 100000 )
-	{
-		operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
-		
-		Glib::Timer timer ;
-		double smallest_time = -1 ;
-
-		std::vector<Sector> blocksizes ;
-		blocksizes .push_back( 1 ) ;
-		blocksizes .push_back( 32 ) ;
-		blocksizes .push_back( 128 ) ;
-		blocksizes .push_back( 256 ) ;
-		blocksizes .push_back( 512 ) ;
-		
-		for ( unsigned int t = 0 ; t < blocksizes .size() && succes ; t++ )
-		{
-			timer .reset() ;
-			timer .start() ;
-
-			succes = copy_blocks( partition_old .device_path,
-					      partition_new .device_path,
-					      partition_old .sector_start + offset,
-					      partition_new .sector_start + offset,
-					      blocksizes[ t ],
-					      20000,
-					      operationdetail .get_last_child(),
-					      copytype ) ;
-			timer .stop() ;
-			
-			if ( timer .elapsed() <  smallest_time || smallest_time == -1 )
-			{
-				smallest_time = timer .elapsed() ;
-				optimal_blocksize = blocksizes[ t ] ;
-			}
-
-			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
-				String::ucompose( _("%1 seconds"), timer .elapsed() ),
-				STATUS_NONE,
-				FONT_ITALIC ) ) ;
-
-			offset += 20000 ;
-		}
-		
-		operationdetail .get_last_child() .add_child( OperationDetail( 
-			String::ucompose( _("optimal blocksize is %1 sectors (%2)"),
-					  optimal_blocksize,
-					  Utils::format_size( optimal_blocksize ) ) ,
-			STATUS_NONE ) ) ;
-	}
+	optimal_blocksize = 64 ;
+	double smallest_time = 1000000 ;
+	Sector N = 32768 ;
+	Glib::Timer timer ;
 	
+	for ( offset = 0 ; 
+	      	succes &&
+	      	timer .elapsed() <= smallest_time &&
+	      	optimal_blocksize *2 < N &&
+	      	offset + N < partition_old .get_length() ;
+	      		offset += N )
+	{
+		if ( offset > 0 ) 
+		{
+			smallest_time = timer .elapsed() ;
+			optimal_blocksize *= 2 ;
+		}
+
+		timer .reset() ; 
+		succes = copy_blocks( partition_old .device_path,
+				      partition_new .device_path,
+				      partition_old .sector_start + offset,
+				      partition_new .sector_start + offset,
+				      optimal_blocksize,
+				      N,
+				      operationdetail .get_last_child(),
+				      copytype ) ;
+		timer .stop() ;
+		
+		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
+			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
+	}
+
+	if ( timer .elapsed() > smallest_time )
+		optimal_blocksize /= 2 ;
+
+	operationdetail .get_last_child() .add_child( OperationDetail( 
+		String::ucompose( _("optimal blocksize is %1 sectors (%2)"),
+				  optimal_blocksize,
+				  Utils::format_size( optimal_blocksize ) ) ,
+		STATUS_NONE ) ) ;
+
 	return succes ; 
 }
 
@@ -1722,6 +1713,9 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		  	        OperationDetail & operationdetail,
 		  	        CopyType copytype )
 {
+	if ( blocksize > sectors )
+		blocksize = sectors ;
+
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( _("copy %1 sectors using a blocksize of %2 sectors"), sectors, blocksize ) ) ) ;
 	
@@ -1741,12 +1735,12 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		//add an empty sub which we will constantly update in the loop
 		operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
 	
-		std::time_t time_start, time_last_progress_update ;
-		time_start = time_last_progress_update = std::time(NULL) ;
+		Sector rest_sectors = sectors % blocksize ;
+		Glib::Timer timer_progress_timeout, timer_total ;
+		
 		Sector t ;
 		if ( copytype == START_TO_END )
 		{
-			Sector rest_sectors = sectors % blocksize ;
 			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
 			{
 				if ( ! copy_block( lp_device_src,
@@ -1757,14 +1751,14 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 						   error_message ) ) 
 					break ;
 
-				if ( (std::time(NULL) - time_last_progress_update) >= 1 )
+				if ( timer_progress_timeout .elapsed() >= 0.5 )
 				{
 					set_progress_info( sectors,
 							   t + blocksize,
-							   time_start,
+							   timer_total,
 							   operationdetail .get_last_child() .get_last_child() ) ;
 
-					time_last_progress_update = std::time(NULL) ;
+					timer_progress_timeout .reset() ;
 				}
 			}
 
@@ -1780,7 +1774,6 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		}
 		else if ( copytype == END_TO_START )
 		{
-			Sector rest_sectors = sectors % blocksize ;
 			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
 			{
 				if ( ! copy_block( lp_device_src,
@@ -1791,14 +1784,14 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 						   error_message ) )
 					break ;
 
-				if ( (std::time(NULL) - time_last_progress_update) >= 1 )
+				if ( timer_progress_timeout .elapsed() >= 0.5 )
 				{
 					set_progress_info( sectors,
 							   t + blocksize,
-							   time_start,
+							   timer_total,
 							   operationdetail .get_last_child() .get_last_child() ) ;
 
-					time_last_progress_update = std::time(NULL) ;
+					timer_progress_timeout .reset() ;
 				}
 			}
 
@@ -1813,14 +1806,13 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				t += rest_sectors ;
 		}
 	
+		//reset fraction to -1 to make room for a new one (or a pulsebar)
+		operationdetail .get_last_child() .get_last_child() .fraction = -1 ;
 
 		//final description
 		operationdetail .get_last_child() .get_last_child() .set_description( 
 			String::ucompose( _("%1 of %2 copied"), t, sectors ), FONT_ITALIC ) ;
 			
-		//reset fraction to -1 to make room for a new one (or a pulsebar)
-		operationdetail .get_last_child() .get_last_child() .fraction = -1 ;
-
 		if ( t == sectors )
 			succes = true ;
 	
@@ -1851,8 +1843,7 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 			       Sector blocksize,
 			       Glib::ustring & error_message ) 
 {
-	char buf[blocksize * 512] ;
-
+	char * buf = static_cast<char *>( malloc( blocksize * 512 ) ) ;
 	if ( ! ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
 	{
 		error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
@@ -1866,6 +1857,7 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 
 		return false ;
 	}
+	free( buf ) ;
 
 	return true ;
 }
