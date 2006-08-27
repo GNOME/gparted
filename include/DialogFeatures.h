@@ -23,6 +23,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/image.h>
 
 namespace GParted
 {
@@ -38,6 +39,8 @@ public:
 private:
 	void show_filesystem( const FS & fs ) ;
 
+	Gtk::HBox *hbox ;
+	Gtk::Image *image ;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;

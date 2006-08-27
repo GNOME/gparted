@@ -50,6 +50,7 @@ FS fat32::get_filesystem_support()
 
 void fat32::set_used_sectors( Partition & partition ) 
 {
+	//FIXME: i've encoutered a readonly fat32 filesystem.. this won't work with the -a ... best check also without the -a
 	exit_status = Utils::execute_command( "dosfsck -a -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 )
 	{

@@ -44,6 +44,19 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
 	get_vbox() ->pack_start( treeview_filesystems ) ;
+	
+	//legend..
+	hbox = manage( new Gtk::HBox ) ;
+	image = manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
+	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
+	hbox ->pack_start( * Utils::mk_label( _("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
+	get_vbox() ->pack_start( *hbox ) ;
+
+	hbox = manage( new Gtk::HBox ) ;
+	image = manage( new Gtk::Image( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
+	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
+	hbox ->pack_start( * Utils::mk_label( _("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
+	get_vbox() ->pack_start( *hbox ) ;
 
 	//initialize icons
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
