@@ -151,8 +151,7 @@ private:
 			 Glib::ustring & error_message ) ; 
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
-				   OperationDetail & operationdetail,
-				   Sector min_size = -1 ) ;
+				   OperationDetail & operationdetail ) ;
 	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;

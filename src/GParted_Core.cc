@@ -1074,40 +1074,37 @@ bool GParted_Core::resize_move( const Device & device,
 			  	Partition & partition_new,
 			  	OperationDetail & operationdetail ) 
 {
-	if ( calculate_exact_geom( partition_old, partition_new, operationdetail ) )
+	if ( partition_new .strict || calculate_exact_geom( partition_old, partition_new, operationdetail ) )
 	{
-		//extended is a special case..
-		if ( partition_old .type == GParted::TYPE_EXTENDED )
+		if ( partition_old .type == TYPE_EXTENDED )
 			return resize_move_partition( partition_old, partition_new, operationdetail ) ;
-	
-		//see if we need move or resize..
+
 		if ( partition_new .sector_start == partition_old .sector_start )
 			return resize( partition_old, partition_new, operationdetail ) ;
-		else if ( partition_new .get_length() > partition_old .get_length() )
+
+		if ( partition_new .get_length() == partition_old .get_length() )
+			return move( device, partition_old, partition_new, operationdetail ) ;
+
+		Partition temp ;
+		if ( partition_new .get_length() > partition_old .get_length() )
 		{
-			//first move, then grow...
-			Partition temp = partition_new ;
+			//first move, then grow. Since old.length < new.length and new.start is valid, temp is valid.
+			temp = partition_new ;
 			temp .sector_end = temp .sector_start + partition_old .get_length() -1 ;
-			
-			return calculate_exact_geom( partition_old, temp, operationdetail, temp .get_length() ) &&
-			       move( device, partition_old, temp, operationdetail ) &&
-			       resize( temp, partition_new, operationdetail ) ;
 		}
-		else if ( partition_new .get_length() < partition_old .get_length() )
+
+		if ( partition_new .get_length() < partition_old .get_length() )
 		{
-			//first shrink, then move..
-			Partition temp = partition_old ;
+			//first shrink, then move. Since new.length < old.length and old.start is valid, temp is valid.
+			temp = partition_old ;
 			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
-		
-			return calculate_exact_geom( partition_old, temp, operationdetail ) &&
-			       resize( partition_old, temp, operationdetail ) &&
-			       calculate_exact_geom( temp, partition_new, operationdetail, temp .get_length() ) &&
-			       move( device, temp, partition_new, operationdetail ) ;
 		}
-		else
-			return calculate_exact_geom( 
-					partition_old, partition_new, operationdetail, partition_old .get_length() ) &&
-			       move( device, partition_old, partition_new, operationdetail ) ;
+
+		temp .strict = true ;
+		bool succes = resize_move( device, partition_old, temp, operationdetail ) ;
+		temp .strict = false ;
+
+		return succes && resize_move( device, temp, partition_new, operationdetail ) ;
 	}
 
 	return false ;
@@ -1118,6 +1115,14 @@ bool GParted_Core::move( const Device & device,
 		   	 const Partition & partition_new,
 		   	 OperationDetail & operationdetail ) 
 {
+	if ( partition_old .get_length() != partition_new .get_length() )
+	{	
+		operationdetail .add_child( OperationDetail( 
+			_("moving requires old and new length to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
+
+		return false ;
+	}
+	
 	return check_repair_filesystem( partition_old, operationdetail ) &&
 	       move_filesystem( partition_old, partition_new, operationdetail ) &&
 	       resize_move_partition( partition_old, partition_new, operationdetail ) &&
@@ -1230,6 +1235,14 @@ bool GParted_Core::resize( const Partition & partition_old,
 			   const Partition & partition_new,
 			   OperationDetail & operationdetail )
 {
+	if ( partition_old .sector_start != partition_new .sector_start )
+	{	
+		operationdetail .add_child( OperationDetail( 
+			_("resizing requires old and new start to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
+
+		return false ;
+	}
+
 	bool succes = false ;
 	if ( check_repair_filesystem( partition_new, operationdetail ) )
 	{
@@ -1401,7 +1414,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			FONT_ITALIC ) ) ;
 	}
 	
-	operationdetail .get_last_child() .set_status(  return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
 	
 	return return_value ;
 }
@@ -1454,7 +1467,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
 	
@@ -1519,7 +1532,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 						break ;
 			}
 
-			operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 			return ( succes &&	
 			     	 check_repair_filesystem( partition_dest, operationdetail ) &&
@@ -1864,16 +1877,11 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 
 bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			       	         Partition & partition_new,
-				         OperationDetail & operationdetail,
-				         Sector min_size ) 
+				         OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
 
-	if ( min_size >= 0 )
-		operationdetail .get_last_child() .add_child( 
-			OperationDetail( String::ucompose( _("minimum size: %1"), min_size ), STATUS_NONE ) ) ;
-	
 	operationdetail .get_last_child() .add_child( 
 		OperationDetail(
 			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
@@ -1901,9 +1909,6 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			
 			if ( constraint )
 			{
-				if ( min_size >= 0 )
-					constraint ->min_size = min_size ;
-
 				//FIXME: if we insert a weird partitionnew geom here (e.g. start > end) 
 				//ped_disk_set_partition_geom() will still return true (althoug an lp exception is written
 				//to stdout.. see if this also affect create_partition and resize_move_partition
