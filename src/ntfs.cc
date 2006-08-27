@@ -25,18 +25,18 @@ FS ntfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_NTFS ;
-	
-	if ( ! Glib::find_program_in_path( "ntfscluster" ) .empty() )
+
+	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() )
+	{
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .check = GParted::FS::EXTERNAL ;
+	}
 	
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
-	
-	if ( ! Glib::find_program_in_path( "ntfsfix" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
-	
+
 	//resizing is a delicate process ...
-	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() && fs .check )
+	if ( fs .read && fs .check )
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
@@ -56,15 +56,16 @@ FS ntfs::get_filesystem_support()
 
 void ntfs::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "ntfscluster --force " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( 
+		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) )
 	{
-		index = output .find( "sectors of free space" ) ;
-		if ( index >= output .length() || 
-		     sscanf( output .substr( index ) .c_str(), "sectors of free space : %Ld", &N ) != 1 ) 
+		index = output .find( "resize at" ) ;
+		if ( index >= output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "resize at %Ld", &N ) != 1 )
 			N = -1 ;
 
 		if ( N > -1 )
-			partition .Set_Unused( N ) ;
+			partition .set_used( Utils::round( N / 512.0 ) ) ; 
 	}
 	else
 		partition .messages .push_back( error ) ;
