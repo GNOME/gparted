@@ -128,10 +128,10 @@ void Win_GParted::init_menubar()
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("Devices"), *image ) ) ; 
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Devices"), *image ) ) ; 
 	
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Show Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
@@ -144,13 +144,14 @@ void Win_GParted::init_menubar()
 	
 	//view
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Harddisk Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("_Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
 	
 	//device
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Set Disklabel"), sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Set Disklabel") ) + " ...",
+								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
 		
 	//partition
@@ -290,20 +291,20 @@ void Win_GParted::init_partition_menu()
 	index++ ;
 	
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("unmount"),
+			Gtk::Menu_Helpers::MenuElem( _("Unmount"),
 						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
 	MENU_TOGGLE_MOUNT_SWAP = index++ ;
 		
 	/*TO TRANSLATORS: menuitem which holds a submenu with mountpoints.. */
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("mount on"), * manage( new Gtk::Menu() ) ) ) ;
+			Gtk::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) ;
 	MENU_MOUNT = index++ ;
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
 
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("manage flags"),
+			Gtk::Menu_Helpers::MenuElem( _("M_anage Flags"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) );
 	MENU_FLAGS = index++ ;
 
@@ -357,7 +358,7 @@ void Win_GParted::init_device_info()
 	
 	//title
 	vbox_info .pack_start( 
-		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Harddisk Information") ) + ":</b>" ),
+		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + ":</b>" ),
 		Gtk::PACK_SHRINK );
 	
 	//GENERAL DEVICE INFO
@@ -760,7 +761,7 @@ void Win_GParted::set_valid_operations()
 	allow_manage_flags( false ) ; allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
-		->set_label( _("unmount") ) ;
+		->set_label( _("_Unmount") ) ;
 
 	menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .show() ;
 	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
@@ -785,13 +786,13 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition .busy )
 		{
 			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
-				->set_label( _("swapoff") ) ;
+				->set_label( _("_Swapoff") ) ;
 
 			return ;
 		}
 		else
        			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
-				->set_label( _("swapon") ) ;
+				->set_label( _("_Swapon") ) ;
 	}
 
 	//only unmount is allowed (if ! extended)
@@ -1081,7 +1082,7 @@ void Win_GParted::menu_gparted_features()
 		//recreate format menu...
 		menu_partition .items()[ MENU_FORMAT ] .remove_submenu() ;
 		menu_partition .items()[ MENU_FORMAT ] .set_submenu( * create_format_menu() ) ;
-		menu_partition .show_all_children() ;
+		menu_partition .items()[ MENU_FORMAT ] .get_submenu() ->show_all_children() ;
 	}
 }
 
