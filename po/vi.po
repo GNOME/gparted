@@ -6,8 +6,8 @@ msgid ""
 ""
 msgstr "Project-Id-Version: gparted 0.2.5 Gnome HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-27 03:56+0200\n"
-"PO-Revision-Date: 2006-08-27 16:38+0930\n"
+"POT-Creation-Date: 2006-08-28 12:44+0200\n"
+"PO-Revision-Date: 2006-08-28 20:54+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -348,6 +348,14 @@ msgstr "Chép"
 msgid "Check"
 msgstr "Kiểm tra"
 
+#: ../src/DialogFeatures.cc:52
+msgid "Available"
+msgstr "Sẵn sàng"
+
+#: ../src/DialogFeatures.cc:58
+msgid "Not Available"
+msgstr "Không sẵn sàng"
+
 #: ../src/DialogManageFlags.cc:31
 #: ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
@@ -432,199 +440,203 @@ msgstr "cỡ: %1 (%2)"
 msgid "create new %1 filesystem"
 msgstr "tạo hệ thống tập tin %1 mới"
 
-#: ../src/GParted_Core.cc:1133
+#: ../src/GParted_Core.cc:1121
+msgid "moving requires old and new length to be the same"
+msgstr "khả năng di chuyển cần thiết cả độ dài mới lẫn độ dài cũ đều là trùng"
+
+#: ../src/GParted_Core.cc:1138
 msgid "move filesystem to the left"
 msgstr "chuyển hệ thống tập tin sang trái"
 
-#: ../src/GParted_Core.cc:1135
+#: ../src/GParted_Core.cc:1140
 msgid "move filesystem to the right"
 msgstr "chuyển hệ thống tập tin sang phải"
 
-#: ../src/GParted_Core.cc:1138
+#: ../src/GParted_Core.cc:1143
 msgid "move filesystem"
 msgstr "chuyển hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1140
+#: ../src/GParted_Core.cc:1145
 msgid ""
 "new and old filesystem have the same positition. skipping this operation"
 msgstr "hệ thống tập tin cả mới lẫn cũ đều có cùng một vị trí nên bỏ qua thao tác này"
 
-#: ../src/GParted_Core.cc:1176
+#: ../src/GParted_Core.cc:1181
 msgid "using internal algorithm"
 msgstr "dùng thuật toán nội bộ"
 
-#: ../src/GParted_Core.cc:1197
+#: ../src/GParted_Core.cc:1202
 msgid "using libparted"
 msgstr "dùng libparted"
 
-#: ../src/GParted_Core.cc:1293
+#: ../src/GParted_Core.cc:1241
+msgid "resizing requires old and new start to be the same"
+msgstr "khả năng thay đổi kích cỡ cần thiết cả đầu cũ lẫn đầu mới đều là trùng"
+
+#: ../src/GParted_Core.cc:1306
 msgid "resize/move partition"
 msgstr "đổi cỡ/chuyển phân vùng"
 
-#: ../src/GParted_Core.cc:1296
+#: ../src/GParted_Core.cc:1309
 msgid "move partition to the right"
 msgstr "chuyển phân vùng sang phải"
 
-#: ../src/GParted_Core.cc:1299
+#: ../src/GParted_Core.cc:1312
 msgid "move partition to the left"
 msgstr "chuyển phân vùng sang trái"
 
-#: ../src/GParted_Core.cc:1302
+#: ../src/GParted_Core.cc:1315
 msgid "grow partition from %1 to %2"
 msgstr "tăng phân vùng từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:1305
+#: ../src/GParted_Core.cc:1318
 msgid "shrink partition from %1 to %2"
 msgstr "giảm phân vùng từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:1308
+#: ../src/GParted_Core.cc:1321
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "chuyển phân vùng sang phải và tăng nó từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:1311
+#: ../src/GParted_Core.cc:1324
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "chuyển phân vùng sang phải và giảm nó từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:1314
+#: ../src/GParted_Core.cc:1327
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "chuyển phân vùng sang trái và tăng nó từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:1317
+#: ../src/GParted_Core.cc:1330
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "chuyển phân vùng sang trái và giảm nó từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:1331
+#: ../src/GParted_Core.cc:1344
 #: ../src/OperationResizeMove.cc:77
 msgid ""
 "new and old partition have the same size and positition. continuing anyway"
 msgstr "phân vùng cả mới lẫn cũ đều có cùng một kích cỡ và vị trí ... vẫn còn tiếp "
 "tục"
 
-#: ../src/GParted_Core.cc:1337
+#: ../src/GParted_Core.cc:1350
 msgid "old start: %1"
 msgstr "đầu cũ : %1"
 
-#: ../src/GParted_Core.cc:1338
+#: ../src/GParted_Core.cc:1351
 msgid "old end: %1"
 msgstr "cuối cũ : %1"
 
-#: ../src/GParted_Core.cc:1339
+#: ../src/GParted_Core.cc:1352
 msgid "old size: %1 (%2)"
 msgstr "cỡ cũ : %1 (%2)"
 
 # Type: string
 # Description
-#: ../src/GParted_Core.cc:1395
-#: ../src/GParted_Core.cc:1933
+#: ../src/GParted_Core.cc:1408
+#: ../src/GParted_Core.cc:1938
 msgid "new start: %1"
 msgstr "đầu mới: %1"
 
-#: ../src/GParted_Core.cc:1396
-#: ../src/GParted_Core.cc:1934
+#: ../src/GParted_Core.cc:1409
+#: ../src/GParted_Core.cc:1939
 msgid "new end: %1"
 msgstr "cuối mới: %1"
 
-#: ../src/GParted_Core.cc:1397
-#: ../src/GParted_Core.cc:1935
+#: ../src/GParted_Core.cc:1410
+#: ../src/GParted_Core.cc:1940
 msgid "new size: %1 (%2)"
 msgstr "cỡ mới: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1421
+#: ../src/GParted_Core.cc:1434
 msgid "shrink filesystem"
 msgstr "giảm hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1425
+#: ../src/GParted_Core.cc:1438
 msgid "grow filesystem"
 msgstr "tăng hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1428
+#: ../src/GParted_Core.cc:1441
 msgid "resize filesystem"
 msgstr "đổi cỡ hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1431
+#: ../src/GParted_Core.cc:1444
 msgid ""
 "new and old filesystem have the same size and positition. continuing anyway"
 msgstr "hệ thống tập tin cả mới lẫn cũ đều có cùng một kích cỡ và vị trí ... vẫn còn "
 "tiếp tục"
 
-#: ../src/GParted_Core.cc:1463
+#: ../src/GParted_Core.cc:1476
 msgid "grow filesystem to fill the partition"
 msgstr "tăng kích cỡ của hệ thống tập tin để chiếm toàn bộ phân vùng"
 
-#: ../src/GParted_Core.cc:1468
+#: ../src/GParted_Core.cc:1481
 msgid "growing is not available for this filesystem"
 msgstr "khả năng tăng kích cỡ không phải sẵn sàng cho hệ thống tập tin này"
 
-#: ../src/GParted_Core.cc:1493
+#: ../src/GParted_Core.cc:1506
 msgid "copy filesystem of %1 to %2"
 msgstr "chép hệ thống tập tin của %1 sang %2"
 
-#: ../src/GParted_Core.cc:1559
+#: ../src/GParted_Core.cc:1572
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "kiểm tra xem hệ thống tập tin trên %1 có lỗi và (nếu có thể) sửa hết"
 
-#: ../src/GParted_Core.cc:1567
+#: ../src/GParted_Core.cc:1580
 msgid "checking is not available for this filesystem"
 msgstr "khả năng kiểm tra không phải sẵn sàng cho hệ thống tập tin này"
 
-#: ../src/GParted_Core.cc:1593
+#: ../src/GParted_Core.cc:1606
 msgid "set partitiontype on %1"
 msgstr "đặt kiểu_vùng trên %1"
 
-#: ../src/GParted_Core.cc:1615
+#: ../src/GParted_Core.cc:1628
 msgid "new partitiontype: %1"
 msgstr "kiểu_vùng mới: %1"
 
-#: ../src/GParted_Core.cc:1642
+#: ../src/GParted_Core.cc:1655
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 trên %2 đã sao chép (%3 còn lại)"
 
-#: ../src/GParted_Core.cc:1647
-#: ../src/GParted_Core.cc:1814
+#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:1827
 msgid "%1 of %2 copied"
 msgstr "%1 trên %2 đã sao chép"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:1673
 msgid "finding optimal blocksize"
 msgstr "đang tìm kích cỡ khối tối ưu"
 
-#: ../src/GParted_Core.cc:1692
+#: ../src/GParted_Core.cc:1705
 msgid "%1 seconds"
 msgstr "%1 giây"
 
-#: ../src/GParted_Core.cc:1699
+#: ../src/GParted_Core.cc:1712
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "kích cỡ khối tối ưu là %1 rãnh ghi (%2)"
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:1733
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "sao chép %1 rãnh ghi, dùng kích cỡ khối là %1 rãnh ghi"
 
-#: ../src/GParted_Core.cc:1849
+#: ../src/GParted_Core.cc:1862
 msgid "Error while reading block at sector %1"
 msgstr "Gặp lỗi khi đọc khối tại rãnh ghi %1"
 
-#: ../src/GParted_Core.cc:1856
+#: ../src/GParted_Core.cc:1869
 msgid "Error while writing block at sector %1"
 msgstr "Gặp lỗi khi ghi khối tại rãnh ghi %1"
 
-#: ../src/GParted_Core.cc:1871
+#: ../src/GParted_Core.cc:1883
 msgid "calculate new size and position of %1"
 msgstr "tính kích cỡ và vị trí mới của %1"
 
-#: ../src/GParted_Core.cc:1875
-msgid "minimum size: %1"
-msgstr "cỡ tối thiểu : %1"
-
-#: ../src/GParted_Core.cc:1879
+#: ../src/GParted_Core.cc:1887
 msgid "requested start: %1"
 msgstr "yêu cầu đầu : %1"
 
-#: ../src/GParted_Core.cc:1880
+#: ../src/GParted_Core.cc:1888
 msgid "requested end: %1"
 msgstr "yêu cầu cuối: %1"
 
-#: ../src/GParted_Core.cc:1881
+#: ../src/GParted_Core.cc:1889
 msgid "requested size: %1 (%2)"
 msgstr "yêu cầu cỡ : %1 (%2)"
 
@@ -1121,12 +1133,12 @@ msgstr "Vì trình GParted có thể thực hiện thay đổi quan trọng, ch�
 "chủ chạy nó."
 
 #.simulation..
-#: ../src/ntfs.cc:91
+#: ../src/ntfs.cc:92
 msgid "run simulation"
 msgstr "chạy mô phỏng"
 
 #.real resize
-#: ../src/ntfs.cc:98
+#: ../src/ntfs.cc:99
 msgid "real resize"
 msgstr "đổi cỡ thật"
 
