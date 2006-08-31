@@ -90,9 +90,6 @@ private:
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
-	bool move_filesystem_using_gparted( const Partition & partition_old,
-			      		    const Partition & partition_new,
-					    OperationDetail & operationdetail ) ;
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
 					      	     OperationDetail & operationdetail ) ;
@@ -122,16 +119,10 @@ private:
 
 	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail ) ;
 
-	enum CopyType
-	{
-		START_TO_END = 0,
-		END_TO_START = 1
-	} ;
 	bool find_optimal_blocksize( const Partition & partition_old,
 		      		     const Partition & partition_new,
-				     CopyType copytype,
 				     Sector & optimal_blocksize,
-				     Sector & offset,
+				     Sector & sectors_done,
 				     OperationDetail & operationdetail ) ;
 
 	bool copy_blocks( const Glib::ustring & src_device,
@@ -140,8 +131,7 @@ private:
 			  Sector dst_start,
 			  Sector blocksize,
 			  Sector sectors,
-			  OperationDetail & operationdetail,
-			  CopyType copytype ) ;
+			  OperationDetail & operationdetail ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,
