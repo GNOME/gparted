@@ -1847,7 +1847,7 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
 		}
 		else
-			error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
+			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_dst ) ;
 
 		free( buf ) ;
 	}
