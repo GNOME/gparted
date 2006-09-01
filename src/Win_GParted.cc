@@ -125,7 +125,7 @@ void Win_GParted::init_menubar()
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh Devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Devices"), *image ) ) ; 
@@ -145,7 +145,7 @@ void Win_GParted::init_menubar()
 	//view
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("_Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
 	
 	//device
