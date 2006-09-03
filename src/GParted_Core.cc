@@ -310,11 +310,12 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				succes = format( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_COPY:
-				//FIXME: think a bit about the process of copying, right now it's always a bit different from the rest... 
-				//maybe we should change the function of partition_new and partition_original?
-				succes = calibrate_partition( operation ->partition_new, operation ->operation_detail ) &&
+				succes = ( operation ->partition_original .type == TYPE_UNALLOCATED || 
+					   calibrate_partition( operation ->partition_new, operation ->operation_detail ) ) &&
+				
 					 calibrate_partition( static_cast<OperationCopy*>( operation ) ->partition_copied,
 							      operation ->operation_detail ) &&
+
 					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 					       operation ->partition_new,
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
@@ -971,8 +972,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		close_device_and_disk() ;
 	}
 	//FIXME: if we create an extended partition and want to do some other operation right after it, it may fail...
-	//there is no extended path to wait for, but maybe we could wait for the device_path to appear? (i think the same goes for 
-	//resize/move)
+	//(i think the same goes for resize/move) --- i REALLY need to fix this, see also #352744
 	if ( new_partition .partition_number > 0 &&
 	     erase_filesystem_signatures( new_partition ) &&
 	     ( new_partition .type == GParted::TYPE_EXTENDED || wait_for_node( new_partition .get_path() ) ) )
