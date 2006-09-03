@@ -1651,9 +1651,7 @@ void GParted_Core::set_progress_info( Sector total,
 {
 	operationdetail .fraction = done / static_cast<double>( total ) ;
 
-	double sec_per_frac = timer .elapsed() / operationdetail .fraction ;
-
-	std::time_t time_remaining = Utils::round( (1.0 - operationdetail .fraction) * sec_per_frac ) ;
+	std::time_t time_remaining = Utils::round( (total - done) / ( done / timer .elapsed() ) ) ;
 
 	operationdetail .progress_text = String::ucompose( _("%1 of %2 copied (%3 remaining)"),
 							   Utils::format_size( done ),
