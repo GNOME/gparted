@@ -284,45 +284,10 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
-	bool succes = true ;
+	bool succes = false ;
 	libparted_messages .clear() ;
-	
-	if ( operation ->partition_original .status == GParted::STAT_COPY )
-	{
-		succes = false ;
-		operation ->operation_detail .add_child( 
-			OperationDetail( String::ucompose( _("find real path of %1"),
-							   operation ->partition_original .get_path() ) ) ) ;
 
-		if ( open_device_and_disk( operation ->partition_original .device_path ) )
-		{
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk,
-									 operation ->partition_original .get_sector() ) ;
-		
-			if ( lp_partition )
-			{
-				char * lp_path = ped_partition_get_path( lp_partition ) ;
-				
-				operation ->partition_original .add_path( lp_path, true ) ;
-				operation ->partition_new .add_path( lp_path, true ) ;
-
-				free( lp_path ) ;
-				succes = true ;
-
-				operation ->operation_detail .get_last_child() .add_child( 
-					OperationDetail( String::ucompose( _("path: %1"),
-									   operation ->partition_new .get_path() ),
-							 STATUS_NONE,
-							 FONT_ITALIC ) ) ;
-			}
-
-			close_device_and_disk() ;
-		}
-
-		operation ->operation_detail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-	}
-
-	if ( succes )
+	if ( calibrate_partition( operation ->partition_original, operation ->operation_detail ) )
 		switch ( operation ->type )
 		{	     
 			case OPERATION_DELETE:
@@ -334,6 +299,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					         operation ->operation_detail ) ;
 				break ;
 			case OPERATION_RESIZE_MOVE:
+				//in case the to be resized/moved partition was a 'copy of..', we need a real path...
+				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
 				succes = resize_move( operation ->device,
 					       	      operation ->partition_original,
 						      operation ->partition_new,
@@ -342,10 +309,13 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			case OPERATION_FORMAT:
 				succes = format( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
-			case OPERATION_COPY: 
-				//when copying to an existing partition we have to change the 'copy of..' to a valid path
-				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-				succes = copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
+			case OPERATION_COPY:
+				//FIXME: think a bit about the process of copying, right now it's always a bit different from the rest... 
+				//maybe we should change the function of partition_new and partition_original?
+				succes = calibrate_partition( operation ->partition_new, operation ->operation_detail ) &&
+					 calibrate_partition( static_cast<OperationCopy*>( operation ) ->partition_copied,
+							      operation ->operation_detail ) &&
+					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 					       operation ->partition_new,
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
 					       operation ->operation_detail ) ;
@@ -592,8 +562,7 @@ void GParted_Core::set_device_partitions( Device & device )
 				partition_temp .Set( device .get_path(),
 						     lp_path,
 						     lp_partition ->num,
-						     lp_partition ->type == 0 ?
-						     		GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
+						     lp_partition ->type == 0 ?	GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
 						     get_filesystem(),
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
@@ -1001,7 +970,9 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 				
 		close_device_and_disk() ;
 	}
-
+	//FIXME: if we create an extended partition and want to do some other operation right after it, it may fail...
+	//there is no extended path to wait for, but maybe we could wait for the device_path to appear? (i think the same goes for 
+	//resize/move)
 	if ( new_partition .partition_number > 0 &&
 	     erase_filesystem_signatures( new_partition ) &&
 	     ( new_partition .type == GParted::TYPE_EXTENDED || wait_for_node( new_partition .get_path() ) ) )
@@ -1469,7 +1440,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dest,
 			 Sector min_size,
 			 OperationDetail & operationdetail ) 
-{
+{//FIXME: add a check to see if dest >= src...
 	if ( check_repair_filesystem( partition_src, operationdetail ) )
 	{
 		bool succes = true ;
@@ -1483,20 +1454,19 @@ bool GParted_Core::copy( const Partition & partition_src,
 						  partition_src .get_path(),
 						  partition_dest .get_path() ) ) ) ;
 						
-
 			switch ( get_fs( partition_dest .filesystem ) .copy )
 			{
-				case  GParted::FS::GPARTED :
+				case GParted::FS::GPARTED :
 						succes = copy_filesystem( partition_src,
 									  partition_dest,
 									  operationdetail .get_last_child() ) ;
 						break ;
 				
-				case  GParted::FS::LIBPARTED :
+				case GParted::FS::LIBPARTED :
 						//FIXME: see if copying through libparted has any advantages
 						break ;
 
-				case  GParted::FS::EXTERNAL :
+				case GParted::FS::EXTERNAL :
 						succes = set_proper_filesystem( partition_dest .filesystem ) &&
 							 p_filesystem ->copy( partition_src .get_path(),
 								     	      partition_dest .get_path(),
@@ -1524,17 +1494,69 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    OperationDetail & operationdetail )
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
+	
+	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
-	Sector optimal_blocksize, sectors_done ;
-	return find_optimal_blocksize( partition_src, partition_dst, optimal_blocksize, sectors_done, operationdetail )
-	       &&
+	Sector optimal_blocksize = 64, N = 32768 ;
+	Sector offset_read = partition_src .sector_start,
+	       offset_write = partition_dst .sector_start ;
+
+	if ( partition_dst .sector_start > partition_src .sector_start )
+	{
+		offset_read += (partition_src .get_length() -N) ;
+		offset_write += (partition_src .get_length() -N) ;
+	}
+
+	Sector done = 0 ;
+	Glib::Timer timer ;
+	double smallest_time = 1000000 ;
+	bool succes = true ;
+
+	while ( succes &&
+		timer .elapsed() <= smallest_time && 
+		std::abs( done ) + N <= partition_src .get_length() && 
+		optimal_blocksize * 2 < N )
+	{
+		if ( done != 0 ) 
+		{
+			smallest_time = timer .elapsed() ;
+			optimal_blocksize *= 2 ;
+		}
+
+		timer .reset() ;
+		succes = copy_blocks( partition_src .device_path, 
+	  		     	      partition_dst .device_path,
+			     	      offset_read + done, 
+			     	      offset_write + done,
+			     	      N, 
+			     	      optimal_blocksize,
+			     	      operationdetail .get_last_child() ) ;
+		timer.stop() ;
+
+		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
+			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
+		
+		if ( ( partition_dst .sector_start > partition_src .sector_start ) )
+			done -= N ;
+		else
+			done += N ;
+	}
+	
+	if ( timer .elapsed() > smallest_time )
+		optimal_blocksize /= 2 ;
+	
+	operationdetail .get_last_child() .add_child( OperationDetail( 
+		String::ucompose( _("optimal blocksize is %1 sectors (%2)"), optimal_blocksize, Utils::format_size( optimal_blocksize ) ),
+		STATUS_NONE ) ) ;
+
+	return succes && 
 	       copy_blocks( partition_src .device_path, 
-	  		    partition_dst .device_path,
-	  		    partition_src .sector_start + ( partition_dst .sector_start < partition_src .sector_start ? sectors_done : 0 ),
-	  		    partition_dst .sector_start + ( partition_dst .sector_start < partition_src .sector_start ? sectors_done : 0 ),
-	  		    optimal_blocksize,
-	  		    partition_src .get_length() - sectors_done,
-	  		    operationdetail ) ;
+		      	    partition_dst .device_path,
+		      	    partition_src .sector_start + ( partition_dst .sector_start > partition_src .sector_start ? 0 : done ),
+		      	    partition_dst .sector_start + ( partition_dst .sector_start > partition_src .sector_start ? 0 : done ),
+		      	    partition_src .get_length() - std::abs( done ), 
+		      	    optimal_blocksize,
+		      	    operationdetail ) ;
 }
 	
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
@@ -1631,182 +1653,80 @@ void GParted_Core::set_progress_info( Sector total,
 	operationdetail .set_description( String::ucompose( _("%1 of %2 copied"), done, total ), FONT_ITALIC ) ;
 }
 	
-bool GParted_Core::find_optimal_blocksize( const Partition & partition_old,
-		      		     	   const Partition & partition_new,
-					   Sector & optimal_blocksize,
-					   Sector & sectors_done,
-					   OperationDetail & operationdetail ) 
+bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
+			  	const Glib::ustring & dst_device,
+			  	Sector src_start,
+			  	Sector dst_start,
+				Sector length,
+			  	Sector blocksize,
+			  	OperationDetail & operationdetail ) 
 {
-	//FIXME: find out if there is a better way to determine a (close to) optimal blocksize...
-	bool succes = true ;
+	if ( blocksize > length )
+		blocksize = length ;
+	
+	operationdetail .add_child( OperationDetail( 
+		String::ucompose( _("copy %1 sectors using a blocksize of %2 sectors"), length, blocksize ) ) ) ;
 
-	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
-	
-	optimal_blocksize = 64 ;
-	double smallest_time = 1000000 ;
-	Sector N = 32768 ;
-	Glib::Timer timer ;
-	
-	for ( sectors_done = 0 ; 
-	      	succes &&
-	      	timer .elapsed() <= smallest_time &&
-	      	optimal_blocksize *2 < N &&
-	      	sectors_done + N < partition_old .get_length() ;
-	      		sectors_done += N )
+	Sector done = length % blocksize ; 
+
+	if ( dst_start > src_start )
 	{
-		if ( sectors_done > 0 ) 
-		{
-			smallest_time = timer .elapsed() ;
-			optimal_blocksize *= 2 ;
-		}
-
-		timer .reset() ;
-		if ( partition_new .sector_start < partition_old .sector_start )
-			succes = copy_blocks( partition_old .device_path,
-					      partition_new .device_path,
-					      partition_old .sector_start +sectors_done,
-					      partition_new .sector_start +sectors_done,
-					      optimal_blocksize,
-					      N,
-					      operationdetail .get_last_child() ) ;
-		else 
-			succes = copy_blocks( partition_old .device_path,
-					      partition_new .device_path,
-					      partition_old .sector_end +1 -sectors_done -N,
-					      partition_new .sector_end +1 -sectors_done -N,
-					      optimal_blocksize,
-					      N,
-					      operationdetail .get_last_child() ) ;
-
-		timer .stop() ;
-		
-		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
-			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
+		blocksize -= 2*blocksize ;
+		done -= 2*done ;
+		src_start += (length -1) ;
+		dst_start += (length -1) ;
 	}
 
-	if ( timer .elapsed() > smallest_time )
-		optimal_blocksize /= 2 ;
-
-	operationdetail .get_last_child() .add_child( OperationDetail( 
-		String::ucompose( _("optimal blocksize is %1 sectors (%2)"),
-				  optimal_blocksize,
-				  Utils::format_size( optimal_blocksize ) ) ,
-		STATUS_NONE ) ) ;
-
-	return succes ; 
-}
-
-bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
-		  	        const Glib::ustring & dst_device,
-		  	        Sector src_start,
-		  	        Sector dst_start,
-		  	        Sector blocksize,
-		  	        Sector sectors,
-		  	        OperationDetail & operationdetail )
-{
-	if ( blocksize > sectors )
-		blocksize = sectors ;
-
-	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("copy %1 sectors using a blocksize of %2 sectors"), sectors, blocksize ) ) ) ;
-	
 	bool succes = false ;
-	PedDevice *lp_device_src, *lp_device_dst ;
+	PedDevice *lp_device_src = ped_device_get( src_device .c_str() );
+	PedDevice *lp_device_dst = src_device != dst_device ? ped_device_get( dst_device .c_str() ) : lp_device_src ;
 
-	lp_device_src = ped_device_get( src_device .c_str() );
-
-	if ( src_device != dst_device )
-		lp_device_dst = ped_device_get( dst_device .c_str() );
-	else
-		lp_device_dst = lp_device_src ;
-	Glib::ustring error_message ;
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
+		succes = true ;
 		ped_device_sync( lp_device_dst ) ;
+
+		Glib::ustring error_message ;
+
+        	if ( done != 0 )
+        	    succes = copy_block( lp_device_src,
+			        	 lp_device_dst,
+			        	 src_start,
+			        	 dst_start, 
+			        	 done,
+			        	 error_message ) ;
+
 		//add an empty sub which we will constantly update in the loop
 		operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
-	
-		Sector rest_sectors = sectors % blocksize ;
-		Glib::Timer timer_progress_timeout, timer_total ;
 		
-		Sector t ;
-		if ( dst_start < src_start ) //read/write start to end...
+		Glib::Timer timer_progress_timeout, timer_total ;
+		for( ; succes && std::abs( done ) < length ; done += blocksize )
 		{
-			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
+			succes = copy_block( lp_device_src,
+					     lp_device_dst,
+					     src_start +done,
+					     dst_start +done, 
+					     blocksize,
+					     error_message ) ; 
+
+			if ( timer_progress_timeout .elapsed() >= 0.5 )
 			{
-				if ( ! copy_block( lp_device_src,
-						   lp_device_dst,
-						   src_start +t,
-						   dst_start +t,
-						   blocksize,
-						   error_message ) ) 
-					break ;
-
-				if ( timer_progress_timeout .elapsed() >= 0.5 )
-				{
-					set_progress_info( sectors,
-							   t + blocksize,
-							   timer_total,
-							   operationdetail .get_last_child() .get_last_child() ) ;
-
-					timer_progress_timeout .reset() ;
-				}
+				set_progress_info( length,
+						   std::abs( done + blocksize ),
+						   timer_total,
+						   operationdetail .get_last_child() .get_last_child() ) ;
+		
+				timer_progress_timeout .reset() ;
 			}
-
-			if ( rest_sectors > 0 &&
-			     sectors -t == rest_sectors &&
-			     copy_block( lp_device_src,
-					 lp_device_dst,
-					 src_start +t,
-					 dst_start +t,
-					 rest_sectors,
-					 error_message ) )
-				t += rest_sectors ;
 		}
-		else //read/write end to start
-		{
-			for ( t = 0 ; t < sectors - rest_sectors ; t+=blocksize )
-			{
-				if ( ! copy_block( lp_device_src,
-						   lp_device_dst,
-						   src_start + sectors -blocksize -t,
-						   dst_start + sectors -blocksize -t,
-						   blocksize,
-						   error_message ) )
-					break ;
 
-				if ( timer_progress_timeout .elapsed() >= 0.5 )
-				{
-					set_progress_info( sectors,
-							   t + blocksize,
-							   timer_total,
-							   operationdetail .get_last_child() .get_last_child() ) ;
-
-					timer_progress_timeout .reset() ;
-				}
-			}
-
-			if ( rest_sectors > 0 &&
-			     sectors -t == rest_sectors &&
-			     copy_block( lp_device_src,
-					 lp_device_dst,
-					 src_start,
-					 dst_start,
-					 rest_sectors,
-					 error_message ) )
-				t += rest_sectors ;
-		}
-	
 		//reset fraction to -1 to make room for a new one (or a pulsebar)
 		operationdetail .get_last_child() .get_last_child() .fraction = -1 ;
 
 		//final description
 		operationdetail .get_last_child() .get_last_child() .set_description( 
-			String::ucompose( _("%1 of %2 copied"), t, sectors ), FONT_ITALIC ) ;
-			
-		if ( t == sectors )
-			succes = true ;
-	
+			String::ucompose( _("%1 of %2 copied"), std::abs( done ), length ), FONT_ITALIC ) ;
+		
 		if ( ! succes && ! error_message .empty() )
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
@@ -1823,7 +1743,6 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-
 	return succes ;
 }
 
@@ -1836,25 +1755,81 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 {
 	bool succes = false ;
 
-	char * buf = static_cast<char *>( malloc( blocksize * 512 ) ) ;
-	if ( buf )
+	if ( blocksize < 0 )
 	{
-		if ( ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
+		blocksize = std::abs( blocksize ) ;
+		offset_src -= ( blocksize -1 ) ;
+		offset_dst -= ( blocksize -1 ) ;
+	}
+
+	if ( blocksize != 0 )
+	{
+		char * buf = static_cast<char *>( malloc( blocksize * 512 ) ) ;
+		if ( buf )
 		{
-			if ( ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
-				succes = true ;
+			if ( ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
+			{
+				if ( ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
+					succes = true ;
+				else
+					error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
+			}
 			else
-				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
+				error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
+
+			free( buf ) ;
 		}
 		else
-			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_dst ) ;
-
-		free( buf ) ;
+			error_message = Glib::strerror( errno ) ;
 	}
-	else
-		error_message = Glib::strerror( errno ) ;
 
 	return succes ;
+}
+	
+bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail & operationdetail ) 
+{
+	if ( partition .type == TYPE_PRIMARY || partition .type == TYPE_LOGICAL || partition .type == TYPE_EXTENDED )
+	{
+		operationdetail .add_child( OperationDetail( String::ucompose( _("calibrate %1"), partition .get_path() ) ) ) ;
+	
+		bool succes = false ;
+		if ( open_device_and_disk( partition .device_path ) )
+		{	
+			if ( partition .type == GParted::TYPE_EXTENDED )
+				lp_partition = ped_disk_extended_partition( lp_disk ) ;
+			else	
+				lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+		
+			if ( lp_partition )//FIXME: add check to see if lp_partition ->type matches partition .type..
+			{
+				char * lp_path = ped_partition_get_path( lp_partition ) ;
+				partition .add_path( lp_path, true ) ;
+				free( lp_path ) ;
+
+				partition .sector_start = lp_partition ->geom .start ;
+				partition .sector_end = lp_partition ->geom .end ;
+
+				operationdetail .get_last_child() .add_child( 
+					OperationDetail(
+						String::ucompose( _("path: %1"), partition .get_path() ) + "\n" +
+						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
+						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
+						String::ucompose( _("size: %1 (%2)"),
+								  partition .get_length(),
+								  Utils::format_size( partition .get_length() ) ),
+					STATUS_NONE, 
+					FONT_ITALIC ) ) ;
+				succes = true ;
+			}
+
+			close_device_and_disk() ;
+		}
+
+		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+		return succes ;
+	}
+	else //nothing to calibrate...
+		return true ;
 }
 
 bool GParted_Core::calculate_exact_geom( const Partition & partition_old,

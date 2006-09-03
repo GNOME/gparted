@@ -119,18 +119,12 @@ private:
 
 	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail ) ;
 
-	bool find_optimal_blocksize( const Partition & partition_old,
-		      		     const Partition & partition_new,
-				     Sector & optimal_blocksize,
-				     Sector & sectors_done,
-				     OperationDetail & operationdetail ) ;
-
 	bool copy_blocks( const Glib::ustring & src_device,
 			  const Glib::ustring & dst_device,
 			  Sector src_start,
 			  Sector dst_start,
+			  Sector length,
 			  Sector blocksize,
-			  Sector sectors,
 			  OperationDetail & operationdetail ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
@@ -139,6 +133,7 @@ private:
 			 Sector offset_dst,
 			 Sector blocksize,
 			 Glib::ustring & error_message ) ; 
+	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
