@@ -106,7 +106,7 @@ private:
 	bool maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 				
 	bool copy( const Partition & partition_src,
-		   Partition & partition_dest,
+		   Partition & partition_dst,
 		   Sector min_size,
 		   OperationDetail & operationdetail ) ; 
 	bool copy_filesystem( const Partition & partition_src,

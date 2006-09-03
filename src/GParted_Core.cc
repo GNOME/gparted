@@ -1439,28 +1439,36 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 }
 
 bool GParted_Core::copy( const Partition & partition_src,
-			 Partition & partition_dest,
+			 Partition & partition_dst,
 			 Sector min_size,
 			 OperationDetail & operationdetail ) 
-{//FIXME: add a check to see if dest >= src...
+{
+	if ( partition_dst .get_length() < partition_src .get_length() )
+	{	
+		operationdetail .add_child( OperationDetail( 
+			_("the destination is smaller than the sourcepartition"), STATUS_ERROR, FONT_ITALIC ) ) ;
+
+		return false ;
+	}
+
 	if ( check_repair_filesystem( partition_src, operationdetail ) )
 	{
 		bool succes = true ;
-		if ( partition_dest .status == GParted::STAT_COPY )
-			succes = create_partition( partition_dest, operationdetail, min_size ) ;
+		if ( partition_dst .status == GParted::STAT_COPY )
+			succes = create_partition( partition_dst, operationdetail, min_size ) ;
 
-		if ( succes && set_partition_type( partition_dest, operationdetail ) )
+		if ( succes && set_partition_type( partition_dst, operationdetail ) )
 		{
 			operationdetail .add_child( OperationDetail( 
 				String::ucompose( _("copy filesystem of %1 to %2"),
 						  partition_src .get_path(),
-						  partition_dest .get_path() ) ) ) ;
+						  partition_dst .get_path() ) ) ) ;
 						
-			switch ( get_fs( partition_dest .filesystem ) .copy )
+			switch ( get_fs( partition_dst .filesystem ) .copy )
 			{
 				case GParted::FS::GPARTED :
 						succes = copy_filesystem( partition_src,
-									  partition_dest,
+									  partition_dst,
 									  operationdetail .get_last_child() ) ;
 						break ;
 				
@@ -1469,9 +1477,9 @@ bool GParted_Core::copy( const Partition & partition_src,
 						break ;
 
 				case GParted::FS::EXTERNAL :
-						succes = set_proper_filesystem( partition_dest .filesystem ) &&
+						succes = set_proper_filesystem( partition_dst .filesystem ) &&
 							 p_filesystem ->copy( partition_src .get_path(),
-								     	      partition_dest .get_path(),
+								     	      partition_dst .get_path(),
 									      operationdetail .get_last_child() ) ;
 						break ;
 
@@ -1483,8 +1491,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 			return ( succes &&	
-			     	 check_repair_filesystem( partition_dest, operationdetail ) &&
-			     	 maximize_filesystem( partition_dest, operationdetail ) ) ;
+			     	 check_repair_filesystem( partition_dst, operationdetail ) &&
+			     	 maximize_filesystem( partition_dst, operationdetail ) ) ;
 		}
 	}
 
