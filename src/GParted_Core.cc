@@ -1023,21 +1023,23 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 
 bool GParted_Core::Delete( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	bool return_value = false ;
-	
+	operationdetail .add_child( OperationDetail( _("delete partition") ) ) ;
+
+	bool succes = false ;
 	if ( open_device_and_disk( partition .device_path ) )
 	{
-		if ( partition .type == GParted::TYPE_EXTENDED )
+		if ( partition .type == TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
-		return_value = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( partition .device_path ) ;
+		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( partition .device_path ) ;
 	
 		close_device_and_disk() ;
 	}
 
-	return return_value ;
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	return succes ;
 }
 	
 bool GParted_Core::resize_move( const Device & device,
@@ -1138,7 +1140,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
 
