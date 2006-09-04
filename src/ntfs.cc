@@ -67,7 +67,7 @@ void ntfs::set_used_sectors( Partition & partition )
 		if ( N > -1 )
 			partition .set_used( Utils::round( N / 512.0 ) ) ; 
 	}
-	else
+	else//FIXME: i think it's a good idea to push the output here as well
 		partition .messages .push_back( error ) ;
 }
 

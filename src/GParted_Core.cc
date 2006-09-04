@@ -1099,6 +1099,7 @@ bool GParted_Core::move( const Device & device,
 	return check_repair_filesystem( partition_old, operationdetail ) &&
 	       move_filesystem( partition_old, partition_new, operationdetail ) &&
 	       resize_move_partition( partition_old, partition_new, operationdetail ) &&
+	       update_bootsector( partition_new, operationdetail ) &&
 	       check_repair_filesystem( partition_new, operationdetail ) &&
 	       maximize_filesystem( partition_new, operationdetail ) ;
 }
@@ -1491,6 +1492,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 			return ( succes &&	
+	       			 update_bootsector( partition_dst, operationdetail ) &&
 			     	 check_repair_filesystem( partition_dst, operationdetail ) &&
 			     	 maximize_filesystem( partition_dst, operationdetail ) ) ;
 		}
@@ -1909,7 +1911,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			FONT_ITALIC ) ) ;
 	}
 
-	operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
 
@@ -1984,6 +1986,48 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	}
 
 	return return_value ;
+}
+	
+bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
+{
+	//only for ntfs atm...
+	//FIXME: 1) this should be done without relying on external commands
+	//	 2) this should probably be done in the fsclasses...
+	if ( partition .filesystem == FS_NTFS )
+	{
+		operationdetail .add_child( OperationDetail( 
+			String::ucompose( _("updating bootsector of %1 filesystem on %2"),
+					  Utils::get_filesystem_string( partition .filesystem ),
+					  partition .get_path() ) ) ) ;
+
+		std::stringstream ss ;
+		ss << std::hex << partition .sector_start ;
+		Glib::ustring hex = ss .str() ;
+	
+		//fill with zeros and reverse...
+		hex .insert( 0, 8 - hex .length(), '0' ) ;
+		Glib::ustring reversed_hex ;
+		for ( int t = 6 ; t >= 0 ; t -=2 )
+			reversed_hex .append( hex .substr( t, 2 ) ) ;
+
+		Glib::ustring output, error, command ;
+		command = 
+			"echo " + reversed_hex + " | /usr/bin/xxd -r -p | /bin/dd conv=notrunc of=" + partition .get_path() + " bs=1 seek=28" ;
+
+		operationdetail .get_last_child() .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+		bool succes = ! Utils::execute_command( command, output, error ) ;
+
+		if ( ! output .empty() )
+			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+		
+		if ( ! error .empty() )
+			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+
+		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+		return succes ;
+	}
+
+	return true ;
 }
 	
 bool GParted_Core::open_device( const Glib::ustring & device_path )

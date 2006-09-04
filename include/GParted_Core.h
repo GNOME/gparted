@@ -140,6 +140,7 @@ private:
 	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
+	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
 	bool open_device( const Glib::ustring & device_path ) ;
