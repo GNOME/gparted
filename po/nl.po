@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-29 03:57+0200\n"
-"PO-Revision-Date: 2006-08-29 09:24+0200\n"
+"POT-Creation-Date: 2006-09-05 13:13+0200\n"
+"PO-Revision-Date: 2006-09-05 15:49+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,9 @@ msgstr "Schijflabel instellen op %1"
 msgid ""
 "A disklabel is a piece of data stored at a well known place on the disk, "
 "that indicates where each partition begins and how many sectors it occupies."
-msgstr "Een schijflabel is een stukje informatie op een vaste plek op de schijf, dat aangeeft waar elke partitie begint en hoeveel sectoren het bevat."
+msgstr ""
+"Een schijflabel is een stukje informatie op een vaste plek op de schijf, dat "
+"aangeeft waar elke partitie begint en hoeveel sectoren het bevat."
 
 # N.B. letterlijke vertaling: U heeft een disklabel nodig... is lelijk
 # de schijf/deze schijf
@@ -118,7 +120,9 @@ msgstr "Kies een nieuw labeltype:"
 
 #: ../src/Dialog_Disklabel.cc:83
 msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr "WAARSCHUWING: Bij het aanmaken van een nieuw schijflabel zullen alle gegevens op %1 worden verwijderd!"
+msgstr ""
+"WAARSCHUWING: Bij het aanmaken van een nieuw schijflabel zullen alle "
+"gegevens op %1 worden verwijderd!"
 
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
 #: ../src/Win_GParted.cc:1738
@@ -415,283 +419,292 @@ msgstr ""
 "Een partitie met gebruikte sectoren (%1) groter dan de lengte (%2) is niet "
 "geldig"
 
-# statusbericht?
-# zoek het echte/daadwerkelijke pad van %1
-#: ../src/GParted_Core.cc:294
-msgid "find real path of %1"
-msgstr "zoeken naar het daadwerkelijke pad van %1"
-
-#: ../src/GParted_Core.cc:313 ../src/GParted_Core.cc:988
-msgid "path: %1"
-msgstr "pad: %1"
-
 # meldingen/berichten
-#: ../src/GParted_Core.cc:357
+#: ../src/GParted_Core.cc:328
 msgid "libparted messages"
 msgstr "libparted meldingen"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:709
+#: ../src/GParted_Core.cc:679
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Kan bestandssysteem niet detecteren! Mogelijke oorzaken zijn:"
 
-#: ../src/GParted_Core.cc:711
+#: ../src/GParted_Core.cc:681
 msgid "The filesystem is damaged"
 msgstr "Het bestandssysteem is beschadigd"
 
-#: ../src/GParted_Core.cc:713
+#: ../src/GParted_Core.cc:683
 msgid "The filesystem is unknown to GParted"
 msgstr "Gparted kent dit bestandssysteem niet"
 
 # beschikbaar weglaten?
-#: ../src/GParted_Core.cc:715
+#: ../src/GParted_Core.cc:685
 msgid "There is no filesystem available (unformatted)"
 msgstr "Er is geen bestandssysteem beschikbaar (ongeformatteerd)"
 
 # koppelingspunt/aankoppelingspunt
 # punt/map
-#: ../src/GParted_Core.cc:792
+#: ../src/GParted_Core.cc:762
 msgid "Unable to find mountpoint"
 msgstr "Kan het aankoppelingspunt niet vinden"
 
-#: ../src/GParted_Core.cc:810
+#: ../src/GParted_Core.cc:780
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Kan de inhoud van het bestandssysteem niet lezen!"
 
-#: ../src/GParted_Core.cc:812
+#: ../src/GParted_Core.cc:782
 msgid "Because of this some operations may be unavailable."
 msgstr "Hierdoor zijn sommige acties uitgeschakeld."
 
-#: ../src/GParted_Core.cc:920
+#: ../src/GParted_Core.cc:890
 msgid "create empty partition"
 msgstr "lege partitie aanmaken"
 
-#: ../src/GParted_Core.cc:989
+#: ../src/GParted_Core.cc:958 ../src/GParted_Core.cc:1824
+msgid "path: %1"
+msgstr "pad: %1"
+
+#: ../src/GParted_Core.cc:959 ../src/GParted_Core.cc:1825
 msgid "start: %1"
 msgstr "begin: %1"
 
-#: ../src/GParted_Core.cc:990
+#: ../src/GParted_Core.cc:960 ../src/GParted_Core.cc:1826
 msgid "end: %1"
 msgstr "eind: %1"
 
-#: ../src/GParted_Core.cc:991
+#: ../src/GParted_Core.cc:961 ../src/GParted_Core.cc:1827
 msgid "size: %1 (%2)"
 msgstr "grootte: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1022 ../src/linux_swap.cc:54 ../src/xfs.cc:193
+#: ../src/GParted_Core.cc:993 ../src/linux_swap.cc:54 ../src/xfs.cc:193
 msgid "create new %1 filesystem"
 msgstr "nieuw %1 bestandssysteem aanmaken"
 
-#: ../src/GParted_Core.cc:1121
+# van grootte veranderen/grootte van partitie wijzigen
+#: ../src/GParted_Core.cc:1026
+msgid "delete partition"
+msgstr "partitie verwijderen"
+
+#: ../src/GParted_Core.cc:1094
 msgid "moving requires old and new length to be the same"
 msgstr "bij verplaatsen moeten de oude en nieuwe lengte hetzelfde zijn"
 
-#: ../src/GParted_Core.cc:1138
+#: ../src/GParted_Core.cc:1112
 msgid "move filesystem to the left"
 msgstr "bestandssysteem naar links verplaatsen"
 
-#: ../src/GParted_Core.cc:1140
+#: ../src/GParted_Core.cc:1114
 msgid "move filesystem to the right"
 msgstr "bestandssysteem naar rechts verplaatsen"
 
-#: ../src/GParted_Core.cc:1143
+#: ../src/GParted_Core.cc:1117
 msgid "move filesystem"
 msgstr "bestandssysteem verplaatsen"
 
-#: ../src/GParted_Core.cc:1145
+#: ../src/GParted_Core.cc:1119
 msgid ""
 "new and old filesystem have the same positition. skipping this operation"
 msgstr ""
 "nieuwe en oude bestandssysteem hebben dezelfde positie. deze bewerking wordt "
 "overgeslagen"
 
-# gebruik makend van intern algoritme/gebruik intern algoritme
-#: ../src/GParted_Core.cc:1181
-msgid "using internal algorithm"
-msgstr "gebruik intern algoritme"
-
 # gebruik makend van/gebruik/libparted gebruiken
-#: ../src/GParted_Core.cc:1202
+#: ../src/GParted_Core.cc:1152
 msgid "using libparted"
 msgstr "gebruik libparted"
 
-#: ../src/GParted_Core.cc:1241
+#: ../src/GParted_Core.cc:1191
 msgid "resizing requires old and new start to be the same"
 msgstr "bij herschalen moeten het oude en nieuwe begin hetzelfde zijn"
 
 # van grootte veranderen/grootte van partitie wijzigen
-#: ../src/GParted_Core.cc:1306
+#: ../src/GParted_Core.cc:1256
 msgid "resize/move partition"
 msgstr "partitie verplaatsen/herschalen"
 
-#: ../src/GParted_Core.cc:1309
+#: ../src/GParted_Core.cc:1259
 msgid "move partition to the right"
 msgstr "partitie naar rechts verplaatsen"
 
 # partitiesoort/partitietype
-#: ../src/GParted_Core.cc:1312
+#: ../src/GParted_Core.cc:1262
 msgid "move partition to the left"
 msgstr "partitie naar links verplaatsen"
 
-#: ../src/GParted_Core.cc:1315
+#: ../src/GParted_Core.cc:1265
 msgid "grow partition from %1 to %2"
 msgstr "partitie vergroten van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1318
+#: ../src/GParted_Core.cc:1268
 msgid "shrink partition from %1 to %2"
 msgstr "partitie verkleinen van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1321
+#: ../src/GParted_Core.cc:1271
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "partitie naar rechts verplaatsen en vergroten van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1324
+#: ../src/GParted_Core.cc:1274
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "partitie naar rechts verplaatsen en verkleinen van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1327
+#: ../src/GParted_Core.cc:1277
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "partitie naar links verplaatsen en vergroten van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1330
+#: ../src/GParted_Core.cc:1280
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "partitie naar links verplaatsen en verkleinen van %1 naar %2"
 
-#: ../src/GParted_Core.cc:1344 ../src/OperationResizeMove.cc:77
+# zal doorgaan is niet echt mooi, iets beters?
+#: ../src/GParted_Core.cc:1294
 msgid ""
-"new and old partition have the same size and positition. continuing anyway"
+"new and old partition have the same size and position. continuing anyway"
 msgstr ""
 "nieuwe en oude partitie hebben dezelfde grootte en positie. zal doorgaan"
 
 # oud/nieuw oude/nieuwe vorige/nieuwe
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1300
 msgid "old start: %1"
 msgstr "oude begin: %1"
 
-#: ../src/GParted_Core.cc:1351
+#: ../src/GParted_Core.cc:1301
 msgid "old end: %1"
 msgstr "oude eind: %1"
 
-#: ../src/GParted_Core.cc:1352
+#: ../src/GParted_Core.cc:1302
 msgid "old size: %1 (%2)"
 msgstr "oude grootte: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1408 ../src/GParted_Core.cc:1938
+#: ../src/GParted_Core.cc:1358 ../src/GParted_Core.cc:1905
 msgid "new start: %1"
 msgstr "nieuwe begin: %1"
 
-#: ../src/GParted_Core.cc:1409 ../src/GParted_Core.cc:1939
+#: ../src/GParted_Core.cc:1359 ../src/GParted_Core.cc:1906
 msgid "new end: %1"
 msgstr "nieuwe eind: %1"
 
-#: ../src/GParted_Core.cc:1410 ../src/GParted_Core.cc:1940
+#: ../src/GParted_Core.cc:1360 ../src/GParted_Core.cc:1907
 msgid "new size: %1 (%2)"
 msgstr "nieuwe grootte: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1434
+#: ../src/GParted_Core.cc:1384
 msgid "shrink filesystem"
 msgstr "bestandssysteem verkleinen"
 
-#: ../src/GParted_Core.cc:1438
+#: ../src/GParted_Core.cc:1388
 msgid "grow filesystem"
 msgstr "bestandssysteem vergroten"
 
 # herschalen/ groter of kleiner maken
-#: ../src/GParted_Core.cc:1441
+#: ../src/GParted_Core.cc:1391
 msgid "resize filesystem"
 msgstr "bestandssysteem herschalen"
 
-# grootte/afmeting
-#: ../src/GParted_Core.cc:1444
-msgid ""
-"new and old filesystem have the same size and positition. continuing anyway"
-msgstr ""
-"nieuwe en oude bestandssysteem hebben dezelfde grootte en positie. zal "
-"doorgaan"
+# zal doorgaan is niet echt mooi, iets beters?
+#: ../src/GParted_Core.cc:1394
+msgid "new and old filesystem have the same size. continuing anyway"
+msgstr "nieuwe en oude bestandssysteem hebben dezelfde grootte. zal doorgaan"
 
 # laten groeien/groter maken/uitbreiden/laten uitzetten
-#: ../src/GParted_Core.cc:1476
+#: ../src/GParted_Core.cc:1426
 msgid "grow filesystem to fill the partition"
 msgstr "bestandssysteem laten groeien tot de partitie is opgevuld"
 
-#: ../src/GParted_Core.cc:1481
+#: ../src/GParted_Core.cc:1431
 msgid "growing is not available for this filesystem"
 msgstr "kan dit bestandssysteem niet laten groeien"
 
+#: ../src/GParted_Core.cc:1450
+msgid "the destination is smaller than the sourcepartition"
+msgstr "de doelpartitie is kleiner dan de bronpartitie"
+
 # bestandssysteem kopieren van 1 naar 2
-#: ../src/GParted_Core.cc:1506
+#: ../src/GParted_Core.cc:1464
 msgid "copy filesystem of %1 to %2"
 msgstr "bestandssysteem van %1 kopiëren naar %2"
 
-#: ../src/GParted_Core.cc:1572
+# gebruik makend van intern algoritme/gebruik intern algoritme
+#: ../src/GParted_Core.cc:1508
+msgid "using internal algorithm"
+msgstr "gebruik intern algoritme"
+
+# berekenen/opzoeken
+#: ../src/GParted_Core.cc:1510
+msgid "finding optimal blocksize"
+msgstr "optimale blokgroote berekenen"
+
+#: ../src/GParted_Core.cc:1549
+msgid "%1 seconds"
+msgstr "%1 seconden"
+
+#: ../src/GParted_Core.cc:1561
+msgid "optimal blocksize is %1 sectors (%2)"
+msgstr "optimale blokgrootte is %1 sectoren (%2)"
+
+#: ../src/GParted_Core.cc:1577
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr ""
 "bestandssysteem op %1 controleren op fouten en deze (indien mogelijk) "
 "repareren"
 
-#: ../src/GParted_Core.cc:1580
+#: ../src/GParted_Core.cc:1585
 msgid "checking is not available for this filesystem"
 msgstr "dit bestandssysteem kan niet worden gecontroleerd"
 
 # partitiesoort/partitietype
-#: ../src/GParted_Core.cc:1606
+#: ../src/GParted_Core.cc:1611
 msgid "set partitiontype on %1"
 msgstr "partitietype op %1 instellen"
 
 # partitiesoort/partitietype
-#: ../src/GParted_Core.cc:1628
+#: ../src/GParted_Core.cc:1633
 msgid "new partitiontype: %1"
 msgstr "nieuw partitietype: %1"
 
-#: ../src/GParted_Core.cc:1655
+#: ../src/GParted_Core.cc:1658
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 van %2 gekopieerd (%3 resterend)"
 
-#: ../src/GParted_Core.cc:1660 ../src/GParted_Core.cc:1827
+#: ../src/GParted_Core.cc:1663 ../src/GParted_Core.cc:1738
 msgid "%1 of %2 copied"
 msgstr "%1 van %2 gekopieerd"
 
-# berekenen/opzoeken
-#: ../src/GParted_Core.cc:1673
-msgid "finding optimal blocksize"
-msgstr "optimale blokgroote berekenen"
-
-#: ../src/GParted_Core.cc:1705
-msgid "%1 seconds"
-msgstr "%1 seconden"
-
-#: ../src/GParted_Core.cc:1712
-msgid "optimal blocksize is %1 sectors (%2)"
-msgstr "optimale blokgrootte is %1 sectoren (%2)"
-
-#: ../src/GParted_Core.cc:1733
+#: ../src/GParted_Core.cc:1678
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopieer %1 sectoren met blokgrootte van %2 sectoren"
 
-#: ../src/GParted_Core.cc:1862
-msgid "Error while reading block at sector %1"
-msgstr "Fout bij lezen van blok op sector %1"
-
-#: ../src/GParted_Core.cc:1869
+#: ../src/GParted_Core.cc:1785
 msgid "Error while writing block at sector %1"
 msgstr "Fout bij schrijven van blok op sector %1"
 
-#: ../src/GParted_Core.cc:1883
+#: ../src/GParted_Core.cc:1788
+msgid "Error while reading block at sector %1"
+msgstr "Fout bij lezen van blok op sector %1"
+
+#: ../src/GParted_Core.cc:1803
+msgid "calibrate %1"
+msgstr "%1 kalibreren"
+
+#: ../src/GParted_Core.cc:1850
 msgid "calculate new size and position of %1"
 msgstr "nieuwe grootte en positie berekenen van %1"
 
-#: ../src/GParted_Core.cc:1887
+#: ../src/GParted_Core.cc:1854
 msgid "requested start: %1"
 msgstr "gevraagd begin: %1"
 
-#: ../src/GParted_Core.cc:1888
+#: ../src/GParted_Core.cc:1855
 msgid "requested end: %1"
 msgstr "gevraagd eind: %1"
 
 # gevraagde/aangevraagde/verzochte
-#: ../src/GParted_Core.cc:1889
+#: ../src/GParted_Core.cc:1856
 msgid "requested size: %1 (%2)"
 msgstr "gevraagde grootte: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1999
+msgid "updating bootsector of %1 filesystem on %2"
+msgstr "bijwerken van de bootsector van het %1-bestandssysteem op %2"
 
 #: ../src/OperationCopy.cc:36
 msgid "copy of %1"
@@ -725,6 +738,12 @@ msgstr "%1 formatteren als %2"
 #: ../src/OperationResizeMove.cc:75
 msgid "resize/move %1"
 msgstr "%1 verplaatsen/herschalen"
+
+#: ../src/OperationResizeMove.cc:77
+msgid ""
+"new and old partition have the same size and positition. continuing anyway"
+msgstr ""
+"nieuwe en oude partitie hebben dezelfde grootte en positie. zal doorgaan"
 
 #: ../src/OperationResizeMove.cc:81
 msgid "Move %1 to the right"
@@ -832,17 +851,17 @@ msgid "%1 TiB"
 msgstr "%1 TiB"
 
 # het is ietwat inconsequent om de devices hier te vertalen als
-# 'stations', we gebruiken al apparaten/schijven
+# 'stations', we gebruiken schijven
 # schijven/stations/apparaten
-# verder is herladen niet echt duidelijk.
+# opnieuw lezen/herlezen/opnieuw analyseren/verversen
 #: ../src/Win_GParted.cc:128
-msgid "_Refresh devices"
-msgstr "_Stations herladen"
+msgid "_Refresh Devices"
+msgstr "_Schijven herlezen"
 
 # apparaten/schijven/stations
 #: ../src/Win_GParted.cc:131
 msgid "_Devices"
-msgstr "_Stations"
+msgstr "_Schijven"
 
 # functies/mogelijkheden/eigenschappen
 # functies tonen/functies
@@ -864,8 +883,8 @@ msgstr "I_nformatie over de harde schijf"
 
 # titel van de voortgangsbalk
 #: ../src/Win_GParted.cc:148
-msgid "_Operations"
-msgstr "_Bewerkingen"
+msgid "Pending _Operations"
+msgstr "_Bewerkingen in de wachtrij"
 
 #: ../src/Win_GParted.cc:149
 msgid "_View"
@@ -1023,7 +1042,7 @@ msgstr "%1 - GParted"
 # schijven/stations/apparaten
 #: ../src/Win_GParted.cc:984
 msgid "Scanning all devices..."
-msgstr "Analyseren van stations..."
+msgstr "Analyseren van schijven..."
 
 # schijven hier gebruikt ipv apparaten
 #: ../src/Win_GParted.cc:1000
@@ -1251,6 +1270,11 @@ msgstr "aangekoppelde bestandssyteem groter maken"
 #: ../src/xfs.cc:232
 msgid "copy filesystem"
 msgstr "bestandssysteem kopiëren"
+
+# statusbericht?
+# zoek het echte/daadwerkelijke pad van %1
+#~ msgid "find real path of %1"
+#~ msgstr "zoeken naar het daadwerkelijke pad van %1"
 
 #~ msgid "%1 clockticks"
 #~ msgstr "%1 kloktikken"
