@@ -32,9 +32,28 @@ dnl======================
 AC_CHECK_LIB(uuid, uuid_generate, [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
 AC_CHECK_LIB(dl, dlopen,          [], AC_MSG_ERROR([*** dl library (libdl) not found]))
 
-AC_CHECK_LIB(parted, ped_get_version, [], AC_MSG_ERROR([*** parted library (libparted) not found]))
-AC_CHECK_DECL(PED_DEVICE_UBD, [], AC_MSG_ERROR([*** Requires libparted >= 1.6.25]), [#include <parted/parted.h>])
+dnl libparted
+AC_MSG_CHECKING(for libparted >= 1.7.1)
+LDFLAGS=-lparted
+AC_TRY_RUN(
+#include <stdio.h>
+#include <parted/parted.h>
 
+int main ()
+{
+	int major ;
+	int minor ;
+	int micro ;
+
+	if ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 )
+		printf( "Found libparted %s\t", ped_get_version() ) ;
+
+        return ! ( major == 1 && minor == 7 && micro >= 1 ) ;
+}
+,AC_MSG_RESULT(OK),AC_MSG_ERROR(*** Requires libparted >= 1.7.1) )
+
+
+dnl GTKMM
 PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 > 2.8 )
 AC_SUBST(GTKMM_LIBS)
 AC_SUBST(GTKMM_CFLAGS)
