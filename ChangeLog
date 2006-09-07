@@ -1,4 +1,12 @@
 2006-09-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
+	
+	* include/Partition.h,
+	  src/Partition.cc: added test_overlap()
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: perform a readonly testrun before the actual
+	  move if destination overlaps source.
+
+2006-09-07 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* include/GParted_Core.h,
 	  src/GParted_Core.cc: parse /proc/partitions to find devices instead

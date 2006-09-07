@@ -110,13 +110,14 @@ private:
 		   OperationDetail & operationdetail ) ; 
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dest,
-			      OperationDetail & operationdetail ) ;
+			      OperationDetail & operationdetail,
+			      bool readonly = false ) ;
 
 	bool check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	bool set_partition_type( const Partition & partition, OperationDetail & operationdetail ) ;
 
-	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail ) ;
+	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail, bool readonly ) ;
 
 	bool copy_blocks( const Glib::ustring & src_device,
 			  const Glib::ustring & dst_device,
@@ -124,14 +125,16 @@ private:
 			  Sector dst_start,
 			  Sector length,
 			  Sector blocksize,
-			  OperationDetail & operationdetail ) ;
+			  OperationDetail & operationdetail,
+			  bool readonly ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,
 			 Sector offset_src,
 			 Sector offset_dst,
 			 Sector blocksize,
-			 Glib::ustring & error_message ) ; 
+			 Glib::ustring & error_message,
+			 bool readonly ) ; 
 	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,

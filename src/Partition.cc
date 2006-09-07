@@ -214,6 +214,15 @@ Sector Partition::get_sector() const
 {
 	return (sector_start + sector_end) / 2 ; 
 }
+	
+bool Partition::test_overlap( const Partition & partition ) const
+{
+	return ( (partition .sector_start >= sector_start && partition .sector_start <= sector_end) 
+		 ||
+		 (partition .sector_end >= sector_start && partition .sector_end <= sector_end)
+		 ||
+		 (partition .sector_start < sector_start && partition .sector_end > sector_end) ) ;
+}
 
 void Partition::clear_mountpoints()
 {

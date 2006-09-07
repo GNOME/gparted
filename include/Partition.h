@@ -87,6 +87,7 @@ public:
 	void clear_mountpoints() ;
 	std::vector<Glib::ustring> get_mountpoints() const ;
 	Sector get_sector() const ;
+	bool test_overlap( const Partition & partition ) const ;
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
