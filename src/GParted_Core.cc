@@ -151,26 +151,27 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		device_paths .clear() ;
 		
 		//try to find all available devices
-		ped_device_probe_all();
-	//FIXME: since parted 1.7.1 i detect an unusable /dev/md/0 device (voyager), take a look at this and
-	//find out how to filter it from the list
-		lp_device = ped_device_get_next( NULL );
-		while ( lp_device ) 
-		{
-			device_paths .push_back( lp_device ->path ) ;
+		std::ifstream proc_partitions( "/proc/partitions" ) ;
+        	if ( proc_partitions )
+        	{
+        	        std::string line ;
+        	        while ( getline( proc_partitions, line ) )
+        	        {
+        	                int minor ;
+        	                char device[512] ;
+        	                if ( sscanf( line .c_str(), "%*d %d %*d %s", &minor, device ) == 2 && minor == 0 )
+        	                        device_paths .push_back( "/dev/" + Glib::ustring( device ) ) ;
+        	        }
 
-			lp_device = ped_device_get_next( lp_device ) ;
-		}
-		close_device_and_disk() ;
+        	        proc_partitions .close() ;
+        	}
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
 	
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
-		if ( check_device_path( device_paths[ t ] ) &&
-		     open_device_and_disk( device_paths[ t ], false ) &&
-		     lp_device )
+		if ( open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
 			
@@ -523,11 +524,6 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 			
 		file .close() ;
 	}
-}
-
-bool GParted_Core::check_device_path( const Glib::ustring & device_path ) 
-{
-	return ( device_path .length() > 6 && device_path .is_ascii() ) ;
 }
 
 std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustring & path ) 

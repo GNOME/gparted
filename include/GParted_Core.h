@@ -56,7 +56,6 @@ private:
 	void init_maps() ;
 	void read_mountpoints_from_file( const Glib::ustring & filename,
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
-	bool check_device_path( const Glib::ustring & device_path ) ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
