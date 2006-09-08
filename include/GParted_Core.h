@@ -171,6 +171,8 @@ private:
 	PedDevice *lp_device ;
 	PedDisk *lp_disk ;
 	PedPartition *lp_partition ;
+	
+	char * buf ;
 };
 
 } //GParted

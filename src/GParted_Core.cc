@@ -668,7 +668,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
 	ped_device_close( lp_device );
 	
-	if ( static_cast<Glib::ustring>( buf ) == "ReIsEr4" )
+	if ( Glib::ustring( buf ) == "ReIsEr4" )
 		return GParted::FS_REISER4 ;		
 		
 	//no filesystem found....
@@ -1726,47 +1726,55 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
-		succes = true ;
 		ped_device_sync( lp_device_dst ) ;
 
 		Glib::ustring error_message ;
 
-        	if ( done != 0 )
-        	    succes = copy_block( lp_device_src,
-			        	 lp_device_dst,
-			        	 src_start,
-			        	 dst_start, 
-			        	 done,
-			        	 error_message,
-					 readonly ) ;
-
-		//add an empty sub which we will constantly update in the loop
-		operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
-		
-		Glib::Timer timer_progress_timeout, timer_total ;
-		while( succes && std::abs( done ) < length )
+		buf = static_cast<char *>( malloc( std::abs( blocksize ) * 512 ) ) ;
+		if ( buf )
 		{
-			succes = copy_block( lp_device_src,
-					     lp_device_dst,
-					     src_start +done,
-					     dst_start +done, 
-					     blocksize,
-					     error_message,
-					     readonly ) ; 
-			if ( succes )
-				done += blocksize ;
+			succes = true ;
+        		if ( done != 0 )
+        		    succes = copy_block( lp_device_src,
+				        	 lp_device_dst,
+				        	 src_start,
+				        	 dst_start, 
+				        	 done,
+				        	 error_message,
+						 readonly ) ;
 
-			if ( timer_progress_timeout .elapsed() >= 0.5 )
+			//add an empty sub which we will constantly update in the loop
+			operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
+			
+			Glib::Timer timer_progress_timeout, timer_total ;
+			while( succes && std::abs( done ) < length )
 			{
-				set_progress_info( length,
-						   std::abs( done + blocksize ),
-						   timer_total,
-						   operationdetail .get_last_child() .get_last_child(),
-						   readonly ) ;
-		
-				timer_progress_timeout .reset() ;
+				succes = copy_block( lp_device_src,
+						     lp_device_dst,
+						     src_start +done,
+						     dst_start +done, 
+						     blocksize,
+						     error_message,
+						     readonly ) ; 
+				if ( succes )
+					done += blocksize ;
+
+				if ( timer_progress_timeout .elapsed() >= 0.5 )
+				{
+					set_progress_info( length,
+							   std::abs( done + blocksize ),
+							   timer_total,
+							   operationdetail .get_last_child() .get_last_child(),
+							   readonly ) ;
+			
+					timer_progress_timeout .reset() ;
+				}
 			}
+			
+			free( buf ) ;
 		}
+		else
+			error_message = Glib::strerror( errno ) ;
 
 		//reset fraction to -1 to make room for a new one (or a pulsebar)
 		operationdetail .get_last_child() .get_last_child() .fraction = -1 ;
@@ -1813,23 +1821,15 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 
 	if ( blocksize != 0 )
 	{
-		char * buf = static_cast<char *>( malloc( blocksize * 512 ) ) ;//FIXME: declare buf global and initialize in copy_blocks()
-		if ( buf )
+		if ( ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
 		{
-			if ( ped_device_read( lp_device_src, buf, offset_src, blocksize ) )
-			{
-				if ( readonly || ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
-					succes = true ;
-				else
-					error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
-			}
+			if ( readonly || ped_device_write( lp_device_dst, buf, offset_dst, blocksize ) )
+				succes = true ;
 			else
-				error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
-
-			free( buf ) ;
+				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
 		}
 		else
-			error_message = Glib::strerror( errno ) ;
+			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
 	}
 
 	return succes ;

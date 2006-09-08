@@ -1,5 +1,12 @@
 2006-09-08 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: declared char * buf global, so it can be
+	  initialized in copy_blocks(). This is a lot more efficient than
+	  initializing it on every copy_block()
+
+2006-09-08 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
 	* src/GParted_Core.cc: skip resize/move of partition/filesystem if
 	  there are no changes.
 
