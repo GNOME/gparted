@@ -67,8 +67,14 @@ void ntfs::set_used_sectors( Partition & partition )
 		if ( N > -1 )
 			partition .set_used( Utils::round( N / 512.0 ) ) ; 
 	}
-	else//FIXME: i think it's a good idea to push the output here as well
-		partition .messages .push_back( error ) ;
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
