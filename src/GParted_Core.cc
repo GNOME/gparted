@@ -1301,10 +1301,15 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 	
 	if ( action == NONE )
+	{
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old partition have the same size and position. continuing anyway"),
+			OperationDetail( _("new and old partition have the same size and position. skipping this operation"),
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
+
+		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		return true ;
+	}
 
 	operationdetail .get_last_child() .add_child( 
 		OperationDetail(
@@ -1402,9 +1407,12 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			operationdetail .add_child( OperationDetail( _("resize filesystem") ) ) ;
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( 
-					_("new and old filesystem have the same size. continuing anyway"),
+					_("new and old filesystem have the same size. skipping this operation"),
 					STATUS_NONE,
-					FONT_ITALIC ) ) ;//FIXME don't continue, same for all the other places where we currently continue...
+					FONT_ITALIC ) ) ;
+		
+			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+			return true ;
 		}
 	}
 
