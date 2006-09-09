@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-05 04:18+0200\n"
-"PO-Revision-Date: 2006-09-05 08:49+0100\n"
+"POT-Creation-Date: 2006-09-09 04:11+0200\n"
+"PO-Revision-Date: 2006-09-09 11:33+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -352,286 +352,307 @@ msgstr "Inte tillgänglig"
 msgid "Manage flags on %1"
 msgstr "Hantera flaggor på %1"
 
-#: ../src/GParted_Core.cc:208
+#: ../src/GParted_Core.cc:209
 msgid "unrecognized"
 msgstr "okänt"
 
-#: ../src/GParted_Core.cc:263
+#: ../src/GParted_Core.cc:264
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "En partition kan inte ha en längd på %1 sektorer"
 
-#: ../src/GParted_Core.cc:271
+#: ../src/GParted_Core.cc:272
 msgid "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr "En partition med använda sektorer (%1) som är större än dess längd (%2) är inte giltig"
 
-#: ../src/GParted_Core.cc:328
+#: ../src/GParted_Core.cc:329
 msgid "libparted messages"
 msgstr "libparted-meddelande"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:679
+#: ../src/GParted_Core.cc:675
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Kunde inte identifiera filsystemet! Möjliga anledningar är:"
 
-#: ../src/GParted_Core.cc:681
+#: ../src/GParted_Core.cc:677
 msgid "The filesystem is damaged"
 msgstr "Filsystemet är skadat"
 
-#: ../src/GParted_Core.cc:683
+#: ../src/GParted_Core.cc:679
 msgid "The filesystem is unknown to GParted"
 msgstr "Filsystemet är för GParted okänt"
 
-#: ../src/GParted_Core.cc:685
+#: ../src/GParted_Core.cc:681
 msgid "There is no filesystem available (unformatted)"
 msgstr "Det finns inget filsystem tillgängligt (oformaterat)"
 
-#: ../src/GParted_Core.cc:762
+#: ../src/GParted_Core.cc:758
 msgid "Unable to find mountpoint"
 msgstr "Kunde inte hitta monteringspunkt"
 
-#: ../src/GParted_Core.cc:780
+#: ../src/GParted_Core.cc:776
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Kunde inte läsa innehållet på detta filsystem!"
 
-#: ../src/GParted_Core.cc:782
+#: ../src/GParted_Core.cc:778
 msgid "Because of this some operations may be unavailable."
 msgstr "På grund av detta kan vissa åtgärder inte vara tillgängliga."
 
-#: ../src/GParted_Core.cc:890
+#: ../src/GParted_Core.cc:886
 msgid "create empty partition"
 msgstr "skapa tom partition"
 
-#: ../src/GParted_Core.cc:958
-#: ../src/GParted_Core.cc:1824
+#: ../src/GParted_Core.cc:954
+#: ../src/GParted_Core.cc:1863
 msgid "path: %1"
 msgstr "sökväg: %1"
 
-#: ../src/GParted_Core.cc:959
-#: ../src/GParted_Core.cc:1825
+#: ../src/GParted_Core.cc:955
+#: ../src/GParted_Core.cc:1864
 msgid "start: %1"
 msgstr "start: %1"
 
-#: ../src/GParted_Core.cc:960
-#: ../src/GParted_Core.cc:1826
+#: ../src/GParted_Core.cc:956
+#: ../src/GParted_Core.cc:1865
 msgid "end: %1"
 msgstr "slut: %1"
 
-#: ../src/GParted_Core.cc:961
-#: ../src/GParted_Core.cc:1827
+#: ../src/GParted_Core.cc:957
+#: ../src/GParted_Core.cc:1866
 msgid "size: %1 (%2)"
 msgstr "storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:993
+#: ../src/GParted_Core.cc:989
 #: ../src/linux_swap.cc:54
-#: ../src/xfs.cc:193
+#: ../src/xfs.cc:199
 msgid "create new %1 filesystem"
 msgstr "skapa nytt %1-filsystem"
 
-#: ../src/GParted_Core.cc:1026
+#: ../src/GParted_Core.cc:1022
 msgid "delete partition"
 msgstr "ta bort partition"
 
-#: ../src/GParted_Core.cc:1094
+#: ../src/GParted_Core.cc:1090
 msgid "moving requires old and new length to be the same"
 msgstr "flyttning kräver att gamla och nya längden är samma"
 
-#: ../src/GParted_Core.cc:1112
+#: ../src/GParted_Core.cc:1108
 msgid "move filesystem to the left"
 msgstr "flytta filsystemet till vänster"
 
-#: ../src/GParted_Core.cc:1114
+#: ../src/GParted_Core.cc:1110
 msgid "move filesystem to the right"
 msgstr "flytta filsystemet till höger"
 
-#: ../src/GParted_Core.cc:1117
+#: ../src/GParted_Core.cc:1113
 msgid "move filesystem"
 msgstr "flytta filsystem"
 
-#: ../src/GParted_Core.cc:1119
+#: ../src/GParted_Core.cc:1115
 msgid "new and old filesystem have the same positition. skipping this operation"
 msgstr "nytt och gammalt filsystem har samma position. hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1152
+#: ../src/GParted_Core.cc:1132
+msgid "perform readonly test"
+msgstr "genomför skrivskyddad test"
+
+#: ../src/GParted_Core.cc:1137
+msgid "perform real move"
+msgstr "genomför verklig flyttning"
+
+#: ../src/GParted_Core.cc:1163
 msgid "using libparted"
 msgstr "använder libparted"
 
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1202
 msgid "resizing requires old and new start to be the same"
 msgstr "storleksändring kräver att gamla och nya starten är samma"
 
-#: ../src/GParted_Core.cc:1256
+#: ../src/GParted_Core.cc:1267
 msgid "resize/move partition"
 msgstr "ändra storlek/flytta på partition"
 
-#: ../src/GParted_Core.cc:1259
+#: ../src/GParted_Core.cc:1270
 msgid "move partition to the right"
 msgstr "flytta partitionen till höger"
 
-#: ../src/GParted_Core.cc:1262
+#: ../src/GParted_Core.cc:1273
 msgid "move partition to the left"
 msgstr "flytta partitionen till vänster"
 
-#: ../src/GParted_Core.cc:1265
+#: ../src/GParted_Core.cc:1276
 msgid "grow partition from %1 to %2"
 msgstr "förstora partitionen från %1 till %2"
 
-#: ../src/GParted_Core.cc:1268
+#: ../src/GParted_Core.cc:1279
 msgid "shrink partition from %1 to %2"
 msgstr "förminska partitionen från %1 till %2"
 
-#: ../src/GParted_Core.cc:1271
+#: ../src/GParted_Core.cc:1282
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "flytta partitionen till höger och förstora den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1274
+#: ../src/GParted_Core.cc:1285
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "flytta partitionen till höger och förminska den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1277
+#: ../src/GParted_Core.cc:1288
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "flytta partitionen till vänster och förstora den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1280
+#: ../src/GParted_Core.cc:1291
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "flytta partitionen till vänster och förminska den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1294
-msgid "new and old partition have the same size and position. continuing anyway"
-msgstr "ny och gammal partition har samma storlek och position. fortsätter ändå"
+#: ../src/GParted_Core.cc:1306
+msgid "new and old partition have the same size and position. skipping this operation"
+msgstr "ny och gammal partition har samma storlek och position. hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1300
+#: ../src/GParted_Core.cc:1316
 msgid "old start: %1"
 msgstr "gammal start: %1"
 
-#: ../src/GParted_Core.cc:1301
+#: ../src/GParted_Core.cc:1317
 msgid "old end: %1"
 msgstr "gammalt slut: %1"
 
-#: ../src/GParted_Core.cc:1302
+#: ../src/GParted_Core.cc:1318
 msgid "old size: %1 (%2)"
 msgstr "gammal storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1358
-#: ../src/GParted_Core.cc:1905
+#: ../src/GParted_Core.cc:1374
+#: ../src/GParted_Core.cc:1944
 msgid "new start: %1"
 msgstr "ny start: %1"
 
-#: ../src/GParted_Core.cc:1359
-#: ../src/GParted_Core.cc:1906
+#: ../src/GParted_Core.cc:1375
+#: ../src/GParted_Core.cc:1945
 msgid "new end: %1"
 msgstr "nytt slut: %1"
 
-#: ../src/GParted_Core.cc:1360
-#: ../src/GParted_Core.cc:1907
+#: ../src/GParted_Core.cc:1376
+#: ../src/GParted_Core.cc:1946
 msgid "new size: %1 (%2)"
 msgstr "ny storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1384
+#: ../src/GParted_Core.cc:1400
 msgid "shrink filesystem"
 msgstr "förminska filsystem"
 
-#: ../src/GParted_Core.cc:1388
+#: ../src/GParted_Core.cc:1404
 msgid "grow filesystem"
 msgstr "förstora filsystem"
 
-#: ../src/GParted_Core.cc:1391
+#: ../src/GParted_Core.cc:1407
 msgid "resize filesystem"
 msgstr "ändra storlek på filsystem"
 
-#: ../src/GParted_Core.cc:1394
-msgid "new and old filesystem have the same size. continuing anyway"
-msgstr "nytt och gammalt filsystem har samma storlek. fortsätter ändå"
+#: ../src/GParted_Core.cc:1410
+msgid "new and old filesystem have the same size. skipping this operation"
+msgstr "nytt och gammalt filsystem har samma storlek. hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1426
+#: ../src/GParted_Core.cc:1445
 msgid "grow filesystem to fill the partition"
 msgstr "förstora filsystemet för att fylla upp partitionen"
 
-#: ../src/GParted_Core.cc:1431
+#: ../src/GParted_Core.cc:1450
 msgid "growing is not available for this filesystem"
 msgstr "storleksförändring är inte tillgängligt för detta filsystem"
 
-#: ../src/GParted_Core.cc:1450
+#: ../src/GParted_Core.cc:1469
 msgid "the destination is smaller than the sourcepartition"
 msgstr "destinationen är mindre än källpartitionen"
 
-#: ../src/GParted_Core.cc:1464
+#: ../src/GParted_Core.cc:1483
 msgid "copy filesystem of %1 to %2"
 msgstr "kopiera filsystemet på %1 till %2"
 
-#: ../src/GParted_Core.cc:1508
+#: ../src/GParted_Core.cc:1528
 msgid "using internal algorithm"
 msgstr "använder intern algoritm"
 
-#: ../src/GParted_Core.cc:1510
+#: ../src/GParted_Core.cc:1530
 msgid "finding optimal blocksize"
 msgstr "hittar optimal blockstorlek"
 
-#: ../src/GParted_Core.cc:1549
+#: ../src/GParted_Core.cc:1570
 msgid "%1 seconds"
 msgstr "%1 sekunder"
 
-#: ../src/GParted_Core.cc:1561
+#: ../src/GParted_Core.cc:1582
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "optimal blockstorlek är %1 sektorer (%2)"
 
-#: ../src/GParted_Core.cc:1577
+#: ../src/GParted_Core.cc:1601
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "kontrollera filsystemet på %1 efter fel och rätta (om möjligt) till dem"
 
-#: ../src/GParted_Core.cc:1585
+#: ../src/GParted_Core.cc:1609
 msgid "checking is not available for this filesystem"
 msgstr "kontrollering är inte tillgängligt för detta filsystem"
 
-#: ../src/GParted_Core.cc:1611
+#: ../src/GParted_Core.cc:1635
 msgid "set partitiontype on %1"
 msgstr "ställ in partitionstyp på %1"
 
-#: ../src/GParted_Core.cc:1633
+#: ../src/GParted_Core.cc:1657
 msgid "new partitiontype: %1"
 msgstr "ny partitionstyp: %1"
 
-#: ../src/GParted_Core.cc:1658
+#: ../src/GParted_Core.cc:1684
+msgid "%1 of %2 read (%3 remaining)"
+msgstr "%1 av %2 lästa (%3 återstår)"
+
+#: ../src/GParted_Core.cc:1684
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 av %2 kopierade (%3 återstår)"
 
-#: ../src/GParted_Core.cc:1663
-#: ../src/GParted_Core.cc:1738
+#: ../src/GParted_Core.cc:1690
+#: ../src/GParted_Core.cc:1784
+msgid "%1 of %2 read"
+msgstr "%1 av %2 lästa"
+
+#: ../src/GParted_Core.cc:1690
+#: ../src/GParted_Core.cc:1784
 msgid "%1 of %2 copied"
 msgstr "%1 av %2 kopierade"
 
-#: ../src/GParted_Core.cc:1678
+#: ../src/GParted_Core.cc:1707
+msgid "read %1 sectors using a blocksize of %2 sectors"
+msgstr "läs %1 sektorer med en blockstorlek på %2 sektorer"
+
+#: ../src/GParted_Core.cc:1710
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopiera %1 sektorer med en blockstorlek på %2 sektorer"
 
-#: ../src/GParted_Core.cc:1785
+#: ../src/GParted_Core.cc:1829
 msgid "Error while writing block at sector %1"
 msgstr "Fel vid skrivning av block på sektor %1"
 
-#: ../src/GParted_Core.cc:1788
+#: ../src/GParted_Core.cc:1832
 msgid "Error while reading block at sector %1"
 msgstr "Fel vid läsning av block på sektor %1"
 
-#: ../src/GParted_Core.cc:1803
+#: ../src/GParted_Core.cc:1842
 msgid "calibrate %1"
 msgstr "kalibrera %1"
 
-#: ../src/GParted_Core.cc:1850
+#: ../src/GParted_Core.cc:1889
 msgid "calculate new size and position of %1"
 msgstr "beräkna ny storlek och position för %1"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:1893
 msgid "requested start: %1"
 msgstr "begärd start: %1"
 
-#: ../src/GParted_Core.cc:1855
+#: ../src/GParted_Core.cc:1894
 msgid "requested end: %1"
 msgstr "begärt slut: %1"
 
-#: ../src/GParted_Core.cc:1856
+#: ../src/GParted_Core.cc:1895
 msgid "requested size: %1 (%2)"
 msgstr "begärd storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1999
+#: ../src/GParted_Core.cc:2038
 msgid "updating bootsector of %1 filesystem on %2"
 msgstr "uppdaterar uppstartssektor på filsystemet %1 på %2"
 
@@ -1085,35 +1106,35 @@ msgid "Apply operations to harddisk"
 msgstr "Verkställ åtgärder till hårddisk"
 
 #. create mountpoint...
-#: ../src/jfs.cc:108
-#: ../src/xfs.cc:110
-#: ../src/xfs.cc:201
-#: ../src/xfs.cc:208
+#: ../src/jfs.cc:114
+#: ../src/xfs.cc:116
+#: ../src/xfs.cc:207
+#: ../src/xfs.cc:214
 msgid "create temporary mountpoint (%1)"
 msgstr "skapa temporär monteringspunkt (%1)"
 
-#: ../src/jfs.cc:115
-#: ../src/xfs.cc:117
-#: ../src/xfs.cc:215
-#: ../src/xfs.cc:224
+#: ../src/jfs.cc:121
+#: ../src/xfs.cc:123
+#: ../src/xfs.cc:221
+#: ../src/xfs.cc:230
 msgid "mount %1 on %2"
 msgstr "montera %1 på %2"
 
-#: ../src/jfs.cc:124
+#: ../src/jfs.cc:130
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "montera om %1 på %2 med flaggan \"resize\" aktiverad"
 
-#: ../src/jfs.cc:142
-#: ../src/xfs.cc:139
-#: ../src/xfs.cc:248
-#: ../src/xfs.cc:269
+#: ../src/jfs.cc:148
+#: ../src/xfs.cc:145
+#: ../src/xfs.cc:254
+#: ../src/xfs.cc:275
 msgid "unmount %1"
 msgstr "avmontera %1"
 
-#: ../src/jfs.cc:162
-#: ../src/xfs.cc:159
-#: ../src/xfs.cc:289
-#: ../src/xfs.cc:312
+#: ../src/jfs.cc:168
+#: ../src/xfs.cc:165
+#: ../src/xfs.cc:295
+#: ../src/xfs.cc:318
 msgid "remove temporary mountpoint (%1)"
 msgstr "ta bort temporär monteringspunkt (%1)"
 
@@ -1126,31 +1147,31 @@ msgid "Since GParted can be a weapon of mass destruction only root may run it."
 msgstr "Eftersom GParted kan vara ett massförstörelsevapen får endast root köra det."
 
 #. simulation..
-#: ../src/ntfs.cc:92
+#: ../src/ntfs.cc:98
 msgid "run simulation"
 msgstr "kör simulering"
 
 #. real resize
-#: ../src/ntfs.cc:99
+#: ../src/ntfs.cc:105
 msgid "real resize"
 msgstr "riktig storleksändring"
 
 #. grow the mounted filesystem..
-#: ../src/xfs.cc:125
+#: ../src/xfs.cc:131
 msgid "grow mounted filesystem"
 msgstr "förstora monterat filsystem"
 
 #. copy filesystem..
-#: ../src/xfs.cc:232
+#: ../src/xfs.cc:238
 msgid "copy filesystem"
 msgstr "kopiera filsystem"
 
+#~ msgid "new and old filesystem have the same size. continuing anyway"
+#~ msgstr "nytt och gammalt filsystem har samma storlek. fortsätter ändå"
 #~ msgid "find real path of %1"
 #~ msgstr "hitta verklig sökväg för %1"
 #~ msgid "Blocksize (sectors):"
 #~ msgstr "Blockstorlek (sektorer):"
-#~ msgid "%1 of %2 moved"
-#~ msgstr "%1 av %2 flyttade"
 #~ msgid "An error occurred while opening the devices"
 #~ msgstr "Ett fel inträffade vid öppning av enheterna"
 #~ msgid "minimum size: %1"
