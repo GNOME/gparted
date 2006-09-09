@@ -407,7 +407,7 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 	
 	 PedDiskType *disk_type ;
 	 for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) ) 
-		 if ( static_cast<Glib::ustring>( disk_type->name ) != "msdos" )
+		 if ( Glib::ustring( disk_type->name ) != "msdos" )
 			disklabeltypes .push_back( disk_type->name ) ;
 
 	 return disklabeltypes ;
@@ -510,7 +510,7 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 		while ( getline( file, line ) )
 			if ( Glib::str_has_prefix( line, "/" ) &&
 			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
-			     static_cast<Glib::ustring>( node ) != "/dev/root" )
+			     Glib::ustring( node ) != "/dev/root" )
 			{
 				line = mountpoint ;
 				

@@ -52,7 +52,6 @@ void Frame_Resizer_Base::init()
 	color_arrow_rectangle .set( "lightgrey" );	this ->get_colormap() ->alloc_color( color_arrow_rectangle ) ;
 	
 	cursor_resize = new Gdk::Cursor( Gdk::SB_H_DOUBLE_ARROW ) ; 
-	cursor_normal = new Gdk::Cursor( Gdk::LEFT_PTR ) ;
 	cursor_move   = new Gdk::Cursor( Gdk::FLEUR ) ; 
 	  
 	GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
@@ -302,7 +301,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 			drawingarea .get_parent_window() ->set_cursor( *cursor_move ) ;
 		//normal pointer 
 		else								
-			drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;		
+			drawingarea .get_parent_window() ->set_cursor() ;		
 	}
 
 	return true;
@@ -347,7 +346,7 @@ bool Frame_Resizer_Base::drawingarea_on_button_release_event( GdkEventButton *ev
 bool Frame_Resizer_Base::drawingarea_on_leave_notify( GdkEventCrossing *ev )
 {
 	if ( ev ->mode != GDK_CROSSING_GRAB && ! GRIP_LEFT && ! GRIP_RIGHT && ! GRIP_MOVE ) 
-		drawingarea .get_parent_window() ->set_cursor( *cursor_normal ) ;	
+		drawingarea .get_parent_window() ->set_cursor() ;	
 	
 	return true;
 }
@@ -431,8 +430,6 @@ Frame_Resizer_Base::~Frame_Resizer_Base()
 	
 	if ( cursor_resize )
 		delete cursor_resize ;
-	if ( cursor_normal )
-		delete cursor_normal ;
 	if ( cursor_move )
 		delete cursor_move ;
 }
