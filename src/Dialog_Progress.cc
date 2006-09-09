@@ -33,6 +33,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	this ->operations = operations ;
 	succes = true ;
 	cancel = false ;
+	warnings = 0 ;
 
 	fraction = 1.00 / operations .size() ;
 		
@@ -139,6 +140,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 				break ;
 			case STATUS_N_A:
 				treerow[ treeview_operations_columns .status_icon ] = icon_n_a ;
+				warnings++ ;
 				break ;
 			case STATUS_NONE:
 				static_cast< Glib::RefPtr<Gdk::Pixbuf> >(
@@ -247,8 +249,12 @@ void Dialog_Progress::on_signal_show()
 	//deal with succes/error...
 	if ( succes )
 	{
-		//FIXME: display amount of warnings between braces after this text, deal properly with plurality
-		progressbar_all .set_text( _("All operations succesfully completed") ) ;
+		str_temp = _("All operations succesfully completed") ;
+
+		if ( warnings > 0 )
+			str_temp += " (" + String::ucompose( _("%1 warnings"), warnings ) + ")" ;
+
+		progressbar_all .set_text( str_temp ) ;
 		progressbar_all .set_fraction( 1.0 ) ;
 	}
 	else 
@@ -263,11 +269,11 @@ void Dialog_Progress::on_signal_show()
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,
 						   true ) ;
-			str_temp = _("The following operation could not be applied to disk:") ;
-			str_temp += "\n\n<i>" ;
-			str_temp += label_current .get_text() ;
-			str_temp += "</i>\n" ;
-			str_temp += _("See the details for more information") ;
+			str_temp = _("See the details for more information.") ;
+			str_temp += "\n\n<i><b>" + Glib::ustring( _("IMPORTANT") ) + "</b>\n" ;
+			str_temp += _("If you want support, you need to provide the saved details!") ;
+			str_temp += "\n" + String::ucompose( 
+				_("See %1 for more information."), "http://gparted.sourceforge.net/larry/tips/save_details.htm" ) + "</i>" ;
 		
 			dialog .set_secondary_text( str_temp, true ) ;
 			dialog .run() ;

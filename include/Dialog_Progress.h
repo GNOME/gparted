@@ -92,7 +92,7 @@ private:
 	bool running, succes, cancel, pulse ;
 	pthread_t pthread ;
 	double fraction ;
-	unsigned int t ;
+	unsigned int t, warnings ;
 	Glib::ustring str_temp ;
 
 	Glib::Dispatcher dispatcher_update_gui_elements ;
