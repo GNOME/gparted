@@ -1566,7 +1566,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			      	    OperationDetail & operationdetail,
 			      	    Sector & total_done ) 
 {
-	total_done = 0 ;
 	return copy_filesystem( partition_src .device_path,
 				partition_dst .device_path,
 				partition_src .sector_start,
@@ -1587,7 +1586,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				    Sector & total_done ) 
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
-//FIXME: consider displaying length here and total_done in the end...	
+	operationdetail .add_child( OperationDetail( String::ucompose( _("copy %1 sectors"), length ), STATUS_NONE ) ) ;
+
 	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
 	Sector optimal_blocksize = readonly ? 128 : 64, N = 32768 ;
@@ -1600,6 +1600,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 		offset_write += (length -N) ;
 	}
 
+	total_done = 0 ;
 	Sector done = 0 ;
 	Glib::Timer timer ;
 	double smallest_time = 1000000 ;
@@ -1646,16 +1647,19 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 					 							 Utils::format_size( optimal_blocksize ) ),
 									       STATUS_NONE ) ) ;
 
-	return succes && 
-	       copy_blocks( src_device, 
-		      	    dst_device,
-		      	    src_start + ( dst_start > src_start ? 0 : done ),
-		      	    dst_start + ( dst_start > src_start ? 0 : done ),
-		      	    length - std::abs( done ), 
-		      	    optimal_blocksize,
-		      	    operationdetail,
-			    readonly,
-			    total_done ) ;
+	if ( succes ) 
+	      succes = copy_blocks( src_device, 
+		      	    	    dst_device,
+		      	    	    src_start + ( dst_start > src_start ? 0 : done ),
+		      	    	    dst_start + ( dst_start > src_start ? 0 : done ),
+		      	    	    length - std::abs( done ), 
+		      	    	    optimal_blocksize,
+		      	    	    operationdetail,
+			    	    readonly,
+			    	    total_done ) ;
+
+	operationdetail .add_child( OperationDetail( String::ucompose( _("%1 sectors copied"), total_done ), STATUS_NONE ) ) ;
+	return succes ;
 }
 
 void GParted_Core::rollback_transaction( const Partition & partition_src,
