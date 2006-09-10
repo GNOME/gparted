@@ -1,3 +1,12 @@
+2006-09-10 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/Dialog_Progress.cc: make sure progressfraction stays between 0.0
+	  and 1.0
+	* include/GParted_Core.h,
+	  src/GParted_Core.cc: implemented rollback in case of failed move of
+	  overlapping filesystems. Together with the readonly test moving
+	  should be quite save now :)
+
 2006-09-09 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* src/fat16.cc,

@@ -1091,7 +1091,7 @@ bool GParted_Core::move( const Device & device,
 
 		return false ;
 	}
-	
+
 	return check_repair_filesystem( partition_old, operationdetail ) &&
 	       move_filesystem( partition_old, partition_new, operationdetail ) &&
 	       resize_move_partition( partition_old, partition_new, operationdetail ) &&
@@ -1129,14 +1129,27 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			succes = false ;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
-				operationdetail .get_last_child() .add_child( OperationDetail( _("perform readonly test"), STATUS_NONE ) ) ;
-				if ( copy_filesystem( 
-					partition_old, partition_new, operationdetail .get_last_child() .get_last_child(), true ) )
+				if ( copy_filesystem_simulation( partition_old, partition_new, operationdetail .get_last_child() ) )
 				{
-					operationdetail .get_last_child() .add_child(
-						OperationDetail( _("perform real move"), STATUS_NONE ) ) ;
-					succes = copy_filesystem( 
-						partition_old, partition_new, operationdetail .get_last_child() .get_last_child() ) ;
+					operationdetail .get_last_child() .add_child( OperationDetail( _("perform real move") ) ) ;
+					
+					Sector total_done ;
+					succes = copy_filesystem( partition_old,
+								  partition_new,
+								  operationdetail .get_last_child() .get_last_child(),
+								  total_done ) ;
+					
+					operationdetail .get_last_child() .get_last_child() 
+						.set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+					if ( ! succes )
+					{
+						rollback_transaction( partition_old,
+								      partition_new,
+								      operationdetail .get_last_child(),
+								      total_done ) ;
+
+						check_repair_filesystem( partition_old, operationdetail ) ;
+					}
 				}
 			}
 			else
@@ -1520,23 +1533,71 @@ bool GParted_Core::copy( const Partition & partition_src,
 	return false ;
 }
 
+bool GParted_Core::copy_filesystem_simulation( const Partition & partition_src,
+				      	       const Partition & partition_dst,
+			      		       OperationDetail & operationdetail ) 
+{
+	operationdetail .add_child( OperationDetail( _("perform readonly test") ) ) ;
+	
+	bool succes = copy_filesystem( partition_src, partition_dst, operationdetail .get_last_child(), true ) ;
+
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	return succes ;
+}
+
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dst,
 				    OperationDetail & operationdetail,
 				    bool readonly )
 {
-	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
+	Sector dummy ;
+	return copy_filesystem( partition_src .device_path,
+				partition_dst .device_path,
+				partition_src .sector_start,
+				partition_dst .sector_start,
+				partition_src .get_length(),
+				operationdetail,
+				readonly,
+				dummy ) ;
+}
+
+bool GParted_Core::copy_filesystem( const Partition & partition_src,
+			      	    const Partition & partition_dst,
+			      	    OperationDetail & operationdetail,
+			      	    Sector & total_done ) 
+{
+	total_done = 0 ;
+	return copy_filesystem( partition_src .device_path,
+				partition_dst .device_path,
+				partition_src .sector_start,
+				partition_dst .sector_start,
+				partition_src .get_length(),
+				operationdetail,
+				false,
+				total_done ) ;
+}
 	
+bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
+			      	    const Glib::ustring & dst_device,
+			      	    Sector src_start,
+			      	    Sector dst_start,
+			      	    Sector length,
+			      	    OperationDetail & operationdetail,
+			      	    bool readonly,
+				    Sector & total_done ) 
+{
+	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
+//FIXME: consider displaying length here and total_done in the end...	
 	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
 	Sector optimal_blocksize = readonly ? 128 : 64, N = 32768 ;
-	Sector offset_read = partition_src .sector_start,
-	       offset_write = partition_dst .sector_start ;
+	Sector offset_read = src_start,
+	       offset_write = dst_start ;
 
-	if ( partition_dst .sector_start > partition_src .sector_start )
+	if ( dst_start > src_start )
 	{
-		offset_read += (partition_src .get_length() -N) ;
-		offset_write += (partition_src .get_length() -N) ;
+		offset_read += (length -N) ;
+		offset_write += (length -N) ;
 	}
 
 	Sector done = 0 ;
@@ -1546,7 +1607,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 	while ( succes &&
 		timer .elapsed() <= smallest_time && 
-		std::abs( done ) + N <= partition_src .get_length() && 
+		std::abs( done ) + N <= length && 
 		optimal_blocksize * 2 < N )
 	{
 		if ( done != 0 ) 
@@ -1556,20 +1617,21 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 		}
 
 		timer .reset() ;
-		succes = copy_blocks( partition_src .device_path, 
-	  		     	      partition_dst .device_path,
+		succes = copy_blocks( src_device, 
+	  		     	      dst_device,
 			     	      offset_read + done, 
 			     	      offset_write + done,
 			     	      N, 
 			     	      optimal_blocksize,
 			     	      operationdetail .get_last_child(),
-				      readonly) ;
+				      readonly,
+				      total_done ) ;
 		timer.stop() ;
 
 		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
 			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
 		
-		if ( ( partition_dst .sector_start > partition_src .sector_start ) )
+		if ( ( dst_start > src_start ) )
 			done -= N ;
 		else
 			done += N ;
@@ -1585,14 +1647,46 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 									       STATUS_NONE ) ) ;
 
 	return succes && 
-	       copy_blocks( partition_src .device_path, 
-		      	    partition_dst .device_path,
-		      	    partition_src .sector_start + ( partition_dst .sector_start > partition_src .sector_start ? 0 : done ),
-		      	    partition_dst .sector_start + ( partition_dst .sector_start > partition_src .sector_start ? 0 : done ),
-		      	    partition_src .get_length() - std::abs( done ), 
+	       copy_blocks( src_device, 
+		      	    dst_device,
+		      	    src_start + ( dst_start > src_start ? 0 : done ),
+		      	    dst_start + ( dst_start > src_start ? 0 : done ),
+		      	    length - std::abs( done ), 
 		      	    optimal_blocksize,
 		      	    operationdetail,
-			    readonly ) ;
+			    readonly,
+			    total_done ) ;
+}
+
+void GParted_Core::rollback_transaction( const Partition & partition_src,
+			      	   	 const Partition & partition_dst,
+			      	   	 OperationDetail & operationdetail,
+			      	   	 Sector total_done ) 
+{
+	if ( total_done > 0 )
+	{
+		operationdetail .add_child( OperationDetail( _("rollback last transaction") ) ) ;
+
+		//find out exactly which part of the filesystem was copied (and to where it was copied)..
+		Partition temp_src = partition_src ;
+		Partition temp_dst = partition_dst ;
+
+		if ( partition_dst .sector_start > partition_src .sector_start )
+		{
+			temp_src .sector_start = temp_src .sector_end - (total_done-1) ;
+			temp_dst .sector_start = temp_dst .sector_end - (total_done-1) ;
+		}
+		else
+		{
+			temp_src .sector_end = temp_src .sector_start + (total_done -1) ;
+			temp_dst .sector_end = temp_dst .sector_start + (total_done -1) ;
+		}
+		
+		//and copy it back (NOTE the reversed dst and src)
+		bool succes = copy_filesystem( temp_dst, temp_src, operationdetail .get_last_child() ) ;
+
+		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	}
 }
 	
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
@@ -1625,7 +1719,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
 
@@ -1666,7 +1760,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		close_device_and_disk() ;
 	}
 
-	operationdetail .get_last_child() .set_status(  return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return return_value ;
 }
 	
@@ -1697,7 +1791,8 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				Sector length,
 			  	Sector blocksize,
 			  	OperationDetail & operationdetail,
-				bool readonly ) 
+				bool readonly,
+				Sector & total_done ) 
 {
 	if ( blocksize > length )
 		blocksize = length ;
@@ -1708,8 +1803,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	else
 		operationdetail .add_child( OperationDetail( 
 			String::ucompose( _("copy %1 sectors using a blocksize of %2 sectors"), length, blocksize ) ) ) ;
-
-
+	
 	Sector done = length % blocksize ; 
 
 	if ( dst_start > src_start )
@@ -1726,13 +1820,12 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
-		ped_device_sync( lp_device_dst ) ;
-
 		Glib::ustring error_message ;
-
 		buf = static_cast<char *>( malloc( std::abs( blocksize ) * 512 ) ) ;
 		if ( buf )
 		{
+			ped_device_sync( lp_device_dst ) ;
+
 			succes = true ;
         		if ( done != 0 )
         		    succes = copy_block( lp_device_src,
@@ -1742,6 +1835,8 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				        	 done,
 				        	 error_message,
 						 readonly ) ;
+			if ( ! succes )
+				done = 0 ;
 
 			//add an empty sub which we will constantly update in the loop
 			operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
@@ -1786,7 +1881,9 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		if ( ! succes && ! error_message .empty() )
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-
+		
+		total_done += std::abs( done ) ;
+	
 		//close and destroy the devices..
 		ped_device_close( lp_device_src ) ;
 		ped_device_destroy( lp_device_src ) ; 

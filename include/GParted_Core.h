@@ -108,10 +108,29 @@ private:
 		   Partition & partition_dst,
 		   Sector min_size,
 		   OperationDetail & operationdetail ) ; 
+	bool copy_filesystem_simulation( const Partition & partition_src,
+			      		 const Partition & partition_dst,
+			      		 OperationDetail & operationdetail ) ;
 	bool copy_filesystem( const Partition & partition_src,
-			      const Partition & partition_dest,
+			      const Partition & partition_dst,
 			      OperationDetail & operationdetail,
 			      bool readonly = false ) ;
+	bool copy_filesystem( const Partition & partition_src,
+			      const Partition & partition_dst,
+			      OperationDetail & operationdetail,
+			      Sector & total_done ) ;
+	bool copy_filesystem( const Glib::ustring & src_device,
+			      const Glib::ustring & dst_device,
+			      Sector src_start,
+			      Sector dst_start,
+			      Sector length,
+			      OperationDetail & operationdetail,
+			      bool readonly,
+			      Sector & total_done ) ;
+	void rollback_transaction( const Partition & partition_src,
+			      	   const Partition & partition_dst,
+			      	   OperationDetail & operationdetail,
+			      	   Sector total_done ) ;
 
 	bool check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 
@@ -126,7 +145,8 @@ private:
 			  Sector length,
 			  Sector blocksize,
 			  OperationDetail & operationdetail,
-			  bool readonly ) ;
+			  bool readonly,
+			  Sector & total_done ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,

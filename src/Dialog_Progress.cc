@@ -181,7 +181,7 @@ void Dialog_Progress::dispatcher_on_update_gui_elements()
 	
 	if ( operationdetail .fraction >= 0 )
 	{
-		progressbar_current .set_fraction( operationdetail .fraction ) ;
+		progressbar_current .set_fraction( operationdetail .fraction > 1.0 ? 1.0 : operationdetail .fraction ) ;
 		progressbar_current .set_text( operationdetail .progress_text ) ;
 	}
 }
@@ -196,7 +196,7 @@ void Dialog_Progress::on_signal_show()
 		label_current .set_markup( "<b>" + operations[ t ] ->description + "</b>" ) ;
 		
 		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
-		progressbar_all .set_fraction( fraction * t ) ;
+		progressbar_all .set_fraction( fraction * t > 1.0 ? 1.0 : fraction * t ) ;
 		
 		treerow = treestore_operations ->children()[ t ] ;
 
