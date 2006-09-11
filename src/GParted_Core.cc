@@ -1581,7 +1581,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				    Sector & total_done ) 
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
-	operationdetail .add_child( OperationDetail( String::ucompose( _("copy %1 sectors"), length ), STATUS_NONE ) ) ;
+	operationdetail .add_child( OperationDetail( 
+		String::ucompose( readonly ? _("read %1 sectors") : _("copy %1 sectors"), length ), STATUS_NONE ) ) ;
 
 	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
@@ -1653,7 +1654,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 			    	    readonly,
 			    	    total_done ) ;
 
-	operationdetail .add_child( OperationDetail( String::ucompose( _("%1 sectors copied"), total_done ), STATUS_NONE ) ) ;
+	operationdetail .add_child( OperationDetail( 
+		String::ucompose( readonly ? _("%1 sectors read") : _("%1 sectors copied"), total_done ), STATUS_NONE ) ) ;
 	return succes ;
 }
 
