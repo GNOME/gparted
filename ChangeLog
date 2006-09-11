@@ -1,3 +1,13 @@
+2006-09-11 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/GParted_Core.cc: reverted back to parted probing after i heard
+	  patches to fix some issues with it are underway. (skipping of floppy
+	  and cdrom)
+	* src/reiser4.cc,
+	  src/reiserfs.cc: added --quiet to the fschecks to prevent the
+	  detailswindow from dying under the load. I should find a solution
+	  for that anyway.
+
 2006-09-10 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* src/GParted_Core.cc: display total sector info in copy_filesystem()

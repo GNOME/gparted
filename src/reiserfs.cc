@@ -112,7 +112,7 @@ bool reiserfs::copy( const Glib::ustring & src_part_path,
 
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "reiserfsck --y --fix-fixable " + partition .get_path(), operationdetail ) ;
+	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition .get_path(), operationdetail ) ;
 	
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }

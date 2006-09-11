@@ -151,27 +151,22 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		device_paths .clear() ;
 		
 		//try to find all available devices
-		std::ifstream proc_partitions( "/proc/partitions" ) ;
-        	if ( proc_partitions )
-        	{
-        	        std::string line ;
-        	        while ( getline( proc_partitions, line ) )
-        	        {
-        	                int minor ;
-        	                char device[512] ;
-        	                if ( sscanf( line .c_str(), "%*d %d %*d %s", &minor, device ) == 2 && minor == 0 )
-        	                        device_paths .push_back( "/dev/" + Glib::ustring( device ) ) ;
-        	        }
-
-        	        proc_partitions .close() ;
-        	}
+		ped_device_probe_all();
+		lp_device = ped_device_get_next( NULL );
+		while ( lp_device ) 
+		{
+			device_paths .push_back( lp_device ->path ) ;
+			
+			lp_device = ped_device_get_next( lp_device ) ;
+		}
+		close_device_and_disk() ;
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
 	
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
-		if ( open_device_and_disk( device_paths[ t ], false ) )
+		if ( device_paths[ t ] .length() > 6 && device_paths[ t ] .is_ascii() && open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
 			

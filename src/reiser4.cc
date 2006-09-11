@@ -96,7 +96,7 @@ bool reiser4::copy( const Glib::ustring & src_part_path,
 
 bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.reiser4 --yes --fix " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition .get_path(), operationdetail ) ;
 }
 
 } //GParted
