@@ -59,6 +59,7 @@ private:
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
+	void get_label( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
 				 std::vector<Partition> & partitions,
 				 Sector start,

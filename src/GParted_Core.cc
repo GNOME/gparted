@@ -593,6 +593,8 @@ void GParted_Core::set_device_partitions( Device & device )
 				break;
 		}
 
+		get_label( partition_temp ) ;
+
 		partition_temp .messages .insert( partition_temp .messages .end(),
 						  libparted_messages. begin(),
 						  libparted_messages .end() ) ;
@@ -678,6 +680,25 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	partition_temp .messages .push_back( temp ) ;
 	
 	return GParted::FS_UNKNOWN ;
+}
+	
+void GParted_Core::get_label( Partition & partition )
+{
+	if ( partition .type != TYPE_EXTENDED )
+	{
+		switch( get_fs( partition .filesystem ) .get_label )
+		{
+			case FS::EXTERNAL:
+				if ( set_proper_filesystem( partition .filesystem ) )
+					p_filesystem ->get_label( partition ) ;
+				break ;
+			case FS::LIBPARTED:
+				break ;
+
+			default:
+				break ;
+		}
+	}
 }
 
 void GParted_Core::insert_unallocated( const Glib::ustring & device_path,

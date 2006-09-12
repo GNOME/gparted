@@ -45,6 +45,10 @@ void hfs::set_used_sectors( Partition & partition )
 {
 }
 
+void hfs::get_label( Partition & partition )
+{
+}
+
 bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "hformat " + new_partition .get_path(), operationdetail ) ;

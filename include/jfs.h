@@ -29,6 +29,7 @@ class jfs : public FileSystem
 public:
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
+	void get_label( Partition & partition ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
 	bool copy( const Glib::ustring & src_part_path, 

@@ -23,29 +23,32 @@ namespace GParted
 FS ext2::get_filesystem_support()
 {
 	FS fs ;
-	fs .filesystem = GParted::FS_EXT2 ;
+	fs .filesystem = FS_EXT2 ;
 
 	if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
-		fs .read = GParted::FS::EXTERNAL ;
+		fs .read = FS::EXTERNAL ;
+
+	if ( ! Glib::find_program_in_path( "e2label" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "mkfs.ext2" ) .empty() )
-		fs .create = GParted::FS::EXTERNAL ;
+		fs .create = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
+		fs .check = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
 	{
-		fs .grow = GParted::FS::EXTERNAL ;
+		fs .grow = FS::EXTERNAL ;
 		
 		if ( fs .read ) //needed to determine a min filesystemsize..
-			fs .shrink = GParted::FS::EXTERNAL ;
+			fs .shrink = FS::EXTERNAL ;
 	}
 
 	if ( fs .check )
 	{
-		fs .copy = GParted::FS::GPARTED ;
-		fs .move = GParted::FS::GPARTED ;
+		fs .copy = FS::GPARTED ;
+		fs .move = FS::GPARTED ;
 	}
 	
 	return fs ;
@@ -77,6 +80,25 @@ void ext2::set_used_sectors( Partition & partition )
 			partition .messages .push_back( error ) ;
 	}
 }
+	
+void ext2::get_label( Partition & partition )
+{
+	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
+	{
+		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
+			partition .label = output .substr( 0, output .size() -1 ) ;
+		else
+			partition .label + output ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
@@ -89,7 +111,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
-					partition_new .get_length(), GParted::UNIT_KIB ) ) -1, true ) + "K" ; 
+					partition_new .get_length(), UNIT_KIB ) ) -1, true ) + "K" ; 
 		
 	return ! execute_command( str_temp, operationdetail ) ;
 }

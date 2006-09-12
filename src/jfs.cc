@@ -99,6 +99,10 @@ void jfs::set_used_sectors( Partition & partition )
 	}
 }
 
+void jfs::get_label( Partition & partition )
+{
+}
+
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operationdetail ) ;

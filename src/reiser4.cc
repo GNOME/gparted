@@ -77,6 +77,10 @@ void reiser4::set_used_sectors( Partition & partition )
 	}
 }
 
+void reiser4::get_label( Partition & partition )
+{
+}
+
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operationdetail ) ;

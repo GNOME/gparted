@@ -81,6 +81,10 @@ void reiserfs::set_used_sectors( Partition & partition )
 			partition .messages .push_back( error ) ;
 	}
 }
+
+void reiserfs::get_label( Partition & partition )
+{
+}
 	
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {

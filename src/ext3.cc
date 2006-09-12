@@ -79,6 +79,25 @@ void ext3::set_used_sectors( Partition & partition )
 	}
 }
 
+void ext3::get_label( Partition & partition )
+{
+	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
+	{
+		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
+			partition .label = output .substr( 0, output .size() -1 ) ;
+		else
+			partition .label + output ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
 bool ext3::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.ext3 " + new_partition .get_path(), operationdetail ) ;

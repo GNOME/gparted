@@ -79,6 +79,10 @@ void fat32::set_used_sectors( Partition & partition )
 	}
 }
 
+void fat32::get_label( Partition & partition )
+{
+}
+
 bool fat32::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkdosfs -F32 -v " + new_partition .get_path(), operationdetail ) ;

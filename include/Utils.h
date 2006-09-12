@@ -91,6 +91,7 @@ struct FS
 
 	FILESYSTEM filesystem ;
 	Support read ; //can we get the amount of used sectors?
+	Support get_label ;
 	Support create ;
 	Support grow ;
 	Support shrink ;
@@ -103,7 +104,7 @@ struct FS
 	
 	FS()
 	{
-		read = create = grow = shrink = move = check = copy = NONE;
+		read = get_label = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
 	} 
 } ;

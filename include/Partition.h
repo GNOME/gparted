@@ -98,6 +98,7 @@ public:
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	FILESYSTEM filesystem ;
+	Glib::ustring label ;
 	Sector sector_start;
 	Sector sector_end;
 	Sector sectors_used;

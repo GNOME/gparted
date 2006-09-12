@@ -101,6 +101,10 @@ void xfs::set_used_sectors( Partition & partition )
 	}
 }
 
+void xfs::get_label( Partition & partition )
+{
+}
+
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operationdetail ) ;

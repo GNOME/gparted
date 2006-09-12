@@ -77,6 +77,10 @@ void ntfs::set_used_sectors( Partition & partition )
 	}
 }
 
+void ntfs::get_label( Partition & partition )
+{
+}
+
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operationdetail ) ;

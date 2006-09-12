@@ -37,6 +37,10 @@ void ufs::set_used_sectors( Partition & partition )
 {
 }
 
+void ufs::get_label( Partition & partition )
+{
+}
+
 bool ufs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return true ;

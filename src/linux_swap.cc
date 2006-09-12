@@ -43,6 +43,10 @@ void linux_swap::set_used_sectors( Partition & partition )
 {
 }
 
+void linux_swap::get_label( Partition & partition )
+{
+}
+
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkswap " + new_partition .get_path(), operationdetail ) ;

@@ -40,6 +40,10 @@ void hfsplus::set_used_sectors( Partition & partition )
 {
 }
 
+void hfsplus::get_label( Partition & partition )
+{
+}
+
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return true ;
