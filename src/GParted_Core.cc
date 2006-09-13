@@ -196,7 +196,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				set_used_sectors( temp_device .partitions ) ;
 			
 				if ( temp_device .highest_busy )
-					temp_device .readonly = ! ped_disk_commit_to_os( lp_disk ) ;
+					temp_device .readonly = ! commit_to_os( 1 ) ;
 			}
 			//harddisk without disklabel
 			else
@@ -983,11 +983,8 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 				
 		close_device_and_disk() ;
 	}
-	//FIXME: if we create an extended partition and want to do some other operation right after it, it may fail...
-	//(i think the same goes for resize/move) --- i REALLY need to fix this, see also #352744
-	if ( new_partition .partition_number > 0 &&
-	     erase_filesystem_signatures( new_partition ) &&
-	     ( new_partition .type == GParted::TYPE_EXTENDED || wait_for_node( new_partition .get_path() ) ) )
+
+	if ( new_partition .partition_number > 0 && erase_filesystem_signatures( new_partition ) )
 	{ 
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 		return true ;
@@ -1045,7 +1042,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
-		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( partition .device_path ) ;
+		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
 	
 		close_device_and_disk() ;
 	}
@@ -1208,8 +1205,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 							    partition_new .sector_start,
 							    partition_new .get_length() ) ;
 				if ( lp_geom )
-					return_value = ped_file_system_resize( fs, lp_geom, NULL ) &&
-						       commit( partition_new .get_path() ) ;
+					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit() ;
 
 				ped_file_system_close( fs );
 			}
@@ -1385,8 +1381,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					new_start = lp_partition ->geom .start ;
 					new_end = lp_partition ->geom .end ;
 
-					return_value = commit( partition_new .type == TYPE_EXTENDED ? 
-									"" : partition_new .get_path() ) ;
+					return_value = commit() ;
 				}
 									
 				ped_constraint_destroy( constraint );
@@ -1767,7 +1762,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 			if ( lp_partition &&
 			     ped_partition_set_system( lp_partition, fs_type ) && 
-			     commit( partition .get_path() ) )
+			     commit() )
 			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail( String::ucompose( _("new partitiontype: %1"),
@@ -2100,26 +2095,6 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 	return p_filesystem ;
 }
 	
-bool GParted_Core::wait_for_node( const Glib::ustring & node ) 
-{
-	//we'll loop for 10 seconds or till 'node' appeares...
-	for( short t = 0 ; t < 50 ; t++ )
-	{
-		//FIXME: find a better way to check if a file exists
-		//the current way is suboptimal (at best)
-		if ( Glib::file_test( node, Glib::FILE_TEST_EXISTS ) )
-		{
-			//same issue
-			sleep( 2 ) ; 
-			return true ;
-		}
-		else
-			usleep( 200000 ) ; //200 milliseconds
-	}
-
-	return false ;
-}
-
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition ) 
 {
 	bool return_value = false ;
@@ -2233,16 +2208,25 @@ void GParted_Core::close_device_and_disk()
 	lp_device = NULL ;
 }	
 
-bool GParted_Core::commit( const Glib::ustring & node ) 
+bool GParted_Core::commit() 
 {
-	bool return_value = ped_disk_commit_to_dev( lp_disk ) ;
+	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
 	
-	ped_disk_commit_to_os( lp_disk ) ;
+	commit_to_os( 10 ) ;
 
-	if ( ! node .empty() && return_value )
-		return_value = wait_for_node( node ) ;
+	return succes ;
+}
 
-	return return_value ;
+bool GParted_Core::commit_to_os( std::time_t timeout ) 
+{
+	bool succes = ped_disk_commit_to_os( lp_disk ) ;
+
+	if ( Glib::find_program_in_path( "udevsettle" ) .empty() )
+		sleep( timeout ) ;
+	else
+		Utils::execute_command( "udevsettle --timeout=" + Utils::num_to_str( timeout ) ) ;
+
+	return succes ;
 }
 	
 PedExceptionOption GParted_Core::ped_exception_handler( PedException * e ) 

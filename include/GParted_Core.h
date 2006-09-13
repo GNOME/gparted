@@ -161,7 +161,6 @@ private:
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
 	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
-	bool wait_for_node( const Glib::ustring & node ) ;
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
@@ -170,7 +169,8 @@ private:
 	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
 	void close_disk() ;
 	void close_device_and_disk() ;
-	bool commit( const Glib::ustring & node = "" ) ;
+	bool commit() ;
+	bool commit_to_os( std::time_t timeout ) ;
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
