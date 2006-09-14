@@ -88,7 +88,7 @@ void ext2::get_label( Partition & partition )
 		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
 			partition .label = output .substr( 0, output .size() -1 ) ;
 		else
-			partition .label + output ;
+			partition .label = output ;
 	}
 	else
 	{

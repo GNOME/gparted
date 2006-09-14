@@ -28,6 +28,9 @@ FS ext3::get_filesystem_support()
 	
 	if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
+
+	if ( ! Glib::find_program_in_path( "e2label" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "mkfs.ext3" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -86,7 +89,7 @@ void ext3::get_label( Partition & partition )
 		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
 			partition .label = output .substr( 0, output .size() -1 ) ;
 		else
-			partition .label + output ;
+			partition .label = output ;
 	}
 	else
 	{
