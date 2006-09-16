@@ -104,16 +104,20 @@ private:
 	
 	void allow_info( bool state )	{
 		toggle_item( state, MENU_INFO ) ; } 
-	
-	void allow_undo( bool state )	{ 
+
+	void allow_undo_clear_apply( bool state )
+	{
 		toggle_item( state, -1, TOOLBAR_UNDO ) ; 
 		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 0 ] )
-			->set_sensitive( state ) ; }
-		
-	void allow_apply( bool state )	{ 
-		toggle_item( state, -1, TOOLBAR_APPLY ) ; 
+			->set_sensitive( state ) ; 
+
 		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 1 ] )
-			->set_sensitive( state ) ; }
+			->set_sensitive( state ) ; 
+
+		toggle_item( state, -1, TOOLBAR_APPLY ) ; 
+		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 2 ] )
+			->set_sensitive( state ) ; 
+	}
 		
 	//threads..
 	void thread_refresh_devices() ;
@@ -169,7 +173,7 @@ private:
 //gui stuff
 	Gtk::HPaned hpaned_main;
 	Gtk::VPaned vpaned_main;
-	Gtk::VBox vbox_main,vbox_info, *vbox;
+	Gtk::VBox vbox_main,vbox_info ;
 	Gtk::HBox hbox_toolbar, hbox_operations, *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
@@ -181,7 +185,6 @@ private:
 	Gtk::ScrolledWindow *scrollwindow;
 	Gtk::Label label_device_info1, label_device_info2, *label;
 	Gtk::Tooltips tooltips ;
-	Gtk::Button *button;
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
 	Gtk::ProgressBar pulsebar ;

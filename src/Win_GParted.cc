@@ -138,7 +138,10 @@ void Win_GParted::init_menubar()
 	
 	//edit
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
+		Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
+		Gtk::Stock::CLEAR, sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::APPLY, sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
 	
@@ -454,39 +457,17 @@ void Win_GParted::init_operationslist()
 	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
 	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
 	treeview_operations .get_selection() ->set_mode( Gtk::SELECTION_NONE );
-
+	
 	//init scrollwindow_operations
 	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 	scrollwindow ->add ( treeview_operations ) ;
 	
-	//set up the close and clear buttons and pack them in a vbox
-	vbox = manage( new Gtk::VBox( ) ) ;
-	//CLOSE
-	button = manage( new Gtk::Button( ) );
-	image = manage( new Gtk::Image( Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU ) );
-	button ->add( *image ) ;
-	button ->set_relief( Gtk::RELIEF_NONE );
-	tooltips .set_tip( *button, _("Hide operationslist") );
-	button ->signal_clicked( ) .connect( sigc::mem_fun( *this, &Win_GParted::close_operationslist ) );
-	vbox ->pack_start( *button, Gtk::PACK_SHRINK );
-	
-	//CLEAR
-	button = manage( new Gtk::Button( ) );
-	image = manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) );
-	button ->add( *image ) ;
-	button ->set_relief( Gtk::RELIEF_NONE );
-	tooltips .set_tip( *button, _("Clear operationslist") );
-	button ->signal_clicked( ) .connect( sigc::mem_fun( *this, &Win_GParted::clear_operationslist ) );
-	vbox ->pack_start( *button, Gtk::PACK_SHRINK );
-	
-	//add vbox and scrollwindow_operations to hbox_operations
-	hbox_operations .pack_start( *vbox, Gtk::PACK_SHRINK );
 	hbox_operations .pack_start( *scrollwindow, Gtk::PACK_EXPAND_WIDGET );
 }
 
-void Win_GParted::init_hpaned_main( ) 
+void Win_GParted::init_hpaned_main() 
 {
 	//left scrollwindow (holds device info)
 	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
@@ -632,9 +613,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 			else
 				operations .push_back( operation );
 
-			allow_undo( true ) ;
-			allow_apply( true ) ;
-
+			allow_undo_clear_apply( true ) ;
 			Refresh_Visual();
 			
 			if ( operations .size() == 1 ) //first operation, open operationslist
@@ -684,10 +663,7 @@ void Win_GParted::Refresh_Visual()
 		statusbar .push( _( "1 operation pending" ) );
 		
 	if ( ! operations .size() ) 
-	{
-		allow_undo( false );
-		allow_apply( false );
-	}
+		allow_undo_clear_apply( false ) ;
 			
 	//count primary's and check for extended
 	index_extended = -1 ;
@@ -927,6 +903,7 @@ void Win_GParted::close_operationslist()
 void Win_GParted::clear_operationslist() 
 {
 	remove_operation( -1, true ) ;
+	close_operationslist() ;
 
 	Refresh_Visual() ;
 }
@@ -969,7 +946,7 @@ void Win_GParted::on_show()
 
 	menu_gparted_refresh_devices() ;
 }
-
+	
 void Win_GParted::thread_refresh_devices() 
 {
 	gparted_core .set_devices( devices ) ;
