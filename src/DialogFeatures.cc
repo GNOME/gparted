@@ -27,7 +27,7 @@ DialogFeatures::DialogFeatures()
 	set_title( _("Features") ) ;
 	set_has_separator( false ) ;
 	set_resizable( false ) ;
-	
+
 	liststore_filesystems = Gtk::ListStore::create( treeview_filesystems_columns );
 	treeview_filesystems .set_model( liststore_filesystems );
 	treeview_filesystems .append_column( _("Filesystem"), treeview_filesystems_columns .filesystem );
@@ -43,16 +43,20 @@ DialogFeatures::DialogFeatures()
 	//of course this url has to be selectable and (if possible) clickable
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
-	get_vbox() ->pack_start( treeview_filesystems ) ;
+
+	hbox = manage( new Gtk::HBox() ) ;
+	hbox ->set_border_width( 6 ) ;
+	hbox ->pack_start( treeview_filesystems ) ;
+	get_vbox() ->pack_start( *hbox ) ;
 	
 	//legend..
-	hbox = manage( new Gtk::HBox ) ;
+	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
 	hbox ->pack_start( * Utils::mk_label( _("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
 	get_vbox() ->pack_start( *hbox ) ;
 
-	hbox = manage( new Gtk::HBox ) ;
+	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
 	hbox ->pack_start( * Utils::mk_label( _("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
