@@ -46,6 +46,10 @@ public:
 	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 
 private:
+	void load_partitions( const std::vector<Partition> & partitions,
+			      bool & mountpoints,
+			      bool & labels,
+			      const Gtk::TreeRow & parent_row = Gtk::TreeRow() ) ;
 	bool set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended = false ) ;
 	void create_row( const Gtk::TreeRow & treerow, const Partition & partition );
 
@@ -54,8 +58,6 @@ private:
 	void on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) ;
 	void on_selection_changed() ;
 	
-	Gtk::TreeRow row, childrow;
-
 	Glib::RefPtr<Gtk::TreeStore> treestore_detail;
 	Glib::RefPtr<Gtk::TreeSelection> treeselection;
 
