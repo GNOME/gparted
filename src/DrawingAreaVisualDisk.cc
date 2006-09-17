@@ -39,7 +39,7 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 	color_text .set( "black" );
 	get_colormap() ->alloc_color( color_text ) ;
 
-	set_events( Gdk::BUTTON_PRESS_MASK );
+	add_events( Gdk::BUTTON_PRESS_MASK );
 	
 	set_size_request( -1, HEIGHT ) ;
 }

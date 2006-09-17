@@ -25,6 +25,7 @@ gparted_SOURCES = \
 	Frame_Resizer_Base.cc		\
 	Frame_Resizer_Extended.cc	\
 	GParted_Core.cc			\
+	HBoxOperations.cc		\
 	Operation.cc			\
 	OperationCopy.cc		\
 	OperationCreate.cc		\

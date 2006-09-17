@@ -105,9 +105,12 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	init_device_info() ;
 	
 	//operationslist...
-	init_operationslist() ;
+	hbox_operations .signal_undo .connect( sigc::mem_fun( this, &Win_GParted::activate_undo ) ) ;
+	hbox_operations .signal_clear .connect( sigc::mem_fun( this, &Win_GParted::clear_operationslist ) ) ;
+	hbox_operations .signal_apply .connect( sigc::mem_fun( this, &Win_GParted::activate_apply ) ) ;
+	hbox_operations .signal_close .connect( sigc::mem_fun( this, &Win_GParted::close_operationslist ) ) ;
 	vpaned_main .pack2( hbox_operations, true, true ) ;
-	
+
 	//statusbar... 
 	pulsebar .set_pulse_step( 0.01 );
 	statusbar .add( pulsebar );
@@ -125,30 +128,48 @@ void Win_GParted::init_menubar()
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Refresh Devices"), Gtk::AccelKey("<control>r"), *image, sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem(
+		_("_Refresh Devices"),
+		Gtk::AccelKey("<control>r"),
+		*image, 
+		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Devices"), *image ) ) ; 
 	
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Show Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem(
+		_("_Show Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
+		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
 	
 	//edit
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
-		Gtk::Stock::UNDO, Gtk::AccelKey("<control>z"), sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
-		Gtk::Stock::CLEAR, sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::APPLY, sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+		_("_Undo Last Operation"), 
+		Gtk::AccelKey("<control>z"),
+		* manage( new Gtk::Image( Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU ) ), 
+		sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+		_("_Clear All Operations"), 
+		* manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) ), 
+		sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) );
+
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+		_("_Apply All Operations"), 
+		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
+		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
 	
 	//view
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( _("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem(
+		_("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( 
+		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
 	
 	//device
@@ -163,8 +184,10 @@ void Win_GParted::init_menubar()
 	
 	//help
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
-	menu ->items( ) .push_back( Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
+	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem(
+		Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem(
+		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
 
 	menubar_main.items() .push_back( Gtk::Menu_Helpers::MenuElem(_("_Help"), *menu ) );
 }
@@ -219,14 +242,14 @@ void Win_GParted::init_toolbar()
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_UNDO = index++ ;
 	toolbutton ->set_sensitive( false );
-	toolbutton ->set_tooltip(tooltips, _("Undo last operation") );		
+	toolbutton ->set_tooltip(tooltips, _("Undo Last Operation") );		
 	
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_APPLY = index++ ;
 	toolbutton ->set_sensitive( false );
-	toolbutton ->set_tooltip(tooltips, _("Apply all operations") );		
+	toolbutton ->set_tooltip(tooltips, _("Apply All Operations") );		
 	
 	//initialize and pack combo_devices
 	liststore_devices = Gtk::ListStore::create( treeview_devices_columns ) ;
@@ -448,37 +471,18 @@ void Win_GParted::init_device_info()
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
 
-void Win_GParted::init_operationslist() 
-{
-	//create listview for pending operations
-	liststore_operations = Gtk::ListStore::create( treeview_operations_columns );
-	treeview_operations .set_model( liststore_operations );
-	treeview_operations .set_headers_visible( false );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_icon );
-	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
-	treeview_operations .get_selection() ->set_mode( Gtk::SELECTION_NONE );
-	
-	//init scrollwindow_operations
-	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
-	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
-	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
-	scrollwindow ->add ( treeview_operations ) ;
-	
-	hbox_operations .pack_start( *scrollwindow, Gtk::PACK_EXPAND_WIDGET );
-}
-
 void Win_GParted::init_hpaned_main() 
 {
 	//left scrollwindow (holds device info)
-	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
+	scrollwindow = manage( new Gtk::ScrolledWindow() ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 
-	hpaned_main.pack1( *scrollwindow, true, true );
+	hpaned_main .pack1( *scrollwindow, true, true );
 	scrollwindow ->add( vbox_info );
 
 	//right scrollwindow (holds treeview with partitions)
-	scrollwindow = manage( new Gtk::ScrolledWindow( ) ) ;
+	scrollwindow = manage( new Gtk::ScrolledWindow() ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 	
@@ -487,7 +491,7 @@ void Win_GParted::init_hpaned_main()
 	treeview_detail .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) );
 	treeview_detail .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
 	scrollwindow ->add( treeview_detail );
-	hpaned_main.pack2( *scrollwindow, true, true );
+	hpaned_main .pack2( *scrollwindow, true, true );
 }
 
 void Win_GParted::refresh_combo_devices()
@@ -618,11 +622,6 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 			
 			if ( operations .size() == 1 ) //first operation, open operationslist
 				open_operationslist() ;
-			
-			//make scrollwindow focus on the last operation in the list	
-			treeview_operations .set_cursor(
-				static_cast<Gtk::TreePath>( static_cast<Gtk::TreeRow>( 
-						*(--liststore_operations ->children() .end()) ) ) ) ;
 		}
 		else
 		{
@@ -642,19 +641,14 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 void Win_GParted::Refresh_Visual()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
-	liststore_operations ->clear();
 	
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
-	{	
 		if ( operations[ t ] ->device == devices[ current_device ] )
 			operations[ t ] ->apply_to_visual( partitions ) ;
 			
-		treerow = *( liststore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_description ] = operations[ t ] ->description ;
-		treerow[ treeview_operations_columns .operation_icon ] = operations[ t ] ->icon ;
-	}
-	
+	hbox_operations .load_operations( operations ) ;
+
 	//set new statusbartext
 	statusbar .pop() ;
 	if ( operations .size() != 1 )
@@ -1020,7 +1014,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 		treeview_detail .clear() ;
 		
 		//hmzz, this is really paranoid, but i think it's the right thing to do ;)
-		liststore_operations ->clear() ;
+		hbox_operations .clear() ;
 		close_operationslist() ;
 		remove_operation( -1, true ) ;
 		
@@ -1825,7 +1819,7 @@ void Win_GParted::activate_apply()
 		
 		//wipe operations...
 		remove_operation( -1, true ) ;
-		liststore_operations ->clear() ;
+		hbox_operations .clear() ;
 		close_operationslist() ;
 							
 		//reset new_count to 1

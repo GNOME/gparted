@@ -22,8 +22,8 @@
 #include "../include/DrawingAreaVisualDisk.h"
 #include "../include/Partition.h"
 #include "../include/TreeView_Detail.h"
-#include "../include/Operation.h"
 #include "../include/GParted_Core.h"
+#include "../include/HBoxOperations.h" 
 
 #include <sigc++/class_slot.h>
 #include <gtkmm/paned.h>
@@ -31,14 +31,10 @@
 #include <gtkmm/separatortoolitem.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/statusbar.h>
-#include <gtkmm/liststore.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/progressbar.h>
-#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/window.h>
 #include <gtkmm/table.h>
-
-#include <unistd.h> //should be included by gtkmm headers. but decided to include it anyway after getting some bugreports..
 
 namespace GParted
 {
@@ -54,7 +50,6 @@ private:
 	void init_partition_menu() ;
 	Gtk::Menu * create_format_menu() ;
 	void init_device_info() ;
-	void init_operationslist() ;
 	void init_hpaned_main() ;
 
 	void refresh_combo_devices() ;
@@ -174,7 +169,7 @@ private:
 	Gtk::HPaned hpaned_main;
 	Gtk::VPaned vpaned_main;
 	Gtk::VBox vbox_main,vbox_info ;
-	Gtk::HBox hbox_toolbar, hbox_operations, *hbox;
+	Gtk::HBox hbox_toolbar, *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::ComboBox combo_devices ;
@@ -192,6 +187,7 @@ private:
 	
 	DrawingAreaVisualDisk drawingarea_visualdisk ;
 	TreeView_Detail treeview_detail;
+	HBoxOperations hbox_operations ;
 
 	//device combo
 	Glib::RefPtr<Gtk::ListStore> liststore_devices ;
@@ -210,23 +206,6 @@ private:
 		}
 	};
 	treeview_devices_Columns treeview_devices_columns ;
-	
-	//operations list
-	Gtk::TreeView treeview_operations;
-	Glib::RefPtr<Gtk::ListStore> liststore_operations;
-	
-	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
-	{
-		Gtk::TreeModelColumn<Glib::ustring> operation_description;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > operation_icon;
-				
-		treeview_operations_Columns() 
-		{ 
-			add( operation_description );
-			add( operation_icon );
-		} 
-	};
-	treeview_operations_Columns treeview_operations_columns;
 	
 	//indices for partitionmenu and toolbar
         int
@@ -251,7 +230,6 @@ private:
 	bool OPERATIONSLIST_OPEN ;
 									
 	GParted_Core gparted_core ;
-	GParted::Device *temp_device ;
 	std::vector<Gtk::Label *> device_info ;
 					
 	//stuff for progress overview and pulsebar

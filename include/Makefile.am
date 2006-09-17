@@ -16,6 +16,7 @@ EXTRA_DIST = \
         Frame_Resizer_Base.h		\
 	Frame_Resizer_Extended.h	\
 	GParted_Core.h    		\
+	HBoxOperations.h    		\
 	Operation.h 			\
 	OperationCopy.h			\
 	OperationCreate.h		\
