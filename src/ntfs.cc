@@ -31,6 +31,9 @@ FS ntfs::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .check = GParted::FS::EXTERNAL ;
 	}
+
+	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -79,6 +82,21 @@ void ntfs::set_used_sectors( Partition & partition )
 
 void ntfs::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, true ) )
+	{
+		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
+			partition .label = output .substr( 0, output .size() -1 ) ;
+		else
+			partition .label = output ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
