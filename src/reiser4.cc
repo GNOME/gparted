@@ -27,7 +27,10 @@ FS reiser4::get_filesystem_support()
 	fs .filesystem = GParted::FS_REISER4 ;
 	
 	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
+	{
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .get_label = FS::EXTERNAL ;
+	}
 	
 	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -79,6 +82,22 @@ void reiser4::set_used_sectors( Partition & partition )
 
 void reiser4::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
+	{
+		char buf[512] ;
+		index = output .find( "label" ) ;
+
+		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "label: %512s", buf ) == 1 )
+			partition .label = buf ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )

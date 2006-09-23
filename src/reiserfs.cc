@@ -27,7 +27,10 @@ FS reiserfs::get_filesystem_support()
 	fs .filesystem = GParted::FS_REISERFS ;
 	
 	if ( ! Glib::find_program_in_path( "debugreiserfs" ) .empty() )
+	{
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .get_label = FS::EXTERNAL ;
+	}
 	
 	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -84,6 +87,22 @@ void reiserfs::set_used_sectors( Partition & partition )
 
 void reiserfs::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
+	{
+		char buf[512] ;
+		index = output .find( "LABEL" ) ;
+
+		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "LABEL: %512s", buf ) == 1 )
+			partition .label = buf ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 	
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
