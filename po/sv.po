@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-14 11:51+0200\n"
-"PO-Revision-Date: 2006-09-14 14:13+0100\n"
+"POT-Creation-Date: 2006-09-25 21:19+0200\n"
+"PO-Revision-Date: 2006-09-25 21:42+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../gparted.desktop.in.h:1
-#: ../src/Win_GParted.cc:1152
+#: ../src/Win_GParted.cc:1123
 msgid "GNOME Partition Editor"
 msgstr "Partitionsredigerare för GNOME"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.h:2
 #: ../src/Win_GParted.cc:65
-#: ../src/Win_GParted.cc:1028
-#: ../src/Win_GParted.cc:1149
+#: ../src/Win_GParted.cc:999
+#: ../src/Win_GParted.cc:1120
 msgid "GParted"
 msgstr "GParted"
 
@@ -50,7 +50,7 @@ msgid "Resize"
 msgstr "Ändra storlek"
 
 #: ../src/Dialog_Base_Partition.cc:159
-#: ../src/Win_GParted.cc:191
+#: ../src/Win_GParted.cc:217
 msgid "Resize/Move"
 msgstr "Ändra storlek/Flytta"
 
@@ -93,7 +93,7 @@ msgstr "VARNING: Skapandet av en ny disketikett kommer att radera allt data på 
 
 #: ../src/Dialog_Disklabel.cc:89
 #: ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1738
+#: ../src/Win_GParted.cc:1709
 msgid "Create"
 msgstr "Skapa"
 
@@ -119,7 +119,7 @@ msgstr "Filsystem:"
 
 #. size
 #: ../src/Dialog_Partition_Info.cc:161
-#: ../src/Win_GParted.cc:377
+#: ../src/Win_GParted.cc:403
 msgid "Size:"
 msgstr "Storlek:"
 
@@ -139,7 +139,7 @@ msgstr "Flaggor:"
 
 #. path
 #: ../src/Dialog_Partition_Info.cc:224
-#: ../src/Win_GParted.cc:385
+#: ../src/Win_GParted.cc:411
 msgid "Path:"
 msgstr "Sökväg:"
 
@@ -183,7 +183,7 @@ msgstr "Sista sektorn:"
 
 #. total sectors
 #: ../src/Dialog_Partition_Info.cc:286
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:464
 msgid "Total Sectors:"
 msgstr "Totalt antal sektorer:"
 
@@ -350,11 +350,15 @@ msgstr "Kopiera"
 msgid "Check"
 msgstr "Kontrollera"
 
-#: ../src/DialogFeatures.cc:52
+#: ../src/DialogFeatures.cc:42
+msgid "Read Label"
+msgstr "Läs etikett"
+
+#: ../src/DialogFeatures.cc:57
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:63
 msgid "Not Available"
 msgstr "Inte tillgänglig"
 
@@ -825,208 +829,212 @@ msgstr "%1 GiB"
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:128
+#: ../src/Win_GParted.cc:132
 msgid "_Refresh Devices"
 msgstr "Uppdate_ra enheter"
 
-#: ../src/Win_GParted.cc:131
+#: ../src/Win_GParted.cc:138
 msgid "_Devices"
 msgstr "_Enheter"
 
-#: ../src/Win_GParted.cc:134
+#: ../src/Win_GParted.cc:142
 msgid "_Show Features"
 msgstr "Vi_sa funktioner"
 
-#: ../src/Win_GParted.cc:137
+#: ../src/Win_GParted.cc:146
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:143
-msgid "_Edit"
-msgstr "_Redigera"
+#: ../src/Win_GParted.cc:151
+msgid "_Undo Last Operation"
+msgstr "_Ångra den senaste åtgärden"
 
-#: ../src/Win_GParted.cc:147
+#: ../src/Win_GParted.cc:157
+msgid "_Clear All Operations"
+msgstr "_Töm alla åtgärder"
+
+#: ../src/Win_GParted.cc:162
+msgid "_Apply All Operations"
+msgstr "_Verkställ alla åtgärder"
+
+#: ../src/Win_GParted.cc:165
+msgid "_Edit"
+msgstr "R_edigera"
+
+#: ../src/Win_GParted.cc:170
 msgid "Device _Information"
 msgstr "Enhets_information"
 
-#: ../src/Win_GParted.cc:148
+#: ../src/Win_GParted.cc:172
 msgid "Pending _Operations"
 msgstr "Väntande å_tgärder"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:173
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/Win_GParted.cc:153
+#: ../src/Win_GParted.cc:177
 msgid "_Set Disklabel"
 msgstr "_Ställ in disketikett"
 
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:179
 msgid "_Device"
 msgstr "_Enhet"
 
-#: ../src/Win_GParted.cc:159
+#: ../src/Win_GParted.cc:183
 msgid "_Partition"
 msgstr "_Partition"
 
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:192
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:206
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Skapa en ny partition i det markerade oallokerade utrymmet"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:211
 msgid "Delete the selected partition"
 msgstr "Ta bort den markerade partitionen"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:221
 msgid "Resize/Move the selected partition"
 msgstr "Ändra storlek/Flytta den markerade partitionen"
 
-#: ../src/Win_GParted.cc:204
+#: ../src/Win_GParted.cc:230
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopiera den markerade partitionen till urklipp"
 
-#: ../src/Win_GParted.cc:209
+#: ../src/Win_GParted.cc:235
 msgid "Paste the partition from the clipboard"
 msgstr "Klistra in partition från urklipp"
 
-#: ../src/Win_GParted.cc:219
-msgid "Undo last operation"
+#: ../src/Win_GParted.cc:245
+msgid "Undo Last Operation"
 msgstr "Ångra den senaste åtgärden"
 
-#: ../src/Win_GParted.cc:226
-msgid "Apply all operations"
+#: ../src/Win_GParted.cc:252
+msgid "Apply All Operations"
 msgstr "Verkställ alla åtgärder"
 
-#: ../src/Win_GParted.cc:261
+#: ../src/Win_GParted.cc:287
 msgid "_Resize/Move"
 msgstr "_Ändra storlek/Flytta"
 
-#: ../src/Win_GParted.cc:285
+#: ../src/Win_GParted.cc:311
 msgid "_Format to"
 msgstr "_Formatera till"
 
-#: ../src/Win_GParted.cc:294
+#: ../src/Win_GParted.cc:320
 msgid "Unmount"
 msgstr "Avmontera"
 
-#: ../src/Win_GParted.cc:300
+#: ../src/Win_GParted.cc:326
 msgid "_Mount on"
 msgstr "_Montera på"
 
-#: ../src/Win_GParted.cc:307
+#: ../src/Win_GParted.cc:333
 msgid "M_anage Flags"
 msgstr "H_antera flaggor"
 
-#: ../src/Win_GParted.cc:361
+#: ../src/Win_GParted.cc:387
 msgid "Device Information"
 msgstr "Enhetsinformation"
 
 #. model
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:395
 msgid "Model:"
 msgstr "Modell:"
 
 #. disktype
-#: ../src/Win_GParted.cc:406
+#: ../src/Win_GParted.cc:432
 msgid "DiskLabelType:"
 msgstr "Typ av disketikett:"
 
 #. heads
-#: ../src/Win_GParted.cc:414
+#: ../src/Win_GParted.cc:440
 msgid "Heads:"
 msgstr "Huvuden:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:422
+#: ../src/Win_GParted.cc:448
 msgid "Sectors/Track:"
 msgstr "Sektorer/Spår:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:430
+#: ../src/Win_GParted.cc:456
 msgid "Cylinders:"
 msgstr "Cylindrar:"
 
-#: ../src/Win_GParted.cc:471
-msgid "Hide operationslist"
-msgstr "Dölj åtgärdslista"
-
-#: ../src/Win_GParted.cc:480
-msgid "Clear operationslist"
-msgstr "Töm åtgärdslista"
-
-#: ../src/Win_GParted.cc:651
+#: ../src/Win_GParted.cc:629
 msgid "Could not add this operation to the list."
 msgstr "Kunde inte lägga till denna åtgärd till listan."
 
-#: ../src/Win_GParted.cc:682
+#: ../src/Win_GParted.cc:655
 msgid "%1 operations pending"
 msgstr "%1 åtgärder väntar"
 
-#: ../src/Win_GParted.cc:684
+#: ../src/Win_GParted.cc:657
 msgid "1 operation pending"
 msgstr "1 åtgärd väntar"
 
-#: ../src/Win_GParted.cc:735
+#: ../src/Win_GParted.cc:705
 msgid "Quit GParted?"
 msgstr "Avsluta GParted?"
 
-#: ../src/Win_GParted.cc:742
+#: ../src/Win_GParted.cc:712
 msgid "%1 operations are currently pending."
 msgstr "%1 åtgärder väntar för närvarande."
 
-#: ../src/Win_GParted.cc:745
+#: ../src/Win_GParted.cc:715
 msgid "1 operation is currently pending."
 msgstr "1 åtgärd väntar för närvarande."
 
-#: ../src/Win_GParted.cc:764
+#: ../src/Win_GParted.cc:734
 msgid "_Unmount"
 msgstr "_Avmontera"
 
 # Vad är detta? Kommandot?
-#: ../src/Win_GParted.cc:789
+#: ../src/Win_GParted.cc:759
 msgid "_Swapoff"
 msgstr "_Aktivera växling"
 
 # Vad är detta? Kommandot?
-#: ../src/Win_GParted.cc:795
+#: ../src/Win_GParted.cc:765
 msgid "_Swapon"
 msgstr "_Inaktivera växling"
 
-#: ../src/Win_GParted.cc:938
+#: ../src/Win_GParted.cc:909
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:984
+#: ../src/Win_GParted.cc:955
 msgid "Scanning all devices..."
 msgstr "Söker av alla enheter..."
 
-#: ../src/Win_GParted.cc:1000
+#: ../src/Win_GParted.cc:971
 msgid "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "Kärnan kan inte läsa om partitionstabellerna på följande enheter:"
 
-#: ../src/Win_GParted.cc:1007
+#: ../src/Win_GParted.cc:978
 msgid "Because of this you will only have limited access to these devices. Unmount all mounted partitions on a device to get full access."
 msgstr "På grund av detta kommer du endast ha begränsad tillgång till dessa enheter. Avmontera alla monterade partitioner på en enhet för att få fullständig tillgång."
 
-#: ../src/Win_GParted.cc:1051
+#: ../src/Win_GParted.cc:1022
 msgid "No devices detected"
 msgstr "Inga enheter identifierade"
 
-#: ../src/Win_GParted.cc:1130
+#: ../src/Win_GParted.cc:1101
 msgid "Sorry, not yet implemented."
 msgstr "Tyvärr, ännu inte implementerat."
 
-#: ../src/Win_GParted.cc:1136
+#: ../src/Win_GParted.cc:1107
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "Besök http://gparted.sf.net för mer information och hjälp."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1167
+#: ../src/Win_GParted.cc:1138
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander\n"
@@ -1035,138 +1043,138 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/Win_GParted.cc:1207
+#: ../src/Win_GParted.cc:1178
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Det är inte möjligt att skapa fler än %1 primära partitioner"
 
-#: ../src/Win_GParted.cc:1215
+#: ../src/Win_GParted.cc:1186
 msgid "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions. Because an extended partition is also a primary partition it might be necessary to remove a primary partition first."
 msgstr "Om du vill ha fler partitioner bör du först skapa en utökad partition. Sådana partitioner kan innehålla andra partitioner. På grund av att en utökad partition också är en primär partition kan det vara nödvändigt att ta bort en primär partition först."
 
-#: ../src/Win_GParted.cc:1394
+#: ../src/Win_GParted.cc:1365
 msgid "Unable to delete %1!"
 msgstr "Kunde inte ta bort %1!"
 
-#: ../src/Win_GParted.cc:1401
+#: ../src/Win_GParted.cc:1372
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Vänligen avmontera alla logiska partitioner som har en siffra högre än %1"
 
-#: ../src/Win_GParted.cc:1412
+#: ../src/Win_GParted.cc:1383
 msgid "Are you sure you want to delete %1?"
 msgstr "Är du säker på att du vill ta bort %1?"
 
-#: ../src/Win_GParted.cc:1419
+#: ../src/Win_GParted.cc:1390
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Efter borttagning är denna partition inte längre tillgänglig för kopiering."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1422
+#: ../src/Win_GParted.cc:1393
 msgid "Delete %1 (%2, %3)"
 msgstr "Ta bort %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1488
+#: ../src/Win_GParted.cc:1459
 msgid "Cannot format this filesystem to %1."
 msgstr "Kan inte formatera detta filsystem till %1."
 
-#: ../src/Win_GParted.cc:1497
+#: ../src/Win_GParted.cc:1468
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "Ett %1-filsystem kräver en partition på åtminstone %2."
 
-#: ../src/Win_GParted.cc:1502
+#: ../src/Win_GParted.cc:1473
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "En partition med ett %1-filsystem har en maximal storlek på %2."
 
-#: ../src/Win_GParted.cc:1587
+#: ../src/Win_GParted.cc:1558
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "Partitionen kunde inte avmonteras från följande monteringspunkter:"
 
-#: ../src/Win_GParted.cc:1589
+#: ../src/Win_GParted.cc:1560
 msgid "Most likely other partitions are also mounted on these mountpoints. You are advised to unmount them manually."
 msgstr "Antagligen är andra partitioner också monterade på dessa monteringspunkter. Det rekommenderas att du avmonterar dem manuellt."
 
-#: ../src/Win_GParted.cc:1639
+#: ../src/Win_GParted.cc:1610
 msgid "Deactivating swap on %1"
 msgstr "Inaktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:1639
+#: ../src/Win_GParted.cc:1610
 msgid "Activating swap on %1"
 msgstr "Aktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1617
 msgid "Could not deactivate swap"
 msgstr "Kunde inte inaktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1617
 msgid "Could not activate swap"
 msgstr "Kunde inte aktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:1662
+#: ../src/Win_GParted.cc:1633
 msgid "Unmounting %1"
 msgstr "Avmonterar %1"
 
-#: ../src/Win_GParted.cc:1667
+#: ../src/Win_GParted.cc:1638
 msgid "Could not unmount %1"
 msgstr "Kunde inte avmontera %1"
 
-#: ../src/Win_GParted.cc:1696
+#: ../src/Win_GParted.cc:1667
 msgid "mounting %1 on %2"
 msgstr "monterar %1 på %2"
 
-#: ../src/Win_GParted.cc:1703
+#: ../src/Win_GParted.cc:1674
 msgid "Could not mount %1 on %2"
 msgstr "Kunde inte montera %1 på %2"
 
-#: ../src/Win_GParted.cc:1727
+#: ../src/Win_GParted.cc:1698
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Är du säker på att du vill skapa en %1-disketikett på %2?"
 
-#: ../src/Win_GParted.cc:1735
+#: ../src/Win_GParted.cc:1706
 msgid "This operation will destroy all data on %1!"
 msgstr "Denna åtgärd kommer att förstöra all data på %1!"
 
-#: ../src/Win_GParted.cc:1744
+#: ../src/Win_GParted.cc:1715
 msgid "Error while setting new disklabel"
 msgstr "Fel vid inställning av ny disketikett"
 
-#: ../src/Win_GParted.cc:1819
+#: ../src/Win_GParted.cc:1790
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Är du säker på att du vill verkställa de väntande åtgärderna?"
 
-#: ../src/Win_GParted.cc:1824
+#: ../src/Win_GParted.cc:1795
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "Det rekommenderas att säkerhetskopiera värdefull data innan du fortsätter."
 
-#: ../src/Win_GParted.cc:1825
+#: ../src/Win_GParted.cc:1796
 msgid "Apply operations to harddisk"
 msgstr "Verkställ åtgärder till hårddisk"
 
 #. create mountpoint...
-#: ../src/jfs.cc:118
+#: ../src/jfs.cc:146
 #: ../src/xfs.cc:120
 #: ../src/xfs.cc:211
 #: ../src/xfs.cc:218
 msgid "create temporary mountpoint (%1)"
 msgstr "skapa temporär monteringspunkt (%1)"
 
-#: ../src/jfs.cc:125
+#: ../src/jfs.cc:153
 #: ../src/xfs.cc:127
 #: ../src/xfs.cc:225
 #: ../src/xfs.cc:234
 msgid "mount %1 on %2"
 msgstr "montera %1 på %2"
 
-#: ../src/jfs.cc:134
+#: ../src/jfs.cc:162
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "montera om %1 på %2 med flaggan \"resize\" aktiverad"
 
-#: ../src/jfs.cc:152
+#: ../src/jfs.cc:180
 #: ../src/xfs.cc:149
 #: ../src/xfs.cc:258
 #: ../src/xfs.cc:279
 msgid "unmount %1"
 msgstr "avmontera %1"
 
-#: ../src/jfs.cc:172
+#: ../src/jfs.cc:200
 #: ../src/xfs.cc:169
 #: ../src/xfs.cc:299
 #: ../src/xfs.cc:322
@@ -1182,12 +1190,12 @@ msgid "Since GParted can be a weapon of mass destruction only root may run it."
 msgstr "Eftersom GParted kan vara ett massförstörelsevapen får endast root köra det."
 
 #. simulation..
-#: ../src/ntfs.cc:102
+#: ../src/ntfs.cc:120
 msgid "run simulation"
 msgstr "kör simulering"
 
 #. real resize
-#: ../src/ntfs.cc:109
+#: ../src/ntfs.cc:127
 msgid "real resize"
 msgstr "riktig storleksändring"
 
@@ -1201,6 +1209,8 @@ msgstr "förstora monterat filsystem"
 msgid "copy filesystem"
 msgstr "kopiera filsystem"
 
+#~ msgid "Hide operationslist"
+#~ msgstr "Dölj åtgärdslista"
 #~ msgid "The following operation could not be applied to disk:"
 #~ msgstr "Följande åtgärd kunde inte verkställas till disken:"
 #~ msgid "new and old filesystem have the same size. continuing anyway"
