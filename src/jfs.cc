@@ -31,6 +31,9 @@ FS jfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
+	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
+	
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -101,6 +104,31 @@ void jfs::set_used_sectors( Partition & partition )
 
 void jfs::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
+	{
+		char buf[512] ;
+		index = output .find( "Volume label:" ) ;
+
+		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "Volume label: %512s", buf ) == 1 )
+		{
+			partition .label = buf ;
+
+			//remove '' from the label..
+			if ( partition .label .size() > 0 && partition .label[0] == '\'' )
+				partition .label = partition .label .substr( 1 ) ;
+
+			if ( partition .label .size() > 0 && partition .label[ partition .label .size() -1 ] == '\'' )
+				partition .label = partition .label .substr( 0, partition .label .size() -1 ) ;
+		}
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
