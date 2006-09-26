@@ -35,7 +35,8 @@ AC_CHECK_LIB(dl, dlopen,          [], AC_MSG_ERROR([*** dl library (libdl) not f
 dnl libparted
 LIBPARTED_VERSION=1.7.1
 AC_MSG_CHECKING(for libparted >= $LIBPARTED_VERSION)
-LDFLAGS=-lparted
+LIBS_save="$LIBS"
+LIBS="-lparted"
 AC_TRY_RUN(
 #include <stdio.h>
 #include <parted/parted.h>
@@ -64,6 +65,7 @@ int main ()
 	return 1 ;
 }
 ,AC_MSG_RESULT(OK),AC_MSG_ERROR(*** Requires libparted >= $LIBPARTED_VERSION) )
+LIBS="$LIBS_save"
 
 
 dnl GTKMM
