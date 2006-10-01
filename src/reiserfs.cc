@@ -87,6 +87,7 @@ void reiserfs::set_used_sectors( Partition & partition )
 
 void reiserfs::get_label( Partition & partition )
 {
+	//FIXME: i think running debugreiserfs takes a long time on filled filesystems, test for this...
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
 		char buf[512] ;

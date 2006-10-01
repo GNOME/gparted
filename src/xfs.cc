@@ -29,7 +29,10 @@ FS xfs::get_filesystem_support()
 	fs .filesystem = GParted::FS_XFS ;
 	
 	if ( ! Glib::find_program_in_path( "xfs_db" ) .empty() ) 	
+	{
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .get_label = FS::EXTERNAL ;
+	}
 	
 	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() ) 	
 		fs .create = GParted::FS::EXTERNAL ;
@@ -103,6 +106,30 @@ void xfs::set_used_sectors( Partition & partition )
 
 void xfs::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "xfs_db -c 'label' " + partition .get_path(), output, error, true ) )
+	{
+		char buf[512] ;
+		if ( sscanf( output .c_str(), "label = %512s", buf ) == 1 )
+		{
+			partition .label = buf ;
+			
+			//remove "" from the label..
+			if ( partition .label .size() > 0 && partition .label[0] == '\"' )
+				partition .label = partition .label .substr( 1 ) ;
+
+			if ( partition .label .size() > 0 && partition .label[ partition .label .size() -1 ] == '\"' )
+				partition .label = partition .label .substr( 0, partition .label .size() -1 ) ;
+		}
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+
 }
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
