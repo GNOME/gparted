@@ -479,7 +479,10 @@ void GParted_Core::init_maps()
 				line = "/dev/" ; 
 				line += c_str ;
 				
-				if ( realpath( line .c_str(), c_str ) && line != c_str )
+				//FIXME: it seems realpath is very unsafe to use (manpage)...
+				if ( file_test( line, Glib::FILE_TEST_EXISTS ) &&
+				     realpath( line .c_str(), c_str ) &&
+				     line != c_str )
 				{
 					//because we can make no assumption about which path libparted will detect
 					//we add all combinations.
@@ -513,8 +516,10 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 				index = line .find( "\\040" ) ;
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;
-			
-				map[ node ] .push_back( line ) ;
+				
+				//only add this path if it exists
+                               	if ( file_test( line, Glib::FILE_TEST_EXISTS ) )
+                                       map[ node ] .push_back( line ) ;	
 			}
 			
 		file .close() ;

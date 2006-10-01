@@ -87,7 +87,10 @@ void reiser4::get_label( Partition & partition )
 		char buf[512] ;
 		index = output .find( "label" ) ;
 
-		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "label: %512s", buf ) == 1 )
+		//FIXME: find a better way to see if label is empty.. imagine someone uses '<none>' as label.... ;)
+		if ( index < output .length() && 
+		     sscanf( output .substr( index ) .c_str(), "label: %512s", buf ) == 1 &&
+		     Glib::ustring( buf ) != "<none>" )
 			partition .label = buf ;
 	}
 	else
