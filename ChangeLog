@@ -1,3 +1,11 @@
+2006-10-22 Bart Hakvoort <hakvoort@cvs.gnome.org>
+
+	* src/Dialog_Progress.cc: gtk+-2.10 seems to return the last valid
+	  iterator if get_iter is executed with an invalid treepath. This is
+	  different from gtk+-2.8 and gave some problems in the
+	  operationdetails. I added a check to make it work in both
+	  situations.
+
 2006-10-01 Bart Hakvoort <hakvoort@cvs.gnome.org>
 
 	* src/GParted_Core.cc: only add mountpoints and paths if they exist

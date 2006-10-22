@@ -117,7 +117,8 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 {
 	Gtk::TreeModel::iterator iter = treestore_operations ->get_iter( operationdetail .get_treepath() ) ;
 
-	if ( iter )
+	//i added the second check after get_iter() in gtk+-2.10 seems to behave differently from gtk+-2.8 
+	if ( iter && treestore_operations ->get_string( iter ) == operationdetail .get_treepath() )
 	{
 		Gtk::TreeRow treerow = *iter ;
 
