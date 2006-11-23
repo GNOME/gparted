@@ -36,7 +36,7 @@ dnl libparted
 LIBPARTED_VERSION=1.7.1
 AC_MSG_CHECKING(for libparted >= $LIBPARTED_VERSION)
 LIBS_save="$LIBS"
-LIBS="-lparted"
+LIBS="-lparted -luuid -ldl"
 AC_TRY_RUN(
 #include <stdio.h>
 #include <parted/parted.h>

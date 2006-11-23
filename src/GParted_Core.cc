@@ -306,6 +306,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				succes = format( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_COPY:
+			//FIXME: in case of a new partition we should make sure the new partition is >= the source partition... 
+			//i think it's best to do this in the dialog_paste
 				succes = ( operation ->partition_original .type == TYPE_UNALLOCATED || 
 					   calibrate_partition( operation ->partition_new, operation ->operation_detail ) ) &&
 				
