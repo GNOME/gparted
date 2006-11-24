@@ -546,7 +546,7 @@ void GParted_Core::set_device_partitions( Device & device )
 	
 	//clear partitions
 	device .partitions .clear() ;
-	
+
 	lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
 	while ( lp_partition )
 	{
@@ -1112,12 +1112,40 @@ bool GParted_Core::move( const Device & device,
 		return false ;
 	}
 
-	return check_repair_filesystem( partition_old, operationdetail ) &&
-	       move_filesystem( partition_old, partition_new, operationdetail ) &&
-	       resize_move_partition( partition_old, partition_new, operationdetail ) &&
-	       update_bootsector( partition_new, operationdetail ) &&
-	       check_repair_filesystem( partition_new, operationdetail ) &&
-	       maximize_filesystem( partition_new, operationdetail ) ;
+	bool succes = false ;
+	if ( check_repair_filesystem( partition_old, operationdetail ) )
+	{
+		//NOTE: logical partitions are preceeded by metadata. To prevent this metadata from being
+		//overwritten we move the partition first and only then the filesystem when moving to the left.
+		//(maybe i should do some reading on how non-msdos disklabels deal with metadata....)
+		if ( partition_new .sector_start < partition_old .sector_start )
+		{
+	       		if ( resize_move_partition( partition_old, partition_new, operationdetail ) )
+	       	   	{
+				if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
+				{
+					operationdetail .add_child( OperationDetail( _("rollback last change to the partitiontable") ) ) ;
+
+					if ( resize_move_partition( partition_new, partition_old, operationdetail .get_last_child() ) )
+						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+					else
+						operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+				}
+				else
+					succes = true ;
+			}
+		}
+		else
+	       		succes = move_filesystem( partition_old, partition_new, operationdetail ) &&
+	       			 resize_move_partition( partition_old, partition_new, operationdetail ) ;
+
+		succes = succes &&
+			 update_bootsector( partition_new, operationdetail ) &&
+	       		 check_repair_filesystem( partition_new, operationdetail ) &&
+	       		 maximize_filesystem( partition_new, operationdetail ) ;
+	}
+
+	return succes ;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
