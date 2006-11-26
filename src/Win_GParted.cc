@@ -1182,6 +1182,8 @@ void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int tim
 
 bool Win_GParted::max_amount_prim_reached() 
 {
+	//FIXME: this is the only place where primary_count is used... instead of counting the primaries on each
+	//refresh, we could just count them here.
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
 	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] .max_prims )
 	{
@@ -1280,9 +1282,17 @@ void Win_GParted::activate_copy()
 
 void Win_GParted::activate_paste()
 {
+	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
+	if ( devices [ current_device ] .max_prims == -1 )
+	{
+		//FIXME: actually we should proceed with pasting after the new disklabel is set.
+		//(the same goes when creating a new partition on a disk without disklabel)
+		activate_disklabel() ;
+		return ;
+	}
+
 	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
 	{
-
 		if ( ! max_amount_prim_reached() )
 		{
 			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
@@ -1304,7 +1314,6 @@ void Win_GParted::activate_paste()
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation ) ;
-
 			}
 		}
 	}
