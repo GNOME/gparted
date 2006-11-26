@@ -26,10 +26,11 @@ namespace GParted
 	//FIXME: stop using GParted:: in front of our own enums.. it's not necessary and clutters the code
 enum OperationType {
         OPERATION_DELETE	= 0,
-	OPERATION_CREATE	= 1,
-	OPERATION_RESIZE_MOVE	= 2,
-	OPERATION_FORMAT	= 3,
-	OPERATION_COPY		= 4
+	OPERATION_CHECK		= 1,
+	OPERATION_CREATE	= 2,
+	OPERATION_RESIZE_MOVE	= 3,
+	OPERATION_FORMAT	= 4,
+	OPERATION_COPY		= 5
 };
 
 class Operation

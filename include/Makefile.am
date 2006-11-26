@@ -19,6 +19,7 @@ EXTRA_DIST = \
 	HBoxOperations.h    		\
 	Operation.h 			\
 	OperationCopy.h			\
+	OperationCheck.h		\
 	OperationCreate.h		\
 	OperationDelete.h		\
 	OperationDetail.h		\

@@ -97,6 +97,9 @@ private:
 	void allow_manage_flags( bool state ) {
 		toggle_item( state, MENU_FLAGS ) ; } 
 	
+	void allow_check( bool state ) {
+		toggle_item( state, MENU_CHECK ) ; } 
+	
 	void allow_info( bool state )	{
 		toggle_item( state, MENU_INFO ) ; } 
 
@@ -154,6 +157,7 @@ private:
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
 	void activate_manage_flags() ;
+	void activate_check() ;
 	
 	void activate_undo();
 	void remove_operation( int index = -1, bool remove_all = false ) ;
@@ -218,6 +222,7 @@ private:
         MENU_TOGGLE_MOUNT_SWAP,
         MENU_MOUNT,
         MENU_FLAGS,
+	MENU_CHECK,
         MENU_INFO,
         TOOLBAR_UNDO,
         TOOLBAR_APPLY ;

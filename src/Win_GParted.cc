@@ -25,6 +25,7 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/DialogManageFlags.h"
 #include "../include/OperationCopy.h"
+#include "../include/OperationCheck.h"
 #include "../include/OperationCreate.h"
 #include "../include/OperationDelete.h"
 #include "../include/OperationFormat.h"
@@ -334,6 +335,11 @@ void Win_GParted::init_partition_menu()
 						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) );
 	MENU_FLAGS = index++ ;
 
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("C_heck"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_check ) ) );
+	MENU_CHECK = index++ ;
+
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
 	
@@ -606,8 +612,10 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	if ( operation )
 	{ 
 		Glib::ustring error ;
+		//FIXME: this is becoming a mess.. maybe it's better to check if partition_new > 0
 		if ( operation ->type == OPERATION_DELETE || 
 		     operation ->type == OPERATION_FORMAT || 
+		     operation ->type == OPERATION_CHECK ||
 		     gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new, error ) )
 		{
 			operation ->create_description() ;
@@ -728,7 +736,7 @@ void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
-	allow_manage_flags( false ) ; allow_info( false ) ;
+	allow_manage_flags( false ) ; allow_check( false ) ; allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
 		->set_label( _("_Unmount") ) ;
@@ -851,6 +859,10 @@ void Win_GParted::set_valid_operations()
 		     selected_partition .status == GParted::STAT_REAL &&
 		     copied_partition != selected_partition )
 		     allow_paste( true ) ;
+
+		//see if we can somehow check/repair this filesystem....
+		if ( fs .check && selected_partition .status == GParted::STAT_REAL )
+			allow_check( true ) ;
 	}
 }
 
@@ -1748,10 +1760,19 @@ void Win_GParted::activate_manage_flags()
 	if ( dialog .any_change )
 		menu_gparted_refresh_devices() ;
 }
+	
+void Win_GParted::activate_check() 
+{
+	Operation *operation = new OperationCheck( devices[ current_device ], selected_partition ) ;
+
+	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+	Add_Operation( operation ) ;
+}
 
 void Win_GParted::activate_undo()
 {
-	//when undoing an creation it's safe to decrease the newcount by one
+	//when undoing a creation it's safe to decrease the newcount by one
 	if ( operations .back() ->type == OPERATION_CREATE )
 		new_count-- ;
 

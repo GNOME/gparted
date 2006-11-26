@@ -28,6 +28,7 @@ gparted_SOURCES = \
 	HBoxOperations.cc		\
 	Operation.cc			\
 	OperationCopy.cc		\
+	OperationCheck.cc		\
 	OperationCreate.cc		\
 	OperationDelete.cc		\
 	OperationDetail.cc		\

@@ -289,6 +289,10 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			case OPERATION_DELETE:
 				succes = Delete( operation ->partition_original, operation ->operation_detail ) ;
 				break ;
+			case OPERATION_CHECK:
+				succes = check_repair_filesystem( operation ->partition_original, operation ->operation_detail ) &&
+					 maximize_filesystem( operation ->partition_original, operation ->operation_detail ) ;
+				break ;
 			case OPERATION_CREATE:
 				succes = create( operation ->device, 
 					         operation ->partition_new,
@@ -1569,10 +1573,10 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
-			return ( succes &&	
-	       			 update_bootsector( partition_dst, operationdetail ) &&
-			     	 check_repair_filesystem( partition_dst, operationdetail ) &&
-			     	 maximize_filesystem( partition_dst, operationdetail ) ) ;
+			return succes &&	
+	       		       update_bootsector( partition_dst, operationdetail ) &&
+			       check_repair_filesystem( partition_dst, operationdetail ) &&
+			       maximize_filesystem( partition_dst, operationdetail ) ;
 		}
 	}
 
