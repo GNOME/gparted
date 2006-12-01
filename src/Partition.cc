@@ -170,9 +170,10 @@ std::vector<Glib::ustring> Partition::get_paths() const
 
 bool Partition::operator==( const Partition & partition ) const
 {
-	return this ->partition_number == partition .partition_number && 
-	       this ->sector_start == partition .sector_start && 
-	       this ->type == partition .type ;
+	return device_path == partition .device_path &&
+	       partition_number == partition .partition_number && 
+	       sector_start == partition .sector_start && 
+	       type == partition .type ;
 }
 
 bool Partition::operator!=( const Partition & partition ) const
