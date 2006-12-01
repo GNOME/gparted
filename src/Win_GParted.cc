@@ -1837,6 +1837,8 @@ void Win_GParted::activate_apply()
 		dialog_progress .set_transient_for( *this ) ;
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;
+		dialog_progress .signal_get_libparted_version .connect(
+			sigc::mem_fun(gparted_core, &GParted_Core::get_libparted_version) ) ;
  
 		int response ;
 		do

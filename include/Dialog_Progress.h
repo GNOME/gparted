@@ -41,6 +41,7 @@ public:
 	~Dialog_Progress();
 	
 	sigc::signal< bool, Operation * > signal_apply_operation ;
+	sigc::signal< Glib::ustring > signal_get_libparted_version ;
 		
 private:
 	void on_signal_update( const OperationDetail & operationdetail ) ;

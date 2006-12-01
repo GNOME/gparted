@@ -50,6 +50,7 @@ public:
 	std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::vector<Glib::ustring> get_all_mountpoints() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
+	Glib::ustring get_libparted_version() ;
 	
 private:
 	//detectionstuff..

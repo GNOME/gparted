@@ -343,6 +343,7 @@ void Dialog_Progress::on_save()
 		if ( out )
 		{
 			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
+			out << "Libparted " << signal_get_libparted_version .emit() << "<BR><BR>" << std::endl ; 
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
 				echo_operation_details( operations[ t ] ->operation_detail, out ) ;
