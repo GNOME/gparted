@@ -1235,16 +1235,18 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	bool return_value = false ;
 	if ( open_device_and_disk( partition_old .device_path ) )
 	{
-		PedPartition * lp_partition = NULL ;
 		PedFileSystem *	fs = NULL ;
 		PedGeometry * lp_geom = NULL ;	
 		
-		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
-		if ( lp_partition )
+		lp_geom = ped_geometry_new( lp_device,
+					    partition_old .sector_start,
+					    partition_old .get_length() ) ;
+		if ( lp_geom )
 		{
-			fs = ped_file_system_open( & lp_partition ->geom );
+			fs = ped_file_system_open( lp_geom );
 			if ( fs )
 			{
+				lp_geom = NULL ;
 				lp_geom = ped_geometry_new( lp_device,
 							    partition_new .sector_start,
 							    partition_new .get_length() ) ;
