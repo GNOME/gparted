@@ -41,9 +41,9 @@ public:
 	void Reset() ;
 	std::vector<Partition> partitions ;
 	Sector length;
-	long heads ;
-	long sectors ;
-	long cylinders ;
+	Sector heads ;
+	Sector sectors ;
+	Sector cylinders ;
 	Sector cylsize ;
 	Glib::ustring model;
  	Glib::ustring disktype;

@@ -56,10 +56,10 @@ protected:
 	};
 	
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;
-	void Set_MinMax_Text( long min, long max ) ;
+	void Set_MinMax_Text( Sector min, Sector max ) ;
 
 	double MB_PER_PIXEL ;
-	long TOTAL_MB ;
+	Sector TOTAL_MB ;
 	Frame_Resizer_Base *frame_resizer_base;
 	Partition selected_partition ;
 	

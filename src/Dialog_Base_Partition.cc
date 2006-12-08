@@ -171,7 +171,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 	}
 }
 
-void Dialog_Base_Partition::Set_MinMax_Text( long min, long max )
+void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 {
 	str_temp = String::ucompose( _("Minimum Size: %1 MiB"), min ) + "\t\t" ;
 	str_temp += String::ucompose( _("Maximum Size: %1 MiB"), max ) ;
