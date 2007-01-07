@@ -155,7 +155,20 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		lp_device = ped_device_get_next( NULL );
 		while ( lp_device ) 
 		{
-			device_paths .push_back( lp_device ->path ) ;
+			//only add this device if we can read the first sector (which means it's a real device)
+			char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+			if ( buf )
+			{
+				if ( ped_device_open( lp_device ) )
+				{
+					if ( ped_device_read( lp_device, buf, 0, 1 ) )
+						device_paths .push_back( lp_device ->path ) ;
+
+					ped_device_close( lp_device ) ;
+				}
+
+				free( buf ) ;
+			}
 			
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
@@ -163,10 +176,10 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
-	
+
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
-		if ( device_paths[ t ] .length() > 6 && device_paths[ t ] .is_ascii() && open_device_and_disk( device_paths[ t ], false ) )
+		if ( open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
 			
