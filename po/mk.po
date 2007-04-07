@@ -6,27 +6,27 @@
 # <>, 2005.
 #  <>, 2005.
 # Arangel Angov <ufo@linux.net.mk>, 2006.
-# Jovan Naumovski <jovan@lugola.net>, 2006.
+# Jovan Naumovski <jovan@lugola.net>, 2006, 2007.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-12 11:54+0200\n"
-"PO-Revision-Date: 2006-09-12 13:59+0200\n"
+"POT-Creation-Date: 2007-01-02 04:45+0000\n"
+"PO-Revision-Date: 2007-04-07 02:20+0200\n"
 "Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1152
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1135
 msgid "GNOME Partition Editor"
 msgstr "Уредувач на партиции за Гном"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:65
-#: ../src/Win_GParted.cc:1028 ../src/Win_GParted.cc:1149
+#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:66
+#: ../src/Win_GParted.cc:1011 ../src/Win_GParted.cc:1132
 msgid "GParted"
 msgstr "Гпартед"
 
@@ -48,7 +48,7 @@ msgstr "Слободен простор после (MB):"
 msgid "Resize"
 msgstr "Смени големина"
 
-#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:191
+#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:218
 msgid "Resize/Move"
 msgstr "Смени/Помести"
 
@@ -95,7 +95,7 @@ msgstr ""
 "податоци на %1!"
 
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1738
+#: ../src/Win_GParted.cc:1730
 msgid "Create"
 msgstr "Креирај"
 
@@ -119,7 +119,7 @@ msgid "Filesystem:"
 msgstr "Датотечен систем:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:377
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:409
 msgid "Size:"
 msgstr "Големина:"
 
@@ -138,7 +138,7 @@ msgid "Flags:"
 msgstr "Знаменца:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:385
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:417
 msgid "Path:"
 msgstr "Патека:"
 
@@ -181,7 +181,7 @@ msgid "Last Sector:"
 msgstr "Последен сектор:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:286 ../src/Win_GParted.cc:438
+#: ../src/Dialog_Partition_Info.cc:286 ../src/Win_GParted.cc:470
 msgid "Total Sectors:"
 msgstr "Вкупно сектори:"
 
@@ -246,69 +246,66 @@ msgstr "Завршени операции:"
 msgid "Details"
 msgstr "Детали"
 
-#: ../src/Dialog_Progress.cc:198
+#: ../src/Dialog_Progress.cc:199
 msgid "%1 of %2 operations completed"
 msgstr "%1 од %2 операции се завршени"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:229
+#: ../src/Dialog_Progress.cc:230
 msgid "_Save Details"
 msgstr "_Зачувај детали"
 
-#: ../src/Dialog_Progress.cc:238
+#: ../src/Dialog_Progress.cc:239
 msgid "Operation canceled"
 msgstr "Откажани операции"
 
-#: ../src/Dialog_Progress.cc:252
+#: ../src/Dialog_Progress.cc:253
 msgid "All operations succesfully completed"
 msgstr "Сите операции се завршени"
 
-#: ../src/Dialog_Progress.cc:255
-#, fuzzy
+#: ../src/Dialog_Progress.cc:256
 msgid "%1 warnings"
-msgstr "Предупредување:"
+msgstr "%1 предупредувања"
 
-#: ../src/Dialog_Progress.cc:267
+#: ../src/Dialog_Progress.cc:268
 msgid "An error occurred while applying the operations"
 msgstr "Се појави грешка при применување на операциите"
 
-#: ../src/Dialog_Progress.cc:272
-#, fuzzy
-msgid "See the details for more information."
-msgstr "Видете ги датеалите за повеќе информации"
-
 #: ../src/Dialog_Progress.cc:273
+msgid "See the details for more information."
+msgstr "Видете ги даталите за повеќе информации."
+
+#: ../src/Dialog_Progress.cc:274
 msgid "IMPORTANT"
 msgstr "ВАЖНО"
 
-#: ../src/Dialog_Progress.cc:274
+#: ../src/Dialog_Progress.cc:275
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Ако сакате поддршка, треба да ги обезбедите зачуваните детали!"
 
-#: ../src/Dialog_Progress.cc:276
-#, fuzzy
+#: ../src/Dialog_Progress.cc:277
 msgid "See %1 for more information."
-msgstr "Видете ги датеалите за повеќе информации"
+msgstr "Видете на %1 за повеќе информации."
 
-#: ../src/Dialog_Progress.cc:309
+#: ../src/Dialog_Progress.cc:310
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Дали сте сигурни дека сакате да ги примените операциите што чекаат?"
 
-#: ../src/Dialog_Progress.cc:315
+#: ../src/Dialog_Progress.cc:316
 msgid "Canceling an operation may cause SEVERE filesystem damage."
 msgstr ""
 "Откажувањето на операцијата може да има ТЕШКИ последици по датотечниот "
 "систем."
 
-#: ../src/Dialog_Progress.cc:317
+#: ../src/Dialog_Progress.cc:318
 msgid "Continue Operation"
 msgstr "Продолжи со операцијата"
 
-#: ../src/Dialog_Progress.cc:318
+#: ../src/Dialog_Progress.cc:319
 msgid "Cancel Operation"
 msgstr "Откажи операција"
 
-#: ../src/Dialog_Progress.cc:331
+#: ../src/Dialog_Progress.cc:332
 msgid "Save Details"
 msgstr "Зачувај детали"
 
@@ -348,11 +345,15 @@ msgstr "Копирај"
 msgid "Check"
 msgstr "Провери"
 
-#: ../src/DialogFeatures.cc:52
+#: ../src/DialogFeatures.cc:42
+msgid "Read Label"
+msgstr "Прочитај натпис"
+
+#: ../src/DialogFeatures.cc:57
 msgid "Available"
 msgstr "Достапно"
 
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:63
 msgid "Not Available"
 msgstr "Не е достапно"
 
@@ -374,324 +375,330 @@ msgstr ""
 "Партицијата со искористени (%1) сектори повеќе од нејзината должина (%2) не "
 "е валидна"
 
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:330
 msgid "libparted messages"
 msgstr "libparted пораки"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:670
+#: ../src/GParted_Core.cc:688
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Не успеав да го откријам датотечниот систем! Можни причини се:"
 
-#: ../src/GParted_Core.cc:672
+#: ../src/GParted_Core.cc:690
 msgid "The filesystem is damaged"
 msgstr "Датотечниот систем е оштетен"
 
-#: ../src/GParted_Core.cc:674
+#: ../src/GParted_Core.cc:692
 msgid "The filesystem is unknown to GParted"
 msgstr "Датотечниот систем е непознат на GParted"
 
-#: ../src/GParted_Core.cc:676
+#: ../src/GParted_Core.cc:694
 msgid "There is no filesystem available (unformatted)"
 msgstr "Нема достапен датотечен систем (неформатиран)"
 
-#: ../src/GParted_Core.cc:753
+#: ../src/GParted_Core.cc:790
 msgid "Unable to find mountpoint"
 msgstr "Не можам да ја најдам точката за монтирање"
 
-#: ../src/GParted_Core.cc:771
+#: ../src/GParted_Core.cc:808
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Не успеав да ја прочитам содржината на датотечниот систем!"
 
-#: ../src/GParted_Core.cc:773
+#: ../src/GParted_Core.cc:810
 msgid "Because of this some operations may be unavailable."
 msgstr "Поради ова некои од операциите може да се недостапни."
 
-#: ../src/GParted_Core.cc:881
+#: ../src/GParted_Core.cc:918
 msgid "create empty partition"
 msgstr "креирај празна партиција"
 
-#: ../src/GParted_Core.cc:949 ../src/GParted_Core.cc:1961
+#: ../src/GParted_Core.cc:986 ../src/GParted_Core.cc:2021
 msgid "path: %1"
 msgstr "патека: %1"
 
-#: ../src/GParted_Core.cc:950 ../src/GParted_Core.cc:1962
+#: ../src/GParted_Core.cc:987 ../src/GParted_Core.cc:2022
 msgid "start: %1"
 msgstr "почеток: %1"
 
-#: ../src/GParted_Core.cc:951 ../src/GParted_Core.cc:1963
+#: ../src/GParted_Core.cc:988 ../src/GParted_Core.cc:2023
 msgid "end: %1"
 msgstr "крај: %1"
 
-#: ../src/GParted_Core.cc:952 ../src/GParted_Core.cc:1964
+#: ../src/GParted_Core.cc:989 ../src/GParted_Core.cc:2024
 msgid "size: %1 (%2)"
 msgstr "големина: %1 (%2)"
 
-#: ../src/GParted_Core.cc:984 ../src/linux_swap.cc:54 ../src/xfs.cc:199
+#: ../src/GParted_Core.cc:1018 ../src/linux_swap.cc:58 ../src/xfs.cc:230
 msgid "create new %1 filesystem"
 msgstr "креирај нов %1 датотечен систем"
 
-#: ../src/GParted_Core.cc:1017
+#: ../src/GParted_Core.cc:1051
 msgid "delete partition"
 msgstr "избриши партиција"
 
-#: ../src/GParted_Core.cc:1085
+#: ../src/GParted_Core.cc:1119
 msgid "moving requires old and new length to be the same"
-msgstr ""
+msgstr "преместувањето бара старата и новата должина да биде иста"
 
-#: ../src/GParted_Core.cc:1103
+#: ../src/GParted_Core.cc:1136
+msgid "rollback last change to the partitiontable"
+msgstr "врати ја последната промена на партиционата табела"
+
+#: ../src/GParted_Core.cc:1165
 msgid "move filesystem to the left"
 msgstr "помести го датотечниот систем налево"
 
-#: ../src/GParted_Core.cc:1105
+#: ../src/GParted_Core.cc:1167
 msgid "move filesystem to the right"
 msgstr "помести го датотечниот систем надесно"
 
-#: ../src/GParted_Core.cc:1108
+#: ../src/GParted_Core.cc:1170
 msgid "move filesystem"
 msgstr "помести го датотечниот систем"
 
-#: ../src/GParted_Core.cc:1110
+#: ../src/GParted_Core.cc:1172
 msgid "new and old filesystem have the same positition. skipping this operation"
 msgstr ""
 "новиот и стариот датотечен систем имаат иста позиција. ја прескокнувам оваа "
 "операција"
 
-#: ../src/GParted_Core.cc:1129
+#: ../src/GParted_Core.cc:1191
 msgid "perform real move"
 msgstr "изврши вистинско поместување"
 
-#: ../src/GParted_Core.cc:1171
+#: ../src/GParted_Core.cc:1233
 msgid "using libparted"
 msgstr "користам libparted"
 
-#: ../src/GParted_Core.cc:1210
+#: ../src/GParted_Core.cc:1273
 msgid "resizing requires old and new start to be the same"
-msgstr ""
+msgstr "промената на големината бара стариот и новиот почеток да биде ист"
 
-#: ../src/GParted_Core.cc:1275
+#: ../src/GParted_Core.cc:1338
 msgid "resize/move partition"
 msgstr "смени големина/помести партиција"
 
-#: ../src/GParted_Core.cc:1278
+#: ../src/GParted_Core.cc:1341
 msgid "move partition to the right"
 msgstr "помести ја партицијата надесно"
 
-#: ../src/GParted_Core.cc:1281
+#: ../src/GParted_Core.cc:1344
 msgid "move partition to the left"
 msgstr "помести ја партицијата налево"
 
-#: ../src/GParted_Core.cc:1284
+#: ../src/GParted_Core.cc:1347
 msgid "grow partition from %1 to %2"
 msgstr "зголеми ја партицијата од %1 на %2"
 
-#: ../src/GParted_Core.cc:1287
+#: ../src/GParted_Core.cc:1350
 msgid "shrink partition from %1 to %2"
 msgstr "смали ја партицијата од %1 на %2"
 
-#: ../src/GParted_Core.cc:1290
+#: ../src/GParted_Core.cc:1353
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "помести ја партицијата надесно и зголеми ја од%1 на %2"
 
-#: ../src/GParted_Core.cc:1293
+#: ../src/GParted_Core.cc:1356
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "помести ја партицијата надесно и смали ја од %1 на %2"
 
-#: ../src/GParted_Core.cc:1296
+#: ../src/GParted_Core.cc:1359
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "помести ја партицијата налево и зголеми ја од %1 на %2"
 
-#: ../src/GParted_Core.cc:1299
+#: ../src/GParted_Core.cc:1362
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "помести ја партицијата налево и смали ја од %1 на %2"
 
-#: ../src/GParted_Core.cc:1314
-#, fuzzy
+#: ../src/GParted_Core.cc:1377
 msgid ""
 "new and old partition have the same size and position. skipping this "
 "operation"
 msgstr ""
-"новиот и стариот датотечен систем имаат иста позиција. ја прескокнувам оваа "
+"новата и старата партиција имаат иста позиција. ја прескокнувам оваа "
 "операција"
 
-#: ../src/GParted_Core.cc:1324
+#: ../src/GParted_Core.cc:1387
 msgid "old start: %1"
 msgstr "стар почеток: %1"
 
-#: ../src/GParted_Core.cc:1325
+#: ../src/GParted_Core.cc:1388
 msgid "old end: %1"
 msgstr "стар крај: %1"
 
-#: ../src/GParted_Core.cc:1326
+#: ../src/GParted_Core.cc:1389
 msgid "old size: %1 (%2)"
 msgstr "стара големина: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1382 ../src/GParted_Core.cc:2042
+#: ../src/GParted_Core.cc:1444 ../src/GParted_Core.cc:2102
 msgid "new start: %1"
 msgstr "нов почеток: %1"
 
-#: ../src/GParted_Core.cc:1383 ../src/GParted_Core.cc:2043
+#: ../src/GParted_Core.cc:1445 ../src/GParted_Core.cc:2103
 msgid "new end: %1"
 msgstr "нов крај: %1"
 
-#: ../src/GParted_Core.cc:1384 ../src/GParted_Core.cc:2044
+#: ../src/GParted_Core.cc:1446 ../src/GParted_Core.cc:2104
 msgid "new size: %1 (%2)"
 msgstr "нова големина: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1408
+#: ../src/GParted_Core.cc:1470
 msgid "shrink filesystem"
 msgstr "смали го датотечниот систем"
 
-#: ../src/GParted_Core.cc:1412
+#: ../src/GParted_Core.cc:1474
 msgid "grow filesystem"
 msgstr "зголеми го датотечниот систем"
 
-#: ../src/GParted_Core.cc:1415
+#: ../src/GParted_Core.cc:1477
 msgid "resize filesystem"
 msgstr "смени ја големината на датотечниот систем"
 
-#: ../src/GParted_Core.cc:1418
-#, fuzzy
+#: ../src/GParted_Core.cc:1480
 msgid "new and old filesystem have the same size. skipping this operation"
 msgstr ""
 "новиот и стариот датотечен систем имаат иста позиција. ја прескокнувам оваа "
 "операција"
 
-#: ../src/GParted_Core.cc:1453
+#: ../src/GParted_Core.cc:1515
 msgid "grow filesystem to fill the partition"
 msgstr "зголеми го датотечниот систем така што ќе се исполни партиција"
 
-#: ../src/GParted_Core.cc:1458
+#: ../src/GParted_Core.cc:1520
 msgid "growing is not available for this filesystem"
 msgstr "зголемувањето не е достапно за овој датотечен систем"
 
-#: ../src/GParted_Core.cc:1477
+#: ../src/GParted_Core.cc:1539
 msgid "the destination is smaller than the sourcepartition"
-msgstr ""
+msgstr "дестинацијата е помала од изворната партиција"
 
-#: ../src/GParted_Core.cc:1491
+#: ../src/GParted_Core.cc:1553
 msgid "copy filesystem of %1 to %2"
 msgstr "копирај го датотечниот систем од %1 до %2"
 
-#: ../src/GParted_Core.cc:1535
+#: ../src/GParted_Core.cc:1597
 msgid "perform readonly test"
-msgstr ""
+msgstr "изврши тест само за читање"
 
-#: ../src/GParted_Core.cc:1583
+#: ../src/GParted_Core.cc:1645
 msgid "using internal algorithm"
 msgstr "користам внатрешен алгоритам"
 
-#: ../src/GParted_Core.cc:1585
+#: ../src/GParted_Core.cc:1647
 msgid "read %1 sectors"
-msgstr ""
+msgstr "прочитај %1 сектори"
 
-#: ../src/GParted_Core.cc:1585
-#, fuzzy
+#: ../src/GParted_Core.cc:1647
 msgid "copy %1 sectors"
-msgstr "Копирај %1 до %2"
+msgstr "копирај %1 сектори"
 
-#: ../src/GParted_Core.cc:1587
+#: ../src/GParted_Core.cc:1649
 msgid "finding optimal blocksize"
-msgstr ""
+msgstr "ја наоѓам оптималната големина на блокот"
 
-#: ../src/GParted_Core.cc:1629
+#: ../src/GParted_Core.cc:1691
 msgid "%1 seconds"
 msgstr "%1 секунди"
 
-#: ../src/GParted_Core.cc:1641
-#, fuzzy
+#: ../src/GParted_Core.cc:1703
 msgid "optimal blocksize is %1 sectors (%2)"
-msgstr "Користи големина на блок од %1 (%2 сектори)"
+msgstr "оптималната големина на блокот е %1 сектори (%2)"
 
-#: ../src/GParted_Core.cc:1658
+#: ../src/GParted_Core.cc:1720
 msgid "%1 sectors read"
 msgstr "%1 сектори се прочитани"
 
-#: ../src/GParted_Core.cc:1658
-#, fuzzy
+#: ../src/GParted_Core.cc:1720
 msgid "%1 sectors copied"
-msgstr "%1 од %2 се ископирани"
+msgstr "ископирани се %1 сектори"
 
-#: ../src/GParted_Core.cc:1669
+#: ../src/GParted_Core.cc:1731
 msgid "rollback last transaction"
 msgstr "отфрли ја последната трансакција"
 
-#: ../src/GParted_Core.cc:1696
+#: ../src/GParted_Core.cc:1758
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "провери го датотечниот систем од %1 за грешки (и ако е можно) поправи ги"
 
-#: ../src/GParted_Core.cc:1704
+#: ../src/GParted_Core.cc:1766
 msgid "checking is not available for this filesystem"
 msgstr "проверувањето не е пристапно за овој датотечен систем"
 
-#: ../src/GParted_Core.cc:1730
+#: ../src/GParted_Core.cc:1792
 msgid "set partitiontype on %1"
 msgstr "постави тип на партиција на %1"
 
-#: ../src/GParted_Core.cc:1752
+#: ../src/GParted_Core.cc:1814
 msgid "new partitiontype: %1"
 msgstr "нов тип на партиција: %1"
 
-#: ../src/GParted_Core.cc:1779
+#: ../src/GParted_Core.cc:1841
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 од %2 се прочитани (%3 преостануваат)"
 
-#: ../src/GParted_Core.cc:1779
-#, fuzzy
+#: ../src/GParted_Core.cc:1841
 msgid "%1 of %2 copied (%3 remaining)"
-msgstr "%1 од %2 се ископирани"
+msgstr "%1 од %2 ископирани (преостануваат %3)"
 
-#: ../src/GParted_Core.cc:1785 ../src/GParted_Core.cc:1880
-#, fuzzy
+#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
 msgid "%1 of %2 read"
-msgstr "%1 од %2 се преместени"
+msgstr "%1 од %2 се прочитани"
 
-#: ../src/GParted_Core.cc:1785 ../src/GParted_Core.cc:1880
+#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
 msgid "%1 of %2 copied"
 msgstr "%1 од %2 се ископирани"
 
-#: ../src/GParted_Core.cc:1803
-#, fuzzy
+#: ../src/GParted_Core.cc:1865
 msgid "read %1 sectors using a blocksize of %2 sectors"
-msgstr "Користи големина на блок од %1 (%2 сектори)"
+msgstr "прочитај %1 сектори со користење на големина на блоковите од %2 сектори"
 
-#: ../src/GParted_Core.cc:1806
-#, fuzzy
+#: ../src/GParted_Core.cc:1868
 msgid "copy %1 sectors using a blocksize of %2 sectors"
-msgstr "Користи големина на блок од %1 (%2 сектори)"
+msgstr "копирај %1 сектори со користење на големина на блоковите од %2 сектори"
 
-#: ../src/GParted_Core.cc:1927
+#: ../src/GParted_Core.cc:1987
 msgid "Error while writing block at sector %1"
 msgstr "Грешка при запишувањето на блокот на секторот %1"
 
-#: ../src/GParted_Core.cc:1930
+#: ../src/GParted_Core.cc:1990
 msgid "Error while reading block at sector %1"
 msgstr "Грешка при читањето на блокот на секторот %1"
 
-#: ../src/GParted_Core.cc:1940
-#, fuzzy
+#: ../src/GParted_Core.cc:2000
 msgid "calibrate %1"
-msgstr "Вметни %1"
+msgstr "калибрирај %1"
 
-#: ../src/GParted_Core.cc:1987
+#: ../src/GParted_Core.cc:2047
 msgid "calculate new size and position of %1"
 msgstr "пресметај ја новата големина и позиција на %1"
 
-#: ../src/GParted_Core.cc:1991
+#: ../src/GParted_Core.cc:2051
 msgid "requested start: %1"
 msgstr "посакуван почеток: %1"
 
-#: ../src/GParted_Core.cc:1992
+#: ../src/GParted_Core.cc:2052
 msgid "requested end: %1"
 msgstr "посакуван крај: %1"
 
-#: ../src/GParted_Core.cc:1993
+#: ../src/GParted_Core.cc:2053
 msgid "requested size: %1 (%2)"
 msgstr "посакувана големина: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2136
+#: ../src/GParted_Core.cc:2176
 msgid "updating bootsector of %1 filesystem on %2"
-msgstr ""
+msgstr "го ажурирам секторот за бутирање на %1 датотечниот систем на %2"
+
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+msgid "_Undo Last Operation"
+msgstr "_Врати ја последната операција"
+
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+msgid "_Clear All Operations"
+msgstr "_Исчисти ги сите операции"
+
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+msgid "_Apply All Operations"
+msgstr "_Примени ги сите операции"
 
 #: ../src/OperationCopy.cc:36
 msgid "copy of %1"
@@ -706,6 +713,11 @@ msgstr "Копирај %1 на %2 (почни од %3)"
 #: ../src/OperationCopy.cc:86
 msgid "Copy %1 to %2"
 msgstr "Копирај %1 до %2"
+
+#. TO TRANSLATORS: looks like  Check and repair filesystem (ext3) on /dev/hda4
+#: ../src/OperationCheck.cc:38
+msgid "Check and repair filesystem (%1) on %2"
+msgstr "Провери и поправи го датотечниот систем од (%1) на %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
 #: ../src/OperationCreate.cc:86
@@ -772,18 +784,22 @@ msgid "Mountpoint"
 msgstr "Точка на монтирање"
 
 #: ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "Натпис"
+
+#: ../src/TreeView_Detail.cc:38
 msgid "Size"
 msgstr "Големина"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:39
 msgid "Used"
 msgstr "Искористени"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:40
 msgid "Unused"
 msgstr "Неискористени"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:41
 msgid "Flags"
 msgstr "Знаменца"
 
@@ -827,203 +843,186 @@ msgstr "%1 GB"
 msgid "%1 TiB"
 msgstr "%1 TB"
 
-#: ../src/Win_GParted.cc:128
-#, fuzzy
+#: ../src/Win_GParted.cc:133
 msgid "_Refresh Devices"
-msgstr "_Освежи уреди"
+msgstr "_Освежи ги уредите"
 
-#: ../src/Win_GParted.cc:131
-#, fuzzy
+#: ../src/Win_GParted.cc:139
 msgid "_Devices"
-msgstr "Уреди"
+msgstr "_Уреди"
 
-#: ../src/Win_GParted.cc:134
-#, fuzzy
+#: ../src/Win_GParted.cc:143
 msgid "_Show Features"
-msgstr "Карактеристики"
+msgstr "_Прикажи карактеристики"
 
-#: ../src/Win_GParted.cc:137
+#: ../src/Win_GParted.cc:147
 msgid "_GParted"
 msgstr "_Гпартед"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:166
 msgid "_Edit"
 msgstr "_Уреди"
 
-#: ../src/Win_GParted.cc:147
-#, fuzzy
+#: ../src/Win_GParted.cc:171
 msgid "Device _Information"
-msgstr "Информации за тврдиот диск"
+msgstr "_Информации за уредот"
 
-#: ../src/Win_GParted.cc:148
-#, fuzzy
+#: ../src/Win_GParted.cc:173
 msgid "Pending _Operations"
-msgstr "Продолжи со операцијата"
+msgstr "_Операции кои чекаат"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:174
 msgid "_View"
 msgstr "_Поглед"
 
-#: ../src/Win_GParted.cc:153
-#, fuzzy
+#: ../src/Win_GParted.cc:178
 msgid "_Set Disklabel"
-msgstr "Постави ознака"
+msgstr "_Постави ознака на дискот"
 
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:180
 msgid "_Device"
 msgstr "_Уред"
 
-#: ../src/Win_GParted.cc:159
+#: ../src/Win_GParted.cc:184
 msgid "_Partition"
 msgstr "_Партиција"
 
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:193
 msgid "_Help"
 msgstr "_Помош"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:207
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Креирај нова партиција во избраниот неалоциран простор"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:212
 msgid "Delete the selected partition"
 msgstr "Избриши ја избраната партиција"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:222
 msgid "Resize/Move the selected partition"
 msgstr "Смени/Помести ја избраната партиција"
 
-#: ../src/Win_GParted.cc:204
+#: ../src/Win_GParted.cc:231
 msgid "Copy the selected partition to the clipboard"
 msgstr "Копирај ја избраната партиција во просторот за копирање"
 
-#: ../src/Win_GParted.cc:209
+#: ../src/Win_GParted.cc:236
 msgid "Paste the partition from the clipboard"
 msgstr "Вметни ја партицијата од просторот за копирање"
 
-#: ../src/Win_GParted.cc:219
-msgid "Undo last operation"
+#: ../src/Win_GParted.cc:246
+msgid "Undo Last Operation"
 msgstr "Врати ја последната операција"
 
-#: ../src/Win_GParted.cc:226
-msgid "Apply all operations"
+#: ../src/Win_GParted.cc:253
+msgid "Apply All Operations"
 msgstr "Примени ги сите операции"
 
-#: ../src/Win_GParted.cc:261
+#: ../src/Win_GParted.cc:288
 msgid "_Resize/Move"
 msgstr "_Смени големина/Помести"
 
-#: ../src/Win_GParted.cc:285
+#: ../src/Win_GParted.cc:312
 msgid "_Format to"
 msgstr "_Форматирај како"
 
-#: ../src/Win_GParted.cc:294
-#, fuzzy
+#: ../src/Win_GParted.cc:321
 msgid "Unmount"
-msgstr "демонтирај"
+msgstr "Одмонтирај"
 
-#: ../src/Win_GParted.cc:300
-#, fuzzy
+#: ../src/Win_GParted.cc:327
 msgid "_Mount on"
-msgstr "монтирај на"
+msgstr "_Монтирај на"
 
-#: ../src/Win_GParted.cc:307
-#, fuzzy
+#: ../src/Win_GParted.cc:334
 msgid "M_anage Flags"
-msgstr "управувај со знамињата"
+msgstr "У_правувај со знамињата"
 
-#: ../src/Win_GParted.cc:361
-#, fuzzy
+#: ../src/Win_GParted.cc:339
+msgid "C_heck"
+msgstr "П_ровери"
+
+#: ../src/Win_GParted.cc:393
 msgid "Device Information"
-msgstr "Информации за тврдиот диск"
+msgstr "Информации за уредот"
 
 #. model
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:401
 msgid "Model:"
 msgstr "Модел:"
 
 #. disktype
-#: ../src/Win_GParted.cc:406
+#: ../src/Win_GParted.cc:438
 msgid "DiskLabelType:"
 msgstr "Тип на ознака за диск:"
 
 #. heads
-#: ../src/Win_GParted.cc:414
+#: ../src/Win_GParted.cc:446
 msgid "Heads:"
 msgstr "Глави:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:422
+#: ../src/Win_GParted.cc:454
 msgid "Sectors/Track:"
 msgstr "Сектори/траки:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:430
+#: ../src/Win_GParted.cc:462
 msgid "Cylinders:"
 msgstr "Цилиндри:"
 
-#: ../src/Win_GParted.cc:471
-msgid "Hide operationslist"
-msgstr "Скриј ја листата со операции"
-
-#: ../src/Win_GParted.cc:480
-msgid "Clear operationslist"
-msgstr "Исчисти ја листата со операции"
-
-#: ../src/Win_GParted.cc:651
+#: ../src/Win_GParted.cc:637
 msgid "Could not add this operation to the list."
 msgstr "Не можам да ја додадам оваа операција на листата."
 
-#: ../src/Win_GParted.cc:682
+#: ../src/Win_GParted.cc:663
 msgid "%1 operations pending"
 msgstr "1% операција чека"
 
-#: ../src/Win_GParted.cc:684
+#: ../src/Win_GParted.cc:665
 msgid "1 operation pending"
 msgstr "1 операција чека"
 
-#: ../src/Win_GParted.cc:735
+#: ../src/Win_GParted.cc:713
 msgid "Quit GParted?"
 msgstr "Да излезам од Гпартед?"
 
-#: ../src/Win_GParted.cc:742
+#: ../src/Win_GParted.cc:720
 msgid "%1 operations are currently pending."
 msgstr "%1 операции чекаат."
 
-#: ../src/Win_GParted.cc:745
+#: ../src/Win_GParted.cc:723
 msgid "1 operation is currently pending."
 msgstr "1 операција чека."
 
-#: ../src/Win_GParted.cc:764
-#, fuzzy
+#: ../src/Win_GParted.cc:742
 msgid "_Unmount"
-msgstr "демонтирај"
+msgstr "_Демонтирај"
 
-#: ../src/Win_GParted.cc:789
-#, fuzzy
+#: ../src/Win_GParted.cc:767
 msgid "_Swapoff"
-msgstr "своп партицијата е исклучена"
+msgstr "_Исклучи ја своп партицијата"
 
-#: ../src/Win_GParted.cc:795
-#, fuzzy
+#: ../src/Win_GParted.cc:773
 msgid "_Swapon"
-msgstr "своп партицијата е вклучена"
+msgstr "_Вклучи ја своп партицијата"
 
-#: ../src/Win_GParted.cc:938
+#: ../src/Win_GParted.cc:921
 msgid "%1 - GParted"
 msgstr "%1 - Гпартед"
 
-#: ../src/Win_GParted.cc:984
+#: ../src/Win_GParted.cc:967
 msgid "Scanning all devices..."
 msgstr "Ги скенирам сите уреди..."
 
-#: ../src/Win_GParted.cc:1000
+#: ../src/Win_GParted.cc:983
 msgid "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr ""
 "Кернелот не е во можност да ги прочита табелите за партициите за следниве "
 "уреди:"
 
-#: ../src/Win_GParted.cc:1007
+#: ../src/Win_GParted.cc:990
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -1031,29 +1030,29 @@ msgstr ""
 "Поради ова ќе имате само ограничен пристап до овие уреди. Одмонтирајте ги "
 "сите монтирани партиции за да добиете целосен пристап."
 
-#: ../src/Win_GParted.cc:1051
+#: ../src/Win_GParted.cc:1034
 msgid "No devices detected"
 msgstr "Не се пронајдени уреди"
 
-#: ../src/Win_GParted.cc:1130
+#: ../src/Win_GParted.cc:1113
 msgid "Sorry, not yet implemented."
 msgstr "Извинете, сеуште не е имплементирано."
 
-#: ../src/Win_GParted.cc:1136
+#: ../src/Win_GParted.cc:1119
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr "За информации и поддршка Ве молам посетете ја http://gparted.sf.net."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1167
+#: ../src/Win_GParted.cc:1150
 msgid "translator-credits"
 msgstr "Арангел Ангов <ufo@linux.net.mk>"
 
-#: ../src/Win_GParted.cc:1207
+#: ../src/Win_GParted.cc:1192
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Не е можно да креирате повеќе од една %1 примарна партиција"
 
-#: ../src/Win_GParted.cc:1215
+#: ../src/Win_GParted.cc:1200
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1065,44 +1064,44 @@ msgstr ""
 "проширената партиција е исто така и примарна, можеби ќе е потребно да "
 "избришите примарна партиција."
 
-#: ../src/Win_GParted.cc:1394
+#: ../src/Win_GParted.cc:1386
 msgid "Unable to delete %1!"
 msgstr "Не можам да ја избришам партицијата %1!"
 
-#: ../src/Win_GParted.cc:1401
+#: ../src/Win_GParted.cc:1393
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Ве молам демонтирајте ги логичките партиции што имаат број повисок од %1"
 
-#: ../src/Win_GParted.cc:1412
+#: ../src/Win_GParted.cc:1404
 msgid "Are you sure you want to delete %1?"
 msgstr "Дали сте сигурни дека сакате да ја избришете %1?"
 
-#: ../src/Win_GParted.cc:1419
+#: ../src/Win_GParted.cc:1411
 msgid "After deletion this partition is no longer available for copying."
 msgstr "По бришењето оваа партиција повеќе нема да биде достапна за копирање."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1422
+#: ../src/Win_GParted.cc:1414
 msgid "Delete %1 (%2, %3)"
 msgstr "Избриши го %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1488
+#: ../src/Win_GParted.cc:1480
 msgid "Cannot format this filesystem to %1."
 msgstr "Можам да го форматирам датотечниот систем во %1."
 
-#: ../src/Win_GParted.cc:1497
+#: ../src/Win_GParted.cc:1489
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "%1 датотечен систем бара партиција со најмалку %2."
 
-#: ../src/Win_GParted.cc:1502
+#: ../src/Win_GParted.cc:1494
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "Партиција со %1 датотечен систем може да има највеќе %2."
 
-#: ../src/Win_GParted.cc:1587
+#: ../src/Win_GParted.cc:1579
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "Партицијата не може да биде одмонтирана од следниве точки за монтирање:"
 
-#: ../src/Win_GParted.cc:1589
+#: ../src/Win_GParted.cc:1581
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
@@ -1110,80 +1109,80 @@ msgstr ""
 "Најверојатно други партиции се исто така монтирани на овие точки за "
 "монтирање. Ве советувам да ги одмонтирате мануелно."
 
-#: ../src/Win_GParted.cc:1639
+#: ../src/Win_GParted.cc:1631
 msgid "Deactivating swap on %1"
 msgstr "Деактивирам swap na %1"
 
-#: ../src/Win_GParted.cc:1639
+#: ../src/Win_GParted.cc:1631
 msgid "Activating swap on %1"
 msgstr "Активирам swap na %1"
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1638
 msgid "Could not deactivate swap"
 msgstr "Не успеав да го деактивирам swap-от"
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1638
 msgid "Could not activate swap"
 msgstr "Не успеав да го деактивирам swap-от"
 
-#: ../src/Win_GParted.cc:1662
+#: ../src/Win_GParted.cc:1654
 msgid "Unmounting %1"
 msgstr "Демонтирам %1"
 
-#: ../src/Win_GParted.cc:1667
+#: ../src/Win_GParted.cc:1659
 msgid "Could not unmount %1"
 msgstr "Не можам да ја демонтирам %1"
 
-#: ../src/Win_GParted.cc:1696
+#: ../src/Win_GParted.cc:1688
 msgid "mounting %1 on %2"
 msgstr "монтирам %1 на %2"
 
-#: ../src/Win_GParted.cc:1703
+#: ../src/Win_GParted.cc:1695
 msgid "Could not mount %1 on %2"
 msgstr "Не можам да монтирам %1 на %2"
 
-#: ../src/Win_GParted.cc:1727
+#: ../src/Win_GParted.cc:1719
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Дали сте сигурни дека сакате да креирате ознака за дискот %1 на %2?"
 
-#: ../src/Win_GParted.cc:1735
+#: ../src/Win_GParted.cc:1727
 msgid "This operation will destroy all data on %1!"
 msgstr "Операцијата ќе ги уништи сите податоци на %1!"
 
-#: ../src/Win_GParted.cc:1744
+#: ../src/Win_GParted.cc:1736
 msgid "Error while setting new disklabel"
 msgstr "Грешка при поставување на ознаката"
 
-#: ../src/Win_GParted.cc:1819
+#: ../src/Win_GParted.cc:1820
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Дали сте сигурни дека сакате да ги примените операциите што чекаат?"
 
-#: ../src/Win_GParted.cc:1824
+#: ../src/Win_GParted.cc:1825
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "Препорачливо е да направите резерва од важните податоци пред да продолжите."
 
-#: ../src/Win_GParted.cc:1825
+#: ../src/Win_GParted.cc:1826
 msgid "Apply operations to harddisk"
 msgstr "Примени ги операциите на тврдиот диск"
 
 #. create mountpoint...
-#: ../src/jfs.cc:114 ../src/xfs.cc:116 ../src/xfs.cc:207 ../src/xfs.cc:214
+#: ../src/jfs.cc:146 ../src/xfs.cc:147 ../src/xfs.cc:238 ../src/xfs.cc:245
 msgid "create temporary mountpoint (%1)"
 msgstr "креирај празна точка за монтирање (%1)"
 
-#: ../src/jfs.cc:121 ../src/xfs.cc:123 ../src/xfs.cc:221 ../src/xfs.cc:230
+#: ../src/jfs.cc:153 ../src/xfs.cc:154 ../src/xfs.cc:252 ../src/xfs.cc:261
 msgid "mount %1 on %2"
 msgstr "монтирај %1 на %2"
 
-#: ../src/jfs.cc:130
+#: ../src/jfs.cc:162
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "ремонтирај %1 на %2 со знаменцето за менување на големина"
 
-#: ../src/jfs.cc:148 ../src/xfs.cc:145 ../src/xfs.cc:254 ../src/xfs.cc:275
+#: ../src/jfs.cc:180 ../src/xfs.cc:176 ../src/xfs.cc:285 ../src/xfs.cc:306
 msgid "unmount %1"
 msgstr "демонтирај %1"
 
-#: ../src/jfs.cc:168 ../src/xfs.cc:165 ../src/xfs.cc:295 ../src/xfs.cc:318
+#: ../src/jfs.cc:200 ../src/xfs.cc:196 ../src/xfs.cc:326 ../src/xfs.cc:349
 msgid "remove temporary mountpoint (%1)"
 msgstr "отстрани ја привремената точна на монтирање (%1)"
 
@@ -1198,22 +1197,22 @@ msgstr ""
 "го изврши само root."
 
 #. simulation..
-#: ../src/ntfs.cc:98
+#: ../src/ntfs.cc:120
 msgid "run simulation"
 msgstr "изврши симулација"
 
 #. real resize
-#: ../src/ntfs.cc:105
+#: ../src/ntfs.cc:127
 msgid "real resize"
 msgstr "вистинска промена на големината"
 
 #. grow the mounted filesystem..
-#: ../src/xfs.cc:131
+#: ../src/xfs.cc:162
 msgid "grow mounted filesystem"
 msgstr "зголеми монтиран датотечен систем"
 
 #. copy filesystem..
-#: ../src/xfs.cc:238
+#: ../src/xfs.cc:269
 msgid "copy filesystem"
 msgstr "копирај го датотечниот систем"
 
