@@ -4,9 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 04:45+0000\n"
-"PO-Revision-Date: 2007-09-13 13:28+0000\n"
-"Last-Translator: Revan <mark125@gmail.com>\n"
+"POT-Creation-Date: 2008-01-07 14:06+0000\n"
+"PO-Revision-Date: 2008-03-20 16:35+0200\n"
+"Last-Translator: Mark Krapivner <mark125@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -151,7 +151,7 @@ msgstr "פעיל"
 
 #: ../src/Dialog_Partition_Info.cc:249
 msgid "Mounted on %1"
-msgstr "מחובר ב %1"
+msgstr "מחובר ב-%1"
 
 #: ../src/Dialog_Partition_Info.cc:253
 msgid "Not busy (There are no mounted logical partitions)"
@@ -241,9 +241,8 @@ msgstr ""
 
 # titel van de voortgangsbalk
 #: ../src/Dialog_Progress.cc:61
-#, fuzzy
 msgid "Completed Operations:"
-msgstr "הפעולות הושלמו"
+msgstr "פעולות שהושלמו:"
 
 #: ../src/Dialog_Progress.cc:101
 msgid "Details"
@@ -255,9 +254,8 @@ msgstr "%1 מתוך %2 פעולות הושלמו"
 
 #. add save button
 #: ../src/Dialog_Progress.cc:230
-#, fuzzy
 msgid "_Save Details"
-msgstr "פרטים"
+msgstr "_שמור פרטים"
 
 # titel van de voortgangsbalk
 #: ../src/Dialog_Progress.cc:239
@@ -269,9 +267,8 @@ msgid "All operations succesfully completed"
 msgstr "כל הפעולות הושלמו בהצלחה"
 
 #: ../src/Dialog_Progress.cc:256
-#, fuzzy
 msgid "%1 warnings"
-msgstr "אזהרה:"
+msgstr "%1 אזהרות"
 
 #: ../src/Dialog_Progress.cc:268
 msgid "An error occurred while applying the operations"
@@ -304,24 +301,21 @@ msgstr ""
 
 # titel van de voortgangsbalk
 #: ../src/Dialog_Progress.cc:318
-#, fuzzy
 msgid "Continue Operation"
-msgstr "הפעולות הושלמו"
+msgstr "המשך פעולה"
 
 # titel van de voortgangsbalk
 #: ../src/Dialog_Progress.cc:319
-#, fuzzy
 msgid "Cancel Operation"
-msgstr "פעולות"
+msgstr "בטל פעולה"
 
 #: ../src/Dialog_Progress.cc:332
-#, fuzzy
 msgid "Save Details"
-msgstr "פרטים"
+msgstr "שמור פרטים"
 
 #: ../src/DialogFeatures.cc:27
 msgid "Features"
-msgstr ""
+msgstr "תכונות"
 
 #: ../src/DialogFeatures.cc:33 ../src/TreeView_Detail.cc:35
 msgid "Filesystem"
@@ -329,11 +323,11 @@ msgstr "מערכת קבצים"
 
 #: ../src/DialogFeatures.cc:34
 msgid "Detect"
-msgstr ""
+msgstr "זיהוי"
 
 #: ../src/DialogFeatures.cc:35
 msgid "Read"
-msgstr ""
+msgstr "קריאה"
 
 #: ../src/DialogFeatures.cc:37
 msgid "Grow"
@@ -353,379 +347,371 @@ msgstr "העתק"
 
 #: ../src/DialogFeatures.cc:41
 msgid "Check"
-msgstr ""
+msgstr "בדיקה"
 
 #: ../src/DialogFeatures.cc:42
 msgid "Read Label"
-msgstr ""
+msgstr "קריאת תווית"
 
 #: ../src/DialogFeatures.cc:57
 msgid "Available"
-msgstr ""
+msgstr "זמין"
 
 #: ../src/DialogFeatures.cc:63
-#, fuzzy
+
 msgid "Not Available"
-msgstr "לא פעיל"
+msgstr "לא זמין"
 
 #: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:217
 msgid "unrecognized"
 msgstr "לא מזוהה"
 
-#: ../src/GParted_Core.cc:259
+#: ../src/GParted_Core.cc:272
 msgid "A partition cannot have a length of %1 sectors"
 msgstr ""
 
-#: ../src/GParted_Core.cc:267
+#: ../src/GParted_Core.cc:280
 msgid ""
 "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr ""
 
-#: ../src/GParted_Core.cc:330
+#: ../src/GParted_Core.cc:343
 msgid "libparted messages"
 msgstr ""
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:688
+#: ../src/GParted_Core.cc:701
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "אין אפשרות לזהות מערכת קבצים! סיבות אפשריות הן:"
 
-#: ../src/GParted_Core.cc:690
+#: ../src/GParted_Core.cc:703
 msgid "The filesystem is damaged"
 msgstr "המערכת קבצים פגומה"
 
-#: ../src/GParted_Core.cc:692
+#: ../src/GParted_Core.cc:705
 #, fuzzy
 msgid "The filesystem is unknown to GParted"
 msgstr "המערכת קבצים לא מוכרת על-ידי libparted"
 
-#: ../src/GParted_Core.cc:694
+#: ../src/GParted_Core.cc:707
 msgid "There is no filesystem available (unformatted)"
 msgstr "אין מערכת קבצים (מחיצה לא מאותחלת)"
 
-#: ../src/GParted_Core.cc:790
+#: ../src/GParted_Core.cc:803
 msgid "Unable to find mountpoint"
 msgstr ""
 
-#: ../src/GParted_Core.cc:808
+#: ../src/GParted_Core.cc:821
 msgid "Unable to read the contents of this filesystem!"
 msgstr "אין אפשרות לקרוא את התוכן  של המערכת קבצים הזאת!"
 
-#: ../src/GParted_Core.cc:810
+#: ../src/GParted_Core.cc:823
 msgid "Because of this some operations may be unavailable."
 msgstr ""
 
-#: ../src/GParted_Core.cc:918
-#, fuzzy
+#: ../src/GParted_Core.cc:931
 msgid "create empty partition"
-msgstr "צור מחיצה חדשה"
+msgstr "צור מחיצה ריקה"
 
-#: ../src/GParted_Core.cc:986 ../src/GParted_Core.cc:2021
-#, fuzzy
+#: ../src/GParted_Core.cc:999 ../src/GParted_Core.cc:2034
 msgid "path: %1"
-msgstr "הדבק %1"
+msgstr "נתיב: %l"
 
-#: ../src/GParted_Core.cc:987 ../src/GParted_Core.cc:2022
+#: ../src/GParted_Core.cc:1000 ../src/GParted_Core.cc:2035
 msgid "start: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:988 ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:1001 ../src/GParted_Core.cc:2036
 msgid "end: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:989 ../src/GParted_Core.cc:2024
-#, fuzzy
+#: ../src/GParted_Core.cc:1002 ../src/GParted_Core.cc:2037
 msgid "size: %1 (%2)"
-msgstr "שנה גודל של %1"
+msgstr "גודל: %l (%2)"
 
-#: ../src/GParted_Core.cc:1018 ../src/linux_swap.cc:58 ../src/xfs.cc:230
+#: ../src/GParted_Core.cc:1031 ../src/linux_swap.cc:58 ../src/xfs.cc:230
 msgid "create new %1 filesystem"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1051
-#, fuzzy
+#: ../src/GParted_Core.cc:1064
 msgid "delete partition"
-msgstr "אין אפשרות למחוק את המחיצה!"
+msgstr "מחק מחיצה"
 
-#: ../src/GParted_Core.cc:1119
+#: ../src/GParted_Core.cc:1132
 msgid "moving requires old and new length to be the same"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1136
+#: ../src/GParted_Core.cc:1149
 msgid "rollback last change to the partitiontable"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1165
+#: ../src/GParted_Core.cc:1178
 msgid "move filesystem to the left"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1167
+#: ../src/GParted_Core.cc:1180
 msgid "move filesystem to the right"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1170
+#: ../src/GParted_Core.cc:1183
 #, fuzzy
 msgid "move filesystem"
 msgstr "מערכת קבצים"
 
-#: ../src/GParted_Core.cc:1172
+#: ../src/GParted_Core.cc:1185
 msgid ""
 "new and old filesystem have the same positition. skipping this operation"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1204
 msgid "perform real move"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1233
+#: ../src/GParted_Core.cc:1246
 msgid "using libparted"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1273
+#: ../src/GParted_Core.cc:1286
 msgid "resizing requires old and new start to be the same"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1338
-#, fuzzy
+#: ../src/GParted_Core.cc:1351
 msgid "resize/move partition"
-msgstr "שנה גודל/הזז את המחיצה שנבחרה"
+msgstr "שנה גודל/הזז מחיצה"
 
-#: ../src/GParted_Core.cc:1341
+#: ../src/GParted_Core.cc:1354
 #, fuzzy
 msgid "move partition to the right"
 msgstr "עורך המחיצות של GNOME"
 
-#: ../src/GParted_Core.cc:1344
+#: ../src/GParted_Core.cc:1357
 msgid "move partition to the left"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1347
+#: ../src/GParted_Core.cc:1360
 msgid "grow partition from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1363
 msgid "shrink partition from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1353
+#: ../src/GParted_Core.cc:1366
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1356
+#: ../src/GParted_Core.cc:1369
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1359
+#: ../src/GParted_Core.cc:1372
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1362
+#: ../src/GParted_Core.cc:1375
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1377
+#: ../src/GParted_Core.cc:1390
 msgid ""
 "new and old partition have the same size and position. skipping this "
 "operation"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1387
+#: ../src/GParted_Core.cc:1400
 msgid "old start: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1388
+#: ../src/GParted_Core.cc:1401
 msgid "old end: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1389
+#: ../src/GParted_Core.cc:1402
 msgid "old size: %1 (%2)"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1444 ../src/GParted_Core.cc:2102
+#: ../src/GParted_Core.cc:1457 ../src/GParted_Core.cc:2115
 msgid "new start: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1445 ../src/GParted_Core.cc:2103
+#: ../src/GParted_Core.cc:1458 ../src/GParted_Core.cc:2116
 msgid "new end: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1446 ../src/GParted_Core.cc:2104
+#: ../src/GParted_Core.cc:1459 ../src/GParted_Core.cc:2117
 #, fuzzy
 msgid "new size: %1 (%2)"
 msgstr "שנה גודל של %1"
 
-#: ../src/GParted_Core.cc:1470
+#: ../src/GParted_Core.cc:1483
 #, fuzzy
 msgid "shrink filesystem"
 msgstr "מערכת קבצים"
 
-#: ../src/GParted_Core.cc:1474
+#: ../src/GParted_Core.cc:1487
 #, fuzzy
 msgid "grow filesystem"
 msgstr "מערכת קבצים"
 
-#: ../src/GParted_Core.cc:1477
+#: ../src/GParted_Core.cc:1490
 #, fuzzy
 msgid "resize filesystem"
 msgstr "מערכת קבצים"
 
-#: ../src/GParted_Core.cc:1480
+#: ../src/GParted_Core.cc:1493
 msgid "new and old filesystem have the same size. skipping this operation"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1515
+#: ../src/GParted_Core.cc:1528
 #, fuzzy
 msgid "grow filesystem to fill the partition"
 msgstr "מחק את המחיצה שנבחרה"
 
-#: ../src/GParted_Core.cc:1520
+#: ../src/GParted_Core.cc:1533
 msgid "growing is not available for this filesystem"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1539
+#: ../src/GParted_Core.cc:1552
 msgid "the destination is smaller than the sourcepartition"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1553
+#: ../src/GParted_Core.cc:1566
 msgid "copy filesystem of %1 to %2"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1597
+#: ../src/GParted_Core.cc:1610
 msgid "perform readonly test"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1645
+#: ../src/GParted_Core.cc:1658
 msgid "using internal algorithm"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1647
+#: ../src/GParted_Core.cc:1660
 msgid "read %1 sectors"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1647
+#: ../src/GParted_Core.cc:1660
 msgid "copy %1 sectors"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1649
+#: ../src/GParted_Core.cc:1662
 msgid "finding optimal blocksize"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1691
+#: ../src/GParted_Core.cc:1704
 msgid "%1 seconds"
-msgstr ""
+msgstr "%1 שניות"
 
-#: ../src/GParted_Core.cc:1703
+#: ../src/GParted_Core.cc:1716
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:1733
 msgid "%1 sectors read"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:1733
 msgid "%1 sectors copied"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1731
+#: ../src/GParted_Core.cc:1744
 msgid "rollback last transaction"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1758
+#: ../src/GParted_Core.cc:1771
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1766
+#: ../src/GParted_Core.cc:1779
 msgid "checking is not available for this filesystem"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1792
+#: ../src/GParted_Core.cc:1805
 #, fuzzy
 msgid "set partitiontype on %1"
 msgstr "מחיצה חדשה מספר %1"
 
-#: ../src/GParted_Core.cc:1814
+#: ../src/GParted_Core.cc:1827
 #, fuzzy
 msgid "new partitiontype: %1"
 msgstr "מחיצה חדשה מספר %1"
 
-#: ../src/GParted_Core.cc:1841
+#: ../src/GParted_Core.cc:1854
 msgid "%1 of %2 read (%3 remaining)"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1841
+#: ../src/GParted_Core.cc:1854
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
+#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
 msgid "%1 of %2 read"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
+#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
 #, fuzzy
 msgid "%1 of %2 copied"
 msgstr "%1 מתוך %2 פעולות הושלמו"
 
-#: ../src/GParted_Core.cc:1865
+#: ../src/GParted_Core.cc:1878
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1868
+#: ../src/GParted_Core.cc:1881
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1987
+#: ../src/GParted_Core.cc:2000
 #, fuzzy
 msgid "Error while writing block at sector %1"
 msgstr "שגיאה במהלך יצירת %1"
 
-#: ../src/GParted_Core.cc:1990
+#: ../src/GParted_Core.cc:2003
 #, fuzzy
 msgid "Error while reading block at sector %1"
 msgstr "שגיאה במהלך יצירת %1"
 
-#: ../src/GParted_Core.cc:2000
+#: ../src/GParted_Core.cc:2013
 msgid "calibrate %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2047
+#: ../src/GParted_Core.cc:2060
 msgid "calculate new size and position of %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2051
+#: ../src/GParted_Core.cc:2064
 msgid "requested start: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2052
+#: ../src/GParted_Core.cc:2065
 msgid "requested end: %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2053
+#: ../src/GParted_Core.cc:2066
 msgid "requested size: %1 (%2)"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2176
+#: ../src/GParted_Core.cc:2189
 msgid "updating bootsector of %1 filesystem on %2"
 msgstr ""
 
 #: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
-#, fuzzy
 msgid "_Undo Last Operation"
-msgstr "בטל פעולה אחרונה"
+msgstr "_בטל פעולה אחרונה"
 
 #: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
-#, fuzzy
 msgid "_Clear All Operations"
-msgstr "נקה רשימת פעולות"
+msgstr "_נקה רשימת פעולות"
 
 # 'uitvoeren' hier toch beter dan 'toepassen'
 #: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
-#, fuzzy
 msgid "_Apply All Operations"
-msgstr "החל את כל הפעולות"
+msgstr "_החל את כל הפעולות"
 
 #: ../src/OperationCopy.cc:36
 msgid "copy of %1"
@@ -815,28 +801,24 @@ msgid "Partition"
 msgstr "מחיצה"
 
 #: ../src/TreeView_Detail.cc:36
-#, fuzzy
 msgid "Mountpoint"
-msgstr "מחובר ב %1"
+msgstr "עיגון"
 
 #: ../src/TreeView_Detail.cc:37
 msgid "Label"
 msgstr ""
 
 #: ../src/TreeView_Detail.cc:38
-#, fuzzy
 msgid "Size"
-msgstr "גודל:"
+msgstr "גודל"
 
 #: ../src/TreeView_Detail.cc:39
-#, fuzzy
 msgid "Used"
-msgstr "בשימוש:"
+msgstr "בשימוש"
 
 #: ../src/TreeView_Detail.cc:40
-#, fuzzy
 msgid "Unused"
-msgstr "לא בשימוש:"
+msgstr "לא בשימוש"
 
 #: ../src/TreeView_Detail.cc:41
 msgid "Flags"
@@ -852,7 +834,6 @@ msgstr "לא ידוע"
 
 # Niet geformatteerd/Zonder format/Ongeformatteerd
 #: ../src/Utils.cc:112
-#, fuzzy
 msgid "unformatted"
 msgstr "לא מאותחל"
 
@@ -885,17 +866,16 @@ msgid "%1 TiB"
 msgstr "%1 TiB"
 
 #: ../src/Win_GParted.cc:133
-#, fuzzy
 msgid "_Refresh Devices"
 msgstr "_רענן התקנים"
 
 #: ../src/Win_GParted.cc:139
 msgid "_Devices"
-msgstr ""
+msgstr "_התקנים"
 
 #: ../src/Win_GParted.cc:143
 msgid "_Show Features"
-msgstr ""
+msgstr "_הצג תכונות"
 
 #: ../src/Win_GParted.cc:147
 msgid "_GParted"
@@ -903,19 +883,17 @@ msgstr "_GParted"
 
 #: ../src/Win_GParted.cc:166
 msgid "_Edit"
-msgstr ""
+msgstr "_עריכה"
 
 #: ../src/Win_GParted.cc:171
-#, fuzzy
 msgid "Device _Information"
-msgstr "מידע אודות הדיסק הקשיח"
+msgstr "מידע אודות ה_התקן"
 
 # dit is een kop in het dialoogvenster
 # Bewerkingen in de wachtrij uitvoeren
 #: ../src/Win_GParted.cc:173
-#, fuzzy
 msgid "Pending _Operations"
-msgstr "החל פעולות בהמתנה"
+msgstr "פעולות _בהמתנה"
 
 #: ../src/Win_GParted.cc:174
 msgid "_View"
@@ -927,7 +905,7 @@ msgstr ""
 
 #: ../src/Win_GParted.cc:180
 msgid "_Device"
-msgstr ""
+msgstr "_התקן"
 
 #: ../src/Win_GParted.cc:184
 msgid "_Partition"
@@ -967,9 +945,8 @@ msgid "Apply All Operations"
 msgstr "החל את כל הפעולות"
 
 #: ../src/Win_GParted.cc:288
-#, fuzzy
 msgid "_Resize/Move"
-msgstr "שנה גודל/הזז"
+msgstr "_שנה גודל/הזז"
 
 # _Converteren naar
 #: ../src/Win_GParted.cc:312
@@ -992,12 +969,11 @@ msgstr ""
 
 #: ../src/Win_GParted.cc:339
 msgid "C_heck"
-msgstr ""
+msgstr "_בדוק"
 
 #: ../src/Win_GParted.cc:393
-#, fuzzy
 msgid "Device Information"
-msgstr "מידע אודות הדיסק הקשיח"
+msgstr "מידע אודות ההתקן"
 
 #. model
 #: ../src/Win_GParted.cc:401
@@ -1050,9 +1026,8 @@ msgid "1 operation is currently pending."
 msgstr "פעולה אחת מחכה."
 
 #: ../src/Win_GParted.cc:742
-#, fuzzy
 msgid "_Unmount"
-msgstr "נתק"
+msgstr "_נתק"
 
 #: ../src/Win_GParted.cc:767
 msgid "_Swapoff"
@@ -1063,9 +1038,8 @@ msgid "_Swapon"
 msgstr ""
 
 #: ../src/Win_GParted.cc:921
-#, fuzzy
 msgid "%1 - GParted"
-msgstr "GParted"
+msgstr "%1 - GParted"
 
 #: ../src/Win_GParted.cc:967
 msgid "Scanning all devices..."
@@ -1101,7 +1075,7 @@ msgstr "אנא בקר ב http://gparted.sf.net בשביל מידע נוסף ות
 msgid "translator-credits"
 msgstr ""
 "יובל טנאי\n"
-"‏Revan https://launchpad.net/~mark125\n"
+"‏‏מארק קרפיבנר <mark125@gmail.com>\n"
 "\n"
 "פרוייקט תרגום GNOME לעברית:\n"
 "‏http://gnome-il.berlios.de"
@@ -1139,9 +1113,8 @@ msgstr "לאחר מחיקת מחיצה זו היא לא תהיה זמינה לה
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
 #: ../src/Win_GParted.cc:1414
-#, fuzzy
 msgid "Delete %1 (%2, %3)"
-msgstr "מחק %1 (%2, %3 MB("
+msgstr "מחיקת %1 (%2, %3)"
 
 #: ../src/Win_GParted.cc:1480
 #, fuzzy
@@ -1278,46 +1251,5 @@ msgstr ""
 
 #. copy filesystem..
 #: ../src/xfs.cc:269
-#, fuzzy
 msgid "copy filesystem"
-msgstr "מערכת קבצים"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# volledige/volledig
-
-
-
-
-
-
-
-
-# of in meervoud:
-# omdat wijzigingen, aangebracht op een schijf die bezet is, de kernel zouden kunnen verwarren...
+msgstr "העתק מערכת קבצים"
