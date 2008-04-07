@@ -84,7 +84,7 @@ void reiser4::get_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		Glib::ustring label = Utils::regexp_label( output, "^label:[\t ]*([^!]*)" ) ;
+		Glib::ustring label = Utils::regexp_label( output, "^label:[\t ]*([^!]*)$" ) ;
 		//FIXME: find a better way to see if label is empty.. imagine someone uses '<none>' as label.... ;)
 		if( label != "<none>" ) 
 			partition .label = label ; 

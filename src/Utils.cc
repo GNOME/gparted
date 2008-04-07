@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart 'plors' Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -170,13 +170,10 @@ Glib::ustring Utils::format_time( std::time_t seconds )
 	Glib::ustring time ;
 	
 	int unit = static_cast<int>( seconds / 3600 ) ;
-	if ( unit > 0 )
-	{
-		if ( unit < 10 )
-			time += "0" ;
-		time += num_to_str( unit ) + ":" ;
-		seconds %= 3600 ;
-	}
+	if ( unit < 10 )
+		time += "0" ;
+	time += num_to_str( unit ) + ":" ;
+	seconds %= 3600 ;
 
 	unit = static_cast<int>( seconds / 60 ) ;
 	if ( unit < 10 )

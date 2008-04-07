@@ -1,7 +1,34 @@
 2008-04-07  Marcel Telka  <marcel@telka.sk>
 
 	* MAINTAINERS: New file (bug #524276).
-	* configure.in: Added 'sk' to ALL_LINGUAS.
+
+2008-04-03  Curtis Gedak  <gedakc@gmail.com>
+
+	* configure.in,
+	  autogen.sh,
+	  po/LINGUAS: Enhanced to use po/LINGUAS for LINGUAS
+	  - Closes GParted bug #467459
+	  - Thanks to Christian Persch for this patch
+
+2008-04-01  Curtis Gedak  <gedakc@gmail.com>
+
+	* Makefile.am: Removed distclean target enhancements from 2008-02-05
+	  - use "make dist" to create a distribution archive file
+
+2008-03-31  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Utils.cc: Ensure hour portion of time is always displayed
+	  - Closes GParted bug #438590
+
+	* src/TreeView_Detail.cc: Removed text_color hard coding
+	  - Removed hard coding of Partition and Filesystem text_color
+	    which was based on if partition was TYPE_UNALLOCATED.
+	  - Removed hard coding of Mount text_color which was based
+	    on if partition was busy.  Lock symbol provides this indicator.
+	  - Closes GParted bug #413810
+
+	* src/reiser4.cc,
+	  src/reiserfs.cc: Tighten get_label regular expression
 
 2008-03-26  Curtis Gedak  <gedakc@gmail.com>
 

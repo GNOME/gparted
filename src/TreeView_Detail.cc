@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -176,16 +176,13 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
-	treerow[ treeview_detail_columns .text_color ] = 
-		partition .type == GParted::TYPE_UNALLOCATED ? "darkgrey" : "black" ;
-	
 	treerow[ treeview_detail_columns .filesystem ] = 
 		Utils::get_filesystem_string( partition .filesystem ) ;
 	
 	//mountpoint
-	treerow[ treeview_detail_columns .mount_text_color ] = partition .busy ? "black" : "darkgrey" ;
 	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
 
+	//label
 	treerow[ treeview_detail_columns .label ] = partition .label ;
 		
 	//size
