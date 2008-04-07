@@ -250,7 +250,7 @@ void Dialog_Progress::on_signal_show()
 	//deal with succes/error...
 	if ( succes )
 	{
-		str_temp = _("All operations succesfully completed") ;
+		str_temp = _("All operations successfully completed") ;
 
 		if ( warnings > 0 )
 			str_temp += " (" + String::ucompose( _("%1 warnings"), warnings ) + ")" ;
@@ -380,7 +380,7 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 				out << "( EXECUTING )" ;
 				break ;
 			case STATUS_SUCCES:
-				out << "( SUCCES )" ;
+				out << "( SUCCESS )" ;
 				break ;
 			case STATUS_ERROR:
 				out << "( ERROR )" ;

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -107,7 +107,19 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	optionmenu_filesystem .signal_changed() .connect( 
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
 	table_create .attach( optionmenu_filesystem, 1, 2, 1, 2, Gtk::FILL );
-	
+
+	//Label
+	table_create .attach( * Utils::mk_label( Glib::ustring( _("Label:") ) ),
+			0, 1, 3, 4,	Gtk::FILL ) ;
+	//Create Text entry box
+	entry .set_max_length( 30 );
+	entry .set_width_chars( 20 );
+	entry .set_activates_default( true );
+	entry .set_text( partition.label );
+	entry .select_region( 0, entry .get_text_length() );
+	//Add entry box to table
+	table_create .attach( entry, 1, 2, 3, 4, Gtk::FILL ) ;
+
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
@@ -161,7 +173,10 @@ Partition Dialog_Partition_New::Get_New_Partition()
 			new_count, part_type,
 			FILESYSTEMS[ optionmenu_filesystem .get_history() ] .filesystem,
 			new_start, new_end, 
-			selected_partition .inside_extended, false ) ; 
+			selected_partition .inside_extended, false ) ;
+
+	//Retrieve Label info
+	part_temp .label = Utils::trim( entry .get_text() );
 	
 	//grow new partition a bit if freespaces are < 1 MiB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < MEBIBYTE ) 

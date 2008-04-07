@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,9 +32,11 @@ FS ntfs::get_filesystem_support()
 		fs .check = GParted::FS::EXTERNAL ;
 	}
 
-	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() )
+	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
 		fs .get_label = FS::EXTERNAL ;
-	
+		fs .set_label = FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 
@@ -84,10 +86,7 @@ void ntfs::get_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, true ) )
 	{
-		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
-			partition .label = output .substr( 0, output .size() -1 ) ;
-		else
-			partition .label = output ;
+		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
 	}
 	else
 	{
@@ -99,9 +98,14 @@ void ntfs::get_label( Partition & partition )
 	}
 }
 
+bool ntfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "ntfslabel --force " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+}
+
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -vv " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkntfs -Q -vv -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004-2006 Bart 'plors' Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > read_label ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > label ;
 				
 		treeview_filesystems_Columns() 
 		{ 
@@ -69,7 +69,7 @@ private:
 			add( move ) ;
 			add( copy ) ;
 			add( check ) ;
-			add( read_label ) ;
+			add( label ) ;
 		}
 	};
 	

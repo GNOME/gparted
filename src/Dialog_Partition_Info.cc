@@ -156,7 +156,7 @@ void Dialog_Partition_Info::Display_Info()
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
-	
+
 	//size
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
 			0, 1,
@@ -257,6 +257,19 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not mounted") ;
 		
 		table ->attach( * Utils::mk_label( str_temp ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	}
+
+	//label
+	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
+	{
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
+				0, 1,
+				top, bottom,
+				Gtk::FILL) ;
+		table ->attach( * Utils::mk_label( partition .label ),
+				1, 2,
+				top++, bottom++,
+				Gtk::FILL) ;
 	}
 	
 	//one blank line

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,9 +29,11 @@ FS ext3::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 
-	if ( ! Glib::find_program_in_path( "e2label" ) .empty() )
+	if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
 		fs .get_label = FS::EXTERNAL ;
-	
+		fs .set_label = FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "mkfs.ext3" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -86,10 +88,7 @@ void ext3::get_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
 	{
-		if ( output .size() > 0 && output[ output .size() -1 ] == '\n' )
-			partition .label = output .substr( 0, output .size() -1 ) ;
-		else
-			partition .label = output ;
+		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
 	}
 	else
 	{
@@ -101,9 +100,14 @@ void ext3::get_label( Partition & partition )
 	}
 }
 
+bool ext3::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+}
+
 bool ext3::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext3 " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.ext3 -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ext3::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

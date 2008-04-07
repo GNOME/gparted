@@ -15,6 +15,7 @@ gparted_SOURCES = \
 	Dialog_Disklabel.cc 		\
 	Dialog_Partition_Copy.cc	\
 	Dialog_Partition_Info.cc	\
+	Dialog_Partition_Label.cc	\
 	Dialog_Partition_New.cc		\
 	Dialog_Partition_Resize_Move.cc	\
 	Dialog_Progress.cc		\
@@ -34,6 +35,7 @@ gparted_SOURCES = \
 	OperationDetail.cc		\
 	OperationFormat.cc		\
 	OperationResizeMove.cc		\
+	OperationLabelPartition.cc	\
 	Partition.cc			\
 	TreeView_Detail.cc		\
 	Utils.cc			\

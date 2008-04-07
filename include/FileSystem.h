@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ public:
 	virtual FS get_filesystem_support() = 0 ;
 	virtual void set_used_sectors( Partition & partition ) = 0 ;
 	virtual void get_label( Partition & partition ) = 0 ;
+	virtual bool set_label( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
 	virtual bool create( const Partition & new_partition, OperationDetail & operationdetail ) = 0 ;
 	virtual bool resize( const Partition & partition_new,
 			     OperationDetail & operationdetail,

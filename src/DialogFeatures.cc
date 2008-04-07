@@ -1,4 +1,4 @@
-/* Copyright (C) 2004-2006 Bart 'plors' Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .append_column( _("Move"), treeview_filesystems_columns .move );
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 	treeview_filesystems .append_column( _("Check"), treeview_filesystems_columns .check );
-	treeview_filesystems .append_column( _("Read Label"), treeview_filesystems_columns .read_label );
+	treeview_filesystems .append_column( _("Label"), treeview_filesystems_columns .label );
 	//FIXME: add info about the relevant project (e.g an url to the projectpage)
 	//of course this url has to be selectable and (if possible) clickable
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
@@ -93,7 +93,7 @@ void DialogFeatures::show_filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .move ] = fs .move ? icon_yes : icon_no ;  
 	treerow[ treeview_filesystems_columns .copy ] = fs .copy ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
-	treerow[ treeview_filesystems_columns .read_label ] = fs .get_label ? icon_yes : icon_no ; 
+	treerow[ treeview_filesystems_columns .label ] = fs .set_label ? icon_yes : icon_no ; 
 }
 
 DialogFeatures::~DialogFeatures() 

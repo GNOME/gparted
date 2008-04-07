@@ -5,7 +5,8 @@ EXTRA_DIST = \
 	Dialog_Base_Partition.h		\
 	Dialog_Disklabel.h 		\
 	Dialog_Partition_Copy.h		\
-        Dialog_Partition_Info.h		\
+    Dialog_Partition_Info.h		\
+    Dialog_Partition_Label.h	\
 	Dialog_Partition_New.h    	\
 	Dialog_Partition_Resize_Move.h 	\
 	Dialog_Progress.h  		\
@@ -25,6 +26,7 @@ EXTRA_DIST = \
 	OperationDetail.h		\
 	OperationFormat.h		\
 	OperationResizeMove.h		\
+	OperationLabelPartition.h	\
         Partition.h  			\
 	TreeView_Detail.h 		\
 	Utils.h 			\

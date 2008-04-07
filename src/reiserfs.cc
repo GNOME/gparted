@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,10 @@ FS reiserfs::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .get_label = FS::EXTERNAL ;
 	}
-	
+
+	if ( ! Glib::find_program_in_path( "reiserfstune" ) .empty() )
+		fs .set_label = FS::EXTERNAL ;
+
 	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -90,11 +93,7 @@ void reiserfs::get_label( Partition & partition )
 	//FIXME: i think running debugreiserfs takes a long time on filled filesystems, test for this...
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
-		char buf[512] ;
-		index = output .find( "LABEL" ) ;
-
-		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "LABEL: %512s", buf ) == 1 )
-			partition .label = buf ;
+		partition .label = Utils::regexp_label( output, "^label:[\t ]*(.*)" ) ;
 	}
 	else
 	{
@@ -106,9 +105,14 @@ void reiserfs::get_label( Partition & partition )
 	}
 }
 	
+bool reiserfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "reiserfstune --label \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkreiserfs -f --label \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

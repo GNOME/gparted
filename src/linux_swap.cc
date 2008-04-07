@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,10 @@ FS linux_swap::get_filesystem_support()
 		fs .grow = GParted::FS::EXTERNAL ;
 		fs .shrink = GParted::FS::EXTERNAL ;
 	}
-	
+
+	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
+
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	
@@ -45,11 +48,28 @@ void linux_swap::set_used_sectors( Partition & partition )
 
 void linux_swap::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "vol_id --label-raw " + partition .get_path(), output, error, true ) )
+	{
+		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool linux_swap::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
 }
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkswap " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkswap -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

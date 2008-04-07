@@ -19,6 +19,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <regex.h>
 
 namespace GParted
 {
@@ -260,6 +261,77 @@ int Utils::execute_command( const Glib::ustring & command,
 	error = std_error ;
 	
 	return exit_status ;
+}
+
+Glib::ustring Utils::regexp_label( const Glib::ustring & text,
+				const Glib::ustring & regular_sub_expression )
+{
+	//Extract text from a regular sub-expression.  E.g., "text we don't want (text we want)"
+	Glib::ustring label = "";
+	regex_t    preg ; 
+	int        nmatch = 2 ;
+	regmatch_t pmatch[  2 ] ;
+	int rc = regcomp( &preg, regular_sub_expression .c_str(), REG_EXTENDED | REG_ICASE | REG_NEWLINE ) ;
+	if (   ( rc == 0 ) //Reg compile OK
+		&& ( regexec( &preg, text .c_str(), nmatch, pmatch, 0 ) == 0 ) //Match found
+	   )
+	{
+		label = text .substr( pmatch[1].rm_so, pmatch[1].rm_eo - pmatch[1].rm_so ) ;
+	}
+	return label ;
+}
+
+Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_letter,
+		const Glib::ustring & device_path )
+{
+	//Create mtools config file
+	//NOTE:  file_name will be changed by the mkstemp() function call.
+	Glib::ustring err_msg = "" ;
+	int fd ;
+	fd = mkstemp( file_name ) ;
+	if( fd != -1 ) {
+		Glib::ustring fcontents =
+			_("# Temporary file created by gparted.  It may be deleted.\n") ;
+
+		//The following file contents are mtools keywords (see man mtools.conf)
+		fcontents = String::ucompose(
+						"drive %1: file=\"%2\"\nmtools_skip_check=1\n", drive_letter, device_path
+					);
+		
+		if( write( fd, fcontents .c_str(), fcontents .size() ) == -1 ) {
+			err_msg = String::ucompose(
+							_("Label operation failed:  Unable to write to temporary file %1.\n")
+							, file_name
+						) ;
+		}
+		close( fd ) ;
+	}
+	else
+	{
+		err_msg = String::ucompose(
+						_("Label operation failed:  Unable to create temporary file %1.\n")
+						, file_name
+					) ;
+	}
+	return err_msg ;
+}
+
+Glib::ustring Utils::delete_mtoolsrc_file( const char file_name[] )
+{
+	//Delete mtools config file
+	Glib::ustring err_msg = "" ;
+	remove( file_name ) ;
+	return err_msg ;
+}
+
+Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /* = " \t\r\n" */ )
+{
+	//Trim leading and trailing whitespace from string
+	Glib::ustring::size_type p2 = src.find_last_not_of(c);
+	if (p2 == Glib::ustring::npos) return Glib::ustring();
+	Glib::ustring::size_type p1 = src.find_first_not_of(c);
+	if (p1 == Glib::ustring::npos) p1 = 0;
+	return src.substr(p1, (p2-p1)+1);
 }
 
 } //GParted..

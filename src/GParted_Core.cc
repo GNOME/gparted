@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart 'plors' Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "../include/OperationDelete.h"
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
+#include "../include/OperationLabelPartition.h"
 
 #include "../include/ext2.h"
 #include "../include/ext3.h"
@@ -368,6 +369,9 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length(),
 					       operation ->operation_detail ) ;
 				break ;
+			case OPERATION_LABEL_PARTITION:
+				succes = label_partition( operation ->partition_new, operation ->operation_detail ) ;
+				break ;
 		}
 
 	if ( libparted_messages .size() > 0 )
@@ -527,10 +531,10 @@ void GParted_Core::init_maps()
 	std::ifstream proc_partitions( "/proc/partitions" ) ;
 	if ( proc_partitions )
 	{
-		char c_str[255] ;
+		char c_str[4096+1] ;
 		
 		while ( getline( proc_partitions, line ) )
-			if ( sscanf( line .c_str(), "%*d %*d %*d %255s", c_str ) == 1 )
+			if ( sscanf( line .c_str(), "%*d %*d %*d %4096s", c_str ) == 1 )
 			{
 				line = "/dev/" ; 
 				line += c_str ;
@@ -555,7 +559,7 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
 {
 	std::string line ;
-	char node[255], mountpoint[255] ;
+	char node[4096+1], mountpoint[4096+1] ;
 	unsigned int index ;
 	
 	std::ifstream file( filename .c_str() ) ;
@@ -563,7 +567,7 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 	{
 		while ( getline( file, line ) )
 			if ( Glib::str_has_prefix( line, "/" ) &&
-			     sscanf( line .c_str(), "%255s %255s", node, mountpoint ) == 2 &&
+			     sscanf( line .c_str(), "%4096s %4096s", node, mountpoint ) == 2 &&
 			     Glib::ustring( node ) != "/dev/root" )
 			{
 				line = mountpoint ;
@@ -1111,7 +1115,43 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
-	
+
+bool GParted_Core::label_partition( const Partition & partition, OperationDetail & operationdetail )	
+{
+	if( partition .label .empty() ) {
+		operationdetail .add_child( OperationDetail( String::ucompose(
+														_("Clear partition label on %1"),
+														partition .get_path()
+													 ) ) ) ;
+	} else {
+		operationdetail .add_child( OperationDetail( String::ucompose(
+														_("Set partition label to \"%1\" on %2"),
+														partition .label, partition .get_path()
+													 ) ) ) ;
+	}
+
+	bool succes = false ;
+	if ( partition .type != TYPE_EXTENDED )
+	{
+		switch( get_fs( partition .filesystem ) .set_label )
+		{
+			case FS::EXTERNAL:
+				succes = set_proper_filesystem( partition .filesystem ) &&
+					 p_filesystem ->set_label( partition, operationdetail .get_last_child() ) ;
+				break ;
+			case FS::LIBPARTED:
+				break ;
+
+			default:
+				break ;
+		}
+	}
+
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+
+	return succes ;	
+}
+
 bool GParted_Core::resize_move( const Device & device,
 				const Partition & partition_old,
 			  	Partition & partition_new,

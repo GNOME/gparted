@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -80,9 +80,19 @@ void hfs::get_label( Partition & partition )
 	}
 }
 
+bool hfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "hformat " + new_partition .get_path(), operationdetail ) ;
+	Glib::ustring cmd = "";
+	if( new_partition .label .empty() )
+		cmd = "hformat " + new_partition .get_path() ;
+	else
+		cmd = "hformat -l \"" + new_partition .label + "\" " + new_partition .get_path() ;
+	return ! execute_command( cmd , operationdetail ) ;
 }
 
 bool hfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,11 @@ void hfsplus::set_used_sectors( Partition & partition )
 
 void hfsplus::get_label( Partition & partition )
 {
+}
+
+bool hfsplus::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
 }
 
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )

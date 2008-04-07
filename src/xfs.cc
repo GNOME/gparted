@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,10 @@ FS xfs::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .get_label = FS::EXTERNAL ;
 	}
-	
+
+	if ( ! Glib::find_program_in_path( "xfs_admin" ) .empty() ) 	
+		fs .set_label = FS::EXTERNAL ;
+
 	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() ) 	
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -106,20 +109,9 @@ void xfs::set_used_sectors( Partition & partition )
 
 void xfs::get_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "xfs_db -c 'label' " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + partition .get_path(), output, error, true ) )
 	{
-		char buf[512] ;
-		if ( sscanf( output .c_str(), "label = %512s", buf ) == 1 )
-		{
-			partition .label = buf ;
-			
-			//remove "" from the label..
-			if ( partition .label .size() > 0 && partition .label[0] == '\"' )
-				partition .label = partition .label .substr( 1 ) ;
-
-			if ( partition .label .size() > 0 && partition .label[ partition .label .size() -1 ] == '\"' )
-				partition .label = partition .label .substr( 0, partition .label .size() -1 ) ;
-		}
+		partition .label = Utils::regexp_label( output, "^label = \"(.*)\"" ) ;
 	}
 	else
 	{
@@ -129,12 +121,25 @@ void xfs::get_label( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
+}
 
+bool xfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	Glib::ustring cmd = "" ;
+	if( partition .label .empty() )
+		cmd = String::ucompose( "xfs_admin -L -- %1", partition .get_path() ) ;
+	else
+		cmd = String::ucompose( "xfs_admin -L \"%1\" %2", partition .label, partition .get_path() ) ;
+	return ! execute_command( cmd, operationdetail ) ;
 }
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.xfs -f " + new_partition .get_path(), operationdetail ) ;
+	//mkfs.xfs will not create filesystem if label is longer than 12 characters, hence truncation.
+	Glib::ustring label = new_partition .label ;
+	if( label .length() > 12 )
+		label = label.substr( 0, 12 ) ;
+	return ! execute_command( "mkfs.xfs -f -L \"" + label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

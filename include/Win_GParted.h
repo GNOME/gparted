@@ -1,4 +1,4 @@
-/*	Copyright (C) 2004 Bart
+/*	Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -100,6 +100,9 @@ private:
 	void allow_check( bool state ) {
 		toggle_item( state, MENU_CHECK ) ; } 
 	
+	void allow_label_partition( bool state )	{
+		toggle_item( state, MENU_LABEL_PARTITION ) ; } 
+
 	void allow_info( bool state )	{
 		toggle_item( state, MENU_INFO ) ; } 
 
@@ -158,6 +161,7 @@ private:
 	void activate_disklabel() ;
 	void activate_manage_flags() ;
 	void activate_check() ;
+	void activate_label_partition() ;
 	
 	void activate_undo();
 	void remove_operation( int index = -1, bool remove_all = false ) ;
@@ -222,7 +226,8 @@ private:
         MENU_TOGGLE_MOUNT_SWAP,
         MENU_MOUNT,
         MENU_FLAGS,
-	MENU_CHECK,
+        MENU_CHECK,
+		MENU_LABEL_PARTITION,
         MENU_INFO,
         TOOLBAR_UNDO,
         TOOLBAR_APPLY ;

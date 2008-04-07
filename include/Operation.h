@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,12 +25,13 @@ namespace GParted
 {
 	//FIXME: stop using GParted:: in front of our own enums.. it's not necessary and clutters the code
 enum OperationType {
-        OPERATION_DELETE	= 0,
+	OPERATION_DELETE	= 0,
 	OPERATION_CHECK		= 1,
 	OPERATION_CREATE	= 2,
 	OPERATION_RESIZE_MOVE	= 3,
 	OPERATION_FORMAT	= 4,
-	OPERATION_COPY		= 5
+	OPERATION_COPY		= 5,
+	OPERATION_LABEL_PARTITION = 6
 };
 
 class Operation

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ public:
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void get_label( Partition & partition ) ;
+	bool set_label( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
 	bool copy( const Glib::ustring & src_part_path, 

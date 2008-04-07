@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -84,14 +84,10 @@ void reiser4::get_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		char buf[512] ;
-		index = output .find( "label" ) ;
-
+		Glib::ustring label = Utils::regexp_label( output, "^label:[\t ]*([^!]*)" ) ;
 		//FIXME: find a better way to see if label is empty.. imagine someone uses '<none>' as label.... ;)
-		if ( index < output .length() && 
-		     sscanf( output .substr( index ) .c_str(), "label: %512s", buf ) == 1 &&
-		     Glib::ustring( buf ) != "<none>" )
-			partition .label = buf ;
+		if( label != "<none>" ) 
+			partition .label = label ; 
 	}
 	else
 	{
@@ -103,9 +99,14 @@ void reiser4::get_label( Partition & partition )
 	}
 }
 
+bool reiser4::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --yes " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ; 
 }
 
 bool reiser4::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

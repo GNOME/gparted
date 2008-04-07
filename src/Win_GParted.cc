@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Dialog_Partition_Info.h"
+#include "../include/Dialog_Partition_Label.h"
 #include "../include/DialogManageFlags.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCheck.h"
@@ -30,6 +31,7 @@
 #include "../include/OperationDelete.h"
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
+#include "../include/OperationLabelPartition.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
@@ -59,6 +61,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
         MENU_MOUNT =
         MENU_FLAGS =
         MENU_INFO =
+        MENU_LABEL_PARTITION =
         TOOLBAR_UNDO =
         TOOLBAR_APPLY = -1 ;
 
@@ -339,6 +342,11 @@ void Win_GParted::init_partition_menu()
 			Gtk::Menu_Helpers::MenuElem( _("C_heck"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_check ) ) );
 	MENU_CHECK = index++ ;
+
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("_Label"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_label_partition ) ) );
+	MENU_LABEL_PARTITION = index++ ;
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
@@ -736,7 +744,8 @@ void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
-	allow_manage_flags( false ) ; allow_check( false ) ; allow_info( false ) ;
+	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_partition( false ) ;
+	allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
 		->set_label( _("_Unmount") ) ;
@@ -831,8 +840,12 @@ void Win_GParted::set_valid_operations()
 			
 		//only allow copying of real partitions
 		if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
-			allow_copy( true ) ;	
-			
+			allow_copy( true ) ;
+		
+		//only allow labelling of real partitions that support labelling
+		if ( selected_partition .status == GParted::STAT_REAL && fs .set_label )
+			allow_label_partition( true ) ;
+
 		if ( selected_partition .get_mountpoints() .size() )
 		{
 			allow_toggle_swap_mount_state( true ) ;
@@ -1138,10 +1151,11 @@ void Win_GParted::menu_help_about()
 	dialog .set_logo( this ->get_icon() ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
-	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort" ) ;
+	dialog .set_copyright( "Copyright © 2004-2008 Bart Hakvoort" ) ;
 
 	//authors
 	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
+	strings .push_back( "Curtis Gedak <gedakc@users.sf.net>" ) ;
 	dialog .set_authors( strings ) ;
 	strings .clear() ;
 
@@ -1784,6 +1798,36 @@ void Win_GParted::activate_check()
 	Add_Operation( operation ) ;
 }
 
+void Win_GParted::activate_label_partition() 
+{
+	Dialog_Partition_Label dialog( selected_partition );
+	dialog .set_transient_for( *this );
+
+	if (	( dialog .run() == Gtk::RESPONSE_OK )
+		&&	( dialog .get_new_label() != selected_partition .label ) ) 
+	{
+		dialog .hide() ;
+		//Make a duplicate of the selected partition (used in UNDO)
+		Partition part_temp ;
+		part_temp .Set( devices[ current_device ] .get_path(), 
+				selected_partition .get_path(), 
+				selected_partition .partition_number, 
+				selected_partition .type,
+				selected_partition .filesystem, 
+				selected_partition .sector_start,
+				selected_partition .sector_end, 
+				selected_partition .inside_extended, 
+				false ) ;
+
+		part_temp .label = dialog .get_new_label();
+
+		Operation * operation = new OperationLabelPartition( devices[ current_device ],
+									selected_partition, part_temp ) ;
+		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+		Add_Operation( operation ) ;
+	}
+}
+	
 void Win_GParted::activate_undo()
 {
 	//when undoing a creation it's safe to decrease the newcount by one

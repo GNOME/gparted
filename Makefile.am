@@ -19,4 +19,9 @@ DISTCLEANFILES =		\
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update		\
-	$(desktop_DATA)		
+	$(desktop_DATA)
+
+distclean-local:
+	rm -rf autom4te.cache
+	find . -name .svn | xargs rm -rf
+	find . -name .cvsignore | xargs rm -rf

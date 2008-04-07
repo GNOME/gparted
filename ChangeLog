@@ -3,6 +3,184 @@
 	* MAINTAINERS: New file (bug #524276).
 	* configure.in: Added 'sk' to ALL_LINGUAS.
 
+2008-03-26  Curtis Gedak  <gedakc@gmail.com>
+
+	* configure.in: gparted-0.3.6
+	  ===================================================
+
+2008-03-25  Curtis Gedak  <gedakc@gmail.com>
+
+	* configure.in: Added 'sk' to ALL_LINGUAS.
+	  Also added 'ko' and 'si' to ALL_LINGUAS.
+	
+2008-03-21  Curtis Gedak  <gedakc@gmail.com>
+
+	* include/OperationLabelPartition.h,
+	  src/OperationLabelPartition.cc: Updated to display label change
+	  - Label change now shown prior to apply button being pressed
+
+	* src/Win_GParted.cc:  Added partition duplication for use with UNDO
+
+	* src/Dialog_Partition_Label.cc: Changed label ADD button to OK
+	  - Added trim function to get_new_label()
+
+2008-03-19  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/linux_swap.cc: Fill in get_label() functionality using vol_id
+
+	* src/reiser4.cc: Enhanced get_label()
+	  - Read partition label up to the first exclamation mark.
+	    The exclamation mark is displayed by debugfs.reiser4 when
+	    the label is the maximum length of 16 characters.
+
+	* src/ext2.cc,
+	  src/ext3.cc,
+	  src/fat16.cc,
+	  src/fat32.cc,
+	  src/hfs.cc,
+	  src/jfs.cc,
+	  src/linux_swap.cc,
+	  src/ntfs.cc,
+	  src/reiser4.cc,
+	  src/reiserfs.cc,
+	  src/xfs.cc: Added partition labelling on filesystem creation
+
+2008-03-18  Curtis Gedak  <gedakc@gmail.com>
+
+	* include/Dialog_Partition_New.h,
+	  src/Dialog_Partition_New.cc: Added partition label entry text box
+
+	* src/jfs.cc,
+	  src/ntfs.cc,
+	  src/reiserfs.cc,
+	  src/xfs.cc: Filled in set_label() functionality
+
+2008-03-12  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/fat16.cc,
+	  src/fat32.cc: Filled in set_label() functionality
+
+	* src/Win_GParted.cc: trim partition label after input accepted
+
+	* include/Utils.h,
+	  src/Utils.cc: Added trim() function
+	  - removes leading and trailing whitespace from a string
+
+2008-03-06  Curtis Gedak  <gedakc@gmail.com>
+
+	* include/DialogFeatures.h,
+	  src/DialogFeatures.cc: Changed Read_Label to Label
+
+2008-03-05  Curtis Gedak  <gedakc@gmail.com>
+
+	* include/ext2.h,
+	  include/ext3.h,
+	  include/fat16.h,
+	  include/fat32.h,
+	  include/hfs.h,
+	  include/hfsplus.h,
+	  include/jfs.h,
+	  include/linux_swap.h,
+	  include/ntfs.h,
+	  include/reiser4.h,
+	  include/reiserfs.h,
+	  include/ufs.h
+	  include/xfs.h,
+	  include/filesystem.h,
+	  include/utils.h,
+	  src/ext2.cc,
+	  src/ext3.cc,
+	  src/fat16.cc,
+	  src/fat32.cc,
+	  src/hfs.cc,
+	  src/hfsplus.cc,
+	  src/jfs.cc,
+	  src/linux_swap.cc,
+	  src/ntfs.cc,
+	  src/reiser4.cc,
+	  src/reiserfs.cc,
+	  src/ufs.cc
+	  src/xfs.cc: Added set_label() function stub
+	  - Filled in set_label for ext2 and ext3
+	
+	* include/Makefile.am,
+	  include/GParted_Core.h,
+	  include/Operation.h,
+	  include/OperationLabelPartition.h,
+	  src/Makefile.am,
+	  src/GParted_Core.cc,
+	  src/OperationLabelPartition.cc: Created operation label partition
+
+2008-03-04  Curtis Gedak  <gedakc@gmail.com>
+
+	* include/Makefile.am,
+	  include/Win_GParted.h,
+	  include/Dialog_Partition_Label.h,
+	  src/Makefile.am,
+	  src/Win_GParted.cc,
+	  src/Dialog_Partition_Label.cc: Created partition label menu and dialog
+
+	* src/xfs.cc: Enhanced to read xfs labels while filesystem is mounted
+	  - Thanks to Gerald Neil for the tip about adding the -r flag.
+
+2008-02-19  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Dialog_Progress.cc: Fixed two English spelling mistakes 
+
+	* src/Dialog_Partition_Info.cc: Moved display of label closer to path
+
+	* src/fat16.cc,
+	  src/fat32.cc: Changed to use new MTools temporary file functions
+
+	* include/Utils.h,
+	  src/Utils.cc: Added create_mtoolsrc_file() and
+	    delete_mtoolsrc_file() to handle MTools temporary file
+
+2008-02-16  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Dialog_Partition_Info.cc: Added display of partition label
+
+2008-02-14  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Win_GParted.cc: Added my name to list of authors
+
+	* src/ext2.cc,
+	  src/ext3.cc,
+	  src/fat16.cc,
+	  src/fat32.cc,
+	  src/jfs.cc,
+	  src/ntfs.cc,
+	  src/reiser4.cc,
+	  src/reiserfs.cc,
+	  src/xfs.cc: Fixed bug in get_label()
+	  - now returns full text of label for labels that include spaces.
+
+	* include/Utils.h,
+	  src/Utils.cc: Added regexp_label() to extract partition label text
+
+2008-02-12  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/fat16.cc,
+	  src/fat32.cc: Added get_label() support using mtools mlabel command
+
+2008-02-07  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/GParted_Core.cc (GParted_Core::init_maps): Fix max path length
+	  - GParted would crash if realpath() returned more than 255 chars
+	  - Closes GParted bug #481768
+	  - Thanks to Deji Akingunola for this suggestion.
+	  (GParted_Core::read_mountpoints_from_file): Extend length of C strings
+	  - Change C strings from 255 to 4096 (current PATH_MAX in limits.h)
+	    to reduce chance of buffer overrun.
+	  - PATH_MAX name not used because manpage appears to indicate
+	    inconsistencies.
+
+2008-02-05  Curtis Gedak  <gedakc@gmail.com>
+
+	* Makefile.am: Enhanced distclean target
+	  - Now removes autom4te.cache, .svn, and .cvsignore
+	  - Thanks to Francois Dupoux for this suggestion.
+
 2008-02-01  Curtis Gedak  <gedakc@gmail.com>
 
 	* configure.in: gparted-0.3.5

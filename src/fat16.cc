@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,13 @@
  
 #include "../include/fat16.h"
 
+/*****
+//For some reason unknown, this works without these include statements.
+#include <stdlib.h>    // 'C' library for mkstemp()
+#include <unistd.h>    // 'C' library for write(), close()
+#include <stdio.h>     // 'C' library for remove()
+*****/
+
 namespace GParted
 {
 
@@ -35,7 +42,12 @@ FS fat16::get_filesystem_support()
 		fs .check = GParted::FS::EXTERNAL ;
 		fs .read = GParted::FS::EXTERNAL ;
 	}
-		
+
+	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
+		fs .get_label = FS::EXTERNAL ;
+		fs .set_label = FS::EXTERNAL ;
+	}
+
 	//resizing of start and endpoint are provided by libparted
 	fs .grow = GParted::FS::LIBPARTED ;
 	fs .shrink = GParted::FS::LIBPARTED ;
@@ -81,11 +93,66 @@ void fat16::set_used_sectors( Partition & partition )
 
 void fat16::get_label( Partition & partition )
 {
-}
+	//Create mtools config file
+	char fname[] = "/tmp/gparted-XXXXXXXX" ;
+	char dletter = 'H' ;
+	Glib::ustring err_msg = "" ;
+	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
+	if( err_msg.length() != 0 )
+		partition .messages .push_back( err_msg );
+
+	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -s %2:", fname, dletter ) ;
+
+	if ( ! Utils::execute_command( cmd, output, error, true ) )
+	{
+		partition .label = Utils::regexp_label( output, "Volume label is ([^(]*)" );
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 	
+	//Delete mtools config file
+	err_msg = Utils::delete_mtoolsrc_file( fname );
+}
+
+bool fat16::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	//Create mtools config file
+	char fname[] = "/tmp/gparted-XXXXXXXX" ;
+	char dletter = 'H' ;
+	Glib::ustring err_msg = "" ;
+	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
+
+	Glib::ustring cmd = "" ;
+	if( partition .label .empty() )
+		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -c %2:", fname, dletter ) ;
+	else
+		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel %2:\"%3\"", fname, dletter, partition .label ) ;
+	
+	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+	
+	int exit_status = Utils::execute_command( cmd, output, error ) ;
+
+	if ( ! output .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+
+	if ( ! error .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+
+	//Delete mtools config file
+	err_msg = Utils::delete_mtoolsrc_file( fname );
+
+	return ( exit_status == 0 );
+}
+
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F16 -v " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkdosfs -F16 -v -n \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool fat16::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -45,6 +45,7 @@ private:
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
 	Gtk::CheckButton checkbutton_round_to_cylinders ;
 	Gtk::Menu menu_type, menu_filesystem;
+	Gtk::Entry entry;
 
 	std::vector<FS> FILESYSTEMS ;
 	int cylinder_size ;

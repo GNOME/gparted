@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -31,9 +31,11 @@ FS jfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() )
 		fs .read = GParted::FS::EXTERNAL ;
 	
-	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() )
+	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
 		fs .get_label = FS::EXTERNAL ;
-	
+		fs .set_label = FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -106,20 +108,7 @@ void jfs::get_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
 	{
-		char buf[512] ;
-		index = output .find( "Volume label:" ) ;
-
-		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "Volume label: %512s", buf ) == 1 )
-		{
-			partition .label = buf ;
-
-			//remove '' from the label..
-			if ( partition .label .size() > 0 && partition .label[0] == '\'' )
-				partition .label = partition .label .substr( 1 ) ;
-
-			if ( partition .label .size() > 0 && partition .label[ partition .label .size() -1 ] == '\'' )
-				partition .label = partition .label .substr( 0, partition .label .size() -1 ) ;
-		}
+		partition .label = Utils::regexp_label( output, "^Volume label:[\t ]*'(.*)'" ) ;
 	}
 	else
 	{
@@ -131,9 +120,14 @@ void jfs::get_label( Partition & partition )
 	}
 }
 
+bool jfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "jfs_tune -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.jfs -q " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.jfs -q -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

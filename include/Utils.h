@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -93,6 +93,7 @@ struct FS
 	FILESYSTEM filesystem ;
 	Support read ; //can we get the amount of used sectors?
 	Support get_label ;
+	Support set_label ;
 	Support create ;
 	Support grow ;
 	Support shrink ;
@@ -105,7 +106,7 @@ struct FS
 	
 	FS()
 	{
-		read = get_label = create = grow = shrink = move = check = copy = NONE;
+		read = get_label = set_label = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
 	} 
 } ;
@@ -133,6 +134,13 @@ public:
 				    Glib::ustring & output,
 				    Glib::ustring & error,
 				    bool use_C_locale = false ) ;
+	static Glib::ustring regexp_label( const Glib::ustring & text,
+					const Glib::ustring & regular_sub_expression ) ;
+	static Glib::ustring create_mtoolsrc_file( char file_name[],
+                    const char drive_letter, const Glib::ustring & device_path ) ;
+	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;
+	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
+
 };
 	
 
