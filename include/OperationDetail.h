@@ -22,6 +22,7 @@
 #include <glibmm/markup.h>
 
 #include <vector>
+#include <ctime>
 
 namespace GParted
 {

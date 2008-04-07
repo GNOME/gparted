@@ -3,6 +3,53 @@
 	* MAINTAINERS: New file (bug #524276).
 	* configure.in: Added 'sk' to ALL_LINGUAS.
 
+2008-02-01  Curtis Gedak  <gedakc@gmail.com>
+
+	* configure.in: gparted-0.3.5
+	  ===================================================
+
+2008-02-01  Curtis Gedak  <gedakc@gmail.com>
+
+	* gparted.desktop.in: Rolled back HIG code changes to 0.3.3
+	  - Reopens bugs #440012, and #381557
+	  - Rolls back debian patch 01_fix-desktop.patch
+	  - moved config.in: gparted-0.3.5 entry from 2008-01-30
+	    to 2008-02-01 to improve readability of ChangeLog entries
+
+2008-01-29  Curtis Gedak  <gedakc@gmail.com>
+
+	* gparted.desktop.in: Updated to align with GNOME Human
+	                      Interface Guidelines 2.0
+	  - Closes bug #440012
+
+2008-01-28  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Win_GParted.cc: Applied debian patch 04_Win_GParted.cc.diff
+	  - Fixed "crashes when rescanning devices after any operation",
+	    closes: #446522. Patch by Denis Sirotkin <fechiny@gmail.com>
+
+	* src/GParted_Core.cc: Applied debian patch
+	                       03_fdi_robustification.patch
+	  - Install a signal handler for cleaning up the automount disabling
+	     FDI, so that it will be cleaned up on program crashes, too.
+	  - Use storage.automount_enabled_hint instead of volume.ignore for the
+	    automount disabling FDI. That way, the new drives will at least
+	    appear in Gnome and the user can mount them manually.
+	  - Patch by Martin Pitt <martin.pitt@ubuntu.com>
+	  - LP: #134712
+	  - Closes: 434268
+
+	* include/Utils.h,
+	  include/OperationDetail.h: Applied debian patch
+	                             02_fix-build-failure-with-g++-4.3.patch
+	  - Fix build failures with g++-4.3. LP: #138584
+
+	* gparted.desktop.in: Applied debian patch 01_fix-desktop.patch
+	  - don't specify the encoding that's deprecated, update the categories
+	    and set the translation domain (LP: #145202)
+	  - Changes name to `Partition Editor`
+	  - Enables gksu to run gparted with
+
 2007-10-14  Yannig Marchegay  <yannig@marchegay.org>
 
 	* configure.in: Added 'oc' to ALL_LINGUAS.

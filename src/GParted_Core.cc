@@ -38,12 +38,21 @@
 #include "../include/ufs.h"
 
 #include <cerrno>
+#include <cstdio>
+#include <csignal>
 #include <sys/statvfs.h>	
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
 namespace GParted
 {
+
+// Clean up the fdi when terminating
+void sig_fdi_cleanup( int signum )
+{
+	remove( "/usr/share/hal/fdi/policy/gparted-disable-automount.fdi" );
+	raise( signum );
+}
 
 GParted_Core::GParted_Core() 
 {
@@ -53,6 +62,29 @@ GParted_Core::GParted_Core()
 	p_filesystem = NULL ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
+
+	//make sure that the fdi is cleaned up on all but the most forceful
+	//program exits
+	struct sigaction sa;
+	sa.sa_handler = sig_fdi_cleanup;
+	sigemptyset( &sa.sa_mask );
+	sa.sa_flags = SA_RESETHAND;
+	if( sigaction( SIGHUP, &sa, NULL ) == -1 ||
+	    sigaction( SIGINT, &sa, NULL ) == -1 ||
+	    sigaction( SIGQUIT, &sa, NULL ) == -1 ||
+	    sigaction( SIGILL, &sa, NULL ) == -1 ||
+	    sigaction( SIGABRT, &sa, NULL ) == -1 ||
+	    sigaction( SIGFPE, &sa, NULL ) == -1 ||
+	    sigaction( SIGSEGV, &sa, NULL ) == -1 ||
+	    sigaction( SIGPIPE, &sa, NULL ) == -1 ||
+	    sigaction( SIGALRM, &sa, NULL ) == -1 ||
+	    sigaction( SIGTERM, &sa, NULL ) == -1 ||
+	    sigaction( SIGUSR1, &sa, NULL ) == -1 ||
+	    sigaction( SIGUSR2, &sa, NULL ) == -1 ||
+	    sigaction( SIGBUS, &sa, NULL ) == -1 ||
+	    sigaction( SIGXCPU, &sa, NULL ) == -1 ||
+	    sigaction( SIGXFSZ, &sa, NULL ) == -1 )
+		perror( "Could not set signal handler" );
 	
 	//disable automount //FIXME: temporary hack, till i find a better solution...
 	std::ofstream fdi_file( "/usr/share/hal/fdi/policy/gparted-disable-automount.fdi" ) ;
@@ -60,8 +92,8 @@ GParted_Core::GParted_Core()
 	{
 		fdi_file << "<deviceinfo version='0.2'>" ;
 		fdi_file << "<device>" ;
-		fdi_file << "<match key='@block.storage_device:storage.hotpluggable' bool='true'>" ;
-		fdi_file << "<merge key='volume.ignore' type='bool'>true</merge>" ;
+		fdi_file << "<match key='storage.hotpluggable' bool='true'>" ;
+		fdi_file << "<merge key='storage.automount_enabled_hint' type='bool'>false</merge>" ;
 		fdi_file << "</match>" ;
 		fdi_file << "</device>" ;
 		fdi_file << "</deviceinfo>" ;

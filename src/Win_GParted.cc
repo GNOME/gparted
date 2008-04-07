@@ -916,8 +916,13 @@ void Win_GParted::clear_operationslist()
 
 void Win_GParted::combo_devices_changed()
 {
+	unsigned int old_current_device = current_device;
 	//set new current device
 	current_device = combo_devices .get_active_row_number() ;
+	if ( current_device == (unsigned int) -1 )
+		current_device = old_current_device;
+	if ( current_device >= devices .size() )
+		current_device = 0 ;
 	set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .get_path() ) );
 	
 	//refresh label_device_info

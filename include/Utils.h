@@ -30,6 +30,7 @@
 #include <glibmm/ustring.h>
 
 #include <iostream>
+#include <ctime>
 
 namespace GParted
 {
