@@ -26,7 +26,7 @@ Dialog_Partition_Label::Dialog_Partition_Label( const Partition & partition )
 
 	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
-	this ->set_size_request( 300, 70 ) ;
+	this ->set_size_request( 300, 80 ) ;
 	
 	/*TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3 */
 	this ->set_title( String::ucompose( _("Set partition label on %1"), partition .get_path() ) );

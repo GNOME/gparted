@@ -48,9 +48,9 @@ void linux_swap::set_used_sectors( Partition & partition )
 
 void linux_swap::get_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "vol_id --label-raw " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
+		partition .label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
 	}
 	else
 	{
