@@ -7,7 +7,7 @@ AM_CFLAGS = -Wall
 
 AM_CXXFLAGS = -Wall	
 
-bin_PROGRAMS = gparted
+sbin_PROGRAMS = gparted
 
 gparted_SOURCES = \
 	Device.cc			\
