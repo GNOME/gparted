@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-06 15:19+0200\n"
-"PO-Revision-Date: 2008-04-05 10:38+0200\n"
+"POT-Creation-Date: 2008-04-09 17:14+0200\n"
+"PO-Revision-Date: 2008-04-09 16:53+0200\n"
 "Last-Translator: Pavol Klačanský <pavolzetor@gmail.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural= (n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1135
+#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1153
 msgid "GNOME Partition Editor"
 msgstr "GNOME editor oddielov"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:66
-#: ../src/Win_GParted.cc:1011 ../src/Win_GParted.cc:1132
+#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:69
+#: ../src/Win_GParted.cc:1029 ../src/Win_GParted.cc:1150
 msgid "GParted"
 msgstr "GParted"
 
@@ -45,7 +45,7 @@ msgstr "Voľné miesto za oddielom (MiB):"
 msgid "Resize"
 msgstr "Zmeniť veľkosť"
 
-#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:218
+#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:221
 msgid "Resize/Move"
 msgstr "Zmeniť veľkosť/presunúť"
 
@@ -90,7 +90,7 @@ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 msgstr "UPOZORNENIE: Vytváranie novej menovky disku zmaže všetky údaje na %1!"
 
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1730
+#: ../src/Win_GParted.cc:1749
 msgid "Create"
 msgstr "Vytvoriť"
 
@@ -114,7 +114,7 @@ msgid "Filesystem:"
 msgstr "Súborový systém:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:409
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:417
 msgid "Size:"
 msgstr "Veľkosť:"
 
@@ -133,7 +133,7 @@ msgid "Flags:"
 msgstr "Označenia:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:417
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:425
 msgid "Path:"
 msgstr "Umiestnenie:"
 
@@ -165,20 +165,31 @@ msgstr "Neaktívny"
 msgid "Not mounted"
 msgstr "Nepripojené"
 
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:112
+msgid "Label:"
+msgstr "Menovka:"
+
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:266
+#: ../src/Dialog_Partition_Info.cc:279
 msgid "First Sector:"
 msgstr "Prvý sektor:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:276
+#: ../src/Dialog_Partition_Info.cc:289
 msgid "Last Sector:"
 msgstr "Posledný sektor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:286 ../src/Win_GParted.cc:470
+#: ../src/Dialog_Partition_Info.cc:299 ../src/Win_GParted.cc:478
 msgid "Total Sectors:"
 msgstr "Celkovo sektorov:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+msgid "Set partition label on %1"
+msgstr "Nastaviť menovku oddielu na %1"
 
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:26
@@ -209,7 +220,7 @@ msgstr "Logický oddiel"
 msgid "Extended Partition"
 msgstr "Rozširujúci oddiel"
 
-#: ../src/Dialog_Partition_New.cc:160
+#: ../src/Dialog_Partition_New.cc:172
 msgid "New Partition #%1"
 msgstr "Nový oddiel"
 
@@ -256,7 +267,7 @@ msgid "Operation canceled"
 msgstr "Operácia bola zrušená"
 
 #: ../src/Dialog_Progress.cc:253
-msgid "All operations succesfully completed"
+msgid "All operations successfully completed"
 msgstr "Všetky operácie boli úspešne dokončené"
 
 #: ../src/Dialog_Progress.cc:256
@@ -339,9 +350,9 @@ msgstr "Kopírovať"
 msgid "Check"
 msgstr "Skontrolovať"
 
-#: ../src/DialogFeatures.cc:42
-msgid "Read Label"
-msgstr "Čítať menovku"
+#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "Menovka"
 
 #: ../src/DialogFeatures.cc:57
 msgid "Available"
@@ -355,339 +366,347 @@ msgstr "Nedostupná"
 msgid "Manage flags on %1"
 msgstr "Spravovať označenia na %1"
 
-#: ../src/GParted_Core.cc:217
+#: ../src/GParted_Core.cc:250
 msgid "unrecognized"
 msgstr "neznámy"
 
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:305
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Oddiel nemôže mať dĺžku %1 sektorov"
 
-#: ../src/GParted_Core.cc:280
+#: ../src/GParted_Core.cc:313
 msgid ""
 "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr ""
 
-#: ../src/GParted_Core.cc:343
+#: ../src/GParted_Core.cc:379
 msgid "libparted messages"
 msgstr "správa libparted"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:701
+#: ../src/GParted_Core.cc:737
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Nepodarilo sa zistiť súborový systém! Možné dôvody:"
 
-#: ../src/GParted_Core.cc:703
+#: ../src/GParted_Core.cc:739
 msgid "The filesystem is damaged"
 msgstr "Súborový systém je poškodený"
 
-#: ../src/GParted_Core.cc:705
+#: ../src/GParted_Core.cc:741
 msgid "The filesystem is unknown to GParted"
 msgstr "Súborový systém je neznámy v GParted"
 
-#: ../src/GParted_Core.cc:707
+#: ../src/GParted_Core.cc:743
 msgid "There is no filesystem available (unformatted)"
 msgstr "Nie je dostupný žiadny súborový systém (nenaformátované)"
 
-#: ../src/GParted_Core.cc:803
+#: ../src/GParted_Core.cc:839
 msgid "Unable to find mountpoint"
 msgstr "Nepodarilo sa nájsť prípojný bod"
 
-#: ../src/GParted_Core.cc:821
+#: ../src/GParted_Core.cc:857
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Nepodarilo sa prečítať obsah tohto súborového systému!"
 
-#: ../src/GParted_Core.cc:823
+#: ../src/GParted_Core.cc:859
 msgid "Because of this some operations may be unavailable."
 msgstr "Kvôli tomu môžu byť nedostupné niektoré operácie."
 
-#: ../src/GParted_Core.cc:931
+#: ../src/GParted_Core.cc:967
 msgid "create empty partition"
 msgstr "vytvoriť prázdny oddiel"
 
-#: ../src/GParted_Core.cc:999 ../src/GParted_Core.cc:2034
+#: ../src/GParted_Core.cc:1035 ../src/GParted_Core.cc:2106
 msgid "path: %1"
 msgstr "umiestnenie: %s"
 
-#: ../src/GParted_Core.cc:1000 ../src/GParted_Core.cc:2035
+#: ../src/GParted_Core.cc:1036 ../src/GParted_Core.cc:2107
 msgid "start: %1"
 msgstr "začiatok: %1"
 
-#: ../src/GParted_Core.cc:1001 ../src/GParted_Core.cc:2036
+#: ../src/GParted_Core.cc:1037 ../src/GParted_Core.cc:2108
 msgid "end: %1"
 msgstr "koniec: %1"
 
-#: ../src/GParted_Core.cc:1002 ../src/GParted_Core.cc:2037
+#: ../src/GParted_Core.cc:1038 ../src/GParted_Core.cc:2109
 msgid "size: %1 (%2)"
 msgstr "veľkosť: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1031 ../src/linux_swap.cc:58 ../src/xfs.cc:230
+#: ../src/GParted_Core.cc:1067 ../src/linux_swap.cc:78 ../src/xfs.cc:235
 msgid "create new %1 filesystem"
 msgstr "vytvoriť nový súboprový systém %1"
 
-#: ../src/GParted_Core.cc:1064
+#: ../src/GParted_Core.cc:1100
 msgid "delete partition"
 msgstr "odstrániť oddiel"
 
-#: ../src/GParted_Core.cc:1132
+#: ../src/GParted_Core.cc:1123
+msgid "Clear partition label on %1"
+msgstr "Vymazať menovku oddielu na %1"
+
+#: ../src/GParted_Core.cc:1128
+msgid "Set partition label to \"%1\" on %2"
+msgstr "Nastaviť menovku oddielu %2 na \"%1\""
+
+#: ../src/GParted_Core.cc:1204
 msgid "moving requires old and new length to be the same"
 msgstr "presúvanie požaduje aby bola stará a nová dĺžka rovnaká"
 
-#: ../src/GParted_Core.cc:1149
+#: ../src/GParted_Core.cc:1221
 msgid "rollback last change to the partitiontable"
 msgstr "vrátiť späť poslednú zmenu na tabuľke oddielov"
 
-#: ../src/GParted_Core.cc:1178
+#: ../src/GParted_Core.cc:1250
 msgid "move filesystem to the left"
 msgstr "presunúť súborový systém doľava"
 
-#: ../src/GParted_Core.cc:1180
+#: ../src/GParted_Core.cc:1252
 msgid "move filesystem to the right"
 msgstr "presunúť súborový systém doprava"
 
-#: ../src/GParted_Core.cc:1183
+#: ../src/GParted_Core.cc:1255
 msgid "move filesystem"
 msgstr "presunúť súborový systém"
 
-#: ../src/GParted_Core.cc:1185
+#: ../src/GParted_Core.cc:1257
 msgid ""
 "new and old filesystem have the same positition. skipping this operation"
 msgstr ""
 "nový a starý súborový systém má rovnakú pozíciu. preskakuje sa táto operácia"
 
-#: ../src/GParted_Core.cc:1204
+#: ../src/GParted_Core.cc:1276
 msgid "perform real move"
 msgstr "vykonať skutočný presun"
 
-#: ../src/GParted_Core.cc:1246
+#: ../src/GParted_Core.cc:1318
 msgid "using libparted"
 msgstr "používa libparted"
 
-#: ../src/GParted_Core.cc:1286
+#: ../src/GParted_Core.cc:1358
 msgid "resizing requires old and new start to be the same"
 msgstr "zmena veľkosti požaduje aby bol starý a nový začiatok rovnaký"
 
-#: ../src/GParted_Core.cc:1351
+#: ../src/GParted_Core.cc:1423
 msgid "resize/move partition"
 msgstr "zmeniť veľkosť/presunúť oddiel"
 
-#: ../src/GParted_Core.cc:1354
+#: ../src/GParted_Core.cc:1426
 msgid "move partition to the right"
 msgstr "presunúť oddiel doprava"
 
-#: ../src/GParted_Core.cc:1357
+#: ../src/GParted_Core.cc:1429
 msgid "move partition to the left"
 msgstr "presunúť oddiel doľava"
 
-#: ../src/GParted_Core.cc:1360
+#: ../src/GParted_Core.cc:1432
 msgid "grow partition from %1 to %2"
 msgstr "zväčšiť oddiel z %1 na %2"
 
-#: ../src/GParted_Core.cc:1363
+#: ../src/GParted_Core.cc:1435
 msgid "shrink partition from %1 to %2"
 msgstr "zmenšiť oddiel z %1 na %2"
 
-#: ../src/GParted_Core.cc:1366
+#: ../src/GParted_Core.cc:1438
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "presunúť oddiel doprava a zväčšiť ho z %1 na %2"
 
-#: ../src/GParted_Core.cc:1369
+#: ../src/GParted_Core.cc:1441
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "presunúť oddiel doprava a zmenšiť ho z %1 na %2"
 
-#: ../src/GParted_Core.cc:1372
+#: ../src/GParted_Core.cc:1444
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "presunúť oddiel doľava a zväčšiť ho z %1 na %2"
 
-#: ../src/GParted_Core.cc:1375
+#: ../src/GParted_Core.cc:1447
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "presunúť oddiel doľava a zmenšiť ho z %1 na %2"
 
-#: ../src/GParted_Core.cc:1390
+#: ../src/GParted_Core.cc:1462
 msgid ""
 "new and old partition have the same size and position. skipping this "
 "operation"
 msgstr ""
 "nový a starý oddiel ma rovnakú veľkosť a pozíciu, preskakuje sa táto operácia"
 
-#: ../src/GParted_Core.cc:1400
+#: ../src/GParted_Core.cc:1472
 msgid "old start: %1"
 msgstr "starý začiatok: %1"
 
-#: ../src/GParted_Core.cc:1401
+#: ../src/GParted_Core.cc:1473
 msgid "old end: %1"
 msgstr "starý koniec: %1"
 
-#: ../src/GParted_Core.cc:1402
+#: ../src/GParted_Core.cc:1474
 msgid "old size: %1 (%2)"
 msgstr "stará veľkosť: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1457 ../src/GParted_Core.cc:2115
+#: ../src/GParted_Core.cc:1529 ../src/GParted_Core.cc:2187
 msgid "new start: %1"
 msgstr "nový začiatok: %1"
 
-#: ../src/GParted_Core.cc:1458 ../src/GParted_Core.cc:2116
+#: ../src/GParted_Core.cc:1530 ../src/GParted_Core.cc:2188
 msgid "new end: %1"
 msgstr "nový koniec: %1"
 
-#: ../src/GParted_Core.cc:1459 ../src/GParted_Core.cc:2117
+#: ../src/GParted_Core.cc:1531 ../src/GParted_Core.cc:2189
 msgid "new size: %1 (%2)"
 msgstr "nová veľkosť: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1483
+#: ../src/GParted_Core.cc:1555
 msgid "shrink filesystem"
 msgstr "zmenšiť súborový systém"
 
-#: ../src/GParted_Core.cc:1487
+#: ../src/GParted_Core.cc:1559
 msgid "grow filesystem"
 msgstr "zväčšiť súborový systém"
 
-#: ../src/GParted_Core.cc:1490
+#: ../src/GParted_Core.cc:1562
 msgid "resize filesystem"
 msgstr "zmeniť veľkosť súborového systému"
 
-#: ../src/GParted_Core.cc:1493
+#: ../src/GParted_Core.cc:1565
 msgid "new and old filesystem have the same size. skipping this operation"
 msgstr ""
 "nový a starý súborový systém má rovnakú veľkosť. preskakuje sa táto operácia"
 
-#: ../src/GParted_Core.cc:1528
+#: ../src/GParted_Core.cc:1600
 msgid "grow filesystem to fill the partition"
 msgstr "zväčšiť súborový systém na zaplenie oddielu"
 
-#: ../src/GParted_Core.cc:1533
+#: ../src/GParted_Core.cc:1605
 msgid "growing is not available for this filesystem"
 msgstr "zväčšovanie nie je dostupné pre tento súborový systém"
 
-#: ../src/GParted_Core.cc:1552
+#: ../src/GParted_Core.cc:1624
 msgid "the destination is smaller than the sourcepartition"
 msgstr "cieľ je menší ako zdrojový oddiel"
 
-#: ../src/GParted_Core.cc:1566
+#: ../src/GParted_Core.cc:1638
 msgid "copy filesystem of %1 to %2"
 msgstr "kopírovať súborový systém z %1 do %2"
 
-#: ../src/GParted_Core.cc:1610
+#: ../src/GParted_Core.cc:1682
 msgid "perform readonly test"
 msgstr "vykonať len skúšku čítania"
 
-#: ../src/GParted_Core.cc:1658
+#: ../src/GParted_Core.cc:1730
 msgid "using internal algorithm"
 msgstr "používa vnutorný algoritmus"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:1732
 msgid "read %1 sectors"
 msgstr "čítať %1 sektorov"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:1732
 msgid "copy %1 sectors"
 msgstr "kopírovať %1 sektorov"
 
-#: ../src/GParted_Core.cc:1662
+#: ../src/GParted_Core.cc:1734
 msgid "finding optimal blocksize"
 msgstr "zisťuje sa optimálna veľkosť bloku"
 
-#: ../src/GParted_Core.cc:1704
+#: ../src/GParted_Core.cc:1776
 msgid "%1 seconds"
 msgstr "%1 sekúnd"
 
-#: ../src/GParted_Core.cc:1716
+#: ../src/GParted_Core.cc:1788
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "optimálna veľkosť bloku je %1 sektorov (%2)"
 
-#: ../src/GParted_Core.cc:1733
+#: ../src/GParted_Core.cc:1805
 msgid "%1 sectors read"
 msgstr "%1 sektorov prečítaných"
 
-#: ../src/GParted_Core.cc:1733
+#: ../src/GParted_Core.cc:1805
 msgid "%1 sectors copied"
 msgstr "%1 sektorov skopírovaných"
 
-#: ../src/GParted_Core.cc:1744
+#: ../src/GParted_Core.cc:1816
 msgid "rollback last transaction"
 msgstr "vrátiť späť poslednú operáciu"
 
-#: ../src/GParted_Core.cc:1771
+#: ../src/GParted_Core.cc:1843
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "skontrolovať súborový systém v %1 na chyby a (ak je možné) opraviť ich"
 
-#: ../src/GParted_Core.cc:1779
+#: ../src/GParted_Core.cc:1851
 msgid "checking is not available for this filesystem"
 msgstr "kontrolovanie nie je dostupné pre tento súborový systém"
 
-#: ../src/GParted_Core.cc:1805
+#: ../src/GParted_Core.cc:1877
 msgid "set partitiontype on %1"
 msgstr "nastaviť typ oddielu na %1"
 
-#: ../src/GParted_Core.cc:1827
+#: ../src/GParted_Core.cc:1899
 msgid "new partitiontype: %1"
 msgstr "nový typ oddielu: %1"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:1926
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 z %2 prečítaných (%3 zostáva)"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:1926
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 z %2 skopírovaných (%3 zostáva)"
 
-#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
+#: ../src/GParted_Core.cc:1932 ../src/GParted_Core.cc:2027
 msgid "%1 of %2 read"
 msgstr "%1 z %2 prečítaných"
 
-#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
+#: ../src/GParted_Core.cc:1932 ../src/GParted_Core.cc:2027
 msgid "%1 of %2 copied"
 msgstr "%1 z %2 skopírovaných"
 
-#: ../src/GParted_Core.cc:1878
+#: ../src/GParted_Core.cc:1950
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "čítať %1 sektorov používajúcich veľkosť bloku z %2 sektorov"
 
-#: ../src/GParted_Core.cc:1881
+#: ../src/GParted_Core.cc:1953
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopírovať %1 sektorov používajúcich veľkosť bloku z %2 sektorov"
 
-#: ../src/GParted_Core.cc:2000
+#: ../src/GParted_Core.cc:2072
 msgid "Error while writing block at sector %1"
 msgstr "Chyba počas zapisovania blokov v sektore %1"
 
-#: ../src/GParted_Core.cc:2003
+#: ../src/GParted_Core.cc:2075
 msgid "Error while reading block at sector %1"
 msgstr "Chyba počas čítania blokov v sektore %1"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2085
 msgid "calibrate %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2060
+#: ../src/GParted_Core.cc:2132
 msgid "calculate new size and position of %1"
 msgstr "vypočítať novú veľkosť a pozíciu %1"
 
-#: ../src/GParted_Core.cc:2064
+#: ../src/GParted_Core.cc:2136
 msgid "requested start: %1"
 msgstr "požadovaný začiatok: %1"
 
-#: ../src/GParted_Core.cc:2065
+#: ../src/GParted_Core.cc:2137
 msgid "requested end: %1"
 msgstr "požadovaný koniec: %1"
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2138
 msgid "requested size: %1 (%2)"
 msgstr "požadovaná veľkosť: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2189
+#: ../src/GParted_Core.cc:2261
 msgid "updating bootsector of %1 filesystem on %2"
 msgstr "aktualizuje sa sektor zavádzača súborového systému %1 na %2"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
 msgid "_Undo Last Operation"
 msgstr "Vrátiť _späť poslednú operáciu"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
 msgid "_Clear All Operations"
 msgstr "_Vymazať všetky operácie"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
 msgid "_Apply All Operations"
 msgstr "_Aplikovať všetky operácie"
 
@@ -724,6 +743,16 @@ msgstr "Odstrániť %1 (%2, %3) z %4"
 #: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
 msgstr "Formátovať %1 ako %2"
+
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+msgid "Clear Partition Label on %1"
+msgstr "Vymazať menovku oddielu na %1"
+
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+msgid "Set Partition Label \"%1\" on %2"
+msgstr "Nastaviť menovku oddielu \"%1\" na %2"
 
 #: ../src/OperationResizeMove.cc:75
 msgid "resize/move %1"
@@ -776,10 +805,6 @@ msgstr "Oddiel"
 msgid "Mountpoint"
 msgstr "Prípojný bod"
 
-#: ../src/TreeView_Detail.cc:37
-msgid "Label"
-msgstr "Menovka"
-
 #: ../src/TreeView_Detail.cc:38
 msgid "Size"
 msgstr "Veľkosť"
@@ -796,227 +821,245 @@ msgstr "Voľných"
 msgid "Flags"
 msgstr "Označenia"
 
-#: ../src/Utils.cc:110
+#: ../src/Utils.cc:111
 msgid "unallocated"
 msgstr "nealokované"
 
-#: ../src/Utils.cc:111
+#: ../src/Utils.cc:112
 msgid "unknown"
 msgstr "neznáme"
 
-#: ../src/Utils.cc:112
+#: ../src/Utils.cc:113
 msgid "unformatted"
 msgstr "nenaformátované"
 
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:128
 msgid "used"
 msgstr "použitých"
 
-#: ../src/Utils.cc:128
+#: ../src/Utils.cc:129
 msgid "unused"
 msgstr "voľných"
 
-#: ../src/Utils.cc:143
+#: ../src/Utils.cc:144
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:148
+#: ../src/Utils.cc:149
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:153
+#: ../src/Utils.cc:154
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:158
+#: ../src/Utils.cc:159
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:163
+#: ../src/Utils.cc:164
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:133
+#: ../src/Utils.cc:291
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr "# Dočasný súbor vytvorený gparted.  Môže byť odstránený.\n"
+
+#: ../src/Utils.cc:300
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr ""
+"Operácia s menovkou zlyhala:  Nepodarilo sa zapísať do dočasného súbora %1.\n"
+
+#: ../src/Utils.cc:309
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr ""
+"Operácia s menovkou zlyhala:  Nepodarilo sa vytvoriť dočasný súbor %1.\n"
+
+#: ../src/Win_GParted.cc:136
 msgid "_Refresh Devices"
 msgstr "_Obnoviť zariadenia"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:142
 msgid "_Devices"
 msgstr "Z_ariadenia"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:146
 msgid "_Show Features"
 msgstr "_Zobraziť funkcie"
 
-#: ../src/Win_GParted.cc:147
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:169
 msgid "_Edit"
 msgstr "_Upraviť"
 
-#: ../src/Win_GParted.cc:171
+#: ../src/Win_GParted.cc:174
 msgid "Device _Information"
 msgstr "_Informácie o zariadení"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:176
 msgid "Pending _Operations"
 msgstr "Čakajúce _operácie"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "_Zobraziť"
 
-#: ../src/Win_GParted.cc:178
+#: ../src/Win_GParted.cc:181
 msgid "_Set Disklabel"
 msgstr "_Nastaviť menovku disku"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:183
 msgid "_Device"
 msgstr "Z_ariadenie"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:187
 msgid "_Partition"
 msgstr "O_ddiel"
 
-#: ../src/Win_GParted.cc:193
+#: ../src/Win_GParted.cc:196
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: ../src/Win_GParted.cc:207
+#: ../src/Win_GParted.cc:210
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Vytvoriť nový oddiel v označenom nealokovanom mieste"
 
-#: ../src/Win_GParted.cc:212
+#: ../src/Win_GParted.cc:215
 msgid "Delete the selected partition"
 msgstr "Odstrániť označený oddiel"
 
-#: ../src/Win_GParted.cc:222
+#: ../src/Win_GParted.cc:225
 msgid "Resize/Move the selected partition"
 msgstr "Zmeniť veľkosť/presunúť označený oddiel"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:234
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopírovať označené oddiely do schránky"
 
-#: ../src/Win_GParted.cc:236
+#: ../src/Win_GParted.cc:239
 msgid "Paste the partition from the clipboard"
 msgstr "Vložiť oddiel zo schránky"
 
-#: ../src/Win_GParted.cc:246
+#: ../src/Win_GParted.cc:249
 msgid "Undo Last Operation"
 msgstr "Vrátiť späť poslednú operáciu"
 
-#: ../src/Win_GParted.cc:253
+#: ../src/Win_GParted.cc:256
 msgid "Apply All Operations"
 msgstr "Aplikovať všetky operácie"
 
-#: ../src/Win_GParted.cc:288
+#: ../src/Win_GParted.cc:291
 msgid "_Resize/Move"
 msgstr "_Zmeniť veľkosť/presunúť"
 
-#: ../src/Win_GParted.cc:312
+#: ../src/Win_GParted.cc:315
 msgid "_Format to"
 msgstr "_Formátovať na"
 
-#: ../src/Win_GParted.cc:321
+#: ../src/Win_GParted.cc:324
 msgid "Unmount"
 msgstr "Odpojiť"
 
-#: ../src/Win_GParted.cc:327
+#: ../src/Win_GParted.cc:330
 msgid "_Mount on"
 msgstr "_Pripojiť k"
 
-#: ../src/Win_GParted.cc:334
+#: ../src/Win_GParted.cc:337
 msgid "M_anage Flags"
 msgstr "S_pravovať označenia"
 
-#: ../src/Win_GParted.cc:339
+#: ../src/Win_GParted.cc:342
 msgid "C_heck"
 msgstr "S_kontrolovať"
 
-#: ../src/Win_GParted.cc:393
+#: ../src/Win_GParted.cc:347
+msgid "_Label"
+msgstr "_Menovka"
+
+#: ../src/Win_GParted.cc:401
 msgid "Device Information"
 msgstr "Informácie o zariadení"
 
 #. model
-#: ../src/Win_GParted.cc:401
+#: ../src/Win_GParted.cc:409
 msgid "Model:"
 msgstr "Model:"
 
 #. disktype
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:446
 msgid "DiskLabelType:"
 msgstr "Typ menovky disku:"
 
 #. heads
-#: ../src/Win_GParted.cc:446
+#: ../src/Win_GParted.cc:454
 msgid "Heads:"
 msgstr "Hlavičky:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:454
+#: ../src/Win_GParted.cc:462
 msgid "Sectors/Track:"
 msgstr "Sektory/stopa:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:462
+#: ../src/Win_GParted.cc:470
 msgid "Cylinders:"
 msgstr "Cylindre:"
 
-#: ../src/Win_GParted.cc:637
+#: ../src/Win_GParted.cc:645
 msgid "Could not add this operation to the list."
 msgstr "Nemohla byť pridaná do zoznamu táto operácia."
 
-#: ../src/Win_GParted.cc:663
+#: ../src/Win_GParted.cc:671
 msgid "%1 operations pending"
 msgstr "%1 operácií čaká"
 
-#: ../src/Win_GParted.cc:665
+#: ../src/Win_GParted.cc:673
 msgid "1 operation pending"
 msgstr "1 operácia čaká"
 
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:721
 msgid "Quit GParted?"
 msgstr "Ukončiť GParted?"
 
-#: ../src/Win_GParted.cc:720
+#: ../src/Win_GParted.cc:728
 msgid "%1 operations are currently pending."
 msgstr "%1 operácií práve čaká."
 
-#: ../src/Win_GParted.cc:723
+#: ../src/Win_GParted.cc:731
 msgid "1 operation is currently pending."
 msgstr "1 operácia práve čaká."
 
-#: ../src/Win_GParted.cc:742
+#: ../src/Win_GParted.cc:751
 msgid "_Unmount"
 msgstr "_Odpojiť"
 
-#: ../src/Win_GParted.cc:767
+#: ../src/Win_GParted.cc:776
 msgid "_Swapoff"
 msgstr "_Vypnúť swap"
 
-#: ../src/Win_GParted.cc:773
+#: ../src/Win_GParted.cc:782
 msgid "_Swapon"
 msgstr "_Zapnúť swap"
 
-#: ../src/Win_GParted.cc:921
+#: ../src/Win_GParted.cc:939
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:967
+#: ../src/Win_GParted.cc:985
 msgid "Scanning all devices..."
 msgstr "Prezerajú sa všetky zariadenia..."
 
-#: ../src/Win_GParted.cc:983
+#: ../src/Win_GParted.cc:1001
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr ""
 "Jadro nie je schopné znovu čítať tabuľky oddielov na nasledujúcich "
 "zariadenia:"
 
-#: ../src/Win_GParted.cc:990
+#: ../src/Win_GParted.cc:1008
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -1024,30 +1067,30 @@ msgstr ""
 "Kvôli tomu budete mať len obmedzený prístup k týmto zariadeniam. Na získanie "
 "plného prístupu odpojte všetky pripojené oddiely k zariadeniu."
 
-#: ../src/Win_GParted.cc:1034
+#: ../src/Win_GParted.cc:1052
 msgid "No devices detected"
 msgstr "Detekované žiadne zariadenia"
 
-#: ../src/Win_GParted.cc:1113
+#: ../src/Win_GParted.cc:1131
 msgid "Sorry, not yet implemented."
 msgstr "Prepáčte, ešte nie je zahrnuté."
 
-#: ../src/Win_GParted.cc:1119
+#: ../src/Win_GParted.cc:1137
 msgid "Please visit http://gparted.sf.net for more information and support."
 msgstr ""
 "Pre viac informácií a podporu navštívte, prosím, http://gparted.sf.net."
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1150
+#: ../src/Win_GParted.cc:1169
 msgid "translator-credits"
 msgstr "Pavol Klačanský <pavolzetor@gmail.com>"
 
-#: ../src/Win_GParted.cc:1192
+#: ../src/Win_GParted.cc:1211
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Nie je možné vytvoriť viac ako %1 primárnych oddielov"
 
-#: ../src/Win_GParted.cc:1200
+#: ../src/Win_GParted.cc:1219
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1058,123 +1101,123 @@ msgstr ""
 "Taký oddiel môže obsahovať ostatné oddiely. Pretože rožšírený oddiel je tiež "
 "primárny oddiel, tak bude nutné odstrániť najprv primárny oddiel."
 
-#: ../src/Win_GParted.cc:1386
+#: ../src/Win_GParted.cc:1405
 msgid "Unable to delete %1!"
 msgstr "Nepodarilo sa odstrániť %1!"
 
-#: ../src/Win_GParted.cc:1393
+#: ../src/Win_GParted.cc:1412
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odpojte, prosím, všetky logické oddily, ktoré majú čislo väčšie ako %1"
 
-#: ../src/Win_GParted.cc:1404
+#: ../src/Win_GParted.cc:1423
 msgid "Are you sure you want to delete %1?"
 msgstr "Ste si istý, že chcete odstrániť %1?"
 
-#: ../src/Win_GParted.cc:1411
+#: ../src/Win_GParted.cc:1430
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po odstránení tohto oddielu nebude viac dostupný na kopírovanie."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1414
+#: ../src/Win_GParted.cc:1433
 msgid "Delete %1 (%2, %3)"
 msgstr "Odstrániť %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1480
+#: ../src/Win_GParted.cc:1499
 msgid "Cannot format this filesystem to %1."
 msgstr "Nemožno formátovať tento súborový systém na %1."
 
-#: ../src/Win_GParted.cc:1489
+#: ../src/Win_GParted.cc:1508
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "Súborový systém %1 vyžaduje oddiel aspoň %2."
 
-#: ../src/Win_GParted.cc:1494
+#: ../src/Win_GParted.cc:1513
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "Oddiel so súborovým systémom %1 má maximálnu veľkosť %2."
 
-#: ../src/Win_GParted.cc:1579
+#: ../src/Win_GParted.cc:1598
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "Oddiel nemohol byť odpojený z nasledujúcich prípojných bodov:"
 
-#: ../src/Win_GParted.cc:1581
+#: ../src/Win_GParted.cc:1600
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1650
 msgid "Deactivating swap on %1"
 msgstr "Deaktivuje sa swap na %s"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1650
 msgid "Activating swap on %1"
 msgstr "Aktivuje sa swap na %1"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1657
 msgid "Could not deactivate swap"
 msgstr "Nemohol byť deaktivovaný swap"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1657
 msgid "Could not activate swap"
 msgstr "Nemohol byť aktivovaný swap"
 
-#: ../src/Win_GParted.cc:1654
+#: ../src/Win_GParted.cc:1673
 msgid "Unmounting %1"
 msgstr "Odpájam %1"
 
-#: ../src/Win_GParted.cc:1659
+#: ../src/Win_GParted.cc:1678
 msgid "Could not unmount %1"
 msgstr "Nemohol byť odpojený %1"
 
-#: ../src/Win_GParted.cc:1688
+#: ../src/Win_GParted.cc:1707
 msgid "mounting %1 on %2"
 msgstr "pripája sa %1 na %2"
 
-#: ../src/Win_GParted.cc:1695
+#: ../src/Win_GParted.cc:1714
 msgid "Could not mount %1 on %2"
 msgstr "Nemohla byť pripojená %1 na %2"
 
-#: ../src/Win_GParted.cc:1719
+#: ../src/Win_GParted.cc:1738
 msgid "Are you sure you want to create a %1 disklabel on %2?"
 msgstr "Ste si istý, že chcete vytvoriť %1 menovku disku na %2?"
 
-#: ../src/Win_GParted.cc:1727
+#: ../src/Win_GParted.cc:1746
 msgid "This operation will destroy all data on %1!"
 msgstr "Táto operácia zničí všetky údaje na %1!"
 
-#: ../src/Win_GParted.cc:1736
+#: ../src/Win_GParted.cc:1755
 msgid "Error while setting new disklabel"
 msgstr "Chyba počas nastavovania novej menovky disku"
 
-#: ../src/Win_GParted.cc:1820
+#: ../src/Win_GParted.cc:1869
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ste si istý, že chcete aplikovať čakajúce operácie?"
 
-#: ../src/Win_GParted.cc:1825
+#: ../src/Win_GParted.cc:1874
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "Je doporučované zálohovať cenné údaje pred pokračovaním."
 
-#: ../src/Win_GParted.cc:1826
+#: ../src/Win_GParted.cc:1875
 msgid "Apply operations to harddisk"
 msgstr "Aplikovať operácie na pevný disk"
 
 #. create mountpoint...
-#: ../src/jfs.cc:146 ../src/xfs.cc:147 ../src/xfs.cc:238 ../src/xfs.cc:245
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:243 ../src/xfs.cc:250
 msgid "create temporary mountpoint (%1)"
 msgstr "vytvoriť dočasný prípojný bod (%1)"
 
-#: ../src/jfs.cc:153 ../src/xfs.cc:154 ../src/xfs.cc:252 ../src/xfs.cc:261
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:257 ../src/xfs.cc:266
 msgid "mount %1 on %2"
 msgstr "pripojiť %1 na %2"
 
-#: ../src/jfs.cc:162
+#: ../src/jfs.cc:156
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "znova pripojiť %1 na %2 so zapnutým 'resize' označením"
 
-#: ../src/jfs.cc:180 ../src/xfs.cc:176 ../src/xfs.cc:285 ../src/xfs.cc:306
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:290 ../src/xfs.cc:311
 msgid "unmount %1"
 msgstr "odpojiť %1"
 
-#: ../src/jfs.cc:200 ../src/xfs.cc:196 ../src/xfs.cc:326 ../src/xfs.cc:349
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:331 ../src/xfs.cc:354
 msgid "remove temporary mountpoint (%1)"
 msgstr "odstrániť dočasný prípojný bod (%1)"
 
@@ -1189,21 +1232,24 @@ msgstr ""
 "hromadného ničenia."
 
 #. simulation..
-#: ../src/ntfs.cc:120
+#: ../src/ntfs.cc:124
 msgid "run simulation"
 msgstr "spustiť simuláciu"
 
 #. real resize
-#: ../src/ntfs.cc:127
+#: ../src/ntfs.cc:131
 msgid "real resize"
 msgstr "skutočná veľkosť"
 
 #. grow the mounted filesystem..
-#: ../src/xfs.cc:162
+#: ../src/xfs.cc:167
 msgid "grow mounted filesystem"
 msgstr "zväčšiť pripojený súborový systém"
 
 #. copy filesystem..
-#: ../src/xfs.cc:269
+#: ../src/xfs.cc:274
 msgid "copy filesystem"
 msgstr "kopírovať súborový systém"
+
+#~ msgid "Read Label"
+#~ msgstr "Čítať menovku"
