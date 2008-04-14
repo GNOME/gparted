@@ -1,0 +1,82 @@
+.\" Copyright (c) 2008 Curtis Gedak.
+.\" This is free software.  You may redistribute copies of it under the terms of
+.\" the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+.\" There is NO WARRANTY, to the extent permitted by law.
+.\"
+.\" Process this file with
+.\" groff -man -Tascii gparted.8
+.\"
+.TH GPARTED 8 "APRIL 14th, 2008" gparted "GParted Manual"
+.SH NAME
+gparted \- Front-end to parted for manipulating disk partitions
+.SH SYNOPSIS
+.B gparted [device]...
+.SH DESCRIPTION
+.B gparted
+is the Gnome Partition Editor
+for creating, reorganizing, and deleting disk partitions. 
+
+A hard disk is usually subdivided into one or more partitions.
+These partitions are normally not re-sizable
+(making one smaller and the adjacent one larger.)
+.B gparted
+makes it possible for you to take a hard disk
+and change the partition organization,
+while preserving the partition contents.
+
+More specifically,
+.B gparted
+enables you to create, destroy, resize, move,
+check, label, and copy partitions, and the file systems contained within.
+This is useful for
+creating space for new operating systems,
+reorganizing disk usage, 
+and mirroring one partition with another (disk imaging).
+
+.B gparted
+uses GNU libparted to detect and manipulate devices and partition tables.
+Several optional packages provide additional file system support.
+Optional packages include:
+.br
+e2fsprogs, dosfstools, mtools, hfsutils, jfsutils,
+.br
+ntfsprogs, reiser4progs, reiserfsprogs, and xfsprogs.
+
+.B gparted
+can also be used with storage devices other than hard disks, such as
+USB flash drives, and memory cards.
+
+More documentation and links to the support forum and bug reports can be found at:
+.br
+http://gparted.sourceforge.net
+
+.SH EXAMPLES
+For a hard drive attached as /dev/sda,
+.B gparted
+can be instructed to limit operations to this drive only with the
+following:
+
+.B gparted
+/dev/sda
+
+This can save time with subsequent device refreshes, such as after
+operations are applied.
+.SH NOTES
+When resizing a logical partition within an extended partition,
+remember that each portion is resized independently.
+Hence shrinking the left-most logical partition
+by moving the left edge to the right will shrink only the logical
+partition.  If you desire to free the space for an adjacent primary
+partition, then you must also shrink the extended partition.
+.SH REPORTING BUGS
+Report bugs at:
+.br
+http://gparted.sourceforge.net/bugs.php
+
+.SH AUTHOR
+Written by Curtis Gedak <gedakc@users.sf.net>
+.SH "SEE ALSO"
+.BR parted (8),
+.BR fdisk (8),
+.BR mkfs (8),
+.BR ntfsprogs (8)
