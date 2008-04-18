@@ -178,7 +178,7 @@ void Win_GParted::init_menubar()
 	
 	//device
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Set Disklabel") ) + " ...",
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + " ...",
 								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
 		
@@ -1734,25 +1734,10 @@ void Win_GParted::activate_disklabel()
 		
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{
-		Gtk::MessageDialog m_dialog( *this,
-		  			     String::ucompose( _("Are you sure you want to create a %1 disklabel on %2?"),
-					  		       dialog .Get_Disklabel(),
-					  		       devices[ current_device ] .get_path() ),
-					     false,
-					     Gtk::MESSAGE_QUESTION,
-					     Gtk::BUTTONS_CANCEL,
-					     true ) ;
-
-		m_dialog .set_secondary_text( String::ucompose( _("This operation will destroy all data on %1!"),
-								devices[ current_device ] .get_path() ) ) ;
-
-		m_dialog .add_button( _("Create"), Gtk::RESPONSE_OK ) ;
-		
-		if ( m_dialog .run() == Gtk::RESPONSE_OK && 
-		     ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
+		if ( ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
 		{
 			Gtk::MessageDialog dialog( *this,
-						   _("Error while setting new disklabel"),
+						   _("Error while creating partition table."),
 						   true,
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,
@@ -1760,7 +1745,6 @@ void Win_GParted::activate_disklabel()
 			dialog .run() ;
 		}
 
-		m_dialog .hide() ;
 		dialog .hide() ;
 			
 		menu_gparted_refresh_devices() ;
