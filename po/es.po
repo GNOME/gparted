@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-09 19:40+0100\n"
-"PO-Revision-Date: 2008-04-13 16:42+0200\n"
+"POT-Creation-Date: 2008-04-18 22:57+0000\n"
+"PO-Revision-Date: 2008-04-19 10:37+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,45 +60,51 @@ msgstr "Tamaño mínimo: %1 MiB"
 msgid "Maximum Size: %1 MiB"
 msgstr "Tamaño máximo: %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "Establecer tabla de particiones en %1"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+msgid "Create partition table on %1"
+msgstr "Crear una tabla de particiones en %1"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a piece of data stored at a well known place on the disk, "
-"that indicates where each partition begins and how many sectors it occupies."
-msgstr ""
-"La tabla de particiones del disco es una información situada en una parte "
-"conocida del disco, que indica dónde comienza cada partición y cuántos "
-"sectores ocupa."
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "ADVERTENCIA: Esto BORRARÁ TODOS LOS DATOS en el DISCO ENTERO %1"
 
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Se necesita una tabla de particiones en el disco si quiere crear particiones."
+msgid "Default is to create an msdos partition table."
+msgstr "Se crea una tabla de particiones de msdos de forma predeterminada."
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "De forma predeterminada GParted crea una tabla de particiones de msdos."
-
-#: ../src/Dialog_Disklabel.cc:59
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: ../src/Dialog_Disklabel.cc:67
-msgid "Select new labeltype:"
+#: ../src/Dialog_Disklabel.cc:65
+msgid "Select new partition table type:"
 msgstr "Seleccionar un nuevo tipo de tabla de particiones:"
 
-#: ../src/Dialog_Disklabel.cc:83
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
+#: ../src/Dialog_Disklabel.cc:81
+msgid "Choosing "
 msgstr ""
-"ATENCIÓN: Al crear una tabla de particiones nueva se borrarán todos los "
-"datos en %1."
 
-#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1749
+#. TO TRANSLATORS: This is the name of the button Gtk::RESPONSE_OK below.
+#: ../src/Dialog_Disklabel.cc:84 ../src/Dialog_Disklabel.cc:98
+#: ../src/DialogFeatures.cc:36
 msgid "Create"
 msgstr "Crear"
+
+#: ../src/Dialog_Disklabel.cc:86
+msgid " will"
+msgstr ""
+
+#. TO TRANSLATORS: looks like IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:89
+msgid "IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr ""
+
+#. TO TRANSLATORS: looks like Create a new partition table on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:92
+msgid "Create a new partition table on disk %1"
+msgstr "Crear una nueva tabla de particiones en el disco %1"
 
 #: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
@@ -926,8 +932,8 @@ msgid "_View"
 msgstr "_Ver"
 
 #: ../src/Win_GParted.cc:181
-msgid "_Set Disklabel"
-msgstr "_Establecer tabla de particiones"
+msgid "_Create Partition Table"
+msgstr "_Crear tabla de particiones"
 
 #: ../src/Win_GParted.cc:183
 msgid "_Device"
@@ -1201,29 +1207,21 @@ msgstr "montando %1 en %2"
 msgid "Could not mount %1 on %2"
 msgstr "No se pudo montar %1 en %2"
 
-#: ../src/Win_GParted.cc:1738
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "¿Está seguro de querer crear una tabla de particiones %1 en %2?"
+#: ../src/Win_GParted.cc:1740
+msgid "Error while creating partition table."
+msgstr "Error al crear la nueva tabla de particiones."
 
-#: ../src/Win_GParted.cc:1746
-msgid "This operation will destroy all data on %1!"
-msgstr "Esta operación destruirá todos los datos en %1."
-
-#: ../src/Win_GParted.cc:1755
-msgid "Error while setting new disklabel"
-msgstr "Error al crear la nueva tabla de particiones del disco"
-
-#: ../src/Win_GParted.cc:1869
+#: ../src/Win_GParted.cc:1853
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "¿Está seguro de querer ejecutar todas las operaciones pendientes?"
 
-#: ../src/Win_GParted.cc:1874
+#: ../src/Win_GParted.cc:1858
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "Se recomienda hacer una copia de seguridad de sus datos de valor antes de "
 "continuar."
 
-#: ../src/Win_GParted.cc:1875
+#: ../src/Win_GParted.cc:1859
 msgid "Apply operations to harddisk"
 msgstr "Realizar operaciones sobre el disco duro"
 
