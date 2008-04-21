@@ -1,5 +1,12 @@
 2008-04-21  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/Dialog_Base_Partition.cc,
+	  src/Dialog_Partition_New.cc: Fixed 1 TB partition limit bug
+	  - Fixed problem with spinbutton math that limited partition size
+	    to a maximum just less than 1 TB.
+	    New limit is just less than 1024 TB.
+	  - Closes GParted bug #524948
+
 	* Makefile.am: Enhanced for new calling script gparted
 	  - Added gparted script installation in sbin
 	  - Added installdir parsing for gparted and gparted.desktop

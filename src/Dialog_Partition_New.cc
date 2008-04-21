@@ -156,9 +156,11 @@ Partition Dialog_Partition_New::Get_New_Partition()
 
 		default	:	part_type = GParted::TYPE_UNALLOCATED ;
 	}
-	
-	new_start = START + (spinbutton_before .get_value_as_int() * MEBIBYTE) ;
-	new_end  = new_start + (spinbutton_size .get_value_as_int() * MEBIBYTE) ;
+
+	//FIXME:  Partition size is limited is just less than 1024 TeraBytes due
+	//        to the maximum value of signed 4 byte integer.
+	new_start = START + (Sector(spinbutton_before .get_value_as_int()) * MEBIBYTE) ;
+	new_end  = new_start + (Sector(spinbutton_size .get_value_as_int()) * MEBIBYTE) ;
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
