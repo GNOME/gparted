@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+#  Purpose:  Acquire device locks prior to running gparted.
+#            This is to prevent devices from being automounted.
+#            File system problems can occur if devices are mounted
+#            prior to the completion of GParted's operations.
+#            See GParted bug #324220
+#            http://bugzilla.gnome.org/show_bug.cgi?id=324220
+#
+#
+#  Following is a quote from HAL 0.5.10 Specification.
+#  http://people.freedesktop.org/~david/hal-spec/hal-spec.html#locking-guidelines
+#
+#  In order to prevent HAL-based automounters from mounting partitions
+#  that are being prepared, applications that access block devices
+#  directly (and pokes the kernel to reload the partitioning table)
+#  should lock out automounters by either a) obtaining the
+#  org.freedesktop.Hal.Device.Storage lock on each drive being processed;
+#  or b) obtaining the global org.freedesktop.Hal.Device.Storage lock.
+#
+
+hal-lock --interface org.freedeskdesktop.Hal.Device.Storage --exclusive \
+	--run @installdir@/gpartedbin $*

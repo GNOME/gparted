@@ -1,3 +1,28 @@
+2008-04-21  Curtis Gedak  <gedakc@gmail.com>
+
+	* Makefile.am: Enhanced for new calling script gparted
+	  - Added gparted script installation in sbin
+	  - Added installdir parsing for gparted and gparted.desktop
+
+	* gparted.desktop.in: Renamed gparted.desktop.in
+	                           to gparted.desktop.in.in
+	  - This is to permit installdir parsing in gparted.desktop
+
+	* gparted.in: Added new calling script gparted
+	  - This is to permit using hal-lock to acquire device
+	    locks to prevent automounting prior to executing gpartedbin.
+	  - Closes GParted bug #324220
+
+	* src/GParted_Core.cc: Removed gparted-disable-automount.fdi handling
+	  - Removed signal handler patch from 2008-01-28
+	  - Removed initial work on disabling automount from 2006-08-09
+	  - /usr/share/hal/fdi/policy/gparted-disable-automount.fdi is
+	    no longer created.
+	  - This is to permit preferred alternative of using hal-lock.
+
+	* src/Makefile.am: Renamed gparted binary to gpartedbin
+	  - This is to permit a calling script to be named gparted.
+
 2008-04-20  Curtis Gedak  <gedakc@gmail.com>
 
 	* src/Dialog_Disklabel.cc: Improved ability to translate text

@@ -7,9 +7,9 @@ AM_CFLAGS = -Wall
 
 AM_CXXFLAGS = -Wall	
 
-sbin_PROGRAMS = gparted
+sbin_PROGRAMS = gpartedbin
 
-gparted_SOURCES = \
+gpartedbin_SOURCES = \
 	Device.cc			\
 	Dialog_Base_Partition.cc	\
 	Dialog_Disklabel.cc 		\
@@ -55,7 +55,7 @@ gparted_SOURCES = \
 	ufs.cc				\
 	xfs.cc
 	
-gparted_LDFLAGS = -lparted -lgthread-2.0 
+gpartedbin_LDFLAGS = -lparted -lgthread-2.0 
 
-gparted_LDADD = $(GTKMM_LIBS)
+gpartedbin_LDADD = $(GTKMM_LIBS)
 
