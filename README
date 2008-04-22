@@ -1,12 +1,77 @@
+GPARTED
+-------
+
 GParted stands for Gnome Partition Editor.
 
 It uses libparted to detect and manipulate devices and partition
 tables while several (optional) file system tools provide support for
-filesystems not included in libparted.  These optional packages will
+file systems not included in libparted.  These optional packages will
 be detected at runtime and don't require a rebuild of GParted.
 
 GParted is written in C++ and uses gtkmm as Graphical Toolkit.  The
 general approach is to keep the GUI as simple as possible.  That's why
-I try to conform to the GNOME Human Interface Guidelines.
+we try to conform to the GNOME Human Interface Guidelines.
 
 Visit http://gparted.sourceforge.net for more information
+
+
+
+INSTALL NOTES
+-------------
+
+Compiling GParted requires that several dependencies are installed.
+
+Following are instructions on how to install these dependencies (which
+may install other dependencies) on two different two GNU/Linux
+distributions:
+
+   (k)ubuntu 7.10 Gutsy Gibbon
+   ---------------------------
+
+   sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
+                        gnome-common libparted-dev libgtkmm-2.4-dev
+
+
+   Fedora 8
+   --------
+
+   su -
+   yum groupinstall "Development Tools"
+   yum install perl-XML-DOM.noarch e2fsprogs-devel parted-devel \
+               gnome-common gtkmm24-devel
+
+
+Compiling and installing GParted is performed using the standard 
+steps of:
+
+   ./configure
+   make
+   make install
+
+
+For more information on installation instructions, refer to the
+file named INSTALL.
+
+
+
+DISTRIBUTION NOTES
+------------------
+
+GParted uses GNU libparted to detect and manipulate devices and
+partition tables.
+
+Several optional packages provide additional file system support.
+Optional packages include:
+
+   e2fsprogs
+   dosfstools
+   mtools
+   hfsutils
+   jfsutils
+   ntfsprogs
+   reiser4progs
+   reiserfsprogs
+   xfsprogs
+
+If the vol_id command is in the search PATH, it will be used to read
+linux-swap volume labels.
