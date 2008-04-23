@@ -61,7 +61,7 @@ GParted uses GNU libparted to detect and manipulate devices and
 partition tables.
 
 Several optional packages provide additional file system support.
-Optional packages include:
+Optional packages that should be listed include:
 
    e2fsprogs
    dosfstools
@@ -75,3 +75,7 @@ Optional packages include:
 
 If the vol_id command is in the search PATH, it will be used to read
 linux-swap volume labels.
+
+Note to packagers:  The above optional packages are not mandatory for
+                    gparted operation, and should probably listed
+                    as 'suggests' not 'depends on'.
