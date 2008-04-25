@@ -1,68 +1,79 @@
 GPARTED
 -------
+Gparted is the Gnome Partition Editor for creating, reorganizing, and
+deleting disk partitions.
 
-GParted stands for Gnome Partition Editor.
+A hard disk is usually subdivided into one or more partitions.  These
+partitions are normally not re-sizable (making one smaller and the
+adjacent one larger.)  Gparted makes it possible for you to take a
+hard disk and change the partition organization, while preserving the
+partition contents.
 
-It uses libparted to detect and manipulate devices and partition
-tables while several (optional) file system tools provide support for
-file systems not included in libparted.  These optional packages will
-be detected at runtime and don't require a rebuild of GParted.
+More specifically, Gparted enables you to create, destroy, resize,
+move, check, label, and copy partitions, and the file systems
+contained within.  This is useful for creating space for new operating
+systems, reorganizing disk usage, and mirroring one partition with
+another (disk imaging).
 
-GParted is written in C++ and uses gtkmm as Graphical Toolkit.  The
-general approach is to keep the GUI as simple as possible.  That's why
-we try to conform to the GNOME Human Interface Guidelines.
+Gparted uses GNU libparted to detect and manipulate devices and
+partition tables.  Several optional packages provide additional file
+system support.  Optional packages include:
+   e2fsprogs, dosfstools, mtools, hfsutils, jfsutils,
+   ntfsprogs, reiser4progs, reiserfsprogs, and xfsprogs.
 
-Visit http://gparted.sourceforge.net for more information
+Gparted can also be used with storage devices other than hard disks,
+such as USB flash drives, and memory cards.
 
-
-
-INSTALL NOTES
--------------
-
-Compiling GParted requires that several dependencies are installed.
-
-Following are instructions on how to install these dependencies (which
-may install other dependencies) on two different GNU/Linux
-distributions:
-
-   (k)ubuntu 7.10 Gutsy Gibbon
-   ---------------------------
-
-   sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
-                        gnome-common libparted-dev libgtkmm-2.4-dev
+Visit http://gparted.sourceforge.net for more information.
 
 
-   Fedora 8
-   --------
-
-   su -
-   yum groupinstall "Development Tools"
-   yum install perl-XML-DOM.noarch e2fsprogs-devel parted-devel \
-               gnome-common gtkmm24-devel
+NEWS
+----
+Information about changes to this release, and past releases can be
+found in the file:
+   NEWS
 
 
-Compiling and installing GParted is performed using the standard 
-steps of:
-
-   ./configure
-   make
-   make install
+INSTALL
+-------
+Installation instructions can be found in the file:
+   INSTALL
 
 
-For more information on installation instructions, refer to the
-file named INSTALL.
+COPYING
+-------
+The copying conditions can be found in the file:
+   COPYING
 
+
+DIRECTORIES
+------------
+compose  - contains String::ucompose() function
+
+doc      - contains manual page documentation
+
+include  - contains source header files
+
+pixmaps  - contains desktop icon
+
+po       - contains international language translations
+
+src      - contains C++ source code
 
 
 DISTRIBUTION NOTES
 ------------------
+The following notes are intended to assist GNU/Linux distribution
+packagers.  More information on GParted features can be found at:
+http://gparted.sourceforge.net/features.php
 
-GParted uses GNU libparted to detect and manipulate devices and
-partition tables.
+GParted Dependencies:
+   libparted
+   libuuid
+   libdl
+   libgtkmm
 
-Several optional packages provide additional file system support.
-Optional packages that should be listed include:
-
+Optional (suggested) packages:
    e2fsprogs
    dosfstools
    mtools
@@ -72,10 +83,5 @@ Optional packages that should be listed include:
    reiser4progs
    reiserfsprogs
    xfsprogs
-
-If the vol_id command is in the search PATH, it will be used to read
-linux-swap volume labels.
-
-Note to packagers:  The above optional packages are not mandatory for
-                    gparted operation, and should probably listed
-                    as 'suggests' not 'depends on'.
+   NOTE:  If the vol_id command is in the search PATH, it will be
+          used to read linux-swap volume labels.
