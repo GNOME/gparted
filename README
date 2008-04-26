@@ -15,12 +15,6 @@ contained within.  This is useful for creating space for new operating
 systems, reorganizing disk usage, and mirroring one partition with
 another (disk imaging).
 
-Gparted uses GNU libparted to detect and manipulate devices and
-partition tables.  Several optional packages provide additional file
-system support.  Optional packages include:
-   e2fsprogs, dosfstools, mtools, hfsutils, jfsutils,
-   ntfsprogs, reiser4progs, reiserfsprogs, and xfsprogs.
-
 Gparted can also be used with storage devices other than hard disks,
 such as USB flash drives, and memory cards.
 
@@ -36,8 +30,41 @@ found in the file:
 
 INSTALL
 -------
-Installation instructions can be found in the file:
-   INSTALL
+a. Pre-built Binary
+
+   Many GNU/Linux distributions already provide a pre-built binary
+   package for GParted.  Instructions on how to install GParted on
+   some distributions is given below:
+
+      (K)Ubuntu
+      ---------
+      sudo apt-get install gparted
+
+      Fedora
+      ------
+      su -
+      yum install gparted
+
+b. Building from Source
+
+   Building Gparted from source requires that several dependencies are
+   installed.  These include:
+      g++
+      e2fsprogs
+      parted
+      gtkmm24
+      gettext
+
+   On (K)Ubuntu, these dependencies may be obtained by running the
+   following command;
+      sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
+                           gnome-common libparted-dev libgtkmm-2.4-dev
+
+   On Fedora, you will need to run (as root);
+      yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
+                  perl(XML::Parser) desktop-file-utils
+
+   The INSTALL file contains further GNU installation instructions.
 
 
 COPYING
@@ -63,17 +90,10 @@ src      - contains C++ source code
 
 DISTRIBUTION NOTES
 ------------------
-The following notes are intended to assist GNU/Linux distribution
-packagers.  More information on GParted features can be found at:
-http://gparted.sourceforge.net/features.php
+Gparted uses GNU libparted to detect and manipulate devices and partition
+tables.  Several optional packages provide additional file system support.
+Optional packages include:
 
-GParted Dependencies:
-   libparted
-   libuuid
-   libdl
-   libgtkmm
-
-Optional (suggested) packages:
    e2fsprogs
    dosfstools
    mtools
