@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 04:45+0000\n"
-"PO-Revision-Date: 2008-03-16 14:46+0100\n"
+"POT-Creation-Date: 2008-04-20 16:11+0000\n"
+"PO-Revision-Date: 2008-04-27 18:44+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,13 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1135
-msgid "GNOME Partition Editor"
-msgstr "GNOME partíciószerkesztő"
+#: ../gparted.desktop.in.h:1
+msgid "Create, reorganize, and delete partitions"
+msgstr "Partíciók létrehozása, újraszervezése és törlése"
 
-#. ==== GUI =========================
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:66
-#: ../src/Win_GParted.cc:1011 ../src/Win_GParted.cc:1132
-msgid "GParted"
-msgstr "GParted"
+#: ../gparted.desktop.in.h:2
+msgid "GParted Partition Editor"
+msgstr "GParted partíciószerkesztő"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free Space Preceding (MiB):"
@@ -45,7 +43,7 @@ msgstr "Szabad hely utána (MiB):"
 msgid "Resize"
 msgstr "Átméretezés"
 
-#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:218
+#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:221
 msgid "Resize/Move"
 msgstr "Átméretezés/Mozgatás"
 
@@ -57,42 +55,35 @@ msgstr "Legkisebb méret: %1 MiB"
 msgid "Maximum Size: %1 MiB"
 msgstr "Legnagyobb méret: %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "Lemezcímke beállítása a következőn: %1"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+msgid "Create partition table on %1"
+msgstr "Partíciós tábla létrehozása a következőn: %1"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a piece of data stored at a well known place on the disk, "
-"that indicates where each partition begins and how many sectors it occupies."
-msgstr ""
-"A lemezcímke egy, a lemez egy jól ismert helyén tárolt adatdarab, amely "
-"jelzi, hogy az egyes partíciók hol kezdődnek és hány szektort foglalnak el."
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "FIGYELMEZTETÉS: EZ MINDEN ADATOT TÖRÖL A KÖVETKEZŐN: %1"
 
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Szüksége van egy lemezcímkére partíciók létrehozásához ezen a lemezen."
+msgid "Default is to create an msdos partition table."
+msgstr "Az alapértelmezés egy msdos partíciós tábla létrehozása."
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "Alapértelmezés szerint a GParted egy msdos lemezcímkét hoz létre."
-
-#: ../src/Dialog_Disklabel.cc:59
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "Speciális"
 
-#: ../src/Dialog_Disklabel.cc:67
-msgid "Select new labeltype:"
-msgstr "Válasszon új címketípust:"
+#: ../src/Dialog_Disklabel.cc:65
+msgid "Select new partition table type:"
+msgstr "Válassza ki az új partícióstábla-típust:"
 
-#: ../src/Dialog_Disklabel.cc:83
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr ""
-"FIGYELMEZTETÉS: egy új lemezcímke létrehozása minden adatot töröl a "
-"következőről: %1!"
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr "A Létrehozás gomb kiválasztása AZONNAL TÖRÖL MINDEN ADATOT A(Z) %1 LEMEZEN"
 
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1730
 msgid "Create"
 msgstr "Létrehozás"
 
@@ -116,7 +107,7 @@ msgid "Filesystem:"
 msgstr "Fájlrendszer:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:409
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:417
 msgid "Size:"
 msgstr "Méret:"
 
@@ -135,7 +126,7 @@ msgid "Flags:"
 msgstr "Jelzők:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:417
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:425
 msgid "Path:"
 msgstr "Útvonal:"
 
@@ -167,20 +158,31 @@ msgstr "Nem aktív"
 msgid "Not mounted"
 msgstr "Nincs csatolva"
 
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:112
+msgid "Label:"
+msgstr "Címke:"
+
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:266
+#: ../src/Dialog_Partition_Info.cc:279
 msgid "First Sector:"
 msgstr "Első szektor:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:276
+#: ../src/Dialog_Partition_Info.cc:289
 msgid "Last Sector:"
 msgstr "Utolsó szektor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:286 ../src/Win_GParted.cc:470
+#: ../src/Dialog_Partition_Info.cc:299 ../src/Win_GParted.cc:478
 msgid "Total Sectors:"
 msgstr "Szektorok összesen:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+msgid "Set partition label on %1"
+msgstr "Partíciócímke beállítása a következőn: %1"
 
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:26
@@ -211,7 +213,7 @@ msgstr "Logikai partíció"
 msgid "Extended Partition"
 msgstr "Kiterjesztett partíció"
 
-#: ../src/Dialog_Partition_New.cc:160
+#: ../src/Dialog_Partition_New.cc:172
 msgid "New Partition #%1"
 msgstr "Új partíció #%1"
 
@@ -257,7 +259,7 @@ msgid "Operation canceled"
 msgstr "Művelet megszakítva"
 
 #: ../src/Dialog_Progress.cc:253
-msgid "All operations succesfully completed"
+msgid "All operations successfully completed"
 msgstr "Minden művelet sikeresen befejezve"
 
 #: ../src/Dialog_Progress.cc:256
@@ -340,9 +342,9 @@ msgstr "Másolás"
 msgid "Check"
 msgstr "Ellenőrzés"
 
-#: ../src/DialogFeatures.cc:42
-msgid "Read Label"
-msgstr "Címek beolvasása"
+#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "Címke"
 
 #: ../src/DialogFeatures.cc:57
 msgid "Available"
@@ -356,336 +358,344 @@ msgstr "Nem érhető el"
 msgid "Manage flags on %1"
 msgstr "Jelzők kezelése a következőn: %1"
 
-#: ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:250
 msgid "unrecognized"
 msgstr "azonosítatlan"
 
-#: ../src/GParted_Core.cc:259
+#: ../src/GParted_Core.cc:305
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Egyetlen partíció sem lehet %1 szektor hosszú"
 
-#: ../src/GParted_Core.cc:267
+#: ../src/GParted_Core.cc:313
 msgid "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr ""
 "A hosszánál (%2) több használt szektorral (%1) rendelkező partíció "
 "érvénytelen"
 
-#: ../src/GParted_Core.cc:330
+#: ../src/GParted_Core.cc:379
 msgid "libparted messages"
 msgstr "libparted üzenetek"
 
 #. no filesystem found....
-#: ../src/GParted_Core.cc:688
+#: ../src/GParted_Core.cc:737
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "A fájlrendszer nem ismerhető fel! A lehetséges okok:"
 
-#: ../src/GParted_Core.cc:690
+#: ../src/GParted_Core.cc:739
 msgid "The filesystem is damaged"
 msgstr "A fájlrendszer sérült"
 
-#: ../src/GParted_Core.cc:692
+#: ../src/GParted_Core.cc:741
 msgid "The filesystem is unknown to GParted"
 msgstr "A fájlrendszer ismeretlen a GParted számára"
 
-#: ../src/GParted_Core.cc:694
+#: ../src/GParted_Core.cc:743
 msgid "There is no filesystem available (unformatted)"
 msgstr "Nem állnak rendelkezésre fájlrendszerek (formázatlan)"
 
-#: ../src/GParted_Core.cc:790
+#: ../src/GParted_Core.cc:839
 msgid "Unable to find mountpoint"
 msgstr "Nem található a csatolási pont"
 
-#: ../src/GParted_Core.cc:808
+#: ../src/GParted_Core.cc:857
 msgid "Unable to read the contents of this filesystem!"
 msgstr "A fájlrendszer tartalma nem olvasható be!"
 
-#: ../src/GParted_Core.cc:810
+#: ../src/GParted_Core.cc:859
 msgid "Because of this some operations may be unavailable."
 msgstr "Emiatt néhány művelet nem lesz elérhető."
 
-#: ../src/GParted_Core.cc:918
+#: ../src/GParted_Core.cc:967
 msgid "create empty partition"
 msgstr "üres partíció létrehozása"
 
-#: ../src/GParted_Core.cc:986 ../src/GParted_Core.cc:2021
+#: ../src/GParted_Core.cc:1035 ../src/GParted_Core.cc:2106
 msgid "path: %1"
 msgstr "Útvonal: %1"
 
-#: ../src/GParted_Core.cc:987 ../src/GParted_Core.cc:2022
+#: ../src/GParted_Core.cc:1036 ../src/GParted_Core.cc:2107
 msgid "start: %1"
 msgstr "kezdet: %1"
 
-#: ../src/GParted_Core.cc:988 ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:1037 ../src/GParted_Core.cc:2108
 msgid "end: %1"
 msgstr "vég: %1"
 
-#: ../src/GParted_Core.cc:989 ../src/GParted_Core.cc:2024
+#: ../src/GParted_Core.cc:1038 ../src/GParted_Core.cc:2109
 msgid "size: %1 (%2)"
 msgstr "méret: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1018 ../src/linux_swap.cc:58 ../src/xfs.cc:230
+#: ../src/GParted_Core.cc:1067 ../src/linux_swap.cc:78 ../src/xfs.cc:235
 msgid "create new %1 filesystem"
 msgstr "új %1 fájlrendszer létrehozása"
 
-#: ../src/GParted_Core.cc:1051
+#: ../src/GParted_Core.cc:1100
 msgid "delete partition"
 msgstr "partíció törlése"
 
-#: ../src/GParted_Core.cc:1119
+#: ../src/GParted_Core.cc:1123
+msgid "Clear partition label on %1"
+msgstr "Partíciócímke törlése a következőn: %1"
+
+#: ../src/GParted_Core.cc:1128
+msgid "Set partition label to \"%1\" on %2"
+msgstr "Partíciócímke beállítása „%1” értékre a következőn: %2"
+
+#: ../src/GParted_Core.cc:1204
 msgid "moving requires old and new length to be the same"
 msgstr "az áthelyezés megköveteli a régi és új hossz azonosságát"
 
-#: ../src/GParted_Core.cc:1136
+#: ../src/GParted_Core.cc:1221
 msgid "rollback last change to the partitiontable"
 msgstr "a partíciós tábla utolsó módosításának visszagörgetése"
 
-#: ../src/GParted_Core.cc:1165
+#: ../src/GParted_Core.cc:1250
 msgid "move filesystem to the left"
 msgstr "fájlrendszer áthelyezése balra"
 
-#: ../src/GParted_Core.cc:1167
+#: ../src/GParted_Core.cc:1252
 msgid "move filesystem to the right"
 msgstr "fájlrendszer áthelyezése jobbra"
 
-#: ../src/GParted_Core.cc:1170
+#: ../src/GParted_Core.cc:1255
 msgid "move filesystem"
 msgstr "fájlrendszer áthelyezése"
 
-#: ../src/GParted_Core.cc:1172
+#: ../src/GParted_Core.cc:1257
 msgid "new and old filesystem have the same positition. skipping this operation"
 msgstr "az új és régi fájlrendszerek pozíciója azonos. a művelet kihagyva"
 
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1276
 msgid "perform real move"
 msgstr "valódi áthelyezés végrehajtása"
 
-#: ../src/GParted_Core.cc:1233
+#: ../src/GParted_Core.cc:1318
 msgid "using libparted"
 msgstr "a libparted segítségével"
 
-#: ../src/GParted_Core.cc:1273
+#: ../src/GParted_Core.cc:1358
 msgid "resizing requires old and new start to be the same"
 msgstr "az átméretezés megköveteli, hogy a régi és új kezdet megegyezzen"
 
-#: ../src/GParted_Core.cc:1338
+#: ../src/GParted_Core.cc:1423
 msgid "resize/move partition"
 msgstr "partíció átméretezése/áthelyezése"
 
-#: ../src/GParted_Core.cc:1341
+#: ../src/GParted_Core.cc:1426
 msgid "move partition to the right"
 msgstr "partíció mozgatása jobbra"
 
-#: ../src/GParted_Core.cc:1344
+#: ../src/GParted_Core.cc:1429
 msgid "move partition to the left"
 msgstr "partíció mozgatása balra"
 
-#: ../src/GParted_Core.cc:1347
+#: ../src/GParted_Core.cc:1432
 msgid "grow partition from %1 to %2"
 msgstr "partíció megnövelése (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1435
 msgid "shrink partition from %1 to %2"
 msgstr "partíció zsugorítása (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1353
+#: ../src/GParted_Core.cc:1438
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "partíció mozgatása jobbra és megnövelése (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1356
+#: ../src/GParted_Core.cc:1441
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "partíció mozgatása jobbra és zsugorítása (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1359
+#: ../src/GParted_Core.cc:1444
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "partíció mozgatása balra és megnövelése (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1362
+#: ../src/GParted_Core.cc:1447
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "partíció mozgatása balra és zsugorítása (%1 -> %2)"
 
-#: ../src/GParted_Core.cc:1377
+#: ../src/GParted_Core.cc:1462
 msgid ""
 "new and old partition have the same size and position. skipping this "
 "operation"
 msgstr "az új és régi fájlrendszerek mérete és pozíciója azonos. a művelet kihagyva"
 
-#: ../src/GParted_Core.cc:1387
+#: ../src/GParted_Core.cc:1472
 msgid "old start: %1"
 msgstr "régi kezdet: %1"
 
-#: ../src/GParted_Core.cc:1388
+#: ../src/GParted_Core.cc:1473
 msgid "old end: %1"
 msgstr "régi vég: %1"
 
-#: ../src/GParted_Core.cc:1389
+#: ../src/GParted_Core.cc:1474
 msgid "old size: %1 (%2)"
 msgstr "régi méret: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1444 ../src/GParted_Core.cc:2102
+#: ../src/GParted_Core.cc:1529 ../src/GParted_Core.cc:2187
 msgid "new start: %1"
 msgstr "új kezdet: %1"
 
-#: ../src/GParted_Core.cc:1445 ../src/GParted_Core.cc:2103
+#: ../src/GParted_Core.cc:1530 ../src/GParted_Core.cc:2188
 msgid "new end: %1"
 msgstr "új vég: %1"
 
-#: ../src/GParted_Core.cc:1446 ../src/GParted_Core.cc:2104
+#: ../src/GParted_Core.cc:1531 ../src/GParted_Core.cc:2189
 msgid "new size: %1 (%2)"
 msgstr "új méret: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1470
+#: ../src/GParted_Core.cc:1555
 msgid "shrink filesystem"
 msgstr "fájlrendszer zsugorítása"
 
-#: ../src/GParted_Core.cc:1474
+#: ../src/GParted_Core.cc:1559
 msgid "grow filesystem"
 msgstr "fájlrendszer növelése"
 
-#: ../src/GParted_Core.cc:1477
+#: ../src/GParted_Core.cc:1562
 msgid "resize filesystem"
 msgstr "fájlrendszer átméretezése"
 
-#: ../src/GParted_Core.cc:1480
+#: ../src/GParted_Core.cc:1565
 msgid "new and old filesystem have the same size. skipping this operation"
 msgstr "az új és régi fájlrendszerek mérete azonos. a művelet kihagyva"
 
-#: ../src/GParted_Core.cc:1515
+#: ../src/GParted_Core.cc:1600
 msgid "grow filesystem to fill the partition"
 msgstr "fájlrendszer növelése, hogy kitöltse a kijelölt partíciót"
 
-#: ../src/GParted_Core.cc:1520
+#: ../src/GParted_Core.cc:1605
 msgid "growing is not available for this filesystem"
 msgstr "a fájlrendszer nem növelhető meg"
 
-#: ../src/GParted_Core.cc:1539
+#: ../src/GParted_Core.cc:1624
 msgid "the destination is smaller than the sourcepartition"
 msgstr "a cél kisebb, mint a forrás partíció"
 
-#: ../src/GParted_Core.cc:1553
+#: ../src/GParted_Core.cc:1638
 msgid "copy filesystem of %1 to %2"
 msgstr "%1 fájlrendszerének másolása %2 helyre"
 
-#: ../src/GParted_Core.cc:1597
+#: ../src/GParted_Core.cc:1682
 msgid "perform readonly test"
 msgstr "csak olvasható teszt végrehajtása"
 
-#: ../src/GParted_Core.cc:1645
+#: ../src/GParted_Core.cc:1730
 msgid "using internal algorithm"
 msgstr "belső algoritmus használata"
 
-#: ../src/GParted_Core.cc:1647
+#: ../src/GParted_Core.cc:1732
 msgid "read %1 sectors"
 msgstr "%1 szektor olvasása"
 
-#: ../src/GParted_Core.cc:1647
+#: ../src/GParted_Core.cc:1732
 msgid "copy %1 sectors"
 msgstr "%1 szektor másolása"
 
-#: ../src/GParted_Core.cc:1649
+#: ../src/GParted_Core.cc:1734
 msgid "finding optimal blocksize"
 msgstr "optimális blokkméret keresése"
 
-#: ../src/GParted_Core.cc:1691
+#: ../src/GParted_Core.cc:1776
 msgid "%1 seconds"
 msgstr "%1 másodperc"
 
-#: ../src/GParted_Core.cc:1703
+#: ../src/GParted_Core.cc:1788
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "az optimális blokkméret %1 szektor (%2)"
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:1805
 msgid "%1 sectors read"
 msgstr "%1 szektor beolvasva"
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:1805
 msgid "%1 sectors copied"
 msgstr "%1 szektor másolva"
 
-#: ../src/GParted_Core.cc:1731
+#: ../src/GParted_Core.cc:1816
 msgid "rollback last transaction"
 msgstr "utolsó tranzakció visszagörgetése"
 
-#: ../src/GParted_Core.cc:1758
+#: ../src/GParted_Core.cc:1843
 msgid "check filesystem on %1 for errors and (if possible) fix them"
 msgstr "%1 fájlrendszerhibáinak ellenőrzése és azok javítása (ha lehetséges)"
 
-#: ../src/GParted_Core.cc:1766
+#: ../src/GParted_Core.cc:1851
 msgid "checking is not available for this filesystem"
 msgstr "az ellenőrzés nem érhető el ezen a fájlrendszeren"
 
-#: ../src/GParted_Core.cc:1792
+#: ../src/GParted_Core.cc:1877
 msgid "set partitiontype on %1"
 msgstr "partíciótípus beállítása a következőn: %1"
 
-#: ../src/GParted_Core.cc:1814
+#: ../src/GParted_Core.cc:1899
 msgid "new partitiontype: %1"
 msgstr "új partíciótípus: %1"
 
-#: ../src/GParted_Core.cc:1841
+#: ../src/GParted_Core.cc:1926
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 / %2 beolvasva (%3 maradt)"
 
-#: ../src/GParted_Core.cc:1841
+#: ../src/GParted_Core.cc:1926
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 / %2 másolva (%3 maradt)"
 
-#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
+#: ../src/GParted_Core.cc:1932 ../src/GParted_Core.cc:2027
 msgid "%1 of %2 read"
 msgstr "%1 / %2 beolvasva"
 
-#: ../src/GParted_Core.cc:1847 ../src/GParted_Core.cc:1942
+#: ../src/GParted_Core.cc:1932 ../src/GParted_Core.cc:2027
 msgid "%1 of %2 copied"
 msgstr "%1 / %2 másolva"
 
-#: ../src/GParted_Core.cc:1865
+#: ../src/GParted_Core.cc:1950
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "%1 szektor beolvasva %2 blokkméret használatával"
 
-#: ../src/GParted_Core.cc:1868
+#: ../src/GParted_Core.cc:1953
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "%1 szektor másolva %2 blokkméret használatával"
 
-#: ../src/GParted_Core.cc:1987
+#: ../src/GParted_Core.cc:2072
 msgid "Error while writing block at sector %1"
 msgstr "Hiba a(z) %1. szektornál található blokk írásakor"
 
-#: ../src/GParted_Core.cc:1990
+#: ../src/GParted_Core.cc:2075
 msgid "Error while reading block at sector %1"
 msgstr "Hiba a(z) %1. szektornál található blokk olvasásakor"
 
-#: ../src/GParted_Core.cc:2000
+#: ../src/GParted_Core.cc:2085
 msgid "calibrate %1"
 msgstr "%1 kalibrálása"
 
-#: ../src/GParted_Core.cc:2047
+#: ../src/GParted_Core.cc:2132
 msgid "calculate new size and position of %1"
 msgstr "%1 új méretének és pozíciójának kiszámítása"
 
-#: ../src/GParted_Core.cc:2051
+#: ../src/GParted_Core.cc:2136
 msgid "requested start: %1"
 msgstr "kért kezdet: %1"
 
-#: ../src/GParted_Core.cc:2052
+#: ../src/GParted_Core.cc:2137
 msgid "requested end: %1"
 msgstr "kért vég: %1"
 
-#: ../src/GParted_Core.cc:2053
+#: ../src/GParted_Core.cc:2138
 msgid "requested size: %1 (%2)"
 msgstr "kért méret: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2176
+#: ../src/GParted_Core.cc:2261
 msgid "updating bootsector of %1 filesystem on %2"
 msgstr "%1 fájlrendszer boot szektorának frissítése a következőn: %2"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
 msgid "_Undo Last Operation"
 msgstr "_Utolsó művelet visszavonása"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
 msgid "_Clear All Operations"
 msgstr "_Minden művelet törlése"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
 msgid "_Apply All Operations"
 msgstr "Minden művelet _alkalmazása"
 
@@ -722,6 +732,16 @@ msgstr "%1 törlése (%2, %3) a következőről: %4"
 #: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
 msgstr "%1 formázása mint %2"
+
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+msgid "Clear Partition Label on %1"
+msgstr "Partíciócímke törlése a következőn: %1"
+
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+msgid "Set Partition Label \"%1\" on %2"
+msgstr "A(z) „%1” partíciócímke beállítása a következőn: %2"
 
 #: ../src/OperationResizeMove.cc:75
 msgid "resize/move %1"
@@ -772,10 +792,6 @@ msgstr "Partíció"
 msgid "Mountpoint"
 msgstr "Csatolási pont"
 
-#: ../src/TreeView_Detail.cc:37
-msgid "Label"
-msgstr "Címke"
-
 #: ../src/TreeView_Detail.cc:38
 msgid "Size"
 msgstr "Méret"
@@ -792,224 +808,246 @@ msgstr "Szabad"
 msgid "Flags"
 msgstr "Jelölők"
 
-#: ../src/Utils.cc:110
+#: ../src/Utils.cc:111
 msgid "unallocated"
 msgstr "lefoglalatlan"
 
-#: ../src/Utils.cc:111
+#: ../src/Utils.cc:112
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: ../src/Utils.cc:112
+#: ../src/Utils.cc:113
 msgid "unformatted"
 msgstr "formázatlan"
 
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:128
 msgid "used"
 msgstr "használt"
 
-#: ../src/Utils.cc:128
+#: ../src/Utils.cc:129
 msgid "unused"
 msgstr "szabad"
 
-#: ../src/Utils.cc:143
+#: ../src/Utils.cc:144
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:148
+#: ../src/Utils.cc:149
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:153
+#: ../src/Utils.cc:154
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:158
+#: ../src/Utils.cc:159
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:163
+#: ../src/Utils.cc:164
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:133
+#: ../src/Utils.cc:291
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr "# A gparted által létrehozott ideiglenes fájl. Törölhető.\n"
+
+#: ../src/Utils.cc:300
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr "A címkeművelet meghiúsult: Az ideiglenes fájl (%1) nem írható.\n"
+
+#: ../src/Utils.cc:309
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr "A címkeművelet meghiúsult: Az ideiglenes fájl (%1) nem hozható létre.\n"
+
+#. ==== GUI =========================
+#: ../src/Win_GParted.cc:69 ../src/Win_GParted.cc:1029
+#: ../src/Win_GParted.cc:1150
+msgid "GParted"
+msgstr "GParted"
+
+#: ../src/Win_GParted.cc:136
 msgid "_Refresh Devices"
 msgstr "Eszközök _frissítése"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:142
 msgid "_Devices"
 msgstr "_Eszközök"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:146
 msgid "_Show Features"
 msgstr "Sz_olgáltatások megjelenítése"
 
-#: ../src/Win_GParted.cc:147
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:169
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
-#: ../src/Win_GParted.cc:171
+#: ../src/Win_GParted.cc:174
 msgid "Device _Information"
 msgstr "Esz_közinformációk"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:176
 msgid "Pending _Operations"
 msgstr "Függő mű_veletek"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "_Nézet"
 
-#: ../src/Win_GParted.cc:178
-msgid "_Set Disklabel"
-msgstr "Lemez_címke beállítása"
+#: ../src/Win_GParted.cc:181
+msgid "_Create Partition Table"
+msgstr "_Partíciós tábla létrehozása"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:183
 msgid "_Device"
 msgstr "_Eszköz"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:187
 msgid "_Partition"
 msgstr "_Partíció"
 
-#: ../src/Win_GParted.cc:193
+#: ../src/Win_GParted.cc:196
 msgid "_Help"
 msgstr "_Súgó"
 
-#: ../src/Win_GParted.cc:207
+#: ../src/Win_GParted.cc:210
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Új partíció létrehozása a kijelölt lefoglalatlan területen"
 
-#: ../src/Win_GParted.cc:212
+#: ../src/Win_GParted.cc:215
 msgid "Delete the selected partition"
 msgstr "A kijelölt partíció törlése"
 
-#: ../src/Win_GParted.cc:222
+#: ../src/Win_GParted.cc:225
 msgid "Resize/Move the selected partition"
 msgstr "A kijelölt partíció átméretezése/mozgatása"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:234
 msgid "Copy the selected partition to the clipboard"
 msgstr "A kijelölt partíció másolása a vágólapra"
 
-#: ../src/Win_GParted.cc:236
+#: ../src/Win_GParted.cc:239
 msgid "Paste the partition from the clipboard"
 msgstr "Partíció beillesztése a vágólapról"
 
-#: ../src/Win_GParted.cc:246
+#: ../src/Win_GParted.cc:249
 msgid "Undo Last Operation"
 msgstr "Utolsó művelet visszavonása"
 
-#: ../src/Win_GParted.cc:253
+#: ../src/Win_GParted.cc:256
 msgid "Apply All Operations"
 msgstr "Minden művelet alkalmazása"
 
-#: ../src/Win_GParted.cc:288
+#: ../src/Win_GParted.cc:291
 msgid "_Resize/Move"
 msgstr "Átméretezés/M_ozgatás"
 
-#: ../src/Win_GParted.cc:312
+#: ../src/Win_GParted.cc:315
 msgid "_Format to"
 msgstr "_Formázás"
 
-#: ../src/Win_GParted.cc:321
+#: ../src/Win_GParted.cc:324
 msgid "Unmount"
 msgstr "Leválasztás"
 
-#: ../src/Win_GParted.cc:327
+#: ../src/Win_GParted.cc:330
 msgid "_Mount on"
 msgstr "_Csatolás"
 
-#: ../src/Win_GParted.cc:334
+#: ../src/Win_GParted.cc:337
 msgid "M_anage Flags"
 msgstr "_Jelzők kezelése"
 
-#: ../src/Win_GParted.cc:339
+#: ../src/Win_GParted.cc:342
 msgid "C_heck"
 msgstr "_Ellenőrzés"
 
-#: ../src/Win_GParted.cc:393
+#: ../src/Win_GParted.cc:347
+msgid "_Label"
+msgstr "_Címke"
+
+#: ../src/Win_GParted.cc:401
 msgid "Device Information"
 msgstr "Eszközinformációk"
 
 #. model
-#: ../src/Win_GParted.cc:401
+#: ../src/Win_GParted.cc:409
 msgid "Model:"
 msgstr "Modell:"
 
 #. disktype
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:446
 msgid "DiskLabelType:"
 msgstr "Lemezcímke típus:"
 
 #. heads
-#: ../src/Win_GParted.cc:446
+#: ../src/Win_GParted.cc:454
 msgid "Heads:"
 msgstr "Fejek:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:454
+#: ../src/Win_GParted.cc:462
 msgid "Sectors/Track:"
 msgstr "Szektorok/sávok:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:462
+#: ../src/Win_GParted.cc:470
 msgid "Cylinders:"
 msgstr "Cilinderek:"
 
-#: ../src/Win_GParted.cc:637
+#: ../src/Win_GParted.cc:645
 msgid "Could not add this operation to the list."
 msgstr "Ez a művelet nem adható a listához."
 
-#: ../src/Win_GParted.cc:663
+#: ../src/Win_GParted.cc:671
 msgid "%1 operations pending"
 msgstr "%1 művelet függőben"
 
-#: ../src/Win_GParted.cc:665
+#: ../src/Win_GParted.cc:673
 msgid "1 operation pending"
 msgstr "1 művelet függőben"
 
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:721
 msgid "Quit GParted?"
 msgstr "Kilép a GPartedből?"
 
-#: ../src/Win_GParted.cc:720
+#: ../src/Win_GParted.cc:728
 msgid "%1 operations are currently pending."
 msgstr "Jelenleg %1 művelet van függőben."
 
-#: ../src/Win_GParted.cc:723
+#: ../src/Win_GParted.cc:731
 msgid "1 operation is currently pending."
 msgstr "Jelenleg 1 művelet van függőben."
 
-#: ../src/Win_GParted.cc:742
+#: ../src/Win_GParted.cc:751
 msgid "_Unmount"
 msgstr "_Leválasztás"
 
-#: ../src/Win_GParted.cc:767
+#: ../src/Win_GParted.cc:776
 msgid "_Swapoff"
 msgstr "S_wap kikapcsolása"
 
-#: ../src/Win_GParted.cc:773
+#: ../src/Win_GParted.cc:782
 msgid "_Swapon"
 msgstr "S_wap bekapcsolása"
 
-#: ../src/Win_GParted.cc:921
+#: ../src/Win_GParted.cc:939
 msgid "%1 - GParted"
 msgstr "%1 – GParted"
 
-#: ../src/Win_GParted.cc:967
+#: ../src/Win_GParted.cc:985
 msgid "Scanning all devices..."
 msgstr "Eszközök letapogatása..."
 
-#: ../src/Win_GParted.cc:983
+#: ../src/Win_GParted.cc:1001
 msgid "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "A kernel képtelen újraolvasni a partíciós táblákat a következő eszközökön:"
 
-#: ../src/Win_GParted.cc:990
+#: ../src/Win_GParted.cc:1008
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -1017,29 +1055,35 @@ msgstr ""
 "Emiatt ezen eszközökhöz csak korlátozott mértékben férhet hozzá. Válassza le "
 "az eszköz csatolt partícióit a teljes hozzáférés érdekében."
 
-#: ../src/Win_GParted.cc:1034
+#: ../src/Win_GParted.cc:1052
 msgid "No devices detected"
 msgstr "Nem érzékeltem eszközöket"
 
-#: ../src/Win_GParted.cc:1113
+#: ../src/Win_GParted.cc:1131
 msgid "Sorry, not yet implemented."
 msgstr "Elnézést, ez még nincs megvalósítva."
 
-#: ../src/Win_GParted.cc:1119
+#: ../src/Win_GParted.cc:1137
 msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr "További információkért és támogatásért keresse fel a http://gparted.sf.net oldalt."
+msgstr ""
+"További információkért és támogatásért keresse fel a http://gparted.sf.net "
+"oldalt."
+
+#: ../src/Win_GParted.cc:1153
+msgid "GNOME Partition Editor"
+msgstr "GNOME partíciószerkesztő"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1150
+#: ../src/Win_GParted.cc:1169
 msgid "translator-credits"
 msgstr "Kelemen Gábor <kelemeng@gnome.hu>"
 
-#: ../src/Win_GParted.cc:1192
+#: ../src/Win_GParted.cc:1211
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Nem lehet %1 darabnál több elsődleges partíciót létrehozni"
 
-#: ../src/Win_GParted.cc:1200
+#: ../src/Win_GParted.cc:1219
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1051,123 +1095,117 @@ msgstr ""
 "partíció maga is egy elsődleges partíció, így először szükséges lehet egy "
 "elsődleges partíció törlése."
 
-#: ../src/Win_GParted.cc:1386
+#: ../src/Win_GParted.cc:1405
 msgid "Unable to delete %1!"
 msgstr "%1 nem törölhető!"
 
-#: ../src/Win_GParted.cc:1393
+#: ../src/Win_GParted.cc:1412
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Válasszon le minden logikai partíciót, melyek száma nagyobb, mint %1"
 
-#: ../src/Win_GParted.cc:1404
+#: ../src/Win_GParted.cc:1423
 msgid "Are you sure you want to delete %1?"
 msgstr "Valóban törölni akarja ezt: %1?"
 
-#: ../src/Win_GParted.cc:1411
+#: ../src/Win_GParted.cc:1430
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Törlés után ezt a partíciót többé nem másolhatja."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1414
+#: ../src/Win_GParted.cc:1433
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 törlése (%2, %3)"
 
-#: ../src/Win_GParted.cc:1480
+#: ../src/Win_GParted.cc:1499
 msgid "Cannot format this filesystem to %1."
 msgstr "Ez a fájlrendszer nem formázható a következő típusúra: %1."
 
-#: ../src/Win_GParted.cc:1489
+#: ../src/Win_GParted.cc:1508
 msgid "A %1 filesystem requires a partition of at least %2."
 msgstr "A(z) %1 típusú fájlrendszerhez legalább %2 méretű partíció szükséges."
 
-#: ../src/Win_GParted.cc:1494
+#: ../src/Win_GParted.cc:1513
 msgid "A partition with a %1 filesystem has a maximum size of %2."
 msgstr "A(z) %1 típusú fájlrendszert tartalmazó partíció legnagyobb mérete %2."
 
-#: ../src/Win_GParted.cc:1579
+#: ../src/Win_GParted.cc:1598
 msgid "The partition could not be unmounted from the following mountpoints:"
 msgstr "Nem választható le a partíció a következő csatolási pontokról:"
 
-#: ../src/Win_GParted.cc:1581
+#: ../src/Win_GParted.cc:1600
 msgid ""
 "Most likely other partitions are also mounted on these mountpoints. You are "
 "advised to unmount them manually."
-msgstr "Nagy valószínűséggel más partíciók is csatolva vannak ezekre a csatolási pontokra. Javasoljuk, hogy ezeket saját kezűleg válassza le."
+msgstr ""
+"Nagy valószínűséggel más partíciók is csatolva vannak ezekre a csatolási "
+"pontokra. Javasoljuk, hogy ezeket saját kezűleg válassza le."
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1650
 msgid "Deactivating swap on %1"
 msgstr "Swap kikapcsolása a következőn: %1"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1650
 msgid "Activating swap on %1"
 msgstr "Swap bekapcsolása a következőn: %1"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1657
 msgid "Could not deactivate swap"
 msgstr "A swap nem kapcsolható ki"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1657
 msgid "Could not activate swap"
 msgstr "A swap nem kapcsolható be"
 
-#: ../src/Win_GParted.cc:1654
+#: ../src/Win_GParted.cc:1673
 msgid "Unmounting %1"
 msgstr "%1 leválasztása"
 
-#: ../src/Win_GParted.cc:1659
+#: ../src/Win_GParted.cc:1678
 msgid "Could not unmount %1"
 msgstr "Nem sikerült leválasztani a következőt: %1"
 
-#: ../src/Win_GParted.cc:1688
+#: ../src/Win_GParted.cc:1707
 msgid "mounting %1 on %2"
 msgstr "%1 csatolása ide: %2"
 
-#: ../src/Win_GParted.cc:1695
+#: ../src/Win_GParted.cc:1714
 msgid "Could not mount %1 on %2"
 msgstr "Nem csatolható a következő: %1 ide: %2"
 
-#: ../src/Win_GParted.cc:1719
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "Valóban létre akar hozni egy %1 lemezcímkét a következőn: %2?"
+#: ../src/Win_GParted.cc:1740
+msgid "Error while creating partition table."
+msgstr "Hiba a partíciós tábla létrehozása közben."
 
-#: ../src/Win_GParted.cc:1727
-msgid "This operation will destroy all data on %1!"
-msgstr "Ez a művelet minden adatot megsemmisít a következőn: %1!"
-
-#: ../src/Win_GParted.cc:1736
-msgid "Error while setting new disklabel"
-msgstr "Hiba az új lemezcímke beállítása közben"
-
-#: ../src/Win_GParted.cc:1820
+#: ../src/Win_GParted.cc:1853
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Biztosan alkalmazni akarja a függőben lévő műveleteket?"
 
-#: ../src/Win_GParted.cc:1825
+#: ../src/Win_GParted.cc:1858
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "Az értékes adatok biztonsági mentése javasolt a folytatás előtt."
 
-#: ../src/Win_GParted.cc:1826
+#: ../src/Win_GParted.cc:1859
 msgid "Apply operations to harddisk"
 msgstr "Műveletek alkalmazása merevlemezre"
 
 #. create mountpoint...
-#: ../src/jfs.cc:146 ../src/xfs.cc:147 ../src/xfs.cc:238 ../src/xfs.cc:245
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:243 ../src/xfs.cc:250
 msgid "create temporary mountpoint (%1)"
 msgstr "átmeneti csatolási pont létrehozása (%1)"
 
-#: ../src/jfs.cc:153 ../src/xfs.cc:154 ../src/xfs.cc:252 ../src/xfs.cc:261
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:257 ../src/xfs.cc:266
 msgid "mount %1 on %2"
 msgstr "%1 csatolása: %2"
 
-#: ../src/jfs.cc:162
+#: ../src/jfs.cc:156
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "%1 újracsatolása %2 eszközön a „resize” jelzővel"
 
-#: ../src/jfs.cc:180 ../src/xfs.cc:176 ../src/xfs.cc:285 ../src/xfs.cc:306
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:290 ../src/xfs.cc:311
 msgid "unmount %1"
 msgstr "%1 leválasztása"
 
-#: ../src/jfs.cc:200 ../src/xfs.cc:196 ../src/xfs.cc:326 ../src/xfs.cc:349
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:331 ../src/xfs.cc:354
 msgid "remove temporary mountpoint (%1)"
 msgstr "átmeneti csatolási pont (%1) eltávolítása"
 
@@ -1180,22 +1218,22 @@ msgid "Since GParted can be a weapon of mass destruction only root may run it."
 msgstr "Mivel a GParted (adat)tömegpusztító fegyver lehet, csak root futtathatja."
 
 #. simulation..
-#: ../src/ntfs.cc:120
+#: ../src/ntfs.cc:124
 msgid "run simulation"
 msgstr "szimuláció futtatása"
 
 #. real resize
-#: ../src/ntfs.cc:127
+#: ../src/ntfs.cc:131
 msgid "real resize"
 msgstr "valódi átméretezés"
 
 #. grow the mounted filesystem..
-#: ../src/xfs.cc:162
+#: ../src/xfs.cc:167
 msgid "grow mounted filesystem"
 msgstr "csatolt fájlrendszer növelése"
 
 #. copy filesystem..
-#: ../src/xfs.cc:269
+#: ../src/xfs.cc:274
 msgid "copy filesystem"
 msgstr "fájlrendszer másolása"
 
