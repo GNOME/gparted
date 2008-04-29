@@ -1,0 +1,120 @@
+====================
+0.3.7   (2008-04-29)
+====================
+NOTES
+	This GParted release consists of bug fixes, and language translation
+	updates.
+	
+	Key changes include:
+	  - Fixed bug for partition sizes greater than or equal to 1 TeraByte
+	  - Created gparted manual page
+	  - Implemented hal-lock to prevent gnome automounting of partitions
+
+BUG FIXES
+	* Corrected math in partition creation/resize dialogs that prevented
+	  operations on partition sizes >= 1 TB (#524948)
+	* Implemented hal-lock to prevent partition automounting (#324220)
+	  - gparted script calls hal-lock which calls gpartedbin executable
+	  - thanks to Deji Akingunola for hal-lock idea
+	* Added manual page documentation (subset of bug #329584)
+	* Changed Set Disklabel menu to Create Partition table,
+	  improved disk erasure warnings, and removed double
+	  confirmation (#422070) 
+	* Improved readability of text for translators in Create Partition
+	  Table dialog (#529063)
+	* Adjusted desktop entries to align with specifications (#518975)
+	* Updated gparted.desktop to align with Human Interface
+	  Guidelines (#440012)
+	* Moved gparted install to sbin instead of bin (#509495)
+	* Added MAINTAINERS file (#524276)
+	  - thanks to Marcel Telka for committing file to repository
+	* Enhanced to use po/LINGUAS for LINGUAS (#467459)
+	  - thanks to Christian Persch for small patch
+	* Ensured hour portion of time is always displayed (#438590)
+	* Removed text color hard coding (#413810)
+	* Aligned README file with GNU coding standards (#529625)
+
+TRANSLATIONS (new/updated)
+	* cs(Adrian Gunis), es(Jorge Gonzalez), hu(Gabor Kelemen),
+	  nl(Tino Meinen), sk(Pavol Klačanský)
+
+DEPENDENCIES (new/updated)
+	* hal-lock used by gparted script to acquire device locks
+
+
+====================
+0.3.6   (2008-03-26)
+====================
+NOTES
+	GParted now has support for partition labels (also known as
+	volume labels).  To change partition labels, use the GParted
+	menu option "Partition -> Label".
+
+	Full partition label support (read and write) is available for
+	the following file systems:
+	     ext2, ext3, fat16, fat32, jfs, ntfs, reiserfs, and xfs.
+
+	Partial support (set volume label on filesystem creation only)
+	is available for:
+	     hfs, linux-swap, and reiser4.
+
+BUG FIXES
+	* Added partition label (volume label) support (#338528)
+	* Fixed maximum path length (#481768)
+
+TRANSLATIONS (new/updated)
+	* eu(Inaki Larranaga Murgoitio), he(Mark Krapivner),
+	  hu(Gabor Kelemen), ne(Pawan Chitrakar), sk(Pavol Klačanský)
+
+	* Added two files for tranlation
+	  - src/Dialog_Partition_Label.cc
+	  - src/OperationLabelPartition.cc
+
+DEPENDENCIES (new/updated)
+	* mtools package required to read and write fat16 and fat32 labels.
+	* vol_id command required to read linux-swap labels.
+
+
+====================
+0.3.5   (2007-02-04)
+====================
+NOTES
+	This release is the first one from a new set of project
+	maintainers (Laurent de Trogoff, and Curtis Gedak).  The
+	release includes changes from the unofficial 0.3.4 release as
+	well as bug fixes, and language translations.
+
+	*Many Thanks* go to Bart Hakvoort.
+	Without Bart's work, there would be no GParted.
+
+BUG FIXES
+	* Applied debian patch 04_Win_GParted.cc.diff (#470387)
+	  - Fixed "crashes when rescanning devices after any operation"
+	  - Thanks to Denis Sirotkin for this patch.
+	* Applied debian patch 03_fdi_robustification.patch (#324220)
+	  - Installed a signal handler for cleaning up the automount disabling
+	    FDI, so that it will be cleaned up on program crashes, too.
+	  - Thanks to Martin Pitt for this improved patch.
+	* Applied debian patch 02_fix-build-failure-with-g++-4.3.patch
+	  - Fix build failures with g++-4.3.
+
+TRANSLATIONS (new/updated)
+	* ar(Djihed Afifi), ca(David Planella),
+	  eu(Inaki Larranaga Murgoitio), fi(Ilkka Tuohela),
+	  he(Yair Hershkovitz), ko(Changwoo Ryu),
+	  lt(Gintautas Miliauskas), mk(Jovan Naumovski),
+	  oc(Yannig Marchegay), pa(Amanpreet Singh Alam),
+	  pt_BR(Djavan Fagundes), ru(Yuri Myasoedov),
+	  si(Danishka Navin), sv(Daniel Nylander), sv(Daniel Nylander) 
+
+DEPENDENCIES (new/updated)
+	* no change.
+
+
+================================================
+0.3.4 (unofficial) TO 0.0.1 (first test release)
+================================================
+NOTES
+	All of the GParted releases prior to gparted-0.3.5 were created
+	by Bart Hakvoort.  Bart is the original author of GParted.
+	This NEWS file was not updated during the previous releases.
