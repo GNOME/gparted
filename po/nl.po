@@ -23,8 +23,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-09 19:40+0100\n"
-"PO-Revision-Date: 2008-04-14 02:39+0200\n"
+"POT-Creation-Date: 2008-04-20 16:11+0000\n"
+"PO-Revision-Date: 2008-04-30 01:40+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,47 +85,37 @@ msgstr "Minimale grootte: %1 MiB"
 msgid "Maximum Size: %1 MiB"
 msgstr "Maximale grootte: %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "Schijflabel instellen op %1"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+msgid "Create partition table on %1"
+msgstr "Partitietabel aanmaken op %1"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a piece of data stored at a well known place on the disk, "
-"that indicates where each partition begins and how many sectors it occupies."
-msgstr ""
-"Een schijflabel is een stukje informatie op een vaste plek op de schijf, dat "
-"aangeeft waar elke partitie begint en hoeveel sectoren het bevat."
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "WAARSCHUWING: Hiermee worden ALLE GEGEVENS op de GEHELE SCHIJF %1 GEWIST!"
 
-# N.B. letterlijke vertaling: U heeft een disklabel nodig... is lelijk
-# de schijf/deze schijf
-# te kunnen aanmaken/aan te maken
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Om partities te kunnen aanmaken op de schijf is een schijflabel nodig."
+msgid "Default is to create an msdos partition table."
+msgstr "Standaard wordt een msdos schijflabel aangemaakt."
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "Standaard maakt GParted een msdos schijflabel aan."
-
-#: ../src/Dialog_Disklabel.cc:59
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-# Select new labeltype: [msdos/amiga/loop/etc]
-# infinitief hier beter dan 'een nieuw labeltype kiezen]
-#: ../src/Dialog_Disklabel.cc:67
-msgid "Select new labeltype:"
-msgstr "Kies een nieuw labeltype:"
+# Select new type: [msdos/amiga/loop/etc]
+# infinitief hier beter dan 'een nieuw partitietabeltype kiezen'
+#: ../src/Dialog_Disklabel.cc:65
+msgid "Select new partition table type:"
+msgstr "Kies een nieuw partitietabeltype:"
 
-#: ../src/Dialog_Disklabel.cc:83
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr ""
-"WAARSCHUWING: Bij het aanmaken van een nieuw schijflabel zullen alle "
-"gegevens op %1 worden verwijderd!"
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr "Wanneer u de knop ‘Aanmaken’ indrukt zullen ALLE GEGEVENS op de schijf %1 ONMIDDELLIJK WORDEN GEWIST."
 
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1749
 msgid "Create"
 msgstr "Aanmaken"
 
@@ -225,7 +215,7 @@ msgstr "Laatste sector:"
 msgid "Total Sectors:"
 msgstr "Totaal aantal sectoren:"
 
-# partitiesoort/partitietype
+# schijflabel/partitielabel ?
 #. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
 #: ../src/Dialog_Partition_Label.cc:32
 msgid "Set partition label on %1"
@@ -836,7 +826,6 @@ msgstr "%1 (%2, %3) verwijderen van %4"
 msgid "Format %1 as %2"
 msgstr "%1 formatteren als %2"
 
-# partitiesoort/partitietype
 #. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
 #: ../src/OperationLabelPartition.cc:59
 msgid "Clear Partition Label on %1"
@@ -965,15 +954,17 @@ msgstr "%1 TiB"
 
 #: ../src/Utils.cc:291
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
-msgstr "# Tijdelijk bestand, aangemaakt door gparted.  Het mag verwijderd worden.\n"
+msgstr ""
+"# Tijdelijk bestand, aangemaakt door gparted.  Het mag verwijderd worden.\n"
 
 #: ../src/Utils.cc:300
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
-msgstr "Bewerking van het label is mislukt: Kan niet naar tijdelijk bestand %1 schrijven.\n"
+msgstr "Bewerken van het label is mislukt: Kan niet naar tijdelijk bestand %1 schrijven.\n"
 
 #: ../src/Utils.cc:309
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
-msgstr "Bewerken van het label is mislukt: Kan tijdelijk bestand %1 niet aanmaken.\n"
+msgstr ""
+"Bewerken van het label is mislukt: Kan tijdelijk bestand %1 niet aanmaken.\n"
 
 #. ==== GUI =========================
 #: ../src/Win_GParted.cc:69 ../src/Win_GParted.cc:1029
@@ -1022,8 +1013,8 @@ msgid "_View"
 msgstr "Beel_d"
 
 #: ../src/Win_GParted.cc:181
-msgid "_Set Disklabel"
-msgstr "_Schijflabel instellen"
+msgid "_Create Partition Table"
+msgstr "Pa_rtitietabel aanmaken"
 
 #: ../src/Win_GParted.cc:183
 msgid "_Device"
@@ -1324,31 +1315,22 @@ msgstr "%1 koppelen aan %2"
 msgid "Could not mount %1 on %2"
 msgstr "Kon %1 niet koppelen aan %2"
 
-# een [msdos] schijflabel aanmaken op /dev/hda
-#: ../src/Win_GParted.cc:1738
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "Weet u zeker dat u een %1 schijflabel wilt aanmaken op %2?"
+#: ../src/Win_GParted.cc:1740
+msgid "Error while creating partition table."
+msgstr "Fout bij het aanmaken van de partitietabel."
 
-#: ../src/Win_GParted.cc:1746
-msgid "This operation will destroy all data on %1!"
-msgstr "Deze bewerking zal alle data op %1 vernietigen!"
-
-#: ../src/Win_GParted.cc:1755
-msgid "Error while setting new disklabel"
-msgstr "Fout bij het instellen van een nieuw schijflabel"
-
-#: ../src/Win_GParted.cc:1869
+#: ../src/Win_GParted.cc:1853
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Weet u zeker dat u de bewerkingen in de wachtrij wilt uitvoeren?"
 
 # data/gegevens/informatie
-#: ../src/Win_GParted.cc:1874
+#: ../src/Win_GParted.cc:1858
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
 "Het wordt aanbevolen om een backup te maken van belangrijke data voordat u "
 "doorgaat."
 
-#: ../src/Win_GParted.cc:1875
+#: ../src/Win_GParted.cc:1859
 msgid "Apply operations to harddisk"
 msgstr "Bewerkingen toepassen op de harde schijf"
 
@@ -1407,6 +1389,39 @@ msgstr "aangekoppelde bestandssyteem groter maken"
 #: ../src/xfs.cc:274
 msgid "copy filesystem"
 msgstr "bestandssysteem kopiëren"
+
+#~ msgid "Set Disklabel on %1"
+#~ msgstr "Schijflabel instellen op %1"
+
+#~ msgid ""
+#~ "A disklabel is a piece of data stored at a well known place on the disk, "
+#~ "that indicates where each partition begins and how many sectors it "
+#~ "occupies."
+#~ msgstr ""
+#~ "Een schijflabel is een stukje informatie op een vaste plek op de schijf, "
+#~ "dat aangeeft waar elke partitie begint en hoeveel sectoren het bevat."
+
+# N.B. letterlijke vertaling: U heeft een disklabel nodig... is lelijk
+# de schijf/deze schijf
+# te kunnen aanmaken/aan te maken
+#~ msgid "You need a disklabel if you want to create partitions on this disk."
+#~ msgstr ""
+#~ "Om partities te kunnen aanmaken op de schijf is een schijflabel nodig."
+
+#~ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
+#~ msgstr ""
+#~ "WAARSCHUWING: Bij het aanmaken van een nieuw schijflabel zullen alle "
+#~ "gegevens op %1 worden verwijderd!"
+
+#~ msgid "_Set Disklabel"
+#~ msgstr "_Schijflabel instellen"
+
+# een [msdos] schijflabel aanmaken op /dev/hda
+#~ msgid "Are you sure you want to create a %1 disklabel on %2?"
+#~ msgstr "Weet u zeker dat u een %1 schijflabel wilt aanmaken op %2?"
+
+#~ msgid "This operation will destroy all data on %1!"
+#~ msgstr "Deze bewerking zal alle data op %1 vernietigen!"
 
 #~ msgid "Read Label"
 #~ msgstr "Label lezen"
