@@ -39,7 +39,7 @@
 #include "../include/ufs.h"
 
 #include <cerrno>
-#include <sys/statvfs.h>	
+#include <sys/statvfs.h>
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
@@ -65,7 +65,7 @@ GParted_Core::GParted_Core()
 	std::cout << "======================" << std::endl ;
 	std::cout << "libparted : " << ped_get_version() << std::endl ;
 	std::cout << "======================" << std::endl ;
-	
+
 	//initialize filesystemlist
 	find_supported_filesystems() ;
 }
@@ -135,9 +135,34 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	if ( probe_devices )
 	{
 		device_paths .clear() ;
-		
+
 		//try to find all available devices
-		ped_device_probe_all();
+		std::ifstream proc_partitions( "/proc/partitions" ) ;
+    	if ( proc_partitions )
+    	{
+    		//parse device names from /proc/partitions
+    		std::string line ;
+    		std::string device ;
+    		while ( getline( proc_partitions, line ) )
+    		{
+    			//Device names without a trailing digit refer to the whole disk.
+    			//These whole disk devices are the ones we want.
+    			device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;
+    			if ( device != "" )
+    			{
+    				//try to have libparted detect the device and add it to the list
+    				device = "/dev/" + device;
+    				ped_device_get( device .c_str() ) ;
+    			}
+    		}
+    		proc_partitions .close() ;
+    	}
+    	else
+    	{
+    		//file /proc/partitions doesn't exist so use libparted to probe devices
+    		ped_device_probe_all();
+    	}
+
 		lp_device = ped_device_get_next( NULL );
 		while ( lp_device ) 
 		{
@@ -152,10 +177,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 					ped_device_close( lp_device ) ;
 				}
-
 				free( buf ) ;
 			}
-			
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
 		close_device_and_disk() ;
