@@ -14,6 +14,13 @@ AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_LIBTOOL
 
+dnl check for hal-lock program
+AC_CHECK_PROG([HAVE_HAL_LOCK], [hal-lock], [yes], [no])
+if test "x$HAVE_HAL_LOCK" = "xno"; then
+	AC_MSG_ERROR([*** hal-lock program not found])
+fi
+
+
 dnl======================
 dnl i18n stuff 
 dnl======================
@@ -28,8 +35,9 @@ IT_PROG_INTLTOOL([0.35.5])
 dnl======================
 dnl checks for libs 
 dnl======================
-AC_CHECK_LIB(uuid, uuid_generate, [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
-AC_CHECK_LIB(dl, dlopen,          [], AC_MSG_ERROR([*** dl library (libdl) not found]))
+AC_CHECK_LIB(uuid, uuid_generate,     [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
+AC_CHECK_LIB(dl, dlopen,              [], AC_MSG_ERROR([*** dl library (libdl) not found]))
+
 
 dnl libparted
 LIBPARTED_VERSION=1.7.1
