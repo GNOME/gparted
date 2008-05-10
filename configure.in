@@ -14,12 +14,6 @@ AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_LIBTOOL
 
-dnl check for hal-lock program
-AC_CHECK_PROG([HAVE_HAL_LOCK], [hal-lock], [yes], [no])
-if test "x$HAVE_HAL_LOCK" = "xno"; then
-	AC_MSG_ERROR([*** hal-lock program not found])
-fi
-
 
 dnl======================
 dnl i18n stuff 
