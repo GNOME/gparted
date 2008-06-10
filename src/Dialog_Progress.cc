@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -236,7 +236,7 @@ void Dialog_Progress::on_signal_show()
 
 	if ( cancel )
 	{
-		progressbar_current .set_text( _("Operation canceled") ) ;
+		progressbar_current .set_text( _("Operation cancelled") ) ;
 		progressbar_current .set_fraction( 0.0 ) ;
 	}
 	else
@@ -253,7 +253,9 @@ void Dialog_Progress::on_signal_show()
 		str_temp = _("All operations successfully completed") ;
 
 		if ( warnings > 0 )
-			str_temp += " (" + String::ucompose( _("%1 warnings"), warnings ) + ")" ;
+			str_temp += " ("
+			         +  String::ucompose( ngettext("%1 warning", "%1 warnings", warnings), warnings )
+			         +  ")" ;
 
 		progressbar_all .set_text( str_temp ) ;
 		progressbar_all .set_fraction( 1.0 ) ;
@@ -313,7 +315,7 @@ void Dialog_Progress::on_cancel()
 				   Gtk::BUTTONS_NONE,
 				   true ) ;
 		
-	dialog .set_secondary_text( _("Canceling an operation may cause SEVERE filesystem damage.") ) ;
+	dialog .set_secondary_text( _("Cancelling an operation may cause SEVERE file system damage.") ) ;
 
 	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
 	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;

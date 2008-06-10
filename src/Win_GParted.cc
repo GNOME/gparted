@@ -667,10 +667,13 @@ void Win_GParted::Refresh_Visual()
 
 	//set new statusbartext
 	statusbar .pop() ;
-	if ( operations .size() != 1 )
-		statusbar .push( String::ucompose( _("%1 operations pending"), operations .size() ) );
-	else
-		statusbar .push( _( "1 operation pending" ) );
+	statusbar .push( String::ucompose( ngettext( "%1 operation pending"
+	                                           , "%1 operations pending"
+	                                           , operations .size()
+	                                           )
+	                                 , operations .size()
+	                                 )
+	               );
 		
 	if ( ! operations .size() ) 
 		allow_undo_clear_apply( false ) ;
@@ -724,11 +727,13 @@ bool Win_GParted::Quit_Check_Operations()
 					   Gtk::BUTTONS_NONE,
 					   true );
 
-		if ( operations .size() != 1 )
-			dialog .set_secondary_text( String::ucompose( _("%1 operations are currently pending."), 
-							  	      operations .size() ) ) ;
-		else
-			dialog .set_secondary_text( _("1 operation is currently pending.") ) ;
+		dialog .set_secondary_text( String::ucompose( ngettext( "%1 operation is currently pending."
+		                                                      , "%1 operations are currently pending."
+		                                                      , operations .size()
+		                                                      )
+		                                            , operations .size()
+		                                            )
+		                          ) ;
 	
 		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
 		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
