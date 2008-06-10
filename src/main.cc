@@ -40,7 +40,7 @@ int main( int argc, char *argv[] )
 					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK ) ;
 		dialog .set_secondary_text(
-				_("Since GParted can be a weapon of mass destruction only root may run it.") ) ;
+				_("Since GParted is a powerful tool capable of destroying partition tables and vast amounts of data, only root may run it.") ) ;
 		
 		dialog .run() ;
 		exit( 0 ) ;
