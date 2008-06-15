@@ -29,14 +29,6 @@ Dialog_Partition_New::Dialog_Partition_New()
 	
 	//set used (in pixels)...
 	frame_resizer_base ->set_used( 0 ) ;
-	
-	//checkbutton..
-	checkbutton_round_to_cylinders .set_label( _("Round to cylinders") ) ;
-	checkbutton_round_to_cylinders .set_active( true ) ;
-	checkbutton_round_to_cylinders .signal_clicked() .connect( 
-		sigc::bind<bool>( sigc::mem_fun(*this, &Dialog_Partition_New::optionmenu_changed), false ) ) ;
-
-	this ->get_vbox() ->pack_start( checkbutton_round_to_cylinders, Gtk::PACK_SHRINK ) ;
 }
 
 void Dialog_Partition_New::Set_Data( const Partition & partition,
@@ -157,7 +149,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		default	:	part_type = GParted::TYPE_UNALLOCATED ;
 	}
 
-	//FIXME:  Partition size is limited is just less than 1024 TeraBytes due
+	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	new_start = START + (Sector(spinbutton_before .get_value_as_int()) * MEBIBYTE) ;
 	new_end  = new_start + (Sector(spinbutton_size .get_value_as_int()) * MEBIBYTE) ;
@@ -197,6 +189,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}
 
+	//set indicator of whether to use strict sector values, or to round to cylinders
 	part_temp .strict = ! checkbutton_round_to_cylinders .get_active() ;
 
 	return part_temp;

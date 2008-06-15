@@ -43,7 +43,6 @@ private:
 	
 	Gtk::Table table_create;
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
-	Gtk::CheckButton checkbutton_round_to_cylinders ;
 	Gtk::Menu menu_type, menu_filesystem;
 	Gtk::Entry entry;
 

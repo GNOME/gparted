@@ -39,7 +39,7 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	
 	//pack hbox_main
 	this ->get_vbox() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
-	
+
 	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
 	
@@ -77,7 +77,12 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	
 	if ( ! fixed_start )
 		before_value = spinbutton_before .get_value() ;
-	
+
+	//add checkbutton
+	checkbutton_round_to_cylinders .set_label( _("Round to cylinders") ) ;
+	checkbutton_round_to_cylinders .set_active( true ) ;
+	table_resize.attach( checkbutton_round_to_cylinders, 0, 1, 3, 4 ) ;
+
 	//connect signalhandlers of the spinbuttons
 	if ( ! fixed_start )
 		spinbutton_before .signal_value_changed() .connect( 
@@ -118,11 +123,11 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 
 Partition Dialog_Base_Partition::Get_New_Partition() 
 {
-	//FIXME:  Partition size is limited is just less than 1024 TeraBytes due
+	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
 		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * MEBIBYTE ;	
-	
+
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
 		selected_partition .sector_end = 
 			selected_partition .sector_start + Sector(spinbutton_size .get_value_as_int()) * MEBIBYTE ;
@@ -143,7 +148,10 @@ Partition Dialog_Base_Partition::Get_New_Partition()
 	//set new value of unused..
 	if ( selected_partition .sectors_used != -1 )
 		selected_partition .sectors_unused = selected_partition .get_length() - selected_partition .sectors_used ;
-	
+
+	//set indicator of whether to use strict sector values, or to round to cylinders
+	selected_partition .strict = ! checkbutton_round_to_cylinders .get_active() ;
+
 	return selected_partition ;
 }
 

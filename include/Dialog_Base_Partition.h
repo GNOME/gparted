@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -68,7 +68,8 @@ protected:
 
 	Gtk::HBox hbox_main ;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
-	
+	Gtk::CheckButton checkbutton_round_to_cylinders ;
+
 	//used to enable/disable OKbutton...
 	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;
 	
