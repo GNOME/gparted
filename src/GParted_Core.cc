@@ -109,7 +109,7 @@ void GParted_Core::find_supported_filesystems()
 	
 	ufs fs_ufs;
 	FILESYSTEMS .push_back( fs_ufs .get_filesystem_support() ) ;
-	
+
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 	
@@ -250,9 +250,23 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 {
 	if ( ! partition .strict )
 	{
-		//FIXME: this doesn't work to well, when dealing with layouts which contain an extended partition
-		//because of the metadata length % cylindersize isn't always 0
-		Sector diff = partition .sector_start % device .cylsize ;
+		Sector diff = 0;
+		if ( partition.type == TYPE_LOGICAL ||
+			 partition.sector_start == device .sectors
+		   ) {
+			//Must account the relative offset between:
+			// (A) the Extended Boot Record sector and the next track of the
+			//     logical partition (usually 63 sectors), and
+			// (B) the Master Boot Record sector and the next track of the first
+			//     primary partition
+			diff = (partition .sector_start - device .sectors) % device .cylsize ;
+		} else if ( partition.sector_start == 34 ) {
+			// (C) the GUID Partition Table (GPT) and the start of the data
+			//     partition at sector 34
+			diff = (partition .sector_start - 34 ) % device .cylsize ;
+		} else {
+			diff = partition .sector_start % device .cylsize ;
+		}
 		if ( diff )
 		{
 			if ( diff < ( device .cylsize / 2 ) )

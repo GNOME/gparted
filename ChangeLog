@@ -1,10 +1,16 @@
 2008-06-15  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/GParted_Core.cc: Enhanced snap-to-cylinder math
+	  - Improved math for rounding starting sector to cylinder
+	    boundaries for logical partitions, and the first primary
+	    partition for MBR and GPT partition tables.
+	  - Closes GParted bug #432525 
+
 	* include/Dialog_Base_Partition.h,
 	  src/Dialog_Base_Partition.cc,
 	  include/Dialog_Partition_New.h,
 	  src/Dialog_Partition_New.cc: Migrated checkbutton.
-	  - Moved "Round to cylinders" checkbutton from partition New
+	  - Moved "Round to cylinders" checkbutton from partition new
 	    dialog to partition base dialog so that it may be used
 	    by all inheritors (e.g., New, Copy, and Resize/Move).
 
