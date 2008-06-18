@@ -1,10 +1,16 @@
+2008-06-18  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/OperationResizeMove.cc: Fixed incorrectly recognized move/resizes
+	  - Re-wrote logic to determine proper partition move / resize operation
+	  - Closes GParted bug #438570
+
 2008-06-15  Curtis Gedak  <gedakc@gmail.com>
 
 	* src/GParted_Core.cc: Enhanced snap-to-cylinder math
 	  - Improved math for rounding starting sector to cylinder
 	    boundaries for logical partitions, and the first primary
 	    partition for MBR and GPT partition tables.
-	  - Closes GParted bug #432525 
+	  - Closes GParted bugs #432525, and #525137
 
 	* include/Dialog_Base_Partition.h,
 	  src/Dialog_Base_Partition.cc,

@@ -57,17 +57,27 @@ void OperationResizeMove::create_description()
 	} ;
 	Action action = NONE ;
 
-	if ( partition_new .get_length() > partition_original .get_length() )
+	if ( partition_new .get_length() > partition_original .get_length() ) {
+		//Grow partition
 		action = GROW ;
-	else if ( partition_new .get_length() < partition_original .get_length() )
+		if ( partition_new .sector_start > partition_original .sector_start )
+			action = MOVE_RIGHT_GROW ;
+		if ( partition_new .sector_start < partition_original .sector_start )
+			action = MOVE_LEFT_GROW ;
+	} else if ( partition_new .get_length() < partition_original .get_length() ) {
+		//Shrink partition
 		action = SHRINK ;
-
-	if ( partition_new .sector_start > partition_original .sector_start &&
-	     partition_new .sector_end > partition_original .sector_end )
-		action = action == GROW ? MOVE_RIGHT_GROW : action == SHRINK ? MOVE_RIGHT_SHRINK : MOVE_RIGHT ;
-	else if ( partition_new .sector_start < partition_original .sector_start &&
-	     partition_new .sector_end < partition_original .sector_end )
-		action = action == GROW ? MOVE_LEFT_GROW : action == SHRINK ? MOVE_LEFT_SHRINK : MOVE_LEFT ;
+		if ( partition_new .sector_start > partition_original .sector_start )
+			action = MOVE_RIGHT_SHRINK ;
+		if ( partition_new .sector_start < partition_original .sector_start )
+			action = MOVE_LEFT_SHRINK ;
+	} else {
+		//No change in partition size
+		if ( partition_new .sector_start > partition_original .sector_start )
+			action = MOVE_RIGHT ;
+		if ( partition_new .sector_start < partition_original .sector_start )
+			action = MOVE_LEFT ;
+	}
 
 	switch ( action )
 	{
