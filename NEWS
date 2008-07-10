@@ -1,4 +1,39 @@
 ====================
+0.3.8   (2008-07-10)
+====================
+NOTES
+	This release of GParted consists of bug fixes, and language
+	translation updates.
+	
+	Key changes include:
+	  - Corrected errors in "Round to cylinders" boundary math
+	  - Added "Round to cylinders" check box for copy and move/resize
+	  - Enhanced to parse devices from /proc/partitions if file exists
+	  - Fixed problem with command line devices being ignored
+	  - Removed absolute requirement for hal-lock
+
+BUG FIXES
+	* Fixed problem with no devices being detected (#363340)
+	* Reduced time for scanning all devices (#453555)
+	* Fixed problem with incorrect BIOS setting for floppy drives (351753)
+	* Fixed partition resizing that incorrectly became a move too (432525)
+	* Corrected problem where some disk space was unassignable (525137)
+	* Fixed action incorrectly recognized for move/resize (438570)
+	* Added proper plural handling for po files (315291)
+	* Changed wording of root privilege required warning (534072)
+	* Fixed three grammatical errors (#533637)
+
+TRANSLATIONS (new/updated)
+	* cs(Adrian Gunis, Lucas Lommer), es(Jorge Gonzalez),
+	  nl(Tino Meinen), pl(Wadim Dziedzic), pt_BR(Djavan Fagundes),
+	  sk(Pavol Klačanský), sv(Daniel Nylander), lt.po(Gintautas Miliauskas)
+
+DEPENDENCIES (new/updated)
+	* hal-lock absolute requirement removed.  The gparted script will
+	  search for and use hal-lock only if it is found in the path.
+
+
+====================
 0.3.7   (2008-04-29)
 ====================
 NOTES
