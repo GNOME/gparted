@@ -1,5 +1,13 @@
 2008-07-23  Curtis Gedak  <gedakc@gmail.com>
 
+	* gparted.desktop.in.in,
+	  Makefile.am,
+	  configure.in: Added check for gksu for gparted menu invocation.
+	  - Permits GNU/Linux distributions with gksu to prompt for root
+	    password when invoked from the menu, while not hampering
+	    distributions without gksu.
+	  - Partially addresses bug 318557 for some GNU/Linux distributions
+
 	* configure.in: Append -svn to version for continuing development
 
 2008-07-10  Curtis Gedak  <gedakc@gmail.com>

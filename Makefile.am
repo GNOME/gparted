@@ -12,7 +12,8 @@ desktop_DATA = $(DESKTOP_FILES)
 sbin_SCRIPTS = gparted
 CLEANFILES = $(sbin_SCRIPTS) $(DESKTOP_IN_FILES)
 
-do_subst = sed -e 's,[@]installdir[@],$(sbindir),g'
+do_subst = sed -e 's,[@]installdir[@],$(sbindir),g' \
+	-e 's,[@]gksuprog[@],$(GKSUPROG),g'
 
 gparted.desktop.in:  gparted.desktop.in.in Makefile
 	$(do_subst) < $(srcdir)/gparted.desktop.in.in > gparted.desktop.in
