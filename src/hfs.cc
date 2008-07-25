@@ -32,12 +32,12 @@ FS hfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
-	
+
 	if ( ! Glib::find_program_in_path( "hfsck" ) .empty() )
-	{
-		fs .get_label = FS::EXTERNAL ;
 		fs .check = FS::EXTERNAL ;
-	}
+
+	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
 
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
@@ -53,22 +53,12 @@ void hfs::set_used_sectors( Partition & partition )
 
 void hfs::get_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "hfsck -v " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
-		char buf[512] ;
-		index = output .find( "drVN" ) ;
-
-		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "drVN = %512s", buf ) == 1 )
-		{
-			partition .label = buf ;
-			
-			//remove "" from the label..
-			if ( partition .label .size() > 0 && partition .label[0] == '\"' )
-				partition .label = partition .label .substr( 1 ) ;
-
-			if ( partition .label .size() > 0 && partition .label[ partition .label .size() -1 ] == '\"' )
-				partition .label = partition .label .substr( 0, partition .label .size() -1 ) ;
-		}
+		Glib::ustring label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
+		//FIXME: find a better way to see if label is empty.. imagine someone uses 'untitled' as label.... ;)
+		if( label != "untitled" ) 
+			partition .label = label ; 
 	}
 	else
 	{
@@ -114,5 +104,3 @@ bool hfs::check_repair( const Partition & partition, OperationDetail & operation
 }
 
 } //GParted
-
-

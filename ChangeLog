@@ -1,5 +1,8 @@
 2008-07-25  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/hfs.cc: Rewrote get_label to use vol_id for hfs file system
+	  - Reason:  not all hfsutils packages include hfsck (e.g. Ubuntu 7.10)
+
 	* src/hfsplus.cc: Enhanced support for hfsplus file system
 	  - Added create, get_label, and check_repair functionality
 	  - Additional feature support is provided by the hfsprogs package
