@@ -30,6 +30,15 @@ FS hfsplus::get_filesystem_support()
 	fs .read = GParted::FS::LIBPARTED ; 
 	fs .shrink = GParted::FS::LIBPARTED ; 
 	
+	if ( ! Glib::find_program_in_path( "mkfs.hfsplus" ) .empty() )
+		fs .create = GParted::FS::EXTERNAL ;
+	
+	if ( ! Glib::find_program_in_path( "fsck.hfsplus" ) .empty() )
+		fs .check = FS::EXTERNAL ;
+
+	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
+		fs .get_label = FS::EXTERNAL ;
+
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	
@@ -42,6 +51,21 @@ void hfsplus::set_used_sectors( Partition & partition )
 
 void hfsplus::get_label( Partition & partition )
 {
+	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
+	{
+		Glib::ustring label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
+		//FIXME: find a better way to see if label is empty.. imagine someone uses 'untitled' as label.... ;)
+		if( label != "untitled" ) 
+			partition .label = label ; 
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+		
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool hfsplus::set_label( const Partition & partition, OperationDetail & operationdetail )
@@ -51,7 +75,12 @@ bool hfsplus::set_label( const Partition & partition, OperationDetail & operatio
 
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return true ;
+	Glib::ustring cmd = "";
+	if( new_partition .label .empty() )
+		cmd = "mkfs.hfsplus " + new_partition .get_path() ;
+	else
+		cmd = "mkfs.hfsplus -v \"" + new_partition .label + "\" " + new_partition .get_path() ;
+	return ! execute_command( cmd , operationdetail ) ;
 }
 
 bool hfsplus::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -68,9 +97,7 @@ bool hfsplus::copy( const Glib::ustring & src_part_path,
 
 bool hfsplus::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return true ;
+	return ! execute_command( "fsck.hfsplus -f -y " + partition .get_path(), operationdetail ) ;
 }
 
 } //GParted
-
-
