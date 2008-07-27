@@ -19,8 +19,10 @@
 HAVE_HAL_LOCK=no
 for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 	if test -x "$k/hal-lock"; then
-		HAVE_HAL_LOCK=yes
-		break
+		if test "z`ps -e | grep hald`" != "z"; then
+			HAVE_HAL_LOCK=yes
+			break
+		fi
 	fi
 done
 
