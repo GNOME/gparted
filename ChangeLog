@@ -1,3 +1,31 @@
+2008-08-05  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/Win_GParted.h: Created show_help_dialog function to display help
+
+	* src/Win_GParted.cc: Created show_help_dialog function to display help
+	  - Replaced help dialog box with call to show_help_dialog function.
+	    Initial concept for the show_help_dialog function comes from the
+	    file-roller project.  The advantage to this code is that it does
+	    create a dependency on libgnomeui.
+	  - Changed menu Help->Help CTRL+H to help->Contents F1
+
+	* src/Makefile.am: Added GPARTED_DATADIR define to INCLUDES
+
+	* autogen.sh: Added USE_COMMON_DOC_BUILD
+	
+	* configure.in: Added help and m4 directories, and GNOME_DOC_INIT
+	
+	* Makefile.am: Added help and m4 directories, and gnome-doc-utils
+
+	* help: Created directory for future GParted Manual
+
+	* m4: Created directory as advised for gnome-doc-util
+	  - *********************************
+	    Prepare for future GParted Manual
+	    *********************************
+	  - See "Migrating to GNOME Documentation Build Utilities"
+	  http://library.gnome.org/devel/gnome-doc-make/0.12/migrating.html.en
+
 2008-07-27  Curtis Gedak  <gedakc@gmail.com>
 
 	* gparted.in: Added additional check for hald daemon if hal-lock exists

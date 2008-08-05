@@ -167,7 +167,7 @@ void Win_GParted::init_menubar()
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
 		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
-	
+
 	//view
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem(
@@ -175,21 +175,25 @@ void Win_GParted::init_menubar()
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( 
 		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
-	
+
 	//device
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + " ...",
 								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
-		
+
 	//partition
 	init_partition_menu() ;
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Partition"), menu_partition ) );
-	
+
 	//help
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back(Gtk::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::HELP, sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+		_("_Contents"), 
+		Gtk::AccelKey("F1"),
+		* manage( new Gtk::Image( Gtk::Stock::HELP, Gtk::ICON_SIZE_MENU ) ), 
+		sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem(
 		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
 
@@ -1130,20 +1134,54 @@ void Win_GParted::menu_view_operations()
 		close_operationslist() ;
 }
 
-void Win_GParted::menu_help_contents()
+void Win_GParted::show_help_dialog (const char *link_id /* For context sensitive help */)
 {
-	Gtk::MessageDialog dialog( *this,
-				   _("Sorry, not yet implemented."),
-				   false,
-				   Gtk::MESSAGE_INFO,
-				   Gtk::BUTTONS_OK,
-				   true );
+/* Original concept for show_help_dialog is from file-roller project
+ * gtk-utils.c revision 1967, Tue Aug 7 06:18:42 2007 UTC
+ * See http://fileroller.sourceforge.net/
+ * 
+ * Modified to work with GParted by Curtis Gedak :-)
+ */
+	GError *err = NULL;
+	char *command;
+	const char *lang;
+	char *uri = NULL;
+	int i;
+	GdkScreen *gscreen;
 
-	dialog .set_secondary_text( _( "Please visit http://gparted.sf.net for more information and support.") ) ;
+	const char * const * langs = g_get_language_names ();
 
-	dialog .run();
+	for (i = 0; langs[i]; i++) {
+		lang = langs[i];
+		if (strchr (lang, '.')) {
+			continue;
+		}
+
+		uri = g_build_filename( GPARTED_DATADIR,
+								"/gnome/help/gparted/",
+								lang,
+								"/gparted.xml",
+								NULL );
+					
+		if (g_file_test (uri, G_FILE_TEST_EXISTS)) {
+                    break;
+		}
+	}
+	
+	if (link_id) {
+		command = g_strconcat ("gnome-open ghelp://", uri, "?", link_id, NULL);
+	} else {
+		command = g_strconcat ("gnome-open ghelp://", uri,  NULL);
+	}
+
+	gscreen = gdk_screen_get_default();
+	gdk_spawn_command_line_on_screen (gscreen, command, &err);
 }
 
+void Win_GParted::menu_help_contents()
+{
+	show_help_dialog( NULL);
+}
 
 void Win_GParted::menu_help_about()
 {

@@ -2,6 +2,7 @@ AC_INIT([gparted],[0.3.8-svn],[http://bugzilla.gnome.org/simple-bug-guide.cgi?pr
 
 AC_CONFIG_SRCDIR(src/main.cc)
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-bzip2])
 AM_MAINTAINER_MODE
@@ -14,10 +15,14 @@ AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_LIBTOOL
 
+GNOME_DOC_INIT
+
+
 dnl======================
 dnl checks for other programs 
 dnl======================
 AC_CHECK_PROG(GKSUPROG, gksu, gksu)
+
 
 dnl======================
 dnl i18n stuff 
@@ -83,6 +88,7 @@ AC_CONFIG_FILES([
 Makefile
 compose/Makefile
 doc/Makefile
+help/Makefile
 include/Makefile
 src/Makefile
 pixmaps/Makefile

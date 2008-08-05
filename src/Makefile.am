@@ -1,5 +1,6 @@
 INCLUDES =						\
 	$(GTKMM_CFLAGS) 				\
+	-DGPARTED_DATADIR=\""$(datadir)"\"			\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"	\
 	-DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"		
 

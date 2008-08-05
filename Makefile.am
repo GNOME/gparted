@@ -1,4 +1,4 @@
-SUBDIRS = compose doc include pixmaps po src
+SUBDIRS = compose doc help include pixmaps po src
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -28,10 +28,16 @@ EXTRA_DIST =			\
 	intltool-extract.in  	\
 	intltool-merge.in	\
 	intltool-update.in	\
-	gparted.in
+	gparted.in			\
+	gnome-doc-utils.make	\
+	m4
 
 DISTCLEANFILES =		\
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update		\
-	$(desktop_DATA)
+	$(desktop_DATA)		\
+	gnome-doc-utils.make
+
+DISTCHECK_CONFIGURE_FLAGS =	\
+	--disable-scrollkeeper
