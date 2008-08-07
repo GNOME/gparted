@@ -1723,7 +1723,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 
 	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
-	Sector optimal_blocksize = readonly ? 128 : 64, N = 32768 ;
+	Sector benchmark_blocksize = readonly ? 128 : 64, N = 65536 ;
+	Sector optimal_blocksize = benchmark_blocksize ;
 	Sector offset_read = src_start,
 	       offset_write = dst_start ;
 
@@ -1739,24 +1740,18 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 	double smallest_time = 1000000 ;
 	bool succes = true ;
 
+	//Benchmark copy times using different block sizes to determine optimal size
 	while ( succes &&
-		timer .elapsed() <= smallest_time && 
 		std::llabs( done ) + N <= length && 
-		optimal_blocksize * 2 < N )
+		benchmark_blocksize <= N )
 	{
-		if ( done != 0 ) 
-		{
-			smallest_time = timer .elapsed() ;
-			optimal_blocksize *= 2 ;
-		}
-
 		timer .reset() ;
 		succes = copy_blocks( src_device, 
 	  		     	      dst_device,
 			     	      offset_read + done, 
 			     	      offset_write + done,
 			     	      N, 
-			     	      optimal_blocksize,
+			     	      benchmark_blocksize,
 			     	      operationdetail .get_last_child(),
 				      readonly,
 				      total_done ) ;
@@ -1764,15 +1759,19 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 
 		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
 			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
-		
+
+		if ( timer .elapsed() <= smallest_time )
+		{
+			smallest_time = timer .elapsed() ;
+			optimal_blocksize = benchmark_blocksize ; 
+		}
+		benchmark_blocksize *= 2 ;
+
 		if ( ( dst_start > src_start ) )
 			done -= N ;
 		else
 			done += N ;
 	}
-	
-	if ( timer .elapsed() > smallest_time )
-		optimal_blocksize /= 2 ;
 	
 	if ( succes )
 		operationdetail .get_last_child() .add_child( OperationDetail( String::ucompose( _("optimal blocksize is %1 sectors (%2)"),

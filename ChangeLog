@@ -1,5 +1,12 @@
 2008-08-06  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/GParted_Core.cc: Enhanced optimal block size copy algorithm.
+	  - Changed algorithm to try all block size possibilities instead of
+	    stopping as soon as next larger block size took longer to copy than
+	    the prior block size.  Due to anomalies in benchmark times, the
+	    previous algorithm would favour smaller block sizes.
+	  - Closes GParted bugs #546423, and #438574
+
 	* README: Updated with new directories for GParted Manual
 
 2008-08-05  Curtis Gedak  <gedakc@gmail.com>
