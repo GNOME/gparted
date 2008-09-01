@@ -2,6 +2,6 @@ figdir = figures
 docname = gparted
 lang = C
 omffile = gparted-C.omf
-entities = legal.xml
+entities =
 include $(top_srcdir)/xmldocs.make
 dist-hook: app-dist-hook

@@ -7,7 +7,7 @@ DOC_MODULE = gparted
 
 #List any files included in the help document using system entities
 #  Example:  <!ENTITY SYSTEM "chapter1.xml">
-DOC_ENTITIES = legal.xml
+DOC_ENTITIES =
 
 #List any files that are included in the Xinclude specification
 DOC_INCLUDES =
