@@ -140,9 +140,10 @@ public:
                     const char drive_letter, const Glib::ustring & device_path ) ;
 	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
+	static Glib::ustring cleanup_cursor( const Glib::ustring & text ) ;
 
 };
-	
+
 
 }//GParted
 

@@ -254,7 +254,7 @@ int Utils::execute_command( const Glib::ustring & command,
 		 return -1 ;
 	}
 
-	output = std_out ;
+	output = Utils::cleanup_cursor( std_out ) ;
 	error = std_error ;
 	
 	return exit_status ;
@@ -330,5 +330,30 @@ Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /*
 	if (p1 == Glib::ustring::npos) p1 = 0;
 	return src.substr(p1, (p2-p1)+1);
 }
+
+Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
+{
+	//Clean up text for commands that use cursoring to display progress.
+	Glib::ustring str = text;
+	//remove backspace '\b' and delete previous character.  Used in mke2fs output.
+	for ( unsigned int index = str .find( "\b" ) ; index < str .length() ; index = str .find( "\b" ) ) {
+		if ( index > 0 )
+			str .erase( index - 1, 2 ) ;
+		else
+			str .erase( index, 1 ) ;
+	}
+	
+	//remove carriage return and line up to previous line feed.  Used in ntfsclone output.
+	//NOTE:  Normal linux line end is line feed.  DOS uses CR + LF.
+	for ( unsigned int index1 = str .find( "\r") ; index1 < str .length() ; index1 = str .find( "\r" ) ) {
+		if ( str .at(index1 + 1) != '\n') { //Only process if next character is not a LF
+			unsigned int index2 = str .rfind( "\n", index1 ) ;
+			if ( index2 <= index1 )
+				str .erase( index2 + 1, index1 - index2 ) ;
+		}
+	}
+	return str;
+}
+
 
 } //GParted..
