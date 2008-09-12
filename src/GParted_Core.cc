@@ -136,6 +136,10 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	{
 		device_paths .clear() ;
 
+		//Fixme:  Remove code to read /proc/partitions when libparted bug 194 is fixed.
+		//        This was a problem with no floppy drive yet BIOS indicated one existed.
+		//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/194
+		//
 		//try to find all available devices
 		std::ifstream proc_partitions( "/proc/partitions" ) ;
     	if ( proc_partitions )
@@ -145,9 +149,13 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
     		std::string device ;
     		while ( getline( proc_partitions, line ) )
     		{
+    			//Whole disk devices are the ones we want.
     			//Device names without a trailing digit refer to the whole disk.
-    			//These whole disk devices are the ones we want.
     			device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;
+    			//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
+    			//E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
+    			if ( device == "" )
+    				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(.*[0-9]+[^p]{1}[0-9]+)$") ;
     			if ( device != "" )
     			{
     				//try to have libparted detect the device and add it to the list
