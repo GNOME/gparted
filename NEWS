@@ -1,4 +1,34 @@
 ====================
+0.3.9   (2008-09-12)
+====================
+NOTES
+	This release of GParted includes some new features in addition to
+	bug fixes, and language translation updates.
+	
+	Key changes include:
+	  - Reduced time to move or copy partitions
+	  - Added ability to create and check hfs+ file systems
+
+BUG FIXES
+	* Enhanced block size algorithm to reduce move and copy times (#546423)
+	* Fixed display overwrite problem with % complete messages (#532574)
+	* Added code hooks for future GParted Manual (#329584)
+	* Enhanced to use gksu to invoke gparted if available (#381557)
+	* Added further check for hald daemon if hal-lock is found (#543730)
+	* Removed unnecessary task of translating GFDL license (#550047) 
+
+TRANSLATIONS (new/updated)
+	* ar(Djihed Afifi), cs(Adrian Guniš), es(Jorge Gonzalez),
+	  eu(Inaki Larranaga Murgoitio), fi(Ilkka Tuohela), gu(Ankit Patel),
+	  nl(Tino Meinen), pt_BR(Djavan Fagundes), sk(Pavol Klačanský),
+	  sv(Daniel Nylander)
+
+DEPENDENCIES (new/updated)
+	* hfsprogs package required to create or check hfs+ file systems.
+	* vol_id command required to read hfs and hfs+ volume labels.
+
+
+====================
 0.3.8   (2008-07-10)
 ====================
 NOTES
