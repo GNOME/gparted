@@ -17,5 +17,5 @@ DOC_FIGURES =
 
 #List of all the language codes for the languages in which the
 #  document is translated
-DOC_LINGUAS = es sv
+DOC_LINGUAS = es it sv
 
