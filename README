@@ -54,6 +54,7 @@ b. Building from Source
       parted
       gtkmm24
       gettext
+      gnome-doc-utils     - required if help documentation is to be built
 
    On (K)Ubuntu, these dependencies may be obtained by running the
    following command;
@@ -64,6 +65,12 @@ b. Building from Source
       yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
                   perl(XML::Parser) desktop-file-utils
 
+   Briefly, the shell commands `./configure; make; make install' should
+   configure, build, and install this package.  If you wish to build
+   this package without the help documentation use the --disable-doc
+   flag:
+      E.g., ./configure --disable doc
+ 
    The INSTALL file contains further GNU installation instructions.
 
 

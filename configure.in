@@ -15,8 +15,6 @@ AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_LIBTOOL
 
-GNOME_DOC_INIT
-
 
 dnl======================
 dnl checks for other programs 
@@ -84,6 +82,32 @@ AC_SUBST(GTKMM_LIBS)
 AC_SUBST(GTKMM_CFLAGS)
 
 
+dnl======================
+dnl check whether to build documentation - Gnome-Doc-Utils
+dnl======================
+AC_ARG_ENABLE(doc,
+  [  --disable-doc           do not build documentation],,)
+if test "x${enable_doc}" = "x" ; then
+	enable_doc=yes
+fi
+
+AC_MSG_CHECKING(whether documentation should be built)
+if test ${enable_doc} = no; then
+	AC_MSG_RESULT([no])
+else
+	AC_MSG_RESULT([yes])
+fi
+
+if test ${enable_doc} = yes; then
+	GNOME_DOC_INIT
+else
+	dnl Do not care if GDU is not found
+	GNOME_DOC_INIT(,,[:])
+fi
+
+AM_CONDITIONAL(DISABLE_DOC, test ${enable_doc} = no)
+
+
 AC_CONFIG_FILES([
 Makefile
 compose/Makefile
@@ -96,3 +120,17 @@ po/Makefile.in
 ])
 
 AC_OUTPUT
+
+
+dnl======================
+dnl Summary
+dnl======================
+
+echo ""
+echo "================ Final configuration ==================="
+echo "          Installing into prefix  :  $prefix"
+echo ""
+echo "            Build documentation?  :  $enable_doc"
+echo ""
+echo " If all settings are OK, type make and make install "
+echo "========================================================"
