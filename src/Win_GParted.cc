@@ -71,7 +71,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	
 	try
 	{
-		this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
+		this ->set_default_icon_name( "gparted" ) ;
 	}
 	catch ( Glib::Exception & e )
 	{ 
@@ -1191,7 +1191,7 @@ void Win_GParted::menu_help_about()
 	dialog .set_transient_for( *this ) ;
 	
 	dialog .set_name( _("GParted") ) ;
-	dialog .set_logo( this ->get_icon() ) ;
+	dialog .set_logo_icon_name( "gparted" ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
 	dialog .set_copyright( "Copyright © 2004-2008 Bart Hakvoort" ) ;

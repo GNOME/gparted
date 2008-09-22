@@ -1,8 +1,8 @@
 ### Do not execute make in the help subdirectory if DISABLE_DOC is set
 if DISABLE_DOC
-SUBDIRS = compose doc include pixmaps po src
+SUBDIRS = compose data doc include po src
 else
-SUBDIRS = help compose doc include pixmaps po src
+SUBDIRS = help compose data doc include po src
 endif
 
 @INTLTOOL_DESKTOP_RULE@

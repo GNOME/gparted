@@ -1,3 +1,36 @@
+2008-09-22  Curtis Gedak  <gedakc@gmail.com>
+
+	* configure.in,
+	  src/Win_GParted.cc,
+	  src/Makefile.am,
+	  makefile.am: Enabled GParted to use themed app icon (Tango theme).
+	  - Thanks to Sebastion Kraft for designing the icons.
+	  - Thanks to Michael Monreal for the small patch to make use of themed
+	    app icon from hicolor.
+	  - Closes GParted bug #350894
+
+	* data/Makefile.am,
+	  data/icons/Makefile.am,
+	  data/icons/hicolor_apps_16x16_gparted.png,  
+ 	  data/icons/hicolor_apps_22x22_gparted.png,
+	  data/icons/hicolor_apps_24x24_gparted.png,
+	  data/icons/hicolor_apps_32x32_gparted.png,
+	  data/icons/hicolor_apps_48x48_gparted.png,
+	  data/icons/hicolor_apps_scalable_gparted.svg,
+	  data/icons/svg/gparted.svg: Created files.
+	  - Icons by Sebastian Kraft
+	  - Small patch by Michael Monreal.
+
+	* data,
+	  data/icons,
+	  data/icons/svg:  Created directories.
+	  - Small patch by Michael Monreal.
+
+	* pixmaps,
+	  pixmaps/Makefile.am,
+	  pixmaps/gparted.png: Removed directory and files.
+	  - This directory and its contents are no longer required - see above notes.
+
 2008-09-15  Curtis Gedak  <gedakc@gmail.com>
 
 	* configure.in,
