@@ -344,14 +344,28 @@ void Dialog_Progress::on_save()
 		std::ofstream out( dialog .get_filename() .c_str() ) ;
 		if ( out )
 		{
+			//Write out proper HTML start
+			out << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" ;
+			out << "<HTML>" ;
+			out << "<HEAD>" ;
+			out << "    <META http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">" ;
+			out << "    <TITLE>GParted Details</TITLE>" ;
+			out << "</HEAD>" ;
+			out << "<BODY>" ;
+
+			out << "<P>" ;
 			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
-			out << "Libparted " << signal_get_libparted_version .emit() << "<BR><BR>" << std::endl ; 
+			out << "Libparted " << signal_get_libparted_version .emit() ;
+			out << "</P>" << std::endl ; 
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
 				echo_operation_details( operations[ t ] ->operation_detail, out ) ;
-				out << "<BR>========================================<BR><BR>" << std::endl ;
+				out << "<P>========================================</P>" << std::endl ;
 			}
-				
+
+			//Write out proper HTML finish
+			out << "</BODY>" ;
+			out << "</HTML>" ;
 			out .close() ;
 		}
 	}
@@ -362,7 +376,7 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 	//replace '\n' with '<br>'
 	Glib::ustring temp = operationdetail .get_description() ;
 	for ( unsigned int index = temp .find( "\n" ) ; index < temp .length() ; index = temp .find( "\n" ) )
-		temp .replace( index, 1, "<BR />" ) ;
+		temp .replace( index, 1, "<BR>" ) ;
 	
 	//and export everything to some kind of html...
 	out << "<TABLE border=0>" << std::endl ;
