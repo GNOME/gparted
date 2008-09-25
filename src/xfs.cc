@@ -231,6 +231,7 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mountpoint" ;
 	
 	//create xfs filesystem on destination..
+	/*TO TRANSLATORS: looks like Create new xfs filesystem */ 
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( _("create new %1 filesystem"), Utils::get_filesystem_string( FS_XFS ) ) ) ) ;
 

@@ -1061,6 +1061,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
+	/*TO TRANSLATORS: looks like create new ext3 filesystem */ 
 	operationdetail .add_child( OperationDetail( String::ucompose(
 							_("create new %1 filesystem"),
 							Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;

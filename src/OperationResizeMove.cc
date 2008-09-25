@@ -84,7 +84,7 @@ void OperationResizeMove::create_description()
 		case NONE		:
 			description = String::ucompose( _("resize/move %1"), partition_original .get_path() ) ;
 			description += " (" ;
-			description += _("new and old partition have the same size and positition. continuing anyway") ;
+			description += _("new and old partition have the same size and position -- continuing anyway") ;
 			description += ")" ;
 			break ;
 		case MOVE_RIGHT		:
