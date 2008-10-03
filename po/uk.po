@@ -3,246 +3,149 @@
 # This file is distributed under the same license as the gparted package.
 # Maxim Dziumanenko <mvd@mylinux.com.ua>, 2004.
 #
+# Vitovt <v.vitovt@gmail.com>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: gparted\n"
+"Project-Id-Version: gparted.vtr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-03 00:11+0300\n"
-"PO-Revision-Date: 2005-08-03 7:24+0300\n"
-"Last-Translator: Maxim Dziumanenko <mvd@mylinux.com.ua>\n"
-"Language-Team: Ukrainian <uk@li.org>\n"
+"POT-Creation-Date: 2008-10-03 12:04+0000\n"
+"PO-Revision-Date: 2008-09-29 23:28+0300\n"
+"Last-Translator: Vitovt <v.vitovt@gmail.com>\n"
+"Language-Team: Українська <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#. ==== GUI =========================
-#: ../gparted.desktop.in.h:1 ../src/Dialog_About.cc:32
-#: ../src/Win_GParted.cc:33
-msgid "GParted"
-msgstr "GParted"
+#: ../gparted.desktop.in.in.h:1
+msgid "Create, reorganize, and delete partitions"
+msgstr "Створити, перемістити чи видалити розділ"
 
-#: ../gparted.desktop.in.h:2 ../src/Dialog_About.cc:33
-msgid "Gnome Partition Editor"
-msgstr "Редактор розділів дисків для GNOME"
+#: ../gparted.desktop.in.in.h:2
+msgid "GParted Partition Editor"
+msgstr "GParted Редактор Розділів"
 
-#. TO TRANSLATORS: this is the dialog title
-#: ../src/Dialog_About.cc:26
-msgid "About GParted"
-msgstr "Про програму GParted"
-
-#: ../src/Dialog_About.cc:49
-msgid "Credits"
-msgstr "Подяки"
-
-#. TO TRANSLATORS: tablabel in aboutdialog
-#: ../src/Dialog_About.cc:59
-msgid "Written by"
-msgstr "Автор"
-
-#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
-#. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Dialog_About.cc:63
-msgid "translator-credits"
-msgstr "Максим Дзюманенко <mvd@mylinux.com.ua>"
-
-#. TO TRANSLATORS: tablabel in aboutdialog
-#: ../src/Dialog_About.cc:69
-msgid "Translated by"
-msgstr "Переклад"
-
-#. add spinbutton_before
-#: ../src/Dialog_Base_Partition.cc:54
-msgid "Free Space Preceding (MB):"
-msgstr "Вільний простір попереду (Мб):"
+#: ../src/Dialog_Base_Partition.cc:56
+msgid "Free Space Preceding (MiB):"
+msgstr "Вільне місце попереду (MiB):"
 
 #. add spinbutton_size
-#: ../src/Dialog_Base_Partition.cc:61
-msgid "New Size (MB):"
-msgstr "Новий розмір (Мб):"
+#: ../src/Dialog_Base_Partition.cc:65
+msgid "New Size (MiB):"
+msgstr "Новий розмір (MiB):"
 
 #. add spinbutton_after
-#: ../src/Dialog_Base_Partition.cc:68
-msgid "Free Space Following (MB):"
-msgstr "Вільний простір після (Мб):"
+#: ../src/Dialog_Base_Partition.cc:72
+msgid "Free Space Following (MiB):"
+msgstr "Вільне місце позаду (MiB):"
 
-#. pack warning about small differences in values..
-#: ../src/Dialog_Base_Partition.cc:85
-msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr ""
-"ПРИМІТКА: значення на диску можуть трохи відрізнятись від введених тут "
-"значень."
+#. add checkbutton
+#: ../src/Dialog_Base_Partition.cc:82
+msgid "Round to cylinders"
+msgstr "Округлити до цилідрів"
 
-#: ../src/Dialog_Base_Partition.cc:149
+#: ../src/Dialog_Base_Partition.cc:169
 msgid "Resize"
 msgstr "Змінити розмір"
 
-#: ../src/Dialog_Base_Partition.cc:149 ../src/Win_GParted.cc:132
-#: ../src/Win_GParted.cc:167 ../src/Win_GParted.cc:898
+#: ../src/Dialog_Base_Partition.cc:169 ../src/Win_GParted.cc:225
 msgid "Resize/Move"
 msgstr "Змінити розмір/Перемістити"
 
-#: ../src/Dialog_Base_Partition.cc:163
-msgid "Minimum Size: %1 MB"
-msgstr "Мінімальний розмір: %1 Мб"
+#: ../src/Dialog_Base_Partition.cc:186
+msgid "Minimum Size: %1 MiB"
+msgstr "Мінімальний розмір %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:164
-msgid "Maximum Size: %1 MB"
-msgstr "Максимальний розмір: %1 Мб"
+#: ../src/Dialog_Base_Partition.cc:187
+msgid "Maximum Size: %1 MiB"
+msgstr "Максимальний розмір %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "Встановити позначку диску %1"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+msgid "Create partition table on %1"
+msgstr "Створити таблицю розділів на %1"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a file at the beginning of the disk that indicates where each "
-"partition begins and how many sectors it occupies."
-msgstr ""
-"Позначка диску - файл на початку диску, який визначає де починається кожен розділ, та "
-"скільки секторів він займає."
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "УВАГА.  Ця дія ЗНИЩИТЬ ВСІ ДАНІ на ВСЬОМУ ДИСКУ %1"
 
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Позначка необхідна, якщо ви хочете створювати розділи диску."
+msgid "Default is to create an msdos partition table."
+msgstr "За умовчанням створюється таблиця розділів msdos"
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "Типово GParted створює позначку диску типу msdos."
-
-#: ../src/Dialog_Disklabel.cc:58
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "Додатково"
 
-#: ../src/Dialog_Disklabel.cc:66
-msgid "Select new labeltype:"
-msgstr "Виберіть новий тип позначки:"
+#: ../src/Dialog_Disklabel.cc:65
+msgid "Select new partition table type:"
+msgstr "Виберіть тип нової таблиці розділів:"
 
-#: ../src/Dialog_Disklabel.cc:88
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr "ПОПЕРЕДЖЕННЯ: Створення нової позначки диску призведе до знищення всіх даних на %1!"
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr "Натиснувши клавішу Створити ви ВІДРАЗУ ЗНИЩИТЕ ВСІ ДАНІ на диску %1"
 
-#: ../src/Dialog_Disklabel.cc:94 ../src/Dialog_Filesystems.cc:32
-#: ../src/Win_GParted.cc:1176
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
+#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
 msgid "Create"
 msgstr "Створити"
-
-#: ../src/Dialog_Filesystems.cc:25 ../src/Win_GParted.cc:88
-msgid "Filesystems"
-msgstr "Файлові системи"
-
-#: ../src/Dialog_Filesystems.cc:31 ../src/TreeView_Detail.cc:32
-msgid "Filesystem"
-msgstr "Файлова система"
-
-#: ../src/Dialog_Filesystems.cc:33
-msgid "Grow"
-msgstr "Збільшити"
-
-#: ../src/Dialog_Filesystems.cc:34
-msgid "Shrink"
-msgstr "Зменшити"
-
-#: ../src/Dialog_Filesystems.cc:35
-msgid "Move"
-msgstr "Перемістити"
-
-#: ../src/Dialog_Filesystems.cc:36
-msgid "Copy"
-msgstr "Скопіювати"
 
 #: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
 msgstr "Вставка %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:30
+#: ../src/Dialog_Partition_Info.cc:31
 msgid "Information about %1"
 msgstr "Інформація про %1"
 
-#: ../src/Dialog_Partition_Info.cc:47
+#: ../src/Dialog_Partition_Info.cc:48
 msgid "Warning:"
 msgstr "Попередження:"
 
-#. set text of pangolayout
-#. create  pangolayout and see if it fits in the visual partition
-#. the label...
-#: ../src/Dialog_Partition_Info.cc:119 ../src/Dialog_Partition_Info.cc:137
-#: ../src/Dialog_Partition_Info.cc:146 ../src/Dialog_Partition_Info.cc:151
-#: ../src/VBox_VisualDisk.cc:160 ../src/VBox_VisualDisk.cc:172
-#: ../src/Win_GParted.cc:356 ../src/Win_GParted.cc:413
-msgid "%1 MB"
-msgstr "%1 Мб"
-
 #. filesystem
 #. filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:132 ../src/Dialog_Partition_New.cc:79
+#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:92
 msgid "Filesystem:"
 msgstr "Файлова система:"
 
-#: ../src/Dialog_Partition_Info.cc:136 ../src/Win_GParted.cc:227
+#. size
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:421
 msgid "Size:"
 msgstr "Розмір:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:145
+#: ../src/Dialog_Partition_Info.cc:177
 msgid "Used:"
 msgstr "Використано:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:150
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Unused:"
 msgstr "Вільно:"
 
-#: ../src/Dialog_Partition_Info.cc:158
+#: ../src/Dialog_Partition_Info.cc:208
 msgid "Flags:"
 msgstr "Ознаки:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:168 ../src/Win_GParted.cc:232
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:429
 msgid "Path:"
 msgstr "Шлях:"
 
-#. real path
-#: ../src/Dialog_Partition_Info.cc:178 ../src/Win_GParted.cc:237
-msgid "Real Path:"
-msgstr "Справжній шлях:"
-
-#: ../src/Dialog_Partition_Info.cc:184
+#: ../src/Dialog_Partition_Info.cc:238
 msgid "Status:"
 msgstr "Статус:"
 
-#: ../src/Dialog_Partition_Info.cc:188
-msgid "Not busy (There are no mounted logical partitions)"
-msgstr "Не зайнятий (не містить підключених логічних розділів)"
+#: ../src/Dialog_Partition_Info.cc:245
+msgid "Busy (At least one logical partition is mounted)"
+msgstr "Використовується (Принаймі один логічний розділ змонтовано)"
 
-#: ../src/Dialog_Partition_Info.cc:190
-msgid "Not active"
-msgstr "Не активний"
-
-#: ../src/Dialog_Partition_Info.cc:192
-msgid "Not mounted"
-msgstr "Не підключений"
-
-#. first sector
-#: ../src/Dialog_Partition_Info.cc:201
-msgid "First Sector:"
-msgstr "Перший сектор:"
-
-#. last sector
-#: ../src/Dialog_Partition_Info.cc:205
-msgid "Last Sector:"
-msgstr "Останній сектор:"
-
-#. total sectors
-#: ../src/Dialog_Partition_Info.cc:209 ../src/Win_GParted.cc:272
-msgid "Total Sectors:"
-msgstr "Загалом секторів:"
-
-#: ../src/Dialog_Partition_Info.cc:216
-msgid "Busy  (At least one logical partition is mounted)"
-msgstr "Зайнятий (принаймні один розділ є підключеним)"
-
-#: ../src/Dialog_Partition_Info.cc:218
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Active"
 msgstr "Активний"
 
@@ -250,499 +153,1112 @@ msgstr "Активний"
 msgid "Mounted on %1"
 msgstr "Підключений у %1"
 
+#: ../src/Dialog_Partition_Info.cc:253
+msgid "Not busy (There are no mounted logical partitions)"
+msgstr "Не використовується (не містить підключених логічних розділів)"
+
+#: ../src/Dialog_Partition_Info.cc:255
+msgid "Not active"
+msgstr "Не активний"
+
+#: ../src/Dialog_Partition_Info.cc:257
+msgid "Not mounted"
+msgstr "Не підключений"
+
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:104
+msgid "Label:"
+msgstr "Мітка:"
+
+#. first sector
+#: ../src/Dialog_Partition_Info.cc:279
+msgid "First Sector:"
+msgstr "Перший сектор:"
+
+#. last sector
+#: ../src/Dialog_Partition_Info.cc:289
+msgid "Last Sector:"
+msgstr "Останній сектор:"
+
+#. total sectors
+#: ../src/Dialog_Partition_Info.cc:299 ../src/Win_GParted.cc:482
+msgid "Total Sectors:"
+msgstr "Загалом секторів:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+msgid "Set partition label on %1"
+msgstr "Змінити мітку розділу на %1"
+
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:26
 msgid "Create new Partition"
 msgstr "Створення нового розділу"
 
-#: ../src/Dialog_Partition_New.cc:40
-msgid "Unformatted"
-msgstr "Не форматовано"
-
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:52
+#: ../src/Dialog_Partition_New.cc:58
 msgid "Create as:"
 msgstr "Створити як:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:55 ../src/Operation.cc:55
+#: ../src/Dialog_Partition_New.cc:63 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "Первинний розділ"
 
-#: ../src/Dialog_Partition_New.cc:56 ../src/Operation.cc:46
-#: ../src/Operation.cc:56
+#: ../src/Dialog_Partition_New.cc:64 ../src/OperationCreate.cc:76
+#: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "Логічний розділ"
 
-#: ../src/Dialog_Partition_New.cc:57 ../src/Operation.cc:57
+#: ../src/Dialog_Partition_New.cc:65 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "Розширений розділ"
 
-#: ../src/Dialog_Partition_New.cc:132
+#: ../src/Dialog_Partition_New.cc:166
 msgid "New Partition #%1"
 msgstr "Новий розділ №%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:69
+#: ../src/Dialog_Partition_Resize_Move.cc:73
 msgid "Resize/Move %1"
 msgstr "Зміна розміру/Переміщення %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:74
+#: ../src/Dialog_Partition_Resize_Move.cc:78
 msgid "Resize %1"
 msgstr "Зміна розміру %1"
 
-#: ../src/Dialog_Progress.cc:28 ../src/Dialog_Progress.cc:35
+#: ../src/Dialog_Progress.cc:32 ../src/Dialog_Progress.cc:44
 msgid "Applying pending operations"
-msgstr "Застосовуються незавершені операції"
+msgstr "Застосовуються операції в з черги"
 
-#: ../src/Dialog_Progress.cc:37
+#: ../src/Dialog_Progress.cc:46
 msgid "Applying all listed operations."
 msgstr "Застосовуються усі перелічені операції."
 
-#: ../src/Dialog_Progress.cc:39
-msgid "Clicking Cancel will prevent the next operations from being applied."
+#: ../src/Dialog_Progress.cc:48
+msgid ""
+"Depending on the amount and type of operations this might take a long time."
 msgstr ""
-"Натискання на \"Скасувати\" перешкодить застосуванню наступних операцій."
+"В залежності від кількості та типу операцій це може зайняти досить багато "
+"часу."
 
-#: ../src/Dialog_Progress.cc:62
-msgid "Completed Operations"
-msgstr "Завершені операції"
+#: ../src/Dialog_Progress.cc:61
+msgid "Completed Operations:"
+msgstr "Завершені операції:"
 
-#: ../src/Dialog_Progress.cc:68
+#: ../src/Dialog_Progress.cc:101
 msgid "Details"
 msgstr "Подробиці"
 
-#: ../src/Dialog_Progress.cc:85
+#: ../src/Dialog_Progress.cc:199
 msgid "%1 of %2 operations completed"
 msgstr "%1 з %2 операцій завершено"
 
-#: ../src/Dialog_Progress.cc:111
-msgid "about %1 minute and %2 seconds left"
-msgstr "залишилось близько %1 хвилини та %2 секунд"
+#. add save button
+#: ../src/Dialog_Progress.cc:230
+msgid "_Save Details"
+msgstr "_Зберегти подробиці"
 
-#: ../src/Dialog_Progress.cc:113
-msgid "about %1 minutes and %2 seconds left"
-msgstr "залишилось близько %1 хвилин та %2 секунд"
+#: ../src/Dialog_Progress.cc:239
+msgid "Operation cancelled"
+msgstr "Операцію відмінено"
 
-#: ../src/GParted_Core.cc:126
+#: ../src/Dialog_Progress.cc:253
+msgid "All operations successfully completed"
+msgstr "Всі операції успішно завершено"
+
+#: ../src/Dialog_Progress.cc:257
+msgid "%1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "%1 попередження"
+msgstr[1] "%1 попереджень"
+msgstr[2] "%1 попереджень"
+
+#: ../src/Dialog_Progress.cc:270
+msgid "An error occurred while applying the operations"
+msgstr "В процесі виконання виникла помилка"
+
+#: ../src/Dialog_Progress.cc:275
+msgid "See the details for more information."
+msgstr "Дивіться подробиці, щоб отримати більше інформації"
+
+#: ../src/Dialog_Progress.cc:276
+msgid "IMPORTANT"
+msgstr "ВАЖЛИВО"
+
+#: ../src/Dialog_Progress.cc:277
+msgid "If you want support, you need to provide the saved details!"
+msgstr "Якщо вам потрібна допомога - надайте збережені подробиці!"
+
+#: ../src/Dialog_Progress.cc:279
+msgid "See %1 for more information."
+msgstr "Дивіться %1 щоб взнати більше."
+
+#: ../src/Dialog_Progress.cc:312
+msgid "Are you sure you want to cancel the current operation?"
+msgstr "Ви впевнені, що хочете відмінити поточну операцію?"
+
+#: ../src/Dialog_Progress.cc:318
+msgid "Cancelling an operation may cause SEVERE file system damage."
+msgstr ""
+"Відміна будь-якої операції може спричинити ЖОРСТКЕ пошкодження файлової "
+"системи. "
+
+#: ../src/Dialog_Progress.cc:320
+msgid "Continue Operation"
+msgstr "Продовжити операцію"
+
+#: ../src/Dialog_Progress.cc:321
+msgid "Cancel Operation"
+msgstr "Відмінити операцію"
+
+#: ../src/Dialog_Progress.cc:334
+msgid "Save Details"
+msgstr "Зберегти подробиці"
+
+#: ../src/DialogFeatures.cc:27
+msgid "Features"
+msgstr "Властивості"
+
+#: ../src/DialogFeatures.cc:33 ../src/TreeView_Detail.cc:35
+msgid "Filesystem"
+msgstr "Файлова система"
+
+#: ../src/DialogFeatures.cc:34
+msgid "Detect"
+msgstr "Розпізнати"
+
+#: ../src/DialogFeatures.cc:35
+msgid "Read"
+msgstr "Прочитати"
+
+#: ../src/DialogFeatures.cc:37
+msgid "Grow"
+msgstr "Збільшити"
+
+#: ../src/DialogFeatures.cc:38
+msgid "Shrink"
+msgstr "Зменшити"
+
+#: ../src/DialogFeatures.cc:39
+msgid "Move"
+msgstr "Перемістити"
+
+#: ../src/DialogFeatures.cc:40
+msgid "Copy"
+msgstr "Копіювати"
+
+#: ../src/DialogFeatures.cc:41
+msgid "Check"
+msgstr "Перевірити"
+
+#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "Мітка"
+
+#: ../src/DialogFeatures.cc:57
+msgid "Available"
+msgstr "Доступно"
+
+#: ../src/DialogFeatures.cc:63
+msgid "Not Available"
+msgstr "Недоступно"
+
+#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+msgid "Manage flags on %1"
+msgstr "Керування ознаками на %1"
+
+#: ../src/GParted_Core.cc:234
 msgid "unrecognized"
 msgstr "не розпізнано"
 
+#: ../src/GParted_Core.cc:303
+msgid "A partition cannot have a length of %1 sectors"
+msgstr "Розділ не може мати довжину в %1 секторів"
+
+#: ../src/GParted_Core.cc:311
+msgid ""
+"A partition with used sectors (%1) greater than it's length (%2) is not valid"
+msgstr ""
+"Розділ в якому кількість використаних секторів (%1) більша за загальну "
+"кількість секторів (%2) не є дійною"
+
+#: ../src/GParted_Core.cc:377
+msgid "libparted messages"
+msgstr "повідомлення libparted"
+
 #. no filesystem found....
-#: ../src/GParted_Core.cc:160
+#: ../src/GParted_Core.cc:735
 msgid "Unable to detect filesystem! Possible reasons are:"
 msgstr "Не вдається виявити файлову систему! Можливі причини:"
 
-#: ../src/GParted_Core.cc:162
+#: ../src/GParted_Core.cc:737
 msgid "The filesystem is damaged"
 msgstr "Файлова система зіпсована"
 
-#: ../src/GParted_Core.cc:164
-msgid "The filesystem is unknown to libparted"
-msgstr "Файлова система невідома libparted"
+#: ../src/GParted_Core.cc:739
+msgid "The filesystem is unknown to GParted"
+msgstr "Файлова система невідома GParted"
 
-#: ../src/GParted_Core.cc:166
+#: ../src/GParted_Core.cc:741
 msgid "There is no filesystem available (unformatted)"
 msgstr "Немає файлової системи (не форматований розділ)"
 
-#: ../src/GParted_Core.cc:168
-msgid "unknown"
-msgstr "невідомо"
+#: ../src/GParted_Core.cc:837
+msgid "Unable to find mountpoint"
+msgstr "Не вдається знайти точку монтування"
 
-#: ../src/GParted_Core.cc:202
+#: ../src/GParted_Core.cc:855
 msgid "Unable to read the contents of this filesystem!"
 msgstr "Не вдається прочитати вміст цієї файлової системи!"
 
-#: ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:857
 msgid "Because of this some operations may be unavailable."
 msgstr "Тому деякі операції можуть бути недоступні."
 
-#: ../src/GParted_Core.cc:332
-msgid "Error while deleting %1"
-msgstr "Помилка при видаленні %1"
+#: ../src/GParted_Core.cc:965
+msgid "create empty partition"
+msgstr "створити порожній розділ"
 
-#: ../src/GParted_Core.cc:337
-msgid "Error while creating %1"
-msgstr "Помилка при створенні %1"
+#: ../src/GParted_Core.cc:1033 ../src/GParted_Core.cc:2104
+msgid "path: %1"
+msgstr "шлях %1"
 
-#: ../src/GParted_Core.cc:342
-msgid "Error while resizing/moving %1"
-msgstr "Помилка при зміні розміру/переміщенні %1"
+#: ../src/GParted_Core.cc:1034 ../src/GParted_Core.cc:2105
+msgid "start: %1"
+msgstr "початок: %1"
 
-#: ../src/GParted_Core.cc:347
-msgid "Error while converting filesystem of %1"
-msgstr "Помилка при перетворенні файлової системи %1"
+#: ../src/GParted_Core.cc:1035 ../src/GParted_Core.cc:2106
+msgid "end: %1"
+msgstr "кінець: %1"
 
-#: ../src/GParted_Core.cc:352
-msgid "Error while copying %1"
-msgstr "Помилка при копіюванні %1"
+#: ../src/GParted_Core.cc:1036 ../src/GParted_Core.cc:2107
+msgid "size: %1 (%2)"
+msgstr "розмір: %1 (%2)"
 
-#: ../src/GParted_Core.cc:714
+#: ../src/GParted_Core.cc:1066 ../src/linux_swap.cc:79 ../src/xfs.cc:236
+msgid "create new %1 filesystem"
+msgstr "створити нову %1 файлову систему"
+
+#: ../src/GParted_Core.cc:1099
+msgid "delete partition"
+msgstr "видалити розділ"
+
+#: ../src/GParted_Core.cc:1122
+msgid "Clear partition label on %1"
+msgstr "Створити мітку розділу %"
+
+#: ../src/GParted_Core.cc:1127
+msgid "Set partition label to \"%1\" on %2"
+msgstr "Встановити мітку розділу \"%1\" на %2"
+
+#: ../src/GParted_Core.cc:1203
+msgid "moving requires old and new length to be the same"
+msgstr "переміщяння потребує щоб стара і нова довжина були однакові"
+
+#: ../src/GParted_Core.cc:1220
+msgid "rollback last change to the partitiontable"
+msgstr "відмінити останню зміну до таблиці розділів"
+
+#: ../src/GParted_Core.cc:1249
+msgid "move filesystem to the left"
+msgstr "посунути файлову систему вліво"
+
+#: ../src/GParted_Core.cc:1251
+msgid "move filesystem to the right"
+msgstr "посунути файлову систему вправо"
+
+#: ../src/GParted_Core.cc:1254
+msgid "move filesystem"
+msgstr "посунути файшову систему"
+
+#: ../src/GParted_Core.cc:1256
 msgid ""
-"Be aware that the failure to apply this operation could affect other "
-"operations on the list."
+"new and old filesystem have the same positition -- skipping this operation"
 msgstr ""
-"Зауважте, що невдале завершення цієї операції може вплинути на інші операції "
-"зі списку."
+"нова і стара файлова система мають одне й те ж місце розташування -- "
+"пропускаю операцію"
 
-#: ../src/Operation.cc:34
+#: ../src/GParted_Core.cc:1275
+msgid "perform real move"
+msgstr "дійсно пересунути"
+
+#: ../src/GParted_Core.cc:1317
+msgid "using libparted"
+msgstr "використовується libparted"
+
+#: ../src/GParted_Core.cc:1357
+msgid "resizing requires old and new start to be the same"
+msgstr "зміна розміру потребує, щоб старий та новий початок збігалися"
+
+#: ../src/GParted_Core.cc:1422
+msgid "resize/move partition"
+msgstr "змінити розмір/пересунути розділ"
+
+#: ../src/GParted_Core.cc:1425
+msgid "move partition to the right"
+msgstr "пересунути розділ вправо"
+
+#: ../src/GParted_Core.cc:1428
+msgid "move partition to the left"
+msgstr "пересунути розділ вліво"
+
+#: ../src/GParted_Core.cc:1431
+msgid "grow partition from %1 to %2"
+msgstr "збільшити розділ з %1 до %2"
+
+#: ../src/GParted_Core.cc:1434
+msgid "shrink partition from %1 to %2"
+msgstr "зменшити розділ з %1 до %2"
+
+#: ../src/GParted_Core.cc:1437
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr "пересунути розділ вправо і збільшити його з %1 до %2"
+
+#: ../src/GParted_Core.cc:1440
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr "пересунути розділ вправо і зменшити його з %1 до %2"
+
+#: ../src/GParted_Core.cc:1443
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr "пересунути розділ вліво і збільшити його з %1 до %2"
+
+#: ../src/GParted_Core.cc:1446
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr "пересунути розділ вліво і зменшити його з %1 до %2"
+
+#: ../src/GParted_Core.cc:1461
+msgid ""
+"new and old partition have the same size and position -- skipping this "
+"operation"
+msgstr ""
+"новий і старий розділ мають однаковий розмір та позицію -- пропускаю цю "
+"операцію"
+
+#: ../src/GParted_Core.cc:1471
+msgid "old start: %1"
+msgstr "старий початок: %1"
+
+#: ../src/GParted_Core.cc:1472
+msgid "old end: %1"
+msgstr "старий кінець: %1"
+
+#: ../src/GParted_Core.cc:1473
+msgid "old size: %1 (%2)"
+msgstr "старий розмір: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1528 ../src/GParted_Core.cc:2185
+msgid "new start: %1"
+msgstr "новий початок: %1"
+
+#: ../src/GParted_Core.cc:1529 ../src/GParted_Core.cc:2186
+msgid "new end: %1"
+msgstr "новий кінець: %1"
+
+#: ../src/GParted_Core.cc:1530 ../src/GParted_Core.cc:2187
+msgid "new size: %1 (%2)"
+msgstr "новий розмір: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1554
+msgid "shrink filesystem"
+msgstr "зменшити розміри файлової системи"
+
+#: ../src/GParted_Core.cc:1558
+msgid "grow filesystem"
+msgstr "збільшити розміри файлової системи"
+
+#: ../src/GParted_Core.cc:1561
+msgid "resize filesystem"
+msgstr "змінити розміри файлової системи"
+
+#: ../src/GParted_Core.cc:1564
+msgid "new and old filesystem have the same size -- skipping this operation"
+msgstr ""
+"нова та стара файлова система мають один і той же розмір -- пропускаю цю "
+"операцію"
+
+#: ../src/GParted_Core.cc:1599
+msgid "grow filesystem to fill the partition"
+msgstr "збільшити файлову систему, щоб заповнити увесь розділ"
+
+#: ../src/GParted_Core.cc:1604
+msgid "growing is not available for this filesystem"
+msgstr "збільшення недоступне для цієї файлової системи"
+
+#: ../src/GParted_Core.cc:1623
+msgid "the destination is smaller than the sourcepartition"
+msgstr "місце призначення менше ніж вихідний розділ"
+
+#: ../src/GParted_Core.cc:1637
+msgid "copy filesystem of %1 to %2"
+msgstr "скопіювати файлову систему з %1 в %2"
+
+#: ../src/GParted_Core.cc:1681
+msgid "perform readonly test"
+msgstr "виконати тест тільки на читання"
+
+#: ../src/GParted_Core.cc:1729
+msgid "using internal algorithm"
+msgstr "використовується внутрішній алгоритм"
+
+#: ../src/GParted_Core.cc:1731
+msgid "read %1 sectors"
+msgstr "прочитано %1 секторів"
+
+#: ../src/GParted_Core.cc:1731
+msgid "copy %1 sectors"
+msgstr "зкопійовано %1 секторів"
+
+#: ../src/GParted_Core.cc:1733
+msgid "finding optimal blocksize"
+msgstr "пошук оптимального розміру блоку"
+
+#: ../src/GParted_Core.cc:1770
+msgid "%1 seconds"
+msgstr "%1 секунд"
+
+#: ../src/GParted_Core.cc:1786
+msgid "optimal blocksize is %1 sectors (%2)"
+msgstr "оптимальний розмір блоку є %1 секторів (%2)"
+
+#: ../src/GParted_Core.cc:1803
+msgid "%1 sectors read"
+msgstr "%1 секторів прочитано"
+
+#: ../src/GParted_Core.cc:1803
+msgid "%1 sectors copied"
+msgstr "%1 секторів зкопійовано"
+
+#: ../src/GParted_Core.cc:1814
+msgid "rollback last transaction"
+msgstr "відміна останньої дії"
+
+#: ../src/GParted_Core.cc:1841
+msgid "check filesystem on %1 for errors and (if possible) fix them"
+msgstr ""
+"перевірити файлову систему на %1 на помилки і (по можливості) виправити їх"
+
+#: ../src/GParted_Core.cc:1849
+msgid "checking is not available for this filesystem"
+msgstr "перевірка недоступна для цієї файлової системи"
+
+#: ../src/GParted_Core.cc:1875
+msgid "set partitiontype on %1"
+msgstr "встановити тип розділу на %1"
+
+#: ../src/GParted_Core.cc:1897
+msgid "new partitiontype: %1"
+msgstr "новий тип розділу: %1"
+
+#: ../src/GParted_Core.cc:1924
+msgid "%1 of %2 read (%3 remaining)"
+msgstr "%1 з %2 прочитано (%3 залишилося)"
+
+#: ../src/GParted_Core.cc:1924
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 з %2 зкопійовано (%3 залишилося)"
+
+#: ../src/GParted_Core.cc:1930 ../src/GParted_Core.cc:2025
+msgid "%1 of %2 read"
+msgstr "%1 з %2 прочитано"
+
+#: ../src/GParted_Core.cc:1930 ../src/GParted_Core.cc:2025
+msgid "%1 of %2 copied"
+msgstr "%1 з %2 зкопійовано"
+
+#: ../src/GParted_Core.cc:1948
+msgid "read %1 sectors using a blocksize of %2 sectors"
+msgstr "прочитано %1 секторів використовуючи розмір блоку в %2 секторів"
+
+#: ../src/GParted_Core.cc:1951
+msgid "copy %1 sectors using a blocksize of %2 sectors"
+msgstr "зкопіювати %1 секторів використовуючи розмір блоку в %2 секторів"
+
+#: ../src/GParted_Core.cc:2070
+msgid "Error while writing block at sector %1"
+msgstr "Помилка під час запису блоку в секторі %1"
+
+#: ../src/GParted_Core.cc:2073
+msgid "Error while reading block at sector %1"
+msgstr "Помилка під час читання блоку в секторі %1"
+
+#: ../src/GParted_Core.cc:2083
+msgid "calibrate %1"
+msgstr "калібрування %1"
+
+#: ../src/GParted_Core.cc:2130
+msgid "calculate new size and position of %1"
+msgstr "розрахувати новий розмір та позицію %1"
+
+#: ../src/GParted_Core.cc:2134
+msgid "requested start: %1"
+msgstr "початок, який вимагають: %1"
+
+#: ../src/GParted_Core.cc:2135
+msgid "requested end: %1"
+msgstr "кінець, який вимагають: %1"
+
+#: ../src/GParted_Core.cc:2136
+msgid "requested size: %1 (%2)"
+msgstr "розмір, який вимагають: %1"
+
+#: ../src/GParted_Core.cc:2259
+msgid "updating bootsector of %1 filesystem on %2"
+msgstr "оновлення сектора завантаження %1 файлової системи на %2"
+
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
+msgid "_Undo Last Operation"
+msgstr "_Відмінити Останню Операцію"
+
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
+msgid "_Clear All Operations"
+msgstr "_Очистити Чергу Операцій"
+
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
+msgid "_Apply All Operations"
+msgstr "_Застосувати Всі Операції в черз в черзі"
+
+#: ../src/OperationCopy.cc:36
 msgid "copy of %1"
 msgstr "копіювання %1"
 
-#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: ../src/Operation.cc:51
-msgid "Delete %1 (%2, %3 MB) from %4"
-msgstr "Видалення  %1 (%2, %3 Мб) з %4"
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
+#: ../src/OperationCopy.cc:78
+msgid "Copy %1 to %2 (start at %3)"
+msgstr "Скопіювати %1 до %2 (початок на %3)"
 
-#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: ../src/Operation.cc:61
-msgid "Create %1 #%2 (%3, %4 MB) on %5"
-msgstr "Створення %1 розділу №%2 (%3, %4 Мб) на %5"
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
+#: ../src/OperationCopy.cc:86
+msgid "Copy %1 to %2"
+msgstr "Скопіювати %1 в %2"
 
-#: ../src/Operation.cc:67
-msgid "Move %1 forward by %2 MB"
-msgstr "Переміщення %1 вперед на %2 Мб"
+#. TO TRANSLATORS: looks like  Check and repair filesystem (ext3) on /dev/hda4
+#: ../src/OperationCheck.cc:38
+msgid "Check and repair filesystem (%1) on %2"
+msgstr "Перевірити та відремонтувати файлову систему (%1) на %2"
 
-#: ../src/Operation.cc:69
-msgid "Move %1 backward by %2 MB"
-msgstr "Переміщення %1 назад на %2 Мб"
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
+#: ../src/OperationCreate.cc:86
+msgid "Create %1 #%2 (%3, %4) on %5"
+msgstr "Створити %1 №%2 (%3, %4) на %5"
 
-#: ../src/Operation.cc:78
-msgid "Resize %1 from %2 MB to %3 MB"
-msgstr "Зміна розміру %1 з %2 Мб на %3 Мб"
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
+#: ../src/OperationDelete.cc:80
+msgid "Delete %1 (%2, %3) from %4"
+msgstr "Видалити %1 (%2, %3) із %4"
 
-#: ../src/Operation.cc:80
-msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr "та переміщення %1 з %2 Мб на %3 Мб"
+#. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
+#: ../src/OperationFormat.cc:58
+msgid "Format %1 as %2"
+msgstr "Форматувати %1 як %2"
 
-#: ../src/Operation.cc:83
-msgid "Sorry, changes are too small to make sense"
-msgstr "Зміни занадто мали, та не мають сенсу"
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+msgid "Clear Partition Label on %1"
+msgstr "Очистити Мітку Розділу на %1"
 
-#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: ../src/Operation.cc:87
-msgid "Convert %1 from %2 to %3"
-msgstr "Перетворення %1 з %2 на %3"
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+msgid "Set Partition Label \"%1\" on %2"
+msgstr "Встановити Мітку Розділу \"%1\" на  %2"
 
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
-#: ../src/Operation.cc:89
-msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr "Копіювання %1 у %2 (початок %3 Мб)"
+#: ../src/OperationResizeMove.cc:85
+msgid "resize/move %1"
+msgstr "змінити розмір/пересунути %1"
 
-#: ../src/Partition.cc:70
-msgid "Unallocated"
-msgstr "Не розподілено"
+#: ../src/OperationResizeMove.cc:87
+msgid ""
+"new and old partition have the same size and position -- continuing anyway"
+msgstr ""
+"новий та старий розділ мають однаковий розмір та позицію -- продовжую в будь-"
+"якому разі"
+
+#: ../src/OperationResizeMove.cc:91
+msgid "Move %1 to the right"
+msgstr "Перемістити %1 направо"
+
+#: ../src/OperationResizeMove.cc:94
+msgid "Move %1 to the left"
+msgstr "Перемістити %1 наліво"
+
+#: ../src/OperationResizeMove.cc:97
+msgid "Grow %1 from %2 to %3"
+msgstr "Збільшити %1 із %2 до %3"
+
+#: ../src/OperationResizeMove.cc:100
+msgid "Shrink %1 from %2 to %3"
+msgstr "Зменшити %1 із %2 до %3"
+
+#: ../src/OperationResizeMove.cc:103
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr "Перемістити %1 вправо і збільшити із %2 до %3"
+
+#: ../src/OperationResizeMove.cc:106
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr "Перемістити %1 вправо і зменшити із %2 до %3"
+
+#: ../src/OperationResizeMove.cc:109
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr "Перемістити %1 вліво і збільшити із %2 до %3"
+
+#: ../src/OperationResizeMove.cc:112
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr "Перемістити %1 вліво і зменшити із %2 до %3"
 
 #. append columns
-#: ../src/TreeView_Detail.cc:31
+#: ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "Розділ"
 
-#: ../src/TreeView_Detail.cc:33
-msgid "Size(MB)"
-msgstr "Розмір (Мб)"
-
-#: ../src/TreeView_Detail.cc:34
-msgid "Used(MB)"
-msgstr "Використано(Мб)"
-
-#: ../src/TreeView_Detail.cc:35
-msgid "Unused(MB)"
-msgstr "Не використано(Мб)"
-
 #: ../src/TreeView_Detail.cc:36
+msgid "Mountpoint"
+msgstr "Точка монтування"
+
+#: ../src/TreeView_Detail.cc:38
+msgid "Size"
+msgstr "Розмір"
+
+#: ../src/TreeView_Detail.cc:39
+msgid "Used"
+msgstr "Використано"
+
+#: ../src/TreeView_Detail.cc:40
+msgid "Unused"
+msgstr "Вільно"
+
+#: ../src/TreeView_Detail.cc:41
 msgid "Flags"
 msgstr "Ознаки"
 
-#: ../src/VBox_VisualDisk.cc:217
+#: ../src/Utils.cc:111
 msgid "unallocated"
 msgstr "не розподілено"
 
-#: ../src/VBox_VisualDisk.cc:235
+#: ../src/Utils.cc:112
+msgid "unknown"
+msgstr "невідомо"
+
+#: ../src/Utils.cc:113
+msgid "unformatted"
+msgstr "не форматовано"
+
+#: ../src/Utils.cc:128
 msgid "used"
 msgstr "використовується"
 
-#: ../src/VBox_VisualDisk.cc:238
+#: ../src/Utils.cc:129
 msgid "unused"
 msgstr "не використовується"
 
-#: ../src/Win_GParted.cc:86
-msgid "_Refresh devices"
-msgstr "О_новити пристрої"
+#: ../src/Utils.cc:144
+msgid "%1 B"
+msgstr "%1 B"
 
-#: ../src/Win_GParted.cc:91
+#: ../src/Utils.cc:149
+msgid "%1 KiB"
+msgstr "%1 KiB"
+
+#: ../src/Utils.cc:154
+msgid "%1 MiB"
+msgstr "%1 MiB"
+
+#: ../src/Utils.cc:159
+msgid "%1 GiB"
+msgstr "%1 GiB"
+
+#: ../src/Utils.cc:164
+msgid "%1 TiB"
+msgstr "%1 TiB"
+
+#: ../src/Utils.cc:291
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr "# Тимчасовий файл створений gparted-ітом.  Його можна видалити.\n"
+
+#: ../src/Utils.cc:300
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr ""
+"Операція з міткою не вдалася:  Неможливо записати до тимчасового файлу %1\n"
+
+#: ../src/Utils.cc:309
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr "Операція з міткою не вдалася:  Неможливо створити тимчасовий файл %1\n"
+
+#. ==== GUI =========================
+#: ../src/Win_GParted.cc:69 ../src/Win_GParted.cc:1038
+#: ../src/Win_GParted.cc:1193
+msgid "GParted"
+msgstr "GParted"
+
+#: ../src/Win_GParted.cc:136
+msgid "_Refresh Devices"
+msgstr "_Оновити Пристрої"
+
+#: ../src/Win_GParted.cc:142
+msgid "_Devices"
+msgstr "_Пристрої"
+
+#: ../src/Win_GParted.cc:146
+msgid "_Show Features"
+msgstr "_Показати можливості, що підтримуються"
+
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "_GParted"
 
-#. title
-#: ../src/Win_GParted.cc:95 ../src/Win_GParted.cc:215
-msgid "Harddisk Information"
-msgstr "Інформація про жорсткий диск"
+#: ../src/Win_GParted.cc:169
+msgid "_Edit"
+msgstr "_Редагувати"
 
-#: ../src/Win_GParted.cc:96
-msgid "Operations"
-msgstr "Операції"
+#: ../src/Win_GParted.cc:174
+msgid "Device _Information"
+msgstr "_Інформація про пристрої"
 
-#: ../src/Win_GParted.cc:97
+#: ../src/Win_GParted.cc:176
+msgid "Pending _Operations"
+msgstr "_Операції в Черзі"
+
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "_Вигляд"
 
-#: ../src/Win_GParted.cc:101
-msgid "Set Disklabel"
-msgstr "Встановити позначку диска"
+#: ../src/Win_GParted.cc:181
+msgid "_Create Partition Table"
+msgstr "_Створити Таблицю Розділів"
 
-#: ../src/Win_GParted.cc:102
+#: ../src/Win_GParted.cc:183
 msgid "_Device"
 msgstr "_Пристрій"
 
-#: ../src/Win_GParted.cc:106
+#: ../src/Win_GParted.cc:187
 msgid "_Partition"
 msgstr "_Розділ"
 
-#: ../src/Win_GParted.cc:112
-msgid "About"
-msgstr "Про програму"
+#: ../src/Win_GParted.cc:192
+msgid "_Contents"
+msgstr "_Вміст"
 
-#: ../src/Win_GParted.cc:113
+#: ../src/Win_GParted.cc:200
 msgid "_Help"
 msgstr "_Довідка"
 
-#: ../src/Win_GParted.cc:124
+#: ../src/Win_GParted.cc:214
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Створити новий розділ у вибраному не розподіленому просторі"
 
-#: ../src/Win_GParted.cc:127
+#: ../src/Win_GParted.cc:219
 msgid "Delete the selected partition"
 msgstr "Видалити виділений розділ"
 
-#: ../src/Win_GParted.cc:134
+#: ../src/Win_GParted.cc:229
 msgid "Resize/Move the selected partition"
-msgstr "Змірити розмір/перемістити видалений розділ"
+msgstr "Змінити розмір/перемістити вибраний розділ"
 
-#: ../src/Win_GParted.cc:140
+#: ../src/Win_GParted.cc:238
 msgid "Copy the selected partition to the clipboard"
 msgstr "Копіювати вибраний розділ у буфер обміну"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:243
 msgid "Paste the partition from the clipboard"
 msgstr "Вставити розділ з буферу обміну"
 
-#: ../src/Win_GParted.cc:149
-msgid "Undo last operation"
-msgstr "Вернути останню операцію"
+#: ../src/Win_GParted.cc:253
+msgid "Undo Last Operation"
+msgstr "Відмінити Останню Операцію"
 
-#: ../src/Win_GParted.cc:152
-msgid "Apply all operations"
-msgstr "Застосувати усі операції"
+#: ../src/Win_GParted.cc:260
+msgid "Apply All Operations"
+msgstr "Застосувати Всі Операції"
 
-#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
-#: ../src/Win_GParted.cc:174
-msgid "_Convert to"
-msgstr "_Перетворити на"
+#: ../src/Win_GParted.cc:295
+msgid "_Resize/Move"
+msgstr "_Змінити розмір/Перемістити"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:319
+msgid "_Format to"
+msgstr "_Відформатувати в "
+
+#: ../src/Win_GParted.cc:328
 msgid "Unmount"
 msgstr "Відключити ФС"
 
+#: ../src/Win_GParted.cc:334
+msgid "_Mount on"
+msgstr "_Підключити в"
+
+#: ../src/Win_GParted.cc:341
+msgid "M_anage Flags"
+msgstr "_Керування Ознаками"
+
+#: ../src/Win_GParted.cc:346
+msgid "C_heck"
+msgstr "П_еревірити"
+
+#: ../src/Win_GParted.cc:351
+msgid "_Label"
+msgstr "_Мітка"
+
+#: ../src/Win_GParted.cc:405
+msgid "Device Information"
+msgstr "Інформація про пристрій"
+
 #. model
-#: ../src/Win_GParted.cc:222
+#: ../src/Win_GParted.cc:413
 msgid "Model:"
 msgstr "Модель:"
 
 #. disktype
-#: ../src/Win_GParted.cc:252
-msgid "DiskType:"
-msgstr "Тип диску:"
+#: ../src/Win_GParted.cc:450
+msgid "DiskLabelType:"
+msgstr "ДискМіткаТип:"
 
 #. heads
-#: ../src/Win_GParted.cc:257
+#: ../src/Win_GParted.cc:458
 msgid "Heads:"
 msgstr "Головок:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:262
+#: ../src/Win_GParted.cc:466
 msgid "Sectors/Track:"
-msgstr "Секторів/доріжку:"
+msgstr "Секторів/доріжок:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:267
+#: ../src/Win_GParted.cc:474
 msgid "Cylinders:"
 msgstr "Циліндрів:"
 
-#: ../src/Win_GParted.cc:303
-msgid "Hide operationslist"
-msgstr "Сховати перелік операцій"
+#: ../src/Win_GParted.cc:649
+msgid "Could not add this operation to the list."
+msgstr "Неможливо додати цю операцію до списку"
 
-#: ../src/Win_GParted.cc:312
-msgid "Clear operationslist"
-msgstr "Очистити перелік операцій"
+#: ../src/Win_GParted.cc:674
+msgid "%1 operation pending"
+msgid_plural "%1 operations pending"
+msgstr[0] "%1 операція у черзі"
+msgstr[1] "%1 операції у черзі"
+msgstr[2] "%1 операцій у черзі"
 
-#: ../src/Win_GParted.cc:370
-msgid "Scanning all devices..."
-msgstr "Пошук усіх пристроїв..."
-
-#: ../src/Win_GParted.cc:484
-msgid "%1 operations pending"
-msgstr "%1 незакінчених операцій"
-
-#: ../src/Win_GParted.cc:486
-msgid "1 operation pending"
-msgstr "1 незакінчена операція"
-
-#: ../src/Win_GParted.cc:538
+#: ../src/Win_GParted.cc:728
 msgid "Quit GParted?"
 msgstr "Вийти з GParted?"
 
-#: ../src/Win_GParted.cc:541
-msgid "%1 operations are currently pending."
-msgstr "наразі %1 незакінчених операцій."
+#: ../src/Win_GParted.cc:734
+msgid "%1 operation is currently pending."
+msgid_plural "%1 operations are currently pending."
+msgstr[0] "%1 операція зараз у черзі"
+msgstr[1] "%1 операції зараз у черзі"
+msgstr[2] "%1 операцій зараз у черзі"
 
-#: ../src/Win_GParted.cc:543
-msgid "1 operation is currently pending."
-msgstr "наразі 1 незакінчена операція."
+#: ../src/Win_GParted.cc:760
+msgid "_Unmount"
+msgstr "_Відключити ФС"
 
-#: ../src/Win_GParted.cc:709
+#: ../src/Win_GParted.cc:785
+msgid "_Swapoff"
+msgstr "_Відключити файл підкачки"
+
+#: ../src/Win_GParted.cc:791
+msgid "_Swapon"
+msgstr "_Підключити файл підкачки"
+
+#: ../src/Win_GParted.cc:948
+msgid "%1 - GParted"
+msgstr "%1 - GParted"
+
+#: ../src/Win_GParted.cc:994
+msgid "Scanning all devices..."
+msgstr "Пошук усіх пристроїв..."
+
+#: ../src/Win_GParted.cc:1010
 msgid ""
 "The kernel is unable to re-read the partitiontables on the following devices:"
 msgstr "Ядро не може перечитати таблицю розділів на на наступних пристроях:"
 
-#: ../src/Win_GParted.cc:713
-msgid "Because of this you will only have limited access to these devices."
-msgstr "Тому ви матимете обмежений доступ до цих пристроїв."
+#: ../src/Win_GParted.cc:1017
+msgid ""
+"Because of this you will only have limited access to these devices. Unmount "
+"all mounted partitions on a device to get full access."
+msgstr ""
+"Тому у вас лише обмежений доступ до цих пристроїв. Відключіть всі змонтовані "
+"розділи на пристроях, щоб отримати повний доступ"
 
-#: ../src/Win_GParted.cc:715
-msgid "Unmount all mounted partitions on a device to get full access."
-msgstr "Відключіть усі підключені файлові системи пристрою для отримання повного доступу."
-
-#: ../src/Win_GParted.cc:760
+#: ../src/Win_GParted.cc:1061
 msgid "No devices detected"
 msgstr "Пристрої не знайдено"
 
-#: ../src/Win_GParted.cc:825
-msgid "Sorry, not yet implemented."
-msgstr "Вибачте, ще не реалізовано."
+#: ../src/Win_GParted.cc:1196
+msgid "GNOME Partition Editor"
+msgstr "GNOME Редактор Розділів"
 
-#: ../src/Win_GParted.cc:827
-msgid "Please visit http://gparted.sf.net for more information and support."
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
+#. It's a good idea to provide the url of your translationteam as well. Thanks!
+#: ../src/Win_GParted.cc:1212
+msgid "translator-credits"
 msgstr ""
-"Додаткову інформацію та технічну підтримку можна знайти на http://gparted.sf."
-"net."
+"Максим Дзюманенко <mvd@mylinux.com.ua>\n"
+"Вітовт <vitovt@grusha.org.ua>"
 
-#: ../src/Win_GParted.cc:868
+#: ../src/Win_GParted.cc:1254
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Створити більш ніж %1 первинних розділи неможливо."
 
-#: ../src/Win_GParted.cc:870
+#: ../src/Win_GParted.cc:1262
 msgid ""
 "If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions."
+"Such a partition can contain other partitions. Because an extended partition "
+"is also a primary partition it might be necessary to remove a primary "
+"partition first."
 msgstr ""
-"Якщо потрібно більша кількість розділів, необхідно створити розширений "
-"розділ. Такий розділ може містити інші розділи."
+"Якщо ви хочете більше розділів, то спершу ви повинні створити розширений "
+"розділ. Такий розділ може містити інші розділи. Оскільки розширений розділ "
+"також є первинним розділом, то можливо спочаткузнадобиться видалити первиний "
+"розділ."
 
-#: ../src/Win_GParted.cc:886
-msgid "Are you sure you want to resize/move this partition?"
-msgstr "Ви дійсно бажаєте змінити розмір/перемістити цей розділ?"
+#: ../src/Win_GParted.cc:1448
+msgid "Unable to delete %1!"
+msgstr "Неможливо видалити %1!"
 
-#: ../src/Win_GParted.cc:888
-msgid ""
-"Resizing a fat16 partition can be quite tricky! Especially growing such a "
-"partition is very error-prone. It is advisable to first convert the "
-"filesystem to fat32."
-msgstr ""
-"Зміна розміру розділів типу fat16 може бути досить ускладнена! Особливо "
-"збільшення таких розділів може приводити до помилок. Рекомендується спочатку "
-"перетворити файлову систему у fat32."
-
-#: ../src/Win_GParted.cc:1009
-msgid "Unable to delete partition!"
-msgstr "Не вдається видалити розділ!"
-
-#: ../src/Win_GParted.cc:1011
+#: ../src/Win_GParted.cc:1455
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Відключіть файлові системи будь-яких логічних розділів з номерами більшими "
 "за %1"
 
-#: ../src/Win_GParted.cc:1018
+#: ../src/Win_GParted.cc:1466
 msgid "Are you sure you want to delete %1?"
 msgstr "Ви дійсно бажаєте видалити %1?"
 
-#: ../src/Win_GParted.cc:1022
+#: ../src/Win_GParted.cc:1473
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Після видалення, цей розділ більше недоступний для копіювання."
 
-#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: ../src/Win_GParted.cc:1027
-msgid "Delete %1 (%2, %3 MB)"
-msgstr "Видалення %1 (%2, %3 Мб)"
+#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
+#: ../src/Win_GParted.cc:1476
+msgid "Delete %1 (%2, %3)"
+msgstr "Видалити %1(%2, %3)"
 
-#: ../src/Win_GParted.cc:1078
-msgid "Are you sure you want to convert this filesystem to %1?"
-msgstr "Ви дійсно бажаєте перетворити цю файлову систему на %1?"
+#: ../src/Win_GParted.cc:1542
+msgid "Cannot format this filesystem to %1."
+msgstr "Неможливо відформатувати цю файлову систему в %1."
 
-#: ../src/Win_GParted.cc:1079 ../src/Win_GParted.cc:1173
-msgid "This operation will destroy all data on %1"
-msgstr "Ця операція призведе до знищення усіх даних на %1"
+#: ../src/Win_GParted.cc:1551
+msgid "A %1 filesystem requires a partition of at least %2."
+msgstr "Файлова система %1 потреує розділ принаймі в %2."
 
-#: ../src/Win_GParted.cc:1097
-msgid "Can not convert this filesystem to %1."
-msgstr "Неможливо перетворити цю файлову систему на %1."
+#: ../src/Win_GParted.cc:1556
+msgid "A partition with a %1 filesystem has a maximum size of %2."
+msgstr "Розділ з файловою системою типу %1 може мати розмір не більше %2."
 
-#: ../src/Win_GParted.cc:1101
-msgid "A %1 filesystem requires a partition of at least %2 MB."
-msgstr "Файлова система %1 вимагає, щоб розмір розділу був принаймні %2 Мб."
+#: ../src/Win_GParted.cc:1641
+msgid "The partition could not be unmounted from the following mountpoints:"
+msgstr "Розділ не може бути відключено від наступних точок монтування:"
 
-#: ../src/Win_GParted.cc:1103
-msgid "A partition with a %1 filesystem has a maximum size of %2 MB."
-msgstr "Максимальний розмір розділу з файловою системою %1 складає %2 Мб."
+#: ../src/Win_GParted.cc:1643
+msgid ""
+"Most likely other partitions are also mounted on these mountpoints. You are "
+"advised to unmount them manually."
+msgstr ""
+"Скоріш всього інші розділи також підключені в ці ж точки монтування. Радимо "
+"відмонтувати їх вручну."
 
-#: ../src/Win_GParted.cc:1153
+#: ../src/Win_GParted.cc:1693
+msgid "Deactivating swap on %1"
+msgstr "Деактивую розділ підкачки на %1"
+
+#: ../src/Win_GParted.cc:1693
+msgid "Activating swap on %1"
+msgstr "Активую розділ підкачки на %1"
+
+#: ../src/Win_GParted.cc:1700
+msgid "Could not deactivate swap"
+msgstr "Неможливо деактивувати розділ підкачки"
+
+#: ../src/Win_GParted.cc:1700
+msgid "Could not activate swap"
+msgstr "Неможливо активувати розділ підкачки"
+
+#: ../src/Win_GParted.cc:1716
+msgid "Unmounting %1"
+msgstr "Відключаю %1"
+
+#: ../src/Win_GParted.cc:1721
 msgid "Could not unmount %1"
 msgstr "Не вдається відключити ФС %1"
 
-#: ../src/Win_GParted.cc:1171
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "Ви дійсно бажаєте створити %1 позначку на %2?"
+#: ../src/Win_GParted.cc:1750
+msgid "mounting %1 on %2"
+msgstr "підключаю %1 в %2"
 
-#: ../src/Win_GParted.cc:1180
-msgid "Error while setting new disklabel"
-msgstr "Помилка при встановленні нової позначки диску"
+#: ../src/Win_GParted.cc:1757
+msgid "Could not mount %1 on %2"
+msgstr "Не можу підключити %1 в %2"
 
-#: ../src/Win_GParted.cc:1205
+#: ../src/Win_GParted.cc:1783
+msgid "Error while creating partition table."
+msgstr "Під час створення таблиці розділів виникла помилка."
+
+#: ../src/Win_GParted.cc:1896
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ви дійсно бажаєте застосувати усі незавершені операції?"
 
-#: ../src/Win_GParted.cc:1207
-msgid "It is recommended to backup valueable data before proceeding."
+#: ../src/Win_GParted.cc:1901
+msgid "It is recommended to backup valuable data before proceeding."
 msgstr ""
-"Перш ніж продовжити, рекомендується зробити резервну копію важливих даних."
+"Рекомендуємо зробити резервні копії всіх важливих даних перед тим як почати."
 
-#: ../src/Win_GParted.cc:1210
+#: ../src/Win_GParted.cc:1902
 msgid "Apply operations to harddisk"
 msgstr "Застосування операцій на диску"
 
-#: ../src/Win_GParted.cc:1248
-msgid "At least one operation was applied to a busy device."
-msgstr "Принаймні одна операція була застосована до зайнятого пристрою."
+#. create mountpoint...
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:244 ../src/xfs.cc:251
+msgid "create temporary mountpoint (%1)"
+msgstr "створити тимчасову точку монтування (%1)"
 
-#: ../src/Win_GParted.cc:1250
-msgid "A busy device is a device with at least one mounted partition."
-msgstr "Зайнятий пристрій - пристрій з принаймні однією підключеною ФС."
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:258 ../src/xfs.cc:267
+msgid "mount %1 on %2"
+msgstr "підключити %1 в %2"
 
-#: ../src/Win_GParted.cc:1252
-msgid ""
-"Because making changes to a busy device may confuse the kernel, you are "
-"advised to reboot your computer."
-msgstr ""
-"Зважаючи, що зміни на зайнятому пристрої можуть заплутати ядро, рекомендується "
-"перезапустити комп'ютер."
+#: ../src/jfs.cc:156
+msgid "remount %1 on %2 with the 'resize' flag enabled"
+msgstr "перепідключити %1 в %2 з увімкнутою ознакою 'змінити розмір'"
 
-#: ../src/main.cc:36
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:291 ../src/xfs.cc:312
+msgid "unmount %1"
+msgstr "відключити %1"
+
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:332 ../src/xfs.cc:355
+msgid "remove temporary mountpoint (%1)"
+msgstr "видалити тимчасову точку монтування (%1)"
+
+#: ../src/main.cc:38
 msgid "Root privileges are required for running GParted"
 msgstr "Для запуску GParted вимагаються права адміністратора (root)."
 
-#: ../src/main.cc:36
-msgid "Since GParted can be a weapon of mass destruction only root may run it."
+#: ../src/main.cc:43
+msgid ""
+"Since GParted is a powerful tool capable of destroying partition tables and "
+"vast amounts of data, only root may run it."
 msgstr ""
-"GParted може бути використаний для множинних руйнувань даних, тому його "
-"запускати має лише адміністратор (root)."
+"Оскільки GParted.- це потужний інструмент здатний знищити таблицю розділів "
+"на диску і величезну кількість данних, то тільки суперкористувач (root) може "
+"його запускати."
+
+#. simulation..
+#: ../src/ntfs.cc:124
+msgid "run simulation"
+msgstr "запустити імітацію"
+
+#. real resize
+#: ../src/ntfs.cc:131
+msgid "real resize"
+msgstr "спражня зміна розміру"
+
+#. grow the mounted filesystem..
+#: ../src/xfs.cc:167
+msgid "grow mounted filesystem"
+msgstr "збільшити змонтовану файлову систему"
+
+#. copy filesystem..
+#: ../src/xfs.cc:275
+msgid "copy filesystem"
+msgstr "копіювати файлову систему"
