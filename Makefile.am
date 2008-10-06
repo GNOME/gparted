@@ -34,8 +34,7 @@ EXTRA_DIST =			\
 	intltool-merge.in	\
 	intltool-update.in	\
 	gparted.in			\
-	gnome-doc-utils.make	\
-	m4
+	gnome-doc-utils.make
 
 DISTCLEANFILES =		\
 	intltool-extract	\
