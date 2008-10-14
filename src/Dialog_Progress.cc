@@ -345,27 +345,25 @@ void Dialog_Progress::on_save()
 		if ( out )
 		{
 			//Write out proper HTML start
-			out << "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">" ;
-			out << "<HTML>" ;
-			out << "<HEAD>" ;
-			out << "    <META http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">" ;
-			out << "    <TITLE>GParted Details</TITLE>" ;
-			out << "</HEAD>" ;
-			out << "<BODY>" ;
+			out << "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>" << std::endl
+			<< "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>" << std::endl
+			<< "<head>" << std::endl
+			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
+			<< "<title>GParted Details</title>" << std::endl
+			<< "</head>" << std::endl
+			<< "<body>" << std::endl
+			<< "<p>GParted " << VERSION << "</p>" << std::endl
+			<< "<p>Libparted " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
 
-			out << "<P>" ;
-			out << "GParted " << VERSION << "<BR><BR>" << std::endl ;
-			out << "Libparted " << signal_get_libparted_version .emit() ;
-			out << "</P>" << std::endl ; 
+			//Write out each operation
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
 				echo_operation_details( operations[ t ] ->operation_detail, out ) ;
-				out << "<P>========================================</P>" << std::endl ;
+				out << "<p>========================================</p>" << std::endl ;
 			}
 
 			//Write out proper HTML finish
-			out << "</BODY>" ;
-			out << "</HTML>" ;
+			out << "</body>" << std::endl << "</html>" ;
 			out .close() ;
 		}
 	}
@@ -376,13 +374,13 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 	//replace '\n' with '<br>'
 	Glib::ustring temp = operationdetail .get_description() ;
 	for ( unsigned int index = temp .find( "\n" ) ; index < temp .length() ; index = temp .find( "\n" ) )
-		temp .replace( index, 1, "<BR>" ) ;
+		temp .replace( index, 1, "<br />" ) ;
 	
 	//and export everything to some kind of html...
-	out << "<TABLE border=0>" << std::endl ;
-	out << "<TR>" << std::endl ;
-	out << "<TD colspan=2>" << std::endl ;
-	out << temp ;
+	out << "<table border='0'>" << std::endl
+	<< "<tr>" << std::endl
+	<< "<td colspan='2'>" << std::endl
+	<< temp ;
 	if ( ! operationdetail .get_elapsed_time() .empty() )
 		out << "&nbsp;&nbsp;" << operationdetail .get_elapsed_time() ;
 	
@@ -413,23 +411,21 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 		}
 	}
 	
-	out << std::endl ;
-	out << "</TD>" << std::endl ;
-	out << "</TR>" << std::endl ;
+	out << std::endl << "</td>" << std::endl << "</tr>" << std::endl ;
 	
 	if ( operationdetail .get_childs(). size() )
 	{
-		out << "<TR>" << std::endl ;
-		out << "<TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>" << std::endl ;
-		out << "<TD>" << std::endl ;
+		out << "<tr>" << std::endl
+		<< "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>" << std::endl
+		<< "<td>" << std::endl ;
 
 		for ( unsigned int t = 0 ; t <  operationdetail .get_childs() .size() ; t++ )
 			echo_operation_details( operationdetail .get_childs()[ t ], out ) ;
 
-		out << "</TD>" << std::endl ;
-		out << "</TR>" << std::endl ;
+		out << "</td>" << std::endl << "</tr>" << std::endl ;
 	}
-	out << "</TABLE>" << std::endl ;
+	out << "</table>" << std::endl ;
+	
 }
 
 void Dialog_Progress::on_response( int response_id ) 
