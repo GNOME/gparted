@@ -1,3 +1,11 @@
+2008-10-15  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/GParted_Core.cc: Enhanced to recognize /dev/mapper/* devices
+	  - The move away from libparted device recognition broke
+	    recognition of /dev/mapper/* devices.  Problem now fixed.
+	  - Thanks to Colin Watson for the patch.
+	  - Closes GParted bug #556114
+
 2008-10-14  Curtis Gedak  <gedakc@gmail.com>
 
 	* src/Dialog_Progress.cc: Enhanced detail log to pass as XHTML
