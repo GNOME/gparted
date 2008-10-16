@@ -346,7 +346,8 @@ void Dialog_Progress::on_save()
 		{
 			//Write out proper HTML start
 			out << "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>" << std::endl
-			<< "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>" << std::endl
+			<< "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='" << Utils::get_lang() << "'"
+			<< " lang='" << Utils::get_lang() << "'>" << std::endl
 			<< "<head>" << std::endl
 			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
 			<< "<title>GParted Details</title>" << std::endl
