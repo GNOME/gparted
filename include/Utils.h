@@ -141,6 +141,7 @@ public:
 	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
 	static Glib::ustring cleanup_cursor( const Glib::ustring & text ) ;
+	static Glib::ustring get_lang() ;
 
 };
 
