@@ -350,11 +350,11 @@ void Dialog_Progress::on_save()
 			<< " lang='" << Utils::get_lang() << "'>" << std::endl
 			<< "<head>" << std::endl
 			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
-			<< "<title>GParted Details</title>" << std::endl
+			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "</head>" << std::endl
 			<< "<body>" << std::endl
-			<< "<p>GParted " << VERSION << "</p>" << std::endl
-			<< "<p>Libparted " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
+			<< "<p>" << _("GParted") << " " << VERSION << "</p>" << std::endl
+			<< "<p>" << _("Libparted") << " " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
 
 			//Write out each operation
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
@@ -392,19 +392,19 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 		switch ( operationdetail .get_status() )
 		{
 			case STATUS_EXECUTE:
-				out << "( EXECUTING )" ;
+				out << "( " << _("EXECUTING") << " )" ;
 				break ;
 			case STATUS_SUCCES:
-				out << "( SUCCESS )" ;
+				out << "( " << _("SUCCESS") << " )" ;
 				break ;
 			case STATUS_ERROR:
-				out << "( ERROR )" ;
+				out << "( " << _("ERROR") << " )" ;
 				break ;
 			case STATUS_INFO:
-				out << "( INFO )" ;
+				out << "( " << _("INFO") << " )" ;
 				break ;
 			case STATUS_N_A:
-				out << "( N/A )" ;
+				out << "( " << _("N/A") << " )" ;
 				break ;
 
 			default:
