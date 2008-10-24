@@ -361,10 +361,15 @@ Glib::ustring Utils::get_lang()
 	//Extract base language from string that may look like "en_CA.UTF-8"
 	//  and return in the form "en-CA"
 	Glib::ustring lang = setlocale( LC_CTYPE, NULL ) ;
+
+	//Strip off anything after the period "." or at sign "@"
+	lang = Utils::regexp_label( lang .c_str(), "^([^.@]*)") ;
+
+	//Convert the underscore "_" to a hyphen "-"
 	Glib::ustring sought = "_" ;
 	Glib::ustring replacement = "-" ;
-	lang = Utils::regexp_label( lang .c_str(), "^([^.]*)") ;
 	lang .replace( lang .find(sought), sought .size(), replacement ) ;
+
 	return lang ;
 }
 
