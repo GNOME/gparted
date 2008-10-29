@@ -1806,7 +1806,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 
 	//Benchmark copy times using different block sizes to determine optimal size
 	while ( succes &&
-		std::llabs( done ) + N <= length && 
+		llabs( done ) + N <= length && 
 		benchmark_blocksize <= N )
 	{
 		timer .reset() ;
@@ -1848,7 +1848,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 		      	    	    dst_device,
 		      	    	    src_start + ( dst_start > src_start ? 0 : done ),
 		      	    	    dst_start + ( dst_start > src_start ? 0 : done ),
-		      	    	    length - std::llabs( done ), 
+		      	    	    length - llabs( done ), 
 		      	    	    optimal_blocksize,
 		      	    	    operationdetail,
 			    	    readonly,
@@ -2022,7 +2022,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
 		Glib::ustring error_message ;
-		buf = static_cast<char *>( malloc( std::llabs( blocksize ) * 512 ) ) ;
+		buf = static_cast<char *>( malloc( llabs( blocksize ) * 512 ) ) ;
 		if ( buf )
 		{
 			ped_device_sync( lp_device_dst ) ;
@@ -2043,7 +2043,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 			operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
 			
 			Glib::Timer timer_progress_timeout, timer_total ;
-			while( succes && std::llabs( done ) < length )
+			while( succes && llabs( done ) < length )
 			{
 				succes = copy_block( lp_device_src,
 						     lp_device_dst,
@@ -2058,7 +2058,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				if ( timer_progress_timeout .elapsed() >= 0.5 )
 				{
 					set_progress_info( length,
-							   std::llabs( done + blocksize ),
+							   llabs( done + blocksize ),
 							   timer_total,
 							   operationdetail .get_last_child() .get_last_child(),
 							   readonly ) ;
@@ -2077,13 +2077,13 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 		//final description
 		operationdetail .get_last_child() .get_last_child() .set_description( 
-			String::ucompose( readonly ? _("%1 of %2 read") : _("%1 of %2 copied"), std::llabs( done ), length ), FONT_ITALIC ) ;
+			String::ucompose( readonly ? _("%1 of %2 read") : _("%1 of %2 copied"), llabs( done ), length ), FONT_ITALIC ) ;
 		
 		if ( ! succes && ! error_message .empty() )
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 		
-		total_done += std::llabs( done ) ;
+		total_done += llabs( done ) ;
 	
 		//close and destroy the devices..
 		ped_device_close( lp_device_src ) ;
@@ -2110,7 +2110,7 @@ bool GParted_Core::copy_block( PedDevice * lp_device_src,
 {
 	if ( blocksize < 0 )
 	{
-		blocksize = std::llabs( blocksize ) ;
+		blocksize = llabs( blocksize ) ;
 		offset_src -= ( blocksize -1 ) ;
 		offset_dst -= ( blocksize -1 ) ;
 	}

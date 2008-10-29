@@ -1,5 +1,10 @@
 2008-10-28  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/GParted_Core.cc: Remove std:: prefix from llabs()
+	  - Fixes problem where gparted failed to build in debian on arm,
+	    armel, mips, and mipsel (debian bug#499722)
+	  - Thanks to Thiemo Seufer for small patch
+
 	* src/reiser4.cc: Removed warning reading mounted reiser4 volume label
 	  - Closes GParted bug #380546
 
