@@ -574,6 +574,10 @@ void Win_GParted::show_pulsebar( const Glib::ustring & status_message )
 			Gtk::Main::iteration();
 		
 		usleep( 10000 );
+
+		Glib::ustring tmp_msg = gparted_core .get_thread_status_message() ;
+		if ( tmp_msg != "" )
+			statusbar .push( tmp_msg ) ;
 	}
 	
 	thread ->join() ;
