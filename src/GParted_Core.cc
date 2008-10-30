@@ -58,6 +58,7 @@ GParted_Core::GParted_Core()
 	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
+	set_thread_status_message("") ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
@@ -170,12 +171,14 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
     			{
     				//try to have libparted detect the device and add it to the list
     				device = "/dev/" + device;
+    				set_thread_status_message( String::ucompose ( _("Scanning %1 ..."), device ) ) ;
     				ped_device_get( device .c_str() ) ;
     			}
     		}
     		proc_partitions .close() ;
 
-			std::set<unsigned int> dm_majors;
+    		//Try to find dev mapper devices
+    		std::set<unsigned int> dm_majors;
 			std::ifstream proc_devices( "/proc/devices" ) ;
 			if ( proc_devices )
 			{
@@ -215,6 +218,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 						continue;
 					if ( dm_majors .find( major( st.st_rdev ) ) != dm_majors .end() )
 						//TODO avoid probing partition nodes for dmraid devices
+	    				set_thread_status_message( String::ucompose ( _("Scanning %1 ..."), mapper_name ) ) ;
 						ped_device_get( mapper_name .c_str() ) ;
 				}
 				closedir( mapper_dir ) ;
@@ -233,6 +237,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
 			if ( buf )
 			{
+				set_thread_status_message( String::ucompose ( _("Reading %1 ..."), lp_device ->path ) ) ;
 				if ( ped_device_open( lp_device ) )
 				{
 					if ( ped_device_read( lp_device, buf, 0, 1 ) )
@@ -251,10 +256,11 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{ 
+		set_thread_status_message( String::ucompose ( _("Scanning %1 for partitions ..."), device_paths[ t ] ) ) ;
 		if ( open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
-			
+
 			//device info..
 			temp_device .add_path( device_paths[ t ] ) ;
 			temp_device .add_paths( get_alternate_paths( temp_device .get_path() ) ) ;
@@ -305,8 +311,20 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 	//clear leftover information...	
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
+	set_thread_status_message("") ;
 	alternate_paths .clear() ;
 	fstab_info .clear() ;
+}
+
+void GParted_Core::set_thread_status_message( Glib::ustring msg )
+{
+	//Remember to clear status message when finished with thread.
+	thread_status_message = msg ;
+}
+
+Glib::ustring GParted_Core::get_thread_status_message( )
+{
+	return thread_status_message ;
 }
 
 bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 

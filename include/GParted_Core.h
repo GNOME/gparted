@@ -51,10 +51,12 @@ public:
 	std::vector<Glib::ustring> get_all_mountpoints() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	Glib::ustring get_libparted_version() ;
-	
+	Glib::ustring get_thread_status_message() ;
+
 private:
 	//detectionstuff..
 	void init_maps() ;
+	void set_thread_status_message( Glib::ustring msg ) ;
 	void read_mountpoints_from_file( const Glib::ustring & filename,
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
@@ -70,7 +72,7 @@ private:
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
 	void LP_set_used_sectors( Partition & partition );
 	void set_flags( Partition & partition ) ;
-
+	
 	//operationstuff...
 	bool create( const Device & device, Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool create_partition( Partition & new_partition, OperationDetail & operationdetail, Sector min_size = 0 ) ;
@@ -185,6 +187,7 @@ private:
 	FS fs ;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
+	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
 	
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
