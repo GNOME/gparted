@@ -239,8 +239,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
 			if ( buf )
 			{
-				/*TO TRANSLATORS: looks like Reading /dev/sda */ 
-				set_thread_status_message( String::ucompose ( _("Reading %1"), lp_device ->path ) ) ;
+				/*TO TRANSLATORS: looks like Confirming /dev/sda */ 
+				set_thread_status_message( String::ucompose ( _("Confirming %1"), lp_device ->path ) ) ;
 				if ( ped_device_open( lp_device ) )
 				{
 					if ( ped_device_read( lp_device, buf, 0, 1 ) )
@@ -259,8 +259,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
-		/*TO TRANSLATORS: looks like Scanning /dev/sda for partitions*/ 
-		set_thread_status_message( String::ucompose ( _("Scanning %1 for partitions"), device_paths[ t ] ) ) ;
+		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
+		set_thread_status_message( String::ucompose ( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
 		if ( open_device_and_disk( device_paths[ t ], false ) )
 		{
 			temp_device .Reset() ;
