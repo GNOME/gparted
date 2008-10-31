@@ -27,10 +27,10 @@ FS reiser4::get_filesystem_support()
 	fs .filesystem = GParted::FS_REISER4 ;
 	
 	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
-	{
 		fs .read = GParted::FS::EXTERNAL ;
+	
+	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
 		fs .get_label = FS::EXTERNAL ;
-	}
 	
 	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -82,18 +82,15 @@ void reiser4::set_used_sectors( Partition & partition )
 
 void reiser4::get_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 -f " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
-		Glib::ustring label = Utils::regexp_label( output, "^label:[\t ]*([^!]*)$" ) ;
-		//FIXME: find a better way to see if label is empty.. imagine someone uses '<none>' as label.... ;)
-		if( label != "<none>" ) 
-			partition .label = label ; 
+		partition .label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
 	}
 	else
 	{
 		if ( ! output .empty() )
 			partition .messages .push_back( output ) ;
-		
+
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
