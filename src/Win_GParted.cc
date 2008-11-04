@@ -1387,6 +1387,7 @@ void Win_GParted::activate_paste()
 	{
 		Partition partition_new = selected_partition ;
 		partition_new .filesystem = copied_partition .filesystem ;
+		partition_new .label = copied_partition .label ;
 		partition_new .color = copied_partition .color ;
 		partition_new .set_used( copied_partition .sectors_used ) ;
 		partition_new .messages .clear() ;
