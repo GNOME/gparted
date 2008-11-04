@@ -1011,7 +1011,7 @@ void Win_GParted::menu_gparted_refresh_devices()
 	{
 		Gtk::MessageDialog dialog(
 			*this,
-			_("The kernel is unable to re-read the partitiontables on the following devices:") + 
+			_("The kernel is unable to re-read the partition tables on the following devices:") + 
 			Glib::build_path( "", readonly_paths ),
 			false,
 			Gtk::MESSAGE_WARNING,
@@ -1212,7 +1212,7 @@ void Win_GParted::menu_help_about()
 	strings .clear() ;
 
 	/*TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
-	  It's a good idea to provide the url of your translationteam as well. Thanks! */
+	  It's a good idea to provide the url of your translation team as well. Thanks! */
 	Glib::ustring str_credits = _("translator-credits") ;
 	if ( str_credits != "translator-credits" )
 		dialog .set_translator_credits( str_credits ) ;
@@ -1904,7 +1904,7 @@ void Win_GParted::activate_apply()
 				   Gtk::BUTTONS_NONE,
 				   true );
 	dialog .set_secondary_text( _( "It is recommended to backup valuable data before proceeding.") ) ;
-	dialog .set_title( _( "Apply operations to harddisk" ) );
+	dialog .set_title( _( "Apply operations to device" ) );
 	
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );

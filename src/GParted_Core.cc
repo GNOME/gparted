@@ -1294,7 +1294,7 @@ bool GParted_Core::move( const Device & device,
 	       	   	{
 				if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
 				{
-					operationdetail .add_child( OperationDetail( _("rollback last change to the partitiontable") ) ) ;
+					operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
 
 					if ( resize_move_partition( partition_new, partition_old, operationdetail .get_last_child() ) )
 						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -1330,7 +1330,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	{
 		operationdetail .add_child( OperationDetail( _("move filesystem") ) ) ;
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old filesystem have the same positition -- skipping this operation"),
+			OperationDetail( _("new and old filesystem have the same position -- skipping this operation"),
 					 STATUS_NONE,
 					 FONT_ITALIC ) ) ;
 
@@ -1697,7 +1697,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	if ( partition_dst .get_length() < partition_src .get_length() )
 	{	
 		operationdetail .add_child( OperationDetail( 
-			_("the destination is smaller than the sourcepartition"), STATUS_ERROR, FONT_ITALIC ) ) ;
+			_("the destination is smaller than the source partition"), STATUS_ERROR, FONT_ITALIC ) ) ;
 
 		return false ;
 	}
@@ -1755,7 +1755,7 @@ bool GParted_Core::copy_filesystem_simulation( const Partition & partition_src,
 				      	       const Partition & partition_dst,
 			      		       OperationDetail & operationdetail ) 
 {
-	operationdetail .add_child( OperationDetail( _("perform readonly test") ) ) ;
+	operationdetail .add_child( OperationDetail( _("perform read-only test") ) ) ;
 	
 	bool succes = copy_filesystem( partition_src, partition_dst, operationdetail .get_last_child(), true ) ;
 
@@ -1949,7 +1949,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 bool GParted_Core::set_partition_type( const Partition & partition, OperationDetail & operationdetail )
 {
 	operationdetail .add_child( OperationDetail(
-				String::ucompose( _("set partitiontype on %1"), partition .get_path() ) ) ) ;
+				String::ucompose( _("set partition type on %1"), partition .get_path() ) ) ) ;
 	
 	bool return_value = false ;
 	
@@ -1971,7 +1971,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			     commit() )
 			{
 				operationdetail .get_last_child() .add_child( 
-					OperationDetail( String::ucompose( _("new partitiontype: %1"),
+					OperationDetail( String::ucompose( _("new partition type: %1"),
 									   lp_partition ->fs_type ->name ),
 							 STATUS_NONE,
 							 FONT_ITALIC ) ) ;
@@ -2333,7 +2333,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	if ( partition .filesystem == FS_NTFS )
 	{
 		operationdetail .add_child( OperationDetail( 
-			String::ucompose( _("updating bootsector of %1 filesystem on %2"),
+			String::ucompose( _("updating boot sector of %1 filesystem on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
 					  partition .get_path() ) ) ) ;
 

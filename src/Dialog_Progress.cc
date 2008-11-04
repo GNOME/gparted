@@ -315,7 +315,7 @@ void Dialog_Progress::on_cancel()
 				   Gtk::BUTTONS_NONE,
 				   true ) ;
 		
-	dialog .set_secondary_text( _("Cancelling an operation may cause SEVERE file system damage.") ) ;
+	dialog .set_secondary_text( _("Canceling an operation might cause SEVERE file system damage.") ) ;
 
 	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
 	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
