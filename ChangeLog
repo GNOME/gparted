@@ -2,8 +2,11 @@
 
 	* src/Dialog_Partition_Copy.cc: Fixed copy and paste partition problem.
 	  - Adjust for situation when an MSDOS partition table is in
-	  	use and a primary partition is copied and pasted into
+	    use and a primary partition is copied and pasted into
 	    an unallocated space in an extended partition.
+	  - Added exclusion for primary partitions at the start of the disk
+	    since this problem does not occur because the size of the master
+	    boot record equals the size of the extended boot record.
 	  - Closes GParted bug #556058
 
 2008-11-04  Curtis Gedak  <gedakc@gmail.com>

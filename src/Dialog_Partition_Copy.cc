@@ -54,8 +54,12 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//  additional 8 MB.  8 MB is typical cylinder size with
 	//  todays larger disks.
 	//  8 MB = (255 heads) * (63 sectors) * (512 bytes)
-	//FIXME:  Should confirm MSDOS partition table type, and use cylinder size from device
+	//  NOTE:  This problem does not occur for a primary partition
+	//  at the the start of the disk because the size of the EBR and
+	//  Master Boot Record are the same.
+	//FIXME:  Should confirm MSDOS partition table type, track sector size, and use cylinder size from device
 	if (   copied_partition .type == TYPE_PRIMARY
+		&& copied_partition .sector_start != 63
 	    && selected_partition .type == TYPE_UNALLOCATED
 	    && selected_partition .inside_extended
 	   )
