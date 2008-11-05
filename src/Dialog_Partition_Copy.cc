@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,8 +43,24 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
-	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_partition .get_length(), GParted::UNIT_MIB ) ) ;
-	
+	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_partition .get_length(), GParted::UNIT_MIB ) ) ; 
+	//Adjust for situation when an MSDOS partition table is in
+	//  use and a primary partition is copied and pasted into
+	//  an unallocated space in an extended partition.
+	//  Since the Extended Boot Record requires an additional track,
+	//  we need to add this to the destination (selected) partition.
+	//  Because GUI selection of partition size is in MB and we round
+	//  to the cylinder size, we will increase the partition by an
+	//  additional 8 MB.  8 MB is typical cylinder size with
+	//  todays larger disks.
+	//  8 MB = (255 heads) * (63 sectors) * (512 bytes)
+	//FIXME:  Should confirm MSDOS partition table type, and use cylinder size from device
+	if (   copied_partition .type == TYPE_PRIMARY
+	    && selected_partition .type == TYPE_UNALLOCATED
+	    && selected_partition .inside_extended
+	   )
+		COPIED_LENGTH_MB += 8 ;
+
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
 	int x_end = Utils::round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
