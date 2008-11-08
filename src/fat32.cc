@@ -44,8 +44,8 @@ FS fat32::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
-		fs .get_label = FS::EXTERNAL ;
-		fs .set_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 	}
 	
 	//resizing of start and endpoint are provided by libparted
@@ -91,7 +91,7 @@ void fat32::set_used_sectors( Partition & partition )
 	}
 }
 
-void fat32::get_label( Partition & partition )
+void fat32::read_label( Partition & partition )
 {
 	//Create mtools config file
 	char fname[] = "/tmp/gparted-XXXXXXXX" ;
@@ -120,7 +120,7 @@ void fat32::get_label( Partition & partition )
 	err_msg = Utils::delete_mtoolsrc_file( fname );
 }
 
-bool fat32::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool fat32::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Create mtools config file
 	char fname[] = "/tmp/gparted-XXXXXXXX" ;

@@ -30,7 +30,7 @@ FS reiser4::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
-		fs .get_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -80,7 +80,7 @@ void reiser4::set_used_sectors( Partition & partition )
 	}
 }
 
-void reiser4::get_label( Partition & partition )
+void reiser4::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
@@ -96,7 +96,7 @@ void reiser4::get_label( Partition & partition )
 	}
 }
 
-bool reiser4::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool reiser4::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

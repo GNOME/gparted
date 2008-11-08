@@ -32,8 +32,8 @@ FS jfs::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
-		fs .get_label = FS::EXTERNAL ;
-		fs .set_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
@@ -104,7 +104,7 @@ void jfs::set_used_sectors( Partition & partition )
 	}
 }
 
-void jfs::get_label( Partition & partition )
+void jfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
 	{
@@ -120,7 +120,7 @@ void jfs::get_label( Partition & partition )
 	}
 }
 
-bool jfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool jfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "jfs_tune -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
 }

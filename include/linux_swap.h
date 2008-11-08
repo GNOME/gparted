@@ -29,8 +29,8 @@ class linux_swap : public FileSystem
 public:
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
-	void get_label( Partition & partition ) ;
-	bool set_label( const Partition & partition, OperationDetail & operationdetail ) ;
+	void read_label( Partition & partition ) ;
+	bool write_label( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
 	bool copy( const Glib::ustring & src_part_path,

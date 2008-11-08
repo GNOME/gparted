@@ -93,7 +93,7 @@ void DialogFeatures::show_filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .move ] = fs .move ? icon_yes : icon_no ;  
 	treerow[ treeview_filesystems_columns .copy ] = fs .copy ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
-	treerow[ treeview_filesystems_columns .label ] = fs .set_label ? icon_yes : icon_no ; 
+	treerow[ treeview_filesystems_columns .label ] = fs .write_label ? icon_yes : icon_no ; 
 }
 
 DialogFeatures::~DialogFeatures() 

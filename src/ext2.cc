@@ -29,8 +29,8 @@ FS ext2::get_filesystem_support()
 		fs .read = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
-		fs .get_label = FS::EXTERNAL ;
-		fs .set_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 	}
 	
 	if ( ! Glib::find_program_in_path( "mkfs.ext2" ) .empty() )
@@ -83,7 +83,7 @@ void ext2::set_used_sectors( Partition & partition )
 	}
 }
 	
-void ext2::get_label( Partition & partition )
+void ext2::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
 	{
@@ -99,7 +99,7 @@ void ext2::get_label( Partition & partition )
 	}
 }
 
-bool ext2::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
 }

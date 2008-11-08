@@ -37,11 +37,11 @@ void ufs::set_used_sectors( Partition & partition )
 {
 }
 
-void ufs::get_label( Partition & partition )
+void ufs::read_label( Partition & partition )
 {
 }
 
-bool ufs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool ufs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

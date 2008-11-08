@@ -33,8 +33,8 @@ FS ntfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
-		fs .get_label = FS::EXTERNAL ;
-		fs .set_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
@@ -82,7 +82,7 @@ void ntfs::set_used_sectors( Partition & partition )
 	}
 }
 
-void ntfs::get_label( Partition & partition )
+void ntfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, true ) )
 	{
@@ -98,7 +98,7 @@ void ntfs::get_label( Partition & partition )
 	}
 }
 
-bool ntfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool ntfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "ntfslabel --force " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
 }

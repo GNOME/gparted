@@ -29,11 +29,11 @@ FS reiserfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "debugreiserfs" ) .empty() )
 	{
 		fs .read = GParted::FS::EXTERNAL ;
-		fs .get_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "reiserfstune" ) .empty() )
-		fs .set_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -88,7 +88,7 @@ void reiserfs::set_used_sectors( Partition & partition )
 	}
 }
 
-void reiserfs::get_label( Partition & partition )
+void reiserfs::read_label( Partition & partition )
 {
 	//FIXME: i think running debugreiserfs takes a long time on filled filesystems, test for this...
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
@@ -105,7 +105,7 @@ void reiserfs::get_label( Partition & partition )
 	}
 }
 	
-bool reiserfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool reiserfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "reiserfstune --label \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
 }

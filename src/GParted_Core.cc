@@ -733,7 +733,7 @@ void GParted_Core::set_device_partitions( Device & device )
 				break;
 		}
 
-		get_label( partition_temp ) ;
+		read_label( partition_temp ) ;
 
 		partition_temp .messages .insert( partition_temp .messages .end(),
 						  libparted_messages. begin(),
@@ -822,15 +822,15 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	return GParted::FS_UNKNOWN ;
 }
 	
-void GParted_Core::get_label( Partition & partition )
+void GParted_Core::read_label( Partition & partition )
 {
 	if ( partition .type != TYPE_EXTENDED )
 	{
-		switch( get_fs( partition .filesystem ) .get_label )
+		switch( get_fs( partition .filesystem ) .read_label )
 		{
 			case FS::EXTERNAL:
 				if ( set_proper_filesystem( partition .filesystem ) )
-					p_filesystem ->get_label( partition ) ;
+					p_filesystem ->read_label( partition ) ;
 				break ;
 			case FS::LIBPARTED:
 				break ;
@@ -1209,11 +1209,11 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 	bool succes = false ;
 	if ( partition .type != TYPE_EXTENDED )
 	{
-		switch( get_fs( partition .filesystem ) .set_label )
+		switch( get_fs( partition .filesystem ) .write_label )
 		{
 			case FS::EXTERNAL:
 				succes = set_proper_filesystem( partition .filesystem ) &&
-					 p_filesystem ->set_label( partition, operationdetail .get_last_child() ) ;
+					 p_filesystem ->write_label( partition, operationdetail .get_last_child() ) ;
 				break ;
 			case FS::LIBPARTED:
 				break ;

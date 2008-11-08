@@ -31,11 +31,11 @@ FS xfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "xfs_db" ) .empty() ) 	
 	{
 		fs .read = GParted::FS::EXTERNAL ;
-		fs .get_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "xfs_admin" ) .empty() ) 	
-		fs .set_label = FS::EXTERNAL ;
+		fs .write_label = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() ) 	
 		fs .create = GParted::FS::EXTERNAL ;
@@ -107,7 +107,7 @@ void xfs::set_used_sectors( Partition & partition )
 	}
 }
 
-void xfs::get_label( Partition & partition )
+void xfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + partition .get_path(), output, error, true ) )
 	{
@@ -123,7 +123,7 @@ void xfs::get_label( Partition & partition )
 	}
 }
 
-bool xfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool xfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "" ;
 	if( partition .label .empty() )

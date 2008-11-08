@@ -37,7 +37,7 @@ FS hfs::get_filesystem_support()
 		fs .check = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
-		fs .get_label = FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
 
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
@@ -51,7 +51,7 @@ void hfs::set_used_sectors( Partition & partition )
 {
 }
 
-void hfs::get_label( Partition & partition )
+void hfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
@@ -70,7 +70,7 @@ void hfs::get_label( Partition & partition )
 	}
 }
 
-bool hfs::set_label( const Partition & partition, OperationDetail & operationdetail )
+bool hfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

@@ -856,7 +856,7 @@ void Win_GParted::set_valid_operations()
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
-		if ( selected_partition .status == GParted::STAT_REAL && fs .set_label )
+		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
 			allow_label_partition( true ) ;
 
 		if ( selected_partition .get_mountpoints() .size() )
