@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -99,6 +99,7 @@ public:
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	FILESYSTEM filesystem ;
 	Glib::ustring label ;
+	Glib::ustring uuid ;
 	Sector sector_start;
 	Sector sector_end;
 	Sector sectors_used;

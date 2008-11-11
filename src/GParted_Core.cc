@@ -17,6 +17,7 @@
  
 #include "../include/Win_GParted.h"
 #include "../include/GParted_Core.h"
+#include "../include/FS_Info.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCreate.h"
 #include "../include/OperationDelete.h"
@@ -676,6 +677,7 @@ void GParted_Core::set_device_partitions( Device & device )
 {
 	int EXT_INDEX = -1 ;
 	char * lp_path ;//we have to free the result of ped_partition_get_path()..
+	FS_Info fs_info ;  //Build cache of file system information
 	
 	//clear partitions
 	device .partitions .clear() ;
@@ -733,7 +735,12 @@ void GParted_Core::set_device_partitions( Device & device )
 				break;
 		}
 
-		read_label( partition_temp ) ;
+		//Avoid reading additional file system information if there is no path
+		//FIXME:  Why is there an empty path for the first primary partition, and an empty path for each logical partition?
+		if ( partition_temp .get_path() != "" ) {
+			read_label( partition_temp ) ;
+			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
+		}
 
 		partition_temp .messages .insert( partition_temp .messages .end(),
 						  libparted_messages. begin(),

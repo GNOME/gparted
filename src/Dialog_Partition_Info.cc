@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -271,7 +271,20 @@ void Dialog_Partition_Info::Display_Info()
 				top++, bottom++,
 				Gtk::FILL) ;
 	}
-	
+
+	//uuid
+	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
+	{
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
+				0, 1,
+				top, bottom,
+				Gtk::FILL) ;
+		table ->attach( * Utils::mk_label( partition .uuid ),
+				1, 2,
+				top++, bottom++,
+				Gtk::FILL) ;
+	}
+
 	//one blank line
 	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	

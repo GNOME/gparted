@@ -1,4 +1,4 @@
-/* Copyright (C) 2004 Bart
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ void Partition::Reset()
 	type = GParted::TYPE_UNALLOCATED ;
 	filesystem = GParted::FS_UNALLOCATED ;
 	label .clear() ;
+	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color .set( "black" ) ;
 	inside_extended = busy = strict = false ;
