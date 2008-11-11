@@ -25,6 +25,7 @@ gpartedbin_SOURCES = \
 	FileSystem.cc			\
 	Frame_Resizer_Base.cc		\
 	Frame_Resizer_Extended.cc	\
+	FS_Info.cc				\
 	GParted_Core.cc			\
 	HBoxOperations.cc		\
 	Operation.cc			\

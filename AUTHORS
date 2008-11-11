@@ -12,13 +12,15 @@ not an invitation to misrepresent who contributed to GNU GParted.
 We need to keep track of copyright (see the Maintainer HOWTO on www.gnu.org).
 
 Curtis Gedak		<gedakc@users.sourceforge.net>
-	* Wrote Utils::fat_compliant_label() method
-	* Wrote Utils::cleanup_cursor() function
+	* Created FS_Info.h, FS_Info.cc
 	* Rewrote read_label functionality for hfs
 	* Wrote create, read_label, and check_repair functionality for hfs+
 	* Wrote read_label functionality for fat16 and fat32 filesystems  
-	* Wrote Utils::regexp_label() function
-	* Wrote write partition label functionality
+	* Wrote following Utils:: methods:
+		regexp_label(), fat_compliant_label(),
+		create_mtoolsrc_file(), delete_mtoolsrc_file,
+		trim(), cleanup_cursor(), get_lang()
+	* Wrote partition write_label functionality
 	* Created Dialog_Partion_Label.h, Dialog_Partition_Label.cc
 	* Created OperationLabelPartition.h, OperationLabelPartition.cc
 	* Maintained from official 0.3.5 release onward 
