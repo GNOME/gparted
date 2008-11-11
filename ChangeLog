@@ -1,3 +1,13 @@
+2008-11-10  Curtis Gedak  <gedakc@gmail.com>
+
+	* src/fat16.cc,
+	  src/fat32.cc:  Enforced fat compliant label before writing.
+	  - Trimmed trailing spaces from label upon reading.
+
+	* include/Utils.h,
+	  src/Utils.cc:  Created new method fat_compliant_label().
+	  - Limit volume label to 11 characters.
+
 2008-11-08  Curtis Gedak  <gedakc@gmail.com>
 
 	* include/ext2.h,

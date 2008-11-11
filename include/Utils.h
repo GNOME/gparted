@@ -136,6 +136,7 @@ public:
 				    bool use_C_locale = false ) ;
 	static Glib::ustring regexp_label( const Glib::ustring & text,
 					const Glib::ustring & regular_sub_expression ) ;
+	static Glib::ustring fat_compliant_label( const Glib::ustring & label ) ;
 	static Glib::ustring create_mtoolsrc_file( char file_name[],
                     const char drive_letter, const Glib::ustring & device_path ) ;
 	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;

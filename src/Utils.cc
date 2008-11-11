@@ -279,6 +279,15 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text,
 	return label ;
 }
 
+Glib::ustring Utils::fat_compliant_label( const Glib::ustring & label )
+{
+	//Limit volume label to 11 characters
+	Glib::ustring text = label ;
+	if( text .length() > 11 )
+		text .resize( 11 ) ;
+	return text ;
+}
+
 Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_letter,
 		const Glib::ustring & device_path )
 {
