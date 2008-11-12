@@ -85,6 +85,8 @@ DIRECTORIES
 ------------
 compose  - contains String::ucompose() function
 
+data     - contains desktop icons
+
 doc      - contains manual page documentation
 
 help     - contains GParted Manual and international translations
@@ -92,8 +94,6 @@ help     - contains GParted Manual and international translations
 include  - contains source header files
 
 m4       - contains macro files
-
-pixmaps  - contains desktop icon
 
 po       - contains international language translations
 
@@ -117,6 +117,8 @@ Optional packages include:
    reiserfsprogs
    xfsprogs
 
-   NOTE:  If the vol_id command is in the search PATH, it will be used
-          to read linux-swap, reiser4, hfs, and hfs+ file system
-          volume labels.
+   NOTE:  * If the vol_id command is in the search PATH, it will be used
+            to read linux-swap, reiser4, hfs, and hfs+ file system
+            volume labels.
+          * If the blkid command is in the search path, it will be used
+            to read file system UUIDs.
