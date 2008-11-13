@@ -28,6 +28,7 @@ class FS_Info
 public:
 	FS_Info() ;
 	~FS_Info() ;
+	Glib::ustring get_label( const Glib::ustring & path, bool & found ) ;
 	Glib::ustring get_uuid( const Glib::ustring & path ) ;
 private:
 	void load_fs_info_cache() ;

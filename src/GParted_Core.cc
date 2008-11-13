@@ -736,9 +736,13 @@ void GParted_Core::set_device_partitions( Device & device )
 		}
 
 		//Avoid reading additional file system information if there is no path
-		//FIXME:  Why is there an empty path for the first primary partition, and an empty path for each logical partition?
-		if ( partition_temp .get_path() != "" ) {
-			read_label( partition_temp ) ;
+		if ( partition_temp .get_path() != "" )
+		{
+			bool label_found = false ;
+			partition_temp .label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
+			if ( ! label_found )
+				read_label( partition_temp ) ;
+
 			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
 		}
 

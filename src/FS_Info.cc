@@ -14,7 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
+
 #include "../include/FS_Info.h"
 
 namespace GParted
@@ -39,6 +39,24 @@ void FS_Info::load_fs_info_cache()
 		else
 			fs_info_cache = "" ;
 	}
+}
+
+Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
+{
+	Glib::ustring label = "" ;
+	found = false ;
+
+	//Retrieve the line containing the device path
+	Glib::ustring regexp = "^" + path + ":([^\n]*)$" ;
+	Glib::ustring temp = Utils::regexp_label( fs_info_cache, regexp ) ;
+	
+	//Set indicator if LABEL found
+	if ( Utils::regexp_label( temp, "(LABEL=\")") != "" )
+		found = true ;
+
+	//Retrieve LABEL
+	label = Utils::regexp_label( temp, "LABEL=\"([^\"]*)\"" ) ;
+	return label ;
 }
 
 Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
