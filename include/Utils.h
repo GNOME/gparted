@@ -126,6 +126,7 @@ public:
 	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
+	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
 	static Glib::ustring format_size( Sector size ) ;
 	static Glib::ustring format_time( std::time_t seconds ) ;
 	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;

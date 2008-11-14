@@ -133,6 +133,28 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 	}
 }
 
+Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
+{
+	switch( filesystem )
+	{
+		case FS_EXT2        : return "e2fsprogs" ;
+		case FS_EXT3        : return "e2fsprogs" ;
+		case FS_FAT16       : return "dosfstools, mtools" ;
+		case FS_FAT32       : return "dosfstools, mtools" ;
+		case FS_HFS         : return "hfsutils" ;
+		case FS_HFSPLUS     : return "hfsprogs" ;
+		case FS_JFS         : return "jfsutils" ;
+		case FS_LINUX_SWAP  : return "util-linux" ;
+		case FS_NTFS        : return "ntfsprogs" ;
+		case FS_REISER4     : return "reiser4progs" ;
+		case FS_REISERFS    : return "reiserfsprogs" ;
+		case FS_UFS         : return "" ;
+		case FS_XFS         : return "xfsprogs" ;
+					  
+		default             : return "" ;
+	}
+}
+
 Glib::ustring Utils::format_size( Sector size ) 
 {
 	std::stringstream ss ;	
