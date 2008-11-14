@@ -21,6 +21,7 @@
 #include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
+#include <gtkmm/expander.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/image.h>
@@ -40,16 +41,18 @@ private:
 	void show_filesystem( const FS & fs ) ;
 
 	Gtk::HBox *hbox ;
+	Gtk::HBox *hbox2 ;
+	Gtk::VBox *vbox ;
 	Gtk::Image *image ;
+	Gtk::Expander expander_legend ;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
+	Glib::ustring str_temp ;
 	
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> filesystem;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > detect ;
-		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > read ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink ;
@@ -57,12 +60,11 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > label ;
+		Gtk::TreeModelColumn<Glib::ustring> software ;
 				
 		treeview_filesystems_Columns() 
 		{ 
 			add( filesystem );
-			add( detect ) ;
-			add( read ) ;
 			add( create ) ;
 			add( grow ) ;
 			add( shrink ) ;
@@ -70,6 +72,7 @@ private:
 			add( copy ) ;
 			add( check ) ;
 			add( label ) ;
+			add( software ) ;
 		}
 	};
 	

@@ -24,15 +24,14 @@ namespace GParted
 
 DialogFeatures::DialogFeatures() 
 {
-	set_title( _("Features") ) ;
+	set_title( _("File System Support") ) ;
 	set_has_separator( false ) ;
 	set_resizable( false ) ;
 
+	//treeview
 	liststore_filesystems = Gtk::ListStore::create( treeview_filesystems_columns );
 	treeview_filesystems .set_model( liststore_filesystems );
-	treeview_filesystems .append_column( _("Filesystem"), treeview_filesystems_columns .filesystem );
-	treeview_filesystems .append_column( _("Detect"), treeview_filesystems_columns .detect );
-	treeview_filesystems .append_column( _("Read"), treeview_filesystems_columns .read );
+	treeview_filesystems .append_column( _("File System"), treeview_filesystems_columns .filesystem );
 	treeview_filesystems .append_column( _("Create"), treeview_filesystems_columns .create );
 	treeview_filesystems .append_column( _("Grow"), treeview_filesystems_columns .grow );
 	treeview_filesystems .append_column( _("Shrink"), treeview_filesystems_columns .shrink );
@@ -40,8 +39,7 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 	treeview_filesystems .append_column( _("Check"), treeview_filesystems_columns .check );
 	treeview_filesystems .append_column( _("Label"), treeview_filesystems_columns .label );
-	//FIXME: add info about the relevant project (e.g an url to the projectpage)
-	//of course this url has to be selectable and (if possible) clickable
+	treeview_filesystems .append_column( _("Required Software"), treeview_filesystems_columns .software );
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
 
@@ -49,25 +47,51 @@ DialogFeatures::DialogFeatures()
 	hbox ->set_border_width( 6 ) ;
 	hbox ->pack_start( treeview_filesystems ) ;
 	get_vbox() ->pack_start( *hbox ) ;
+
+	//file system support legend
+	hbox2 = manage( new Gtk::HBox( false, 6 ) ) ;
+	hbox2 ->set_border_width( 6 ) ;
 	
-	//legend..
+	hbox = manage( new Gtk::HBox() ) ;
+	str_temp  = _("This chart shows the actions supported on file systems.") ;
+	str_temp += "\n" ;
+	str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.") ;
+	hbox ->pack_start( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true ),
+			   Gtk::PACK_SHRINK );
+	hbox2 -> pack_start( *hbox ) ;
+	
+	//icon legend
+	vbox = manage( new Gtk::VBox() ) ;
 	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
 	hbox ->pack_start( * Utils::mk_label( _("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
-	get_vbox() ->pack_start( *hbox ) ;
+	vbox ->pack_start( *hbox ) ;
 
 	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
 	hbox ->pack_start( * Utils::mk_label( _("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
-	get_vbox() ->pack_start( *hbox ) ;
+	vbox ->pack_start( *hbox ) ;
+	hbox2 ->pack_start( *vbox ) ;
+
+	//legend
+	hbox = manage( new Gtk::HBox( false, 6 ) ) ;
+	hbox ->set_border_width( 6 ) ;
+	str_temp = "<b>" ;
+	str_temp += _("Legend") ;
+	str_temp += "</b>" ;
+	expander_legend .set_label( str_temp ) ;
+	expander_legend .set_use_markup( true ) ;
+	
+	get_vbox() ->pack_start( expander_legend, Gtk::PACK_SHRINK ) ;
+	expander_legend .add( *hbox2 ) ;
 
 	//initialize icons
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
 	icon_no = render_icon( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
 	
-	add_button( Gtk::Stock::REFRESH, Gtk::RESPONSE_OK ) ;
+	add_button( _("Rescan Support"), Gtk::RESPONSE_OK );
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
 	show_all_children() ;
 }
@@ -84,9 +108,7 @@ void DialogFeatures::show_filesystem( const FS & fs )
 {
 	treerow = *( liststore_filesystems ->append() );
 	treerow[ treeview_filesystems_columns .filesystem ] = Utils::get_filesystem_string( fs .filesystem ) ;
-	
-	treerow[ treeview_filesystems_columns .detect ] = icon_yes ; 
-	treerow[ treeview_filesystems_columns .read ] = fs .read ? icon_yes : icon_no ; 
+
 	treerow[ treeview_filesystems_columns .create ] = fs .create ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .grow ] = fs .grow ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .shrink ] = fs .shrink ? icon_yes : icon_no ; 
@@ -94,6 +116,8 @@ void DialogFeatures::show_filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .copy ] = fs .copy ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .label ] = fs .write_label ? icon_yes : icon_no ; 
+
+	treerow[ treeview_filesystems_columns .software ] = Utils::get_filesystem_software( fs .filesystem ) ;
 }
 
 DialogFeatures::~DialogFeatures() 
