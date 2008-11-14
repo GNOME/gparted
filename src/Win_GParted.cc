@@ -142,9 +142,6 @@ void Win_GParted::init_menubar()
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Devices"), *image ) ) ; 
 	
 	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem(
-		_("_Show Features"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
 	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
 		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
@@ -175,6 +172,10 @@ void Win_GParted::init_menubar()
 	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( 
 		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
+
+	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem(
+		_("_File System Support"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
 
 	//device
 	menu = manage( new Gtk::Menu() ) ;
