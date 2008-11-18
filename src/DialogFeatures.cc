@@ -90,7 +90,8 @@ DialogFeatures::DialogFeatures()
 	//initialize icons
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
 	icon_no = render_icon( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 
-	
+
+	/*TO TRANSLATORS: This is a button that will search again for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan Support"), Gtk::RESPONSE_OK );
 	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
 	show_all_children() ;
