@@ -43,7 +43,7 @@ FS ext2::get_filesystem_support()
 	{
 		fs .grow = FS::EXTERNAL ;
 		
-		if ( fs .read ) //needed to determine a min filesystemsize..
+		if ( fs .read ) //needed to determine a min file system size..
 			fs .shrink = FS::EXTERNAL ;
 	}
 
@@ -131,7 +131,7 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 {
 	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operationdetail ) ;
 	
-	//exitstatus 256 isn't documented, but it's returned when the 'FILESYSTEM IS MODIFIED'
+	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
 }

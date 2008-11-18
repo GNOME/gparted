@@ -45,7 +45,7 @@ FS ntfs::get_filesystem_support()
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
-		if ( fs .read ) //needed to determine a min filesystemsize..
+		if ( fs .read ) //needed to determine a min file system size..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 	

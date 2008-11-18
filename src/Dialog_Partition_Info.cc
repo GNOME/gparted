@@ -148,7 +148,7 @@ void Dialog_Partition_Info::Display_Info()
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
 	
 	//filesystem
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Filesystem:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;

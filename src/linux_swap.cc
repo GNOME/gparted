@@ -74,9 +74,9 @@ bool linux_swap::create( const Partition & new_partition, OperationDetail & oper
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	/*TO TRANSLATORS: looks like create new linux-swap filesystem */ 
+	/*TO TRANSLATORS: looks like create new linux-swap file system */ 
 	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("create new %1 filesystem"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
+		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
 	if ( create( partition_new, operationdetail .get_last_child() ) ) 
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;

@@ -32,8 +32,8 @@ TreeView_Detail::TreeView_Detail()
 
 	//append columns
 	append_column( _("Partition"), treeview_detail_columns .path );
-	append_column( _("Filesystem"), treeview_detail_columns .color );
-	append_column( _("Mountpoint"), treeview_detail_columns .mountpoint );
+	append_column( _("File System"), treeview_detail_columns .color );
+	append_column( _("Mount Point"), treeview_detail_columns .mountpoint );
 	append_column( _("Label"), treeview_detail_columns .label );
 	append_column( _("Size"), treeview_detail_columns .size );
 	append_column( _("Used"), treeview_detail_columns .used );
@@ -51,11 +51,11 @@ TreeView_Detail::TreeView_Detail()
 	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
 					 treeview_detail_columns .text_color );
 	
-	//FILESYSTEM
-	//filesystem text
+	//FILE SYSTEM
+	//file system text
 	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
 	
-	//colored text in Filesystem column 
+	//colored text in File System column 
 	std::vector<Gtk::CellRenderer*> renderers = get_column( 1 ) ->get_cell_renderers() ;
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
 	get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(),
@@ -65,8 +65,8 @@ TreeView_Detail::TreeView_Detail()
 	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = Gtk::ALIGN_LEFT ;
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
 	
-	//MOUNTPOINT
-	//colored text in mountpoint column 
+	//MOUNT POINT
+	//colored text in mount point column 
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 2 ) ->get_first_cell_renderer() );
 	get_column( 2 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
 					 treeview_detail_columns .mount_text_color );
@@ -179,7 +179,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .filesystem ] = 
 		Utils::get_filesystem_string( partition .filesystem ) ;
 	
-	//mountpoint
+	//mount point
 	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
 
 	//label

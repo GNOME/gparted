@@ -135,7 +135,7 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	//mkfs.xfs will not create filesystem if label is longer than 12 characters, hence truncation.
+	//mkfs.xfs will not create file system if label is longer than 12 characters, hence truncation.
 	Glib::ustring label = new_partition .label ;
 	if( label .length() > 12 )
 		label = label.substr( 0, 12 ) ;
@@ -146,10 +146,10 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 {
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_xfs_mountpoint" ;
+	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_xfs_mount_point" ;
 
-	//create mountpoint...
-	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+	//create mount point...
+	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mount point (%1)"), TEMP_MP ) ) ) ;
 	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -163,8 +163,8 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			
-			//grow the mounted filesystem..
-			operationdetail .add_child( OperationDetail( _("grow mounted filesystem") ) ) ;
+			//grow the mounted file system..
+			operationdetail .add_child( OperationDetail( _("grow mounted file system") ) ) ;
 			
 			if ( ! execute_command ( "xfs_growfs " + TEMP_MP, operationdetail .get_last_child() ) )
 			{
@@ -196,9 +196,9 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
 				
-		//remove the mountpoint..
+		//remove the mount point..
 		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+			OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), TEMP_MP ) ) ) ;
 		if ( ! rmdir( TEMP_MP .c_str() ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -227,28 +227,28 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 {
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring SRC = Glib::get_tmp_dir() + "/gparted_tmp_xfs_src_mountpoint" ;
-	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mountpoint" ;
+	Glib::ustring SRC = Glib::get_tmp_dir() + "/gparted_tmp_xfs_src_mount_point" ;
+	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mount_point" ;
 	
-	//create xfs filesystem on destination..
-	/*TO TRANSLATORS: looks like Create new xfs filesystem */ 
+	//create xfs file system on destination..
+	/*TO TRANSLATORS: looks like Create new xfs file system */ 
 	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("create new %1 filesystem"), Utils::get_filesystem_string( FS_XFS ) ) ) ) ;
+		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_XFS ) ) ) ) ;
 
 	if ( create( Partition( dest_part_path ), operationdetail .get_last_child() ) )
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 		
-		//create source mountpoint...
+		//create source mount point...
 		operationdetail .add_child( 
-			OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), SRC ) ) ) ;
+			OperationDetail( String::ucompose( _("create temporary mount point (%1)"), SRC ) ) ) ;
 		if ( ! mkdir( SRC .c_str(), 0 ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			
-			//create destination mountpoint...
+			//create destination mount point...
 			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), DST ) ) ) ;
+				OperationDetail( String::ucompose( _("create temporary mount point (%1)"), DST ) ) ) ;
 			if ( ! mkdir( DST .c_str(), 0 ) )
 			{
 				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -271,8 +271,8 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 					{
 						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 	
-						//copy filesystem..
-						operationdetail .add_child( OperationDetail( _("copy filesystem") ) ) ;
+						//copy file system..
+						operationdetail .add_child( OperationDetail( _("copy file system") ) ) ;
 						
 						if ( ! execute_command( 
 							 "xfsdump -J - " + SRC + " | xfsrestore -J - " + DST,
@@ -327,9 +327,9 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 				}
 		
-				//remove destination mountpoint..
+				//remove destination mount point..
 				operationdetail .add_child(
-					OperationDetail( String::ucompose( _("remove temporary mountpoint (%1)"), DST ) ) ) ;
+					OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), DST ) ) ) ;
 				if ( ! rmdir( DST .c_str() ) )
 				{
 					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -350,9 +350,9 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 					OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
 			}
 			
-			//remove source mountpoint..
+			//remove source mount point..
 			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("remove temporary mountpoint (%1)"), SRC ) ) ) ;
+				OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), SRC ) ) ) ;
 			if ( ! rmdir( SRC .c_str() ) )
 			{
 				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;

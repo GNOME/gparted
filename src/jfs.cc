@@ -134,10 +134,10 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 {
 	bool return_value = false ;
 	Glib::ustring error ;
-	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_jfs_mountpoint" ;
+	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_jfs_mount_point" ;
 	
-	//create mountpoint...
-	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+	//create mount point...
+	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mount point (%1)"), TEMP_MP ) ) ) ;
 	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -151,7 +151,7 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			
-			//remount the partition to resize the filesystem
+			//remount the partition to resize the file system
 			operationdetail .add_child(
 				OperationDetail( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
 								   partition_new .get_path(),
@@ -189,9 +189,9 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
 		
-		//remove the mountpoint..
+		//remove the mount point..
 		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("remove temporary mountpoint (%1)"), TEMP_MP ) ) ) ;
+			OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), TEMP_MP ) ) ) ;
 		if ( ! rmdir( TEMP_MP .c_str() ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;

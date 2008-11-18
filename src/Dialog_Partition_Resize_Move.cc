@@ -90,7 +90,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 
 	Sector previous, next ;
 	previous = next = 0 ;
-	//also check the partitions filesystem ( if this is a 'resize-only' then previous should be 0 )	
+	//also check the partitions file system ( if this is a 'resize-only' then previous should be 0 )	
 	if ( t >= 1 && partitions[t -1].type == GParted::TYPE_UNALLOCATED && ! this ->fixed_start )
 	{ 
 		previous = partitions[t -1] .get_length() ;
@@ -116,7 +116,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//set MIN
 	if ( fs .shrink )
 	{
-		//since some filesystems have lower limits we need to check for this
+		//since some file systems have lower limits we need to check for this
 		if ( selected_partition .sectors_used > fs .MIN )
 			fs .MIN = selected_partition .sectors_used ;
 

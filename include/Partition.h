@@ -43,7 +43,7 @@ enum PartitionStatus {
 	STAT_FORMATTED	=	3
 };
 
-//FIXME: we should make a difference between partition- and filesystemsize. 
+//FIXME: we should make a difference between partition- and file system size. 
 //especially in the core this can make a difference when giving detailed feedback. With new cairosupport in gtkmm
 //it's even possible to make stuff like this visible in the GUI in a nice and clear way
 class Partition

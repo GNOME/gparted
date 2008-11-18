@@ -33,7 +33,7 @@ FS fat16::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_FAT16 ;
 		
-	//find out if we can create fat16 filesystems
+	//find out if we can create fat16 file systems
 	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	

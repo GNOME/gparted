@@ -74,7 +74,7 @@ GParted_Core::GParted_Core()
 	std::cout << "libparted : " << ped_get_version() << std::endl ;
 	std::cout << "======================" << std::endl ;
 
-	//initialize filesystemlist
+	//initialize file system list
 	find_supported_filesystems() ;
 }
 
@@ -121,7 +121,7 @@ void GParted_Core::find_supported_filesystems()
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 	
-	//unknown filesystem (default when no match is found)
+	//unknown file system (default when no match is found)
 	FS fs ; fs .filesystem = GParted::FS_UNKNOWN ;
 	FILESYSTEMS .push_back( fs ) ;
 }
@@ -592,7 +592,7 @@ void GParted_Core::init_maps()
 	read_mountpoints_from_file( "/etc/mtab", mount_info ) ;
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
-	//sort the mountpoints and remove duplicates.. (no need to do this for fstab_info)
+	//sort the mount points and remove duplicates.. (no need to do this for fstab_info)
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
 	{
 		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
@@ -648,7 +648,7 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 			{
 				line = mountpoint ;
 				
-				//see if mountpoint contains spaces and deal with it
+				//see if mount point contains spaces and deal with it
 				index = line .find( "\\040" ) ;
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;
@@ -775,7 +775,7 @@ void GParted_Core::set_device_partitions( Device & device )
 
 GParted::FILESYSTEM GParted_Core::get_filesystem() 
 {
-	//standard libparted filesystems..
+	//standard libparted file systems..
 	if ( lp_partition && lp_partition ->fs_type )
 	{
 		if ( Glib::ustring( lp_partition ->fs_type ->name ) == "extended" )
@@ -807,7 +807,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	}
 	
 	
-	//other filesystems libparted couldn't detect (i've send patches for these filesystems to the parted guys)
+	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
 	char buf[512] ;
 
 	ped_device_open( lp_device );
@@ -819,14 +819,14 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	if ( Glib::ustring( buf ) == "ReIsEr4" )
 		return GParted::FS_REISER4 ;		
 		
-	//no filesystem found....
-	temp = _( "Unable to detect filesystem! Possible reasons are:" ) ;
+	//no file system found....
+	temp = _( "Unable to detect file system! Possible reasons are:" ) ;
 	temp += "\n-"; 
-	temp += _( "The filesystem is damaged" ) ;
+	temp += _( "The file system is damaged" ) ;
 	temp += "\n-" ; 
-	temp += _( "The filesystem is unknown to GParted" ) ;
+	temp += _( "The file system is unknown to GParted" ) ;
 	temp += "\n-"; 
-	temp += _( "There is no filesystem available (unformatted)" ) ; 
+	temp += _( "There is no file system available (unformatted)" ) ; 
 	
 	partition_temp .messages .push_back( temp ) ;
 	
@@ -922,7 +922,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				}
 
 				if ( partitions[ t ] .get_mountpoints() .empty() )
-					partitions[ t ] .messages .push_back( _("Unable to find mountpoint") ) ;
+					partitions[ t ] .messages .push_back( _("Unable to find mount point") ) ;
 			}
 			else
 			{
@@ -940,7 +940,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 {
 	struct statvfs sfs ; 
 	
-	temp = _("Unable to read the contents of this filesystem!") ;
+	temp = _("Unable to read the contents of this file system!") ;
 	temp += "\n" ;
 	temp += _("Because of this some operations may be unavailable.") ;
 	
@@ -1149,9 +1149,9 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	/*TO TRANSLATORS: looks like create new ext3 filesystem */ 
+	/*TO TRANSLATORS: looks like create new ext3 file system */ 
 	operationdetail .add_child( OperationDetail( String::ucompose(
-							_("create new %1 filesystem"),
+							_("create new %1 file system"),
 							Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
 	
 	bool succes = false ;
@@ -1176,7 +1176,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {	
-	//remove all filesystem signatures...
+	//remove all file system signatures...
 	erase_filesystem_signatures( partition ) ;
 
 	return set_partition_type( partition, operationdetail ) && create_filesystem( partition, operationdetail ) ;
@@ -1297,7 +1297,7 @@ bool GParted_Core::move( const Device & device,
 	if ( check_repair_filesystem( partition_old, operationdetail ) )
 	{
 		//NOTE: logical partitions are preceeded by metadata. To prevent this metadata from being
-		//overwritten we move the partition first and only then the filesystem when moving to the left.
+		//overwritten we move the partition first and only then the file system when moving to the left.
 		//(maybe i should do some reading on how non-msdos disklabels deal with metadata....)
 		if ( partition_new .sector_start < partition_old .sector_start )
 		{
@@ -1334,14 +1334,14 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				    OperationDetail & operationdetail ) 
 {
 	if ( partition_new .sector_start < partition_old .sector_start )
-		operationdetail .add_child( OperationDetail( _("move filesystem to the left") ) ) ;
+		operationdetail .add_child( OperationDetail( _("move file system to the left") ) ) ;
 	else if ( partition_new .sector_start > partition_old .sector_start )
-		operationdetail .add_child( OperationDetail( _("move filesystem to the right") ) ) ;
+		operationdetail .add_child( OperationDetail( _("move file system to the right") ) ) ;
 	else
 	{
-		operationdetail .add_child( OperationDetail( _("move filesystem") ) ) ;
+		operationdetail .add_child( OperationDetail( _("move file system") ) ) ;
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old filesystem have the same position -- skipping this operation"),
+			OperationDetail( _("new and old file system have the same position -- skipping this operation"),
 					 STATUS_NONE,
 					 FONT_ITALIC ) ) ;
 
@@ -1462,7 +1462,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 		if ( ! check_repair_filesystem( partition_new, operationdetail ) )
 			succes = false ;
 
-		//expand filesystem to fit exactly in partition
+		//expand file system to fit exactly in partition
 		if ( ! maximize_filesystem( partition_new, operationdetail ) )
 			succes = false ;
 			
@@ -1639,17 +1639,17 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 	{
 		if ( partition_new .get_length() < partition_old .get_length() )
 		{
-			operationdetail .add_child( OperationDetail( _("shrink filesystem") ) ) ;
+			operationdetail .add_child( OperationDetail( _("shrink file system") ) ) ;
 			action = get_fs( partition_old .filesystem ) .shrink ;
 		}
 		else if ( partition_new .get_length() > partition_old .get_length() )
-			operationdetail .add_child( OperationDetail( _("grow filesystem") ) ) ;
+			operationdetail .add_child( OperationDetail( _("grow file system") ) ) ;
 		else
 		{
-			operationdetail .add_child( OperationDetail( _("resize filesystem") ) ) ;
+			operationdetail .add_child( OperationDetail( _("resize file system") ) ) ;
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( 
-					_("new and old filesystem have the same size -- skipping this operation"),
+					_("new and old file system have the same size -- skipping this operation"),
 					STATUS_NONE,
 					FONT_ITALIC ) ) ;
 		
@@ -1684,12 +1684,12 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 	
 bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	operationdetail .add_child( OperationDetail( _("grow filesystem to fill the partition") ) ) ;
+	operationdetail .add_child( OperationDetail( _("grow file system to fill the partition") ) ) ;
 
 	if ( get_fs( partition .filesystem ) .grow == GParted::FS::NONE )
 	{
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("growing is not available for this filesystem"),
+			OperationDetail( _("growing is not available for this file system"),
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
 
@@ -1722,7 +1722,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 		if ( succes && set_partition_type( partition_dst, operationdetail ) )
 		{
 			operationdetail .add_child( OperationDetail( 
-				String::ucompose( _("copy filesystem of %1 to %2"),
+				String::ucompose( _("copy file system of %1 to %2"),
 						  partition_src .get_path(),
 						  partition_dst .get_path() ) ) ) ;
 						
@@ -1901,7 +1901,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 	{
 		operationdetail .add_child( OperationDetail( _("rollback last transaction") ) ) ;
 
-		//find out exactly which part of the filesystem was copied (and to where it was copied)..
+		//find out exactly which part of the file system was copied (and to where it was copied)..
 		Partition temp_src = partition_src ;
 		Partition temp_dst = partition_dst ;
 
@@ -1926,7 +1926,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( 
-				String::ucompose( _("check filesystem on %1 for errors and (if possible) fix them"),
+				String::ucompose( _("check file system on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
 	
 	bool succes = false ;
@@ -1934,7 +1934,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 	{
 		case GParted::FS::NONE:
 			operationdetail .get_last_child() .add_child(
-				OperationDetail( _("checking is not available for this filesystem"),
+				OperationDetail( _("checking is not available for this file system"),
 						 STATUS_NONE,
 						 FONT_ITALIC ) ) ;
 
@@ -2320,7 +2320,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 
 		if ( lp_partition && ped_file_system_clobber( & lp_partition ->geom ) )
 		{
-			//filesystems not yet supported by libparted
+			//file systems not yet supported by libparted
 			if ( ped_device_open( lp_device ) )
 			{
 				//reiser4 stores "ReIsEr4" at sector 128
@@ -2344,7 +2344,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	if ( partition .filesystem == FS_NTFS )
 	{
 		operationdetail .add_child( OperationDetail( 
-			String::ucompose( _("updating boot sector of %1 filesystem on %2"),
+			String::ucompose( _("updating boot sector of %1 file system on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
 					  partition .get_path() ) ) ) ;
 

@@ -46,7 +46,7 @@ FS reiserfs::get_filesystem_support()
 	{
 		fs .grow = GParted::FS::EXTERNAL ;
 		
-		if ( fs .read ) //needed to determine a min filesystemsize..
+		if ( fs .read ) //needed to determine a min file system size..
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 
@@ -90,7 +90,7 @@ void reiserfs::set_used_sectors( Partition & partition )
 
 void reiserfs::read_label( Partition & partition )
 {
-	//FIXME: i think running debugreiserfs takes a long time on filled filesystems, test for this...
+	//FIXME: i think running debugreiserfs takes a long time on filled file systems, test for this...
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
 		partition .label = Utils::regexp_label( output, "^label:[\t ]*(.*)$" ) ;

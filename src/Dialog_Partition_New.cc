@@ -88,8 +88,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
 	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
-	//filesystems to choose from 
-	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Filesystem:") ) + "\t" ),
+	//file systems to choose from 
+	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("File System:") ) + "\t" ),
 			     0, 1, 1, 2,
 			     Gtk::FILL );
 	
@@ -118,7 +118,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), GParted::UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
-	//set first enabled filesystem
+	//set first enabled file system
 	optionmenu_filesystem .set_history( first_creatable_fs ) ;
 	optionmenu_changed( false ) ;
 	
@@ -268,7 +268,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 
 void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
 {
-	//fill the filesystem menu with the filesystems (except for extended) 
+	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
 	{
 		menu_filesystem .items() .push_back( 
@@ -281,7 +281,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//unformatted is always available
 	menu_filesystem .items() .back() .set_sensitive( true ) ;
 	
-	//find and set first enabled filesystem
+	//find and set first enabled file system
 	for ( unsigned int t = 0 ; t < menu_filesystem .items() .size() ; t++ )
 		if ( menu_filesystem .items()[ t ] .sensitive() )
 		{

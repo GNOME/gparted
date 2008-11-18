@@ -315,7 +315,7 @@ void Win_GParted::init_partition_menu()
 	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
-	/*TO TRANSLATORS: menuitem which holds a submenu with filesystems.. */
+	/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::ImageMenuElem( _("_Format to"),
 							  *image,
@@ -330,7 +330,7 @@ void Win_GParted::init_partition_menu()
 						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
 	MENU_TOGGLE_MOUNT_SWAP = index++ ;
 		
-	/*TO TRANSLATORS: menuitem which holds a submenu with mountpoints.. */
+	/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) ;
 	MENU_MOUNT = index++ ;
@@ -887,7 +887,7 @@ void Win_GParted::set_valid_operations()
 		     copied_partition != selected_partition )
 		     allow_paste( true ) ;
 
-		//see if we can somehow check/repair this filesystem....
+		//see if we can somehow check/repair this file system....
 		if ( fs .check && selected_partition .status == GParted::STAT_REAL )
 			allow_check( true ) ;
 	}
@@ -1364,7 +1364,7 @@ void Win_GParted::activate_paste()
 		{
 			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
 						      devices[ current_device ] .cylsize ) ;
-			//we don't need the messages/mountpoints of the source partition.
+			//we don't need the messages/mount points of the source partition.
 			copied_partition .messages .clear() ;
 			copied_partition .clear_mountpoints() ;
 			dialog .Set_Data( selected_partition, copied_partition ) ;
@@ -1545,7 +1545,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	     fs .MAX && selected_partition .get_length() > fs .MAX ) 
 	{
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( _("Cannot format this filesystem to %1."),
+					   String::ucompose( _("Cannot format this file system to %1."),
 						   	     Utils::get_filesystem_string( new_fs ) ) ,
 					   false,
 					   Gtk::MESSAGE_ERROR,
@@ -1554,12 +1554,12 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 		if ( selected_partition .get_length() < fs .MIN )
 			dialog .set_secondary_text( String::ucompose( 
-						_( "A %1 filesystem requires a partition of at least %2."),
+						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MIN ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose( 
-						_( "A partition with a %1 filesystem has a maximum size of %2."),
+						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MAX ) ) );
 		
@@ -1582,7 +1582,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	part_temp .status = GParted::STAT_FORMATTED ;
 	
 	//if selected_partition is NEW we simply remove the NEW operation from the list and
-	//add it again with the new filesystem
+	//add it again with the new file system
 	if ( selected_partition .status == GParted::STAT_NEW )
 	{
 		//remove operation which creates this partition
@@ -1644,9 +1644,9 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 	if ( *succes && failed_mountpoints .size() )
 	{
 		*succes = false ;
-		*error = _("The partition could not be unmounted from the following mountpoints:") ;
+		*error = _("The partition could not be unmounted from the following mount points:") ;
 		*error += "\n\n<i>" + Glib::build_path( "\n", failed_mountpoints ) + "</i>\n\n" ;
-		*error +=  _("Most likely other partitions are also mounted on these mountpoints. You are advised to unmount them manually.") ;
+		*error +=  _("Most likely other partitions are also mounted on these mount points. You are advised to unmount them manually.") ;
 	}
 	else
 		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;

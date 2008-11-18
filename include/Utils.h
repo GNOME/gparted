@@ -79,7 +79,7 @@ enum SIZE_UNIT
 	UNIT_TIB	= 5
 } ;
 
-//struct to store filesysteminformation
+//struct to store file system information
 struct FS
 {
 	enum Support
