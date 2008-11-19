@@ -223,7 +223,16 @@ void Win_GParted::init_toolbar()
 	
 	//RESIZE/MOVE
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
-	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, _("Resize/Move") ));
+	Glib::ustring str_temp = _("Resize/Move") ;
+	//Condition string split and Undo button.
+	//  for longer translated string, split string in two and skip the Undo button to permit full toolbar to display
+	//  FIXME:  Is there a better way to do this, perhaps without the conditional?  At the moment this seems to be the best compromise.
+	bool display_undo = true ;
+	if( str_temp .length() > 14 ) {
+		str_temp .replace( str_temp .find( "/" ), 1, "\n/" ) ;
+		display_undo = false ;
+	}
+	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, str_temp ));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_RESIZE_MOVE = index++ ;
@@ -246,12 +255,15 @@ void Win_GParted::init_toolbar()
 	index++ ;
 	
 	//UNDO and APPLY
-	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::UNDO));
-	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );
-	toolbar_main.append(*toolbutton);
-	TOOLBAR_UNDO = index++ ;
-	toolbutton ->set_sensitive( false );
-	toolbutton ->set_tooltip(tooltips, _("Undo Last Operation") );		
+	if ( display_undo ) {
+		//Undo button is displayed only if translated language "Resize/Move" is not too long.  See above setting of this condition.
+		toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::UNDO));
+		toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );
+		toolbar_main.append(*toolbutton);
+		TOOLBAR_UNDO = index++ ;
+		toolbutton ->set_sensitive( false );
+		toolbutton ->set_tooltip(tooltips, _("Undo Last Operation") );
+	}
 	
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );
