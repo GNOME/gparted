@@ -1,5 +1,9 @@
 2008-11-19  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/Win_GParted.cc: Fixed dangerous copy and paste problem.
+	  - Prevent a copied partition from being pasted into an existing
+	    partition.
+
 	* src/Win_GParted.cc: Added language length conditional Undo display.
 	  - If translated language is relatively long, then
 	      split the "Resize/Move" toolbar button text into two lines, and

@@ -896,7 +896,8 @@ void Win_GParted::set_valid_operations()
 		if ( ! copied_partition .get_path() .empty() &&
 		     copied_partition .get_length() <= selected_partition .get_length() &&
 		     selected_partition .status == GParted::STAT_REAL &&
-		     copied_partition != selected_partition )
+		     copied_partition != selected_partition &&
+		     selected_partition .type == GParted::TYPE_UNALLOCATED )
 		     allow_paste( true ) ;
 
 		//see if we can somehow check/repair this file system....
