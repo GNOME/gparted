@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-08 11:03+0100\n"
-"PO-Revision-Date: 2008-11-08 11:05+0100\n"
+"POT-Creation-Date: 2008-11-20 19:26+0100\n"
+"PO-Revision-Date: 2008-11-20 19:33+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,7 @@ msgid "Resize"
 msgstr "Ändra storlek"
 
 #: ../src/Dialog_Base_Partition.cc:169
-#: ../src/Win_GParted.cc:225
+#: ../src/Win_GParted.cc:226
 msgid "Resize/Move"
 msgstr "Ändra storlek/Flytta"
 
@@ -91,7 +91,7 @@ msgstr "Val av knappen Skapa kommer OMEDELBART ATT RADERA ALLT DATA på disken %
 
 #. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
 #: ../src/Dialog_Disklabel.cc:89
-#: ../src/DialogFeatures.cc:36
+#: ../src/DialogFeatures.cc:35
 msgid "Create"
 msgstr "Skapa"
 
@@ -109,15 +109,15 @@ msgid "Warning:"
 msgstr "Varning:"
 
 #. filesystem
-#. filesystems to choose from
+#. file systems to choose from
 #: ../src/Dialog_Partition_Info.cc:151
 #: ../src/Dialog_Partition_New.cc:92
-msgid "Filesystem:"
+msgid "File System:"
 msgstr "Filsystem:"
 
 #. size
 #: ../src/Dialog_Partition_Info.cc:161
-#: ../src/Win_GParted.cc:421
+#: ../src/Win_GParted.cc:434
 msgid "Size:"
 msgstr "Storlek:"
 
@@ -137,7 +137,7 @@ msgstr "Flaggor:"
 
 #. path
 #: ../src/Dialog_Partition_Info.cc:224
-#: ../src/Win_GParted.cc:429
+#: ../src/Win_GParted.cc:442
 msgid "Path:"
 msgstr "Sökväg:"
 
@@ -176,19 +176,23 @@ msgstr "Inte monterad"
 msgid "Label:"
 msgstr "Etikett:"
 
+#: ../src/Dialog_Partition_Info.cc:278
+msgid "UUID:"
+msgstr "UUID:"
+
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:279
+#: ../src/Dialog_Partition_Info.cc:292
 msgid "First Sector:"
 msgstr "Första sektorn:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:289
+#: ../src/Dialog_Partition_Info.cc:302
 msgid "Last Sector:"
 msgstr "Sista sektorn:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:299
-#: ../src/Win_GParted.cc:482
+#: ../src/Dialog_Partition_Info.cc:312
+#: ../src/Win_GParted.cc:495
 msgid "Total Sectors:"
 msgstr "Totalt antal sektorer:"
 
@@ -327,8 +331,8 @@ msgstr "GParted-detaljer"
 #. ==== GUI =========================
 #: ../src/Dialog_Progress.cc:356
 #: ../src/Win_GParted.cc:69
-#: ../src/Win_GParted.cc:1042
-#: ../src/Win_GParted.cc:1197
+#: ../src/Win_GParted.cc:1056
+#: ../src/Win_GParted.cc:1211
 msgid "GParted"
 msgstr "GParted"
 
@@ -357,54 +361,67 @@ msgid "N/A"
 msgstr "-"
 
 #: ../src/DialogFeatures.cc:27
-msgid "Features"
-msgstr "Funktioner"
-
-#: ../src/DialogFeatures.cc:33
-#: ../src/TreeView_Detail.cc:35
-msgid "Filesystem"
-msgstr "Filsystem"
+msgid "File System Support"
+msgstr "Filsystemsstöd"
 
 #: ../src/DialogFeatures.cc:34
-msgid "Detect"
-msgstr "Identifiera"
+#: ../src/TreeView_Detail.cc:35
+msgid "File System"
+msgstr "Filsystem"
 
-#: ../src/DialogFeatures.cc:35
-msgid "Read"
-msgstr "Läs"
-
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:36
 msgid "Grow"
 msgstr "Förstora"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:37
 msgid "Shrink"
 msgstr "Förminska"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:38
 msgid "Move"
 msgstr "Flytta"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:39
 msgid "Copy"
 msgstr "Kopiera"
 
-#: ../src/DialogFeatures.cc:41
+#: ../src/DialogFeatures.cc:40
 msgid "Check"
 msgstr "Kontrollera"
 
-#: ../src/DialogFeatures.cc:42
+#: ../src/DialogFeatures.cc:41
 #: ../src/TreeView_Detail.cc:37
 msgid "Label"
 msgstr "Etikett"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:42
+msgid "Required Software"
+msgstr "Nödvändig programvara"
+
+#: ../src/DialogFeatures.cc:56
+msgid "This chart shows the actions supported on file systems."
+msgstr "Detta diagram visar åtgärderna som stöds på filsystem."
+
+#: ../src/DialogFeatures.cc:58
+msgid "Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software."
+msgstr "Inte alla åtgärder finns tillgängliga på alla filsystem. Detta på grund av filsystemens design samt begränsningar i den nödvändiga programvaran."
+
+#: ../src/DialogFeatures.cc:68
 msgid "Available"
 msgstr "Tillgänglig"
 
-#: ../src/DialogFeatures.cc:63
+#: ../src/DialogFeatures.cc:74
 msgid "Not Available"
 msgstr "Inte tillgänglig"
+
+#: ../src/DialogFeatures.cc:82
+msgid "Legend"
+msgstr "Förklaring"
+
+#. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
+#: ../src/DialogFeatures.cc:95
+msgid "Rescan For Supported Actions"
+msgstr "Sök igen efter åtgärder som stöds"
 
 #: ../src/DialogManageFlags.cc:31
 #: ../src/DialogManageFlags.cc:36
@@ -414,369 +431,369 @@ msgstr "Hantera flaggor på %1"
 #. TO TRANSLATORS: looks like Scanning /dev/sda
 #. TODO avoid probing partition nodes for dmraid devices
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:175
-#: ../src/GParted_Core.cc:223
+#: ../src/GParted_Core.cc:176
+#: ../src/GParted_Core.cc:224
 msgid "Scanning %1"
 msgstr "Söker av %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:243
+#: ../src/GParted_Core.cc:244
 msgid "Confirming %1"
 msgstr "Bekräftar %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:263
+#: ../src/GParted_Core.cc:264
 msgid "Searching %1 partitions"
 msgstr "Söker av partitioner på %1"
 
-#: ../src/GParted_Core.cc:299
+#: ../src/GParted_Core.cc:300
 msgid "unrecognized"
 msgstr "okänt"
 
-#: ../src/GParted_Core.cc:380
+#: ../src/GParted_Core.cc:381
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "En partition kan inte ha en längd på %1 sektorer"
 
-#: ../src/GParted_Core.cc:388
+#: ../src/GParted_Core.cc:389
 msgid "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr "En partition med använda sektorer (%1) som är större än dess längd (%2) är inte giltig"
 
-#: ../src/GParted_Core.cc:454
+#: ../src/GParted_Core.cc:455
 msgid "libparted messages"
 msgstr "libparted-meddelande"
 
-#. no filesystem found....
-#: ../src/GParted_Core.cc:812
-msgid "Unable to detect filesystem! Possible reasons are:"
+#. no file system found....
+#: ../src/GParted_Core.cc:823
+msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Kunde inte identifiera filsystemet! Möjliga anledningar är:"
 
-#: ../src/GParted_Core.cc:814
-msgid "The filesystem is damaged"
+#: ../src/GParted_Core.cc:825
+msgid "The file system is damaged"
 msgstr "Filsystemet är skadat"
 
-#: ../src/GParted_Core.cc:816
-msgid "The filesystem is unknown to GParted"
-msgstr "Filsystemet är för GParted okänt"
+#: ../src/GParted_Core.cc:827
+msgid "The file system is unknown to GParted"
+msgstr "Filsystemet är okänt för GParted"
 
-#: ../src/GParted_Core.cc:818
-msgid "There is no filesystem available (unformatted)"
+#: ../src/GParted_Core.cc:829
+msgid "There is no file system available (unformatted)"
 msgstr "Det finns inget filsystem tillgängligt (oformaterat)"
 
-#: ../src/GParted_Core.cc:914
-msgid "Unable to find mountpoint"
+#: ../src/GParted_Core.cc:925
+msgid "Unable to find mount point"
 msgstr "Kunde inte hitta monteringspunkt"
 
-#: ../src/GParted_Core.cc:932
-msgid "Unable to read the contents of this filesystem!"
+#: ../src/GParted_Core.cc:943
+msgid "Unable to read the contents of this file system!"
 msgstr "Kunde inte läsa innehållet på detta filsystem!"
 
-#: ../src/GParted_Core.cc:934
+#: ../src/GParted_Core.cc:945
 msgid "Because of this some operations may be unavailable."
 msgstr "På grund av detta kan vissa åtgärder inte vara tillgängliga."
 
-#: ../src/GParted_Core.cc:1042
+#: ../src/GParted_Core.cc:1053
 msgid "create empty partition"
 msgstr "skapa tom partition"
 
-#: ../src/GParted_Core.cc:1110
-#: ../src/GParted_Core.cc:2181
+#: ../src/GParted_Core.cc:1121
+#: ../src/GParted_Core.cc:2192
 msgid "path: %1"
 msgstr "sökväg: %1"
 
-#: ../src/GParted_Core.cc:1111
-#: ../src/GParted_Core.cc:2182
+#: ../src/GParted_Core.cc:1122
+#: ../src/GParted_Core.cc:2193
 msgid "start: %1"
 msgstr "start: %1"
 
-#: ../src/GParted_Core.cc:1112
-#: ../src/GParted_Core.cc:2183
+#: ../src/GParted_Core.cc:1123
+#: ../src/GParted_Core.cc:2194
 msgid "end: %1"
 msgstr "slut: %1"
 
-#: ../src/GParted_Core.cc:1113
-#: ../src/GParted_Core.cc:2184
+#: ../src/GParted_Core.cc:1124
+#: ../src/GParted_Core.cc:2195
 msgid "size: %1 (%2)"
 msgstr "storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1143
+#: ../src/GParted_Core.cc:1154
 #: ../src/linux_swap.cc:79
 #: ../src/xfs.cc:236
-msgid "create new %1 filesystem"
+msgid "create new %1 file system"
 msgstr "skapa nytt %1-filsystem"
 
-#: ../src/GParted_Core.cc:1176
+#: ../src/GParted_Core.cc:1187
 msgid "delete partition"
 msgstr "ta bort partition"
 
-#: ../src/GParted_Core.cc:1199
+#: ../src/GParted_Core.cc:1210
 msgid "Clear partition label on %1"
 msgstr "Töm partitionsetikett på %1"
 
-#: ../src/GParted_Core.cc:1204
+#: ../src/GParted_Core.cc:1215
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Ställ in partitionsetikett till \"%1\" på %2"
 
-#: ../src/GParted_Core.cc:1280
+#: ../src/GParted_Core.cc:1291
 msgid "moving requires old and new length to be the same"
 msgstr "flyttning kräver att gamla och nya längden är samma"
 
-#: ../src/GParted_Core.cc:1297
+#: ../src/GParted_Core.cc:1308
 msgid "rollback last change to the partition table"
 msgstr "rulla tillbaka senaste ändring i partitionstabellen"
 
-#: ../src/GParted_Core.cc:1326
-msgid "move filesystem to the left"
+#: ../src/GParted_Core.cc:1337
+msgid "move file system to the left"
 msgstr "flytta filsystemet åt vänster"
 
-#: ../src/GParted_Core.cc:1328
-msgid "move filesystem to the right"
+#: ../src/GParted_Core.cc:1339
+msgid "move file system to the right"
 msgstr "flytta filsystemet åt höger"
 
-#: ../src/GParted_Core.cc:1331
-msgid "move filesystem"
+#: ../src/GParted_Core.cc:1342
+msgid "move file system"
 msgstr "flytta filsystem"
 
-#: ../src/GParted_Core.cc:1333
-msgid "new and old filesystem have the same position -- skipping this operation"
+#: ../src/GParted_Core.cc:1344
+msgid "new and old file system have the same position -- skipping this operation"
 msgstr "nytt och gammalt filsystem har samma position -- hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1352
+#: ../src/GParted_Core.cc:1363
 msgid "perform real move"
 msgstr "genomför verklig flyttning"
 
-#: ../src/GParted_Core.cc:1394
+#: ../src/GParted_Core.cc:1405
 msgid "using libparted"
 msgstr "använder libparted"
 
-#: ../src/GParted_Core.cc:1434
+#: ../src/GParted_Core.cc:1445
 msgid "resizing requires old and new start to be the same"
 msgstr "storleksändring kräver att gamla och nya starten är samma"
 
-#: ../src/GParted_Core.cc:1499
+#: ../src/GParted_Core.cc:1510
 msgid "resize/move partition"
 msgstr "ändra storlek/flytta på partition"
 
-#: ../src/GParted_Core.cc:1502
+#: ../src/GParted_Core.cc:1513
 msgid "move partition to the right"
 msgstr "flytta partitionen åt höger"
 
-#: ../src/GParted_Core.cc:1505
+#: ../src/GParted_Core.cc:1516
 msgid "move partition to the left"
 msgstr "flytta partitionen åt vänster"
 
-#: ../src/GParted_Core.cc:1508
+#: ../src/GParted_Core.cc:1519
 msgid "grow partition from %1 to %2"
 msgstr "förstora partitionen från %1 till %2"
 
-#: ../src/GParted_Core.cc:1511
+#: ../src/GParted_Core.cc:1522
 msgid "shrink partition from %1 to %2"
 msgstr "förminska partitionen från %1 till %2"
 
-#: ../src/GParted_Core.cc:1514
+#: ../src/GParted_Core.cc:1525
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "flytta partitionen till höger och förstora den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1517
+#: ../src/GParted_Core.cc:1528
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "flytta partitionen till höger och förminska den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1520
+#: ../src/GParted_Core.cc:1531
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "flytta partitionen till vänster och förstora den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1523
+#: ../src/GParted_Core.cc:1534
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "flytta partitionen till vänster och förminska den från %1 till %2"
 
-#: ../src/GParted_Core.cc:1538
+#: ../src/GParted_Core.cc:1549
 msgid "new and old partition have the same size and position -- skipping this operation"
 msgstr "ny och gammal partition har samma storlek och position -- hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1548
+#: ../src/GParted_Core.cc:1559
 msgid "old start: %1"
 msgstr "gammal start: %1"
 
-#: ../src/GParted_Core.cc:1549
+#: ../src/GParted_Core.cc:1560
 msgid "old end: %1"
 msgstr "gammalt slut: %1"
 
-#: ../src/GParted_Core.cc:1550
+#: ../src/GParted_Core.cc:1561
 msgid "old size: %1 (%2)"
 msgstr "gammal storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1605
-#: ../src/GParted_Core.cc:2262
+#: ../src/GParted_Core.cc:1616
+#: ../src/GParted_Core.cc:2273
 msgid "new start: %1"
 msgstr "ny start: %1"
 
-#: ../src/GParted_Core.cc:1606
-#: ../src/GParted_Core.cc:2263
+#: ../src/GParted_Core.cc:1617
+#: ../src/GParted_Core.cc:2274
 msgid "new end: %1"
 msgstr "nytt slut: %1"
 
-#: ../src/GParted_Core.cc:1607
-#: ../src/GParted_Core.cc:2264
+#: ../src/GParted_Core.cc:1618
+#: ../src/GParted_Core.cc:2275
 msgid "new size: %1 (%2)"
 msgstr "ny storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1631
-msgid "shrink filesystem"
+#: ../src/GParted_Core.cc:1642
+msgid "shrink file system"
 msgstr "förminska filsystem"
 
-#: ../src/GParted_Core.cc:1635
-msgid "grow filesystem"
+#: ../src/GParted_Core.cc:1646
+msgid "grow file system"
 msgstr "förstora filsystem"
 
-#: ../src/GParted_Core.cc:1638
-msgid "resize filesystem"
+#: ../src/GParted_Core.cc:1649
+msgid "resize file system"
 msgstr "ändra storlek på filsystem"
 
-#: ../src/GParted_Core.cc:1641
-msgid "new and old filesystem have the same size -- skipping this operation"
+#: ../src/GParted_Core.cc:1652
+msgid "new and old file system have the same size -- skipping this operation"
 msgstr "nytt och gammalt filsystem har samma storlek -- hoppar över denna åtgärd"
 
-#: ../src/GParted_Core.cc:1676
-msgid "grow filesystem to fill the partition"
+#: ../src/GParted_Core.cc:1687
+msgid "grow file system to fill the partition"
 msgstr "förstora filsystemet för att fylla upp partitionen"
 
-#: ../src/GParted_Core.cc:1681
-msgid "growing is not available for this filesystem"
+#: ../src/GParted_Core.cc:1692
+msgid "growing is not available for this file system"
 msgstr "storleksförändring är inte tillgängligt för detta filsystem"
 
-#: ../src/GParted_Core.cc:1700
+#: ../src/GParted_Core.cc:1711
 msgid "the destination is smaller than the source partition"
 msgstr "destinationen är mindre än källpartitionen"
 
-#: ../src/GParted_Core.cc:1714
-msgid "copy filesystem of %1 to %2"
+#: ../src/GParted_Core.cc:1725
+msgid "copy file system of %1 to %2"
 msgstr "kopiera filsystemet på %1 till %2"
 
-#: ../src/GParted_Core.cc:1758
+#: ../src/GParted_Core.cc:1769
 msgid "perform read-only test"
 msgstr "genomför skrivskyddad test"
 
-#: ../src/GParted_Core.cc:1806
+#: ../src/GParted_Core.cc:1817
 msgid "using internal algorithm"
 msgstr "använder intern algoritm"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:1819
 msgid "read %1 sectors"
 msgstr "läs %1 sektorer"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:1819
 msgid "copy %1 sectors"
 msgstr "kopiera %1 sektorer"
 
-#: ../src/GParted_Core.cc:1810
+#: ../src/GParted_Core.cc:1821
 msgid "finding optimal blocksize"
 msgstr "hittar optimal blockstorlek"
 
-#: ../src/GParted_Core.cc:1847
+#: ../src/GParted_Core.cc:1858
 msgid "%1 seconds"
 msgstr "%1 sekunder"
 
-#: ../src/GParted_Core.cc:1863
+#: ../src/GParted_Core.cc:1874
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "optimal blockstorlek är %1 sektorer (%2)"
 
-#: ../src/GParted_Core.cc:1880
+#: ../src/GParted_Core.cc:1891
 msgid "%1 sectors read"
 msgstr "%1 sektorer lästa"
 
-#: ../src/GParted_Core.cc:1880
+#: ../src/GParted_Core.cc:1891
 msgid "%1 sectors copied"
 msgstr "%1 sektorer kopierade"
 
-#: ../src/GParted_Core.cc:1891
+#: ../src/GParted_Core.cc:1902
 msgid "rollback last transaction"
 msgstr "rulla tillbaka senaste transaktion"
 
-#: ../src/GParted_Core.cc:1918
-msgid "check filesystem on %1 for errors and (if possible) fix them"
-msgstr "kontrollera filsystemet på %1 efter fel och rätta (om möjligt) till dem"
+#: ../src/GParted_Core.cc:1929
+msgid "check file system on %1 for errors and (if possible) fix them"
+msgstr "kontrollera filsystemet på %1 efter fel och korrigera (om möjligt) dem"
 
-#: ../src/GParted_Core.cc:1926
-msgid "checking is not available for this filesystem"
-msgstr "kontrollering är inte tillgängligt för detta filsystem"
+#: ../src/GParted_Core.cc:1937
+msgid "checking is not available for this file system"
+msgstr "kontroll är inte tillgänglig för detta filsystem"
 
-#: ../src/GParted_Core.cc:1952
+#: ../src/GParted_Core.cc:1963
 msgid "set partition type on %1"
 msgstr "ställ in partitionstyp på %1"
 
-#: ../src/GParted_Core.cc:1974
+#: ../src/GParted_Core.cc:1985
 msgid "new partition type: %1"
 msgstr "ny partitionstyp: %1"
 
-#: ../src/GParted_Core.cc:2001
+#: ../src/GParted_Core.cc:2012
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 av %2 lästa (%3 återstår)"
 
-#: ../src/GParted_Core.cc:2001
+#: ../src/GParted_Core.cc:2012
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 av %2 kopierade (%3 återstår)"
 
-#: ../src/GParted_Core.cc:2007
-#: ../src/GParted_Core.cc:2102
+#: ../src/GParted_Core.cc:2018
+#: ../src/GParted_Core.cc:2113
 msgid "%1 of %2 read"
 msgstr "%1 av %2 lästa"
 
-#: ../src/GParted_Core.cc:2007
-#: ../src/GParted_Core.cc:2102
+#: ../src/GParted_Core.cc:2018
+#: ../src/GParted_Core.cc:2113
 msgid "%1 of %2 copied"
 msgstr "%1 av %2 kopierade"
 
-#: ../src/GParted_Core.cc:2025
+#: ../src/GParted_Core.cc:2036
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "läs %1 sektorer med en blockstorlek på %2 sektorer"
 
-#: ../src/GParted_Core.cc:2028
+#: ../src/GParted_Core.cc:2039
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopiera %1 sektorer med en blockstorlek på %2 sektorer"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2158
 msgid "Error while writing block at sector %1"
 msgstr "Fel vid skrivning av block på sektor %1"
 
-#: ../src/GParted_Core.cc:2150
+#: ../src/GParted_Core.cc:2161
 msgid "Error while reading block at sector %1"
 msgstr "Fel vid läsning av block på sektor %1"
 
-#: ../src/GParted_Core.cc:2160
+#: ../src/GParted_Core.cc:2171
 msgid "calibrate %1"
 msgstr "kalibrera %1"
 
-#: ../src/GParted_Core.cc:2207
+#: ../src/GParted_Core.cc:2218
 msgid "calculate new size and position of %1"
 msgstr "beräkna ny storlek och position för %1"
 
-#: ../src/GParted_Core.cc:2211
+#: ../src/GParted_Core.cc:2222
 msgid "requested start: %1"
 msgstr "begärd start: %1"
 
-#: ../src/GParted_Core.cc:2212
+#: ../src/GParted_Core.cc:2223
 msgid "requested end: %1"
 msgstr "begärt slut: %1"
 
-#: ../src/GParted_Core.cc:2213
+#: ../src/GParted_Core.cc:2224
 msgid "requested size: %1 (%2)"
 msgstr "begärd storlek: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2336
-msgid "updating boot sector of %1 filesystem on %2"
-msgstr "uppdaterar uppstartssektor på filsystemet %1 på %2"
+#: ../src/GParted_Core.cc:2347
+msgid "updating boot sector of %1 file system on %2"
+msgstr "uppdaterar uppstartssektor på %1-filsystemet på %2"
 
 #: ../src/HBoxOperations.cc:45
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:152
 msgid "_Undo Last Operation"
 msgstr "_Ångra den senaste åtgärden"
 
 #: ../src/HBoxOperations.cc:50
-#: ../src/Win_GParted.cc:161
+#: ../src/Win_GParted.cc:158
 msgid "_Clear All Operations"
 msgstr "_Töm alla åtgärder"
 
 #: ../src/HBoxOperations.cc:55
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:163
 msgid "_Apply All Operations"
 msgstr "_Verkställ alla åtgärder"
 
@@ -794,9 +811,9 @@ msgstr "Kopiera %1 till %2 (börja vid %3)"
 msgid "Copy %1 to %2"
 msgstr "Kopiera %1 till %2"
 
-#. TO TRANSLATORS: looks like  Check and repair filesystem (ext3) on /dev/hda4
+#. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
 #: ../src/OperationCheck.cc:38
-msgid "Check and repair filesystem (%1) on %2"
+msgid "Check and repair file system (%1) on %2"
 msgstr "Kontrollera och reparera filsystemet (%1) på %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
@@ -870,7 +887,7 @@ msgid "Partition"
 msgstr "Partition"
 
 #: ../src/TreeView_Detail.cc:36
-msgid "Mountpoint"
+msgid "Mount Point"
 msgstr "Monteringspunkt"
 
 #: ../src/TreeView_Detail.cc:38
@@ -909,35 +926,35 @@ msgstr "använt"
 msgid "unused"
 msgstr "oanvänt"
 
-#: ../src/Utils.cc:145
+#: ../src/Utils.cc:167
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:150
+#: ../src/Utils.cc:172
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:155
+#: ../src/Utils.cc:177
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:160
+#: ../src/Utils.cc:182
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:165
+#: ../src/Utils.cc:187
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Utils.cc:292
+#: ../src/Utils.cc:323
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Temporärfil skapad av gparted.  Den kan tas bort.\n"
 
-#: ../src/Utils.cc:301
+#: ../src/Utils.cc:332
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Etikettåtgärden misslyckades:  Kunde inte skriva till temporärfilen %1.\n"
 
-#: ../src/Utils.cc:310
+#: ../src/Utils.cc:341
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Etikettåtgärden misslyckades:  Kunde inte skapa temporärfilen %1.\n"
 
@@ -949,196 +966,196 @@ msgstr "Uppdate_ra enheter"
 msgid "_Devices"
 msgstr "_Enheter"
 
-#: ../src/Win_GParted.cc:146
-msgid "_Show Features"
-msgstr "Vi_sa funktioner"
-
-#: ../src/Win_GParted.cc:150
+#: ../src/Win_GParted.cc:147
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:169
+#: ../src/Win_GParted.cc:166
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:171
 msgid "Device _Information"
 msgstr "Enhets_information"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:173
 msgid "Pending _Operations"
 msgstr "Väntande å_tgärder"
 
-#: ../src/Win_GParted.cc:177
+#: ../src/Win_GParted.cc:174
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/Win_GParted.cc:181
+#: ../src/Win_GParted.cc:178
+msgid "_File System Support"
+msgstr "_Filsystemsstöd"
+
+#: ../src/Win_GParted.cc:182
 msgid "_Create Partition Table"
 msgstr "_Skapa partitionstabell"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:184
 msgid "_Device"
 msgstr "_Enhet"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:188
 msgid "_Partition"
 msgstr "_Partition"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:193
 msgid "_Contents"
 msgstr "_Innehåll"
 
-#: ../src/Win_GParted.cc:200
+#: ../src/Win_GParted.cc:201
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/Win_GParted.cc:214
+#: ../src/Win_GParted.cc:215
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Skapa en ny partition i det markerade oallokerade utrymmet"
 
-#: ../src/Win_GParted.cc:219
+#: ../src/Win_GParted.cc:220
 msgid "Delete the selected partition"
 msgstr "Ta bort den markerade partitionen"
 
-#: ../src/Win_GParted.cc:229
+#: ../src/Win_GParted.cc:239
 msgid "Resize/Move the selected partition"
 msgstr "Ändra storlek/Flytta den markerade partitionen"
 
-#: ../src/Win_GParted.cc:238
+#: ../src/Win_GParted.cc:248
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopiera den markerade partitionen till urklipp"
 
-#: ../src/Win_GParted.cc:243
+#: ../src/Win_GParted.cc:253
 msgid "Paste the partition from the clipboard"
 msgstr "Klistra in partition från urklipp"
 
-#: ../src/Win_GParted.cc:253
+#: ../src/Win_GParted.cc:265
 msgid "Undo Last Operation"
 msgstr "Ångra den senaste åtgärden"
 
-#: ../src/Win_GParted.cc:260
+#: ../src/Win_GParted.cc:273
 msgid "Apply All Operations"
 msgstr "Verkställ alla åtgärder"
 
-#: ../src/Win_GParted.cc:295
+#: ../src/Win_GParted.cc:308
 msgid "_Resize/Move"
 msgstr "_Ändra storlek/Flytta"
 
-#: ../src/Win_GParted.cc:319
+#: ../src/Win_GParted.cc:332
 msgid "_Format to"
 msgstr "_Formatera till"
 
-#: ../src/Win_GParted.cc:328
+#: ../src/Win_GParted.cc:341
 msgid "Unmount"
 msgstr "Avmontera"
 
-#: ../src/Win_GParted.cc:334
+#: ../src/Win_GParted.cc:347
 msgid "_Mount on"
 msgstr "_Montera på"
 
-#: ../src/Win_GParted.cc:341
+#: ../src/Win_GParted.cc:354
 msgid "M_anage Flags"
 msgstr "H_antera flaggor"
 
-#: ../src/Win_GParted.cc:346
+#: ../src/Win_GParted.cc:359
 msgid "C_heck"
 msgstr "Kontrolle_ra"
 
-#: ../src/Win_GParted.cc:351
+#: ../src/Win_GParted.cc:364
 msgid "_Label"
 msgstr "_Etikett"
 
-#: ../src/Win_GParted.cc:405
+#: ../src/Win_GParted.cc:418
 msgid "Device Information"
 msgstr "Enhetsinformation"
 
 #. model
-#: ../src/Win_GParted.cc:413
+#: ../src/Win_GParted.cc:426
 msgid "Model:"
 msgstr "Modell:"
 
 #. disktype
-#: ../src/Win_GParted.cc:450
+#: ../src/Win_GParted.cc:463
 msgid "DiskLabelType:"
 msgstr "Typ av disketikett:"
 
 #. heads
-#: ../src/Win_GParted.cc:458
+#: ../src/Win_GParted.cc:471
 msgid "Heads:"
 msgstr "Huvuden:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:466
+#: ../src/Win_GParted.cc:479
 msgid "Sectors/Track:"
 msgstr "Sektorer/Spår:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:474
+#: ../src/Win_GParted.cc:487
 msgid "Cylinders:"
 msgstr "Cylindrar:"
 
-#: ../src/Win_GParted.cc:653
+#: ../src/Win_GParted.cc:666
 msgid "Could not add this operation to the list."
 msgstr "Kunde inte lägga till denna åtgärd till listan."
 
-#: ../src/Win_GParted.cc:678
+#: ../src/Win_GParted.cc:691
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 åtgärd väntar"
 msgstr[1] "%1 åtgärder väntar"
 
-#: ../src/Win_GParted.cc:732
+#: ../src/Win_GParted.cc:745
 msgid "Quit GParted?"
 msgstr "Avsluta GParted?"
 
-#: ../src/Win_GParted.cc:738
+#: ../src/Win_GParted.cc:751
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 åtgärd väntar för närvarande."
 msgstr[1] "%1 åtgärder väntar för närvarande."
 
-#: ../src/Win_GParted.cc:764
+#: ../src/Win_GParted.cc:777
 msgid "_Unmount"
 msgstr "_Avmontera"
 
 # Vad är detta? Kommandot?
-#: ../src/Win_GParted.cc:789
+#: ../src/Win_GParted.cc:802
 msgid "_Swapoff"
 msgstr "_Aktivera växling"
 
 # Vad är detta? Kommandot?
-#: ../src/Win_GParted.cc:795
+#: ../src/Win_GParted.cc:808
 msgid "_Swapon"
 msgstr "_Inaktivera växling"
 
-#: ../src/Win_GParted.cc:952
+#: ../src/Win_GParted.cc:966
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:998
+#: ../src/Win_GParted.cc:1012
 msgid "Scanning all devices..."
 msgstr "Söker av alla enheter..."
 
-#: ../src/Win_GParted.cc:1014
+#: ../src/Win_GParted.cc:1028
 msgid "The kernel is unable to re-read the partition tables on the following devices:"
 msgstr "Kärnan kan inte läsa om partitionstabellerna på följande enheter:"
 
-#: ../src/Win_GParted.cc:1021
+#: ../src/Win_GParted.cc:1035
 msgid "Because of this you will only have limited access to these devices. Unmount all mounted partitions on a device to get full access."
 msgstr "På grund av detta kommer du endast ha begränsad tillgång till dessa enheter. Avmontera alla monterade partitioner på en enhet för att få fullständig tillgång."
 
-#: ../src/Win_GParted.cc:1065
+#: ../src/Win_GParted.cc:1079
 msgid "No devices detected"
 msgstr "Inga enheter identifierade"
 
-#: ../src/Win_GParted.cc:1200
+#: ../src/Win_GParted.cc:1214
 msgid "GNOME Partition Editor"
 msgstr "Partitionsredigerare för GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1216
+#: ../src/Win_GParted.cc:1230
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander\n"
@@ -1147,109 +1164,109 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/Win_GParted.cc:1258
+#: ../src/Win_GParted.cc:1272
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Det är inte möjligt att skapa fler än %1 primära partitioner"
 
-#: ../src/Win_GParted.cc:1266
+#: ../src/Win_GParted.cc:1280
 msgid "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions. Because an extended partition is also a primary partition it might be necessary to remove a primary partition first."
 msgstr "Om du vill ha fler partitioner bör du först skapa en utökad partition. Sådana partitioner kan innehålla andra partitioner. På grund av att en utökad partition också är en primär partition kan det vara nödvändigt att ta bort en primär partition först."
 
-#: ../src/Win_GParted.cc:1453
+#: ../src/Win_GParted.cc:1467
 msgid "Unable to delete %1!"
 msgstr "Kunde inte ta bort %1!"
 
-#: ../src/Win_GParted.cc:1460
+#: ../src/Win_GParted.cc:1474
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Vänligen avmontera alla logiska partitioner som har en siffra högre än %1"
 
-#: ../src/Win_GParted.cc:1471
+#: ../src/Win_GParted.cc:1485
 msgid "Are you sure you want to delete %1?"
 msgstr "Är du säker på att du vill ta bort %1?"
 
-#: ../src/Win_GParted.cc:1478
+#: ../src/Win_GParted.cc:1492
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Efter borttagning är denna partition inte längre tillgänglig för kopiering."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1481
+#: ../src/Win_GParted.cc:1495
 msgid "Delete %1 (%2, %3)"
 msgstr "Ta bort %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1547
-msgid "Cannot format this filesystem to %1."
+#: ../src/Win_GParted.cc:1561
+msgid "Cannot format this file system to %1."
 msgstr "Kan inte formatera detta filsystem till %1."
 
-#: ../src/Win_GParted.cc:1556
-msgid "A %1 filesystem requires a partition of at least %2."
+#: ../src/Win_GParted.cc:1570
+msgid "A %1 file system requires a partition of at least %2."
 msgstr "Ett %1-filsystem kräver en partition på åtminstone %2."
 
-#: ../src/Win_GParted.cc:1561
-msgid "A partition with a %1 filesystem has a maximum size of %2."
+#: ../src/Win_GParted.cc:1575
+msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "En partition med ett %1-filsystem har en maximal storlek på %2."
 
-#: ../src/Win_GParted.cc:1646
-msgid "The partition could not be unmounted from the following mountpoints:"
+#: ../src/Win_GParted.cc:1660
+msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partitionen kunde inte avmonteras från följande monteringspunkter:"
 
-#: ../src/Win_GParted.cc:1648
-msgid "Most likely other partitions are also mounted on these mountpoints. You are advised to unmount them manually."
+#: ../src/Win_GParted.cc:1662
+msgid "Most likely other partitions are also mounted on these mount points. You are advised to unmount them manually."
 msgstr "Antagligen är andra partitioner också monterade på dessa monteringspunkter. Det rekommenderas att du avmonterar dem manuellt."
 
-#: ../src/Win_GParted.cc:1698
+#: ../src/Win_GParted.cc:1712
 msgid "Deactivating swap on %1"
 msgstr "Inaktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:1698
+#: ../src/Win_GParted.cc:1712
 msgid "Activating swap on %1"
 msgstr "Aktiverar växlingsutrymme på %1"
 
-#: ../src/Win_GParted.cc:1705
+#: ../src/Win_GParted.cc:1719
 msgid "Could not deactivate swap"
 msgstr "Kunde inte inaktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:1705
+#: ../src/Win_GParted.cc:1719
 msgid "Could not activate swap"
 msgstr "Kunde inte aktivera växlingsutrymme"
 
-#: ../src/Win_GParted.cc:1721
+#: ../src/Win_GParted.cc:1735
 msgid "Unmounting %1"
 msgstr "Avmonterar %1"
 
-#: ../src/Win_GParted.cc:1726
+#: ../src/Win_GParted.cc:1740
 msgid "Could not unmount %1"
 msgstr "Kunde inte avmontera %1"
 
-#: ../src/Win_GParted.cc:1755
+#: ../src/Win_GParted.cc:1769
 msgid "mounting %1 on %2"
 msgstr "monterar %1 på %2"
 
-#: ../src/Win_GParted.cc:1762
+#: ../src/Win_GParted.cc:1776
 msgid "Could not mount %1 on %2"
 msgstr "Kunde inte montera %1 på %2"
 
-#: ../src/Win_GParted.cc:1788
+#: ../src/Win_GParted.cc:1802
 msgid "Error while creating partition table."
 msgstr "Fel vid skapandet av partitionstabell."
 
-#: ../src/Win_GParted.cc:1901
+#: ../src/Win_GParted.cc:1915
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Är du säker på att du vill verkställa de väntande åtgärderna?"
 
-#: ../src/Win_GParted.cc:1906
+#: ../src/Win_GParted.cc:1920
 msgid "It is recommended to backup valuable data before proceeding."
 msgstr "Det rekommenderas att du säkerhetskopierar värdefullt data innan du fortsätter."
 
-#: ../src/Win_GParted.cc:1907
+#: ../src/Win_GParted.cc:1921
 msgid "Apply operations to device"
 msgstr "Verkställ åtgärder till enheten"
 
-#. create mountpoint...
+#. create mount point...
 #: ../src/jfs.cc:140
 #: ../src/xfs.cc:152
 #: ../src/xfs.cc:244
 #: ../src/xfs.cc:251
-msgid "create temporary mountpoint (%1)"
+msgid "create temporary mount point (%1)"
 msgstr "skapa temporär monteringspunkt (%1)"
 
 #: ../src/jfs.cc:147
@@ -1274,7 +1291,7 @@ msgstr "avmontera %1"
 #: ../src/xfs.cc:201
 #: ../src/xfs.cc:332
 #: ../src/xfs.cc:355
-msgid "remove temporary mountpoint (%1)"
+msgid "remove temporary mount point (%1)"
 msgstr "ta bort temporär monteringspunkt (%1)"
 
 #: ../src/main.cc:38
@@ -1295,16 +1312,24 @@ msgstr "kör simulering"
 msgid "real resize"
 msgstr "riktig storleksändring"
 
-#. grow the mounted filesystem..
+#. grow the mounted file system..
 #: ../src/xfs.cc:167
-msgid "grow mounted filesystem"
+msgid "grow mounted file system"
 msgstr "förstora monterat filsystem"
 
-#. copy filesystem..
+#. copy file system..
 #: ../src/xfs.cc:275
-msgid "copy filesystem"
+msgid "copy file system"
 msgstr "kopiera filsystem"
 
+#~ msgid "Features"
+#~ msgstr "Funktioner"
+#~ msgid "Detect"
+#~ msgstr "Identifiera"
+#~ msgid "Read"
+#~ msgstr "Läs"
+#~ msgid "_Show Features"
+#~ msgstr "Vi_sa funktioner"
 #~ msgid "Sorry, not yet implemented."
 #~ msgstr "Tyvärr, ännu inte implementerat."
 #~ msgid "Please visit http://gparted.sf.net for more information and support."
