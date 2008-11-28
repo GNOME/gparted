@@ -1,4 +1,54 @@
 ====================
+0.4.0   (2008-11-28)
+====================
+NOTES
+	This release of GParted includes some new features in addition to
+	bug fixes, and language translation updates.
+	
+	Key changes include:
+	  - Improved read label performance with blkid cached results
+	  - Added read UUID support
+	  - Enforced FAT16/32 compliant volume labels (11 char max)
+	  - Fixed destination too small on copy and paste partition
+	  - Added status bar message updates while scanning devices
+	  - Moved Features entry from menu GParted to View
+	  - Renamed Features dialog to File System Support
+	  - Prevented paste into an existing partition
+	  - Added --disable-doc configure flag to stop building help docs
+
+BUG FIXES
+	* Enabled device passing with gnome-desktop-item-launch (#561495)
+	* Added explanation to Features dialog (#353104)
+	* Trimmed some information from Features dialog (#342682)
+	* Renamed button for improved clarity (#561350)
+	* Enabled full toolbar display for longer languages (#561068)
+	* Fixed destination too small on copy and paste (#556058)
+	* Removed warning reading mounted reiser4 file system (#380546) 
+	* Enhanced to recognize /dev/mapper/* devices (#556114)
+	  Thanks to Colin Watson for the patch.
+	* Enhanced gparted_details.htm to pass XHTML validator (#525347)
+	  Thanks to Markus Elfring for the small patch.
+	* Implemented themed application icon (#350894)
+	  Thanks to Sebastian Kraft for the icons.
+	  Thanks to Michael Monreal for the small patch.
+
+TRANSLATIONS (new/updated)
+	* ca(David Planella), cs(Adrian Gunis),
+	  de(Jochen Skulj and Mario Blättermann),
+	  es(Jorge Gonzalez and Milton Galo Patricio), fi(Ilkka Tuohela),
+	  fr(Robert-André Mauchin and Claude Paroz),
+	  gl(Ignacio Casal Quinteiro), hu(Gabor Kelemen),
+	  it(Milo Casagrande and Ubuntu-it),
+	  pt_BR(Carlos Eduardo Santos, Vladimir Melo, and Djavan Fagundes),
+	  sk(Pavol Klačanský), sv(Daniel Nylander), uk(Vitovt),
+	  zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao),
+
+DEPENDENCIES (new/updated)
+	* blkid command required to read file system UUIDs.
+	  blkid is part of e2fsprogs.
+
+
+====================
 0.3.9   (2008-09-12)
 ====================
 NOTES
