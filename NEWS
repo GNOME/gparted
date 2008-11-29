@@ -1,4 +1,33 @@
 ====================
+0.4.1   (2008-11-29)
+====================
+NOTES
+	This release of GParted rolls back /dev/mapper/* detection.
+	
+	The problem was that all /dev/mapper/* entries were added to the
+	device list including LVM partitions.  This was confusing behaviour
+	to GParted users, and in my opinion it was better to roll back
+	this change.
+
+	A work-around for /dev/mapper/* device detection is available by
+	passing the device names to gparted on the command line.
+	E.g.,
+	     gparted /dev/mapper/device-name
+
+	Thanks to François Dupoux for identifying this problem early, and
+	working towards a resolution.
+
+BUG FIXES
+	* Reopened bug - no longer sees /dev/mapper/* devices (#556114)
+
+TRANSLATIONS (new/updated)
+	* no change.
+
+DEPENDENCIES (new/updated)
+	* no change.
+
+
+====================
 0.4.0   (2008-11-28)
 ====================
 NOTES
@@ -41,7 +70,7 @@ TRANSLATIONS (new/updated)
 	  it(Milo Casagrande and Ubuntu-it),
 	  pt_BR(Carlos Eduardo Santos, Vladimir Melo, and Djavan Fagundes),
 	  sk(Pavol Klačanský), sv(Daniel Nylander), uk(Vitovt),
-	  zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao),
+	  zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao)
 
 DEPENDENCIES (new/updated)
 	* blkid command required to read file system UUIDs.
