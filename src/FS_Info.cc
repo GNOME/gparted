@@ -41,14 +41,21 @@ void FS_Info::load_fs_info_cache()
 	}
 }
 
+Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
+{
+	//Retrieve the line containing the device path
+	Glib::ustring regexp = "^" + path + ":([^\n]*)$" ;
+	Glib::ustring entry = Utils::regexp_label( fs_info_cache, regexp ) ;
+	return entry;
+}
+
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
 	Glib::ustring label = "" ;
 	found = false ;
 
 	//Retrieve the line containing the device path
-	Glib::ustring regexp = "^" + path + ":([^\n]*)$" ;
-	Glib::ustring temp = Utils::regexp_label( fs_info_cache, regexp ) ;
+	Glib::ustring temp = get_device_entry( path ) ;
 	
 	//Set indicator if LABEL found
 	if ( Utils::regexp_label( temp, "(LABEL=\")") != "" )
@@ -62,8 +69,7 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 {
 	//Retrieve the line containing the device path
-	Glib::ustring regexp = "^" + path + ":([^\n]*)$" ;
-	Glib::ustring temp = Utils::regexp_label( fs_info_cache, regexp ) ;
+	Glib::ustring temp = get_device_entry( path ) ;
 
 	//Retrieve the UUID
 	Glib::ustring uuid = Utils::regexp_label( temp, "UUID=\"([^\"]*)\"" ) ;
