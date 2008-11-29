@@ -1,5 +1,10 @@
 2008-11-29  Curtis Gedak  <gedakc@gmail.com>
 
+	* src/GParted.cc: Removed code to recognize /dev/mapper/* devices.
+	  - Too many /dev/mapper/* devices listed (including partitions)
+	  - Roll back patch applied on 2008-10-15
+	  - Reopens GParted bug #556114
+
 	* include/FS_Info.h,
 	  src/FS_Info.cc: Moved common code into new get_device_entry() method.
 

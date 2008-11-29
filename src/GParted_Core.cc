@@ -144,11 +144,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	{
 		device_paths .clear() ;
 
-		//Fixme:  Remove code to read:
-		//           /proc/partitions,
-		//           /proc/devices, and
-		//           /dev/mapper
-		//        when libparted bug 194 is fixed.
+		//FIXME:  When libparted bug 194 is fixed, remove code to read:
+		//           /proc/partitions
 		//        This was a problem with no floppy drive yet BIOS indicated one existed.
 		//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/194
 		//
@@ -178,54 +175,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
     			}
     		}
     		proc_partitions .close() ;
-
-    		//Try to find dev mapper devices
-    		std::set<unsigned int> dm_majors;
-			std::ifstream proc_devices( "/proc/devices" ) ;
-			if ( proc_devices )
-			{
-				//parse device numbers from /proc/devices
-				std::string line ;
-				bool seen_bd = false ;
-				while ( getline( proc_devices, line ) )
-				{
-					if ( ! seen_bd )
-					{
-						if ( ! line .compare( 0, 14, "Block devices:" ) == 0 )
-							seen_bd = true ;
-						continue ;
-					}
-					unsigned int major ;
-					char c_str[256+1] ;
-					if ( sscanf( line .c_str(), "%u %256s", &major, c_str ) == 2 )
-						dm_majors .insert( major );
-				}
-				proc_devices .close() ;
-			}
-
-			DIR *mapper_dir = opendir( "/dev/mapper" );
-			if ( mapper_dir )
-			{
-				struct dirent *mapper_entry ;
-				while ( (mapper_entry = readdir( mapper_dir )) )
-				{
-					if ( strcmp( mapper_entry ->d_name, "." ) == 0 ||
-							strcmp( mapper_entry ->d_name, ".." ) == 0 ||
-							strcmp( mapper_entry ->d_name, "control" ) == 0 )
-						continue ;
-					std::string mapper_name = "/dev/mapper/" ;
-					mapper_name += mapper_entry ->d_name ;
-					struct stat st ;
-					if ( stat( mapper_name .c_str(), &st ) != 0 )
-						continue;
-					if ( dm_majors .find( major( st.st_rdev ) ) != dm_majors .end() )
-						//TODO avoid probing partition nodes for dmraid devices
-	    				/*TO TRANSLATORS: looks like Scanning /dev/sda */ 
-	    				set_thread_status_message( String::ucompose ( _("Scanning %1"), mapper_name ) ) ;
-						ped_device_get( mapper_name .c_str() ) ;
-				}
-				closedir( mapper_dir ) ;
-			}
     	}
     	else
     	{
