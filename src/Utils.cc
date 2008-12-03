@@ -35,6 +35,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 			      Gtk::AlignmentEnum x_align,
 			      Gtk::AlignmentEnum y_align,
 			      bool wrap,
+			      bool selectable,
 			      const Glib::ustring & text_color ) 
 {
 
@@ -42,6 +43,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 	
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;
+	label ->set_selectable( selectable ) ;
 	
 	if ( text_color != "black" )
 	{

@@ -121,6 +121,7 @@ public:
 			      	      Gtk::AlignmentEnum x_align = Gtk::ALIGN_LEFT,
 			      	      Gtk::AlignmentEnum y_align = Gtk::ALIGN_CENTER,
 				      bool wrap = false,
+				      bool selectable = false,
 				      const Glib::ustring & text_color = "black" ) ;
 	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;
 	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
