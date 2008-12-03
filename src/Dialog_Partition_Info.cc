@@ -152,7 +152,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::get_filesystem_string( partition .filesystem ) ),
+	table ->attach( * Utils::mk_label( Utils::get_filesystem_string( partition .filesystem ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -162,7 +162,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL) ;
-	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_length() ) ),
+	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_length() ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -178,7 +178,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_used ) ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_used ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -192,7 +192,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unused ) ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unused ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -209,7 +209,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ) ),
+		table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2, 
 				top++, bottom++,
 				Gtk::FILL ) ;
@@ -228,7 +228,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ) ),
+		table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top++, bottom++,
 				Gtk::FILL ) ;
@@ -256,7 +256,7 @@ void Dialog_Partition_Info::Display_Info()
 		else 
 			str_temp = _("Not mounted") ;
 		
-		table ->attach( * Utils::mk_label( str_temp ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	}
 
 	//label
@@ -266,7 +266,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .label ),
+		table ->attach( * Utils::mk_label( partition .label, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top++, bottom++,
 				Gtk::FILL) ;
@@ -279,7 +279,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .uuid ),
+		table ->attach( * Utils::mk_label( partition .uuid, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top++, bottom++,
 				Gtk::FILL) ;
@@ -293,7 +293,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_start ) ),
+	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_start ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -303,7 +303,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition.sector_end ) ),
+	table ->attach( * Utils::mk_label( Utils::num_to_str( partition.sector_end ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ; 
@@ -313,7 +313,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .get_length() ) ),
+	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .get_length() ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;

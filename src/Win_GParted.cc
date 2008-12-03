@@ -427,7 +427,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//size
@@ -435,7 +435,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//path
@@ -446,7 +446,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
@@ -464,7 +464,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//heads
@@ -472,7 +472,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//sectors/track
@@ -480,7 +480,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//cylinders
@@ -488,7 +488,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//total sectors
@@ -496,7 +496,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "" ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
