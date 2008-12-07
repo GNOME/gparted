@@ -65,7 +65,9 @@ enum FILESYSTEM
 	FS_UFS		= 16,
 
 	FS_USED		= 17,
-	FS_UNUSED	= 18
+	FS_UNUSED	= 18,
+
+	FS_LVM2		= 19   
 } ;
 
 enum SIZE_UNIT

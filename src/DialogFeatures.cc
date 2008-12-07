@@ -100,9 +100,16 @@ DialogFeatures::DialogFeatures()
 void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 {
 	liststore_filesystems ->clear() ;
-	
-	for ( unsigned short t = 0; t < FILESYSTEMS .size() -1 ; t++ )
+
+	//fill the features chart with valid file systems 
+	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
+	{
+		//Skip lvm2 and unknown because these are not file systems
+		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
+			FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN )
+			continue ;
 		show_filesystem( FILESYSTEMS[ t ] ) ;
+	}
 }
 		
 void DialogFeatures::show_filesystem( const FS & fs )

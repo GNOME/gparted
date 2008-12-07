@@ -41,13 +41,29 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
 	this ->cylinder_size = cylinder_size ;
+
+	//copy GParted FILESYSTEMS
 	this ->FILESYSTEMS = FILESYSTEMS ;
-	this ->FILESYSTEMS .back() .filesystem = GParted::FS_UNFORMATTED ;
-	this ->FILESYSTEMS .back() .create = GParted::FS::LIBPARTED ;
-		
-	FS fs_tmp ;
-	fs_tmp .filesystem = GParted::FS_EXTENDED ;
-	this ->FILESYSTEMS .push_back( fs_tmp ) ;
+
+	//remove all non-valid file systems
+	for ( unsigned int t = this ->FILESYSTEMS .size( ) ; t > 0 ; t-- )
+	{
+		if ( this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN ||
+			 this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 )
+			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;
+	}
+
+	FS *fs_tmp ;
+	//add FS_UNFORMATTED
+	fs_tmp = new( FS ) ;
+	fs_tmp ->filesystem = GParted::FS_UNFORMATTED ;
+	fs_tmp ->create = GParted::FS::LIBPARTED ;
+	this ->FILESYSTEMS .push_back( * fs_tmp ) ;
+
+	//add FS_EXTENDED
+	fs_tmp = new( FS ) ;
+	fs_tmp ->filesystem = GParted::FS_EXTENDED ;
+	this ->FILESYSTEMS .push_back( * fs_tmp ) ;
 	
 	//add table with selection menu's...
 	table_create .set_border_width( 10 ) ;
@@ -269,13 +285,16 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
 {
 	//fill the file system menu with the file systems (except for extended) 
-	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) -1 ; t++ ) 
+	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
+		//skip extended (lvm2 and unknown removed in Set_Data())
+		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_EXTENDED )
+			continue ;
 		menu_filesystem .items() .push_back( 
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
-		menu_filesystem .items()[ t ] .set_sensitive(
+		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			this ->selected_partition .get_length() >= FILESYSTEMS[ t ] .MIN ) ;	
+			this ->selected_partition .get_length() >= FILESYSTEMS[ t ] .MIN ) ;
 	}
 	
 	//unformatted is always available

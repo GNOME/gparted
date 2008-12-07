@@ -67,27 +67,28 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 { 
 	switch( filesystem )
 	{
-		case FS_UNALLOCATED	: return "#A9A9A9" ;
-		case FS_UNKNOWN		: return "#000000" ;
-		case FS_UNFORMATTED	: return "#000000" ;
-		case FS_EXTENDED	: return "#7DFCFE" ;
-		case FS_EXT2		: return "#9DB8D2" ;
-		case FS_EXT3		: return "#7590AE" ;
-		case FS_LINUX_SWAP	: return "#C1665A" ;
-		case FS_FAT16		: return "#00FF00" ;
-		case FS_FAT32		: return "#18D918" ;
-		case FS_NTFS		: return "#42E5AC" ;
-		case FS_REISERFS	: return "#ADA7C8" ;
-		case FS_REISER4		: return "#887FA3" ;
-		case FS_XFS		: return "#EED680" ;
-		case FS_JFS		: return "#E0C39E" ;
-		case FS_HFS		: return "#E0B6AF" ;
-		case FS_HFSPLUS		: return "#C0A39E" ;
-		case FS_UFS		: return "#D1940C" ;
-		case FS_USED		: return "#F8F8BA" ;
-		case FS_UNUSED		: return "#FFFFFF" ;
+		case FS_UNALLOCATED	: return "#A9A9A9" ;	// ~ medium grey
+		case FS_UNKNOWN		: return "#000000" ;	//black
+		case FS_UNFORMATTED	: return "#000000" ;	//black
+		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
+		case FS_EXT2		: return "#9DB8D2" ;	//blue hilight
+		case FS_EXT3		: return "#7590AE" ;	//blue medium
+		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
+		case FS_FAT16		: return "#00FF00" ;	//green
+		case FS_FAT32		: return "#18D918" ;	// ~ medium green
+		case FS_NTFS		: return "#42E5AC" ;	// ~ light turquoise
+		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
+		case FS_REISER4		: return "#887FA3" ;	//purple medium
+		case FS_XFS			: return "#EED680" ;	//accent yellow
+		case FS_JFS			: return "#E0C39E" ;	//face skin medium
+		case FS_HFS			: return "#E0B6AF" ;	//red hilight
+		case FS_HFSPLUS		: return "#C0A39E" ;	// ~ serene red
+		case FS_UFS			: return "#D1940C" ;	//accent yellow dark
+		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
+		case FS_UNUSED		: return "#FFFFFF" ;	//white
+		case FS_LVM2		: return "#CC9966" ;	// ~ medium brown
 
-		default			: return "#000000" ;
+		default				: return "#000000" ;
 	}
 }
 
@@ -130,6 +131,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UFS		: return "ufs" ;
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
+		case FS_LVM2		: return "lvm2" ;
 					  
 		default			: return "" ;
 	}

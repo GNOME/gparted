@@ -105,7 +105,7 @@ void GParted_Core::find_supported_filesystems()
 	
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support() ) ;
-	
+
 	ntfs fs_ntfs;
 	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support() ) ;
 	
@@ -120,12 +120,19 @@ void GParted_Core::find_supported_filesystems()
 
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
-	
+
+	FS *fs ;
+	//lvm2 physical volume -- not a file system
+	fs = new( FS ) ;
+	fs ->filesystem = GParted::FS_LVM2 ;
+	FILESYSTEMS .push_back( * fs ) ;
+
 	//unknown file system (default when no match is found)
-	FS fs ; fs .filesystem = GParted::FS_UNKNOWN ;
-	FILESYSTEMS .push_back( fs ) ;
+	fs = new( FS ) ;
+	fs ->filesystem = GParted::FS_UNKNOWN ;
+	FILESYSTEMS .push_back( * fs ) ;
 }
-	
+
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
 	this ->device_paths = user_devices ;
@@ -757,6 +764,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	
 	
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
+	// - no patches sent to parted for lvm2
 	char buf[512] ;
 
 	ped_device_open( lp_device );
@@ -767,7 +775,27 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	
 	if ( Glib::ustring( buf ) == "ReIsEr4" )
 		return GParted::FS_REISER4 ;		
-		
+
+	//lvm2
+	//NOTE: lvm2 is not a file system but we do wish to recognize the Physical Volume
+	char magic1[16] ;
+	char magic2[16] ;
+
+	ped_device_open( lp_device );
+	ped_geometry_read( & lp_partition ->geom, buf, 1, 1 ) ;
+	strncpy(magic1, buf+0, 8) ;  magic1[8] = '\0' ; //set and terminate string
+	strncpy(magic2, buf+24, 4) ; magic2[4] = '\0' ; //set and terminate string
+	ped_device_close( lp_device );
+
+	if (    Glib::ustring( magic1 ) == "LABELONE"
+		 && Glib::ustring( magic2 ) == "LVM2" )
+	{
+		temp = _( "Logical Volume Management is not yet supported." ) ;
+		temp += "\n" ;
+		partition_temp .messages .push_back( temp ) ;
+		return GParted::FS_LVM2 ;
+	}
+
 	//no file system found....
 	temp = _( "Unable to detect file system! Possible reasons are:" ) ;
 	temp += "\n-"; 
@@ -856,7 +884,8 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 		       partitions[ t ] .type == GParted::TYPE_LOGICAL ) &&
-		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP )
+		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_LVM2 )
 		{
 			if ( partitions[ t ] .busy )
 			{
@@ -896,6 +925,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
 		{
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
