@@ -143,6 +143,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 {
 	devices .clear() ;
 	Device temp_device ;
+	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	
 	init_maps() ;
 	
@@ -633,7 +634,7 @@ void GParted_Core::set_device_partitions( Device & device )
 {
 	int EXT_INDEX = -1 ;
 	char * lp_path ;//we have to free the result of ped_partition_get_path()..
-	FS_Info fs_info ;  //Build cache of file system information
+	FS_Info fs_info ;  //Use cache of file system information
 	
 	//clear partitions
 	device .partitions .clear() ;

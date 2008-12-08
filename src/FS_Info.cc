@@ -19,10 +19,21 @@
 
 namespace GParted
 {
-	
+
+//initialize static data element
+Glib::ustring FS_Info::fs_info_cache = "";
+
 FS_Info::FS_Info()
 {
-	load_fs_info_cache() ;
+	//Ensure that cache has been loaded at least once
+	if ( fs_info_cache == "" )
+		load_fs_info_cache() ;
+}
+
+FS_Info:: FS_Info( bool do_refresh )
+{
+	if ( do_refresh )
+		load_fs_info_cache() ;
 }
 
 FS_Info::~FS_Info()

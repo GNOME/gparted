@@ -27,13 +27,14 @@ class FS_Info
 {
 public:
 	FS_Info() ;
+	FS_Info( bool do_refresh ) ;
 	~FS_Info() ;
 	Glib::ustring get_label( const Glib::ustring & path, bool & found ) ;
 	Glib::ustring get_uuid( const Glib::ustring & path ) ;
 private:
 	void load_fs_info_cache() ;
 	Glib::ustring get_device_entry( const Glib::ustring & path ) ;
-	Glib::ustring fs_info_cache ;
+	static Glib::ustring fs_info_cache ;
 };
 
 }//GParted
