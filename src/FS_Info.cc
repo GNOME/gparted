@@ -60,6 +60,18 @@ Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
 	return entry;
 }
 
+Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
+{
+	Glib::ustring fs_type = "" ;
+
+	//Retrieve the line containing the device path
+	Glib::ustring temp = get_device_entry( path ) ;
+	
+	//Retrieve TYPE
+	fs_type = Utils::regexp_label( temp, "TYPE=\"([^\"]*)\"" ) ;
+	return fs_type ;
+}
+
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
 	Glib::ustring label = "" ;

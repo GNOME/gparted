@@ -29,6 +29,7 @@ public:
 	FS_Info() ;
 	FS_Info( bool do_refresh ) ;
 	~FS_Info() ;
+	Glib::ustring get_fs_type( const Glib::ustring & path ) ;
 	Glib::ustring get_label( const Glib::ustring & path, bool & found ) ;
 	Glib::ustring get_uuid( const Glib::ustring & path ) ;
 private:
