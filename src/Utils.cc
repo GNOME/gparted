@@ -73,6 +73,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
 		case FS_EXT2		: return "#9DB8D2" ;	//blue hilight
 		case FS_EXT3		: return "#7590AE" ;	//blue medium
+		case FS_EXT4		: return "#4B6983" ;	//blue dark
 		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
 		case FS_FAT16		: return "#00FF00" ;	//green
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
@@ -118,6 +119,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_EXTENDED	: return "extended" ;
 		case FS_EXT2		: return "ext2" ;
 		case FS_EXT3		: return "ext3" ;
+		case FS_EXT4		: return "ext4" ;
 		case FS_LINUX_SWAP	: return "linux-swap" ;
 		case FS_FAT16		: return "fat16" ;
 		case FS_FAT32		: return "fat32" ;
@@ -143,6 +145,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 	{
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
+		case FS_EXT4        : return "e2fsprogs" ;
 		case FS_FAT16       : return "dosfstools, mtools" ;
 		case FS_FAT32       : return "dosfstools, mtools" ;
 		case FS_HFS         : return "hfsutils" ;

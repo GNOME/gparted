@@ -27,6 +27,7 @@
 
 #include "../include/ext2.h"
 #include "../include/ext3.h"
+#include "../include/ext4.h"
 #include "../include/fat16.h"
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
@@ -87,7 +88,10 @@ void GParted_Core::find_supported_filesystems()
 	
 	ext3 fs_ext3;
 	FILESYSTEMS .push_back( fs_ext3 .get_filesystem_support() ) ;
-	
+
+	ext4 fs_ext4;
+	FILESYSTEMS .push_back( fs_ext4 .get_filesystem_support() ) ;
+
 	fat16 fs_fat16;
 	FILESYSTEMS .push_back( fs_fat16 .get_filesystem_support() ) ;
 	
@@ -740,7 +744,19 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext2" )
 			return GParted::FS_EXT2 ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext3" )
-			return GParted::FS_EXT3 ;
+		{
+			//FIXME:  Temporary code to detect ext4.
+			//        Replace when libparted bug #188 "ext4 detected as ext3" is fixed.
+			//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/188
+			FS_Info fs_info ;
+			temp = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ; 
+			if ( temp == "ext4" || temp == "ext4dev" )
+				return GParted::FS_EXT4 ;
+			else
+				return GParted::FS_EXT3 ;
+		}
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext4" )
+			return GParted::FS_EXT4 ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat16" )
@@ -2272,6 +2288,7 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 	{
 		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
 		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
+		case FS_EXT4		: p_filesystem = new ext4() ; 		break ;
 		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
 		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
 		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;

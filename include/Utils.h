@@ -52,22 +52,23 @@ enum FILESYSTEM
 	
 	FS_EXT2		= 4,
 	FS_EXT3		= 5,
-	FS_LINUX_SWAP	= 6,
-	FS_FAT16	= 7,
-	FS_FAT32	= 8,
-	FS_NTFS		= 9,
-	FS_REISERFS	= 10,
-	FS_REISER4	= 11,
-	FS_XFS		= 12,
-	FS_JFS		= 13,
-	FS_HFS		= 14,
-	FS_HFSPLUS	= 15,
-	FS_UFS		= 16,
+	FS_EXT4		= 6,
+	FS_LINUX_SWAP	= 7,
+	FS_FAT16	= 8,
+	FS_FAT32	= 9,
+	FS_NTFS		= 10,
+	FS_REISERFS	= 11,
+	FS_REISER4	= 12,
+	FS_XFS		= 13,
+	FS_JFS		= 14,
+	FS_HFS		= 15,
+	FS_HFSPLUS	= 16,
+	FS_UFS		= 17,
 
-	FS_USED		= 17,
-	FS_UNUSED	= 18,
+	FS_USED		= 18,
+	FS_UNUSED	= 19,
 
-	FS_LVM2		= 19   
+	FS_LVM2		= 20   
 } ;
 
 enum SIZE_UNIT
