@@ -14,7 +14,7 @@ EXTRA_DIST = \
 	DialogManageFlags.h  		\
 	DrawingAreaVisualDisk.h 	\
 	FileSystem.h  			\
-        Frame_Resizer_Base.h		\
+	Frame_Resizer_Base.h		\
 	Frame_Resizer_Extended.h	\
 	FS_Info.h				\
 	GParted_Core.h    		\
@@ -28,19 +28,20 @@ EXTRA_DIST = \
 	OperationFormat.h		\
 	OperationResizeMove.h		\
 	OperationLabelPartition.h	\
-        Partition.h  			\
+	Partition.h  			\
 	TreeView_Detail.h 		\
 	Utils.h 			\
 	Win_GParted.h 			\
 	ext2.h				\
 	ext3.h  			\
+	ext4.h  			\
 	fat16.h    			\
 	fat32.h  			\
 	hfs.h  				\
 	hfsplus.h 			\
 	i18n.h				\
 	jfs.h 				\
-        linux_swap.h 			\
+	linux_swap.h 			\
 	ntfs.h  			\
 	reiser4.h   			\
 	reiserfs.h  			\
