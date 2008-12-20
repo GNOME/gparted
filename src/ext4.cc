@@ -111,7 +111,7 @@ bool ext4::write_label( const Partition & partition, OperationDetail & operation
 
 bool ext4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext4 -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.ext4 -j -O extent -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ext4::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
