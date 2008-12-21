@@ -406,7 +406,10 @@ Glib::ustring Utils::get_lang()
 	//Convert the underscore "_" to a hyphen "-"
 	Glib::ustring sought = "_" ;
 	Glib::ustring replacement = "-" ;
-	lang .replace( lang .find(sought), sought .size(), replacement ) ;
+	//NOTE:  Application crashes if string replace is called and sought is not found,
+	//       so we need to only perform replace if the sought is found.
+	if ( lang .find(sought) != Glib::ustring::npos )
+		lang .replace( lang .find(sought), sought .size(), replacement ) ;
 
 	return lang ;
 }
