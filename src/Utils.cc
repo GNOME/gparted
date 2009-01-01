@@ -14,7 +14,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
+
 #include "../include/Utils.h"
 
 #include <sstream>
@@ -24,7 +24,7 @@
 
 namespace GParted
 {
-	
+
 Sector Utils::round( double double_value )
 {
 	 return static_cast<Sector>( double_value + 0.5 ) ;
@@ -36,21 +36,21 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 			      Gtk::AlignmentEnum y_align,
 			      bool wrap,
 			      bool selectable,
-			      const Glib::ustring & text_color ) 
+			      const Glib::ustring & text_color )
 {
 
 	Gtk::Label * label = manage( new Gtk::Label( text, x_align, y_align ) ) ;
-	
+
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;
 	label ->set_selectable( selectable ) ;
-	
+
 	if ( text_color != "black" )
 	{
 		Gdk::Color color( text_color ) ;
 		label ->modify_fg( label ->get_state(), color ) ;
 	}
-	
+
 	return label ;
 }
 
@@ -63,8 +63,8 @@ Glib::ustring Utils::num_to_str( Sector number, bool use_C_locale )
 }
 
 //use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..
-Glib::ustring Utils::get_color( FILESYSTEM filesystem ) 
-{ 
+Glib::ustring Utils::get_color( FILESYSTEM filesystem )
+{
 	switch( filesystem )
 	{
 		case FS_UNALLOCATED	: return "#A9A9A9" ;	// ~ medium grey
@@ -93,7 +93,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 	}
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) 
+Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height )
 {
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, false, 8, width, height ) ;
 
@@ -113,7 +113,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 {
 	switch( filesystem )
 	{
-		case FS_UNALLOCATED	: return _("unallocated") ; 
+		case FS_UNALLOCATED	: return _("unallocated") ;
 		case FS_UNKNOWN		: return _("unknown") ;
 		case FS_UNFORMATTED	: return _("unformatted") ;
 		case FS_EXTENDED	: return "extended" ;
@@ -134,7 +134,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2		: return "lvm2" ;
-					  
+
 		default			: return "" ;
 	}
 }
@@ -145,7 +145,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 	{
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
-		case FS_EXT4        : return "e2fsprogs" ;
+		case FS_EXT4        : return "e2fsprogs v1.41+" ;
 		case FS_FAT16       : return "dosfstools, mtools" ;
 		case FS_FAT32       : return "dosfstools, mtools" ;
 		case FS_HFS         : return "hfsutils" ;
@@ -157,33 +157,33 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_REISERFS    : return "reiserfsprogs" ;
 		case FS_UFS         : return "" ;
 		case FS_XFS         : return "xfsprogs" ;
-					  
+
 		default             : return "" ;
 	}
 }
 
-Glib::ustring Utils::format_size( Sector size ) 
+Glib::ustring Utils::format_size( Sector size )
 {
-	std::stringstream ss ;	
+	std::stringstream ss ;
 	//ss .imbue( std::locale( "" ) ) ;  see #157871
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
-	
+
 	if ( size < KIBIBYTE )
 	{
 		ss << sector_to_unit( size, UNIT_BYTE ) ;
 		return String::ucompose( _("%1 B"), ss .str() ) ;
 	}
-	else if ( size < MEBIBYTE ) 
+	else if ( size < MEBIBYTE )
 	{
 		ss << sector_to_unit( size, UNIT_KIB ) ;
 		return String::ucompose( _("%1 KiB"), ss .str() ) ;
 	}
-	else if ( size < GIBIBYTE ) 
+	else if ( size < GIBIBYTE )
 	{
 		ss << sector_to_unit( size, UNIT_MIB ) ;
 		return String::ucompose( _("%1 MiB"), ss .str() ) ;
 	}
-	else if ( size < TEBIBYTE ) 
+	else if ( size < TEBIBYTE )
 	{
 		ss << sector_to_unit( size, UNIT_GIB ) ;
 		return String::ucompose( _("%1 GiB"), ss .str() ) ;
@@ -194,11 +194,11 @@ Glib::ustring Utils::format_size( Sector size )
 		return String::ucompose( _("%1 TiB"), ss .str() ) ;
 	}
 }
-	
-Glib::ustring Utils::format_time( std::time_t seconds ) 
+
+Glib::ustring Utils::format_time( std::time_t seconds )
 {
 	Glib::ustring time ;
-	
+
 	int unit = static_cast<int>( seconds / 3600 ) ;
 	if ( unit < 10 )
 		time += "0" ;
@@ -218,13 +218,13 @@ Glib::ustring Utils::format_time( std::time_t seconds )
 	return time ;
 }
 
-double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) 
+double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit )
 {
 	switch ( size_unit )
 	{
 		case UNIT_BYTE	:
 			return sectors * 512 ;
-		
+
 		case UNIT_KIB	:
 			return sectors / static_cast<double>( KIBIBYTE ) ;
 		case UNIT_MIB	:
@@ -233,13 +233,13 @@ double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit )
 			return sectors / static_cast<double>( GIBIBYTE ) ;
 		case UNIT_TIB	:
 			return sectors / static_cast<double>( TEBIBYTE ) ;
-		
+
 		default:
 			return sectors ;
 	}
 }
-	
-int Utils::execute_command( const Glib::ustring & command ) 
+
+int Utils::execute_command( const Glib::ustring & command )
 {
 	Glib::ustring dummy ;
 	return execute_command( command, dummy, dummy ) ;
@@ -252,7 +252,7 @@ int Utils::execute_command( const Glib::ustring & command,
 {
 	int exit_status = -1 ;
 	std::string std_out, std_error ;
-	
+
 	try
 	{
 		if ( use_C_locale )
@@ -265,20 +265,20 @@ int Utils::execute_command( const Glib::ustring & command,
 			argv .push_back( "-c" ) ;
 			argv .push_back( command ) ;
 
-			Glib::spawn_sync( ".", 
+			Glib::spawn_sync( ".",
 					  argv,
 					  envp,
 					  Glib::SPAWN_SEARCH_PATH,
 					  sigc::slot<void>(),
 					  &std_out,
-					  &std_error, 
+					  &std_error,
 					  &exit_status ) ;
 		}
 		else
 			Glib::spawn_command_line_sync( "sh -c '" + command + "'", &std_out, &std_error, &exit_status ) ;
 	}
 	catch ( Glib::Exception & e )
-	{ 
+	{
 		 error = e .what() ;
 
 		 return -1 ;
@@ -286,7 +286,7 @@ int Utils::execute_command( const Glib::ustring & command,
 
 	output = Utils::cleanup_cursor( std_out ) ;
 	error = std_error ;
-	
+
 	return exit_status ;
 }
 
@@ -295,7 +295,7 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text,
 {
 	//Extract text from a regular sub-expression.  E.g., "text we don't want (text we want)"
 	Glib::ustring label = "";
-	regex_t    preg ; 
+	regex_t    preg ;
 	int        nmatch = 2 ;
 	regmatch_t pmatch[  2 ] ;
 	int rc = regcomp( &preg, regular_sub_expression .c_str(), REG_EXTENDED | REG_ICASE | REG_NEWLINE ) ;
@@ -333,7 +333,7 @@ Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_le
 		fcontents = String::ucompose(
 						"drive %1: file=\"%2\"\nmtools_skip_check=1\n", drive_letter, device_path
 					);
-		
+
 		if( write( fd, fcontents .c_str(), fcontents .size() ) == -1 ) {
 			err_msg = String::ucompose(
 							_("Label operation failed:  Unable to write to temporary file %1.\n")
@@ -381,7 +381,7 @@ Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
 		else
 			str .erase( index, 1 ) ;
 	}
-	
+
 	//remove carriage return and line up to previous line feed.  Used in ntfsclone output.
 	//NOTE:  Normal linux line end is line feed.  DOS uses CR + LF.
 	for ( unsigned int index1 = str .find( "\r") ; index1 < str .length() ; index1 = str .find( "\r" ) ) {
