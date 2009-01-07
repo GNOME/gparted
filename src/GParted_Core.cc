@@ -757,7 +757,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		}
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext4" )
 			return GParted::FS_EXT4 ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" )
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" ||
+		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(new)" ||
+		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(old)" )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat16" )
 			return GParted::FS_FAT16 ;
