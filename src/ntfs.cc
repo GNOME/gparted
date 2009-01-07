@@ -105,13 +105,13 @@ bool ntfs::write_label( const Partition & partition, OperationDetail & operation
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -vv -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool return_value = false ;
-	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
+	Glib::ustring str_temp = "ntfsresize -P --force " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 	{
