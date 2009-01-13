@@ -179,7 +179,7 @@ void Win_GParted::init_menubar()
 
 	//device
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + " ...",
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + "...",
 								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
 
