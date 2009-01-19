@@ -1922,7 +1922,11 @@ void Win_GParted::activate_apply()
 				   Gtk::MESSAGE_WARNING,
 				   Gtk::BUTTONS_NONE,
 				   true );
-	dialog .set_secondary_text( _( "It is recommended to backup valuable data before proceeding.") ) ;
+	Glib::ustring temp;
+	temp =  _( "Editing partitions has the potential to cause LOSS of DATA.") ;
+	temp += "\n" ;
+	temp += _( "You are advised to backup your data before proceeding." ) ;
+	dialog .set_secondary_text( temp ) ;
 	dialog .set_title( _( "Apply operations to device" ) );
 	
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
