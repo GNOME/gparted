@@ -836,9 +836,50 @@ void Win_GParted::set_valid_operations()
 			else
 				required_size = copied_partition .get_length() ;
 
-			if ( ( required_size + devices[ current_device ] .cylsize ) <= selected_partition .get_length() )
+			//  /* Copy Primary not at start of disk to within Extended partition */
+			//  Adjust when a primary partition is copied and pasted
+			//  into an unallocated space in an extended partition
+			//  of an MSDOS partition table.
+			//  Since the Extended Boot Record requires an additional track,
+			//  this must be considered in the required space for the
+			//  destination (selected) partition.
+			//  NOTE:  This problem does not occur for a primary partition
+			//  at the the start of the disk because the size of the EBR and
+			//  Master Boot Record are the same.
+			//
+			//  /* Copy Primary not at start of disk to Primary at start of disk */
+			//  Also Adjust when a primary partition that does not start at the
+			//  beginning of the disk is copied and pasted
+			//  into an unallocated space at the start of the disk device.
+			//  Since the Master Boot Record requires an additional track,
+			//  this must be considered in the required space for the
+			//  destination (selected) partition.
+			//
+			//  Because the largest unit used in the GUI is one
+			//  cylinder size (round to cylinders), the space
+			//  needed in the destination partition needs to be increased
+			//  by one cylinder size.
+			if (   (/* Copy Primary not at start of disk to within Extended partition */
+				       copied_partition .type == TYPE_PRIMARY
+				    && copied_partition .sector_start > devices[ current_device ] .sectors /* 63 for MSDOS Partition Table */
+				    && devices[ current_device ] .disktype == "msdos" 
+				    && selected_partition .type == TYPE_UNALLOCATED
+				    && selected_partition .inside_extended
+				   )
+				|| ( /* Copy Primary not at start of disk to Primary at start of disk */
+				       copied_partition .type == TYPE_PRIMARY
+				    && copied_partition .sector_start > devices[ current_device ] .sectors /* 63 for MSDOS Partition Table */
+				    && devices[ current_device ] .disktype == "msdos" 
+				    && selected_partition .type == TYPE_UNALLOCATED
+				    && selected_partition .sector_start <= devices[ current_device ] .sectors  /* Beginning of disk device */
+				    && ! selected_partition .inside_extended
+				   )
+			   )
+				required_size += devices[ current_device ] .cylsize ;
+
+			if ( required_size <= selected_partition .get_length() )
 				allow_paste( true ) ;
-		}			
+		}
 		
 		return ;
 	}
