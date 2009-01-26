@@ -1,15 +1,16 @@
 # translation of gparted.
 # Copyright (C) 2008, 2009 Free Software Foundation, Inc
 # This file is distributed under the same license as the gparted package.
-# Pavol Klačanský <pavolzetor@gmail.com>, 2008, 2009.
+# Pavol Klačanský <pavol@klacansky.com>, 2008, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-17 23:18+0100\n"
-"PO-Revision-Date: 2009-01-12 19:41+0100\n"
-"Last-Translator: Pavol Klačanský <pavolzetor@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gparted&component=general\n"
+"POT-Creation-Date: 2009-01-24 18:19+0000\n"
+"PO-Revision-Date: 2009-01-25 10:51+0100\n"
+"Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -320,7 +321,7 @@ msgstr "Podrobnosti GParted"
 
 #. ==== GUI =========================
 #: ../src/Dialog_Progress.cc:356 ../src/Win_GParted.cc:69
-#: ../src/Win_GParted.cc:1061 ../src/Win_GParted.cc:1216
+#: ../src/Win_GParted.cc:1102 ../src/Win_GParted.cc:1257
 msgid "GParted"
 msgstr "GParted"
 
@@ -1120,15 +1121,15 @@ msgstr "_Vypnúť swap"
 msgid "_Swapon"
 msgstr "_Zapnúť swap"
 
-#: ../src/Win_GParted.cc:971
+#: ../src/Win_GParted.cc:1012
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1017
+#: ../src/Win_GParted.cc:1058
 msgid "Scanning all devices..."
 msgstr "Prezerajú sa všetky zariadenia..."
 
-#: ../src/Win_GParted.cc:1033
+#: ../src/Win_GParted.cc:1074
 msgid ""
 "The kernel is unable to re-read the partition tables on the following "
 "devices:"
@@ -1136,7 +1137,7 @@ msgstr ""
 "Jadro nie je schopné znovu čítať tabuľky oddielov na nasledujúcich "
 "zariadeniach:"
 
-#: ../src/Win_GParted.cc:1040
+#: ../src/Win_GParted.cc:1081
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -1144,25 +1145,25 @@ msgstr ""
 "Kvôli tomu budete mať len obmedzený prístup k týmto zariadeniam. Na získanie "
 "plného prístupu odpojte všetky pripojené oddiely k zariadeniu."
 
-#: ../src/Win_GParted.cc:1084
+#: ../src/Win_GParted.cc:1125
 msgid "No devices detected"
 msgstr "Detekované žiadne zariadenia"
 
-#: ../src/Win_GParted.cc:1219
+#: ../src/Win_GParted.cc:1260
 msgid "GNOME Partition Editor"
 msgstr "GNOME editor oddielov"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1235
+#: ../src/Win_GParted.cc:1276
 msgid "translator-credits"
-msgstr "Pavol Klačanský <pavolzetor@gmail.com>"
+msgstr "Pavol Klačanský <pavol@klacansky.com>"
 
-#: ../src/Win_GParted.cc:1277
+#: ../src/Win_GParted.cc:1318
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Nie je možné vytvoriť viac ako %1 primárnych oddielov"
 
-#: ../src/Win_GParted.cc:1285
+#: ../src/Win_GParted.cc:1326
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1173,44 +1174,44 @@ msgstr ""
 "Taký oddiel môže obsahovať ostatné oddiely. Pretože rožšírený oddiel je tiež "
 "primárny oddiel, tak bude nutné odstrániť najprv primárny oddiel."
 
-#: ../src/Win_GParted.cc:1472
+#: ../src/Win_GParted.cc:1513
 msgid "Unable to delete %1!"
 msgstr "Nepodarilo sa odstrániť %1!"
 
-#: ../src/Win_GParted.cc:1479
+#: ../src/Win_GParted.cc:1520
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odpojte, prosím, všetky logické oddily, ktoré majú čislo väčšie ako %1"
 
-#: ../src/Win_GParted.cc:1490
+#: ../src/Win_GParted.cc:1531
 msgid "Are you sure you want to delete %1?"
 msgstr "Ste si istý, že chcete odstrániť %1?"
 
-#: ../src/Win_GParted.cc:1497
+#: ../src/Win_GParted.cc:1538
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po odstránení tohto oddielu nebude viac dostupný na kopírovanie."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1500
+#: ../src/Win_GParted.cc:1541
 msgid "Delete %1 (%2, %3)"
 msgstr "Odstrániť %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1566
+#: ../src/Win_GParted.cc:1607
 msgid "Cannot format this file system to %1."
 msgstr "Nemožno formátovať tento súborový systém na %1."
 
-#: ../src/Win_GParted.cc:1575
+#: ../src/Win_GParted.cc:1616
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Súborový systém %1 vyžaduje oddiel aspoň %2."
 
-#: ../src/Win_GParted.cc:1580
+#: ../src/Win_GParted.cc:1621
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Oddiel so súborovým systémom %1 má maximálnu veľkosť %2."
 
-#: ../src/Win_GParted.cc:1665
+#: ../src/Win_GParted.cc:1706
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Oddiel nemohol byť odpojený z nasledujúcich prípojných bodov:"
 
-#: ../src/Win_GParted.cc:1667
+#: ../src/Win_GParted.cc:1708
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1218,51 +1219,55 @@ msgstr ""
 "Na týchto prípojných bodoch sú pravdepodobne pripojené iné oddiely. Je "
 "doporučené odpojiť ich ručne."
 
-#: ../src/Win_GParted.cc:1717
+#: ../src/Win_GParted.cc:1758
 msgid "Deactivating swap on %1"
 msgstr "Deaktivuje sa swap na %s"
 
-#: ../src/Win_GParted.cc:1717
+#: ../src/Win_GParted.cc:1758
 msgid "Activating swap on %1"
 msgstr "Aktivuje sa swap na %1"
 
-#: ../src/Win_GParted.cc:1724
+#: ../src/Win_GParted.cc:1765
 msgid "Could not deactivate swap"
 msgstr "Nemohol byť deaktivovaný swap"
 
-#: ../src/Win_GParted.cc:1724
+#: ../src/Win_GParted.cc:1765
 msgid "Could not activate swap"
 msgstr "Nemohol byť aktivovaný swap"
 
-#: ../src/Win_GParted.cc:1740
+#: ../src/Win_GParted.cc:1781
 msgid "Unmounting %1"
 msgstr "Odpájam %1"
 
-#: ../src/Win_GParted.cc:1745
+#: ../src/Win_GParted.cc:1786
 msgid "Could not unmount %1"
 msgstr "Nemohol byť odpojený %1"
 
-#: ../src/Win_GParted.cc:1774
+#: ../src/Win_GParted.cc:1815
 msgid "mounting %1 on %2"
 msgstr "pripája sa %1 na %2"
 
-#: ../src/Win_GParted.cc:1781
+#: ../src/Win_GParted.cc:1822
 msgid "Could not mount %1 on %2"
 msgstr "Nemohla byť pripojená %1 na %2"
 
-#: ../src/Win_GParted.cc:1807
+#: ../src/Win_GParted.cc:1848
 msgid "Error while creating partition table."
 msgstr "Chyba počas vytvárania tabuľky oddielov."
 
-#: ../src/Win_GParted.cc:1920
+#: ../src/Win_GParted.cc:1961
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ste si istý, že chcete aplikovať čakajúce operácie?"
 
-#: ../src/Win_GParted.cc:1925
-msgid "It is recommended to backup valuable data before proceeding."
-msgstr "Je doporučované zálohovať cenné údaje pred pokračovaním."
+#: ../src/Win_GParted.cc:1967
+msgid "Editing partitions has the potential to cause LOSS of DATA."
+msgstr "Upravovanie oddielov môže zapríčíniť STRATU ÚDAJOV."
 
-#: ../src/Win_GParted.cc:1926
+#: ../src/Win_GParted.cc:1969
+msgid "You are advised to backup your data before proceeding."
+msgstr "Je doporučované zálohovať vaše údaje pred pokračovaním."
+
+#: ../src/Win_GParted.cc:1971
 msgid "Apply operations to device"
 msgstr "Aplikovať operácie na zariadenie"
 
