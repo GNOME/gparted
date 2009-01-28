@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1967,7 +1967,12 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		PedFileSystemType * fs_type = 
 			ped_file_system_type_get( Utils::get_filesystem_string( partition .filesystem ) .c_str() ) ;
 
+		//If not found, and FS is linux-swap, then try linux-swap(new)
+		if ( ! fs_type && Utils::get_filesystem_string( partition .filesystem ) == "linux-swap" )
+			fs_type = ped_file_system_type_get( "linux-swap(new)" ) ;
+
 		//default is Linux (83)
+		//FIXME:  Currently HFS+ and HFS get set to 83, but should be AF.
 		if ( ! fs_type )
 			fs_type = ped_file_system_type_get( "ext2" ) ;
 
