@@ -1,4 +1,46 @@
 ====================
+0.4.2   (2009-02-05)
+====================
+NOTES
+	This big news for this GParted release is support for ext4 file systems,
+	and the addition of an application help manual.
+	
+	Key changes include:
+	  - Added support for ext4 file system
+	    - Support for ext4 is built into version 2.6.28 of the Linux kernel
+	    - e2fsprogs version 1.41.0 or higher required
+	  - Created application help manual
+	  - Updated gparted manual page
+	  - Made text beside field labels selectable (i.e., copy/paste UUID)
+	  - Added lvm2 physical volume detection
+	  - Reduced file system information disk reads to improve performance
+	  - Fixed application crash when saving details and locale not set
+	  - Enhanced copy/paste checks when MBR/EBR involved
+
+BUG FIXES
+	* Added additional category to desktop file (#568937)
+	* Created application help manual (#329584)
+	* Reworded caution message when applying operations (#564952)
+	* Recognized linux-swap(new)/(old) as linux-swap (#419515)
+	* Improved text for libparted not found error message (#565682) 
+	* Added support for ext4 file system (#503112)
+	* Removed doubled space in front of fdl license link (#556114)
+	* Added lvm2 physical volume detection (small part of #160787)
+
+TRANSLATIONS (new/updated)
+	* ca(David Planella), cs(Adrian Gunis), de(Mario Blättermann),
+	  el(Evgenia Petoumenou), es(Jorge Gonzalez), fr(Claude Paroz),
+	  it(Milo Casagrande), pl(Tomasz Dominikowski),
+	  pt_BR(Fábio Nogueira, Fabrício Godoy, Leonardo Gregianin,
+	        Leonardo Ferreira Fontenelle, Djavan Fagundes),
+	  sk(Pavol Klačanský), sv(Daniel Nylander),
+	  th(Pongpichit Panna, Theppitak Karoonboonyanan)
+
+DEPENDENCIES (new/updated)
+	* e2fsprogs v1.41.0 or higher required for ext4 file system support
+
+
+====================
 0.4.1   (2008-11-29)
 ====================
 NOTES
