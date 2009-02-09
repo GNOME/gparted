@@ -229,8 +229,11 @@ void Win_GParted::init_toolbar()
 	//  FIXME:  Is there a better way to do this, perhaps without the conditional?  At the moment this seems to be the best compromise.
 	bool display_undo = true ;
 	if( str_temp .length() > 14 ) {
-		str_temp .replace( str_temp .find( "/" ), 1, "\n/" ) ;
-		display_undo = false ;
+		size_t index = str_temp .find( "/" ) ;
+		if ( index != Glib::ustring::npos ) {
+			str_temp .replace( index, 1, "\n/" ) ;
+			display_undo = false ;
+		}
 	}
 	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, str_temp ));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
