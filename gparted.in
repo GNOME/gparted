@@ -30,7 +30,7 @@ done
 #  Use hal-lock for invocation if it exists, otherwise simply run gpartedbin
 #
 if test "x$HAVE_HAL_LOCK" = "xyes"; then
-	hal-lock --interface org.freedeskdesktop.Hal.Device.Storage --exclusive \
+	hal-lock --interface org.freedesktop.Hal.Device.Storage --exclusive \
 		--run "@installdir@/gpartedbin $*"
 else
 	@installdir@/gpartedbin $*
