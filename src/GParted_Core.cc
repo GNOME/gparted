@@ -314,7 +314,7 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 		} else {
 			diff = partition .sector_start % device .cylsize ;
 		}
-		if ( diff )
+		if ( diff && ! partition .strict_start  )
 		{
 			if ( diff < ( device .cylsize / 2 ) )
 				partition .sector_start -= diff ;
@@ -1242,7 +1242,10 @@ bool GParted_Core::resize_move( const Device & device,
 			  	Partition & partition_new,
 			  	OperationDetail & operationdetail ) 
 {
-	if ( partition_new .strict || calculate_exact_geom( partition_old, partition_new, operationdetail ) )
+	if (   partition_new .strict
+		|| partition_new .strict_start
+		|| calculate_exact_geom( partition_old, partition_new, operationdetail )
+	   )
 	{
 		if ( partition_old .type == TYPE_EXTENDED )
 			return resize_move_partition( partition_old, partition_new, operationdetail ) ;
@@ -1299,8 +1302,8 @@ bool GParted_Core::move( const Device & device,
 		//(maybe i should do some reading on how non-msdos disklabels deal with metadata....)
 		if ( partition_new .sector_start < partition_old .sector_start )
 		{
-	       		if ( resize_move_partition( partition_old, partition_new, operationdetail ) )
-	       	   	{
+			if ( resize_move_partition( partition_old, partition_new, operationdetail ) )
+			{
 				if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
 				{
 					operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
@@ -1315,13 +1318,13 @@ bool GParted_Core::move( const Device & device,
 			}
 		}
 		else
-	       		succes = move_filesystem( partition_old, partition_new, operationdetail ) &&
-	       			 resize_move_partition( partition_old, partition_new, operationdetail ) ;
+			succes = move_filesystem( partition_old, partition_new, operationdetail ) &&
+				resize_move_partition( partition_old, partition_new, operationdetail ) ;
 
 		succes = succes &&
-			 update_bootsector( partition_new, operationdetail ) &&
-	       		 check_repair_filesystem( partition_new, operationdetail ) &&
-	       		 maximize_filesystem( partition_new, operationdetail ) ;
+			update_bootsector( partition_new, operationdetail ) &&
+			check_repair_filesystem( partition_new, operationdetail ) &&
+			maximize_filesystem( partition_new, operationdetail ) ;
 	}
 
 	return succes ;
@@ -1581,10 +1584,14 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		
 		if ( lp_partition )
 		{
-			PedGeometry *geom = ped_geometry_new( lp_device,
-							      partition_new .sector_start,
-							      partition_new .get_length() ) ;
-			constraint = ped_constraint_exact( geom ) ;
+			if ( partition_new .strict || partition_new .strict_start ) {
+				PedGeometry *geom = ped_geometry_new( lp_device,
+									  partition_new .sector_start,
+									  partition_new .get_length() ) ;
+				constraint = ped_constraint_exact( geom ) ;
+			}
+			else
+				constraint = ped_constraint_any( lp_device ) ;
 
 			if ( constraint )
 			{

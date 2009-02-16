@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -151,6 +151,10 @@ Partition Dialog_Base_Partition::Get_New_Partition()
 
 	//set indicator of whether to use strict sector values, or to round to cylinders
 	selected_partition .strict = ! checkbutton_round_to_cylinders .get_active() ;
+
+	//if the original before value has not changed, then set indicator to keep start sector unchanged
+	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
+		selected_partition .strict_start = TRUE ;
 
 	return selected_partition ;
 }
