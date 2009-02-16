@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ void Partition::Reset()
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	color .set( "black" ) ;
-	inside_extended = busy = strict = false ;
+	inside_extended = busy = strict = strict_start = false ;
 	logicals .clear() ;
 	flags .clear() ;
 	mountpoints .clear() ;
