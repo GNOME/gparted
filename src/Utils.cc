@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -88,6 +88,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
 		case FS_LVM2		: return "#CC9966" ;	// ~ medium brown
+		case FS_LUKS		: return "#625B81" ;	//purple dark
 
 		default				: return "#000000" ;
 	}
@@ -134,6 +135,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2		: return "lvm2" ;
+		case FS_LUKS		: return "crypt-luks" ;
 
 		default			: return "" ;
 	}

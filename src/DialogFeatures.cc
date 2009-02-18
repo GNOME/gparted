@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -104,9 +104,11 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	//fill the features chart with valid file systems 
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
 	{
-		//Skip lvm2 and unknown because these are not file systems
-		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
-			FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN )
+		//Skip luks, lvm2, and unknown because these are not file systems
+		if ( FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS ||
+		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
+		     FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN
+		   )
 			continue ;
 		show_filesystem( FILESYSTEMS[ t ] ) ;
 	}

@@ -131,6 +131,11 @@ void GParted_Core::find_supported_filesystems()
 	fs ->filesystem = GParted::FS_LVM2 ;
 	FILESYSTEMS .push_back( * fs ) ;
 
+	//luks encryption-- not a file system
+	fs = new( FS ) ;
+	fs ->filesystem = GParted::FS_LUKS ;
+	FILESYSTEMS .push_back( * fs ) ;
+
 	//unknown file system (default when no match is found)
 	fs = new( FS ) ;
 	fs ->filesystem = GParted::FS_UNKNOWN ;
@@ -783,7 +788,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	
 	
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
-	// - no patches sent to parted for lvm2
+	// - no patches sent to parted for lvm2, or luks
 	char buf[512] ;
 
 	ped_device_open( lp_device );
@@ -813,6 +818,22 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		temp += "\n" ;
 		partition_temp .messages .push_back( temp ) ;
 		return GParted::FS_LVM2 ;
+	}
+
+	//LUKS encryption
+	char magic[16] ;
+
+	ped_device_open( lp_device );
+	ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
+	strncpy(magic, buf+0, 6) ;  magic[6] = '\0' ; //set and terminate string
+	ped_device_close( lp_device );
+
+	if ( Glib::ustring( magic ) == "LUKS\xBA\xBE" )
+	{
+		temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
+		temp += "\n" ;
+		partition_temp .messages .push_back( temp ) ;
+		return GParted::FS_LUKS ;
 	}
 
 	//no file system found....
@@ -902,9 +923,12 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
-		       partitions[ t ] .type == GParted::TYPE_LOGICAL ) &&
+		       partitions[ t ] .type == GParted::TYPE_LOGICAL
+		     ) &&
 		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_LVM2 )
+		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
+		     partitions[ t ] .filesystem != GParted::FS_LUKS
+		   )
 		{
 			if ( partitions[ t ] .busy )
 			{
@@ -944,8 +968,10 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
 		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
-		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN )
+		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
+		   )
 		{
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 

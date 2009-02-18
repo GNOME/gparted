@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,9 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	for ( unsigned int t = this ->FILESYSTEMS .size( ) ; t > 0 ; t-- )
 	{
 		if ( this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN ||
-			 this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 )
+		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
+		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS
+		   )
 			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;
 	}
 
@@ -287,7 +289,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
-		//skip extended (lvm2 and unknown removed in Set_Data())
+		//skip extended (luks, lvm2, and unknown removed in Set_Data())
 		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_EXTENDED )
 			continue ;
 		menu_filesystem .items() .push_back( 
