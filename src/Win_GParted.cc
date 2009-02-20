@@ -1605,8 +1605,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 	
-	if ( selected_partition .get_length() < fs .MIN ||
-	     fs .MAX && selected_partition .get_length() > fs .MAX ) 
+	if ( ( selected_partition .get_length() < fs .MIN ) ||
+	     ( fs .MAX && selected_partition .get_length() > fs .MAX ) )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _("Cannot format this file system to %1."),
