@@ -385,8 +385,9 @@ Gtk::Menu * Win_GParted::create_format_menu()
 
 	for ( unsigned int t =0; t < gparted_core .get_filesystems() .size() ; t++ )
 	{
-		//Skip luks, lvm2, and unknown because these are not file systems
-		if ( gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS ||
+		//Skip btrfs, luks, lvm2, and unknown because these are not file systems
+		if ( gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_BTRFS ||
+		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS ||
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LVM2 ||
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_UNKNOWN
 		   )

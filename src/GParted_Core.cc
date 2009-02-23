@@ -126,6 +126,11 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 
 	FS *fs ;
+	//btrfs  FIXME:  Add full support when on-disk-format stabilized
+	fs = new( FS ) ;
+	fs ->filesystem = GParted::FS_BTRFS ;
+	FILESYSTEMS .push_back( * fs ) ;
+
 	//lvm2 physical volume -- not a file system
 	fs = new( FS ) ;
 	fs ->filesystem = GParted::FS_LVM2 ;
@@ -746,6 +751,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	{
 		if ( Glib::ustring( lp_partition ->fs_type ->name ) == "extended" )
 			return GParted::FS_EXTENDED ;
+		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "btrfs" )
+			return GParted::FS_BTRFS ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext2" )
 			return GParted::FS_EXT2 ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext3" )
@@ -798,7 +805,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	ped_device_close( lp_device );
 	
 	if ( Glib::ustring( buf ) == "ReIsEr4" )
-		return GParted::FS_REISER4 ;		
+		return GParted::FS_REISER4 ;
 
 	//lvm2
 	//NOTE: lvm2 is not a file system but we do wish to recognize the Physical Volume
@@ -834,6 +841,29 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		temp += "\n" ;
 		partition_temp .messages .push_back( temp ) ;
 		return GParted::FS_LUKS ;
+	}
+
+	//btrfs
+	#define BTRFS_SUPER_INFO_SIZE 4096
+	#define BTRFS_SUPER_INFO_OFFSET (64 * 1024)	
+	#define BTRFS_SIGNATURE "_BHRfS_M"
+
+	char    buf_btrfs[BTRFS_SUPER_INFO_SIZE] ;
+
+	ped_device_open( lp_device ) ;
+	ped_geometry_read( & lp_partition ->geom, buf_btrfs, \
+	                   (BTRFS_SUPER_INFO_OFFSET / 512), \
+	                   (BTRFS_SUPER_INFO_SIZE / 512)
+	                 ) ;
+	strncpy(magic, buf_btrfs+64, strlen(BTRFS_SIGNATURE)) ;  magic[strlen(BTRFS_SIGNATURE)] = '\0' ; //set and terminate string
+	ped_device_close( lp_device ) ;
+
+	if ( magic == Glib::ustring(BTRFS_SIGNATURE) )
+	{
+		temp = _( "BTRFS is not yet supported." ) ;
+		temp += "\n" ;
+		partition_temp .messages .push_back( temp ) ;
+		return GParted::FS_BTRFS ;
 	}
 
 	//no file system found....
@@ -927,7 +957,8 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     ) &&
 		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
 		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
-		     partitions[ t ] .filesystem != GParted::FS_LUKS
+		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
+		     partitions[ t ] .filesystem != GParted::FS_BTRFS
 		   )
 		{
 			if ( partitions[ t ] .busy )
@@ -968,6 +999,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+		     partitions[ t ] .filesystem != GParted::FS_BTRFS &&
 		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
 		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN

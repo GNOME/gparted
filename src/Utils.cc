@@ -71,6 +71,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UNKNOWN		: return "#000000" ;	//black
 		case FS_UNFORMATTED	: return "#000000" ;	//black
 		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
+		case FS_BTRFS		: return "#FF9955" ;	//orange
 		case FS_EXT2		: return "#9DB8D2" ;	//blue hilight
 		case FS_EXT3		: return "#7590AE" ;	//blue medium
 		case FS_EXT4		: return "#4B6983" ;	//blue dark
@@ -118,6 +119,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UNKNOWN		: return _("unknown") ;
 		case FS_UNFORMATTED	: return _("unformatted") ;
 		case FS_EXTENDED	: return "extended" ;
+		case FS_BTRFS		: return "btrfs" ;
 		case FS_EXT2		: return "ext2" ;
 		case FS_EXT3		: return "ext3" ;
 		case FS_EXT4		: return "ext4" ;

@@ -68,8 +68,9 @@ enum FILESYSTEM
 	FS_USED		= 18,
 	FS_UNUSED	= 19,
 
-	FS_LVM2		= 20,
-	FS_LUKS		= 21
+	FS_BTRFS	= 20,  /* FIXME: Move this higher up list when full support added */
+	FS_LVM2		= 21,
+	FS_LUKS		= 22
 } ;
 
 enum SIZE_UNIT
