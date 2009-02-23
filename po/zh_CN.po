@@ -2,699 +2,1345 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Funda Wang <fundawang@linux.net.cn>, 2004.
+# Wei Mingzhi <whistler@openoffice.org>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-05 12:03+0100\n"
-"PO-Revision-Date: 2004-12-06 00:25+0800\n"
-"Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
-"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gparted&component=general\n"
+"POT-Creation-Date: 2009-02-21 12:21+0000\n"
+"PO-Revision-Date: 2009-02-22 14:16+0800\n"
+"Last-Translator: Wei Mingzhi <whistler@openoffice.org>\n"
+"Language-Team: zh_CN <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=1;\n"
 
-#. ==== GUI =========================
-#: gparted.desktop.in.h:1 src/Dialog_About.cc:32 src/Win_GParted.cc:39
-msgid "GParted"
-msgstr "GParted"
+#: ../gparted.desktop.in.in.h:1
+msgid "Create, reorganize, and delete partitions"
+msgstr "创建、重新组织或删除分区"
 
-#: gparted.desktop.in.h:2
-msgid "Gnome Partition Editor"
-msgstr "Gnome 分区编辑器"
+#: ../gparted.desktop.in.in.h:2
+msgid "GParted Partition Editor"
+msgstr "GParted 分区编辑器"
 
-#. TO TRANSLATORS: this is the dialog title
-#: src/Dialog_About.cc:26
-msgid "About GParted"
-msgstr "关于 GParted"
-
-#: src/Dialog_About.cc:33
-msgid "Gnome Partition Editor based on libparted"
-msgstr "基于 libparted 的 Gnome 分区编辑器"
-
-#: src/Dialog_About.cc:49
-msgid "Credits"
-msgstr "致谢"
-
-#. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:59
-msgid "Written by"
-msgstr "编写者"
-
-#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
-#. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: src/Dialog_About.cc:63
-msgid "translator-credits"
-msgstr "开源软件国际化之 GNOME 简体中文组"
-
-#. TO TRANSLATORS: tablabel in aboutdialog
-#: src/Dialog_About.cc:69
-msgid "Translated by"
-msgstr "翻译者"
-
-#. add spinbutton_before
-#: src/Dialog_Base_Partition.cc:54
-msgid "Free Space Preceding (MB):"
-msgstr ""
+#: ../src/Dialog_Base_Partition.cc:56
+msgid "Free Space Preceding (MiB):"
+msgstr "之前的空余空间 (MiB):"
 
 #. add spinbutton_size
-#: src/Dialog_Base_Partition.cc:61
-msgid "New Size (MB):"
-msgstr "新大小(MB)："
+#: ../src/Dialog_Base_Partition.cc:65
+msgid "New Size (MiB):"
+msgstr "新大小(MiB):"
 
 #. add spinbutton_after
-#: src/Dialog_Base_Partition.cc:68
-msgid "Free Space Following (MB):"
-msgstr ""
+#: ../src/Dialog_Base_Partition.cc:72
+msgid "Free Space Following (MiB):"
+msgstr "之后的空余空间 (MiB):"
 
-#. pack warning about small differences in values..
-#: src/Dialog_Base_Partition.cc:86
-msgid "NOTE: values on disk may differ slightly from the values entered here."
-msgstr ""
+#. add checkbutton
+#: ../src/Dialog_Base_Partition.cc:82
+msgid "Round to cylinders"
+msgstr "舍入到柱面"
 
-#: src/Dialog_Base_Partition.cc:150
+#: ../src/Dialog_Base_Partition.cc:173
 msgid "Resize"
 msgstr "更改大小"
 
-#: src/Dialog_Base_Partition.cc:150 src/Win_GParted.cc:133
-#: src/Win_GParted.cc:168 src/Win_GParted.cc:858
+#: ../src/Dialog_Base_Partition.cc:173 ../src/Win_GParted.cc:226
 msgid "Resize/Move"
 msgstr "更改大小/移动"
 
-#: src/Dialog_Base_Partition.cc:169
-msgid "Minimum Size: %1 MB"
-msgstr "最小大小：%1 MB"
+#: ../src/Dialog_Base_Partition.cc:190
+msgid "Minimum Size: %1 MiB"
+msgstr "最小大小: %1 MiB"
 
-#: src/Dialog_Base_Partition.cc:170
-msgid "Maximum Size: %1 MB"
-msgstr "最大大小：%1 MB"
+#: ../src/Dialog_Base_Partition.cc:191
+msgid "Maximum Size: %1 MiB"
+msgstr "最大大小: %1 MiB"
 
-#: src/Dialog_Disklabel.cc:25 src/Dialog_Disklabel.cc:44
-msgid "No recognizable disklabel detected on %1"
-msgstr ""
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+msgid "Create partition table on %1"
+msgstr "在 %1 上建立新的分区表"
 
-#: src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a file at the beginning of the disk that indicates where each "
-"partition begins and how many sectors it occupies."
-msgstr ""
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "警告: 此操作将删除整个硬盘 %1 上的全部数据 !!!"
 
-#: src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr ""
+#: ../src/Dialog_Disklabel.cc:50
+msgid "Default is to create an msdos partition table."
+msgstr "默认将建立一个 MS-DOS 分区表。"
 
-#: src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr ""
-
-#: src/Dialog_Disklabel.cc:58
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "高级"
 
-#: src/Dialog_Disklabel.cc:66
-msgid "Select new labeltype:"
-msgstr ""
+#: ../src/Dialog_Disklabel.cc:65
+msgid "Select new partition table type:"
+msgstr "选择新分区表类型:"
 
-#: src/Dialog_Disklabel.cc:88
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr ""
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr "选择创建按钮将立即删除磁盘 %1 上的全部数据 !!!"
 
-#: src/Dialog_Disklabel.cc:94
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
+#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:35
 msgid "Create"
 msgstr "创建"
 
-#. prevents on spinbutton_changed from getting activated prematurely
-#: src/Dialog_Partition_Copy.cc:33
+#: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
 msgstr "粘贴 %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: src/Dialog_Partition_Info.cc:30
+#: ../src/Dialog_Partition_Info.cc:31
 msgid "Information about %1"
 msgstr "关于 %1 的信息"
 
-#: src/Dialog_Partition_Info.cc:47
+#: ../src/Dialog_Partition_Info.cc:48
 msgid "Warning:"
-msgstr "警告："
-
-#. set text of pangolayout
-#. create  pangolayout and see if it fits in the visual partition
-#. the label...
-#: src/Dialog_Partition_Info.cc:119 src/Dialog_Partition_Info.cc:138
-#: src/Dialog_Partition_Info.cc:147 src/Dialog_Partition_Info.cc:152
-#: src/VBox_VisualDisk.cc:163 src/VBox_VisualDisk.cc:175
-#: src/Win_GParted.cc:378 src/Win_GParted.cc:428
-msgid "%1 MB"
-msgstr "%1 MB"
+msgstr "警告:"
 
 #. filesystem
-#. filesystems to choose from
-#: src/Dialog_Partition_Info.cc:133 src/Dialog_Partition_New.cc:84
-msgid "Filesystem:"
-msgstr "文件系统："
+#. file systems to choose from
+#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:110
+msgid "File System:"
+msgstr "文件系统:"
 
 #. size
-#: src/Dialog_Partition_Info.cc:137 src/Win_GParted.cc:228
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:444
 msgid "Size:"
-msgstr "大小："
+msgstr "大小:"
 
 #. used
-#: src/Dialog_Partition_Info.cc:146
+#: ../src/Dialog_Partition_Info.cc:177
 msgid "Used:"
-msgstr "已用："
+msgstr "已用:"
 
 #. unused
-#: src/Dialog_Partition_Info.cc:151
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Unused:"
-msgstr "未用："
+msgstr "未用:"
 
-#: src/Dialog_Partition_Info.cc:159
+#: ../src/Dialog_Partition_Info.cc:208
 msgid "Flags:"
-msgstr ""
+msgstr "标志:"
 
 #. path
-#: src/Dialog_Partition_Info.cc:169 src/Win_GParted.cc:233
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:452
 msgid "Path:"
-msgstr "路径："
+msgstr "路径:"
 
-#: src/Dialog_Partition_Info.cc:179 src/Win_GParted.cc:240
-msgid "Real Path:"
-msgstr "实际路径："
-
-#: src/Dialog_Partition_Info.cc:185
+#: ../src/Dialog_Partition_Info.cc:238
 msgid "Status:"
-msgstr "状态："
+msgstr "状态:"
 
-#: src/Dialog_Partition_Info.cc:189
-msgid "Not busy (There are no mounted logical partitions)"
-msgstr "不忙(没有挂载的逻辑分区)"
+#: ../src/Dialog_Partition_Info.cc:245
+msgid "Busy (At least one logical partition is mounted)"
+msgstr "忙 (至少一个逻辑分区已挂载)"
 
-#: src/Dialog_Partition_Info.cc:191
-msgid "Not active"
-msgstr "未激活"
-
-#: src/Dialog_Partition_Info.cc:193
-msgid "Not mounted"
-msgstr "未挂载"
-
-#. first sector
-#: src/Dialog_Partition_Info.cc:202
-msgid "First Sector:"
-msgstr "首扇区："
-
-#. last sector
-#: src/Dialog_Partition_Info.cc:206
-msgid "Last Sector:"
-msgstr "末扇区："
-
-#. total sectors
-#: src/Dialog_Partition_Info.cc:210 src/Win_GParted.cc:276
-msgid "Total Sectors:"
-msgstr "总计扇区数："
-
-#: src/Dialog_Partition_Info.cc:217
-msgid "Busy  (At least one logical partition is mounted)"
-msgstr ""
-
-#: src/Dialog_Partition_Info.cc:219
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Active"
 msgstr "激活"
 
-#: src/Dialog_Partition_Info.cc:254
+#: ../src/Dialog_Partition_Info.cc:249
 msgid "Mounted on %1"
-msgstr "挂在于 %1"
+msgstr "挂载于 %1"
+
+#: ../src/Dialog_Partition_Info.cc:253
+msgid "Not busy (There are no mounted logical partitions)"
+msgstr "空闲 (没有挂载的逻辑分区)"
+
+#: ../src/Dialog_Partition_Info.cc:255
+msgid "Not active"
+msgstr "未激活"
+
+#: ../src/Dialog_Partition_Info.cc:257
+msgid "Not mounted"
+msgstr "未挂载"
+
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:122
+msgid "Label:"
+msgstr "卷标:"
+
+#: ../src/Dialog_Partition_Info.cc:278
+msgid "UUID:"
+msgstr "UUID:"
+
+#. first sector
+#: ../src/Dialog_Partition_Info.cc:292
+msgid "First Sector:"
+msgstr "首扇区:"
+
+#. last sector
+#: ../src/Dialog_Partition_Info.cc:302
+msgid "Last Sector:"
+msgstr "末扇区:"
+
+#. total sectors
+#: ../src/Dialog_Partition_Info.cc:312 ../src/Win_GParted.cc:505
+msgid "Total Sectors:"
+msgstr "总计扇区数:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+msgid "Set partition label on %1"
+msgstr "设定 %1 的分区卷标"
 
 #. TO TRANSLATORS: dialogtitle
-#: src/Dialog_Partition_New.cc:26
+#: ../src/Dialog_Partition_New.cc:26
 msgid "Create new Partition"
 msgstr "创建新分区"
 
-#: src/Dialog_Partition_New.cc:45
-msgid "Unformatted"
-msgstr "未格式化"
-
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: src/Dialog_Partition_New.cc:57
+#: ../src/Dialog_Partition_New.cc:76
 msgid "Create as:"
-msgstr "创建为："
+msgstr "创建为:"
 
 #. fill partitiontype menu
-#: src/Dialog_Partition_New.cc:60 src/Operation.cc:58
+#: ../src/Dialog_Partition_New.cc:81 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "主分区"
 
-#: src/Dialog_Partition_New.cc:61 src/Operation.cc:49 src/Operation.cc:59
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:76
+#: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "逻辑分区"
 
-#: src/Dialog_Partition_New.cc:62 src/Operation.cc:60
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "扩展分区"
 
-#: src/Dialog_Partition_New.cc:142
+#: ../src/Dialog_Partition_New.cc:184
 msgid "New Partition #%1"
 msgstr "新分区 #%1"
 
-#: src/Dialog_Partition_Resize_Move.cc:74
+#: ../src/Dialog_Partition_Resize_Move.cc:73
 msgid "Resize/Move %1"
 msgstr "更改大小/移动 %1"
 
-#: src/Dialog_Partition_Resize_Move.cc:79
+#: ../src/Dialog_Partition_Resize_Move.cc:78
 msgid "Resize %1"
 msgstr "更改 %1 的大小"
 
-#: src/Dialog_Progress.cc:28 src/Dialog_Progress.cc:35
+#: ../src/Dialog_Progress.cc:32 ../src/Dialog_Progress.cc:44
 msgid "Applying pending operations"
-msgstr ""
+msgstr "应用待执行操作"
 
-#: src/Dialog_Progress.cc:37
+#: ../src/Dialog_Progress.cc:46
 msgid "Applying all listed operations."
-msgstr ""
+msgstr "应用全部列出的操作。"
 
-#: src/Dialog_Progress.cc:39
-msgid "Clicking Cancel will prevent the next operations from being applied."
-msgstr ""
+#: ../src/Dialog_Progress.cc:48
+msgid ""
+"Depending on the amount and type of operations this might take a long time."
+msgstr "此操作可能会花费较长时间 (由操作的多少及类型决定)。"
 
-#: src/Dialog_Progress.cc:62
-msgid "Completed Operations"
-msgstr "已完成操作"
+#: ../src/Dialog_Progress.cc:61
+msgid "Completed Operations:"
+msgstr "已完成操作:"
 
-#: src/Dialog_Progress.cc:68
+#: ../src/Dialog_Progress.cc:101
 msgid "Details"
 msgstr "细节"
 
-#: src/Dialog_Progress.cc:85
+#: ../src/Dialog_Progress.cc:199
 msgid "%1 of %2 operations completed"
 msgstr "已完成 %2 个操作中的 %1 个"
 
-#: src/Dialog_Progress.cc:111
-msgid "about %1 minute and %2 seconds left"
-msgstr ""
+#. add save button
+#: ../src/Dialog_Progress.cc:230
+msgid "_Save Details"
+msgstr "保存细节(_S)"
 
-#: src/Dialog_Progress.cc:113
-msgid "about %1 minutes and %2 seconds left"
-msgstr ""
+#: ../src/Dialog_Progress.cc:239
+msgid "Operation cancelled"
+msgstr "操作已取消"
 
-#: src/GParted_Core.cc:115
+#: ../src/Dialog_Progress.cc:253
+msgid "All operations successfully completed"
+msgstr "成功完成所有操作"
+
+#: ../src/Dialog_Progress.cc:257
+msgid "%1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "%1 个警告"
+msgstr[1] "%1 个警告"
+
+#: ../src/Dialog_Progress.cc:270
+msgid "An error occurred while applying the operations"
+msgstr "应用操作时发生了一个错误"
+
+#: ../src/Dialog_Progress.cc:275
+msgid "See the details for more information."
+msgstr "请参看细节以获取更多信息。"
+
+#: ../src/Dialog_Progress.cc:276
+msgid "IMPORTANT"
+msgstr "重要"
+
+#: ../src/Dialog_Progress.cc:277
+msgid "If you want support, you need to provide the saved details!"
+msgstr "如欲获取支持，您需要提供保存的详细信息。"
+
+#: ../src/Dialog_Progress.cc:279
+msgid "See %1 for more information."
+msgstr "请参看 %1 以获取更多信息。"
+
+#: ../src/Dialog_Progress.cc:312
+msgid "Are you sure you want to cancel the current operation?"
+msgstr "确认要取消当前操作吗?"
+
+#: ../src/Dialog_Progress.cc:318
+msgid "Canceling an operation might cause SEVERE file system damage."
+msgstr "取消操作可能会导致文件系统严重损坏。"
+
+#: ../src/Dialog_Progress.cc:320
+msgid "Continue Operation"
+msgstr "继续操作"
+
+#: ../src/Dialog_Progress.cc:321
+msgid "Cancel Operation"
+msgstr "取消操作"
+
+#: ../src/Dialog_Progress.cc:334
+msgid "Save Details"
+msgstr "保存细节"
+
+#: ../src/Dialog_Progress.cc:353
+msgid "GParted Details"
+msgstr "GParted 细节"
+
+#. ==== GUI =========================
+#: ../src/Dialog_Progress.cc:356 ../src/Win_GParted.cc:69
+#: ../src/Win_GParted.cc:1107 ../src/Win_GParted.cc:1262
+msgid "GParted"
+msgstr "GParted"
+
+#: ../src/Dialog_Progress.cc:357
+msgid "Libparted"
+msgstr "Libparted"
+
+#: ../src/Dialog_Progress.cc:395
+msgid "EXECUTING"
+msgstr "正在执行"
+
+#: ../src/Dialog_Progress.cc:398
+msgid "SUCCESS"
+msgstr "成功"
+
+#: ../src/Dialog_Progress.cc:401
+msgid "ERROR"
+msgstr "错误"
+
+#: ../src/Dialog_Progress.cc:404
+msgid "INFO"
+msgstr "信息"
+
+#: ../src/Dialog_Progress.cc:407
+msgid "N/A"
+msgstr "不可用"
+
+#: ../src/DialogFeatures.cc:27
+msgid "File System Support"
+msgstr "文件系统支持"
+
+#: ../src/DialogFeatures.cc:34 ../src/TreeView_Detail.cc:35
+msgid "File System"
+msgstr "文件系统"
+
+#: ../src/DialogFeatures.cc:36
+msgid "Grow"
+msgstr "扩大"
+
+#: ../src/DialogFeatures.cc:37
+msgid "Shrink"
+msgstr "缩小"
+
+#: ../src/DialogFeatures.cc:38
+msgid "Move"
+msgstr "移动"
+
+#: ../src/DialogFeatures.cc:39
+msgid "Copy"
+msgstr "复制"
+
+#: ../src/DialogFeatures.cc:40
+msgid "Check"
+msgstr "检查"
+
+#: ../src/DialogFeatures.cc:41 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "卷标"
+
+#: ../src/DialogFeatures.cc:42
+msgid "Required Software"
+msgstr "需要的软件"
+
+#: ../src/DialogFeatures.cc:56
+msgid "This chart shows the actions supported on file systems."
+msgstr "此图表显示了文件系统支持的操作。"
+
+#: ../src/DialogFeatures.cc:58
+msgid ""
+"Not all actions are available on all file systems, in part due to the nature "
+"of file systems and limitations in the required software."
+msgstr ""
+"不是所有操作对所有文件系统都可用。操作可能会受到文件系统及所需软件的限制。"
+
+#: ../src/DialogFeatures.cc:68
+msgid "Available"
+msgstr "可用"
+
+#: ../src/DialogFeatures.cc:74
+msgid "Not Available"
+msgstr "不可用"
+
+#: ../src/DialogFeatures.cc:82
+msgid "Legend"
+msgstr "图示"
+
+#. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
+#: ../src/DialogFeatures.cc:95
+msgid "Rescan For Supported Actions"
+msgstr "重新扫描支持的操作"
+
+#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+msgid "Manage flags on %1"
+msgstr "管理 %1 上面的标志"
+
+#. TO TRANSLATORS: looks like Scanning /dev/sda
+#: ../src/GParted_Core.cc:190
+msgid "Scanning %1"
+msgstr "正在扫描 %1"
+
+#. TO TRANSLATORS: looks like Confirming /dev/sda
+#: ../src/GParted_Core.cc:210
+msgid "Confirming %1"
+msgstr "正在确认 %1"
+
+#. TO TRANSLATORS: looks like Searching /dev/sda partitions
+#: ../src/GParted_Core.cc:230
+msgid "Searching %1 partitions"
+msgstr "正在搜索 %1 上面的分区"
+
+#: ../src/GParted_Core.cc:266
 msgid "unrecognized"
 msgstr "未识别"
 
-#: src/GParted_Core.cc:153
-msgid "unknown"
-msgstr "未知"
+#: ../src/GParted_Core.cc:347
+msgid "A partition cannot have a length of %1 sectors"
+msgstr "分区长度不可以为 %1 个扇区。"
 
-#: src/GParted_Core.cc:154
-msgid "Unable to detect filesystem! Possible reasons are:"
-msgstr ""
-
-#: src/GParted_Core.cc:156
-msgid "The filesystem is damaged"
-msgstr "文件系统已损坏"
-
-#: src/GParted_Core.cc:158
-msgid "The filesystem is unknown to libparted"
-msgstr ""
-
-#: src/GParted_Core.cc:160
-msgid "There is no filesystem available (unformatted)"
-msgstr ""
-
-#: src/GParted_Core.cc:178
-msgid "Unable to read the contents of this filesystem!"
-msgstr ""
-
-#: src/GParted_Core.cc:277
-msgid "Error while deleting %1"
-msgstr ""
-
-#: src/GParted_Core.cc:282
-msgid "Error while creating %1"
-msgstr ""
-
-#: src/GParted_Core.cc:287
-msgid "Error while resizing/moving %1"
-msgstr ""
-
-#: src/GParted_Core.cc:292
-msgid "Error while converting filesystem of %1"
-msgstr ""
-
-#: src/GParted_Core.cc:297
-msgid "Error while copying %1"
-msgstr ""
-
-#: src/GParted_Core.cc:652
+#: ../src/GParted_Core.cc:355
 msgid ""
-"Be aware that the failure to apply this operation could affect other "
-"operations on the list."
-msgstr ""
+"A partition with used sectors (%1) greater than it's length (%2) is not valid"
+msgstr "分区已用扇区数 (%1) 大于实际大小 (%2)，不合法"
 
-#: src/Operation.cc:36
+#: ../src/GParted_Core.cc:421
+msgid "libparted messages"
+msgstr "libparted 消息"
+
+#: ../src/GParted_Core.cc:817
+msgid "Logical Volume Management is not yet supported."
+msgstr "目前不支持逻辑卷管理。"
+
+#: ../src/GParted_Core.cc:833
+msgid "Linux Unified Key Setup encryption is not yet supported."
+msgstr "目前不支持 Linux 统一密钥设置加密。"
+
+#. no file system found....
+#: ../src/GParted_Core.cc:840
+msgid "Unable to detect file system! Possible reasons are:"
+msgstr "无法检测文件系统! 可能原因:"
+
+#: ../src/GParted_Core.cc:842
+msgid "The file system is damaged"
+msgstr "文件系统已损坏。"
+
+#: ../src/GParted_Core.cc:844
+msgid "The file system is unknown to GParted"
+msgstr "文件系统未知于 GParted"
+
+#: ../src/GParted_Core.cc:846
+msgid "There is no file system available (unformatted)"
+msgstr "无可用的文件系统 (未格式化)"
+
+#: ../src/GParted_Core.cc:946
+msgid "Unable to find mount point"
+msgstr "无法找到挂载点"
+
+#: ../src/GParted_Core.cc:964
+msgid "Unable to read the contents of this file system!"
+msgstr "无法读取此文件系统上的内容!"
+
+#: ../src/GParted_Core.cc:966
+msgid "Because of this some operations may be unavailable."
+msgstr "因为此操作可能不可用。"
+
+#: ../src/GParted_Core.cc:1077
+msgid "create empty partition"
+msgstr "创建空分区"
+
+#: ../src/GParted_Core.cc:1145 ../src/GParted_Core.cc:2228
+msgid "path: %1"
+msgstr "路径: %1"
+
+#: ../src/GParted_Core.cc:1146 ../src/GParted_Core.cc:2229
+msgid "start: %1"
+msgstr "起始位置: %1"
+
+#: ../src/GParted_Core.cc:1147 ../src/GParted_Core.cc:2230
+msgid "end: %1"
+msgstr "终止位置: %1"
+
+#: ../src/GParted_Core.cc:1148 ../src/GParted_Core.cc:2231
+msgid "size: %1 (%2)"
+msgstr "大小: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1178 ../src/linux_swap.cc:79 ../src/xfs.cc:236
+msgid "create new %1 file system"
+msgstr "建立新的 %1 文件系统"
+
+#: ../src/GParted_Core.cc:1211
+msgid "delete partition"
+msgstr "删除分区"
+
+#: ../src/GParted_Core.cc:1234
+msgid "Clear partition label on %1"
+msgstr "删除 %1 上的分区卷标"
+
+#: ../src/GParted_Core.cc:1239
+msgid "Set partition label to \"%1\" on %2"
+msgstr "将 %2 的分区卷标设为 \"%1\""
+
+#: ../src/GParted_Core.cc:1318
+msgid "moving requires old and new length to be the same"
+msgstr "移动需要旧的大小和新的相同"
+
+#: ../src/GParted_Core.cc:1335
+msgid "rollback last change to the partition table"
+msgstr "回滚对分区表的上一次更改"
+
+#: ../src/GParted_Core.cc:1364
+msgid "move file system to the left"
+msgstr "向左移动文件系统"
+
+#: ../src/GParted_Core.cc:1366
+msgid "move file system to the right"
+msgstr "向右移动文件系统"
+
+#: ../src/GParted_Core.cc:1369
+msgid "move file system"
+msgstr "移动文件系统"
+
+#: ../src/GParted_Core.cc:1371
+msgid ""
+"new and old file system have the same position -- skipping this operation"
+msgstr "旧的文件系统和新的文件系统位置相同 -- 跳过此操作"
+
+#: ../src/GParted_Core.cc:1390
+msgid "perform real move"
+msgstr "进行实际的移动操作"
+
+#: ../src/GParted_Core.cc:1432
+msgid "using libparted"
+msgstr "使用 libparted"
+
+#: ../src/GParted_Core.cc:1472
+msgid "resizing requires old and new start to be the same"
+msgstr "调整大小需要旧的起始位置和新的相同"
+
+#: ../src/GParted_Core.cc:1537
+msgid "resize/move partition"
+msgstr "改变大小/移动分区"
+
+#: ../src/GParted_Core.cc:1540
+msgid "move partition to the right"
+msgstr "向右移动分区"
+
+#: ../src/GParted_Core.cc:1543
+msgid "move partition to the left"
+msgstr "向左移动分区"
+
+#: ../src/GParted_Core.cc:1546
+msgid "grow partition from %1 to %2"
+msgstr "将分区由 %1 扩大至 %2"
+
+#: ../src/GParted_Core.cc:1549
+msgid "shrink partition from %1 to %2"
+msgstr "将分区由 %1 缩小至 %2"
+
+#: ../src/GParted_Core.cc:1552
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr "向右移动分区并由 %1 扩大至 %2"
+
+#: ../src/GParted_Core.cc:1555
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr "向右移动分区并由 %1 缩小至 %2"
+
+#: ../src/GParted_Core.cc:1558
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr "向左移动分区并由 %1 扩大至 %2"
+
+#: ../src/GParted_Core.cc:1561
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr "向左移动分区并由 %1 缩小至 %2"
+
+#: ../src/GParted_Core.cc:1576
+msgid ""
+"new and old partition have the same size and position -- skipping this "
+"operation"
+msgstr "新的分区大小及位置和旧的分区相同 -- 跳过此操作"
+
+#: ../src/GParted_Core.cc:1586
+msgid "old start: %1"
+msgstr "旧的起始位置: %1"
+
+#: ../src/GParted_Core.cc:1587
+msgid "old end: %1"
+msgstr "旧的终止位置: %1"
+
+#: ../src/GParted_Core.cc:1588
+msgid "old size: %1 (%2)"
+msgstr "旧的大小: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1647 ../src/GParted_Core.cc:2309
+msgid "new start: %1"
+msgstr "新起始位置: %1"
+
+#: ../src/GParted_Core.cc:1648 ../src/GParted_Core.cc:2310
+msgid "new end: %1"
+msgstr "新的终止位置: %1"
+
+#: ../src/GParted_Core.cc:1649 ../src/GParted_Core.cc:2311
+msgid "new size: %1 (%2)"
+msgstr "新大小: %1 (%2)"
+
+#: ../src/GParted_Core.cc:1673
+msgid "shrink file system"
+msgstr "缩小文件系统"
+
+#: ../src/GParted_Core.cc:1677
+msgid "grow file system"
+msgstr "扩大文件系统"
+
+#: ../src/GParted_Core.cc:1680
+msgid "resize file system"
+msgstr "改变文件系统大小"
+
+#: ../src/GParted_Core.cc:1683
+msgid "new and old file system have the same size -- skipping this operation"
+msgstr "新的文件系统大小和旧的相同 -- 跳过此操作"
+
+#: ../src/GParted_Core.cc:1718
+msgid "grow file system to fill the partition"
+msgstr "放大文件系统至整个分区"
+
+#: ../src/GParted_Core.cc:1723
+msgid "growing is not available for this file system"
+msgstr "此文件系统不可放大"
+
+#: ../src/GParted_Core.cc:1742
+msgid "the destination is smaller than the source partition"
+msgstr "目标分区小于源分区"
+
+#: ../src/GParted_Core.cc:1756
+msgid "copy file system of %1 to %2"
+msgstr "将文件系统由 %1 复制到 %2"
+
+#: ../src/GParted_Core.cc:1800
+msgid "perform read-only test"
+msgstr "执行只读测试"
+
+#: ../src/GParted_Core.cc:1848
+msgid "using internal algorithm"
+msgstr "使用内部算法"
+
+#: ../src/GParted_Core.cc:1850
+msgid "read %1 sectors"
+msgstr "读取 %1 个扇区"
+
+#: ../src/GParted_Core.cc:1850
+msgid "copy %1 sectors"
+msgstr "复制 %1 个扇区"
+
+#: ../src/GParted_Core.cc:1852
+msgid "finding optimal blocksize"
+msgstr "查找最优的块大小"
+
+#: ../src/GParted_Core.cc:1889
+msgid "%1 seconds"
+msgstr "%1 秒"
+
+#: ../src/GParted_Core.cc:1905
+msgid "optimal blocksize is %1 sectors (%2)"
+msgstr "最优的块大小是 %1 扇区 (%2)"
+
+#: ../src/GParted_Core.cc:1922
+msgid "%1 sectors read"
+msgstr "%1 个扇区已读取"
+
+#: ../src/GParted_Core.cc:1922
+msgid "%1 sectors copied"
+msgstr "%1 个扇区已复制"
+
+#: ../src/GParted_Core.cc:1933
+msgid "rollback last transaction"
+msgstr "回滚上次操作过程"
+
+#: ../src/GParted_Core.cc:1960
+msgid "check file system on %1 for errors and (if possible) fix them"
+msgstr "检查 %1 上的文件系统错误并在可能的情况下修正"
+
+#: ../src/GParted_Core.cc:1968
+msgid "checking is not available for this file system"
+msgstr "检测功能对此文件系统不可用"
+
+#: ../src/GParted_Core.cc:1994
+msgid "set partition type on %1"
+msgstr "设定 %1 的分区类型"
+
+#: ../src/GParted_Core.cc:2021
+msgid "new partition type: %1"
+msgstr "新分区类型: %1"
+
+#: ../src/GParted_Core.cc:2048
+msgid "%1 of %2 read (%3 remaining)"
+msgstr "%1 (共 %2) 已读取 (剩余 %3)"
+
+#: ../src/GParted_Core.cc:2048
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 (共 %2) 已复制 (剩余 %3)"
+
+#: ../src/GParted_Core.cc:2054 ../src/GParted_Core.cc:2149
+msgid "%1 of %2 read"
+msgstr "%1 (共 %2) 已读取"
+
+#: ../src/GParted_Core.cc:2054 ../src/GParted_Core.cc:2149
+msgid "%1 of %2 copied"
+msgstr "%1 (共 %2) 已复制"
+
+#: ../src/GParted_Core.cc:2072
+msgid "read %1 sectors using a blocksize of %2 sectors"
+msgstr "使用 %2 个扇区的块大小读取 %1 个扇区"
+
+#: ../src/GParted_Core.cc:2075
+msgid "copy %1 sectors using a blocksize of %2 sectors"
+msgstr "使用 %2 个扇区的块大小复制 %1 个扇区"
+
+#: ../src/GParted_Core.cc:2194
+msgid "Error while writing block at sector %1"
+msgstr "写入扇区 %1 位置的区块时发生错误"
+
+#: ../src/GParted_Core.cc:2197
+msgid "Error while reading block at sector %1"
+msgstr "读取扇区 %1 位置的区块时发生错误"
+
+#: ../src/GParted_Core.cc:2207
+msgid "calibrate %1"
+msgstr "校准 %1"
+
+#: ../src/GParted_Core.cc:2254
+msgid "calculate new size and position of %1"
+msgstr "计算 %1 的新大小及位置"
+
+#: ../src/GParted_Core.cc:2258
+msgid "requested start: %1"
+msgstr "请求的起始位置: %1"
+
+#: ../src/GParted_Core.cc:2259
+msgid "requested end: %1"
+msgstr "请求的终止位置: %1"
+
+#: ../src/GParted_Core.cc:2260
+msgid "requested size: %1 (%2)"
+msgstr "请求的大小: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2384
+msgid "updating boot sector of %1 file system on %2"
+msgstr "更新 %2 上的 %1 文件系统的引导扇区"
+
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+msgid "_Undo Last Operation"
+msgstr "撤销上次操作"
+
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+msgid "_Clear All Operations"
+msgstr "清除全部操作"
+
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+msgid "_Apply All Operations"
+msgstr "应用全部操作(_A)"
+
+#: ../src/OperationCopy.cc:36
 msgid "copy of %1"
 msgstr "%1 的副本"
 
-#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 2345 MB) from /dev/hda
-#: src/Operation.cc:54
-msgid "Delete %1 (%2, %3 MB) from %4"
-msgstr ""
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
+#: ../src/OperationCopy.cc:78
+msgid "Copy %1 to %2 (start at %3)"
+msgstr "将 %1 复制到 %2 (起始位置为 %3)"
 
-#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 2345 MB) on /dev/hda
-#: src/Operation.cc:64
-msgid "Create %1 #%2 (%3, %4 MB) on %5"
-msgstr ""
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
+#: ../src/OperationCopy.cc:86
+msgid "Copy %1 to %2"
+msgstr "复制 %1 至 %2"
 
-#: src/Operation.cc:70
-msgid "Move %1 forward by %2 MB"
-msgstr ""
+#. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
+#: ../src/OperationCheck.cc:38
+msgid "Check and repair file system (%1) on %2"
+msgstr "检测并修复 %2 上的文件系统 (%1)"
 
-#: src/Operation.cc:72
-msgid "Move %1 backward by %2 MB"
-msgstr ""
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
+#: ../src/OperationCreate.cc:86
+msgid "Create %1 #%2 (%3, %4) on %5"
+msgstr "在 %5 上建立 %1 #%2 (%3, %4)"
 
-#: src/Operation.cc:81
-msgid "Resize %1 from %2 MB to %3 MB"
-msgstr ""
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
+#: ../src/OperationDelete.cc:80
+msgid "Delete %1 (%2, %3) from %4"
+msgstr "从 %4 删除 %1 (%2, %3)"
 
-#: src/Operation.cc:83
-msgid "and Resize %1 from %2 MB to %3 MB"
-msgstr ""
+#. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
+#: ../src/OperationFormat.cc:58
+msgid "Format %1 as %2"
+msgstr "将 %1 格式化为 %2"
 
-#: src/Operation.cc:86
-msgid "Sorry, changes are too small to make sense"
-msgstr ""
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+msgid "Clear Partition Label on %1"
+msgstr "清除 %1 上的分区卷标"
 
-#. TO TRANSLATORS: looks like  Convert /dev/hda4 from ntfs to linux-swap
-#: src/Operation.cc:90
-msgid "Convert %1 from %2 to %3"
-msgstr ""
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+msgid "Set Partition Label \"%1\" on %2"
+msgstr "将 %2 的分区卷标设定为 \"%1\""
 
-#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 2500 MB)
-#: src/Operation.cc:92
-msgid "Copy %1 to %2 (start at %3 MB)"
-msgstr ""
+#: ../src/OperationResizeMove.cc:85
+msgid "resize/move %1"
+msgstr "更改大小/移动 %1"
 
-#: src/Partition.cc:70
-msgid "Unallocated"
-msgstr "未分配"
+#: ../src/OperationResizeMove.cc:87
+msgid ""
+"new and old partition have the same size and position -- continuing anyway"
+msgstr "新的分区大小及位置和旧的分区相同 -- 继续"
+
+#: ../src/OperationResizeMove.cc:91
+msgid "Move %1 to the right"
+msgstr "向右移动 %1"
+
+#: ../src/OperationResizeMove.cc:94
+msgid "Move %1 to the left"
+msgstr "向左移动 %1"
+
+#: ../src/OperationResizeMove.cc:97
+msgid "Grow %1 from %2 to %3"
+msgstr "将 %1 由 %2 扩大至 %3"
+
+#: ../src/OperationResizeMove.cc:100
+msgid "Shrink %1 from %2 to %3"
+msgstr "将 %1 由 %2 缩小至 %3"
+
+#: ../src/OperationResizeMove.cc:103
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr "向右移动 %1 并由 %2 扩大至 %3"
+
+#: ../src/OperationResizeMove.cc:106
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr "向右移动 %1 并由 %2 缩小至 %3"
+
+#: ../src/OperationResizeMove.cc:109
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr "向左移动 %1 并由 %2 扩大至 %3"
+
+#: ../src/OperationResizeMove.cc:112
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr "向左移动 %1 并由 %2 缩小至 %3"
 
 #. append columns
-#: src/TreeView_Detail.cc:31
+#: ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "分区"
 
-#: src/TreeView_Detail.cc:32
-msgid "Filesystem"
-msgstr "文件系统"
+#: ../src/TreeView_Detail.cc:36
+msgid "Mount Point"
+msgstr "挂载点"
 
-#: src/TreeView_Detail.cc:33
-msgid "Size(MB)"
-msgstr "大小(MB)"
+#: ../src/TreeView_Detail.cc:38
+msgid "Size"
+msgstr "大小"
 
-#: src/TreeView_Detail.cc:34
-msgid "Used(MB)"
-msgstr "已用(MB)"
+#: ../src/TreeView_Detail.cc:39
+msgid "Used"
+msgstr "已用"
 
-#: src/TreeView_Detail.cc:35
-msgid "Unused(MB)"
-msgstr "未用(MB)"
+#: ../src/TreeView_Detail.cc:40
+msgid "Unused"
+msgstr "未用"
 
-#: src/TreeView_Detail.cc:36
+#: ../src/TreeView_Detail.cc:41
 msgid "Flags"
-msgstr ""
+msgstr "标志"
 
-#: src/VBox_VisualDisk.cc:219
+#: ../src/Utils.cc:117
 msgid "unallocated"
 msgstr "未分配"
 
-#: src/VBox_VisualDisk.cc:236
+#: ../src/Utils.cc:118
+msgid "unknown"
+msgstr "未知"
+
+#: ../src/Utils.cc:119
+msgid "unformatted"
+msgstr "未格式化"
+
+#: ../src/Utils.cc:135
 msgid "used"
-msgstr ""
+msgstr "已用"
 
-#: src/VBox_VisualDisk.cc:239
+#: ../src/Utils.cc:136
 msgid "unused"
-msgstr ""
+msgstr "未用"
 
-#: src/Win_GParted.cc:98
-msgid "_Refresh devices"
+#: ../src/Utils.cc:176
+msgid "%1 B"
+msgstr "%1 字节"
+
+#: ../src/Utils.cc:181
+msgid "%1 KiB"
+msgstr "%1 KiB"
+
+#: ../src/Utils.cc:186
+msgid "%1 MiB"
+msgstr "%1 MiB"
+
+#: ../src/Utils.cc:191
+msgid "%1 GiB"
+msgstr "%1 GiB"
+
+#: ../src/Utils.cc:196
+msgid "%1 TiB"
+msgstr "%1 TiB"
+
+#: ../src/Utils.cc:332
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr "# gparted 建立的临时文件。可删除。\n"
+
+#: ../src/Utils.cc:341
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr "更改卷标操作失败: 无法写入临时文件 %1。\n"
+
+#: ../src/Utils.cc:350
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr "更改卷标操作失败: 无法建立临时文件 %1。\n"
+
+#: ../src/Win_GParted.cc:136
+msgid "_Refresh Devices"
 msgstr "刷新设备(_R)"
 
-#: src/Win_GParted.cc:101
+#: ../src/Win_GParted.cc:142
+msgid "_Devices"
+msgstr "设备(_D)"
+
+#: ../src/Win_GParted.cc:147
 msgid "_GParted"
 msgstr "_GParted"
 
-#. title
-#: src/Win_GParted.cc:105 src/Win_GParted.cc:216
-msgid "Harddisk Information"
-msgstr "硬盘信息"
+#: ../src/Win_GParted.cc:166
+msgid "_Edit"
+msgstr "编辑(_E)"
 
-#: src/Win_GParted.cc:106
-msgid "Operations"
-msgstr "操作"
+#: ../src/Win_GParted.cc:171
+msgid "Device _Information"
+msgstr "设备信息(_I)"
 
-#: src/Win_GParted.cc:107
+#: ../src/Win_GParted.cc:173
+msgid "Pending _Operations"
+msgstr "待执行操作(_O)"
+
+#: ../src/Win_GParted.cc:174
 msgid "_View"
 msgstr "查看(_V)"
 
-#: src/Win_GParted.cc:113
-msgid "About"
-msgstr "关于"
+#: ../src/Win_GParted.cc:178
+msgid "_File System Support"
+msgstr "文件系统支持(_F)"
 
-#: src/Win_GParted.cc:114
+#: ../src/Win_GParted.cc:182
+msgid "_Create Partition Table"
+msgstr "创建分区表(_C)"
+
+#: ../src/Win_GParted.cc:184
+msgid "_Device"
+msgstr "设备(_D)"
+
+#: ../src/Win_GParted.cc:188
+msgid "_Partition"
+msgstr "分区(_P)"
+
+#: ../src/Win_GParted.cc:193
+msgid "_Contents"
+msgstr "内容(_C)"
+
+#: ../src/Win_GParted.cc:201
 msgid "_Help"
 msgstr "帮助(_A)"
 
-#: src/Win_GParted.cc:125
+#: ../src/Win_GParted.cc:215
 msgid "Create a new partition in the selected unallocated space"
-msgstr ""
+msgstr "在选定的未分配空间内建立一个新的分区"
 
-#: src/Win_GParted.cc:128
+#: ../src/Win_GParted.cc:220
 msgid "Delete the selected partition"
-msgstr ""
+msgstr "删除选定分区"
 
-#: src/Win_GParted.cc:135
+#: ../src/Win_GParted.cc:242
 msgid "Resize/Move the selected partition"
-msgstr ""
+msgstr "调整大小/移动选定分区"
 
-#: src/Win_GParted.cc:141
+#: ../src/Win_GParted.cc:251
 msgid "Copy the selected partition to the clipboard"
-msgstr ""
+msgstr "将选定分区复制到剪贴板"
 
-#: src/Win_GParted.cc:144
+#: ../src/Win_GParted.cc:256
 msgid "Paste the partition from the clipboard"
-msgstr ""
+msgstr "从剪贴板粘贴分区"
 
-#: src/Win_GParted.cc:150
-msgid "Undo last operation"
-msgstr ""
+#: ../src/Win_GParted.cc:268
+msgid "Undo Last Operation"
+msgstr "撤销上次操作"
 
-#: src/Win_GParted.cc:153
-msgid "Apply all operations"
+#: ../src/Win_GParted.cc:276
+msgid "Apply All Operations"
 msgstr "应用全部操作"
 
-#. TO TRANSLATORS: menuitem which holds a submenu with filesystems..
-#: src/Win_GParted.cc:175
-msgid "_Convert to"
-msgstr "转换为(_C)"
+#: ../src/Win_GParted.cc:311
+msgid "_Resize/Move"
+msgstr "更改大小/移动(_R)"
 
-#: src/Win_GParted.cc:177
+#: ../src/Win_GParted.cc:335
+msgid "_Format to"
+msgstr "格式化为(_F)"
+
+#: ../src/Win_GParted.cc:344
 msgid "Unmount"
 msgstr "卸载"
 
+#: ../src/Win_GParted.cc:350
+msgid "_Mount on"
+msgstr "挂载于(_M)"
+
+#: ../src/Win_GParted.cc:357
+msgid "M_anage Flags"
+msgstr "管理标志(_A)"
+
+#: ../src/Win_GParted.cc:362
+msgid "C_heck"
+msgstr "检查(_H)"
+
+#: ../src/Win_GParted.cc:367
+msgid "_Label"
+msgstr "卷标(_L)"
+
+#: ../src/Win_GParted.cc:428
+msgid "Device Information"
+msgstr "设备信息"
+
 #. model
-#: src/Win_GParted.cc:223
+#: ../src/Win_GParted.cc:436
 msgid "Model:"
-msgstr ""
+msgstr "型号:"
 
 #. disktype
-#: src/Win_GParted.cc:256
-msgid "DiskType:"
-msgstr "磁盘类型："
+#: ../src/Win_GParted.cc:473
+msgid "DiskLabelType:"
+msgstr "磁盘卷标类型:"
 
 #. heads
-#: src/Win_GParted.cc:261
+#: ../src/Win_GParted.cc:481
 msgid "Heads:"
-msgstr ""
+msgstr "磁头数:"
 
 #. sectors/track
-#: src/Win_GParted.cc:266
+#: ../src/Win_GParted.cc:489
 msgid "Sectors/Track:"
-msgstr "扇区/磁道数："
+msgstr "扇区/磁道数:"
 
 #. cylinders
-#: src/Win_GParted.cc:271
+#: ../src/Win_GParted.cc:497
 msgid "Cylinders:"
-msgstr ""
+msgstr "柱面数:"
 
-#: src/Win_GParted.cc:307
-msgid "Hide operationslist"
-msgstr "隐藏操作列表"
+#: ../src/Win_GParted.cc:676
+msgid "Could not add this operation to the list."
+msgstr "无法将此操作加入列表。"
 
-#: src/Win_GParted.cc:316
-msgid "Clear operationslist"
-msgstr "清除操作列表"
+#: ../src/Win_GParted.cc:701
+msgid "%1 operation pending"
+msgid_plural "%1 operations pending"
+msgstr[0] "%1 个操作待进行"
+msgstr[1] "%1 个操作待进行"
 
-#: src/Win_GParted.cc:354
-msgid "No devices were detected"
-msgstr ""
+#: ../src/Win_GParted.cc:755
+msgid "Quit GParted?"
+msgstr "退出 GParted?"
 
-#: src/Win_GParted.cc:356
-msgid "You have probably encountered a bug. GParted will quit now."
-msgstr ""
+#: ../src/Win_GParted.cc:761
+msgid "%1 operation is currently pending."
+msgid_plural "%1 operations are currently pending."
+msgstr[0] "%1 个操作待进行"
+msgstr[1] "%1 个操作待进行"
 
-#: src/Win_GParted.cc:392
+#: ../src/Win_GParted.cc:787
+msgid "_Unmount"
+msgstr "卸载(_U)"
+
+#: ../src/Win_GParted.cc:812
+msgid "_Swapoff"
+msgstr "禁用交换空间(_S)"
+
+#: ../src/Win_GParted.cc:818
+msgid "_Swapon"
+msgstr "启用交换空间(_S)"
+
+#: ../src/Win_GParted.cc:1017
+msgid "%1 - GParted"
+msgstr "%1 - GParted"
+
+#: ../src/Win_GParted.cc:1063
 msgid "Scanning all devices..."
 msgstr "正在扫描全部设备..."
 
-#: src/Win_GParted.cc:501
-msgid "%1 operations pending"
-msgstr ""
-
-#: src/Win_GParted.cc:503
-msgid "1 operation pending"
-msgstr ""
-
-#: src/Win_GParted.cc:553
-msgid "Quit GParted?"
-msgstr ""
-
-#: src/Win_GParted.cc:556
-msgid "%1 operations are currently pending."
-msgstr ""
-
-#: src/Win_GParted.cc:558
-msgid "1 operation is currently pending."
-msgstr ""
-
-#: src/Win_GParted.cc:731
+#: ../src/Win_GParted.cc:1079
 msgid ""
-"The kernel is unable to re-read the partitiontables on the following devices:"
-msgstr ""
+"The kernel is unable to re-read the partition tables on the following "
+"devices:"
+msgstr "内核无法重新读取以下设备的分区表:"
 
-#: src/Win_GParted.cc:735
-msgid "Because of this you will only have limited access to these devices."
+#: ../src/Win_GParted.cc:1086
+msgid ""
+"Because of this you will only have limited access to these devices. Unmount "
+"all mounted partitions on a device to get full access."
 msgstr ""
+"因为您对这些设备只有受限访问权限。请卸载设备上的所有分区以获取完整访问权限。"
 
-#: src/Win_GParted.cc:737
-msgid "Unmount all mounted partitions on a device to get full access."
+#: ../src/Win_GParted.cc:1130
+msgid "No devices detected"
+msgstr "未检测到设备"
+
+#: ../src/Win_GParted.cc:1265
+msgid "GNOME Partition Editor"
+msgstr "GNOME 分区编辑器"
+
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
+#. It's a good idea to provide the url of your translation team as well. Thanks!
+#: ../src/Win_GParted.cc:1281
+msgid "translator-credits"
 msgstr ""
+"Funda Wang <fundawang@gmail.com>\n"
+"Wei Mingzhi <weimingzhi@gmail.com>"
 
-#: src/Win_GParted.cc:784
-msgid "Sorry, not yet implemented."
-msgstr ""
-
-#: src/Win_GParted.cc:786
-msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr ""
-
-#: src/Win_GParted.cc:828
+#: ../src/Win_GParted.cc:1323
 msgid "It is not possible to create more than %1 primary partitions"
-msgstr ""
+msgstr "无法建立多于 %1 个主分区"
 
-#: src/Win_GParted.cc:830
+#: ../src/Win_GParted.cc:1331
 msgid ""
 "If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions."
+"Such a partition can contain other partitions. Because an extended partition "
+"is also a primary partition it might be necessary to remove a primary "
+"partition first."
 msgstr ""
+"如果您需要更多分区，请先建立一个扩展分区。扩展分区可包含其它分区。因为扩展分"
+"区也同时是一个主分区，可能需要先删除一个主分区。"
 
-#: src/Win_GParted.cc:846
-msgid "Are you sure you want to resize/move this partition?"
-msgstr ""
+#: ../src/Win_GParted.cc:1518
+msgid "Unable to delete %1!"
+msgstr "无法删除 %1!"
 
-#: src/Win_GParted.cc:848
-msgid ""
-"Resizing a fat16 partition can be quite tricky! Especially growing such a "
-"partition is very error-prone. It is advisable to first convert the "
-"filesystem to fat32."
-msgstr ""
-
-#: src/Win_GParted.cc:950
-msgid "Error while setting new disklabel"
-msgstr ""
-
-#: src/Win_GParted.cc:984
-msgid "Unable to delete partition!"
-msgstr ""
-
-#: src/Win_GParted.cc:986
+#: ../src/Win_GParted.cc:1525
 msgid "Please unmount any logical partitions having a number higher than %1"
-msgstr ""
+msgstr "请卸载全部编号高于 %1 的逻辑分区"
 
-#: src/Win_GParted.cc:993
+#: ../src/Win_GParted.cc:1536
 msgid "Are you sure you want to delete %1?"
-msgstr ""
+msgstr "是否确认要删除 %1?"
 
-#: src/Win_GParted.cc:997
+#: ../src/Win_GParted.cc:1543
 msgid "After deletion this partition is no longer available for copying."
-msgstr ""
+msgstr "删除分区后，分区将不能再被复制。"
 
-#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MB)
-#: src/Win_GParted.cc:1002
-msgid "Delete %1 (%2, %3 MB)"
-msgstr ""
+#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
+#: ../src/Win_GParted.cc:1546
+msgid "Delete %1 (%2, %3)"
+msgstr "删除 %1 (%2, %3)"
 
-#: src/Win_GParted.cc:1059
-msgid "Are you sure you want to convert this filesystem to %1?"
-msgstr ""
+#: ../src/Win_GParted.cc:1612
+msgid "Cannot format this file system to %1."
+msgstr "无法将此文件系统格式化为 %1。"
 
-#: src/Win_GParted.cc:1060
-msgid "This operation will destroy all data on %1"
-msgstr ""
+#: ../src/Win_GParted.cc:1621
+msgid "A %1 file system requires a partition of at least %2."
+msgstr "一个 %1 文件系统需要一个至少有 %2 的分区。"
 
-#: src/Win_GParted.cc:1078 src/Win_GParted.cc:1080
-msgid "Can not convert this filesystem to fat16."
-msgstr ""
+#: ../src/Win_GParted.cc:1626
+msgid "A partition with a %1 file system has a maximum size of %2."
+msgstr "一个使用 %1 文件系统的分区的最大容量为 %2。"
 
-#: src/Win_GParted.cc:1078
-msgid "A fat16 filesystem requires a partition of at least 32 MB."
-msgstr ""
+#: ../src/Win_GParted.cc:1711
+msgid "The partition could not be unmounted from the following mount points:"
+msgstr "分区无法从以下挂载点卸载:"
 
-#: src/Win_GParted.cc:1080
-msgid "A partition with a fat16 filesystem has a maximum size of 1023 MB."
-msgstr ""
-
-#: src/Win_GParted.cc:1082
-msgid "Can not convert this filesystem to fat32."
-msgstr ""
-
-#: src/Win_GParted.cc:1082
-msgid "A fat32 filesystem requires a partition of at least 256 MB."
-msgstr ""
-
-#: src/Win_GParted.cc:1135
-msgid "Could not unmount %1"
-msgstr ""
-
-#: src/Win_GParted.cc:1163
-msgid "Are you sure you want to apply the pending operations?"
-msgstr ""
-
-#: src/Win_GParted.cc:1165
-msgid "It is recommended to backup valueable data before proceeding."
-msgstr ""
-
-#: src/Win_GParted.cc:1168
-msgid "Apply operations to harddisk"
-msgstr ""
-
-#: src/Win_GParted.cc:1206
-msgid "At least one operation was applied to a busy device."
-msgstr ""
-
-#: src/Win_GParted.cc:1208
-msgid "A busy device is a device with at least one mounted partition."
-msgstr ""
-
-#: src/Win_GParted.cc:1210
+#: ../src/Win_GParted.cc:1713
 msgid ""
-"Because making changes to a busy device may confuse the kernel, you are "
-"advised to reboot your computer."
-msgstr ""
+"Most likely other partitions are also mounted on these mount points. You are "
+"advised to unmount them manually."
+msgstr "其它分区很可能也被挂载到这些挂载点上。建立手动卸载它们。"
 
-#: src/main.cc:36
+#: ../src/Win_GParted.cc:1763
+msgid "Deactivating swap on %1"
+msgstr "正在关闭 %1 上的交换空间"
+
+#: ../src/Win_GParted.cc:1763
+msgid "Activating swap on %1"
+msgstr "正在激活 %1 上的交换空间"
+
+#: ../src/Win_GParted.cc:1770
+msgid "Could not deactivate swap"
+msgstr "无法关闭交换空间"
+
+#: ../src/Win_GParted.cc:1770
+msgid "Could not activate swap"
+msgstr "无法激活交换空间"
+
+#: ../src/Win_GParted.cc:1786
+msgid "Unmounting %1"
+msgstr "正在卸载 %1"
+
+#: ../src/Win_GParted.cc:1791
+msgid "Could not unmount %1"
+msgstr "无法卸载 %1"
+
+#: ../src/Win_GParted.cc:1820
+msgid "mounting %1 on %2"
+msgstr "正在挂载 %1 于 %2"
+
+#: ../src/Win_GParted.cc:1827
+msgid "Could not mount %1 on %2"
+msgstr "无法将 %1 挂载到 %2"
+
+#: ../src/Win_GParted.cc:1853
+msgid "Error while creating partition table."
+msgstr "无法建立分区表。"
+
+#: ../src/Win_GParted.cc:1966
+msgid "Are you sure you want to apply the pending operations?"
+msgstr "是否确认要应用待执行操作?"
+
+#: ../src/Win_GParted.cc:1972
+msgid "Editing partitions has the potential to cause LOSS of DATA."
+msgstr "编辑分区可能会导致数据丢失。"
+
+#: ../src/Win_GParted.cc:1974
+msgid "You are advised to backup your data before proceeding."
+msgstr "建议执行操作之前先备份数据。"
+
+#: ../src/Win_GParted.cc:1976
+msgid "Apply operations to device"
+msgstr "应用操作到设备"
+
+#. create mount point...
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:244 ../src/xfs.cc:251
+msgid "create temporary mount point (%1)"
+msgstr "建立临时挂载点 (%1)"
+
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:258 ../src/xfs.cc:267
+msgid "mount %1 on %2"
+msgstr "挂载 %1 于 %2"
+
+#: ../src/jfs.cc:156
+msgid "remount %1 on %2 with the 'resize' flag enabled"
+msgstr "重新将 %1 挂载到 %2，启用 '改变大小' 标志"
+
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:291 ../src/xfs.cc:312
+msgid "unmount %1"
+msgstr "卸载 %1"
+
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:332 ../src/xfs.cc:355
+msgid "remove temporary mount point (%1)"
+msgstr "删除临时挂载点 (%1)"
+
+#: ../src/main.cc:38
 msgid "Root privileges are required for running GParted"
-msgstr ""
+msgstr "运行 GParted 需要管理员特权。"
 
-#: src/main.cc:36
-msgid "Since GParted can be a weapon of mass destruction only root may run it."
+#: ../src/main.cc:43
+msgid ""
+"Since GParted is a powerful tool capable of destroying partition tables and "
+"vast amounts of data, only root may run it."
 msgstr ""
+"由于 GParted 可以用来破坏分区表及磁盘上的数据，只有管理员 (root) 可以运行它。"
+
+#. simulation..
+#: ../src/ntfs.cc:124
+msgid "run simulation"
+msgstr "进行模拟"
+
+#. real resize
+#: ../src/ntfs.cc:131
+msgid "real resize"
+msgstr "实际地改变大小"
+
+#. grow the mounted file system..
+#: ../src/xfs.cc:167
+msgid "grow mounted file system"
+msgstr "扩大挂载的文件系统"
+
+#. copy file system..
+#: ../src/xfs.cc:275
+msgid "copy file system"
+msgstr "复制文件系统"
+
+#~ msgid "About GParted"
+#~ msgstr "关于 GParted"
+
+#~ msgid "Gnome Partition Editor based on libparted"
+#~ msgstr "基于 libparted 的 Gnome 分区编辑器"
+
+#~ msgid "Credits"
+#~ msgstr "致谢"
+
+#~ msgid "Written by"
+#~ msgstr "编写者"
+
+#~ msgid "Translated by"
+#~ msgstr "翻译者"
+
+#~ msgid "Real Path:"
+#~ msgstr "实际路径："
+
+#~ msgid "Unallocated"
+#~ msgstr "未分配"
+
+#~ msgid "Size(MB)"
+#~ msgstr "大小(MB)"
+
+#~ msgid "Used(MB)"
+#~ msgstr "已用(MB)"
+
+#~ msgid "Unused(MB)"
+#~ msgstr "未用(MB)"
+
+#~ msgid "About"
+#~ msgstr "关于"
+
+#~ msgid "Hide operationslist"
+#~ msgstr "隐藏操作列表"
