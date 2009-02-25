@@ -173,36 +173,40 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 		//
 		//try to find all available devices
 		std::ifstream proc_partitions( "/proc/partitions" ) ;
-    	if ( proc_partitions )
-    	{
-    		//parse device names from /proc/partitions
-    		std::string line ;
-    		std::string device ;
-    		while ( getline( proc_partitions, line ) )
-    		{
-    			//Whole disk devices are the ones we want.
-    			//Device names without a trailing digit refer to the whole disk.
-    			device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;
-    			//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
-    			//E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
-    			if ( device == "" )
-    				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(.*[0-9]+[^p]{1}[0-9]+)$") ;
-    			if ( device != "" )
-    			{
-    				//try to have libparted detect the device and add it to the list
-    				device = "/dev/" + device;
-    				/*TO TRANSLATORS: looks like Scanning /dev/sda */ 
-    				set_thread_status_message( String::ucompose ( _("Scanning %1"), device ) ) ;
-    				ped_device_get( device .c_str() ) ;
-    			}
-    		}
-    		proc_partitions .close() ;
-    	}
-    	else
-    	{
-    		//file /proc/partitions doesn't exist so use libparted to probe devices
-    		ped_device_probe_all();
-    	}
+		if ( proc_partitions )
+		{
+			//parse device names from /proc/partitions
+			std::string line ;
+			std::string device ;
+			while ( getline( proc_partitions, line ) )
+			{
+				//Whole disk devices are the ones we want.
+				//Device names without a trailing digit refer to the whole disk.
+				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;
+				//Recognize /dev/mmcblk* devices.
+				//E.g., device = /dev/mmcblk0, partition = /dev/mmcblk0p1
+				if ( device == "" )
+					device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(mmcblk[0-9]+)$") ;
+				//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
+				//E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
+				if ( device == "" )
+					device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(.*[0-9]+[^p]{1}[0-9]+)$") ;
+				if ( device != "" )
+				{
+					//try to have libparted detect the device and add it to the list
+					device = "/dev/" + device;
+					/*TO TRANSLATORS: looks like Scanning /dev/sda */ 
+					set_thread_status_message( String::ucompose ( _("Scanning %1"), device ) ) ;
+					ped_device_get( device .c_str() ) ;
+				}
+			}
+			proc_partitions .close() ;
+		}
+		else
+		{
+			//file /proc/partitions doesn't exist so use libparted to probe devices
+			ped_device_probe_all();
+		}
 
 		lp_device = ped_device_get_next( NULL );
 		while ( lp_device ) 
