@@ -848,9 +848,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	}
 
 	//btrfs
-	#define BTRFS_SUPER_INFO_SIZE 4096
-	#define BTRFS_SUPER_INFO_OFFSET (64 * 1024)	
-	#define BTRFS_SIGNATURE "_BHRfS_M"
+	const Sector BTRFS_SUPER_INFO_SIZE   = 4096 ;
+	const Sector BTRFS_SUPER_INFO_OFFSET = (64 * 1024) ;
+	const Glib::ustring BTRFS_SIGNATURE  = "_BHRfS_M" ;
 
 	char    buf_btrfs[BTRFS_SUPER_INFO_SIZE] ;
 
@@ -859,10 +859,10 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	                   (BTRFS_SUPER_INFO_OFFSET / 512), \
 	                   (BTRFS_SUPER_INFO_SIZE / 512)
 	                 ) ;
-	strncpy(magic, buf_btrfs+64, strlen(BTRFS_SIGNATURE)) ;  magic[strlen(BTRFS_SIGNATURE)] = '\0' ; //set and terminate string
+	strncpy(magic, buf_btrfs+64, BTRFS_SIGNATURE .size()) ;  magic[BTRFS_SIGNATURE .size()] = '\0' ; //set and terminate string
 	ped_device_close( lp_device ) ;
 
-	if ( magic == Glib::ustring(BTRFS_SIGNATURE) )
+	if ( magic == BTRFS_SIGNATURE )
 	{
 		temp = _( "BTRFS is not yet supported." ) ;
 		temp += "\n" ;
