@@ -1,17 +1,14 @@
-# translation of lv.po to Latvian
-# translation of gparted.HEAD2.po to Latvian
 # translation of gparted.HEAD.po to Latvian
-# translation of iztulkots.gparted.HEAD.po to Latvian
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Raivis Dejus <orvils@gmail.com>, 2006.
 #
+# Raivis Dejus <orvils@gmail.com>, 2006, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-21 13:31+0300\n"
-"PO-Revision-Date: 2006-06-21 13:34+0300\n"
+"Project-Id-Version: gparted.HEAD\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&component=general\n"
+"POT-Creation-Date: 2009-02-23 20:22+0000\n"
+"PO-Revision-Date: 2009-03-10 18:26+0200\n"
 "Last-Translator: Raivis Dejus <orvils@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
 "MIME-Version: 1.0\n"
@@ -20,18 +17,18 @@ msgstr ""
 "X-Poedit-Language: Latvian\n"
 "X-Poedit-Country: LATVIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1128
-msgid "GNOME Partition Editor"
-msgstr "GNOME partīciju redaktors"
+#: ../gparted.desktop.in.in.h:1
+#| msgid "Delete the selected partition"
+msgid "Create, reorganize, and delete partitions"
+msgstr "Veido, pārkārto un dzēš partīcijas"
 
-#. ==== GUI =========================
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:52
-#: ../src/Win_GParted.cc:1004 ../src/Win_GParted.cc:1125
-msgid "GParted"
-msgstr "GParted"
+#: ../gparted.desktop.in.in.h:2
+#| msgid "GNOME Partition Editor"
+msgid "GParted Partition Editor"
+msgstr "Gparted partīciju redaktors"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free Space Preceding (MiB):"
@@ -47,67 +44,65 @@ msgstr "Jaunais izmērs (MiB):"
 msgid "Free Space Following (MiB):"
 msgstr "Brīva vieta pēc (MiB):"
 
-#: ../src/Dialog_Base_Partition.cc:159
+#. add checkbutton
+#: ../src/Dialog_Base_Partition.cc:82
+msgid "Round to cylinders"
+msgstr "Noapaļot līdz cilindriem"
+
+#: ../src/Dialog_Base_Partition.cc:173
 msgid "Resize"
 msgstr "Mainīt izmēru"
 
-#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:173
+#: ../src/Dialog_Base_Partition.cc:173 ../src/Win_GParted.cc:226
 msgid "Resize/Move"
-msgstr "Mainīt izmēru/Pārvietot"
+msgstr "Mainīt"
 
-#: ../src/Dialog_Base_Partition.cc:176
+#: ../src/Dialog_Base_Partition.cc:190
 msgid "Minimum Size: %1 MiB"
 msgstr "Minimālais izmērs %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:177
+#: ../src/Dialog_Base_Partition.cc:191
 msgid "Maximum Size: %1 MiB"
 msgstr "Maksimālais izmērs %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "Uzstādīt diska nosaukumu %1"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+#| msgid "Create new Partition"
+msgid "Create partition table on %1"
+msgstr "Izveidot partīciju tabulu uz %1"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a piece of data stored at a well known place on the disk, "
-"that indicates where each partition begins and how many sectors it occupies."
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr ""
-"Diska iezīme ir daļa no datiem, kuri ir noglabāti visiem mums zināmā vietā "
-"uz diska, kura norāda, kur katra partīcija sākas un cik daudz sektoru tā "
-"aizņem."
 
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "Jums vajag diska iezīmes, lai izveidotu jaunu partīciju."
+#| msgid "By default GParted creates an msdos disklabel."
+msgid "Default is to create an msdos partition table."
+msgstr "Pēc noklusējuma rada msdos partīciju tabulu."
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "Noklusējumā GParted rada MSDos diska iezīmes."
-
-#: ../src/Dialog_Disklabel.cc:59
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "Paplašināts"
 
-#: ../src/Dialog_Disklabel.cc:67
-msgid "Select new labeltype:"
-msgstr "Izvēlēties jaunu iezīmes tipu:"
+#: ../src/Dialog_Disklabel.cc:65
+#| msgid "Select new labeltype:"
+msgid "Select new partition table type:"
+msgstr "Izvēlēties jaunu partīciju tabulas tipu:"
 
-#: ../src/Dialog_Disklabel.cc:83
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr "BRĪDINĀJUMS: radot jaunu diska iezīmi visi dati tiks izdzēsti uz %1!"
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr ""
 
-#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1669
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
+#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:35
 msgid "Create"
 msgstr "Izveidot"
 
 #: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
 msgstr "Ielīmēt %1"
-
-#: ../src/Dialog_Partition_Copy.cc:95
-msgid "Blocksize (sectors):"
-msgstr "Blokizmērs (sektoros):"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
 #: ../src/Dialog_Partition_Info.cc:31
@@ -119,424 +114,828 @@ msgid "Warning:"
 msgstr "Brīdinājums:"
 
 #. filesystem
-#. filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:140 ../src/Dialog_Partition_New.cc:100
-msgid "Filesystem:"
+#. file systems to choose from
+#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:111
+#| msgid "Filesystem:"
+msgid "File System:"
 msgstr "Failsistēma:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:150 ../src/Win_GParted.cc:334
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:445
 msgid "Size:"
 msgstr "Izmērs:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:166
+#: ../src/Dialog_Partition_Info.cc:177
 msgid "Used:"
 msgstr "Izmantots:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:180
+#: ../src/Dialog_Partition_Info.cc:191
 msgid "Unused:"
 msgstr "Neizmantots:"
 
-#: ../src/Dialog_Partition_Info.cc:197
+#: ../src/Dialog_Partition_Info.cc:208
 msgid "Flags:"
 msgstr "Karogi:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:213 ../src/Win_GParted.cc:342
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:453
 msgid "Path:"
 msgstr "Ceļš:"
 
-#: ../src/Dialog_Partition_Info.cc:227
+#: ../src/Dialog_Partition_Info.cc:238
 msgid "Status:"
 msgstr "Statuss:"
 
-#: ../src/Dialog_Partition_Info.cc:234
+#: ../src/Dialog_Partition_Info.cc:245
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Aizņemts (vismaz 1 loģiskā partīcija ir pieontēta)"
 
-#: ../src/Dialog_Partition_Info.cc:236
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Active"
 msgstr "Aktīvs"
 
-#: ../src/Dialog_Partition_Info.cc:238
+#: ../src/Dialog_Partition_Info.cc:249
 msgid "Mounted on %1"
 msgstr "Piemontēts uz %1"
 
-#: ../src/Dialog_Partition_Info.cc:242
+#: ../src/Dialog_Partition_Info.cc:253
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Nav aizņemts( nav piemontēto loģisko partīciju)"
 
-#: ../src/Dialog_Partition_Info.cc:244
+#: ../src/Dialog_Partition_Info.cc:255
 msgid "Not active"
 msgstr "Nav aktīvs"
 
-#: ../src/Dialog_Partition_Info.cc:246
+#: ../src/Dialog_Partition_Info.cc:257
 msgid "Not mounted"
 msgstr "Nav piemontēts"
 
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:123
+#| msgid "DiskLabelType:"
+msgid "Label:"
+msgstr "Etiķete:"
+
+#: ../src/Dialog_Partition_Info.cc:278
+msgid "UUID:"
+msgstr ""
+
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:255
+#: ../src/Dialog_Partition_Info.cc:292
 msgid "First Sector:"
 msgstr "Pirmais sektors:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:265
+#: ../src/Dialog_Partition_Info.cc:302
 msgid "Last Sector:"
 msgstr "Pēdējais sektors:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:275 ../src/Win_GParted.cc:395
+#: ../src/Dialog_Partition_Info.cc:312 ../src/Win_GParted.cc:506
 msgid "Total Sectors:"
 msgstr "Sektori kopā:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+#| msgid "Set Disklabel on %1"
+msgid "Set partition label on %1"
+msgstr "Uzstādīt partīcijas nosaukumu %1"
 
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:26
 msgid "Create new Partition"
 msgstr "Izveidot jaunu partīciju"
 
-#. checkbutton..
-#: ../src/Dialog_Partition_New.cc:34
-msgid "Round to cylinders"
-msgstr "Noapaļot līdz cilindriem"
-
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:66
+#: ../src/Dialog_Partition_New.cc:77
 msgid "Create as:"
 msgstr "Izveidot kā:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:71 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "Primārā partīcija"
 
-#: ../src/Dialog_Partition_New.cc:72 ../src/OperationCreate.cc:78
-#: ../src/OperationDelete.cc:77
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:76
+#: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "Loģiskā partīcija"
 
-#: ../src/Dialog_Partition_New.cc:73 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "Paplašināta partīcija"
 
-#: ../src/Dialog_Partition_New.cc:160
+#: ../src/Dialog_Partition_New.cc:185
 msgid "New Partition #%1"
 msgstr "Jauna partīcija #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:70
+#: ../src/Dialog_Partition_Resize_Move.cc:73
 msgid "Resize/Move %1"
 msgstr "Mainīt izmēru/Pārvietot %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:75
+#: ../src/Dialog_Partition_Resize_Move.cc:78
 msgid "Resize %1"
 msgstr "Mainīt izmēru %1"
 
-#: ../src/Dialog_Progress.cc:32 ../src/Dialog_Progress.cc:40
+#: ../src/Dialog_Progress.cc:32 ../src/Dialog_Progress.cc:44
 msgid "Applying pending operations"
 msgstr "Izpildīt izvēlētās darbības"
 
-#: ../src/Dialog_Progress.cc:42
+#: ../src/Dialog_Progress.cc:46
 msgid "Applying all listed operations."
 msgstr "Izpildīt visas izvēlētās darbības."
 
-#: ../src/Dialog_Progress.cc:44
+#: ../src/Dialog_Progress.cc:48
 msgid "Depending on the amount and type of operations this might take a long time."
 msgstr ""
 "Sakarā ar operāciju lielo skaitu un tipu, šis process var aizņemt daudz "
 "laika."
 
-#: ../src/Dialog_Progress.cc:57
+#: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
 msgstr "Izpildītās darbības:"
 
-#: ../src/Dialog_Progress.cc:95
+#: ../src/Dialog_Progress.cc:101
 msgid "Details"
 msgstr "Detaļas"
 
-#: ../src/Dialog_Progress.cc:174
+#: ../src/Dialog_Progress.cc:199
 msgid "%1 of %2 operations completed"
 msgstr "Pabeigtas %1 no %2 darbībām"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:220
+#: ../src/Dialog_Progress.cc:230
 msgid "_Save Details"
 msgstr "_Saglabāt detaļas"
 
-#: ../src/Dialog_Progress.cc:229
-msgid "Operation canceled"
-msgstr "Darbība atcelta"
-
-#: ../src/Dialog_Progress.cc:243
-msgid "All operations succesfully completed"
-msgstr "Visas darbības ir veiksmīgi pabeigtas"
+#: ../src/Dialog_Progress.cc:239
+#| msgid "Operation canceled"
+msgid "Operation cancelled"
+msgstr "Darbība atsaukta"
 
 #: ../src/Dialog_Progress.cc:253
+#| msgid "All operations succesfully completed"
+msgid "All operations successfully completed"
+msgstr "Visas darbības ir veiksmīgi pabeigtas"
+
+#: ../src/Dialog_Progress.cc:257
+#| msgid "Warning:"
+msgid "%1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "%1 brīdinājums"
+msgstr[1] "%1 brīdinājumi"
+msgstr[2] "%1 brīdinājumu"
+
+#: ../src/Dialog_Progress.cc:270
 msgid "An error occurred while applying the operations"
 msgstr "Kļūme izpildot izvēlētās darbības"
 
-#: ../src/Dialog_Progress.cc:258
-msgid "The following operation could not be applied to disk:"
-msgstr "Sekojošā operācija nevarēja tikt uzstādīta diskam:"
+#: ../src/Dialog_Progress.cc:275
+#| msgid "See the details for more information"
+msgid "See the details for more information."
+msgstr ""
 
-#: ../src/Dialog_Progress.cc:262
-msgid "See the details for more information"
-msgstr "Lai iegūtu vairāk informācijas, skatīties rekvizītus"
+#: ../src/Dialog_Progress.cc:276
+msgid "IMPORTANT"
+msgstr ""
 
-#: ../src/Dialog_Progress.cc:295
+#: ../src/Dialog_Progress.cc:277
+msgid "If you want support, you need to provide the saved details!"
+msgstr ""
+
+#: ../src/Dialog_Progress.cc:279
+#| msgid "See the details for more information"
+msgid "See %1 for more information."
+msgstr ""
+
+#: ../src/Dialog_Progress.cc:312
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Vai Jūs esat pārliecināts, ka vēlaties pārtraukt pašreizējo operāciju?"
 
-#: ../src/Dialog_Progress.cc:301
-msgid "Canceling an operation may cause SEVERE filesystem damage."
-msgstr "Operācijas apturēšana var stipri bojāt failsistēmu."
+#: ../src/Dialog_Progress.cc:318
+#| msgid "Canceling an operation may cause SEVERE filesystem damage."
+msgid "Canceling an operation might cause SEVERE file system damage."
+msgstr "dARBĪBAS apturēšana var IEVĒROJAMI bojāt failsistēmu."
 
-#: ../src/Dialog_Progress.cc:303
+#: ../src/Dialog_Progress.cc:320
 msgid "Continue Operation"
 msgstr "Turpināt darbību"
 
-#: ../src/Dialog_Progress.cc:304
+#: ../src/Dialog_Progress.cc:321
 msgid "Cancel Operation"
 msgstr "Atcelt darbību"
 
-#: ../src/Dialog_Progress.cc:317
+#: ../src/Dialog_Progress.cc:334
 msgid "Save Details"
 msgstr "Saglabāt detaļas"
 
-#: ../src/DialogFeatures.cc:27 ../src/Win_GParted.cc:121
-msgid "Features"
-msgstr "Pazīmes"
+#: ../src/Dialog_Progress.cc:353
+#| msgid "Save Details"
+msgid "GParted Details"
+msgstr "GParted papildus informācija"
 
-#: ../src/DialogFeatures.cc:33 ../src/TreeView_Detail.cc:35
-msgid "Filesystem"
+#. ==== GUI =========================
+#: ../src/Dialog_Progress.cc:356 ../src/Win_GParted.cc:69
+#: ../src/Win_GParted.cc:1108 ../src/Win_GParted.cc:1263
+msgid "GParted"
+msgstr "GParted"
+
+#: ../src/Dialog_Progress.cc:357
+#| msgid "GParted"
+msgid "Libparted"
+msgstr "Libparted"
+
+#: ../src/Dialog_Progress.cc:395
+msgid "EXECUTING"
+msgstr ""
+
+#: ../src/Dialog_Progress.cc:398
+msgid "SUCCESS"
+msgstr ""
+
+#: ../src/Dialog_Progress.cc:401
+msgid "ERROR"
+msgstr "KĻŪDA"
+
+#: ../src/Dialog_Progress.cc:404
+msgid "INFO"
+msgstr ""
+
+#: ../src/Dialog_Progress.cc:407
+msgid "N/A"
+msgstr "N/P"
+
+#: ../src/DialogFeatures.cc:27
+#| msgid "Filesystem"
+msgid "File System Support"
+msgstr "Failsistēmu atbalsts"
+
+#: ../src/DialogFeatures.cc:34 ../src/TreeView_Detail.cc:35
+#| msgid "Filesystem"
+msgid "File System"
 msgstr "Failsistēma"
 
-#: ../src/DialogFeatures.cc:34
-msgid "Detect"
-msgstr "Atrast"
-
-#: ../src/DialogFeatures.cc:35
-msgid "Read"
-msgstr "Lasīt"
-
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:36
 msgid "Grow"
 msgstr "Palielināt"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:37
 msgid "Shrink"
 msgstr "Samazināt"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:38
 msgid "Move"
 msgstr "Pārvietot"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:39
 msgid "Copy"
 msgstr "Kopēt"
 
-#: ../src/DialogFeatures.cc:41
+#: ../src/DialogFeatures.cc:40
 msgid "Check"
 msgstr "Pārbaudīt"
+
+#: ../src/DialogFeatures.cc:41 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "Etiķete"
+
+#: ../src/DialogFeatures.cc:42
+msgid "Required Software"
+msgstr ""
+
+#: ../src/DialogFeatures.cc:56
+msgid "This chart shows the actions supported on file systems."
+msgstr ""
+
+#: ../src/DialogFeatures.cc:58
+msgid ""
+"Not all actions are available on all file systems, in part due to the nature "
+"of file systems and limitations in the required software."
+msgstr ""
+
+#: ../src/DialogFeatures.cc:68
+msgid "Available"
+msgstr "Pieejams"
+
+#: ../src/DialogFeatures.cc:74
+#| msgid "Not active"
+msgid "Not Available"
+msgstr "Nav pieejams"
+
+#: ../src/DialogFeatures.cc:82
+msgid "Legend"
+msgstr "Apzīmējumi"
+
+#. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
+#: ../src/DialogFeatures.cc:95
+msgid "Rescan For Supported Actions"
+msgstr ""
 
 #: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "Apstrādāt karogus uz %1 "
 
-#: ../src/GParted_Core.cc:208
+#. TO TRANSLATORS: looks like Scanning /dev/sda
+#: ../src/GParted_Core.cc:195
+#| msgid "Unmounting %1"
+msgid "Scanning %1"
+msgstr "Skenē %1"
+
+#. TO TRANSLATORS: looks like Confirming /dev/sda
+#: ../src/GParted_Core.cc:215
+#| msgid "Unmounting %1"
+msgid "Confirming %1"
+msgstr "Apliecina %1"
+
+#. TO TRANSLATORS: looks like Searching /dev/sda partitions
+#: ../src/GParted_Core.cc:235
+msgid "Searching %1 partitions"
+msgstr ""
+
+#: ../src/GParted_Core.cc:271
 msgid "unrecognized"
 msgstr "neatpazīta"
 
-#. no filesystem found....
-#: ../src/GParted_Core.cc:633
-msgid "Unable to detect filesystem! Possible reasons are:"
+#: ../src/GParted_Core.cc:352
+msgid "A partition cannot have a length of %1 sectors"
+msgstr ""
+
+#: ../src/GParted_Core.cc:360
+msgid "A partition with used sectors (%1) greater than it's length (%2) is not valid"
+msgstr ""
+
+#: ../src/GParted_Core.cc:426
+msgid "libparted messages"
+msgstr ""
+
+#: ../src/GParted_Core.cc:824
+msgid "Logical Volume Management is not yet supported."
+msgstr ""
+
+#: ../src/GParted_Core.cc:840
+msgid "Linux Unified Key Setup encryption is not yet supported."
+msgstr ""
+
+#: ../src/GParted_Core.cc:863
+msgid "BTRFS is not yet supported."
+msgstr ""
+
+#. no file system found....
+#: ../src/GParted_Core.cc:870
+#| msgid "Unable to detect filesystem! Possible reasons are:"
+msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Neiespējami noteikt failssistēmu! Iespējamie iemesli:"
 
-#: ../src/GParted_Core.cc:635
-msgid "The filesystem is damaged"
+#: ../src/GParted_Core.cc:872
+#| msgid "The filesystem is damaged"
+msgid "The file system is damaged"
 msgstr "Failsistēma ir bojāta"
 
-#: ../src/GParted_Core.cc:637
-msgid "The filesystem is unknown to GParted"
-msgstr "Failsistēma ir GParted nezināma"
+#: ../src/GParted_Core.cc:874
+#| msgid "The filesystem is unknown to GParted"
+msgid "The file system is unknown to GParted"
+msgstr "Failsistēma nav zināma GParted"
 
-#: ../src/GParted_Core.cc:639
-msgid "There is no filesystem available (unformatted)"
-msgstr "Failsistēma nav pieejama(noformatēta)"
+#: ../src/GParted_Core.cc:876
+#| msgid "There is no filesystem available (unformatted)"
+msgid "There is no file system available (unformatted)"
+msgstr "Failsistēma nav pieejama (noformatēta)"
 
-#: ../src/GParted_Core.cc:714
-msgid "Unable to find mountpoint"
-msgstr "Nevar atrast montēšanas punktus"
+#: ../src/GParted_Core.cc:977
+#| msgid "Unable to find mountpoint"
+msgid "Unable to find mount point"
+msgstr "Nevar atrast montēšanas punktu"
 
-#: ../src/GParted_Core.cc:732
-msgid "Unable to read the contents of this filesystem!"
+#: ../src/GParted_Core.cc:995
+#| msgid "Unable to read the contents of this filesystem!"
+msgid "Unable to read the contents of this file system!"
 msgstr "Nevar nolasīt failsistēmas saturu!"
 
-#: ../src/GParted_Core.cc:734
+#: ../src/GParted_Core.cc:997
 msgid "Because of this some operations may be unavailable."
 msgstr "Sakarā ar šo, dažas operācijas var būt nepieejamas."
 
-#: ../src/GParted_Core.cc:736
-msgid "Did you install the correct plugin for this filesystem?"
-msgstr "Vai Jūs esat uzinstalējis īsto spraudni šai failsistēmai?"
-
-#: ../src/GParted_Core.cc:854
+#: ../src/GParted_Core.cc:1109
 msgid "create empty partition"
 msgstr "Izveidot tukšu partīciju"
 
-#: ../src/GParted_Core.cc:924
+#: ../src/GParted_Core.cc:1177 ../src/GParted_Core.cc:2260
 msgid "path: %1"
 msgstr "ceļš: %1"
 
-#: ../src/GParted_Core.cc:925
+#: ../src/GParted_Core.cc:1178 ../src/GParted_Core.cc:2261
 msgid "start: %1"
 msgstr "sākums: %1"
 
-#: ../src/GParted_Core.cc:926
+#: ../src/GParted_Core.cc:1179 ../src/GParted_Core.cc:2262
 msgid "end: %1"
 msgstr "beigas: %1"
 
-#: ../src/GParted_Core.cc:927
-msgid "size: %1"
-msgstr "izmērs: %1"
+#: ../src/GParted_Core.cc:1180 ../src/GParted_Core.cc:2263
+#| msgid "size: %1"
+msgid "size: %1 (%2)"
+msgstr "izmērs: %1 (%2)"
 
-#: ../src/GParted_Core.cc:969
-msgid "create new %1 filesystem"
-msgstr "iveidot jaunu failsistēmu %1"
+#: ../src/GParted_Core.cc:1210 ../src/linux_swap.cc:79 ../src/xfs.cc:236
+#| msgid "create new %1 filesystem"
+msgid "create new %1 file system"
+msgstr "izveidot jaunu failsistēmu %1"
 
-#: ../src/GParted_Core.cc:1094
-msgid "move filesystem."
-msgstr "pārvietot failsistēmu."
+#: ../src/GParted_Core.cc:1243
+#| msgid "set partitiontype"
+msgid "delete partition"
+msgstr "dzēst partīciju"
 
-#: ../src/GParted_Core.cc:1171 ../src/GParted_Core.cc:1217
-#: ../src/GParted_Core.cc:1247
-msgid "%1 of %2 moved"
-msgstr "%1 no %2 pārvietots"
+#: ../src/GParted_Core.cc:1266
+#| msgid "Set Disklabel on %1"
+msgid "Clear partition label on %1"
+msgstr "Notīrīt partīcijas nosaukumu no %1"
 
-#: ../src/GParted_Core.cc:1342
+#: ../src/GParted_Core.cc:1271
+msgid "Set partition label to \"%1\" on %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1350
+msgid "moving requires old and new length to be the same"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1367
+#| msgid "grow filesystem to fill the partition"
+msgid "rollback last change to the partition table"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1396
+#| msgid "move filesystem."
+msgid "move file system to the left"
+msgstr "pārvietot failsistēmu pa kreisi"
+
+#: ../src/GParted_Core.cc:1398
+#| msgid "grow filesystem to fill the partition"
+msgid "move file system to the right"
+msgstr "pārvietot failsistēmu pa labi"
+
+#: ../src/GParted_Core.cc:1401
+#| msgid "move filesystem."
+msgid "move file system"
+msgstr "pārvietot failsistēmu"
+
+#: ../src/GParted_Core.cc:1403
+#| msgid "new and old partition have the same size. continuing anyway"
+msgid "new and old file system have the same position -- skipping this operation"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1422
+msgid "perform real move"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1464
+msgid "using libparted"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1504
+msgid "resizing requires old and new start to be the same"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1569
 msgid "resize/move partition"
 msgstr "mainīt partīcijas izmēru/pārvietot to"
 
-#: ../src/GParted_Core.cc:1362
+#: ../src/GParted_Core.cc:1572
+msgid "move partition to the right"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1575
+#| msgid "set partitiontype"
+msgid "move partition to the left"
+msgstr "pārvietot partīciju pa kreisi"
+
+#: ../src/GParted_Core.cc:1578
+msgid "grow partition from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1581
+msgid "shrink partition from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1584
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1587
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1590
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1593
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1608
+#| msgid "new and old partition have the same size. continuing anyway"
+msgid ""
+"new and old partition have the same size and position -- skipping this "
+"operation"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1618
 msgid "old start: %1"
 msgstr "vecais sākums: %1"
 
-#: ../src/GParted_Core.cc:1363
+#: ../src/GParted_Core.cc:1619
 msgid "old end: %1"
 msgstr "vecās beigas: %1"
 
-#: ../src/GParted_Core.cc:1364
-msgid "old size: %1"
-msgstr "vecais izmērs: %1"
+#: ../src/GParted_Core.cc:1620
+#| msgid "old size: %1"
+msgid "old size: %1 (%2)"
+msgstr "vecais izmērs: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1429
+#: ../src/GParted_Core.cc:1679 ../src/GParted_Core.cc:2341
 msgid "new start: %1"
 msgstr "jaunais sākums: %1"
 
-#: ../src/GParted_Core.cc:1430
+#: ../src/GParted_Core.cc:1680 ../src/GParted_Core.cc:2342
 msgid "new end: %1"
 msgstr "jaunās beigas: %1"
 
-#: ../src/GParted_Core.cc:1431
-msgid "new size: %1"
-msgstr "jaunais izmērs: %1"
+#: ../src/GParted_Core.cc:1681 ../src/GParted_Core.cc:2343
+#| msgid "new size: %1"
+msgid "new size: %1 (%2)"
+msgstr "jaunais izmērs: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1462
-msgid "shrink filesystem"
+#: ../src/GParted_Core.cc:1705
+#| msgid "shrink filesystem"
+msgid "shrink file system"
 msgstr "samazināt failsistēmu"
 
-#: ../src/GParted_Core.cc:1464
-msgid "grow filesystem"
+#: ../src/GParted_Core.cc:1709
+#| msgid "grow filesystem"
+msgid "grow file system"
 msgstr "palielināt failsistēmu"
 
-#: ../src/GParted_Core.cc:1467
-msgid "new and old partition have the same size. continuing anyway"
-msgstr "jaunajai un vecajai partīcijai ir vienādi izmēri. vai turpināt"
+#: ../src/GParted_Core.cc:1712
+#| msgid "shrink filesystem"
+msgid "resize file system"
+msgstr "mainīt failsistēmas izmēru"
 
-#: ../src/GParted_Core.cc:1489
-msgid "grow filesystem to fill the partition"
+#: ../src/GParted_Core.cc:1715
+#| msgid "new and old partition have the same size. continuing anyway"
+msgid "new and old file system have the same size -- skipping this operation"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1750
+#| msgid "grow filesystem to fill the partition"
+msgid "grow file system to fill the partition"
 msgstr "palielināt failsistēmu, līdz tā piepilda partīciju"
 
-#: ../src/GParted_Core.cc:1498
-msgid "resize partition and filesystem using libparted"
-msgstr "mainīt partīcijas izmēru un failsistēmu izmantojot libparted"
+#: ../src/GParted_Core.cc:1755
+msgid "growing is not available for this file system"
+msgstr ""
 
-#: ../src/GParted_Core.cc:1572
-msgid "copy filesystem of %1 to %2"
+#: ../src/GParted_Core.cc:1774
+msgid "the destination is smaller than the source partition"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1788
+#| msgid "copy filesystem of %1 to %2"
+msgid "copy file system of %1 to %2"
 msgstr "kopēt failsistēmu no %1 uz %2"
 
-#: ../src/GParted_Core.cc:1621
-msgid "Use a blocksize of %1 (%2 sectors)"
-msgstr "Izmantot %1 blokizmēru (%2 sektori)"
+#: ../src/GParted_Core.cc:1832
+msgid "perform read-only test"
+msgstr ""
 
-#: ../src/GParted_Core.cc:1662 ../src/GParted_Core.cc:1687
+#: ../src/GParted_Core.cc:1880
+msgid "using internal algorithm"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1882
+msgid "read %1 sectors"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1882
+#| msgid "Copy %1 to %2"
+msgid "copy %1 sectors"
+msgstr "kopēt %1 sektoru"
+
+#: ../src/GParted_Core.cc:1884
+msgid "finding optimal blocksize"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1921
+msgid "%1 seconds"
+msgstr "%1 sekundes"
+
+#: ../src/GParted_Core.cc:1937
+#| msgid "Use a blocksize of %1 (%2 sectors)"
+msgid "optimal blocksize is %1 sectors (%2)"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1954
+msgid "%1 sectors read"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1954
+#| msgid "%1 of %2 copied"
+msgid "%1 sectors copied"
+msgstr "%1 sektori nokopēti"
+
+#: ../src/GParted_Core.cc:1965
+msgid "rollback last transaction"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1992
+#| msgid "check filesystem on %1 for errors and (if possible) fix them"
+msgid "check file system on %1 for errors and (if possible) fix them"
+msgstr "pārbaudīt failsistēmas kļūdas uz %1 un ja iespējams, tad izlabot tās"
+
+#: ../src/GParted_Core.cc:2000
+msgid "checking is not available for this file system"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2026
+#| msgid "set partitiontype"
+msgid "set partition type on %1"
+msgstr "uzstādīt partīcijas tipu kā %1"
+
+#: ../src/GParted_Core.cc:2053
+#| msgid "set partitiontype"
+msgid "new partition type: %1"
+msgstr "jaunās partīcijas tips: %1"
+
+#: ../src/GParted_Core.cc:2080
+msgid "%1 of %2 read (%3 remaining)"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2080
+#| msgid "%1 of %2 copied"
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 no %2 nokopēts (%3 atlicis)"
+
+#: ../src/GParted_Core.cc:2086 ../src/GParted_Core.cc:2181
+#| msgid "%1 of %2 moved"
+msgid "%1 of %2 read"
+msgstr "%1 no %2 nolasīts"
+
+#: ../src/GParted_Core.cc:2086 ../src/GParted_Core.cc:2181
 msgid "%1 of %2 copied"
 msgstr "%1 no %2 nokopēts"
 
-#: ../src/GParted_Core.cc:1723
-msgid "An error occurred while opening the devices"
-msgstr "Kļūme atverot ierīces"
+#: ../src/GParted_Core.cc:2104
+#| msgid "Use a blocksize of %1 (%2 sectors)"
+msgid "read %1 sectors using a blocksize of %2 sectors"
+msgstr ""
 
-#: ../src/GParted_Core.cc:1733
-msgid "check filesystem on %1 for errors and (if possible) fix them"
-msgstr "pārbaudīt failsistēmas kļūdas uz %1 un ja iespējams, tad izlabot tās"
+#: ../src/GParted_Core.cc:2107
+#| msgid "Use a blocksize of %1 (%2 sectors)"
+msgid "copy %1 sectors using a blocksize of %2 sectors"
+msgstr ""
 
-#: ../src/GParted_Core.cc:1753
-msgid "set partitiontype"
-msgstr "uzstādīt partīcijas tipu"
-
-#: ../src/GParted_Core.cc:1795
-msgid "Error while reading block at sector %1"
-msgstr "Kļūda lasot %1 sektora bloku"
-
-#: ../src/GParted_Core.cc:1803
+#: ../src/GParted_Core.cc:2226
 msgid "Error while writing block at sector %1"
 msgstr "Kļūda rakstot %1 sektora bloku"
 
-#: ../src/OperationCopy.cc:40
+#: ../src/GParted_Core.cc:2229
+msgid "Error while reading block at sector %1"
+msgstr "Kļūda lasot %1 sektora bloku"
+
+#: ../src/GParted_Core.cc:2239
+#| msgid "Paste %1"
+msgid "calibrate %1"
+msgstr "kalibrēt %1"
+
+#: ../src/GParted_Core.cc:2286
+msgid "calculate new size and position of %1"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2290
+#| msgid "old start: %1"
+msgid "requested start: %1"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2291
+#| msgid "old end: %1"
+msgid "requested end: %1"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2292
+msgid "requested size: %1 (%2)"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2416
+msgid "updating boot sector of %1 file system on %2"
+msgstr ""
+
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+#| msgid "Undo last operation"
+msgid "_Undo Last Operation"
+msgstr "Atcelt pēdējo darbīb_u"
+
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+#| msgid "Clear operationslist"
+msgid "_Clear All Operations"
+msgstr "_Notīrīt darbību sarakstu"
+
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+#| msgid "Apply all operations"
+msgid "_Apply All Operations"
+msgstr "Uzstādīt vis_as darbības"
+
+#: ../src/OperationCopy.cc:36
 msgid "copy of %1"
 msgstr "kopēt no %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:82
+#: ../src/OperationCopy.cc:78
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "kopēt %1 uz %2(sākt no %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:90
+#: ../src/OperationCopy.cc:86
 msgid "Copy %1 to %2"
 msgstr "Kopēt %1 uz %2"
 
+#. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
+#: ../src/OperationCheck.cc:38
+#| msgid "copy filesystem of %1 to %2"
+msgid "Check and repair file system (%1) on %2"
+msgstr "Pārbaudīt un salabot failsistēmu (%1) uz %2"
+
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:88
+#: ../src/OperationCreate.cc:86
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Izveidot %1 #%2(%3, %4) uz %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:82
+#: ../src/OperationDelete.cc:80
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Dzēst %1 (%2, %3) no %4"
 
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:60
+#: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
 msgstr "Formatēt %1 kā %2"
 
-#: ../src/OperationResizeMove.cc:53
-msgid "Move %1 forward by %2"
-msgstr "Pārvietot %1 par %2 uz priekšu"
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+#| msgid "New Partition #%1"
+msgid "Clear Partition Label on %1"
+msgstr ""
 
-#: ../src/OperationResizeMove.cc:57
-msgid "Move %1 backward by %2"
-msgstr "Pārvietot %1 par %2 atpakaļ"
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+msgid "Set Partition Label \"%1\" on %2"
+msgstr ""
 
-#: ../src/OperationResizeMove.cc:67
-msgid "Resize %1 from %2 to %3"
-msgstr "Mainīt %1 izmēru no %2 uz %3"
+#: ../src/OperationResizeMove.cc:85
+#| msgid "Resize/Move %1"
+msgid "resize/move %1"
+msgstr "mainīt izmēru/pārvietot %1"
 
-#: ../src/OperationResizeMove.cc:72
-msgid "and Resize %1 from %2 to %3"
-msgstr "un mainīt %1 izmēru no %2 uz %3"
+#: ../src/OperationResizeMove.cc:87
+#| msgid "new and old partition have the same size. continuing anyway"
+msgid "new and old partition have the same size and position -- continuing anyway"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:91
+msgid "Move %1 to the right"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:94
+msgid "Move %1 to the left"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:97
+#| msgid "Resize %1 from %2 to %3"
+msgid "Grow %1 from %2 to %3"
+msgstr "Palielināt %1 izmēru no %2 uz %3"
+
+#: ../src/OperationResizeMove.cc:100
+#| msgid "Resize %1 from %2 to %3"
+msgid "Shrink %1 from %2 to %3"
+msgstr "Samazināt %1 izmēru no %2 uz %3"
+
+#: ../src/OperationResizeMove.cc:103
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:106
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:109
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr ""
+
+#: ../src/OperationResizeMove.cc:112
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr ""
 
 #. append columns
 #: ../src/TreeView_Detail.cc:34
@@ -544,231 +943,285 @@ msgid "Partition"
 msgstr "Partīcija"
 
 #: ../src/TreeView_Detail.cc:36
-msgid "Mountpoint"
+#| msgid "Mountpoint"
+msgid "Mount Point"
 msgstr "Montēšanas punkts"
 
-#: ../src/TreeView_Detail.cc:37
+#: ../src/TreeView_Detail.cc:38
 msgid "Size"
 msgstr "Izmērs"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:39
 msgid "Used"
 msgstr "Izmantots"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:40
 msgid "Unused"
 msgstr "Neizmantots"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:41
 msgid "Flags"
 msgstr "Karogi"
 
-#: ../src/Utils.cc:110
+#: ../src/Utils.cc:118
 msgid "unallocated"
 msgstr "neizvietots"
 
-#: ../src/Utils.cc:111
+#: ../src/Utils.cc:119
 msgid "unknown"
 msgstr "nezināms"
 
-#: ../src/Utils.cc:112
+#: ../src/Utils.cc:120
 msgid "unformatted"
 msgstr "nenofarmatēts"
 
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:137
 msgid "used"
 msgstr "izmantots"
 
-#: ../src/Utils.cc:128
+#: ../src/Utils.cc:138
 msgid "unused"
 msgstr "neizmantots"
 
-#: ../src/Utils.cc:143
+#: ../src/Utils.cc:178
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:148
+#: ../src/Utils.cc:183
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:153
+#: ../src/Utils.cc:188
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:158
+#: ../src/Utils.cc:193
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:163
+#: ../src/Utils.cc:198
 msgid "%1 TiB"
 msgstr "%1  TiB"
 
-#: ../src/Win_GParted.cc:115
-msgid "_Refresh devices"
-msgstr "Atjaunināt ie_rīču sarakstu"
+#: ../src/Utils.cc:334
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr ""
 
-#: ../src/Win_GParted.cc:118
-msgid "Devices"
-msgstr "Ierīces"
+#: ../src/Utils.cc:343
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr ""
 
-#: ../src/Win_GParted.cc:124
+#: ../src/Utils.cc:352
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr ""
+
+#: ../src/Win_GParted.cc:136
+#| msgid "_Refresh devices"
+msgid "_Refresh Devices"
+msgstr "Atjaunināt ie_rīci"
+
+#: ../src/Win_GParted.cc:142
+#| msgid "Devices"
+msgid "_Devices"
+msgstr "_Ierīces"
+
+#: ../src/Win_GParted.cc:147
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:130
+#: ../src/Win_GParted.cc:166
 msgid "_Edit"
 msgstr "R_ediģēt"
 
-#: ../src/Win_GParted.cc:134 ../src/Win_GParted.cc:318
-msgid "Harddisk Information"
-msgstr "Cietā diska informācija"
+#: ../src/Win_GParted.cc:171
+#| msgid "Harddisk Information"
+msgid "Device _Information"
+msgstr "Ierīces _informācija"
 
-#: ../src/Win_GParted.cc:135
-msgid "Operations"
-msgstr "Darbības"
+#: ../src/Win_GParted.cc:173
+#| msgid "Continue Operation"
+msgid "Pending _Operations"
+msgstr "Sarind_otās darbības"
 
-#: ../src/Win_GParted.cc:136
+#: ../src/Win_GParted.cc:174
 msgid "_View"
 msgstr "_Skats"
 
-#: ../src/Win_GParted.cc:140
-msgid "Set Disklabel"
-msgstr "Uzstādīt diska iezīmi"
+#: ../src/Win_GParted.cc:178
+#| msgid "Filesystem"
+msgid "_File System Support"
+msgstr "_Failsistēmas atbalsts"
 
-#: ../src/Win_GParted.cc:141
+#: ../src/Win_GParted.cc:182
+#| msgid "Create new Partition"
+msgid "_Create Partition Table"
+msgstr "Izveidot jaunu partī_ciju tabulu"
+
+#: ../src/Win_GParted.cc:184
 msgid "_Device"
 msgstr "_Ierīce"
 
-#: ../src/Win_GParted.cc:145
+#: ../src/Win_GParted.cc:188
 msgid "_Partition"
 msgstr "_Partīcija"
 
-#: ../src/Win_GParted.cc:152
+#: ../src/Win_GParted.cc:193
+msgid "_Contents"
+msgstr "_Saturs"
+
+#: ../src/Win_GParted.cc:201
 msgid "_Help"
 msgstr "_Palīdzība"
 
-#: ../src/Win_GParted.cc:164
+#: ../src/Win_GParted.cc:215
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Izveidot jaunu partīciju izvēlētajē, bet neizmantotajā apgabalā"
 
-#: ../src/Win_GParted.cc:168
+#: ../src/Win_GParted.cc:220
 msgid "Delete the selected partition"
 msgstr "Izdzēst izvēlēto partīciju"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:242
 msgid "Resize/Move the selected partition"
 msgstr "Pārvietot vai mainīt izvēlētās partīcijas izmēru"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:251
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopēt izvēlēto partīciju uz starpliktuvi"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:256
 msgid "Paste the partition from the clipboard"
 msgstr "Ielikt partīciju no starpliktuves"
 
-#: ../src/Win_GParted.cc:195
-msgid "Undo last operation"
+#: ../src/Win_GParted.cc:268
+#| msgid "Undo last operation"
+msgid "Undo Last Operation"
 msgstr "Atcelt pēdējo darbību"
 
-#: ../src/Win_GParted.cc:201
-msgid "Apply all operations"
-msgstr "Uzstādīt visas darbības"
+#: ../src/Win_GParted.cc:276
+#| msgid "Apply all operations"
+msgid "Apply All Operations"
+msgstr "Izpildīt visas darbības"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:311
 msgid "_Resize/Move"
 msgstr "Mainīt izmēru/Pā_rvietot"
 
-#: ../src/Win_GParted.cc:250
+#: ../src/Win_GParted.cc:335
 msgid "_Format to"
 msgstr "_Formatēt uz"
 
-#: ../src/Win_GParted.cc:257 ../src/Win_GParted.cc:741
-msgid "unmount"
-msgstr "nomeontēt"
+#: ../src/Win_GParted.cc:344
+#| msgid "unmount"
+msgid "Unmount"
+msgstr "Nomontēt"
 
-#: ../src/Win_GParted.cc:262
-msgid "mount on"
-msgstr "piemontēt uz"
+#: ../src/Win_GParted.cc:350
+#| msgid "mount on"
+msgid "_Mount on"
+msgstr "Pie_montēt uz"
 
-#: ../src/Win_GParted.cc:267
-msgid "manage flags"
-msgstr "apstrādāt karogus"
+#: ../src/Win_GParted.cc:357
+#| msgid "manage flags"
+msgid "M_anage Flags"
+msgstr "_Apstrādāt karogus"
+
+#: ../src/Win_GParted.cc:362
+#| msgid "Check"
+msgid "C_heck"
+msgstr "_Pārbaudīt"
+
+#: ../src/Win_GParted.cc:367
+msgid "_Label"
+msgstr "_Etiķete"
+
+#: ../src/Win_GParted.cc:429
+#| msgid "Harddisk Information"
+msgid "Device Information"
+msgstr "Ierīces informācija"
 
 #. model
-#: ../src/Win_GParted.cc:326
+#: ../src/Win_GParted.cc:437
 msgid "Model:"
 msgstr "Modelis:"
 
 #. disktype
-#: ../src/Win_GParted.cc:363
+#: ../src/Win_GParted.cc:474
 msgid "DiskLabelType:"
 msgstr "Diska iezīmes tips:"
 
 #. heads
-#: ../src/Win_GParted.cc:371
+#: ../src/Win_GParted.cc:482
 msgid "Heads:"
 msgstr "Galviņas:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:379
+#: ../src/Win_GParted.cc:490
 msgid "Sectors/Track:"
 msgstr "Sektori/celiņi:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:387
+#: ../src/Win_GParted.cc:498
 msgid "Cylinders:"
 msgstr "Cilindri:"
 
-#: ../src/Win_GParted.cc:428
-msgid "Hide operationslist"
-msgstr "Slēpt darbību sarakstu"
+#: ../src/Win_GParted.cc:677
+msgid "Could not add this operation to the list."
+msgstr ""
 
-#: ../src/Win_GParted.cc:437
-msgid "Clear operationslist"
-msgstr "Notīrīt darbību sarakstu. "
+#: ../src/Win_GParted.cc:702
+#| msgid "%1 operations pending"
+msgid "%1 operation pending"
+msgid_plural "%1 operations pending"
+msgstr[0] "%1 darbība gaida izpildi"
+msgstr[1] "%1 darbības gaida izpildi"
+msgstr[2] "%1 darbību gaida izpildi"
 
-#: ../src/Win_GParted.cc:660
-msgid "%1 operations pending"
-msgstr "%1 darbības gaida izpildi"
-
-#: ../src/Win_GParted.cc:662
-msgid "1 operation pending"
-msgstr "1 operācija gaida izpildi"
-
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:756
 msgid "Quit GParted?"
 msgstr "Iziet no GParted?"
 
-#: ../src/Win_GParted.cc:720
-msgid "%1 operations are currently pending."
-msgstr "%1 darbība šobrīd gaida izpildi."
+#: ../src/Win_GParted.cc:762
+#| msgid "1 operation is currently pending."
+msgid "%1 operation is currently pending."
+msgid_plural "%1 operations are currently pending."
+msgstr[0] "%1 darbība šobrīd gaida izpildi."
+msgstr[1] "%1 darbības šobrīd gaida izpildi."
+msgstr[2] "%1 darbību šobrīd gaida izpildi."
 
-#: ../src/Win_GParted.cc:723
-msgid "1 operation is currently pending."
-msgstr "1 darbība šobrīd gaida izpildi."
+#: ../src/Win_GParted.cc:788
+#| msgid "unmount"
+msgid "_Unmount"
+msgstr "_Nomontēt"
 
-#: ../src/Win_GParted.cc:765
-msgid "swapoff"
-msgstr "swapoff"
+#: ../src/Win_GParted.cc:813
+#| msgid "swapoff"
+msgid "_Swapoff"
+msgstr "_Swapoff"
 
-#: ../src/Win_GParted.cc:771
-msgid "swapon"
-msgstr "swapon"
+#: ../src/Win_GParted.cc:819
+#| msgid "swapon"
+msgid "_Swapon"
+msgstr "_Swapon"
 
-#: ../src/Win_GParted.cc:914
+#: ../src/Win_GParted.cc:1018
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:960
+#: ../src/Win_GParted.cc:1064
 msgid "Scanning all devices..."
 msgstr "Analizēju visas ierīces..."
 
-#: ../src/Win_GParted.cc:976
-msgid "The kernel is unable to re-read the partitiontables on the following devices:"
-msgstr "Kernel nevar pārlasīt partīcijtabulas sekojošām ierīcēm:"
+#: ../src/Win_GParted.cc:1080
+#| msgid ""
+#| "The kernel is unable to re-read the partitiontables on the following "
+#| "devices:"
+msgid ""
+"The kernel is unable to re-read the partition tables on the following "
+"devices:"
+msgstr "Kodols nevar pārlasīt partīcijtabulas sekojošām ierīcēm:"
 
-#: ../src/Win_GParted.cc:983
+#: ../src/Win_GParted.cc:1087
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -776,31 +1229,25 @@ msgstr ""
 "Sakarā ar šo, Jums būs limitēta pieeja šai ierīcei. Lai iegūtu pilnu pieeju, "
 "nomontējiet  piemontētās partīcijas uz ierīces."
 
-#: ../src/Win_GParted.cc:1027
+#: ../src/Win_GParted.cc:1131
 msgid "No devices detected"
 msgstr "Nav atrastas ierīces"
 
-#: ../src/Win_GParted.cc:1106
-msgid "Sorry, not yet implemented."
-msgstr "Piedodiet, vēl nav īstenots."
-
-#: ../src/Win_GParted.cc:1112
-msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr ""
-"Lūdzu, apmeklējiet http://gparted.sf.net , lai iegūtu vairāk informācijas "
-"vai atbalstu."
+#: ../src/Win_GParted.cc:1266
+msgid "GNOME Partition Editor"
+msgstr "GNOME partīciju redaktors"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
-#. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1143
+#. It's a good idea to provide the url of your translation team as well. Thanks!
+#: ../src/Win_GParted.cc:1282
 msgid "translator-credits"
 msgstr "Gvido Sprogis <gvido.sprogis@gmail.com>"
 
-#: ../src/Win_GParted.cc:1183
+#: ../src/Win_GParted.cc:1324
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Nav iespējams izveidot vairāk kā %1 prmārās partīcijas"
 
-#: ../src/Win_GParted.cc:1191
+#: ../src/Win_GParted.cc:1332
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -812,125 +1259,134 @@ msgstr ""
 "paplašinātā partīcija var būt arī galvenā partīcija, iespējams būtu "
 "nepieciešams noņemt vispirms galveno partīciju."
 
-#: ../src/Win_GParted.cc:1342
+#: ../src/Win_GParted.cc:1519
 msgid "Unable to delete %1!"
 msgstr "Nevar izdzēst %1!"
 
-#: ../src/Win_GParted.cc:1349
+#: ../src/Win_GParted.cc:1526
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Lūdzu, nomontējiet visas loģiskās partīcijas, kuru numuri ir lielāki par %1"
 
-#: ../src/Win_GParted.cc:1360
+#: ../src/Win_GParted.cc:1537
 msgid "Are you sure you want to delete %1?"
 msgstr "Vai Jūs esat pārliecināts, ka vēlaties izdzēst %1?"
 
-#: ../src/Win_GParted.cc:1367
+#: ../src/Win_GParted.cc:1544
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Pēc izdzēšanas šī partīcija vairs nebūs pieejama kopēšanai."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1370
+#: ../src/Win_GParted.cc:1547
 msgid "Delete %1 (%2, %3)"
 msgstr "Dzēšs %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1431
-msgid "Cannot format this filesystem to %1."
+#: ../src/Win_GParted.cc:1613
+#| msgid "Cannot format this filesystem to %1."
+msgid "Cannot format this file system to %1."
 msgstr "Nevar formatēt šo failsistēmu uz %1."
 
-#: ../src/Win_GParted.cc:1440
-msgid "A %1 filesystem requires a partition of at least %2."
+#: ../src/Win_GParted.cc:1622
+#| msgid "A %1 filesystem requires a partition of at least %2."
+msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 failsitēmai ir nepieciešama vismaz %2 partīcija."
 
-#: ../src/Win_GParted.cc:1445
-msgid "A partition with a %1 filesystem has a maximum size of %2."
+#: ../src/Win_GParted.cc:1627
+#| msgid "A partition with a %1 filesystem has a maximum size of %2."
+msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 failsistēmas partīcijas maksimālais izmērs ir %2."
 
-#: ../src/Win_GParted.cc:1518
-msgid "The partition could not be unmounted from the following mountpoints:"
-msgstr "Partīciju nebija iespējams nomontēt no sekojošiem montēšanas punktiem:"
+#: ../src/Win_GParted.cc:1712
+#| msgid "The partition could not be unmounted from the following mountpoints:"
+msgid "The partition could not be unmounted from the following mount points:"
+msgstr "Partīciju nevarēja nomontēt no sekojošiem montēšanas punktiem:"
 
-#: ../src/Win_GParted.cc:1520
+#: ../src/Win_GParted.cc:1714
+#| msgid ""
+#| "Most likely other partitions are also mounted on these mountpoints. You "
+#| "are advised to unmount them manually."
 msgid ""
-"Most likely other partitions are also mounted on these mountpoints. You are "
+"Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
 msgstr ""
 "Iespējams citas partīcijas ir piemontētas pie šī montēšanas punkta. "
-"Ieteicams nomontēt."
+"Ieteicams būtu tās nomontēt."
 
-#: ../src/Win_GParted.cc:1570
+#: ../src/Win_GParted.cc:1764
 msgid "Deactivating swap on %1"
 msgstr "Deaktivizē swap uz %1"
 
-#: ../src/Win_GParted.cc:1570
+#: ../src/Win_GParted.cc:1764
 msgid "Activating swap on %1"
 msgstr "Aktivizē swap uz %1"
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1771
 msgid "Could not deactivate swap"
 msgstr "Nevarēja deaktivizēt swap"
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1771
 msgid "Could not activate swap"
 msgstr "Nevarēja aktivizēt swap"
 
-#: ../src/Win_GParted.cc:1593
+#: ../src/Win_GParted.cc:1787
 msgid "Unmounting %1"
 msgstr "Nomontē %1"
 
-#: ../src/Win_GParted.cc:1598
+#: ../src/Win_GParted.cc:1792
 msgid "Could not unmount %1"
 msgstr "Nebija iespējams nomontēt %1"
 
-#: ../src/Win_GParted.cc:1627
+#: ../src/Win_GParted.cc:1821
 msgid "mounting %1 on %2"
 msgstr "montē %1 uz %2"
 
-#: ../src/Win_GParted.cc:1634
+#: ../src/Win_GParted.cc:1828
 msgid "Could not mount %1 on %2"
 msgstr "Nebija iespējams montēt %1 uz %2"
 
-#: ../src/Win_GParted.cc:1658
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "Vai Jūs esat drošs, ka vēlaties izveidot diska nosaukumu %1 uz %2?"
+#: ../src/Win_GParted.cc:1854
+#| msgid "Error while setting new disklabel"
+msgid "Error while creating partition table."
+msgstr "Kļūda veidojot partīciju tabulu."
 
-#: ../src/Win_GParted.cc:1666
-msgid "This operation will destroy all data on %1!"
-msgstr "Šī operācija iznīcinās visus datus uz %1!"
-
-#: ../src/Win_GParted.cc:1675
-msgid "Error while setting new disklabel"
-msgstr "Kļūda, uzstādot jaunu diska nosaukumu"
-
-#: ../src/Win_GParted.cc:1750
+#: ../src/Win_GParted.cc:1967
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Vai tiešām vēlaties izpildīt atsīmētās darbības?"
 
-#: ../src/Win_GParted.cc:1755
-msgid "It is recommended to backup valuable data before proceeding."
-msgstr "Ieteicams dublēt datus, pirms turpināt."
+#: ../src/Win_GParted.cc:1973
+msgid "Editing partitions has the potential to cause LOSS of DATA."
+msgstr ""
 
-#: ../src/Win_GParted.cc:1756
-msgid "Apply operations to harddisk"
-msgstr "Izpildīt drbības cietajam diskam"
+#: ../src/Win_GParted.cc:1975
+#| msgid "It is recommended to backup valuable data before proceeding."
+msgid "You are advised to backup your data before proceeding."
+msgstr "Ieteicams izceidot datu rezerves kopiju, pirms turpināt."
 
-#: ../src/jfs.cc:107 ../src/xfs.cc:109 ../src/xfs.cc:198 ../src/xfs.cc:205
-msgid "create temporary mountpoint (%1)"
+#: ../src/Win_GParted.cc:1977
+#| msgid "Apply operations to harddisk"
+msgid "Apply operations to device"
+msgstr "Izpildīt drbības ierīcei"
+
+#. create mount point...
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:244 ../src/xfs.cc:251
+#| msgid "create temporary mountpoint (%1)"
+msgid "create temporary mount point (%1)"
 msgstr "radit pagaidu montesanas punktu (%1)"
 
-#: ../src/jfs.cc:114 ../src/xfs.cc:116 ../src/xfs.cc:212 ../src/xfs.cc:221
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:258 ../src/xfs.cc:267
 msgid "mount %1 on %2"
 msgstr "montet no %1 uz %2"
 
-#: ../src/jfs.cc:123
+#: ../src/jfs.cc:156
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "pārmontēt %1 uz %2 ar aktivizētu 'resize' karogu"
 
-#: ../src/jfs.cc:140 ../src/xfs.cc:139 ../src/xfs.cc:245 ../src/xfs.cc:266
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:291 ../src/xfs.cc:312
 msgid "unmount %1"
 msgstr "nomontēt %1"
 
-#: ../src/jfs.cc:160 ../src/xfs.cc:159 ../src/xfs.cc:286 ../src/xfs.cc:309
-msgid "remove temporary mountpoint (%1)"
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:332 ../src/xfs.cc:355
+#| msgid "remove temporary mountpoint (%1)"
+msgid "remove temporary mount point (%1)"
 msgstr "noņemt pagaidu montēšanas punktu (%1)"
 
 #: ../src/main.cc:38
@@ -938,28 +1394,34 @@ msgid "Root privileges are required for running GParted"
 msgstr "Ir nepieciešamas root privilēģijas, lai darbinātu GParted"
 
 #: ../src/main.cc:43
-msgid "Since GParted can be a weapon of mass destruction only root may run it."
+#| msgid ""
+#| "Since GParted can be a weapon of mass destruction only root may run it."
+msgid ""
+"Since GParted is a powerful tool capable of destroying partition tables and "
+"vast amounts of data, only root may run it."
 msgstr ""
-"Tā kā GParted var būt masu iznīcinošs ierocis, tikai root lietotājs var to "
+"Tā kā GParted var būt masu iznīcināšanas ierocis, tikai root lietotājs var to "
 "izmantot."
 
 #. simulation..
-#: ../src/ntfs.cc:90
+#: ../src/ntfs.cc:124
 msgid "run simulation"
 msgstr "palaist simulaciju"
 
 #. real resize
-#: ../src/ntfs.cc:97
+#: ../src/ntfs.cc:131
 msgid "real resize"
 msgstr "reāla izmēra maiņa"
 
-#. grow the mounted filesystem..
-#: ../src/xfs.cc:124
-msgid "grow mounted filesystem"
+#. grow the mounted file system..
+#: ../src/xfs.cc:167
+#| msgid "grow mounted filesystem"
+msgid "grow mounted file system"
 msgstr "palielināt piemontēto failsistēmu"
 
-#. copy filesystem..
-#: ../src/xfs.cc:229
-msgid "copy filesystem"
+#. copy file system..
+#: ../src/xfs.cc:275
+#| msgid "copy filesystem"
+msgid "copy file system"
 msgstr "kopēt failsistēmu"
 
