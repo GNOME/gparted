@@ -21,6 +21,8 @@
 #include <iomanip>
 #include <regex.h>
 #include <locale.h>
+#include <sys/stat.h>	//Used in file_exists() method
+
 
 namespace GParted
 {
@@ -416,6 +418,57 @@ Glib::ustring Utils::get_lang()
 		lang .replace( lang .find(sought), sought .size(), replacement ) ;
 
 	return lang ;
+}
+
+//The tokenize method copied and adapted from:
+//  http://www.linuxselfhelp.com/HOWTO/C++Programming-HOWTO-7.html
+void Utils::tokenize( const Glib::ustring& str,
+                      std::vector<Glib::ustring>& tokens,
+                      const Glib::ustring& delimiters = " " )
+{
+	// Skip delimiters at beginning.
+	Glib::ustring::size_type lastPos = str.find_first_not_of(delimiters, 0);
+	// Find first "non-delimiter".
+	Glib::ustring::size_type pos     = str.find_first_of(delimiters, lastPos);
+
+	while (Glib::ustring::npos != pos || Glib::ustring::npos != lastPos)
+	{
+		// Found a token, add it to the vector.
+		tokens.push_back(str.substr(lastPos, pos - lastPos));
+		// Skip delimiters.  Note the "not_of"
+		lastPos = str.find_first_not_of(delimiters, pos);
+		// Find next "non-delimiter"
+		pos = str.find_first_of(delimiters, lastPos);
+	}
+}
+
+//The file_exists method copied and adapted from:
+//  http://wiki.forum.nokia.com/index.php/CS001101_-_Checking_if_a_file_exists_in_C_and_C%2B%2B
+bool Utils::file_exists( const char* filename )
+{
+	struct stat info ;
+	int ret = -1 ;
+	
+	//get the file attributes
+	ret = stat(filename, &info) ;
+	if(ret == 0)
+	{
+		//stat() is able to get the file attributes,
+		//so the file obviously exists
+		return true ;
+	}
+	else
+	{
+		//stat() is not able to get the file attributes,
+		//so the file obviously does not exist or
+		//more capabilities is required
+		return false ;
+	}
+}
+
+bool Utils::file_exists( const Glib::ustring& filename )
+{
+	return file_exists( filename .c_str() ) ;
 }
 
 

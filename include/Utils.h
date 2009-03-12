@@ -31,6 +31,7 @@
 
 #include <iostream>
 #include <ctime>
+#include <vector>
 
 namespace GParted
 {
@@ -150,7 +151,11 @@ public:
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
 	static Glib::ustring cleanup_cursor( const Glib::ustring & text ) ;
 	static Glib::ustring get_lang() ;
-
+	static void tokenize( const Glib::ustring& str,
+	                      std::vector<Glib::ustring>& tokens,
+	                      const Glib::ustring& delimiters ) ;
+	static bool file_exists( const char* filename ) ;
+	static bool file_exists( const Glib::ustring& filename ) ;
 };
 
 
