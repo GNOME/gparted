@@ -21,7 +21,6 @@
 #include <iomanip>
 #include <regex.h>
 #include <locale.h>
-#include <sys/stat.h>	//Used in file_exists() method
 
 
 namespace GParted
@@ -440,35 +439,6 @@ void Utils::tokenize( const Glib::ustring& str,
 		// Find next "non-delimiter"
 		pos = str.find_first_of(delimiters, lastPos);
 	}
-}
-
-//The file_exists method copied and adapted from:
-//  http://wiki.forum.nokia.com/index.php/CS001101_-_Checking_if_a_file_exists_in_C_and_C%2B%2B
-bool Utils::file_exists( const char* filename )
-{
-	struct stat info ;
-	int ret = -1 ;
-	
-	//get the file attributes
-	ret = stat(filename, &info) ;
-	if(ret == 0)
-	{
-		//stat() is able to get the file attributes,
-		//so the file obviously exists
-		return true ;
-	}
-	else
-	{
-		//stat() is not able to get the file attributes,
-		//so the file obviously does not exist or
-		//more capabilities is required
-		return false ;
-	}
-}
-
-bool Utils::file_exists( const Glib::ustring& filename )
-{
-	return file_exists( filename .c_str() ) ;
 }
 
 
