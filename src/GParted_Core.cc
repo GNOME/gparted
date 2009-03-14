@@ -17,6 +17,7 @@
  
 #include "../include/Win_GParted.h"
 #include "../include/GParted_Core.h"
+#include "../include/DMRaid.h"
 #include "../include/FS_Info.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCreate.h"
@@ -158,6 +159,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	devices .clear() ;
 	Device temp_device ;
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
+	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	
 	init_maps() ;
 	
@@ -201,6 +203,17 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				}
 			}
 			proc_partitions .close() ;
+
+			//Try to find all dmraid devices
+			if (dmraid .is_dmraid_supported() ) {
+				std::vector<Glib::ustring> dmraid_devices ;
+				dmraid .get_devices( dmraid_devices ) ;
+				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
+					set_thread_status_message( String::ucompose ( _("Scanning %1"), dmraid_devices[k] ) ) ;
+					dmraid .create_dev_map_entries( dmraid_devices[k] ) ;
+					ped_device_get( dmraid_devices[k] .c_str() ) ;
+				}
+			}
 		}
 		else
 		{
@@ -455,7 +468,15 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 		
 		close_device_and_disk() ;
 	}
-	
+
+	//delete and recreate disk entries if dmraid
+	DMRaid dmraid ;
+	if ( return_value && dmraid .is_dmraid_device( device_path ) )
+	{
+		dmraid .purge_dev_map_entries( device_path ) ;
+		dmraid .create_dev_map_entries( device_path ) ;
+	}
+
 	return return_value ;	
 }
 	
@@ -564,6 +585,7 @@ void GParted_Core::init_maps()
 	fstab_info .clear() ;
 
 	read_mountpoints_from_file( "/proc/mounts", mount_info ) ;
+	read_mountpoints_from_file( "/proc/swaps", mount_info ) ;
 	read_mountpoints_from_file( "/etc/mtab", mount_info ) ;
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
@@ -653,7 +675,8 @@ void GParted_Core::set_device_partitions( Device & device )
 	int EXT_INDEX = -1 ;
 	char * lp_path ;//we have to free the result of ped_partition_get_path()..
 	FS_Info fs_info ;  //Use cache of file system information
-	
+	DMRaid dmraid ;    //Use cache of dmraid device information
+
 	//clear partitions
 	device .partitions .clear() ;
 
@@ -662,12 +685,26 @@ void GParted_Core::set_device_partitions( Device & device )
 	{
 		libparted_messages .clear() ;
 		partition_temp .Reset() ;
-	
+		bool partition_is_busy = false ;
+
 		switch ( lp_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
-			case PED_PARTITION_LOGICAL:  
+			case PED_PARTITION_LOGICAL:
 				lp_path = ped_partition_get_path( lp_partition ) ;
+
+				//Handle dmraid devices differently because the minor number might not
+				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
+				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
+				if ( dmraid .is_dmraid_device( device .get_path() ) )
+				{
+					iter_mp = mount_info .find( lp_path ) ;
+					if ( iter_mp != mount_info .end() )
+						partition_is_busy = true ;
+				}
+				else
+					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
+
 				partition_temp .Set( device .get_path(),
 						     lp_path,
 						     lp_partition ->num,
@@ -676,7 +713,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
 						     lp_partition ->type,
-						     ped_partition_is_busy( lp_partition ) ) ;
+						     partition_is_busy ) ;
 				free( lp_path ) ;
 						
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
@@ -689,6 +726,27 @@ void GParted_Core::set_device_partitions( Device & device )
 			
 			case PED_PARTITION_EXTENDED:
 				lp_path = ped_partition_get_path( lp_partition ) ;
+
+				//Handle dmraid devices differently because the minor number might not
+				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
+				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
+				if ( dmraid .is_dmraid_device( device .get_path() ) )
+				{
+					for ( unsigned int k = 5; k < 255; k++ )
+					{
+						//Try device_name + [5 to 255]
+						iter_mp = mount_info .find( device .get_path() + Utils::num_to_str( k ) ) ;
+						if ( iter_mp != mount_info .end() )
+							partition_is_busy = true ;
+						//Try device_name + p + [5 to 255]
+						iter_mp = mount_info .find( device .get_path() + "p" + Utils::num_to_str( k ) ) ;
+						if ( iter_mp != mount_info .end() )
+							partition_is_busy = true ;
+					}
+				}
+				else
+					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
+
 				partition_temp .Set( device .get_path(),
 					 	     lp_path, 
 						     lp_partition ->num,
@@ -697,7 +755,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
 						     false,
-						     ped_partition_is_busy( lp_partition ) ) ;
+						     partition_is_busy ) ;
 				free( lp_path ) ;
 				
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
@@ -1195,16 +1253,16 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		close_device_and_disk() ;
 	}
 
-	if ( new_partition .partition_number > 0 && erase_filesystem_signatures( new_partition ) )
-	{ 
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		return true ;
-	}
-	else
-	{		
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;	
-		return false ;
-	} 
+	bool succes = new_partition .partition_number > 0 && erase_filesystem_signatures( new_partition ) ;
+
+	//create dev map entries if dmraid
+	DMRaid dmraid ;
+	if ( succes && dmraid .is_dmraid_device( new_partition .device_path ) )
+		succes = dmraid .create_dev_map_entries( new_partition, operationdetail .get_last_child() ) ;
+
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+
+	return succes ;
 }
 	
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
@@ -1257,6 +1315,23 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
 	
 		close_device_and_disk() ;
+	}
+
+	//delete partition dev mapper entry, and delete and recreate all other affected dev mapper entries if dmraid
+	DMRaid dmraid ;
+	if ( succes && dmraid .is_dmraid_device( partition .device_path ) )
+	{
+		//Open disk handle before and close after to prevent application crash.
+		if ( open_device_and_disk( partition .device_path ) )
+		{
+			if ( ! dmraid .delete_affected_dev_map_entries( partition, operationdetail .get_last_child() ) )
+				succes = false ;	//comand failed
+
+			if ( ! dmraid .create_dev_map_entries( partition, operationdetail .get_last_child() ) )
+				succes = false ;	//command failed
+
+			close_device_and_disk() ;
+		}
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -1687,6 +1762,18 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					  	  Utils::format_size( new_end - new_start + 1 ) ),
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
+
+		//update dev mapper entry if partition is dmraid.
+		DMRaid dmraid ;
+		if ( return_value && dmraid .is_dmraid_device( partition_new .device_path ) )
+		{
+			//Open disk handle before and close after to prevent application crash.
+			if ( open_device_and_disk( partition_new .device_path ) )
+			{
+				return_value = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
+				close_device_and_disk() ;
+			}
+		}
 	}
 	
 	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -2349,6 +2436,18 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 					  	  Utils::format_size( partition_new .get_length() ) ),
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
+
+		//Update dev mapper entry if partition is dmraid.
+		DMRaid dmraid ;
+		if ( succes && dmraid .is_dmraid_device( partition_new .device_path ) )
+		{
+			//Open disk handle before and close after to prevent application crash.
+			if ( open_device_and_disk( partition_new .device_path ) )
+			{
+				succes = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
+				close_device_and_disk() ;
+			}
+		}
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -2507,7 +2606,12 @@ bool GParted_Core::commit()
 
 bool GParted_Core::commit_to_os( std::time_t timeout ) 
 {
-	bool succes = ped_disk_commit_to_os( lp_disk ) ;
+	DMRaid dmraid ;
+	bool succes ;
+	if ( dmraid .is_dmraid_device( lp_disk ->dev ->path ) )
+		succes = true ;
+	else
+		succes = ped_disk_commit_to_os( lp_disk ) ;
 
 	if ( Glib::find_program_in_path( "udevsettle" ) .empty() )
 		sleep( timeout ) ;
