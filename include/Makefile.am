@@ -13,6 +13,7 @@ EXTRA_DIST = \
 	DialogFeatures.h 		\
 	DialogManageFlags.h  		\
 	DrawingAreaVisualDisk.h 	\
+	DMRaid.h				\
 	FileSystem.h  			\
 	Frame_Resizer_Base.h		\
 	Frame_Resizer_Extended.h	\

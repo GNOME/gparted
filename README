@@ -112,7 +112,7 @@ Optional packages include:
    hfsutils
    hfsprogs
    jfsutils
-   ntfsprogs
+   ntfsprogs       - xxd command from vim-common also required
    reiser4progs
    reiserfsprogs
    xfsprogs
@@ -124,4 +124,13 @@ Optional packages include:
             to read file system UUIDs and labels.  It is also used for
             ext4 file detection. 
             blkid is part of the e2fsprogs package.
+
+
+For dmraid support, the following packages are required:
+
+   dmsetup         - removes /dev/mapper entries
+   dmraid          - lists dmraid devices and creates /dev/mapper entries
+   kpartx          - creates /dev/mapper entries such as
+                       /dev/mapper/isw_idedecefg_Volume0p1
+
 

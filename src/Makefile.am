@@ -22,6 +22,7 @@ gpartedbin_SOURCES = \
 	DialogFeatures.cc		\
 	DialogManageFlags.cc		\
 	DrawingAreaVisualDisk.cc	\
+	DMRaid.cc				\
 	FileSystem.cc			\
 	Frame_Resizer_Base.cc		\
 	Frame_Resizer_Extended.cc	\
