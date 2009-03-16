@@ -59,6 +59,9 @@ private:
 	void set_thread_status_message( Glib::ustring msg ) ;
 	void read_mountpoints_from_file( const Glib::ustring & filename,
 					 std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
+	void read_mountpoints_from_file_swaps(
+		const Glib::ustring & filename,
+		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 

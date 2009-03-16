@@ -585,7 +585,7 @@ void GParted_Core::init_maps()
 	fstab_info .clear() ;
 
 	read_mountpoints_from_file( "/proc/mounts", mount_info ) ;
-	read_mountpoints_from_file( "/proc/swaps", mount_info ) ;
+	read_mountpoints_from_file_swaps( "/proc/swaps", mount_info ) ;
 	read_mountpoints_from_file( "/etc/mtab", mount_info ) ;
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
@@ -659,6 +659,26 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 	}
 }
 
+void GParted_Core::read_mountpoints_from_file_swaps(
+	const Glib::ustring & filename,
+	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+{
+	std::string line ;
+	std::string node ;
+	
+	std::ifstream file( filename .c_str() ) ;
+	if ( file )
+	{
+		while ( getline( file, line ) )
+		{
+			node = Utils::regexp_label( line, "^(/[^ ]+)" ) ;
+			if ( node .size() > 0 )
+				map[ node ] .push_back( "" /* no mountpoint for swap */ ) ;
+		}
+		file .close() ;
+	}
+}
+
 std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustring & path ) 
 {
 	std::vector<Glib::ustring> paths ;
@@ -698,7 +718,12 @@ void GParted_Core::set_device_partitions( Device & device )
 				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
 				if ( dmraid .is_dmraid_device( device .get_path() ) )
 				{
-					iter_mp = mount_info .find( lp_path ) ;
+					//Try device_name + partition_number
+					iter_mp = mount_info .find( device .get_path() + Utils::num_to_str( lp_partition ->num ) ) ;
+					if ( iter_mp != mount_info .end() )
+						partition_is_busy = true ;
+					//Try device_name + p + partition_number
+					iter_mp = mount_info .find( device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ) ;
 					if ( iter_mp != mount_info .end() )
 						partition_is_busy = true ;
 				}
@@ -1012,6 +1037,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	
 void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
 {
+	DMRaid dmraid ;	//Use cache of dmraid device information
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
@@ -1027,11 +1053,35 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 			{
 				for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
 				{
-					iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
-					if ( iter_mp != mount_info .end() )
+					//Handle dmraid devices differently because there may be more
+					//  than one partition name.
+					//  E.g., there might be names with and/or without a 'p' between
+					//        the device name and partition number.
+					if ( dmraid .is_dmraid_device( partitions[ t ] .device_path ) )
 					{
-						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
-						break ;
+						//Try device_name + partition_number
+						iter_mp = mount_info .find( partitions[ t ] .device_path + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
+						if ( iter_mp != mount_info .end() )
+						{
+							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+							break ;
+						}
+						//Try device_name + p + partition_number
+						iter_mp = mount_info .find( partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
+						if ( iter_mp != mount_info .end() )
+						{
+							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+							break ;
+						}
+					}
+					else
+					{
+						iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
+						if ( iter_mp != mount_info .end() )
+						{
+							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+							break ;
+						}
 					}
 				}
 
