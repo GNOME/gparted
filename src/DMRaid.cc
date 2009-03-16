@@ -187,6 +187,12 @@ void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector
 	}
 }
 
+int DMRaid::get_partition_number( const Glib::ustring & partition_name )
+{
+	Glib::ustring dmraid_name = get_dmraid_name( partition_name ) ;
+	return std::atoi( Utils::regexp_label( partition_name, dmraid_name + "p?([0-9]+)" ) .c_str() ) ;
+}
+
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Create all missing dev mapper entries for a specified device.
@@ -234,33 +240,46 @@ void DMRaid::get_affected_dev_map_entries( const Partition & partition, std::vec
 {
 	//Build list of affected /dev/mapper entries when a partition is to be deleted.
 
+	//Retrieve list of matching directory entries
+	std::vector<Glib::ustring> dir_list ;
+	get_dmraid_dir_entries( partition .device_path, dir_list );
+
+	//All partition numbers equal to the number of the partition to be deleted
+	//  will be affected.
+	//  Also, if the partition is inside an extended partition, then all logical
+	//  partition numbers greater than the number of the partition to be deleted
+	//  will be affected.
 	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
-	Glib::ustring regexp = "^" + DEV_MAP_PATH + "(.*)$" ;
-	Glib::ustring partition_name = Utils::regexp_label( partition .get_path(), regexp ) ;
-
-	affected_entries .push_back( partition_name ) ;
-
-	if (  partition .inside_extended )
+	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
-		std::vector<Glib::ustring> dir_list ;
-
-		//Retrieve list of matching directory entries
-		get_dmraid_dir_entries( partition .device_path, dir_list );
-
-		Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
-
-		//All logical partition numbers greater than the partition to be deleted will be affected
-		for ( unsigned int k=0; k < dir_list .size(); k++ )
+		if ( Utils::regexp_label( dir_list[k], "^(" + dmraid_name + ")" ) == dmraid_name )
 		{
-			if ( Utils::regexp_label( dir_list[k], "^(" + dmraid_name + ")" ) == dmraid_name )
-			{
-				if (   std::atoi( Utils::regexp_label( dir_list[k],
-				                                       dmraid_name + "p?([0-9]+)"
-				                                     ) .c_str()
-				                ) > partition .partition_number
-				   )
+			int dir_part_num = get_partition_number( dir_list[k] ) ;
+			if ( dir_part_num == partition .partition_number ||
+			     ( partition .inside_extended && dir_part_num > partition .partition_number )
+			   )
 				affected_entries .push_back( dir_list[k] ) ;
-			}
+		}
+	}
+}
+
+void DMRaid::get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries )
+{
+	//Build list of all /dev/mapper entries for a partition.
+
+	//Retrieve list of matching directory entries
+	std::vector<Glib::ustring> dir_list ;
+	get_dmraid_dir_entries( partition .device_path, dir_list );
+
+	//Retrieve all partition numbers equal to the number of the partition.
+	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
+	for ( unsigned int k=0; k < dir_list .size(); k++ )
+	{
+		if ( Utils::regexp_label( dir_list[k], "^(" + dmraid_name + ")" ) == dmraid_name )
+		{
+			int dir_part_num = get_partition_number( dir_list[k] ) ;
+			if ( dir_part_num == partition .partition_number )
+				partition_entries .push_back( dir_list[k] ) ;
 		}
 	}
 }
@@ -293,14 +312,22 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 
 bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail )
 {
-	//Delete a single dev mapper entry
+	//Delete a single partition which may be represented by multiple dev mapper entries
+	bool exit_status = true ;	//assume success
 
 	/*TO TRANSLATORS: looks like  delete /dev/mapper entry */ 
 	Glib::ustring tmp = String::ucompose ( _("delete %1 entry"), DEV_MAP_PATH ) ;
 	operationdetail .add_child( OperationDetail( tmp ) );
 
-	Glib::ustring command = "dmsetup remove " + partition .get_path() ;
-	bool exit_status = ! execute_command( command, operationdetail .get_last_child() ) ; 
+	std::vector<Glib::ustring> partition_entries ;
+	get_partition_dev_map_entries( partition, partition_entries ) ;
+	
+	for ( unsigned int k = 0; k < partition_entries .size(); k++ )
+	{
+		Glib::ustring command = "dmsetup remove " + partition_entries[k] ;
+		if ( execute_command( command, operationdetail .get_last_child() ) )
+			exit_status = false ;	//command failed
+	}
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
 

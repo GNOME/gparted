@@ -48,10 +48,11 @@ public:
 	~DMRaid() ;
 	bool is_dmraid_supported() ;
 	bool is_dmraid_device( const Glib::ustring & dev_path ) ;
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
 	void get_devices( std::vector<Glib::ustring> & dmraid_devices ) ;
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
 	Glib::ustring get_dmraid_prefix( const Glib::ustring & dev_path ) ;
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
+	int get_partition_number( const Glib::ustring & partition_name ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
@@ -65,6 +66,7 @@ private:
 	void set_commands_found() ;
 	void get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector<Glib::ustring> & dir_list ) ;
 	void get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries ) ;
+	void get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries ) ;
 	static bool dmraid_cache_initialized ;
 	static bool dmraid_found ;
 	static bool dmsetup_found ;
