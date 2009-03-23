@@ -359,6 +359,10 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 {
 	//Update dmraid entry by first deleting the entry then recreating the entry
 
+	//Skip if extended partition because the only change is to the partition table.
+	if ( partition .type == GParted::TYPE_EXTENDED )
+		return true ;
+
 	bool exit_status = true ;	//assume successful
 	
 	/*TO TRANSLATORS: looks like  update /dev/mapper entry */ 
