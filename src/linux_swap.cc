@@ -77,16 +77,13 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 	/*TO TRANSLATORS: looks like create new linux-swap file system */ 
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
-	if ( create( partition_new, operationdetail .get_last_child() ) ) 
-	{
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		return true ;
-	}
-	else
-	{
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-		return false ;
-	}
+
+	//Maintain label and uuid when recreating swap
+	Glib::ustring command = "mkswap -L \"" + partition_new .label + "\" -U \"" + partition_new .uuid + "\" " + partition_new .get_path() ;
+	bool exit_status = ! execute_command( command , operationdetail .get_last_child() ) ;
+
+	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
+	return exit_status ;
 }
 
 bool linux_swap::copy( const Glib::ustring & src_part_path,
