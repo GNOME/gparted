@@ -199,9 +199,9 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	//  Try both dmraid -ay and kpartx -a
 
 	Glib::ustring command ;
-	bool exit_status = true ;	//assume success
+	bool exit_status = true ;
 
-	/*TO TRANSLATORS: looks like  create /dev/mapper entries */ 
+	/*TO TRANSLATORS: looks like  create missing /dev/mapper entries */ 
 	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAP_PATH ) ;
 	operationdetail .add_child( OperationDetail( tmp ) );
 
@@ -290,7 +290,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 
 	std::vector<Glib::ustring> affected_entries ;
 	Glib::ustring command ;
-	bool exit_status = true ;	//assume successful
+	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete affected /dev/mapper entries */ 
 	Glib::ustring tmp = String::ucompose ( _("delete affected %1 entries"), DEV_MAP_PATH ) ;
@@ -313,7 +313,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Delete a single partition which may be represented by multiple dev mapper entries
-	bool exit_status = true ;	//assume success
+	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete /dev/mapper entry */ 
 	Glib::ustring tmp = String::ucompose ( _("delete %1 entry"), DEV_MAP_PATH ) ;
@@ -341,7 +341,7 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 	std::vector<Glib::ustring> dir_list ;
 	Glib::ustring command ;
 	Glib::ustring output, error ;
-	bool exit_status = true ;	//assume successful
+	bool exit_status = true ;
 
 	get_dmraid_dir_entries( dev_path, dir_list ) ;
 
@@ -363,8 +363,8 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	if ( partition .type == GParted::TYPE_EXTENDED )
 		return true ;
 
-	bool exit_status = true ;	//assume successful
-	
+	bool exit_status = true ;
+
 	/*TO TRANSLATORS: looks like  update /dev/mapper entry */ 
 	Glib::ustring tmp = String::ucompose ( _("update %1 entry"), DEV_MAP_PATH ) ;
 	operationdetail .add_child( OperationDetail( tmp ) );
