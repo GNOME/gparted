@@ -6,30 +6,31 @@
 # Amanpreet Singh Alam <aalam@redhat.com>, 2004.
 # Amanpreet Singh Alam <amanpreetalam@yahoo.com>, 2005.
 # A S Alam <apbrar@gmail.com>, 2006, 2007.
-# A S Alam <aalam@users.sf.net>, 2007.
+# A S Alam <aalam@users.sf.net>, 2007, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD.pa\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-19 17:32+0100\n"
-"PO-Revision-Date: 2007-11-03 07:59+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=gparted&component=general\n"
+"POT-Creation-Date: 2009-03-21 01:04+0000\n"
+"PO-Revision-Date: 2009-04-01 07:37+0000\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Panjabi <punjabi-l10n@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjab-l10n@list.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 0.3\n"
 "Plural-Forms: Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../gparted.desktop.in.h:1 ../src/Win_GParted.cc:1135
-msgid "GNOME Partition Editor"
-msgstr "ਗਨੋਮ ਪਾਰਟੀਸ਼ਨ ਐਡੀਟਰ"
+#: ../gparted.desktop.in.in.h:1
+#| msgid "Delete the selected partition"
+msgid "Create, reorganize, and delete partitions"
+msgstr "ਪਾਰਟੀਸ਼ਨ ਬਣਾਓ, ਪਰਬੰਧ ਕਰੋ ਅਤੇ ਹਟਾਓ"
 
-#. ==== GUI =========================
-#: ../gparted.desktop.in.h:2 ../src/Win_GParted.cc:66
-#: ../src/Win_GParted.cc:1011 ../src/Win_GParted.cc:1132
-msgid "GParted"
-msgstr "GParted"
+#: ../gparted.desktop.in.in.h:2
+#| msgid "GNOME Partition Editor"
+msgid "GParted Partition Editor"
+msgstr "ਜੀਪਾਰਟਡ ਪਾਰਟੀਸ਼ਨ ਐਡੀਟਰ"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free Space Preceding (MiB):"
@@ -45,62 +46,65 @@ msgstr "ਨਵਾਂ ਸਾਈਜ਼ (MiB):"
 msgid "Free Space Following (MiB):"
 msgstr "ਅੱਗੇ ਖਾਲੀ ਥਾਂ (MiB):"
 
-#: ../src/Dialog_Base_Partition.cc:159
+#. add checkbutton
+#: ../src/Dialog_Base_Partition.cc:82
+msgid "Round to cylinders"
+msgstr "ਸਿਲੰਡਰਾਂ ਲਈ ਪੂਰਾ ਕਰੋ"
+
+#: ../src/Dialog_Base_Partition.cc:173
 msgid "Resize"
 msgstr "ਮੁੜ-ਸਾਈਜ਼"
 
-#: ../src/Dialog_Base_Partition.cc:159 ../src/Win_GParted.cc:218
+#: ../src/Dialog_Base_Partition.cc:173 ../src/Win_GParted.cc:226
 msgid "Resize/Move"
 msgstr "ਮੁੜ-ਸਾਈਜ਼/ਭੇਜੋ"
 
-#: ../src/Dialog_Base_Partition.cc:176
+#: ../src/Dialog_Base_Partition.cc:190
 msgid "Minimum Size: %1 MiB"
 msgstr "ਘੱਟੋ-ਘੱਟ ਸਾਈਜ਼: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:177
+#: ../src/Dialog_Base_Partition.cc:191
 msgid "Maximum Size: %1 MiB"
 msgstr "ਵੱਧ ਤੋਂ ਵੱਧ ਸਾਈਜ਼: %1 MiB"
 
-#: ../src/Dialog_Disklabel.cc:25 ../src/Dialog_Disklabel.cc:44
-msgid "Set Disklabel on %1"
-msgstr "%1 ਤੇ ਡਿਸਕ ਨਾਂ ਦਿਓ"
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:26
+#| msgid "set partitiontype on %1"
+msgid "Create partition table on %1"
+msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਬਣਾਓ"
 
-#: ../src/Dialog_Disklabel.cc:48
-msgid ""
-"A disklabel is a piece of data stored at a well known place on the disk, "
-"that indicates where each partition begins and how many sectors it occupies."
-msgstr ""
-"ਡਿਸਕ ਨਾਂ (ਡਿਸਕਲੇਬਲ) ਡਾਟਾ ਹੈ, ਜੋ ਕਿ ਡਿਸਕ ਉੱਤੇ ਇੱਕ ਜਾਣੇ ਥਾਂ ਉੱਤੇ ਸੰਭਾਲਿਆ ਜਾਂਦਾ ਹੈ, ਜੋ ਇਹ "
-"ਦਰਸਾਉਦਾ ਹੈ ਕਿ ਹਰ ਡਿਸਕ ਪਾਰਟੀਸ਼ਨ ਕਿੱਥੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ ਅਤੇ ਕਿੰਨੇ ਸੈਕਟਰ ਹਨ।"
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:46
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "ਚੇਤਾਵਨੀ: ਪੂਰੀ ਡਿਸਕ %1 ਤੋਂ ਸਭ ਡਾਟਾ ਹਟਾ ਦਿੱਤਾ ਜਾਵੇਗਾ"
 
 #: ../src/Dialog_Disklabel.cc:50
-msgid "You need a disklabel if you want to create partitions on this disk."
-msgstr "ਜੇਕਰ ਤੁਹਾਨੂੰ ਇਸ ਡਿਸਕ ਤੇ ਪਾਰਟੀਸ਼ਨ ਬਣਾਉਣੇ ਹਨ, ਤਾਂ ਤੁਹਾਨੂੰ ਡਿਸਕ ਨਾਂ (ਡਿਸਕਲੇਬਲ) ਲੋੜੀਦਾ ਹੈ।"
+#| msgid "By default GParted creates an msdos disklabel."
+msgid "Default is to create an msdos partition table."
+msgstr "ਡਿਫਾਲਟ ਰੂਪ ਵਿੱਚ msdos ਨਾਂ ਬਣਾਉਦਾ ਹੈ।"
 
-#: ../src/Dialog_Disklabel.cc:52
-msgid "By default GParted creates an msdos disklabel."
-msgstr "ਮੂਲ ਰੂਪ ਵਿੱਚ ਜੀਪਾਰਟਡ msdos ਨਾਂ ਬਣਾਉਦਾ ਹੈ।"
-
-#: ../src/Dialog_Disklabel.cc:59
+#: ../src/Dialog_Disklabel.cc:57
 msgid "Advanced"
 msgstr "ਤਕਨੀਕੀ"
 
-#: ../src/Dialog_Disklabel.cc:67
-msgid "Select new labeltype:"
-msgstr "ਨਵਾਂ ਨਾਂ ਚੁਣੋ:"
+#: ../src/Dialog_Disklabel.cc:65
+#| msgid "Select new labeltype:"
+msgid "Select new partition table type:"
+msgstr "ਨਵੀਂ ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਟਾਈਪ ਚੁਣੋ:"
 
-#: ../src/Dialog_Disklabel.cc:83
-msgid "WARNING: Creating a new disklabel will erase all data on %1!"
-msgstr "ਸਾਵਧਾਨ: ਨਵਾਂ ਡਿਸਕ ਨਾਂ ਬਣਾਉਣ ਨਾਲ %1 ਤੇ ਮੌਜੂਦ ਸਭ ਡਾਟਾ ਹਟਾਇਆ ਜਾਵੇਗਾ!"
+#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
+#: ../src/Dialog_Disklabel.cc:82
+msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+msgstr "ਬਣਾਓ ਬਟਨ ਨਾਲ ਡਿਸਕ %1 ਤੋਂ *ਤੁਰੰਤ ਸਭ ਡਾਟਾ ਮਿਟਾ* ਦਿੱਤਾ ਜਾਵੇਗਾ"
 
-#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:36
-#: ../src/Win_GParted.cc:1730
+#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
+#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:35
 msgid "Create"
 msgstr "ਬਣਾਓ"
 
 #: ../src/Dialog_Partition_Copy.cc:35
 msgid "Paste %1"
-msgstr "%1 ਚਿਪਕਾਉ"
+msgstr "%1 ਚੇਪੋ"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
 #: ../src/Dialog_Partition_Info.cc:31
@@ -112,13 +116,14 @@ msgid "Warning:"
 msgstr "ਚੇਤਾਵਨੀ:"
 
 #. filesystem
-#. filesystems to choose from
-#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:100
-msgid "Filesystem:"
+#. file systems to choose from
+#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:111
+#| msgid "Filesystem:"
+msgid "File System:"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:409
+#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:445
 msgid "Size:"
 msgstr "ਸਾਈਜ਼:"
 
@@ -137,7 +142,7 @@ msgid "Flags:"
 msgstr "ਫਲੈਗ਼:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:417
+#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:453
 msgid "Path:"
 msgstr "ਮਾਰਗ:"
 
@@ -169,51 +174,63 @@ msgstr "ਐਕਟਿਵ ਨਹੀਂ"
 msgid "Not mounted"
 msgstr "ਮਾਊਂਟ ਨਹੀਂ"
 
+#. Label
+#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:123
+#| msgid "Label"
+msgid "Label:"
+msgstr "ਲੇਬਲ:"
+
+#: ../src/Dialog_Partition_Info.cc:278
+msgid "UUID:"
+msgstr "UUID:"
+
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:266
+#: ../src/Dialog_Partition_Info.cc:292
 msgid "First Sector:"
 msgstr "ਪਹਿਲਾਂ ਸੈਕਟਰ:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:276
+#: ../src/Dialog_Partition_Info.cc:302
 msgid "Last Sector:"
 msgstr "ਆਖਰੀ ਸੈਕਟਰ:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:286 ../src/Win_GParted.cc:470
+#: ../src/Dialog_Partition_Info.cc:312 ../src/Win_GParted.cc:506
 msgid "Total Sectors:"
 msgstr "ਕੁੱਲ ਸੈਕਟਰ:"
+
+#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
+#: ../src/Dialog_Partition_Label.cc:32
+#| msgid "set partitiontype on %1"
+msgid "Set partition label on %1"
+msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਲੇਬਲ ਸੈੱਟ ਕਰੋ"
 
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:26
 msgid "Create new Partition"
 msgstr "ਨਵਾਂ ਪਾਰਟੀਸ਼ਨ ਬਣਾਓ"
 
-#. checkbutton..
-#: ../src/Dialog_Partition_New.cc:34
-msgid "Round to cylinders"
-msgstr "ਸਿਲੰਡਰਾਂ ਲਈ ਪੂਰਾ ਕਰੋ"
-
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:66
+#: ../src/Dialog_Partition_New.cc:77
 msgid "Create as:"
 msgstr "ਇਸ ਵਾਂਗ ਬਣਾਓ:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:71 ../src/OperationCreate.cc:73
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "ਪ੍ਰਾਇਮਰੀ ਪਾਰਟੀਸ਼ਨ"
 
-#: ../src/Dialog_Partition_New.cc:72 ../src/OperationCreate.cc:76
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:76
 #: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "ਲਾਜ਼ੀਕਾਲ ਪਾਰਟੀਸ਼ਨ"
 
-#: ../src/Dialog_Partition_New.cc:73 ../src/OperationCreate.cc:79
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "ਐਕਸਟਿਡਡ ਪਾਰਟੀਸ਼ਨ"
 
-#: ../src/Dialog_Partition_New.cc:160
+#: ../src/Dialog_Partition_New.cc:185
 msgid "New Partition #%1"
 msgstr "ਨਵਾਂ ਪਾਰਟੀਸ਼ਨ #%1"
 
@@ -255,427 +272,584 @@ msgid "_Save Details"
 msgstr "ਵੇਰਵਾ ਸੰਭਾਲੋ(_S)"
 
 #: ../src/Dialog_Progress.cc:239
-msgid "Operation canceled"
+#| msgid "Operation canceled"
+msgid "Operation cancelled"
 msgstr "ਓਪਰੇਸ਼ਨ ਰੱਦ ਕੀਤਾ"
 
 #: ../src/Dialog_Progress.cc:253
-msgid "All operations succesfully completed"
+#| msgid "All operations succesfully completed"
+msgid "All operations successfully completed"
 msgstr "ਸਭ ਓਪਰੇਸ਼ਨ ਸਫ਼ਲਤਾਪੂਰਕ ਮੁਕੰਮਲ ਕੀਤੇ ਗਏ ਹਨ"
 
-#: ../src/Dialog_Progress.cc:256
-msgid "%1 warnings"
-msgstr "%1 ਚੇਤਾਵਨੀ"
+#: ../src/Dialog_Progress.cc:257
+#| msgid "%1 warnings"
+msgid "%1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "%1 ਚੇਤਾਵਨੀ"
+msgstr[1] "%1 ਚੇਤਾਵਨੀ"
 
-#: ../src/Dialog_Progress.cc:268
+#: ../src/Dialog_Progress.cc:270
 msgid "An error occurred while applying the operations"
 msgstr "ਓਪਰੇਸ਼ਨ ਲਾਗੂ ਕਰਨ ਦੌਰਾਨ ਇੱਕ ਗਲਤੀ ਆਈ ਹੈ"
 
-#: ../src/Dialog_Progress.cc:273
+#: ../src/Dialog_Progress.cc:275
 msgid "See the details for more information."
 msgstr "ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ ਵੇਰਵਾ ਵੇਖੋ।"
 
-#: ../src/Dialog_Progress.cc:274
+#: ../src/Dialog_Progress.cc:276
 msgid "IMPORTANT"
 msgstr "ਖਾਸ"
 
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:277
 msgid "If you want support, you need to provide the saved details!"
 msgstr "ਜੇ ਤੁਹਾਨੂੰ ਸਹਿਯੋਗ ਦੀ ਲੋੜ ਹੈ ਤਾਂ ਤੁਹਾਨੂੰ ਸੰਭਾਲਿਆ ਵੇਰਵਾ ਦੇਣਾ ਪਵੇਗਾ!"
 
-#: ../src/Dialog_Progress.cc:277
+#: ../src/Dialog_Progress.cc:279
 msgid "See %1 for more information."
 msgstr "ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ %1 ਵੇਖੋ।"
 
-#: ../src/Dialog_Progress.cc:310
+#: ../src/Dialog_Progress.cc:312
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "ਕੀ ਤੁਸੀਂ ਮੌਜੂਦਾ ਓਪਰੇਸ਼ਨ ਰੱਦ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੋ?"
 
-#: ../src/Dialog_Progress.cc:316
-msgid "Canceling an operation may cause SEVERE filesystem damage."
+#: ../src/Dialog_Progress.cc:318
+#| msgid "Canceling an operation may cause SEVERE filesystem damage."
+msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "ਇੱਕ ਓਪਰੇਸ਼ਨ ਰੱਦ ਕਰਨ ਨਾਲ ਫਾਇਲ ਸਿਸਟਮ ਨੂੰ ਨੁਕਸਾਨ ਦਾ ਕਾਰਨ ਬਣ ਸਕਦਾ ਹੈ।"
 
-#: ../src/Dialog_Progress.cc:318
+#: ../src/Dialog_Progress.cc:320
 msgid "Continue Operation"
 msgstr "ਓਪਰੇਸ਼ਨ ਜਾਰੀ ਰੱਖੋ"
 
-#: ../src/Dialog_Progress.cc:319
+#: ../src/Dialog_Progress.cc:321
 msgid "Cancel Operation"
 msgstr "ਓਪਰੇਸ਼ਨ ਰੱਦ ਕਰੋ"
 
-#: ../src/Dialog_Progress.cc:332
+#: ../src/Dialog_Progress.cc:334
 msgid "Save Details"
 msgstr "ਵੇਰਵਾ ਸੰਭਾਲੋ"
 
-#: ../src/DialogFeatures.cc:27
-msgid "Features"
-msgstr "ਫੀਚਰ"
+#: ../src/Dialog_Progress.cc:353
+#| msgid "Save Details"
+msgid "GParted Details"
+msgstr "ਜੀਪਾਰਟਡ ਵੇਰਵਾ"
 
-#: ../src/DialogFeatures.cc:33 ../src/TreeView_Detail.cc:35
-msgid "Filesystem"
+#. ==== GUI =========================
+#: ../src/Dialog_Progress.cc:356 ../src/Win_GParted.cc:69
+#: ../src/Win_GParted.cc:1108 ../src/Win_GParted.cc:1263
+msgid "GParted"
+msgstr "GParted"
+
+#: ../src/Dialog_Progress.cc:357
+#| msgid "using libparted"
+msgid "Libparted"
+msgstr "Libparted"
+
+#: ../src/Dialog_Progress.cc:395
+msgid "EXECUTING"
+msgstr "ਚੱਲ ਰਿਹਾ ਹੈ"
+
+#: ../src/Dialog_Progress.cc:398
+msgid "SUCCESS"
+msgstr "ਸਫ਼ਲ"
+
+#: ../src/Dialog_Progress.cc:401
+msgid "ERROR"
+msgstr "ਗਲਤੀ"
+
+#: ../src/Dialog_Progress.cc:404
+msgid "INFO"
+msgstr "ਜਾਣਕਾਰੀ"
+
+#: ../src/Dialog_Progress.cc:407
+msgid "N/A"
+msgstr "ਉਪਲੱਬਧ ਨਹੀਂ"
+
+#: ../src/DialogFeatures.cc:27
+#| msgid "Filesystem"
+msgid "File System Support"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਸਹਿਯੋਗ"
+
+#: ../src/DialogFeatures.cc:34 ../src/TreeView_Detail.cc:35
+#| msgid "Filesystem"
+msgid "File System"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ"
 
-#: ../src/DialogFeatures.cc:34
-msgid "Detect"
-msgstr "ਖੋਜ"
-
-#: ../src/DialogFeatures.cc:35
-msgid "Read"
-msgstr "ਪੜ੍ਹਨ"
-
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:36
 msgid "Grow"
 msgstr "ਫੈਲਾਓ"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:37
 msgid "Shrink"
 msgstr "ਸੁੰਘੜੋ"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:38
 msgid "Move"
 msgstr "ਭੇਜੋ"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:39
 msgid "Copy"
-msgstr "ਨਕਲ"
+msgstr "ਕਾਪੀ"
 
-#: ../src/DialogFeatures.cc:41
+#: ../src/DialogFeatures.cc:40
 msgid "Check"
 msgstr "ਚੈੱਕ"
 
-#: ../src/DialogFeatures.cc:42
-msgid "Read Label"
-msgstr "ਲੇਬਲ ਪੜ੍ਹੋ"
+#: ../src/DialogFeatures.cc:41 ../src/TreeView_Detail.cc:37
+msgid "Label"
+msgstr "ਲੇਬਲ"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:42
+msgid "Required Software"
+msgstr "ਲੋੜੀਦਾ ਸਾਫਟਵੇਅਰ"
+
+#: ../src/DialogFeatures.cc:56
+msgid "This chart shows the actions supported on file systems."
+msgstr "ਇਹ ਚਾਰਟ ਫਾਇਲ ਸਿਸਟਮਾਂ ਉੱਤੇ ਸਹਾਇਕ ਐਕਸ਼ਨ ਵੇਖਾਉਦਾ ਹੈ।"
+
+#: ../src/DialogFeatures.cc:58
+msgid ""
+"Not all actions are available on all file systems, in part due to the nature "
+"of file systems and limitations in the required software."
+msgstr ""
+"ਸਭ ਫਾਇਲ ਸਿਸਟਮਾਂ ਥਈ ਸਭ ਐਕਸ਼ਨ ਉਪਲੱਬਧ ਨਹੀਂ ਹਨ,  ਜੋ ਕਿ ਫਾਇਲ ਸਿਸਟਮ ਦੇ ਸੁਭਾਅ ਕਰਕੇ ਅਤੇ ਲੋੜੀਦੇ "
+"ਸਾਫਟਵੇਅਰ ਦੀਆਂ ਕਮੀਆਂ ਕਰਕੇ ਹੈ।"
+
+#: ../src/DialogFeatures.cc:68
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../src/DialogFeatures.cc:63
+#: ../src/DialogFeatures.cc:74
 msgid "Not Available"
 msgstr "ਉਪਲੱਬਧ ਨਹੀਂ"
+
+#: ../src/DialogFeatures.cc:82
+msgid "Legend"
+msgstr "ਸੰਕੇਤ"
+
+#. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
+#: ../src/DialogFeatures.cc:95
+msgid "Rescan For Supported Actions"
+msgstr "ਸਹਾਇਕ ਐਕਸ਼ਨਾਂ ਲਈ ਮੁੜ-ਸਕੈਨ"
 
 #: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "%1 ਉੱਤੇ ਫਲੈਗ਼ ਪਰਬੰਧ"
 
-#: ../src/GParted_Core.cc:217
+#. assume success
+#. TO TRANSLATORS: looks like  create /dev/mapper entries
+#: ../src/DMRaid.cc:205
+#| msgid "create new %1 filesystem"
+msgid "create missing %1 entries"
+msgstr "ਗੁੰਮ %1 ਐਂਟਰੀਆਂ ਬਣਾਓ"
+
+#. assume successful
+#. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
+#: ../src/DMRaid.cc:296
+msgid "delete affected %1 entries"
+msgstr "ਪਰਭਾਵਿਤ %1 ਐਟਰੀਆਂ ਹਟਾਓ"
+
+#. Delete a single partition which may be represented by multiple dev mapper entries
+#. assume success
+#. TO TRANSLATORS: looks like  delete /dev/mapper entry
+#: ../src/DMRaid.cc:319
+msgid "delete %1 entry"
+msgstr "%1 ਐਂਟਰੀ ਹਟਾਓ"
+
+#. Update dmraid entry by first deleting the entry then recreating the entry
+#. assume successful
+#. TO TRANSLATORS: looks like  update /dev/mapper entry
+#: ../src/DMRaid.cc:365
+msgid "update %1 entry"
+msgstr "%1 ਐਂਟਰੀ ਅੱਪਡੇਟ"
+
+#. TO TRANSLATORS: looks like Scanning /dev/sda
+#: ../src/GParted_Core.cc:201 ../src/GParted_Core.cc:212
+#| msgid "Unmounting %1"
+msgid "Scanning %1"
+msgstr "%1 ਸਕੈਨ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+
+#. TO TRANSLATORS: looks like Confirming /dev/sda
+#: ../src/GParted_Core.cc:232
+#| msgid "Unmounting %1"
+msgid "Confirming %1"
+msgstr "%1 ਪੁਸ਼ਟੀ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
+
+#. TO TRANSLATORS: looks like Searching /dev/sda partitions
+#: ../src/GParted_Core.cc:252
+msgid "Searching %1 partitions"
+msgstr "%1 ਪਾਰਟੀਸ਼ਨਾਂ ਦੀ ਖੋਜ ਜਾਰੀ"
+
+#: ../src/GParted_Core.cc:288
 msgid "unrecognized"
 msgstr "ਬੇਪਛਾਣ"
 
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:369
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "ਇੱਕ ਪਾਰਟੀਸ਼ਨ ਦੀ ਲੰਬਾਈ %1 ਸੈਕਟਰ ਨਹੀਂ ਹੋ ਸਕਦੀ"
 
-#: ../src/GParted_Core.cc:280
+#: ../src/GParted_Core.cc:377
 msgid "A partition with used sectors (%1) greater than it's length (%2) is not valid"
 msgstr "ਇੱਕ ਪਾਰਟੀਸ਼ਨ ਵਰਤੇ ਸੈਕਟਰ (%1), ਇਸ ਦੀ ਲੰਬਾਈ (%2) ਤੋਂ ਵੱਧ ਵੈਧ ਨਹੀਂ ਹੈ।"
 
-#: ../src/GParted_Core.cc:343
+#: ../src/GParted_Core.cc:443
 msgid "libparted messages"
 msgstr "libparted ਸੁਨੇਹੇ"
 
-#. no filesystem found....
-#: ../src/GParted_Core.cc:701
-msgid "Unable to detect filesystem! Possible reasons are:"
+#: ../src/GParted_Core.cc:911
+msgid "Logical Volume Management is not yet supported."
+msgstr "ਲਾਜ਼ੀਕਲ ਵਾਲੀਅਮ ਪਰਬੰਧ ਹਾਲੇ ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
+
+#: ../src/GParted_Core.cc:927
+msgid "Linux Unified Key Setup encryption is not yet supported."
+msgstr "ਲੀਨਕਸ ਯੂਨੀਫਾਇਡ ਕੁੰਜੀ ਸੈਟਅੱਪ ਇੰਕ੍ਰਿਪਸ਼ਨ ਹਾਲੇ ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
+
+#: ../src/GParted_Core.cc:950
+msgid "BTRFS is not yet supported."
+msgstr "BTRFS ਹਾਲੇ ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
+
+#. no file system found....
+#: ../src/GParted_Core.cc:957
+#| msgid "Unable to detect filesystem! Possible reasons are:"
+msgid "Unable to detect file system! Possible reasons are:"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਖੋਜਿਆ ਨਹੀਂ ਗਿਆ! ਸੰਭਵ ਕਾਰਨ ਹਨ:"
 
-#: ../src/GParted_Core.cc:703
-msgid "The filesystem is damaged"
+#: ../src/GParted_Core.cc:959
+#| msgid "The filesystem is damaged"
+msgid "The file system is damaged"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਨਿਕਾਰਾ ਹੈ"
 
-#: ../src/GParted_Core.cc:705
-msgid "The filesystem is unknown to GParted"
+#: ../src/GParted_Core.cc:961
+#| msgid "The filesystem is unknown to GParted"
+msgid "The file system is unknown to GParted"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਜੀ-ਪਾਰਟਡ ਲਈ ਅਣਜਾਣ ਹੈ"
 
-#: ../src/GParted_Core.cc:707
-msgid "There is no filesystem available (unformatted)"
+#: ../src/GParted_Core.cc:963
+#| msgid "There is no filesystem available (unformatted)"
+msgid "There is no file system available (unformatted)"
 msgstr "ਕੋਈ ਫਾਇਲ ਸਿਸਟਮ ਉਪਲੱਬਧ ਨਹੀਂ (ਨਾ-ਫਾਰਮੈਟ)"
 
-#: ../src/GParted_Core.cc:803
-msgid "Unable to find mountpoint"
-msgstr "ਮਾਊਂਟ-ਪੁਆਇੰਟ ਲੱਭਣ ਲਈ ਅਸਫ਼ਲ"
+#: ../src/GParted_Core.cc:1089
+#| msgid "Unable to find mountpoint"
+msgid "Unable to find mount point"
+msgstr "ਮਾਊਂਟ ਪੁਆਇੰਟ ਲੱਭਣ ਲਈ ਅਸਫ਼ਲ"
 
-#: ../src/GParted_Core.cc:821
-msgid "Unable to read the contents of this filesystem!"
+#: ../src/GParted_Core.cc:1107
+#| msgid "Unable to read the contents of this filesystem!"
+msgid "Unable to read the contents of this file system!"
 msgstr "ਇਸ ਫਾਇਲ ਸਿਸਟਮ ਦੇ ਪਾਰਟੀਸ਼ਨ ਪੜਨ ਦੌਰਾਨ ਗਲਤੀ ਹੈ!"
 
-#: ../src/GParted_Core.cc:823
+#: ../src/GParted_Core.cc:1109
 msgid "Because of this some operations may be unavailable."
 msgstr "ਕਿਉਕਿ ਕੁਝ ਓਪਰੇਸ਼ਨ ਹਾਲੇ ਉਪਲੱਬਧ ਨਹੀਂ ਹਨ।"
 
-#: ../src/GParted_Core.cc:931
+#: ../src/GParted_Core.cc:1221
 msgid "create empty partition"
 msgstr "ਖਾਲੀ ਪਾਰਟੀਸ਼ਨ ਬਣਾਓ"
 
-#: ../src/GParted_Core.cc:999 ../src/GParted_Core.cc:2034
+#: ../src/GParted_Core.cc:1289 ../src/GParted_Core.cc:2401
 msgid "path: %1"
 msgstr "ਮਾਰਗ: %1"
 
-#: ../src/GParted_Core.cc:1000 ../src/GParted_Core.cc:2035
+#: ../src/GParted_Core.cc:1290 ../src/GParted_Core.cc:2402
 msgid "start: %1"
 msgstr "ਸ਼ੁਰੂ: %1"
 
-#: ../src/GParted_Core.cc:1001 ../src/GParted_Core.cc:2036
+#: ../src/GParted_Core.cc:1291 ../src/GParted_Core.cc:2403
 msgid "end: %1"
 msgstr "ਅੰਤ: %1"
 
-#: ../src/GParted_Core.cc:1002 ../src/GParted_Core.cc:2037
+#: ../src/GParted_Core.cc:1292 ../src/GParted_Core.cc:2404
 msgid "size: %1 (%2)"
 msgstr "ਸਾਈਜ਼: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1031 ../src/linux_swap.cc:58 ../src/xfs.cc:230
-msgid "create new %1 filesystem"
+#: ../src/GParted_Core.cc:1322 ../src/linux_swap.cc:79 ../src/xfs.cc:236
+#| msgid "create new %1 filesystem"
+msgid "create new %1 file system"
 msgstr "ਨਵਾਂ %1 ਫਾਇਲ-ਸਿਸਟਮ ਬਣਾਓ"
 
-#: ../src/GParted_Core.cc:1064
+#: ../src/GParted_Core.cc:1355
 msgid "delete partition"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਹਟਾਓ"
 
-#: ../src/GParted_Core.cc:1132
+#: ../src/GParted_Core.cc:1395
+#| msgid "set partitiontype on %1"
+msgid "Clear partition label on %1"
+msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਲੇਬਲ ਸੈੱਟ ਕਰੋ"
+
+#: ../src/GParted_Core.cc:1400
+#| msgid "grow partition from %1 to %2"
+msgid "Set partition label to \"%1\" on %2"
+msgstr "%2 ਉੱਤੇ \"%1\" ਪਾਰਟੀਸ਼ਨ ਲੇਬਲ ਦਿਓ"
+
+#: ../src/GParted_Core.cc:1479
 msgid "moving requires old and new length to be the same"
 msgstr "ਮੂਵ ਕਰਨ ਲਈ ਪੁਰਾਣੀ ਅਤੇ ਨਵੀਂ ਲੰਬਾਈ ਬਰਾਬਰ ਹੋਣੀ ਲਾਜ਼ਮੀ ਹੈ"
 
-#: ../src/GParted_Core.cc:1149
-msgid "rollback last change to the partitiontable"
+#: ../src/GParted_Core.cc:1496
+#| msgid "rollback last change to the partitiontable"
+msgid "rollback last change to the partition table"
 msgstr "ਪਾਰਟੀਸ਼ਨ-ਟੇਬਲ ਲਈ ਆਖਰੀ ਕੀਤੇ ਬਦਲਾਅ ਰੋਲ-ਬੈਕ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1178
-msgid "move filesystem to the left"
-msgstr "ਫਾਇਲ-ਸਿਸਟਮ ਖੱਬੇ ਭੇਜੋ"
+#: ../src/GParted_Core.cc:1525
+#| msgid "move filesystem to the left"
+msgid "move file system to the left"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਖੱਬੇ ਭੇਜੋ"
 
-#: ../src/GParted_Core.cc:1180
-msgid "move filesystem to the right"
+#: ../src/GParted_Core.cc:1527
+#| msgid "move filesystem to the right"
+msgid "move file system to the right"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਸੱਜੇ ਭੇਜੋ"
 
-#: ../src/GParted_Core.cc:1183
-msgid "move filesystem"
+#: ../src/GParted_Core.cc:1530
+#| msgid "move filesystem"
+msgid "move file system"
 msgstr "ਫਾਇਲ ਸਿਸਟਮ ਮੂਵ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1185
-msgid "new and old filesystem have the same positition. skipping this operation"
-msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਫਾਇਲਸਿਸਟਮ ਇੱਕ ਸਥਿਤੀ ਉੱਤੇ ਹਨ। ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ।"
+#: ../src/GParted_Core.cc:1532
+#| msgid ""
+#| "new and old filesystem have the same positition. skipping this operation"
+msgid "new and old file system have the same position -- skipping this operation"
+msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਫਾਇਲਸਿਸਟਮ ਇੱਕ ਸਥਿਤੀ ਉੱਤੇ ਹਨ -- ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ।"
 
-#: ../src/GParted_Core.cc:1204
+#: ../src/GParted_Core.cc:1551
 msgid "perform real move"
 msgstr "ਰੀਅਲ ਮੂਵ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1246
+#: ../src/GParted_Core.cc:1593
 msgid "using libparted"
 msgstr "libparted ਦੀ ਵਰਤੋਂ"
 
-#: ../src/GParted_Core.cc:1286
+#: ../src/GParted_Core.cc:1633
 msgid "resizing requires old and new start to be the same"
 msgstr "ਮੁੜ-ਸਾਈਜ਼ ਲਈ ਪੁਰਾਣੇ ਅਤੇ ਨਵੇਂ ਸਟਾਰਟ ਇੱਕੋ ਹੋਣਾ ਲਾਜ਼ਮੀ ਹੈ।"
 
-#: ../src/GParted_Core.cc:1351
+#: ../src/GParted_Core.cc:1698
 msgid "resize/move partition"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਮੁੜ-ਸਾਈਜ਼/ਮੂਵ"
 
-#: ../src/GParted_Core.cc:1354
+#: ../src/GParted_Core.cc:1701
 msgid "move partition to the right"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਸੱਜੇ ਪਾਸੇ ਮੂਵ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1357
+#: ../src/GParted_Core.cc:1704
 msgid "move partition to the left"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਖੱਬੇ ਭੇਜੋ"
 
-#: ../src/GParted_Core.cc:1360
+#: ../src/GParted_Core.cc:1707
 msgid "grow partition from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ %1 ਤੋਂ %2 ਵਧਾਓ"
 
-#: ../src/GParted_Core.cc:1363
+#: ../src/GParted_Core.cc:1710
 msgid "shrink partition from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ %1 ਤੋਂ %2 ਸੁੰਘੜੋ"
 
-#: ../src/GParted_Core.cc:1366
+#: ../src/GParted_Core.cc:1713
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਸੱਜੇ ਭੇਜੋ ਅਤੇ %1 ਤੋਂ %2 ਲਈ ਫੈਲਾਓ"
 
-#: ../src/GParted_Core.cc:1369
+#: ../src/GParted_Core.cc:1716
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਸੱਜੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %1 ਤੋਂ %2 ਸੁੰਘੜੋ"
 
-#: ../src/GParted_Core.cc:1372
+#: ../src/GParted_Core.cc:1719
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਖੱਬੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %1 ਤੋਂ %2 ਫੈਲਾਓ"
 
-#: ../src/GParted_Core.cc:1375
+#: ../src/GParted_Core.cc:1722
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਖੱਬੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %1 ਤੋਂ %2 ਸੁੰਘੜੋ"
 
-#: ../src/GParted_Core.cc:1390
+#: ../src/GParted_Core.cc:1737
+#| msgid ""
+#| "new and old partition have the same size and position. skipping this "
+#| "operation"
 msgid ""
-"new and old partition have the same size and position. skipping this "
+"new and old partition have the same size and position -- skipping this "
 "operation"
-msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ਼ ਅਤੇ ਸਥਿਤੀ ਇੱਕੋ ਹੀ ਹੈ। ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ"
+msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ਼ ਅਤੇ ਸਥਿਤੀ ਇੱਕੋ ਹੀ ਹੈ -- ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/GParted_Core.cc:1400
+#: ../src/GParted_Core.cc:1747
 msgid "old start: %1"
 msgstr "ਪੁਰਾਣਾ ਸ਼ੁਰੂ: %1"
 
-#: ../src/GParted_Core.cc:1401
+#: ../src/GParted_Core.cc:1748
 msgid "old end: %1"
 msgstr "ਪੁਰਾਣਾ ਅੰਤ: %1"
 
-#: ../src/GParted_Core.cc:1402
+#: ../src/GParted_Core.cc:1749
 msgid "old size: %1 (%2)"
 msgstr "ਪੁਰਾਣਾ ਸਾਈਜ਼: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1457 ../src/GParted_Core.cc:2115
+#: ../src/GParted_Core.cc:1808 ../src/GParted_Core.cc:2482
 msgid "new start: %1"
 msgstr "ਨਵਾਂ ਸ਼ੁਰੂ: %1"
 
-#: ../src/GParted_Core.cc:1458 ../src/GParted_Core.cc:2116
+#: ../src/GParted_Core.cc:1809 ../src/GParted_Core.cc:2483
 msgid "new end: %1"
 msgstr "ਨਵਾਂ ਅੰਤ: %1"
 
-#: ../src/GParted_Core.cc:1459 ../src/GParted_Core.cc:2117
+#: ../src/GParted_Core.cc:1810 ../src/GParted_Core.cc:2484
 msgid "new size: %1 (%2)"
 msgstr "ਨਵਾਂ ਸਾਈਜ਼: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1483
-msgid "shrink filesystem"
-msgstr "ਫਾਇਲ-ਸਿਸਟਮ ਸੁੰਘੜੋ"
+#: ../src/GParted_Core.cc:1846
+#| msgid "shrink filesystem"
+msgid "shrink file system"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਸੁੰਘੜੋ"
 
-#: ../src/GParted_Core.cc:1487
-msgid "grow filesystem"
-msgstr "ਫਾਇਲ-ਸਿਸਟਮ ਫੈਲਾਓ"
+#: ../src/GParted_Core.cc:1850
+#| msgid "grow filesystem"
+msgid "grow file system"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਫੈਲਾਓ"
 
-#: ../src/GParted_Core.cc:1490
-msgid "resize filesystem"
-msgstr "ਫਾਇਲ-ਸਿਸਟਮ ਮੁੜ-ਸਾਈਜ਼"
+#: ../src/GParted_Core.cc:1853
+#| msgid "resize filesystem"
+msgid "resize file system"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਮੁੜ-ਸਾਈਜ਼"
 
-#: ../src/GParted_Core.cc:1493
-msgid "new and old filesystem have the same size. skipping this operation"
-msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ਼ ਇੱਕੋ ਹੀ ਹੈ। ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ"
+#: ../src/GParted_Core.cc:1856
+#| msgid "new and old filesystem have the same size. skipping this operation"
+msgid "new and old file system have the same size -- skipping this operation"
+msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ਼ ਇੱਕੋ ਹੀ ਹੈ -- ਓਪਰੇਸ਼ਨ ਛੱਡਿਆ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/GParted_Core.cc:1528
-msgid "grow filesystem to fill the partition"
+#: ../src/GParted_Core.cc:1891
+#| msgid "grow filesystem to fill the partition"
+msgid "grow file system to fill the partition"
 msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਭਰਨ ਲਈ ਫਾਇਲ ਸਿਸਟਮ ਫੈਲਾਓ"
 
-#: ../src/GParted_Core.cc:1533
-msgid "growing is not available for this filesystem"
+#: ../src/GParted_Core.cc:1896
+#| msgid "growing is not available for this filesystem"
+msgid "growing is not available for this file system"
 msgstr "ਇਹ ਫਾਇਲ ਸਿਸਟਮ ਲਈ ਫੈਲਾਉਣਾ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
 
-#: ../src/GParted_Core.cc:1552
-msgid "the destination is smaller than the sourcepartition"
-msgstr "ਟਿਕਾਣਾ ਸਰੋਤ-ਪਾਰਟੀਸ਼ਨ ਤੋਂ ਛੋਟਾ ਹੈ"
+#: ../src/GParted_Core.cc:1915
+#| msgid "the destination is smaller than the sourcepartition"
+msgid "the destination is smaller than the source partition"
+msgstr "ਟਿਕਾਣਾ ਸਰੋਤ ਪਾਰਟੀਸ਼ਨ ਤੋਂ ਛੋਟਾ ਹੈ"
 
-#: ../src/GParted_Core.cc:1566
-msgid "copy filesystem of %1 to %2"
+#: ../src/GParted_Core.cc:1929
+#| msgid "copy filesystem of %1 to %2"
+msgid "copy file system of %1 to %2"
 msgstr "%1 ਦੇ ਫਾਇਲ-ਸਿਸਟਮ %2 ਉੱਤੇ ਕਾਪੀ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1610
-msgid "perform readonly test"
-msgstr "ਕੇਵਲ ਪੜ੍ਹਨਯੋਗ ਟੈਸਟ ਹੀ ਚਲਾਓ"
+#: ../src/GParted_Core.cc:1973
+#| msgid "perform readonly test"
+msgid "perform read-only test"
+msgstr "ਕੇਵਲ ਪੜ੍ਹਨ-ਯੋਗ ਟੈਸਟ ਹੀ ਚਲਾਓ"
 
-#: ../src/GParted_Core.cc:1658
+#: ../src/GParted_Core.cc:2021
 msgid "using internal algorithm"
 msgstr "ਅੰਦਰੂਨੀ ਐਲਗੋਰਿਥਮ ਵਰਤ ਕੇ"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:2023
 msgid "read %1 sectors"
 msgstr "%1 ਸੈਕਟਰ ਪੜ੍ਹੋ"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:2023
 msgid "copy %1 sectors"
 msgstr "%1 ਸੈਕਟਰ ਕਾਪੀ"
 
-#: ../src/GParted_Core.cc:1662
+#: ../src/GParted_Core.cc:2025
 msgid "finding optimal blocksize"
 msgstr "ਅਨੁਕੂਲ ਬਲਾਕ-ਸਾਈਜ਼ ਦੀ ਖੋਜ ਜਾਰੀ"
 
-#: ../src/GParted_Core.cc:1704
+#: ../src/GParted_Core.cc:2062
 msgid "%1 seconds"
 msgstr "%1 ਸਕਿੰਟ"
 
-#: ../src/GParted_Core.cc:1716
+#: ../src/GParted_Core.cc:2078
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "ਅਨੁਕੂਲ ਬਲਾਕ ਸਾਈਜ਼ %1 ਸੈਕਟਰ ਹੈ(%2)"
 
-#: ../src/GParted_Core.cc:1733
+#: ../src/GParted_Core.cc:2095
 msgid "%1 sectors read"
 msgstr "%1 ਸੈਕਟਰ ਪੜ੍ਹੇ"
 
-#: ../src/GParted_Core.cc:1733
+#: ../src/GParted_Core.cc:2095
 msgid "%1 sectors copied"
 msgstr "%1 ਸੈਕਟਰ ਕਾਪੀ ਕੀਤੇ"
 
-#: ../src/GParted_Core.cc:1744
+#: ../src/GParted_Core.cc:2106
 msgid "rollback last transaction"
 msgstr "ਆਖਰੀ ਟਰਾਂਸਜ਼ੇਸ਼ਨ ਰੋਲਬੈਕ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1771
-msgid "check filesystem on %1 for errors and (if possible) fix them"
-msgstr "%1 ਉੱਤੇ ਗਲਤੀਆਂ ਲਈ ਜਾਂਚ ਕਰੋ ਅਤੇ ਉਹਨਾਂ ਨੂੰ (ਜੇ ਸੰਭਵ ਹੋਵੇ ਤਾਂ) ਠੀਕ ਕਰੋ"
+#: ../src/GParted_Core.cc:2133
+#| msgid "check filesystem on %1 for errors and (if possible) fix them"
+msgid "check file system on %1 for errors and (if possible) fix them"
+msgstr "%1 ਉੱਤੇ ਫਾਇਲ ਸਿਸਟਮ ਗਲਤੀਆਂ ਲਈ ਜਾਂਚ ਕਰੋ ਅਤੇ ਉਹਨਾਂ ਨੂੰ (ਜੇ ਸੰਭਵ ਹੋਵੇ ਤਾਂ) ਠੀਕ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1779
-msgid "checking is not available for this filesystem"
+#: ../src/GParted_Core.cc:2141
+#| msgid "checking is not available for this filesystem"
+msgid "checking is not available for this file system"
 msgstr "ਇਹ ਫਾਇਲ ਸਿਸਟਮ ਲਈ ਚੈੱਕ ਕਰਨਾ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
 
-#: ../src/GParted_Core.cc:1805
-msgid "set partitiontype on %1"
-msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ-ਟਾਈਪ ਸੈੱਟ ਕਰੋ"
+#: ../src/GParted_Core.cc:2167
+#| msgid "set partitiontype on %1"
+msgid "set partition type on %1"
+msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਟਾਈਪ ਸੈੱਟ ਕਰੋ"
 
-#: ../src/GParted_Core.cc:1827
-msgid "new partitiontype: %1"
-msgstr "ਨਵੀਂ ਪਾਰਟੀਸ਼ਨ-ਟਾਈਪ: %1"
+#: ../src/GParted_Core.cc:2194
+#| msgid "new partitiontype: %1"
+msgid "new partition type: %1"
+msgstr "ਨਵੀਂ ਪਾਰਟੀਸ਼ਨ ਟਾਈਪ: %1"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:2221
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%2 ਵਿੱਚੋਂ %1 ਪੜ੍ਹੇ (%3 ਬਾਕੀ)"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:2221
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%2 ਵਿੱਚੋਂ %1 ਕਾਪੀ (%3 ਬਾਕੀ)"
 
-#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
+#: ../src/GParted_Core.cc:2227 ../src/GParted_Core.cc:2322
 msgid "%1 of %2 read"
 msgstr "%2 ਵਿੱਚੋਂ %1 ਪੜ੍ਹੇ"
 
-#: ../src/GParted_Core.cc:1860 ../src/GParted_Core.cc:1955
+#: ../src/GParted_Core.cc:2227 ../src/GParted_Core.cc:2322
 msgid "%1 of %2 copied"
 msgstr "%2 ਵਿੱਚੋਂ %1 ਕਾਪੀ ਹੋਇਆ"
 
-#: ../src/GParted_Core.cc:1878
+#: ../src/GParted_Core.cc:2245
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "%1 ਸੈਕਟਰ %2 ਸੈਕਟਰਾਂ ਦੇ ਬਲਾਕ-ਸਾਈਜ਼ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਪੜ੍ਹੇ"
 
-#: ../src/GParted_Core.cc:1881
+#: ../src/GParted_Core.cc:2248
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "%1 ਸੈਕਟਰ %2 ਸੈਕਟਰਾਂ ਦੇ ਬਲਾਕ-ਸਾਈਜ਼ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਕਾਪੀ ਕੀਤੇ"
 
-#: ../src/GParted_Core.cc:2000
+#: ../src/GParted_Core.cc:2367
 msgid "Error while writing block at sector %1"
 msgstr "ਸੈਕਟਰ %1 ਉੱਤੇ ਬਲਾਕ ਲਿਖਣ ਦੌਰਾਨ ਗਲਤੀ"
 
-#: ../src/GParted_Core.cc:2003
+#: ../src/GParted_Core.cc:2370
 msgid "Error while reading block at sector %1"
 msgstr "ਸੈਕਟਰ %1 ਉੱਤੇ ਬਲਾਕ ਪੜ੍ਹਨ ਦੌਰਾਨ ਗਲਤੀ"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2380
 msgid "calibrate %1"
 msgstr "%1 ਕੈਲੇਬਰੇਟ"
 
-#: ../src/GParted_Core.cc:2060
+#: ../src/GParted_Core.cc:2427
 msgid "calculate new size and position of %1"
 msgstr "%1 ਦਾ ਨਵਾਂ ਸਾਈਜ਼ ਅਤੇ ਸਥਿਤੀ ਕੱਢੋ"
 
-#: ../src/GParted_Core.cc:2064
+#: ../src/GParted_Core.cc:2431
 msgid "requested start: %1"
 msgstr "ਮੰਗਿਆ ਸ਼ੁਰੂ: %1"
 
-#: ../src/GParted_Core.cc:2065
+#: ../src/GParted_Core.cc:2432
 msgid "requested end: %1"
 msgstr "ਮੰਗਿਆ ਅੰਤ: %1"
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2433
 msgid "requested size: %1 (%2)"
 msgstr "ਮੰਗਿਆ ਸਾਈਜ਼: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2189
-msgid "updating bootsector of %1 filesystem on %2"
-msgstr "%2 ਉੱਤੇ %1 ਫਾਇਲਸਿਸਟਠ ਦਾ ਬੂਟ ਸੈਕਟਰ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
+#: ../src/GParted_Core.cc:2569
+#| msgid "updating bootsector of %1 filesystem on %2"
+msgid "updating boot sector of %1 file system on %2"
+msgstr "%2 ਉੱਤੇ %1 ਫਾਇਲ ਸਿਸਟਮ ਦਾ ਬੂਟ ਸੈਕਟਰ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
 #: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
 msgid "_Undo Last Operation"
@@ -703,10 +877,11 @@ msgstr "%1 ਤੋਂ %2 ਉੱਤੇ ਨਕਲ (%3 ਉੱਤੇ ਸ਼ੁਰੂ)
 msgid "Copy %1 to %2"
 msgstr "%1 ਨੂੰ %2 ਉੱਤੇ ਕਾਪੀ ਕਰੋ"
 
-#. TO TRANSLATORS: looks like  Check and repair filesystem (ext3) on /dev/hda4
+#. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
 #: ../src/OperationCheck.cc:38
-msgid "Check and repair filesystem (%1) on %2"
-msgstr "%2 ਉੱਤੇ ਫਾਇਲ ਸਿਸਟਮ (%2) ਚੈੱਕ ਕਰੋ ਅਤੇ ਰੀਪੇਅਰ ਕਰੋ"
+#| msgid "Check and repair filesystem (%1) on %2"
+msgid "Check and repair file system (%1) on %2"
+msgstr "%2 ਉੱਤੇ ਫਾਇਲ ਸਿਸਟਮ (%1) ਚੈੱਕ ਕਰੋ ਅਤੇ ਰੀਪੇਅਰ ਕਰੋ"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
 #: ../src/OperationCreate.cc:86
@@ -723,43 +898,57 @@ msgstr "%4 ਤੋਂ %1 (%2, %3) ਹਟਾਓ"
 msgid "Format %1 as %2"
 msgstr "%1 %2 ਦੇ ਤੌਰ ਉੱਤੇ ਫਾਰਮੈਟ"
 
-#: ../src/OperationResizeMove.cc:75
+#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
+#: ../src/OperationLabelPartition.cc:59
+#| msgid "set partitiontype on %1"
+msgid "Clear Partition Label on %1"
+msgstr "%1 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਟਾਈਪ ਸੈੱਟ ਕਰੋ"
+
+#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
+#: ../src/OperationLabelPartition.cc:63
+#| msgid "set partitiontype on %1"
+msgid "Set Partition Label \"%1\" on %2"
+msgstr "%2 ਉੱਤੇ ਪਾਰਟੀਸ਼ਨ ਲੇਬਲ \"%1\" ਸੈੱਟ ਕਰੋ"
+
+#: ../src/OperationResizeMove.cc:85
 msgid "resize/move %1"
 msgstr "%1 ਮੁੜ-ਸਾਈਜ਼/ਮੂਵ"
 
-#: ../src/OperationResizeMove.cc:77
-msgid "new and old partition have the same size and positition. continuing anyway"
-msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ ਅਤੇ ਸਥਿਤੀ ਇੱਕੋ ਹੀ ਹੈ। ਕੀ ਕਿਵੇਂ ਵੀ ਜਾਰੀ ਰੱਖਣਾ ਹੈ।"
+#: ../src/OperationResizeMove.cc:87
+#| msgid ""
+#| "new and old partition have the same size and positition. continuing anyway"
+msgid "new and old partition have the same size and position -- continuing anyway"
+msgstr "ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਸਾਈਜ ਅਤੇ ਸਥਿਤੀ ਇੱਕੋ ਹੀ ਹੈ -- ਕੀ ਕਿਵੇਂ ਵੀ ਜਾਰੀ ਰੱਖਣਾ ਹੈ।"
 
-#: ../src/OperationResizeMove.cc:81
+#: ../src/OperationResizeMove.cc:91
 msgid "Move %1 to the right"
 msgstr "%1 ਸੱਜੇ ਮੂਵ ਕਰੋ"
 
-#: ../src/OperationResizeMove.cc:84
+#: ../src/OperationResizeMove.cc:94
 msgid "Move %1 to the left"
 msgstr "%1 ਖੱਬੇ ਮੂਵ ਕਰੋ"
 
-#: ../src/OperationResizeMove.cc:87
+#: ../src/OperationResizeMove.cc:97
 msgid "Grow %1 from %2 to %3"
 msgstr "%1 ਨੂੰ %2 ਤੋਂ %3 ਲਈ ਫੈਲਾਓ"
 
-#: ../src/OperationResizeMove.cc:90
+#: ../src/OperationResizeMove.cc:100
 msgid "Shrink %1 from %2 to %3"
 msgstr "%1 ਨੂੰ %2 ਤੋਂ %3 ਲਈ ਸੁੰਘੜੋ"
 
-#: ../src/OperationResizeMove.cc:93
+#: ../src/OperationResizeMove.cc:103
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "%1 ਨੂੰ ਸੱਜੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %2 ਤੋਂ %3 ਫੈਲਾਓ"
 
-#: ../src/OperationResizeMove.cc:96
+#: ../src/OperationResizeMove.cc:106
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "%1 ਨੂੰ ਸੱਜੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %2 ਤੋਂ %3 ਸੁੰਘੜੋ"
 
-#: ../src/OperationResizeMove.cc:99
+#: ../src/OperationResizeMove.cc:109
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "%1 ਨੂੰ ਖੱਬੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %2 ਤੋਂ %3 ਫੈਲਾਓ"
 
-#: ../src/OperationResizeMove.cc:102
+#: ../src/OperationResizeMove.cc:112
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "%1 ਨੂੰ ਖੱਬੇ ਮੂਵ ਕਰੋ ਅਤੇ ਇਸ ਨੂੰ %2 ਤੋਂ %3 ਸੁੰਘੜੋ"
 
@@ -769,16 +958,13 @@ msgid "Partition"
 msgstr "ਪਾਰਟੀਸ਼ਨ"
 
 #: ../src/TreeView_Detail.cc:36
-msgid "Mountpoint"
+#| msgid "Mountpoint"
+msgid "Mount Point"
 msgstr "ਮਾਊਂਟ ਪੁਆਇੰਟ"
-
-#: ../src/TreeView_Detail.cc:37
-msgid "Label"
-msgstr "ਲੇਬਲ"
 
 #: ../src/TreeView_Detail.cc:38
 msgid "Size"
-msgstr "ਸਾਈਜ਼:"
+msgstr "ਸਾਈਜ਼"
 
 #: ../src/TreeView_Detail.cc:39
 msgid "Used"
@@ -792,57 +978,65 @@ msgstr "ਅਣ-ਵਰਤੀ"
 msgid "Flags"
 msgstr "ਫਲੈਗ਼"
 
-#: ../src/Utils.cc:110
+#: ../src/Utils.cc:119
 msgid "unallocated"
 msgstr "ਅਣਵੰਡੀ"
 
-#: ../src/Utils.cc:111
+#: ../src/Utils.cc:120
 msgid "unknown"
 msgstr "ਅਣਜਾਣ"
 
-#: ../src/Utils.cc:112
+#: ../src/Utils.cc:121
 msgid "unformatted"
 msgstr "ਗ਼ੈਰ-ਫਾਰਮੈਟ"
 
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:138
 msgid "used"
 msgstr "ਵਰਤੀ"
 
-#: ../src/Utils.cc:128
+#: ../src/Utils.cc:139
 msgid "unused"
 msgstr "ਅਣ-ਵਰਤੀ"
 
-#: ../src/Utils.cc:143
+#: ../src/Utils.cc:179
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:148
+#: ../src/Utils.cc:184
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:153
+#: ../src/Utils.cc:189
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:158
+#: ../src/Utils.cc:194
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:163
+#: ../src/Utils.cc:199
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:133
+#: ../src/Utils.cc:335
+msgid "# Temporary file created by gparted.  It may be deleted.\n"
+msgstr "# ਆਰਜ਼ੀ ਫਾਇਲ gparted ਵਲੋਂ ਬਣਾਈ ਗਈ ਹੈ। ਇਹ ਬਾਅਦ ਵਿੱਚ ਹਟਾਈ ਜਾ ਸਕਦੀ ਹੈ।\n"
+
+#: ../src/Utils.cc:344
+msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+msgstr "ਲੇਬਲ ਓਪਰੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਇਆ: ਆਰਜ਼ੀ ਫਾਇਲ %1 ਲਿਖਣ ਲਈ ਅਸਮਰੱਥ।\n"
+
+#: ../src/Utils.cc:353
+msgid "Label operation failed:  Unable to create temporary file %1.\n"
+msgstr "ਲੇਬਲ ਓਪਰੇਸ਼ਨ ਫੇਲ੍ਹ ਹੋਇਆ: ਆਰਜ਼ੀ ਫਾਇਲ %1 ਬਣਾਉਣ ਲਈ ਫੇਲ੍ਹ ਹੈ।\n"
+
+#: ../src/Win_GParted.cc:136
 msgid "_Refresh Devices"
 msgstr "ਜੰਤਰ ਤਾਜ਼ਾ(_R)"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:142
 msgid "_Devices"
 msgstr "ਜੰਤਰ(_D)"
-
-#: ../src/Win_GParted.cc:143
-msgid "_Show Features"
-msgstr "ਫੀਚਰ ਵੇਖੋ(_S)"
 
 #: ../src/Win_GParted.cc:147
 msgid "_GParted"
@@ -865,151 +1059,169 @@ msgid "_View"
 msgstr "ਵੇਖੋ(_V)"
 
 #: ../src/Win_GParted.cc:178
-msgid "_Set Disklabel"
-msgstr "ਡਿਸਕ-ਲੇਬਲ ਸੈੱਟ ਕਰੋ(_S)"
+#| msgid "Filesystem"
+msgid "_File System Support"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਸਹਿਯੋਗ(_F)"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:182
+#| msgid "Create new Partition"
+msgid "_Create Partition Table"
+msgstr "ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਬਣਾਓ(_C)"
+
+#: ../src/Win_GParted.cc:184
 msgid "_Device"
 msgstr "ਜੰਤਰ(_D)"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:188
 msgid "_Partition"
 msgstr "ਪਾਰਟੀਸ਼ਨ(_P)"
 
 #: ../src/Win_GParted.cc:193
+msgid "_Contents"
+msgstr "ਸਮੱਗਰੀ(_C)"
+
+#: ../src/Win_GParted.cc:201
 msgid "_Help"
 msgstr "ਮੱਦਦ(_H)"
 
-#: ../src/Win_GParted.cc:207
+#: ../src/Win_GParted.cc:215
 msgid "Create a new partition in the selected unallocated space"
 msgstr "ਚੁਣੀ ਅਣਵੰਡੀ ਥਾਂ ਵਿੱਚ ਨਵਾਂ ਪਾਰਟੀਸ਼ਨ ਬਣਾਓ"
 
-#: ../src/Win_GParted.cc:212
+#: ../src/Win_GParted.cc:220
 msgid "Delete the selected partition"
 msgstr "ਚੁਣਿਆ ਪਾਰਟੀਸ਼ਨ ਹਟਾਓ"
 
-#: ../src/Win_GParted.cc:222
+#: ../src/Win_GParted.cc:242
 msgid "Resize/Move the selected partition"
 msgstr "ਚੁਣਿਆ ਪਾਰਟੀਸ਼ਨ ਮੁੜ-ਸਾਈਜ਼/ਭੇਜੋ"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:251
 msgid "Copy the selected partition to the clipboard"
 msgstr "ਚੁਣੇ ਪਾਰਟੀਸ਼ਨ ਤੋਂ ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਨਕਲ"
 
-#: ../src/Win_GParted.cc:236
+#: ../src/Win_GParted.cc:256
 msgid "Paste the partition from the clipboard"
 msgstr "ਕਲਿੱਪਬੋਰਡ ਤੋਂ ਪਾਰਟੀਸ਼ਨ ਚੇਪੋ"
 
-#: ../src/Win_GParted.cc:246
+#: ../src/Win_GParted.cc:268
 msgid "Undo Last Operation"
 msgstr "ਆਖਰੀ ਓਪਰੇਸ਼ਨ ਵਾਪਸ ਲਵੋ"
 
-#: ../src/Win_GParted.cc:253
+#: ../src/Win_GParted.cc:276
 msgid "Apply All Operations"
 msgstr "ਸਭ ਓਪਰੇਸ਼ਨ ਲਾਗੂ ਕਰੋ"
 
-#: ../src/Win_GParted.cc:288
+#: ../src/Win_GParted.cc:311
 msgid "_Resize/Move"
 msgstr "ਮੁੜ-ਸਾਈਜ਼/ਭੇਜੋ(_R)"
 
-#: ../src/Win_GParted.cc:312
+#: ../src/Win_GParted.cc:335
 msgid "_Format to"
 msgstr "ਫਾਰਮੈਟ(_F)"
 
-#: ../src/Win_GParted.cc:321
+#: ../src/Win_GParted.cc:344
 msgid "Unmount"
 msgstr "ਅਣ-ਮਾਊਂਟ"
 
-#: ../src/Win_GParted.cc:327
+#: ../src/Win_GParted.cc:350
 msgid "_Mount on"
 msgstr "ਮਾਊਟ ਹੈ(_M)"
 
-#: ../src/Win_GParted.cc:334
+#: ../src/Win_GParted.cc:357
 msgid "M_anage Flags"
 msgstr "ਫਲੈਗ਼ ਮੈਨੇਜ(_a)"
 
-#: ../src/Win_GParted.cc:339
+#: ../src/Win_GParted.cc:362
 msgid "C_heck"
 msgstr "ਚੈੱਕ ਕਰੋ(_h)"
 
-#: ../src/Win_GParted.cc:393
+#: ../src/Win_GParted.cc:367
+#| msgid "Label"
+msgid "_Label"
+msgstr "ਲੇਬਲ(_L)"
+
+#: ../src/Win_GParted.cc:429
 msgid "Device Information"
 msgstr "ਜੰਤਰ ਜਾਣਕਾਰੀ"
 
 #. model
-#: ../src/Win_GParted.cc:401
+#: ../src/Win_GParted.cc:437
 msgid "Model:"
 msgstr "ਮਾਡਲ:"
 
 #. disktype
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:474
 msgid "DiskLabelType:"
 msgstr "ਡਿਸਕਲੇਬਲ ਕਿਸਮ:"
 
 #. heads
-#: ../src/Win_GParted.cc:446
+#: ../src/Win_GParted.cc:482
 msgid "Heads:"
 msgstr "ਹੈੱਡ:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:454
+#: ../src/Win_GParted.cc:490
 msgid "Sectors/Track:"
 msgstr "ਸੈਕਟਰ/ਟਰੈਕ:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:462
+#: ../src/Win_GParted.cc:498
 msgid "Cylinders:"
 msgstr "ਸਿੰਲਡਰ:"
 
-#: ../src/Win_GParted.cc:637
+#: ../src/Win_GParted.cc:677
 msgid "Could not add this operation to the list."
 msgstr "ਇਹ ਓਪਰੇਸ਼ਨ ਲਿਸਟ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।"
 
-#: ../src/Win_GParted.cc:663
-msgid "%1 operations pending"
-msgstr "%1 ਓਪਰੇਸ਼ਨ ਅਜੇ ਬਾਕੀ ਹਨ"
+#: ../src/Win_GParted.cc:702
+#| msgid "%1 operations pending"
+msgid "%1 operation pending"
+msgid_plural "%1 operations pending"
+msgstr[0] "%1 ਓਪਰੇਸ਼ਨ ਅਜੇ ਬਾਕੀ ਹਨ"
+msgstr[1] "%1 ਓਪਰੇਸ਼ਨ ਅਜੇ ਬਾਕੀ ਹਨ"
 
-#: ../src/Win_GParted.cc:665
-msgid "1 operation pending"
-msgstr "1 ਓਪਰੇਸ਼ਨ ਬਾਕੀ ਹੈ"
-
-#: ../src/Win_GParted.cc:713
+#: ../src/Win_GParted.cc:756
 msgid "Quit GParted?"
 msgstr "ਜੀਪਾਰਟਡ ਬੰਦ ਕਰਨਾ ਹੈ?"
 
-#: ../src/Win_GParted.cc:720
-msgid "%1 operations are currently pending."
-msgstr "%1 ਓਪਰੇਸ਼ਨ ਇਸ ਸਮੇਂ ਬਕਾਇਆ ਹਨ।"
+#: ../src/Win_GParted.cc:762
+#| msgid "1 operation is currently pending."
+msgid "%1 operation is currently pending."
+msgid_plural "%1 operations are currently pending."
+msgstr[0] "%1 ਓਪਰੇਸ਼ਨ ਇਸ ਸਮੇਂ ਬਾਕੀ ਹੈ।"
+msgstr[1] "%1 ਓਪਰੇਸ਼ਨ ਇਸ ਸਮੇਂ ਬਾਕੀ ਹਨ।"
 
-#: ../src/Win_GParted.cc:723
-msgid "1 operation is currently pending."
-msgstr "1 ਓਪਰੇਸ਼ਨ ਇਸ ਸਮੇਂ ਬਕਾਇਆ ਹੈ।"
-
-#: ../src/Win_GParted.cc:742
+#: ../src/Win_GParted.cc:788
 msgid "_Unmount"
 msgstr "ਅਣ-ਮਾਊਂਟ(_U)"
 
-#: ../src/Win_GParted.cc:767
+#: ../src/Win_GParted.cc:813
 msgid "_Swapoff"
 msgstr "ਸਵੈਪ-ਆਫ਼(_S)"
 
-#: ../src/Win_GParted.cc:773
+#: ../src/Win_GParted.cc:819
 msgid "_Swapon"
 msgstr "ਸਵੈਪ-ਆਨ(_S)"
 
-#: ../src/Win_GParted.cc:921
+#: ../src/Win_GParted.cc:1018
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:967
+#: ../src/Win_GParted.cc:1064
 msgid "Scanning all devices..."
 msgstr "ਜੰਤਰਾਂ ਦੀ ਜਾਂਚ ਜਾਰੀ ਹੈ..."
 
-#: ../src/Win_GParted.cc:983
-msgid "The kernel is unable to re-read the partitiontables on the following devices:"
-msgstr "ਕਰਨਲ ਹੇਠਾਂ ਦਿੱਤੇ ਪਾਰਟੀਸ਼ਨਾਂ ਤੇ ਪਾਰਟੀਸ਼ਨ-ਸਾਰਣੀ ਮੁੜ-ਪੜ੍ਹਨ ਵਿੱਚ ਅਸਫਲ ਹੈ:"
+#: ../src/Win_GParted.cc:1080
+#| msgid ""
+#| "The kernel is unable to re-read the partitiontables on the following "
+#| "devices:"
+msgid ""
+"The kernel is unable to re-read the partition tables on the following "
+"devices:"
+msgstr "ਕਰਨਲ ਹੇਠਾਂ ਦਿੱਤੇ ਪਾਰਟੀਸ਼ਨਾਂ ਤੇ ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਮੁੜ-ਪੜ੍ਹਨ ਵਿੱਚ ਅਸਫਲ ਹੈ:"
 
-#: ../src/Win_GParted.cc:990
+#: ../src/Win_GParted.cc:1087
 msgid ""
 "Because of this you will only have limited access to these devices. Unmount "
 "all mounted partitions on a device to get full access."
@@ -1017,32 +1229,27 @@ msgstr ""
 "ਕਿਉਂਕਿ ਇਹਨਾਂ ਜੰਤਰਾਂ ਉੱਤੇ ਤੁਹਾਡੇ ਕੋਲ ਸੀਮਤ ਅਧਿਕਾਰ ਹਨ। ਪੂਰੇ ਅਧਿਕਾਰ ਲੈਣ ਲਈ ਸਭ ਮਾਊਂਟ ਪਾਰਟੀਸ਼ਨਾਂ "
 "ਨੂੰ ਅਣ-ਮਾਊਂਟ ਕਰੋ।"
 
-#: ../src/Win_GParted.cc:1034
+#: ../src/Win_GParted.cc:1131
 msgid "No devices detected"
 msgstr "ਕੋਈ ਜੰਤਰ ਨਹੀਂ ਖੋਜਿਆ"
 
-#: ../src/Win_GParted.cc:1113
-msgid "Sorry, not yet implemented."
-msgstr "ਮੁਆਫੀ, ਪਰ ਹਾਲੇ ਤੱਕ ਬਣਿਆ ਨਹੀਂ ਹੈ।"
-
-#: ../src/Win_GParted.cc:1119
-msgid "Please visit http://gparted.sf.net for more information and support."
-msgstr "ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਉੱਤੇ ਮੱਦਦ ਲਈ http://gparted.sf.net ਵੇਖੋ।"
+#: ../src/Win_GParted.cc:1266
+msgid "GNOME Partition Editor"
+msgstr "ਗਨੋਮ ਪਾਰਟੀਸ਼ਨ ਐਡੀਟਰ"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
-#. It's a good idea to provide the url of your translationteam as well. Thanks!
-#: ../src/Win_GParted.cc:1150
+#. It's a good idea to provide the url of your translation team as well. Thanks!
+#: ../src/Win_GParted.cc:1282
 msgid "translator-credits"
 msgstr ""
 "ਅਮਨਪਰੀਤ ਸਿੰਘ ਆਲਮ\n"
-"Punjabi Open Source Team"
-"http://www.satluj.org/"
+"Punjabi Open Source Teamhttp://www.satluj.org/"
 
-#: ../src/Win_GParted.cc:1192
+#: ../src/Win_GParted.cc:1324
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "%1 ਤੋਂ ਜਿਆਦਾ ਪ੍ਰਾਇਮਰੀ ਪਾਰਟੀਸ਼ਨ ਬਣਾਏ ਨਹੀਂ ਜਾ ਸਕਦੇ ਹਨ"
 
-#: ../src/Win_GParted.cc:1200
+#: ../src/Win_GParted.cc:1332
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1053,126 +1260,135 @@ msgstr ""
 "ਇੰਝ ਦਾ ਪਾਰਟੀਸ਼ਨ ਹੋਰ ਪਾਰਟੀਸ਼ਨ ਵੀ ਰੱਖ ਸਕਦਾ ਹੈ। ਕਿਉਂਕ ਐਕਸਟੈੱਡ ਪਾਰਟੀਸ਼ਨ ਇੱਕ ਪ੍ਰਾਇਮਰੀ ਪਾਰਟੀਸ਼ਨ "
 "ਵੀ ਹੋ ਸਕਦਾ ਹੈ, ਇਸਕਰਕੇ ਪਹਿਲਾਂ ਇੱਕ ਪ੍ਰਾਇਮਰੀ ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਹਟਾਉਣਾ ਲਾਜ਼ਮੀ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1386
+#: ../src/Win_GParted.cc:1519
 msgid "Unable to delete %1!"
 msgstr "%1 ਨੂੰ ਹਟਾਉਣ ਵਿੱਚ ਅਸਫਲ!"
 
-#: ../src/Win_GParted.cc:1393
+#: ../src/Win_GParted.cc:1526
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "ਕਿਰਪਾ ਕਰਕੇ %1 ਅੰਕ ਦੀ ਗਿਣਤੀ ਤੋਂ ਜਿਆਦਾ ਵਾਲੇ ਸਭ ਲਾਜ਼ੀਕਲ ਪਾਰਟੀਸ਼ਨ ਅਣ-ਮਾਊਂਟ ਕਰੋ"
 
-#: ../src/Win_GParted.cc:1404
+#: ../src/Win_GParted.cc:1537
 msgid "Are you sure you want to delete %1?"
 msgstr "ਕੀ ਤੁਸੀਂ %1 ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: ../src/Win_GParted.cc:1411
+#: ../src/Win_GParted.cc:1544
 msgid "After deletion this partition is no longer available for copying."
 msgstr "ਇਹ ਪਾਰਟੀਸ਼ਨ ਹਟਾਉਣ ਉਪਰੰਤ ਨਕਲ ਕਰਨ ਲਈ ਮਿਲੇਗਾ ਨਹੀਂ।"
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1414
+#: ../src/Win_GParted.cc:1547
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 (%2, %3) ਹਟਾਓ"
 
-#: ../src/Win_GParted.cc:1480
-msgid "Cannot format this filesystem to %1."
+#: ../src/Win_GParted.cc:1613
+#| msgid "Cannot format this filesystem to %1."
+msgid "Cannot format this file system to %1."
 msgstr "ਇਹ ਫਾਇਲ ਸਿਸਟਮ ਨੂੰ %1 ਲਈ ਫਾਰਮੈਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1489
-msgid "A %1 filesystem requires a partition of at least %2."
+#: ../src/Win_GParted.cc:1622
+#| msgid "A %1 filesystem requires a partition of at least %2."
+msgid "A %1 file system requires a partition of at least %2."
 msgstr "ਇੱਕ %1 ਫਾਇਲ ਸਿਸਟਮ ਨੂੰ ਇੱਕ ਪਾਰਟੀਸ਼ਨ ਲਈ ਘੱਟੋ-ਘੱਟ %2 ਦੀ ਲੋੜ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1494
-msgid "A partition with a %1 filesystem has a maximum size of %2."
+#: ../src/Win_GParted.cc:1627
+#| msgid "A partition with a %1 filesystem has a maximum size of %2."
+msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 ਫਾਇਲ ਸਿਸਟਮ ਦੇ ਪਾਰਟੀਸ਼ਨ ਦਾ ਵੱਧ ਤੋਂ ਵੱਧ ਸਾਈਜ਼ %2 ਹੀ ਹੋ ਸਕਦਾ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1579
-msgid "The partition could not be unmounted from the following mountpoints:"
-msgstr "ਹੇਠ ਦਿੱਤੇ ਮਾਊਂਟ ਥਾਵਾਂ ਤੋਂ ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਅਣ-ਮਾਊਂਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ ਹੈ:"
+#: ../src/Win_GParted.cc:1712
+#| msgid "The partition could not be unmounted from the following mountpoints:"
+msgid "The partition could not be unmounted from the following mount points:"
+msgstr "ਹੇਠ ਦਿੱਤੇ ਮਾਊਂਟ ਪੁਆਇੰਟਾਂ ਤੋਂ ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਅਣ-ਮਾਊਂਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ ਹੈ:"
 
-#: ../src/Win_GParted.cc:1581
+#: ../src/Win_GParted.cc:1714
+#| msgid ""
+#| "Most likely other partitions are also mounted on these mountpoints. You "
+#| "are advised to unmount them manually."
 msgid ""
-"Most likely other partitions are also mounted on these mountpoints. You are "
+"Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
 msgstr ""
-"ਸ਼ਾਇਦ ਹੋਰ ਪਾਰਟੀਸ਼ਨ ਵੀ ਇਹਨਾਂ ਮਾਊਂਟ ਥਾਵਾਂ ਉੱਤੇ ਮਾਊਂਟ ਹਨ। ਤੁਹਾਨੂੰ ਉਨ੍ਹਾਂ ਨੂੰ ਪਹਿਲਾਂ ਖੁਦ ਅਣ-ਮਾਊਂਟ "
+"ਸ਼ਾਇਦ ਹੋਰ ਪਾਰਟੀਸ਼ਨ ਵੀ ਇਹਨਾਂ ਮਾਊਂਟ ਪੁਆਇੰਟਾਂ ਉੱਤੇ ਮਾਊਂਟ ਹਨ। ਤੁਹਾਨੂੰ ਉਨ੍ਹਾਂ ਨੂੰ ਪਹਿਲਾਂ ਖੁਦ "
+"ਅਣ-ਮਾਊਂਟ "
 "ਕਰਨ ਦੀ ਸਿਫ਼ਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1764
 msgid "Deactivating swap on %1"
 msgstr "%1 ਉੱਤੇ ਸਵੈਪ ਡਿ-ਐਕਟਿਵ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1764
 msgid "Activating swap on %1"
 msgstr "%1 ਉੱਤੇ ਸਵੈਪ ਐਕਟਿਵ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1771
 msgid "Could not deactivate swap"
 msgstr "ਸਵੈਪ ਡਿ-ਐਕਟਿਵ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
 
-#: ../src/Win_GParted.cc:1638
+#: ../src/Win_GParted.cc:1771
 msgid "Could not activate swap"
 msgstr "ਸਵੈਪ ਐਕਟਿਵ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
 
-#: ../src/Win_GParted.cc:1654
+#: ../src/Win_GParted.cc:1787
 msgid "Unmounting %1"
 msgstr "%1 ਅਣ-ਮਾਊਂਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/Win_GParted.cc:1659
+#: ../src/Win_GParted.cc:1792
 msgid "Could not unmount %1"
 msgstr "%1 ਨੂੰ ਅਣ-ਮਾਊਂਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ"
 
-#: ../src/Win_GParted.cc:1688
+#: ../src/Win_GParted.cc:1821
 msgid "mounting %1 on %2"
 msgstr "%1 ਨੂੰ %2 ਉੱਤੇ ਮਾਊਂਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ"
 
-#: ../src/Win_GParted.cc:1695
+#: ../src/Win_GParted.cc:1828
 msgid "Could not mount %1 on %2"
 msgstr "%1 ਨੂੰ %2 ਉੱਤੇ ਮਾਊਂਟ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ"
 
-#: ../src/Win_GParted.cc:1719
-msgid "Are you sure you want to create a %1 disklabel on %2?"
-msgstr "ਕੀ ਤੁਸੀਂ %2 ਤੇ %1 ਡਿਸਕ ਲੇਬਲ ਬਣਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
+#: ../src/Win_GParted.cc:1854
+#| msgid "Error while setting new disklabel"
+msgid "Error while creating partition table."
+msgstr "ਨਵਾਂ ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਬਣਾਉਣ ਦੌਰਾਨ ਗਲਤੀ"
 
-#: ../src/Win_GParted.cc:1727
-msgid "This operation will destroy all data on %1!"
-msgstr "ਇਸ ਓਪਰੇਸ਼ਨ %1 'ਤੇ ਮੌਜੂਦ ਸਭ ਡਾਟੇ ਨੂੰ ਹਟਾ ਦੇਵੇਗੀ!"
-
-#: ../src/Win_GParted.cc:1736
-msgid "Error while setting new disklabel"
-msgstr "ਨਵਾਂ ਡਿਸਕ ਲੇਬਲ ਦੇਣ ਦੌਰਾਨ ਗਲਤੀ"
-
-#: ../src/Win_GParted.cc:1820
+#: ../src/Win_GParted.cc:1967
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "ਕੀ ਤੁਸੀਂ ਬਕਾਇਆ ਓਪਰੇਸ਼ਨ ਕਰਨ ਲਈ ਸਹਿਮਤ ਹੋ?"
 
-#: ../src/Win_GParted.cc:1825
-msgid "It is recommended to backup valuable data before proceeding."
-msgstr "ਅੱਗੇ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ ਕੀਮਤੀ ਡਾਟੇ ਦਾ ਬੈਕਅੱਪ ਲੈਣ ਦੀ ਸਲਾਹ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ।"
+#: ../src/Win_GParted.cc:1973
+msgid "Editing partitions has the potential to cause LOSS of DATA."
+msgstr "ਪਾਰਟੀਸ਼ਨ ਨੂੰ ਸੋਧਣ ਨਾਲ *ਡਾਟਾ ਖਤਮ ਹੋਣ* ਦਾ ਖਤਰਾ ਬਣਾਇਆ ਰਹਿੰਦਾ ਹੈ।"
 
-#: ../src/Win_GParted.cc:1826
-msgid "Apply operations to harddisk"
-msgstr "ਓਪਰੇਸ਼ਨ ਹਾਰਡ-ਡਿਸਕ ਤੇ ਲਾਗੂ ਕਰੋ"
+#: ../src/Win_GParted.cc:1975
+#| msgid "It is recommended to backup valuable data before proceeding."
+msgid "You are advised to backup your data before proceeding."
+msgstr "ਤੁਹਾਨੂੰ ਅੱਗੇ ਜਾਣ ਤੋਂ ਪਹਿਲਾਂ ਕੀਮਤੀ ਡਾਟੇ ਦਾ ਬੈਕਅੱਪ ਲੈਣ ਦੀ ਸਲਾਹ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ।"
 
-#. create mountpoint...
-#: ../src/jfs.cc:146 ../src/xfs.cc:147 ../src/xfs.cc:238 ../src/xfs.cc:245
-msgid "create temporary mountpoint (%1)"
-msgstr "ਆਰਜ਼ੀ ਮਾਊਂਟ-ਪੁਆਇੰਟ (%1) ਬਣਾਓ"
+#: ../src/Win_GParted.cc:1977
+#| msgid "Apply operations to harddisk"
+msgid "Apply operations to device"
+msgstr "ਓਪਰੇਸ਼ਨ ਜੰਤਰ ਉੱਤੇ ਲਾਗੂ ਕਰੋ"
 
-#: ../src/jfs.cc:153 ../src/xfs.cc:154 ../src/xfs.cc:252 ../src/xfs.cc:261
+#. create mount point...
+#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:244 ../src/xfs.cc:251
+#| msgid "create temporary mountpoint (%1)"
+msgid "create temporary mount point (%1)"
+msgstr "ਆਰਜ਼ੀ ਮਾਊਂਟ ਪੁਆਇੰਟ (%1) ਬਣਾਓ"
+
+#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:258 ../src/xfs.cc:267
 msgid "mount %1 on %2"
 msgstr "%1 %2 ਉੱਤੇ ਮਾਊਂਟ ਹੈ"
 
-#: ../src/jfs.cc:162
+#: ../src/jfs.cc:156
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "%1 ਨੂੰ %2 ਉੱਤੇ 'ਮੁੜ-ਸਾਈਜ਼' ਢੰਗ ਯੋਗ ਕਰਕੇ ਮੁੜ-ਮਾਊਂਟ"
 
-#: ../src/jfs.cc:180 ../src/xfs.cc:176 ../src/xfs.cc:285 ../src/xfs.cc:306
+#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:291 ../src/xfs.cc:312
 msgid "unmount %1"
 msgstr "%1 ਅਣ-ਮਾਊਂਟ"
 
-#: ../src/jfs.cc:200 ../src/xfs.cc:196 ../src/xfs.cc:326 ../src/xfs.cc:349
-msgid "remove temporary mountpoint (%1)"
+#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:332 ../src/xfs.cc:355
+#| msgid "remove temporary mountpoint (%1)"
+msgid "remove temporary mount point (%1)"
 msgstr "ਆਰਜ਼ੀ ਮਾਊਂਟ ਪੁਆਇੰਟ (%1) ਹਟਾਓ"
 
 #: ../src/main.cc:38
@@ -1180,26 +1396,87 @@ msgid "Root privileges are required for running GParted"
 msgstr "ਜੀਪਾਰਟਡ ਨੂੰ ਚਲਾਉਣ ਲ਼ਈ ਪ੍ਰਬੰਧਕੀ(root) ਅਧਿਕਾਰ ਚਾਹੀਦੇ ਹਨ"
 
 #: ../src/main.cc:43
-msgid "Since GParted can be a weapon of mass destruction only root may run it."
-msgstr "ਕਿਉਕਿ ਜੀਪਾਰਟਡ ਘਾਣ ਕਰਨ ਦੇ ਯੋਗ ਸੰਦ ਹੈ, ਇਸਕਰਕੇ ਪ੍ਰਬੰਧਕ (root) ਹੀ ਇਸ ਨੂੰ ਇਸਤੇਮਾਲ ਕਰ ਸਕਦਾ ਹੈ।"
+#| msgid ""
+#| "Since GParted can be a weapon of mass destruction only root may run it."
+msgid ""
+"Since GParted is a powerful tool capable of destroying partition tables and "
+"vast amounts of data, only root may run it."
+msgstr ""
+"ਕਿਉਕਿ ਜੀਪਾਰਟਡ ਤਾਕਤਵਰ ਟੂਲ ਹੈ, ਜੋ ਕਿ ਪਾਰਟੀਸ਼ਨ ਟੇਬਲ ਅਤੇ ਵੱਡੀ ਮਾਤਰਾ ਵਿੱਚ ਡਾਟਾ ਖਰਾਬ ਕਰ ਸਕਦਾ ਹੈ, "
+"ਇਸਕਰਕੇ ਪ੍ਰਬੰਧਕ (root) ਹੀ ਇਸ ਨੂੰ ਇਸਤੇਮਾਲ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ।"
 
 #. simulation..
-#: ../src/ntfs.cc:120
+#: ../src/ntfs.cc:124
 msgid "run simulation"
 msgstr "ਸੀਮੂਲੇਸ਼ਨ ਚਲਾਓ"
 
 #. real resize
-#: ../src/ntfs.cc:127
+#: ../src/ntfs.cc:131
 msgid "real resize"
 msgstr "ਅਸਲੀ ਮੁੜ-ਸਾਈਜ਼"
 
-#. grow the mounted filesystem..
-#: ../src/xfs.cc:162
-msgid "grow mounted filesystem"
+#. grow the mounted file system..
+#: ../src/xfs.cc:167
+#| msgid "grow mounted filesystem"
+msgid "grow mounted file system"
 msgstr "ਮਾਊਂਟ ਹੋਇਆ ਫਾਇਲ ਸਿਸਟਮ ਫੈਲਾਓ"
 
-#. copy filesystem..
-#: ../src/xfs.cc:269
-msgid "copy filesystem"
-msgstr "ਫਾਇਲ-ਸਿਸਟਮ ਨਕਲ"
+#. copy file system..
+#: ../src/xfs.cc:275
+#| msgid "copy filesystem"
+msgid "copy file system"
+msgstr "ਫਾਇਲ ਸਿਸਟਮ ਕਾਪੀ ਕਰੋ"
 
+#~ msgid "Set Disklabel on %1"
+#~ msgstr "%1 ਤੇ ਡਿਸਕ ਨਾਂ ਦਿਓ"
+
+#~ msgid ""
+#~ "A disklabel is a piece of data stored at a well known place on the disk, "
+#~ "that indicates where each partition begins and how many sectors it "
+#~ "occupies."
+#~ msgstr ""
+#~ "ਡਿਸਕ ਨਾਂ (ਡਿਸਕਲੇਬਲ) ਡਾਟਾ ਹੈ, ਜੋ ਕਿ ਡਿਸਕ ਉੱਤੇ ਇੱਕ ਜਾਣੇ ਥਾਂ ਉੱਤੇ ਸੰਭਾਲਿਆ ਜਾਂਦਾ ਹੈ, ਜੋ ਇਹ "
+#~ "ਦਰਸਾਉਦਾ ਹੈ ਕਿ ਹਰ ਡਿਸਕ ਪਾਰਟੀਸ਼ਨ ਕਿੱਥੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ ਅਤੇ ਕਿੰਨੇ ਸੈਕਟਰ ਹਨ।"
+
+#~ msgid "You need a disklabel if you want to create partitions on this disk."
+#~ msgstr ""
+#~ "ਜੇਕਰ ਤੁਹਾਨੂੰ ਇਸ ਡਿਸਕ ਤੇ ਪਾਰਟੀਸ਼ਨ ਬਣਾਉਣੇ ਹਨ, ਤਾਂ ਤੁਹਾਨੂੰ ਡਿਸਕ ਨਾਂ (ਡਿਸਕਲੇਬਲ) ਲੋੜੀਦਾ ਹੈ।"
+
+#~ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
+#~ msgstr "ਸਾਵਧਾਨ: ਨਵਾਂ ਡਿਸਕ ਨਾਂ ਬਣਾਉਣ ਨਾਲ %1 ਤੇ ਮੌਜੂਦ ਸਭ ਡਾਟਾ ਹਟਾਇਆ ਜਾਵੇਗਾ!"
+
+#~ msgid "Features"
+#~ msgstr "ਫੀਚਰ"
+
+#~ msgid "Detect"
+#~ msgstr "ਖੋਜ"
+
+#~ msgid "Read"
+#~ msgstr "ਪੜ੍ਹਨ"
+
+#~ msgid "Read Label"
+#~ msgstr "ਲੇਬਲ ਪੜ੍ਹੋ"
+
+#~ msgid "_Show Features"
+#~ msgstr "ਫੀਚਰ ਵੇਖੋ(_S)"
+
+#~ msgid "_Set Disklabel"
+#~ msgstr "ਡਿਸਕ-ਲੇਬਲ ਸੈੱਟ ਕਰੋ(_S)"
+
+#~ msgid "1 operation pending"
+#~ msgstr "1 ਓਪਰੇਸ਼ਨ ਬਾਕੀ ਹੈ"
+
+#~ msgid "%1 operations are currently pending."
+#~ msgstr "%1 ਓਪਰੇਸ਼ਨ ਇਸ ਸਮੇਂ ਬਕਾਇਆ ਹਨ।"
+
+#~ msgid "Sorry, not yet implemented."
+#~ msgstr "ਮੁਆਫੀ, ਪਰ ਹਾਲੇ ਤੱਕ ਬਣਿਆ ਨਹੀਂ ਹੈ।"
+
+#~ msgid "Please visit http://gparted.sf.net for more information and support."
+#~ msgstr "ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਉੱਤੇ ਮੱਦਦ ਲਈ http://gparted.sf.net ਵੇਖੋ।"
+
+#~ msgid "Are you sure you want to create a %1 disklabel on %2?"
+#~ msgstr "ਕੀ ਤੁਸੀਂ %2 ਤੇ %1 ਡਿਸਕ ਲੇਬਲ ਬਣਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
+
+#~ msgid "This operation will destroy all data on %1!"
+#~ msgstr "ਇਸ ਓਪਰੇਸ਼ਨ %1 'ਤੇ ਮੌਜੂਦ ਸਭ ਡਾਟੇ ਨੂੰ ਹਟਾ ਦੇਵੇਗੀ!"
