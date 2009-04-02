@@ -1,4 +1,48 @@
 ====================
+0.4.4   (2009-04-02)
+====================
+NOTES
+	This big news for this release of GParted is the addition of
+	support for dmraid devices, also known as ATA-RAID, or Fake RAID.
+
+	Key changes include:
+	  - Added support for /dev/mapper dmraid devices
+	  - Added recognition of /dev/mmcblk* SD/MMC devices
+	  - Enhanced resize/move to only move start if space before changed
+
+BUG FIXES
+	* Added support for /dev/mapper dmraid devices (#317262)
+	* Added recognition of /dev/mmcblk* SD/MMC devices (#564985)
+	* Enhanced resize to only move start if space before changed (#571151)
+	* Maintained label and UUID when resizing swap (#575585)
+	* Added detection of LUKS encrypted partitions (#490740)
+	* Added detection of btrfs file system (part of #571170)
+	  - Thanks to Luca Bruno for initial btrfs support patch.
+	* Improved new comments for translators (#576956)
+
+TRANSLATIONS (new/updated)
+	* cs(Adrian Guniš), da(Ask H. Larsen, Per Kongstad),
+	  de(Mario Blättermann, Jochen Skulj), es(Jorge Gonzalez),
+	  eu(Inaki Larranaga Murgoitio), fr(Claude Paroz), gl(Suso Baleato),
+	  hu(Gabor Kelemen), it(Milo Casagrande),
+	  ja(Hideki Yamane, Mitsuya Shibata), lv(Raivis Dejus),
+	  pa(A S Alam), pt(António Lima),
+	  pt_BR(Djavan Fagundes, Vladimir Melo, Leonardo Ferreira Fontenelle),
+	  ru(Yuriy Myasoedov), sk(Pavol Klačanský), sv(Daniel Nylander),
+	  zh_CN(Whistler)
+
+DEPENDENCIES (new/updated)
+	* For dmraid support, the following three commands are required:
+	  - dmsetup
+	  - dmraid
+	  - kpartx
+	* For GNU/Linux distribution dmraid support, the following are required:
+	  - kernel built with Device Mapping and Mirroring.  From menuconfig,
+	    it is under Device Drivers -> <something> (RAID & LVM).
+	  - dmraid drive arrays activated on boot (e.g., dmraid -ay).
+
+
+====================
 0.4.3   (2009-02-12)
 ====================
 NOTES
@@ -12,7 +56,8 @@ NOTES
 
 BUG FIXES
 	* Corrected name of lock taken by hal-lock (#571347)
-	  - Thanks to Jonas Pedersen for finding this mistake.
+	  - Thanks to Alain Kalker for discovering this mistake.
+	  - Thanks to Jonas Pedersen for reporting this mistake upstream.
 	* Fixed crash on startup with Russian language (#570855)
 	  - Thanks to Dmitriy Motitskiy for small patch.
 
