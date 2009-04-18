@@ -11,6 +11,11 @@ which gnome-autogen.sh || {
     exit 1
 }
 
+# Ensure that m4 directory exists
+if ! test -d $srcdir/m4; then
+	mkdir $srcdir/m4
+fi
+
 # Check for GNOME-DOC-UTILS
 GDUMAKE="gnome-doc-utils.make"
 GDUMAKEFULLPATH=`locate $GDUMAKE | grep -m 1 "gnome-doc-utils/"`
