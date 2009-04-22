@@ -833,6 +833,27 @@ void GParted_Core::set_device_partitions( Device & device )
 
 GParted::FILESYSTEM GParted_Core::get_filesystem() 
 {
+	char buf[512] ;
+	char magic[16] ;
+
+	//Check for LUKS encryption prior to libparted file system detection.
+	//  Otherwise encrypted file systems such as ext3 will be detected by
+	//  libparted as 'ext3'.
+
+	//LUKS encryption
+	ped_device_open( lp_device );
+	ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
+	strncpy(magic, buf+0, 6) ;  magic[6] = '\0' ; //set and terminate string
+	ped_device_close( lp_device );
+
+	if ( Glib::ustring( magic ) == "LUKS\xBA\xBE" )
+	{
+		temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
+		temp += "\n" ;
+		partition_temp .messages .push_back( temp ) ;
+		return GParted::FS_LUKS ;
+	}
+
 	//standard libparted file systems..
 	if ( lp_partition && lp_partition ->fs_type )
 	{
@@ -883,7 +904,6 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
 	// - no patches sent to parted for lvm2, or luks
-	char buf[512] ;
 
 	ped_device_open( lp_device );
 
@@ -912,22 +932,6 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		temp += "\n" ;
 		partition_temp .messages .push_back( temp ) ;
 		return GParted::FS_LVM2 ;
-	}
-
-	//LUKS encryption
-	char magic[16] ;
-
-	ped_device_open( lp_device );
-	ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-	strncpy(magic, buf+0, 6) ;  magic[6] = '\0' ; //set and terminate string
-	ped_device_close( lp_device );
-
-	if ( Glib::ustring( magic ) == "LUKS\xBA\xBE" )
-	{
-		temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
-		temp += "\n" ;
-		partition_temp .messages .push_back( temp ) ;
-		return GParted::FS_LUKS ;
 	}
 
 	//btrfs
