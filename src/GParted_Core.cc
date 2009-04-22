@@ -905,9 +905,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
 	// - no patches sent to parted for lvm2, or luks
 
-	ped_device_open( lp_device );
-
 	//reiser4
+	ped_device_open( lp_device );
 	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
 	ped_device_close( lp_device );
 	
