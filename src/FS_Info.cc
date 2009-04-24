@@ -20,18 +20,33 @@
 namespace GParted
 {
 
-//initialize static data element
+//initialize static data elements
+bool FS_Info::fs_info_cache_initialized = false ;
+bool FS_Info::blkid_found  = false ;
 Glib::ustring FS_Info::fs_info_cache = "";
 
 FS_Info::FS_Info()
 {
 	//Ensure that cache has been loaded at least once
-	if ( fs_info_cache == "" )
+	if ( ! fs_info_cache_initialized )
+	{
+		fs_info_cache_initialized = true ;
+		set_commands_found() ;
 		load_fs_info_cache() ;
+	}
 }
 
 FS_Info:: FS_Info( bool do_refresh )
 {
+	//Ensure that cache has been loaded at least once
+	if ( ! fs_info_cache_initialized )
+	{
+		fs_info_cache_initialized = true ;
+		set_commands_found() ;
+		if ( do_refresh == false )
+			load_fs_info_cache() ;
+	}
+
 	if ( do_refresh )
 		load_fs_info_cache() ;
 }
@@ -43,13 +58,19 @@ FS_Info::~FS_Info()
 void FS_Info::load_fs_info_cache()
 {
 	Glib::ustring output, error ;
-	if ( ! Glib::find_program_in_path( "blkid" ) .empty() )
+	if ( blkid_found )
 	{
 		if ( ! Utils::execute_command( "blkid -c /dev/null", output, error, true ) )
 			fs_info_cache = output ;
 		else
 			fs_info_cache = "" ;
 	}
+}
+
+void FS_Info::set_commands_found()
+{
+	//Set status of commands found 
+	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
 }
 
 Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
