@@ -2666,10 +2666,12 @@ bool GParted_Core::commit_to_os( std::time_t timeout )
 	else
 		succes = ped_disk_commit_to_os( lp_disk ) ;
 
-	if ( Glib::find_program_in_path( "udevsettle" ) .empty() )
-		sleep( timeout ) ;
-	else
+	if ( ! Glib::find_program_in_path( "udevsettle" ) .empty() )
 		Utils::execute_command( "udevsettle --timeout=" + Utils::num_to_str( timeout ) ) ;
+	else if ( ! Glib::find_program_in_path( "udevadm" ) .empty() )
+		Utils::execute_command( "udevadm settle --timeout=" + Utils::num_to_str( timeout ) ) ;
+	else
+		sleep( timeout ) ;
 
 	return succes ;
 }
