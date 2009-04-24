@@ -23,6 +23,7 @@ namespace GParted
 //initialize static data elements
 bool FS_Info::fs_info_cache_initialized = false ;
 bool FS_Info::blkid_found  = false ;
+bool FS_Info::vol_id_found  = false ;
 Glib::ustring FS_Info::fs_info_cache = "";
 
 FS_Info::FS_Info()
@@ -71,6 +72,7 @@ void FS_Info::set_commands_found()
 {
 	//Set status of commands found 
 	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
+	vol_id_found = (! Glib::find_program_in_path( "vol_id" ) .empty() ) ;
 }
 
 Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
@@ -117,6 +119,17 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 
 	//Retrieve the UUID
 	Glib::ustring uuid = Utils::regexp_label( temp, "UUID=\"([^\"]*)\"" ) ;
+
+	if ( uuid .empty() && vol_id_found )
+	{
+		//Retrieve UUID using vol_id command
+		Glib::ustring output, error ;
+		if ( ! Utils::execute_command( "vol_id " + path, output, error, true ) )
+		{
+			uuid = Utils::regexp_label( output, "ID_FS_UUID=([^\n]*)" ) ;
+		}
+	}
+
 	return uuid ;
 }
 
