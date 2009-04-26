@@ -27,6 +27,8 @@ bool DMRaid::dmraid_cache_initialized = false ;
 bool DMRaid::dmraid_found  = false ;
 bool DMRaid::dmsetup_found = false ;
 bool DMRaid::kpartx_found  = false ;
+bool DMRaid::udevinfo_found = false ;
+bool DMRaid::udevadm_found  = false ;
 std::vector<Glib::ustring> DMRaid::dmraid_devices ;
 
 DMRaid::DMRaid()
@@ -82,6 +84,8 @@ void DMRaid::set_commands_found()
 	dmraid_found = (! Glib::find_program_in_path( "dmraid" ) .empty() ) ;
 	dmsetup_found = (! Glib::find_program_in_path( "dmsetup" ) .empty() ) ;
 	kpartx_found = (! Glib::find_program_in_path( "kpartx" ) .empty() ) ;
+	udevinfo_found = (! Glib::find_program_in_path( "udevinfo" ) .empty() ) ;
+	udevadm_found = (! Glib::find_program_in_path( "udevadm" ) .empty() ) ;
 }
 
 bool DMRaid::is_dmraid_supported()
@@ -100,6 +104,28 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 		for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 			if ( dev_path == (DEV_MAP_PATH + dmraid_devices[k]) )
 				device_found = true ;
+	}
+
+	//Some distros appear to default to /dev/dm-# for device names, so
+	//  also check with udev to see if they are in fact dmraid devices
+	if ( ! device_found && ( dev_path .find( "/dev/dm" ) != Glib::ustring::npos ) )
+	{
+		Glib::ustring output = "" ;
+		Glib::ustring error  = "" ;
+		Glib::ustring alt_udev_path = "" ;
+		if ( udevinfo_found )
+			if ( ! Utils::execute_command( "udevinfo --query=name --name=" + dev_path, output, error, true ) )
+				alt_udev_path = output ;
+		else if ( udevadm_found )
+			if ( ! Utils::execute_command( "udevadm info --query=name --name=" + DEV_MAP_PATH + dev_path, output, error, true ) )
+				alt_udev_path = output ;
+		if ( ! alt_udev_path .empty() )
+		{
+			for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
+				if ( alt_udev_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
+					device_found = true ;
+					
+		}
 	}
 
 	return device_found ;

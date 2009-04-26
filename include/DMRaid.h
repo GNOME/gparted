@@ -71,6 +71,8 @@ private:
 	static bool dmraid_found ;
 	static bool dmsetup_found ;
 	static bool kpartx_found ;
+	static bool udevinfo_found ;
+	static bool udevadm_found ;
 	static std::vector<Glib::ustring> dmraid_devices ;
 };
 
