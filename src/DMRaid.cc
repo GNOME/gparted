@@ -34,7 +34,8 @@ std::vector<Glib::ustring> DMRaid::dmraid_devices ;
 DMRaid::DMRaid()
 {
 	//Ensure that cache has been loaded at least once
-	if ( ! dmraid_cache_initialized ) {
+	if ( ! dmraid_cache_initialized )
+	{
 		dmraid_cache_initialized = true ;
 		set_commands_found() ;
 		load_dmraid_cache() ;
@@ -64,7 +65,8 @@ void DMRaid::load_dmraid_cache()
 {
 	//Load data into dmraid structures
 	Glib::ustring output, error ;
-	if ( dmraid_found ) {
+	if ( dmraid_found )
+	{
 		if ( ! Utils::execute_command( "dmraid -sa -c", output, error, true ) )
 		{
 			Glib::ustring temp = Utils::regexp_label( output, "^(no raid disks).*" ) ;
