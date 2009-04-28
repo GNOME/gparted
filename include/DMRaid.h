@@ -53,6 +53,7 @@ public:
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
 	Glib::ustring get_dmraid_prefix( const Glib::ustring & dev_path ) ;
 	int get_partition_number( const Glib::ustring & partition_name ) ;
+	Glib::ustring get_udev_name( const Glib::ustring & dev_path ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;

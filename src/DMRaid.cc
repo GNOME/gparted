@@ -112,22 +112,11 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 	//  also check with udev to see if they are in fact dmraid devices
 	if ( ! device_found && ( dev_path .find( "/dev/dm" ) != Glib::ustring::npos ) )
 	{
-		Glib::ustring output = "" ;
-		Glib::ustring error  = "" ;
-		Glib::ustring alt_udev_path = "" ;
-		if ( udevinfo_found )
-			if ( ! Utils::execute_command( "udevinfo --query=name --name=" + dev_path, output, error, true ) )
-				alt_udev_path = output ;
-		else if ( udevadm_found )
-			if ( ! Utils::execute_command( "udevadm info --query=name --name=" + DEV_MAP_PATH + dev_path, output, error, true ) )
-				alt_udev_path = output ;
-		if ( ! alt_udev_path .empty() )
-		{
+		Glib::ustring udev_name = get_udev_name( dev_path ) ;
+		if ( ! udev_name .empty() )
 			for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
-				if ( alt_udev_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
+				if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
 					device_found = true ;
-					
-		}
 	}
 
 	return device_found ;
@@ -219,6 +208,29 @@ int DMRaid::get_partition_number( const Glib::ustring & partition_name )
 {
 	Glib::ustring dmraid_name = get_dmraid_name( partition_name ) ;
 	return std::atoi( Utils::regexp_label( partition_name, dmraid_name + "p?([0-9]+)" ) .c_str() ) ;
+}
+
+Glib::ustring DMRaid::get_udev_name( const Glib::ustring & dev_path )
+{
+	//Retrieve name of device using udev information
+	Glib::ustring output = "" ;
+	Glib::ustring error  = "" ;
+	Glib::ustring udev_name = "" ;
+
+	if ( udevinfo_found )
+		if ( ! Utils::execute_command( "udevinfo --query=name --name=" + dev_path, output, error, true ) )
+			udev_name = output ;
+	else if ( udevadm_found )
+		if ( ! Utils::execute_command( "udevadm info --query=name --name=" + DEV_MAP_PATH + dev_path, output, error, true ) )
+			udev_name = output ;
+	if ( ! udev_name .empty() )
+	{
+		//Extract portion of name after last '/'
+		udev_name = Utils::regexp_label( udev_name, "([^/]*)$" ) ;
+	}
+
+std::cout << "dev_path: " << dev_path << ", udev_name: " << udev_name << std::endl;
+	return udev_name ;
 }
 
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
