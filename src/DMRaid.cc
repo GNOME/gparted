@@ -162,7 +162,17 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 		if ( Utils::regexp_label( dev_path, regexp ) == dmraid_devices[k] )
 			dmraid_name = dmraid_devices[k] ;
 	}
-	
+
+	//Some distros appear to default to /dev/dm-# for device names, so
+	//  also check with udev for dmraid name
+	if ( dmraid_name .empty() && ( dev_path .find( "/dev/dm" ) != Glib::ustring::npos ) )
+	{
+		Glib::ustring udev_name = get_udev_name( dev_path ) ;
+		for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
+			if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
+				dmraid_name = dmraid_devices[k] ;
+	}
+
 	return dmraid_name ;
 }
 
