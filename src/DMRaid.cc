@@ -239,7 +239,6 @@ Glib::ustring DMRaid::get_udev_name( const Glib::ustring & dev_path )
 		udev_name = Utils::regexp_label( udev_name, "([^/]*)$" ) ;
 	}
 
-std::cout << "dev_path: " << dev_path << ", udev_name: " << udev_name << std::endl;
 	return udev_name ;
 }
 
