@@ -275,12 +275,18 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	//  Try both dmraid -ay and kpartx -a
 
 	Glib::ustring command, output, error ;
+	bool exit_status = true ;
 
 	Glib::ustring dmraid_prefix = get_dmraid_prefix( dev_path ) ;
 	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
 
-	command = "dmraid -ay -v " + dmraid_prefix + " && kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
-	bool exit_status = ! Utils::execute_command( command, output, error, true ) ;
+	command = "dmraid -ay -v " + dmraid_prefix ;
+	if ( Utils::execute_command( command, output, error, true ) )
+		exit_status = false;	//command failed
+
+	command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
+	if ( Utils::execute_command( command, output, error, true ) )
+		exit_status = false;	//command failed
 
 	return exit_status ;
 }
