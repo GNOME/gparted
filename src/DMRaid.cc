@@ -176,25 +176,6 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 	return dmraid_name ;
 }
 
-Glib::ustring DMRaid::get_dmraid_prefix( const Glib::ustring & dev_path )
-{
-	//Retrieve prefix of dmraid device representing fake RAID manufacturer
-
-	//First try to get longer prefix including underscore to more accurately define the dmraid prefix
-	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
-	Glib::ustring regexp = "^([^_]*_[^_]*)" ;
-	Glib::ustring dmraid_prefix = Utils::regexp_label( dmraid_name, regexp ) ;
-	
-	if ( dmraid_prefix .size() <= 0 )
-	{
-		//Retrieve shorter prefix because longer name did not work
-		regexp = "^([^_]*)" ;
-		dmraid_prefix = Utils::regexp_label( dmraid_name, regexp ) ;
-	}
-
-	return dmraid_prefix ;
-}
-
 void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector<Glib::ustring> & dir_list )
 {
 	//Build list of all device entries matching device path
@@ -254,8 +235,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAP_PATH ) ;
 	operationdetail .add_child( OperationDetail( tmp ) );
 
-	Glib::ustring dmraid_prefix = get_dmraid_prefix( partition .device_path ) ;
-	command = "dmraid -ay -v " + dmraid_prefix ;
+	command = "dmraid -ay -v" ;
 	if ( execute_command( command, operationdetail .get_last_child() ) )
 		exit_status = false ;	//command failed
 
@@ -277,13 +257,11 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	Glib::ustring command, output, error ;
 	bool exit_status = true ;
 
-	Glib::ustring dmraid_prefix = get_dmraid_prefix( dev_path ) ;
-	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
-
-	command = "dmraid -ay -v " + dmraid_prefix ;
+	command = "dmraid -ay -v" ;
 	if ( Utils::execute_command( command, output, error, true ) )
 		exit_status = false;	//command failed
 
+	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
 	command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
 	if ( Utils::execute_command( command, output, error, true ) )
 		exit_status = false;	//command failed

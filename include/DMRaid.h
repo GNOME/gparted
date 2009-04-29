@@ -51,7 +51,6 @@ public:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
 	void get_devices( std::vector<Glib::ustring> & dmraid_devices ) ;
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
-	Glib::ustring get_dmraid_prefix( const Glib::ustring & dev_path ) ;
 	int get_partition_number( const Glib::ustring & partition_name ) ;
 	Glib::ustring get_udev_name( const Glib::ustring & dev_path ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
