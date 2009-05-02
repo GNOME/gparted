@@ -211,6 +211,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
 					set_thread_status_message( String::ucompose ( _("Scanning %1"), dmraid_devices[k] ) ) ;
 					dmraid .create_dev_map_entries( dmraid_devices[k] ) ;
+					settle_device( 1 ) ;
 					ped_device_get( dmraid_devices[k] .c_str() ) ;
 				}
 			}
