@@ -179,6 +179,7 @@ private:
 	void close_device_and_disk() ;
 	bool commit() ;
 	bool commit_to_os( std::time_t timeout ) ;
+	void settle_device( std::time_t timeout ) ;
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
