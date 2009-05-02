@@ -92,6 +92,15 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 	
 	//Retrieve TYPE
 	fs_type = Utils::regexp_label( temp, "TYPE=\"([^\"]*)\"" ) ;
+
+	if ( fs_type .empty() && vol_id_found )
+	{
+		//Retrieve TYPE using vol_id command
+		Glib::ustring output, error ;
+		if ( ! Utils::execute_command( "vol_id " + path, output, error, true ) )
+			fs_type = Utils::regexp_label( output, "ID_FS_TYPE=([^\n]*)" ) ;
+	}
+
 	return fs_type ;
 }
 
