@@ -2586,7 +2586,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 
 		Glib::ustring output, error, command ;
 		command = 
-			"echo " + reversed_hex + " | /usr/bin/xxd -r -p | /bin/dd conv=notrunc of=" + partition .get_path() + " bs=1 seek=28" ;
+			"echo " + reversed_hex + " | xxd -r -p | dd conv=notrunc of=" + partition .get_path() + " bs=1 seek=28" ;
 
 		operationdetail .get_last_child() .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 		bool succes = ! Utils::execute_command( command, output, error ) ;
