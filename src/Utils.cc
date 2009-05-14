@@ -157,7 +157,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_HFSPLUS     : return "hfsprogs" ;
 		case FS_JFS         : return "jfsutils" ;
 		case FS_LINUX_SWAP  : return "util-linux" ;
-		case FS_NTFS        : return "ntfsprogs" ;
+		case FS_NTFS        : return "ntfsprogs, xxd, dd" ;
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs" ;
 		case FS_UFS         : return "" ;
