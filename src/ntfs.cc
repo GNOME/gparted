@@ -49,18 +49,11 @@ FS ntfs::get_filesystem_support()
 			fs .shrink = GParted::FS::EXTERNAL ;
 	}
 
-	//Command xxd used with dd to update NTFS boot sector after move or paste.
-	//  See GParted_Core::update_bootsector().
-
 	//we need ntfsresize to set correct used/unused after cloning
-	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() &&
-	     ! Glib::find_program_in_path( "xxd" ) .empty() &&
-	     ! Glib::find_program_in_path( "dd" ) .empty() )
+	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() )
 		fs .copy = GParted::FS::EXTERNAL ;
 
-	if ( fs .check && 
-	     ! Glib::find_program_in_path( "xxd" ) .empty() &&
-	     ! Glib::find_program_in_path( "dd" ) .empty() )
+	if ( fs .check )
 		fs .move = GParted::FS::GPARTED ;
 	
 	return fs ;

@@ -2565,37 +2565,66 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	//only for ntfs atm...
-	//FIXME: 1) this should be done without relying on external commands
-	//	 2) this should probably be done in the fsclasses...
+	//FIXME: this should probably be done in the fs classes...
 	if ( partition .filesystem == FS_NTFS )
 	{
+		//The NTFS file system stores a value in the boot record called the
+		//  Number of Hidden Sectors.  This value must match the partition start
+		//  sector number in order for Windows to boot from the file system.
+		//  For more details, refer to the NTFS Volume Boot Record at:
+		//  http://www.geocities.com/thestarman3/asm/mbr/NTFSBR.htm
+
 		operationdetail .add_child( OperationDetail( 
-			String::ucompose( _("updating boot sector of %1 file system on %2"),
+			String::ucompose( _("update boot sector of %1 file system on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
 					  partition .get_path() ) ) ) ;
 
+		//convert start sector to hex string
 		std::stringstream ss ;
 		ss << std::hex << partition .sector_start ;
 		Glib::ustring hex = ss .str() ;
-	
+
 		//fill with zeros and reverse...
 		hex .insert( 0, 8 - hex .length(), '0' ) ;
 		Glib::ustring reversed_hex ;
 		for ( int t = 6 ; t >= 0 ; t -=2 )
 			reversed_hex .append( hex .substr( t, 2 ) ) ;
 
-		Glib::ustring output, error, command ;
-		command = 
-			"echo " + reversed_hex + " | xxd -r -p | dd conv=notrunc of=" + partition .get_path() + " bs=1 seek=28" ;
+		//convert reversed hex codes into ascii characters
+		char buf[4] ;
+		for ( unsigned int k = 0; (k < 4 && k < (reversed_hex .length() / 2)); k++ )
+		{
+			Glib::ustring tmp_hex = "0x" + reversed_hex .substr( k * 2, 2 ) ;
+			buf[k] = (char)( std::strtol( tmp_hex .c_str(), NULL, 16 ) ) ;
+		}
 
-		operationdetail .get_last_child() .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-		bool succes = ! Utils::execute_command( command, output, error ) ;
+		//write new Number of Hidden Sectors value into NTFS boot sector at offset 0x1C
+		Glib::ustring error_message = "" ;
+		std::ofstream dev_file ;
+		dev_file .open( partition .get_path() .c_str(), std::ios::out | std::ios::binary ) ;
+		if ( dev_file .is_open() )
+		{
+			dev_file .seekp( 0x1C ) ;
+			if ( dev_file .good() )
+			{
+				dev_file .write( buf, 4 ) ;
+				if ( dev_file .bad() )
+					error_message = String::ucompose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;;
+			}
+			else
+				error_message = String::ucompose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;;
+			dev_file .close( ) ;
+		}
+		else
+			error_message = String::ucompose( _("Error trying to open %1"), partition .get_path() ) ;
 
-		if ( ! output .empty() )
-			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-		
-		if ( ! error .empty() )
-			operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+		//append error messages if any
+		bool succes = true ;
+		if ( ! error_message .empty() )
+		{
+			succes = false ;
+			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
+		}
 
 		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 		return succes ;
