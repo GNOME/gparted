@@ -2574,6 +2574,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 		//  For more details, refer to the NTFS Volume Boot Record at:
 		//  http://www.geocities.com/thestarman3/asm/mbr/NTFSBR.htm
 
+		/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
 		operationdetail .add_child( OperationDetail( 
 			String::ucompose( _("update boot sector of %1 file system on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
@@ -2609,20 +2610,36 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 			{
 				dev_file .write( buf, 4 ) ;
 				if ( dev_file .bad() )
-					error_message = String::ucompose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;;
+				{
+					/*TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1 */
+					error_message = String::ucompose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;
+				}
 			}
 			else
-				error_message = String::ucompose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;;
+			{
+				/*TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1 */
+				error_message = String::ucompose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;
+			}
 			dev_file .close( ) ;
 		}
 		else
+		{
+			/*TO TRANSLATORS: looks like Error trying to open /dev/sdd1 */
 			error_message = String::ucompose( _("Error trying to open %1"), partition .get_path() ) ;
+		}
 
-		//append error messages if any
+		//append error messages if any found
 		bool succes = true ;
 		if ( ! error_message .empty() )
 		{
 			succes = false ;
+			error_message += "\n" ;
+			/*TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record. */
+			error_message += String::ucompose( _("Failed to set the number of hidden sectors to %1 in the ntfs boot record."), reversed_hex ) ;
+			error_message += "\n" ;
+			error_message += String::ucompose( _("You might try the following command to correct the problem:"), reversed_hex ) ;
+			error_message += "\n" ;
+			error_message += String::ucompose( "echo %1 | xxd -r -p | dd conv=notrunc of=%2 bs=1 seek=28", reversed_hex, partition .get_path() ) ;
 			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 
