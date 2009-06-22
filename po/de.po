@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-04 00:21+0200\n"
-"PO-Revision-Date: 2009-05-01 01:11+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"POT-Creation-Date: 2009-06-22 22:12+0200\n"
+"PO-Revision-Date: 2009-06-22 22:16+0100\n"
+"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,8 +88,8 @@ msgstr "Neuen Partitionstabellentyp auswählen:"
 #: ../src/Dialog_Disklabel.cc:82
 msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
 msgstr ""
-"Die Auswahl des Knopfes »Erstellen« wird SOFORT ALLE DATEN auf der Festplatte "
-"%1 LÖSCHEN"
+"Die Auswahl des Knopfes »Erstellen« wird SOFORT ALLE DATEN auf der Festplatte %"
+"1 LÖSCHEN"
 
 #. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
 #: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:35
@@ -811,9 +811,35 @@ msgstr "Angefordertes Ende: %1"
 msgid "requested size: %1 (%2)"
 msgstr "Angeforderte Größe: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2573
-msgid "updating boot sector of %1 file system on %2"
+#: ../src/GParted_Core.cc:2579
+msgid "update boot sector of %1 file system on %2"
 msgstr "Bootsektor von %1 mit Dateisystem auf %2 aktualisieren"
+
+#. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
+#: ../src/GParted_Core.cc:2615
+msgid "Error trying to write to boot sector in %1"
+msgstr "Fehler beim Versuch, in den Bootsektor von %1 zu schreiben"
+
+#. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
+#: ../src/GParted_Core.cc:2621
+msgid "Error trying to seek to position 0x1c in %1"
+msgstr "Fehler beim Versuch, zur Position 0x1c auf %1 zu springen"
+
+#. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
+#: ../src/GParted_Core.cc:2628
+msgid "Error trying to open %1"
+msgstr "Fehler beim Versuch, %1 zu öffnen"
+
+#. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
+#: ../src/GParted_Core.cc:2638
+msgid ""
+"Failed to set the number of hidden sectors to %1 in the ntfs boot record."
+msgstr ""
+"Fehler beim Festlegen der versteckten Sektoren auf %1 im NTFS-Bootbereich."
+
+#: ../src/GParted_Core.cc:2640
+msgid "You might try the following command to correct the problem:"
+msgstr "Sie könnten folgenden Befehl ausführen, um das Problem zu beheben:"
 
 #: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
 msgid "_Undo Last Operation"
@@ -1175,11 +1201,10 @@ msgstr "Alle Laufwerke werden abgefragt …"
 
 #: ../src/Win_GParted.cc:1080
 msgid ""
-"The kernel is unable to re-read the partition tables on the following "
-"devices:"
+"The kernel is unable to re-read the partition tables on the following devices:"
 msgstr ""
-"Der Systemkern konnte die Partitionstabellen folgender Laufwerke nicht "
-"erneut einlesen:"
+"Der Systemkern konnte die Partitionstabellen folgender Laufwerke nicht erneut "
+"einlesen:"
 
 #: ../src/Win_GParted.cc:1087
 msgid ""
