@@ -13,8 +13,8 @@ DOC_ENTITIES =
 DOC_INCLUDES =
 
 #List of all the figures that are referenced in the help document
-DOC_FIGURES =
+DOC_FIGURES = figures/gparted_window.png
 
 #List of all the language codes for the languages in which the
 #  document is translated
-DOC_LINGUAS = de es it pt_BR sv th
+DOC_LINGUAS = de es fr it pt_BR sv th
