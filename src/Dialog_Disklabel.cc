@@ -78,7 +78,6 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY );
-
 	this ->show_all_children() ;
 }
 
