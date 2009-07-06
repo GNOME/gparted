@@ -1845,8 +1845,8 @@ void Win_GParted::activate_disklabel()
 {
 	Dialog_Disklabel dialog( devices[ current_device ] .get_path(), gparted_core .get_disklabeltypes() ) ;
 	dialog .set_transient_for( *this );
-		
-	if ( dialog .run() == Gtk::RESPONSE_OK )
+
+	if ( dialog .run() == Gtk::RESPONSE_APPLY )
 	{
 		if ( ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
 		{

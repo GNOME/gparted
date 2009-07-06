@@ -76,18 +76,9 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 	combo_labeltypes .set_active( 0 ) ;
 	hbox ->pack_start( combo_labeltypes, Gtk::PACK_SHRINK ) ;
 
-	//standard warning	
-	str_temp = "\n<i>" ;
-	/*TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda */
-	str_temp += String::ucompose( _("Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"), device_path ) ;
-	str_temp += "\n</i>";
-	vbox ->pack_start( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true ),
-			   Gtk::PACK_SHRINK );
-			
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	/*TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will .... */
-	this ->add_button( _("Create"), Gtk::RESPONSE_OK );
-		
+	this ->add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY );
+
 	this ->show_all_children() ;
 }
 
