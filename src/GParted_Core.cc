@@ -629,13 +629,14 @@ void GParted_Core::init_maps()
 	}
 }
 
-void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
-					       std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) 
+void GParted_Core::read_mountpoints_from_file(
+	const Glib::ustring & filename,
+	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
 {
 	std::string line ;
 	char node[4096+1], mountpoint[4096+1] ;
 	unsigned int index ;
-	
+
 	std::ifstream file( filename .c_str() ) ;
 	if ( file )
 	{
@@ -645,17 +646,17 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename,
 			     Glib::ustring( node ) != "/dev/root" )
 			{
 				line = mountpoint ;
-				
+
 				//see if mount point contains spaces and deal with it
 				index = line .find( "\\040" ) ;
 				if ( index < line .length() )
 					line .replace( index, 4, " " ) ;
-				
+
 				//only add this path if it exists
-                               	if ( file_test( line, Glib::FILE_TEST_EXISTS ) )
-                                       map[ node ] .push_back( line ) ;	
+				if ( file_test( line, Glib::FILE_TEST_EXISTS ) )
+					map[ node ] .push_back( line ) ;	
 			}
-			
+
 		file .close() ;
 	}
 }
