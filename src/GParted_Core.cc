@@ -634,28 +634,28 @@ void GParted_Core::read_mountpoints_from_file(
 	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
 {
 	std::string line ;
-	char node[4096+1], mountpoint[4096+1] ;
-	unsigned int index ;
+	Glib::ustring node ;
+	Glib::ustring mountpoint ;
 
 	std::ifstream file( filename .c_str() ) ;
 	if ( file )
 	{
 		while ( getline( file, line ) )
-			if ( Glib::str_has_prefix( line, "/" ) &&
-			     sscanf( line .c_str(), "%4096s %4096s", node, mountpoint ) == 2 &&
-			     Glib::ustring( node ) != "/dev/root" )
+		{
+			node       = Utils::regexp_label( line, "^(/[^ \t]+)[ \t]+[^ \t]+" ) ;
+			mountpoint = Utils::regexp_label( line, "^/[^ \t]+[ \t]+([^ \t]+)" ) ;
+			if ( mountpoint .length() > 0 &&
+			     node .length() > 0 &&
+			     node != "/dev/root" )
 			{
-				line = mountpoint ;
-
-				//see if mount point contains spaces and deal with it
-				index = line .find( "\\040" ) ;
-				if ( index < line .length() )
-					line .replace( index, 4, " " ) ;
-
 				//only add this path if it exists
-				if ( file_test( line, Glib::FILE_TEST_EXISTS ) )
-					map[ node ] .push_back( line ) ;	
+				if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+				{
+					map[ node ] .push_back( mountpoint ) ;
+					//FIXME:  Should check if file is a symbolic link.  If so then find real path
+				}
 			}
+		}
 
 		file .close() ;
 	}
