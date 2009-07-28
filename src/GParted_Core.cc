@@ -880,7 +880,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext4" )
 			return GParted::FS_EXT4 ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" ||
+		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(v1)" ||
 		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(new)" ||
+		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(v0)" ||
 		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(old)" )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat16" )
@@ -2177,6 +2179,10 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	{
 		PedFileSystemType * fs_type = 
 			ped_file_system_type_get( Utils::get_filesystem_string( partition .filesystem ) .c_str() ) ;
+
+		//If not found, and FS is linux-swap, then try linux-swap(v1)
+		if ( ! fs_type && Utils::get_filesystem_string( partition .filesystem ) == "linux-swap" )
+			fs_type = ped_file_system_type_get( "linux-swap(v1)" ) ;
 
 		//If not found, and FS is linux-swap, then try linux-swap(new)
 		if ( ! fs_type && Utils::get_filesystem_string( partition .filesystem ) == "linux-swap" )
