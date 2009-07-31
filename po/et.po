@@ -10,9 +10,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-02-25 04:19+0000\n"
-"PO-Revision-Date: 2009-06-26 18:07+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gparted&component=general\n"
+"POT-Creation-Date: 2009-07-30 22:15+0000\n"
+"PO-Revision-Date: 2009-07-31 17:50+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,8 +26,8 @@ msgstr ""
 msgid "Create, reorganize, and delete partitions"
 msgstr "Partitsioonide loomine, muutmine ja kustutamine"
 
-msgid "Partition Editor"
-msgstr "Partitsioonihaldur"
+msgid "GParted Partition Editor"
+msgstr "GParted partitsioonihaldur"
 
 msgid "Free Space Preceding (MiB):"
 msgstr "Eelnev vaba ruum (MiB):"
@@ -71,14 +72,6 @@ msgstr "Täpsemalt"
 
 msgid "Select new partition table type:"
 msgstr "Vali uue partitsioonitabeli liik:"
-
-#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
-msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
-msgstr "\"Loo\" nupul klõpsamine KUSTUTAB KOHESELT KÕIK ANDMED kettal %1"
-
-#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
-msgid "Create"
-msgstr "Loomine"
 
 msgid "Paste %1"
 msgstr "Aseta %1"
@@ -281,6 +274,9 @@ msgstr "Failisüsteemide tugi"
 msgid "File System"
 msgstr "Failisüsteem"
 
+msgid "Create"
+msgstr "Loomine"
+
 msgid "Grow"
 msgstr "Kasvatamine"
 
@@ -329,6 +325,22 @@ msgstr "Skaneeri uuesti toetatud tegevusi"
 msgid "Manage flags on %1"
 msgstr "%1 lippude haldamine"
 
+#. TO TRANSLATORS: looks like  create missing /dev/mapper entries
+msgid "create missing %1 entries"
+msgstr "puuduvate %1 kirjete loomine"
+
+#. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
+msgid "delete affected %1 entries"
+msgstr "asjassepuutuvate %1 kirjete kustutamine"
+
+#. TO TRANSLATORS: looks like  delete /dev/mapper entry
+msgid "delete %1 entry"
+msgstr "%1 kirje kustutamine"
+
+#. TO TRANSLATORS: looks like  update /dev/mapper entry
+msgid "update %1 entry"
+msgstr "%1 kirje uuendamine"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
 msgid "Scanning %1"
 msgstr "%1 skaneerimine"
@@ -356,8 +368,14 @@ msgstr ""
 msgid "libparted messages"
 msgstr "libparted-i sõnumid"
 
+msgid "Linux Unified Key Setup encryption is not yet supported."
+msgstr "Linux Unified Key Setup-i krüpteering pole veel toetatud."
+
 msgid "Logical Volume Management is not yet supported."
 msgstr "Loogiliste köidete haldus pole veel toetatud."
+
+msgid "BTRFS is not yet supported."
+msgstr "BTRFS ei ole veel toetatud."
 
 #. no file system found....
 msgid "Unable to detect file system! Possible reasons are:"
@@ -595,8 +613,30 @@ msgstr "soovitud lõpp: %1"
 msgid "requested size: %1 (%2)"
 msgstr "soovitud suurus: %1 (%2)"
 
-msgid "updating boot sector of %1 file system on %2"
+msgid "update boot sector of %1 file system on %2"
 msgstr "seadme %2 failisüsteemi %1 alglaadimissektori uuendamine"
+
+#. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
+msgid "Error trying to write to boot sector in %1"
+msgstr "Seadme %1 alglaadimissektori kirjutamise katsel esines viga"
+
+#. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
+msgid "Error trying to seek to position 0x1c in %1"
+msgstr "Esines viga, kui prooviti kerida kohale 0x1c seadmel %1"
+
+#. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
+msgid "Error trying to open %1"
+msgstr "Viga %1 avamise katsel"
+
+#. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
+msgid ""
+"Failed to set the number of hidden sectors to %1 in the ntfs boot record."
+msgstr ""
+"Ntfs-i alglaadimiskirjes varjatud sektorite arvu väärtuseks %1 määramine "
+"nurjus."
+
+msgid "You might try the following command to correct the problem:"
+msgstr "Sa võid proovida järgnevat käsku, et viga parandada:"
 
 msgid "_Undo Last Operation"
 msgstr "_Võta viimane tegevus tagasi"
