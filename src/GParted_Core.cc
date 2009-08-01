@@ -2581,9 +2581,9 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 		//  For more details, refer to the NTFS Volume Boot Record at:
 		//  http://www.geocities.com/thestarman3/asm/mbr/NTFSBR.htm
 
-		/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
 		operationdetail .add_child( OperationDetail( 
-			String::ucompose( _("update boot sector of %1 file system on %2"),
+				/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
+				String::ucompose( _("update boot sector of %1 file system on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
 					  partition .get_path() ) ) ) ;
 
