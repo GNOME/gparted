@@ -207,11 +207,16 @@ Glib::ustring DMRaid::get_udev_name( const Glib::ustring & dev_path )
 	Glib::ustring udev_name = "" ;
 
 	if ( udevinfo_found )
+	{
 		if ( ! Utils::execute_command( "udevinfo --query=name --name=" + dev_path, output, error, true ) )
 			udev_name = output ;
+	}
 	else if ( udevadm_found )
-		if ( ! Utils::execute_command( "udevadm info --query=name --name=" + DEV_MAP_PATH + dev_path, output, error, true ) )
+	{
+		if ( ! Utils::execute_command( "udevadm info --query=name --name=" + dev_path, output, error, true ) )
 			udev_name = output ;
+	}
+
 	if ( ! udev_name .empty() )
 	{
 		//Extract portion of name after last '/'
