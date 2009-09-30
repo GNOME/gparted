@@ -102,7 +102,7 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 	if ( is_dmraid_supported() )
 	{
 		for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
-			if ( dev_path == (DEV_MAP_PATH + dmraid_devices[k]) )
+			if ( dev_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
 				device_found = true ;
 	}
 
