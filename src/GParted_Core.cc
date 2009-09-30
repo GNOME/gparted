@@ -246,6 +246,20 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
+	else
+	{
+		//Device paths were passed in on the command line.
+
+		//Ensure that dmraid device entries are created
+		for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
+		{
+			if ( dmraid .is_dmraid_supported() &&
+			     dmraid .is_dmraid_device( device_paths[t] ) )
+			{
+				dmraid .create_dev_map_entries( dmraid .get_dmraid_name( device_paths [t] ) ) ;
+			}
+		}
+	}
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
