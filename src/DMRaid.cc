@@ -65,18 +65,16 @@ void DMRaid::load_dmraid_cache()
 {
 	//Load data into dmraid structures
 	Glib::ustring output, error ;
+	dmraid_devices .clear() ;
+
 	if ( dmraid_found )
 	{
 		if ( ! Utils::execute_command( "dmraid -sa -c", output, error, true ) )
 		{
 			Glib::ustring temp = Utils::regexp_label( output, "^(no raid disks).*" ) ;
-			if ( temp == "no raid disks" )
-				dmraid_devices .clear() ;
-			else
+			if ( temp != "no raid disks" )
 				Utils::tokenize( output, dmraid_devices, "\n" ) ;
 		}
-		else
-			dmraid_devices .clear() ;
 	}
 }
 
