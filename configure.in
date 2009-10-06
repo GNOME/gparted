@@ -60,13 +60,21 @@ int main ()
 
 	if ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 )
 	{
+		/* Check for libparted three digit version number */
 		if ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 )
 		{
 			printf( "Found libparted %s\t", ped_get_version() ) ;
+			return ! ( (major > min_major) ||
+			           ((major == min_major) && (minor > min_minor)) ||
+			           ((major == min_major) && (minor == min_minor) && (micro >= min_micro)) ) ;
+		}
 
-			return ! ((major > min_major) ||
-           			 ((major == min_major) && (minor > min_minor)) ||
-           			 ((major == min_major) && (minor == min_minor) && (micro >= min_micro))) ;
+		/* Check for two digit libparted version number */
+		if ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 )
+		{
+			printf( "Found libparted %s\t", ped_get_version() ) ;
+			return ! ( (major > min_major) ||
+			           ((major == min_major) && (minor >= min_minor)) ) ;
 		}
 	}
 
