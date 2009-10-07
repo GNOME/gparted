@@ -389,7 +389,7 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 		if ( partition .get_length() < partition .sectors_used )
 		{
 			error = String::ucompose( 
-				_("A partition with used sectors (%1) greater than it's length (%2) is not valid"),
+				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
 				partition .sectors_used,
 				partition .get_length() ) ;
 			return false ;
@@ -1555,7 +1555,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	{
 		operationdetail .add_child( OperationDetail( _("move file system") ) ) ;
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old file system have the same position -- skipping this operation"),
+			OperationDetail( _("new and old file system have the same position — skipping this operation"),
 					 STATUS_NONE,
 					 FONT_ITALIC ) ) ;
 
@@ -1760,7 +1760,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	if ( action == NONE )
 	{
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old partition have the same size and position -- skipping this operation"),
+			OperationDetail( _("new and old partition have the same size and position — skipping this operation"),
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
 
@@ -1879,7 +1879,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			operationdetail .add_child( OperationDetail( _("resize file system") ) ) ;
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( 
-					_("new and old file system have the same size -- skipping this operation"),
+					_("new and old file system have the same size — skipping this operation"),
 					STATUS_NONE,
 					FONT_ITALIC ) ) ;
 		
@@ -2129,7 +2129,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 {
 	if ( total_done > 0 )
 	{
-		operationdetail .add_child( OperationDetail( _("rollback last transaction") ) ) ;
+		operationdetail .add_child( OperationDetail( _("roll back last transaction") ) ) ;
 
 		//find out exactly which part of the file system was copied (and to where it was copied)..
 		Partition temp_src = partition_src ;
@@ -2661,7 +2661,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 			succes = false ;
 			error_message += "\n" ;
 			/*TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record. */
-			error_message += String::ucompose( _("Failed to set the number of hidden sectors to %1 in the ntfs boot record."), reversed_hex ) ;
+			error_message += String::ucompose( _("Failed to set the number of hidden sectors to %1 in the NTFS boot record."), reversed_hex ) ;
 			error_message += "\n" ;
 			error_message += String::ucompose( _("You might try the following command to correct the problem:"), reversed_hex ) ;
 			error_message += "\n" ;
