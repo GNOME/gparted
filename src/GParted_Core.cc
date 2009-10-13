@@ -660,19 +660,21 @@ void GParted_Core::read_mountpoints_from_file(
 			mountpoint = Utils::regexp_label( line, "^/[^ \t]+[ \t]+([^ \t]+)" ) ;
 			if ( mountpoint .length() > 0 && node .length() > 0 )
 			{
-				//If node is a symbolic link (e.g., /dev/root), then find real path
-				if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
-				{
-					char c_str[4096+1] ;
-					Glib::ustring tmp_node = node ;
-					//FIXME: it seems realpath is very unsafe to use (manpage)...
-					realpath( tmp_node .c_str(), c_str ) ;
-					if ( tmp_node .length() > 0 )
-						node = tmp_node ;
-				}
-				//only add this path if it exists
+				//Only add node path(s) if mount point exists
 				if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+				{
 					map[ node ] .push_back( mountpoint ) ;
+
+					//If node is a symbolic link (e.g., /dev/root)
+					//  then find real path and add entry
+					if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
+					{
+						char c_str[4096+1] ;
+						//FIXME: it seems realpath is very unsafe to use (manpage)...
+						if ( realpath( node .c_str(), c_str ) != NULL )
+							map[ c_str ] .push_back( mountpoint ) ;
+					}
+				}
 			}
 		}
 
