@@ -115,6 +115,20 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 			for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 				if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
 					device_found = true ;
+
+		//Also check for a symbolic link if device not yet found
+		if ( ! device_found && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
+		{
+			//Path is a symbolic link so find real path
+			char c_str[4096+1] ;
+			//FIXME: it seems realpath is very unsafe to use (manpage)...
+			realpath( dev_path .c_str(), c_str ) ;
+			Glib::ustring tmp_path = c_str ;
+			if ( tmp_path .length() > 0 )
+				for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
+					if ( tmp_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
+						device_found = true ;
+		}
 	}
 
 	return device_found ;
@@ -169,6 +183,20 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 		for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 			if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
 				dmraid_name = dmraid_devices[k] ;
+
+		//Also check for a symbolic link if dmraid_name not yet found
+		if ( dmraid_name .empty() && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
+		{
+			//Path is a symbolic link so find real path
+			char c_str[4096+1] ;
+			//FIXME: it seems realpath is very unsafe to use (manpage)...
+			realpath( dev_path .c_str(), c_str ) ;
+			Glib::ustring tmp_path = c_str ;
+			if ( tmp_path .length() > 0 )
+				for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
+					if ( tmp_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
+						dmraid_name = dmraid_devices[k] ;
+		}
 	}
 
 	return dmraid_name ;
