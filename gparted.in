@@ -2,19 +2,29 @@
 #
 #  Purpose:  Perform appropriate startup of GParted executable gpartedbin.
 #
-#            On systems with hal-lock, use hal-lock to acquire device
-#            locks prior to running gpartedbin.
-#            This is to prevent devices from being automounted.
+#            The purpose of these startup methods is to prevent
+#            devices from being automounted.
 #            File system problems can occur if devices are mounted
 #            prior to the completion of GParted's operations.
-#            See GParted bug #324220
-#            http://bugzilla.gnome.org/show_bug.cgi?id=324220
-#
-#            On systems without hal-lock, invoke gpartedbin directly.
 #
 
 #
+#  Search PATH to determine if devkit-disks program can be found
+#  and if appropriate daemon is running.
+#
+HAVE_DEVKIT_DISKS=no
+for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
+	if test -x "$k/devkit-disks"; then
+		if test "z`ps -e | grep devkit-disks-da`" != "z"; then
+			HAVE_DEVKIT_DISKS=yes
+			break
+		fi
+	fi
+done
+
+#
 #  Search PATH to determine if hal-lock program can be found
+#  and if appropriate daemon is running.
 #
 HAVE_HAL_LOCK=no
 for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
@@ -27,9 +37,13 @@ for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 done
 
 #
-#  Use hal-lock for invocation if it exists, otherwise simply run gpartedbin
+#  Use devkit-disks for invocation if binary exists and daemon is running.
+#  Otherwise use hal-lock for invocation if binary exists and daemon is running.
+#  If the above checks fail then simply run gpartedbin.
 #
-if test "x$HAVE_HAL_LOCK" = "xyes"; then
+if test "x$HAVE_DEVKIT_DISKS" = "xyes"; then
+	devkit-disks --inhibit -- @installdir@/gpartedbin $*
+elif test "x$HAVE_HAL_LOCK" = "xyes"; then
 	hal-lock --interface org.freedesktop.Hal.Device.Storage --exclusive \
 		--run "@installdir@/gpartedbin $*"
 else
