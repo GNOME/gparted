@@ -1250,7 +1250,25 @@ void Win_GParted::show_help_dialog (const char *link_id /* For context sensitive
 
 void Win_GParted::menu_help_contents()
 {
+#ifdef NO_DOC
+	//GParted was configured with --disable-doc
+	Gtk::MessageDialog dialog( *this,
+			_( "Documentation is not available." ),
+			false,
+			Gtk::MESSAGE_INFO,
+			Gtk::BUTTONS_OK,
+			true ) ;
+	Glib::ustring tmp_msg = _( "This build of gparted is configured without documentation." ) ;
+	tmp_msg += "\n" ;
+	tmp_msg += _( "Documentation is available at the project web site." ) ;
+	tmp_msg += "\n" ;
+	tmp_msg += "http://gparted.sourceforge.net" ;
+	dialog .set_secondary_text( tmp_msg ) ;
+	dialog .run() ;
+#else
+	//GParted was configured without --disable-doc
 	show_help_dialog( NULL);
+#endif
 }
 
 void Win_GParted::menu_help_about()
