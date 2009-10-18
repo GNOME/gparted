@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,11 +40,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	dispatcher_update_gui_elements .connect( 
 		sigc::mem_fun( this, &Dialog_Progress::dispatcher_on_update_gui_elements ) ) ;
 			
-	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += _("Applying pending operations") ;
-	str_temp += "</span>\n\n" ;
-	str_temp += _("Applying all listed operations.") ;
-	str_temp += "\n";
+	Glib::ustring str_temp = "\n";
 	str_temp += _("Depending on the amount and type of operations this might take a long time.") ;
 	str_temp += "\n";
 	this ->get_vbox() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
