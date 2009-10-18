@@ -108,7 +108,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
 	//file systems to choose from 
-	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("File System:") ) + "\t" ),
+	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("File system:") ) + "\t" ),
 			     0, 1, 1, 2,
 			     Gtk::FILL );
 	

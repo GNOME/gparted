@@ -53,7 +53,7 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	
 	//add spinbutton_before
 	table_resize .attach(
-		* Utils::mk_label( static_cast<Glib::ustring>( _( "Free Space Preceding (MiB):") ) + " \t" ),
+		* Utils::mk_label( static_cast<Glib::ustring>( _( "Free space preceding (MiB):") ) + " \t" ),
 		0, 1, 0, 1,
 		Gtk::SHRINK );
 		
@@ -62,14 +62,14 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL );
 	
 	//add spinbutton_size
-	table_resize.attach( * Utils::mk_label( _( "New Size (MiB):" ) ), 0, 1, 1, 2 );
+	table_resize.attach( * Utils::mk_label( _( "New size (MiB):" ) ), 0, 1, 1, 2 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL );
 	
 	//add spinbutton_after
-	table_resize.attach( * Utils::mk_label( _( "Free Space Following (MiB):") ), 0, 1, 2, 3 ) ;
+	table_resize.attach( * Utils::mk_label( _( "Free space following (MiB):") ), 0, 1, 2, 3 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
@@ -187,8 +187,8 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 
 void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 {
-	str_temp = String::ucompose( _("Minimum Size: %1 MiB"), min ) + "\t\t" ;
-	str_temp += String::ucompose( _("Maximum Size: %1 MiB"), max ) ;
+	str_temp = String::ucompose( _("Minimum size: %1 MiB"), min ) + "\t\t" ;
+	str_temp += String::ucompose( _("Maximum size: %1 MiB"), max ) ;
 	label_minmax .set_text( str_temp ) ; 
 }
 

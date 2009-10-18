@@ -1,4 +1,4 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008 Bart Hakvoort
+/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -148,7 +148,7 @@ void Dialog_Partition_Info::Display_Info()
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
 	
 	//filesystem
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File system:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -289,7 +289,7 @@ void Dialog_Partition_Info::Display_Info()
 	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//first sector
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First Sector:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First sector:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -299,7 +299,7 @@ void Dialog_Partition_Info::Display_Info()
 			Gtk::FILL ) ;
 	
 	//last sector
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last Sector:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last sector:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -309,7 +309,7 @@ void Dialog_Partition_Info::Display_Info()
 			Gtk::FILL ) ; 
 	
 	//total sectors
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total Sectors:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total sectors:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
