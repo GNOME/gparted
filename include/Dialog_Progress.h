@@ -57,6 +57,7 @@ private:
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;
 
+	Gtk::VBox *vbox ;
 	Gtk::Label label_current ;
 	Gtk::Label label_current_sub ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;

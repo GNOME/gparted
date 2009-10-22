@@ -39,24 +39,27 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		
 	dispatcher_update_gui_elements .connect( 
 		sigc::mem_fun( this, &Dialog_Progress::dispatcher_on_update_gui_elements ) ) ;
-			
-	Glib::ustring str_temp = "\n";
-	str_temp += _("Depending on the amount and type of operations this might take a long time.") ;
+
+	vbox = manage( new Gtk::VBox() ) ;
+	vbox ->set_border_width( 10 ) ;
+	this ->get_vbox() ->pack_start( *vbox, Gtk::PACK_SHRINK ) ;
+
+	Glib::ustring str_temp = _("Depending on the amount and type of operations this might take a long time.") ;
 	str_temp += "\n";
-	this ->get_vbox() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
-	
+	vbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
+
 	label_current .set_alignment( Gtk::ALIGN_LEFT );
-	this ->get_vbox() ->pack_start( label_current, Gtk::PACK_SHRINK ) ;
+	vbox ->pack_start( label_current, Gtk::PACK_SHRINK ) ;
 
 	progressbar_current .set_pulse_step( 0.01 ) ;
-	this->get_vbox() ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
+	vbox ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
 	
 	label_current_sub .set_alignment( Gtk::ALIGN_LEFT );
-	this ->get_vbox() ->pack_start( label_current_sub, Gtk::PACK_SHRINK );
+	vbox ->pack_start( label_current_sub, Gtk::PACK_SHRINK );
 	
-	this ->get_vbox() ->pack_start( * Utils::mk_label( "<b>" + Glib::ustring( _("Completed Operations:") ) + "</b>" ),
+	vbox ->pack_start( * Utils::mk_label( "<b>" + Glib::ustring( _("Completed Operations:") ) + "</b>" ),
 					Gtk::PACK_SHRINK );
-	this ->get_vbox() ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
+	vbox ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
 	
 	//create some icons here, instead of recreating them every time
 	icon_execute = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
@@ -100,8 +103,8 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
    		sigc::mem_fun(*this, &Dialog_Progress::on_expander_changed) );
 	expander_details .add( scrolledwindow ) ;
 	
-	this ->get_vbox() ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
-	this ->get_vbox() ->set_spacing( 5 ) ;
+	vbox ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
+	vbox ->set_spacing( 5 ) ;
 	
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
 	
