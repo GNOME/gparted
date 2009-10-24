@@ -140,6 +140,7 @@ private:
 	void menu_gparted_quit();
 	void menu_view_harddisk_info();
 	void menu_view_operations();
+	void show_disklabel_unrecognized( Glib::ustring device_name );
 	void show_help_dialog (const char *link_id);
 	void menu_help_contents();
 	void menu_help_about();

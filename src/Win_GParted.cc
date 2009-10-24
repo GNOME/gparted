@@ -1204,6 +1204,26 @@ void Win_GParted::menu_view_operations()
 		close_operationslist() ;
 }
 
+void Win_GParted::show_disklabel_unrecognized ( Glib::ustring device_name )
+{
+	//Display dialog box indicating that no partition table was found on the device
+	Gtk::MessageDialog dialog( *this,
+			/*TO TRANSLATORS: looks like   No partition table found on device /dev/sda */
+			String::ucompose( _( "No partition table found on device %1" ), device_name ),
+			false,
+			Gtk::MESSAGE_INFO,
+			Gtk::BUTTONS_OK,
+			true ) ;
+	Glib::ustring tmp_msg = _( "A partition table is required before partitions can be added." ) ;
+	tmp_msg += "\n" ;
+	tmp_msg += _( "To create a new partition table choose the menu item:" ) ;
+	tmp_msg += "\n" ;
+	/*TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu. */
+	tmp_msg += _( "Device --> Create Partition Table." ) ;
+	dialog .set_secondary_text( tmp_msg ) ;
+	dialog .run() ;
+}
+
 void Win_GParted::show_help_dialog (const char *link_id /* For context sensitive help */)
 {
 /* Original concept for show_help_dialog is from file-roller project
@@ -1435,9 +1455,7 @@ void Win_GParted::activate_paste()
 	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
 	if ( devices [ current_device ] .max_prims == -1 )
 	{
-		//FIXME: actually we should proceed with pasting after the new disklabel is set.
-		//(the same goes when creating a new partition on a disk without disklabel)
-		activate_disklabel() ;
+		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 		return ;
 	}
 
@@ -1490,8 +1508,9 @@ void Win_GParted::activate_new()
 {
 	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
 	if ( devices [ current_device ] .max_prims == -1 )
-		activate_disklabel() ;
-			
+	{
+		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
+	}
 	else if ( ! max_amount_prim_reached() )
 	{	
 		Dialog_Partition_New dialog;
