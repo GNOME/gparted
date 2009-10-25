@@ -1880,6 +1880,34 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 
 void Win_GParted::activate_disklabel()
 {
+	//If there are pending operations then warn the user that these
+	//  operations must either be applied or cleared before creating
+	//  a new partition table.
+	if ( operations .size() )
+	{
+		Glib::ustring tmp_msg =
+		    String::ucompose( ngettext( "%1 operation is currently pending."
+		                              , "%1 operations are currently pending."
+		                              , operations .size()
+		                              )
+		                    , operations .size()
+		                    ) ;
+		Gtk::MessageDialog dialog( *this
+		                         , tmp_msg
+		                         , false
+		                         , Gtk::MESSAGE_INFO
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		tmp_msg  = _( "A new partition table cannot be created when there are pending operations." ) ;
+		tmp_msg += "\n" ;
+		tmp_msg += _( "Use the Edit menu to either clear or apply all operations before creating a new partition table." ) ;
+		dialog .set_secondary_text( tmp_msg ) ;
+		dialog .run() ;
+		return ;
+	}
+
+	//Display dialog for creating a new partition table.
 	Dialog_Disklabel dialog( devices[ current_device ] .get_path(), gparted_core .get_disklabeltypes() ) ;
 	dialog .set_transient_for( *this );
 
