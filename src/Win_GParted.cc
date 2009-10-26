@@ -1067,28 +1067,6 @@ void Win_GParted::menu_gparted_refresh_devices()
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
 
-	//show read-only warning if necessary
-	std::vector<Glib::ustring> readonly_paths ;
-	for ( unsigned int t = 0 ; t < devices .size() ; t++ )
-		if ( devices[ t ] .readonly )
-			readonly_paths .push_back( "\n- " + devices[ t ] .get_path() ) ;
-		
-	if ( readonly_paths .size() > 0 )
-	{
-		Gtk::MessageDialog dialog(
-			*this,
-			_("The kernel is unable to re-read the partition tables on the following devices:") + 
-			Glib::build_path( "", readonly_paths ),
-			false,
-			Gtk::MESSAGE_WARNING,
-			Gtk::BUTTONS_OK,
-			true ) ;
-
-		dialog .set_secondary_text( _("Because of this you will only have limited access to these devices. Unmount all mounted partitions on a device to get full access.") ) ;
-		
-		dialog .run() ;
-	}
-	
 	//see if there are any pending operations on non-existent devices
 	//NOTE that this isn't 100% foolproof since some stuff (e.g. sourcedevice of copy) may slip through.
 	//but anyone who removes the sourcedevice before applying the operations gets what he/she deserves :-)
