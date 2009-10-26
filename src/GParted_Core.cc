@@ -1557,7 +1557,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	{
 		operationdetail .add_child( OperationDetail( _("move file system") ) ) ;
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old file system have the same position — skipping this operation"),
+			OperationDetail( _("new and old file system have the same position.  Hence skipping this operation"),
 					 STATUS_NONE,
 					 FONT_ITALIC ) ) ;
 
@@ -1762,7 +1762,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	if ( action == NONE )
 	{
 		operationdetail .get_last_child() .add_child( 
-			OperationDetail( _("new and old partition have the same size and position — skipping this operation"),
+			OperationDetail( _("new and old partition have the same size and position.  Hence skipping this operation"),
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
 
@@ -1881,7 +1881,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			operationdetail .add_child( OperationDetail( _("resize file system") ) ) ;
 			operationdetail .get_last_child() .add_child( 
 				OperationDetail( 
-					_("new and old file system have the same size — skipping this operation"),
+					_("new and old file system have the same size.  Hence skipping this operation"),
 					STATUS_NONE,
 					FONT_ITALIC ) ) ;
 		
