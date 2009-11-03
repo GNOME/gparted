@@ -1239,7 +1239,7 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 
 void Win_GParted::menu_help_contents()
 {
-#ifdef NO_DOC
+#ifdef HAVE_DISABLE_DOC
 	//GParted was configured with --disable-doc
 	Gtk::MessageDialog dialog( *this,
 			_( "Documentation is not available." ),

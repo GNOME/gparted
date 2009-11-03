@@ -117,8 +117,8 @@ if test ${enable_doc} = yes; then
 else
 	dnl Do not care if GDU is not found
 	GNOME_DOC_INIT(,,[:])
-	dnl Set   #define NO_DOC 1   to indicate documentation not wanted
-	AC_DEFINE([NO_DOC], [1], [Define to 1 if --disable-doc specified])
+	dnl Set   #define HAVE_DISABLE_DOC 1   to indicate documentation not wanted
+	AC_DEFINE([HAVE_DISABLE_DOC], [1], [Define to 1 if --disable-doc specified])
 fi
 
 AM_CONDITIONAL(DISABLE_DOC, test ${enable_doc} = no)
