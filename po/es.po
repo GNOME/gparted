@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&component=general\n"
-"POT-Creation-Date: 2009-10-26 21:27+0000\n"
-"PO-Revision-Date: 2009-11-02 12:11+0100\n"
+"POT-Creation-Date: 2009-11-03 17:30+0000\n"
+"PO-Revision-Date: 2009-11-03 21:12+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,24 +27,33 @@ msgstr ""
 msgid "Create, reorganize, and delete partitions"
 msgstr "Cree, reorganice y borre particiones"
 
-#: ../gparted.desktop.in.in.h:2
+#. ==== GUI =========================
+#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:355
+#: ../src/Win_GParted.cc:69 ../src/Win_GParted.cc:1086
+#: ../src/Win_GParted.cc:1270
+msgid "GParted"
+msgstr "GParted"
+
+#: ../gparted.desktop.in.in.h:3
 msgid "GParted Partition Editor"
 msgstr "Editor de particiones GParted"
 
+#: ../gparted.desktop.in.in.h:4
+#| msgid "GNOME Partition Editor"
+msgid "Partition Editor"
+msgstr "Editor de particiones"
+
 #: ../src/Dialog_Base_Partition.cc:56
-#| msgid "Free Space Preceding (MiB):"
 msgid "Free space preceding (MiB):"
 msgstr "Espacio libre precedente (MiB):"
 
 #. add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:65
-#| msgid "New Size (MiB):"
 msgid "New size (MiB):"
 msgstr "Tamaño nuevo (MiB):"
 
 #. add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:72
-#| msgid "Free Space Following (MiB):"
 msgid "Free space following (MiB):"
 msgstr "Espacio libre a continuación (MiB):"
 
@@ -62,12 +71,10 @@ msgid "Resize/Move"
 msgstr "Redimensionar/Mover"
 
 #: ../src/Dialog_Base_Partition.cc:190
-#| msgid "Minimum Size: %1 MiB"
 msgid "Minimum size: %1 MiB"
 msgstr "Tamaño mínimo: %1 MiB"
 
 #: ../src/Dialog_Base_Partition.cc:191
-#| msgid "Maximum Size: %1 MiB"
 msgid "Maximum size: %1 MiB"
 msgstr "Tamaño máximo: %1 MiB"
 
@@ -109,7 +116,6 @@ msgstr "Atención:"
 #. filesystem
 #. file systems to choose from
 #: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:111
-#| msgid "File System:"
 msgid "File system:"
 msgstr "Sistema de archivos:"
 
@@ -177,19 +183,16 @@ msgstr "UUID:"
 
 #. first sector
 #: ../src/Dialog_Partition_Info.cc:292
-#| msgid "First Sector:"
 msgid "First sector:"
 msgstr "Primer sector:"
 
 #. last sector
 #: ../src/Dialog_Partition_Info.cc:302
-#| msgid "Last Sector:"
 msgid "Last sector:"
 msgstr "Último sector:"
 
 #. total sectors
 #: ../src/Dialog_Partition_Info.cc:312
-#| msgid "Total Sectors:"
 msgid "Total sectors:"
 msgstr "Sectores totales:"
 
@@ -320,12 +323,6 @@ msgstr "Guarda los detalles"
 #: ../src/Dialog_Progress.cc:352
 msgid "GParted Details"
 msgstr "Detalles de GParted"
-
-#. ==== GUI =========================
-#: ../src/Dialog_Progress.cc:355 ../src/Win_GParted.cc:69
-#: ../src/Win_GParted.cc:1086 ../src/Win_GParted.cc:1279
-msgid "GParted"
-msgstr "GParted"
 
 #: ../src/Dialog_Progress.cc:356
 msgid "Libparted"
@@ -579,8 +576,6 @@ msgid "move file system"
 msgstr "mover el sistema de archivos"
 
 #: ../src/GParted_Core.cc:1560
-#| msgid ""
-#| "new and old file system have the same position — skipping this operation"
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -637,9 +632,6 @@ msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "mueve la partición a la izquierda y la encoge desde %1 a %2"
 
 #: ../src/GParted_Core.cc:1765
-#| msgid ""
-#| "new and old partition have the same size and position — skipping this "
-#| "operation"
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -684,7 +676,6 @@ msgid "resize file system"
 msgstr "redimensionar el sistema de archivos"
 
 #: ../src/GParted_Core.cc:1884
-#| msgid "new and old file system have the same size — skipping this operation"
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
@@ -910,8 +901,6 @@ msgid "resize/move %1"
 msgstr "Redimensionar/Mover %1"
 
 #: ../src/OperationResizeMove.cc:87
-#| msgid ""
-#| "new and old partition have the same size and position — continuing anyway"
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
@@ -1187,7 +1176,7 @@ msgstr[1] "%1 operaciones pendientes"
 msgid "Quit GParted?"
 msgstr "¿Desea salir de GParted?"
 
-#: ../src/Win_GParted.cc:762 ../src/Win_GParted.cc:1867
+#: ../src/Win_GParted.cc:762 ../src/Win_GParted.cc:1858
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Actualmente hay %1 operación pendiente."
@@ -1219,7 +1208,6 @@ msgstr "No se detectó ningún dispositivo"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
 #: ../src/Win_GParted.cc:1190
-#| msgid "Create partition table on %1"
 msgid "No partition table found on device %1"
 msgstr "No se encontró ninguna tabla de particiones en el dispositivo %1"
 
@@ -1229,45 +1217,47 @@ msgstr ""
 "Se necesita una tabla de particiones antes de poder añadir particiones."
 
 #: ../src/Win_GParted.cc:1197
-#| msgid "Create partition table on %1"
 msgid "To create a new partition table choose the menu item:"
 msgstr "Para crear una tabla de particiones nueva elija el elemento del menú:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
 #: ../src/Win_GParted.cc:1200
-#| msgid "_Create Partition Table"
 msgid "Device --> Create Partition Table."
 msgstr "Dispositivo --> Crear tabla de particiones."
 
-#: ../src/Win_GParted.cc:1254
+#: ../src/Win_GParted.cc:1229
+msgid "Unable to open GParted Manual help file."
+msgstr "No se pudo abrir el archivo de ayuda del manual de GParted"
+
+#: ../src/Win_GParted.cc:1245
 msgid "Documentation is not available."
 msgstr "La documentación no está disponible."
 
-#: ../src/Win_GParted.cc:1259
+#: ../src/Win_GParted.cc:1250
 msgid "This build of gparted is configured without documentation."
 msgstr "Esta construcción de GParted está configurada sin documentación."
 
-#: ../src/Win_GParted.cc:1261
+#: ../src/Win_GParted.cc:1252
 msgid "Documentation is available at the project web site."
 msgstr "La documentación está disponible en la página web del proyecto."
 
-#: ../src/Win_GParted.cc:1282
+#: ../src/Win_GParted.cc:1273
 msgid "GNOME Partition Editor"
 msgstr "Editor de particiones de GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1298
+#: ../src/Win_GParted.cc:1289
 msgid "translator-credits"
 msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>, 2004-2009\n"
 "Milton Inostroza Aguilera <minoztro@gmail.com>, 2008"
 
-#: ../src/Win_GParted.cc:1340
+#: ../src/Win_GParted.cc:1331
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "No es posible crear más de %1 particiones primarias"
 
-#: ../src/Win_GParted.cc:1348
+#: ../src/Win_GParted.cc:1339
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1279,47 +1269,47 @@ msgstr ""
 "extendida es también una partición primaria quizá sea necesario eliminar una "
 "partición primaria antes."
 
-#: ../src/Win_GParted.cc:1534
+#: ../src/Win_GParted.cc:1525
 msgid "Unable to delete %1!"
 msgstr "Imposible borrar %1."
 
-#: ../src/Win_GParted.cc:1541
+#: ../src/Win_GParted.cc:1532
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Por favor, desmonte todas las particiones lógicas que tengan un número mayor "
 "de %1"
 
-#: ../src/Win_GParted.cc:1552
+#: ../src/Win_GParted.cc:1543
 msgid "Are you sure you want to delete %1?"
 msgstr "¿Seguro que quiere borrar %1?"
 
-#: ../src/Win_GParted.cc:1559
+#: ../src/Win_GParted.cc:1550
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Después de borrar esta partición, no estará disponible para copiar."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1562
+#: ../src/Win_GParted.cc:1553
 msgid "Delete %1 (%2, %3)"
 msgstr "Borrar %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1628
+#: ../src/Win_GParted.cc:1619
 msgid "Cannot format this file system to %1."
 msgstr "No se puede formatear este sistema de ficheros a %1."
 
-#: ../src/Win_GParted.cc:1637
+#: ../src/Win_GParted.cc:1628
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Un sistema de archivos %1 requiere una partición de al menos %2."
 
-#: ../src/Win_GParted.cc:1642
+#: ../src/Win_GParted.cc:1633
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr ""
 "Una partición con un sistema de archivos %1 tiene un tamaño máximo de %2."
 
-#: ../src/Win_GParted.cc:1727
+#: ../src/Win_GParted.cc:1718
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "La partición no se pudo desmontar de los siguientes puntos de montaje:"
 
-#: ../src/Win_GParted.cc:1729
+#: ../src/Win_GParted.cc:1720
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1327,46 +1317,46 @@ msgstr ""
 "Debido a que parece que también hay montadas otras particiones en estos "
 "puntos de montaje, se le avisa para que las desmonte manualmente."
 
-#: ../src/Win_GParted.cc:1779
+#: ../src/Win_GParted.cc:1770
 msgid "Deactivating swap on %1"
 msgstr "Desactivando el espacio de intercambio en %1"
 
-#: ../src/Win_GParted.cc:1779
+#: ../src/Win_GParted.cc:1770
 msgid "Activating swap on %1"
 msgstr "Activando el espacio de intercambio en %1"
 
-#: ../src/Win_GParted.cc:1786
+#: ../src/Win_GParted.cc:1777
 msgid "Could not deactivate swap"
 msgstr "No se pudo desactivar el espacio de intercambio"
 
-#: ../src/Win_GParted.cc:1786
+#: ../src/Win_GParted.cc:1777
 msgid "Could not activate swap"
 msgstr "No se pudo sactivar el espacio de intercambio"
 
-#: ../src/Win_GParted.cc:1802
+#: ../src/Win_GParted.cc:1793
 msgid "Unmounting %1"
 msgstr "Desmontando %1"
 
-#: ../src/Win_GParted.cc:1807
+#: ../src/Win_GParted.cc:1798
 msgid "Could not unmount %1"
 msgstr "No se pudo desmontar %1"
 
-#: ../src/Win_GParted.cc:1836
+#: ../src/Win_GParted.cc:1827
 msgid "mounting %1 on %2"
 msgstr "montando %1 en %2"
 
-#: ../src/Win_GParted.cc:1843
+#: ../src/Win_GParted.cc:1834
 msgid "Could not mount %1 on %2"
 msgstr "No se pudo montar %1 en %2"
 
-#: ../src/Win_GParted.cc:1880
+#: ../src/Win_GParted.cc:1871
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "No se puede crear una tabla de particiones nueva cuando existen operaciones "
 "pendientes."
 
-#: ../src/Win_GParted.cc:1882
+#: ../src/Win_GParted.cc:1873
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1374,24 +1364,24 @@ msgstr ""
 "Use el menú Editar para limpiar o aplicar todas las operaciones antes de "
 "crear una tabla de particiones nueva."
 
-#: ../src/Win_GParted.cc:1897
+#: ../src/Win_GParted.cc:1888
 msgid "Error while creating partition table."
 msgstr "Error al crear la nueva tabla de particiones."
 
-#: ../src/Win_GParted.cc:2010
+#: ../src/Win_GParted.cc:2001
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "¿Está seguro de querer ejecutar todas las operaciones pendientes?"
 
-#: ../src/Win_GParted.cc:2016
+#: ../src/Win_GParted.cc:2007
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "La edición de particiones puede causar PÉRDIDA DE DATOS."
 
-#: ../src/Win_GParted.cc:2018
+#: ../src/Win_GParted.cc:2009
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Se recomienda hacer una copia de seguridad de sus datos antes de continuar."
 
-#: ../src/Win_GParted.cc:2020
+#: ../src/Win_GParted.cc:2011
 msgid "Apply operations to device"
 msgstr "Aplicar las operaciones sobre el dispositivo"
 
