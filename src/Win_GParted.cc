@@ -1202,48 +1202,39 @@ void Win_GParted::show_disklabel_unrecognized ( Glib::ustring device_name )
 	dialog .run() ;
 }
 
-void Win_GParted::show_help_dialog (const char *link_id /* For context sensitive help */)
+void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gparted */
+                                  , const Glib::ustring & link_id  /* For context sensitive help */
+                                  )
 {
-/* Original concept for show_help_dialog is from file-roller project
- * gtk-utils.c revision 1967, Tue Aug 7 06:18:42 2007 UTC
- * See http://fileroller.sourceforge.net/
- * 
- * Modified to work with GParted by Curtis Gedak :-)
- */
-	GError *err = NULL;
-	char *command;
-	const char *lang;
-	char *uri = NULL;
-	int i;
-	GdkScreen *gscreen;
+	GError *error = NULL ;
+	GdkScreen *gscreen = NULL ;
 
-	const char * const * langs = g_get_language_names ();
-
-	for (i = 0; langs[i]; i++) {
-		lang = langs[i];
-		if (strchr (lang, '.')) {
-			continue;
-		}
-
-		uri = g_build_filename( GPARTED_DATADIR,
-								"/gnome/help/gparted/",
-								lang,
-								"/gparted.xml",
-								NULL );
-					
-		if (g_file_test (uri, G_FILE_TEST_EXISTS)) {
-                    break;
-		}
-	}
-	
-	if (link_id) {
-		command = g_strconcat ("gnome-open ghelp://", uri, "?", link_id, NULL);
-	} else {
-		command = g_strconcat ("gnome-open ghelp://", uri,  NULL);
+	Glib::ustring uri = "ghelp:" + filename ;
+	if (link_id .size() > 0 ) {
+		uri = uri + "?" + link_id ;
 	}
 
-	gscreen = gdk_screen_get_default();
-	gdk_spawn_command_line_on_screen (gscreen, command, &err);
+	gscreen = gdk_screen_get_default() ;
+
+#ifdef HAVE_GTK_SHOW_URI
+	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
+#else
+	Glib::ustring command = "gnome-open " + uri ;
+	gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
+#endif
+
+	if ( error != NULL )
+	{
+		Gtk::MessageDialog dialog( *this
+		                         , _( "Unable to open GParted Manual help file." )
+		                         , false
+		                         , Gtk::MESSAGE_ERROR
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		dialog .set_secondary_text( error ->message ) ;
+		dialog .run() ;
+	}
 }
 
 void Win_GParted::menu_help_contents()
@@ -1265,7 +1256,7 @@ void Win_GParted::menu_help_contents()
 	dialog .run() ;
 #else
 	//GParted was configured without --disable-doc
-	show_help_dialog( NULL);
+	show_help_dialog( "gparted", "" );
 #endif
 }
 
