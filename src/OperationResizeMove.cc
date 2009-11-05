@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
+ * Copyright (C) 2008, 2009 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

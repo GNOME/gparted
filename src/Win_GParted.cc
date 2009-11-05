@@ -1,4 +1,5 @@
-/* Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Bart Hakvoort
+/* Copyright (C) 2004 Bart
+ * Copyright (C) 2008, 2009 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1271,7 +1272,7 @@ void Win_GParted::menu_help_about()
 	dialog .set_logo_icon_name( "gparted" ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
-	dialog .set_copyright( "Copyright © 2004-2009 Bart Hakvoort" ) ;
+	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort\nCopyright © 2008-2009 Curtis Gedak" ) ;
 
 	//authors
 	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
