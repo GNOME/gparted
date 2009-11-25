@@ -949,8 +949,7 @@ void Win_GParted::set_valid_operations()
 		if ( ! copied_partition .get_path() .empty() &&
 		     copied_partition .get_length() <= selected_partition .get_length() &&
 		     selected_partition .status == GParted::STAT_REAL &&
-		     copied_partition != selected_partition &&
-		     selected_partition .type == GParted::TYPE_UNALLOCATED )
+		     copied_partition != selected_partition )
 		     allow_paste( true ) ;
 
 		//see if we can somehow check/repair this file system....
@@ -1471,6 +1470,18 @@ void Win_GParted::activate_paste()
 		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
+
+		//Warn that paste operation will overwrite data in existing partition
+		Gtk::MessageDialog dialog( *this
+		                         , _( "You have pasted into an existing partition." )
+		                         , false
+		                         , Gtk::MESSAGE_WARNING
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
+		dialog .set_secondary_text( String::ucompose( _( "The data in %1 will be lost if you apply this operation."), partition_new .get_path() ) ) ;
+		dialog .run() ;
 	}
 }
 
