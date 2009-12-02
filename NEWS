@@ -1,4 +1,40 @@
 ====================
+0.5.0   (2009-12-02)
+====================
+NOTES
+	This release of GParted adds support for Linux software RAID.
+
+	RAID systems now supported include:
+	  - Hardware RAID
+	  - Motherboard BIOS RAID (also known as Fake RAID - dmraid)
+	  - Linux Software RAID (mdadm)
+
+	Key changes include:
+	  - Add auto detection of Linux software RAID devices
+	  - Re-enable ability to paste into an existing partition
+	  - Ensure parted-1.9.0 is patched if using with GParted
+
+BUG FIXES
+	* Add auto detection of Linux software RAID devices
+	* GNOME Goal: Correct desktop files (#600048)
+	* GNOME Goal: Replace gnome-open with gtk_show_uri (#600046)
+	* Found cause of NTFS volume bigger than device size (#601574)
+	  - Ensure parted-1.9.0 is patched if using with GParted
+	  - Thanks go to François Dupoux for discovering the required patch
+	* Re-enable ability to paste into an existing partition (#582101)
+
+TRANSLATIONS (new/updated)
+	* bg(Krasimir Chonov), cs(Adrian Guniš), da(Ask H. Larsen),
+	  es(Jorge González), fr(Claude Paroz), hu(Gabor Kelemen),
+	  it(Milo Casagrande), pt(António Lima), pt_BR(Djavan Fagundes),
+	  sl(Matej Urbančič), sv(Daniel Nylander)
+
+DEPENDENCIES (new/updated)
+	* For Linux software RAID support, the following command is required:
+	  - mdadm
+
+
+====================
 0.4.8   (2009-11-02)
 ====================
 NOTES
