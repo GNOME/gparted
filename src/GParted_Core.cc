@@ -321,6 +321,11 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 								 0,
 								 temp_device .length,
 								 false );
+				//Place libparted messages in this unallocated partition
+				partition_temp .messages .insert( partition_temp .messages .end(),
+								  libparted_messages. begin(),
+								  libparted_messages .end() ) ;
+				libparted_messages .clear() ;
 				temp_device .partitions .push_back( partition_temp );
 			}
 					
