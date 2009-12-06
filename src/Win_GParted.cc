@@ -427,7 +427,7 @@ void Win_GParted::init_device_info()
 	
 	//title
 	vbox_info .pack_start( 
-		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + ":</b>" ),
+		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + "</b>" ),
 		Gtk::PACK_SHRINK );
 	
 	//GENERAL DEVICE INFO
@@ -488,7 +488,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//sectors/track
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/Track:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/track:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
@@ -504,7 +504,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//total sectors
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total Sectors:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total sectors:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
