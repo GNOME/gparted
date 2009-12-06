@@ -141,3 +141,12 @@ For GNU/Linux distribution dmraid support, the following are required:
    - kernel built with Device Mapping and Mirroring built.  From menuconfig,
      it is under Device Drivers -> <something> (RAID & LVM).
    - dmraid drive arrays activated on boot (e.g., dmraid -ay).
+
+
+Several more commands are optionally used by GParted if found on the system.
+These commands include:
+
+   blkid         - used to read volume labels and detect ext4 file systems
+   vol_id        - used to read volume labels
+   devkit-disks  - used to prevent automounting of file systems
+   hal-lock      - used to prevent automounting of file systems
