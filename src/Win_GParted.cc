@@ -472,7 +472,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//disktype
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("DiskLabelType:") ) + "</b>" ),
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Partition table:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
