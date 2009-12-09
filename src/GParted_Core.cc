@@ -308,7 +308,12 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				set_used_sectors( temp_device .partitions ) ;
 			
 				if ( temp_device .highest_busy )
+				{
 					temp_device .readonly = ! commit_to_os( 1 ) ;
+					//Clear libparted messages.  Typically these are:
+					//  The kernel was unable to re-read the partition table...
+					libparted_messages .clear() ;
+				}
 			}
 			//harddisk without disklabel
 			else
