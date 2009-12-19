@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&component=general\n"
-"POT-Creation-Date: 2009-12-03 23:06+0000\n"
-"PO-Revision-Date: 2009-12-05 13:05+0200\n"
+"POT-Creation-Date: 2009-12-06 21:37+0000\n"
+"PO-Revision-Date: 2009-12-19 09:33+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian GNOME Team <gnomero-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -192,6 +192,7 @@ msgstr "Ultimul sector:"
 
 #. total sectors
 #: ../src/Dialog_Partition_Info.cc:313
+#: ../src/Win_GParted.cc:507
 msgid "Total sectors:"
 msgstr "Sectoare total:"
 
@@ -301,7 +302,7 @@ msgstr "Vedeți %1 pentru mai multe informații."
 
 #: ../src/Dialog_Progress.cc:312
 msgid "Are you sure you want to cancel the current operation?"
-msgstr "Doriți să anulați operația curentă?"
+msgstr "Sigur doriți să anulați operația curentă?"
 
 #: ../src/Dialog_Progress.cc:318
 msgid "Canceling an operation might cause SEVERE file system damage."
@@ -349,7 +350,7 @@ msgstr "Nu există"
 
 #: ../src/DialogFeatures.cc:28
 msgid "File System Support"
-msgstr "Suport sisteme de fișiere"
+msgstr "Nivelul suportului pentru sisteme de fișiere"
 
 #: ../src/DialogFeatures.cc:35
 #: ../src/TreeView_Detail.cc:36
@@ -1124,8 +1125,9 @@ msgstr "Model:"
 
 #. disktype
 #: ../src/Win_GParted.cc:475
-msgid "DiskLabelType:"
-msgstr "Tip etichetă disc:"
+#| msgid "Partition"
+msgid "Partition table:"
+msgstr "Tabel partiții:"
 
 #. heads
 #: ../src/Win_GParted.cc:483
@@ -1134,18 +1136,14 @@ msgstr "Capete:"
 
 #. sectors/track
 #: ../src/Win_GParted.cc:491
-msgid "Sectors/Track:"
-msgstr "Sectoare/Pistă:"
+#| msgid "Sectors/Track:"
+msgid "Sectors/track:"
+msgstr "Sectoare/pistă:"
 
 #. cylinders
 #: ../src/Win_GParted.cc:499
 msgid "Cylinders:"
 msgstr "Cilindri:"
-
-#. total sectors
-#: ../src/Win_GParted.cc:507
-msgid "Total Sectors:"
-msgstr "Sectoare total:"
 
 #: ../src/Win_GParted.cc:678
 msgid "Could not add this operation to the list."
@@ -1188,7 +1186,7 @@ msgstr "%1 - GParted"
 
 #: ../src/Win_GParted.cc:1064
 msgid "Scanning all devices..."
-msgstr "Se scanează toate dispozitivele..."
+msgstr "Se analizează toate dispozitivele..."
 
 #: ../src/Win_GParted.cc:1109
 msgid "No devices detected"
@@ -1352,7 +1350,7 @@ msgstr "A apărut o eroare la crearea tabelei de partiții."
 
 #: ../src/Win_GParted.cc:2013
 msgid "Are you sure you want to apply the pending operations?"
-msgstr "Doriți să aplicați operațiile aflate în așteptare?"
+msgstr "Sigur doriți să aplicați operațiile aflate în așteptare?"
 
 #: ../src/Win_GParted.cc:2019
 msgid "Editing partitions has the potential to cause LOSS of DATA."
@@ -1427,6 +1425,10 @@ msgstr "mărește sistemul de fișiere montat"
 msgid "copy file system"
 msgstr "copiază sistemul de fișiere montat"
 
+#~ msgid "DiskLabelType:"
+#~ msgstr "Tip etichetă disc:"
+#~ msgid "Total Sectors:"
+#~ msgstr "Sectoare total:"
 #~ msgid ""
 #~ "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
 #~ msgstr ""
