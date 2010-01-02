@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,10 +56,9 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 	return label ;
 }
 
-Glib::ustring Utils::num_to_str( Sector number, bool use_C_locale )
+Glib::ustring Utils::num_to_str( Sector number )
 {
 	std::stringstream ss ;
-	//ss.imbue( std::locale( use_C_locale ? "C" : "" ) ) ; see #157871
 	ss << number ;
 	return ss .str() ;
 }
@@ -171,7 +170,6 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 Glib::ustring Utils::format_size( Sector size )
 {
 	std::stringstream ss ;
-	//ss .imbue( std::locale( "" ) ) ;  see #157871
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
 
 	if ( size < KIBIBYTE )

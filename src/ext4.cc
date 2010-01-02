@@ -1,4 +1,4 @@
-/* Copyright (C) 2008 Curtis Gedak
+/* Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ bool ext4::resize( const Partition & partition_new, OperationDetail & operationd
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
-					partition_new .get_length(), GParted::UNIT_KIB ) ) -1, true ) + "K" ; 
+					partition_new .get_length(), GParted::UNIT_KIB ) ) -1 ) + "K" ; 
 		
 	return ! execute_command( str_temp, operationdetail ) ;
 }

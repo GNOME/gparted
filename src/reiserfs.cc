@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -124,7 +124,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	{
 		str_temp += " -s " ;
 		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
-				partition_new .get_length(), GParted::UNIT_BYTE ) ) -1, true ) ;
+				partition_new .get_length(), GParted::UNIT_BYTE ) ) -1 ) ;
 	}
 
 	exit_status = execute_command( str_temp, operationdetail ) ;

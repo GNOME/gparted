@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -130,7 +130,7 @@ public:
 				      bool wrap = false,
 				      bool selectable = false,
 				      const Glib::ustring & text_color = "black" ) ;
-	static Glib::ustring num_to_str( Sector number, bool use_C_locale = false ) ;
+	static Glib::ustring num_to_str( Sector number ) ;
 	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
