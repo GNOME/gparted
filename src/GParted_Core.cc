@@ -27,6 +27,7 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationLabelPartition.h"
+#include "../config.h"
 
 #include "../include/ext2.h"
 #include "../include/ext3.h"
@@ -42,7 +43,9 @@
 #include "../include/hfsplus.h"
 #include "../include/reiser4.h"
 #include "../include/ufs.h"
-
+#ifdef BTRFS_SUPPORT
+#include "../include/btrfs.h"
+#endif
 #include <set>
 #include <cerrno>
 #include <cstring>
@@ -86,6 +89,17 @@ void GParted_Core::find_supported_filesystems()
 {
 	FILESYSTEMS .clear() ;
 	
+	FS *fs ;
+#ifdef BTRFS_SUPPORT
+	btrfs fs_btrfs;
+	FILESYSTEMS .push_back( fs_btrfs .get_filesystem_support() ) ;
+#else
+	//btrfs  FIXME:  Add full support when on-disk-format stabilized
+	fs = new( FS ) ;
+	fs ->filesystem = GParted::FS_BTRFS ;
+	FILESYSTEMS .push_back( * fs ) ;
+#endif
+
 	ext2 fs_ext2;
 	FILESYSTEMS .push_back( fs_ext2 .get_filesystem_support() ) ;
 	
@@ -127,12 +141,6 @@ void GParted_Core::find_supported_filesystems()
 
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
-
-	FS *fs ;
-	//btrfs  FIXME:  Add full support when on-disk-format stabilized
-	fs = new( FS ) ;
-	fs ->filesystem = GParted::FS_BTRFS ;
-	FILESYSTEMS .push_back( * fs ) ;
 
 	//lvm2 physical volume -- not a file system
 	fs = new( FS ) ;
@@ -1181,9 +1189,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 
 	if ( magic1 == BTRFS_SIGNATURE )
 	{
+#ifndef BTRFS_SUPPORT
 		temp = _( "BTRFS is not yet supported." ) ;
 		temp += "\n" ;
 		partition_temp .messages .push_back( temp ) ;
+#endif
 		return GParted::FS_BTRFS ;
 	}
 
@@ -1286,8 +1296,10 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     ) &&
 		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
 		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
-		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
-		     partitions[ t ] .filesystem != GParted::FS_BTRFS
+		     partitions[ t ] .filesystem != GParted::FS_LUKS
+#ifndef BTRFS_SUPPORT
+		     && partitions[ t ] .filesystem != GParted::FS_BTRFS
+#endif
 		   )
 		{
 			if ( partitions[ t ] .busy )
@@ -1348,7 +1360,9 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
+#ifndef BTRFS_SUPPORT
 		     partitions[ t ] .filesystem != GParted::FS_BTRFS &&
+#endif
 		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
 		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
@@ -2866,7 +2880,9 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
 		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
 		case FS_UFS		: p_filesystem = new ufs() ;	 	break ;
-
+#ifdef BTRFS_SUPPORT
+		case FS_BTRFS		: p_filesystem = new btrfs() ;	 	break ;
+#endif
 		default			: p_filesystem = NULL ;
 	}
 

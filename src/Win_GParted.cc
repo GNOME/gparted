@@ -33,6 +33,7 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationLabelPartition.h"
+#include "../config.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
@@ -393,7 +394,10 @@ Gtk::Menu * Win_GParted::create_format_menu()
 	for ( unsigned int t =0; t < gparted_core .get_filesystems() .size() ; t++ )
 	{
 		//Skip btrfs, luks, lvm2, and unknown because these are not file systems
-		if ( gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_BTRFS ||
+		if (
+#ifndef BTRFS_SUPPORT
+		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_BTRFS ||
+#endif
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS ||
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LVM2 ||
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_UNKNOWN
