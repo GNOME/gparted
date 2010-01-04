@@ -105,8 +105,11 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	//fill the features chart with valid file systems 
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
 	{
-		//Skip btrfs, luks, lvm2, and unknown because these are not file systems
-		if ( FILESYSTEMS[ t ] .filesystem == GParted::FS_BTRFS ||
+		//Skip luks, lvm2, and unknown because these are not file systems
+		if (
+#ifndef BTRFS_SUPPORT
+		     FILESYSTEMS[ t ] .filesystem == GParted::FS_BTRFS ||
+#endif
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS ||
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN
