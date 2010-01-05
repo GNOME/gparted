@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the gparted package.
 #
 # Matic Žgur <mr.zgur@gmail.com>, 2006.
-# Matej Urbančič <mateju@svn.gnome.org>, 2009.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&component=general\n"
-"POT-Creation-Date: 2009-11-25 22:39+0000\n"
-"PO-Revision-Date: 2009-11-26 08:57+0100\n"
+"POT-Creation-Date: 2010-01-02 22:08+0000\n"
+"PO-Revision-Date: 2010-01-05 09:09+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -197,6 +197,7 @@ msgstr "Zadnji sektor:"
 
 #. total sectors
 #: ../src/Dialog_Partition_Info.cc:313
+#: ../src/Win_GParted.cc:507
 msgid "Total sectors:"
 msgstr "Skupaj sektorjev:"
 
@@ -397,7 +398,7 @@ msgstr "Zahtevana programska oprema"
 
 #: ../src/DialogFeatures.cc:57
 msgid "This chart shows the actions supported on file systems."
-msgstr "V razpredelnici so zapisana dejanja, ki jih datotečni sistem podpira."
+msgstr "V preglednici so zapisana dejanja, ki jih datotečni sistem podpira."
 
 #: ../src/DialogFeatures.cc:59
 msgid "Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software."
@@ -462,376 +463,376 @@ msgstr "Potrjevanje %1"
 msgid "Searching %1 partitions"
 msgstr "Iskanje razdelkov na %1"
 
-#: ../src/GParted_Core.cc:316
+#: ../src/GParted_Core.cc:321
 msgid "unrecognized"
 msgstr "neprepoznano"
 
-#: ../src/GParted_Core.cc:397
+#: ../src/GParted_Core.cc:407
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Razdelek ne sme biti dolžine %1 sektorjev"
 
-#: ../src/GParted_Core.cc:405
+#: ../src/GParted_Core.cc:415
 msgid "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "Razdelek z več porabljenimi sektorji (%1), kot je njegova dolžina (%2), ni veljaven."
 
-#: ../src/GParted_Core.cc:471
+#: ../src/GParted_Core.cc:481
 msgid "libparted messages"
 msgstr "sporočilo libparted"
 
-#: ../src/GParted_Core.cc:887
+#: ../src/GParted_Core.cc:897
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux poenotena namestitev šifriranja še ni podprta."
 
-#: ../src/GParted_Core.cc:968
+#: ../src/GParted_Core.cc:978
 msgid "Logical Volume Management is not yet supported."
 msgstr "Upravljanje logičnih razdelkov še ni podprto."
 
-#: ../src/GParted_Core.cc:991
+#: ../src/GParted_Core.cc:1001
 msgid "BTRFS is not yet supported."
 msgstr "BTRFS še ni podprt."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:998
+#: ../src/GParted_Core.cc:1008
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Ni mogoče zaznati datotečnega sistema! Mogoči razlogi so:"
 
-#: ../src/GParted_Core.cc:1000
+#: ../src/GParted_Core.cc:1010
 msgid "The file system is damaged"
 msgstr "Datotečni sistem je poškodovan"
 
-#: ../src/GParted_Core.cc:1002
+#: ../src/GParted_Core.cc:1012
 msgid "The file system is unknown to GParted"
 msgstr "Datotečnega sistema ni mogoče prepoznati"
 
-#: ../src/GParted_Core.cc:1004
+#: ../src/GParted_Core.cc:1014
 msgid "There is no file system available (unformatted)"
 msgstr "Na voljo ni nobenega datotečnega sistema (neformatirano)"
 
-#: ../src/GParted_Core.cc:1130
+#: ../src/GParted_Core.cc:1140
 msgid "Unable to find mount point"
 msgstr "Ni mogoče najti priklopne točke"
 
-#: ../src/GParted_Core.cc:1148
+#: ../src/GParted_Core.cc:1158
 msgid "Unable to read the contents of this file system!"
 msgstr "Ni mogoče prebrati vsebine datotečnega sistema!"
 
-#: ../src/GParted_Core.cc:1150
+#: ../src/GParted_Core.cc:1160
 msgid "Because of this some operations may be unavailable."
 msgstr "Zaradi tega nekatere možnosti morda ne bodo na voljo."
 
-#: ../src/GParted_Core.cc:1262
+#: ../src/GParted_Core.cc:1272
 msgid "create empty partition"
 msgstr "ustvari prazen razdelek"
 
-#: ../src/GParted_Core.cc:1330
-#: ../src/GParted_Core.cc:2446
+#: ../src/GParted_Core.cc:1340
+#: ../src/GParted_Core.cc:2456
 msgid "path: %1"
 msgstr "pot: %1"
 
-#: ../src/GParted_Core.cc:1331
-#: ../src/GParted_Core.cc:2447
+#: ../src/GParted_Core.cc:1341
+#: ../src/GParted_Core.cc:2457
 msgid "start: %1"
 msgstr "začetek: %1"
 
-#: ../src/GParted_Core.cc:1332
-#: ../src/GParted_Core.cc:2448
+#: ../src/GParted_Core.cc:1342
+#: ../src/GParted_Core.cc:2458
 msgid "end: %1"
 msgstr "konec: %1"
 
-#: ../src/GParted_Core.cc:1333
-#: ../src/GParted_Core.cc:2449
+#: ../src/GParted_Core.cc:1343
+#: ../src/GParted_Core.cc:2459
 msgid "size: %1 (%2)"
 msgstr "velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1363
+#: ../src/GParted_Core.cc:1373
 #: ../src/linux_swap.cc:80
 #: ../src/xfs.cc:237
 msgid "create new %1 file system"
 msgstr "ustvari nov datotečni sistem %1"
 
-#: ../src/GParted_Core.cc:1396
+#: ../src/GParted_Core.cc:1406
 msgid "delete partition"
 msgstr "izbriši razdelek"
 
-#: ../src/GParted_Core.cc:1436
+#: ../src/GParted_Core.cc:1446
 msgid "Clear partition label on %1"
 msgstr "Počisti oznako razdelka na %1"
 
-#: ../src/GParted_Core.cc:1441
+#: ../src/GParted_Core.cc:1451
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Določi oznako razdelka \"%1\" na %2"
 
-#: ../src/GParted_Core.cc:1520
+#: ../src/GParted_Core.cc:1530
 msgid "moving requires old and new length to be the same"
 msgstr "premikanje zahteva, da sta stara in nova dolžina enaki"
 
-#: ../src/GParted_Core.cc:1537
+#: ../src/GParted_Core.cc:1547
 msgid "rollback last change to the partition table"
 msgstr "povrni zadnjo spremembo na preglednici razdelkov"
 
-#: ../src/GParted_Core.cc:1566
+#: ../src/GParted_Core.cc:1576
 msgid "move file system to the left"
 msgstr "premakni datotečni sistem levo"
 
-#: ../src/GParted_Core.cc:1568
+#: ../src/GParted_Core.cc:1578
 msgid "move file system to the right"
 msgstr "premakni datotečni sistem desno"
 
-#: ../src/GParted_Core.cc:1571
+#: ../src/GParted_Core.cc:1581
 msgid "move file system"
 msgstr "premakni datotečni sistem"
 
-#: ../src/GParted_Core.cc:1573
+#: ../src/GParted_Core.cc:1583
 msgid "new and old file system have the same position.  Hence skipping this operation"
 msgstr "nov in stari datotečni sistem imata enak položaj, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:1592
+#: ../src/GParted_Core.cc:1602
 msgid "perform real move"
 msgstr "izvedi resničen premik"
 
-#: ../src/GParted_Core.cc:1634
+#: ../src/GParted_Core.cc:1644
 msgid "using libparted"
 msgstr "uporablja libparted"
 
-#: ../src/GParted_Core.cc:1674
+#: ../src/GParted_Core.cc:1684
 msgid "resizing requires old and new start to be the same"
 msgstr "spreminjanje velikosti zahteva, da sta stari in nov začetek enaka"
 
-#: ../src/GParted_Core.cc:1739
+#: ../src/GParted_Core.cc:1749
 msgid "resize/move partition"
 msgstr "spremeni velikost/premakni razdelek"
 
-#: ../src/GParted_Core.cc:1742
+#: ../src/GParted_Core.cc:1752
 msgid "move partition to the right"
 msgstr "premakni razdelek desno"
 
-#: ../src/GParted_Core.cc:1745
+#: ../src/GParted_Core.cc:1755
 msgid "move partition to the left"
 msgstr "premakni razdelek levo"
 
-#: ../src/GParted_Core.cc:1748
+#: ../src/GParted_Core.cc:1758
 msgid "grow partition from %1 to %2"
 msgstr "povečaj razdelek iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1751
+#: ../src/GParted_Core.cc:1761
 msgid "shrink partition from %1 to %2"
 msgstr "skrči razdelek iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1754
+#: ../src/GParted_Core.cc:1764
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "premakni razdelek desno in povečaj velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1757
+#: ../src/GParted_Core.cc:1767
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "premakni razdelek desno in skrči velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1760
+#: ../src/GParted_Core.cc:1770
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "premakni razdelek levo in povečaj velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1763
+#: ../src/GParted_Core.cc:1773
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "premakni razdelek levo in skrči velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:1778
+#: ../src/GParted_Core.cc:1788
 msgid "new and old partition have the same size and position.  Hence skipping this operation"
 msgstr "nov in stari razdelek imata isto velikost in položaj, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:1788
+#: ../src/GParted_Core.cc:1798
 msgid "old start: %1"
 msgstr "stari začetek: %1"
 
-#: ../src/GParted_Core.cc:1789
+#: ../src/GParted_Core.cc:1799
 msgid "old end: %1"
 msgstr "stari konec: %1"
 
-#: ../src/GParted_Core.cc:1790
+#: ../src/GParted_Core.cc:1800
 msgid "old size: %1 (%2)"
 msgstr "stara velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1849
-#: ../src/GParted_Core.cc:2527
+#: ../src/GParted_Core.cc:1859
+#: ../src/GParted_Core.cc:2537
 msgid "new start: %1"
 msgstr "nov začetek: %1"
 
-#: ../src/GParted_Core.cc:1850
-#: ../src/GParted_Core.cc:2528
+#: ../src/GParted_Core.cc:1860
+#: ../src/GParted_Core.cc:2538
 msgid "new end: %1"
 msgstr "nov konec: %1"
 
-#: ../src/GParted_Core.cc:1851
-#: ../src/GParted_Core.cc:2529
+#: ../src/GParted_Core.cc:1861
+#: ../src/GParted_Core.cc:2539
 msgid "new size: %1 (%2)"
 msgstr "nova velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1887
+#: ../src/GParted_Core.cc:1897
 msgid "shrink file system"
 msgstr "skrči datotečni sistem"
 
-#: ../src/GParted_Core.cc:1891
+#: ../src/GParted_Core.cc:1901
 msgid "grow file system"
 msgstr "povečaj datotečni sistem"
 
-#: ../src/GParted_Core.cc:1894
+#: ../src/GParted_Core.cc:1904
 msgid "resize file system"
 msgstr "spremeni velikost datotečnega sistema"
 
-#: ../src/GParted_Core.cc:1897
+#: ../src/GParted_Core.cc:1907
 msgid "new and old file system have the same size.  Hence skipping this operation"
 msgstr "nov in stari datotečni sistem imata enako velikost, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:1932
+#: ../src/GParted_Core.cc:1942
 msgid "grow file system to fill the partition"
 msgstr "povečaj datotečni sistem, da zapolni razdelek"
 
-#: ../src/GParted_Core.cc:1937
+#: ../src/GParted_Core.cc:1947
 msgid "growing is not available for this file system"
 msgstr "povečanje za ta datotečni sistem ni na voljo"
 
-#: ../src/GParted_Core.cc:1956
+#: ../src/GParted_Core.cc:1966
 msgid "the destination is smaller than the source partition"
 msgstr "ciljni razdelek je manjši kot izvorni"
 
-#: ../src/GParted_Core.cc:1970
+#: ../src/GParted_Core.cc:1980
 msgid "copy file system of %1 to %2"
 msgstr "kopiraj datotečni sistem %1 v %2"
 
-#: ../src/GParted_Core.cc:2014
+#: ../src/GParted_Core.cc:2024
 msgid "perform read-only test"
 msgstr "izvedi preizkus samo-za-branje"
 
-#: ../src/GParted_Core.cc:2062
+#: ../src/GParted_Core.cc:2072
 msgid "using internal algorithm"
 msgstr "uporabljanje internega algoritma"
 
-#: ../src/GParted_Core.cc:2064
+#: ../src/GParted_Core.cc:2074
 msgid "read %1 sectors"
 msgstr "preberi %1 sektorjev"
 
-#: ../src/GParted_Core.cc:2064
+#: ../src/GParted_Core.cc:2074
 msgid "copy %1 sectors"
 msgstr "kopiraj %1 sektorjev"
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2076
 msgid "finding optimal blocksize"
 msgstr "iskanje optimalne velikosti bloka"
 
-#: ../src/GParted_Core.cc:2103
+#: ../src/GParted_Core.cc:2113
 msgid "%1 seconds"
 msgstr "%1 sekund"
 
-#: ../src/GParted_Core.cc:2119
+#: ../src/GParted_Core.cc:2129
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "optimalna velikost bloka je %1 sektorjev (%2)"
 
-#: ../src/GParted_Core.cc:2136
+#: ../src/GParted_Core.cc:2146
 msgid "%1 sectors read"
 msgstr "%1 sektorjev prebranih"
 
-#: ../src/GParted_Core.cc:2136
+#: ../src/GParted_Core.cc:2146
 msgid "%1 sectors copied"
 msgstr "%1 sektorjev prebranih"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2157
 msgid "roll back last transaction"
 msgstr "povrni zadnji prenos"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2184
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "preveri datotečni sistem %1 za napake in jih (če je le mogoče) popravi"
 
-#: ../src/GParted_Core.cc:2182
+#: ../src/GParted_Core.cc:2192
 msgid "checking is not available for this file system"
 msgstr "preverjanje za ta datotečni sistem ni na voljo"
 
-#: ../src/GParted_Core.cc:2208
+#: ../src/GParted_Core.cc:2218
 msgid "set partition type on %1"
 msgstr "nastavi vrsto razdelka na %1"
 
-#: ../src/GParted_Core.cc:2239
+#: ../src/GParted_Core.cc:2249
 msgid "new partition type: %1"
 msgstr "nova vrsta razdelka: %1"
 
-#: ../src/GParted_Core.cc:2266
+#: ../src/GParted_Core.cc:2276
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 od %2 prebranih (preostalo %3)"
 
-#: ../src/GParted_Core.cc:2266
+#: ../src/GParted_Core.cc:2276
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 od %2 kopiranih (preostalo %3)"
 
-#: ../src/GParted_Core.cc:2272
-#: ../src/GParted_Core.cc:2367
+#: ../src/GParted_Core.cc:2282
+#: ../src/GParted_Core.cc:2377
 msgid "%1 of %2 read"
 msgstr "%1 od %2 prebranih"
 
-#: ../src/GParted_Core.cc:2272
-#: ../src/GParted_Core.cc:2367
+#: ../src/GParted_Core.cc:2282
+#: ../src/GParted_Core.cc:2377
 msgid "%1 of %2 copied"
 msgstr "%1 od %2 kopiranih"
 
-#: ../src/GParted_Core.cc:2290
+#: ../src/GParted_Core.cc:2300
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "preberi %1 sektorjev z uporabo velikosti bloka %2 sektorjev"
 
-#: ../src/GParted_Core.cc:2293
+#: ../src/GParted_Core.cc:2303
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopiraj %1 sektorjev z uporabo velikosti bloka %2 sektorjev"
 
-#: ../src/GParted_Core.cc:2412
+#: ../src/GParted_Core.cc:2422
 msgid "Error while writing block at sector %1"
 msgstr "Napaka med pisanjem bloka v sektorju %1"
 
-#: ../src/GParted_Core.cc:2415
+#: ../src/GParted_Core.cc:2425
 msgid "Error while reading block at sector %1"
 msgstr "Napaka med branjem bloka v sektorju %1"
 
-#: ../src/GParted_Core.cc:2425
+#: ../src/GParted_Core.cc:2435
 msgid "calibrate %1"
 msgstr "preverjanje stanja %1"
 
-#: ../src/GParted_Core.cc:2472
+#: ../src/GParted_Core.cc:2482
 msgid "calculate new size and position of %1"
 msgstr "izračunaj novo velikost in položaj %1"
 
-#: ../src/GParted_Core.cc:2476
+#: ../src/GParted_Core.cc:2486
 msgid "requested start: %1"
 msgstr "zahtevan začetek: %1"
 
-#: ../src/GParted_Core.cc:2477
+#: ../src/GParted_Core.cc:2487
 msgid "requested end: %1"
 msgstr "zahtevan konec: %1"
 
-#: ../src/GParted_Core.cc:2478
+#: ../src/GParted_Core.cc:2488
 msgid "requested size: %1 (%2)"
 msgstr "zahtevana velikost: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2620
+#: ../src/GParted_Core.cc:2630
 msgid "update boot sector of %1 file system on %2"
 msgstr "posodabljanje zagonskega sektorja datotečnega sistema %1 na %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2656
+#: ../src/GParted_Core.cc:2666
 msgid "Error trying to write to boot sector in %1"
 msgstr "Napaka pisanjs v zagonski sektor na %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2662
+#: ../src/GParted_Core.cc:2672
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Napaka med iskanjem na položaju 0x1c v %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2669
+#: ../src/GParted_Core.cc:2679
 msgid "Error trying to open %1"
 msgstr "Napaka med odpiranjem %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2679
+#: ../src/GParted_Core.cc:2689
 msgid "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "Napaka med določanjem števila skritih sektorjev na %1 v NTFS zagonskem zapisu."
 
-#: ../src/GParted_Core.cc:2681
+#: ../src/GParted_Core.cc:2691
 msgid "You might try the following command to correct the problem:"
 msgstr "Poskusite lahko ukaz za popravilo težav:"
 
@@ -959,55 +960,55 @@ msgstr "Neporabljeno"
 msgid "Flags"
 msgstr "Zastavice"
 
-#: ../src/Utils.cc:120
+#: ../src/Utils.cc:119
 msgid "unallocated"
 msgstr "nedodeljeno"
 
-#: ../src/Utils.cc:121
+#: ../src/Utils.cc:120
 msgid "unknown"
 msgstr "neznano"
 
-#: ../src/Utils.cc:122
+#: ../src/Utils.cc:121
 msgid "unformatted"
 msgstr "neformatirano"
 
-#: ../src/Utils.cc:139
+#: ../src/Utils.cc:138
 msgid "used"
 msgstr "porabljeno"
 
-#: ../src/Utils.cc:140
+#: ../src/Utils.cc:139
 msgid "unused"
 msgstr "neporabljeno"
 
-#: ../src/Utils.cc:180
+#: ../src/Utils.cc:178
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:185
+#: ../src/Utils.cc:183
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:190
+#: ../src/Utils.cc:188
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:195
+#: ../src/Utils.cc:193
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:200
+#: ../src/Utils.cc:198
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Utils.cc:336
+#: ../src/Utils.cc:334
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Začasna datoteka programa GParted. Datoteko ni pomembna za delovanje sistema.\n"
 
-#: ../src/Utils.cc:345
+#: ../src/Utils.cc:343
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Napaka med označevanjem: ni mogoče pisati v začasno datoteko %1.\n"
 
-#: ../src/Utils.cc:354
+#: ../src/Utils.cc:352
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Napaka med označevanjem: ni mogoče ustvariti v začasne datoteke %1.\n"
 
@@ -1130,8 +1131,8 @@ msgstr "Model:"
 
 #. disktype
 #: ../src/Win_GParted.cc:475
-msgid "DiskLabelType:"
-msgstr "Vrsta oznake diska:"
+msgid "Partition table:"
+msgstr "Preglednica razdelkov:"
 
 #. heads
 #: ../src/Win_GParted.cc:483
@@ -1140,18 +1141,13 @@ msgstr "Glave:"
 
 #. sectors/track
 #: ../src/Win_GParted.cc:491
-msgid "Sectors/Track:"
+msgid "Sectors/track:"
 msgstr "Sektorji/sled:"
 
 #. cylinders
 #: ../src/Win_GParted.cc:499
 msgid "Cylinders:"
 msgstr "Cilindri:"
-
-#. total sectors
-#: ../src/Win_GParted.cc:507
-msgid "Total Sectors:"
-msgstr "Skupaj sektorjev:"
 
 #: ../src/Win_GParted.cc:678
 msgid "Could not add this operation to the list."
@@ -1427,9 +1423,12 @@ msgstr "povečaj priklopljen datotečni sistem"
 msgid "copy file system"
 msgstr "kopiraj datotečni sistem"
 
+#~ msgid "DiskLabelType:"
+#~ msgstr "Vrsta oznake diska:"
+#~ msgid "Total Sectors:"
+#~ msgstr "Skupaj sektorjev:"
 #~ msgid "Set Disklabel on %1"
 #~ msgstr "Nastavi oznako diska na %1"
-
 #~ msgid ""
 #~ "A disklabel is a piece of data stored at a well known place on the disk, "
 #~ "that indicates where each partition begins and how many sectors it "
@@ -1437,61 +1436,48 @@ msgstr "kopiraj datotečni sistem"
 #~ msgstr ""
 #~ "Oznaka diska je podatek shranjen na dobro poznanem delu diska, ki "
 #~ "označujejo, kje se začne vsak razdelek in koliko sektorjev zaseda."
-
 #~ msgid "You need a disklabel if you want to create partitions on this disk."
 #~ msgstr ""
 #~ "Če želite ustvariti razdelke na tem disku, potrebujete oznako diska."
-
 #~ msgid "By default GParted creates an msdos disklabel."
 #~ msgstr "Privzeto GParted ustvari oznako diska msdos."
-
 #~ msgid "WARNING: Creating a new disklabel will erase all data on %1!"
 #~ msgstr ""
 #~ "OPOZORILO: Ustvarjanje nove oznake diska bo izbrisalo vse podatke na %1!"
-
 #~ msgid "Applying all listed operations."
 #~ msgstr "Uveljavi vse naštete operacije."
-
 #~ msgid "Features"
 #~ msgstr "Zmožnosti"
-
 #~ msgid "Detect"
 #~ msgstr "Zaznaj"
-
 #~ msgid "Read"
 #~ msgstr "Beri"
-
 #~ msgid "_Show Features"
 #~ msgstr "_Prikaži zmožnosti"
-
 #~ msgid "_Set Disklabel"
 #~ msgstr "_Nastavi oznako diska"
-
 #~ msgid "1 operation pending"
 #~ msgstr "1 operacija pridržana"
-
 #~ msgid "%1 operations are currently pending."
 #~ msgstr "%1 operacij je trenutno pridržanih."
-
-#~ msgid "The kernel is unable to re-read the partitiontables on the following devices:"
-#~ msgstr "Jedro ne more ponovno prebrati tabele razdelkov na naslednjih napravah:"
-
+#~ msgid ""
+#~ "The kernel is unable to re-read the partitiontables on the following "
+#~ "devices:"
+#~ msgstr ""
+#~ "Jedro ne more ponovno prebrati tabele razdelkov na naslednjih napravah:"
 #~ msgid ""
 #~ "Because of this you will only have limited access to these devices. "
 #~ "Unmount all mounted partitions on a device to get full access."
 #~ msgstr ""
 #~ "Zaradi tega boste imeli samo omejen dostop do teh naprav. Odklopite vse "
 #~ "priklopljene razdelke na napravi za popoln dostop."
-
 #~ msgid "Sorry, not yet implemented."
 #~ msgstr "Oprostite, še ni implementirano."
-
 #~ msgid "Please visit http://gparted.sf.net for more information and support."
 #~ msgstr ""
 #~ "Prosim, obiščite http://gparted.sf.net za več informacij in podporo."
-
 #~ msgid "Are you sure you want to create a %1 disklabel on %2?"
 #~ msgstr "Ali ste prepričani, da želite ustvariti oznako diska %1 na %2?"
-
 #~ msgid "This operation will destroy all data on %1!"
 #~ msgstr "Ta operacija bo uničila vse podatke na %1!"
+
