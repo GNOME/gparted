@@ -2750,7 +2750,7 @@ bool GParted_Core::commit()
 {
 	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
 	
-	commit_to_os( 10 ) ;
+	succes = commit_to_os( 10 ) && succes ;
 
 	return succes ;
 }
