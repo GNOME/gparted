@@ -64,7 +64,7 @@ FS fat16::get_filesystem_support()
 
 void fat16::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( "dosfsck -v " + partition .get_path(), output, error, true ) ;
+	exit_status = Utils::execute_command( "dosfsck -n -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
 		//free clusters

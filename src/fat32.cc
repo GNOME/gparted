@@ -64,7 +64,7 @@ FS fat32::get_filesystem_support()
 void fat32::set_used_sectors( Partition & partition ) 
 {
 	//FIXME: i've encoutered a readonly fat32 file system.. this won't work with the -a ... best check also without the -a
-	exit_status = Utils::execute_command( "dosfsck -v " + partition .get_path(), output, error, true ) ;
+	exit_status = Utils::execute_command( "dosfsck -n -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
 		//free clusters
