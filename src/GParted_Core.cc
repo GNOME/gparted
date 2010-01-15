@@ -2762,7 +2762,18 @@ bool GParted_Core::commit_to_os( std::time_t timeout )
 	if ( dmraid .is_dmraid_device( lp_disk ->dev ->path ) )
 		succes = true ;
 	else
+	{
 		succes = ped_disk_commit_to_os( lp_disk ) ;
+
+		//FIXME:  Work around to try to alleviate problems caused by
+		//  bug #604298 - Failure to inform kernel of partition changes
+		//  If not successful the first time, try one more time.
+		if ( ! succes )
+		{
+			sleep( 1 ) ;
+			succes = ped_disk_commit_to_os( lp_disk ) ;
+		}
+	}
 
 	settle_device( timeout ) ;
 
