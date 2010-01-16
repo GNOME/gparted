@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -246,9 +246,19 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				set_thread_status_message( String::ucompose ( _("Confirming %1"), lp_device ->path ) ) ;
 				if ( ped_device_open( lp_device ) )
 				{
-					if ( ped_device_read( lp_device, buf, 0, 1 ) )
-						device_paths .push_back( lp_device ->path ) ;
-
+					//FIXME: Remove this check when both GParted and libparted
+					//       support devices with a logical sector size != 512.
+					if ( lp_device ->sector_size != 512 )
+					{
+						/*TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes because gparted only supports a size of 512 bytes. */
+						Glib::ustring msg = String::ucompose ( _("Ignoring device %1 with logical sector size of %2 bytes because gparted only supports a size of 512 bytes."), lp_device ->path, lp_device ->sector_size ) ;
+						std::cout << msg << std::endl << std::endl ;
+					}
+					else
+					{
+						if ( ped_device_read( lp_device, buf, 0, 1 ) )
+							device_paths .push_back( lp_device ->path ) ;
+					}
 					ped_device_close( lp_device ) ;
 				}
 				free( buf ) ;
