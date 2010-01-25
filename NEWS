@@ -1,4 +1,38 @@
 ====================
+0.5.1   (2010-01-25)
+====================
+NOTES
+	This release of GParted includes some very important bug fixes
+	in addition to language translation updates.
+	
+	Key changes include:
+	  - Work around partition resizing problems with newer udev and kernels
+	  - Avoid crashes by ignoring devices with sector size > 512 bytes
+
+BUG FIXES
+	* Work around to partition resizing problems (#604298)
+	  - Thanks to François Dupoux and Steven Shiau for their help
+	* Ensure return code is passed up through commit() method
+	* Avoid crash by ignoring devices with sector size > 512 bytes (#595309)
+	  - Thanks to Jan Claeys for initial small patch
+	* Capture libparted messages if invalid partition table found (#337244)
+	* Fix problem reading some FAT32 partitions (#605175)
+
+TRANSLATIONS (new/updated)
+	* ar(Khaled Hosny), bg(Alexander Shopov),
+	  cs(Adrian Guniš, Marek Černocký, Petr Kovar), da(Ask H. Larsen),
+	  de(Mario Blättermann, Jan Janssen), eu(Inaki Larranaga Murgoitio),
+	  en_GB(Bruce Cowan), es(Jorge González), fr(Claude Paroz),
+	  gl(Anton Méixome), hu(Gabor Kelemen), it(Milo Casagrande),
+	  pt_BR(Djavan Fagundes, Antonio Fernandes C. Neto),
+	  ro(Lucian Adrian Grijincu, Adi Roiban), sl(Matej Urbančič),
+	  sv(Daniel Nylander)
+
+DEPENDENCIES (new/updated)
+	* no change.
+
+
+====================
 0.5.0   (2009-12-02)
 ====================
 NOTES
