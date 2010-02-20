@@ -1164,11 +1164,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
 {
 	struct statvfs sfs ; 
-	
-	temp = _("Unable to read the contents of this file system!") ;
-	temp += "\n" ;
-	temp += _("Because of this some operations may be unavailable.") ;
-	
+
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
@@ -1213,8 +1209,21 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 				}
 
 				if ( partitions[ t ] .sectors_used == -1 )
+				{
+					temp = _("Unable to read the contents of this file system!") ;
+					temp += "\n" ;
+					temp += _("Because of this some operations may be unavailable.") ;
+					if ( ! Utils::get_filesystem_software( partitions[ t ] .filesystem ) .empty() )
+					{
+						temp += "\n\n" ;
+						/*TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs. */
+						temp += String::ucompose( _("The following list of software packages is required for %1 file system support:  %2."),
+						                          Utils::get_filesystem_string( partitions[ t ] .filesystem ),
+						                          Utils::get_filesystem_software( partitions[ t ] .filesystem )
+						                        ) ;
+					}
 					partitions[ t ] .messages .push_back( temp ) ;
-				
+				}
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_used_sectors( partitions[ t ] .logicals ) ;
