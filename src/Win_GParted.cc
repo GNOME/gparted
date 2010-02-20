@@ -510,7 +510,15 @@ void Win_GParted::init_device_info()
 			Gtk::FILL );
 	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
+
+	//sector size
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sector size:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL );
+	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
 }
 
@@ -640,6 +648,7 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		device_info[ t++ ] ->set_text( Utils::num_to_str( devices[ current_device ] .sectors ) );
 		device_info[ t++ ] ->set_text( Utils::num_to_str( devices[ current_device ] .cylinders ) );
 		device_info[ t++ ] ->set_text( Utils::num_to_str( devices[ current_device ] .length ) );
+		device_info[ t++ ] ->set_text( Utils::num_to_str( devices[ current_device ] .sector_size ) );
 	}
 }
 

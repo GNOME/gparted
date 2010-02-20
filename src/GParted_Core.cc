@@ -297,6 +297,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			temp_device .add_paths( get_alternate_paths( temp_device .get_path() ) ) ;
 
 			temp_device .model 	=	lp_device ->model ;
+			temp_device .sector_size	=	lp_device ->sector_size ;
 			temp_device .heads 	=	lp_device ->bios_geom .heads ;
 			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;

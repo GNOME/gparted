@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,7 +33,7 @@ void Device::Reset()
 	length = cylsize = 0 ;
 	heads = sectors = cylinders = 0 ;
 	model = disktype = "" ;
-	max_prims = highest_busy = 0 ;
+	sector_size = max_prims = highest_busy = 0 ;
 	readonly = false ; 	
 }
 	
