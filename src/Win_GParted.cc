@@ -209,7 +209,10 @@ void Win_GParted::init_toolbar()
 	hbox_toolbar.pack_start( toolbar_main );
 	
 	//NEW and DELETE
-	toolbutton = Gtk::manage( new Gtk::ToolButton( Gtk::Stock::NEW ) );
+	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_BUTTON ) );
+	/*TO TRANSLATORS: "New" is a tool bar item for partition actions. */
+	Glib::ustring str_temp = _("New") ;
+	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, str_temp ));
 	toolbutton ->signal_clicked() .connect( sigc::mem_fun( *this, &Win_GParted::activate_new ) );
 	toolbar_main .append( *toolbutton );
 	TOOLBAR_NEW = index++ ;
@@ -224,7 +227,7 @@ void Win_GParted::init_toolbar()
 	
 	//RESIZE/MOVE
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
-	Glib::ustring str_temp = _("Resize/Move") ;
+	str_temp = _("Resize/Move") ;
 	//Condition string split and Undo button.
 	//  for longer translated string, split string in two and skip the Undo button to permit full toolbar to display
 	//  FIXME:  Is there a better way to do this, perhaps without the conditional?  At the moment this seems to be the best compromise.
@@ -293,8 +296,11 @@ void Win_GParted::init_partition_menu()
 {
 	int index = 0 ;
 	//fill menu_partition
+	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU ) );
 	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::NEW,
+			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
+			Gtk::Menu_Helpers::ImageMenuElem( _("_New"), 
+							  *image, 
 							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
 	MENU_NEW = index++ ;
 	
