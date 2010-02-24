@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 				     unsigned short new_count, 
 				     const std::vector<FS> & FILESYSTEMS,
 				     bool only_unformatted,
-				     Sector cylinder_size )
+				     Sector cylinder_size,
+				     Glib::ustring disktype )
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
@@ -85,7 +86,13 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
 	
 	//determine which PartitionType is allowed
-	if ( partition .inside_extended )
+	if ( disktype != "msdos" && disktype != "dvh" )
+	{
+		menu_type .items()[ 1 ] .set_sensitive( false ); 
+		menu_type .items()[ 2 ] .set_sensitive( false );
+		menu_type .set_active( 0 );
+	}
+	else if ( partition .inside_extended )
 	{
 		menu_type .items()[ 0 ] .set_sensitive( false ); 
 		menu_type .items()[ 2 ] .set_sensitive( false );
