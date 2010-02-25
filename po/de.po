@@ -12,14 +12,16 @@ msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&component=general\n"
-"POT-Creation-Date: 2010-02-20 22:13+0000\n"
-"PO-Revision-Date: 2010-02-21 17:21+0100\n"
+"POT-Creation-Date: 2010-02-22 17:38+0000\n"
+"PO-Revision-Date: 2010-02-25 11:44+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
 
 #: ../gparted.desktop.in.in.h:1
 msgid "Create, reorganize, and delete partitions"
@@ -27,8 +29,8 @@ msgstr "Partitionen erzeugen, reorganisieren und löschen"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:356
-#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1095
-#: ../src/Win_GParted.cc:1279
+#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1101
+#: ../src/Win_GParted.cc:1285
 msgid "GParted"
 msgstr "GParted"
 
@@ -63,7 +65,7 @@ msgstr "Auf Zylinder ab-/aufrunden"
 msgid "Resize"
 msgstr "Größe ändern"
 
-#: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:227
+#: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:230
 msgid "Resize/Move"
 msgstr "Größe ändern/Verschieben"
 
@@ -117,7 +119,7 @@ msgid "File system:"
 msgstr "Dateisystem:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:446
+#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:452
 msgid "Size:"
 msgstr "Größe:"
 
@@ -136,7 +138,7 @@ msgid "Flags:"
 msgstr "Markierungen:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:454
+#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:460
 msgid "Path:"
 msgstr "Pfad:"
 
@@ -189,7 +191,7 @@ msgid "Last sector:"
 msgstr "Letzter Sektor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:507
+#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:513
 msgid "Total sectors:"
 msgstr "Sektoren insgesamt:"
 
@@ -1091,196 +1093,206 @@ msgstr "_Inhalte"
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../src/Win_GParted.cc:216
+#. TO TRANSLATORS: "New" is a tool bar item for partition actions.
+#: ../src/Win_GParted.cc:214
+msgid "New"
+msgstr "Neu"
+
+#: ../src/Win_GParted.cc:219
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Eine neue Partition im ausgewählten unzugeteilten Bereich erzeugen"
 
-#: ../src/Win_GParted.cc:221
+#: ../src/Win_GParted.cc:224
 msgid "Delete the selected partition"
 msgstr "Die ausgewählte Partition löschen"
 
-#: ../src/Win_GParted.cc:243
+#: ../src/Win_GParted.cc:246
 msgid "Resize/Move the selected partition"
 msgstr "Die ausgewählte Partition in der Größe ändern oder verschieben"
 
-#: ../src/Win_GParted.cc:252
+#: ../src/Win_GParted.cc:255
 msgid "Copy the selected partition to the clipboard"
 msgstr "Die ausgewählte Partition in die Zwischenablage kopieren"
 
-#: ../src/Win_GParted.cc:257
+#: ../src/Win_GParted.cc:260
 msgid "Paste the partition from the clipboard"
 msgstr "Die Partition aus der Zwischenablage einfügen"
 
-#: ../src/Win_GParted.cc:269
+#: ../src/Win_GParted.cc:272
 msgid "Undo Last Operation"
 msgstr "letzte Operation rückgängig machen"
 
-#: ../src/Win_GParted.cc:277
+#: ../src/Win_GParted.cc:280
 msgid "Apply All Operations"
 msgstr "Alle Operationen ausführen"
 
-#: ../src/Win_GParted.cc:312
+#. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
+#: ../src/Win_GParted.cc:302
+#| msgid "_View"
+msgid "_New"
+msgstr "_Neu"
+
+#: ../src/Win_GParted.cc:318
 msgid "_Resize/Move"
 msgstr "_Größe ändern/Verschieben"
 
-#: ../src/Win_GParted.cc:336
+#: ../src/Win_GParted.cc:342
 msgid "_Format to"
 msgstr "_Formatieren als"
 
-#: ../src/Win_GParted.cc:345
+#: ../src/Win_GParted.cc:351
 msgid "Unmount"
 msgstr "Aushängen"
 
-#: ../src/Win_GParted.cc:351
+#: ../src/Win_GParted.cc:357
 msgid "_Mount on"
 msgstr "_Einhängen auf"
 
-#: ../src/Win_GParted.cc:358
+#: ../src/Win_GParted.cc:364
 msgid "M_anage Flags"
 msgstr "Markierungen be_arbeiten"
 
-#: ../src/Win_GParted.cc:363
+#: ../src/Win_GParted.cc:369
 msgid "C_heck"
 msgstr "Ü_berprüfen"
 
-#: ../src/Win_GParted.cc:368
+#: ../src/Win_GParted.cc:374
 msgid "_Label"
 msgstr "_Bezeichnung"
 
-#: ../src/Win_GParted.cc:430
+#: ../src/Win_GParted.cc:436
 msgid "Device Information"
 msgstr "Laufwerksinformationen"
 
 #. model
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:444
 msgid "Model:"
 msgstr "Modell:"
 
 #. disktype
-#: ../src/Win_GParted.cc:475
+#: ../src/Win_GParted.cc:481
 msgid "Partition table:"
 msgstr "Partitionstabelle:"
 
 #. heads
-#: ../src/Win_GParted.cc:483
+#: ../src/Win_GParted.cc:489
 msgid "Heads:"
 msgstr "Köpfe:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:491
+#: ../src/Win_GParted.cc:497
 msgid "Sectors/track:"
 msgstr "Sektoren/Spuren:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:499
+#: ../src/Win_GParted.cc:505
 msgid "Cylinders:"
 msgstr "Zylinder:"
 
 #. sector size
-#: ../src/Win_GParted.cc:515
-#| msgid "Sectors/track:"
+#: ../src/Win_GParted.cc:521
 msgid "Sector size:"
 msgstr "Sektorgröße:"
 
-#: ../src/Win_GParted.cc:687
+#: ../src/Win_GParted.cc:693
 msgid "Could not add this operation to the list."
 msgstr "Diese Operation kann nicht zur Liste hinzugefügt werden."
 
-#: ../src/Win_GParted.cc:712
+#: ../src/Win_GParted.cc:718
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 ausstehende Operation"
 msgstr[1] "%1 ausstehende Operationen"
 
-#: ../src/Win_GParted.cc:766
+#: ../src/Win_GParted.cc:772
 msgid "Quit GParted?"
 msgstr "Möchten Sie GParted wirklich beenden?"
 
-#: ../src/Win_GParted.cc:772 ../src/Win_GParted.cc:1879
+#: ../src/Win_GParted.cc:778 ../src/Win_GParted.cc:1885
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 Operation steht momentan aus."
 msgstr[1] "%2 Operationen stehen momentan aus."
 
-#: ../src/Win_GParted.cc:798
+#: ../src/Win_GParted.cc:804
 msgid "_Unmount"
 msgstr "_Aushängen"
 
-#: ../src/Win_GParted.cc:823
+#: ../src/Win_GParted.cc:829
 msgid "_Swapoff"
 msgstr "Auslagerungsspeicher a_usschalten"
 
-#: ../src/Win_GParted.cc:829
+#: ../src/Win_GParted.cc:835
 msgid "_Swapon"
 msgstr "Auslagerungsspeicher _einschalten"
 
-#: ../src/Win_GParted.cc:1027
+#: ../src/Win_GParted.cc:1033
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1073
+#: ../src/Win_GParted.cc:1079
 msgid "Scanning all devices..."
 msgstr "Alle Laufwerke werden abgefragt …"
 
-#: ../src/Win_GParted.cc:1118
+#: ../src/Win_GParted.cc:1124
 msgid "No devices detected"
 msgstr "Keine Laufwerke erkannt"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1199
+#: ../src/Win_GParted.cc:1205
 msgid "No partition table found on device %1"
 msgstr "Keine Partitionstabelle auf %1 gefunden"
 
-#: ../src/Win_GParted.cc:1204
+#: ../src/Win_GParted.cc:1210
 msgid "A partition table is required before partitions can be added."
 msgstr ""
 "Eine Partitionstabelle ist erforderlich, bevor Partitionen hinzugefügt werden "
 "können."
 
-#: ../src/Win_GParted.cc:1206
+#: ../src/Win_GParted.cc:1212
 msgid "To create a new partition table choose the menu item:"
 msgstr ""
 "Um eine neue Partitionstabelle zu erstellen, wählen Sie den Menüeintrag:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1209
+#: ../src/Win_GParted.cc:1215
 msgid "Device --> Create Partition Table."
 msgstr "Gerät → Partitionstabelle erstellen"
 
-#: ../src/Win_GParted.cc:1238
+#: ../src/Win_GParted.cc:1244
 msgid "Unable to open GParted Manual help file."
 msgstr "Die Hilfedatei zu GParted kann nicht geöffnet werden."
 
-#: ../src/Win_GParted.cc:1254
+#: ../src/Win_GParted.cc:1260
 msgid "Documentation is not available."
 msgstr "Dokumentation ist nicht verfügbar."
 
-#: ../src/Win_GParted.cc:1259
+#: ../src/Win_GParted.cc:1265
 msgid "This build of gparted is configured without documentation."
 msgstr "Diese Version von GParted wurde ohne Dokumentation erstellt."
 
-#: ../src/Win_GParted.cc:1261
+#: ../src/Win_GParted.cc:1267
 msgid "Documentation is available at the project web site."
 msgstr "Die Dokumentation ist auf der Webseite des Projekts verfügbar."
 
-#: ../src/Win_GParted.cc:1282
+#: ../src/Win_GParted.cc:1288
 msgid "GNOME Partition Editor"
 msgstr "GNOME Partitionierungswerkzeug"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1298
+#: ../src/Win_GParted.cc:1304
 msgid "translator-credits"
 msgstr ""
 "Hendrik Brandt <heb@gnome-de.org>\n"
 "Jochen Skulj <jochen@jochenskulj.de>\n"
 "Jan Janssen <medhefgo@web.de>"
 
-#: ../src/Win_GParted.cc:1340
+#: ../src/Win_GParted.cc:1346
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Es ist nicht möglich mehr als %1 primäre Partitionen zu erstellen"
 
-#: ../src/Win_GParted.cc:1348
+#: ../src/Win_GParted.cc:1354
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1292,60 +1304,60 @@ msgstr ""
 "aufnehmen. Weil eine erweiterte Partition auch eine primäre Partition ist, "
 "kann es erforderlich sein, eine primäre Partition zunächst zu löschen."
 
-#: ../src/Win_GParted.cc:1485
+#: ../src/Win_GParted.cc:1491
 msgid "You have pasted into an existing partition."
 msgstr "Sie haben in eine bestehende Partition eingefügt."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1492
+#: ../src/Win_GParted.cc:1498
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr ""
 "Die Daten in %1 werden verlorengehen, wenn Sie diese Operation anwenden."
 
-#: ../src/Win_GParted.cc:1546
+#: ../src/Win_GParted.cc:1552
 msgid "Unable to delete %1!"
 msgstr "Partition %1 konnte nicht gelöscht werden!"
 
-#: ../src/Win_GParted.cc:1553
+#: ../src/Win_GParted.cc:1559
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Bitte hängen Sie jede logische Partition mit einer Nummer größer als %1 aus."
 
-#: ../src/Win_GParted.cc:1564
+#: ../src/Win_GParted.cc:1570
 msgid "Are you sure you want to delete %1?"
 msgstr "Sind Sie sicher, dass Sie %1 löschen möchten?"
 
-#: ../src/Win_GParted.cc:1571
+#: ../src/Win_GParted.cc:1577
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Nachdem diese Partition gelöscht wurde steht Sie nicht mehr zum Kopieren zur "
 "Verfügung."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1574
+#: ../src/Win_GParted.cc:1580
 msgid "Delete %1 (%2, %3)"
 msgstr "Löschen von %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1640
+#: ../src/Win_GParted.cc:1646
 msgid "Cannot format this file system to %1."
 msgstr "Dieses Dateisystem kann nicht als %1 formatiert werden."
 
-#: ../src/Win_GParted.cc:1649
+#: ../src/Win_GParted.cc:1655
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Ein %1-Dateisystem muss mindestens eine Größe von %2 besitzen."
 
-#: ../src/Win_GParted.cc:1654
+#: ../src/Win_GParted.cc:1660
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr ""
 "Eine Partition mit einem %1-Dateisystem darf maximal eine Größe von %2 "
 "besitzen."
 
-#: ../src/Win_GParted.cc:1739
+#: ../src/Win_GParted.cc:1745
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr ""
 "Die Partition konnte von folgenden Einhängepunkten nicht ausgehängt werden:"
 
-#: ../src/Win_GParted.cc:1741
+#: ../src/Win_GParted.cc:1747
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1353,46 +1365,46 @@ msgstr ""
 "Wahrscheinlich sind andere Partitionen auch an diesen Einhängepunkten "
 "eingehängt. Es wird Ihnen empfohlen, diese manuell auszuhängen."
 
-#: ../src/Win_GParted.cc:1791
+#: ../src/Win_GParted.cc:1797
 msgid "Deactivating swap on %1"
 msgstr "Auslagerungsspeicher auf %1 ausschalten"
 
-#: ../src/Win_GParted.cc:1791
+#: ../src/Win_GParted.cc:1797
 msgid "Activating swap on %1"
 msgstr "Auslagerungsspeicher auf %1 einschalten"
 
-#: ../src/Win_GParted.cc:1798
+#: ../src/Win_GParted.cc:1804
 msgid "Could not deactivate swap"
 msgstr "Auslagerungsspeicher konnte nicht ausgeschaltet werden"
 
-#: ../src/Win_GParted.cc:1798
+#: ../src/Win_GParted.cc:1804
 msgid "Could not activate swap"
 msgstr "Auslagerungsspeicher konnte nicht eingeschaltet werden"
 
-#: ../src/Win_GParted.cc:1814
+#: ../src/Win_GParted.cc:1820
 msgid "Unmounting %1"
 msgstr "%1 wird ausgehängt"
 
-#: ../src/Win_GParted.cc:1819
+#: ../src/Win_GParted.cc:1825
 msgid "Could not unmount %1"
 msgstr "%1 konnte nicht ausgehängt werden"
 
-#: ../src/Win_GParted.cc:1848
+#: ../src/Win_GParted.cc:1854
 msgid "mounting %1 on %2"
 msgstr "%1 wird auf %2 eingehängt"
 
-#: ../src/Win_GParted.cc:1855
+#: ../src/Win_GParted.cc:1861
 msgid "Could not mount %1 on %2"
 msgstr "%1 konnte nicht auf %s ausgehängt werden"
 
-#: ../src/Win_GParted.cc:1892
+#: ../src/Win_GParted.cc:1898
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Eine neue Partitionstabelle kann nicht erstellt werden, wenn es noch "
 "ausstehende Operationen gibt."
 
-#: ../src/Win_GParted.cc:1894
+#: ../src/Win_GParted.cc:1900
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1400,26 +1412,26 @@ msgstr ""
 "Verwenden Sie das »Bearbeiten«-Menü, um entweder alle Operationen anzuwenden "
 "oder zu löschen, bevor Sie eine neue Partitionstabelle erstellen."
 
-#: ../src/Win_GParted.cc:1909
+#: ../src/Win_GParted.cc:1915
 msgid "Error while creating partition table."
 msgstr "Fehler beim Erstellen der Partitionstabelle."
 
-#: ../src/Win_GParted.cc:2022
+#: ../src/Win_GParted.cc:2028
 msgid "Are you sure you want to apply the pending operations?"
 msgstr ""
 "Sind Sie sicher, dass Sie die ausstehenden Operationen ausführen möchten?"
 
-#: ../src/Win_GParted.cc:2028
+#: ../src/Win_GParted.cc:2034
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr ""
 "Das Bearbeiten von Partitionen birgt die Gefahr eines möglichen "
 "DATENVERLUSTES."
 
-#: ../src/Win_GParted.cc:2030
+#: ../src/Win_GParted.cc:2036
 msgid "You are advised to backup your data before proceeding."
 msgstr "Es wird empfohlen, dass Sie wichtige Daten vor dem Fortfahren sichern."
 
-#: ../src/Win_GParted.cc:2032
+#: ../src/Win_GParted.cc:2038
 msgid "Apply operations to device"
 msgstr "Operationen auf Festplatte anwenden"
 
