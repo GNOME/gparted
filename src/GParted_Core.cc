@@ -2253,7 +2253,6 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			fs_type = ped_file_system_type_get( "linux-swap(new)" ) ;
 
 		//default is Linux (83)
-		//FIXME:  Currently HFS+ and HFS get set to 83, but should be AF.
 		if ( ! fs_type )
 			fs_type = ped_file_system_type_get( "ext2" ) ;
 
