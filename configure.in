@@ -82,6 +82,55 @@ int main ()
 LIBS="$LIBS_save"
 
 
+dnl======================
+dnl check whether libparted >= 2.2 (has improved partition table re-read code)
+dnl======================
+LIBPARTED_VERSION=2.2
+AC_MSG_CHECKING(if libparted >= $LIBPARTED_VERSION (has improved pt re-read))
+LIBS_save="$LIBS"
+LIBS="-lparted -luuid -ldl"
+need_work_around=yes
+AC_TRY_RUN(
+#include <stdio.h>
+#include <parted/parted.h>
+
+int main ()
+{
+	int min_major = 0;
+	int min_minor = 0;
+	int min_micro = 0;
+	int major = 0;
+	int minor = 0;
+	int micro = 0;
+
+	if ( ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 ) ||
+	     ( sscanf( "$LIBPARTED_VERSION", "%d.%d", &min_major, &min_minor ) == 2 ) ||
+	     ( sscanf( "$LIBPARTED_VERSION", "%d", &min_major ) == 1 )
+	   )
+	{
+		if ( ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 ) ||
+		     ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 ) ||
+		     ( sscanf( ped_get_version(), "%d", &major ) == 1 )
+		   )
+		{
+			return ! ( (major > min_major) ||
+			           ( (major == min_major) && (minor > min_minor) ) ||
+			           ( (major == min_major) && (minor == min_minor) && (micro >= min_micro) )
+			         ) ;
+		}
+	}
+
+	return 1 ;
+}
+,[AC_MSG_RESULT(yes)
+  AC_DEFINE([HAVE_LIBPARTED_2_2_0_PLUS], [1], [Define to 1 if libparted contains improved partition table re-read code])
+  need_pt_reread_work_around=no]
+,[AC_MSG_RESULT(no)
+  need_pt_reread_work_around=yes]
+)
+LIBS="$LIBS_save"
+
+
 dnl GTKMM
 PKG_CHECK_MODULES(GTKMM, gtkmm-2.4 > 2.8 )
 AC_SUBST(GTKMM_LIBS)
@@ -146,6 +195,8 @@ echo "================ Final configuration ==================="
 echo "          Installing into prefix  :  $prefix"
 echo ""
 echo "            Build documentation?  :  $enable_doc"
+echo ""
+echo "    Need pt re-read work around?  :  $need_pt_reread_work_around"
 echo ""
 echo " If all settings are OK, type make and make install "
 echo "========================================================"

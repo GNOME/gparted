@@ -2783,8 +2783,8 @@ bool GParted_Core::commit_to_os( std::time_t timeout )
 	else
 	{
 		succes = ped_disk_commit_to_os( lp_disk ) ;
-
-		//FIXME:  Work around to try to alleviate problems caused by
+#ifndef HAVE_LIBPARTED_2_2_0_PLUS
+		//Work around to try to alleviate problems caused by
 		//  bug #604298 - Failure to inform kernel of partition changes
 		//  If not successful the first time, try one more time.
 		if ( ! succes )
@@ -2792,6 +2792,7 @@ bool GParted_Core::commit_to_os( std::time_t timeout )
 			sleep( 1 ) ;
 			succes = ped_disk_commit_to_os( lp_disk ) ;
 		}
+#endif
 	}
 
 	settle_device( timeout ) ;
