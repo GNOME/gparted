@@ -386,13 +386,21 @@ Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
 			str .erase( index, 1 ) ;
 	}
 
-	//remove carriage return and line up to previous line feed.  Used in ntfsclone output.
+	//Remove carriage return and line up to previous line feed.  Used in ntfsclone output.
 	//NOTE:  Normal linux line end is line feed.  DOS uses CR + LF.
-	for ( unsigned int index1 = str .find( "\r") ; index1 < str .length() ; index1 = str .find( "\r" ) ) {
-		if ( str .at(index1 + 1) != '\n') { //Only process if next character is not a LF
+	for ( unsigned int index1 = str .find( "\r") ; index1 < str .length() ; index1 = str .find( "\r" ) )
+	{
+		//Only process if next character is not a LF.
+		if ( str .at(index1 + 1) != '\n')
+		{
+			//find point to start erase from.
 			unsigned int index2 = str .rfind( "\n", index1 ) ;
-			if ( index2 <= index1 )
-				str .erase( index2 + 1, index1 - index2 ) ;
+			//find end point to erase up to.
+			unsigned int index3 = str .find( "\n", index1 ) ;
+			unsigned int index4 = str .rfind( "\r", index3 ) ;
+			//perform erase if indices are valid
+			if ( ( index2 <= index1 ) && ( index4 > index2 ) && ( index4 < str .length() ) )
+				str .erase( index2 + 1, index4 - index2 ) ;
 		}
 	}
 	return str;
