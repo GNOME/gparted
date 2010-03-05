@@ -890,25 +890,30 @@ void GParted_Core::set_device_partitions( Device & device )
 
 GParted::FILESYSTEM GParted_Core::get_filesystem() 
 {
-	char buf[512] ;
-	char magic[16] ;
+	char magic1[16] = "";
+	char magic2[16] = "";
 
 	//Check for LUKS encryption prior to libparted file system detection.
 	//  Otherwise encrypted file systems such as ext3 will be detected by
 	//  libparted as 'ext3'.
 
 	//LUKS encryption
-	ped_device_open( lp_device );
-	ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-	strncpy(magic, buf+0, 6) ;  magic[6] = '\0' ; //set and terminate string
-	ped_device_close( lp_device );
-
-	if ( Glib::ustring( magic ) == "LUKS\xBA\xBE" )
+	char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+	if ( buf )
 	{
-		temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
-		temp += "\n" ;
-		partition_temp .messages .push_back( temp ) ;
-		return GParted::FS_LUKS ;
+		ped_device_open( lp_device );
+		ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
+		strncpy(magic1, buf+0, 6) ;  magic1[6] = '\0' ; //set and terminate string
+		ped_device_close( lp_device );
+		free( buf ) ;
+
+		if ( Glib::ustring( magic1 ) == "LUKS\xBA\xBE" )
+		{
+			temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
+			temp += "\n" ;
+			partition_temp .messages .push_back( temp ) ;
+			return GParted::FS_LUKS ;
+		}
 	}
 
 	//standard libparted file systems..
@@ -965,31 +970,52 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	// - no patches sent to parted for lvm2, or luks
 
 	//reiser4
-	ped_device_open( lp_device );
-	ped_geometry_read( & lp_partition ->geom, buf, 128, 1 ) ;
-	ped_device_close( lp_device );
-	
-	if ( Glib::ustring( buf ) == "ReIsEr4" )
-		return GParted::FS_REISER4 ;
+	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+	if ( buf )
+	{
+		ped_device_open( lp_device );
+		ped_geometry_read( & lp_partition ->geom
+		                 , buf
+		                 , (65536 / lp_device ->sector_size) 
+		                 , 1
+		                 ) ;
+		strncpy(magic1, buf+0, 7) ;  magic1[7] = '\0' ; //set and terminate string
+		ped_device_close( lp_device );
+		free( buf ) ;
+
+		if ( Glib::ustring( magic1 ) == "ReIsEr4" )
+			return GParted::FS_REISER4 ;
+	}
 
 	//lvm2
 	//NOTE: lvm2 is not a file system but we do wish to recognize the Physical Volume
-	char magic1[16] ;
-	char magic2[16] ;
-
-	ped_device_open( lp_device );
-	ped_geometry_read( & lp_partition ->geom, buf, 1, 1 ) ;
-	strncpy(magic1, buf+0, 8) ;  magic1[8] = '\0' ; //set and terminate string
-	strncpy(magic2, buf+24, 4) ; magic2[4] = '\0' ; //set and terminate string
-	ped_device_close( lp_device );
-
-	if (    Glib::ustring( magic1 ) == "LABELONE"
-		 && Glib::ustring( magic2 ) == "LVM2" )
+	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+	if ( buf )
 	{
-		temp = _( "Logical Volume Management is not yet supported." ) ;
-		temp += "\n" ;
-		partition_temp .messages .push_back( temp ) ;
-		return GParted::FS_LVM2 ;
+		ped_device_open( lp_device );
+		if ( lp_device ->sector_size == 512 )
+		{
+			ped_geometry_read( & lp_partition ->geom, buf, 1, 1 ) ;
+			strncpy(magic1, buf+ 0, 8) ; magic1[8] = '\0' ; //set and terminate string
+			strncpy(magic2, buf+24, 4) ; magic2[4] = '\0' ; //set and terminate string
+		}
+		else
+		{
+			ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
+			strncpy(magic1, buf+ 0+512, 8) ; magic1[8] = '\0' ; //set and terminate string
+			strncpy(magic2, buf+24+512, 4) ; magic2[4] = '\0' ; //set and terminate string
+		}
+		ped_device_close( lp_device );
+		free( buf ) ;
+
+		if (    Glib::ustring( magic1 ) == "LABELONE"
+		     && Glib::ustring( magic2 ) == "LVM2" )
+		{
+			temp = _( "Logical Volume Management is not yet supported." ) ;
+			temp += "\n" ;
+			partition_temp .messages .push_back( temp ) ;
+			return GParted::FS_LVM2 ;
+		}
 	}
 
 	//btrfs
@@ -1000,14 +1026,15 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	char    buf_btrfs[BTRFS_SUPER_INFO_SIZE] ;
 
 	ped_device_open( lp_device ) ;
-	ped_geometry_read( & lp_partition ->geom, buf_btrfs, \
-	                   (BTRFS_SUPER_INFO_OFFSET / 512), \
-	                   (BTRFS_SUPER_INFO_SIZE / 512)
+	ped_geometry_read( & lp_partition ->geom
+	                 , buf_btrfs
+	                 , (BTRFS_SUPER_INFO_OFFSET / lp_device ->sector_size)
+	                 , (BTRFS_SUPER_INFO_SIZE / lp_device ->sector_size)
 	                 ) ;
-	strncpy(magic, buf_btrfs+64, BTRFS_SIGNATURE .size()) ;  magic[BTRFS_SIGNATURE .size()] = '\0' ; //set and terminate string
+	strncpy(magic1, buf_btrfs+64, BTRFS_SIGNATURE .size()) ;  magic1[BTRFS_SIGNATURE .size()] = '\0' ; //set and terminate string
 	ped_device_close( lp_device ) ;
 
-	if ( magic == BTRFS_SIGNATURE )
+	if ( magic1 == BTRFS_SIGNATURE )
 	{
 		temp = _( "BTRFS is not yet supported." ) ;
 		temp += "\n" ;
