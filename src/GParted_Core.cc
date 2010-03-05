@@ -2646,8 +2646,8 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 			//file systems not yet supported by libparted
 			if ( ped_device_open( lp_device ) )
 			{
-				//reiser4 stores "ReIsEr4" at sector 128
-				return_value = ped_geometry_write( & lp_partition ->geom, "0000000", 128, 1 ) ;
+				//reiser4 stores "ReIsEr4" at sector 128 with a sector size of 512 bytes
+				return_value = ped_geometry_write( & lp_partition ->geom, "0000000", (65536 / lp_device ->sector_size), 1 ) ;
 
 				ped_device_close( lp_device ) ;
 			}
