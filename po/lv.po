@@ -4,15 +4,16 @@
 #
 # Raivis Dejus <orvils@gmail.com>, 2006, 2009.
 # Peteris Krisjanis <pecisk@gmail.com>, 2010.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gparted&component=general\n"
-"POT-Creation-Date: 2010-03-07 14:04+0000\n"
-"PO-Revision-Date: 2010-03-07 17:10+0200\n"
-"Last-Translator: Peteris Krisjanis <pecisk@gmail.com>\n"
-"Language-Team: Latviešu <lata-l10n@googlegroups.com>\n"
+"POT-Creation-Date: 2010-03-07 15:25+0000\n"
+"PO-Revision-Date: 2010-03-07 22:43+0200\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latviešu <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,7 +68,7 @@ msgstr "Mainīt izmēru"
 
 #: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:230
 msgid "Resize/Move"
-msgstr "Mainīt"
+msgstr "Mainīt/Pārvietot"
 
 #: ../src/Dialog_Base_Partition.cc:191
 msgid "Minimum size: %1 MiB"
@@ -97,7 +98,7 @@ msgstr "Paplašināti"
 
 #: ../src/Dialog_Disklabel.cc:66
 msgid "Select new partition table type:"
-msgstr "Izvēlēties jaunu sadaļu tabulas tipu:"
+msgstr "Izvēlieties jaunu sadaļu tabulas tipu:"
 
 #: ../src/Dialog_Partition_Copy.cc:36
 msgid "Paste %1"
@@ -244,8 +245,7 @@ msgstr "Izpildīt dotās darbības"
 msgid ""
 "Depending on the amount and type of operations this might take a long time."
 msgstr ""
-"Atkarībā no operāciju skaita un tipiem, šis process varētu aizņemt daudz "
-"laika."
+"Atkarībā no darbību skaita un tipiem, šis process varētu aizņemt daudz laika."
 
 #: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
@@ -465,7 +465,7 @@ msgstr ""
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
 #: ../src/GParted_Core.cc:290
 msgid "Searching %1 partitions"
-msgstr "Meklē %s sadaļas"
+msgstr "Meklē %1 sadaļas"
 
 #: ../src/GParted_Core.cc:332
 msgid "unrecognized"
@@ -488,16 +488,16 @@ msgstr "libparted paziņojumi"
 
 #: ../src/GParted_Core.cc:908
 msgid "Linux Unified Key Setup encryption is not yet supported."
-msgstr "Linux Unified Key Setup šifrēšana nav vēl atbalstīta."
+msgstr "Linux Unified Key Setup šifrēšana vēl nav atbalstīta."
 
 #: ../src/GParted_Core.cc:989
 msgid "Logical Volume Management is not yet supported."
 msgstr ""
-"Loģisko sējumu pārvaldība (Logical Volume Management) nav vēl atbalstīta."
+"Loģisko sējumu pārvaldība (Logical Volume Management) vēl nav atbalstīta."
 
 #: ../src/GParted_Core.cc:1012
 msgid "BTRFS is not yet supported."
-msgstr "BTRFS nav vēl atbalstīts."
+msgstr "BTRFS vēl nav atbalstīts."
 
 #. no file system found....
 #: ../src/GParted_Core.cc:1019
@@ -534,12 +534,12 @@ msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr ""
-"Sekojošas programmatūras pakotnes ir nepieciešamas %1 failu sistēmas "
-"atbalsts: %2."
+"Sekojošās programmatūras pakotnes ir nepieciešamas %1 failu sistēmas "
+"atbalstam: %2."
 
 #: ../src/GParted_Core.cc:1292
 msgid "create empty partition"
-msgstr "Izveidot tukšu sadaļu"
+msgstr "izveidot tukšu sadaļu"
 
 #: ../src/GParted_Core.cc:1360 ../src/GParted_Core.cc:2475
 msgid "path: %1"
@@ -599,7 +599,7 @@ msgid ""
 "operation"
 msgstr ""
 "jaunā un vecā failu sistēma atrodas tajā pašā vietā. Tāpēc izlaiž doto "
-"operāciju"
+"darbību"
 
 #: ../src/GParted_Core.cc:1622
 msgid "perform real move"
@@ -657,7 +657,7 @@ msgid ""
 "operation"
 msgstr ""
 "jaunā un vecā sadaļa atrodas vienā un tajā pašā vietā un tās ir vienāda "
-"izmēra. Tāpēc izlaiž doto operāciju."
+"izmēra. Tāpēc izlaiž doto darbību"
 
 #: ../src/GParted_Core.cc:1818
 msgid "old start: %1"
@@ -698,7 +698,7 @@ msgstr "mainīt failsistēmas izmēru"
 #: ../src/GParted_Core.cc:1927
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
-msgstr "Jaunā un vecā sadaļa ir vienāda izmēra. Tāpēc izlaiž doto operāciju."
+msgstr "jaunā un vecā sadaļa ir vienāda izmēra. Tāpēc izlaiž šo darbību"
 
 #: ../src/GParted_Core.cc:1962
 msgid "grow file system to fill the partition"
@@ -710,7 +710,7 @@ msgstr "šo failsistēmu nevar palielināt"
 
 #: ../src/GParted_Core.cc:1986
 msgid "the destination is smaller than the source partition"
-msgstr "Izvēlētā vieta ir mazāka nekā sadaļa"
+msgstr "izvēlētā vieta ir mazāka nekā sadaļa"
 
 #: ../src/GParted_Core.cc:2000
 msgid "copy file system of %1 to %2"
@@ -758,7 +758,7 @@ msgstr "atsaukt pēdējo darbību"
 
 #: ../src/GParted_Core.cc:2204
 msgid "check file system on %1 for errors and (if possible) fix them"
-msgstr "pārbaudīt failsistēmas %1 kļūdas un, ja iespējams, izlabot tās"
+msgstr "pārbaudīt, vai %1 failsistēmā ir kļūdas un, ja iespējams, izlabot tās"
 
 #: ../src/GParted_Core.cc:2212
 msgid "checking is not available for this file system"
@@ -790,27 +790,27 @@ msgstr "%1 no %2 nokopēti"
 
 #: ../src/GParted_Core.cc:2319
 msgid "read %1 sectors using a blocksize of %2 sectors"
-msgstr "nolasīti %1 sektori, izmantojot %2 sektoru bloka izmēru"
+msgstr "nolasīt %1 sektorus, izmantojot %2 sektoru bloka izmēru"
 
 #: ../src/GParted_Core.cc:2322
 msgid "copy %1 sectors using a blocksize of %2 sectors"
-msgstr "kopēti %1 sektori, izmantojot %2 sektoru bloka izmēru"
+msgstr "kopēt %1 sektorus, izmantojot %2 sektoru bloka izmēru"
 
 #: ../src/GParted_Core.cc:2441
 msgid "Error while writing block at sector %1"
-msgstr "Kļūda rakstot %1 sektora bloku"
+msgstr "Kļūda, rakstot %1 sektora bloku"
 
 #: ../src/GParted_Core.cc:2444
 msgid "Error while reading block at sector %1"
-msgstr "Kļūda lasot %1 sektora bloku"
+msgstr "Kļūda, lasot %1 sektora bloku"
 
 #: ../src/GParted_Core.cc:2454
 msgid "calibrate %1"
-msgstr "kalibrē %1"
+msgstr "kalibrēt %1"
 
 #: ../src/GParted_Core.cc:2501
 msgid "calculate new size and position of %1"
-msgstr "izrēķina jauno %1 izmēru un pozīciju"
+msgstr "izrēķināt jauno %1 izmēru un pozīciju"
 
 #: ../src/GParted_Core.cc:2505
 msgid "requested start: %1"
@@ -827,22 +827,22 @@ msgstr "pieprasītais izmērs: %1 (%2)"
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
 #: ../src/GParted_Core.cc:2649
 msgid "update boot sector of %1 file system on %2"
-msgstr "atjaunina %1 failsistēmas ielādes sektoru %2"
+msgstr "atjaunināt %1 failsistēmas ielādes sektoru %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
 #: ../src/GParted_Core.cc:2685
 msgid "Error trying to write to boot sector in %1"
-msgstr "Kļūda mēģinot rakstīt %1 ielādes sektoru"
+msgstr "Kļūda, mēģinot rakstīt %1 ielādes sektoru"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
 #: ../src/GParted_Core.cc:2691
 msgid "Error trying to seek to position 0x1c in %1"
-msgstr "Kļūda mēģinot meklēt pozīciju 0x1c %1"
+msgstr "Kļūda, mēģinot meklēt pozīciju 0x1c %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
 #: ../src/GParted_Core.cc:2698
 msgid "Error trying to open %1"
-msgstr "Kļūda mēģinot atvērt %1"
+msgstr "Kļūda, mēģinot atvērt %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
 #: ../src/GParted_Core.cc:2708
@@ -852,7 +852,7 @@ msgstr "Neizdevās iestatīt %1 slēpto sektoru skaitu NTFS ielādes ierakstā."
 
 #: ../src/GParted_Core.cc:2710
 msgid "You might try the following command to correct the problem:"
-msgstr "Lai šo problēmu risinātu, jūs varētu izmēģināt sekojošu komandu:"
+msgstr "Lai risinātu šo problēmu, varat pamēģināt šādu komandu:"
 
 #: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:153
 msgid "_Undo Last Operation"
@@ -864,7 +864,7 @@ msgstr "_Notīrīt visas darbības"
 
 #: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:164
 msgid "_Apply All Operations"
-msgstr "Attiecināt vis_as darbības"
+msgstr "Pielietot vis_as darbības"
 
 #: ../src/OperationCopy.cc:36
 msgid "copy of %1"
@@ -873,32 +873,32 @@ msgstr "%1 kopija"
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
 #: ../src/OperationCopy.cc:78
 msgid "Copy %1 to %2 (start at %3)"
-msgstr "kopē %1 uz %2 (sākts no %3)"
+msgstr "Kopēt %1 uz %2 (sākt no %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
 #: ../src/OperationCopy.cc:86
 msgid "Copy %1 to %2"
-msgstr "Kopē %1 uz %2"
+msgstr "Kopēt %1 uz %2"
 
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
 #: ../src/OperationCheck.cc:38
 msgid "Check and repair file system (%1) on %2"
-msgstr "Pārbauda un salabo failsistēmu (%1) uz %2"
+msgstr "Pārbaudīt un salabot failsistēmu (%1) uz %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
 #: ../src/OperationCreate.cc:86
 msgid "Create %1 #%2 (%3, %4) on %5"
-msgstr "Izveido %1 #%2(%3, %4) uz %5"
+msgstr "Izveidot %1 #%2(%3, %4) uz %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
 #: ../src/OperationDelete.cc:80
 msgid "Delete %1 (%2, %3) from %4"
-msgstr "Dzēs %1 (%2, %3) no %4"
+msgstr "Dzēst %1 (%2, %3) no %4"
 
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
 #: ../src/OperationFormat.cc:58
 msgid "Format %1 as %2"
-msgstr "Formatē %1 kā %2"
+msgstr "Formatēt %1 kā %2"
 
 #. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
 #: ../src/OperationLabelPartition.cc:59
@@ -912,47 +912,46 @@ msgstr "Iestatīt %2 sadaļas nosaukumu uz \"%1\""
 
 #: ../src/OperationResizeMove.cc:86
 msgid "resize/move %1"
-msgstr "maina izmēru/pārvieto %1"
+msgstr "mainīt izmēru/pārvietot %1"
 
 #: ../src/OperationResizeMove.cc:88
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
-"jaunajai un vecajai sadaļai ir tāds pats izmērs un pozīcija. Tāpēc turpinām "
-"tālāk"
+"jaunajai un vecajai sadaļai ir tāds pats izmērs un pozīcija. Turpinām tāpat"
 
 #: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
-msgstr "Pārvieto %1 pa labi"
+msgstr "Pārvietot %1 pa labi"
 
 #: ../src/OperationResizeMove.cc:95
 msgid "Move %1 to the left"
-msgstr "Pārvieto %1 pa kreisi"
+msgstr "Pārvietot %1 pa kreisi"
 
 #: ../src/OperationResizeMove.cc:98
 msgid "Grow %1 from %2 to %3"
-msgstr "Palielina %1 izmēru no %2 uz %3"
+msgstr "Palielināt %1 no %2 uz %3"
 
 #: ../src/OperationResizeMove.cc:101
 msgid "Shrink %1 from %2 to %3"
-msgstr "Samazina %1 izmēru no %2 uz %3"
+msgstr "Samazināt %1 no %2 uz %3"
 
 #: ../src/OperationResizeMove.cc:104
 msgid "Move %1 to the right and grow it from %2 to %3"
-msgstr "Pārvieto %1 pa labi un palielina to no %2 uz %3"
+msgstr "Pārvietot %1 pa labi un palielināt to no %2 uz %3"
 
 #: ../src/OperationResizeMove.cc:107
 msgid "Move %1 to the right and shrink it from %2 to %3"
-msgstr "Pārvieto %1 pa labi un samazina to no %2 uz %3"
+msgstr "Pārvietot %1 pa labi un samazināt to no %2 uz %3"
 
 #: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the left and grow it from %2 to %3"
-msgstr "Pārvieto %1 pa kreisi un palielina to no %2 uz %3"
+msgstr "Pārvietot %1 pa kreisi un palielināt to no %2 uz %3"
 
 #: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left and shrink it from %2 to %3"
-msgstr "Pārvieto %1 pa kreisi un samazina to no %2 uz %3"
+msgstr "Pārvietot %1 pa kreisi un samazināt to no %2 uz %3"
 
 #. append columns
 #: ../src/TreeView_Detail.cc:35
@@ -1017,11 +1016,11 @@ msgstr "%1 GiB"
 
 #: ../src/Utils.cc:198
 msgid "%1 TiB"
-msgstr "%1  TiB"
+msgstr "%1 TiB"
 
 #: ../src/Utils.cc:334
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
-msgstr "# Pagaidu fails, ko izveidojusi gparted. Tas varētu tikt izdzēsts.\n"
+msgstr "# Pagaidu fails, ko izveidojusi gparted. To var dzēst.\n"
 
 #: ../src/Utils.cc:343
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
@@ -1053,7 +1052,7 @@ msgstr "_Informācija par ierīci"
 
 #: ../src/Win_GParted.cc:174
 msgid "Pending _Operations"
-msgstr "Se_kojošās darbības"
+msgstr "Plān_otās darbības"
 
 #: ../src/Win_GParted.cc:175
 msgid "_View"
@@ -1106,7 +1105,7 @@ msgstr "Kopēt izvēlēto sadaļu uz starpliktuvi"
 
 #: ../src/Win_GParted.cc:260
 msgid "Paste the partition from the clipboard"
-msgstr "Ielikt sadaļu no starpliktuves"
+msgstr "Ielīmēt sadaļu no starpliktuves"
 
 #: ../src/Win_GParted.cc:272
 msgid "Undo Last Operation"
@@ -1114,12 +1113,12 @@ msgstr "Atcelt pēdējo darbību"
 
 #: ../src/Win_GParted.cc:280
 msgid "Apply All Operations"
-msgstr "Attiecināt visas darbības"
+msgstr "Pielietot visas darbības"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
 #: ../src/Win_GParted.cc:302
 msgid "_New"
-msgstr "_Jauna"
+msgstr "Jau_na"
 
 #: ../src/Win_GParted.cc:318
 msgid "_Resize/Move"
@@ -1236,7 +1235,7 @@ msgstr "Ierīcei %1 nav atrodama sadaļu tabula"
 
 #: ../src/Win_GParted.cc:1210
 msgid "A partition table is required before partitions can be added."
-msgstr "Lai pievienotu sadaļas, ir jābūt izveidotai sadaļu tabulai"
+msgstr "Lai pievienotu sadaļas, ir jābūt izveidotai sadaļu tabulai."
 
 #: ../src/Win_GParted.cc:1212
 msgid "To create a new partition table choose the menu item:"
@@ -1272,7 +1271,9 @@ msgstr "GNOME sadaļu redaktors"
 #: ../src/Win_GParted.cc:1304
 msgid "translator-credits"
 msgstr ""
-"Gvido Sprogis <gvido.sprogis@gmail.com> Pēteris Krišjānis <pecisk@gmail.com>"
+"Gvido Sprogis <gvido.sprogis@gmail.com> "
+"Pēteris Krišjānis <pecisk@gmail.com> "
+"Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>"
 
 #: ../src/Win_GParted.cc:1346
 msgid "It is not possible to create more than %1 primary partitions"
@@ -1297,7 +1298,7 @@ msgstr "Jūs esat ielicis kopēto sadaļu eksistējošas sadaļas vietā."
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
 #: ../src/Win_GParted.cc:1498
 msgid "The data in %1 will be lost if you apply this operation."
-msgstr "dati, kas atrodas %1 tiks zaudēti, ja jūs attiecināsiet šo darbību."
+msgstr "Dati, kas atrodas %1, tiks zaudēti, ja jūs pielietosiet šo darbību."
 
 #: ../src/Win_GParted.cc:1553
 msgid "Unable to delete %1!"
@@ -1310,7 +1311,7 @@ msgstr ""
 
 #: ../src/Win_GParted.cc:1571
 msgid "Are you sure you want to delete %1?"
-msgstr "Vai jūs esat pārliecināts, ka vēlaties dzēst %1?"
+msgstr "Vai tiešām vēlaties dzēst %1?"
 
 #: ../src/Win_GParted.cc:1578
 msgid "After deletion this partition is no longer available for copying."
@@ -1319,7 +1320,7 @@ msgstr "Pēc dzēšanas šī sadaļa vairs nebūs pieejama kopēšanai."
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
 #: ../src/Win_GParted.cc:1581
 msgid "Delete %1 (%2, %3)"
-msgstr "Dzēš %1 (%2, %3)"
+msgstr "Dzēst %1 (%2, %3)"
 
 #: ../src/Win_GParted.cc:1647
 msgid "Cannot format this file system to %1."
@@ -1381,23 +1382,23 @@ msgstr "Neizdevās piemontēt %1 pie %2"
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
-"Jauna sadaļu tabulu nevar izveidot, ja vēl ir neizpildītas dotās darbības."
+"Jaunu sadaļu tabulu nevar izveidot, ja vēl ir neizpildītas plānotās darbības."
 
 #: ../src/Win_GParted.cc:1901
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
-"Izmantojiet 'Rediģēt' izvēlni, lai attīrītu vai attiecinātu visas darbības "
+"Izmantojiet 'Rediģēt' izvēlni, lai attīrītu vai pielietotu visas darbības "
 "pirms jaunas sadaļu tabulas izveides."
 
 #: ../src/Win_GParted.cc:1916
 msgid "Error while creating partition table."
-msgstr "Kļūda veidojot sadaļu tabulu."
+msgstr "Kļūda, veidojot sadaļu tabulu."
 
 #: ../src/Win_GParted.cc:2029
 msgid "Are you sure you want to apply the pending operations?"
-msgstr "Vai tiešām vēlaties izpildīt dotās darbības?"
+msgstr "Vai tiešām vēlaties izpildīt plānotās darbības?"
 
 #: ../src/Win_GParted.cc:2035
 msgid "Editing partitions has the potential to cause LOSS of DATA."
@@ -1405,11 +1406,11 @@ msgstr "Sadaļu rediģēšana var izraisīt DATU ZAUDĒŠANU."
 
 #: ../src/Win_GParted.cc:2037
 msgid "You are advised to backup your data before proceeding."
-msgstr "Jums ir ieteicams izveidot jūsu datu rezerves kopijas, pirms turpināt."
+msgstr "Pirms turpināšanas ir ieteicams izveidot datu rezerves kopijas."
 
 #: ../src/Win_GParted.cc:2039
 msgid "Apply operations to device"
-msgstr "Attiecināt darbības uz ierīci"
+msgstr "Pielietot darbības ierīcei"
 
 #. create mount point...
 #: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:245 ../src/xfs.cc:252
