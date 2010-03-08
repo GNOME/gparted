@@ -1,10 +1,45 @@
 ====================
+0.5.2   (2010-03-08)
+====================
+NOTES
+	This release of GParted includes bug fixes, and language translation
+	updates.
+
+	Key changes include:
+	  - Fix bug when copying huge (> 100 GB) NTFS partition never finishes
+	  - Disable extended partition option for GPT disks
+
+BUG FIXES
+	* Fix bug when copying huge NTFS partition never finishes (#575324)
+	* Indicate required software if unable to read file system (#576908)
+	* Disable extended option for non-MSDOS and non-DVH disk types (#583906)
+	* Add check if partition table re-read work around code is needed
+	* Fix problem building gparted on OpenSUSE 11.1 (#608065)
+	* Make partition "New" label available for translation (#610540)
+	* Enable removal of msftres flag on GPT disk (#518439)
+	  - Requires libparted-2.0 or higher
+	* Set HFS/HFS+ partition identifier to proper value (#568867)
+	  - Requires libparted-2.2 or higher
+
+TRANSLATIONS (new/updated)
+	* bg(Alexander Shopov), cs(Marek Černocký, Adrian Guniš, Petr Kovar),
+	  de(Mario Blättermann), en_GB(Bruce Cowan), es(Jorge González),
+	  fr(Claude Paroz), gl(Fran Diéguez), hu(Gabor Kelemen), pl(Piotr Drąg),
+	  lv(Rūdolfs Mazurs, Peteris Krisjanis), pt(António Lima),
+	  pt_BR(Henrique P. Machado, Djavan Fagundes), sl(Matej Urbančič),
+	  sv(Daniel Nylander)
+
+DEPENDENCIES (new/updated)
+	* no change.
+
+
+====================
 0.5.1   (2010-01-25)
 ====================
 NOTES
 	This release of GParted includes some very important bug fixes
 	in addition to language translation updates.
-	
+
 	Key changes include:
 	  - Work around partition resizing problems with newer udev and kernels
 	  - Avoid crashes by ignoring devices with sector size > 512 bytes
