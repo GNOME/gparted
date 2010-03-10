@@ -99,7 +99,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 				copied_partition .sectors_used, GParted::UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 	
 	if ( fs .grow )
-		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX -= BUF ;
+		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX - BUF ;
 	else
 		fs .MAX = copied_partition .get_length() ;
 
