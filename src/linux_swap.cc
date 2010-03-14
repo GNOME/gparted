@@ -80,7 +80,10 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
 
 	//Maintain label and uuid when recreating swap
-	Glib::ustring command = "mkswap -L \"" + partition_new .label + "\" -U \"" + partition_new .uuid + "\" " + partition_new .get_path() ;
+	Glib::ustring command = "mkswap -L \"" + partition_new .label + "\" " ;
+	if ( ! partition_new .uuid .empty() )
+		command +=  " -U \"" + partition_new .uuid + "\" " ;
+	command += partition_new .get_path() ;
 	bool exit_status = ! execute_command( command , operationdetail .get_last_child() ) ;
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
