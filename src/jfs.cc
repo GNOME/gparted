@@ -71,7 +71,7 @@ FS jfs::get_filesystem_support()
 		fs .copy = GParted::FS::GPARTED ;
 	}
 	
-	fs .MIN = 16 * MEBIBYTE ;
+	fs .MIN = 16 * MEBI_FACTOR ;
 	
 	return fs ;
 }

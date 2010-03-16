@@ -1302,7 +1302,7 @@ bool GParted_Core::create( const Device & device, Partition & new_partition, Ope
 	{
 		return create_partition( new_partition, operationdetail ) ;
 	}
-	else if ( create_partition( new_partition, operationdetail, get_fs( new_partition .filesystem ) .MIN ) )
+	else if ( create_partition( new_partition, operationdetail, (get_fs( new_partition .filesystem ) .MIN / DEFAULT_SECTOR_SIZE) ) )
 	{
 		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
 			return true ;

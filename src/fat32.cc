@@ -56,7 +56,7 @@ FS fat32::get_filesystem_support()
 		
 	fs .copy = GParted::FS::GPARTED ;
 	
-	fs .MIN = 32 * MEBIBYTE ; //smaller fs'es will cause windows scandisk to fail..
+	fs .MIN = 32 * MEBI_FACTOR ; //smaller fs'es will cause windows scandisk to fail..
 	
 	return fs ;
 }

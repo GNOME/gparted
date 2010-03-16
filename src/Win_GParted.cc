@@ -1640,7 +1640,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 	
-	if ( ( selected_partition .get_length() < fs .MIN ) ||
+	if ( ( selected_partition .get_length() < (fs .MIN / DEFAULT_SECTOR_SIZE) ) ||
 	     ( fs .MAX && selected_partition .get_length() > fs .MAX ) )
 	{
 		Gtk::MessageDialog dialog( *this,
@@ -1651,11 +1651,11 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		if ( selected_partition .get_length() < fs .MIN )
+		if ( selected_partition .get_length() < (fs .MIN / DEFAULT_SECTOR_SIZE) )
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( new_fs ),
-						Utils::format_size( fs .MIN ) ) );
+						Utils::format_size( (fs .MIN / DEFAULT_SECTOR_SIZE) ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A partition with a %1 file system has a maximum size of %2."),

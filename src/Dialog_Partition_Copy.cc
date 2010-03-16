@@ -105,32 +105,32 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 
 	
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs .MIN = copied_partition .sectors_used + (BUF * 2) ;
+		fs .MIN = ( copied_partition .sectors_used + (BUF * 2) ) * DEFAULT_SECTOR_SIZE;
 	else
-		fs .MIN = COPIED_LENGTH_MB * MEBIBYTE ;
+		fs .MIN = COPIED_LENGTH_MB * MEBI_FACTOR ;
 	
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
 	spinbutton_size .set_range(
-		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
 		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ) ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
 					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
-		Utils::round( Utils::sector_to_unit( fs .MIN, GParted::UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
 		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
 
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )

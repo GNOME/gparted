@@ -72,7 +72,7 @@ FS xfs::get_filesystem_support()
 	if ( fs .check )
 		fs .move = GParted::FS::GPARTED ;
 
-	fs .MIN = 32 * MEBIBYTE ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
+	fs .MIN = 32 * MEBI_FACTOR ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
 	
 	return fs ;
 }

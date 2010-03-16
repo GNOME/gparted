@@ -117,7 +117,7 @@ struct FS
 	Support check ; //some checktool available?
 	Support copy ;
 
-	Sector MIN ; 
+	Byte_Value MIN ; 
 	Sector MAX ;
 	
 	FS()
