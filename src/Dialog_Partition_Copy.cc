@@ -99,9 +99,9 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 				copied_partition .sectors_used, GParted::UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 	
 	if ( fs .grow )
-		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX - BUF ;
+		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) ? (TOTAL_MB * MEBI_FACTOR) : fs .MAX - (BUF * DEFAULT_SECTOR_SIZE) ;
 	else
-		fs .MAX = copied_partition .get_length() ;
+		fs .MAX = copied_partition .get_length() * DEFAULT_SECTOR_SIZE ;
 
 	
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
@@ -117,7 +117,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set values of spinbutton_size
 	spinbutton_size .set_range(
 		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
@@ -126,12 +126,12 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	GRIP = false ;
 	
 	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
-					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
 		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

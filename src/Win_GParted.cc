@@ -1641,7 +1641,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	fs = gparted_core .get_fs( new_fs ) ;
 	
 	if ( ( selected_partition .get_length() < (fs .MIN / DEFAULT_SECTOR_SIZE) ) ||
-	     ( fs .MAX && selected_partition .get_length() > fs .MAX ) )
+	     ( fs .MAX && selected_partition .get_length() > (fs .MAX / DEFAULT_SECTOR_SIZE) ) )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _("Cannot format this file system to %1."),
@@ -1660,7 +1660,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( new_fs ),
-						Utils::format_size( fs .MAX ) ) );
+						Utils::format_size( (fs .MAX / DEFAULT_SECTOR_SIZE) ) ) );
 		
 		dialog .run() ;
 		return ;

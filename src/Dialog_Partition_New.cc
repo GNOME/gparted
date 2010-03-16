@@ -151,7 +151,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ; 
+	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ; 
 	spinbutton_before .set_value( 0 ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
@@ -260,25 +260,24 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		if ( selected_partition .get_length() < (fs .MIN /DEFAULT_SECTOR_SIZE) )
 			fs .MIN = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
 				
-		fs .MAX = ( fs .MAX && ( fs .MAX - cylinder_size ) < (TOTAL_MB * MEBIBYTE) ) ?
-				fs .MAX - cylinder_size : TOTAL_MB * MEBIBYTE ;
+		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBI_FACTOR) ) ) ? fs .MAX : (TOTAL_MB * MEBI_FACTOR) ;
 		
 		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
-						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 
 			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 		spinbutton_size .set_range(
 				Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-				Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+				Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 		spinbutton_after .set_range(
 			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 				
 		//set contents of label_minmax
 		Set_MinMax_Text(
 			Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-			Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+			Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 	}
 	
 	//set fitting resizer colors

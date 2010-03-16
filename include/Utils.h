@@ -118,7 +118,7 @@ struct FS
 	Support copy ;
 
 	Byte_Value MIN ; 
-	Sector MAX ;
+	Byte_Value MAX ;
 	
 	FS()
 	{

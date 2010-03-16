@@ -43,7 +43,7 @@ FS hfs::get_filesystem_support()
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	
-	fs .MAX = 2048 * MEBIBYTE ;
+	fs .MAX = 2048 * MEBI_FACTOR ;
 	
 	return fs ;
 }

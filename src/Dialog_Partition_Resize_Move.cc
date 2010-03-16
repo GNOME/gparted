@@ -133,13 +133,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//set MAX
 	if ( fs .grow )
 	{
-		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) 
-			fs .MAX = TOTAL_MB * MEBIBYTE ;
+		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) 
+			fs .MAX = TOTAL_MB * MEBI_FACTOR ;
 		else
-			fs .MAX -= BUF/2 ;
+			fs .MAX -= (BUF/2 * DEFAULT_SECTOR_SIZE) ;
 	}
 	else
-		fs .MAX = selected_partition .get_length() ;
+		fs .MAX = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
 
 	
 	//set values of spinbutton_before
@@ -155,7 +155,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//set values of spinbutton_size 
 	spinbutton_size .set_range( 
 		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( 
 		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), GParted::UNIT_MIB ) ) ) ;
 	
@@ -168,12 +168,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		Utils::round( Utils::sector_to_unit( next, GParted::UNIT_MIB ) ) ) ;
 	
 	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
-					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
 		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, GParted::UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), GParted::UNIT_MIB ) ) ) ;
 }
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Partition> & partitions )
