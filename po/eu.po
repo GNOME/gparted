@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-25 16:49+0100\n"
-"PO-Revision-Date: 2010-01-25 16:59+0100\n"
+"POT-Creation-Date: 2010-03-18 18:34+0100\n"
+"PO-Revision-Date: 2010-03-18 18:39+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,8 +24,8 @@ msgstr "Sortu, berrantolatu eta ezabatu partizioak"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:356
-#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1086
-#: ../src/Win_GParted.cc:1270
+#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1101
+#: ../src/Win_GParted.cc:1285
 msgid "GParted"
 msgstr "GParted"
 
@@ -60,7 +60,7 @@ msgstr "Biribildu zilindroetara"
 msgid "Resize"
 msgstr "Aldatu tamaina"
 
-#: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:227
+#: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:230
 msgid "Resize/Move"
 msgstr "Aldatu tamainaz/lekuz"
 
@@ -109,12 +109,12 @@ msgstr "Abisua:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:112
+#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:119
 msgid "File system:"
 msgstr "Fitxategi-sistema:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:446
+#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:452
 msgid "Size:"
 msgstr "Tamaina:"
 
@@ -133,7 +133,7 @@ msgid "Flags:"
 msgstr "Banderak:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:454
+#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:460
 msgid "Path:"
 msgstr "Bide-izena:"
 
@@ -167,7 +167,7 @@ msgstr "Muntatu gabe"
 
 #. Label
 #: ../src/Dialog_Partition_Info.cc:266 ../src/Dialog_Partition_Label.cc:43
-#: ../src/Dialog_Partition_New.cc:124
+#: ../src/Dialog_Partition_New.cc:131
 msgid "Label:"
 msgstr "Etiketa:"
 
@@ -186,7 +186,7 @@ msgid "Last sector:"
 msgstr "Azken sektorea:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:507
+#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:513
 msgid "Total sectors:"
 msgstr "Sektoreak guztira:"
 
@@ -201,25 +201,25 @@ msgid "Create new Partition"
 msgstr "Sortu partizio berria"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:78
+#: ../src/Dialog_Partition_New.cc:79
 msgid "Create as:"
 msgstr "Sortu honela:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:73
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:73
 msgid "Primary Partition"
 msgstr "Partizio nagusia"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:76
+#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:76
 #: ../src/OperationDelete.cc:75
 msgid "Logical Partition"
 msgstr "Partizio logikoa"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:79
+#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:79
 msgid "Extended Partition"
 msgstr "Partizio hedatua"
 
-#: ../src/Dialog_Partition_New.cc:186
+#: ../src/Dialog_Partition_New.cc:193
 msgid "New Partition #%1"
 msgstr "%1. partizio berria"
 
@@ -451,130 +451,139 @@ msgid ""
 "Ignoring device %1 with logical sector size of %2 bytes because gparted only "
 "supports a size of 512 bytes."
 msgstr ""
-"%1 gailuari (%2 byte-ko sektore logikoduna) ezikusi egiten "
-"gparted-ek soilik 512 byte-ko tamainak onartzen dituelako."
+"%1 gailuari (%2 byte-ko sektore logikoduna) ezikusi egiten gparted-ek soilik "
+"512 byte-ko tamainak onartzen dituelako."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
 #: ../src/GParted_Core.cc:290
 msgid "Searching %1 partitions"
 msgstr "%1 partizioak bilatzen"
 
-#: ../src/GParted_Core.cc:331
+#: ../src/GParted_Core.cc:332
 msgid "unrecognized"
 msgstr "ezezaguna"
 
-#: ../src/GParted_Core.cc:417
+#: ../src/GParted_Core.cc:418
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Partizioak ezin du %1 sektoretako luzera eduki"
 
-#: ../src/GParted_Core.cc:425
+#: ../src/GParted_Core.cc:426
 msgid "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Partizio bat ez da baliozkoa baldin eta erabilitako sektoreak (%1) bere "
 "luzera (%2) baino handiagoak badira"
 
-#: ../src/GParted_Core.cc:491
+#: ../src/GParted_Core.cc:492
 msgid "libparted messages"
 msgstr "libparted mezuak"
 
-#: ../src/GParted_Core.cc:907
+#: ../src/GParted_Core.cc:912
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux Unified Key Setup enkripzioa ez dago oraindik onartuta"
 
-#: ../src/GParted_Core.cc:988
+#: ../src/GParted_Core.cc:1014
 msgid "Logical Volume Management is not yet supported."
 msgstr "Bolumen Logikoaren Kudeaketa (LVM) ez dago oraindik onartuta."
 
-#: ../src/GParted_Core.cc:1011
+#: ../src/GParted_Core.cc:1039
 msgid "BTRFS is not yet supported."
 msgstr "BTRFS ez dago oraindik onartuta."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1018
+#: ../src/GParted_Core.cc:1046
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Ezin da fitxategi-sistema detektatu! Arrazoi posibleak:"
 
-#: ../src/GParted_Core.cc:1020
+#: ../src/GParted_Core.cc:1048
 msgid "The file system is damaged"
 msgstr "Fitxategi-sistema hondatuta dago"
 
-#: ../src/GParted_Core.cc:1022
+#: ../src/GParted_Core.cc:1050
 msgid "The file system is unknown to GParted"
 msgstr "GParted-ek ez du fitxategi-sistema ezagutzen"
 
-#: ../src/GParted_Core.cc:1024
+#: ../src/GParted_Core.cc:1052
 msgid "There is no file system available (unformatted)"
 msgstr "Ez dago fitxategi-sistemarik erabilgarri (formatua eman gabe)"
 
-#: ../src/GParted_Core.cc:1150
+#: ../src/GParted_Core.cc:1178
 msgid "Unable to find mount point"
 msgstr "Ezin da muntatze-puntua aurkitu"
 
-#: ../src/GParted_Core.cc:1168
+#: ../src/GParted_Core.cc:1241
 msgid "Unable to read the contents of this file system!"
 msgstr "Ezin da fitxategi-sistemaren edukia irakurri."
 
-#: ../src/GParted_Core.cc:1170
+#: ../src/GParted_Core.cc:1243
 msgid "Because of this some operations may be unavailable."
 msgstr "Hori dela eta, zenbait eragiketa ez dira erabilgarri egongo."
 
-#: ../src/GParted_Core.cc:1282
+#. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
+#: ../src/GParted_Core.cc:1248
+msgid ""
+"The following list of software packages is required for %1 file system "
+"support:  %2."
+msgstr ""
+"Honako softwareen paketeen zerrenda behar da %1 fitxategi-sistemaren "
+"euskarria edukitzeko: %2."
+
+#: ../src/GParted_Core.cc:1319
 msgid "create empty partition"
 msgstr "sortu partizio hutsa"
 
-#: ../src/GParted_Core.cc:1350 ../src/GParted_Core.cc:2466
+#: ../src/GParted_Core.cc:1387 ../src/GParted_Core.cc:2502
 msgid "path: %1"
 msgstr "bide-izena: %1"
 
-#: ../src/GParted_Core.cc:1351 ../src/GParted_Core.cc:2467
+#: ../src/GParted_Core.cc:1388 ../src/GParted_Core.cc:2503
 msgid "start: %1"
 msgstr "hasiera: %1"
 
-#: ../src/GParted_Core.cc:1352 ../src/GParted_Core.cc:2468
+#: ../src/GParted_Core.cc:1389 ../src/GParted_Core.cc:2504
 msgid "end: %1"
 msgstr "amaiera: %1"
 
-#: ../src/GParted_Core.cc:1353 ../src/GParted_Core.cc:2469
+#: ../src/GParted_Core.cc:1390 ../src/GParted_Core.cc:2505
 msgid "size: %1 (%2)"
 msgstr "tamaina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1383 ../src/linux_swap.cc:80 ../src/xfs.cc:237
+#: ../src/GParted_Core.cc:1420 ../src/linux_swap.cc:80 ../src/xfs.cc:237
 msgid "create new %1 file system"
 msgstr "sortu %1 fitxategi-sistema berria"
 
-#: ../src/GParted_Core.cc:1416
+#: ../src/GParted_Core.cc:1453
 msgid "delete partition"
 msgstr "ezabatu partizioa"
 
-#: ../src/GParted_Core.cc:1456
+#: ../src/GParted_Core.cc:1493
 msgid "Clear partition label on %1"
 msgstr "Garbitu partizio-etiketa: --> %1"
 
-#: ../src/GParted_Core.cc:1461
+#: ../src/GParted_Core.cc:1498
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Ezarri partizio-etiketa \"%1\" gisa: --> %2"
 
-#: ../src/GParted_Core.cc:1540
+#: ../src/GParted_Core.cc:1577
 msgid "moving requires old and new length to be the same"
 msgstr "lekuz aldatzeak luzera zaharra eta berria berdinak izatea eskatzen du"
 
-#: ../src/GParted_Core.cc:1557
+#: ../src/GParted_Core.cc:1594
 msgid "rollback last change to the partition table"
 msgstr "desegin partizio-taularen azken aldaketa"
 
-#: ../src/GParted_Core.cc:1586
+#: ../src/GParted_Core.cc:1623
 msgid "move file system to the left"
 msgstr "eraman fitxategi-sistema ezkerrera"
 
-#: ../src/GParted_Core.cc:1588
+#: ../src/GParted_Core.cc:1625
 msgid "move file system to the right"
 msgstr "eraman fitxategi-sistema eskuinera"
 
-#: ../src/GParted_Core.cc:1591
+#: ../src/GParted_Core.cc:1628
 msgid "move file system"
 msgstr "aldatu lekuz fitxategi-sistema"
 
-#: ../src/GParted_Core.cc:1593
+#: ../src/GParted_Core.cc:1630
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -582,55 +591,55 @@ msgstr ""
 "fitxategi-sistema zaharrak eta berriak posizio berdina dute. Eragiketa hau "
 "saltatzen"
 
-#: ../src/GParted_Core.cc:1612
+#: ../src/GParted_Core.cc:1649
 msgid "perform real move"
 msgstr "landu benetako leku aldaketa"
 
-#: ../src/GParted_Core.cc:1654
+#: ../src/GParted_Core.cc:1691
 msgid "using libparted"
 msgstr "libparted erabiltzen"
 
-#: ../src/GParted_Core.cc:1694
+#: ../src/GParted_Core.cc:1731
 msgid "resizing requires old and new start to be the same"
 msgstr "tamainaz aldatzeak hasiera zaharra eta berria berdinak izatea eskatzen du"
 
-#: ../src/GParted_Core.cc:1759
+#: ../src/GParted_Core.cc:1796
 msgid "resize/move partition"
 msgstr "aldatu partizioa tamainaz/lekuz"
 
-#: ../src/GParted_Core.cc:1762
+#: ../src/GParted_Core.cc:1799
 msgid "move partition to the right"
 msgstr "eraman partizioa eskuinera"
 
-#: ../src/GParted_Core.cc:1765
+#: ../src/GParted_Core.cc:1802
 msgid "move partition to the left"
 msgstr "eraman partizioa ezkerrera"
 
-#: ../src/GParted_Core.cc:1768
+#: ../src/GParted_Core.cc:1805
 msgid "grow partition from %1 to %2"
 msgstr "handitu partizioa: %1 ==> %2"
 
-#: ../src/GParted_Core.cc:1771
+#: ../src/GParted_Core.cc:1808
 msgid "shrink partition from %1 to %2"
 msgstr "txikitu partizioa: %1 ==> %2"
 
-#: ../src/GParted_Core.cc:1774
+#: ../src/GParted_Core.cc:1811
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "eraman partizioa eskuinera eta handitu %1(e)tik %2(e)ra"
 
-#: ../src/GParted_Core.cc:1777
+#: ../src/GParted_Core.cc:1814
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "eraman partizioa eskuinera eta txikitu %1(e)tik %2(e)ra"
 
-#: ../src/GParted_Core.cc:1780
+#: ../src/GParted_Core.cc:1817
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "eraman partizioa ezkerrera eta handitu %1(e)tik %2(e)ra"
 
-#: ../src/GParted_Core.cc:1783
+#: ../src/GParted_Core.cc:1820
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "eraman partizioa ezkerrera eta txikitu %1(e)tik %2(e)ra"
 
-#: ../src/GParted_Core.cc:1798
+#: ../src/GParted_Core.cc:1835
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -638,202 +647,202 @@ msgstr ""
 "partizio berriak eta zaharrak tamaina eta posizio berdina dute. Eragiketa "
 "hau saltatzen"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:1845
 msgid "old start: %1"
 msgstr "hasiera zaharra: %1"
 
-#: ../src/GParted_Core.cc:1809
+#: ../src/GParted_Core.cc:1846
 msgid "old end: %1"
 msgstr "amaiera zaharra: %1"
 
-#: ../src/GParted_Core.cc:1810
+#: ../src/GParted_Core.cc:1847
 msgid "old size: %1 (%2)"
 msgstr "tamaina zaharra: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1869 ../src/GParted_Core.cc:2547
+#: ../src/GParted_Core.cc:1906 ../src/GParted_Core.cc:2583
 msgid "new start: %1"
 msgstr "hasiera berria: %1"
 
-#: ../src/GParted_Core.cc:1870 ../src/GParted_Core.cc:2548
+#: ../src/GParted_Core.cc:1907 ../src/GParted_Core.cc:2584
 msgid "new end: %1"
 msgstr "amaiera berria: %1"
 
-#: ../src/GParted_Core.cc:1871 ../src/GParted_Core.cc:2549
+#: ../src/GParted_Core.cc:1908 ../src/GParted_Core.cc:2585
 msgid "new size: %1 (%2)"
 msgstr "tamaina berria: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1907
+#: ../src/GParted_Core.cc:1944
 msgid "shrink file system"
 msgstr "txikitu fitxategi-sistema"
 
-#: ../src/GParted_Core.cc:1911
+#: ../src/GParted_Core.cc:1948
 msgid "grow file system"
 msgstr "handitu fitxategi-sistema"
 
-#: ../src/GParted_Core.cc:1914
+#: ../src/GParted_Core.cc:1951
 msgid "resize file system"
 msgstr "aldatu fitxategi-sistemaren tamaina"
 
-#: ../src/GParted_Core.cc:1917
+#: ../src/GParted_Core.cc:1954
 msgid "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
-"fitxategi-sistema zaharraren eta berriaren tamainak berdinak dira. "
-"Eragiketa hau saltatzen"
+"fitxategi-sistema zaharraren eta berriaren tamainak berdinak dira. Eragiketa "
+"hau saltatzen"
 
-#: ../src/GParted_Core.cc:1952
+#: ../src/GParted_Core.cc:1989
 msgid "grow file system to fill the partition"
 msgstr "handitu fitxategi-sistema partizioa betetzeko"
 
-#: ../src/GParted_Core.cc:1957
+#: ../src/GParted_Core.cc:1994
 msgid "growing is not available for this file system"
 msgstr "handitzea ez dago erabilgarri fitxategi-sistema honekin"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:2013
 msgid "the destination is smaller than the source partition"
 msgstr "helburua jatorrizko partizioa baino txikiagoa da"
 
-#: ../src/GParted_Core.cc:1990
+#: ../src/GParted_Core.cc:2027
 msgid "copy file system of %1 to %2"
 msgstr "kopiatu fitxategi-sistema %1(e)tik %2(e)ra"
 
-#: ../src/GParted_Core.cc:2034
+#: ../src/GParted_Core.cc:2071
 msgid "perform read-only test"
 msgstr "landu proba (irakurtzeko soilik)"
 
-#: ../src/GParted_Core.cc:2082
+#: ../src/GParted_Core.cc:2119
 msgid "using internal algorithm"
 msgstr "barneko algoritmoa erabiltzen"
 
-#: ../src/GParted_Core.cc:2084
+#: ../src/GParted_Core.cc:2121
 msgid "read %1 sectors"
 msgstr "irakurritako sektoreak: %1"
 
-#: ../src/GParted_Core.cc:2084
+#: ../src/GParted_Core.cc:2121
 msgid "copy %1 sectors"
 msgstr "kopiatutako sektoreak: %1"
 
-#: ../src/GParted_Core.cc:2086
+#: ../src/GParted_Core.cc:2123
 msgid "finding optimal blocksize"
 msgstr "bloke-tamaina optimoa bilatzen"
 
-#: ../src/GParted_Core.cc:2123
+#: ../src/GParted_Core.cc:2160
 msgid "%1 seconds"
 msgstr "%1 segundo"
 
-#: ../src/GParted_Core.cc:2139
+#: ../src/GParted_Core.cc:2176
 msgid "optimal blocksize is %1 sectors (%2)"
 msgstr "bloke-tamaina optimoa: %1 sektore (%1)"
 
-#: ../src/GParted_Core.cc:2156
+#: ../src/GParted_Core.cc:2193
 msgid "%1 sectors read"
 msgstr "%1 sektore irakurrita"
 
-#: ../src/GParted_Core.cc:2156
+#: ../src/GParted_Core.cc:2193
 msgid "%1 sectors copied"
 msgstr "%1 sektore kopiatuta"
 
-#: ../src/GParted_Core.cc:2167
+#: ../src/GParted_Core.cc:2204
 msgid "roll back last transaction"
 msgstr "desegin azken transakzioa"
 
-#: ../src/GParted_Core.cc:2194
+#: ../src/GParted_Core.cc:2231
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "egiaztatu %1(e)n fitxategi-sistema eta konpondu (ahal bada) aurkitzen diren "
 "erroreak"
 
-#: ../src/GParted_Core.cc:2202
+#: ../src/GParted_Core.cc:2239
 msgid "checking is not available for this file system"
 msgstr "egiaztatzea ez dago erabilgarri fitxategi-sistema honekin"
 
-#: ../src/GParted_Core.cc:2228
+#: ../src/GParted_Core.cc:2265
 msgid "set partition type on %1"
 msgstr "ezarri partizio mota: --> %1"
 
-#: ../src/GParted_Core.cc:2259
+#: ../src/GParted_Core.cc:2295
 msgid "new partition type: %1"
 msgstr "partizio mota berria: %1"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2322
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "irakurrita: %1 / %2  (%3 falta da)"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2322
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "kopiatuta: %1 / %2  (%3 falta da)"
 
-#: ../src/GParted_Core.cc:2292 ../src/GParted_Core.cc:2387
+#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
 msgid "%1 of %2 read"
 msgstr "irakurrita: %1 / %2"
 
-#: ../src/GParted_Core.cc:2292 ../src/GParted_Core.cc:2387
+#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
 msgid "%1 of %2 copied"
 msgstr "kopiatuta: %1 / %2"
 
-#: ../src/GParted_Core.cc:2310
+#: ../src/GParted_Core.cc:2346
 msgid "read %1 sectors using a blocksize of %2 sectors"
 msgstr "irakurri %1 sektore %2 sektoretako bloke-tamaina erabiliz"
 
-#: ../src/GParted_Core.cc:2313
+#: ../src/GParted_Core.cc:2349
 msgid "copy %1 sectors using a blocksize of %2 sectors"
 msgstr "kopiatu %1 sektore %2 sektoretako bloke-tamaina erabiliz"
 
-#: ../src/GParted_Core.cc:2432
+#: ../src/GParted_Core.cc:2468
 msgid "Error while writing block at sector %1"
 msgstr "Errorea %1 sektorean blokea idaztean"
 
-#: ../src/GParted_Core.cc:2435
+#: ../src/GParted_Core.cc:2471
 msgid "Error while reading block at sector %1"
 msgstr "Errorea %1 sektorean blokea irakurtzean"
 
-#: ../src/GParted_Core.cc:2445
+#: ../src/GParted_Core.cc:2481
 msgid "calibrate %1"
 msgstr "kalibratu %1"
 
-#: ../src/GParted_Core.cc:2492
+#: ../src/GParted_Core.cc:2528
 msgid "calculate new size and position of %1"
 msgstr "kalkulatu %1(e)n tamaina eta posizio berria"
 
-#: ../src/GParted_Core.cc:2496
+#: ../src/GParted_Core.cc:2532
 msgid "requested start: %1"
 msgstr "eskatutako hasiera: %1"
 
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2533
 msgid "requested end: %1"
 msgstr "eskatutako amaiera: %1"
 
-#: ../src/GParted_Core.cc:2498
+#: ../src/GParted_Core.cc:2534
 msgid "requested size: %1 (%2)"
 msgstr "eskatutako tamaina: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2640
+#: ../src/GParted_Core.cc:2676
 msgid "update boot sector of %1 file system on %2"
 msgstr "eguneratu %1 fitxategi-sistemako abioko sektorea %2 gailuan"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2676
+#: ../src/GParted_Core.cc:2712
 msgid "Error trying to write to boot sector in %1"
 msgstr "Errorea abioko sektorean idaztean %1 gailuan"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2682
+#: ../src/GParted_Core.cc:2718
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Errorea 0x1c posizioa kokatzean %1 gailuan"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2689
+#: ../src/GParted_Core.cc:2725
 msgid "Error trying to open %1"
 msgstr "Errorea %1 irekitzean"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2699
+#: ../src/GParted_Core.cc:2735
 msgid "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Huts egin du ezkutuko sektore kopurua %1 gisa ezartzean NTFS-ren abioko "
 "erregistroan."
 
-#: ../src/GParted_Core.cc:2701
+#: ../src/GParted_Core.cc:2737
 msgid "You might try the following command to correct the problem:"
 msgstr "Saia zaitez honako komandoarekin arazoa konpontzeko:"
 
@@ -902,9 +911,8 @@ msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
-"partizio berriak eta zaharrak tamaina eta posizio berdinak dituzte. "
-"Hhala"
-"ere jarraitu egingo da"
+"partizio berriak eta zaharrak tamaina eta posizio berdinak dituzte. Hhalaere "
+"jarraitu egingo da"
 
 #: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
@@ -1071,184 +1079,199 @@ msgstr "_Edukia"
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: ../src/Win_GParted.cc:216
+#. TO TRANSLATORS: "New" is a tool bar item for partition actions.
+#: ../src/Win_GParted.cc:214
+msgid "New"
+msgstr "Berria"
+
+#: ../src/Win_GParted.cc:219
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Sortu partizio berria hautatutako esleitu gabeko lekuan"
 
-#: ../src/Win_GParted.cc:221
+#: ../src/Win_GParted.cc:224
 msgid "Delete the selected partition"
 msgstr "Ezabatu hautatutako partizioa"
 
-#: ../src/Win_GParted.cc:243
+#: ../src/Win_GParted.cc:246
 msgid "Resize/Move the selected partition"
 msgstr "Aldatu hautatutako partizioa tamainaz/lekuz"
 
-#: ../src/Win_GParted.cc:252
+#: ../src/Win_GParted.cc:255
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopiatu hautatutako partizioa arbelean"
 
-#: ../src/Win_GParted.cc:257
+#: ../src/Win_GParted.cc:260
 msgid "Paste the partition from the clipboard"
 msgstr "Itsatsi partizioa arbeletik"
 
-#: ../src/Win_GParted.cc:269
+#: ../src/Win_GParted.cc:272
 msgid "Undo Last Operation"
 msgstr "Desegin azken eragiketa"
 
-#: ../src/Win_GParted.cc:277
+#: ../src/Win_GParted.cc:280
 msgid "Apply All Operations"
 msgstr "Aplikatu eragiketa guztiak"
 
-#: ../src/Win_GParted.cc:312
+#. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
+#: ../src/Win_GParted.cc:302
+msgid "_New"
+msgstr "_Berria"
+
+#: ../src/Win_GParted.cc:318
 msgid "_Resize/Move"
 msgstr "_Aldatu tamainaz/lekuz"
 
-#: ../src/Win_GParted.cc:336
+#: ../src/Win_GParted.cc:342
 msgid "_Format to"
 msgstr "Eman _formatua:"
 
-#: ../src/Win_GParted.cc:345
+#: ../src/Win_GParted.cc:351
 msgid "Unmount"
 msgstr "Desmuntatu"
 
-#: ../src/Win_GParted.cc:351
+#: ../src/Win_GParted.cc:357
 msgid "_Mount on"
 msgstr "_Muntatu hemen"
 
-#: ../src/Win_GParted.cc:358
+#: ../src/Win_GParted.cc:364
 msgid "M_anage Flags"
 msgstr "_Kudeatu banderak"
 
-#: ../src/Win_GParted.cc:363
+#: ../src/Win_GParted.cc:369
 msgid "C_heck"
 msgstr "Eg_iaztatu"
 
-#: ../src/Win_GParted.cc:368
+#: ../src/Win_GParted.cc:374
 msgid "_Label"
 msgstr "_Etiketa"
 
-#: ../src/Win_GParted.cc:430
+#: ../src/Win_GParted.cc:436
 msgid "Device Information"
 msgstr "Gailuaren informazioa"
 
 #. model
-#: ../src/Win_GParted.cc:438
+#: ../src/Win_GParted.cc:444
 msgid "Model:"
 msgstr "Modeloa:"
 
 #. disktype
-#: ../src/Win_GParted.cc:475
+#: ../src/Win_GParted.cc:481
 msgid "Partition table:"
 msgstr "Partizio-taula:"
 
 #. heads
-#: ../src/Win_GParted.cc:483
+#: ../src/Win_GParted.cc:489
 msgid "Heads:"
 msgstr "Buruak:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:491
+#: ../src/Win_GParted.cc:497
 msgid "Sectors/track:"
 msgstr "Sektoreak/pista:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:499
+#: ../src/Win_GParted.cc:505
 msgid "Cylinders:"
 msgstr "Zilindroak:"
 
-#: ../src/Win_GParted.cc:678
+#. sector size
+#: ../src/Win_GParted.cc:521
+msgid "Sector size:"
+msgstr "Sektore-tamaina:"
+
+#: ../src/Win_GParted.cc:693
 msgid "Could not add this operation to the list."
 msgstr "Ezin izan da eragiketa hau zerrendari gehitu."
 
-#: ../src/Win_GParted.cc:703
+#: ../src/Win_GParted.cc:718
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "Eragiketa %1 zai"
 msgstr[1] "%1 eragiketa zai"
 
-#: ../src/Win_GParted.cc:757
+#: ../src/Win_GParted.cc:772
 msgid "Quit GParted?"
 msgstr "Irten GParted aplikaziotik?"
 
-#: ../src/Win_GParted.cc:763 ../src/Win_GParted.cc:1870
+#: ../src/Win_GParted.cc:778 ../src/Win_GParted.cc:1886
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Unean eragiketa %1 dago zai."
 msgstr[1] "Unean %1 eragiketa daude zai."
 
-#: ../src/Win_GParted.cc:789
+#: ../src/Win_GParted.cc:804
 msgid "_Unmount"
 msgstr "_Desmuntatu"
 
-#: ../src/Win_GParted.cc:814
+#: ../src/Win_GParted.cc:829
 msgid "_Swapoff"
 msgstr "De_saktibatu swap"
 
-#: ../src/Win_GParted.cc:820
+#: ../src/Win_GParted.cc:835
 msgid "_Swapon"
 msgstr "A_ktibatu swap"
 
-#: ../src/Win_GParted.cc:1018
+#: ../src/Win_GParted.cc:1033
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1064
+#: ../src/Win_GParted.cc:1079
 msgid "Scanning all devices..."
 msgstr "Gailu guztiak eskaneatzen..."
 
-#: ../src/Win_GParted.cc:1109
+#: ../src/Win_GParted.cc:1124
 msgid "No devices detected"
 msgstr "Ez da gailurik detektatu"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1190
+#: ../src/Win_GParted.cc:1205
 msgid "No partition table found on device %1"
 msgstr "Ez da partizio-taularik aurkitu %1 gailuan"
 
-#: ../src/Win_GParted.cc:1195
+#: ../src/Win_GParted.cc:1210
 msgid "A partition table is required before partitions can be added."
 msgstr "Partizio-taula bat behar da partizioak gehitu aurretik."
 
-#: ../src/Win_GParted.cc:1197
+#: ../src/Win_GParted.cc:1212
 msgid "To create a new partition table choose the menu item:"
 msgstr "Partizio-taula berri bat sortzekoa aukeratu menuko elementua:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1200
+#: ../src/Win_GParted.cc:1215
 msgid "Device --> Create Partition Table."
 msgstr "Gailua --> Sortu partizio-taula."
 
-#: ../src/Win_GParted.cc:1229
+#: ../src/Win_GParted.cc:1244
 msgid "Unable to open GParted Manual help file."
 msgstr "Ezin da Gparted-en laguntzako eskuliburuaren fitxategia ireki."
 
-#: ../src/Win_GParted.cc:1245
+#: ../src/Win_GParted.cc:1260
 msgid "Documentation is not available."
 msgstr "Dokumentazioa ez dago eskuragarri."
 
-#: ../src/Win_GParted.cc:1250
+#: ../src/Win_GParted.cc:1265
 msgid "This build of gparted is configured without documentation."
 msgstr "Gparted-en konpilazio hau dokumentaziorik gabe konfiguratuta dago."
 
-#: ../src/Win_GParted.cc:1252
+#: ../src/Win_GParted.cc:1267
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentazioa proiektuaren webgunean eskuragarri dago."
 
-#: ../src/Win_GParted.cc:1273
+#: ../src/Win_GParted.cc:1288
 msgid "GNOME Partition Editor"
 msgstr "GNOMEren partizio-editorea"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1289
+#: ../src/Win_GParted.cc:1304
 msgid "translator-credits"
 msgstr "Iñaki Larrañaga Murgoitio <dooteo@zundan.com>"
 
-#: ../src/Win_GParted.cc:1331
+#: ../src/Win_GParted.cc:1346
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "Ezin dira %1 partizio nagusi baino gehiago sortu"
 
-#: ../src/Win_GParted.cc:1339
+#: ../src/Win_GParted.cc:1354
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1260,53 +1283,53 @@ msgstr ""
 "partizio nagusia denez, litekeena da aurrenik partizio nagusia ezabatu behar "
 "izatea."
 
-#: ../src/Win_GParted.cc:1476
+#: ../src/Win_GParted.cc:1491
 msgid "You have pasted into an existing partition."
 msgstr "Existitizen den partizio batean itsatsi duzu."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1483
+#: ../src/Win_GParted.cc:1498
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "%1(e)ko datuak galdu egingo dira eragiketa hau aplikatzen baduzu."
 
-#: ../src/Win_GParted.cc:1537
+#: ../src/Win_GParted.cc:1553
 msgid "Unable to delete %1!"
 msgstr "Ezin da %1 ezabatu."
 
-#: ../src/Win_GParted.cc:1544
+#: ../src/Win_GParted.cc:1560
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Desmuntatu %1 zenbakia baino handiagoa duen edozein partizio logiko"
 
-#: ../src/Win_GParted.cc:1555
+#: ../src/Win_GParted.cc:1571
 msgid "Are you sure you want to delete %1?"
 msgstr "Ziur zaude %1 ezabatzea nahi duzula?"
 
-#: ../src/Win_GParted.cc:1562
+#: ../src/Win_GParted.cc:1578
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Partizio hau ezabatu ondoren ez da erabilgarri egongo kopiatzeko."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1565
+#: ../src/Win_GParted.cc:1581
 msgid "Delete %1 (%2, %3)"
 msgstr "Ezabatu %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1647
 msgid "Cannot format this file system to %1."
 msgstr "Ezin zaio %1 formatua eman fitxategi-sistemari"
 
-#: ../src/Win_GParted.cc:1640
+#: ../src/Win_GParted.cc:1656
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 fitxategi-sistemak gutxienez %2(e)ko partizioa behar du"
 
-#: ../src/Win_GParted.cc:1645
+#: ../src/Win_GParted.cc:1661
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 fitxategi-sistemadun partizioak gehienez %2(e)ko tamaina du"
 
-#: ../src/Win_GParted.cc:1730
+#: ../src/Win_GParted.cc:1746
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partizioa ezin izan da desmuntatu honako muntatze-puntuetatik:"
 
-#: ../src/Win_GParted.cc:1732
+#: ../src/Win_GParted.cc:1748
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1314,67 +1337,67 @@ msgstr ""
 "Baliteke beste partizioak ere muntatze-puntu hauetan muntatuta egotea. Eskuz "
 "desmuntatu beharko dituzu."
 
-#: ../src/Win_GParted.cc:1782
+#: ../src/Win_GParted.cc:1798
 msgid "Deactivating swap on %1"
 msgstr "Swap partizioa desaktibatzen: --> %1"
 
-#: ../src/Win_GParted.cc:1782
+#: ../src/Win_GParted.cc:1798
 msgid "Activating swap on %1"
 msgstr "Swap partizioa aktibatzen: --> %1"
 
-#: ../src/Win_GParted.cc:1789
+#: ../src/Win_GParted.cc:1805
 msgid "Could not deactivate swap"
 msgstr "Ezin izan da swap partizioa desaktibatu"
 
-#: ../src/Win_GParted.cc:1789
+#: ../src/Win_GParted.cc:1805
 msgid "Could not activate swap"
 msgstr "Ezin izan da swap partizioa aktibatu"
 
-#: ../src/Win_GParted.cc:1805
+#: ../src/Win_GParted.cc:1821
 msgid "Unmounting %1"
 msgstr "%1 desmuntatzen"
 
-#: ../src/Win_GParted.cc:1810
+#: ../src/Win_GParted.cc:1826
 msgid "Could not unmount %1"
 msgstr "Ezin izan da %1 desmuntatu"
 
-#: ../src/Win_GParted.cc:1839
+#: ../src/Win_GParted.cc:1855
 msgid "mounting %1 on %2"
 msgstr "%1 muntatzen: --> %2"
 
-#: ../src/Win_GParted.cc:1846
+#: ../src/Win_GParted.cc:1862
 msgid "Could not mount %1 on %2"
 msgstr "Ezin izan da %1 hemen muntatu: %2"
 
-#: ../src/Win_GParted.cc:1883
+#: ../src/Win_GParted.cc:1899
 msgid "A new partition table cannot be created when there are pending operations."
 msgstr "Partizio-taula berri bat ezin da sortu eragiketak lantzea falta direnean."
 
-#: ../src/Win_GParted.cc:1885
+#: ../src/Win_GParted.cc:1901
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
-"Erabili Editatu menua eragiketa guztiak garbitzeko edo aplikatzeko "
-"partizio taula berri bat sortu aurretik."
+"Erabili Editatu menua eragiketa guztiak garbitzeko edo aplikatzeko partizio "
+"taula berri bat sortu aurretik."
 
-#: ../src/Win_GParted.cc:1900
+#: ../src/Win_GParted.cc:1916
 msgid "Error while creating partition table."
 msgstr "Errorea partizio-taula sortzean."
 
-#: ../src/Win_GParted.cc:2013
+#: ../src/Win_GParted.cc:2029
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ziur zaude zain dauden eragiketak aplikatzea nahi dituzula?"
 
-#: ../src/Win_GParted.cc:2019
+#: ../src/Win_GParted.cc:2035
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Partizioak editatzeak DATUAK GALTZEKO arrisku handia sor dezake."
 
-#: ../src/Win_GParted.cc:2021
+#: ../src/Win_GParted.cc:2037
 msgid "You are advised to backup your data before proceeding."
 msgstr "Datu garrantzitsuen babes-kopia egin jarraitu aurretik."
 
-#: ../src/Win_GParted.cc:2023
+#: ../src/Win_GParted.cc:2039
 msgid "Apply operations to device"
 msgstr "Aplikatu eragiketak disko gogorrean"
 
