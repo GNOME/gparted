@@ -142,7 +142,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled file system
@@ -151,7 +151,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ) ; 
+	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ; 
 	spinbutton_before .set_value( 0 ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
@@ -267,17 +267,17 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
 		spinbutton_size .set_range(
-				Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ),
-				Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ) ;
+				Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
+				Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
 		spinbutton_after .set_range(
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
 				
 		//set contents of label_minmax
 		Set_MinMax_Text(
-			Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ),
-			Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, GParted::UNIT_MIB ) ) ) ;
+			Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
+			Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
 	}
 	
 	//set fitting resizer colors
