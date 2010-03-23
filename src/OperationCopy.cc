@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -78,7 +79,7 @@ void OperationCopy::create_description()
 		description = String::ucompose( _("Copy %1 to %2 (start at %3)"),
 					        partition_copied .get_path(),
 					        device .get_path(),
-					        Utils::format_size( partition_new .sector_start ) ) ;
+					        Utils::format_size( partition_new .sector_start, DEFAULT_SECTOR_SIZE ) ) ;
 	}
 	else
 	{

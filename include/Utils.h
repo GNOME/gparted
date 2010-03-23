@@ -144,7 +144,7 @@ public:
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
 	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
-	static Glib::ustring format_size( Sector size ) ;
+	static Glib::ustring format_size( Sector sectors, Byte_Value sector_size ) ;
 	static Glib::ustring format_time( std::time_t seconds ) ;
 	static double sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT size_unit ) ;
 	static int execute_command( const Glib::ustring & command ) ;

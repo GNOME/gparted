@@ -167,34 +167,34 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 	}
 }
 
-Glib::ustring Utils::format_size( Sector size )
+Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 {
 	std::stringstream ss ;
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
 
-	if ( size < KIBIBYTE )
+	if ( (sectors * sector_size) < KIBI_FACTOR )
 	{
-		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_BYTE ) ;
+		ss << sector_to_unit( sectors, sector_size, UNIT_BYTE ) ;
 		return String::ucompose( _("%1 B"), ss .str() ) ;
 	}
-	else if ( size < MEBIBYTE )
+	else if ( (sectors * sector_size) < MEBI_FACTOR )
 	{
-		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_KIB ) ;
+		ss << sector_to_unit( sectors, sector_size, UNIT_KIB ) ;
 		return String::ucompose( _("%1 KiB"), ss .str() ) ;
 	}
-	else if ( size < GIBIBYTE )
+	else if ( (sectors * sector_size) < GIBI_FACTOR )
 	{
-		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ;
+		ss << sector_to_unit( sectors, sector_size, UNIT_MIB ) ;
 		return String::ucompose( _("%1 MiB"), ss .str() ) ;
 	}
-	else if ( size < TEBIBYTE )
+	else if ( (sectors * sector_size) < TEBI_FACTOR )
 	{
-		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_GIB ) ;
+		ss << sector_to_unit( sectors, sector_size, UNIT_GIB ) ;
 		return String::ucompose( _("%1 GiB"), ss .str() ) ;
 	}
 	else
 	{
-		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_TIB ) ;
+		ss << sector_to_unit( sectors, sector_size, UNIT_TIB ) ;
 		return String::ucompose( _("%1 TiB"), ss .str() ) ;
 	}
 }

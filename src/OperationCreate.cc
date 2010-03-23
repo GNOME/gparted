@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -87,7 +88,7 @@ void OperationCreate::create_description()
 				 	description, 
 					partition_new .partition_number, 
 					Utils::get_filesystem_string( partition_new .filesystem ), 
-					Utils::format_size( partition_new .get_length() ),
+					Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ),
 					device .get_path() ) ;
 }
 

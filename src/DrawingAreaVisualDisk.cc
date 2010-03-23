@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -107,7 +108,7 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 	   			         partitions[ t ] .get_length() ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length() ) ) ;
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
 	}
 }
 

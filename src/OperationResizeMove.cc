@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -117,8 +117,8 @@ void OperationResizeMove::create_description()
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
 						partition_original .get_path(),
-						Utils::format_size( partition_original .get_length() ),
-						Utils::format_size( partition_new .get_length() ) ) ;
+						Utils::format_size( partition_original .get_length(), DEFAULT_SECTOR_SIZE ),
+						Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
 }
 
 void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )

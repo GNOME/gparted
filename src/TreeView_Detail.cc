@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -187,15 +187,15 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .label ] = partition .label ;
 		
 	//size
-	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length() ) ;
+	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length(), DEFAULT_SECTOR_SIZE ) ;
 	
 	//used
 	treerow[ treeview_detail_columns .used ] =
-		partition .sectors_used == -1 ? "---" : Utils::format_size( partition .sectors_used ) ;
+		partition .sectors_used == -1 ? "---" : Utils::format_size( partition .sectors_used, DEFAULT_SECTOR_SIZE ) ;
 
 	//unused
 	treerow[ treeview_detail_columns .unused ] = 
-		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused ) ;
+		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused, DEFAULT_SECTOR_SIZE ) ;
 
 	//flags	
 	treerow[ treeview_detail_columns .flags ] = 

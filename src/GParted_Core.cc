@@ -1388,8 +1388,8 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
-					  			  new_partition .get_length(),
-					  			  Utils::format_size( new_partition .get_length() ) ),
+								new_partition .get_length(),
+								Utils::format_size( new_partition .get_length(), DEFAULT_SECTOR_SIZE ) ),
 						STATUS_NONE,
 						FONT_ITALIC ) ) ;
 				}
@@ -1823,8 +1823,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
-						Utils::format_size( partition_old .get_length() ),
-						Utils::format_size( partition_new .get_length() ) ) ;
+						Utils::format_size( partition_old .get_length(), DEFAULT_SECTOR_SIZE ),
+						Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
 
 	operationdetail .add_child( OperationDetail( description ) ) ;
 
@@ -1845,8 +1845,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
 			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
 			String::ucompose( _("old size: %1 (%2)"),
-					  partition_old .get_length(),
-					  Utils::format_size( partition_old .get_length() ) ),
+					partition_old .get_length(),
+					Utils::format_size( partition_old .get_length(), DEFAULT_SECTOR_SIZE ) ),
 		STATUS_NONE, 
 		FONT_ITALIC ) ) ;
 	
@@ -1906,8 +1906,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				String::ucompose( _("new start: %1"), new_start ) + "\n" +
 				String::ucompose( _("new end: %1"), new_end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
-					 	  new_end - new_start + 1,
-					  	  Utils::format_size( new_end - new_start + 1 ) ),
+						new_end - new_start + 1,
+						Utils::format_size( new_end - new_start + 1, DEFAULT_SECTOR_SIZE ) ),
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
 
@@ -2174,9 +2174,9 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 	
 	if ( succes )
 		operationdetail .get_last_child() .add_child( OperationDetail( String::ucompose( _("optimal blocksize is %1 sectors (%2)"),
-					 							 optimal_blocksize,
-					 							 Utils::format_size( optimal_blocksize ) ),
-									       STATUS_NONE ) ) ;
+												optimal_blocksize,
+												Utils::format_size( optimal_blocksize, DEFAULT_SECTOR_SIZE ) ),
+												STATUS_NONE ) ) ;
 
 	if ( succes ) 
 	      succes = copy_blocks( src_device, 
@@ -2320,8 +2320,8 @@ void GParted_Core::set_progress_info( Sector total,
 
 	operationdetail .progress_text = 
 		String::ucompose( readonly ? _("%1 of %2 read (%3 remaining)") : _("%1 of %2 copied (%3 remaining)"),
-				  Utils::format_size( done ),
-				  Utils::format_size( total ),
+				  Utils::format_size( done, DEFAULT_SECTOR_SIZE ),
+				  Utils::format_size( total, DEFAULT_SECTOR_SIZE ),
 				  Utils::format_time( time_remaining) ) ; 
 			
 	operationdetail .set_description( 
@@ -2503,8 +2503,8 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
-								  partition .get_length(),
-								  Utils::format_size( partition .get_length() ) ),
+								partition .get_length(),
+								Utils::format_size( partition .get_length(), DEFAULT_SECTOR_SIZE ) ),
 					STATUS_NONE, 
 					FONT_ITALIC ) ) ;
 				succes = true ;
@@ -2532,8 +2532,8 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
 			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
 			String::ucompose( _("requested size: %1 (%2)"),
-					  partition_new .get_length(),
-					  Utils::format_size( partition_new .get_length() ) ),
+					partition_new .get_length(),
+					Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ) ),
 		STATUS_NONE,
 		FONT_ITALIC ) ) ;
 	
@@ -2583,8 +2583,8 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
 				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
-					 	  partition_new .get_length(),
-					  	  Utils::format_size( partition_new .get_length() ) ),
+						partition_new .get_length(),
+						Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ) ),
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
 

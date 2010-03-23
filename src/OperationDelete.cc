@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -80,7 +81,7 @@ void OperationDelete::create_description()
 	description = String::ucompose( _("Delete %1 (%2, %3) from %4"),
 					description,
 					Utils::get_filesystem_string( partition_original .filesystem ), 
-					Utils::format_size( partition_original .get_length() ),
+					Utils::format_size( partition_original .get_length(), DEFAULT_SECTOR_SIZE ),
 					partition_original .device_path ) ;
 }
 	
