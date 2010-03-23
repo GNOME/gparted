@@ -174,27 +174,27 @@ Glib::ustring Utils::format_size( Sector size )
 
 	if ( size < KIBIBYTE )
 	{
-		ss << sector_to_unit( size, UNIT_BYTE ) ;
+		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_BYTE ) ;
 		return String::ucompose( _("%1 B"), ss .str() ) ;
 	}
 	else if ( size < MEBIBYTE )
 	{
-		ss << sector_to_unit( size, UNIT_KIB ) ;
+		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_KIB ) ;
 		return String::ucompose( _("%1 KiB"), ss .str() ) ;
 	}
 	else if ( size < GIBIBYTE )
 	{
-		ss << sector_to_unit( size, UNIT_MIB ) ;
+		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ;
 		return String::ucompose( _("%1 MiB"), ss .str() ) ;
 	}
 	else if ( size < TEBIBYTE )
 	{
-		ss << sector_to_unit( size, UNIT_GIB ) ;
+		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_GIB ) ;
 		return String::ucompose( _("%1 GiB"), ss .str() ) ;
 	}
 	else
 	{
-		ss << sector_to_unit( size, UNIT_TIB ) ;
+		ss << sector_to_unit( size, DEFAULT_SECTOR_SIZE, UNIT_TIB ) ;
 		return String::ucompose( _("%1 TiB"), ss .str() ) ;
 	}
 }
@@ -222,21 +222,21 @@ Glib::ustring Utils::format_time( std::time_t seconds )
 	return time ;
 }
 
-double Utils::sector_to_unit( Sector sectors, SIZE_UNIT size_unit )
+double Utils::sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT size_unit )
 {
 	switch ( size_unit )
 	{
 		case UNIT_BYTE	:
-			return sectors * 512 ;
+			return sectors * sector_size ;
 
 		case UNIT_KIB	:
-			return sectors / static_cast<double>( KIBIBYTE ) ;
+			return sectors / ( static_cast<double>( KIBI_FACTOR ) / sector_size );
 		case UNIT_MIB	:
-			return sectors / static_cast<double>( MEBIBYTE ) ;
+			return sectors / ( static_cast<double>( MEBI_FACTOR ) / sector_size );
 		case UNIT_GIB	:
-			return sectors / static_cast<double>( GIBIBYTE ) ;
+			return sectors / ( static_cast<double>( GIBI_FACTOR ) / sector_size );
 		case UNIT_TIB	:
-			return sectors / static_cast<double>( TEBIBYTE ) ;
+			return sectors / ( static_cast<double>( TEBI_FACTOR ) / sector_size );
 
 		default:
 			return sectors ;

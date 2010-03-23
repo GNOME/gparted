@@ -146,7 +146,7 @@ public:
 	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
 	static Glib::ustring format_size( Sector size ) ;
 	static Glib::ustring format_time( std::time_t seconds ) ;
-	static double sector_to_unit( Sector sectors, SIZE_UNIT size_unit ) ;
+	static double sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT size_unit ) ;
 	static int execute_command( const Glib::ustring & command ) ;
 	static int execute_command( const Glib::ustring & command,
 				    Glib::ustring & output,
