@@ -2122,7 +2122,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 
 	operationdetail .add_child( OperationDetail( _("finding optimal blocksize"), STATUS_NONE ) ) ;
 
-	Sector benchmark_blocksize = readonly ? 128 : 64, N = 65536 ;
+	Sector benchmark_blocksize = readonly ? 128 : 64, N = 32768 ;
 	Sector optimal_blocksize = benchmark_blocksize ;
 	Sector offset_read = src_start,
 	       offset_write = dst_start ;
