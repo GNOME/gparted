@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ private:
 				
 	bool copy( const Partition & partition_src,
 		   Partition & partition_dst,
-		   Sector min_size,
+		   Byte_Value min_size,
 		   OperationDetail & operationdetail ) ; 
 	bool copy_filesystem_simulation( const Partition & partition_src,
 			      		 const Partition & partition_dst,
@@ -128,19 +128,19 @@ private:
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dst,
 			      OperationDetail & operationdetail,
-			      Sector & total_done ) ;
+			      Byte_Value & total_done ) ;
 	bool copy_filesystem( const Glib::ustring & src_device,
 			      const Glib::ustring & dst_device,
 			      Sector src_start,
 			      Sector dst_start,
-			      Sector length,
+			      Byte_Value src_length,
 			      OperationDetail & operationdetail,
 			      bool readonly,
-			      Sector & total_done ) ;
+			      Byte_Value & total_done ) ;
 	void rollback_transaction( const Partition & partition_src,
-			      	   const Partition & partition_dst,
-			      	   OperationDetail & operationdetail,
-			      	   Sector total_done ) ;
+				   const Partition & partition_dst,
+				   OperationDetail & operationdetail,
+				   Byte_Value total_done ) ;
 
 	bool check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 
@@ -152,17 +152,17 @@ private:
 			  const Glib::ustring & dst_device,
 			  Sector src_start,
 			  Sector dst_start,
-			  Sector length,
-			  Sector blocksize,
+			  Byte_Value length,
+			  Byte_Value blocksize,
 			  OperationDetail & operationdetail,
 			  bool readonly,
-			  Sector & total_done ) ;
+			  Byte_Value & total_done ) ;
 
 	bool copy_block( PedDevice * lp_device_src,
 			 PedDevice * lp_device_dst,
 			 Sector offset_src,
 			 Sector offset_dst,
-			 Sector blocksize,
+			 Byte_Value blocksize,
 			 Glib::ustring & error_message,
 			 bool readonly ) ; 
 	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
