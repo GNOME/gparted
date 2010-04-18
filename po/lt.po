@@ -5,17 +5,18 @@
 #
 # Gintautas Miliauskas <gintas@akl.lt>, 2005, 2006, 2007.
 # Žygimantas Beručka <zygis@gnome.org>, 2008, 20, 2010.
+# Aurimas Černius <aurisc4@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-27 11:51+0200\n"
-"PO-Revision-Date: 2010-03-27 11:50+0200\n"
-"Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
-"Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
+"POT-Creation-Date: 2010-04-19 01:59+0300\n"
+"PO-Revision-Date: 2010-04-15 22:52+0300\n"
+"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
+"Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: UTF-8\n"
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
 "100<10 || n%100>=20) ? 1 : 2);\n"
 
@@ -530,19 +531,19 @@ msgstr "Reikalingi šie paketai %1 failų sistemos palaikymui:  %2."
 msgid "create empty partition"
 msgstr "kurti tuščią skirsnį"
 
-#: ../src/GParted_Core.cc:1387 ../src/GParted_Core.cc:2502
+#: ../src/GParted_Core.cc:1387 ../src/GParted_Core.cc:2556
 msgid "path: %1"
 msgstr "kelias: %1"
 
-#: ../src/GParted_Core.cc:1388 ../src/GParted_Core.cc:2503
+#: ../src/GParted_Core.cc:1388 ../src/GParted_Core.cc:2557
 msgid "start: %1"
 msgstr "pradžia: %1"
 
-#: ../src/GParted_Core.cc:1389 ../src/GParted_Core.cc:2504
+#: ../src/GParted_Core.cc:1389 ../src/GParted_Core.cc:2558
 msgid "end: %1"
 msgstr "pabaiga: %1"
 
-#: ../src/GParted_Core.cc:1390 ../src/GParted_Core.cc:2505
+#: ../src/GParted_Core.cc:1390 ../src/GParted_Core.cc:2559
 msgid "size: %1 (%2)"
 msgstr "dydis: %1 (%2)"
 
@@ -658,15 +659,15 @@ msgstr "ankstesnė pabaiga: %1"
 msgid "old size: %1 (%2)"
 msgstr "ankstesnis dydis: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1906 ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:1906 ../src/GParted_Core.cc:2637
 msgid "new start: %1"
 msgstr "nauja pradžia: %1"
 
-#: ../src/GParted_Core.cc:1907 ../src/GParted_Core.cc:2584
+#: ../src/GParted_Core.cc:1907 ../src/GParted_Core.cc:2638
 msgid "new end: %1"
 msgstr "nauja pabaiga: %1"
 
-#: ../src/GParted_Core.cc:1908 ../src/GParted_Core.cc:2585
+#: ../src/GParted_Core.cc:1908 ../src/GParted_Core.cc:2639
 msgid "new size: %1 (%2)"
 msgstr "naujas dydis: %1 (%2)"
 
@@ -700,146 +701,157 @@ msgstr "šios failų sistemos didinti negalima"
 msgid "the destination is smaller than the source partition"
 msgstr "paskirties vieta mažesnė negu šaltinio skirsnis"
 
-#: ../src/GParted_Core.cc:2027
+#: ../src/GParted_Core.cc:2030
 msgid "copy file system of %1 to %2"
 msgstr "kopijuoti %1 failų sistemą į %2"
 
-#: ../src/GParted_Core.cc:2071
+#: ../src/GParted_Core.cc:2074
 msgid "perform read-only test"
 msgstr "vykdyti nekeičiamąjį testą"
 
-#: ../src/GParted_Core.cc:2119
+#: ../src/GParted_Core.cc:2122
 msgid "using internal algorithm"
 msgstr "naudojamas vidinis algoritmas"
 
-#: ../src/GParted_Core.cc:2121
-msgid "read %1 sectors"
-msgstr "skaitoma %1 sektorių"
+#. TO TRANSLATORS: looks like  read 1.00 MiB
+#: ../src/GParted_Core.cc:2126
+msgid "read %1"
+msgstr "nuskaityti %1"
 
-#: ../src/GParted_Core.cc:2121
-msgid "copy %1 sectors"
-msgstr "kopijuojama %1 sektorių"
+#. TO TRANSLATORS: looks like  copy 1.00 MiB
+#: ../src/GParted_Core.cc:2128
+msgid "copy %1"
+msgstr "kopijuoti %1"
 
-#: ../src/GParted_Core.cc:2123
-msgid "finding optimal blocksize"
+#: ../src/GParted_Core.cc:2132
+msgid "finding optimal block size"
 msgstr "skaičiuojamas optimalus blokų dydis"
 
-#: ../src/GParted_Core.cc:2160
+#: ../src/GParted_Core.cc:2172
 msgid "%1 seconds"
 msgstr "%1 sekundžių"
 
-#: ../src/GParted_Core.cc:2176
-msgid "optimal blocksize is %1 sectors (%2)"
-msgstr "optimalus bloko dydis yra %1 sektorių (%2)"
+#. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
+#: ../src/GParted_Core.cc:2190
+msgid "optimal block size is %1"
+msgstr "optimalus bloko dydis yra %1"
 
-#: ../src/GParted_Core.cc:2193
-msgid "%1 sectors read"
-msgstr "perskaityta %1 sektorių"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
+#: ../src/GParted_Core.cc:2208
+msgid "%1 (%2 B) read"
+msgstr "%1 (%2 B) perskaityta"
 
-#: ../src/GParted_Core.cc:2193
-msgid "%1 sectors copied"
-msgstr "nukopijuota %1 sektorių"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
+#: ../src/GParted_Core.cc:2210
+msgid "%1 (%2 B) copied"
+msgstr "%1 (%2 B) nukopijuota"
 
-#: ../src/GParted_Core.cc:2204
+#: ../src/GParted_Core.cc:2223
 msgid "roll back last transaction"
 msgstr "atšaukti paskutinę tranzakciją"
 
-#: ../src/GParted_Core.cc:2231
+#: ../src/GParted_Core.cc:2250
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "patikrinti %1 esančią failų sistemą ir (jei įmanoma) ištaisyti klaidas"
 
-#: ../src/GParted_Core.cc:2239
+#: ../src/GParted_Core.cc:2258
 msgid "checking is not available for this file system"
 msgstr "šios failų sistemos patikrinti negalima"
 
-#: ../src/GParted_Core.cc:2265
+#: ../src/GParted_Core.cc:2284
 msgid "set partition type on %1"
 msgstr "nustatyti %1 skirsnio tipą"
 
-#: ../src/GParted_Core.cc:2295
+#: ../src/GParted_Core.cc:2314
 msgid "new partition type: %1"
 msgstr "naujas skirsnio tipas: %1"
 
-#: ../src/GParted_Core.cc:2322
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2343
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "perskaityta %1 iš %2 (liko %3)"
 
-#: ../src/GParted_Core.cc:2322
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2345
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "nukopijuota %1 iš %2 (liko %3)"
 
-#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
+#: ../src/GParted_Core.cc:2353 ../src/GParted_Core.cc:2461
 msgid "%1 of %2 read"
 msgstr "%1 iš %2 perskaityta"
 
-#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#: ../src/GParted_Core.cc:2355 ../src/GParted_Core.cc:2463
 msgid "%1 of %2 copied"
 msgstr "%1 iš %2 nukopijuota"
 
-#: ../src/GParted_Core.cc:2346
-msgid "read %1 sectors using a blocksize of %2 sectors"
-msgstr "perskaityta %1 sektorių, bloko dydis %2 sektorių"
+#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2376
+msgid "read %1 using a block size of %2"
+msgstr "perskaityta %1 naudojant bloko dydį %2"
 
-#: ../src/GParted_Core.cc:2349
-msgid "copy %1 sectors using a blocksize of %2 sectors"
-msgstr "nukopijuota %1 sektorių, bloko dydis %2 sektorių"
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2381
+msgid "copy %1 using a block size of %2"
+msgstr "nukopijuota %1 naudojant bloko dydį %2"
 
-#: ../src/GParted_Core.cc:2468
+#: ../src/GParted_Core.cc:2522
 msgid "Error while writing block at sector %1"
 msgstr "Klaida rašant bloką sektoriuje %1"
 
-#: ../src/GParted_Core.cc:2471
+#: ../src/GParted_Core.cc:2525
 msgid "Error while reading block at sector %1"
 msgstr "Klaida skaitant bloką sektoriuje %1"
 
-#: ../src/GParted_Core.cc:2481
+#: ../src/GParted_Core.cc:2535
 msgid "calibrate %1"
 msgstr "kalibruoti %1"
 
-#: ../src/GParted_Core.cc:2528
+#: ../src/GParted_Core.cc:2582
 msgid "calculate new size and position of %1"
 msgstr "paskaičiuoti naują %1 dydį ir poziciją"
 
-#: ../src/GParted_Core.cc:2532
+#: ../src/GParted_Core.cc:2586
 msgid "requested start: %1"
 msgstr "paprašyta pradžia: %1"
 
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2587
 msgid "requested end: %1"
 msgstr "paprašyta pabaiga: %1"
 
-#: ../src/GParted_Core.cc:2534
+#: ../src/GParted_Core.cc:2588
 msgid "requested size: %1 (%2)"
 msgstr "paprašytas dydis: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2676
+#: ../src/GParted_Core.cc:2730
 msgid "update boot sector of %1 file system on %2"
 msgstr "atnaujinti %1 failų sistemos paleidimo sektorių skirsnyje %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2712
+#: ../src/GParted_Core.cc:2766
 msgid "Error trying to write to boot sector in %1"
 msgstr "Klaida rašant į paleidimo sektorių skirsnyje %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2718
+#: ../src/GParted_Core.cc:2772
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Klaida ieškant pozicijos 0x1c skirsnyje %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2725
+#: ../src/GParted_Core.cc:2779
 msgid "Error trying to open %1"
 msgstr "Klaida atveriant %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2789
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Nepavyko nustatyti NTFS paleidimo įraše paslėptų sektorių skaičiaus į %1."
 
-#: ../src/GParted_Core.cc:2737
+#: ../src/GParted_Core.cc:2791
 msgid "You might try the following command to correct the problem:"
 msgstr "Galite pabandyti ištaisyti problemą šia komanda:"
 
@@ -1453,6 +1465,18 @@ msgstr "didinti prijungtą failų sistemą"
 #: ../src/xfs.cc:276
 msgid "copy file system"
 msgstr "kopijuoti failų sistemą"
+
+#~ msgid "read %1 sectors"
+#~ msgstr "skaitoma %1 sektorių"
+
+#~ msgid "copy %1 sectors"
+#~ msgstr "kopijuojama %1 sektorių"
+
+#~ msgid "%1 sectors read"
+#~ msgstr "perskaityta %1 sektorių"
+
+#~ msgid "%1 sectors copied"
+#~ msgstr "nukopijuota %1 sektorių"
 
 #~ msgid "Applying all listed operations."
 #~ msgstr "Vykdomos visos operacijos iš sąrašo."
