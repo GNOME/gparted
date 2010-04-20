@@ -1,4 +1,5 @@
-/*  Copyright (C) 2004 Bart
+/* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,7 +30,7 @@ public:
 	Dialog_Partition_Copy( const FS & fs, Sector cylinder_size ) ;
 	void Set_Data( const Partition & selected_partition, const Partition & copied_partition );
 
-	Partition Get_New_Partition() ;
+	Partition Get_New_Partition( Byte_Value sector_size ) ;
 
 private:
 };

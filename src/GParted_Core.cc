@@ -336,6 +336,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				partition_temp .Set_Unallocated( temp_device .get_path(),
 								 0,
 								 temp_device .length,
+								 temp_device .sector_size,
 								 false );
 				//Place libparted messages in this unallocated partition
 				partition_temp .messages .insert( partition_temp .messages .end(),
@@ -794,6 +795,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     get_filesystem(),
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
+						     device .sector_size,
 						     lp_partition ->type,
 						     partition_is_busy ) ;
 				free( lp_path ) ;
@@ -836,6 +838,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     GParted::FS_EXTENDED,
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
+						     device .sector_size,
 						     false,
 						     partition_is_busy ) ;
 				free( lp_path ) ;
@@ -883,9 +886,10 @@ void GParted_Core::set_device_partitions( Device & device )
 				    device .partitions[ EXT_INDEX ] .logicals,
 				    device .partitions[ EXT_INDEX ] .sector_start,
 				    device .partitions[ EXT_INDEX ] .sector_end,
+				    device .sector_size,
 				    true ) ;
-	
-	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, false ) ; 
+
+	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
 GParted::FILESYSTEM GParted_Core::get_filesystem() 
@@ -1079,10 +1083,11 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 				       std::vector<Partition> & partitions,
 				       Sector start,
 				       Sector end,
+				       Byte_Value sector_size,
 				       bool inside_extended )
 {
 	partition_temp .Reset() ;
-	partition_temp .Set_Unallocated( device_path, 0, 0, inside_extended ) ;
+	partition_temp .Set_Unallocated( device_path, 0, 0, sector_size, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty() )

@@ -71,6 +71,7 @@ private:
 				 std::vector<Partition> & partitions,
 				 Sector start,
 				 Sector end,
+				 Byte_Value sector_size,
 				 bool inside_extended ) ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;

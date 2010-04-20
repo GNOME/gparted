@@ -161,7 +161,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Partition_New::Get_New_Partition()
+Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 {
 	Partition part_temp ;
 	PartitionType part_type ;
@@ -193,7 +193,8 @@ Partition Dialog_Partition_New::Get_New_Partition()
 			String::ucompose( _("New Partition #%1"), new_count ),
 			new_count, part_type,
 			FILESYSTEMS[ optionmenu_filesystem .get_history() ] .filesystem,
-			new_start, new_end, 
+			new_start, new_end,
+			sector_size,
 			selected_partition .inside_extended, false ) ;
 
 	//Retrieve Label info
@@ -212,6 +213,7 @@ Partition Dialog_Partition_New::Get_New_Partition()
 		UNALLOCATED .Set_Unallocated( part_temp .device_path,
 					      part_temp .sector_start,
 					      part_temp .sector_end,
+					      sector_size,
 					      true ) ;
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}

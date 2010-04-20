@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -59,8 +59,8 @@ public:
 protected:
 	int find_index_original( const std::vector<Partition> & partitions ) ;
 	int find_index_extended( const std::vector<Partition> & partitions ) ;
-	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended );
-	
+	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
+
 	int index ;
 	int index_extended ;
 };

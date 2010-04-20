@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,10 +43,10 @@ int Operation::find_index_extended( const std::vector<Partition> & partitions )
 	return -1 ;
 }
 
-void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, bool inside_extended )
+void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
 	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( device .get_path(), 0, 0, inside_extended ) ;
+	UNALLOCATED .Set_Unallocated( device .get_path(), 0, 0, sector_size, inside_extended ) ;
 	
 	//if there are no partitions at all..
 	if ( partitions .empty() )

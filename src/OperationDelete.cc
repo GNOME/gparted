@@ -45,6 +45,7 @@ void OperationDelete::apply_to_visual( std::vector<Partition> & partitions )
 			insert_unallocated( partitions[ index_extended ] .logicals,
 					    partitions[ index_extended ] .sector_start,
 					    partitions[ index_extended ] .sector_end,
+					    device .sector_size,
 					    true ) ;
 		
 			//if deleted partition was logical we have to decrease the partitionnumbers of the logicals
@@ -65,7 +66,7 @@ void OperationDelete::apply_to_visual( std::vector<Partition> & partitions )
 		{
 			remove_original_and_adjacent_unallocated( partitions, index ) ;
 			
-			insert_unallocated( partitions, 0, device .length -1, false ) ;
+			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
 		}
 	}
 }

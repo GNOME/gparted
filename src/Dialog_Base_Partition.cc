@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Base_Partition::Get_New_Partition() 
+Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size ) 
 {
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.

@@ -38,7 +38,7 @@ public:
 		       bool only_unformatted,
 		       Sector cylinder_size,
 		       Glib::ustring disktype );
-	Partition Get_New_Partition() ;//overridden function
+	Partition Get_New_Partition( Byte_Value sector_size ) ;//overridden function
 
 private:
 	void Build_Filesystems_Menu( bool only_unformatted ) ;

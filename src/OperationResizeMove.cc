@@ -136,8 +136,9 @@ void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & parti
 			 remove_adjacent_unallocated( partitions[ index_extended ] .logicals, index ) ;
 
 			 insert_unallocated( partitions[ index_extended ] .logicals,
-				    	     partitions[ index_extended ] .sector_start,
-				    	     partitions[ index_extended ] .sector_end,
+					     partitions[ index_extended ] .sector_start,
+					     partitions[ index_extended ] .sector_end,
+					     device .sector_size,
 					     true ) ;
 		}
 	}
@@ -150,7 +151,7 @@ void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & parti
 			partitions[ index ] = partition_new ;
 			remove_adjacent_unallocated( partitions, index ) ;
 
-			insert_unallocated( partitions, 0, device .length -1, false ) ;
+			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
 		}
 	}
 }
@@ -171,7 +172,7 @@ void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & par
 			partitions[ index_extended ] .sector_end = partition_new .sector_end ;
 		}
 	
-		insert_unallocated( partitions, 0, device .length -1, false ) ;
+		insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
 	}
 	
 	//stuff INSIDE extended partition
@@ -190,6 +191,7 @@ void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & par
 		insert_unallocated( partitions[ index_extended ] .logicals,
 				    partitions[ index_extended ] .sector_start,
 				    partitions[ index_extended ] .sector_end,
+				    device .sector_size,
 				    true ) ;
 	}
 }

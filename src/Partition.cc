@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 			FILESYSTEM filesystem,
 			Sector sector_start,
 			Sector sector_end,
+			Byte_Value sector_size,
 			bool inside_extended,
 			bool busy )
 {
@@ -70,6 +71,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->filesystem = filesystem;
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
+	this ->sector_size = sector_size;
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
 	
@@ -97,6 +99,7 @@ void Partition::set_used( Sector sectors_used )
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
 				 Sector sector_start,
 				 Sector sector_end,
+				 Byte_Value sector_size,
 				 bool inside_extended )
 {
 	Reset() ;
@@ -108,6 +111,7 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 	     GParted::FS_UNALLOCATED,
 	     sector_start,
 	     sector_end,
+	     sector_size,
 	     inside_extended,
 	     false ); 
 	

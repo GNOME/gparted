@@ -55,7 +55,8 @@ void OperationCopy::apply_to_visual( std::vector<Partition> & partitions )
 			insert_unallocated( partitions[ index_extended ] .logicals,
 					    partitions[ index_extended ] .sector_start,
 					    partitions[ index_extended ] .sector_end,
-				    	    true ) ;
+					    device .sector_size,
+					    true ) ;
 		}
 	}
 	else
@@ -66,7 +67,7 @@ void OperationCopy::apply_to_visual( std::vector<Partition> & partitions )
 		{
 			partitions[ index ] = partition_new ;
 		
-			insert_unallocated( partitions, 0, device .length -1, false ) ;
+			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
 		}
 	}
 }

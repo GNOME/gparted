@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public:
 	~Dialog_Base_Partition( ) ;
 
 	void Set_Resizer( bool extended ) ;
-	Partition Get_New_Partition( ) ;
+	Partition Get_New_Partition( Byte_Value sector_size ) ;
 	
 protected:
 	enum SPINBUTTON {

@@ -1404,11 +1404,12 @@ void Win_GParted::activate_resize()
 					selected_partition .Set_Unallocated( devices[ current_device ] .get_path(),
 									     selected_partition .sector_start,
 									     selected_partition .sector_end,
+									     devices[current_device] .sector_size,
 									     selected_partition .inside_extended ) ;
 
 					Operation * operation = new OperationCreate( devices[ current_device ],
-							 			     selected_partition,
-							 			     dialog .Get_New_Partition() ) ;
+										     selected_partition,
+										     dialog .Get_New_Partition( devices[ current_device ] .sector_size ) ) ;
 					operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 					Add_Operation( operation ) ;
@@ -1420,8 +1421,8 @@ void Win_GParted::activate_resize()
 		else//normal move/resize on existing partition
 		{
 			Operation * operation = new OperationResizeMove( devices[ current_device ],
-					 			         selected_partition,
-							     		 dialog .Get_New_Partition() );
+								         selected_partition,
+								         dialog .Get_New_Partition( devices[ current_device ] .sector_size) );
 			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation ) ;
@@ -1460,9 +1461,9 @@ void Win_GParted::activate_paste()
 				dialog .hide() ;
 
 				Operation * operation = new OperationCopy( devices[ current_device ],
-					 	       			   selected_partition,
-						       			   dialog .Get_New_Partition(),
-						       			   copied_partition ) ;
+									   selected_partition,
+									   dialog .Get_New_Partition( devices[ current_device ] .sector_size ),
+									   copied_partition ) ;
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation ) ;
@@ -1527,8 +1528,8 @@ void Win_GParted::activate_new()
 			
 			new_count++ ;
 			Operation *operation = new OperationCreate( devices[ current_device ],
-							 	    selected_partition,
-							 	    dialog .Get_New_Partition() ) ;
+								    selected_partition,
+								    dialog .Get_New_Partition( devices[ current_device ] .sector_size ) ) ;
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation );
@@ -1668,14 +1669,15 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	
 	//ok we made it.  lets create an fitting partition object
 	Partition part_temp ;
-	part_temp .Set( devices[ current_device ] .get_path(), 
-			selected_partition .get_path(), 
-			selected_partition .partition_number, 
+	part_temp .Set( devices[ current_device ] .get_path(),
+			selected_partition .get_path(),
+			selected_partition .partition_number,
 			selected_partition .type,
-			new_fs, 
+			new_fs,
 			selected_partition .sector_start,
-			selected_partition .sector_end, 
-			selected_partition .inside_extended, 
+			selected_partition .sector_end,
+			devices[ current_device ] .sector_size,
+			selected_partition .inside_extended,
 			false ) ;
 	 
 	part_temp .status = GParted::STAT_FORMATTED ;
@@ -1969,14 +1971,15 @@ void Win_GParted::activate_label_partition()
 		dialog .hide() ;
 		//Make a duplicate of the selected partition (used in UNDO)
 		Partition part_temp ;
-		part_temp .Set( devices[ current_device ] .get_path(), 
-				selected_partition .get_path(), 
-				selected_partition .partition_number, 
+		part_temp .Set( devices[ current_device ] .get_path(),
+				selected_partition .get_path(),
+				selected_partition .partition_number,
 				selected_partition .type,
-				selected_partition .filesystem, 
+				selected_partition .filesystem,
 				selected_partition .sector_start,
-				selected_partition .sector_end, 
-				selected_partition .inside_extended, 
+				selected_partition .sector_end,
+				devices[ current_device ] .sector_size,
+				selected_partition .inside_extended,
 				false ) ;
 
 		part_temp .label = dialog .get_new_label();

@@ -143,14 +143,14 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Partition_Copy::Get_New_Partition() 
+Partition Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
 {
 	//first call baseclass to get the correct new partition
-	selected_partition = Dialog_Base_Partition::Get_New_Partition() ;
-	
+	selected_partition = Dialog_Base_Partition::Get_New_Partition( sector_size ) ;
+
 	//set proper name and status for partition
 	selected_partition .status = GParted::STAT_COPY ;
-	
+
 	return selected_partition ;
 }
 
