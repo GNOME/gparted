@@ -115,7 +115,9 @@ public:
 
 	bool strict ;		//Indicator if start and end sectors must stay unchanged
 	bool strict_start ;	//Indicator if start sector must stay unchanged
-	
+
+	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.
+
 private:
 	void sort_paths_and_remove_duplicates() ;
 

@@ -43,6 +43,7 @@ void Partition::Reset()
 	label .clear() ;
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
+	sector_size = 0 ;
 	color .set( "black" ) ;
 	inside_extended = busy = strict = strict_start = false ;
 	logicals .clear() ;
