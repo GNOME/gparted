@@ -41,10 +41,14 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//set some widely used values...
 	START = selected_partition .sector_start ;
 	total_length = selected_partition .get_length() ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
-	
-	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ; 
+
+	//Determine minimum number of sectors needed in destination (selected) partition and
+	//  handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
+	Sector copied_min_sectors = ( copied_partition .get_length() * copied_partition .sector_size + (selected_partition .sector_size - 1) ) / selected_partition .sector_size ;
+
+	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, copied_partition .sector_size, UNIT_MIB ) ) ; 
 	//  /* Copy Primary not at start of disk to within Extended partition */
 	//  Adjust when a primary partition is copied and pasted
 	//  into an unallocated space in an extended partition
@@ -96,16 +100,16 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
 	frame_resizer_base ->set_used( 
 		Utils::round( Utils::sector_to_unit( 
-				copied_partition .sectors_used, DEFAULT_SECTOR_SIZE, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
-	
+				copied_partition .sectors_used, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
+
 	if ( fs .grow )
 		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) ? (TOTAL_MB * MEBI_FACTOR) : fs .MAX - (BUF * DEFAULT_SECTOR_SIZE) ;
 	else
-		fs .MAX = copied_partition .get_length() * DEFAULT_SECTOR_SIZE ;
+		fs .MAX = copied_partition .get_length() * copied_partition .sector_size ;
 
 	
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs .MIN = ( copied_partition .sectors_used + (BUF * 2) ) * DEFAULT_SECTOR_SIZE;
+		fs .MIN = ( copied_partition .sectors_used + (BUF * 2) ) * copied_partition .sector_size;
 	else
 		fs .MIN = COPIED_LENGTH_MB * MEBI_FACTOR ;
 	
