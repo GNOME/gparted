@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -181,10 +181,10 @@ void Dialog_Progress::dispatcher_on_update_gui_elements()
 	label_current_sub .set_markup( "<i>" + label_current_sub_text + "</i>\n" ) ;
 	
 	if ( operationdetail .fraction >= 0 )
-	{
 		progressbar_current .set_fraction( operationdetail .fraction > 1.0 ? 1.0 : operationdetail .fraction ) ;
-		progressbar_current .set_text( operationdetail .progress_text ) ;
-	}
+
+	//To ensure progress bar height remains the same, add a space in case message is empty
+	progressbar_current .set_text( operationdetail .progress_text + " " ) ;
 }
 
 void Dialog_Progress::on_signal_show()

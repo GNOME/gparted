@@ -2450,6 +2450,12 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 					timer_progress_timeout .reset() ;
 				}
 			}
+			//set progress bar current info on completion
+			set_progress_info( length,
+			                   llabs( done ),
+			                   timer_total,
+			                   operationdetail .get_last_child() .get_last_child(),
+			                   readonly ) ;
 			
 			free( buf ) ;
 		}
