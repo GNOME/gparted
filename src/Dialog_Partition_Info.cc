@@ -136,7 +136,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
-		partition .get_path() + "\n" + Utils::format_size( partition .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
+		partition .get_path() + "\n" + Utils::format_size( partition .get_length(), partition .sector_size ) ) ;
 }
 
 void Dialog_Partition_Info::Display_Info()
@@ -163,7 +163,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL) ;
-	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_length(), DEFAULT_SECTOR_SIZE ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_length(), partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -179,7 +179,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_used, DEFAULT_SECTOR_SIZE ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_used, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -193,7 +193,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unused, DEFAULT_SECTOR_SIZE ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unused, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;

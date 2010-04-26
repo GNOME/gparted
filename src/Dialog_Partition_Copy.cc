@@ -103,11 +103,11 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 				copied_partition .sectors_used, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 
 	if ( fs .grow )
-		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) ? (TOTAL_MB * MEBI_FACTOR) : fs .MAX - (BUF * DEFAULT_SECTOR_SIZE) ;
+		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) ? (TOTAL_MB * MEBI_FACTOR) : fs .MAX - (BUF * selected_partition .sector_size) ;
 	else
 		fs .MAX = copied_partition .get_length() * copied_partition .sector_size ;
 
-	
+	//TODO: Since BUF is the cylinder size of the current device, the cylinder size of the copied device could differ for small disks
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
 		fs .MIN = ( copied_partition .sectors_used + (BUF * 2) ) * copied_partition .sector_size;
 	else
@@ -115,17 +115,17 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_before .set_value( 0 ) ;
 		
 	//set values of spinbutton_size
 	spinbutton_size .set_range(
-		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
@@ -134,8 +134,8 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
-		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;

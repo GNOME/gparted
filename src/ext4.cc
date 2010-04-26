@@ -120,7 +120,7 @@ bool ext4::resize( const Partition & partition_new, OperationDetail & operationd
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
-					partition_new .get_length(), DEFAULT_SECTOR_SIZE, UNIT_KIB ) ) -1 ) + "K" ; 
+					partition_new .get_length(), partition_new .sector_size, UNIT_KIB ) ) -1 ) + "K" ; 
 		
 	return ! execute_command( str_temp, operationdetail ) ;
 }

@@ -108,7 +108,7 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 	   			         partitions[ t ] .get_length() ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length(), partitions[ t ] .sector_size ) ) ;
 	}
 }
 

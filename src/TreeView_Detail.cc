@@ -187,15 +187,15 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .label ] = partition .label ;
 		
 	//size
-	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length(), DEFAULT_SECTOR_SIZE ) ;
+	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_length(), partition .sector_size ) ;
 	
 	//used
 	treerow[ treeview_detail_columns .used ] =
-		partition .sectors_used == -1 ? "---" : Utils::format_size( partition .sectors_used, DEFAULT_SECTOR_SIZE ) ;
+		partition .sectors_used == -1 ? "---" : Utils::format_size( partition .sectors_used, partition .sector_size ) ;
 
 	//unused
 	treerow[ treeview_detail_columns .unused ] = 
-		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused, DEFAULT_SECTOR_SIZE ) ;
+		partition .sectors_unused == -1 ? "---" : Utils::format_size( partition .sectors_unused, partition .sector_size ) ;
 
 	//flags	
 	treerow[ treeview_detail_columns .flags ] = 

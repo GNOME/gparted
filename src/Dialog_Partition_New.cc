@@ -142,7 +142,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), this ->selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled file system
@@ -151,7 +151,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ; 
+	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ; 
 	spinbutton_before .set_value( 0 ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
@@ -253,14 +253,14 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 
 		if ( checkbutton_round_to_cylinders .get_active() )
 		{
-			if ( (fs .MIN / DEFAULT_SECTOR_SIZE) < cylinder_size )
-				fs .MIN = cylinder_size * DEFAULT_SECTOR_SIZE ;
+			if ( (fs .MIN / selected_partition .sector_size) < cylinder_size )
+				fs .MIN = cylinder_size * selected_partition .sector_size ;
 		}
-		else if ( (fs .MIN / DEFAULT_SECTOR_SIZE) < MEBIBYTE )
+		else if ( fs .MIN < MEBI_FACTOR )
 			fs .MIN = MEBI_FACTOR ;
 		
-		if ( selected_partition .get_length() < (fs .MIN /DEFAULT_SECTOR_SIZE) )
-			fs .MIN = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
+		if ( selected_partition .get_length() < (fs .MIN / selected_partition .sector_size) )
+			fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
 				
 		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBI_FACTOR) ) ) ? fs .MAX : (TOTAL_MB * MEBI_FACTOR) ;
 		
@@ -269,17 +269,17 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 		spinbutton_size .set_range(
-				Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-				Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+				Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+				Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 		spinbutton_after .set_range(
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 				
 		//set contents of label_minmax
 		Set_MinMax_Text(
-			Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-			Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+			Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	}
 	
 	//set fitting resizer colors
@@ -306,7 +306,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			this ->selected_partition .get_length() >= (FILESYSTEMS[ t ] .MIN / DEFAULT_SECTOR_SIZE) ) ;
+			this ->selected_partition .get_length() >= (FILESYSTEMS[ t ] .MIN / this ->selected_partition .sector_size) ) ;
 	}
 	
 	//unformatted is always available

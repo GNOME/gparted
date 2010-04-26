@@ -104,7 +104,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		next = partitions[t +1] .get_length() ;
 	
 	total_length = previous + selected_partition .get_length() + next;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 		
@@ -118,29 +118,29 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	if ( fs .shrink )
 	{
 		//since some file systems have lower limits we need to check for this
-		if ( selected_partition .sectors_used > (fs .MIN / DEFAULT_SECTOR_SIZE) )
-			fs .MIN = selected_partition .sectors_used * DEFAULT_SECTOR_SIZE ;
+		if ( selected_partition .sectors_used > (fs .MIN / selected_partition .sector_size) )
+			fs .MIN = selected_partition .sectors_used * selected_partition .sector_size ;
 
 		//if fs. MIN is 0 here (means used == 0 as well) it's safe to have BUF / 2
-		fs .MIN += fs .MIN ? (BUF * DEFAULT_SECTOR_SIZE) : (BUF/2 * DEFAULT_SECTOR_SIZE) ;
+		fs .MIN += fs .MIN ? (BUF * selected_partition .sector_size) : (BUF/2 * selected_partition .sector_size) ;
 
 		//in certain (rare) cases fs .MIN is (now) larger than 'selected_partition'..
-		if ( (fs .MIN / DEFAULT_SECTOR_SIZE) > selected_partition .get_length() )
-			fs .MIN = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
+		if ( (fs .MIN / selected_partition .sector_size) > selected_partition .get_length() )
+			fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
 	}
 	else
-		fs .MIN = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
-	
+		fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
+
 	//set MAX
 	if ( fs .grow )
 	{
 		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) 
 			fs .MAX = TOTAL_MB * MEBI_FACTOR ;
 		else
-			fs .MAX -= (BUF/2 * DEFAULT_SECTOR_SIZE) ;
+			fs .MAX -= (BUF/2 * selected_partition .sector_size) ;
 	}
 	else
-		fs .MAX = selected_partition .get_length() * DEFAULT_SECTOR_SIZE ;
+		fs .MAX = selected_partition .get_length() * selected_partition .sector_size ;
 
 	
 	//set values of spinbutton_before
@@ -148,33 +148,33 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	{
 		spinbutton_before .set_range( 
 			0,
-			TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 		spinbutton_before .set_value( 
-			Utils::round( Utils::sector_to_unit( previous, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			Utils::round( Utils::sector_to_unit( previous, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	}
 	
 	//set values of spinbutton_size 
 	spinbutton_size .set_range( 
-		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( 
-		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
 	Sector after_min = ( ! fs .grow && ! fs .move ) ? next : 0 ;
 	spinbutton_after .set_range( 
-		Utils::round( Utils::sector_to_unit( after_min, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-		TOTAL_MB - Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( after_min, selected_partition .sector_size, UNIT_MIB ) ),
+		TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_after .set_value( 
-		Utils::round( Utils::sector_to_unit( next, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( next, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
 					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 
-		Utils::round( Utils::sector_to_unit( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
+		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 }
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Partition> & partitions )
@@ -201,7 +201,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 		
 	//now we have enough data to calculate some important values..
 	total_length = previous + selected_partition .get_length() + next;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
@@ -227,34 +227,34 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
-		spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	else
-		spinbutton_before .set_range( 0, Utils::round( Utils::sector_to_unit( first - START, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		spinbutton_before .set_range( 0, Utils::round( Utils::sector_to_unit( first - START, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
-	spinbutton_before .set_value( Utils::round( Utils::sector_to_unit( previous, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+	spinbutton_before .set_value( Utils::round( Utils::sector_to_unit( previous, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_size
 	if ( first == 0 ) //no logicals
-		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( BUF/2, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ), TOTAL_MB ) ;
+		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( BUF/2, selected_partition .sector_size, UNIT_MIB ) ), TOTAL_MB ) ;
 	else
-		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( used, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ), TOTAL_MB ) ;
+		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( used, selected_partition .sector_size, UNIT_MIB ) ), TOTAL_MB ) ;
 	
 	spinbutton_size .set_value(
-		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
 		spinbutton_after .set_range( 
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( BUF/2, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	else
 		spinbutton_after .set_range( 
-			0, Utils::round( Utils::sector_to_unit( total_length + START - first - used, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+			0, Utils::round( Utils::sector_to_unit( total_length + START - first - used, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
-	spinbutton_after .set_value( Utils::round( Utils::sector_to_unit( next, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+	spinbutton_after .set_value( Utils::round( Utils::sector_to_unit( next, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( Utils::round( Utils::sector_to_unit( first == 0 ? BUF/2 : used, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ),
-			 Utils::round( Utils::sector_to_unit( total_length, DEFAULT_SECTOR_SIZE, UNIT_MIB ) ) ) ;
+	Set_MinMax_Text( Utils::round( Utils::sector_to_unit( first == 0 ? BUF/2 : used, selected_partition .sector_size, UNIT_MIB ) ),
+			 Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 }
 
 } //GParted

@@ -80,7 +80,7 @@ void OperationCopy::create_description()
 		description = String::ucompose( _("Copy %1 to %2 (start at %3)"),
 					        partition_copied .get_path(),
 					        device .get_path(),
-					        Utils::format_size( partition_new .sector_start, DEFAULT_SECTOR_SIZE ) ) ;
+					        Utils::format_size( partition_new .sector_start, partition_new .sector_size ) ) ;
 	}
 	else
 	{

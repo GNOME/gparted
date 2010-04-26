@@ -125,7 +125,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	{
 		str_temp += " -s " ;
 		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
-				partition_new .get_length(), DEFAULT_SECTOR_SIZE, UNIT_BYTE ) ) -1 ) ;
+				partition_new .get_length(), partition_new .sector_size, UNIT_BYTE ) ) -1 ) ;
 	}
 
 	exit_status = execute_command( str_temp, operationdetail ) ;

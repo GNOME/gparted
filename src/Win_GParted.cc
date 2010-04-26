@@ -565,12 +565,12 @@ void Win_GParted::refresh_combo_devices()
 		treerow[ treeview_devices_columns .icon ] =
 			render_icon( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
 		treerow[ treeview_devices_columns .device ] = devices[ i ] .get_path() ;
-		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, DEFAULT_SECTOR_SIZE ) + ")" ; 
+		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ; 
 	
 		//devices submenu....
 		hbox = manage( new Gtk::HBox() ) ;
 		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_SHRINK ) ;
-		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, DEFAULT_SECTOR_SIZE ) + ")",
+		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")",
 					              true,
 						      Gtk::ALIGN_RIGHT ),
 				   Gtk::PACK_EXPAND_WIDGET ) ;
@@ -645,7 +645,7 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		
 		//global info...
 		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
-		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length, DEFAULT_SECTOR_SIZE ) ) ;
+		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length, devices[ current_device ] .sector_size ) ) ;
 		device_info[ t++ ] ->set_text( Glib::build_path( "\n", devices[ current_device ] .get_paths() ) ) ;
 		
 		//detailed info
@@ -1582,7 +1582,7 @@ void Win_GParted::activate_delete()
 		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3)"), 
 						     selected_partition .get_path(), 
 						     Utils::get_filesystem_string( selected_partition .filesystem ),
-						     Utils::format_size( selected_partition .get_length(), DEFAULT_SECTOR_SIZE ) ) );
+						     Utils::format_size( selected_partition .get_length(), selected_partition .sector_size ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
 	
@@ -1641,8 +1641,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 	
-	if ( ( selected_partition .get_length() < (fs .MIN / DEFAULT_SECTOR_SIZE) ) ||
-	     ( fs .MAX && selected_partition .get_length() > (fs .MAX / DEFAULT_SECTOR_SIZE) ) )
+	if ( ( selected_partition .get_length() < (fs .MIN / selected_partition .sector_size) ) ||
+	     ( fs .MAX && selected_partition .get_length() > (fs .MAX / selected_partition .sector_size) ) )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( _("Cannot format this file system to %1."),
@@ -1652,16 +1652,16 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		if ( selected_partition .get_length() < (fs .MIN / DEFAULT_SECTOR_SIZE) )
+		if ( selected_partition .get_length() < (fs .MIN / selected_partition .sector_size) )
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( new_fs ),
-						Utils::format_size( (fs .MIN / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE ) ) );
+						Utils::format_size( fs .MIN, 1 /* Byte */ ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose( 
 						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( new_fs ),
-						Utils::format_size( (fs .MAX / DEFAULT_SECTOR_SIZE), DEFAULT_SECTOR_SIZE ) ) );
+						Utils::format_size( fs .MAX, 1 /* Byte */ ) ) );
 		
 		dialog .run() ;
 		return ;

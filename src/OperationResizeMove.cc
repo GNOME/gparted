@@ -117,8 +117,8 @@ void OperationResizeMove::create_description()
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
 						partition_original .get_path(),
-						Utils::format_size( partition_original .get_length(), DEFAULT_SECTOR_SIZE ),
-						Utils::format_size( partition_new .get_length(), DEFAULT_SECTOR_SIZE ) ) ;
+						Utils::format_size( partition_original .get_length(), partition_original .sector_size ),
+						Utils::format_size( partition_new .get_length(), partition_new .sector_size ) ) ;
 }
 
 void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )
