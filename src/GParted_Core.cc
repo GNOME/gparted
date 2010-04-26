@@ -2094,6 +2094,8 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .device_path,
 				partition_src .sector_start,
 				partition_dst .sector_start,
+				partition_src .sector_size,
+				partition_dst .sector_size,
 				partition_src .get_length() * DEFAULT_SECTOR_SIZE,
 				operationdetail,
 				readonly,
@@ -2109,6 +2111,8 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .device_path,
 				partition_src .sector_start,
 				partition_dst .sector_start,
+				partition_src .sector_size,
+				partition_dst .sector_size,
 				partition_src .get_length() * DEFAULT_SECTOR_SIZE,
 				operationdetail,
 				false,
@@ -2119,6 +2123,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				    const Glib::ustring & dst_device,
 				    Sector src_start,
 				    Sector dst_start,
+				    Byte_Value src_sector_size,
+				    Byte_Value dst_sector_size,
 				    Byte_Value src_length,
 				    OperationDetail & operationdetail,
 				    bool readonly,
@@ -2145,9 +2151,9 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 	//  with the end of the partition and finishing with the start.
 	if ( dst_start > src_start )
 	{
-		offset_read  += (src_length/DEFAULT_SECTOR_SIZE) - (N/DEFAULT_SECTOR_SIZE) ;
+		offset_read  += (src_length/src_sector_size) - (N/src_sector_size) ;
 		/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-		offset_write += ((src_length + (DEFAULT_SECTOR_SIZE - 1))/DEFAULT_SECTOR_SIZE) - (N/DEFAULT_SECTOR_SIZE) ;
+		offset_write += ((src_length + (dst_sector_size - 1))/dst_sector_size) - (N/dst_sector_size) ;
 	}
 
 	total_done = 0 ;
@@ -2164,8 +2170,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 		timer .reset() ;
 		succes = copy_blocks( src_device, 
 				      dst_device,
-				      offset_read  + (done / DEFAULT_SECTOR_SIZE),
-				      offset_write + (done / DEFAULT_SECTOR_SIZE),
+				      offset_read  + (done / src_sector_size),
+				      offset_write + (done / dst_sector_size),
 				      N,
 				      benchmark_blocksize,
 				      operationdetail .get_last_child(),
@@ -2199,8 +2205,8 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 	if ( succes )
 		succes = copy_blocks( src_device, 
 				    dst_device,
-				    src_start + ( dst_start > src_start ? 0 : (done / DEFAULT_SECTOR_SIZE) ),
-				    dst_start + ( dst_start > src_start ? 0 : (done / DEFAULT_SECTOR_SIZE) ),
+				    src_start + ( dst_start > src_start ? 0 : (done / src_sector_size) ),
+				    dst_start + ( dst_start > src_start ? 0 : (done / dst_sector_size) ),
 				    src_length - llabs( done ),
 				    optimal_blocksize,
 				    operationdetail,
@@ -2388,23 +2394,26 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 	Byte_Value done = length % blocksize ; 
 
-	//Handle situation where we need to perform the copy beginning
-	//  with the end of the partition and finishing with the start.
-	if ( dst_start > src_start )
-	{
-		blocksize -= 2*blocksize ;
-		done -= 2*done ;
-		src_start += ( (length / DEFAULT_SECTOR_SIZE) - 1 ) ;
-		/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-		dst_start += ( ((length + (DEFAULT_SECTOR_SIZE - 1))/ DEFAULT_SECTOR_SIZE) - 1 ) ;
-	}
-
 	bool succes = false ;
 	PedDevice *lp_device_src = ped_device_get( src_device .c_str() );
 	PedDevice *lp_device_dst = src_device != dst_device ? ped_device_get( dst_device .c_str() ) : lp_device_src ;
 
 	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
 	{
+		Byte_Value src_sector_size = lp_device_src ->sector_size ;
+		Byte_Value dst_sector_size = lp_device_dst ->sector_size ;
+
+		//Handle situation where we need to perform the copy beginning
+		//  with the end of the partition and finishing with the start.
+		if ( dst_start > src_start )
+		{
+			blocksize -= 2*blocksize ;
+			done -= 2*done ;
+			src_start += ( (length / src_sector_size) - 1 ) ;
+			/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
+			dst_start += ( ((length + (dst_sector_size - 1))/ dst_sector_size) - 1 ) ;
+		}
+
 		Glib::ustring error_message ;
 		buf = static_cast<char *>( malloc( llabs( blocksize ) ) ) ;
 		if ( buf )
@@ -2431,8 +2440,8 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 			{
 				succes = copy_block( lp_device_src,
 						     lp_device_dst,
-						     src_start + (done / DEFAULT_SECTOR_SIZE),
-						     dst_start + (done / DEFAULT_SECTOR_SIZE),
+						     src_start + (done / src_sector_size),
+						     dst_start + (done / dst_sector_size),
 						     blocksize,
 						     error_message,
 						     readonly ) ; 

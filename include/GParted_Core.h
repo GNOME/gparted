@@ -134,6 +134,8 @@ private:
 			      const Glib::ustring & dst_device,
 			      Sector src_start,
 			      Sector dst_start,
+			      Byte_Value src_sector_size,
+			      Byte_Value dst_sector_size,
 			      Byte_Value src_length,
 			      OperationDetail & operationdetail,
 			      bool readonly,
