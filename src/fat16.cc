@@ -56,8 +56,8 @@ FS fat16::get_filesystem_support()
 		
 	fs .copy = GParted::FS::GPARTED ;
 	
-	fs .MIN = 16 * MEBI_FACTOR ;
-	fs .MAX = (4096 - 1) * MEBI_FACTOR ;  //Maximum seems to be just less than 4096 MiB
+	fs .MIN = 16 * MEBIBYTE ;
+	fs .MAX = (4096 - 1) * MEBIBYTE ;  //Maximum seems to be just less than 4096 MiB
 	
 	return fs ;
 }

@@ -155,7 +155,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	spinbutton_before .set_value( 0 ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
-	if ( TOTAL_MB * (MEBI_FACTOR / this ->selected_partition .sector_size) < this ->cylinder_size )
+	if ( TOTAL_MB * (MEBIBYTE / this ->selected_partition .sector_size) < this ->cylinder_size )
 		frame_resizer_base ->set_sensitive( false ) ;
 			
 	this ->show_all_children() ;
@@ -178,8 +178,8 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
-	new_start = START + (Sector(spinbutton_before .get_value_as_int()) * (MEBI_FACTOR / sector_size)) ;
-	new_end  = new_start + (Sector(spinbutton_size .get_value_as_int()) * (MEBI_FACTOR / sector_size)) - 1 ;
+	new_start = START + (Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size)) ;
+	new_end  = new_start + (Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size)) - 1 ;
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
@@ -201,9 +201,9 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	part_temp .label = Utils::trim( entry .get_text() );
 	
 	//grow new partition a bit if freespaces are < 1 MiB
-	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBI_FACTOR / sector_size) ) 
+	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBIBYTE / sector_size) ) 
 		part_temp.sector_start = selected_partition.sector_start ;
-	if ( (selected_partition.sector_end - part_temp.sector_end) < (MEBI_FACTOR / sector_size) ) 
+	if ( (selected_partition.sector_end - part_temp.sector_end) < (MEBIBYTE / sector_size) ) 
 		part_temp.sector_end = selected_partition.sector_end ;
 	
 	//if new is extended...
@@ -256,16 +256,16 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 			if ( (fs .MIN / selected_partition .sector_size) < cylinder_size )
 				fs .MIN = cylinder_size * selected_partition .sector_size ;
 		}
-		else if ( fs .MIN < MEBI_FACTOR )
-			fs .MIN = MEBI_FACTOR ;
+		else if ( fs .MIN < MEBIBYTE )
+			fs .MIN = MEBIBYTE ;
 		
 		if ( selected_partition .get_length() < (fs .MIN / selected_partition .sector_size) )
 			fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
 				
-		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBI_FACTOR) ) ) ? fs .MAX : (TOTAL_MB * MEBI_FACTOR) ;
+		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBIBYTE) ) ) ? fs .MAX : (TOTAL_MB * MEBIBYTE) ;
 		
-		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
-						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
+		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 				
 		//set new spinbutton ranges
 		spinbutton_before .set_range( 

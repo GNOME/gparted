@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ FS xfs::get_filesystem_support()
 	if ( fs .check )
 		fs .move = GParted::FS::GPARTED ;
 
-	fs .MIN = 32 * MEBI_FACTOR ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
+	fs .MIN = 32 * MEBIBYTE ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
 	
 	return fs ;
 }

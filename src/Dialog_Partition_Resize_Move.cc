@@ -134,8 +134,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//set MAX
 	if ( fs .grow )
 	{
-		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBI_FACTOR) ) 
-			fs .MAX = TOTAL_MB * MEBI_FACTOR ;
+		if ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) 
+			fs .MAX = TOTAL_MB * MEBIBYTE ;
 		else
 			fs .MAX -= (BUF/2 * selected_partition .sector_size) ;
 	}
@@ -168,8 +168,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	spinbutton_after .set_value( 
 		Utils::round( Utils::sector_to_unit( next, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
-	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBI_FACTOR) ),
-					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBI_FACTOR) ) ) ;
+	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
+					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
 	Set_MinMax_Text( 

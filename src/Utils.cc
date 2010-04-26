@@ -172,22 +172,22 @@ Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 	std::stringstream ss ;
 	ss << std::setiosflags( std::ios::fixed ) << std::setprecision( 2 ) ;
 
-	if ( (sectors * sector_size) < KIBI_FACTOR )
+	if ( (sectors * sector_size) < KIBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_BYTE ) ;
 		return String::ucompose( _("%1 B"), ss .str() ) ;
 	}
-	else if ( (sectors * sector_size) < MEBI_FACTOR )
+	else if ( (sectors * sector_size) < MEBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_KIB ) ;
 		return String::ucompose( _("%1 KiB"), ss .str() ) ;
 	}
-	else if ( (sectors * sector_size) < GIBI_FACTOR )
+	else if ( (sectors * sector_size) < GIBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_MIB ) ;
 		return String::ucompose( _("%1 MiB"), ss .str() ) ;
 	}
-	else if ( (sectors * sector_size) < TEBI_FACTOR )
+	else if ( (sectors * sector_size) < TEBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_GIB ) ;
 		return String::ucompose( _("%1 GiB"), ss .str() ) ;
@@ -230,13 +230,13 @@ double Utils::sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT 
 			return sectors * sector_size ;
 
 		case UNIT_KIB	:
-			return sectors / ( static_cast<double>( KIBI_FACTOR ) / sector_size );
+			return sectors / ( static_cast<double>( KIBIBYTE ) / sector_size );
 		case UNIT_MIB	:
-			return sectors / ( static_cast<double>( MEBI_FACTOR ) / sector_size );
+			return sectors / ( static_cast<double>( MEBIBYTE ) / sector_size );
 		case UNIT_GIB	:
-			return sectors / ( static_cast<double>( GIBI_FACTOR ) / sector_size );
+			return sectors / ( static_cast<double>( GIBIBYTE ) / sector_size );
 		case UNIT_TIB	:
-			return sectors / ( static_cast<double>( TEBI_FACTOR ) / sector_size );
+			return sectors / ( static_cast<double>( TEBIBYTE ) / sector_size );
 
 		default:
 			return sectors ;

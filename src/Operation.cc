@@ -60,7 +60,7 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front() .sector_start - start) >= (MEBI_FACTOR / sector_size) )
+	if ( (partitions .front() .sector_start - start) >= (MEBIBYTE / sector_size) )
 	{
 		UNALLOCATED .sector_start = start ;
 		UNALLOCATED .sector_end = partitions .front() .sector_start -1 ;
@@ -70,7 +70,7 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 	
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
-		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= (MEBI_FACTOR / sector_size) )
+		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= (MEBIBYTE / sector_size) )
 		{
 			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
 			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
@@ -79,7 +79,7 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 		}
 		
 	//last partition end <---> end
-	if ( (end - partitions .back() .sector_end ) >= (MEBI_FACTOR / sector_size) )
+	if ( (end - partitions .back() .sector_end ) >= (MEBIBYTE / sector_size) )
 	{
 		UNALLOCATED .sector_start = partitions .back() .sector_end +1 ;
 		UNALLOCATED .sector_end = end ;

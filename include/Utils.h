@@ -40,17 +40,11 @@ namespace GParted
 typedef long long Sector;
 typedef long long Byte_Value;
 
-//sizeunits defined in sectors of 512 bytes..
-#define KIBIBYTE 2
-#define MEBIBYTE 2048  
-#define GIBIBYTE 2097152
-#define TEBIBYTE 2147483648U 
-
 //Size units defined in bytes
-const Byte_Value KIBI_FACTOR=1024;
-const Byte_Value MEBI_FACTOR=(KIBI_FACTOR * KIBI_FACTOR);
-const Byte_Value GIBI_FACTOR=(MEBI_FACTOR * KIBI_FACTOR);
-const Byte_Value TEBI_FACTOR=(GIBI_FACTOR * KIBI_FACTOR);
+const Byte_Value KIBIBYTE=1024;
+const Byte_Value MEBIBYTE=(KIBIBYTE * KIBIBYTE);
+const Byte_Value GIBIBYTE=(MEBIBYTE * KIBIBYTE);
+const Byte_Value TEBIBYTE=(GIBIBYTE * KIBIBYTE);
 
 enum FILESYSTEM
 {
