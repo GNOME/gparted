@@ -305,8 +305,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			temp_device .cylsize 	=	temp_device .heads * temp_device .sectors ; 
 		
 			//make sure cylsize is at least 1 MiB
-			if ( temp_device .cylsize < MEBIBYTE )
-				temp_device .cylsize = MEBIBYTE ;
+			if ( temp_device .cylsize < (MEBI_FACTOR / temp_device .sector_size) )
+				temp_device .cylsize = (MEBI_FACTOR / temp_device .sector_size) ;
 				
 			//normal harddisk
 			if ( lp_disk )
@@ -1101,7 +1101,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front() .sector_start - start) >= MEBIBYTE )
+	if ( (partitions .front() .sector_start - start) >= (MEBI_FACTOR / sector_size) )
 	{
 		partition_temp .sector_start = start ;
 		partition_temp .sector_end = partitions .front() .sector_start -1 ;
@@ -1111,7 +1111,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
-		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= MEBIBYTE )
+		if ( ( partitions[ t +1 ] .sector_start - partitions[ t ] .sector_end ) >= (MEBI_FACTOR / sector_size) )
 		{
 			partition_temp .sector_start = partitions[ t ] .sector_end +1 ;
 			partition_temp .sector_end = partitions[ t +1 ] .sector_start -1 ;
@@ -1120,7 +1120,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 		}
 		
 	//last partition end <---> end
-	if ( (end - partitions .back() .sector_end ) >= MEBIBYTE )
+	if ( (end - partitions .back() .sector_end ) >= (MEBI_FACTOR / sector_size) )
 	{
 		partition_temp .sector_start = partitions .back() .sector_end +1 ;
 		partition_temp .sector_end = end ;

@@ -127,11 +127,11 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
-		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * MEBIBYTE ;	
+		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * (MEBI_FACTOR / sector_size) ;	
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
 		selected_partition .sector_end = 
-			selected_partition .sector_start + Sector(spinbutton_size .get_value_as_int()) * MEBIBYTE ;
+			selected_partition .sector_start + Sector(spinbutton_size .get_value_as_int()) * (MEBI_FACTOR / sector_size) ;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
 	//the new partition thinks it's bigger then it can be. Here we solve this.
@@ -141,9 +141,9 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 		selected_partition .sector_end = START + total_length -1 ;
 	
 	//grow a bit into small freespace ( < 1MiB ) 
-	if ( (selected_partition .sector_start - START) < MEBIBYTE )
+	if ( (selected_partition .sector_start - START) < (MEBI_FACTOR / sector_size) )
 		selected_partition .sector_start = START ;
-	if ( ( START + total_length -1 - selected_partition .sector_end ) < MEBIBYTE )
+	if ( ( START + total_length -1 - selected_partition .sector_end ) < (MEBI_FACTOR / sector_size) )
 		selected_partition .sector_end = START + total_length -1 ;
 	
 	//set new value of unused..
