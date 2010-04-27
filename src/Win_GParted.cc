@@ -852,11 +852,11 @@ void Win_GParted::set_valid_operations()
 		//find out if there is a copied partition and if it fits inside this unallocated space
 		if ( ! copied_partition .get_path() .empty() && ! devices[ current_device ] .readonly )
 		{
-			Sector required_size ;
+			Byte_Value required_size ;
 			if ( copied_partition .filesystem == GParted::FS_XFS )
-				required_size = copied_partition .sectors_used ;
+				required_size = copied_partition .sectors_used * copied_partition .sector_size;
 			else
-				required_size = copied_partition .get_length() ;
+				required_size = copied_partition .get_byte_length() ;
 
 			//  /* Copy Primary not at start of disk to within Extended partition */
 			//  Adjust when a primary partition is copied and pasted
@@ -897,9 +897,9 @@ void Win_GParted::set_valid_operations()
 				    && ! selected_partition .inside_extended
 				   )
 			   )
-				required_size += devices[ current_device ] .cylsize ;
+				required_size += devices[ current_device ] .cylsize * devices[ current_device ] .sector_size ;
 
-			if ( required_size <= selected_partition .get_length() )
+			if ( required_size <= selected_partition .get_byte_length() )
 				allow_paste( true ) ;
 		}
 		
@@ -962,7 +962,7 @@ void Win_GParted::set_valid_operations()
 
 		//see if there is an copied partition and if it passes all tests
 		if ( ! copied_partition .get_path() .empty() &&
-		     copied_partition .get_length() <= selected_partition .get_length() &&
+		     copied_partition .get_byte_length() <= selected_partition .get_byte_length() &&
 		     selected_partition .status == GParted::STAT_REAL &&
 		     copied_partition != selected_partition )
 		     allow_paste( true ) ;
