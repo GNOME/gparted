@@ -259,8 +259,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		else if ( fs .MIN < MEBIBYTE )
 			fs .MIN = MEBIBYTE ;
 		
-		if ( selected_partition .get_length() < (fs .MIN / selected_partition .sector_size) )
-			fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
+		if ( selected_partition .get_byte_length() < fs .MIN )
+			fs .MIN = selected_partition .get_byte_length() ;
 				
 		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBIBYTE) ) ) ? fs .MAX : (TOTAL_MB * MEBIBYTE) ;
 		
@@ -306,7 +306,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			this ->selected_partition .get_length() >= (FILESYSTEMS[ t ] .MIN / this ->selected_partition .sector_size) ) ;
+			this ->selected_partition .get_byte_length() >= FILESYSTEMS[ t ] .MIN ) ;
 	}
 	
 	//unformatted is always available

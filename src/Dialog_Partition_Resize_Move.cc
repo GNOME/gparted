@@ -125,11 +125,11 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		fs .MIN += fs .MIN ? (BUF * selected_partition .sector_size) : (BUF/2 * selected_partition .sector_size) ;
 
 		//in certain (rare) cases fs .MIN is (now) larger than 'selected_partition'..
-		if ( (fs .MIN / selected_partition .sector_size) > selected_partition .get_length() )
-			fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
+		if ( fs .MIN > selected_partition .get_byte_length() )
+			fs .MIN = selected_partition .get_byte_length() ;
 	}
 	else
-		fs .MIN = selected_partition .get_length() * selected_partition .sector_size ;
+		fs .MIN = selected_partition .get_byte_length() ;
 
 	//set MAX
 	if ( fs .grow )
@@ -140,7 +140,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 			fs .MAX -= (BUF/2 * selected_partition .sector_size) ;
 	}
 	else
-		fs .MAX = selected_partition .get_length() * selected_partition .sector_size ;
+		fs .MAX = selected_partition .get_byte_length() ;
 
 	
 	//set values of spinbutton_before

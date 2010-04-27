@@ -46,7 +46,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 
 	//Determine minimum number of sectors needed in destination (selected) partition and
 	//  handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
-	Sector copied_min_sectors = ( copied_partition .get_length() * copied_partition .sector_size + (selected_partition .sector_size - 1) ) / selected_partition .sector_size ;
+	Sector copied_min_sectors = ( copied_partition .get_byte_length() + (selected_partition .sector_size - 1) ) / selected_partition .sector_size ;
 
 	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, copied_partition .sector_size, UNIT_MIB ) ) ; 
 	//  /* Copy Primary not at start of disk to within Extended partition */
@@ -105,7 +105,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	if ( fs .grow )
 		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX - (BUF * selected_partition .sector_size) ;
 	else
-		fs .MAX = copied_partition .get_length() * copied_partition .sector_size ;
+		fs .MAX = copied_partition .get_byte_length() ;
 
 	//TODO: Since BUF is the cylinder size of the current device, the cylinder size of the copied device could differ for small disks
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation

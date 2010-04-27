@@ -480,7 +480,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 					       operation ->partition_new,
-					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_length() * static_cast<OperationCopy*>( operation ) ->partition_copied .sector_size,
+					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_byte_length(),
 					       operation ->operation_detail ) ;
 				break ;
 			case OPERATION_LABEL_PARTITION:
@@ -2012,7 +2012,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Byte_Value min_size,
 			 OperationDetail & operationdetail ) 
 {
-	if ( partition_dst .get_length() < partition_src .get_length() )
+	if ( partition_dst .get_byte_length() < partition_src .get_byte_length() )
 	{	
 		operationdetail .add_child( OperationDetail( 
 			_("the destination is smaller than the source partition"), STATUS_ERROR, FONT_ITALIC ) ) ;
@@ -2096,7 +2096,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .sector_start,
 				partition_src .sector_size,
 				partition_dst .sector_size,
-				partition_src .get_length() * partition_src .sector_size,
+				partition_src .get_byte_length(),
 				operationdetail,
 				readonly,
 				dummy ) ;
@@ -2113,7 +2113,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .sector_start,
 				partition_src .sector_size,
 				partition_dst .sector_size,
-				partition_src .get_length() * partition_src .sector_size,
+				partition_src .get_byte_length(),
 				operationdetail,
 				false,
 				total_done ) ;
