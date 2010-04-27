@@ -82,6 +82,7 @@ public:
 	
 	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
 	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
+	Byte_Value get_byte_length() const ;
 	Sector get_length() const ; 
 	Glib::ustring get_path() const ;
 	std::vector<Glib::ustring> get_paths() const ;

@@ -154,6 +154,14 @@ void Partition::add_paths( const std::vector<Glib::ustring> & paths, bool clear_
 	sort_paths_and_remove_duplicates() ;
 }
 
+Byte_Value Partition::get_byte_length() const 
+{
+	if ( get_length() >= 0 )
+		return get_length() * sector_size ;
+	else
+		return -1 ;
+}
+
 Sector Partition::get_length() const 
 {
 	if ( sector_start >= 0 && sector_end >= 0 )
