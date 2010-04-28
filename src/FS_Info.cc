@@ -1,4 +1,4 @@
-/* Copyright (C) 2008, 2009 Curtis Gedak
+/* Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -86,12 +86,23 @@ Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
 Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 {
 	Glib::ustring fs_type = "" ;
+	Glib::ustring fs_sec_type = "" ;
 
 	//Retrieve the line containing the device path
-	Glib::ustring temp = get_device_entry( path ) ;
+	Glib::ustring dev_path_line = get_device_entry( path ) ;
 	
 	//Retrieve TYPE
-	fs_type = Utils::regexp_label( temp, "TYPE=\"([^\"]*)\"" ) ;
+	fs_type     = Utils::regexp_label( dev_path_line, "[^_]TYPE=\"([^\"]*)\"" ) ;
+	fs_sec_type = Utils::regexp_label( dev_path_line, "SEC_TYPE=\"([^\"]*)\"" ) ;
+
+	//If vfat, decide whether fat16 or fat32
+	if ( fs_type == "vfat" )
+	{
+		if ( fs_sec_type == "msdos" )
+			fs_type = "fat16" ;
+		else
+			fs_type = "fat32" ;
+	}
 
 	if ( fs_type .empty() && vol_id_found )
 	{

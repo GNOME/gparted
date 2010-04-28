@@ -960,7 +960,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		          fs_type == "linux-swap(v1)" ||
 		          fs_type == "linux-swap(new)" ||
 		          fs_type == "linux-swap(v0)" ||
-		          fs_type == "linux-swap(old)" )
+		          fs_type == "linux-swap(old)" ||
+		          fs_type == "swap" )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( fs_type == "fat16" )
 			return GParted::FS_FAT16 ;
@@ -976,7 +977,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 			return GParted::FS_JFS ;
 		else if ( fs_type == "hfs" )
 			return GParted::FS_HFS ;
-		else if ( fs_type == "hfs+" )
+		else if ( fs_type == "hfs+" ||
+		          fs_type == "hfsplus" )
 			return GParted::FS_HFSPLUS ;
 		else if ( fs_type == "ufs" )
 			return GParted::FS_UFS ;
