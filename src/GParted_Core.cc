@@ -920,56 +920,69 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		}
 	}
 
-	//standard libparted file systems..
+	FS_Info fs_info ;
+	Glib::ustring fs_type = "" ;
+
+	//Standard libparted file system detection
 	if ( lp_partition && lp_partition ->fs_type )
 	{
-		if ( Glib::ustring( lp_partition ->fs_type ->name ) == "extended" )
+		fs_type = lp_partition ->fs_type ->name ;
+
+		//TODO:  Temporary code to detect ext4.
+		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
+		temp = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ;
+		if ( temp == "ext4" || temp == "ext4dev" )
+			fs_type = temp ;
+	}
+
+	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
+	//  appear to detect file systems for sector sizes other than 512 bytes.
+	if ( fs_type .empty() )
+	{
+		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
+		fs_type = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ;
+	}
+
+	if ( ! fs_type .empty() )
+	{
+		if ( fs_type == "extended" )
 			return GParted::FS_EXTENDED ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "btrfs" )
+		else if ( fs_type == "btrfs" )
 			return GParted::FS_BTRFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext2" )
+		else if ( fs_type == "ext2" )
 			return GParted::FS_EXT2 ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext3" )
-		{
-			//FIXME:  Temporary code to detect ext4.
-			//        Replace when libparted bug #188 "ext4 detected as ext3" is fixed.
-			//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/188
-			FS_Info fs_info ;
-			temp = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ; 
-			if ( temp == "ext4" || temp == "ext4dev" )
-				return GParted::FS_EXT4 ;
-			else
-				return GParted::FS_EXT3 ;
-		}
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ext4" )
+		else if ( fs_type == "ext3" )
+			return GParted::FS_EXT3 ;
+		else if ( fs_type == "ext4" ||
+		          fs_type == "ext4dev" )
 			return GParted::FS_EXT4 ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap" ||
-		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(v1)" ||
-		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(new)" ||
-		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(v0)" ||
-		          Glib::ustring( lp_partition ->fs_type ->name ) == "linux-swap(old)" )
+		else if ( fs_type == "linux-swap" ||
+		          fs_type == "linux-swap(v1)" ||
+		          fs_type == "linux-swap(new)" ||
+		          fs_type == "linux-swap(v0)" ||
+		          fs_type == "linux-swap(old)" )
 			return GParted::FS_LINUX_SWAP ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat16" )
+		else if ( fs_type == "fat16" )
 			return GParted::FS_FAT16 ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "fat32" )
+		else if ( fs_type == "fat32" )
 			return GParted::FS_FAT32 ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ntfs" )
+		else if ( fs_type == "ntfs" )
 			return GParted::FS_NTFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "reiserfs" )
+		else if ( fs_type == "reiserfs" )
 			return GParted::FS_REISERFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "xfs" )
+		else if ( fs_type == "xfs" )
 			return GParted::FS_XFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "jfs" )
+		else if ( fs_type == "jfs" )
 			return GParted::FS_JFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "hfs" )
+		else if ( fs_type == "hfs" )
 			return GParted::FS_HFS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "hfs+" )
+		else if ( fs_type == "hfs+" )
 			return GParted::FS_HFSPLUS ;
-		else if ( Glib::ustring( lp_partition ->fs_type ->name ) == "ufs" )
+		else if ( fs_type == "ufs" )
 			return GParted::FS_UFS ;
 	}
-	
-	
+
+
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
 	// - no patches sent to parted for lvm2, or luks
 
