@@ -1582,7 +1582,7 @@ void Win_GParted::activate_delete()
 		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3)"), 
 						     selected_partition .get_path(), 
 						     Utils::get_filesystem_string( selected_partition .filesystem ),
-						     Utils::format_size( selected_partition .get_length(), selected_partition .sector_size ) ) );
+						     Utils::format_size( selected_partition .get_sector_length(), selected_partition .sector_size ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
 	

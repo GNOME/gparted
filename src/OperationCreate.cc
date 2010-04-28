@@ -89,7 +89,7 @@ void OperationCreate::create_description()
 				 	description, 
 					partition_new .partition_number, 
 					Utils::get_filesystem_string( partition_new .filesystem ), 
-					Utils::format_size( partition_new .get_length(), partition_new .sector_size ),
+					Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ),
 					device .get_path() ) ;
 }
 

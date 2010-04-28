@@ -40,8 +40,8 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	//set some widely used values...
 	START = selected_partition .sector_start ;
-	total_length = selected_partition .get_length() ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ;
+	total_length = selected_partition .get_sector_length() ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_sector_length(), selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 
 	//Determine minimum number of sectors needed in destination (selected) partition and

@@ -148,7 +148,7 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	
 	//set new value of unused..
 	if ( selected_partition .sectors_used != -1 )
-		selected_partition .sectors_unused = selected_partition .get_length() - selected_partition .sectors_used ;
+		selected_partition .sectors_unused = selected_partition .get_sector_length() - selected_partition .sectors_used ;
 
 	//set indicator of whether to use strict sector values, or to round to cylinders
 	selected_partition .strict = ! checkbutton_round_to_cylinders .get_active() ;

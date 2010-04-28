@@ -80,19 +80,19 @@ void Partition::Set(	const Glib::ustring & device_path,
 
 void Partition::Set_Unused( Sector sectors_unused )
 {
-	if ( sectors_unused < get_length() )
+	if ( sectors_unused < get_sector_length() )
 	{
 		this ->sectors_unused = sectors_unused ;
-		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_length() - sectors_unused ;
+		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_sector_length() - sectors_unused ;
 	}
 }
 	
 void Partition::set_used( Sector sectors_used ) 
 {
-	if ( sectors_used < get_length() )
+	if ( sectors_used < get_sector_length() )
 	{
 		this ->sectors_used = sectors_used ;
-		this ->sectors_unused = ( sectors_used == -1 ) ? -1 : get_length() - sectors_used ;
+		this ->sectors_unused = ( sectors_used == -1 ) ? -1 : get_sector_length() - sectors_used ;
 	}
 }
 
@@ -156,13 +156,13 @@ void Partition::add_paths( const std::vector<Glib::ustring> & paths, bool clear_
 
 Byte_Value Partition::get_byte_length() const 
 {
-	if ( get_length() >= 0 )
-		return get_length() * sector_size ;
+	if ( get_sector_length() >= 0 )
+		return get_sector_length() * sector_size ;
 	else
 		return -1 ;
 }
 
-Sector Partition::get_length() const 
+Sector Partition::get_sector_length() const 
 {
 	if ( sector_start >= 0 && sector_end >= 0 )
 		return sector_end - sector_start + 1 ;

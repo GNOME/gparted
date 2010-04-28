@@ -142,7 +142,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//set some widely used values...
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_length(), this ->selected_partition .sector_size, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_sector_length(), this ->selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled file system

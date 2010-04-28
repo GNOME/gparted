@@ -58,14 +58,14 @@ void OperationResizeMove::create_description()
 	} ;
 	Action action = NONE ;
 
-	if ( partition_new .get_length() > partition_original .get_length() ) {
+	if ( partition_new .get_sector_length() > partition_original .get_sector_length() ) {
 		//Grow partition
 		action = GROW ;
 		if ( partition_new .sector_start > partition_original .sector_start )
 			action = MOVE_RIGHT_GROW ;
 		if ( partition_new .sector_start < partition_original .sector_start )
 			action = MOVE_LEFT_GROW ;
-	} else if ( partition_new .get_length() < partition_original .get_length() ) {
+	} else if ( partition_new .get_sector_length() < partition_original .get_sector_length() ) {
 		//Shrink partition
 		action = SHRINK ;
 		if ( partition_new .sector_start > partition_original .sector_start )
@@ -117,8 +117,8 @@ void OperationResizeMove::create_description()
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
 						partition_original .get_path(),
-						Utils::format_size( partition_original .get_length(), partition_original .sector_size ),
-						Utils::format_size( partition_new .get_length(), partition_new .sector_size ) ) ;
+						Utils::format_size( partition_original .get_sector_length(), partition_original .sector_size ),
+						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ) ;
 }
 
 void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )

@@ -414,19 +414,19 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 			partition .sector_end = device .length -1 ;
 
 		//ok, do some basic checks on the partition..
-		if ( partition .get_length() <= 0 )
+		if ( partition .get_sector_length() <= 0 )
 		{
 			error = String::ucompose( _("A partition cannot have a length of %1 sectors"),
-						  partition .get_length() ) ;
+						  partition .get_sector_length() ) ;
 			return false ;
 		}
 
-		if ( partition .get_length() < partition .sectors_used )
+		if ( partition .get_sector_length() < partition .sectors_used )
 		{
 			error = String::ucompose( 
 				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
 				partition .sectors_used,
-				partition .get_length() ) ;
+				partition .get_sector_length() ) ;
 			return false ;
 		}
 
@@ -1282,7 +1282,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition )
 				constraint = ped_file_system_get_resize_constraint( fs ) ;
 				if ( constraint )
 				{
-					partition .Set_Unused( partition .get_length() - constraint ->min_size ) ;
+					partition .Set_Unused( partition .get_sector_length() - constraint ->min_size ) ;
 					
 					ped_constraint_destroy( constraint );
 				}
@@ -1364,7 +1364,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 			{
 				PedGeometry *geom = ped_geometry_new( lp_device,
 								      new_partition .sector_start,
-								      new_partition .get_length() ) ;
+								      new_partition .get_sector_length() ) ;
 
 				if ( geom )
 					constraint = ped_constraint_exact( geom ) ;
@@ -1393,8 +1393,8 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
-								new_partition .get_length(),
-								Utils::format_size( new_partition .get_length(), new_partition .sector_size ) ),
+								new_partition .get_sector_length(),
+								Utils::format_size( new_partition .get_sector_length(), new_partition .sector_size ) ),
 						STATUS_NONE,
 						FONT_ITALIC ) ) ;
 				}
@@ -1543,22 +1543,22 @@ bool GParted_Core::resize_move( const Device & device,
 		if ( partition_new .sector_start == partition_old .sector_start )
 			return resize( partition_old, partition_new, operationdetail ) ;
 
-		if ( partition_new .get_length() == partition_old .get_length() )
+		if ( partition_new .get_sector_length() == partition_old .get_sector_length() )
 			return move( device, partition_old, partition_new, operationdetail ) ;
 
 		Partition temp ;
-		if ( partition_new .get_length() > partition_old .get_length() )
+		if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 		{
 			//first move, then grow. Since old.length < new.length and new.start is valid, temp is valid.
 			temp = partition_new ;
-			temp .sector_end = temp .sector_start + partition_old .get_length() -1 ;
+			temp .sector_end = temp .sector_start + partition_old .get_sector_length() -1 ;
 		}
 
-		if ( partition_new .get_length() < partition_old .get_length() )
+		if ( partition_new .get_sector_length() < partition_old .get_sector_length() )
 		{
 			//first shrink, then move. Since new.length < old.length and old.start is valid, temp is valid.
 			temp = partition_old ;
-			temp .sector_end = partition_old .sector_start + partition_new .get_length() -1 ;
+			temp .sector_end = partition_old .sector_start + partition_new .get_sector_length() -1 ;
 		}
 
 		temp .strict = true ;
@@ -1576,7 +1576,7 @@ bool GParted_Core::move( const Device & device,
 		   	 const Partition & partition_new,
 		   	 OperationDetail & operationdetail ) 
 {
-	if ( partition_old .get_length() != partition_new .get_length() )
+	if ( partition_old .get_sector_length() != partition_new .get_sector_length() )
 	{	
 		operationdetail .add_child( OperationDetail( 
 			_("moving requires old and new length to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
@@ -1703,7 +1703,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 		
 		lp_geom = ped_geometry_new( lp_device,
 					    partition_old .sector_start,
-					    partition_old .get_length() ) ;
+					    partition_old .get_sector_length() ) ;
 		if ( lp_geom )
 		{
 			fs = ped_file_system_open( lp_geom );
@@ -1712,7 +1712,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 				lp_geom = NULL ;
 				lp_geom = ped_geometry_new( lp_device,
 							    partition_new .sector_start,
-							    partition_new .get_length() ) ;
+							    partition_new .get_sector_length() ) ;
 				if ( lp_geom )
 					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit() ;
 
@@ -1743,7 +1743,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	{
 		succes = true ;
 
-		if ( succes && partition_new .get_length() < partition_old .get_length() )
+		if ( succes && partition_new .get_sector_length() < partition_old .get_sector_length() )
 			succes = resize_filesystem( partition_old, partition_new, operationdetail ) ;
 						
 		if ( succes )
@@ -1782,9 +1782,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	} ;
 	Action action = NONE ;
 
-	if ( partition_new .get_length() > partition_old .get_length() )
+	if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 		action = GROW ;
-	else if ( partition_new .get_length() < partition_old .get_length() )
+	else if ( partition_new .get_sector_length() < partition_old .get_sector_length() )
 		action = SHRINK ;
 
 	if ( partition_new .sector_start > partition_old .sector_start &&
@@ -1828,8 +1828,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
-						Utils::format_size( partition_old .get_length(), partition_old .sector_size ),
-						Utils::format_size( partition_new .get_length(), partition_new .sector_size ) ) ;
+						Utils::format_size( partition_old .get_sector_length(), partition_old .sector_size ),
+						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ) ;
 
 	operationdetail .add_child( OperationDetail( description ) ) ;
 
@@ -1850,8 +1850,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
 			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
 			String::ucompose( _("old size: %1 (%2)"),
-					partition_old .get_length(),
-					Utils::format_size( partition_old .get_length(), partition_old .sector_size ) ),
+					partition_old .get_sector_length(),
+					Utils::format_size( partition_old .get_sector_length(), partition_old .sector_size ) ),
 		STATUS_NONE, 
 		FONT_ITALIC ) ) ;
 	
@@ -1877,7 +1877,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			if ( partition_new .strict || partition_new .strict_start ) {
 				PedGeometry *geom = ped_geometry_new( lp_device,
 									  partition_new .sector_start,
-									  partition_new .get_length() ) ;
+									  partition_new .get_sector_length() ) ;
 				constraint = ped_constraint_exact( geom ) ;
 			}
 			else
@@ -1944,12 +1944,12 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 
 	if ( ! fill_partition )
 	{
-		if ( partition_new .get_length() < partition_old .get_length() )
+		if ( partition_new .get_sector_length() < partition_old .get_sector_length() )
 		{
 			operationdetail .add_child( OperationDetail( _("shrink file system") ) ) ;
 			action = get_fs( partition_old .filesystem ) .shrink ;
 		}
-		else if ( partition_new .get_length() > partition_old .get_length() )
+		else if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 			operationdetail .add_child( OperationDetail( _("grow file system") ) ) ;
 		else
 		{
@@ -2577,8 +2577,8 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
-								partition .get_length(),
-								Utils::format_size( partition .get_length(), partition .sector_size ) ),
+								partition .get_sector_length(),
+								Utils::format_size( partition .get_sector_length(), partition .sector_size ) ),
 					STATUS_NONE, 
 					FONT_ITALIC ) ) ;
 				succes = true ;
@@ -2606,8 +2606,8 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
 			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
 			String::ucompose( _("requested size: %1 (%2)"),
-					partition_new .get_length(),
-					Utils::format_size( partition_new .get_length(), partition_new .sector_size ) ),
+					partition_new .get_sector_length(),
+					Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 		STATUS_NONE,
 		FONT_ITALIC ) ) ;
 	
@@ -2657,8 +2657,8 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
 				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
 				String::ucompose( _("new size: %1 (%2)"),
-						partition_new .get_length(),
-						Utils::format_size( partition_new .get_length(), partition_new .sector_size ) ),
+						partition_new .get_sector_length(),
+						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
 

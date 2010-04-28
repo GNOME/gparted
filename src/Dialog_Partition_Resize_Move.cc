@@ -94,16 +94,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//also check the partitions file system ( if this is a 'resize-only' then previous should be 0 )	
 	if ( t >= 1 && partitions[t -1].type == GParted::TYPE_UNALLOCATED && ! this ->fixed_start )
 	{ 
-		previous = partitions[t -1] .get_length() ;
+		previous = partitions[t -1] .get_sector_length() ;
 		START = partitions[t -1] .sector_start ;
 	} 
 	else
 		START = selected_partition .sector_start ;
 	
 	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
-		next = partitions[t +1] .get_length() ;
+		next = partitions[t +1] .get_sector_length() ;
 	
-	total_length = previous + selected_partition .get_length() + next;
+	total_length = previous + selected_partition .get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
@@ -111,7 +111,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_x_end( 
-		Utils::round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
+		Utils::round( selected_partition .get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
 	frame_resizer_base ->set_used( Utils::round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
 
 	//set MIN
@@ -158,7 +158,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
 		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
 	spinbutton_size .set_value( 
-		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_sector_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
 	Sector after_min = ( ! fs .grow && ! fs .move ) ? next : 0 ;
@@ -189,7 +189,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	//calculate length and start of previous
 	if ( t > 0 && partitions[t -1] .type == GParted::TYPE_UNALLOCATED )
 	{
-		previous = partitions[t -1] .get_length() ;
+		previous = partitions[t -1] .get_sector_length() ;
 		START = partitions[t -1] .sector_start ;
 	} 
 	else
@@ -197,16 +197,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	
 	//calculate length of next
 	if ( t +1 < partitions .size() && partitions[ t +1 ] .type == GParted::TYPE_UNALLOCATED )
-		next = partitions[ t +1 ] .get_length() ;
+		next = partitions[ t +1 ] .get_sector_length() ;
 		
 	//now we have enough data to calculate some important values..
-	total_length = previous + selected_partition .get_length() + next;
+	total_length = previous + selected_partition .get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
 	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
-	frame_resizer_base ->set_x_end( Utils::round( selected_partition .get_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
+	frame_resizer_base ->set_x_end( Utils::round( selected_partition .get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
 	
 	//used is a bit different here... we consider start of first logical to end last logical as used space
 	Sector first =0, used =0 ;
@@ -240,7 +240,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 		spinbutton_size .set_range( Utils::round( Utils::sector_to_unit( used, selected_partition .sector_size, UNIT_MIB ) ), TOTAL_MB ) ;
 	
 	spinbutton_size .set_value(
-		Utils::round( Utils::sector_to_unit( selected_partition .get_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
+		Utils::round( Utils::sector_to_unit( selected_partition .get_sector_length(), selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals

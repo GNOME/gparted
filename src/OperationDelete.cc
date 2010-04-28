@@ -82,7 +82,7 @@ void OperationDelete::create_description()
 	description = String::ucompose( _("Delete %1 (%2, %3) from %4"),
 					description,
 					Utils::get_filesystem_string( partition_original .filesystem ), 
-					Utils::format_size( partition_original .get_length(), partition_original .sector_size ),
+					Utils::format_size( partition_original .get_sector_length(), partition_original .sector_size ),
 					partition_original .device_path ) ;
 }
 	

@@ -117,7 +117,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	//calculate proportional width of used and unused
 	used = unused = 0 ;
 	used = Utils::round( 
-		(400 - BORDER *2) / ( static_cast<double>( partition .get_length() ) / partition .sectors_used ) ) ;
+		(400 - BORDER *2) / ( static_cast<double>( partition .get_sector_length() ) / partition .sectors_used ) ) ;
 	
 	unused = 400 - used - BORDER *2 ;
 	
@@ -136,7 +136,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
-		partition .get_path() + "\n" + Utils::format_size( partition .get_length(), partition .sector_size ) ) ;
+		partition .get_path() + "\n" + Utils::format_size( partition .get_sector_length(), partition .sector_size ) ) ;
 }
 
 void Dialog_Partition_Info::Display_Info()
@@ -163,7 +163,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL) ;
-	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_length(), partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+	table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sector_length(), partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
@@ -172,7 +172,7 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//calculate relative diskusage
 		int percent_used = 
-			Utils::round( partition .sectors_used / static_cast<double>( partition .get_length() ) * 100 ) ;
+			Utils::round( partition .sectors_used / static_cast<double>( partition .get_sector_length() ) * 100 ) ;
 						
 		//used
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
@@ -314,7 +314,7 @@ void Dialog_Partition_Info::Display_Info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .get_length() ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .get_sector_length() ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;

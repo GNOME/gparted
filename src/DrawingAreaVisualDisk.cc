@@ -91,24 +91,24 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 		visual_partitions .push_back( visual_partition() ) ;
 
 		visual_partitions .back() .partition = partitions[ t ] ; 
-		visual_partitions .back() .fraction = partitions[ t ] .get_length() / static_cast<double>( length ) ;
+		visual_partitions .back() .fraction = partitions[ t ] .get_sector_length() / static_cast<double>( length ) ;
 
 		if ( partitions[ t ] .type == GParted::TYPE_UNALLOCATED || partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			visual_partitions .back() .fraction_used = -1 ;
 		else if ( partitions[ t ] .sectors_used > 0 )
 			visual_partitions .back() .fraction_used = 
-				partitions[ t ] .sectors_used / static_cast<double>( partitions[ t ] .get_length() ) ;
+				partitions[ t ] .sectors_used / static_cast<double>( partitions[ t ] .get_sector_length() ) ;
 	
 		visual_partitions .back() .color = partitions[ t ] .color; 
 		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			set_static_data( partitions[ t ] .logicals, 
-				      	 visual_partitions .back() .logicals,
-	   			         partitions[ t ] .get_length() ) ;
+			set_static_data( partitions[ t ] .logicals,
+					 visual_partitions .back() .logicals,
+					 partitions[ t ] .get_sector_length() ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_length(), partitions[ t ] .sector_size ) ) ;
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_sector_length(), partitions[ t ] .sector_size ) ) ;
 	}
 }
 
