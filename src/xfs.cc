@@ -96,7 +96,7 @@ void xfs::set_used_sectors( Partition & partition )
 			N = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / double(partition .sector_size) ) ) ) ;
 	}
 	else
 	{

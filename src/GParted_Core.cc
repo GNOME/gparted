@@ -1228,7 +1228,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
 					{
 						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
-							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / 512) ) ;
+							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / partitions[ t ] .sector_size) ) ;
 						else
 							partitions[ t ] .messages .push_back( 
 								"statvfs (" + 

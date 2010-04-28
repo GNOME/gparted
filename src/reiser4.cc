@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ void reiser4::set_used_sectors( Partition & partition )
 			S = -1 ;
 
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / 512.0 ) ) ) ;
+			partition .Set_Unused( Utils::round( N * ( S / double(partition .sector_size) ) ) ) ;
 	}
 	else
 	{

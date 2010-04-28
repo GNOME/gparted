@@ -71,7 +71,7 @@ void ntfs::set_used_sectors( Partition & partition )
 			N = -1 ;
 
 		if ( N > -1 )
-			partition .set_used( Utils::round( N / 512.0 ) ) ; 
+			partition .set_used( Utils::round( N / double(partition .sector_size) ) ) ; 
 	}
 	else
 	{
