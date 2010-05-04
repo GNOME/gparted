@@ -48,7 +48,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//  handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
 	Sector copied_min_sectors = ( copied_partition .get_byte_length() + (selected_partition .sector_size - 1) ) / selected_partition .sector_size ;
 
-	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, copied_partition .sector_size, UNIT_MIB ) ) ; 
+	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, selected_partition .sector_size, UNIT_MIB ) ) ; 
 	//  /* Copy Primary not at start of disk to within Extended partition */
 	//  Adjust when a primary partition is copied and pasted
 	//  into an unallocated space in an extended partition
