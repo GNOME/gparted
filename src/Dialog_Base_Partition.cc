@@ -129,7 +129,6 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
-	//        Assuming 512 byte sector size.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
 		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;	
 
