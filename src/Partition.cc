@@ -45,7 +45,7 @@ void Partition::Reset()
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	sector_size = 0 ;
 	color .set( "black" ) ;
-	inside_extended = busy = strict = strict_start = false ;
+	inside_extended = busy = strict_start = false ;
 	logicals .clear() ;
 	flags .clear() ;
 	mountpoints .clear() ;

@@ -157,7 +157,11 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
 	if ( TOTAL_MB * (MEBIBYTE / this ->selected_partition .sector_size) < this ->cylinder_size )
 		frame_resizer_base ->set_sensitive( false ) ;
-			
+
+	//connect signal handler for Dialog_Base_Partiton optionmenu_alignment
+	optionmenu_alignment .signal_changed() .connect( 
+		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
+
 	this ->show_all_children() ;
 }
 
@@ -218,8 +222,14 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}
 
-	//set indicator of whether to use strict sector values, or to round to cylinders
-	part_temp .strict = ! checkbutton_round_to_cylinders .get_active() ;
+	//set alignment
+	switch ( optionmenu_alignment .get_history() )
+	{
+		case  0 :  part_temp .alignment = GParted::ALIGN_CYLINDER;  break;
+		case  1 :  part_temp .alignment = GParted::ALIGN_STRICT;  break;
+
+		default :  part_temp .alignment = GParted::ALIGN_CYLINDER ;
+	}
 
 	return part_temp;
 }
@@ -246,12 +256,12 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		}
 	}
 	
-	//optionmenu_filesystem
+	//optionmenu_filesystem and optionmenu_alignment
 	if ( ! type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
 
-		if ( checkbutton_round_to_cylinders .get_active() )
+		if ( optionmenu_alignment .get_history() == ALIGN_CYLINDER )
 		{
 			if ( (fs .MIN / selected_partition .sector_size) < cylinder_size )
 				fs .MIN = cylinder_size * selected_partition .sector_size ;

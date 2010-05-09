@@ -22,7 +22,6 @@
 #include "../include/Dialog_Base_Partition.h"
 
 #include <gtkmm/optionmenu.h>
-#include <gtkmm/checkbutton.h>
 
 namespace GParted
 {

@@ -44,6 +44,12 @@ enum PartitionStatus {
 	STAT_FORMATTED	=	3
 };
 
+enum PartitionAlignment {
+	ALIGN_CYLINDER = 0,    //Align to nearest cylinder
+	ALIGN_STRICT   = 1     //Strict alignment - no rounding
+	                       //  Indicator if start and end sectors must remain unchanged
+};
+
 //FIXME: we should make a difference between partition- and file system size. 
 //especially in the core this can make a difference when giving detailed feedback. With new cairosupport in gtkmm
 //it's even possible to make stuff like this visible in the GUI in a nice and clear way
@@ -101,6 +107,7 @@ public:
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
+	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
 	FILESYSTEM filesystem ;
 	Glib::ustring label ;
 	Glib::ustring uuid ;
@@ -116,7 +123,6 @@ public:
 	
 	std::vector<Partition> logicals ;
 
-	bool strict ;		//Indicator if start and end sectors must stay unchanged
 	bool strict_start ;	//Indicator if start sector must stay unchanged
 
 	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.

@@ -372,11 +372,11 @@ Glib::ustring GParted_Core::get_thread_status_message( )
 
 bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 
 {
-	if ( ! partition .strict )
+	if ( partition .alignment != ALIGN_STRICT )
 	{
 		Sector diff = 0;
 		if ( partition.type == TYPE_LOGICAL ||
-			 partition.sector_start == device .sectors
+		     partition.sector_start == device .sectors
 		   ) {
 			//Must account the relative offset between:
 			// (A) the Extended Boot Record sector and the next track of the
@@ -1375,7 +1375,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 		if ( lp_partition )
 		{
-			if ( new_partition .strict )
+			if ( new_partition .alignment == ALIGN_STRICT )
 			{
 				PedGeometry *geom = ped_geometry_new( lp_device,
 								      new_partition .sector_start,
@@ -1547,9 +1547,9 @@ bool GParted_Core::resize_move( const Device & device,
 			  	Partition & partition_new,
 			  	OperationDetail & operationdetail ) 
 {
-	if (   partition_new .strict
-		|| partition_new .strict_start
-		|| calculate_exact_geom( partition_old, partition_new, operationdetail )
+	if (   (partition_new .alignment == ALIGN_STRICT)
+	    || partition_new .strict_start
+	    || calculate_exact_geom( partition_old, partition_new, operationdetail )
 	   )
 	{
 		if ( partition_old .type == TYPE_EXTENDED )
@@ -1576,9 +1576,10 @@ bool GParted_Core::resize_move( const Device & device,
 			temp .sector_end = partition_old .sector_start + partition_new .get_sector_length() -1 ;
 		}
 
-		temp .strict = true ;
+		PartitionAlignment previous_alignment = temp .alignment ;
+		temp .alignment = ALIGN_STRICT ;
 		bool succes = resize_move( device, partition_old, temp, operationdetail ) ;
-		temp .strict = false ;
+		temp .alignment = previous_alignment ;
 
 		return succes && resize_move( device, temp, partition_new, operationdetail ) ;
 	}
@@ -1889,7 +1890,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		
 		if ( lp_partition )
 		{
-			if ( partition_new .strict || partition_new .strict_start ) {
+			if ( (partition_new .alignment == ALIGN_STRICT) || partition_new .strict_start ) {
 				PedGeometry *geom = ped_geometry_new( lp_device,
 									  partition_new .sector_start,
 									  partition_new .get_sector_length() ) ;

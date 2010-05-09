@@ -29,6 +29,7 @@
 #include <gtkmm/table.h>
 #include <gtkmm/box.h>
 #include <gtkmm/tooltips.h>
+#include <gtkmm/optionmenu.h>
 
 namespace GParted
 {
@@ -69,7 +70,8 @@ protected:
 
 	Gtk::HBox hbox_main ;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
-	Gtk::CheckButton checkbutton_round_to_cylinders ;
+	Gtk::OptionMenu optionmenu_alignment ;
+	Gtk::Menu menu_alignment ;
 
 	//used to enable/disable OKbutton...
 	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;

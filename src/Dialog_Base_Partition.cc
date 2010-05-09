@@ -79,11 +79,6 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	if ( ! fixed_start )
 		before_value = spinbutton_before .get_value() ;
 
-	//add checkbutton
-	checkbutton_round_to_cylinders .set_label( _("Round to cylinders") ) ;
-	checkbutton_round_to_cylinders .set_active( true ) ;
-	table_resize.attach( checkbutton_round_to_cylinders, 0, 1, 3, 4 ) ;
-
 	//connect signalhandlers of the spinbuttons
 	if ( ! fixed_start )
 		spinbutton_before .signal_value_changed() .connect( 
@@ -96,6 +91,21 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	spinbutton_after .signal_value_changed() .connect(
 		sigc::bind<SPINBUTTON>( 
 			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
+
+	//add alignment
+	/*TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices> */
+	table_resize .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Align to:") ) + "\t" ),
+	                      0, 1, 3, 4, Gtk::FILL );
+
+	//fill partition alignment menu
+	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
+	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Cylinder") ) ) ;
+	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
+	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("None") ) ) ;
+
+	optionmenu_alignment .set_menu( menu_alignment );
+
+	table_resize .attach( optionmenu_alignment, 1, 2, 3, 4, Gtk::FILL );
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;
@@ -153,8 +163,14 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	if ( selected_partition .sectors_used != -1 )
 		selected_partition .sectors_unused = selected_partition .get_sector_length() - selected_partition .sectors_used ;
 
-	//set indicator of whether to use strict sector values, or to round to cylinders
-	selected_partition .strict = ! checkbutton_round_to_cylinders .get_active() ;
+	//set alignment
+	switch ( optionmenu_alignment .get_history() )
+	{
+		case  0 :  selected_partition .alignment = ALIGN_CYLINDER;  break;
+		case  1 :  selected_partition .alignment = ALIGN_STRICT;  break;
+
+		default :  selected_partition .alignment = ALIGN_CYLINDER ;
+	}
 
 	//if the original before value has not changed, then set indicator to keep start sector unchanged
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
