@@ -889,6 +889,14 @@ void Win_GParted::set_valid_operations()
 			   )
 				required_size += MEBIBYTE;
 
+			//Determine if space is needed for the backup partition on a GPT partition table
+			if (   ( devices[ current_device ] .disktype == "gpt" )
+			    && ( ( devices[ current_device ] .length - selected_partition .sector_end )
+			         < ( MEBIBYTE / devices[ current_device ] .sector_size )
+			       )
+			   )
+				required_size += MEBIBYTE ;
+
 			if ( required_size <= selected_partition .get_byte_length() )
 				allow_paste( true ) ;
 		}
