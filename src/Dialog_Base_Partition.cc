@@ -24,13 +24,12 @@ namespace GParted
 Dialog_Base_Partition::Dialog_Base_Partition()
 {
 	this ->set_has_separator( false ) ;
-//FIXME: somehow the 'off by a few' MiB's warning disappeared.
-//I need to display it whenever the round to cylinders isn't checked.
 	frame_resizer_base = NULL;
 	GRIP = false ;
 	this ->fixed_start = false ;
 	this ->set_resizable( false );
 	ORIG_BEFORE = ORIG_SIZE = ORIG_AFTER = -1 ;
+	MIN_SPACE_BEFORE_MB = -1 ;
 	
 	//pack resizer hbox
 	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
@@ -100,10 +99,13 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	//fill partition alignment menu
 	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
 	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Cylinder") ) ) ;
+	/*TO TRANSLATORS: Menu option for label "Align to:" */
+	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("MiB") ) ) ;
 	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
 	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("None") ) ) ;
 
 	optionmenu_alignment .set_menu( menu_alignment );
+	optionmenu_alignment .set_history( ALIGN_MEBIBYTE);  //Default setting
 
 	table_resize .attach( optionmenu_alignment, 1, 2, 3, 4, Gtk::FILL );
 
@@ -143,8 +145,10 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;	
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
-		selected_partition .sector_end = 
-			selected_partition .sector_start + Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size) ;
+		selected_partition .sector_end =
+			selected_partition .sector_start
+			+ Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size)
+			- 1 /* one sector short of exact mebibyte multiple */;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
 	//the new partition thinks it's bigger then it can be. Here we solve this.
@@ -167,10 +171,13 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	switch ( optionmenu_alignment .get_history() )
 	{
 		case  0 :  selected_partition .alignment = ALIGN_CYLINDER;  break;
-		case  1 :  selected_partition .alignment = ALIGN_STRICT;  break;
+		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;  break;
+		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
 
 		default :  selected_partition .alignment = ALIGN_CYLINDER ;
 	}
+
+	selected_partition .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
 
 	//if the original before value has not changed, then set indicator to keep start sector unchanged
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
@@ -212,11 +219,29 @@ void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 	label_minmax .set_text( str_temp ) ; 
 }
 
+int Dialog_Base_Partition::MB_Needed_for_Boot_Record( const Partition & partition )
+{
+	//Determine if space is needed for the Master Boot Record or
+	//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
+	//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
+	//  NOTE:  This logic also contained in Win_GParted::set_valid_operations
+	if (   (   partition .inside_extended
+	        && partition .type == TYPE_UNALLOCATED
+	       )
+	    || ( partition .type == TYPE_LOGICAL )
+	                                     /* Beginning of disk device */
+	    || ( partition .sector_start <= (MEBIBYTE / partition .sector_size) )
+	   )
+		return 1 ;
+	else
+		return 0 ;
+}
+
 void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 {  
 	GRIP = true ;
 
-	spinbutton_before .set_value( x_start == 0 ? 0 : x_start * MB_PER_PIXEL ) ;
+	spinbutton_before .set_value( x_start <= MIN_SPACE_BEFORE_MB * MB_PER_PIXEL ? MIN_SPACE_BEFORE_MB : x_start * MB_PER_PIXEL ) ;
 	
 	if ( x_end == 500 )
 	{
@@ -237,7 +262,7 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 		
 	spinbutton_size .set_value( ( x_end - x_start ) * MB_PER_PIXEL ) ;
 	
-	before_value = fixed_start ? 0 : spinbutton_before .get_value() ;
+	before_value = fixed_start ? MIN_SPACE_BEFORE_MB : spinbutton_before .get_value() ;
 
 	if ( arrow == Frame_Resizer_Base::ARROW_RIGHT ) //don't touch freespace before, leave it as it is
 	{
@@ -251,10 +276,10 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 	}
 	else if ( arrow == Frame_Resizer_Base::ARROW_LEFT ) //don't touch freespace after, leave it as it is
 	{
-		if ( x_start == 0 )
+		if ( x_start <= MIN_SPACE_BEFORE_MB * MB_PER_PIXEL )
 		{
-			spinbutton_before .set_value( 0 );
-			spinbutton_size .set_value( TOTAL_MB - spinbutton_after.get_value() ) ;
+			spinbutton_before .set_value( MIN_SPACE_BEFORE_MB );
+			spinbutton_size .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - spinbutton_after.get_value() ) ;
 		}
 		else
 			spinbutton_before .set_value(
@@ -270,7 +295,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 {  
 	if ( ! GRIP )
 	{
-		before_value = fixed_start ? 0 : spinbutton_before .get_value() ;
+		before_value = fixed_start ? MIN_SPACE_BEFORE_MB : spinbutton_before .get_value() ;
 			
 		//Balance the spinbuttons
 		switch ( spinbutton )

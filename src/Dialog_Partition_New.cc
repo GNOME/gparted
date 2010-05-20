@@ -140,6 +140,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	table_create .attach( entry, 1, 2, 3, 4, Gtk::FILL ) ;
 
 	//set some widely used values...
+	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_sector_length(), this ->selected_partition .sector_size, UNIT_MIB ) ) ;
@@ -151,8 +152,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ; 
-	spinbutton_before .set_value( 0 ) ;
+	spinbutton_size .set_value( ceil( fs .MAX / double(MEBIBYTE) ) ) ; 
+	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
 	
 	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
 	if ( TOTAL_MB * (MEBIBYTE / this ->selected_partition .sector_size) < this ->cylinder_size )
@@ -226,10 +227,13 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	switch ( optionmenu_alignment .get_history() )
 	{
 		case  0 :  part_temp .alignment = GParted::ALIGN_CYLINDER;  break;
-		case  1 :  part_temp .alignment = GParted::ALIGN_STRICT;  break;
+		case  1 :  part_temp .alignment = GParted::ALIGN_MEBIBYTE;  break;
+		case  2 :  part_temp .alignment = GParted::ALIGN_STRICT;  break;
 
-		default :  part_temp .alignment = GParted::ALIGN_CYLINDER ;
+		default :  part_temp .alignment = GParted::ALIGN_MEBIBYTE ;
 	}
+
+	part_temp .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
 
 	return part_temp;
 }
@@ -268,30 +272,34 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		}
 		else if ( fs .MIN < MEBIBYTE )
 			fs .MIN = MEBIBYTE ;
-		
+
 		if ( selected_partition .get_byte_length() < fs .MIN )
 			fs .MIN = selected_partition .get_byte_length() ;
-				
-		fs .MAX = ( fs .MAX && ( fs .MAX < (TOTAL_MB * MEBIBYTE) ) ) ? fs .MAX : (TOTAL_MB * MEBIBYTE) ;
-		
+
+		if ( ! fs .MAX || ( fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
+			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
+
 		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
 						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
-				
+
 		//set new spinbutton ranges
-		spinbutton_before .set_range( 
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
-		spinbutton_size .set_range(
-				Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
-				Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
-		spinbutton_after .set_range(
-			0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
-				
+		spinbutton_before .set_range( MIN_SPACE_BEFORE_MB
+		                            , TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) )
+		                            ) ;
+		spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) )
+		                          , ceil( fs .MAX / double(MEBIBYTE) )
+		                          ) ;
+		spinbutton_after .set_range( 0
+		                           , TOTAL_MB - MIN_SPACE_BEFORE_MB
+		                             - ceil( fs .MIN / double(MEBIBYTE) )
+		                           ) ;
+
 		//set contents of label_minmax
-		Set_MinMax_Text(
-			Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
-			Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
+		Set_MinMax_Text( ceil( fs .MIN / double(MEBIBYTE) )
+		               , ceil( fs .MAX / double(MEBIBYTE) )
+		               ) ;
 	}
-	
+
 	//set fitting resizer colors
 	//backgroundcolor..
 	color_temp .set( optionmenu_type .get_history() == 2 ? "darkgrey" : "white" ) ;

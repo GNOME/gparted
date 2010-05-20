@@ -372,70 +372,166 @@ Glib::ustring GParted_Core::get_thread_status_message( )
 
 bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 
 {
-	if ( partition .alignment != ALIGN_STRICT )
+	Sector diff = 0;
+	if ( partition.type == TYPE_LOGICAL ||
+	     partition.sector_start == device .sectors
+	   )
 	{
-		Sector diff = 0;
-		if ( partition.type == TYPE_LOGICAL ||
-		     partition.sector_start == device .sectors
-		   ) {
-			//Must account the relative offset between:
-			// (A) the Extended Boot Record sector and the next track of the
-			//     logical partition (usually 63 sectors), and
-			// (B) the Master Boot Record sector and the next track of the first
-			//     primary partition
-			diff = (partition .sector_start - device .sectors) % device .cylsize ;
-		} else if ( partition.sector_start == 34 ) {
-			// (C) the GUID Partition Table (GPT) and the start of the data
-			//     partition at sector 34
-			diff = (partition .sector_start - 34 ) % device .cylsize ;
-		} else {
-			diff = partition .sector_start % device .cylsize ;
-		}
-		if ( diff && ! partition .strict_start  )
-		{
-			if ( diff < ( device .cylsize / 2 ) )
-				partition .sector_start -= diff ;
-			else
-				partition .sector_start += (device .cylsize - diff ) ;
-		}
-	
-		diff = (partition .sector_end +1) % device .cylsize ;
-		if ( diff )
-		{
-			if ( diff < ( device .cylsize / 2 ) )
-				partition .sector_end -= diff ;
-			else
-				partition .sector_end += (device .cylsize - diff ) ;
-		}
-	
-		if ( partition .sector_start < 0 )
-			partition .sector_start = 0 ;
-		if ( partition .sector_end > device .length )
-			partition .sector_end = device .length -1 ;
+		//Must account the relative offset between:
+		// (A) the Extended Boot Record sector and the next track of the
+		//     logical partition (usually 63 sectors), and
+		// (B) the Master Boot Record sector and the next track of the first
+		//     primary partition
+		diff = (partition .sector_start - device .sectors) % device .cylsize ;
+	}
+	else if ( partition.sector_start == 34 )
+	{
+		// (C) the GUID Partition Table (GPT) and the start of the data
+		//     partition at sector 34
+		diff = (partition .sector_start - 34 ) % device .cylsize ;
+	}
+	else
+	{
+		diff = partition .sector_start % device .cylsize ;
+	}
+	if ( diff && ! partition .strict_start  )
+	{
+		if ( diff < ( device .cylsize / 2 ) )
+			partition .sector_start -= diff ;
+		else
+			partition .sector_start += (device .cylsize - diff ) ;
+	}
 
-		//ok, do some basic checks on the partition..
-		if ( partition .get_sector_length() <= 0 )
-		{
-			error = String::ucompose( _("A partition cannot have a length of %1 sectors"),
-						  partition .get_sector_length() ) ;
-			return false ;
-		}
-
-		if ( partition .get_sector_length() < partition .sectors_used )
-		{
-			error = String::ucompose( 
-				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
-				partition .sectors_used,
-				partition .get_sector_length() ) ;
-			return false ;
-		}
-
-		//FIXME: it would be perfect if we could check for overlapping with adjacent partitions as well,
-		//however, finding the adjacent partitions is not as easy as it seems and at this moment all the dialogs
-		//already perform these checks. A perfect 'fixme-later' ;)
+	diff = (partition .sector_end +1) % device .cylsize ;
+	if ( diff )
+	{
+		if ( diff < ( device .cylsize / 2 ) )
+			partition .sector_end -= diff ;
+		else
+			partition .sector_end += (device .cylsize - diff ) ;
 	}
 
 	return true ;
+}
+
+bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) 
+{
+	Sector diff = 0;
+	if ( partition .sector_start < 2 || partition .type == TYPE_LOGICAL )
+	{
+		//Must account the relative offset between:
+		// (A) the Master Boot Record sector and the first primary/extended partition, and
+		// (B) the Extended Boot Record sector and the logical partition
+
+		//If strict_start is set then do not adjust sector start.
+		//If this partition is not simply queued for a reformat then
+		//  add space minimum to force alignment to next mebibyte.
+		if (   (! partition .strict_start)
+		    && (partition .free_space_before == 0)
+		    && ( partition .status != STAT_FORMATTED)
+		   )
+		{
+			//Unless specifically told otherwise, the Linux kernel considers extended
+			//  boot records to be two sectors long, in order to "leave room for LILO".
+			partition .sector_start += 2 ;
+		}
+	}
+
+	//Align start sector
+	diff = Sector(partition .sector_start % ( MEBIBYTE / partition .sector_size ));
+	if ( diff && (   (! partition .strict_start)
+	              || (   partition .strict_start
+	                  && (   partition .status == STAT_NEW
+	                      || partition .status == STAT_COPY
+	                     )
+	                 )
+	             )
+	   )
+		partition .sector_start += ( (MEBIBYTE / partition .sector_size) - diff) ;
+
+	//If this is a logical partition not at end of drive then check to see if space is
+	//  required for a following logical partition Extended Boot Record
+	if ( partition .type == TYPE_LOGICAL )
+	{
+		//Locate the extended partition that contains the logical partitions.
+		int index_extended = -1 ;
+		for ( unsigned int t = 0 ; t < device .partitions .size() ; t++ )
+		{
+			if ( device .partitions[ t ] .type == TYPE_EXTENDED )
+				index_extended = t ;
+		}
+
+		//If there is a following logical partition that starts a mebibyte or less
+		//  from the end of this partition, then reserve a mebibyte for the EBR.
+		if ( index_extended != -1 )
+		{
+			for ( unsigned int t = 0; t < device .partitions[ index_extended ] .logicals .size(); t++ )
+			{
+				if (   ( device .partitions[ index_extended ] .logicals[ t ] .type == TYPE_LOGICAL )
+				    && ( device .partitions[ index_extended ] .logicals[ t ] .sector_start > partition .sector_end )
+				    && ( ( device .partitions[ index_extended ] .logicals[ t ] .sector_start - partition .sector_end )
+				         < ( MEBIBYTE / device .sector_size )
+				       )
+				   )
+					partition .sector_end -= 1 ;
+			}
+		}
+	}
+
+	//If this is a GPT partition table then reserve a mebibyte at the end of the device
+	//  for the backup partition table
+	if (    device .disktype == "gpt" 
+	    && ( ( device .length - partition .sector_end ) <= ( MEBIBYTE / device .sector_size ) )
+	   )
+	{
+		partition .sector_end -= 1 ;
+	}
+
+	//Align end sector
+	diff = (partition .sector_end + 1) % ( MEBIBYTE / partition .sector_size);
+	if ( diff )
+		partition .sector_end -= diff ;
+
+	return true ;
+}
+
+bool GParted_Core::snap_to_alignment( const Device & device, Partition & partition, Glib::ustring & error )
+{
+	bool rc = true ;
+
+	if ( partition .alignment == ALIGN_CYLINDER )
+		rc = snap_to_cylinder( device, partition, error ) ;
+	else if ( partition .alignment == ALIGN_MEBIBYTE )
+		rc = snap_to_mebibyte( device, partition, error ) ;
+
+	//Ensure that partition start and end are not beyond the ends of the disk device
+	if ( partition .sector_start < 0 )
+		partition .sector_start = 0 ;
+	if ( partition .sector_end > device .length )
+		partition .sector_end = device .length - 1 ;
+
+	//do some basic checks on the partition
+	if ( partition .get_sector_length() <= 0 )
+	{
+		error = String::ucompose( _("A partition cannot have a length of %1 sectors"),
+				partition .get_sector_length() ) ;
+		return false ;
+	}
+
+	if ( partition .get_sector_length() < partition .sectors_used )
+	{
+		error = String::ucompose(
+				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
+				partition .sectors_used,
+				partition .get_sector_length() ) ;
+		return false ;
+	}
+
+	//FIXME: it would be perfect if we could check for overlapping with adjacent partitions as well,
+	//however, finding the adjacent partitions is not as easy as it seems and at this moment all the dialogs
+	//already perform these checks. A perfect 'fixme-later' ;)
+
+	return rc ;
 }
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
@@ -1375,7 +1471,9 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 		if ( lp_partition )
 		{
-			if ( new_partition .alignment == ALIGN_STRICT )
+			if (   new_partition .alignment == ALIGN_STRICT
+			    || new_partition .alignment == ALIGN_MEBIBYTE
+			   )
 			{
 				PedGeometry *geom = ped_geometry_new( lp_device,
 								      new_partition .sector_start,
@@ -1548,6 +1646,7 @@ bool GParted_Core::resize_move( const Device & device,
 			  	OperationDetail & operationdetail ) 
 {
 	if (   (partition_new .alignment == ALIGN_STRICT)
+	    || (partition_new .alignment == ALIGN_MEBIBYTE)
 	    || partition_new .strict_start
 	    || calculate_exact_geom( partition_old, partition_new, operationdetail )
 	   )
@@ -1890,7 +1989,10 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		
 		if ( lp_partition )
 		{
-			if ( (partition_new .alignment == ALIGN_STRICT) || partition_new .strict_start ) {
+			if (   (partition_new .alignment == ALIGN_STRICT)
+			    || (partition_new .alignment == ALIGN_MEBIBYTE)
+			    || partition_new .strict_start
+			   ) {
 				PedGeometry *geom = ped_geometry_new( lp_device,
 									  partition_new .sector_start,
 									  partition_new .get_sector_length() ) ;

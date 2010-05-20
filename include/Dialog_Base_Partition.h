@@ -75,7 +75,12 @@ protected:
 
 	//used to enable/disable OKbutton...
 	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;
-	
+
+	//used to reserve space for Master or Extended Boot Record (1 MiB)
+	int MIN_SPACE_BEFORE_MB ;
+
+	int MB_Needed_for_Boot_Record( const Partition & partition ) ;
+
 	//signal handlers
 	void on_signal_move( int, int );
 	void on_signal_resize( int, int, Frame_Resizer_Base::ArrowType );

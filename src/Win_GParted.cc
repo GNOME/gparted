@@ -669,10 +669,12 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	{ 
 		Glib::ustring error ;
 		//FIXME: this is becoming a mess.. maybe it's better to check if partition_new > 0
-		if ( operation ->type == OPERATION_DELETE || 
-		     operation ->type == OPERATION_FORMAT || 
+		if ( operation ->type == OPERATION_DELETE ||
+		     operation ->type == OPERATION_FORMAT ||
 		     operation ->type == OPERATION_CHECK ||
-		     gparted_core .snap_to_cylinder( operation ->device, operation ->partition_new, error ) )
+		     operation ->type == OPERATION_LABEL_PARTITION ||
+		     gparted_core .snap_to_alignment( operation ->device, operation ->partition_new, error )
+		   )
 		{
 			operation ->create_description() ;
 
@@ -858,46 +860,34 @@ void Win_GParted::set_valid_operations()
 			else
 				required_size = copied_partition .get_byte_length() ;
 
-			//  /* Copy Primary not at start of disk to within Extended partition */
-			//  Adjust when a primary partition is copied and pasted
-			//  into an unallocated space in an extended partition
-			//  of an MSDOS partition table.
-			//  Since the Extended Boot Record requires an additional track,
-			//  this must be considered in the required space for the
-			//  destination (selected) partition.
-			//  NOTE:  This problem does not occur for a primary partition
-			//  at the the start of the disk because the size of the EBR and
-			//  Master Boot Record are the same.
-			//
-			//  /* Copy Primary not at start of disk to Primary at start of disk */
-			//  Also Adjust when a primary partition that does not start at the
-			//  beginning of the disk is copied and pasted
-			//  into an unallocated space at the start of the disk device.
-			//  Since the Master Boot Record requires an additional track,
-			//  this must be considered in the required space for the
-			//  destination (selected) partition.
-			//
-			//  Because the largest unit used in the GUI is one
-			//  cylinder size (round to cylinders), the space
-			//  needed in the destination partition needs to be increased
-			//  by one cylinder size.
-			if (   (/* Copy Primary not at start of disk to within Extended partition */
-				       copied_partition .type == TYPE_PRIMARY
-				    && copied_partition .sector_start > devices[ current_device ] .sectors /* 63 for MSDOS Partition Table */
-				    && devices[ current_device ] .disktype == "msdos" 
-				    && selected_partition .type == TYPE_UNALLOCATED
-				    && selected_partition .inside_extended
-				   )
-				|| ( /* Copy Primary not at start of disk to Primary at start of disk */
-				       copied_partition .type == TYPE_PRIMARY
-				    && copied_partition .sector_start > devices[ current_device ] .sectors /* 63 for MSDOS Partition Table */
-				    && devices[ current_device ] .disktype == "msdos" 
-				    && selected_partition .type == TYPE_UNALLOCATED
-				    && selected_partition .sector_start <= devices[ current_device ] .sectors  /* Beginning of disk device */
-				    && ! selected_partition .inside_extended
-				   )
+			//Determine if space is needed for the Master Boot Record or
+			//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
+			//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
+			//  NOTE:  This logic also contained in Dialog_Base_Partition::MB_Needed_for_Boot_Record
+			if (   (   selected_partition .inside_extended
+			        && selected_partition .type == TYPE_UNALLOCATED
+			       )
+			    || ( selected_partition .type == TYPE_LOGICAL )
+			                                     /* Beginning of disk device */
+			    || ( selected_partition .sector_start <= (MEBIBYTE / selected_partition .sector_size) )
 			   )
-				required_size += devices[ current_device ] .cylsize * devices[ current_device ] .sector_size ;
+				required_size += MEBIBYTE;
+
+			//Determine if space is needed for the Extended Boot Record for a logical partition
+			//  after this partition.  Generally an an additional track or MEBIBYTE
+			//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
+			if (   (   (   selected_partition .inside_extended
+			            && selected_partition .type == TYPE_UNALLOCATED
+			           )
+			        || ( selected_partition .type == TYPE_LOGICAL )
+			       )
+			    && ( selected_partition .sector_end
+			         < ( devices[ current_device ] .length
+			             - ( 2 * MEBIBYTE / devices[ current_device ] .sector_size )
+			           )
+			       )
+			   )
+				required_size += MEBIBYTE;
 
 			if ( required_size <= selected_partition .get_byte_length() )
 				allow_paste( true ) ;

@@ -46,7 +46,8 @@ enum PartitionStatus {
 
 enum PartitionAlignment {
 	ALIGN_CYLINDER = 0,    //Align to nearest cylinder
-	ALIGN_STRICT   = 1     //Strict alignment - no rounding
+	ALIGN_MEBIBYTE = 1,    //Align to nearest mebibyte
+	ALIGN_STRICT   = 2     //Strict alignment - no rounding
 	                       //  Indicator if start and end sectors must remain unchanged
 };
 
@@ -124,6 +125,7 @@ public:
 	std::vector<Partition> logicals ;
 
 	bool strict_start ;	//Indicator if start sector must stay unchanged
+	Sector free_space_before ;  //Free space preceding partition value
 
 	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.
 

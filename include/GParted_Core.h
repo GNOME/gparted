@@ -40,6 +40,8 @@ public:
 	void set_devices( std::vector<Device> & devices ) ;
 	
 	bool snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) ;
+	bool snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) ;
+	bool snap_to_alignment( const Device & device, Partition & partition, Glib::ustring & error ) ;
 	bool apply_operation_to_disk( Operation * operation );
 	
 	bool set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;

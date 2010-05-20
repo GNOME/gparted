@@ -39,6 +39,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_rgb_partition_color( copied_partition .color ) ;
 	
 	//set some widely used values...
+	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
 	START = selected_partition .sector_start ;
 	total_length = selected_partition .get_sector_length() ;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition .get_sector_length(), selected_partition .sector_size, UNIT_MIB ) ) ;
@@ -48,51 +49,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//  handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
 	Sector copied_min_sectors = ( copied_partition .get_byte_length() + (selected_partition .sector_size - 1) ) / selected_partition .sector_size ;
 
-	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, selected_partition .sector_size, UNIT_MIB ) ) ; 
-	//  /* Copy Primary not at start of disk to within Extended partition */
-	//  Adjust when a primary partition is copied and pasted
-	//  into an unallocated space in an extended partition
-	//  of an MSDOS partition table.
-	//  Since the Extended Boot Record requires an additional track,
-	//  this must be considered in the required space for the
-	//  destination (selected) partition.
-	//  NOTE:  This problem does not occur for a primary partition
-	//  at the the start of the disk because the size of the EBR and
-	//  Master Boot Record are the same.
-	//
-	//  /* Copy Primary not at start of disk to Primary at start of disk */
-	//  Also Adjust when a primary partition that does not start at the
-	//  beginning of the disk is copied and pasted
-	//  into an unallocated space at the start of the disk device.
-	//  Since the Master Boot Record requires an additional track,
-	//  this must be considered in the required space for the
-	//  destination (selected) partition.
-	//
-	//  Because the largest unit used in the GUI is one
-	//  cylinder size (round to cylinders), the space
-	//  needed in the destination partition needs to be increased
-	//  by enough to round up one cylinder size.
-	//  Increase by half a cylinder size (or 4 MB) because this
-	//  will round up to the next cylinder size.
-	//  8 MB is typical cylinder size with todays larger disks.
-	//  8 MB = (255 heads) * (63 sectors) * (512 bytes)
-	//
-	//FIXME:  Should confirm MSDOS partition table type, track sector size, and use cylinder size from device
-	if (   (/* Copy Primary not at start of disk to within Extended partition */
-		       copied_partition .type == TYPE_PRIMARY
-		    && copied_partition .sector_start > 63
-		    && selected_partition .type == TYPE_UNALLOCATED
-		    && selected_partition .inside_extended
-		   )
-		|| ( /* Copy Primary not at start of disk to Primary at start of disk */
-		       copied_partition .type == TYPE_PRIMARY
-		    && copied_partition .sector_start > 63
-		    && selected_partition .type == TYPE_UNALLOCATED
-		    && selected_partition .sector_start <=63 /* Beginning of disk device */
-		    && ! selected_partition .inside_extended
-		   )
-	   )
-		COPIED_LENGTH_MB += 4 ;
+	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, selected_partition .sector_size, UNIT_MIB ) ) ;
 
 	//now calculate proportional length of partition 
 	frame_resizer_base ->set_x_start( 0 ) ;
@@ -103,7 +60,10 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 				copied_partition .sectors_used, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 
 	if ( fs .grow )
-		fs .MAX = ( ! fs .MAX || fs .MAX > (TOTAL_MB * MEBIBYTE) ) ? (TOTAL_MB * MEBIBYTE) : fs .MAX - (BUF * selected_partition .sector_size) ;
+		if ( ! fs .MAX || fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
+			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
+		else
+			fs .MAX =  fs .MAX - (BUF * selected_partition .sector_size) ;
 	else
 		fs .MAX = copied_partition .get_byte_length() ;
 
@@ -115,27 +75,27 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
-	spinbutton_before .set_value( 0 ) ;
-		
+	spinbutton_before .set_range( MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
+
 	//set values of spinbutton_size
-	spinbutton_size .set_range(
-		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
+	spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) )
+	                          , ceil( fs .MAX / double(MEBIBYTE) )
+	                          ) ;
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ) ) ;
-	spinbutton_after .set_value( TOTAL_MB - COPIED_LENGTH_MB ) ; 
+	spinbutton_after .set_range( 0, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+	spinbutton_after .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
 	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
 					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 	
 	//set contents of label_minmax
-	Set_MinMax_Text( 
-		Utils::round( Utils::sector_to_unit( fs .MIN, 1 /* Byte */, UNIT_MIB ) ),
-		Utils::round( Utils::sector_to_unit( fs .MAX, 1 /* Byte */, UNIT_MIB ) ) ) ;
+	Set_MinMax_Text( ceil( fs .MIN / double(MEBIBYTE) )
+	               , ceil( fs .MAX / double(MEBIBYTE) )
+	               ) ;
 
 	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
 	this ->selected_partition = copied_partition ;
