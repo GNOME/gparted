@@ -155,8 +155,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	spinbutton_size .set_value( ceil( fs .MAX / double(MEBIBYTE) ) ) ; 
 	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
 	
-	//euhrm, this wil only happen when there's a very small free space (usually the effect of a bad partitionmanager)
-	if ( TOTAL_MB * (MEBIBYTE / this ->selected_partition .sector_size) < this ->cylinder_size )
+	//Disable resizing when the total area is less than two mebibytes
+	if ( TOTAL_MB < 2 )
 		frame_resizer_base ->set_sensitive( false ) ;
 
 	//connect signal handler for Dialog_Base_Partiton optionmenu_alignment
