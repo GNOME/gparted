@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@ Frame_Resizer_Base::Frame_Resizer_Base()
 {
 	BORDER = 8 ;
 	GRIPPER = 10 ;
+	X_MIN_SPACE_BEFORE = 0 ;
 
 	fixed_start = false ;
 	init() ;
@@ -85,6 +87,11 @@ void Frame_Resizer_Base::set_x_start( int x_start )
 	this ->X_START = x_start + GRIPPER ;
 } 
 
+void Frame_Resizer_Base::set_x_min_space_before( int x_min_space_before ) 
+{
+	this ->X_MIN_SPACE_BEFORE = x_min_space_before ;
+}
+
 void Frame_Resizer_Base::set_x_end( int x_end ) 
 { 
 	this ->X_END = x_end + GRIPPER + BORDER * 2 ; 
@@ -147,7 +154,7 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if ( ev ->x > GRIPPER &&
+			if ( ev ->x > (GRIPPER + X_MIN_SPACE_BEFORE) &&
 			     (X_END - ev ->x) < MAX_SIZE &&
 			     (X_END - ev ->x) > MIN_SIZE )
 			{
@@ -161,8 +168,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 				{
 					X_START = X_END - MAX_SIZE ;
 
-					if ( X_START < GRIPPER )
-						X_START = GRIPPER ;
+					if ( X_START < (GRIPPER + X_MIN_SPACE_BEFORE) )
+						X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
 			
 					//-1 to force the spinbutton to its max.
 					signal_resize .emit( X_START - GRIPPER -1,
@@ -170,11 +177,11 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 							     ARROW_LEFT ) ; 
 				}
 			}
-			else if ( ev ->x <= GRIPPER )
+			else if ( ev ->x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
 			{
-				if ( X_START > GRIPPER && X_END - X_START < MAX_SIZE )
+				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) && X_END - X_START < MAX_SIZE )
 				{
-					X_START = GRIPPER ;
+					X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
 				
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
@@ -249,17 +256,17 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		{
 			temp_x = X_START + static_cast<int>( ev ->x - X_START_MOVE );
 			temp_y = X_END - X_START ;
-		
-			if ( temp_x > GRIPPER && temp_x + temp_y < 500 + GRIPPER + BORDER * 2 )
+
+			if ( temp_x > (GRIPPER + X_MIN_SPACE_BEFORE) && temp_x + temp_y < 500 + GRIPPER + BORDER * 2 )
 			{
 				X_START = temp_x ;
 				X_END = X_START + temp_y ;
 			}
-			else if ( temp_x <= GRIPPER )
+			else if ( temp_x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
 			{
-				if ( X_START > GRIPPER )
+				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) )
 				{
-					X_START = GRIPPER ;
+					X_START = GRIPPER + X_MIN_SPACE_BEFORE;
 					X_END = X_START + temp_y ;
 				}
 			}
@@ -271,8 +278,8 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 					X_START = X_END - temp_y ;
 				}
 			}
-			
-			X_START_MOVE = static_cast<int>( ev ->x ) ;		
+
+			X_START_MOVE = static_cast<int>( ev ->x ) ;
 			signal_move .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2 ) ;
 		}
 		

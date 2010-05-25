@@ -52,8 +52,9 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	long COPIED_LENGTH_MB = Utils::round( Utils::sector_to_unit( copied_min_sectors, selected_partition .sector_size, UNIT_MIB ) ) ;
 
 	//now calculate proportional length of partition 
-	frame_resizer_base ->set_x_start( 0 ) ;
-	int x_end = Utils::round( COPIED_LENGTH_MB / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
+	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
+	frame_resizer_base ->set_x_start( Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL) ) ;
+	int x_end = Utils::round( (MIN_SPACE_BEFORE_MB + COPIED_LENGTH_MB) / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
 	frame_resizer_base ->set_used( 
 		Utils::round( Utils::sector_to_unit( 

@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -35,19 +36,20 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 	{
 		if ( GRIP_LEFT )
 		{
-			if (  ev ->x > GRIPPER && 
-		  	      ev->x < X_END - BORDER *2 && 
-		     	      ( ev ->x < USED_START || USED == 0 ) ) 
+			if (  ev ->x > (GRIPPER + X_MIN_SPACE_BEFORE) &&
+			      ev ->x < (X_END - MIN_SIZE - BORDER * 2) &&
+			      ( ev ->x < USED_START || USED == 0 )
+			   )
 			{
 				X_START = static_cast<int>( ev ->x ) ;
 				
 				signal_resize .emit( X_START - GRIPPER, X_END - GRIPPER - BORDER * 2, ARROW_LEFT ) ; 
 			}
-			else if ( ev ->x <= GRIPPER )
+			else if ( ev ->x <= (GRIPPER + X_MIN_SPACE_BEFORE) )
 			{
-				if ( X_START > GRIPPER )
+				if ( X_START > (GRIPPER + X_MIN_SPACE_BEFORE) )
 				{
-					X_START = GRIPPER ;
+					X_START = GRIPPER + X_MIN_SPACE_BEFORE ;
 
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
@@ -66,11 +68,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 							     ARROW_LEFT ) ;
 				}
 			}
-			else if ( USED == 0 && ev ->x >= X_END - BORDER * 2 )
+			else if ( USED == 0 && ev ->x >= (X_END - MIN_SIZE - BORDER * 2) )
 			{
 				if ( X_START < X_END - BORDER * 2 )
 				{
-					X_START = X_END - BORDER * 2 ;
+					X_START = X_END - MIN_SIZE - BORDER * 2 ;
 					
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,
@@ -81,7 +83,7 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		else if ( GRIP_RIGHT )
 		{
 			if ( ev ->x < 500 + GRIPPER + BORDER * 2 && 
-			     ev ->x > X_START + BORDER *2 &&
+			     ev ->x > (X_START + MIN_SIZE + BORDER * 2) &&
 			     ( ev ->x > USED_START + USED + BORDER *2 || USED == 0 ) )
 			{
 				X_END = static_cast<int>( ev ->x ) ;
@@ -110,11 +112,11 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 							     X_END - GRIPPER - BORDER * 2 -1, ARROW_RIGHT ) ;
 				}
 			}
-			else if ( USED == 0 && ev ->x <= X_START + BORDER *2 )
+			else if ( USED == 0 && ev ->x <= (X_START + MIN_SIZE + BORDER * 2) )
 			{
-				if ( X_END > X_START + BORDER *2 )
+				if ( X_END > (X_START + MIN_SIZE + BORDER * 2) )
 				{
-					X_END = X_START + BORDER *2 ;
+					X_END = X_START + MIN_SIZE + BORDER *2 ;
 					
 					signal_resize .emit( X_START - GRIPPER,
 							     X_END - GRIPPER - BORDER * 2,

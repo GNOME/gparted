@@ -110,6 +110,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 		
 	//now calculate proportional length of partition 
+	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
 	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_x_end( 
 		Utils::round( selected_partition .get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
@@ -198,6 +199,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//calculate proportional length of partition ( in pixels )
+	frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
 	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_x_end( Utils::round( selected_partition .get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
 	

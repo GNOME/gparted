@@ -279,6 +279,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		if ( ! fs .MAX || ( fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
 			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
 
+		frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
 		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
 						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
 

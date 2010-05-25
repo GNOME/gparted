@@ -1,4 +1,5 @@
 /* Copyright (C) 2004 Bart
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,6 +37,7 @@ public:
 	void set_rgb_partition_color( const Gdk::Color & color ) ;
 	void override_default_rgb_unused_color( const Gdk::Color & color ) ;
 	
+	void set_x_min_space_before( int x_min_space_before ) ;
 	void set_x_start( int x_start ) ;
 	void set_x_end( int x_end ) ;
 	void set_used( int used );
@@ -54,6 +56,7 @@ public:
 
 protected:
 	int BORDER, GRIPPER ;
+	int X_MIN_SPACE_BEFORE ;
 	int X_START, USED, UNUSED, X_END, X_START_MOVE, MIN_SIZE, MAX_SIZE;
 	bool GRIP_LEFT, GRIP_RIGHT, GRIP_MOVE ;
 
