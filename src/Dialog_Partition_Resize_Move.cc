@@ -141,9 +141,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		spinbutton_before .set_range( MIN_SPACE_BEFORE_MB
 		                            , TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) )
 		                            ) ;
-		spinbutton_before .set_value( 
-			Utils::round( Utils::sector_to_unit( previous, selected_partition .sector_size, UNIT_MIB ) )
-			- MIN_SPACE_BEFORE_MB ) ;
+		spinbutton_before .set_value(
+			Utils::round( Utils::sector_to_unit( previous, selected_partition .sector_size, UNIT_MIB ) ) ) ;
 	}
 
 	//set values of spinbutton_size 
