@@ -265,12 +265,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
 
-		if ( optionmenu_alignment .get_history() == ALIGN_CYLINDER )
-		{
-			if ( (fs .MIN / selected_partition .sector_size) < cylinder_size )
-				fs .MIN = cylinder_size * selected_partition .sector_size ;
-		}
-		else if ( fs .MIN < MEBIBYTE )
+		if ( fs .MIN < MEBIBYTE )
 			fs .MIN = MEBIBYTE ;
 
 		if ( selected_partition .get_byte_length() < fs .MIN )
