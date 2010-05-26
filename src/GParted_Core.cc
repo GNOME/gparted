@@ -373,6 +373,12 @@ Glib::ustring GParted_Core::get_thread_status_message( )
 bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 
 {
 	Sector diff = 0;
+
+	//Determine if partition size is less than a disk cylinder
+	bool less_than_cylinder = false;
+	if ( ( partition .sector_end - partition .sector_start ) < device .cylsize )
+		less_than_cylinder = true;
+
 	if ( partition.type == TYPE_LOGICAL ||
 	     partition.sector_start == device .sectors
 	   )
@@ -396,7 +402,7 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 	}
 	if ( diff && ! partition .strict_start  )
 	{
-		if ( diff < ( device .cylsize / 2 ) )
+		if ( diff < ( device .cylsize / 2 ) || less_than_cylinder )
 			partition .sector_start -= diff ;
 		else
 			partition .sector_start += (device .cylsize - diff ) ;
@@ -405,7 +411,7 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 	diff = (partition .sector_end +1) % device .cylsize ;
 	if ( diff )
 	{
-		if ( diff < ( device .cylsize / 2 ) )
+		if ( diff < ( device .cylsize / 2 ) && ! less_than_cylinder )
 			partition .sector_end -= diff ;
 		else
 			partition .sector_end += (device .cylsize - diff ) ;
