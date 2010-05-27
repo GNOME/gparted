@@ -71,9 +71,9 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
 	{
-		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end ) > (MEBIBYTE / sector_size) )
+		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) > (MEBIBYTE / sector_size) )
 		    || (   ( partitions[ t + 1 ] .type != TYPE_LOGICAL )  // Only show exactly 1 MiB if following partition is not logical.
-		        && ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end ) == (MEBIBYTE / sector_size)
+		        && ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) == (MEBIBYTE / sector_size) )
 		       )
 		   )
 		{

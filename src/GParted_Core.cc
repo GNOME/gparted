@@ -1229,10 +1229,10 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
 	{
-		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end ) > (MEBIBYTE / sector_size) )
+		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) > (MEBIBYTE / sector_size) )
 		    || (   ( partitions[ t + 1 ] .type != TYPE_LOGICAL )  // Only show exactly 1 MiB if following partition is not logical.
-		        && ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end ) == (MEBIBYTE / sector_size)
-			   )
+		        && ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) == (MEBIBYTE / sector_size) )
+		       )
 		   )
 		{
 			partition_temp .sector_start = partitions[ t ] .sector_end +1 ;
@@ -1243,7 +1243,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 
 	//last partition end <---> end
-	if ( (end - partitions .back() .sector_end ) >= (MEBIBYTE / sector_size) )
+	if ( (end - partitions .back() .sector_end) >= (MEBIBYTE / sector_size) )
 	{
 		partition_temp .sector_start = partitions .back() .sector_end +1 ;
 		partition_temp .sector_end = end ;
