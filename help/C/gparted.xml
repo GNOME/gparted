@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.4.6">
-  <!ENTITY manrevision "1.1">
-  <!ENTITY date "July 2009">
+  <!ENTITY appversion "0.6.0">
+  <!ENTITY manrevision "1.2">
+  <!ENTITY date "June 2010">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -15,10 +15,15 @@
   -->
 ]>
 
+<!-- Remember to update the revision history -->
+
 <!--
       To generate a single html file of this document, use the command:
         xmlto html-nochunks gparted.xml
--->
+
+      To test this document in a viewer, use the command:
+        gnome-help file:/full-path-to-gparted.xml
+ -->
 
 <!-- ============= Document Header =================================== -->
 <?db.chunk.max_depth 4?>
@@ -93,27 +98,43 @@
 
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
-<!-- Remember to remove the &manrevision; entity from the revision entries other
-     than the current revision. -->
     <revhistory>
       <revision>
-        <revnumber>&appname; Manual V&manrevision;</revnumber>
-        <date>&date;</date>
+        <revnumber>&appname; Manual V1.2</revnumber>
+        <date>June 2010</date>
+        <revremark>Describes version 0.6.0 of &appname;</revremark>
         <revdescription>
           <para role="author">Curtis Gedak</para>
           <para role="publisher">&appname; Project</para>
         </revdescription> 
       </revision>
-<!-- Uncomment this and maintain if you are not the original author
       <revision>
-        <revnumber>&appname; Manual V&manrevision;</revnumber>
-        <date>&date;</date>
+        <revnumber>&appname; Manual V1.1</revnumber>
+        <date>July 2009</date>
+        <revremark>Describes version 0.4.6 of &appname;</revremark>
         <revdescription>
-          <para role="author">firstname lastname</para>
-          <para role="publisher">publishername</para>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
         </revdescription> 
       </revision>
--->
+      <revision>
+        <revnumber>&appname; Manual V1.0</revnumber>
+        <date>January 2009</date>
+        <revremark>Describes version 0.4.2 of &appname;</revremark>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+        </revdescription> 
+      </revision>
+      <revision>
+        <revnumber>&appname; Manual V0.3.9</revnumber>
+        <date>September 2008</date>
+        <revremark>Describes version 0.3.9 of &appname;</revremark>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+        </revdescription> 
+      </revision>
     </revhistory>
 
     <releaseinfo>
@@ -1001,41 +1022,49 @@
         <sect4 id="gparted-specify-partition-alignment">
           <title>Specifying Partition Alignment</title>
           <para>
-          To specify the alignment of the partition, use the
-          <guilabel>Round to cylinders</guilabel> check box.
+          To specify the alignment of the partition, click the 
+          <guilabel>Align to</guilabel> arrow button, and select from the list.
           </para>
           <itemizedlist>
             <listitem>
               <para>
-              To enable, select the <guilabel>Round to cylinders</guilabel>
-              check box.
+              Use <guilabel>MiB</guilabel> alignment for modern
+              operating systems.  This setting aligns partitions to
+              start and end on precise mebibyte (1,048,576 byte)
+              boundaries.  MiB alignment provides enhanced performance
+              when used with RAID systems and with Solid State Drives,
+              such as USB flash drives.
               </para>
             </listitem>
             <listitem>
               <para>
-              To disable, deselect the <guilabel>Round to cylinders</guilabel>
-              check box.
+              Use <guilabel>Cylinder</guilabel> alignment to maintain
+              compatibility with operating systems released before the
+              year 2000, such as DOS.  This setting aligns partitions
+              to start and end on disk cylinder boundaries.
+              </para>
+              <tip>
+                <para>
+                The Cylinder/Head/Sector values reported by modern
+                disk devices no longer have a direct physical
+                relationship to the data stored on the disk device.
+                Hence it is no longer valid to use this alignment
+                setting to achieve enhanced performance.
+                </para>
+              </tip>
+            </listitem>
+            <listitem>
+              <para>
+              Use <guilabel>None</guilabel> only if you have an
+              in-depth knowledge of disk structure, partition tables,
+              and boot records.  This setting places partition
+              boundaries relative to the end of any immediately
+              preceding partition on the disk device.  This setting
+              is not guaranteed to reserve or respect space required
+              for boot records.
               </para>
             </listitem>
           </itemizedlist>
-          <note>
-            <para>
-            When enabled, <guilabel>Round to cylinders</guilabel>
-            aligns partition boundaries on the cylinder boundaries
-            for the disk device.  Enabled is the default setting.
-            </para>
-          </note>
-          <tip>
-            <para>
-            If you want to maintain compatibility with old operating systems,
-            enable <guilabel>Round to cylinders</guilabel>.
-            </para>
-            <para>
-            If you do not want the start of an existing partition to move,
-            then disable <guilabel>Round to cylinders</guilabel>
-            and do not change the <guilabel>free space preceding</guilabel> value.
-            </para>
-          </tip>
         </sect4>
 
 <!-- ============= To Specify a Partition Type ======================= -->
@@ -1189,6 +1218,13 @@
               Adjust the size of the partition.
               See <xref linkend="gparted-specify-partition-size-and-location"/>.
               </para>
+              <tip>
+                <para>
+                If you do not want the start of an existing partition
+                to move, then do not change the <guilabel>free space
+                preceding</guilabel> value.
+                </para>
+              </tip>
             </listitem>
             <listitem>
               <para>
