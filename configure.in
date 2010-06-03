@@ -124,9 +124,9 @@ int main ()
 }
 ,[AC_MSG_RESULT(yes)
   AC_DEFINE([HAVE_LIBPARTED_2_2_0_PLUS], [1], [Define to 1 if libparted contains improved partition table re-read code])
-  need_pt_reread_work_around=no]
+  need_pt_reread_work_around=no; support_sector_size_gt_512=yes]
 ,[AC_MSG_RESULT(no)
-  need_pt_reread_work_around=yes]
+  need_pt_reread_work_around=yes; support_sector_size_gt_512=no]
 )
 LIBS="$LIBS_save"
 
@@ -192,11 +192,12 @@ dnl======================
 
 echo ""
 echo "================ Final configuration ==================="
-echo "          Installing into prefix  :  $prefix"
+echo "                 Installing into prefix  :  $prefix"
 echo ""
-echo "            Build documentation?  :  $enable_doc"
+echo "                   Build documentation?  :  $enable_doc"
 echo ""
-echo "    Need pt re-read work around?  :  $need_pt_reread_work_around"
+echo "   Need part table re-read work around?  :  $need_pt_reread_work_around"
+echo "     Supports sector sizes > 512 bytes?  :  $support_sector_size_gt_512"
 echo ""
 echo " If all settings are OK, type make and make install "
 echo "========================================================"
