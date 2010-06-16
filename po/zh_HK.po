@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted 0.5.2-git\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 22:29+0800\n"
-"PO-Revision-Date: 2010-03-30 22:30+0800\n"
-"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
+"POT-Creation-Date: 2010-06-16 14:40+0800\n"
+"PO-Revision-Date: 2010-06-16 14:44+0800\n"
+"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,8 +22,8 @@ msgstr "建立、編輯或刪除分割區"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:356
-#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1101
-#: ../src/Win_GParted.cc:1285
+#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1099
+#: ../src/Win_GParted.cc:1283
 msgid "GParted"
 msgstr "GParted"
 
@@ -35,38 +35,55 @@ msgstr "GParted 分割區編輯器"
 msgid "Partition Editor"
 msgstr "分割區編輯器"
 
-#: ../src/Dialog_Base_Partition.cc:57
+#: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
 msgstr "前端的剩餘空間 (MiB)："
 
 #. add spinbutton_size
-#: ../src/Dialog_Base_Partition.cc:66
+#: ../src/Dialog_Base_Partition.cc:65
 msgid "New size (MiB):"
 msgstr "新的大小 (MiB)："
 
 #. add spinbutton_after
-#: ../src/Dialog_Base_Partition.cc:73
+#: ../src/Dialog_Base_Partition.cc:72
 msgid "Free space following (MiB):"
 msgstr "後端的剩餘空間 (MiB)："
 
-#. add checkbutton
-#: ../src/Dialog_Base_Partition.cc:83
-msgid "Round to cylinders"
-msgstr "最接近的磁柱"
+#. add alignment
+#. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
+#: ../src/Dialog_Base_Partition.cc:96
+msgid "Align to:"
+msgstr "貼齊："
 
-#: ../src/Dialog_Base_Partition.cc:174
+#. fill partition alignment menu
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:101
+msgid "Cylinder"
+msgstr "磁柱"
+
+#. TO TRANSLATORS: Menu option for label "Align to:"
+#: ../src/Dialog_Base_Partition.cc:103
+msgid "MiB"
+msgstr "MiB"
+
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:105
+msgid "None"
+msgstr "沒有"
+
+#: ../src/Dialog_Base_Partition.cc:200
 msgid "Resize"
 msgstr "調整大小"
 
-#: ../src/Dialog_Base_Partition.cc:174 ../src/Win_GParted.cc:230
+#: ../src/Dialog_Base_Partition.cc:200 ../src/Win_GParted.cc:230
 msgid "Resize/Move"
 msgstr "調整大小/移動"
 
-#: ../src/Dialog_Base_Partition.cc:191
+#: ../src/Dialog_Base_Partition.cc:217
 msgid "Minimum size: %1 MiB"
 msgstr "大小下限：%1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:192
+#: ../src/Dialog_Base_Partition.cc:218
 msgid "Maximum size: %1 MiB"
 msgstr "大小上限：%1 MiB"
 
@@ -204,20 +221,20 @@ msgid "Create as:"
 msgstr "建立為："
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:74
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "主要分割區"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:77
-#: ../src/OperationDelete.cc:76
+#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:78
+#: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "邏輯分割區"
 
-#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:80
+#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "伸延分割區"
 
-#: ../src/Dialog_Partition_New.cc:193
+#: ../src/Dialog_Partition_New.cc:198
 msgid "New Partition #%1"
 msgstr "新增分割區 #%1"
 
@@ -438,391 +455,406 @@ msgstr "正在掃描 %1"
 msgid "Confirming %1"
 msgstr "正在確認 %1"
 
-#. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes because gparted only supports a size of 512 bytes.
-#: ../src/GParted_Core.cc:254
+#. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
+#: ../src/GParted_Core.cc:258
+msgid "Ignoring device %1 with logical sector size of %2 bytes."
+msgstr "略過邏輯磁區大小為 %2 位元組的裝置 %1。"
+
+#: ../src/GParted_Core.cc:260
 msgid ""
-"Ignoring device %1 with logical sector size of %2 bytes because gparted only "
-"supports a size of 512 bytes."
-msgstr "略過邏輯磁區大小為 %2 位元組的裝置 %s，因為 gparted 只支援 512 位元組的大小。"
+"GParted requires libparted version 2.2 or higher to support devices with "
+"sector sizes larger than 512 bytes."
+msgstr "GParted 需要 libparted 版本 2.2 或更高的版本才能支援磁區大於 512 位元組的裝置。"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:290
+#: ../src/GParted_Core.cc:297
 msgid "Searching %1 partitions"
 msgstr "正在搜尋 %1 分割區"
 
-#: ../src/GParted_Core.cc:332
+#: ../src/GParted_Core.cc:339
 msgid "unrecognized"
 msgstr "無法確認"
 
-#: ../src/GParted_Core.cc:418
+#: ../src/GParted_Core.cc:529
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "分割區的長度不能是 %1 個磁區"
 
-#: ../src/GParted_Core.cc:426
+#: ../src/GParted_Core.cc:537
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "分割區的已用磁區 (%1) 大於其本身的長度 (%2) 是無效的"
 
-#: ../src/GParted_Core.cc:492
+#: ../src/GParted_Core.cc:602
 msgid "libparted messages"
 msgstr "libparted 訊息"
 
-#: ../src/GParted_Core.cc:912
+#: ../src/GParted_Core.cc:1025
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "尚未支援 Linux Unified Key Setup 加密。"
 
-#: ../src/GParted_Core.cc:1014
+#: ../src/GParted_Core.cc:1142
 msgid "Logical Volume Management is not yet supported."
 msgstr "尚未支援 Logical Volume Management。"
 
-#: ../src/GParted_Core.cc:1039
+#: ../src/GParted_Core.cc:1167
 msgid "BTRFS is not yet supported."
 msgstr "尚未支援 BTRFS。"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1046
+#: ../src/GParted_Core.cc:1174
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "偵測不到任何檔案系統！原因可能是："
 
-#: ../src/GParted_Core.cc:1048
+#: ../src/GParted_Core.cc:1176
 msgid "The file system is damaged"
 msgstr "檔案系統已受損"
 
-#: ../src/GParted_Core.cc:1050
+#: ../src/GParted_Core.cc:1178
 msgid "The file system is unknown to GParted"
 msgstr "GParted 不知道此檔案系統的類型"
 
-#: ../src/GParted_Core.cc:1052
+#: ../src/GParted_Core.cc:1180
 msgid "There is no file system available (unformatted)"
 msgstr "這裏沒有檔案系統存在（未格式化）"
 
-#: ../src/GParted_Core.cc:1178
+#: ../src/GParted_Core.cc:1313
 msgid "Unable to find mount point"
 msgstr "找不到掛載點"
 
-#: ../src/GParted_Core.cc:1241
+#: ../src/GParted_Core.cc:1376
 msgid "Unable to read the contents of this file system!"
 msgstr "無法讀取此檔案系統的內容！"
 
-#: ../src/GParted_Core.cc:1243
+#: ../src/GParted_Core.cc:1378
 msgid "Because of this some operations may be unavailable."
 msgstr "原因可能是有些動作不存在。"
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1248
+#: ../src/GParted_Core.cc:1383
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "支援 %1 檔案系統需要以下的軟件套件：%2"
 
-#: ../src/GParted_Core.cc:1319
+#: ../src/GParted_Core.cc:1454
 msgid "create empty partition"
 msgstr "建立空白分割區"
 
-#: ../src/GParted_Core.cc:1387 ../src/GParted_Core.cc:2502
+#: ../src/GParted_Core.cc:1524 ../src/GParted_Core.cc:2713
 msgid "path: %1"
 msgstr "路徑：%1"
 
-#: ../src/GParted_Core.cc:1388 ../src/GParted_Core.cc:2503
+#: ../src/GParted_Core.cc:1525 ../src/GParted_Core.cc:2714
 msgid "start: %1"
 msgstr "開始磁區：%1"
 
-#: ../src/GParted_Core.cc:1389 ../src/GParted_Core.cc:2504
+#: ../src/GParted_Core.cc:1526 ../src/GParted_Core.cc:2715
 msgid "end: %1"
 msgstr "結束磁區：%1"
 
-#: ../src/GParted_Core.cc:1390 ../src/GParted_Core.cc:2505
+#: ../src/GParted_Core.cc:1527 ../src/GParted_Core.cc:2716
 msgid "size: %1 (%2)"
 msgstr "大小：%1 (%2)"
 
-#: ../src/GParted_Core.cc:1420 ../src/linux_swap.cc:80 ../src/xfs.cc:237
+#: ../src/GParted_Core.cc:1557 ../src/linux_swap.cc:80 ../src/xfs.cc:237
 msgid "create new %1 file system"
 msgstr "建立新的 %1 檔案系統"
 
-#: ../src/GParted_Core.cc:1453
+#: ../src/GParted_Core.cc:1590
 msgid "delete partition"
 msgstr "刪除分割區"
 
-#: ../src/GParted_Core.cc:1493
+#: ../src/GParted_Core.cc:1630
 msgid "Clear partition label on %1"
 msgstr "清除 %1 上的分割區標籤"
 
-#: ../src/GParted_Core.cc:1498
+#: ../src/GParted_Core.cc:1635
 msgid "Set partition label to \"%1\" on %2"
 msgstr "在 %2 設定分割區標籤「%1」"
 
-#: ../src/GParted_Core.cc:1577
+#: ../src/GParted_Core.cc:1716
 msgid "moving requires old and new length to be the same"
 msgstr "移動要求新及舊的長度相同"
 
-#: ../src/GParted_Core.cc:1594
+#: ../src/GParted_Core.cc:1733
 msgid "rollback last change to the partition table"
 msgstr "返回上一次對分割表的更改"
 
-#: ../src/GParted_Core.cc:1623
+#: ../src/GParted_Core.cc:1762
 msgid "move file system to the left"
 msgstr "檔案系統向左移"
 
-#: ../src/GParted_Core.cc:1625
+#: ../src/GParted_Core.cc:1764
 msgid "move file system to the right"
 msgstr "檔案系統向右移"
 
-#: ../src/GParted_Core.cc:1628
+#: ../src/GParted_Core.cc:1767
 msgid "move file system"
 msgstr "移動檔案系統"
 
-#: ../src/GParted_Core.cc:1630
+#: ../src/GParted_Core.cc:1769
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr "新及舊檔案系統的位置相同。因此略過此操作。"
 
-#: ../src/GParted_Core.cc:1649
+#: ../src/GParted_Core.cc:1788
 msgid "perform real move"
 msgstr "進行真實移動"
 
-#: ../src/GParted_Core.cc:1691
+#: ../src/GParted_Core.cc:1830
 msgid "using libparted"
 msgstr "使用 libparted"
 
-#: ../src/GParted_Core.cc:1731
+#: ../src/GParted_Core.cc:1870
 msgid "resizing requires old and new start to be the same"
 msgstr "調整大小要求新及舊的開始位置相同"
 
-#: ../src/GParted_Core.cc:1796
+#: ../src/GParted_Core.cc:1935
 msgid "resize/move partition"
 msgstr "調整大小/移動分割區"
 
-#: ../src/GParted_Core.cc:1799
+#: ../src/GParted_Core.cc:1938
 msgid "move partition to the right"
 msgstr "分割區向右移"
 
-#: ../src/GParted_Core.cc:1802
+#: ../src/GParted_Core.cc:1941
 msgid "move partition to the left"
 msgstr "分割區向左移"
 
-#: ../src/GParted_Core.cc:1805
+#: ../src/GParted_Core.cc:1944
 msgid "grow partition from %1 to %2"
 msgstr "分割區由 %1 增大為 %2"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:1947
 msgid "shrink partition from %1 to %2"
 msgstr "分割區由 %1 縮小為 %2"
 
-#: ../src/GParted_Core.cc:1811
+#: ../src/GParted_Core.cc:1950
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "將分割區向右移及由 %1 增大為 %2"
 
-#: ../src/GParted_Core.cc:1814
+#: ../src/GParted_Core.cc:1953
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "將分割區向右移及由 %1 縮小 %2"
 
-#: ../src/GParted_Core.cc:1817
+#: ../src/GParted_Core.cc:1956
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "將分割區向左移及由 %1 增大為 %2"
 
-#: ../src/GParted_Core.cc:1820
+#: ../src/GParted_Core.cc:1959
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "將分割區向左移及由 %1 縮小為 %2"
 
-#: ../src/GParted_Core.cc:1835
+#: ../src/GParted_Core.cc:1974
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr "新及舊分割區的位置及容量相同。因此略過此操作。"
 
-#: ../src/GParted_Core.cc:1845
+#: ../src/GParted_Core.cc:1984
 msgid "old start: %1"
 msgstr "舊的開始磁區：%1"
 
-#: ../src/GParted_Core.cc:1846
+#: ../src/GParted_Core.cc:1985
 msgid "old end: %1"
 msgstr "舊的結束磁區：%1"
 
-#: ../src/GParted_Core.cc:1847
+#: ../src/GParted_Core.cc:1986
 msgid "old size: %1 (%2)"
 msgstr "舊的大小：%1"
 
-#: ../src/GParted_Core.cc:1906 ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:2048 ../src/GParted_Core.cc:2794
 msgid "new start: %1"
 msgstr "新的開始磁區：%1"
 
-#: ../src/GParted_Core.cc:1907 ../src/GParted_Core.cc:2584
+#: ../src/GParted_Core.cc:2049 ../src/GParted_Core.cc:2795
 msgid "new end: %1"
 msgstr "新的結束磁區：%1"
 
-#: ../src/GParted_Core.cc:1908 ../src/GParted_Core.cc:2585
+#: ../src/GParted_Core.cc:2050 ../src/GParted_Core.cc:2796
 msgid "new size: %1 (%2)"
 msgstr "新的大小：%1"
 
-#: ../src/GParted_Core.cc:1944
+#: ../src/GParted_Core.cc:2086
 msgid "shrink file system"
 msgstr "縮小檔案系統"
 
-#: ../src/GParted_Core.cc:1948
+#: ../src/GParted_Core.cc:2090
 msgid "grow file system"
 msgstr "增大檔案系統"
 
-#: ../src/GParted_Core.cc:1951
+#: ../src/GParted_Core.cc:2093
 msgid "resize file system"
 msgstr "重設檔案系統大小"
 
-#: ../src/GParted_Core.cc:1954
+#: ../src/GParted_Core.cc:2096
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "新及舊的檔案系統容量相同。因此略過此操作。"
 
-#: ../src/GParted_Core.cc:1989
+#: ../src/GParted_Core.cc:2131
 msgid "grow file system to fill the partition"
 msgstr "將檔案系統增大至填滿整個分割區"
 
-#: ../src/GParted_Core.cc:1994
+#: ../src/GParted_Core.cc:2136
 msgid "growing is not available for this file system"
 msgstr "不能增大此檔案系統"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2155
 msgid "the destination is smaller than the source partition"
 msgstr "目的地的大小比來源分割區的小"
 
-#: ../src/GParted_Core.cc:2027
+#: ../src/GParted_Core.cc:2172
 msgid "copy file system of %1 to %2"
 msgstr "將 %1 的檔案系統複製到 %2"
 
-#: ../src/GParted_Core.cc:2071
+#: ../src/GParted_Core.cc:2216
 msgid "perform read-only test"
 msgstr "進行唯讀測試"
 
-#: ../src/GParted_Core.cc:2119
+#: ../src/GParted_Core.cc:2270
 msgid "using internal algorithm"
 msgstr "使用內部演算法"
 
-#: ../src/GParted_Core.cc:2121
-msgid "read %1 sectors"
-msgstr "讀取 %1 個磁區"
+#. TO TRANSLATORS: looks like  read 1.00 MiB
+#: ../src/GParted_Core.cc:2274
+msgid "read %1"
+msgstr "讀取 %1"
 
-#: ../src/GParted_Core.cc:2121
-msgid "copy %1 sectors"
-msgstr "複製 %1 個磁區"
+#. TO TRANSLATORS: looks like  copy 1.00 MiB
+#: ../src/GParted_Core.cc:2276
+msgid "copy %1"
+msgstr "複製 %1"
 
-#: ../src/GParted_Core.cc:2123
-msgid "finding optimal blocksize"
-msgstr "尋找最住的磁碟區塊大小"
+#: ../src/GParted_Core.cc:2280
+msgid "finding optimal block size"
+msgstr "尋找最佳的磁碟區塊大小"
 
-#: ../src/GParted_Core.cc:2160
+#: ../src/GParted_Core.cc:2320
 msgid "%1 seconds"
 msgstr "%1 秒"
 
-#: ../src/GParted_Core.cc:2176
-msgid "optimal blocksize is %1 sectors (%2)"
-msgstr "最佳的區塊大小是 %1 個磁區 (%2)"
+#. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
+#: ../src/GParted_Core.cc:2338
+msgid "optimal block size is %1"
+msgstr "最佳磁碟區塊大小為 %1"
 
-#: ../src/GParted_Core.cc:2193
-msgid "%1 sectors read"
-msgstr "已讀取 %1 個磁區"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
+#: ../src/GParted_Core.cc:2356
+msgid "%1 (%2 B) read"
+msgstr "%1 (%2 B) 已讀"
 
-#: ../src/GParted_Core.cc:2193
-msgid "%1 sectors copied"
-msgstr "已複製 %1 個磁區"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
+#: ../src/GParted_Core.cc:2358
+msgid "%1 (%2 B) copied"
+msgstr "%1 (%2 B) 已複製"
 
-#: ../src/GParted_Core.cc:2204
+#: ../src/GParted_Core.cc:2371
 msgid "roll back last transaction"
 msgstr "返回上一次事項"
 
-#: ../src/GParted_Core.cc:2231
+#: ../src/GParted_Core.cc:2398
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "檢查 %1 上檔案系統的錯誤及修正它們（如果可以）"
 
-#: ../src/GParted_Core.cc:2239
+#: ../src/GParted_Core.cc:2406
 msgid "checking is not available for this file system"
 msgstr "不能替此檔案系統作檢查"
 
-#: ../src/GParted_Core.cc:2265
+#: ../src/GParted_Core.cc:2432
 msgid "set partition type on %1"
 msgstr "設定 %1 的檔案系統"
 
-#: ../src/GParted_Core.cc:2295
+#: ../src/GParted_Core.cc:2462
 msgid "new partition type: %1"
 msgstr "新分割區類型：%1"
 
-#: ../src/GParted_Core.cc:2322
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2491
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "已讀取 %1/%2（剩餘 %3）"
 
-#: ../src/GParted_Core.cc:2322
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2493
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "已複製 %1/%2（剩餘 %3）"
 
-#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
+#: ../src/GParted_Core.cc:2501 ../src/GParted_Core.cc:2618
 msgid "%1 of %2 read"
 msgstr "已讀取 %1/%2"
 
-#: ../src/GParted_Core.cc:2328 ../src/GParted_Core.cc:2423
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#: ../src/GParted_Core.cc:2503 ../src/GParted_Core.cc:2620
 msgid "%1 of %2 copied"
 msgstr "已複製 %1/%2"
 
-#: ../src/GParted_Core.cc:2346
-msgid "read %1 sectors using a blocksize of %2 sectors"
-msgstr "使用區塊大小為 %2 個磁區讀取 %1 個磁區"
+#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2524
+msgid "read %1 using a block size of %2"
+msgstr "使用 %2 區塊大小讀取 %1"
 
-#: ../src/GParted_Core.cc:2349
-msgid "copy %1 sectors using a blocksize of %2 sectors"
-msgstr "使用區塊大小為 %2 個磁區複製 %1 個磁區"
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2529
+msgid "copy %1 using a block size of %2"
+msgstr "使用 %2 區塊大小複製 %1"
 
-#: ../src/GParted_Core.cc:2468
+#: ../src/GParted_Core.cc:2679
 msgid "Error while writing block at sector %1"
 msgstr "在磁區 %1 中寫入區塊時發生錯誤"
 
-#: ../src/GParted_Core.cc:2471
+#: ../src/GParted_Core.cc:2682
 msgid "Error while reading block at sector %1"
 msgstr "在磁區 %1 中讀取區塊時發生錯誤"
 
-#: ../src/GParted_Core.cc:2481
+#: ../src/GParted_Core.cc:2692
 msgid "calibrate %1"
 msgstr "調整 %1"
 
-#: ../src/GParted_Core.cc:2528
+#: ../src/GParted_Core.cc:2739
 msgid "calculate new size and position of %1"
 msgstr "計算 %1 新的大小及位置"
 
-#: ../src/GParted_Core.cc:2532
+#: ../src/GParted_Core.cc:2743
 msgid "requested start: %1"
 msgstr "指定開始磁區：%1"
 
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2744
 msgid "requested end: %1"
 msgstr "指定結束磁區：%1"
 
-#: ../src/GParted_Core.cc:2534
+#: ../src/GParted_Core.cc:2745
 msgid "requested size: %1 (%2)"
 msgstr "指定大小：%1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2676
+#: ../src/GParted_Core.cc:2887
 msgid "update boot sector of %1 file system on %2"
 msgstr "更新在 %2 上檔案系統 %1 的啟動磁區"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2712
+#: ../src/GParted_Core.cc:2923
 msgid "Error trying to write to boot sector in %1"
 msgstr "嘗試在 %1 中寫入開機磁區時發生錯誤"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2718
+#: ../src/GParted_Core.cc:2929
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "嘗試在 %1 搜尋位置 0x1c 時發生錯誤"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2725
+#: ../src/GParted_Core.cc:2936
 msgid "Error trying to open %1"
 msgstr "嘗試開啟 %1 時發生錯誤"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2946
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "在 NTFS 開機紀錄中設定隱藏磁區的編號為 %1 時失敗。"
 
-#: ../src/GParted_Core.cc:2737
+#: ../src/GParted_Core.cc:2948
 msgid "You might try the following command to correct the problem:"
 msgstr "你也許可以嘗試下列指令來修正問題："
 
@@ -843,12 +875,12 @@ msgid "copy of %1"
 msgstr "複製 %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:79
+#: ../src/OperationCopy.cc:80
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "複製 %1 至 %2（在 %3 開始）"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:87
+#: ../src/OperationCopy.cc:88
 msgid "Copy %1 to %2"
 msgstr "複製 %1 至 %2"
 
@@ -858,12 +890,12 @@ msgid "Check and repair file system (%1) on %2"
 msgstr "檢查並修復 %2 上的檔案系統(%1)"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:87
+#: ../src/OperationCreate.cc:88
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "在 %5 中建立%1 #%2 (%3, %4)"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:81
+#: ../src/OperationDelete.cc:82
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "刪除 %4 中的 %1 (%2, %3)"
 
@@ -1153,89 +1185,89 @@ msgstr "磁柱："
 msgid "Sector size:"
 msgstr "磁區小："
 
-#: ../src/Win_GParted.cc:693
+#: ../src/Win_GParted.cc:695
 msgid "Could not add this operation to the list."
 msgstr "無法將此動作加入清單。"
 
-#: ../src/Win_GParted.cc:718
+#: ../src/Win_GParted.cc:720
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "等待中的 %1 個動作"
 
-#: ../src/Win_GParted.cc:772
+#: ../src/Win_GParted.cc:774
 msgid "Quit GParted?"
 msgstr "離開 GParted?"
 
-#: ../src/Win_GParted.cc:778 ../src/Win_GParted.cc:1886
+#: ../src/Win_GParted.cc:780 ../src/Win_GParted.cc:1886
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "目前有 %1 個動作在等待。"
 
-#: ../src/Win_GParted.cc:804
+#: ../src/Win_GParted.cc:806
 msgid "_Unmount"
 msgstr "卸載(_U)"
 
-#: ../src/Win_GParted.cc:829
+#: ../src/Win_GParted.cc:831
 msgid "_Swapoff"
 msgstr "停用交換區(_S)"
 
-#: ../src/Win_GParted.cc:835
+#: ../src/Win_GParted.cc:837
 msgid "_Swapon"
 msgstr "啟用交換區(_S)"
 
-#: ../src/Win_GParted.cc:1033
+#: ../src/Win_GParted.cc:1031
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1079
+#: ../src/Win_GParted.cc:1077
 msgid "Scanning all devices..."
 msgstr "掃描所有裝置..."
 
-#: ../src/Win_GParted.cc:1124
+#: ../src/Win_GParted.cc:1122
 msgid "No devices detected"
 msgstr "偵測不到任何裝置"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1205
+#: ../src/Win_GParted.cc:1203
 msgid "No partition table found on device %1"
 msgstr "在 %1 裝置上找不到分割表"
 
-#: ../src/Win_GParted.cc:1210
+#: ../src/Win_GParted.cc:1208
 msgid "A partition table is required before partitions can be added."
 msgstr "在加入分割區之前必須先有分割表。"
 
-#: ../src/Win_GParted.cc:1212
+#: ../src/Win_GParted.cc:1210
 msgid "To create a new partition table choose the menu item:"
 msgstr "要建立新的分割表請選擇選單項目："
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1215
+#: ../src/Win_GParted.cc:1213
 msgid "Device --> Create Partition Table."
 msgstr "裝置 --> 建立分割表。"
 
-#: ../src/Win_GParted.cc:1244
+#: ../src/Win_GParted.cc:1242
 msgid "Unable to open GParted Manual help file."
 msgstr "無法開啟 GParted 手冊求助檔。"
 
-#: ../src/Win_GParted.cc:1260
+#: ../src/Win_GParted.cc:1258
 msgid "Documentation is not available."
 msgstr "文件不可用。"
 
-#: ../src/Win_GParted.cc:1265
+#: ../src/Win_GParted.cc:1263
 msgid "This build of gparted is configured without documentation."
 msgstr "此 gparted 的組建版本沒有加入文件支援。"
 
-#: ../src/Win_GParted.cc:1267
+#: ../src/Win_GParted.cc:1265
 msgid "Documentation is available at the project web site."
 msgstr "文件可以在專案網站上取得。"
 
-#: ../src/Win_GParted.cc:1288
+#: ../src/Win_GParted.cc:1286
 msgid "GNOME Partition Editor"
 msgstr "GNOME 分割區編輯器"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1304
+#: ../src/Win_GParted.cc:1302
 msgid "translator-credits"
 msgstr ""
 "如對翻譯有任何意見，請送一封電子郵件給\n"
@@ -1244,11 +1276,11 @@ msgstr ""
 "\n"
 "Woodman Tuen <wmtuen@gmail.com>, 2005-06"
 
-#: ../src/Win_GParted.cc:1346
+#: ../src/Win_GParted.cc:1344
 msgid "It is not possible to create more than %1 primary partitions"
 msgstr "不可能建立多於 %1 個主要分割區"
 
-#: ../src/Win_GParted.cc:1354
+#: ../src/Win_GParted.cc:1352
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1256,45 +1288,45 @@ msgid ""
 "partition first."
 msgstr "如果念想要有更多的分割區，那麼你應先建立伸延分割區。這種分割臨能包含其它分割區。但是伸延分割區同是主要分割區，所以可能先要將主要分割區移除。"
 
-#: ../src/Win_GParted.cc:1491
+#: ../src/Win_GParted.cc:1490
 msgid "You have pasted into an existing partition."
 msgstr "你已貼到現存的分割區中。"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1498
+#: ../src/Win_GParted.cc:1497
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "如果你套用了此動作，%1 內的資料將會流失。"
 
-#: ../src/Win_GParted.cc:1553
+#: ../src/Win_GParted.cc:1552
 msgid "Unable to delete %1!"
 msgstr "無法刪除 %1！"
 
-#: ../src/Win_GParted.cc:1560
+#: ../src/Win_GParted.cc:1559
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "請先卸載任何大於 %1 的邏輯分割區"
 
-#: ../src/Win_GParted.cc:1571
+#: ../src/Win_GParted.cc:1570
 msgid "Are you sure you want to delete %1?"
 msgstr "確定要刪除 %1？"
 
-#: ../src/Win_GParted.cc:1578
+#: ../src/Win_GParted.cc:1577
 msgid "After deletion this partition is no longer available for copying."
 msgstr "分割區在刪除後不能再複製。"
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1581
+#: ../src/Win_GParted.cc:1580
 msgid "Delete %1 (%2, %3)"
 msgstr "刪除 %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1647
+#: ../src/Win_GParted.cc:1646
 msgid "Cannot format this file system to %1."
 msgstr "無法將這個檔案系統格式化為 %1。"
 
-#: ../src/Win_GParted.cc:1656
+#: ../src/Win_GParted.cc:1655
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 的檔案系統的分割區要求最少要有 %2。"
 
-#: ../src/Win_GParted.cc:1661
+#: ../src/Win_GParted.cc:1660
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 檔案系統的分割區的大小上限是 %2。"
 
@@ -1355,19 +1387,19 @@ msgstr "在建立新的分割表之前，請使用「編輯」選單來清除或
 msgid "Error while creating partition table."
 msgstr "建立分割表時發生錯誤。"
 
-#: ../src/Win_GParted.cc:2029
+#: ../src/Win_GParted.cc:2030
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "確定要套用等待中的動作？"
 
-#: ../src/Win_GParted.cc:2035
+#: ../src/Win_GParted.cc:2036
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "編輯分割區有造成 資 料 遺 失 的可能。"
 
-#: ../src/Win_GParted.cc:2037
+#: ../src/Win_GParted.cc:2038
 msgid "You are advised to backup your data before proceeding."
 msgstr "建議進行前先備份你的資料。"
 
-#: ../src/Win_GParted.cc:2039
+#: ../src/Win_GParted.cc:2040
 msgid "Apply operations to device"
 msgstr "套用至所有裝置"
 
@@ -1421,6 +1453,21 @@ msgstr "增大已掛載的檔案系統"
 #: ../src/xfs.cc:276
 msgid "copy file system"
 msgstr "複製檔案系統"
+
+#~ msgid "Round to cylinders"
+#~ msgstr "最接近的磁柱"
+
+#~ msgid "read %1 sectors"
+#~ msgstr "讀取 %1 個磁區"
+
+#~ msgid "copy %1 sectors"
+#~ msgstr "複製 %1 個磁區"
+
+#~ msgid "%1 sectors read"
+#~ msgstr "已讀取 %1 個磁區"
+
+#~ msgid "%1 sectors copied"
+#~ msgstr "已複製 %1 個磁區"
 
 #~ msgid "Applying all listed operations."
 #~ msgstr "正在套用所有已列出的動作。"
