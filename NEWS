@@ -1,4 +1,61 @@
 ====================
+0.6.0   (2010-06-18)
+====================
+NOTES
+	The GParted team is proud to announce this release brings
+	support for devices with sector sizes greater than 512 bytes.
+
+	For the last three decades, 512 byte sector sizes have been
+	the norm and many tools, including GParted, were hard coded to
+	assume this sector size.
+
+	Also included in this release are bug fixes, and language
+	translation updates.
+
+	Key changes include:
+	  - Add support for devices with sector sizes > 512 bytes
+	  - Add alignment option to align to MiB
+	  - Set _default_ alignment to align to MiB
+
+	Known issues:
+	  When used with libparted versions 2.3 and lower on devices with
+	  sector sizes > 512 bytes:
+	  - hfs/hfs+: used/unused space not detected
+	  - hfs/hfs+: shrink file system not available
+
+BUG FIXES
+	* Add support for devices with sector sizes > 512 bytes (#607165)
+	* Add align to MiB option and make it the default (#617409)
+	* Enable copy to work on computers with only 128 MiB RAM (#613430)
+	* Fix mkswap error "UUID parsing failed" when resizing with no UUID
+	  - Debian Bug #573836
+	* Handle devkit-disks command being renamed to udisks on Dec. 2009
+	  - GParted Bug #324220 comment 62, Ubuntu launchpad #588530
+	* Convert git log entries for Makefile generated ChangeLog
+	* Clean up progress bar current status after copy/move action
+
+TRANSLATIONS (new/updated)
+	* ar(Khaled Hosny), cs(Petr Kovar, Adrian Guniš), da(Ask H. Larsen),
+	  de(Mario Blättermann), el(Dimitris Tsiolis), es(Jorge González),
+	  eu(Inaki Larranaga Murgoitio), fi(Timo Jyrinki),
+	  fr(Claude Paroz, Bruno Brouard), gl(Fran Diéguez),
+	  hu(Gabor Kelemen), it(Milo Casagrande),
+	  lt(Žygimantas Beručka, Aurimas Černius, Gintautas Miliauskas),
+	  nb(Kjartan Maraas), pl(Piotr Drąg), pt(António Lima),
+	  pt_BR(André Gondim, Vladimir Melo, Djavan Fagundes), ro(Adi Roiban),
+	  sl(Matej Urbančič), uk(Maxim V. Dziumanenko),
+	  zh_HK(Cheng-Chia Tseng, Chao-Hsiung Liao),
+	  zh_TW(Cheng-Chia Tseng, Chao-Hsiung Liao)
+
+DEPENDENCIES (new/updated)
+	* Support for sector sizes > 512 bytes requires libparted
+	  version 2.2 or higher.
+	* Previously missed dependency for DMRAID:
+	  - if available, either udevinfo or udevadm will be used
+	    to query the udev name.
+
+
+====================
 0.5.2   (2010-03-08)
 ====================
 NOTES
