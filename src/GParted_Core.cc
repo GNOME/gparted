@@ -2868,8 +2868,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 
 bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 {
-	if ( p_filesystem )
-		delete p_filesystem ;
+	delete p_filesystem;
 		
 	switch( filesystem )
 	{
@@ -3112,8 +3111,7 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
-	if ( p_filesystem )
-		delete p_filesystem ;
+	delete p_filesystem;
 }
 	
 } //GParted

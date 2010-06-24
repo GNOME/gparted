@@ -435,8 +435,6 @@ Frame_Resizer_Base::~Frame_Resizer_Base()
 	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
 	this ->get_colormap() ->free_colors( color_arrow_rectangle, 1 ) ;
 	
-	if ( cursor_resize )
-		delete cursor_resize ;
-	if ( cursor_move )
-		delete cursor_move ;
+	delete cursor_resize;
+	delete cursor_move;
 }

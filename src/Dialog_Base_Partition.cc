@@ -344,8 +344,7 @@ void Dialog_Base_Partition::Check_Change()
 
 Dialog_Base_Partition::~Dialog_Base_Partition() 
 {
-	if ( frame_resizer_base )
-		delete frame_resizer_base ;
+	delete frame_resizer_base;
 }
 
 } //GParted
