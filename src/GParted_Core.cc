@@ -2339,7 +2339,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				Utils::format_size( optimal_blocksize, 1 ) ),
 				STATUS_NONE ) ) ;
 
-	if ( succes )
+	if ( succes && llabs( done ) < src_length )
 		succes = copy_blocks( src_device, 
 				    dst_device,
 				    src_start + ( dst_start > src_start ? 0 : (done / src_sector_size) ),
