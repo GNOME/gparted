@@ -104,8 +104,11 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
 	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("None") ) ) ;
 
+	//FIXME: Disable MiB alignment as a temporary measure until bug #623630 can be properly addressed.
+	menu_alignment .items()[ 1 ] .set_sensitive( false );
+
 	optionmenu_alignment .set_menu( menu_alignment );
-	optionmenu_alignment .set_history( ALIGN_MEBIBYTE);  //Default setting
+	optionmenu_alignment .set_history( ALIGN_CYLINDER);  //Default setting
 
 	table_resize .attach( optionmenu_alignment, 1, 2, 3, 4, Gtk::FILL );
 
