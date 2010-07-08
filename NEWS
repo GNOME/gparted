@@ -1,4 +1,32 @@
 ====================
+0.6.1   (2010-07-08)
+====================
+NOTES
+	This is an important bug fix release for two critical bugs
+	found in GParted.  Also included are some language translation
+	updates.
+
+	Key changes include:
+	  - Fix crash moving partition when size is a multiple of 16 MiB
+	  - Disable MiB alignment temporarily until bug #623630 can be fixed.
+
+	    Bug #623630 is a problem where moving logical partitions using
+	    the new MiB alignment feature might overwrite the Extended Boot
+	    Record of another logical partition.  This causes an invalid
+	    partition table with a wrong signature.
+
+BUG FIXES
+	* Fix crash moving partition when size is a multiple of 16 MiB (#623697)
+	* Disable MiB alignment temporarily until bug #623630 can be fixed.
+
+TRANSLATIONS (new/updated)
+	* cs(Adrian Guniš), gl(Fran Diéguez), he(Yaron Shahrabani)
+
+DEPENDENCIES (new/updated)
+	* no change.
+
+
+====================
 0.6.0   (2010-06-18)
 ====================
 NOTES
