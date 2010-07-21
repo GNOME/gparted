@@ -52,7 +52,8 @@ for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 done
 
 #
-#  Use udisks if binary exists and daemon is running.
+#  Use both udisks and hal-lock if both binaries exists and both daemons are running.
+#  Else use udisks if binary exists and daemon is running.
 #  Else use both devkit-disks and hal-lock for invocation if both binaries exist
 #  and both of the daemons are running.
 #  Else use devkit-disks if binary exists and daemon is running.
@@ -60,7 +61,11 @@ done
 #  If the above checks fail then simply run gpartedbin.
 #
 BASE_CMD="@installdir@/gpartedbin $*"
-if test "x$HAVE_UDISKS" = "xyes"; then
+if test "x$HAVE_UDISKS" = "xyes" && test "x$HAVE_HAL_LOCK" = "xyes"; then
+	udisks --inhibit -- \
+		hal-lock --interface org.freedesktop.Hal.Device.Storage --exclusive \
+			--run "$BASE_CMD"
+elif test "x$HAVE_UDISKS" = "xyes"; then
 	udisks --inhibit -- $BASE_CMD
 elif test "x$HAVE_DEVKIT_DISKS" = "xyes" && test "x$HAVE_HAL_LOCK" = "xyes"; then
 	devkit-disks --inhibit -- \
