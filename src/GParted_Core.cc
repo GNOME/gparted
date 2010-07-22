@@ -1721,29 +1721,41 @@ bool GParted_Core::move( const Device & device,
 	bool succes = false ;
 	if ( check_repair_filesystem( partition_old, operationdetail ) )
 	{
-		//NOTE: logical partitions are preceeded by metadata. To prevent this metadata from being
-		//overwritten we move the partition first and only then the file system when moving to the left.
-		//(maybe i should do some reading on how non-msdos disklabels deal with metadata....)
-		if ( partition_new .sector_start < partition_old .sector_start )
-		{
-			if ( resize_move_partition( partition_old, partition_new, operationdetail ) )
-			{
-				if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
-				{
-					operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
+		//NOTE: Logical partitions are preceded by meta data.  To prevent this
+		//      meta data from being overwritten we first expand the partition to
+		//      encompass all of the space involved in the move.  In this way we
+		//      prevent overwriting the meta data for this partition when we move
+		//      this partition to the left.  We also prevent overwriting the meta
+		//      data of a following partition when we move this partition to the
+		//      right.
+		Partition partition_all_space = partition_old ;
+		partition_all_space .alignment = ALIGN_STRICT ;
+		if ( partition_new .sector_start < partition_all_space. sector_start )
+			partition_all_space .sector_start = partition_new. sector_start ;
+		if ( partition_new .sector_end > partition_all_space.sector_end )
+			partition_all_space .sector_end = partition_new. sector_end ;
 
-					if ( resize_move_partition( partition_new, partition_old, operationdetail .get_last_child() ) )
-						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-					else
-						operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				}
+		//Make old partition all encompassing and if move file system fails
+		//  then return partition table to original state
+		if ( resize_move_partition( partition_old, partition_all_space, operationdetail ) )
+		{
+			//Note move of file system is from old values to new values, not from
+			//  the all encompassing values.
+			if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
+			{
+				operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
+
+				if ( resize_move_partition( partition_all_space, partition_old, operationdetail .get_last_child() ) )
+					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 				else
-					succes = true ;
+					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 			}
+			else
+				succes = true ;
 		}
-		else
-			succes = move_filesystem( partition_old, partition_new, operationdetail ) &&
-				resize_move_partition( partition_old, partition_new, operationdetail ) ;
+
+		//Make new partition from all encompassing partition
+		succes =  succes && resize_move_partition( partition_all_space, partition_new, operationdetail ) ;
 
 		succes = succes &&
 			update_bootsector( partition_new, operationdetail ) &&
