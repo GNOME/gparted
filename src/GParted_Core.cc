@@ -1745,7 +1745,9 @@ bool GParted_Core::move( const Device & device,
 			{
 				operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
 
-				if ( resize_move_partition( partition_all_space, partition_old, operationdetail .get_last_child() ) )
+				Partition partition_restore = partition_old ;
+				partition_restore .alignment = ALIGN_STRICT ;  //Ensure that old partition boundaries are not modified
+				if ( resize_move_partition( partition_all_space, partition_restore, operationdetail .get_last_child() ) )
 					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 				else
 					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
