@@ -37,6 +37,9 @@ FS linux_swap::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
 		fs .read_label = FS::EXTERNAL ;
 
+	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
+		fs .write_label = FS::EXTERNAL ;
+
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	
@@ -65,7 +68,7 @@ void linux_swap::read_label( Partition & partition )
 
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return true ;
+	return ! execute_command( "swaplabel -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
 }
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
