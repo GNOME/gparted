@@ -168,6 +168,7 @@ private:
 	
 	void activate_undo();
 	void remove_operation( int index = -1, bool remove_all = false ) ;
+	int  partition_in_operation_queue_count( const Partition & partition ) ;
 	void activate_apply();
 
 //private variables

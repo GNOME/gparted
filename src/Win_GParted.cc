@@ -2002,7 +2002,20 @@ void Win_GParted::activate_undo()
 	if ( ! operations .size() )
 		close_operationslist() ;
 }
-	
+
+int Win_GParted::partition_in_operation_queue_count( const Partition & partition )
+{
+	int operation_count = 0 ;
+
+	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+	{
+		if ( partition .get_path() == operations[ t ] ->partition_original .get_path() )
+			operation_count++ ;
+	}
+
+	return operation_count ;
+}
+
 void Win_GParted::remove_operation( int index, bool remove_all ) 
 {
 	if ( remove_all )
