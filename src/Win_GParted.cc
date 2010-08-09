@@ -1780,9 +1780,42 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 
 	pulse = false ;
 }
-	
+
 void Win_GParted::toggle_swap_mount_state() 
-{	
+{
+	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
+	if ( operation_count > 0 )
+	{
+		//Note that this situation will only occur when trying to swapon a partition.
+		//  This is because GParted does not permit queueing operations on partitions
+		//  that are currently active (i.e., swap enabled, or mounted).  Hence this
+		//  situation will not occur for the swapoff or unmount actions that this
+		//  method handles.
+
+		/*TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdd8. */
+		Glib::ustring tmp_msg =
+		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2."
+		                              , "%1 operations are currently pending for partition %2."
+		                              , operation_count
+		                              )
+		                    , operation_count
+		                    , selected_partition .get_path()
+		                    ) ;
+		Gtk::MessageDialog dialog( *this
+		                         , tmp_msg
+		                         , false
+		                         , Gtk::MESSAGE_INFO
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		tmp_msg  = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
+		tmp_msg += "\n" ;
+		tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
+		dialog .set_secondary_text( tmp_msg ) ;
+		dialog .run() ;
+		return ;
+	}
+
 	bool succes = false ;
 	Glib::ustring error ;
 
@@ -1837,12 +1870,39 @@ void Win_GParted::toggle_swap_mount_state()
 
 	menu_gparted_refresh_devices() ;
 }
-	
+
 void Win_GParted::activate_mount_partition( unsigned int index ) 
 {
+	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
+	if ( operation_count > 0 )
+	{
+		/*TO TRANSLATORS: Plural case looks like   4 operations are currently pending for partition /dev/sdd8. */
+		Glib::ustring tmp_msg =
+		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2."
+		                              , "%1 operations are currently pending for partition %2."
+		                              , operation_count
+		                              )
+		                    , operation_count
+		                    , selected_partition .get_path()
+		                    ) ;
+		Gtk::MessageDialog dialog( *this
+		                         , tmp_msg
+		                         , false
+		                         , Gtk::MESSAGE_INFO
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		tmp_msg  = _( "The mount action cannot be performed if an operation is pending for the partition." ) ;
+		tmp_msg += "\n" ;
+		tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using mount with this partition." ) ;
+		dialog .set_secondary_text( tmp_msg ) ;
+		dialog .run() ;
+		return ;
+	}
+
 	bool succes = false ;
 	Glib::ustring error ;
-	
+
 	pulse = true ;
 
 	thread = Glib::Thread::create( sigc::bind<Glib::ustring, bool *, Glib::ustring *>( 
