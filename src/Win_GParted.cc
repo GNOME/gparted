@@ -1937,6 +1937,39 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 
 void Win_GParted::activate_disklabel()
 {
+	//If there are active mounted partitions on the device then warn
+	//  the user that all partitions must be unactive before creating
+	//  a new partition table
+	int active_count = active_partitions_on_device_count( devices[ current_device ] ) ;
+	if ( active_count > 0 )
+	{
+		Glib::ustring tmp_msg =
+		    String::ucompose( /*TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda. */
+		                      ngettext( "%1 partition is currently active on device %2."
+		                      /*TO TRANSLATORS: Plural case looks like    3 partitions are currently active on device /dev/sda. */
+		                              , "%1 partitions are currently active on device %2."
+		                              , active_count
+		                              )
+		                    , active_count
+		                    , devices[ current_device ] .get_path()
+		                    ) ;
+		Gtk::MessageDialog dialog( *this
+		                         , tmp_msg
+		                         , false
+		                         , Gtk::MESSAGE_INFO
+		                         , Gtk::BUTTONS_OK
+		                         , true
+		                         ) ;
+		tmp_msg  = _( "A new partition table cannot be created when there are active partitions." ) ;
+		tmp_msg += "  " ;
+		tmp_msg += _( "Active partitions are those that are in use, such as a mounted file system, or enabled swap space." ) ;
+		tmp_msg += "\n" ;
+		tmp_msg += _( "Use Partition menu options, such as unmount or swapoff, to deactivate all partitions on this device before creating a new partition table." ) ;
+		dialog .set_secondary_text( tmp_msg ) ;
+		dialog .run() ;
+		return ;
+	}
+
 	//If there are pending operations then warn the user that these
 	//  operations must either be applied or cleared before creating
 	//  a new partition table.
