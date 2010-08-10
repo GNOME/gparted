@@ -2097,6 +2097,40 @@ int Win_GParted::partition_in_operation_queue_count( const Partition & partition
 	return operation_count ;
 }
 
+int  Win_GParted::active_partitions_on_device_count( const Device & device )
+{
+	int active_count = 0 ;
+
+	//Count the active partitions on the device
+	for ( unsigned int k=0; k < device .partitions .size(); k++ )
+	{
+		//FIXME:  Should also count other types of active partitions, such as LVM2 when we know how.
+
+		//Count the active primary partitions
+		if (   device .partitions[ k ] .busy
+		    && device .partitions[ k ] .type != TYPE_EXTENDED
+		    && device .partitions[ k ] .type != TYPE_UNALLOCATED
+		   )
+			active_count++ ;
+
+		//Count the active logical partitions
+		if (   device .partitions[ k ] .busy
+		    && device .partitions[ k ] .type == TYPE_EXTENDED
+		   )
+		{
+			for ( unsigned int j=0; j < device .partitions[ k ] .logicals .size(); j++ )
+			{
+				if (   device .partitions[ k ] .logicals [ j ] .busy
+				    && device .partitions[ k ] .logicals [ j ] .type != TYPE_UNALLOCATED
+				   )
+					active_count++ ;
+			}
+		}
+	}
+
+	return active_count ;
+}
+
 void Win_GParted::activate_apply()
 {
 	Gtk::MessageDialog dialog( *this,
