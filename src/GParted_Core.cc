@@ -874,12 +874,15 @@ void GParted_Core::set_device_partitions( Device & device )
 		partition_temp .Reset() ;
 		bool partition_is_busy = false ;
 
+		//Retrieve partition path
+		lp_path = ped_partition_get_path( lp_partition ) ;
+		Glib::ustring partition_path = lp_path ;
+		free( lp_path ) ;
+
 		switch ( lp_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				lp_path = ped_partition_get_path( lp_partition ) ;
-
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
 				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
@@ -898,7 +901,7 @@ void GParted_Core::set_device_partitions( Device & device )
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
 
 				partition_temp .Set( device .get_path(),
-						     lp_path,
+						     partition_path,
 						     lp_partition ->num,
 						     lp_partition ->type == 0 ?	GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
 						     get_filesystem(),
@@ -907,19 +910,16 @@ void GParted_Core::set_device_partitions( Device & device )
 						     device .sector_size,
 						     lp_partition ->type,
 						     partition_is_busy ) ;
-				free( lp_path ) ;
-						
+
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
-				
+
 				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
 					device .highest_busy = partition_temp .partition_number ;
-									
+
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
-				lp_path = ped_partition_get_path( lp_partition ) ;
-
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
 				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
@@ -941,7 +941,7 @@ void GParted_Core::set_device_partitions( Device & device )
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
 
 				partition_temp .Set( device .get_path(),
-					 	     lp_path, 
+						     partition_path, 
 						     lp_partition ->num,
 						     GParted::TYPE_EXTENDED,
 						     GParted::FS_EXTENDED,
@@ -950,14 +950,13 @@ void GParted_Core::set_device_partitions( Device & device )
 						     device .sector_size,
 						     false,
 						     partition_is_busy ) ;
-				free( lp_path ) ;
-				
+
 				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
-				
+
 				EXT_INDEX = device .partitions .size() ;
 				break ;
-		
+
 			default:
 				break;
 		}
@@ -989,7 +988,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		//next partition (if any)
 		lp_partition = ped_disk_next_partition( lp_disk, lp_partition ) ;
 	}
-	
+
 	if ( EXT_INDEX > -1 )
 		insert_unallocated( device .get_path(),
 				    device .partitions[ EXT_INDEX ] .logicals,
