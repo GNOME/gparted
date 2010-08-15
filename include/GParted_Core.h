@@ -66,6 +66,7 @@ private:
 		const Glib::ustring & filename,
 		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
+	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
 	void read_label( Partition & partition ) ;

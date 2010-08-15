@@ -857,6 +857,18 @@ std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustrin
 	return paths ;
 }
 
+Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
+{
+	char * lp_path ;	//we have to free the result of ped_partition_get_path()
+	Glib::ustring partition_path ;
+	
+	lp_path = ped_partition_get_path( lp_partition ) ;
+	partition_path = lp_path ;
+	free( lp_path ) ;
+
+	return partition_path ;
+}
+
 void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
