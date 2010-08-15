@@ -872,7 +872,6 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
-	char * lp_path ;//we have to free the result of ped_partition_get_path()..
 	FS_Info fs_info ;  //Use cache of file system information
 	DMRaid dmraid ;    //Use cache of dmraid device information
 
@@ -887,9 +886,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		bool partition_is_busy = false ;
 
 		//Retrieve partition path
-		lp_path = ped_partition_get_path( lp_partition ) ;
-		Glib::ustring partition_path = lp_path ;
-		free( lp_path ) ;
+		Glib::ustring partition_path = get_partition_path( lp_partition );
 
 		switch ( lp_partition ->type )
 		{
@@ -1050,7 +1047,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 
 		//TODO:  Temporary code to detect ext4.
 		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
-		temp = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ;
+		temp = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
 		if ( temp == "ext4" || temp == "ext4dev" )
 			fs_type = temp ;
 	}
@@ -1060,7 +1057,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	if ( fs_type .empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		fs_type = fs_info .get_fs_type( Glib::ustring( ped_partition_get_path( lp_partition ) ) ) ;
+		fs_type = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
 	}
 
 	if ( ! fs_type .empty() )
@@ -1522,10 +1519,8 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
 				{
-					//we have to free the result of ped_partition_get_path()..
-					char * lp_path = ped_partition_get_path( lp_partition ) ;
-					new_partition .add_path( lp_path, true ) ;
-					free( lp_path ) ;
+					Glib::ustring partition_path = get_partition_path( lp_partition ) ;
+					new_partition .add_path( partition_path, true ) ;
 
 					new_partition .partition_number = lp_partition ->num ;
 					new_partition .sector_start = lp_partition ->geom .start ;
