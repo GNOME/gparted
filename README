@@ -134,8 +134,6 @@ For dmraid support, the following packages are required:
 
    dmsetup         - removes /dev/mapper entries
    dmraid          - lists dmraid devices and creates /dev/mapper entries
-   kpartx          - creates /dev/mapper entries such as
-                       /dev/mapper/isw_idedecefg_Volume0p1
 
 For GNU/Linux distribution dmraid support, the following are required:
    - kernel built with Device Mapping and Mirroring built.  From menuconfig,
@@ -153,6 +151,8 @@ These commands include:
    hal-lock      - used to prevent automounting of file systems
    gksu          - used to acquire root privileges in .desktop file,
                    but only if available when gparted source is configured.
+   kpartx        - used in dmraid to create /dev/mapper entries such as
+                     /dev/mapper/isw_idedecefg_Volume0p1
    udevinfo      - used in dmraid to query udev name
    udevadm       - used in dmraid to query udev name
 

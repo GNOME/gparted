@@ -91,7 +91,7 @@ void DMRaid::set_commands_found()
 bool DMRaid::is_dmraid_supported()
 {
 	//Determine if dmraid is supported on this computer
-	return ( dmraid_found && dmsetup_found && kpartx_found ) ;
+	return ( dmraid_found && dmsetup_found ) ;
 }
 
 bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
@@ -295,7 +295,7 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Create all missing dev mapper entries for a specified device.
-	//  Try both dmraid -ay and kpartx -a
+	//  Try both dmraid -ay and (if available) kpartx -a
 
 	Glib::ustring command ;
 	bool exit_status = true ;
@@ -308,10 +308,13 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	if ( execute_command( command, operationdetail .get_last_child() ) )
 		exit_status = false ;	//command failed
 
-	Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
-	command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
-	if ( execute_command( command, operationdetail .get_last_child() ) )
-		exit_status = false ;	//command failed
+	if ( kpartx_found )
+	{
+		Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
+		command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
+		if ( execute_command( command, operationdetail .get_last_child() ) )
+			exit_status = false ;	//command failed
+	}
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
 
@@ -321,7 +324,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 {
 	//Create all missing dev mapper entries for a specified device.
-	//  Try both dmraid -ay and kpartx -a
+	//  Try both dmraid -ay and (if available) kpartx -a
 
 	Glib::ustring command, output, error ;
 	bool exit_status = true ;
@@ -330,10 +333,13 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	if ( Utils::execute_command( command, output, error, true ) )
 		exit_status = false;	//command failed
 
-	Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
-	command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
-	if ( Utils::execute_command( command, output, error, true ) )
-		exit_status = false;	//command failed
+	if ( kpartx_found )
+	{
+		Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
+		command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
+		if ( Utils::execute_command( command, output, error, true ) )
+			exit_status = false;	//command failed
+	}
 
 	return exit_status ;
 }
