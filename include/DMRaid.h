@@ -1,4 +1,4 @@
-/* Copyright (C) 2009 Curtis Gedak
+/* Copyright (C) 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -53,6 +53,7 @@ public:
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
 	int get_partition_number( const Glib::ustring & partition_name ) ;
 	Glib::ustring get_udev_name( const Glib::ustring & dev_path ) ;
+	Glib::ustring make_path_dmraid_compatible( Glib::ustring partition_path ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;

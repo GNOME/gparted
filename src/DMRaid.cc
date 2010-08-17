@@ -1,4 +1,4 @@
-/* Copyright (C) 2009 Curtis Gedak
+/* Copyright (C) 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -252,6 +252,44 @@ Glib::ustring DMRaid::get_udev_name( const Glib::ustring & dev_path )
 	}
 
 	return udev_name ;
+}
+
+Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path )
+{
+	//The purpose of this method is to ensure that the partition name matches
+	//   the name that the dmraid command would create.
+	//
+	//From my experience, the general rule of thumb naming convention for creating
+	//  partition names is as follows:
+	//
+	//  A)  If the device name ends in a number, then append the letter "p" and 
+	//      the partition number to create the partition name.
+	//      For Example:
+	//         Device Name   :  /dev/mapper/isw_cjbdddajhi_Disk0
+	//         Partition Name:  /dev/mapper/isw_cjbdddajhi_Disk0p1
+	//
+	//  B)  If the device name does not end in a number, then append the 
+	//      partition number only to create the partition name.
+	//      For Example:
+	//         Device Name   :  /dev/mapper/isw_cjbdddajhi_Volume
+	//         Partition Name:  /dev/mapper/isw_cjbdddajhi_Volume1
+	//
+	//The dmraid command appears to never add the "p" into the partition name.
+	//  Instead in all cases dmraid simply appends the partition number to the
+	//  device name to create a partition name.
+	//
+	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
+	{
+		Glib::ustring reg_exp = DEV_MAP_PATH + dmraid_devices[ k ] + "p([0-9]+)" ;
+		Glib::ustring partition_number = Utils::regexp_label( partition_path, reg_exp ) ;
+		if ( ! partition_number .empty() )
+		{
+			partition_path = DEV_MAP_PATH + dmraid_devices[ k ] + partition_number ;
+			break ;
+		}
+	}
+
+	return partition_path ;
 }
 
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
