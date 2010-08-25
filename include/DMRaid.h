@@ -52,7 +52,7 @@ public:
 	void get_devices( std::vector<Glib::ustring> & dmraid_devices ) ;
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
 	int get_partition_number( const Glib::ustring & partition_name ) ;
-	Glib::ustring get_udev_name( const Glib::ustring & dev_path ) ;
+	Glib::ustring get_udev_dm_name( const Glib::ustring & dev_path ) ;
 	Glib::ustring make_path_dmraid_compatible( Glib::ustring partition_path ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;

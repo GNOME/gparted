@@ -110,11 +110,19 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 	//  also check with udev to see if they are in fact dmraid devices
 	if ( ! device_found && ( dev_path .find( "/dev/dm" ) != Glib::ustring::npos ) )
 	{
-		Glib::ustring udev_name = get_udev_name( dev_path ) ;
+		//Ensure we use the base device name if dev_path in form /dev/dm-#p#
+		Glib::ustring regexp = "(/dev/dm-[0-9]+)p[0-9]+" ;
+		Glib::ustring dev_path_only = Utils::regexp_label( dev_path, regexp ) ;
+		if ( dev_path_only .empty() )
+			dev_path_only = dev_path ;
+
+		Glib::ustring udev_name = get_udev_dm_name( dev_path_only ) ;
 		if ( ! udev_name .empty() )
+		{
 			for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 				if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
 					device_found = true ;
+		}
 
 		//Also check for a symbolic link if device not yet found
 		if ( ! device_found && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
@@ -179,7 +187,7 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 	//  also check with udev for dmraid name
 	if ( dmraid_name .empty() && ( dev_path .find( "/dev/dm" ) != Glib::ustring::npos ) )
 	{
-		Glib::ustring udev_name = get_udev_name( dev_path ) ;
+		Glib::ustring udev_name = get_udev_dm_name( dev_path ) ;
 		for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 			if ( udev_name .find( dmraid_devices[k] ) != Glib::ustring::npos )
 				dmraid_name = dmraid_devices[k] ;
@@ -227,31 +235,25 @@ int DMRaid::get_partition_number( const Glib::ustring & partition_name )
 	return std::atoi( Utils::regexp_label( partition_name, dmraid_name + "p?([0-9]+)" ) .c_str() ) ;
 }
 
-Glib::ustring DMRaid::get_udev_name( const Glib::ustring & dev_path )
+Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 {
-	//Retrieve name of device using udev information
+	//Retrieve DM_NAME of device using udev information
 	Glib::ustring output = "" ;
 	Glib::ustring error  = "" ;
-	Glib::ustring udev_name = "" ;
+	Glib::ustring dm_name = "" ;
 
 	if ( udevinfo_found )
-	{
-		if ( ! Utils::execute_command( "udevinfo --query=name --name=" + dev_path, output, error, true ) )
-			udev_name = output ;
-	}
+		Utils::execute_command( "udevinfo --query=all --name=" + dev_path, output, error, true ) ;
 	else if ( udevadm_found )
+		Utils::execute_command( "udevadm info --query=all --name=" + dev_path, output, error, true ) ;
+
+	if ( ! output .empty() )
 	{
-		if ( ! Utils::execute_command( "udevadm info --query=name --name=" + dev_path, output, error, true ) )
-			udev_name = output ;
+		Glib::ustring regexp = "^E: DM_NAME=([^\n]*)$" ;
+		dm_name = Utils::regexp_label( output, regexp ) ;
 	}
 
-	if ( ! udev_name .empty() )
-	{
-		//Extract portion of name after last '/'
-		udev_name = Utils::regexp_label( udev_name, "([^/]*)$" ) ;
-	}
-
-	return udev_name ;
+	return dm_name ;
 }
 
 Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path )
@@ -278,14 +280,33 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 	//  Instead in all cases dmraid simply appends the partition number to the
 	//  device name to create a partition name.
 	//
+	Glib::ustring reg_exp ;
+	Glib::ustring partition_number ;
+
 	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 	{
-		Glib::ustring reg_exp = DEV_MAP_PATH + dmraid_devices[ k ] + "p([0-9]+)" ;
-		Glib::ustring partition_number = Utils::regexp_label( partition_path, reg_exp ) ;
+		reg_exp = DEV_MAP_PATH + dmraid_devices[ k ] + "p([0-9]+)" ;
+		partition_number = Utils::regexp_label( partition_path, reg_exp ) ;
 		if ( ! partition_number .empty() )
 		{
 			partition_path = DEV_MAP_PATH + dmraid_devices[ k ] + partition_number ;
-			break ;
+			return partition_path ;
+		}
+	}
+
+	//If parted is configured with --disable-device-mapper then the partition path
+	//  could default to something like /dev/dm-#p# on some distros, so we need to
+	//  convert these names back into /dev/mapper entries
+	reg_exp = "/dev/dm-[0-9]+p([0-9]+)" ;
+	partition_number = Utils::regexp_label( partition_path, reg_exp ) ;
+	if ( ! partition_number .empty() )
+	{
+		reg_exp = "(/dev/dm-[0-9]+)p[0-9]+" ;
+		Glib::ustring device_path = Utils::regexp_label( partition_path, reg_exp ) ;
+		if ( ! device_path .empty() )
+		{
+			device_path = get_udev_dm_name( device_path ) ;
+			partition_path = DEV_MAP_PATH + device_path + partition_number ;
 		}
 	}
 
@@ -304,9 +325,17 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAP_PATH ) ;
 	operationdetail .add_child( OperationDetail( tmp ) );
 
-	command = "dmraid -ay -v" ;
+	//Newer dmraid defaults to always inserting the letter 'p' between the device name
+	//  and the partition number.  Since the '-P' option is not valid for older dmraid
+	//  versions, try with and without the '-P' option.
+	command = "dmraid -ay -P \"\" -v" ;
 	if ( execute_command( command, operationdetail .get_last_child() ) )
-		exit_status = false ;	//command failed
+	{
+		//Above command failed, so try without the '-P' option.
+		command = "dmraid -ay -v" ;
+		if ( execute_command( command, operationdetail .get_last_child() ) )
+			exit_status = false ;	//command failed
+	}
 
 	if ( kpartx_found )
 	{
@@ -329,9 +358,17 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	Glib::ustring command, output, error ;
 	bool exit_status = true ;
 
-	command = "dmraid -ay -v" ;
+	//Newer dmraid defaults to always inserting the letter 'p' between the device name
+	//  and the partition number.  Since the '-P' option is not valid for older dmraid
+	//  versions, try with and without the '-P' option.
+	command = "dmraid -ay -P \"\" -v" ;
 	if ( Utils::execute_command( command, output, error, true ) )
-		exit_status = false;	//command failed
+	{
+		//Above command failed, so try without the '-P' option.
+		command = "dmraid -ay -v" ;
+		if ( Utils::execute_command( command, output, error, true ) )
+			exit_status = false;	//command failed
+	}
 
 	if ( kpartx_found )
 	{
