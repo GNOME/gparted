@@ -868,8 +868,9 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 	free(lp_path);
 
 	//Ensure partition path name is compatible with dmraid
-	if (dmraid .is_dmraid_supported() && dmraid .is_dmraid_device(
-			partition_path))
+	if (   dmraid .is_dmraid_supported()
+	    && dmraid .is_dmraid_device( partition_path )
+	   )
 	{
 		partition_path = dmraid .make_path_dmraid_compatible(partition_path);
 	}
