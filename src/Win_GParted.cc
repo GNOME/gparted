@@ -1424,6 +1424,30 @@ void Win_GParted::activate_resize()
 			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation ) ;
+
+			//Display notification if move operation has been queued
+			if ( operation ->partition_original .sector_start != operation ->partition_new .sector_start )
+			{
+				//Warn that move operation might break boot process
+				Gtk::MessageDialog dialog( *this
+				                           /*TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3. */
+				                         , String::ucompose( _( "You have queued an operation to move the start sector of partition %1." ), operation ->partition_original .get_path() )
+				                         , false
+				                         , Gtk::MESSAGE_WARNING
+				                         , Gtk::BUTTONS_OK
+				                         , true
+				                         ) ;
+				Glib::ustring tmp_msg = _( "Moving a partition might cause your operating system to fail to boot." ) ;
+				tmp_msg += "  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:." ;
+				tmp_msg += "\n" ;
+				tmp_msg += _( "You can learn how to repair the boot configuration in the GParted FAQ." ) ;
+				tmp_msg += "\n" ;
+				tmp_msg += "http://gparted.sourceforge.net/faq.php" ;
+				tmp_msg += "\n\n" ;
+				tmp_msg += "Moving a partition might take a very long time to apply." ;
+				dialog .set_secondary_text( tmp_msg ) ;
+				dialog .run() ;
+			}
 		}
 	}
 }
