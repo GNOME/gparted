@@ -103,7 +103,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
 		next = partitions[t +1] .get_sector_length() ;
 
-	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
+	//Only calculate MIN_SPACE_BEFORE_MB if we have a previous (unallocated) partition.
+	//  Otherwise there will not be enough graphical space to reserve a full 1 MiB for MBR/EBR.
+	//  Since this is an existing partition, if an MBR/EBR was needed then it already exists with enough space.
+	if ( previous <= 0 )
+		MIN_SPACE_BEFORE_MB = 0 ;
+	else
+		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
 	total_length = previous + selected_partition .get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	
@@ -193,7 +199,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Parti
 		next = partitions[ t +1 ] .get_sector_length() ;
 		
 	//now we have enough data to calculate some important values..
-	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
+	//Only calculate MIN_SPACE_BEFORE_MB if we have a previous (unallocated) partition.
+	//  Otherwise there will not be enough graphical space to reserve a full 1 MiB for MBR/EBR.
+	//  Since this is an existing partition, if an MBR/EBR was needed then it already exists with enough space.
+	if ( previous <= 0 )
+		MIN_SPACE_BEFORE_MB = 0 ;
+	else
+		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
 	total_length = previous + selected_partition .get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;

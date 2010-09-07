@@ -241,8 +241,8 @@ void Dialog_Base_Partition::on_signal_move( int x_start, int x_end )
 {  
 	GRIP = true ;
 
-	spinbutton_before .set_value( x_start <= MIN_SPACE_BEFORE_MB * MB_PER_PIXEL ? MIN_SPACE_BEFORE_MB : x_start * MB_PER_PIXEL ) ;
-	
+	spinbutton_before .set_value( x_start * MB_PER_PIXEL ) ;
+
 	if ( x_end == 500 )
 	{
 		spinbutton_after .set_value( 0 ) ;
@@ -275,17 +275,8 @@ void Dialog_Base_Partition::on_signal_resize( int x_start, int x_end, Frame_Resi
 			spinbutton_after .set_value( TOTAL_MB - before_value - spinbutton_size .get_value() ) ;
 	}
 	else if ( arrow == Frame_Resizer_Base::ARROW_LEFT ) //don't touch freespace after, leave it as it is
-	{
-		if ( x_start <= MIN_SPACE_BEFORE_MB * MB_PER_PIXEL )
-		{
-			spinbutton_before .set_value( MIN_SPACE_BEFORE_MB );
-			spinbutton_size .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - spinbutton_after.get_value() ) ;
-		}
-		else
-			spinbutton_before .set_value(
-				TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() ) ;
-	}
-		
+		spinbutton_before .set_value( TOTAL_MB - spinbutton_size .get_value() - spinbutton_after .get_value() ) ;
+
 	Check_Change() ;
 	
 	GRIP = false ;
