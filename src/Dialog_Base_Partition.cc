@@ -174,7 +174,7 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;  break;
 		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
 
-		default :  selected_partition .alignment = ALIGN_CYLINDER ;
+		default :  selected_partition .alignment = ALIGN_MEBIBYTE ;
 	}
 
 	selected_partition .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
