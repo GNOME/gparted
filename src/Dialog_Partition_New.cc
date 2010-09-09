@@ -227,7 +227,16 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	switch ( optionmenu_alignment .get_history() )
 	{
 		case  0 :  part_temp .alignment = GParted::ALIGN_CYLINDER;  break;
-		case  1 :  part_temp .alignment = GParted::ALIGN_MEBIBYTE;  break;
+		case  1 :  part_temp .alignment = GParted::ALIGN_MEBIBYTE;
+		           {
+		               //if free space available, grow partition so sector_end on mebibyte boundary
+		               Sector diff = ( MEBIBYTE / part_temp .sector_size ) - ( part_temp .sector_end + 1 ) % ( MEBIBYTE / part_temp .sector_size ) ;
+		               if (   diff
+		                   && ( ( part_temp .sector_end - START +1 + diff ) < total_length )
+		                  )
+		                   part_temp .sector_end += diff ;
+		           }
+		           break;
 		case  2 :  part_temp .alignment = GParted::ALIGN_STRICT;  break;
 
 		default :  part_temp .alignment = GParted::ALIGN_MEBIBYTE ;
