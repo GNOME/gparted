@@ -171,7 +171,16 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	switch ( optionmenu_alignment .get_history() )
 	{
 		case  0 :  selected_partition .alignment = ALIGN_CYLINDER;  break;
-		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;  break;
+		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;
+		           {
+		               //if free space available, grow partition so sector_end on mebibyte boundary
+		               Sector diff = ( MEBIBYTE / selected_partition .sector_size ) - ( selected_partition .sector_end + 1 ) % ( MEBIBYTE / selected_partition .sector_size ) ;
+		               if (   diff
+		                   && ( ( selected_partition .sector_end - START +1 + diff ) < total_length )
+		                  )
+		                   selected_partition .sector_end += diff ;
+		           }
+		           break;
 		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
 
 		default :  selected_partition .alignment = ALIGN_MEBIBYTE ;
