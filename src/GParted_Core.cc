@@ -63,7 +63,7 @@ GParted_Core::GParted_Core()
 	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
-	set_thread_status_message("") ;
+	thread_status_message = "" ;
 
 	ped_exception_set_handler( ped_exception_handler ) ; 
 
