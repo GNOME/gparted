@@ -1,4 +1,46 @@
 ====================
+0.6.3   (2010-09-23)
+====================
+NOTES
+	This release of GParted improves motherboard BIOS RAID support
+	and includes bug fixes, and language translation updates.
+
+	Key changes include:
+	  - Fix problems listing and working with fake RAID devices
+	  - Prevent swapon and mount if partition is in operation queue
+	  - Prevent partition table creation if partitions are active
+
+BUG FIXES
+	* Add labelling of linux-swap (#626325)
+	  - Thanks go to Mike Fleetwood for this small patch
+	* Prevent swapon and mount if partition is in operation queue (#611431)
+	* Prevent partition table creation if partitions are active
+	  - Ubuntu launchpad #503125
+	* Ensure partition path name is compatible with dmraid (#622217)
+	  - Ubuntu launchpad #600729
+	* Remove dependency on kpartx for fake RAID support
+	  - Ubuntu launchpad #554582
+	* Warn partition move queued that might break boot process (#627199)
+	* Fix MiB mismatch when graphically moving logical partition (#628554)
+	* Fix paste destination partition smaller than source (#626946)
+	* Fix size reduced by 1 MiB if created after cylinder aligned partition
+	* Complete quoting for parameters in configure.in file (#622598)
+	  - Thanks go to Markus Elfring for this small patch 
+
+TRANSLATIONS (new/updated)
+	* cs(Adrian Guniš, Marek Černocký), da(Ask H. Larsen),
+	  de(Christian Kirbach, Mario Blättermann), es(Jorge González),
+	  et(Mattias Põldaru), fr(Nicolas Repentin, Bruno Brouard),
+	  he(Yaron Shahrabani), hu(Gabor Kelemen), id(Dirgita),
+	  it(Milo Casagrande), ja(Takayuki KUSANO), kk(Baurzhan Muftakhidinov),
+	  pl(Piotr Drąg), pt(António Lima), pt_BR(Carlos José Pereira),
+	  sl(Matej Urbančič), sv(Daniel Nylander)
+
+DEPENDENCIES (new/updated)
+	* kpartx package no longer required for fake RAID support.
+
+
+====================
 0.6.2   (2010-08-01)
 ====================
 NOTES
