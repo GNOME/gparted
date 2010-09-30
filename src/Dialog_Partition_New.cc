@@ -229,9 +229,10 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 		case  0 :  part_temp .alignment = GParted::ALIGN_CYLINDER;  break;
 		case  1 :  part_temp .alignment = GParted::ALIGN_MEBIBYTE;
 		           {
-		               //if free space available, grow partition so sector_end on mebibyte boundary
+		               //if start sector not MiB aligned and free space available then add ~1 MiB to partition so requested size is kept
 		               Sector diff = ( MEBIBYTE / part_temp .sector_size ) - ( part_temp .sector_end + 1 ) % ( MEBIBYTE / part_temp .sector_size ) ;
 		               if (   diff
+		                   && ( part_temp .sector_start % (MEBIBYTE / part_temp .sector_size ) ) > 0
 		                   && ( ( part_temp .sector_end - START +1 + diff ) < total_length )
 		                  )
 		                   part_temp .sector_end += diff ;
