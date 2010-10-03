@@ -58,17 +58,17 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;
 	}
 
-	FS *fs_tmp ;
+	FS fs_tmp ;
 	//add FS_UNFORMATTED
-	fs_tmp = new( FS ) ;
-	fs_tmp ->filesystem = GParted::FS_UNFORMATTED ;
-	fs_tmp ->create = GParted::FS::LIBPARTED ;
-	this ->FILESYSTEMS .push_back( * fs_tmp ) ;
+	fs_tmp .filesystem = GParted::FS_UNFORMATTED ;
+	fs_tmp .create = GParted::FS::LIBPARTED ;
+	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	//add FS_EXTENDED
-	fs_tmp = new( FS ) ;
-	fs_tmp ->filesystem = GParted::FS_EXTENDED ;
-	this ->FILESYSTEMS .push_back( * fs_tmp ) ;
+	fs_tmp = FS();
+	fs_tmp .filesystem = GParted::FS_EXTENDED ;
+	fs_tmp .create = GParted::FS::NONE ;
+	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 	
 	//add table with selection menu's...
 	table_create .set_border_width( 10 ) ;
