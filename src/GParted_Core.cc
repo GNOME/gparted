@@ -2910,6 +2910,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 			if ( ped_device_open( lp_device ) )
 			{
 				//reiser4 stores "ReIsEr4" at sector 128 with a sector size of 512 bytes
+				// FIXME writing block of partially uninitialized bytes (security/privacy)
 				return_value = ped_geometry_write( & lp_partition ->geom, "0000000", (65536 / lp_device ->sector_size), 1 ) ;
 
 				ped_device_close( lp_device ) ;
