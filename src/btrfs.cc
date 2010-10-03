@@ -61,8 +61,43 @@ bool btrfs::check_repair( const Partition & partition, OperationDetail & operati
 
 void btrfs::set_used_sectors( Partition & partition )
 {
-// TODO
-    return;
+	if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
+	{
+		Glib::ustring size_label;
+		if ( ((index = output .find( "FS bytes" )) < output .length()) &&
+			  (size_label=Utils::regexp_label(output .substr( index ), "^FS bytes used (.*)B")) .length() > 0)
+		{
+			gchar *suffix;
+			gdouble rawN = g_ascii_strtod (size_label.c_str(),&suffix);
+			unsigned long long mult=0;
+			switch(suffix[0]){
+				case 'K':
+					mult=KIBIBYTE;
+					break;
+				case 'M':
+					mult=MEBIBYTE;
+					break;
+				case 'G':
+					mult=GIBIBYTE;
+					break;
+				case 'T':
+					mult=TEBIBYTE;
+					break;
+				default:
+					mult=1;
+					break;
+					}
+			partition .set_used( Utils::round( (rawN * mult)/ double(partition .sector_size) ) ) ;
+		}
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
