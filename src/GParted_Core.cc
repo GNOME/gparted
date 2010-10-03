@@ -89,15 +89,14 @@ void GParted_Core::find_supported_filesystems()
 {
 	FILESYSTEMS .clear() ;
 	
-	FS *fs ;
+	FS fs_notsupp;
 #ifdef BTRFS_SUPPORT
 	btrfs fs_btrfs;
 	FILESYSTEMS .push_back( fs_btrfs .get_filesystem_support() ) ;
 #else
 	//btrfs  FIXME:  Add full support when on-disk-format stabilized
-	fs = new( FS ) ;
-	fs ->filesystem = GParted::FS_BTRFS ;
-	FILESYSTEMS .push_back( * fs ) ;
+	fs_notsupp.filesystem = GParted::FS_BTRFS;
+	FILESYSTEMS .push_back( fs_notsupp ) ;
 #endif
 
 	ext2 fs_ext2;
@@ -143,19 +142,16 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 
 	//lvm2 physical volume -- not a file system
-	fs = new( FS ) ;
-	fs ->filesystem = GParted::FS_LVM2 ;
-	FILESYSTEMS .push_back( * fs ) ;
+	fs_notsupp .filesystem = GParted::FS_LVM2 ;
+	FILESYSTEMS .push_back( fs_notsupp ) ;
 
 	//luks encryption-- not a file system
-	fs = new( FS ) ;
-	fs ->filesystem = GParted::FS_LUKS ;
-	FILESYSTEMS .push_back( * fs ) ;
+	fs_notsupp .filesystem = GParted::FS_LUKS ;
+	FILESYSTEMS .push_back( fs_notsupp ) ;
 
 	//unknown file system (default when no match is found)
-	fs = new( FS ) ;
-	fs ->filesystem = GParted::FS_UNKNOWN ;
-	FILESYSTEMS .push_back( * fs ) ;
+	fs_notsupp .filesystem = GParted::FS_UNKNOWN ;
+	FILESYSTEMS .push_back( fs_notsupp ) ;
 }
 
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
