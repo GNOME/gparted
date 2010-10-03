@@ -24,6 +24,7 @@ namespace GParted
 
 OperationDetail::OperationDetail()
 {
+	status = STATUS_NONE; // prevent uninitialized member access
 	set_status( STATUS_NONE ) ;
 	fraction = -1 ;
 	time_elapsed = -1 ;
