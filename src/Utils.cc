@@ -307,11 +307,12 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text,
 	int        nmatch = 2 ;
 	regmatch_t pmatch[  2 ] ;
 	int rc = regcomp( &preg, regular_sub_expression .c_str(), REG_EXTENDED | REG_ICASE | REG_NEWLINE ) ;
-	if (   ( rc == 0 ) //Reg compile OK
-		&& ( regexec( &preg, text .c_str(), nmatch, pmatch, 0 ) == 0 ) //Match found
-	   )
+    if(rc == 0)
 	{
-		label = text .substr( pmatch[1].rm_so, pmatch[1].rm_eo - pmatch[1].rm_so ) ;
+		if (regexec(&preg, text.c_str(), nmatch, pmatch, 0) == 0)
+			label = text .substr( pmatch[1].rm_so, pmatch[1].rm_eo - pmatch[1].rm_so ) ;
+
+		regfree(&preg);
 	}
 	return label ;
 }
