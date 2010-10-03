@@ -1064,9 +1064,15 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 
 		//TODO:  Temporary code to detect ext4.
 		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
-		temp = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
-		if ( temp == "ext4" || temp == "ext4dev" )
-			fs_type = temp ;
+		char * const path = ped_partition_get_path( lp_partition );
+
+		if (NULL != path)
+		{
+			temp = fs_info .get_fs_type( Glib::ustring( path ) ) ;
+			if ( temp == "ext4" || temp == "ext4dev" )
+				fs_type = temp ;
+			free( path );
+		}
 	}
 
 	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
@@ -1074,7 +1080,12 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	if ( fs_type .empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		fs_type = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
+		char * const path = ped_partition_get_path( lp_partition );
+		if (NULL != path)
+		{
+			fs_type = fs_info.get_fs_type( Glib::ustring( path ) ) ;
+			free( path );
+		}
 	}
 
 	if ( ! fs_type .empty() )
