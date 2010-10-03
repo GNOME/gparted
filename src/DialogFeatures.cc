@@ -77,8 +77,6 @@ DialogFeatures::DialogFeatures()
 	hbox2 ->pack_start( *vbox ) ;
 
 	//legend
-	hbox = manage( new Gtk::HBox( false, 6 ) ) ;
-	hbox ->set_border_width( 6 ) ;
 	str_temp = "<b>" ;
 	str_temp += _("Legend") ;
 	str_temp += "</b>" ;
