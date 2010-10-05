@@ -1041,11 +1041,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	{
 		ped_device_open( lp_device );
 		ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-		strncpy(magic1, buf+0, 6) ;  magic1[6] = '\0' ; //set and terminate string
+		memcpy(magic1, buf+0, 6) ;  //set binary magic data
 		ped_device_close( lp_device );
 		free( buf ) ;
 
-		if ( Glib::ustring( magic1 ) == "LUKS\xBA\xBE" )
+		if ( 0 == memcmp( magic1 , "LUKS\xBA\xBE", 6 ) )
 		{
 			temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
 			temp += "\n" ;
@@ -1132,11 +1132,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		                 , (65536 / lp_device ->sector_size) 
 		                 , 1
 		                 ) ;
-		strncpy(magic1, buf+0, 7) ;  magic1[7] = '\0' ; //set and terminate string
+		memcpy(magic1, buf+0, 7) ; //set binary magic data
 		ped_device_close( lp_device );
 		free( buf ) ;
 
-		if ( Glib::ustring( magic1 ) == "ReIsEr4" )
+		if ( 0 == memcmp( magic1, "ReIsEr4", 7 ) )
 			return GParted::FS_REISER4 ;
 	}
 
@@ -1149,20 +1149,20 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		if ( lp_device ->sector_size == 512 )
 		{
 			ped_geometry_read( & lp_partition ->geom, buf, 1, 1 ) ;
-			strncpy(magic1, buf+ 0, 8) ; magic1[8] = '\0' ; //set and terminate string
-			strncpy(magic2, buf+24, 4) ; magic2[4] = '\0' ; //set and terminate string
+			memcpy(magic1, buf+ 0, 8) ; // set binary magic data
+			memcpy(magic2, buf+24, 4) ; // set binary magic data
 		}
 		else
 		{
 			ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-			strncpy(magic1, buf+ 0+512, 8) ; magic1[8] = '\0' ; //set and terminate string
-			strncpy(magic2, buf+24+512, 4) ; magic2[4] = '\0' ; //set and terminate string
+			memcpy(magic1, buf+ 0+512, 8) ; // set binary magic data
+			memcpy(magic2, buf+24+512, 4) ; // set binary magic data
 		}
 		ped_device_close( lp_device );
 		free( buf ) ;
 
-		if (    Glib::ustring( magic1 ) == "LABELONE"
-		     && Glib::ustring( magic2 ) == "LVM2" )
+		if (    0 == memcmp( magic1, "LABELONE", 8 )
+		     && 0 == memcmp( magic2, "LVM2", 4 ) )
 		{
 			temp = _( "Logical Volume Management is not yet supported." ) ;
 			temp += "\n" ;
@@ -1174,7 +1174,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	//btrfs
 	const Sector BTRFS_SUPER_INFO_SIZE   = 4096 ;
 	const Sector BTRFS_SUPER_INFO_OFFSET = (64 * 1024) ;
-	const Glib::ustring BTRFS_SIGNATURE  = "_BHRfS_M" ;
+	const char* const BTRFS_SIGNATURE  = "_BHRfS_M" ;
 
 	char    buf_btrfs[BTRFS_SUPER_INFO_SIZE] ;
 
@@ -1184,10 +1184,10 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	                 , (BTRFS_SUPER_INFO_OFFSET / lp_device ->sector_size)
 	                 , (BTRFS_SUPER_INFO_SIZE / lp_device ->sector_size)
 	                 ) ;
-	strncpy(magic1, buf_btrfs+64, BTRFS_SIGNATURE .size()) ;  magic1[BTRFS_SIGNATURE .size()] = '\0' ; //set and terminate string
+	memcpy(magic1, buf_btrfs+64, strlen(BTRFS_SIGNATURE) ) ;  //set binary magic data
 	ped_device_close( lp_device ) ;
 
-	if ( magic1 == BTRFS_SIGNATURE )
+	if ( 0 == memcmp( magic1, BTRFS_SIGNATURE, strlen(BTRFS_SIGNATURE) ) )
 	{
 #ifndef BTRFS_SUPPORT
 		temp = _( "BTRFS is not yet supported." ) ;
