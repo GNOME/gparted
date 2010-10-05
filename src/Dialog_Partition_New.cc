@@ -320,6 +320,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 
 void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
 {
+	bool set_first=false;
 	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
@@ -331,18 +332,28 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
 			this ->selected_partition .get_byte_length() >= FILESYSTEMS[ t ] .MIN ) ;
+		//use ext2 as default filesystem
+		if ( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) == "ext2" &&
+			menu_filesystem .items() .back() .sensitive() )
+		{
+			first_creatable_fs=menu_filesystem .items() .size() - 1;
+			set_first=true;
+		}
 	}
 	
 	//unformatted is always available
 	menu_filesystem .items() .back() .set_sensitive( true ) ;
 	
-	//find and set first enabled file system
-	for ( unsigned int t = 0 ; t < menu_filesystem .items() .size() ; t++ )
-		if ( menu_filesystem .items()[ t ] .sensitive() )
-		{
-			first_creatable_fs = t ;
-			break ;
-		}
+	if(!set_first)
+	{
+		//find and set first enabled file system
+		for ( unsigned int t = 0 ; t < menu_filesystem .items() .size() ; t++ )
+			if ( menu_filesystem .items()[ t ] .sensitive() )
+			{
+				first_creatable_fs = t ;
+				break ;
+			}
+	}
 }
 
 } //GParted
