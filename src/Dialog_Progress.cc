@@ -276,7 +276,7 @@ void Dialog_Progress::on_signal_show()
 			str_temp += "\n\n<i><b>" + Glib::ustring( _("IMPORTANT") ) + "</b>\n" ;
 			str_temp += _("If you want support, you need to provide the saved details!") ;
 			str_temp += "\n" + String::ucompose( 
-				_("See %1 for more information."), "http://gparted.sourceforge.net/larry/tips/save_details.htm" ) + "</i>" ;
+				_("See %1 for more information."), "http://gparted.org/larry/tips/save_details.htm" ) + "</i>" ;
 		
 			dialog .set_secondary_text( str_temp, true ) ;
 			dialog .run() ;

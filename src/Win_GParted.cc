@@ -1268,7 +1268,7 @@ void Win_GParted::menu_help_contents()
 	tmp_msg += "\n" ;
 	tmp_msg += _( "Documentation is available at the project web site." ) ;
 	tmp_msg += "\n" ;
-	tmp_msg += "http://gparted.sourceforge.net" ;
+	tmp_msg += "http://gparted.org" ;
 	dialog .set_secondary_text( tmp_msg ) ;
 	dialog .run() ;
 #else
@@ -1297,7 +1297,7 @@ void Win_GParted::menu_help_about()
 	strings .clear() ;
 
 	//artists
-	strings .push_back( "http://gparted.sourceforge.net/artwork.php" ) ;
+	strings .push_back( "http://gparted.org/artwork.php" ) ;
 	dialog .set_artists( strings ) ;
 	strings .clear() ;
 
@@ -1309,7 +1309,7 @@ void Win_GParted::menu_help_about()
 
 
   	//the url is not clickable because this would introduce an new dep (gnome-vfsmm) 
-	dialog .set_website( "http://gparted.sourceforge.net" ) ;
+	dialog .set_website( "http://gparted.org" ) ;
 
 	dialog .run() ;
 }
@@ -1446,7 +1446,7 @@ void Win_GParted::activate_resize()
 				tmp_msg += "\n" ;
 				tmp_msg += _( "You can learn how to repair the boot configuration in the GParted FAQ." ) ;
 				tmp_msg += "\n" ;
-				tmp_msg += "http://gparted.sourceforge.net/faq.php" ;
+				tmp_msg += "http://gparted.org/faq.php" ;
 				tmp_msg += "\n\n" ;
 				tmp_msg += "Moving a partition might take a very long time to apply." ;
 				dialog .set_secondary_text( tmp_msg ) ;
