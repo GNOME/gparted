@@ -1345,8 +1345,12 @@ bool Win_GParted::max_amount_prim_reached()
 	{
 		Gtk::MessageDialog dialog( 
 			*this,
-			String::ucompose( _("It is not possible to create more than %1 primary partitions"),
-					  devices[ current_device ] .max_prims ),
+			String::ucompose( ngettext( "It is not possible to create more than %1 primary partition"
+			                          , "It is not possible to create more than %1 primary partitions"
+			                          , devices[ current_device ] .max_prims
+			                          )
+			                , devices[ current_device ] .max_prims
+			                ),
 			false,
 			Gtk::MESSAGE_ERROR,
 			Gtk::BUTTONS_OK,
