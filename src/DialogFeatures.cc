@@ -66,13 +66,21 @@ DialogFeatures::DialogFeatures()
 	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-	hbox ->pack_start( * Utils::mk_label( _("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
+	hbox ->pack_start( * Utils::mk_label(
+			/* TO TRANSLATORS:  Available
+			 * means that this action is valid for this file system.
+			 */
+			_("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
 	vbox ->pack_start( *hbox ) ;
 
 	hbox = manage( new Gtk::HBox() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
 	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-	hbox ->pack_start( * Utils::mk_label( _("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
+	hbox ->pack_start( * Utils::mk_label(
+			/* TO TRANSLATORS:  Not Available
+			 * means that this action is not valid for this file system.
+			 */
+			_("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
 	vbox ->pack_start( *hbox ) ;
 	hbox2 ->pack_start( *vbox ) ;
 

@@ -340,7 +340,12 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			//harddisk without disklabel
 			else
 			{
-				temp_device .disktype = _("unrecognized") ;
+				temp_device .disktype =
+						/* TO TRANSLATORS:  unrecognized
+						 * means that the partition table for this
+						 * disk device is unknown or not recognized.
+						 */
+						_("unrecognized") ;
 				temp_device .max_prims = -1 ;
 				
 				Partition partition_temp ;
@@ -1748,8 +1753,13 @@ bool GParted_Core::move( const Device & device,
 {
 	if ( partition_old .get_sector_length() != partition_new .get_sector_length() )
 	{	
-		operationdetail .add_child( OperationDetail( 
-			_("moving requires old and new length to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
+		operationdetail .add_child( OperationDetail(
+				/* TO TRANSLATORS:  moving requires old and new length to be the same
+				 * means that the length in bytes of the old partition and new partition
+				 * must be the same.  If the sector sizes of the old partition and the
+				 * new partition are the same, then the length in sectors must be the same.
+				 */
+				_("moving requires old and new length to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
 
 		return false ;
 	}
@@ -2445,7 +2455,9 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( 
-				String::ucompose( _("check file system on %1 for errors and (if possible) fix them"),
+				String::ucompose(
+						/* TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them */
+						_("check file system on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
 	
 	bool succes = false ;

@@ -275,8 +275,9 @@ void Dialog_Progress::on_signal_show()
 			str_temp = _("See the details for more information.") ;
 			str_temp += "\n\n<i><b>" + Glib::ustring( _("IMPORTANT") ) + "</b>\n" ;
 			str_temp += _("If you want support, you need to provide the saved details!") ;
-			str_temp += "\n" + String::ucompose( 
-				_("See %1 for more information."), "http://gparted.org/larry/tips/save_details.htm" ) + "</i>" ;
+			str_temp += "\n" + String::ucompose(
+					/* TO TRANSLATORS: looks like   See http://gparted.org/larry/tips/save_details.htm for more information. */
+					_("See %1 for more information."), "http://gparted.org/larry/tips/save_details.htm" ) + "</i>" ;
 		
 			dialog .set_secondary_text( str_temp, true ) ;
 			dialog .run() ;
@@ -392,19 +393,46 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 		switch ( operationdetail .get_status() )
 		{
 			case STATUS_EXECUTE:
-				out << "( " << _("EXECUTING") << " )" ;
+				out << "( " <<
+						/* TO TRANSLATORS:  EXECUTING
+						 * means that the status for this operation is
+						 * executing or currently in progress.
+						 */
+						_("EXECUTING") << " )" ;
 				break ;
 			case STATUS_SUCCES:
-				out << "( " << _("SUCCESS") << " )" ;
+				out << "( " <<
+						/* TO" TRANSLATORS:  SUCCESS
+						 * means that the status for this operation is
+						 * completed successfully.
+						 */
+						_("SUCCESS") << " )" ;
 				break ;
 			case STATUS_ERROR:
-				out << "( " << _("ERROR") << " )" ;
+				out << "( "
+						/* TO TRANSLATORS:  ERROR
+						 * means that the status for this operation is
+						 * completed with errors.
+						 */
+						<< _("ERROR") << " )" ;
 				break ;
 			case STATUS_INFO:
-				out << "( " << _("INFO") << " )" ;
+				out << "( " <<
+						/* TO TRANSLATORS:  INFO
+						 * means that the status for this operation is
+						 * for your information , or messages from the
+						 * libparted library.
+						 */
+						_("INFO") << " )" ;
 				break ;
 			case STATUS_N_A:
-				out << "( " << _("N/A") << " )" ;
+				out << "( " <<
+						/* TO TRANSLATORS:  N/A
+						 * means that the status for this operation is
+						 * not applicable because the operation is not
+						 * supported on the file system in the partition.
+						 */
+						_("N/A") << " )" ;
 				break ;
 
 			default:

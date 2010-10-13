@@ -243,20 +243,53 @@ void Dialog_Partition_Info::Display_Info()
 		if ( partition .busy )
 		{
 			if ( partition .type == GParted::TYPE_EXTENDED )
+			{
+				/* TO TRANSLATORS:  Busy (At least one logical partition is mounted)
+				 * means that this extended partition contains at least one logical
+				 * partition that is mounted or otherwise active.
+				 */
 				str_temp =  _("Busy (At least one logical partition is mounted)") ;
+			}
 			else if ( partition .filesystem == FS_LINUX_SWAP )
+			{
+				/* TO TRANSLATORS:  Active
+				 * means that this linux swap partition is enabled and being used by
+				 * the operating system.
+				 */
 				str_temp = _("Active") ;
+			}
 			else if ( partition .get_mountpoints() .size() )
-				str_temp = String::ucompose( _("Mounted on %1"),
-							     Glib::build_path( ", ", partition .get_mountpoints() ) ) ;
+			{
+				str_temp = String::ucompose( 
+						/* TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint */
+						_("Mounted on %1"),
+						Glib::build_path( ", ", partition .get_mountpoints() ) ) ;
+			}
 		}
 		else if ( partition.type == GParted::TYPE_EXTENDED )
+		{
+			/* TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
+			 * means that this extended partition contains no mounted or otherwise
+			 * active partitions.
+			 */
 			str_temp = _("Not busy (There are no mounted logical partitions)") ;
+		}
 		else if ( partition.filesystem == GParted::FS_LINUX_SWAP )
+		{
+			/* TO TRANSLATORS:  Not active
+			 *  means that this linux swap partition is not enabled and is not
+			 *  in use by the operating system.
+			 */
 			str_temp = _("Not active") ;
-		else 
+		}
+		else
+		{
+			/* TO TRANSLATORS:  Not mounted
+			 * means that this partition is not mounted.
+			 */
 			str_temp = _("Not mounted") ;
-		
+		}
+
 		table ->attach( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	}
 

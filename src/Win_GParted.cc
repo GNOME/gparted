@@ -1671,20 +1671,30 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	     ( fs .MAX && selected_partition .get_byte_length() > fs .MAX ) )
 	{
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( _("Cannot format this file system to %1."),
-						   	     Utils::get_filesystem_string( new_fs ) ) ,
+					   String::ucompose( 
+							/* TO TRANSLATORS: looks like
+							* Cannot format this file system to fat16.
+							*/
+							_( "Cannot format this file system to %1." ),
+							   Utils::get_filesystem_string( new_fs ) ) ,
 					   false,
 					   Gtk::MESSAGE_ERROR,
 					   Gtk::BUTTONS_OK,
 					   true );
 
 		if ( selected_partition .get_byte_length() < fs .MIN )
-			dialog .set_secondary_text( String::ucompose( 
+			dialog .set_secondary_text( String::ucompose(
+						/* TO TRANSLATORS: looks like
+						 * A fat16 file system requires a partition of at least 16.00 MiB.
+						 */
 						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MIN, 1 /* Byte */ ) ) );
 		else
-			dialog .set_secondary_text( String::ucompose( 
+			dialog .set_secondary_text( String::ucompose(
+						/* TO TRANSLATORS: looks like
+						 * A partition with a hfs file system has a maximum size of 2.00 GiB.
+						 */
 						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( new_fs ),
 						Utils::format_size( fs .MAX, 1 /* Byte */ ) ) );

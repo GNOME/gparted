@@ -117,9 +117,26 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 {
 	switch( filesystem )
 	{
-		case FS_UNALLOCATED	: return _("unallocated") ;
-		case FS_UNKNOWN		: return _("unknown") ;
-		case FS_UNFORMATTED	: return _("unformatted") ;
+		case FS_UNALLOCATED	: return
+				/* TO TRANSLATORS:  unallocated
+				 * means that this space on the disk device does
+				 * not contain a recognized file system, and is in
+				 * other words unallocated.
+				 */
+				_("unallocated") ;
+		case FS_UNKNOWN		: return
+				/* TO TRANSLATORS:  unknown
+				 * means that this space within this partition does
+				 * not contain a file system known to GParted, and
+				 * is in other words unknown.
+				 */
+				_("unknown") ;
+		case FS_UNFORMATTED	: return
+				/* TO TRANSLATORS:  unformatted
+				 * means that the space within this partition will not
+				 * be formatted with a known file system by GParted.
+				 */
+				_("unformatted") ;
 		case FS_EXTENDED	: return "extended" ;
 		case FS_BTRFS		: return "btrfs" ;
 		case FS_EXT2		: return "ext2" ;
@@ -336,6 +353,14 @@ Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_le
 	fd = mkstemp( file_name ) ;
 	if( fd != -1 ) {
 		Glib::ustring fcontents =
+			/* TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
+			 * means that this file is only used while gparted is applying operations.
+			 * If for some reason this file exists at any other time, then the message is
+			 * meant to inform a user that the file can be deleted with no harmful effects.
+			 * This file is typically created, exists for less than a few seconds, and is
+			 * then deleted by gparted.  Under normal circumstances a user should never
+			 * see this file.
+			 */
 			_("# Temporary file created by gparted.  It may be deleted.\n") ;
 
 		//The following file contents are mtools keywords (see man mtools.conf)
@@ -345,6 +370,9 @@ Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_le
 
 		if( write( fd, fcontents .c_str(), fcontents .size() ) == -1 ) {
 			err_msg = String::ucompose(
+							/* TO TRANSLATORS: looks like
+							 * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
+							 */
 							_("Label operation failed:  Unable to write to temporary file %1.\n")
 							, file_name
 						) ;
@@ -354,6 +382,9 @@ Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_le
 	else
 	{
 		err_msg = String::ucompose(
+						/* TO TRANSLATORS: looks like
+						 * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
+						 */
 						_("Label operation failed:  Unable to create temporary file %1.\n")
 						, file_name
 					) ;
