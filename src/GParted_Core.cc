@@ -535,7 +535,9 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 	//do some basic checks on the partition
 	if ( partition .get_sector_length() <= 0 )
 	{
-		error = String::ucompose( _("A partition cannot have a length of %1 sectors"),
+		error = String::ucompose(
+				/* TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors */
+				_("A partition cannot have a length of %1 sectors"),
 				partition .get_sector_length() ) ;
 		return false ;
 	}
@@ -543,6 +545,7 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 	if ( partition .get_sector_length() < partition .sectors_used )
 	{
 		error = String::ucompose(
+				/* TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid */
 				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
 				partition .sectors_used,
 				partition .get_sector_length() ) ;
