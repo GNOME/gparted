@@ -17,7 +17,6 @@
  */
 
 #include "../include/Utils.h"
-#include "../config.h"
 
 #include <sstream>
 #include <iomanip>
@@ -166,6 +165,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 {
 	switch( filesystem )
 	{
+		case FS_BTRFS       : return "btrfs-tools" ;
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
 		case FS_EXT4        : return "e2fsprogs v1.41+" ;
@@ -179,9 +179,6 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs" ;
 		case FS_UFS         : return "" ;
-#ifdef BTRFS_SUPPORT
-		case FS_BTRFS       : return "btrfs-tools" ;
-#endif
 		case FS_XFS         : return "xfsprogs" ;
 
 		default             : return "" ;

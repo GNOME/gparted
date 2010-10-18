@@ -1,9 +1,5 @@
 gparted_includedir = $(pkgincludedir)
 
-if BTRFS_SUPPORT
-btrfs_source = btrfs.h
-endif
-
 EXTRA_DIST = \
 	Device.h 			\
 	Dialog_Base_Partition.h		\
@@ -38,6 +34,7 @@ EXTRA_DIST = \
 	TreeView_Detail.h 		\
 	Utils.h 			\
 	Win_GParted.h 			\
+	btrfs.h				\
 	ext2.h				\
 	ext3.h  			\
 	ext4.h  			\
@@ -52,5 +49,4 @@ EXTRA_DIST = \
 	reiser4.h   			\
 	reiserfs.h  			\
 	ufs.h  				\
-	xfs.h				\
-	$(btrfs_source)
+	xfs.h

@@ -113,9 +113,6 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	{
 		//Skip luks, lvm2, and unknown because these are not file systems
 		if (
-#ifndef BTRFS_SUPPORT
-		     FILESYSTEMS[ t ] .filesystem == GParted::FS_BTRFS ||
-#endif
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS ||
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN

@@ -7,10 +7,6 @@ AM_CFLAGS = -Wall
 
 AM_CXXFLAGS = -Wall	
 
-if BTRFS_SUPPORT
-btrfs_source = btrfs.cc
-endif
-
 sbin_PROGRAMS = gpartedbin
 
 gpartedbin_SOURCES = \
@@ -47,6 +43,7 @@ gpartedbin_SOURCES = \
 	TreeView_Detail.cc		\
 	Utils.cc			\
 	Win_GParted.cc			\
+	btrfs.cc			\
 	ext2.cc				\
 	ext3.cc				\
 	ext4.cc				\
@@ -61,9 +58,8 @@ gpartedbin_SOURCES = \
 	reiser4.cc 			\
 	reiserfs.cc			\
 	ufs.cc				\
-	xfs.cc				\
-	$(btrfs_source)
-	
+	xfs.cc
+
 gpartedbin_LDFLAGS = -lparted -lgthread-2.0 
 
 gpartedbin_LDADD = $(GTKMM_LIBS)
