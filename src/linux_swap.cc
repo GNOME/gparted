@@ -41,7 +41,7 @@ FS linux_swap::get_filesystem_support()
 		fs .write_label = FS::EXTERNAL ;
 
 	fs .copy = GParted::FS::EXTERNAL ;
-	fs .move = GParted::FS::GPARTED ;
+	fs .move = GParted::FS::EXTERNAL ;
 	
 	return fs ;
 }
@@ -98,6 +98,18 @@ bool linux_swap::move( const Partition & partition_new
                      , OperationDetail & operationdetail
                      )
 {
+	//Since linux-swap does not contain data, do not actually move the partition
+	operationdetail .add_child(
+	    OperationDetail(
+	                     /* TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data */
+	                     String::ucompose( _("Partition move action skipped because %1 file system does not contain data")
+	                                     , Utils::get_filesystem_string( FS_LINUX_SWAP )
+	                                     )
+	                   , STATUS_NONE
+	                   , FONT_ITALIC
+	                   )
+	                          ) ;
+
 	return true ;
 }
 

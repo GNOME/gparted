@@ -1860,6 +1860,11 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 								  	 operationdetail .get_last_child() ) ;
 			break ;
 		case GParted::FS::EXTERNAL:
+			succes = set_proper_filesystem( partition_new .filesystem ) &&
+			         p_filesystem ->move( partition_old
+			                            , partition_new
+			                            , operationdetail .get_last_child()
+			                            ) ;
 			break ;
 	}
 
