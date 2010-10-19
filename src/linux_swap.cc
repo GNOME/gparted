@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ FS linux_swap::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
 		fs .write_label = FS::EXTERNAL ;
 
-	fs .copy = GParted::FS::GPARTED ;
+	fs .copy = GParted::FS::EXTERNAL ;
 	fs .move = GParted::FS::GPARTED ;
 	
 	return fs ;
@@ -97,6 +97,18 @@ bool linux_swap::copy( const Glib::ustring & src_part_path,
 		       const Glib::ustring & dest_part_path,
 		       OperationDetail & operationdetail )
 {
+	//Since linux-swap does not contain data, do not actually copy the partition
+	operationdetail .add_child(
+	    OperationDetail(
+	                     /* TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data */
+	                     String::ucompose( _("Partition copy action skipped because %1 file system does not contain data")
+	                                     , Utils::get_filesystem_string( FS_LINUX_SWAP )
+	                                     )
+	                   , STATUS_NONE
+	                   , FONT_ITALIC
+	                   )
+	                          ) ;
+
 	return true ;
 }
 
