@@ -91,6 +91,14 @@ bool hfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return true ;
 }
 
+bool hfs::move( const Partition & partition_new
+              , const Partition & partition_old
+              , OperationDetail & operationdetail
+              )
+{
+	return true ;
+}
+
 bool hfs::copy( const Glib::ustring & src_part_path,
 		const Glib::ustring & dest_part_path,
 		OperationDetail & operationdetail )

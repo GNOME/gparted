@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,10 @@ public:
 	virtual bool resize( const Partition & partition_new,
 			     OperationDetail & operationdetail,
 			     bool fill_partition = false ) = 0 ;
+	virtual bool move( const Partition & partition_new
+	                 , const Partition & partition_old
+	                 , OperationDetail & operationdetail
+	                 ) = 0 ;
 	virtual bool copy( const Glib::ustring & src_part_path,
 			   const Glib::ustring & dest_part_path,
 			   OperationDetail & operationdetail ) = 0 ;

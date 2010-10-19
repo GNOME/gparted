@@ -216,6 +216,14 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return return_value ;
 }
 
+bool jfs::move( const Partition & partition_new
+              , const Partition & partition_old
+              , OperationDetail & operationdetail
+              )
+{
+	return true ;
+}
+
 bool jfs::copy( const Glib::ustring & src_part_path, 
 		const Glib::ustring & dest_part_path,
 		OperationDetail & operationdetail )

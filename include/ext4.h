@@ -1,4 +1,4 @@
-/* Copyright (C) 2008 Curtis Gedak
+/* Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,10 @@ public:
 	bool write_label( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
+	bool move( const Partition & partition_new
+	         , const Partition & partition_old
+	         , OperationDetail & operationdetail
+	         ) ;
 	bool copy( const Glib::ustring & src_part_path,
 		   const Glib::ustring & dest_part_path,
 		   OperationDetail & operationdetail ) ;

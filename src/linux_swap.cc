@@ -93,6 +93,14 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 	return exit_status ;
 }
 
+bool linux_swap::move( const Partition & partition_new
+                     , const Partition & partition_old
+                     , OperationDetail & operationdetail
+                     )
+{
+	return true ;
+}
+
 bool linux_swap::copy( const Glib::ustring & src_part_path,
 		       const Glib::ustring & dest_part_path,
 		       OperationDetail & operationdetail )

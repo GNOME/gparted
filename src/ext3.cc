@@ -122,6 +122,14 @@ bool ext3::resize( const Partition & partition_new, OperationDetail & operationd
 	return ! execute_command( str_temp, operationdetail ) ;
 }
 
+bool ext3::move( const Partition & partition_new
+               , const Partition & partition_old
+               , OperationDetail & operationdetail
+               )
+{
+	return true ;
+}
+
 bool ext3::copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path,
 		 OperationDetail & operationdetail )

@@ -133,6 +133,14 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	return ( exit_status == 0 || exit_status == 256 ) ;
 }
 
+bool reiserfs::move( const Partition & partition_new
+                   , const Partition & partition_old
+                   , OperationDetail & operationdetail
+                   )
+{
+	return true ;
+}
+
 bool reiserfs::copy( const Glib::ustring & src_part_path,
 		     const Glib::ustring & dest_part_path,
 		     OperationDetail & operationdetail )

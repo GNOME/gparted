@@ -1,4 +1,5 @@
 /* Copyright (C) 2009,2010 Luca Bruno <lucab@debian.org>
+ * Copyright (C) 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -104,6 +105,14 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 {
 // TODO
         return true ;
+}
+
+bool btrfs::move( const Partition & partition_new
+                , const Partition & partition_old
+                , OperationDetail & operationdetail
+                )
+{
+	return true ;
 }
 
 bool btrfs::copy( const Glib::ustring & src_part_path,

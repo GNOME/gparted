@@ -149,6 +149,14 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	return return_value ;
 }
 
+bool ntfs::move( const Partition & partition_new
+               , const Partition & partition_old
+               , OperationDetail & operationdetail
+               )
+{
+	return true ;
+}
+
 bool ntfs::copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
 		 OperationDetail & operationdetail )
