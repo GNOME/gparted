@@ -101,7 +101,30 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		START = selected_partition .sector_start ;
 	
 	if ( t +1 < partitions .size() && partitions[t +1] .type == GParted::TYPE_UNALLOCATED )
+	{
 		next = partitions[t +1] .get_sector_length() ;
+
+		//If this is a logical partition and there is extra free space
+		//  then check if we need to reserve 1 MiB of space after for
+		//  the next logical partition Extended Boot Record.
+		if (   selected_partition .type == TYPE_LOGICAL
+		    && next >= (MEBIBYTE / selected_partition .sector_size)
+		   )
+		{
+			//Find maximum sector_end (allocated or unallocated) within list of
+			//  partitions inside the extended partition
+			Sector max_sector_end = 0 ;
+			for (unsigned int k = 0 ; k < partitions .size() ; k++ )
+			{
+				if ( partitions[ k ] .sector_end > max_sector_end )
+					max_sector_end = partitions[ k ] .sector_end ;
+			}
+
+			//If not within 1 MiB of the end of the extended partition, then reserve 1 MiB
+			if ( ( max_sector_end - partitions[t+1] .sector_end ) > ( MEBIBYTE / selected_partition .sector_size ) )
+				next -= MEBIBYTE / selected_partition .sector_size ;
+		}
+	}
 
 	//Only calculate MIN_SPACE_BEFORE_MB if we have a previous (unallocated) partition.
 	//  Otherwise there will not be enough graphical space to reserve a full 1 MiB for MBR/EBR.
