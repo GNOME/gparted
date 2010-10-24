@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the gparted package.
 #
 # Dirgita <dirgitadevina@yahoo.co.id>, 2010.
+# Andika Triwidada <andika@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&component=general\n"
-"POT-Creation-Date: 2010-09-18 18:50+0000\n"
-"PO-Revision-Date: 2010-09-19 07:32+0700\n"
-"Last-Translator: Dirgita <dirgitadevina@yahoo.co.id>\n"
+"POT-Creation-Date: 2010-10-19 19:45+0000\n"
+"PO-Revision-Date: 2010-10-24 12:23+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,9 +24,9 @@ msgid "Create, reorganize, and delete partitions"
 msgstr "Membuat, mengorganisasi ulang, serta menghapus partisi"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:356
-#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1099
-#: ../src/Win_GParted.cc:1283
+#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
+#: ../src/Win_GParted.cc:71 ../src/Win_GParted.cc:1100
+#: ../src/Win_GParted.cc:1284
 msgid "GParted"
 msgstr "GParted"
 
@@ -55,8 +56,9 @@ msgstr "Ruang bebas di akhir (MiB):"
 #. add alignment
 #. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
 #: ../src/Dialog_Base_Partition.cc:96
+#, fuzzy
 msgid "Align to:"
-msgstr ""
+msgstr "URI tujuan"
 
 #. fill partition alignment menu
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
@@ -74,19 +76,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "Nihil"
 
-#: ../src/Dialog_Base_Partition.cc:209
+#: ../src/Dialog_Base_Partition.cc:210
 msgid "Resize"
 msgstr "Ubah Ukuran"
 
-#: ../src/Dialog_Base_Partition.cc:209 ../src/Win_GParted.cc:230
+#: ../src/Dialog_Base_Partition.cc:210 ../src/Win_GParted.cc:231
 msgid "Resize/Move"
 msgstr "Ubah Ukuran/Pindahkan"
 
-#: ../src/Dialog_Base_Partition.cc:226
+#: ../src/Dialog_Base_Partition.cc:227
 msgid "Minimum size: %1 MiB"
 msgstr "Ukuran minimal: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:227
+#: ../src/Dialog_Base_Partition.cc:228
 msgid "Maximum size: %1 MiB"
 msgstr "Ukuran maksimal: %1 MiB"
 
@@ -102,7 +104,7 @@ msgstr "PERINGATAN: Ini akan MENGHAPUS SEMUA DATA pada SELURUH DISKA %1"
 
 #: ../src/Dialog_Disklabel.cc:51
 msgid "Default is to create an MS-DOS partition table."
-msgstr ""
+msgstr "Bawaan akan membuat tabel partisi MS-DOS."
 
 #: ../src/Dialog_Disklabel.cc:58
 msgid "Advanced"
@@ -110,11 +112,11 @@ msgstr "Lanjutan"
 
 #: ../src/Dialog_Disklabel.cc:66
 msgid "Select new partition table type:"
-msgstr ""
+msgstr "Pilih jenis tabel partisi baru:"
 
 #: ../src/Dialog_Partition_Copy.cc:36
 msgid "Paste %1"
-msgstr ""
+msgstr "Tempel %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
 #: ../src/Dialog_Partition_Info.cc:32
@@ -132,7 +134,7 @@ msgid "File system:"
 msgstr "Sistem berkas:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:452
+#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:453
 msgid "Size:"
 msgstr "Ukuran:"
 
@@ -151,7 +153,7 @@ msgid "Flags:"
 msgstr "Tanda:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:460
+#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:461
 msgid "Path:"
 msgstr "Jalur:"
 
@@ -159,52 +161,72 @@ msgstr "Jalur:"
 msgid "Status:"
 msgstr "Status:"
 
-#: ../src/Dialog_Partition_Info.cc:246
+#. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
+#. * means that this extended partition contains at least one logical
+#. * partition that is mounted or otherwise active.
+#.
+#: ../src/Dialog_Partition_Info.cc:251
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Sibuk (Setidaknya ada satu partisi logika dalam kondisi terkait)"
 
-#: ../src/Dialog_Partition_Info.cc:248
+#. TO TRANSLATORS:  Active
+#. * means that this linux swap partition is enabled and being used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:259
 msgid "Active"
 msgstr "Aktif"
 
-#: ../src/Dialog_Partition_Info.cc:250
+#. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
+#: ../src/Dialog_Partition_Info.cc:265
 msgid "Mounted on %1"
 msgstr "Dikaitkan pada %1"
 
-#: ../src/Dialog_Partition_Info.cc:254
+#. TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
+#. * means that this extended partition contains no mounted or otherwise
+#. * active partitions.
+#.
+#: ../src/Dialog_Partition_Info.cc:275
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Tidak sibuk (Tidak ada partisi logika dalam kondisi terkait)"
 
-#: ../src/Dialog_Partition_Info.cc:256
+#. TO TRANSLATORS:  Not active
+#. *  means that this linux swap partition is not enabled and is not
+#. *  in use by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:283
 msgid "Not active"
 msgstr "Tidak aktif"
 
-#: ../src/Dialog_Partition_Info.cc:258
+#. TO TRANSLATORS:  Not mounted
+#. * means that this partition is not mounted.
+#.
+#: ../src/Dialog_Partition_Info.cc:290
 msgid "Not mounted"
 msgstr "Tidak dikaitkan"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:266 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_Info.cc:299 ../src/Dialog_Partition_Label.cc:43
 #: ../src/Dialog_Partition_New.cc:131
 msgid "Label:"
 msgstr "Label:"
 
-#: ../src/Dialog_Partition_Info.cc:279
+#: ../src/Dialog_Partition_Info.cc:312
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:293
+#: ../src/Dialog_Partition_Info.cc:326
 msgid "First sector:"
 msgstr "Sektor pertama:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:303
+#: ../src/Dialog_Partition_Info.cc:336
 msgid "Last sector:"
 msgstr "Sektor terakhir:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:513
+#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:514
 msgid "Total sectors:"
 msgstr "Total sektor:"
 
@@ -236,7 +258,7 @@ msgstr "Partisi Logika"
 
 #: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
-msgstr ""
+msgstr "Partisi Extended"
 
 #: ../src/Dialog_Partition_New.cc:198
 msgid "New Partition #%1"
@@ -306,57 +328,81 @@ msgstr "PENTING"
 #: ../src/Dialog_Progress.cc:277
 msgid "If you want support, you need to provide the saved details!"
 msgstr ""
+"Bila Anda perlu bantuan, Anda perlu menyediakan rincian yang tersimpan!"
 
-#: ../src/Dialog_Progress.cc:279
+#. TO TRANSLATORS: looks like   See http://gparted.org/larry/tips/save_details.htm for more information.
+#: ../src/Dialog_Progress.cc:280
 msgid "See %1 for more information."
 msgstr "Lihat %1 untuk informasi lebih lanjut."
 
-#: ../src/Dialog_Progress.cc:312
+#: ../src/Dialog_Progress.cc:313
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Batalkan operasi?"
 
-#: ../src/Dialog_Progress.cc:318
+#: ../src/Dialog_Progress.cc:319
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "Membatalkan operasi dapat mengakibatkan kerusakan BERAT pada sistem berkas."
 
-#: ../src/Dialog_Progress.cc:320
+#: ../src/Dialog_Progress.cc:321
 msgid "Continue Operation"
 msgstr "Lanjutkan Operasi"
 
-#: ../src/Dialog_Progress.cc:321
+#: ../src/Dialog_Progress.cc:322
 msgid "Cancel Operation"
 msgstr "Batalkan Operasi"
 
-#: ../src/Dialog_Progress.cc:334
+#: ../src/Dialog_Progress.cc:335
 msgid "Save Details"
 msgstr "Simpan Detail"
 
-#: ../src/Dialog_Progress.cc:353
+#: ../src/Dialog_Progress.cc:354
 msgid "GParted Details"
 msgstr "Detail GParted"
 
-#: ../src/Dialog_Progress.cc:357
+#: ../src/Dialog_Progress.cc:358
 msgid "Libparted"
 msgstr "Libparted"
 
-#: ../src/Dialog_Progress.cc:395
+#. TO TRANSLATORS:  EXECUTING
+#. * means that the status for this operation is
+#. * executing or currently in progress.
+#.
+#: ../src/Dialog_Progress.cc:401
 msgid "EXECUTING"
 msgstr "MENGEKSEKUSI"
 
-#: ../src/Dialog_Progress.cc:398
+#. TO" TRANSLATORS:  SUCCESS
+#. * means that the status for this operation is
+#. * completed successfully.
+#.
+#: ../src/Dialog_Progress.cc:409
 msgid "SUCCESS"
 msgstr "BERHASIL"
 
-#: ../src/Dialog_Progress.cc:401
+#. TO TRANSLATORS:  ERROR
+#. * means that the status for this operation is
+#. * completed with errors.
+#.
+#: ../src/Dialog_Progress.cc:417
 msgid "ERROR"
 msgstr "GALAT"
 
-#: ../src/Dialog_Progress.cc:404
+#. TO TRANSLATORS:  INFO
+#. * means that the status for this operation is
+#. * for your information , or messages from the
+#. * libparted library.
+#.
+#: ../src/Dialog_Progress.cc:426
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/Dialog_Progress.cc:407
+#. TO TRANSLATORS:  N/A
+#. * means that the status for this operation is
+#. * not applicable because the operation is not
+#. * supported on the file system in the partition.
+#.
+#: ../src/Dialog_Progress.cc:435
 msgid "N/A"
 msgstr "T/A"
 
@@ -374,15 +420,15 @@ msgstr "Buat"
 
 #: ../src/DialogFeatures.cc:37
 msgid "Grow"
-msgstr ""
+msgstr "Perbesar"
 
 #: ../src/DialogFeatures.cc:38
 msgid "Shrink"
-msgstr ""
+msgstr "Perkecil"
 
 #: ../src/DialogFeatures.cc:39
 msgid "Move"
-msgstr ""
+msgstr "Pindah"
 
 #: ../src/DialogFeatures.cc:40
 msgid "Copy"
@@ -416,20 +462,26 @@ msgstr ""
 "sifat dan limitasi terhadap perangkat lunak yang diperlukan untuk sistem "
 "berkas tersebut."
 
-#: ../src/DialogFeatures.cc:69
+#. TO TRANSLATORS:  Available
+#. * means that this action is valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:73
 msgid "Available"
 msgstr "Tersedia"
 
-#: ../src/DialogFeatures.cc:75
+#. TO TRANSLATORS:  Not Available
+#. * means that this action is not valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:83
 msgid "Not Available"
 msgstr "Tidak Tersedia"
 
-#: ../src/DialogFeatures.cc:83
+#: ../src/DialogFeatures.cc:89
 msgid "Legend"
 msgstr "Legenda"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:96
+#: ../src/DialogFeatures.cc:102
 msgid "Rescan For Supported Actions"
 msgstr "Pindai Ulang untuk Aksi yang Didukung"
 
@@ -440,454 +492,476 @@ msgstr "Atur tanda pada %1"
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
 #: ../src/DMRaid.cc:325
 msgid "create missing %1 entries"
-msgstr ""
+msgstr "buat entri %1 yang hilang"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
 #: ../src/DMRaid.cc:441
 msgid "delete affected %1 entries"
-msgstr ""
+msgstr "hapus entri %1 yang terpengaruh"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
 #: ../src/DMRaid.cc:464
 msgid "delete %1 entry"
-msgstr ""
+msgstr "hapus entri %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
 #: ../src/DMRaid.cc:514
 msgid "update %1 entry"
-msgstr ""
+msgstr "mutakhirkan entri %1"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:204 ../src/GParted_Core.cc:215
-#: ../src/GParted_Core.cc:225
+#: ../src/GParted_Core.cc:200 ../src/GParted_Core.cc:211
+#: ../src/GParted_Core.cc:221
 msgid "Scanning %1"
 msgstr "Memindai %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:246
+#: ../src/GParted_Core.cc:242
 msgid "Confirming %1"
-msgstr ""
+msgstr "Menegaskan %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:258
+#: ../src/GParted_Core.cc:254
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
-msgstr ""
+msgstr "Mengabaikan perangkat %1 dengan ukuran sektor lojik %2 byte."
 
-#: ../src/GParted_Core.cc:260
+#: ../src/GParted_Core.cc:256
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
 msgstr ""
+"GParted memerlukan libparted versi 2.2 atau lebih tinggi untuk mendukung "
+"perangkat dengan ukuran sektor lebih dari 512 byte."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:297
+#: ../src/GParted_Core.cc:293
 msgid "Searching %1 partitions"
 msgstr "Mencari partisi %1"
 
-#: ../src/GParted_Core.cc:339
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this
+#. * disk device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:340
 msgid "unrecognized"
-msgstr ""
+msgstr "tak dikenal"
 
-#: ../src/GParted_Core.cc:529
+#. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
+#: ../src/GParted_Core.cc:532
 msgid "A partition cannot have a length of %1 sectors"
-msgstr ""
+msgstr "Partisi tak bisa memiliki panjang %1 sektor"
 
-#: ../src/GParted_Core.cc:537
+#. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
+#: ../src/GParted_Core.cc:541
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
+"Partisi dengan sektor terpakai (%1) lebih besar dari panjangnya (%2) tak "
+"valid"
 
-#: ../src/GParted_Core.cc:602
+#: ../src/GParted_Core.cc:606
 msgid "libparted messages"
-msgstr ""
+msgstr "pesan libparted"
 
-#: ../src/GParted_Core.cc:1042
+#: ../src/GParted_Core.cc:1046
 msgid "Linux Unified Key Setup encryption is not yet supported."
-msgstr ""
+msgstr "Enkripsi Linux Unified Key Setup belum didukung."
 
-#: ../src/GParted_Core.cc:1159
+#: ../src/GParted_Core.cc:1174
 msgid "Logical Volume Management is not yet supported."
-msgstr ""
-
-#: ../src/GParted_Core.cc:1184
-msgid "BTRFS is not yet supported."
-msgstr "BTRFS belum didukung."
+msgstr "Logical Volume Management (LVM) belum didukung."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1203
 msgid "Unable to detect file system! Possible reasons are:"
-msgstr ""
+msgstr "Tak bisa mendeteksi sistem berkas! Kemungkinan karena:"
 
-#: ../src/GParted_Core.cc:1193
+#: ../src/GParted_Core.cc:1205
 msgid "The file system is damaged"
 msgstr "Sistem berkas mengalami kerusakan"
 
-#: ../src/GParted_Core.cc:1195
+#: ../src/GParted_Core.cc:1207
 msgid "The file system is unknown to GParted"
-msgstr ""
+msgstr "Sistem berkas tak dikenal oleh GParted"
 
-#: ../src/GParted_Core.cc:1197
+#: ../src/GParted_Core.cc:1209
 msgid "There is no file system available (unformatted)"
-msgstr ""
+msgstr "Tak ada sistem berkas yang tersedia (tak diformat)"
 
-#: ../src/GParted_Core.cc:1330
+#: ../src/GParted_Core.cc:1341
 msgid "Unable to find mount point"
-msgstr ""
+msgstr "Tak bisa menemukan titik kait"
 
-#: ../src/GParted_Core.cc:1393
+#: ../src/GParted_Core.cc:1403
 msgid "Unable to read the contents of this file system!"
-msgstr ""
+msgstr "Tak bisa membaca isi sistem berkas ini!"
 
-#: ../src/GParted_Core.cc:1395
+#: ../src/GParted_Core.cc:1405
 msgid "Because of this some operations may be unavailable."
-msgstr ""
+msgstr "Karena ini beberapa operasi mungkin tak tersedia."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1400
+#: ../src/GParted_Core.cc:1410
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr ""
+"Daftar paket perangkat lunak berikut diperlukan untuk dukungan sistem berkas "
+"%1:  %2."
 
-#: ../src/GParted_Core.cc:1471
+#: ../src/GParted_Core.cc:1481
 msgid "create empty partition"
 msgstr "membuat partisi kosong"
 
-#: ../src/GParted_Core.cc:1539 ../src/GParted_Core.cc:2742
+#: ../src/GParted_Core.cc:1549 ../src/GParted_Core.cc:2764
 msgid "path: %1"
 msgstr "lokasi: %1"
 
-#: ../src/GParted_Core.cc:1540 ../src/GParted_Core.cc:2743
+#: ../src/GParted_Core.cc:1550 ../src/GParted_Core.cc:2765
 msgid "start: %1"
 msgstr "awal: %1"
 
-#: ../src/GParted_Core.cc:1541 ../src/GParted_Core.cc:2744
+#: ../src/GParted_Core.cc:1551 ../src/GParted_Core.cc:2766
 msgid "end: %1"
 msgstr "akhir: %1"
 
-#: ../src/GParted_Core.cc:1542 ../src/GParted_Core.cc:2745
+#: ../src/GParted_Core.cc:1552 ../src/GParted_Core.cc:2767
 msgid "size: %1 (%2)"
 msgstr "ukuran: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1572 ../src/linux_swap.cc:83 ../src/xfs.cc:237
+#: ../src/GParted_Core.cc:1582 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "membuat sistem berkas %1 yang baru"
 
-#: ../src/GParted_Core.cc:1605
+#: ../src/GParted_Core.cc:1615
 msgid "delete partition"
 msgstr "menghapus partisi"
 
-#: ../src/GParted_Core.cc:1645
+#: ../src/GParted_Core.cc:1655
 msgid "Clear partition label on %1"
 msgstr "Membersihkan label partisi pada %1"
 
-#: ../src/GParted_Core.cc:1650
+#: ../src/GParted_Core.cc:1660
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Memberikan label partisi \"%1\" pada %1"
 
-#: ../src/GParted_Core.cc:1731
+#. TO TRANSLATORS:  moving requires old and new length to be the same
+#. * means that the length in bytes of the old partition and new partition
+#. * must be the same.  If the sector sizes of the old partition and the
+#. * new partition are the same, then the length in sectors must be the same.
+#.
+#: ../src/GParted_Core.cc:1746
 msgid "moving requires old and new length to be the same"
-msgstr ""
+msgstr "pemindahan mempersyaratkan panjang lama dan baru mesti sama"
 
-#: ../src/GParted_Core.cc:1761
+#: ../src/GParted_Core.cc:1776
 msgid "rollback last change to the partition table"
-msgstr ""
+msgstr "mengembalikan perubahan terakhir ke tabel partisi"
 
-#: ../src/GParted_Core.cc:1791
+#: ../src/GParted_Core.cc:1806
 msgid "move file system to the left"
-msgstr ""
+msgstr "pindahkan sistem berkas ke kiri"
 
-#: ../src/GParted_Core.cc:1793
+#: ../src/GParted_Core.cc:1808
 msgid "move file system to the right"
-msgstr ""
+msgstr "pindahkan sistem berkas ke kanan"
 
-#: ../src/GParted_Core.cc:1796
+#: ../src/GParted_Core.cc:1811
 msgid "move file system"
-msgstr ""
+msgstr "pindahkan sistem berkas"
 
-#: ../src/GParted_Core.cc:1798
+#: ../src/GParted_Core.cc:1813
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
+"sistem berkas baru dan lama memiliki posisi yang sama.  Maka operasi ini "
+"dilewati"
 
-#: ../src/GParted_Core.cc:1817
+#: ../src/GParted_Core.cc:1832
 msgid "perform real move"
-msgstr ""
+msgstr "laksanakan pemindahan sebenarnya"
 
-#: ../src/GParted_Core.cc:1859
+#: ../src/GParted_Core.cc:1879
 msgid "using libparted"
-msgstr ""
+msgstr "memakai libparted"
 
-#: ../src/GParted_Core.cc:1899
+#: ../src/GParted_Core.cc:1919
 msgid "resizing requires old and new start to be the same"
-msgstr ""
+msgstr "mengubah ukuran mempersyaratkan awal lama dan baru sama"
 
-#: ../src/GParted_Core.cc:1964
+#: ../src/GParted_Core.cc:1984
 msgid "resize/move partition"
-msgstr ""
+msgstr "ubah ukuran/pindahkan partisi"
 
-#: ../src/GParted_Core.cc:1967
+#: ../src/GParted_Core.cc:1987
 msgid "move partition to the right"
-msgstr ""
+msgstr "pindahkan partisi ke kanan"
 
-#: ../src/GParted_Core.cc:1970
+#: ../src/GParted_Core.cc:1990
 msgid "move partition to the left"
-msgstr ""
+msgstr "pindahkan partisi ke kiri"
 
-#: ../src/GParted_Core.cc:1973
+#: ../src/GParted_Core.cc:1993
 msgid "grow partition from %1 to %2"
-msgstr ""
+msgstr "perbesar partisi dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:1996
 msgid "shrink partition from %1 to %2"
-msgstr ""
+msgstr "perkecil partisi dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:1979
+#: ../src/GParted_Core.cc:1999
 msgid "move partition to the right and grow it from %1 to %2"
-msgstr ""
+msgstr "pindahkan partisi ke kanan dan perbesar dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:1982
+#: ../src/GParted_Core.cc:2002
 msgid "move partition to the right and shrink it from %1 to %2"
-msgstr ""
+msgstr "pindahkan partisi ke kanan dan perkecil dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:1985
+#: ../src/GParted_Core.cc:2005
 msgid "move partition to the left and grow it from %1 to %2"
-msgstr ""
+msgstr "pindahkan partisi ke kiri dan perbesar dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2008
 msgid "move partition to the left and shrink it from %1 to %2"
-msgstr ""
+msgstr "pindahkan partisi ke kiri dan perkecil dari %1 ke %2"
 
-#: ../src/GParted_Core.cc:2003
+#: ../src/GParted_Core.cc:2023
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
+"partisi baru dan lama memiliki ukuran dan posisi sama.  Maka operasi ini "
+"dilewati"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2033
 msgid "old start: %1"
-msgstr ""
+msgstr "awal lama: %1"
 
-#: ../src/GParted_Core.cc:2014
+#: ../src/GParted_Core.cc:2034
 msgid "old end: %1"
-msgstr ""
+msgstr "akhir lama: %1"
 
-#: ../src/GParted_Core.cc:2015
+#: ../src/GParted_Core.cc:2035
 msgid "old size: %1 (%2)"
-msgstr ""
+msgstr "ukuran lama: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2077 ../src/GParted_Core.cc:2823
+#: ../src/GParted_Core.cc:2097 ../src/GParted_Core.cc:2845
 msgid "new start: %1"
-msgstr ""
+msgstr "awal baru: %1"
 
-#: ../src/GParted_Core.cc:2078 ../src/GParted_Core.cc:2824
+#: ../src/GParted_Core.cc:2098 ../src/GParted_Core.cc:2846
 msgid "new end: %1"
-msgstr ""
+msgstr "akhir baru: %1"
 
-#: ../src/GParted_Core.cc:2079 ../src/GParted_Core.cc:2825
+#: ../src/GParted_Core.cc:2099 ../src/GParted_Core.cc:2847
 msgid "new size: %1 (%2)"
-msgstr ""
+msgstr "ukuran baru: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2115
+#: ../src/GParted_Core.cc:2135
 msgid "shrink file system"
-msgstr ""
+msgstr "perkecil sistem berkas"
 
-#: ../src/GParted_Core.cc:2119
+#: ../src/GParted_Core.cc:2139
 msgid "grow file system"
-msgstr ""
+msgstr "perbesar sistem berkas"
 
-#: ../src/GParted_Core.cc:2122
+#: ../src/GParted_Core.cc:2142
 msgid "resize file system"
-msgstr ""
+msgstr "ubah ukuran sistem berkas"
 
-#: ../src/GParted_Core.cc:2125
+#: ../src/GParted_Core.cc:2145
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
+"sistem berkas baru dan lama memiliki ukuran yang sama.  Maka operasi ini "
+"dilewati"
 
-#: ../src/GParted_Core.cc:2160
+#: ../src/GParted_Core.cc:2180
 msgid "grow file system to fill the partition"
-msgstr ""
+msgstr "perbesar sistem berkas untuk memenuhi partisi"
 
-#: ../src/GParted_Core.cc:2165
+#: ../src/GParted_Core.cc:2185
 msgid "growing is not available for this file system"
-msgstr ""
+msgstr "pembesaran tak tersedia bagi sistem berkas ini"
 
-#: ../src/GParted_Core.cc:2184
+#: ../src/GParted_Core.cc:2204
 msgid "the destination is smaller than the source partition"
-msgstr ""
+msgstr "tujuan lebih kecil daripada partisi sumber"
 
-#: ../src/GParted_Core.cc:2201
+#: ../src/GParted_Core.cc:2221
 msgid "copy file system of %1 to %2"
-msgstr ""
+msgstr "salin sistem berkas %1 ke %2"
 
-#: ../src/GParted_Core.cc:2245
+#: ../src/GParted_Core.cc:2265
 msgid "perform read-only test"
-msgstr ""
+msgstr "lakukan pengujian hanya-baca"
 
-#: ../src/GParted_Core.cc:2299
+#: ../src/GParted_Core.cc:2319
 msgid "using internal algorithm"
-msgstr ""
+msgstr "menggunakan algoritma internal"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2303
+#: ../src/GParted_Core.cc:2323
 msgid "read %1"
-msgstr ""
+msgstr "baca %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2305
+#: ../src/GParted_Core.cc:2325
 msgid "copy %1"
-msgstr ""
+msgstr "tulis %1"
 
-#: ../src/GParted_Core.cc:2309
+#: ../src/GParted_Core.cc:2329
 msgid "finding optimal block size"
-msgstr ""
+msgstr "mencari ukuran blok optimal"
 
-#: ../src/GParted_Core.cc:2349
+#: ../src/GParted_Core.cc:2369
 msgid "%1 seconds"
 msgstr "%1 detik"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2367
+#: ../src/GParted_Core.cc:2387
 msgid "optimal block size is %1"
-msgstr ""
+msgstr "ukuran blok optimal adalah %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2385
+#: ../src/GParted_Core.cc:2405
 msgid "%1 (%2 B) read"
-msgstr ""
+msgstr "%1 (%2 B) dibaca"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2387
+#: ../src/GParted_Core.cc:2407
 msgid "%1 (%2 B) copied"
-msgstr ""
+msgstr "%1 (%2 B) disalin"
 
-#: ../src/GParted_Core.cc:2400
+#: ../src/GParted_Core.cc:2420
 msgid "roll back last transaction"
-msgstr ""
+msgstr "kembalikan transaksi terakhir"
 
-#: ../src/GParted_Core.cc:2427
+#. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
+#: ../src/GParted_Core.cc:2449
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
+"memeriksa galat pada sistem berkas %1 dan (bila memungkinkan) diperbaiki"
 
-#: ../src/GParted_Core.cc:2435
+#: ../src/GParted_Core.cc:2457
 msgid "checking is not available for this file system"
-msgstr ""
+msgstr "pemeriksaan tak tersedia bagi sistem berkas ini"
 
 # Type sengaja tidak diterjemahkan.
-#: ../src/GParted_Core.cc:2461
+#: ../src/GParted_Core.cc:2483
 msgid "set partition type on %1"
 msgstr "membuat partisi pada %1"
 
 # Type sengaja tidak diterjemahkan.
-#: ../src/GParted_Core.cc:2491
+#: ../src/GParted_Core.cc:2513
 msgid "new partition type: %1"
 msgstr "partisi baru: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2520
+#: ../src/GParted_Core.cc:2542
 msgid "%1 of %2 read (%3 remaining)"
-msgstr ""
+msgstr "%1 dari %2 dibaca (%3 tersisa)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2522
+#: ../src/GParted_Core.cc:2544
 msgid "%1 of %2 copied (%3 remaining)"
-msgstr ""
+msgstr "%1 dari %2 disalin (%3 tersisa)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2530 ../src/GParted_Core.cc:2647
+#: ../src/GParted_Core.cc:2552 ../src/GParted_Core.cc:2669
 msgid "%1 of %2 read"
 msgstr "%1 dari %2 telah dibaca"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2532 ../src/GParted_Core.cc:2649
+#: ../src/GParted_Core.cc:2554 ../src/GParted_Core.cc:2671
 msgid "%1 of %2 copied"
 msgstr "%1 dari %2 telah disalin"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2553
+#: ../src/GParted_Core.cc:2575
 msgid "read %1 using a block size of %2"
-msgstr ""
+msgstr "membaca %1 memakai ukuran blok %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2558
+#: ../src/GParted_Core.cc:2580
 msgid "copy %1 using a block size of %2"
-msgstr ""
+msgstr "menyalin %1 memakai ukuran blok %2"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2730
 msgid "Error while writing block at sector %1"
-msgstr ""
+msgstr "Galat saat menulis blok pada sektor %1"
 
-#: ../src/GParted_Core.cc:2711
+#: ../src/GParted_Core.cc:2733
 msgid "Error while reading block at sector %1"
-msgstr ""
+msgstr "Galat saat membaca blok pada sektor %1"
 
-#: ../src/GParted_Core.cc:2721
+#: ../src/GParted_Core.cc:2743
 msgid "calibrate %1"
-msgstr ""
+msgstr "mengalibrasi %1"
 
-#: ../src/GParted_Core.cc:2768
+#: ../src/GParted_Core.cc:2790
 msgid "calculate new size and position of %1"
-msgstr ""
+msgstr "menghitung ukuran dan posisi baru dari %1"
 
-#: ../src/GParted_Core.cc:2772
+#: ../src/GParted_Core.cc:2794
 msgid "requested start: %1"
-msgstr ""
+msgstr "awal yang diminta: %1"
 
-#: ../src/GParted_Core.cc:2773
+#: ../src/GParted_Core.cc:2795
 msgid "requested end: %1"
-msgstr ""
+msgstr "akhir yang diminta: %1"
 
-#: ../src/GParted_Core.cc:2774
+#: ../src/GParted_Core.cc:2796
 msgid "requested size: %1 (%2)"
-msgstr ""
+msgstr "ukuran yang diminta: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2916
+#: ../src/GParted_Core.cc:2938
 msgid "update boot sector of %1 file system on %2"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2952
+#: ../src/GParted_Core.cc:2974
 msgid "Error trying to write to boot sector in %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2958
+#: ../src/GParted_Core.cc:2980
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2965
+#: ../src/GParted_Core.cc:2987
+#, fuzzy
 msgid "Error trying to open %1"
-msgstr ""
+msgstr "Galat mencoba memulai:"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2975
+#: ../src/GParted_Core.cc:2997
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 
-#: ../src/GParted_Core.cc:2977
+#: ../src/GParted_Core.cc:2999
 msgid "You might try the following command to correct the problem:"
 msgstr ""
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:153
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:154
 msgid "_Undo Last Operation"
 msgstr "_Batalkan Operasi Terakhir"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:159
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:160
 msgid "_Clear All Operations"
 msgstr "Batalkan _Semua Operasi"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:164
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:165
 msgid "_Apply All Operations"
 msgstr "Ter_apkan Semua Operasi"
 
 #: ../src/OperationCopy.cc:37
 msgid "copy of %1"
-msgstr ""
+msgstr "salinan dari %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
 #: ../src/OperationCopy.cc:80
@@ -931,7 +1005,7 @@ msgstr "Memberikan Label \"%1\" pada %2"
 
 #: ../src/OperationResizeMove.cc:86
 msgid "resize/move %1"
-msgstr ""
+msgstr "ubah ukuran/pindahkan %1"
 
 #: ../src/OperationResizeMove.cc:88
 msgid ""
@@ -941,35 +1015,41 @@ msgstr ""
 
 #: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
-msgstr ""
+msgstr "Pindahkan %1 ke kanan"
 
 #: ../src/OperationResizeMove.cc:95
 msgid "Move %1 to the left"
-msgstr ""
+msgstr "Pindahkan %1 ke kiri"
 
 #: ../src/OperationResizeMove.cc:98
+#, fuzzy
 msgid "Grow %1 from %2 to %3"
-msgstr ""
+msgstr "perbesar partisi dari %1 ke %2"
 
 #: ../src/OperationResizeMove.cc:101
+#, fuzzy
 msgid "Shrink %1 from %2 to %3"
-msgstr ""
+msgstr "perkecil partisi dari %1 ke %2"
 
 #: ../src/OperationResizeMove.cc:104
+#, fuzzy
 msgid "Move %1 to the right and grow it from %2 to %3"
-msgstr ""
+msgstr "pindahkan partisi ke kanan dan perbesar dari %1 ke %2"
 
 #: ../src/OperationResizeMove.cc:107
+#, fuzzy
 msgid "Move %1 to the right and shrink it from %2 to %3"
-msgstr ""
+msgstr "pindahkan partisi ke kanan dan perkecil dari %1 ke %2"
 
 #: ../src/OperationResizeMove.cc:110
+#, fuzzy
 msgid "Move %1 to the left and grow it from %2 to %3"
-msgstr ""
+msgstr "pindahkan partisi ke kiri dan perbesar dari %1 ke %2"
 
 #: ../src/OperationResizeMove.cc:113
+#, fuzzy
 msgid "Move %1 to the left and shrink it from %2 to %3"
-msgstr ""
+msgstr "pindahkan partisi ke kiri dan perkecil dari %1 ke %2"
 
 #. append columns
 #: ../src/TreeView_Detail.cc:35
@@ -996,301 +1076,333 @@ msgstr "Belum Dipakai"
 msgid "Flags"
 msgstr "Tanda"
 
-#: ../src/Utils.cc:119
+#. TO TRANSLATORS:  unallocated
+#. * means that this space on the disk device does
+#. * not contain a recognized file system, and is in
+#. * other words unallocated.
+#.
+#: ../src/Utils.cc:125
 msgid "unallocated"
 msgstr "belum dialokasikan"
 
-#: ../src/Utils.cc:120
+#. TO TRANSLATORS:  unknown
+#. * means that this space within this partition does
+#. * not contain a file system known to GParted, and
+#. * is in other words unknown.
+#.
+#: ../src/Utils.cc:132
+#, fuzzy
 msgid "unknown"
-msgstr ""
+msgstr "tidak diketahui"
 
-#: ../src/Utils.cc:121
+#. TO TRANSLATORS:  unformatted
+#. * means that the space within this partition will not
+#. * be formatted with a known file system by GParted.
+#.
+#: ../src/Utils.cc:138
 msgid "unformatted"
 msgstr "belum diformat"
 
-#: ../src/Utils.cc:138
+#: ../src/Utils.cc:155
 msgid "used"
 msgstr "dipakai"
 
-#: ../src/Utils.cc:139
+#: ../src/Utils.cc:156
 msgid "unused"
 msgstr "belum dipakai"
 
-#: ../src/Utils.cc:178
+#: ../src/Utils.cc:196
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:183
+#: ../src/Utils.cc:201
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:188
+#: ../src/Utils.cc:206
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:193
+#: ../src/Utils.cc:211
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:198
+#: ../src/Utils.cc:216
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Utils.cc:334
+#. TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
+#. * means that this file is only used while gparted is applying operations.
+#. * If for some reason this file exists at any other time, then the message is
+#. * meant to inform a user that the file can be deleted with no harmful effects.
+#. * This file is typically created, exists for less than a few seconds, and is
+#. * then deleted by gparted.  Under normal circumstances a user should never
+#. * see this file.
+#.
+#: ../src/Utils.cc:361
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr ""
 
-#: ../src/Utils.cc:343
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:373
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr ""
 
-#: ../src/Utils.cc:352
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:385
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr ""
 
-#: ../src/Win_GParted.cc:137
+#: ../src/Win_GParted.cc:138
 msgid "_Refresh Devices"
 msgstr "Muat Ulang Pe_rangkat"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:144
 msgid "_Devices"
 msgstr "_Perangkat"
 
-#: ../src/Win_GParted.cc:148
+#: ../src/Win_GParted.cc:149
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:167
+#: ../src/Win_GParted.cc:168
 msgid "_Edit"
 msgstr "_Sunting"
 
-#: ../src/Win_GParted.cc:172
+#: ../src/Win_GParted.cc:173
 msgid "Device _Information"
 msgstr "_Informasi Perangkat"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:175
 msgid "Pending _Operations"
 msgstr "_Operasi yang Belum Dilakukan"
 
-#: ../src/Win_GParted.cc:175
+#: ../src/Win_GParted.cc:176
 msgid "_View"
 msgstr "_Tampilan"
 
-#: ../src/Win_GParted.cc:179
+#: ../src/Win_GParted.cc:180
 msgid "_File System Support"
 msgstr "_Dukungan Sistem Berkas"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:184
 msgid "_Create Partition Table"
 msgstr "Buat Tabel Pa_rtisi"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:186
 msgid "_Device"
 msgstr "_Perangkat"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:190
 msgid "_Partition"
 msgstr "_Partisi"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:195
 msgid "_Contents"
 msgstr "_Isi"
 
-#: ../src/Win_GParted.cc:202
+#: ../src/Win_GParted.cc:203
 msgid "_Help"
 msgstr "Ba_ntuan"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:214
+#: ../src/Win_GParted.cc:215
 msgid "New"
 msgstr "Baru"
 
-#: ../src/Win_GParted.cc:219
+#: ../src/Win_GParted.cc:220
 msgid "Create a new partition in the selected unallocated space"
 msgstr ""
 
-#: ../src/Win_GParted.cc:224
+#: ../src/Win_GParted.cc:225
 msgid "Delete the selected partition"
-msgstr ""
+msgstr "Hapus partisi yang dipilih"
 
-#: ../src/Win_GParted.cc:246
+#: ../src/Win_GParted.cc:247
 msgid "Resize/Move the selected partition"
 msgstr ""
 
-#: ../src/Win_GParted.cc:255
+#: ../src/Win_GParted.cc:256
 msgid "Copy the selected partition to the clipboard"
-msgstr ""
+msgstr "Salin partisi yang dipilih ke papan klip"
 
-#: ../src/Win_GParted.cc:260
+#: ../src/Win_GParted.cc:261
 msgid "Paste the partition from the clipboard"
-msgstr ""
+msgstr "Tempelkan partisi dari papan klip"
 
-#: ../src/Win_GParted.cc:272
+#: ../src/Win_GParted.cc:273
 msgid "Undo Last Operation"
 msgstr "Batalkan Operasi Terakhir"
 
-#: ../src/Win_GParted.cc:280
+#: ../src/Win_GParted.cc:281
 msgid "Apply All Operations"
 msgstr "Terapkan Semua Operasi"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:302
+#: ../src/Win_GParted.cc:303
 msgid "_New"
 msgstr "_Baru"
 
-#: ../src/Win_GParted.cc:318
+#: ../src/Win_GParted.cc:319
 msgid "_Resize/Move"
 msgstr "Ubah Uku_ran/Pindahkan"
 
-#: ../src/Win_GParted.cc:342
+#: ../src/Win_GParted.cc:343
 msgid "_Format to"
 msgstr "_Format jadi"
 
-#: ../src/Win_GParted.cc:351
+#: ../src/Win_GParted.cc:352
 msgid "Unmount"
-msgstr ""
+msgstr "Lepas kaitan"
 
-#: ../src/Win_GParted.cc:357
+#: ../src/Win_GParted.cc:358
 msgid "_Mount on"
-msgstr ""
+msgstr "Di_kaitkan ke"
 
-#: ../src/Win_GParted.cc:364
+#: ../src/Win_GParted.cc:365
 msgid "M_anage Flags"
 msgstr "_Atur Tanda"
 
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:370
 msgid "C_heck"
 msgstr "_Periksa"
 
-#: ../src/Win_GParted.cc:374
+#: ../src/Win_GParted.cc:375
 msgid "_Label"
 msgstr "_Label"
 
-#: ../src/Win_GParted.cc:436
+#: ../src/Win_GParted.cc:437
 msgid "Device Information"
 msgstr "Informasi Perangkat"
 
 #. model
-#: ../src/Win_GParted.cc:444
+#: ../src/Win_GParted.cc:445
 msgid "Model:"
 msgstr "Model:"
 
 #. disktype
-#: ../src/Win_GParted.cc:481
+#: ../src/Win_GParted.cc:482
 msgid "Partition table:"
 msgstr "Tabel partisi:"
 
 #. heads
-#: ../src/Win_GParted.cc:489
+#: ../src/Win_GParted.cc:490
 msgid "Heads:"
-msgstr ""
+msgstr "Head:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:497
+#: ../src/Win_GParted.cc:498
 msgid "Sectors/track:"
 msgstr "Sektor/trek:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:506
 msgid "Cylinders:"
 msgstr "Silinder:"
 
 #. sector size
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:522
 msgid "Sector size:"
 msgstr "Ukuran sektor:"
 
-#: ../src/Win_GParted.cc:695
+#: ../src/Win_GParted.cc:696
 msgid "Could not add this operation to the list."
-msgstr ""
+msgstr "Tak bisa menambahkan operasi ini ke daftar."
 
-#: ../src/Win_GParted.cc:720
+#: ../src/Win_GParted.cc:721
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 operasi akan diterapkan"
 
-#: ../src/Win_GParted.cc:774
+#: ../src/Win_GParted.cc:775
 msgid "Quit GParted?"
 msgstr "Keluar dari GParted?"
 
-#: ../src/Win_GParted.cc:780 ../src/Win_GParted.cc:2003
+#: ../src/Win_GParted.cc:781 ../src/Win_GParted.cc:2021
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 operasi masih belum dilakukan."
 
-#: ../src/Win_GParted.cc:806
+#: ../src/Win_GParted.cc:807
 msgid "_Unmount"
 msgstr "_Lepas Kaitan"
 
-#: ../src/Win_GParted.cc:831
+#: ../src/Win_GParted.cc:832
 msgid "_Swapoff"
 msgstr "Nonaktifkan _Swap"
 
-#: ../src/Win_GParted.cc:837
+#: ../src/Win_GParted.cc:838
 msgid "_Swapon"
 msgstr "Aktifkan _Swap"
 
-#: ../src/Win_GParted.cc:1031
+#: ../src/Win_GParted.cc:1032
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1077
+#: ../src/Win_GParted.cc:1078
 msgid "Scanning all devices..."
 msgstr "Memindai semua perangkat..."
 
-#: ../src/Win_GParted.cc:1122
+#: ../src/Win_GParted.cc:1123
 msgid "No devices detected"
 msgstr "Tidak ada perangkat yang terdeteksi"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1203
+#: ../src/Win_GParted.cc:1204
 msgid "No partition table found on device %1"
 msgstr "Tidak menemukan tabel partisi pada perangkat %1"
 
-#: ../src/Win_GParted.cc:1208
+#: ../src/Win_GParted.cc:1209
 msgid "A partition table is required before partitions can be added."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1210
+#: ../src/Win_GParted.cc:1211
 msgid "To create a new partition table choose the menu item:"
 msgstr ""
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1213
+#: ../src/Win_GParted.cc:1214
 msgid "Device --> Create Partition Table."
 msgstr "Perangkat --> Buat Tabel Partisi."
 
-#: ../src/Win_GParted.cc:1242
+#: ../src/Win_GParted.cc:1243
 msgid "Unable to open GParted Manual help file."
 msgstr "Tidak dapat membuka berkas bantuan Manual GParted."
 
-#: ../src/Win_GParted.cc:1258
+#: ../src/Win_GParted.cc:1259
 msgid "Documentation is not available."
 msgstr "Dokumentasi tidak tersedia."
 
-#: ../src/Win_GParted.cc:1263
+#: ../src/Win_GParted.cc:1264
 msgid "This build of gparted is configured without documentation."
 msgstr "Versi gparted ini dikompilasi tanpa dukungan dokumentasi."
 
-#: ../src/Win_GParted.cc:1265
+#: ../src/Win_GParted.cc:1266
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentasi tersedia pada situs web proyek."
 
-#: ../src/Win_GParted.cc:1286
+#: ../src/Win_GParted.cc:1287
 msgid "GNOME Partition Editor"
 msgstr "Penyunting Partisi GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1302
+#: ../src/Win_GParted.cc:1303
 msgid "translator-credits"
-msgstr "Dirgita <dirgitadevina@yahoo.co.id>, 2010."
-
-#: ../src/Win_GParted.cc:1344
-msgid "It is not possible to create more than %1 primary partitions"
 msgstr ""
+"Dirgita <dirgitadevina@yahoo.co.id>, 2010.\n"
+"Andika Triwidada <andika@gmail.com>, 2010."
 
-#: ../src/Win_GParted.cc:1352
+#: ../src/Win_GParted.cc:1345
+msgid "It is not possible to create more than %1 primary partition"
+msgid_plural "It is not possible to create more than %1 primary partitions"
+msgstr[0] ""
+
+#: ../src/Win_GParted.cc:1357
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1298,237 +1410,263 @@ msgid ""
 "partition first."
 msgstr ""
 
-#. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1434
-msgid "You have queued an operation to move the start sector of partition %1."
-msgstr ""
-
-#: ../src/Win_GParted.cc:1440
+#: ../src/Win_GParted.cc:1438
 msgid "Moving a partition might cause your operating system to fail to boot."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1443
+#. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
+#: ../src/Win_GParted.cc:1446
+msgid "You have queued an operation to move the start sector of partition %1."
+msgstr ""
+
+#: ../src/Win_GParted.cc:1451
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1514
+#: ../src/Win_GParted.cc:1522
 msgid "You have pasted into an existing partition."
 msgstr ""
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1521
+#: ../src/Win_GParted.cc:1529
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Data pada %1 akan hilang jika Anda menerapkan operasi ini."
 
-#: ../src/Win_GParted.cc:1576
+#: ../src/Win_GParted.cc:1584
 msgid "Unable to delete %1!"
 msgstr "Tidak dapat menghapus %1!"
 
-#: ../src/Win_GParted.cc:1583
+#: ../src/Win_GParted.cc:1591
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:1594
+#: ../src/Win_GParted.cc:1602
 msgid "Are you sure you want to delete %1?"
 msgstr "Hapus %1?"
 
-#: ../src/Win_GParted.cc:1601
+#: ../src/Win_GParted.cc:1609
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1604
+#: ../src/Win_GParted.cc:1612
 msgid "Delete %1 (%2, %3)"
 msgstr "Menghapus %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1670
+#. TO TRANSLATORS: looks like
+#. * Cannot format this file system to fat16.
+#.
+#: ../src/Win_GParted.cc:1682
 msgid "Cannot format this file system to %1."
 msgstr "Tidak dapat memformat sistem berkas ini menjadi %1."
 
-#: ../src/Win_GParted.cc:1679
+#. TO TRANSLATORS: looks like
+#. * A fat16 file system requires a partition of at least 16.00 MiB.
+#.
+#: ../src/Win_GParted.cc:1694
 msgid "A %1 file system requires a partition of at least %2."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1684
+#. TO TRANSLATORS: looks like
+#. * A partition with a hfs file system has a maximum size of 2.00 GiB.
+#.
+#: ../src/Win_GParted.cc:1702
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1770
+#: ../src/Win_GParted.cc:1788
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr ""
 
-#: ../src/Win_GParted.cc:1772
+#: ../src/Win_GParted.cc:1790
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1821 ../src/Win_GParted.cc:1905
+#: ../src/Win_GParted.cc:1839 ../src/Win_GParted.cc:1923
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "%1 operasi masih belum dilakukan untuk partisi %2."
 
-#: ../src/Win_GParted.cc:1835
+#: ../src/Win_GParted.cc:1853
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1837
+#: ../src/Win_GParted.cc:1855
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1855
+#: ../src/Win_GParted.cc:1873
 msgid "Deactivating swap on %1"
 msgstr "Menonaktifkan swap pada %1"
 
-#: ../src/Win_GParted.cc:1855
+#: ../src/Win_GParted.cc:1873
 msgid "Activating swap on %1"
 msgstr "Mengaktifkan swap pada %1"
 
-#: ../src/Win_GParted.cc:1862
+#: ../src/Win_GParted.cc:1880
 msgid "Could not deactivate swap"
 msgstr "Tidak dapat menonaktifkan swap"
 
-#: ../src/Win_GParted.cc:1862
+#: ../src/Win_GParted.cc:1880
 msgid "Could not activate swap"
 msgstr "Tidak dapat mengaktifkan swap"
 
-#: ../src/Win_GParted.cc:1878
+#: ../src/Win_GParted.cc:1896
 msgid "Unmounting %1"
 msgstr "Melepas kaitan %1"
 
-#: ../src/Win_GParted.cc:1883
+#: ../src/Win_GParted.cc:1901
 msgid "Could not unmount %1"
 msgstr "Tidak dapat melepas kaitan %1"
 
-#: ../src/Win_GParted.cc:1919
+#: ../src/Win_GParted.cc:1937
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1921
+#: ../src/Win_GParted.cc:1939
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1939
+#: ../src/Win_GParted.cc:1957
 msgid "mounting %1 on %2"
 msgstr "mengaitkan %1 pada %2"
 
-#: ../src/Win_GParted.cc:1946
+#: ../src/Win_GParted.cc:1964
 msgid "Could not mount %1 on %2"
 msgstr "Tidak dapat mengaitkan %1 pada %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:1972
+#: ../src/Win_GParted.cc:1990
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "%1 partisi sedang aktif pada perangkat %2."
 
-#: ../src/Win_GParted.cc:1987
+#: ../src/Win_GParted.cc:2005
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1989
+#: ../src/Win_GParted.cc:2007
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1991
+#: ../src/Win_GParted.cc:2009
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2016
+#: ../src/Win_GParted.cc:2034
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2018
+#: ../src/Win_GParted.cc:2036
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2033
+#: ../src/Win_GParted.cc:2051
 msgid "Error while creating partition table."
 msgstr "Galat sewaktu membuat tabel partisi."
 
-#: ../src/Win_GParted.cc:2194
+#: ../src/Win_GParted.cc:2212
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Laksanakan operasi yang belum dilakukan?"
 
-#: ../src/Win_GParted.cc:2200
+#: ../src/Win_GParted.cc:2218
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "KEHILANGAN DATA adalah resiko ketika mengubah-ubah partisi."
 
 # Sengaja ditambah spasi dan karakter pemutus baris (line break). Ini hanya untuk alasan kenyamanan saat dibaca.
-#: ../src/Win_GParted.cc:2202
+#: ../src/Win_GParted.cc:2220
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 " \n"
 "Anda disarankan untuk membuat salinan data sebelum melanjutkan proses ini."
 
 # Sengaja pendek, karena ini adalah judul dialog^^
-#: ../src/Win_GParted.cc:2204
+#: ../src/Win_GParted.cc:2222
 msgid "Apply operations to device"
 msgstr "Terapkan Operasi"
 
 #. create mount point...
-#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:245 ../src/xfs.cc:252
+#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
 msgid "create temporary mount point (%1)"
-msgstr ""
+msgstr "membuat titik kait sementara (%1)"
 
-#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:259 ../src/xfs.cc:268
+#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:267 ../src/xfs.cc:276
 msgid "mount %1 on %2"
-msgstr ""
+msgstr "mengaitkan %1 pada %2"
 
 #: ../src/jfs.cc:157
 msgid "remount %1 on %2 with the 'resize' flag enabled"
-msgstr ""
+msgstr "mengait ulang %1 pada %2 dengan flag 'ubah ukuran' diaktifkan"
 
-#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:292 ../src/xfs.cc:313
+#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:300 ../src/xfs.cc:321
 msgid "unmount %1"
-msgstr ""
+msgstr "melepas kaitan %1"
 
-#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:333 ../src/xfs.cc:356
+#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:341 ../src/xfs.cc:364
 msgid "remove temporary mount point (%1)"
+msgstr "menghapus titik kait sementara (%1)"
+
+#. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:105
+msgid ""
+"Partition move action skipped because %1 file system does not contain data"
 msgstr ""
+"Aksi pemindahan partisi dilewati karena sistem berkas %1 tak memuat data"
+
+#. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:124
+msgid ""
+"Partition copy action skipped because %1 file system does not contain data"
+msgstr ""
+"Aksi penyalinan partisi dilewati karena sistem berkas %1 tak memuat data"
 
 #: ../src/main.cc:38
 msgid "Root privileges are required for running GParted"
-msgstr ""
+msgstr "Diperlukan hak root untuk menjalankan GParted"
 
 #: ../src/main.cc:43
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
 msgstr ""
+"Karena GParted adalah perkakas yang berkemampuan tinggi yang dapat merusak "
+"tabel partisi dan sejumlah sangat besar data, hanya root yang boleh "
+"menjalankannya."
 
 #. simulation..
 #: ../src/ntfs.cc:125
 msgid "run simulation"
-msgstr ""
+msgstr "jalankan simulasi"
 
 #. real resize
 #: ../src/ntfs.cc:132
 msgid "real resize"
-msgstr ""
+msgstr "ubah ukuran secara nyata"
 
 #. grow the mounted file system..
 #: ../src/xfs.cc:168
 msgid "grow mounted file system"
-msgstr ""
+msgstr "perbesar sistem berkas yang dikait"
 
 #. copy file system..
-#: ../src/xfs.cc:276
+#: ../src/xfs.cc:284
 msgid "copy file system"
-msgstr ""
+msgstr "salin sistem berkas"
