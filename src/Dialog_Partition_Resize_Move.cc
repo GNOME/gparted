@@ -132,7 +132,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	if ( previous <= 0 )
 		MIN_SPACE_BEFORE_MB = 0 ;
 	else
-		MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
+	{
+		if ( START <= (MEBIBYTE / selected_partition .sector_size) )
+			MIN_SPACE_BEFORE_MB = 1 ;
+		else
+			MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
+	}
 	total_length = previous + selected_partition .get_sector_length() + next;
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( total_length, selected_partition .sector_size, UNIT_MIB ) ) ;
 	
