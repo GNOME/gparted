@@ -1,4 +1,53 @@
 ====================
+0.7.0   (2010-10-29)
+====================
+NOTES
+
+	This release of GParted adds initial support for the btrfs
+	file system, and fixes two critical bugs.  Also included are
+	other bug fixes and language translation updates.
+
+	Key changes include:
+	  - Add initial support for btrfs
+	  - Fix crash at start with glibmm-ERROR
+	  - Fix crash moving more than one logical partition right
+
+BUG FIXES
+	* Add initial support for btrfs (#571170)
+	  - Thanks go to Luca Bruno for this big patch
+	* Fix gparted crash at start with glibmm-ERROR
+	  - Crash due to using ustring for file system signature recognition
+	  - Ubuntu launchpad #609477
+	  - Ubuntu launchpad #617885
+	  - Thanks go to Seth Heeren for this small patch
+	* Fix crash moving more than one logical partition right (#628863)
+	* Fix several memory leaks and valgrind errors (#631201)
+	  - Thanks go to Seth Heeren for this small patch
+	* Remove unnecessary null pointer checks (#539092)
+	  - Thanks go Markus Elfring for this small patch
+	* Insert additional translator comments (#631684)
+	* Fix partitions moved or copied are 1 MiB larger (#632478)
+	* Skip move/copy action because linux swap contains no data (#589555)
+	  - Ubuntu launchpad #401228
+	* Ensure 1 MiB reserved when moving partition to start of disk
+
+TRANSLATIONS (new/updated)
+	* bg(Alexander Shopov), da(Ask H. Larsen),
+	  de(Mario Blättermann, Christian Kirbach), es(Jorge González),
+	  et(Mattias Põldaru), gl(Fran Diéguez), fr(Claude Paroz),
+	  hu(Gabor Kelemen), id(Andika Triwidada), kk(Baurzhan Muftakhidinov),
+	  lt(Aurimas Černius, Žygimantas Beručka), nb(Kjartan Maraas),
+	  pa(A S Alam), pl(Piotr Drąg, Tomasz Dominikowski),
+	  pt(António Lima), pt_BR(Antonio Fernandes C. Neto),
+	  sl(Matej Urbančič), uk(Maxim V. Dziumanenko),
+	  zh_CN(Aron Xu, Yunqiang Su), zh_HK(Chao-Hsiung Liao, Wei-Lun Chao),
+	  zh_TW(Chao-Hsiung Liao, Wei-Lun Chao)
+
+DEPENDENCIES (new/updated)
+	* btrfs-tools package is required for optional btrfs support.
+
+
+====================
 0.6.4   (2010-10-01)
 ====================
 NOTES
