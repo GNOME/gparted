@@ -865,11 +865,14 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 {
 	DMRaid dmraid;   //Use cache of dmraid device information
 	char * lp_path;  //we have to free the result of ped_partition_get_path()
-	Glib::ustring partition_path;
+	Glib::ustring partition_path = "Partition path not found";
 
 	lp_path = ped_partition_get_path(lp_partition);
-	partition_path = lp_path;
-	free(lp_path);
+	if ( lp_path != NULL )
+	{
+		partition_path = lp_path;
+		free(lp_path);
+	}
 
 	//Ensure partition path name is compatible with dmraid
 	if (   dmraid .is_dmraid_supported()
@@ -1060,15 +1063,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 
 		//TODO:  Temporary code to detect ext4.
 		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
-		char * const path = ped_partition_get_path( lp_partition );
-
-		if (NULL != path)
-		{
-			temp = fs_info .get_fs_type( Glib::ustring( path ) ) ;
-			if ( temp == "ext4" || temp == "ext4dev" )
-				fs_type = temp ;
-			free( path );
-		}
+		temp = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
+		if ( temp == "ext4" || temp == "ext4dev" )
+			fs_type = temp ;
 	}
 
 	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
@@ -1076,12 +1073,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 	if ( fs_type .empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		char * const path = ped_partition_get_path( lp_partition );
-		if (NULL != path)
-		{
-			fs_type = fs_info.get_fs_type( Glib::ustring( path ) ) ;
-			free( path );
-		}
+		fs_type = fs_info.get_fs_type( get_partition_path( lp_partition ) ) ;
 	}
 
 	if ( ! fs_type .empty() )
@@ -2752,9 +2744,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		
 			if ( lp_partition )//FIXME: add check to see if lp_partition ->type matches partition .type..
 			{
-				char * lp_path = ped_partition_get_path( lp_partition ) ;
-				partition .add_path( lp_path, true ) ;
-				free( lp_path ) ;
+				partition .add_path( get_partition_path( lp_partition ) ) ;
 
 				partition .sector_start = lp_partition ->geom .start ;
 				partition .sector_end = lp_partition ->geom .end ;
