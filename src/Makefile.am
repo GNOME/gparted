@@ -39,6 +39,7 @@ gpartedbin_SOURCES = \
 	OperationResizeMove.cc		\
 	OperationLabelPartition.cc	\
 	Partition.cc			\
+	Proc_Partitions_Info.cc		\
 	SWRaid.cc				\
 	TreeView_Detail.cc		\
 	Utils.cc			\

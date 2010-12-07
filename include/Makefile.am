@@ -30,6 +30,7 @@ EXTRA_DIST = \
 	OperationResizeMove.h		\
 	OperationLabelPartition.h	\
 	Partition.h  			\
+	Proc_Partitions_Info.h	\
 	SWRaid.h				\
 	TreeView_Detail.h 		\
 	Utils.h 			\

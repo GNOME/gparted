@@ -65,7 +65,6 @@ private:
 	void read_mountpoints_from_file_swaps(
 		const Glib::ustring & filename,
 		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
-	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
@@ -202,8 +201,6 @@ private:
 	
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
-	std::map< Glib::ustring, Glib::ustring > alternate_paths ;
-	std::map< Glib::ustring, Glib::ustring >::iterator iter ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 	
 	PedDevice *lp_device ;

@@ -27,6 +27,7 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationLabelPartition.h"
+#include "../include/Proc_Partitions_Info.h"
 
 #include "../include/btrfs.h"
 #include "../include/ext2.h"
@@ -156,6 +157,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 {
 	devices .clear() ;
 	Device temp_device ;
+	Proc_Partitions_Info pp_info( true ) ;  //Refresh cache of proc partition information
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	SWRaid swraid( true ) ;    //Refresh cache of swraid device information
@@ -297,7 +299,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 			//device info..
 			temp_device .add_path( device_paths[ t ] ) ;
-			temp_device .add_paths( get_alternate_paths( temp_device .get_path() ) ) ;
+			temp_device .add_paths( pp_info .get_alternate_paths( temp_device .get_path() ) ) ;
 
 			temp_device .model 	=	lp_device ->model ;
 			temp_device .length 	=	lp_device ->length ;
@@ -363,7 +365,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	//clear leftover information...	
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	set_thread_status_message("") ;
-	alternate_paths .clear() ;
 	fstab_info .clear() ;
 }
 
@@ -743,7 +744,6 @@ Glib::ustring GParted_Core::get_libparted_version()
 
 void GParted_Core::init_maps() 
 {
-	alternate_paths .clear() ;
 	mount_info .clear() ;
 	fstab_info .clear() ;
 
@@ -760,34 +760,6 @@ void GParted_Core::init_maps()
 		iter_mp ->second .erase( 
 				std::unique( iter_mp ->second .begin(), iter_mp ->second .end() ),
 				iter_mp ->second .end() ) ;
-	}
-
-	//initialize alternate_paths...
-	std::string line ;
-	std::ifstream proc_partitions( "/proc/partitions" ) ;
-	if ( proc_partitions )
-	{
-		char c_str[4096+1] ;
-		
-		while ( getline( proc_partitions, line ) )
-			if ( sscanf( line .c_str(), "%*d %*d %*d %4096s", c_str ) == 1 )
-			{
-				line = "/dev/" ; 
-				line += c_str ;
-				
-				//FIXME: it seems realpath is very unsafe to use (manpage)...
-				if ( file_test( line, Glib::FILE_TEST_EXISTS ) &&
-				     realpath( line .c_str(), c_str ) &&
-				     line != c_str )
-				{
-					//because we can make no assumption about which path libparted will detect
-					//we add all combinations.
-					alternate_paths[ c_str ] = line ;
-					alternate_paths[ line ] = c_str ;
-				}
-			}
-
-		proc_partitions .close() ;
 	}
 }
 
@@ -850,17 +822,6 @@ void GParted_Core::read_mountpoints_from_file_swaps(
 	}
 }
 
-std::vector<Glib::ustring> GParted_Core::get_alternate_paths( const Glib::ustring & path ) 
-{
-	std::vector<Glib::ustring> paths ;
-	
-	iter = alternate_paths .find( path ) ;
-	if ( iter != alternate_paths .end() )
-		paths .push_back( iter ->second ) ;
-
-	return paths ;
-}
-
 Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 {
 	DMRaid dmraid;   //Use cache of dmraid device information
@@ -888,6 +849,7 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 void GParted_Core::set_device_partitions( Device & device ) 
 {
 	int EXT_INDEX = -1 ;
+	Proc_Partitions_Info pp_info ; //Use cache of proc partitions information
 	FS_Info fs_info ;  //Use cache of file system information
 	DMRaid dmraid ;    //Use cache of dmraid device information
 
@@ -936,7 +898,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     lp_partition ->type,
 						     partition_is_busy ) ;
 
-				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
+				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
 
 				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
@@ -976,7 +938,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						     false,
 						     partition_is_busy ) ;
 
-				partition_temp .add_paths( get_alternate_paths( partition_temp .get_path() ) ) ;
+				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp ) ;
 
 				EXT_INDEX = device .partitions .size() ;
