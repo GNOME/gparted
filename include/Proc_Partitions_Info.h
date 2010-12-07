@@ -36,10 +36,12 @@ public:
 	Proc_Partitions_Info() ;
 	Proc_Partitions_Info( bool do_refresh ) ;
 	~Proc_Partitions_Info() ;
+	std::vector<Glib::ustring> get_device_paths() ;
 	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
 private:
 	void load_proc_partitions_info_cache() ;
 	static bool proc_partitions_info_cache_initialized ;
+	static std::vector<Glib::ustring> device_paths_cache ;
 	static std::map< Glib::ustring, Glib::ustring > alternate_paths_cache ;
 };
 
