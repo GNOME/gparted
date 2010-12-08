@@ -1238,30 +1238,31 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		{
 			if ( partitions[ t ] .busy )
 			{
-				for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
+				//Handle dmraid devices differently because there may be more
+				//  than one partition name.
+				//  E.g., there might be names with and/or without a 'p' between
+				//        the device name and partition number.
+				if ( dmraid .is_dmraid_device( partitions[ t ] .device_path ) )
 				{
-					//Handle dmraid devices differently because there may be more
-					//  than one partition name.
-					//  E.g., there might be names with and/or without a 'p' between
-					//        the device name and partition number.
-					if ( dmraid .is_dmraid_device( partitions[ t ] .device_path ) )
+					//Try device_name + partition_number
+					iter_mp = mount_info .find( partitions[ t ] .device_path + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
+					if ( iter_mp != mount_info .end() )
 					{
-						//Try device_name + partition_number
-						iter_mp = mount_info .find( partitions[ t ] .device_path + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
-						if ( iter_mp != mount_info .end() )
-						{
-							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
-							break ;
-						}
-						//Try device_name + p + partition_number
-						iter_mp = mount_info .find( partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
-						if ( iter_mp != mount_info .end() )
-						{
-							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
-							break ;
-						}
+						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+						break ;
 					}
-					else
+					//Try device_name + p + partition_number
+					iter_mp = mount_info .find( partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
+					if ( iter_mp != mount_info .end() )
+					{
+						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+						break ;
+					}
+				}
+				else
+				{
+					//Normal device, not DMRaid device
+					for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
 					{
 						iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
 						if ( iter_mp != mount_info .end() )
