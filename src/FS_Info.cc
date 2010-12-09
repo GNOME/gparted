@@ -153,4 +153,22 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 	return uuid ;
 }
 
+Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
+{
+	//Retrieve the path given the uuid
+	Glib::ustring regexp = "^([^:]*):.*UUID=\"" + uuid + "\".*$" ;
+	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
+
+	return path ;
+}
+
+Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
+{
+	//Retrieve the path given the label
+	Glib::ustring regexp = "^([^:]*):.*LABEL=\"" + label + "\".*$" ;
+	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
+
+	return path ;
+}
+
 }//GParted

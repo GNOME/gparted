@@ -1,4 +1,4 @@
-/* Copyright (C) 2008, 2009 Curtis Gedak
+/* Copyright (C) 2008, 2009, 2010 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ public:
 	Glib::ustring get_fs_type( const Glib::ustring & path ) ;
 	Glib::ustring get_label( const Glib::ustring & path, bool & found ) ;
 	Glib::ustring get_uuid( const Glib::ustring & path ) ;
+	Glib::ustring get_path_by_uuid( const Glib::ustring & uuid ) ;
+	Glib::ustring get_path_by_label( const Glib::ustring & label ) ;
 private:
 	void load_fs_info_cache() ;
 	void set_commands_found() ;
