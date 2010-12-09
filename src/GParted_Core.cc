@@ -52,6 +52,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <mntent.h>
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
@@ -748,39 +749,40 @@ void GParted_Core::read_mountpoints_from_file(
 	const Glib::ustring & filename,
 	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
 {
-	std::string line ;
-	Glib::ustring node ;
-	Glib::ustring mountpoint ;
+	FILE* fp = setmntent( filename .c_str(), "r" ) ;
 
-	std::ifstream file( filename .c_str() ) ;
-	if ( file )
+	if ( fp == NULL )
+		return ;
+
+	struct mntent* p = NULL ;
+
+	while ( (p = getmntent(fp)) != NULL )
 	{
-		while ( getline( file, line ) )
-		{
-			node       = Utils::regexp_label( line, "^(/[^ \t]+)[ \t]+[^ \t]+" ) ;
-			mountpoint = Utils::regexp_label( line, "^/[^ \t]+[ \t]+([^ \t]+)" ) ;
-			if ( mountpoint .length() > 0 && node .length() > 0 )
-			{
-				//Only add node path(s) if mount point exists
-				if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
-				{
-					map[ node ] .push_back( mountpoint ) ;
+		Glib::ustring node = p->mnt_fsname ;
 
-					//If node is a symbolic link (e.g., /dev/root)
-					//  then find real path and add entry
-					if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
-					{
-						char c_str[4096+1] ;
-						//FIXME: it seems realpath is very unsafe to use (manpage)...
-						if ( realpath( node .c_str(), c_str ) != NULL )
-							map[ c_str ] .push_back( mountpoint ) ;
-					}
+		if ( ! node .empty() )
+		{
+			Glib::ustring mountpoint = p->mnt_dir ;
+
+			//Only add node path(s) if mount point exists
+			if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+			{
+				map[ node ] .push_back( mountpoint ) ;
+
+				//If node is a symbolic link (e.g., /dev/root)
+				//  then find real path and add entry
+				if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
+				{
+					char c_str[4096+1] ;
+					//FIXME: it seems realpath is very unsafe to use (manpage)...
+					if ( realpath( node .c_str(), c_str ) != NULL )
+						map[ c_str ] .push_back( mountpoint ) ;
 				}
 			}
 		}
-
-		file .close() ;
 	}
+
+	endmntent( fp ) ;
 }
 
 void GParted_Core::read_mountpoints_from_file_swaps(
