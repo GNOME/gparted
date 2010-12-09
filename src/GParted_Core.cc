@@ -749,6 +749,8 @@ void GParted_Core::read_mountpoints_from_file(
 	const Glib::ustring & filename,
 	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
 {
+	FS_Info fs_info ;  //Use cache of file system information
+
 	FILE* fp = setmntent( filename .c_str(), "r" ) ;
 
 	if ( fp == NULL )
@@ -759,6 +761,14 @@ void GParted_Core::read_mountpoints_from_file(
 	while ( (p = getmntent(fp)) != NULL )
 	{
 		Glib::ustring node = p->mnt_fsname ;
+
+		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" ) ;
+		if ( ! uuid .empty() )
+			node = fs_info .get_path_by_uuid( uuid ) ;
+
+		Glib::ustring label = Utils::regexp_label( node, "^LABEL=(.*)" ) ;
+		if ( ! label .empty() )
+			node = fs_info .get_path_by_label( label ) ;
 
 		if ( ! node .empty() )
 		{
