@@ -422,34 +422,33 @@ Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /*
 
 Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
 {
-	//Clean up text for commands that use cursoring to display progress.
-	Glib::ustring str = text;
-	//remove backspace '\b' and delete previous character.  Used in mke2fs output.
-	for ( unsigned int index = str .find( "\b" ) ; index < str .length() ; index = str .find( "\b" ) ) {
-		if ( index > 0 )
-			str .erase( index - 1, 2 ) ;
-		else
-			str .erase( index, 1 ) ;
+	std::istringstream in(text);
+	std::ostringstream out;
+	char ch;
+	std::streampos startofline = out.tellp();
+
+	while (in.get(ch))
+	{
+		switch(ch)
+		{
+			case '\r':
+				if ('\n' != in.peek()) // for windows CRLF
+					out.seekp(startofline);
+				else
+					out.put(ch);
+				break;
+			case '\b':
+				if (out.tellp() > startofline)
+					out.seekp(out.tellp()-1ll);
+				break;
+			default:
+				out.put(ch);
+		}
+		if (ch == '\n')
+		 	startofline = out.tellp();
 	}
 
-	//Remove carriage return and line up to previous line feed.  Used in ntfsclone output.
-	//NOTE:  Normal linux line end is line feed.  DOS uses CR + LF.
-	for ( unsigned int index1 = str .find( "\r") ; index1 < str .length() ; index1 = str .find( "\r" ) )
-	{
-		//Only process if next character is not a LF.
-		if ( str .at(index1 + 1) != '\n')
-		{
-			//find point to start erase from.
-			unsigned int index2 = str .rfind( "\n", index1 ) ;
-			//find end point to erase up to.
-			unsigned int index3 = str .find( "\n", index1 ) ;
-			unsigned int index4 = str .rfind( "\r", index3 ) ;
-			//perform erase if indices are valid
-			if ( ( index2 <= index1 ) && ( index4 > index2 ) && ( index4 < str .length() ) )
-				str .erase( index2 + 1, index4 - index2 ) ;
-		}
-	}
-	return str;
+	return out.str();
 }
 
 Glib::ustring Utils::get_lang()
