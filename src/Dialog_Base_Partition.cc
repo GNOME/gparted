@@ -173,13 +173,20 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 		case  0 :  selected_partition .alignment = ALIGN_CYLINDER;  break;
 		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;
 		           {
-		               //if start sector not MiB aligned and free space available then add ~1 MiB to partition so requested size is kept
-		               Sector diff = ( MEBIBYTE / selected_partition .sector_size ) - ( selected_partition .sector_end + 1 ) % ( MEBIBYTE / selected_partition .sector_size ) ;
-		               if (   diff
-		                   && ( selected_partition .sector_start % (MEBIBYTE / selected_partition .sector_size ) ) > 0
-		                   && ( ( selected_partition .sector_end - START +1 + diff ) < total_length )
+		               //if partition size is not an integer multiple of MiB
+		               //   or the start or end sectors are not MiB aligned,
+		               //   and space is available,
+		               //   then add 1 MiB to partition so requested size is kept
+		               //   after GParted_Core::snap_to_mebibyte method rounding
+		               Sector partition_size = selected_partition .sector_end - selected_partition .sector_start + Sector(1) ;
+		               Sector sectors_in_mib = MEBIBYTE / selected_partition .sector_size ;
+		               if (   (   ( ( partition_size % sectors_in_mib ) > 0 )
+		                       || ( ( selected_partition .sector_start % sectors_in_mib ) > 0 )
+		                       || ( ( ( selected_partition .sector_end + Sector(1) ) % sectors_in_mib ) > 0 )
+		                      )
+		                   && ( ( partition_size + sectors_in_mib ) < total_length )
 		                  )
-		                   selected_partition .sector_end += diff ;
+		                   selected_partition .sector_end += sectors_in_mib ;
 		           }
 		           break;
 		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
