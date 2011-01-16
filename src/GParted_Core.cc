@@ -1148,12 +1148,15 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 
 	//no file system found....
 	temp = _( "Unable to detect file system! Possible reasons are:" ) ;
-	temp += "\n-"; 
+	temp += "\n- "; 
 	temp += _( "The file system is damaged" ) ;
-	temp += "\n-" ; 
+	temp += "\n- " ; 
 	temp += _( "The file system is unknown to GParted" ) ;
-	temp += "\n-"; 
+	temp += "\n- "; 
 	temp += _( "There is no file system available (unformatted)" ) ; 
+	temp += "\n- "; 
+	/* TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing */
+	temp += String::ucompose( _( "The device entry %1 is missing" ), get_partition_path( lp_partition ) ) ;
 	
 	partition_temp .messages .push_back( temp ) ;
 	
