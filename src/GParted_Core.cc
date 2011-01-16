@@ -1357,6 +1357,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					if ( ! Utils::get_filesystem_software( partitions[ t ] .filesystem ) .empty() )
 					{
 						temp += "\n\n" ;
+						temp += _( "The cause might be a missing software package.") ;
+						temp += "\n" ;
 						/*TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs. */
 						temp += String::ucompose( _("The following list of software packages is required for %1 file system support:  %2."),
 						                          Utils::get_filesystem_string( partitions[ t ] .filesystem ),
