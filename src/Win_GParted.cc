@@ -1236,6 +1236,13 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 	Glib::ustring command = "gnome-open " + uri ;
 	gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
 #endif
+	if ( error != NULL )
+	{
+		//Try opening yelp application directly
+		g_clear_error( &error ) ;  //Clear error from trying to open gparted help manual above (gtk_show_uri or gnome-open).
+		Glib::ustring command = "yelp " + uri ;
+		gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
+	}
 
 	if ( error != NULL )
 	{
