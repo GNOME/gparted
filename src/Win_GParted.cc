@@ -689,6 +689,16 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 			
 			if ( operations .size() == 1 ) //first operation, open operationslist
 				open_operationslist() ;
+
+			//FIXME:  A slight flicker may be introduced by this extra display refresh.
+			//An extra display refresh seems to prevent the disk area visual disk from
+			//  disappearing when enough operations are added to require a scrollbar
+			//  (about 4 operations with default window size).
+			//  Note that commenting out the code to
+			//  "//make scrollwindow focus on the last operation in the list"
+			//  in HBoxOperations::load_operations() prevents this problem from occurring as well.
+			//  See also Win_GParted::activate_undo().
+			drawingarea_visualdisk .queue_draw() ;
 		}
 		else
 		{
@@ -2143,6 +2153,13 @@ void Win_GParted::activate_undo()
 	
 	if ( ! operations .size() )
 		close_operationslist() ;
+
+	//FIXME:  A slight flicker may be introduced by this extra display refresh.
+	//An extra display refresh seems to prevent the disk area visual disk from
+	//  disappearing when there enough operations to require a scrollbar
+	//  (about 4+ operations with default window size) and a user clicks on undo.
+	//  See also Win_GParted::Add_operation().
+	drawingarea_visualdisk .queue_draw() ;
 }
 
 void Win_GParted::remove_operation( int index, bool remove_all ) 
