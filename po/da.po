@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GParted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-29 00:10+0200\n"
-"PO-Revision-Date: 2010-10-24 13:52+0200\n"
+"POT-Creation-Date: 2011-01-27 22:12+0100\n"
+"PO-Revision-Date: 2010-11-04 20:26+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,8 +27,8 @@ msgstr "Opret, omorganisér og slet partitioner"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
-#: ../src/Win_GParted.cc:71 ../src/Win_GParted.cc:1100
-#: ../src/Win_GParted.cc:1284
+#: ../src/Win_GParted.cc:71 ../src/Win_GParted.cc:1110
+#: ../src/Win_GParted.cc:1301
 msgid "GParted"
 msgstr "GParted"
 
@@ -75,19 +76,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "Intet"
 
-#: ../src/Dialog_Base_Partition.cc:210
+#: ../src/Dialog_Base_Partition.cc:217
 msgid "Resize"
 msgstr "Tilpas"
 
-#: ../src/Dialog_Base_Partition.cc:210 ../src/Win_GParted.cc:231
+#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:231
 msgid "Resize/Move"
 msgstr "Tilpas/flyt"
 
-#: ../src/Dialog_Base_Partition.cc:227
+#: ../src/Dialog_Base_Partition.cc:234
 msgid "Minimum size: %1 MiB"
 msgstr "Minimumsstørrelse: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:228
+#: ../src/Dialog_Base_Partition.cc:235
 msgid "Maximum size: %1 MiB"
 msgstr "Maksimumsstørrelse: %1 MiB"
 
@@ -507,22 +508,22 @@ msgid "update %1 entry"
 msgstr "opdatér %1-element"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:200 ../src/GParted_Core.cc:211
-#: ../src/GParted_Core.cc:221
+#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
+#: ../src/GParted_Core.cc:205
 msgid "Scanning %1"
 msgstr "Scanner %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:242
+#: ../src/GParted_Core.cc:226
 msgid "Confirming %1"
 msgstr "Bekræfter %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:254
+#: ../src/GParted_Core.cc:238
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Ignorerer enheden %1 med logisk sektorstørrelse på %2 byte."
 
-#: ../src/GParted_Core.cc:256
+#: ../src/GParted_Core.cc:240
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -531,113 +532,122 @@ msgstr ""
 "med sektorer større end 512 byte."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:293
+#: ../src/GParted_Core.cc:277
 msgid "Searching %1 partitions"
-msgstr "Søger %1 partitioner"
+msgstr "Søger efter partitioner på %1"
 
 #. TO TRANSLATORS:  unrecognized
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:340
+#: ../src/GParted_Core.cc:324
 msgid "unrecognized"
 msgstr "ikke genkendt"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:532
+#: ../src/GParted_Core.cc:515
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "En partition kan ikke have en længde på %1 sektorer"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:541
+#: ../src/GParted_Core.cc:524
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "En partition med et antal brugte sektorer (%1), der er større end dens "
 "længde (%1), er ikke gyldig"
 
-#: ../src/GParted_Core.cc:606
+#: ../src/GParted_Core.cc:589
 msgid "libparted messages"
 msgstr "beskeder fra libparted"
 
-#: ../src/GParted_Core.cc:1046
+#: ../src/GParted_Core.cc:1004
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux Unified Key Setup-kryptering understøttes endnu ikke."
 
 # Forkortelsens inkluderet for at sikre tilstrækkeligheden af msgstr'ens informationsindhold
-#: ../src/GParted_Core.cc:1174
+#: ../src/GParted_Core.cc:1121
 msgid "Logical Volume Management is not yet supported."
 msgstr "Logisk volumenhåndtering (LVM) understøttes endnu ikke."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1203
+#: ../src/GParted_Core.cc:1150
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Kan ikke finde noget filsystem! Mulige årsager:"
 
-#: ../src/GParted_Core.cc:1205
+#: ../src/GParted_Core.cc:1152
 msgid "The file system is damaged"
 msgstr "Filsystemet er skadet"
 
-#: ../src/GParted_Core.cc:1207
+#: ../src/GParted_Core.cc:1154
 msgid "The file system is unknown to GParted"
 msgstr "GParted kender ikke filsystemet"
 
-#: ../src/GParted_Core.cc:1209
+#: ../src/GParted_Core.cc:1156
 msgid "There is no file system available (unformatted)"
 msgstr "Der er intet tilgængeligt filsystem (uformateret)"
 
-#: ../src/GParted_Core.cc:1341
+#. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
+#: ../src/GParted_Core.cc:1159
+msgid "The device entry %1 is missing"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1292
 msgid "Unable to find mount point"
 msgstr "Kan ikke finde monteringspunkt"
 
-#: ../src/GParted_Core.cc:1403
+#: ../src/GParted_Core.cc:1354
 msgid "Unable to read the contents of this file system!"
 msgstr "Kan ikke læse indholdet af dette filsystem!"
 
-#: ../src/GParted_Core.cc:1405
+#: ../src/GParted_Core.cc:1356
 msgid "Because of this some operations may be unavailable."
 msgstr "Af denne grund vil visse handlinger muligvis ikke være tilgængelige."
 
+#: ../src/GParted_Core.cc:1360
+msgid "The cause might be a missing software package."
+msgstr ""
+
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1410
+#: ../src/GParted_Core.cc:1363
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "Understøttelse af %1-filsystemer kræver følgende programpakker:  %2."
 
-#: ../src/GParted_Core.cc:1481
+#: ../src/GParted_Core.cc:1434
 msgid "create empty partition"
 msgstr "opret tom partition"
 
-#: ../src/GParted_Core.cc:1549 ../src/GParted_Core.cc:2764
+#: ../src/GParted_Core.cc:1502 ../src/GParted_Core.cc:2715
 msgid "path: %1"
 msgstr "sti: %1"
 
-#: ../src/GParted_Core.cc:1550 ../src/GParted_Core.cc:2765
+#: ../src/GParted_Core.cc:1503 ../src/GParted_Core.cc:2716
 msgid "start: %1"
 msgstr "start: %1"
 
-#: ../src/GParted_Core.cc:1551 ../src/GParted_Core.cc:2766
+#: ../src/GParted_Core.cc:1504 ../src/GParted_Core.cc:2717
 msgid "end: %1"
 msgstr "slut: %1"
 
-#: ../src/GParted_Core.cc:1552 ../src/GParted_Core.cc:2767
+#: ../src/GParted_Core.cc:1505 ../src/GParted_Core.cc:2718
 msgid "size: %1 (%2)"
 msgstr "størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1582 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1535 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "opret nyt %1-filsystem"
 
-#: ../src/GParted_Core.cc:1615
+#: ../src/GParted_Core.cc:1568
 msgid "delete partition"
 msgstr "slet partition"
 
-#: ../src/GParted_Core.cc:1655
+#: ../src/GParted_Core.cc:1608
 msgid "Clear partition label on %1"
 msgstr "Ryd partitionsmærkat på %1"
 
-#: ../src/GParted_Core.cc:1660
+#: ../src/GParted_Core.cc:1613
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Sæt partitionsmærkat til \"%1% på %2"
 
@@ -646,27 +656,27 @@ msgstr "Sæt partitionsmærkat til \"%1% på %2"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1746
+#: ../src/GParted_Core.cc:1699
 msgid "moving requires old and new length to be the same"
 msgstr "flytning kræver at gammel og ny længde skal være ens"
 
-#: ../src/GParted_Core.cc:1776
+#: ../src/GParted_Core.cc:1729
 msgid "rollback last change to the partition table"
 msgstr "omgør sidste ændring til partitionstabellen"
 
-#: ../src/GParted_Core.cc:1806
+#: ../src/GParted_Core.cc:1759
 msgid "move file system to the left"
 msgstr "flyt filsystem til venstre"
 
-#: ../src/GParted_Core.cc:1808
+#: ../src/GParted_Core.cc:1761
 msgid "move file system to the right"
 msgstr "flyt filsystem til højre"
 
-#: ../src/GParted_Core.cc:1811
+#: ../src/GParted_Core.cc:1764
 msgid "move file system"
 msgstr "flyt filsystem"
 
-#: ../src/GParted_Core.cc:1813
+#: ../src/GParted_Core.cc:1766
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -674,56 +684,56 @@ msgstr ""
 "det nye og det gamle filsystem har samme position.  Derfor springes denne "
 "handling over"
 
-#: ../src/GParted_Core.cc:1832
+#: ../src/GParted_Core.cc:1785
 msgid "perform real move"
 msgstr "udfør ægte flytning"
 
 # kan også fortolkes som "(om) brug af libparted", men usandsynligt
-#: ../src/GParted_Core.cc:1879
+#: ../src/GParted_Core.cc:1832
 msgid "using libparted"
 msgstr "bruger libparted"
 
-#: ../src/GParted_Core.cc:1919
+#: ../src/GParted_Core.cc:1872
 msgid "resizing requires old and new start to be the same"
 msgstr "ændring af størrelse kræver at nye og gamle startpunkt skal være ens"
 
-#: ../src/GParted_Core.cc:1984
+#: ../src/GParted_Core.cc:1937
 msgid "resize/move partition"
 msgstr "tilpas/flyt partition"
 
-#: ../src/GParted_Core.cc:1987
+#: ../src/GParted_Core.cc:1940
 msgid "move partition to the right"
 msgstr "flyt partition til højre"
 
-#: ../src/GParted_Core.cc:1990
+#: ../src/GParted_Core.cc:1943
 msgid "move partition to the left"
 msgstr "flyt partition til venstre"
 
-#: ../src/GParted_Core.cc:1993
+#: ../src/GParted_Core.cc:1946
 msgid "grow partition from %1 to %2"
 msgstr "forstør partition fra %1 til %2"
 
-#: ../src/GParted_Core.cc:1996
+#: ../src/GParted_Core.cc:1949
 msgid "shrink partition from %1 to %2"
 msgstr "formindsk partition fra %1 til %2"
 
-#: ../src/GParted_Core.cc:1999
+#: ../src/GParted_Core.cc:1952
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "flyt partitionen til højre og forstør den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2002
+#: ../src/GParted_Core.cc:1955
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "flyt partitionen til højre og formindsk den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2005
+#: ../src/GParted_Core.cc:1958
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "flyt partitionen til venstre og forstør den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2008
+#: ../src/GParted_Core.cc:1961
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "flyt partitionen til venstre og formindsk den fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:1976
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -731,215 +741,215 @@ msgstr ""
 "den nye og den gamle partition har samme størrelse og position.  Derfor "
 "springes denne handling over"
 
-#: ../src/GParted_Core.cc:2033
+#: ../src/GParted_Core.cc:1986
 msgid "old start: %1"
 msgstr "gammelt begyndelsespunkt: %1"
 
-#: ../src/GParted_Core.cc:2034
+#: ../src/GParted_Core.cc:1987
 msgid "old end: %1"
 msgstr "gammelt slutpunkt: %1"
 
-#: ../src/GParted_Core.cc:2035
+#: ../src/GParted_Core.cc:1988
 msgid "old size: %1 (%2)"
 msgstr "gammel størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2097 ../src/GParted_Core.cc:2845
+#: ../src/GParted_Core.cc:2050 ../src/GParted_Core.cc:2796
 msgid "new start: %1"
 msgstr "nyt startpunkt: %1"
 
-#: ../src/GParted_Core.cc:2098 ../src/GParted_Core.cc:2846
+#: ../src/GParted_Core.cc:2051 ../src/GParted_Core.cc:2797
 msgid "new end: %1"
 msgstr "nyt slutpunkt: %1"
 
-#: ../src/GParted_Core.cc:2099 ../src/GParted_Core.cc:2847
+#: ../src/GParted_Core.cc:2052 ../src/GParted_Core.cc:2798
 msgid "new size: %1 (%2)"
 msgstr "ny størrelse: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2135
+#: ../src/GParted_Core.cc:2088
 msgid "shrink file system"
 msgstr "formindsk filsystem"
 
-#: ../src/GParted_Core.cc:2139
+#: ../src/GParted_Core.cc:2092
 msgid "grow file system"
 msgstr "forstør filsystem"
 
 # blot "tilpas", når konteksten måske ikke fremgår, vil være noget upræcist
-#: ../src/GParted_Core.cc:2142
+#: ../src/GParted_Core.cc:2095
 msgid "resize file system"
 msgstr "tilpas størrelse af filsystem"
 
-#: ../src/GParted_Core.cc:2145
+#: ../src/GParted_Core.cc:2098
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "det nye og det gamle filsystem har samme størrelse.  Derfor springes denne "
 "handling over"
 
-#: ../src/GParted_Core.cc:2180
+#: ../src/GParted_Core.cc:2133
 msgid "grow file system to fill the partition"
 msgstr "forstør filsystemet, så det udfylder partitionen"
 
-#: ../src/GParted_Core.cc:2185
+#: ../src/GParted_Core.cc:2138
 msgid "growing is not available for this file system"
 msgstr "forstørrelseshandlingen er ikke tilgængelig for dette filsystem"
 
-#: ../src/GParted_Core.cc:2204
+#: ../src/GParted_Core.cc:2157
 msgid "the destination is smaller than the source partition"
 msgstr "destinationen er mindre end kildepartitionen"
 
 # sandsynligvis "from /dev/hda to /dev/hdb", er mit gæt
-#: ../src/GParted_Core.cc:2221
+#: ../src/GParted_Core.cc:2174
 msgid "copy file system of %1 to %2"
 msgstr "kopiér filsystemet fra %1 til %2"
 
-#: ../src/GParted_Core.cc:2265
+#: ../src/GParted_Core.cc:2218
 msgid "perform read-only test"
 msgstr "udfør test uden skrivning"
 
-#: ../src/GParted_Core.cc:2319
+#: ../src/GParted_Core.cc:2272
 msgid "using internal algorithm"
 msgstr "bruger intern algoritme"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2323
+#: ../src/GParted_Core.cc:2276
 msgid "read %1"
 msgstr "læs %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2325
+#: ../src/GParted_Core.cc:2278
 msgid "copy %1"
 msgstr "kopiér %1"
 
-#: ../src/GParted_Core.cc:2329
+#: ../src/GParted_Core.cc:2282
 msgid "finding optimal block size"
 msgstr "finder optimal blokstørrelse"
 
-#: ../src/GParted_Core.cc:2369
+#: ../src/GParted_Core.cc:2322
 msgid "%1 seconds"
 msgstr "%1 sekunder"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2387
+#: ../src/GParted_Core.cc:2340
 msgid "optimal block size is %1"
 msgstr "den optimale blokstørrelse er %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2405
+#: ../src/GParted_Core.cc:2358
 msgid "%1 (%2 B) read"
 msgstr "%1 (%2 B) læst"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2407
+#: ../src/GParted_Core.cc:2360
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) kopieret"
 
-#: ../src/GParted_Core.cc:2420
+#: ../src/GParted_Core.cc:2373
 msgid "roll back last transaction"
 msgstr "omgør sidste transaktion"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2449
+#: ../src/GParted_Core.cc:2402
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "kontrollér filsystemet på %1 for fejl og reparér dem hvis muligt"
 
-#: ../src/GParted_Core.cc:2457
+#: ../src/GParted_Core.cc:2410
 msgid "checking is not available for this file system"
 msgstr "kontrolhandlingen er ikke tilgængelig for dette filsystem"
 
-#: ../src/GParted_Core.cc:2483
+#: ../src/GParted_Core.cc:2436
 msgid "set partition type on %1"
 msgstr "sæt partitionstypen på %1"
 
-#: ../src/GParted_Core.cc:2513
+#: ../src/GParted_Core.cc:2466
 msgid "new partition type: %1"
 msgstr "ny partitionstype: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2542
+#: ../src/GParted_Core.cc:2495
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 af %2 læst (%3 resterende)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2544
+#: ../src/GParted_Core.cc:2497
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 af %2 kopieret (%3 resterende)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2552 ../src/GParted_Core.cc:2669
+#: ../src/GParted_Core.cc:2505 ../src/GParted_Core.cc:2622
 msgid "%1 of %2 read"
 msgstr "%1 af %2 læst"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2554 ../src/GParted_Core.cc:2671
+#: ../src/GParted_Core.cc:2507 ../src/GParted_Core.cc:2624
 msgid "%1 of %2 copied"
 msgstr "%1 af %2 kopieret"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2575
+#: ../src/GParted_Core.cc:2528
 msgid "read %1 using a block size of %2"
 msgstr "læs %1 med en blokstørrelse på %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2580
+#: ../src/GParted_Core.cc:2533
 msgid "copy %1 using a block size of %2"
 msgstr "kopiér %1 med en blokstørrelse på %2"
 
-#: ../src/GParted_Core.cc:2730
+#: ../src/GParted_Core.cc:2683
 msgid "Error while writing block at sector %1"
 msgstr "Fejl under skrivning til blok i sektor %1"
 
-#: ../src/GParted_Core.cc:2733
+#: ../src/GParted_Core.cc:2686
 msgid "Error while reading block at sector %1"
 msgstr "Fejl under læsning fra blok i sektor %1"
 
-#: ../src/GParted_Core.cc:2743
+#: ../src/GParted_Core.cc:2696
 msgid "calibrate %1"
 msgstr "kalibrér %1"
 
-#: ../src/GParted_Core.cc:2790
+#: ../src/GParted_Core.cc:2741
 msgid "calculate new size and position of %1"
 msgstr "udregn ny størrelse og position af %1"
 
-#: ../src/GParted_Core.cc:2794
+#: ../src/GParted_Core.cc:2745
 msgid "requested start: %1"
 msgstr "ønsket startpunkt: %1"
 
-#: ../src/GParted_Core.cc:2795
+#: ../src/GParted_Core.cc:2746
 msgid "requested end: %1"
 msgstr "ønsket slutpunkt: %1"
 
-#: ../src/GParted_Core.cc:2796
+#: ../src/GParted_Core.cc:2747
 msgid "requested size: %1 (%2)"
 msgstr "ønsket størrelse: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2938
+#: ../src/GParted_Core.cc:2889
 msgid "update boot sector of %1 file system on %2"
 msgstr "opdatér bootsektor for %1-filsystemet på %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2974
+#: ../src/GParted_Core.cc:2925
 msgid "Error trying to write to boot sector in %1"
 msgstr "Fejl under skrivning til blok i sektor %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2980
+#: ../src/GParted_Core.cc:2931
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Fejl ved søgning til positionen 0x1c i %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2987
+#: ../src/GParted_Core.cc:2938
 msgid "Error trying to open %1"
 msgstr "Fejl ved åbning af %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2997
+#: ../src/GParted_Core.cc:2948
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Kunne ikke sætte antallet af skjulte sektorer til %1 i NTFS-boot-recorden."
 
-#: ../src/GParted_Core.cc:2999
+#: ../src/GParted_Core.cc:2950
 msgid "You might try the following command to correct the problem:"
 msgstr "Du kan forsøge følgende kommandoer for at løse problemet:"
 
@@ -1302,93 +1312,93 @@ msgstr "Cylindre:"
 msgid "Sector size:"
 msgstr "Sektorstørrelse:"
 
-#: ../src/Win_GParted.cc:696
+#: ../src/Win_GParted.cc:706
 msgid "Could not add this operation to the list."
 msgstr "Kunne ikke føje denne handling til listen."
 
-#: ../src/Win_GParted.cc:721
+#: ../src/Win_GParted.cc:731
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 handling planlagt"
 msgstr[1] "%1 handlinger planlagt"
 
-#: ../src/Win_GParted.cc:775
+#: ../src/Win_GParted.cc:785
 msgid "Quit GParted?"
 msgstr "Afslut GParted?"
 
-#: ../src/Win_GParted.cc:781 ../src/Win_GParted.cc:2021
+#: ../src/Win_GParted.cc:791 ../src/Win_GParted.cc:2038
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 handling er i øjeblikket planlagt."
 msgstr[1] "%1 handlinger er i øjeblikket planlagt."
 
-#: ../src/Win_GParted.cc:807
+#: ../src/Win_GParted.cc:817
 msgid "_Unmount"
 msgstr "_Afmontér"
 
 # se man-siden for swapoff
-#: ../src/Win_GParted.cc:832
+#: ../src/Win_GParted.cc:842
 msgid "_Swapoff"
 msgstr "_Swap fra"
 
 # se man-siden for swapon
-#: ../src/Win_GParted.cc:838
+#: ../src/Win_GParted.cc:848
 msgid "_Swapon"
 msgstr "_Swap på"
 
-#: ../src/Win_GParted.cc:1032
+#: ../src/Win_GParted.cc:1042
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1078
+#: ../src/Win_GParted.cc:1088
 msgid "Scanning all devices..."
 msgstr "Scanner alle enheder..."
 
-#: ../src/Win_GParted.cc:1123
+#: ../src/Win_GParted.cc:1133
 msgid "No devices detected"
 msgstr "Ingen enheder fundet"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1204
+#: ../src/Win_GParted.cc:1214
 msgid "No partition table found on device %1"
 msgstr "Ingen partitionstabel blev fundet på enheden %1"
 
-#: ../src/Win_GParted.cc:1209
+#: ../src/Win_GParted.cc:1219
 msgid "A partition table is required before partitions can be added."
 msgstr "Partitioner kan ikke tilføjes, før en partitionstabel er oprettet."
 
-#: ../src/Win_GParted.cc:1211
+#: ../src/Win_GParted.cc:1221
 msgid "To create a new partition table choose the menu item:"
 msgstr "For at oprette en ny partitionstabel, skal du vælge menupunktet:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1214
+#: ../src/Win_GParted.cc:1224
 msgid "Device --> Create Partition Table."
 msgstr "Enhed --> Opret partitionstabel."
 
-#: ../src/Win_GParted.cc:1243
+#: ../src/Win_GParted.cc:1260
 msgid "Unable to open GParted Manual help file."
 msgstr "Kan ikke åbne GParted-manualfilen."
 
-#: ../src/Win_GParted.cc:1259
+#: ../src/Win_GParted.cc:1276
 msgid "Documentation is not available."
 msgstr "Dokumentation er ikke tilgængelig."
 
-#: ../src/Win_GParted.cc:1264
+#: ../src/Win_GParted.cc:1281
 msgid "This build of gparted is configured without documentation."
 msgstr "Denne kompilering af gparted er konfigureret uden dokumentation."
 
-#: ../src/Win_GParted.cc:1266
+#: ../src/Win_GParted.cc:1283
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentationen kan findes på projektets websted."
 
-#: ../src/Win_GParted.cc:1287
+#: ../src/Win_GParted.cc:1304
 msgid "GNOME Partition Editor"
 msgstr "GNOME-partitioneringsprogram"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1303
+#: ../src/Win_GParted.cc:1320
 msgid "translator-credits"
 msgstr ""
 "Ask Hjorth Larsen <asklarsen@gmail.com>\n"
@@ -1397,13 +1407,13 @@ msgstr ""
 "Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
 "Mere info: http://www.dansk-gruppen.dk"
 
-#: ../src/Win_GParted.cc:1345
+#: ../src/Win_GParted.cc:1362
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Det er ikke muligt at oprette mere end %1 primær partition"
 msgstr[1] "Det er ikke muligt at oprette mere end %1 primære partitioner"
 
-#: ../src/Win_GParted.cc:1357
+#: ../src/Win_GParted.cc:1374
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1415,81 +1425,81 @@ msgstr ""
 "udvidet partition også er en primær partition, kan det være nødvendigt at "
 "fjerne en primær partition først."
 
-#: ../src/Win_GParted.cc:1438
+#: ../src/Win_GParted.cc:1455
 msgid "Moving a partition might cause your operating system to fail to boot."
 msgstr ""
 "Flytning af en partition kan forårsage at dit operativsystem ikke kan starte "
 "op."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1446
+#: ../src/Win_GParted.cc:1463
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Du har sat en handling i kø, der vil flytte startsektoren for partitionen %1."
 
-#: ../src/Win_GParted.cc:1451
+#: ../src/Win_GParted.cc:1468
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "I GParteds OSS kan du se hvordan opstartskonfigurationen kan repareres."
 
-#: ../src/Win_GParted.cc:1522
+#: ../src/Win_GParted.cc:1539
 msgid "You have pasted into an existing partition."
 msgstr "Du har indsat i en eksisterende partition."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1529
+#: ../src/Win_GParted.cc:1546
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Data i %1 vil gå tabt, hvis du udfører denne handling."
 
-#: ../src/Win_GParted.cc:1584
+#: ../src/Win_GParted.cc:1601
 msgid "Unable to delete %1!"
 msgstr "Kan ikke slette %1!"
 
-#: ../src/Win_GParted.cc:1591
+#: ../src/Win_GParted.cc:1608
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Afmontér venligst enhver logisk partition med nummer større end %1"
 
-#: ../src/Win_GParted.cc:1602
+#: ../src/Win_GParted.cc:1619
 msgid "Are you sure you want to delete %1?"
 msgstr "Er du sikker på at du vil slette %1?"
 
-#: ../src/Win_GParted.cc:1609
+#: ../src/Win_GParted.cc:1626
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Efter denne partition er slettet, vil den ikke længere være tilgængelig for "
 "kopiering."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1612
+#: ../src/Win_GParted.cc:1629
 msgid "Delete %1 (%2, %3)"
 msgstr "Slet %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1682
+#: ../src/Win_GParted.cc:1699
 msgid "Cannot format this file system to %1."
 msgstr "Kan ikke formatere dette filsystem til %1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1694
+#: ../src/Win_GParted.cc:1711
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Et %1-filsystem kræver en partition på mindst %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1702
+#: ../src/Win_GParted.cc:1719
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "En partition med et %1-filsystem har en maksimal størrelse på %2."
 
-#: ../src/Win_GParted.cc:1788
+#: ../src/Win_GParted.cc:1805
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partitionen kunne ikke afmonteres fra følgende monteringspunkter:"
 
-#: ../src/Win_GParted.cc:1790
+#: ../src/Win_GParted.cc:1807
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1497,13 +1507,13 @@ msgstr ""
 "Den mest sandsynlige forklaring er, at andre partitioner også er monteret på "
 "disse monteringspunkter. Det tilrådes, at du afmonterer dem manuelt."
 
-#: ../src/Win_GParted.cc:1839 ../src/Win_GParted.cc:1923
+#: ../src/Win_GParted.cc:1856 ../src/Win_GParted.cc:1940
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "%1 handling er i øjeblikket planlagt for partitionen %2."
 msgstr[1] "%1 handlinger er i øjeblikket planlagt for partitionen %2."
 
-#: ../src/Win_GParted.cc:1853
+#: ../src/Win_GParted.cc:1870
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1512,7 +1522,7 @@ msgstr ""
 "er planlagt handlinger for partitionen."
 
 # swapon er en kommando, se man-siden for swapon
-#: ../src/Win_GParted.cc:1855
+#: ../src/Win_GParted.cc:1872
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1520,31 +1530,31 @@ msgstr ""
 "Brug Redigér-menuen til at fortryde, rydde eller udføre alle handlinger, før "
 "du aktiverer swap (swapon) på denne partition."
 
-#: ../src/Win_GParted.cc:1873
+#: ../src/Win_GParted.cc:1890
 msgid "Deactivating swap on %1"
 msgstr "Deaktiverer swap på %1"
 
-#: ../src/Win_GParted.cc:1873
+#: ../src/Win_GParted.cc:1890
 msgid "Activating swap on %1"
 msgstr "Aktiverer swap på %1"
 
-#: ../src/Win_GParted.cc:1880
+#: ../src/Win_GParted.cc:1897
 msgid "Could not deactivate swap"
 msgstr "Kunne ikke deaktivere swap"
 
-#: ../src/Win_GParted.cc:1880
+#: ../src/Win_GParted.cc:1897
 msgid "Could not activate swap"
 msgstr "Kunne ikke aktivere swap"
 
-#: ../src/Win_GParted.cc:1896
+#: ../src/Win_GParted.cc:1913
 msgid "Unmounting %1"
 msgstr "Afmonterer %1"
 
-#: ../src/Win_GParted.cc:1901
+#: ../src/Win_GParted.cc:1918
 msgid "Could not unmount %1"
 msgstr "Kunne ikke afmontere %1"
 
-#: ../src/Win_GParted.cc:1937
+#: ../src/Win_GParted.cc:1954
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1552,7 +1562,7 @@ msgstr ""
 "Monteringshandlingen kan ikke udføres, hvis der allerede er planlagt andre "
 "handlinger for partitionen."
 
-#: ../src/Win_GParted.cc:1939
+#: ../src/Win_GParted.cc:1956
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1560,28 +1570,28 @@ msgstr ""
 "Brug Redigér-menuen til at fortryde, rydde eller udføre alle handlinger, før "
 "du bruger mount på denne partition."
 
-#: ../src/Win_GParted.cc:1957
+#: ../src/Win_GParted.cc:1974
 msgid "mounting %1 on %2"
 msgstr "monterer %1 på %2"
 
-#: ../src/Win_GParted.cc:1964
+#: ../src/Win_GParted.cc:1981
 msgid "Could not mount %1 on %2"
 msgstr "Kunne ikke montere %1 på %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:1990
+#: ../src/Win_GParted.cc:2007
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "%1 partition er i øjeblikket aktiv på enheden %2."
 msgstr[1] "%1 partitioner er i øjeblikket aktive på enheden %2."
 
-#: ../src/Win_GParted.cc:2005
+#: ../src/Win_GParted.cc:2022
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "En ny partitionstabel kan ikke oprettes, når der er aktive partitioner."
 
-#: ../src/Win_GParted.cc:2007
+#: ../src/Win_GParted.cc:2024
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1589,7 +1599,7 @@ msgstr ""
 "Aktive partitioner er partitioner som er i brug, f.eks. monterede "
 "filsystemer eller aktiverede swap-områder."
 
-#: ../src/Win_GParted.cc:2009
+#: ../src/Win_GParted.cc:2026
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1598,13 +1608,13 @@ msgstr ""
 "deaktivere alle partitioner på denne enhed, før du opretter en ny "
 "partitionstabel."
 
-#: ../src/Win_GParted.cc:2034
+#: ../src/Win_GParted.cc:2051
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "En ny partitionstabel kan ikke oprettes, når der er planlagte handlinger."
 
-#: ../src/Win_GParted.cc:2036
+#: ../src/Win_GParted.cc:2053
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1612,24 +1622,24 @@ msgstr ""
 "Brug Redigér-menuen til enten at rydde eller udføre alle handlinger, før du "
 "opretter en ny partitionstabel."
 
-#: ../src/Win_GParted.cc:2051
+#: ../src/Win_GParted.cc:2068
 msgid "Error while creating partition table."
 msgstr "Fejl under oprettelse af partitionstabel."
 
-#: ../src/Win_GParted.cc:2212
+#: ../src/Win_GParted.cc:2236
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Er du sikker på at du vil udføre de planlagte handlinger?"
 
-#: ../src/Win_GParted.cc:2218
+#: ../src/Win_GParted.cc:2242
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Redigering af partitioner kan potentielt forårsage TAB AF DATA."
 
-#: ../src/Win_GParted.cc:2220
+#: ../src/Win_GParted.cc:2244
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Det anbefales, at du tager sikkerhedskopier af dine data før du fortsætter."
 
-#: ../src/Win_GParted.cc:2222
+#: ../src/Win_GParted.cc:2246
 msgid "Apply operations to device"
 msgstr "Udfør handlinger på enhed"
 
