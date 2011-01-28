@@ -156,6 +156,7 @@ public:
 	static void tokenize( const Glib::ustring& str,
 	                      std::vector<Glib::ustring>& tokens,
 	                      const Glib::ustring& delimiters ) ;
+	static int convert_to_int(const Glib::ustring & src);
 };
 
 

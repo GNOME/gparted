@@ -350,6 +350,42 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	fstab_info .clear() ;
 }
 
+// runs gpart on the specified parameter
+void GParted_Core::guess_partition_table(const Device & device, Glib::ustring &buff)
+{
+	int pid, stdoutput, stderror;
+	std::vector<std::string> argvproc, envpproc;
+	gunichar tmp;
+
+	//Get the char string of the sector_size
+	std::ostringstream ssIn;
+    ssIn << device.sector_size;
+    Glib::ustring str_ssize = ssIn.str();
+
+	//Build the command line
+	argvproc.push_back("gpart");
+	argvproc.push_back(device.get_path());
+	argvproc.push_back("-s");
+	argvproc.push_back(str_ssize);
+
+	envpproc .push_back( "LC_ALL=C" ) ;
+	envpproc .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
+
+	Glib::spawn_async_with_pipes(Glib::get_current_dir(), argvproc,
+		envpproc, Glib::SPAWN_SEARCH_PATH, sigc::slot<void>(),
+		&pid, NULL, &stdoutput, &stderror);
+
+	this->iocOutput=Glib::IOChannel::create_from_fd(stdoutput);
+
+	while(this->iocOutput->read(tmp)==Glib::IO_STATUS_NORMAL)
+	{
+		buff+=tmp;
+	}
+	this->iocOutput->close();
+
+	return;
+}
+
 void GParted_Core::set_thread_status_message( Glib::ustring msg )
 {
 	//Remember to clear status message when finished with thread.

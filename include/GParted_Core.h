@@ -38,6 +38,7 @@ public:
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
+	void guess_partition_table(const Device & device, Glib::ustring &buff);
 	
 	bool snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) ;
 	bool snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) ;
@@ -198,6 +199,7 @@ private:
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
+	Glib::RefPtr<Glib::IOChannel> iocInput, iocOutput; // Used to send data to gpart command
 	
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;

@@ -13,6 +13,7 @@ gpartedbin_SOURCES = \
 	Device.cc			\
 	Dialog_Base_Partition.cc	\
 	Dialog_Disklabel.cc 		\
+	Dialog_Rescue_Data.cc		\
 	Dialog_Partition_Copy.cc	\
 	Dialog_Partition_Info.cc	\
 	Dialog_Partition_Label.cc	\

@@ -481,5 +481,15 @@ void Utils::tokenize( const Glib::ustring& str,
 	}
 }
 
+// Converts a Glib::ustring into a int
+int Utils::convert_to_int(const Glib::ustring & src)
+{
+	int ret_val;
+	std::istringstream stream(src);
+	stream >> ret_val;
+
+	return ret_val;
+}
+
 
 } //GParted..

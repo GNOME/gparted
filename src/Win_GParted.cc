@@ -20,6 +20,7 @@
 #include "../include/Dialog_Progress.h"
 #include "../include/DialogFeatures.h" 
 #include "../include/Dialog_Disklabel.h"
+#include "../include/Dialog_Rescue_Data.h"
 #include "../include/Dialog_Partition_Resize_Move.h"
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/Dialog_Partition_New.h"
@@ -183,6 +184,10 @@ void Win_GParted::init_menubar()
 	menu = manage( new Gtk::Menu() ) ;
 	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + "...",
 								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
+
+	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Attempt Data Rescue") ) + "...",
+								sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data) ) );
+
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
 
 	//partition
@@ -1840,7 +1845,15 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 	pulse = false ;
 }
 
-void Win_GParted::toggle_swap_mount_state() 
+// Runs gpart in a thread
+void Win_GParted::thread_guess_partition_table()
+{
+	this->gpart_output="";
+	this->gparted_core.guess_partition_table(devices[ current_device ], this->gpart_output);
+	pulse=false;
+}
+
+void Win_GParted::toggle_swap_mount_state()
 {
 	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
 	if ( operation_count > 0 )
@@ -2078,7 +2091,77 @@ void Win_GParted::activate_disklabel()
 		menu_gparted_refresh_devices() ;
 	}
 }
-	
+
+//Runs when the Device->Attempt Rescue Data is clicked
+void Win_GParted::activate_attempt_rescue_data()
+{
+	if(Glib::find_program_in_path( "gpart" ) .empty()) //Gpart must be installed to continue
+	{
+		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+		errorDialog.set_message(_("Command gpart was not found"));
+		errorDialog.set_secondary_text(_("This feature uses gpart. Please install gpart and try again."));
+
+		errorDialog.run();
+
+		return;
+	}
+
+	//Dialog information
+	Glib::ustring sec_text = _( "A full disk scan is needed to find file systems." ) ;
+	sec_text += "\n" ;
+	sec_text +=_("The scan might take a very long time.");
+	sec_text += "\n" ;
+	sec_text += _("After the scan you can mount any discovered file systems and copy the data to other media.") ;
+	sec_text += "\n" ;
+	sec_text += _("Do you want to continue?");
+
+	Gtk::MessageDialog messageDialog(*this, "", true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK_CANCEL, true);
+	/*TO TRANSLATORS: looks like	Search for file systems on /deb/sdb */
+	messageDialog.set_message(String::ucompose(_("Search for file systems on %1"), devices[ current_device ] .get_path()));
+	messageDialog.set_secondary_text(sec_text);
+
+	if(messageDialog.run()!=Gtk::RESPONSE_OK)
+	{
+		return;
+	}
+
+	messageDialog.hide();
+
+	pulse=true;
+	this->thread = Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_guess_partition_table ), true ) ;
+
+	/*TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb */
+	show_pulsebar(String::ucompose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
+
+	Dialog_Rescue_Data dialog;
+	dialog .set_transient_for( *this );
+
+	//Reads the output of gpart
+	dialog.init_partitions(&devices[ current_device ], this->gpart_output);
+
+	if(dialog.get_partitions().size()==0) //No partitions found
+	{
+		//Dialog information
+		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+		
+		/*TO TRANSLATORS: looks like	No file systems found on /deb/sdb */
+		errorDialog.set_message(String::ucompose(_("No file systems found on %1"), devices[ current_device ] .get_path()));
+		errorDialog.set_secondary_text(_("The disk scan by gpart did not find any recognizable file systems on this disk."));
+
+		errorDialog.run();
+		return;
+	}
+
+	dialog.run();
+	dialog.hide();
+
+	Glib::ustring commandUmount= "umount /tmp/gparted-roview*";
+
+	Utils::execute_command(commandUmount);
+
+	menu_gparted_refresh_devices() ;
+}
+
 void Win_GParted::activate_manage_flags() 
 {
 	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;

@@ -126,6 +126,7 @@ private:
 	void thread_unmount_partition( bool * succes, Glib::ustring * error ) ;
 	void thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) ;
 	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
+	void thread_guess_partition_table();
 		
 	//signal handlers
 	void open_operationslist() ;
@@ -162,6 +163,7 @@ private:
 	void toggle_swap_mount_state() ;
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
+	void activate_attempt_rescue_data();
 	void activate_manage_flags() ;
 	void activate_check() ;
 	void activate_label_partition() ;
@@ -243,6 +245,7 @@ private:
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	FS fs ;
 	bool OPERATIONSLIST_OPEN ;
+	Glib::ustring gpart_output;//Output of gpart command
 									
 	GParted_Core gparted_core ;
 	std::vector<Gtk::Label *> device_info ;

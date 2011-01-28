@@ -4,6 +4,7 @@ EXTRA_DIST = \
 	Device.h 			\
 	Dialog_Base_Partition.h		\
 	Dialog_Disklabel.h 		\
+	Dialog_Rescue_Data.h		\
 	Dialog_Partition_Copy.h		\
     Dialog_Partition_Info.h		\
     Dialog_Partition_Label.h	\
