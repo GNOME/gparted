@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.6.0">
-  <!ENTITY manrevision "1.2">
-  <!ENTITY date "June 2010">
+  <!ENTITY appversion "0.8.0">
+  <!ENTITY manrevision "1.3">
+  <!ENTITY date "January 2011">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -99,6 +99,15 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
     <revhistory>
+      <revision>
+        <revnumber>&appname; Manual V1.3</revnumber>
+        <date>January 2011</date>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+          <para role="annotations">Describes version 0.8.0 of &appname;</para>
+        </revdescription> 
+      </revision>
       <revision>
         <revnumber>&appname; Manual V1.2</revnumber>
         <date>June 2010</date>
@@ -528,6 +537,149 @@
         <xref linkend="gparted-recover-partition-table"/>.
         </para>
       </caution>
+    </sect2>
+
+<!-- ============= To Attempt Data Rescue =================== -->
+    <sect2 id="gparted-attempt-data-rescue">
+      <title>Attempting Data Rescue</title>
+      <para>
+      To attempt data rescue from a disk device:
+        <orderedlist>
+          <listitem>
+            <para>
+            Select a disk device.
+            See <xref linkend="gparted-select-device"/>.
+           </para>
+          </listitem>
+          <listitem>
+            <para>
+            Choose:
+            <menuchoice><guimenu>Device</guimenu><guimenuitem>Attempt Data Rescue</guimenuitem></menuchoice>.
+            The application displays a
+            <guilabel>Search for file systems on <replaceable>/path-to-device</replaceable></guilabel>
+            dialog.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            Click <guibutton>OK</guibutton> to start the full disk scan.
+            </para>
+            <tip>
+              <para>
+              Large disk devices can take a very long time to scan.
+              If you do not have the time to wait for a full disk scan
+              then click <guibutton>Cancel</guibutton>.
+              </para>
+            </tip>
+            <note>
+              <para>
+              A maximum of 4 partitions with file systems might be
+              discovered.  If you want to discover more than 4
+              partitions and restore the partition table, see
+              <xref linkend="gparted-recover-partition-table"/>.
+              </para>
+            </note>
+          </listitem>
+          <listitem>
+            <para>
+            When the full disk scan completes one of two possible
+            dialogs is displayed:
+              <itemizedlist>
+                <listitem>
+                  <para>
+                  <guilabel>No file systems found
+                  on <replaceable>/path-to-device</replaceable>
+                  </guilabel>
+                  </para>
+                  <para>
+                  If no file systems are found, you have other options
+                  to try to rescue your data.
+                  The <application>photorec</application> application
+                  is designed to help recover many different types of
+                  lost files.  For more information
+                  about <application>photorec</application>, see
+                  <ulink type="http"
+                  url="http://www.cgsecurity.org/wiki/PhotoRec"/>.
+                  </para>
+                  <para>
+                  Click <guibutton>OK</guibutton> to close the dialog
+                  box, and end this attempt to rescue data.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                  <guilabel>File systems found
+                  on <replaceable>/path-to-device</replaceable>
+                  </guilabel>
+                  </para>
+                  <para>
+                  If file systems are found, each file system is
+                  displayed in a list along with
+                  a <guibutton>View</guibutton> button.  The dialog
+                  will indicate if there are data inconsistencies.
+                  Inconsistencies in the data might prevent you from
+                  viewing the data.
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            To rescue data, use the following steps for each file system:
+              <orderedlist numeration="upperalpha">
+                <listitem>
+                  <para>
+                  Click <guibutton>View</guibutton> to mount and display
+                  the file system.  Your default file manager is opened
+                  and displays a read-only view of the file system.
+                  </para>
+                  <note>
+                    <para>
+                    If the dialog <guilabel>Unable to open the default
+                    file manager</guilabel> is displayed, then you
+                    will need to open a file manager and navigate to
+                    the mount point for the file system.
+                    </para>
+                    <para>
+                    The mount point is shown in the dialog, for
+                    example "/tmp/gparted-roview-XXXXXX".
+                    </para>
+                    <para>
+                    Click <guibutton>OK</guibutton> to close the
+                    <guilabel>Unable to open the
+                    default file manager</guilabel> dialog.
+                    </para>
+                  </note>
+                </listitem>
+                <listitem>
+                  <para>
+                  Use the file manager to copy your data to other
+                  storage media.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                  When you are finished copying your data, close the
+                  file manager.
+                  </para>
+                </listitem>
+              </orderedlist>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            When you are finished rescuing data,
+            click <guibutton>Close</guibutton> to end this attempt to
+            rescue data.  The application umounts any file systems
+            that were mounted for viewing.  Then the application
+            rescans all the disk devices and refreshes the device
+            partition layout in the <application>&app;</application>
+            window.
+            </para>
+          </listitem>
+        </orderedlist>
+      </para>
     </sect2>
 
   </sect1>
