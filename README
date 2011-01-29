@@ -142,6 +142,11 @@ For GNU/Linux distribution dmraid support, the following are required:
    - dmraid drive arrays activated on boot (e.g., dmraid -ay).
 
 
+For attempt data rescue for lost partitions, the following package
+is required:
+   gpart           - guesses PC-type hard disk partitions
+
+
 Several more commands are optionally used by GParted if found on the system.
 These commands include:
 
@@ -149,6 +154,8 @@ These commands include:
    vol_id        - used to read volume labels
    udisks        - used to prevent automounting of file systems
    devkit-disks  - used to prevent automounting of file systems
+   {filemanager} - used in attempt data rescue to display discovered
+                   file systems.  (e.g., nautilus, pcmanfm)
    hal-lock      - used to prevent automounting of file systems
    gksu          - used to acquire root privileges in .desktop file,
                    but only if available when gparted source is configured.
@@ -156,4 +163,5 @@ These commands include:
                      /dev/mapper/isw_idedecefg_Volume0p1
    udevinfo      - used in dmraid to query udev name
    udevadm       - used in dmraid to query udev name
+   yelp          - used to display help manual
 
