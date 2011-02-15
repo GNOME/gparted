@@ -1,4 +1,60 @@
 ============================
+GParted 0.8.0   (2010-02-15)
+============================
+
+Release Notes
+-------------
+  The GParted team is proud to announce a new feature to attempt data
+  rescue for lost partitions.
+
+  This new feature uses the gpart command to guess the partition
+  table.  Discovered file systems can be mounted read-only so that you
+  can copy data to other media.
+
+  Also included in this release are bug fixes, and language
+  translation updates.
+
+### Key changes include:
+
+  * Add attempt data rescue for lost partitions
+  * Fix paste destination partition smaller than source
+  * Prevent visual disk display area from disappearing
+
+Bug Fixes
+---------
+  * Add attempt data rescue for lost partitions (#171215)
+    - Requires gpart
+    - Thanks go to Joan Lledó for the patch implementing this new feature
+  * Fix paste destination partition smaller than source (#639393)
+  * Fix minor cylinder alignment rounding error (size < 1 cylinder)
+  * Add possible causes for failure to detect or read file systems
+  * Increase robustness of help manual launch
+  * Prevent visual disk display area from disappearing
+    - Ubuntu launchpad #583746
+  * Update help manual with new feature to attempt data rescue
+  * Minor updates to man page
+
+Translations (new/updated)
+--------------------------
+  ar(Khaled Hosny), cs(Marek Černocký), da(Ask H. Larsen),
+  de(Mario Blättermann), es(Daniel Mustieles, Paulo E Ojeda, Jorge González),
+  et(Mattias Põldaru), fr(Claude Paroz, Bruno Brouard), gl(Fran Diéguez),
+  he(Yaron Shahrabani), id(Andika Triwidada), it(Milo Casagrande),
+  kk(Baurzhan Muftakhidinov), pt(António Lima), ru(Yuri Myasoedov),
+  sl(Matej Urbančič), sr(Мирослав Николић), sr@latin(Мирослав Николић),
+  sv(Daniel Nylander), zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao)
+
+  Also includes ro(Daniel Șerbănescu) update which had not yet been
+  committed to master git branch.
+
+Dependencies (new/updated)
+--------------------------
+  * gpart package is required for attempt data rescue
+  * a default file manager is used, if available, for attempt data
+    rescue to display discovered file systems.
+
+
+============================
 GParted 0.7.1   (2010-12-13)
 ============================
 
