@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-20 22:23+0200\n"
-"PO-Revision-Date: 2011-01-20 22:32+0300\n"
+"POT-Creation-Date: 2011-02-17 20:13+0200\n"
+"PO-Revision-Date: 2011-02-17 20:12+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
-"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.6.1\n"
@@ -27,8 +27,8 @@ msgstr "أنشئ ونظم واحذف الأقراص"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
-#: ../src/Win_GParted.cc:71 ../src/Win_GParted.cc:1110
-#: ../src/Win_GParted.cc:1301
+#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1115
+#: ../src/Win_GParted.cc:1306
 msgid "GParted"
 msgstr "مُقسِّم‌ج"
 
@@ -80,7 +80,7 @@ msgstr "لا شيء"
 msgid "Resize"
 msgstr "غيّر الحجم"
 
-#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:231
+#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:236
 msgid "Resize/Move"
 msgstr "غيَّر الحجم/انقل"
 
@@ -134,7 +134,7 @@ msgid "File system:"
 msgstr "نظام الملفات:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:453
+#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:458
 msgid "Size:"
 msgstr "الحجم:"
 
@@ -153,7 +153,7 @@ msgid "Flags:"
 msgstr "الشارات:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:461
+#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:466
 msgid "Path:"
 msgstr "المسار:"
 
@@ -226,7 +226,7 @@ msgid "Last sector:"
 msgstr "القطاع الأخير:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:514
+#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:519
 msgid "Total sectors:"
 msgstr "مجموع القطاعات:"
 
@@ -485,6 +485,98 @@ msgstr "أعِد فحص الإجراءات المدعومة"
 msgid "Manage flags on %1"
 msgstr "أدر الشارات على %1"
 
+#: ../src/Dialog_Rescue_Data.cc:34
+msgid "Search disk for file systems"
+msgstr "ابحث في القرص عن أنظمة الملفات"
+
+#. TO TRANSLATORS: looks like    File systems found on on /dev/sdb
+#: ../src/Dialog_Rescue_Data.cc:51
+msgid "File systems found on on %1"
+msgstr "وجدت أنظمة ملفات في %1"
+
+#: ../src/Dialog_Rescue_Data.cc:56
+msgid "Data found"
+msgstr "وجدت البيانات"
+
+#: ../src/Dialog_Rescue_Data.cc:60
+msgid "Data found with inconsistencies"
+msgstr "وجدت البيانات مع عدم اتساق"
+
+#: ../src/Dialog_Rescue_Data.cc:62
+msgid "WARNING!: The file systems marked with (!) are inconsistent."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:64
+msgid "You might encounter errors trying to view these file systems."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:80
+msgid "The 'View' buttons create read-only views of each file system."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:82
+msgid "All mounted views will be unmounted when you close this dialog."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:105
+msgid "File systems"
+msgstr "أنظمة الملفات"
+
+#. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
+#: ../src/Dialog_Rescue_Data.cc:127
+msgid "#%1: %2 (%3 MiB)"
+msgstr "‏#%1:‏ %2 (%3 مبيابايت)"
+
+#: ../src/Dialog_Rescue_Data.cc:135
+msgid "View"
+msgstr "منظور"
+
+#: ../src/Dialog_Rescue_Data.cc:172
+msgid "An error occurred while creating the read-only view."
+msgstr "حدث خطأ أثناء إنشاء منظور للقراءة فقط "
+
+#: ../src/Dialog_Rescue_Data.cc:174
+msgid ""
+"Either the file system can not be mounted (like swap), or there are "
+"inconsistencies or errors in the file system."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:178
+msgid "Failed creating read-only view"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:208
+msgid "Error:"
+msgstr "خطأ:"
+
+#. TO TRANSLATORS: looks like
+#. * The file system is mounted on:
+#. * /tmp/gparted-roview-Nlhb3R.
+#: ../src/Dialog_Rescue_Data.cc:216
+msgid "The file system is mounted on:"
+msgstr "نظام الملفات موصول على:"
+
+#: ../src/Dialog_Rescue_Data.cc:221
+msgid "Unable to open the default file manager"
+msgstr "تعذّر فتح مدير الملفات المبدئي"
+
+#: ../src/Dialog_Rescue_Data.cc:240
+msgid ""
+"Warning: The detected file system area overlaps with at least one existing "
+"partition."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:242
+msgid ""
+"It is recommended that you do not use any overlapping file systems to avoid "
+"disturbing existing data."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:244
+#, fuzzy
+msgid "Do you want to try to deactivate the following mount points?"
+msgstr "لا يمكن فصل القسم من نقاط الوصل التالية:"
+
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
 #: ../src/DMRaid.cc:325
 msgid "create missing %1 entries"
@@ -543,106 +635,106 @@ msgid "unrecognized"
 msgstr "غير معروف"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:515
+#: ../src/GParted_Core.cc:551
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "لا يمكن أن يكون طول القسم %1 قطاعات"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:524
+#: ../src/GParted_Core.cc:560
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "القسم الذي يحتوي على قطاعات مستخدمة (%1) أكبر من طوله (%2) ليس سليما"
 
-#: ../src/GParted_Core.cc:589
+#: ../src/GParted_Core.cc:625
 msgid "libparted messages"
 msgstr "رسائل libparted"
 
-#: ../src/GParted_Core.cc:1004
+#: ../src/GParted_Core.cc:1040
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "تعمية إعداد مفتاح لينكس الموحد غير مدعومة حاليا."
 
-#: ../src/GParted_Core.cc:1121
+#: ../src/GParted_Core.cc:1157
 msgid "Logical Volume Management is not yet supported."
 msgstr "إدارة الأجزاء المنطقية غير مدعومة حايا."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1150
+#: ../src/GParted_Core.cc:1186
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "تعذّر التعرف على نظام الملفات! الأسباب المحتملة هي:"
 
-#: ../src/GParted_Core.cc:1152
+#: ../src/GParted_Core.cc:1188
 msgid "The file system is damaged"
 msgstr "نظام الملفات تالف"
 
-#: ../src/GParted_Core.cc:1154
+#: ../src/GParted_Core.cc:1190
 msgid "The file system is unknown to GParted"
 msgstr "لا يعرف مُقسِّم‌ج نظام الملفات"
 
-#: ../src/GParted_Core.cc:1156
+#: ../src/GParted_Core.cc:1192
 msgid "There is no file system available (unformatted)"
 msgstr "لا يوجد نظام ملفات (غير مهيّأ)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1159
+#: ../src/GParted_Core.cc:1195
 msgid "The device entry %1 is missing"
 msgstr "الجهاز %1 ناقص"
 
-#: ../src/GParted_Core.cc:1292
+#: ../src/GParted_Core.cc:1328
 msgid "Unable to find mount point"
 msgstr "تعذّر العثور على نقطة الوصل"
 
-#: ../src/GParted_Core.cc:1354
+#: ../src/GParted_Core.cc:1390
 msgid "Unable to read the contents of this file system!"
 msgstr "تعذّرت قراءة محتوى نظام الملفات!"
 
-#: ../src/GParted_Core.cc:1356
+#: ../src/GParted_Core.cc:1392
 msgid "Because of this some operations may be unavailable."
 msgstr "بسبب هذا قد لا تتوفّر بعض العمليات."
 
-#: ../src/GParted_Core.cc:1360
+#: ../src/GParted_Core.cc:1396
 msgid "The cause might be a missing software package."
 msgstr "قد يكون السبب حزمة برمجية ناقصة."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1363
+#: ../src/GParted_Core.cc:1399
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "قائمة الحزم البرمجية التالية مطلوبة لدعم نظام الملفات %1:‏ %2."
 
-#: ../src/GParted_Core.cc:1434
+#: ../src/GParted_Core.cc:1470
 msgid "create empty partition"
 msgstr "أنشئ قسما فارغا"
 
-#: ../src/GParted_Core.cc:1502 ../src/GParted_Core.cc:2715
+#: ../src/GParted_Core.cc:1538 ../src/GParted_Core.cc:2751
 msgid "path: %1"
 msgstr "المسار: %1"
 
-#: ../src/GParted_Core.cc:1503 ../src/GParted_Core.cc:2716
+#: ../src/GParted_Core.cc:1539 ../src/GParted_Core.cc:2752
 msgid "start: %1"
 msgstr "البداية: %1"
 
-#: ../src/GParted_Core.cc:1504 ../src/GParted_Core.cc:2717
+#: ../src/GParted_Core.cc:1540 ../src/GParted_Core.cc:2753
 msgid "end: %1"
 msgstr "النهاية: %1"
 
-#: ../src/GParted_Core.cc:1505 ../src/GParted_Core.cc:2718
+#: ../src/GParted_Core.cc:1541 ../src/GParted_Core.cc:2754
 msgid "size: %1 (%2)"
 msgstr "الحجم: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1535 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1571 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "أنشئ نظام ملفات %1 جديد"
 
-#: ../src/GParted_Core.cc:1568
+#: ../src/GParted_Core.cc:1604
 msgid "delete partition"
 msgstr "احذف القسم"
 
-#: ../src/GParted_Core.cc:1608
+#: ../src/GParted_Core.cc:1644
 msgid "Clear partition label on %1"
 msgstr "امح عنوان القسم على %1"
 
-#: ../src/GParted_Core.cc:1613
+#: ../src/GParted_Core.cc:1649
 msgid "Set partition label to \"%1\" on %2"
 msgstr "ضع عنوانا \"%1\" للقسم %2"
 
@@ -651,302 +743,302 @@ msgstr "ضع عنوانا \"%1\" للقسم %2"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1699
+#: ../src/GParted_Core.cc:1735
 msgid "moving requires old and new length to be the same"
 msgstr "يتطلّب النقل أن يكون الطول القديم والجديد متماثلين"
 
-#: ../src/GParted_Core.cc:1729
+#: ../src/GParted_Core.cc:1765
 msgid "rollback last change to the partition table"
 msgstr "تراجع عن التغيير الأخير في جدول التقسبم"
 
-#: ../src/GParted_Core.cc:1759
+#: ../src/GParted_Core.cc:1795
 msgid "move file system to the left"
 msgstr "انقل نظام الملفات إلى اليسار"
 
-#: ../src/GParted_Core.cc:1761
+#: ../src/GParted_Core.cc:1797
 msgid "move file system to the right"
 msgstr "انقل نظام الملفات إلى اليمين"
 
-#: ../src/GParted_Core.cc:1764
+#: ../src/GParted_Core.cc:1800
 msgid "move file system"
 msgstr "انقل نظام الملفات"
 
-#: ../src/GParted_Core.cc:1766
+#: ../src/GParted_Core.cc:1802
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr "نظام الملفات القديم والجديد في نفس الموقع، لذا سأتخطى هذه العمليّة"
 
-#: ../src/GParted_Core.cc:1785
+#: ../src/GParted_Core.cc:1821
 msgid "perform real move"
 msgstr "قم بنقل حقيقي"
 
-#: ../src/GParted_Core.cc:1832
+#: ../src/GParted_Core.cc:1868
 msgid "using libparted"
 msgstr "باستخدام libparted"
 
-#: ../src/GParted_Core.cc:1872
+#: ../src/GParted_Core.cc:1908
 msgid "resizing requires old and new start to be the same"
 msgstr "يحتاج تغيير الحجم أن تكون البداية الجديدة والقديمة متطابقتين"
 
-#: ../src/GParted_Core.cc:1937
+#: ../src/GParted_Core.cc:1973
 msgid "resize/move partition"
 msgstr "غيّر حجم/انقل القسم"
 
-#: ../src/GParted_Core.cc:1940
+#: ../src/GParted_Core.cc:1976
 msgid "move partition to the right"
 msgstr "انقل القسم لليمين"
 
-#: ../src/GParted_Core.cc:1943
+#: ../src/GParted_Core.cc:1979
 msgid "move partition to the left"
 msgstr "انقل القسم لليسار"
 
-#: ../src/GParted_Core.cc:1946
+#: ../src/GParted_Core.cc:1982
 msgid "grow partition from %1 to %2"
 msgstr "وسّع القسم من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1949
+#: ../src/GParted_Core.cc:1985
 msgid "shrink partition from %1 to %2"
 msgstr "قلّص القسم من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1952
+#: ../src/GParted_Core.cc:1988
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "انقل القسم لليمين ووسعه من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1955
+#: ../src/GParted_Core.cc:1991
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "انقل القسم لليمين وقلِّصه من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1958
+#: ../src/GParted_Core.cc:1994
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "انقل القسم لليسار ووسعه من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1961
+#: ../src/GParted_Core.cc:1997
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "انقل القسم لليسار وقلِّصه من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:2012
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr "للقسم القديم والجديد نفس الحجم والموضع، لذا سأتخطى هذه العملية."
 
-#: ../src/GParted_Core.cc:1986
+#: ../src/GParted_Core.cc:2022
 msgid "old start: %1"
 msgstr "البداية القديمة: %1"
 
-#: ../src/GParted_Core.cc:1987
+#: ../src/GParted_Core.cc:2023
 msgid "old end: %1"
 msgstr "النهاية القديمة: %1"
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2024
 msgid "old size: %1 (%2)"
 msgstr "الحجم القديم: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2050 ../src/GParted_Core.cc:2796
+#: ../src/GParted_Core.cc:2086 ../src/GParted_Core.cc:2832
 msgid "new start: %1"
 msgstr "البداية الجديدة: %1"
 
-#: ../src/GParted_Core.cc:2051 ../src/GParted_Core.cc:2797
+#: ../src/GParted_Core.cc:2087 ../src/GParted_Core.cc:2833
 msgid "new end: %1"
 msgstr "النهاية الجديدة: %1"
 
-#: ../src/GParted_Core.cc:2052 ../src/GParted_Core.cc:2798
+#: ../src/GParted_Core.cc:2088 ../src/GParted_Core.cc:2834
 msgid "new size: %1 (%2)"
 msgstr "الحجم الجديد: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2088
+#: ../src/GParted_Core.cc:2124
 msgid "shrink file system"
 msgstr "قلِّص نظام الملفّات"
 
-#: ../src/GParted_Core.cc:2092
+#: ../src/GParted_Core.cc:2128
 msgid "grow file system"
 msgstr "وسّع نظام الملفّات"
 
-#: ../src/GParted_Core.cc:2095
+#: ../src/GParted_Core.cc:2131
 msgid "resize file system"
 msgstr "غيِّر حجم نظام الملفّات"
 
-#: ../src/GParted_Core.cc:2098
+#: ../src/GParted_Core.cc:2134
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "لنظام الملفات القديم والجديد نفس الحجم، لذا سأتخطى هذه العملية"
 
-#: ../src/GParted_Core.cc:2133
+#: ../src/GParted_Core.cc:2169
 msgid "grow file system to fill the partition"
 msgstr "وسِّع نظام الملفات ليملأ القسم"
 
-#: ../src/GParted_Core.cc:2138
+#: ../src/GParted_Core.cc:2174
 msgid "growing is not available for this file system"
 msgstr "لا يتوفّر التوسيع لنظام الملفات هذا"
 
-#: ../src/GParted_Core.cc:2157
+#: ../src/GParted_Core.cc:2193
 msgid "the destination is smaller than the source partition"
 msgstr "القسم المقصِد أصغر من القسم المصدر"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2210
 msgid "copy file system of %1 to %2"
 msgstr "انسخ نظام الملفات من %1 إلى %2"
 
-#: ../src/GParted_Core.cc:2218
+#: ../src/GParted_Core.cc:2254
 msgid "perform read-only test"
 msgstr "قم باختبار قراءة فقط"
 
-#: ../src/GParted_Core.cc:2272
+#: ../src/GParted_Core.cc:2308
 msgid "using internal algorithm"
 msgstr "باستخدام الخوارزمية الداخلية"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2276
+#: ../src/GParted_Core.cc:2312
 msgid "read %1"
 msgstr "قرأ %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2278
+#: ../src/GParted_Core.cc:2314
 msgid "copy %1"
 msgstr "نسخ %1"
 
-#: ../src/GParted_Core.cc:2282
+#: ../src/GParted_Core.cc:2318
 msgid "finding optimal block size"
 msgstr "يبحث عن حجم الوحدة المثالي"
 
-#: ../src/GParted_Core.cc:2322
+#: ../src/GParted_Core.cc:2358
 msgid "%1 seconds"
 msgstr "%1 ثوان"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2340
+#: ../src/GParted_Core.cc:2376
 msgid "optimal block size is %1"
 msgstr "حجم الوحدة المثالي هو %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2358
+#: ../src/GParted_Core.cc:2394
 msgid "%1 (%2 B) read"
 msgstr "قُرِأ %1 (%2 بايت)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2360
+#: ../src/GParted_Core.cc:2396
 msgid "%1 (%2 B) copied"
 msgstr "نُسِخ %1 (%2 بايت)"
 
-#: ../src/GParted_Core.cc:2373
+#: ../src/GParted_Core.cc:2409
 msgid "roll back last transaction"
 msgstr "ألغ العملية الأخيرة"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2402
+#: ../src/GParted_Core.cc:2438
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "افحص نظام الملفات على %1 بحثا عن أخطاء وصلحهم (إن أمكن)"
 
-#: ../src/GParted_Core.cc:2410
+#: ../src/GParted_Core.cc:2446
 msgid "checking is not available for this file system"
 msgstr "لا يتوفر الفحص لنظام الملفات هذا"
 
-#: ../src/GParted_Core.cc:2436
+#: ../src/GParted_Core.cc:2472
 msgid "set partition type on %1"
 msgstr "حدد نوع القسم على %1"
 
-#: ../src/GParted_Core.cc:2466
+#: ../src/GParted_Core.cc:2502
 msgid "new partition type: %1"
 msgstr "نوع القسم الجديد: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2495
+#: ../src/GParted_Core.cc:2531
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "قُرِأ %1 من %2 (تبقى %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2533
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "نُسِخ %1 من %2 (تبقى %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2505 ../src/GParted_Core.cc:2622
+#: ../src/GParted_Core.cc:2541 ../src/GParted_Core.cc:2658
 msgid "%1 of %2 read"
 msgstr "قُرِأ %1 من %2"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2507 ../src/GParted_Core.cc:2624
+#: ../src/GParted_Core.cc:2543 ../src/GParted_Core.cc:2660
 msgid "%1 of %2 copied"
 msgstr "نُسِخ %1 من %2"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2528
+#: ../src/GParted_Core.cc:2564
 msgid "read %1 using a block size of %2"
 msgstr "قرأ %1 قطاعات مستخدما مقاس وحدة من %2 قطاعات"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2569
 msgid "copy %1 using a block size of %2"
 msgstr "نسخ %1 قطاعات مستخدما مقاس وحدة من %2 قطاعات"
 
-#: ../src/GParted_Core.cc:2683
+#: ../src/GParted_Core.cc:2719
 msgid "Error while writing block at sector %1"
 msgstr "خطأ أثناء كتابة الوحدة في القطاع %1"
 
-#: ../src/GParted_Core.cc:2686
+#: ../src/GParted_Core.cc:2722
 msgid "Error while reading block at sector %1"
 msgstr "خطأ أثناء قرائة الوحدة في القطاع %1"
 
-#: ../src/GParted_Core.cc:2696
+#: ../src/GParted_Core.cc:2732
 msgid "calibrate %1"
 msgstr "معايرة %1"
 
-#: ../src/GParted_Core.cc:2741
+#: ../src/GParted_Core.cc:2777
 msgid "calculate new size and position of %1"
 msgstr "احسب الحجم والموضع الجديد ل %1"
 
-#: ../src/GParted_Core.cc:2745
+#: ../src/GParted_Core.cc:2781
 msgid "requested start: %1"
 msgstr "البداية المطلوبة: %1"
 
-#: ../src/GParted_Core.cc:2746
+#: ../src/GParted_Core.cc:2782
 msgid "requested end: %1"
 msgstr "النهاية المطلوبة: %1"
 
-#: ../src/GParted_Core.cc:2747
+#: ../src/GParted_Core.cc:2783
 msgid "requested size: %1 (%2)"
 msgstr "الحجم المطلوب: %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2889
+#: ../src/GParted_Core.cc:2925
 msgid "update boot sector of %1 file system on %2"
 msgstr "حدّث قطاع الإقلاع %1 من نظام ملفات %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2925
+#: ../src/GParted_Core.cc:2961
 msgid "Error trying to write to boot sector in %1"
 msgstr "خطأ أثناء محاولة كتابة الوحدة في القطاع %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2931
+#: ../src/GParted_Core.cc:2967
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "خطأ أثناء محاولة التقدم إلى الموضع 0x1c في %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2938
+#: ../src/GParted_Core.cc:2974
 msgid "Error trying to open %1"
 msgstr "خطأ أثناء محاولة فتح %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2948
+#: ../src/GParted_Core.cc:2984
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "فشل تحديد عدد القطاعات المخفية إلى %1 في سجل إقلاع NTFS"
 
-#: ../src/GParted_Core.cc:2950
+#: ../src/GParted_Core.cc:2986
 msgid "You might try the following command to correct the problem:"
 msgstr "يمكنك تجربة هذا الأمر لإصلاح المشكلة:"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:154
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
 msgid "_Undo Last Operation"
 msgstr "_تراجع عن العملية الأخيرة"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:160
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
 msgid "_Clear All Operations"
 msgstr "ا_مسح كل العمليات"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:165
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
 msgid "_Apply All Operations"
 msgstr "_طبّق كل العمليات"
 
@@ -1141,163 +1233,167 @@ msgstr "فشلت عملية العنوان:  تعذرت كتابة الملف ا
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "فشلت عملية العنوان:  تعذر إنشاء الملف المؤقت %1.\n"
 
-#: ../src/Win_GParted.cc:138
+#: ../src/Win_GParted.cc:139
 msgid "_Refresh Devices"
 msgstr "أ_عد تحميل الأقراص"
 
-#: ../src/Win_GParted.cc:144
+#: ../src/Win_GParted.cc:145
 msgid "_Devices"
 msgstr "الأ_قراص"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "_مُقسِّم‌ج"
 
-#: ../src/Win_GParted.cc:168
+#: ../src/Win_GParted.cc:169
 msgid "_Edit"
 msgstr "_تحرير"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:174
 msgid "Device _Information"
 msgstr "معلومات ال_قرص"
 
-#: ../src/Win_GParted.cc:175
+#: ../src/Win_GParted.cc:176
 msgid "Pending _Operations"
 msgstr "العمليات ال_منتظرة"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "_عرض"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:181
 msgid "_File System Support"
 msgstr "دعم _نظم الملفات"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:185
 msgid "_Create Partition Table"
 msgstr "أ_نشئ جدول تقسيم جديد"
 
-#: ../src/Win_GParted.cc:186
+#: ../src/Win_GParted.cc:188
+msgid "_Attempt Data Rescue"
+msgstr "_حاوِل إنقاذ البيانات"
+
+#: ../src/Win_GParted.cc:191
 msgid "_Device"
 msgstr "_قرص"
 
-#: ../src/Win_GParted.cc:190
+#: ../src/Win_GParted.cc:195
 msgid "_Partition"
 msgstr "_قسم"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:200
 msgid "_Contents"
 msgstr "_المحتويات"
 
-#: ../src/Win_GParted.cc:203
+#: ../src/Win_GParted.cc:208
 msgid "_Help"
 msgstr "م_ساعدة"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:215
+#: ../src/Win_GParted.cc:220
 msgid "New"
 msgstr "جديد"
 
-#: ../src/Win_GParted.cc:220
+#: ../src/Win_GParted.cc:225
 msgid "Create a new partition in the selected unallocated space"
 msgstr "أنشئ قسما جديدا في المساحة غير المخصصة"
 
-#: ../src/Win_GParted.cc:225
+#: ../src/Win_GParted.cc:230
 msgid "Delete the selected partition"
 msgstr "احذف القسم المحدد"
 
-#: ../src/Win_GParted.cc:247
+#: ../src/Win_GParted.cc:252
 msgid "Resize/Move the selected partition"
 msgstr "غير حجم/انقل القسم المحدد"
 
-#: ../src/Win_GParted.cc:256
+#: ../src/Win_GParted.cc:261
 msgid "Copy the selected partition to the clipboard"
 msgstr "انسخ القسم المحدد للحافظة"
 
-#: ../src/Win_GParted.cc:261
+#: ../src/Win_GParted.cc:266
 msgid "Paste the partition from the clipboard"
 msgstr "الصق القسم من الحافظة"
 
-#: ../src/Win_GParted.cc:273
+#: ../src/Win_GParted.cc:278
 msgid "Undo Last Operation"
 msgstr "تراجع عن العملية الأخيرة"
 
-#: ../src/Win_GParted.cc:281
+#: ../src/Win_GParted.cc:286
 msgid "Apply All Operations"
 msgstr "طبّق كل العمليات"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:303
+#: ../src/Win_GParted.cc:308
 msgid "_New"
 msgstr "_جديد"
 
-#: ../src/Win_GParted.cc:319
+#: ../src/Win_GParted.cc:324
 msgid "_Resize/Move"
 msgstr "_غير حجم/انقل"
 
-#: ../src/Win_GParted.cc:343
+#: ../src/Win_GParted.cc:348
 msgid "_Format to"
 msgstr "_هيء إلى"
 
-#: ../src/Win_GParted.cc:352
+#: ../src/Win_GParted.cc:357
 msgid "Unmount"
 msgstr "أزل الوصل"
 
-#: ../src/Win_GParted.cc:358
+#: ../src/Win_GParted.cc:363
 msgid "_Mount on"
 msgstr "أو_صل على"
 
-#: ../src/Win_GParted.cc:365
+#: ../src/Win_GParted.cc:370
 msgid "M_anage Flags"
 msgstr "أ_دِر الشارات"
 
-#: ../src/Win_GParted.cc:370
+#: ../src/Win_GParted.cc:375
 msgid "C_heck"
 msgstr "ا_فحص"
 
-#: ../src/Win_GParted.cc:375
+#: ../src/Win_GParted.cc:380
 msgid "_Label"
 msgstr "عنوان"
 
-#: ../src/Win_GParted.cc:437
+#: ../src/Win_GParted.cc:442
 msgid "Device Information"
 msgstr "معلومات القرص"
 
 #. model
-#: ../src/Win_GParted.cc:445
+#: ../src/Win_GParted.cc:450
 msgid "Model:"
 msgstr "الطراز:"
 
 #. disktype
-#: ../src/Win_GParted.cc:482
+#: ../src/Win_GParted.cc:487
 msgid "Partition table:"
 msgstr "جدول التقسيم:"
 
 #. heads
-#: ../src/Win_GParted.cc:490
+#: ../src/Win_GParted.cc:495
 msgid "Heads:"
 msgstr "الرؤوس:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:498
+#: ../src/Win_GParted.cc:503
 msgid "Sectors/track:"
 msgstr "القطاعات\\المسارات:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:506
+#: ../src/Win_GParted.cc:511
 msgid "Cylinders:"
 msgstr "الاسطوانات:"
 
 #. sector size
-#: ../src/Win_GParted.cc:522
+#: ../src/Win_GParted.cc:527
 msgid "Sector size:"
 msgstr "حجم القطاع:"
 
-#: ../src/Win_GParted.cc:706
+#: ../src/Win_GParted.cc:711
 msgid "Could not add this operation to the list."
 msgstr "تعذّر إضافة هذه العملية للقائمة."
 
-#: ../src/Win_GParted.cc:731
+#: ../src/Win_GParted.cc:736
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "لا عمليات منتظرة"
@@ -1307,11 +1403,11 @@ msgstr[3] "%1 عمليات منتظرة"
 msgstr[4] "%1 عملية منتظرة"
 msgstr[5] "%1 عملية منتظرة"
 
-#: ../src/Win_GParted.cc:785
+#: ../src/Win_GParted.cc:790
 msgid "Quit GParted?"
 msgstr "أأخرج من مُقسِّم‌ج؟"
 
-#: ../src/Win_GParted.cc:791 ../src/Win_GParted.cc:2038
+#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2051
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "لا عمليات منتظرة حاليا."
@@ -1321,77 +1417,77 @@ msgstr[3] "%1 عمليات منتظرة حاليا."
 msgstr[4] "%1 عملية منتظرة حاليا."
 msgstr[5] "%1 عملية منتظرة حاليا."
 
-#: ../src/Win_GParted.cc:817
+#: ../src/Win_GParted.cc:822
 msgid "_Unmount"
 msgstr "ا_فصل"
 
-#: ../src/Win_GParted.cc:842
+#: ../src/Win_GParted.cc:847
 msgid "_Swapoff"
 msgstr "أ_وقف التبديل"
 
-#: ../src/Win_GParted.cc:848
+#: ../src/Win_GParted.cc:853
 msgid "_Swapon"
 msgstr "_شغل التبديل"
 
-#: ../src/Win_GParted.cc:1042
+#: ../src/Win_GParted.cc:1047
 msgid "%1 - GParted"
 msgstr "%1 - مُقسِّم‌ج"
 
-#: ../src/Win_GParted.cc:1088
+#: ../src/Win_GParted.cc:1093
 msgid "Scanning all devices..."
 msgstr "يفحص كل الأقراص..."
 
-#: ../src/Win_GParted.cc:1133
+#: ../src/Win_GParted.cc:1138
 msgid "No devices detected"
 msgstr "لم يُعثر على أية أقراص"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1214
+#: ../src/Win_GParted.cc:1219
 msgid "No partition table found on device %1"
 msgstr "لم يُعثر على جدول تقسيم على الجهاز %1"
 
-#: ../src/Win_GParted.cc:1219
+#: ../src/Win_GParted.cc:1224
 msgid "A partition table is required before partitions can be added."
 msgstr "جدول التقسيم مطلوب قبل إمكانية إضافة أي أقسام."
 
-#: ../src/Win_GParted.cc:1221
+#: ../src/Win_GParted.cc:1226
 msgid "To create a new partition table choose the menu item:"
 msgstr "لإنشاء جدول تقسيم، اختر عنصر القائمة:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1224
+#: ../src/Win_GParted.cc:1229
 msgid "Device --> Create Partition Table."
 msgstr "جهاز --> أنشئ جدول تقسيم جديد."
 
-#: ../src/Win_GParted.cc:1260
+#: ../src/Win_GParted.cc:1265
 msgid "Unable to open GParted Manual help file."
 msgstr "تعذّر فتح ملف كتيّب مقسّم‌ج."
 
-#: ../src/Win_GParted.cc:1276
+#: ../src/Win_GParted.cc:1281
 msgid "Documentation is not available."
 msgstr "التوثيق غير متاح."
 
-#: ../src/Win_GParted.cc:1281
+#: ../src/Win_GParted.cc:1286
 msgid "This build of gparted is configured without documentation."
 msgstr "هذا البناء من مقسّم‌ج معدّ بدون توثيق."
 
-#: ../src/Win_GParted.cc:1283
+#: ../src/Win_GParted.cc:1288
 msgid "Documentation is available at the project web site."
 msgstr "التوثيق متوفر في موقع البرنامج."
 
-#: ../src/Win_GParted.cc:1304
+#: ../src/Win_GParted.cc:1309
 msgid "GNOME Partition Editor"
 msgstr "محرر أقسام لجنوم"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1320
+#: ../src/Win_GParted.cc:1325
 msgid "translator-credits"
 msgstr ""
 "فريق عربآيز للترجمة http://www.arabeyes.org :\n"
 "خالد حسني\t<khaledhosny@eglug.org>"
 
-#: ../src/Win_GParted.cc:1362
+#: ../src/Win_GParted.cc:1367
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "لا يمكن إنشاء أكثر من %1 قسم أولي"
@@ -1401,7 +1497,7 @@ msgstr[3] "لا يمكن إنشاء أكثر من %1 أقسام أولية"
 msgstr[4] "لا يمكن إنشاء أكثر من %1 قسما أوليا"
 msgstr[5] "لا يمكن إنشاء أكثر من %1 قسم أولي"
 
-#: ../src/Win_GParted.cc:1374
+#: ../src/Win_GParted.cc:1379
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1412,81 +1508,81 @@ msgstr ""
 "تحتوي أقساما أخرى. وحيث أن القسم الممتد هو قسم أولي في الوقت ذاته، فقد يكون "
 "من الضروري حذف أحد الأقسام الأولية أولا."
 
-#: ../src/Win_GParted.cc:1455
+#: ../src/Win_GParted.cc:1460
 msgid "Moving a partition might cause your operating system to fail to boot."
 msgstr "نقل قسم قد يؤدي `لى فشل نظام التشغيل في الإقلاع."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1463
+#: ../src/Win_GParted.cc:1468
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "لديك عملية منتظرة في الطابور لنق قطاع بداية القسم %1."
 
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1473
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "يمكنك الاطلاع على كيفية إصلاح إعدادات الإقلاع من أسئلة مقسّم‌ج الشائعة."
 
-#: ../src/Win_GParted.cc:1539
+#: ../src/Win_GParted.cc:1544
 msgid "You have pasted into an existing partition."
 msgstr "لقد لصقت في قسم موجود من قبل."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1546
+#: ../src/Win_GParted.cc:1551
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "ستضيع البيانات الموجودة في %1 إذا طبّقت هذه العملية."
 
-#: ../src/Win_GParted.cc:1601
+#: ../src/Win_GParted.cc:1606
 msgid "Unable to delete %1!"
 msgstr "تعذر حذف %1!"
 
-#: ../src/Win_GParted.cc:1608
+#: ../src/Win_GParted.cc:1613
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "من فضلك افصل أي قسم منطقي يحمل رقما أكبر من %1"
 
-#: ../src/Win_GParted.cc:1619
+#: ../src/Win_GParted.cc:1624
 msgid "Are you sure you want to delete %1?"
 msgstr "أمتأكّدٌ أنّك تريد حذف %1؟"
 
-#: ../src/Win_GParted.cc:1626
+#: ../src/Win_GParted.cc:1631
 msgid "After deletion this partition is no longer available for copying."
 msgstr "بعد الحذف لن يتوفر هذا القسم مرة أخرى للنسخ."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1629
+#: ../src/Win_GParted.cc:1634
 msgid "Delete %1 (%2, %3)"
 msgstr "احذف %1 (%2، %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1699
+#: ../src/Win_GParted.cc:1704
 msgid "Cannot format this file system to %1."
 msgstr "لم أستطع تهيئة نظام الملفات هذا إلى %1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1711
+#: ../src/Win_GParted.cc:1716
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "يحتاج نظام الملفات %1 قسما على الأقل %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1719
+#: ../src/Win_GParted.cc:1724
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "أقصى حجم لقسم بنظام ملفات %1 هو %2."
 
-#: ../src/Win_GParted.cc:1805
+#: ../src/Win_GParted.cc:1810
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "لا يمكن فصل القسم من نقاط الوصل التالية:"
 
-#: ../src/Win_GParted.cc:1807
+#: ../src/Win_GParted.cc:1812
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
 msgstr "في الأغلب توجد أقسام أخرى موصولة في نقاط الوصل هذه. ينصح بفصلهم يدويا."
 
-#: ../src/Win_GParted.cc:1856 ../src/Win_GParted.cc:1940
+#: ../src/Win_GParted.cc:1869 ../src/Win_GParted.cc:1953
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "لا عمليات منتظرة حاليا للقسم %2."
@@ -1496,13 +1592,13 @@ msgstr[3] "%1 عمليات منتظرة حاليا للقسم %2."
 msgstr[4] "%1 عملية منتظرة حاليا للقسم %2."
 msgstr[5] "%1 عملية منتظرة حاليا للقسم %2."
 
-#: ../src/Win_GParted.cc:1870
+#: ../src/Win_GParted.cc:1883
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "لا يمكن تنفيذ إجراء swapon في حال وجود عملية منتظرِة لهذا القسم."
 
-#: ../src/Win_GParted.cc:1872
+#: ../src/Win_GParted.cc:1885
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1510,54 +1606,54 @@ msgstr ""
 "استخدم قائمة \"تحرير\" للتراجع عن كل العمليات أو مسحها أو تطبيقها قبل "
 "استخدام swapon مع هذا القسم."
 
-#: ../src/Win_GParted.cc:1890
+#: ../src/Win_GParted.cc:1903
 msgid "Deactivating swap on %1"
 msgstr "تعطيل التبديل على %1."
 
-#: ../src/Win_GParted.cc:1890
+#: ../src/Win_GParted.cc:1903
 msgid "Activating swap on %1"
 msgstr "تفعيل التبديل على %1"
 
-#: ../src/Win_GParted.cc:1897
+#: ../src/Win_GParted.cc:1910
 msgid "Could not deactivate swap"
 msgstr "تعذّر تعطيل التبديل"
 
-#: ../src/Win_GParted.cc:1897
+#: ../src/Win_GParted.cc:1910
 msgid "Could not activate swap"
 msgstr "تعذّر تفعيل التبديل"
 
-#: ../src/Win_GParted.cc:1913
+#: ../src/Win_GParted.cc:1926
 msgid "Unmounting %1"
 msgstr "يفصل %1"
 
-#: ../src/Win_GParted.cc:1918
+#: ../src/Win_GParted.cc:1931
 msgid "Could not unmount %1"
 msgstr "تعذّر فصل %1"
 
-#: ../src/Win_GParted.cc:1954
+#: ../src/Win_GParted.cc:1967
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "لا يمكن تنفيذ إجراء الوصْل في حال وجود عملية منتظرِة لهذا القسم."
 
-#: ../src/Win_GParted.cc:1956
+#: ../src/Win_GParted.cc:1969
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
 msgstr ""
-"استخدم قائمة \"تحرير\" للتراجع عن كل العمليات أو مسحها أو تطبيقها قبل استخدام "
-"الوصْل مع هذا القسم."
+"استخدم قائمة \"تحرير\" للتراجع عن كل العمليات أو مسحها أو تطبيقها قبل "
+"استخدام الوصْل مع هذا القسم."
 
-#: ../src/Win_GParted.cc:1974
+#: ../src/Win_GParted.cc:1987
 msgid "mounting %1 on %2"
 msgstr "يصل %1 على %2"
 
-#: ../src/Win_GParted.cc:1981
+#: ../src/Win_GParted.cc:1994
 msgid "Could not mount %1 on %2"
 msgstr "تعذّر وصل %1 على %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:2007
+#: ../src/Win_GParted.cc:2020
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "لا عمليات منتظرة حاليا على الجهاز %2."
@@ -1567,12 +1663,12 @@ msgstr[3] "%1 عمليات منتظرة حاليا على الجهاز %2."
 msgstr[4] "%1 عملية منتظرة حاليا على الجهاز %2."
 msgstr[5] "%1 عملية منتظرة حاليا على الجهاز %2."
 
-#: ../src/Win_GParted.cc:2022
+#: ../src/Win_GParted.cc:2035
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "لا يمكن إنشاء جدول تقسيم جديد في وجود أقسام نشطة."
 
-#: ../src/Win_GParted.cc:2024
+#: ../src/Win_GParted.cc:2037
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1580,43 +1676,94 @@ msgstr ""
 "الأقسام النشطة هي الأقسام المستخدمة مثل أنظمة الملفات الموصولة أو مساحات "
 "التبديل المُفعّلة."
 
-#: ../src/Win_GParted.cc:2026
+#: ../src/Win_GParted.cc:2039
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
-"استخدم خيارات قائمة \"قسم\" مثل \"افصل\" لإيقاف نشاط كل الأقسام قبل إنشاء جدول "
-"تقسيم."
+"استخدم خيارات قائمة \"قسم\" مثل \"افصل\" لإيقاف نشاط كل الأقسام قبل إنشاء "
+"جدول تقسيم."
 
-#: ../src/Win_GParted.cc:2051
+#: ../src/Win_GParted.cc:2064
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "لا يمكن إنشاء جدول تقسيم جديد في وجود عمليات معلّقة."
 
-#: ../src/Win_GParted.cc:2053
+#: ../src/Win_GParted.cc:2066
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 "استخدم قائمة \"تحرير\" لمسح أو تطبيق كل العمليات قبل إنشاء جدول تقسيم جديد."
 
-#: ../src/Win_GParted.cc:2068
+#: ../src/Win_GParted.cc:2081
 msgid "Error while creating partition table."
 msgstr "حدث خطأ خلال إنشاء جدول التقسيم الجديد"
 
-#: ../src/Win_GParted.cc:2236
+#: ../src/Win_GParted.cc:2101
+msgid "Command gpart was not found"
+msgstr ""
+
+#: ../src/Win_GParted.cc:2102
+msgid "This feature uses gpart. Please install gpart and try again."
+msgstr ""
+
+#. Dialog information
+#: ../src/Win_GParted.cc:2110
+msgid "A full disk scan is needed to find file systems."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2112
+msgid "The scan might take a very long time."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2114
+msgid ""
+"After the scan you can mount any discovered file systems and copy the data "
+"to other media."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2116
+msgid "Do you want to continue?"
+msgstr ""
+
+#. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2120
+#, fuzzy
+msgid "Search for file systems on %1"
+msgstr "انسخ نظام الملفات من %1 إلى %2"
+
+#. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2134
+#, fuzzy
+msgid "Searching for file systems on %1"
+msgstr "لم أستطع تهيئة نظام الملفات هذا إلى %1."
+
+#. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
+#: ../src/Win_GParted.cc:2148
+#, fuzzy
+msgid "No file systems found on %1"
+msgstr "انسخ نظام الملفات من %1 إلى %2"
+
+#: ../src/Win_GParted.cc:2149
+msgid ""
+"The disk scan by gpart did not find any recognizable file systems on this "
+"disk."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2319
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "أمتأكد أنك ترغب في تطبيق العمليات المنتظرة؟"
 
-#: ../src/Win_GParted.cc:2242
+#: ../src/Win_GParted.cc:2325
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "تحرير الأقسام قد يسبب فقدا في البيانات."
 
-#: ../src/Win_GParted.cc:2244
+#: ../src/Win_GParted.cc:2327
 msgid "You are advised to backup your data before proceeding."
 msgstr "ينصح بحفظ البيانات الهامة احتياطيا قبل التقدم."
 
-#: ../src/Win_GParted.cc:2246
+#: ../src/Win_GParted.cc:2329
 msgid "Apply operations to device"
 msgstr "طبق العمليات على القرص"
 
@@ -1684,4 +1831,3 @@ msgstr "وسّع نظام الملفات الموصول"
 #: ../src/xfs.cc:284
 msgid "copy file system"
 msgstr "انسخ نظام الملفّات"
-
