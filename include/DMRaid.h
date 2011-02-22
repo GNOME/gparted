@@ -1,4 +1,4 @@
-/* Copyright (C) 2009, 2010 Curtis Gedak
+/* Copyright (C) 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -71,7 +71,6 @@ private:
 	static bool dmraid_cache_initialized ;
 	static bool dmraid_found ;
 	static bool dmsetup_found ;
-	static bool kpartx_found ;
 	static bool udevinfo_found ;
 	static bool udevadm_found ;
 	static std::vector<Glib::ustring> dmraid_devices ;

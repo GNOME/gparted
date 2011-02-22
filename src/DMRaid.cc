@@ -1,4 +1,4 @@
-/* Copyright (C) 2009, 2010 Curtis Gedak
+/* Copyright (C) 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ namespace GParted
 bool DMRaid::dmraid_cache_initialized = false ;
 bool DMRaid::dmraid_found  = false ;
 bool DMRaid::dmsetup_found = false ;
-bool DMRaid::kpartx_found  = false ;
 bool DMRaid::udevinfo_found = false ;
 bool DMRaid::udevadm_found  = false ;
 std::vector<Glib::ustring> DMRaid::dmraid_devices ;
@@ -83,7 +82,6 @@ void DMRaid::set_commands_found()
 	//Set status of commands found 
 	dmraid_found = (! Glib::find_program_in_path( "dmraid" ) .empty() ) ;
 	dmsetup_found = (! Glib::find_program_in_path( "dmsetup" ) .empty() ) ;
-	kpartx_found = (! Glib::find_program_in_path( "kpartx" ) .empty() ) ;
 	udevinfo_found = (! Glib::find_program_in_path( "udevinfo" ) .empty() ) ;
 	udevadm_found = (! Glib::find_program_in_path( "udevadm" ) .empty() ) ;
 }
@@ -316,7 +314,6 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail )
 {
 	//Create all missing dev mapper entries for a specified device.
-	//  Try both dmraid -ay and (if available) kpartx -a
 
 	Glib::ustring command ;
 	bool exit_status = true ;
@@ -337,14 +334,6 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 			exit_status = false ;	//command failed
 	}
 
-	if ( kpartx_found )
-	{
-		Glib::ustring dmraid_name = get_dmraid_name( partition .device_path ) ;
-		command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
-		if ( execute_command( command, operationdetail .get_last_child() ) )
-			exit_status = false ;	//command failed
-	}
-
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 	return exit_status ;
@@ -353,7 +342,6 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 {
 	//Create all missing dev mapper entries for a specified device.
-	//  Try both dmraid -ay and (if available) kpartx -a
 
 	Glib::ustring command, output, error ;
 	bool exit_status = true ;
@@ -366,14 +354,6 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	{
 		//Above command failed, so try without the '-P' option.
 		command = "dmraid -ay -v" ;
-		if ( Utils::execute_command( command, output, error, true ) )
-			exit_status = false;	//command failed
-	}
-
-	if ( kpartx_found )
-	{
-		Glib::ustring dmraid_name = get_dmraid_name( dev_path ) ;
-		command = "kpartx -a -v " + DEV_MAP_PATH + dmraid_name ;
 		if ( Utils::execute_command( command, output, error, true ) )
 			exit_status = false;	//command failed
 	}
