@@ -203,8 +203,10 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				dmraid .get_devices( dmraid_devices ) ;
 				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
 					set_thread_status_message( String::ucompose ( _("Scanning %1"), dmraid_devices[k] ) ) ;
+#ifndef USE_LIBPARTED_DMRAID
 					dmraid .create_dev_map_entries( dmraid_devices[k] ) ;
 					settle_device( 1 ) ;
+#endif
 					ped_device_get( dmraid_devices[k] .c_str() ) ;
 				}
 			}
@@ -256,6 +258,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
+#ifndef USE_LIBPARTED_DMRAID
 	else
 	{
 		//Device paths were passed in on the command line.
@@ -270,6 +273,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			}
 		}
 	}
+#endif
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
@@ -651,6 +655,7 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 		close_device_and_disk() ;
 	}
 
+#ifndef USE_LIBPARTED_DMRAID
 	//delete and recreate disk entries if dmraid
 	DMRaid dmraid ;
 	if ( return_value && dmraid .is_dmraid_device( device_path ) )
@@ -658,6 +663,7 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 		dmraid .purge_dev_map_entries( device_path ) ;
 		dmraid .create_dev_map_entries( device_path ) ;
 	}
+#endif
 
 	return return_value ;	
 }
@@ -853,7 +859,6 @@ void GParted_Core::read_mountpoints_from_file_swaps(
 
 Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 {
-	DMRaid dmraid;   //Use cache of dmraid device information
 	char * lp_path;  //we have to free the result of ped_partition_get_path()
 	Glib::ustring partition_path = "Partition path not found";
 
@@ -864,13 +869,16 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 		free(lp_path);
 	}
 
+#ifndef USE_LIBPARTED_DMRAID
 	//Ensure partition path name is compatible with dmraid
+	DMRaid dmraid;   //Use cache of dmraid device information
 	if (   dmraid .is_dmraid_supported()
 	    && dmraid .is_dmraid_device( partition_path )
 	   )
 	{
 		partition_path = dmraid .make_path_dmraid_compatible(partition_path);
 	}
+#endif
 
 	return partition_path ;
 }
@@ -880,7 +888,9 @@ void GParted_Core::set_device_partitions( Device & device )
 	int EXT_INDEX = -1 ;
 	Proc_Partitions_Info pp_info ; //Use cache of proc partitions information
 	FS_Info fs_info ;  //Use cache of file system information
+#ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;    //Use cache of dmraid device information
+#endif
 
 	//clear partitions
 	device .partitions .clear() ;
@@ -899,6 +909,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
+#ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
 				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
@@ -914,6 +925,7 @@ void GParted_Core::set_device_partitions( Device & device )
 						partition_is_busy = true ;
 				}
 				else
+#endif
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
 
 				partition_temp .Set( device .get_path(),
@@ -936,6 +948,7 @@ void GParted_Core::set_device_partitions( Device & device )
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
+#ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
 				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
@@ -954,6 +967,7 @@ void GParted_Core::set_device_partitions( Device & device )
 					}
 				}
 				else
+#endif
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
 
 				partition_temp .Set( device .get_path(),
@@ -1276,7 +1290,9 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	
 void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
 {
+#ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
+#endif
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
@@ -1289,6 +1305,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		{
 			if ( partitions[ t ] .busy )
 			{
+#ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because there may be more
 				//  than one partition name.
 				//  E.g., there might be names with and/or without a 'p' between
@@ -1312,6 +1329,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				}
 				else
 				{
+#endif
 					//Normal device, not DMRaid device
 					for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
 					{
@@ -1322,7 +1340,9 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 							break ;
 						}
 					}
+#ifndef USE_LIBPARTED_DMRAID
 				}
+#endif
 
 				if ( partitions[ t ] .get_mountpoints() .empty() )
 					partitions[ t ] .messages .push_back( _("Unable to find mount point") ) ;
@@ -1554,10 +1574,12 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 
 	bool succes = new_partition .partition_number > 0 && erase_filesystem_signatures( new_partition ) ;
 
+#ifndef USE_LIBPARTED_DMRAID
 	//create dev map entries if dmraid
 	DMRaid dmraid ;
 	if ( succes && dmraid .is_dmraid_device( new_partition .device_path ) )
 		succes = dmraid .create_dev_map_entries( new_partition, operationdetail .get_last_child() ) ;
+#endif
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
@@ -1616,6 +1638,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 		close_device_and_disk() ;
 	}
 
+#ifndef USE_LIBPARTED_DMRAID
 	//delete partition dev mapper entry, and delete and recreate all other affected dev mapper entries if dmraid
 	DMRaid dmraid ;
 	if ( succes && dmraid .is_dmraid_device( partition .device_path ) )
@@ -1632,6 +1655,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 			close_device_and_disk() ;
 		}
 	}
+#endif
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
@@ -2091,6 +2115,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
 
+#ifndef USE_LIBPARTED_DMRAID
 		//update dev mapper entry if partition is dmraid.
 		DMRaid dmraid ;
 		if ( return_value && dmraid .is_dmraid_device( partition_new .device_path ) )
@@ -2102,6 +2127,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				close_device_and_disk() ;
 			}
 		}
+#endif
 	}
 	
 	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -2837,6 +2863,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
 
+#ifndef USE_LIBPARTED_DMRAID
 		//Update dev mapper entry if partition is dmraid.
 		DMRaid dmraid ;
 		if ( succes && dmraid .is_dmraid_device( partition_new .device_path ) )
@@ -2848,6 +2875,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				close_device_and_disk() ;
 			}
 		}
+#endif
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -3052,12 +3080,14 @@ bool GParted_Core::commit()
 
 bool GParted_Core::commit_to_os( std::time_t timeout ) 
 {
-	DMRaid dmraid ;
 	bool succes ;
+#ifndef USE_LIBPARTED_DMRAID
+	DMRaid dmraid ;
 	if ( dmraid .is_dmraid_device( lp_disk ->dev ->path ) )
 		succes = true ;
 	else
 	{
+#endif
 		succes = ped_disk_commit_to_os( lp_disk ) ;
 #ifndef HAVE_LIBPARTED_2_2_0_PLUS
 		//Work around to try to alleviate problems caused by
@@ -3069,7 +3099,9 @@ bool GParted_Core::commit_to_os( std::time_t timeout )
 			succes = ped_disk_commit_to_os( lp_disk ) ;
 		}
 #endif
+#ifndef USE_LIBPARTED_DMRAID
 	}
+#endif
 
 	settle_device( timeout ) ;
 

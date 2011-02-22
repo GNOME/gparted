@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -354,7 +354,11 @@ void Dialog_Progress::on_save()
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "</head>" << std::endl
 			<< "<body>" << std::endl
-			<< "<p>" << _("GParted") << " " << VERSION << "</p>" << std::endl
+			<< "<p>" << _("GParted") << " " << VERSION
+#ifdef USE_LIBPARTED_DMRAID
+			<< " --enable-libparted-dmraid"
+#endif
+			<< "</p>" << std::endl
 			<< "<p>" << _("Libparted") << " " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
 
 			//Write out each operation

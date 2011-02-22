@@ -171,6 +171,25 @@ fi
 AM_CONDITIONAL([DISABLE_DOC], [test ${enable_doc} = no])
 
 
+dnl======================
+dnl check whether to use native libparted dmraid support
+dnl======================
+AC_ARG_ENABLE([libparted_dmraid],
+  [  --enable-libparted-dmraid   do use native libparted /dev/mapper dmraid support],,)
+if test "x${enable_libparted_dmraid}" = "x" ; then
+	enable_libparted_dmraid=no
+fi
+
+AC_MSG_CHECKING([whether native libparted /dev/mapper dmraid support should be used])
+if test ${enable_libparted_dmraid} = yes; then
+	AC_MSG_RESULT([yes])
+	dnl Set   #define USE_LIBPARTED_DMRAID 1   to indicate documentation not wanted
+	AC_DEFINE([USE_LIBPARTED_DMRAID], [1], [Define to 1 if --enable-libparted-dmraid specified])
+else
+	AC_MSG_RESULT([no])
+fi
+
+
 AC_CONFIG_FILES([
 Makefile
 compose/Makefile
@@ -198,6 +217,7 @@ echo "                   Build documentation?  :  $enable_doc"
 echo ""
 echo "   Need part table re-read work around?  :  $need_pt_reread_work_around"
 echo "     Supports sector sizes > 512 bytes?  :  $support_sector_size_gt_512"
+echo "   Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""
 echo " If all settings are OK, type make and make install "
 echo "========================================================"

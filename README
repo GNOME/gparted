@@ -67,11 +67,19 @@ b. Building from Source
                   perl(XML::Parser) desktop-file-utils
 
    Briefly, the shell commands `./configure; make; make install' should
-   configure, build, and install this package.  If you wish to build
-   this package without the help documentation use the --disable-doc
-   flag:
+   configure, build, and install this package.
+
+   If you wish to build this package without the help documentation use
+   the --disable-doc flag:
       E.g., ./configure --disable-doc
- 
+
+   If you wish to build this package to use native libparted /dev/mapper
+   dmraid support use the --enable-libparted-dmraid flag:
+      E.g., ./configure --enable-libparted-dmraid
+
+   Please note that more than one configure flags can be used:
+      E.g., ./configure --disable-doc --enable-libparted-dmraid
+
    The INSTALL file contains further GNU installation instructions.
 
 
