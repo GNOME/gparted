@@ -52,6 +52,24 @@ for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 done
 
 #
+#  Define base command for executing GParted
+#
+BASE_CMD="@installdir@/gpartedbin $*"
+
+#
+#  If no root privileges, then invoke gpartedbin directly
+#  so that a graphical warning is displayed.
+#  Otherwise udisks, devkit-disks, or hal-lock in the later
+#  invocation may prevent gpartedbin from starting and hence
+#  the user will not see a graphical warning.
+#
+if test "x`id -u`" != "x0"; then
+	echo "Root privileges are required for running gparted."
+	$BASE_CMD
+	exit 1
+fi
+
+#
 #  Use both udisks and hal-lock for invocation if both binaries exist and both
 #  daemons are running.
 #  Else use udisks if binary exists and daemon is running.
@@ -61,7 +79,6 @@ done
 #  Otherwise use hal-lock for invocation if binary exists and daemon is running.
 #  If the above checks fail then simply run gpartedbin.
 #
-BASE_CMD="@installdir@/gpartedbin $*"
 if test "x$HAVE_UDISKS" = "xyes" && test "x$HAVE_HAL_LOCK" = "xyes"; then
 	udisks --inhibit -- \
 		hal-lock --interface org.freedesktop.Hal.Device.Storage --exclusive \
