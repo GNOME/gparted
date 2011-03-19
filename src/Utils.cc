@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -277,27 +277,40 @@ int Utils::execute_command( const Glib::ustring & command,
 
 	try
 	{
+		std::vector<std::string>argv;
+		argv .push_back( "sh" ) ;
+		argv .push_back( "-c" ) ;
+		argv .push_back( command ) ;
+
 		if ( use_C_locale )
 		{
-			std::vector<std::string> envp, argv;
+			//Spawn command using the C language environment
+			std::vector<std::string> envp ;
 			envp .push_back( "LC_ALL=C" ) ;
 			envp .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
 
-			argv .push_back( "sh" ) ;
-			argv .push_back( "-c" ) ;
-			argv .push_back( command ) ;
-
-			Glib::spawn_sync( ".",
-					  argv,
-					  envp,
-					  Glib::SPAWN_SEARCH_PATH,
-					  sigc::slot<void>(),
-					  &std_out,
-					  &std_error,
-					  &exit_status ) ;
+			Glib::spawn_sync( "."
+			                , argv
+			                , envp
+			                , Glib::SPAWN_SEARCH_PATH
+			                , sigc::slot<void>()
+			                , &std_out
+			                , &std_error
+			                , &exit_status
+			                ) ;
 		}
 		else
-			Glib::spawn_command_line_sync( "sh -c '" + command + "'", &std_out, &std_error, &exit_status ) ;
+		{
+			//Spawn command inheriting the parent's environment
+			Glib::spawn_sync( "."
+			                , argv
+			                , Glib::SPAWN_SEARCH_PATH
+			                , sigc::slot<void>()
+			                , &std_out
+			                , &std_error
+			                , &exit_status
+			                ) ;
+		}
 	}
 	catch ( Glib::Exception & e )
 	{
