@@ -47,8 +47,8 @@ void Dialog_Rescue_Data::draw_dialog()
 {
 	Glib::ustring *message;
 
-	/*TO TRANSLATORS: looks like    File systems found on on /dev/sdb */
-	this ->set_title( String::ucompose( _("File systems found on on %1"), this->device_path ) );
+	/*TO TRANSLATORS: looks like    File systems found on /dev/sdb */
+	this ->set_title( String::ucompose( _("File systems found on %1"), this->device_path ) );
 
 	message=new Glib::ustring("<big><b>");
 	if(!this->inconsistencies)
