@@ -1,4 +1,46 @@
 ============================
+GParted 0.8.1   (2011-05-23)
+============================
+
+Release Notes
+-------------
+  This release of GParted further improves motherboard BIOS RAID
+  support and includes bug fixes, and language translation updates.
+
+### Key changes include:
+
+  * Remove all usage of kpartx to avoid partition entry duplicates
+  * Add configure option --enable-libparted-dmraid
+
+Bug Fixes
+---------
+  * Remove all usage of kpartx to avoid partition entry duplicates
+    - Ubuntu launchpad #719129
+  * Add configure option --enable-libparted-dmraid
+    - Ubuntu launchpad #719129
+    - Thanks go to Phillip Susi for help with this idea
+  * Ensure graphical error message displayed when run by non-root user
+    - Ubuntu launchpad #696937
+  * Simplify command output cleanup implementation
+    - Thanks go to Seth Heeren for this method replacement patch
+
+Translations (new/updated)
+--------------------------
+  ar(Khaled Hosny), bg(Alexander Shopov), da(Ask H. Larsen),
+  eo(Kristjan SCHMIDT), fa(Arash Mousavi),
+  fr(Claude Paroz, Julien Hardelin, Vincent Blut), hu(Gabor Kelemen),
+  it(Milo Casagrande), lv(Rudolfs Mazurs, Peteris Krisjanis),
+  nl(Hannie Dumoleyn), pl(Piotr Drąg),
+  pt_BR(Luana Campos Ferreira, Djavan Fagundes),
+  ro(Daniel Șerbănescu, Lucian Adrian Grijincu), ru(Yuri Myasoedov),
+  te(Praveen Illa, krishnababu k), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * kpartx package is not used.
+
+
+============================
 GParted 0.8.0   (2011-02-15)
 ============================
 
