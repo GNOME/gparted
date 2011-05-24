@@ -45,7 +45,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	vbox ->set_border_width( 10 ) ;
 	this ->get_vbox() ->pack_start( *vbox, Gtk::PACK_SHRINK ) ;
 
-	Glib::ustring str_temp = _("Depending on the amount and type of operations this might take a long time.") ;
+	Glib::ustring str_temp = _("Depending on the number and type of operations this might take a long time.") ;
 	str_temp += "\n";
 	vbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 
