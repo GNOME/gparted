@@ -6,17 +6,17 @@
 #
 #
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2004, 2005, 2006, 2008, 2009, 2010, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=gparted&component=general\n"
-"POT-Creation-Date: 2011-01-29 22:45+0000\n"
-"PO-Revision-Date: 2011-01-30 13:34+0100\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"product=gparted&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-05-24 17:55+0000\n"
+"PO-Revision-Date: 2011-05-25 10:32+0200\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -279,11 +279,14 @@ msgid "Applying pending operations"
 msgstr "Realizando operaciones pendientes"
 
 #: ../src/Dialog_Progress.cc:48
+#| msgid ""
+#| "Depending on the amount and type of operations this might take a long "
+#| "time."
 msgid ""
-"Depending on the amount and type of operations this might take a long time."
+"Depending on the number and type of operations this might take a long time."
 msgstr ""
-"Dependiendo de la cantidad y del tipo de operaciones esto puede tomar un "
-"tiempo largo."
+"Dependiendo del número y del tipo de operaciones esto puede llevar bastante "
+"tiempo."
 
 #: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
@@ -362,7 +365,7 @@ msgstr "Guarda los detalles"
 msgid "GParted Details"
 msgstr "Detalles de GParted"
 
-#: ../src/Dialog_Progress.cc:358
+#: ../src/Dialog_Progress.cc:362
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -370,7 +373,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:401
+#: ../src/Dialog_Progress.cc:405
 msgid "EXECUTING"
 msgstr "EJECUTANDO"
 
@@ -378,7 +381,7 @@ msgstr "EJECUTANDO"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:409
+#: ../src/Dialog_Progress.cc:413
 msgid "SUCCESS"
 msgstr "ÉXITO"
 
@@ -386,7 +389,7 @@ msgstr "ÉXITO"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:417
+#: ../src/Dialog_Progress.cc:421
 msgid "ERROR"
 msgstr "ERROR"
 
@@ -395,7 +398,7 @@ msgstr "ERROR"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:430
 msgid "INFO"
 msgstr "INFO"
 
@@ -404,7 +407,7 @@ msgstr "INFO"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:439
 msgid "N/A"
 msgstr "N/D"
 
@@ -490,15 +493,14 @@ msgid "Manage flags on %1"
 msgstr "Gestionar opciones en %1"
 
 #: ../src/Dialog_Rescue_Data.cc:34
-#| msgid "shrink file system"
 msgid "Search disk for file systems"
 msgstr "Buscar sistemas de archivo en el disco"
 
-#. TO TRANSLATORS: looks like    File systems found on on /dev/sdb
+#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
 #: ../src/Dialog_Rescue_Data.cc:51
-#| msgid "copy file system of %1 to %2"
-msgid "File systems found on on %1"
-msgstr "Se encontraron sistemas de archivos en %1"
+#| msgid "File systems found on on %1"
+msgid "File systems found on %1"
+msgstr "Sistemas de archivos encontrados en %1"
 
 #: ../src/Dialog_Rescue_Data.cc:56
 msgid "Data found"
@@ -526,7 +528,6 @@ msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "Al cerrar este diálogo se desmontarán todas las vistas montadas."
 
 #: ../src/Dialog_Rescue_Data.cc:105
-#| msgid "File system:"
 msgid "File systems"
 msgstr "Sistemas de archivos"
 
@@ -536,12 +537,10 @@ msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: %2 (%3 MiB)"
 
 #: ../src/Dialog_Rescue_Data.cc:135
-#| msgid "_View"
 msgid "View"
 msgstr "Ver"
 
 #: ../src/Dialog_Rescue_Data.cc:172
-#| msgid "An error occurred while applying the operations"
 msgid "An error occurred while creating the read-only view."
 msgstr "Ocurrió un error al crear la vista de sólo lectura."
 
@@ -565,12 +564,10 @@ msgstr "Error:"
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
 #: ../src/Dialog_Rescue_Data.cc:216
-#| msgid "The file system is damaged"
 msgid "The file system is mounted on:"
 msgstr "El sistema de archivos está montado en:"
 
 #: ../src/Dialog_Rescue_Data.cc:221
-#| msgid "Unable to open GParted Manual help file."
 msgid "Unable to open the default file manager"
 msgstr "No se pudo abrir el gestor de archivos predeterminado"
 
@@ -591,28 +588,26 @@ msgstr ""
 "interferencias con datos existentes."
 
 #: ../src/Dialog_Rescue_Data.cc:244
-#| msgid ""
-#| "The partition could not be unmounted from the following mount points:"
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "¿Quiere intentar desactivar los siguientes puntos de montaje?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:325
+#: ../src/DMRaid.cc:322
 msgid "create missing %1 entries"
 msgstr "crear %1 entradas faltantes"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:441
+#: ../src/DMRaid.cc:421
 msgid "delete affected %1 entries"
 msgstr "eliminar %1 entradas afectadas"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:464
+#: ../src/DMRaid.cc:444
 msgid "delete %1 entry"
 msgstr "eliminar %1 entrada"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:514
+#: ../src/DMRaid.cc:494
 msgid "update %1 entry"
 msgstr "actualizar %1 entrada"
 
@@ -623,17 +618,17 @@ msgid "Scanning %1"
 msgstr "Analizando %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:226
+#: ../src/GParted_Core.cc:228
 msgid "Confirming %1"
 msgstr "Confirmando %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:240
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr ""
 "Ignorando el dispositivo %1 con un tamaño de sector lógico de %2 bytes."
 
-#: ../src/GParted_Core.cc:240
+#: ../src/GParted_Core.cc:242
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -642,7 +637,7 @@ msgstr ""
 "dispositivos con tamaños de sectores mayores de 512 bytes."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:277
+#: ../src/GParted_Core.cc:281
 msgid "Searching %1 partitions"
 msgstr "Buscando %1 particiones"
 
@@ -650,76 +645,76 @@ msgstr "Buscando %1 particiones"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:328
 msgid "unrecognized"
 msgstr "no reconocido"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:551
+#: ../src/GParted_Core.cc:555
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Una partición no puede tener una longitud de %1 sectores"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:560
+#: ../src/GParted_Core.cc:564
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Una partición con sectores usados (%1) mayor que su longitud (%2) no es "
 "válida"
 
-#: ../src/GParted_Core.cc:625
+#: ../src/GParted_Core.cc:629
 msgid "libparted messages"
 msgstr "mensajes de libparted"
 
-#: ../src/GParted_Core.cc:1040
+#: ../src/GParted_Core.cc:1054
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "El cifrado LUKS (Linux Unified Key Setup) aún no está soportada."
 
-#: ../src/GParted_Core.cc:1157
+#: ../src/GParted_Core.cc:1171
 msgid "Logical Volume Management is not yet supported."
 msgstr "La gestión de volúmenes lógicos aún no está soportada."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1186
+#: ../src/GParted_Core.cc:1200
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr ""
 "Imposible detectar el sistema de archivos. Las razones posiblemente son:"
 
-#: ../src/GParted_Core.cc:1188
+#: ../src/GParted_Core.cc:1202
 msgid "The file system is damaged"
 msgstr "El sistema de archivos está dañado"
 
-#: ../src/GParted_Core.cc:1190
+#: ../src/GParted_Core.cc:1204
 msgid "The file system is unknown to GParted"
 msgstr "El sistema de archivos es desconocido para GParted"
 
-#: ../src/GParted_Core.cc:1192
+#: ../src/GParted_Core.cc:1206
 msgid "There is no file system available (unformatted)"
 msgstr "No hay ningún sistema de archivos disponible (sin formato)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1195
+#: ../src/GParted_Core.cc:1209
 msgid "The device entry %1 is missing"
 msgstr "No se encuentra la entrada del dispositivo %1"
 
-#: ../src/GParted_Core.cc:1328
+#: ../src/GParted_Core.cc:1348
 msgid "Unable to find mount point"
 msgstr "Imposible encontrar el punto de montaje"
 
-#: ../src/GParted_Core.cc:1390
+#: ../src/GParted_Core.cc:1410
 msgid "Unable to read the contents of this file system!"
 msgstr "Imposible leer el contenido de este sistema de archivos."
 
-#: ../src/GParted_Core.cc:1392
+#: ../src/GParted_Core.cc:1412
 msgid "Because of this some operations may be unavailable."
 msgstr "Debido a esto, algunas operaciones pueden no estar disponibles."
 
-#: ../src/GParted_Core.cc:1396
+#: ../src/GParted_Core.cc:1416
 msgid "The cause might be a missing software package."
 msgstr "La causa puede ser que falte un paquete de software."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1399
+#: ../src/GParted_Core.cc:1419
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -727,39 +722,39 @@ msgstr ""
 "Se necesita la siguiente lista de paquetes de software para el soporte del "
 "sistema de archivos %1: %2."
 
-#: ../src/GParted_Core.cc:1470
+#: ../src/GParted_Core.cc:1490
 msgid "create empty partition"
 msgstr "crear una partición vacía"
 
-#: ../src/GParted_Core.cc:1538 ../src/GParted_Core.cc:2751
+#: ../src/GParted_Core.cc:1558 ../src/GParted_Core.cc:2777
 msgid "path: %1"
 msgstr "ruta: %1"
 
-#: ../src/GParted_Core.cc:1539 ../src/GParted_Core.cc:2752
+#: ../src/GParted_Core.cc:1559 ../src/GParted_Core.cc:2778
 msgid "start: %1"
 msgstr "inicio: %1"
 
-#: ../src/GParted_Core.cc:1540 ../src/GParted_Core.cc:2753
+#: ../src/GParted_Core.cc:1560 ../src/GParted_Core.cc:2779
 msgid "end: %1"
 msgstr "fin: %1"
 
-#: ../src/GParted_Core.cc:1541 ../src/GParted_Core.cc:2754
+#: ../src/GParted_Core.cc:1561 ../src/GParted_Core.cc:2780
 msgid "size: %1 (%2)"
 msgstr "tamaño: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1571 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1593 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "crear un sistema de archivos %1 nuevo "
 
-#: ../src/GParted_Core.cc:1604
+#: ../src/GParted_Core.cc:1626
 msgid "delete partition"
 msgstr "eliminar partición"
 
-#: ../src/GParted_Core.cc:1644
+#: ../src/GParted_Core.cc:1668
 msgid "Clear partition label on %1"
 msgstr "Limpiar la etiqueta de la partición en %1"
 
-#: ../src/GParted_Core.cc:1649
+#: ../src/GParted_Core.cc:1673
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Establecer la etiqueta de la partición a «%1» en %2"
 
@@ -768,27 +763,27 @@ msgstr "Establecer la etiqueta de la partición a «%1» en %2"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1735
+#: ../src/GParted_Core.cc:1759
 msgid "moving requires old and new length to be the same"
 msgstr "mover requiere que la longitud antigua y la nueva sea la misma"
 
-#: ../src/GParted_Core.cc:1765
+#: ../src/GParted_Core.cc:1789
 msgid "rollback last change to the partition table"
 msgstr "deshacer el último cambio en la tabla de particiones"
 
-#: ../src/GParted_Core.cc:1795
+#: ../src/GParted_Core.cc:1819
 msgid "move file system to the left"
 msgstr "mover el sistema de archivos a la izquierda"
 
-#: ../src/GParted_Core.cc:1797
+#: ../src/GParted_Core.cc:1821
 msgid "move file system to the right"
 msgstr "mover el sistema de archivos a la derecha"
 
-#: ../src/GParted_Core.cc:1800
+#: ../src/GParted_Core.cc:1824
 msgid "move file system"
 msgstr "mover el sistema de archivos"
 
-#: ../src/GParted_Core.cc:1802
+#: ../src/GParted_Core.cc:1826
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -796,55 +791,55 @@ msgstr ""
 "el sistema de archivos nuevo y el antiguo tienen la misma posición; "
 "omitiendo esta operación"
 
-#: ../src/GParted_Core.cc:1821
+#: ../src/GParted_Core.cc:1845
 msgid "perform real move"
 msgstr "realizar movimiento real"
 
-#: ../src/GParted_Core.cc:1868
+#: ../src/GParted_Core.cc:1892
 msgid "using libparted"
 msgstr "usando libparted"
 
-#: ../src/GParted_Core.cc:1908
+#: ../src/GParted_Core.cc:1932
 msgid "resizing requires old and new start to be the same"
 msgstr "la redimensión requiere que el inicio antiguo y el nuevo sea el mismo"
 
-#: ../src/GParted_Core.cc:1973
+#: ../src/GParted_Core.cc:1997
 msgid "resize/move partition"
 msgstr "redimensionar/mover la partición"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:2000
 msgid "move partition to the right"
 msgstr "mover partición a la derecha"
 
-#: ../src/GParted_Core.cc:1979
+#: ../src/GParted_Core.cc:2003
 msgid "move partition to the left"
 msgstr "mover partición a la izquierda"
 
-#: ../src/GParted_Core.cc:1982
+#: ../src/GParted_Core.cc:2006
 msgid "grow partition from %1 to %2"
 msgstr "ampliar partición desde %1 a %2"
 
-#: ../src/GParted_Core.cc:1985
+#: ../src/GParted_Core.cc:2009
 msgid "shrink partition from %1 to %2"
 msgstr "reducir partición de %1 a %2"
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2012
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "mueve la partición a la derecha y la agranda desde %1 a %2"
 
-#: ../src/GParted_Core.cc:1991
+#: ../src/GParted_Core.cc:2015
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "mueve la partición a la derecha y la encoge desde %1 a %2"
 
-#: ../src/GParted_Core.cc:1994
+#: ../src/GParted_Core.cc:2018
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "mueve la partición a la izquierda y la agranda desde %1 a %2"
 
-#: ../src/GParted_Core.cc:1997
+#: ../src/GParted_Core.cc:2021
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "mueve la partición a la izquierda y la encoge desde %1 a %2"
 
-#: ../src/GParted_Core.cc:2012
+#: ../src/GParted_Core.cc:2036
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -852,216 +847,216 @@ msgstr ""
 "la partición nueva y la antigua tienen el mismo tamaño y la misma posición; "
 "omitiendo esta operación"
 
-#: ../src/GParted_Core.cc:2022
+#: ../src/GParted_Core.cc:2046
 msgid "old start: %1"
 msgstr "inicio antiguo: %1"
 
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:2047
 msgid "old end: %1"
 msgstr "fin antiguo: %1"
 
-#: ../src/GParted_Core.cc:2024
+#: ../src/GParted_Core.cc:2048
 msgid "old size: %1 (%2)"
 msgstr "tamaño antiguo: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2086 ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:2110 ../src/GParted_Core.cc:2858
 msgid "new start: %1"
 msgstr "nuevo inicio: %1"
 
-#: ../src/GParted_Core.cc:2087 ../src/GParted_Core.cc:2833
+#: ../src/GParted_Core.cc:2111 ../src/GParted_Core.cc:2859
 msgid "new end: %1"
 msgstr "nuevo final: %1"
 
-#: ../src/GParted_Core.cc:2088 ../src/GParted_Core.cc:2834
+#: ../src/GParted_Core.cc:2112 ../src/GParted_Core.cc:2860
 msgid "new size: %1 (%2)"
 msgstr "tamaño nuevo: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2124
+#: ../src/GParted_Core.cc:2150
 msgid "shrink file system"
 msgstr "encoger el sistema de archivos"
 
-#: ../src/GParted_Core.cc:2128
+#: ../src/GParted_Core.cc:2154
 msgid "grow file system"
 msgstr "aumentar el sistema de archivos"
 
-#: ../src/GParted_Core.cc:2131
+#: ../src/GParted_Core.cc:2157
 msgid "resize file system"
 msgstr "redimensionar el sistema de archivos"
 
-#: ../src/GParted_Core.cc:2134
+#: ../src/GParted_Core.cc:2160
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "el sistema de archivos nuevo y el antiguo tienen el mismo tamaño; omitiendo "
 "esta operación"
 
-#: ../src/GParted_Core.cc:2169
+#: ../src/GParted_Core.cc:2195
 msgid "grow file system to fill the partition"
 msgstr "aumentar el tamaño del sistema de archivos hasta llenar la partición"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2200
 msgid "growing is not available for this file system"
 msgstr "ampliar no está disponible para este sistema de ficheros."
 
-#: ../src/GParted_Core.cc:2193
+#: ../src/GParted_Core.cc:2219
 msgid "the destination is smaller than the source partition"
 msgstr "el destino es más pequeño que la partición de origen"
 
-#: ../src/GParted_Core.cc:2210
+#: ../src/GParted_Core.cc:2236
 msgid "copy file system of %1 to %2"
 msgstr "copiar el sistema de archivos de %1 a %2"
 
-#: ../src/GParted_Core.cc:2254
+#: ../src/GParted_Core.cc:2280
 msgid "perform read-only test"
 msgstr "realizar comprobación de sólo lectura"
 
-#: ../src/GParted_Core.cc:2308
+#: ../src/GParted_Core.cc:2334
 msgid "using internal algorithm"
 msgstr "usando algoritmo interno"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2312
+#: ../src/GParted_Core.cc:2338
 msgid "read %1"
 msgstr "leer %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2314
+#: ../src/GParted_Core.cc:2340
 msgid "copy %1"
 msgstr "copiar %1"
 
-#: ../src/GParted_Core.cc:2318
+#: ../src/GParted_Core.cc:2344
 msgid "finding optimal block size"
 msgstr "buscando tamaño de bloque óptimo"
 
-#: ../src/GParted_Core.cc:2358
+#: ../src/GParted_Core.cc:2384
 msgid "%1 seconds"
 msgstr "%1 segundos"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2376
+#: ../src/GParted_Core.cc:2402
 msgid "optimal block size is %1"
 msgstr "el tamaño de bloque óptimo es %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2394
+#: ../src/GParted_Core.cc:2420
 msgid "%1 (%2 B) read"
 msgstr "%1 (%2 B) leídos"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2396
+#: ../src/GParted_Core.cc:2422
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) copiados"
 
-#: ../src/GParted_Core.cc:2409
+#: ../src/GParted_Core.cc:2435
 msgid "roll back last transaction"
 msgstr "deshacer la última transacción"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2438
+#: ../src/GParted_Core.cc:2464
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "comprobar errores en el sistema de archivos en %1 y (si es posible) "
 "arreglarlos"
 
-#: ../src/GParted_Core.cc:2446
+#: ../src/GParted_Core.cc:2472
 msgid "checking is not available for this file system"
 msgstr "la comprobación no está disponible para este sistema de archivos"
 
-#: ../src/GParted_Core.cc:2472
+#: ../src/GParted_Core.cc:2498
 msgid "set partition type on %1"
 msgstr "establecer el tipo de partición en %1"
 
-#: ../src/GParted_Core.cc:2502
+#: ../src/GParted_Core.cc:2528
 msgid "new partition type: %1"
 msgstr "tipo de partición nuevo: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2531
+#: ../src/GParted_Core.cc:2557
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 de %2 leídos (quedan %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2559
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 de %2 copiado (quedan %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2541 ../src/GParted_Core.cc:2658
+#: ../src/GParted_Core.cc:2567 ../src/GParted_Core.cc:2684
 msgid "%1 of %2 read"
 msgstr "%1 de %2 leídos"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2543 ../src/GParted_Core.cc:2660
+#: ../src/GParted_Core.cc:2569 ../src/GParted_Core.cc:2686
 msgid "%1 of %2 copied"
 msgstr "%1 de %2 copiados"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2564
+#: ../src/GParted_Core.cc:2590
 msgid "read %1 using a block size of %2"
 msgstr "leer %1 usando un tamaño de bloque de %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2569
+#: ../src/GParted_Core.cc:2595
 msgid "copy %1 using a block size of %2"
 msgstr "copiar %1 usando un tamaño de bloque de %2"
 
-#: ../src/GParted_Core.cc:2719
+#: ../src/GParted_Core.cc:2745
 msgid "Error while writing block at sector %1"
 msgstr "Error al crear escribir el bloque en el sector %1"
 
-#: ../src/GParted_Core.cc:2722
+#: ../src/GParted_Core.cc:2748
 msgid "Error while reading block at sector %1"
 msgstr "Error al leer el bloque en el sector %1"
 
-#: ../src/GParted_Core.cc:2732
+#: ../src/GParted_Core.cc:2758
 msgid "calibrate %1"
 msgstr "calibrar %1"
 
-#: ../src/GParted_Core.cc:2777
+#: ../src/GParted_Core.cc:2803
 msgid "calculate new size and position of %1"
 msgstr "calcular el tamaño nuevo y la posición de %1"
 
-#: ../src/GParted_Core.cc:2781
+#: ../src/GParted_Core.cc:2807
 msgid "requested start: %1"
 msgstr "inicio solicitado: %1"
 
-#: ../src/GParted_Core.cc:2782
+#: ../src/GParted_Core.cc:2808
 msgid "requested end: %1"
 msgstr "fin solicitado: %1"
 
-#: ../src/GParted_Core.cc:2783
+#: ../src/GParted_Core.cc:2809
 msgid "requested size: %1 (%2)"
 msgstr "tamaño solicitado: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2925
+#: ../src/GParted_Core.cc:2953
 msgid "update boot sector of %1 file system on %2"
 msgstr "actualizar el sector de arranque del sistema de archivos %1 en %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2961
+#: ../src/GParted_Core.cc:2989
 msgid "Error trying to write to boot sector in %1"
 msgstr "Error al intentar escribir el sector de arranque en %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2967
+#: ../src/GParted_Core.cc:2995
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Error al intentar buscar la posición 0x1c en %s"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2974
+#: ../src/GParted_Core.cc:3002
 msgid "Error trying to open %1"
 msgstr "Error al intentar abrir %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2984
+#: ../src/GParted_Core.cc:3012
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Falló al establecer el número de sectores ocultos en %1 en el registro de "
 "arranque NTFS."
 
-#: ../src/GParted_Core.cc:2986
+#: ../src/GParted_Core.cc:3014
 msgid "You might try the following command to correct the problem:"
 msgstr "Puede probar el siguiente comando para corregir el problema:"
 
@@ -1252,23 +1247,23 @@ msgstr "%1 TiB"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:361
+#: ../src/Utils.cc:374
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Archivo temporal creado por GParted. Se eliminará.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:373
+#: ../src/Utils.cc:386
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr ""
-"Falló la operación de etiquetado: No se pudo escribir al archivo temporal "
-"%1.\n"
+"Falló la operación de etiquetado: No se pudo escribir al archivo temporal %"
+"1.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:385
+#: ../src/Utils.cc:398
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr ""
 "Falló la operación de etiquetado: No se pudo crear el archivo temporal %1.\n"
@@ -1776,19 +1771,16 @@ msgstr "¿Quiere continuar?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
 #: ../src/Win_GParted.cc:2120
-#| msgid "copy file system of %1 to %2"
 msgid "Search for file systems on %1"
 msgstr "Buscar sistemas de archivos en %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
 #: ../src/Win_GParted.cc:2134
-#| msgid "Cannot format this file system to %1."
 msgid "Searching for file systems on %1"
 msgstr "Buscando sistemas de archivos en %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
 #: ../src/Win_GParted.cc:2148
-#| msgid "copy file system of %1 to %2"
 msgid "No file systems found on %1"
 msgstr "No se encontraron sistemas de archivos en %1"
 
@@ -1864,8 +1856,7 @@ msgid ""
 "vast amounts of data, only root may run it."
 msgstr ""
 "Ya que GParted es una potente herramienta capaz de destruir tablas de "
-"particiones y gran cantidad de datos, sólo el usuario «root» puede "
-"ejecutarla."
+"particiones y gran cantidad de datos, sólo el usuario «root» puede ejecutarla."
 
 #. simulation..
 #: ../src/ntfs.cc:125
@@ -1932,8 +1923,8 @@ msgstr "copiar el sistema de archivos"
 #~ msgid ""
 #~ "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
 #~ msgstr ""
-#~ "Elegir el botón «Crear» BORRARÁ INMEDIATAMENTE TODOS LOS DATOS en el "
-#~ "disco %1"
+#~ "Elegir el botón «Crear» BORRARÁ INMEDIATAMENTE TODOS LOS DATOS en el disco "
+#~ "%1"
 
 #~ msgid "Features"
 #~ msgstr "Características"
