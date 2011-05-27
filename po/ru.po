@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted trunk\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&component=general\n"
-"POT-Creation-Date: 2011-01-29 22:05+0000\n"
-"PO-Revision-Date: 2011-05-22 21:58+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-05-24 17:55+0000\n"
+"PO-Revision-Date: 2011-05-27 09:48+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -285,7 +285,10 @@ msgid "Applying pending operations"
 msgstr "Применение запланированных операций"
 
 #: ../src/Dialog_Progress.cc:48
-msgid "Depending on the amount and type of operations this might take a long time."
+#| msgid ""
+#| "Depending on the amount and type of operations this might take a long "
+#| "time."
+msgid "Depending on the number and type of operations this might take a long time."
 msgstr "В зависимости от видов операций и их количества этот процесс может занять продолжительное время."
 
 #: ../src/Dialog_Progress.cc:61
@@ -365,7 +368,7 @@ msgstr "Сохранить подробности"
 msgid "GParted Details"
 msgstr "Подробности GParted"
 
-#: ../src/Dialog_Progress.cc:358
+#: ../src/Dialog_Progress.cc:362
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -373,7 +376,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:401
+#: ../src/Dialog_Progress.cc:405
 msgid "EXECUTING"
 msgstr "ВЫПОЛНЕНИЕ"
 
@@ -381,7 +384,7 @@ msgstr "ВЫПОЛНЕНИЕ"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:409
+#: ../src/Dialog_Progress.cc:413
 msgid "SUCCESS"
 msgstr "УСПЕШНО"
 
@@ -389,7 +392,7 @@ msgstr "УСПЕШНО"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:417
+#: ../src/Dialog_Progress.cc:421
 msgid "ERROR"
 msgstr "ОШИБКА"
 
@@ -398,7 +401,7 @@ msgstr "ОШИБКА"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:430
 msgid "INFO"
 msgstr "ИНФОРМАЦИЯ"
 
@@ -407,7 +410,7 @@ msgstr "ИНФОРМАЦИЯ"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:439
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -490,15 +493,14 @@ msgid "Manage flags on %1"
 msgstr "Управление флагами на %1"
 
 #: ../src/Dialog_Rescue_Data.cc:34
-#| msgid "shrink file system"
 msgid "Search disk for file systems"
 msgstr "Найти файловые системы на диске"
 
-#. TO TRANSLATORS: looks like    File systems found on on /dev/sdb
+#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
 #: ../src/Dialog_Rescue_Data.cc:51
-#| msgid "copy file system of %1 to %2"
-msgid "File systems found on on %1"
-msgstr "Файловые системы, найденные на %2"
+#| msgid "File systems found on on %1"
+msgid "File systems found on %1"
+msgstr "Файловые системы, найденные на %1"
 
 #: ../src/Dialog_Rescue_Data.cc:56
 msgid "Data found"
@@ -525,7 +527,6 @@ msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "Все смонтированные обзоры будут отмонтированы, как только будет закрыт этот диалог."
 
 #: ../src/Dialog_Rescue_Data.cc:105
-#| msgid "File system:"
 msgid "File systems"
 msgstr "Файловые системы"
 
@@ -535,12 +536,10 @@ msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: %2 (%3 МиБ)"
 
 #: ../src/Dialog_Rescue_Data.cc:135
-#| msgid "_View"
 msgid "View"
 msgstr "Обзор"
 
 #: ../src/Dialog_Rescue_Data.cc:172
-#| msgid "An error occurred while applying the operations"
 msgid "An error occurred while creating the read-only view."
 msgstr "При создании обзора, доступного только для чтения, произошла ошибка."
 
@@ -560,12 +559,10 @@ msgstr "Ошибка:"
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
 #: ../src/Dialog_Rescue_Data.cc:216
-#| msgid "The file system is damaged"
 msgid "The file system is mounted on:"
 msgstr "Точка монтирования файловой системы:"
 
 #: ../src/Dialog_Rescue_Data.cc:221
-#| msgid "Unable to open GParted Manual help file."
 msgid "Unable to open the default file manager"
 msgstr "Не удалось открыть файловый менеджер по умолчанию"
 
@@ -578,28 +575,26 @@ msgid "It is recommended that you do not use any overlapping file systems to avo
 msgstr "Рекомендуется избегать перекрытия файловых систем в целях предотвращения потери данных."
 
 #: ../src/Dialog_Rescue_Data.cc:244
-#| msgid ""
-#| "The partition could not be unmounted from the following mount points:"
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "Попробовать отключить следующие точки монтирования?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:325
+#: ../src/DMRaid.cc:322
 msgid "create missing %1 entries"
 msgstr "создать отсутствующие элементы %1"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:441
+#: ../src/DMRaid.cc:421
 msgid "delete affected %1 entries"
 msgstr "удалить затронутые элементы %1"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:464
+#: ../src/DMRaid.cc:444
 msgid "delete %1 entry"
 msgstr "удалить элемент %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:514
+#: ../src/DMRaid.cc:494
 msgid "update %1 entry"
 msgstr "обновить элемент %1"
 
@@ -611,21 +606,21 @@ msgid "Scanning %1"
 msgstr "Сканирование %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:226
+#: ../src/GParted_Core.cc:228
 msgid "Confirming %1"
 msgstr "Перепроверка %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:240
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Игнорируется устройство %1 с логическим размером сектора, равным %2 байта."
 
-#: ../src/GParted_Core.cc:240
+#: ../src/GParted_Core.cc:242
 msgid "GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes."
 msgstr "Для поддержки устройств с размером сектора более 512 байт GParted требуется libparted версии 2.2 или новее."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:277
+#: ../src/GParted_Core.cc:281
 msgid "Searching %1 partitions"
 msgstr "Поиск разделов на %1"
 
@@ -633,114 +628,114 @@ msgstr "Поиск разделов на %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:328
 msgid "unrecognized"
 msgstr "неизвестный"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:551
+#: ../src/GParted_Core.cc:555
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Раздел не может быть длиной в %1 сектор"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:560
+#: ../src/GParted_Core.cc:564
 msgid "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "Раздел с количеством секторов (%1), большим чем его длина (%2),является некорректным"
 
-#: ../src/GParted_Core.cc:625
+#: ../src/GParted_Core.cc:629
 msgid "libparted messages"
 msgstr "сообщения libparted"
 
-#: ../src/GParted_Core.cc:1040
+#: ../src/GParted_Core.cc:1054
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Унифицированная настройка ключей шифрования Linux на данный момент не поддерживается."
 
-#: ../src/GParted_Core.cc:1157
+#: ../src/GParted_Core.cc:1171
 msgid "Logical Volume Management is not yet supported."
 msgstr "Менеджер логических томов (LVM) на данный момент не поддерживается."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1186
+#: ../src/GParted_Core.cc:1200
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Невозможно обнаружить файловую систему! Возможные причины:"
 
-#: ../src/GParted_Core.cc:1188
+#: ../src/GParted_Core.cc:1202
 msgid "The file system is damaged"
 msgstr "файловая система повреждена"
 
-#: ../src/GParted_Core.cc:1190
+#: ../src/GParted_Core.cc:1204
 msgid "The file system is unknown to GParted"
 msgstr "файловая система неизвестна GParted"
 
-#: ../src/GParted_Core.cc:1192
+#: ../src/GParted_Core.cc:1206
 msgid "There is no file system available (unformatted)"
 msgstr "Отсутствует файловая система (раздел не отформатирован)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1195
+#: ../src/GParted_Core.cc:1209
 msgid "The device entry %1 is missing"
 msgstr "Запись устройства %1 отсутствует"
 
-#: ../src/GParted_Core.cc:1328
+#: ../src/GParted_Core.cc:1348
 msgid "Unable to find mount point"
 msgstr "Невозможно найти точку монтирования"
 
-#: ../src/GParted_Core.cc:1390
+#: ../src/GParted_Core.cc:1410
 msgid "Unable to read the contents of this file system!"
 msgstr "Невозможно прочитать содержимое этой файловой системы!"
 
-#: ../src/GParted_Core.cc:1392
+#: ../src/GParted_Core.cc:1412
 msgid "Because of this some operations may be unavailable."
 msgstr "Из-за этого некоторые операции могут быть недоступны."
 
-#: ../src/GParted_Core.cc:1396
+#: ../src/GParted_Core.cc:1416
 msgid "The cause might be a missing software package."
 msgstr "Возможная причина: отсутствует пакет приложения."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1399
+#: ../src/GParted_Core.cc:1419
 msgid "The following list of software packages is required for %1 file system support:  %2."
 msgstr "Для поддержки файловой системы %1 требуется следующее ПО: %2."
 
-#: ../src/GParted_Core.cc:1470
+#: ../src/GParted_Core.cc:1490
 msgid "create empty partition"
 msgstr "создать пустой раздел"
 
-#: ../src/GParted_Core.cc:1538
-#: ../src/GParted_Core.cc:2751
+#: ../src/GParted_Core.cc:1558
+#: ../src/GParted_Core.cc:2777
 msgid "path: %1"
 msgstr "путь: %1"
 
-#: ../src/GParted_Core.cc:1539
-#: ../src/GParted_Core.cc:2752
+#: ../src/GParted_Core.cc:1559
+#: ../src/GParted_Core.cc:2778
 msgid "start: %1"
 msgstr "начало: %1"
 
-#: ../src/GParted_Core.cc:1540
-#: ../src/GParted_Core.cc:2753
+#: ../src/GParted_Core.cc:1560
+#: ../src/GParted_Core.cc:2779
 msgid "end: %1"
 msgstr "конец: %1"
 
-#: ../src/GParted_Core.cc:1541
-#: ../src/GParted_Core.cc:2754
+#: ../src/GParted_Core.cc:1561
+#: ../src/GParted_Core.cc:2780
 msgid "size: %1 (%2)"
 msgstr "размер: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1571
+#: ../src/GParted_Core.cc:1593
 #: ../src/linux_swap.cc:83
 #: ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "создать новую файловую систему %1"
 
-#: ../src/GParted_Core.cc:1604
+#: ../src/GParted_Core.cc:1626
 msgid "delete partition"
 msgstr "удалить раздел"
 
-#: ../src/GParted_Core.cc:1644
+#: ../src/GParted_Core.cc:1668
 msgid "Clear partition label on %1"
 msgstr "Очистить метку раздела на %1"
 
-#: ../src/GParted_Core.cc:1649
+#: ../src/GParted_Core.cc:1673
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Установить метку раздела «%1» на %2"
 
@@ -749,289 +744,289 @@ msgstr "Установить метку раздела «%1» на %2"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1735
+#: ../src/GParted_Core.cc:1759
 msgid "moving requires old and new length to be the same"
 msgstr "для перемещения необходимо чтобы длины исходного и целевого раздела были одинаковыми"
 
-#: ../src/GParted_Core.cc:1765
+#: ../src/GParted_Core.cc:1789
 msgid "rollback last change to the partition table"
 msgstr "откатить последнее изменение в таблице разделов"
 
-#: ../src/GParted_Core.cc:1795
+#: ../src/GParted_Core.cc:1819
 msgid "move file system to the left"
 msgstr "переместить файловую систему влево"
 
-#: ../src/GParted_Core.cc:1797
+#: ../src/GParted_Core.cc:1821
 msgid "move file system to the right"
 msgstr "переместить файловую систему вправо"
 
-#: ../src/GParted_Core.cc:1800
+#: ../src/GParted_Core.cc:1824
 msgid "move file system"
 msgstr "переместить файловую систему"
 
-#: ../src/GParted_Core.cc:1802
+#: ../src/GParted_Core.cc:1826
 msgid "new and old file system have the same position.  Hence skipping this operation"
 msgstr "новая и старая файловые системы имеют одинаковое расположение, поэтому пропускаем эту операцию"
 
-#: ../src/GParted_Core.cc:1821
+#: ../src/GParted_Core.cc:1845
 msgid "perform real move"
 msgstr "подготовить перемещение"
 
-#: ../src/GParted_Core.cc:1868
+#: ../src/GParted_Core.cc:1892
 msgid "using libparted"
 msgstr "использование libparted"
 
-#: ../src/GParted_Core.cc:1908
+#: ../src/GParted_Core.cc:1932
 msgid "resizing requires old and new start to be the same"
 msgstr "для изменения размера необходимо, чтобы прежнее и новое начальные положения совпадали"
 
-#: ../src/GParted_Core.cc:1973
+#: ../src/GParted_Core.cc:1997
 msgid "resize/move partition"
 msgstr "изменить размер или переместить раздел"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:2000
 msgid "move partition to the right"
 msgstr "переместить раздел вправо"
 
-#: ../src/GParted_Core.cc:1979
+#: ../src/GParted_Core.cc:2003
 msgid "move partition to the left"
 msgstr "переместить раздел влево"
 
-#: ../src/GParted_Core.cc:1982
+#: ../src/GParted_Core.cc:2006
 msgid "grow partition from %1 to %2"
 msgstr "увеличить раздел с %1 до %2"
 
-#: ../src/GParted_Core.cc:1985
+#: ../src/GParted_Core.cc:2009
 msgid "shrink partition from %1 to %2"
 msgstr "уменьшить раздел с %1 до %2"
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2012
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "переместить раздел вправо и увеличить размер с %1 до %2"
 
-#: ../src/GParted_Core.cc:1991
+#: ../src/GParted_Core.cc:2015
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "переместить раздел вправо и уменьшить размер с %1 до %2"
 
-#: ../src/GParted_Core.cc:1994
+#: ../src/GParted_Core.cc:2018
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "переместить раздел влево и увеличить размер с %1 до %2"
 
-#: ../src/GParted_Core.cc:1997
+#: ../src/GParted_Core.cc:2021
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "переместить раздел влево и уменьшить размер с %1 до %2"
 
-#: ../src/GParted_Core.cc:2012
+#: ../src/GParted_Core.cc:2036
 msgid "new and old partition have the same size and position.  Hence skipping this operation"
 msgstr "новый и старый разделы имеют одинаковый размер и позицию, поэтому пропускаем эту операцию"
 
-#: ../src/GParted_Core.cc:2022
+#: ../src/GParted_Core.cc:2046
 msgid "old start: %1"
 msgstr "начинался: %1"
 
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:2047
 msgid "old end: %1"
 msgstr "заканчивался: %1"
 
-#: ../src/GParted_Core.cc:2024
+#: ../src/GParted_Core.cc:2048
 msgid "old size: %1 (%2)"
 msgstr "старый размер: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2086
-#: ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:2110
+#: ../src/GParted_Core.cc:2858
 msgid "new start: %1"
 msgstr "теперь начинается: %1"
 
-#: ../src/GParted_Core.cc:2087
-#: ../src/GParted_Core.cc:2833
+#: ../src/GParted_Core.cc:2111
+#: ../src/GParted_Core.cc:2859
 msgid "new end: %1"
 msgstr "теперь заканчивается: %1"
 
-#: ../src/GParted_Core.cc:2088
-#: ../src/GParted_Core.cc:2834
+#: ../src/GParted_Core.cc:2112
+#: ../src/GParted_Core.cc:2860
 msgid "new size: %1 (%2)"
 msgstr "новый размер: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2124
+#: ../src/GParted_Core.cc:2150
 msgid "shrink file system"
 msgstr "уменьшить размер файловой системы"
 
-#: ../src/GParted_Core.cc:2128
+#: ../src/GParted_Core.cc:2154
 msgid "grow file system"
 msgstr "увеличить размер файловой системы"
 
-#: ../src/GParted_Core.cc:2131
+#: ../src/GParted_Core.cc:2157
 msgid "resize file system"
 msgstr "изменить размер файловой системы"
 
-#: ../src/GParted_Core.cc:2134
+#: ../src/GParted_Core.cc:2160
 msgid "new and old file system have the same size.  Hence skipping this operation"
 msgstr "новая и старая файловые системы имеют одинаковый размер, поэтому пропускаем эту операцию"
 
-#: ../src/GParted_Core.cc:2169
+#: ../src/GParted_Core.cc:2195
 msgid "grow file system to fill the partition"
 msgstr "увеличить размер файловой системы, заполнив весь раздел"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2200
 msgid "growing is not available for this file system"
 msgstr "увеличение размера этой файловой системы не поддерживается"
 
-#: ../src/GParted_Core.cc:2193
+#: ../src/GParted_Core.cc:2219
 msgid "the destination is smaller than the source partition"
 msgstr "раздел назначения меньше, чем раздел-источник"
 
-#: ../src/GParted_Core.cc:2210
+#: ../src/GParted_Core.cc:2236
 msgid "copy file system of %1 to %2"
 msgstr "копировать файловую систему с %1 на %2"
 
-#: ../src/GParted_Core.cc:2254
+#: ../src/GParted_Core.cc:2280
 msgid "perform read-only test"
 msgstr "подготовить тест «только-чтение»"
 
-#: ../src/GParted_Core.cc:2308
+#: ../src/GParted_Core.cc:2334
 msgid "using internal algorithm"
 msgstr "использование внутреннего алгоритма"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2312
+#: ../src/GParted_Core.cc:2338
 msgid "read %1"
 msgstr "прочитано %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2314
+#: ../src/GParted_Core.cc:2340
 msgid "copy %1"
 msgstr "скопировано %1"
 
-#: ../src/GParted_Core.cc:2318
+#: ../src/GParted_Core.cc:2344
 msgid "finding optimal block size"
 msgstr "поиск оптимального размера блока"
 
-#: ../src/GParted_Core.cc:2358
+#: ../src/GParted_Core.cc:2384
 msgid "%1 seconds"
 msgstr "секунд: %1"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2376
+#: ../src/GParted_Core.cc:2402
 msgid "optimal block size is %1"
 msgstr "оптимальный размер блока — %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2394
+#: ../src/GParted_Core.cc:2420
 msgid "%1 (%2 B) read"
 msgstr "%1 (%2 Б) прочитано"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2396
+#: ../src/GParted_Core.cc:2422
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 Б) скопировано"
 
-#: ../src/GParted_Core.cc:2409
+#: ../src/GParted_Core.cc:2435
 msgid "roll back last transaction"
 msgstr "отменить последнюю транзакцию"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2438
+#: ../src/GParted_Core.cc:2464
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "проверить на ошибки файловую систему %1 и устранить их, если это возможно"
 
-#: ../src/GParted_Core.cc:2446
+#: ../src/GParted_Core.cc:2472
 msgid "checking is not available for this file system"
 msgstr "проверка на ошибки недоступна для этой файловой системы"
 
-#: ../src/GParted_Core.cc:2472
+#: ../src/GParted_Core.cc:2498
 msgid "set partition type on %1"
 msgstr "установить тип раздела на %1"
 
-#: ../src/GParted_Core.cc:2502
+#: ../src/GParted_Core.cc:2528
 msgid "new partition type: %1"
 msgstr "новый тип раздела: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2531
+#: ../src/GParted_Core.cc:2557
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 из %2 прочитано (%3 осталось)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2559
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 из %2 скопировано (%3 осталось)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2541
-#: ../src/GParted_Core.cc:2658
+#: ../src/GParted_Core.cc:2567
+#: ../src/GParted_Core.cc:2684
 msgid "%1 of %2 read"
 msgstr "%1 из %2 прочитано"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2543
-#: ../src/GParted_Core.cc:2660
+#: ../src/GParted_Core.cc:2569
+#: ../src/GParted_Core.cc:2686
 msgid "%1 of %2 copied"
 msgstr "%1 из %2 скопировано"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2564
+#: ../src/GParted_Core.cc:2590
 msgid "read %1 using a block size of %2"
 msgstr "прочитать %1, используя размер блока %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2569
+#: ../src/GParted_Core.cc:2595
 msgid "copy %1 using a block size of %2"
 msgstr "копировать %1, используя размер блока %2"
 
-#: ../src/GParted_Core.cc:2719
+#: ../src/GParted_Core.cc:2745
 msgid "Error while writing block at sector %1"
 msgstr "При записи блока в сектор %1 возникла ошибка"
 
-#: ../src/GParted_Core.cc:2722
+#: ../src/GParted_Core.cc:2748
 msgid "Error while reading block at sector %1"
 msgstr "При чтении блока из сектора %1 возникла ошибка"
 
-#: ../src/GParted_Core.cc:2732
+#: ../src/GParted_Core.cc:2758
 msgid "calibrate %1"
 msgstr "калибровка %1"
 
-#: ../src/GParted_Core.cc:2777
+#: ../src/GParted_Core.cc:2803
 msgid "calculate new size and position of %1"
 msgstr "вычислить новый размер и позицию %1"
 
-#: ../src/GParted_Core.cc:2781
+#: ../src/GParted_Core.cc:2807
 msgid "requested start: %1"
 msgstr "запрашивается начало: %1"
 
-#: ../src/GParted_Core.cc:2782
+#: ../src/GParted_Core.cc:2808
 msgid "requested end: %1"
 msgstr "запрашивается конец: %1"
 
-#: ../src/GParted_Core.cc:2783
+#: ../src/GParted_Core.cc:2809
 msgid "requested size: %1 (%2)"
 msgstr "запрашивается размер: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2925
+#: ../src/GParted_Core.cc:2953
 msgid "update boot sector of %1 file system on %2"
 msgstr "обновление загрузочного сектора файловой системы %1 на %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2961
+#: ../src/GParted_Core.cc:2989
 msgid "Error trying to write to boot sector in %1"
 msgstr "При записи блока в загрузочный сектор %1 возникла ошибка"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2967
+#: ../src/GParted_Core.cc:2995
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "При переходе к позиции 0x1c на %1 возникла ошибка"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2974
+#: ../src/GParted_Core.cc:3002
 msgid "Error trying to open %1"
 msgstr "При открытии %1 возникла ошибка"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2984
+#: ../src/GParted_Core.cc:3012
 msgid "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "Не удалось установить количество скрытых секторов равным %1 в загрузочной записи NTFS."
 
-#: ../src/GParted_Core.cc:2986
+#: ../src/GParted_Core.cc:3014
 msgid "You might try the following command to correct the problem:"
 msgstr "Чтобы исправить это, попробуйте выполнить следующую команду:"
 
@@ -1221,21 +1216,21 @@ msgstr "%1 ТиБ"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:361
+#: ../src/Utils.cc:374
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Временный файл, созданный gparted. Может быть удалён.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:373
+#: ../src/Utils.cc:386
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Не удалось провести операцию с меткой, потому что не удалось записать во временный файл %1.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:385
+#: ../src/Utils.cc:398
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Операция с метками не удалась, потому что не удалось создать временный файл %1.\n"
 
@@ -1687,19 +1682,16 @@ msgstr "Хотите продолжить?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
 #: ../src/Win_GParted.cc:2120
-#| msgid "copy file system of %1 to %2"
 msgid "Search for file systems on %1"
 msgstr "Найти файловые системы на %2"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
 #: ../src/Win_GParted.cc:2134
-#| msgid "Cannot format this file system to %1."
 msgid "Searching for file systems on %1"
 msgstr "Поиск файловых систем на %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
 #: ../src/Win_GParted.cc:2148
-#| msgid "copy file system of %1 to %2"
 msgid "No file systems found on %1"
 msgstr "На %1 файловых систем не обнаружено"
 
