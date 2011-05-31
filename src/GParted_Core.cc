@@ -331,7 +331,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				Partition partition_temp ;
 				partition_temp .Set_Unallocated( temp_device .get_path(),
 								 0,
-								 temp_device .length,
+								 temp_device .length - 1,
 								 temp_device .sector_size,
 								 false );
 				//Place libparted messages in this unallocated partition
