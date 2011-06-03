@@ -11,10 +11,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-06 20:30+0200\n"
-"PO-Revision-Date: 2009-06-29 20:42+0200\n"
+"POT-Creation-Date: 2011-06-03 19:06+0200\n"
+"PO-Revision-Date: 2011-05-16 23:00+0200\n"
 "Last-Translator: David Planella <david.planella@gmail.com>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,174 +25,210 @@ msgstr ""
 msgid "Create, reorganize, and delete partitions"
 msgstr "Creeu, reorganitzeu i suprimiu particions"
 
-#: ../gparted.desktop.in.in.h:2
+#. ==== GUI =========================
+#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
+#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1115
+#: ../src/Win_GParted.cc:1306
+msgid "GParted"
+msgstr "GParted"
+
+#: ../gparted.desktop.in.in.h:3
 msgid "GParted Partition Editor"
 msgstr "Editor de particions GParted"
 
+#: ../gparted.desktop.in.in.h:4
+msgid "Partition Editor"
+msgstr "Editor de particions"
+
 #: ../src/Dialog_Base_Partition.cc:56
-msgid "Free Space Preceding (MiB):"
+msgid "Free space preceding (MiB):"
 msgstr "Espai lliure precedent (MiB):"
 
 #. add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:65
-msgid "New Size (MiB):"
+msgid "New size (MiB):"
 msgstr "Mida nova (MiB):"
 
 #. add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:72
-msgid "Free Space Following (MiB):"
+msgid "Free space following (MiB):"
 msgstr "Espai lliure posterior (MiB):"
 
-#. add checkbutton
-#: ../src/Dialog_Base_Partition.cc:82
-msgid "Round to cylinders"
-msgstr "Arrodoneix a cilindres"
+#. add alignment
+#. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
+#: ../src/Dialog_Base_Partition.cc:96
+msgid "Align to:"
+msgstr "Alinea amb:"
 
-#: ../src/Dialog_Base_Partition.cc:173
+#. fill partition alignment menu
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:101
+msgid "Cylinder"
+msgstr "Cilindre"
+
+#. TO TRANSLATORS: Menu option for label "Align to:"
+#: ../src/Dialog_Base_Partition.cc:103
+msgid "MiB"
+msgstr "MiB"
+
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:105
+msgid "None"
+msgstr "Cap"
+
+#: ../src/Dialog_Base_Partition.cc:217
 msgid "Resize"
 msgstr "Redimensiona"
 
-#: ../src/Dialog_Base_Partition.cc:173 ../src/Win_GParted.cc:226
+#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:236
 msgid "Resize/Move"
 msgstr "Redimensiona/Mou"
 
-#: ../src/Dialog_Base_Partition.cc:190
-msgid "Minimum Size: %1 MiB"
+#: ../src/Dialog_Base_Partition.cc:234
+msgid "Minimum size: %1 MiB"
 msgstr "Mida mínima: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:191
-msgid "Maximum Size: %1 MiB"
+#: ../src/Dialog_Base_Partition.cc:235
+msgid "Maximum size: %1 MiB"
 msgstr "Mida màxima: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:26
+#: ../src/Dialog_Disklabel.cc:27
 msgid "Create partition table on %1"
 msgstr "Creació de la taula de particions a %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:46
+#: ../src/Dialog_Disklabel.cc:47
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "AVÍS: aquesta acció SUPRIMIRÀ TOTES LES DADES de TOT EL DISC %1"
 
-#: ../src/Dialog_Disklabel.cc:50
-msgid "Default is to create an msdos partition table."
+#: ../src/Dialog_Disklabel.cc:51
+msgid "Default is to create an MS-DOS partition table."
 msgstr ""
-"L'acció predeterminada és la creació d'una taula de particions de l'MSDOS."
+"L'acció predeterminada és la creació d'una taula de particions de l'MS-DOS."
 
-#: ../src/Dialog_Disklabel.cc:57
+#: ../src/Dialog_Disklabel.cc:58
 msgid "Advanced"
 msgstr "Avançat"
 
-#: ../src/Dialog_Disklabel.cc:65
+#: ../src/Dialog_Disklabel.cc:66
 msgid "Select new partition table type:"
 msgstr "Seleccioneu el tipus de taula de particions nou:"
 
-#. TO TRANSLATORS: looks like  Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk /dev/hda
-#: ../src/Dialog_Disklabel.cc:82
-msgid "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
-msgstr ""
-"En prémer el botó «Crea» SE SUPRIMIRAN IMMEDIATAMENT TOTES LES DADES del disc "
-"%1"
-
-#. TO TRANSLATORS: This is the name of the button referred to in the previous text  Choosing the Create button will ....
-#: ../src/Dialog_Disklabel.cc:89 ../src/DialogFeatures.cc:35
-msgid "Create"
-msgstr "Crea"
-
-#: ../src/Dialog_Partition_Copy.cc:35
+#: ../src/Dialog_Partition_Copy.cc:36
 msgid "Paste %1"
 msgstr "Enganxa %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:31
+#: ../src/Dialog_Partition_Info.cc:32
 msgid "Information about %1"
 msgstr "Informació sobre %1"
 
-#: ../src/Dialog_Partition_Info.cc:48
+#: ../src/Dialog_Partition_Info.cc:49
 msgid "Warning:"
 msgstr "Avís:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:151 ../src/Dialog_Partition_New.cc:111
-msgid "File System:"
+#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:119
+msgid "File system:"
 msgstr "Sistema de fitxers:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:161 ../src/Win_GParted.cc:445
+#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:458
 msgid "Size:"
 msgstr "Mida:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:177
+#: ../src/Dialog_Partition_Info.cc:178
 msgid "Used:"
 msgstr "Utilitzat:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:191
+#: ../src/Dialog_Partition_Info.cc:192
 msgid "Unused:"
 msgstr "No utilitzat:"
 
-#: ../src/Dialog_Partition_Info.cc:208
+#: ../src/Dialog_Partition_Info.cc:209
 msgid "Flags:"
 msgstr "Senyaladors:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:224 ../src/Win_GParted.cc:453
+#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:466
 msgid "Path:"
 msgstr "Camí:"
 
-#: ../src/Dialog_Partition_Info.cc:238
+#: ../src/Dialog_Partition_Info.cc:239
 msgid "Status:"
 msgstr "Estat:"
 
-#: ../src/Dialog_Partition_Info.cc:245
+#. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
+#. * means that this extended partition contains at least one logical
+#. * partition that is mounted or otherwise active.
+#.
+#: ../src/Dialog_Partition_Info.cc:251
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Ocupada (almenys una partició lògica està muntada)"
 
-#: ../src/Dialog_Partition_Info.cc:247
+#. TO TRANSLATORS:  Active
+#. * means that this linux swap partition is enabled and being used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:259
 msgid "Active"
 msgstr "Activa"
 
-#: ../src/Dialog_Partition_Info.cc:249
+#. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
+#: ../src/Dialog_Partition_Info.cc:265
 msgid "Mounted on %1"
 msgstr "Muntada a %1"
 
-#: ../src/Dialog_Partition_Info.cc:253
+#. TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
+#. * means that this extended partition contains no mounted or otherwise
+#. * active partitions.
+#.
+#: ../src/Dialog_Partition_Info.cc:275
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "No ocupada (no hi ha particions lògiques muntades)"
 
-#: ../src/Dialog_Partition_Info.cc:255
+#. TO TRANSLATORS:  Not active
+#. *  means that this linux swap partition is not enabled and is not
+#. *  in use by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:283
 msgid "Not active"
 msgstr "No activa"
 
-#: ../src/Dialog_Partition_Info.cc:257
+#. TO TRANSLATORS:  Not mounted
+#. * means that this partition is not mounted.
+#.
+#: ../src/Dialog_Partition_Info.cc:290
 msgid "Not mounted"
 msgstr "No muntada"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:265 ../src/Dialog_Partition_Label.cc:43
-#: ../src/Dialog_Partition_New.cc:123
+#: ../src/Dialog_Partition_Info.cc:299 ../src/Dialog_Partition_Label.cc:43
+#: ../src/Dialog_Partition_New.cc:131
 msgid "Label:"
 msgstr "Etiqueta:"
 
-#: ../src/Dialog_Partition_Info.cc:278
+#: ../src/Dialog_Partition_Info.cc:312
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:292
-msgid "First Sector:"
+#: ../src/Dialog_Partition_Info.cc:326
+msgid "First sector:"
 msgstr "Primer sector:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:302
-msgid "Last Sector:"
+#: ../src/Dialog_Partition_Info.cc:336
+msgid "Last sector:"
 msgstr "Últim sector:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:312 ../src/Win_GParted.cc:506
-msgid "Total Sectors:"
+#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:519
+msgid "Total sectors:"
 msgstr "Sectors totals:"
 
 #. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
@@ -200,53 +237,50 @@ msgid "Set partition label on %1"
 msgstr "Estableix l'etiqueta de la partició a %1"
 
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:26
+#: ../src/Dialog_Partition_New.cc:27
 msgid "Create new Partition"
 msgstr "Crea una partició nova"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:77
+#: ../src/Dialog_Partition_New.cc:79
 msgid "Create as:"
 msgstr "Crea com a:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:73
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Partició primària"
 
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:76
-#: ../src/OperationDelete.cc:75
+#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:78
+#: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Partició lògica"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:79
+#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Partició estesa"
 
-#: ../src/Dialog_Partition_New.cc:185
+#: ../src/Dialog_Partition_New.cc:198
 msgid "New Partition #%1"
 msgstr "Partició nova #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:73
+#: ../src/Dialog_Partition_Resize_Move.cc:74
 msgid "Resize/Move %1"
 msgstr "Redimensiona/Mou %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:78
+#: ../src/Dialog_Partition_Resize_Move.cc:79
 msgid "Resize %1"
 msgstr "Redimensiona %1"
 
 # You apply changes, not operations. jm
-#: ../src/Dialog_Progress.cc:32 ../src/Dialog_Progress.cc:44
+#: ../src/Dialog_Progress.cc:33
 msgid "Applying pending operations"
 msgstr "S'estan realitzant les operacions pendents"
 
-#: ../src/Dialog_Progress.cc:46
-msgid "Applying all listed operations."
-msgstr "S'estan realitzant totes les operacions llistades."
-
 #: ../src/Dialog_Progress.cc:48
+#, fuzzy
 msgid ""
-"Depending on the amount and type of operations this might take a long time."
+"Depending on the number and type of operations this might take a long time."
 msgstr ""
 "Depenent de la quantitat i el tipus d'operacions podria tardar una bona "
 "estona."
@@ -298,107 +332,128 @@ msgstr "IMPORTANT"
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Si voleu ajuda, heu de proporcionar els detalls desats."
 
-#: ../src/Dialog_Progress.cc:279
+#. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
+#: ../src/Dialog_Progress.cc:280
 msgid "See %1 for more information."
 msgstr "Vegeu %1 per a més informació."
 
-#: ../src/Dialog_Progress.cc:312
+#: ../src/Dialog_Progress.cc:313
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Esteu segur de voler cancel·lar l'operació actual?"
 
-#: ../src/Dialog_Progress.cc:318
+#: ../src/Dialog_Progress.cc:319
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "La cancel·lació d'una operació pot malmetre GREUMENT el sistema de fitxers."
 
-#: ../src/Dialog_Progress.cc:320
+#: ../src/Dialog_Progress.cc:321
 msgid "Continue Operation"
 msgstr "Continua l'operació"
 
-#: ../src/Dialog_Progress.cc:321
+#: ../src/Dialog_Progress.cc:322
 msgid "Cancel Operation"
 msgstr "Cancel·la l'operació"
 
-#: ../src/Dialog_Progress.cc:334
+#: ../src/Dialog_Progress.cc:335
 msgid "Save Details"
 msgstr "Desa els detalls"
 
-#: ../src/Dialog_Progress.cc:353
+#: ../src/Dialog_Progress.cc:354
 msgid "GParted Details"
 msgstr "Detalls del GParted"
 
-#. ==== GUI =========================
-#: ../src/Dialog_Progress.cc:356 ../src/Win_GParted.cc:69
-#: ../src/Win_GParted.cc:1108 ../src/Win_GParted.cc:1263
-msgid "GParted"
-msgstr "GParted"
-
-#: ../src/Dialog_Progress.cc:357
+#: ../src/Dialog_Progress.cc:362
 msgid "Libparted"
 msgstr "Libparted"
 
-#: ../src/Dialog_Progress.cc:395
+#. TO TRANSLATORS:  EXECUTING
+#. * means that the status for this operation is
+#. * executing or currently in progress.
+#.
+#: ../src/Dialog_Progress.cc:405
 msgid "EXECUTING"
 msgstr "EXECUCIÓ"
 
-#: ../src/Dialog_Progress.cc:398
+#. TO" TRANSLATORS:  SUCCESS
+#. * means that the status for this operation is
+#. * completed successfully.
+#.
+#: ../src/Dialog_Progress.cc:413
 msgid "SUCCESS"
 msgstr "ÈXIT"
 
-#: ../src/Dialog_Progress.cc:401
+#. TO TRANSLATORS:  ERROR
+#. * means that the status for this operation is
+#. * completed with errors.
+#.
+#: ../src/Dialog_Progress.cc:421
 msgid "ERROR"
 msgstr "ERROR"
 
-#: ../src/Dialog_Progress.cc:404
+#. TO TRANSLATORS:  INFO
+#. * means that the status for this operation is
+#. * for your information , or messages from the
+#. * libparted library.
+#.
+#: ../src/Dialog_Progress.cc:430
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/Dialog_Progress.cc:407
+#. TO TRANSLATORS:  N/A
+#. * means that the status for this operation is
+#. * not applicable because the operation is not
+#. * supported on the file system in the partition.
+#.
+#: ../src/Dialog_Progress.cc:439
 msgid "N/A"
 msgstr "NO DISPONIBLE"
 
-#: ../src/DialogFeatures.cc:27
+#: ../src/DialogFeatures.cc:28
 msgid "File System Support"
 msgstr "Compatibilitat amb els sistemes de fitxers"
 
-#: ../src/DialogFeatures.cc:34 ../src/TreeView_Detail.cc:35
+#: ../src/DialogFeatures.cc:35 ../src/TreeView_Detail.cc:36
 msgid "File System"
 msgstr "Sistema de fitxers"
 
 #: ../src/DialogFeatures.cc:36
+msgid "Create"
+msgstr "Crea"
+
+#: ../src/DialogFeatures.cc:37
 msgid "Grow"
 msgstr "Engrandeix"
 
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:38
 msgid "Shrink"
 msgstr "Encongeix"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:39
 msgid "Move"
 msgstr "Mou"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:40
 msgid "Copy"
 msgstr "Copia"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:41
 msgid "Check"
 msgstr "Comprova"
 
-#: ../src/DialogFeatures.cc:41 ../src/TreeView_Detail.cc:37
+#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:38
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../src/DialogFeatures.cc:42
+#: ../src/DialogFeatures.cc:43
 msgid "Required Software"
 msgstr "Programari requerit"
 
-#: ../src/DialogFeatures.cc:56
+#: ../src/DialogFeatures.cc:57
 msgid "This chart shows the actions supported on file systems."
 msgstr ""
 "Aquest diagrama mostra les accions que funcionen en els sistemes de fitxers."
 
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:59
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -407,20 +462,26 @@ msgstr ""
 "és degut en part a la natura dels sistemes de fitxers i a les limitacions "
 "del programari requerit."
 
-#: ../src/DialogFeatures.cc:68
+#. TO TRANSLATORS:  Available
+#. * means that this action is valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:73
 msgid "Available"
 msgstr "Disponible"
 
-#: ../src/DialogFeatures.cc:74
+#. TO TRANSLATORS:  Not Available
+#. * means that this action is not valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:83
 msgid "Not Available"
 msgstr "No disponible"
 
-#: ../src/DialogFeatures.cc:82
+#: ../src/DialogFeatures.cc:89
 msgid "Legend"
 msgstr "Llegenda"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:95
+#: ../src/DialogFeatures.cc:102
 msgid "Rescan For Supported Actions"
 msgstr "Torna a analitzar les accions compatibles"
 
@@ -428,443 +489,600 @@ msgstr "Torna a analitzar les accions compatibles"
 msgid "Manage flags on %1"
 msgstr "Gestiona els senyaladors de %1"
 
+#: ../src/Dialog_Rescue_Data.cc:34
+msgid "Search disk for file systems"
+msgstr "Cerca sistemes de fitxers al disc"
+
+#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
+#: ../src/Dialog_Rescue_Data.cc:51
+#, fuzzy
+msgid "File systems found on %1"
+msgstr "S'han trobat sistemes de fitxers a %1"
+
+#: ../src/Dialog_Rescue_Data.cc:56
+msgid "Data found"
+msgstr "S'han trobat dades"
+
+#: ../src/Dialog_Rescue_Data.cc:60
+msgid "Data found with inconsistencies"
+msgstr "S'han trobat dades amb inconsistències"
+
+#: ../src/Dialog_Rescue_Data.cc:62
+msgid "WARNING!: The file systems marked with (!) are inconsistent."
+msgstr "ATENCIÓ: Els sistemes de fitxers marcats amb (!) són inconsistents."
+
+#: ../src/Dialog_Rescue_Data.cc:64
+msgid "You might encounter errors trying to view these file systems."
+msgstr ""
+"Podeu trobar errors en intentar visualitzar aquests sistemes de fitxers."
+
+#: ../src/Dialog_Rescue_Data.cc:80
+msgid "The 'View' buttons create read-only views of each file system."
+msgstr ""
+"Els botons «Visualitza» creen vistes de sols lectura de cada sistema de "
+"fitxers."
+
+#: ../src/Dialog_Rescue_Data.cc:82
+msgid "All mounted views will be unmounted when you close this dialog."
+msgstr ""
+"Totes les visualitzacions muntades es desmuntaran quan tanqueu aquest diàleg."
+
+#: ../src/Dialog_Rescue_Data.cc:105
+msgid "File systems"
+msgstr "Sistemes de fitxers"
+
+#. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
+#: ../src/Dialog_Rescue_Data.cc:127
+msgid "#%1: %2 (%3 MiB)"
+msgstr "#%1: %2 (%3 MiB)"
+
+#: ../src/Dialog_Rescue_Data.cc:135
+msgid "View"
+msgstr "Visualitza"
+
+#: ../src/Dialog_Rescue_Data.cc:172
+msgid "An error occurred while creating the read-only view."
+msgstr "S'ha produït un error en crear la vista de sols lectura."
+
+#: ../src/Dialog_Rescue_Data.cc:174
+msgid ""
+"Either the file system can not be mounted (like swap), or there are "
+"inconsistencies or errors in the file system."
+msgstr ""
+"O els sistema de fitxers no es pot muntar (com una partició d'intercanvi), o "
+"hi ha inconsistències o errors en el sistema de fitxers."
+
+#: ../src/Dialog_Rescue_Data.cc:178
+msgid "Failed creating read-only view"
+msgstr "Ha fallat la creació de la vista de sols lectura"
+
+#: ../src/Dialog_Rescue_Data.cc:208
+msgid "Error:"
+msgstr "Error:"
+
+#. TO TRANSLATORS: looks like
+#. * The file system is mounted on:
+#. * /tmp/gparted-roview-Nlhb3R.
+#: ../src/Dialog_Rescue_Data.cc:216
+msgid "The file system is mounted on:"
+msgstr "El sistema de fitxers està muntat a:"
+
+#: ../src/Dialog_Rescue_Data.cc:221
+msgid "Unable to open the default file manager"
+msgstr "No s'ha pogut obrir el gestor de fitxers predeterminat."
+
+#: ../src/Dialog_Rescue_Data.cc:240
+msgid ""
+"Warning: The detected file system area overlaps with at least one existing "
+"partition."
+msgstr ""
+"Atenció: L'àrea del sistema de fitxers detectat es superposa amb, com a "
+"mínim, una partició existent."
+
+#: ../src/Dialog_Rescue_Data.cc:242
+msgid ""
+"It is recommended that you do not use any overlapping file systems to avoid "
+"disturbing existing data."
+msgstr ""
+"Es recomana que no utilitzeu cap sistema de fitxers superposat per evitar "
+"interferències amb dades existents."
+
+#: ../src/Dialog_Rescue_Data.cc:244
+msgid "Do you want to try to deactivate the following mount points?"
+msgstr "Voleu intentar desactivar els punts de muntatge següents?"
+
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:235
+#: ../src/DMRaid.cc:322
 msgid "create missing %1 entries"
 msgstr "crea les entrades %1 que manquen"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:329
+#: ../src/DMRaid.cc:421
 msgid "delete affected %1 entries"
 msgstr "suprimeix les entrades %1 afectades"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:352
+#: ../src/DMRaid.cc:444
 msgid "delete %1 entry"
 msgstr "suprimeix l'entrada %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:402
+#: ../src/DMRaid.cc:494
 msgid "update %1 entry"
 msgstr "actualitza l'entrada %1"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:201 ../src/GParted_Core.cc:212
+#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
+#: ../src/GParted_Core.cc:205
 msgid "Scanning %1"
 msgstr "S'està analitzant %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:233
+#: ../src/GParted_Core.cc:228
 msgid "Confirming %1"
 msgstr "S'està confirmant %1"
 
+#. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
+#: ../src/GParted_Core.cc:240
+msgid "Ignoring device %1 with logical sector size of %2 bytes."
+msgstr ""
+"S'està ignorant el dispositiu %1 amb una mida de sector lògic de %2 bytes."
+
+#: ../src/GParted_Core.cc:242
+msgid ""
+"GParted requires libparted version 2.2 or higher to support devices with "
+"sector sizes larger than 512 bytes."
+msgstr ""
+"El Gparted requereix la versió 2.2 o superior de la libparted per admetre "
+"dispositius amb mida de sector més gran que 512 bytes."
+
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:253
+#: ../src/GParted_Core.cc:281
 msgid "Searching %1 partitions"
 msgstr "S'estan cercant les particions de %1"
 
-#: ../src/GParted_Core.cc:289
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this
+#. * disk device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:328
 msgid "unrecognized"
 msgstr "desconegut"
 
-#: ../src/GParted_Core.cc:370
+#. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
+#: ../src/GParted_Core.cc:555
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "La partició no pot tenir una llargada de %1 sectors"
 
-#: ../src/GParted_Core.cc:378
+#. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
+#: ../src/GParted_Core.cc:564
 msgid ""
-"A partition with used sectors (%1) greater than it's length (%2) is not valid"
+"A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "No és vàlida una partició amb més sectors utilitzats (%1) que la seva "
 "llargada (%2)"
 
-#: ../src/GParted_Core.cc:444
+#: ../src/GParted_Core.cc:629
 msgid "libparted messages"
 msgstr "missatges de libparted"
 
-#: ../src/GParted_Core.cc:852
+#: ../src/GParted_Core.cc:1054
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "El xifrat per Linux Unified Key Setup encara no està implementat."
 
-#: ../src/GParted_Core.cc:931
+#: ../src/GParted_Core.cc:1171
 msgid "Logical Volume Management is not yet supported."
 msgstr "La gestió de volums lògics encara no està implementada."
 
-#: ../src/GParted_Core.cc:954
-msgid "BTRFS is not yet supported."
-msgstr "El BTRFS encara no està implementat."
-
 #. no file system found....
-#: ../src/GParted_Core.cc:961
+#: ../src/GParted_Core.cc:1200
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "No s'ha pogut detectar el sistema de fitxers. Les raons possibles són:"
 
-#: ../src/GParted_Core.cc:963
+#: ../src/GParted_Core.cc:1202
 msgid "The file system is damaged"
 msgstr "El sistema de fitxers està malmès"
 
-#: ../src/GParted_Core.cc:965
+#: ../src/GParted_Core.cc:1204
 msgid "The file system is unknown to GParted"
 msgstr "EL GParted no reconeix aquest sistema de fitxers"
 
-#: ../src/GParted_Core.cc:967
+#: ../src/GParted_Core.cc:1206
 msgid "There is no file system available (unformatted)"
 msgstr "No hi ha cap sistema de fitxers disponible (no formatada)"
 
-#: ../src/GParted_Core.cc:1093
+#. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
+#: ../src/GParted_Core.cc:1209
+msgid "The device entry %1 is missing"
+msgstr "Manca l'entrada del dispositiu %1"
+
+#: ../src/GParted_Core.cc:1348
 msgid "Unable to find mount point"
 msgstr "No s'ha pogut trobar el punt de muntatge"
 
-#: ../src/GParted_Core.cc:1111
+#: ../src/GParted_Core.cc:1410
 msgid "Unable to read the contents of this file system!"
 msgstr "No s'ha pogut llegir el contingut d'aquest sistema de fitxers."
 
-#: ../src/GParted_Core.cc:1113
+#: ../src/GParted_Core.cc:1412
 msgid "Because of this some operations may be unavailable."
 msgstr "Això pot fer que algunes operacions no estiguin disponibles."
 
-#: ../src/GParted_Core.cc:1225
+#: ../src/GParted_Core.cc:1416
+msgid "The cause might be a missing software package."
+msgstr "La causa pot ser que falti un paquet de programari."
+
+#. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
+#: ../src/GParted_Core.cc:1419
+msgid ""
+"The following list of software packages is required for %1 file system "
+"support:  %2."
+msgstr ""
+"Cal la llista de paquets de programari següent per admetre el sistema de "
+"fitxers %1: %2."
+
+#: ../src/GParted_Core.cc:1490
 msgid "create empty partition"
 msgstr "crea una partició buida"
 
-#: ../src/GParted_Core.cc:1293 ../src/GParted_Core.cc:2405
+#: ../src/GParted_Core.cc:1558 ../src/GParted_Core.cc:2777
 msgid "path: %1"
 msgstr "camí: %1"
 
-#: ../src/GParted_Core.cc:1294 ../src/GParted_Core.cc:2406
+#: ../src/GParted_Core.cc:1559 ../src/GParted_Core.cc:2778
 msgid "start: %1"
 msgstr "inici: %1"
 
-#: ../src/GParted_Core.cc:1295 ../src/GParted_Core.cc:2407
+#: ../src/GParted_Core.cc:1560 ../src/GParted_Core.cc:2779
 msgid "end: %1"
 msgstr "final: %1"
 
-#: ../src/GParted_Core.cc:1296 ../src/GParted_Core.cc:2408
+#: ../src/GParted_Core.cc:1561 ../src/GParted_Core.cc:2780
 msgid "size: %1 (%2)"
 msgstr "mida: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1326 ../src/linux_swap.cc:79 ../src/xfs.cc:236
+#: ../src/GParted_Core.cc:1593 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "crea un sistema de fitxers nou de tipus %1"
 
-#: ../src/GParted_Core.cc:1359
+#: ../src/GParted_Core.cc:1626
 msgid "delete partition"
 msgstr "suprimeix la partició"
 
-#: ../src/GParted_Core.cc:1399
+#: ../src/GParted_Core.cc:1668
 msgid "Clear partition label on %1"
 msgstr "Suprimeix l'etiqueta de la partició a %1"
 
-#: ../src/GParted_Core.cc:1404
+#: ../src/GParted_Core.cc:1673
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Estableix l'etiqueta de partició com a «%1» a %2"
 
-#: ../src/GParted_Core.cc:1483
+#. TO TRANSLATORS:  moving requires old and new length to be the same
+#. * means that the length in bytes of the old partition and new partition
+#. * must be the same.  If the sector sizes of the old partition and the
+#. * new partition are the same, then the length in sectors must be the same.
+#.
+#: ../src/GParted_Core.cc:1759
 msgid "moving requires old and new length to be the same"
 msgstr "per a poder moure la mida anterior i la nova han de ser iguals"
 
-#: ../src/GParted_Core.cc:1500
+#: ../src/GParted_Core.cc:1789
 msgid "rollback last change to the partition table"
 msgstr "desfés l'últim canvi a la taula de particions"
 
-#: ../src/GParted_Core.cc:1529
+#: ../src/GParted_Core.cc:1819
 msgid "move file system to the left"
 msgstr "mou el sistema de fitxers cap a l'esquerra"
 
-#: ../src/GParted_Core.cc:1531
+#: ../src/GParted_Core.cc:1821
 msgid "move file system to the right"
 msgstr "mou el sistema de fitxers cap a la dreta"
 
-#: ../src/GParted_Core.cc:1534
+#: ../src/GParted_Core.cc:1824
 msgid "move file system"
 msgstr "mou el sistema de fitxers"
 
-#: ../src/GParted_Core.cc:1536
+#: ../src/GParted_Core.cc:1826
 msgid ""
-"new and old file system have the same position -- skipping this operation"
+"new and old file system have the same position.  Hence skipping this "
+"operation"
 msgstr ""
-"el sistema de fitxers nou i l'antic són a la mateixa posició -- s'ometrà "
-"aquesta operació"
+"el sistema de fitxers nou i l'antic són a la mateixa posició. Per tant "
+"s'ometrà aquesta operació"
 
-#: ../src/GParted_Core.cc:1555
+#: ../src/GParted_Core.cc:1845
 msgid "perform real move"
 msgstr "realitza un moviment real"
 
-#: ../src/GParted_Core.cc:1597
+#: ../src/GParted_Core.cc:1892
 msgid "using libparted"
 msgstr "s'està utilitzant libparted"
 
-#: ../src/GParted_Core.cc:1637
+#: ../src/GParted_Core.cc:1932
 msgid "resizing requires old and new start to be the same"
 msgstr "per a redimensionar cal que l'anterior inici i el nou siguin el mateix"
 
-#: ../src/GParted_Core.cc:1702
+#: ../src/GParted_Core.cc:1997
 msgid "resize/move partition"
 msgstr "redimensiona/mou la partició"
 
-#: ../src/GParted_Core.cc:1705
+#: ../src/GParted_Core.cc:2000
 msgid "move partition to the right"
 msgstr "mou la partició a la dreta"
 
-#: ../src/GParted_Core.cc:1708
+#: ../src/GParted_Core.cc:2003
 msgid "move partition to the left"
 msgstr "mou la partició a l'esquerra"
 
-#: ../src/GParted_Core.cc:1711
+#: ../src/GParted_Core.cc:2006
 msgid "grow partition from %1 to %2"
 msgstr "engrandeix la partició de %1 a %2"
 
-#: ../src/GParted_Core.cc:1714
+#: ../src/GParted_Core.cc:2009
 msgid "shrink partition from %1 to %2"
 msgstr "disminueix la partició de %1 a %2"
 
-#: ../src/GParted_Core.cc:1717
+#: ../src/GParted_Core.cc:2012
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "mou la partició a la dreta i engrandeix-la de %1 a %2"
 
-#: ../src/GParted_Core.cc:1720
+#: ../src/GParted_Core.cc:2015
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "mou la partició a la dreta i disminueix-la de %1 a %2"
 
-#: ../src/GParted_Core.cc:1723
+#: ../src/GParted_Core.cc:2018
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "mou la partició a l'esquerra i engrandeix-la de %1 a %2"
 
-#: ../src/GParted_Core.cc:1726
+#: ../src/GParted_Core.cc:2021
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "mou la partició a l'esquerra i disminueix-la de %1 a %2"
 
-#: ../src/GParted_Core.cc:1741
+#: ../src/GParted_Core.cc:2036
 msgid ""
-"new and old partition have the same size and position -- skipping this "
+"new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
-"la partició nova i l'antiga tenen la mateixa mida i la mateixa posició -- "
-"s'ometrà aquesta operació"
+"la partició nova i antiga tenen la mateixa mida i posició. Per tant s'ometrà "
+"aquesta operació"
 
-#: ../src/GParted_Core.cc:1751
+#: ../src/GParted_Core.cc:2046
 msgid "old start: %1"
 msgstr "inici anterior: %1"
 
-#: ../src/GParted_Core.cc:1752
+#: ../src/GParted_Core.cc:2047
 msgid "old end: %1"
 msgstr "final anterior: %1"
 
-#: ../src/GParted_Core.cc:1753
+#: ../src/GParted_Core.cc:2048
 msgid "old size: %1 (%2)"
 msgstr "mida anterior: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1812 ../src/GParted_Core.cc:2486
+#: ../src/GParted_Core.cc:2110 ../src/GParted_Core.cc:2858
 msgid "new start: %1"
 msgstr "inici nou: %1"
 
-#: ../src/GParted_Core.cc:1813 ../src/GParted_Core.cc:2487
+#: ../src/GParted_Core.cc:2111 ../src/GParted_Core.cc:2859
 msgid "new end: %1"
 msgstr "final nou: %1"
 
-#: ../src/GParted_Core.cc:1814 ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2112 ../src/GParted_Core.cc:2860
 msgid "new size: %1 (%2)"
 msgstr "mida nova: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1850
+#: ../src/GParted_Core.cc:2150
 msgid "shrink file system"
 msgstr "encongeix el sistema de fitxers"
 
-#: ../src/GParted_Core.cc:1854
+#: ../src/GParted_Core.cc:2154
 msgid "grow file system"
 msgstr "engrandeix el sistema de fitxers"
 
-#: ../src/GParted_Core.cc:1857
+#: ../src/GParted_Core.cc:2157
 msgid "resize file system"
 msgstr "redimensiona el sistema de fitxers"
 
-#: ../src/GParted_Core.cc:1860
-msgid "new and old file system have the same size -- skipping this operation"
+#: ../src/GParted_Core.cc:2160
+msgid ""
+"new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
-"el sistema de fitxers nou i l'antic tenen la mateixa mida -- s'ometrà "
+"els sistemes de fitxers nou i antic tenen la mateixa mida. Per tant s'ometrà "
 "aquesta operació"
 
-#: ../src/GParted_Core.cc:1895
+#: ../src/GParted_Core.cc:2195
 msgid "grow file system to fill the partition"
 msgstr "engrandeix el sistema de fitxers fins a emplenar la partició"
 
-#: ../src/GParted_Core.cc:1900
+#: ../src/GParted_Core.cc:2200
 msgid "growing is not available for this file system"
 msgstr "aquest sistema de fitxers no es pot engrandir"
 
-#: ../src/GParted_Core.cc:1919
+#: ../src/GParted_Core.cc:2219
 msgid "the destination is smaller than the source partition"
 msgstr "la partició de destinació és més petita que la d'origen"
 
-#: ../src/GParted_Core.cc:1933
+#: ../src/GParted_Core.cc:2236
 msgid "copy file system of %1 to %2"
 msgstr "copia el sistema de fitxers de %1 a %2"
 
-#: ../src/GParted_Core.cc:1977
+#: ../src/GParted_Core.cc:2280
 msgid "perform read-only test"
 msgstr "realitza una prova de només lectura"
 
-#: ../src/GParted_Core.cc:2025
+#: ../src/GParted_Core.cc:2334
 msgid "using internal algorithm"
 msgstr "s'està utilitzant un algorisme intern"
 
-#: ../src/GParted_Core.cc:2027
-msgid "read %1 sectors"
-msgstr "llegeix %1 sectors"
+#. TO TRANSLATORS: looks like  read 1.00 MiB
+#: ../src/GParted_Core.cc:2338
+msgid "read %1"
+msgstr "llegeix %1"
 
-#: ../src/GParted_Core.cc:2027
-msgid "copy %1 sectors"
-msgstr "copia %1 sectors"
+#. TO TRANSLATORS: looks like  copy 1.00 MiB
+#: ../src/GParted_Core.cc:2340
+msgid "copy %1"
+msgstr "copia %1"
 
-#: ../src/GParted_Core.cc:2029
-msgid "finding optimal blocksize"
+#: ../src/GParted_Core.cc:2344
+msgid "finding optimal block size"
 msgstr "s'està cercant la mida de bloc òptima"
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2384
 msgid "%1 seconds"
 msgstr "%1 segons"
 
-#: ../src/GParted_Core.cc:2082
-msgid "optimal blocksize is %1 sectors (%2)"
-msgstr "la mida de blocs òptima és %1 sectors (%2)"
+#. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
+#: ../src/GParted_Core.cc:2402
+msgid "optimal block size is %1"
+msgstr "la mida de bloc òptima és %1"
 
-#: ../src/GParted_Core.cc:2099
-msgid "%1 sectors read"
-msgstr "s'han llegit %1 sectors"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
+#: ../src/GParted_Core.cc:2420
+msgid "%1 (%2 B) read"
+msgstr "s'han llegit %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:2099
-msgid "%1 sectors copied"
-msgstr "s'han copiat %1 sectors"
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
+#: ../src/GParted_Core.cc:2422
+msgid "%1 (%2 B) copied"
+msgstr "s'han copiat %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:2110
-msgid "rollback last transaction"
+#: ../src/GParted_Core.cc:2435
+msgid "roll back last transaction"
 msgstr "desfés l'última transacció"
 
-#: ../src/GParted_Core.cc:2137
+#. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
+#: ../src/GParted_Core.cc:2464
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "comprova el sistema de fitxers %1 i (si és possible) arregla els errors"
 
-#: ../src/GParted_Core.cc:2145
+#: ../src/GParted_Core.cc:2472
 msgid "checking is not available for this file system"
 msgstr ""
 "la funció de comprovació no està disponible per a aquest tipus de sistema de "
 "fitxers"
 
-#: ../src/GParted_Core.cc:2171
+#: ../src/GParted_Core.cc:2498
 msgid "set partition type on %1"
 msgstr "defineix el tipus de partició a %1"
 
-#: ../src/GParted_Core.cc:2198
+#: ../src/GParted_Core.cc:2528
 msgid "new partition type: %1"
 msgstr "tipus nou de partició: %1"
 
-#: ../src/GParted_Core.cc:2225
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2557
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "s'han llegit %1 de %2 (manquen %3)"
 
-#: ../src/GParted_Core.cc:2225
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/GParted_Core.cc:2559
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "s'han copiat %1 de %2 (manquen %3)"
 
-#: ../src/GParted_Core.cc:2231 ../src/GParted_Core.cc:2326
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
+#: ../src/GParted_Core.cc:2567 ../src/GParted_Core.cc:2684
 msgid "%1 of %2 read"
 msgstr "s'han llegit %1 de %2"
 
-#: ../src/GParted_Core.cc:2231 ../src/GParted_Core.cc:2326
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#: ../src/GParted_Core.cc:2569 ../src/GParted_Core.cc:2686
 msgid "%1 of %2 copied"
 msgstr "s'han copiat %1 de %2"
 
-#: ../src/GParted_Core.cc:2249
-msgid "read %1 sectors using a blocksize of %2 sectors"
-msgstr "llegeix %1 sectors fent servir blocs de mida de %2 sectors"
+#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2590
+msgid "read %1 using a block size of %2"
+msgstr "llegeix %1 fent servir blocs de mida de %2"
 
-#: ../src/GParted_Core.cc:2252
-msgid "copy %1 sectors using a blocksize of %2 sectors"
-msgstr "copia %1 sectors fent servir blocs de mida de %2 sectors"
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:2595
+msgid "copy %1 using a block size of %2"
+msgstr "copia %1 fent servir blocs de mida de %2"
 
-#: ../src/GParted_Core.cc:2371
+#: ../src/GParted_Core.cc:2745
 msgid "Error while writing block at sector %1"
 msgstr "S'ha produït un error escrivint un bloc al sector %1"
 
-#: ../src/GParted_Core.cc:2374
+#: ../src/GParted_Core.cc:2748
 msgid "Error while reading block at sector %1"
 msgstr "S'ha produït un error llegint el bloc del sector %1"
 
-#: ../src/GParted_Core.cc:2384
+#: ../src/GParted_Core.cc:2758
 msgid "calibrate %1"
 msgstr "calibra %1"
 
-#: ../src/GParted_Core.cc:2431
+#: ../src/GParted_Core.cc:2803
 msgid "calculate new size and position of %1"
 msgstr "calcula la nova mida i posició de %1"
 
-#: ../src/GParted_Core.cc:2435
+#: ../src/GParted_Core.cc:2807
 msgid "requested start: %1"
 msgstr "inici demanat: %1"
 
-#: ../src/GParted_Core.cc:2436
+#: ../src/GParted_Core.cc:2808
 msgid "requested end: %1"
 msgstr "final demanat: %1"
 
-#: ../src/GParted_Core.cc:2437
+#: ../src/GParted_Core.cc:2809
 msgid "requested size: %1 (%2)"
 msgstr "mida demanada: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2579
+#. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
+#: ../src/GParted_Core.cc:2953
 msgid "update boot sector of %1 file system on %2"
 msgstr "actualitza el sector d'arrencada del sistema de fitxers %1 a %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2615
+#: ../src/GParted_Core.cc:2989
 msgid "Error trying to write to boot sector in %1"
 msgstr "S'ha produït un error en intentar escriure al sector d'arrencada de %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2621
+#: ../src/GParted_Core.cc:2995
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "S'ha produït un error en intentar anar a la posició 0x1C a %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2628
+#: ../src/GParted_Core.cc:3002
 msgid "Error trying to open %1"
 msgstr "S'ha produït un error en intentar obrir %s"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2638
+#: ../src/GParted_Core.cc:3012
 msgid ""
-"Failed to set the number of hidden sectors to %1 in the ntfs boot record."
+"Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Ha fallat l'establiment del nombre de sectors ocults com a %1 al registre "
 "d'arrencada NTFS."
 
-#: ../src/GParted_Core.cc:2640
+#: ../src/GParted_Core.cc:3014
 msgid "You might try the following command to correct the problem:"
 msgstr "Podeu provar l'ordre següent per a corregir el problema:"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:152
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
 msgid "_Undo Last Operation"
 msgstr "_Desfés l'última operació"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:158
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
 msgid "_Clear All Operations"
 msgstr "_Neteja totes les operacions"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:163
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
 msgid "_Apply All Operations"
 msgstr "_Realitza totes les operacions"
 
-#: ../src/OperationCopy.cc:36
+#: ../src/OperationCopy.cc:37
 msgid "copy of %1"
 msgstr "còpia de %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:78
+#: ../src/OperationCopy.cc:80
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Copia %1 a %2 (començant a %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:86
+#: ../src/OperationCopy.cc:88
 msgid "Copy %1 to %2"
 msgstr "Copia %1 a %2"
 
@@ -874,12 +1092,12 @@ msgid "Check and repair file system (%1) on %2"
 msgstr "Comprova i repara el sistema de fitxers (%1) a %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:86
+#: ../src/OperationCreate.cc:88
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Crea una %1 #%2 (%3, %4) a %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:80
+#: ../src/OperationDelete.cc:82
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Suprimeix de %1 (%2, %3) de %4"
 
@@ -898,346 +1116,414 @@ msgstr "Suprimeix l'etiqueta de la taula de particions a %1"
 msgid "Set Partition Label \"%1\" on %2"
 msgstr "Estableix l'etiqueta de partició com a «%1» a %2"
 
-#: ../src/OperationResizeMove.cc:85
+#: ../src/OperationResizeMove.cc:86
 msgid "resize/move %1"
 msgstr "redimensiona/mou %1"
 
-#: ../src/OperationResizeMove.cc:87
+#: ../src/OperationResizeMove.cc:88
 msgid ""
-"new and old partition have the same size and position -- continuing anyway"
+"new and old partition have the same size and position.  Hence continuing "
+"anyway"
 msgstr ""
-"la partició vella i nova tenen la mateixa mida i posició -- es continuarà de "
-"totes maneres"
+"la partició nova i l'antiga tenen la mateixa mida i posició. Per tant es "
+"continuarà de totes maneres"
 
-#: ../src/OperationResizeMove.cc:91
+#: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
 msgstr "Mou %1 cap a la dreta"
 
-#: ../src/OperationResizeMove.cc:94
+#: ../src/OperationResizeMove.cc:95
 msgid "Move %1 to the left"
 msgstr "Mou %1 cap a l'esquerra"
 
-#: ../src/OperationResizeMove.cc:97
+#: ../src/OperationResizeMove.cc:98
 msgid "Grow %1 from %2 to %3"
 msgstr "Engrandeix %1 de %2 a %3"
 
-#: ../src/OperationResizeMove.cc:100
+#: ../src/OperationResizeMove.cc:101
 msgid "Shrink %1 from %2 to %3"
 msgstr "Disminueix %1 de %2 a %3"
 
-#: ../src/OperationResizeMove.cc:103
+#: ../src/OperationResizeMove.cc:104
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "Mou %1 cap a la dreta i engrandeix-la de %2 a %3"
 
-#: ../src/OperationResizeMove.cc:106
+#: ../src/OperationResizeMove.cc:107
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "Mou %1 cap a la dreta i disminueix-la de %2 a %3"
 
-#: ../src/OperationResizeMove.cc:109
+#: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "Mou %1 a l'esquerra i engrandeix-la de %2 a %3"
 
-#: ../src/OperationResizeMove.cc:112
+#: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "Mou %1 a l'esquerra i disminueix-la de %2 a %3"
 
 #. append columns
-#: ../src/TreeView_Detail.cc:34
+#: ../src/TreeView_Detail.cc:35
 msgid "Partition"
 msgstr "Partició"
 
-#: ../src/TreeView_Detail.cc:36
+#: ../src/TreeView_Detail.cc:37
 msgid "Mount Point"
 msgstr "Punt de muntatge"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:39
 msgid "Size"
 msgstr "Mida"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:40
 msgid "Used"
 msgstr "Utilitzat"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:41
 msgid "Unused"
 msgstr "No utilitzat"
 
-#: ../src/TreeView_Detail.cc:41
+#: ../src/TreeView_Detail.cc:42
 msgid "Flags"
 msgstr "Senyaladors"
 
-#: ../src/Utils.cc:119
+#. TO TRANSLATORS:  unallocated
+#. * means that this space on the disk device does
+#. * not contain a recognized file system, and is in
+#. * other words unallocated.
+#.
+#: ../src/Utils.cc:125
 msgid "unallocated"
 msgstr "no assignat"
 
-#: ../src/Utils.cc:120
+#. TO TRANSLATORS:  unknown
+#. * means that this space within this partition does
+#. * not contain a file system known to GParted, and
+#. * is in other words unknown.
+#.
+#: ../src/Utils.cc:132
 msgid "unknown"
 msgstr "desconegut"
 
-#: ../src/Utils.cc:121
+#. TO TRANSLATORS:  unformatted
+#. * means that the space within this partition will not
+#. * be formatted with a known file system by GParted.
+#.
+#: ../src/Utils.cc:138
 msgid "unformatted"
 msgstr "no formatada"
 
-#: ../src/Utils.cc:138
+#: ../src/Utils.cc:155
 msgid "used"
 msgstr "utilitzat"
 
-#: ../src/Utils.cc:139
+#: ../src/Utils.cc:156
 msgid "unused"
 msgstr "no utilitzat"
 
-#: ../src/Utils.cc:179
+#: ../src/Utils.cc:196
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:184
+#: ../src/Utils.cc:201
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:189
+#: ../src/Utils.cc:206
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:194
+#: ../src/Utils.cc:211
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:199
+#: ../src/Utils.cc:216
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Utils.cc:335
+#. TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
+#. * means that this file is only used while gparted is applying operations.
+#. * If for some reason this file exists at any other time, then the message is
+#. * meant to inform a user that the file can be deleted with no harmful effects.
+#. * This file is typically created, exists for less than a few seconds, and is
+#. * then deleted by gparted.  Under normal circumstances a user should never
+#. * see this file.
+#.
+#: ../src/Utils.cc:374
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Fitxer temporal que ha creat el GParted. Podeu suprimir-lo.\n"
 
-#: ../src/Utils.cc:344
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:386
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr ""
 "Ha fallat l'operació sobre l'etiqueta: no s'ha pogut escriure al fitxer "
 "temporal %1.\n"
 
-#: ../src/Utils.cc:353
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:398
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr ""
 "Ha fallat l'operació sobre l'etiqueta: no s'ha pogut crear el fitxer "
 "temporal %1.\n"
 
-#: ../src/Win_GParted.cc:136
+#: ../src/Win_GParted.cc:139
 msgid "_Refresh Devices"
 msgstr "_Actualitza els dispositius"
 
-#: ../src/Win_GParted.cc:142
+#: ../src/Win_GParted.cc:145
 msgid "_Devices"
 msgstr "_Dispositius"
 
-#: ../src/Win_GParted.cc:147
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:166
+#: ../src/Win_GParted.cc:169
 msgid "_Edit"
 msgstr "_Edita"
 
-#: ../src/Win_GParted.cc:171
+#: ../src/Win_GParted.cc:174
 msgid "Device _Information"
 msgstr "_Informació del dispositiu"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:176
 msgid "Pending _Operations"
 msgstr "_Operacions pendents"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "_Visualitza"
 
-#: ../src/Win_GParted.cc:178
+#: ../src/Win_GParted.cc:181
 msgid "_File System Support"
 msgstr "Mostra la _compatibilitat amb els sistemes de fitxers"
 
-#: ../src/Win_GParted.cc:182
+#: ../src/Win_GParted.cc:185
 msgid "_Create Partition Table"
 msgstr "_Crea una taula de particions"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:188
+msgid "_Attempt Data Rescue"
+msgstr "_Intenta rescatar les dades"
+
+#: ../src/Win_GParted.cc:191
 msgid "_Device"
 msgstr "_Dispositiu"
 
-#: ../src/Win_GParted.cc:188
+#: ../src/Win_GParted.cc:195
 msgid "_Partition"
 msgstr "_Partició"
 
-#: ../src/Win_GParted.cc:193
+#: ../src/Win_GParted.cc:200
 msgid "_Contents"
 msgstr "_Contingut"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:208
 msgid "_Help"
 msgstr "A_juda"
 
-#: ../src/Win_GParted.cc:215
+#. TO TRANSLATORS: "New" is a tool bar item for partition actions.
+#: ../src/Win_GParted.cc:220
+msgid "New"
+msgstr "Nova"
+
+#: ../src/Win_GParted.cc:225
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Crea una nova partició a l'espai seleccionat no assignat"
 
-#: ../src/Win_GParted.cc:220
+#: ../src/Win_GParted.cc:230
 msgid "Delete the selected partition"
 msgstr "Suprimeix la partició seleccionada"
 
-#: ../src/Win_GParted.cc:242
+#: ../src/Win_GParted.cc:252
 msgid "Resize/Move the selected partition"
 msgstr "Redimensiona/Mou la partició seleccionada"
 
-#: ../src/Win_GParted.cc:251
+#: ../src/Win_GParted.cc:261
 msgid "Copy the selected partition to the clipboard"
 msgstr "Copia la partició seleccionada al porta-retalls"
 
-#: ../src/Win_GParted.cc:256
+#: ../src/Win_GParted.cc:266
 msgid "Paste the partition from the clipboard"
 msgstr "Enganxa la partició des del porta-retalls"
 
-#: ../src/Win_GParted.cc:268
+#: ../src/Win_GParted.cc:278
 msgid "Undo Last Operation"
 msgstr "Desfés l'última operació"
 
-#: ../src/Win_GParted.cc:276
+#: ../src/Win_GParted.cc:286
 msgid "Apply All Operations"
 msgstr "Realitza totes les operacions"
 
-#: ../src/Win_GParted.cc:311
+#. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
+#: ../src/Win_GParted.cc:308
+msgid "_New"
+msgstr "_Nova"
+
+#: ../src/Win_GParted.cc:324
 msgid "_Resize/Move"
 msgstr "_Redimensiona/Mou"
 
-#: ../src/Win_GParted.cc:335
+#: ../src/Win_GParted.cc:348
 msgid "_Format to"
 msgstr "_Formata a"
 
-#: ../src/Win_GParted.cc:344
+#: ../src/Win_GParted.cc:357
 msgid "Unmount"
 msgstr "Desmunta"
 
-#: ../src/Win_GParted.cc:350
+#: ../src/Win_GParted.cc:363
 msgid "_Mount on"
 msgstr "_Munta a"
 
-#: ../src/Win_GParted.cc:357
+#: ../src/Win_GParted.cc:370
 msgid "M_anage Flags"
 msgstr "_Gestiona els senyaladors"
 
-#: ../src/Win_GParted.cc:362
+#: ../src/Win_GParted.cc:375
 msgid "C_heck"
 msgstr "_Comprova"
 
-#: ../src/Win_GParted.cc:367
+#: ../src/Win_GParted.cc:380
 msgid "_Label"
 msgstr "E_tiqueta"
 
-#: ../src/Win_GParted.cc:429
+#: ../src/Win_GParted.cc:442
 msgid "Device Information"
 msgstr "Informació del dispositiu"
 
 #. model
-#: ../src/Win_GParted.cc:437
+#: ../src/Win_GParted.cc:450
 msgid "Model:"
 msgstr "Model:"
 
 #. disktype
-#: ../src/Win_GParted.cc:474
-msgid "DiskLabelType:"
-msgstr "Tipus d'etiqueta de disc:"
+#: ../src/Win_GParted.cc:487
+msgid "Partition table:"
+msgstr "Taula de particions:"
 
 #. heads
-#: ../src/Win_GParted.cc:482
+#: ../src/Win_GParted.cc:495
 msgid "Heads:"
 msgstr "Capçaleres:"
 
 # Tracks? jm.
 #. sectors/track
-#: ../src/Win_GParted.cc:490
-msgid "Sectors/Track:"
-msgstr "Sectors/Pista:"
+#: ../src/Win_GParted.cc:503
+msgid "Sectors/track:"
+msgstr "Sectors/pista:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:498
+#: ../src/Win_GParted.cc:511
 msgid "Cylinders:"
 msgstr "Cilindres:"
 
-#: ../src/Win_GParted.cc:677
+#. sector size
+#: ../src/Win_GParted.cc:527
+msgid "Sector size:"
+msgstr "Mida de sector:"
+
+#: ../src/Win_GParted.cc:711
 msgid "Could not add this operation to the list."
 msgstr "No s'ha pogut afegir aquesta operació a la llista."
 
-#: ../src/Win_GParted.cc:702
+#: ../src/Win_GParted.cc:736
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 operació pendent"
 msgstr[1] "%1 operacions pendents"
 
-#: ../src/Win_GParted.cc:756
+#: ../src/Win_GParted.cc:790
 msgid "Quit GParted?"
 msgstr "Voleu sortir del GParted?"
 
-#: ../src/Win_GParted.cc:762
+#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2051
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "queda %1 operació pendent."
 msgstr[1] "queden %1 operacions pendents."
 
-#: ../src/Win_GParted.cc:788
+#: ../src/Win_GParted.cc:822
 msgid "_Unmount"
 msgstr "_Desmunta"
 
-#: ../src/Win_GParted.cc:813
+#: ../src/Win_GParted.cc:847
 msgid "_Swapoff"
 msgstr "_Partició d'intercanvi inactiva"
 
-#: ../src/Win_GParted.cc:819
+#: ../src/Win_GParted.cc:853
 msgid "_Swapon"
 msgstr "_Partició d'intercanvi activa"
 
-#: ../src/Win_GParted.cc:1018
+#: ../src/Win_GParted.cc:1047
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1064
+#: ../src/Win_GParted.cc:1093
 msgid "Scanning all devices..."
 msgstr "S'estan analitzant tots els dispositius..."
 
-#: ../src/Win_GParted.cc:1080
-msgid ""
-"The kernel is unable to re-read the partition tables on the following "
-"devices:"
-msgstr ""
-"El nucli no ha pogut tornar a llegir la taula de particions als següents "
-"dispositius:"
-
-#: ../src/Win_GParted.cc:1087
-msgid ""
-"Because of this you will only have limited access to these devices. Unmount "
-"all mounted partitions on a device to get full access."
-msgstr ""
-"A causa d'això només tindreu accés limitat a aquests dispositius. Desmunteu "
-"totes les particions muntades en un dispositiu per aconseguir-hi ple accés."
-
-#: ../src/Win_GParted.cc:1131
+#: ../src/Win_GParted.cc:1138
 msgid "No devices detected"
 msgstr "No s'ha detectat cap dispositiu"
 
-#: ../src/Win_GParted.cc:1266
+#. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
+#: ../src/Win_GParted.cc:1219
+msgid "No partition table found on device %1"
+msgstr "No s'ha trobat cap taula de particions en el dispositiu %1"
+
+#: ../src/Win_GParted.cc:1224
+msgid "A partition table is required before partitions can be added."
+msgstr "Cal una taula de particions abans de poder afegir particions."
+
+#: ../src/Win_GParted.cc:1226
+msgid "To create a new partition table choose the menu item:"
+msgstr "Trieu un element del menú per crear una taula de particions nova:"
+
+#. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
+#: ../src/Win_GParted.cc:1229
+msgid "Device --> Create Partition Table."
+msgstr "Dispositiu --> Crea una taula de particions."
+
+#: ../src/Win_GParted.cc:1265
+msgid "Unable to open GParted Manual help file."
+msgstr "No s'ha pogut obrir el fitxer del manual d'ajuda del GParted."
+
+#: ../src/Win_GParted.cc:1281
+msgid "Documentation is not available."
+msgstr "La documentació no està disponible."
+
+#: ../src/Win_GParted.cc:1286
+msgid "This build of gparted is configured without documentation."
+msgstr "Aquest muntatge del GParted s'ha configurat sense documentació."
+
+#: ../src/Win_GParted.cc:1288
+msgid "Documentation is available at the project web site."
+msgstr "La documentació està disponible al lloc web del projecte."
+
+#: ../src/Win_GParted.cc:1309
 msgid "GNOME Partition Editor"
 msgstr "Editor de particions del GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1282
+#: ../src/Win_GParted.cc:1325
 msgid "translator-credits"
 msgstr ""
 "Jordi Mallach <jordi@sindominio.net>\n"
 "David Cassany <davidcassany@hotmail.com>\n"
 "David Planella <david.planella@gmail.com>"
 
-#: ../src/Win_GParted.cc:1324
-msgid "It is not possible to create more than %1 primary partitions"
-msgstr "No és possible crear més de %1 particions primàries"
+#: ../src/Win_GParted.cc:1367
+msgid "It is not possible to create more than %1 primary partition"
+msgid_plural "It is not possible to create more than %1 primary partitions"
+msgstr[0] "No és possible crear més de %1 partició primària"
+msgstr[1] "No és possible crear més de %1 particions primàries"
 
-#: ../src/Win_GParted.cc:1332
+#: ../src/Win_GParted.cc:1379
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1249,44 +1535,80 @@ msgstr ""
 "també és una partició primària, possiblement primer caldria suprimir una "
 "partició primària."
 
-#: ../src/Win_GParted.cc:1519
+#: ../src/Win_GParted.cc:1460
+msgid "Moving a partition might cause your operating system to fail to boot."
+msgstr ""
+"Moure una partició pot causar que el sistema operatiu falli en arrencar."
+
+#. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
+#: ../src/Win_GParted.cc:1468
+msgid "You have queued an operation to move the start sector of partition %1."
+msgstr ""
+"Heu posat a la cua una operació per moure el sector inicial de la partició "
+"%1."
+
+#: ../src/Win_GParted.cc:1473
+msgid "You can learn how to repair the boot configuration in the GParted FAQ."
+msgstr ""
+"Podeu aprendre com reparar la configuració d'arrencada a les preguntes més "
+"freqüents del GParted."
+
+#: ../src/Win_GParted.cc:1544
+msgid "You have pasted into an existing partition."
+msgstr "Heu enganxat en una partició existent."
+
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:1551
+msgid "The data in %1 will be lost if you apply this operation."
+msgstr "Si apliqueu aquesta operació es perdran les dades de %1."
+
+#: ../src/Win_GParted.cc:1606
 msgid "Unable to delete %1!"
 msgstr "No s'ha pogut suprimir %1."
 
-#: ../src/Win_GParted.cc:1526
+#: ../src/Win_GParted.cc:1613
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Desmunteu qualsevol partició lògica que tingui un número major que %1"
 
-#: ../src/Win_GParted.cc:1537
+#: ../src/Win_GParted.cc:1624
 msgid "Are you sure you want to delete %1?"
 msgstr "Esteu segur de voler suprimir %1?"
 
-#: ../src/Win_GParted.cc:1544
+#: ../src/Win_GParted.cc:1631
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Un cop s'hagi suprimit, aquesta partició no es podrà copiar."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1547
+#: ../src/Win_GParted.cc:1634
 msgid "Delete %1 (%2, %3)"
 msgstr "Suprimeix %1 (%2, %3)"
 
-#: ../src/Win_GParted.cc:1613
+#. TO TRANSLATORS: looks like
+#. * Cannot format this file system to fat16.
+#.
+#: ../src/Win_GParted.cc:1704
 msgid "Cannot format this file system to %1."
 msgstr "No es pot formatar aquest sistema de fitxers a %1."
 
-#: ../src/Win_GParted.cc:1622
+#. TO TRANSLATORS: looks like
+#. * A fat16 file system requires a partition of at least 16.00 MiB.
+#.
+#: ../src/Win_GParted.cc:1716
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Un sistema de fitxers %1 requereix una partició d'almenys %2."
 
-#: ../src/Win_GParted.cc:1627
+#. TO TRANSLATORS: looks like
+#. * A partition with a hfs file system has a maximum size of 2.00 GiB.
+#.
+#: ../src/Win_GParted.cc:1724
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Una partició amb un sistema de fitxers %1 té una mida màxima de %2."
 
-#: ../src/Win_GParted.cc:1712
+#: ../src/Win_GParted.cc:1810
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "La partició no s'ha pogut desmuntar dels següents punts de muntatge:"
 
-#: ../src/Win_GParted.cc:1714
+#: ../src/Win_GParted.cc:1812
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1294,80 +1616,231 @@ msgstr ""
 "És probable que altres particions estiguin muntades en aquests punts de "
 "muntatge. És recomanable que les desmunteu manualment."
 
-#: ../src/Win_GParted.cc:1764
+#: ../src/Win_GParted.cc:1869 ../src/Win_GParted.cc:1953
+msgid "%1 operation is currently pending for partition %2."
+msgid_plural "%1 operations are currently pending for partition %2."
+msgstr[0] "Queda %1 operació pendent per a la partició %2."
+msgstr[1] "Queden %1 operacions pendents per a la partició %2."
+
+#: ../src/Win_GParted.cc:1883
+msgid ""
+"The swapon action cannot be performed if an operation is pending for the "
+"partition."
+msgstr ""
+"No es pot realitzar l'acció d'activar la partició d'intercanvi si hi ha una "
+"operació pendent per a la partició."
+
+#: ../src/Win_GParted.cc:1885
+msgid ""
+"Use the Edit menu to undo, clear, or apply operations before using swapon "
+"with this partition."
+msgstr ""
+"Utilitzeu el menú Edita per desfer, netejar o aplicar les operacions abans "
+"d'activar la partició d'intercanvi amb aquesta partició."
+
+#: ../src/Win_GParted.cc:1903
 msgid "Deactivating swap on %1"
 msgstr "S'està desactivant la partició d'intercanvi en %1"
 
-#: ../src/Win_GParted.cc:1764
+#: ../src/Win_GParted.cc:1903
 msgid "Activating swap on %1"
 msgstr "S'està activant la partició d'intercanvi en %1"
 
-#: ../src/Win_GParted.cc:1771
+#: ../src/Win_GParted.cc:1910
 msgid "Could not deactivate swap"
 msgstr "No s'ha pogut desactivar la partició d'intercanvi"
 
-#: ../src/Win_GParted.cc:1771
+#: ../src/Win_GParted.cc:1910
 msgid "Could not activate swap"
 msgstr "No s'ha pogut activar la partició d'intercanvi"
 
-#: ../src/Win_GParted.cc:1787
+#: ../src/Win_GParted.cc:1926
 msgid "Unmounting %1"
 msgstr "S'està desmuntant %1"
 
-#: ../src/Win_GParted.cc:1792
+#: ../src/Win_GParted.cc:1931
 msgid "Could not unmount %1"
 msgstr "No s'ha pogut desmuntar %1"
 
-#: ../src/Win_GParted.cc:1821
+#: ../src/Win_GParted.cc:1967
+msgid ""
+"The mount action cannot be performed if an operation is pending for the "
+"partition."
+msgstr ""
+"No es pot realitzar l'acció de muntar si hi ha una operació pendent per a la "
+"partició."
+
+#: ../src/Win_GParted.cc:1969
+msgid ""
+"Use the Edit menu to undo, clear, or apply operations before using mount "
+"with this partition."
+msgstr ""
+"Utilitzeu el menú Edita per desfer, netejar o aplicar les operacions abans "
+"de muntar amb aquesta partició."
+
+#: ../src/Win_GParted.cc:1987
 msgid "mounting %1 on %2"
 msgstr "S'està muntant %1 a %2"
 
-#: ../src/Win_GParted.cc:1828
+#: ../src/Win_GParted.cc:1994
 msgid "Could not mount %1 on %2"
 msgstr "No s'ha pogut muntar %1 a %2"
 
-#: ../src/Win_GParted.cc:1854
+#. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
+#: ../src/Win_GParted.cc:2020
+msgid "%1 partition is currently active on device %2."
+msgid_plural "%1 partitions are currently active on device %2."
+msgstr[0] "queda %1 partició activa al dispositiu %2."
+msgstr[1] "queden %1 particions actives al dispositiu %2."
+
+#: ../src/Win_GParted.cc:2035
+msgid ""
+"A new partition table cannot be created when there are active partitions."
+msgstr ""
+"No es pot crear una taula de particions nova quan hi ha particions actives."
+
+#: ../src/Win_GParted.cc:2037
+msgid ""
+"Active partitions are those that are in use, such as a mounted file system, "
+"or enabled swap space."
+msgstr ""
+"Les particions actives són aquelles que s'estan utilitzant, com ara un "
+"sistema de fitxers muntat o un espai d'intercanvi habilitat."
+
+#: ../src/Win_GParted.cc:2039
+msgid ""
+"Use Partition menu options, such as unmount or swapoff, to deactivate all "
+"partitions on this device before creating a new partition table."
+msgstr ""
+"Utilitzeu les opcions del menú Partició, com ara «Desmunta» o «Partició "
+"d'intercanvi inactiva», per desactivar totes les particions d'aquest "
+"dispositiu abans de crear una taula de particions nova."
+
+#: ../src/Win_GParted.cc:2064
+msgid ""
+"A new partition table cannot be created when there are pending operations."
+msgstr ""
+"No es pot crear una taula de particions nova si hi han operacions pendents."
+
+#: ../src/Win_GParted.cc:2066
+msgid ""
+"Use the Edit menu to either clear or apply all operations before creating a "
+"new partition table."
+msgstr ""
+"Utilitzeu el menú Edita per netejar o aplicar totes les operacions abans de "
+"crear una taula de particions nova."
+
+#: ../src/Win_GParted.cc:2081
 msgid "Error while creating partition table."
 msgstr "S'ha produït un error en crear la taula de particions."
 
-#: ../src/Win_GParted.cc:1967
+#: ../src/Win_GParted.cc:2101
+msgid "Command gpart was not found"
+msgstr "No s'ha trobat l'ordre gpart"
+
+#: ../src/Win_GParted.cc:2102
+msgid "This feature uses gpart. Please install gpart and try again."
+msgstr ""
+"Aquesta funció utilitza el gpart. Instal·leu el gpart i torneu-ho a provar."
+
+#. Dialog information
+#: ../src/Win_GParted.cc:2110
+msgid "A full disk scan is needed to find file systems."
+msgstr "Cal analitzar tot el disc per trobar els sistemes de fitxers."
+
+#: ../src/Win_GParted.cc:2112
+msgid "The scan might take a very long time."
+msgstr "L'anàlisis pot durar molta estona."
+
+#: ../src/Win_GParted.cc:2114
+msgid ""
+"After the scan you can mount any discovered file systems and copy the data "
+"to other media."
+msgstr ""
+"Després d'analitzar podreu muntar qualsevol sistema de fitxers descobert i "
+"copiar les dades a un altre suport."
+
+#: ../src/Win_GParted.cc:2116
+msgid "Do you want to continue?"
+msgstr "Voleu continuar?"
+
+#. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2120
+msgid "Search for file systems on %1"
+msgstr "Cerca sistemes de fitxers a %1"
+
+#. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2134
+msgid "Searching for file systems on %1"
+msgstr "S'estan cercant sistemes de fitxers a %1"
+
+#. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
+#: ../src/Win_GParted.cc:2148
+msgid "No file systems found on %1"
+msgstr "No s'han trobat sistemes de fitxers a %1"
+
+#: ../src/Win_GParted.cc:2149
+msgid ""
+"The disk scan by gpart did not find any recognizable file systems on this "
+"disk."
+msgstr ""
+"L'anàlisis del disc fet pel gpart no ha trobat cap sistema de fitxers "
+"reconegut en aquest disc."
+
+#: ../src/Win_GParted.cc:2319
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Esteu segur de voler aplicar les operacions pendents?"
 
-#: ../src/Win_GParted.cc:1973
+#: ../src/Win_GParted.cc:2325
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "L'edició de particions comporta una potencial pèrdua de dades."
 
-#: ../src/Win_GParted.cc:1975
+#: ../src/Win_GParted.cc:2327
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "És recomanable que feu còpies de seguretat de les vostres dades abans de "
 "continuar."
 
-#: ../src/Win_GParted.cc:1977
+#: ../src/Win_GParted.cc:2329
 msgid "Apply operations to device"
 msgstr "Aplica les operacions al dispositiu"
 
 #. create mount point...
-#: ../src/jfs.cc:140 ../src/xfs.cc:152 ../src/xfs.cc:244 ../src/xfs.cc:251
+#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
 msgid "create temporary mount point (%1)"
 msgstr "crea un punt de muntatge temporal (%1)"
 
-#: ../src/jfs.cc:147 ../src/xfs.cc:159 ../src/xfs.cc:258 ../src/xfs.cc:267
+#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:267 ../src/xfs.cc:276
 msgid "mount %1 on %2"
 msgstr "Munta %1 a %2"
 
-#: ../src/jfs.cc:156
+#: ../src/jfs.cc:157
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "remunta %1 a %2 amb el senyalador de «redimensiona» habilitat"
 
-#: ../src/jfs.cc:174 ../src/xfs.cc:181 ../src/xfs.cc:291 ../src/xfs.cc:312
+#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:300 ../src/xfs.cc:321
 msgid "unmount %1"
 msgstr "desmunta %1"
 
-#: ../src/jfs.cc:194 ../src/xfs.cc:201 ../src/xfs.cc:332 ../src/xfs.cc:355
+#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:341 ../src/xfs.cc:364
 msgid "remove temporary mount point (%1)"
 msgstr "suprimeix el punt de muntatge temporal (%1)"
+
+#. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:105
+msgid ""
+"Partition move action skipped because %1 file system does not contain data"
+msgstr ""
+"S'ha omès l'acció de moure la partició perquè el sistema de fitxers %1 no "
+"conté dades"
+
+#. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:124
+msgid ""
+"Partition copy action skipped because %1 file system does not contain data"
+msgstr ""
+"S'ha omès l'acció de copiar la partició perquè el sistema de fitxers %1 no "
+"conté dades"
 
 #: ../src/main.cc:38
 msgid "Root privileges are required for running GParted"
@@ -1383,24 +1856,82 @@ msgstr ""
 "executar."
 
 #. simulation..
-#: ../src/ntfs.cc:124
+#: ../src/ntfs.cc:125
 msgid "run simulation"
 msgstr "executa una simulació"
 
 #. real resize
-#: ../src/ntfs.cc:131
+#: ../src/ntfs.cc:132
 msgid "real resize"
 msgstr "redimensionat real"
 
 #. grow the mounted file system..
-#: ../src/xfs.cc:167
+#: ../src/xfs.cc:168
 msgid "grow mounted file system"
 msgstr "engrandeix el sistema de fitxers muntat"
 
 #. copy file system..
-#: ../src/xfs.cc:275
+#: ../src/xfs.cc:284
 msgid "copy file system"
 msgstr "copia el sistema de fitxers"
+
+#~ msgid "Round to cylinders"
+#~ msgstr "Arrodoneix a cilindres"
+
+#~ msgid ""
+#~ "Choosing the Create button will IMMEDIATELY ERASE ALL DATA on disk %1"
+#~ msgstr ""
+#~ "En prémer el botó «Crea» SE SUPRIMIRAN IMMEDIATAMENT TOTES LES DADES del "
+#~ "disc %1"
+
+#~ msgid "Applying all listed operations."
+#~ msgstr "S'estan realitzant totes les operacions llistades."
+
+#~ msgid "BTRFS is not yet supported."
+#~ msgstr "El BTRFS encara no està implementat."
+
+#~ msgid ""
+#~ "new and old partition have the same size and position -- skipping this "
+#~ "operation"
+#~ msgstr ""
+#~ "la partició nova i l'antiga tenen la mateixa mida i la mateixa posició -- "
+#~ "s'ometrà aquesta operació"
+
+#~ msgid ""
+#~ "new and old file system have the same size -- skipping this operation"
+#~ msgstr ""
+#~ "el sistema de fitxers nou i l'antic tenen la mateixa mida -- s'ometrà "
+#~ "aquesta operació"
+
+#~ msgid "read %1 sectors"
+#~ msgstr "llegeix %1 sectors"
+
+#~ msgid "copy %1 sectors"
+#~ msgstr "copia %1 sectors"
+
+#~ msgid "%1 sectors read"
+#~ msgstr "s'han llegit %1 sectors"
+
+#~ msgid "%1 sectors copied"
+#~ msgstr "s'han copiat %1 sectors"
+
+#~ msgid "DiskLabelType:"
+#~ msgstr "Tipus d'etiqueta de disc:"
+
+#~ msgid ""
+#~ "The kernel is unable to re-read the partition tables on the following "
+#~ "devices:"
+#~ msgstr ""
+#~ "El nucli no ha pogut tornar a llegir la taula de particions als següents "
+#~ "dispositius:"
+
+#~ msgid ""
+#~ "Because of this you will only have limited access to these devices. "
+#~ "Unmount all mounted partitions on a device to get full access."
+#~ msgstr ""
+#~ "A causa d'això només tindreu accés limitat a aquests dispositius. "
+#~ "Desmunteu totes les particions muntades en un dispositiu per aconseguir-"
+#~ "hi ple accés."
 
 #~ msgid "Features"
 #~ msgstr "Característiques"
@@ -1503,9 +2034,6 @@ msgstr "copia el sistema de fitxers"
 #~ msgid "and Resize %1 from %2 to %3"
 #~ msgstr "i redimensiona %1 de %2 a %3"
 
-#~ msgid "Filesystems"
-#~ msgstr "Sistemes de fitxers"
-
 #~ msgid "Error while setting new disklabel"
 #~ msgstr "S'ha produït un error en establir l'etiqueta del disc"
 
@@ -1543,17 +2071,5 @@ msgstr "copia el sistema de fitxers"
 #~ "els sistemes de fitxers vell i nou tenen la mateixa posició. S'ometrà "
 #~ "aquesta operació"
 
-#~ msgid "new and old filesystem have the same size. skipping this operation"
-#~ msgstr ""
-#~ "els sistemes de fitxers vell i nou tenen la mateixa mida. S'ometrà "
-#~ "aquesta operació"
-
 #~ msgid "Select new labeltype:"
 #~ msgstr "Seleccioneu un tipus d'etiqueta nou:"
-
-#~ msgid ""
-#~ "new and old partition have the same size and position. skipping this "
-#~ "operation"
-#~ msgstr ""
-#~ "la partició vella i nova tenen la mateixa mida i posició. S'ometrà "
-#~ "aquesta operació"
