@@ -1223,8 +1223,10 @@ void GParted_Core::read_label( Partition & partition )
 				if ( set_proper_filesystem( partition .filesystem ) )
 					p_filesystem ->read_label( partition ) ;
 				break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 			case FS::LIBPARTED:
 				break ;
+#endif
 
 			default:
 				break ;
@@ -1396,9 +1398,11 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 							if ( set_proper_filesystem( partitions[ t ] .filesystem ) )
 								p_filesystem ->set_used_sectors( partitions[ t ] ) ;
 							break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 						case GParted::FS::LIBPARTED	:
 							LP_set_used_sectors( partitions[ t ] ) ;
 							break ;
+#endif
 
 						default:
 							break ;
@@ -1430,6 +1434,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	}
 }
 
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 void GParted_Core::LP_set_used_sectors( Partition & partition )
 {
 	PedFileSystem *fs = NULL;
@@ -1458,6 +1463,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition )
 		}
 	}
 }
+#endif
 
 void GParted_Core::set_flags( Partition & partition )
 {
@@ -1572,7 +1578,11 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		close_device_and_disk() ;
 	}
 
-	bool succes = new_partition .partition_number > 0 && erase_filesystem_signatures( new_partition ) ;
+	bool succes = new_partition .partition_number > 0
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+	              && erase_filesystem_signatures( new_partition )
+#endif
+	;
 
 #ifndef USE_LIBPARTED_DMRAID
 	//create dev map entries if dmraid
@@ -1600,8 +1610,10 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 		case GParted::FS::LIBPARTED:
 			break ;
+#endif
 		case GParted::FS::EXTERNAL:
 			succes = set_proper_filesystem( partition .filesystem ) &&
 				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
@@ -1614,9 +1626,11 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 }
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
-{	
+{
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	//remove all file system signatures...
 	erase_filesystem_signatures( partition ) ;
+#endif
 
 	return set_partition_type( partition, operationdetail ) && create_filesystem( partition, operationdetail ) ;
 }
@@ -1684,8 +1698,10 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 				succes = set_proper_filesystem( partition .filesystem ) &&
 					 p_filesystem ->write_label( partition, operationdetail .get_last_child() ) ;
 				break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 			case FS::LIBPARTED:
 				break ;
+#endif
 
 			default:
 				break ;
@@ -1867,11 +1883,13 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				succes = copy_filesystem( partition_old, partition_new, operationdetail .get_last_child() ) ;
 
 			break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 		case GParted::FS::LIBPARTED:
 			succes = resize_move_filesystem_using_libparted( partition_old,
 									 partition_new,
 								  	 operationdetail .get_last_child() ) ;
 			break ;
+#endif
 		case GParted::FS::EXTERNAL:
 			succes = set_proper_filesystem( partition_new .filesystem ) &&
 			         p_filesystem ->move( partition_old
@@ -1885,6 +1903,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	return succes ;
 }
 
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
 		  	      		            	   const Partition & partition_new,
 						    	   OperationDetail & operationdetail ) 
@@ -1921,6 +1940,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 
 	return return_value ;
 }
+#endif
 
 bool GParted_Core::resize( const Partition & partition_old, 
 			   const Partition & partition_new,
@@ -2173,11 +2193,13 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 		case GParted::FS::LIBPARTED:
 			succes = resize_move_filesystem_using_libparted( partition_old,
 									 partition_new,
 								  	 operationdetail .get_last_child() ) ;
 			break ;
+#endif
 		case GParted::FS::EXTERNAL:
 			succes = set_proper_filesystem( partition_new .filesystem ) && 
 				 p_filesystem ->resize( partition_new,
@@ -2244,10 +2266,12 @@ bool GParted_Core::copy( const Partition & partition_src,
 									  partition_dst,
 									  operationdetail .get_last_child() ) ;
 						break ;
-				
+
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 				case GParted::FS::LIBPARTED :
 						//FIXME: see if copying through libparted has any advantages
 						break ;
+#endif
 
 				case GParted::FS::EXTERNAL :
 						succes = set_proper_filesystem( partition_dst .filesystem ) &&
@@ -2479,8 +2503,10 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 		case GParted::FS::LIBPARTED:
 			break ;
+#endif
 		case GParted::FS::EXTERNAL:
 			succes = set_proper_filesystem( partition .filesystem ) &&
 				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
@@ -2908,7 +2934,8 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 
 	return p_filesystem ;
 }
-	
+
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition ) 
 {
 	bool return_value = false ;
@@ -2935,7 +2962,8 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 
 	return return_value ;
 }
-	
+#endif
+
 bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	//only for ntfs atm...

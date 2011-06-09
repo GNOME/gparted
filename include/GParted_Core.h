@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,9 @@ private:
 				 bool inside_extended ) ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	void LP_set_used_sectors( Partition & partition );
+#endif
 	void set_flags( Partition & partition ) ;
 	
 	//operationstuff...
@@ -103,9 +105,11 @@ private:
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
 					      	     OperationDetail & operationdetail ) ;
+#endif
 	bool resize( const Partition & partition_old,
 		     const Partition & partition_new,
 		     OperationDetail & operationdetail ) ;
@@ -176,7 +180,9 @@ private:
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
 	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	bool erase_filesystem_signatures( const Partition & partition ) ;
+#endif
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	

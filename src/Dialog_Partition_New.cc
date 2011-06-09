@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	FS fs_tmp ;
 	//add FS_UNFORMATTED
 	fs_tmp .filesystem = GParted::FS_UNFORMATTED ;
-	fs_tmp .create = GParted::FS::LIBPARTED ;
+	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	//add FS_EXTENDED

@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -48,12 +48,16 @@ FS fat32::get_filesystem_support()
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
 	}
-	
+
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	//resizing of start and endpoint are provided by libparted
 	fs .grow = GParted::FS::LIBPARTED ;
 	fs .shrink = GParted::FS::LIBPARTED ;
 	fs .move = GParted::FS::LIBPARTED ;
-		
+#else
+	fs .move = FS::GPARTED ;
+#endif
+
 	fs .copy = GParted::FS::GPARTED ;
 	
 	fs .MIN = 32 * MEBIBYTE ; //smaller fs'es will cause windows scandisk to fail..

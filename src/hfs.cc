@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,9 +27,11 @@ FS hfs::get_filesystem_support()
 	FS fs ;
 		
 	fs .filesystem = GParted::FS_HFS ;
-	
+
+#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	fs .read = GParted::FS::LIBPARTED ; 
 	fs .shrink = GParted::FS::LIBPARTED ; 
+#endif
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
