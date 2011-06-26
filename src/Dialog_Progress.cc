@@ -41,72 +41,75 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	dispatcher_update_gui_elements .connect( 
 		sigc::mem_fun( this, &Dialog_Progress::dispatcher_on_update_gui_elements ) ) ;
 
-	vbox = manage( new Gtk::VBox() ) ;
-	vbox ->set_border_width( 10 ) ;
-	this ->get_vbox() ->pack_start( *vbox, Gtk::PACK_SHRINK ) ;
-
-	Glib::ustring str_temp = _("Depending on the number and type of operations this might take a long time.") ;
-	str_temp += "\n";
-	vbox ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
-
-	label_current .set_alignment( Gtk::ALIGN_LEFT );
-	vbox ->pack_start( label_current, Gtk::PACK_SHRINK ) ;
-
-	progressbar_current .set_pulse_step( 0.01 ) ;
-	vbox ->pack_start( progressbar_current, Gtk::PACK_SHRINK );
-	
-	label_current_sub .set_alignment( Gtk::ALIGN_LEFT );
-	vbox ->pack_start( label_current_sub, Gtk::PACK_SHRINK );
-	
-	vbox ->pack_start( * Utils::mk_label( "<b>" + Glib::ustring( _("Completed Operations:") ) + "</b>" ),
-					Gtk::PACK_SHRINK );
-	vbox ->pack_start( progressbar_all, Gtk::PACK_SHRINK );
-	
-	//create some icons here, instead of recreating them every time
-	icon_execute = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-	icon_succes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-	icon_error = render_icon( Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-	icon_info = render_icon( Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-	icon_n_a = render_icon( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ;
-	
-	treestore_operations = Gtk::TreeStore::create( treeview_operations_columns );
-	treeview_operations .set_model( treestore_operations );
-	treeview_operations .set_headers_visible( false );
-	treeview_operations .set_rules_hint( true ) ;
-	treeview_operations .set_size_request( 500, 250 ) ;
-	treeview_operations .append_column( "", treeview_operations_columns .operation_description );
-	treeview_operations .append_column( "", treeview_operations_columns .elapsed_time );
-	treeview_operations .append_column( "", treeview_operations_columns .status_icon );
-
-	treeview_operations .get_column( 0 ) ->set_expand( true ) ;
-	treeview_operations .get_column( 0 ) ->set_cell_data_func( 
-		* ( treeview_operations .get_column( 0 ) ->get_first_cell_renderer() ),
-		sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) ) ;
-
-	//fill 'er up
-	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
-		this ->operations[ t ] ->operation_detail .set_description( operations[ t ] ->description, FONT_BOLD ) ;
-		this ->operations[ t ] ->operation_detail .set_treepath( Utils::num_to_str( t ) ) ;
-		
-		treerow = *( treestore_operations ->append() );
-		treerow[ treeview_operations_columns .operation_description ] =
-			this ->operations[ t ] ->operation_detail .get_description() ; 
-	}
-	
-	scrolledwindow .set_shadow_type( Gtk::SHADOW_ETCHED_IN ) ;
-	scrolledwindow .set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC ) ;
-	scrolledwindow .add( treeview_operations ) ;
+		Gtk::VBox* vbox(manage(new Gtk::VBox()));
 
-	expander_details .set_label( "<b>" + Glib::ustring( _("Details") ) + "</b>" ) ;
-	expander_details .set_use_markup( true ) ;
-	expander_details .property_expanded() .signal_changed() .connect(
-   		sigc::mem_fun(*this, &Dialog_Progress::on_expander_changed) );
-	expander_details .add( scrolledwindow ) ;
-	
-	vbox ->pack_start( expander_details, Gtk::PACK_EXPAND_WIDGET ) ; 
-	vbox ->set_spacing( 5 ) ;
-	
+		vbox->set_border_width(10);
+		this->get_vbox()->pack_start(*vbox, Gtk::PACK_SHRINK);
+
+		Glib::ustring str_temp(_("Depending on the number and type of operations this might take a long time."));
+		str_temp += "\n";
+		vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
+
+		label_current.set_alignment(Gtk::ALIGN_LEFT);
+		vbox->pack_start(label_current, Gtk::PACK_SHRINK);
+
+		progressbar_current.set_pulse_step(0.01);
+		vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
+
+		label_current_sub.set_alignment(Gtk::ALIGN_LEFT);
+		vbox->pack_start(label_current_sub, Gtk::PACK_SHRINK);
+
+		vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
+					Gtk::PACK_SHRINK);
+		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
+
+		//create some icons here, instead of recreating them every time
+		icon_execute = render_icon(Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_succes = render_icon(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_error = render_icon(Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_info = render_icon(Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_n_a = render_icon(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+
+		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
+		treeview_operations.set_model(treestore_operations);
+		treeview_operations.set_headers_visible(false);
+		treeview_operations.set_rules_hint(true);
+		treeview_operations.set_size_request(500, 250);
+		treeview_operations.append_column("", treeview_operations_columns.operation_description);
+		treeview_operations.append_column("", treeview_operations_columns.elapsed_time);
+		treeview_operations.append_column("", treeview_operations_columns.status_icon);
+
+		treeview_operations.get_column(0)->set_expand(true);
+		treeview_operations.get_column(0)->set_cell_data_func(
+			*(treeview_operations.get_column(0)->get_first_cell_renderer()),
+			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
+
+		//fill 'er up
+		for (unsigned int t = 0; t < operations.size(); ++t)
+		{
+			this->operations[t]->operation_detail.set_description(operations[t]->description, FONT_BOLD);
+			this->operations[t]->operation_detail.set_treepath(Utils::num_to_str(t));
+
+			treerow = *(treestore_operations->append());
+			treerow[treeview_operations_columns.operation_description] =
+				this ->operations[t]->operation_detail.get_description();
+		}
+
+		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+		scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+		scrolledwindow.add(treeview_operations);
+
+		expander_details.set_label("<b>" + Glib::ustring(_("Details")) + "</b>");
+		expander_details.set_use_markup(true);
+		expander_details.property_expanded().signal_changed().connect(
+   			sigc::mem_fun(*this, &Dialog_Progress::on_expander_changed) );
+		expander_details.add(scrolledwindow);
+
+		vbox ->pack_start(expander_details, Gtk::PACK_EXPAND_WIDGET);
+		vbox ->set_spacing(5);
+	}
+
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
 	
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
@@ -250,7 +253,7 @@ void Dialog_Progress::on_signal_show()
 	//deal with succes/error...
 	if ( succes )
 	{
-		str_temp = _("All operations successfully completed") ;
+		Glib::ustring str_temp(_("All operations successfully completed"));
 
 		if ( warnings > 0 )
 			str_temp += " ("
@@ -272,7 +275,8 @@ void Dialog_Progress::on_signal_show()
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,
 						   true ) ;
-			str_temp = _("See the details for more information.") ;
+			Glib::ustring str_temp(_("See the details for more information."));
+
 			str_temp += "\n\n<i><b>" + Glib::ustring( _("IMPORTANT") ) + "</b>\n" ;
 			str_temp += _("If you want support, you need to provide the saved details!") ;
 			str_temp += "\n" + String::ucompose(

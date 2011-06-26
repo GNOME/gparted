@@ -41,15 +41,10 @@ public:
 private:
 	void show_filesystem( const FS & fs ) ;
 
-	Gtk::HBox *hbox ;
-	Gtk::HBox *hbox2 ;
-	Gtk::VBox *vbox ;
-	Gtk::Image *image ;
 	Gtk::Expander expander_legend ;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
-	Glib::ustring str_temp ;
 	
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
 	{

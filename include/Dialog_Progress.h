@@ -58,7 +58,6 @@ private:
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;
 
-	Gtk::VBox *vbox ;
 	Gtk::Label label_current ;
 	Gtk::Label label_current_sub ;
 	Gtk::ProgressBar progressbar_all, progressbar_current ;
@@ -96,7 +95,6 @@ private:
 	pthread_t pthread ;
 	double fraction ;
 	unsigned int t, warnings ;
-	Glib::ustring str_temp ;
 
 	Glib::Dispatcher dispatcher_update_gui_elements ;
 	Glib::ustring label_current_sub_text ;

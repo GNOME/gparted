@@ -40,13 +40,6 @@ public:
 	Glib::ustring get_new_label();
 
 private:
-	Partition partition ;
-
-	Gtk::HBox *hbox ;
-	Gtk::VBox *vbox ;
-	Gtk::Frame *frame;
-	Gtk::Image *image;
-	Gtk::Table *table;
 	Gtk::Entry *entry;
 };
 

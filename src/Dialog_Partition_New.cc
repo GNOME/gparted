@@ -42,7 +42,6 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
-	this ->cylinder_size = cylinder_size ;
 
 	//copy GParted FILESYSTEMS
 	this ->FILESYSTEMS = FILESYSTEMS ;
@@ -307,14 +306,16 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	}
 
 	//set fitting resizer colors
-	//backgroundcolor..
-	color_temp .set( optionmenu_type .get_history() == 2 ? "darkgrey" : "white" ) ;
-	frame_resizer_base ->override_default_rgb_unused_color( color_temp );
-	
-	//partitioncolor..
-	color_temp .set( Utils::get_color( fs .filesystem ) ) ;
-	frame_resizer_base ->set_rgb_partition_color( color_temp ) ;
-	
+	{
+		Gdk::Color color_temp;
+
+		color_temp.set((optionmenu_type.get_history() == 2) ? "darkgrey" : "white");
+		frame_resizer_base->override_default_rgb_unused_color(color_temp);
+
+		color_temp.set(Utils::get_color(fs.filesystem));
+		frame_resizer_base->set_rgb_partition_color(color_temp);
+	}
+
 	frame_resizer_base ->Draw_Partition() ;
 }
 

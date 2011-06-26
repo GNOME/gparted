@@ -44,55 +44,66 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
 
-	hbox = manage( new Gtk::HBox() ) ;
-	hbox ->set_border_width( 6 ) ;
-	hbox ->pack_start( treeview_filesystems ) ;
-	get_vbox() ->pack_start( *hbox ) ;
+	{
+		Gtk::HBox* hbox(manage(new Gtk::HBox()));
 
-	//file system support legend
-	hbox2 = manage( new Gtk::HBox( false, 6 ) ) ;
-	hbox2 ->set_border_width( 6 ) ;
-	
-	hbox = manage( new Gtk::HBox() ) ;
-	str_temp  = _("This chart shows the actions supported on file systems.") ;
-	str_temp += "\n" ;
-	str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.") ;
-	hbox ->pack_start( * Utils::mk_label( str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true ),
-			   Gtk::PACK_SHRINK );
-	hbox2 -> pack_start( *hbox ) ;
-	
-	//icon legend
-	vbox = manage( new Gtk::VBox() ) ;
-	hbox = manage( new Gtk::HBox() ) ;
-	image = manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
-	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-	hbox ->pack_start( * Utils::mk_label(
-			/* TO TRANSLATORS:  Available
-			 * means that this action is valid for this file system.
-			 */
-			_("Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
-	vbox ->pack_start( *hbox ) ;
+		hbox->set_border_width(6);
+		hbox->pack_start(treeview_filesystems);
+		get_vbox()->pack_start(*hbox);
 
-	hbox = manage( new Gtk::HBox() ) ;
-	image = manage( new Gtk::Image( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR ) );
-	hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
-	hbox ->pack_start( * Utils::mk_label(
-			/* TO TRANSLATORS:  Not Available
-			 * means that this action is not valid for this file system.
-			 */
-			_("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
-	vbox ->pack_start( *hbox ) ;
-	hbox2 ->pack_start( *vbox ) ;
+		//file system support legend
+		Gtk::HBox* hbox2(manage(new Gtk::HBox(false, 6)));
+		hbox2->set_border_width(6);
 
-	//legend
-	str_temp = "<b>" ;
-	str_temp += _("Legend") ;
-	str_temp += "</b>" ;
-	expander_legend .set_label( str_temp ) ;
-	expander_legend .set_use_markup( true ) ;
-	
-	get_vbox() ->pack_start( expander_legend, Gtk::PACK_SHRINK ) ;
-	expander_legend .add( *hbox2 ) ;
+		hbox = manage(new Gtk::HBox());
+		{
+			Glib::ustring str_temp(_("This chart shows the actions supported on file systems."));
+			str_temp += "\n" ;
+			str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.");
+			hbox->pack_start(*Utils::mk_label(str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true),
+					Gtk::PACK_SHRINK);
+			hbox2->pack_start(*hbox);
+
+			{
+				//icon legend
+				Gtk::VBox* vbox(manage(new Gtk::VBox()));
+
+				hbox = manage(new Gtk::HBox());
+
+				{
+					Gtk::Image* image(manage(new Gtk::Image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR)));
+					hbox->pack_start(*image, Gtk::PACK_SHRINK);
+					hbox->pack_start(*Utils::mk_label(
+							/* TO TRANSLATORS:  Available
+							* means that this action is valid for this file system.
+							*/
+							_("Available")), Gtk::PACK_EXPAND_WIDGET );
+					vbox ->pack_start(*hbox);
+
+					hbox = manage(new Gtk::HBox());
+					image = manage(new Gtk::Image(Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR));
+					hbox->pack_start(*image, Gtk::PACK_SHRINK);
+				}
+
+				hbox->pack_start(*Utils::mk_label(
+						/* TO TRANSLATORS:  Not Available
+						* means that this action is not valid for this file system.
+						*/
+						_("Not Available") ), Gtk::PACK_EXPAND_WIDGET);
+				vbox->pack_start(*hbox);
+				hbox2->pack_start(*vbox);
+			}
+
+			str_temp = "<b>";
+			str_temp += _("Legend");
+			str_temp += "</b>";
+			expander_legend.set_label(str_temp);
+			expander_legend.set_use_markup(true);
+		}
+
+		get_vbox()->pack_start(expander_legend, Gtk::PACK_SHRINK);
+		expander_legend.add(*hbox2);
+	}
 
 	//initialize icons
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR ) ; 

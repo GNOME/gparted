@@ -42,28 +42,35 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		frame = manage( new Gtk::Frame() );
 		frame ->set_border_width( 10 );
 		
-		image = manage( new Gtk::Image( Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON ) );
-				
-		hbox = manage( new Gtk::HBox() );
-		hbox ->pack_start( *image, Gtk::PACK_SHRINK ) ;
+		{
+			Gtk::Image* image(manage(new Gtk::Image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON)));
+
+			hbox = manage(new Gtk::HBox());
+			hbox->pack_start(*image, Gtk::PACK_SHRINK);
+		}
+
 		hbox ->pack_start( * Utils::mk_label( "<b> " + Glib::ustring(_("Warning:") ) + " </b>" ),
 				   Gtk::PACK_SHRINK ) ;
 
 
 		frame ->set_label_widget( *hbox ) ;
+
 		//FIXME: for more clarity we should add a listview here with alternating rowcolors..
 		//that way it's easier to tell messages apart..
-		vbox = manage( new Gtk::VBox( false, 4 ) );
-		vbox ->set_border_width( 5 ) ;
-		for ( unsigned int t = 0 ; t < partition .messages .size() ; t++ )
-			vbox ->pack_start( * Utils::mk_label( "<i>" + partition .messages[t] + "</i>",
-					 		      true,
-					 		      Gtk::ALIGN_LEFT,
-					 		      Gtk::ALIGN_CENTER,
-					 		      true ),
-					   Gtk::PACK_SHRINK ) ;
-		frame ->add( *vbox ) ;
-		
+		{
+			Gtk::VBox* vbox(manage(new Gtk::VBox(false,4)));
+			vbox->set_border_width(5);
+
+			for (unsigned int t = 0; t < partition.messages.size(); ++t)
+				vbox->pack_start(*Utils::mk_label("<i>" + partition .messages[t] + "</i>",
+								true,
+								Gtk::ALIGN_LEFT,
+								Gtk::ALIGN_CENTER,
+								true),
+						Gtk::PACK_SHRINK);
+			frame->add(*vbox);
+		}
+
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}
 		
@@ -143,7 +150,8 @@ void Dialog_Partition_Info::Display_Info()
 {  
 	int top = 0, bottom = 1 ;
 	
-	table = manage( new Gtk::Table() ) ;
+	Gtk::Table* table(manage(new Gtk::Table()));
+
 	table ->set_border_width( 5 ) ;
 	table ->set_col_spacings(10 ) ;
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;

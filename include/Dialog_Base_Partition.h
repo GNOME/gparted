@@ -97,12 +97,8 @@ private:
 	Gtk::VBox vbox_resize_move;
 	Gtk::Label label_minmax ;
 	Gtk::Table table_resize;
-	Gtk::HBox hbox_table, hbox_resizer, hbox_resize_move;
-	Gtk::Tooltips tooltips;
+	Gtk::HBox hbox_table, hbox_resizer;
 	Gtk::Button button_resize_move ;
-	Gtk::Image *image_temp ;
-
-	Glib::ustring str_temp ;
 };
 
 } //GParted

@@ -48,12 +48,10 @@ private:
 	Gtk::Entry entry;
 
 	std::vector<FS> FILESYSTEMS ;
-	int cylinder_size ;
 	
 	//signal handlers
 	void optionmenu_changed( bool );
 
-	Gdk::Color color_temp;
 	unsigned short new_count, first_creatable_fs ;
 };
 

@@ -39,11 +39,8 @@ public:
 	
 private:
 	Gtk::Expander expander_advanced ;
-	Gtk::HBox *hbox ;
-	Gtk::VBox *vbox ;
 	Gtk::Image image ;
 	Gtk::ComboBoxText combo_labeltypes ;
-	Glib::ustring str_temp ;
 	std::vector<Glib::ustring> labeltypes ;
 };
 

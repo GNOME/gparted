@@ -212,12 +212,16 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 			
 			break ;
 		case RESIZE_MOVE:
-			image_temp = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON ) );
-			hbox_resize_move .pack_start( *image_temp, Gtk::PACK_EXPAND_PADDING ) ;
-			hbox_resize_move .pack_start( * Utils::mk_label( fixed_start ? _("Resize") : _("Resize/Move") ),
-						      Gtk::PACK_EXPAND_PADDING ) ;
-			button_resize_move .add( hbox_resize_move ) ;
-														
+			{
+				Gtk::Image* image_temp(manage(new Gtk::Image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON)));
+				Gtk::HBox* box_resize_move(manage(new Gtk::HBox()));
+
+				box_resize_move->pack_start(*image_temp, Gtk::PACK_EXPAND_PADDING);
+				box_resize_move->pack_start(*Utils::mk_label(fixed_start ? _("Resize") : _("Resize/Move")),
+							Gtk::PACK_EXPAND_PADDING);
+				button_resize_move.add(*box_resize_move);
+			}
+
 			this ->add_action_widget ( button_resize_move, Gtk::RESPONSE_OK ) ;
 			button_resize_move .set_sensitive( false ) ;
 			
@@ -231,7 +235,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 
 void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 {
-	str_temp = String::ucompose( _("Minimum size: %1 MiB"), min ) + "\t\t" ;
+	Glib::ustring str_temp(String::ucompose( _("Minimum size: %1 MiB"), min ) + "\t\t");
 	str_temp += String::ucompose( _("Maximum size: %1 MiB"), max ) ;
 	label_minmax .set_text( str_temp ) ; 
 }
