@@ -308,10 +308,11 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	//set fitting resizer colors
 	{
 		Gdk::Color color_temp;
-
+		//Background color
 		color_temp.set((optionmenu_type.get_history() == 2) ? "darkgrey" : "white");
 		frame_resizer_base->override_default_rgb_unused_color(color_temp);
 
+		//Partition color
 		color_temp.set(Utils::get_color(fs.filesystem));
 		frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
