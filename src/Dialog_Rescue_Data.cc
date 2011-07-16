@@ -1,4 +1,5 @@
 /* Copyright (C) 2010 Joan Lledó
+ * Copyright (C) 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/checkbutton.h>
 #include <sstream>
+#include <cerrno>
 
 namespace GParted
 {
@@ -159,7 +161,24 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 
 	char tmpDir[32]=tmp_prefix;
 
-	mkdtemp(tmpDir);
+	char * tmpDirResult = mkdtemp(tmpDir);
+	if ( tmpDirResult == NULL )
+	{
+		Glib::ustring error_txt = _("An error occurred while creating a temporary director for use as a mount point.");
+		error_txt += "\n";
+		error_txt += _("Error");
+		error_txt += ":\n";
+		error_txt += Glib::strerror( errno );
+
+		//Dialog information
+		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+		errorDialog.set_message(_("Failed creating temporary directory"));
+		errorDialog.set_secondary_text(error_txt);
+
+		errorDialog.run();
+
+		return;
+	}
 
 	Glib::ustring mountPoint=tmpDir;
 
