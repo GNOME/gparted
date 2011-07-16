@@ -37,7 +37,6 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 				     unsigned short new_count, 
 				     const std::vector<FS> & FILESYSTEMS,
 				     bool only_unformatted,
-				     Sector cylinder_size,
 				     Glib::ustring disktype )
 {
 	this ->new_count = new_count;

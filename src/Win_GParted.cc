@@ -1569,7 +1569,6 @@ void Win_GParted::activate_new()
 				  new_count,
 				  gparted_core .get_filesystems(),
 				  devices[ current_device ] .readonly,
-				  devices[ current_device ] .cylsize,
 				  devices[ current_device ] .disktype ) ;
 		
 		dialog .set_transient_for( *this );
