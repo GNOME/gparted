@@ -165,7 +165,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	else//it's an new od which needs to be added to the model.
 	{
 		unsigned int pos = operationdetail .get_treepath() .rfind( ":" ) ;
-		if ( pos >= 0 && pos < operationdetail .get_treepath() .length() )
+		if ( pos < operationdetail .get_treepath() .length() )
 			iter = treestore_operations ->get_iter( operationdetail .get_treepath() 
 							.substr( 0, operationdetail .get_treepath() .rfind( ":" ) ) ) ;
 		else
