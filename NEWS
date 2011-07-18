@@ -1,4 +1,61 @@
 ============================
+GParted 0.9.0   (2011-07-18)
+============================
+
+Release Notes
+-------------
+  The most significant change in this release is the ability to
+  compile and link with libparted 3.0.
+
+  GParted retains full functionality when compiled and linked with
+  libparted versions prior to 3.0, for example libparted-2.4.
+
+  Because Parted 3.0 removed some file system specific functionality,
+  the following abilities are lost or changed when GParted is compiled
+  and linked with libparted 3.0:
+
+    * Unable to grow and shrink FAT16 and FAT32 file systems
+    * Unable to shrink HFS and HFS+ file systems
+    * Unable to determine used and unused sectors in HFS and HFS+ file
+      systems
+    * Unable to erase file system signatures on partition create and
+      format
+    * FAT16 and FAT32 file system moves performed internally by
+      GParted instead of by libparted
+
+### Other key changes include:
+
+  * Fix size off by one sector with unrecognized disk label
+  * Fix GParted crashes with assertion (head_size <= 63)
+    - Requires libparted-2.4 or higher
+
+Bug Fixes
+---------
+  * Enable compile and link with libparted 3.0 (#651559)
+  * Fix size off by one sector with unrecognized disk label (#649444)
+  * Fix GParted crashes with assertion (head_size <= 63)
+    - Requires libparted-2.4 or higher
+    - Ubuntu launchpad #545911
+  * Fix typo "on on " -> "on" (#650793)
+    - Thanks go to Gabor Kelemen for this small patch
+  * Improve English grammar: amount -> number (#650237)
+
+Translations (new/updated)
+--------------------------
+  ca(Gil Forcada), cs(Marek Černocký), da(Ask H. Larsen),
+  de(Mario Blättermann), es(Daniel Mustieles), fa(Arash Mousavi),
+  fr(Claude Paroz), he(Yaron Shahrabani), hu(Gabor Kelemen),
+  it(Milo Casagrande), lt(Aurimas Černius), pl(Piotr Drąg),
+  pt_BR(Luana Campos Ferreira), ru(Yuri Myasoedov), sl(Matej Urbančič),
+  sr(Мирослав Николић), sr@latin(Мирослав Николић), sv(Daniel Nylander),
+  tr(Şenol Korkmaz, Muhammet Kara), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.8.1   (2011-05-23)
 ============================
 
