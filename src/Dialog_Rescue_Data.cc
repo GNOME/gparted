@@ -164,7 +164,7 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 	char * tmpDirResult = mkdtemp(tmpDir);
 	if ( tmpDirResult == NULL )
 	{
-		Glib::ustring error_txt = _("An error occurred while creating a temporary director for use as a mount point.");
+		Glib::ustring error_txt = _("An error occurred while creating a temporary directory for use as a mount point.");
 		error_txt += "\n";
 		error_txt += _("Error");
 		error_txt += ":\n";
