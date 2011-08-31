@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-13 15:38+0000\n"
-"PO-Revision-Date: 2011-06-26 23:05+0200\n"
+"POT-Creation-Date: 2011-07-31 15:02+0000\n"
+"PO-Revision-Date: 2011-07-21 01:16+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Language: Serbian (sr)\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.5.2\n"
 "X-Launchpad-Export-Date: 2010-05-13 00:28+0000\n"
+"X-Project-Style: gnome\n"
 
 #: ../gparted.desktop.in.in.h:1
 msgid "Create, reorganize, and delete partitions"
 msgstr "Стварајте, реорганизујте и бришите партиције"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
+#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:361
 #: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1115
 #: ../src/Win_GParted.cc:1306
 msgid "GParted"
@@ -76,41 +76,41 @@ msgstr "MB"
 msgid "None"
 msgstr "Ништа"
 
-#: ../src/Dialog_Base_Partition.cc:217
+#: ../src/Dialog_Base_Partition.cc:220
 msgid "Resize"
 msgstr "Промени величину"
 
-#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:236
+#: ../src/Dialog_Base_Partition.cc:220 ../src/Win_GParted.cc:236
 msgid "Resize/Move"
 msgstr "Промени величину/Премести"
 
-#: ../src/Dialog_Base_Partition.cc:234
+#: ../src/Dialog_Base_Partition.cc:238
 msgid "Minimum size: %1 MiB"
 msgstr "Најмања величина: %1 MB"
 
-#: ../src/Dialog_Base_Partition.cc:235
+#: ../src/Dialog_Base_Partition.cc:239
 msgid "Maximum size: %1 MiB"
 msgstr "Највећа величина: %1 MB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:27
+#: ../src/Dialog_Disklabel.cc:28
 msgid "Create partition table on %1"
 msgstr " Стварање партиционе табеле на партицији %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:47
+#: ../src/Dialog_Disklabel.cc:52
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "УПОЗОРЕЊЕ: Ово ће ОБРИСАТИ СВЕ ПОДАТКЕ на ЦЕЛОМ ДИСКу „%1“"
 
-#: ../src/Dialog_Disklabel.cc:51
+#: ../src/Dialog_Disklabel.cc:56
 msgid "Default is to create an MS-DOS partition table."
 msgstr "Подразумевана вредност је стварање МС-ДОС партиционе табеле."
 
-#: ../src/Dialog_Disklabel.cc:58
+#: ../src/Dialog_Disklabel.cc:62
 msgid "Advanced"
 msgstr "Напредно"
 
-#: ../src/Dialog_Disklabel.cc:66
+#: ../src/Dialog_Disklabel.cc:71
 msgid "Select new partition table type:"
 msgstr "Изаберите нови тип партиционе табеле:"
 
@@ -123,41 +123,41 @@ msgstr "Убаци „%1“"
 msgid "Information about %1"
 msgstr " Информације о „%1“"
 
-#: ../src/Dialog_Partition_Info.cc:49
+#: ../src/Dialog_Partition_Info.cc:52
 msgid "Warning:"
 msgstr "Упозорење:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:119
+#: ../src/Dialog_Partition_Info.cc:160 ../src/Dialog_Partition_New.cc:117
 msgid "File system:"
 msgstr "Систем датотека:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:458
+#: ../src/Dialog_Partition_Info.cc:170 ../src/Win_GParted.cc:458
 msgid "Size:"
 msgstr "Величина:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:178
+#: ../src/Dialog_Partition_Info.cc:186
 msgid "Used:"
 msgstr "Заузето:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:192
+#: ../src/Dialog_Partition_Info.cc:200
 msgid "Unused:"
 msgstr "Слободно:"
 
-#: ../src/Dialog_Partition_Info.cc:209
+#: ../src/Dialog_Partition_Info.cc:217
 msgid "Flags:"
 msgstr "Ознаке:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:466
+#: ../src/Dialog_Partition_Info.cc:233 ../src/Win_GParted.cc:466
 msgid "Path:"
 msgstr "Путања:"
 
-#: ../src/Dialog_Partition_Info.cc:239
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Status:"
 msgstr "Стање:"
 
@@ -165,7 +165,7 @@ msgstr "Стање:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:251
+#: ../src/Dialog_Partition_Info.cc:259
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Заузета (најмање једна логичка патиција је монтирана)"
 
@@ -173,12 +173,12 @@ msgstr "Заузета (најмање једна логичка патициј�
 #. * means that this linux swap partition is enabled and being used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:259
+#: ../src/Dialog_Partition_Info.cc:267
 msgid "Active"
 msgstr "Активнa"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:265
+#: ../src/Dialog_Partition_Info.cc:273
 msgid "Mounted on %1"
 msgstr "Монтирана је на „%1“"
 
@@ -186,7 +186,7 @@ msgstr "Монтирана је на „%1“"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:275
+#: ../src/Dialog_Partition_Info.cc:283
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Слободна (нема монтираних логичких партиција)"
 
@@ -194,44 +194,44 @@ msgstr "Слободна (нема монтираних логичких пар�
 #. *  means that this linux swap partition is not enabled and is not
 #. *  in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:283
+#: ../src/Dialog_Partition_Info.cc:291
 msgid "Not active"
 msgstr "Није активна"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:290
+#: ../src/Dialog_Partition_Info.cc:298
 msgid "Not mounted"
 msgstr "Није монтирана"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:299 ../src/Dialog_Partition_Label.cc:43
-#: ../src/Dialog_Partition_New.cc:131
+#: ../src/Dialog_Partition_Info.cc:307 ../src/Dialog_Partition_Label.cc:41
+#: ../src/Dialog_Partition_New.cc:129
 msgid "Label:"
 msgstr "Етикета:"
 
-#: ../src/Dialog_Partition_Info.cc:312
+#: ../src/Dialog_Partition_Info.cc:320
 msgid "UUID:"
 msgstr "УУИД:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:326
+#: ../src/Dialog_Partition_Info.cc:334
 msgid "First sector:"
 msgstr "Први сектор:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:336
+#: ../src/Dialog_Partition_Info.cc:344
 msgid "Last sector:"
 msgstr "Последњи сектор:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:519
+#: ../src/Dialog_Partition_Info.cc:354 ../src/Win_GParted.cc:519
 msgid "Total sectors:"
 msgstr "Укупан број сектора:"
 
 #. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
-#: ../src/Dialog_Partition_Label.cc:32
+#: ../src/Dialog_Partition_Label.cc:30
 msgid "Set partition label on %1"
 msgstr "Постављање етикете на партицији %1"
 
@@ -241,25 +241,25 @@ msgid "Create new Partition"
 msgstr "Стварање нове партиције"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:79
+#: ../src/Dialog_Partition_New.cc:77
 msgid "Create as:"
 msgstr "Направи:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Примарну партицију"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Логичку партицију"
 
-#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Проширену партицију"
 
-#: ../src/Dialog_Partition_New.cc:198
+#: ../src/Dialog_Partition_New.cc:196
 msgid "New Partition #%1"
 msgstr "Нова партиција #%1"
 
@@ -275,92 +275,92 @@ msgstr "Промена величине „%1“"
 msgid "Applying pending operations"
 msgstr "Извршавање заказаних операција"
 
-#: ../src/Dialog_Progress.cc:48
+#: ../src/Dialog_Progress.cc:50
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr "У зависности од броја и врста операција ово може потрајати мало дуже."
 
-#: ../src/Dialog_Progress.cc:61
+#: ../src/Dialog_Progress.cc:63
 msgid "Completed Operations:"
 msgstr "Завршене операције:"
 
-#: ../src/Dialog_Progress.cc:101
+#: ../src/Dialog_Progress.cc:103
 msgid "Details"
 msgstr "Детаљи"
 
-#: ../src/Dialog_Progress.cc:199
+#: ../src/Dialog_Progress.cc:202
 msgid "%1 of %2 operations completed"
 msgstr "%1 од %2 операција је завршена"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:230
+#: ../src/Dialog_Progress.cc:233
 msgid "_Save Details"
 msgstr "_Сачувај детаље"
 
-#: ../src/Dialog_Progress.cc:239
+#: ../src/Dialog_Progress.cc:242
 msgid "Operation cancelled"
 msgstr "Операција је обустављена"
 
-#: ../src/Dialog_Progress.cc:253
+#: ../src/Dialog_Progress.cc:256
 msgid "All operations successfully completed"
 msgstr "Све операције су успешно завршене"
 
-#: ../src/Dialog_Progress.cc:257
+#: ../src/Dialog_Progress.cc:260
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "1% упозорење"
 msgstr[1] "1% упозорења"
 msgstr[2] "1% упозорења"
 
-#: ../src/Dialog_Progress.cc:270
+#: ../src/Dialog_Progress.cc:273
 msgid "An error occurred while applying the operations"
 msgstr "Дошло је до грешке приликом извршавања операција"
 
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:278
 msgid "See the details for more information."
 msgstr "Погледајте детаље за више информација."
 
-#: ../src/Dialog_Progress.cc:276
+#: ../src/Dialog_Progress.cc:280
 msgid "IMPORTANT"
 msgstr "ВАЖНО"
 
-#: ../src/Dialog_Progress.cc:277
+#: ../src/Dialog_Progress.cc:281
 msgid "If you want support, you need to provide the saved details!"
 msgstr ""
 "Уколико желите подршку, требали бисте да нам доставите сачуване детаље!"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:280
+#: ../src/Dialog_Progress.cc:284
 msgid "See %1 for more information."
 msgstr "Погледајте „%1“ за више информација."
 
-#: ../src/Dialog_Progress.cc:313
+#: ../src/Dialog_Progress.cc:317
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Да ли сте сигурни да желите да откажете текућу операцију?"
 
-#: ../src/Dialog_Progress.cc:319
+#: ../src/Dialog_Progress.cc:323
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "Отказивање неке од операција може довести до ОЗБИЉНИХ ОШТЕЋЕЊА на систему "
 "датотека."
 
-#: ../src/Dialog_Progress.cc:321
+#: ../src/Dialog_Progress.cc:325
 msgid "Continue Operation"
 msgstr "Настави операцију"
 
-#: ../src/Dialog_Progress.cc:322
+#: ../src/Dialog_Progress.cc:326
 msgid "Cancel Operation"
 msgstr "Откажи операцију"
 
-#: ../src/Dialog_Progress.cc:335
+#: ../src/Dialog_Progress.cc:339
 msgid "Save Details"
 msgstr "Сачувај детаље"
 
-#: ../src/Dialog_Progress.cc:354
+#: ../src/Dialog_Progress.cc:358
 msgid "GParted Details"
 msgstr "Детаљи ГПартеда"
 
-#: ../src/Dialog_Progress.cc:362
+#: ../src/Dialog_Progress.cc:366
 msgid "Libparted"
 msgstr "Либпартед"
 
@@ -368,7 +368,7 @@ msgstr "Либпартед"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:405
+#: ../src/Dialog_Progress.cc:409
 msgid "EXECUTING"
 msgstr "ИЗВРШАВАМ"
 
@@ -376,7 +376,7 @@ msgstr "ИЗВРШАВАМ"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:413
+#: ../src/Dialog_Progress.cc:417
 msgid "SUCCESS"
 msgstr "УСПЕШНО"
 
@@ -384,7 +384,7 @@ msgstr "УСПЕШНО"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:421
+#: ../src/Dialog_Progress.cc:425
 msgid "ERROR"
 msgstr "ГРЕШКА"
 
@@ -393,7 +393,7 @@ msgstr "ГРЕШКА"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:430
+#: ../src/Dialog_Progress.cc:434
 msgid "INFO"
 msgstr "ИНФО"
 
@@ -402,7 +402,7 @@ msgstr "ИНФО"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:439
+#: ../src/Dialog_Progress.cc:443
 msgid "N/A"
 msgstr "Н/Д"
 
@@ -446,11 +446,11 @@ msgstr "Етикетирање"
 msgid "Required Software"
 msgstr "Потребан софтвер"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:60
 msgid "This chart shows the actions supported on file systems."
 msgstr "Овај графикон показује подржане акције на систему датотека."
 
-#: ../src/DialogFeatures.cc:59
+#: ../src/DialogFeatures.cc:62
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -461,23 +461,23 @@ msgstr ""
 #. TO TRANSLATORS:  Available
 #. * means that this action is valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:73
+#: ../src/DialogFeatures.cc:80
 msgid "Available"
 msgstr "Доступна"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:83
+#: ../src/DialogFeatures.cc:92
 msgid "Not Available"
 msgstr "Недоступна"
 
-#: ../src/DialogFeatures.cc:89
+#: ../src/DialogFeatures.cc:98
 msgid "Legend"
 msgstr "Легенда"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:102
+#: ../src/DialogFeatures.cc:113
 msgid "Rescan For Supported Actions"
 msgstr "Провери за подржаним акцијама"
 
@@ -485,59 +485,75 @@ msgstr "Провери за подржаним акцијама"
 msgid "Manage flags on %1"
 msgstr " Управљај ознакама на „%1“"
 
-#: ../src/Dialog_Rescue_Data.cc:34
+#: ../src/Dialog_Rescue_Data.cc:36
 msgid "Search disk for file systems"
 msgstr "Потражи системе датотека на диску"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: ../src/Dialog_Rescue_Data.cc:51
+#: ../src/Dialog_Rescue_Data.cc:53
 msgid "File systems found on %1"
 msgstr "Пронађени су системи датотека на „%1“"
 
-#: ../src/Dialog_Rescue_Data.cc:56
+#: ../src/Dialog_Rescue_Data.cc:58
 msgid "Data found"
 msgstr "Пронађени подаци"
 
-#: ../src/Dialog_Rescue_Data.cc:60
+#: ../src/Dialog_Rescue_Data.cc:62
 msgid "Data found with inconsistencies"
 msgstr "Пронађени су противречни подаци."
 
-#: ../src/Dialog_Rescue_Data.cc:62
+#: ../src/Dialog_Rescue_Data.cc:64
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
 msgstr "УПОЗОРЕЊЕ: Систем датотека означен са (!) је противречан."
 
-#: ../src/Dialog_Rescue_Data.cc:64
+#: ../src/Dialog_Rescue_Data.cc:66
 msgid "You might encounter errors trying to view these file systems."
 msgstr ""
 "Можете наићи на проблеме ако покушате да прегледате те системе датотека."
 
-#: ../src/Dialog_Rescue_Data.cc:80
+#: ../src/Dialog_Rescue_Data.cc:82
 msgid "The 'View' buttons create read-only views of each file system."
 msgstr ""
 "Дугмад „Преглед“ ствара прегледе сваког система датотека само за читање."
 
-#: ../src/Dialog_Rescue_Data.cc:82
+#: ../src/Dialog_Rescue_Data.cc:84
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "Сви монтирани прегледи биће демонтирани када затворите ово прозорче."
 
-#: ../src/Dialog_Rescue_Data.cc:105
+#: ../src/Dialog_Rescue_Data.cc:107
 msgid "File systems"
 msgstr "Системи датотека"
 
 #. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: ../src/Dialog_Rescue_Data.cc:127
+#: ../src/Dialog_Rescue_Data.cc:129
 msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: „%2“ (%3 MB)"
 
-#: ../src/Dialog_Rescue_Data.cc:135
+#: ../src/Dialog_Rescue_Data.cc:137
 msgid "View"
 msgstr "Преглед"
 
-#: ../src/Dialog_Rescue_Data.cc:172
+#: ../src/Dialog_Rescue_Data.cc:167
+msgid ""
+"An error occurred while creating a temporary director for use as a mount "
+"point."
+msgstr ""
+"Дошло је до грешке приликом стварања привременог директоријума који се "
+"користи као тачка монтирања."
+
+#: ../src/Dialog_Rescue_Data.cc:169
+msgid "Error"
+msgstr "Грeшкa"
+
+#: ../src/Dialog_Rescue_Data.cc:175
+msgid "Failed creating temporary directory"
+msgstr "Не могу да направим привремени директоријум"
+
+#: ../src/Dialog_Rescue_Data.cc:191
 msgid "An error occurred while creating the read-only view."
 msgstr "Дошло је до грешке приликом стварања прегледа само за читање."
 
-#: ../src/Dialog_Rescue_Data.cc:174
+#: ../src/Dialog_Rescue_Data.cc:193
 msgid ""
 "Either the file system can not be mounted (like swap), or there are "
 "inconsistencies or errors in the file system."
@@ -545,26 +561,26 @@ msgstr ""
 "Или систем датотека не може бити монтиран (рецимо своп) или има "
 "противречности или грешака на систему датотека."
 
-#: ../src/Dialog_Rescue_Data.cc:178
+#: ../src/Dialog_Rescue_Data.cc:197
 msgid "Failed creating read-only view"
 msgstr "Нисам успео да створим преглед само за читање"
 
-#: ../src/Dialog_Rescue_Data.cc:208
+#: ../src/Dialog_Rescue_Data.cc:227
 msgid "Error:"
 msgstr "Грешка:"
 
 #. TO TRANSLATORS: looks like
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
-#: ../src/Dialog_Rescue_Data.cc:216
+#: ../src/Dialog_Rescue_Data.cc:235
 msgid "The file system is mounted on:"
 msgstr "Систем датотека је монтиран на:"
 
-#: ../src/Dialog_Rescue_Data.cc:221
+#: ../src/Dialog_Rescue_Data.cc:240
 msgid "Unable to open the default file manager"
 msgstr "Не могу да отворим основног управника датотека"
 
-#: ../src/Dialog_Rescue_Data.cc:240
+#: ../src/Dialog_Rescue_Data.cc:259
 msgid ""
 "Warning: The detected file system area overlaps with at least one existing "
 "partition."
@@ -572,7 +588,7 @@ msgstr ""
 "Упозорење: Област откривеног система датотека се преклапа бар са једном "
 "постојећом партицијом."
 
-#: ../src/Dialog_Rescue_Data.cc:242
+#: ../src/Dialog_Rescue_Data.cc:261
 msgid ""
 "It is recommended that you do not use any overlapping file systems to avoid "
 "disturbing existing data."
@@ -580,27 +596,27 @@ msgstr ""
 "Препоручује вам се да не користите ниједан преклопљени систем датотека да "
 "бисте избегли оштећење постојећих података."
 
-#: ../src/Dialog_Rescue_Data.cc:244
+#: ../src/Dialog_Rescue_Data.cc:263
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "Да ли желите да покушате да дизактивирате следеће тачке монтирања?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:322
+#: ../src/DMRaid.cc:326
 msgid "create missing %1 entries"
 msgstr "стварам „%1“ недостајуће ставке"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:421
+#: ../src/DMRaid.cc:425
 msgid "delete affected %1 entries"
 msgstr "бришем „%1“ афектиране ставке"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:444
+#: ../src/DMRaid.cc:448
 msgid "delete %1 entry"
 msgstr "бришем ставку „%1“"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:494
+#: ../src/DMRaid.cc:498
 msgid "update %1 entry"
 msgstr "освежи ставку „%1“"
 
@@ -1432,7 +1448,7 @@ msgstr[2] "%1 заказаних операција"
 msgid "Quit GParted?"
 msgstr "Да затворим ГПартед?"
 
-#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2051
+#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2050
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 операција је тренутно заказана."
@@ -1555,53 +1571,53 @@ msgstr "Убацили сте унутар једне постојеће пар�
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Ако примените ову операцију подаци на „%1“ ће бити изгубљени."
 
-#: ../src/Win_GParted.cc:1606
+#: ../src/Win_GParted.cc:1605
 msgid "Unable to delete %1!"
 msgstr "Не могу да обришем „%1“!"
 
-#: ../src/Win_GParted.cc:1613
+#: ../src/Win_GParted.cc:1612
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Демонтирајте сваку логичку партицију са бројем већим од %1"
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1623
 msgid "Are you sure you want to delete %1?"
 msgstr "Да ли сте сигурни да желите да обришете „%1“!"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1630
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Након брисања ова партиција неће бити доступна за умножавање."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1634
+#: ../src/Win_GParted.cc:1633
 msgid "Delete %1 (%2, %3)"
 msgstr "Обриши „%1“ (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1704
+#: ../src/Win_GParted.cc:1703
 msgid "Cannot format this file system to %1."
 msgstr "Не могу да форматирам овај систем датотека као %1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1716
+#: ../src/Win_GParted.cc:1715
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 систем датотека захтева партицију најмање од %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1724
+#: ../src/Win_GParted.cc:1723
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Партиција са %1 системом датотека има максималну величину од %2."
 
-#: ../src/Win_GParted.cc:1810
+#: ../src/Win_GParted.cc:1809
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Партиција не може бити демонтирана са следећих тачака монтирања:"
 
-#: ../src/Win_GParted.cc:1812
+#: ../src/Win_GParted.cc:1811
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1609,14 +1625,14 @@ msgstr ""
 "Највероватније да су и друге партиције монтиране на овим тачкама монтирања. "
 "Саветује вам се да их демонтирате ручно."
 
-#: ../src/Win_GParted.cc:1869 ../src/Win_GParted.cc:1953
+#: ../src/Win_GParted.cc:1868 ../src/Win_GParted.cc:1952
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "%1 операција је тренутно заказана за партицију %2."
 msgstr[1] "%1 операције су тренутно заказане за партицију %2."
 msgstr[2] "%1 операција је тренутно заказано за партицију %2."
 
-#: ../src/Win_GParted.cc:1883
+#: ../src/Win_GParted.cc:1882
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1624,7 +1640,7 @@ msgstr ""
 "Акција укључивања свопа не може бити извршена ако има заказане операције за "
 "партицију."
 
-#: ../src/Win_GParted.cc:1885
+#: ../src/Win_GParted.cc:1884
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1632,31 +1648,31 @@ msgstr ""
 "Користите мени „Уређивање“ да бисте опозвали, поништили или применили "
 "операције пре коришћења укључивања свопа са овом партицијом."
 
-#: ../src/Win_GParted.cc:1903
+#: ../src/Win_GParted.cc:1902
 msgid "Deactivating swap on %1"
 msgstr "Деактивирам своп на „%1“"
 
-#: ../src/Win_GParted.cc:1903
+#: ../src/Win_GParted.cc:1902
 msgid "Activating swap on %1"
 msgstr "Активирам своп на „%1“"
 
-#: ../src/Win_GParted.cc:1910
+#: ../src/Win_GParted.cc:1909
 msgid "Could not deactivate swap"
 msgstr "Не могу да деактивирам своп"
 
-#: ../src/Win_GParted.cc:1910
+#: ../src/Win_GParted.cc:1909
 msgid "Could not activate swap"
 msgstr "Не могу да активирам своп"
 
-#: ../src/Win_GParted.cc:1926
+#: ../src/Win_GParted.cc:1925
 msgid "Unmounting %1"
 msgstr "Демонтирам „%1“"
 
-#: ../src/Win_GParted.cc:1931
+#: ../src/Win_GParted.cc:1930
 msgid "Could not unmount %1"
 msgstr "Не могу да демонтирам „%1“"
 
-#: ../src/Win_GParted.cc:1967
+#: ../src/Win_GParted.cc:1966
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1664,7 +1680,7 @@ msgstr ""
 "Акција монтирања не може бити извршена ако има заказане операције за "
 "партицију."
 
-#: ../src/Win_GParted.cc:1969
+#: ../src/Win_GParted.cc:1968
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1672,30 +1688,30 @@ msgstr ""
 "Користите мени „Уређивање“ да бисте опозвали, поништили или применили "
 "операције пре коришћења монтирања са овом партицијом."
 
-#: ../src/Win_GParted.cc:1987
+#: ../src/Win_GParted.cc:1986
 msgid "mounting %1 on %2"
 msgstr "монтирам %1 на %2"
 
-#: ../src/Win_GParted.cc:1994
+#: ../src/Win_GParted.cc:1993
 msgid "Could not mount %1 on %2"
 msgstr "Не могу да монтирам %1 на %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:2020
+#: ../src/Win_GParted.cc:2019
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "%1 партиција је тренутно активна на уређају %2."
 msgstr[1] "%1 партиције су тренутно активне на уређају %2."
 msgstr[2] "%1 партиција је тренутно активно на уређају %2."
 
-#: ../src/Win_GParted.cc:2035
+#: ../src/Win_GParted.cc:2034
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Нова партициона табела не може бити направљена када су неке партиције "
 "активне."
 
-#: ../src/Win_GParted.cc:2037
+#: ../src/Win_GParted.cc:2036
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1703,7 +1719,7 @@ msgstr ""
 "Активне партиције су оне које су у употреби, као што је монтирани систем "
 "датотека или укључени своп простор."
 
-#: ../src/Win_GParted.cc:2039
+#: ../src/Win_GParted.cc:2038
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1712,14 +1728,14 @@ msgstr ""
 "да деактивирате све партиције на том уређају пре него што направите нову "
 "партициону табелу."
 
-#: ../src/Win_GParted.cc:2064
+#: ../src/Win_GParted.cc:2063
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Нова партициона табела не може бити направљена када постоје заказане "
 "операције."
 
-#: ../src/Win_GParted.cc:2066
+#: ../src/Win_GParted.cc:2065
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1727,30 +1743,30 @@ msgstr ""
 "Користите мени „Уређивање“ да бисте поништили или применили све операције "
 "пре прављења нове партиционе табеле."
 
-#: ../src/Win_GParted.cc:2081
+#: ../src/Win_GParted.cc:2080
 msgid "Error while creating partition table."
 msgstr "Грешка приликом прављења партиционе табеле."
 
-#: ../src/Win_GParted.cc:2101
+#: ../src/Win_GParted.cc:2100
 msgid "Command gpart was not found"
 msgstr "Наредба „gpart“ није пронађена"
 
-#: ../src/Win_GParted.cc:2102
+#: ../src/Win_GParted.cc:2101
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Ова функција користи гпарт. Молим инсталирајте „gpart“ и покушајте опет."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2110
+#: ../src/Win_GParted.cc:2109
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "За проналажење система датотека потребно је претраживање целокупног диска."
 
-#: ../src/Win_GParted.cc:2112
+#: ../src/Win_GParted.cc:2111
 msgid "The scan might take a very long time."
 msgstr "Претраживање може да потраје предуго."
 
-#: ../src/Win_GParted.cc:2114
+#: ../src/Win_GParted.cc:2113
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -1758,26 +1774,26 @@ msgstr ""
 "Након претраживања моћи ћете да монтирате откривене системе датотека и да "
 "умножите податке на друге медије."
 
-#: ../src/Win_GParted.cc:2116
+#: ../src/Win_GParted.cc:2115
 msgid "Do you want to continue?"
 msgstr "Да ли желите да наставите?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2120
+#: ../src/Win_GParted.cc:2119
 msgid "Search for file systems on %1"
 msgstr "Тражи системе датотека на „%1“"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2134
+#: ../src/Win_GParted.cc:2133
 msgid "Searching for file systems on %1"
 msgstr "Тражим системе датотека на „%1“"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2147
 msgid "No file systems found on %1"
 msgstr "Нису пронађени системи датотека на „%1“"
 
-#: ../src/Win_GParted.cc:2149
+#: ../src/Win_GParted.cc:2148
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -1785,20 +1801,20 @@ msgstr ""
 "Претраживањем диска гпартом нисам нашао ниједан препознатљиви систем "
 "датотека на овом диску."
 
-#: ../src/Win_GParted.cc:2319
+#: ../src/Win_GParted.cc:2318
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Да ли сте сигурни да желите да примените заказане операције?"
 
-#: ../src/Win_GParted.cc:2325
+#: ../src/Win_GParted.cc:2324
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Уређивање партиција може довести до ГУБИТКА ПОДАТАКА."
 
-#: ../src/Win_GParted.cc:2327
+#: ../src/Win_GParted.cc:2326
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Саветује вам се да направите резервну копију података пре него што наставите."
 
-#: ../src/Win_GParted.cc:2329
+#: ../src/Win_GParted.cc:2328
 msgid "Apply operations to device"
 msgstr "Примени операције на уређај"
 
