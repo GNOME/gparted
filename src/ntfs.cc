@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ bool ntfs::create( const Partition & new_partition, OperationDetail & operationd
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool return_value = false ;
-	Glib::ustring str_temp = "ntfsresize -P --force " + partition_new .get_path() ;
+	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 	{
