@@ -3,9 +3,9 @@
  * Uses Glib::ustring instead of std::string which doesn't work with
  * Gtkmm due to character encoding troubles with stringstreams.
  *
- * Version 1.0.4.
+ * Version 1.0.5.
  *
- * Copyright (c) 2002, 03, 04 Ole Laursen <olau@hardworking.dk>.
+ * Copyright (c) 2002, 03, 04, 07 Ole Laursen <olau@hardworking.dk>.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -28,7 +28,7 @@
 //
 //   String::ucompose("This is a %1x%2 matrix.", rows, cols);
 //
-// See http://www.cs.aau.dk/~olau/compose/ or the included
+// See http://people.iola.dk/olau/compose/ or the included
 // README.compose for more details.
 //
 
@@ -124,7 +124,7 @@ namespace UStringPrivate
     os << obj;
 
     std::wstring str = os.str();
-   
+    
     return Glib::convert(std::string(reinterpret_cast<const char *>(str.data()),
 				     str.size() * sizeof(wchar_t)),
 			 "UTF-8", "WCHAR_T");
@@ -151,13 +151,20 @@ namespace UStringPrivate
   {
     return obj;
   }
+
+  template <>
+  inline std::string
+  Composition::stringify<char *>(char *obj)
+  {
+    return obj;
+  }
   
   // implementation of class Composition
   template <typename T>
   inline Composition &Composition::arg(const T &obj)
   {
     Glib::ustring rep = stringify(obj);
-  
+    
     if (!rep.empty()) {		// manipulators don't produce output
       for (specification_map::const_iterator i = specs.lower_bound(arg_no),
 	     end = specs.upper_bound(arg_no); i != end; ++i) {
@@ -179,8 +186,7 @@ namespace UStringPrivate
     : arg_no(1)
   {
 #if __GNUC__ >= 3
-	  //see #157871
-	//os.imbue(std::locale("")); // use the user's locale for the stream
+    os.imbue(std::locale("")); // use the user's locale for the stream
 #endif
     std::string::size_type b = 0, i = 0;
   

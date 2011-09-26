@@ -1,0 +1,342 @@
+Documentation for the compose library
+-------------------------------------
+
+The file compose.hpp contains the source for a small C++ library for
+composition of strings from arbitrary objects convertible to strings
+(such as integers, floats etc.). This is the documentation for that
+library. The utility of the library is thought to be greatest for
+programmers needing translation of their programs, but in fact it can
+be used for its mere convenience.
+
+The file ucompose.hpp has a front-end that uses Glib::ustrings which
+come from the C++ GUI library Gtkmm (see www.gtkmm.org). Use
+ucompose.hpp and String::ucompose if you are using Gtkmm - else your
+ustrings will end up corrupted someday.
+
+
+The initiating problem - a prelude
+----------------------------------
+
+The basic problem this library solves is that of creating strings such
+as "Fact is that 10 gobbles are worth 100$ of troubles." where the two
+numbers, 10 and 100, are to be determined at runtime and may vary. C++
+doesn't have a good solution for this problem - unless you use
+something like itoa() (which isn't really portable and doesn't work
+for arbitrary objects, say GobbliGobs, that define their own
+conversion routines by overloading "ostream & operator<<(ostream &,
+Object)"), the best option you have is to aggregate an ostringstream:
+
+  std::ostringstream os;
+  os << gobble_no;
+  std::string gobble_no_as_string = os.str();
+
+But even Bjarne Stroustrup thinks this is embarrassing for ordinary
+integer-to-string conversion. The Boost family of libraries (see
+www.boost.org) defines a lexical_cast<T>() which one may use to
+conveniently compose a complex string (in fact it uses a stringstream
+internally):
+
+  #include <boost/lexical_cast.hpp>
+
+  std::string s = "Fact is that " + boost::lexical_cast<std::string>(gobble_no)
+                  + " gobbles are worth "
+                  + boost::lexical_cast<std::string>(gobble_price)
+                  + "$ of troubles.";
+
+However, this is prone to subtle errors when written (one may easily
+forget a '+' or a space on one side of a converted object, both
+annoyingly requiring recompilation and attention), hard to read, and a
+real internationalisation killer. Imagine translating the strings
+
+  "Fact is that "
+
+  " gobbles are worth "
+
+  "$ of troubles."
+
+not quite sure whether the strings actually form an entity and with
+only fragmented clues of what is inserted between them. What is worse,
+most languages do not order the different parts of sentences the same
+way English does. And by chopping up the string, we have more or less
+enforced a particular order (or at least made the changing of it most
+difficult for the translator). Also, one now has to mark up three
+strings in the program to get one string translated - another source
+of errors.
+
+Furthermore, the lexical cast of Boost doesn't allow us to control
+even simple formatting requests, such as increased (or, often more
+importantly, decreased) precision of floating point numbers.
+
+
+Interlude: The Solution that isn't really a Solution
+----------------------------------------------------
+
+So, one might think, isn't this string composition problem already
+solved? Does our inheritage from C not already provide us with the
+solution, the end to all these troubles? Upon thinking this, one
+probably has the dreaded printf, "print formatted", family in mind.
+
+Except from the type insecurity resulting from usage of such
+functions, a problem already partly solved by modern compiler
+warnings, suffice to say that they mix badly with ordinary C++ style
+of programming. For good reason, they don't return proper
+std::string's and usually even require one to worry about memory
+management. Needless worries.
+
+
+Finale: An end to the problem
+-----------------------------
+
+So what we need really need is something like
+
+  std::string s = compose("Fact is that %1 gobbles are worth %2$ of troubles.",
+                          gobble_no, gobble_price);
+
+This is what this library gives.
+
+
+Semantics in details (...and there was much rejoice)
+----------------------------------------------------
+
+Actually, what the library really gives is 15 overloaded template
+functions like
+
+  template <typename T1, typename T2>
+  inline std::string compose(const std::string &fmt,
+			     const T1 &o1, const T2 &o2);
+
+declared in the namespace String - each allowing one extra parameter
+to join the composition - and some implementation details in the
+namespace StringPrivate (notably a class that defines a generic,
+unlimited parameter substitution mechanism).
+
+The first parameter is the format string containing percent
+specifications (%1, %2 etc.) and the following generically typed
+parameters are the objects to be inserted in the string. The 15
+functions allow up to 15 parameters to be inserted. For instance:
+
+  String::compose("%1 times %2 equals %3", 1.5, 2, 3);
+
+  // "1.5 times 2 equals 3"
+  
+A percent specification consists of a percent sign followed by an
+integer. The format string is parsed at first so any possible new
+percent specifications that may be constructed halfway through the
+composition by the inserted strings, aren't interpreted as such:
+
+  String::compose("1st: %1  2nd: %2", "%2", 1234);
+
+  // "1st: %2  2nd: 1234"
+
+Of course, this format allows one to easily swap the specification
+strings:
+
+  String::compose("No. %2 is better than no. %1", 1, 2);
+
+  // "No. 2 is better than no. 1"
+
+One may silently leave out a specification string:
+
+  String::compose("%1, %3", "Hey", "hi", "ho");
+
+  // "Hey, ho"
+
+Or even an object (all percent specifications are always erased):
+
+  String::compose("%1 %2: '%3'", "Twin", "geeks");
+
+  // "Twin geeks: ''"
+
+And specifications may be repeated:
+
+  String::compose("I am feeling so %1, %1, %1!", "happy");
+
+  // "I am feeling so happy, happy, happy!"
+
+This gives potential translators of the strings considerable freedom.
+
+
+Conversion of objects, the art of
+----------------------------------
+
+Internally the template functions use an object that stores a
+stringstream for converting arguments. Thus adding an extra parameter
+to the compose function is very much like appending an extra "<< arg"
+to a stream output statement.
+
+This implies seamless support for manipulators and that user-supplied
+conversions are supported for free. To add output support for one of
+your own classes, simply add the appropriate operator<< overload, just
+as you would for std::cout:
+
+  ostream &operator<<(ostream &, const MyType &my_obj)
+  {
+    // ...
+  }
+
+The manipulator support imply that constructions like the following
+are possible:
+
+  #include <iomanip>
+  // ...
+
+  double r = 1.0 / 6;
+  String::compose("1/6 app. equals %1, %2, and %3", r, 
+                   std::setprecision(10), r, 
+                   std::setprecision(3), r);
+
+  // "1/6 app. equals 0.166667, 0.1666666667, and 0.167"
+
+Note that within the same call of compose the stringstream is not
+cleared, so the same rules governs whether the settings are remembered
+as for ordinary ostreams (look up the rules in your favourite C++
+standard iostream documentation):
+
+  String::compose("1/6 app. equals %1, %2, and %3", r, 
+                   std::setprecision(10), r, r);
+
+  // "1/6 app. equals 0.166667, 0.1666666667, and 0.1666666667"
+
+Each call of compose constructs a new stringstream so settings are not
+preserved across these.
+
+Internally, the manipulator detection works by examining the output
+from the stringstream - if it is empty, then the parameter is not
+considered real output, and the specification number is not
+incremented. This behaviour is needed to give the above semantics, but
+it also implies that if your insert the empty string, "", the compose
+object will not consider it output; as a consequence the following
+example does not work as expected:
+
+  String::compose("I'm a%1 alien at the age of %2.",
+                   happiness > 10 ? " happy" : "", 99800);
+
+  // "I'm a happy alien at the age of 99800."
+  // "I'm a99800 alien at the age of ."
+
+But read below for why you really should not do this anyway, and for
+the simple remedy.
+
+
+Escaping the parse
+------------------
+
+All double percent signs are replaced with a single sign; if the
+double signs appears in front of an integer, the resulting single
+percent sign followed by the integer isn't considered a specification.
+Thus, to get a percent specification:
+
+  String::compose("This is a %1: %%1", "specification");
+
+  // "This is a specification: %1"
+
+Single percent signs are left untouched in case they aren't followed
+by a number:
+
+  String::compose("%1% done", 0.98 * 100);
+
+  // "98% done"
+
+To get two percent signs in a row:
+
+  String::compose("%1 %2 signs: %%%%", 2, '%');
+
+  // "2 % signs: %%"
+
+
+A final advice against cleverness
+---------------------------------
+
+Do not let the techniques this library offers tempt you into trying
+overly clever string compositions, or the translators of your program
+will curse you in eternity! For instance:
+
+  String::compose("A%1 man", man.is_angry() ? "n angry" : " content");
+
+  // "An angry man"
+  // "A happy man"
+
+The inherent problem with this approach is that it hardcodes the way
+the sentence is constructed; obviously this is only guaranteed to work
+for English. It also makes the code harder to read. Instead, fork the
+code on a slightly higher level and repeat the whole string:
+
+  std::string description;
+  
+  if (man.is_angry())
+    description = String::compose("An angry man");
+  else
+    description = String::compose("A content man");
+
+Now the code is also much easier to read. This (slightly contrived,
+but realistic, I have seen it in real code) example is of course quite
+easy to spot, but in generel one needs to be very careful as soon as
+one substitute strings into ordinary text. One more example:
+
+  String::compose("This is a %1", thing->got_wheels() ? "car" : "house");
+
+Innocent looking, but absolutely wrong. Most languages will need to
+change the part "a " of the string too (e.g. in Danish it is "en bil"
+(a car) but "et hus" (a house)).
+
+Completely decoupled words should of course not cause any problems:
+
+  String::compose("The XML error was caused by the element '%1'", 
+                  element.name);
+
+In fact, factoring out the common part of such strings (e.g. putting
+it in a xml_error function) may be much of a convenience for the
+translators.
+
+Often, you would want to use constructions such as the above ones when
+some part of the string sometime needs to be in plural form:
+
+  String::compose("There is a total of %1 %2.", n, n == 1 ? "hen" : "hens");
+
+But do not do this - for some languages, a two-way branch isn't
+enough. Instead the translation system should have some means of
+solving this (for gettext, look up the function 'ngettext').
+
+  
+Practically speaking, the art of improvement
+--------------------------------------------
+
+The latest, super-duper-improved (hah!) version of the library should
+always be available together with a small test example from
+
+  http://www.cs.aau.dk/~olau/compose/
+
+Note that the license of the library is GNU Lesser General Public
+License. For the uninitiated, this basically means that you may use
+the library freely in any way you want, but if you change any of the
+code of it and distribute it in binary form, you _must_ also release
+the source for the modified library under the LGPL. Thus you must
+share your improvements with the rest of the world, just like I shared
+my code with you. No big deal. If you have any comments, suggestions
+for improvements, critics, (good) jokes, portability fixes,
+interesting uses, or perhaps just a word of wisdom, let me know.
+
+Ole Laursen <olau@hardworking.dk>, 2003.
+
+
+A short historical anecdote - postlude
+--------------------------------------
+
+One might think that the name of the namespace "String::" is pretty
+lame; and, indeed, I agree. However, the library was initially born
+because the Gtkmm family of libraries doesn't help with composition of
+strings and e.g. integers in a way so that the placement of the
+integers is decoupled from the conversion to strings; a procedure that
+is frequently badly needed in a GUI-intensitive program.
+
+So when I got the idea of using a stringstream together with a
+template member function, I promptly implemented the Composition class
+(defined in the StringPrivate namespace). But, alas, the functionality
+isn't conceived to be important enough for Gtkmm users to be put into
+Glibmm (a support library for Gtkmm that contains various helpers), so
+instead I'm placing it here. Unfortunately, this left me without a
+proper namespace (formerly "Glib::") to wrap the functionality in -
+thus the current "String::".
+
+My apologies. Maybe the situation will change one day. Suggestions are
+welcome.
