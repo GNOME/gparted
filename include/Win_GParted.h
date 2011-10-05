@@ -60,6 +60,7 @@ private:
 	void Fill_Label_Device_Info( bool clear = false );
 
 	void Add_Operation( Operation * operation, int index = -1 ) ;
+	bool Merge_Operations( int first, int second );
 	void Refresh_Visual();
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;

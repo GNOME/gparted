@@ -720,6 +720,66 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	}
 }
 
+bool Win_GParted::Merge_Operations( int first, int second )
+{
+	// Two resize operations of the same partition
+	if ( operations[ first ]->type == OPERATION_RESIZE_MOVE &&
+	     operations[ second ]->type == OPERATION_RESIZE_MOVE &&
+	     operations[ first ]->partition_new == operations[ second ]->partition_original
+	   )
+	{
+		operations[ first ]->partition_new = operations[ second ]->partition_new;
+		operations[ first ]->create_description() ;
+		remove_operation( second );
+
+		Refresh_Visual();
+
+		return true;
+	}
+	// Two label change operations on the same partition
+	else if ( operations[ first ]->type == OPERATION_LABEL_PARTITION &&
+	          operations[ second ]->type == OPERATION_LABEL_PARTITION &&
+	          operations[ first ]->partition_new == operations[ second ]->partition_original
+	        )
+	{
+		operations[ first ]->partition_new.label = operations[ second ]->partition_new.label;
+		operations[ first ]->create_description() ;
+		remove_operation( second );
+
+		Refresh_Visual();
+
+		return true;
+	}
+	// Two check operations of the same partition
+	else if ( operations[ first ]->type == OPERATION_CHECK &&
+	          operations[ second ]->type == OPERATION_CHECK &&
+	          operations[ first ]->partition_original == operations[ second ]->partition_original
+	        )
+	{
+		remove_operation( second );
+
+		Refresh_Visual();
+
+		return true;
+	}
+	// Two format operations of the same partition
+	else if ( operations[ first ]->type == OPERATION_FORMAT &&
+	          operations[ second ]->type == OPERATION_FORMAT &&
+	          operations[ first ]->partition_new == operations[ second ]->partition_original
+	   )
+	{
+		operations[ first ]->partition_new = operations[ second ]->partition_new;
+		operations[ first ]->create_description() ;
+		remove_operation( second );
+
+		Refresh_Visual();
+
+		return true;
+	}
+
+	return false;
+}
+
 void Win_GParted::Refresh_Visual()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
@@ -1478,6 +1538,12 @@ void Win_GParted::activate_resize()
 				dialog .set_secondary_text( tmp_msg ) ;
 				dialog .run() ;
 			}
+
+			// Try to merge with previous operation
+			if ( operations .size() >= 2 )
+			{
+				Merge_Operations(operations .size() - 2, operations .size() - 1);
+			}
 		}
 	}
 }
@@ -1666,6 +1732,12 @@ void Win_GParted::activate_delete()
 			
 		new_count += 1 ;
 			
+		// Verify if the two operations can be merged
+		for ( int t = 0 ; t < static_cast<int>( operations .size() - 1 ) ; t++ )
+		{
+			Merge_Operations( t, t+1 );
+		}
+
 		Refresh_Visual(); 
 				
 		if ( ! operations .size() )
@@ -1740,6 +1812,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			devices[ current_device ] .sector_size,
 			selected_partition .inside_extended,
 			false ) ;
+	part_temp .Set_Unused( selected_partition .sectors_unused );
+	part_temp .set_used( 0 );
 	 
 	part_temp .status = GParted::STAT_FORMATTED ;
 	
@@ -1777,6 +1851,12 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
+
+		// Try to merge with previous operation
+		if ( operations .size() >= 2 )
+		{
+			Merge_Operations( operations .size() - 2, operations .size() - 1 );
+		}
 	}
 }
 
@@ -2190,6 +2270,16 @@ void Win_GParted::activate_check()
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 	Add_Operation( operation ) ;
+
+	// Verify if the two operations can be merged
+	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
+	{
+		if ( operations[ t ] ->type == OPERATION_CHECK )
+		{
+			if( Merge_Operations( t, operations .size() -1 ) )
+				break;
+		}
+	}
 }
 
 void Win_GParted::activate_label_partition() 
@@ -2213,13 +2303,26 @@ void Win_GParted::activate_label_partition()
 				devices[ current_device ] .sector_size,
 				selected_partition .inside_extended,
 				false ) ;
+		part_temp .Set_Unused( selected_partition.sectors_unused );
+		part_temp .set_used( selected_partition.sectors_used );
 
 		part_temp .label = dialog .get_new_label();
 
 		Operation * operation = new OperationLabelPartition( devices[ current_device ],
 									selected_partition, part_temp ) ;
 		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
 		Add_Operation( operation ) ;
+
+		// Verify if the two operations can be merged
+		for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
+		{
+			if ( operations[ t ] ->type == OPERATION_LABEL_PARTITION )
+			{
+				if( Merge_Operations( t, operations .size() -1 ) )
+					break;
+			}
+		}
 	}
 }
 	

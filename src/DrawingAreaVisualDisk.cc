@@ -387,6 +387,7 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 	calc_position_and_height( visual_partitions, MAIN_BORDER, MAIN_BORDER ) ;//0, 0 ) ;
 	calc_used_unused( visual_partitions ) ;
 	calc_text( visual_partitions ) ;
+	queue_draw();
 }
 
 int DrawingAreaVisualDisk::spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) 
