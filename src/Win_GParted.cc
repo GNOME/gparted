@@ -720,8 +720,11 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	}
 }
 
-bool Win_GParted::Merge_Operations( int first, int second )
+bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 {
+	if( first >= operations .size() || second >= operations .size() )
+		return false;
+
 	// Two resize operations of the same partition
 	if ( operations[ first ]->type == OPERATION_RESIZE_MOVE &&
 	     operations[ second ]->type == OPERATION_RESIZE_MOVE &&
@@ -766,7 +769,7 @@ bool Win_GParted::Merge_Operations( int first, int second )
 	else if ( operations[ first ]->type == OPERATION_FORMAT &&
 	          operations[ second ]->type == OPERATION_FORMAT &&
 	          operations[ first ]->partition_new == operations[ second ]->partition_original
-	   )
+	        )
 	{
 		operations[ first ]->partition_new = operations[ second ]->partition_new;
 		operations[ first ]->create_description() ;
