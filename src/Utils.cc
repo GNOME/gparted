@@ -439,7 +439,7 @@ Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
 				break;
 			case '\b':
 				if (out.tellp() > startofline)
-					out.seekp(out.tellp() - std::streamsize('\b'));
+					out.seekp(out.tellp() - std::streamoff(1));
 				break;
 			default:
 				out.put(ch);
