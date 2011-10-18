@@ -1,5 +1,5 @@
 /* Copyright (C) 2009,2010 Luca Bruno <lucab@debian.org>
- * Copyright (C) 2010 Curtis Gedak
+ * Copyright (C) 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,6 +38,18 @@ FS btrfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
+
+	//resizing of btrfs requires btrfsctl, mount, and umount
+	if (    ! Glib::find_program_in_path( "btrfsctl" ) .empty()
+	     && ! Glib::find_program_in_path( "mount" ) .empty()
+	     && ! Glib::find_program_in_path( "umount" ) .empty()
+	     && fs .check
+	   )
+	{
+		fs .grow = FS::EXTERNAL ;
+		if ( fs .read ) //needed to determine a minimum file system size.
+			fs .shrink = FS::EXTERNAL ;
+	}
 
 	if ( fs .check )
 	{
@@ -125,8 +137,55 @@ bool btrfs::copy( const Glib::ustring & src_part_path,
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-// TODO
-        return true ;
+	bool exit_status = false ;
+
+	//Create directory
+	Glib::ustring str_temp = _( "create temporary directory" ) ;
+	operationdetail .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+	char dtemplate[] = "/tmp/gparted-XXXXXXXX" ;
+	Glib::ustring dname =  mkdtemp( dtemplate ) ;
+	if( dname .empty() )
+	{
+		//Failed to create temporary directory
+		str_temp = _( "Failed to create temporary directory." );
+		operationdetail .get_last_child() .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_ITALIC ) ) ;
+		return false ;
+	}
+
+	/*TO TRANSLATORS: looks like  Created temporary directory /tmp/gparted-XXCOOO8U */
+	str_temp = String::ucompose ( _("Created temporary directory %1"), dname ) ;
+	operationdetail .get_last_child() .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_ITALIC ) ) ;
+
+	//Mount file system.  Needed to resize btrfs.
+	str_temp = "mount -v -t btrfs " + partition_new .get_path() + " " + dname ;
+	exit_status = ! execute_command( str_temp, operationdetail ) ;
+
+	if ( exit_status )
+	{
+		//Build resize command
+		str_temp = "btrfsctl" ;
+		if ( ! fill_partition )
+		{
+			str_temp += " -r " + Utils::num_to_str( floor( Utils::sector_to_unit(
+						partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
+		}
+		else
+			str_temp += " -r max" ;
+		str_temp += " " + dname ;
+
+		//Execute the command
+		exit_status = execute_command( str_temp, operationdetail ) ;
+
+		//Always unmount the file system
+		str_temp = "umount -v " + dname ;
+		execute_command( str_temp, operationdetail ) ;
+	}
+
+	//Always remove the temporary directory name
+	str_temp = "rmdir -v " + dname ;
+	execute_command( str_temp, operationdetail ) ;
+
+	return exit_status ;
 }
 
 void btrfs::read_label( Partition & partition )
