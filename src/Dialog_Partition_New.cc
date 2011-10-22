@@ -50,8 +50,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	{
 		if ( this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN ||
 		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
-		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS ||
-		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_BTRFS
+		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS
 		   )
 			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;
 	}
@@ -325,7 +324,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
-		//skip extended (btrfs, luks, lvm2, and unknown removed in Set_Data())
+		//skip extended (luks, lvm2, and unknown removed in Set_Data())
 		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_EXTENDED )
 			continue ;
 		menu_filesystem .items() .push_back( 

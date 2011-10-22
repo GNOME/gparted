@@ -50,28 +50,28 @@ enum FILESYSTEM
 {
 	FS_UNALLOCATED	= 0,
 	FS_UNKNOWN	= 1,
-	FS_UNFORMATTED	= 2, 
+	FS_UNFORMATTED	= 2,
 	FS_EXTENDED	= 3,
-	
-	FS_EXT2		= 4,
-	FS_EXT3		= 5,
-	FS_EXT4		= 6,
-	FS_LINUX_SWAP	= 7,
-	FS_FAT16	= 8,
-	FS_FAT32	= 9,
-	FS_NTFS		= 10,
-	FS_REISERFS	= 11,
-	FS_REISER4	= 12,
-	FS_XFS		= 13,
-	FS_JFS		= 14,
-	FS_HFS		= 15,
-	FS_HFSPLUS	= 16,
-	FS_UFS		= 17,
 
-	FS_USED		= 18,
-	FS_UNUSED	= 19,
+	FS_BTRFS	= 4,
+	FS_EXT2		= 5,
+	FS_EXT3		= 6,
+	FS_EXT4		= 7,
+	FS_LINUX_SWAP	= 8,
+	FS_FAT16	= 9,
+	FS_FAT32	= 10,
+	FS_NTFS		= 11,
+	FS_REISERFS	= 12,
+	FS_REISER4	= 13,
+	FS_XFS		= 14,
+	FS_JFS		= 15,
+	FS_HFS		= 16,
+	FS_HFSPLUS	= 17,
+	FS_UFS		= 18,
 
-	FS_BTRFS	= 20,  /* FIXME: Move this higher up list when full support added */
+	FS_USED		= 19,
+	FS_UNUSED	= 20,
+
 	FS_LVM2		= 21,
 	FS_LUKS		= 22
 } ;
