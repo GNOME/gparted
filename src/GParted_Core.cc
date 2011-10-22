@@ -2922,6 +2922,7 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 	switch( filesystem )
 	{
 		case FS_BTRFS		: p_filesystem = new btrfs() ;	 	break ;
+		case FS_EXFAT		: p_filesystem = new exfat() ;	 	break ;
 		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
 		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
 		case FS_EXT4		: p_filesystem = new ext4() ; 		break ;
