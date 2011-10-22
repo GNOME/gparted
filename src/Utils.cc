@@ -79,6 +79,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
 		case FS_FAT16		: return "#00FF00" ;	//green
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
+		case FS_EXFAT		: return "#2E8B57" ;	// ~ sea green
 		case FS_NTFS		: return "#42E5AC" ;	// ~ light turquoise
 		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
 		case FS_REISER4		: return "#887FA3" ;	//purple medium
@@ -144,6 +145,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_LINUX_SWAP	: return "linux-swap" ;
 		case FS_FAT16		: return "fat16" ;
 		case FS_FAT32		: return "fat32" ;
+		case FS_EXFAT		: return "exfat" ;
 		case FS_NTFS		: return "ntfs" ;
 		case FS_REISERFS	: return "reiserfs" ;
 		case FS_REISER4		: return "reiser4" ;

@@ -60,20 +60,21 @@ enum FILESYSTEM
 	FS_LINUX_SWAP	= 8,
 	FS_FAT16	= 9,
 	FS_FAT32	= 10,
-	FS_NTFS		= 11,
-	FS_REISERFS	= 12,
-	FS_REISER4	= 13,
-	FS_XFS		= 14,
-	FS_JFS		= 15,
-	FS_HFS		= 16,
-	FS_HFSPLUS	= 17,
-	FS_UFS		= 18,
+	FS_EXFAT	= 11, /* Also known as fat64 */
+	FS_NTFS		= 12,
+	FS_REISERFS	= 13,
+	FS_REISER4	= 14,
+	FS_XFS		= 15,
+	FS_JFS		= 16,
+	FS_HFS		= 17,
+	FS_HFSPLUS	= 18,
+	FS_UFS		= 19,
 
-	FS_USED		= 19,
-	FS_UNUSED	= 20,
+	FS_USED		= 20,
+	FS_UNUSED	= 21,
 
-	FS_LVM2		= 21,
-	FS_LUKS		= 22
+	FS_LVM2		= 22,
+	FS_LUKS		= 23
 } ;
 
 enum SIZE_UNIT

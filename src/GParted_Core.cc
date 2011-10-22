@@ -30,6 +30,7 @@
 #include "../include/Proc_Partitions_Info.h"
 
 #include "../include/btrfs.h"
+#include "../include/exfat.h"
 #include "../include/ext2.h"
 #include "../include/ext3.h"
 #include "../include/ext4.h"
@@ -92,6 +93,9 @@ void GParted_Core::find_supported_filesystems()
 
 	btrfs fs_btrfs;
 	FILESYSTEMS .push_back( fs_btrfs .get_filesystem_support() ) ;
+
+	exfat fs_exfat;
+	FILESYSTEMS .push_back( fs_exfat .get_filesystem_support() ) ;
 
 	ext2 fs_ext2;
 	FILESYSTEMS .push_back( fs_ext2 .get_filesystem_support() ) ;
@@ -1087,6 +1091,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 			return GParted::FS_EXTENDED ;
 		else if ( fs_type == "btrfs" )
 			return GParted::FS_BTRFS ;
+		else if ( fs_type == "exfat" )
+			return GParted::FS_EXFAT ;
 		else if ( fs_type == "ext2" )
 			return GParted::FS_EXT2 ;
 		else if ( fs_type == "ext3" )
@@ -1121,6 +1127,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		else if ( fs_type == "ufs" )
 			return GParted::FS_UFS ;
 	}
+
 
 
 	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)

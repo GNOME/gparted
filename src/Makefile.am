@@ -46,6 +46,7 @@ gpartedbin_SOURCES = \
 	Utils.cc			\
 	Win_GParted.cc			\
 	btrfs.cc			\
+	exfat.cc			\
 	ext2.cc				\
 	ext3.cc				\
 	ext4.cc				\

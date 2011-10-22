@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	Utils.h 			\
 	Win_GParted.h 			\
 	btrfs.h				\
+	exfat.h				\
 	ext2.h				\
 	ext3.h  			\
 	ext4.h  			\
