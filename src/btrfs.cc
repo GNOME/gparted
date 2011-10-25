@@ -137,8 +137,6 @@ bool btrfs::copy( const Glib::ustring & src_part_path,
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	bool exit_status = false ;
-
 	//Create directory
 	Glib::ustring str_temp = _( "create temporary directory" ) ;
 	operationdetail .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
@@ -175,6 +173,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 
 		//Execute the command
 		exit_status = execute_command( str_temp, operationdetail ) ;
+		//Sometimes btrfsctl returns an exit status of 256 on successful resize.
+		exit_status = ( exit_status == 0 || exit_status == 256 ) ;
 
 		//Always unmount the file system
 		str_temp = "umount -v " + dname ;
