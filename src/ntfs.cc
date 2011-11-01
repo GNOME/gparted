@@ -85,9 +85,9 @@ void ntfs::set_used_sectors( Partition & partition )
 
 void ntfs::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, false ) )
 	{
-		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
+		partition .label = Utils::trim( output ) ;
 	}
 	else
 	{
