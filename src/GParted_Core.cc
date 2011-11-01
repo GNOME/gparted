@@ -995,14 +995,15 @@ void GParted_Core::set_device_partitions( Device & device )
 				break;
 		}
 
-		//Avoid reading additional file system information if there is no path
+		//Retrieve file system label
 		if ( partition_temp .get_path() != "" )
 		{
-			bool label_found = false ;
-			partition_temp .label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
-			if ( ! label_found )
-				read_label( partition_temp ) ;
-
+			read_label( partition_temp ) ;
+			if ( partition_temp .label .empty() )
+			{
+				bool label_found = false ;
+				partition_temp .label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
+			}
 			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
 		}
 

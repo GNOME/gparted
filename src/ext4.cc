@@ -1,4 +1,4 @@
-/* Copyright (C) 2008, 2009, 2010 Curtis Gedak
+/* Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ void ext4::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "^(.*)" ) ;
+		partition .label = Utils::trim( output ) ;
 	}
 	else
 	{
