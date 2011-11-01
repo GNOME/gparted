@@ -51,6 +51,13 @@ FS btrfs::get_filesystem_support()
 			fs .shrink = FS::EXTERNAL ;
 	}
 
+	if ( ! Glib::find_program_in_path( "btrfs" ) .empty() )
+	{
+		//Test for labelling capability in btrfs command
+		if ( ! Utils::execute_command( "btrfs filesystem label --help", output, error, true ) )
+			fs .write_label = FS::EXTERNAL;
+	}
+
 	if ( fs .check )
 	{
 		fs .copy = GParted::FS::GPARTED ;
@@ -115,8 +122,7 @@ void btrfs::set_used_sectors( Partition & partition )
 
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-// TODO
-        return true ;
+	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
 }
 
 bool btrfs::move( const Partition & partition_new
