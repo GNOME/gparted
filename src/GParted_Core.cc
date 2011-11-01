@@ -995,9 +995,10 @@ void GParted_Core::set_device_partitions( Device & device )
 				break;
 		}
 
-		//Retrieve file system label
+		//Avoid reading additional file system information if there is no path
 		if ( partition_temp .get_path() != "" )
 		{
+			//Retrieve file system label
 			read_label( partition_temp ) ;
 			if ( partition_temp .label .empty() )
 			{
