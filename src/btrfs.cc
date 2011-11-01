@@ -190,19 +190,18 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 
 void btrfs::read_label( Partition & partition )
 {
-        if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
-        {
-                partition .label = Utils::regexp_label( output, "^Label ([^\n\t]*)" ) ;
-        }
-        else
-        {
-                if ( ! output .empty() )
-                        partition .messages .push_back( output ) ;
+	if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
+	{
+		partition .label = Utils::regexp_label( output, "^Label:?\\s*([^\n\t]*)\\s*uuid:" ) ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
 
-                if ( ! error .empty() )
-                        partition .messages .push_back( error ) ;
-        }
-
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
 }
 
 } //GParted
