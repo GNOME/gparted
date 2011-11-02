@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-31 16:33+0000\n"
-"PO-Revision-Date: 2011-09-08 11:28+0200\n"
+"POT-Creation-Date: 2011-10-22 18:27+0000\n"
+"PO-Revision-Date: 2011-11-02 19:33+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,8 +30,8 @@ msgstr "Vytvořit, znovu uspořádat a odstranit oddíly"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:361
-#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1115
-#: ../src/Win_GParted.cc:1306
+#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1178
+#: ../src/Win_GParted.cc:1369
 msgid "GParted"
 msgstr "GParted"
 
@@ -132,7 +132,7 @@ msgstr "Varování:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:160 ../src/Dialog_Partition_New.cc:117
+#: ../src/Dialog_Partition_Info.cc:160 ../src/Dialog_Partition_New.cc:116
 msgid "File system:"
 msgstr "Souborový systém:"
 
@@ -210,7 +210,7 @@ msgstr "Nepřipojen"
 
 #. Label
 #: ../src/Dialog_Partition_Info.cc:307 ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:129
+#: ../src/Dialog_Partition_New.cc:128
 msgid "Label:"
 msgstr "Název:"
 
@@ -244,25 +244,25 @@ msgid "Create new Partition"
 msgstr "Vytvořit nový oddíl"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:77
+#: ../src/Dialog_Partition_New.cc:76
 msgid "Create as:"
 msgstr "Vytvořit jako:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:81 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Primární oddíl"
 
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Logický oddíl"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Rozšířený oddíl"
 
-#: ../src/Dialog_Partition_New.cc:196
+#: ../src/Dialog_Partition_New.cc:195
 msgid "New Partition #%1"
 msgstr "Nový oddíl #%1"
 
@@ -537,9 +537,6 @@ msgid "View"
 msgstr "Zobrazit"
 
 #: ../src/Dialog_Rescue_Data.cc:167
-#| msgid ""
-#| "An error occurred while creating a temporary director for use as a mount "
-#| "point."
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
@@ -626,22 +623,22 @@ msgid "update %1 entry"
 msgstr "aktualizuje se položka %1"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
-#: ../src/GParted_Core.cc:205
+#: ../src/GParted_Core.cc:190 ../src/GParted_Core.cc:199
+#: ../src/GParted_Core.cc:209
 msgid "Scanning %1"
 msgstr "Prochází se %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:228
+#: ../src/GParted_Core.cc:232
 msgid "Confirming %1"
 msgstr "Potvrzuje se %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:240
+#: ../src/GParted_Core.cc:244
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Ignoruje se zařízení %1 s velikostí logického sektoru %2 bajtů."
 
-#: ../src/GParted_Core.cc:242
+#: ../src/GParted_Core.cc:246
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -650,7 +647,7 @@ msgstr ""
 "vyžaduje GParted knihovnu libparted ve verzi 2.2 nebo vyšší."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:281
+#: ../src/GParted_Core.cc:285
 msgid "Searching %1 partitions"
 msgstr "Hledají se oddíly %1"
 
@@ -658,73 +655,73 @@ msgstr "Hledají se oddíly %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:328
+#: ../src/GParted_Core.cc:332
 msgid "unrecognized"
 msgstr "nerozpoznáno"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:555
+#: ../src/GParted_Core.cc:559
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Oddíl nemůže mít délku %1 sektorů"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:564
+#: ../src/GParted_Core.cc:568
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "Oddíl s použitými sektory (%1) větší než jeho délka (%2) není platný"
 
-#: ../src/GParted_Core.cc:629
+#: ../src/GParted_Core.cc:633
 msgid "libparted messages"
 msgstr "hlášení libparted"
 
-#: ../src/GParted_Core.cc:1054
+#: ../src/GParted_Core.cc:1058
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Šifrování pomocí Linux Unified Key Setup není ještě podporováno."
 
-#: ../src/GParted_Core.cc:1171
+#: ../src/GParted_Core.cc:1178
 msgid "Logical Volume Management is not yet supported."
 msgstr "Správa logických svazků (LVM) není ještě podporována."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1200
+#: ../src/GParted_Core.cc:1207
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Nelze detekovat souborový systém! Možné důvody jsou:"
 
-#: ../src/GParted_Core.cc:1202
+#: ../src/GParted_Core.cc:1209
 msgid "The file system is damaged"
 msgstr "Souborový systém je poškozen"
 
-#: ../src/GParted_Core.cc:1204
+#: ../src/GParted_Core.cc:1211
 msgid "The file system is unknown to GParted"
 msgstr "GParted nezná tento souborový systém"
 
-#: ../src/GParted_Core.cc:1206
+#: ../src/GParted_Core.cc:1213
 msgid "There is no file system available (unformatted)"
 msgstr "Není dostupný žádný souborový systém (nezformátováno)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1209
+#: ../src/GParted_Core.cc:1216
 msgid "The device entry %1 is missing"
 msgstr "Schází přístup k zařízení %1"
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1357
 msgid "Unable to find mount point"
 msgstr "Nelze najít přípojný bod"
 
-#: ../src/GParted_Core.cc:1414
+#: ../src/GParted_Core.cc:1421
 msgid "Unable to read the contents of this file system!"
 msgstr "Nelze číst obsah tohoto souborového systému!"
 
-#: ../src/GParted_Core.cc:1416
+#: ../src/GParted_Core.cc:1423
 msgid "Because of this some operations may be unavailable."
 msgstr "Kvůli tomu nebudou možná některé operace dostupné."
 
-#: ../src/GParted_Core.cc:1420
+#: ../src/GParted_Core.cc:1427
 msgid "The cause might be a missing software package."
 msgstr "To může být způsobeno chybějícím softwarovým balíčkem."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1423
+#: ../src/GParted_Core.cc:1430
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -732,39 +729,39 @@ msgstr ""
 "Následující seznam softwarových balíků je potřeba k podpoře souborového "
 "systému %1: %2."
 
-#: ../src/GParted_Core.cc:1496
+#: ../src/GParted_Core.cc:1503
 msgid "create empty partition"
 msgstr "vytváří se prázdný oddíl"
 
-#: ../src/GParted_Core.cc:1564 ../src/GParted_Core.cc:2803
+#: ../src/GParted_Core.cc:1571 ../src/GParted_Core.cc:2810
 msgid "path: %1"
 msgstr "cesta: %1"
 
-#: ../src/GParted_Core.cc:1565 ../src/GParted_Core.cc:2804
+#: ../src/GParted_Core.cc:1572 ../src/GParted_Core.cc:2811
 msgid "start: %1"
 msgstr "začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:1566 ../src/GParted_Core.cc:2805
+#: ../src/GParted_Core.cc:1573 ../src/GParted_Core.cc:2812
 msgid "end: %1"
 msgstr "konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:1567 ../src/GParted_Core.cc:2806
+#: ../src/GParted_Core.cc:1574 ../src/GParted_Core.cc:2813
 msgid "size: %1 (%2)"
 msgstr "velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1603 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1610 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "vytváří se nový souborový systém %1"
 
-#: ../src/GParted_Core.cc:1640
+#: ../src/GParted_Core.cc:1647
 msgid "delete partition"
 msgstr "odstraňuje se oddíl"
 
-#: ../src/GParted_Core.cc:1682
+#: ../src/GParted_Core.cc:1689
 msgid "Clear partition label on %1"
 msgstr "maže se název oddílu na %1"
 
-#: ../src/GParted_Core.cc:1687
+#: ../src/GParted_Core.cc:1694
 msgid "Set partition label to \"%1\" on %2"
 msgstr "nastavuje se název oddílu \"%1\" na %2"
 
@@ -773,27 +770,27 @@ msgstr "nastavuje se název oddílu \"%1\" na %2"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1775
+#: ../src/GParted_Core.cc:1782
 msgid "moving requires old and new length to be the same"
 msgstr "přesun vyžaduje, aby byla minulá a nová délka stejná"
 
-#: ../src/GParted_Core.cc:1805
+#: ../src/GParted_Core.cc:1812
 msgid "rollback last change to the partition table"
 msgstr "poslední změna v tabulce oddílů se vrací zpět"
 
-#: ../src/GParted_Core.cc:1835
+#: ../src/GParted_Core.cc:1842
 msgid "move file system to the left"
 msgstr "souborový systém se přesunuje doleva"
 
-#: ../src/GParted_Core.cc:1837
+#: ../src/GParted_Core.cc:1844
 msgid "move file system to the right"
 msgstr "souborový systém se přesunuje doprava"
 
-#: ../src/GParted_Core.cc:1840
+#: ../src/GParted_Core.cc:1847
 msgid "move file system"
 msgstr "přesunuje se souborový systém"
 
-#: ../src/GParted_Core.cc:1842
+#: ../src/GParted_Core.cc:1849
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -801,56 +798,56 @@ msgstr ""
 "nový a minulý souborový systém mají stejnou pozici.  Proto se tato operace "
 "přeskakuje."
 
-#: ../src/GParted_Core.cc:1861
+#: ../src/GParted_Core.cc:1868
 msgid "perform real move"
 msgstr "provádí se skutečný přesun"
 
-#: ../src/GParted_Core.cc:1911
+#: ../src/GParted_Core.cc:1918
 msgid "using libparted"
 msgstr "používá se libparted"
 
-#: ../src/GParted_Core.cc:1952
+#: ../src/GParted_Core.cc:1959
 msgid "resizing requires old and new start to be the same"
 msgstr ""
 "změna velikosti vyžaduje, aby minulý a nový oddíl začínal na stejném místě"
 
-#: ../src/GParted_Core.cc:2017
+#: ../src/GParted_Core.cc:2024
 msgid "resize/move partition"
 msgstr "mění se velikost/přesunuje se oddíl"
 
-#: ../src/GParted_Core.cc:2020
+#: ../src/GParted_Core.cc:2027
 msgid "move partition to the right"
 msgstr "oddíl se přesunuje doprava"
 
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:2030
 msgid "move partition to the left"
 msgstr "oddíl se přesunuje doleva"
 
-#: ../src/GParted_Core.cc:2026
+#: ../src/GParted_Core.cc:2033
 msgid "grow partition from %1 to %2"
 msgstr "oddíl se zvětšuje z %1 na %2"
 
-#: ../src/GParted_Core.cc:2029
+#: ../src/GParted_Core.cc:2036
 msgid "shrink partition from %1 to %2"
 msgstr "oddíl se zmenšuje z %1 na %2"
 
-#: ../src/GParted_Core.cc:2032
+#: ../src/GParted_Core.cc:2039
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "oddíl se přesunuje doprava a zvětšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2035
+#: ../src/GParted_Core.cc:2042
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "oddíl se přesunuje doprava a zmenšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2038
+#: ../src/GParted_Core.cc:2045
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "oddíl se přesunuje doleva a zvětšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2041
+#: ../src/GParted_Core.cc:2048
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "oddíl se přesunuje doleva a zmenšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2056
+#: ../src/GParted_Core.cc:2063
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -858,215 +855,215 @@ msgstr ""
 "nový a minulý oddíl mají stejnou velikost a pozici.  Proto se tato operace "
 "přeskakuje."
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2073
 msgid "old start: %1"
 msgstr "minulý začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2067
+#: ../src/GParted_Core.cc:2074
 msgid "old end: %1"
 msgstr "minulý konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2068
+#: ../src/GParted_Core.cc:2075
 msgid "old size: %1 (%2)"
 msgstr "minulá velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2130 ../src/GParted_Core.cc:2884
+#: ../src/GParted_Core.cc:2137 ../src/GParted_Core.cc:2891
 msgid "new start: %1"
 msgstr "nový začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2131 ../src/GParted_Core.cc:2885
+#: ../src/GParted_Core.cc:2138 ../src/GParted_Core.cc:2892
 msgid "new end: %1"
 msgstr "nový konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2132 ../src/GParted_Core.cc:2886
+#: ../src/GParted_Core.cc:2139 ../src/GParted_Core.cc:2893
 msgid "new size: %1 (%2)"
 msgstr "nová velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2170
+#: ../src/GParted_Core.cc:2177
 msgid "shrink file system"
 msgstr "zmenšuje se souborový systém"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2181
 msgid "grow file system"
 msgstr "zvětšuje se souborový systém"
 
-#: ../src/GParted_Core.cc:2177
+#: ../src/GParted_Core.cc:2184
 msgid "resize file system"
 msgstr "mění se velikost souborového systému"
 
-#: ../src/GParted_Core.cc:2180
+#: ../src/GParted_Core.cc:2187
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "nový a minulý souborový systém mají stejnou velikost.  Proto se tato operace "
 "přeskakuje."
 
-#: ../src/GParted_Core.cc:2217
+#: ../src/GParted_Core.cc:2224
 msgid "grow file system to fill the partition"
 msgstr "zvětšuje se souborový systém až do zaplnění oddílu"
 
-#: ../src/GParted_Core.cc:2222
+#: ../src/GParted_Core.cc:2229
 msgid "growing is not available for this file system"
 msgstr "zvětšení není pro tento souborový systém dostupné"
 
-#: ../src/GParted_Core.cc:2241
+#: ../src/GParted_Core.cc:2248
 msgid "the destination is smaller than the source partition"
 msgstr "cíl je menší než původní oddíl"
 
-#: ../src/GParted_Core.cc:2258
+#: ../src/GParted_Core.cc:2265
 msgid "copy file system of %1 to %2"
 msgstr "kopíruje se souborový systém z %1 na %2"
 
-#: ../src/GParted_Core.cc:2304
+#: ../src/GParted_Core.cc:2311
 msgid "perform read-only test"
 msgstr "provádí se pouze test čtení"
 
-#: ../src/GParted_Core.cc:2358
+#: ../src/GParted_Core.cc:2365
 msgid "using internal algorithm"
 msgstr "používá se interní algoritmus"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2362
+#: ../src/GParted_Core.cc:2369
 msgid "read %1"
 msgstr "přečíst %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2364
+#: ../src/GParted_Core.cc:2371
 msgid "copy %1"
 msgstr "zkopírovat %1"
 
-#: ../src/GParted_Core.cc:2368
+#: ../src/GParted_Core.cc:2375
 msgid "finding optimal block size"
 msgstr "hledá se optimální velikost bloku"
 
-#: ../src/GParted_Core.cc:2408
+#: ../src/GParted_Core.cc:2415
 msgid "%1 seconds"
 msgstr "%1 sekund"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2426
+#: ../src/GParted_Core.cc:2433
 msgid "optimal block size is %1"
 msgstr "optimální velikost bloku je %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2444
+#: ../src/GParted_Core.cc:2451
 msgid "%1 (%2 B) read"
 msgstr "přečteno %1 (%2 B)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2446
+#: ../src/GParted_Core.cc:2453
 msgid "%1 (%2 B) copied"
 msgstr "zkopírováno %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:2459
+#: ../src/GParted_Core.cc:2466
 msgid "roll back last transaction"
 msgstr "poslední transakce se vrací zpět"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2495
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "kontrolují se chyby souborového systému na %1 a (podle možností) se opraví"
 
-#: ../src/GParted_Core.cc:2496
+#: ../src/GParted_Core.cc:2503
 msgid "checking is not available for this file system"
 msgstr "kontrola není pro tento souborový systém dostupná"
 
-#: ../src/GParted_Core.cc:2524
+#: ../src/GParted_Core.cc:2531
 msgid "set partition type on %1"
 msgstr "nastavuje se typ oddílu na %1"
 
-#: ../src/GParted_Core.cc:2554
+#: ../src/GParted_Core.cc:2561
 msgid "new partition type: %1"
 msgstr "nový typ oddílu: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:2590
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "přečteno %1 z %2 (zbývá %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2585
+#: ../src/GParted_Core.cc:2592
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "zkopírováno %1 z %2 (zbývá %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2593 ../src/GParted_Core.cc:2710
+#: ../src/GParted_Core.cc:2600 ../src/GParted_Core.cc:2717
 msgid "%1 of %2 read"
 msgstr "přečteno %1 z %2"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2595 ../src/GParted_Core.cc:2712
+#: ../src/GParted_Core.cc:2602 ../src/GParted_Core.cc:2719
 msgid "%1 of %2 copied"
 msgstr "zkopírováno %1 z %2"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2616
+#: ../src/GParted_Core.cc:2623
 msgid "read %1 using a block size of %2"
 msgstr "čte se %1 používající velikost bloku %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2621
+#: ../src/GParted_Core.cc:2628
 msgid "copy %1 using a block size of %2"
 msgstr "kopíruje se %1 používající velikost bloku %2"
 
-#: ../src/GParted_Core.cc:2771
+#: ../src/GParted_Core.cc:2778
 msgid "Error while writing block at sector %1"
 msgstr "Chyba při zapisování bloku v sektoru %1"
 
-#: ../src/GParted_Core.cc:2774
+#: ../src/GParted_Core.cc:2781
 msgid "Error while reading block at sector %1"
 msgstr "Chyba při čtení bloku v sektoru %1"
 
-#: ../src/GParted_Core.cc:2784
+#: ../src/GParted_Core.cc:2791
 msgid "calibrate %1"
 msgstr "kalibruje se %1"
 
-#: ../src/GParted_Core.cc:2829
+#: ../src/GParted_Core.cc:2836
 msgid "calculate new size and position of %1"
 msgstr "počítá se nová velikost a pozice %1"
 
-#: ../src/GParted_Core.cc:2833
+#: ../src/GParted_Core.cc:2840
 msgid "requested start: %1"
 msgstr "požadovaný začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2834
+#: ../src/GParted_Core.cc:2841
 msgid "requested end: %1"
 msgstr "požadovaný konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2835
+#: ../src/GParted_Core.cc:2842
 msgid "requested size: %1 (%2)"
 msgstr "požadovaná velikost: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2981
+#: ../src/GParted_Core.cc:2988
 msgid "update boot sector of %1 file system on %2"
 msgstr "aktualizuje se sektor zavaděče souborového systému %1 na %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3017
+#: ../src/GParted_Core.cc:3024
 msgid "Error trying to write to boot sector in %1"
 msgstr "Chyba při zapisování do sektoru zavaděče na %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3023
+#: ../src/GParted_Core.cc:3030
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Chyba při přechodu na pozici 0x1c na %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3030
+#: ../src/GParted_Core.cc:3037
 msgid "Error trying to open %1"
 msgstr "Chyba při otevírání %1"
 
 # Použil jsem návrh M. Černockého
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3040
+#: ../src/GParted_Core.cc:3047
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "V záznamu zavaděče NTFS se nepodařilo nastavit počet skrytých sektorů na %1."
 
-#: ../src/GParted_Core.cc:3042
+#: ../src/GParted_Core.cc:3049
 msgid "You might try the following command to correct the problem:"
 msgstr "K opravě problému můžete zkusit následující příkaz:"
 
@@ -1199,7 +1196,7 @@ msgstr "Příznaky"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:125
+#: ../src/Utils.cc:126
 msgid "unallocated"
 msgstr "neobsazeno"
 
@@ -1208,7 +1205,7 @@ msgstr "neobsazeno"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:132
+#: ../src/Utils.cc:133
 msgid "unknown"
 msgstr "neznámý"
 
@@ -1216,35 +1213,35 @@ msgstr "neznámý"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:138
+#: ../src/Utils.cc:139
 msgid "unformatted"
 msgstr "nezformátováno"
 
-#: ../src/Utils.cc:155
+#: ../src/Utils.cc:157
 msgid "used"
 msgstr "použito"
 
-#: ../src/Utils.cc:156
+#: ../src/Utils.cc:158
 msgid "unused"
 msgstr "nepoužito"
 
-#: ../src/Utils.cc:196
+#: ../src/Utils.cc:198
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:201
+#: ../src/Utils.cc:203
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:206
+#: ../src/Utils.cc:208
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:211
+#: ../src/Utils.cc:213
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:216
+#: ../src/Utils.cc:218
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1256,21 +1253,21 @@ msgstr "%1 TiB"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:374
+#: ../src/Utils.cc:376
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Dočasný soubor vytvořen pomocí gparted.  Může být odstraněn.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:386
+#: ../src/Utils.cc:388
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Operace s názvem selhala: Nelze zapsat do dočasného souboru %1.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:398
+#: ../src/Utils.cc:400
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Operace s názvem selhala: Nelze vytvořit dočasný soubor %1.\n"
 
@@ -1434,103 +1431,103 @@ msgstr "Velikost sektoru:"
 msgid "Could not add this operation to the list."
 msgstr "Tuto operaci nelze přidat do seznamu."
 
-#: ../src/Win_GParted.cc:736
+#: ../src/Win_GParted.cc:799
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 nevyřízená operace"
 msgstr[1] "%1 nevyřízené operace"
 msgstr[2] "%1 nevyřízených operací"
 
-#: ../src/Win_GParted.cc:790
+#: ../src/Win_GParted.cc:853
 msgid "Quit GParted?"
 msgstr "Ukončit GParted?"
 
-#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2050
+#: ../src/Win_GParted.cc:859 ../src/Win_GParted.cc:2133
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 operace není momentálně vyřízena."
 msgstr[1] "%1 operace nejsou momentálně vyřízeny."
 msgstr[2] "%1 operací není momentálně vyřízeno."
 
-#: ../src/Win_GParted.cc:822
+#: ../src/Win_GParted.cc:885
 msgid "_Unmount"
 msgstr "_Odpojit"
 
-#: ../src/Win_GParted.cc:847
+#: ../src/Win_GParted.cc:910
 msgid "_Swapoff"
 msgstr "Odpojit _odkládací oddíl"
 
-#: ../src/Win_GParted.cc:853
+#: ../src/Win_GParted.cc:916
 msgid "_Swapon"
 msgstr "Připojit _odkládací oddíl"
 
-#: ../src/Win_GParted.cc:1047
+#: ../src/Win_GParted.cc:1110
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1093
+#: ../src/Win_GParted.cc:1156
 msgid "Scanning all devices..."
 msgstr "Prochází se všechna zařízení..."
 
-#: ../src/Win_GParted.cc:1138
+#: ../src/Win_GParted.cc:1201
 msgid "No devices detected"
 msgstr "Nebyla detekována žádná zařízení"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1219
+#: ../src/Win_GParted.cc:1282
 msgid "No partition table found on device %1"
 msgstr "Na zařízení %1 nebyla nalezena žádná tabulka oddílů"
 
-#: ../src/Win_GParted.cc:1224
+#: ../src/Win_GParted.cc:1287
 msgid "A partition table is required before partitions can be added."
 msgstr "Před přidáváním oddílů je potřeba vytvořit tabulku oddílů."
 
-#: ../src/Win_GParted.cc:1226
+#: ../src/Win_GParted.cc:1289
 msgid "To create a new partition table choose the menu item:"
 msgstr "Pro vytvoření nové tabulky oddílů zvolte položku z nabídky:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1229
+#: ../src/Win_GParted.cc:1292
 msgid "Device --> Create Partition Table."
 msgstr "Zařízení --> Vytvořit tabulku oddílů."
 
-#: ../src/Win_GParted.cc:1265
+#: ../src/Win_GParted.cc:1328
 msgid "Unable to open GParted Manual help file."
 msgstr "Nelze otevřít soubor s příručkou pro aplikaci GParted."
 
-#: ../src/Win_GParted.cc:1281
+#: ../src/Win_GParted.cc:1344
 msgid "Documentation is not available."
 msgstr "Dokumentace není k dispozici."
 
-#: ../src/Win_GParted.cc:1286
+#: ../src/Win_GParted.cc:1349
 msgid "This build of gparted is configured without documentation."
 msgstr "Tato verze gparted je vydána bez dokumentace."
 
-#: ../src/Win_GParted.cc:1288
+#: ../src/Win_GParted.cc:1351
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentace je dostupná na webové stránce projektu."
 
-#: ../src/Win_GParted.cc:1309
+#: ../src/Win_GParted.cc:1372
 msgid "GNOME Partition Editor"
 msgstr "Editor oddílů pro GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1325
+#: ../src/Win_GParted.cc:1388
 msgid "translator-credits"
 msgstr ""
 "Miloslav Trmač <mitr@volny.cz>\n"
 "Adrian Guniš <andygun696@gmail.com>\n"
 "Marek Černocký <marek@manet.cz>"
 
-#: ../src/Win_GParted.cc:1367
+#: ../src/Win_GParted.cc:1430
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Není možné vytvořit více než %1 primární oddíl"
 msgstr[1] "Není možné vytvořit více než %1 primární oddíly"
 msgstr[2] "Není možné vytvořit více než %1 primárních oddílů"
 
-#: ../src/Win_GParted.cc:1379
+#: ../src/Win_GParted.cc:1442
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1541,78 +1538,78 @@ msgstr ""
 "Takový oddíl může obsahovat další oddíly. Protože rozšířený oddíl je také "
 "primární oddíl, může být nezbytné odstranit nejdříve primární oddíl."
 
-#: ../src/Win_GParted.cc:1460
+#: ../src/Win_GParted.cc:1523
 msgid "Moving a partition might cause your operating system to fail to boot."
 msgstr "Přesun oddílu může způsobit selhání při zavádění operačního systému."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1531
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Zařadili jste do fronty operaci k přesunu počátečního sektoru oddílu %1."
 
-#: ../src/Win_GParted.cc:1473
+#: ../src/Win_GParted.cc:1536
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "V sekci často kladené otázky k GParted můžete zjistit, jak opravit nastavení "
 "zavaděče."
 
-#: ../src/Win_GParted.cc:1544
+#: ../src/Win_GParted.cc:1613
 msgid "You have pasted into an existing partition."
 msgstr "Vložili jste do existujícího oddílu."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1551
+#: ../src/Win_GParted.cc:1620
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Pokud provedete tuto operaci, ztratíte data v %1."
 
-#: ../src/Win_GParted.cc:1605
+#: ../src/Win_GParted.cc:1674
 msgid "Unable to delete %1!"
 msgstr "Nelze odstranit %1!"
 
-#: ../src/Win_GParted.cc:1612
+#: ../src/Win_GParted.cc:1681
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odpojte prosím logické oddíly, které mají číslo větší než %1"
 
-#: ../src/Win_GParted.cc:1623
+#: ../src/Win_GParted.cc:1692
 msgid "Are you sure you want to delete %1?"
 msgstr "Opravdu chcete odstranit %1?"
 
-#: ../src/Win_GParted.cc:1630
+#: ../src/Win_GParted.cc:1699
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po odstranění už nebude tento oddíl k dispozici pro kopírování."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1633
+#: ../src/Win_GParted.cc:1702
 msgid "Delete %1 (%2, %3)"
 msgstr "Odstranit %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1703
+#: ../src/Win_GParted.cc:1778
 msgid "Cannot format this file system to %1."
 msgstr "Nelze zformátovat tento souborový systém jako %1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1715
+#: ../src/Win_GParted.cc:1790
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Souborový systém %1 vyžaduje oddíl s minimálně %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1723
+#: ../src/Win_GParted.cc:1798
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Oddíl se souborovým systémem %1 má maximální velikost %2."
 
-#: ../src/Win_GParted.cc:1809
+#: ../src/Win_GParted.cc:1892
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Oddíl nemohl být odpojen z následujících přípojných bodů:"
 
-#: ../src/Win_GParted.cc:1811
+#: ../src/Win_GParted.cc:1894
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1620,14 +1617,14 @@ msgstr ""
 "Na těchto přípojných bodech jsou nejspíše připojeny jiné oddíly. "
 "Doporučujeme odpojit je ručně."
 
-#: ../src/Win_GParted.cc:1868 ../src/Win_GParted.cc:1952
+#: ../src/Win_GParted.cc:1951 ../src/Win_GParted.cc:2035
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "Na oddílu %2 není momentálně vyřízena %1 operace."
 msgstr[1] "Na oddílu %2 nejsou momentálně vyřízeny %1 operace."
 msgstr[2] "Na oddílu %2 není momentálně vyřízeno %1 operací."
 
-#: ../src/Win_GParted.cc:1882
+#: ../src/Win_GParted.cc:1965
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1635,7 +1632,7 @@ msgstr ""
 "Připojení odkládacího oddílu nelze provést, pokud je na oddílu nevyřízená "
 "operace."
 
-#: ../src/Win_GParted.cc:1884
+#: ../src/Win_GParted.cc:1967
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1643,37 +1640,37 @@ msgstr ""
 "Před připojením odkládacího oddílu použijte nabídku Upravit k vrácení, "
 "zrušení nebo provedení operací."
 
-#: ../src/Win_GParted.cc:1902
+#: ../src/Win_GParted.cc:1985
 msgid "Deactivating swap on %1"
 msgstr "Deaktivuje se odkládací oddíl na %1"
 
-#: ../src/Win_GParted.cc:1902
+#: ../src/Win_GParted.cc:1985
 msgid "Activating swap on %1"
 msgstr "Aktivuje se odkládací oddíl na %1"
 
-#: ../src/Win_GParted.cc:1909
+#: ../src/Win_GParted.cc:1992
 msgid "Could not deactivate swap"
 msgstr "Nelze deaktivovat odkládací oddíl"
 
-#: ../src/Win_GParted.cc:1909
+#: ../src/Win_GParted.cc:1992
 msgid "Could not activate swap"
 msgstr "Nelze aktivovat odkládací oddíl"
 
-#: ../src/Win_GParted.cc:1925
+#: ../src/Win_GParted.cc:2008
 msgid "Unmounting %1"
 msgstr "Odpojuje se %1"
 
-#: ../src/Win_GParted.cc:1930
+#: ../src/Win_GParted.cc:2013
 msgid "Could not unmount %1"
 msgstr "Nelze odpojit %1"
 
-#: ../src/Win_GParted.cc:1966
+#: ../src/Win_GParted.cc:2049
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "Připojení nelze provést, pokud je na oddílu nevyřízená operace."
 
-#: ../src/Win_GParted.cc:1968
+#: ../src/Win_GParted.cc:2051
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1681,28 +1678,28 @@ msgstr ""
 "Před připojením tohoto oddílu použijte nabídku Upravit k vrácení, zrušení "
 "nebo provedení operací."
 
-#: ../src/Win_GParted.cc:1986
+#: ../src/Win_GParted.cc:2069
 msgid "mounting %1 on %2"
 msgstr "připojuje se %1 na %2"
 
-#: ../src/Win_GParted.cc:1993
+#: ../src/Win_GParted.cc:2076
 msgid "Could not mount %1 on %2"
 msgstr "Nelze připojit %1 na %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:2019
+#: ../src/Win_GParted.cc:2102
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "Na zařízení %2 je momentálně %1 aktivní oddíl."
 msgstr[1] "Na zařízení %2 jsou momentálně %1 aktivní oddíly."
 msgstr[2] "Na zařízení %2 je momentálně %1 aktivních oddílů."
 
-#: ../src/Win_GParted.cc:2034
+#: ../src/Win_GParted.cc:2117
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Pokud máte aktivní oddíly, nelze vytvořit novou tabulku oddílů."
 
-#: ../src/Win_GParted.cc:2036
+#: ../src/Win_GParted.cc:2119
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1710,7 +1707,7 @@ msgstr ""
 "Aktivní oddíly jsou ty, které jsou v užívání, jako např. připojený souborový "
 "systém nebo povolený odkládací prostor."
 
-#: ../src/Win_GParted.cc:2038
+#: ../src/Win_GParted.cc:2121
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1719,12 +1716,12 @@ msgstr ""
 "tomto zařízení možnosti z nabídky Oddíl, jako např. odpojit nebo odpojit "
 "odkládací oddíl."
 
-#: ../src/Win_GParted.cc:2063
+#: ../src/Win_GParted.cc:2146
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "Pokud máte nevyřízené operace, nelze vytvořit novou tabulku oddílů."
 
-#: ../src/Win_GParted.cc:2065
+#: ../src/Win_GParted.cc:2148
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1732,30 +1729,30 @@ msgstr ""
 "Před vytvořením nové tabulky oddílů použijte nabídku Upravit buď pro zrušení "
 "nebo provedení všech operací."
 
-#: ../src/Win_GParted.cc:2080
+#: ../src/Win_GParted.cc:2163
 msgid "Error while creating partition table."
 msgstr "Chyba při vytváření tabulky oddílů."
 
-#: ../src/Win_GParted.cc:2100
+#: ../src/Win_GParted.cc:2183
 msgid "Command gpart was not found"
 msgstr "Příkaz gpart nebyl nalezen"
 
-#: ../src/Win_GParted.cc:2101
+#: ../src/Win_GParted.cc:2184
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Tato funkce využívá program gpart. Nainstalujte jej prosím a zkuste to znovu."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2109
+#: ../src/Win_GParted.cc:2192
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "Pro nalezení souborových systémů je zapotřebí provést úplnou analýzu disku."
 
-#: ../src/Win_GParted.cc:2111
+#: ../src/Win_GParted.cc:2194
 msgid "The scan might take a very long time."
 msgstr "Tato analýza může zabrat hodně času."
 
-#: ../src/Win_GParted.cc:2113
+#: ../src/Win_GParted.cc:2196
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -1763,26 +1760,26 @@ msgstr ""
 "Po skončení analýzy můžete případné objevené souborové systémy připojit a "
 "zkopírovat si data na jiné médium."
 
-#: ../src/Win_GParted.cc:2115
+#: ../src/Win_GParted.cc:2198
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovat?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2119
+#: ../src/Win_GParted.cc:2202
 msgid "Search for file systems on %1"
 msgstr "Hledání souborových systémů na %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2133
+#: ../src/Win_GParted.cc:2216
 msgid "Searching for file systems on %1"
 msgstr "Vyhledávají se souborové systémy na %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2147
+#: ../src/Win_GParted.cc:2230
 msgid "No file systems found on %1"
 msgstr "Na %1 nebyl nalezen žádný souborový systém"
 
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2231
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -1790,21 +1787,39 @@ msgstr ""
 "Na tomto disku nebyly při analýze programem gpart nalezeny žádné "
 "rozpoznatelné souborové systémy."
 
-#: ../src/Win_GParted.cc:2318
+#: ../src/Win_GParted.cc:2424
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Opravdu chcete provést nevyřízené operace?"
 
-#: ../src/Win_GParted.cc:2324
+#: ../src/Win_GParted.cc:2430
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Upravování oddílů může způsobit ZTRÁTU DAT."
 
-#: ../src/Win_GParted.cc:2326
+#: ../src/Win_GParted.cc:2432
 msgid "You are advised to backup your data before proceeding."
 msgstr "Před pokračováním je doporučeno zazálohovat si cenná data."
 
-#: ../src/Win_GParted.cc:2328
+#: ../src/Win_GParted.cc:2434
 msgid "Apply operations to device"
 msgstr "Provést operace na zařízení"
+
+#. Create directory
+#: ../src/btrfs.cc:143
+#| msgid "Failed creating temporary directory"
+msgid "create temporary directory"
+msgstr "vytváří se dočasná složka"
+
+#. Failed to create temporary directory
+#: ../src/btrfs.cc:150
+#| msgid "Failed creating temporary directory"
+msgid "Failed to create temporary directory."
+msgstr "Selhalo vytvoření dočasné složky."
+
+#. TO TRANSLATORS: looks like  Created temporary directory /tmp/gparted-XXCOOO8U
+#: ../src/btrfs.cc:156
+#| msgid "Failed creating temporary directory"
+msgid "Created temporary directory %1"
+msgstr "Vytvořena dočasná složka %1"
 
 #. create mount point...
 #: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
