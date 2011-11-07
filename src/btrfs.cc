@@ -192,7 +192,12 @@ void btrfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "^Label:?\\s*([^\n\t]*)\\s*uuid:" ) ;
+		Glib::ustring label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
+		//Btrfs-show reports "none" when there is no label, but
+		//  this is indistinguishable from the label actually
+		//  being "none".  Assume no label case.
+		if ( label != "none" )
+			partition .label = label ;
 	}
 	else
 	{
