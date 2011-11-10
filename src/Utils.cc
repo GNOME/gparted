@@ -181,7 +181,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs" ;
 		case FS_UFS         : return "" ;
-		case FS_XFS         : return "xfsprogs" ;
+		case FS_XFS         : return "xfsprogs, xfsdump" ;
 
 		default             : return "" ;
 	}
