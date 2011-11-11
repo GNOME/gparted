@@ -1557,7 +1557,9 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 			
 			if ( constraint )
 			{
-				if ( min_size > 0 )
+				if (   min_size > 0
+				    && new_partition .filesystem != FS_XFS // Permit copying to smaller xfs partition
+				   )
 					constraint ->min_size = min_size ;
 		
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
@@ -2244,8 +2246,10 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Byte_Value min_size,
 			 OperationDetail & operationdetail ) 
 {
-	if ( partition_dst .get_byte_length() < partition_src .get_byte_length() )
-	{	
+	if (   partition_dst .get_byte_length() < partition_src .get_byte_length()
+	    && partition_src .filesystem != FS_XFS // Permit copying to smaller xfs partition
+	   )
+	{
 		operationdetail .add_child( OperationDetail( 
 			_("the destination is smaller than the source partition"), STATUS_ERROR, FONT_ITALIC ) ) ;
 
