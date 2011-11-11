@@ -22,16 +22,12 @@
 namespace GParted
 {
 
+bool btrfs_found = false ;
+
 FS btrfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_BTRFS ;
-
-	if ( ! Glib::find_program_in_path( "btrfs-show" ) .empty() )
-	{
-		fs .read = GParted::FS::EXTERNAL ;
-		fs .read_label = FS::EXTERNAL ;
-	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -39,23 +35,54 @@ FS btrfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 
-	//resizing of btrfs requires btrfsctl, mount, and umount
-	if (    ! Glib::find_program_in_path( "btrfsctl" ) .empty()
-	     && ! Glib::find_program_in_path( "mount" ) .empty()
-	     && ! Glib::find_program_in_path( "umount" ) .empty()
-	     && fs .check
-	   )
+	btrfs_found = ( ! Glib::find_program_in_path( "btrfs" ) .empty() ) ;
+	if ( btrfs_found )
 	{
-		fs .grow = FS::EXTERNAL ;
-		if ( fs .read ) //needed to determine a minimum file system size.
-			fs .shrink = FS::EXTERNAL ;
-	}
+		//Use newer btrfs multi-tool control command.  No need
+		//  to test for filesystem show and filesystem resize
+		//  sub-commands as they were always included.
 
-	if ( ! Glib::find_program_in_path( "btrfs" ) .empty() )
-	{
+		fs .read = GParted::FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
+
+		//Resizing of btrfs requires mount, umount as well as
+		//  btrfs filesystem resize
+		if (    ! Glib::find_program_in_path( "mount" ) .empty()
+		     && ! Glib::find_program_in_path( "umount" ) .empty()
+		     && fs .check
+		   )
+		{
+			fs .grow = FS::EXTERNAL ;
+			if ( fs .read ) //needed to determine a minimum file system size.
+				fs .shrink = FS::EXTERNAL ;
+		}
+
 		//Test for labelling capability in btrfs command
 		if ( ! Utils::execute_command( "btrfs filesystem label --help", output, error, true ) )
 			fs .write_label = FS::EXTERNAL;
+	}
+	else
+	{
+		//Fall back to using btrfs-show and btrfsctl, which
+		//  were depreciated October 2011
+
+		if ( ! Glib::find_program_in_path( "btrfs-show" ) .empty() )
+		{
+			fs .read = GParted::FS::EXTERNAL ;
+			fs .read_label = FS::EXTERNAL ;
+		}
+
+		//Resizing of btrfs requires btrfsctl, mount, and umount
+		if (    ! Glib::find_program_in_path( "btrfsctl" ) .empty()
+		     && ! Glib::find_program_in_path( "mount" ) .empty()
+		     && ! Glib::find_program_in_path( "umount" ) .empty()
+		     && fs .check
+		   )
+		{
+			fs .grow = FS::EXTERNAL ;
+			if ( fs .read ) //needed to determine a minimum file system size.
+				fs .shrink = FS::EXTERNAL ;
+		}
 	}
 
 	if ( fs .check )
@@ -81,7 +108,12 @@ bool btrfs::check_repair( const Partition & partition, OperationDetail & operati
 
 void btrfs::set_used_sectors( Partition & partition )
 {
-	if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
+
+	if ( btrfs_found )
+		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+	else
+		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+	if ( ! exit_status )
 	{
 		Glib::ustring size_label;
 		if ( ((index = output .find( "FS bytes" )) < output .length()) &&
@@ -148,6 +180,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	operationdetail .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 	char dtemplate[] = "/tmp/gparted-XXXXXXXX" ;
 	Glib::ustring dname =  mkdtemp( dtemplate ) ;
+	Glib::ustring str_size ;
 	if( dname .empty() )
 	{
 		//Failed to create temporary directory
@@ -167,20 +200,36 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	if ( exit_status )
 	{
 		//Build resize command
-		str_temp = "btrfsctl" ;
 		if ( ! fill_partition )
-		{
-			str_temp += " -r " + Utils::num_to_str( floor( Utils::sector_to_unit(
-						partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
-		}
+			str_size = Utils::num_to_str( floor( Utils::sector_to_unit(
+					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
 		else
-			str_temp += " -r max" ;
-		str_temp += " " + dname ;
+			str_size = "max" ;
+
+		if ( btrfs_found )
+			str_temp = "btrfs filesystem resize " + str_size + " " + dname ;
+		else
+			str_temp = "btrfsctl -r " + str_size + " " + dname ;
 
 		//Execute the command
 		exit_status = execute_command( str_temp, operationdetail ) ;
-		//Sometimes btrfsctl returns an exit status of 256 on successful resize.
-		exit_status = ( exit_status == 0 || exit_status == 256 ) ;
+		//Resizing a btrfs file system for a second time to the
+		//  same size results in ioctl() returning -1 EINVAL
+		//  (Invalid argument) from the kernel btrfs code.
+		//  *   Btrfs filesystem resize reports this as exit
+		//      status 30:
+		//          ERROR: Unable to resize '/MOUNTPOINT'
+		//  *   Btrfsctl -r reports this as exit status 1:
+		//          ioctl:: Invalid argument
+		//  WARNING:
+		//  Ignoring these errors could mask real failures, but
+		//  not ignoring them will cause partition shinks to
+		//  fail on the second "grow file system to fill the
+		//  partition" resize.
+		exit_status = (    exit_status == 0
+		                || (   btrfs_found && exit_status == 30<<8 )
+		                || ( ! btrfs_found && exit_status ==  1<<8 )
+		              ) ;
 
 		//Always unmount the file system
 		str_temp = "umount -v " + dname ;
@@ -196,16 +245,32 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 
 void btrfs::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) )
+	if ( btrfs_found )
 	{
-		Glib::ustring label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
-		//Btrfs-show reports "none" when there is no label, but
-		//  this is indistinguishable from the label actually
-		//  being "none".  Assume no label case.
-		if ( label != "none" )
-			partition .label = label ;
+		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		if ( ! exit_status )
+		{
+			partition .label = Utils::regexp_label( output, "^Label: '(.*)'  uuid:" );
+			//Btrfs filesystem show encloses the label in single
+			//  quotes or reports "none" without single quotes, so
+			//  the cases are disginguishable and this regexp won't
+			//  match the no label case.
+		}
 	}
 	else
+	{
+		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+		if ( ! exit_status )
+		{
+			Glib::ustring label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
+			//Btrfs-show reports "none" when there is no label, but
+			//  this is indistinguishable from the label actually
+			//  being "none".  Assume no label case.
+			if ( label != "none" )
+				partition .label = label ;
+		}
+	}
+	if ( exit_status )
 	{
 		if ( ! output .empty() )
 			partition .messages .push_back( output ) ;
