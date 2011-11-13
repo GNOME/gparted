@@ -64,7 +64,9 @@ b. Building from Source
 
    On Fedora, you will need to run (as root);
       yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
-                  perl(XML::Parser) desktop-file-utils
+                  'perl(XML::Parser)' desktop-file-utils libuuid-devel \
+                  gnome-doc-utils rarian-compat
+      yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
    following command;
@@ -78,6 +80,10 @@ b. Building from Source
    If you wish to build this package without the help documentation use
    the --disable-doc flag:
       E.g., ./configure --disable-doc
+
+   If you wish to build this package for use on a desktop that does not
+   support scrollkeeper use the --disable-scrollkeeper flag:
+      E.g., ./configure --disable-scrollkeeper
 
    If you wish to build this package to use native libparted /dev/mapper
    dmraid support use the --enable-libparted-dmraid flag:
