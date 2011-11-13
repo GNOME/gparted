@@ -1829,10 +1829,16 @@ bool GParted_Core::move( const Device & device,
 		//Make new partition from all encompassing partition
 		succes =  succes && resize_move_partition( partition_all_space, partition_new, operationdetail ) ;
 
-		succes = succes &&
-			update_bootsector( partition_new, operationdetail ) &&
-			check_repair_filesystem( partition_new, operationdetail ) &&
-			maximize_filesystem( partition_new, operationdetail ) ;
+		succes = (    succes
+		          && update_bootsector( partition_new, operationdetail )
+		          && (   //Do not maximize file system if new size <= old
+		                 ( partition_new .get_sector_length() <= partition_old .get_sector_length() )
+		              || (   check_repair_filesystem( partition_new, operationdetail )
+		                  && maximize_filesystem( partition_new, operationdetail )
+		                 )
+		             )
+		         );
+
 	}
 
 	return succes ;
@@ -1972,16 +1978,18 @@ bool GParted_Core::resize( const Partition & partition_old,
 
 		if ( succes && partition_new .get_sector_length() < partition_old .get_sector_length() )
 			succes = resize_filesystem( partition_old, partition_new, operationdetail ) ;
-						
+
 		if ( succes )
 			succes = resize_move_partition( partition_old, partition_new, operationdetail ) ;
-			
-		//these 2 are always executed, however, if 1 of them fails the whole operation fails
-		if ( ! check_repair_filesystem( partition_new, operationdetail ) )
-			succes = false ;
 
 		//expand file system to fit exactly in partition
-		if ( ! maximize_filesystem( partition_new, operationdetail ) )
+		if ( ! (   //Do not maximize file system if new size <= old
+		           ( partition_new .get_sector_length() <= partition_old .get_sector_length() )
+		        || (   check_repair_filesystem( partition_new, operationdetail )
+		            && maximize_filesystem( partition_new, operationdetail )
+		           )
+		       )
+		   )
 			succes = false ;
 			
 		return succes ;
@@ -2300,10 +2308,15 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
-			return succes &&
-			       update_bootsector( partition_dst, operationdetail ) &&
-			       check_repair_filesystem( partition_dst, operationdetail ) &&
-			       maximize_filesystem( partition_dst, operationdetail ) ;
+			return (   succes
+			        && update_bootsector( partition_dst, operationdetail )
+			        && (   //Do not maximize file system if destination size <= source
+			               ( partition_dst .get_sector_length() <= partition_src .get_sector_length() )
+			            || (   check_repair_filesystem( partition_dst, operationdetail )
+			                && maximize_filesystem( partition_dst, operationdetail )
+			               )
+			           )
+			       );
 		}
 	}
 
