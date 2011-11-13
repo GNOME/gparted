@@ -295,12 +295,11 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 							operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 						}
 						
-						//unmount destination partition
+						//unmount source partition
 						operationdetail .add_child(
-							OperationDetail( String::ucompose( _("unmount %1"),
-											    dest_part_path ) ) ) ;
+							OperationDetail( String::ucompose( _("unmount %1"), src_part_path ) ) ) ;
 					
-						if ( ! execute_command( "umount -v  " + dest_part_path,
+						if ( ! execute_command( "umount -v  " + src_part_path,
 									operationdetail .get_last_child() ) )
 						{
 							operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
@@ -316,11 +315,11 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 						operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 					}
 					
-					//unmount source partition
+					//unmount destination partition
 					operationdetail .add_child(
-						OperationDetail( String::ucompose( _("unmount %1"), src_part_path ) ) ) ;
+						OperationDetail( String::ucompose( _("unmount %1"), dest_part_path ) ) ) ;
 				
-					if ( ! execute_command( "umount -v  " + src_part_path,
+					if ( ! execute_command( "umount -v  " + dest_part_path,
 								operationdetail .get_last_child() ) )
 					{
 						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
