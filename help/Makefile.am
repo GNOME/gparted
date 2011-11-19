@@ -17,4 +17,4 @@ DOC_FIGURES = figures/gparted_window.png
 
 #List of all the language codes for the languages in which the
 #  document is translated
-DOC_LINGUAS = cs de es fr it pt_BR ro sl sr sr@latin sv th
+DOC_LINGUAS = cs de es fr it pt_BR ro ru sl sr sr@latin sv th
