@@ -81,7 +81,7 @@ void Partition::Set(	const Glib::ustring & device_path,
 
 void Partition::Set_Unused( Sector sectors_unused )
 {
-	if ( sectors_unused < get_sector_length() )
+	if ( sectors_unused <= get_sector_length() )
 	{
 		this ->sectors_unused = sectors_unused ;
 		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_sector_length() - sectors_unused ;
