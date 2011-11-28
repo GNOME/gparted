@@ -38,6 +38,7 @@
 #include "../include/fat16.h"
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
+#include "../include/lvm2_pv.h"
 #include "../include/reiserfs.h"
 #include "../include/nilfs2.h"
 #include "../include/ntfs.h"
@@ -127,6 +128,9 @@ void GParted_Core::find_supported_filesystems()
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support() ) ;
 
+	lvm2_pv fs_lvm2_pv;
+	FILESYSTEMS .push_back( fs_lvm2_pv .get_filesystem_support() ) ;
+
 	nilfs2 fs_nilfs2;
 	FILESYSTEMS .push_back( fs_nilfs2 .get_filesystem_support() ) ;
 
@@ -144,10 +148,6 @@ void GParted_Core::find_supported_filesystems()
 
 	xfs fs_xfs;
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
-
-	//lvm2 physical volume -- not a file system
-	fs_notsupp .filesystem = GParted::FS_LVM2_PV ;
-	FILESYSTEMS .push_back( fs_notsupp ) ;
 
 	//luks encryption-- not a file system
 	fs_notsupp .filesystem = GParted::FS_LUKS ;
@@ -1102,6 +1102,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		fs_type = fs_info.get_fs_type( get_partition_path( lp_partition ) ) ;
 	}
 
+	Glib::ustring lvm_warning = _( "Logical Volume Management is not yet supported." ) ;
+	lvm_warning += "\n" ;
+
 	if ( ! fs_type .empty() )
 	{
 		if ( fs_type == "extended" )
@@ -1124,6 +1127,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		          fs_type == "linux-swap(old)" ||
 		          fs_type == "swap" )
 			return GParted::FS_LINUX_SWAP ;
+		else if ( fs_type == "LVM2_member" )
+		{
+			partition_temp .messages .push_back( lvm_warning ) ;
+			return GParted::FS_LVM2_PV ;
+		}
 		else if ( fs_type == "fat16" )
 			return GParted::FS_FAT16 ;
 		else if ( fs_type == "fat32" )
@@ -1194,9 +1202,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		if (    0 == memcmp( magic1, "LABELONE", 8 )
 		     && 0 == memcmp( magic2, "LVM2", 4 ) )
 		{
-			temp = _( "Logical Volume Management is not yet supported." ) ;
-			temp += "\n" ;
-			partition_temp .messages .push_back( temp ) ;
+			partition_temp .messages .push_back( lvm_warning ) ;
 			return GParted::FS_LVM2_PV ;
 		}
 	}
@@ -1412,7 +1418,6 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
 		     partitions[ t ] .filesystem != GParted::FS_LUKS       &&
-		     partitions[ t ] .filesystem != GParted::FS_LVM2_PV    &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
 		   )
 		{
@@ -3007,6 +3012,7 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
 		case FS_EXT4		: p_filesystem = new ext4() ; 		break ;
 		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
+		case FS_LVM2_PV		: p_filesystem = new lvm2_pv() ;	break ;
 		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
 		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
 		case FS_NILFS2		: p_filesystem = new nilfs2() ;		break ;
