@@ -38,6 +38,7 @@
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
 #include "../include/reiserfs.h"
+#include "../include/nilfs2.h"
 #include "../include/ntfs.h"
 #include "../include/xfs.h"
 #include "../include/jfs.h"
@@ -123,6 +124,9 @@ void GParted_Core::find_supported_filesystems()
 	
 	linux_swap fs_linux_swap;
 	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support() ) ;
+
+	nilfs2 fs_nilfs2;
+	FILESYSTEMS .push_back( fs_nilfs2 .get_filesystem_support() ) ;
 
 	ntfs fs_ntfs;
 	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support() ) ;
@@ -1113,6 +1117,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 			return GParted::FS_FAT16 ;
 		else if ( fs_type == "fat32" )
 			return GParted::FS_FAT32 ;
+		else if ( fs_type == "nilfs2" )
+			return GParted::FS_NILFS2 ;
 		else if ( fs_type == "ntfs" )
 			return GParted::FS_NTFS ;
 		else if ( fs_type == "reiserfs" )
@@ -2948,6 +2954,7 @@ bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
 		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
 		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
+		case FS_NILFS2		: p_filesystem = new nilfs2() ;		break ;
 		case FS_NTFS		: p_filesystem = new ntfs() ; 		break ;
 		case FS_REISERFS	: p_filesystem = new reiserfs() ; 	break ;
 		case FS_REISER4		: p_filesystem = new reiser4() ;	break ;

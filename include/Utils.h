@@ -69,12 +69,13 @@ enum FILESYSTEM
 	FS_HFS		= 17,
 	FS_HFSPLUS	= 18,
 	FS_UFS		= 19,
+	FS_NILFS2	= 20,
 
-	FS_USED		= 20,
-	FS_UNUSED	= 21,
+	FS_USED		= 21,
+	FS_UNUSED	= 22,
 
-	FS_LVM2		= 22,
-	FS_LUKS		= 23
+	FS_LVM2		= 23,
+	FS_LUKS		= 24
 } ;
 
 enum SIZE_UNIT

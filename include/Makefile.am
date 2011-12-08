@@ -48,6 +48,7 @@ EXTRA_DIST = \
 	i18n.h				\
 	jfs.h 				\
 	linux_swap.h 			\
+	nilfs2.h			\
 	ntfs.h  			\
 	reiser4.h   			\
 	reiserfs.h  			\

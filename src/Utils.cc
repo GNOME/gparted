@@ -63,7 +63,7 @@ Glib::ustring Utils::num_to_str( Sector number )
 	return ss .str() ;
 }
 
-//use http://developer.gnome.org/projects/gup/hig/2.0/design.html#Palette as a starting point..
+//use palette from http://developer.gnome.org/hig-book/2.32/design-color.html.en as a starting point.
 Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 {
 	switch( filesystem )
@@ -80,6 +80,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_FAT16		: return "#00FF00" ;	//green
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
 		case FS_EXFAT		: return "#2E8B57" ;	// ~ sea green
+		case FS_NILFS2		: return "#826647" ;	//face skin dark
 		case FS_NTFS		: return "#42E5AC" ;	// ~ light turquoise
 		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
 		case FS_REISER4		: return "#887FA3" ;	//purple medium
@@ -146,6 +147,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_FAT16		: return "fat16" ;
 		case FS_FAT32		: return "fat32" ;
 		case FS_EXFAT		: return "exfat" ;
+		case FS_NILFS2		: return "nilfs2" ;
 		case FS_NTFS		: return "ntfs" ;
 		case FS_REISERFS	: return "reiserfs" ;
 		case FS_REISER4		: return "reiser4" ;
@@ -177,6 +179,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_HFSPLUS     : return "hfsprogs" ;
 		case FS_JFS         : return "jfsutils" ;
 		case FS_LINUX_SWAP  : return "util-linux" ;
+		case FS_NILFS2      : return "nilfs-utils" ;
 		case FS_NTFS        : return "ntfsprogs" ;
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs" ;

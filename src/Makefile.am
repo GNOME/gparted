@@ -57,6 +57,7 @@ gpartedbin_SOURCES = \
 	jfs.cc				\
 	linux_swap.cc			\
 	main.cc				\
+	nilfs2.cc			\
 	ntfs.cc				\
 	reiser4.cc 			\
 	reiserfs.cc			\
