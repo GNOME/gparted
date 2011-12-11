@@ -51,28 +51,16 @@ Glib::ustring LVM2_PV_Info::dmsetup_info_cache = "" ;
 
 LVM2_PV_Info::LVM2_PV_Info()
 {
-	//Ensure that cache has been loaded at least once
-	if ( ! lvm2_pv_info_cache_initialized )
-	{
-		lvm2_pv_info_cache_initialized = true ;
-		set_commands_found() ;
-		load_lvm2_pv_info_cache() ;
-	}
 }
 
 LVM2_PV_Info::LVM2_PV_Info( bool do_refresh )
 {
-	//Ensure that cache has been loaded at least once
-	if ( ! lvm2_pv_info_cache_initialized )
-	{
-		lvm2_pv_info_cache_initialized = true ;
-		set_commands_found() ;
-		if ( do_refresh == false )
-			load_lvm2_pv_info_cache() ;
-	}
-
 	if ( do_refresh )
+	{
+		set_commands_found() ;
 		load_lvm2_pv_info_cache() ;
+		lvm2_pv_info_cache_initialized = true ;
+	}
 }
 
 LVM2_PV_Info::~LVM2_PV_Info()
@@ -81,17 +69,21 @@ LVM2_PV_Info::~LVM2_PV_Info()
 
 bool LVM2_PV_Info::is_lvm2_pv_supported()
 {
+	if ( ! lvm2_pv_info_cache_initialized )
+		set_commands_found() ;
 	return ( lvm_found && dmsetup_found ) ;
 }
 
 Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 {
+	initialize_if_required() ;
 	return get_pv_attr( path, PVATTR_VG_NAME ) ;
 }
 
 //Return number of free bytes in the PV, or -1 for error.
 Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 {
+	initialize_if_required() ;
 	Byte_Value free_bytes = -1 ;
 	Glib::ustring fb_str = get_pv_attr( path, PVATTR_PV_FREE ) ;
 	if ( fb_str != "" )
@@ -108,6 +100,7 @@ Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 //Report if any LVs are active in the VG stored in the PV.
 bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 {
+	initialize_if_required() ;
 	Glib::ustring vgname = get_pv_attr( path, PVATTR_VG_NAME ) ;
 	if ( vgname == "" )
 		//PV not yet included in any VG
@@ -119,6 +112,16 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 }
 
 //Private methods
+
+void LVM2_PV_Info::initialize_if_required()
+{
+	if ( ! lvm2_pv_info_cache_initialized )
+	{
+		set_commands_found() ;
+		load_lvm2_pv_info_cache() ;
+		lvm2_pv_info_cache_initialized = true ;
+	}
+}
 
 void LVM2_PV_Info::set_commands_found()
 {

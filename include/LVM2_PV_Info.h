@@ -42,6 +42,7 @@ public:
 	Byte_Value get_free_bytes( const Glib::ustring & path ) ;
 	bool has_active_lvs( const Glib::ustring & path ) ;
 private:
+	void initialize_if_required() ;
 	void set_commands_found() ;
 	void load_lvm2_pv_info_cache() ;
 	Glib::ustring get_pv_attr( const Glib::ustring & path, unsigned int entry ) ;
