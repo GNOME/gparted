@@ -1,4 +1,47 @@
 ============================
+GParted 0.11.0  (2011-12-13)
+============================
+
+Release Notes
+-------------
+  This release of GParted adds some volume label improvements, and
+  includes bug fixes and language translation updates.
+
+### Key changes include:
+
+  * Display ext2/3/4, ntfs, and btrfs unicode volume labels properly
+  * Add labelling of btrfs file systems
+  * Enable XFS copy to new smaller partition
+
+Bug Fixes
+---------
+  * Display ext2/3/4 unicode volume labels properly (#662537)
+  * Display ntfs unicode volume labels properly
+    - Ubuntu launchpad #614994
+  * Fix FAT16/32 label displayed as uppercase (#625337)
+  * Add labelling of btrfs file systems (#663207)
+    - Thanks to Mike Fleetwood for small patch
+    - Requires btrfs-tools package yet-to-be-released (> Oct 25, 2011)
+  * Fix btrfs volume label reading (#663590)
+    - Thanks to Mike Fleetwood for small patch
+  * Enable XFS copy to new smaller partition (#663806)
+    - Thanks to Stephen Kirkby for small reverse umount order patch
+  * Use newer btrfs multi-tool control command first (#663884)
+    - Thanks to Mike Fleetwood for this patch
+  * Avoid redundant file system maximize actions (#663980)
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), da(Joe Hansen), ru(Andrey Germanov),
+  sr(Мирослав Николић), sr@latin(Мирослав Николић), uk(Daniel Korostil),
+  zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.10.0  (2011-11-01)
 ============================
 
