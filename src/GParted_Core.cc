@@ -1346,6 +1346,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
 #endif
+	LVM2_PV_Info lvm2_pv_info ;
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
@@ -1409,6 +1410,12 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		}
 		else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			set_mountpoints( partitions[ t ] .logicals ) ;
+		else if ( partitions[ t ] .filesystem == GParted::FS_LVM2_PV )
+		{
+			Glib::ustring vgname = lvm2_pv_info. get_vg_name( partitions[t].get_path() ) ;
+			if ( ! vgname .empty() )
+				partitions[ t ] .add_mountpoint( vgname ) ;
+		}
 	}
 }
 	

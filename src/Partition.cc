@@ -207,6 +207,14 @@ void Partition::sort_paths_and_remove_duplicates()
 	std::sort( paths .begin(), paths .end(), compare_paths ) ;
 }
 
+void Partition::add_mountpoint( const Glib::ustring & mountpoint, bool clear_mountpoints )
+{
+	if ( clear_mountpoints )
+		this ->mountpoints .clear() ;
+
+	this ->mountpoints .push_back( mountpoint ) ;
+}
+
 void Partition::add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints ) 
 {
 	if ( clear_mountpoints )

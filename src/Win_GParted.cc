@@ -1043,7 +1043,11 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
 			allow_change_uuid( true ) ;
 
-		if ( selected_partition .get_mountpoints() .size() )
+		//Generate Mount on submenu, except for LVM2 PVs
+		//  borrowing mount point to display the VGNAME
+		if (   selected_partition .filesystem != GParted::FS_LVM2_PV
+		    && selected_partition .get_mountpoints() .size()
+		   )
 		{
 			allow_toggle_swap_mount_state( true ) ;
 			

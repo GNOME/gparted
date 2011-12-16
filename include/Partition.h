@@ -93,6 +93,7 @@ public:
 	Sector get_sector_length() const ; 
 	Glib::ustring get_path() const ;
 	std::vector<Glib::ustring> get_paths() const ;
+	void add_mountpoint( const Glib::ustring & mountpoint, bool clear_mountpoints = false ) ;
 	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints = false ) ;
 	Glib::ustring get_mountpoint() const ; 
 	void clear_mountpoints() ;
