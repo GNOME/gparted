@@ -32,6 +32,7 @@ OperationDetail::OperationDetail()
 
 OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font )
 {
+	this ->status = STATUS_NONE; // prevent uninitialized member access
 	set_description( description, font ) ;
 	set_status( status ) ;
 
