@@ -53,6 +53,11 @@ public:
 	
 protected:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
+	int execute_command_timed( const Glib::ustring & command
+	                         , OperationDetail & operationdetail
+	                         , bool check_status = true ) ;
+	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
+	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
 
 	//those are used in several places..
 	Glib::ustring output, error ;

@@ -19,6 +19,7 @@
 #include "../include/Utils.h"
 
 #include <sstream>
+#include <fstream>
 #include <iomanip>
 #include <glibmm/regex.h>
 #include <locale.h>
@@ -188,6 +189,49 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 
 		default             : return "" ;
 	}
+}
+
+//Report whether or not the kernel supports a particular file system
+bool Utils::kernel_supports_fs( const Glib::ustring & fs )
+{
+	bool fs_supported = false ;
+
+	//Read /proc/filesystems and check for the file system name.
+	//  Will succeed for compiled in drivers and already loaded
+	//  moduler drivers.  If not found, try loading the driver
+	//  as a module and re-checking /proc/filesystems.
+	std::ifstream input ;
+	std::string line ;
+	input .open( "/proc/filesystems" ) ;
+	if ( input )
+	{
+		while ( input >> line )
+			if ( line == fs )
+			{
+				fs_supported = true ;
+				break ;
+			}
+		input .close() ;
+	}
+	if ( fs_supported )
+		return true ;
+
+	Glib::ustring output, error ;
+	execute_command( "modprobe " + fs, output, error, true ) ;
+
+	input .open( "/proc/filesystems" ) ;
+	if ( input )
+	{
+		while ( input >> line )
+			if ( line == fs )
+			{
+				fs_supported = true ;
+				break ;
+			}
+		input .close() ;
+	}
+
+	return fs_supported ;
 }
 
 Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
