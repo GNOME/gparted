@@ -45,11 +45,12 @@ FS btrfs::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .read_label = FS::EXTERNAL ;
 
-		//Resizing of btrfs requires mount, umount as well as
-		//  btrfs filesystem resize
+		//Resizing of btrfs requires mount, umount and kernel
+		//  support as well as btrfs filesystem resize
 		if (    ! Glib::find_program_in_path( "mount" ) .empty()
 		     && ! Glib::find_program_in_path( "umount" ) .empty()
 		     && fs .check
+		     && Utils::kernel_supports_fs( "btrfs" )
 		   )
 		{
 			fs .grow = FS::EXTERNAL ;
@@ -72,11 +73,13 @@ FS btrfs::get_filesystem_support()
 			fs .read_label = FS::EXTERNAL ;
 		}
 
-		//Resizing of btrfs requires btrfsctl, mount, and umount
+		//Resizing of btrfs requires btrfsctl, mount, umount
+		//  and kernel support
 		if (    ! Glib::find_program_in_path( "btrfsctl" ) .empty()
 		     && ! Glib::find_program_in_path( "mount" ) .empty()
 		     && ! Glib::find_program_in_path( "umount" ) .empty()
 		     && fs .check
+		     && Utils::kernel_supports_fs( "btrfs" )
 		   )
 		{
 			fs .grow = FS::EXTERNAL ;
@@ -175,47 +178,31 @@ bool btrfs::copy( const Glib::ustring & src_part_path,
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	//Create directory
-	Glib::ustring str_temp = _( "create temporary directory" ) ;
-	operationdetail .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-	char dtemplate[] = "/tmp/gparted-XXXXXXXX" ;
-	Glib::ustring dname =  mkdtemp( dtemplate ) ;
-	Glib::ustring str_size ;
-	if( dname .empty() )
-	{
-		//Failed to create temporary directory
-		str_temp = _( "Failed to create temporary directory." );
-		operationdetail .get_last_child() .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_ITALIC ) ) ;
+	bool success = true ;
+
+	Glib::ustring mount_point = mk_temp_dir( "", operationdetail ) ;
+	if ( mount_point .empty() )
 		return false ;
-	}
 
-	/*TO TRANSLATORS: looks like  Created temporary directory /tmp/gparted-XXCOOO8U */
-	str_temp = String::ucompose ( _("Created temporary directory %1"), dname ) ;
-	operationdetail .get_last_child() .add_child( OperationDetail( str_temp, STATUS_NONE, FONT_ITALIC ) ) ;
+	success &= ! execute_command_timed( "mount -v -t btrfs " + partition_new .get_path() + " " + mount_point, operationdetail ) ;
 
-	//Mount file system.  Needed to resize btrfs.
-	str_temp = "mount -v -t btrfs " + partition_new .get_path() + " " + dname ;
-	exit_status = ! execute_command( str_temp, operationdetail ) ;
-
-	if ( exit_status )
+	if ( success )
 	{
-		//Build resize command
+		Glib::ustring size ;
 		if ( ! fill_partition )
-			str_size = Utils::num_to_str( floor( Utils::sector_to_unit(
+			size = Utils::num_to_str( floor( Utils::sector_to_unit(
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
 		else
-			str_size = "max" ;
-
+			size = "max" ;
+		Glib::ustring cmd ;
 		if ( btrfs_found )
-			str_temp = "btrfs filesystem resize " + str_size + " " + dname ;
+			cmd = "btrfs filesystem resize " + size + " " + mount_point ;
 		else
-			str_temp = "btrfsctl -r " + str_size + " " + dname ;
-
-		//Execute the command
-		exit_status = execute_command( str_temp, operationdetail ) ;
-		//Resizing a btrfs file system for a second time to the
-		//  same size results in ioctl() returning -1 EINVAL
-		//  (Invalid argument) from the kernel btrfs code.
+			cmd = "btrfsctl -r " + size + " " + mount_point ;
+		exit_status = execute_command_timed( cmd, operationdetail, false ) ;
+		//Resizing a btrfs file system to the same size results
+		//  in ioctl() returning -1 EINVAL (Invalid argument)
+		//  from the kernel btrfs code.
 		//  *   Btrfs filesystem resize reports this as exit
 		//      status 30:
 		//          ERROR: Unable to resize '/MOUNTPOINT'
@@ -223,24 +210,21 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		//          ioctl:: Invalid argument
 		//  WARNING:
 		//  Ignoring these errors could mask real failures, but
-		//  not ignoring them will cause partition shinks to
-		//  fail on the second "grow file system to fill the
-		//  partition" resize.
-		exit_status = (    exit_status == 0
-		                || (   btrfs_found && exit_status == 30<<8 )
-		                || ( ! btrfs_found && exit_status ==  1<<8 )
-		              ) ;
+		//  not ignoring them will cause resizing to the same
+		//  size as part of check operation to fail.
+		bool resize_succeeded = (    exit_status == 0
+		                          || (   btrfs_found && exit_status == 30<<8 )
+		                          || ( ! btrfs_found && exit_status ==  1<<8 )
+		                        ) ;
+		operationdetail .get_last_child() .set_status( resize_succeeded ? STATUS_SUCCES : STATUS_ERROR ) ;
+		success &= resize_succeeded ;
 
-		//Always unmount the file system
-		str_temp = "umount -v " + dname ;
-		execute_command( str_temp, operationdetail ) ;
+		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
 	}
 
-	//Always remove the temporary directory name
-	str_temp = "rmdir -v " + dname ;
-	execute_command( str_temp, operationdetail ) ;
+	rm_temp_dir( mount_point, operationdetail ) ;
 
-	return exit_status ;
+	return success ;
 }
 
 void btrfs::read_label( Partition & partition )
