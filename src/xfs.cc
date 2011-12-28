@@ -44,31 +44,23 @@ FS xfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "xfs_repair" ) .empty() ) 	
 		fs .check = GParted::FS::EXTERNAL ;
 	
-	//resizing of xfs requires xfs_growfs, xfs_repair, mount, umount and xfs support in the kernel
-	if ( ! Glib::find_program_in_path( "xfs_growfs" ) .empty() &&
-	     ! Glib::find_program_in_path( "mount" ) .empty() &&
+	//Mounted operations require mount, umount and xfs support in the kernel
+	if ( ! Glib::find_program_in_path( "mount" ) .empty()  &&
 	     ! Glib::find_program_in_path( "umount" ) .empty() &&
-    	     fs .check ) 	
+	     fs .check                                         &&
+	     Utils::kernel_supports_fs( "xfs" )                   )
 	{
-		Glib::ustring line ;
-		std::ifstream input( "/proc/filesystems" ) ;
-		while ( input >> line )
-			if ( line == "xfs" )
-			{
-				fs .grow = GParted::FS::EXTERNAL ;
-				break ;
-			}
-		
-		input .close( ) ;
+		//Grow
+		if ( ! Glib::find_program_in_path( "xfs_growfs" ) .empty() )
+			fs .grow = FS::EXTERNAL ;
+
+		//Copy using xfsdump, xfsrestore
+		if ( ! Glib::find_program_in_path( "xfsdump" ) .empty()    &&
+		     ! Glib::find_program_in_path( "xfsrestore" ) .empty() &&
+		     fs .create                                               )
+			fs .copy = FS::EXTERNAL ;
 	}
-	
-	if ( ! Glib::find_program_in_path( "xfsdump" ) .empty() &&
-	     ! Glib::find_program_in_path( "xfsrestore" ) .empty() &&
-	     ! Glib::find_program_in_path( "mount" ) .empty() &&
-	     ! Glib::find_program_in_path( "umount" ) .empty() &&
-	     fs .check && fs .create ) 	
-		fs .copy = GParted::FS::EXTERNAL ;
-	
+
 	if ( fs .check )
 		fs .move = GParted::FS::GPARTED ;
 
@@ -145,81 +137,25 @@ bool xfs::create( const Partition & new_partition, OperationDetail & operationde
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	bool return_value = false ;
-	Glib::ustring error ;
-	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_xfs_mount_point" ;
+	bool success = true ;
 
-	//create mount point...
-	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mount point (%1)"), TEMP_MP ) ) ) ;
-	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
+	Glib::ustring mount_point = mk_temp_dir( "", operationdetail ) ;
+	if ( mount_point .empty() )
+		return false ;
+
+	success &= ! execute_command_timed( "mount -v -t xfs " + partition_new .get_path() + " " + mount_point,
+	                                    operationdetail ) ;
+
+	if ( success )
 	{
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		
-		//mount partition
-		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("mount %1 on %2"), partition_new .get_path(), TEMP_MP ) ) ) ;
+		success &= ! execute_command_timed( "xfs_growfs " + mount_point, operationdetail ) ;
 
-		if ( ! execute_command( "mount -v -t xfs " + partition_new .get_path() + " " + TEMP_MP,
-					operationdetail .get_last_child() ) )
-		{
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			
-			//grow the mounted file system..
-			operationdetail .add_child( OperationDetail( _("grow mounted file system") ) ) ;
-			
-			if ( ! execute_command ( "xfs_growfs " + TEMP_MP, operationdetail .get_last_child() ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-				return_value = true ;
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-			}
-			
-			//and unmount it...
-			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("unmount %1"), partition_new .get_path() ) ) ) ;
-
-			if ( ! execute_command( "umount -v " + partition_new .get_path(),
-						operationdetail .get_last_child() ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				return_value = false ;
-			}
-		}
-		else
-		{
-			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-		}
-				
-		//remove the mount point..
-		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), TEMP_MP ) ) ) ;
-		if ( ! rmdir( TEMP_MP .c_str() ) )
-		{
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		}
-		else
-		{
-			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-			operationdetail .get_last_child() .add_child(
-				OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-
-			return_value = false ;
-		}
+		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
 	}
-	else
-	{
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-		operationdetail .get_last_child() .add_child( OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-	}
-	
-	return return_value ;
+
+	rm_temp_dir( mount_point, operationdetail ) ;
+
+	return success ;
 }
 
 bool xfs::move( const Partition & partition_new
@@ -234,157 +170,48 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 		const Glib::ustring & dest_part_path,
 		OperationDetail & operationdetail )
 {
-	bool return_value = false ;
-	Glib::ustring error ;
-	Glib::ustring SRC = Glib::get_tmp_dir() + "/gparted_tmp_xfs_src_mount_point" ;
-	Glib::ustring DST = Glib::get_tmp_dir() + "/gparted_tmp_xfs_dest_mount_point" ;
-	
-	//create xfs file system on destination..
-	/*TO TRANSLATORS: looks like Create new xfs file system */ 
-	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_XFS ) ) ) ) ;
+	bool success = true ;
 
-	if ( create( Partition( dest_part_path ), operationdetail .get_last_child() ) )
+	success &= ! execute_command_timed( "mkfs.xfs -f " + dest_part_path, operationdetail ) ;
+	if ( ! success )
+		return false ;
+
+	Glib::ustring src_mount_point = mk_temp_dir( "src", operationdetail ) ;
+	if ( src_mount_point .empty() )
+		return false ;
+
+	Glib::ustring dest_mount_point = mk_temp_dir( "dest", operationdetail ) ;
+	if ( dest_mount_point .empty() )
 	{
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		
-		//create source mount point...
-		operationdetail .add_child( 
-			OperationDetail( String::ucompose( _("create temporary mount point (%1)"), SRC ) ) ) ;
-		if ( ! mkdir( SRC .c_str(), 0 ) )
-		{
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			
-			//create destination mount point...
-			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("create temporary mount point (%1)"), DST ) ) ) ;
-			if ( ! mkdir( DST .c_str(), 0 ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-
-				//mount source partition
-				operationdetail .add_child(
-					OperationDetail( String::ucompose( _("mount %1 on %2"), src_part_path, SRC ) ) ) ;
-				
-				if ( ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part_path + " " + SRC,
-							operationdetail .get_last_child() ) )
-				{
-					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-
-					//mount destination partition
-					operationdetail .add_child(
-					OperationDetail( String::ucompose( _("mount %1 on %2"), dest_part_path, DST ) ) ) ;
-			
-					if ( ! execute_command( "mount -v -t xfs " + dest_part_path + " " + DST,
-								operationdetail .get_last_child() ) )
-					{
-						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-	
-						//copy file system..
-						operationdetail .add_child( OperationDetail( _("copy file system") ) ) ;
-						
-						if ( ! execute_command( 
-							 "xfsdump -J - " + SRC + " | xfsrestore -J - " + DST,
-							 operationdetail .get_last_child() ) )
-						{
-							operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-							return_value = true ;
-						}
-						else
-						{
-							operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-						}
-						
-						//unmount source partition
-						operationdetail .add_child(
-							OperationDetail( String::ucompose( _("unmount %1"), src_part_path ) ) ) ;
-					
-						if ( ! execute_command( "umount -v  " + src_part_path,
-									operationdetail .get_last_child() ) )
-						{
-							operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-						}
-						else
-						{
-							operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-							return_value = false ;
-						}
-					}
-					else
-					{
-						operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-					}
-					
-					//unmount destination partition
-					operationdetail .add_child(
-						OperationDetail( String::ucompose( _("unmount %1"), dest_part_path ) ) ) ;
-				
-					if ( ! execute_command( "umount -v  " + dest_part_path,
-								operationdetail .get_last_child() ) )
-					{
-						operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-					}
-					else
-					{
-						operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-						return_value = false ;
-					}
-				}
-				else
-				{
-					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				}
-		
-				//remove destination mount point..
-				operationdetail .add_child(
-					OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), DST ) ) ) ;
-				if ( ! rmdir( DST .c_str() ) )
-				{
-					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-				}
-				else
-				{
-					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-					operationdetail .get_last_child() .add_child(
-						OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-	
-					return_value = false ;
-				}
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				operationdetail .get_last_child() .add_child(
-					OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-			}
-			
-			//remove source mount point..
-			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), SRC ) ) ) ;
-			if ( ! rmdir( SRC .c_str() ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				operationdetail .get_last_child() .add_child(
-					OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-
-				return_value = false ;
-			}
-		}
-		else
-		{
-			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-			operationdetail .get_last_child() .add_child(
-				OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
-		}
+		rm_temp_dir( src_mount_point, operationdetail ) ;
+		return false ;
 	}
-	else 
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 
-	return return_value ;
+	success &= ! execute_command_timed( "mount -v -t xfs -o noatime,ro " + src_part_path +
+	                                    " " + src_mount_point, operationdetail ) ;
+
+	if ( success )
+	{
+		success &= ! execute_command_timed( "mount -v -t xfs " + dest_part_path +
+		                                    " " + dest_mount_point, operationdetail ) ;
+
+		if ( success )
+		{
+			success &= ! execute_command_timed( "xfsdump -J - " + src_mount_point +
+			                                    " | xfsrestore -J - " + dest_mount_point,
+			                                    operationdetail ) ;
+
+			success &= ! execute_command_timed( "umount -v " + dest_part_path, operationdetail ) ;
+		}
+
+		success &= ! execute_command_timed( "umount -v " + src_part_path, operationdetail ) ;
+	}
+
+	rm_temp_dir( dest_mount_point, operationdetail ) ;
+
+	rm_temp_dir( src_mount_point, operationdetail ) ;
+
+	return success ;
 }
 
 bool xfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
