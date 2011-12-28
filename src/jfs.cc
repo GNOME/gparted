@@ -44,26 +44,13 @@ FS jfs::get_filesystem_support()
 		fs .check = GParted::FS::EXTERNAL ;
 	
 	//resizing of jfs requires mount, unmount, check/repair functionality and jfs support in the kernel
-	if ( ! Glib::find_program_in_path( "mount" ) .empty() &&
+	if ( ! Glib::find_program_in_path( "mount" ) .empty()  &&
 	     ! Glib::find_program_in_path( "umount" ) .empty() &&
-	     fs .check )
+	     fs .check                                         &&
+	     Utils::kernel_supports_fs( "jfs" )                   )
 	{
-		std::ifstream input( "/proc/filesystems" ) ;
-		if ( input )
-		{
-			Glib::ustring line ;
-
-			while ( input >> line )
-				if ( line == "jfs" )
-				{
-					fs .grow = GParted::FS::EXTERNAL ;
-					break ;
-				}
-	
-			input .close() ;
-		}
+		fs .grow = GParted::FS::EXTERNAL ;
 	}
-
 
 	if ( fs .check )
 	{
@@ -133,87 +120,26 @@ bool jfs::create( const Partition & new_partition, OperationDetail & operationde
 
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	bool return_value = false ;
-	Glib::ustring error ;
-	Glib::ustring TEMP_MP = Glib::get_tmp_dir() + "/gparted_tmp_jfs_mount_point" ;
-	
-	//create mount point...
-	operationdetail .add_child( OperationDetail( String::ucompose( _("create temporary mount point (%1)"), TEMP_MP ) ) ) ;
-	if ( ! mkdir( TEMP_MP .c_str(), 0 ) )
-	{
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+	bool success = true ;
 
-		//mount partition
-		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("mount %1 on %2"), partition_new .get_path(), TEMP_MP ) ) ) ;
-		
-		if ( ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + TEMP_MP,
-					operationdetail .get_last_child() ) )
-		{
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			
-			//remount the partition to resize the file system
-			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("remount %1 on %2 with the 'resize' flag enabled"),
-								   partition_new .get_path(),
-								   TEMP_MP ) ) ) ;
-			
-			if ( ! execute_command( 
-					"mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + TEMP_MP,
-					operationdetail .get_last_child() ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-				return_value = true ;
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-			}
-			
-			//and unmount it...
-			operationdetail .add_child(
-				OperationDetail( String::ucompose( _("unmount %1"), partition_new .get_path() ) ) ) ;
-		
-			if ( ! execute_command( "umount -v " + partition_new .get_path(),
-						operationdetail .get_last_child() ) )
-			{
-				operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			}
-			else
-			{
-				operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-				return_value = false ;
-			}
-		}
-		else
-		{
-			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-		}
-		
-		//remove the mount point..
-		operationdetail .add_child(
-			OperationDetail( String::ucompose( _("remove temporary mount point (%1)"), TEMP_MP ) ) ) ;
-		if ( ! rmdir( TEMP_MP .c_str() ) )
-		{
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-		}
-		else
-		{
-			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-			operationdetail .get_last_child() .add_child( 
-				OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
+	Glib::ustring mount_point = mk_temp_dir( "", operationdetail ) ;
+	if ( mount_point .empty() )
+		return false ;
 
-			return_value = false ;
-		}
-	}
-	else
+	success &= ! execute_command_timed( "mount -v -t jfs " + partition_new .get_path() + " " + mount_point,
+	                                    operationdetail ) ;
+
+	if ( success )
 	{
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-		operationdetail .get_last_child() .add_child( 
-			OperationDetail( Glib::strerror( errno ), STATUS_NONE ) ) ;
+		success &= ! execute_command_timed( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + mount_point,
+		                                    operationdetail ) ;
+
+		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
 	}
-	
-	return return_value ;
+
+	rm_temp_dir( mount_point, operationdetail ) ;
+
+	return success ;
 }
 
 bool jfs::move( const Partition & partition_new
