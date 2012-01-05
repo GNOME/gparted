@@ -55,6 +55,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <mntent.h>
+#include <gtkmm/messagedialog.h>
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
@@ -3180,18 +3181,76 @@ void GParted_Core::settle_device( std::time_t timeout )
 		sleep( timeout ) ;
 }
 
+class PedExceptionMsg : public Gtk::MessageDialog
+{
+public:
+	PedExceptionMsg( PedException &e ) : MessageDialog( Glib::ustring(e.message), false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_NONE, true )
+		{
+			switch( e.type )
+			{
+			case PED_EXCEPTION_WARNING:
+				set_title( _("Libparted Warning") );
+				property_message_type() = Gtk::MESSAGE_WARNING;
+				break;
+			case PED_EXCEPTION_INFORMATION:
+				set_title( _("Libparted Information") );
+				property_message_type() = Gtk::MESSAGE_INFO;
+				break;
+			case PED_EXCEPTION_ERROR:
+				set_title( _("Libparted Error") );
+			default:
+				set_title( _("Libparted Bug Found!") );
+			}
+			if (e.options & PED_EXCEPTION_FIX)
+				add_button( _("Fix"), PED_EXCEPTION_FIX );
+			if (e.options & PED_EXCEPTION_YES)
+				add_button( _("Yes"), PED_EXCEPTION_YES );
+			if (e.options & PED_EXCEPTION_OK)
+				add_button( _("Ok"), PED_EXCEPTION_OK );
+			if (e.options & PED_EXCEPTION_RETRY)
+				add_button( _("Retry"), PED_EXCEPTION_RETRY );
+			if (e.options & PED_EXCEPTION_NO)
+				add_button( _("No"), PED_EXCEPTION_NO );
+			if (e.options & PED_EXCEPTION_CANCEL)
+				add_button( _("Cancel"), PED_EXCEPTION_CANCEL );
+			if (e.options & PED_EXCEPTION_IGNORE)
+				add_button( _("Ignore"), PED_EXCEPTION_IGNORE );
+		}
+};
+
 PedExceptionOption GParted_Core::ped_exception_handler( PedException * e ) 
 {
+	PedExceptionOption ret = PED_EXCEPTION_UNHANDLED;
         std::cout << e ->message << std::endl ;
 
         libparted_messages .push_back( e->message ) ;
-
-	return PED_EXCEPTION_UNHANDLED ;
+	char optcount = 0;
+	int opt = 0;
+	for( char c = 0; c < 10; c++ )
+		if( e->options & (1 << c) ) {
+			opt = (1 << c);
+			optcount++;
+		}
+	// if only one option was given, choose it without popup
+	if( optcount == 1 && e->type != PED_EXCEPTION_BUG && e->type != PED_EXCEPTION_FATAL )
+		return (PedExceptionOption)opt;
+	if (Glib::Thread::self() != GParted_Core::mainthread)
+		gdk_threads_enter();
+	PedExceptionMsg msg( *e );
+	msg.show_all();
+	ret = (PedExceptionOption)msg.run();
+	if (Glib::Thread::self() != GParted_Core::mainthread)
+		gdk_threads_leave();
+	if (ret < 0)
+		ret = PED_EXCEPTION_UNHANDLED;
+	return ret;
 }
 
 GParted_Core::~GParted_Core() 
 {
 	delete p_filesystem;
 }
+
+Glib::Thread *GParted_Core::mainthread;
 	
 } //GParted

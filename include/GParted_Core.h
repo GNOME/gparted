@@ -32,6 +32,7 @@ namespace GParted
 class GParted_Core
 {
 public:
+	static Glib::Thread *mainthread;
 	GParted_Core() ;
 	~GParted_Core() ;
 

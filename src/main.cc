@@ -19,11 +19,15 @@
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
+#include "../include/GParted_Core.h"
 
 int main( int argc, char *argv[] )
 {
 	//initialize thread system
 	Glib::thread_init() ;
+	gdk_threads_init();
+	gdk_threads_enter();
+	GParted::GParted_Core::mainthread = Glib::Thread::self();
 	
 	Gtk::Main kit( argc, argv ) ;
 		 
