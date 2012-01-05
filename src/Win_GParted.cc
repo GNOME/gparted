@@ -941,7 +941,8 @@ void Win_GParted::set_valid_operations()
 	//only unmount is allowed (if ! extended)
 	if ( selected_partition .busy )	
 	{
-		if ( selected_partition .type != GParted::TYPE_EXTENDED )
+		if ( selected_partition .type != GParted::TYPE_EXTENDED    &&
+		     selected_partition .filesystem != GParted::FS_LVM2_PV    )
 			allow_toggle_swap_mount_state( true ) ;
 
 		return ;

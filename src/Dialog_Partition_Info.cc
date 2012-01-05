@@ -266,6 +266,14 @@ void Dialog_Partition_Info::Display_Info()
 				 */
 				str_temp = _("Active") ;
 			}
+			else if ( partition .filesystem == FS_LVM2_PV )
+			{
+				/* TO TRANSLATORS:  myvgname active
+				 * means that the partition is part of an LVM volume group and that
+				 * volume group is active and being used by the operating system.
+				 */
+				str_temp = String::ucompose( _("%1 active"), partition .get_mountpoint() ) ;
+			}
 			else if ( partition .get_mountpoints() .size() )
 			{
 				str_temp = String::ucompose( 
@@ -289,6 +297,23 @@ void Dialog_Partition_Info::Display_Info()
 			 *  in use by the operating system.
 			 */
 			str_temp = _("Not active") ;
+		}
+		else if ( partition .filesystem == FS_LVM2_PV )
+		{
+			Glib::ustring mount_point = partition .get_mountpoint() ;
+			if ( mount_point .empty() )
+				/* TO TRANSLATORS:  Not active (Not part of any volume group)
+				 * means that the partition is not yet part of an LVM volume
+				 * group and therefore is not active and can not yet be used by
+				 * the operating system.
+				 */
+				str_temp = _("Not active (Not part of any volume group)") ;
+			else
+				/* TO TRANSLATORS:  myvgname not active
+				 * means that the partition is part of an LVM volume group but
+				 * the volume group is not active and not being used by the operating system.
+				 */
+				str_temp = String::ucompose( _("%1 not active"), mount_point ) ;
 		}
 		else
 		{

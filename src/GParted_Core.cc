@@ -906,6 +906,7 @@ void GParted_Core::set_device_partitions( Device & device )
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;    //Use cache of dmraid device information
 #endif
+	LVM2_PV_Info lvm2_pv_info ;
 
 	//clear partitions
 	device .partitions .clear() ;
@@ -941,7 +942,8 @@ void GParted_Core::set_device_partitions( Device & device )
 				}
 				else
 #endif
-					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
+					partition_is_busy = ped_partition_is_busy( lp_partition ) ||
+					                    lvm2_pv_info .has_active_lvs( partition_path ) ;
 
 				partition_temp .Set( device .get_path(),
 						     partition_path,
@@ -983,7 +985,8 @@ void GParted_Core::set_device_partitions( Device & device )
 				}
 				else
 #endif
-					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
+					partition_is_busy = ped_partition_is_busy( lp_partition ) ||
+					                    lvm2_pv_info .has_active_lvs( partition_path ) ;
 
 				partition_temp .Set( device .get_path(),
 						     partition_path, 
@@ -1433,7 +1436,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
 			{
-				if ( partitions[ t ] .busy )
+				if ( partitions[ t ] .busy && partitions[t] .filesystem != GParted::FS_LVM2_PV )
 				{
 					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
 					{
