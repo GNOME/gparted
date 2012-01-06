@@ -180,6 +180,11 @@ int main ()
 LIBS="$LIBS_save"
 
 
+dnl gthread
+PKG_CHECK_MODULES([GTHREAD], [gthread-2.0])
+AC_SUBST([GTHREAD_LIBS])
+AC_SUBST([GTHREAD_CFLAGS])
+
 dnl GTKMM
 PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 > 2.8])
 AC_SUBST([GTKMM_LIBS])

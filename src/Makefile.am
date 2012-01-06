@@ -1,4 +1,5 @@
 INCLUDES =						\
+	$(GTHREAD_CFLAGS) 				\
 	$(GTKMM_CFLAGS) 				\
 	-DGPARTED_DATADIR=\""$(datadir)"\"			\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
@@ -64,7 +65,7 @@ gpartedbin_SOURCES = \
 	ufs.cc				\
 	xfs.cc
 
-gpartedbin_LDFLAGS = -lparted -lgthread-2.0 
+gpartedbin_LDFLAGS = -lparted
 
-gpartedbin_LDADD = $(GTKMM_LIBS)
+gpartedbin_LDADD = $(GTHREAD_LIBS) $(GTKMM_LIBS)
 
