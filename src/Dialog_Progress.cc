@@ -222,7 +222,7 @@ void Dialog_Progress::on_signal_show()
 			while ( Gtk::Main::events_pending() )
 				Gtk::Main::iteration();
 			gdk_threads_leave();
-			usleep( 10000 ) ;
+			usleep( 100000 ) ;
 			gdk_threads_enter();
 		}
 
