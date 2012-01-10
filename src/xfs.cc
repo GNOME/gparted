@@ -76,7 +76,7 @@ FS xfs::get_filesystem_support()
 void xfs::set_used_sectors( Partition & partition ) 
 {
 	if ( ! Utils::execute_command( 
-			"xfs_db -c 'sb 0' -c 'print blocksize' -c 'print fdblocks' -r " + partition .get_path(),
+			"xfs_db -c 'sb 0' -c 'print blocksize' -c 'print dblocks' -c 'print fdblocks' -r " + partition .get_path(),
 			output,
 			error,
 			true ) )
@@ -85,14 +85,25 @@ void xfs::set_used_sectors( Partition & partition )
 		if ( sscanf( output .c_str(), "blocksize = %Ld", &S ) != 1 )
 			S = -1 ;
 
-		//free blocks
-		index = output .find( "fdblocks" ) ;
+		//filesystem blocks
+		index = output .find( "\ndblocks" ) ;
 		if ( index > output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "fdblocks = %Ld", &N ) != 1 )
+		     sscanf( output .substr( index ) .c_str(), "\ndblocks = %Ld", &T ) != 1 )
+			T = -1 ;
+
+		//free blocks
+		index = output .find( "\nfdblocks" ) ;
+		if ( index > output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "\nfdblocks = %Ld", &N ) != 1 )
 			N = -1 ;
 
-		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / double(partition .sector_size) ) ) ) ;
+		if ( T > -1 && N > -1 && S > -1 )
+		{
+			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
+			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+			partition .set_sector_usage( T, N ) ;
+		}
+
 	}
 	else
 	{

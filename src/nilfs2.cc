@@ -66,7 +66,15 @@ void nilfs2::set_used_sectors( Partition & partition )
 {
 	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
 	{
-		Glib::ustring::size_type index = output .find( "Free blocks count:" ) ;
+		//File system size in bytes
+		Glib::ustring::size_type index = output .find( "Device size:" ) ;
+		if (   index == Glib::ustring::npos
+		    || sscanf( output.substr( index ) .c_str(), "Device size: %Ld", &T ) != 1
+		   )
+			T = -1 ;
+
+		//Free space in blocks
+		index = output .find( "Free blocks count:" ) ;
 		if (   index == Glib::ustring::npos
 		    || sscanf( output.substr( index ) .c_str(), "Free blocks count: %Ld", &N ) != 1
 		   )
@@ -78,8 +86,12 @@ void nilfs2::set_used_sectors( Partition & partition )
 		   )
 			S = -1 ;
 
-		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / double( partition .sector_size) ) ) ) ;
+		if ( T > -1 && N > -1 && S > -1 )
+		{
+			T = Utils::round( T / double(partition .sector_size) ) ;
+			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+			partition .set_sector_usage( T, N ) ;
+		}
 	}
 	else
 	{

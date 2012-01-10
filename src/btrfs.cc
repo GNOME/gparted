@@ -124,31 +124,27 @@ void btrfs::set_used_sectors( Partition & partition )
 		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
 	if ( ! exit_status )
 	{
-		Glib::ustring size_label;
-		if ( ((index = output .find( "FS bytes" )) < output .length()) &&
-			  (size_label=Utils::regexp_label(output .substr( index ), "^FS bytes used (.*)B")) .length() > 0)
+		//FIXME: Improve free space calculation for multi-device
+		//  btrfs file systems.  Currently uses the size of the
+		//  btrfs device in this partition (spot on) and the
+		//  file system wide used bytes (wrong for multi-device
+		//  file systems).
+
+		Glib::ustring str ;
+		//Btrfs file system device size
+		Glib::ustring regexp = "devid .* size ([0-9\\.]+.?B) .* path " + partition .get_path() ;
+		if ( ! ( str = Utils::regexp_label( output, regexp ) ) .empty() )
+			T = btrfs_size_to_num( str ) ;
+
+		//Btrfs file system wide used bytes
+		if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+.?B)" ) ) .empty() )
+			N = T - btrfs_size_to_num( str ) ;
+
+		if ( T > -1 && N > -1 )
 		{
-			gchar *suffix;
-			gdouble rawN = g_ascii_strtod (size_label.c_str(),&suffix);
-			unsigned long long mult=0;
-			switch(suffix[0]){
-				case 'K':
-					mult=KIBIBYTE;
-					break;
-				case 'M':
-					mult=MEBIBYTE;
-					break;
-				case 'G':
-					mult=GIBIBYTE;
-					break;
-				case 'T':
-					mult=TEBIBYTE;
-					break;
-				default:
-					mult=1;
-					break;
-					}
-			partition .set_used( Utils::round( (rawN * mult)/ double(partition .sector_size) ) ) ;
+			T = Utils::round( T / double(partition .sector_size) ) ;
+			N = Utils::round( N / double(partition .sector_size) ) ;
+			partition .set_sector_usage( T, N );
 		}
 	}
 	else
@@ -308,5 +304,20 @@ void btrfs::read_uuid( Partition & partition )
 	}
 }
 
+Sector btrfs::btrfs_size_to_num( Glib::ustring str ) const
+{
+	gchar * suffix ;
+	gdouble rawN = g_ascii_strtod( str .c_str(), & suffix ) ;
+	unsigned long long mult ;
+	switch ( suffix[0] )
+	{
+		case 'K':	mult = KIBIBYTE ;	break ;
+		case 'M':	mult = MEBIBYTE ;	break ;
+		case 'G':	mult = GIBIBYTE ;	break ;
+		case 'T':	mult = TEBIBYTE ;	break ;
+		default:	mult = 1 ;		break ;
+	}
+	return Utils::round( rawN * mult ) ;
+}
 
 } //GParted

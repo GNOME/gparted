@@ -75,15 +75,25 @@ void jfs::set_used_sectors( Partition & partition )
 		if ( index >= output .length() || 
 		     sscanf( output .substr( index ) .c_str(), "Block Size: %Ld", &S ) != 1 ) 
 			S = -1 ;
-		
+
+		//total blocks
+		index = output .find( "dn_mapsize:" ) ;
+		if ( index >= output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "dn_mapsize: %Lx", &T ) != 1 )
+			T = -1 ;
+
 		//free blocks
 		index = output .find( "dn_nfree:" ) ;
 		if ( index >= output .length() || 
 		     sscanf( output .substr( index ) .c_str(), "dn_nfree: %Lx", &N ) != 1 ) 
 			N = -1 ;
 
-		if ( S > -1 && N > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / double(partition .sector_size) ) ) ) ;
+		if ( T > -1 && N > -1 && S > -1 )
+		{
+			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
+			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+			partition .set_sector_usage( T, N ) ;
+		}
 	}
 	else
 	{

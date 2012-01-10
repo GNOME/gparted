@@ -111,13 +111,22 @@ void ntfs::set_used_sectors( Partition & partition )
 	if ( ! Utils::execute_command( 
 		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) )
 	{
+		index = output .find( "Current volume size:" ) ;
+		if ( index >= output .length() ||
+		     sscanf( output .substr( index ) .c_str(), "Current volume size: %Ld", &T ) != 1 )
+			T = -1 ;
+
 		index = output .find( "resize at" ) ;
 		if ( index >= output .length() ||
 		     sscanf( output .substr( index ) .c_str(), "resize at %Ld", &N ) != 1 )
 			N = -1 ;
 
-		if ( N > -1 )
-			partition .set_used( Utils::round( N / double(partition .sector_size) ) ) ; 
+		if ( T > -1 && N > -1 )
+		{
+			T = Utils::round( T / double(partition .sector_size) ) ;
+			N = Utils::round( N / double(partition .sector_size) ) ;
+			partition .set_sector_usage( T, T - N );
+		}
 	}
 	else
 	{

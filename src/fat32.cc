@@ -94,6 +94,19 @@ void fat32::set_used_sectors( Partition & partition )
 	exit_status = Utils::execute_command( "dosfsck -n -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
+		//total file system size in logical sectors
+		index = output .rfind( "\n", output .find( "sectors total" ) ) +1 ;
+		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &T ) != 1 )
+			T = -1 ;
+
+		//bytes per logical sector
+		index = output .rfind( "\n", output .find( "bytes per logical sector" ) ) +1 ;
+		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 )
+			S = -1 ;
+
+		if ( T > -1 && S > -1 )
+			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
+
 		//free clusters
 		index = output .find( ",", output .find( partition .get_path() ) + partition .get_path() .length() ) +1 ;
 		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
@@ -107,7 +120,10 @@ void fat32::set_used_sectors( Partition & partition )
 			S = -1 ;
 	
 		if ( N > -1 && S > -1 )
-			partition .Set_Unused( Utils::round( N * ( S / double(partition .sector_size) ) ) ) ;
+			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+
+		if ( T > -1 && N > -1 )
+			partition .set_sector_usage( T, N ) ;
 	}
 	else
 	{
