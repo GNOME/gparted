@@ -51,9 +51,6 @@ enum PartitionAlignment {
 	                       //  Indicator if start and end sectors must remain unchanged
 };
 
-//FIXME: we should make a difference between partition- and file system size. 
-//especially in the core this can make a difference when giving detailed feedback. With new cairosupport in gtkmm
-//it's even possible to make stuff like this visible in the GUI in a nice and clear way
 class Partition
 {
 public:
@@ -77,6 +74,8 @@ public:
 
 	void Set_Unused( Sector sectors_unused ) ;
 	void set_used( Sector sectors_used ) ;
+	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
+	bool significant_unallocated_space() const ;
 
 	void Set_Unallocated( const Glib::ustring & device_path, 
 			      Sector sector_start,
@@ -117,6 +116,7 @@ public:
 	Sector sector_end;
 	Sector sectors_used;
 	Sector sectors_unused;
+	Sector sectors_unallocated;  //Difference between the size of the partition and the file system
 	Gdk::Color color;
 	bool inside_extended;
 	bool busy;

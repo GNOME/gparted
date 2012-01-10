@@ -20,7 +20,9 @@
 
 namespace GParted
 {
-	
+
+#define SIGNIFICANT_UNALLOCATED_PERCENTAGE 5.0
+
 Partition::Partition()
 {
 	Reset() ;
@@ -44,6 +46,7 @@ void Partition::Reset()
 	label .clear() ;
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
+	sectors_unallocated = 0 ;
 	free_space_before = -1 ;
 	sector_size = 0 ;
 	color .set( "black" ) ;
@@ -80,22 +83,65 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->color .set( Utils::get_color( filesystem ) );
 }
 
+//Deprecated method of setting file system free space, which assumes
+//  the file system fills the partition.
 void Partition::Set_Unused( Sector sectors_unused )
 {
 	if ( sectors_unused <= get_sector_length() )
 	{
 		this ->sectors_unused = sectors_unused ;
 		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_sector_length() - sectors_unused ;
+		this ->sectors_unallocated = 0 ;
 	}
 }
-	
+
+//Deprecated method of setting file system used space, which assumes
+//  the file system fills the partition.
 void Partition::set_used( Sector sectors_used ) 
 {
 	if ( sectors_used < get_sector_length() )
 	{
 		this ->sectors_used = sectors_used ;
 		this ->sectors_unused = ( sectors_used == -1 ) ? -1 : get_sector_length() - sectors_used ;
+		this ->sectors_unallocated = 0 ;
 	}
+}
+
+//Preferred method of setting file system size and free space, which also
+//  calculates unallocated space.  Set sectors_fs_size = -1 for unknown.
+void Partition::set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused )
+{
+	Sector length = get_sector_length() ;
+	if (    0 <= sectors_fs_size   && sectors_fs_size   <= length
+	     && 0 <= sectors_fs_unused && sectors_fs_unused <= sectors_fs_size
+	   )
+	{
+		sectors_used        = sectors_fs_size - sectors_fs_unused ;
+		sectors_unused      = sectors_fs_unused ;
+		sectors_unallocated = length - sectors_fs_size ;
+	}
+	else if ( sectors_fs_size == -1 )
+	{
+		if ( 0 <= sectors_fs_unused && sectors_fs_unused <= length )
+		{
+			sectors_used   = length - sectors_fs_unused ;
+			sectors_unused = sectors_fs_unused ;
+		}
+		else
+		{
+			 sectors_used = -1 ;
+			 sectors_unused = -1 ;
+		}
+		sectors_unallocated = 0 ;
+	}
+}
+
+bool Partition::significant_unallocated_space() const
+{
+	Sector length = get_sector_length() ;
+	if ( sectors_unallocated > 0 && length > 0 )
+		return ( sectors_unallocated * 100.0 / length > SIGNIFICANT_UNALLOCATED_PERCENTAGE ) ;
+	return false ;
 }
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path,

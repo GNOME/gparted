@@ -1486,7 +1486,15 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
 					{
 						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
-							partitions[ t ] .Set_Unused( sfs .f_bfree * (sfs .f_bsize / partitions[ t ] .sector_size) ) ;
+						{
+							Sector fs_size = static_cast<Sector>( sfs .f_blocks ) *
+							                 sfs .f_frsize /
+							                 partitions[ t ] .sector_size ;
+							Sector fs_free = static_cast<Sector>( sfs .f_bfree ) *
+							                 sfs .f_bsize /
+							                 partitions[ t ] .sector_size ;
+							partitions[ t ] .set_sector_usage( fs_size, fs_free ) ;
+						}
 						else
 							partitions[ t ] .messages .push_back( 
 								"statvfs (" + 
@@ -1529,6 +1537,26 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 						                          Utils::get_filesystem_string( partitions[ t ] .filesystem ),
 						                          Utils::get_filesystem_software( partitions[ t ] .filesystem )
 						                        ) ;
+					}
+					partitions[ t ] .messages .push_back( temp ) ;
+				}
+				else if ( partitions[ t ] .significant_unallocated_space() )
+				{
+					/* TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition. */
+					temp = String::ucompose( _("%1 of unallocated space within the partition."),
+					                         Utils::format_size( partitions[ t ] .sectors_unallocated, partitions[ t ] .sector_size ) ) ;
+					FS fs = get_fs( partitions[ t ] .filesystem ) ;
+					if (    fs .check != GParted::FS::NONE
+					     && fs .grow  != GParted::FS::NONE )
+					{
+						temp += "\n" ;
+						/* TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
+						 * means that the user can perform a check of the partition which will
+						 * also grow the file system to fill the partition.
+						 */
+						temp += _("To grow the file system to fill the partition, select the partition and choose the menu item:") ;
+						temp += "\n" ;
+						temp += _("Partition --> Check.") ;
 					}
 					partitions[ t ] .messages .push_back( temp ) ;
 				}
