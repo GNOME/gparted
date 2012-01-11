@@ -12,10 +12,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=gparted&component=general\n"
-"POT-Creation-Date: 2010-08-25 16:34+0000\n"
-"PO-Revision-Date: 2010-08-25 23:11+0900\n"
-"Last-Translator: Fumihito YOSHIDA <hito@kugutsu.org>\n"
+"product=gparted&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-01-08 21:07+0000\n"
+"PO-Revision-Date: 2012-01-11 21:56+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,9 +29,9 @@ msgid "Create, reorganize, and delete partitions"
 msgstr "パーティションを作成／再構成／削除する"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:356
-#: ../src/Win_GParted.cc:70 ../src/Win_GParted.cc:1099
-#: ../src/Win_GParted.cc:1283
+#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:362
+#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1178
+#: ../src/Win_GParted.cc:1369
 msgid "GParted"
 msgstr "GParted"
 
@@ -41,7 +41,7 @@ msgstr "GParted パーティション編集ツール"
 
 #: ../gparted.desktop.in.in.h:4
 msgid "Partition Editor"
-msgstr "パーティション・エディタ"
+msgstr "パーティション・エディター"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
@@ -67,7 +67,7 @@ msgstr ""
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
 #: ../src/Dialog_Base_Partition.cc:101
 msgid "Cylinder"
-msgstr "シリンダ数"
+msgstr "シリンダー数"
 
 #. TO TRANSLATORS: Menu option for label "Align to:"
 #: ../src/Dialog_Base_Partition.cc:103
@@ -79,41 +79,41 @@ msgstr "MiB"
 msgid "None"
 msgstr "なし"
 
-#: ../src/Dialog_Base_Partition.cc:200
+#: ../src/Dialog_Base_Partition.cc:220
 msgid "Resize"
 msgstr "リサイズ"
 
-#: ../src/Dialog_Base_Partition.cc:200 ../src/Win_GParted.cc:230
+#: ../src/Dialog_Base_Partition.cc:220 ../src/Win_GParted.cc:236
 msgid "Resize/Move"
 msgstr "リサイズ/移動"
 
-#: ../src/Dialog_Base_Partition.cc:217
+#: ../src/Dialog_Base_Partition.cc:238
 msgid "Minimum size: %1 MiB"
 msgstr "最小サイズ: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:218
+#: ../src/Dialog_Base_Partition.cc:239
 msgid "Maximum size: %1 MiB"
 msgstr "最大サイズ: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:27
+#: ../src/Dialog_Disklabel.cc:28
 msgid "Create partition table on %1"
 msgstr "%1 にパーティションテーブルを作成"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:47
+#: ../src/Dialog_Disklabel.cc:52
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "警告: この作業は「ディスク %1 上の全データを削除」します"
 
-#: ../src/Dialog_Disklabel.cc:51
+#: ../src/Dialog_Disklabel.cc:56
 msgid "Default is to create an MS-DOS partition table."
 msgstr "デフォルトでは MS-DOS パーティションテーブルを作成します。"
 
-#: ../src/Dialog_Disklabel.cc:58
+#: ../src/Dialog_Disklabel.cc:62
 msgid "Advanced"
 msgstr "詳細"
 
-#: ../src/Dialog_Disklabel.cc:66
+#: ../src/Dialog_Disklabel.cc:71
 msgid "Select new partition table type:"
 msgstr "新しいパーティションテーブルの形式を選択:"
 
@@ -126,95 +126,115 @@ msgstr "%1 を貼り付け"
 msgid "Information about %1"
 msgstr "%1の情報"
 
-#: ../src/Dialog_Partition_Info.cc:49
+#: ../src/Dialog_Partition_Info.cc:52
 msgid "Warning:"
 msgstr "注意:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:119
+#: ../src/Dialog_Partition_Info.cc:160 ../src/Dialog_Partition_New.cc:116
 msgid "File system:"
 msgstr "ファイルシステム:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:452
+#: ../src/Dialog_Partition_Info.cc:170 ../src/Win_GParted.cc:458
 msgid "Size:"
 msgstr "容量:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:178
+#: ../src/Dialog_Partition_Info.cc:186
 msgid "Used:"
 msgstr "使用済:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:192
+#: ../src/Dialog_Partition_Info.cc:200
 msgid "Unused:"
 msgstr "空き:"
 
-#: ../src/Dialog_Partition_Info.cc:209
+#: ../src/Dialog_Partition_Info.cc:217
 msgid "Flags:"
 msgstr "フラグ:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:460
+#: ../src/Dialog_Partition_Info.cc:233 ../src/Win_GParted.cc:466
 msgid "Path:"
 msgstr "パス:"
 
-#: ../src/Dialog_Partition_Info.cc:239
+#: ../src/Dialog_Partition_Info.cc:247
 msgid "Status:"
 msgstr "状態:"
 
-#: ../src/Dialog_Partition_Info.cc:246
+#. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
+#. * means that this extended partition contains at least one logical
+#. * partition that is mounted or otherwise active.
+#.
+#: ../src/Dialog_Partition_Info.cc:259
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "ビジー(1つ以上の論理パーティションがマウントされています)"
 
-#: ../src/Dialog_Partition_Info.cc:248
+#. TO TRANSLATORS:  Active
+#. * means that this linux swap partition is enabled and being used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:267
 msgid "Active"
 msgstr "有効"
 
-#: ../src/Dialog_Partition_Info.cc:250
+#. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
+#: ../src/Dialog_Partition_Info.cc:273
 msgid "Mounted on %1"
 msgstr "%1 に マウントされています"
 
-#: ../src/Dialog_Partition_Info.cc:254
+#. TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
+#. * means that this extended partition contains no mounted or otherwise
+#. * active partitions.
+#.
+#: ../src/Dialog_Partition_Info.cc:283
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "非ビジー(マウントされている論理パーティションはありません)"
 
-#: ../src/Dialog_Partition_Info.cc:256
+#. TO TRANSLATORS:  Not active
+#. *  means that this linux swap partition is not enabled and is not
+#. *  in use by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:291
 msgid "Not active"
 msgstr "非アクティブ"
 
-#: ../src/Dialog_Partition_Info.cc:258
+#. TO TRANSLATORS:  Not mounted
+#. * means that this partition is not mounted.
+#.
+#: ../src/Dialog_Partition_Info.cc:298
 msgid "Not mounted"
 msgstr "マウントされていません"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:266 ../src/Dialog_Partition_Label.cc:43
-#: ../src/Dialog_Partition_New.cc:131
+#: ../src/Dialog_Partition_Info.cc:307 ../src/Dialog_Partition_Label.cc:41
+#: ../src/Dialog_Partition_New.cc:128
 msgid "Label:"
 msgstr "ラベル:"
 
-#: ../src/Dialog_Partition_Info.cc:279
+#: ../src/Dialog_Partition_Info.cc:320
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:293
+#: ../src/Dialog_Partition_Info.cc:334
 msgid "First sector:"
-msgstr "開始セクタ:"
+msgstr "開始セクター:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:303
+#: ../src/Dialog_Partition_Info.cc:344
 msgid "Last sector:"
-msgstr "終了セクタ:"
+msgstr "終了セクター:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:313 ../src/Win_GParted.cc:513
+#: ../src/Dialog_Partition_Info.cc:354 ../src/Win_GParted.cc:519
 msgid "Total sectors:"
-msgstr "総セクタ:"
+msgstr "総セクター:"
 
 #. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
-#: ../src/Dialog_Partition_Label.cc:32
+#: ../src/Dialog_Partition_Label.cc:30
 msgid "Set partition label on %1"
 msgstr "%1 のパーティションラベルを設定"
 
@@ -224,25 +244,25 @@ msgid "Create new Partition"
 msgstr "新規パーティションの作成"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:79
+#: ../src/Dialog_Partition_New.cc:76
 msgid "Create as:"
 msgstr "種類:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:81 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "基本パーティション"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "論理パーティション"
 
-#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "拡張パーティション"
 
-#: ../src/Dialog_Partition_New.cc:198
+#: ../src/Dialog_Partition_New.cc:195
 msgid "New Partition #%1"
 msgstr "新規パーティション #%1"
 
@@ -258,107 +278,134 @@ msgstr "%1 をリサイズ"
 msgid "Applying pending operations"
 msgstr "保留中の操作を適用しています"
 
-#: ../src/Dialog_Progress.cc:48
+#: ../src/Dialog_Progress.cc:50
+#, fuzzy
+#| msgid ""
+#| "Depending on the amount and type of operations this might take a long "
+#| "time."
 msgid ""
-"Depending on the amount and type of operations this might take a long time."
+"Depending on the number and type of operations this might take a long time."
 msgstr "操作の種類や件数によっては、この処理に時間がかかる場合があります。"
 
-#: ../src/Dialog_Progress.cc:61
+#: ../src/Dialog_Progress.cc:63
 msgid "Completed Operations:"
 msgstr "完了した操作:"
 
-#: ../src/Dialog_Progress.cc:101
+#: ../src/Dialog_Progress.cc:103
 msgid "Details"
 msgstr "詳細"
 
-#: ../src/Dialog_Progress.cc:199
+#: ../src/Dialog_Progress.cc:202
 msgid "%1 of %2 operations completed"
 msgstr "%2 件中 %1 件の操作が完了しました"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:230
+#: ../src/Dialog_Progress.cc:234
 msgid "_Save Details"
 msgstr "詳細を保存(_S)"
 
-#: ../src/Dialog_Progress.cc:239
+#: ../src/Dialog_Progress.cc:243
 msgid "Operation cancelled"
 msgstr "操作がキャンセルされました"
 
-#: ../src/Dialog_Progress.cc:253
+#: ../src/Dialog_Progress.cc:257
 msgid "All operations successfully completed"
 msgstr "全ての操作が無事完了しました"
 
-#: ../src/Dialog_Progress.cc:257
+#: ../src/Dialog_Progress.cc:261
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 の警告"
 
-#: ../src/Dialog_Progress.cc:270
+#: ../src/Dialog_Progress.cc:274
 msgid "An error occurred while applying the operations"
 msgstr "操作の適用中にエラーが発生しました"
 
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:279
 msgid "See the details for more information."
 msgstr "より詳しい情報は詳細を参照してください"
 
-#: ../src/Dialog_Progress.cc:276
+#: ../src/Dialog_Progress.cc:281
 msgid "IMPORTANT"
 msgstr "*重要*"
 
-#: ../src/Dialog_Progress.cc:277
+#: ../src/Dialog_Progress.cc:282
 msgid "If you want support, you need to provide the saved details!"
 msgstr "もしこの現象のサポートが必要であれば、保存した詳細を提供してください！"
 
-#: ../src/Dialog_Progress.cc:279
+#. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
+#: ../src/Dialog_Progress.cc:285
 msgid "See %1 for more information."
 msgstr "より詳しい情報は %1 を参照してください"
 
-#: ../src/Dialog_Progress.cc:312
+#: ../src/Dialog_Progress.cc:318
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "本当に今の操作をキャンセルしてもよろしいですか？"
 
-#: ../src/Dialog_Progress.cc:318
+#: ../src/Dialog_Progress.cc:324
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "操作をキャンセルするとファイルシステムに重大な障害を招く恐れがあります。"
 
-#: ../src/Dialog_Progress.cc:320
+#: ../src/Dialog_Progress.cc:326
 msgid "Continue Operation"
 msgstr "操作を続ける"
 
-#: ../src/Dialog_Progress.cc:321
+#: ../src/Dialog_Progress.cc:327
 msgid "Cancel Operation"
 msgstr "操作をキャンセルする"
 
-#: ../src/Dialog_Progress.cc:334
+#: ../src/Dialog_Progress.cc:340
 msgid "Save Details"
 msgstr "詳細を保存する"
 
-#: ../src/Dialog_Progress.cc:353
+#: ../src/Dialog_Progress.cc:359
 msgid "GParted Details"
 msgstr "GParted の詳細"
 
-#: ../src/Dialog_Progress.cc:357
+#: ../src/Dialog_Progress.cc:367
 msgid "Libparted"
 msgstr "Libparted"
 
-#: ../src/Dialog_Progress.cc:395
+#. TO TRANSLATORS:  EXECUTING
+#. * means that the status for this operation is
+#. * executing or currently in progress.
+#.
+#: ../src/Dialog_Progress.cc:410
 msgid "EXECUTING"
 msgstr "実行"
 
-#: ../src/Dialog_Progress.cc:398
+#. TO" TRANSLATORS:  SUCCESS
+#. * means that the status for this operation is
+#. * completed successfully.
+#.
+#: ../src/Dialog_Progress.cc:418
 msgid "SUCCESS"
 msgstr "成功"
 
-#: ../src/Dialog_Progress.cc:401
+#. TO TRANSLATORS:  ERROR
+#. * means that the status for this operation is
+#. * completed with errors.
+#.
+#: ../src/Dialog_Progress.cc:426
 msgid "ERROR"
 msgstr "エラー"
 
-#: ../src/Dialog_Progress.cc:404
+#. TO TRANSLATORS:  INFO
+#. * means that the status for this operation is
+#. * for your information , or messages from the
+#. * libparted library.
+#.
+#: ../src/Dialog_Progress.cc:435
 msgid "INFO"
 msgstr "情報"
 
-#: ../src/Dialog_Progress.cc:407
+#. TO TRANSLATORS:  N/A
+#. * means that the status for this operation is
+#. * not applicable because the operation is not
+#. * supported on the file system in the partition.
+#.
+#: ../src/Dialog_Progress.cc:444
 msgid "N/A"
 msgstr "N/A"
 
@@ -402,11 +449,11 @@ msgstr "ラベル"
 msgid "Required Software"
 msgstr "必要なソフトウェア"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:60
 msgid "This chart shows the actions supported on file systems."
 msgstr "この表はファイルシステム上でサポートしている動作を示しています。"
 
-#: ../src/DialogFeatures.cc:59
+#: ../src/DialogFeatures.cc:62
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -414,20 +461,26 @@ msgstr ""
 "一部のファイルシステムにおける問題と、必要となるソフトウェアの制限があるた"
 "め、全てのファイルシステムに対して全ての作業が出来るわけではありません。"
 
-#: ../src/DialogFeatures.cc:69
+#. TO TRANSLATORS:  Available
+#. * means that this action is valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:80
 msgid "Available"
 msgstr "利用可"
 
-#: ../src/DialogFeatures.cc:75
+#. TO TRANSLATORS:  Not Available
+#. * means that this action is not valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:92
 msgid "Not Available"
 msgstr "利用不可"
 
-#: ../src/DialogFeatures.cc:83
+#: ../src/DialogFeatures.cc:98
 msgid "Legend"
 msgstr "凡例"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:96
+#: ../src/DialogFeatures.cc:113
 msgid "Rescan For Supported Actions"
 msgstr "再スキャンを行い、可能な動作を確認する"
 
@@ -435,452 +488,643 @@ msgstr "再スキャンを行い、可能な動作を確認する"
 msgid "Manage flags on %1"
 msgstr "%1のフラグを編集"
 
+#: ../src/Dialog_Rescue_Data.cc:36
+#, fuzzy
+#| msgid "shrink file system"
+msgid "Search disk for file systems"
+msgstr "ファイルシステムを縮小する"
+
+#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
+#: ../src/Dialog_Rescue_Data.cc:53
+#, fuzzy
+#| msgid "copy file system of %1 to %2"
+msgid "File systems found on %1"
+msgstr "ファイルシステム %1 の内容を %2 にコピー"
+
+#: ../src/Dialog_Rescue_Data.cc:58
+msgid "Data found"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:62
+msgid "Data found with inconsistencies"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:64
+msgid "WARNING!: The file systems marked with (!) are inconsistent."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:66
+msgid "You might encounter errors trying to view these file systems."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:82
+msgid "The 'View' buttons create read-only views of each file system."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:84
+msgid "All mounted views will be unmounted when you close this dialog."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:107
+#, fuzzy
+#| msgid "File system:"
+msgid "File systems"
+msgstr "ファイルシステム:"
+
+#. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
+#: ../src/Dialog_Rescue_Data.cc:129
+msgid "#%1: %2 (%3 MiB)"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:137
+#, fuzzy
+#| msgid "_View"
+msgid "View"
+msgstr "表示(_V)"
+
+#: ../src/Dialog_Rescue_Data.cc:167
+msgid ""
+"An error occurred while creating a temporary directory for use as a mount "
+"point."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:169
+msgid "Error"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:175
+msgid "Failed creating temporary directory"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:191
+#, fuzzy
+#| msgid "An error occurred while applying the operations"
+msgid "An error occurred while creating the read-only view."
+msgstr "操作の適用中にエラーが発生しました"
+
+#: ../src/Dialog_Rescue_Data.cc:193
+msgid ""
+"Either the file system can not be mounted (like swap), or there are "
+"inconsistencies or errors in the file system."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:197
+msgid "Failed creating read-only view"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:227
+msgid "Error:"
+msgstr ""
+
+#. TO TRANSLATORS: looks like
+#. * The file system is mounted on:
+#. * /tmp/gparted-roview-Nlhb3R.
+#: ../src/Dialog_Rescue_Data.cc:235
+#, fuzzy
+#| msgid "The file system is damaged"
+msgid "The file system is mounted on:"
+msgstr "ファイルシステムが損傷しています"
+
+#: ../src/Dialog_Rescue_Data.cc:240
+msgid "Unable to open the default file manager"
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:259
+msgid ""
+"Warning: The detected file system area overlaps with at least one existing "
+"partition."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:261
+msgid ""
+"It is recommended that you do not use any overlapping file systems to avoid "
+"disturbing existing data."
+msgstr ""
+
+#: ../src/Dialog_Rescue_Data.cc:263
+#, fuzzy
+#| msgid ""
+#| "The partition could not be unmounted from the following mount points:"
+msgid "Do you want to try to deactivate the following mount points?"
+msgstr "パーティションを次のマウントポイントからアンマウントできませんでした:"
+
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:325
+#: ../src/DMRaid.cc:326
 msgid "create missing %1 entries"
 msgstr ""
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:441
+#: ../src/DMRaid.cc:425
 msgid "delete affected %1 entries"
 msgstr ""
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:464
+#: ../src/DMRaid.cc:448
 msgid "delete %1 entry"
 msgstr ""
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:514
+#: ../src/DMRaid.cc:498
 msgid "update %1 entry"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:204 ../src/GParted_Core.cc:215
-#: ../src/GParted_Core.cc:225
+#: ../src/GParted_Core.cc:195 ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:214
 msgid "Scanning %1"
 msgstr "%1 をスキャン中"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:246
+#: ../src/GParted_Core.cc:237
 msgid "Confirming %1"
 msgstr "%1 を確認中"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:258
+#: ../src/GParted_Core.cc:249
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr ""
 
-#: ../src/GParted_Core.cc:260
+#: ../src/GParted_Core.cc:251
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
 msgstr ""
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:297
+#: ../src/GParted_Core.cc:290
 msgid "Searching %1 partitions"
 msgstr "%1 上のパーティションを検索中"
 
-#: ../src/GParted_Core.cc:339
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this
+#. * disk device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:337
 msgid "unrecognized"
 msgstr "認識できません"
 
-#: ../src/GParted_Core.cc:529
+#. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
+#: ../src/GParted_Core.cc:564
 msgid "A partition cannot have a length of %1 sectors"
-msgstr "パーティションは %1 セクタの長さを保持できません"
+msgstr "パーティションは %1 セクターの長さを保持できません"
 
-#: ../src/GParted_Core.cc:537
+#. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
+#: ../src/GParted_Core.cc:573
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
-"使用しているセクタ (%1)が、それ自身の長さ (%2) より大きいパーティションは有効"
-"ではありません"
+"使用しているセクター (%1)が、それ自身の長さ (%2) より大きいパーティションは有"
+"効ではありません"
 
-#: ../src/GParted_Core.cc:602
+#: ../src/GParted_Core.cc:638
 msgid "libparted messages"
 msgstr "libparted のメッセージ"
 
-#: ../src/GParted_Core.cc:1042
+#: ../src/GParted_Core.cc:1065
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux Unified Key Setupによる暗号化はまだ対応していません。"
 
-#: ../src/GParted_Core.cc:1159
+#: ../src/GParted_Core.cc:1187
 msgid "Logical Volume Management is not yet supported."
 msgstr "論理ボリュームマネージメント(LVM)はまだ対応していません。"
 
-#: ../src/GParted_Core.cc:1184
-msgid "BTRFS is not yet supported."
-msgstr "BTRFSはまだ対応していません。"
-
 #. no file system found....
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1216
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "ファイルシステムを検出できません！ 考えられる理由は次の通りです:"
 
-#: ../src/GParted_Core.cc:1193
+#: ../src/GParted_Core.cc:1218
 msgid "The file system is damaged"
 msgstr "ファイルシステムが損傷しています"
 
-#: ../src/GParted_Core.cc:1195
+#: ../src/GParted_Core.cc:1220
 msgid "The file system is unknown to GParted"
 msgstr "Gparted が判別できないファイルシステムです"
 
-#: ../src/GParted_Core.cc:1197
+#: ../src/GParted_Core.cc:1222
 msgid "There is no file system available (unformatted)"
 msgstr "利用可能なファイルシステムがありません (未フォーマット)"
 
-#: ../src/GParted_Core.cc:1330
+#. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
+#: ../src/GParted_Core.cc:1225
+msgid "The device entry %1 is missing"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1366
 msgid "Unable to find mount point"
 msgstr "マウントポイントが見つかりません"
 
-#: ../src/GParted_Core.cc:1393
+#: ../src/GParted_Core.cc:1430
 msgid "Unable to read the contents of this file system!"
 msgstr "このファイルシステムの内容を読み込むことができません！"
 
-#: ../src/GParted_Core.cc:1395
+#: ../src/GParted_Core.cc:1432
 msgid "Because of this some operations may be unavailable."
 msgstr "これによりいくつかの操作が利用できません。"
 
+#: ../src/GParted_Core.cc:1436
+msgid "The cause might be a missing software package."
+msgstr ""
+
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1400
+#: ../src/GParted_Core.cc:1439
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr ""
 
-#: ../src/GParted_Core.cc:1471
+#: ../src/GParted_Core.cc:1512
 msgid "create empty partition"
 msgstr "空のパーティションを作成"
 
-#: ../src/GParted_Core.cc:1539 ../src/GParted_Core.cc:2742
+#: ../src/GParted_Core.cc:1582 ../src/GParted_Core.cc:2836
 msgid "path: %1"
 msgstr "パス: %1"
 
-#: ../src/GParted_Core.cc:1540 ../src/GParted_Core.cc:2743
+#: ../src/GParted_Core.cc:1583 ../src/GParted_Core.cc:2837
 msgid "start: %1"
 msgstr "開始位置: %1"
 
-#: ../src/GParted_Core.cc:1541 ../src/GParted_Core.cc:2744
+#: ../src/GParted_Core.cc:1584 ../src/GParted_Core.cc:2838
 msgid "end: %1"
 msgstr "終了位置: %1"
 
-#: ../src/GParted_Core.cc:1542 ../src/GParted_Core.cc:2745
+#: ../src/GParted_Core.cc:1585 ../src/GParted_Core.cc:2839
 msgid "size: %1 (%2)"
 msgstr "容量: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1572 ../src/linux_swap.cc:83 ../src/xfs.cc:237
+#: ../src/GParted_Core.cc:1621 ../src/linux_swap.cc:83 ../src/xfs.cc:245
 msgid "create new %1 file system"
 msgstr "%1 の新規ファイルシステムを作成する"
 
-#: ../src/GParted_Core.cc:1605
+#: ../src/GParted_Core.cc:1658
 msgid "delete partition"
 msgstr "パーティションの削除"
 
-#: ../src/GParted_Core.cc:1645
+#: ../src/GParted_Core.cc:1700
 msgid "Clear partition label on %1"
 msgstr "%1 のパーティションラベルを消去します"
 
-#: ../src/GParted_Core.cc:1650
+#: ../src/GParted_Core.cc:1705
 msgid "Set partition label to \"%1\" on %2"
 msgstr "パーティションラベルを %1 から %2 に変更します"
 
-#: ../src/GParted_Core.cc:1731
+#. TO TRANSLATORS:  moving requires old and new length to be the same
+#. * means that the length in bytes of the old partition and new partition
+#. * must be the same.  If the sector sizes of the old partition and the
+#. * new partition are the same, then the length in sectors must be the same.
+#.
+#: ../src/GParted_Core.cc:1793
 msgid "moving requires old and new length to be the same"
 msgstr "移動するには新しい側と古い側の長さが同じである必要があります"
 
-#: ../src/GParted_Core.cc:1761
+#: ../src/GParted_Core.cc:1823
 msgid "rollback last change to the partition table"
 msgstr "パーティションテーブルへの最後の変更を取り消す"
 
-#: ../src/GParted_Core.cc:1791
+#: ../src/GParted_Core.cc:1859
 msgid "move file system to the left"
 msgstr "ファイルシステムを左へ移動する"
 
-#: ../src/GParted_Core.cc:1793
+#: ../src/GParted_Core.cc:1861
 msgid "move file system to the right"
 msgstr "ファイルシステムを右へ移動する"
 
-#: ../src/GParted_Core.cc:1796
+#: ../src/GParted_Core.cc:1864
 msgid "move file system"
 msgstr "ファイルシステムを移動する"
 
-#: ../src/GParted_Core.cc:1798
+#: ../src/GParted_Core.cc:1866
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr "新旧ファイルシステムの位置が同じです。この操作をスキップします。"
 
-#: ../src/GParted_Core.cc:1817
+#: ../src/GParted_Core.cc:1885
 msgid "perform real move"
 msgstr "実際の移動を実行"
 
-#: ../src/GParted_Core.cc:1859
+#: ../src/GParted_Core.cc:1935
 msgid "using libparted"
 msgstr "libpartedを使用"
 
-#: ../src/GParted_Core.cc:1899
+#: ../src/GParted_Core.cc:1976
 msgid "resizing requires old and new start to be the same"
 msgstr ""
 "リサイズするには以前の開始位置と新しい開始位置が同じである必要があります"
 
-#: ../src/GParted_Core.cc:1964
+#: ../src/GParted_Core.cc:2043
 msgid "resize/move partition"
 msgstr "パーティションを移動/リサイズ"
 
-#: ../src/GParted_Core.cc:1967
+#: ../src/GParted_Core.cc:2046
 msgid "move partition to the right"
 msgstr "パーティションを右へ移動する"
 
-#: ../src/GParted_Core.cc:1970
+#: ../src/GParted_Core.cc:2049
 msgid "move partition to the left"
 msgstr "パーティションを右へ移動する"
 
-#: ../src/GParted_Core.cc:1973
+#: ../src/GParted_Core.cc:2052
 msgid "grow partition from %1 to %2"
 msgstr "パーティションを %1 から %2 に拡大する"
 
-#: ../src/GParted_Core.cc:1976
+#: ../src/GParted_Core.cc:2055
 msgid "shrink partition from %1 to %2"
 msgstr "パーティションを %1 から %2 に縮小する"
 
-#: ../src/GParted_Core.cc:1979
+#: ../src/GParted_Core.cc:2058
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "パーティションを右に移動して %1 から %2 に拡大する"
 
-#: ../src/GParted_Core.cc:1982
+#: ../src/GParted_Core.cc:2061
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "パーティションを右に移動して %1 から %2 に縮小する"
 
-#: ../src/GParted_Core.cc:1985
+#: ../src/GParted_Core.cc:2064
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "パーティションを左に移動して %1 から %2 に拡大する"
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2067
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "パーティションを左に移動して %1 から %2 に縮小する"
 
-#: ../src/GParted_Core.cc:2003
+#: ../src/GParted_Core.cc:2082
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr "新旧パーティションの容量と位置が同じです。この操作をスキップします"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2092
 msgid "old start: %1"
 msgstr "以前の開始位置: %1"
 
-#: ../src/GParted_Core.cc:2014
+#: ../src/GParted_Core.cc:2093
 msgid "old end: %1"
 msgstr "以前の終了位置: %1"
 
-#: ../src/GParted_Core.cc:2015
+#: ../src/GParted_Core.cc:2094
 msgid "old size: %1 (%2)"
 msgstr "以前の容量: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2077 ../src/GParted_Core.cc:2823
+#: ../src/GParted_Core.cc:2156 ../src/GParted_Core.cc:2917
 msgid "new start: %1"
 msgstr "新しい開始位置: %1"
 
-#: ../src/GParted_Core.cc:2078 ../src/GParted_Core.cc:2824
+#: ../src/GParted_Core.cc:2157 ../src/GParted_Core.cc:2918
 msgid "new end: %1"
 msgstr "新しい終了位置: %1"
 
-#: ../src/GParted_Core.cc:2079 ../src/GParted_Core.cc:2825
+#: ../src/GParted_Core.cc:2158 ../src/GParted_Core.cc:2919
 msgid "new size: %1 (%2)"
 msgstr "新しいサイズ: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2115
+#: ../src/GParted_Core.cc:2196
 msgid "shrink file system"
 msgstr "ファイルシステムを縮小する"
 
-#: ../src/GParted_Core.cc:2119
+#: ../src/GParted_Core.cc:2200
 msgid "grow file system"
 msgstr "ファイルシステムを拡大する"
 
-#: ../src/GParted_Core.cc:2122
+#: ../src/GParted_Core.cc:2203
 msgid "resize file system"
 msgstr "ファイルシステムのサイズを変更する"
 
-#: ../src/GParted_Core.cc:2125
+#: ../src/GParted_Core.cc:2206
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "新旧ファイルシステムの容量が同じです。この操作をスキップします"
 
-#: ../src/GParted_Core.cc:2160
+#: ../src/GParted_Core.cc:2243
 msgid "grow file system to fill the partition"
 msgstr "パーティション一杯までファイルシステムを拡大する"
 
-#: ../src/GParted_Core.cc:2165
+#: ../src/GParted_Core.cc:2248
 msgid "growing is not available for this file system"
 msgstr "このファイルシステムは拡大できません"
 
-#: ../src/GParted_Core.cc:2184
+#: ../src/GParted_Core.cc:2269
 msgid "the destination is smaller than the source partition"
 msgstr "割当先の容量が元パーティションより小さいです"
 
-#: ../src/GParted_Core.cc:2201
+#: ../src/GParted_Core.cc:2286
 msgid "copy file system of %1 to %2"
 msgstr "ファイルシステム %1 の内容を %2 にコピー"
 
-#: ../src/GParted_Core.cc:2245
+#: ../src/GParted_Core.cc:2337
 msgid "perform read-only test"
 msgstr "読み込みテストを実行する"
 
-#: ../src/GParted_Core.cc:2299
+#: ../src/GParted_Core.cc:2391
 msgid "using internal algorithm"
 msgstr "内部アルゴリズムを使用する"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2303
+#: ../src/GParted_Core.cc:2395
 msgid "read %1"
 msgstr "%1 読込"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2305
+#: ../src/GParted_Core.cc:2397
 msgid "copy %1"
 msgstr "%1のコピー"
 
-#: ../src/GParted_Core.cc:2309
+#: ../src/GParted_Core.cc:2401
 msgid "finding optimal block size"
 msgstr "最適なブロックサイズを調査中"
 
-#: ../src/GParted_Core.cc:2349
+#: ../src/GParted_Core.cc:2441
 msgid "%1 seconds"
 msgstr "%1 秒"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2367
+#: ../src/GParted_Core.cc:2459
 msgid "optimal block size is %1"
-msgstr "最適なブロックサイズは %1 セクタ (%2)"
+msgstr "最適なブロックサイズは %1 セクター (%2)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2385
+#: ../src/GParted_Core.cc:2477
 msgid "%1 (%2 B) read"
 msgstr "%1 / %2 を読み込みました"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2387
+#: ../src/GParted_Core.cc:2479
 msgid "%1 (%2 B) copied"
 msgstr "%1 / %2 をコピーしました"
 
-#: ../src/GParted_Core.cc:2400
+#: ../src/GParted_Core.cc:2492
 msgid "roll back last transaction"
 msgstr "パーティションテーブルへの最後の変更を取り消す"
 
-#: ../src/GParted_Core.cc:2427
+#. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
+#: ../src/GParted_Core.cc:2521
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1 のファイルシステムのエラーをチェックし （可能であれば）修復する"
 
-#: ../src/GParted_Core.cc:2435
+#: ../src/GParted_Core.cc:2529
 msgid "checking is not available for this file system"
 msgstr "このファイルシステムはチェックできません"
 
-#: ../src/GParted_Core.cc:2461
+#: ../src/GParted_Core.cc:2557
 msgid "set partition type on %1"
 msgstr "%1 のパーティションの種類を設定"
 
-#: ../src/GParted_Core.cc:2491
+#: ../src/GParted_Core.cc:2587
 msgid "new partition type: %1"
 msgstr "新しいパーティションの種類: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2520
+#: ../src/GParted_Core.cc:2616
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 / %2 を読み込み済 (残り %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2522
+#: ../src/GParted_Core.cc:2618
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 / %2 をコピーしました (残り %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2530 ../src/GParted_Core.cc:2647
+#: ../src/GParted_Core.cc:2626 ../src/GParted_Core.cc:2743
 msgid "%1 of %2 read"
 msgstr "%1 / %2 を読み込みました"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2532 ../src/GParted_Core.cc:2649
+#: ../src/GParted_Core.cc:2628 ../src/GParted_Core.cc:2745
 msgid "%1 of %2 copied"
 msgstr "%2 件中 %1 件をコピーしました"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2553
+#: ../src/GParted_Core.cc:2649
 msgid "read %1 using a block size of %2"
-msgstr "%1 セクタを読み込み済(ブロックサイズは %2 セクタ)"
+msgstr "%1 セクターを読み込み済(ブロックサイズは %2 セクター)"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2558
+#: ../src/GParted_Core.cc:2654
 msgid "copy %1 using a block size of %2"
-msgstr "%1 セクタをコピー済(ブロックサイズは %2 セクタ)"
+msgstr "%1 セクターをコピー済(ブロックサイズは %2 セクター)"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2804
 msgid "Error while writing block at sector %1"
-msgstr "セクタ %1 のブロックを書き込み中にエラーが発生しました"
+msgstr "セクター %1 のブロックを書き込み中にエラーが発生しました"
 
-#: ../src/GParted_Core.cc:2711
+#: ../src/GParted_Core.cc:2807
 msgid "Error while reading block at sector %1"
-msgstr "セクタ %1 のブロックを読み込み中にエラーが発生しました"
+msgstr "セクター %1 のブロックを読み込み中にエラーが発生しました"
 
-#: ../src/GParted_Core.cc:2721
+#: ../src/GParted_Core.cc:2817
 msgid "calibrate %1"
 msgstr "%1 の調整"
 
-#: ../src/GParted_Core.cc:2768
+#: ../src/GParted_Core.cc:2862
 msgid "calculate new size and position of %1"
 msgstr "%1 の新しいサイズと容量を計算"
 
-#: ../src/GParted_Core.cc:2772
+#: ../src/GParted_Core.cc:2866
 msgid "requested start: %1"
 msgstr "要求された開始位置: %1"
 
-#: ../src/GParted_Core.cc:2773
+#: ../src/GParted_Core.cc:2867
 msgid "requested end: %1"
 msgstr "要求された終了位置: %1"
 
-#: ../src/GParted_Core.cc:2774
+#: ../src/GParted_Core.cc:2868
 msgid "requested size: %1 (%2)"
 msgstr "要求された容量: %1 (%2)"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2916
+#: ../src/GParted_Core.cc:3016
 msgid "update boot sector of %1 file system on %2"
-msgstr "%2 上の %1 ファイルシステムのブートセクタを更新しています"
+msgstr "%2 上の %1 ファイルシステムのブートセクターを更新しています"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:2952
+#: ../src/GParted_Core.cc:3052
 msgid "Error trying to write to boot sector in %1"
-msgstr "%1 のブートセクタに書き込み中にエラーが発生しました"
+msgstr "%1 のブートセクターに書き込み中にエラーが発生しました"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:2958
+#: ../src/GParted_Core.cc:3058
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:2965
+#: ../src/GParted_Core.cc:3065
 msgid "Error trying to open %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:2975
+#: ../src/GParted_Core.cc:3075
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 
-#: ../src/GParted_Core.cc:2977
+#: ../src/GParted_Core.cc:3077
 msgid "You might try the following command to correct the problem:"
 msgstr ""
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:153
+#: ../src/GParted_Core.cc:3192
+#, fuzzy
+#| msgid "Libparted"
+msgid "Libparted Warning"
+msgstr "Libparted"
+
+#: ../src/GParted_Core.cc:3196
+#, fuzzy
+#| msgid "Device Information"
+msgid "Libparted Information"
+msgstr "デバイス情報"
+
+#: ../src/GParted_Core.cc:3200
+#, fuzzy
+#| msgid "Libparted"
+msgid "Libparted Error"
+msgstr "Libparted"
+
+#: ../src/GParted_Core.cc:3202
+#, fuzzy
+#| msgid "Libparted"
+msgid "Libparted Bug Found!"
+msgstr "Libparted"
+
+#: ../src/GParted_Core.cc:3205
+msgid "Fix"
+msgstr ""
+
+#: ../src/GParted_Core.cc:3207
+msgid "Yes"
+msgstr ""
+
+#: ../src/GParted_Core.cc:3209
+msgid "Ok"
+msgstr ""
+
+#: ../src/GParted_Core.cc:3211
+msgid "Retry"
+msgstr ""
+
+#: ../src/GParted_Core.cc:3213
+#, fuzzy
+#| msgid "None"
+msgid "No"
+msgstr "なし"
+
+#: ../src/GParted_Core.cc:3215
+msgid "Cancel"
+msgstr ""
+
+#: ../src/GParted_Core.cc:3217
+msgid "Ignore"
+msgstr ""
+
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
 msgid "_Undo Last Operation"
 msgstr "最後の操作を元に戻す(_U)"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:159
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
 msgid "_Clear All Operations"
 msgstr "保留中の全ての操作を破棄する(_C)"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:164
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
 msgid "_Apply All Operations"
 msgstr "保留中の全ての操作を適用する(_A)"
 
@@ -995,294 +1239,326 @@ msgstr "空き"
 msgid "Flags"
 msgstr "フラグ"
 
-#: ../src/Utils.cc:119
+#. TO TRANSLATORS:  unallocated
+#. * means that this space on the disk device does
+#. * not contain a recognized file system, and is in
+#. * other words unallocated.
+#.
+#: ../src/Utils.cc:127
 msgid "unallocated"
 msgstr "未割り当て"
 
-#: ../src/Utils.cc:120
+#. TO TRANSLATORS:  unknown
+#. * means that this space within this partition does
+#. * not contain a file system known to GParted, and
+#. * is in other words unknown.
+#.
+#: ../src/Utils.cc:134
 msgid "unknown"
 msgstr "不明"
 
-#: ../src/Utils.cc:121
+#. TO TRANSLATORS:  unformatted
+#. * means that the space within this partition will not
+#. * be formatted with a known file system by GParted.
+#.
+#: ../src/Utils.cc:140
 msgid "unformatted"
 msgstr "未フォーマット"
 
-#: ../src/Utils.cc:138
+#: ../src/Utils.cc:159
 msgid "used"
 msgstr "使用済"
 
-#: ../src/Utils.cc:139
+#: ../src/Utils.cc:160
 msgid "unused"
 msgstr "空き"
 
-#: ../src/Utils.cc:178
+#: ../src/Utils.cc:201
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:183
+#: ../src/Utils.cc:206
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:188
+#: ../src/Utils.cc:211
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:193
+#: ../src/Utils.cc:216
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:198
+#: ../src/Utils.cc:221
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Utils.cc:334
+#. TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
+#. * means that this file is only used while gparted is applying operations.
+#. * If for some reason this file exists at any other time, then the message is
+#. * meant to inform a user that the file can be deleted with no harmful effects.
+#. * This file is typically created, exists for less than a few seconds, and is
+#. * then deleted by gparted.  Under normal circumstances a user should never
+#. * see this file.
+#.
+#: ../src/Utils.cc:380
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# gparted によって作成された一時ファイルです。消去されます。\n"
 
-#: ../src/Utils.cc:343
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:392
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr ""
 "ラベル設定作業が失敗しました: 一時ファイル %1 に書き込みができません。\n"
 
-#: ../src/Utils.cc:352
+#. TO TRANSLATORS: looks like
+#. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
+#.
+#: ../src/Utils.cc:404
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "ラベル設定作業が失敗しました: 一時ファイル %1 を作成できません。\n"
 
-#: ../src/Win_GParted.cc:137
+#: ../src/Win_GParted.cc:139
 msgid "_Refresh Devices"
 msgstr "デバイスを更新(_R)"
 
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:145
 msgid "_Devices"
 msgstr "デバイス(_D)"
 
-#: ../src/Win_GParted.cc:148
+#: ../src/Win_GParted.cc:150
 msgid "_GParted"
 msgstr "GParted(_G)"
 
-#: ../src/Win_GParted.cc:167
+#: ../src/Win_GParted.cc:169
 msgid "_Edit"
 msgstr "編集(_E)"
 
-#: ../src/Win_GParted.cc:172
+#: ../src/Win_GParted.cc:174
 msgid "Device _Information"
 msgstr "デバイス情報(_I)"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:176
 msgid "Pending _Operations"
 msgstr "保留中の操作(_O)"
 
-#: ../src/Win_GParted.cc:175
+#: ../src/Win_GParted.cc:177
 msgid "_View"
 msgstr "表示(_V)"
 
-#: ../src/Win_GParted.cc:179
+#: ../src/Win_GParted.cc:181
 msgid "_File System Support"
 msgstr "サポートするファイルシステム (_F)"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:185
 msgid "_Create Partition Table"
 msgstr "パーティションテーブルの作成 (_C)"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:188
+msgid "_Attempt Data Rescue"
+msgstr ""
+
+#: ../src/Win_GParted.cc:191
 msgid "_Device"
 msgstr "デバイス(_D)"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:195
 msgid "_Partition"
 msgstr "パーティション(_P)"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:200
 msgid "_Contents"
 msgstr "目次(_C)"
 
-#: ../src/Win_GParted.cc:202
+#: ../src/Win_GParted.cc:208
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:214
+#: ../src/Win_GParted.cc:220
 msgid "New"
 msgstr ""
 
-#: ../src/Win_GParted.cc:219
+#: ../src/Win_GParted.cc:225
 msgid "Create a new partition in the selected unallocated space"
 msgstr "選択した未割り当ての領域に新規パーティションを作成します"
 
-#: ../src/Win_GParted.cc:224
+#: ../src/Win_GParted.cc:230
 msgid "Delete the selected partition"
 msgstr "選択したパーティションを削除します"
 
-#: ../src/Win_GParted.cc:246
+#: ../src/Win_GParted.cc:252
 msgid "Resize/Move the selected partition"
 msgstr "選択したパーティションをリサイズ/移動します"
 
-#: ../src/Win_GParted.cc:255
+#: ../src/Win_GParted.cc:261
 msgid "Copy the selected partition to the clipboard"
 msgstr "選択したパーティションをクリップボードにコピーします"
 
-#: ../src/Win_GParted.cc:260
+#: ../src/Win_GParted.cc:266
 msgid "Paste the partition from the clipboard"
 msgstr "クリップボードからパーティションを貼り付けます"
 
-#: ../src/Win_GParted.cc:272
+#: ../src/Win_GParted.cc:278
 msgid "Undo Last Operation"
 msgstr "直前の操作を元に戻します"
 
-#: ../src/Win_GParted.cc:280
+#: ../src/Win_GParted.cc:286
 msgid "Apply All Operations"
 msgstr "全ての操作を適用します"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:302
+#: ../src/Win_GParted.cc:308
 msgid "_New"
 msgstr ""
 
-#: ../src/Win_GParted.cc:318
+#: ../src/Win_GParted.cc:324
 msgid "_Resize/Move"
 msgstr "リサイズ/移動(_R)"
 
-#: ../src/Win_GParted.cc:342
+#: ../src/Win_GParted.cc:348
 msgid "_Format to"
 msgstr "フォーマット(_F)"
 
-#: ../src/Win_GParted.cc:351
+#: ../src/Win_GParted.cc:357
 msgid "Unmount"
 msgstr "アンマウント"
 
-#: ../src/Win_GParted.cc:357
+#: ../src/Win_GParted.cc:363
 msgid "_Mount on"
 msgstr "マウント(_M)"
 
-#: ../src/Win_GParted.cc:364
+#: ../src/Win_GParted.cc:370
 msgid "M_anage Flags"
 msgstr "フラグを編集(_A)"
 
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:375
 msgid "C_heck"
 msgstr "チェック(_H)"
 
-#: ../src/Win_GParted.cc:374
+#: ../src/Win_GParted.cc:380
 msgid "_Label"
 msgstr "ラベル (_L)"
 
-#: ../src/Win_GParted.cc:436
+#: ../src/Win_GParted.cc:442
 msgid "Device Information"
 msgstr "デバイス情報"
 
 #. model
-#: ../src/Win_GParted.cc:444
+#: ../src/Win_GParted.cc:450
 msgid "Model:"
 msgstr "型式:"
 
 #. disktype
-#: ../src/Win_GParted.cc:481
+#: ../src/Win_GParted.cc:487
 msgid "Partition table:"
 msgstr "パーティションテーブル:"
 
 #. heads
-#: ../src/Win_GParted.cc:489
+#: ../src/Win_GParted.cc:495
 msgid "Heads:"
 msgstr "ヘッド数:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:497
+#: ../src/Win_GParted.cc:503
 msgid "Sectors/track:"
-msgstr "セクタ数/トラック:"
+msgstr "セクター数/トラック:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:511
 msgid "Cylinders:"
-msgstr "シリンダ数:"
+msgstr "シリンダー数:"
 
 #. sector size
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:527
 msgid "Sector size:"
-msgstr "セクタサイズ:"
+msgstr "セクターサイズ:"
 
-#: ../src/Win_GParted.cc:695
+#: ../src/Win_GParted.cc:711
 msgid "Could not add this operation to the list."
 msgstr "この操作をリストに追加できませんでした。"
 
-#: ../src/Win_GParted.cc:720
+#: ../src/Win_GParted.cc:799
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 件の操作を保留中"
 
-#: ../src/Win_GParted.cc:774
+#: ../src/Win_GParted.cc:853
 msgid "Quit GParted?"
 msgstr "GParted を終了しますか？"
 
-#: ../src/Win_GParted.cc:780 ../src/Win_GParted.cc:1979
+#: ../src/Win_GParted.cc:859 ../src/Win_GParted.cc:2133
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 件の操作を現在保留中"
 
-#: ../src/Win_GParted.cc:806
+#: ../src/Win_GParted.cc:885
 msgid "_Unmount"
 msgstr "アンマウント(_U)"
 
-#: ../src/Win_GParted.cc:831
+#: ../src/Win_GParted.cc:910
 msgid "_Swapoff"
 msgstr "スワップを無効化(_S)"
 
-#: ../src/Win_GParted.cc:837
+#: ../src/Win_GParted.cc:916
 msgid "_Swapon"
 msgstr "スワップを有効化(_S)"
 
-#: ../src/Win_GParted.cc:1031
+#: ../src/Win_GParted.cc:1110
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1077
+#: ../src/Win_GParted.cc:1156
 msgid "Scanning all devices..."
 msgstr "全てのデバイスをスキャン中..."
 
-#: ../src/Win_GParted.cc:1122
+#: ../src/Win_GParted.cc:1201
 msgid "No devices detected"
 msgstr "検出されたデバイスはありません"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1203
+#: ../src/Win_GParted.cc:1282
 msgid "No partition table found on device %1"
 msgstr "%1 にパーティションテーブルが見つかりませんでした"
 
-#: ../src/Win_GParted.cc:1208
+#: ../src/Win_GParted.cc:1287
 msgid "A partition table is required before partitions can be added."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1210
+#: ../src/Win_GParted.cc:1289
 msgid "To create a new partition table choose the menu item:"
 msgstr ""
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1213
+#: ../src/Win_GParted.cc:1292
 msgid "Device --> Create Partition Table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1242
+#: ../src/Win_GParted.cc:1328
 msgid "Unable to open GParted Manual help file."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1258
+#: ../src/Win_GParted.cc:1344
 msgid "Documentation is not available."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1263
+#: ../src/Win_GParted.cc:1349
 msgid "This build of gparted is configured without documentation."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1265
+#: ../src/Win_GParted.cc:1351
 msgid "Documentation is available at the project web site."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1286
+#: ../src/Win_GParted.cc:1372
 msgid "GNOME Partition Editor"
-msgstr "GNOME パーティション・エディタ"
+msgstr "GNOME パーティション・エディター"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1302
+#: ../src/Win_GParted.cc:1388
 msgid "translator-credits"
 msgstr ""
 "Kazutaka HARADA <kazutaka@dc4.so-net.ne.jp>\n"
@@ -1290,7 +1566,7 @@ msgstr ""
 "やまね ひでき <henrich@debian.or.jp>\n"
 "Mitsuya Shibata <mty.shibata@gmail.com>\n"
 "草野 貴之 <AE5T-KSN@asahi-net.or.jp>\n"
-"日本GNOMEユーザ会 <http://www.gnome.gr.jp/>\n"
+"日本GNOMEユーザー会 <http://www.gnome.gr.jp/>\n"
 "Launchpad Contributions:\n"
 "  CMasami https://launchpad.net/~cmasami\n"
 "  Fumihito YOSHIDA https://launchpad.net/~hito\n"
@@ -1300,11 +1576,14 @@ msgstr ""
 "  hmatsue https://launchpad.net/~hmatsue\n"
 "  vbk https://launchpad.net/~vbkaisetsu"
 
-#: ../src/Win_GParted.cc:1344
-msgid "It is not possible to create more than %1 primary partitions"
-msgstr "%1 個以上の基本パーティションを作成する事はできません"
+#: ../src/Win_GParted.cc:1430
+#, fuzzy
+#| msgid "It is not possible to create more than %1 primary partitions"
+msgid "It is not possible to create more than %1 primary partition"
+msgid_plural "It is not possible to create more than %1 primary partitions"
+msgstr[0] "%1 個以上の基本パーティションを作成する事はできません"
 
-#: ../src/Win_GParted.cc:1352
+#: ../src/Win_GParted.cc:1442
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1316,55 +1595,77 @@ msgstr ""
 "パーティションもプライマリパーティションの一つであるため、先にプライマリパー"
 "ティションを削除する必要があるかもしれません。"
 
-#: ../src/Win_GParted.cc:1490
+#: ../src/Win_GParted.cc:1523
+msgid "Moving a partition might cause your operating system to fail to boot."
+msgstr ""
+
+#. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
+#: ../src/Win_GParted.cc:1531
+msgid "You have queued an operation to move the start sector of partition %1."
+msgstr ""
+
+#: ../src/Win_GParted.cc:1536
+msgid "You can learn how to repair the boot configuration in the GParted FAQ."
+msgstr ""
+
+#: ../src/Win_GParted.cc:1613
 msgid "You have pasted into an existing partition."
 msgstr ""
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1497
+#: ../src/Win_GParted.cc:1620
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1552
+#: ../src/Win_GParted.cc:1674
 msgid "Unable to delete %1!"
 msgstr "%1を削除できません!"
 
-#: ../src/Win_GParted.cc:1559
+#: ../src/Win_GParted.cc:1681
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "%1 よりも大きい番号の論理パーティションを全てアンマウントしてください"
 
-#: ../src/Win_GParted.cc:1570
+#: ../src/Win_GParted.cc:1692
 msgid "Are you sure you want to delete %1?"
 msgstr "本当に %1 を削除して良いですか？"
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1699
 msgid "After deletion this partition is no longer available for copying."
 msgstr "削除後は、このパーティションをコピーできなくなります。"
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1580
+#: ../src/Win_GParted.cc:1702
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 (%2, %3)を削除"
 
-#: ../src/Win_GParted.cc:1646
+#. TO TRANSLATORS: looks like
+#. * Cannot format this file system to fat16.
+#.
+#: ../src/Win_GParted.cc:1778
 msgid "Cannot format this file system to %1."
 msgstr "このファイルシステムを %1 にフォーマットできません"
 
-#: ../src/Win_GParted.cc:1655
+#. TO TRANSLATORS: looks like
+#. * A fat16 file system requires a partition of at least 16.00 MiB.
+#.
+#: ../src/Win_GParted.cc:1790
 msgid "A %1 file system requires a partition of at least %2."
 msgstr ""
 "ファイルシステム %1 には少なくとも %2 の容量を持ったパーティションが必要で"
 "す。"
 
-#: ../src/Win_GParted.cc:1660
+#. TO TRANSLATORS: looks like
+#. * A partition with a hfs file system has a maximum size of 2.00 GiB.
+#.
+#: ../src/Win_GParted.cc:1798
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 ファイルシステムのパーティションでは最大容量が %2 に制限されます。"
 
-#: ../src/Win_GParted.cc:1746
+#: ../src/Win_GParted.cc:1892
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "パーティションを次のマウントポイントからアンマウントできませんでした:"
 
-#: ../src/Win_GParted.cc:1748
+#: ../src/Win_GParted.cc:1894
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1372,128 +1673,201 @@ msgstr ""
 "おそらく他のパーティションもこれらのマウントポイントにマウントされています。"
 "それらのパーティションを手動でアンマウントしましょう。"
 
-#: ../src/Win_GParted.cc:1797 ../src/Win_GParted.cc:1881
+#: ../src/Win_GParted.cc:1951 ../src/Win_GParted.cc:2035
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "パーティション %2 の %1 件の操作を現在保留中。"
 
-#: ../src/Win_GParted.cc:1811
+#: ../src/Win_GParted.cc:1965
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1813
+#: ../src/Win_GParted.cc:1967
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1831
+#: ../src/Win_GParted.cc:1985
 msgid "Deactivating swap on %1"
 msgstr "%1 のスワップを無効化しています"
 
-#: ../src/Win_GParted.cc:1831
+#: ../src/Win_GParted.cc:1985
 msgid "Activating swap on %1"
 msgstr "%1 のスワップを有効化しています"
 
-#: ../src/Win_GParted.cc:1838
+#: ../src/Win_GParted.cc:1992
 msgid "Could not deactivate swap"
 msgstr "スワップを無効にできません"
 
-#: ../src/Win_GParted.cc:1838
+#: ../src/Win_GParted.cc:1992
 msgid "Could not activate swap"
 msgstr "スワップを有効にできません"
 
-#: ../src/Win_GParted.cc:1854
+#: ../src/Win_GParted.cc:2008
 msgid "Unmounting %1"
 msgstr "%1 をアンマウント中"
 
-#: ../src/Win_GParted.cc:1859
+#: ../src/Win_GParted.cc:2013
 msgid "Could not unmount %1"
 msgstr "%1をアンマウントできませんでした"
 
-#: ../src/Win_GParted.cc:1895
+#: ../src/Win_GParted.cc:2049
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1897
+#: ../src/Win_GParted.cc:2051
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1915
+#: ../src/Win_GParted.cc:2069
 msgid "mounting %1 on %2"
 msgstr "%1を%2にマウント中"
 
-#: ../src/Win_GParted.cc:1922
+#: ../src/Win_GParted.cc:2076
 msgid "Could not mount %1 on %2"
 msgstr "%1を%2にマウントできませんでした"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:1948
+#: ../src/Win_GParted.cc:2102
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "デバイス %2 の %1 件の操作を現在保留中"
 
-#: ../src/Win_GParted.cc:1963
+#: ../src/Win_GParted.cc:2117
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1965
+#: ../src/Win_GParted.cc:2119
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1967
+#: ../src/Win_GParted.cc:2121
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1992
+#: ../src/Win_GParted.cc:2146
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1994
+#: ../src/Win_GParted.cc:2148
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2009
+#: ../src/Win_GParted.cc:2163
 msgid "Error while creating partition table."
 msgstr "パーティションテーブルの作成中にエラーが発生しました。"
 
-#: ../src/Win_GParted.cc:2170
+#: ../src/Win_GParted.cc:2183
+msgid "Command gpart was not found"
+msgstr ""
+
+#: ../src/Win_GParted.cc:2184
+msgid "This feature uses gpart. Please install gpart and try again."
+msgstr ""
+
+#. Dialog information
+#: ../src/Win_GParted.cc:2192
+msgid "A full disk scan is needed to find file systems."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2194
+msgid "The scan might take a very long time."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2196
+msgid ""
+"After the scan you can mount any discovered file systems and copy the data "
+"to other media."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2198
+msgid "Do you want to continue?"
+msgstr ""
+
+#. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2202
+#, fuzzy
+#| msgid "copy file system of %1 to %2"
+msgid "Search for file systems on %1"
+msgstr "ファイルシステム %1 の内容を %2 にコピー"
+
+#. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2216
+#, fuzzy
+#| msgid "Cannot format this file system to %1."
+msgid "Searching for file systems on %1"
+msgstr "このファイルシステムを %1 にフォーマットできません"
+
+#. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
+#: ../src/Win_GParted.cc:2230
+#, fuzzy
+#| msgid "copy file system of %1 to %2"
+msgid "No file systems found on %1"
+msgstr "ファイルシステム %1 の内容を %2 にコピー"
+
+#: ../src/Win_GParted.cc:2231
+msgid ""
+"The disk scan by gpart did not find any recognizable file systems on this "
+"disk."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2424
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "本当に保留中の操作を適用してもよろしいですか？"
 
-#: ../src/Win_GParted.cc:2176
+#: ../src/Win_GParted.cc:2430
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "パーティションを変更すると、データの消失する可能性があります。"
 
-#: ../src/Win_GParted.cc:2178
+#: ../src/Win_GParted.cc:2432
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "処理を実行する前に重要なデータはバックアップしておくことをお薦めします。"
 
-#: ../src/Win_GParted.cc:2180
+#: ../src/Win_GParted.cc:2434
 msgid "Apply operations to device"
 msgstr "デバイスに対して操作を適用"
 
+#. Create directory
+#: ../src/btrfs.cc:179
+#, fuzzy
+#| msgid "create temporary mount point (%1)"
+msgid "create temporary directory"
+msgstr "一時的なマウントポイント (%1) を作成"
+
+#. Failed to create temporary directory
+#: ../src/btrfs.cc:187
+msgid "Failed to create temporary directory."
+msgstr ""
+
+#. TO TRANSLATORS: looks like  Created temporary directory /tmp/gparted-XXCOOO8U
+#: ../src/btrfs.cc:193
+#, fuzzy
+#| msgid "create temporary mount point (%1)"
+msgid "Created temporary directory %1"
+msgstr "一時的なマウントポイント (%1) を作成"
+
 #. create mount point...
-#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:245 ../src/xfs.cc:252
+#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
 msgid "create temporary mount point (%1)"
 msgstr "一時的なマウントポイント (%1) を作成"
 
-#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:259 ../src/xfs.cc:268
+#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:267 ../src/xfs.cc:276
 msgid "mount %1 on %2"
 msgstr "%1を%2にマウントする"
 
@@ -1501,19 +1875,31 @@ msgstr "%1を%2にマウントする"
 msgid "remount %1 on %2 with the 'resize' flag enabled"
 msgstr "'リサイズ'フラグを有効にして%1を%2に再マウントする"
 
-#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:292 ../src/xfs.cc:313
+#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:300 ../src/xfs.cc:320
 msgid "unmount %1"
 msgstr "%1をアンマウントする"
 
-#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:333 ../src/xfs.cc:356
+#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:340 ../src/xfs.cc:363
 msgid "remove temporary mount point (%1)"
 msgstr "一時的なマウントポイント (%1) を削除"
 
-#: ../src/main.cc:38
+#. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:105
+msgid ""
+"Partition move action skipped because %1 file system does not contain data"
+msgstr ""
+
+#. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:124
+msgid ""
+"Partition copy action skipped because %1 file system does not contain data"
+msgstr ""
+
+#: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
 msgstr "GPartedの実行にはroot権限が必要です"
 
-#: ../src/main.cc:43
+#: ../src/main.cc:47
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -1537,9 +1923,12 @@ msgid "grow mounted file system"
 msgstr "マウントされているファイルシステムを拡大"
 
 #. copy file system..
-#: ../src/xfs.cc:276
+#: ../src/xfs.cc:284
 msgid "copy file system"
 msgstr "ファイルシステムをコピー"
+
+#~ msgid "BTRFS is not yet supported."
+#~ msgstr "BTRFSはまだ対応していません。"
 
 #~ msgid "Round to cylinders"
 #~ msgstr "シリンダ単位に丸める"
