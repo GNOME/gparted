@@ -78,7 +78,7 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 	//Secure Programming for Linux and Unix HOWTO, Chapter 6. Avoid Buffer Overflow
 	//  http://tldp.org/HOWTO/Secure-Programs-HOWTO/library-c.html
 	char dir_buf[4096+1];
-	sprintf( dir_buf, "%.*s", sizeof(dir_buf)-1, dir_template .c_str() ) ;
+	sprintf( dir_buf, "%.*s", (int) sizeof(dir_buf)-1, dir_template .c_str() ) ;
 
 	//Looks like "mkdir -v" command was run to the user
 	operationdetail .add_child( OperationDetail(
