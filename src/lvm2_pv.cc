@@ -30,7 +30,8 @@ FS lvm2_pv::get_filesystem_support()
 	LVM2_PV_Info lvm2_pv_info ;
 	if ( lvm2_pv_info .is_lvm2_pv_supported() )
 	{
-		fs .read = GParted::FS::EXTERNAL ;
+		fs .read   = FS::EXTERNAL ;
+		fs .create = FS::EXTERNAL ;
 	}
 
 	return fs ;
@@ -77,7 +78,7 @@ bool lvm2_pv::write_uuid( const Partition & partition, OperationDetail & operati
 
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return true ;
+	return ! execute_command( "lvm pvcreate -M 2 " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

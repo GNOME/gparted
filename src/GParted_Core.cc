@@ -2766,11 +2766,14 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 {
 	operationdetail .add_child( OperationDetail(
 				String::ucompose( _("set partition type on %1"), partition .get_path() ) ) ) ;
-	
+	//Set partition type appropriately for the type of file system stored in the partition.
+	//  Libparted treats every type as a file system, except LVM which it treats as a flag.
+
 	bool return_value = false ;
 	
 	if ( open_device_and_disk( partition .device_path ) )
 	{
+		//Lookup libparted file system type using GParted's name, as most match
 		PedFileSystemType * fs_type = 
 			ped_file_system_type_get( Utils::get_filesystem_string( partition .filesystem ) .c_str() ) ;
 
@@ -2786,13 +2789,15 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		if ( ! fs_type )
 			fs_type = ped_file_system_type_get( "ext2" ) ;
 
-		if ( fs_type )
+		if ( fs_type && partition .filesystem != FS_LVM2_PV )
 		{
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
-			if ( lp_partition &&
-			     ped_partition_set_system( lp_partition, fs_type ) && 
-			     commit() )
+			//Also clear any libparted LVM flag so that it doesn't override the file system type
+			if ( lp_partition                                                 &&
+			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 0 ) &&
+			     ped_partition_set_system( lp_partition, fs_type )            &&
+			     commit()                                                        )
 			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail( String::ucompose( _("new partition type: %1"),
@@ -2800,6 +2805,22 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 							 STATUS_NONE,
 							 FONT_ITALIC ) ) ;
 
+				return_value = true ;
+			}
+		}
+		else if ( partition .filesystem == FS_LVM2_PV )
+		{
+			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+
+			if ( lp_partition                                                 &&
+			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
+			     commit()                                                        )
+			{
+				operationdetail .get_last_child() .add_child(
+					OperationDetail( String::ucompose( _("new partition flag: %1"),
+					                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
+					                 STATUS_NONE,
+					                 FONT_ITALIC ) ) ;
 				return_value = true ;
 			}
 		}

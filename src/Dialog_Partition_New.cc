@@ -49,8 +49,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	std::vector< FS >::iterator f ;
 	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
 	{
-		if ( f ->filesystem == GParted::FS_UNKNOWN
-		    || f ->filesystem == GParted::FS_LVM2_PV
+		if (   f ->filesystem == GParted::FS_UNKNOWN
 		    || f ->filesystem == GParted::FS_LUKS
 		   )
 			//Compensate for subsequent 'f++' ...
