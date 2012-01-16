@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-08 21:07+0000\n"
-"PO-Revision-Date: 2012-01-11 10:17+0100\n"
+"POT-Creation-Date: 2012-01-11 20:02+0000\n"
+"PO-Revision-Date: 2012-01-16 10:37+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -622,6 +622,16 @@ msgstr "maže se položka %1"
 msgid "update %1 entry"
 msgstr "aktualizuje se položka %1"
 
+#. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:103
+msgid "Created directory %1"
+msgstr "Vytvořena složka %1"
+
+#. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:130
+msgid "Removed directory %1"
+msgstr "Odstraněna složka %1"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
 #: ../src/GParted_Core.cc:195 ../src/GParted_Core.cc:204
 #: ../src/GParted_Core.cc:214
@@ -749,7 +759,7 @@ msgstr "konec oddílu: %1"
 msgid "size: %1 (%2)"
 msgstr "velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1621 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1621 ../src/linux_swap.cc:83
 msgid "create new %1 file system"
 msgstr "vytváří se nový souborový systém %1"
 
@@ -1240,7 +1250,7 @@ msgstr "Příznaky"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:127
+#: ../src/Utils.cc:128
 msgid "unallocated"
 msgstr "neobsazeno"
 
@@ -1249,7 +1259,7 @@ msgstr "neobsazeno"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:134
+#: ../src/Utils.cc:135
 msgid "unknown"
 msgstr "neznámý"
 
@@ -1257,35 +1267,35 @@ msgstr "neznámý"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:140
+#: ../src/Utils.cc:141
 msgid "unformatted"
 msgstr "nezformátováno"
 
-#: ../src/Utils.cc:159
+#: ../src/Utils.cc:160
 msgid "used"
 msgstr "použito"
 
-#: ../src/Utils.cc:160
+#: ../src/Utils.cc:161
 msgid "unused"
 msgstr "nepoužito"
 
-#: ../src/Utils.cc:201
+#: ../src/Utils.cc:245
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:206
+#: ../src/Utils.cc:250
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:211
+#: ../src/Utils.cc:255
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:216
+#: ../src/Utils.cc:260
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:221
+#: ../src/Utils.cc:265
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1297,21 +1307,21 @@ msgstr "%1 TiB"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:380
+#: ../src/Utils.cc:424
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Dočasný soubor vytvořen pomocí gparted.  Může být odstraněn.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:392
+#: ../src/Utils.cc:436
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Operace s názvem selhala: Nelze zapsat do dočasného souboru %1.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:404
+#: ../src/Utils.cc:448
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Operace s názvem selhala: Nelze vytvořit dočasný soubor %1.\n"
 
@@ -1847,42 +1857,6 @@ msgstr "Před pokračováním je doporučeno zazálohovat si cenná data."
 msgid "Apply operations to device"
 msgstr "Provést operace na zařízení"
 
-#. Create directory
-#: ../src/btrfs.cc:179
-msgid "create temporary directory"
-msgstr "vytváří se dočasná složka"
-
-#. Failed to create temporary directory
-#: ../src/btrfs.cc:187
-msgid "Failed to create temporary directory."
-msgstr "Selhalo vytvoření dočasné složky."
-
-#. TO TRANSLATORS: looks like  Created temporary directory /tmp/gparted-XXCOOO8U
-#: ../src/btrfs.cc:193
-msgid "Created temporary directory %1"
-msgstr "Vytvořena dočasná složka %1"
-
-#. create mount point...
-#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
-msgid "create temporary mount point (%1)"
-msgstr "vytváří se dočasný přípojný bod (%1)"
-
-#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:267 ../src/xfs.cc:276
-msgid "mount %1 on %2"
-msgstr "připojuje se %1 na %2"
-
-#: ../src/jfs.cc:157
-msgid "remount %1 on %2 with the 'resize' flag enabled"
-msgstr "znovu se připojuje %1 na %2 s povoleným příznakem 'změnit velikost'"
-
-#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:300 ../src/xfs.cc:320
-msgid "unmount %1"
-msgstr "odpojuje se %1"
-
-#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:340 ../src/xfs.cc:363
-msgid "remove temporary mount point (%1)"
-msgstr "odstraňuje se dočasný přípojný bod (%1)"
-
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
 #: ../src/linux_swap.cc:105
 msgid ""
@@ -1919,13 +1893,3 @@ msgstr "spouští se simulace"
 #: ../src/ntfs.cc:132
 msgid "real resize"
 msgstr "provádí se skutečná změna velikosti"
-
-#. grow the mounted file system..
-#: ../src/xfs.cc:168
-msgid "grow mounted file system"
-msgstr "zvětšuje se připojený souborový systém"
-
-#. copy file system..
-#: ../src/xfs.cc:284
-msgid "copy file system"
-msgstr "kopíruje se souborový systém"
