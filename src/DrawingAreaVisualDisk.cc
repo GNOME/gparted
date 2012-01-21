@@ -37,6 +37,9 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 	color_unused .set( Utils::get_color( GParted::FS_UNUSED ) );
 	get_colormap() ->alloc_color( color_unused ) ;
 	
+	color_unallocated .set( Utils::get_color( GParted::FS_UNALLOCATED ) );
+	get_colormap() ->alloc_color( color_unallocated ) ;
+
 	color_text .set( "black" );
 	get_colormap() ->alloc_color( color_text ) ;
 
@@ -91,24 +94,45 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 		visual_partitions .push_back( visual_partition() ) ;
 
 		visual_partitions .back() .partition = partitions[ t ] ; 
-		visual_partitions .back() .fraction = partitions[ t ] .get_sector_length() / static_cast<double>( length ) ;
+		Sector partition_length = partitions[ t ] .get_sector_length() ;
+		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
 
 		if ( partitions[ t ] .type == GParted::TYPE_UNALLOCATED || partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			visual_partitions .back() .fraction_used = -1 ;
-		else if ( partitions[ t ] .sectors_used > 0 )
-			visual_partitions .back() .fraction_used = 
-				partitions[ t ] .sectors_used / static_cast<double>( partitions[ t ] .get_sector_length() ) ;
+		{
+			//Don't calculate or draw partition used, unused or unallocated rectangles
+			//  to show usage.  Only partition color rectangle will be drawn.
+			visual_partitions .back() .fraction_unallocated = -1.0 ;
+			visual_partitions .back() .fraction_used        = -1.0 ;
+		}
+		else
+		{
+			//Use sum_sectors as the denominator to calculate fraction_used and
+			//  fraction_unallocated in case it doesn't equal partition_length.
+			Sector sum_sectors = partitions[ t ] .sectors_used
+			                   + partitions[ t ] .sectors_unused
+			                   + partitions[ t ] .sectors_unallocated ;
+			if ( partitions[ t ] .sectors_unallocated > 0 )
+				visual_partitions .back() .fraction_unallocated =
+					partitions[ t ] .sectors_unallocated / static_cast<double>( sum_sectors ) ;
+			else
+				visual_partitions .back() .fraction_unallocated = 0.0 ;
+
+			//Calculate fraction used from free space so any hidden overhead is counted as used
+			if ( partitions[ t ] .sectors_unused >= 0 )
+				visual_partitions .back() .fraction_used =
+					1.0 - visual_partitions .back() .fraction_unallocated
+					    - partitions[ t ] .sectors_unused / static_cast<double>( sum_sectors ) ;
+		}
 	
 		visual_partitions .back() .color = partitions[ t ] .color; 
 		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			set_static_data( partitions[ t ] .logicals,
-					 visual_partitions .back() .logicals,
-					 partitions[ t ] .get_sector_length() ) ;
+					 visual_partitions .back() .logicals, partition_length ) ;
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
-				partitions[ t ] .get_path() + "\n" + Utils::format_size( partitions[ t ] .get_sector_length(), partitions[ t ] .sector_size ) ) ;
+				partitions[ t ] .get_path() + "\n" + Utils::format_size( partition_length, partitions[ t ] .sector_size ) ) ;
 	}
 }
 
@@ -152,32 +176,38 @@ void DrawingAreaVisualDisk::calc_position_and_height( std::vector<visual_partiti
 	}
 }
 
-void DrawingAreaVisualDisk::calc_used_unused( std::vector<visual_partition> & visual_partitions ) 
+void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_partitions )
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		if ( visual_partitions[ t ] .fraction_used > -1 )
+		if ( visual_partitions[ t ] .fraction_used >= 0.0 )
 		{ 
+			int inner_length = visual_partitions[ t ] .length - BORDER *2 ;
+
 			//used
+			visual_partitions[ t ] .used_length = Utils::round( inner_length * visual_partitions[ t ] .fraction_used ) ;
 			visual_partitions[ t ] .x_used_start = visual_partitions[ t ] .x_start + BORDER ;
-		
-			if ( visual_partitions[ t ] .fraction_used )
-				visual_partitions[ t ] .used_length =
-					Utils::round( ( visual_partitions[ t ] .length - (2*BORDER) ) * visual_partitions[ t ] .fraction_used ) ;
+
+			//unallocated
+			visual_partitions[ t ] .unallocated_length = Utils::round( inner_length * visual_partitions[ t ] .fraction_unallocated ) ;
+			visual_partitions[ t ] .x_unallocated_start = visual_partitions[ t ] .x_start
+									+ visual_partitions[ t ] .length
+									- BORDER
+									- visual_partitions[ t ] .unallocated_length ;
 
 			//unused
-			visual_partitions[ t ] .x_unused_start = 
-				visual_partitions[ t ] .x_used_start + visual_partitions[ t ] .used_length  ;
-			visual_partitions[ t ] .unused_length = 
-				visual_partitions[ t ] .length - (2 * BORDER) - visual_partitions[ t ] .used_length ;
+			visual_partitions[ t ] .unused_length = inner_length
+								- visual_partitions[ t ] .used_length
+								- visual_partitions[ t ] .unallocated_length ;
+			visual_partitions[ t ] .x_unused_start = visual_partitions[ t ] .x_used_start + visual_partitions[ t ] .used_length ;
 
 			//y position and height
-			visual_partitions[ t ] .y_used_unused_start = visual_partitions[ t ] .y_start + BORDER ;
-			visual_partitions[ t ] .used_unused_height = visual_partitions[ t ] .height - (2 * BORDER) ;
+			visual_partitions[ t ] .y_usage_start = visual_partitions[ t ] .y_start + BORDER ;
+			visual_partitions[ t ] .usage_height = visual_partitions[ t ] .height - (2 * BORDER) ;
 		}
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
-			calc_used_unused( visual_partitions[ t ] .logicals ) ;
+			calc_usage( visual_partitions[ t ] .logicals ) ;
 	}
 }
 	
@@ -226,9 +256,9 @@ void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp )
 		get_window() ->draw_rectangle( gc,
 					       true,
 					       vp .x_used_start, 
-					       vp .y_used_unused_start, 
+					       vp .y_usage_start,
 					       vp .used_length,
-					       vp .used_unused_height );
+					       vp .usage_height );
 	}
 		
 	//unused
@@ -238,9 +268,21 @@ void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp )
 		get_window() ->draw_rectangle( gc,
 					       true,
 					       vp .x_unused_start, 
-					       vp .y_used_unused_start, 
+					       vp .y_usage_start,
 					       vp .unused_length,
-					       vp .used_unused_height );
+					       vp .usage_height );
+	}
+
+	//unallocated
+	if ( vp .unallocated_length > 0 )
+	{
+		gc ->set_foreground( color_unallocated );
+		get_window() ->draw_rectangle( gc,
+					       true,
+					       vp .x_unallocated_start,
+					       vp .y_usage_start,
+					       vp .unallocated_length,
+					       vp .usage_height );
 	}
 
 	//text
@@ -385,7 +427,7 @@ void DrawingAreaVisualDisk::on_size_allocate( Gtk::Allocation & allocation )
 	
 	//and calculate the rest..
 	calc_position_and_height( visual_partitions, MAIN_BORDER, MAIN_BORDER ) ;//0, 0 ) ;
-	calc_used_unused( visual_partitions ) ;
+	calc_usage( visual_partitions ) ;
 	calc_text( visual_partitions ) ;
 	queue_draw();
 }
@@ -431,6 +473,7 @@ DrawingAreaVisualDisk::~DrawingAreaVisualDisk()
 	//free the allocated colors
 	get_colormap() ->free_colors( color_used, 1 ) ;
 	get_colormap() ->free_colors( color_unused, 1 ) ;
+	get_colormap() ->free_colors( color_unallocated, 1 ) ;
 	get_colormap() ->free_colors( color_text, 1 ) ;
 }
 

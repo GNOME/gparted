@@ -51,7 +51,7 @@ private:
 			      Sector length ) ;
 	int calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) ;
 	void calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) ;
-	void calc_used_unused( std::vector<visual_partition> & visual_partitions ) ;
+	void calc_usage( std::vector<visual_partition> & visual_partitions ) ;
 	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
 	
 	void draw_partition( const visual_partition & vp ) ;
@@ -72,14 +72,16 @@ private:
 	//variables
 	struct visual_partition
 	{
-		double fraction ;
-		double fraction_used ;
+		double fraction ;		//Partition size as a fraction of containing disk or extended partition size
+		double fraction_used ;		//Used space as a fraction of partition size
+		double fraction_unallocated ;	//Unallocated space as a fraction of partition size
 
 		int x_start, length ;
 		int y_start, height ;
 		int x_used_start, used_length ;
 		int x_unused_start, unused_length ;
-		int y_used_unused_start, used_unused_height ;
+		int x_unallocated_start, unallocated_length ;
+		int y_usage_start, usage_height ;
 		int x_text, y_text ;
 
 		Gdk::Color color ;
@@ -92,12 +94,13 @@ private:
 
 		visual_partition()
 		{
-			fraction = fraction_used =
+			fraction = fraction_used = fraction_unallocated = 0.0 ;
 			x_start = length =
 			y_start = height =
 			x_used_start = used_length =
 			x_unused_start = unused_length =
-			y_used_unused_start = used_unused_height =
+			x_unallocated_start = unallocated_length =
+			y_usage_start = usage_height =
 			x_text = y_text = 0 ;
 			
 			pango_layout .clear() ;
@@ -116,7 +119,7 @@ private:
 	int TOT_SEP, MIN_SIZE ;
 
 	Glib::RefPtr<Gdk::GC> gc;
-	Gdk::Color color_used, color_unused, color_text;
+	Gdk::Color color_used, color_unused, color_unallocated, color_text;
 };
 
 } //GParted
