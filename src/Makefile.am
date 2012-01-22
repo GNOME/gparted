@@ -32,6 +32,7 @@ gpartedbin_SOURCES = \
 	GParted_Core.cc			\
 	HBoxOperations.cc		\
 	Operation.cc			\
+	OperationChangeUUID.cc		\
 	OperationCopy.cc		\
 	OperationCheck.cc		\
 	OperationCreate.cc		\

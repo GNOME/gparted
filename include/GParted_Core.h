@@ -71,6 +71,7 @@ private:
 	void set_device_partitions( Device & device ) ;
 	GParted::FILESYSTEM get_filesystem() ; 
 	void read_label( Partition & partition ) ;
+	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
 				 std::vector<Partition> & partitions,
 				 Sector start,
@@ -95,6 +96,8 @@ private:
 	
 	bool label_partition( const Partition & partition, OperationDetail & operation_detail ) ;
 	
+	bool change_uuid( const Partition & partition, OperationDetail & operation_detail ) ;
+
 	bool resize_move( const Device & device,
 			  const Partition & partition_old,
 			  Partition & partition_new,

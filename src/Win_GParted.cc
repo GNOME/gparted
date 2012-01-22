@@ -33,6 +33,7 @@
 #include "../include/OperationDelete.h"
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
+#include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelPartition.h"
 #include "../config.h"
 
@@ -65,6 +66,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
         MENU_FLAGS =
         MENU_INFO =
         MENU_LABEL_PARTITION =
+        MENU_CHANGE_UUID =
         TOOLBAR_UNDO =
         TOOLBAR_APPLY = -1 ;
 
@@ -381,6 +383,11 @@ void Win_GParted::init_partition_menu()
 						     sigc::mem_fun( *this, &Win_GParted::activate_label_partition ) ) );
 	MENU_LABEL_PARTITION = index++ ;
 
+	menu_partition .items() .push_back(
+			Gtk::Menu_Helpers::MenuElem( _("New UU_ID"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_change_uuid ) ) );
+	MENU_CHANGE_UUID = index++ ;
+
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
 	
@@ -678,6 +685,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 		if ( operation ->type == OPERATION_DELETE ||
 		     operation ->type == OPERATION_FORMAT ||
 		     operation ->type == OPERATION_CHECK ||
+		     operation ->type == OPERATION_CHANGE_UUID ||
 		     operation ->type == OPERATION_LABEL_PARTITION ||
 		     gparted_core .snap_to_alignment( operation ->device, operation ->partition_new, error )
 		   )
@@ -746,6 +754,20 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 	        )
 	{
 		operations[ first ]->partition_new.label = operations[ second ]->partition_new.label;
+		operations[ first ]->create_description() ;
+		remove_operation( second );
+
+		Refresh_Visual();
+
+		return true;
+	}
+	// Two change-uuid change operations on the same partition
+	else if ( operations[ first ]->type == OPERATION_CHANGE_UUID &&
+	          operations[ second ]->type == OPERATION_CHANGE_UUID &&
+	          operations[ first ]->partition_new == operations[ second ]->partition_original
+	        )
+	{
+		operations[ first ]->partition_new.uuid = operations[ second ]->partition_new.uuid;
 		operations[ first ]->create_description() ;
 		remove_operation( second );
 
@@ -879,7 +901,7 @@ void Win_GParted::set_valid_operations()
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
 	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_partition( false ) ;
-	allow_info( false ) ;
+	allow_change_uuid( false ); allow_info( false ) ;
 	
        	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
 		->set_label( _("_Unmount") ) ;
@@ -1016,6 +1038,10 @@ void Win_GParted::set_valid_operations()
 		//only allow labelling of real partitions that support labelling
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
 			allow_label_partition( true ) ;
+
+		//only allow changing UUID of real partitions that support it
+		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
+			allow_change_uuid( true ) ;
 
 		if ( selected_partition .get_mountpoints() .size() )
 		{
@@ -1596,6 +1622,7 @@ void Win_GParted::activate_paste()
 		Partition partition_new = selected_partition ;
 		partition_new .filesystem = copied_partition .filesystem ;
 		partition_new .label = copied_partition .label ;
+		partition_new .uuid = copied_partition .uuid ;
 		partition_new .color = copied_partition .color ;
 		partition_new .set_used( copied_partition .sectors_used ) ;
 		partition_new .messages .clear() ;
@@ -2310,6 +2337,7 @@ void Win_GParted::activate_label_partition()
 		part_temp .set_used( selected_partition.sectors_used );
 
 		part_temp .label = dialog .get_new_label();
+		part_temp .uuid = selected_partition .uuid ;
 
 		Operation * operation = new OperationLabelPartition( devices[ current_device ],
 									selected_partition, part_temp ) ;
@@ -2329,6 +2357,41 @@ void Win_GParted::activate_label_partition()
 	}
 }
 	
+void Win_GParted::activate_change_uuid()
+{
+	//Make a duplicate of the selected partition (used in UNDO)
+	Partition part_temp ;
+	part_temp .Set( devices[ current_device ] .get_path(),
+			selected_partition .get_path(),
+			selected_partition .partition_number,
+			selected_partition .type,
+			selected_partition .filesystem,
+			selected_partition .sector_start,
+			selected_partition .sector_end,
+			devices[ current_device ] .sector_size,
+			selected_partition .inside_extended,
+			false ) ;
+
+	part_temp .label = selected_partition .label ;
+	part_temp .uuid = _("(New UUID - will be randomly generated)") ;
+
+	Operation * operation = new OperationChangeUUID( devices[ current_device ],
+								selected_partition, part_temp ) ;
+	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+	Add_Operation( operation ) ;
+
+	// Verify if the two operations can be merged
+	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
+	{
+		if ( operations[ t ] ->type == OPERATION_CHANGE_UUID )
+		{
+			if( Merge_Operations( t, operations .size() -1 ) )
+				break;
+		}
+	}
+}
+
 void Win_GParted::activate_undo()
 {
 	//when undoing a creation it's safe to decrease the newcount by one

@@ -1116,6 +1116,32 @@
         </para>
       </sect3>
 
+<!-- ============= To Change a Partition's UUID ========================== -->
+      <sect3 id="gparted-changing-partition-uuid">
+        <title>Changing a Partition UUID</title>
+        <para>
+        To change the UUID of a partition:
+          <orderedlist>
+            <listitem>
+              <para>
+              Select an unmounted partition.
+              See <xref linkend="gparted-select-partition"/>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Choose:
+              <menuchoice><guimenu>Partition</guimenu>
+	      <guimenuitem>New UUID</guimenuitem></menuchoice>.
+	      The application displays the set a new random UUID
+	      operation in the <guilabel>Operations Pending</guilabel>
+	      pane.
+              </para>
+            </listitem>
+          </orderedlist>
+        </para>
+      </sect3>
+
 <!-- ============= Specifying Partition Details ====================== -->
       <sect3 id="gparted-specify-partition-details">
         <title>Specifying Partition Details</title>
@@ -1650,8 +1676,12 @@
               <listitem>
                 <para>
                 Change the UUID of the partition.
+                See <xref linkend="gparted-changing-partition-uuid"/>.
+                </para>
+                <para>
                 If the partition label is not blank, change the label
                 of the partition.
+                See <xref linkend="gparted-setting-partition-label"/>.
                 </para>
               </listitem>
               <listitem>

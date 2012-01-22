@@ -36,7 +36,11 @@ FS xfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "xfs_admin" ) .empty() ) 	
+	{
 		fs .write_label = FS::EXTERNAL ;
+		fs .read_uuid = FS::EXTERNAL ;
+		fs .write_uuid = FS::EXTERNAL ;
+	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() ) 	
 		fs .create = GParted::FS::EXTERNAL ;
@@ -124,6 +128,29 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 	else
 		cmd = String::ucompose( "xfs_admin -L \"%1\" %2", partition .label, partition .get_path() ) ;
 	return ! execute_command( cmd, operationdetail ) ;
+}
+
+void xfs::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "xfs_admin -u " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "^UUID[[:blank:]]*=[[:blank:]]*([^[:space:]]*)" ) ;
+		if (partition .uuid == "00000000-0000-0000-0000-000000000000")
+			partition .uuid .clear() ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool xfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "xfs_admin -U generate " + partition .get_path(), operationdetail ) ;
 }
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )

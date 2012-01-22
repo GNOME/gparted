@@ -34,7 +34,11 @@ FS reiserfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "reiserfstune" ) .empty() )
+	{
 		fs .write_label = FS::EXTERNAL ;
+		fs .read_uuid = FS::EXTERNAL ;
+		fs .write_uuid = FS::EXTERNAL ;
+	}
 
 	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -110,6 +114,27 @@ void reiserfs::read_label( Partition & partition )
 bool reiserfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "reiserfstune --label \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
+void reiserfs::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "reiserfstune " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*([^[:space:]]*)" ) ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "reiserfstune -u random " + partition .get_path(), operationdetail ) ;
 }
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )

@@ -105,6 +105,9 @@ private:
 	void allow_label_partition( bool state )	{
 		toggle_item( state, MENU_LABEL_PARTITION ) ; } 
 
+	void allow_change_uuid( bool state )	{
+		toggle_item( state, MENU_CHANGE_UUID ) ; }
+
 	void allow_info( bool state )	{
 		toggle_item( state, MENU_INFO ) ; } 
 
@@ -167,6 +170,7 @@ private:
 	void activate_attempt_rescue_data();
 	void activate_manage_flags() ;
 	void activate_check() ;
+	void activate_change_uuid() ;
 	void activate_label_partition() ;
 	
 	void activate_undo();
@@ -235,7 +239,8 @@ private:
         MENU_MOUNT,
         MENU_FLAGS,
         MENU_CHECK,
-		MENU_LABEL_PARTITION,
+	MENU_LABEL_PARTITION,
+	MENU_CHANGE_UUID,
         MENU_INFO,
         TOOLBAR_UNDO,
         TOOLBAR_APPLY ;

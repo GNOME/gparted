@@ -40,6 +40,7 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .append_column( _("Copy"), treeview_filesystems_columns .copy );
 	treeview_filesystems .append_column( _("Check"), treeview_filesystems_columns .check );
 	treeview_filesystems .append_column( _("Label"), treeview_filesystems_columns .label );
+	treeview_filesystems .append_column( _("UUID"), treeview_filesystems_columns .uuid );
 	treeview_filesystems .append_column( _("Required Software"), treeview_filesystems_columns .software );
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
@@ -145,6 +146,7 @@ void DialogFeatures::show_filesystem( const FS & fs )
 	treerow[ treeview_filesystems_columns .copy ] = fs .copy ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .check ] = fs .check ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .label ] = fs .write_label ? icon_yes : icon_no ; 
+	treerow[ treeview_filesystems_columns .uuid ] = fs .write_uuid ? icon_yes : icon_no ;
 
 	treerow[ treeview_filesystems_columns .software ] = Utils::get_filesystem_software( fs .filesystem ) ;
 }

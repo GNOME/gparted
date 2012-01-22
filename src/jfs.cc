@@ -29,12 +29,15 @@ FS jfs::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_JFS ;
 		
-	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() )
+	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() ) {
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .read_uuid = GParted::FS::EXTERNAL ;
+	}
 	
 	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
+		fs .write_uuid = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
@@ -111,6 +114,29 @@ void jfs::read_label( Partition & partition )
 bool jfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "jfs_tune -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
+void jfs::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "echo su | jfs_debugfs " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "s_uuid:[[:blank:]]*([^[:space:]]+)" ) ;
+		if ( partition .uuid == "00000000-0000-0000-0000-000000000000" )
+			partition .uuid .clear() ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool jfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "jfs_tune -U random " + partition .get_path(), operationdetail ) ;
 }
 
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )

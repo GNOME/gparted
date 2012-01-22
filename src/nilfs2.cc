@@ -36,6 +36,8 @@ FS nilfs2::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .read_label = GParted::FS::EXTERNAL ;
 		fs .write_label = GParted::FS::EXTERNAL ;
+		fs .read_uuid = GParted::FS::EXTERNAL ;
+		fs .write_uuid = GParted::FS::EXTERNAL ;
 	}
 
         //Nilfs2 resizing is an online only operation and needs:
@@ -125,6 +127,29 @@ void nilfs2::read_label( Partition & partition )
 bool nilfs2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "nilfs-tune -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
+void nilfs2::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*([^[:space:]]*)" ) ;
+		if (partition .uuid == "00000000-0000-0000-0000-000000000000")
+			partition .uuid .clear() ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool nilfs2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "nilfs-tune -U " + Utils::generate_uuid() + " " + partition .get_path(), operationdetail ) ;
 }
 
 bool nilfs2::create( const Partition & new_partition, OperationDetail & operationdetail )

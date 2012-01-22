@@ -38,7 +38,10 @@ FS linux_swap::get_filesystem_support()
 		fs .read_label = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
-		fs .write_label = FS::EXTERNAL ;
+	{
+		fs .read_uuid = FS::EXTERNAL ;
+		fs .write_uuid = FS::EXTERNAL ;
+	}
 
 	fs .copy = GParted::FS::EXTERNAL ;
 	fs .move = GParted::FS::EXTERNAL ;
@@ -69,6 +72,28 @@ void linux_swap::read_label( Partition & partition )
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "swaplabel -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+}
+
+void linux_swap::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*([^[:space:]]*)" ) ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+
+bool linux_swap::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "swaplabel -U \"" + Utils::generate_uuid() + "\" " + partition .get_path(), operationdetail ) ;
 }
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )

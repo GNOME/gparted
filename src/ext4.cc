@@ -34,7 +34,12 @@ FS ext4::get_filesystem_support()
 
 		if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
 			fs .read = GParted::FS::EXTERNAL ;
-	
+
+		if ( ! Glib::find_program_in_path( "tune2fs" ) .empty() ) {
+			fs .read_uuid = FS::EXTERNAL ;
+			fs .write_uuid = FS::EXTERNAL ;
+		}
+
 		if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
 			fs .read_label = FS::EXTERNAL ;
 			fs .write_label = FS::EXTERNAL ;
@@ -107,6 +112,29 @@ void ext4::read_label( Partition & partition )
 bool ext4::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+}
+
+void ext4::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "tune2fs -l " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*([^[:space:]]*)" ) ;
+		if (partition .uuid == "<none>")
+			partition .uuid .clear() ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool ext4::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "tune2fs -U random " + partition .get_path(), operationdetail ) ;
 }
 
 bool ext4::create( const Partition & new_partition, OperationDetail & operationdetail )

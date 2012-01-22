@@ -56,6 +56,7 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > label ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > uuid ;
 		Gtk::TreeModelColumn<Glib::ustring> software ;
 				
 		treeview_filesystems_Columns() 
@@ -68,6 +69,7 @@ private:
 			add( copy ) ;
 			add( check ) ;
 			add( label ) ;
+			add( uuid ) ;
 			add( software ) ;
 		}
 	};

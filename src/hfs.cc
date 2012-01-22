@@ -78,6 +78,15 @@ bool hfs::write_label( const Partition & partition, OperationDetail & operationd
 	return true ;
 }
 
+void hfs::read_uuid( Partition & partition )
+{
+}
+
+bool hfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "";

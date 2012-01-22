@@ -44,6 +44,7 @@ FS btrfs::get_filesystem_support()
 
 		fs .read = GParted::FS::EXTERNAL ;
 		fs .read_label = FS::EXTERNAL ;
+		fs .read_uuid = FS::EXTERNAL ;
 
 		//Resizing of btrfs requires mount, umount and kernel
 		//  support as well as btrfs filesystem resize
@@ -160,6 +161,11 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
 }
 
+bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool btrfs::move( const Partition & partition_new
                 , const Partition & partition_old
                 , OperationDetail & operationdetail
@@ -263,5 +269,34 @@ void btrfs::read_label( Partition & partition )
 			partition .messages .push_back( error ) ;
 	}
 }
+
+void btrfs::read_uuid( Partition & partition )
+{
+	if ( btrfs_found )
+	{
+		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		if ( ! exit_status )
+		{
+			partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*([^[:space:]]*)" );
+		}
+	}
+	else
+	{
+		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+		if ( ! exit_status )
+		{
+			partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*([^[:space:]]*)" );
+		}
+	}
+	if ( exit_status )
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
 
 } //GParted

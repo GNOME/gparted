@@ -46,6 +46,15 @@ bool exfat::write_label( const Partition & partition, OperationDetail & operatio
 	return true ;
 }
 
+void exfat::read_uuid( Partition & partition )
+{
+}
+
+bool exfat::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool exfat::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return true ;

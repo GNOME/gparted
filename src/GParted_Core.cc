@@ -26,6 +26,7 @@
 #include "../include/OperationDelete.h"
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
+#include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelPartition.h"
 #include "../include/Proc_Partitions_Info.h"
 
@@ -631,6 +632,9 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			case OPERATION_LABEL_PARTITION:
 				succes = label_partition( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
+			case OPERATION_CHANGE_UUID:
+				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
+				break ;
 		}
 
 	if ( libparted_messages .size() > 0 )
@@ -1010,7 +1014,13 @@ void GParted_Core::set_device_partitions( Device & device )
 				bool label_found = false ;
 				partition_temp .label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
 			}
-			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
+
+			//Retrieve file system UUID
+			read_uuid( partition_temp ) ;
+			if ( partition_temp .uuid .empty() )
+			{
+				partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
+			}
 		}
 
 		partition_temp .messages .insert( partition_temp .messages .end(),
@@ -1243,6 +1253,23 @@ void GParted_Core::read_label( Partition & partition )
 			case FS::LIBPARTED:
 				break ;
 #endif
+
+			default:
+				break ;
+		}
+	}
+}
+
+void GParted_Core::read_uuid( Partition & partition )
+{
+	if ( partition .type != TYPE_EXTENDED )
+	{
+		switch( get_fs( partition .filesystem ) .read_uuid )
+		{
+			case FS::EXTERNAL:
+				if ( set_proper_filesystem( partition .filesystem ) )
+					p_filesystem ->read_uuid( partition ) ;
+				break ;
 
 			default:
 				break ;
@@ -1729,6 +1756,33 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 	return succes ;	
+}
+
+bool GParted_Core::change_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	operationdetail .add_child( OperationDetail( String::ucompose(
+									_("Set UUID on %1 to a new, random value"),
+									 partition .get_path()
+								 ) ) ) ;
+
+	bool succes = false ;
+	if ( partition .type != TYPE_EXTENDED )
+	{
+		switch( get_fs( partition .filesystem ) .write_uuid )
+		{
+			case FS::EXTERNAL:
+				succes = set_proper_filesystem( partition .filesystem ) &&
+					 p_filesystem ->write_uuid( partition, operationdetail .get_last_child() ) ;
+				break ;
+
+			default:
+				break;
+		}
+	}
+
+	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+
+	return succes ;
 }
 
 bool GParted_Core::resize_move( const Device & device,

@@ -29,6 +29,7 @@ EXTRA_DIST = \
 	OperationDetail.h		\
 	OperationFormat.h		\
 	OperationResizeMove.h		\
+	OperationChangeUUID.h		\
 	OperationLabelPartition.h	\
 	Partition.h  			\
 	Proc_Partitions_Info.h	\

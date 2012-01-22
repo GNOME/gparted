@@ -44,9 +44,13 @@ FS fat16::get_filesystem_support()
 		fs .read = GParted::FS::EXTERNAL ;
 	}
 
+	if ( ! Glib::find_program_in_path( "mdir" ) .empty() )
+		fs .read_uuid = FS::EXTERNAL ;
+
 	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
+		fs .write_uuid = FS::EXTERNAL ;
 	}
 
 #ifndef HAVE_LIBPARTED_3_0_0_PLUS
@@ -141,6 +145,62 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 	
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 	
+	int exit_status = Utils::execute_command( cmd, output, error ) ;
+
+	if ( ! output .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+
+	if ( ! error .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+
+	//Delete mtools config file
+	err_msg = Utils::delete_mtoolsrc_file( fname );
+
+	return ( exit_status == 0 );
+}
+
+void fat16::read_uuid( Partition & partition )
+{
+	//Create mtools config file
+	char fname[] = "/tmp/gparted-XXXXXXXX" ;
+	char dletter = 'H' ;
+	Glib::ustring err_msg = "" ;
+	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
+	if( err_msg.length() != 0 )
+		partition .messages .push_back( err_msg );
+
+	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mdir -f %2:", fname, dletter ) ;
+
+	if ( ! Utils::execute_command( cmd, output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( output, "Volume Serial Number is[[:blank:]]([^[:space:]]+)" ) ;
+		if ( partition .uuid == "0000-0000" )
+			partition .uuid .clear() ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	//Create mtools config file
+	char fname[] = "/tmp/gparted-XXXXXXXX" ;
+	char dletter = 'H' ;
+	Glib::ustring err_msg = "" ;
+	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
+
+	// Wait some time - 'random' UUIDs turn out identical if generated in quick succession...
+	sleep(1);
+	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -s -n %2:", fname, dletter ) ;
+
+	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+
 	int exit_status = Utils::execute_command( cmd, output, error ) ;
 
 	if ( ! output .empty() )

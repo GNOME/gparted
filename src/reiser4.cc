@@ -37,7 +37,10 @@ FS reiser4::get_filesystem_support()
 		fs .create = GParted::FS::EXTERNAL ;
 	
 	if ( ! Glib::find_program_in_path( "fsck.reiser4" ) .empty() )
+	{
+		fs .read_uuid = GParted::FS::EXTERNAL ;
 		fs .check = GParted::FS::EXTERNAL ;
+	}
 	
 
 	if ( fs .check )
@@ -98,6 +101,27 @@ void reiser4::read_label( Partition & partition )
 }
 
 bool reiser4::write_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
+void reiser4::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "fsck.reiser4 --check --yes " + partition .get_path(), output, error, true ) )
+	{
+		partition .uuid = Utils::regexp_label( error, "uuid:[[:blank:]]*([^[:space:]]*)" ) ;
+	}
+	else
+	{
+		if ( ! output .empty() )
+			partition .messages .push_back( output ) ;
+
+		if ( ! error .empty() )
+			partition .messages .push_back( error ) ;
+	}
+}
+
+bool reiser4::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
 	return true ;
 }

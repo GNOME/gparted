@@ -23,6 +23,7 @@
 #include <iomanip>
 #include <glibmm/regex.h>
 #include <locale.h>
+#include <uuid/uuid.h>
 
 
 namespace GParted
@@ -551,6 +552,18 @@ int Utils::convert_to_int(const Glib::ustring & src)
 	stream >> ret_val;
 
 	return ret_val;
+}
+
+// Create a new UUID
+Glib::ustring Utils::generate_uuid(void)
+{
+	uuid_t uuid;
+	char uuid_str[UUID_STRING_LENGTH+1];
+
+	uuid_generate(uuid);
+	uuid_unparse(uuid,uuid_str);
+
+	return uuid_str;
 }
 
 

@@ -47,6 +47,15 @@ bool ufs::write_label( const Partition & partition, OperationDetail & operationd
 	return true ;
 }
 
+void ufs::read_uuid( Partition & partition )
+{
+}
+
+bool ufs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool ufs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return true ;

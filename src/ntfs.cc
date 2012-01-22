@@ -104,6 +104,15 @@ bool ntfs::write_label( const Partition & partition, OperationDetail & operation
 	return ! execute_command( "ntfslabel --force " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
 }
 
+void ntfs::read_uuid( Partition & partition )
+{
+}
+
+bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;

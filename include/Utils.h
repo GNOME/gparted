@@ -34,6 +34,8 @@
 #include <ctime>
 #include <vector>
 
+#define UUID_STRING_LENGTH 36
+
 namespace GParted
 {
 
@@ -106,6 +108,8 @@ struct FS
 	Support read ; //can we get the amount of used sectors?
 	Support read_label ;
 	Support write_label ;
+	Support read_uuid ;
+	Support write_uuid ;
 	Support create ;
 	Support grow ;
 	Support shrink ;
@@ -118,7 +122,7 @@ struct FS
 	
 	FS()
 	{
-		read = read_label = write_label = create = grow = shrink = move = check = copy = NONE;
+		read = read_label = write_label = read_uuid = write_uuid = create = grow = shrink = move = check = copy = NONE;
 		MIN = MAX = 0 ;
 	} 
 } ;
@@ -163,6 +167,7 @@ public:
 	                      std::vector<Glib::ustring>& tokens,
 	                      const Glib::ustring& delimiters ) ;
 	static int convert_to_int(const Glib::ustring & src);
+	static Glib::ustring generate_uuid(void);
 };
 
 
