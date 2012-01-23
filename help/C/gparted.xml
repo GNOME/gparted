@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.8.0">
-  <!ENTITY manrevision "1.3">
-  <!ENTITY date "January 2011">
+  <!ENTITY appversion "0.12.0">
+  <!ENTITY manrevision "1.4">
+  <!ENTITY date "February 2012">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -46,7 +46,7 @@
     </abstract>
 
     <copyright>
-      <year>2008, 2009, 2010, 2011</year>
+      <year>2008, 2009, 2010, 2011, 2012</year>
       <holder>Curtis Gedak</holder>
     </copyright>
 
@@ -99,6 +99,15 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
     <revhistory>
+      <revision>
+        <revnumber>&appname; Manual V1.4</revnumber>
+        <date>February 2012</date>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+          <para role="annotations">Describes version 0.12.0 of &appname;</para>
+        </revdescription> 
+      </revision>
       <revision>
         <revnumber>&appname; Manual V1.3</revnumber>
         <date>January 2011</date>
@@ -1668,27 +1677,48 @@
           as the source partition.
           This can cause a problem when mount actions use the
           partition label or the UUID to identify the partition.
-          The problem is that the label and the UUID are not unique.
           </para>
           <para>
-          You are advised to do one of the following:
+          The problem is that the operating system will randomly
+          select to mount either the source, or the copy of the
+          partition.  For example, on the first mount action the
+          source partition might be mounted.  On the next mount action
+          the copy of the partition might be mounted.  Over time this
+          random nature of partition mounting might make files seem to
+          mysteriously appear or disappear depending upon which
+          partition is mounted.
+          </para>
+          <para>
+          To avoid the problem you are advised to do one of the
+          following:
             <itemizedlist>
               <listitem>
                 <para>
-                Change the UUID of the partition.
-                See <xref linkend="gparted-changing-partition-uuid"/>.
-                </para>
-                <para>
-                If the partition label is not blank, change the label
-                of the partition.
-                See <xref linkend="gparted-setting-partition-label"/>.
+                After you have applied the copy operation:
+                  <orderedlist>
+                    <listitem>
+                      <para>
+                      Change the UUID of the partition.
+                      See <xref linkend="gparted-changing-partition-uuid"/>.
+                      </para>
+                    </listitem>
+                    <listitem>
+                      <para>
+                      If the partition label is not blank, change the
+                      label of the partition.
+                      See <xref linkend="gparted-setting-partition-label"/>.
+                      </para>
+               </listitem>
+                  </orderedlist>
                 </para>
               </listitem>
               <listitem>
                 <para>
                 Use some other method to ensure that the source
-                partition and the copy of the source partition
-                are not used on the same computer at the same time.
+                partition and the copy of the partition are not used
+                on the same computer at the same time.  For example,
+                if the copy of the partition is on a separate drive
+                then remove the drive from the computer.
                 </para>
               </listitem>
             </itemizedlist>
