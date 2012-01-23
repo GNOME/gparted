@@ -71,7 +71,7 @@ void SWRaid::load_swraid_cache()
 				Utils::tokenize( output, temp_arr, "\n" ) ;
 				for ( unsigned int k = 0; k < temp_arr .size(); k++ )
 				{
-					Glib::ustring temp = Utils::regexp_label( output, "^[^/]*(/dev/[^\t ]*)" ) ;
+					Glib::ustring temp = Utils::regexp_label( temp_arr[k], "^[^/]*(/dev/[^\t ]*)" ) ;
 					if ( temp .size() > 0 )
 						swraid_devices .push_back( temp ) ;
 				}
