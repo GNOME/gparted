@@ -1586,7 +1586,8 @@ void GParted_Core::LP_set_used_sectors( Partition & partition )
 				constraint = ped_file_system_get_resize_constraint( fs ) ;
 				if ( constraint )
 				{
-					partition .Set_Unused( partition .get_sector_length() - constraint ->min_size ) ;
+					partition .set_sector_usage( fs ->geom ->length,
+					                             fs ->geom ->length - constraint ->min_size ) ;
 					
 					ped_constraint_destroy( constraint );
 				}
