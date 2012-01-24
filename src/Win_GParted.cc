@@ -1542,7 +1542,9 @@ void Win_GParted::activate_resize()
 			Add_Operation( operation ) ;
 
 			//Display notification if move operation has been queued
-			if ( operation ->partition_original .sector_start != operation ->partition_new .sector_start )
+			if (   operation ->partition_original .sector_start != operation ->partition_new .sector_start
+			    && operation ->partition_original .type != TYPE_EXTENDED
+			   )
 			{
 				//Warn that move operation might break boot process
 				Gtk::MessageDialog dialog( *this
