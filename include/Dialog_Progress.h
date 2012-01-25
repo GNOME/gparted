@@ -50,7 +50,7 @@ private:
 	void on_signal_show() ;
 	void on_expander_changed() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
-	static void *static_pthread_apply_operation( void * p_dialog_progress ) ;
+	void thread_apply_operation();
 	void on_cancel() ;
 	void on_save() ;
 	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
@@ -66,6 +66,7 @@ private:
 	Gtk::TreeRow treerow ;
 	Gtk::ScrolledWindow scrolledwindow ;
 	Gtk::Expander expander_details ;
+	Gtk::Button *cancelbutton;
 	
 	Glib::RefPtr<Gdk::Pixbuf> icon_execute ;
 	Glib::RefPtr<Gdk::Pixbuf> icon_succes ;
@@ -93,7 +94,6 @@ private:
 	std::vector<Operation *> operations ;
 	OperationDetail operationdetail ;
 	bool succes, cancel;
-	pthread_t pthread ;
 	double fraction ;
 	unsigned int t, warnings ;
 	sigc::connection pulsetimer;

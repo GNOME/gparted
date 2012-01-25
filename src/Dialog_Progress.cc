@@ -110,7 +110,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		vbox ->set_spacing(5);
 	}
 
-	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
+	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
@@ -217,8 +217,11 @@ void Dialog_Progress::on_signal_show()
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 		
 		//and start..
-		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
+		Glib::Thread::create( sigc::mem_fun(
+					*this, &Dialog_Progress::thread_apply_operation ),
+				      false );
 		Gtk::Main::run();
+
 		//set status (succes/error) for this operation
 		operations[ t ] ->operation_detail .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	}
@@ -227,8 +230,8 @@ void Dialog_Progress::on_signal_show()
 	this ->add_button( _("_Save Details"), Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
 	
 	//replace 'cancel' with 'close'
-	std::vector<Gtk::Widget *> children = this ->get_action_area() ->get_children() ;
-	this ->get_action_area() ->remove( * children .back() ) ;
+	delete cancelbutton;
+	cancelbutton = 0;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
 
 	pulsetimer.disconnect();
@@ -302,15 +305,10 @@ static bool _mainquit( void *dummy )
 	return false;
 }
 
-void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 
+void Dialog_Progress::thread_apply_operation()
 {
-	Dialog_Progress *dp = static_cast<Dialog_Progress *>( p_dialog_progress ) ;
-	
-	dp ->succes = dp ->signal_apply_operation .emit( dp ->operations[ dp ->t ] ) ;
-	
+	succes = signal_apply_operation.emit( operations[t] );
 	g_idle_add( (GSourceFunc)_mainquit, NULL );
-
-	return NULL ;
 }
 
 void Dialog_Progress::on_cancel()
@@ -329,10 +327,8 @@ void Dialog_Progress::on_cancel()
 	
 	if ( dialog .run() == Gtk::RESPONSE_CANCEL )
 	{
-		pthread_cancel( pthread ) ;
-		cancel = true ;
-		Gtk::Main::quit();
-		succes = false ;
+		cancel = true;
+		cancelbutton->set_sensitive( false );
 	}
 }
 
@@ -490,6 +486,7 @@ bool Dialog_Progress::on_delete_event( GdkEventAny * event )
 
 Dialog_Progress::~Dialog_Progress()
 {
+	delete cancelbutton;
 }
 
 
