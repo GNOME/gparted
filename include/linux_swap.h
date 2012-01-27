@@ -28,6 +28,8 @@ namespace GParted
 class linux_swap : public FileSystem
 {
 public:
+	virtual const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
+
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;

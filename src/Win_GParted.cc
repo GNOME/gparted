@@ -303,6 +303,7 @@ void Win_GParted::init_toolbar()
 void Win_GParted::init_partition_menu() 
 {
 	int index = 0 ;
+
 	//fill menu_partition
 	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU ) );
 	menu_partition .items() .push_back( 
@@ -356,7 +357,8 @@ void Win_GParted::init_partition_menu()
 	index++ ;
 	
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("Unmount"),
+			//This is a placeholder text. It will be replaced with some other text before it is used
+			Gtk::Menu_Helpers::MenuElem( "--placeholder--",
 						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
 	MENU_TOGGLE_MOUNT_SWAP = index++ ;
 		
@@ -903,8 +905,8 @@ void Win_GParted::set_valid_operations()
 	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_partition( false ) ;
 	allow_change_uuid( false ); allow_info( false ) ;
 	
-       	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
-		->set_label( _("_Unmount") ) ;
+	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+		->set_label( FileSystem::get_generic_text ( CTEXT_DEACTIVATE_FILESYSTEM ) ) ;
 
 	menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .show() ;
 	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
@@ -920,34 +922,37 @@ void Win_GParted::set_valid_operations()
 	if ( selected_partition .type != GParted::TYPE_UNALLOCATED && selected_partition .status == GParted::STAT_REAL )
 		allow_manage_flags( true ) ; 
 
-	//deal with swap...
-	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
-	{
-		if ( selected_partition .status == GParted::STAT_REAL )
-			allow_toggle_swap_mount_state( true ) ;
+	//Activate / deactivate
+	if ( gparted_core .get_filesystem_object ( selected_partition .filesystem ) )
+		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+			->set_label( gparted_core .get_filesystem_object ( selected_partition .filesystem )
+			             ->get_custom_text (  selected_partition .busy
+			                                ? CTEXT_DEACTIVATE_FILESYSTEM
+			                                : CTEXT_ACTIVATE_FILESYSTEM
+			                               )
+			           ) ;
+	else
+		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+			->set_label( FileSystem::get_generic_text (  selected_partition .busy
+			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
+			                                           : CTEXT_ACTIVATE_FILESYSTEM )
+			                                          ) ;
 
-		if ( selected_partition .busy )
-		{
-			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
-				->set_label( _("_Swapoff") ) ;
+	//Only permit mount/unmount, swapon/swapoff, ... if action is available
+	if (    selected_partition .status == GParted::STAT_REAL
+	     && selected_partition .type != GParted::TYPE_EXTENDED
+	     && selected_partition .filesystem != GParted::FS_LVM2_PV
+	     && (    selected_partition .busy
+	          || selected_partition .get_mountpoints() .size() /* Have mount point(s) */
+	          || selected_partition .filesystem == GParted::FS_LINUX_SWAP
+	        )
+	   )
+		allow_toggle_swap_mount_state( true ) ;
 
-			return ;
-		}
-		else
-       			dynamic_cast<Gtk::Label*>(menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() ) 
-				->set_label( _("_Swapon") ) ;
-	}
-
-	//only unmount is allowed (if ! extended)
-	if ( selected_partition .busy )	
-	{
-		if ( selected_partition .type != GParted::TYPE_EXTENDED    &&
-		     selected_partition .filesystem != GParted::FS_LVM2_PV    )
-			allow_toggle_swap_mount_state( true ) ;
-
+	//only unmount/swapoff/... is allowed if busy
+	if ( selected_partition .busy )
 		return ;
-	}
-	
+
 	//UNALLOCATED
 	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
 	{
@@ -1050,8 +1055,6 @@ void Win_GParted::set_valid_operations()
 		    && selected_partition .get_mountpoints() .size()
 		   )
 		{
-			allow_toggle_swap_mount_state( true ) ;
-			
 			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
 			menu ->items() .clear() ;
 			for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
