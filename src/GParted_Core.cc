@@ -92,71 +92,48 @@ GParted_Core::GParted_Core()
 
 void GParted_Core::find_supported_filesystems()
 {
+	std::map< FILESYSTEM, FileSystem * >::iterator f ;
+
+	// TODO: determine whether it is safe to initialize this only once
+	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
+		if ( f ->second )
+			delete f ->second ;
+	}
+
+	FILESYSTEM_MAP .clear() ;
+
+	FILESYSTEM_MAP[ FS_BTRFS ]	= new btrfs() ;
+	FILESYSTEM_MAP[ FS_EXFAT ]	= new exfat() ;
+	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2() ;
+	FILESYSTEM_MAP[ FS_EXT3 ]	= new ext3() ;
+	FILESYSTEM_MAP[ FS_EXT4 ]	= new ext4() ;
+	FILESYSTEM_MAP[ FS_FAT16 ]	= new fat16() ;
+	FILESYSTEM_MAP[ FS_FAT32 ]	= new fat32() ;
+	FILESYSTEM_MAP[ FS_HFS ]	= new hfs() ;
+	FILESYSTEM_MAP[ FS_HFSPLUS ]	= new hfsplus() ;
+	FILESYSTEM_MAP[ FS_JFS ]	= new jfs() ;
+	FILESYSTEM_MAP[ FS_LINUX_SWAP ]	= new linux_swap() ;
+	FILESYSTEM_MAP[ FS_LVM2_PV ]	= new lvm2_pv() ;
+	FILESYSTEM_MAP[ FS_NILFS2 ]	= new nilfs2() ;
+	FILESYSTEM_MAP[ FS_NTFS ]	= new ntfs() ;
+	FILESYSTEM_MAP[ FS_REISER4 ]	= new reiser4() ;
+	FILESYSTEM_MAP[ FS_REISERFS ]	= new reiserfs() ;
+	FILESYSTEM_MAP[ FS_UFS ]	= new ufs() ;
+	FILESYSTEM_MAP[ FS_XFS ]	= new xfs() ;
+	FILESYSTEM_MAP[ FS_LUKS ]	= NULL ;
+	FILESYSTEM_MAP[ FS_UNKNOWN ]	= NULL ;
+
 	FILESYSTEMS .clear() ;
-	
+
 	FS fs_notsupp;
-
-	btrfs fs_btrfs;
-	FILESYSTEMS .push_back( fs_btrfs .get_filesystem_support() ) ;
-
-	exfat fs_exfat;
-	FILESYSTEMS .push_back( fs_exfat .get_filesystem_support() ) ;
-
-	ext2 fs_ext2;
-	FILESYSTEMS .push_back( fs_ext2 .get_filesystem_support() ) ;
-	
-	ext3 fs_ext3;
-	FILESYSTEMS .push_back( fs_ext3 .get_filesystem_support() ) ;
-
-	ext4 fs_ext4;
-	FILESYSTEMS .push_back( fs_ext4 .get_filesystem_support() ) ;
-
-	fat16 fs_fat16;
-	FILESYSTEMS .push_back( fs_fat16 .get_filesystem_support() ) ;
-	
-	fat32 fs_fat32;
-	FILESYSTEMS .push_back( fs_fat32 .get_filesystem_support() ) ;
-	
-	hfs fs_hfs;
-	FILESYSTEMS .push_back( fs_hfs .get_filesystem_support() ) ;
-	
-	hfsplus fs_hfsplus;
-	FILESYSTEMS .push_back( fs_hfsplus .get_filesystem_support() ) ;
-	
-	jfs fs_jfs;
-	FILESYSTEMS .push_back( fs_jfs .get_filesystem_support() ) ;
-	
-	linux_swap fs_linux_swap;
-	FILESYSTEMS .push_back( fs_linux_swap .get_filesystem_support() ) ;
-
-	lvm2_pv fs_lvm2_pv;
-	FILESYSTEMS .push_back( fs_lvm2_pv .get_filesystem_support() ) ;
-
-	nilfs2 fs_nilfs2;
-	FILESYSTEMS .push_back( fs_nilfs2 .get_filesystem_support() ) ;
-
-	ntfs fs_ntfs;
-	FILESYSTEMS .push_back( fs_ntfs .get_filesystem_support() ) ;
-	
-	reiser4 fs_reiser4;
-	FILESYSTEMS .push_back( fs_reiser4 .get_filesystem_support() ) ;
-	
-	reiserfs fs_reiserfs;
-	FILESYSTEMS .push_back( fs_reiserfs .get_filesystem_support() ) ;
-	
-	ufs fs_ufs;
-	FILESYSTEMS .push_back( fs_ufs .get_filesystem_support() ) ;
-
-	xfs fs_xfs;
-	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
-
-	//luks encryption-- not a file system
-	fs_notsupp .filesystem = GParted::FS_LUKS ;
-	FILESYSTEMS .push_back( fs_notsupp ) ;
-
-	//unknown file system (default when no match is found)
-	fs_notsupp .filesystem = GParted::FS_UNKNOWN ;
-	FILESYSTEMS .push_back( fs_notsupp ) ;
+	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
+		if ( f ->second )
+			FILESYSTEMS .push_back( f ->second ->get_filesystem_support() ) ;
+		else {
+			fs_notsupp .filesystem = f ->first ;
+			FILESYSTEMS .push_back( fs_notsupp ) ;
+		}
+	}
 }
 
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
@@ -3008,32 +2985,17 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 
 bool GParted_Core::set_proper_filesystem( const FILESYSTEM & filesystem )
 {
-	delete p_filesystem;
-		
-	switch( filesystem )
-	{
-		case FS_BTRFS		: p_filesystem = new btrfs() ;	 	break ;
-		case FS_EXFAT		: p_filesystem = new exfat() ;	 	break ;
-		case FS_EXT2		: p_filesystem = new ext2() ;	 	break ;
-		case FS_EXT3		: p_filesystem = new ext3() ; 		break ;
-		case FS_EXT4		: p_filesystem = new ext4() ; 		break ;
-		case FS_LINUX_SWAP	: p_filesystem = new linux_swap() ; 	break ;
-		case FS_LVM2_PV		: p_filesystem = new lvm2_pv() ;	break ;
-		case FS_FAT16		: p_filesystem = new fat16() ; 		break ;
-		case FS_FAT32		: p_filesystem = new fat32() ; 		break ;
-		case FS_NILFS2		: p_filesystem = new nilfs2() ;		break ;
-		case FS_NTFS		: p_filesystem = new ntfs() ; 		break ;
-		case FS_REISERFS	: p_filesystem = new reiserfs() ; 	break ;
-		case FS_REISER4		: p_filesystem = new reiser4() ;	break ;
-		case FS_XFS		: p_filesystem = new xfs() ; 		break ;
-		case FS_JFS		: p_filesystem = new jfs() ; 		break ;
-		case FS_HFS		: p_filesystem = new hfs() ; 		break ;
-		case FS_HFSPLUS		: p_filesystem = new hfsplus() ; 	break ;
-		case FS_UFS		: p_filesystem = new ufs() ;	 	break ;
-		default			: p_filesystem = NULL ;
-	}
+	p_filesystem = get_filesystem_object( filesystem ) ;
 
 	return p_filesystem ;
+}
+
+FileSystem * GParted_Core::get_filesystem_object( const FILESYSTEM & filesystem )
+{
+	if ( FILESYSTEM_MAP .count( filesystem ) )
+	    return FILESYSTEM_MAP[ filesystem ] ;
+	else
+	    return NULL ;
 }
 
 #ifndef HAVE_LIBPARTED_3_0_0_PLUS

@@ -58,6 +58,7 @@ public:
 	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
 
+	FileSystem * get_filesystem_object( const FILESYSTEM & filesystem ) ;
 private:
 	//detectionstuff..
 	void init_maps() ;
@@ -201,6 +202,7 @@ private:
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
 	std::vector<FS> FILESYSTEMS ;
+	std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
 	FileSystem * p_filesystem ;
 	std::vector<PedPartitionFlag> flags;
 	Glib::ustring temp ;
