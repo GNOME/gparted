@@ -91,6 +91,11 @@ enum SIZE_UNIT
 	UNIT_TIB	= 5
 } ;
 
+enum CUSTOM_TEXT
+{
+	CTEXT_NONE,
+} ;
+
 //struct to store file system information
 struct FS
 {

@@ -34,6 +34,9 @@ public:
 	FileSystem() ;
 	virtual ~FileSystem() {}
 
+	virtual const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
+	static const Glib::ustring get_generic_text( CUSTOM_TEXT ttype, int index = 0 ) ;
+
 	virtual FS get_filesystem_support() = 0 ;
 	virtual void set_used_sectors( Partition & partition ) = 0 ;
 	virtual void read_label( Partition & partition ) = 0 ;

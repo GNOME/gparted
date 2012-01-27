@@ -27,6 +27,16 @@ FileSystem::FileSystem()
 {
 }
 
+const Glib::ustring FileSystem::get_custom_text( CUSTOM_TEXT ttype, int index )
+{
+	return get_generic_text( ttype, index ) ;
+}
+
+const Glib::ustring FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index )
+{
+	return "" ;
+}
+
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
