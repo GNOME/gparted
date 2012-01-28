@@ -407,8 +407,8 @@ Gtk::Menu * Win_GParted::create_format_menu()
 	{
 		//Skip luks, lvm2, and unknown because these are not file systems
 		if (
-		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS ||
-		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LVM2 ||
+		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS    ||
+		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LVM2_PV ||
 		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_UNKNOWN
 		   )
 			continue ;

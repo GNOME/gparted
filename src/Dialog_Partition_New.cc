@@ -49,7 +49,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	for ( unsigned int t = this ->FILESYSTEMS .size( ) ; t > 0 ; t-- )
 	{
 		if ( this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN ||
-		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
+		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2_PV ||
 		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS
 		   )
 			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;

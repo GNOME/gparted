@@ -72,11 +72,11 @@ enum FILESYSTEM
 	FS_HFSPLUS	= 18,
 	FS_UFS		= 19,
 	FS_NILFS2	= 20,
+	FS_LVM2_PV	= 21,
 
-	FS_USED		= 21,
-	FS_UNUSED	= 22,
+	FS_USED		= 22,
+	FS_UNUSED	= 23,
 
-	FS_LVM2		= 23,
 	FS_LUKS		= 24
 } ;
 

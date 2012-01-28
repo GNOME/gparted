@@ -146,7 +146,7 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEMS .push_back( fs_xfs .get_filesystem_support() ) ;
 
 	//lvm2 physical volume -- not a file system
-	fs_notsupp .filesystem = GParted::FS_LVM2 ;
+	fs_notsupp .filesystem = GParted::FS_LVM2_PV ;
 	FILESYSTEMS .push_back( fs_notsupp ) ;
 
 	//luks encryption-- not a file system
@@ -1197,7 +1197,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 			temp = _( "Logical Volume Management is not yet supported." ) ;
 			temp += "\n" ;
 			partition_temp .messages .push_back( temp ) ;
-			return GParted::FS_LVM2 ;
+			return GParted::FS_LVM2_PV ;
 		}
 	}
 
@@ -1344,7 +1344,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		       partitions[ t ] .type == GParted::TYPE_LOGICAL
 		     ) &&
 		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
+		     partitions[ t ] .filesystem != GParted::FS_LVM2_PV    &&
 		     partitions[ t ] .filesystem != GParted::FS_LUKS
 		   )
 		{
@@ -1411,8 +1411,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_LUKS &&
-		     partitions[ t ] .filesystem != GParted::FS_LVM2 &&
+		     partitions[ t ] .filesystem != GParted::FS_LUKS       &&
+		     partitions[ t ] .filesystem != GParted::FS_LVM2_PV    &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
 		   )
 		{

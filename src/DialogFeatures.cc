@@ -125,8 +125,8 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	{
 		//Skip luks, lvm2, and unknown because these are not file systems
 		if (
-		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS ||
-		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2 ||
+		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS    ||
+		     FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2_PV ||
 		     FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN
 		   )
 			continue ;

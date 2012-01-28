@@ -93,7 +93,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UFS			: return "#D1940C" ;	//accent yellow dark
 		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
-		case FS_LVM2		: return "#CC9966" ;	// ~ medium brown
+		case FS_LVM2_PV		: return "#CC9966" ;	// ~ medium brown
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 
 		default				: return "#000000" ;
@@ -160,7 +160,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UFS		: return "ufs" ;
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
-		case FS_LVM2		: return "lvm2" ;
+		case FS_LVM2_PV		: return "lvm2" ;
 		case FS_LUKS		: return "crypt-luks" ;
 
 		default			: return "" ;
