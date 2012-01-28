@@ -21,6 +21,7 @@ EXTRA_DIST = \
 	FS_Info.h				\
 	GParted_Core.h    		\
 	HBoxOperations.h    		\
+	LVM2_PV_Info.h			\
 	Operation.h 			\
 	OperationCopy.h			\
 	OperationCheck.h		\

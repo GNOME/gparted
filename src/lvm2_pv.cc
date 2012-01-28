@@ -16,6 +16,7 @@
  */
 
 
+#include "../include/LVM2_PV_Info.h"
 #include "../include/lvm2_pv.h"
 
 namespace GParted
@@ -26,7 +27,8 @@ FS lvm2_pv::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_LVM2_PV ;
 
-	if ( ! Glib::find_program_in_path( "lvm" ) .empty() )
+	LVM2_PV_Info lvm2_pv_info ;
+	if ( lvm2_pv_info .is_lvm2_pv_supported() )
 	{
 		fs .read = GParted::FS::EXTERNAL ;
 	}
@@ -36,19 +38,10 @@ FS lvm2_pv::get_filesystem_support()
 
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
-	if ( ! Utils::execute_command( "lvm pvs --units b --noheadings --nosuffix -o pv_free " + partition .get_path(), output, error, true ) )
-	{
-		gdouble free_bytes = g_ascii_strtod( output .c_str(), NULL ) ;
-		partition .Set_Unused( Utils::round( free_bytes / double(partition .sector_size) ) ) ;
-	}
-	else
-	{
-		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
-
-		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
-	}
+	LVM2_PV_Info lvm2_pv_info ;
+	Byte_Value free_bytes = lvm2_pv_info .get_free_bytes( partition .get_path() ) ;
+	if ( free_bytes >= 0 )
+		partition .Set_Unused( Utils::round( double(free_bytes) / double(partition .sector_size) ) ) ;
 }
 
 void lvm2_pv::read_label( Partition & partition )

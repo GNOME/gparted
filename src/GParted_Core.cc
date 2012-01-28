@@ -21,6 +21,7 @@
 #include "../include/DMRaid.h"
 #include "../include/SWRaid.h"
 #include "../include/FS_Info.h"
+#include "../include/LVM2_PV_Info.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCreate.h"
 #include "../include/OperationDelete.h"
@@ -172,6 +173,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	SWRaid swraid( true ) ;    //Refresh cache of swraid device information
+	LVM2_PV_Info lvm2_pv_info( true ) ;	//Refresh cache of LVM2 PV information
 	
 	init_maps() ;
 	

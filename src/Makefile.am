@@ -31,6 +31,7 @@ gpartedbin_SOURCES = \
 	FS_Info.cc				\
 	GParted_Core.cc			\
 	HBoxOperations.cc		\
+	LVM2_PV_Info.cc			\
 	Operation.cc			\
 	OperationChangeUUID.cc		\
 	OperationCopy.cc		\

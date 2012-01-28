@@ -544,6 +544,30 @@ void Utils::tokenize( const Glib::ustring& str,
 	}
 }
 
+//Split string on every delimiter, appending to the vector.  Inspired by:
+//  http://stackoverflow.com/questions/236129/how-to-split-a-string-in-c/3616605#3616605
+//  E.g. using Utils::split(str, result, ":") for str -> result
+//  "" -> []   "a" -> ["a"]   "::" -> ["","",""]   ":a::bb" -> ["","a","","bb"]
+void Utils::split( const Glib::ustring& str,
+                   std::vector<Glib::ustring>& result,
+                   const Glib::ustring& delimiters     )
+{
+	//Special case zero length string to empty vector
+	if ( str == "" )
+		return ;
+	Glib::ustring::size_type fromPos  = 0 ;
+	Glib::ustring::size_type delimPos = str.find_first_of( delimiters );
+	while ( Glib::ustring::npos != delimPos )
+	{
+		Glib::ustring word( str, fromPos, delimPos - fromPos ) ;
+		result .push_back( word ) ;
+		fromPos = delimPos + 1 ;
+		delimPos = str.find_first_of( delimiters, fromPos ) ;
+	}
+	Glib::ustring word( str, fromPos ) ;
+	result. push_back( word ) ;
+}
+
 // Converts a Glib::ustring into a int
 int Utils::convert_to_int(const Glib::ustring & src)
 {
