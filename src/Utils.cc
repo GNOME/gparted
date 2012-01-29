@@ -160,7 +160,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UFS		: return "ufs" ;
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
-		case FS_LVM2_PV		: return "lvm2" ;
+		case FS_LVM2_PV		: return "lvm2 pv" ;
 		case FS_LUKS		: return "crypt-luks" ;
 
 		default			: return "" ;
@@ -181,6 +181,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_HFSPLUS     : return "hfsprogs" ;
 		case FS_JFS         : return "jfsutils" ;
 		case FS_LINUX_SWAP  : return "util-linux" ;
+		case FS_LVM2_PV     : return "lvm2" ;
 		case FS_NILFS2      : return "nilfs-utils" ;
 		case FS_NTFS        : return "ntfsprogs" ;
 		case FS_REISER4     : return "reiser4progs" ;

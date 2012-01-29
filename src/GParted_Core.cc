@@ -1107,9 +1107,6 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		fs_type = fs_info.get_fs_type( get_partition_path( lp_partition ) ) ;
 	}
 
-	Glib::ustring lvm_warning = _( "Logical Volume Management is not yet supported." ) ;
-	lvm_warning += "\n" ;
-
 	if ( ! fs_type .empty() )
 	{
 		if ( fs_type == "extended" )
@@ -1133,10 +1130,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		          fs_type == "swap" )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( fs_type == "LVM2_member" )
-		{
-			partition_temp .messages .push_back( lvm_warning ) ;
 			return GParted::FS_LVM2_PV ;
-		}
 		else if ( fs_type == "fat16" )
 			return GParted::FS_FAT16 ;
 		else if ( fs_type == "fat32" )
@@ -1207,7 +1201,6 @@ GParted::FILESYSTEM GParted_Core::get_filesystem()
 		if (    0 == memcmp( magic1, "LABELONE", 8 )
 		     && 0 == memcmp( magic2, "LVM2", 4 ) )
 		{
-			partition_temp .messages .push_back( lvm_warning ) ;
 			return GParted::FS_LVM2_PV ;
 		}
 	}
