@@ -268,7 +268,7 @@
       On startup, <application>&app;</application> will scan your
       computer for disk devices.
       </para>
-	</sect2>
+    </sect2>
 
 <!-- ============= When You Start gparted ============================ -->
     <sect2 id="gparted-when-you-start">
@@ -1044,6 +1044,11 @@
           the partition when mounting the partition.
           </para>
           <para>
+          Note that using UUIDs is not a panacea. See
+          <xref linkend="gparted-changing-partition-uuid"/> for
+          more information.
+          </para>
+          <para>
           Changes in a device name might adversely affect the
           following files:
             <itemizedlist>
@@ -1141,13 +1146,187 @@
               <para>
               Choose:
               <menuchoice><guimenu>Partition</guimenu>
-	      <guimenuitem>New UUID</guimenuitem></menuchoice>.
-	      The application displays the set a new random UUID
-	      operation in the <guilabel>Operations Pending</guilabel>
-	      pane.
+              <guimenuitem>New UUID</guimenuitem></menuchoice>.
+              The application displays the set a new random UUID
+              operation in the <guilabel>Operations Pending</guilabel>
+              pane.
               </para>
+              <warning>
+                <para>
+                Changing the UUID of an existing filesystem may affect the ability of a
+                Linux system to boot. On Windows, it may affect the validity of the
+                Windows Product Activation key.
+                </para>
+                <para>
+                Please read (one of) the following sections for more information
+                if this may be a concern.
+                </para>
+              </warning>
+              <note>
+                <para>
+                For FAT and NTFS filesystems, what GParted names, and treats as, the
+                UUID, is in fact its Volume Serial Number.
+                </para>
+                <para>
+                An NTFS filesystem also has a real UUID, but that is a different number,
+                which cannot and should not be changed - at all.
+                </para>
+              </note>
             </listitem>
           </orderedlist>
+          <sect4 id="gparted-linux-uuid-issues">
+            <title>UUIDs in Linux</title>
+            <para>
+            Modern Linux systems are usually configured to use UUIDs to locate
+            and identify the different filesystems or partitions when booting. Some
+            partition types, like LVM physical volumes, are <emphasis>only</emphasis>
+            identified using their UUID.  Making changes to partitions may therefore
+            affect the Linux boot process in different ways:
+            </para>
+            <para>
+              <variablelist>
+                <varlistentry>
+                  <term>When copying a partition</term>
+                  <listitem>
+                    <para>
+                    When a copy was made of a partition, and both the original
+                    and the copy are ever present on the same machine at the same
+                    time, Linux may (will)
+                    not be able to predictably identify which is which. This is caused
+                    by the fact that the UUID is used for identification, and
+                    both partitions, being copies, have the same UUID.
+                    </para>
+                    <para>
+                    If such confusion happens at boot time, the results will be
+                    unpredictable. One or the other will essentially be selected at random,
+                    and possibly a different one at each boot. Over time, this random
+                    nature of partition selection might make files seem to mysteriously
+                    appear or disappear depending upon which partition is selected. It may
+                    also cause severe data corruption or loss.
+                    </para>
+                    <para>
+                    This can, and should, be avoided by changing the UUID of the copy. It
+                    is safest to change the UUID of a copied partition at all times, as both
+                    partitions, or other copies of it, may meet again on the same computer,
+                    with unexpected and unpredictable
+                    results.
+                    </para>
+                  </listitem>
+                </varlistentry>
+                <varlistentry>
+                  <term>When changing the UUID of a partition</term>
+                  <listitem>
+                    <para>
+                    When changing he UUID of a partition, Linux may no longer be able to
+                    correctly identify the partition.  If the partition is needed when
+                    booting, this may result in a failure to boot.
+                    </para>
+                    <para>
+                    Do not change a partition's UUID if that partition is not intended to be
+                    a copy of an existing partition, unless you know what you are doing,
+                    and prepared to deal with the consequences.
+                    </para>
+                    <para>
+                    Before changing UUIDs of Windows partitions, please be sure to
+                    read <xref linkend="gparted-windows-uuid-issues"/>.
+                    </para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </para>
+          </sect4>
+          <sect4 id="gparted-windows-uuid-issues">
+            <title>UUIDs in Windows</title>
+            <para>
+            On NTFS and FAT filesystems, the number that GParted names, and treats as
+            UUID, is in fact the Volume Serial Number.
+            </para>
+            <warning>
+              <para>
+              When changing the UUID / Volume Serial Number on a partition that will
+              (continue to) be used on the same hardware, using the same Windows licence,
+              please read this section carefully.
+              </para>
+              <para>
+              The information in this section is provided as is.
+              It is believed to be accurate, but it might in fact be incorrect, or subtly
+              misleading. Use GParted at your own risk. If you cannot afford to take
+              the risk of making Windows unbootable and/or loosing your data, then do
+              not use GParted.
+              </para>
+            </warning>
+            <para>
+            Changing the Volume Serial Number of an NTFS or FAT partition that is used by Windows, may
+            have different consequences depending on the kind of partition in question.
+            </para>
+            <para>
+              <variablelist>
+                <varlistentry>
+                  <term>UUIDs on Windows system partitions</term>
+                  <listitem>
+                    <para>
+                    On Windows, the Volume Serial Number of the System partition is
+                    usually used<footnote>
+                         <para>
+                         In atypical cases, the Volume Serial Number of another partition might
+                         be the one that is used instead.
+                         </para>
+                       </footnote>
+                    for Windows Product Activation (WPA). The first modification of this number will
+                    count as a change for WPA. Subsequent modifications are 'free'.
+                    </para>
+                    <para>
+                    Too many such WPA-affecting changes, like replacing the primary harddisk
+                    or the processor, or adding memory, will invalidate the WPA key. In that
+                    case, windows needs to be re-activated.
+                    </para>
+                    <para>
+                    For NTFS filesystems only, GParted can, and will, attempt to avoid making a
+                    change that could be WPA-affecting, by changing only half of the NTFS Volume
+                    Serial Number. Such a half-change should also be safe, in principle.
+                    Nevertheless, no guarantees can be given.
+                    </para>
+                    <para>
+                    As there is no easy way to revert a Volume Serial Number change (it will not,
+                    for instance, be included in a regular backup), it should not be changed
+                    casually, and not unless one is prepared to take the risk, and re-activate
+                    Windows when the change proved to be one too many for WPA.
+                    </para>
+                    <para>
+                    As long as a partition having the <emphasis>original</emphasis> Volume Serial
+                    Number is present at Windows boot time, WPA requirements should normally be
+                    satisfied, and no WPA change should be noted by Windows.
+                    </para>
+                </listitem>
+                  </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry>
+                  <term>UUIDs on data partitions</term>
+                  <listitem>
+                    <para>
+                    The NTFS or FAT Volume Serial Number on a data partition is not normally used
+                    for WPA, although there may be exceptions. Changing it should therefore not
+                    affect WPA.
+                    </para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+              <variablelist>
+                <varlistentry>
+                  <term>UUIDs on external storage media</term>
+                  <listitem>
+                    <para>
+                    On external storage media that are not permanently attached, and not present
+                    at Windows boot time, the Volume Serial Number is not (cannot be) used for
+                    WPA, and therefore the validity of the WPA key should not be affected when
+                    the Volume Serial Number is changed.
+                    </para>
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </para>
+          </sect4>
         </para>
       </sect3>
 

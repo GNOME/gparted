@@ -183,7 +183,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_LINUX_SWAP  : return "util-linux" ;
 		case FS_LVM2_PV     : return "lvm2" ;
 		case FS_NILFS2      : return "nilfs-utils" ;
-		case FS_NTFS        : return "ntfsprogs" ;
+		case FS_NTFS        : return "ntfsprogs / ntfs-3g" ;
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs" ;
 		case FS_UFS         : return "" ;

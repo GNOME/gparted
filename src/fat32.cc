@@ -17,6 +17,7 @@
  */
  
  
+#include "../include/fat16.h"
 #include "../include/fat32.h"
 
 /*****
@@ -28,6 +29,22 @@
 
 namespace GParted
 {
+
+const Glib::ustring ( & fat32::Change_UUID_Warning ) [] = fat16::Change_UUID_Warning ;
+
+const Glib::ustring fat32::get_custom_text( CUSTOM_TEXT ttype, int index )
+{
+	int i ;
+	switch ( ttype ) {
+		case CTEXT_CHANGE_UUID_WARNING :
+			for ( i = 0 ; i < index && Change_UUID_Warning[ i ] != "" ; i++ ) {
+				// Just iterate...
+			}
+			return Change_UUID_Warning [ i ] ;
+		default :
+			return FileSystem::get_custom_text( ttype, index ) ;
+	}
+}
 
 FS fat32::get_filesystem_support()
 {

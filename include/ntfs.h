@@ -28,6 +28,7 @@ namespace GParted
 class ntfs : public FileSystem
 {
 public:
+	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;
@@ -44,6 +45,8 @@ public:
 		   const Glib::ustring & dest_part_path,
 		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+
+	static const Glib::ustring Change_UUID_Warning [] ;
 };
 
 } //GParted

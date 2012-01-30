@@ -48,6 +48,9 @@ const Byte_Value MEBIBYTE=(KIBIBYTE * KIBIBYTE);
 const Byte_Value GIBIBYTE=(MEBIBYTE * KIBIBYTE);
 const Byte_Value TEBIBYTE=(GIBIBYTE * KIBIBYTE);
 
+const Glib::ustring UUID_RANDOM = _("(New UUID - will be randomly generated)") ;
+const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly generated)") ;
+
 enum FILESYSTEM
 {
 	FS_UNALLOCATED	= 0,
@@ -96,6 +99,7 @@ enum CUSTOM_TEXT
 	CTEXT_NONE,
 	CTEXT_ACTIVATE_FILESYSTEM,		// Activate text ('Mount', 'Swapon', ...)
 	CTEXT_DEACTIVATE_FILESYSTEM,		// Deactivate text ('Unmount', 'Swapoff', ...)
+	CTEXT_CHANGE_UUID_WARNING,		// Warning to print when changing UUIDs
 } ;
 
 //struct to store file system information

@@ -1748,10 +1748,17 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 
 bool GParted_Core::change_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	operationdetail .add_child( OperationDetail( String::ucompose(
-									_("Set UUID on %1 to a new, random value"),
-									 partition .get_path()
-								 ) ) ) ;
+	if ( partition .uuid == UUID_RANDOM_NTFS_HALF ) {
+		operationdetail .add_child( OperationDetail( String::ucompose(
+										_("Set half of the UUID on %1 to a new, random value"),
+										 partition .get_path()
+									 ) ) ) ;
+	} else {
+		operationdetail .add_child( OperationDetail( String::ucompose(
+										_("Set UUID on %1 to a new, random value"),
+										 partition .get_path()
+									 ) ) ) ;
+	}
 
 	bool succes = false ;
 	if ( partition .type != TYPE_EXTENDED )

@@ -22,6 +22,38 @@
 namespace GParted
 {
 
+const Glib::ustring ntfs::Change_UUID_Warning [] =  { _( "This may invalidate your Windows Activation key."
+						       )
+						    , _( "On FAT and NTFS filesystems, GParted"
+							 " uses the Volume Serial Number as UUID."
+							 " Changing the Volume Serial Number on the Windows"
+							 " system partition may invalidate the Windows Activation key."
+						       )
+						    , _( "External storage media and non-system partitions are normally safe."
+							 " GParted also attempts to avoid the problem by changing only"
+							 " half of the serial number, which should be safe as well."
+							 " Nevertheless, guarantees cannot be given."
+						       )
+						    , _( "Please read the manual for more information, and do not apply"
+							 " this change if you are not prepared to re-activate Windows"
+						       )
+						    ,    ""
+						    } ;
+
+const Glib::ustring ntfs::get_custom_text( CUSTOM_TEXT ttype, int index )
+{
+	int i ;
+	switch ( ttype ) {
+		case CTEXT_CHANGE_UUID_WARNING :
+			for ( i = 0 ; i < index && Change_UUID_Warning[ i ] != "" ; i++ ) {
+				// Just iterate...
+			}
+			return Change_UUID_Warning [ i ] ;
+		default :
+			return FileSystem::get_custom_text( ttype, index ) ;
+	}
+}
+
 FS ntfs::get_filesystem_support()
 {
 	FS fs ;
@@ -34,8 +66,21 @@ FS ntfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
+		Glib::ustring version ;
+
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
+
+		//Not all versions of ntfslabel support setting the Volume Serial Number
+		//The advanced (AR) release does as of the first 2012 release
+		//The stable release does not have it yet, at the time of this writing
+		//So: check for the presence of the command-line option.
+
+		//ntfslabel --help exits with non-zero error code (1)
+		Utils::execute_command( "ntfslabel --help ", output, error, false ) ;
+
+		if ( ! ( version = Utils::regexp_label( output, "--new-serial[[:blank:]]" ) ) .empty() )
+			fs .write_uuid = FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
@@ -110,6 +155,11 @@ void ntfs::read_uuid( Partition & partition )
 
 bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition .uuid == UUID_RANDOM_NTFS_HALF )
+		return ! execute_command( "ntfslabel --new-half-serial " + partition .get_path(), operationdetail ) ;
+	else
+		return ! execute_command( "ntfslabel --new-serial " + partition .get_path(), operationdetail ) ;
+
 	return true ;
 }
 

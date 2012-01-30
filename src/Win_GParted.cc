@@ -769,7 +769,10 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 	          operations[ first ]->partition_new == operations[ second ]->partition_original
 	        )
 	{
-		operations[ first ]->partition_new.uuid = operations[ second ]->partition_new.uuid;
+		// Changing half the UUID should not override changing all of it
+		if ( operations[ first ]->partition_new.uuid == UUID_RANDOM_NTFS_HALF ||
+		     operations[ second ]->partition_new.uuid == UUID_RANDOM )
+			operations[ first ]->partition_new.uuid = operations[ second ]->partition_new.uuid;
 		operations[ first ]->create_description() ;
 		remove_operation( second );
 
@@ -2369,6 +2372,25 @@ void Win_GParted::activate_label_partition()
 	
 void Win_GParted::activate_change_uuid()
 {
+	if ( gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING ) != "" ) {
+		int i ;
+		Gtk::MessageDialog dialog( *this
+					 , gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, 0 )
+					 , false
+					 , Gtk::MESSAGE_WARNING
+					 , Gtk::BUTTONS_OK
+					 , true
+					 ) ;
+		Glib::ustring tmp_msg = "" ;
+		for ( i = 1 ; gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, i ) != "" ; i++ ) {
+			if ( i > 1 )
+				tmp_msg += "\n\n" ;
+			tmp_msg += gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, i ) ;
+		}
+		dialog .set_secondary_text( tmp_msg ) ;
+		dialog .run() ;
+	}
+
 	//Make a duplicate of the selected partition (used in UNDO)
 	Partition part_temp ;
 	part_temp .Set( devices[ current_device ] .get_path(),
@@ -2383,7 +2405,14 @@ void Win_GParted::activate_change_uuid()
 			false ) ;
 
 	part_temp .label = selected_partition .label ;
-	part_temp .uuid = _("(New UUID - will be randomly generated)") ;
+
+	if ( part_temp .filesystem == GParted::FS_NTFS )
+		//Explicitly ask for half, so that the user will be aware of it
+		//Also, keep this kind of policy out of the NTFS code.
+		part_temp .uuid = UUID_RANDOM_NTFS_HALF ;
+	else
+		part_temp .uuid = UUID_RANDOM ;
+
 
 	Operation * operation = new OperationChangeUUID( devices[ current_device ],
 								selected_partition, part_temp ) ;
