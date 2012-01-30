@@ -29,21 +29,20 @@
 namespace GParted
 {
 
-const Glib::ustring fat16::Change_UUID_Warning [] = { _( "This may invalidate your Windows Activation key."
-						       )
-						    , _( "On FAT and NTFS filesystems, GParted"
-							 " uses the Volume Serial Number as UUID."
-							 " Changing the Volume Serial Number on the Windows"
-							 " system partition may invalidate the Windows Activation key."
-						       )
-						    , _( "External storage media and non-system partitions are normally safe,"
-							 " but guarantees cannot be given."
-						       )
-						    , _( "Please read the manual for more information, and do not apply"
-							 " this change if you are not prepared to re-activate Windows"
-						       )
-						    ,    ""
-						    } ;
+const Glib::ustring fat16::Change_UUID_Warning [] =
+	{ _( "Changing the UUID might invalidate the Windows Product Activation (WPA) key."
+	   )
+	, _( "On FAT and NTFS file systems, the"
+	     " Volume Serial Number is treated as the UUID."
+	     " Changing the Volume Serial Number on the Windows system"
+	     " partition, such as C:, might invalidate the WPA key."
+	     " An invalid WPA key will prevent login until you reactivate Windows."
+	   )
+	, _( "Changing the UUID on external storage media and non-system partitions"
+	     " is usually safe, but guarantees cannot be given."
+	   )
+	,    ""
+	} ;
 
 const Glib::ustring fat16::get_custom_text( CUSTOM_TEXT ttype, int index )
 {
