@@ -523,6 +523,9 @@ Glib::ustring Utils::get_lang()
 	return lang ;
 }
 
+//Extract a list of tokens from any number of background separator characters
+//  E.g., tokenize(str="  word1   word2   ", tokens, delimiters=" ")
+//        -> tokens=["word1","word2]
 //The tokenize method copied and adapted from:
 //  http://www.linuxselfhelp.com/HOWTO/C++Programming-HOWTO-7.html
 void Utils::tokenize( const Glib::ustring& str,
