@@ -40,33 +40,18 @@ FS nilfs2::get_filesystem_support()
 		fs .write_uuid = GParted::FS::EXTERNAL ;
 	}
 
-        //Nilfs2 resizing is an online only operation and needs:
-        //  mount, umount, nilfs-resize and linux >= 3.0 with nilfs2 support.
-        if ( ! Glib::find_program_in_path( "mount" ) .empty()        &&
-             ! Glib::find_program_in_path( "umount" ) .empty()       &&
-             ! Glib::find_program_in_path( "nilfs-resize" ) .empty() &&
-             Utils::kernel_supports_fs( "nilfs2" )                      )
-        {
-                std::ifstream input( "/proc/version" ) ;
-                std::string line ;
-                int linux_major_ver = -1 ;
-                int linux_minor_ver = -1 ;
-                int linux_patch_ver = -1 ;
-                if ( input )
-                {
-                        getline( input, line ) ;
-                        sscanf( line .c_str() , "Linux version %d.%d.%d",
-			        &linux_major_ver, &linux_minor_ver, &linux_patch_ver ) ;
-                        input .close() ;
-                }
-
-                if ( linux_major_ver >= 3 )
-                {
-                        fs .grow = GParted::FS::EXTERNAL ;
-                        if ( fs .read ) //needed to determine a minimum file system size.
-                                fs .shrink = GParted::FS::EXTERNAL ;
-                }
-        }
+	//Nilfs2 resizing is an online only operation and needs:
+	//  mount, umount, nilfs-resize and linux >= 3.0 with nilfs2 support.
+	if ( ! Glib::find_program_in_path( "mount" ) .empty()        &&
+	     ! Glib::find_program_in_path( "umount" ) .empty()       &&
+	     ! Glib::find_program_in_path( "nilfs-resize" ) .empty() &&
+	     Utils::kernel_supports_fs( "nilfs2" )                   &&
+	     Utils::kernel_version_at_least( 3, 0, 0 )                  )
+	{
+		fs .grow = GParted::FS::EXTERNAL ;
+		if ( fs .read ) //needed to determine a minimum file system size.
+			fs .shrink = GParted::FS::EXTERNAL ;
+	}
 
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;

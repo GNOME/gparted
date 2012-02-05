@@ -236,6 +236,18 @@ bool Utils::kernel_supports_fs( const Glib::ustring & fs )
 	return fs_supported ;
 }
 
+//Report if kernel version is >= (major, minor, patch)
+bool Utils::kernel_version_at_least( int major_ver, int minor_ver, int patch_ver )
+{
+	int actual_major_ver, actual_minor_ver, actual_patch_ver ;
+	if ( ! get_kernel_version( actual_major_ver, actual_minor_ver, actual_patch_ver ) )
+		return false ;
+	bool result =    ( actual_major_ver > major_ver )
+	              || ( actual_major_ver == major_ver && actual_minor_ver > minor_ver )
+	              || ( actual_major_ver == major_ver && actual_minor_ver == minor_ver && actual_patch_ver >= patch_ver ) ;
+	return result ;
+}
+
 Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 {
 	std::stringstream ss ;
@@ -594,5 +606,38 @@ Glib::ustring Utils::generate_uuid(void)
 	return uuid_str;
 }
 
+//private functions ...
+
+//Read kernel version, reporting success or failure
+bool Utils::get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver )
+{
+	static bool read_file = false ;
+	static int read_major_ver = -1 ;
+	static int read_minor_ver = -1 ;
+	static int read_patch_ver = -1 ;
+
+	bool success = false ;
+	if ( ! read_file )
+	{
+		std::ifstream input( "/proc/version" ) ;
+		std::string line ;
+		if ( input )
+		{
+			getline( input, line ) ;
+			sscanf( line .c_str(), "Linux version %d.%d.%d",
+			        &read_major_ver, &read_minor_ver, &read_patch_ver ) ;
+			input .close() ;
+		}
+		read_file = true ;
+	}
+	if ( read_major_ver > -1 && read_minor_ver > -1 && read_patch_ver > -1 )
+	{
+		major_ver = read_major_ver ;
+		minor_ver = read_minor_ver ;
+		patch_ver = read_patch_ver ;
+		success = true ;
+	}
+	return success ;
+}
 
 } //GParted..
