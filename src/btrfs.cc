@@ -23,6 +23,7 @@ namespace GParted
 {
 
 bool btrfs_found = false ;
+bool resize_to_same_size_fails = true ;
 
 FS btrfs::get_filesystem_support()
 {
@@ -96,6 +97,10 @@ FS btrfs::get_filesystem_support()
 	}
 
 	fs .MIN = 256 * MEBIBYTE ;
+
+	//Linux before version 3.2 fails when resizing btrfs file system
+	//  to the same size.
+	resize_to_same_size_fails = ! Utils::kernel_version_at_least( 3, 2, 0 ) ;
 
 	return fs ;
 }
@@ -206,22 +211,27 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		else
 			cmd = "btrfsctl -r " + size + " " + mount_point ;
 		exit_status = execute_command_timed( cmd, operationdetail, false ) ;
-		//Resizing a btrfs file system to the same size results
-		//  in ioctl() returning -1 EINVAL (Invalid argument)
-		//  from the kernel btrfs code.
-		//  *   Btrfs filesystem resize reports this as exit
-		//      status 30:
-		//          ERROR: Unable to resize '/MOUNTPOINT'
-		//  *   Btrfsctl -r reports this as exit status 1:
-		//          ioctl:: Invalid argument
-		//  WARNING:
-		//  Ignoring these errors could mask real failures, but
-		//  not ignoring them will cause resizing to the same
-		//  size as part of check operation to fail.
-		bool resize_succeeded = (    exit_status == 0
-		                          || (   btrfs_found && exit_status == 30<<8 )
-		                          || ( ! btrfs_found && exit_status ==  1<<8 )
-		                        ) ;
+		bool resize_succeeded = ( exit_status == 0 ) ;
+		if ( resize_to_same_size_fails )
+		{
+			//Linux before version 3.2 fails when resizing a
+			//  btrfs file system to the same size with ioctl()
+			//  returning -1 EINVAL (Invalid argument) from the
+			//  kernel btrfs code.
+			//  *   Btrfs filesystem resize reports this as exit
+			//      status 30:
+			//          ERROR: Unable to resize '/MOUNTPOINT'
+			//  *   Btrfsctl -r reports this as exit status 1:
+			//          ioctl:: Invalid argument
+			//  WARNING:
+			//  Ignoring these errors could mask real failures,
+			//  but not ignoring them will cause resizing to the
+			//  same size as part of check operation to fail.
+			resize_succeeded = (    exit_status == 0
+			                     || (   btrfs_found && exit_status == 30<<8 )
+			                     || ( ! btrfs_found && exit_status ==  1<<8 )
+			                   ) ;
+		}
 		operationdetail .get_last_child() .set_status( resize_succeeded ? STATUS_SUCCES : STATUS_ERROR ) ;
 		success &= resize_succeeded ;
 
