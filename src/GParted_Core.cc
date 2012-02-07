@@ -917,6 +917,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		libparted_messages .clear() ;
 		partition_temp .Reset() ;
 		bool partition_is_busy = false ;
+		GParted::FILESYSTEM filesystem ;
 
 		//Retrieve partition path
 		Glib::ustring partition_path = get_partition_path( lp_partition );
@@ -925,6 +926,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
+				filesystem = get_filesystem() ;
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -943,13 +945,13 @@ void GParted_Core::set_device_partitions( Device & device )
 				else
 #endif
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ||
-					                    lvm2_pv_info .has_active_lvs( partition_path ) ;
+					                    ( filesystem == GParted::FS_LVM2_PV && lvm2_pv_info .has_active_lvs( partition_path ) ) ;
 
 				partition_temp .Set( device .get_path(),
 						     partition_path,
 						     lp_partition ->num,
 						     lp_partition ->type == 0 ?	GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
-						     get_filesystem(),
+						     filesystem,
 						     lp_partition ->geom .start,
 						     lp_partition ->geom .end,
 						     device .sector_size,
@@ -985,8 +987,7 @@ void GParted_Core::set_device_partitions( Device & device )
 				}
 				else
 #endif
-					partition_is_busy = ped_partition_is_busy( lp_partition ) ||
-					                    lvm2_pv_info .has_active_lvs( partition_path ) ;
+					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
 
 				partition_temp .Set( device .get_path(),
 						     partition_path, 
