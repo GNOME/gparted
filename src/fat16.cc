@@ -214,6 +214,8 @@ void fat16::read_uuid( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
+
+	err_msg = Utils::delete_mtoolsrc_file( fname );
 }
 
 bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
