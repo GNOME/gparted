@@ -49,7 +49,6 @@ private:
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
-	static std::vector<Glib::ustring> lvm2_lv_cache ;
 };
 
 }//GParted

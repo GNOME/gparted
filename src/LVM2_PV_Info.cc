@@ -23,15 +23,10 @@ namespace GParted
 enum PV_ATTRIBUTE
 {
 	PVATTR_PV_NAME = 0,
-	PVATTR_VG_NAME = 1,
-	PVATTR_PV_FREE = 2
-} ;
-
-enum LV_ATTRIBUTE
-{
-	LVATTR_LV_NAME = 0,
-	LVATTR_VG_NAME = 1,
-	LVATTR_LV_BITS = 2
+	PVATTR_PV_FREE = 1,
+	PVATTR_VG_NAME = 2,
+	PVATTR_LV_NAME = 3,
+	PVATTR_LV_BITS = 4
 } ;
 
 //Data model:
@@ -39,24 +34,24 @@ enum LV_ATTRIBUTE
 //                      - Has the cache been loaded let?
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - String vector storing attributes of a PV.
-//                        Attributes are: pv_name,vg_name,pv_free.
-//                        Pv_free is the number of free bytes.
+//                        Attributes are: pv_name,pv_free,vg_name,
+//                        lv_name,lv_attr.  Pv_free is the number of
+//                        free bytes, see lvs(8) for details of
+//                        lv_attrs.
 //                        E.g.
-//                        ["/dev/sda6,vg_test,4022337536",
-//                         "/dev/sda8,vg_test2,5087690752",
-//                         "/dev/sda10,,2147483648"]
-//  lvm2_lv_cache       - String vector storing attributes of an LV.
-//                        Attributes are: lv_name,vg_name,lv_attrs.
-//                        See lvs(8) for details of lv_attrs.
-//                        E.g.
-//                        ["lvol0,vg_test,-wi---",
-//                         "lvol0,vg_test2,-wi-a-"]
+//                        ["/dev/sda10,2147483648,,,",
+//                         "/dev/sda11,2143289344,GParted-VG1,,",
+//                         "/dev/sda12,1619001344,GParted-VG2,lvol0,-wi---",
+//                         "/dev/sda12,1619001344,GParted-VG2,,",
+//                         "/dev/sda13,830472192,GParted_VG3,lvol0,-wi-a-",
+//                         "/dev/sda13,830472192,GParted_VG3,lvol1,-wi-a-",
+//                         "/dev/sda13,830472192,GParted_VG3,,"]
+
 
 //Initialize static data elements
 bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
 bool LVM2_PV_Info::lvm_found = false ;
 std::vector<Glib::ustring> LVM2_PV_Info::lvm2_pv_cache ;
-std::vector<Glib::ustring> LVM2_PV_Info::lvm2_lv_cache ;
 
 LVM2_PV_Info::LVM2_PV_Info()
 {
@@ -115,16 +110,17 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 		//PV not yet included in any VG
 		return false ;
 
-	for ( unsigned int i = 0 ; i < lvm2_lv_cache .size() ; i ++ )
+	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
-		std::vector<Glib::ustring> lv_attrs ;
-		Utils::split( lvm2_lv_cache [i], lv_attrs, "," ) ;
-		if ( vgname == lv_attrs [LVATTR_VG_NAME] )
+		std::vector<Glib::ustring> pv_attrs ;
+		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
+		if ( vgname == pv_attrs [PVATTR_VG_NAME] )
 		{
 			//5th "bit" is active status.  E.g.
 			//  "-wi---" inactive, "-wi-a-" active, ...
 			//  Treat any non-hyphen character as active.
-			if ( lv_attrs [LVATTR_LV_BITS] [4] != '-' )
+			if (    pv_attrs [PVATTR_LV_BITS] .length() >= 5
+			     && pv_attrs [PVATTR_LV_BITS] [4] != '-'     )
 				//LV in VG is active
 				return true ;
 		}
@@ -155,7 +151,6 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	Glib::ustring output, error ;
 
 	lvm2_pv_cache .clear() ;
-	lvm2_lv_cache .clear() ;
 	if ( lvm_found )
 	{
 		//The OS is expected to fully enable LVM, this scan does
@@ -165,24 +160,17 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		//Load LVM2 PV attribute cache.  Output PV attributes in
 		//  PV_ATTRIBUTE order
-		if ( ! Utils::execute_command( "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,vg_name,pv_free", output, error, true ) )
+		if ( ! Utils::execute_command( "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,lv_name,lv_attr", output, error, true ) )
 		{
 			if ( output != "" )
 				Utils::tokenize( output, lvm2_pv_cache, " \n" ) ;
 		}
-
-		//Load LVM2 LV attribute cache.  Output LV attributes in
-		//  LV_ATTRIBUTE order
-		if ( ! Utils::execute_command( "lvm lvs --config \"log{command_names=0}\" --noheadings --separator , -o lv_name,vg_name,lv_attr", output, error, true ) )
-		{
-			if ( output != "" )
-				Utils::tokenize( output, lvm2_lv_cache, " \n" ) ;
-		}
 	}
 }
 
-//Return PV's nth attribute.  Attributes are numbered 0 upwards for:
-//  pv_name,vg_name,pv_free
+//Return PV's nth attribute.  Performs linear search of the cache and
+//  uses the first matching PV entry.  Attributes are numbered 0 upward
+//  using PV_ATTRIBUTE enumeration.
 Glib::ustring LVM2_PV_Info::get_pv_attr( const Glib::ustring & path, unsigned int entry )
 {
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
