@@ -41,6 +41,7 @@ public:
 	Glib::ustring get_vg_name( const Glib::ustring & path ) ;
 	Byte_Value get_free_bytes( const Glib::ustring & path ) ;
 	bool has_active_lvs( const Glib::ustring & path ) ;
+	std::vector<Glib::ustring> get_error_messages() ;
 private:
 	void initialize_if_required() ;
 	void set_command_found() ;
@@ -49,6 +50,7 @@ private:
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
+	static std::vector<Glib::ustring> error_messages ;
 };
 
 }//GParted

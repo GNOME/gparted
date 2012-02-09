@@ -46,12 +46,14 @@ enum PV_ATTRIBUTE
 //                         "/dev/sda13,830472192,GParted_VG3,lvol0,-wi-a-",
 //                         "/dev/sda13,830472192,GParted_VG3,lvol1,-wi-a-",
 //                         "/dev/sda13,830472192,GParted_VG3,,"]
+//  error_messages      - String vector storing error messsages.
 
 
 //Initialize static data elements
 bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
 bool LVM2_PV_Info::lvm_found = false ;
 std::vector<Glib::ustring> LVM2_PV_Info::lvm2_pv_cache ;
+std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
 LVM2_PV_Info::LVM2_PV_Info()
 {
@@ -128,6 +130,12 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 	return false ;
 }
 
+std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages()
+{
+	initialize_if_required() ;
+	return error_messages ;
+}
+
 //Private methods
 
 void LVM2_PV_Info::initialize_if_required()
@@ -151,6 +159,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	Glib::ustring output, error ;
 
 	lvm2_pv_cache .clear() ;
+	error_messages .clear() ;
 	if ( lvm_found )
 	{
 		//The OS is expected to fully enable LVM, this scan does
@@ -160,10 +169,27 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		//Load LVM2 PV attribute cache.  Output PV attributes in
 		//  PV_ATTRIBUTE order
-		if ( ! Utils::execute_command( "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,lv_name,lv_attr", output, error, true ) )
+		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,lv_name,lv_attr" ;
+		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
 				Utils::tokenize( output, lvm2_pv_cache, " \n" ) ;
+		}
+		else
+		{
+			error_messages .push_back( cmd ) ;
+			if ( ! output .empty() )
+				error_messages .push_back ( output ) ;
+			if ( ! error .empty() )
+				error_messages .push_back ( error ) ;
+			Glib::ustring temp ;
+			temp = _("An error occurred reading LVM2 configuration!") ;
+			temp += "\n" ;
+			temp += _("Some or all of the details may be missing or incorrect.") ;
+			temp += "\n" ;
+			temp += _("You should NOT modify any LVM2 PV partitions.") ;
+			temp += "\n" ;
+			error_messages .push_back( temp ) ;
 		}
 	}
 }
