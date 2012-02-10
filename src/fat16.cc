@@ -33,9 +33,9 @@ const Glib::ustring fat16::Change_UUID_Warning [] =
 	{ _( "Changing the UUID might invalidate the Windows Product Activation (WPA) key."
 	   )
 	, _( "On FAT and NTFS file systems, the"
-	     " Volume Serial Number is treated as the UUID."
+	     " Volume Serial Number is used as the UUID."
 	     " Changing the Volume Serial Number on the Windows system"
-	     " partition, such as C:, might invalidate the WPA key."
+	     " partition, normally C:, might invalidate the WPA key."
 	     " An invalid WPA key will prevent login until you reactivate Windows."
 	   )
 	, _( "Changing the UUID on external storage media and non-system partitions"

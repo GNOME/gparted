@@ -1129,7 +1129,7 @@
       <sect3 id="gparted-changing-partition-uuid">
         <title>Changing a Partition UUID</title>
         <para>
-        To change the UUID of a partition:
+        To change the Universally Unique Identifier (UUID) of a partition:
           <orderedlist>
             <listitem>
               <para>
@@ -1153,34 +1153,41 @@
                 </para>
                 <para>
                 On FAT and NTFS file systems, the Volume Serial Number
-                is treated as the UUID.  Changing the Volume Serial
-                Number on the Windows system partition, such as C:,
+                is used as UUID.  Changing the Volume Serial
+                Number on the Windows system partition, normally C:,
                 might invalidate the WPA key.  An invalid WPA key will
                 prevent login until you reactivate Windows.
                 </para>
                 <para>
                 In an attempt to avoid invalidating the WPA key, on
                 NTFS file systems only half of the UUID is set to a
-                new random value.
-                </para>
-                <para>
-                If the WPA key is invalidated you will need to
-                reactivate Windows before you can login.
+                new random value. On FAT file systems, such a precaution
+                is not possible.
                 </para>
                 <para>
                 The WPA key should not be affected by changing the
                 UUID of data partitions or removable media partitions.
+                In rare cases, a partition that is present
+                at boot time might be an exception to this rule.
                 </para>
               </warning>
               <warning>
                 <para>
-                Changing the UUID might cause a GNU/Linux system to
-                fail to boot, or to fail to mount a file system.
+                Changing the UUID when there is no need to do so might
+                cause a GNU/Linux system to fail to boot, or to fail
+                to mount a file system.
+                </para>
+                <para>
+                Changing the UUID is only required after copying a
+                partition.  The UUID change is needed to prevent
+                duplicate UUIDs when both the source and the copy of
+                the partition are used on the same computer.
                 </para>
                 <para>
                 If boot or mount problems occur you might need to edit
-                configuration files, such as /etc/fstab, to ensure
-                that the correct UUID is specified.
+                configuration files, such as /etc/fstab, and
+                regenerate the grub menu to ensure that the correct
+                UUID is specified.
                 </para>
               </warning>
             </listitem>
@@ -1712,8 +1719,9 @@
           The copy of the partition has the same label
           and the same Universally Unique Identifier (UUID)
           as the source partition.
-          This can cause a problem when mount actions use the
-          partition label or the UUID to identify the partition.
+          This can cause a problem when booting, or when mount actions
+          use the partition label or the UUID to identify the
+          partition.
           </para>
           <para>
           The problem is that the operating system will randomly
@@ -1737,18 +1745,26 @@
                   <orderedlist>
                     <listitem>
                       <para>
-                      Change the UUID of the partition.
+                      Change the UUID of either the source, or the copy
+                      of the partition.
                       See <xref linkend="gparted-changing-partition-uuid"/>.
                       </para>
                     </listitem>
                     <listitem>
                       <para>
-                      If the partition label is not blank, change the
-                      label of the partition.
+                      If the partition label is not blank then change the
+                      label of either the source, or the copy of the
+                      partition.
                       See <xref linkend="gparted-setting-partition-label"/>.
                       </para>
-               </listitem>
+                    </listitem>
                   </orderedlist>
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                After you have applied the copy operation, delete or
+                reformat the source partition.
                 </para>
               </listitem>
               <listitem>
