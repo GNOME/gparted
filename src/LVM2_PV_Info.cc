@@ -83,7 +83,7 @@ bool LVM2_PV_Info::is_lvm2_pv_supported()
 Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	return get_pv_attr( path, PVATTR_VG_NAME ) ;
+	return get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
 }
 
 //Return number of free bytes in the PV, or -1 for error.
@@ -91,7 +91,7 @@ Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
 	Byte_Value free_bytes = -1 ;
-	Glib::ustring fb_str = get_pv_attr( path, PVATTR_PV_FREE ) ;
+	Glib::ustring fb_str = get_pv_attr_by_path( path, PVATTR_PV_FREE ) ;
 	if ( fb_str != "" )
 	{
 		gchar * suffix ;
@@ -107,7 +107,7 @@ Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	Glib::ustring vgname = get_pv_attr( path, PVATTR_VG_NAME ) ;
+	Glib::ustring vgname = get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
 	if ( vgname == "" )
 		//PV not yet included in any VG
 		return false ;
@@ -116,13 +116,13 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 	{
 		std::vector<Glib::ustring> pv_attrs ;
 		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
-		if ( vgname == pv_attrs [PVATTR_VG_NAME] )
+		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
 		{
+			Glib::ustring lv_bits = get_pv_attr_by_row( i, PVATTR_LV_BITS ) ;
 			//5th "bit" is active status.  E.g.
 			//  "-wi---" inactive, "-wi-a-" active, ...
 			//  Treat any non-hyphen character as active.
-			if (    pv_attrs [PVATTR_LV_BITS] .length() >= 5
-			     && pv_attrs [PVATTR_LV_BITS] [4] != '-'     )
+			if ( lv_bits .length() >= 5 && lv_bits [4] != '-' )
 				//LV in VG is active
 				return true ;
 		}
@@ -173,7 +173,11 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
-				Utils::tokenize( output, lvm2_pv_cache, " \n" ) ;
+			{
+				Utils::tokenize( output, lvm2_pv_cache, "\n" ) ;
+				for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
+					lvm2_pv_cache [i] = Utils::trim( lvm2_pv_cache [i] ) ;
+			}
 		}
 		else
 		{
@@ -185,7 +189,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 			Glib::ustring temp ;
 			temp = _("An error occurred reading LVM2 configuration!") ;
 			temp += "\n" ;
-			temp += _("Some or all of the details may be missing or incorrect.") ;
+			temp += _("Some or all of the details might be missing or incorrect.") ;
 			temp += "\n" ;
 			temp += _("You should NOT modify any LVM2 PV partitions.") ;
 			temp += "\n" ;
@@ -197,13 +201,13 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 //Return PV's nth attribute.  Performs linear search of the cache and
 //  uses the first matching PV entry.  Attributes are numbered 0 upward
 //  using PV_ATTRIBUTE enumeration.
-Glib::ustring LVM2_PV_Info::get_pv_attr( const Glib::ustring & path, unsigned int entry )
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry )
 {
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
 		std::vector<Glib::ustring> pv_attrs ;
 		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
-		if ( path == pv_attrs [PVATTR_PV_NAME] )
+		if ( PVATTR_PV_NAME < pv_attrs .size() && path == pv_attrs [PVATTR_PV_NAME] )
 		{
 			if ( entry < pv_attrs .size() )
 				return pv_attrs [entry] ;
@@ -212,6 +216,20 @@ Glib::ustring LVM2_PV_Info::get_pv_attr( const Glib::ustring & path, unsigned in
 		}
 	}
 
+	return "" ;
+}
+
+//Return PV's nth attribute from specified cache row.  Row is numbered
+//  0 upwards and attributes are numbers numbered 0 upwards using
+//  PV_ATTRIBUTE enumeration.
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry )
+{
+	if ( row >= lvm2_pv_cache .size() )
+		return "" ;
+	std::vector<Glib::ustring> pv_attrs ;
+	Utils::split( lvm2_pv_cache [row], pv_attrs, "," ) ;
+	if ( entry < pv_attrs .size() )
+		return pv_attrs [entry] ;
 	return "" ;
 }
 

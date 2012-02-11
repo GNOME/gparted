@@ -46,7 +46,8 @@ private:
 	void initialize_if_required() ;
 	void set_command_found() ;
 	void load_lvm2_pv_info_cache() ;
-	Glib::ustring get_pv_attr( const Glib::ustring & path, unsigned int entry ) ;
+	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) ;
+	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
