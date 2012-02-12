@@ -17,6 +17,7 @@
  */
  
 #include "../include/Dialog_Partition_Info.h"
+#include "../include/LVM2_PV_Info.h"
 
 namespace GParted
 {
@@ -269,7 +270,7 @@ void Dialog_Partition_Info::Display_Info()
 			else if ( partition .filesystem == FS_LVM2_PV )
 			{
 				/* TO TRANSLATORS:  myvgname active
-				 * means that the partition is part of an LVM volume group and that
+				 * means that the partition is a member of an LVM volume group and the
 				 * volume group is active and being used by the operating system.
 				 */
 				str_temp = String::ucompose( _("%1 active"), partition .get_mountpoint() ) ;
@@ -300,17 +301,26 @@ void Dialog_Partition_Info::Display_Info()
 		}
 		else if ( partition .filesystem == FS_LVM2_PV )
 		{
+			LVM2_PV_Info lvm2_pv_info ;
 			Glib::ustring mount_point = partition .get_mountpoint() ;
 			if ( mount_point .empty() )
-				/* TO TRANSLATORS:  Not active (Not part of any volume group)
-				 * means that the partition is not yet part of an LVM volume
+				/* TO TRANSLATORS:  Not active (Not a member of any volume group)
+				 * means that the partition is not yet a member of an LVM volume
 				 * group and therefore is not active and can not yet be used by
 				 * the operating system.
 				 */
-				str_temp = _("Not active (Not part of any volume group)") ;
+				str_temp = _("Not active (Not a member of any volume group)") ;
+			else if ( lvm2_pv_info .is_vg_exported( mount_point ) )
+				/* TO TRANSLATORS:  myvgname not active and exported
+				 * means that the partition is a member of an LVM volume group but
+				 * the volume group is not active and not being used by the operating system.
+				 * The volume group has also been exported making the LVM physical volumes
+				 * ready for moving to a different computer system.
+				 */
+				str_temp = String::ucompose( _("%1 not active and exported"), mount_point ) ;
 			else
 				/* TO TRANSLATORS:  myvgname not active
-				 * means that the partition is part of an LVM volume group but
+				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
 				 */
 				str_temp = String::ucompose( _("%1 not active"), mount_point ) ;

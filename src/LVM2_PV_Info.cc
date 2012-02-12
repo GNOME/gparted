@@ -25,8 +25,9 @@ enum PV_ATTRIBUTE
 	PVATTR_PV_NAME = 0,
 	PVATTR_PV_FREE = 1,
 	PVATTR_VG_NAME = 2,
-	PVATTR_LV_NAME = 3,
-	PVATTR_LV_BITS = 4
+	PVATTR_VG_BITS = 3,
+	PVATTR_LV_NAME = 4,
+	PVATTR_LV_BITS = 5
 } ;
 
 //Data model:
@@ -35,17 +36,20 @@ enum PV_ATTRIBUTE
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - String vector storing attributes of a PV.
 //                        Attributes are: pv_name,pv_free,vg_name,
-//                        lv_name,lv_attr.  Pv_free is the number of
-//                        free bytes, see lvs(8) for details of
-//                        lv_attrs.
+//                        vg_attr,lv_name,lv_attr.  Pv_free is the
+//                        number of free bytes, see vgs(8) and lvs(8)
+//                        for details of vg_attr and lv_attr
+//                        respectively.
 //                        E.g.
-//                        ["/dev/sda10,2147483648,,,",
-//                         "/dev/sda11,2143289344,GParted-VG1,,",
-//                         "/dev/sda12,1619001344,GParted-VG2,lvol0,-wi---",
-//                         "/dev/sda12,1619001344,GParted-VG2,,",
-//                         "/dev/sda13,830472192,GParted_VG3,lvol0,-wi-a-",
-//                         "/dev/sda13,830472192,GParted_VG3,lvol1,-wi-a-",
-//                         "/dev/sda13,830472192,GParted_VG3,,"]
+//                        ["/dev/sda10,2147483648,,r-----,,",
+//                         "/dev/sda11,2143289344,GParted-VG1,wz--n-,,",
+//                         "/dev/sda12,1619001344,GParted-VG2,wz--n-,lvol0,-wi---",
+//                         "/dev/sda12,1619001344,GParted-VG2,wz--n-,,",
+//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,lvol0,-wi-a-",
+//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,lvol1,-wi-a-",
+//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,,",
+//                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,lvol0,-wi---",
+//                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,,"]
 //  error_messages      - String vector storing error messsages.
 
 
@@ -130,6 +134,29 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 	return false ;
 }
 
+//Report if the VG is exported.
+bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
+{
+	initialize_if_required() ;
+
+	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
+	{
+		std::vector<Glib::ustring> pv_attrs ;
+		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
+		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
+		{
+			Glib::ustring vg_bits = get_pv_attr_by_row( i, PVATTR_VG_BITS ) ;
+			//3rd "bit" is export status.  E.g.
+			//  "wz--n-" imported, "wzx-n-" exported.
+			//  Treat any non-hyphen character as exported.
+			if ( vg_bits .length() >= 3 && vg_bits [2] != '-' )
+				//VG is exported
+				return true ;
+		}
+	}
+	return false ;
+}
+
 std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages()
 {
 	initialize_if_required() ;
@@ -169,7 +196,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		//Load LVM2 PV attribute cache.  Output PV attributes in
 		//  PV_ATTRIBUTE order
-		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,lv_name,lv_attr" ;
+		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,vg_attr,lv_name,lv_attr" ;
 		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
