@@ -42,7 +42,7 @@ public:
 	Byte_Value get_free_bytes( const Glib::ustring & path ) ;
 	bool has_active_lvs( const Glib::ustring & path ) ;
 	bool is_vg_exported( const Glib::ustring & vgname ) ;
-	std::vector<Glib::ustring> get_error_messages() ;
+	std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path ) ;
 private:
 	void initialize_if_required() ;
 	void set_command_found() ;

@@ -43,7 +43,7 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 	if ( free_bytes >= 0 )
 		partition .Set_Unused( Utils::round( double(free_bytes) / double(partition .sector_size) ) ) ;
 
-	std::vector<Glib::ustring> error_messages = lvm2_pv_info .get_error_messages() ;
+	std::vector<Glib::ustring> error_messages = lvm2_pv_info .get_error_messages( partition .get_path() ) ;
 	if ( ! error_messages .empty() )
 	{
 		for ( unsigned int i = 0 ; i < error_messages .size() ; i ++ )

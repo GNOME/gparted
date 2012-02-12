@@ -50,7 +50,8 @@ enum PV_ATTRIBUTE
 //                         "/dev/sda13,830472192,GParted_VG3,wz--n-,,",
 //                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,lvol0,-wi---",
 //                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,,"]
-//  error_messages      - String vector storing error messsages.
+//  error_messages      - String vector storing whole cache error
+//                        messsages.
 
 
 //Initialize static data elements
@@ -157,10 +158,30 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 	return false ;
 }
 
-std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages()
+std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	return error_messages ;
+	if ( ! error_messages .empty() )
+		//Return whole cache error messages as first choice
+		return error_messages ;
+
+	std::vector<Glib::ustring> partition_specific_messages ;
+	partition_specific_messages .clear() ;
+	Glib::ustring temp ;
+
+	//Check for partition specific message: partial VG
+	Glib::ustring vg_bits = get_pv_attr_by_path( path, PVATTR_VG_BITS ) ;
+	//4rd "bit" is partial flag.  E.g.
+	//  "wz--n-" all PVs exist, "wz-pn-" one or move PVs missing.
+	//  Treat any non-hyphen character as damaged.
+	if ( vg_bits .length() >= 4 && vg_bits [3] != '-' )
+	{
+		temp = _("One or more Physical Volumes belonging to the Volume Group is missing.") ;
+		temp += "\n" ;
+		partition_specific_messages .push_back ( temp ) ;
+	}
+
+	return partition_specific_messages ;
 }
 
 //Private methods
