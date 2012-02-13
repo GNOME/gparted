@@ -130,6 +130,7 @@ private:
 	void thread_unmount_partition( bool * succes, Glib::ustring * error ) ;
 	void thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) ;
 	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
+	void thread_toggle_lvm2_pv( bool * succes, Glib::ustring * error ) ;
 	void thread_guess_partition_table();
 		
 	//signal handlers

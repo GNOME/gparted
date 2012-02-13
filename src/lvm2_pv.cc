@@ -22,6 +22,23 @@
 namespace GParted
 {
 
+const Glib::ustring lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index )
+{
+	/*TO TRANSLATORS: these labels will be used in the partition menu */
+	static const Glib::ustring activate_text = _( "Ac_tivate" ) ;
+	static const Glib::ustring deactivate_text = _( "Deac_tivate" ) ;
+
+	switch ( ttype )
+	{
+		case CTEXT_ACTIVATE_FILESYSTEM:
+			return index == 0 ? activate_text : "" ;
+		case CTEXT_DEACTIVATE_FILESYSTEM:
+			return index == 0 ? deactivate_text : "" ;
+		default:
+			return "" ;
+	}
+}
+
 FS lvm2_pv::get_filesystem_support()
 {
 	FS fs ;

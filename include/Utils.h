@@ -97,8 +97,8 @@ enum SIZE_UNIT
 enum CUSTOM_TEXT
 {
 	CTEXT_NONE,
-	CTEXT_ACTIVATE_FILESYSTEM,		// Activate text ('Mount', 'Swapon', ...)
-	CTEXT_DEACTIVATE_FILESYSTEM,		// Deactivate text ('Unmount', 'Swapoff', ...)
+	CTEXT_ACTIVATE_FILESYSTEM,		// Activate text ('Mount', 'Swapon', VG 'Activate', ...)
+	CTEXT_DEACTIVATE_FILESYSTEM,		// Deactivate text ('Unmount', 'Swapoff', VG 'Deactivate', ...)
 	CTEXT_CHANGE_UUID_WARNING,		// Warning to print when changing UUIDs
 } ;
 

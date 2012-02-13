@@ -954,7 +954,22 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_swap_mount_state( true ) ;
 
-	//only unmount/swapoff/... is allowed if busy
+	//Only permit VG deactivation if busy, or activation if not busy and a member of a VG.
+	//  For now specifically allow activation of an exported VG, which LVM will fail
+	//  with "Volume group "VGNAME" is exported", otherwise user won't know why the
+	//  inactive PV can't be activated.
+	if (    selected_partition .status == GParted::STAT_REAL
+	     && selected_partition .type != GParted::TYPE_EXTENDED
+	     && selected_partition .filesystem == GParted::FS_LVM2_PV
+	     && (    selected_partition .busy
+	          || (    ! selected_partition .busy
+                       && ! selected_partition .get_mountpoints() .empty()  //VGNAME from mount point
+	             )
+	        )
+	   )
+		allow_toggle_swap_mount_state( true ) ;
+
+	//only unmount/swapoff/VG deactivate/... is allowed if busy
 	if ( selected_partition .busy )
 		return ;
 
@@ -1997,6 +2012,23 @@ void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error )
 	pulse = false ;
 }
 
+void Win_GParted::thread_toggle_lvm2_pv( bool * success, Glib::ustring * error )
+{
+	Glib::ustring dummy ;
+
+	if ( selected_partition .busy )
+		//VGNAME from mount point
+		*success = ! Utils::execute_command( "lvm vgchange -a n " + selected_partition .get_mountpoint(),
+		                                     dummy,
+		                                     *error ) ;
+	else
+		*success = ! Utils::execute_command( "lvm vgchange -a y " + selected_partition .get_mountpoint(),
+		                                     dummy,
+		                                     *error ) ;
+
+	pulse = false ;
+}
+
 // Runs gpart in a thread
 void Win_GParted::thread_guess_partition_table()
 {
@@ -2010,11 +2042,12 @@ void Win_GParted::toggle_swap_mount_state()
 	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
 	if ( operation_count > 0 )
 	{
-		//Note that this situation will only occur when trying to swapon a partition.
-		//  This is because GParted does not permit queueing operations on partitions
-		//  that are currently active (i.e., swap enabled, or mounted).  Hence this
-		//  situation will not occur for the swapoff or unmount actions that this
-		//  method handles.
+		//Note that this situation will only occur when trying to swapon a partition
+		//  or activate the Volume Group of a Physical Volume.  This is because
+		//  GParted does not permit queueing operations on partitions that are
+		//  currently active (i.e., swap enabled, mounted or active VG).  Hence
+		//  this situation will not occur for the swapoff, unmount or deactivate VG
+		//  actions that this method handles.
 
 		/*TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdd8. */
 		Glib::ustring tmp_msg =
@@ -2032,9 +2065,18 @@ void Win_GParted::toggle_swap_mount_state()
 		                         , Gtk::BUTTONS_OK
 		                         , true
 		                         ) ;
-		tmp_msg  = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
-		tmp_msg += "\n" ;
-		tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
+		if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+		{
+			tmp_msg = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
+			tmp_msg += "\n" ;
+			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
+		}
+		else if ( selected_partition .filesystem == GParted::FS_LVM2_PV )
+		{
+			tmp_msg = _( "The activate Volume Group action cannot be performed if an operation is pending for the partition." ) ;
+			tmp_msg += "\n" ;
+			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using activate Volume Group with this partition." ) ;
+		}
 		dialog .set_secondary_text( tmp_msg ) ;
 		dialog .run() ;
 		return ;
@@ -2067,6 +2109,34 @@ void Win_GParted::toggle_swap_mount_state()
 
 			dialog .set_secondary_text( error ) ;
 			
+			dialog.run() ;
+		}
+	}
+	else if ( selected_partition .filesystem == GParted::FS_LVM2_PV )
+	{
+		thread = Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>(
+			sigc::mem_fun( *this, &Win_GParted::thread_toggle_lvm2_pv ), &succes, &error ), true ) ;
+
+		show_pulsebar(
+			String::ucompose(
+				selected_partition .busy ? _("Deactivating Volume Group %1")
+				                         : _("Activating Volume Group %1"),
+				//VGNAME from mount point
+				selected_partition .get_mountpoint() ) ) ;
+
+		if ( ! succes )
+		{
+			Gtk::MessageDialog dialog(
+				*this,
+				selected_partition .busy ? _("Could not deactivate Volume Group")
+				                         : _("Could not activate Volume Group"),
+				false,
+				Gtk::MESSAGE_ERROR,
+				Gtk::BUTTONS_OK,
+				true ) ;
+
+			dialog .set_secondary_text( error ) ;
+
 			dialog.run() ;
 		}
 	}
