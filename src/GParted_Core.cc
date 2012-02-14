@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart 'plors' Hakvoort
- * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011, 2012 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1887,8 +1887,10 @@ bool GParted_Core::move( const Device & device,
 
 		succes = (    succes
 		          && update_bootsector( partition_new, operationdetail )
-		          && (   //Do not maximize file system if new size <= old
-		                 ( partition_new .get_sector_length() <= partition_old .get_sector_length() )
+		          && (   //Do not maximize file system if FS not linux-swap and new size <= old
+		                 (   partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not moved
+		                  && partition_new .get_sector_length() <= partition_old .get_sector_length()
+		                 )
 		              || (   check_repair_filesystem( partition_new, operationdetail )
 		                  && maximize_filesystem( partition_new, operationdetail )
 		                 )
@@ -2039,8 +2041,10 @@ bool GParted_Core::resize( const Partition & partition_old,
 			succes = resize_move_partition( partition_old, partition_new, operationdetail ) ;
 
 		//expand file system to fit exactly in partition
-		if ( ! (   //Do not maximize file system if new size <= old
-		           ( partition_new .get_sector_length() <= partition_old .get_sector_length() )
+		if ( ! (   //Do not maximize file system if FS not linux-swap and new size <= old
+		           (   partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not resized
+		            && partition_new .get_sector_length() <= partition_old .get_sector_length()
+		           )
 		        || (   check_repair_filesystem( partition_new, operationdetail )
 		            && maximize_filesystem( partition_new, operationdetail )
 		           )
@@ -2366,8 +2370,10 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 			return (   succes
 			        && update_bootsector( partition_dst, operationdetail )
-			        && (   //Do not maximize file system if destination size <= source
-			               ( partition_dst .get_sector_length() <= partition_src .get_sector_length() )
+			        && (   //Do not maximize file system if FS not linux-swap and destination size <= source
+			               (   partition_dst .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not copied
+			                && partition_dst .get_sector_length() <= partition_src .get_sector_length()
+			               )
 			            || (   check_repair_filesystem( partition_dst, operationdetail )
 			                && maximize_filesystem( partition_dst, operationdetail )
 			               )
