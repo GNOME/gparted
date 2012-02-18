@@ -55,6 +55,7 @@ FS linux_swap::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
 	{
+		fs .write_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
 		fs .write_uuid = FS::EXTERNAL ;
 	}
