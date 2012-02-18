@@ -46,13 +46,15 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	this ->FILESYSTEMS = FILESYSTEMS ;
 
 	//remove all non-valid file systems
-	for ( unsigned int t = this ->FILESYSTEMS .size( ) ; t > 0 ; t-- )
+	std::vector< FS >::iterator f ;
+	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
 	{
-		if ( this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_UNKNOWN ||
-		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LVM2_PV ||
-		     this ->FILESYSTEMS[ t ] .filesystem == GParted::FS_LUKS
+		if ( f ->filesystem == GParted::FS_UNKNOWN
+		    || f ->filesystem == GParted::FS_LVM2_PV
+		    || f ->filesystem == GParted::FS_LUKS
 		   )
-			this ->FILESYSTEMS .erase( this->FILESYSTEMS .begin() + t ) ;
+			//Compensate for subsequent 'f++' ...
+			f = this ->FILESYSTEMS .erase( f ) - 1 ;
 	}
 
 	FS fs_tmp ;
