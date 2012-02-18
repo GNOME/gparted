@@ -693,11 +693,24 @@ const std::vector<FS> & GParted_Core::get_filesystems() const
 
 const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
 {
+	unsigned int unknown ;
+
+	unknown = FILESYSTEMS .size() ;
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
+	{
 		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
 			return FILESYSTEMS[ t ] ;
-	
-	return FILESYSTEMS .back() ;
+		else if ( FILESYSTEMS[ t ] .filesystem == FS_UNKNOWN )
+			unknown = t ;
+	}
+
+	if ( unknown == FILESYSTEMS .size() ) {
+		// This shouldn't happen, but just in case...
+		static FS fs;
+		fs .filesystem = FS_UNKNOWN ;
+		return fs ;
+	} else
+		return FILESYSTEMS[ unknown ] ;
 }
 
 std::vector<Glib::ustring> GParted_Core::get_disklabeltypes() 
