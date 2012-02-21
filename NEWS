@@ -1,4 +1,74 @@
 ============================
+GParted 0.12.0  (2012-02-21)
+============================
+
+Release Notes
+-------------
+  This release of GParted adds some exciting new features, and
+  includes bug fixes and language translation updates.
+
+### Key changes include:
+
+  * Add support for nilfs2 including resizing
+  * Add ability to change UUID
+  * Add read-only support for LVM PVs
+  * Enable GPT expansion when growing RAID
+
+Bug Fixes
+---------
+  * Add support for nilfs2 including resizing (#642842)
+    - Requires libparted 2.4+ or utils-linux 2.20+ for nilfs2 detection
+    - Requires nilfs-utils 2.1+ and Linux 3.0+ for nilfs2 resize support
+    - Thanks to Mike Fleetwood for these patches
+  * Prevent unitialized OperationDetail member access
+    - Thanks to Mike Fleetwood for this small patch
+  * Create common methods for mount and umount in btrfs, jfs, nilfs2, and xfs
+    - Thanks to Mike Fleetwood for these patches
+  * Add read-only support for LVM PVs (#160787)
+    - Thanks to Mike Fleetwood for these patches
+  * Don't ignore any errors resizing btrfs on Linux >= 3.2 (#669389)
+    - Thanks to Mike Fleetwood for these patches
+  * Display pop-up dialog on libparted exceptions
+    - Fixes Bug #566935 - Unable to expand GPT partition when growing RAID
+    - Thanks to Phillip Susi for this patch
+  * Reduce graphic processing requirement for pulse bar
+    - Debian #499193 - gparted: 100% cpu usage
+    - Debian #519764 - gparted: Lots of animation makes use over SSH
+                       X-tunnel slow
+  * Add support to change UUID (#667278)
+    - Thanks to Rogier Goossens for these patches
+  * Fix detection of multiple SW RAID (md) devices (#668486)
+    - Thanks to Rogier Goossens for this small patch
+  * Fix build to correctly link to gthread (#667412)
+    - Thanks to Vincent Untz for this small patch
+  * Fix long scan problem when BIOS floppy setting incorrect (#667511)
+    - Ubuntu launchpad #910379
+  * Enhance documentation for UUIDs and copying partitions (#608308)
+  * Fix en_CA parameter missing percent sign translation error (#660180)
+  * Avoid warning display when moving start of extended partition
+  * Increase FAT32 minimum size to 33 MiB (#668491)
+  * Fix regression when shrinking, moving and copying swap (#670017)
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), da(Joe Hansen), de(Mario Blättermann, Christian Kirbach),
+  es(Daniel Mustieles), fr(Bruno Brouard), gl(Fran Diéguez),
+  hu(Gabor Kelemen), ja(Jiro Matsuzawa), kk(Baurzhan Muftakhidinov),
+  ml(Anish A), nb(Kjartan Maraas), pl(Piotr Drąg), pt(António Lima),
+  ru(Yuri Myasoedov), sl(Matej Urbančič), sr(Мирослав Николић),
+  sr@latin(Мирослав Николић), te(Praveen Illa)
+
+Dependencies (new/updated)
+--------------------------
+  * nilfs-utils package is required for optional nilfs2 support.
+    - nilfs2 resizing requires nilfs-utils 2.1+ and Linux 3.0+.
+  * ntfs-3g advanced release version >= 2012.1.15AR is required to change
+    NTFS UUID
+    - requires new ntfslabel options --new-serial and --new-half-serial.
+    - NOTE:  ntfs-3g stable 2012.1.15 does not yet support changing NTFS UUID
+
+
+============================
 GParted 0.11.0  (2011-12-13)
 ============================
 
