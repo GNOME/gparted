@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-01-28 18:49+0000\n"
-"PO-Revision-Date: 2012-01-29 21:25+0100\n"
+"POT-Creation-Date: 2012-02-22 18:12+0000\n"
+"PO-Revision-Date: 2012-02-23 20:25+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -22,26 +22,34 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../gparted.desktop.in.in.h:1
-msgid "Create, reorganize, and delete partitions"
-msgstr "Ustvarjanje, urejanje in brisanje razdelkov"
-
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:2
+#: ../gparted.desktop.in.in.h:1
 #: ../src/Dialog_Progress.cc:362
 #: ../src/Win_GParted.cc:74
-#: ../src/Win_GParted.cc:1204
-#: ../src/Win_GParted.cc:1395
+#: ../src/Win_GParted.cc:1215
+#: ../src/Win_GParted.cc:1406
 msgid "GParted"
 msgstr "GParted"
+
+#: ../gparted.desktop.in.in.h:2
+msgid "Partition Editor"
+msgstr "Urejevalnik razdelkov"
 
 #: ../gparted.desktop.in.in.h:3
 msgid "GParted Partition Editor"
 msgstr "GParted urejevalnik razdelkov"
 
 #: ../gparted.desktop.in.in.h:4
-msgid "Partition Editor"
-msgstr "Urejevalnik razdelkov"
+msgid "Create, reorganize, and delete partitions"
+msgstr "Ustvarjanje, urejanje in brisanje razdelkov"
+
+#: ../include/Utils.h:51
+msgid "(New UUID - will be randomly generated)"
+msgstr "(Nova vrednosti UUID bo ustvarjena naključno)"
+
+#: ../include/Utils.h:52
+msgid "(Half new UUID - will be randomly generated)"
+msgstr "(Polovica nove vrednosti UUID bo ustvarjena naključno)"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
@@ -123,48 +131,48 @@ msgid "Paste %1"
 msgstr "Prilepi %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:32
+#: ../src/Dialog_Partition_Info.cc:33
 msgid "Information about %1"
 msgstr "Podatki o %1"
 
-#: ../src/Dialog_Partition_Info.cc:52
+#: ../src/Dialog_Partition_Info.cc:53
 msgid "Warning:"
 msgstr "Opozorilo:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:160
-#: ../src/Dialog_Partition_New.cc:116
+#: ../src/Dialog_Partition_Info.cc:161
+#: ../src/Dialog_Partition_New.cc:118
 msgid "File system:"
 msgstr "Datotečni sistem:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:170
-#: ../src/Win_GParted.cc:465
+#: ../src/Dialog_Partition_Info.cc:171
+#: ../src/Win_GParted.cc:467
 msgid "Size:"
 msgstr "Velikost:"
 
 #. used
-#: ../src/Dialog_Partition_Info.cc:186
+#: ../src/Dialog_Partition_Info.cc:187
 msgid "Used:"
 msgstr "Porabljeno:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:200
+#: ../src/Dialog_Partition_Info.cc:201
 msgid "Unused:"
 msgstr "Neporabljeno:"
 
-#: ../src/Dialog_Partition_Info.cc:217
+#: ../src/Dialog_Partition_Info.cc:218
 msgid "Flags:"
 msgstr "Zastavice:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:233
-#: ../src/Win_GParted.cc:473
+#: ../src/Dialog_Partition_Info.cc:234
+#: ../src/Win_GParted.cc:475
 msgid "Path:"
 msgstr "Pot:"
 
-#: ../src/Dialog_Partition_Info.cc:247
+#: ../src/Dialog_Partition_Info.cc:248
 msgid "Status:"
 msgstr "Stanje:"
 
@@ -172,7 +180,7 @@ msgstr "Stanje:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:259
+#: ../src/Dialog_Partition_Info.cc:260
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "V priklopu (vsaj en logični razdelek je priklopljen)"
 
@@ -180,12 +188,20 @@ msgstr "V priklopu (vsaj en logični razdelek je priklopljen)"
 #. * means that this linux swap partition is enabled and being used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:267
+#: ../src/Dialog_Partition_Info.cc:268
 msgid "Active"
 msgstr "Dejavno"
 
+#. TO TRANSLATORS:  myvgname active
+#. * means that the partition is a member of an LVM volume group and the
+#. * volume group is active and being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:276
+msgid "%1 active"
+msgstr "%1 je dejavna"
+
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:273
+#: ../src/Dialog_Partition_Info.cc:282
 msgid "Mounted on %1"
 msgstr "Priklopljen v %1"
 
@@ -193,7 +209,7 @@ msgstr "Priklopljen v %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:283
+#: ../src/Dialog_Partition_Info.cc:292
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Ni v priklopu (ni priklopljenih logičnih razdelkov)"
 
@@ -201,41 +217,68 @@ msgstr "Ni v priklopu (ni priklopljenih logičnih razdelkov)"
 #. *  means that this linux swap partition is not enabled and is not
 #. *  in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:291
+#: ../src/Dialog_Partition_Info.cc:300
 msgid "Not active"
 msgstr "Ni dejavno"
+
+#. TO TRANSLATORS:  Not active (Not a member of any volume group)
+#. * means that the partition is not yet a member of an LVM volume
+#. * group and therefore is not active and can not yet be used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:312
+msgid "Not active (Not a member of any volume group)"
+msgstr "Ni dejavna (ni del skupine nosilca)"
+
+#. TO TRANSLATORS:  myvgname not active and exported
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#. * The volume group has also been exported making the LVM physical volumes
+#. * ready for moving to a different computer system.
+#.
+#: ../src/Dialog_Partition_Info.cc:320
+msgid "%1 not active and exported"
+msgstr "%1 ni dejavna in je izvožena"
+
+#. TO TRANSLATORS:  myvgname not active
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:326
+msgid "%1 not active"
+msgstr "%1 ni dejavna"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:298
+#: ../src/Dialog_Partition_Info.cc:333
 msgid "Not mounted"
 msgstr "Ni priklopljeno"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:307
+#: ../src/Dialog_Partition_Info.cc:342
 #: ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:128
+#: ../src/Dialog_Partition_New.cc:130
 msgid "Label:"
 msgstr "Oznaka:"
 
-#: ../src/Dialog_Partition_Info.cc:320
+#: ../src/Dialog_Partition_Info.cc:355
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:334
+#: ../src/Dialog_Partition_Info.cc:369
 msgid "First sector:"
 msgstr "Prvi sektor:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:344
+#: ../src/Dialog_Partition_Info.cc:379
 msgid "Last sector:"
 msgstr "Zadnji sektor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:354
-#: ../src/Win_GParted.cc:526
+#: ../src/Dialog_Partition_Info.cc:389
+#: ../src/Win_GParted.cc:528
 msgid "Total sectors:"
 msgstr "Skupaj sektorjev:"
 
@@ -250,28 +293,28 @@ msgid "Create new Partition"
 msgstr "Ustvari nov razdelek"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:76
+#: ../src/Dialog_Partition_New.cc:78
 msgid "Create as:"
 msgstr "Ustvari kot:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:81
+#: ../src/Dialog_Partition_New.cc:83
 #: ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Osnovni razdelek"
 
-#: ../src/Dialog_Partition_New.cc:82
+#: ../src/Dialog_Partition_New.cc:84
 #: ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Logični razdelek"
 
-#: ../src/Dialog_Partition_New.cc:83
+#: ../src/Dialog_Partition_New.cc:85
 #: ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Razširjeni razdelek"
 
-#: ../src/Dialog_Partition_New.cc:195
+#: ../src/Dialog_Partition_New.cc:197
 msgid "New Partition #%1"
 msgstr "Nov razdelek #%1"
 
@@ -614,39 +657,48 @@ msgstr "izbriši vnos %1"
 msgid "update %1 entry"
 msgstr "posodobi vnos %1"
 
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/FileSystem.cc:38
+msgid "_Mount"
+msgstr "_Priklopi"
+
+#: ../src/FileSystem.cc:39
+msgid "_Unmount"
+msgstr "_Odklopi"
+
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:103
+#: ../src/FileSystem.cc:124
 msgid "Created directory %1"
 msgstr "Ustvarjena je mapa %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:130
+#: ../src/FileSystem.cc:151
 msgid "Removed directory %1"
 msgstr "Odstranjena je mapa %1"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:196
-#: ../src/GParted_Core.cc:205
-#: ../src/GParted_Core.cc:215
+#: ../src/GParted_Core.cc:175
+#: ../src/GParted_Core.cc:184
+#: ../src/GParted_Core.cc:194
 msgid "Scanning %1"
 msgstr "Preiskovanje %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:217
 msgid "Confirming %1"
 msgstr "Potrjevanje %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:250
+#: ../src/GParted_Core.cc:229
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Naprava %1 z velikostjo logičnih sektorjev %2 bajtov bo prezrta."
 
-#: ../src/GParted_Core.cc:252
+#: ../src/GParted_Core.cc:231
 msgid "GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes."
 msgstr "Program GParted zahteva namestitev knjižnice libparted 2.2 ali višje različice za podporo napravam z velikostjo sektorjev nad 512 bajtov."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:291
+#: ../src/GParted_Core.cc:270
 msgid "Searching %1 partitions"
 msgstr "Iskanje razdelkov na %1"
 
@@ -654,117 +706,117 @@ msgstr "Iskanje razdelkov na %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:338
+#: ../src/GParted_Core.cc:317
 msgid "unrecognized"
 msgstr "neprepoznavno"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:565
+#: ../src/GParted_Core.cc:544
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Razdelek ne sme biti dolžine %1 sektorjev"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:574
+#: ../src/GParted_Core.cc:553
 msgid "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "Razdelek z več uporabljenimi sektorji (%1), kot je njegova dolžina (%2), ni veljaven."
 
-#: ../src/GParted_Core.cc:642
+#: ../src/GParted_Core.cc:621
 msgid "libparted messages"
 msgstr "sporočilo libparted"
 
-#: ../src/GParted_Core.cc:1075
+#: ../src/GParted_Core.cc:1071
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux poenotena namestitev šifriranja še ni podprta."
 
-#: ../src/GParted_Core.cc:1197
-msgid "Logical Volume Management is not yet supported."
-msgstr "Upravljanje logičnih razdelkov še ni podprto."
-
 #. no file system found....
-#: ../src/GParted_Core.cc:1226
+#: ../src/GParted_Core.cc:1221
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Ni mogoče zaznati datotečnega sistema! Mogoči razlogi so:"
 
-#: ../src/GParted_Core.cc:1228
+#: ../src/GParted_Core.cc:1223
 msgid "The file system is damaged"
 msgstr "Datotečni sistem je poškodovan"
 
-#: ../src/GParted_Core.cc:1230
+#: ../src/GParted_Core.cc:1225
 msgid "The file system is unknown to GParted"
 msgstr "Datotečnega sistema ni mogoče prepoznati"
 
-#: ../src/GParted_Core.cc:1232
+#: ../src/GParted_Core.cc:1227
 msgid "There is no file system available (unformatted)"
 msgstr "Na voljo ni nobenega datotečnega sistema (ni formatirano)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1235
+#: ../src/GParted_Core.cc:1230
 msgid "The device entry %1 is missing"
 msgstr "Manjka določilo naprave%1."
 
-#: ../src/GParted_Core.cc:1393
+#: ../src/GParted_Core.cc:1389
 msgid "Unable to find mount point"
 msgstr "Ni mogoče najti priklopne točke"
 
-#: ../src/GParted_Core.cc:1457
+#: ../src/GParted_Core.cc:1458
 msgid "Unable to read the contents of this file system!"
 msgstr "Ni mogoče prebrati vsebine datotečnega sistema!"
 
-#: ../src/GParted_Core.cc:1459
+#: ../src/GParted_Core.cc:1460
 msgid "Because of this some operations may be unavailable."
 msgstr "Zaradi tega nekatere možnosti morda ne bodo na voljo."
 
-#: ../src/GParted_Core.cc:1463
+#: ../src/GParted_Core.cc:1464
 msgid "The cause might be a missing software package."
 msgstr "Vzrok je lahko manjkajoči programski paket."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1466
+#: ../src/GParted_Core.cc:1467
 msgid "The following list of software packages is required for %1 file system support:  %2."
 msgstr "Naslednji seznam paketov programske opreme je zahtevan za podporo %1 datotečnega sistema:  %2."
 
-#: ../src/GParted_Core.cc:1539
+#: ../src/GParted_Core.cc:1540
 msgid "create empty partition"
 msgstr "ustvari prazen razdelek"
 
-#: ../src/GParted_Core.cc:1609
-#: ../src/GParted_Core.cc:2890
+#: ../src/GParted_Core.cc:1610
+#: ../src/GParted_Core.cc:2904
 msgid "path: %1"
 msgstr "pot: %1"
 
-#: ../src/GParted_Core.cc:1610
-#: ../src/GParted_Core.cc:2891
+#: ../src/GParted_Core.cc:1611
+#: ../src/GParted_Core.cc:2905
 msgid "start: %1"
 msgstr "začetek: %1"
 
-#: ../src/GParted_Core.cc:1611
-#: ../src/GParted_Core.cc:2892
+#: ../src/GParted_Core.cc:1612
+#: ../src/GParted_Core.cc:2906
 msgid "end: %1"
 msgstr "konec: %1"
 
-#: ../src/GParted_Core.cc:1612
-#: ../src/GParted_Core.cc:2893
+#: ../src/GParted_Core.cc:1613
+#: ../src/GParted_Core.cc:2907
 msgid "size: %1 (%2)"
 msgstr "velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1648
-#: ../src/linux_swap.cc:108
+#: ../src/GParted_Core.cc:1649
+#: ../src/linux_swap.cc:125
 msgid "create new %1 file system"
 msgstr "ustvarjanje novega datotečnega sistema %1"
 
-#: ../src/GParted_Core.cc:1685
+#: ../src/GParted_Core.cc:1686
 msgid "delete partition"
 msgstr "brisanje razdelka"
 
-#: ../src/GParted_Core.cc:1727
+#: ../src/GParted_Core.cc:1728
 msgid "Clear partition label on %1"
 msgstr "Čiščenje oznake razdelka na %1"
 
-#: ../src/GParted_Core.cc:1732
+#: ../src/GParted_Core.cc:1733
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Nastavljanje oznake razdelka \"%1\" na %2"
 
-#: ../src/GParted_Core.cc:1764
+#: ../src/GParted_Core.cc:1766
+msgid "Set half of the UUID on %1 to a new, random value"
+msgstr "Nastavi polovico UUID na %1 na novo, naključno vrednost"
+
+#: ../src/GParted_Core.cc:1771
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Nastavi UUID na %1 na novo, naključno vrednost"
 
@@ -773,260 +825,260 @@ msgstr "Nastavi UUID na %1 na novo, naključno vrednost"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1847
+#: ../src/GParted_Core.cc:1855
 msgid "moving requires old and new length to be the same"
 msgstr "premikanje zahteva, da sta stara in nova dolžina enaki"
 
-#: ../src/GParted_Core.cc:1877
+#: ../src/GParted_Core.cc:1885
 msgid "rollback last change to the partition table"
 msgstr "povračanje zadnje spremembe na preglednici razdelkov"
 
-#: ../src/GParted_Core.cc:1913
+#: ../src/GParted_Core.cc:1923
 msgid "move file system to the left"
 msgstr "premakni datotečni sistem levo"
 
-#: ../src/GParted_Core.cc:1915
+#: ../src/GParted_Core.cc:1925
 msgid "move file system to the right"
 msgstr "premakni datotečni sistem desno"
 
-#: ../src/GParted_Core.cc:1918
+#: ../src/GParted_Core.cc:1928
 msgid "move file system"
 msgstr "premakni datotečni sistem"
 
-#: ../src/GParted_Core.cc:1920
+#: ../src/GParted_Core.cc:1930
 msgid "new and old file system have the same position.  Hence skipping this operation"
 msgstr "nov in stari datotečni sistem imata enak položaj, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:1939
+#: ../src/GParted_Core.cc:1949
 msgid "perform real move"
 msgstr "izvedi resničen premik"
 
-#: ../src/GParted_Core.cc:1989
+#: ../src/GParted_Core.cc:1999
 msgid "using libparted"
 msgstr "z uporabo libparted"
 
-#: ../src/GParted_Core.cc:2030
+#: ../src/GParted_Core.cc:2040
 msgid "resizing requires old and new start to be the same"
 msgstr "spreminjanje velikosti zahteva, da sta stari in nov začetek enaka"
 
-#: ../src/GParted_Core.cc:2097
+#: ../src/GParted_Core.cc:2109
 msgid "resize/move partition"
 msgstr "spremeni velikost/premakni razdelek"
 
-#: ../src/GParted_Core.cc:2100
+#: ../src/GParted_Core.cc:2112
 msgid "move partition to the right"
 msgstr "premakni razdelek desno"
 
-#: ../src/GParted_Core.cc:2103
+#: ../src/GParted_Core.cc:2115
 msgid "move partition to the left"
 msgstr "premakni razdelek levo"
 
-#: ../src/GParted_Core.cc:2106
+#: ../src/GParted_Core.cc:2118
 msgid "grow partition from %1 to %2"
 msgstr "povečaj razdelek iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2109
+#: ../src/GParted_Core.cc:2121
 msgid "shrink partition from %1 to %2"
 msgstr "skrči razdelek iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2112
+#: ../src/GParted_Core.cc:2124
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "premakni razdelek desno in povečaj velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2115
+#: ../src/GParted_Core.cc:2127
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "premakni razdelek desno in skrči velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2118
+#: ../src/GParted_Core.cc:2130
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "premakni razdelek levo in povečaj velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2121
+#: ../src/GParted_Core.cc:2133
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "premakni razdelek levo in skrči velikost iz %1 na %2"
 
-#: ../src/GParted_Core.cc:2136
+#: ../src/GParted_Core.cc:2148
 msgid "new and old partition have the same size and position.  Hence skipping this operation"
 msgstr "nov in stari razdelek imata isto velikost in položaj, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:2146
+#: ../src/GParted_Core.cc:2158
 msgid "old start: %1"
 msgstr "stari začetek: %1"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2159
 msgid "old end: %1"
 msgstr "stari konec: %1"
 
-#: ../src/GParted_Core.cc:2148
+#: ../src/GParted_Core.cc:2160
 msgid "old size: %1 (%2)"
 msgstr "stara velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2210
-#: ../src/GParted_Core.cc:2971
+#: ../src/GParted_Core.cc:2222
+#: ../src/GParted_Core.cc:2985
 msgid "new start: %1"
 msgstr "nov začetek: %1"
 
-#: ../src/GParted_Core.cc:2211
-#: ../src/GParted_Core.cc:2972
+#: ../src/GParted_Core.cc:2223
+#: ../src/GParted_Core.cc:2986
 msgid "new end: %1"
 msgstr "nov konec: %1"
 
-#: ../src/GParted_Core.cc:2212
-#: ../src/GParted_Core.cc:2973
+#: ../src/GParted_Core.cc:2224
+#: ../src/GParted_Core.cc:2987
 msgid "new size: %1 (%2)"
 msgstr "nova velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2250
+#: ../src/GParted_Core.cc:2262
 msgid "shrink file system"
 msgstr "skrči datotečni sistem"
 
-#: ../src/GParted_Core.cc:2254
+#: ../src/GParted_Core.cc:2266
 msgid "grow file system"
 msgstr "povečevanje datotečnega sistema"
 
-#: ../src/GParted_Core.cc:2257
+#: ../src/GParted_Core.cc:2269
 msgid "resize file system"
 msgstr "spreminjanje velikosti datotečnega sistema"
 
-#: ../src/GParted_Core.cc:2260
+#: ../src/GParted_Core.cc:2272
 msgid "new and old file system have the same size.  Hence skipping this operation"
 msgstr "nov in stari datotečni sistem imata enako velikost, zato se opravilo ne bo izvedlo"
 
-#: ../src/GParted_Core.cc:2297
+#: ../src/GParted_Core.cc:2309
 msgid "grow file system to fill the partition"
 msgstr "povečava datotečnega sistema, da zapolni razdelek"
 
-#: ../src/GParted_Core.cc:2302
+#: ../src/GParted_Core.cc:2314
 msgid "growing is not available for this file system"
 msgstr "povečanje za ta datotečni sistem ni na voljo"
 
-#: ../src/GParted_Core.cc:2323
+#: ../src/GParted_Core.cc:2335
 msgid "the destination is smaller than the source partition"
 msgstr "ciljni razdelek je manjši kot izvorni"
 
-#: ../src/GParted_Core.cc:2340
+#: ../src/GParted_Core.cc:2352
 msgid "copy file system of %1 to %2"
 msgstr "kopiranje datotečnega sistema %1 v %2"
 
-#: ../src/GParted_Core.cc:2391
+#: ../src/GParted_Core.cc:2405
 msgid "perform read-only test"
 msgstr "izvajanje preizkusa samo-za-branje"
 
-#: ../src/GParted_Core.cc:2445
+#: ../src/GParted_Core.cc:2459
 msgid "using internal algorithm"
 msgstr "uporabljanje internega algoritma"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2449
+#: ../src/GParted_Core.cc:2463
 msgid "read %1"
 msgstr "preberi %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2451
+#: ../src/GParted_Core.cc:2465
 msgid "copy %1"
 msgstr "kopiraj %1"
 
-#: ../src/GParted_Core.cc:2455
+#: ../src/GParted_Core.cc:2469
 msgid "finding optimal block size"
 msgstr "iskanje optimalne velikosti bloka"
 
-#: ../src/GParted_Core.cc:2495
+#: ../src/GParted_Core.cc:2509
 msgid "%1 seconds"
 msgstr "%1 sekund"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2513
+#: ../src/GParted_Core.cc:2527
 msgid "optimal block size is %1"
 msgstr "optimalna velikost bloka je %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2531
+#: ../src/GParted_Core.cc:2545
 msgid "%1 (%2 B) read"
 msgstr "Prebrano %1 (%2 B)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2547
 msgid "%1 (%2 B) copied"
 msgstr "Kopirano %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:2546
+#: ../src/GParted_Core.cc:2560
 msgid "roll back last transaction"
 msgstr "povrnitev zadnjega prenosa"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2575
+#: ../src/GParted_Core.cc:2589
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "preverjanje datotečnega sistema %1 za napake in jih (če je le mogoče) popravi"
 
-#: ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:2597
 msgid "checking is not available for this file system"
 msgstr "preverjanje za ta datotečni sistem ni na voljo"
 
-#: ../src/GParted_Core.cc:2611
+#: ../src/GParted_Core.cc:2625
 msgid "set partition type on %1"
 msgstr "nastavi vrsto razdelka na %1"
 
-#: ../src/GParted_Core.cc:2641
+#: ../src/GParted_Core.cc:2655
 msgid "new partition type: %1"
 msgstr "nova vrsta razdelka: %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2670
+#: ../src/GParted_Core.cc:2684
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "%1 od %2 prebranih (preostalo %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2672
+#: ../src/GParted_Core.cc:2686
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 od %2 kopiranih (preostalo %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2680
-#: ../src/GParted_Core.cc:2797
+#: ../src/GParted_Core.cc:2694
+#: ../src/GParted_Core.cc:2811
 msgid "%1 of %2 read"
 msgstr "%1 od %2 prebranih"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2682
-#: ../src/GParted_Core.cc:2799
+#: ../src/GParted_Core.cc:2696
+#: ../src/GParted_Core.cc:2813
 msgid "%1 of %2 copied"
 msgstr "%1 od %2 kopiranih"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2703
+#: ../src/GParted_Core.cc:2717
 msgid "read %1 using a block size of %2"
 msgstr "preberi %1 z uporabo velikosti bloka %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2722
 msgid "copy %1 using a block size of %2"
 msgstr "kopiraj %1 z uporabo velikosti bloka %2"
 
-#: ../src/GParted_Core.cc:2858
+#: ../src/GParted_Core.cc:2872
 msgid "Error while writing block at sector %1"
 msgstr "Napaka med pisanjem bloka v sektorju %1"
 
-#: ../src/GParted_Core.cc:2861
+#: ../src/GParted_Core.cc:2875
 msgid "Error while reading block at sector %1"
 msgstr "Napaka med branjem bloka v sektorju %1"
 
-#: ../src/GParted_Core.cc:2871
+#: ../src/GParted_Core.cc:2885
 msgid "calibrate %1"
 msgstr "umeri %1"
 
-#: ../src/GParted_Core.cc:2916
+#: ../src/GParted_Core.cc:2930
 msgid "calculate new size and position of %1"
 msgstr "izračunaj novo velikost in položaj %1"
 
-#: ../src/GParted_Core.cc:2920
+#: ../src/GParted_Core.cc:2934
 msgid "requested start: %1"
 msgstr "zahtevan začetek: %1"
 
-#: ../src/GParted_Core.cc:2921
+#: ../src/GParted_Core.cc:2935
 msgid "requested end: %1"
 msgstr "zahtevan konec: %1"
 
-#: ../src/GParted_Core.cc:2922
+#: ../src/GParted_Core.cc:2936
 msgid "requested size: %1 (%2)"
 msgstr "zahtevana velikost: %1 (%2)"
 
@@ -1118,8 +1170,29 @@ msgstr "_Počisti vsa opravila"
 msgid "_Apply All Operations"
 msgstr "_Uveljavi vsa opravila"
 
+#: ../src/LVM2_PV_Info.cc:179
+msgid "One or more Physical Volumes belonging to the Volume Group is missing."
+msgstr ""
+
+#: ../src/LVM2_PV_Info.cc:238
+msgid "An error occurred reading LVM2 configuration!"
+msgstr "Prišlo je do napake med branjem nastavitev LVM2!"
+
+#: ../src/LVM2_PV_Info.cc:240
+msgid "Some or all of the details might be missing or incorrect."
+msgstr ""
+
+#: ../src/LVM2_PV_Info.cc:242
+msgid "You should NOT modify any LVM2 PV partitions."
+msgstr "Razdelkov LVM2 PV NI priporočljivo spreminjati!"
+
+#. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
+#: ../src/OperationChangeUUID.cc:60
+msgid "Set half the UUID to a new random value on %1 file system on %2"
+msgstr "Nastavi polovico UUID na novo naključno vrednost datotečnega sistema %1 na %2"
+
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:59
+#: ../src/OperationChangeUUID.cc:66
 msgid "Set a new random UUID on %1 file system on %2"
 msgstr "Nastavitev novega naključnega UUID datotečnega sistema %1 na %2"
 
@@ -1266,23 +1339,23 @@ msgstr "porabljeno"
 msgid "unused"
 msgstr "neporabljeno"
 
-#: ../src/Utils.cc:246
+#: ../src/Utils.cc:259
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:251
+#: ../src/Utils.cc:264
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:256
+#: ../src/Utils.cc:269
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:261
+#: ../src/Utils.cc:274
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:266
+#: ../src/Utils.cc:279
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1294,21 +1367,21 @@ msgstr "%1 TiB"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:425
+#: ../src/Utils.cc:438
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# Začasna datoteka programa GParted. Datoteka ni pomembna za delovanje sistema.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:437
+#: ../src/Utils.cc:450
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "Napaka med označevanjem: ni mogoče pisati v začasno datoteko %1.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:449
+#: ../src/Utils.cc:462
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "Napaka med označevanjem: ni mogoče ustvariti začasne datoteke %1.\n"
 
@@ -1402,81 +1475,77 @@ msgid "Apply All Operations"
 msgstr "Uveljavi vsa opravila"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:310
+#: ../src/Win_GParted.cc:311
 msgid "_New"
 msgstr "_Novo"
 
-#: ../src/Win_GParted.cc:326
+#: ../src/Win_GParted.cc:327
 msgid "_Resize/Move"
 msgstr "_Spremeni velikost/premakni"
 
-#: ../src/Win_GParted.cc:350
+#: ../src/Win_GParted.cc:351
 msgid "_Format to"
 msgstr "_Formatiraj v"
 
-#: ../src/Win_GParted.cc:359
-msgid "Unmount"
-msgstr "Odklopi"
-
-#: ../src/Win_GParted.cc:365
+#: ../src/Win_GParted.cc:367
 msgid "_Mount on"
 msgstr "_Priklopi na"
 
-#: ../src/Win_GParted.cc:372
+#: ../src/Win_GParted.cc:374
 msgid "M_anage Flags"
 msgstr "Up_ravljanje zastavic"
 
-#: ../src/Win_GParted.cc:377
+#: ../src/Win_GParted.cc:379
 msgid "C_heck"
 msgstr "P_reveri"
 
-#: ../src/Win_GParted.cc:382
+#: ../src/Win_GParted.cc:384
 msgid "_Label"
 msgstr "_Oznaka"
 
-#: ../src/Win_GParted.cc:387
+#: ../src/Win_GParted.cc:389
 msgid "New UU_ID"
 msgstr "Nov UU_ID"
 
-#: ../src/Win_GParted.cc:449
+#: ../src/Win_GParted.cc:451
 msgid "Device Information"
 msgstr "Podatki o napravi"
 
 #. model
-#: ../src/Win_GParted.cc:457
+#: ../src/Win_GParted.cc:459
 msgid "Model:"
 msgstr "Model:"
 
 #. disktype
-#: ../src/Win_GParted.cc:494
+#: ../src/Win_GParted.cc:496
 msgid "Partition table:"
 msgstr "Razpredelnica razdelkov:"
 
 #. heads
-#: ../src/Win_GParted.cc:502
+#: ../src/Win_GParted.cc:504
 msgid "Heads:"
 msgstr "Glave:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:510
+#: ../src/Win_GParted.cc:512
 msgid "Sectors/track:"
 msgstr "Sektorji/sled:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:518
+#: ../src/Win_GParted.cc:520
 msgid "Cylinders:"
 msgstr "Cilindri:"
 
 #. sector size
-#: ../src/Win_GParted.cc:534
+#: ../src/Win_GParted.cc:536
 msgid "Sector size:"
 msgstr "Velikost sektorja:"
 
-#: ../src/Win_GParted.cc:719
+#: ../src/Win_GParted.cc:721
 msgid "Could not add this operation to the list."
 msgstr "Ni mogoče dodati tega opravila na seznam."
 
-#: ../src/Win_GParted.cc:821
+#: ../src/Win_GParted.cc:826
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 pridržanih opravil"
@@ -1484,12 +1553,12 @@ msgstr[1] "%1 pridržano opravilo"
 msgstr[2] "%1 pridržani opravili"
 msgstr[3] "%1 pridržana opravila"
 
-#: ../src/Win_GParted.cc:875
+#: ../src/Win_GParted.cc:880
 msgid "Quit GParted?"
 msgstr "Ali želite končati GParted?"
 
-#: ../src/Win_GParted.cc:881
-#: ../src/Win_GParted.cc:2162
+#: ../src/Win_GParted.cc:886
+#: ../src/Win_GParted.cc:2173
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 opravil je trenutno pridržanih."
@@ -1497,77 +1566,65 @@ msgstr[1] "%1 opravilo je trenutno pridržano."
 msgstr[2] "%1 opravili sta trenutno pridržani."
 msgstr[3] "%1 opravila so trenutno pridržana."
 
-#: ../src/Win_GParted.cc:907
-msgid "_Unmount"
-msgstr "_Odklopi"
-
-#: ../src/Win_GParted.cc:932
-msgid "_Swapoff"
-msgstr "_Ustavi izmenjavo"
-
-#: ../src/Win_GParted.cc:938
-msgid "_Swapon"
-msgstr "_Zaženi izmenjavo"
-
-#: ../src/Win_GParted.cc:1136
+#: ../src/Win_GParted.cc:1147
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1182
+#: ../src/Win_GParted.cc:1193
 msgid "Scanning all devices..."
 msgstr "Proučevanje vseh naprav ..."
 
-#: ../src/Win_GParted.cc:1227
+#: ../src/Win_GParted.cc:1238
 msgid "No devices detected"
 msgstr "Ni zaznanih naprav"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1308
+#: ../src/Win_GParted.cc:1319
 msgid "No partition table found on device %1"
 msgstr "Na napravi %1 ni mogoče najti razpredelnice razdelkov"
 
-#: ../src/Win_GParted.cc:1313
+#: ../src/Win_GParted.cc:1324
 msgid "A partition table is required before partitions can be added."
 msgstr "Pred dodajanjem razdelkov mora biti ustvarjena razpredelnica razdelkov."
 
-#: ../src/Win_GParted.cc:1315
+#: ../src/Win_GParted.cc:1326
 msgid "To create a new partition table choose the menu item:"
 msgstr "Ustvarjanje razpredelnice razdelkov z izborom predmeta menija:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1318
+#: ../src/Win_GParted.cc:1329
 msgid "Device --> Create Partition Table."
 msgstr "Naprava --> Ustvari razpredelnico razdelkov."
 
-#: ../src/Win_GParted.cc:1354
+#: ../src/Win_GParted.cc:1365
 msgid "Unable to open GParted Manual help file."
 msgstr "Ni mogoče odpreti priročnika pomoči programa GParted."
 
-#: ../src/Win_GParted.cc:1370
+#: ../src/Win_GParted.cc:1381
 msgid "Documentation is not available."
 msgstr "Dokumentacija ni na voljo."
 
-#: ../src/Win_GParted.cc:1375
+#: ../src/Win_GParted.cc:1386
 msgid "This build of gparted is configured without documentation."
 msgstr "Različica gparted je nameščena brez dokumentacije."
 
-#: ../src/Win_GParted.cc:1377
+#: ../src/Win_GParted.cc:1388
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentacija je na voljo na spletnih straneh projekta."
 
-#: ../src/Win_GParted.cc:1398
+#: ../src/Win_GParted.cc:1409
 msgid "GNOME Partition Editor"
 msgstr "Urejevalnik razdelkov za GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1414
+#: ../src/Win_GParted.cc:1425
 msgid "translator-credits"
 msgstr ""
 "Matic Žgur <mr.zgur@gmail.com>\n"
 "Matej Urbančič <mateju@svn.gnome.org>"
 
-#: ../src/Win_GParted.cc:1456
+#: ../src/Win_GParted.cc:1467
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Ni mogoče ustvariti več kot %1 osnovnih razdelkov"
@@ -1575,84 +1632,84 @@ msgstr[1] "Ni mogoče ustvariti več kot %1 osnovnega razdelka"
 msgstr[2] "Ni mogoče ustvariti več kot %1 osnovnih razdelkov"
 msgstr[3] "Ni mogoče ustvariti več kot %1 osnovnih razdelkov"
 
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1479
 msgid "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions. Because an extended partition is also a primary partition it might be necessary to remove a primary partition first."
 msgstr "V primeru postavljanja več razdelkov, je treba najprej ustvariti razširjeni razdelek. Razširjeni razdelek vsebuje druge razdelke, ker pa je hkrati tudi osnovni razdelek, je mogoče, da bo treba najprej odstraniti trenutni osnovni razdelek."
 
-#: ../src/Win_GParted.cc:1551
+#: ../src/Win_GParted.cc:1562
 msgid "Moving a partition might cause your operating system to fail to boot."
 msgstr "Premikanje razdelka lahko povzroči napako zaganjanja sistema."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1559
+#: ../src/Win_GParted.cc:1570
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "Uvrščeno je tudi opravilo premikanja zagonskega sektorja razdelka %1."
 
-#: ../src/Win_GParted.cc:1564
+#: ../src/Win_GParted.cc:1575
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "Več podrobnosti o reševanju nastavitev zaganjanja je mogoče najti med pogostimi vprašanji GParted FAQ."
 
-#: ../src/Win_GParted.cc:1642
+#: ../src/Win_GParted.cc:1653
 msgid "You have pasted into an existing partition."
 msgstr "Podatki so bili prilepljeni v obstoječi razdelek."
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1649
+#: ../src/Win_GParted.cc:1660
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Z izvedbo tega opravila bodo podatki na %1 trajno izgubljeni."
 
-#: ../src/Win_GParted.cc:1703
+#: ../src/Win_GParted.cc:1714
 msgid "Unable to delete %1!"
 msgstr "Ni mogoče izbrisati %1!"
 
-#: ../src/Win_GParted.cc:1710
+#: ../src/Win_GParted.cc:1721
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odklopite logične razdelke s številko večjo od %1"
 
-#: ../src/Win_GParted.cc:1721
+#: ../src/Win_GParted.cc:1732
 msgid "Are you sure you want to delete %1?"
 msgstr "Ali ste prepričani, da želite izbrisati %1?"
 
-#: ../src/Win_GParted.cc:1728
+#: ../src/Win_GParted.cc:1739
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po brisanju, ta razdelek ne bo več na voljo za kopiranje."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1731
+#: ../src/Win_GParted.cc:1742
 msgid "Delete %1 (%2, %3)"
 msgstr "Izbriši %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1807
+#: ../src/Win_GParted.cc:1818
 msgid "Cannot format this file system to %1."
 msgstr "Datotečnega sistema ni mogoče formatirati v %1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1819
+#: ../src/Win_GParted.cc:1830
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Datotečni sistem %1 zahteva razdelek velikosti vsaj %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1827
+#: ../src/Win_GParted.cc:1838
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Razdelek z datotečnim sistemom %1 ima največjo velikost %2."
 
-#: ../src/Win_GParted.cc:1921
+#: ../src/Win_GParted.cc:1932
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Razdelka ni mogoče odklopiti iz naslednjih priklopnih točk:"
 
-#: ../src/Win_GParted.cc:1923
+#: ../src/Win_GParted.cc:1934
 msgid "Most likely other partitions are also mounted on these mount points. You are advised to unmount them manually."
 msgstr "Najverjetneje je, da so v te priklopne točke priklopljeni tudi drugi razdelki. Treba jih bo ročno odklopiti."
 
-#: ../src/Win_GParted.cc:1980
-#: ../src/Win_GParted.cc:2064
+#: ../src/Win_GParted.cc:1991
+#: ../src/Win_GParted.cc:2075
 msgid "%1 operation is currently pending for partition %2."
 msgid_plural "%1 operations are currently pending for partition %2."
 msgstr[0] "%1 opravil je trenutno pripravljenih za razdelek %2."
@@ -1660,56 +1717,56 @@ msgstr[1] "%1 opravilo je trenutno pripravljeno za razdelek %2."
 msgstr[2] "%1 opravili sta trenutno pripravljeni za razdelek %2."
 msgstr[3] "%1 opravila so trenutno pripravljena za razdelek %2."
 
-#: ../src/Win_GParted.cc:1994
+#: ../src/Win_GParted.cc:2005
 msgid "The swapon action cannot be performed if an operation is pending for the partition."
 msgstr "Ukaza swapon za zagon izmenjave ni mogoče izvesti, v kolikor obstajajo pripravljena opravila razdelka."
 
-#: ../src/Win_GParted.cc:1996
+#: ../src/Win_GParted.cc:2007
 msgid "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition."
 msgstr "V meniju urejanja je mogoče razveljaviti, počistiti ali uveljaviti dejanja, pred izvedbo ukaza swapon za zaganjanje izmenjave razdelka."
 
-#: ../src/Win_GParted.cc:2014
+#: ../src/Win_GParted.cc:2025
 msgid "Deactivating swap on %1"
 msgstr "Ustavljanje izmenjevalnega razdelka %1"
 
-#: ../src/Win_GParted.cc:2014
+#: ../src/Win_GParted.cc:2025
 msgid "Activating swap on %1"
 msgstr "Zaganjanje izmenjevalnega razdelka na %1"
 
-#: ../src/Win_GParted.cc:2021
+#: ../src/Win_GParted.cc:2032
 msgid "Could not deactivate swap"
 msgstr "Ni mogoče ustaviti izmenjevalnega razdelka"
 
-#: ../src/Win_GParted.cc:2021
+#: ../src/Win_GParted.cc:2032
 msgid "Could not activate swap"
 msgstr "Ni mogoče zagnati izmenjevalnega razdelka"
 
-#: ../src/Win_GParted.cc:2037
+#: ../src/Win_GParted.cc:2048
 msgid "Unmounting %1"
 msgstr "Odklapljanje %1"
 
-#: ../src/Win_GParted.cc:2042
+#: ../src/Win_GParted.cc:2053
 msgid "Could not unmount %1"
 msgstr "Ni mogoče odklopiti %1"
 
-#: ../src/Win_GParted.cc:2078
+#: ../src/Win_GParted.cc:2089
 msgid "The mount action cannot be performed if an operation is pending for the partition."
 msgstr "Ukaza mount za priklapljanje ni mogoče izvesti, v kolikor obstajajo pripravljena opravila razdelka."
 
-#: ../src/Win_GParted.cc:2080
+#: ../src/Win_GParted.cc:2091
 msgid "Use the Edit menu to undo, clear, or apply operations before using mount with this partition."
 msgstr "V meniju urejanja je mogoče razveljaviti, počistiti ali uveljaviti dejanja, pred izvedbo ukaza mount za priklapljanje razdelka."
 
-#: ../src/Win_GParted.cc:2098
+#: ../src/Win_GParted.cc:2109
 msgid "mounting %1 on %2"
 msgstr "priklapljanje %1 v %2"
 
-#: ../src/Win_GParted.cc:2105
+#: ../src/Win_GParted.cc:2116
 msgid "Could not mount %1 on %2"
 msgstr "Ni mogoče priklopiti %1 v %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:2131
+#: ../src/Win_GParted.cc:2142
 msgid "%1 partition is currently active on device %2."
 msgid_plural "%1 partitions are currently active on device %2."
 msgstr[0] "Trenutno je dejavnih %1 razdelkov na napravi %2."
@@ -1717,101 +1774,121 @@ msgstr[1] "Trenutno je dejaven %1 razdelek na napravi %2."
 msgstr[2] "Trenutno sta dejavna %1 razdelka na napravi %2."
 msgstr[3] "Trenutno so dejavni %1 razdelki na napravi %2."
 
-#: ../src/Win_GParted.cc:2146
+#: ../src/Win_GParted.cc:2157
 msgid "A new partition table cannot be created when there are active partitions."
 msgstr "Nove razpredelnice razdelkov ni mogoče ustvariti, kadar obstajajo dejavni razdelki."
 
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2159
 msgid "Active partitions are those that are in use, such as a mounted file system, or enabled swap space."
 msgstr "Dejavni razdelki so razdelki, ki so trenutno v uporabi, na primer priklopljeni datotečni sistem ali omogočen izmenjevalni prostor."
 
-#: ../src/Win_GParted.cc:2150
+#: ../src/Win_GParted.cc:2161
 msgid "Use Partition menu options, such as unmount or swapoff, to deactivate all partitions on this device before creating a new partition table."
 msgstr "V meniju razdelkov je mogoče odklopiti vse razdelke naprave, pred ustvarjanjem nove razpredelnice razdelkov."
 
-#: ../src/Win_GParted.cc:2175
+#: ../src/Win_GParted.cc:2186
 msgid "A new partition table cannot be created when there are pending operations."
 msgstr "Nove razpredelnice razdelkov ni mogoče ustvariti, kadar obstajajo zadržana opravila."
 
-#: ../src/Win_GParted.cc:2177
+#: ../src/Win_GParted.cc:2188
 msgid "Use the Edit menu to either clear or apply all operations before creating a new partition table."
 msgstr "Meni urejanja omogoča urejanje opravil pred ustvarjanjem nove razpredelnice razdelkov."
 
-#: ../src/Win_GParted.cc:2192
+#: ../src/Win_GParted.cc:2203
 msgid "Error while creating partition table."
 msgstr "Napaka med ustvarjanjem novega razpredelnice razdelkov."
 
-#: ../src/Win_GParted.cc:2212
+#: ../src/Win_GParted.cc:2223
 msgid "Command gpart was not found"
 msgstr "Ukaza gpart ni mogoče najti"
 
-#: ../src/Win_GParted.cc:2213
+#: ../src/Win_GParted.cc:2224
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Možnost programa uporablja programnik gpart. Namestite paket in poskusite znova."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2221
+#: ../src/Win_GParted.cc:2232
 msgid "A full disk scan is needed to find file systems."
 msgstr "Pri iskanju datotečnih sistemov, mora biti uporabljeno popolno preiskovanje diska."
 
-#: ../src/Win_GParted.cc:2223
+#: ../src/Win_GParted.cc:2234
 msgid "The scan might take a very long time."
 msgstr "Preiskovanje je lahko dolgotrajno."
 
-#: ../src/Win_GParted.cc:2225
+#: ../src/Win_GParted.cc:2236
 msgid "After the scan you can mount any discovered file systems and copy the data to other media."
 msgstr "Po preiskovanju, je odkrite datotečne sisteme mogoče priklopiti in kopirati podatke na drug nosilec."
 
-#: ../src/Win_GParted.cc:2227
+#: ../src/Win_GParted.cc:2238
 msgid "Do you want to continue?"
 msgstr "Ali želite nadaljevati?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2231
+#: ../src/Win_GParted.cc:2242
 msgid "Search for file systems on %1"
 msgstr "Poišči datotečne sisteme na priklopu %1."
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2245
+#: ../src/Win_GParted.cc:2256
 msgid "Searching for file systems on %1"
 msgstr "Iskanje datotečnih sistemov na priklopu %1."
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2259
+#: ../src/Win_GParted.cc:2270
 msgid "No file systems found on %1"
 msgstr "Na priklopu %1 datotečnega sistema ni mogoče najti"
 
-#: ../src/Win_GParted.cc:2260
+#: ../src/Win_GParted.cc:2271
 msgid "The disk scan by gpart did not find any recognizable file systems on this disk."
 msgstr "Preiskovanje s programnikom gpart ni vrnilo zadetkov o obstoječih datotečnih sistemih na disku."
 
-#: ../src/Win_GParted.cc:2378
-msgid "(New UUID - will be randomly generated)"
-msgstr "(Nova vrednosti UUID bo ustvarjena naključno)"
-
-#: ../src/Win_GParted.cc:2489
+#: ../src/Win_GParted.cc:2526
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Ali ste prepričani, da želite uveljaviti pridržana opravila?"
 
-#: ../src/Win_GParted.cc:2495
+#: ../src/Win_GParted.cc:2532
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Urejanje razdelkov lahko vodi k izgubi podatkov."
 
-#: ../src/Win_GParted.cc:2497
+#: ../src/Win_GParted.cc:2534
 msgid "You are advised to backup your data before proceeding."
 msgstr "Priporočeno je, da pred nadaljevanjem naredite varnostno kopijo pomembnih podatkov."
 
-#: ../src/Win_GParted.cc:2499
+#: ../src/Win_GParted.cc:2536
 msgid "Apply operations to device"
 msgstr "Uveljavi opravila na napravi"
 
+#: ../src/fat16.cc:33
+#: ../src/ntfs.cc:26
+msgid "Changing the UUID might invalidate the Windows Product Activation (WPA) key."
+msgstr "Spreminjanje vrednosti UUID lahko povzroči razveljavitev ključa WPA (Windows Product Activation)."
+
+#: ../src/fat16.cc:35
+#: ../src/ntfs.cc:28
+msgid "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. Changing the Volume Serial Number on the Windows system partition, normally C:, might invalidate the WPA key. An invalid WPA key will prevent login until you reactivate Windows."
+msgstr ""
+
+#: ../src/fat16.cc:41
+#: ../src/ntfs.cc:38
+msgid "Changing the UUID on external storage media and non-system partitions is usually safe, but guarantees cannot be given."
+msgstr ""
+
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/linux_swap.cc:28
+msgid "_Swapon"
+msgstr "_Zaženi izmenjavo"
+
+#: ../src/linux_swap.cc:29
+msgid "_Swapoff"
+msgstr "_Ustavi izmenjavo"
+
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:130
+#: ../src/linux_swap.cc:147
 msgid "Partition move action skipped because %1 file system does not contain data"
 msgstr "Premikanje razdelka je prekinjeno, saj datotečni sistem %1 ne vsebuje podatkov"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:149
+#: ../src/linux_swap.cc:166
 msgid "Partition copy action skipped because %1 file system does not contain data"
 msgstr "Kopiranje razdelka je prekinjeno, saj datotečni sistem %1 ne vsebuje podatkov"
 
@@ -1823,15 +1900,25 @@ msgstr "Za zagon programa GParted so zahtevana skrbniška dovoljenja"
 msgid "Since GParted is a powerful tool capable of destroying partition tables and vast amounts of data, only root may run it."
 msgstr "Ker je GParted orodje, s katerim lahko neizkušen uporabnik uniči sistem, , ga lahko zažene le skrbnik."
 
+#: ../src/ntfs.cc:34
+msgid "In an attempt to avoid invalidating the WPA key, on NTFS file systems only half of the UUID is set to a new random value."
+msgstr ""
+
 #. simulation..
-#: ../src/ntfs.cc:134
+#: ../src/ntfs.cc:185
 msgid "run simulation"
 msgstr "zaženi navidezni način delovanja"
 
 #. real resize
-#: ../src/ntfs.cc:141
+#: ../src/ntfs.cc:192
 msgid "real resize"
 msgstr "prava sprememba velikosti"
+
+#~ msgid "Logical Volume Management is not yet supported."
+#~ msgstr "Upravljanje logičnih razdelkov še ni podprto."
+
+#~ msgid "Unmount"
+#~ msgstr "Odklopi"
 
 #~ msgid "create temporary directory"
 #~ msgstr "ustvari začasno mapo"
