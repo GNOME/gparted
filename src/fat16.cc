@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011, 2012 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -82,13 +82,15 @@ FS fat16::get_filesystem_support()
 		fs .write_uuid = FS::EXTERNAL ;
 	}
 
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 	//resizing of start and endpoint are provided by libparted
 	fs .grow = GParted::FS::LIBPARTED ;
 	fs .shrink = GParted::FS::LIBPARTED ;
-	fs .move = GParted::FS::LIBPARTED ;
+#endif
+#ifdef HAVE_LIBPARTED_3_0_0_PLUS
+	fs .move = FS::GPARTED ;
 #else
-	fs.move = FS::GPARTED ;
+	fs .move = GParted::FS::LIBPARTED ;
 #endif
 
 	fs .copy = GParted::FS::GPARTED ;

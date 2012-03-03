@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010, 2011 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011, 2012 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,9 @@
 #include "../include/Operation.h"
 
 #include <parted/parted.h>
+#ifdef HAVE_LIBPARTED_3_1_0_PLUS
+#include <parted/filesys.h>
+#endif
 #include <vector>
 #include <fstream>
 
@@ -81,7 +84,7 @@ private:
 				 bool inside_extended ) ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
 	void set_used_sectors( std::vector<Partition> & partitions ) ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 	void LP_set_used_sectors( Partition & partition );
 #endif
 	void set_flags( Partition & partition ) ;
@@ -110,7 +113,7 @@ private:
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 	bool resize_move_filesystem_using_libparted( const Partition & partition_old,
 				      		     const Partition & partition_new,
 					      	     OperationDetail & operationdetail ) ;

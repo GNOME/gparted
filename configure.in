@@ -173,11 +173,72 @@ int main ()
 }
 ], [AC_MSG_RESULT([yes])
   AC_DEFINE([HAVE_LIBPARTED_3_0_0_PLUS], [1], [Define to 1 if libparted >= 3.0])
-  have_lp_fs_resize_api=no]
+  have_old_lp_fs_resize_api=no]
 , [AC_MSG_RESULT([no])
-  have_lp_fs_resize_api=yes]
+  have_old_lp_fs_resize_api=yes]
 )
 LIBS="$LIBS_save"
+
+
+dnl======================
+dnl check whether libparted >= 3.1 (libparted has new file system resizing LIB)
+dnl======================
+LIBPARTED_VERSION=3.1
+AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted has new file system resizing LIB)])
+LIBS_save="$LIBS"
+LIBS="-lparted -luuid -ldl"
+need_work_around=yes
+AC_TRY_RUN([
+#include <stdio.h>
+#include <parted/parted.h>
+
+int main ()
+{
+	int min_major = 0;
+	int min_minor = 0;
+	int min_micro = 0;
+	int major = 0;
+	int minor = 0;
+	int micro = 0;
+
+	if ( ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 ) ||
+	     ( sscanf( "$LIBPARTED_VERSION", "%d.%d", &min_major, &min_minor ) == 2 ) ||
+	     ( sscanf( "$LIBPARTED_VERSION", "%d", &min_major ) == 1 )
+	   )
+	{
+		if ( ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 ) ||
+		     ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 ) ||
+		     ( sscanf( ped_get_version(), "%d", &major ) == 1 )
+		   )
+		{
+			return ! ( (major > min_major) ||
+			           ( (major == min_major) && (minor > min_minor) ) ||
+			           ( (major == min_major) && (minor == min_minor) && (micro >= min_micro) )
+			         ) ;
+		}
+	}
+
+	return 1 ;
+}
+], [ AC_MSG_RESULT([yes])
+     AC_DEFINE([HAVE_LIBPARTED_3_1_0_PLUS], [1], [Define to 1 if libparted >= 3.1])
+     have_new_lp_fs_resize_lib=yes
+   ]
+ , [ AC_MSG_RESULT([no])
+     have_new_lp_fs_resize_lib=no
+   ]
+)
+LIBS="$LIBS_save"
+
+
+dnl Check for availability of libparted fs resize library
+AM_CONDITIONAL([USE_LIBPARTED_FS_RESIZE_LIBRARY], [ test ${have_new_lp_fs_resize_lib} = yes])
+
+
+dnl Check if have libparted fs resize capability
+if test [ ${have_old_lp_fs_resize_api} = yes -o ${have_new_lp_fs_resize_lib} = yes ]; then
+	AC_DEFINE([HAVE_LIBPARTED_FS_RESIZE], [1], [Define to 1 if have libparted fs resize capability])
+fi
 
 
 dnl gthread
@@ -264,17 +325,18 @@ dnl Summary
 dnl======================
 
 echo ""
-echo "===================== Final configuration ========================"
-echo "                      Installing into prefix  :  $prefix"
+echo "======================== Final configuration ==========================="
+echo "                         Installing into prefix  :  $prefix"
 echo ""
-echo "                        Build documentation?  :  $enable_doc"
+echo "                           Build documentation?  :  $enable_doc"
 echo ""
-echo "        Use native libparted dmraid support?  :  $enable_libparted_dmraid"
+echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""
-echo "    --- Features Based On Libparted Version ---"
-echo "   Need partition table re-read work around?  :  $need_pt_reread_work_around"
-echo "          Supports sector sizes > 512 bytes?  :  $support_sector_size_gt_512"
-echo "    Have libparted file system resizing API?  :  $have_lp_fs_resize_api"
+echo "       --- Features Based On Libparted Version ---"
+echo "      Need partition table re-read work around?  :  $need_pt_reread_work_around"
+echo "             Supports sector sizes > 512 bytes?  :  $support_sector_size_gt_512"
+echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
+echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
 echo ""
-echo " If all settings are OK, type make and make install "
-echo "=================================================================="
+echo " If all settings are OK, type make and then (as root) make install"
+echo "========================================================================"

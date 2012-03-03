@@ -1442,7 +1442,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 							if ( set_proper_filesystem( partitions[ t ] .filesystem ) )
 								p_filesystem ->set_used_sectors( partitions[ t ] ) ;
 							break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 						case GParted::FS::LIBPARTED	:
 							LP_set_used_sectors( partitions[ t ] ) ;
 							break ;
@@ -1478,7 +1478,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 	}
 }
 
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 void GParted_Core::LP_set_used_sectors( Partition & partition )
 {
 	PedFileSystem *fs = NULL;
@@ -1656,7 +1656,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifndef HAVE_LIBPARTED_3_0_PLUS
 		case GParted::FS::LIBPARTED:
 			break ;
 #endif
@@ -1664,6 +1664,9 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			succes = set_proper_filesystem( partition .filesystem ) &&
 				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
 
+			break ;
+
+		default:
 			break ;
 	}
 
@@ -1971,7 +1974,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				succes = copy_filesystem( partition_old, partition_new, operationdetail .get_last_child() ) ;
 
 			break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 		case GParted::FS::LIBPARTED:
 			succes = resize_move_filesystem_using_libparted( partition_old,
 									 partition_new,
@@ -1985,13 +1988,16 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			                            , operationdetail .get_last_child()
 			                            ) ;
 			break ;
+
+		default:
+			break ;
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
 }
 
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & partition_old,
 		  	      		            	   const Partition & partition_new,
 						    	   OperationDetail & operationdetail ) 
@@ -2285,7 +2291,7 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
+#ifdef HAVE_LIBPARTED_FS_RESIZE
 		case GParted::FS::LIBPARTED:
 			succes = resize_move_filesystem_using_libparted( partition_old,
 									 partition_new,
@@ -2297,6 +2303,9 @@ bool GParted_Core::resize_filesystem( const Partition & partition_old,
 				 p_filesystem ->resize( partition_new,
 							operationdetail .get_last_child(), 
 							fill_partition ) ;
+			break ;
+
+		default:
 			break ;
 	}
 
@@ -2612,6 +2621,9 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			succes = set_proper_filesystem( partition .filesystem ) &&
 				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
 
+			break ;
+
+		default:
 			break ;
 	}
 
