@@ -39,9 +39,14 @@ FS lvm2_pv::get_filesystem_support()
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
 	LVM2_PV_Info lvm2_pv_info ;
-	Byte_Value free_bytes = lvm2_pv_info .get_free_bytes( partition .get_path() ) ;
-	if ( free_bytes >= 0 )
-		partition .Set_Unused( Utils::round( double(free_bytes) / double(partition .sector_size) ) ) ;
+	T = (Sector) lvm2_pv_info .get_size_bytes( partition .get_path() ) ;
+	N = (Sector) lvm2_pv_info .get_free_bytes( partition .get_path() ) ;
+	if ( T > -1 && N > -1 )
+	{
+		T = Utils::round( T / double(partition .sector_size) ) ;
+		N = Utils::round( N / double(partition .sector_size) ) ;
+		partition .set_sector_usage( T, N ) ;
+	}
 
 	std::vector<Glib::ustring> error_messages = lvm2_pv_info .get_error_messages( partition .get_path() ) ;
 	if ( ! error_messages .empty() )

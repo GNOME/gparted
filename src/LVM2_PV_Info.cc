@@ -23,11 +23,12 @@ namespace GParted
 enum PV_ATTRIBUTE
 {
 	PVATTR_PV_NAME = 0,
-	PVATTR_PV_FREE = 1,
-	PVATTR_VG_NAME = 2,
-	PVATTR_VG_BITS = 3,
-	PVATTR_LV_NAME = 4,
-	PVATTR_LV_BITS = 5
+	PVATTR_PV_SIZE = 1,
+	PVATTR_PV_FREE = 2,
+	PVATTR_VG_NAME = 3,
+	PVATTR_VG_BITS = 4,
+	PVATTR_LV_NAME = 5,
+	PVATTR_LV_BITS = 6
 } ;
 
 //Data model:
@@ -35,21 +36,21 @@ enum PV_ATTRIBUTE
 //                      - Has the cache been loaded let?
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - String vector storing attributes of a PV.
-//                        Attributes are: pv_name,pv_free,vg_name,
-//                        vg_attr,lv_name,lv_attr.  Pv_free is the
-//                        number of free bytes, see vgs(8) and lvs(8)
-//                        for details of vg_attr and lv_attr
-//                        respectively.
+//                        Attributes are: pv_name,pv_size,pv_free,
+//                        vg_name,vg_attr,lv_name,lv_attr.  Pv_size and
+//                        pv_free are the size of the PV and number of
+//                        free bytes.  See vgs(8) and lvs(8) for details
+//                        of vg_attr and lv_attr respectively.
 //                        E.g.
-//                        ["/dev/sda10,2147483648,,r-----,,",
-//                         "/dev/sda11,2143289344,GParted-VG1,wz--n-,,",
-//                         "/dev/sda12,1619001344,GParted-VG2,wz--n-,lvol0,-wi---",
-//                         "/dev/sda12,1619001344,GParted-VG2,wz--n-,,",
-//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,lvol0,-wi-a-",
-//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,lvol1,-wi-a-",
-//                         "/dev/sda13,830472192,GParted_VG3,wz--n-,,",
-//                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,lvol0,-wi---",
-//                         "/dev/sda14,1828716544,GParted-VG4,wzx-n-,,"]
+//                        ["/dev/sda10,2147483648,2147483648,,r-----,,",
+//                         "/dev/sda11,2143289344,2143289344,GParted-VG1,wz--n-,,",
+//                         "/dev/sda12,2143289344,1619001344,GParted-VG2,wz--n-,lvol0,-wi---",
+//                         "/dev/sda12,2143289344,1619001344,GParted-VG2,wz--n-,,",
+//                         "/dev/sda13,2143289344,830472192,GParted_VG3,wz--n-,lvol0,-wi-a-",
+//                         "/dev/sda13,2143289344,830472192,GParted_VG3,wz--n-,lvol1,-wi-a-",
+//                         "/dev/sda13,2143289344,830472192,GParted_VG3,wz--n-,,",
+//                         "/dev/sda14,2143289344,1828716544,GParted-VG4,wzx-n-,lvol0,-wi---",
+//                         "/dev/sda14,2143289344,1828716544,GParted-VG4,wzx-n-,,"]
 //  error_messages      - String vector storing whole cache error
 //                        messsages.
 
@@ -91,21 +92,20 @@ Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 	return get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
 }
 
+//Return PV size in bytes, or -1 for error.
+Byte_Value LVM2_PV_Info::get_size_bytes( const Glib::ustring & path )
+{
+	initialize_if_required() ;
+	Glib::ustring str = get_pv_attr_by_path( path, PVATTR_PV_SIZE ) ;
+	return lvm2_pv_attr_to_num( str ) ;
+}
+
 //Return number of free bytes in the PV, or -1 for error.
 Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	Byte_Value free_bytes = -1 ;
-	Glib::ustring fb_str = get_pv_attr_by_path( path, PVATTR_PV_FREE ) ;
-	if ( fb_str != "" )
-	{
-		gchar * suffix ;
-		free_bytes = (Byte_Value) g_ascii_strtoll( fb_str .c_str(), & suffix, 10 ) ;
-		if ( free_bytes < 0 || ( free_bytes == 0 && suffix == fb_str ) )
-			//Negative number or conversion failed
-			free_bytes = -1 ;
-	}
-	return free_bytes ;
+	Glib::ustring str = get_pv_attr_by_path( path, PVATTR_PV_FREE ) ;
+	return lvm2_pv_attr_to_num( str ) ;
 }
 
 //Report if any LVs are active in the VG stored in the PV.
@@ -217,7 +217,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 
 		//Load LVM2 PV attribute cache.  Output PV attributes in
 		//  PV_ATTRIBUTE order
-		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_free,vg_name,vg_attr,lv_name,lv_attr" ;
+		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix --noheadings --separator , --units b -o pv_name,pv_size,pv_free,vg_name,vg_attr,lv_name,lv_attr" ;
 		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
@@ -279,6 +279,22 @@ Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int e
 	if ( entry < pv_attrs .size() )
 		return pv_attrs [entry] ;
 	return "" ;
+}
+
+//Return string converted to a number, or -1 for error.
+//Used to convert PVs size or free bytes.
+Byte_Value LVM2_PV_Info::lvm2_pv_attr_to_num( const Glib::ustring str )
+{
+	Byte_Value num = -1 ;
+	if ( str != "" )
+	{
+		gchar * suffix ;
+		num = (Byte_Value) g_ascii_strtoll( str .c_str(), & suffix, 10 ) ;
+		if ( num < 0 || ( num == 0 && suffix == str ) )
+			//Negative number or conversion failed
+			num = -1 ;
+	}
+	return num ;
 }
 
 }//GParted

@@ -39,6 +39,7 @@ public:
 	~LVM2_PV_Info() ;
 	bool is_lvm2_pv_supported() ;
 	Glib::ustring get_vg_name( const Glib::ustring & path ) ;
+	Byte_Value get_size_bytes( const Glib::ustring & path ) ;
 	Byte_Value get_free_bytes( const Glib::ustring & path ) ;
 	bool has_active_lvs( const Glib::ustring & path ) ;
 	bool is_vg_exported( const Glib::ustring & vgname ) ;
@@ -49,6 +50,7 @@ private:
 	void load_lvm2_pv_info_cache() ;
 	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) ;
 	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) ;
+	Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
