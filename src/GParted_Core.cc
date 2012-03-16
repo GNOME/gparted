@@ -2223,6 +2223,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	
 	if ( return_value )
 	{
+		//Change to partition succeeded
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail(
 				String::ucompose( _("new start: %1"), new_start ) + "\n" +
@@ -2247,7 +2248,21 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		}
 #endif
 	}
-	
+	else
+	{
+		//Change to partition failed
+		operationdetail .get_last_child() .add_child(
+			OperationDetail(
+				String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
+				String::ucompose( _("requested end: %1"), partition_new . sector_end ) + "\n" +
+				String::ucompose( _("requested size: %1 (%2)"),
+						partition_new .get_sector_length(),
+						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
+								STATUS_NONE,
+								FONT_ITALIC )
+								) ;
+	}
+
 	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
 	
 	return return_value ;
