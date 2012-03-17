@@ -463,8 +463,10 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 		}
 	}
 
-	//Align start sector
+	//Calculate difference offset from Mebibyte boundary
 	diff = Sector(partition .sector_start % ( MEBIBYTE / partition .sector_size ));
+
+	//Align start sector only if permitted to change start sector
 	if ( diff && (   (! partition .strict_start)
 	              || (   partition .strict_start
 	                  && (   partition .status == STAT_NEW
@@ -473,7 +475,43 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 	                 )
 	             )
 	   )
+	{
 		partition .sector_start += ( (MEBIBYTE / partition .sector_size) - diff) ;
+
+		//If this is an extended partition then check to see if sufficient space is
+		//  available for any following logical partition Extended Boot Record
+		if ( partition .type == TYPE_EXTENDED )
+		{
+			//Locate the extended partition that contains the logical partitions.
+			int index_extended = -1 ;
+			for ( unsigned int t = 0 ; t < device .partitions .size() ; t++ )
+			{
+				if ( device .partitions[ t ] .type == TYPE_EXTENDED )
+					index_extended = t ;
+			}
+
+			//If there is logical partition that starts less than 2 sectors
+			//  from the start of this partition, then reserve a mebibyte for the EBR.
+			if ( index_extended != -1 )
+			{
+				for ( unsigned int t = 0; t < device .partitions[ index_extended ] .logicals .size(); t++ )
+				{
+					if (   ( device .partitions[ index_extended ] .logicals[ t ] .type == TYPE_LOGICAL )
+					    && ( (  (  device .partitions[ index_extended ] .logicals[ t ] .sector_start )
+					          - ( partition .sector_start )
+					         )
+					         //Unless specifically told otherwise, the Linux kernel considers extended
+					         //  boot records to be two sectors long, in order to "leave room for LILO".
+					         < 2
+					       )
+					   )
+					{
+						partition .sector_start -= (MEBIBYTE / partition .sector_size) ;
+					}
+				}
+			}
+		}
+	}
 
 	//If this is a logical partition not at end of drive then check to see if space is
 	//  required for a following logical partition Extended Boot Record
