@@ -1570,13 +1570,13 @@ void Win_GParted::activate_resize()
 					String::ucompose( _( "You have queued an operation to move the start sector of partition %1." )
 					                , operation ->partition_original .get_path()
 					                ) ;
-				tmp_msg += "  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:." ;
+				tmp_msg += _( "  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:." ) ;
 				tmp_msg += "\n" ;
 				tmp_msg += _( "You can learn how to repair the boot configuration in the GParted FAQ." ) ;
 				tmp_msg += "\n" ;
 				tmp_msg += "http://gparted.org/faq.php" ;
 				tmp_msg += "\n\n" ;
-				tmp_msg += "Moving a partition might take a very long time to apply." ;
+				tmp_msg += _( "Moving a partition might take a very long time to apply." ) ;
 				dialog .set_secondary_text( tmp_msg ) ;
 				dialog .run() ;
 			}
