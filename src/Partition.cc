@@ -39,6 +39,7 @@ void Partition::Reset()
 	messages .clear() ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
+	alignment = ALIGN_STRICT ;
 	filesystem = GParted::FS_UNALLOCATED ;
 	label .clear() ;
 	uuid .clear() ;

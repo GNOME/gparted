@@ -683,6 +683,9 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	if ( operation )
 	{ 
 		Glib::ustring error ;
+		//Add any of the listed operations without further checking, but
+		//  for the other operations (_CREATE, _RESIZE_MOVE and _COPY)
+		//  ensure the partition is correctly aligned.
 		//FIXME: this is becoming a mess.. maybe it's better to check if partition_new > 0
 		if ( operation ->type == OPERATION_DELETE ||
 		     operation ->type == OPERATION_FORMAT ||
@@ -1633,6 +1636,7 @@ void Win_GParted::activate_paste()
 	else
 	{
 		Partition partition_new = selected_partition ;
+		partition_new .alignment = ALIGN_STRICT ;
 		partition_new .filesystem = copied_partition .filesystem ;
 		partition_new .label = copied_partition .label ;
 		partition_new .uuid = copied_partition .uuid ;
