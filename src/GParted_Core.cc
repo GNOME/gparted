@@ -1042,6 +1042,8 @@ void GParted_Core::set_device_partitions( Device & device )
 		if ( partition_temp .get_path() != "" )
 		{
 			//Retrieve file system label
+			//  Use file system specific method first in an effort to ensure multi-byte
+			//  character sets are properly displayed.
 			read_label( partition_temp ) ;
 			if ( partition_temp .label .empty() )
 			{
@@ -1050,10 +1052,11 @@ void GParted_Core::set_device_partitions( Device & device )
 			}
 
 			//Retrieve file system UUID
-			read_uuid( partition_temp ) ;
+			//  Use cached method first in an effort to speed up device scanning.
+			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
 			if ( partition_temp .uuid .empty() )
 			{
-				partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
+				read_uuid( partition_temp ) ;
 			}
 		}
 
