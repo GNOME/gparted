@@ -549,6 +549,23 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 		}
 	}
 
+	//If this is a primary or an extended partition and the partition overlaps
+	//  the start of the next primary or extended partition then subtract a
+	//  mebibyte from the end of the partition to address the overlap.
+	if ( partition .type == TYPE_PRIMARY || partition .type == TYPE_EXTENDED )
+	{
+		for ( unsigned int t = 0 ; t < device .partitions .size() ; t++ )
+		{
+			if (   (   device .partitions[ t ] .type == TYPE_PRIMARY
+			        || device .partitions[ t ] .type == TYPE_EXTENDED
+			       )
+			    && ( device .partitions[ t ] .sector_start > partition .sector_start )
+			    && ( device .partitions[ t ] .sector_start <= partition .sector_end )
+			   )
+				partition .sector_end -= ( MEBIBYTE / partition .sector_size );
+		}
+	}
+
 	//If this is a GPT partition table and the partition ends less than 34 sectors
 	//  from the end of the device, then reserve at least a mebibyte for the
 	//  backup partition table
