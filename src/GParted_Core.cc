@@ -513,6 +513,11 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 		}
 	}
 
+	//Align end sector
+	diff = (partition .sector_end + 1) % ( MEBIBYTE / partition .sector_size);
+	if ( diff )
+		partition .sector_end -= diff ;
+
 	//If this is a logical partition not at end of drive then check to see if space is
 	//  required for a following logical partition Extended Boot Record
 	if ( partition .type == TYPE_LOGICAL )
@@ -525,8 +530,8 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 				index_extended = t ;
 		}
 
-		//If there is a following logical partition that starts a mebibyte or less
-		//  from the end of this partition, then reserve a mebibyte for the EBR.
+		//If there is a following logical partition that starts less than 2 sectors from
+		//  the end of this partition, then reserve at least a mebibyte for the EBR.
 		if ( index_extended != -1 )
 		{
 			for ( unsigned int t = 0; t < device .partitions[ index_extended ] .logicals .size(); t++ )
@@ -534,27 +539,25 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 				if (   ( device .partitions[ index_extended ] .logicals[ t ] .type == TYPE_LOGICAL )
 				    && ( device .partitions[ index_extended ] .logicals[ t ] .sector_start > partition .sector_end )
 				    && ( ( device .partitions[ index_extended ] .logicals[ t ] .sector_start - partition .sector_end )
-				         < ( MEBIBYTE / device .sector_size )
+				           //Unless specifically told otherwise, the Linux kernel considers extended
+				           //  boot records to be two sectors long, in order to "leave room for LILO".
+				         < 2
 				       )
 				   )
-					partition .sector_end -= 1 ;
+					partition .sector_end -= ( MEBIBYTE / partition .sector_size ) ;
 			}
 		}
 	}
 
-	//If this is a GPT partition table then reserve a mebibyte at the end of the device
-	//  for the backup partition table
-	if (    device .disktype == "gpt" 
-	    && ( ( device .length - partition .sector_end ) <= ( MEBIBYTE / device .sector_size ) )
+	//If this is a GPT partition table and the partition ends less than 34 sectors
+	//  from the end of the device, then reserve at least a mebibyte for the
+	//  backup partition table
+	if (    device .disktype == "gpt"
+	    && ( ( device .length - partition .sector_end ) < 34 )
 	   )
 	{
-		partition .sector_end -= 1 ;
+		partition .sector_end -= ( MEBIBYTE / partition .sector_size ) ;
 	}
-
-	//Align end sector
-	diff = (partition .sector_end + 1) % ( MEBIBYTE / partition .sector_size);
-	if ( diff )
-		partition .sector_end -= diff ;
 
 	return true ;
 }
