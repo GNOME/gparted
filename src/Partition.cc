@@ -83,32 +83,8 @@ void Partition::Set(	const Glib::ustring & device_path,
 	this ->color .set( Utils::get_color( filesystem ) );
 }
 
-//Deprecated method of setting file system free space, which assumes
-//  the file system fills the partition.
-void Partition::Set_Unused( Sector sectors_unused )
-{
-	if ( sectors_unused <= get_sector_length() )
-	{
-		this ->sectors_unused = sectors_unused ;
-		this ->sectors_used = ( sectors_unused == -1 ) ? -1 : get_sector_length() - sectors_unused ;
-		this ->sectors_unallocated = 0 ;
-	}
-}
-
-//Deprecated method of setting file system used space, which assumes
-//  the file system fills the partition.
-void Partition::set_used( Sector sectors_used ) 
-{
-	if ( sectors_used < get_sector_length() )
-	{
-		this ->sectors_used = sectors_used ;
-		this ->sectors_unused = ( sectors_used == -1 ) ? -1 : get_sector_length() - sectors_used ;
-		this ->sectors_unallocated = 0 ;
-	}
-}
-
-//Preferred method of setting file system size and free space, which also
-//  calculates unallocated space.  Set sectors_fs_size = -1 for unknown.
+//Set file system size and free space, which also calculates unallocated
+//  space.  Set sectors_fs_size = -1 for unknown.
 void Partition::set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused )
 {
 	Sector length = get_sector_length() ;

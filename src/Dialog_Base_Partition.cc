@@ -138,6 +138,7 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 {
 	//set sector size of new partition
 	selected_partition .sector_size = sector_size;
+	Sector old_size = selected_partition .get_sector_length() ;
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
@@ -163,10 +164,6 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	if ( ( START + total_length -1 - selected_partition .sector_end ) < (MEBIBYTE / sector_size) )
 		selected_partition .sector_end = START + total_length -1 ;
 	
-	//set new value of unused..
-	if ( selected_partition .sectors_used != -1 )
-		selected_partition .sectors_unused = selected_partition .get_sector_length() - selected_partition .sectors_used ;
-
 	//set alignment
 	switch ( optionmenu_alignment .get_history() )
 	{
@@ -192,6 +189,29 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
 
 		default :  selected_partition .alignment = ALIGN_MEBIBYTE ;
+	}
+
+	//update partition usage
+	if ( selected_partition .sectors_used != -1 && selected_partition .sectors_unused != -1 )
+	{
+		Sector new_size = selected_partition .get_sector_length() ;
+		if ( old_size == new_size )
+		{
+			//Pasting into new same sized partition or moving partition keeping the same size,
+			//  therefore only block copy operation will be performed maintaining file system size.
+			selected_partition .set_sector_usage(
+					selected_partition .sectors_used + selected_partition .sectors_unused,
+					selected_partition .sectors_unused ) ;
+		}
+		else
+		{
+			//Pasting into new larger partition or (moving and) resizing partition larger or smaller,
+			//  therefore block copy followed by file system grow or shrink operations will be
+			//  performed making the file system fill the partition.
+			selected_partition .set_sector_usage(
+					new_size,
+					new_size - selected_partition .sectors_used ) ;
+		}
 	}
 
 	selected_partition .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;

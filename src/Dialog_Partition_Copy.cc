@@ -105,9 +105,12 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	this ->selected_partition .type = 
 		selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
 	//Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
-	this ->selected_partition .set_used(
-			( (copied_partition .sectors_used * copied_partition .sector_size)
-			  + (selected_partition .sector_size - 1)
+	this ->selected_partition .set_sector_usage(
+			(   ( ( copied_partition .sectors_used + copied_partition .sectors_unused ) * copied_partition .sector_size )
+			  + ( selected_partition .sector_size - 1 )
+			) / selected_partition .sector_size,
+			(   ( copied_partition .sectors_unused * copied_partition .sector_size )
+			  + ( selected_partition .sector_size - 1 )
 			) / selected_partition .sector_size ) ;
 
 	this ->show_all_children() ;

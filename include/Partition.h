@@ -72,8 +72,6 @@ public:
 			bool inside_extended,
 			bool busy ) ;
 
-	void Set_Unused( Sector sectors_unused ) ;
-	void set_used( Sector sectors_used ) ;
 	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
 	bool significant_unallocated_space() const ;
 
