@@ -2339,22 +2339,9 @@ void Win_GParted::activate_label_partition()
 	{
 		dialog .hide() ;
 		//Make a duplicate of the selected partition (used in UNDO)
-		Partition part_temp ;
-		part_temp .Set( devices[ current_device ] .get_path(),
-				selected_partition .get_path(),
-				selected_partition .partition_number,
-				selected_partition .type,
-				selected_partition .filesystem,
-				selected_partition .sector_start,
-				selected_partition .sector_end,
-				devices[ current_device ] .sector_size,
-				selected_partition .inside_extended,
-				false ) ;
-		part_temp .Set_Unused( selected_partition.sectors_unused );
-		part_temp .set_used( selected_partition.sectors_used );
+		Partition part_temp = selected_partition ;
 
 		part_temp .label = dialog .get_new_label();
-		part_temp .uuid = selected_partition .uuid ;
 
 		Operation * operation = new OperationLabelPartition( devices[ current_device ],
 									selected_partition, part_temp ) ;
