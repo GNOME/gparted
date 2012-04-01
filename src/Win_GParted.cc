@@ -2396,19 +2396,7 @@ void Win_GParted::activate_change_uuid()
 	}
 
 	//Make a duplicate of the selected partition (used in UNDO)
-	Partition part_temp ;
-	part_temp .Set( devices[ current_device ] .get_path(),
-			selected_partition .get_path(),
-			selected_partition .partition_number,
-			selected_partition .type,
-			selected_partition .filesystem,
-			selected_partition .sector_start,
-			selected_partition .sector_end,
-			devices[ current_device ] .sector_size,
-			selected_partition .inside_extended,
-			false ) ;
-
-	part_temp .label = selected_partition .label ;
+	Partition part_temp = selected_partition ;
 
 	if ( part_temp .filesystem == GParted::FS_NTFS )
 		//Explicitly ask for half, so that the user will be aware of it
