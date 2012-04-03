@@ -182,7 +182,8 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 
 	Glib::ustring mountPoint=tmpDir;
 
-	Glib::ustring commandLine= String::ucompose("mount -o ro,loop,offset=%1,sizelimit=%2 %3 %4", initOffset, totalSize, this->device_path, mountPoint);
+	Glib::ustring commandLine= "mount -o ro,loop,offset="+Utils::num_to_str(initOffset)
+		+",sizelimit="+Utils::num_to_str(totalSize)+" "+this->device_path+" "+mountPoint;
 
 	int mountResult=Utils::execute_command(commandLine);
 
