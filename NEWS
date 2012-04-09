@@ -1,4 +1,62 @@
 ============================
+GParted 0.12.1  (2012-04-09)
+============================
+
+Release Notes
+-------------
+This release enables GParted to use the new file system resize library
+(for FAT16/32 and HFS/+) available with parted 3.1.  Also included are bug
+fixes and language translation updates.
+
+### Key changes include:
+
+  * Enable new file system resize library available with parted-3.1
+  * Handle more than 15 partitions on a disk device with parted-3.1
+  * Ensure space for EBR when resizing Extended partition
+  * Ensure Align to MiB does not overlap following partition
+
+Bug Fixes
+---------
+  * Enable minimal file system resize API (FAT and HFS* only) (#668281)
+    - Requires libparted-3.1+
+    - Thanks go to Jim Meyering for returning FAT16/32 and HFS/+
+      file system resizing ability in a new library with parted 3.1.
+  * Properly handle more than 15 partitions on a disk (#632345)
+    - Requires libparted-3.1+
+  * Ensure space for EBR when resizing Extended partition (#664050)
+  * Improve reiser4 file system uuid reading method
+    - Thanks to Mike Fleetwood for this small patch
+  * Fix uninitialised read when pasting into an existing partition (#672654)
+    - Thanks to Mike Fleetwood for this small patch
+  * Fix for FS size & flags becoming unknown after change UUID (#673245)
+      & Fix for FS flags becoming unknown after change label
+    - Thanks to Rogier Goossens for these patches
+  * Fix attempt data rescue fail to open read-only view (#673246)
+    - Thanks to Joan Lledó for this small patch
+  * Add requested partition details to log if resize/move fails
+  * Use cached method first to read UUID to shorten device scan time
+  * Rework Align to MiB adjustments to end sector of partition
+  * Ensure Align to MiB does not overlap following partition (#661744)
+  * Fix two typos in en_CA translation (#670097)
+  * Fix typographical error in en_CA translation (#672359)
+
+Translations (new/updated)
+--------------------------
+  ar(Khaled Hosny), cs(Marek Černocký), da(Ask H. Larsen),
+  de(Mario Blättermann), es(Daniel Mustieles), fa(Arash Mousavi),
+  fr(Claude Paroz), gl(Fran Diéguez), it(Milo Casagrande),
+  lt(Algimantas Margevičius), lv(Rudolfs Mazurs), ml(Anish A),
+  nb(Kjartan Maraas), pl(Piotr Drąg), pt_BR(Gabriel Speckhahn),
+  ro(Daniel Șerbănescu), sl(Matej Urbančič), sr(Мирослав Николић),
+  sr@latin(Мирослав Николић), sv(Daniel Nylander), te(Sasi Bhushan Boddepalli),
+  uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.12.0  (2012-02-21)
 ============================
 
