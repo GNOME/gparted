@@ -1641,7 +1641,24 @@ void Win_GParted::activate_paste()
 		partition_new .label = copied_partition .label ;
 		partition_new .uuid = copied_partition .uuid ;
 		partition_new .color = copied_partition .color ;
-		partition_new .set_used( copied_partition .sectors_used ) ;
+		Sector new_size = partition_new .get_sector_length() ;
+		if ( copied_partition .get_sector_length() == new_size )
+		{
+			//Pasting into same size existing partition, therefore only block copy operation
+			//  will be performed maintaining the file system size.
+			partition_new .set_sector_usage(
+					copied_partition .sectors_used + copied_partition. sectors_unused,
+					copied_partition. sectors_unused ) ;
+		}
+		else
+		{
+			//Pasting into larger existing partition, therefore block copy followed by file system
+			//  grow operations (if supported) will be performed making the file system fill the
+			//  partition.
+			partition_new .set_sector_usage(
+					new_size,
+					new_size - copied_partition .sectors_used ) ;
+		}
 		partition_new .messages .clear() ;
  
 		Operation * operation = new OperationCopy( devices[ current_device ],
@@ -1859,8 +1876,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			devices[ current_device ] .sector_size,
 			selected_partition .inside_extended,
 			false ) ;
-	part_temp .Set_Unused( selected_partition .sectors_unused );
-	part_temp .set_used( 0 );
+	//Leave sector usage figures to new Partition object defaults of
+	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
 	 
 	part_temp .status = GParted::STAT_FORMATTED ;
 	
