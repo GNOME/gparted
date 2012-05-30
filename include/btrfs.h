@@ -45,7 +45,9 @@ public:
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
 private:
-	Sector btrfs_size_to_num( Glib::ustring s ) const ;
+	Byte_Value btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) const ;
+	gdouble btrfs_size_max_delta( Glib::ustring str ) const ;
+	gdouble btrfs_size_to_gdouble( Glib::ustring str ) const ;
 };
 } //GParted
 

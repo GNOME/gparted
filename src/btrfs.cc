@@ -19,6 +19,8 @@
 
 #include "../include/btrfs.h"
 
+#include <ctype.h>
+
 namespace GParted
 {
 
@@ -117,7 +119,6 @@ bool btrfs::check_repair( const Partition & partition, OperationDetail & operati
 
 void btrfs::set_used_sectors( Partition & partition )
 {
-
 	if ( btrfs_found )
 		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
 	else
@@ -130,15 +131,16 @@ void btrfs::set_used_sectors( Partition & partition )
 		//  file system wide used bytes (wrong for multi-device
 		//  file systems).
 
+		Byte_Value ptn_bytes = partition .get_byte_length() ;
 		Glib::ustring str ;
 		//Btrfs file system device size
 		Glib::ustring regexp = "devid .* size ([0-9\\.]+.?B) .* path " + partition .get_path() ;
 		if ( ! ( str = Utils::regexp_label( output, regexp ) ) .empty() )
-			T = btrfs_size_to_num( str ) ;
+			T = btrfs_size_to_num( str, ptn_bytes, true ) ;
 
 		//Btrfs file system wide used bytes
 		if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+.?B)" ) ) .empty() )
-			N = T - btrfs_size_to_num( str ) ;
+			N = T - btrfs_size_to_num( str, ptn_bytes, false ) ;
 
 		if ( T > -1 && N > -1 )
 		{
@@ -304,7 +306,79 @@ void btrfs::read_uuid( Partition & partition )
 	}
 }
 
-Sector btrfs::btrfs_size_to_num( Glib::ustring str ) const
+//Private methods
+
+//Return the value of a btrfs tool formatted size, including reversing
+//  changes in certain cases caused by using binary prefix multipliers
+//  and rounding to two decimal places of precision.  E.g. "2.00GB".
+Byte_Value btrfs::btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) const
+{
+	Byte_Value size_bytes = Utils::round( btrfs_size_to_gdouble( str ) ) ;
+	gdouble delta         = btrfs_size_max_delta( str ) ;
+	Byte_Value upper_size = size_bytes + ceil( delta ) ;
+	Byte_Value lower_size = size_bytes - floor( delta ) ;
+
+	if ( size_bytes > ptn_bytes && lower_size <= ptn_bytes )
+	{
+		//Scale value down to partition size:
+		//  The btrfs tool reported size appears larger than the partition
+		//  size, but the minimum possible size which could have been rounded
+		//  to the reported figure is within the partition size so use the
+		//  smaller partition size instead.  Applied to FS device size and FS
+		//  wide used bytes.
+		//      ............|         ptn_bytes
+		//               [    x    )  size_bytes with upper & lower size
+		//                  x         scaled down size_bytes
+		//  Do this to avoid the FS size or used bytes being larger than the
+		//  partition size and GParted failing to read the file system usage and
+		//  report a warning.
+		size_bytes = ptn_bytes ;
+	}
+	else if ( scale_up && size_bytes < ptn_bytes && upper_size > ptn_bytes )
+	{
+		//Scale value up to partition size:
+		//  The btrfs tool reported size appears smaller than the partition
+		//  size, but the maximum possible size which could have been rounded
+		//  to the reported figure is within the partition size so use the
+		//  larger partition size instead.  Applied to FS device size only.
+		//      ............|     ptn_bytes
+		//           [    x    )  size_bytes with upper & lower size
+		//                  x     scaled up size_bytes
+		//  Make an assumption that the file system actually fills the
+		//  partition, rather than is slightly smaller to avoid false reporting
+		//  of unallocated space.
+		size_bytes = ptn_bytes ;
+	}
+
+	return size_bytes ;
+}
+
+//Return maximum delta for which num +/- delta would be rounded by btrfs
+//  tools to str.  E.g. btrfs_size_max_delta("2.00GB") -> 5368709.12
+gdouble btrfs::btrfs_size_max_delta( Glib::ustring str ) const
+{
+	Glib::ustring limit_str ;
+	//Create limit_str.  E.g. str = "2.00GB" -> limit_str = "0.005GB"
+	for ( Glib::ustring::iterator p = str .begin() ; p != str .end() ; p ++ )
+	{
+		if ( isdigit( *p ) )
+			limit_str .append( "0" ) ;
+		else if ( *p == '.' )
+			limit_str .append( "." ) ;
+		else
+		{
+			limit_str .append( "5" ) ;
+			limit_str .append( p, str .end() ) ;
+			break ;
+		}
+	}
+	gdouble max_delta = btrfs_size_to_gdouble( limit_str ) ;
+	return max_delta ;
+}
+
+//Return the value of a btrfs tool formatted size.
+//  E.g. btrfs_size_to_gdouble("2.00GB") -> 2147483648.0
+gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str ) const
 {
 	gchar * suffix ;
 	gdouble rawN = g_ascii_strtod( str .c_str(), & suffix ) ;
@@ -317,7 +391,7 @@ Sector btrfs::btrfs_size_to_num( Glib::ustring str ) const
 		case 'T':	mult = TEBIBYTE ;	break ;
 		default:	mult = 1 ;		break ;
 	}
-	return Utils::round( rawN * mult ) ;
+	return rawN * mult ;
 }
 
 } //GParted
