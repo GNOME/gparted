@@ -148,14 +148,15 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	frame_resizer_base ->set_x_start( Utils::round( previous / ( total_length / 500.00 ) ) ) ;
 	frame_resizer_base ->set_x_end( 
 		Utils::round( selected_partition .get_sector_length() / ( total_length / 500.00 ) ) + frame_resizer_base ->get_x_start() ) ;
-	frame_resizer_base ->set_used( Utils::round( selected_partition.sectors_used / ( total_length / 500.00 ) ) ) ;
+	Sector min_resize = selected_partition .estimated_min_size() ;
+	frame_resizer_base ->set_used( Utils::round( min_resize / ( total_length / 500.00 ) ) ) ;
 
 	//set MIN
 	if ( fs .shrink )
 	{
 		//since some file systems have lower limits we need to check for this
-		if ( selected_partition .sectors_used > (fs .MIN / selected_partition .sector_size) )
-			fs .MIN = selected_partition .sectors_used * selected_partition .sector_size ;
+		if ( min_resize > (fs .MIN / selected_partition .sector_size) )
+			fs .MIN = min_resize * selected_partition .sector_size ;
 
 		//ensure that minimum size is at least one mebibyte
 		if ( ! fs .MIN || fs .MIN < MEBIBYTE )

@@ -74,6 +74,7 @@ public:
 
 	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
 	bool significant_unallocated_space() const ;
+	Sector estimated_min_size() const ;
 
 	void Set_Unallocated( const Glib::ustring & device_path, 
 			      Sector sector_start,
@@ -130,6 +131,7 @@ public:
 
 private:
 	void sort_paths_and_remove_duplicates() ;
+	Sector get_significant_unallocated_sectors() const ;
 
 	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
 	

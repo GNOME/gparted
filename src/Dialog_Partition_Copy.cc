@@ -56,9 +56,9 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_x_start( Utils::round(MIN_SPACE_BEFORE_MB / MB_PER_PIXEL) ) ;
 	int x_end = Utils::round( (MIN_SPACE_BEFORE_MB + COPIED_LENGTH_MB) / ( TOTAL_MB/500.00 ) ) ; //> 500 px only possible with xfs...
 	frame_resizer_base ->set_x_end( x_end > 500 ? 500 : x_end ) ;
+	Sector min_resize = copied_partition .estimated_min_size() ;
 	frame_resizer_base ->set_used( 
-		Utils::round( Utils::sector_to_unit( 
-				copied_partition .sectors_used, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
+		Utils::round( Utils::sector_to_unit( min_resize, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 
 	if ( fs .grow )
 		if ( ! fs .MAX || fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
@@ -70,7 +70,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 
 	//TODO: Since BUF is the cylinder size of the current device, the cylinder size of the copied device could differ for small disks
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs .MIN = ( copied_partition .sectors_used + (BUF * 2) ) * copied_partition .sector_size;
+		fs .MIN = ( min_resize + (BUF * 2) ) * copied_partition .sector_size;
 	else
 		fs .MIN = COPIED_LENGTH_MB * MEBIBYTE ;
 	

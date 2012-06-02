@@ -21,7 +21,7 @@
 namespace GParted
 {
 
-#define SIGNIFICANT_UNALLOCATED_PERCENTAGE 5.0
+#define SIGNIFICANT_UNALLOCATED_FRACTION 0.05
 
 Partition::Partition()
 {
@@ -114,10 +114,19 @@ void Partition::set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unus
 
 bool Partition::significant_unallocated_space() const
 {
-	Sector length = get_sector_length() ;
-	if ( sectors_unallocated > 0 && length > 0 )
-		return ( sectors_unallocated * 100.0 / length > SIGNIFICANT_UNALLOCATED_PERCENTAGE ) ;
+	if ( get_sector_length() >= 0 && sectors_unallocated > 0 )
+		return sectors_unallocated >= get_significant_unallocated_sectors() ;
 	return false ;
+}
+
+Sector Partition::estimated_min_size() const
+{
+	//Add unallocated sectors up to the significant threshold, to
+	//  account for any intrinsic unallocated sectors in the
+	//  file systems minimum partition size.
+	if ( sectors_used > 0 )
+		return sectors_used + std::min( sectors_unallocated, get_significant_unallocated_sectors() ) ;
+	return -1 ;
 }
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
@@ -281,6 +290,16 @@ void Partition::clear_mountpoints()
 bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
 {
 	return A .length() < B .length() ;
+}
+
+//Return threshold of sectors which is considered above the intrinsic
+//  level for a file system which "fills" the partition.
+Sector Partition::get_significant_unallocated_sectors() const
+{
+	Sector length = get_sector_length() ;
+	if ( length >= 0 )
+		return Utils::round( length * SIGNIFICANT_UNALLOCATED_FRACTION ) ;
+	return 0 ;
 }
 
 Partition::~Partition()
