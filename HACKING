@@ -17,3 +17,45 @@ even when it's only one character. =)
 
 Thanks,
 Curtis
+
+
+
+partition usage and unallocated space
+=====================================
+
+After addressing bug #499202 GParted now also displays unallocated space
+as well as used and unused space for recognised file systems.  The
+unallocated space is shown graphically and the numeric figure is shown
+in the Information Dialog if it is greater than zero.  Additionally a
+warning is reported if the unallocated space is considered too much.
+See the code and commit messages for more details.
+
+Worked example of partition and file system usage for a newly created
+jfs file system in a 200 MiB partition reporting a small amount of
+unallocated space:
+
+# sfdisk -s /dev/sda9
+204800
+
+# echo dm | jfs_debugfs /dev/sda9 | egrep 'Block Size:|dn_mapsize:|dn_nfree:'
+Aggregate Block Size: 4096
+[1] dn_mapsize:		0x0000000c6cb	[9] dn_agheigth:	0
+[2] dn_nfree:		0x0000000c6a3	[10] dn_agwidth:	1
+
+Partition size = 204800  (1K blocks) = 409600 (512 byte sectors)
+FS size        = 0x0c6cb (4K blocks)
+               = 50891   (4K blocks) = 407128 (512 byte sectors)
+FS free        = 0x0c6a3 (4K blocks)
+               = 50851   (4K blocks) = 406808 (512 byte sectors)
+
+Calculation:
+size        = ptn_size           = 409600                 = 200.00 MiB
+used        = fs_size - fs_free  = 407128 - 406808 =  320 = 160.00 KiB
+unused      = fs_free            = 406808                 = 198.64 MiB
+unallocated = ptn_size - fs_size = 409600 - 407128 = 2472 =   1.21 MiB
+
+Figures displayed in the Information dialog:
+Size:         200.00 MiB
+Used:         160.00 KiB  ( 0% )
+Unused:       198.64 MiB  ( 99% )
+Unallocated:  1.21 MiB    ( 1% )

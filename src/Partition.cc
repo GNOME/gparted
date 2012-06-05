@@ -21,8 +21,6 @@
 namespace GParted
 {
 
-#define SIGNIFICANT_UNALLOCATED_FRACTION 0.05
-
 Partition::Partition()
 {
 	Reset() ;
@@ -293,13 +291,38 @@ bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B 
 }
 
 //Return threshold of sectors which is considered above the intrinsic
-//  level for a file system which "fills" the partition.
+//  level for a file system which "fills" the partition.  Calculation
+//  is:
+//      %age of partition size           , when
+//      5%                               ,           ptn size <= 100 MiB
+//      linear scaling from 5% down to 2%, 100 MiB < ptn size <= 1 GiB
+//      2%                               , 1 GiB   < ptn size
 Sector Partition::get_significant_unallocated_sectors() const
 {
-	Sector length = get_sector_length() ;
-	if ( length >= 0 )
-		return Utils::round( length * SIGNIFICANT_UNALLOCATED_FRACTION ) ;
-	return 0 ;
+	const double HIGHER_UNALLOCATED_FRACTION = 0.05 ;
+	const double LOWER_UNALLOCATED_FRACTION  = 0.02 ;
+	Sector     length   = get_sector_length() ;
+	Byte_Value byte_len = length * sector_size ;
+	if ( byte_len <= 0 )
+	{
+		return 0 ;
+	}
+	else if ( byte_len <= 100 * MEBIBYTE )
+	{
+		return Utils::round( length * HIGHER_UNALLOCATED_FRACTION ) ;
+	}
+	else if ( byte_len <= 1 * GIBIBYTE )
+	{
+		double fraction = ( HIGHER_UNALLOCATED_FRACTION - LOWER_UNALLOCATED_FRACTION ) -
+		                  ( byte_len - 100 * MEBIBYTE ) * ( HIGHER_UNALLOCATED_FRACTION - LOWER_UNALLOCATED_FRACTION ) /
+		                  ( 1 * GIBIBYTE - 100 * MEBIBYTE ) +
+		                  LOWER_UNALLOCATED_FRACTION ;
+		return Utils::round( length * fraction ) ;
+	}
+	else
+	{
+		return Utils::round( length * LOWER_UNALLOCATED_FRACTION ) ;
+	}
 }
 
 Partition::~Partition()
