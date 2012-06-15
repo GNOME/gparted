@@ -969,7 +969,7 @@ void Win_GParted::set_valid_operations()
 		{
 			Byte_Value required_size ;
 			if ( copied_partition .filesystem == GParted::FS_XFS )
-				required_size = copied_partition .sectors_used * copied_partition .sector_size;
+				required_size = copied_partition .estimated_min_size() * copied_partition .sector_size;
 			else
 				required_size = copied_partition .get_byte_length() ;
 

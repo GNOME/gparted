@@ -136,10 +136,10 @@ void Dialog_Partition_Info::init_drawingarea()
 		unused      = 0 ;
 		unallocated = 400 - BORDER *2 ;
 	}
-	else if ( partition .sectors_used >= 0 && partition .sectors_unused >= 0 )
+	else if ( partition .sector_usage_known() )
 	{
-		used        = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .sectors_used   ) ) ;
-		unused      = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .sectors_unused ) ) ;
+		used        = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .get_sectors_used()   ) ) ;
+		unused      = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .get_sectors_unused() ) ) ;
 		unallocated = 400 - BORDER *2 - used - unused ;
 	}
 	else
@@ -202,11 +202,14 @@ void Dialog_Partition_Info::Display_Info()
 			top++, bottom++,
 			Gtk::FILL ) ;
 	
-	if ( partition.sectors_used != -1 )
+	if ( partition .sector_usage_known() )
 	{
+		Sector used        = partition .get_sectors_used() ;
+		Sector unused      = partition .get_sectors_unused() ;
+		Sector unallocated = partition .get_sectors_unallocated() ;
 		//calculate relative diskusage
-		int percent_unused      = Utils::round( partition .sectors_unused * 100.0 / ptn_sectors ) ;
-		int percent_unallocated = Utils::round( partition .sectors_unallocated * 100.0 / ptn_sectors ) ;
+		int percent_unused      = Utils::round( unused      * 100.0 / ptn_sectors ) ;
+		int percent_unallocated = Utils::round( unallocated * 100.0 / ptn_sectors ) ;
 		int percent_used        = 100 - percent_unallocated - percent_unused ;
 
 		//Used
@@ -214,7 +217,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_used, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( used, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -228,7 +231,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unused, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( unused, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -238,13 +241,13 @@ void Dialog_Partition_Info::Display_Info()
 				Gtk::FILL ) ;
 
 		//unallocated
-		if ( partition .sectors_unallocated > 0 )
+		if ( unallocated > 0 )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
 					0, 1,
 					top, bottom,
 					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( Utils::format_size( partition .sectors_unallocated, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+			table ->attach( * Utils::mk_label( Utils::format_size( unallocated, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 					1, 2,
 					top, bottom,
 					Gtk::FILL ) ;

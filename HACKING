@@ -24,10 +24,15 @@ partition usage and unallocated space
 =====================================
 
 After addressing bug #499202 GParted now also displays unallocated space
-as well as used and unused space for recognised file systems.  The
-unallocated space is shown graphically and the numeric figure is shown
-in the Information Dialog if it is greater than zero.  Additionally a
-warning is reported if the unallocated space is considered too much.
+as well as used and unused space for recognised file systems.  Many file
+systems which actually fill their partition report a small amount of
+intrinsic unallocated space when mounted, but not when unmounted.  To
+avoid confusing the user and unnecessarily alarming them don't show
+unallocated space below a threshold, 2 to 5% depending on partition
+size.  It is just included in the used figure instead.  (This is
+effectively how GParted behaved before bug #499202 was addressed).  When
+above the threshold unallocated space is shown graphically, the numeric
+figure is shown in the Information Dialog and a is warning displayed.
 See the code and commit messages for more details.
 
 Worked example of partition and file system usage for a newly created
@@ -54,8 +59,14 @@ used        = fs_size - fs_free  = 407128 - 406808 =  320 = 160.00 KiB
 unused      = fs_free            = 406808                 = 198.64 MiB
 unallocated = ptn_size - fs_size = 409600 - 407128 = 2472 =   1.21 MiB
 
+  (Threshold %age for 200 MiB partition is approximately 4.675%)
+threshold   = ptn_size * pct      = 19150                 =   9.35 MiB
+
+  (Unallocated is below threshold so is included in used figure)
+disp_used   = used + unallocated = 320 + 2472      = 2792 =   1.36 MiB
+disp_unused = unused             = 406808                 = 198.64 MiB
+
 Figures displayed in the Information dialog:
 Size:         200.00 MiB
-Used:         160.00 KiB  ( 0% )
-Unused:       198.64 MiB  ( 99% )
-Unallocated:  1.21 MiB    ( 1% )
+Used:           1.36 MiB  ( 1% )
+Unused:       198.64 KiB  ( 99% )

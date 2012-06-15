@@ -45,6 +45,7 @@ void Partition::Reset()
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	sectors_unallocated = 0 ;
+	significant_threshold = 1 ;
 	free_space_before = -1 ;
 	sector_size = 0 ;
 	color .set( "black" ) ;
@@ -90,9 +91,10 @@ void Partition::set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unus
 	     && 0 <= sectors_fs_unused && sectors_fs_unused <= sectors_fs_size
 	   )
 	{
-		sectors_used        = sectors_fs_size - sectors_fs_unused ;
-		sectors_unused      = sectors_fs_unused ;
-		sectors_unallocated = length - sectors_fs_size ;
+		sectors_used          = sectors_fs_size - sectors_fs_unused ;
+		sectors_unused        = sectors_fs_unused ;
+		sectors_unallocated   = length - sectors_fs_size ;
+		significant_threshold = calc_significant_unallocated_sectors() ;
 	}
 	else if ( sectors_fs_size == -1 )
 	{
@@ -106,15 +108,14 @@ void Partition::set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unus
 			 sectors_used = -1 ;
 			 sectors_unused = -1 ;
 		}
-		sectors_unallocated = 0 ;
+		sectors_unallocated   = 0 ;
+		significant_threshold = 1 ;
 	}
 }
 
-bool Partition::significant_unallocated_space() const
+bool Partition::sector_usage_known() const
 {
-	if ( get_sector_length() >= 0 && sectors_unallocated > 0 )
-		return sectors_unallocated >= get_significant_unallocated_sectors() ;
-	return false ;
+	return sectors_used >= 0 && sectors_unused >= 0 ;
 }
 
 Sector Partition::estimated_min_size() const
@@ -122,9 +123,43 @@ Sector Partition::estimated_min_size() const
 	//Add unallocated sectors up to the significant threshold, to
 	//  account for any intrinsic unallocated sectors in the
 	//  file systems minimum partition size.
-	if ( sectors_used > 0 )
-		return sectors_used + std::min( sectors_unallocated, get_significant_unallocated_sectors() ) ;
+	if ( sectors_used >= 0 )
+		return sectors_used + std::min( sectors_unallocated, significant_threshold ) ;
 	return -1 ;
+}
+
+//Return user displayable used sectors.
+//  Only add unallocated sectors up to the significant threshold to
+//  account for any intrinsic unallocated sectors in the file system.
+//  Above the threshold just return the used sectors figure.
+Sector Partition::get_sectors_used() const
+{
+	if ( sectors_used >= 0 )
+	{
+		if ( sectors_unallocated < significant_threshold )
+			return sectors_used + sectors_unallocated ;
+		else
+			return sectors_used ;
+	}
+	return -1 ;
+}
+
+//Return user displayable unused sectors.
+Sector Partition::get_sectors_unused() const
+{
+	return sectors_unused ;
+}
+
+//Return user displayable unallocated sectors.
+//  Return zero below the significant unallocated sectors threshold, as
+//  the figure has been added to the displayable used sectors.  Above the
+//  threshold just return the unallocated sectors figure.
+Sector Partition::get_sectors_unallocated() const
+{
+	if ( sectors_unallocated < significant_threshold )
+		return 0 ;
+	else
+		return sectors_unallocated ;
 }
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
@@ -297,19 +332,21 @@ bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B 
 //      5%                               ,           ptn size <= 100 MiB
 //      linear scaling from 5% down to 2%, 100 MiB < ptn size <= 1 GiB
 //      2%                               , 1 GiB   < ptn size
-Sector Partition::get_significant_unallocated_sectors() const
+Sector Partition::calc_significant_unallocated_sectors() const
 {
 	const double HIGHER_UNALLOCATED_FRACTION = 0.05 ;
 	const double LOWER_UNALLOCATED_FRACTION  = 0.02 ;
 	Sector     length   = get_sector_length() ;
 	Byte_Value byte_len = length * sector_size ;
+	Sector     significant ;
+
 	if ( byte_len <= 0 )
 	{
-		return 0 ;
+		significant = 1;
 	}
 	else if ( byte_len <= 100 * MEBIBYTE )
 	{
-		return Utils::round( length * HIGHER_UNALLOCATED_FRACTION ) ;
+		significant = Utils::round( length * HIGHER_UNALLOCATED_FRACTION ) ;
 	}
 	else if ( byte_len <= 1 * GIBIBYTE )
 	{
@@ -317,12 +354,15 @@ Sector Partition::get_significant_unallocated_sectors() const
 		                  ( byte_len - 100 * MEBIBYTE ) * ( HIGHER_UNALLOCATED_FRACTION - LOWER_UNALLOCATED_FRACTION ) /
 		                  ( 1 * GIBIBYTE - 100 * MEBIBYTE ) +
 		                  LOWER_UNALLOCATED_FRACTION ;
-		return Utils::round( length * fraction ) ;
+		significant = Utils::round( length * fraction ) ;
 	}
 	else
 	{
-		return Utils::round( length * LOWER_UNALLOCATED_FRACTION ) ;
+		significant = Utils::round( length * LOWER_UNALLOCATED_FRACTION ) ;
 	}
+	if ( significant <= 1 )
+		significant = 1;
+	return significant ;
 }
 
 Partition::~Partition()

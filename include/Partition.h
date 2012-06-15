@@ -73,8 +73,11 @@ public:
 			bool busy ) ;
 
 	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
-	bool significant_unallocated_space() const ;
+	bool sector_usage_known() const ;
 	Sector estimated_min_size() const ;
+	Sector get_sectors_used() const ;
+	Sector get_sectors_unused() const ;
+	Sector get_sectors_unallocated() const ;
 
 	void Set_Unallocated( const Glib::ustring & device_path, 
 			      Sector sector_start,
@@ -116,6 +119,7 @@ public:
 	Sector sectors_used;
 	Sector sectors_unused;
 	Sector sectors_unallocated;  //Difference between the size of the partition and the file system
+	Sector significant_threshold;  //Threshold from intrinsic to significant unallocated sectors
 	Gdk::Color color;
 	bool inside_extended;
 	bool busy;
@@ -131,7 +135,7 @@ public:
 
 private:
 	void sort_paths_and_remove_duplicates() ;
-	Sector get_significant_unallocated_sectors() const ;
+	Sector calc_significant_unallocated_sectors() const ;
 
 	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
 	

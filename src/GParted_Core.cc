@@ -604,6 +604,11 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 		return false ;
 	}
 
+	//FIXME: I think that this if condition should be impossible because Partition::set_sector_usage(),
+	//  and ::set_used() and ::Set_Unused() before that, don't allow setting file usage figures to be
+	//  larger than the partition size.  A btrfs file system spanning muiltiple partitions will have
+	//  usage figures larger than any single partition but the figures will won't be set because of
+	//  the above reasoning.  Confirm condition is impossible and consider removing this code.
 	if ( partition .get_sector_length() < partition .sectors_used )
 	{
 		error = String::ucompose(
@@ -1522,7 +1527,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					}
 				}
 
-				if ( partitions[ t ] .sectors_used == -1 )
+				Sector unallocated ;
+				if ( ! partitions[ t ] .sector_usage_known() )
 				{
 					temp = _("Unable to read the contents of this file system!") ;
 					temp += "\n" ;
@@ -1540,11 +1546,11 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					}
 					partitions[ t ] .messages .push_back( temp ) ;
 				}
-				else if ( partitions[ t ] .significant_unallocated_space() )
+				else if ( ( unallocated = partitions[ t ] .get_sectors_unallocated() ) > 0 )
 				{
 					/* TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition. */
 					temp = String::ucompose( _("%1 of unallocated space within the partition."),
-					                         Utils::format_size( partitions[ t ] .sectors_unallocated, partitions[ t ] .sector_size ) ) ;
+					                         Utils::format_size( unallocated, partitions[ t ] .sector_size ) ) ;
 					FS fs = get_fs( partitions[ t ] .filesystem ) ;
 					if (    fs .check != GParted::FS::NONE
 					     && fs .grow  != GParted::FS::NONE )

@@ -108,20 +108,21 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 		{
 			//Use sum_sectors as the denominator to calculate fraction_used and
 			//  fraction_unallocated in case it doesn't equal partition_length.
-			Sector sum_sectors = partitions[ t ] .sectors_used
-			                   + partitions[ t ] .sectors_unused
-			                   + partitions[ t ] .sectors_unallocated ;
-			if ( partitions[ t ] .sectors_unallocated > 0 )
+			Sector used        = partitions[ t ] .get_sectors_used() ;
+			Sector unused      = partitions[ t ] .get_sectors_unused() ;
+			Sector unallocated = partitions[ t ] .get_sectors_unallocated() ;
+			Sector sum_sectors = used + unused + unallocated ;
+			if ( unallocated > 0 )
 				visual_partitions .back() .fraction_unallocated =
-					partitions[ t ] .sectors_unallocated / static_cast<double>( sum_sectors ) ;
+					unallocated / static_cast<double>( sum_sectors ) ;
 			else
 				visual_partitions .back() .fraction_unallocated = 0.0 ;
 
 			//Calculate fraction used from free space so any hidden overhead is counted as used
-			if ( partitions[ t ] .sectors_unused >= 0 )
+			if ( unused >= 0 )
 				visual_partitions .back() .fraction_used =
 					1.0 - visual_partitions .back() .fraction_unallocated
-					    - partitions[ t ] .sectors_unused / static_cast<double>( sum_sectors ) ;
+					    - unused / static_cast<double>( sum_sectors ) ;
 		}
 	
 		visual_partitions .back() .color = partitions[ t ] .color; 
