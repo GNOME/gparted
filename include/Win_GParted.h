@@ -92,9 +92,9 @@ private:
 		
 	void allow_format( bool state )	{ 
 		toggle_item( state, MENU_FORMAT ) ; }
-	
-	void allow_toggle_swap_mount_state( bool state )	{ 
-		toggle_item( state, MENU_TOGGLE_MOUNT_SWAP ) ; }
+
+	void allow_toggle_busy_state( bool state )	{
+		toggle_item( state, MENU_TOGGLE_BUSY ) ; }
 
 	void allow_manage_flags( bool state ) {
 		toggle_item( state, MENU_FLAGS ) ; } 
@@ -165,7 +165,7 @@ private:
 	void activate_delete();
 	void activate_info();
 	void activate_format( GParted::FILESYSTEM new_fs );
-	void toggle_swap_mount_state() ;
+	void toggle_busy_state() ;
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
 	void activate_attempt_rescue_data();
@@ -237,7 +237,7 @@ private:
         MENU_COPY, TOOLBAR_COPY,
         MENU_PASTE, TOOLBAR_PASTE,
         MENU_FORMAT,
-        MENU_TOGGLE_MOUNT_SWAP,
+        MENU_TOGGLE_BUSY,
         MENU_MOUNT,
         MENU_FLAGS,
         MENU_CHECK,

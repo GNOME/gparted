@@ -63,7 +63,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
         MENU_COPY = TOOLBAR_COPY =
         MENU_PASTE = TOOLBAR_PASTE =
         MENU_FORMAT =
-        MENU_TOGGLE_MOUNT_SWAP =
+        MENU_TOGGLE_BUSY =
         MENU_MOUNT =
         MENU_FLAGS =
         MENU_INFO =
@@ -361,9 +361,9 @@ void Win_GParted::init_partition_menu()
 	menu_partition .items() .push_back(
 			//This is a placeholder text. It will be replaced with some other text before it is used
 			Gtk::Menu_Helpers::MenuElem( "--placeholder--",
-						     sigc::mem_fun( *this, &Win_GParted::toggle_swap_mount_state ) ) );
-	MENU_TOGGLE_MOUNT_SWAP = index++ ;
-		
+						     sigc::mem_fun( *this, &Win_GParted::toggle_busy_state ) ) );
+	MENU_TOGGLE_BUSY = index++ ;
+
 	/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) ;
@@ -908,14 +908,14 @@ bool Win_GParted::Quit_Check_Operations()
 void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_format( false ); allow_toggle_swap_mount_state( false ) ;
+	allow_paste( false ); allow_format( false ); allow_toggle_busy_state( false ) ;
 	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_partition( false ) ;
 	allow_change_uuid( false ); allow_info( false ) ;
-	
-	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+
+	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 		->set_label( FileSystem::get_generic_text ( CTEXT_DEACTIVATE_FILESYSTEM ) ) ;
 
-	menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .show() ;
+	menu_partition .items()[ MENU_TOGGLE_BUSY ] .show() ;
 	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
 
 	//no partition selected...	
@@ -931,7 +931,7 @@ void Win_GParted::set_valid_operations()
 
 	//Activate / deactivate
 	if ( gparted_core .get_filesystem_object ( selected_partition .filesystem ) )
-		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 			->set_label( gparted_core .get_filesystem_object ( selected_partition .filesystem )
 			             ->get_custom_text (  selected_partition .busy
 			                                ? CTEXT_DEACTIVATE_FILESYSTEM
@@ -939,7 +939,7 @@ void Win_GParted::set_valid_operations()
 			                               )
 			           ) ;
 	else
-		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .get_child() )
+		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 			->set_label( FileSystem::get_generic_text (  selected_partition .busy
 			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
@@ -954,7 +954,7 @@ void Win_GParted::set_valid_operations()
 	          || selected_partition .filesystem == GParted::FS_LINUX_SWAP
 	        )
 	   )
-		allow_toggle_swap_mount_state( true ) ;
+		allow_toggle_busy_state( true ) ;
 
 	//Only permit VG deactivation if busy, or activation if not busy and a member of a VG.
 	//  For now specifically allow activation of an exported VG, which LVM will fail
@@ -969,7 +969,7 @@ void Win_GParted::set_valid_operations()
 	             )
 	        )
 	   )
-		allow_toggle_swap_mount_state( true ) ;
+		allow_toggle_busy_state( true ) ;
 
 	//only unmount/swapoff/VG deactivate/... is allowed if busy
 	if ( selected_partition .busy )
@@ -1088,8 +1088,8 @@ void Win_GParted::set_valid_operations()
 
 				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
 			}
-			
-			menu_partition .items()[ MENU_TOGGLE_MOUNT_SWAP ] .hide() ;
+
+			menu_partition .items()[ MENU_TOGGLE_BUSY ] .hide() ;
 			menu_partition .items()[ MENU_MOUNT ] .show() ;	
 		}
 
@@ -2068,7 +2068,7 @@ void Win_GParted::thread_guess_partition_table()
 	pulse=false;
 }
 
-void Win_GParted::toggle_swap_mount_state()
+void Win_GParted::toggle_busy_state()
 {
 	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
 	if ( operation_count > 0 )
