@@ -127,8 +127,6 @@ void Dialog_Partition_Info::init_drawingarea()
 	this ->get_vbox() ->pack_start( *hbox, Gtk::PACK_SHRINK ) ;
 	
 	//calculate proportional width of used, unused and unallocated
-	used = unused = unallocated = 0 ;
-	double dlength = static_cast<double>( partition .get_sector_length() ) ;
 	if ( partition .type == GParted::TYPE_EXTENDED )
 	{
 		//Specifically show extended partitions as unallocated
@@ -138,9 +136,11 @@ void Dialog_Partition_Info::init_drawingarea()
 	}
 	else if ( partition .sector_usage_known() )
 	{
-		used        = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .get_sectors_used()   ) ) ;
-		unused      = Utils::round( ( 400 - BORDER *2 ) / ( dlength / partition .get_sectors_unused() ) ) ;
-		unallocated = 400 - BORDER *2 - used - unused ;
+		Partition::calc_usage_triple( partition .get_sectors_used(),
+		                              partition .get_sectors_unused(),
+		                              partition .get_sectors_unallocated(),
+		                              ( 400 - BORDER *2 ),
+		                              used, unused, unallocated            ) ;
 	}
 	else
 	{
@@ -208,9 +208,9 @@ void Dialog_Partition_Info::Display_Info()
 		Sector unused      = partition .get_sectors_unused() ;
 		Sector unallocated = partition .get_sectors_unallocated() ;
 		//calculate relative diskusage
-		int percent_unused      = Utils::round( unused      * 100.0 / ptn_sectors ) ;
-		int percent_unallocated = Utils::round( unallocated * 100.0 / ptn_sectors ) ;
-		int percent_used        = 100 - percent_unallocated - percent_unused ;
+		int percent_used, percent_unused, percent_unallocated ;
+		Partition::calc_usage_triple( used, unused, unallocated, 100,
+		                              percent_used, percent_unused, percent_unallocated ) ;
 
 		//Used
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),

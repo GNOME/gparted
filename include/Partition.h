@@ -133,7 +133,11 @@ public:
 
 	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.
 
+	static void calc_usage_triple( double d1, double d2, double d3, int imax, int & i1, int & i2, int & i3 ) ;
+
 private:
+	static void calc_usage_triple_helper( double dtot, double d1, double d2, double d3, int imax, int & i1, int & i2, int & i3 ) ;
+
 	void sort_paths_and_remove_duplicates() ;
 	Sector calc_significant_unallocated_sectors() const ;
 

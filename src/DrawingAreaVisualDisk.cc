@@ -183,24 +183,25 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 	{
 		if ( visual_partitions[ t ] .fraction_used >= 0.0 )
 		{ 
-			int inner_length = visual_partitions[ t ] .length - BORDER *2 ;
 
+			Partition::calc_usage_triple( visual_partitions[ t ] .fraction_used,
+			                              1.0 - visual_partitions[ t ] .fraction_used
+			                                  - visual_partitions[ t ] .fraction_unallocated,
+			                              visual_partitions[ t ] .fraction_unallocated,
+			                              visual_partitions[ t ] .length - BORDER *2,
+			                              visual_partitions[ t ] .used_length,
+			                              visual_partitions[ t ] .unused_length,
+			                              visual_partitions[ t ] .unallocated_length ) ;
 			//used
-			visual_partitions[ t ] .used_length = Utils::round( inner_length * visual_partitions[ t ] .fraction_used ) ;
 			visual_partitions[ t ] .x_used_start = visual_partitions[ t ] .x_start + BORDER ;
 
-			//unallocated
-			visual_partitions[ t ] .unallocated_length = Utils::round( inner_length * visual_partitions[ t ] .fraction_unallocated ) ;
-			visual_partitions[ t ] .x_unallocated_start = visual_partitions[ t ] .x_start
-									+ visual_partitions[ t ] .length
-									- BORDER
-									- visual_partitions[ t ] .unallocated_length ;
-
 			//unused
-			visual_partitions[ t ] .unused_length = inner_length
-								- visual_partitions[ t ] .used_length
-								- visual_partitions[ t ] .unallocated_length ;
-			visual_partitions[ t ] .x_unused_start = visual_partitions[ t ] .x_used_start + visual_partitions[ t ] .used_length ;
+			visual_partitions[ t ] .x_unused_start = visual_partitions[ t ] .x_used_start
+			                                       + visual_partitions[ t ] .used_length ;
+
+			//unallocated
+			visual_partitions[ t ] .x_unallocated_start = visual_partitions[ t ] .x_unused_start
+			                                            + visual_partitions[ t ] .unused_length ;
 
 			//y position and height
 			visual_partitions[ t ] .y_usage_start = visual_partitions[ t ] .y_start + BORDER ;
