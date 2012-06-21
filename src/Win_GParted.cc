@@ -1419,7 +1419,7 @@ void Win_GParted::menu_help_about()
 	strings .clear() ;
 
 	//artists
-	strings .push_back( "http://gparted.org/artwork.php" ) ;
+	strings .push_back( "Sebastian Kraft <kraft.sebastian@gmail.com>" ) ;
 	dialog .set_artists( strings ) ;
 	strings .clear() ;
 
