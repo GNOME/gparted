@@ -158,10 +158,7 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 		{
 			if ( visual_partitions[ t ] .partition .sector_usage_known() )
 			{
-				Partition::calc_usage_triple(
-						visual_partitions[ t ] .partition .get_sectors_used(),
-						visual_partitions[ t ] .partition .get_sectors_unused(),
-						visual_partitions[ t ] .partition .get_sectors_unallocated(),
+				visual_partitions[ t ] .partition .get_usage_triple(
 						visual_partitions[ t ] .length - BORDER *2,
 						visual_partitions[ t ] .used_length,
 						visual_partitions[ t ] .unused_length,

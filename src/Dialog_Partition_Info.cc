@@ -136,11 +136,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	}
 	else if ( partition .sector_usage_known() )
 	{
-		Partition::calc_usage_triple( partition .get_sectors_used(),
-		                              partition .get_sectors_unused(),
-		                              partition .get_sectors_unallocated(),
-		                              ( 400 - BORDER *2 ),
-		                              used, unused, unallocated            ) ;
+		partition .get_usage_triple( 400 - BORDER *2, used, unused, unallocated ) ;
 	}
 	else
 	{
@@ -209,8 +205,7 @@ void Dialog_Partition_Info::Display_Info()
 		Sector unallocated = partition .get_sectors_unallocated() ;
 		//calculate relative diskusage
 		int percent_used, percent_unused, percent_unallocated ;
-		Partition::calc_usage_triple( used, unused, unallocated, 100,
-		                              percent_used, percent_unused, percent_unallocated ) ;
+		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
 
 		//Used
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),

@@ -262,32 +262,39 @@ bool Partition::operator!=( const Partition & partition ) const
 	return ! ( *this == partition ) ;
 }
 
-//Calculate the "best" display integers (pixels or percentages) from
-//  partition usage figures.  Rounds the smaller two figures and then
-//  subtracts them from the desired total for the largest figure.
-void Partition::calc_usage_triple( double d1, double d2, double d3, int imax, int & i1, int & i2, int & i3 )
+//Get the "best" display integers (pixels or percentages) from partition
+//  usage figures.  Rounds the smaller two figures and then subtracts
+//  them from the desired total for the largest figure.
+void Partition::get_usage_triple( int imax, int & i1, int & i2, int & i3 ) const
 {
-	if ( d1 < 0.0 ) d1 = 0.0 ;
-	if ( d2 < 0.0 ) d2 = 0.0 ;
-	if ( d3 < 0.0 ) d3 = 0.0 ;
-	double dtot = d1 + d2 + d3 ;
-	if ( d1 <= d2 && d1 <= d3 )
-		calc_usage_triple_helper( dtot, d1, d2, d3, imax, i1, i2, i3 ) ;
-	else if ( d2 <  d1 && d2 <= d3 )
-		calc_usage_triple_helper( dtot, d2, d1, d3, imax, i2, i1, i3 ) ;
-	else if ( d3 <  d1 && d3 <  d2 )
-		calc_usage_triple_helper( dtot, d3, d1, d2, imax, i3, i1, i2 ) ;
+	Sector s1 = get_sectors_used() ;
+	Sector s2 = get_sectors_unused() ;
+	Sector s3 = get_sectors_unallocated() ;
+	if ( ! sector_usage_known() )
+	{
+		//Set to all unused
+		i1 = i3 = 0 ;
+		i2 = imax ;
+		return ;
+	}
+	Sector stot = s1 + s2 + s3 ;
+	if ( s1 <= s2 && s1 <= s3 )
+		get_usage_triple_helper( stot, s1, s2, s3, imax, i1, i2, i3 ) ;
+	else if ( s2 <  s1 && s2 <= s3 )
+		get_usage_triple_helper( stot, s2, s1, s3, imax, i2, i1, i3 ) ;
+	else if ( s3 <  s1 && s3 <  s2 )
+		get_usage_triple_helper( stot, s3, s1, s2, imax, i3, i1, i2 ) ;
 }
 
-//Calculate the "best" display integers when d1 <= d2 and d1 <= d3.
+//Calculate the "best" display integers when s1 <= s2 and s1 <= s3.
 //  Ensure i1 <= i2 and i1 <= i3.
-void Partition::calc_usage_triple_helper( double dtot, double d1, double d2, double d3, int imax, int & i1, int & i2, int & i3 )
+void Partition::get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sector s3, int imax, int & i1, int & i2, int & i3 )
 {
 	int t ;
-	i1 = Utils::round( d1 / dtot * imax ) ;
-	if ( d2 <= d3 )
+	i1 = Utils::round( static_cast<double>( s1 ) / stot * imax ) ;
+	if ( s2 <= s3 )
 	{
-		i2 = Utils::round( d2 / dtot * imax ) ;
+		i2 = Utils::round( static_cast<double>( s2 ) / stot * imax ) ;
 		i3 = imax - i1 - i2 ;
 		if ( i1 > i3 )
 		{
@@ -299,7 +306,7 @@ void Partition::calc_usage_triple_helper( double dtot, double d1, double d2, dou
 	}
 	else
 	{
-		i3 = Utils::round( d3 / dtot * imax ) ;
+		i3 = Utils::round( static_cast<double>( s3 ) / stot * imax ) ;
 		i2 = imax - i1 - i3 ;
 		if ( i1 > i2 )
 		{
