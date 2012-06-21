@@ -97,34 +97,6 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 		Sector partition_length = partitions[ t ] .get_sector_length() ;
 		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
 
-		if ( partitions[ t ] .type == GParted::TYPE_UNALLOCATED || partitions[ t ] .type == GParted::TYPE_EXTENDED )
-		{
-			//Don't calculate or draw partition used, unused or unallocated rectangles
-			//  to show usage.  Only partition color rectangle will be drawn.
-			visual_partitions .back() .fraction_unallocated = -1.0 ;
-			visual_partitions .back() .fraction_used        = -1.0 ;
-		}
-		else
-		{
-			//Use sum_sectors as the denominator to calculate fraction_used and
-			//  fraction_unallocated in case it doesn't equal partition_length.
-			Sector used        = partitions[ t ] .get_sectors_used() ;
-			Sector unused      = partitions[ t ] .get_sectors_unused() ;
-			Sector unallocated = partitions[ t ] .get_sectors_unallocated() ;
-			Sector sum_sectors = used + unused + unallocated ;
-			if ( unallocated > 0 )
-				visual_partitions .back() .fraction_unallocated =
-					unallocated / static_cast<double>( sum_sectors ) ;
-			else
-				visual_partitions .back() .fraction_unallocated = 0.0 ;
-
-			//Calculate fraction used from free space so any hidden overhead is counted as used
-			if ( unused >= 0 )
-				visual_partitions .back() .fraction_used =
-					1.0 - visual_partitions .back() .fraction_unallocated
-					    - unused / static_cast<double>( sum_sectors ) ;
-		}
-	
 		visual_partitions .back() .color = partitions[ t ] .color; 
 		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
@@ -181,17 +153,28 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		if ( visual_partitions[ t ] .fraction_used >= 0.0 )
-		{ 
+		if ( visual_partitions[ t ] .partition .type != GParted::TYPE_UNALLOCATED &&
+		     visual_partitions[ t ] .partition .type != GParted::TYPE_EXTENDED       )
+		{
+			if ( visual_partitions[ t ] .partition .sector_usage_known() )
+			{
+				Partition::calc_usage_triple(
+						visual_partitions[ t ] .partition .get_sectors_used(),
+						visual_partitions[ t ] .partition .get_sectors_unused(),
+						visual_partitions[ t ] .partition .get_sectors_unallocated(),
+						visual_partitions[ t ] .length - BORDER *2,
+						visual_partitions[ t ] .used_length,
+						visual_partitions[ t ] .unused_length,
+						visual_partitions[ t ] .unallocated_length ) ;
+			}
+			else
+			{
+				//Specifically show unknown figures as unused
+				visual_partitions[ t ] .used_length        = 0 ;
+				visual_partitions[ t ] .unused_length      = visual_partitions[ t ] .length - BORDER *2 ;
+				visual_partitions[ t ] .unallocated_length = 0 ;
+			}
 
-			Partition::calc_usage_triple( visual_partitions[ t ] .fraction_used,
-			                              1.0 - visual_partitions[ t ] .fraction_used
-			                                  - visual_partitions[ t ] .fraction_unallocated,
-			                              visual_partitions[ t ] .fraction_unallocated,
-			                              visual_partitions[ t ] .length - BORDER *2,
-			                              visual_partitions[ t ] .used_length,
-			                              visual_partitions[ t ] .unused_length,
-			                              visual_partitions[ t ] .unallocated_length ) ;
 			//used
 			visual_partitions[ t ] .x_used_start = visual_partitions[ t ] .x_start + BORDER ;
 

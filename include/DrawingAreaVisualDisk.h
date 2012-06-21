@@ -73,9 +73,6 @@ private:
 	struct visual_partition
 	{
 		double fraction ;		//Partition size as a fraction of containing disk or extended partition size
-		double fraction_used ;		//Used space as a fraction of partition size
-		double fraction_unallocated ;	//Unallocated space as a fraction of partition size
-
 		int x_start, length ;
 		int y_start, height ;
 		int x_used_start, used_length ;
@@ -94,7 +91,7 @@ private:
 
 		visual_partition()
 		{
-			fraction = fraction_used = fraction_unallocated = 0.0 ;
+			fraction = 0.0 ;
 			x_start = length =
 			y_start = height =
 			x_used_start = used_length =
