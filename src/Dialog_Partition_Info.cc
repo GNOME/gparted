@@ -200,9 +200,6 @@ void Dialog_Partition_Info::Display_Info()
 	
 	if ( partition .sector_usage_known() )
 	{
-		Sector used        = partition .get_sectors_used() ;
-		Sector unused      = partition .get_sectors_unused() ;
-		Sector unallocated = partition .get_sectors_unallocated() ;
 		//calculate relative diskusage
 		int percent_used, percent_unused, percent_unallocated ;
 		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
@@ -212,7 +209,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( used, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -226,7 +223,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( unused, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
@@ -236,13 +233,14 @@ void Dialog_Partition_Info::Display_Info()
 				Gtk::FILL ) ;
 
 		//unallocated
-		if ( unallocated > 0 )
+		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
+		if ( sectors_unallocated > 0 )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
 					0, 1,
 					top, bottom,
 					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( Utils::format_size( unallocated, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 					1, 2,
 					top, bottom,
 					Gtk::FILL ) ;
