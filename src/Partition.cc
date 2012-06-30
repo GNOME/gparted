@@ -270,13 +270,9 @@ void Partition::get_usage_triple( int imax, int & i1, int & i2, int & i3 ) const
 	Sector s1 = get_sectors_used() ;
 	Sector s2 = get_sectors_unused() ;
 	Sector s3 = get_sectors_unallocated() ;
-	if ( ! sector_usage_known() )
-	{
-		//Set to all unused
-		i1 = i3 = 0 ;
-		i2 = imax ;
-		return ;
-	}
+	if ( s1 < 0 ) s1 = 0 ;
+	if ( s2 < 0 ) s2 = 0 ;
+	if ( s3 < 0 ) s3 = 0 ;
 	Sector stot = s1 + s2 + s3 ;
 	if ( s1 <= s2 && s1 <= s3 )
 		get_usage_triple_helper( stot, s1, s2, s3, imax, i1, i2, i3 ) ;
