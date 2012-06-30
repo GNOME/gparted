@@ -1413,8 +1413,18 @@ void Win_GParted::menu_help_about()
 	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort\nCopyright © 2008-2012 Curtis Gedak" ) ;
 
 	//authors
-	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
+	//Names listed in alphabetical order by LAST name.
+	//See also AUTHORS file -- names listed in opposite order to try to be fair.
+	strings .push_back( "Luca Bruno <lucab@debian.org>" ) ;
+	strings .push_back( "Jérôme Dumesnil <jerome.dumesnil@gmail.com>" ) ;
+	strings .push_back( "Markus Elfring <elfring@users.sourceforge.net>" ) ;
+	strings .push_back( "Mike Fleetwood <mike.fleetwood@googlemail.com>" ) ;
 	strings .push_back( "Curtis Gedak <gedakc@users.sf.net>" ) ;
+	strings .push_back( "Rogier Goossens <goossens.rogier@gmail.com>" ) ;
+	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
+	strings .push_back( "Seth Heeren <sgheeren@gmail.com>" ) ;
+	strings .push_back( "Joan Lledó <joanlluislledo@gmail.com>" ) ;
+	strings .push_back( "Phillip Susi <psusi@cfl.rr.com>" ) ;
 	dialog .set_authors( strings ) ;
 	strings .clear() ;
 
