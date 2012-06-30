@@ -566,6 +566,26 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 		}
 	}
 
+	//If this is an extended partition then check to see if the end of the
+	//  extended partition encompasses the end of the last logical partition.
+	if ( partition .type == TYPE_EXTENDED )
+	{
+		//If there is logical partition that has an end sector beyond the
+		//  end of the extended partition, then set the extended partition
+		//  end sector to be the same as the end of the logical partition.
+		for ( unsigned int t = 0; t < partition .logicals .size(); t++ )
+		{
+			if (   ( partition .logicals[ t ] .type == TYPE_LOGICAL )
+			    && (   (  partition .logicals[ t ] .sector_end )
+			         > ( partition .sector_end )
+			       )
+			   )
+			{
+				partition .sector_end = partition .logicals[ t ] .sector_end ;
+			}
+		}
+	}
+
 	//If this is a GPT partition table and the partition ends less than 34 sectors
 	//  from the end of the device, then reserve at least a mebibyte for the
 	//  backup partition table
