@@ -19,6 +19,8 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
 
+#include <gtkmm/separator.h>
+
 namespace GParted
 {
 
@@ -171,7 +173,8 @@ void Dialog_Partition_Info::Display_Info()
 {  
 	int top = 0, bottom = 1 ;
 	Sector ptn_sectors = partition .get_sector_length() ;
-	
+	LVM2_PV_Info lvm2_pv_info ;
+
 	Gtk::Table* table(manage(new Gtk::Table()));
 
 	table ->set_border_width( 5 ) ;
@@ -340,7 +343,6 @@ void Dialog_Partition_Info::Display_Info()
 		}
 		else if ( partition .filesystem == FS_LVM2_PV )
 		{
-			LVM2_PV_Info lvm2_pv_info ;
 			Glib::ustring mount_point = partition .get_mountpoint() ;
 			if ( mount_point .empty() )
 				/* TO TRANSLATORS:  Not active (Not a member of any volume group)
@@ -433,6 +435,48 @@ void Dialog_Partition_Info::Display_Info()
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
+
+	if ( partition .filesystem == FS_LVM2_PV )
+	{
+		//one blank line
+		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+
+		//horizontal separator
+		Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
+		table ->attach( * hsep, 0, 2, top++, bottom++, Gtk::FILL ) ;
+
+		//one blank line
+		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+
+		//Volume Group
+		Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
+		                0, 1, top, bottom, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( vgname, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		                1, 2, top++, bottom++, Gtk::FILL ) ;
+
+		//Members
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
+		                0, 1, top, bottom, Gtk::FILL ) ;
+
+		std::vector<Glib::ustring> members ;
+		if ( ! vgname .empty() )
+			members = lvm2_pv_info .get_vg_members( vgname ) ;
+
+		if ( members .empty() )
+			table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+		else
+		{
+			table ->attach( * Utils::mk_label( members [0], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+			                1, 2, top++, bottom++, Gtk::FILL ) ;
+			for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+			{
+				table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL) ;
+				table ->attach( * Utils::mk_label( members [i], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+				                1, 2, top++, bottom++, Gtk::FILL ) ;
+			}
+		}
+	}
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info()

@@ -158,6 +158,37 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 	return false ;
 }
 
+//Return vector of PVs which are members of the VG.  Passing "" returns all empty PVs.
+std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & vgname )
+{
+	initialize_if_required() ;
+	std::vector<Glib::ustring> members ;
+
+	//Generate array of unique PV member names of a VG
+	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
+	{
+		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
+		{
+			bool already_added = false ;
+			Glib::ustring pvname = get_pv_attr_by_row( i, PVATTR_PV_NAME ) ;
+			for ( unsigned int j = 0 ; j < members .size() ; j ++ )
+			{
+				if ( pvname == members[ j ] )
+				{
+					already_added = true ;
+					break ;
+				}
+			}
+			if ( ! already_added )
+			{
+				members .push_back( get_pv_attr_by_row( i, PVATTR_PV_NAME ) ) ;
+			}
+		}
+	}
+
+	return members ;
+}
+
 std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring & path )
 {
 	initialize_if_required() ;
