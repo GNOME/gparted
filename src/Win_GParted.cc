@@ -35,12 +35,14 @@
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelPartition.h"
+#include "../include/LVM2_PV_Info.h"
 #include "../config.h"
 
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
 #include <gtkmm/main.h>
+#include <gtkmm/separator.h>
 
 namespace GParted
 {
@@ -1659,6 +1661,15 @@ void Win_GParted::activate_paste()
 	}
 	else
 	{
+		bool shown_dialog = false ;
+		//VGNAME from mount mount
+		if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+		{
+			if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_COPY ) )
+				return ;
+			shown_dialog = true ;
+		}
+
 		Partition partition_new = selected_partition ;
 		partition_new .alignment = ALIGN_STRICT ;
 		partition_new .filesystem = copied_partition .filesystem ;
@@ -1693,17 +1704,23 @@ void Win_GParted::activate_paste()
 
 		Add_Operation( operation ) ;
 
-		//Warn that paste operation will overwrite data in existing partition
-		Gtk::MessageDialog dialog( *this
-		                         , _( "You have pasted into an existing partition." )
-		                         , false
-		                         , Gtk::MESSAGE_WARNING
-		                         , Gtk::BUTTONS_OK
-		                         , true
-		                         ) ;
-		/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
-		dialog .set_secondary_text( String::ucompose( _( "The data in %1 will be lost if you apply this operation."), partition_new .get_path() ) ) ;
-		dialog .run() ;
+		if ( ! shown_dialog )
+		{
+			//Only warn that this paste operation will overwrite data in the existing
+			//  partition if not already shown the remove non-empty LVM2 PV dialog.
+			Gtk::MessageDialog dialog( *this
+			                         , _( "You have pasted into an existing partition." )
+			                         , false
+			                         , Gtk::MESSAGE_WARNING
+			                         , Gtk::BUTTONS_OK
+			                         , true
+			                         ) ;
+			/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
+			dialog .set_secondary_text(
+					String::ucompose( _( "The data in %1 will be lost if you apply this operation." ),
+					partition_new .get_path() ) ) ;
+			dialog .run() ;
+		}
 	}
 }
 
@@ -1744,6 +1761,13 @@ void Win_GParted::activate_new()
 
 void Win_GParted::activate_delete()
 { 
+	//VGNAME from mount mount
+	if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+	{
+		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_DELETE ) )
+			return ;
+	}
+
 	/* since logicals are *always* numbered from 5 to <last logical> there can be a shift
 	 * in numbers after deletion.
 	 * e.g. consider /dev/hda5 /dev/hda6 /dev/hda7. Now after removal of /dev/hda6,
@@ -1849,9 +1873,16 @@ void Win_GParted::activate_info()
 
 void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 {
+	//VGNAME from mount mount
+	if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+	{
+		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_FORMAT ) )
+			return ;
+	}
+
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
-	
+
 	if ( ( selected_partition .get_byte_length() < fs .MIN ) ||
 	     ( fs .MAX && selected_partition .get_byte_length() > fs .MAX ) )
 	{
@@ -2645,6 +2676,91 @@ void Win_GParted::activate_apply()
 		//reread devices and their layouts...
 		menu_gparted_refresh_devices() ;
 	}
+}
+
+bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
+{
+	Glib::ustring tmp_msg ;
+	switch ( optype )
+	{
+		case OPERATION_DELETE:
+			tmp_msg = String::ucompose( _( "You are deleting non-empty LVM2 Physical Volume %1" ),
+			                            selected_partition .get_path() ) ;
+			break ;
+		case OPERATION_FORMAT:
+			tmp_msg = String::ucompose( _( "You are formatting over non-empty LVM2 Physical Volume %1" ),
+			                            selected_partition .get_path() ) ;
+			break ;
+		case OPERATION_COPY:
+			tmp_msg = String::ucompose( _( "You are pasting over non-empty LVM2 Physical Volume %1" ),
+			                            selected_partition .get_path() ) ;
+			break ;
+		default:
+			break ;
+	}
+	Gtk::MessageDialog dialog( *this, tmp_msg,
+	                           false, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_NONE, true ) ;
+
+	tmp_msg =  _( "Deleting or overwriting the Physical Volume is irrecoverable and will destroy or damage the "
+	              " Volume Group." ) ;
+	tmp_msg += "\n\n" ;
+	tmp_msg += _( "To avoid destroying or damaging the Volume Group, you are advised to cancel and use external "
+	              "LVM commands to free the Physical Volume before attempting this operation." ) ;
+	tmp_msg += "\n\n" ;
+	tmp_msg += _( "Do you want to continue to forcibly delete the Physical Volume?" ) ;
+	dialog .set_secondary_text( tmp_msg ) ;
+
+	//WARNING: Uses Gtk::MessageDialog::get_message_area() which was new in
+	//  gtkmm-2.22 released September 2010.  Not all distributions will have it.
+	Gtk::Box * msg_area = dialog .get_message_area() ;
+
+	Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
+	msg_area ->pack_start( * hsep ) ;
+
+	Gtk::Table * table( manage( new Gtk::Table() ) ) ;
+        table ->set_border_width( 0 ) ;
+        table ->set_col_spacings( 10 ) ;
+        msg_area ->pack_start( * table ) ;
+
+	int top = 0, bottom = 1 ;
+	LVM2_PV_Info lvm2_pv_info ;
+	Glib::ustring vgname = lvm2_pv_info .get_vg_name( selected_partition .get_path() ) ;
+
+	//Volume Group
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _( "Volume Group:" ) ) + "</b>" ),
+	                0, 1, top, bottom, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( vgname, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+	                1, 2, top++, bottom++, Gtk::FILL ) ;
+
+	//Members
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
+			0, 1, top, bottom, Gtk::FILL ) ;
+
+	std::vector<Glib::ustring> members ;
+	if ( ! vgname .empty() )
+		members = lvm2_pv_info .get_vg_members( vgname ) ;
+
+	if ( members .empty() )
+		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	else
+	{
+		table ->attach( * Utils::mk_label( members [0], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+				1, 2, top++, bottom++, Gtk::FILL ) ;
+		for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+		{
+			table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( members [i], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+					1, 2, top++, bottom++, Gtk::FILL ) ;
+		}
+
+	}
+
+	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
+	dialog .show_all() ;
+	if ( dialog .run() == Gtk::RESPONSE_OK )
+		return true ;
+	return false ;
 }
 
 } // GParted

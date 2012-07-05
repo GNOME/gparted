@@ -179,6 +179,7 @@ private:
 	int  partition_in_operation_queue_count( const Partition & partition ) ;
 	int  active_partitions_on_device_count( const Device & device ) ;
 	void activate_apply();
+	bool remove_non_empty_lvm2_pv_dialog( const OperationType optype ) ;
 
 //private variables
 	unsigned int current_device ;
