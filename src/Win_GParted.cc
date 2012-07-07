@@ -2599,8 +2599,6 @@ int  Win_GParted::active_partitions_on_device_count( const Device & device )
 	//Count the active partitions on the device
 	for ( unsigned int k=0; k < device .partitions .size(); k++ )
 	{
-		//FIXME:  Should also count other types of active partitions, such as LVM2 when we know how.
-
 		//Count the active primary partitions
 		if (   device .partitions[ k ] .busy
 		    && device .partitions[ k ] .type != TYPE_EXTENDED
