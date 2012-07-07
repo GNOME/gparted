@@ -119,8 +119,6 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
-		std::vector<Glib::ustring> pv_attrs ;
-		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
 		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
 		{
 			Glib::ustring lv_bits = get_pv_attr_by_row( i, PVATTR_LV_BITS ) ;
@@ -142,8 +140,6 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
-		std::vector<Glib::ustring> pv_attrs ;
-		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
 		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
 		{
 			Glib::ustring vg_bits = get_pv_attr_by_row( i, PVATTR_VG_BITS ) ;
