@@ -276,7 +276,7 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 //Return PV's nth attribute.  Performs linear search of the cache and
 //  uses the first matching PV entry.  Attributes are numbered 0 upward
 //  using PV_ATTRIBUTE enumeration.
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry )
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const
 {
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
@@ -297,7 +297,7 @@ Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, uns
 //Return PV's nth attribute from specified cache row.  Row is numbered
 //  0 upwards and attributes are numbers numbered 0 upwards using
 //  PV_ATTRIBUTE enumeration.
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry )
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry ) const
 {
 	if ( row >= lvm2_pv_cache .size() )
 		return "" ;

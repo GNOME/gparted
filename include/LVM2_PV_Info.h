@@ -49,9 +49,9 @@ private:
 	void initialize_if_required() ;
 	void set_command_found() ;
 	void load_lvm2_pv_info_cache() ;
-	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) ;
-	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) ;
-	Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
+	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const ;
+	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) const ;
+	static Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
