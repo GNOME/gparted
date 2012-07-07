@@ -311,7 +311,7 @@ void btrfs::read_uuid( Partition & partition )
 //Return the value of a btrfs tool formatted size, including reversing
 //  changes in certain cases caused by using binary prefix multipliers
 //  and rounding to two decimal places of precision.  E.g. "2.00GB".
-Byte_Value btrfs::btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) const
+Byte_Value btrfs::btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up )
 {
 	Byte_Value size_bytes = Utils::round( btrfs_size_to_gdouble( str ) ) ;
 	gdouble delta         = btrfs_size_max_delta( str ) ;
@@ -355,7 +355,7 @@ Byte_Value btrfs::btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bo
 
 //Return maximum delta for which num +/- delta would be rounded by btrfs
 //  tools to str.  E.g. btrfs_size_max_delta("2.00GB") -> 5368709.12
-gdouble btrfs::btrfs_size_max_delta( Glib::ustring str ) const
+gdouble btrfs::btrfs_size_max_delta( Glib::ustring str )
 {
 	Glib::ustring limit_str ;
 	//Create limit_str.  E.g. str = "2.00GB" -> limit_str = "0.005GB"
@@ -378,7 +378,7 @@ gdouble btrfs::btrfs_size_max_delta( Glib::ustring str ) const
 
 //Return the value of a btrfs tool formatted size.
 //  E.g. btrfs_size_to_gdouble("2.00GB") -> 2147483648.0
-gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str ) const
+gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str )
 {
 	gchar * suffix ;
 	gdouble rawN = g_ascii_strtod( str .c_str(), & suffix ) ;
