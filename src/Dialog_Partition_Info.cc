@@ -253,7 +253,11 @@ void Dialog_Partition_Info::Display_Info()
 					Gtk::FILL ) ;
 		}
 	}
-	
+
+	Glib::ustring vgname = "" ;
+	if ( partition .filesystem == FS_LVM2_PV )
+		vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+
 	//flags
 	if ( partition.type != GParted::TYPE_UNALLOCATED )
 	{
@@ -315,7 +319,7 @@ void Dialog_Partition_Info::Display_Info()
 				 * means that the partition is a member of an LVM volume group and the
 				 * volume group is active and being used by the operating system.
 				 */
-				str_temp = String::ucompose( _("%1 active"), partition .get_mountpoint() ) ;
+				str_temp = String::ucompose( _("%1 active"), vgname ) ;
 			}
 			else if ( partition .get_mountpoints() .size() )
 			{
@@ -343,28 +347,27 @@ void Dialog_Partition_Info::Display_Info()
 		}
 		else if ( partition .filesystem == FS_LVM2_PV )
 		{
-			Glib::ustring mount_point = partition .get_mountpoint() ;
-			if ( mount_point .empty() )
+			if ( vgname .empty() )
 				/* TO TRANSLATORS:  Not active (Not a member of any volume group)
 				 * means that the partition is not yet a member of an LVM volume
 				 * group and therefore is not active and can not yet be used by
 				 * the operating system.
 				 */
 				str_temp = _("Not active (Not a member of any volume group)") ;
-			else if ( lvm2_pv_info .is_vg_exported( mount_point ) )
+			else if ( lvm2_pv_info .is_vg_exported( vgname ) )
 				/* TO TRANSLATORS:  myvgname not active and exported
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
 				 * The volume group has also been exported making the LVM physical volumes
 				 * ready for moving to a different computer system.
 				 */
-				str_temp = String::ucompose( _("%1 not active and exported"), mount_point ) ;
+				str_temp = String::ucompose( _("%1 not active and exported"), vgname ) ;
 			else
 				/* TO TRANSLATORS:  myvgname not active
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
 				 */
-				str_temp = String::ucompose( _("%1 not active"), mount_point ) ;
+				str_temp = String::ucompose( _("%1 not active"), vgname ) ;
 		}
 		else
 		{
@@ -449,7 +452,6 @@ void Dialog_Partition_Info::Display_Info()
 		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 
 		//Volume Group
-		Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
 		                0, 1, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( vgname, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
