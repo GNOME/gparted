@@ -31,6 +31,18 @@ enum PV_ATTRIBUTE
 	PVATTR_LV_BITS = 6
 } ;
 
+enum VG_BIT
+{
+	VGBIT_EXPORTED = 2,	//  "x" VG exported,                    "-" VG not exported
+	VGBIT_PARTIAL  = 3	//  "p" VG has one or more PVs missing, "-" all PVs present
+} ;
+
+enum LV_BIT
+{
+	LVBIT_STATE = 4		//  "a" LV active, "-" LV not active
+				//  (Has many more values beside just "a" and "-".  See lvs(8) for details).
+} ;
+
 //Data model:
 //  lvm2_pv_info_cache_initialized
 //                      - Has the cache been loaded let?
@@ -121,11 +133,7 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 	{
 		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
 		{
-			Glib::ustring lv_bits = get_pv_attr_by_row( i, PVATTR_LV_BITS ) ;
-			//5th "bit" is active status.  E.g.
-			//  "-wi---" inactive, "-wi-a-" active, ...
-			//  Treat any non-hyphen character as active.
-			if ( lv_bits .length() >= 5 && lv_bits [4] != '-' )
+			if ( bit_set( get_pv_attr_by_row( i, PVATTR_LV_BITS ), LVBIT_STATE ) )
 				//LV in VG is active
 				return true ;
 		}
@@ -142,11 +150,7 @@ bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 	{
 		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
 		{
-			Glib::ustring vg_bits = get_pv_attr_by_row( i, PVATTR_VG_BITS ) ;
-			//3rd "bit" is export status.  E.g.
-			//  "wz--n-" imported, "wzx-n-" exported.
-			//  Treat any non-hyphen character as exported.
-			if ( vg_bits .length() >= 3 && vg_bits [2] != '-' )
+			if ( bit_set( get_pv_attr_by_row( i, PVATTR_VG_BITS), VGBIT_EXPORTED ) )
 				//VG is exported
 				return true ;
 		}
@@ -197,11 +201,7 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 	Glib::ustring temp ;
 
 	//Check for partition specific message: partial VG
-	Glib::ustring vg_bits = get_pv_attr_by_path( path, PVATTR_VG_BITS ) ;
-	//4rd "bit" is partial flag.  E.g.
-	//  "wz--n-" all PVs exist, "wz-pn-" one or move PVs missing.
-	//  Treat any non-hyphen character as damaged.
-	if ( vg_bits .length() >= 4 && vg_bits [3] != '-' )
+	if ( bit_set( get_pv_attr_by_path( path, PVATTR_VG_BITS ), VGBIT_PARTIAL ) )
 	{
 		temp = _("One or more Physical Volumes belonging to the Volume Group is missing.") ;
 		temp += "\n" ;
@@ -322,6 +322,21 @@ Byte_Value LVM2_PV_Info::lvm2_pv_attr_to_num( const Glib::ustring str )
 			num = -1 ;
 	}
 	return num ;
+}
+
+//Test if the bit is set in either VG or LV "bits" attribute string
+//  E.g.  bit_set( "wz--n-", VGBIT_EXPORTED ) -> false
+//        bit_set( "wzx-n-", VGBIT_EXPORTED ) -> true
+bool LVM2_PV_Info::bit_set( const Glib::ustring & attr, unsigned int bit )
+{
+	//NOTE:
+	//  This code treats hyphen '-' as unset and everything else as set.
+	//  Some of the "bits", including LV state (LVBIT_STATE) encode many
+	//  settings as different letters, but this assumption is still valid.
+	//  See vgs(8) and lvs(8) for details.
+	if ( ! attr .empty() && attr .length() > bit )
+		return ( attr[ bit ] != '-' ) ;
+	return false ;
 }
 
 }//GParted
