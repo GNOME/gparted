@@ -10,15 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-07 11:48+0300\n"
-"PO-Revision-Date: 2012-07-07 17:04+0300\n"
+"POT-Creation-Date: 2012-07-10 21:14+0300\n"
+"PO-Revision-Date: 2012-07-10 21:13+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:362
@@ -224,7 +224,7 @@ msgstr "неактивен"
 #.
 #: ../src/Dialog_Partition_Info.cc:351
 msgid "Not active (Not a member of any volume group)"
-msgstr ""
+msgstr "неактивен (не е член на никоя група)"
 
 #. TO TRANSLATORS:  myvgname not active and exported
 #. * means that the partition is a member of an LVM volume group but
@@ -234,7 +234,7 @@ msgstr ""
 #.
 #: ../src/Dialog_Partition_Info.cc:359
 msgid "%1 not active and exported"
-msgstr ""
+msgstr "%1 е неактивен, но е експортиран"
 
 #. TO TRANSLATORS:  myvgname not active
 #. * means that the partition is a member of an LVM volume group but
@@ -791,7 +791,7 @@ msgstr ""
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
 #: ../src/GParted_Core.cc:1572
 msgid "%1 of unallocated space within the partition."
-msgstr ""
+msgstr "%1 незаделено място в дяла."
 
 #. TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
 #. * means that the user can perform a check of the partition which will
@@ -801,7 +801,9 @@ msgstr ""
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
-msgstr "За да уголемите файловата система до запълване на дяла, изберете дяла и изберете следното:"
+msgstr ""
+"За да уголемите файловата система до запълване на дяла, изберете дяла и "
+"изберете следното:"
 
 #: ../src/GParted_Core.cc:1585
 msgid "Partition --> Check."
@@ -846,10 +848,11 @@ msgstr "Промяна на етикета на %2 да е „%1“"
 #: ../src/GParted_Core.cc:1885
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr ""
+"Задаване на половината от идентификатора на %1 на нова, случайна стойност"
 
 #: ../src/GParted_Core.cc:1890
 msgid "Set UUID on %1 to a new, random value"
-msgstr ""
+msgstr "Задаване на идентификатора на %1 на нова, случайна стойност"
 
 #. TO TRANSLATORS:  moving requires old and new length to be the same
 #. * means that the length in bytes of the old partition and new partition
@@ -1210,7 +1213,7 @@ msgstr "_Прилагане на всички действия"
 
 #: ../src/LVM2_PV_Info.cc:179
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
-msgstr ""
+msgstr "Поне един физически том от групата липсва."
 
 #: ../src/LVM2_PV_Info.cc:238
 msgid "An error occurred reading LVM2 configuration!"
@@ -1222,17 +1225,21 @@ msgstr "Някои данни може да са грешни или да лип
 
 #: ../src/LVM2_PV_Info.cc:242
 msgid "You should NOT modify any LVM2 PV partitions."
-msgstr ""
+msgstr "Не променяйте никой физически дял от LVM2."
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
 #: ../src/OperationChangeUUID.cc:60
 msgid "Set half the UUID to a new random value on %1 file system on %2"
 msgstr ""
+"Задаване на половината от идентификатора на файловата система %1 върху %2 на "
+"нова, случайна стойност"
 
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
 #: ../src/OperationChangeUUID.cc:66
 msgid "Set a new random UUID on %1 file system on %2"
-msgstr "Задаване на нов, случаен идентификатор UUID на файловата система %1 върху %2"
+msgstr ""
+"Задаване на идентификатора на файловата система %1 върху %2 на нова, "
+"случайна стойност"
 
 #: ../src/OperationCopy.cc:37
 msgid "copy of %1"
@@ -1665,8 +1672,10 @@ msgstr ""
 "Александър Шопов <ash@kambanaria.org>\n"
 "\n"
 "Проектът за превод на GNOME има нужда от подкрепа.\n"
-"Научете повече за нас на http://gnome.cult.bg\n"
-"Докладвайте за грешки на http://gnome.cult.bg/bugs"
+"Научете повече за нас на <a href=\"http://gnome.cult.bg\">http://gnome.cult."
+"bg</a>\n"
+"Докладвайте за грешки на <a href=\"http://gnome.cult.bg/bugs\">http://gnome."
+"cult.bg/bugs</a>"
 
 #: ../src/Win_GParted.cc:1480
 msgid "It is not possible to create more than %1 primary partition"
@@ -1703,6 +1712,9 @@ msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
 msgstr ""
+"  Проблем при стартиране е най-вероятно да се появи, ако преместите дял на "
+"ГНУ/Линукс, който съдържа папката „/boot“ или ако преместите системния дял "
+"на Уиндоус, който съдържа „C:“."
 
 #: ../src/Win_GParted.cc:1588
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
@@ -1968,7 +1980,9 @@ msgstr "Прилагане"
 #: ../src/fat16.cc:33 ../src/ntfs.cc:26
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key."
-msgstr "Промяната на идентификатора UUID може да направи ключа за активиране на Уиндоус (WPA) невалиден."
+msgstr ""
+"Промяната на идентификатора UUID може да направи ключа за активиране на "
+"Уиндоус (WPA) невалиден."
 
 #: ../src/fat16.cc:35 ../src/ntfs.cc:28
 msgid ""
@@ -1977,12 +1991,19 @@ msgid ""
 "C:, might invalidate the WPA key. An invalid WPA key will prevent login "
 "until you reactivate Windows."
 msgstr ""
+"Серийният номер на дяловете, съдържащи файлови системи FAT и NTFS, служи "
+"като идентификатор (UUID). Промяната на номера на системния дял, който най-"
+"често отговаря на „C:“, може да унищожи валидността на ключа за Уиндоус. "
+"Този проблем ще ви попречи да влезете в системата под Уиндоус, докато не "
+"активирате на Уиндоус отново."
 
 #: ../src/fat16.cc:41 ../src/ntfs.cc:38
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
 msgstr ""
+"Обикновено промяната на идентификатора на външно или несистемно устройство е "
+"безопасно действие. За жалост няма пълна гаранция за това."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: ../src/linux_swap.cc:28
@@ -2028,6 +2049,9 @@ msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
 msgstr ""
+"Само половината от идентификатора на дяла се задава да е нова, случайна "
+"стойност, за да се избегне унищожаване на валидността на ключа за активиране "
+"на Уиндоус."
 
 #. simulation..
 #: ../src/ntfs.cc:194
