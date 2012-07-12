@@ -26,6 +26,9 @@ Bart Harkvoort		<gparted@users.sourceforge.net>
 	* Created and maintained up to official 0.3.3 release and
 	  the unofficial 0.3.4 release.
 
+Colin Watson		<cjwatson@debian.org>
+	* Wrote find /dev/mapper devices when not using libparted discovery patch
+
 Curtis Gedak		<gedakc@users.sourceforge.net>
 	* Created SWRaid.h, SWRaid.cc to support Linux software RAID devices.
 	* Created DMRaid.h, DMRaid.cc to support /dev/mapper dmraid devices.
@@ -43,6 +46,12 @@ Curtis Gedak		<gedakc@users.sourceforge.net>
 	* Created OperationLabelPartition.h, OperationLabelPartition.cc
 	* Maintained from official 0.3.5 release onward
 
+Denis Sirotkin		<fechiny@gmail.com>
+	* Wrote small patch to avoid crash when rescanning devices
+
+Dmitriy Motitskiy	<dmotitskiy@gmail.com>
+	* Wrote small patch to fix crash on startup with Russian language
+
 Jérôme Dumesnil		<jerome.dumesnil@gmail.com>
 	* Wrote patch to merge actions -- method Win_GParted::Merge_Operations().
 
@@ -58,6 +67,9 @@ Markus Elfring		<elfring@users.sourceforge.net>
 	* Wrote patch to change some local Dialog attributes to variables
 	* Wrote small patch to delete unnecessary null pointer checks
 	* Wrote small patch to add complete quoting for macro parameters
+
+Martin Pitt			<martin.pitt@ubuntu.com>
+	* Wrote patch to install signal handler to clean up automount disabling FDI
 
 Michael Monreal		<michael.monreal@gmx.net>
 	* Wrote small patch to implement themed app icon in hicolor
@@ -78,6 +90,7 @@ Phillip Susi		<psusi@cfl.rr.com>
 Rogier Goossens		<goossens.rogier@gmail.com>
 	* Wrote patch to support changing file system UUIDs.
 	* Created OperationChangeUUID.h, OperationChangeUUID.cc to support changing UUIDs.
+	* Wrote small patch to fix detection of multiple SW RAID (md) devices
 
 Sebastian Kraft		<kraft.sebastian@gmail.com>
 	* Designed Tango theme icons
@@ -87,5 +100,11 @@ Seth Heeren			<sgheeren@gmail.com>
 	* Wrote several small patches to fix memory leaks and valgrind errors
 	* Wrote method replacement patch to simplify Utils::cleanup_cursor
 
+Seth Hunter			<hunter@ll.mit.edu>
+	* Wrote small patch to fix create partition off by one sector
+
 Stephen Kirkby		<mail@stephenkirkby.co.uk>
 	* Wrote small patch to reverse umount order in xfs::copy
+
+Vincent Untz		<vuntz@gnome.org>
+	* Wrote small patch to correctly link to gthread
