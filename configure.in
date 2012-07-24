@@ -258,6 +258,12 @@ PKG_CHECK_EXISTS([gtkmm-2.4 >= 2.16.0],
   [])
 
 
+dnl Check for gtkmm >= 2.22 to determine availability of Gtk::MessageDialog::get_message_area().
+PKG_CHECK_EXISTS([gtkmm-2.4 >= 2.22.0],
+  [AC_DEFINE([HAVE_GET_MESSAGE_AREA], 1, [Define if gtkmm provides Gtk::MessageDialog::get_message_area() function.])],
+  [])
+
+
 dnl======================
 dnl check whether to build documentation - Gnome-Doc-Utils
 dnl======================

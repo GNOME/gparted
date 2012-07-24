@@ -2708,10 +2708,46 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	              "LVM commands to free the Physical Volume before attempting this operation." ) ;
 	tmp_msg += "\n\n" ;
 	tmp_msg += _( "Do you want to continue to forcibly delete the Physical Volume?" ) ;
-	dialog .set_secondary_text( tmp_msg ) ;
 
-	//WARNING: Uses Gtk::MessageDialog::get_message_area() which was new in
-	//  gtkmm-2.22 released September 2010.  Not all distributions will have it.
+	LVM2_PV_Info lvm2_pv_info ;
+	Glib::ustring vgname = lvm2_pv_info .get_vg_name( selected_partition .get_path() ) ;
+	std::vector<Glib::ustring> members ;
+	if ( ! vgname .empty() )
+		members = lvm2_pv_info .get_vg_members( vgname ) ;
+
+	//Single copy of each string for translation purposes
+	const Glib::ustring vgname_label  = _( "Volume Group:" ) ;
+	const Glib::ustring members_label = _( "Members:" ) ;
+
+#ifndef HAVE_GET_MESSAGE_AREA
+	//Basic method of displaying VG members by appending it to the secondary text in the dialog.
+	tmp_msg += "\n____________________\n\n" ;
+	tmp_msg += "<b>" ;
+	tmp_msg +=       vgname_label ;
+	tmp_msg +=                    "</b>    " ;
+	tmp_msg +=                               vgname ;
+	tmp_msg += "\n" ;
+	tmp_msg += "<b>" ;
+	tmp_msg +=       members_label ;
+	tmp_msg +=                     "</b>" ;
+	if ( ! members .empty() )
+	{
+		tmp_msg += "    " ;
+		tmp_msg +=        members [0] ;
+		for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+		{
+			tmp_msg += "    " ;
+			tmp_msg +=        members [i] ;
+		}
+	}
+#endif /* ! HAVE_GET_MESSAGE_AREA */
+
+	dialog .set_secondary_text( tmp_msg, true ) ;
+
+#ifdef HAVE_GET_MESSAGE_AREA
+	//Nicely formatted method of displaying VG members by using a table below the secondary text
+	//  in the dialog.  Uses Gtk::MessageDialog::get_message_area() which was new in gtkmm-2.22
+	//  released September 2010.
 	Gtk::Box * msg_area = dialog .get_message_area() ;
 
 	Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
@@ -2723,22 +2759,16 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
         msg_area ->pack_start( * table ) ;
 
 	int top = 0, bottom = 1 ;
-	LVM2_PV_Info lvm2_pv_info ;
-	Glib::ustring vgname = lvm2_pv_info .get_vg_name( selected_partition .get_path() ) ;
 
 	//Volume Group
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _( "Volume Group:" ) ) + "</b>" ),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( vgname_label ) + "</b>" ),
 	                0, 1, top, bottom, Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( vgname, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 	                1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	//Members
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>"),
 			0, 1, top, bottom, Gtk::FILL ) ;
-
-	std::vector<Glib::ustring> members ;
-	if ( ! vgname .empty() )
-		members = lvm2_pv_info .get_vg_members( vgname ) ;
 
 	if ( members .empty() )
 		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
@@ -2754,6 +2784,7 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 		}
 
 	}
+#endif /* HAVE_GET_MESSAGE_AREA */
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
