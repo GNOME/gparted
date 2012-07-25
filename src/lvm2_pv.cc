@@ -145,4 +145,9 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 	return ! execute_command( "lvm pvck -v " + partition .get_path(), operationdetail ) ;
 }
 
+bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

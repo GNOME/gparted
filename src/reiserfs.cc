@@ -189,4 +189,9 @@ bool reiserfs::check_repair( const Partition & partition, OperationDetail & oper
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }
 
+bool reiserfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

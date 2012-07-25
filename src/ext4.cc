@@ -185,5 +185,10 @@ bool ext4::check_repair( const Partition & partition, OperationDetail & operatio
 	//this is quite normal (especially after a copy) so we let the function return true...
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
 }
-	
+
+bool ext4::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

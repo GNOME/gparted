@@ -200,6 +200,11 @@ bool jfs::check_repair( const Partition & partition, OperationDetail & operation
 	return ( exit_status == 0 || exit_status == 1 ) ;
 }
 
+bool jfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

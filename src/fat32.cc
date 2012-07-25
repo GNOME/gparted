@@ -284,4 +284,9 @@ bool fat32::check_repair( const Partition & partition, OperationDetail & operati
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }
 
+bool fat32::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

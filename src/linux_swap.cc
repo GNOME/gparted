@@ -179,4 +179,9 @@ bool linux_swap::check_repair( const Partition & partition, OperationDetail & op
 	return true ;
 }
 
+bool linux_swap::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

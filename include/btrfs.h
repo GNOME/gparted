@@ -43,6 +43,7 @@ public:
 		   const Glib::ustring & dest_part_path,
 		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool remove( const Partition & partition, OperationDetail & operationdetail ) ;
 
 private:
 	static Byte_Value btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) ;

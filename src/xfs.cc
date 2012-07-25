@@ -257,6 +257,11 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail ) ;
 }
 
+bool xfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

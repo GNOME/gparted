@@ -97,7 +97,9 @@ private:
 	bool format( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	bool Delete( const Partition & partition, OperationDetail & operationdetail ) ;
-	
+
+	bool remove_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
+
 	bool label_partition( const Partition & partition, OperationDetail & operation_detail ) ;
 	
 	bool change_uuid( const Partition & partition, OperationDetail & operation_detail ) ;

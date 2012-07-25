@@ -164,6 +164,11 @@ bool reiser4::check_repair( const Partition & partition, OperationDetail & opera
 	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition .get_path(), operationdetail ) ;
 }
 
+bool reiser4::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

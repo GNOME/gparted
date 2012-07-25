@@ -120,4 +120,9 @@ bool hfsplus::check_repair( const Partition & partition, OperationDetail & opera
 	return ! execute_command( "fsck.hfsplus -f -y " + partition .get_path(), operationdetail ) ;
 }
 
+bool hfsplus::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

@@ -238,6 +238,11 @@ bool ntfs::check_repair( const Partition & partition, OperationDetail & operatio
 	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operationdetail ) ; 
 }
 
+bool ntfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

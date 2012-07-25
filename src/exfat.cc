@@ -88,5 +88,10 @@ bool exfat::check_repair( const Partition & partition, OperationDetail & operati
 	return true ;
 }
 
+bool exfat::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 

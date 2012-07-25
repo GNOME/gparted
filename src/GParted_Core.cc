@@ -655,7 +655,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		switch ( operation ->type )
 		{	     
 			case OPERATION_DELETE:
-				succes = Delete( operation ->partition_original, operation ->operation_detail ) ;
+				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
+				         Delete( operation ->partition_original, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_CHECK:
 				succes = check_repair_filesystem( operation ->partition_original, operation ->operation_detail ) &&
@@ -675,7 +676,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 						      operation ->operation_detail ) ;
 				break ;
 			case OPERATION_FORMAT:
-				succes = format( operation ->partition_new, operation ->operation_detail ) ;
+				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
+				         format( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_COPY:
 			//FIXME: in case of a new partition we should make sure the new partition is >= the source partition... 
@@ -685,7 +687,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				
 					 calibrate_partition( static_cast<OperationCopy*>( operation ) ->partition_copied,
 							      operation ->operation_detail ) &&
-
+				         remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
 					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
 					       operation ->partition_new,
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_byte_length(),
@@ -1838,6 +1840,30 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
+}
+
+bool GParted_Core::remove_filesystem( const Partition & partition, OperationDetail & operationdetail )
+{
+	bool success = true ;
+
+	switch ( get_fs( partition .filesystem ) .remove )
+	{
+		case FS::EXTERNAL:
+			//Run file system specific remove method to delete the file system.  Most
+			//  file systems should NOT implement a remove() method as it will prevent
+			//  recovery from accidental partition deletion.
+			operationdetail .add_child( OperationDetail( String::ucompose(
+								_("delete %1 file system"),
+								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
+			success = set_proper_filesystem( partition .filesystem ) &&
+			          p_filesystem ->remove( partition, operationdetail .get_last_child() ) ;
+			operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_ERROR ) ;
+			break ;
+
+		default:
+			break ;
+	}
+	return success ;
 }
 
 bool GParted_Core::label_partition( const Partition & partition, OperationDetail & operationdetail )	

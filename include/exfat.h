@@ -47,6 +47,7 @@ public:
 	         , OperationDetail & operationdetail
 	         ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool remove( const Partition & partition, OperationDetail & operationdetail ) ;
 };
 
 } //GParted

@@ -205,4 +205,9 @@ bool nilfs2::check_repair( const Partition & partition, OperationDetail & operat
 	return true ;
 }
 
+bool nilfs2::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

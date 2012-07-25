@@ -183,6 +183,11 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
 }
 
+bool ext2::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

@@ -55,7 +55,8 @@ public:
 			   const Glib::ustring & dest_part_path,
 			   OperationDetail & operationdetail ) = 0 ;
 	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
-	
+	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
+
 protected:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
 	int execute_command_timed( const Glib::ustring & command

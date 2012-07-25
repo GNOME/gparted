@@ -86,6 +86,11 @@ bool ufs::check_repair( const Partition & partition, OperationDetail & operation
 	return true ;
 }
 
+bool ufs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted
 
 

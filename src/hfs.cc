@@ -123,4 +123,9 @@ bool hfs::check_repair( const Partition & partition, OperationDetail & operation
 	return ! execute_command( "hfsck -v " + partition .get_path(), operationdetail ) ;
 }
 
+bool hfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 } //GParted

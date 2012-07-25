@@ -306,6 +306,11 @@ void btrfs::read_uuid( Partition & partition )
 	}
 }
 
+bool btrfs::remove( const Partition & partition, OperationDetail & operationdetail )
+{
+	return true ;
+}
+
 //Private methods
 
 //Return the value of a btrfs tool formatted size, including reversing

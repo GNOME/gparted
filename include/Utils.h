@@ -125,13 +125,15 @@ struct FS
 	Support move ; //startpoint and endpoint
 	Support check ; //some checktool available?
 	Support copy ;
+	Support remove ;
 
 	Byte_Value MIN ; 
 	Byte_Value MAX ;
 	
 	FS()
 	{
-		read = read_label = write_label = read_uuid = write_uuid = create = grow = shrink = move = check = copy = NONE;
+		read = read_label = write_label = read_uuid = write_uuid = create = grow = shrink =
+		move = check = copy = remove = NONE ;
 		MIN = MAX = 0 ;
 	} 
 } ;

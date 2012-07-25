@@ -45,6 +45,7 @@ public:
 		   const Glib::ustring & dest_part_path,
 		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool remove( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	const static Glib::ustring ( & Change_UUID_Warning ) [] ;
 };
