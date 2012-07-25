@@ -53,6 +53,7 @@ FS lvm2_pv::get_filesystem_support()
 		fs .shrink = FS::EXTERNAL ;
 		fs .move   = FS::GPARTED ;
 		fs .check  = FS::EXTERNAL ;
+		fs .remove = FS::EXTERNAL ;
 	}
 
 	return fs ;
@@ -147,7 +148,15 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
-	return true ;
+	LVM2_PV_Info lvm2_pv_info ;
+	Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+	Glib::ustring cmd ;
+	if ( vgname .empty() )
+		cmd = "lvm pvremove " + partition .get_path() ;
+	else
+		//Must force the removal of a PV which is a member of a VG
+		cmd = "echo y | lvm pvremove --force --force " + partition .get_path() ;
+	return ! execute_command( cmd, operationdetail ) ;
 }
 
 } //GParted
