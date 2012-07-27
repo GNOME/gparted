@@ -257,7 +257,7 @@ void Dialog_Rescue_Data::check_overlaps(int nPart)
 	if(is_overlaping(nPart))
 	{
 		Gtk::MessageDialog overlapDialog(*this, "", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO, true);
-		overlapDialog.set_message(_("Warning: The detected file system area overlaps with at least one existing partition."));
+		overlapDialog.set_message(_("Warning: The detected file system area overlaps with at least one existing partition"));
 
 		Glib::ustring sec_text=_("It is recommended that you do not use any overlapping file systems to avoid disturbing existing data.");
 		sec_text+="\n";

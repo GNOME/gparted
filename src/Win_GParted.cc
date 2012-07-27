@@ -722,7 +722,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 		else
 		{
 			Gtk::MessageDialog dialog( *this,
-				   _("Could not add this operation to the list."),
+				   _("Could not add this operation to the list"),
 				   false,
 				   Gtk::MESSAGE_ERROR,
 				   Gtk::BUTTONS_OK,
@@ -1381,7 +1381,7 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 	if ( error != NULL )
 	{
 		Gtk::MessageDialog dialog( *this
-		                         , _( "Unable to open GParted Manual help file." )
+		                         , _( "Unable to open GParted Manual help file" )
 		                         , false
 		                         , Gtk::MESSAGE_ERROR
 		                         , Gtk::BUTTONS_OK
@@ -1397,7 +1397,7 @@ void Win_GParted::menu_help_contents()
 #ifdef HAVE_DISABLE_DOC
 	//GParted was configured with --disable-doc
 	Gtk::MessageDialog dialog( *this,
-			_( "Documentation is not available." ),
+			_( "Documentation is not available" ),
 			false,
 			Gtk::MESSAGE_INFO,
 			Gtk::BUTTONS_OK,
@@ -1588,7 +1588,7 @@ void Win_GParted::activate_resize()
 			{
 				//Warn that move operation might break boot process
 				Gtk::MessageDialog dialog( *this
-				                         , _( "Moving a partition might cause your operating system to fail to boot." )
+				                         , _( "Moving a partition might cause your operating system to fail to boot" )
 				                         , false
 				                         , Gtk::MESSAGE_WARNING
 				                         , Gtk::BUTTONS_OK
@@ -1709,7 +1709,7 @@ void Win_GParted::activate_paste()
 			//Only warn that this paste operation will overwrite data in the existing
 			//  partition if not already shown the remove non-empty LVM2 PV dialog.
 			Gtk::MessageDialog dialog( *this
-			                         , _( "You have pasted into an existing partition." )
+			                         , _( "You have pasted into an existing partition" )
 			                         , false
 			                         , Gtk::MESSAGE_WARNING
 			                         , Gtk::BUTTONS_OK
@@ -1891,7 +1891,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 							/* TO TRANSLATORS: looks like
 							* Cannot format this file system to fat16.
 							*/
-							_( "Cannot format this file system to %1." ),
+							_( "Cannot format this file system to %1" ),
 							   Utils::get_filesystem_string( new_fs ) ) ,
 					   false,
 					   Gtk::MESSAGE_ERROR,
@@ -2082,8 +2082,8 @@ void Win_GParted::toggle_busy_state()
 
 		/*TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdd8. */
 		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2."
-		                              , "%1 operations are currently pending for partition %2."
+		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2"
+		                              , "%1 operations are currently pending for partition %2"
 		                              , operation_count
 		                              )
 		                    , operation_count
@@ -2203,8 +2203,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	{
 		/*TO TRANSLATORS: Plural case looks like   4 operations are currently pending for partition /dev/sdd8. */
 		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2."
-		                              , "%1 operations are currently pending for partition %2."
+		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2"
+		                              , "%1 operations are currently pending for partition %2"
 		                              , operation_count
 		                              )
 		                    , operation_count
@@ -2269,10 +2269,10 @@ void Win_GParted::activate_disklabel()
 	if ( active_count > 0 )
 	{
 		Glib::ustring tmp_msg =
-		    String::ucompose( /*TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda. */
-		                      ngettext( "%1 partition is currently active on device %2."
-		                      /*TO TRANSLATORS: Plural case looks like    3 partitions are currently active on device /dev/sda. */
-		                              , "%1 partitions are currently active on device %2."
+		    String::ucompose( /*TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda */
+		                      ngettext( "%1 partition is currently active on device %2"
+		                      /*TO TRANSLATORS: Plural case looks like    3 partitions are currently active on device /dev/sda */
+		                              , "%1 partitions are currently active on device %2"
 		                              , active_count
 		                              )
 		                    , active_count
@@ -2301,8 +2301,8 @@ void Win_GParted::activate_disklabel()
 	if ( operations .size() )
 	{
 		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending."
-		                              , "%1 operations are currently pending."
+		    String::ucompose( ngettext( "%1 operation is currently pending"
+		                              , "%1 operations are currently pending"
 		                              , operations .size()
 		                              )
 		                    , operations .size()
@@ -2331,7 +2331,7 @@ void Win_GParted::activate_disklabel()
 		if ( ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
 		{
 			Gtk::MessageDialog dialog( *this,
-						   _("Error while creating partition table."),
+						   _("Error while creating partition table"),
 						   true,
 						   Gtk::MESSAGE_ERROR,
 						   Gtk::BUTTONS_OK,

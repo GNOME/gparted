@@ -23,7 +23,7 @@ namespace GParted
 {
 
 const Glib::ustring ntfs::Change_UUID_Warning [] =
-	{ _( "Changing the UUID might invalidate the Windows Product Activation (WPA) key."
+	{ _( "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 	   )
 	, _( "On FAT and NTFS file systems, the"
 	     " Volume Serial Number is used as the UUID."
