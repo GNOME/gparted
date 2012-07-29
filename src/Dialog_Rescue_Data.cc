@@ -153,9 +153,9 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 {
 	Partition part=this->partitions[nPart];
 
-	int initOffset=this->sector_size*part.sector_start;
-	int numSectors=part.sector_end-part.sector_start+1;
-	int totalSize=this->sector_size*numSectors;
+	Byte_Value initOffset=this->sector_size*part.sector_start;
+	Sector numSectors=part.sector_end-part.sector_start+1;
+	Byte_Value totalSize=this->sector_size*numSectors;
 
 	this->check_overlaps(nPart);
 
