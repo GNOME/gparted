@@ -53,6 +53,10 @@ private:
 	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) const ;
 	Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const ;
 	Glib::ustring get_vg_attr_by_row( unsigned int row, unsigned int entry ) const ;
+	static Glib::ustring get_attr_by_name( const std::vector<Glib::ustring> cache,
+	                                       const Glib::ustring name, unsigned int entry ) ;
+	static Glib::ustring get_attr_by_row( const std::vector<Glib::ustring> cache,
+	                                      unsigned int row, unsigned int entry ) ;
 	static Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
 	static bool bit_set( const Glib::ustring & attr, unsigned int bit ) ;
 	static bool lvm2_pv_info_cache_initialized ;

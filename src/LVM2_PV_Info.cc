@@ -289,54 +289,41 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	}
 }
 
-//Return PV's nth attribute.  Performs linear search of the cache and
-//  uses the first matching PV entry.  Attributes are numbered 0 upward
-//  using PV_ATTRIBUTE enumeration.
 Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const
 {
-	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
-	{
-		std::vector<Glib::ustring> pv_attrs ;
-		Utils::split( lvm2_pv_cache [i], pv_attrs, "," ) ;
-		if ( PVATTR_PV_NAME < pv_attrs .size() && path == pv_attrs [PVATTR_PV_NAME] )
-		{
-			if ( entry < pv_attrs .size() )
-				return pv_attrs [entry] ;
-			else
-				break ;
-		}
-	}
-
-	return "" ;
+	return get_attr_by_name( lvm2_pv_cache, path, entry ) ;
 }
 
-//Return PV's nth attribute from specified cache row.  Row is numbered
-//  0 upwards and attributes are numbers numbered 0 upwards using
-//  PV_ATTRIBUTE enumeration.
 Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry ) const
 {
-	if ( row >= lvm2_pv_cache .size() )
-		return "" ;
-	std::vector<Glib::ustring> pv_attrs ;
-	Utils::split( lvm2_pv_cache [row], pv_attrs, "," ) ;
-	if ( entry < pv_attrs .size() )
-		return pv_attrs [entry] ;
-	return "" ;
+	return get_attr_by_row( lvm2_pv_cache, row, entry ) ;
 }
 
-//Return VG's nth attribute.  Performs linear search of the cache and
-//  uses the first matching VG entry.  Attributes are numbered 0 upward
-//  using VG_ATTRIBUTE enumeration.
 Glib::ustring LVM2_PV_Info::get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const
 {
-	for ( unsigned int i = 0 ; i < lvm2_vg_cache .size() ; i ++ )
+	return get_attr_by_name( lvm2_vg_cache, vgname, entry ) ;
+}
+
+Glib::ustring LVM2_PV_Info::get_vg_attr_by_row( unsigned int row, unsigned int entry ) const
+{
+	return get_attr_by_row( lvm2_vg_cache, row, entry ) ;
+}
+
+//Performs linear search of the cache and uses the first matching name.
+//  Return nth attribute.  Attributes are numbered 0 upward using
+//  PV_ATTRIBUTE and VG_ATTRIBUTE enumerations for lvm2_pv_cache and
+//  lvm2_vg_cache respectively.
+Glib::ustring LVM2_PV_Info::get_attr_by_name( const std::vector<Glib::ustring> cache,
+                                              const Glib::ustring name, unsigned int entry )
+{
+	for ( unsigned int i = 0 ; i < cache .size() ; i ++ )
 	{
-		std::vector<Glib::ustring> vg_attrs ;
-		Utils::split( lvm2_vg_cache [i], vg_attrs, "," ) ;
-		if ( VGATTR_VG_NAME < vg_attrs .size() && vgname == vg_attrs [VGATTR_VG_NAME] )
+		std::vector<Glib::ustring> attrs ;
+		Utils::split( cache [i], attrs, "," ) ;
+		if ( attrs .size() >= 1 && attrs [0] == name )
 		{
-			if ( entry < vg_attrs .size() )
-				return vg_attrs [entry] ;
+			if ( entry < attrs .size() )
+				return attrs [entry] ;
 			else
 				break ;
 		}
@@ -345,17 +332,19 @@ Glib::ustring LVM2_PV_Info::get_vg_attr_by_name( const Glib::ustring & vgname, u
 	return "" ;
 }
 
-//Return VG's nth attribute from specified cache row.  Row is numbered
-//  0 upwards and attributes are numbers numbered 0 upwards using
-//  VG_ATTRIBUTE enumeration.
-Glib::ustring LVM2_PV_Info::get_vg_attr_by_row( unsigned int row, unsigned int entry ) const
+//Lookup row from the cache and return nth attribute.  Row is numbered
+//  0 upwards and attributes are numbered 0 upwards using PV_ATTRIBUTE
+//  and VG_ATTRIBUTE enumerations for lvm2_pv_cache and lvm2_vg_cache
+//  respectively.
+Glib::ustring LVM2_PV_Info::get_attr_by_row( const std::vector<Glib::ustring> cache,
+                                             unsigned int row, unsigned int entry )
 {
-	if ( row >= lvm2_vg_cache .size() )
+	if ( row >= cache .size() )
 		return "" ;
-	std::vector<Glib::ustring> vg_attrs ;
-	Utils::split( lvm2_vg_cache [row], vg_attrs, "," ) ;
-	if ( entry < vg_attrs .size() )
-		return vg_attrs [entry] ;
+	std::vector<Glib::ustring> attrs ;
+	Utils::split( cache [row], attrs, "," ) ;
+	if ( entry < attrs .size() )
+		return attrs [entry] ;
 	return "" ;
 }
 
