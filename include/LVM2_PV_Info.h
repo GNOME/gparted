@@ -51,11 +51,14 @@ private:
 	void load_lvm2_pv_info_cache() ;
 	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const ;
 	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) const ;
+	Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const ;
+	Glib::ustring get_vg_attr_by_row( unsigned int row, unsigned int entry ) const ;
 	static Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
 	static bool bit_set( const Glib::ustring & attr, unsigned int bit ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
 	static std::vector<Glib::ustring> lvm2_pv_cache ;
+	static std::vector<Glib::ustring> lvm2_vg_cache ;
 	static std::vector<Glib::ustring> error_messages ;
 };
 
