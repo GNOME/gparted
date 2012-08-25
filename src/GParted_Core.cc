@@ -2484,7 +2484,16 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
 		return true ;
 	}
-	
+	else if ( filesystem_resize_disallowed( partition ) )
+	{
+
+		operationdetail .get_last_child() .add_child(
+			OperationDetail( _("growing the file system is currently disallowed"),
+			                 STATUS_NONE, FONT_ITALIC ) ) ;
+		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
+		return true ;
+	}
+
 	return resize_filesystem( partition, partition, operationdetail, true ) ;
 }
 
@@ -3212,6 +3221,20 @@ FileSystem * GParted_Core::get_filesystem_object( const FILESYSTEM & filesystem 
 	    return FILESYSTEM_MAP[ filesystem ] ;
 	else
 	    return NULL ;
+}
+
+bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
+{
+	if ( partition .filesystem == FS_LVM2_PV )
+	{
+		//The LVM2 PV can't be resized when it's a member of an export VG
+		LVM2_PV_Info lvm2_pv_info ;
+		Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+		if ( vgname .empty() )
+			return false ;
+		return lvm2_pv_info .is_vg_exported( vgname ) ;
+	}
+	return false ;
 }
 
 #ifndef HAVE_LIBPARTED_3_0_0_PLUS

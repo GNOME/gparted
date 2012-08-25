@@ -17,6 +17,7 @@
  */
  
 #include "../include/Dialog_Partition_Resize_Move.h"
+#include "../include/GParted_Core.h"
 
 namespace GParted
 {
@@ -68,6 +69,14 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	     selected_partition .filesystem != FS_LINUX_SWAP )
 		fs .shrink = GParted::FS::NONE ;
 	
+	//Disable resizing as it's currently disallowed for the file system in this partition.
+	//  (Updates this class's copy of file system support information).
+	if ( GParted_Core::filesystem_resize_disallowed( selected_partition ) )
+	{
+		fs .shrink = FS::NONE ;
+		fs .grow   = FS::NONE ;
+	}
+
 	//see if we need a fixed_start
 	if ( fs .move )
 	{

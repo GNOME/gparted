@@ -62,6 +62,7 @@ public:
 	Glib::ustring get_thread_status_message() ;
 
 	FileSystem * get_filesystem_object( const FILESYSTEM & filesystem ) ;
+	static bool filesystem_resize_disallowed( const Partition & partition ) ;
 private:
 	//detectionstuff..
 	void init_maps() ;

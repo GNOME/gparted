@@ -17,6 +17,7 @@
  */
 
 #include "../include/Dialog_Partition_Copy.h"
+#include "../include/GParted_Core.h"
 
 namespace GParted
 {
@@ -60,7 +61,9 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	frame_resizer_base ->set_used( 
 		Utils::round( Utils::sector_to_unit( min_resize, copied_partition .sector_size, UNIT_MIB ) / (TOTAL_MB/500.00) ) ) ;
 
-	if ( fs .grow )
+	//Only allow pasting into a new larger partition if growing the file
+	//  system is implemented and resizing it is currently allowed.
+	if ( fs .grow && ! GParted_Core::filesystem_resize_disallowed( copied_partition ) )
 		if ( ! fs .MAX || fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
 			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
 		else
