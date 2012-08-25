@@ -1588,6 +1588,14 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 					}
 					partitions[ t ] .messages .push_back( temp ) ;
 				}
+
+				if ( filesystem_resize_disallowed( partitions[ t ] ) )
+				{
+					temp = get_filesystem_object( partitions[ t ] .filesystem )
+					       ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING ) ;
+					if ( ! temp .empty() )
+						partitions[ t ] .messages .push_back( temp ) ;
+				}
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_used_sectors( partitions[ t ] .logicals ) ;
@@ -2486,10 +2494,15 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	}
 	else if ( filesystem_resize_disallowed( partition ) )
 	{
-
-		operationdetail .get_last_child() .add_child(
-			OperationDetail( _("growing the file system is currently disallowed"),
-			                 STATUS_NONE, FONT_ITALIC ) ) ;
+		Glib::ustring msg        = _("growing the file system is currently disallowed") ;
+		Glib::ustring custom_msg = get_filesystem_object( partition .filesystem )
+		                           ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING ) ;
+		if ( ! custom_msg .empty() )
+		{
+			msg += "\n" ;
+			msg += custom_msg ;
+		}
+		operationdetail .get_last_child() .add_child( OperationDetail( msg, STATUS_NONE, FONT_ITALIC ) ) ;
 		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
 		return true ;
 	}

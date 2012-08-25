@@ -28,12 +28,18 @@ const Glib::ustring lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index )
 	static const Glib::ustring activate_text = _( "Ac_tivate" ) ;
 	static const Glib::ustring deactivate_text = _( "Deac_tivate" ) ;
 
+	static const Glib::ustring resize_warning =
+		_( "The LVM2 Physical Volume can not currently be resized because it is a member of an exported "
+		   "Volume Group." ) ;
+
 	switch ( ttype )
 	{
 		case CTEXT_ACTIVATE_FILESYSTEM:
 			return index == 0 ? activate_text : "" ;
 		case CTEXT_DEACTIVATE_FILESYSTEM:
 			return index == 0 ? deactivate_text : "" ;
+		case CTEXT_RESIZE_DISALLOWED_WARNING:
+			return index == 0 ? resize_warning : "" ;
 		default:
 			return "" ;
 	}

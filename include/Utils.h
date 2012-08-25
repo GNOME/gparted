@@ -100,6 +100,7 @@ enum CUSTOM_TEXT
 	CTEXT_ACTIVATE_FILESYSTEM,		// Activate text ('Mount', 'Swapon', VG 'Activate', ...)
 	CTEXT_DEACTIVATE_FILESYSTEM,		// Deactivate text ('Unmount', 'Swapoff', VG 'Deactivate', ...)
 	CTEXT_CHANGE_UUID_WARNING,		// Warning to print when changing UUIDs
+	CTEXT_RESIZE_DISALLOWED_WARNING		// File system resizing currently disallowed reason
 } ;
 
 //struct to store file system information
