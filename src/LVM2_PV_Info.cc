@@ -105,8 +105,7 @@ LVM2_PV_Info::~LVM2_PV_Info()
 
 bool LVM2_PV_Info::is_lvm2_pv_supported()
 {
-	if ( ! lvm2_pv_info_cache_initialized )
-		set_command_found() ;
+	set_command_found() ;
 	return ( lvm_found ) ;
 }
 
@@ -283,7 +282,6 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 			temp += _("Some or all of the details might be missing or incorrect.") ;
 			temp += "\n" ;
 			temp += _("You should NOT modify any LVM2 PV partitions.") ;
-			temp += "\n" ;
 			error_messages .push_back( temp ) ;
 		}
 	}
