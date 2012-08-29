@@ -80,14 +80,17 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 
 	//connect signalhandlers of the spinbuttons
 	if ( ! fixed_start )
-		spinbutton_before .signal_value_changed() .connect( 
+		before_change_connection = spinbutton_before .signal_value_changed() .connect(
 			sigc::bind<SPINBUTTON>( 
 				sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), BEFORE ) ) ;
+	else
+		//Initialise empty connection object for use in the destructor
+		before_change_connection = sigc::connection() ;
 	
-	spinbutton_size .signal_value_changed() .connect(
+	size_change_connection = spinbutton_size .signal_value_changed() .connect(
 		sigc::bind<SPINBUTTON>( 
 			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), SIZE ) ) ;
-	spinbutton_after .signal_value_changed() .connect(
+	after_change_connection = spinbutton_after .signal_value_changed() .connect(
 		sigc::bind<SPINBUTTON>( 
 			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
 
@@ -376,6 +379,9 @@ void Dialog_Base_Partition::Check_Change()
 
 Dialog_Base_Partition::~Dialog_Base_Partition() 
 {
+	before_change_connection .disconnect() ;
+	size_change_connection .disconnect() ;
+	after_change_connection .disconnect() ;
 	delete frame_resizer_base;
 }
 

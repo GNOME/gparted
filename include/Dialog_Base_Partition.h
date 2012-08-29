@@ -73,6 +73,8 @@ protected:
 	Gtk::OptionMenu optionmenu_alignment ;
 	Gtk::Menu menu_alignment ;
 
+	sigc::connection before_change_connection, size_change_connection, after_change_connection ;
+
 	//used to enable/disable OKbutton...
 	int ORIG_BEFORE, ORIG_SIZE, ORIG_AFTER ;
 
