@@ -214,7 +214,6 @@ private:
 	std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
 	FileSystem * p_filesystem ;
 	std::vector<PedPartitionFlag> flags;
-	FS fs ;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
