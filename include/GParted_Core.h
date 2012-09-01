@@ -213,7 +213,6 @@ private:
 	std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
 	FileSystem * p_filesystem ;
 	std::vector<PedPartitionFlag> flags;
-	Glib::ustring temp ;
 	Partition partition_temp ;
 	FS fs ;
 	std::vector<Glib::ustring> device_paths ;
