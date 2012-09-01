@@ -74,7 +74,8 @@ private:
 		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
-	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition ) ;
+	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
+	                                    std::vector<Glib::ustring>& messages ) ;
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
@@ -213,7 +214,6 @@ private:
 	std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
 	FileSystem * p_filesystem ;
 	std::vector<PedPartitionFlag> flags;
-	Partition partition_temp ;
 	FS fs ;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;

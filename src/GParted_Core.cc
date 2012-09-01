@@ -996,7 +996,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	while ( lp_partition )
 	{
 		libparted_messages .clear() ;
-		partition_temp .Reset() ;
+		Partition partition_temp ;
 		bool partition_is_busy = false ;
 		GParted::FILESYSTEM filesystem ;
 
@@ -1007,7 +1007,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = get_filesystem( lp_device, lp_partition ) ;
+				filesystem = get_filesystem( lp_device, lp_partition, partition_temp .messages ) ;
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1143,7 +1143,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition )
+GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
+                                                  std::vector<Glib::ustring>& messages )
 {
 	char magic1[16] = "";
 	char magic2[16] = "";
@@ -1167,7 +1168,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 			Glib::ustring temp ;
 			temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
 			temp += "\n" ;
-			partition_temp .messages .push_back( temp ) ;
+			messages .push_back( temp ) ;
 			return GParted::FS_LUKS ;
 		}
 	}
@@ -1326,7 +1327,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	/* TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing */
 	temp += String::ucompose( _( "The device entry %1 is missing" ), get_partition_path( lp_partition ) ) ;
 	
-	partition_temp .messages .push_back( temp ) ;
+	messages .push_back( temp ) ;
 	
 	return GParted::FS_UNKNOWN ;
 }
@@ -1376,7 +1377,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 				       Byte_Value sector_size,
 				       bool inside_extended )
 {
-	partition_temp .Reset() ;
+	Partition partition_temp ;
 	partition_temp .Set_Unallocated( device_path, 0, 0, sector_size, inside_extended ) ;
 	
 	//if there are no partitions at all..
