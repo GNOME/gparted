@@ -45,7 +45,9 @@ FS reiser4::get_filesystem_support()
 		fs .copy = GParted::FS::GPARTED ;
 		fs .move = GParted::FS::GPARTED ;
 	}
-	
+
+	fs .online_read = FS::GPARTED ;
+
 	/*
 	 * IT SEEMS RESIZE AND COPY AREN'T IMPLEMENTED YET IN THE TOOLS...
 	 * SEE http://marc.theaimsgroup.com/?t=109883161600003&r=1&w=2 for more information.. 

@@ -55,6 +55,7 @@ FS nilfs2::get_filesystem_support()
 
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
+	fs .online_read = FS::GPARTED ;
 
 	//Minimum FS size is 128M+4K using mkfs.nilfs2 defaults
 	fs .MIN = 128 * MEBIBYTE + 4 * KIBIBYTE ;

@@ -1496,8 +1496,6 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 	
 void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
 {
-	struct statvfs sfs ; 
-
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
@@ -1508,26 +1506,20 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
 			{
-				if ( partitions[ t ] .busy && partitions[t] .filesystem != GParted::FS_LVM2_PV )
+				if ( partitions[ t ] .busy )
 				{
-					if ( partitions[ t ] .get_mountpoints() .size() > 0  )
+					switch( get_fs( partitions[ t ] .filesystem ) .online_read )
 					{
-						if ( statvfs( partitions[ t ] .get_mountpoint() .c_str(), &sfs ) == 0 )
-						{
-							Sector fs_size = static_cast<Sector>( sfs .f_blocks ) *
-							                 sfs .f_frsize /
-							                 partitions[ t ] .sector_size ;
-							Sector fs_free = static_cast<Sector>( sfs .f_bfree ) *
-							                 sfs .f_bsize /
-							                 partitions[ t ] .sector_size ;
-							partitions[ t ] .set_sector_usage( fs_size, fs_free ) ;
-						}
-						else
-							partitions[ t ] .messages .push_back( 
-								"statvfs (" + 
-								partitions[ t ] .get_mountpoint() + 
-								"): " + 
-								Glib::strerror( errno ) ) ;
+						case FS::EXTERNAL:
+							if ( set_proper_filesystem( partitions[ t ] .filesystem ) )
+								p_filesystem ->set_used_sectors( partitions[ t ] ) ;
+							break ;
+						case FS::GPARTED:
+							mounted_set_used_sectors( partitions[ t ] ) ;
+							break ;
+
+						default:
+							break ;
 					}
 				}
 				else
@@ -1600,6 +1592,24 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 				set_used_sectors( partitions[ t ] .logicals ) ;
 		}
+	}
+}
+
+void GParted_Core::mounted_set_used_sectors( Partition & partition )
+{
+	struct statvfs sfs ;
+
+	if ( partition .get_mountpoints() .size() > 0 )
+	{
+		if ( statvfs( partition .get_mountpoint() .c_str(), &sfs ) == 0 )
+		{
+			Sector fs_size = static_cast<Sector>( sfs .f_blocks ) * sfs .f_frsize / partition .sector_size ;
+			Sector fs_free = static_cast<Sector>( sfs .f_bfree ) * sfs .f_bsize / partition .sector_size ;
+			partition .set_sector_usage( fs_size, fs_free ) ;
+		}
+		else
+			partition .messages .push_back( "statvfs (" + partition .get_mountpoint() + "): " +
+			                                Glib::strerror( errno ) ) ;
 	}
 }
 

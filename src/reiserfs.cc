@@ -61,6 +61,8 @@ FS reiserfs::get_filesystem_support()
 		fs .move = GParted::FS::GPARTED ;
 	}
 
+	fs .online_read = FS::GPARTED ;
+
 	//Actual minimum is at least 18 blocks larger than 32 MiB for the journal offset
 	fs .MIN = 34 * MEBIBYTE ;
 	

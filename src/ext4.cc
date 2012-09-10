@@ -63,6 +63,8 @@ FS ext4::get_filesystem_support()
 		}
 	}
 
+	fs .online_read = FS::GPARTED ;
+
 	return fs ;
 }
 

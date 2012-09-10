@@ -98,6 +98,8 @@ FS btrfs::get_filesystem_support()
 		fs .move = GParted::FS::GPARTED ;
 	}
 
+	fs .online_read = FS::GPARTED ;
+
 	fs .MIN = 256 * MEBIBYTE ;
 
 	//Linux before version 3.2 fails when resizing btrfs file system

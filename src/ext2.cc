@@ -58,7 +58,9 @@ FS ext2::get_filesystem_support()
 		fs .copy = FS::GPARTED ;
 		fs .move = FS::GPARTED ;
 	}
-	
+
+	fs .online_read = FS::GPARTED ;
+
 	return fs ;
 }
 

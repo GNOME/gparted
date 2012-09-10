@@ -30,7 +30,8 @@ FS ufs::get_filesystem_support()
 	
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
-	
+	fs .online_read = FS::GPARTED ;
+
 	return fs ;
 }
 

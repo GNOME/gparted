@@ -118,7 +118,7 @@ struct FS
 	};
 
 	FILESYSTEM filesystem ;
-	Support read ; //can we get the amount of used sectors?
+	Support read ;  //Can and how to read sector usage while inactive
 	Support read_label ;
 	Support write_label ;
 	Support read_uuid ;
@@ -130,6 +130,7 @@ struct FS
 	Support check ; //some checktool available?
 	Support copy ;
 	Support remove ;
+	Support online_read ;  //Can and how to read sector usage while active
 
 	Byte_Value MIN ; 
 	Byte_Value MAX ;
@@ -137,7 +138,7 @@ struct FS
 	FS()
 	{
 		read = read_label = write_label = read_uuid = write_uuid = create = grow = shrink =
-		move = check = copy = remove = NONE ;
+		move = check = copy = remove = online_read = NONE ;
 		MIN = MAX = 0 ;
 	} 
 } ;

@@ -102,7 +102,9 @@ FS ntfs::get_filesystem_support()
 
 	if ( fs .check )
 		fs .move = GParted::FS::GPARTED ;
-	
+
+	fs .online_read = FS::GPARTED ;
+
 	return fs ;
 }
 

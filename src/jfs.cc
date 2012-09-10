@@ -60,7 +60,9 @@ FS jfs::get_filesystem_support()
 		fs .move = GParted::FS::GPARTED ;
 		fs .copy = GParted::FS::GPARTED ;
 	}
-	
+
+	fs .online_read = FS::GPARTED ;
+
 	fs .MIN = 16 * MEBIBYTE ;
 	
 	return fs ;

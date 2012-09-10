@@ -44,7 +44,8 @@ FS hfs::get_filesystem_support()
 
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
-	
+	fs .online_read = FS::GPARTED ;
+
 	fs .MAX = 2048 * MEBIBYTE ;
 	
 	return fs ;

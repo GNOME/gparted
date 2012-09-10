@@ -60,6 +60,7 @@ FS lvm2_pv::get_filesystem_support()
 		fs .move   = FS::GPARTED ;
 		fs .check  = FS::EXTERNAL ;
 		fs .remove = FS::EXTERNAL ;
+		fs .online_read = FS::EXTERNAL ;
 	}
 
 	return fs ;
