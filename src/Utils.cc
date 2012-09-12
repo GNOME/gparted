@@ -24,6 +24,8 @@
 #include <glibmm/regex.h>
 #include <locale.h>
 #include <uuid/uuid.h>
+#include <cerrno>
+#include <sys/statvfs.h>
 
 
 namespace GParted
@@ -604,6 +606,26 @@ Glib::ustring Utils::generate_uuid(void)
 	uuid_unparse(uuid,uuid_str);
 
 	return uuid_str;
+}
+
+//Wrapper around statvfs() system call to get mounted file system size
+//  and free space, both in bytes.
+int Utils::get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
+                                         Byte_Value & fs_size, Byte_Value & fs_free,
+                                         Glib::ustring error_message )
+{
+	struct statvfs sfs ;
+	int ret ;
+	ret = statvfs( mountpoint .c_str(), &sfs ) ;
+	if ( ret == 0 )
+	{
+		fs_size = static_cast<Byte_Value>( sfs .f_blocks ) * sfs .f_frsize ;
+		fs_free = static_cast<Byte_Value>( sfs .f_bfree ) * sfs .f_bsize ;
+	}
+	else
+		error_message = "statvfs (" + mountpoint + "): " + Glib::strerror( errno ) ;
+
+	return ret ;
 }
 
 //private functions ...

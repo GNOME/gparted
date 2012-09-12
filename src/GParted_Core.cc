@@ -52,7 +52,6 @@
 #include <set>
 #include <cerrno>
 #include <cstring>
-#include <sys/statvfs.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -1597,19 +1596,17 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 
 void GParted_Core::mounted_set_used_sectors( Partition & partition )
 {
-	struct statvfs sfs ;
-
 	if ( partition .get_mountpoints() .size() > 0 )
 	{
-		if ( statvfs( partition .get_mountpoint() .c_str(), &sfs ) == 0 )
-		{
-			Sector fs_size = static_cast<Sector>( sfs .f_blocks ) * sfs .f_frsize / partition .sector_size ;
-			Sector fs_free = static_cast<Sector>( sfs .f_bfree ) * sfs .f_bsize / partition .sector_size ;
-			partition .set_sector_usage( fs_size, fs_free ) ;
-		}
+		Byte_Value fs_size ;
+		Byte_Value fs_free ;
+		Glib::ustring error_message ;
+		if ( Utils::get_mounted_filesystem_usage( partition .get_mountpoint(),
+		                                          fs_size, fs_free, error_message ) == 0 )
+			partition .set_sector_usage( fs_size / partition .sector_size,
+			                             fs_free / partition .sector_size ) ;
 		else
-			partition .messages .push_back( "statvfs (" + partition .get_mountpoint() + "): " +
-			                                Glib::strerror( errno ) ) ;
+			partition .messages .push_back( error_message ) ;
 	}
 }
 

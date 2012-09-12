@@ -188,6 +188,9 @@ public:
 	                   const Glib::ustring& delimiters     ) ;
 	static int convert_to_int(const Glib::ustring & src);
 	static Glib::ustring generate_uuid(void);
+	static int get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
+	                                         Byte_Value & fs_size, Byte_Value & fs_free,
+	                                         Glib::ustring error_message ) ;
 
 private:
 	static bool get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver ) ;

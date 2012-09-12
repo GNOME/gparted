@@ -63,13 +63,18 @@ FS ext4::get_filesystem_support()
 		}
 	}
 
-	fs .online_read = FS::GPARTED ;
+	fs .online_read = FS::EXTERNAL ;
 
 	return fs ;
 }
 
 void ext4::set_used_sectors( Partition & partition ) 
 {
+	//Called when file system is unmounted *and* when mounted.  Always read
+	//  the file system size from the on disk superblock using dumpe2fs to
+	//  avoid overhead subtraction.  Read the free space from the kernel via
+	//  the statvfs() system call when mounted and from the superblock when
+	//  unmounted.
 	if ( ! Utils::execute_command( "dumpe2fs -h " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "Block count:" ) ;
@@ -77,22 +82,40 @@ void ext4::set_used_sectors( Partition & partition )
 		     sscanf( output.substr( index ) .c_str(), "Block count: %Ld", &T ) != 1 )
 			T = -1 ;
 
-		index = output .find( "Free blocks:" ) ;
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ) .c_str(), "Free blocks: %Ld", &N ) != 1 )   
-			N = -1 ;
-	
 		index = output .find( "Block size:" ) ;
 		if ( index >= output.length() || 
 		     sscanf( output.substr( index ) .c_str(), "Block size: %Ld", &S ) != 1 )  
 			S = -1 ;
 
-		if ( T > -1 && N > -1 && S > -1 )
-		{
+		if ( T > -1 && S > -1 )
 			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
-			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
-			partition .set_sector_usage( T, N ) ;
+
+		if ( partition .busy )
+		{
+			Byte_Value ignored ;
+			Byte_Value fs_free ;
+			if ( Utils::get_mounted_filesystem_usage( partition .get_mountpoint(),
+			                                          ignored, fs_free, error ) == 0 )
+				N = Utils::round( fs_free / double(partition .sector_size) ) ;
+			else
+			{
+				N = -1 ;
+				partition .messages .push_back( error ) ;
+			}
 		}
+		else
+		{
+			index = output .find( "Free blocks:" ) ;
+			if ( index >= output .length() ||
+			     sscanf( output.substr( index ) .c_str(), "Free blocks: %Ld", &N ) != 1 )
+				N = -1 ;
+
+			if ( N > -1 && S > -1 )
+				N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+		}
+
+		if ( T > -1 && N > -1 )
+			partition .set_sector_usage( T, N ) ;
 	}
 	else
 	{
