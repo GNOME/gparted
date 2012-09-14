@@ -19,8 +19,6 @@
  
 #include "../include/jfs.h"
 
-#include <cerrno>
-
 namespace GParted
 {
 

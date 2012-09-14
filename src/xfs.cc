@@ -19,8 +19,6 @@
  
 #include "../include/xfs.h"
 
-#include <cerrno>
-
 namespace GParted
 {
 
