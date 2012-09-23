@@ -31,12 +31,12 @@ FS jfs::get_filesystem_support()
 		
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() ) {
 		fs .read = GParted::FS::EXTERNAL ;
-		fs .read_uuid = GParted::FS::EXTERNAL ;
 	}
 	
 	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
+		fs .read_uuid = FS::EXTERNAL ;
 		fs .write_uuid = FS::EXTERNAL ;
 	}
 
@@ -128,9 +128,9 @@ bool jfs::write_label( const Partition & partition, OperationDetail & operationd
 
 void jfs::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "echo su | jfs_debugfs " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "s_uuid:[[:blank:]]*([^[:space:]]+)" ) ;
+		partition .uuid = Utils::regexp_label( output, "^File system UUID:[[:blank:]]*([^[:space:]]+)" ) ;
 		if ( partition .uuid == "00000000-0000-0000-0000-000000000000" )
 			partition .uuid .clear() ;
 	}
