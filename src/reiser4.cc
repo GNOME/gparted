@@ -30,12 +30,10 @@ FS reiser4::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
 	{
 		fs .read = GParted::FS::EXTERNAL ;
+		fs .read_label = FS::EXTERNAL ;
 		fs .read_uuid = GParted::FS::EXTERNAL ;
 	}
-	
-	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
-		fs .read_label = FS::EXTERNAL ;
-	
+
 	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -94,9 +92,9 @@ void reiser4::set_used_sectors( Partition & partition )
 
 void reiser4::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
+		partition .label = Utils::regexp_label( output, "^label:[[:blank:]]*(.*)$" ) ;
 	}
 	else
 	{
