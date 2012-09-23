@@ -130,9 +130,7 @@ void nilfs2::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*([^[:space:]]*)" ) ;
-		if (partition .uuid == "00000000-0000-0000-0000-000000000000")
-			partition .uuid .clear() ;
+		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{

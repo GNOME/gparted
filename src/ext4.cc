@@ -127,9 +127,7 @@ void ext4::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "tune2fs -l " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*([^[:space:]]*)" ) ;
-		if (partition .uuid == "<none>")
-			partition .uuid .clear() ;
+		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{

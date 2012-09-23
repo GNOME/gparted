@@ -145,9 +145,7 @@ void xfs::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "xfs_admin -u " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "^UUID[[:blank:]]*=[[:blank:]]*([^[:space:]]*)" ) ;
-		if (partition .uuid == "00000000-0000-0000-0000-000000000000")
-			partition .uuid .clear() ;
+		partition .uuid = Utils::regexp_label( output, "^UUID[[:blank:]]*=[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{

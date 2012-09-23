@@ -95,7 +95,7 @@ void linux_swap::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*([^[:space:]]*)" ) ;
+		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{

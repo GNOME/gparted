@@ -117,7 +117,7 @@ void reiser4::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*([^[:space:]]*)" ) ;
+		partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{

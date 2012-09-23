@@ -130,9 +130,7 @@ void jfs::read_uuid( Partition & partition )
 {
 	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
 	{
-		partition .uuid = Utils::regexp_label( output, "^File system UUID:[[:blank:]]*([^[:space:]]+)" ) ;
-		if ( partition .uuid == "00000000-0000-0000-0000-000000000000" )
-			partition .uuid .clear() ;
+		partition .uuid = Utils::regexp_label( output, "^File system UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
 	else
 	{
