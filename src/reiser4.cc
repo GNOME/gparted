@@ -96,7 +96,7 @@ void reiser4::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "^label:[[:blank:]]*(.*)$" ) ;
+		partition .set_label( Utils::regexp_label( output, "^label:[[:blank:]]*(.*)$" ) ) ;
 	}
 	else
 	{
@@ -136,7 +136,7 @@ bool reiser4::write_uuid( const Partition & partition, OperationDetail & operati
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ; 
+	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool reiser4::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

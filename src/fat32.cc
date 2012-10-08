@@ -150,7 +150,7 @@ void fat32::read_label( Partition & partition )
 
 	if ( ! Utils::execute_command( cmd, output, error, true ) )
 	{
-		partition .label = Utils::trim( Utils::regexp_label( output, "Volume label is ([^(]*)" ) ) ;
+		partition .set_label( Utils::trim( Utils::regexp_label( output, "Volume label is ([^(]*)" ) ) ) ;
 	}
 	else
 	{
@@ -174,10 +174,11 @@ bool fat32::write_label( const Partition & partition, OperationDetail & operatio
 	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
 
 	Glib::ustring cmd = "" ;
-	if( partition .label .empty() )
+	if ( partition .get_label() .empty() )
 		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -c %2:", fname, dletter ) ;
 	else
-		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel %2:\"%3\"", fname, dletter, Utils::fat_compliant_label( partition .label ) ) ;
+		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel %2:\"%3\"",
+		                        fname, dletter, Utils::fat_compliant_label( partition .get_label() ) ) ;
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 	
 	int exit_status = Utils::execute_command( cmd, output, error ) ;
@@ -255,7 +256,8 @@ bool fat32::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat32::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F32 -v -n \"" + Utils::fat_compliant_label( new_partition .label ) + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkdosfs -F32 -v -n \"" + Utils::fat_compliant_label( new_partition .get_label() ) +
+	                          "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool fat32::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

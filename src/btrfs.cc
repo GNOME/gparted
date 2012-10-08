@@ -111,7 +111,7 @@ FS btrfs::get_filesystem_support()
 
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return (! execute_command( "mkfs.btrfs -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) );
+	return (! execute_command( "mkfs.btrfs -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) );
 }
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -163,7 +163,7 @@ void btrfs::set_used_sectors( Partition & partition )
 
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
 }
 
 bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
@@ -250,11 +250,13 @@ void btrfs::read_label( Partition & partition )
 		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
 		if ( ! exit_status )
 		{
-			partition .label = Utils::regexp_label( output, "^Label: '(.*)'  uuid:" );
+			partition .set_label( Utils::regexp_label( output, "^Label: '(.*)'  uuid:" ) ) ;
 			//Btrfs filesystem show encloses the label in single
 			//  quotes or reports "none" without single quotes, so
-			//  the cases are disginguishable and this regexp won't
-			//  match the no label case.
+			//  the cases are distinguishable and this regexp won't
+			//  match the no label case.  In the no match case
+			//  regexp_label() returns "" and this is used to set
+			//  the set the blank label.
 		}
 	}
 	else
@@ -267,7 +269,9 @@ void btrfs::read_label( Partition & partition )
 			//  this is indistinguishable from the label actually
 			//  being "none".  Assume no label case.
 			if ( label != "none" )
-				partition .label = label ;
+				partition .set_label( label ) ;
+			else
+				partition .set_label( "" ) ;
 		}
 	}
 	if ( exit_status )

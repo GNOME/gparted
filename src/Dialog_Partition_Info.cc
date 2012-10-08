@@ -387,7 +387,7 @@ void Dialog_Partition_Info::Display_Info()
 				0, 1,
 				top, bottom,
 				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .label, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( partition .get_label(), true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
 				1, 2,
 				top++, bottom++,
 				Gtk::FILL) ;

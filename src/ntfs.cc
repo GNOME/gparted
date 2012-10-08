@@ -144,7 +144,7 @@ void ntfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "ntfslabel --force " + partition .get_path(), output, error, false ) )
 	{
-		partition .label = Utils::trim( output ) ;
+		partition .set_label( Utils::trim( output ) ) ;
 	}
 	else
 	{
@@ -158,7 +158,7 @@ void ntfs::read_label( Partition & partition )
 
 bool ntfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfslabel --force " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+	return ! execute_command( "ntfslabel --force " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
 }
 
 void ntfs::read_uuid( Partition & partition )
@@ -177,7 +177,7 @@ bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

@@ -102,6 +102,9 @@ public:
 	std::vector<Glib::ustring> get_mountpoints() const ;
 	Sector get_sector() const ;
 	bool test_overlap( const Partition & partition ) const ;
+	bool label_known() const ;
+	Glib::ustring get_label() const ;
+	void set_label( const Glib::ustring & label ) ;
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
@@ -113,7 +116,6 @@ public:
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
 	FILESYSTEM filesystem ;
-	Glib::ustring label ;
 	Glib::ustring uuid ;
 	Sector sector_start;
 	Sector sector_end;
@@ -144,6 +146,8 @@ private:
 	
 	std::vector<Glib::ustring> paths ;
 	std::vector<Glib::ustring> mountpoints ;
+	bool have_label ;
+	Glib::ustring label ;
 };
 
 }//GParted

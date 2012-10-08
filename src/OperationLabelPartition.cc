@@ -54,14 +54,14 @@ void OperationLabelPartition::apply_to_visual( std::vector<Partition> & partitio
 
 void OperationLabelPartition::create_description() 
 {
-	if( partition_new .label .empty() ) {
+	if( partition_new .get_label() .empty() ) {
 		/*TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3 */
 		description = String::ucompose( _("Clear Partition Label on %1"),
 						partition_new .get_path() ) ;
 	} else {
 		/*TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3 */
 		description = String::ucompose( _("Set Partition Label \"%1\" on %2"),
-					 	partition_new .label,
+						partition_new .get_label(),
 						partition_new .get_path() ) ;
 	}
 }

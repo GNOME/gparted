@@ -132,7 +132,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	entry .set_max_length( 30 );
 	entry .set_width_chars( 20 );
 	entry .set_activates_default( true );
-	entry .set_text( partition.label );
+	entry .set_text( partition .get_label() );
 	entry .select_region( 0, entry .get_text_length() );
 	//Add entry box to table
 	table_create .attach( entry, 1, 2, 3, 4, Gtk::FILL ) ;
@@ -201,7 +201,7 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 			selected_partition .inside_extended, false ) ;
 
 	//Retrieve Label info
-	part_temp .label = Utils::trim( entry .get_text() );
+	part_temp .set_label( Utils::trim( entry .get_text() ) ) ;
 	
 	//grow new partition a bit if freespaces are < 1 MiB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBIBYTE / sector_size) ) 

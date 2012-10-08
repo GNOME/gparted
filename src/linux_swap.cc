@@ -74,7 +74,7 @@ void linux_swap::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
+		partition .set_label( Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ) ;
 	}
 	else
 	{
@@ -88,7 +88,7 @@ void linux_swap::read_label( Partition & partition )
 
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -L \"" + partition .label + "\" " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "swaplabel -L \"" + partition .get_label() + "\" " + partition .get_path(), operationdetail ) ;
 }
 
 void linux_swap::read_uuid( Partition & partition )
@@ -115,7 +115,7 @@ bool linux_swap::write_uuid( const Partition & partition, OperationDetail & oper
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkswap -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkswap -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -125,7 +125,7 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
 
 	//Maintain label and uuid when recreating swap
-	Glib::ustring command = "mkswap -L \"" + partition_new .label + "\" " ;
+	Glib::ustring command = "mkswap -L \"" + partition_new .get_label() + "\" " ;
 	if ( ! partition_new .uuid .empty() )
 		command +=  " -U \"" + partition_new .uuid + "\" " ;
 	command += partition_new .get_path() ;

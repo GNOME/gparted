@@ -759,7 +759,7 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 	          operations[ first ]->partition_new == operations[ second ]->partition_original
 	        )
 	{
-		operations[ first ]->partition_new.label = operations[ second ]->partition_new.label;
+		operations[ first ]->partition_new.set_label( operations[ second ]->partition_new .get_label() ) ;
 		operations[ first ]->create_description() ;
 		remove_operation( second );
 
@@ -1673,7 +1673,7 @@ void Win_GParted::activate_paste()
 		Partition partition_new = selected_partition ;
 		partition_new .alignment = ALIGN_STRICT ;
 		partition_new .filesystem = copied_partition .filesystem ;
-		partition_new .label = copied_partition .label ;
+		partition_new .set_label( copied_partition .get_label() ) ;
 		partition_new .uuid = copied_partition .uuid ;
 		partition_new .color = copied_partition .color ;
 		Sector new_size = partition_new .get_sector_length() ;
@@ -2462,13 +2462,13 @@ void Win_GParted::activate_label_partition()
 	dialog .set_transient_for( *this );
 
 	if (	( dialog .run() == Gtk::RESPONSE_OK )
-		&&	( dialog .get_new_label() != selected_partition .label ) ) 
+	     && ( dialog .get_new_label() != selected_partition .get_label() ) )
 	{
 		dialog .hide() ;
 		//Make a duplicate of the selected partition (used in UNDO)
 		Partition part_temp = selected_partition ;
 
-		part_temp .label = dialog .get_new_label();
+		part_temp .set_label( dialog .get_new_label() ) ;
 
 		Operation * operation = new OperationLabelPartition( devices[ current_device ],
 									selected_partition, part_temp ) ;

@@ -1091,10 +1091,12 @@ void GParted_Core::set_device_partitions( Device & device )
 			//  Use file system specific method first in an effort to ensure multi-byte
 			//  character sets are properly displayed.
 			read_label( partition_temp ) ;
-			if ( partition_temp .label .empty() )
+			if ( ! partition_temp .label_known() )
 			{
 				bool label_found = false ;
-				partition_temp .label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
+				Glib::ustring label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
+				if ( label_found )
+					partition_temp .set_label( label ) ;
 			}
 
 			//Retrieve file system UUID
@@ -1883,7 +1885,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::label_partition( const Partition & partition, OperationDetail & operationdetail )	
 {
-	if( partition .label .empty() ) {
+	if( partition .get_label() .empty() ) {
 		operationdetail .add_child( OperationDetail( String::ucompose(
 														_("Clear partition label on %1"),
 														partition .get_path()
@@ -1891,7 +1893,7 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 	} else {
 		operationdetail .add_child( OperationDetail( String::ucompose(
 														_("Set partition label to \"%1\" on %2"),
-														partition .label, partition .get_path()
+														partition .get_label(), partition .get_path()
 													 ) ) ) ;
 	}
 

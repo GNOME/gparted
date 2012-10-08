@@ -41,7 +41,7 @@ void Partition::Reset()
 	type = GParted::TYPE_UNALLOCATED ;
 	alignment = ALIGN_STRICT ;
 	filesystem = GParted::FS_UNALLOCATED ;
-	label .clear() ;
+	have_label = false ;
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	sectors_unallocated = 0 ;
@@ -247,6 +247,25 @@ Glib::ustring Partition::get_path() const
 std::vector<Glib::ustring> Partition::get_paths() const
 {
 	return paths ;
+}
+
+bool Partition::label_known() const
+{
+	return have_label ;
+}
+
+//Return the label or "" if label is unknown.
+Glib::ustring Partition::get_label() const
+{
+	if ( have_label )
+		return label ;
+	return "" ;
+}
+
+void Partition::set_label( const Glib::ustring & label )
+{
+	this ->label = label ;
+	have_label = true ;
 }
 
 bool Partition::operator==( const Partition & partition ) const

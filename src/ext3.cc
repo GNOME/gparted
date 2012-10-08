@@ -128,7 +128,7 @@ void ext3::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::trim( output ) ;
+		partition .set_label( Utils::trim( output ) ) ;
 	}
 	else
 	{
@@ -142,7 +142,7 @@ void ext3::read_label( Partition & partition )
 
 bool ext3::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .label + "\"", operationdetail ) ;
+	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
 }
 
 void ext3::read_uuid( Partition & partition )
@@ -168,7 +168,7 @@ bool ext3::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext3::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext3 -L \"" + new_partition .label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.ext3 -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool ext3::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

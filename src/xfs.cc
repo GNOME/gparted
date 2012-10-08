@@ -119,7 +119,7 @@ void xfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + partition .get_path(), output, error, true ) )
 	{
-		partition .label = Utils::regexp_label( output, "^label = \"(.*)\"" ) ;
+		partition .set_label( Utils::regexp_label( output, "^label = \"(.*)\"" ) ) ;
 	}
 	else
 	{
@@ -134,10 +134,10 @@ void xfs::read_label( Partition & partition )
 bool xfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "" ;
-	if( partition .label .empty() )
+	if( partition .get_label() .empty() )
 		cmd = String::ucompose( "xfs_admin -L -- %1", partition .get_path() ) ;
 	else
-		cmd = String::ucompose( "xfs_admin -L \"%1\" %2", partition .label, partition .get_path() ) ;
+		cmd = String::ucompose( "xfs_admin -L \"%1\" %2", partition .get_label(), partition .get_path() ) ;
 	return ! execute_command( cmd, operationdetail ) ;
 }
 
@@ -165,7 +165,7 @@ bool xfs::write_uuid( const Partition & partition, OperationDetail & operationde
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	//mkfs.xfs will not create file system if label is longer than 12 characters, hence truncation.
-	Glib::ustring label = new_partition .label ;
+	Glib::ustring label = new_partition .get_label() ;
 	if( label .length() > 12 )
 		label = label.substr( 0, 12 ) ;
 	return ! execute_command( "mkfs.xfs -f -L \"" + label + "\" " + new_partition .get_path(), operationdetail ) ;
