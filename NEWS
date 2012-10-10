@@ -1,4 +1,53 @@
 ============================
+GParted 0.14.0  (2012-10-10)
+============================
+
+Release Notes
+-------------
+  The big news with this release of GParted is the ability to move,
+  resize, check, create, and delete physical volumes under Logical
+  Volume Management (lvm2 pv).  Also included are bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Add LVM PV read-write support
+  * Fix crash when pressing Esc in dialogs with number entry
+
+Bug Fixes
+---------
+  * Add LVM PV read-write support (#670171)
+    - Thanks to Mike Fleetwood for this 20 piece patch set
+  * Fix crash when pressing Esc in dialogs with number entry (#682658)
+    - Ubuntu launchpad #375095
+    - Thanks to Mike Fleetwood for this small patch
+  * Ignore invalid reiserfs UUIDs (#684115) which includes:
+    - Switch to using debugreiserfs to read the UUID
+    - Switch to using jfs_tune to read the UUID
+    - Update file system specific validation of RFC 4122 UUIDs for
+      btrfs, ext2, ext3, ext4, jfs, linux_swap, nilfs2, reiser4,
+      reiserfs, and xfs.
+    - Switch to using debugfs.reiser4 to read the label
+    - Thanks to Mike Fleetwood for this patch set
+ * Fix mounted file system size and usage determination for ext2/3/4 (#683255)
+    - Thanks to Mike Fleetwood for this patch set
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), es(Daniel Mustieles), fr(Claude Paroz),
+  gl(Fran Diéguez, Leandro Regueiro), hu(Gabor Kelemen),
+  id(Andika Triwidada), it(Milo Casagrande), ko(Seong-ho Cho),
+  lt(Aurimas Černius), ml(Ani Peter), pl(Piotr Drąg), pt_BR(Djavan Fagundes),
+  sl(Matej Urbančič), sr(Мирослав Николић), sr@latin(Мирослав Николић),
+  th(Akom Chotiphantawanon), uk(Daniel Korostil), zh_HK(Chao-Hsiung Liao),
+  zh_TW(Chao-Hsiung Liao)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.13.1  (2012-08-08)
 ============================
 
