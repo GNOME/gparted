@@ -50,11 +50,9 @@ FS linux_swap::get_filesystem_support()
 		fs .shrink = GParted::FS::EXTERNAL ;
 	}
 
-	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
-		fs .read_label = FS::EXTERNAL ;
-
 	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
 	{
+		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
 		fs .write_uuid = FS::EXTERNAL ;
@@ -72,9 +70,9 @@ void linux_swap::set_used_sectors( Partition & partition )
 
 void linux_swap::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
 	{
-		partition .set_label( Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ) ;
+		partition .set_label( Utils::regexp_label( output, "^LABEL:[[:blank:]]*(.*)$" ) ) ;
 	}
 	else
 	{
