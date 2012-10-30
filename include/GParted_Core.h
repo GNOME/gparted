@@ -73,8 +73,8 @@ private:
 		const Glib::ustring & filename,
 		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
-	void set_device_partitions( Device & device ) ;
-	GParted::FILESYSTEM get_filesystem() ; 
+	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
+	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device ) ;
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
@@ -84,10 +84,10 @@ private:
 				 Byte_Value sector_size,
 				 bool inside_extended ) ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
-	void set_used_sectors( std::vector<Partition> & partitions ) ;
+	void set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk ) ;
 	void mounted_set_used_sectors( Partition & partition ) ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE
-	void LP_set_used_sectors( Partition & partition );
+	void LP_set_used_sectors( Partition & partition, PedDisk* lp_disk ) ;
 #endif
 	void set_flags( Partition & partition ) ;
 	
@@ -198,12 +198,13 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
-	bool open_device( const Glib::ustring & device_path ) ;
-	bool open_device_and_disk( const Glib::ustring & device_path, bool strict = true ) ;
-	void close_disk() ;
-	void close_device_and_disk() ;
-	bool commit() ;
-	bool commit_to_os( std::time_t timeout ) ;
+	PedDevice* open_device( const Glib::ustring & device_path ) ;
+	bool open_device_and_disk( const Glib::ustring & device_path,
+	                           PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true ) ;
+	void close_disk( PedDisk*& lp_disk ) ;
+	void close_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
+	bool commit( PedDisk* lp_disk ) ;
+	bool commit_to_os( PedDisk* lp_disk, std::time_t timeout ) ;
 	void settle_device( std::time_t timeout ) ;
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
@@ -224,8 +225,6 @@ private:
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 	
-	PedDevice *lp_device ;
-	PedDisk *lp_disk ;
 	PedPartition *lp_partition ;
 	
 	char * buf ;

@@ -66,8 +66,6 @@ namespace GParted
 
 GParted_Core::GParted_Core() 
 {
-	lp_device = NULL ;
-	lp_disk = NULL ;
 	lp_partition = NULL ;
 	p_filesystem = NULL ;
 	thread_status_message = "" ;
@@ -205,7 +203,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			ped_device_probe_all();
 		}
 
-		lp_device = ped_device_get_next( NULL );
+		PedDevice* lp_device = ped_device_get_next( NULL ) ;
 		while ( lp_device ) 
 		{
 			//only add this device if we can read the first sector (which means it's a real device)
@@ -242,7 +240,8 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			}
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
-		close_device_and_disk() ;
+		PedDisk* lp_disk = NULL ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
@@ -267,7 +266,9 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
 		set_thread_status_message( String::ucompose ( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
-		if ( open_device_and_disk( device_paths[ t ], false ) )
+		PedDevice* lp_device = NULL ;
+		PedDisk* lp_disk = NULL ;
+		if ( open_device_and_disk( device_paths[ t ], lp_device, lp_disk, false ) )
 		{
 			temp_device .Reset() ;
 
@@ -293,13 +294,13 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 				
-				set_device_partitions( temp_device ) ;
+				set_device_partitions( temp_device, lp_device, lp_disk ) ;
 				set_mountpoints( temp_device .partitions ) ;
-				set_used_sectors( temp_device .partitions ) ;
+				set_used_sectors( temp_device .partitions, lp_disk ) ;
 			
 				if ( temp_device .highest_busy )
 				{
-					temp_device .readonly = ! commit_to_os( 1 ) ;
+					temp_device .readonly = ! commit_to_os( lp_disk, 1 ) ;
 					//Clear libparted messages.  Typically these are:
 					//  The kernel was unable to re-read the partition table...
 					libparted_messages .clear() ;
@@ -332,7 +333,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 					
 			devices .push_back( temp_device ) ;
 			
-			close_device_and_disk() ;
+			close_device_and_disk( lp_device, lp_disk) ;
 		}
 	}
 
@@ -716,7 +717,9 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 {
 	bool return_value = false ;
 	
-	if ( open_device_and_disk( device_path, false ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( device_path, lp_device, lp_disk, false ) )
 	{
 		PedDiskType *type = NULL ;
 		type = ped_disk_type_get( disklabel .c_str() ) ;
@@ -725,10 +728,10 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 		{
 			lp_disk = ped_disk_new_fresh( lp_device, type );
 		
-			return_value = commit() ;
+			return_value = commit( lp_disk ) ;
 		}
 		
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 #ifndef USE_LIBPARTED_DMRAID
@@ -747,8 +750,9 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
 {
 	bool succes = false ;
-
-	if ( open_device_and_disk( partition .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		lp_partition = NULL ;
 		if ( partition .type == GParted::TYPE_EXTENDED )
@@ -761,10 +765,10 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
 
 			if ( lp_flag > 0 && ped_partition_set_flag( lp_partition, lp_flag, state ) )
-				succes = commit() ;
+				succes = commit( lp_disk ) ;
 		}
 	
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	return succes ;
@@ -826,7 +830,9 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 {
 	std::map<Glib::ustring, bool> flag_info ;
 
-	if ( open_device_and_disk( partition .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		lp_partition = NULL ;
 		if ( partition .type == GParted::TYPE_EXTENDED )
@@ -842,7 +848,7 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 						ped_partition_get_flag( lp_partition, flags[ t ] ) ;
 		}
 	
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	return flag_info ;
@@ -972,7 +978,11 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 	return partition_path ;
 }
 
-void GParted_Core::set_device_partitions( Device & device ) 
+/**
+ * Fills the device.partitions member of device by scanning
+ * all partitions
+ */
+void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk )
 {
 	int EXT_INDEX = -1 ;
 	Proc_Partitions_Info pp_info ; //Use cache of proc partitions information
@@ -1000,7 +1010,7 @@ void GParted_Core::set_device_partitions( Device & device )
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = get_filesystem() ;
+				filesystem = get_filesystem( lp_device ) ;
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1136,7 +1146,7 @@ void GParted_Core::set_device_partitions( Device & device )
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem() 
+GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device )
 {
 	char magic1[16] = "";
 	char magic2[16] = "";
@@ -1495,7 +1505,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 	}
 }
 	
-void GParted_Core::set_used_sectors( std::vector<Partition> & partitions ) 
+void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -1533,7 +1543,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 							break ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 						case GParted::FS::LIBPARTED	:
-							LP_set_used_sectors( partitions[ t ] ) ;
+							LP_set_used_sectors( partitions[ t ], lp_disk ) ;
 							break ;
 #endif
 
@@ -1591,7 +1601,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions )
 				}
 			}
 			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-				set_used_sectors( partitions[ t ] .logicals ) ;
+				set_used_sectors( partitions[ t ] .logicals, lp_disk ) ;
 		}
 	}
 }
@@ -1613,7 +1623,7 @@ void GParted_Core::mounted_set_used_sectors( Partition & partition )
 }
 
 #ifdef HAVE_LIBPARTED_FS_RESIZE
-void GParted_Core::LP_set_used_sectors( Partition & partition )
+void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
 	PedFileSystem *fs = NULL;
 	PedConstraint *constraint = NULL;
@@ -1675,8 +1685,9 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	operationdetail .add_child( OperationDetail( _("create empty partition") ) ) ;
 	
 	new_partition .partition_number = 0 ;
-		
-	if ( open_device_and_disk( new_partition .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( new_partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartitionType type;
 		lp_partition = NULL ;
@@ -1732,7 +1743,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 				   )
 					constraint ->min_size = min_size ;
 		
-				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit() )
+				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit( lp_disk ) )
 				{
 					Glib::ustring partition_path = get_partition_path( lp_partition ) ;
 					new_partition .add_path( partition_path, true ) ;
@@ -1756,7 +1767,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 			}
 		}
 				
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	bool succes = new_partition .partition_number > 0
@@ -1824,16 +1835,18 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 	operationdetail .add_child( OperationDetail( _("delete partition") ) ) ;
 
 	bool succes = false ;
-	if ( open_device_and_disk( partition .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		if ( partition .type == TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
-		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit() ;
+		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( lp_disk ) ;
 	
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 #ifndef USE_LIBPARTED_DMRAID
@@ -1841,8 +1854,10 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 	DMRaid dmraid ;
 	if ( succes && dmraid .is_dmraid_device( partition .device_path ) )
 	{
+		PedDevice* lp_device = NULL ;
+		PedDisk* lp_disk = NULL ;
 		//Open disk handle before and close after to prevent application crash.
-		if ( open_device_and_disk( partition .device_path ) )
+		if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 		{
 			if ( ! dmraid .delete_affected_dev_map_entries( partition, operationdetail .get_last_child() ) )
 				succes = false ;	//comand failed
@@ -1850,7 +1865,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 			if ( ! dmraid .create_dev_map_entries( partition, operationdetail .get_last_child() ) )
 				succes = false ;	//command failed
 
-			close_device_and_disk() ;
+			close_device_and_disk( lp_device, lp_disk ) ;
 		}
 	}
 #endif
@@ -2164,7 +2179,9 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	operationdetail .add_child( OperationDetail( _("using libparted"), STATUS_NONE ) ) ;
 
 	bool return_value = false ;
-	if ( open_device_and_disk( partition_old .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
 		PedFileSystem *	fs = NULL ;
 		PedGeometry * lp_geom = NULL ;	
@@ -2182,13 +2199,13 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 							    partition_new .sector_start,
 							    partition_new .get_sector_length() ) ;
 				if ( lp_geom )
-					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit() ;
+					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit( lp_disk ) ;
 
 				ped_file_system_close( fs );
 			}
 		}
 
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	return return_value ;
@@ -2338,7 +2355,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	//after going out of the 'if ( lp_partition)' scope. That's why we use some variables here.
 	Sector new_start = -1, new_end = -1 ;
 		
-	if ( open_device_and_disk( partition_old .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
@@ -2370,14 +2389,14 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					new_start = lp_partition ->geom .start ;
 					new_end = lp_partition ->geom .end ;
 
-					return_value = commit() ;
+					return_value = commit( lp_disk ) ;
 				}
 									
 				ped_constraint_destroy( constraint );
 			}
 		}
 		
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 	
 	if ( return_value )
@@ -2398,11 +2417,13 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		DMRaid dmraid ;
 		if ( return_value && dmraid .is_dmraid_device( partition_new .device_path ) )
 		{
+			PedDevice* lp_device = NULL ;
+			PedDisk* lp_disk = NULL ;
 			//Open disk handle before and close after to prevent application crash.
-			if ( open_device_and_disk( partition_new .device_path ) )
+			if ( open_device_and_disk( partition_new .device_path, lp_device, lp_disk ) )
 			{
 				return_value = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
-				close_device_and_disk() ;
+				close_device_and_disk( lp_device, lp_disk ) ;
 			}
 		}
 #endif
@@ -2828,7 +2849,9 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 	bool return_value = false ;
 	
-	if ( open_device_and_disk( partition .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		//Lookup libparted file system type using GParted's name, as most match
 		PedFileSystemType * fs_type = 
@@ -2854,7 +2877,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			if ( lp_partition                                                 &&
 			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 0 ) &&
 			     ped_partition_set_system( lp_partition, fs_type )            &&
-			     commit()                                                        )
+			     commit( lp_disk )                                               )
 			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail( String::ucompose( _("new partition type: %1"),
@@ -2871,7 +2894,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 			if ( lp_partition                                                 &&
 			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
-			     commit()                                                        )
+			     commit( lp_disk )                                               )
 			{
 				operationdetail .get_last_child() .add_child(
 					OperationDetail( String::ucompose( _("new partition flag: %1"),
@@ -2882,7 +2905,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			}
 		}
 
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -3106,7 +3129,9 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		operationdetail .add_child( OperationDetail( String::ucompose( _("calibrate %1"), partition .get_path() ) ) ) ;
 	
 		bool succes = false ;
-		if ( open_device_and_disk( partition .device_path ) )
+		PedDevice* lp_device = NULL ;
+		PedDisk* lp_disk = NULL ;
+		if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 		{	
 			if ( partition .type == GParted::TYPE_EXTENDED )
 				lp_partition = ped_disk_extended_partition( lp_disk ) ;
@@ -3133,7 +3158,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 				succes = true ;
 			}
 
-			close_device_and_disk() ;
+			close_device_and_disk( lp_device, lp_disk ) ;
 		}
 
 		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -3161,7 +3186,9 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		FONT_ITALIC ) ) ;
 	
 	bool succes = false ;
-	if ( open_device_and_disk( partition_old .device_path ) )
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
 		lp_partition = NULL ;
 
@@ -3196,7 +3223,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			}
 		}
 
-		close_device_and_disk() ;	
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	if ( succes ) 
@@ -3216,11 +3243,13 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 		DMRaid dmraid ;
 		if ( succes && dmraid .is_dmraid_device( partition_new .device_path ) )
 		{
+			PedDevice* lp_device = NULL ;
+			PedDisk* lp_disk = NULL ;
 			//Open disk handle before and close after to prevent application crash.
-			if ( open_device_and_disk( partition_new .device_path ) )
+			if ( open_device_and_disk( partition_new .device_path, lp_device, lp_disk ) )
 			{
 				succes = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
-				close_device_and_disk() ;
+				close_device_and_disk( lp_device, lp_disk ) ;
 			}
 		}
 #endif
@@ -3263,8 +3292,10 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition ) 
 {
 	bool return_value = false ;
-	
-	if ( open_device_and_disk( partition .device_path ) )
+
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
 		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
@@ -3281,7 +3312,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 			}
 		}
 		
-		close_device_and_disk() ;	
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	return return_value ;
@@ -3376,19 +3407,16 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	return true ;
 }
 	
-bool GParted_Core::open_device( const Glib::ustring & device_path )
+PedDevice* GParted_Core::open_device( const Glib::ustring & device_path )
 {
-	lp_device = ped_device_get( device_path .c_str() );
-	
-	return lp_device ;
+	return ped_device_get( device_path .c_str() ) ;
 }
 	
-bool GParted_Core::open_device_and_disk( const Glib::ustring & device_path, bool strict ) 
+bool GParted_Core::open_device_and_disk( const Glib::ustring & device_path,
+                                         PedDevice*& lp_device, PedDisk*& lp_disk, bool strict )
 {
-	lp_device = NULL ;
-	lp_disk = NULL ;
-
-	if ( open_device( device_path ) )
+	lp_device = open_device( device_path ) ;
+	if ( lp_device )
 	{
 		lp_disk = ped_disk_new( lp_device );
 	
@@ -3397,13 +3425,13 @@ bool GParted_Core::open_device_and_disk( const Glib::ustring & device_path, bool
 		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
 			return true ;
 		
-		close_device_and_disk() ;
+		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
 	return false ;
 }
 
-void GParted_Core::close_disk()
+void GParted_Core::close_disk( PedDisk*& lp_disk )
 {
 	if ( lp_disk )
 		ped_disk_destroy( lp_disk ) ;
@@ -3411,9 +3439,9 @@ void GParted_Core::close_disk()
 	lp_disk = NULL ;
 }
 
-void GParted_Core::close_device_and_disk()
+void GParted_Core::close_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk )
 {
-	close_disk() ;
+	close_disk( lp_disk ) ;
 
 	if ( lp_device )
 		ped_device_destroy( lp_device ) ;
@@ -3421,16 +3449,16 @@ void GParted_Core::close_device_and_disk()
 	lp_device = NULL ;
 }	
 
-bool GParted_Core::commit() 
+bool GParted_Core::commit( PedDisk* lp_disk )
 {
 	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
 	
-	succes = commit_to_os( 10 ) && succes ;
+	succes = commit_to_os( lp_disk, 10 ) && succes ;
 
 	return succes ;
 }
 
-bool GParted_Core::commit_to_os( std::time_t timeout ) 
+bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 {
 	bool succes ;
 #ifndef USE_LIBPARTED_DMRAID
