@@ -192,7 +192,7 @@ private:
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
-	bool set_proper_filesystem( const FILESYSTEM & filesystem ) ;
+	FileSystem* set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 #ifndef HAVE_LIBPARTED_3_0_0_PLUS
 	bool erase_filesystem_signatures( const Partition & partition ) ;
 #endif
@@ -212,7 +212,6 @@ private:
 
 	std::vector<FS> FILESYSTEMS ;
 	std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
-	FileSystem * p_filesystem ;
 	std::vector<PedPartitionFlag> flags;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
