@@ -240,8 +240,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 			}
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
-		PedDisk* lp_disk = NULL ;
-		close_device_and_disk( lp_device, lp_disk ) ;
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
