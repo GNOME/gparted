@@ -74,7 +74,7 @@ private:
 		std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
-	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device ) ;
+	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition ) ;
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
@@ -89,7 +89,7 @@ private:
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 	void LP_set_used_sectors( Partition & partition, PedDisk* lp_disk ) ;
 #endif
-	void set_flags( Partition & partition ) ;
+	void set_flags( Partition & partition, PedPartition* lp_partition ) ;
 	
 	//operationstuff...
 	bool create( const Device & device, Partition & new_partition, OperationDetail & operationdetail ) ;
@@ -224,8 +224,6 @@ private:
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
-	
-	PedPartition *lp_partition ;
 	
 	char * buf ;
 };

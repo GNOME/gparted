@@ -66,7 +66,6 @@ namespace GParted
 
 GParted_Core::GParted_Core() 
 {
-	lp_partition = NULL ;
 	p_filesystem = NULL ;
 	thread_status_message = "" ;
 
@@ -752,7 +751,7 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		lp_partition = NULL ;
+		PedPartition* lp_partition = NULL ;
 		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
@@ -832,7 +831,7 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		lp_partition = NULL ;
+		PedPartition* lp_partition = NULL ;
 		if ( partition .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
@@ -993,7 +992,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	//clear partitions
 	device .partitions .clear() ;
 
-	lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
+	PedPartition* lp_partition = ped_disk_next_partition( lp_disk, NULL ) ;
 	while ( lp_partition )
 	{
 		libparted_messages .clear() ;
@@ -1008,7 +1007,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = get_filesystem( lp_device ) ;
+				filesystem = get_filesystem( lp_device, lp_partition ) ;
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1041,7 +1040,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 						     partition_is_busy ) ;
 
 				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
-				set_flags( partition_temp ) ;
+				set_flags( partition_temp, lp_partition ) ;
 
 				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
 					device .highest_busy = partition_temp .partition_number ;
@@ -1083,7 +1082,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 						     partition_is_busy ) ;
 
 				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
-				set_flags( partition_temp ) ;
+				set_flags( partition_temp, lp_partition ) ;
 
 				EXT_INDEX = device .partitions .size() ;
 				break ;
@@ -1144,7 +1143,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device )
+GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition )
 {
 	char magic1[16] = "";
 	char magic2[16] = "";
@@ -1628,7 +1627,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk 
 
 	if ( lp_disk )
 	{
-		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 		
 		if ( lp_partition )
 		{
@@ -1652,7 +1651,7 @@ void GParted_Core::LP_set_used_sectors( Partition & partition, PedDisk* lp_disk 
 }
 #endif
 
-void GParted_Core::set_flags( Partition & partition )
+void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition )
 {
 	for ( unsigned int t = 0 ; t < flags .size() ; t++ )
 		if ( ped_partition_is_flag_available( lp_partition, flags[ t ] ) &&
@@ -1688,7 +1687,6 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	if ( open_device_and_disk( new_partition .device_path, lp_device, lp_disk ) )
 	{
 		PedPartitionType type;
-		lp_partition = NULL ;
 		PedConstraint *constraint = NULL ;
 		PedFileSystemType* fs_type = NULL ;
 		
@@ -1712,7 +1710,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		if ( new_partition .type != GParted::TYPE_EXTENDED )
 			fs_type = ped_file_system_type_get( "ext2" ) ;
 
-		lp_partition = ped_partition_new( lp_disk,
+		PedPartition* lp_partition = ped_partition_new( lp_disk,
 						  type,
 						  fs_type,
 						  new_partition .sector_start,
@@ -1837,6 +1835,7 @@ bool GParted_Core::Delete( const Partition & partition, OperationDetail & operat
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
+		PedPartition* lp_partition = NULL ;
 		if ( partition .type == TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else
@@ -2347,7 +2346,6 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	bool return_value = false ;
 	
 	PedConstraint *constraint = NULL ;
-	lp_partition = NULL ;
 
 	//sometimes the lp_partition ->geom .start,end and length values display random numbers
 	//after going out of the 'if ( lp_partition)' scope. That's why we use some variables here.
@@ -2357,6 +2355,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
+		PedPartition* lp_partition = NULL ;
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
@@ -2869,7 +2868,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 		if ( fs_type && partition .filesystem != FS_LVM2_PV )
 		{
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+			PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 			//Also clear any libparted LVM flag so that it doesn't override the file system type
 			if ( lp_partition                                                 &&
@@ -2888,7 +2887,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		}
 		else if ( partition .filesystem == FS_LVM2_PV )
 		{
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+			PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 			if ( lp_partition                                                 &&
 			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
@@ -3131,6 +3130,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		PedDisk* lp_disk = NULL ;
 		if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 		{	
+			PedPartition* lp_partition = NULL ;
 			if ( partition .type == GParted::TYPE_EXTENDED )
 				lp_partition = ped_disk_extended_partition( lp_disk ) ;
 			else	
@@ -3188,8 +3188,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
-		lp_partition = NULL ;
-
+		PedPartition* lp_partition = NULL ;
 		if ( partition_old .type == GParted::TYPE_EXTENDED )
 			lp_partition = ped_disk_extended_partition( lp_disk ) ;
 		else		
@@ -3295,7 +3294,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition )
 	PedDisk* lp_disk = NULL ;
 	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
 
 		if ( lp_partition && ped_file_system_clobber( & lp_partition ->geom ) )
 		{
