@@ -184,10 +184,13 @@ These commands include:
    {filemanager} - used in attempt data rescue to display discovered
                    file systems.  (e.g., nautilus, pcmanfm)
    hal-lock      - used to prevent automounting of file systems
-   gksu          - used to acquire root privileges in .desktop file,
+   gksudo        - used to acquire root privileges in .desktop file,
                    but only if available when gparted source is configured.
-   kdesudo       - also used to acquire root privileges in .desktop
-                   file if gksu not available, but only if available
+   gksu          - alternatively used to acquire root privileges in .desktop
+                   file if gksu not available, but only if available when
+                   gparted source is configured.
+   kdesudo       - alternatively used to acquire root privileges in .desktop
+                   file if gksudo and gksu not available, but only if available
                    when gparted source is configured.
    udevinfo      - used in dmraid to query udev name
    udevadm       - used in dmraid to query udev name
