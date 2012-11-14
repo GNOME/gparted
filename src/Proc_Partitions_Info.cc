@@ -92,6 +92,10 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 			//Whole disk devices are the ones we want.
 			//Device names without a trailing digit refer to the whole disk.
 			device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;
+			//Recognize /dev/md* devices (Linux software RAID - mdadm).
+			//E.g., device = /dev/md127, partition = /dev/md127p1
+			if ( device == "" )
+				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(md[0-9]+)$") ;
 			//Recognize /dev/mmcblk* devices.
 			//E.g., device = /dev/mmcblk0, partition = /dev/mmcblk0p1
 			if ( device == "" )
