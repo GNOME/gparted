@@ -97,9 +97,16 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 			if ( device == "" )
 				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(mmcblk[0-9]+)$") ;
 			//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
-			//E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
+			//  E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
+			//  (linux-x.y.z/Documentation/blockdev/cciss.txt)
+			//Device names for Compaq SMART2 Intelligent Disk Array
+			//  E.g., device = /dev/ida/c0d0, partition = /dev/ida/c0d0p1
+			//  (linux-x.y.z/Documentation/blockdev/cpqarray.txt)
+			//Device names for Mylex DAC960/AcceleRAID/eXtremeRAID PCI RAID
+			//  E.g., device = /dev/rd/c0d0, partition = /dev/rd/c0d0p1
+			//  (linux-x.y.z/Documentation/blockdev/README.DAC960)
 			if ( device == "" )
-				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(.*[0-9]+[^p]{1}[0-9]+)$") ;
+				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([a-z]+/c[0-9]+d[0-9]+)$") ;
 			if ( device != "" )
 			{
 				//add potential device to the list
