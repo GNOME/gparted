@@ -44,7 +44,6 @@ gpartedbin_SOURCES = \
 	OperationLabelPartition.cc	\
 	Partition.cc			\
 	Proc_Partitions_Info.cc		\
-	SWRaid.cc				\
 	TreeView_Detail.cc		\
 	Utils.cc			\
 	Win_GParted.cc			\

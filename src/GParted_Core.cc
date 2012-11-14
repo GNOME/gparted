@@ -19,7 +19,6 @@
 #include "../include/Win_GParted.h"
 #include "../include/GParted_Core.h"
 #include "../include/DMRaid.h"
-#include "../include/SWRaid.h"
 #include "../include/FS_Info.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../include/OperationCopy.h"
@@ -144,7 +143,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	Proc_Partitions_Info pp_info( true ) ;  //Refresh cache of proc partition information
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
-	SWRaid swraid( true ) ;    //Refresh cache of swraid device information
 	LVM2_PV_Info lvm2_pv_info( true ) ;	//Refresh cache of LVM2 PV information
 	
 	init_maps() ;
@@ -169,16 +167,6 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				/*TO TRANSLATORS: looks like Scanning /dev/sda */
 				set_thread_status_message( String::ucompose ( _("Scanning %1"), temp_devices[ k ] ) ) ;
 				ped_device_get( temp_devices[ k ] .c_str() ) ;
-			}
-
-			//Try to find all swraid devices
-			if (swraid .is_swraid_supported() ) {
-				std::vector<Glib::ustring> swraid_devices ;
-				swraid .get_devices( swraid_devices ) ;
-				for ( unsigned int k=0; k < swraid_devices .size(); k++ ) {
-					set_thread_status_message( String::ucompose ( _("Scanning %1"), swraid_devices[k] ) ) ;
-					ped_device_get( swraid_devices[k] .c_str() ) ;
-				}
 			}
 
 			//Try to find all dmraid devices
