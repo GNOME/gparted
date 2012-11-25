@@ -543,6 +543,13 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 					partition .sector_end -= ( MEBIBYTE / partition .sector_size ) ;
 			}
 		}
+
+		//If the logical partition end is beyond the end of the extended partition
+		//  then reduce logical partition end by a mebibyte to address the overlap.
+		if (   ( index_extended != -1 )
+		    && ( partition .sector_end > device .partitions[ index_extended ] .sector_end )
+		   )
+			partition .sector_end -= ( MEBIBYTE / partition .sector_size ) ;
 	}
 
 	//If this is a primary or an extended partition and the partition overlaps
