@@ -2246,20 +2246,18 @@ bool GParted_Core::resize( const Partition & partition_old,
 			succes = resize_move_partition( partition_old, partition_new, operationdetail ) ;
 
 		//expand file system to fit exactly in partition
-		if ( ! (   //Do not maximize file system if FS not linux-swap and new size <= old
-		           (   partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not resized
-		            && partition_new .get_sector_length() <= partition_old .get_sector_length()
-		           )
-		        || (   check_repair_filesystem( partition_new, operationdetail )
-		            && maximize_filesystem( partition_new, operationdetail )
-		           )
+		if (   succes
+		    && (   //Maximize file system if FS not linux-swap and new size > old
+		           partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not resized
+		        && partition_new .get_sector_length() > partition_old .get_sector_length()
 		       )
 		   )
-			succes = false ;
-			
+			succes =    check_repair_filesystem( partition_new, operationdetail )
+			         && maximize_filesystem( partition_new, operationdetail ) ;
+
 		return succes ;
 	}
-		
+
 	return false ;
 }
 
