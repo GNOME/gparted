@@ -1436,6 +1436,7 @@ void Win_GParted::menu_help_about()
 	strings .push_back( "Markus Elfring <elfring@users.sourceforge.net>" ) ;
 	strings .push_back( "Mike Fleetwood <mike.fleetwood@googlemail.com>" ) ;
 	strings .push_back( "Curtis Gedak <gedakc@users.sf.net>" ) ;
+	strings .push_back( "Matthias Gehre <m.gehre@gmx.de>" ) ;
 	strings .push_back( "Rogier Goossens <goossens.rogier@gmail.com>" ) ;
 	strings .push_back( "Bart Hakvoort <gparted@users.sf.net>" ) ;
 	strings .push_back( "Seth Heeren <sgheeren@gmail.com>" ) ;
