@@ -1700,8 +1700,9 @@ bool GParted_Core::create( const Device & device, Partition & new_partition, Ope
 		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
 			return true ;
 		else
-			return set_partition_type( new_partition, operationdetail ) &&
-		       	       create_filesystem( new_partition, operationdetail ) ;
+			return    erase_filesystem_signatures( new_partition, operationdetail )
+			       && set_partition_type( new_partition, operationdetail )
+			       && create_filesystem( new_partition, operationdetail ) ;
 	}
 	
 	return false ;
@@ -1796,11 +1797,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		close_device_and_disk( lp_device, lp_disk ) ;
 	}
 
-	bool succes = new_partition .partition_number > 0
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-	              && erase_filesystem_signatures( new_partition )
-#endif
-	;
+	bool succes = new_partition .partition_number > 0 ;
 
 #ifndef USE_LIBPARTED_DMRAID
 	//create dev map entries if dmraid
@@ -1849,12 +1846,9 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-	//remove all file system signatures...
-	erase_filesystem_signatures( partition ) ;
-#endif
-
-	return set_partition_type( partition, operationdetail ) && create_filesystem( partition, operationdetail ) ;
+	return    erase_filesystem_signatures( partition, operationdetail )
+	       && set_partition_type( partition, operationdetail )
+	       && create_filesystem( partition, operationdetail ) ;
 }
 
 bool GParted_Core::Delete( const Partition & partition, OperationDetail & operationdetail ) 
@@ -3123,36 +3117,27 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 	return false ;
 }
 
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-bool GParted_Core::erase_filesystem_signatures( const Partition & partition ) 
+bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	bool return_value = false ;
-
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
-	if ( open_device_and_disk( partition .device_path, lp_device, lp_disk ) )
+	if ( ! Glib::find_program_in_path( "wipefs" ) .empty() )
 	{
-		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-
-		if ( lp_partition && ped_file_system_clobber( & lp_partition ->geom ) )
-		{
-			//file systems not yet supported by libparted
-			if ( ped_device_open( lp_device ) )
-			{
-				//reiser4 stores "ReIsEr4" at sector 128 with a sector size of 512 bytes
-				// FIXME writing block of partially uninitialized bytes (security/privacy)
-				return_value = ped_geometry_write( & lp_partition ->geom, "0000000", (65536 / lp_device ->sector_size), 1 ) ;
-
-				ped_device_close( lp_device ) ;
-			}
-		}
-		
-		close_device_and_disk( lp_device, lp_disk ) ;
+		operationdetail .add_child( OperationDetail(
+				String::ucompose( _("clear old file system signatures in %1"),
+				                  partition .get_path() ) ) ) ;
+		OperationDetail & od = operationdetail .get_last_child() ;
+		Glib::ustring output, error ;
+		Glib::ustring command = "wipefs -a " + partition .get_path() ;
+		od .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+		int exit_status = Utils::execute_command( command, output, error, true ) ;
+		if ( ! output .empty() )
+			od .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+		if ( ! error .empty() )
+			od .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+		od .set_status( exit_status == 0 ? STATUS_SUCCES : STATUS_N_A ) ;
 	}
 
-	return return_value ;
+	return true ;
 }
-#endif
 
 bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
 {

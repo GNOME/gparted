@@ -178,9 +178,7 @@ private:
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
 	FileSystem* set_proper_filesystem( const FILESYSTEM & filesystem ) ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-	bool erase_filesystem_signatures( const Partition & partition ) ;
-#endif
+	bool erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
