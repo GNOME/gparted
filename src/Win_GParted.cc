@@ -406,45 +406,46 @@ void Win_GParted::init_partition_menu()
 	menu_partition .accelerate( *this ) ;  
 }
 
+//Create the Partition --> Format to --> (file system list) menu
 Gtk::Menu * Win_GParted::create_format_menu()
 {
+	const std::vector<FS> & fss = gparted_core .get_filesystems() ;
 	menu = manage( new Gtk::Menu() ) ;
 
-	for ( unsigned int t =0; t < gparted_core .get_filesystems() .size() ; t++ )
+	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
 	{
 		//Skip luks and unknown because these are not file systems
-		if (
-		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_LUKS    ||
-		     gparted_core .get_filesystems()[ t ] .filesystem == GParted::FS_UNKNOWN
+		if (    fss[ t ] .filesystem == FS_LUKS
+		     || fss[ t ] .filesystem == FS_UNKNOWN
 		   )
 			continue ;
 
-		hbox = manage( new Gtk::HBox() );
-			
-		//the colored square
-		hbox ->pack_start( * manage( new Gtk::Image(
-					Utils::get_color_as_pixbuf( 
-						gparted_core .get_filesystems()[ t ] .filesystem, 16, 16 ) ) ),
-				   Gtk::PACK_SHRINK ) ;			
-		
-		//the label...
-		hbox ->pack_start( * Utils::mk_label(
-					" " + 
-					Utils::get_filesystem_string( gparted_core .get_filesystems()[ t ] .filesystem ) ),
-				   Gtk::PACK_SHRINK );	
-				
-		menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) );
-		if ( gparted_core .get_filesystems()[ t ] .create )
-			menu ->items() .back() .signal_activate() .connect( 
-				sigc::bind<GParted::FILESYSTEM>(sigc::mem_fun(*this, &Win_GParted::activate_format),
-				gparted_core .get_filesystems()[ t ] .filesystem ) ) ;
-		else
-			menu ->items() .back() .set_sensitive( false ) ;
+		create_format_menu_add_item( fss[ t ] .filesystem, fss[ t ] .create ) ;
 	}
-	
+
 	return menu ;
 }
-	
+
+//Add one entry to the Partition --> Format to --> (file system list) menu
+void Win_GParted::create_format_menu_add_item( FILESYSTEM filesystem, bool activate )
+{
+	hbox = manage( new Gtk::HBox() ) ;
+	//the colored square
+	hbox ->pack_start( * manage( new Gtk::Image( Utils::get_color_as_pixbuf( filesystem, 16, 16 ) ) ),
+	                   Gtk::PACK_SHRINK ) ;
+	//the label...
+	hbox ->pack_start( * Utils::mk_label( " " + Utils::get_filesystem_string( filesystem ) ),
+	                   Gtk::PACK_SHRINK ) ;
+
+	menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) ) ;
+	if ( activate )
+		menu ->items() .back() .signal_activate() .connect(
+			sigc::bind<GParted::FILESYSTEM>( sigc::mem_fun( *this, &Win_GParted::activate_format ),
+			                                 filesystem ) ) ;
+	else
+		menu ->items() .back() .set_sensitive( false ) ;
+}
+
 void Win_GParted::init_device_info()
 {
 	vbox_info.set_spacing( 5 );

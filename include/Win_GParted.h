@@ -50,6 +50,7 @@ private:
 	void init_toolbar() ;
 	void init_partition_menu() ;
 	Gtk::Menu * create_format_menu() ;
+	void create_format_menu_add_item( FILESYSTEM filesystem, bool activate ) ;
 	void init_device_info() ;
 	void init_hpaned_main() ;
 
