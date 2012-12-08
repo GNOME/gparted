@@ -42,27 +42,35 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
 
-	//copy GParted FILESYSTEMS
+	//Copy GParted FILESYSTEMS vector and re-order it to all real file systems first
+	//  followed by FS_CLEARED, FS_UNFORMATTED and finally FS_EXTENDED.  This decides
+	//  the order of items in the file system menu, built by Build_Filesystems_Menu().
 	this ->FILESYSTEMS = FILESYSTEMS ;
 
-	//remove all non-valid file systems
+	//... remove all non-valid file systems
 	std::vector< FS >::iterator f ;
 	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
 	{
-		if (   f ->filesystem == GParted::FS_UNKNOWN
-		    || f ->filesystem == GParted::FS_LUKS
+		if (   f ->filesystem == FS_UNKNOWN
+		    || f ->filesystem == FS_CLEARED
+		    || f ->filesystem == FS_LUKS
 		   )
 			//Compensate for subsequent 'f++' ...
 			f = this ->FILESYSTEMS .erase( f ) - 1 ;
 	}
 
 	FS fs_tmp ;
-	//add FS_UNFORMATTED
+	//... add FS_CLEARED
+	fs_tmp .filesystem = FS_CLEARED ;
+	fs_tmp .create = FS::GPARTED ;
+	this ->FILESYSTEMS .push_back( fs_tmp ) ;
+
+	//... add FS_UNFORMATTED
 	fs_tmp .filesystem = GParted::FS_UNFORMATTED ;
 	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
-	//add FS_EXTENDED
+	//... finally add FS_EXTENDED
 	fs_tmp = FS();
 	fs_tmp .filesystem = GParted::FS_EXTENDED ;
 	fs_tmp .create = GParted::FS::NONE ;
@@ -327,7 +335,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
-		//skip extended (luks, lvm2, and unknown removed in Set_Data())
+		//skip extended
 		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_EXTENDED )
 			continue ;
 		menu_filesystem .items() .push_back( 

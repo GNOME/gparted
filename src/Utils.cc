@@ -82,6 +82,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UNALLOCATED	: return "#A9A9A9" ;	// ~ medium grey
 		case FS_UNKNOWN		: return "#000000" ;	//black
 		case FS_UNFORMATTED	: return "#000000" ;	//black
+		case FS_CLEARED		: return "#000000" ;	//black
 		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
 		case FS_BTRFS		: return "#FF9955" ;	//orange
 		case FS_EXT2		: return "#9DB8D2" ;	//blue hilight
@@ -203,6 +204,12 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 				 * be formatted with a known file system by GParted.
 				 */
 				_("unformatted") ;
+		case FS_CLEARED		: return
+				/* TO TRANSLATORS:  cleared
+				 * means that all file system signatures in the partition
+				 * will be cleared by GParted.
+				 */
+				_("cleared") ;
 		case FS_EXTENDED	: return "extended" ;
 		case FS_BTRFS		: return "btrfs" ;
 		case FS_EXT2		: return "ext2" ;

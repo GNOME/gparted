@@ -59,32 +59,33 @@ enum FILESYSTEM
 	FS_UNALLOCATED	= 0,
 	FS_UNKNOWN	= 1,
 	FS_UNFORMATTED	= 2,
-	FS_EXTENDED	= 3,
+	FS_CLEARED	= 3,  //Clear existing file system signatures
+	FS_EXTENDED	= 4,
 
-	FS_BTRFS	= 4,
-	FS_EXFAT	= 5, /* Also known as fat64 */
-	FS_EXT2		= 6,
-	FS_EXT3		= 7,
-	FS_EXT4		= 8,
-	FS_F2FS		= 9,
-	FS_FAT16	= 10,
-	FS_FAT32	= 11,
-	FS_HFS		= 12,
-	FS_HFSPLUS	= 13,
-	FS_JFS		= 14,
-	FS_LINUX_SWAP	= 15,
-	FS_LVM2_PV	= 16,
-	FS_NILFS2	= 17,
-	FS_NTFS		= 18,
-	FS_REISER4	= 19,
-	FS_REISERFS	= 20,
-	FS_UFS		= 21,
-	FS_XFS		= 22,
+	FS_BTRFS	= 5,
+	FS_EXFAT	= 6, /* Also known as fat64 */
+	FS_EXT2		= 7,
+	FS_EXT3		= 8,
+	FS_EXT4		= 9,
+	FS_F2FS		= 10,
+	FS_FAT16	= 11,
+	FS_FAT32	= 12,
+	FS_HFS		= 13,
+	FS_HFSPLUS	= 14,
+	FS_JFS		= 15,
+	FS_LINUX_SWAP	= 16,
+	FS_LVM2_PV	= 17,
+	FS_NILFS2	= 18,
+	FS_NTFS		= 19,
+	FS_REISER4	= 20,
+	FS_REISERFS	= 21,
+	FS_UFS		= 22,
+	FS_XFS		= 23,
 
-	FS_USED		= 23,
-	FS_UNUSED	= 24,
+	FS_USED		= 24,
+	FS_UNUSED	= 25,
 
-	FS_LUKS		= 25
+	FS_LUKS		= 26
 } ;
 
 enum SIZE_UNIT

@@ -414,14 +414,17 @@ Gtk::Menu * Win_GParted::create_format_menu()
 
 	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
 	{
-		//Skip luks and unknown because these are not file systems
-		if (    fss[ t ] .filesystem == FS_LUKS
-		     || fss[ t ] .filesystem == FS_UNKNOWN
+		//Skip unknown, cleared and luks because these are not file systems
+		if (    fss[ t ] .filesystem == FS_UNKNOWN
+		     || fss[ t ] .filesystem == FS_CLEARED
+		     || fss[ t ] .filesystem == FS_LUKS
 		   )
 			continue ;
 
 		create_format_menu_add_item( fss[ t ] .filesystem, fss[ t ] .create ) ;
 	}
+	//Add cleared at the end of the list
+	create_format_menu_add_item( FS_CLEARED, true ) ;
 
 	return menu ;
 }

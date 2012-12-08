@@ -97,6 +97,8 @@ void GParted_Core::find_supported_filesystems()
 
 	FILESYSTEM_MAP .clear() ;
 
+	FILESYSTEM_MAP[ FS_UNKNOWN ]	= NULL ;
+	FILESYSTEM_MAP[ FS_CLEARED ]	= NULL ;
 	FILESYSTEM_MAP[ FS_BTRFS ]	= new btrfs() ;
 	FILESYSTEM_MAP[ FS_EXFAT ]	= new exfat() ;
 	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2( FS_EXT2 ) ;
@@ -117,8 +119,12 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEM_MAP[ FS_UFS ]	= new ufs() ;
 	FILESYSTEM_MAP[ FS_XFS ]	= new xfs() ;
 	FILESYSTEM_MAP[ FS_LUKS ]	= NULL ;
-	FILESYSTEM_MAP[ FS_UNKNOWN ]	= NULL ;
 
+	//Iteration of std::map is ordered according to operator< of the key.
+	//  Hence the FILESYSTEMS vector is constructed in FILESYSTEM enum
+	//  order: FS_UNKNOWN, FS_CLEARED, FS_BTRFS, ..., FS_XFS, FS_LUKS
+	//  which ultimately controls the default order of file systems in menus
+	//  and dialogs.
 	FILESYSTEMS .clear() ;
 
 	FS fs_notsupp;
@@ -1699,6 +1705,8 @@ bool GParted_Core::create( const Device & device, Partition & new_partition, Ope
 	{
 		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
 			return true ;
+		else if ( new_partition .filesystem == FS_CLEARED )
+			return erase_filesystem_signatures( new_partition, operationdetail ) ;
 		else
 			return    erase_filesystem_signatures( new_partition, operationdetail )
 			       && set_partition_type( new_partition, operationdetail )
@@ -1846,9 +1854,12 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {
-	return    erase_filesystem_signatures( partition, operationdetail )
-	       && set_partition_type( partition, operationdetail )
-	       && create_filesystem( partition, operationdetail ) ;
+	if ( partition .filesystem == FS_CLEARED )
+		return erase_filesystem_signatures( partition, operationdetail ) ;
+	else
+		return    erase_filesystem_signatures( partition, operationdetail )
+		       && set_partition_type( partition, operationdetail )
+		       && create_filesystem( partition, operationdetail ) ;
 }
 
 bool GParted_Core::Delete( const Partition & partition, OperationDetail & operationdetail ) 
