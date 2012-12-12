@@ -1,4 +1,42 @@
 ============================
+GParted 0.14.1  (2012-12-12)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes some important bug fixes and some
+  language translation updates.
+
+### Key changes include:
+
+  * Fix Linux software RAID device detection
+  * Fix logical partition grow overlaps extended partition end
+
+Bug Fixes
+---------
+  * Make GParted recognise reading blank file system labels (#685656)
+    - Thanks to Mike Fleetwood for this patch set
+  * Treat reiser4 label "<none>" as meaning blank (#688760)
+    - Thanks to Mike Fleetwood for this small patch
+  * Fix Linux software RAID device detection (#678379)
+  * Fix logical partition grow overlaps extended partition end (#686668)
+  * Use kdesudo on KDE, as gksu is not installed by default (#687813)
+  * Cleanup - remove lp_device and lp_disk from GParted_Core (#683149)
+    - Thanks to Matthias Gehre for this patch set
+
+Translations (new/updated)
+--------------------------
+  de(Christian Kirbach, Wolfgang Stöggl), el(Dimitris Spingos),
+  lv(Rūdolfs Mazurs), nn(Yngve Spjeld Landro, Åsmund Skjæveland),
+  sk(Dušan Kazik), zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao)
+
+Dependencies (new/updated)
+--------------------------
+  * Optionally configure to use kdesudo if gksu is not installed
+  * mdadm no longer required for Linux software RAID detection
+
+
+============================
 GParted 0.14.0  (2012-10-10)
 ============================
 
