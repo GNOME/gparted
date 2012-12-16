@@ -118,6 +118,54 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int
 	return pixbuf ;
 }
 
+int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
+{
+	switch( filesystem )
+	{
+		//All file systems commented out are not supported for labelling
+		//  by either the new partition or label partition operations.
+		case FS_BTRFS		: return 255 ;
+		//case FS_EXFAT		: return  ;
+		case FS_EXT2		: return 16 ;
+		case FS_EXT3		: return 16 ;
+		case FS_EXT4		: return 16 ;
+		case FS_FAT16		: return 11 ;
+		case FS_FAT32		: return 11 ;
+		//mkfs.hfsplus can create hfs and hfs+ file systems with labels up to 255
+		//  characters.  However there is no specific tool to read the labels and
+		//  blkid, the only tool currently available, only display the first 27
+		//  and 63 character respectively.
+		//  Reference:
+		//  util-linux-2.20.1/libblkid/src/superblocks/hfs.c:struct hfs_mdb
+		case FS_HFS		: return 27 ;
+		case FS_HFSPLUS		: return 63 ;
+		//mkfs.jfs and jfs_tune can create and update labels to 16 characters but
+		//  only displays the first 11 characters.  This is because version 1 jfs
+		//  file systems only have an 11 character field for the label but version
+		//  2 jfs has extra fields containing a 16 character label.  mkfs.jfs
+		//  writes the extra fields containing the 16 character label, but then
+		//  sets it to version 1 jfs.  It does this to be backwardly compatible
+		//  with jfs before 1.0.18, released May 2002.  Blkid does display the
+		//  full 16 character label by just ignoring the file system version.
+		//  As using jfs_tune to get the label stick with an 11 character limit.
+		//  References:
+		//  jfsutils-1.1.15/tune/tune.c:main()
+		//  jfsutils-1.1.15/mkfs/mkfs.c:create_aggregate()
+		//  http://jfs.cvs.sourceforge.net/viewvc/jfs/jfsutils/NEWS?revision=HEAD
+		case FS_JFS		: return 11 ;
+		case FS_LINUX_SWAP	: return 15 ;
+		//case FS_LVM2_PV	: return  ;
+		case FS_NILFS2		: return 80 ;
+		case FS_NTFS		: return 128 ;
+		case FS_REISER4		: return 16 ;
+		case FS_REISERFS	: return 16 ;
+		//case FS_UFS		: return  ;
+		case FS_XFS		: return 12 ;
+
+		default			: return 30 ;
+	}
+}
+
 Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 {
 	switch( filesystem )

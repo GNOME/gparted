@@ -44,7 +44,7 @@ Dialog_Partition_Label::Dialog_Partition_Label( const Partition & partition )
 				Gtk::FILL);
 		//Create Text entry box
 		entry = manage(new Gtk::Entry());
-		entry->set_max_length(30);
+		entry->set_max_length( Utils::get_filesystem_label_maxlength( partition.filesystem ) ) ;
 		entry->set_width_chars(20);
 		entry->set_activates_default(true);
 		entry->set_text(partition.get_label());

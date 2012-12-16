@@ -129,7 +129,6 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	table_create .attach( * Utils::mk_label( Glib::ustring( _("Label:") ) ),
 			0, 1, 3, 4,	Gtk::FILL ) ;
 	//Create Text entry box
-	entry .set_max_length( 30 );
 	entry .set_width_chars( 20 );
 	entry .set_activates_default( true );
 	entry .set_text( partition .get_label() );
@@ -315,6 +314,9 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		color_temp.set(Utils::get_color(fs.filesystem));
 		frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
+
+	//set partition name entry box length
+	entry .set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) ) ;
 
 	frame_resizer_base ->Draw_Partition() ;
 }

@@ -158,6 +158,7 @@ public:
 	static Glib::ustring num_to_str( Sector number ) ;
 	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
+	static int get_filesystem_label_maxlength( FILESYSTEM filesystem ) ;
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
 	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
 	static bool kernel_supports_fs( const Glib::ustring & fs ) ;
