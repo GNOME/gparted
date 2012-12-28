@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-15 18:25+0300\n"
-"PO-Revision-Date: 2011-07-15 18:26+0200\n"
+"POT-Creation-Date: 2012-12-28 14:17+0200\n"
+"PO-Revision-Date: 2012-12-28 14:33+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -16,24 +16,34 @@ msgstr ""
 "X-Launchpad-Export-Date: 2007-10-11 22:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../gparted.desktop.in.in.h:1
-msgid "Create, reorganize, and delete partitions"
-msgstr "יצירה, ארגון מחדש ומחיקה של מחיצות"
-
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:2 ../src/Dialog_Progress.cc:357
-#: ../src/Win_GParted.cc:72 ../src/Win_GParted.cc:1115
-#: ../src/Win_GParted.cc:1306
+#: ../gparted.desktop.in.in.h:1
+#: ../src/Dialog_Progress.cc:362
+#: ../src/Win_GParted.cc:76
+#: ../src/Win_GParted.cc:1234
+#: ../src/Win_GParted.cc:1425
 msgid "GParted"
 msgstr "GParted"
+
+#: ../gparted.desktop.in.in.h:2
+msgid "Partition Editor"
+msgstr "עורך המחיצות"
 
 #: ../gparted.desktop.in.in.h:3
 msgid "GParted Partition Editor"
 msgstr "עורך המחיצות GParted"
 
 #: ../gparted.desktop.in.in.h:4
-msgid "Partition Editor"
-msgstr "עורך המחיצות"
+msgid "Create, reorganize, and delete partitions"
+msgstr "יצירה, ארגון מחדש ומחיקה של מחיצות"
+
+#: ../include/Utils.h:54
+msgid "(New UUID - will be randomly generated)"
+msgstr "(UUID חדש - ייווצר באופן אקראי)"
+
+#: ../include/Utils.h:55
+msgid "(Half new UUID - will be randomly generated)"
+msgstr "(חצי UUID חדש - ייווצר באופן אקראי)"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
@@ -51,108 +61,116 @@ msgstr "שטח פנוי לאחר המחיצה (MiB):"
 
 #. add alignment
 #. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
-#: ../src/Dialog_Base_Partition.cc:96
+#: ../src/Dialog_Base_Partition.cc:99
 msgid "Align to:"
 msgstr "יישור לפי:"
 
 #. fill partition alignment menu
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:101
+#: ../src/Dialog_Base_Partition.cc:104
 msgid "Cylinder"
 msgstr "צילינדרים"
 
 #. TO TRANSLATORS: Menu option for label "Align to:"
-#: ../src/Dialog_Base_Partition.cc:103
+#: ../src/Dialog_Base_Partition.cc:106
 msgid "MiB"
 msgstr "MiB"
 
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:105
+#: ../src/Dialog_Base_Partition.cc:108
 msgid "None"
 msgstr "ללא"
 
-#: ../src/Dialog_Base_Partition.cc:217
+#: ../src/Dialog_Base_Partition.cc:243
 msgid "Resize"
 msgstr "שינוי גודל"
 
-#: ../src/Dialog_Base_Partition.cc:217 ../src/Win_GParted.cc:236
+#: ../src/Dialog_Base_Partition.cc:243
+#: ../src/Win_GParted.cc:240
 msgid "Resize/Move"
 msgstr "שינוי גודל/הזזה"
 
-#: ../src/Dialog_Base_Partition.cc:234
+#: ../src/Dialog_Base_Partition.cc:261
 msgid "Minimum size: %1 MiB"
 msgstr "גודל מזערי: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:235
+#: ../src/Dialog_Base_Partition.cc:262
 msgid "Maximum size: %1 MiB"
 msgstr "גודל מרבי: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:27
+#: ../src/Dialog_Disklabel.cc:28
 msgid "Create partition table on %1"
 msgstr "יצרית טבלת מחיצות ב־%1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:47
+#: ../src/Dialog_Disklabel.cc:52
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "אזהרה: פעולה זו תמחק את כל המידע בכונן %1"
 
-#: ../src/Dialog_Disklabel.cc:51
+#: ../src/Dialog_Disklabel.cc:56
 msgid "Default is to create an MS-DOS partition table."
 msgstr "ברירת המחדל היא ליצור טבלת מחיצות של MS-DOS."
 
-#: ../src/Dialog_Disklabel.cc:58
+#: ../src/Dialog_Disklabel.cc:62
 msgid "Advanced"
 msgstr "מתקדם"
 
-#: ../src/Dialog_Disklabel.cc:66
+#: ../src/Dialog_Disklabel.cc:71
 msgid "Select new partition table type:"
 msgstr "יש לבחור את סוג טבלת המחיצות החדשה:"
 
-#: ../src/Dialog_Partition_Copy.cc:36
+#: ../src/Dialog_Partition_Copy.cc:37
 msgid "Paste %1"
 msgstr "הדבקת %1"
 
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:32
+#: ../src/Dialog_Partition_Info.cc:35
 msgid "Information about %1"
 msgstr "מידע על אודות %1"
 
-#: ../src/Dialog_Partition_Info.cc:49
+#: ../src/Dialog_Partition_Info.cc:55
 msgid "Warning:"
 msgstr "אזהרה:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:152 ../src/Dialog_Partition_New.cc:119
+#: ../src/Dialog_Partition_Info.cc:185
+#: ../src/Dialog_Partition_New.cc:117
 msgid "File system:"
 msgstr "מערכת קבצים:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:162 ../src/Win_GParted.cc:458
+#: ../src/Dialog_Partition_Info.cc:195
+#: ../src/Win_GParted.cc:468
 msgid "Size:"
 msgstr "גודל:"
 
-#. used
-#: ../src/Dialog_Partition_Info.cc:178
+#. Used
+#: ../src/Dialog_Partition_Info.cc:211
 msgid "Used:"
 msgstr "בשימוש:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:192
+#: ../src/Dialog_Partition_Info.cc:225
 msgid "Unused:"
 msgstr "לא בשימוש:"
 
-#: ../src/Dialog_Partition_Info.cc:209
+#: ../src/Dialog_Partition_Info.cc:242
+msgid "Unallocated:"
+msgstr "לא מוקצה:"
+
+#: ../src/Dialog_Partition_Info.cc:264
 msgid "Flags:"
 msgstr "דגלים:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:225 ../src/Win_GParted.cc:466
+#: ../src/Dialog_Partition_Info.cc:280
+#: ../src/Win_GParted.cc:476
 msgid "Path:"
 msgstr "נתיב:"
 
-#: ../src/Dialog_Partition_Info.cc:239
+#: ../src/Dialog_Partition_Info.cc:294
 msgid "Status:"
 msgstr "מצב:"
 
@@ -160,7 +178,7 @@ msgstr "מצב:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:251
+#: ../src/Dialog_Partition_Info.cc:306
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "עסוק (לפחות מחיצה לוגית אחת מעוגנת)"
 
@@ -168,12 +186,21 @@ msgstr "עסוק (לפחות מחיצה לוגית אחת מעוגנת)"
 #. * means that this linux swap partition is enabled and being used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:259
+#: ../src/Dialog_Partition_Info.cc:314
 msgid "Active"
 msgstr "פעיל"
 
+#. TO TRANSLATORS:  myvgname active
+#. * means that the partition is a member of an LVM volume group and the
+#. * volume group is active and being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:322
+#, fuzzy
+msgid "%1 active"
+msgstr "לא פעיל"
+
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:265
+#: ../src/Dialog_Partition_Info.cc:328
 msgid "Mounted on %1"
 msgstr "מעוגן במיקום %1"
 
@@ -181,7 +208,7 @@ msgstr "מעוגן במיקום %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:275
+#: ../src/Dialog_Partition_Info.cc:338
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "פנוי (אין מחיצות לוגיות מחוברות)"
 
@@ -189,44 +216,87 @@ msgstr "פנוי (אין מחיצות לוגיות מחוברות)"
 #. *  means that this linux swap partition is not enabled and is not
 #. *  in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:283
+#: ../src/Dialog_Partition_Info.cc:346
 msgid "Not active"
+msgstr "לא פעיל"
+
+#. TO TRANSLATORS:  Not active (Not a member of any volume group)
+#. * means that the partition is not yet a member of an LVM volume
+#. * group and therefore is not active and can not yet be used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:356
+msgid "Not active (Not a member of any volume group)"
+msgstr "לא פעיל (אינו חבר באף קבוצת כרכים)"
+
+#. TO TRANSLATORS:  myvgname not active and exported
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#. * The volume group has also been exported making the LVM physical volumes
+#. * ready for moving to a different computer system.
+#.
+#: ../src/Dialog_Partition_Info.cc:364
+msgid "%1 not active and exported"
+msgstr ""
+
+#. TO TRANSLATORS:  myvgname not active
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:370
+#, fuzzy
+msgid "%1 not active"
 msgstr "לא פעיל"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:290
+#: ../src/Dialog_Partition_Info.cc:377
 msgid "Not mounted"
 msgstr "לא מעוגן"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:299 ../src/Dialog_Partition_Label.cc:43
-#: ../src/Dialog_Partition_New.cc:131
+#: ../src/Dialog_Partition_Info.cc:386
+#: ../src/Dialog_Partition_Label.cc:41
+#: ../src/Dialog_Partition_New.cc:129
 msgid "Label:"
 msgstr "תוויות:"
 
-#: ../src/Dialog_Partition_Info.cc:312
+#: ../src/Dialog_Partition_Info.cc:399
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:326
+#: ../src/Dialog_Partition_Info.cc:413
 msgid "First sector:"
 msgstr "סקטור ראשון:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:336
+#: ../src/Dialog_Partition_Info.cc:423
 msgid "Last sector:"
 msgstr "סקטור אחרון:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:346 ../src/Win_GParted.cc:519
+#: ../src/Dialog_Partition_Info.cc:433
+#: ../src/Win_GParted.cc:529
 msgid "Total sectors:"
 msgstr "סה\"כ סקטורים:"
 
+#. Volume Group
+#. Single copy of each string for translation purposes
+#: ../src/Dialog_Partition_Info.cc:455
+#: ../src/Win_GParted.cc:2718
+msgid "Volume Group:"
+msgstr "קבוצת כרכים:"
+
+#. Members
+#: ../src/Dialog_Partition_Info.cc:461
+#: ../src/Win_GParted.cc:2719
+msgid "Members:"
+msgstr "חברים"
+
 #. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
-#: ../src/Dialog_Partition_Label.cc:32
+#: ../src/Dialog_Partition_Label.cc:30
 msgid "Set partition label on %1"
 msgstr "הגדרת תווית המחיצה במיקום %1"
 
@@ -236,33 +306,36 @@ msgid "Create new Partition"
 msgstr "יצירת מחיצה חדשה"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:79
+#: ../src/Dialog_Partition_New.cc:77
 msgid "Create as:"
 msgstr "יצירה כ־:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:82
+#: ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "מחיצה ראשית"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:83
+#: ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "מחיצה לוגית"
 
-#: ../src/Dialog_Partition_New.cc:86 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:84
+#: ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "מחיצה מורחבת"
 
-#: ../src/Dialog_Partition_New.cc:198
+#: ../src/Dialog_Partition_New.cc:196
 msgid "New Partition #%1"
 msgstr "מחיצה חדשה מספר %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:74
+#: ../src/Dialog_Partition_Resize_Move.cc:83
 msgid "Resize/Move %1"
 msgstr "שינוי גודל/הזזה של %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:79
+#: ../src/Dialog_Partition_Resize_Move.cc:88
 msgid "Resize %1"
 msgstr "שינוי גודל של %1"
 
@@ -270,88 +343,87 @@ msgstr "שינוי גודל של %1"
 msgid "Applying pending operations"
 msgstr "החלת הפעולות הממתינות"
 
-#: ../src/Dialog_Progress.cc:48
-msgid ""
-"Depending on the number and type of operations this might take a long time."
+#: ../src/Dialog_Progress.cc:50
+msgid "Depending on the number and type of operations this might take a long time."
 msgstr "כתלות בכמות ובסוג הפעולות, הן עלולות להמשך זמן רב."
 
-#: ../src/Dialog_Progress.cc:61
+#: ../src/Dialog_Progress.cc:63
 msgid "Completed Operations:"
 msgstr "פעולות שהושלמו:"
 
-#: ../src/Dialog_Progress.cc:101
+#: ../src/Dialog_Progress.cc:103
 msgid "Details"
 msgstr "פרטים"
 
-#: ../src/Dialog_Progress.cc:199
+#: ../src/Dialog_Progress.cc:202
 msgid "%1 of %2 operations completed"
 msgstr "%1 מתוך %2 פעולות הושלמו"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:230
+#: ../src/Dialog_Progress.cc:234
 msgid "_Save Details"
 msgstr "_שמירת פרטים"
 
-#: ../src/Dialog_Progress.cc:239
+#: ../src/Dialog_Progress.cc:243
 msgid "Operation cancelled"
 msgstr "הפעולה בוטלה"
 
-#: ../src/Dialog_Progress.cc:253
+#: ../src/Dialog_Progress.cc:257
 msgid "All operations successfully completed"
 msgstr "כל הפעולות הושלמו בהצלחה"
 
-#: ../src/Dialog_Progress.cc:257
+#: ../src/Dialog_Progress.cc:261
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "אזהרה אחת"
 msgstr[1] "%1 אזהרות"
 
-#: ../src/Dialog_Progress.cc:270
+#: ../src/Dialog_Progress.cc:274
 msgid "An error occurred while applying the operations"
 msgstr "אירעה שגיאה בעת ביצוע הפעולות"
 
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:279
 msgid "See the details for more information."
 msgstr "יש לעיין בפרטים למידע נוסף."
 
-#: ../src/Dialog_Progress.cc:276
+#: ../src/Dialog_Progress.cc:281
 msgid "IMPORTANT"
 msgstr "חשוב"
 
-#: ../src/Dialog_Progress.cc:277
+#: ../src/Dialog_Progress.cc:282
 msgid "If you want support, you need to provide the saved details!"
 msgstr "על־מנת לקבל תמיכה, יש לספק את הפרטים השמורים!"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:280
+#: ../src/Dialog_Progress.cc:285
 msgid "See %1 for more information."
 msgstr "יש לעיין ב־%1 למידע נוסף."
 
-#: ../src/Dialog_Progress.cc:313
+#: ../src/Dialog_Progress.cc:318
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "האם לבטל את הפעולה הנוכחית?"
 
-#: ../src/Dialog_Progress.cc:319
+#: ../src/Dialog_Progress.cc:324
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "ביטול פעולה עלול לגרום לנזק חמור למערכת הקבצים."
 
-#: ../src/Dialog_Progress.cc:321
+#: ../src/Dialog_Progress.cc:326
 msgid "Continue Operation"
 msgstr "המשך פעולה"
 
-#: ../src/Dialog_Progress.cc:322
+#: ../src/Dialog_Progress.cc:327
 msgid "Cancel Operation"
 msgstr "ביטול פעולה"
 
-#: ../src/Dialog_Progress.cc:335
+#: ../src/Dialog_Progress.cc:340
 msgid "Save Details"
 msgstr "שמירת פרטים"
 
-#: ../src/Dialog_Progress.cc:354
+#: ../src/Dialog_Progress.cc:359
 msgid "GParted Details"
 msgstr "פרטי GParted"
 
-#: ../src/Dialog_Progress.cc:362
+#: ../src/Dialog_Progress.cc:367
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -359,7 +431,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:405
+#: ../src/Dialog_Progress.cc:410
 msgid "EXECUTING"
 msgstr "ביצוע"
 
@@ -367,7 +439,7 @@ msgstr "ביצוע"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:413
+#: ../src/Dialog_Progress.cc:418
 msgid "SUCCESS"
 msgstr "הצלחה"
 
@@ -375,7 +447,7 @@ msgstr "הצלחה"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:421
+#: ../src/Dialog_Progress.cc:426
 msgid "ERROR"
 msgstr "תקלה"
 
@@ -384,7 +456,7 @@ msgstr "תקלה"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:430
+#: ../src/Dialog_Progress.cc:435
 msgid "INFO"
 msgstr "מידע"
 
@@ -393,7 +465,7 @@ msgstr "מידע"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:439
+#: ../src/Dialog_Progress.cc:444
 msgid "N/A"
 msgstr "לא זמין"
 
@@ -401,7 +473,8 @@ msgstr "לא זמין"
 msgid "File System Support"
 msgstr "תמיכה במערכת קבצים"
 
-#: ../src/DialogFeatures.cc:35 ../src/TreeView_Detail.cc:36
+#: ../src/DialogFeatures.cc:35
+#: ../src/TreeView_Detail.cc:36
 msgid "File System"
 msgstr "מערכת קבצים"
 
@@ -429,193 +502,216 @@ msgstr "העתקה"
 msgid "Check"
 msgstr "בדיקה"
 
-#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:38
+#: ../src/DialogFeatures.cc:42
+#: ../src/TreeView_Detail.cc:38
 msgid "Label"
 msgstr "תווית"
 
 #: ../src/DialogFeatures.cc:43
+msgid "UUID"
+msgstr "UUID"
+
+#: ../src/DialogFeatures.cc:44
 msgid "Required Software"
 msgstr "תכנה דרושה"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:61
 msgid "This chart shows the actions supported on file systems."
 msgstr "הטבלה מראה את האפשרויות הנתמכות על ידי מערכת הקבצים."
 
-#: ../src/DialogFeatures.cc:59
-msgid ""
-"Not all actions are available on all file systems, in part due to the nature "
-"of file systems and limitations in the required software."
-msgstr ""
-"לא כל הפעולות זמינות עבור מערכת קבצים זו, חלקן עקב טבעה של מערכת הקבצים "
-"וחלקן עקב מגבלות תכנה."
+#: ../src/DialogFeatures.cc:63
+msgid "Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software."
+msgstr "לא כל הפעולות זמינות עבור מערכת קבצים זו, חלקן עקב טבעה של מערכת הקבצים וחלקן עקב מגבלות תכנה."
 
 #. TO TRANSLATORS:  Available
 #. * means that this action is valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:73
+#: ../src/DialogFeatures.cc:81
 msgid "Available"
 msgstr "זמין"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:83
+#: ../src/DialogFeatures.cc:93
 msgid "Not Available"
 msgstr "לא זמין"
 
-#: ../src/DialogFeatures.cc:89
+#: ../src/DialogFeatures.cc:99
 msgid "Legend"
 msgstr "מקרא"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:102
+#: ../src/DialogFeatures.cc:114
 msgid "Rescan For Supported Actions"
 msgstr "סריקה חוזרת לפעילויות נתמכות"
 
-#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+#: ../src/DialogManageFlags.cc:31
+#: ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "ניהול דגלים ב־%1"
 
-#: ../src/Dialog_Rescue_Data.cc:34
+#: ../src/Dialog_Rescue_Data.cc:36
 msgid "Search disk for file systems"
 msgstr "חיפוש אחר מערכות קבצים בכונן"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: ../src/Dialog_Rescue_Data.cc:51
+#: ../src/Dialog_Rescue_Data.cc:53
 msgid "File systems found on %1"
 msgstr "מערכות קבצים שהתגלו על גבי %1"
 
-#: ../src/Dialog_Rescue_Data.cc:56
+#: ../src/Dialog_Rescue_Data.cc:58
 msgid "Data found"
 msgstr "הנתונים נמצאו"
 
-#: ../src/Dialog_Rescue_Data.cc:60
+#: ../src/Dialog_Rescue_Data.cc:62
 msgid "Data found with inconsistencies"
 msgstr "נמצאו נתונים בעלי חוסר רציפות"
 
-#: ../src/Dialog_Rescue_Data.cc:62
+#: ../src/Dialog_Rescue_Data.cc:64
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
 msgstr "אזהרה!: מערכות הקבצים המסומנות ב־(!) אינן רציפות."
 
-#: ../src/Dialog_Rescue_Data.cc:64
+#: ../src/Dialog_Rescue_Data.cc:66
 msgid "You might encounter errors trying to view these file systems."
 msgstr "יתכן שיתרחשו תקלות בעת הניסיון לצפות במערכות קבצים אלו."
 
-#: ../src/Dialog_Rescue_Data.cc:80
+#: ../src/Dialog_Rescue_Data.cc:82
 msgid "The 'View' buttons create read-only views of each file system."
 msgstr "לחצן הצפייה יצור תצוגות לקריאה בלבד עבור כל מערכת קבצים."
 
-#: ../src/Dialog_Rescue_Data.cc:82
+#: ../src/Dialog_Rescue_Data.cc:84
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "כל התצוגות המעוגנות ינותקו בעת סגירת חלון דו־שיח זה."
 
-#: ../src/Dialog_Rescue_Data.cc:105
+#: ../src/Dialog_Rescue_Data.cc:107
 msgid "File systems"
 msgstr "מערכות קבצים"
 
 #. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: ../src/Dialog_Rescue_Data.cc:127
+#: ../src/Dialog_Rescue_Data.cc:129
 msgid "#%1: %2 (%3 MiB)"
 msgstr "מס׳ %1:‏ %2 (%3 MiB)"
 
-#: ../src/Dialog_Rescue_Data.cc:135
+#: ../src/Dialog_Rescue_Data.cc:137
 msgid "View"
 msgstr "תצוגה"
 
-#: ../src/Dialog_Rescue_Data.cc:172
+#: ../src/Dialog_Rescue_Data.cc:167
+#, fuzzy
+msgid "An error occurred while creating a temporary directory for use as a mount point."
+msgstr "אירעה שגיאה בעת יצירת התצוגה לקריאה בלבד."
+
+#: ../src/Dialog_Rescue_Data.cc:169
+msgid "Error"
+msgstr "שגיאה"
+
+#: ../src/Dialog_Rescue_Data.cc:175
+#, fuzzy
+msgid "Failed creating temporary directory"
+msgstr "שגיאה ביצירת תצוגה לקריאה בלבד"
+
+#: ../src/Dialog_Rescue_Data.cc:192
 msgid "An error occurred while creating the read-only view."
 msgstr "אירעה שגיאה בעת יצירת התצוגה לקריאה בלבד."
 
-#: ../src/Dialog_Rescue_Data.cc:174
-msgid ""
-"Either the file system can not be mounted (like swap), or there are "
-"inconsistencies or errors in the file system."
-msgstr ""
-"או שלא ניתן לעגן את מערכת הקבצים (כיוון שזהו כונן החלפה – swap), או שישנן "
-"שגיאות אי־רציפות או שגיאות במערכת הקבצים."
+#: ../src/Dialog_Rescue_Data.cc:194
+msgid "Either the file system can not be mounted (like swap), or there are inconsistencies or errors in the file system."
+msgstr "או שלא ניתן לעגן את מערכת הקבצים (כיוון שזהו כונן החלפה – swap), או שישנן שגיאות אי־רציפות או שגיאות במערכת הקבצים."
 
-#: ../src/Dialog_Rescue_Data.cc:178
+#: ../src/Dialog_Rescue_Data.cc:198
 msgid "Failed creating read-only view"
 msgstr "שגיאה ביצירת תצוגה לקריאה בלבד"
 
-#: ../src/Dialog_Rescue_Data.cc:208
+#: ../src/Dialog_Rescue_Data.cc:228
 msgid "Error:"
 msgstr "שגיאה:"
 
 #. TO TRANSLATORS: looks like
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
-#: ../src/Dialog_Rescue_Data.cc:216
+#: ../src/Dialog_Rescue_Data.cc:236
 msgid "The file system is mounted on:"
 msgstr "מערכת הקבצים מעוגנת אל:"
 
-#: ../src/Dialog_Rescue_Data.cc:221
+#: ../src/Dialog_Rescue_Data.cc:241
 msgid "Unable to open the default file manager"
 msgstr "לא ניתן לפתוח את מנהל הקבצים כבררת המחדל"
 
-#: ../src/Dialog_Rescue_Data.cc:240
-msgid ""
-"Warning: The detected file system area overlaps with at least one existing "
-"partition."
+#: ../src/Dialog_Rescue_Data.cc:260
+#, fuzzy
+msgid "Warning: The detected file system area overlaps with at least one existing partition"
 msgstr "אזהרה: האזור שזוהה במערכת הקבצים חופף לפחות מחיצה קיימת אחת."
 
-#: ../src/Dialog_Rescue_Data.cc:242
-msgid ""
-"It is recommended that you do not use any overlapping file systems to avoid "
-"disturbing existing data."
-msgstr ""
-"מומלץ שלא להשתמש במערכות קבצים חופפות כדי להימנע מהפרעה לנתונים קיימים."
+#: ../src/Dialog_Rescue_Data.cc:262
+msgid "It is recommended that you do not use any overlapping file systems to avoid disturbing existing data."
+msgstr "מומלץ שלא להשתמש במערכות קבצים חופפות כדי להימנע מהפרעה לנתונים קיימים."
 
-#: ../src/Dialog_Rescue_Data.cc:244
+#: ../src/Dialog_Rescue_Data.cc:264
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "האם ברצונך לנסות לנטרל את נקודות העגינה הבאות?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:322
+#: ../src/DMRaid.cc:326
 msgid "create missing %1 entries"
 msgstr "יצירת הרשומות החסרות של %1"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:421
+#: ../src/DMRaid.cc:425
 msgid "delete affected %1 entries"
 msgstr "מחיקת הרשומות המושפעות של %1"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:444
+#: ../src/DMRaid.cc:448
 msgid "delete %1 entry"
 msgstr "מחיקת הרשומות של %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:494
+#: ../src/DMRaid.cc:498
 msgid "update %1 entry"
 msgstr "עדכון הרשומות של %1"
 
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/FileSystem.cc:38
+msgid "_Mount"
+msgstr "_עיגון"
+
+#: ../src/FileSystem.cc:39
+msgid "_Unmount"
+msgstr "_ניתוק"
+
+#. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:124
+msgid "Created directory %1"
+msgstr "נוצרה התיקייה %1"
+
+#. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:151
+msgid "Removed directory %1"
+msgstr "הוסרה התיקייה %1"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
-#: ../src/GParted_Core.cc:205
+#: ../src/GParted_Core.cc:168
+#: ../src/GParted_Core.cc:177
 msgid "Scanning %1"
 msgstr "סריקת %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:228
+#: ../src/GParted_Core.cc:200
 msgid "Confirming %1"
 msgstr "אישור %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:240
+#: ../src/GParted_Core.cc:212
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "התעלמות מההתקן %1 בעל הסקטור הלוגי בן %2 בתים."
 
-#: ../src/GParted_Core.cc:242
-msgid ""
-"GParted requires libparted version 2.2 or higher to support devices with "
-"sector sizes larger than 512 bytes."
-msgstr ""
-"ל־GParted נדרשת גרסה 2.2 או עדכנית יותר של libparted, על מנת לתמוך בהתקנים "
-"עם גודל סקטור הגדול מ־512 בתים."
+#: ../src/GParted_Core.cc:214
+msgid "GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes."
+msgstr "ל־GParted נדרשת גרסה 2.2 או עדכנית יותר של libparted, על מנת לתמוך בהתקנים עם גודל סקטור הגדול מ־512 בתים."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:281
+#: ../src/GParted_Core.cc:252
 msgid "Searching %1 partitions"
 msgstr "חיפוש של המחיצה %1"
 
@@ -623,419 +719,529 @@ msgstr "חיפוש של המחיצה %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:328
+#: ../src/GParted_Core.cc:301
 msgid "unrecognized"
 msgstr "לא מזוהה"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:555
+#: ../src/GParted_Core.cc:613
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "מחיצה לא יכולה להיות באורך של %1 סקטורים"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:564
-msgid ""
-"A partition with used sectors (%1) greater than its length (%2) is not valid"
+#: ../src/GParted_Core.cc:627
+msgid "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "מחיצה שבה כמות הסקטורים שבשימוש (%1) גדולה מגודלה (%2) איננה אפשרית"
 
-#: ../src/GParted_Core.cc:629
+#: ../src/GParted_Core.cc:697
 msgid "libparted messages"
 msgstr "הודעה של libparted"
 
-#: ../src/GParted_Core.cc:1054
+#: ../src/GParted_Core.cc:1163
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "עדיין אין תמיכה ב־Linux Unified Key Setup."
 
-#: ../src/GParted_Core.cc:1171
-msgid "Logical Volume Management is not yet supported."
-msgstr "עדיין אין תמיכה ב־Logical Volume Management."
-
 #. no file system found....
-#: ../src/GParted_Core.cc:1200
+#: ../src/GParted_Core.cc:1313
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "אין אפשרות לזהות את מערכת הקבצים! הסיבות האפשריות לכך הן:"
 
-#: ../src/GParted_Core.cc:1202
+#: ../src/GParted_Core.cc:1315
 msgid "The file system is damaged"
 msgstr "מערכת הקבצים פגומה"
 
-#: ../src/GParted_Core.cc:1204
+#: ../src/GParted_Core.cc:1317
 msgid "The file system is unknown to GParted"
 msgstr "מערכת הקבצים לא מוכרת ל־GParted"
 
-#: ../src/GParted_Core.cc:1206
+#: ../src/GParted_Core.cc:1319
 msgid "There is no file system available (unformatted)"
 msgstr "אין מערכת קבצים זמינה (לא מפורמטת)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1209
+#: ../src/GParted_Core.cc:1322
 msgid "The device entry %1 is missing"
 msgstr "הרשומה להתקן %1 חסרה"
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1485
 msgid "Unable to find mount point"
 msgstr "אין אפשרות למצוא את נקודת העיגון"
 
-#: ../src/GParted_Core.cc:1414
+#: ../src/GParted_Core.cc:1558
 msgid "Unable to read the contents of this file system!"
 msgstr "לא ניתן לקרוא את התוכן של מערכת קבצים זו!"
 
-#: ../src/GParted_Core.cc:1416
+#: ../src/GParted_Core.cc:1560
 msgid "Because of this some operations may be unavailable."
 msgstr "עקב כך יתכן שכמה מהפעולות לא יהיו זמינות."
 
-#: ../src/GParted_Core.cc:1420
+#: ../src/GParted_Core.cc:1564
 msgid "The cause might be a missing software package."
 msgstr "יתכן שהסיבה היא חבילת תכנה חסרה."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1423
-msgid ""
-"The following list of software packages is required for %1 file system "
-"support:  %2."
+#: ../src/GParted_Core.cc:1567
+msgid "The following list of software packages is required for %1 file system support:  %2."
 msgstr "חבילות התכנה הבאות נדרשות לצורך תמיכה במערכת הקבצים %1:  %2."
 
-#: ../src/GParted_Core.cc:1496
+#. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
+#: ../src/GParted_Core.cc:1577
+msgid "%1 of unallocated space within the partition."
+msgstr ""
+
+#. TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
+#. * means that the user can perform a check of the partition which will
+#. * also grow the file system to fill the partition.
+#.
+#: ../src/GParted_Core.cc:1588
+#, fuzzy
+msgid "To grow the file system to fill the partition, select the partition and choose the menu item:"
+msgstr "ליצירת מחיצה חדשה, יש לבחור באפשרות מהתפריט:"
+
+#: ../src/GParted_Core.cc:1590
+msgid "Partition --> Check."
+msgstr "מחיצה --> נבדקה."
+
+#: ../src/GParted_Core.cc:1685
 msgid "create empty partition"
 msgstr "יצירת מחיצה ריקה"
 
-#: ../src/GParted_Core.cc:1564 ../src/GParted_Core.cc:2803
+#: ../src/GParted_Core.cc:1755
+#: ../src/GParted_Core.cc:3157
 msgid "path: %1"
 msgstr "נתיב: %1"
 
-#: ../src/GParted_Core.cc:1565 ../src/GParted_Core.cc:2804
+#: ../src/GParted_Core.cc:1756
+#: ../src/GParted_Core.cc:3158
 msgid "start: %1"
 msgstr "התחלה: %1"
 
-#: ../src/GParted_Core.cc:1566 ../src/GParted_Core.cc:2805
+#: ../src/GParted_Core.cc:1757
+#: ../src/GParted_Core.cc:3159
 msgid "end: %1"
 msgstr "סוף: %1"
 
-#: ../src/GParted_Core.cc:1567 ../src/GParted_Core.cc:2806
+#: ../src/GParted_Core.cc:1758
+#: ../src/GParted_Core.cc:3160
 msgid "size: %1 (%2)"
 msgstr "גודל: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1603 ../src/linux_swap.cc:83 ../src/xfs.cc:245
+#: ../src/GParted_Core.cc:1794
+#: ../src/linux_swap.cc:123
 msgid "create new %1 file system"
 msgstr "יצירת מערכת קבצים חדשה מסוג %1 "
 
-#: ../src/GParted_Core.cc:1640
+#: ../src/GParted_Core.cc:1835
 msgid "delete partition"
 msgstr "מחיקת מחיצה"
 
-#: ../src/GParted_Core.cc:1682
+#: ../src/GParted_Core.cc:1890
+msgid "delete %1 file system"
+msgstr "מחיקת מערכת הקבצים %1 "
+
+#: ../src/GParted_Core.cc:1907
 msgid "Clear partition label on %1"
 msgstr "הסרת התווית מהמחיצה במיקום %1"
 
-#: ../src/GParted_Core.cc:1687
+#: ../src/GParted_Core.cc:1912
 msgid "Set partition label to \"%1\" on %2"
 msgstr "קביעת התווית במחיצה \"%1\" במיקום %2"
+
+#: ../src/GParted_Core.cc:1946
+msgid "Set half of the UUID on %1 to a new, random value"
+msgstr ""
+
+#: ../src/GParted_Core.cc:1951
+msgid "Set UUID on %1 to a new, random value"
+msgstr ""
 
 #. TO TRANSLATORS:  moving requires old and new length to be the same
 #. * means that the length in bytes of the old partition and new partition
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:1775
+#: ../src/GParted_Core.cc:2036
 msgid "moving requires old and new length to be the same"
 msgstr "הזזה דורשת כי הגודל הישן והגודל החדש יהיו זהים"
 
-#: ../src/GParted_Core.cc:1805
+#: ../src/GParted_Core.cc:2066
 msgid "rollback last change to the partition table"
 msgstr "ביטול השינויים האחרונים בטבלת המחיצות"
 
-#: ../src/GParted_Core.cc:1835
+#: ../src/GParted_Core.cc:2104
 msgid "move file system to the left"
 msgstr "הזזת מערכת הקבצים לשמאל"
 
-#: ../src/GParted_Core.cc:1837
+#: ../src/GParted_Core.cc:2106
 msgid "move file system to the right"
 msgstr "הזזת מערכת הקבצים לימין"
 
-#: ../src/GParted_Core.cc:1840
+#: ../src/GParted_Core.cc:2109
 msgid "move file system"
 msgstr "הזזת מערכת הקבצים"
 
-#: ../src/GParted_Core.cc:1842
-msgid ""
-"new and old file system have the same position.  Hence skipping this "
-"operation"
-msgstr ""
-"מערכות הקבצים הישנה והחדשה נמצאות באותו המיקום. לפיכך יש לדלג על פעולה זו"
+#: ../src/GParted_Core.cc:2111
+msgid "new and old file system have the same position.  Hence skipping this operation"
+msgstr "מערכות הקבצים הישנה והחדשה נמצאות באותו המיקום. לפיכך יש לדלג על פעולה זו"
 
-#: ../src/GParted_Core.cc:1861
+#: ../src/GParted_Core.cc:2131
 msgid "perform real move"
 msgstr "ביצוע העברה אמיתית"
 
-#: ../src/GParted_Core.cc:1911
+#: ../src/GParted_Core.cc:2184
 msgid "using libparted"
 msgstr "שימוש ב־libparted"
 
-#: ../src/GParted_Core.cc:1952
+#: ../src/GParted_Core.cc:2227
 msgid "resizing requires old and new start to be the same"
 msgstr "שינוי גודל דורש כי ההתחלה החדשה והישנה יהיו זהות."
 
-#: ../src/GParted_Core.cc:2017
+#: ../src/GParted_Core.cc:2294
 msgid "resize/move partition"
 msgstr "שינוי גודל/הזזת מחיצה"
 
-#: ../src/GParted_Core.cc:2020
+#: ../src/GParted_Core.cc:2297
 msgid "move partition to the right"
 msgstr "הזזת מחיצה לימין"
 
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:2300
 msgid "move partition to the left"
 msgstr "הזזת מחיצה לשמאל"
 
-#: ../src/GParted_Core.cc:2026
+#: ../src/GParted_Core.cc:2303
 msgid "grow partition from %1 to %2"
 msgstr "הגדלת המחיצה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2029
+#: ../src/GParted_Core.cc:2306
 msgid "shrink partition from %1 to %2"
 msgstr "כיווץ המחיצה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2032
+#: ../src/GParted_Core.cc:2309
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "הזזת המחיצה לימין והגדלתה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2035
+#: ../src/GParted_Core.cc:2312
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "הזזת המחיצה לימין והקטנתה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2038
+#: ../src/GParted_Core.cc:2315
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "הזזת המחיצה לשמאל והגדלתה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2041
+#: ../src/GParted_Core.cc:2318
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "הזזת המחיצה לימין והקטנתה מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2056
-msgid ""
-"new and old partition have the same size and position.  Hence skipping this "
-"operation"
-msgstr ""
-"המחיצה הישנה והחדשה הן בעלות אותו גודל ומיקום. לפיכך יש לדלג על פעולה זו"
+#: ../src/GParted_Core.cc:2333
+msgid "new and old partition have the same size and position.  Hence skipping this operation"
+msgstr "המחיצה הישנה והחדשה הן בעלות אותו גודל ומיקום. לפיכך יש לדלג על פעולה זו"
 
-#: ../src/GParted_Core.cc:2066
+#: ../src/GParted_Core.cc:2343
 msgid "old start: %1"
 msgstr "התחלה ישנה: %1"
 
-#: ../src/GParted_Core.cc:2067
+#: ../src/GParted_Core.cc:2344
 msgid "old end: %1"
 msgstr "סיום ישן: %1"
 
-#: ../src/GParted_Core.cc:2068
+#: ../src/GParted_Core.cc:2345
 msgid "old size: %1 (%2)"
 msgstr "גודל ישן: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2130 ../src/GParted_Core.cc:2884
+#: ../src/GParted_Core.cc:2410
+#: ../src/GParted_Core.cc:3239
 msgid "new start: %1"
 msgstr "התחלה חדשה: %1"
 
-#: ../src/GParted_Core.cc:2131 ../src/GParted_Core.cc:2885
+#: ../src/GParted_Core.cc:2411
+#: ../src/GParted_Core.cc:3240
 msgid "new end: %1"
 msgstr "סיום חדש: %1"
 
-#: ../src/GParted_Core.cc:2132 ../src/GParted_Core.cc:2886
+#: ../src/GParted_Core.cc:2412
+#: ../src/GParted_Core.cc:3241
 msgid "new size: %1 (%2)"
 msgstr "הגודל החדש: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2170
+#: ../src/GParted_Core.cc:2439
+#: ../src/GParted_Core.cc:3187
+msgid "requested start: %1"
+msgstr "התחלה מבוקשת: %1"
+
+#: ../src/GParted_Core.cc:2440
+#: ../src/GParted_Core.cc:3188
+msgid "requested end: %1"
+msgstr "סיום מבוקש: %1"
+
+#: ../src/GParted_Core.cc:2441
+#: ../src/GParted_Core.cc:3189
+msgid "requested size: %1 (%2)"
+msgstr "גודל מבוקש: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2466
 msgid "shrink file system"
 msgstr "כיווץ מערכת הקבצים"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2470
 msgid "grow file system"
 msgstr "הגדלת מערכת הקבצים"
 
-#: ../src/GParted_Core.cc:2177
+#: ../src/GParted_Core.cc:2473
 msgid "resize file system"
 msgstr "שינוי גודל מערכת הקבצים"
 
-#: ../src/GParted_Core.cc:2180
-msgid ""
-"new and old file system have the same size.  Hence skipping this operation"
+#: ../src/GParted_Core.cc:2476
+msgid "new and old file system have the same size.  Hence skipping this operation"
 msgstr "למערכת הקבצים החדשה והישנה יש את אותו הגודל. לפיכך יש לדלג על פעולה זו"
 
-#: ../src/GParted_Core.cc:2217
+#: ../src/GParted_Core.cc:2517
 msgid "grow file system to fill the partition"
 msgstr "הגדלת מערכת הקבצים בהתאמה למחיצה"
 
-#: ../src/GParted_Core.cc:2222
+#: ../src/GParted_Core.cc:2522
 msgid "growing is not available for this file system"
 msgstr "הגדלה לא אפשרית עבור מערכת קבצים זו"
 
-#: ../src/GParted_Core.cc:2241
+#: ../src/GParted_Core.cc:2531
+msgid "growing the file system is currently disallowed"
+msgstr "הגדלת מערכת הקבצים אינה מורשית כרגע"
+
+#: ../src/GParted_Core.cc:2557
 msgid "the destination is smaller than the source partition"
 msgstr "היעד קטן ממחיצת המקור"
 
-#: ../src/GParted_Core.cc:2258
+#: ../src/GParted_Core.cc:2574
 msgid "copy file system of %1 to %2"
 msgstr "העתקת מערכת הקבצים מ־%1 ל־%2"
 
-#: ../src/GParted_Core.cc:2304
+#: ../src/GParted_Core.cc:2628
 msgid "perform read-only test"
 msgstr "ביצוע בדיקת קריאה בלבד"
 
-#: ../src/GParted_Core.cc:2358
+#: ../src/GParted_Core.cc:2682
 msgid "using internal algorithm"
 msgstr "שימוש באלגוריתם פנימי"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2362
+#: ../src/GParted_Core.cc:2686
 msgid "read %1"
 msgstr "נקראו %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2364
+#: ../src/GParted_Core.cc:2688
 msgid "copy %1"
 msgstr "העתקת %1"
 
-#: ../src/GParted_Core.cc:2368
+#: ../src/GParted_Core.cc:2692
 msgid "finding optimal block size"
 msgstr "מציאת גודל מיטבי עבור גודל בלוק"
 
-#: ../src/GParted_Core.cc:2408
+#: ../src/GParted_Core.cc:2732
 msgid "%1 seconds"
 msgstr "%1 שניות"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2426
+#: ../src/GParted_Core.cc:2750
 msgid "optimal block size is %1"
 msgstr "גודל הבלוק המיטבי הוא %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2444
+#: ../src/GParted_Core.cc:2768
 msgid "%1 (%2 B) read"
 msgstr "נקראו %1 (%2 בתים)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2446
+#: ../src/GParted_Core.cc:2770
 msgid "%1 (%2 B) copied"
 msgstr "הועתקו %1 (%2 בתים)"
 
-#: ../src/GParted_Core.cc:2459
+#: ../src/GParted_Core.cc:2783
 msgid "roll back last transaction"
 msgstr "ביטול ההעברה האחרונה"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2812
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "בדיקה אחר שגיאות במערכת הקבצים שב־%1, (ובמידת האפשר) תיקון שלהן"
 
-#: ../src/GParted_Core.cc:2496
+#: ../src/GParted_Core.cc:2821
 msgid "checking is not available for this file system"
 msgstr "בדיקה לא זמינה עבור מערכת קבצים זו"
 
-#: ../src/GParted_Core.cc:2524
+#: ../src/GParted_Core.cc:2852
 msgid "set partition type on %1"
 msgstr "קביעת סוג המחיצה של %1"
 
-#: ../src/GParted_Core.cc:2554
+#: ../src/GParted_Core.cc:2889
 msgid "new partition type: %1"
 msgstr "סוג המחיצה החדשה: %1"
 
+#: ../src/GParted_Core.cc:2906
+msgid "new partition flag: %1"
+msgstr "דגל מחיצה חדשה: %1"
+
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:2934
 msgid "%1 of %2 read (%3 remaining)"
 msgstr "נקראו %1 מתוך %2 (נותרו %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2585
+#: ../src/GParted_Core.cc:2936
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "הועתקו %1 מתוך %2 (נותרו %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2593 ../src/GParted_Core.cc:2710
+#: ../src/GParted_Core.cc:2944
+#: ../src/GParted_Core.cc:3061
 msgid "%1 of %2 read"
 msgstr "נקראו %1 מתוך %2"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2595 ../src/GParted_Core.cc:2712
+#: ../src/GParted_Core.cc:2946
+#: ../src/GParted_Core.cc:3063
 msgid "%1 of %2 copied"
 msgstr "הועתקו %1 מתוך %2"
 
 #. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2616
+#: ../src/GParted_Core.cc:2967
 msgid "read %1 using a block size of %2"
 msgstr "נקראו %1 באמצעות בלוק בגודל %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2621
+#: ../src/GParted_Core.cc:2972
 msgid "copy %1 using a block size of %2"
 msgstr "העתקת %1 באמצעות בלוק בגודל %2"
 
-#: ../src/GParted_Core.cc:2771
+#: ../src/GParted_Core.cc:3122
 msgid "Error while writing block at sector %1"
 msgstr "שגיאה במהלך כתיבת בלוק בסקטור %1"
 
-#: ../src/GParted_Core.cc:2774
+#: ../src/GParted_Core.cc:3125
 msgid "Error while reading block at sector %1"
 msgstr "שגיאה במהלך קריאת בלוק בסקטור %1"
 
-#: ../src/GParted_Core.cc:2784
+#: ../src/GParted_Core.cc:3135
 msgid "calibrate %1"
 msgstr "כיול %1"
 
-#: ../src/GParted_Core.cc:2829
+#: ../src/GParted_Core.cc:3183
 msgid "calculate new size and position of %1"
 msgstr "חישוב הגודל והמיקום החדשים של %1"
 
-#: ../src/GParted_Core.cc:2833
-msgid "requested start: %1"
-msgstr "התחלה מבוקשת: %1"
-
-#: ../src/GParted_Core.cc:2834
-msgid "requested end: %1"
-msgstr "סיום מבוקש: %1"
-
-#: ../src/GParted_Core.cc:2835
-msgid "requested size: %1 (%2)"
-msgstr "גודל מבוקש: %1 (%2)"
-
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:2981
+#: ../src/GParted_Core.cc:3340
 msgid "update boot sector of %1 file system on %2"
 msgstr "עדכון סקטור ההפעלה במערכת קבצים מסוג %1 במיקום %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3017
+#: ../src/GParted_Core.cc:3376
 msgid "Error trying to write to boot sector in %1"
 msgstr "שגיאה בניסיון הכתיבה לסקטור ההפעלה שב־%1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3023
+#: ../src/GParted_Core.cc:3382
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "תקלה בזמן חיפוש המיקום 0x1c ב־%1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3030
+#: ../src/GParted_Core.cc:3389
 msgid "Error trying to open %1"
 msgstr "תקלה בניסיון לפתיחת %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3040
-msgid ""
-"Failed to set the number of hidden sectors to %1 in the NTFS boot record."
+#: ../src/GParted_Core.cc:3399
+msgid "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "ארע כשל בקביעת מספר הסקטורים המוסתרים ל־%1 ברשומות האתחול של NTFS."
 
-#: ../src/GParted_Core.cc:3042
+#: ../src/GParted_Core.cc:3401
 msgid "You might try the following command to correct the problem:"
 msgstr "ניתן לנסות את הפקודות הבאות כדי לתקן פעולה זו:"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:155
+#: ../src/GParted_Core.cc:3513
+msgid "Libparted Warning"
+msgstr "אזהרת Libparted"
+
+#: ../src/GParted_Core.cc:3517
+msgid "Libparted Information"
+msgstr "פרטי Libparted"
+
+#: ../src/GParted_Core.cc:3521
+msgid "Libparted Error"
+msgstr "שגיאת Libparted"
+
+#: ../src/GParted_Core.cc:3523
+msgid "Libparted Bug Found!"
+msgstr "נמצאה תקלה ב־Libparted!"
+
+#: ../src/GParted_Core.cc:3526
+msgid "Fix"
+msgstr "תיקון"
+
+#: ../src/GParted_Core.cc:3528
+msgid "Yes"
+msgstr "כן"
+
+#: ../src/GParted_Core.cc:3530
+msgid "Ok"
+msgstr "אישור"
+
+#: ../src/GParted_Core.cc:3532
+msgid "Retry"
+msgstr "ניסיון חוזר"
+
+#: ../src/GParted_Core.cc:3534
+msgid "No"
+msgstr "לא"
+
+#: ../src/GParted_Core.cc:3536
+msgid "Cancel"
+msgstr "ביטול"
+
+#: ../src/GParted_Core.cc:3538
+msgid "Ignore"
+msgstr "התעלמות"
+
+#: ../src/HBoxOperations.cc:45
+#: ../src/Win_GParted.cc:159
 msgid "_Undo Last Operation"
 msgstr "_ביטול הפעולה האחרונה"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:161
+#: ../src/HBoxOperations.cc:50
+#: ../src/Win_GParted.cc:165
 msgid "_Clear All Operations"
 msgstr "_ניקוי כל הפעולות"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:166
+#: ../src/HBoxOperations.cc:55
+#: ../src/Win_GParted.cc:170
 msgid "_Apply All Operations"
 msgstr "ה_חלת כל הפעולות"
+
+#: ../src/LVM2_PV_Info.cc:194
+msgid "One or more Physical Volumes belonging to the Volume Group is missing."
+msgstr "כרך פיזי אחד או יותר השייך לקבוצת הכרכים חסר."
+
+#: ../src/LVM2_PV_Info.cc:280
+msgid "An error occurred reading LVM2 configuration!"
+msgstr "אירעה שגיאה בעת קריאת התצורה של LVM2!"
+
+#: ../src/LVM2_PV_Info.cc:282
+msgid "Some or all of the details might be missing or incorrect."
+msgstr "חלק או כל הפרטים חסרים או שגויים."
+
+#: ../src/LVM2_PV_Info.cc:284
+msgid "You should NOT modify any LVM2 PV partitions."
+msgstr ""
+
+#. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
+#: ../src/OperationChangeUUID.cc:60
+msgid "Set half the UUID to a new random value on %1 file system on %2"
+msgstr ""
+
+#. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
+#: ../src/OperationChangeUUID.cc:66
+#, fuzzy
+msgid "Set a new random UUID on %1 file system on %2"
+msgstr "עדכון סקטור ההפעלה במערכת קבצים מסוג %1 במיקום %2"
 
 #: ../src/OperationCopy.cc:37
 msgid "copy of %1"
@@ -1086,9 +1292,7 @@ msgid "resize/move %1"
 msgstr "שינוי גודל"
 
 #: ../src/OperationResizeMove.cc:88
-msgid ""
-"new and old partition have the same size and position.  Hence continuing "
-"anyway"
+msgid "new and old partition have the same size and position.  Hence continuing anyway"
 msgstr "למחיצה הישנה ולחדשה יש אותו גודל ומיקום. לפיכך יש להמשיך בכל מקרה"
 
 #: ../src/OperationResizeMove.cc:92
@@ -1153,7 +1357,7 @@ msgstr "דגלים"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:125
+#: ../src/Utils.cc:131
 msgid "unallocated"
 msgstr "לא מוקצה"
 
@@ -1162,7 +1366,7 @@ msgstr "לא מוקצה"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:132
+#: ../src/Utils.cc:138
 msgid "unknown"
 msgstr "לא ידוע"
 
@@ -1170,35 +1374,35 @@ msgstr "לא ידוע"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:138
+#: ../src/Utils.cc:144
 msgid "unformatted"
 msgstr "לא מאותחל"
 
-#: ../src/Utils.cc:155
+#: ../src/Utils.cc:163
 msgid "used"
 msgstr "בשימוש"
 
-#: ../src/Utils.cc:156
+#: ../src/Utils.cc:164
 msgid "unused"
 msgstr "לא בשימוש"
 
-#: ../src/Utils.cc:196
+#: ../src/Utils.cc:261
 msgid "%1 B"
 msgstr "%1 בתים"
 
-#: ../src/Utils.cc:201
+#: ../src/Utils.cc:266
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:206
+#: ../src/Utils.cc:271
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:211
+#: ../src/Utils.cc:276
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:216
+#: ../src/Utils.cc:281
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1210,265 +1414,253 @@ msgstr "%1 TiB"
 #. * then deleted by gparted.  Under normal circumstances a user should never
 #. * see this file.
 #.
-#: ../src/Utils.cc:374
+#: ../src/Utils.cc:440
 msgid "# Temporary file created by gparted.  It may be deleted.\n"
 msgstr "# קובץ זמני שנוצר ע\"י gparted. ניתן למוחקו.\n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:386
+#: ../src/Utils.cc:452
 msgid "Label operation failed:  Unable to write to temporary file %1.\n"
 msgstr "פעולת התווית נכשלה: אין אפשרות לכתוב אל הקובץ הזמני %1. \n"
 
 #. TO TRANSLATORS: looks like
 #. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
 #.
-#: ../src/Utils.cc:398
+#: ../src/Utils.cc:464
 msgid "Label operation failed:  Unable to create temporary file %1.\n"
 msgstr "פעולת התווית נכשלה: אין אפשרות ליצור את הקובץ הזמני %1. \n"
 
-#: ../src/Win_GParted.cc:139
+#: ../src/Win_GParted.cc:143
 msgid "_Refresh Devices"
 msgstr "_רענון ההתקנים"
 
-#: ../src/Win_GParted.cc:145
+#: ../src/Win_GParted.cc:149
 msgid "_Devices"
 msgstr "ה_תקנים"
 
-#: ../src/Win_GParted.cc:150
+#: ../src/Win_GParted.cc:154
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:169
+#: ../src/Win_GParted.cc:173
 msgid "_Edit"
 msgstr "ע_ריכה"
 
-#: ../src/Win_GParted.cc:174
+#: ../src/Win_GParted.cc:178
 msgid "Device _Information"
 msgstr "מידע אודות הה_תקן"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:180
 msgid "Pending _Operations"
 msgstr "פעולות _ממתינות"
 
-#: ../src/Win_GParted.cc:177
+#: ../src/Win_GParted.cc:181
 msgid "_View"
 msgstr "_תצוגה"
 
-#: ../src/Win_GParted.cc:181
+#: ../src/Win_GParted.cc:185
 msgid "_File System Support"
 msgstr "ת_מיכה במערכת הקבצים"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:189
 msgid "_Create Partition Table"
 msgstr "י_צירת טבלת מחיצות"
 
-#: ../src/Win_GParted.cc:188
+#: ../src/Win_GParted.cc:192
 msgid "_Attempt Data Rescue"
 msgstr "ניסיון _חילוץ הנתונים"
 
-#: ../src/Win_GParted.cc:191
+#: ../src/Win_GParted.cc:195
 msgid "_Device"
 msgstr "ה_תקן"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:199
 msgid "_Partition"
 msgstr "_מחיצה"
 
-#: ../src/Win_GParted.cc:200
+#: ../src/Win_GParted.cc:204
 msgid "_Contents"
 msgstr "ת_כולה"
 
-#: ../src/Win_GParted.cc:208
+#: ../src/Win_GParted.cc:212
 msgid "_Help"
 msgstr "ע_זרה"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:220
+#: ../src/Win_GParted.cc:224
 msgid "New"
 msgstr "חדש"
 
-#: ../src/Win_GParted.cc:225
+#: ../src/Win_GParted.cc:229
 msgid "Create a new partition in the selected unallocated space"
 msgstr "יצירת מחיצה חדשה בשטח הלא מוקצה שנבחר"
 
-#: ../src/Win_GParted.cc:230
+#: ../src/Win_GParted.cc:234
 msgid "Delete the selected partition"
 msgstr "מחיקת המחיצה שנבחרה"
 
-#: ../src/Win_GParted.cc:252
+#: ../src/Win_GParted.cc:256
 msgid "Resize/Move the selected partition"
 msgstr "שינוי גודל/הזזה של המחיצה שנבחרה"
 
-#: ../src/Win_GParted.cc:261
+#: ../src/Win_GParted.cc:265
 msgid "Copy the selected partition to the clipboard"
 msgstr "העתקת המחיצה שנבחרה ללוח העריכה"
 
-#: ../src/Win_GParted.cc:266
+#: ../src/Win_GParted.cc:270
 msgid "Paste the partition from the clipboard"
 msgstr "הדבקת מחיצה מלוח העריכה"
 
-#: ../src/Win_GParted.cc:278
+#: ../src/Win_GParted.cc:282
 msgid "Undo Last Operation"
 msgstr "ביטול הפעולה האחרונה"
 
-#: ../src/Win_GParted.cc:286
+#: ../src/Win_GParted.cc:290
 msgid "Apply All Operations"
 msgstr "החלת כל הפעולות"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:308
+#: ../src/Win_GParted.cc:313
 msgid "_New"
 msgstr "_חדש"
 
-#: ../src/Win_GParted.cc:324
+#: ../src/Win_GParted.cc:329
 msgid "_Resize/Move"
 msgstr "_שינוי גודל/הזזה"
 
-#: ../src/Win_GParted.cc:348
+#: ../src/Win_GParted.cc:353
 msgid "_Format to"
 msgstr "_פרמוט ל־"
 
-#: ../src/Win_GParted.cc:357
-msgid "Unmount"
-msgstr "ניתוק"
-
-#: ../src/Win_GParted.cc:363
+#: ../src/Win_GParted.cc:369
 msgid "_Mount on"
 msgstr "_עיגון במיקום"
 
-#: ../src/Win_GParted.cc:370
+#: ../src/Win_GParted.cc:376
 msgid "M_anage Flags"
 msgstr "ניה_ול דגלים"
 
-#: ../src/Win_GParted.cc:375
+#: ../src/Win_GParted.cc:381
 msgid "C_heck"
 msgstr "_בדיקה"
 
-#: ../src/Win_GParted.cc:380
+#: ../src/Win_GParted.cc:386
 msgid "_Label"
 msgstr "_תווית"
 
-#: ../src/Win_GParted.cc:442
+#: ../src/Win_GParted.cc:391
+msgid "New UU_ID"
+msgstr "UUID _חדש"
+
+#: ../src/Win_GParted.cc:452
 msgid "Device Information"
 msgstr "מידע אודות ההתקן"
 
 #. model
-#: ../src/Win_GParted.cc:450
+#: ../src/Win_GParted.cc:460
 msgid "Model:"
 msgstr "דגם:"
 
 #. disktype
-#: ../src/Win_GParted.cc:487
+#: ../src/Win_GParted.cc:497
 msgid "Partition table:"
 msgstr "טבלת מחיצות:"
 
 #. heads
-#: ../src/Win_GParted.cc:495
+#: ../src/Win_GParted.cc:505
 msgid "Heads:"
 msgstr "ראשים:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:503
+#: ../src/Win_GParted.cc:513
 msgid "Sectors/track:"
 msgstr "סקטורים/רצועות:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:511
+#: ../src/Win_GParted.cc:521
 msgid "Cylinders:"
 msgstr "צילינדרים:"
 
 #. sector size
-#: ../src/Win_GParted.cc:527
+#: ../src/Win_GParted.cc:537
 msgid "Sector size:"
 msgstr "גודל הסקטורים:"
 
-#: ../src/Win_GParted.cc:711
-msgid "Could not add this operation to the list."
-msgstr "אין אפשרות להוסיף פעולות לרשימה."
+#: ../src/Win_GParted.cc:725
+msgid "Could not add this operation to the list"
+msgstr "לא ניתן להוסיף פעולה זאת לרשימה"
 
-#: ../src/Win_GParted.cc:736
+#: ../src/Win_GParted.cc:830
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "פעולה אחת ממתינה"
 msgstr[1] "%1 פעולות ממתינות"
 
-#: ../src/Win_GParted.cc:790
+#: ../src/Win_GParted.cc:884
 msgid "Quit GParted?"
 msgstr "האם לצאת מ־GParted?"
 
-#: ../src/Win_GParted.cc:796 ../src/Win_GParted.cc:2051
+#: ../src/Win_GParted.cc:890
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "פעולה אחת ממתינה כעת"
 msgstr[1] "%1 פעולות ממתינות כעת"
 
-#: ../src/Win_GParted.cc:822
-msgid "_Unmount"
-msgstr "_ניתוק"
-
-#: ../src/Win_GParted.cc:847
-msgid "_Swapoff"
-msgstr "_כיבוי swap"
-
-#: ../src/Win_GParted.cc:853
-msgid "_Swapon"
-msgstr "ה_פעלת swap"
-
-#: ../src/Win_GParted.cc:1047
+#: ../src/Win_GParted.cc:1166
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1093
+#: ../src/Win_GParted.cc:1212
 msgid "Scanning all devices..."
 msgstr "סריקת כל ההתקנים..."
 
-#: ../src/Win_GParted.cc:1138
+#: ../src/Win_GParted.cc:1257
 msgid "No devices detected"
 msgstr "לא נמצאו התקנים"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1219
+#: ../src/Win_GParted.cc:1338
 msgid "No partition table found on device %1"
 msgstr "לא נמצאה טבלת מחיצות בהתקן %1"
 
-#: ../src/Win_GParted.cc:1224
+#: ../src/Win_GParted.cc:1343
 msgid "A partition table is required before partitions can be added."
 msgstr "יש צורך בטבלת מחיצות לפני שניתן יהיה להוסיף עוד מחיצות."
 
-#: ../src/Win_GParted.cc:1226
+#: ../src/Win_GParted.cc:1345
 msgid "To create a new partition table choose the menu item:"
 msgstr "ליצירת מחיצה חדשה, יש לבחור באפשרות מהתפריט:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1229
+#: ../src/Win_GParted.cc:1348
 msgid "Device --> Create Partition Table."
 msgstr "התקנים --> יצירת טבלת מחיצות."
 
-#: ../src/Win_GParted.cc:1265
-msgid "Unable to open GParted Manual help file."
-msgstr "אין אפשרות לפתוח את קובץ העזרה של GParted."
+#: ../src/Win_GParted.cc:1384
+msgid "Unable to open GParted Manual help file"
+msgstr "לא ניתן לפתוח את קובץ העזרה של GParted"
 
-#: ../src/Win_GParted.cc:1281
-msgid "Documentation is not available."
-msgstr "התיעוד אינו זמין."
+#: ../src/Win_GParted.cc:1400
+msgid "Documentation is not available"
+msgstr "התיעוד אינו זמין"
 
-#: ../src/Win_GParted.cc:1286
+#: ../src/Win_GParted.cc:1405
 msgid "This build of gparted is configured without documentation."
 msgstr "הידור התכנית GParted הוגדר ללא התיעוד."
 
-#: ../src/Win_GParted.cc:1288
+#: ../src/Win_GParted.cc:1407
 msgid "Documentation is available at the project web site."
 msgstr "התיעוד זמין באתר הבית של הפרויקט."
 
-#: ../src/Win_GParted.cc:1309
+#: ../src/Win_GParted.cc:1428
 msgid "GNOME Partition Editor"
 msgstr "עורך המחיצות של GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1325
+#: ../src/Win_GParted.cc:1455
 msgid "translator-credits"
 msgstr ""
 "יובל טנאי\n"
@@ -1479,340 +1671,397 @@ msgstr ""
 "פרוייקט תרגום GNOME לעברית:\n"
 "‏http://gnome-il.berlios.de"
 
-#: ../src/Win_GParted.cc:1367
+#: ../src/Win_GParted.cc:1497
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "לא ניתן ליצור יותר ממחיצה ראשית אחת"
 msgstr[1] "לא ניתן ליצור יותר מ־%1 מחיצות ראשיות"
 
-#: ../src/Win_GParted.cc:1379
-msgid ""
-"If you want more partitions you should first create an extended partition. "
-"Such a partition can contain other partitions. Because an extended partition "
-"is also a primary partition it might be necessary to remove a primary "
-"partition first."
-msgstr ""
-"על מנת ליצור עוד מחיצות, יש קודם כל ליצור מחיצה מורחבת (extended partition). "
-"מחיצה מסוג זה יכולה להכיל מחיצות אחרות. כיוון שמחיצה מורחבת חייבת להיות "
-"מחיצה ראשית בעצמה, ייתכן שיהיה צורך להסיר מחיצה ראשית אחרת קודם כל."
+#: ../src/Win_GParted.cc:1509
+msgid "If you want more partitions you should first create an extended partition. Such a partition can contain other partitions. Because an extended partition is also a primary partition it might be necessary to remove a primary partition first."
+msgstr "על מנת ליצור עוד מחיצות, יש קודם כל ליצור מחיצה מורחבת (extended partition). מחיצה מסוג זה יכולה להכיל מחיצות אחרות. כיוון שמחיצה מורחבת חייבת להיות מחיצה ראשית בעצמה, ייתכן שיהיה צורך להסיר מחיצה ראשית אחרת קודם כל."
 
-#: ../src/Win_GParted.cc:1460
-msgid "Moving a partition might cause your operating system to fail to boot."
+#: ../src/Win_GParted.cc:1592
+#, fuzzy
+msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "העברת מחיצה עלולה לגרום לכשל באתחול מערכת ההפעלה."
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1600
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "לתור נוספה פעולה להעברת סקטור ההתחלה של המחיצה %1."
 
-#: ../src/Win_GParted.cc:1473
+#: ../src/Win_GParted.cc:1603
+msgid "  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:."
+msgstr ""
+
+#: ../src/Win_GParted.cc:1605
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "באפשרותך ללמוד כיצד לתקן את תצורת האתחול דרך שאלות הנפוצות של GParted."
 
-#: ../src/Win_GParted.cc:1544
-msgid "You have pasted into an existing partition."
+#: ../src/Win_GParted.cc:1609
+#, fuzzy
+msgid "Moving a partition might take a very long time to apply."
+msgstr "הסריקה עלולה לארוך זמן רב."
+
+#: ../src/Win_GParted.cc:1713
+#, fuzzy
+msgid "You have pasted into an existing partition"
 msgstr "ההדבקה התבצעה אל תוך מחיצה קיימת."
 
-#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:1551
+#: ../src/Win_GParted.cc:1721
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "הנתונים שב־%1 ימחקו אם הפעולה תבוצע."
 
-#: ../src/Win_GParted.cc:1606
+#: ../src/Win_GParted.cc:1784
 msgid "Unable to delete %1!"
 msgstr "אין אפשרות למחוק את %1!"
 
-#: ../src/Win_GParted.cc:1613
+#: ../src/Win_GParted.cc:1791
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "נא לנתק כל מחיצה לוגית עם מספר גבוה מ־%1"
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1802
 msgid "Are you sure you want to delete %1?"
 msgstr "האם ברצונך למחוק את %1?"
 
-#: ../src/Win_GParted.cc:1631
+#: ../src/Win_GParted.cc:1809
 msgid "After deletion this partition is no longer available for copying."
 msgstr "לאחר מחיקת מחיצה זו היא לא תהיה זמינה יותר להעתקה."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1634
+#: ../src/Win_GParted.cc:1812
 msgid "Delete %1 (%2, %3)"
 msgstr "מחיקת %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1704
-msgid "Cannot format this file system to %1."
+#: ../src/Win_GParted.cc:1895
+#, fuzzy
+msgid "Cannot format this file system to %1"
 msgstr "אין אפשרות לאתחל את מערכת הקבצים ל־%1."
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1716
+#: ../src/Win_GParted.cc:1907
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "מערכת הקבצים %1 דורשת מחיצה בגודל של לפחות %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1724
+#: ../src/Win_GParted.cc:1915
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "הגודל המרבי של מחיצה עם מערכת קבצים מסוג %1  הוא %2"
 
-#: ../src/Win_GParted.cc:1810
+#: ../src/Win_GParted.cc:2009
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "איו אפשרות לנתק את עיגון המחיצה מנקודות העיגון הבאות:"
 
-#: ../src/Win_GParted.cc:1812
-msgid ""
-"Most likely other partitions are also mounted on these mount points. You are "
-"advised to unmount them manually."
-msgstr ""
-"מירב הסיכויים שמחיצות נוספות מעוגנות לאותה נקודת עיגון. מומלץ לנתק את העיגון "
-"ידנית."
+#: ../src/Win_GParted.cc:2011
+msgid "Most likely other partitions are also mounted on these mount points. You are advised to unmount them manually."
+msgstr "מירב הסיכויים שמחיצות נוספות מעוגנות לאותה נקודת עיגון. מומלץ לנתק את העיגון ידנית."
 
-#: ../src/Win_GParted.cc:1869 ../src/Win_GParted.cc:1953
-msgid "%1 operation is currently pending for partition %2."
-msgid_plural "%1 operations are currently pending for partition %2."
+#: ../src/Win_GParted.cc:2086
+#: ../src/Win_GParted.cc:2207
+#, fuzzy
+msgid "%1 operation is currently pending for partition %2"
+msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "פעולה אחת ממתינה כעת למחיצה %2."
 msgstr[1] "%1 פעולות ממתינות כעת למחיצה %2."
 
-#: ../src/Win_GParted.cc:1883
-msgid ""
-"The swapon action cannot be performed if an operation is pending for the "
-"partition."
+#: ../src/Win_GParted.cc:2102
+msgid "The swapon action cannot be performed if an operation is pending for the partition."
 msgstr "לא ניתן לבצע את הפעלת ההחלפה אם ישנה פעולה הממתינה למחיצה."
 
-#: ../src/Win_GParted.cc:1885
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using swapon "
-"with this partition."
-msgstr ""
-"ניתן להשתמש בתפריט העריכה כדי לבטל, לנקות או להחיל את הפעולות לפני הפעלת "
-"ההחלפה על מחיצה זו."
+#: ../src/Win_GParted.cc:2104
+msgid "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition."
+msgstr "ניתן להשתמש בתפריט העריכה כדי לבטל, לנקות או להחיל את הפעולות לפני הפעלת ההחלפה על מחיצה זו."
 
-#: ../src/Win_GParted.cc:1903
+#: ../src/Win_GParted.cc:2108
+#, fuzzy
+msgid "The activate Volume Group action cannot be performed if an operation is pending for the partition."
+msgstr "לא ניתן לבצע את פעולת העיגון אם ישנה פעולה הממתינה למחיצה."
+
+#: ../src/Win_GParted.cc:2110
+msgid "Use the Edit menu to undo, clear, or apply operations before using activate Volume Group with this partition."
+msgstr "ניתן להשתמש בתפריט העריכה כדי לבטל, לנקות או להחיל פעולות לפני שימוש בהפעלת קבוצת כרכים עם מחיצה זו."
+
+#: ../src/Win_GParted.cc:2129
 msgid "Deactivating swap on %1"
 msgstr "ה־swap מופסק במיקום %1"
 
-#: ../src/Win_GParted.cc:1903
+#: ../src/Win_GParted.cc:2129
 msgid "Activating swap on %1"
 msgstr "ה־swap מופעל במיקום %1"
 
-#: ../src/Win_GParted.cc:1910
+#: ../src/Win_GParted.cc:2136
 msgid "Could not deactivate swap"
 msgstr "אין אפשרות להפסיק את השימוש ב־swap"
 
-#: ../src/Win_GParted.cc:1910
+#: ../src/Win_GParted.cc:2136
 msgid "Could not activate swap"
 msgstr "אין אפשרות להתחיל את השימוש ב־swap"
 
-#: ../src/Win_GParted.cc:1926
+#: ../src/Win_GParted.cc:2154
+msgid "Deactivating Volume Group %1"
+msgstr "קבוצת הכרכים %1 מנוטרלת"
+
+#: ../src/Win_GParted.cc:2155
+msgid "Activating Volume Group %1"
+msgstr "קבוצת הכרכים %1 מופעלת"
+
+#: ../src/Win_GParted.cc:2163
+msgid "Could not deactivate Volume Group"
+msgstr "לא ניתן לנטרל את קבוצת הכרכים"
+
+#: ../src/Win_GParted.cc:2164
+msgid "Could not activate Volume Group"
+msgstr "לא ניתן להפעיל את קבוצת הכרכים"
+
+#: ../src/Win_GParted.cc:2180
 msgid "Unmounting %1"
 msgstr "ניתוק העיגון של %1"
 
-#: ../src/Win_GParted.cc:1931
+#: ../src/Win_GParted.cc:2185
 msgid "Could not unmount %1"
 msgstr "אין אפשרות לנתק את העיגון של %1"
 
-#: ../src/Win_GParted.cc:1967
-msgid ""
-"The mount action cannot be performed if an operation is pending for the "
-"partition."
+#: ../src/Win_GParted.cc:2221
+msgid "The mount action cannot be performed if an operation is pending for the partition."
 msgstr "לא ניתן לבצע את פעולת העיגון אם ישנה פעולה הממתינה למחיצה."
 
-#: ../src/Win_GParted.cc:1969
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using mount "
-"with this partition."
-msgstr ""
-"ניתן להשתמש בתפריט העריכה כדי לבטל, לנקות או להחיל את הפעולות לפני השימוש "
-"בעיגון על מחיצה זו."
+#: ../src/Win_GParted.cc:2223
+msgid "Use the Edit menu to undo, clear, or apply operations before using mount with this partition."
+msgstr "ניתן להשתמש בתפריט העריכה כדי לבטל, לנקות או להחיל את הפעולות לפני השימוש בעיגון על מחיצה זו."
 
-#: ../src/Win_GParted.cc:1987
+#: ../src/Win_GParted.cc:2241
 msgid "mounting %1 on %2"
 msgstr "עיגון %1 ב־%2"
 
-#: ../src/Win_GParted.cc:1994
+#: ../src/Win_GParted.cc:2248
 msgid "Could not mount %1 on %2"
 msgstr "אין אפשרות לעגן את %1 במיקום %2"
 
-#. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda.
-#: ../src/Win_GParted.cc:2020
-msgid "%1 partition is currently active on device %2."
-msgid_plural "%1 partitions are currently active on device %2."
+#. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
+#: ../src/Win_GParted.cc:2274
+#, fuzzy
+msgid "%1 partition is currently active on device %2"
+msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "פעולה אחת פעילה כעת בהתקן %2."
 msgstr[1] "%1 פעולות פעילות כעת בהתקן %2."
 
-#: ../src/Win_GParted.cc:2035
-msgid ""
-"A new partition table cannot be created when there are active partitions."
+#: ../src/Win_GParted.cc:2289
+msgid "A new partition table cannot be created when there are active partitions."
 msgstr "לא ניתן ליצור טבלת מחיצות חדשה כאשר ישנן מחיצות פעילות."
 
-#: ../src/Win_GParted.cc:2037
-msgid ""
-"Active partitions are those that are in use, such as a mounted file system, "
-"or enabled swap space."
-msgstr ""
-"המחיצות הזמינות הן אלו שבשימוש, כגון מערכת קבצים מעוגנת או נפח החלפה שהופעל."
+#: ../src/Win_GParted.cc:2291
+msgid "Active partitions are those that are in use, such as a mounted file system, or enabled swap space."
+msgstr "המחיצות הזמינות הן אלו שבשימוש, כגון מערכת קבצים מעוגנת או נפח החלפה שהופעל."
 
-#: ../src/Win_GParted.cc:2039
-msgid ""
-"Use Partition menu options, such as unmount or swapoff, to deactivate all "
-"partitions on this device before creating a new partition table."
-msgstr ""
-"ניתן להשתמש באפשרויות תפריט המחיצה כגון ניתוק או ביטול החלפה כדי לנטרל את כל "
-"המחיצות בהתקן זה בטרם יצירת טבלת מחיצות חדשה."
+#: ../src/Win_GParted.cc:2293
+msgid "Use Partition menu options, such as unmount or swapoff, to deactivate all partitions on this device before creating a new partition table."
+msgstr "ניתן להשתמש באפשרויות תפריט המחיצה כגון ניתוק או ביטול החלפה כדי לנטרל את כל המחיצות בהתקן זה בטרם יצירת טבלת מחיצות חדשה."
 
-#: ../src/Win_GParted.cc:2064
-msgid ""
-"A new partition table cannot be created when there are pending operations."
+#: ../src/Win_GParted.cc:2305
+msgid "%1 operation is currently pending"
+msgid_plural "%1 operations are currently pending"
+msgstr[0] "פעולה אחת ממתינה כעת"
+msgstr[1] "%1 פעולות ממתינות כעת"
+
+#: ../src/Win_GParted.cc:2318
+msgid "A new partition table cannot be created when there are pending operations."
 msgstr "לא ניתן ליצור טבלת מחיצות חדשה כאשר ישנן פעולות ממתינות."
 
-#: ../src/Win_GParted.cc:2066
-msgid ""
-"Use the Edit menu to either clear or apply all operations before creating a "
-"new partition table."
-msgstr ""
-"ניתן להשתמש בתפריט העריכה כדי להחיל או לנקות את כל הפעולות לפני יצירת טבלת "
-"מחיצות חדשה."
+#: ../src/Win_GParted.cc:2320
+msgid "Use the Edit menu to either clear or apply all operations before creating a new partition table."
+msgstr "ניתן להשתמש בתפריט העריכה כדי להחיל או לנקות את כל הפעולות לפני יצירת טבלת מחיצות חדשה."
 
-#: ../src/Win_GParted.cc:2081
-msgid "Error while creating partition table."
-msgstr "שגיאה ביצירת טבלת המחיצות."
+#: ../src/Win_GParted.cc:2335
+msgid "Error while creating partition table"
+msgstr "שגיאה ביצירת טבלת המחיצות"
 
-#: ../src/Win_GParted.cc:2101
+#: ../src/Win_GParted.cc:2355
 msgid "Command gpart was not found"
 msgstr "הפקודה gpart לא נמצאה"
 
-#: ../src/Win_GParted.cc:2102
+#: ../src/Win_GParted.cc:2356
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "תכונה זו משתמש ב־gpart. נא להתקין את gpart ולנסות שוב."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2110
+#: ../src/Win_GParted.cc:2364
 msgid "A full disk scan is needed to find file systems."
 msgstr "נדרשת סריקת כונן מלאה כדי למצוא את מערכות הקבצים."
 
-#: ../src/Win_GParted.cc:2112
+#: ../src/Win_GParted.cc:2366
 msgid "The scan might take a very long time."
 msgstr "הסריקה עלולה לארוך זמן רב."
 
-#: ../src/Win_GParted.cc:2114
-msgid ""
-"After the scan you can mount any discovered file systems and copy the data "
-"to other media."
-msgstr ""
-"לאחר הסריקה ניתן לעגן מערכות קבצים שהתגלו ולהעתיק את הנתונים למדיה אחרת."
+#: ../src/Win_GParted.cc:2368
+msgid "After the scan you can mount any discovered file systems and copy the data to other media."
+msgstr "לאחר הסריקה ניתן לעגן מערכות קבצים שהתגלו ולהעתיק את הנתונים למדיה אחרת."
 
-#: ../src/Win_GParted.cc:2116
+#: ../src/Win_GParted.cc:2370
 msgid "Do you want to continue?"
 msgstr "האם ברצונך להמשיך?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2120
+#: ../src/Win_GParted.cc:2374
 msgid "Search for file systems on %1"
 msgstr "חיפוש אחר מערכות קבצים על גבי %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2134
+#: ../src/Win_GParted.cc:2388
 msgid "Searching for file systems on %1"
 msgstr "מתבצע חיפוש אחר מערכות קבצים על גבי %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2402
 msgid "No file systems found on %1"
 msgstr "לא נמצאו מערכות קבצים על גבי %1"
 
-#: ../src/Win_GParted.cc:2149
-msgid ""
-"The disk scan by gpart did not find any recognizable file systems on this "
-"disk."
+#: ../src/Win_GParted.cc:2403
+msgid "The disk scan by gpart did not find any recognizable file systems on this disk."
 msgstr "בסריקת הכוננים על ידי gpart לא נמצאו מערכות קבצים מוכרות בכונן."
 
-#: ../src/Win_GParted.cc:2319
+#: ../src/Win_GParted.cc:2631
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "האם להחיל את כל הפעולות הממתינות?"
 
-#: ../src/Win_GParted.cc:2325
+#: ../src/Win_GParted.cc:2637
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "עם פעולת עריכת המחיצות ישנו סיכון אפשרי לאובדן נתונים."
 
-#: ../src/Win_GParted.cc:2327
+#: ../src/Win_GParted.cc:2639
 msgid "You are advised to backup your data before proceeding."
 msgstr "מומלץ לגבות מידע חשוב לפני המשך הפעילות."
 
-#: ../src/Win_GParted.cc:2329
+#: ../src/Win_GParted.cc:2641
 msgid "Apply operations to device"
 msgstr "החלת הפעולות על ההתקן"
 
-#. create mount point...
-#: ../src/jfs.cc:141 ../src/xfs.cc:153 ../src/xfs.cc:253 ../src/xfs.cc:260
-msgid "create temporary mount point (%1)"
-msgstr "יצירת נקודת עיגון זמנית (%1)"
+#: ../src/Win_GParted.cc:2686
+msgid "You are deleting non-empty LVM2 Physical Volume %1"
+msgstr ""
 
-#: ../src/jfs.cc:148 ../src/xfs.cc:160 ../src/xfs.cc:267 ../src/xfs.cc:276
-msgid "mount %1 on %2"
-msgstr "עיגון %1 במיקום %2"
+#: ../src/Win_GParted.cc:2690
+msgid "You are formatting over non-empty LVM2 Physical Volume %1"
+msgstr ""
 
-#: ../src/jfs.cc:157
-msgid "remount %1 on %2 with the 'resize' flag enabled"
-msgstr "עיגון מחדש של %1 במיקום %2 עם הדגל 'resize' מופעל"
+#: ../src/Win_GParted.cc:2694
+msgid "You are pasting over non-empty LVM2 Physical Volume %1"
+msgstr ""
 
-#: ../src/jfs.cc:175 ../src/xfs.cc:182 ../src/xfs.cc:300 ../src/xfs.cc:321
-msgid "unmount %1"
-msgstr "ניתוק %1"
+#: ../src/Win_GParted.cc:2703
+msgid "Deleting or overwriting the Physical Volume is irrecoverable and will destroy or damage the  Volume Group."
+msgstr ""
 
-#: ../src/jfs.cc:195 ../src/xfs.cc:202 ../src/xfs.cc:341 ../src/xfs.cc:364
-msgid "remove temporary mount point (%1)"
-msgstr "הסרת נקודת עיגון זמנית (%1)"
+#: ../src/Win_GParted.cc:2706
+msgid "To avoid destroying or damaging the Volume Group, you are advised to cancel and use external LVM commands to free the Physical Volume before attempting this operation."
+msgstr ""
+
+#: ../src/Win_GParted.cc:2709
+msgid "Do you want to continue to forcibly delete the Physical Volume?"
+msgstr ""
+
+#: ../src/fat16.cc:33
+#: ../src/ntfs.cc:26
+msgid "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
+msgstr ""
+
+#: ../src/fat16.cc:35
+#: ../src/ntfs.cc:28
+msgid "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. Changing the Volume Serial Number on the Windows system partition, normally C:, might invalidate the WPA key. An invalid WPA key will prevent login until you reactivate Windows."
+msgstr ""
+
+#: ../src/fat16.cc:41
+#: ../src/ntfs.cc:38
+msgid "Changing the UUID on external storage media and non-system partitions is usually safe, but guarantees cannot be given."
+msgstr ""
+
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/linux_swap.cc:28
+msgid "_Swapon"
+msgstr "ה_פעלת swap"
+
+#: ../src/linux_swap.cc:29
+msgid "_Swapoff"
+msgstr "_כיבוי swap"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:105
-msgid ""
-"Partition move action skipped because %1 file system does not contain data"
-msgstr ""
-"התכנית דילגה על פעולת העברת המחיצה כיוון שמערכת הקבצים %1 אינה מכילה נתונים"
+#: ../src/linux_swap.cc:145
+msgid "Partition move action skipped because %1 file system does not contain data"
+msgstr "התכנית דילגה על פעולת העברת המחיצה כיוון שמערכת הקבצים %1 אינה מכילה נתונים"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:124
-msgid ""
-"Partition copy action skipped because %1 file system does not contain data"
-msgstr ""
-"התכנית דילגה על פעולת העתקת המחיצה כיוון שמערכת הקבצים %1 אינה מכילה נתונים"
+#: ../src/linux_swap.cc:164
+msgid "Partition copy action skipped because %1 file system does not contain data"
+msgstr "התכנית דילגה על פעולת העתקת המחיצה כיוון שמערכת הקבצים %1 אינה מכילה נתונים"
 
-#: ../src/main.cc:38
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/lvm2_pv.cc:28
+msgid "Ac_tivate"
+msgstr "ה_פעלה"
+
+#: ../src/lvm2_pv.cc:29
+msgid "Deac_tivate"
+msgstr "נ_טרול"
+
+#: ../src/lvm2_pv.cc:32
+msgid "The LVM2 Physical Volume can not currently be resized because it is a member of an exported Volume Group."
+msgstr ""
+
+#: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
 msgstr "יש צורך בהרשאות root כדי להפעיל את GParted"
 
-#: ../src/main.cc:43
-msgid ""
-"Since GParted is a powerful tool capable of destroying partition tables and "
-"vast amounts of data, only root may run it."
+#: ../src/main.cc:47
+msgid "Since GParted is a powerful tool capable of destroying partition tables and vast amounts of data, only root may run it."
+msgstr "מאחר שבאפשרותה של GParted להשמיד את המחיצות וכמות עצומה של מידע, רק מנהל המערכת (root) רשאי להריץ אותה."
+
+#: ../src/ntfs.cc:34
+msgid "In an attempt to avoid invalidating the WPA key, on NTFS file systems only half of the UUID is set to a new random value."
 msgstr ""
-"מאחר שבאפשרותה של GParted להשמיד את המחיצות וכמות עצומה של מידע, רק מנהל "
-"המערכת (root) רשאי להריץ אותה."
 
 #. simulation..
-#: ../src/ntfs.cc:125
+#: ../src/ntfs.cc:196
 msgid "run simulation"
 msgstr "הרצת הדמיה"
 
 #. real resize
-#: ../src/ntfs.cc:132
+#: ../src/ntfs.cc:203
 msgid "real resize"
 msgstr "שינוי גודל אמתי"
 
-#. grow the mounted file system..
-#: ../src/xfs.cc:168
-msgid "grow mounted file system"
-msgstr "הגדלת מערכת הקבצים המעוגנת"
+#~ msgid "Logical Volume Management is not yet supported."
+#~ msgstr "עדיין אין תמיכה ב־Logical Volume Management."
 
-#. copy file system..
-#: ../src/xfs.cc:284
-msgid "copy file system"
-msgstr "העתקת מערכת הקבצים"
+#~ msgid "Unmount"
+#~ msgstr "ניתוק"
+
+#~ msgid "create temporary mount point (%1)"
+#~ msgstr "יצירת נקודת עיגון זמנית (%1)"
+
+#~ msgid "mount %1 on %2"
+#~ msgstr "עיגון %1 במיקום %2"
+
+#~ msgid "remount %1 on %2 with the 'resize' flag enabled"
+#~ msgstr "עיגון מחדש של %1 במיקום %2 עם הדגל 'resize' מופעל"
+
+#~ msgid "unmount %1"
+#~ msgstr "ניתוק %1"
+
+#~ msgid "remove temporary mount point (%1)"
+#~ msgstr "הסרת נקודת עיגון זמנית (%1)"
+
+#~ msgid "grow mounted file system"
+#~ msgstr "הגדלת מערכת הקבצים המעוגנת"
+
+#~ msgid "copy file system"
+#~ msgstr "העתקת מערכת הקבצים"
 
 #~ msgid "BTRFS is not yet supported."
 #~ msgstr "מערכת הקבצים BRTFS עדיין איננה נתמכת."
@@ -1838,19 +2087,14 @@ msgstr "העתקת מערכת הקבצים"
 # uitleg onder de kop
 #~ msgid "Applying all listed operations."
 #~ msgstr "החל את כל הפעולות הרשומות."
-
 #~ msgid "Features"
 #~ msgstr "תכונות"
-
 #~ msgid "Detect"
 #~ msgstr "זיהוי"
-
 #~ msgid "Read"
 #~ msgstr "קריאה"
-
 #~ msgid "_Show Features"
 #~ msgstr "_הצג תכונות"
-
 #, fuzzy
 #~ msgid "DiskLabelType:"
 #~ msgstr "סוג דיסק:"
