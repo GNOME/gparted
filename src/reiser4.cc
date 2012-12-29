@@ -97,6 +97,9 @@ void reiser4::read_label( Partition & partition )
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
 		Glib::ustring label = Utils::regexp_label( output, "^label:[[:blank:]]*(.*)$" ) ;
+		//Avoid reading any trailing junk after the label
+		if ( label .length() > 16 )
+			label .resize( 16 ) ;
 		if ( label != "<none>" )
 			partition .set_label( label ) ;
 		else
