@@ -164,11 +164,7 @@ bool xfs::write_uuid( const Partition & partition, OperationDetail & operationde
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	//mkfs.xfs will not create file system if label is longer than 12 characters, hence truncation.
-	Glib::ustring label = new_partition .get_label() ;
-	if( label .length() > 12 )
-		label = label.substr( 0, 12 ) ;
-	return ! execute_command( "mkfs.xfs -f -L \"" + label + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

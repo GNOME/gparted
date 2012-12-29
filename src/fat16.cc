@@ -190,10 +190,10 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -c %2:", fname, dletter ) ;
 	else
 		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel %2:\"%3\"",
-		                        fname, dletter, Utils::fat_compliant_label( partition .get_label() ) ) ;
-	
+		                        fname, dletter, partition .get_label() ) ;
+
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-	
+
 	int exit_status = Utils::execute_command( cmd, output, error ) ;
 
 	if ( ! output .empty() )
@@ -268,8 +268,7 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F16 -v -n \"" + Utils::fat_compliant_label( new_partition .get_label() ) +
-	                          "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkdosfs -F16 -v -n \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool fat16::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
