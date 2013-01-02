@@ -1431,6 +1431,7 @@ void Win_GParted::menu_help_about()
 	//authors
 	//Names listed in alphabetical order by LAST name.
 	//See also AUTHORS file -- names listed in opposite order to try to be fair.
+	strings .push_back( "Sinlu Bes <e80f00@gmail.com>" ) ;
 	strings .push_back( "Luca Bruno <lucab@debian.org>" ) ;
 	strings .push_back( "Jérôme Dumesnil <jerome.dumesnil@gmail.com>" ) ;
 	strings .push_back( "Markus Elfring <elfring@users.sourceforge.net>" ) ;
