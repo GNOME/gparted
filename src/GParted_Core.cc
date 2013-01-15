@@ -3545,32 +3545,55 @@ public:
 		}
 };
 
-PedExceptionOption GParted_Core::ped_exception_handler( PedException * e ) 
-{
-	PedExceptionOption ret = PED_EXCEPTION_UNHANDLED;
-        std::cout << e ->message << std::endl ;
+struct ped_exception_ctx {
+	PedExceptionOption ret;
+	PedException *e;
+	Glib::Threads::Mutex mutex;
+	Glib::Threads::Cond cond;
+};
 
-        libparted_messages .push_back( e->message ) ;
+static bool _ped_exception_handler( struct ped_exception_ctx *ctx )
+{
+        std::cout << ctx->e->message << std::endl;
+
+        libparted_messages.push_back( ctx->e->message );
 	char optcount = 0;
 	int opt = 0;
 	for( char c = 0; c < 10; c++ )
-		if( e->options & (1 << c) ) {
+		if( ctx->e->options & (1 << c) ) {
 			opt = (1 << c);
 			optcount++;
 		}
 	// if only one option was given, choose it without popup
-	if( optcount == 1 && e->type != PED_EXCEPTION_BUG && e->type != PED_EXCEPTION_FATAL )
-		return (PedExceptionOption)opt;
-	if (Glib::Thread::self() != GParted_Core::mainthread)
-		gdk_threads_enter();
-	PedExceptionMsg msg( *e );
+	if( optcount == 1 && ctx->e->type != PED_EXCEPTION_BUG && ctx->e->type != PED_EXCEPTION_FATAL )
+	{
+		ctx->ret = (PedExceptionOption)opt;
+		ctx->cond.signal();
+		return false;
+	}
+	PedExceptionMsg msg( *ctx->e );
 	msg.show_all();
-	ret = (PedExceptionOption)msg.run();
-	if (Glib::Thread::self() != GParted_Core::mainthread)
-		gdk_threads_leave();
-	if (ret < 0)
-		ret = PED_EXCEPTION_UNHANDLED;
-	return ret;
+	ctx->ret = (PedExceptionOption)msg.run();
+	if (ctx->ret < 0)
+		ctx->ret = PED_EXCEPTION_UNHANDLED;
+	ctx->mutex.lock();
+	ctx->cond.signal();
+	ctx->mutex.unlock();
+	return false;
+}
+
+PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
+{
+	struct ped_exception_ctx ctx;
+	ctx.ret = PED_EXCEPTION_UNHANDLED;
+	ctx.e = e;
+	if (Glib::Thread::self() != GParted_Core::mainthread) {
+		ctx.mutex.lock();
+		g_idle_add( (GSourceFunc)_ped_exception_handler, &ctx );
+		ctx.cond.wait( ctx.mutex );
+		ctx.mutex.unlock();
+	} else _ped_exception_handler( &ctx );
+	return ctx.ret;
 }
 
 GParted_Core::~GParted_Core() 
@@ -3578,5 +3601,5 @@ GParted_Core::~GParted_Core()
 }
 
 Glib::Thread *GParted_Core::mainthread;
-	
+
 } //GParted
