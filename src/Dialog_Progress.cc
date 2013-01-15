@@ -152,8 +152,6 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 				break ;
 		}
 
-		pulse = operationdetail .fraction < 0 ;
-
 		//update the gui elements..
 		this ->operationdetail = operationdetail ;
 
@@ -161,6 +159,11 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 			label_current_sub_text = operationdetail .get_description() ;
 
 		dispatcher_update_gui_elements() ;
+		if ( operationdetail.fraction >= 0 ) {
+			pulsetimer.disconnect();
+			progressbar_current.set_fraction( operationdetail.fraction > 1.0 ? 1.0 : operationdetail.fraction );
+		} else if( !pulsetimer.connected() )
+			pulsetimer = Glib::signal_timeout().connect( sigc::mem_fun(*this, &Dialog_Progress::pulsebar_pulse), 100 );
 	}
 	else//it's an new od which needs to be added to the model.
 	{
@@ -183,11 +186,14 @@ void Dialog_Progress::dispatcher_on_update_gui_elements()
 {
 	label_current_sub .set_markup( "<i>" + label_current_sub_text + "</i>\n" ) ;
 	
-	if ( operationdetail .fraction >= 0 )
-		progressbar_current .set_fraction( operationdetail .fraction > 1.0 ? 1.0 : operationdetail .fraction ) ;
-
 	//To ensure progress bar height remains the same, add a space in case message is empty
 	progressbar_current .set_text( operationdetail .progress_text + " " ) ;
+}
+
+bool Dialog_Progress::pulsebar_pulse()
+{
+	progressbar_current.pulse();
+	return true;
 }
 
 void Dialog_Progress::on_signal_show()
@@ -211,19 +217,8 @@ void Dialog_Progress::on_signal_show()
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 		
 		//and start..
-		running = true ;
 		pthread_create( & pthread, NULL, Dialog_Progress::static_pthread_apply_operation, this );
-
-		while ( running )
-		{
-			if ( pulse )
-				progressbar_current .pulse() ;
-			
-			while ( Gtk::Main::events_pending() )
-				Gtk::Main::iteration();
-			usleep( 100000 ) ;
-		}
-
+		Gtk::Main::run();
 		//set status (succes/error) for this operation
 		operations[ t ] ->operation_detail .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	}
@@ -235,6 +230,8 @@ void Dialog_Progress::on_signal_show()
 	std::vector<Gtk::Widget *> children = this ->get_action_area() ->get_children() ;
 	this ->get_action_area() ->remove( * children .back() ) ;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+
+	pulsetimer.disconnect();
 
 	if ( cancel )
 	{
@@ -299,13 +296,19 @@ void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, co
 		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
 }
 
+static bool _mainquit( void *dummy )
+{
+	Gtk::Main::quit();
+	return false;
+}
+
 void * Dialog_Progress::static_pthread_apply_operation( void * p_dialog_progress ) 
 {
 	Dialog_Progress *dp = static_cast<Dialog_Progress *>( p_dialog_progress ) ;
 	
 	dp ->succes = dp ->signal_apply_operation .emit( dp ->operations[ dp ->t ] ) ;
 	
-	dp ->running = false ;
+	g_idle_add( (GSourceFunc)_mainquit, NULL );
 
 	return NULL ;
 }
@@ -328,7 +331,7 @@ void Dialog_Progress::on_cancel()
 	{
 		pthread_cancel( pthread ) ;
 		cancel = true ;
-		running = false ;
+		Gtk::Main::quit();
 		succes = false ;
 	}
 }

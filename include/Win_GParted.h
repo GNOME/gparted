@@ -259,8 +259,7 @@ private:
 	std::vector<Gtk::Label *> device_info ;
 					
 	//stuff for progress overview and pulsebar
-	Glib::Thread *thread ;
-	bool pulse ;
+	bool pulsebar_pulse();
 };
 
 } //GParted

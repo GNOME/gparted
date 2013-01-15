@@ -57,6 +57,7 @@ private:
 	
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;
+	bool pulsebar_pulse();
 
 	Gtk::Label label_current ;
 	Gtk::Label label_current_sub ;
@@ -91,11 +92,11 @@ private:
 	
 	std::vector<Operation *> operations ;
 	OperationDetail operationdetail ;
-	bool running, succes, cancel, pulse ;
+	bool succes, cancel;
 	pthread_t pthread ;
 	double fraction ;
 	unsigned int t, warnings ;
-
+	sigc::connection pulsetimer;
 	Glib::Dispatcher dispatcher_update_gui_elements ;
 	Glib::ustring label_current_sub_text ;
 };
