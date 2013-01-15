@@ -3147,6 +3147,41 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		od .set_status( exit_status == 0 ? STATUS_SUCCES : STATUS_N_A ) ;
 	}
 
+	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
+	//  device and partition devices.  So even though the file system signatures
+	//  have been overwritten on the disk via a partition device, libparted reading
+	//  via the whole disk device will read the old data and report the file system
+	//  as still existing.
+	//
+	//  Libparted >= 2.0 works around this by calling ioctl(fd, BLKFLSBUF) to flush
+	//  the cache when opening the whole disk device, but only for kernels before
+	//  2.6.0.
+	//  Ref: parted v3.1-52-g1c659d5 ./libparted/arch/linux.c linux_open()
+	//  1657         /* With kernels < 2.6 flush cache for cache coherence issues */
+	//  1658         if (!_have_kern26())
+	//  1659                 _flush_cache (dev);
+	//
+	//  Calling ped_device_sync() to flush the cache is required when the partition is
+	//  just being cleared.  However the sync can be skipped when the wipe is being
+	//  performed as part of writing a new file system as the partition type is also
+	//  changed, which modified the partition table so GParted calls
+	//  ped_disk_commit_to_os().  This instructs the kernel to remove all non-busy
+	//  partitions on the disk and re-adds them, thus effectively flushing the cache
+	//  of the disk.
+	//
+	//  Opening the device and calling ped_device_sync() took 0.15 seconds or less on
+	//  a 5400 RPM laptop hard drive.  For now just always call ped_device_sync() as
+	//  it doesn't add much time to the overall operation.
+	PedDevice * lp_device = ped_device_get( partition .device_path .c_str() ) ;
+	if ( lp_device != NULL )
+	{
+		if ( ped_device_open( lp_device ) )
+		{
+			ped_device_sync( lp_device ) ;
+			ped_device_close( lp_device ) ;
+		}
+		ped_device_destroy( lp_device ) ;
+	}
 	return true ;
 }
 
