@@ -50,7 +50,10 @@ FS fat32::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_FAT32 ;
-		
+
+	// hack to disable silly mtools warnings
+	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );
+
 	//find out if we can create fat32 file systems
 	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
@@ -138,15 +141,7 @@ void fat32::set_used_sectors( Partition & partition )
 
 void fat32::read_label( Partition & partition )
 {
-	//Create mtools config file
-	char fname[] = "/tmp/gparted-XXXXXXXX" ;
-	char dletter = 'H' ;
-	Glib::ustring err_msg = "" ;
-	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
-	if( err_msg.length() != 0 )
-		partition .messages .push_back( err_msg );
-
-	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -s %2:", fname, dletter ) ;
+	Glib::ustring cmd = "mlabel -s :: -i " + partition.get_path();
 
 	if ( ! Utils::execute_command( cmd, output, error, true ) )
 	{
@@ -160,25 +155,15 @@ void fat32::read_label( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
-	
-	//Delete mtools config file
-	err_msg = Utils::delete_mtoolsrc_file( fname );
 }
 
 bool fat32::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	//Create mtools config file
-	char fname[] = "/tmp/gparted-XXXXXXXX" ;
-	char dletter = 'H' ;
-	Glib::ustring err_msg = "" ;
-	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
-
 	Glib::ustring cmd = "" ;
 	if ( partition .get_label() .empty() )
-		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -c %2:", fname, dletter ) ;
+		cmd = "mlabel -c :: -i " + partition.get_path();
 	else
-		cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel %2:\"%3\"",
-		                        fname, dletter, partition .get_label() ) ;
+		cmd = "mlabel ::\"" + partition.get_label() + "\" -i " + partition.get_path();
 
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 
@@ -190,23 +175,12 @@ bool fat32::write_label( const Partition & partition, OperationDetail & operatio
 	if ( ! error .empty() )
 		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
 
-	//Delete mtools config file
-	err_msg = Utils::delete_mtoolsrc_file( fname );
-
 	return ( exit_status == 0 );
 }
 
 void fat32::read_uuid( Partition & partition )
 {
-	//Create mtools config file
-	char fname[] = "/tmp/gparted-XXXXXXXX" ;
-	char dletter = 'H' ;
-	Glib::ustring err_msg = "" ;
-	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
-	if( err_msg.length() != 0 )
-		partition .messages .push_back( err_msg );
-
-	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mdir -f %2:", fname, dletter ) ;
+	Glib::ustring cmd = "mdir -f :: -i " + partition.get_path();
 
 	if ( ! Utils::execute_command( cmd, output, error, true ) )
 	{
@@ -222,22 +196,12 @@ void fat32::read_uuid( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
-
-	err_msg = Utils::delete_mtoolsrc_file( fname );
 }
 
 
 bool fat32::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	//Create mtools config file
-	char fname[] = "/tmp/gparted-XXXXXXXX" ;
-	char dletter = 'H' ;
-	Glib::ustring err_msg = "" ;
-	err_msg = Utils::create_mtoolsrc_file( fname, dletter, partition.get_path() ) ;
-
-	// Wait some time - 'random' UUIDs turn out identical if generated in quick succession...
-	sleep(1);
-	Glib::ustring cmd = String::ucompose( "export MTOOLSRC=%1 && mlabel -s -n %2:", fname, dletter ) ;
+	Glib::ustring cmd = "mlabel -s -n :: -i " + partition.get_path();
 
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 
@@ -248,9 +212,6 @@ bool fat32::write_uuid( const Partition & partition, OperationDetail & operation
 
 	if ( ! error .empty() )
 		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	//Delete mtools config file
-	err_msg = Utils::delete_mtoolsrc_file( fname );
 
 	return ( exit_status == 0 );
 }

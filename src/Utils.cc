@@ -458,63 +458,6 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text
 		return "" ;
 }
 
-Glib::ustring Utils::create_mtoolsrc_file( char file_name[], const char drive_letter,
-		const Glib::ustring & device_path )
-{
-	//Create mtools config file
-	//NOTE:  file_name will be changed by the mkstemp() function call.
-	Glib::ustring err_msg = "" ;
-	int fd ;
-	fd = mkstemp( file_name ) ;
-	if( fd != -1 ) {
-		Glib::ustring fcontents =
-			/* TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
-			 * means that this file is only used while gparted is applying operations.
-			 * If for some reason this file exists at any other time, then the message is
-			 * meant to inform a user that the file can be deleted with no harmful effects.
-			 * This file is typically created, exists for less than a few seconds, and is
-			 * then deleted by gparted.  Under normal circumstances a user should never
-			 * see this file.
-			 */
-			_("# Temporary file created by gparted.  It may be deleted.\n") ;
-
-		//The following file contents are mtools keywords (see man mtools.conf)
-		fcontents = String::ucompose(
-						"drive %1: file=\"%2\"\nmtools_skip_check=1\n", drive_letter, device_path
-					);
-
-		if( write( fd, fcontents .c_str(), fcontents .size() ) == -1 ) {
-			err_msg = String::ucompose(
-							/* TO TRANSLATORS: looks like
-							 * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
-							 */
-							_("Label operation failed:  Unable to write to temporary file %1.\n")
-							, file_name
-						) ;
-		}
-		close( fd ) ;
-	}
-	else
-	{
-		err_msg = String::ucompose(
-						/* TO TRANSLATORS: looks like
-						 * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
-						 */
-						_("Label operation failed:  Unable to create temporary file %1.\n")
-						, file_name
-					) ;
-	}
-	return err_msg ;
-}
-
-Glib::ustring Utils::delete_mtoolsrc_file( const char file_name[] )
-{
-	//Delete mtools config file
-	Glib::ustring err_msg = "" ;
-	remove( file_name ) ;
-	return err_msg ;
-}
-
 Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /* = " \t\r\n" */ )
 {
 	//Trim leading and trailing whitespace from string
