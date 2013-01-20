@@ -186,7 +186,8 @@ namespace UStringPrivate
     : arg_no(1)
   {
 #if __GNUC__ >= 3
-    os.imbue(std::locale("")); // use the user's locale for the stream
+    //Prevent crash with unknown locales.  See bugs #157871, #692049
+    //os.imbue(std::locale("")); // use the user's locale for the stream
 #endif
     std::string::size_type b = 0, i = 0;
   
