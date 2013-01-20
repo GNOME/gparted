@@ -170,25 +170,6 @@ private:
 
 	bool set_partition_type( const Partition & partition, OperationDetail & operationdetail ) ;
 
-	void set_progress_info( Sector total, Sector done, const Glib::Timer & timer, OperationDetail & operationdetail, bool readonly ) ;
-
-	bool copy_blocks( const Glib::ustring & src_device,
-			  const Glib::ustring & dst_device,
-			  Sector src_start,
-			  Sector dst_start,
-			  Byte_Value length,
-			  Byte_Value blocksize,
-			  OperationDetail & operationdetail,
-			  bool readonly,
-			  Byte_Value & total_done ) ;
-
-	bool copy_block( PedDevice * lp_device_src,
-			 PedDevice * lp_device_dst,
-			 Sector offset_src,
-			 Sector offset_dst,
-			 Byte_Value blocksize,
-			 Glib::ustring & error_message,
-			 bool readonly ) ; 
 	bool calibrate_partition( Partition & partition, OperationDetail & operationdetail ) ;
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,

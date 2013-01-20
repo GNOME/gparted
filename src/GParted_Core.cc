@@ -48,6 +48,7 @@
 #include "../include/hfsplus.h"
 #include "../include/reiser4.h"
 #include "../include/ufs.h"
+#include "../include/Copy_Blocks.h"
 #include <set>
 #include <cerrno>
 #include <cstring>
@@ -2749,7 +2750,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				      benchmark_blocksize,
 				      operationdetail .get_last_child(),
 				      readonly,
-				      total_done ) ;
+				      total_done ).copy();
 		timer.stop() ;
 
 		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
@@ -2777,14 +2778,14 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 
 	if ( succes && llabs( done ) < src_length )
 		succes = copy_blocks( src_device, 
-				    dst_device,
-				    src_start + ( dst_start > src_start ? 0 : (done / src_sector_size) ),
-				    dst_start + ( dst_start > src_start ? 0 : (done / dst_sector_size) ),
-				    src_length - llabs( done ),
-				    optimal_blocksize,
-				    operationdetail,
-				    readonly,
-				    total_done ) ;
+				      dst_device,
+				      src_start + ((done > 0 ? done : 0) / src_sector_size),
+				      dst_start + ((done > 0 ? done : 0) / dst_sector_size),
+				      src_length - llabs( done ),
+				      optimal_blocksize,
+				      operationdetail,
+				      readonly,
+				      total_done ).copy();
 
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( readonly ?
@@ -2804,8 +2805,6 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 {
 	if ( total_done > 0 )
 	{
-		operationdetail .add_child( OperationDetail( _("roll back last transaction") ) ) ;
-
 		//find out exactly which part of the file system was copied (and to where it was copied)..
 		Partition temp_src = partition_src ;
 		Partition temp_dst = partition_dst ;
@@ -2820,6 +2819,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 			temp_src .sector_end = temp_src .sector_start + ( (total_done / temp_src .sector_size) - 1 ) ;
 			temp_dst .sector_end = temp_dst .sector_start + ( (total_done / temp_dst .sector_size) - 1 ) ;
 		}
+		operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
 		//and copy it back (NOTE the reversed dst and src)
 		bool succes = copy_filesystem( temp_dst, temp_src, operationdetail .get_last_child() ) ;
@@ -2942,216 +2942,6 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	return return_value ;
 }
 	
-void GParted_Core::set_progress_info( Byte_Value total,
-				      Byte_Value done,
-				      const Glib::Timer & timer,
-				      OperationDetail & operationdetail,
-				      bool readonly ) 
-{
-	operationdetail .fraction = done / static_cast<double>( total ) ;
-
-	std::time_t time_remaining = Utils::round( (total - done) / ( done / timer .elapsed() ) ) ;
-
-	operationdetail .progress_text = 
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining) */
-				_("%1 of %2 read (%3 remaining)") :
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
-				_("%1 of %2 copied (%3 remaining)"),
-				  Utils::format_size( done, 1 ),
-				  Utils::format_size( total,1 ),
-				  Utils::format_time( time_remaining) ) ; 
-			
-	operationdetail .set_description( 
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read */
-				_("%1 of %2 read") :
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
-				_("%1 of %2 copied"),
-				Utils::format_size( done, 1 ), Utils::format_size( total, 1 ) ),
-				FONT_ITALIC ) ;
-}
-	
-bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
-				const Glib::ustring & dst_device,
-				Sector src_start,
-				Sector dst_start,
-				Byte_Value length,
-				Byte_Value blocksize,
-				OperationDetail & operationdetail,
-				bool readonly,
-				Byte_Value & total_done ) 
-{
-	if ( blocksize > length )
-		blocksize = length ;
-
-	if ( readonly )
-		operationdetail .add_child( OperationDetail( 
-				/*TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("read %1 using a block size of %2"), Utils::format_size( length, 1 ),
-					Utils::format_size( blocksize, 1 ) ) ) ) ;
-	else
-		operationdetail .add_child( OperationDetail( 
-				/*TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("copy %1 using a block size of %2"), Utils::format_size( length, 1 ),
-					Utils::format_size( blocksize, 1 ) ) ) ) ;
-
-	Byte_Value done = length % blocksize ; 
-
-	bool succes = false ;
-	PedDevice *lp_device_src = ped_device_get( src_device .c_str() );
-	PedDevice *lp_device_dst = src_device != dst_device ? ped_device_get( dst_device .c_str() ) : lp_device_src ;
-
-	if ( lp_device_src && lp_device_dst && ped_device_open( lp_device_src ) && ped_device_open( lp_device_dst ) )
-	{
-		Byte_Value src_sector_size = lp_device_src ->sector_size ;
-		Byte_Value dst_sector_size = lp_device_dst ->sector_size ;
-
-		//Handle situation where we need to perform the copy beginning
-		//  with the end of the partition and finishing with the start.
-		if ( dst_start > src_start )
-		{
-			blocksize -= 2*blocksize ;
-			done -= 2*done ;
-			src_start += ( (length / src_sector_size) - 1 ) ;
-			/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-			dst_start += ( ((length + (dst_sector_size - 1))/ dst_sector_size) - 1 ) ;
-		}
-
-		Glib::ustring error_message ;
-		buf = static_cast<char *>( malloc( llabs( blocksize ) ) ) ;
-		if ( buf )
-		{
-			ped_device_sync( lp_device_dst ) ;
-
-			succes = true ;
-			if ( done != 0 )
-				succes = copy_block( lp_device_src,
-						lp_device_dst,
-						src_start,
-						dst_start, 
-						done,
-						error_message,
-						readonly ) ;
-			if ( ! succes )
-				done = 0 ;
-
-			//add an empty sub which we will constantly update in the loop
-			operationdetail .get_last_child() .add_child( OperationDetail( "", STATUS_NONE ) ) ;
-
-			Glib::Timer timer_progress_timeout, timer_total ;
-			while( succes && llabs( done ) < length )
-			{
-				succes = copy_block( lp_device_src,
-						     lp_device_dst,
-						     src_start + (done / src_sector_size),
-						     dst_start + (done / dst_sector_size),
-						     blocksize,
-						     error_message,
-						     readonly ) ; 
-				if ( succes )
-					done += blocksize ;
-
-				if ( timer_progress_timeout .elapsed() >= 0.5 )
-				{
-					set_progress_info( length,
-							   llabs( done + blocksize ),
-							   timer_total,
-							   operationdetail .get_last_child() .get_last_child(),
-							   readonly ) ;
-			
-					timer_progress_timeout .reset() ;
-				}
-			}
-			//set progress bar current info on completion
-			set_progress_info( length,
-			                   llabs( done ),
-			                   timer_total,
-			                   operationdetail .get_last_child() .get_last_child(),
-			                   readonly ) ;
-			
-			free( buf ) ;
-		}
-		else
-			error_message = Glib::strerror( errno ) ;
-
-		//reset fraction to -1 to make room for a new one (or a pulsebar)
-		operationdetail .get_last_child() .get_last_child() .fraction = -1 ;
-
-		//final description
-		operationdetail .get_last_child() .get_last_child() .set_description( 
-			String::ucompose( readonly ?
-					/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read */
-					_("%1 of %2 read") :
-					/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
-					_("%1 of %2 copied"),
-					Utils::format_size( llabs( done ), 1 ),
-					Utils::format_size( length, 1 ) ),
-					FONT_ITALIC ) ;
-		
-		if ( ! succes && ! error_message .empty() )
-			operationdetail .get_last_child() .add_child( 
-				OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
-		
-		total_done += llabs( done ) ;
-	
-		//close and destroy the devices..
-		ped_device_close( lp_device_src ) ;
-		ped_device_destroy( lp_device_src ) ; 
-
-		if ( src_device != dst_device )
-		{
-			ped_device_close( lp_device_dst ) ;
-			ped_device_destroy( lp_device_dst ) ;
-		}
-	}
-
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-	return succes ;
-}
-
-bool GParted_Core::copy_block( PedDevice * lp_device_src,
-			       PedDevice * lp_device_dst,
-			       Sector offset_src,
-			       Sector offset_dst,
-			       Byte_Value block_length,
-			       Glib::ustring & error_message,
-			       bool readonly ) 
-{
-	Byte_Value sector_size_src = lp_device_src ->sector_size ;
-	Byte_Value sector_size_dst = lp_device_dst ->sector_size ;
-
-	//Handle case where src and dst sector sizes are different.
-	//    E.g.,  5 sectors x 512 bytes/sector = ??? 2048 byte sectors
-	Sector num_blocks_src = (llabs(block_length) + (sector_size_src - 1) ) / sector_size_src ;
-	Sector num_blocks_dst = (llabs(block_length) + (sector_size_dst - 1) ) / sector_size_dst ;
-
-	//Handle situation where we are performing copy operation beginning
-	//  with the end of the partition and finishing with the start.
-	if ( block_length < 0 )
-	{
-		block_length = llabs( block_length ) ;
-		offset_src -= ( (block_length / sector_size_src) - 1 ) ;
-		/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-		offset_dst -= ( ( (block_length + (sector_size_dst - 1)) / sector_size_dst) - 1 ) ;
-	}
-
-	if ( block_length != 0 )
-	{
-		if ( ped_device_read( lp_device_src, buf, offset_src, num_blocks_src ) )
-		{
-			if ( readonly || ped_device_write( lp_device_dst, buf, offset_dst, num_blocks_dst ) )
-				return true ;
-			else
-				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst ) ;
-		}
-		else
-			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
-	}
-
-	return false ;
-}
-
 bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail & operationdetail ) 
 {
 	if ( partition .type == TYPE_PRIMARY || partition .type == TYPE_LOGICAL || partition .type == TYPE_EXTENDED )

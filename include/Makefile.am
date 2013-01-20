@@ -56,4 +56,5 @@ EXTRA_DIST = \
 	reiserfs.h  			\
 	ufs.h  				\
 	xfs.h				\
-	PipeCapture.h
+	PipeCapture.h			\
+	Copy_Blocks.h
