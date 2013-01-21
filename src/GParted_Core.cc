@@ -33,8 +33,6 @@
 #include "../include/btrfs.h"
 #include "../include/exfat.h"
 #include "../include/ext2.h"
-#include "../include/ext3.h"
-#include "../include/ext4.h"
 #include "../include/fat16.h"
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
@@ -100,9 +98,9 @@ void GParted_Core::find_supported_filesystems()
 
 	FILESYSTEM_MAP[ FS_BTRFS ]	= new btrfs() ;
 	FILESYSTEM_MAP[ FS_EXFAT ]	= new exfat() ;
-	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2() ;
-	FILESYSTEM_MAP[ FS_EXT3 ]	= new ext3() ;
-	FILESYSTEM_MAP[ FS_EXT4 ]	= new ext4() ;
+	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2( FS_EXT2 ) ;
+	FILESYSTEM_MAP[ FS_EXT3 ]	= new ext2( FS_EXT3 ) ;
+	FILESYSTEM_MAP[ FS_EXT4 ]	= new ext2( FS_EXT4 ) ;
 	FILESYSTEM_MAP[ FS_FAT16 ]	= new fat16() ;
 	FILESYSTEM_MAP[ FS_FAT32 ]	= new fat32() ;
 	FILESYSTEM_MAP[ FS_HFS ]	= new hfs() ;

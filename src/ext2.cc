@@ -24,42 +24,48 @@ namespace GParted
 FS ext2::get_filesystem_support()
 {
 	FS fs ;
-	fs .filesystem = FS_EXT2 ;
+	fs .filesystem = specific_type;
 
-	if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
-		fs .read = FS::EXTERNAL ;
-
-	if ( ! Glib::find_program_in_path( "tune2fs" ) .empty() ) {
-		fs .read_uuid = FS::EXTERNAL ;
-		fs .write_uuid = FS::EXTERNAL ;
-	}
-
-	if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
-		fs .read_label = FS::EXTERNAL ;
-		fs .write_label = FS::EXTERNAL ;
-	}
-	
-	if ( ! Glib::find_program_in_path( "mkfs.ext2" ) .empty() )
+	//Only enable any functionality if the relevant mkfs.extX command is
+	//  found to ensure that the version of e2fsprogs is new enough to
+	//  support ext4.  Applying to ext2/3 too is OK as relevant mkfs.ext2/3
+	//  commands exist.
+	if ( ! Glib::find_program_in_path( "mkfs." + Utils::get_filesystem_string( specific_type ) ).empty() )
+	{
 		fs .create = FS::EXTERNAL ;
-	
-	if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
-		fs .check = FS::EXTERNAL ;
-	
-	if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
-	{
-		fs .grow = FS::EXTERNAL ;
-		
-		if ( fs .read ) //needed to determine a min file system size..
-			fs .shrink = FS::EXTERNAL ;
-	}
 
-	if ( fs .check )
-	{
-		fs .copy = FS::GPARTED ;
-		fs .move = FS::GPARTED ;
-	}
+		if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
+			fs .read = FS::EXTERNAL ;
 
-	fs .online_read = FS::EXTERNAL ;
+		if ( ! Glib::find_program_in_path( "tune2fs" ) .empty() ) {
+			fs .read_uuid = FS::EXTERNAL ;
+			fs .write_uuid = FS::EXTERNAL ;
+		}
+
+		if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
+			fs .read_label = FS::EXTERNAL ;
+			fs .write_label = FS::EXTERNAL ;
+		}
+
+		if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
+			fs .check = FS::EXTERNAL ;
+	
+		if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
+		{
+			fs .grow = FS::EXTERNAL ;
+
+			if ( fs .read ) //needed to determine a min file system size..
+				fs .shrink = FS::EXTERNAL ;
+		}
+
+		if ( fs .check )
+		{
+			fs .copy = FS::GPARTED ;
+			fs .move = FS::GPARTED ;
+		}
+
+		fs .online_read = FS::EXTERNAL ;
+	}
 
 	return fs ;
 }
@@ -167,8 +173,8 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext2 -L \"" +
-				  new_partition.get_label() + "\" " + new_partition.get_path(),
+	return ! execute_command( "mkfs." + Utils::get_filesystem_string( specific_type ) +
+				  " -L \"" + new_partition.get_label() + "\" " + new_partition.get_path(),
 				  operationdetail,
 				  false,
 				  true );

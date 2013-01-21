@@ -27,7 +27,9 @@ namespace GParted
 
 class ext2 : public FileSystem
 {
+	const enum FILESYSTEM specific_type;
 public:
+	ext2( enum FILESYSTEM type ) : specific_type( type ) {};
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;
