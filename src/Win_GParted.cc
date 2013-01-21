@@ -166,7 +166,8 @@ void Win_GParted::init_menubar()
 		sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) );
 
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
-		_("_Apply All Operations"), 
+		_("_Apply All Operations"),
+		Gtk::AccelKey(GDK_Return, Gdk::CONTROL_MASK),
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
 		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
