@@ -59,7 +59,8 @@ public:
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
 	bool success;
 protected:
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail, bool checkstatus = false );
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+			     bool checkstatus = false, bool cancel_safe = false );
 	int execute_command_timed( const Glib::ustring & command, OperationDetail & operationdetail ) {
 		return execute_command( command, operationdetail, true ); }
 	void execute_command_eof();

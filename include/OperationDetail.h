@@ -48,6 +48,7 @@ class OperationDetail
 {
 public:	
 	OperationDetail() ;
+	~OperationDetail();
 	OperationDetail( const Glib::ustring & description,
 			 OperationDetailStatus status = STATUS_EXECUTE,
 			 Font font = FONT_NORMAL ) ;
@@ -68,10 +69,11 @@ public:
 	Glib::ustring progress_text ;
 	
 	sigc::signal< void, const OperationDetail & > signal_update ;
-
+	sigc::signal< void, bool > signal_cancel;
+	char cancelflag;
 private:
 	void on_update( const OperationDetail & operationdetail ) ;
-	
+	void cancel( bool force );
 	Glib::ustring description ;
 	OperationDetailStatus status ; 
 
@@ -79,6 +81,7 @@ private:
 	
 	std::vector<OperationDetail> sub_details ; 	
 	std::time_t time_start, time_elapsed ;
+	sigc::connection cancelconnection;
 };
 
 } //GParted

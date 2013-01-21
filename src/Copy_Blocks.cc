@@ -23,6 +23,40 @@
 
 namespace GParted {
 
+void copy_blocks::set_cancel( bool force )
+{
+	if ( force || cancel_safe )
+		cancel = true;
+}
+
+copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
+			  const Glib::ustring & in_dst_device,
+			  Sector src_start,
+			  Sector dst_start,
+			  Byte_Value in_length,
+			  Byte_Value in_blocksize,
+			  OperationDetail & in_operationdetail,
+			  bool in_readonly,
+			  Byte_Value & in_total_done,
+			  bool in_cancel_safe) :
+	src_device( in_src_device ),
+	dst_device ( in_dst_device ),
+	length ( in_length ),
+	blocksize ( in_blocksize ),
+	operationdetail ( in_operationdetail ),
+	readonly ( in_readonly ),
+	total_done ( in_total_done ),
+	offset_src ( src_start ),
+	offset_dst ( dst_start ),
+	cancel( false ),
+	cancel_safe ( in_cancel_safe )
+{
+	operationdetail.signal_cancel.connect(
+		sigc::mem_fun(*this, &copy_blocks::set_cancel));
+	if (operationdetail.cancelflag)
+		set_cancel( operationdetail.cancelflag == 2 );
+}
+
 bool copy_blocks::set_progress_info()
 {
 	Byte_Value done = llabs(this->done);
@@ -96,7 +130,7 @@ void copy_blocks::copy_thread()
 	while( success && llabs( done ) < length )
 	{
 		copy_block();
-		if ( timer_progress_timeout.elapsed() >= 0.5 )
+		if ( timer_progress_timeout .elapsed() >= 0.5 )
 		{
 			Glib::signal_idle().connect( sigc::mem_fun(
 							     *this,
@@ -198,6 +232,13 @@ void copy_blocks::copy_block()
 		offset_dst += (blocksize / sector_size_dst);
 	}
 
+	if ( cancel )
+	{
+		error_message = _("Operation Canceled");
+		success = false;
+		return;
+	}
+
 	if ( blocksize != 0 )
 	{
 		if ( ped_device_read( lp_device_src, buf, offset_src, num_blocks_src ) )
@@ -210,7 +251,7 @@ void copy_blocks::copy_block()
 			}
 		}
 		else
-			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src );
+			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
 	}
 	if ( blocksize > 0 )
 	{

@@ -66,7 +66,19 @@ static void relay_update( OperationDetail *operationdetail, Glib::ustring *str )
 	operationdetail->set_description( *str, FONT_ITALIC );
 }
 
-int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail, bool checkstatus )
+static void cancel_command( bool force, Glib::Pid pid, bool cancel_safe )
+{
+	if( force || cancel_safe )
+		kill( -pid, SIGINT );
+}
+
+static void setup_child()
+{
+	setpgrp();
+}
+
+int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+				 bool checkstatus, bool cancel_safe )
 {
 	operationdetail .add_child( OperationDetail( command, checkstatus ? STATUS_EXECUTE : STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 	Glib::Pid pid;
@@ -79,7 +91,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 			std::string(),
 			Glib::shell_parse_argv( command ),
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
-			sigc::slot< void >(),
+			sigc::ptr_fun(setup_child),
 			&pid,
 			0,
 			&out,
@@ -114,6 +126,11 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	outputcapture.connect_signal( out );
 	errorcapture.connect_signal( err );
 
+	operationdetail.get_last_child().signal_cancel.connect(
+		sigc::bind(
+			sigc::ptr_fun( cancel_command ),
+			pid,
+			cancel_safe ));
 	Gtk::Main::run();
 
 	if (checkstatus) {

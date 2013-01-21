@@ -223,6 +223,7 @@ void Dialog_Progress::on_signal_show()
 	this ->add_button( _("_Save Details"), Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
 	
 	//replace 'cancel' with 'close'
+	canceltimer.disconnect();
 	delete cancelbutton;
 	cancelbutton = 0;
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
@@ -292,6 +293,19 @@ void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, co
 		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
 }
 
+bool Dialog_Progress::cancel_timeout()
+{
+	if (--cancel_countdown)
+		cancelbutton->set_label( Glib::ustring::compose("Force Cancel (%1)", cancel_countdown ) );
+	else {
+		cancelbutton->set_label( "Force Cancel" );
+		canceltimer.disconnect();
+		cancelbutton->set_sensitive();
+		return false;
+	}
+	return true;
+}
+
 void Dialog_Progress::on_cancel()
 {
 	Gtk::MessageDialog dialog( *this,
@@ -306,10 +320,18 @@ void Dialog_Progress::on_cancel()
 	dialog .add_button( _("Continue Operation"), Gtk::RESPONSE_NONE ) ;
 	dialog .add_button( _("Cancel Operation"), Gtk::RESPONSE_CANCEL ) ;
 	
-	if ( dialog .run() == Gtk::RESPONSE_CANCEL )
+	if ( !cancel || dialog .run() == Gtk::RESPONSE_CANCEL )
 	{
-		cancel = true;
 		cancelbutton->set_sensitive( false );
+		if (!cancel) {
+			cancel_countdown = 5;
+			cancelbutton->set_label( Glib::ustring::compose("Force Cancel (%1)", cancel_countdown ) );
+			canceltimer = Glib::signal_timeout().connect(
+				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
+		}
+		else cancelbutton->set_label( "Force Cancel" );
+		operations[t]->operation_detail.signal_cancel( cancel );
+		cancel = true;
 	}
 }
 

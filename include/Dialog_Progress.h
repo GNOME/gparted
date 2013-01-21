@@ -97,6 +97,9 @@ private:
 	unsigned int t, warnings ;
 	sigc::connection pulsetimer;
 	Glib::ustring label_current_sub_text ;
+	unsigned int cancel_countdown;
+	sigc::connection canceltimer;
+	bool cancel_timeout();
 };
 
 }//GParted

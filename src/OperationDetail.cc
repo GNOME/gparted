@@ -25,6 +25,7 @@ namespace GParted
 OperationDetail::OperationDetail()
 {
 	status = STATUS_NONE; // prevent uninitialized member access
+	cancelflag = 0;
 	set_status( STATUS_NONE ) ;
 	fraction = -1 ;
 	time_elapsed = -1 ;
@@ -32,12 +33,18 @@ OperationDetail::OperationDetail()
 
 OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font )
 {
+	cancelflag = 0;
 	this ->status = STATUS_NONE; // prevent uninitialized member access
 	set_description( description, font ) ;
 	set_status( status ) ;
 
 	fraction = -1 ;
 	time_elapsed = -1 ;
+}
+
+OperationDetail::~OperationDetail()
+{
+	cancelconnection.disconnect();
 }
 
 void OperationDetail::set_description( const Glib::ustring & description, Font font )
@@ -126,7 +133,10 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 
 	sub_details .back() .set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() -1 ) ) ;
 	sub_details .back() .signal_update .connect( sigc::mem_fun( this, &OperationDetail::on_update ) ) ;
-	
+	sub_details.back().cancelconnection = signal_cancel.connect(
+				sigc::mem_fun( &sub_details.back(), &OperationDetail::cancel ) );
+	if ( cancelflag )
+		sub_details.back().cancel( cancelflag == 2 );
 	on_update( sub_details .back() ) ;
 }
 	
@@ -153,6 +163,14 @@ void OperationDetail::on_update( const OperationDetail & operationdetail )
 {
 	if ( ! treepath .empty() )
 		signal_update .emit( operationdetail ) ;
+}
+
+void OperationDetail::cancel( bool force )
+{
+	if ( force )
+		cancelflag = 2;
+	else cancelflag = 1;
+	signal_cancel(force);
 }
 
 } //GParted

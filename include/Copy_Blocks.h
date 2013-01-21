@@ -42,25 +42,20 @@ class copy_blocks {
 	Glib::ustring error_message;
 	bool set_progress_info();
 	void copy_thread();
+	bool cancel;
+	bool cancel_safe;
+	void set_cancel( bool force );
 public:
-copy_blocks( const Glib::ustring & in_src_device,
-	     const Glib::ustring & in_dst_device,
-	     Sector src_start,
-	     Sector dst_start,
-	     Byte_Value in_length,
-	     Byte_Value in_blocksize,
-	     OperationDetail & in_operationdetail,
-	     bool in_readonly,
-	     Byte_Value & in_total_done ) :
-	src_device( in_src_device ),
-		dst_device ( in_dst_device ),
-		length ( in_length ),
-		blocksize ( in_blocksize ),
-		operationdetail ( in_operationdetail ),
-		readonly ( in_readonly ),
-		total_done ( in_total_done ),
-		offset_src ( src_start ),
-		offset_dst ( dst_start ) {};
+	copy_blocks( const Glib::ustring & in_src_device,
+		     const Glib::ustring & in_dst_device,
+		     Sector src_start,
+		     Sector dst_start,
+		     Byte_Value in_length,
+		     Byte_Value in_blocksize,
+		     OperationDetail & in_operationdetail,
+		     bool in_readonly,
+		     Byte_Value & in_total_done,
+		     bool cancel_safe );
 	bool copy();
 	void copy_block();
 };
