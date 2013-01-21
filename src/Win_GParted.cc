@@ -309,8 +309,9 @@ void Win_GParted::init_partition_menu()
 	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU ) );
 	menu_partition .items() .push_back( 
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
-			Gtk::Menu_Helpers::ImageMenuElem( _("_New"), 
-							  *image, 
+			Gtk::Menu_Helpers::ImageMenuElem( _("_New"),
+							  Gtk::AccelKey( GDK_Insert, Gdk::BUTTON1_MASK),
+							  *image,
 							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
 	MENU_NEW = index++ ;
 	
