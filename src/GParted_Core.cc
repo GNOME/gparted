@@ -2152,27 +2152,21 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			succes = false ;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
-				if ( copy_filesystem_simulation( partition_old, partition_new, operationdetail .get_last_child() ) )
-				{
-					operationdetail .get_last_child() .add_child( OperationDetail( _("perform real move") ) ) ;
-					
-					succes = copy_filesystem( partition_old,
-								  partition_new,
-								  operationdetail .get_last_child() .get_last_child(),
-								  total_done,
-								  true ) ;
-					
-					operationdetail .get_last_child() .get_last_child() 
-						.set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-					if ( ! succes )
-					{
-						rollback_transaction( partition_old,
-								      partition_new,
-								      operationdetail .get_last_child(),
-								      total_done ) ;
+				succes = copy_filesystem( partition_old,
+							  partition_new,
+							  operationdetail.get_last_child(),
+							  total_done,
+							  true );
 
-						check_repair_filesystem( partition_old, operationdetail ) ;
-					}
+				operationdetail.get_last_child().get_last_child()
+					.set_status( succes ? STATUS_SUCCES : STATUS_ERROR );
+				if ( ! succes )
+				{
+					rollback_transaction( partition_old,
+							      partition_new,
+							      operationdetail .get_last_child(),
+							      total_done );
+					check_repair_filesystem( partition_old, operationdetail );
 				}
 			}
 			else
