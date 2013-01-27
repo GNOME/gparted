@@ -2092,8 +2092,12 @@ bool GParted_Core::move( const Device & device,
 
 				Partition partition_restore = partition_old ;
 				partition_restore .alignment = ALIGN_STRICT ;  //Ensure that old partition boundaries are not modified
-				if ( resize_move_partition( partition_all_space, partition_restore, operationdetail .get_last_child() ) )
-					operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+				if ( resize_move_partition(
+					     partition_all_space, partition_restore, operationdetail.get_last_child() ) ) {
+					operationdetail.get_last_child().set_status( STATUS_SUCCES );
+					check_repair_filesystem( partition_old, operationdetail );
+				}
+
 				else
 					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 			}
@@ -2166,7 +2170,6 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 							      partition_new,
 							      operationdetail .get_last_child(),
 							      total_done );
-					check_repair_filesystem( partition_old, operationdetail );
 				}
 			}
 			else
