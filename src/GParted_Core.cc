@@ -2819,13 +2819,20 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 
 		if ( partition_dst .sector_start > partition_src .sector_start )
 		{
-			temp_src .sector_start = temp_src .sector_end - ( (total_done / temp_src .sector_size) - 1 ) ;
-			temp_dst .sector_start = temp_dst .sector_end - ( (total_done / temp_dst .sector_size) - 1 ) ;
+			Sector distance = partition_dst.sector_start - partition_src.sector_start;
+			temp_src.sector_start = temp_src.sector_end - ( (total_done / temp_src.sector_size) - 1 ) + distance;
+			temp_dst.sector_start = temp_dst.sector_end - ( (total_done / temp_dst.sector_size) - 1 ) + distance;
+			if (temp_src.sector_start > temp_src.sector_end)
+				return;  /* nothing has been overwritten yet, so nothing to roll back */
+
 		}
 		else
 		{
-			temp_src .sector_end = temp_src .sector_start + ( (total_done / temp_src .sector_size) - 1 ) ;
-			temp_dst .sector_end = temp_dst .sector_start + ( (total_done / temp_dst .sector_size) - 1 ) ;
+			Sector distance = partition_src.sector_start - partition_dst.sector_start;
+			temp_src.sector_end = temp_src.sector_start + ( (total_done / temp_src.sector_size) - 1 ) - distance;
+			temp_dst.sector_end = temp_dst.sector_start + ( (total_done / temp_dst.sector_size) - 1 ) - distance;
+			if (temp_src.sector_start > temp_src.sector_end)
+				return;  /* nothing has been overwritten yet, so nothing to roll back */
 		}
 		operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
