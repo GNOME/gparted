@@ -22,24 +22,16 @@
 namespace GParted
 {
 
-OperationDetail::OperationDetail()
+OperationDetail::OperationDetail() : fraction( -1 ), cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ),
+				     time_elapsed( -1 )
 {
-	status = STATUS_NONE; // prevent uninitialized member access
-	cancelflag = 0;
-	set_status( STATUS_NONE ) ;
-	fraction = -1 ;
-	time_elapsed = -1 ;
 }
 
-OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font )
+OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font ) :
+	fraction( -1 ), cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
 {
-	cancelflag = 0;
-	this ->status = STATUS_NONE; // prevent uninitialized member access
-	set_description( description, font ) ;
-	set_status( status ) ;
-
-	fraction = -1 ;
-	time_elapsed = -1 ;
+	set_description( description, font );
+	set_status( status );
 }
 
 OperationDetail::~OperationDetail()
@@ -92,7 +84,8 @@ void OperationDetail::set_status( OperationDetailStatus status )
 				break ;
 			case STATUS_ERROR:
 			case STATUS_SUCCES:
-				time_elapsed = std::time( NULL ) - time_start ;
+				if( time_start != -1 )
+					time_elapsed = std::time( NULL ) - time_start ;
 				break ;
 
 			default:
