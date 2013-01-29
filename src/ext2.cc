@@ -167,7 +167,11 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.ext2 -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.ext2 -L \"" +
+				  new_partition.get_label() + "\" " + new_partition.get_path(),
+				  operationdetail,
+				  false,
+				  true );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -198,8 +202,9 @@ bool ext2::copy( const Glib::ustring & src_part_path,
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "e2fsck -f -y -v " + partition .get_path(), operationdetail ) ;
-	
+	exit_status = execute_command( "e2fsck -f -y -v " + partition.get_path(), operationdetail,
+				       false, true );
+
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;

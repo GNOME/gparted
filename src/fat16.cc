@@ -227,7 +227,11 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F16 -v -I -n \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkdosfs -F16 -v -I -n \"" + new_partition .get_label() +
+				  "\" " + new_partition .get_path(),
+				  operationdetail,
+				  false,
+				  true );
 }
 
 bool fat16::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -252,7 +256,8 @@ bool fat16::copy( const Glib::ustring & src_part_path,
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operationdetail ) ;
+	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operationdetail,
+				       false, true );
 
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }

@@ -149,7 +149,9 @@ bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operat
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f --label \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkreiserfs -f --label \"" + new_partition.get_label() +
+				  "\" " + new_partition.get_path(), operationdetail,
+				  false, true );
 }
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -184,7 +186,8 @@ bool reiserfs::copy( const Glib::ustring & src_part_path,
 
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition .get_path(), operationdetail ) ;
+	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
+				       operationdetail, false, true );
 	
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }

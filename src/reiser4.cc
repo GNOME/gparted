@@ -143,7 +143,9 @@ bool reiser4::write_uuid( const Partition & partition, OperationDetail & operati
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition.get_label() +
+				  "\" " + new_partition.get_path(), operationdetail,
+				  false, true );
 }
 
 bool reiser4::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -168,7 +170,8 @@ bool reiser4::copy( const Glib::ustring & src_part_path,
 
 bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition.get_path(),
+				  operationdetail, false, true );
 }
 
 bool reiser4::remove( const Partition & partition, OperationDetail & operationdetail )

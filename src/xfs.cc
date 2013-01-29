@@ -164,7 +164,11 @@ bool xfs::write_uuid( const Partition & partition, OperationDetail & operationde
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_label() +
+				  "\" " + new_partition.get_path(),
+				  operationdetail,
+				  false,
+				  true );
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -204,7 +208,7 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 {
 	bool success = true ;
 
-	success &= ! execute_command( "mkfs.xfs -f " + dest_part_path, operationdetail, true ) ;
+	success &= ! execute_command( "mkfs.xfs -f " + dest_part_path, operationdetail, true, true );
 	if ( ! success )
 		return false ;
 
@@ -231,7 +235,7 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 		{
 			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
 						      " | xfsrestore -J - " + dest_mount_point + "'",
-						      operationdetail, true );
+						      operationdetail, true, true );
 
 			success &= ! execute_command( "umount -v " + dest_part_path, operationdetail, true ) ;
 		}
@@ -248,7 +252,8 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 
 bool xfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail,
+				  false, true );
 }
 
 bool xfs::remove( const Partition & partition, OperationDetail & operationdetail )

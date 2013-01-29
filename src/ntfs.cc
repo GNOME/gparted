@@ -177,7 +177,11 @@ bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition.get_label() +
+				  "\" " + new_partition.get_path(),
+				  operationdetail,
+				  false,
+				  true );
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -232,7 +236,10 @@ bool ntfs::copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
 		 OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path, operationdetail ) ;
+	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path,
+				  operationdetail,
+				  false,
+				  true );
 }
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
