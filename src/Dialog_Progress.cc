@@ -28,7 +28,6 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 {
-	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
@@ -37,12 +36,13 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	warnings = 0 ;
 
 	fraction = 1.00 / operations .size() ;
-		
+	this->property_default_width() = 700;
+
 	{
 		Gtk::VBox* vbox(manage(new Gtk::VBox()));
 
 		vbox->set_border_width(10);
-		this->get_vbox()->pack_start(*vbox, Gtk::PACK_SHRINK);
+		this->get_vbox()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
 
 		Glib::ustring str_temp(_("Depending on the number and type of operations this might take a long time."));
 		str_temp += "\n";
@@ -72,7 +72,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		treeview_operations.set_model(treestore_operations);
 		treeview_operations.set_headers_visible(false);
 		treeview_operations.set_rules_hint(true);
-		treeview_operations.set_size_request(500, 250);
+		treeview_operations.set_size_request(700, 250);
 		treeview_operations.append_column("", treeview_operations_columns.operation_description);
 		treeview_operations.append_column("", treeview_operations_columns.elapsed_time);
 		treeview_operations.append_column("", treeview_operations_columns.status_icon);
@@ -95,12 +95,11 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 
 		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 		scrolledwindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+		scrolledwindow.set_size_request (700, 250);
 		scrolledwindow.add(treeview_operations);
 
 		expander_details.set_label("<b>" + Glib::ustring(_("Details")) + "</b>");
 		expander_details.set_use_markup(true);
-		expander_details.property_expanded().signal_changed().connect(
-   			sigc::mem_fun(*this, &Dialog_Progress::on_expander_changed) );
 		expander_details.add(scrolledwindow);
 
 		vbox ->pack_start(expander_details, Gtk::PACK_EXPAND_WIDGET);
@@ -280,11 +279,6 @@ void Dialog_Progress::on_signal_show()
 			dialog .run() ;
 		}
 	} 
-}
-
-void Dialog_Progress::on_expander_changed() 
-{
-	this ->set_resizable( expander_details .get_expanded() ) ;
 }
 
 void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter )

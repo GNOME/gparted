@@ -48,7 +48,6 @@ private:
 	void on_signal_update( const OperationDetail & operationdetail ) ;
 	void update_gui_elements() ;
 	void on_signal_show() ;
-	void on_expander_changed() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
 	void on_cancel() ;
 	void on_save() ;
