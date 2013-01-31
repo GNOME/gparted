@@ -169,32 +169,12 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	return ( exit_status == 0 || exit_status == 256 ) ;
 }
 
-bool reiserfs::move( const Partition & partition_new
-                   , const Partition & partition_old
-                   , OperationDetail & operationdetail
-                   )
-{
-	return true ;
-}
-
-bool reiserfs::copy( const Glib::ustring & src_part_path,
-		     const Glib::ustring & dest_part_path,
-		     OperationDetail & operationdetail )
-{	
-	return true ;
-}
-
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
 				       operationdetail, false, true );
 	
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
-}
-
-bool reiserfs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

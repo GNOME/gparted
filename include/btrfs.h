@@ -32,18 +32,9 @@ public:
 	void read_label( Partition & partition ) ;
 	bool write_label( const Partition & partition, OperationDetail & operationdetail ) ;
 	void read_uuid( Partition & partition ) ;
-	bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
-	bool move( const Partition & partition_new
-	         , const Partition & partition_old
-	         , OperationDetail & operationdetail
-	         ) ;
-	bool copy( const Glib::ustring & src_part_path,
-		   const Glib::ustring & dest_part_path,
-		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
-	bool remove( const Partition & partition, OperationDetail & operationdetail ) ;
 
 private:
 	static Byte_Value btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) ;

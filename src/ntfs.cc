@@ -224,14 +224,6 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	return return_value ;
 }
 
-bool ntfs::move( const Partition & partition_new
-               , const Partition & partition_old
-               , OperationDetail & operationdetail
-               )
-{
-	return true ;
-}
-
 bool ntfs::copy( const Glib::ustring & src_part_path,
 		 const Glib::ustring & dest_part_path, 
 		 OperationDetail & operationdetail )
@@ -245,11 +237,6 @@ bool ntfs::copy( const Glib::ustring & src_part_path,
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operationdetail ) ; 
-}
-
-bool ntfs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

@@ -234,37 +234,12 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 				  true );
 }
 
-bool fat16::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
-{
-	return true ;
-}
-
-bool fat16::move( const Partition & partition_new
-                , const Partition & partition_old
-                , OperationDetail & operationdetail
-                )
-{
-	return true ;
-}
-
-bool fat16::copy( const Glib::ustring & src_part_path,
-		  const Glib::ustring & dest_part_path,
-		  OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operationdetail,
 				       false, true );
 
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
-}
-
-bool fat16::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

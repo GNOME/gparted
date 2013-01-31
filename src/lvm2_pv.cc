@@ -86,25 +86,6 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 	}
 }
 
-void lvm2_pv::read_label( Partition & partition )
-{
-	return ;
-}
-
-bool lvm2_pv::write_label( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-void lvm2_pv::read_uuid( Partition & partition )
-{
-}
-
-bool lvm2_pv::write_uuid( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "lvm pvcreate -M 2 " + new_partition .get_path(), operationdetail ) ;
@@ -118,34 +99,6 @@ bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operati
 			Utils::num_to_str( floor( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K " ;
 	return ! execute_command( "lvm pvresize -v " + size + partition_new .get_path(), operationdetail ) ;
-}
-
-bool lvm2_pv::move( const Partition & partition_new
-                  , const Partition & partition_old
-                  , OperationDetail & operationdetail
-               )
-{
-	return true ;
-}
-
-bool lvm2_pv::copy( const Glib::ustring & src_part_path
-                  , const Glib::ustring & dest_part_path
-                  , OperationDetail & operationdetail )
-{
-	//Copy not implemented.
-	//  Metadata fully describing a Volume Group is stored at the start of
-	//  each Physical Volume member.  Internally LVM2 primarily uses UUIDs
-	//  to uniquely identify all objects (PVs, VG and LVs) but the interface
-	//  uses device names and VG and LV names.  The general case of copying
-	//  a PV could confuse LVM2 because it will result in duplicate objects,
-	//  or even duplicate partial VGs and LVs if they span multiple PVs, so
-	//  it is not safe and should be achieved using other LVM2 commands.  A
-	//  specific case of copying a PV is the right action when it is as part
-	//  of the transfer of an exported VG to a remote machine via storage
-	//  which will be detached from the local machine and attached to the
-	//  remote machine, but would probably fit better at a VG manipulation
-	//  layer.  Thus copying of PVs is not implemented.
-	return true ;
 }
 
 bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & operationdetail )

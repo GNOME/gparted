@@ -166,27 +166,6 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
 }
 
-bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool btrfs::move( const Partition & partition_new
-                , const Partition & partition_old
-                , OperationDetail & operationdetail
-                )
-{
-	return true ;
-}
-
-bool btrfs::copy( const Glib::ustring & src_part_path,
-                    const Glib::ustring & dest_part_path,
-                    OperationDetail & operationdetail )
-{
-// TODO
-        return true ;
-}
-
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
@@ -311,11 +290,6 @@ void btrfs::read_uuid( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
-}
-
-bool btrfs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 //Private methods

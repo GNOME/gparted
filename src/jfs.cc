@@ -178,32 +178,12 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return success ;
 }
 
-bool jfs::move( const Partition & partition_new
-              , const Partition & partition_old
-              , OperationDetail & operationdetail
-              )
-{
-	return true ;
-}
-
-bool jfs::copy( const Glib::ustring & src_part_path, 
-		const Glib::ustring & dest_part_path,
-		OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool jfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "jfs_fsck -f " + partition.get_path(), operationdetail,
 				       false, true );
 
 	return ( exit_status == 0 || exit_status == 1 ) ;
-}
-
-bool jfs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

@@ -39,24 +39,24 @@ public:
 	static const Glib::ustring get_generic_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 
 	virtual FS get_filesystem_support() = 0 ;
-	virtual void set_used_sectors( Partition & partition ) = 0 ;
-	virtual void read_label( Partition & partition ) = 0 ;
-	virtual bool write_label( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
-	virtual void read_uuid( Partition & partition ) = 0 ;
-	virtual bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
-	virtual bool create( const Partition & new_partition, OperationDetail & operationdetail ) = 0 ;
+	virtual void set_used_sectors( Partition & partition ) {};
+	virtual void read_label( Partition & partition ) {};
+	virtual bool write_label( const Partition & partition, OperationDetail & operationdetail ) { return false; };
+	virtual void read_uuid( Partition & partition ) {};
+	virtual bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) { return false; };
+	virtual bool create( const Partition & new_partition, OperationDetail & operationdetail ) { return false; };
 	virtual bool resize( const Partition & partition_new,
 			     OperationDetail & operationdetail,
-			     bool fill_partition = false ) = 0 ;
+			     bool fill_partition = false ) { return false; };
 	virtual bool move( const Partition & partition_new
 	                 , const Partition & partition_old
 	                 , OperationDetail & operationdetail
-	                 ) = 0 ;
+			   ) { return false; };
 	virtual bool copy( const Glib::ustring & src_part_path,
 			   const Glib::ustring & dest_part_path,
-			   OperationDetail & operationdetail ) = 0 ;
-	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
-	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
+			   OperationDetail & operationdetail ) { return false; };
+	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) { return false; };
+	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
 	bool success;
 protected:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,

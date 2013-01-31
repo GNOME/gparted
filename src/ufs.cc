@@ -35,63 +35,6 @@ FS ufs::get_filesystem_support()
 	return fs ;
 }
 
-void ufs::set_used_sectors( Partition & partition ) 
-{
-}
-
-void ufs::read_label( Partition & partition )
-{
-}
-
-bool ufs::write_label( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-void ufs::read_uuid( Partition & partition )
-{
-}
-
-bool ufs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool ufs::create( const Partition & new_partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool ufs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
-{
-	return true ;
-}
-
-bool ufs::move( const Partition & partition_new
-              , const Partition & partition_old
-              , OperationDetail & operationdetail
-              )
-{
-	return true ;
-}
-
-bool ufs::copy( const Glib::ustring & src_part_path,
-		const Glib::ustring & dest_part_path,
-		OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool ufs::check_repair( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool ufs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 } //GParted
 
 

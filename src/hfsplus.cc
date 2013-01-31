@@ -49,10 +49,6 @@ FS hfsplus::get_filesystem_support()
 	return fs ;
 }
 
-void hfsplus::set_used_sectors( Partition & partition ) 
-{
-}
-
 void hfsplus::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
@@ -74,20 +70,6 @@ void hfsplus::read_label( Partition & partition )
 	}
 }
 
-bool hfsplus::write_label( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-void hfsplus::read_uuid( Partition & partition )
-{
-}
-
-bool hfsplus::write_uuid( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "";
@@ -98,34 +80,9 @@ bool hfsplus::create( const Partition & new_partition, OperationDetail & operati
 	return ! execute_command( cmd , operationdetail ) ;
 }
 
-bool hfsplus::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
-{
-	return true ;
-}
-
-bool hfsplus::move( const Partition & partition_new
-                  , const Partition & partition_old
-                  , OperationDetail & operationdetail
-                  )
-{
-	return true ;
-}
-
-bool hfsplus::copy( const Glib::ustring & src_part_path,
-		    const Glib::ustring & dest_part_path,
-		    OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool hfsplus::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "fsck.hfsplus -f -y " + partition .get_path(), operationdetail ) ;
-}
-
-bool hfsplus::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

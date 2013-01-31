@@ -194,14 +194,6 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return success ;
 }
 
-bool xfs::move( const Partition & partition_new
-              , const Partition & partition_old
-              , OperationDetail & operationdetail
-              )
-{
-	return true ;
-}
-
 bool xfs::copy( const Glib::ustring & src_part_path,
 		const Glib::ustring & dest_part_path,
 		OperationDetail & operationdetail )
@@ -254,11 +246,6 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 {
 	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail,
 				  false, true );
-}
-
-bool xfs::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

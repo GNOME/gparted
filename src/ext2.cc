@@ -191,21 +191,6 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 	return ! execute_command( str_temp, operationdetail ) ;
 }
 
-bool ext2::move( const Partition & partition_new
-               , const Partition & partition_old
-               , OperationDetail & operationdetail
-               )
-{
-	return true ;
-}
-
-bool ext2::copy( const Glib::ustring & src_part_path, 
-		 const Glib::ustring & dest_part_path,
-		 OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "e2fsck -f -y -v " + partition.get_path(), operationdetail,
@@ -214,11 +199,6 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
-}
-
-bool ext2::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
 }
 
 } //GParted

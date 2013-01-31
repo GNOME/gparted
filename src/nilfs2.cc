@@ -185,30 +185,4 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 	return success ;
 }
 
-bool nilfs2::move( const Partition & partition_new
-                 , const Partition & partition_old
-                 , OperationDetail & operationdetail
-                 )
-{
-	return true ;
-}
-
-bool nilfs2::copy( const Glib::ustring & src_part_path
-                 , const Glib::ustring & dest_part_path
-                 , OperationDetail & operationdetail
-                 )
-{
-	return true ;
-}
-
-bool nilfs2::check_repair( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool nilfs2::remove( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
 } //GParted

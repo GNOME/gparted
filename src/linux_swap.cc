@@ -64,10 +64,6 @@ FS linux_swap::get_filesystem_support()
 	return fs ;
 }
 
-void linux_swap::set_used_sectors( Partition & partition ) 
-{
-}
-
 void linux_swap::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
@@ -169,16 +165,6 @@ bool linux_swap::copy( const Glib::ustring & src_part_path,
 	                   )
 	                          ) ;
 
-	return true ;
-}
-
-bool linux_swap::check_repair( const Partition & partition, OperationDetail & operationdetail )
-{
-	return true ;
-}
-
-bool linux_swap::remove( const Partition & partition, OperationDetail & operationdetail )
-{
 	return true ;
 }
 
