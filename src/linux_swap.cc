@@ -149,8 +149,8 @@ bool linux_swap::move( const Partition & partition_new
 	return true ;
 }
 
-bool linux_swap::copy( const Glib::ustring & src_part_path,
-		       const Glib::ustring & dest_part_path,
+bool linux_swap::copy( const Partition & src_part,
+		       Partition & dest_part,
 		       OperationDetail & operationdetail )
 {
 	//Since linux-swap does not contain data, do not actually copy the partition

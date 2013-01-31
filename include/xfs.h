@@ -36,8 +36,8 @@ public:
 	bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
-	bool copy( const Glib::ustring & src_part_path,
-		   const Glib::ustring & dest_part_path,
+	bool copy( const Partition & src_part,
+		   Partition & dest_part,
 		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 };

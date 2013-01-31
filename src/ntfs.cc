@@ -224,11 +224,11 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	return return_value ;
 }
 
-bool ntfs::copy( const Glib::ustring & src_part_path,
-		 const Glib::ustring & dest_part_path, 
+bool ntfs::copy( const Partition & src_part,
+		 Partition & dest_part, 
 		 OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsclone -f --overwrite " + dest_part_path + " " + src_part_path,
+	return ! execute_command( "ntfsclone -f --overwrite " + dest_part.get_path() + " " + src_part.get_path(),
 				  operationdetail,
 				  false,
 				  true );

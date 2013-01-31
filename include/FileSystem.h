@@ -52,8 +52,8 @@ public:
 	                 , const Partition & partition_old
 	                 , OperationDetail & operationdetail
 			   ) { return false; };
-	virtual bool copy( const Glib::ustring & src_part_path,
-			   const Glib::ustring & dest_part_path,
+	virtual bool copy( const Partition & src_part,
+			   Partition & dest_part,
 			   OperationDetail & operationdetail ) { return false; };
 	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) { return false; };
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };

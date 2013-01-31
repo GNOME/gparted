@@ -2616,8 +2616,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 
 				case GParted::FS::EXTERNAL :
 					succes = ( p_filesystem = set_proper_filesystem( partition_dst .filesystem ) ) &&
-							 p_filesystem ->copy( partition_src .get_path(),
-								     	      partition_dst .get_path(),
+							 p_filesystem ->copy( partition_src,
+									      partition_dst,
 									      operationdetail .get_last_child() ) ;
 						break ;
 

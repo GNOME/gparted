@@ -194,13 +194,13 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 	return success ;
 }
 
-bool xfs::copy( const Glib::ustring & src_part_path,
-		const Glib::ustring & dest_part_path,
+bool xfs::copy( const Partition & src_part,
+		Partition & dest_part,
 		OperationDetail & operationdetail )
 {
 	bool success = true ;
 
-	success &= ! execute_command( "mkfs.xfs -f " + dest_part_path, operationdetail, true, true );
+	success &= ! execute_command( "mkfs.xfs -f " + dest_part.get_path(), operationdetail, true, true );
 	if ( ! success )
 		return false ;
 
@@ -215,12 +215,12 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 		return false ;
 	}
 
-	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part_path +
+	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part.get_path() +
 				      " " + src_mount_point, operationdetail, true ) ;
 
 	if ( success )
 	{
-		success &= ! execute_command( "mount -v -t xfs " + dest_part_path +
+		success &= ! execute_command( "mount -v -t xfs " + dest_part.get_path() +
 					      " " + dest_mount_point, operationdetail, true ) ;
 
 		if ( success )
@@ -229,10 +229,10 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 						      " | xfsrestore -J - " + dest_mount_point + "'",
 						      operationdetail, true, true );
 
-			success &= ! execute_command( "umount -v " + dest_part_path, operationdetail, true ) ;
+			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail, true ) ;
 		}
 
-		success &= ! execute_command( "umount -v " + src_part_path, operationdetail, true ) ;
+		success &= ! execute_command( "umount -v " + src_part.get_path(), operationdetail, true ) ;
 	}
 
 	rm_temp_dir( dest_mount_point, operationdetail ) ;

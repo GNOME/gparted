@@ -41,8 +41,8 @@ public:
 	         , const Partition & partition_old
 	         , OperationDetail & operationdetail
 	         ) ;
-	bool copy( const Glib::ustring & src_part_path,
-		   const Glib::ustring & dest_part_path,
+	bool copy( const Partition & src_part,
+		   Partition & dest_part,
 		   OperationDetail & operationdetail ) ;
 };
 
