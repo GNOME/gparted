@@ -257,7 +257,7 @@ bool fat32::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat32::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F32 -v -n \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkdosfs -F32 -v -I -n \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
 }
 
 bool fat32::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
