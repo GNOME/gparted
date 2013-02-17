@@ -3130,21 +3130,27 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
+	bool success = true ;
 	if ( ! Glib::find_program_in_path( "wipefs" ) .empty() )
 	{
+		Glib::ustring output ;
 		operationdetail .add_child( OperationDetail(
 				String::ucompose( _("clear old file system signatures in %1"),
 				                  partition .get_path() ) ) ) ;
 		OperationDetail & od = operationdetail .get_last_child() ;
-		Glib::ustring output, error ;
-		Glib::ustring command = "wipefs -a " + partition .get_path() ;
-		od .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-		int exit_status = Utils::execute_command( command, output, error, true ) ;
-		if ( ! output .empty() )
-			od .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-		if ( ! error .empty() )
-			od .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-		od .set_status( exit_status == 0 ? STATUS_SUCCES : STATUS_N_A ) ;
+		success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+
+		//Before util-linux 2.21.0, released Feb 2012, wipefs only erased 1 of
+		//  the 3 vfat (fat16/fat32) signatures each time it was called.  If only
+		//  one vfat signature was wiped, found "(vfat)" only once in the output,
+		//  execute wipefs 2 more time.
+		Glib::ustring::size_type p1 = output .find( "(vfat)" ) ;
+		if (    p1 != Glib::ustring::npos
+		     && output .find( "(vfat)", p1+6 ) == Glib::ustring::npos )
+		{
+			success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+			success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+		}
 	}
 
 	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
@@ -3182,7 +3188,28 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		}
 		ped_device_destroy( lp_device ) ;
 	}
+
+	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_N_A ) ;
 	return true ;
+}
+
+bool GParted_Core::wipe_filesystem_signatures( const Glib::ustring & path,
+                                               OperationDetail & operationdetail, Glib::ustring & output )
+{
+	bool success ;
+	Glib::ustring error ;
+	Glib::ustring command = "wipefs -a " + path ;
+
+	operationdetail .add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
+	int exit_status = Utils::execute_command( command, output, error, true ) ;
+	if ( ! output .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
+	if ( ! error .empty() )
+		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
+	success = ( 0 == exit_status ) ;
+	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_N_A ) ;
+
+	return success ;
 }
 
 bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 

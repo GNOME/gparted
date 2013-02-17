@@ -179,6 +179,8 @@ private:
 				   OperationDetail & operationdetail ) ;
 	FileSystem* set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool wipe_filesystem_signatures( const Glib::ustring & device_path,
+	                                 OperationDetail & operationdetail, Glib::ustring & output ) ;
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
