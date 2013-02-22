@@ -42,6 +42,7 @@ public:
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
+	void set_devices_thread( std::vector<Device> * pdevices );
 	void guess_partition_table(const Device & device, Glib::ustring &buff);
 	
 	bool snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) ;

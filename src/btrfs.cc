@@ -195,7 +195,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	if ( mount_point .empty() )
 		return false ;
 
-	success &= ! execute_command_timed( "mount -v -t btrfs " + partition_new .get_path() + " " + mount_point, operationdetail ) ;
+	success &= ! execute_command( "mount -v -t btrfs " + partition_new .get_path() + " " + mount_point,
+				      operationdetail, true ) ;
 
 	if ( success )
 	{
@@ -210,7 +211,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			cmd = "btrfs filesystem resize " + size + " " + mount_point ;
 		else
 			cmd = "btrfsctl -r " + size + " " + mount_point ;
-		exit_status = execute_command_timed( cmd, operationdetail, false ) ;
+		exit_status = execute_command( cmd, operationdetail, false ) ;
 		bool resize_succeeded = ( exit_status == 0 ) ;
 		if ( resize_to_same_size_fails )
 		{
@@ -235,7 +236,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		operationdetail .get_last_child() .set_status( resize_succeeded ? STATUS_SUCCES : STATUS_ERROR ) ;
 		success &= resize_succeeded ;
 
-		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
+		success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
 	}
 
 	rm_temp_dir( mount_point, operationdetail ) ;

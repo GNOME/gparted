@@ -621,8 +621,6 @@ bool Win_GParted::pulsebar_pulse()
 
 void Win_GParted::show_pulsebar( const Glib::ustring & status_message ) 
 {
-	sigc::connection pulsetimer;
-
 	pulsebar .show();
 	statusbar .push( status_message) ;
 	
@@ -636,7 +634,10 @@ void Win_GParted::show_pulsebar( const Glib::ustring & status_message )
 		
 	// connect pulse update timer
 	pulsetimer = Glib::signal_timeout().connect( sigc::mem_fun(*this, &Win_GParted::pulsebar_pulse), 100 );
-	Gtk::Main::run();
+}
+
+void Win_GParted::hide_pulsebar()
+{
 	pulsetimer.disconnect();
 	pulsebar .hide();
 	statusbar .pop() ;
@@ -1199,17 +1200,11 @@ void Win_GParted::on_show()
 	menu_gparted_refresh_devices() ;
 }
 	
-void Win_GParted::thread_refresh_devices() 
-{
-	gparted_core .set_devices( devices ) ;
-	Gtk::Main::quit();
-}
-
 void Win_GParted::menu_gparted_refresh_devices()
 {
-	Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_refresh_devices ), false );
-
 	show_pulsebar( _("Scanning all devices...") ) ;
+	gparted_core.set_devices( devices );
+	hide_pulsebar();
 	
 	//check if current_device is still available (think about hotpluggable stuff like usbdevices)
 	if ( current_device >= devices .size() )
@@ -1981,7 +1976,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	}
 }
 
-void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error ) 
+void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error ) 
 {
 	std::vector<Glib::ustring> errors, failed_mountpoints, mountpoints = gparted_core .get_all_mountpoints() ;
 	Glib::ustring dummy ;
@@ -2013,63 +2008,15 @@ void Win_GParted::thread_unmount_partition( bool * succes, Glib::ustring * error
 	}
 	else
 		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;
-
-	Gtk::Main::quit();
 }
 	
-void Win_GParted::thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) 
-{
-	Glib::ustring dummy ;
-	std::vector<Glib::ustring> errors ;
-	
-	*succes = ! Utils::execute_command( "mount -v " + selected_partition .get_path() + " \"" + mountpoint + "\"",
-					    dummy,
-					    *error ) ;
-	Gtk::Main::quit();
-}
-
-void Win_GParted::thread_toggle_swap( bool * succes, Glib::ustring * error ) 
-{	
-	Glib::ustring dummy ;
-	
-	if ( selected_partition .busy )
-		*succes = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path() + " && sync",
-						    dummy,
-						    *error ) ;
-	else
-		*succes = ! Utils::execute_command( "swapon -v " + selected_partition .get_path() + " && sync",
-						    dummy,
-						    *error ) ;
-	Gtk::Main::quit();
-}
-
-void Win_GParted::thread_toggle_lvm2_pv( bool * success, Glib::ustring * error )
-{
-	Glib::ustring dummy ;
-
-	if ( selected_partition .busy )
-		//VGNAME from mount point
-		*success = ! Utils::execute_command( "lvm vgchange -a n " + selected_partition .get_mountpoint(),
-		                                     dummy,
-		                                     *error ) ;
-	else
-		*success = ! Utils::execute_command( "lvm vgchange -a y " + selected_partition .get_mountpoint(),
-		                                     dummy,
-		                                     *error ) ;
-	Gtk::Main::quit();
-}
-
-// Runs gpart in a thread
-void Win_GParted::thread_guess_partition_table()
-{
-	this->gpart_output="";
-	this->gparted_core.guess_partition_table(devices[ current_device ], this->gpart_output);
-	Gtk::Main::quit();
-}
-
 void Win_GParted::toggle_busy_state()
 {
 	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
+	bool success = false ;
+	Glib::ustring error ;
+	Glib::ustring output;
+
 	if ( operation_count > 0 )
 	{
 		//Note that this situation will only occur when trying to swapon a partition
@@ -2112,20 +2059,22 @@ void Win_GParted::toggle_busy_state()
 		return ;
 	}
 
-	bool succes = false ;
-	Glib::ustring error ;
-
 	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
 	{
-		Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
-			sigc::mem_fun( *this, &Win_GParted::thread_toggle_swap ), &succes, &error ), false );
-
 		show_pulsebar( 
 			String::ucompose( 
 				selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
 				selected_partition .get_path() ) ) ;
-
-		if ( ! succes )
+		if ( selected_partition .busy )
+			success = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path(),
+							    output,
+							    error );
+		else
+			success = ! Utils::execute_command( "swapon -v " + selected_partition .get_path(),
+							    output,
+							    error );
+		hide_pulsebar();
+		if ( ! success )
 		{
 			Gtk::MessageDialog dialog( 
 				*this,
@@ -2142,17 +2091,24 @@ void Win_GParted::toggle_busy_state()
 	}
 	else if ( selected_partition .filesystem == GParted::FS_LVM2_PV )
 	{
-		Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>(
-			sigc::mem_fun( *this, &Win_GParted::thread_toggle_lvm2_pv ), &succes, &error ), false );
-
 		show_pulsebar(
 			String::ucompose(
 				selected_partition .busy ? _("Deactivating Volume Group %1")
 				                         : _("Activating Volume Group %1"),
 				//VGNAME from mount point
 				selected_partition .get_mountpoint() ) ) ;
+		if ( selected_partition .busy )
+			//VGNAME from mount point
+			success = ! Utils::execute_command( "lvm vgchange -a n " + selected_partition .get_mountpoint(),
+							    output,
+							    error );
+		else
+			success = ! Utils::execute_command( "lvm vgchange -a y " + selected_partition .get_mountpoint(),
+							     output,
+							     error );
+		hide_pulsebar();
 
-		if ( ! succes )
+		if ( ! success )
 		{
 			Gtk::MessageDialog dialog(
 				*this,
@@ -2170,12 +2126,10 @@ void Win_GParted::toggle_busy_state()
 	}
 	else if ( selected_partition .busy )
 	{
-		Glib::Thread::create( sigc::bind<bool *, Glib::ustring *>( 
-			sigc::mem_fun( *this, &Win_GParted::thread_unmount_partition ), &succes, &error ), false );
-
 		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .get_path() ) ) ;
-	
-		if ( ! succes )
+		unmount_partition( &success, &error );
+		hide_pulsebar();
+		if ( ! success )
 		{
 			Gtk::MessageDialog dialog( *this, 
 						   String::ucompose( _("Could not unmount %1"), selected_partition .get_path() ),
@@ -2222,21 +2176,19 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 		return ;
 	}
 
-	bool succes = false ;
+	bool success = false ;
 	Glib::ustring error ;
-
-	Glib::Thread::create( sigc::bind<Glib::ustring, bool *, Glib::ustring *>( 
-						sigc::mem_fun( *this, &Win_GParted::thread_mount_partition ),
-						selected_partition .get_mountpoints()[ index ],
-						&succes,
-						&error ),
-				       false );
+	Glib::ustring stdout;
 
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
 					 selected_partition .get_path(),
 					 selected_partition .get_mountpoints()[ index ] ) ) ;
-
-	if ( ! succes )
+	success = !Utils::execute_command( "mount -v " + selected_partition .get_path() + " \"" +
+					   selected_partition.get_mountpoints()[ index ] + "\"",
+					   stdout,
+					   error ) ;
+	hide_pulsebar();
+	if ( ! success )
 	{
 		Gtk::MessageDialog dialog( *this, 
 					   String::ucompose( _("Could not mount %1 on %2"),
@@ -2375,11 +2327,11 @@ void Win_GParted::activate_attempt_rescue_data()
 
 	messageDialog.hide();
 
-	Glib::Thread::create( sigc::mem_fun( *this, &Win_GParted::thread_guess_partition_table ), false );
-
 	/*TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb */
 	show_pulsebar(String::ucompose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
-
+	gpart_output="";
+	gparted_core.guess_partition_table(devices[ current_device ], gpart_output);
+	hide_pulsebar();
 	Dialog_Rescue_Data dialog;
 	dialog .set_transient_for( *this );
 

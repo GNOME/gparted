@@ -146,7 +146,7 @@ OperationDetail & OperationDetail::get_last_child()
 	if ( sub_details .size() == 0 )
 		add_child( OperationDetail( "---", STATUS_ERROR ) ) ;
 
-	return sub_details .back() ;
+	return sub_details[sub_details.size() - 1];
 }
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 

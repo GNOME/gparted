@@ -55,4 +55,5 @@ EXTRA_DIST = \
 	reiser4.h   			\
 	reiserfs.h  			\
 	ufs.h  				\
-	xfs.h
+	xfs.h				\
+	PipeCapture.h

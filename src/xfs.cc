@@ -175,14 +175,14 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 	if ( mount_point .empty() )
 		return false ;
 
-	success &= ! execute_command_timed( "mount -v -t xfs " + partition_new .get_path() + " " + mount_point,
-	                                    operationdetail ) ;
+	success &= ! execute_command( "mount -v -t xfs " + partition_new .get_path() + " " + mount_point,
+				      operationdetail, true ) ;
 
 	if ( success )
 	{
-		success &= ! execute_command_timed( "xfs_growfs " + mount_point, operationdetail ) ;
+		success &= ! execute_command( "xfs_growfs " + mount_point, operationdetail, true ) ;
 
-		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
+		success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
 	}
 
 	rm_temp_dir( mount_point, operationdetail ) ;
@@ -204,7 +204,7 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 {
 	bool success = true ;
 
-	success &= ! execute_command_timed( "mkfs.xfs -f " + dest_part_path, operationdetail ) ;
+	success &= ! execute_command( "mkfs.xfs -f " + dest_part_path, operationdetail, true ) ;
 	if ( ! success )
 		return false ;
 
@@ -219,24 +219,24 @@ bool xfs::copy( const Glib::ustring & src_part_path,
 		return false ;
 	}
 
-	success &= ! execute_command_timed( "mount -v -t xfs -o noatime,ro " + src_part_path +
-	                                    " " + src_mount_point, operationdetail ) ;
+	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part_path +
+				      " " + src_mount_point, operationdetail, true ) ;
 
 	if ( success )
 	{
-		success &= ! execute_command_timed( "mount -v -t xfs " + dest_part_path +
-		                                    " " + dest_mount_point, operationdetail ) ;
+		success &= ! execute_command( "mount -v -t xfs " + dest_part_path +
+					      " " + dest_mount_point, operationdetail, true ) ;
 
 		if ( success )
 		{
-			success &= ! execute_command_timed( "xfsdump -J - " + src_mount_point +
-			                                    " | xfsrestore -J - " + dest_mount_point,
-			                                    operationdetail ) ;
+			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
+						      " | xfsrestore -J - " + dest_mount_point + "'",
+						      operationdetail, true );
 
-			success &= ! execute_command_timed( "umount -v " + dest_part_path, operationdetail ) ;
+			success &= ! execute_command( "umount -v " + dest_part_path, operationdetail, true ) ;
 		}
 
-		success &= ! execute_command_timed( "umount -v " + src_part_path, operationdetail ) ;
+		success &= ! execute_command( "umount -v " + src_part_path, operationdetail, true ) ;
 	}
 
 	rm_temp_dir( dest_mount_point, operationdetail ) ;

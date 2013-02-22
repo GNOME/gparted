@@ -162,7 +162,7 @@ bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationde
 		cmd = "lvm pvremove " + partition .get_path() ;
 	else
 		//Must force the removal of a PV which is a member of a VG
-		cmd = "echo y | lvm pvremove --force --force " + partition .get_path() ;
+		cmd = "lvm pvremove --force --force --yes " + partition .get_path() ;
 	return ! execute_command( cmd, operationdetail ) ;
 }
 

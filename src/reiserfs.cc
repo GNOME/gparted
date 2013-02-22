@@ -154,16 +154,15 @@ bool reiserfs::create( const Partition & new_partition, OperationDetail & operat
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 { 
-	Glib::ustring str_temp = "echo y | resize_reiserfs " + partition_new .get_path() ;
-	
+	Glib::ustring size = "" ;
 	if ( ! fill_partition )
 	{
-		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
-				partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) -1 ) ;
+		size = " -s " + Utils::num_to_str( Utils::round( Utils::sector_to_unit(
+		                   partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) -1 ) ;
 	}
+	Glib::ustring cmd = "sh -c 'echo y | resize_reiserfs" + size + " " + partition_new .get_path() + "'" ;
 
-	exit_status = execute_command( str_temp, operationdetail ) ;
+	exit_status = execute_command( cmd, operationdetail ) ;
 
 	return ( exit_status == 0 || exit_status == 256 ) ;
 }

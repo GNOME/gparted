@@ -57,6 +57,7 @@
 #include <dirent.h>
 #include <mntent.h>
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/main.h>
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
@@ -138,6 +139,22 @@ void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_dev
 	
 void GParted_Core::set_devices( std::vector<Device> & devices )
 {
+	Glib::Thread::create( sigc::bind(
+				sigc::mem_fun( *this, &GParted_Core::set_devices_thread ),
+				&devices),
+			      false );
+	Gtk::Main::run();
+}
+
+static bool _mainquit( void *dummy )
+{
+	Gtk::Main::quit();
+	return false;
+}
+
+void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
+{
+	std::vector<Device> &devices = *pdevices;
 	devices .clear() ;
 	Device temp_device ;
 	Proc_Partitions_Info pp_info( true ) ;  //Refresh cache of proc partition information
@@ -325,6 +342,7 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	set_thread_status_message("") ;
 	fstab_info .clear() ;
+	g_idle_add( (GSourceFunc)_mainquit, NULL );
 }
 
 // runs gpart on the specified parameter
@@ -3548,15 +3566,15 @@ public:
 struct ped_exception_ctx {
 	PedExceptionOption ret;
 	PedException *e;
-	Glib::Threads::Mutex mutex;
-	Glib::Threads::Cond cond;
+	Glib::Mutex mutex;
+	Glib::Cond cond;
 };
 
 static bool _ped_exception_handler( struct ped_exception_ctx *ctx )
 {
-        std::cout << ctx->e->message << std::endl;
+	std::cerr << ctx->e->message << std::endl;
 
-        libparted_messages.push_back( ctx->e->message );
+	libparted_messages.push_back( ctx->e->message );
 	char optcount = 0;
 	int opt = 0;
 	for( char c = 0; c < 10; c++ )

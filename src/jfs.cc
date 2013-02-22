@@ -68,7 +68,7 @@ FS jfs::get_filesystem_support()
 
 void jfs::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "echo dm | jfs_debugfs " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "sh -c 'echo dm | jfs_debugfs " + partition.get_path() + "'", output, error, true ) )
 	{
 		//blocksize
 		index = output .find( "Block Size:" ) ;
@@ -160,15 +160,15 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 	if ( mount_point .empty() )
 		return false ;
 
-	success &= ! execute_command_timed( "mount -v -t jfs " + partition_new .get_path() + " " + mount_point,
-	                                    operationdetail ) ;
+	success &= ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + mount_point,
+				      operationdetail, true ) ;
 
 	if ( success )
 	{
-		success &= ! execute_command_timed( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + mount_point,
-		                                    operationdetail ) ;
+		success &= ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + mount_point,
+					      operationdetail, true ) ;
 
-		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
+		success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
 	}
 
 	rm_temp_dir( mount_point, operationdetail ) ;

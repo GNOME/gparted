@@ -55,7 +55,7 @@ private:
 
 	void refresh_combo_devices() ;
 	void show_pulsebar( const Glib::ustring & status_message ) ;
-	
+	void hide_pulsebar();
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
@@ -126,12 +126,7 @@ private:
 	}
 		
 	//threads..
-	void thread_refresh_devices() ;
-	void thread_unmount_partition( bool * succes, Glib::ustring * error ) ;
-	void thread_mount_partition( Glib::ustring mountpoint, bool * succes, Glib::ustring * error ) ;
-	void thread_toggle_swap( bool * succes, Glib::ustring * error ) ;
-	void thread_toggle_lvm2_pv( bool * succes, Glib::ustring * error ) ;
-	void thread_guess_partition_table();
+	void unmount_partition( bool * succes, Glib::ustring * error );
 		
 	//signal handlers
 	void open_operationslist() ;
@@ -260,6 +255,7 @@ private:
 					
 	//stuff for progress overview and pulsebar
 	bool pulsebar_pulse();
+	sigc::connection pulsetimer;
 };
 
 } //GParted

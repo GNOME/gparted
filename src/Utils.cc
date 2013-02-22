@@ -17,6 +17,8 @@
  */
 
 #include "../include/Utils.h"
+#include "../include/GParted_Core.h"
+#include "../include/PipeCapture.h"
 
 #include <sstream>
 #include <fstream>
@@ -26,7 +28,8 @@
 #include <uuid/uuid.h>
 #include <cerrno>
 #include <sys/statvfs.h>
-
+#include <gtkmm/main.h>
+#include <fcntl.h>
 
 namespace GParted
 {
@@ -269,7 +272,7 @@ bool Utils::kernel_supports_fs( const Glib::ustring & fs )
 		return true ;
 
 	Glib::ustring output, error ;
-	execute_command( "modprobe " + fs, output, error, true ) ;
+	execute_command( "modprobe " + fs, output, error, true );
 
 	input .open( "/proc/filesystems" ) ;
 	if ( input )
@@ -380,62 +383,113 @@ int Utils::execute_command( const Glib::ustring & command )
 	return execute_command( command, dummy, dummy ) ;
 }
 
-int Utils::execute_command( const Glib::ustring & command,
-		     	    Glib::ustring & output,
-			    Glib::ustring & error,
-		     	    bool use_C_locale )
+class utils_execute_command_status
 {
-	int exit_status = -1 ;
-	std::string std_out, std_error ;
+public:
+	bool running;
+	int pipecount;
+	int exit_status;
+	bool foreground;
+	Glib::Mutex mutex;
+	Glib::Cond cond;
+	void store_exit_status( GPid pid, int status );
+	void execute_command_eof();
+};
 
-	try
+void utils_execute_command_status::store_exit_status( GPid pid, int status )
+{
+	exit_status = status;
+	running = false;
+	if (pipecount == 0) // pipes finished first
 	{
-		std::vector<std::string>argv;
-		argv .push_back( "sh" ) ;
-		argv .push_back( "-c" ) ;
-		argv .push_back( command ) ;
-
-		if ( use_C_locale )
-		{
-			//Spawn command using the C language environment
-			std::vector<std::string> envp ;
-			envp .push_back( "LC_ALL=C" ) ;
-			envp .push_back( "PATH=" + Glib::getenv( "PATH" ) ) ;
-
-			Glib::spawn_sync( "."
-			                , argv
-			                , envp
-			                , Glib::SPAWN_SEARCH_PATH
-			                , sigc::slot<void>()
-			                , &std_out
-			                , &std_error
-			                , &exit_status
-			                ) ;
-		}
-		else
-		{
-			//Spawn command inheriting the parent's environment
-			Glib::spawn_sync( "."
-			                , argv
-			                , Glib::SPAWN_SEARCH_PATH
-			                , sigc::slot<void>()
-			                , &std_out
-			                , &std_error
-			                , &exit_status
-			                ) ;
+		if (foreground)
+			Gtk::Main::quit();
+		else {
+			mutex.lock();
+			cond.signal();
+			mutex.unlock();
 		}
 	}
-	catch ( Glib::Exception & e )
+	Glib::spawn_close_pid( pid );
+}
+
+void utils_execute_command_status::execute_command_eof()
+{
+	if (--pipecount)
+		return; // wait for second pipe to eof
+	if ( !running ) // already got exit status
 	{
-		 error = e .what() ;
-
-		 return -1 ;
+		if (foreground)
+			Gtk::Main::quit();
+		else {
+			mutex.lock();
+			cond.signal();
+			mutex.unlock();
+		}
 	}
+}
 
-	output = Utils::cleanup_cursor( std_out ) ;
-	error = std_error ;
+static void set_locale()
+{
+	setenv( "LC_ALL", "C", 1 );
+}
 
-	return exit_status ;
+int Utils::execute_command( const Glib::ustring & command,
+			    Glib::ustring & output,
+			    Glib::ustring & error,
+			    bool use_C_locale )
+{
+	Glib::Pid pid;
+	// set up pipes for capture
+	int out, err;
+	utils_execute_command_status status;
+	// spawn external process
+	status.running = true;
+	status.pipecount = 2;
+	status.foreground = (Glib::Thread::self() == GParted_Core::mainthread);
+	try {
+		Glib::spawn_async_with_pipes(
+			std::string(),
+			Glib::shell_parse_argv( command ),
+			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
+			use_C_locale ? sigc::ptr_fun( set_locale ) : sigc::slot< void >(),
+			&pid,
+			0,
+			&out,
+			&err );
+	} catch (Glib::SpawnError &e) {
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
+	fcntl( out, F_SETFL, O_NONBLOCK );
+	fcntl( err, F_SETFL, O_NONBLOCK );
+	Glib::signal_child_watch().connect( sigc::mem_fun(
+			  status, &utils_execute_command_status::store_exit_status ),
+					    pid );
+	output.clear();
+	error.clear();
+	//Lock mutex so we have time to setup pipecapture for output and error streams
+	//  before connecting the input/output signal handler
+	if( !status.foreground )
+		status.mutex.lock();
+	PipeCapture outputcapture( out, output );
+	PipeCapture errorcapture( err, error );
+	outputcapture.eof.connect( sigc::mem_fun(
+		 status, &utils_execute_command_status::execute_command_eof ));
+	errorcapture.eof.connect( sigc::mem_fun(
+		 status, &utils_execute_command_status::execute_command_eof ));
+	outputcapture.connect_signal( out );
+	errorcapture.connect_signal( err );
+
+	if( status.foreground)
+		Gtk::Main::run();
+	else {
+		status.cond.wait( status.mutex );
+		status.mutex.unlock();
+	}
+	close( out );
+	close( err );
+	return status.exit_status;
 }
 
 Glib::ustring Utils::regexp_label( const Glib::ustring & text
@@ -466,37 +520,6 @@ Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /*
 	Glib::ustring::size_type p1 = src.find_first_not_of(c);
 	if (p1 == Glib::ustring::npos) p1 = 0;
 	return src.substr(p1, (p2-p1)+1);
-}
-
-Glib::ustring Utils::cleanup_cursor( const Glib::ustring & text )
-{
-	std::istringstream in(text);
-	std::ostringstream out;
-	char ch;
-	std::streampos startofline = out.tellp();
-
-	while (in.get(ch))
-	{
-		switch(ch)
-		{
-			case '\r':
-				if ('\n' != in.peek()) // for windows CRLF
-					out.seekp(startofline);
-				else
-					out.put(ch);
-				break;
-			case '\b':
-				if (out.tellp() > startofline)
-					out.seekp(out.tellp() - std::streamoff(1));
-				break;
-			default:
-				out.put(ch);
-		}
-		if (ch == '\n')
-		 	startofline = out.tellp();
-	}
-
-	return out.str();
 }
 
 Glib::ustring Utils::get_lang()

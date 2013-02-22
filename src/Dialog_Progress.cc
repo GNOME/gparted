@@ -38,9 +38,6 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 
 	fraction = 1.00 / operations .size() ;
 		
-	dispatcher_update_gui_elements .connect( 
-		sigc::mem_fun( this, &Dialog_Progress::dispatcher_on_update_gui_elements ) ) ;
-
 	{
 		Gtk::VBox* vbox(manage(new Gtk::VBox()));
 
@@ -158,12 +155,12 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		if ( operationdetail .get_status() == STATUS_EXECUTE )
 			label_current_sub_text = operationdetail .get_description() ;
 
-		dispatcher_update_gui_elements() ;
 		if ( operationdetail.fraction >= 0 ) {
 			pulsetimer.disconnect();
 			progressbar_current.set_fraction( operationdetail.fraction > 1.0 ? 1.0 : operationdetail.fraction );
 		} else if( !pulsetimer.connected() )
 			pulsetimer = Glib::signal_timeout().connect( sigc::mem_fun(*this, &Dialog_Progress::pulsebar_pulse), 100 );
+		update_gui_elements();
 	}
 	else//it's an new od which needs to be added to the model.
 	{
@@ -182,7 +179,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 	}
 }
 
-void Dialog_Progress::dispatcher_on_update_gui_elements()
+void Dialog_Progress::update_gui_elements()
 {
 	label_current_sub .set_markup( "<i>" + label_current_sub_text + "</i>\n" ) ;
 	
@@ -216,11 +213,7 @@ void Dialog_Progress::on_signal_show()
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
 		
-		//and start..
-		Glib::Thread::create( sigc::mem_fun(
-					*this, &Dialog_Progress::thread_apply_operation ),
-				      false );
-		Gtk::Main::run();
+		succes = signal_apply_operation.emit( operations[t] );
 
 		//set status (succes/error) for this operation
 		operations[ t ] ->operation_detail .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -297,18 +290,6 @@ void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, co
 {
 	dynamic_cast<Gtk::CellRendererText *>( renderer ) ->property_markup() = 
 		static_cast<Gtk::TreeRow>( *iter )[ treeview_operations_columns .operation_description ] ;
-}
-
-static bool _mainquit( void *dummy )
-{
-	Gtk::Main::quit();
-	return false;
-}
-
-void Dialog_Progress::thread_apply_operation()
-{
-	succes = signal_apply_operation.emit( operations[t] );
-	g_idle_add( (GSourceFunc)_mainquit, NULL );
 }
 
 void Dialog_Progress::on_cancel()

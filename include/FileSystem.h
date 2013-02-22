@@ -21,6 +21,7 @@
 #define DEFINE_FILESYSTEM
 
 #include "../include/Operation.h"
+#include "../include/PipeCapture.h"
 
 #include <fstream>
 #include <sys/stat.h>
@@ -56,12 +57,12 @@ public:
 			   OperationDetail & operationdetail ) = 0 ;
 	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) = 0 ;
-
+	bool success;
 protected:
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
-	int execute_command_timed( const Glib::ustring & command
-	                         , OperationDetail & operationdetail
-	                         , bool check_status = true ) ;
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail, bool checkstatus = false );
+	int execute_command_timed( const Glib::ustring & command, OperationDetail & operationdetail ) {
+		return execute_command( command, operationdetail, true ); }
+	void execute_command_eof();
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
 	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
 
@@ -72,7 +73,9 @@ protected:
 	unsigned int index ;
 	
 private:
-
+	void store_exit_status( GPid pid, int status );
+	bool running;
+	int pipecount;
 };
 
 } //GParted

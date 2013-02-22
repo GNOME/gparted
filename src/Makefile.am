@@ -65,7 +65,8 @@ gpartedbin_SOURCES = \
 	reiser4.cc 			\
 	reiserfs.cc			\
 	ufs.cc				\
-	xfs.cc
+	xfs.cc				\
+	PipeCapture.cc
 
 gpartedbin_LDFLAGS = -lparted
 

@@ -163,8 +163,8 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 	if ( mount_point .empty() )
 		return false ;
 
-	success &= ! execute_command_timed( "mount -v -t nilfs2 " + partition_new .get_path() + " " + mount_point,
-	                                    operationdetail ) ;
+	success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() + " " + mount_point,
+				      operationdetail, true ) ;
 
 	if ( success )
 	{
@@ -175,9 +175,9 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
 			cmd += " " + size ;
 		}
-		success &= ! execute_command_timed( cmd, operationdetail ) ;
+		success &= ! execute_command( cmd, operationdetail, true ) ;
 
-		success &= ! execute_command_timed( "umount -v " + mount_point, operationdetail ) ;
+		success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
 	}
 
 	rm_temp_dir( mount_point, operationdetail ) ;

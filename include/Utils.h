@@ -178,7 +178,6 @@ public:
                     const char drive_letter, const Glib::ustring & device_path ) ;
 	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
-	static Glib::ustring cleanup_cursor( const Glib::ustring & text ) ;
 	static Glib::ustring get_lang() ;
 	static void tokenize( const Glib::ustring& str,
 	                      std::vector<Glib::ustring>& tokens,
@@ -195,7 +194,6 @@ public:
 private:
 	static bool get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver ) ;
 };
-
 
 }//GParted
 

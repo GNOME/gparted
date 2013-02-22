@@ -46,11 +46,10 @@ public:
 		
 private:
 	void on_signal_update( const OperationDetail & operationdetail ) ;
-	void dispatcher_on_update_gui_elements() ;
+	void update_gui_elements() ;
 	void on_signal_show() ;
 	void on_expander_changed() ;
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
-	void thread_apply_operation();
 	void on_cancel() ;
 	void on_save() ;
 	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
@@ -97,7 +96,6 @@ private:
 	double fraction ;
 	unsigned int t, warnings ;
 	sigc::connection pulsetimer;
-	Glib::Dispatcher dispatcher_update_gui_elements ;
 	Glib::ustring label_current_sub_text ;
 };
 
