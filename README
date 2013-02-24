@@ -45,6 +45,10 @@ a. Pre-built Binary
       su -
       yum install gparted
 
+      OpenSUSE
+      --------
+      sudo zypper install gparted
+
 b. Building from Source
 
    Building Gparted from source requires that several dependencies are
@@ -60,19 +64,20 @@ b. Building from Source
    following command;
       sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
                            gnome-common libparted-dev libgtkmm-2.4-dev \
-                           libdevmapper-dev gnome-doc-utils
+                           libdevmapper-dev gnome-doc-utils docbook-xml
 
    On Fedora, you will need to run (as root);
       yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  gnome-doc-utils rarian-compat
+                  gnome-doc-utils docbook-dtds rarian-compat
       yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
-   following command;
-      sudo zypper install automake autoconf gcc-g++ make gnome-common \
+   following commands;
+      sudo zypper install automake autoconf make gnome-common \
                           libuuid-devel parted-devel gtkmm2-devel \
-                          gnome-doc-utils-devel
+                          gnome-doc-utils-devel docbook-xsl-stylesheets
+      sudo zypper install -t pattern devel_c_c++
 
    Briefly, the shell commands `./configure; make; make install' should
    configure, build, and install this package.
