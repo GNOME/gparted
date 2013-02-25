@@ -3155,17 +3155,31 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		overall_success = wipefs_success ;
 	}
 
-	//Get device, disk & partition and open the device.
+	//Get device, disk & partition and open the device.  Allocate buffer and fill with
+	//  zeros.  Buffer size is the greater of 4 KiB and the sector size.
 	PedDevice* lp_device = NULL ;
 	PedDisk* lp_disk = NULL ;
 	PedPartition* lp_partition = NULL ;
 	bool device_is_open = false ;
+	Byte_Value bufsize = 4LL * KIBIBYTE ;
+	char * buf = NULL ;
 	if (    open_device_and_disk( partition .device_path, lp_device, lp_disk )
 	     && ( lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ) )
 	{
 		if ( ped_device_open( lp_device ) )
+		{
 			device_is_open = true ;
+
+			bufsize = std::max( bufsize, lp_device ->sector_size ) ;
+			buf = static_cast<char *>( malloc( bufsize ) ) ;
+			if ( buf )
+				memset( buf, 0, bufsize ) ;
+		}
 	}
+
+	//Single copy of string for translation purposes
+	/*TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0 */
+	const Glib::ustring wrote_zeros_msg = _("wrote %1 of zeros at byte offset %2") ;
 
 	if ( ! overall_success )
 	{
@@ -3178,14 +3192,11 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		OperationDetail & od = operationdetail .get_last_child() ;
 		od .add_child( OperationDetail( _("clear primary signatures") ) ) ;
 
-		Byte_Value bufsize = std::max( 4LL * KIBIBYTE, lp_device ->sector_size ) ;
 		Byte_Value total_size = std::min( 64LL * KIBIBYTE + bufsize, partition .get_byte_length() ) ;
-		char * buf = static_cast<char *>( malloc( bufsize ) ) ;
 		Byte_Value written = 0LL ;
 		bool zero_success = false ;
 		if ( device_is_open && buf )
 		{
-			memset( buf, 0, bufsize ) ;
 			while ( written < total_size )
 			{
 				zero_success = ped_geometry_write( & lp_partition ->geom, buf,
@@ -3195,13 +3206,12 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 					break ;
 				written += bufsize ;
 			}
-			free( buf ) ;
 		}
 
 		if ( zero_success )
 		{
 			od .get_last_child() .add_child( OperationDetail(
-					String::ucompose( _("wrote %1 of zeros at byte offset %2"),
+					String::ucompose( wrote_zeros_msg,
 					                  Utils::format_size( written, 1 ),
 					                  0LL ),
 					STATUS_NONE, FONT_ITALIC ) ) ;
@@ -3213,6 +3223,44 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		}
 		overall_success = zero_success ;
 	}
+
+	//Erase any nilfs2 secondary super block to prevent erroneous detection by
+	//  libparted because wipefs didn't clear the signature in the secondary super
+	//  block.  Overwrite the last full 4 KiB block with zeros (or larger if the
+	//  sector size is larger and possibly earlier depending on the sector alignment).
+	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
+	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
+	if ( overall_success )
+	{
+		OperationDetail & od = operationdetail .get_last_child() ;
+		od .add_child( OperationDetail( _("clear secondary signatures") ) ) ;
+
+		Byte_Value byte_offset = ( ( partition .get_byte_length() >> 12 ) - 1 ) << 12 ;
+		bool zero_success = false ;
+		if ( device_is_open && buf )
+		{
+			zero_success = ped_geometry_write( & lp_partition ->geom, buf,
+			                                   byte_offset / lp_device ->sector_size,
+			                                   bufsize / lp_device ->sector_size ) ;
+		}
+
+		if ( zero_success )
+		{
+			od .get_last_child() .add_child( OperationDetail(
+					String::ucompose( wrote_zeros_msg,
+					                  Utils::format_size( bufsize, 1 ),
+					                  byte_offset ),
+					STATUS_NONE, FONT_ITALIC ) ) ;
+			od .get_last_child() .set_status( STATUS_SUCCES ) ;
+		}
+		else
+		{
+			od .get_last_child() .set_status( STATUS_ERROR ) ;
+		}
+		overall_success &= zero_success ;
+	}
+	if ( buf )
+		free( buf ) ;
 
 	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
 	//  device and partition devices.  So even though the file system signatures
