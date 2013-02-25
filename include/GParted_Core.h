@@ -182,11 +182,9 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
-	PedDevice* open_device( const Glib::ustring & device_path ) ;
-	bool open_device_and_disk( const Glib::ustring & device_path,
-	                           PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true ) ;
-	void close_disk( PedDisk*& lp_disk ) ;
-	void close_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
+	bool get_device_and_disk( const Glib::ustring & device_path,
+	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true ) ;
+	void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
 	bool commit( PedDisk* lp_disk ) ;
 	bool commit_to_os( PedDisk* lp_disk, std::time_t timeout ) ;
 	void settle_device( std::time_t timeout ) ;
