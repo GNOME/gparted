@@ -3130,15 +3130,16 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	bool success = true ;
+	bool overall_success = false ;
+	operationdetail .add_child( OperationDetail(
+			String::ucompose( _("clear old file system signatures in %1"),
+			                  partition .get_path() ) ) ) ;
+
 	if ( ! Glib::find_program_in_path( "wipefs" ) .empty() )
 	{
 		Glib::ustring output ;
-		operationdetail .add_child( OperationDetail(
-				String::ucompose( _("clear old file system signatures in %1"),
-				                  partition .get_path() ) ) ) ;
 		OperationDetail & od = operationdetail .get_last_child() ;
-		success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+		bool wipefs_success = wipe_filesystem_signatures( partition .get_path(), od, output ) ;
 
 		//Before util-linux 2.21.0, released Feb 2012, wipefs only erased 1 of
 		//  the 3 vfat (fat16/fat32) signatures each time it was called.  If only
@@ -3148,9 +3149,69 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		if (    p1 != Glib::ustring::npos
 		     && output .find( "(vfat)", p1+6 ) == Glib::ustring::npos )
 		{
-			success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
-			success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+			wipefs_success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
+			wipefs_success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
 		}
+		overall_success = wipefs_success ;
+	}
+
+	//Get device, disk & partition and open the device.
+	PedDevice* lp_device = NULL ;
+	PedDisk* lp_disk = NULL ;
+	PedPartition* lp_partition = NULL ;
+	bool device_is_open = false ;
+	if (    open_device_and_disk( partition .device_path, lp_device, lp_disk )
+	     && ( lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ) )
+	{
+		if ( ped_device_open( lp_device ) )
+			device_is_open = true ;
+	}
+
+	if ( ! overall_success )
+	{
+		//Wipefs either doesn't exist or reported an error clearing the file
+		//  system signatures.  Fall back to writing zeros over the first 68 KiB
+		//  of the partition to clear any super blocks and their signatures.  (May
+		//  be more if the block size is larger than 4 KiB.  File system super
+		//  blocks have a range of locations from offset 0 for vfat, ntfs and xfs
+		//  all the way up to offset 64 KiB for btrfs, reiserfs and reiser4).
+		OperationDetail & od = operationdetail .get_last_child() ;
+		od .add_child( OperationDetail( _("clear primary signatures") ) ) ;
+
+		Byte_Value bufsize = std::max( 4LL * KIBIBYTE, lp_device ->sector_size ) ;
+		Byte_Value total_size = std::min( 64LL * KIBIBYTE + bufsize, partition .get_byte_length() ) ;
+		char * buf = static_cast<char *>( malloc( bufsize ) ) ;
+		Byte_Value written = 0LL ;
+		bool zero_success = false ;
+		if ( device_is_open && buf )
+		{
+			memset( buf, 0, bufsize ) ;
+			while ( written < total_size )
+			{
+				zero_success = ped_geometry_write( & lp_partition ->geom, buf,
+				                                   written / lp_device ->sector_size,
+				                                   bufsize / lp_device ->sector_size ) ;
+				if ( ! zero_success )
+					break ;
+				written += bufsize ;
+			}
+			free( buf ) ;
+		}
+
+		if ( zero_success )
+		{
+			od .get_last_child() .add_child( OperationDetail(
+					String::ucompose( _("wrote %1 of zeros at byte offset %2"),
+					                  Utils::format_size( written, 1 ),
+					                  0LL ),
+					STATUS_NONE, FONT_ITALIC ) ) ;
+			od .get_last_child() .set_status( STATUS_SUCCES ) ;
+		}
+		else
+		{
+			od .get_last_child() .set_status( STATUS_ERROR ) ;
+		}
+		overall_success = zero_success ;
 	}
 
 	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
@@ -3178,19 +3239,15 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//  Opening the device and calling ped_device_sync() took 0.15 seconds or less on
 	//  a 5400 RPM laptop hard drive.  For now just always call ped_device_sync() as
 	//  it doesn't add much time to the overall operation.
-	PedDevice * lp_device = ped_device_get( partition .device_path .c_str() ) ;
-	if ( lp_device != NULL )
+	if ( device_is_open )
 	{
-		if ( ped_device_open( lp_device ) )
-		{
-			ped_device_sync( lp_device ) ;
-			ped_device_close( lp_device ) ;
-		}
-		ped_device_destroy( lp_device ) ;
+		ped_device_sync( lp_device ) ;
+		ped_device_close( lp_device ) ;
 	}
+	close_device_and_disk( lp_device, lp_disk ) ;
 
-	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_N_A ) ;
-	return true ;
+	operationdetail .get_last_child() .set_status( overall_success ? STATUS_SUCCES : STATUS_ERROR ) ;
+	return overall_success ;
 }
 
 bool GParted_Core::wipe_filesystem_signatures( const Glib::ustring & path,
