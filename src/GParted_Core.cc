@@ -3239,10 +3239,20 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//  Opening the device and calling ped_device_sync() took 0.15 seconds or less on
 	//  a 5400 RPM laptop hard drive.  For now just always call ped_device_sync() as
 	//  it doesn't add much time to the overall operation.
-	if ( device_is_open )
+	if ( overall_success )
 	{
-		ped_device_sync( lp_device ) ;
-		ped_device_close( lp_device ) ;
+		OperationDetail & od = operationdetail .get_last_child() ;
+		od .add_child( OperationDetail( String::ucompose( _("flush operating system cache of %1"),
+		                                                  lp_device ->path ) ) ) ;
+
+		bool flush_success = false ;
+		if ( device_is_open )
+		{
+			flush_success = ped_device_sync( lp_device ) ;
+			ped_device_close( lp_device ) ;
+		}
+		od .get_last_child() .set_status( flush_success ? STATUS_SUCCES : STATUS_ERROR ) ;
+		overall_success &= flush_success ;
 	}
 	close_device_and_disk( lp_device, lp_disk ) ;
 
