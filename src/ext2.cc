@@ -220,9 +220,12 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ext2::create_progress ) );
+	bool ret = ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
+	                              new_partition.get_path(),
+	                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	c.disconnect();
+	return ret;
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -302,6 +305,22 @@ void ext2::resize_progress( OperationDetail *operationdetail )
 	size_t xlen = q - p;
 	operationdetail->fraction = (double)xlen / barlen;
 	operationdetail->signal_update( *operationdetail );
+}
+
+void ext2::create_progress( OperationDetail *operationdetail )
+{
+	Glib::ustring ss;
+	size_t p = output.find_last_of('\n');
+	// looks like "Writing inode tables: xx/yy"
+	if ( p == output.npos )
+		return;
+	ss = output.substr( p );
+	int x, y;
+	if ( sscanf( ss.c_str(), "\nWriting inode tables: %d/%d", &x, &y ) == 2 )
+	{
+		operationdetail->fraction = (double)x / y;
+		operationdetail->signal_update( *operationdetail );
+	}
 }
 
 } //GParted
