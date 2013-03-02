@@ -3264,7 +3264,7 @@ bool GParted_Core::wipe_filesystem_signatures( const Glib::ustring & path,
 	if ( ! error .empty() )
 		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
 	success = ( 0 == exit_status ) ;
-	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_N_A ) ;
+	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 	return success ;
 }
