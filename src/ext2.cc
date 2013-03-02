@@ -233,7 +233,10 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K";
 
-	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS );
+	sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ext2::resize_progress ) );
+	bool ret = ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS );
+	c.disconnect();
+	return ret;
 }
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -268,6 +271,37 @@ bool ext2::copy( const Partition & src_part,
 {
 	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+}
+
+//Private methods
+
+void ext2::resize_progress( OperationDetail *operationdetail )
+{
+	Glib::ustring ss;
+	size_t p = output.find_last_of('\n');
+	// looks like "Scanning inode table          XXXXXXXXXXXXXXXXXXXXXXXXXXXX------------"
+	if ( p == output.npos )
+		return;
+	ss = output.substr( p );
+	if ( ss.empty() )
+		return;
+	size_t sslen = ss.length();
+	if ( ss[sslen-1] != 'X' && ss[sslen-1] != '-' )
+		return;
+	// p = Start of progress bar
+	p = ss.find_last_not_of( "X-" );
+	if ( p == ss.npos )
+		p = 0;
+	else
+		p++;
+	size_t barlen = sslen - p;
+	// q = First dash in progress bar or end of string
+	size_t q = ss.find( '-', p );
+	if ( q == ss.npos )
+		q = sslen;
+	size_t xlen = q - p;
+	operationdetail->fraction = (double)xlen / barlen;
+	operationdetail->signal_update( *operationdetail );
 }
 
 } //GParted

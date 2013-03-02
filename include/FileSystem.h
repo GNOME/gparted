@@ -88,8 +88,10 @@ protected:
 	Sector T, N, S ;  //File system [T]otal num of blocks, [N]um of free (or used) blocks, block [S]ize
 	int exit_status ;
 	unsigned int index ;
-	
+	sigc::signal<void, OperationDetail *> signal_progress;
+
 private:
+	void update_command_progress( OperationDetail *operationdetail );
 	void store_exit_status( GPid pid, int status );
 	bool running;
 	int pipecount;

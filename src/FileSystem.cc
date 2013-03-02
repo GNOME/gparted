@@ -125,6 +125,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                children[children.size() - 1],
 	                                                &error ) );
+	outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
+	                                                 &operationdetail ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
@@ -145,6 +147,11 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	close( out );
 	close( err );
 	return exit_status;
+}
+
+void FileSystem::update_command_progress( OperationDetail *operationdetail )
+{
+	signal_progress.emit( operationdetail );
 }
 
 void FileSystem::set_status( OperationDetail & operationdetail, bool success )

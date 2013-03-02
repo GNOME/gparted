@@ -223,6 +223,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 		//real resize
 		operationdetail .add_child( OperationDetail( _("real resize") ) ) ;
 
+		sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ntfs::resize_progress ) );
 		if ( ! execute_command( cmd + " " + partition_new.get_path(),
 		                        operationdetail.get_last_child(), EXEC_CHECK_STATUS ) )
 		{
@@ -233,6 +234,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 		{
 			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
+		c.disconnect();
 	}
 	else
 	{
@@ -254,6 +256,23 @@ bool ntfs::copy( const Partition & src_part,
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "ntfsresize -i -f -v " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
+}
+
+//Private methods
+
+void ntfs::resize_progress( OperationDetail *operationdetail )
+{
+	size_t p = output.find_last_of('\n');
+	if ( p == output.npos )
+		return;
+	Glib::ustring ss = output.substr( p );
+	// looks like "12.34 percent completed"
+	float frac;
+	if ( sscanf( ss.c_str(), "%f percent completed", &frac ) == 1 )
+	{
+		operationdetail->fraction = frac / 100;
+		operationdetail->signal_update( *operationdetail );
+	}
 }
 
 } //GParted

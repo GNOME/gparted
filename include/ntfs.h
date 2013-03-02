@@ -42,6 +42,9 @@ public:
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	static const Glib::ustring Change_UUID_Warning [] ;
+
+private:
+	void resize_progress( OperationDetail *operationdetail );
 };
 
 } //GParted

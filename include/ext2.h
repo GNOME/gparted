@@ -52,6 +52,9 @@ public:
 	bool copy( const Partition & partition_new,
 	           Partition & partition_old,
 	           OperationDetail & operationdetail );
+
+private:
+	void resize_progress( OperationDetail *operationdetail );
 };
 
 } //GParted
