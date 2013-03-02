@@ -244,8 +244,10 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
+	sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ext2::check_repair_progress ) );
 	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
 	                               EXEC_CANCEL_SAFE );
+	c.disconnect();
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
 	set_status( operationdetail, success );
 	return success;
@@ -319,6 +321,26 @@ void ext2::create_progress( OperationDetail *operationdetail )
 	if ( sscanf( ss.c_str(), "\nWriting inode tables: %d/%d", &x, &y ) == 2 )
 	{
 		operationdetail->fraction = (double)x / y;
+		operationdetail->signal_update( *operationdetail );
+	}
+}
+
+void ext2::check_repair_progress( OperationDetail *operationdetail )
+{
+	Glib::ustring ss;
+	size_t p = output.find_last_of('\n');
+	// looks like "/dev/loop0p1: |==============================================  \ 95.1%"
+	if ( p == output.npos )
+		return;
+	ss = output.substr( p );
+	p = ss.find_last_of('%');
+	if ( p == ss.npos )
+		return;
+	ss = ss.substr( p-5, p );
+	float frac;
+	if ( sscanf( ss.c_str(), "%f%%", &frac ) == 1 )
+	{
+		operationdetail->fraction = frac / 100;
 		operationdetail->signal_update( *operationdetail );
 	}
 }
