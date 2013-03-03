@@ -1084,6 +1084,11 @@
               The application displays the format partition operation
               in the <guilabel>Operations Pending</guilabel> pane.
               </para>
+              <para>
+              See <xref linkend="gparted-specify-partition-file-system"/>
+              for the meaning of the <guimenuitem>cleared</guimenuitem>
+              file system type.
+              </para>
             </listitem>
           </orderedlist>
         </para>
@@ -1361,26 +1366,37 @@
               <itemizedlist>
                 <listitem>
                   <para>
-                  Ext2, and ext3 file systems can be used for installing
-                  GNU/Linux, and for data.
+                  <guimenuitem>ext2</guimenuitem>, and
+                  <guimenuitem>ext3</guimenuitem> file systems can be
+                  used for installing GNU/Linux, and for data.
                   </para>
                 </listitem>
                 <listitem>
                   <para>
-                  Linux-swap can be used with GNU/Linux to increase the
-                  virtual memory of your computer.
+                  <guimenuitem>linux-swap</guimenuitem> can be used with
+                  GNU/Linux to increase the virtual memory of your
+                  computer.
                   </para>
                 </listitem>
                 <listitem>
                   <para>
-                  Fat16 and fat32 file systems can be used to share
-                  data between free and commercial operating systems.
+                  <guimenuitem>fat16</guimenuitem> and
+                  <guimenuitem>fat32</guimenuitem> file systems can be
+                  used to share data between free and commercial
+                  operating systems.
                   </para>
                 </listitem>
                 <listitem>
                   <para>
-                  Unformatted can be used if you want to create a
-                  partition with no file system.
+                  <guimenuitem>cleared</guimenuitem> can be used to
+                  clear any existing file system signatures and ensure
+                  that the partition is recognised as empty.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                  <guimenuitem>unformatted</guimenuitem> can be used to
+                  just create a partition without writing a file system.
                   </para>
                 </listitem>
               </itemizedlist>
