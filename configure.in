@@ -252,6 +252,17 @@ AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
+dnl Check for glibmm >= 2.14 to determine availability of Glib::Regex class
+AC_MSG_CHECKING([for Glib::Regex class])
+PKG_CHECK_EXISTS(
+	[glibmm-2.4 >= 2.14.0],
+	[AC_DEFINE([HAVE_GLIB_REGEX], 1, [Define to 1 if glibmm provides Glib::Regex class.])
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+
+
 dnl GTKMM 2.16 needed for gtk_show_uri()
 PKG_CHECK_EXISTS([gtkmm-2.4 >= 2.16.0],
   [AC_DEFINE([HAVE_GTK_SHOW_URI], 1, [Define to 1 if you have gtk_show_uri])],

@@ -23,7 +23,11 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#ifdef HAVE_GLIB_REGEX
 #include <glibmm/regex.h>
+#else
+#include <regex.h>
+#endif
 #include <locale.h>
 #include <uuid/uuid.h>
 #include <cerrno>
@@ -506,6 +510,7 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text
 {
 	//Extract text from a regular sub-expression or pattern.
 	//  E.g., "text we don't want (text we want)"
+#ifdef HAVE_GLIB_REGEX
 	std::vector<Glib::ustring> results;
 	Glib::RefPtr<Glib::Regex> myregexp =
 		Glib::Regex::create( pattern
@@ -518,6 +523,20 @@ Glib::ustring Utils::regexp_label( const Glib::ustring & text
 		return results[ 1 ] ;
 	else
 		return "" ;
+#else /* ! HAVE_GLIB_REGEX */
+	Glib::ustring label = "" ;
+	regex_t preg ;
+	int nmatch = 2 ;
+	regmatch_t pmatch[ 2 ] ;
+	int rc = regcomp( &preg, pattern .c_str(), REG_EXTENDED | REG_ICASE | REG_NEWLINE ) ;
+	if ( rc == 0 )
+	{
+		if ( regexec( &preg, text .c_str(), nmatch, pmatch, 0 ) == 0 )
+			label = text .substr( pmatch[ 1 ] .rm_so, pmatch[ 1 ] .rm_eo - pmatch[ 1 ] .rm_so ) ;
+		regfree( &preg ) ;
+	}
+	return label ;
+#endif
 }
 
 Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /* = " \t\r\n" */ )
