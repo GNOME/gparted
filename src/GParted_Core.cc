@@ -550,6 +550,12 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 			if (   (   device .partitions[ t ] .type == TYPE_PRIMARY
 			        || device .partitions[ t ] .type == TYPE_EXTENDED
 			       )
+			    && (   //For a change to an existing partition, (e.g., move or resize)
+			           //  skip comparing to original partition and
+			           //  only compare to other existing partitions
+			           partition .status == STAT_REAL
+			        && partition .partition_number != device. partitions[ t ] .partition_number
+			       )
 			    && ( device .partitions[ t ] .sector_start > partition .sector_start )
 			    && ( device .partitions[ t ] .sector_start <= partition .sector_end )
 			   )
