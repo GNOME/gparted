@@ -1,4 +1,5 @@
 AC_INIT([gparted],[0.15.0-git],[https://bugzilla.gnome.org/enter_bug.cgi?product=gparted])
+AC_PREREQ([2.50])
 
 AC_CONFIG_SRCDIR([src/main.cc])
 AC_CONFIG_HEADERS([config.h])
@@ -9,7 +10,7 @@ AM_MAINTAINER_MODE
 
 
 dnl======================
-dnl checks for programs 
+dnl checks for programs
 dnl======================
 AC_PROG_CC
 AC_PROG_CXX
@@ -17,13 +18,13 @@ AM_PROG_LIBTOOL
 
 
 dnl======================
-dnl checks for other programs 
+dnl checks for other programs
 dnl======================
 AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo], [])
 
 
 dnl======================
-dnl i18n stuff 
+dnl i18n stuff
 dnl======================
 GETTEXT_PACKAGE=gparted
 AC_SUBST([GETTEXT_PACKAGE])
@@ -34,18 +35,20 @@ IT_PROG_INTLTOOL([0.35.5])
 
 
 dnl======================
-dnl checks for libs 
+dnl checks for libs
 dnl======================
 AC_CHECK_LIB([uuid], [uuid_generate], [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
 AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** dl library (libdl) not found]))
 
 
-dnl libparted
+dnl Check for minimum required libparted version
 LIBPARTED_VERSION=1.7.1
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_VERSION])
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
-AC_TRY_RUN([
+AC_RUN_IFELSE(
+	[AC_LANG_SOURCE(
+		[[
 #include <stdio.h>
 #include <parted/parted.h>
 
@@ -78,7 +81,11 @@ int main ()
 
 	return 1 ;
 }
-], AC_MSG_RESULT([OK]), AC_MSG_ERROR([*** Requires libparted >= $LIBPARTED_VERSION.  Perhaps development header files missing?]))
+		]]
+	)],
+	[AC_MSG_RESULT([OK])],
+	[AC_MSG_ERROR([*** Requires libparted >= $LIBPARTED_VERSION.  Perhaps development header files missing?])]
+)
 LIBS="$LIBS_save"
 
 
@@ -90,7 +97,9 @@ AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (has improved pt re-read)])
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
 need_work_around=yes
-AC_TRY_RUN([
+AC_RUN_IFELSE(
+	[AC_LANG_SOURCE(
+		[[
 #include <stdio.h>
 #include <parted/parted.h>
 
@@ -122,11 +131,16 @@ int main ()
 
 	return 1 ;
 }
-], [AC_MSG_RESULT([yes])
-  AC_DEFINE([HAVE_LIBPARTED_2_2_0_PLUS], [1], [Define to 1 if libparted contains improved partition table re-read code])
-  need_pt_reread_work_around=no; support_sector_size_gt_512=yes]
-, [AC_MSG_RESULT([no])
-  need_pt_reread_work_around=yes; support_sector_size_gt_512=no]
+		]]
+	)],
+	[AC_DEFINE([HAVE_LIBPARTED_2_2_0_PLUS], [1],
+	           [Define to 1 if libparted contains improved partition table re-read code])
+	 need_pt_reread_work_around=no; support_sector_size_gt_512=yes
+	 AC_MSG_RESULT([yes])
+	],
+	[need_pt_reread_work_around=yes; support_sector_size_gt_512=no
+	 AC_MSG_RESULT([no])
+	]
 )
 LIBS="$LIBS_save"
 
@@ -139,7 +153,9 @@ AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted is missing file s
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
 need_work_around=yes
-AC_TRY_RUN([
+AC_RUN_IFELSE(
+	[AC_LANG_SOURCE(
+		[[
 #include <stdio.h>
 #include <parted/parted.h>
 
@@ -171,11 +187,15 @@ int main ()
 
 	return 1 ;
 }
-], [AC_MSG_RESULT([yes])
-  AC_DEFINE([HAVE_LIBPARTED_3_0_0_PLUS], [1], [Define to 1 if libparted >= 3.0])
-  have_old_lp_fs_resize_api=no]
-, [AC_MSG_RESULT([no])
-  have_old_lp_fs_resize_api=yes]
+		]]
+	)],
+	[AC_DEFINE([HAVE_LIBPARTED_3_0_0_PLUS], [1], [Define to 1 if libparted >= 3.0])
+	 have_old_lp_fs_resize_api=no
+	 AC_MSG_RESULT([yes])
+	],
+	[have_old_lp_fs_resize_api=yes
+	 AC_MSG_RESULT([no])
+	]
 )
 LIBS="$LIBS_save"
 
@@ -188,7 +208,9 @@ AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted has new file syst
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
 need_work_around=yes
-AC_TRY_RUN([
+AC_RUN_IFELSE(
+	[AC_LANG_SOURCE(
+		[[
 #include <stdio.h>
 #include <parted/parted.h>
 
@@ -220,13 +242,15 @@ int main ()
 
 	return 1 ;
 }
-], [ AC_MSG_RESULT([yes])
-     AC_DEFINE([HAVE_LIBPARTED_3_1_0_PLUS], [1], [Define to 1 if libparted >= 3.1])
-     have_new_lp_fs_resize_lib=yes
-   ]
- , [ AC_MSG_RESULT([no])
-     have_new_lp_fs_resize_lib=no
-   ]
+		]]
+	)],
+	[AC_DEFINE([HAVE_LIBPARTED_3_1_0_PLUS], [1], [Define to 1 if libparted >= 3.1])
+	 have_new_lp_fs_resize_lib=yes
+	 AC_MSG_RESULT([yes])
+	],
+	[have_new_lp_fs_resize_lib=no
+	 AC_MSG_RESULT([no])
+	]
 )
 LIBS="$LIBS_save"
 
