@@ -289,10 +289,12 @@ void Dialog_Progress::on_cell_data_description( Gtk::CellRenderer * renderer, co
 
 bool Dialog_Progress::cancel_timeout()
 {
-	if (--cancel_countdown)
-		cancelbutton->set_label( Glib::ustring::compose("Force Cancel (%1)", cancel_countdown ) );
-	else {
-		cancelbutton->set_label( "Force Cancel" );
+	if (--cancel_countdown) {
+		/*TO TRANSLATORS: looks like  Force Cancel (5)
+		 *  where the number represents a count down in seconds until the button is enabled */
+		cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
+	} else {
+		cancelbutton->set_label( _("Force Cancel") );
 		canceltimer.disconnect();
 		cancelbutton->set_sensitive();
 		return false;
@@ -319,11 +321,13 @@ void Dialog_Progress::on_cancel()
 		cancelbutton->set_sensitive( false );
 		if (!cancel) {
 			cancel_countdown = 5;
-			cancelbutton->set_label( Glib::ustring::compose("Force Cancel (%1)", cancel_countdown ) );
+			/*TO TRANSLATORS: looks like  Force Cancel (5)
+			 *  where the number represents a count down in seconds until the button is enabled */
+			cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
-		else cancelbutton->set_label( "Force Cancel" );
+		else cancelbutton->set_label( _("Force Cancel") );
 		operations[t]->operation_detail.signal_cancel( cancel );
 		cancel = true;
 	}
