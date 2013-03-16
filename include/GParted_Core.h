@@ -140,9 +140,6 @@ private:
 		   Partition & partition_dst,
 		   Byte_Value min_size,
 		   OperationDetail & operationdetail ) ; 
-	bool copy_filesystem_simulation( const Partition & partition_src,
-			      		 const Partition & partition_dst,
-			      		 OperationDetail & operationdetail ) ;
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dst,
 			      OperationDetail & operationdetail,

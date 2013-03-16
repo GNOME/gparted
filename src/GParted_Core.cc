@@ -2654,18 +2654,6 @@ bool GParted_Core::copy( const Partition & partition_src,
 	return false ;
 }
 
-bool GParted_Core::copy_filesystem_simulation( const Partition & partition_src,
-				      	       const Partition & partition_dst,
-			      		       OperationDetail & operationdetail ) 
-{
-	operationdetail .add_child( OperationDetail( _("perform read-only test") ) ) ;
-	
-	bool succes = copy_filesystem( partition_src, partition_dst, operationdetail .get_last_child(), true, true ) ;
-
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-	return succes ;
-}
-
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dst,
 				    OperationDetail & operationdetail,
