@@ -33,6 +33,7 @@
 #include "../include/btrfs.h"
 #include "../include/exfat.h"
 #include "../include/ext2.h"
+#include "../include/f2fs.h"
 #include "../include/fat16.h"
 #include "../include/fat32.h"
 #include "../include/linux_swap.h"
@@ -101,6 +102,7 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2( FS_EXT2 ) ;
 	FILESYSTEM_MAP[ FS_EXT3 ]	= new ext2( FS_EXT3 ) ;
 	FILESYSTEM_MAP[ FS_EXT4 ]	= new ext2( FS_EXT4 ) ;
+	FILESYSTEM_MAP[ FS_F2FS ]	= new f2fs() ;
 	FILESYSTEM_MAP[ FS_FAT16 ]	= new fat16() ;
 	FILESYSTEM_MAP[ FS_FAT32 ]	= new fat32() ;
 	FILESYSTEM_MAP[ FS_HFS ]	= new hfs() ;
@@ -1237,6 +1239,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 			return GParted::FS_LINUX_SWAP ;
 		else if ( fs_type == "LVM2_member" )
 			return GParted::FS_LVM2_PV ;
+		else if ( fs_type == "f2fs" )
+			return GParted::FS_F2FS ;
 		else if ( fs_type == "fat16" )
 			return GParted::FS_FAT16 ;
 		else if ( fs_type == "fat32" )

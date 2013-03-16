@@ -40,6 +40,7 @@ EXTRA_DIST = \
 	btrfs.h				\
 	exfat.h				\
 	ext2.h				\
+	f2fs.h				\
 	fat16.h    			\
 	fat32.h  			\
 	hfs.h  				\

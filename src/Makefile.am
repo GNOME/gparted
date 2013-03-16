@@ -50,6 +50,7 @@ gpartedbin_SOURCES = \
 	btrfs.cc			\
 	exfat.cc			\
 	ext2.cc				\
+	f2fs.cc				\
 	fat16.cc			\
 	fat32.cc			\
 	hfs.cc				\

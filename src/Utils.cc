@@ -84,6 +84,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_EXT3		: return "#7590AE" ;	//blue medium
 		case FS_EXT4		: return "#4B6983" ;	//blue dark
 		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
+		case FS_F2FS		: return "#DF421E" ;	//accent red
 		case FS_FAT16		: return "#00FF00" ;	//green
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
 		case FS_EXFAT		: return "#2E8B57" ;	// ~ sea green
@@ -132,6 +133,11 @@ int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 		case FS_EXT2		: return 16 ;
 		case FS_EXT3		: return 16 ;
 		case FS_EXT4		: return 16 ;
+		//mkfs.f2fs says that it can create file systems with labels up to 512
+		//  characters, but it core dumps with labels of 29 characters or larger!
+		//  Also blkid only correctly displays labels up to 19 characters.
+		//  (Suspect it is all part of a memory corruption bug in mkfs.f2fs).
+		case FS_F2FS		: return 19 ;
 		case FS_FAT16		: return 11 ;
 		case FS_FAT32		: return 11 ;
 		//mkfs.hfsplus can create hfs and hfs+ file systems with labels up to 255
@@ -199,6 +205,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_EXT3		: return "ext3" ;
 		case FS_EXT4		: return "ext4" ;
 		case FS_LINUX_SWAP	: return "linux-swap" ;
+		case FS_F2FS		: return "f2fs" ;
 		case FS_FAT16		: return "fat16" ;
 		case FS_FAT32		: return "fat32" ;
 		case FS_EXFAT		: return "exfat" ;
@@ -228,6 +235,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
 		case FS_EXT4        : return "e2fsprogs v1.41+" ;
+		case FS_F2FS        : return "f2fs-tools" ;
 		case FS_FAT16       : return "dosfstools, mtools" ;
 		case FS_FAT32       : return "dosfstools, mtools" ;
 		case FS_HFS         : return "hfsutils" ;
