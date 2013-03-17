@@ -841,10 +841,17 @@ void Win_GParted::Refresh_Visual()
 		
 	if ( ! operations .size() ) 
 		allow_undo_clear_apply( false ) ;
-			
-	//count primary's and check for extended
+
+	//Count primary partitions for check in max_amount_prim_reached(),
+	//  check for an extended partition and select the largest unallocated
+	//  partition if there is one.
 	index_extended = -1 ;
 	primary_count = 0;
+
+	selected_partition .Reset() ;
+	Sector largest_unalloc_size = -1 ;
+	Sector current_size ;
+
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .get_path() == copied_partition .get_path() )
@@ -852,15 +859,42 @@ void Win_GParted::Refresh_Visual()
 		
 		switch ( partitions[ t ] .type )
 		{
-			case GParted::TYPE_PRIMARY	:
+			case TYPE_PRIMARY:
 				primary_count++;
 				break;
-				
-			case GParted::TYPE_EXTENDED	:
+
+			case TYPE_EXTENDED:
 				index_extended = t ;
 				primary_count++;
+
+				for ( unsigned int u = 0 ; u < partitions[ t ] .logicals .size() ; u ++ )
+				{
+					switch ( partitions[ t ] .logicals[ u ] .type )
+					{
+						case TYPE_UNALLOCATED:
+							current_size = partitions[ t ]. logicals[ u ] .get_sector_length() ;
+							if ( current_size > largest_unalloc_size )
+							{
+								largest_unalloc_size = current_size ;
+								selected_partition = partitions[ t ] .logicals[ u ] ;
+							}
+							break;
+
+						default:
+							break;
+					}
+				}
 				break;
-				
+
+			case TYPE_UNALLOCATED:
+				current_size = partitions[ t ] .get_sector_length() ;
+				if ( current_size > largest_unalloc_size )
+				{
+					largest_unalloc_size = current_size ;
+					selected_partition = partitions[ t ] ;
+				}
+				break;
+
 			default				:
 				break;
 		}
@@ -871,11 +905,16 @@ void Win_GParted::Refresh_Visual()
 
 	//treeview details
 	treeview_detail .load_partitions( partitions ) ;
-	
-	//no partition can be selected after a refresh..
-	selected_partition .Reset() ;
-	set_valid_operations() ; 
-			
+
+	set_valid_operations() ;
+
+	if ( largest_unalloc_size >= 0 )
+	{
+		//Inform visuals of selection of the largest unallocated partition
+		drawingarea_visualdisk .set_selected( selected_partition ) ;
+		treeview_detail .set_selected( selected_partition ) ;
+	}
+
 	while ( Gtk::Main::events_pending() ) 
 		Gtk::Main::iteration() ;
 }
