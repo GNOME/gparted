@@ -821,7 +821,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 void Win_GParted::Refresh_Visual()
 {
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
-	int largest_unallocated = -1;
 	
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
@@ -861,12 +860,7 @@ void Win_GParted::Refresh_Visual()
 				index_extended = t ;
 				primary_count++;
 				break;
-			case GParted::TYPE_UNALLOCATED  :
-				if (largest_unallocated == -1)
-					largest_unallocated = t;
-				else if( (partitions[t].sector_end - partitions[t].sector_start) >
-					 (partitions[largest_unallocated].sector_end - partitions[largest_unallocated].sector_start))
-					largest_unallocated = t;
+				
 			default				:
 				break;
 		}
@@ -880,12 +874,6 @@ void Win_GParted::Refresh_Visual()
 	
 	//no partition can be selected after a refresh..
 	selected_partition .Reset() ;
-	if( largest_unallocated != -1 )
-	{
-		selected_partition = partitions[largest_unallocated];
-		treeview_detail.set_selected( selected_partition );
-		drawingarea_visualdisk.set_selected( selected_partition );
-	}
 	set_valid_operations() ; 
 			
 	while ( Gtk::Main::events_pending() ) 
