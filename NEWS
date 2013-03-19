@@ -1,4 +1,69 @@
 ============================
+GParted 0.15.0  (2013-03-19)
+============================
+
+Release Notes
+-------------
+  The big news with this release is the ability to track live updates
+  of command execution progress.  This should help with determining
+  the status of long running commands by enabling users to see the
+  live command output in the details section of the apply operations
+  window.  This new ability is implemented by a fundamental code
+  change that spawns commands to run asynchronously.  Also included in
+  this release are bug fixes and language translation updates.
+
+### Key changes include:
+
+  * Live tracking of command progress output in the details log
+  * Move operations are twice as fast as prior versions
+  * Proper cancel support added
+  * Volume label length now based on file system type
+  * Unallocated space is selected by default
+  * New key bindings added:
+    - Insert     --> New Partition
+    - Ctrl+Enter --> Apply All Operations
+
+Bug Fixes
+---------
+  * Refactor to use asynchronous command execution (#685740) which includes:
+    - Remove move read-only simulation pass (#696013)
+    - Remove temporary mtoolsrc file used in fat16/32 labelling and UUID
+    - Cleanup duplicate code for common file system methods
+    - Combine duplicate code for ext2/ext3/ext4
+    - Check file system after reverting partition table when move canceled
+    - Add proper cancel support for current and pending operations (#601239)
+    - Fix interrupting a format leaves partition in-use (#403487)
+    - Fix details log does not expand to the available vertical space (#602635)
+    - Increase width of details log display to include status icons (#662722)
+    - Select unallocated space by default (#667365)
+  * Make partition label length dependent on the file system type (#689318)
+  * Avoid reading trailing junk for a reiser4 label
+  * Improve argument vector usage (#689689)
+  * Prevent crash when using an unknown locale (#692049)
+  * Work around faulty "complete disks" detection in mkdosfs (#693955)
+  * Fix move primary partition right to left shrinks partition 1 MiB (#695078)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Phillip Susi, Mike Fleetwood,
+  Sinlu Bes, Jan Claeys, Mathiue Dupuy, and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  ca(Pau Iranzo), cs(Marek Černocký), da(Joe Hansen),
+  de(Christian Kirbach, Mario Blättermann), es(Daniel Mustieles),
+  fr(Claude Paroz), he(Yaron Shahrabani), hu(Gabor Kelemen),
+  lt(Aurimas Černius), nl(Paulus Santané), pl(Piotr Drąg),
+  pt(António Lima), pt_BR(Enrico Nicoletto), ro(Daniel Șerbănescu),
+  ru(Yuri Myasoedov), sl(Matej Urbančič), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), sk(Dušan Kazik), tr(Muhammet Kara)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.14.1  (2012-12-12)
 ============================
 
