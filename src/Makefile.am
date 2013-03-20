@@ -12,38 +12,40 @@ AM_CXXFLAGS = -Wall
 sbin_PROGRAMS = gpartedbin
 
 gpartedbin_SOURCES = \
+	Copy_Blocks.cc			\
+	DMRaid.cc			\
 	Device.cc			\
+	DialogFeatures.cc		\
+	DialogManageFlags.cc		\
 	Dialog_Base_Partition.cc	\
-	Dialog_Disklabel.cc 		\
-	Dialog_Rescue_Data.cc		\
+	Dialog_Disklabel.cc		\
 	Dialog_Partition_Copy.cc	\
 	Dialog_Partition_Info.cc	\
 	Dialog_Partition_Label.cc	\
 	Dialog_Partition_New.cc		\
 	Dialog_Partition_Resize_Move.cc	\
 	Dialog_Progress.cc		\
-	DialogFeatures.cc		\
-	DialogManageFlags.cc		\
+	Dialog_Rescue_Data.cc		\
 	DrawingAreaVisualDisk.cc	\
-	DMRaid.cc				\
+	FS_Info.cc			\
 	FileSystem.cc			\
 	Frame_Resizer_Base.cc		\
 	Frame_Resizer_Extended.cc	\
-	FS_Info.cc				\
 	GParted_Core.cc			\
 	HBoxOperations.cc		\
 	LVM2_PV_Info.cc			\
 	Operation.cc			\
 	OperationChangeUUID.cc		\
-	OperationCopy.cc		\
 	OperationCheck.cc		\
+	OperationCopy.cc		\
 	OperationCreate.cc		\
 	OperationDelete.cc		\
 	OperationDetail.cc		\
 	OperationFormat.cc		\
-	OperationResizeMove.cc		\
 	OperationLabelPartition.cc	\
+	OperationResizeMove.cc		\
 	Partition.cc			\
+	PipeCapture.cc			\
 	Proc_Partitions_Info.cc		\
 	TreeView_Detail.cc		\
 	Utils.cc			\
@@ -61,12 +63,10 @@ gpartedbin_SOURCES = \
 	main.cc				\
 	nilfs2.cc			\
 	ntfs.cc				\
-	reiser4.cc 			\
+	reiser4.cc			\
 	reiserfs.cc			\
 	ufs.cc				\
-	xfs.cc				\
-	PipeCapture.cc			\
-	Copy_Blocks.cc
+	xfs.cc
 
 gpartedbin_LDFLAGS = -lparted
 
