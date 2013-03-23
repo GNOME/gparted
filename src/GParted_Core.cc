@@ -3130,30 +3130,10 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	bool overall_success = false ;
+	bool overall_success ;
 	operationdetail .add_child( OperationDetail(
 			String::ucompose( _("clear old file system signatures in %1"),
 			                  partition .get_path() ) ) ) ;
-
-	if ( ! Glib::find_program_in_path( "wipefs" ) .empty() )
-	{
-		Glib::ustring output ;
-		OperationDetail & od = operationdetail .get_last_child() ;
-		bool wipefs_success = wipe_filesystem_signatures( partition .get_path(), od, output ) ;
-
-		//Before util-linux 2.21.0, released Feb 2012, wipefs only erased 1 of
-		//  the 3 vfat (fat16/fat32) signatures each time it was called.  If only
-		//  one vfat signature was wiped, found "(vfat)" only once in the output,
-		//  execute wipefs 2 more time.
-		Glib::ustring::size_type p1 = output .find( "(vfat)" ) ;
-		if (    p1 != Glib::ustring::npos
-		     && output .find( "(vfat)", p1+6 ) == Glib::ustring::npos )
-		{
-			wipefs_success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
-			wipefs_success &= wipe_filesystem_signatures( partition .get_path(), od, output ) ;
-		}
-		overall_success = wipefs_success ;
-	}
 
 	//Get device, disk & partition and open the device.  Allocate buffer and fill with
 	//  zeros.  Buffer size is the greater of 4 KiB and the sector size.
@@ -3181,14 +3161,13 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	/*TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0 */
 	const Glib::ustring wrote_zeros_msg = _("wrote %1 of zeros at byte offset %2") ;
 
-	if ( ! overall_success )
+	//Erase all file system primary super blocks including their signatures.
+	//  Overwrite the first 68 KiB with zeros (or larger if if the sector size is
+	//  larger than 4 KiB.  This covers the location all supported file super blocks
+	//  which range offset 0 for vfat, ntfs and xfs all the way up to offset 64 KiB
+	//  for btrfs, reiserfs and reiser4.  This is likely to also include future file
+	//  system super blocks too).
 	{
-		//Wipefs either doesn't exist or reported an error clearing the file
-		//  system signatures.  Fall back to writing zeros over the first 68 KiB
-		//  of the partition to clear any super blocks and their signatures.  (May
-		//  be more if the block size is larger than 4 KiB.  File system super
-		//  blocks have a range of locations from offset 0 for vfat, ntfs and xfs
-		//  all the way up to offset 64 KiB for btrfs, reiserfs and reiser4).
 		OperationDetail & od = operationdetail .get_last_child() ;
 		od .add_child( OperationDetail( _("clear primary signatures") ) ) ;
 
@@ -3224,9 +3203,9 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		overall_success = zero_success ;
 	}
 
-	//Erase any nilfs2 secondary super block to prevent erroneous detection by
-	//  libparted because wipefs didn't clear the signature in the secondary super
-	//  block.  Overwrite the last full 4 KiB block with zeros (or larger if the
+	//Also erase any nilfs2 secondary super block at the end of the partition to
+	//  prevent erroneous detection by libparted using the signature in the secondary
+	//  super block.  Overwrite the last full 4 KiB block with zeros (or larger if the
 	//  sector size is larger and possibly earlier depending on the sector alignment).
 	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
 	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
@@ -3306,25 +3285,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 
 	operationdetail .get_last_child() .set_status( overall_success ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return overall_success ;
-}
-
-bool GParted_Core::wipe_filesystem_signatures( const Glib::ustring & path,
-                                               OperationDetail & operationdetail, Glib::ustring & output )
-{
-	bool success ;
-	Glib::ustring error ;
-	Glib::ustring command = "wipefs -a " + path ;
-
-	operationdetail .add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) ) ;
-	int exit_status = Utils::execute_command( command, output, error, true ) ;
-	if ( ! output .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-	if ( ! error .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-	success = ( 0 == exit_status ) ;
-	operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_ERROR ) ;
-
-	return success ;
 }
 
 bool GParted_Core::update_bootsector( const Partition & partition, OperationDetail & operationdetail ) 
