@@ -207,7 +207,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 		size = " -s " + Utils::num_to_str( Utils::round( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
 	}
-	Glib::ustring cmd = "ntfsresize -P --force --force" + size ;
+	Glib::ustring cmd = "ntfsresize --force --force" + size ;
 
 	//simulation..
 	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
@@ -249,7 +249,7 @@ bool ntfs::copy( const Partition & src_part,
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsresize -P -i -f -v " + partition .get_path(), operationdetail ) ; 
+	return ! execute_command( "ntfsresize -i -f -v " + partition .get_path(), operationdetail ) ;
 }
 
 } //GParted
