@@ -110,8 +110,9 @@ FS ntfs::get_filesystem_support()
 
 void ntfs::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( 
-		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) )
+	exit_status = Utils::execute_command(
+		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) ;
+	if ( exit_status == 0 || exit_status == 1<<8 )
 	{
 		index = output .find( "Current volume size:" ) ;
 		if ( index >= output .length() ||
@@ -122,6 +123,11 @@ void ntfs::set_used_sectors( Partition & partition )
 		if ( index >= output .length() ||
 		     sscanf( output .substr( index ) .c_str(), "resize at %Ld", &N ) != 1 )
 			N = -1 ;
+		//For an absolutely full NTFS, "ntfsresize --info" exits
+		//  with status 1 and reports this message instead
+		index = output .find( "ERROR: Volume is full" ) ;
+		if ( index < output .length() )
+			N = T ;
 
 		if ( T > -1 && N > -1 )
 		{
