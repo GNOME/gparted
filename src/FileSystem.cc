@@ -22,6 +22,7 @@
 #include <cerrno>
 #include <iostream>
 #include <gtkmm/main.h>
+#include <signal.h>
 #include <fcntl.h>
 
 namespace GParted

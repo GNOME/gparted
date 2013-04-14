@@ -292,7 +292,7 @@ bool Dialog_Progress::cancel_timeout()
 	if (--cancel_countdown) {
 		/*TO TRANSLATORS: looks like  Force Cancel (5)
 		 *  where the number represents a count down in seconds until the button is enabled */
-		cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
+		cancelbutton->set_label( String::ucompose( _("Force Cancel (%1)"), cancel_countdown ) );
 	} else {
 		cancelbutton->set_label( _("Force Cancel") );
 		canceltimer.disconnect();
@@ -323,7 +323,7 @@ void Dialog_Progress::on_cancel()
 			cancel_countdown = 5;
 			/*TO TRANSLATORS: looks like  Force Cancel (5)
 			 *  where the number represents a count down in seconds until the button is enabled */
-			cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
+			cancelbutton->set_label( String::ucompose( _("Force Cancel (%1)"), cancel_countdown ) );
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
