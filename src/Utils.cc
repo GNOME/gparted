@@ -453,6 +453,12 @@ static void set_locale()
 	setenv( "LC_ALL", "C", 1 );
 }
 
+static void _store_exit_status( GPid pid, gint status, gpointer data )
+{
+	utils_execute_command_status *sp = (utils_execute_command_status *)data;
+	sp->store_exit_status( pid, status );
+}
+
 int Utils::execute_command( const Glib::ustring & command,
 			    Glib::ustring & output,
 			    Glib::ustring & error,
@@ -482,9 +488,7 @@ int Utils::execute_command( const Glib::ustring & command,
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
 	fcntl( err, F_SETFL, O_NONBLOCK );
-	Glib::signal_child_watch().connect( sigc::mem_fun(
-			  status, &utils_execute_command_status::store_exit_status ),
-					    pid );
+	g_child_watch_add( pid, _store_exit_status, &status );
 	output.clear();
 	error.clear();
 	//Lock mutex so we have time to setup pipecapture for output and error streams

@@ -40,12 +40,12 @@ class copy_blocks {
 	Glib::Timer timer_total;
 	bool success;
 	Glib::ustring error_message;
-	bool set_progress_info();
 	void copy_thread();
 	bool cancel;
 	bool cancel_safe;
 	void set_cancel( bool force );
 public:
+	bool set_progress_info();
 	copy_blocks( const Glib::ustring & in_src_device,
 		     const Glib::ustring & in_dst_device,
 		     Sector src_start,

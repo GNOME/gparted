@@ -94,6 +94,12 @@ static bool mainquit(copy_blocks *cb)
 	return false;
 }
 
+static gboolean _set_progress_info( gpointer data )
+{
+	copy_blocks *cb = (copy_blocks *)data;
+	return cb->set_progress_info();
+}
+
 void copy_blocks::copy_thread()
 {
 	if ( ped_device_open( lp_device_src ) &&
@@ -132,9 +138,7 @@ void copy_blocks::copy_thread()
 		copy_block();
 		if ( timer_progress_timeout .elapsed() >= 0.5 )
 		{
-			Glib::signal_idle().connect( sigc::mem_fun(
-							     *this,
-							     &copy_blocks::set_progress_info) );
+			g_idle_add( _set_progress_info, this );
 			timer_progress_timeout.reset();
 		}
 	}
@@ -151,9 +155,7 @@ void copy_blocks::copy_thread()
 	}
 
 	//set progress bar current info on completion
-	Glib::signal_idle().connect( sigc::mem_fun(
-					     *this,
-					     &copy_blocks::set_progress_info) );
+	g_idle_add( _set_progress_info, this );
 	g_idle_add( (GSourceFunc)mainquit, this );
 }
 
