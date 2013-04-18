@@ -3502,7 +3502,9 @@ static bool _ped_exception_handler( struct ped_exception_ctx *ctx )
 	if( optcount == 1 && ctx->e->type != PED_EXCEPTION_BUG && ctx->e->type != PED_EXCEPTION_FATAL )
 	{
 		ctx->ret = (PedExceptionOption)opt;
+		ctx->mutex.lock();
 		ctx->cond.signal();
+		ctx->mutex.unlock();
 		return false;
 	}
 	PedExceptionMsg msg( *ctx->e );
