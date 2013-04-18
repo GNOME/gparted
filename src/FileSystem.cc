@@ -89,7 +89,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	running = true;
 	try {
 		Glib::spawn_async_with_pipes(
-			std::string(),
+			std::string( "." ),
 			Glib::shell_parse_argv( command ),
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			sigc::ptr_fun(setup_child),

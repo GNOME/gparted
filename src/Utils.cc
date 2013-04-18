@@ -474,7 +474,7 @@ int Utils::execute_command( const Glib::ustring & command,
 	status.foreground = (Glib::Thread::self() == GParted_Core::mainthread);
 	try {
 		Glib::spawn_async_with_pipes(
-			std::string(),
+			std::string( "." ),
 			Glib::shell_parse_argv( command ),
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			use_C_locale ? sigc::ptr_fun( set_locale ) : sigc::slot< void >(),
