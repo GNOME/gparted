@@ -75,16 +75,18 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	this ->set_title( _("GParted") );
 	this ->set_default_size( 775, 500 );
 	
-#ifdef HAVE_SET_DEFAULT_ICON_NAME
 	try
 	{
+#ifdef HAVE_SET_DEFAULT_ICON_NAME
 		this ->set_default_icon_name( "gparted" ) ;
+#else
+		this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
+#endif
 	}
 	catch ( Glib::Exception & e )
 	{
 		std::cout << e .what() << std::endl ;
 	}
-#endif
 	
 	//Pack the main box
 	this ->add( vbox_main ); 

@@ -16,12 +16,23 @@ public_icons = \
 private_icons = \
 	$(NULL)
 
+# Name of the fallback icon to install in /usr/share/pixmaps [1]
+# --
+# The GNOME 2 desktop wants a 16x16 "Menu" type icon [2] for the title
+# bar and the open window list, and a 32x32 icon for the Alt-Tab task
+# switcher.  GParted only specifies a single icon file in the fallback
+# case so just use the 16x16 one and let it be scaled as required.
+# [1] https://developer.gnome.org/icon-theme-spec/
+# [2] https://developer.gnome.org/hig-book/2.32/hig-book.html#icons
+pixmap = hicolor_apps_16x16_gparted.png
+
 noinst_DATA = \
 	$(NULL)
 
 EXTRA_DIST = \
 	$(public_icons)		\
 	$(private_icons)	\
+	$(pixmap)		\
 	$(noinst_DATA)		\
 	$(NULL)
 
@@ -76,6 +87,13 @@ uninstall-icons:
 		rm -f $(DESTDIR)$(pkgdatadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
 	done
 
-install-data-local: install-icons update-icon-cache
+install-pixmap:
+	mkdir -p $(DESTDIR)$(datadir)/pixmaps; \
+	$(INSTALL_DATA) $(srcdir)/$(pixmap) $(DESTDIR)$(datadir)/pixmaps/gparted.png
 
-uninstall-local: uninstall-icons update-icon-cache
+uninstall-pixmap:
+	rm -f $(DESTDIR)$(datadir)/pixmaps/gparted.png
+
+install-data-local: install-icons install-pixmap update-icon-cache
+
+uninstall-local: uninstall-icons uninstall-pixmap update-icon-cache
