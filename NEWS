@@ -1,4 +1,50 @@
 ============================
+GParted 0.16.0  (2013-04-24)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes a critical bug fix for a crash that
+  might cause loss of data while moving or copying a partition.  We
+  strongly recommend that all users of GParted 0.15.0 upgrade to
+  GParted 0.16.0 to avoid data loss.  Also included are bug fixes,
+  enhancements and language translation updates.
+
+### Key changes include:
+
+  * Avoid crash in GParted when moving or copying partitions
+  * Fix GParted scans forever blank disk in virtual machine
+  * Add support for f2fs file system
+
+Bug Fixes
+---------
+  * Avoid crash in GParted when moving or copying partitions (#697727)
+  * Fix GParted scans forever blank disk in virtual machine (#697518)
+  * Add support for f2fs file system (#695396)
+  * Improve clearing of file system signatures (#688882)
+  * Fix absolutely full ntfs reported as error (#697946)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Patrick Verner,
+  Phillip Susi, and Curtis Gedak
+
+Translations (new/updated)
+--------------------------
+  ca(Pau Iranzo), ca@valencia(Carles Ferrando, Pau Iranzo),
+  cs(Marek Černocký), de(Christian Kirbach, Wolfgang Stöggl),
+  es(Nicolás Satragno, Daniel Mustieles), fr(Claude Paroz), hu(Gabor Kelemen),
+  it(Milo Casagrande), lt(Aurimas Černius), pl(Piotr Drąg),
+  pt_BR(Rafael Ferreira), po(Piotr Drąg), ro(Daniel Șerbănescu),
+  sl(Matej Urbančič, Martin Srebotnjak), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), tr(Muhammet Kara)
+
+Dependencies (new/updated)
+--------------------------
+  * f2fs-tools package is required for optional f2fs support.
+
+
+============================
 GParted 0.15.0  (2013-03-19)
 ============================
 

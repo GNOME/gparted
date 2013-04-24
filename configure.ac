@@ -1,4 +1,4 @@
-AC_INIT([gparted],[0.15.0-git],[https://bugzilla.gnome.org/enter_bug.cgi?product=gparted])
+AC_INIT([gparted],[0.16.0],[https://bugzilla.gnome.org/enter_bug.cgi?product=gparted])
 AC_PREREQ([2.50])
 
 AC_CONFIG_SRCDIR([src/main.cc])
