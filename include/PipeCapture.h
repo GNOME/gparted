@@ -31,11 +31,14 @@ class PipeCapture
 	unsigned int backcount;
 	unsigned int linelength;
 	Glib::RefPtr<Glib::IOChannel> channel;
-	sigc::connection connection;
+	guint sourceid;
 	bool OnReadable( Glib::IOCondition condition );
+	static gboolean _OnReadable( GIOChannel *source,
+	                             GIOCondition condition,
+	                             gpointer data );
 public:
 	PipeCapture( int fd, Glib::ustring &buffer );
-	void connect_signal( int fd );
+	void connect_signal();
 	~PipeCapture();
 	sigc::signal<void> eof;
 	sigc::signal<void> update;

@@ -501,8 +501,8 @@ int Utils::execute_command( const Glib::ustring & command,
 		 status, &utils_execute_command_status::execute_command_eof ));
 	errorcapture.eof.connect( sigc::mem_fun(
 		 status, &utils_execute_command_status::execute_command_eof ));
-	outputcapture.connect_signal( out );
-	errorcapture.connect_signal( err );
+	outputcapture.connect_signal();
+	errorcapture.connect_signal();
 
 	if( status.foreground)
 		Gtk::Main::run();

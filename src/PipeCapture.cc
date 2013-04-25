@@ -20,21 +20,30 @@
 
 namespace GParted {
 
-PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ), backcount( 0 ), linelength( 0 )
+PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ), backcount( 0 ), linelength( 0 ),
+                                                            sourceid( 0 )
 {
 	// tie fd to string
 	// make channel
 	channel = Glib::IOChannel::create_from_fd( fd );
 }
 
-void PipeCapture::connect_signal( int fd )
+void PipeCapture::connect_signal()
 {
 	// connect handler to signal input/output
-	connection = Glib::signal_io().connect(
-		sigc::mem_fun( *this, &PipeCapture::OnReadable ),
-		fd,
-		Glib::IO_IN | Glib::IO_HUP | Glib::IO_ERR );
+	sourceid = g_io_add_watch( channel->gobj(),
+	                           GIOCondition(G_IO_IN | G_IO_ERR | G_IO_HUP),
+	                           _OnReadable,
+	                           this );
 }
+
+gboolean PipeCapture::_OnReadable( GIOChannel *source,
+				   GIOCondition condition,
+				   gpointer data )
+{
+	return static_cast<PipeCapture *>(data)->OnReadable( Glib::IOCondition(condition) );
+}
+
 
 bool PipeCapture::OnReadable( Glib::IOCondition condition )
 {
@@ -71,14 +80,14 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	if (status != Glib::IO_STATUS_EOF)
 		std::cerr << "Pipe IOChannel read failed" << std::endl;
 	// signal completion
-	connection.disconnect();
 	eof();
 	return false;
 }
 
 PipeCapture::~PipeCapture()
 {
-	connection.disconnect();
+	if( sourceid > 0 )
+		g_source_remove( sourceid );
 }
 
 } // namespace GParted

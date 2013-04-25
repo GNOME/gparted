@@ -124,8 +124,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	errorcapture.update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
 						 &(children[children.size() - 1]),
 						 &error ) );
-	outputcapture.connect_signal( out );
-	errorcapture.connect_signal( err );
+	outputcapture.connect_signal();
+	errorcapture.connect_signal();
 
 	operationdetail.get_last_child().signal_cancel.connect(
 		sigc::bind(
