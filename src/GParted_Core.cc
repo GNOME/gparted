@@ -1264,6 +1264,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		else if ( fs_type == "hfs" )
 			return GParted::FS_HFS ;
 		else if ( fs_type == "hfs+" ||
+		          fs_type == "hfsx" ||
 		          fs_type == "hfsplus" )
 			return GParted::FS_HFSPLUS ;
 		else if ( fs_type == "ufs" )
