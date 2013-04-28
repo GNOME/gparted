@@ -308,9 +308,12 @@ AC_LINK_IFELSE(
 	)],
 	[AC_DEFINE([HAVE_SET_DEFAULT_ICON_NAME], 1,
 	           [Define to 1 if gtkmm-2.4 provides Gtk::Window::set_default_icon_name() method.])
+	 AM_CONDITIONAL([INSTALL_PIXMAPS_DIR], false)
 	 AC_MSG_RESULT([yes])
 	],
-	[AC_MSG_RESULT([no])]
+	[AM_CONDITIONAL([INSTALL_PIXMAPS_DIR], true)
+	 AC_MSG_RESULT([no])
+        ]
 )
 CXXFLAGS="$CXXFLAGS_save"
 AC_LANG_POP([C++])

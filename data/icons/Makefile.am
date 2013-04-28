@@ -36,6 +36,12 @@ EXTRA_DIST = \
 	$(noinst_DATA)		\
 	$(NULL)
 
+# Only install fallback icon to /usr/share/pixmaps if required
+if INSTALL_PIXMAPS_DIR
+INSTALL_PIXMAP   = install-pixmap
+UNINSTALL_PIXMAP = uninstall-pixmap
+endif
+
 ###############################################################################
 
 gtk_update_icon_cache = gtk-update-icon-cache -f -t
@@ -94,6 +100,6 @@ install-pixmap:
 uninstall-pixmap:
 	rm -f $(DESTDIR)$(datadir)/pixmaps/gparted.png
 
-install-data-local: install-icons install-pixmap update-icon-cache
+install-data-local: install-icons $(INSTALL_PIXMAP) update-icon-cache
 
-uninstall-local: uninstall-icons uninstall-pixmap update-icon-cache
+uninstall-local: uninstall-icons $(UNINSTALL_PIXMAP) update-icon-cache
