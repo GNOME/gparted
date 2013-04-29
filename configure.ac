@@ -297,7 +297,9 @@ dnl version check isn't sufficient.  Instead perform a more accurate, but slower
 dnl and link a test program check.
 AC_LANG_PUSH([C++])
 CXXFLAGS_save="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS `pkg-config gtkmm-2.4 --cflags --libs`"
+CXXFLAGS="$CXXFLAGS `pkg-config gtkmm-2.4 --cflags`"
+LIBS_save="$LIBS"
+LIBS="`pkg-config gtkmm-2.4 --libs`"
 AC_MSG_CHECKING([for Gtk::Window::set_default_icon_name method])
 AC_LINK_IFELSE(
 	[AC_LANG_PROGRAM(
@@ -316,6 +318,7 @@ AC_LINK_IFELSE(
         ]
 )
 CXXFLAGS="$CXXFLAGS_save"
+LIBS="$LIBS_save"
 AC_LANG_POP([C++])
 
 
