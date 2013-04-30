@@ -402,7 +402,7 @@ int Utils::execute_command( const Glib::ustring & command )
 	return execute_command( command, dummy, dummy ) ;
 }
 
-class utils_execute_command_status
+class CommandStatus
 {
 public:
 	bool running;
@@ -415,7 +415,7 @@ public:
 	void execute_command_eof();
 };
 
-void utils_execute_command_status::store_exit_status( GPid pid, int status )
+void CommandStatus::store_exit_status( GPid pid, int status )
 {
 	exit_status = status;
 	running = false;
@@ -432,7 +432,7 @@ void utils_execute_command_status::store_exit_status( GPid pid, int status )
 	Glib::spawn_close_pid( pid );
 }
 
-void utils_execute_command_status::execute_command_eof()
+void CommandStatus::execute_command_eof()
 {
 	if (--pipecount)
 		return; // wait for second pipe to eof
@@ -455,7 +455,7 @@ static void set_locale()
 
 static void _store_exit_status( GPid pid, gint status, gpointer data )
 {
-	utils_execute_command_status *sp = (utils_execute_command_status *)data;
+	CommandStatus *sp = (CommandStatus *)data;
 	sp->store_exit_status( pid, status );
 }
 
@@ -467,7 +467,7 @@ int Utils::execute_command( const Glib::ustring & command,
 	Glib::Pid pid;
 	// set up pipes for capture
 	int out, err;
-	utils_execute_command_status status;
+	CommandStatus status;
 	// spawn external process
 	status.running = true;
 	status.pipecount = 2;
@@ -498,9 +498,9 @@ int Utils::execute_command( const Glib::ustring & command,
 	PipeCapture outputcapture( out, output );
 	PipeCapture errorcapture( err, error );
 	outputcapture.eof.connect( sigc::mem_fun(
-		 status, &utils_execute_command_status::execute_command_eof ));
+		 status, &CommandStatus::execute_command_eof ));
 	errorcapture.eof.connect( sigc::mem_fun(
-		 status, &utils_execute_command_status::execute_command_eof ));
+		 status, &CommandStatus::execute_command_eof ));
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
