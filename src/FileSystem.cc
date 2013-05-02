@@ -62,7 +62,9 @@ void FileSystem::store_exit_status( GPid pid, int status )
 	Glib::spawn_close_pid( pid );
 }
 
-static void relay_update( OperationDetail *operationdetail, Glib::ustring *str )
+//Callback passing the latest partial output from the external command
+//  to operation detail for updating in the UI
+static void update_command_output( OperationDetail *operationdetail, Glib::ustring *str )
 {
 	operationdetail->set_description( *str, FONT_ITALIC );
 }
@@ -118,10 +120,10 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	operationdetail.get_last_child().add_child(
 		OperationDetail( error, STATUS_NONE, FONT_ITALIC ) );
 	std::vector<OperationDetail> &children = operationdetail.get_last_child().get_childs();
-	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
+	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                 &(children[children.size() - 2]),
 	                                                 &output ) );
-	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
+	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                &(children[children.size() - 1]),
 	                                                &error ) );
 	outputcapture.connect_signal();
