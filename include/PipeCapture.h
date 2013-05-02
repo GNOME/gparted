@@ -40,8 +40,8 @@ public:
 	PipeCapture( int fd, Glib::ustring &buffer );
 	void connect_signal();
 	~PipeCapture();
-	sigc::signal<void> eof;
-	sigc::signal<void> update;
+	sigc::signal<void> signal_eof;
+	sigc::signal<void> signal_update;
 };
 
 } // namepace GParted

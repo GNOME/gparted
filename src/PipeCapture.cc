@@ -74,13 +74,13 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				++linelength;
 			}
 		}
-		update();
+		signal_update.emit();
 		return true;
 	}
 	if (status != Glib::IO_STATUS_EOF)
 		std::cerr << "Pipe IOChannel read failed" << std::endl;
 	// signal completion
-	eof();
+	signal_eof.emit();
 	return false;
 }
 

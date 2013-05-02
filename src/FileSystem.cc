@@ -111,19 +111,19 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	pipecount = 2;
 	PipeCapture outputcapture( out, output );
 	PipeCapture errorcapture( err, error );
-	outputcapture.eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
-	errorcapture.eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
+	outputcapture.signal_eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
+	errorcapture.signal_eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
 	operationdetail.get_last_child().add_child(
 		OperationDetail( output, STATUS_NONE, FONT_ITALIC ) );
 	operationdetail.get_last_child().add_child(
 		OperationDetail( error, STATUS_NONE, FONT_ITALIC ) );
 	std::vector<OperationDetail> &children = operationdetail.get_last_child().get_childs();
-	outputcapture.update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
-						  &(children[children.size() - 2]),
-						  &output ) );
-	errorcapture.update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
-						 &(children[children.size() - 1]),
-						 &error ) );
+	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
+	                                                 &(children[children.size() - 2]),
+	                                                 &output ) );
+	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( relay_update ),
+	                                                &(children[children.size() - 1]),
+	                                                &error ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 

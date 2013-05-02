@@ -497,10 +497,8 @@ int Utils::execute_command( const Glib::ustring & command,
 		status.mutex.lock();
 	PipeCapture outputcapture( out, output );
 	PipeCapture errorcapture( err, error );
-	outputcapture.eof.connect( sigc::mem_fun(
-		 status, &CommandStatus::execute_command_eof ));
-	errorcapture.eof.connect( sigc::mem_fun(
-		 status, &CommandStatus::execute_command_eof ));
+	outputcapture.signal_eof.connect( sigc::mem_fun( status, &CommandStatus::execute_command_eof ) );
+	errorcapture.signal_eof.connect( sigc::mem_fun( status, &CommandStatus::execute_command_eof ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
