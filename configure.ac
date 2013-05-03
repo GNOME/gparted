@@ -20,7 +20,7 @@ AM_PROG_LIBTOOL
 dnl======================
 dnl checks for other programs
 dnl======================
-AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo], [])
+AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo "xdg-su -c"], [])
 
 
 dnl======================
