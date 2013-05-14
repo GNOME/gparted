@@ -53,7 +53,6 @@ gpartedbin_SOURCES = \
 	ext2.cc				\
 	f2fs.cc				\
 	fat16.cc			\
-	fat32.cc			\
 	hfs.cc				\
 	hfsplus.cc			\
 	jfs.cc				\

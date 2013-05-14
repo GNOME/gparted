@@ -42,7 +42,6 @@ EXTRA_DIST = \
 	ext2.h				\
 	f2fs.h				\
 	fat16.h    			\
-	fat32.h  			\
 	hfs.h  				\
 	hfsplus.h 			\
 	i18n.h				\

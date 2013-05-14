@@ -27,7 +27,9 @@ namespace GParted
 
 class fat16 : public FileSystem
 {
+	const enum FILESYSTEM specific_type ;
 public:
+	fat16( enum FILESYSTEM type ) : specific_type( type ) {} ;
 	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
@@ -38,6 +40,7 @@ public:
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
+private:
 	static const Glib::ustring Change_UUID_Warning [] ;
 };
 

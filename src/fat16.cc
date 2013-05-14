@@ -61,12 +61,12 @@ const Glib::ustring fat16::get_custom_text( CUSTOM_TEXT ttype, int index )
 FS fat16::get_filesystem_support()
 {
 	FS fs ;
-	fs .filesystem = GParted::FS_FAT16 ;
+	fs .filesystem = specific_type ;
 		
 	// hack to disable silly mtools warnings
 	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );
 
-	//find out if we can create fat16 file systems
+	//find out if we can create fat file systems
 	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
 		fs .create = GParted::FS::EXTERNAL ;
 	
@@ -99,9 +99,16 @@ FS fat16::get_filesystem_support()
 	fs .copy = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
 
-	fs .MIN = 16 * MEBIBYTE ;
-	fs .MAX = (4096 - 1) * MEBIBYTE ;  //Maximum seems to be just less than 4096 MiB
-	
+	if ( fs .filesystem == FS_FAT16 )
+	{
+		fs .MIN = 16 * MEBIBYTE ;
+		fs .MAX = (4096 - 1) * MEBIBYTE ;  //Maximum seems to be just less than 4096 MiB
+	}
+	else //FS_FAT32
+	{
+		fs .MIN = 33 * MEBIBYTE ; //Smaller file systems will cause windows scandisk to fail.
+	}
+
 	return fs ;
 }
 
@@ -227,7 +234,8 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkdosfs -F16 -v -I -n \"" + new_partition .get_label() +
+	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
+	return ! execute_command( "mkdosfs -F" + fat_size + " -v -I -n \"" + new_partition .get_label() +
 				  "\" " + new_partition .get_path(),
 				  operationdetail,
 				  false,
