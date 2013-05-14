@@ -42,6 +42,7 @@ public:
 
 private:
 	static const Glib::ustring Change_UUID_Warning [] ;
+	const Glib::ustring pad_label( const Glib::ustring &label ) const ;
 };
 
 } //GParted

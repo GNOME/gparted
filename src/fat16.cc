@@ -180,7 +180,7 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 	if ( partition .get_label() .empty() )
 		cmd = "mlabel -c :: -i " + partition.get_path();
 	else
-		cmd = "mlabel ::\"" + partition.get_label() + "\" -i " + partition.get_path();
+		cmd = "mlabel ::\"" + pad_label( partition.get_label() ) + "\" -i " + partition.get_path();
 
 	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 
@@ -235,7 +235,7 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
-	return ! execute_command( "mkdosfs -F" + fat_size + " -v -I -n \"" + new_partition .get_label() +
+	return ! execute_command( "mkdosfs -F" + fat_size + " -v -I -n \"" + pad_label( new_partition .get_label() ) +
 				  "\" " + new_partition .get_path(),
 				  operationdetail,
 				  false,
@@ -250,6 +250,14 @@ bool fat16::check_repair( const Partition & partition, OperationDetail & operati
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }
 
+//Private methods
+
+//Pad fat label with spaces to prevent mlabel writing corrupted labels.  See bug #700228
+const Glib::ustring fat16::pad_label( const Glib::ustring &label ) const
+{
+	Glib::ustring new_label = label ;
+	new_label .resize( Utils::get_filesystem_label_maxlength( specific_type ), ' ' ) ;
+	return new_label ;
+}
+
 } //GParted
-
-
