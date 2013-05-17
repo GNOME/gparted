@@ -714,22 +714,6 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 				operations .insert( operations .begin() + index, operation ) ;
 			else
 				operations .push_back( operation );
-
-			allow_undo_clear_apply( true ) ;
-			Refresh_Visual();
-			
-			if ( operations .size() == 1 ) //first operation, open operationslist
-				open_operationslist() ;
-
-			//FIXME:  A slight flicker may be introduced by this extra display refresh.
-			//An extra display refresh seems to prevent the disk area visual disk from
-			//  disappearing when enough operations are added to require a scrollbar
-			//  (about 4 operations with default window size).
-			//  Note that commenting out the code to
-			//  "//make scrollwindow focus on the last operation in the list"
-			//  in HBoxOperations::load_operations() prevents this problem from occurring as well.
-			//  See also Win_GParted::activate_undo().
-			drawingarea_visualdisk .queue_draw() ;
 		}
 		else
 		{
@@ -761,8 +745,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		operations[ first ]->create_description() ;
 		remove_operation( second );
 
-		Refresh_Visual();
-
 		return true;
 	}
 	// Two label change operations on the same partition
@@ -774,8 +756,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		operations[ first ]->partition_new.set_label( operations[ second ]->partition_new .get_label() ) ;
 		operations[ first ]->create_description() ;
 		remove_operation( second );
-
-		Refresh_Visual();
 
 		return true;
 	}
@@ -792,8 +772,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		operations[ first ]->create_description() ;
 		remove_operation( second );
 
-		Refresh_Visual();
-
 		return true;
 	}
 	// Two check operations of the same partition
@@ -803,8 +781,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 	        )
 	{
 		remove_operation( second );
-
-		Refresh_Visual();
 
 		return true;
 	}
@@ -817,8 +793,6 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		operations[ first ]->partition_new = operations[ second ]->partition_new;
 		operations[ first ]->create_description() ;
 		remove_operation( second );
-
-		Refresh_Visual();
 
 		return true;
 	}
@@ -1155,6 +1129,28 @@ void Win_GParted::set_valid_operations()
 		if ( fs .check && selected_partition .status == GParted::STAT_REAL )
 			allow_check( true ) ;
 	}
+}
+
+void Win_GParted::show_operationslist()
+{
+	//Enable (or disable) Undo and Apply buttons
+	allow_undo_clear_apply( operations .size() ) ;
+
+	//Updates view of operations list and sensitivity of Undo and Apply buttons
+	Refresh_Visual();
+
+	if ( operations .size() == 1 ) //first operation, open operationslist
+		open_operationslist() ;
+
+	//FIXME:  A slight flicker may be introduced by this extra display refresh.
+	//An extra display refresh seems to prevent the disk area visual disk from
+	//  disappearing when enough operations are added to require a scrollbar
+	//  (about 4 operations with default window size).
+	//  Note that commenting out the code to
+	//  "//make scrollwindow focus on the last operation in the list"
+	//  in HBoxOperations::load_operations() prevents this problem from occurring as well.
+	//  See also Win_GParted::activate_undo().
+	drawingarea_visualdisk .queue_draw() ;
 }
 
 void Win_GParted::open_operationslist() 
@@ -1663,6 +1659,8 @@ void Win_GParted::activate_resize()
 			}
 		}
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::activate_copy()
@@ -1768,6 +1766,8 @@ void Win_GParted::activate_paste()
 			dialog .run() ;
 		}
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::activate_new()
@@ -1801,6 +1801,8 @@ void Win_GParted::activate_new()
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation );
+
+			show_operationslist() ;
 		}
 	}
 }
@@ -1908,6 +1910,8 @@ void Win_GParted::activate_delete()
 
 		Add_Operation( operation ) ;
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::activate_info()
@@ -2023,6 +2027,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			Merge_Operations( operations .size() - 2, operations .size() - 1 );
 		}
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error ) 
@@ -2449,6 +2455,8 @@ void Win_GParted::activate_check()
 				break;
 		}
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::activate_label_partition() 
@@ -2480,6 +2488,8 @@ void Win_GParted::activate_label_partition()
 					break;
 			}
 		}
+
+		show_operationslist() ;
 	}
 }
 	
@@ -2530,6 +2540,8 @@ void Win_GParted::activate_change_uuid()
 				break;
 		}
 	}
+
+	show_operationslist() ;
 }
 
 void Win_GParted::activate_undo()

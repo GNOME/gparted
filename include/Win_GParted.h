@@ -65,6 +65,7 @@ private:
 	void Refresh_Visual();
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;
+	void show_operationslist() ;
 	
 	//convenience functions
 	void toggle_item( bool state, int menu_item, int toolbar_item = -1 )
