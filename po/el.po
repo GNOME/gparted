@@ -4,14 +4,14 @@
 # Kostas Papadimas <pkst@gnome.org>, 2005, 2009.
 # Jennie Petoumenou <epetoumenou@gmail.com>, 2009.
 # Dimitris Tsiolis <dimits7@gmail.com>, 2010.
-# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2012.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparte"
 "d&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-01 18:28+0000\n"
-"PO-Revision-Date: 2012-11-15 12:33+0300\n"
+"POT-Creation-Date: 2013-03-25 16:58+0000\n"
+"PO-Revision-Date: 2013-05-17 08:17+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "Language: el\n"
@@ -23,9 +23,9 @@ msgstr ""
 "X-Project-Style: gnome\n"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:362
-#: ../src/Win_GParted.cc:76 ../src/Win_GParted.cc:1234
-#: ../src/Win_GParted.cc:1425
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:360
+#: ../src/Win_GParted.cc:75 ../src/Win_GParted.cc:1276
+#: ../src/Win_GParted.cc:1467
 msgid "GParted"
 msgstr "GParted"
 
@@ -41,13 +41,56 @@ msgstr "Επεξεργαστής κατατμήσεων GParted"
 msgid "Create, reorganize, and delete partitions"
 msgstr "Δημιουργία, επεξεργασία και διαγραφή κατατμήσεων"
 
-#: ../include/Utils.h:51
+#: ../include/Utils.h:54
 msgid "(New UUID - will be randomly generated)"
 msgstr "(Νέο UUID - θα δημιουργηθεί τυχαία)"
 
-#: ../include/Utils.h:52
+#: ../include/Utils.h:55
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(Νέο μισό UUID - θα δημιουργηθεί τυχαία)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
+#: ../src/Copy_Blocks.cc:71
+msgid "%1 of %2 read (%3 remaining)"
+msgstr "Έγινε ανάγνωση %1 από %2 (απομένουν %3)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/Copy_Blocks.cc:73
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "Έγινε αντιγραφή %1 από %2 (απομένουν %3)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
+#: ../src/Copy_Blocks.cc:81 ../src/Copy_Blocks.cc:197
+msgid "%1 of %2 read"
+msgstr "Έγινε ανάγνωση %1 από %2"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#: ../src/Copy_Blocks.cc:83 ../src/Copy_Blocks.cc:199
+msgid "%1 of %2 copied"
+msgstr "Έγινε αντιγραφή %1 από %2"
+
+#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
+#: ../src/Copy_Blocks.cc:168
+msgid "read %1 using a block size of %2"
+msgstr "ανάγνωση %1 με χρήση μεγέθους μπλοκ %2"
+
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/Copy_Blocks.cc:173
+msgid "copy %1 using a block size of %2"
+msgstr "αντιγραφή %1 με χρήση μεγέθους ομάδας %2"
+
+#: ../src/Copy_Blocks.cc:237
+#| msgid "Operation cancelled"
+msgid "Operation Canceled"
+msgstr "Ακύρωση λειτουργίας"
+
+#: ../src/Copy_Blocks.cc:249
+msgid "Error while writing block at sector %1"
+msgstr "Σφάλμα κατά την εγγραφή ενός μπλοκ στον τομέα %1"
+
+#: ../src/Copy_Blocks.cc:254
+msgid "Error while reading block at sector %1"
+msgstr "Σφάλμα κατά την ανάγνωση ενός μπλοκ στον τομέα %1"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
@@ -89,7 +132,7 @@ msgstr "Τίποτα"
 msgid "Resize"
 msgstr "Αυξομείωση"
 
-#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:240
+#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:242
 msgid "Resize/Move"
 msgstr "Αυξομείωση/Μετακίνηση"
 
@@ -138,12 +181,12 @@ msgstr "Προσοχή:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:185 ../src/Dialog_Partition_New.cc:117
+#: ../src/Dialog_Partition_Info.cc:185 ../src/Dialog_Partition_New.cc:125
 msgid "File system:"
 msgstr "Σύστημα αρχείων:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:195 ../src/Win_GParted.cc:468
+#: ../src/Dialog_Partition_Info.cc:195 ../src/Win_GParted.cc:475
 msgid "Size:"
 msgstr "Μέγεθος:"
 
@@ -166,7 +209,7 @@ msgid "Flags:"
 msgstr "Σημαίες:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:280 ../src/Win_GParted.cc:476
+#: ../src/Dialog_Partition_Info.cc:280 ../src/Win_GParted.cc:483
 msgid "Path:"
 msgstr "Διαδρομή:"
 
@@ -255,7 +298,7 @@ msgstr "Μη προσαρτημένο"
 
 #. Label
 #: ../src/Dialog_Partition_Info.cc:386 ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:129
+#: ../src/Dialog_Partition_New.cc:137
 msgid "Label:"
 msgstr "Ετικέτα:"
 
@@ -274,18 +317,18 @@ msgid "Last sector:"
 msgstr "Τελευταίος τομέας:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:433 ../src/Win_GParted.cc:529
+#: ../src/Dialog_Partition_Info.cc:433 ../src/Win_GParted.cc:536
 msgid "Total sectors:"
 msgstr "Σύνολο τομέων:"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:455 ../src/Win_GParted.cc:2717
+#: ../src/Dialog_Partition_Info.cc:455 ../src/Win_GParted.cc:2710
 msgid "Volume Group:"
 msgstr "Ομάδα τόμων:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2718
+#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2711
 msgid "Members:"
 msgstr "Μέλη:"
 
@@ -300,25 +343,25 @@ msgid "Create new Partition"
 msgstr "Δημιουργία νέας κατάτμησης"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:77
+#: ../src/Dialog_Partition_New.cc:85
 msgid "Create as:"
 msgstr "Δημιουργία ως:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Πρωτεύουσα κατάτμηση"
 
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Λογική κατάτμηση"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Εκτεταμένη κατάτμηση"
 
-#: ../src/Dialog_Partition_New.cc:196
+#: ../src/Dialog_Partition_New.cc:203
 msgid "New Partition #%1"
 msgstr "Νέα κατάτμηση #%1"
 
@@ -330,97 +373,108 @@ msgstr "Αυξομείωση/Μετακίνηση %1"
 msgid "Resize %1"
 msgstr "Αυξομείωση %1"
 
-#: ../src/Dialog_Progress.cc:33
+#: ../src/Dialog_Progress.cc:32
 msgid "Applying pending operations"
 msgstr "Εφαρμογή των εργασιών που εκκρεμούν"
 
-#: ../src/Dialog_Progress.cc:50
+#: ../src/Dialog_Progress.cc:47
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr ""
 "Ανάλογα με τον αριθμό και τον τύπο των εργασιών αυτή η διαδικασία μπορεί να "
 "είναι αρκετά χρονοβόρα."
 
-#: ../src/Dialog_Progress.cc:63
+#: ../src/Dialog_Progress.cc:60
 msgid "Completed Operations:"
 msgstr "Ολοκληρωμένες εργασίες:"
 
-#: ../src/Dialog_Progress.cc:103
+#: ../src/Dialog_Progress.cc:101
 msgid "Details"
 msgstr "Λεπτομέρειες"
 
-#: ../src/Dialog_Progress.cc:202
+#: ../src/Dialog_Progress.cc:204
 msgid "%1 of %2 operations completed"
 msgstr "Ολοκληρώθηκαν %1 από %2 εργασίες"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:234
+#: ../src/Dialog_Progress.cc:222
 msgid "_Save Details"
 msgstr "Απο_θήκευση λεπτομερειών"
 
-#: ../src/Dialog_Progress.cc:243
+#: ../src/Dialog_Progress.cc:234
 msgid "Operation cancelled"
 msgstr "Ακυρώθηκε η εργασία"
 
-#: ../src/Dialog_Progress.cc:257
+#: ../src/Dialog_Progress.cc:248
 msgid "All operations successfully completed"
 msgstr "Όλες οι εργασίες ολοκληρώθηκαν με επιτυχία"
 
-#: ../src/Dialog_Progress.cc:261
+#: ../src/Dialog_Progress.cc:252
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 προειδοποίηση"
 msgstr[1] "%1 προειδοποιήσεις"
 
-#: ../src/Dialog_Progress.cc:274
+#: ../src/Dialog_Progress.cc:265
 msgid "An error occurred while applying the operations"
 msgstr "Προέκυψε σφάλμα κατά την εφαρμογή των εργασιών"
 
-#: ../src/Dialog_Progress.cc:279
+#: ../src/Dialog_Progress.cc:270
 msgid "See the details for more information."
 msgstr "Δείτε τις λεπτομέρειες για περισσότερες πληροφορίες."
 
-#: ../src/Dialog_Progress.cc:281
+#: ../src/Dialog_Progress.cc:272
 msgid "IMPORTANT"
 msgstr "ΠΡΟΣΟΧΗ"
 
-#: ../src/Dialog_Progress.cc:282
+#: ../src/Dialog_Progress.cc:273
 msgid "If you want support, you need to provide the saved details!"
 msgstr ""
 "Για να λάβετε υποστήριξη πρέπει να παράσχετε τις αποθηκευμένες λεπτομέρειες!"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:285
+#: ../src/Dialog_Progress.cc:276
 msgid "See %1 for more information."
 msgstr "Δείτε το %1 για περισσότερες πληροφορίες."
 
-#: ../src/Dialog_Progress.cc:318
+#. TO TRANSLATORS: looks like  Force Cancel (5)
+#. *  where the number represents a count down in seconds until the button is enabled
+#: ../src/Dialog_Progress.cc:295 ../src/Dialog_Progress.cc:326
+msgid "Force Cancel (%1)"
+msgstr "Εξαναγκασμός ακύρωσης (%1)"
+
+#: ../src/Dialog_Progress.cc:297 ../src/Dialog_Progress.cc:330
+#| msgid "Cancel"
+msgid "Force Cancel"
+msgstr "Εξαναγκασμός ακύρωσης"
+
+#: ../src/Dialog_Progress.cc:308
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Σίγουρα θέλετε να ακυρώσετε την τρέχουσα εργασία;"
 
-#: ../src/Dialog_Progress.cc:324
+#: ../src/Dialog_Progress.cc:314
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "Η ακύρωση μιας εργασίας μπορεί να προκαλέσει ΣΗΜΑΝΤΙΚΟΤΑΤΕΣ βλάβες στο "
 "σύστημα αρχείων."
 
-#: ../src/Dialog_Progress.cc:326
+#: ../src/Dialog_Progress.cc:316
 msgid "Continue Operation"
 msgstr "Συνέχιση εργασίας"
 
-#: ../src/Dialog_Progress.cc:327
+#: ../src/Dialog_Progress.cc:317
 msgid "Cancel Operation"
 msgstr "Ακύρωση εργασίας"
 
-#: ../src/Dialog_Progress.cc:340
+#: ../src/Dialog_Progress.cc:338
 msgid "Save Details"
 msgstr "Αποθήκευση λεπτομερειών"
 
-#: ../src/Dialog_Progress.cc:359
+#: ../src/Dialog_Progress.cc:357
 msgid "GParted Details"
 msgstr "Λεπτομέρειες GParted"
 
-#: ../src/Dialog_Progress.cc:367
+#: ../src/Dialog_Progress.cc:365
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -428,7 +482,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:410
+#: ../src/Dialog_Progress.cc:408
 msgid "EXECUTING"
 msgstr "ΕΚΤΕΛΕΣΗ"
 
@@ -436,7 +490,7 @@ msgstr "ΕΚΤΕΛΕΣΗ"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:418
+#: ../src/Dialog_Progress.cc:416
 msgid "SUCCESS"
 msgstr "ΕΠΙΤΥΧΙΑ"
 
@@ -444,7 +498,7 @@ msgstr "ΕΠΙΤΥΧΙΑ"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:424
 msgid "ERROR"
 msgstr "ΣΦΑΛΜΑ"
 
@@ -453,7 +507,7 @@ msgstr "ΣΦΑΛΜΑ"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:433
 msgid "INFO"
 msgstr "ΠΛΗΡΟΦΟΡΙΕΣ"
 
@@ -462,7 +516,7 @@ msgstr "ΠΛΗΡΟΦΟΡΙΕΣ"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:444
+#: ../src/Dialog_Progress.cc:442
 msgid "N/A"
 msgstr "Δ/Υ"
 
@@ -651,9 +705,6 @@ msgid "Unable to open the default file manager"
 msgstr "Αδυναμία ανοίγματος του προεπιλεγμένου διαχειριστή αρχείων"
 
 #: ../src/Dialog_Rescue_Data.cc:260
-#| msgid ""
-#| "Warning: The detected file system area overlaps with at least one "
-#| "existing partition."
 msgid ""
 "Warning: The detected file system area overlaps with at least one existing "
 "partition"
@@ -695,41 +746,40 @@ msgid "update %1 entry"
 msgstr "ενημέρωση καταχώρησης στο %1"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:38
+#: ../src/FileSystem.cc:42
 msgid "_Mount"
 msgstr "_Προσάρτηση"
 
-#: ../src/FileSystem.cc:39
+#: ../src/FileSystem.cc:43
 msgid "_Unmount"
 msgstr "Α_ποπροσάρτηση"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:124
+#: ../src/FileSystem.cc:188
 msgid "Created directory %1"
 msgstr "Δημιουργήθηκε ο κατάλογος %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:151
+#: ../src/FileSystem.cc:215
 msgid "Removed directory %1"
 msgstr "Διαγράφηκε ο κατάλογος %1"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:175 ../src/GParted_Core.cc:184
-#: ../src/GParted_Core.cc:194
+#: ../src/GParted_Core.cc:192 ../src/GParted_Core.cc:201
 msgid "Scanning %1"
 msgstr "Σάρωση του %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:217
+#: ../src/GParted_Core.cc:224
 msgid "Confirming %1"
 msgstr "Επιβεβαίωση του %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:229
+#: ../src/GParted_Core.cc:236
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Παράβλεψη συσκευής %1 με μέγεθος λογικού τομέα %2 bytes."
 
-#: ../src/GParted_Core.cc:231
+#: ../src/GParted_Core.cc:238
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -738,7 +788,7 @@ msgstr ""
 "υποστηρίζει συσκευές με μεγέθη τομέων μεγαλύτερα από 512 ψηφιολέξεις."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:270
+#: ../src/GParted_Core.cc:276
 msgid "Searching %1 partitions"
 msgstr "Αναζήτηση στις κατατμήσεις του %1"
 
@@ -746,71 +796,71 @@ msgstr "Αναζήτηση στις κατατμήσεις του %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:317
+#: ../src/GParted_Core.cc:325
 msgid "unrecognized"
 msgstr "Μη αναγνωρίσιμα"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:622
+#: ../src/GParted_Core.cc:644
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Μια κατάτμηση δεν μπορεί να έχει μήκος %1 τομέων"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:636
+#: ../src/GParted_Core.cc:658
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Μια κατάτμηση δεν είναι έγκυρη αν οι χρησιμοποιούμενοι τομείς (%1) είναι "
 "περισσότεροι από το μήκος (%2) της κατάτμησης"
 
-#: ../src/GParted_Core.cc:706
+#: ../src/GParted_Core.cc:728
 msgid "libparted messages"
 msgstr "Μηνύματα libparted"
 
-#: ../src/GParted_Core.cc:1159
+#: ../src/GParted_Core.cc:1194
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Δεν υποστηρίζεται ακόμη η κρυπτογράφηση Linux Unified Key Setup."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1309
+#: ../src/GParted_Core.cc:1346
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Δεν εντοπίστηκε το σύστημα αρχείων! Οι πιθανές αιτίες είναι:"
 
-#: ../src/GParted_Core.cc:1311
+#: ../src/GParted_Core.cc:1348
 msgid "The file system is damaged"
 msgstr "Το σύστημα αρχείων είναι κατεστραμμένο"
 
-#: ../src/GParted_Core.cc:1313
+#: ../src/GParted_Core.cc:1350
 msgid "The file system is unknown to GParted"
 msgstr "Το σύστημα αρχείων είναι άγνωστο στο GParted"
 
-#: ../src/GParted_Core.cc:1315
+#: ../src/GParted_Core.cc:1352
 msgid "There is no file system available (unformatted)"
 msgstr "Δεν υπάρχει διαθέσιμο σύστημα αρχείων (αμορφοποίητα)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1318
+#: ../src/GParted_Core.cc:1355
 msgid "The device entry %1 is missing"
 msgstr "Λείπει η καταχώρηση της συσκευής %1"
 
-#: ../src/GParted_Core.cc:1477
+#: ../src/GParted_Core.cc:1518
 msgid "Unable to find mount point"
 msgstr "Δε βρέθηκε το σημείο προσάρτησης"
 
-#: ../src/GParted_Core.cc:1555
+#: ../src/GParted_Core.cc:1591
 msgid "Unable to read the contents of this file system!"
 msgstr "Δεν ήταν δυνατή η ανάγνωση των περιεχομένων του συστήματος αρχείων!"
 
-#: ../src/GParted_Core.cc:1557
+#: ../src/GParted_Core.cc:1593
 msgid "Because of this some operations may be unavailable."
 msgstr "Εξ αιτίας αυτού, ορισμένες λειτουργίες ίσως να μην είναι διαθέσιμες."
 
-#: ../src/GParted_Core.cc:1561
+#: ../src/GParted_Core.cc:1597
 msgid "The cause might be a missing software package."
 msgstr "Η αιτία μπορεί να είναι ένα πακέτο λογισμικού που λείπει."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1564
+#: ../src/GParted_Core.cc:1600
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -819,7 +869,7 @@ msgstr ""
 "αρχείων %1:  %2."
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1574
+#: ../src/GParted_Core.cc:1610
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 ελεύθερος χώρος στην κατάτμηση."
 
@@ -827,7 +877,7 @@ msgstr "%1 ελεύθερος χώρος στην κατάτμηση."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1585
+#: ../src/GParted_Core.cc:1621
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -835,56 +885,55 @@ msgstr ""
 "Για να αναπτυχθεί το σύστημα αρχείων ώστε να γεμίζει την κατάτμηση, επιλέξτε "
 "την κατάτμηση και διαλέξτε από το μενού:"
 
-#: ../src/GParted_Core.cc:1587
+#: ../src/GParted_Core.cc:1623
 msgid "Partition --> Check."
 msgstr "Κατάτμηση --> Έλεγχος."
 
-#: ../src/GParted_Core.cc:1666
+#: ../src/GParted_Core.cc:1721
 msgid "create empty partition"
 msgstr "δημιουργία κενής κατάτμησης"
 
-#: ../src/GParted_Core.cc:1736 ../src/GParted_Core.cc:3116
+#: ../src/GParted_Core.cc:1791 ../src/GParted_Core.cc:2981
 msgid "path: %1"
 msgstr "διαδρομή: %1"
 
-#: ../src/GParted_Core.cc:1737 ../src/GParted_Core.cc:3117
+#: ../src/GParted_Core.cc:1792 ../src/GParted_Core.cc:2982
 msgid "start: %1"
 msgstr "αρχή: %1"
 
-#: ../src/GParted_Core.cc:1738 ../src/GParted_Core.cc:3118
+#: ../src/GParted_Core.cc:1793 ../src/GParted_Core.cc:2983
 msgid "end: %1"
 msgstr "τέλος: %1"
 
-#: ../src/GParted_Core.cc:1739 ../src/GParted_Core.cc:3119
+#: ../src/GParted_Core.cc:1794 ../src/GParted_Core.cc:2984
 msgid "size: %1 (%2)"
 msgstr "μέγεθος: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1775 ../src/linux_swap.cc:125
+#: ../src/GParted_Core.cc:1826 ../src/linux_swap.cc:119
 msgid "create new %1 file system"
 msgstr "δημιουργία νέου συστήματος αρχείων %1"
 
-#: ../src/GParted_Core.cc:1815
+#: ../src/GParted_Core.cc:1867
 msgid "delete partition"
 msgstr "διαγραφή κατάτμησης"
 
-#: ../src/GParted_Core.cc:1864
-#| msgid "create new %1 file system"
+#: ../src/GParted_Core.cc:1922
 msgid "delete %1 file system"
 msgstr "διαγραφή συστήματος αρχείων %1"
 
-#: ../src/GParted_Core.cc:1881
+#: ../src/GParted_Core.cc:1939
 msgid "Clear partition label on %1"
 msgstr "Εκκαθάριση της ετικέτας της κατάτμησης στο %1"
 
-#: ../src/GParted_Core.cc:1886
+#: ../src/GParted_Core.cc:1944
 msgid "Set partition label to \"%1\" on %2"
 msgstr "Ορισμός της ετικέτας κατάτμησης σε \"%1\" στο %2"
 
-#: ../src/GParted_Core.cc:1919
+#: ../src/GParted_Core.cc:1978
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Ορίστε το ήμισυ του UUID στο %1 σε μια νέα, τυχαία τιμή"
 
-#: ../src/GParted_Core.cc:1924
+#: ../src/GParted_Core.cc:1983
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Ορίστε το UUID στο %1 σε μια νέα, τυχαία τιμή"
 
@@ -893,28 +942,28 @@ msgstr "Ορίστε το UUID στο %1 σε μια νέα, τυχαία τιμ
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2008
+#: ../src/GParted_Core.cc:2068
 msgid "moving requires old and new length to be the same"
 msgstr ""
 "για να γίνει η μετακίνηση πρέπει το παλαιό και το νέο μήκος να ταυτίζονται"
 
-#: ../src/GParted_Core.cc:2038
+#: ../src/GParted_Core.cc:2098
 msgid "rollback last change to the partition table"
 msgstr "αναίρεση της τελευταίας αλλαγής στον πίνακα κατατμήσεων"
 
-#: ../src/GParted_Core.cc:2076
+#: ../src/GParted_Core.cc:2140
 msgid "move file system to the left"
 msgstr "μετακίνηση του συστήματος αρχείων αριστερά"
 
-#: ../src/GParted_Core.cc:2078
+#: ../src/GParted_Core.cc:2142
 msgid "move file system to the right"
 msgstr "μετακίνηση του συστήματος αρχείων δεξιά"
 
-#: ../src/GParted_Core.cc:2081
+#: ../src/GParted_Core.cc:2145
 msgid "move file system"
 msgstr "μετακίνηση του συστήματος αρχείων"
 
-#: ../src/GParted_Core.cc:2083
+#: ../src/GParted_Core.cc:2147
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -922,56 +971,52 @@ msgstr ""
 "το νέο και το παλιό σύστημα αρχείων έχουν την ίδια θέση. Συνεπώς "
 "παραβλέπεται αυτή η εργασία"
 
-#: ../src/GParted_Core.cc:2102
-msgid "perform real move"
-msgstr "πραγματική μετακίνηση"
-
-#: ../src/GParted_Core.cc:2155
+#: ../src/GParted_Core.cc:2215
 msgid "using libparted"
 msgstr "χρήση libparted"
 
-#: ../src/GParted_Core.cc:2196
+#: ../src/GParted_Core.cc:2258
 msgid "resizing requires old and new start to be the same"
 msgstr ""
 "για να γίνει αλλαγή μεγέθους πρέπει η παλαιά και η νέα αρχή να συμπίπτουν"
 
-#: ../src/GParted_Core.cc:2265
+#: ../src/GParted_Core.cc:2325
 msgid "resize/move partition"
 msgstr "αυξομείωση/μετακίνηση κατάτμησης"
 
-#: ../src/GParted_Core.cc:2268
+#: ../src/GParted_Core.cc:2328
 msgid "move partition to the right"
 msgstr "μετακίνηση κατάτμησης δεξιά"
 
-#: ../src/GParted_Core.cc:2271
+#: ../src/GParted_Core.cc:2331
 msgid "move partition to the left"
 msgstr "μετακίνηση κατάτμησης αριστερά"
 
-#: ../src/GParted_Core.cc:2274
+#: ../src/GParted_Core.cc:2334
 msgid "grow partition from %1 to %2"
 msgstr "αύξηση του μεγέθους της κατάτμησης από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2277
+#: ../src/GParted_Core.cc:2337
 msgid "shrink partition from %1 to %2"
 msgstr "μείωση του μεγέθους της κατάτμησης από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2280
+#: ../src/GParted_Core.cc:2340
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "μετακίνηση της κατάτμησης δεξιά και αύξησή της από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2283
+#: ../src/GParted_Core.cc:2343
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "μετακίνηση της κατάτμησης δεξιά και μείωσή της από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2346
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "μετακίνηση της κατάτμησης αριστερά και αύξησή της από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2289
+#: ../src/GParted_Core.cc:2349
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "μετακίνηση της κατάτμησης αριστερά και μείωσή της από %1 σε %2"
 
-#: ../src/GParted_Core.cc:2304
+#: ../src/GParted_Core.cc:2364
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -979,286 +1024,265 @@ msgstr ""
 "η νέα και η παλιά κατάτμηση έχουν το ίδιο μέγεθος και θέση. Συνεπώς "
 "παραβλέπεται αυτή η εργασία"
 
-#: ../src/GParted_Core.cc:2314
+#: ../src/GParted_Core.cc:2374
 msgid "old start: %1"
 msgstr "παλαιά αρχή: %1"
 
-#: ../src/GParted_Core.cc:2315
+#: ../src/GParted_Core.cc:2375
 msgid "old end: %1"
 msgstr "παλαιό τέλος: %1"
 
-#: ../src/GParted_Core.cc:2316
+#: ../src/GParted_Core.cc:2376
 msgid "old size: %1 (%2)"
 msgstr "παλαιό μέγεθος: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2379 ../src/GParted_Core.cc:3197
+#: ../src/GParted_Core.cc:2441 ../src/GParted_Core.cc:3063
 msgid "new start: %1"
 msgstr "νέα αρχή: %1"
 
-#: ../src/GParted_Core.cc:2380 ../src/GParted_Core.cc:3198
+#: ../src/GParted_Core.cc:2442 ../src/GParted_Core.cc:3064
 msgid "new end: %1"
 msgstr "νέο τέλος: %1"
 
-#: ../src/GParted_Core.cc:2381 ../src/GParted_Core.cc:3199
+#: ../src/GParted_Core.cc:2443 ../src/GParted_Core.cc:3065
 msgid "new size: %1 (%2)"
 msgstr "νέο μέγεθος: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2406 ../src/GParted_Core.cc:3146
+#: ../src/GParted_Core.cc:2470 ../src/GParted_Core.cc:3011
 msgid "requested start: %1"
 msgstr "επιθυμητή αρχή: %1"
 
-#: ../src/GParted_Core.cc:2407 ../src/GParted_Core.cc:3147
+#: ../src/GParted_Core.cc:2471 ../src/GParted_Core.cc:3012
 msgid "requested end: %1"
 msgstr "επιθυμητό τέλος: %1"
 
-#: ../src/GParted_Core.cc:2408 ../src/GParted_Core.cc:3148
+#: ../src/GParted_Core.cc:2472 ../src/GParted_Core.cc:3013
 msgid "requested size: %1 (%2)"
 msgstr "επιθυμητό μέγεθος: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2433
+#: ../src/GParted_Core.cc:2497
 msgid "shrink file system"
 msgstr "μείωση μεγέθους συστήματος αρχείων"
 
-#: ../src/GParted_Core.cc:2437
+#: ../src/GParted_Core.cc:2501
 msgid "grow file system"
 msgstr "αύξηση μεγέθους συστήματος αρχείων"
 
-#: ../src/GParted_Core.cc:2440
+#: ../src/GParted_Core.cc:2504
 msgid "resize file system"
 msgstr "αλλαγή μεγέθους του συστήματος αρχείων"
 
-#: ../src/GParted_Core.cc:2443
+#: ../src/GParted_Core.cc:2507
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "το νέο και το παλιό σύστημα αρχείων έχουν το ίδιο μέγεθος. Συνεπώς "
 "παραβλέπεται αυτή η εργασία"
 
-#: ../src/GParted_Core.cc:2483
+#: ../src/GParted_Core.cc:2548
 msgid "grow file system to fill the partition"
 msgstr ""
 "αύξηση του μεγέθους του συστήματος αρχείων προκειμένου να καταλαμβάνει όλη "
 "την κατάτμηση"
 
-#: ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2553
 msgid "growing is not available for this file system"
 msgstr ""
 "δεν υπάρχει δυνατότητα αύξησης του μεγέθους για αυτό το σύστημα αρχείων"
 
-#: ../src/GParted_Core.cc:2497
-#| msgid "The file system is damaged"
+#: ../src/GParted_Core.cc:2562
 msgid "growing the file system is currently disallowed"
 msgstr "η αύξηση του συστήματος αρχείων προς το παρόν δεν επιτρέπεται"
 
-#: ../src/GParted_Core.cc:2523
+#: ../src/GParted_Core.cc:2588
 msgid "the destination is smaller than the source partition"
 msgstr "ο προορισμός έχει μικρότερο μέγεθος από την κατάτμηση προέλευσης"
 
-#: ../src/GParted_Core.cc:2540
+#: ../src/GParted_Core.cc:2605
 msgid "copy file system of %1 to %2"
 msgstr "αντιγραφή του συστήματος αρχείων του %1 στο %2"
 
-#: ../src/GParted_Core.cc:2593
-msgid "perform read-only test"
-msgstr "εκτέλεση δοκιμής μόνο ανάγνωσης"
-
-#: ../src/GParted_Core.cc:2647
+#: ../src/GParted_Core.cc:2708
 msgid "using internal algorithm"
 msgstr "με χρήση εσωτερικού αλγορίθμου"
 
 #. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2651
+#: ../src/GParted_Core.cc:2712
 msgid "read %1"
 msgstr "ανάγνωση %1"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2653
+#: ../src/GParted_Core.cc:2714
 msgid "copy %1"
 msgstr "αντιγραφή %1"
 
-#: ../src/GParted_Core.cc:2657
+#: ../src/GParted_Core.cc:2718
 msgid "finding optimal block size"
 msgstr "εύρεση βέλτιστου μεγέθους μπλοκ"
 
-#: ../src/GParted_Core.cc:2697
+#: ../src/GParted_Core.cc:2759
 msgid "%1 seconds"
 msgstr "%1 δευτερόλεπτα"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2715
+#: ../src/GParted_Core.cc:2777
 msgid "optimal block size is %1"
 msgstr "Το βέλτιστο μέγεθος μπλοκ είναι %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2733
+#: ../src/GParted_Core.cc:2796
 msgid "%1 (%2 B) read"
 msgstr "%1 (%2 B) αναγνώστηκαν"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2798
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) αντιγράφηκαν"
 
-#: ../src/GParted_Core.cc:2748
+#: ../src/GParted_Core.cc:2832
 msgid "roll back last transaction"
 msgstr "αναστροφή τελευταίας συναλλαγής"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2777
+#: ../src/GParted_Core.cc:2846
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "έλεγχος του συστήματος αρχείων στο %1 για λάθη και (αν γίνεται) επιδιόρθωσή "
 "τους"
 
-#: ../src/GParted_Core.cc:2785
+#: ../src/GParted_Core.cc:2855
 msgid "checking is not available for this file system"
 msgstr "δεν υπάρχει δυνατότητα ελέγχου για αυτό το σύστημα αρχείων"
 
-#: ../src/GParted_Core.cc:2816
+#: ../src/GParted_Core.cc:2886
 msgid "set partition type on %1"
 msgstr "ορίζεται ως %1 ο τύπος της κατάτμησης"
 
-#: ../src/GParted_Core.cc:2851
+#: ../src/GParted_Core.cc:2923
 msgid "new partition type: %1"
 msgstr "νέος τύπος κατάτμησης: %1"
 
-#: ../src/GParted_Core.cc:2868
-#| msgid "new partition type: %1"
+#: ../src/GParted_Core.cc:2940
 msgid "new partition flag: %1"
 msgstr "νέα σημαία κατάτμηση: %1"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2896
-msgid "%1 of %2 read (%3 remaining)"
-msgstr "Έγινε ανάγνωση %1 από %2 (απομένουν %3)"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2898
-msgid "%1 of %2 copied (%3 remaining)"
-msgstr "Έγινε αντιγραφή %1 από %2 (απομένουν %3)"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2906 ../src/GParted_Core.cc:3023
-msgid "%1 of %2 read"
-msgstr "Έγινε ανάγνωση %1 από %2"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2908 ../src/GParted_Core.cc:3025
-msgid "%1 of %2 copied"
-msgstr "Έγινε αντιγραφή %1 από %2"
-
-#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2929
-msgid "read %1 using a block size of %2"
-msgstr "ανάγνωση %1 με χρήση μεγέθους μπλοκ %2"
-
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2934
-msgid "copy %1 using a block size of %2"
-msgstr "αντιγραφή %1 με χρήση μεγέθους ομάδας %2"
-
-#: ../src/GParted_Core.cc:3084
-msgid "Error while writing block at sector %1"
-msgstr "Σφάλμα κατά την εγγραφή ενός μπλοκ στον τομέα %1"
-
-#: ../src/GParted_Core.cc:3087
-msgid "Error while reading block at sector %1"
-msgstr "Σφάλμα κατά την ανάγνωση ενός μπλοκ στον τομέα %1"
-
-#: ../src/GParted_Core.cc:3097
+#: ../src/GParted_Core.cc:2959
 msgid "calibrate %1"
 msgstr "ρύθμιση του %1"
 
-#: ../src/GParted_Core.cc:3142
+#: ../src/GParted_Core.cc:3007
 msgid "calculate new size and position of %1"
 msgstr "υπολογισμός νέου μεγέθους και θέσης του %1"
 
+#: ../src/GParted_Core.cc:3123
+#| msgid "Search for file systems on %1"
+msgid "clear old file system signatures in %1"
+msgstr "καθαρισμός παλιού συστήματος αρχείου υπογραφών στο %1"
+
+#. Single copy of string for translation purposes
+#. TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0
+#: ../src/GParted_Core.cc:3150
+msgid "wrote %1 of zeros at byte offset %2"
+msgstr "έγραψε %1 μηδενικά στην μετατόπιση οκτάδας %2"
+
+#: ../src/GParted_Core.cc:3160
+msgid "clear primary signatures"
+msgstr "καθαρισμός πρωτευουσών υπογραφών"
+
+#: ../src/GParted_Core.cc:3203
+msgid "clear secondary signatures"
+msgstr "καθαρισμός δευτερευουσών υπογραφών"
+
+#: ../src/GParted_Core.cc:3260
+msgid "flush operating system cache of %1"
+msgstr "εκκένωση κρυφής μνήμης λειτουργικού συστήματος του %1"
+
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3296
+#: ../src/GParted_Core.cc:3292
 msgid "update boot sector of %1 file system on %2"
 msgstr "ενημέρωση του τομέα εκκίνησης του συστήματος αρχείων %1 στο %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3332
+#: ../src/GParted_Core.cc:3328
 msgid "Error trying to write to boot sector in %1"
 msgstr "Σφάλμα κατά την προσπάθεια εγγραφής στον τομέα εκκίνησης στο %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3338
+#: ../src/GParted_Core.cc:3334
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Σφάλμα κατά την αναζήτηση προς τη θέση 0x1c στο %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3345
+#: ../src/GParted_Core.cc:3341
 msgid "Error trying to open %1"
 msgstr "Σφάλμα κατά την προσπάθεια ανοίγματος του %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3351
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Αποτυχία ορισμού του αριθμού των κρυφών τομέων σε %1 στην εγγραφή εκκίνησης "
 "του NTFS."
 
-#: ../src/GParted_Core.cc:3357
+#: ../src/GParted_Core.cc:3353
 msgid "You might try the following command to correct the problem:"
 msgstr ""
 "Μπορείτε να δοκιμάσετε την παρακάτω εντολή για να διορθωθεί το πρόβλημα:"
 
-#: ../src/GParted_Core.cc:3472
+#: ../src/GParted_Core.cc:3453
 msgid "Libparted Warning"
 msgstr "Προειδοποίηση Libparted"
 
-#: ../src/GParted_Core.cc:3476
+#: ../src/GParted_Core.cc:3457
 msgid "Libparted Information"
 msgstr "Πληροφορίες Libparted"
 
-#: ../src/GParted_Core.cc:3480
+#: ../src/GParted_Core.cc:3461
 msgid "Libparted Error"
 msgstr "Σφάλμα Libparted"
 
-#: ../src/GParted_Core.cc:3482
+#: ../src/GParted_Core.cc:3463
 msgid "Libparted Bug Found!"
 msgstr "Βρέθηκε σφάλμα στο Libparted!"
 
-#: ../src/GParted_Core.cc:3485
+#: ../src/GParted_Core.cc:3466
 msgid "Fix"
 msgstr "Διόρθωση"
 
-#: ../src/GParted_Core.cc:3487
+#: ../src/GParted_Core.cc:3468
 msgid "Yes"
 msgstr "Ναι"
 
-#: ../src/GParted_Core.cc:3489
+#: ../src/GParted_Core.cc:3470
 msgid "Ok"
 msgstr "Ok"
 
-#: ../src/GParted_Core.cc:3491
+#: ../src/GParted_Core.cc:3472
 msgid "Retry"
 msgstr "Επανάληψη"
 
-#: ../src/GParted_Core.cc:3493
+#: ../src/GParted_Core.cc:3474
 msgid "No"
 msgstr "Όχι"
 
-#: ../src/GParted_Core.cc:3495
+#: ../src/GParted_Core.cc:3476
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: ../src/GParted_Core.cc:3497
+#: ../src/GParted_Core.cc:3478
 msgid "Ignore"
 msgstr "Αγνόηση"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:159
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:160
 msgid "_Undo Last Operation"
 msgstr "Α_ναίρεση της τελευταίας εργασίας"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:165
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:166
 msgid "_Clear All Operations"
 msgstr "_Εκκαθάριση όλων των εργασιών"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:170
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:171
 msgid "_Apply All Operations"
 msgstr "Ε_φαρμογή όλων των εργασιών"
 
@@ -1273,7 +1297,8 @@ msgstr "Ένα σφάλμα συνέβη κατά την ανάγνωση ρυθ
 
 #: ../src/LVM2_PV_Info.cc:282
 msgid "Some or all of the details might be missing or incorrect."
-msgstr "Μπορεί να λείπουν ή να είναι λάθος μερικές ή όλες από τις λεπτομέρειες."
+msgstr ""
+"Μπορεί να λείπουν ή να είναι λάθος μερικές ή όλες από τις λεπτομέρειες."
 
 #: ../src/LVM2_PV_Info.cc:284
 msgid "You should NOT modify any LVM2 PV partitions."
@@ -1408,7 +1433,7 @@ msgstr "Σημαίες"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:129
+#: ../src/Utils.cc:193
 msgid "unallocated"
 msgstr "αδιάθετα"
 
@@ -1417,7 +1442,7 @@ msgstr "αδιάθετα"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:136
+#: ../src/Utils.cc:200
 msgid "unknown"
 msgstr "άγνωστα"
 
@@ -1425,302 +1450,279 @@ msgstr "άγνωστα"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:142
+#: ../src/Utils.cc:206
 msgid "unformatted"
 msgstr "μη μορφοποιημένα"
 
-#: ../src/Utils.cc:161
+#. TO TRANSLATORS:  cleared
+#. * means that all file system signatures in the partition
+#. * will be cleared by GParted.
+#.
+#: ../src/Utils.cc:212
+msgid "cleared"
+msgstr "καθαρισμός"
+
+#: ../src/Utils.cc:232
 msgid "used"
 msgstr "χρησιμοποιούνται"
 
-#: ../src/Utils.cc:162
+#: ../src/Utils.cc:233
 msgid "unused"
 msgstr "δε χρησιμοποιούνται"
 
-#: ../src/Utils.cc:259
+#: ../src/Utils.cc:331
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:264
+#: ../src/Utils.cc:336
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:269
+#: ../src/Utils.cc:341
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:274
+#: ../src/Utils.cc:346
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:279
+#: ../src/Utils.cc:351
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#. TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
-#. * means that this file is only used while gparted is applying operations.
-#. * If for some reason this file exists at any other time, then the message is
-#. * meant to inform a user that the file can be deleted with no harmful effects.
-#. * This file is typically created, exists for less than a few seconds, and is
-#. * then deleted by gparted.  Under normal circumstances a user should never
-#. * see this file.
-#.
-#: ../src/Utils.cc:438
-msgid "# Temporary file created by gparted.  It may be deleted.\n"
-msgstr "# Προσωρινό αρχείο του gparted. Μπορείτε να το διαγράψετε.\n"
-
-#. TO TRANSLATORS: looks like
-#. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
-#.
-#: ../src/Utils.cc:450
-msgid "Label operation failed:  Unable to write to temporary file %1.\n"
-msgstr "Η εργασία δημιουργίας ετικέτας απέτυχε: Αδυναμία εγγραφής στο προσωρινό "
-"αρχείο %1.\n"
-
-#. TO TRANSLATORS: looks like
-#. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
-#.
-#: ../src/Utils.cc:462
-msgid "Label operation failed:  Unable to create temporary file %1.\n"
-msgstr "Η εργασία δημιουργίας ετικέτας απέτυχε: Αδυναμία δημιουργίας του προσωρινού "
-"αρχείου %1.\n"
-
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:144
 msgid "_Refresh Devices"
 msgstr "Α_νανέωση συσκευών"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:150
 msgid "_Devices"
 msgstr "_Συσκευές"
 
-#: ../src/Win_GParted.cc:154
+#: ../src/Win_GParted.cc:155
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:175
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: ../src/Win_GParted.cc:178
+#: ../src/Win_GParted.cc:180
 msgid "Device _Information"
 msgstr "Πλ_ηροφορίες συσκευής"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:182
 msgid "Pending _Operations"
 msgstr "Εκκρε_μείς εργασίες"
 
-#: ../src/Win_GParted.cc:181
+#: ../src/Win_GParted.cc:183
 msgid "_View"
 msgstr "Προ_βολή"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:187
 msgid "_File System Support"
 msgstr "_Υποστήριξη συστήματος αρχείων"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:191
 msgid "_Create Partition Table"
 msgstr "_Δημιουργία πίνακα κατατμήσεων"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:194
 msgid "_Attempt Data Rescue"
 msgstr "Προ_σπάθεια ανάκτησης δεδομένων"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:197
 msgid "_Device"
 msgstr "_Συσκευή"
 
-#: ../src/Win_GParted.cc:199
+#: ../src/Win_GParted.cc:201
 msgid "_Partition"
 msgstr "_Κατάτμηση"
 
-#: ../src/Win_GParted.cc:204
+#: ../src/Win_GParted.cc:206
 msgid "_Contents"
 msgstr "_Περιεχόμενα"
 
-#: ../src/Win_GParted.cc:212
+#: ../src/Win_GParted.cc:214
 msgid "_Help"
 msgstr "_Βοήθεια"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:224
+#: ../src/Win_GParted.cc:226
 msgid "New"
 msgstr "Νέο"
 
-#: ../src/Win_GParted.cc:229
+#: ../src/Win_GParted.cc:231
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Δημιουργία νέας κατάτμησης στον επιλεγμένο αδιάθετο χώρο"
 
-#: ../src/Win_GParted.cc:234
+#: ../src/Win_GParted.cc:236
 msgid "Delete the selected partition"
 msgstr "Διαγραφή της επιλεγμένης κατάτμησης"
 
-#: ../src/Win_GParted.cc:256
+#: ../src/Win_GParted.cc:258
 msgid "Resize/Move the selected partition"
 msgstr "Αυξομείωση/μετακίνηση της επιλεγμένης κατάτμησης"
 
-#: ../src/Win_GParted.cc:265
+#: ../src/Win_GParted.cc:267
 msgid "Copy the selected partition to the clipboard"
 msgstr "Αντιγραφή της επιλεγμένης κατάτμησης στο πρόχειρο"
 
-#: ../src/Win_GParted.cc:270
+#: ../src/Win_GParted.cc:272
 msgid "Paste the partition from the clipboard"
 msgstr "Επικόλληση της κατάτμησης από το πρόχειρο"
 
-#: ../src/Win_GParted.cc:282
+#: ../src/Win_GParted.cc:284
 msgid "Undo Last Operation"
 msgstr "Αναίρεση της τελευταίας εργασίας"
 
-#: ../src/Win_GParted.cc:290
+#: ../src/Win_GParted.cc:292
 msgid "Apply All Operations"
 msgstr "Εφαρμογή όλων των εργασιών"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:313
+#: ../src/Win_GParted.cc:315
 msgid "_New"
 msgstr "_Νέα"
 
-#: ../src/Win_GParted.cc:329
+#: ../src/Win_GParted.cc:332
 msgid "_Resize/Move"
 msgstr "Α_λλαγή μεγέθους / μετακίνηση"
 
-#: ../src/Win_GParted.cc:353
+#: ../src/Win_GParted.cc:356
 msgid "_Format to"
 msgstr "_Μορφοποίηση σε"
 
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:372
 msgid "_Mount on"
 msgstr "_Προσάρτηση στο"
 
-#: ../src/Win_GParted.cc:376
+#: ../src/Win_GParted.cc:379
 msgid "M_anage Flags"
 msgstr "Δια_χείριση σημαιών"
 
-#: ../src/Win_GParted.cc:381
+#: ../src/Win_GParted.cc:384
 msgid "C_heck"
 msgstr "Έλε_γχος"
 
-#: ../src/Win_GParted.cc:386
+#: ../src/Win_GParted.cc:389
 msgid "_Label"
 msgstr "Ε_τικέτα"
 
-#: ../src/Win_GParted.cc:391
+#: ../src/Win_GParted.cc:394
 msgid "New UU_ID"
 msgstr "Νέο UU_ID"
 
-#: ../src/Win_GParted.cc:452
+#: ../src/Win_GParted.cc:459
 msgid "Device Information"
 msgstr "Πληροφορίες συσκευής"
 
 #. model
-#: ../src/Win_GParted.cc:460
+#: ../src/Win_GParted.cc:467
 msgid "Model:"
 msgstr "Μοντέλο:"
 
 #. disktype
-#: ../src/Win_GParted.cc:497
+#: ../src/Win_GParted.cc:504
 msgid "Partition table:"
 msgstr "Πίνακας κατατμήσεων:"
 
 #. heads
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:512
 msgid "Heads:"
 msgstr "Κεφαλές:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:513
+#: ../src/Win_GParted.cc:520
 msgid "Sectors/track:"
 msgstr "Τομείς/τροχιά:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:528
 msgid "Cylinders:"
 msgstr "Κύλινδροι:"
 
 #. sector size
-#: ../src/Win_GParted.cc:537
+#: ../src/Win_GParted.cc:544
 msgid "Sector size:"
 msgstr "Μέγεθος τομέα:"
 
-#: ../src/Win_GParted.cc:725
-#| msgid "Could not add this operation to the list."
+#: ../src/Win_GParted.cc:735
 msgid "Could not add this operation to the list"
 msgstr "Αδυναμία προσθήκης αυτής της λειτουργίας στη λίστα"
 
-#: ../src/Win_GParted.cc:830
+#: ../src/Win_GParted.cc:840
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "Εκκρεμεί %1 εργασία"
 msgstr[1] "Εκκρεμούν %1 εργασίες"
 
-#: ../src/Win_GParted.cc:884
+#: ../src/Win_GParted.cc:933
 msgid "Quit GParted?"
 msgstr "Έξοδος από το GParted;"
 
-#: ../src/Win_GParted.cc:890
+#: ../src/Win_GParted.cc:939
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Εκκρεμεί %1 εργασία."
 msgstr[1] "Εκκρεμούν %1 εργασίες."
 
-#: ../src/Win_GParted.cc:1166
+#: ../src/Win_GParted.cc:1215
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1212
+#: ../src/Win_GParted.cc:1252
 msgid "Scanning all devices..."
 msgstr "Σάρωση όλων των συσκευών..."
 
-#: ../src/Win_GParted.cc:1257
+#: ../src/Win_GParted.cc:1299
 msgid "No devices detected"
 msgstr "Δεν εντοπίστηκαν συσκευές"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1338
+#: ../src/Win_GParted.cc:1380
 msgid "No partition table found on device %1"
 msgstr "Δεν βρέθηκε πίνακας κατατμήσεων στη συσκευή %1"
 
-#: ../src/Win_GParted.cc:1343
+#: ../src/Win_GParted.cc:1385
 msgid "A partition table is required before partitions can be added."
 msgstr ""
 "Απαιτείται ένας πίνακας κατατμήσεων πριν να μπορέσουν να προστεθούν "
 "κατατμήσεις."
 
-#: ../src/Win_GParted.cc:1345
+#: ../src/Win_GParted.cc:1387
 msgid "To create a new partition table choose the menu item:"
 msgstr ""
 "Για να δημιουργήσετε έναν νέο πίνακα κατατμήσεων επιλέξτε το αντικείμενο "
 "μενού:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1348
+#: ../src/Win_GParted.cc:1390
 msgid "Device --> Create Partition Table."
 msgstr "Συσκευή --> Δημιουργία πίνακα κατατμήσεων."
 
-#: ../src/Win_GParted.cc:1384
-#| msgid "Unable to open GParted Manual help file."
+#: ../src/Win_GParted.cc:1426
 msgid "Unable to open GParted Manual help file"
 msgstr "Αδυναμία ανοίγματος του αρχείου βοήθειας του εγχειριδίου GParted"
 
-#: ../src/Win_GParted.cc:1400
-#| msgid "Documentation is not available."
+#: ../src/Win_GParted.cc:1442
 msgid "Documentation is not available"
 msgstr "Η τεκμηρίωση δεν είναι διαθέσιμη"
 
-#: ../src/Win_GParted.cc:1405
+#: ../src/Win_GParted.cc:1447
 msgid "This build of gparted is configured without documentation."
 msgstr "Αυτή η έκδοση του gparted δεν συνοδεύεται από τεκμηρίωση."
 
-#: ../src/Win_GParted.cc:1407
+#: ../src/Win_GParted.cc:1449
 msgid "Documentation is available at the project web site."
 msgstr "Η τεκμηρίωση είναι διαθέσιμη στον ιστότοπο του εγχειρήματος."
 
-#: ../src/Win_GParted.cc:1428
+#: ../src/Win_GParted.cc:1470
 msgid "GNOME Partition Editor"
 msgstr "Επεξεργαστής κατατμήσεων του GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1454
+#: ../src/Win_GParted.cc:1498
 msgid "translator-credits"
 msgstr ""
 "Ελληνική μεταφραστική ομάδα GNOME\n"
@@ -1731,14 +1733,14 @@ msgstr ""
 "\n"
 "Για περισσότερα δείτε http://www.gnome.gr/"
 
-#: ../src/Win_GParted.cc:1496
+#: ../src/Win_GParted.cc:1540
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Δεν μπορεί να δημιουργηθεί πάνω από %1 πρωτεύουσα κατατμήση"
 msgstr[1] ""
 "Δεν μπορούν να δημιουργηθούν περισσότερες από %1 πρωτεύουσες κατατμήσεις"
 
-#: ../src/Win_GParted.cc:1508
+#: ../src/Win_GParted.cc:1552
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1751,22 +1753,20 @@ msgstr ""
 "κατατμήσεις είναι και πρωτεύουσες κατατμήσεις, ίσως χρειαστεί πρώτα να "
 "αφαιρέσετε μία πρωτεύουσα κατάτμηση."
 
-#: ../src/Win_GParted.cc:1591
-#| msgid ""
-#| "Moving a partition might cause your operating system to fail to boot."
+#: ../src/Win_GParted.cc:1635
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Μετακινώντας μια κατάτμηση μπορεί να προκαλέσει αποτυχία εκκίνησης του "
 "συστήματός σας"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1599
+#: ../src/Win_GParted.cc:1643
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Έχετε στην ουρά μια εργασία για τη μετακίνηση της αρχής του τομέα της "
 "κατάτμησης %1."
 
-#: ../src/Win_GParted.cc:1602
+#: ../src/Win_GParted.cc:1646
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1775,80 +1775,79 @@ msgstr ""
 "κατάτμηση GNU/Linux που περιέχει το /boot, ή εάν μετακινήσετε την κατάτμηση "
 "των Windows που είναι ο C:."
 
-#: ../src/Win_GParted.cc:1604
+#: ../src/Win_GParted.cc:1648
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Μπορείτε να μάθετε πως να επιδιορθώσετε τις ρυθμίσεις εκκίνησης στις συχνές "
 "ερωτήσεις FAQ του GParted."
 
-#: ../src/Win_GParted.cc:1608
+#: ../src/Win_GParted.cc:1652
 msgid "Moving a partition might take a very long time to apply."
-msgstr "Η μετακίνηση μιας κατάτμησης μπορεί να πάρει αρκετή ώρα να ολοκληρωθεί."
+msgstr ""
+"Η μετακίνηση μιας κατάτμησης μπορεί να πάρει αρκετή ώρα να ολοκληρωθεί."
 
-#: ../src/Win_GParted.cc:1712
-#| msgid "You have pasted into an existing partition."
+#: ../src/Win_GParted.cc:1756
 msgid "You have pasted into an existing partition"
 msgstr "Επικολλήσατε μέσα σε μια υπάρχουσα κατάτμηση"
 
-#: ../src/Win_GParted.cc:1720
+#: ../src/Win_GParted.cc:1764
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Τα δεδομένα στο %1 θα χαθούν αν εφαρμόσετε αυτή την εργασία."
 
-#: ../src/Win_GParted.cc:1783
+#: ../src/Win_GParted.cc:1827
 msgid "Unable to delete %1!"
 msgstr "Δεν είναι δυνατή η διαγραφή του %1!"
 
-#: ../src/Win_GParted.cc:1790
+#: ../src/Win_GParted.cc:1834
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Παρακαλούμε, αποπροσαρτήστε τις λογικές κατατμήσεις με αριθμό μεγαλύτερο του "
 "%1"
 
-#: ../src/Win_GParted.cc:1801
+#: ../src/Win_GParted.cc:1845
 msgid "Are you sure you want to delete %1?"
 msgstr "Σίγουρα θέλετε να διαγράψετε το %1;"
 
-#: ../src/Win_GParted.cc:1808
+#: ../src/Win_GParted.cc:1852
 msgid "After deletion this partition is no longer available for copying."
 msgstr ""
 "Μετά τη διαγραφή, αυτή η κατάτμηση δε θα είναι πλέον διαθέσιμη για αντιγραφή."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1811
+#: ../src/Win_GParted.cc:1855
 msgid "Delete %1 (%2, %3)"
 msgstr "Διαγραφή %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1894
-#| msgid "Cannot format this file system to %1."
+#: ../src/Win_GParted.cc:1938
 msgid "Cannot format this file system to %1"
 msgstr "Αδυναμία διαμόρφωσης αυτού του συστήματος αρχείων σε %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1906
+#: ../src/Win_GParted.cc:1950
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Το σύστημα αρχείων %1 απαιτεί κατάτμηση τουλάχιστον %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1914
+#: ../src/Win_GParted.cc:1958
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr ""
 "Για κατατμήσεις με σύστημα αρχείων %1 το μέγιστο επιτρεπόμενο μέγεθος είναι "
 "%2."
 
-#: ../src/Win_GParted.cc:2008
+#: ../src/Win_GParted.cc:2052
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr ""
 "Δεν ήταν δυνατή η αποπροσάρτηση της κατάτμησης από τα ακόλουθα σημεία "
 "προσάρτησης:"
 
-#: ../src/Win_GParted.cc:2010
+#: ../src/Win_GParted.cc:2054
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1856,15 +1855,13 @@ msgstr ""
 "Κατά πάσα πιθανότητα υπάρχουν και άλλες κατατμήσεις προσαρτημένες σε αυτά τα "
 "σημεία προσάρτησης. Παρακαλείσθε να τις αποπροσαρτήσετε χειροκίνητα."
 
-#: ../src/Win_GParted.cc:2085 ../src/Win_GParted.cc:2206
-#| msgid "%1 operation is currently pending for partition %2."
-#| msgid_plural "%1 operations are currently pending for partition %2."
+#: ../src/Win_GParted.cc:2078 ../src/Win_GParted.cc:2204
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Εκκρεμεί %1 εργασία για την κατάτμηση %2"
 msgstr[1] "Εκκρεμούν %1 εργασίες για την κατάτμηση %2"
 
-#: ../src/Win_GParted.cc:2101
+#: ../src/Win_GParted.cc:2094
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1872,7 +1869,7 @@ msgstr ""
 "Η ενέργειας ενεργοποίησης του swap δε μπορεί να εκτελεστεί αν εκκρεμεί "
 "εργασία για την κατάτμηση."
 
-#: ../src/Win_GParted.cc:2103
+#: ../src/Win_GParted.cc:2096
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1880,10 +1877,7 @@ msgstr ""
 "Χρησιμοποιήστε το μενού Επεξεργασία για να αναιρέσετε, να διαγράψετε, ή να "
 "εφαρμόσετε εργασίες πριν την ενεργοποίηση του swap σε αυτή την κατάτμηση."
 
-#: ../src/Win_GParted.cc:2107
-#| msgid ""
-#| "The mount action cannot be performed if an operation is pending for the "
-#| "partition."
+#: ../src/Win_GParted.cc:2100
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
@@ -1891,10 +1885,7 @@ msgstr ""
 "Η ενέργεια της ενεργοποίησης ομάδας τόμων δε μπορεί να εκτελεστεί αν "
 "εκκρεμεί εργασία για την κατάτμηση."
 
-#: ../src/Win_GParted.cc:2109
-#| msgid ""
-#| "Use the Edit menu to undo, clear, or apply operations before using mount "
-#| "with this partition."
+#: ../src/Win_GParted.cc:2102
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1903,51 +1894,47 @@ msgstr ""
 "εφαρμόσετε εργασίες πριν την ενεργοποίηση της ομάδας τόμων σε αυτή την "
 "κατάτμηση."
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2113
 msgid "Deactivating swap on %1"
 msgstr "Απενεργοποίηση swap στο %1"
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2113
 msgid "Activating swap on %1"
 msgstr "Ενεργοποίηση swap στο %1"
 
-#: ../src/Win_GParted.cc:2135
+#: ../src/Win_GParted.cc:2128
 msgid "Could not deactivate swap"
 msgstr "Δεν ήταν δυνατή η απενεργοποίηση του swap"
 
-#: ../src/Win_GParted.cc:2135
+#: ../src/Win_GParted.cc:2128
 msgid "Could not activate swap"
 msgstr "Δεν ήταν δυνατή η ενεργοποίηση του swap"
 
-#: ../src/Win_GParted.cc:2153
-#| msgid "Deactivating swap on %1"
+#: ../src/Win_GParted.cc:2143
 msgid "Deactivating Volume Group %1"
 msgstr "Απενεργοποίηση ομάδας τόμων %1"
 
-#: ../src/Win_GParted.cc:2154
-#| msgid "Activating swap on %1"
+#: ../src/Win_GParted.cc:2144
 msgid "Activating Volume Group %1"
 msgstr "Ενεργοποίηση ομάδας τόμων %1"
 
 #: ../src/Win_GParted.cc:2162
-#| msgid "Could not deactivate swap"
 msgid "Could not deactivate Volume Group"
 msgstr "Αδυναμία απενεργοποίησης της ομάδας τόμων"
 
 #: ../src/Win_GParted.cc:2163
-#| msgid "Could not activate swap"
 msgid "Could not activate Volume Group"
 msgstr "Αδυναμία ενεργοποίησης της ομάδας τόμων"
 
-#: ../src/Win_GParted.cc:2179
+#: ../src/Win_GParted.cc:2176
 msgid "Unmounting %1"
 msgstr "Αποπροσάρτηση %1"
 
-#: ../src/Win_GParted.cc:2184
+#: ../src/Win_GParted.cc:2182
 msgid "Could not unmount %1"
 msgstr "Δεν ήταν δυνατή η αποπροσάρτηση του %1"
 
-#: ../src/Win_GParted.cc:2220
+#: ../src/Win_GParted.cc:2218
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1955,7 +1942,7 @@ msgstr ""
 "Η ενέργειας της προσάρτησης δε μπορεί να εκτελεστεί αν εκκρεμεί εργασία για "
 "την κατάτμηση."
 
-#: ../src/Win_GParted.cc:2222
+#: ../src/Win_GParted.cc:2220
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1963,31 +1950,29 @@ msgstr ""
 "Χρησιμοποιήστε το μενού Επεξεργασία για να αναιρέσετε, να διαγράψετε, ή να "
 "εφαρμόσετε εργασίες πριν την προσάρτηση σε αυτή την κατάτμηση."
 
-#: ../src/Win_GParted.cc:2240
+#: ../src/Win_GParted.cc:2230
 msgid "mounting %1 on %2"
 msgstr "προσάρτηση του %1 στο %2"
 
-#: ../src/Win_GParted.cc:2247
+#: ../src/Win_GParted.cc:2241
 msgid "Could not mount %1 on %2"
 msgstr "Δεν ήταν δυνατή η προσάρτηση του %1 στο %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2273
-#| msgid "%1 partition is currently active on device %2."
-#| msgid_plural "%1 partitions are currently active on device %2."
+#: ../src/Win_GParted.cc:2267
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 κατάτμηση είναι ενεργή στη συσκευή %2"
 msgstr[1] "%1 κατατμήσεις είναι ενεργές στη συσκευή %2"
 
-#: ../src/Win_GParted.cc:2288
+#: ../src/Win_GParted.cc:2282
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Δεν μπορεί να δημιουργηθεί νέος πίνακας κατατμήσεων ενώ υπάρχουν ενεργές "
 "κατατμήσεις."
 
-#: ../src/Win_GParted.cc:2290
+#: ../src/Win_GParted.cc:2284
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1995,7 +1980,7 @@ msgstr ""
 "Οι ενεργές κατατμήσεις είναι αυτές που χρησιμοποιούντε, όπως ένα "
 "προσαρτημένο σύστημα αρχείων, ή ένα ενεργό swap."
 
-#: ../src/Win_GParted.cc:2292
+#: ../src/Win_GParted.cc:2286
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2004,21 +1989,19 @@ msgstr ""
 "απενεργοποίηση του swap, για να απενεργοποιήσετε όλες τις κατατμήσεις σε "
 "αυτή τη συσκευή πριν δημιουργήσετε έναν νέο πίνακα κατατμήσεων."
 
-#: ../src/Win_GParted.cc:2304
-#| msgid "%1 operation is currently pending."
-#| msgid_plural "%1 operations are currently pending."
+#: ../src/Win_GParted.cc:2298
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "Εκκρεμεί %1 εργασία"
 msgstr[1] "Εκκρεμούν %1 εργασίες"
 
-#: ../src/Win_GParted.cc:2317
+#: ../src/Win_GParted.cc:2311
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Δεν μπορεί να δημιουργηθεί νέος πίνακας κατατμήσεων ενώ εκκρεμούν εργασίες."
 
-#: ../src/Win_GParted.cc:2319
+#: ../src/Win_GParted.cc:2313
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2026,31 +2009,30 @@ msgstr ""
 "Χρησιμοποιήστε το μενού επεξεργασία για να διαγράψετε ή να εφαρμόσετε όλες "
 "τις εργασίες πριν να δημιουργήσετε έναν νέο πίνακα κατατμήσεων."
 
-#: ../src/Win_GParted.cc:2334
-#| msgid "Error while creating partition table."
+#: ../src/Win_GParted.cc:2328
 msgid "Error while creating partition table"
 msgstr "Σφάλμα κατά τη δημιουργία του πίνακα κατατμήσεων"
 
-#: ../src/Win_GParted.cc:2354
+#: ../src/Win_GParted.cc:2348
 msgid "Command gpart was not found"
 msgstr "Δε βρέθηκε η εντολή gpart"
 
-#: ../src/Win_GParted.cc:2355
+#: ../src/Win_GParted.cc:2349
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Αυτό το χαρακτηριστικό χρησιμοποιεί το gpart. Παρακαλώ εγκαταστήστε το και "
 "δοκιμάστε ξανά."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2363
+#: ../src/Win_GParted.cc:2357
 msgid "A full disk scan is needed to find file systems."
 msgstr "Απαιτείται πλήρης σάρωση για την εύρεση συστημάτων αρχείων."
 
-#: ../src/Win_GParted.cc:2365
+#: ../src/Win_GParted.cc:2359
 msgid "The scan might take a very long time."
 msgstr "Η σάρωση μπορεί να διαρκέσει αρκετή ώρα."
 
-#: ../src/Win_GParted.cc:2367
+#: ../src/Win_GParted.cc:2361
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2058,26 +2040,26 @@ msgstr ""
 "Μετά τη σάρωση μπορείτε να προσαρτήσετε οποιαδήποτε συστήματα αρχείων που "
 "βρέθηκαν και να αντιγράψετε τα δεδομένα σε άλλα μέσα."
 
-#: ../src/Win_GParted.cc:2369
+#: ../src/Win_GParted.cc:2363
 msgid "Do you want to continue?"
 msgstr "Θέλετε να συνεχίσετε;"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2373
+#: ../src/Win_GParted.cc:2367
 msgid "Search for file systems on %1"
 msgstr "Αναζητήστε για συστήματα αρχείων στο %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2387
+#: ../src/Win_GParted.cc:2378
 msgid "Searching for file systems on %1"
 msgstr "Αναζήτηση για συστήματα αρχείων στο %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2401
+#: ../src/Win_GParted.cc:2394
 msgid "No file systems found on %1"
 msgstr "Δεν βρέθηκαν συστήματα αρχείων στο %1"
 
-#: ../src/Win_GParted.cc:2402
+#: ../src/Win_GParted.cc:2395
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2085,38 +2067,38 @@ msgstr ""
 "Η σάρωση του δίσκου με το gpart δε βρήκε αναγνωρίσιμα συστήματα αρχείων σε "
 "αυτόν."
 
-#: ../src/Win_GParted.cc:2630
+#: ../src/Win_GParted.cc:2623
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Σίγουρα θέλετε να εφαρμοστούν οι εργασίες που εκκρεμούν;"
 
-#: ../src/Win_GParted.cc:2636
+#: ../src/Win_GParted.cc:2629
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr ""
 "Η επεξεργασία κατατμήσεων μπορεί δυνητικά να προκαλέσει ΑΠΩΛΕΙΑ ΔΕΔΟΜΕΝΩΝ."
 
-#: ../src/Win_GParted.cc:2638
+#: ../src/Win_GParted.cc:2631
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Σας συμβουλεύουμε να δημιουργήσετε αντίγραφο ασφαλείας των σημαντικών σας "
 "δεδομένων πριν προχωρήσετε."
 
-#: ../src/Win_GParted.cc:2640
+#: ../src/Win_GParted.cc:2633
 msgid "Apply operations to device"
 msgstr "Εφαρμογή εργασιών στη συσκευή"
 
-#: ../src/Win_GParted.cc:2685
+#: ../src/Win_GParted.cc:2678
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Διαγράφετε τον μη κενό LVM2 φυσικό τόμο %1"
 
-#: ../src/Win_GParted.cc:2689
+#: ../src/Win_GParted.cc:2682
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Διαμορφώνετε τον μη κενό LVM2 φυσικό τόμο %1"
 
-#: ../src/Win_GParted.cc:2693
+#: ../src/Win_GParted.cc:2686
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Επικολλάτε στον μη κενό LVM2 φυσικό τόμο %1"
 
-#: ../src/Win_GParted.cc:2702
+#: ../src/Win_GParted.cc:2695
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2124,7 +2106,7 @@ msgstr ""
 "Η διαγραφή ή αντικατάσταση του φυσικού τόμου είναι ανεπανόρθωτη και θα "
 "καταστρέψει ή θα βλάψει την ομάδα τόμων."
 
-#: ../src/Win_GParted.cc:2705
+#: ../src/Win_GParted.cc:2698
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2134,14 +2116,11 @@ msgstr ""
 "ακυρώσετε και να χρησιμοποιήσετε εξωτερικές εντολές LVM για να ελευθερώσετε "
 "τον φυσικό τόμο πριν προσπαθήσετε αυτήν την εργασία."
 
-#: ../src/Win_GParted.cc:2708
+#: ../src/Win_GParted.cc:2701
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Θέλετε να συνεχίσετε στην αναγκαστική διαγραφή του φυσικού τόμου;"
 
 #: ../src/fat16.cc:33 ../src/ntfs.cc:26
-#| msgid ""
-#| "Changing the UUID might invalidate the Windows Product Activation (WPA) "
-#| "key."
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
@@ -2178,7 +2157,7 @@ msgid "_Swapoff"
 msgstr "Απενεργοποίη_ση swap"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:147
+#: ../src/linux_swap.cc:141
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2186,7 +2165,7 @@ msgstr ""
 "σύστημα αρχείων %1"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:166
+#: ../src/linux_swap.cc:160
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2210,11 +2189,11 @@ msgstr ""
 "Ο φυσικός τόμος LVM2 δεν μπορεί προς το παρόν να αυξομειωθεί επειδή είναι "
 "μέλος μιας ομάδας τόμων που εξάχθηκε."
 
-#: ../src/main.cc:42
+#: ../src/main.cc:40
 msgid "Root privileges are required for running GParted"
 msgstr "Απαιτούνται προνόμια root για την εκτέλεση του GParted"
 
-#: ../src/main.cc:47
+#: ../src/main.cc:45
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2231,14 +2210,33 @@ msgstr ""
 "αρχείων NTFS μόνο το μισό του UUID έχει οριστεί σε μια νέα τυχαία τιμή."
 
 #. simulation..
-#: ../src/ntfs.cc:194
+#: ../src/ntfs.cc:200
 msgid "run simulation"
 msgstr "εκτέλεση προσομοίωσης"
 
 #. real resize
-#: ../src/ntfs.cc:201
+#: ../src/ntfs.cc:207
 msgid "real resize"
 msgstr "πραγματική αλλαγή μεγέθους"
+
+#~ msgid "perform real move"
+#~ msgstr "πραγματική μετακίνηση"
+
+#~ msgid "perform read-only test"
+#~ msgstr "εκτέλεση δοκιμής μόνο ανάγνωσης"
+
+#~ msgid "# Temporary file created by gparted.  It may be deleted.\n"
+#~ msgstr "# Προσωρινό αρχείο του gparted. Μπορείτε να το διαγράψετε.\n"
+
+#~ msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+#~ msgstr ""
+#~ "Η εργασία δημιουργίας ετικέτας απέτυχε: Αδυναμία εγγραφής στο προσωρινό "
+#~ "αρχείο %1.\n"
+
+#~ msgid "Label operation failed:  Unable to create temporary file %1.\n"
+#~ msgstr ""
+#~ "Η εργασία δημιουργίας ετικέτας απέτυχε: Αδυναμία δημιουργίας του "
+#~ "προσωρινού αρχείου %1.\n"
 
 #~ msgid "Logical Volume Management is not yet supported."
 #~ msgstr "Δεν υποστηρίζεται ακόμη η διαχείριση λογικών τόμων."
