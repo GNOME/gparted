@@ -29,7 +29,6 @@ class copy_blocks {
 	Byte_Value length;
 	Byte_Value blocksize;
 	OperationDetail &operationdetail;
-	bool readonly;
 	Byte_Value & total_done;
 	char *buf;
 	Byte_Value done;
@@ -53,7 +52,6 @@ public:
 		     Byte_Value in_length,
 		     Byte_Value in_blocksize,
 		     OperationDetail & in_operationdetail,
-		     bool in_readonly,
 		     Byte_Value & in_total_done,
 		     bool cancel_safe );
 	bool copy();

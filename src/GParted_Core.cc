@@ -2613,7 +2613,6 @@ bool GParted_Core::copy( const Partition & partition_src,
 						succes = copy_filesystem( partition_src,
 									  partition_dst,
 									  operationdetail .get_last_child(),
-									  false,
 									  true ) ;
 						break ;
 
@@ -2657,7 +2656,6 @@ bool GParted_Core::copy( const Partition & partition_src,
 bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				    const Partition & partition_dst,
 				    OperationDetail & operationdetail,
-				    bool readonly,
 				    bool cancel_safe )
 {
 	Sector dummy ;
@@ -2669,7 +2667,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .sector_size,
 				partition_src .get_byte_length(),
 				operationdetail,
-				readonly,
 				dummy,
 				cancel_safe ) ;
 }
@@ -2688,7 +2685,6 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 				partition_dst .sector_size,
 				partition_src .get_byte_length(),
 				operationdetail,
-				false,
 				total_done,
 				cancel_safe ) ;
 }
@@ -2701,23 +2697,19 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				    Byte_Value dst_sector_size,
 				    Byte_Value src_length,
 				    OperationDetail & operationdetail,
-				    bool readonly,
 				    Byte_Value & total_done,
 				    bool cancel_safe )
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
-	operationdetail .add_child( OperationDetail( 
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  read 1.00 MiB */
-				_("read %1") :
-				/*TO TRANSLATORS: looks like  copy 1.00 MiB */
-				_("copy %1"),
-				Utils::format_size( src_length, 1 ) ),
-				STATUS_NONE ) ) ;
+	operationdetail .add_child( OperationDetail(
+		String::ucompose( /*TO TRANSLATORS: looks like  copy 1.00 MiB */
+		                  _("copy %1"), Utils::format_size( src_length, 1 ) ),
+		STATUS_NONE ) ) ;
 
 	operationdetail .add_child( OperationDetail( _("finding optimal block size"), STATUS_NONE ) ) ;
 
-	Byte_Value benchmark_blocksize = readonly ? (2 * MEBIBYTE) : (1 * MEBIBYTE), N = (16 * MEBIBYTE) ;
+	Byte_Value benchmark_blocksize = (1 * MEBIBYTE) ;
+	Byte_Value N = (16 * MEBIBYTE) ;
 	Byte_Value optimal_blocksize = benchmark_blocksize ;
 	Sector offset_read = src_start ;
 	Sector offset_write = dst_start ;
@@ -2750,7 +2742,6 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				      N,
 				      benchmark_blocksize,
 				      operationdetail .get_last_child(),
-				      readonly,
 				      total_done,
 				      cancel_safe ).copy();
 		timer.stop() ;
@@ -2786,18 +2777,13 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				      src_length - llabs( done ),
 				      optimal_blocksize,
 				      operationdetail,
-				      readonly,
 				      total_done,
 				      cancel_safe ).copy();
 
 	operationdetail .add_child( OperationDetail( 
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read */
-				_("%1 (%2 B) read") :
-				/*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
-				_("%1 (%2 B) copied"),
-				Utils::format_size( total_done, 1 ), total_done ),
-				STATUS_NONE ) ) ;
+		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
+		                  _("%1 (%2 B) copied"), Utils::format_size( total_done, 1 ), total_done ),
+		STATUS_NONE ) ) ;
 	return succes ;
 }
 
@@ -2832,7 +2818,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 		operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
 		//and copy it back (NOTE the reversed dst and src)
-		bool succes = copy_filesystem( temp_dst, temp_src, operationdetail .get_last_child(), false, false ) ;
+		bool succes = copy_filesystem( temp_dst, temp_src, operationdetail .get_last_child(), false ) ;
 
 		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	}

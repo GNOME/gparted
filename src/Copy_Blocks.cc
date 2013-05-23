@@ -36,7 +36,6 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 			  Byte_Value in_length,
 			  Byte_Value in_blocksize,
 			  OperationDetail & in_operationdetail,
-			  bool in_readonly,
 			  Byte_Value & in_total_done,
 			  bool in_cancel_safe) :
 	src_device( in_src_device ),
@@ -44,7 +43,6 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 	length ( in_length ),
 	blocksize ( in_blocksize ),
 	operationdetail ( in_operationdetail ),
-	readonly ( in_readonly ),
 	total_done ( in_total_done ),
 	offset_src ( src_start ),
 	offset_dst ( dst_start ),
@@ -66,23 +64,17 @@ bool copy_blocks::set_progress_info()
 	std::time_t time_remaining = Utils::round( (length - done) / ( done / timer_total.elapsed() ) );
 
 	operationdetail.progress_text =
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining) */
-				_("%1 of %2 read (%3 remaining)") :
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
-				_("%1 of %2 copied (%3 remaining)"),
+		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
+				  _("%1 of %2 copied (%3 remaining)"),
 				  Utils::format_size( done, 1 ),
 				  Utils::format_size( length,1 ),
 				  Utils::format_time( time_remaining ) );
 
 	operationdetail.set_description(
-		String::ucompose( readonly ?
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read */
-				_("%1 of %2 read") :
-				/*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
+		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 				_("%1 of %2 copied"),
 				Utils::format_size( done, 1 ), Utils::format_size( length, 1 ) ),
-				FONT_ITALIC );
+		FONT_ITALIC );
 	return false;
 }
 
@@ -164,16 +156,11 @@ bool copy_blocks::copy()
 	if ( blocksize > length )
 		blocksize = length;
 
-	if ( readonly )
-		operationdetail.add_child( OperationDetail(
-				/*TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("read %1 using a block size of %2"), Utils::format_size( length, 1 ),
-					Utils::format_size( blocksize, 1 ) ) ) );
-	else
-		operationdetail.add_child( OperationDetail(
-				/*TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("copy %1 using a block size of %2"), Utils::format_size( length, 1 ),
-					Utils::format_size( blocksize, 1 ) ) ) );
+	operationdetail.add_child( OperationDetail(
+			/*TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB */
+			String::ucompose( _("copy %1 using a block size of %2"),
+			                  Utils::format_size( length, 1 ),
+			                  Utils::format_size( blocksize, 1 ) ) ) );
 
 	done = length % blocksize;
 
@@ -194,10 +181,7 @@ bool copy_blocks::copy()
 
 			//final description
 			operationdetail.get_last_child().get_last_child().set_description(
-				String::ucompose( readonly ?
-						  /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read */
-						  _("%1 of %2 read") :
-						  /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
+				String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 						  _("%1 of %2 copied"),
 						  Utils::format_size( llabs( done ), 1 ),
 						  Utils::format_size( length, 1 ) ),
@@ -245,7 +229,7 @@ void copy_blocks::copy_block()
 	{
 		if ( ped_device_read( lp_device_src, buf, offset_src, num_blocks_src ) )
 		{
-			if ( readonly || ped_device_write( lp_device_dst, buf, offset_dst, num_blocks_dst ) )
+			if ( ped_device_write( lp_device_dst, buf, offset_dst, num_blocks_dst ) )
 				success = true;
 			else {
 				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst );

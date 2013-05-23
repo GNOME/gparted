@@ -143,7 +143,6 @@ private:
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dst,
 			      OperationDetail & operationdetail,
-			      bool readonly,
 			      bool cancel_safe );
 	bool copy_filesystem( const Partition & partition_src,
 			      const Partition & partition_dst,
@@ -158,7 +157,6 @@ private:
 			      Byte_Value dst_sector_size,
 			      Byte_Value src_length,
 			      OperationDetail & operationdetail,
-			      bool readonly,
 			      Byte_Value & total_done,
 			      bool cancel_safe ) ;
 	void rollback_transaction( const Partition & partition_src,
