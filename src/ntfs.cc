@@ -193,26 +193,25 @@ bool ntfs::create( const Partition & new_partition, OperationDetail & operationd
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool return_value = false ;
-	Glib::ustring str_temp = "ntfsresize -P --force --force " + partition_new .get_path() ;
-	
+	Glib::ustring size = "" ;
 	if ( ! fill_partition )
 	{
-		str_temp += " -s " ;
-		str_temp += Utils::num_to_str( Utils::round( Utils::sector_to_unit(
+		size = " -s " + Utils::num_to_str( Utils::round( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
 	}
-	
+	Glib::ustring cmd = "ntfsresize -P --force --force" + size ;
+
 	//simulation..
 	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
 
-	if ( ! execute_command( str_temp + " --no-action", operationdetail .get_last_child() ) )
+	if ( ! execute_command( cmd + " --no-action " + partition_new .get_path(), operationdetail .get_last_child() ) )
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 
 		//real resize
 		operationdetail .add_child( OperationDetail( _("real resize") ) ) ;
 
-		if ( ! execute_command( str_temp, operationdetail .get_last_child() ) )
+		if ( ! execute_command( cmd + " " + partition_new .get_path(), operationdetail .get_last_child() ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			return_value = true ;
