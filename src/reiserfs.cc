@@ -160,7 +160,7 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	if ( ! fill_partition )
 	{
 		size = " -s " + Utils::num_to_str( Utils::round( Utils::sector_to_unit(
-		                   partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) -1 ) ;
+		                   partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
 	}
 	Glib::ustring cmd = "sh -c 'echo y | resize_reiserfs" + size + " " + partition_new .get_path() + "'" ;
 
