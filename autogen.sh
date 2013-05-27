@@ -1,5 +1,14 @@
 #!/bin/sh
-# Run this to generate all the initial makefiles, etc.
+# autogen.sh - Run this to generate all the initial makefiles, etc.
+#
+# Copyright (C) 2004 Bart 'plors' Hakvoort
+# Copyright (C) 2008 Curtis Gedak
+#
+#  Copying and distribution of this file, with or without modification,
+#  are permitted in any medium without royalty provided the copyright
+#  notice and this notice are preserved.  This file is offered as-is,
+#  without any warranty.
+
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
