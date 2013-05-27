@@ -16,8 +16,8 @@
  */
 
 
-#ifndef EXFAT_H_
-#define EXFAT_H_
+#ifndef GPARTED_EXFAT_H
+#define GPARTED_EXFAT_H
 
 #include "../include/FileSystem.h"
 
@@ -32,4 +32,4 @@ public:
 
 } //GParted
 
-#endif /* EXFAT_H_ */
+#endif /* GPARTED_EXFAT_H */

@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_FILESYSTEM
-#define DEFINE_FILESYSTEM
+
+
+#ifndef GPARTED_FILESYSTEM_H
+#define GPARTED_FILESYSTEM_H
 
 #include "../include/Operation.h"
 #include "../include/PipeCapture.h"
@@ -81,4 +81,4 @@ private:
 
 } //GParted
 
-#endif //DEFINE_FILESYSTEM
+#endif /* GPARTED_FILESYSTEM_H */

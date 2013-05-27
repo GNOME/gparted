@@ -14,9 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef DIALOG_PARTITION_LABEL_H_
-#define DIALOG_PARTITION_LABEL_H_
+
+#ifndef GPARTED_DIALOG_PARTITION_LABEL_H
+#define GPARTED_DIALOG_PARTITION_LABEL_H
 
 #include "../include/Partition.h"
 #include "../include/i18n.h"
@@ -45,4 +45,4 @@ private:
 
 } //GParted
 
-#endif //DIALOG_PARTITION_LABEL_H_
+#endif /* GPARTED_DIALOG_PARTITION_LABEL_H */

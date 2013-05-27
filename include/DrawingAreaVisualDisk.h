@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef DRAWINGAREA_VISUALDISK
-#define DRAWINGAREA_VISUALDISK
+#ifndef GPARTED_DRAWINGAREAVISUALDISK_H
+#define GPARTED_DRAWINGAREAVISUALDISK_H
 
 #include "../include/Partition.h"
 
@@ -120,4 +120,5 @@ private:
 };
 
 } //GParted
-#endif //DRAWINGAREA_VISUALDISK
+
+#endif /* GPARTED_DRAWINGAREAVISUALDISK_H */

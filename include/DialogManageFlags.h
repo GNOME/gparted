@@ -14,10 +14,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
 
-#ifndef DIALOG_MANAGE_FLAGS
-#define DIALOG_MANAGE_FLAGS
+
+#ifndef GPARTED_DIALOGMANAGEFLAGS_H
+#define GPARTED_DIALOGMANAGEFLAGS_H
 
 #include "../include/Partition.h"
 
@@ -67,5 +67,4 @@ private:
 
 } //GParted
 
-
-#endif //DIALOG_MANAGE_FLAGS
+#endif /* GPARTED_DIALOGMANAGEFLAGS_H */

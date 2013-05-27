@@ -14,9 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef HBOX_OPERATIONS
-#define HBOX_OPERATIONS
+
+#ifndef GPARTED_HBOXOPERATIONS_H
+#define GPARTED_HBOXOPERATIONS_H
 
 #include "../include/Operation.h"
 
@@ -71,4 +71,4 @@ private:
 
 } //GParted
 
-#endif //HBOX_OPERATIONS
+#endif /* GPARTED_HBOXOPERATIONS_H */

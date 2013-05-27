@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef OPERATIONCHECK
-#define OPERATIONCHECK
+#ifndef GPARTED_OPERATIONCHECK_H
+#define GPARTED_OPERATIONCHECK_H
 
 #include "../include/Operation.h"
 
@@ -36,4 +36,4 @@ private:
 
 } //GParted
 
-#endif //OPERATIONCHECK
+#endif /* GPARTED_OPERATIONCHECK_H */

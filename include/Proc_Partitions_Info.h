@@ -22,8 +22,8 @@
  * that helps to minimize the number of required disk reads.
  */
 
-#ifndef PROC_PARTITONS_INFO_H_
-#define PROC_PARTITONS_INFO_H_
+#ifndef GPARTED_PROC_PARTITIONS_INFO_H
+#define GPARTED_PROC_PARTITIONS_INFO_H
 
 #include "../include/Utils.h"
 
@@ -47,4 +47,4 @@ private:
 
 }//GParted
 
-#endif /*PROC_PARTITONS_INFO_H_*/
+#endif /* GPARTED_PROC_PARTITIONS_INFO_H */

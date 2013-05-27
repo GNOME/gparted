@@ -24,8 +24,8 @@
  * load the data structures upon each initialization of the class.
  */
 
-#ifndef DMRAID_H_
-#define DMRAID_H_
+#ifndef GPARTED_DMRAID_H
+#define GPARTED_DMRAID_H
 
 #include "../include/Utils.h"
 #include "../include/Partition.h"
@@ -78,4 +78,4 @@ private:
 
 }//GParted
 
-#endif /* DMRAID_H_ */
+#endif /* GPARTED_DMRAID_H */

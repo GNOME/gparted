@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_PARTITION_INFO
-#define DIALOG_PARTITION_INFO
+#ifndef GPARTED_DIALOG_PARTITION_INFO_H
+#define GPARTED_DIALOG_PARTITION_INFO_H
 
 //what kind of info would one prefer to see here?
 //my guess is, it's best to keep the amount of info minimal and wait for users requests
@@ -65,4 +65,4 @@ private:
 
 } //GParted
 
-#endif //DIALOG_PARTITION_INFO
+#endif /* GPARTED_DIALOG_PARTITION_INFO_H */

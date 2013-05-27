@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_HFS
-#define DEFINE_HFS
+
+
+#ifndef GPARTED_HFS_H
+#define GPARTED_HFS_H
 
 #include "../include/FileSystem.h"
 
@@ -36,4 +36,4 @@ public:
 
 } //GParted
 
-#endif //HFS
+#endif /* GPARTED_HFS_H */

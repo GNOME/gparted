@@ -1,5 +1,5 @@
-#ifndef I18N 
-#define I18N
+#ifndef GPARTED_I18N_H
+#define GPARTED_I18N_H
 
 	#ifdef HAVE_CONFIG_H
 		#include "config.h"
@@ -12,4 +12,4 @@
 		#include "../compose/ucompose.hpp"
 	#endif /* ENABLE_NLS */
 
-#endif /* I18N */
+#endif /* GPARTED_I18N_H */

@@ -14,10 +14,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef FRAME_RESIZER_EXTENDED
-#define FRAME_RESIZER_EXTENDED
+
+
+#ifndef GPARTED_FRAME_RESIZER_EXTENDED_H
+#define GPARTED_FRAME_RESIZER_EXTENDED_H
 
 #include "../include/Frame_Resizer_Base.h"
  
@@ -37,4 +37,4 @@ private:
 	virtual void Draw_Partition() ;
 };
 
-#endif //FRAME_RESIZER_EXTENDED
+#endif /* GPARTED_FRAME_RESIZER_EXTENDED_H */

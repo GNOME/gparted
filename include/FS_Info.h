@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef FS_INFO_H_
-#define FS_INFO_H_
+#ifndef GPARTED_FS_INFO_H
+#define GPARTED_FS_INFO_H
 
 #include "../include/Utils.h"
 
@@ -46,4 +46,4 @@ private:
 
 }//GParted
 
-#endif /*FS_INFO_H_*/
+#endif /* GPARTED_FS_INFO_H */

@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_EXT2
-#define DEFINE_EXT2
+
+
+#ifndef GPARTED_EXT2_H
+#define GPARTED_EXT2_H
 
 #include "../include/FileSystem.h"
 
@@ -43,4 +43,4 @@ public:
 
 } //GParted
 
-#endif //EXT2
+#endif /* GPARTED_EXT2_H */

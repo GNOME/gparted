@@ -14,10 +14,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
 
-#ifndef DIALOG_DISKLABEL
-#define DIALOG_DISKLABEL
+
+#ifndef GPARTED_DIALOG_DISKLABEL_H
+#define GPARTED_DIALOG_DISKLABEL_H
 
 #include "../include/Utils.h"
 
@@ -46,5 +46,4 @@ private:
 
 } //GParted
 
-
-#endif //DIALOG_DISKLABEL
+#endif /* GPARTED_DIALOG_DISKLABEL_H */

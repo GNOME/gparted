@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_PARTITION_RESIZE_MOVE
-#define DIALOG_PARTITION_RESIZE_MOVE
+#ifndef GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
+#define GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
 
 #include "../include/Dialog_Base_Partition.h"
 
@@ -36,4 +36,4 @@ private:
 
 } //GParted
 
-#endif //DIALOG_PARTITION_RESIZE_MOVE
+#endif /* GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H */

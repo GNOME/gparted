@@ -20,9 +20,9 @@
   * Partition isn't really a partition. It's more like a geometry, a continuous part of the disk. 
   * I use it to represent partitions as well as unallocated spaces
   */
- 
-#ifndef PARTITION
-#define PARTITION
+
+#ifndef GPARTED_PARTITION_H
+#define GPARTED_PARTITION_H
 
 #include "../include/Utils.h"
 
@@ -151,4 +151,5 @@ private:
 };
 
 }//GParted
-#endif //PARTITION
+
+#endif /* GPARTED_PARTITION_H */

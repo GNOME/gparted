@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_NTFS
-#define DEFINE_NTFS
+
+
+#ifndef GPARTED_NTFS_H
+#define GPARTED_NTFS_H
 
 #include "../include/FileSystem.h"
 
@@ -47,4 +47,4 @@ public:
 
 } //GParted
 
-#endif //NTFS
+#endif /* GPARTED_NTFS_H */

@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_REISER4
-#define DEFINE_REISER4
+
+
+#ifndef GPARTED_REISER4_H
+#define GPARTED_REISER4_H
 
 #include "../include/FileSystem.h"
 
@@ -38,4 +38,4 @@ public:
 
 } //GParted
 
-#endif //REISER4
+#endif /* GPARTED_REISER4_H */

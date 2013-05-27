@@ -16,8 +16,8 @@
  */
 
 
-#ifndef NILFS2_H_
-#define NILFS2_H_
+#ifndef GPARTED_NILFS2_H
+#define GPARTED_NILFS2_H
 
 #include "../include/FileSystem.h"
 
@@ -39,4 +39,4 @@ public:
 
 } //GParted
 
-#endif /*NILFS2_H_*/
+#endif /* GPARTED_NILFS2_H */

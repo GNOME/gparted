@@ -22,8 +22,8 @@
  * Some stuff i need in a lot of places so i dropped in all together in one file.
  */
 
-#ifndef UTILS
-#define UTILS
+#ifndef GPARTED_UTILS_H
+#define GPARTED_UTILS_H
 
 #include "../include/i18n.h"
 
@@ -199,4 +199,4 @@ private:
 
 }//GParted
 
-#endif //UTILS
+#endif /* GPARTED_UTILS_H */

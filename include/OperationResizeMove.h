@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef OPERATIONRESIZEMOVE
-#define OPERATIONRESIZEMOVE
+#ifndef GPARTED_OPERATIONRESIZEMOVE_H
+#define GPARTED_OPERATIONRESIZEMOVE_H
 
 #include "../include/Operation.h"
 
@@ -43,4 +43,4 @@ private:
 
 } //GParted
 
-#endif //OPERATIONRESIZEMOVE
+#endif /* GPARTED_OPERATIONRESIZEMOVE_H */

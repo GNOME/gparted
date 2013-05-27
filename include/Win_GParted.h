@@ -15,9 +15,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef WIN_GPARTED
-#define WIN_GPARTED
+
+#ifndef GPARTED_WIN_GPARTED_H
+#define GPARTED_WIN_GPARTED_H
 
 #include "../include/Device.h"
 #include "../include/DrawingAreaVisualDisk.h"
@@ -262,4 +262,4 @@ private:
 
 } //GParted
 
-#endif //WIN_GPARTED
+#endif /* GPARTED_WIN_GPARTED_H */

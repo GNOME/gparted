@@ -15,9 +15,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef GPARTED_CORE
-#define GPARTED_CORE
+
+#ifndef GPARTED_GPARTED_CORE_H
+#define GPARTED_GPARTED_CORE_H
 
 #include "../include/FileSystem.h"
 #include "../include/Operation.h"
@@ -205,5 +205,4 @@ private:
 
 } //GParted
 
-
-#endif //GPARTED_CORE
+#endif /* GPARTED_GPARTED_CORE_H */

@@ -16,8 +16,8 @@
  */
 
 
-#ifndef LVM2_PV_H_
-#define LVM2_PV_H_
+#ifndef GPARTED_LVM2_PV_H
+#define GPARTED_LVM2_PV_H
 
 #include "../include/FileSystem.h"
 
@@ -38,4 +38,4 @@ public:
 
 } //GParted
 
-#endif /*LVM2_PV_H_*/
+#endif /* GPARTED_LVM2_PV_H */

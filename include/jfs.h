@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_JFS
-#define DEFINE_JFS
+
+
+#ifndef GPARTED_JFS_H
+#define GPARTED_JFS_H
 
 #include "../include/FileSystem.h"
 
@@ -41,4 +41,4 @@ public:
 
 } //GParted
 
-#endif //JFS
+#endif /* GPARTED_JFS_H */

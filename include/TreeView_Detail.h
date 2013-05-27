@@ -14,9 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef TREEVIEW_DETAIL
-#define TREEVIEW_DETAIL
+
+#ifndef GPARTED_TREEVIEW_DETAIL_H
+#define GPARTED_TREEVIEW_DETAIL_H
 
 #include "../include/Partition.h"
 
@@ -95,4 +95,4 @@ private:
 
 } //GParted
 
-#endif //TREEVIEW_DETAIL
+#endif /* GPARTED_TREEVIEW_DETAIL_H */

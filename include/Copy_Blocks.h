@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef COPY_BLOCKS_H
-#define COPY_BLOCKS_H
+#ifndef GPARTED_COPY_BLOCKS_H
+#define GPARTED_COPY_BLOCKS_H
 
 #include "../include/Operation.h"
 #include <parted/parted.h>
@@ -62,4 +62,4 @@ public:
 
 } // namespace GParted
 
-#endif // COPY_BLOCKS_H
+#endif /* GPARTED_COPY_BLOCKS_H */

@@ -15,8 +15,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef PIPECAPTURE_H
-#define PIPECAPTURE_H
+#ifndef GPARTED_PIPECAPTURE_H
+#define GPARTED_PIPECAPTURE_H
 
 #include <glibmm/ustring.h>
 #include <glibmm/main.h>
@@ -46,4 +46,4 @@ public:
 
 } // namepace GParted
 
-#endif
+#endif /* GPARTED_PIPECAPTURE_H */

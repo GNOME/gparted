@@ -14,9 +14,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef OPERATIONLABELPARTITION_H_
-#define OPERATIONLABELPARTITION_H_
+
+#ifndef GPARTED_OPERATIONLABELPARTITION_H
+#define GPARTED_OPERATIONLABELPARTITION_H
 
 #include "../include/Operation.h"
 
@@ -38,4 +38,4 @@ private:
 
 } //GParted
 
-#endif //OPERATIONLABELPARTITION_H_
+#endif /* GPARTED_OPERATIONLABELPARTITION_H */

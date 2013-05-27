@@ -15,9 +15,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
-#ifndef DEVICE
-#define DEVICE
+
+#ifndef GPARTED_DEVICE_H
+#define GPARTED_DEVICE_H
 
 #include "../include/Partition.h"
 
@@ -63,5 +63,5 @@ private:
 };
  
 } //GParted
- 
-#endif //DEVICE
+
+#endif /* GPARTED_DEVICE_H */

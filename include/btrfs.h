@@ -17,8 +17,8 @@
  */
 
 
-#ifndef BTRFS_H_
-#define BTRFS_H_
+#ifndef GPARTED_BTRFS_H
+#define GPARTED_BTRFS_H
 
 #include "../include/FileSystem.h"
 
@@ -43,4 +43,4 @@ private:
 };
 } //GParted
 
-#endif //BTRFS_H_
+#endif /* GPARTED_BTRFS_H */

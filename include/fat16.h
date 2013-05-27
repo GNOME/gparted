@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_FAT16
-#define DEFINE_FAT16
+
+
+#ifndef GPARTED_FAT16_H
+#define GPARTED_FAT16_H
 
 #include "../include/FileSystem.h"
 
@@ -47,4 +47,4 @@ private:
 
 } //GParted
 
-#endif //FAT16
+#endif /* GPARTED_FAT16_H */

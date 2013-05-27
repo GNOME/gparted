@@ -16,8 +16,8 @@
  */
 
 
-#ifndef F2FS_H_
-#define F2FS_H_
+#ifndef GPARTED_F2FS_H
+#define GPARTED_F2FS_H
 
 #include "../include/FileSystem.h"
 
@@ -33,4 +33,4 @@ public:
 
 } //GParted
 
-#endif /* F2FS_H_ */
+#endif /* GPARTED_F2FS_H */

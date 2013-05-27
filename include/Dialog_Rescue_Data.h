@@ -20,8 +20,8 @@
  * Reads the output of gpart and build the dialog
  * */
 
-#ifndef DIALOG_RESCUE_DATA
-#define DIALOG_RESCUE_DATA
+#ifndef GPARTED_DIALOG_RESCUE_DATA_H
+#define GPARTED_DIALOG_RESCUE_DATA_H
 
 #include "../include/Device.h"
 #include "../include/Partition.h"
@@ -73,5 +73,4 @@ private:
 
 } //GParted
 
-
-#endif //DIALOG_RESCUE_DATA
+#endif /* GPARTED_DIALOG_RESCUE_DATA_H */

@@ -15,10 +15,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
- 
- 
-#ifndef DEFINE_LINUX_SWAP
-#define DEFINE_LINUX_SWAP
+
+
+#ifndef GPARTED_LINUX_SWAP_H
+#define GPARTED_LINUX_SWAP_H
 
 #include "../include/FileSystem.h"
 
@@ -48,4 +48,4 @@ public:
 
 } //GParted
 
-#endif //LINUX_SWAP
+#endif /* GPARTED_LINUX_SWAP_H */

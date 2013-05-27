@@ -16,8 +16,8 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#ifndef DIALOG_PARTITION_PROGRESS
-#define DIALOG_PARTITION_PROGRESS
+#ifndef GPARTED_DIALOG_PROGRESS_H
+#define GPARTED_DIALOG_PROGRESS_H
 
 #include "../include/i18n.h"
 #include "../include/Utils.h"
@@ -103,4 +103,4 @@ private:
 
 }//GParted
 
-#endif //DIALOG_PARTITION_PROGRESS
+#endif /* GPARTED_DIALOG_PROGRESS_H */

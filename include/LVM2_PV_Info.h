@@ -23,8 +23,8 @@
  * their attributes.
  */
 
-#ifndef LVM2_PV_INFO_H_
-#define LVM2_PV_INFO_H_
+#ifndef GPARTED_LVM2_PV_INFO_H
+#define GPARTED_LVM2_PV_INFO_H
 
 #include "../include/Utils.h"
 
@@ -68,4 +68,4 @@ private:
 
 }//GParted
 
-#endif /*LVM2_PV_INFO_H_*/
+#endif /* GPARTED_LVM2_PV_INFO_H */
