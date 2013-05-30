@@ -105,6 +105,11 @@ FS ntfs::get_filesystem_support()
 
 	fs .online_read = FS::GPARTED ;
 
+	//Minimum NTFS partition size = (Minimum NTFS volume size) + (backup NTFS boot sector)
+	//                            = (1 MiB) + (1 sector)
+	// For GParted this means 2 MiB because smallest GUI unit is MiB.
+	fs. MIN = 2 * MEBIBYTE;
+
 	return fs ;
 }
 
