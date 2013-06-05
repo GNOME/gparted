@@ -46,6 +46,7 @@ FS linux_swap::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "mkswap" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
 		fs .grow = GParted::FS::EXTERNAL ;
 		fs .shrink = GParted::FS::EXTERNAL ;
 	}

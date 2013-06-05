@@ -33,7 +33,10 @@ FS btrfs::get_filesystem_support()
 	fs .filesystem = GParted::FS_BTRFS ;
 
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
 
 	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;

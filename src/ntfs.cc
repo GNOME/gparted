@@ -85,7 +85,10 @@ FS ntfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
 
 	//resizing is a delicate process ...
 	if ( fs .read && fs .check )

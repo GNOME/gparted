@@ -39,8 +39,11 @@ FS jfs::get_filesystem_support()
 	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
-	
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "jfs_fsck" ) .empty() )
 		fs .check = GParted::FS::EXTERNAL ;
 	

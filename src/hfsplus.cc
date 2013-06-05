@@ -34,8 +34,11 @@ FS hfsplus::get_filesystem_support()
 #endif
 
 	if ( ! Glib::find_program_in_path( "mkfs.hfsplus" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
-	
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "fsck.hfsplus" ) .empty() )
 		fs .check = FS::EXTERNAL ;
 

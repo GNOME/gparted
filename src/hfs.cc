@@ -34,7 +34,10 @@ FS hfs::get_filesystem_support()
 #endif
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
 
 	if ( ! Glib::find_program_in_path( "hfsck" ) .empty() )
 		fs .check = FS::EXTERNAL ;

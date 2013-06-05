@@ -68,8 +68,11 @@ FS fat16::get_filesystem_support()
 
 	//find out if we can create fat file systems
 	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
+	{
 		fs .create = GParted::FS::EXTERNAL ;
-	
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+	}
+
 	if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
 	{
 		fs .check = GParted::FS::EXTERNAL ;

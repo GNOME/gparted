@@ -29,6 +29,7 @@ FS nilfs2::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "mkfs.nilfs2" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
 	}
 
 	if ( ! Glib::find_program_in_path( "nilfs-tune" ) .empty() )

@@ -33,6 +33,7 @@ FS ext2::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "mkfs." + Utils::get_filesystem_string( specific_type ) ).empty() )
 	{
 		fs .create = FS::EXTERNAL ;
+		fs .create_with_label = FS::EXTERNAL ;
 
 		if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
 			fs .read = FS::EXTERNAL ;

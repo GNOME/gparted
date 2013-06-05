@@ -126,6 +126,7 @@ struct FS
 	Support read_uuid ;
 	Support write_uuid ;
 	Support create ;
+	Support create_with_label ;  //Can and how to format file system with label
 	Support grow ;
 	Support shrink ;
 	Support move ; //startpoint and endpoint
@@ -139,8 +140,8 @@ struct FS
 	
 	FS()
 	{
-		read = read_label = write_label = read_uuid = write_uuid = create = grow = shrink =
-		move = check = copy = remove = online_read = NONE ;
+		read = read_label = write_label = read_uuid = write_uuid = create = create_with_label =
+		grow = shrink = move = check = copy = remove = online_read = NONE ;
 		MIN = MAX = 0 ;
 	} 
 } ;
