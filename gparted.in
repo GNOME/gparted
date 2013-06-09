@@ -7,7 +7,7 @@
 #            File system problems can occur if devices are mounted
 #            prior to the completion of GParted's operations.
 #
-# Copyright (C) 2008, 2009, 2010 Curtis Gedak
+# Copyright (C) 2008, 2009, 2010, 2013 Curtis Gedak
 #
 #  This file is part of GParted.
 #
@@ -24,6 +24,20 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GParted.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+#
+#  Search PATH to determine if systemctl program can be found
+#  and if appropriate daemon is running.
+#
+HAVE_SYSTEMCTL=no
+for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
+	if test -x "$k/systemctl"; then
+		if test "z`ps -e | grep systemd`" != "z"; then
+			HAVE_SYSTEMCTL=yes
+			break
+		fi
+	fi
+done
 
 #
 #  Search PATH to determine if udisks program can be found
@@ -87,6 +101,14 @@ if test "x`id -u`" != "x0"; then
 fi
 
 #
+#  Use systemctl to prevent automount by masking currently unmasked mount points
+#
+if test "x$HAVE_SYSTEMCTL" = "xyes"; then
+	MOUNTLIST=`systemctl list-unit-files --full --all -t mount --no-legend | grep -v masked | cut -f1 -d' '`
+	systemctl --runtime mask --quiet -- $MOUNTLIST
+fi
+
+#
 #  Use both udisks and hal-lock for invocation if both binaries exist and both
 #  daemons are running.
 #  Else use udisks if binary exists and daemon is running.
@@ -113,4 +135,11 @@ elif test "x$HAVE_HAL_LOCK" = "xyes"; then
 		--run "$BASE_CMD"
 else
 	$BASE_CMD
+fi
+
+#
+#  Use systemctl to restore that status of any mount points changed above
+#
+if test "x$HAVE_SYSTEMCTL" = "xyes"; then
+	systemctl --runtime unmask --quiet -- $MOUNTLIST
 fi
