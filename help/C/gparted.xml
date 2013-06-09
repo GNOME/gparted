@@ -2098,19 +2098,46 @@
                     <para>
                     To stop the operations while they are executing,
                     click <guibutton>Cancel</guibutton>.
+                    The application displays a disabled
+                    <guibutton>Force Cancel (5)</guibutton> button and
+                    counts down for 5 seconds.
+                    </para>
+                    <note>
+                      <para>
+                      <guibutton>Cancel</guibutton> instructs the
+                      application to stop or roll back operations
+                      as necessary to ensure data integrity.
+                      </para>
+                    </note>
+                    <para>
+                    If operations have not halted after 5 seconds the
+                    application enables the <guibutton>Force
+                    Cancel</guibutton> button.
+                    </para>
+                    <para>
+                    To force the operations to stop, click
+                    <guibutton>Force Cancel</guibutton>.
                     The application displays a warning dialog.
                     </para>
                     <para>
-                    You are advised to click
-                    <guibutton>Continue Operation</guibutton>
-                    because <guibutton>Cancel Operation</guibutton>
-                    might cause SEVERE file system damage.
-                    Cancel the operation only if you agree to
-                    the consequences.
+                    Click <guibutton>Continue Operation</guibutton> to
+                    allow the roll back operations to complete, or
+                    click <guibutton>Cancel Operation</guibutton> to
+                    cancel the roll back operations.
                     </para>
+                    <warning>
+                      <para>
+                      <guibutton>Cancel Operation</guibutton>
+                      terminates the safe roll back of operations and
+                      might cause SEVERE file system damage and data
+                      loss.  You are advised to click
+                      <guibutton>Continue Operation</guibutton> to
+                      allow the roll back to complete.
+                      </para>
+                    </warning>
                     <para>
-                    When the application finishes applying all operations,
-                    the application displays the 
+                    When the application finishes performing operations,
+                    the application displays the
                     <guibutton>Save Details</guibutton> button and the
                     <guibutton>Close</guibutton> button.
                     </para>
