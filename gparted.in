@@ -3,9 +3,11 @@
 #  Purpose:  Perform appropriate startup of GParted executable gpartedbin.
 #
 #            The purpose of these startup methods is to prevent
-#            devices from being automounted.
-#            File system problems can occur if devices are mounted
-#            prior to the completion of GParted's operations.
+#            devices from being automounted, and to ensure only one
+#            instance of GParted is running.  File system problems can
+#            occur if devices are mounted prior to the completion of
+#            GParted's operations, or if multiple partition editing
+#            tools are in use concurrently.
 #
 # Copyright (C) 2008, 2009, 2010, 2013 Curtis Gedak
 #
@@ -24,6 +26,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with GParted.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+#
+#  Only permit one instance of GParted to execute at a time
+#
+if test "z`ps -e | grep gpartedbin`" != "z"; then
+	echo "The process gpartedbin is already running."
+	echo "Only one gpartedbin process is permitted."
+	exit 1
+fi
 
 #
 #  Search PATH to determine if systemctl program can be found
