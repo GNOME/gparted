@@ -27,8 +27,9 @@ fi
 
 # Check for GNOME-DOC-UTILS
 GDUMAKE="gnome-doc-utils.make"
-GDUMAKEFULLPATH=`locate $GDUMAKE | grep -m 1 "gnome-doc-utils/"`
-if test "x${GDUMAKEFULLPATH}" = "x" ; then 
+datadir=`pkg-config --variable=datadir gnome-doc-utils`
+GDUMAKEFULLPATH="$datadir/gnome-doc-utils/$GDUMAKE"
+if test "X$datadir" = 'X' || ! test -f "${GDUMAKEFULLPATH}" ; then
 	echo "Cannot find file: $GDUMAKE"
 	echo "You need to install gnome-doc-utils"
 	exit 1
