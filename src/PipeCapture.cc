@@ -64,6 +64,9 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				buff += '\n';
 				backcount = 0;
 			}
+			else if (*s == '\x01' || *s == '\x02' )
+				//Skip Ctrl-A and Ctrl-B chars e2fsck uses to bracket the progress bar
+				continue;
 			else {
 				if (backcount) {
 					buff.erase( buff.length() - backcount, backcount );

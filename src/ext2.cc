@@ -194,7 +194,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "e2fsck -f -y -v " + partition.get_path(), operationdetail,
+	exit_status = execute_command( "e2fsck -f -y -v -C 0 " + partition.get_path(), operationdetail,
 				       false, true );
 
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
