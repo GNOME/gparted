@@ -67,16 +67,30 @@ FS fat16::get_filesystem_support()
 	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );
 
 	//find out if we can create fat file systems
-	if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
+	if ( ! Glib::find_program_in_path( "mkfs.fat" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;
 		fs .create_with_label = GParted::FS::EXTERNAL ;
+		create_cmd = "mkfs.fat" ;
+	}
+	else if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
+	{
+		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+		create_cmd = "mkdosfs" ;
 	}
 
-	if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
+	if ( ! Glib::find_program_in_path( "fsck.fat" ) .empty() )
 	{
 		fs .check = GParted::FS::EXTERNAL ;
 		fs .read = GParted::FS::EXTERNAL ;
+		check_cmd = "fsck.fat" ;
+	}
+	else if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
+	{
+		fs .check = GParted::FS::EXTERNAL ;
+		fs .read = GParted::FS::EXTERNAL ;
+		check_cmd = "dosfsck" ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mdir" ) .empty() )
@@ -117,7 +131,7 @@ FS fat16::get_filesystem_support()
 
 void fat16::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( "dosfsck -n -v " + partition .get_path(), output, error, true ) ;
+	exit_status = Utils::execute_command( check_cmd + " -n -v " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 || exit_status == 256 )
 	{
 		//total file system size in logical sectors
@@ -238,7 +252,7 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
-	return ! execute_command( "mkdosfs -F" + fat_size + " -v -I -n \"" + pad_label( new_partition .get_label() ) +
+	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I -n \"" + pad_label( new_partition .get_label() ) +
 				  "\" " + new_partition .get_path(),
 				  operationdetail,
 				  false,
@@ -247,7 +261,7 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "dosfsck -a -w -v " + partition .get_path(), operationdetail,
+	exit_status = execute_command( check_cmd + " -a -w -v " + partition .get_path(), operationdetail,
 				       false, true );
 
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;

@@ -28,8 +28,10 @@ namespace GParted
 class fat16 : public FileSystem
 {
 	const enum FILESYSTEM specific_type ;
+	Glib::ustring create_cmd ;
+	Glib::ustring check_cmd ;
 public:
-	fat16( enum FILESYSTEM type ) : specific_type( type ) {} ;
+	fat16( enum FILESYSTEM type ) : specific_type( type ), create_cmd( "" ), check_cmd( "" ) {} ;
 	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
