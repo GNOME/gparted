@@ -26,9 +26,12 @@ int main( int argc, char *argv[] )
 	//initialize thread system
 	Glib::thread_init() ;
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
-	
+
 	Gtk::Main kit( argc, argv ) ;
-		 
+
+	//Set WM_CLASS X Window property for correct naming under GNOME Shell
+	gdk_set_program_class( "GParted" ) ;
+
 	//i18n
 	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
 	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
