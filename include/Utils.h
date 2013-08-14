@@ -50,6 +50,7 @@ const Byte_Value KIBIBYTE=1024;
 const Byte_Value MEBIBYTE=(KIBIBYTE * KIBIBYTE);
 const Byte_Value GIBIBYTE=(MEBIBYTE * KIBIBYTE);
 const Byte_Value TEBIBYTE=(GIBIBYTE * KIBIBYTE);
+const Byte_Value PEBIBYTE=(TEBIBYTE * KIBIBYTE);
 
 const Glib::ustring UUID_RANDOM = _("(New UUID - will be randomly generated)") ;
 const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly generated)") ;
@@ -193,6 +194,8 @@ public:
 	static int get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 	                                         Byte_Value & fs_size, Byte_Value & fs_free,
 	                                         Glib::ustring error_message ) ;
+	static Byte_Value floor_size( Byte_Value value, Byte_Value rounding_size ) ;
+	static Byte_Value ceil_size( Byte_Value value, Byte_Value rounding_size ) ;
 
 private:
 	static bool get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver ) ;

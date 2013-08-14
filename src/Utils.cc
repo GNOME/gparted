@@ -669,6 +669,18 @@ int Utils::get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 	return ret ;
 }
 
+//Round down to multiple of rounding_size
+Byte_Value Utils::floor_size( Byte_Value value, Byte_Value rounding_size )
+{
+	return value / rounding_size * rounding_size ;
+}
+
+//Round up to multiple of rounding_size
+Byte_Value Utils::ceil_size( Byte_Value value, Byte_Value rounding_size )
+{
+	return ( value + rounding_size - 1LL ) / rounding_size * rounding_size ;
+}
+
 //private functions ...
 
 //Read kernel version, reporting success or failure

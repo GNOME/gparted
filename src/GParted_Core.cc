@@ -3104,7 +3104,7 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	bool overall_success ;
+	bool overall_success = true ;
 	operationdetail .add_child( OperationDetail(
 			String::ucompose( _("clear old file system signatures in %1"),
 			                  partition .get_path() ) ) ) ;
@@ -3131,84 +3131,107 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		}
 	}
 
-	//Single copy of string for translation purposes
-	/*TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0 */
-	const Glib::ustring wrote_zeros_msg = _("wrote %1 of zeros at byte offset %2") ;
-
-	//Erase all file system primary super blocks including their signatures.
-	//  Overwrite the first 68 KiB with zeros (or larger if if the sector size is
-	//  larger than 4 KiB.  This covers the location all supported file super blocks
-	//  which range offset 0 for vfat, ntfs and xfs all the way up to offset 64 KiB
-	//  for btrfs, reiserfs and reiser4.  This is likely to also include future file
-	//  system super blocks too).
+	//Erase all file system super blocks, including their signatures.  The specified
+	//  byte ranges are converted to whole sectors (as disks fundamentally only read
+	//  or write whole sectors) and written using ped_geometry_write().  Therefore
+	//  don't try to surgically overwrite just the few bytes of each signature as this
+	//  code overwrites whole sectors and it embeds more knowledge that is necessary.
+	//
+	//  First byte range from offset 0 of length 68 KiB covers the primary super block
+	//  of all currently supported file systems and is also likely to include future
+	//  file system super blocks too.  Only a few file systems have additional super
+	//  blocks and signatures.  Overwrite the btrfs super block mirror copies and the
+	//  nilfs2 secondary super block.
+	//
+	//  Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.
+	//  https://btrfs.wiki.kernel.org/index.php/On-disk_Format#Superblock
+	//
+	//  Nilfs2 secondary super block is located at at the last whole 4 KiB block.
+	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
+	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
+	struct {
+		Byte_Value offset;    //Negative offsets work backwards from the end of the partition
+		Byte_Value rounding;  //Minimum desired rounding for offset
+		Byte_Value length;
+	} ranges[] = {
+		//offset          , rounding      , length
+		{   0LL           , 1LL           , 68LL * KIBIBYTE },  //All primary super blocks
+		{  64LL * MEBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
+		{ 256LL * GIBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
+		{   1LL * PEBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
+		{  -4LL * KIBIBYTE, 4LL * KIBIBYTE,  4LL * KIBIBYTE }   //Nilfs2 secondary super block
+	} ;
+	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
 	{
-		OperationDetail & od = operationdetail .get_last_child() ;
-		od .add_child( OperationDetail( _("clear primary signatures") ) ) ;
+		//Rounding is performed in multiples of the sector size because writes are in whole sectors.
+		Byte_Value rounding_size = Utils::ceil_size( ranges[i].rounding, lp_device ->sector_size ) ;
+		Byte_Value byte_offset ;
+		Byte_Value byte_len ;
 
-		Byte_Value total_size = std::min( 64LL * KIBIBYTE + bufsize, partition .get_byte_length() ) ;
+		//Compute range to be erased taking into minimum desired rounding requirements and
+		//  negative offsets.  Range may become larger, but not smaller than requested.
+		if ( ranges[i] .offset >= 0LL )
+		{
+			byte_offset = Utils::floor_size( ranges[i] .offset, rounding_size ) ;
+			byte_len    = Utils::ceil_size( ranges[i] .offset + ranges[i] .length, rounding_size )
+			              - byte_offset ;
+		}
+		else //Negative offsets
+		{
+			Byte_Value notional_offset = Utils::floor_size( partition .get_byte_length() + ranges[i] .offset, ranges[i]. rounding ) ;
+			byte_offset = Utils::floor_size( notional_offset, rounding_size ) ;
+			byte_len    = Utils::ceil_size( notional_offset + ranges[i] .length, rounding_size )
+			              - byte_offset ;
+		}
+
+		//Limit range to partition size.
+		if ( byte_offset + byte_len <= 0LL )
+		{
+			//Byte range entirely before partition start.  Programmer error!
+			continue;
+		}
+		else if ( byte_offset < 0 )
+		{
+			//Byte range spans partition start.  Trim to fit.
+			byte_len += byte_offset ;
+			byte_offset = 0LL ;
+		}
+		if ( byte_offset >= partition .get_byte_length() )
+		{
+			//Byte range entirely after partition end.  Ignore.
+			continue ;
+		}
+		else if ( byte_offset + byte_len > partition .get_byte_length() )
+		{
+			//Byte range spans partition end.  Trim to fit.
+			byte_len = partition .get_byte_length() - byte_offset ;
+		}
+
+		OperationDetail & od = operationdetail .get_last_child() ;
 		Byte_Value written = 0LL ;
 		bool zero_success = false ;
 		if ( device_is_open && buf )
 		{
-			while ( written < total_size )
+			od .add_child( OperationDetail(
+					/*TO TRANSLATORS: looks like  write 68.00 KiB of zeros at byte offset 0 */
+					String::ucompose( "write %1 of zeros at byte offset %2",
+					                  Utils::format_size( byte_len, 1 ),
+					                  byte_offset ) ) ) ;
+
+			while ( written < byte_len )
 			{
+				//Write in bufsize amounts.  Last write may be smaller but
+				//  will still be a whole number of sectors.
+				Byte_Value amount = std::min( bufsize, byte_len - written ) ;
 				zero_success = ped_geometry_write( & lp_partition ->geom, buf,
-				                                   written / lp_device ->sector_size,
-				                                   bufsize / lp_device ->sector_size ) ;
+				                                   ( byte_offset + written ) / lp_device ->sector_size,
+				                                   amount / lp_device ->sector_size ) ;
 				if ( ! zero_success )
 					break ;
-				written += bufsize ;
+				written += amount ;
 			}
-		}
 
-		if ( zero_success )
-		{
-			od .get_last_child() .add_child( OperationDetail(
-					String::ucompose( wrote_zeros_msg,
-					                  Utils::format_size( written, 1 ),
-					                  0LL ),
-					STATUS_NONE, FONT_ITALIC ) ) ;
-			od .get_last_child() .set_status( STATUS_SUCCES ) ;
-		}
-		else
-		{
-			od .get_last_child() .set_status( STATUS_ERROR ) ;
-		}
-		overall_success = zero_success ;
-	}
-
-	//Also erase any nilfs2 secondary super block at the end of the partition to
-	//  prevent erroneous detection by libparted using the signature in the secondary
-	//  super block.  Overwrite the last full 4 KiB block with zeros (or larger if the
-	//  sector size is larger and possibly earlier depending on the sector alignment).
-	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
-	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
-	if ( overall_success )
-	{
-		OperationDetail & od = operationdetail .get_last_child() ;
-		od .add_child( OperationDetail( _("clear secondary signatures") ) ) ;
-
-		Byte_Value byte_offset = ( ( partition .get_byte_length() >> 12 ) - 1 ) << 12 ;
-		bool zero_success = false ;
-		if ( device_is_open && buf )
-		{
-			zero_success = ped_geometry_write( & lp_partition ->geom, buf,
-			                                   byte_offset / lp_device ->sector_size,
-			                                   bufsize / lp_device ->sector_size ) ;
-		}
-
-		if ( zero_success )
-		{
-			od .get_last_child() .add_child( OperationDetail(
-					String::ucompose( wrote_zeros_msg,
-					                  Utils::format_size( bufsize, 1 ),
-					                  byte_offset ),
-					STATUS_NONE, FONT_ITALIC ) ) ;
-			od .get_last_child() .set_status( STATUS_SUCCES ) ;
-		}
-		else
-		{
-			od .get_last_child() .set_status( STATUS_ERROR ) ;
+			od .get_last_child() .set_status( zero_success ? STATUS_SUCCES : STATUS_ERROR ) ;
 		}
 		overall_success &= zero_success ;
 	}
