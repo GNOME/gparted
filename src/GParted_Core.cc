@@ -2273,9 +2273,9 @@ bool GParted_Core::resize( const Partition & partition_old,
 
 		//expand file system to fit exactly in partition
 		if (   succes
-		    && (   //Maximize file system if FS not linux-swap and new size > old
-		           partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not resized
-		        && partition_new .get_sector_length() > partition_old .get_sector_length()
+		    && (   //Maximize file system if linux-swap or new size > old
+		           partition_new .filesystem == FS_LINUX_SWAP  //linux-swap is recreated, not resized
+		        || partition_new .get_sector_length() > partition_old .get_sector_length()
 		       )
 		   )
 			succes =    check_repair_filesystem( partition_new, operationdetail )
