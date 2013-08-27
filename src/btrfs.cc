@@ -139,12 +139,12 @@ void btrfs::set_used_sectors( Partition & partition )
 		Byte_Value ptn_bytes = partition .get_byte_length() ;
 		Glib::ustring str ;
 		//Btrfs file system device size
-		Glib::ustring regexp = "devid .* size ([0-9\\.]+.?B) .* path " + partition .get_path() ;
+		Glib::ustring regexp = "devid .* size ([0-9\\.]+( ?[KMGTPE]?i?B)?) .* path " + partition .get_path() ;
 		if ( ! ( str = Utils::regexp_label( output, regexp ) ) .empty() )
 			T = btrfs_size_to_num( str, ptn_bytes, true ) ;
 
 		//Btrfs file system wide used bytes
-		if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+.?B)" ) ) .empty() )
+		if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+( ?[KMGTPE]?i?B)?)" ) ) .empty() )
 			N = T - btrfs_size_to_num( str, ptn_bytes, false ) ;
 
 		if ( T > -1 && N > -1 )
@@ -371,6 +371,8 @@ gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str )
 {
 	gchar * suffix ;
 	gdouble rawN = g_ascii_strtod( str .c_str(), & suffix ) ;
+	while ( isspace( suffix[0] ) )  //Skip white space before suffix
+		suffix ++ ;
 	unsigned long long mult ;
 	switch ( suffix[0] )
 	{
@@ -378,6 +380,8 @@ gdouble btrfs::btrfs_size_to_gdouble( Glib::ustring str )
 		case 'M':	mult = MEBIBYTE ;	break ;
 		case 'G':	mult = GIBIBYTE ;	break ;
 		case 'T':	mult = TEBIBYTE ;	break ;
+		case 'P':	mult = PEBIBYTE ;	break ;
+		case 'E':	mult = EXBIBYTE ;	break ;
 		default:	mult = 1 ;		break ;
 	}
 	return rawN * mult ;

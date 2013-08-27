@@ -51,6 +51,7 @@ const Byte_Value MEBIBYTE=(KIBIBYTE * KIBIBYTE);
 const Byte_Value GIBIBYTE=(MEBIBYTE * KIBIBYTE);
 const Byte_Value TEBIBYTE=(GIBIBYTE * KIBIBYTE);
 const Byte_Value PEBIBYTE=(TEBIBYTE * KIBIBYTE);
+const Byte_Value EXBIBYTE=(PEBIBYTE * KIBIBYTE);
 
 const Glib::ustring UUID_RANDOM = _("(New UUID - will be randomly generated)") ;
 const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly generated)") ;
