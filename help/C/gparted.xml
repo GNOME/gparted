@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.18.0">
-  <!ENTITY manrevision "1.7">
-  <!ENTITY date "February 2014">
+  <!ENTITY appversion "0.20.0">
+  <!ENTITY manrevision "1.8">
+  <!ENTITY date "September 2014">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -99,6 +99,15 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
     <revhistory>
+      <revision>
+        <revnumber>&appname; Manual V1.8</revnumber>
+        <date>September 2014</date>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+          <para role="annotations">Describes version 0.20.0 of &appname;</para>
+        </revdescription>
+      </revision>
       <revision>
         <revnumber>&appname; Manual V1.7</revnumber>
         <date>February 2014</date>
@@ -2357,12 +2366,13 @@
     <sect2 id="gparted-fix-grub-boot-problem">
       <title>Fixing GRUB boot problem</title>
       <para>
-      The Grand Unified Boot loader (GRUB) might fail to boot an
-      operating system if you do one of the following:
+      The Grand Unified Boot loader (GRUB) is used by many GNU/Linux
+      distributions.  GRUB might fail to boot an operating system if
+      you do one of the following:
         <itemizedlist>
           <listitem>
             <para>
-            Move the partition containing the GRUB stage2 file.
+            Move a partition containing the boot code.
             </para>
           </listitem>
           <listitem>
@@ -2374,71 +2384,254 @@
         </itemizedlist>
       </para>
       <para>
-      To fix these problems, you will need to reinstall the GRUB 
-      boot record using the following steps:
-        <orderedlist>
-          <listitem>
-            <para>
-            Start the <application>grub</application> application
-            from the command line.
-            <screen><prompt>$ </prompt><command>grub</command></screen>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-            Find where <application>grub</application> stage1 is located by using
-            one of the following:
-            </para>
-            <para>
-            If the /boot folder is stored in the / partition,
-            use the command:
-            <screen><prompt>grub&gt; </prompt><command>find</command> /boot/grub/stage1</screen>
-            If the /boot folder is stored in a partition
-            different than the / partition, use the command:
-            <screen><prompt>grub&gt; </prompt><command>find</command> /grub/stage1</screen>
-            </para>
-            <para>
-            The output from the <command>find</command> command might
-            look like the following:
-            <screen><computeroutput> <replaceable>(hd0,0)</replaceable></computeroutput></screen>
-            If more than one line is listed in the command output,
-            you will need to decide which device you use for <application>grub</application>.
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-            Set the <application>grub</application> root device
-            by specifying the device returned
-            by the <command>find</command> command.
-            <screen><prompt>grub&gt; </prompt>root <replaceable>(hd0,0)</replaceable></screen>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-            Reinstall <application>grub</application>
-            by specifying the device returned
-            by the <command>find</command> command.
-            <screen><prompt>grub&gt; </prompt>setup <replaceable>(hd0,0)</replaceable></screen>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-            Exit <application>grub</application>.
-            <screen><prompt>grub&gt; </prompt>quit</screen>
-            </para>
-          </listitem>
-          <listitem>
-            <para>
-            Reboot your computer.
-            </para>
-          </listitem>
-        </orderedlist>
+      To fix these problems you must determine which boot loader is
+      being used, and then restore the proper boot loader.
       </para>
       <para>
-      The <application>grub</application> application is included on
-      each Live CD listed in
-      <xref linkend="gparted-acquire-livecd"/>
+      There are two major versions of GRUB:
+        <itemizedlist>
+          <listitem>
+            <para>
+            GRUB, also known as GRUB 2, covers versions 1.98 and
+            higher.  GRUB 2 works with both GUID partition tables
+            (GPT) and msdos partition tables.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            GRUB Legacy, traditionally known as GRUB, covers versions
+            0.9x and earlier.  GRUB Legacy works with msdos partition
+            tables only.
+            </para>
+          </listitem>
+        </itemizedlist>
       </para>
+      <para>
+      GRUB 2 is used as the default boot loader in the following
+      GNU/Linux distributions:
+        <itemizedlist>
+          <listitem>
+            <para>
+            CentOS 7 and higher
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            Debian 6 (Squeeze) and higher
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            Fedora 16 (Verne) and higher
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            openSUSE 12.2 and higher
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+            Ubuntu 9.10 (Karmic Koala) and higher
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+      <para>
+      If you are unsure whether your computer uses GRUB 2 or GRUB
+      Legacy, you might try searching for the answer on the Internet.
+      </para>
+
+<!-- ============= To Restore GRUB 2 ================================= -->
+      <sect3 id="gparted-restore-grub-2">
+        <title>Restoring GRUB 2 Boot Loader</title>
+        <para>
+        Use the following steps to restore the GRUB 2 boot loader:
+          <orderedlist>
+            <listitem>
+              <para>
+              Boot from Live media such as GParted Live or your
+              GNU/Linux distribution image.  Open a terminal window.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Determine which partition contains the / file system for
+              your GNU/Linux distribution.
+              </para>
+              <para>
+              Use GParted to list the partitions on your disk device.
+              Look for a partition that contains your GNU/Linux / file
+              system.  This Linux partition will likely use a file
+              system such as ext2, ext3, ext4, or btrfs.
+              </para>
+              <note>
+                <para>
+                If the / partition is on LVM then the Logical Volume
+                Manager must be active.  LVM can be started with the
+                command:
+                <screen><prompt># </prompt><command>vgchange</command> -a y</screen>
+                </para>
+                <para>
+                With LVM, the equivalent of a disk partition is a
+                Logical Volume.  Logical Volumes can be listed with
+                the command:
+                <screen><prompt># </prompt><command>lvscan</command></screen>
+                </para>
+              </note>
+              <note>
+                <para>
+                If the / partition is on RAID, then the RAID must be
+                active.  Linux Software RAID can be started with the
+                command:
+                <screen><prompt># </prompt><command>mdadm</command> --assemble --scan</screen>
+                </para>
+              </note>
+            </listitem>
+            <listitem>
+              <para>
+              Create a mount point directory by entering (as root):
+              <screen><prompt># </prompt><command>mkdir</command> /tmp/mydir</screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Mount the / partition on the mount point directory.  For
+              example assume the / file system is contained in the
+              /dev/sda5 partition.  Enter (as root):
+              <screen><prompt># </prompt><command>mount</command> <replaceable>/dev/sda5</replaceable> /tmp/mydir</screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              If you have a separate /boot partition, for example at
+              /dev/sda3, then an extra step is required.  Mount the
+              /boot partition at /tmp/mydir/boot by entering (as
+              root):
+              <screen><prompt># </prompt><command>mount</command> <replaceable>/dev/sda3</replaceable> /tmp/mydir/boot</screen>
+              </para>
+              <note>
+                <para>
+                If you do not know whether you have a separate boot
+                partition then you probably do not and can ignore this
+                step.
+                </para>
+              </note>
+            </listitem>
+            <listitem>
+              <para>
+              Prepare to change the root environment by entering (as
+              root):
+              <screen><prompt># </prompt><command>mount</command> --bind /dev /tmp/mydir/dev</screen>
+              <screen><prompt># </prompt><command>mount</command> --bind /proc /tmp/mydir/proc</screen>
+              <screen><prompt># </prompt><command>mount</command> --bind /sys /tmp/mydir/sys</screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Change the root environment by entering (as root):
+              <screen><prompt># </prompt><command>chroot</command> /tmp/mydir</screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Reinstall GRUB 2 on the boot device.  Note that the
+              device name is used and not the partition name.  For
+              example, if the / partition is /dev/sda5 then the device
+              is /dev/sda.
+              </para>
+              <para>
+              For Debian, Ubuntu, and other offshoot GNU/Linux
+              distributions, enter the command (as root):
+              <screen><prompt># </prompt><command>grub-install</command> <replaceable>/dev/sda</replaceable></screen>
+              </para>
+              <para>
+              For CentOS, Fedora, openSUSE and other offshoot
+              GNU/Linux distributions, enter the command (as root):
+              <screen><prompt># </prompt><command>grub2-install</command> <replaceable>/dev/sda</replaceable></screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Exit the chroot environment by entering (as root):
+              <screen><prompt># </prompt><command>exit</command></screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Reboot your computer.
+              </para>
+            </listitem>
+          </orderedlist>
+        </para>
+      </sect3>
+
+<!-- ============= To Restore GRUB Legacy ============================ -->
+      <sect3 id="gparted-restore-grub-legacy">
+        <title>Restoring GRUB Legacy Boot Loader</title>
+        <para>
+        Use the following steps to restore the GRUB Legacy boot
+        loader:
+          <orderedlist>
+            <listitem>
+              <para>
+              Start the <application>grub</application> application
+              from the command line (as root).
+              <screen><prompt># </prompt><command>grub</command></screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Find where <application>grub</application> stage1 is
+              located by using one of the following:
+              </para>
+              <para>
+              If the /boot folder is stored in the / partition,
+              use the command:
+              <screen><prompt>grub&gt; </prompt><command>find</command> /boot/grub/stage1</screen>
+              If the /boot folder is stored in a partition
+              different than the / partition, use the command:
+            <screen><prompt>grub&gt; </prompt><command>find</command> /grub/stage1</screen>
+              </para>
+              <para>
+              The output from the <command>find</command> command
+              might look like the following:
+              <screen><computeroutput> <replaceable>(hd0,0)</replaceable></computeroutput></screen>
+              If more than one line is listed in the command output,
+              you will need to decide which device you use for
+              <application>grub</application>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Set the <application>grub</application> root device by
+              specifying the device returned by the
+              <command>find</command> command.
+              <screen><prompt>grub&gt; </prompt>root <replaceable>(hd0,0)</replaceable></screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Reinstall <application>grub</application> by specifying
+              the device returned by the <command>find</command>
+              command.
+              <screen><prompt>grub&gt; </prompt>setup <replaceable>(hd0,0)</replaceable></screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Exit <application>grub</application>.
+              <screen><prompt>grub&gt; </prompt>quit</screen>
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Reboot your computer.
+              </para>
+            </listitem>
+          </orderedlist>
+        </para>
+      </sect3>
     </sect2>
 
 <!-- ============= End of Fixing Operating System Boot Problems ====== -->
