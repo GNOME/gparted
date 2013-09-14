@@ -1539,8 +1539,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_LUKS       &&
+		if ( partitions[ t ] .filesystem != GParted::FS_LUKS       &&
 		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
 		   )
 		{
