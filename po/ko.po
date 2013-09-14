@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-07-05 04:51+0000\n"
+"POT-Creation-Date: 2013-08-29 16:27+0000\n"
 "PO-Revision-Date: 2013-07-14 21:44+0900\n"
 "Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
@@ -39,11 +39,11 @@ msgstr "GParted 파티션 편집기"
 msgid "Create, reorganize, and delete partitions"
 msgstr "파티션을 만들고, 재배치하고, 삭제합니다"
 
-#: ../include/Utils.h:54
+#: ../include/Utils.h:56
 msgid "(New UUID - will be randomly generated)"
 msgstr "(새 UUID - 임의로 생성합니다)"
 
-#: ../include/Utils.h:55
+#: ../include/Utils.h:57
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(절반의 새 UUID - 임의로 생성합니다)"
 
@@ -1118,96 +1118,82 @@ msgstr "%1의 새 크기와 위치를 계산"
 msgid "clear old file system signatures in %1"
 msgstr "%1의 이전 파일 시스템 서명 지우기"
 
-#. Single copy of string for translation purposes
-#. TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0
-#: ../src/GParted_Core.cc:3136
-msgid "wrote %1 of zeros at byte offset %2"
-msgstr "%2바이트 오프셋에 %1 용량의 0으로 쓰기"
-
-#: ../src/GParted_Core.cc:3146
-msgid "clear primary signatures"
-msgstr "1차 서명 지우기"
-
-#: ../src/GParted_Core.cc:3189
-msgid "clear secondary signatures"
-msgstr "2차 서명 지우기"
-
-#: ../src/GParted_Core.cc:3246
+#: ../src/GParted_Core.cc:3269
 msgid "flush operating system cache of %1"
 msgstr "%1의 운영 체제 캐시 비우기"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3278
+#: ../src/GParted_Core.cc:3301
 msgid "update boot sector of %1 file system on %2"
 msgstr "%2에 %1 파일 시스템의 부트 섹터 업데이트"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3314
+#: ../src/GParted_Core.cc:3337
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1에 부트 섹터를 기록하는 도중 오류"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3320
+#: ../src/GParted_Core.cc:3343
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1의 0x1c 위치를 탐색하려던 중 오류"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3327
+#: ../src/GParted_Core.cc:3350
 msgid "Error trying to open %1"
 msgstr "%1을(를) 열려던 중 오류"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3337
+#: ../src/GParted_Core.cc:3360
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "NTFS 부트 레코드의 숨겨진 섹터의 수를 %1(으)로 설정하는데 실패했습니다."
 
-#: ../src/GParted_Core.cc:3339
+#: ../src/GParted_Core.cc:3362
 msgid "You might try the following command to correct the problem:"
 msgstr "이 문제를 해결하려면 다음 명령을 시도해야 할 것입니다:"
 
-#: ../src/GParted_Core.cc:3439
+#: ../src/GParted_Core.cc:3462
 msgid "Libparted Warning"
 msgstr "libparted 경고"
 
-#: ../src/GParted_Core.cc:3443
+#: ../src/GParted_Core.cc:3466
 msgid "Libparted Information"
 msgstr "libparted 정보"
 
-#: ../src/GParted_Core.cc:3447
+#: ../src/GParted_Core.cc:3470
 msgid "Libparted Error"
 msgstr "libparted 오류"
 
-#: ../src/GParted_Core.cc:3449
+#: ../src/GParted_Core.cc:3472
 msgid "Libparted Bug Found!"
 msgstr "libparted 버그를 찾았습니다!"
 
-#: ../src/GParted_Core.cc:3452
+#: ../src/GParted_Core.cc:3475
 msgid "Fix"
 msgstr "고침"
 
-#: ../src/GParted_Core.cc:3454
+#: ../src/GParted_Core.cc:3477
 msgid "Yes"
 msgstr "예"
 
-#: ../src/GParted_Core.cc:3456
+#: ../src/GParted_Core.cc:3479
 msgid "Ok"
 msgstr "확인"
 
-#: ../src/GParted_Core.cc:3458
+#: ../src/GParted_Core.cc:3481
 msgid "Retry"
 msgstr "재시도"
 
-#: ../src/GParted_Core.cc:3460
+#: ../src/GParted_Core.cc:3483
 msgid "No"
 msgstr "아니요"
 
-#: ../src/GParted_Core.cc:3462
+#: ../src/GParted_Core.cc:3485
 msgid "Cancel"
 msgstr "취소"
 
-#: ../src/GParted_Core.cc:3464
+#: ../src/GParted_Core.cc:3487
 msgid "Ignore"
 msgstr "무시"
 
@@ -2065,11 +2051,11 @@ msgstr ""
 "LVM2 물리 볼륨은 내보낸 볼륨 그룹의 구성원이기 때문에 현재 크기를 조절할 수 "
 "없습니다."
 
-#: ../src/main.cc:40
+#: ../src/main.cc:43
 msgid "Root privileges are required for running GParted"
 msgstr "GParted를 실행하려면 root 권한이 필요합니다"
 
-#: ../src/main.cc:45
+#: ../src/main.cc:48
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2094,6 +2080,15 @@ msgstr "시뮬레이션 실행"
 #: ../src/ntfs.cc:220
 msgid "real resize"
 msgstr "실제 크기 조정"
+
+#~ msgid "wrote %1 of zeros at byte offset %2"
+#~ msgstr "%2바이트 오프셋에 %1 용량의 0으로 쓰기"
+
+#~ msgid "clear primary signatures"
+#~ msgstr "1차 서명 지우기"
+
+#~ msgid "clear secondary signatures"
+#~ msgstr "2차 서명 지우기"
 
 #~ msgid "perform real move"
 #~ msgstr "실제 이동 수행"
