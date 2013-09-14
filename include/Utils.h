@@ -194,7 +194,7 @@ public:
 	static Glib::ustring generate_uuid(void);
 	static int get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 	                                         Byte_Value & fs_size, Byte_Value & fs_free,
-	                                         Glib::ustring error_message ) ;
+	                                         Glib::ustring & error_message ) ;
 	static Byte_Value floor_size( Byte_Value value, Byte_Value rounding_size ) ;
 	static Byte_Value ceil_size( Byte_Value value, Byte_Value rounding_size ) ;
 

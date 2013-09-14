@@ -653,7 +653,7 @@ Glib::ustring Utils::generate_uuid(void)
 //  and free space, both in bytes.
 int Utils::get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
                                          Byte_Value & fs_size, Byte_Value & fs_free,
-                                         Glib::ustring error_message )
+                                         Glib::ustring & error_message )
 {
 	struct statvfs sfs ;
 	int ret ;
@@ -664,7 +664,7 @@ int Utils::get_mounted_filesystem_usage( const Glib::ustring & mountpoint,
 		fs_free = static_cast<Byte_Value>( sfs .f_bfree ) * sfs .f_bsize ;
 	}
 	else
-		error_message = "statvfs (" + mountpoint + "): " + Glib::strerror( errno ) ;
+		error_message = "statvfs(\"" + mountpoint + "\"): " + Glib::strerror( errno ) ;
 
 	return ret ;
 }
