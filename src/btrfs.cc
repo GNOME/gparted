@@ -78,6 +78,7 @@ FS btrfs::get_filesystem_support()
 		{
 			fs .read = GParted::FS::EXTERNAL ;
 			fs .read_label = FS::EXTERNAL ;
+			fs .read_uuid = FS::EXTERNAL ;
 		}
 
 		//Resizing of btrfs requires btrfsctl, mount, umount
