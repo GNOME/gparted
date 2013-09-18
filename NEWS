@@ -1,4 +1,67 @@
 ============================
+GParted 0.16.2  (2013-09-18)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes some important bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Fix crash if click apply before pending operations fully displayed
+  * Fix FAT16/32 labels are sometimes shown corrupted
+  * Fix regression - linux-swap resize broken
+  * Fix to not hide the progress of the tools used - ntfsresize (#697662)
+
+Bug Fixes
+---------
+  * Fix crash if click apply before pending operations fully displayed (#699452)
+  * Enable .desktop prompt for root on default openSUSE installation (#699626)
+  * Fix FAT16/32 labels are sometimes shown corrupted (#700228)
+    - Combine duplicate code for fat16/fat32
+  * Fix setting the backup boot sector when resizing NTFS (#701075)
+    - Requires a future version of ntfs-3g with enhanced ntfsresize
+    - Enables whole partition use when resizing ext2/3/4, ntfs and reiserfs
+  * Set NTFS minimum partition size to 2 MiB (#697848)
+  * Make include guards unique (#539297)
+    - Remove unused read-only functionality from internal block copy
+  * Ensure running GParted is named correctly under GNOME Shell (#705323)
+  * Clear btrfs file system super block mirror copies too (#705426)
+  * Prepare for btrfs tools using IEC prefix multipliers (#706914)
+  * Add create_with_label flag to FS structure (#701569)
+  * Inhibit systemd automounting (#701676)
+    - Only permit one GParted instance to run at a time
+  * Stop using "locate" for gnome-doc-utils check in autogen.sh (#702040)
+  * Fix name changes in dosfstools 3.0.18+ breaking FAT16/32 support (#704629)
+  * Fix to not hide the progress of the tools used - ntfsresize (#697662)
+  * Fix regression - linux-swap resize broken (#706604)
+  * Update Help Manual with GPT flags and Force Cancel button (#707070)
+  * Add missing colon to label in en_CA translation (#685735)
+  * Ensure active tense of mount menu option in en_CA translation (#694700)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Sinlu Bes and
+  Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), da(Joe Hansen), el(Dimitris Spingos),
+  es(Daniel Mustieles), fi(Jiri Grönroos, Ville-Pekka Vainio),
+  fr(Claude Paroz), gl(Fran Diéguez), id(Andika Triwidada),
+  ja(OKANO Takayoshi), ko(Seong-ho Cho), pt_BR(Enrico Nicoletto),
+  ru(Yuri Myasoedov), sk(Dušan Kazik), sr(Мирослав Николић),
+  sr@latin(Мирослав Николић), th(Akom Chotiphantawanon), uk(Daniel Korostil),
+  zh_TW(Chao-Hsiung Liao)
+
+Dependencies (new/updated)
+--------------------------
+  * Optionally configure to use xdg-su if gksudo, gksu, and kdesudo are
+    not installed
+
+
+============================
 GParted 0.16.1  (2013-04-30)
 ============================
 
