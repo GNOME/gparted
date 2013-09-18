@@ -12,7 +12,7 @@ Release Notes
   * Fix crash if click apply before pending operations fully displayed
   * Fix FAT16/32 labels are sometimes shown corrupted
   * Fix regression - linux-swap resize broken
-  * Fix to not hide the progress of the tools used - ntfsresize (#697662)
+  * Fix to not hide the progress of the tools used - ntfsresize
 
 Bug Fixes
 ---------
@@ -695,7 +695,7 @@ Bug Fixes
     - Ubuntu launchpad #696937
   * Simplify command output cleanup implementation
     - Thanks go to Seth Heeren for this method replacement patch
-  * Enable unmount of partition with apostrophe in label 
+  * Enable unmount of partition with apostrophe in label
     - Ubuntu launchpad #151796
 
 Translations (new/updated)
@@ -902,7 +902,7 @@ BUG FIXES
 	* Fix paste destination partition smaller than source (#626946)
 	* Fix size reduced by 1 MiB if created after cylinder aligned partition
 	* Complete quoting for parameters in configure.in file (#622598)
-	  - Thanks go to Markus Elfring for this small patch 
+	  - Thanks go to Markus Elfring for this small patch
 
 TRANSLATIONS (new/updated)
 	* cs(Adrian Guniš, Marek Černocký), da(Ask H. Larsen),
@@ -1138,7 +1138,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes bug fixes, and language
 	translation updates.
-	
+
 	Key changes include:
 	  - Ensure no pending operations before creating partition table
 	  - Improve dmraid device and name recognition
@@ -1173,7 +1173,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes some bug fixes, and language
 	translation updates.
-	
+
 	Key changes include:
 	  - Fixed new partition creation size off by one sector (#596552)
 	  - Improved recognition of dmraid devices
@@ -1200,7 +1200,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes bug fixes, and language
 	translation updates.
-	
+
 	Key changes include:
 	  - Removed requirement for xxd for ntfs move or paste action
 	  - Enhanced for new linux-swap "filesystem" types from parted-1.9.0
@@ -1232,7 +1232,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes some bug fixes, and language
 	translation updates.
-	
+
 	Key changes include:
 	  - Improved crypt-luks detection
 	  - Improved dmraid device detection
@@ -1303,7 +1303,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes bug fixes, and language translation
 	updates.
-	
+
 	Key changes include:
 	  - Corrected name of lock taken by hal-lock
 	    (The lock is needed to prevent automounting of file systems)
@@ -1329,7 +1329,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	The big news for this GParted release is support for ext4 file systems,
 	and the addition of an application help manual.
-	
+
 	Key changes include:
 	  - Added support for ext4 file system
 	    - Support for ext4 is built into version 2.6.28 of the Linux kernel
@@ -1347,7 +1347,7 @@ BUG FIXES
 	* Created application help manual (#329584)
 	* Reworded caution message when applying operations (#564952)
 	* Recognized linux-swap(new)/(old) as linux-swap (#419515)
-	* Improved text for libparted not found error message (#565682) 
+	* Improved text for libparted not found error message (#565682)
 	* Added support for ext4 file system (#503112)
 	* Removed doubled space in front of fdl license link (#556114)
 	* Added lvm2 physical volume detection (small part of #160787)
@@ -1370,7 +1370,7 @@ DEPENDENCIES (new/updated)
 ====================
 NOTES
 	This release of GParted rolls back /dev/mapper/* detection.
-	
+
 	The problem was that all /dev/mapper/* entries were added to the
 	device list including LVM partitions.  This was confusing behaviour
 	to GParted users, and in my opinion it was better to roll back
@@ -1400,7 +1400,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes some new features in addition to
 	bug fixes, and language translation updates.
-	
+
 	Key changes include:
 	  - Improved read label performance with blkid cached results
 	  - Added read UUID support
@@ -1419,7 +1419,7 @@ BUG FIXES
 	* Renamed button for improved clarity (#561350)
 	* Enabled full toolbar display for longer languages (#561068)
 	* Fixed destination too small on copy and paste (#556058)
-	* Removed warning reading mounted reiser4 file system (#380546) 
+	* Removed warning reading mounted reiser4 file system (#380546)
 	* Enhanced to recognize /dev/mapper/* devices (#556114)
 	  Thanks to Colin Watson for the patch.
 	* Enhanced gparted_details.htm to pass XHTML validator (#525347)
@@ -1450,7 +1450,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted includes some new features in addition to
 	bug fixes, and language translation updates.
-	
+
 	Key changes include:
 	  - Reduced time to move or copy partitions
 	  - Added ability to create and check hfs+ file systems
@@ -1461,7 +1461,7 @@ BUG FIXES
 	* Added code hooks for future GParted Manual (#329584)
 	* Enhanced to use gksu to invoke gparted if available (#381557)
 	* Added further check for hald daemon if hal-lock is found (#543730)
-	* Removed unnecessary task of translating GFDL license (#550047) 
+	* Removed unnecessary task of translating GFDL license (#550047)
 
 TRANSLATIONS (new/updated)
 	* ar(Djihed Afifi), cs(Adrian Guniš), es(Jorge Gonzalez),
@@ -1480,7 +1480,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This release of GParted consists of bug fixes, and language
 	translation updates.
-	
+
 	Key changes include:
 	  - Corrected errors in "Round to cylinders" boundary math
 	  - Added "Round to cylinders" check box for copy and move/resize
@@ -1515,7 +1515,7 @@ DEPENDENCIES (new/updated)
 NOTES
 	This GParted release consists of bug fixes, and language translation
 	updates.
-	
+
 	Key changes include:
 	  - Fixed bug for partition sizes greater than or equal to 1 TeraByte
 	  - Created gparted manual page
@@ -1530,7 +1530,7 @@ BUG FIXES
 	* Added manual page documentation (subset of bug #329584)
 	* Changed Set Disklabel menu to Create Partition table,
 	  improved disk erasure warnings, and removed double
-	  confirmation (#422070) 
+	  confirmation (#422070)
 	* Improved readability of text for translators in Create Partition
 	  Table dialog (#529063)
 	* Adjusted desktop entries to align with specifications (#518975)
@@ -1616,7 +1616,7 @@ TRANSLATIONS (new/updated)
 	  lt(Gintautas Miliauskas), mk(Jovan Naumovski),
 	  oc(Yannig Marchegay), pa(Amanpreet Singh Alam),
 	  pt_BR(Djavan Fagundes), ru(Yuri Myasoedov),
-	  si(Danishka Navin), sv(Daniel Nylander), sv(Daniel Nylander) 
+	  si(Danishka Navin), sv(Daniel Nylander), sv(Daniel Nylander)
 
 DEPENDENCIES (new/updated)
 	* no change.
