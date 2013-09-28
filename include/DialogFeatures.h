@@ -21,7 +21,7 @@
 #include "../include/Utils.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/expander.h>
+#include <gtkmm/frame.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/image.h>
@@ -40,7 +40,7 @@ public:
 private:
 	void show_filesystem( const FS & fs ) ;
 
-	Gtk::Expander expander_legend ;
+	Gtk::Frame legend_frame ;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;

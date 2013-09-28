@@ -119,10 +119,10 @@ DialogFeatures::DialogFeatures()
 	str_temp = "<b>" ;
 	str_temp += _("Legend") ;
 	str_temp += "</b>" ;
-	expander_legend .set_label( str_temp ) ;
-	expander_legend .set_use_markup( true ) ;
-	expander_legend .add( *legend_hbox ) ;
-	this ->get_vbox() ->pack_start( expander_legend, Gtk::PACK_SHRINK ) ;
+	legend_frame .set_label_widget( *Utils::mk_label( str_temp ) ) ;
+	legend_frame .set_shadow_type( Gtk::SHADOW_NONE ) ;
+	legend_frame .add( *legend_hbox ) ;
+	this ->get_vbox() ->pack_start( legend_frame, Gtk::PACK_SHRINK ) ;
 
 	/*TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan For Supported Actions"), Gtk::RESPONSE_OK );
