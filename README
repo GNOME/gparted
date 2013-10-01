@@ -50,12 +50,12 @@ a. Pre-built Binary
    package for GParted.  Instructions on how to install GParted on
    some distributions is given below:
 
-      (K)Ubuntu or Debian
-      -------------------
+      Debian or Ubuntu
+      ----------------
       sudo apt-get install gparted
 
-      Fedora
-      ------
+      Fedora or CentOS/RHEL
+      ---------------------
       su -
       yum install gparted
 
@@ -74,8 +74,11 @@ b. Building from Source
       gettext
       gnome-doc-utils     - required if help documentation is to be built
 
-   On (K)Ubuntu, these dependencies may be obtained by running the
-   following command;
+   On Debian or Ubuntu, these dependencies may be obtained by running
+   one of the following commands:
+     Either;
+      sudo apt-get build-dep gparted
+     Or;
       sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
                            gnome-common libparted-dev libgtkmm-2.4-dev \
                            libdevmapper-dev gnome-doc-utils docbook-xml
@@ -83,7 +86,8 @@ b. Building from Source
    On Fedora, you will need to run (as root);
       yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  gnome-doc-utils docbook-dtds rarian-compat
+                  gnome-doc-utils docbook-dtds rarian-compat intltool \
+                  gcc-g++
       yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
