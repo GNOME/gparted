@@ -6,13 +6,17 @@ SUBDIRS = help compose data doc include po src
 endif
 
 @INTLTOOL_DESKTOP_RULE@
-
 DESKTOP_IN_IN_FILES = gparted.desktop.in.in
 DESKTOP_IN_FILES = gparted.desktop.in
 DESKTOP_FILES =$(DESKTOP_IN_FILES:.desktop.in=.desktop)
-
 desktopdir = $(datadir)/applications
 desktop_DATA = $(DESKTOP_FILES)
+
+@INTLTOOL_XML_RULE@
+APPDATA_IN_FILES = gparted.appdata.xml.in
+APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
+appdatadir = $(datadir)/appdata
+appdata_DATA = $(APPDATA_FILES)
 
 sbin_SCRIPTS = gparted
 CLEANFILES = $(sbin_SCRIPTS) $(DESKTOP_IN_FILES)
@@ -51,6 +55,8 @@ dist-hook:
 	fi
 
 EXTRA_DIST =			\
+	$(APPDATA_IN_FILES)	\
+	$(APPDATA_FILES)	\
 	$(DESKTOP_IN_IN_FILES)	\
 	$(DESKTOP_FILES)	\
 	intltool-extract.in  	\
@@ -60,10 +66,11 @@ EXTRA_DIST =			\
 	gnome-doc-utils.make
 
 DISTCLEANFILES =		\
+	$(appdata_DATA)		\
+	$(desktop_DATA)		\
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update		\
-	$(desktop_DATA)		\
 	gnome-doc-utils.make
 
 DISTCHECK_CONFIGURE_FLAGS =	\
