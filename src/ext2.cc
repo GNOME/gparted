@@ -183,7 +183,7 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring str_temp = "resize2fs " + partition_new .get_path() ;
+	Glib::ustring str_temp = "resize2fs -p " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
