@@ -20,7 +20,8 @@
 
 namespace GParted {
 
-PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ), backcount( 0 ), linelength( 0 ),
+PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
+                                                            linestart( 0 ), cursor( 0 ), lineend( 0 ),
                                                             sourceid( 0 )
 {
 	// tie fd to string
@@ -47,34 +48,45 @@ gboolean PipeCapture::_OnReadable( GIOChannel *source,
 
 bool PipeCapture::OnReadable( Glib::IOCondition condition )
 {
-	// read from pipe and store in buff
+	//Read from pipe and store in buff.  Provide minimal interpretation so
+	//  programs which use text progress bars are displayed correctly.
+	//  Linestart, cursor and lineend are offsets into buff like this:
+	//      "Previous line\n
+	//       Current line.  Text progress bar: XXXXXXXXXX----------"
+	//      /\                                          /\        /\
+	//      linestart                                   cursor    lineend
 	Glib::ustring str;
 	Glib::IOStatus status = channel->read( str, 512 );
 	if (status == Glib::IO_STATUS_NORMAL)
 	{
-		for( Glib::ustring::iterator s = str.begin();
-		     s != str.end(); s++ )
+		for( Glib::ustring::iterator s = str.begin(); s != str.end(); s++ )
 		{
-			if( *s == '\b' )
-				backcount++;
+			if( *s == '\b' ) {
+				if ( cursor > linestart )
+					cursor -- ;
+			}
 			else if( *s == '\r' )
-				backcount = linelength;
+				cursor = linestart ;
 			else if( *s == '\n' ) {
-				linelength = 0;
-				buff += '\n';
-				backcount = 0;
+				cursor = lineend ;
+				buff .append( 1, '\n' ) ;
+				cursor ++ ;
+				linestart = cursor ;
+				lineend = cursor ;
 			}
 			else if (*s == '\x01' || *s == '\x02' )
 				//Skip Ctrl-A and Ctrl-B chars e2fsck uses to bracket the progress bar
 				continue;
 			else {
-				if (backcount) {
-					buff.erase( buff.length() - backcount, backcount );
-					linelength -= backcount;
-					backcount = 0;
+				if ( cursor < lineend ) {
+					buff .replace( cursor, 1, 1, *s ) ;
+					cursor ++ ;
 				}
-				buff += *s;
-				++linelength;
+				else {
+					buff .append( 1, *s ) ;
+					cursor ++ ;
+					lineend = cursor ;
+				}
 			}
 		}
 		signal_update.emit();

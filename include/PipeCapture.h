@@ -28,8 +28,9 @@ namespace GParted {
 class PipeCapture
 {
 	Glib::ustring &buff;
-	unsigned int backcount;
-	unsigned int linelength;
+	Glib::ustring::size_type linestart ;
+	Glib::ustring::size_type cursor ;
+	Glib::ustring::size_type lineend ;
 	Glib::RefPtr<Glib::IOChannel> channel;
 	guint sourceid;
 	bool OnReadable( Glib::IOCondition condition );
