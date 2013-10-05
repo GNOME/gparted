@@ -96,34 +96,36 @@ void GParted_Core::find_supported_filesystems()
 
 	FILESYSTEM_MAP .clear() ;
 
-	FILESYSTEM_MAP[ FS_UNKNOWN ]	= NULL ;
-	FILESYSTEM_MAP[ FS_CLEARED ]	= NULL ;
-	FILESYSTEM_MAP[ FS_BTRFS ]	= new btrfs() ;
-	FILESYSTEM_MAP[ FS_EXFAT ]	= new exfat() ;
-	FILESYSTEM_MAP[ FS_EXT2 ]	= new ext2( FS_EXT2 ) ;
-	FILESYSTEM_MAP[ FS_EXT3 ]	= new ext2( FS_EXT3 ) ;
-	FILESYSTEM_MAP[ FS_EXT4 ]	= new ext2( FS_EXT4 ) ;
-	FILESYSTEM_MAP[ FS_F2FS ]	= new f2fs() ;
-	FILESYSTEM_MAP[ FS_FAT16 ]	= new fat16( FS_FAT16 ) ;
-	FILESYSTEM_MAP[ FS_FAT32 ]	= new fat16( FS_FAT32 ) ;
-	FILESYSTEM_MAP[ FS_HFS ]	= new hfs() ;
-	FILESYSTEM_MAP[ FS_HFSPLUS ]	= new hfsplus() ;
-	FILESYSTEM_MAP[ FS_JFS ]	= new jfs() ;
-	FILESYSTEM_MAP[ FS_LINUX_SWAP ]	= new linux_swap() ;
-	FILESYSTEM_MAP[ FS_LVM2_PV ]	= new lvm2_pv() ;
-	FILESYSTEM_MAP[ FS_NILFS2 ]	= new nilfs2() ;
-	FILESYSTEM_MAP[ FS_NTFS ]	= new ntfs() ;
-	FILESYSTEM_MAP[ FS_REISER4 ]	= new reiser4() ;
-	FILESYSTEM_MAP[ FS_REISERFS ]	= new reiserfs() ;
-	FILESYSTEM_MAP[ FS_UFS ]	= new ufs() ;
-	FILESYSTEM_MAP[ FS_XFS ]	= new xfs() ;
-	FILESYSTEM_MAP[ FS_LUKS ]	= NULL ;
+	FILESYSTEM_MAP[ FS_UNKNOWN ]         = NULL ;
+	FILESYSTEM_MAP[ FS_CLEARED ]         = NULL ;
+	FILESYSTEM_MAP[ FS_BTRFS ]           = new btrfs() ;
+	FILESYSTEM_MAP[ FS_EXFAT ]           = new exfat() ;
+	FILESYSTEM_MAP[ FS_EXT2 ]            = new ext2( FS_EXT2 ) ;
+	FILESYSTEM_MAP[ FS_EXT3 ]            = new ext2( FS_EXT3 ) ;
+	FILESYSTEM_MAP[ FS_EXT4 ]            = new ext2( FS_EXT4 ) ;
+	FILESYSTEM_MAP[ FS_F2FS ]            = new f2fs() ;
+	FILESYSTEM_MAP[ FS_FAT16 ]           = new fat16( FS_FAT16 ) ;
+	FILESYSTEM_MAP[ FS_FAT32 ]           = new fat16( FS_FAT32 ) ;
+	FILESYSTEM_MAP[ FS_HFS ]             = new hfs() ;
+	FILESYSTEM_MAP[ FS_HFSPLUS ]         = new hfsplus() ;
+	FILESYSTEM_MAP[ FS_JFS ]             = new jfs() ;
+	FILESYSTEM_MAP[ FS_LINUX_SWAP ]      = new linux_swap() ;
+	FILESYSTEM_MAP[ FS_LVM2_PV ]         = new lvm2_pv() ;
+	FILESYSTEM_MAP[ FS_NILFS2 ]          = new nilfs2() ;
+	FILESYSTEM_MAP[ FS_NTFS ]            = new ntfs() ;
+	FILESYSTEM_MAP[ FS_REISER4 ]         = new reiser4() ;
+	FILESYSTEM_MAP[ FS_REISERFS ]        = new reiserfs() ;
+	FILESYSTEM_MAP[ FS_UFS ]             = new ufs() ;
+	FILESYSTEM_MAP[ FS_XFS ]             = new xfs() ;
+	FILESYSTEM_MAP[ FS_LUKS ]            = NULL ;
+	FILESYSTEM_MAP[ FS_LINUX_SWRAID ]    = NULL ;
+	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
 
 	//Iteration of std::map is ordered according to operator< of the key.
 	//  Hence the FILESYSTEMS vector is constructed in FILESYSTEM enum
-	//  order: FS_UNKNOWN, FS_CLEARED, FS_BTRFS, ..., FS_XFS, FS_LUKS
-	//  which ultimately controls the default order of file systems in menus
-	//  and dialogs.
+	//  order: FS_UNKNOWN, FS_CLEARED, FS_BTRFS, ..., FS_LINUX_SWRAID,
+	//  LINUX_SWSUSPEND which ultimately controls the default order of file
+	//  systems in menus and dialogs.
 	FILESYSTEMS .clear() ;
 
 	FS fs_notsupp;
@@ -1268,6 +1270,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 			return GParted::FS_HFSPLUS ;
 		else if ( fs_type == "ufs" )
 			return GParted::FS_UFS ;
+		else if ( fs_type == "linux_raid_member" )
+			return FS_LINUX_SWRAID ;
+		else if ( fs_type == "swsusp" ||
+		          fs_type == "swsuspend" )
+			return FS_LINUX_SWSUSPEND ;
 	}
 
 
@@ -1468,9 +1475,11 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 		       partitions[ t ] .type == GParted::TYPE_LOGICAL
 		     ) &&
-		     partitions[ t ] .filesystem != GParted::FS_LINUX_SWAP &&
-		     partitions[ t ] .filesystem != GParted::FS_LVM2_PV    &&
-		     partitions[ t ] .filesystem != GParted::FS_LUKS
+		     partitions[ t ] .filesystem != FS_LINUX_SWAP      &&
+		     partitions[ t ] .filesystem != FS_LVM2_PV         &&
+		     partitions[ t ] .filesystem != FS_LUKS            &&
+		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
+		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
 		   )
 		{
 			if ( partitions[ t ] .busy )
@@ -1539,8 +1548,10 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .filesystem != GParted::FS_LUKS       &&
-		     partitions[ t ] .filesystem != GParted::FS_UNKNOWN
+		if ( partitions[ t ] .filesystem != FS_UNKNOWN         &&
+		     partitions[ t ] .filesystem != FS_LUKS            &&
+		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
+		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
 		   )
 		{
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||

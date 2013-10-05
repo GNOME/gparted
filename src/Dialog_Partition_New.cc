@@ -47,13 +47,15 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	//  the order of items in the file system menu, built by Build_Filesystems_Menu().
 	this ->FILESYSTEMS = FILESYSTEMS ;
 
-	//... remove all non-valid file systems
+	//... remove all non-file systems or file systems only recognised but not otherwise supported
 	std::vector< FS >::iterator f ;
 	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
 	{
 		if (   f ->filesystem == FS_UNKNOWN
 		    || f ->filesystem == FS_CLEARED
 		    || f ->filesystem == FS_LUKS
+		    || f ->filesystem == FS_LINUX_SWRAID
+		    || f ->filesystem == FS_LINUX_SWSUSPEND
 		   )
 			//Compensate for subsequent 'f++' ...
 			f = this ->FILESYSTEMS .erase( f ) - 1 ;

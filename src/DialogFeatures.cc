@@ -123,10 +123,12 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	//fill the features chart with valid file systems 
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
 	{
-		//Skip unknown, cleared and luks because these are not file systems
+		//Skip non-file systems or file systems only recognised but not otherwise supported
 		if (    FILESYSTEMS[ t ] .filesystem == FS_UNKNOWN
 		     || FILESYSTEMS[ t ] .filesystem == FS_CLEARED
 		     || FILESYSTEMS[ t ] .filesystem == FS_LUKS
+		     || FILESYSTEMS[ t ] .filesystem == FS_LINUX_SWRAID
+		     || FILESYSTEMS[ t ] .filesystem == FS_LINUX_SWSUSPEND
 		   )
 			continue ;
 		show_filesystem( FILESYSTEMS[ t ] ) ;

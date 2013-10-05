@@ -106,6 +106,8 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
 		case FS_LVM2_PV		: return "#CC9966" ;	// ~ medium brown
 		case FS_LUKS		: return "#625B81" ;	//purple dark
+		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
+		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
 
 		default				: return "#000000" ;
 	}
@@ -233,6 +235,8 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2_PV		: return "lvm2 pv" ;
 		case FS_LUKS		: return "crypt-luks" ;
+		case FS_LINUX_SWRAID	: return "linux-raid" ;
+		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
 
 		default			: return "" ;
 	}
