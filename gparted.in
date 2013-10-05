@@ -115,7 +115,9 @@ fi
 #  Use systemctl to prevent automount by masking currently unmasked mount points
 #
 if test "x$HAVE_SYSTEMCTL" = "xyes"; then
-	MOUNTLIST=`systemctl list-units --full --all -t mount --no-legend | grep -v masked | cut -f1 -d' '`
+	MOUNTLIST=`systemctl list-units --full --all -t mount --no-legend \
+	  | grep -v masked | cut -f1 -d' ' \
+	  | egrep -v '^(dev-hugepages|dev-mqueue|proc-sys-fs-binfmt_misc|run-user-.*-gvfs|sys-fs-fuse-connections|sys-kernel-config|sys-kernel-debug)'`
 	systemctl --runtime mask --quiet -- $MOUNTLIST
 fi
 
