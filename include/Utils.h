@@ -180,9 +180,6 @@ public:
 	static Glib::ustring regexp_label( const Glib::ustring & text
 	                                 , const Glib::ustring & pattern
 	                                 ) ;
-	static Glib::ustring create_mtoolsrc_file( char file_name[],
-                    const char drive_letter, const Glib::ustring & device_path ) ;
-	static Glib::ustring delete_mtoolsrc_file( const char file_name[] ) ;
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
 	static Glib::ustring get_lang() ;
 	static void tokenize( const Glib::ustring& str,
