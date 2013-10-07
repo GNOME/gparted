@@ -168,6 +168,7 @@ public:
 	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
 	static bool kernel_supports_fs( const Glib::ustring & fs ) ;
 	static bool kernel_version_at_least( int major_ver, int minor_ver, int patch_ver ) ;
+	static bool swraid_member_is_active( const Glib::ustring & path ) ;
 	static Glib::ustring format_size( Sector sectors, Byte_Value sector_size ) ;
 	static Glib::ustring format_time( std::time_t seconds ) ;
 	static double sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT size_unit ) ;

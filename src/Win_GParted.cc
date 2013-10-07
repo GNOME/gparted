@@ -967,10 +967,11 @@ void Win_GParted::set_valid_operations()
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
 
-	//Only permit mount/unmount, swapon/swapoff, ... if action is available
+	//Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
 	if (    selected_partition .status == GParted::STAT_REAL
 	     && selected_partition .type != GParted::TYPE_EXTENDED
 	     && selected_partition .filesystem != GParted::FS_LVM2_PV
+	     && selected_partition .filesystem != FS_LINUX_SWRAID
 	     && (    selected_partition .busy
 	          || selected_partition .get_mountpoints() .size() /* Have mount point(s) */
 	          || selected_partition .filesystem == GParted::FS_LINUX_SWAP

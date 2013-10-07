@@ -1051,8 +1051,9 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				}
 				else
 #endif
-					partition_is_busy = ped_partition_is_busy( lp_partition ) ||
-					                    ( filesystem == GParted::FS_LVM2_PV && lvm2_pv_info .has_active_lvs( partition_path ) ) ;
+					partition_is_busy =    ped_partition_is_busy( lp_partition )
+					                    || ( filesystem == FS_LVM2_PV      && lvm2_pv_info .has_active_lvs( partition_path ) )
+					                    || ( filesystem == FS_LINUX_SWRAID && Utils::swraid_member_is_active( partition_path ) ) ;
 
 				partition_temp .Set( device .get_path(),
 						     partition_path,
