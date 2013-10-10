@@ -192,7 +192,6 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 	if ( bit_set( get_vg_attr_by_name( vgname, VGATTR_VG_BITS ), VGBIT_PARTIAL ) )
 	{
 		temp = _("One or more Physical Volumes belonging to the Volume Group is missing.") ;
-		temp += "\n" ;
 		partition_specific_messages .push_back ( temp ) ;
 	}
 

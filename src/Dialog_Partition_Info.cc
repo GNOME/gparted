@@ -58,17 +58,30 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 
 		frame ->set_label_widget( *hbox ) ;
 
-		//FIXME: for more clarity we should add a listview here with alternating rowcolors..
-		//that way it's easier to tell messages apart..
+		//Merge all messages for display so that they can be selected together.
+		//  Use a blank line between individual messages so that each message can be
+		//  distinguished. Therefore each message should have been formatted as one
+		//  or more non-blank lines, with an optional trailing new line.  This is
+		//  true of GParted internal messages and probably all external messages and
+		//  errors from libparted and executed commands too.
+		Glib::ustring all_messages ;
+		for ( unsigned int t = 0; t < partition .messages .size(); t ++ )
 		{
-			Gtk::VBox* vbox(manage(new Gtk::VBox(false,4)));
-			vbox->set_border_width(5);
+			if ( all_messages .size() > 0 )
+				all_messages += "\n\n" ;
 
-			for (unsigned int t = 0; t < partition.messages.size(); ++t)
-				vbox->pack_start(*Utils::mk_label("<i>" + partition .messages[t] + "</i>", true, true),
-				                 Gtk::PACK_SHRINK);
-			frame->add(*vbox);
+			Glib::ustring::size_type take = partition .messages[ t ] .size() ;
+			if ( take > 0 )
+			{
+				if ( partition .messages[ t ][ take-1 ] == '\n' )
+					take -- ;  //Skip optional trailing new line
+				all_messages += "<i>" + partition .messages[ t ] .substr( 0, take ) + "</i>" ;
+			}
 		}
+		Gtk::VBox *vbox( manage( new Gtk::VBox() ) ) ;
+		vbox ->set_border_width( 5 ) ;
+		vbox ->pack_start( *Utils::mk_label( all_messages, true, true, true ), Gtk::PACK_SHRINK ) ;
+		frame ->add( *vbox ) ;
 
 		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
 	}

@@ -1194,7 +1194,6 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		{
 			Glib::ustring temp ;
 			temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
-			temp += "\n" ;
 			messages .push_back( temp ) ;
 			return GParted::FS_LUKS ;
 		}
@@ -1604,7 +1603,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 					temp += _("Because of this some operations may be unavailable.") ;
 					if ( ! Utils::get_filesystem_software( partitions[ t ] .filesystem ) .empty() )
 					{
-						temp += "\n\n" ;
+						temp += "\n" ;
 						temp += _( "The cause might be a missing software package.") ;
 						temp += "\n" ;
 						/*TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs. */
