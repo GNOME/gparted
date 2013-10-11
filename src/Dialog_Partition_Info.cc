@@ -483,10 +483,10 @@ void Dialog_Partition_Info::Display_Info()
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
 {
-	this ->get_colormap() ->free_colors( color_used, 1 ) ;
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap() ->free_colors( color_text, 1 ) ;
-	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
+	this ->get_colormap() ->free_color( color_used ) ;
+	this ->get_colormap() ->free_color( color_unused ) ;
+	this ->get_colormap() ->free_color( color_text ) ;
+	this ->get_colormap() ->free_color( color_partition ) ;
 }
 
 } //GParted

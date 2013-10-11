@@ -70,14 +70,14 @@ void Frame_Resizer_Base::init()
 
 void Frame_Resizer_Base::set_rgb_partition_color( const Gdk::Color & color )
 {
-	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
+	this ->get_colormap() ->free_color( color_partition ) ;
 	this ->color_partition = color ;
 	this ->get_colormap() ->alloc_color( color_partition ) ;
 }
 
 void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::Color & color ) 
 {
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
+	this ->get_colormap() ->free_color( color_unused ) ;
 	this ->color_unused = color ;
 	this ->get_colormap() ->alloc_color( color_unused ) ;
 }
@@ -428,12 +428,12 @@ void Frame_Resizer_Base::Draw_Resize_Grip( ArrowType arrow_type )
 
 Frame_Resizer_Base::~Frame_Resizer_Base()
 { 
-	this ->get_colormap() ->free_colors( color_used, 1 ) ;
-	this ->get_colormap() ->free_colors( color_unused, 1 ) ;
-	this ->get_colormap() ->free_colors( color_arrow, 1 ) ;
-	this ->get_colormap() ->free_colors( color_background, 1 ) ;
-	this ->get_colormap() ->free_colors( color_partition, 1 ) ;
-	this ->get_colormap() ->free_colors( color_arrow_rectangle, 1 ) ;
+	this ->get_colormap() ->free_color( color_used ) ;
+	this ->get_colormap() ->free_color( color_unused ) ;
+	this ->get_colormap() ->free_color( color_arrow ) ;
+	this ->get_colormap() ->free_color( color_background ) ;
+	this ->get_colormap() ->free_color( color_partition ) ;
+	this ->get_colormap() ->free_color( color_arrow_rectangle ) ;
 	
 	delete cursor_resize;
 	delete cursor_move;

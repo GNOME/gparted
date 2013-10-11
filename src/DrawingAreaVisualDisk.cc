@@ -441,7 +441,7 @@ void DrawingAreaVisualDisk::free_colors( std::vector<visual_partition> & visual_
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		get_colormap() ->free_colors( visual_partitions[ t ] .color, 1 ) ;
+		get_colormap() ->free_color( visual_partitions[ t ] .color ) ;
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			free_colors( visual_partitions[ t ] .logicals ) ;
@@ -453,10 +453,10 @@ DrawingAreaVisualDisk::~DrawingAreaVisualDisk()
 	clear() ;
 
 	//free the allocated colors
-	get_colormap() ->free_colors( color_used, 1 ) ;
-	get_colormap() ->free_colors( color_unused, 1 ) ;
-	get_colormap() ->free_colors( color_unallocated, 1 ) ;
-	get_colormap() ->free_colors( color_text, 1 ) ;
+	get_colormap() ->free_color( color_used ) ;
+	get_colormap() ->free_color( color_unused ) ;
+	get_colormap() ->free_color( color_unallocated ) ;
+	get_colormap() ->free_color( color_text ) ;
 }
 
 } //GParted
