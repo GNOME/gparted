@@ -122,6 +122,34 @@ if test "x$HAVE_SYSTEMCTL" = "xyes"; then
 fi
 
 #
+# Create temporary blank overrides for all udev rules which automatically
+# start Linux Software RAID array members.
+#
+# Udev stores volatile / temporary runtime rules in directory /run/udev/rules.d.
+# Older versions use /dev/.udev/rules.d instead, and even older versions don't
+# have such a directory at all.  Volatile / temporary rules are use to override
+# default rules from /lib/udev/rules.d.  (Permanent local administrative rules
+# in directory /etc/udev/rules.d override all others).  See udev(7) manual page
+# from various versions of udev for details.
+#
+# Default udev rules containing mdadm to incrementally start array members are
+# found in 64-md-raid.rules and/or 65-md-incremental.rules, depending on the
+# distribution and age.  The rules may be commented out or not exist at all.
+#
+UDEV_TEMP_MDADM_RULES=''  # List of temporary override rules files.
+for udev_temp_d in /run/udev /dev/.udev; do
+	if test -d "$udev_temp_d"; then
+		test ! -d "$udev_temp_d/rules.d" && mkdir "$udev_temp_d/rules.d"
+		udev_mdadm_rules=`egrep -l '^[^#].*mdadm (-I|--incremental)' /lib/udev/rules.d/*.rules 2> /dev/null`
+		UDEV_TEMP_MDADM_RULES=`echo "$udev_mdadm_rules" | sed 's,^/lib/udev,'"$udev_temp_d"','`
+		break
+	fi
+done
+for rule in $UDEV_TEMP_MDADM_RULES; do
+	touch "$rule"
+done
+
+#
 #  Use both udisks and hal-lock for invocation if both binaries exist and both
 #  daemons are running.
 #  Else use udisks if binary exists and daemon is running.
@@ -149,6 +177,14 @@ elif test "x$HAVE_HAL_LOCK" = "xyes"; then
 else
 	$BASE_CMD
 fi
+
+#
+# Clear any temporary override udev rules used to stop udev automatically
+# starting Linux Software RAID array members.
+#
+for rule in $UDEV_TEMP_MDADM_RULES; do
+	rm -f "$rule"
+done
 
 #
 #  Use systemctl to restore that status of any mount points changed above
