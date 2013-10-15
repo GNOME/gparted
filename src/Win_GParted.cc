@@ -485,7 +485,7 @@ void Win_GParted::init_device_info()
 	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>",
 					   true,
 					   Gtk::ALIGN_LEFT,
-					   Gtk::ALIGN_TOP ),
+					   Gtk::ALIGN_CENTER ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;

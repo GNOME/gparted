@@ -280,7 +280,7 @@ void Dialog_Partition_Info::Display_Info()
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>",
 						   true,
 						   Gtk::ALIGN_LEFT,
-						   Gtk::ALIGN_TOP ),
+						   Gtk::ALIGN_CENTER ),
 				0, 1,
 				top, bottom,
 				Gtk::FILL ) ;
