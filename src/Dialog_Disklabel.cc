@@ -55,7 +55,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 
 			str_temp = _("Default is to create an MS-DOS partition table.");
 			str_temp += "\n";
-			vbox->pack_start(*Utils::mk_label(str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true),
+			vbox->pack_start(*Utils::mk_label(str_temp, true, true),
 					Gtk::PACK_SHRINK);
 
 			str_temp = "<b>";

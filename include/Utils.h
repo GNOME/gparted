@@ -155,8 +155,6 @@ public:
 	static Sector round( double double_value ) ;
 	static Gtk::Label * mk_label( const Glib::ustring & text,
 				      bool use_markup = true,
-			      	      Gtk::AlignmentEnum x_align = Gtk::ALIGN_LEFT,
-			      	      Gtk::AlignmentEnum y_align = Gtk::ALIGN_CENTER,
 				      bool wrap = false,
 				      bool selectable = false,
 				      const Glib::ustring & text_color = "black" ) ;

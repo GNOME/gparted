@@ -45,14 +45,14 @@ Sector Utils::round( double double_value )
 
 Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 			      bool use_markup,
-			      Gtk::AlignmentEnum x_align,
-			      Gtk::AlignmentEnum y_align,
 			      bool wrap,
 			      bool selectable,
 			      const Glib::ustring & text_color )
 {
-
-	Gtk::Label * label = manage( new Gtk::Label( text, x_align, y_align ) ) ;
+	//xalign 0.0 == Gtk::ALIGN_LEFT  (gtkmm <= 2.22)
+	//           == Gtk::ALIGN_START (gtkmm >= 2.24)
+	//yalign 0.5 == Gtk::ALIGN_CENTER
+	Gtk::Label * label = manage( new Gtk::Label( text, 0.0, 0.5 ) ) ;
 
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;

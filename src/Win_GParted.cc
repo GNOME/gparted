@@ -470,7 +470,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//size
@@ -478,18 +478,15 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//path
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>",
-					   true,
-					   Gtk::ALIGN_LEFT,
-					   Gtk::ALIGN_CENTER ),
+	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
@@ -507,7 +504,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//heads
@@ -515,7 +512,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//sectors/track
@@ -523,7 +520,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL );
 	
 	//cylinders
@@ -531,7 +528,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	
 	//total sectors
@@ -539,7 +536,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	//sector size
@@ -547,7 +544,7 @@ void Win_GParted::init_device_info()
 			0, 1,
 			top, bottom,
 			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "", true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ) ) ;
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
@@ -595,9 +592,7 @@ void Win_GParted::refresh_combo_devices()
 		//devices submenu....
 		hbox = manage( new Gtk::HBox() ) ;
 		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_EXPAND_WIDGET ) ;
-		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")",
-		                                      true,
-		                                      Gtk::ALIGN_LEFT ),
+		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ),
 		                   Gtk::PACK_SHRINK ) ;
 
 		menu ->items() .push_back( * manage( new Gtk::RadioMenuItem( radio_group ) ) ) ;
@@ -2768,7 +2763,7 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	//Volume Group
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( vgname_label ) + "</b>" ),
 	                0, 1, top, bottom, Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( vgname, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+	table ->attach( * Utils::mk_label( vgname, true, false, true ),
 	                1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	//Members
@@ -2779,12 +2774,12 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	else
 	{
-		table ->attach( * Utils::mk_label( members [0], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+		table ->attach( * Utils::mk_label( members [0], true, false, true ),
 				1, 2, top++, bottom++, Gtk::FILL ) ;
 		for ( unsigned int i = 1 ; i < members .size() ; i ++ )
 		{
 			table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( members [i], true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, false, true ),
+			table ->attach( * Utils::mk_label( members [i], true, false, true ),
 					1, 2, top++, bottom++, Gtk::FILL ) ;
 		}
 

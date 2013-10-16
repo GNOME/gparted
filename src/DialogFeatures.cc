@@ -61,7 +61,7 @@ DialogFeatures::DialogFeatures()
 			Glib::ustring str_temp(_("This chart shows the actions supported on file systems."));
 			str_temp += "\n" ;
 			str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.");
-			hbox->pack_start(*Utils::mk_label(str_temp, true, Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER, true),
+			hbox->pack_start(*Utils::mk_label(str_temp, true, true),
 					Gtk::PACK_SHRINK);
 			hbox2->pack_start(*hbox);
 
