@@ -594,12 +594,12 @@ void Win_GParted::refresh_combo_devices()
 	
 		//devices submenu....
 		hbox = manage( new Gtk::HBox() ) ;
-		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_SHRINK ) ;
+		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_EXPAND_WIDGET ) ;
 		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")",
-					              true,
-						      Gtk::ALIGN_RIGHT ),
-				   Gtk::PACK_EXPAND_WIDGET ) ;
-		
+		                                      true,
+		                                      Gtk::ALIGN_LEFT ),
+		                   Gtk::PACK_SHRINK ) ;
+
 		menu ->items() .push_back( * manage( new Gtk::RadioMenuItem( radio_group ) ) ) ;
 		menu ->items() .back() .add( *hbox ) ;
 		menu ->items() .back() .signal_activate() .connect( 
