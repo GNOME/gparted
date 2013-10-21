@@ -2,30 +2,31 @@
 # Copyright (C) 2010 gparted's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gparted package.
 # Anish A <aneesh.nl@gmail.com>, 2010, 2012.
+# Anish Sheela <aneesh.nl@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-15 17:56+0000\n"
-"PO-Revision-Date: 2012-09-15 23:26+0530\n"
-"Last-Translator: Anish A <aneesh.nl@gmail.com>\n"
-"Language-Team: Swatantra Malayalam Computing\n"
+"POT-Creation-Date: 2013-10-19 20:23+0000\n"
+"PO-Revision-Date: 2013-10-21 22:20+0530\n"
+"Last-Translator: Anish Sheela <aneesh.nl@gmail.com>\n"
+"Language-Team: Swatantra Malayalam Computing <discuss@lists.smc.org.in>\n"
 "Language: ml\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 "X-Poedit-Language: Malayalam\n"
 "X-Poedit-Country: INDIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:362
-#: ../src/Win_GParted.cc:76 ../src/Win_GParted.cc:1234
-#: ../src/Win_GParted.cc:1425
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:360
+#: ../src/Win_GParted.cc:75 ../src/Win_GParted.cc:1272
+#: ../src/Win_GParted.cc:1463
 msgid "GParted"
 msgstr "ജീപാര്‍ട്ടട്"
 
@@ -41,13 +42,40 @@ msgstr "ജീപാര്‍ട്ടട് പാര്‍ട്ടീഷന�
 msgid "Create, reorganize, and delete partitions"
 msgstr "പാര്‍ട്ടിഷനുകള്‍ നിര്‍മ്മിക്കുകയും, അടുക്കിവയ്ക്കുകയും, കളയുകയും ചെയ്യുക"
 
-#: ../include/Utils.h:51
+#: ../include/Utils.h:56
 msgid "(New UUID - will be randomly generated)"
 msgstr "(പുതിയ UUID - ക്രമമില്ലാതെ ഉണ്ടാക്കും)"
 
-#: ../include/Utils.h:52
+#: ../include/Utils.h:57
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(പകുതി പുതിയ UUID - ക്രമമില്ലാതെ ഉണ്ടാക്കും)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/Copy_Blocks.cc:68
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%2 ലെ %1 പകര്‍ത്തി (%3 അവശേഷിക്കുന്നു)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#: ../src/Copy_Blocks.cc:75 ../src/Copy_Blocks.cc:185
+msgid "%1 of %2 copied"
+msgstr "%2 ലെ %1 പകര്‍ത്തി"
+
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/Copy_Blocks.cc:161
+msgid "copy %1 using a block size of %2"
+msgstr "%2 ബ്ലോക്ക് വലിപ്പം ഉപയോഗിച്ച് %1 പകര്‍ത്തി"
+
+#: ../src/Copy_Blocks.cc:223
+msgid "Operation Canceled"
+msgstr "പ്രവര്‍ത്തനം റദ്ദാക്കി"
+
+#: ../src/Copy_Blocks.cc:235
+msgid "Error while writing block at sector %1"
+msgstr "സെക്ട്ടര്‍ %1 ല്‍ എഴുതുമ്പോള്‍ പിഴവ്"
+
+#: ../src/Copy_Blocks.cc:240
+msgid "Error while reading block at sector %1"
+msgstr "സെക്ട്ടര്‍ %1 ല്‍ വായിക്കുമ്പോള്‍ പിഴവ്"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
@@ -89,7 +117,7 @@ msgstr "ഒന്നുമില്ല"
 msgid "Resize"
 msgstr "വലിപ്പം മാറ്റുക"
 
-#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:240
+#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:244
 msgid "Resize/Move"
 msgstr "വലിപ്പം മാറ്റുക അല്ലെങ്കില്‍ നീക്കുക"
 
@@ -138,39 +166,39 @@ msgstr "മുന്നറിയിപ്പ്:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:185 ../src/Dialog_Partition_New.cc:117
+#: ../src/Dialog_Partition_Info.cc:181 ../src/Dialog_Partition_New.cc:127
 msgid "File system:"
 msgstr "ഫയല്‍ സിസ്റ്റം:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:195 ../src/Win_GParted.cc:468
+#: ../src/Dialog_Partition_Info.cc:191 ../src/Win_GParted.cc:479
 msgid "Size:"
 msgstr "വലിപ്പം:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:211
+#: ../src/Dialog_Partition_Info.cc:207
 msgid "Used:"
 msgstr "ഉപയോഗിച്ചത്:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:225
+#: ../src/Dialog_Partition_Info.cc:221
 msgid "Unused:"
 msgstr "ഉപയോഗിക്കാത്തവ:"
 
-#: ../src/Dialog_Partition_Info.cc:242
+#: ../src/Dialog_Partition_Info.cc:238
 msgid "Unallocated:"
 msgstr "നീക്കിവെയ്ക്കാത്ത് :"
 
-#: ../src/Dialog_Partition_Info.cc:264
+#: ../src/Dialog_Partition_Info.cc:260
 msgid "Flags:"
 msgstr "ഫ്ലാഗുകള്‍:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:280 ../src/Win_GParted.cc:476
+#: ../src/Dialog_Partition_Info.cc:276 ../src/Win_GParted.cc:487
 msgid "Path:"
 msgstr "ഉപകരണം:"
 
-#: ../src/Dialog_Partition_Info.cc:294
+#: ../src/Dialog_Partition_Info.cc:287
 msgid "Status:"
 msgstr "അവസ്ഥ:"
 
@@ -178,7 +206,7 @@ msgstr "അവസ്ഥ:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:306
+#: ../src/Dialog_Partition_Info.cc:299
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "തിരക്കിലാണ് (ഒരു ലോജിക്കല്‍ പാര്‍ട്ടിഷനെങ്കിലും മൌണ്ട് ചെയ്തിട്ടുണ്ട്)"
 
@@ -186,7 +214,7 @@ msgstr "തിരക്കിലാണ് (ഒരു ലോജിക്കല്
 #. * means that this linux swap partition is enabled and being used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:314
+#: ../src/Dialog_Partition_Info.cc:307
 msgid "Active"
 msgstr "ഉപയോഗത്തിലിരിക്കുന്നു"
 
@@ -194,12 +222,12 @@ msgstr "ഉപയോഗത്തിലിരിക്കുന്നു"
 #. * means that the partition is a member of an LVM volume group and the
 #. * volume group is active and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:322
+#: ../src/Dialog_Partition_Info.cc:315
 msgid "%1 active"
 msgstr "%1 ഉപയോഗത്തില്‍"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:328
+#: ../src/Dialog_Partition_Info.cc:321
 msgid "Mounted on %1"
 msgstr "%1 ല്‍ മൌണ്ട് ചെയ്തു"
 
@@ -207,7 +235,7 @@ msgstr "%1 ല്‍ മൌണ്ട് ചെയ്തു"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:338
+#: ../src/Dialog_Partition_Info.cc:331
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "തിരക്കിലല്ല (ഒരു ലോജിക്കല്‍ പാര്‍ട്ടിഷനും മൌണ്ട് ചെയ്തിട്ടില്ല)"
 
@@ -215,7 +243,7 @@ msgstr "തിരക്കിലല്ല (ഒരു ലോജിക്കല്
 #. *  means that this linux swap partition is not enabled and is not
 #. *  in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:346
+#: ../src/Dialog_Partition_Info.cc:339
 msgid "Not active"
 msgstr "ഉപയോഗത്തിലില്ല"
 
@@ -224,7 +252,7 @@ msgstr "ഉപയോഗത്തിലില്ല"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:356
+#: ../src/Dialog_Partition_Info.cc:349
 msgid "Not active (Not a member of any volume group)"
 msgstr "ഉപയോഗത്തിലില്ല (ഒരു വോള്യം കൂട്ടത്തിന്റെയും അംഗമല്ല)"
 
@@ -234,7 +262,7 @@ msgstr "ഉപയോഗത്തിലില്ല (ഒരു വോള്യം
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:364
+#: ../src/Dialog_Partition_Info.cc:357
 msgid "%1 not active and exported"
 msgstr "%1 കയറ്റുമതി ചെയ്തതും ഉപയോഗത്തിലില്ലാത്തതുമാണ്"
 
@@ -242,50 +270,50 @@ msgstr "%1 കയറ്റുമതി ചെയ്തതും ഉപയോഗ�
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:370
+#: ../src/Dialog_Partition_Info.cc:363
 msgid "%1 not active"
 msgstr "%1 ഉപയോഗത്തിലില്ല"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:377
+#: ../src/Dialog_Partition_Info.cc:370
 msgid "Not mounted"
 msgstr "മൗണ്ട് ചെയ്തിട്ടില്ല "
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:386 ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:129
+#: ../src/Dialog_Partition_Info.cc:379 ../src/Dialog_Partition_Label.cc:41
+#: ../src/Dialog_Partition_New.cc:139
 msgid "Label:"
 msgstr "പേര്:"
 
-#: ../src/Dialog_Partition_Info.cc:399
+#: ../src/Dialog_Partition_Info.cc:392
 msgid "UUID:"
 msgstr "യുയുഐഡി:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:413
+#: ../src/Dialog_Partition_Info.cc:406
 msgid "First sector:"
 msgstr "ആദ്യത്തെ സെക്ടര്‍:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:423
+#: ../src/Dialog_Partition_Info.cc:416
 msgid "Last sector:"
 msgstr "അവസാനത്തെ സെക്ടര്‍:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:433 ../src/Win_GParted.cc:529
+#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:537
 msgid "Total sectors:"
 msgstr "മൊത്തം സെക്ടറുകള്‍"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:455 ../src/Win_GParted.cc:2717
+#: ../src/Dialog_Partition_Info.cc:448 ../src/Win_GParted.cc:2722
 msgid "Volume Group:"
 msgstr "വോള്യം കൂട്ടം:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2718
+#: ../src/Dialog_Partition_Info.cc:454 ../src/Win_GParted.cc:2723
 msgid "Members:"
 msgstr "അംഗങ്ങള്‍:"
 
@@ -300,25 +328,25 @@ msgid "Create new Partition"
 msgstr "പൂതിയ പാര്‍ട്ടിഷന്‍ നിര്‍മ്മിക്കുക"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:77
+#: ../src/Dialog_Partition_New.cc:87
 msgid "Create as:"
 msgstr "ഇതായി ഉണ്ടാക്കുക:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:82 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "പ്രഥമ പാര്‍ട്ടിഷന്‍"
 
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:93 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "ലോജിക്കല്‍ പാര്‍ട്ടിഷന്‍"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:94 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "ദീര്‍ഘിപ്പിച്ച പാര്‍ട്ടിഷന്‍"
 
-#: ../src/Dialog_Partition_New.cc:196
+#: ../src/Dialog_Partition_New.cc:205
 msgid "New Partition #%1"
 msgstr "പുതിയ പാര്‍ട്ടിഷന്‍ #%1"
 
@@ -330,92 +358,102 @@ msgstr "വലിപ്പം മാറ്റുക അല്ലെങ്കി�
 msgid "Resize %1"
 msgstr "വലിപ്പം മാറ്റുക %1"
 
-#: ../src/Dialog_Progress.cc:33
+#: ../src/Dialog_Progress.cc:32
 msgid "Applying pending operations"
 msgstr "തീര്‍ച്ചപ്പെടാത്ത പ്രവര്‍ത്തനങ്ങള്‍ പ്രയോഗിക്കുക"
 
-#: ../src/Dialog_Progress.cc:50
+#: ../src/Dialog_Progress.cc:47
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr "പാര്‍ട്ടിഷന്റെ എണ്ണവും പ്രവര്‍ത്തനങ്ങളുടെ തരവുമനസരിച്ച് ഇത് ധാരാളം സമയമെടുക്കാം."
 
-#: ../src/Dialog_Progress.cc:63
+#: ../src/Dialog_Progress.cc:60
 msgid "Completed Operations:"
 msgstr "തീര്‍ന്ന പ്രവര്‍ത്തനങ്ങള്‍"
 
-#: ../src/Dialog_Progress.cc:103
+#: ../src/Dialog_Progress.cc:101
 msgid "Details"
 msgstr "വിശദാംശങ്ങള്‍"
 
-#: ../src/Dialog_Progress.cc:202
+#: ../src/Dialog_Progress.cc:204
 msgid "%1 of %2 operations completed"
 msgstr "%2 ല്‍ %1 പ്രവര്‍ത്തനങ്ങള്‍ തീര്‍ന്നു"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:234
+#: ../src/Dialog_Progress.cc:222
 msgid "_Save Details"
 msgstr "വിശദാംശങ്ങള്‍ _സൂക്ഷിക്കുക"
 
-#: ../src/Dialog_Progress.cc:243
+#: ../src/Dialog_Progress.cc:234
 msgid "Operation cancelled"
 msgstr "പ്രവര്‍ത്തനം റദ്ദാക്കി"
 
-#: ../src/Dialog_Progress.cc:257
+#: ../src/Dialog_Progress.cc:248
 msgid "All operations successfully completed"
 msgstr "എല്ലാ പ്രവര്‍ത്തനങ്ങളും വിജയകരമായി പൂര്‍ത്തയാക്കി"
 
-#: ../src/Dialog_Progress.cc:261
+#: ../src/Dialog_Progress.cc:252
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 മുന്നറിയിപ്പ്"
 msgstr[1] "%1 മുന്നറിയിപ്പുകള്‍"
 
-#: ../src/Dialog_Progress.cc:274
+#: ../src/Dialog_Progress.cc:265
 msgid "An error occurred while applying the operations"
 msgstr "പ്രവര്‍ത്തനങ്ങള്‍ പ്രയോഗിച്ചപ്പോള്‍ ഒരു പിശക് സംഭവിച്ചു"
 
-#: ../src/Dialog_Progress.cc:279
+#: ../src/Dialog_Progress.cc:270
 msgid "See the details for more information."
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി വിശദാംശങ്ങള്‍ കാണുക"
 
-#: ../src/Dialog_Progress.cc:281
+#: ../src/Dialog_Progress.cc:272
 msgid "IMPORTANT"
 msgstr "പ്രധാനം"
 
-#: ../src/Dialog_Progress.cc:282
+#: ../src/Dialog_Progress.cc:273
 msgid "If you want support, you need to provide the saved details!"
 msgstr "താങ്കള്‍ക്ക് പിന്‍തുണ ആവശ്യമുണ്ടെങ്കില്‍ സംരക്ഷിച്ച വിശദാംശങ്ങള്‍ നല്‍കണം."
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:285
+#: ../src/Dialog_Progress.cc:276
 msgid "See %1 for more information."
 msgstr "കൂടുതല്‍ വിവരങ്ങള്‍ക്കായി %1 കാണുക."
 
-#: ../src/Dialog_Progress.cc:318
+#. TO TRANSLATORS: looks like  Force Cancel (5)
+#. *  where the number represents a count down in seconds until the button is enabled
+#: ../src/Dialog_Progress.cc:295 ../src/Dialog_Progress.cc:326
+msgid "Force Cancel (%1)"
+msgstr "നിര്‍ബന്ധമായി റദ്ദാക്കുക (%1)"
+
+#: ../src/Dialog_Progress.cc:297 ../src/Dialog_Progress.cc:330
+msgid "Force Cancel"
+msgstr "നിര്‍ബന്ധമായി റദ്ദാക്കുക"
+
+#: ../src/Dialog_Progress.cc:308
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "ഇപ്പോള്‍ നടക്കുന്ന പ്രവര്‍ത്തനം റദ്ദാക്കണമെന്ന് ഉറപ്പാണോ?"
 
-#: ../src/Dialog_Progress.cc:324
+#: ../src/Dialog_Progress.cc:314
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "ഒരു പ്രവര്‍ത്തനം റദ്ദാക്കിയാല്‍ ഗുരുതരമായ ഫയല്‍ സിസ്റ്റം പ്രശ്നങ്ങള്‍ ഉണ്ടാക്കാം."
 
-#: ../src/Dialog_Progress.cc:326
+#: ../src/Dialog_Progress.cc:316
 msgid "Continue Operation"
 msgstr "പ്രക്രീയ തുടരുക"
 
-#: ../src/Dialog_Progress.cc:327
+#: ../src/Dialog_Progress.cc:317
 msgid "Cancel Operation"
 msgstr "പ്രക്രീയ റദ്ദാക്കുക"
 
-#: ../src/Dialog_Progress.cc:340
+#: ../src/Dialog_Progress.cc:338
 msgid "Save Details"
 msgstr "വിശദാംശങ്ങള്‍ സൂക്ഷിക്കുക"
 
-#: ../src/Dialog_Progress.cc:359
+#: ../src/Dialog_Progress.cc:357
 msgid "GParted Details"
 msgstr "ജിപാര്‍ട്ടട് വിശദാംശങ്ങള്‍"
 
-#: ../src/Dialog_Progress.cc:367
+#: ../src/Dialog_Progress.cc:365
 msgid "Libparted"
 msgstr "ലിബ്പാര്‍ട്ടട്"
 
@@ -423,7 +461,7 @@ msgstr "ലിബ്പാര്‍ട്ടട്"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:410
+#: ../src/Dialog_Progress.cc:408
 msgid "EXECUTING"
 msgstr "നടപ്പാക്കുകുന്നു"
 
@@ -431,7 +469,7 @@ msgstr "നടപ്പാക്കുകുന്നു"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:418
+#: ../src/Dialog_Progress.cc:416
 msgid "SUCCESS"
 msgstr "വിജയം"
 
@@ -439,7 +477,7 @@ msgstr "വിജയം"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:424
 msgid "ERROR"
 msgstr "പിഴവ്"
 
@@ -448,7 +486,7 @@ msgstr "പിഴവ്"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:433
 msgid "INFO"
 msgstr "വിവരം"
 
@@ -457,7 +495,7 @@ msgstr "വിവരം"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:444
+#: ../src/Dialog_Progress.cc:442
 msgid "N/A"
 msgstr "ബാധകമല്ല"
 
@@ -676,41 +714,40 @@ msgid "update %1 entry"
 msgstr "%1 പുതുക്കുക"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:38
+#: ../src/FileSystem.cc:43
 msgid "_Mount"
 msgstr "_മൌണ്ട്"
 
-#: ../src/FileSystem.cc:39
+#: ../src/FileSystem.cc:44
 msgid "_Unmount"
 msgstr "_അണ്‍മൌണ്ട്"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:124
+#: ../src/FileSystem.cc:191
 msgid "Created directory %1"
 msgstr "%1 ഡയറക്ട്ടറി നിര്‍മ്മിച്ചു"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:151
+#: ../src/FileSystem.cc:218
 msgid "Removed directory %1"
 msgstr "%1 ഡയറക്ട്ടറി നിക്കം ചെയ്തു"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:175 ../src/GParted_Core.cc:184
-#: ../src/GParted_Core.cc:194
+#: ../src/GParted_Core.cc:193 ../src/GParted_Core.cc:202
 msgid "Scanning %1"
 msgstr "%1 പരിശോധിക്കുന്നു"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:217
+#: ../src/GParted_Core.cc:225
 msgid "Confirming %1"
 msgstr "%1 തീര്‍ച്ചപ്പെടുത്തുന്നു"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:229
+#: ../src/GParted_Core.cc:237
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "ലോജിക്കല്‍ സെക്ട്ടര്‍ വലിപ്പം %2 ബൈറ്റ് ഉള്ള %1 ഉപകരണത്തെ അവഗണിക്കുന്നു."
 
-#: ../src/GParted_Core.cc:231
+#: ../src/GParted_Core.cc:239
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -719,7 +756,7 @@ msgstr ""
 "പതിപ്പെങ്കിലും വേണം."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:270
+#: ../src/GParted_Core.cc:277
 msgid "Searching %1 partitions"
 msgstr "%1 പാര്‍ട്ടിഷന്‍ തിരയുന്നു"
 
@@ -727,78 +764,78 @@ msgstr "%1 പാര്‍ട്ടിഷന്‍ തിരയുന്നു"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:317
+#: ../src/GParted_Core.cc:326
 msgid "unrecognized"
 msgstr "തിരിച്ചറിയാത്തത്"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:622
+#: ../src/GParted_Core.cc:645
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "ഒരു പാര്‍ട്ടിഷന്റെ സെക്ട്ടറിന്റെ വലിപ്പം %1 ആകാന്‍ പാടില്ല"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:636
+#: ../src/GParted_Core.cc:659
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "ഒരു പാര്‍ട്ടിഷന്റെ ഉപയോഗിച്ച സെക്ട്ടറുകള്‍ (%1) അതിന്റെ വലിപ്പത്തിനെക്കാള്‍ കൂടുതലായത്(%2) കാരണം "
 "സാധുവല്ല"
 
-#: ../src/GParted_Core.cc:706
+#: ../src/GParted_Core.cc:729
 msgid "libparted messages"
 msgstr "ലിബ്പാര്‍ട്ടട് സന്ദേശങ്ങള്‍"
 
-#: ../src/GParted_Core.cc:1159
+#: ../src/GParted_Core.cc:1196
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "ലിനക്സ് ഏകീകരിച്ച കീ സജ്ജികരണ എന്‍ക്രിപ്ഷന്‍ ഇനിയും പിന്‍തുണച്ചിട്ടില്ല."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1309
+#: ../src/GParted_Core.cc:1354
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "ഫയല്‍ സിസ്റ്റം കണ്ടുപിടിച്ചില്ല! സാധ്യതയുള്ള കാരണങ്ങള്‍:"
 
-#: ../src/GParted_Core.cc:1311
+#: ../src/GParted_Core.cc:1356
 msgid "The file system is damaged"
 msgstr "ഫയല്‍ സിസ്റ്റം തകരാറിലാണ്"
 
-#: ../src/GParted_Core.cc:1313
+#: ../src/GParted_Core.cc:1358
 msgid "The file system is unknown to GParted"
 msgstr "ഈ ഫയല്‍ സിസ്റ്റം ജീപാര്‍ട്ടടിന് അറിയില്ല"
 
-#: ../src/GParted_Core.cc:1315
+#: ../src/GParted_Core.cc:1360
 msgid "There is no file system available (unformatted)"
 msgstr "ഫയല്‍ സിസ്റ്റമൊന്നും ലഭ്യമല്ല (ഫോര്‍മാറ്റ് ചെയ്തിട്ടില്ല)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1318
+#: ../src/GParted_Core.cc:1363
 msgid "The device entry %1 is missing"
 msgstr "%1 ഉപകരണം കാണാനില്ല"
 
-#: ../src/GParted_Core.cc:1477
+#: ../src/GParted_Core.cc:1528
 msgid "Unable to find mount point"
 msgstr "മൌണ്ട് സ്ഥാനം കണ്ടുപിടിയ്ക്കാന്‍ പറ്റുന്നില്ല"
 
-#: ../src/GParted_Core.cc:1555
+#: ../src/GParted_Core.cc:1602
 msgid "Unable to read the contents of this file system!"
 msgstr "ഫയല്‍ സിസ്റ്റത്തിലെ ഉള്ളടക്കം വായിക്കാന്‍ പറ്റുന്നില്ല"
 
-#: ../src/GParted_Core.cc:1557
+#: ../src/GParted_Core.cc:1604
 msgid "Because of this some operations may be unavailable."
 msgstr "ഇത് കാരണം ചില പ്രവര്‍ത്തനങ്ങള്‍ ലഭ്യമല്ലാതാകാം."
 
-#: ../src/GParted_Core.cc:1561
+#: ../src/GParted_Core.cc:1608
 msgid "The cause might be a missing software package."
 msgstr "കാണാനില്ലാത്ത ഒരു സോഫ്റ്റ്‌വെയര്‍ പാക്കേജ് ആകാം കാരണം."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1564
+#: ../src/GParted_Core.cc:1611
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "%1 ഫയല്‍ സിസ്റ്റം പിന്തുണയ്ക്കായി ഈ സോഫ്റ്റ്‌വെയര്‍ പാക്കേജുകള്‍ ആവശ്യമാണ്: %2."
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1574
+#: ../src/GParted_Core.cc:1621
 msgid "%1 of unallocated space within the partition."
 msgstr "പാര്‍ട്ടീഷന്റെ അകത്ത് %1 ഉപയോഗിക്കാത്ത സ്ഥലം ഉണ്ട്."
 
@@ -806,7 +843,7 @@ msgstr "പാര്‍ട്ടീഷന്റെ അകത്ത് %1 ഉപ�
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1585
+#: ../src/GParted_Core.cc:1632
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -814,55 +851,55 @@ msgstr ""
 "ഒരു പാര്‍ട്ടീഷ്യന്‍ മുഴുവന്‍ ഈ ഫയല്‍സിസ്റ്റം ആക്കാന്‍, പാര്‍ട്ടീഷ്യന്‍ തിരഞ്ഞെടുത്ത ശേഷം ഈ മെനു "
 "തിരഞ്ഞെടുക്കുക:"
 
-#: ../src/GParted_Core.cc:1587
+#: ../src/GParted_Core.cc:1634
 msgid "Partition --> Check."
 msgstr "പാര്‍ട്ടീഷന്‍ --> പരീശോധന."
 
-#: ../src/GParted_Core.cc:1666
+#: ../src/GParted_Core.cc:1732
 msgid "create empty partition"
 msgstr "ഒഴിഞ്ഞ പാര്‍ട്ടിഷന്‍ ഉണ്ടാക്കുക"
 
-#: ../src/GParted_Core.cc:1736 ../src/GParted_Core.cc:3116
+#: ../src/GParted_Core.cc:1802 ../src/GParted_Core.cc:2978
 msgid "path: %1"
 msgstr "വഴി: %1"
 
-#: ../src/GParted_Core.cc:1737 ../src/GParted_Core.cc:3117
+#: ../src/GParted_Core.cc:1803 ../src/GParted_Core.cc:2979
 msgid "start: %1"
 msgstr "തുടക്കം: %1"
 
-#: ../src/GParted_Core.cc:1738 ../src/GParted_Core.cc:3118
+#: ../src/GParted_Core.cc:1804 ../src/GParted_Core.cc:2980
 msgid "end: %1"
 msgstr "അവസാനം: %1"
 
-#: ../src/GParted_Core.cc:1739 ../src/GParted_Core.cc:3119
+#: ../src/GParted_Core.cc:1805 ../src/GParted_Core.cc:2981
 msgid "size: %1 (%2)"
 msgstr "വലിപ്പം: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1775 ../src/linux_swap.cc:125
+#: ../src/GParted_Core.cc:1837 ../src/linux_swap.cc:165
 msgid "create new %1 file system"
 msgstr "പുതിയ %1 ഫയല്‍സിസ്റ്റം ഉണ്ടാക്കുക"
 
-#: ../src/GParted_Core.cc:1815
+#: ../src/GParted_Core.cc:1878
 msgid "delete partition"
 msgstr "പാര്‍ട്ടിഷന്‍ നീക്കം ചെയ്യുക"
 
-#: ../src/GParted_Core.cc:1864
+#: ../src/GParted_Core.cc:1933
 msgid "delete %1 file system"
 msgstr "%1 ഫയല്‍സിസ്റ്റം ഇല്ലാതാക്കുക"
 
-#: ../src/GParted_Core.cc:1881
+#: ../src/GParted_Core.cc:1950
 msgid "Clear partition label on %1"
 msgstr "%1 ലെ പാര്‍ട്ടിഷന്റെ പേര് കളയുക"
 
-#: ../src/GParted_Core.cc:1886
+#: ../src/GParted_Core.cc:1955
 msgid "Set partition label to \"%1\" on %2"
 msgstr "%2 ലെ പാര്‍ട്ടിഷന്റെ പേരു് %1 ആക്കുക"
 
-#: ../src/GParted_Core.cc:1919
+#: ../src/GParted_Core.cc:1989
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "%1 ലെ പകുതി UUID യ്ക്ക് ഏതെങ്കിലും ഒരു മൂല്യം കൊടുക്കുക"
 
-#: ../src/GParted_Core.cc:1924
+#: ../src/GParted_Core.cc:1994
 msgid "Set UUID on %1 to a new, random value"
 msgstr "%1 ലെ UUID ഏതെങ്കിലും ഒരു മൂല്യം കൊടുക്കുക"
 
@@ -871,354 +908,306 @@ msgstr "%1 ലെ UUID ഏതെങ്കിലും ഒരു മൂല്യ�
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2008
+#: ../src/GParted_Core.cc:2079
 msgid "moving requires old and new length to be the same"
 msgstr "പഴയതും പുതിയതുമായ തുടക്കങ്ങള്‍ ഒന്നായാലെ നീക്കാന്‍ പറ്റു"
 
-#: ../src/GParted_Core.cc:2038
+#: ../src/GParted_Core.cc:2109
 msgid "rollback last change to the partition table"
 msgstr "പാര്‍ട്ടിഷന്‍ പട്ടികയിലെ അവസാനത്തെ മാറ്റം പഴയപടിയാക്കുക"
 
-#: ../src/GParted_Core.cc:2076
+#: ../src/GParted_Core.cc:2151
 msgid "move file system to the left"
 msgstr "ഫയല്‍ സിസ്റ്റം ഇടത്തോട്ട് നീക്കുക"
 
-#: ../src/GParted_Core.cc:2078
+#: ../src/GParted_Core.cc:2153
 msgid "move file system to the right"
 msgstr "ഫയല്‍ സിസ്റ്റം വലത്തോട്ട് നീക്കുക"
 
-#: ../src/GParted_Core.cc:2081
+#: ../src/GParted_Core.cc:2156
 msgid "move file system"
 msgstr "ഫയല്‍ സിസ്റ്റം നീക്കുക"
 
-#: ../src/GParted_Core.cc:2083
+#: ../src/GParted_Core.cc:2158
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr "പുതിയ, പഴയ ഫയല്‍ സിസ്റ്റങ്ങള്‍ക്ക് ഒരേ സ്ഥാനം. അതിനാല്‍ ഈ പ്രവര്‍ത്തനം ഒഴിവാക്കുന്നു."
 
-#: ../src/GParted_Core.cc:2102
-msgid "perform real move"
-msgstr "ശരിയ്ക്കും നീക്കുക"
-
-#: ../src/GParted_Core.cc:2155
+#: ../src/GParted_Core.cc:2226
 msgid "using libparted"
 msgstr "ലിബ്പാര്‍ട്ടട് ഉപയോഗിച്ച്"
 
-#: ../src/GParted_Core.cc:2196
+#: ../src/GParted_Core.cc:2269
 msgid "resizing requires old and new start to be the same"
 msgstr "പഴയതും പുതിയതുമായ തുടക്കങ്ങള്‍ ഒന്നായാലെ വലിപ്പം മാറ്റാന്‍ പറ്റു"
 
-#: ../src/GParted_Core.cc:2265
+#: ../src/GParted_Core.cc:2336
 msgid "resize/move partition"
 msgstr "പാര്‍ട്ടിഷന്‍ നീക്കുകയോ വലിപ്പം മാറ്റുകയോ ചെയ്യുക"
 
-#: ../src/GParted_Core.cc:2268
+#: ../src/GParted_Core.cc:2339
 msgid "move partition to the right"
 msgstr "പാര്‍ട്ടിഷന്‍ വലത്തോട്ട് നീക്കുക"
 
-#: ../src/GParted_Core.cc:2271
+#: ../src/GParted_Core.cc:2342
 msgid "move partition to the left"
 msgstr "പാര്‍ട്ടിഷന്‍ ഇടത്താട്ട് നീക്കുക"
 
-#: ../src/GParted_Core.cc:2274
+#: ../src/GParted_Core.cc:2345
 msgid "grow partition from %1 to %2"
 msgstr "%1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് പാര്‍ട്ടിഷന്‍ വലുതാക്കുക"
 
-#: ../src/GParted_Core.cc:2277
+#: ../src/GParted_Core.cc:2348
 msgid "shrink partition from %1 to %2"
 msgstr "%1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് പാര്‍ട്ടിഷന്‍ ചെറുതാക്കുക"
 
-#: ../src/GParted_Core.cc:2280
+#: ../src/GParted_Core.cc:2351
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "പാര്‍ട്ടിഷന്‍ വലത്തേയ്ക്ക് നീക്കി %1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് വലുതാക്കു"
 
-#: ../src/GParted_Core.cc:2283
+#: ../src/GParted_Core.cc:2354
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "പാര്‍ട്ടിഷന്‍ വലത്തേയ്ക്ക് നീക്കി %1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് ചെറുതാക്കു"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2357
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "പാര്‍ട്ടിഷന്‍ ഇടത്തേയ്കേക് നീക്കി %1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് വലുതാക്കു"
 
-#: ../src/GParted_Core.cc:2289
+#: ../src/GParted_Core.cc:2360
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "പാര്‍ട്ടിഷന്‍ ഇടത്തേയ്ക്ക് നീക്കി %1 ല്‍ നിന്ന് %2 ലേയ്ക്ക് ചെറുതാക്കു"
 
-#: ../src/GParted_Core.cc:2304
+#: ../src/GParted_Core.cc:2375
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr "പുതിയ, പഴയ പാര്‍ട്ടിഷന് ഒരേ സ്ഥാനവും വലിപ്പവും. അതിനാല്‍ ഈ പ്രവര്‍ത്തനം ഒഴിവാക്കുന്നു."
 
-#: ../src/GParted_Core.cc:2314
+#: ../src/GParted_Core.cc:2385
 msgid "old start: %1"
 msgstr "പഴയ തുടക്കം: %1"
 
-#: ../src/GParted_Core.cc:2315
+#: ../src/GParted_Core.cc:2386
 msgid "old end: %1"
 msgstr "പഴയ അവസാനം: %1"
 
-#: ../src/GParted_Core.cc:2316
+#: ../src/GParted_Core.cc:2387
 msgid "old size: %1 (%2)"
 msgstr "പഴയ വലിപ്പം: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2379 ../src/GParted_Core.cc:3197
+#: ../src/GParted_Core.cc:2452 ../src/GParted_Core.cc:3060
 msgid "new start: %1"
 msgstr "പുതിയ തുടക്കം: %1"
 
-#: ../src/GParted_Core.cc:2380 ../src/GParted_Core.cc:3198
+#: ../src/GParted_Core.cc:2453 ../src/GParted_Core.cc:3061
 msgid "new end: %1"
 msgstr "പുതിയ അവസാനം: %1"
 
-#: ../src/GParted_Core.cc:2381 ../src/GParted_Core.cc:3199
+#: ../src/GParted_Core.cc:2454 ../src/GParted_Core.cc:3062
 msgid "new size: %1 (%2)"
 msgstr "പുതിയ വലിപ്പം: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2406 ../src/GParted_Core.cc:3146
+#: ../src/GParted_Core.cc:2481 ../src/GParted_Core.cc:3008
 msgid "requested start: %1"
 msgstr "ആവശ്യപ്പെട്ട തുടക്കം: %1"
 
-#: ../src/GParted_Core.cc:2407 ../src/GParted_Core.cc:3147
+#: ../src/GParted_Core.cc:2482 ../src/GParted_Core.cc:3009
 msgid "requested end: %1"
 msgstr "ആവശ്യപ്പെട്ട അവസാനം: %1"
 
-#: ../src/GParted_Core.cc:2408 ../src/GParted_Core.cc:3148
+#: ../src/GParted_Core.cc:2483 ../src/GParted_Core.cc:3010
 msgid "requested size: %1 (%2)"
 msgstr "ആവശ്യപ്പെട്ട വലിപ്പം: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2433
+#: ../src/GParted_Core.cc:2508
 msgid "shrink file system"
 msgstr "ഫയല്‍ സിസ്റ്റം ചെറുതാക്കുക"
 
-#: ../src/GParted_Core.cc:2437
+#: ../src/GParted_Core.cc:2512
 msgid "grow file system"
 msgstr "ഫയല്‍ സിസ്റ്റം വലുതാക്കുക"
 
-#: ../src/GParted_Core.cc:2440
+#: ../src/GParted_Core.cc:2515
 msgid "resize file system"
 msgstr "ഫയല്‍ സിസ്റ്റത്തിന്റെ വലിപ്പം മാറ്റുക"
 
-#: ../src/GParted_Core.cc:2443
+#: ../src/GParted_Core.cc:2518
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "പുതിയ, പഴയ ഫയല്‍ സിസ്റ്റങ്ങള്‍ക്ക് ഒരേ വലിപ്പം. അതിനാല്‍ ഈ പ്രവര്‍ത്തനം ഒഴിവാക്കുന്നു."
 
-#: ../src/GParted_Core.cc:2483
+#: ../src/GParted_Core.cc:2559
 msgid "grow file system to fill the partition"
 msgstr "മുഴുവന്‍ പാര്‍ട്ടിഷനുകളും നിറയുന്ന തരത്തില്‍ ഫയല്‍ സിസ്റ്റം വലുതാക്കുക"
 
-#: ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2564
 msgid "growing is not available for this file system"
 msgstr "ഈ ഫയല്‍ സിസ്റ്റത്തിന് വലുതാക്കുക ലഭ്യമല്ല"
 
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2573
 msgid "growing the file system is currently disallowed"
 msgstr "ഫയല്‍ സിസ്റ്റം വലുതാക്കുന്നത് ഇപ്പോള്‍ അനുവദിനീയം അല്ല"
 
-#: ../src/GParted_Core.cc:2523
+#: ../src/GParted_Core.cc:2599
 msgid "the destination is smaller than the source partition"
 msgstr "ലക്ഷ്യ പാര്‍ട്ടിഷന്‍ ശ്രോതസ്സിനെക്കാള്‍ ചെറുതാണ്"
 
-#: ../src/GParted_Core.cc:2540
+#: ../src/GParted_Core.cc:2616
 msgid "copy file system of %1 to %2"
 msgstr "%1 ലെ ഫയല്‍ സിസ്റ്റം %2 ലേയ്ക്ക് പകര്‍ത്തുക"
 
-#: ../src/GParted_Core.cc:2593
-msgid "perform read-only test"
-msgstr "വായിച്ച് മാത്രം പരിക്ഷണം നടത്തുക"
-
-#: ../src/GParted_Core.cc:2647
+#: ../src/GParted_Core.cc:2714
 msgid "using internal algorithm"
 msgstr "ആന്തരികമായ വിദ്യ ഉപയോഗിച്ച്"
 
-#. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2651
-msgid "read %1"
-msgstr "%1 വായിച്ചു"
-
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2653
+#: ../src/GParted_Core.cc:2717
 msgid "copy %1"
 msgstr "%1 പകര്‍ത്തി"
 
-#: ../src/GParted_Core.cc:2657
+#: ../src/GParted_Core.cc:2720
 msgid "finding optimal block size"
 msgstr "മെച്ചമായ ബ്ളോക്ക് വലിപ്പം കണ്ടുപിടിയ്ക്കുന്നു"
 
-#: ../src/GParted_Core.cc:2697
+#: ../src/GParted_Core.cc:2761
 msgid "%1 seconds"
 msgstr "%1 സെക്കന്റ്"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2715
+#: ../src/GParted_Core.cc:2779
 msgid "optimal block size is %1"
 msgstr "മെച്ചമായ ബ്ളോക്ക് വലിപ്പം %1 ആണ്"
 
-#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2733
-msgid "%1 (%2 B) read"
-msgstr "%1 (%2 B) വായിച്ചു"
-
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2796
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) പകര്‍ത്തി"
 
-#: ../src/GParted_Core.cc:2748
+#: ../src/GParted_Core.cc:2829
 msgid "roll back last transaction"
 msgstr "അവസാന കൈമാറ്റം പഴയപടിയാക്കുക"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2777
+#: ../src/GParted_Core.cc:2843
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1 ല്‍ ഫയല്‍ സിസ്റ്റം പിഴവുകള്‍ക്കായി തിരയുക, സാധ്യമെങ്കില്‍ അവ പരിഹരിക്കുക"
 
-#: ../src/GParted_Core.cc:2785
+#: ../src/GParted_Core.cc:2852
 msgid "checking is not available for this file system"
 msgstr "ഈ ഫയല്‍ സിസ്റ്റത്തിന് പരിശോധന ലഭ്യമല്ല"
 
-#: ../src/GParted_Core.cc:2816
+#: ../src/GParted_Core.cc:2883
 msgid "set partition type on %1"
 msgstr "%1 ലെ പാര്‍ട്ടിഷന്‍ തരം തീരുമാനിക്കുക"
 
-#: ../src/GParted_Core.cc:2851
+#: ../src/GParted_Core.cc:2920
 msgid "new partition type: %1"
 msgstr "പുതിയ പാര്‍ട്ടിഷന്‍ തരം: %1"
 
-#: ../src/GParted_Core.cc:2868
+#: ../src/GParted_Core.cc:2937
 msgid "new partition flag: %1"
 msgstr "പുതിയ പാര്‍ട്ടിഷന്‍ ഫ്ളാഗ്: %1"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2896
-msgid "%1 of %2 read (%3 remaining)"
-msgstr "%2 ലെ %1 വായിച്ചു (%3 അവശേഷിക്കുന്നു)"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/GParted_Core.cc:2898
-msgid "%1 of %2 copied (%3 remaining)"
-msgstr "%2 ലെ %1 പകര്‍ത്തി (%3 അവശേഷിക്കുന്നു)"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/GParted_Core.cc:2906 ../src/GParted_Core.cc:3023
-msgid "%1 of %2 read"
-msgstr "%2 ലെ %1 വായിച്ചു"
-
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/GParted_Core.cc:2908 ../src/GParted_Core.cc:3025
-msgid "%1 of %2 copied"
-msgstr "%2 ലെ %1 പകര്‍ത്തി"
-
-#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2929
-msgid "read %1 using a block size of %2"
-msgstr "%2 ബ്ളോക്ക് വലിപ്പം ഉപയോഗിച്ച് %1 വായിച്ചു"
-
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:2934
-msgid "copy %1 using a block size of %2"
-msgstr "%2 ബ്ളോക്ക് വലിപ്പം ഉപയോഗിച്ച് %1 പകര്‍ത്തി"
-
-#: ../src/GParted_Core.cc:3084
-msgid "Error while writing block at sector %1"
-msgstr "സെക്ട്ടര്‍ %1 ല്‍ എഴുതുമ്പോള്‍ പിഴവ്"
-
-#: ../src/GParted_Core.cc:3087
-msgid "Error while reading block at sector %1"
-msgstr "സെക്ട്ടര്‍ %1 ല്‍ വായിക്കുമ്പോള്‍ പിഴവ്"
-
-#: ../src/GParted_Core.cc:3097
+#: ../src/GParted_Core.cc:2956
 msgid "calibrate %1"
 msgstr "%1 ക്രമീകരിക്കു"
 
-#: ../src/GParted_Core.cc:3142
+#: ../src/GParted_Core.cc:3004
 msgid "calculate new size and position of %1"
 msgstr "%1 ന്റെ പുതിയ വലിപ്പവും സ്ഥാനവും കണ​ക്ക് കുട്ടുക"
 
+#: ../src/GParted_Core.cc:3120
+msgid "clear old file system signatures in %1"
+msgstr "%1 ലെ പഴയ ഫയല്‍സിസ്റ്റം ഒപ്പുകള്‍ മായ്ക്കുക"
+
+#: ../src/GParted_Core.cc:3280
+msgid "flush operating system cache of %1"
+msgstr "%1 ലെ പ്രവര്‍ത്തകസംവിധാന ക്യാഷ് ഫ്ലഷ് ചെയ്യുക"
+
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3296
+#: ../src/GParted_Core.cc:3312
 msgid "update boot sector of %1 file system on %2"
 msgstr "%2 ലെ %1 ഫയല്‍ സിസ്റ്റത്തിലെ ബൂട്ട് സെക്ട്ടര്‍ പരിഷ്കരിക്കുക"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3332
+#: ../src/GParted_Core.cc:3348
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1 ലെ ബൂട്ട് സെക്ട്ടര്‍ എഴുതുന്നതില്‍ പിഴവ്"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3338
+#: ../src/GParted_Core.cc:3354
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1 ലെ 0x1c സ്ഥാനത്തിലേയ്ക്ക് പോകുന്നതില്‍ പിഴവ്"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3345
+#: ../src/GParted_Core.cc:3361
 msgid "Error trying to open %1"
 msgstr "%1 തുറക്കുന്നതില്‍ പിഴവ്"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3371
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "എന്‍ടിഎഫ്എസ് ബൂട്ട് രേഖയിലെ ഗോപ്യമായ സെക്ട്ടറിന്റെ എണ്ണം %1 ആക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/GParted_Core.cc:3357
+#: ../src/GParted_Core.cc:3373
 msgid "You might try the following command to correct the problem:"
 msgstr "താങ്കള്‍ക്ക് ഈ പ്രശ്നം പരിഹരിക്കാന്‍ ഈ കമാന്റുകള്‍ സഹായിക്കും:"
 
-#: ../src/GParted_Core.cc:3472
+#: ../src/GParted_Core.cc:3473
 msgid "Libparted Warning"
 msgstr "ലിബ്പാര്‍ട്ടട് മുന്നറിയിപ്പ്"
 
-#: ../src/GParted_Core.cc:3476
+#: ../src/GParted_Core.cc:3477
 msgid "Libparted Information"
 msgstr "ലിബ്പാര്‍ട്ടട് വിവരങ്ങള്‍"
 
-#: ../src/GParted_Core.cc:3480
+#: ../src/GParted_Core.cc:3481
 msgid "Libparted Error"
 msgstr "ലിബ്പാര്‍ട്ടട് പിഴവ്"
 
-#: ../src/GParted_Core.cc:3482
+#: ../src/GParted_Core.cc:3483
 msgid "Libparted Bug Found!"
 msgstr "ലിബ്പാര്‍ട്ടടില്‍ ബഗ്ഗ് കണ്ടെത്തി"
 
-#: ../src/GParted_Core.cc:3485
+#: ../src/GParted_Core.cc:3486
 msgid "Fix"
 msgstr "ശരിയാക്കണോ"
 
-#: ../src/GParted_Core.cc:3487
+#: ../src/GParted_Core.cc:3488
 msgid "Yes"
 msgstr "അതെ"
 
-#: ../src/GParted_Core.cc:3489
+#: ../src/GParted_Core.cc:3490
 msgid "Ok"
 msgstr "ശരി"
 
-#: ../src/GParted_Core.cc:3491
+#: ../src/GParted_Core.cc:3492
 msgid "Retry"
 msgstr "വിണ്ടും ശ്രമിക്കുക"
 
-#: ../src/GParted_Core.cc:3493
+#: ../src/GParted_Core.cc:3494
 msgid "No"
 msgstr "ഇല്ല"
 
-#: ../src/GParted_Core.cc:3495
+#: ../src/GParted_Core.cc:3496
 msgid "Cancel"
 msgstr "റദ്ദാക്കു"
 
-#: ../src/GParted_Core.cc:3497
+#: ../src/GParted_Core.cc:3498
 msgid "Ignore"
 msgstr "അവഗണിക്കു"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:159
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:162
 msgid "_Undo Last Operation"
 msgstr "അവസാന പ്രവര്‍ത്തനം _പഴയപടിയാക്കുക"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:165
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:168
 msgid "_Clear All Operations"
 msgstr "_എല്ലാ പ്രവര്‍ത്തനങ്ങളും കളയുക"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:170
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:173
 msgid "_Apply All Operations"
 msgstr "_എല്ലാ പ്രവര്‍ത്തനങ്ങളും നടപ്പാക്കുക"
 
@@ -1364,7 +1353,7 @@ msgstr "ഫ്ലാഗുകള്‍"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:129
+#: ../src/Utils.cc:195
 msgid "unallocated"
 msgstr "നീക്കിവെച്ചിട്ടില്ല"
 
@@ -1373,7 +1362,7 @@ msgstr "നീക്കിവെച്ചിട്ടില്ല"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:136
+#: ../src/Utils.cc:202
 msgid "unknown"
 msgstr "അറിയില്ല"
 
@@ -1381,303 +1370,285 @@ msgstr "അറിയില്ല"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:142
+#: ../src/Utils.cc:208
 msgid "unformatted"
 msgstr "ഫോര്‍മാറ്റ് ചെയ്തിട്ടില്ല"
 
-#: ../src/Utils.cc:161
+#. TO TRANSLATORS:  cleared
+#. * means that all file system signatures in the partition
+#. * will be cleared by GParted.
+#.
+#: ../src/Utils.cc:214
+msgid "cleared"
+msgstr "മായ്ച്ചു"
+
+#: ../src/Utils.cc:234
 msgid "used"
 msgstr "ഉപയോഗിച്ചത്"
 
-#: ../src/Utils.cc:162
+#: ../src/Utils.cc:235
 msgid "unused"
 msgstr "ഉപയോഗിക്കാത്തത്"
 
-#: ../src/Utils.cc:259
+#: ../src/Utils.cc:368
 msgid "%1 B"
 msgstr "%1 ബൈറ്റ്"
 
-#: ../src/Utils.cc:264
+#: ../src/Utils.cc:373
 msgid "%1 KiB"
 msgstr "%1 കിലോബൈറ്റ്"
 
-#: ../src/Utils.cc:269
+#: ../src/Utils.cc:378
 msgid "%1 MiB"
 msgstr "%1 മെഗാബൈറ്റ്"
 
-#: ../src/Utils.cc:274
+#: ../src/Utils.cc:383
 msgid "%1 GiB"
 msgstr "%1 ജിഗാബൈറ്റ്"
 
-#: ../src/Utils.cc:279
+#: ../src/Utils.cc:388
 msgid "%1 TiB"
 msgstr "%1 ടെറാബൈറ്റ്"
 
-#. TO TRANSLATORS:  # Temporary file created by gparted.  It may be deleted.
-#. * means that this file is only used while gparted is applying operations.
-#. * If for some reason this file exists at any other time, then the message is
-#. * meant to inform a user that the file can be deleted with no harmful effects.
-#. * This file is typically created, exists for less than a few seconds, and is
-#. * then deleted by gparted.  Under normal circumstances a user should never
-#. * see this file.
-#.
-#: ../src/Utils.cc:438
-msgid "# Temporary file created by gparted.  It may be deleted.\n"
-msgstr "# ജിപാര്‍ട്ടട് നിര്‍മ്മിച്ച താല്‍കാലിക ഫയല്‍. ഇത് വേണമെങ്കില്‍ കളയാം.\n"
-
-#. TO TRANSLATORS: looks like
-#. * Label operation failed:  Unable to write to temporary file /tmp/Y56ZZ3M13LM.
-#.
-#: ../src/Utils.cc:450
-msgid "Label operation failed:  Unable to write to temporary file %1.\n"
-msgstr "പേര് കൊടുക്കുന്നത് പരാജയപ്പെട്ടു: താല്‍കാലിക ഫയല്‍ %1 എഴുതാന്‍ പറ്റുന്നില്ല.\n"
-
-#. TO TRANSLATORS: looks like
-#. * Label operation failed:  Unable to create temporary file /tmp/Y56ZZ3M13LM.
-#.
-#: ../src/Utils.cc:462
-msgid "Label operation failed:  Unable to create temporary file %1.\n"
-msgstr "പേര് കൊടുക്കുന്നത് പരാജയപ്പെട്ടു: താല്‍കാലിക ഫയല്‍ %1 നിര്‍മ്മിക്കാന്‍ പറ്റുന്നില്ല.\n"
-
-#: ../src/Win_GParted.cc:143
+#: ../src/Win_GParted.cc:146
 msgid "_Refresh Devices"
 msgstr "ഉപകരണങ്ങള്‍ _പുതുക്കുക"
 
-#: ../src/Win_GParted.cc:149
+#: ../src/Win_GParted.cc:152
 msgid "_Devices"
 msgstr "_ഉപകരണങ്ങള്‍"
 
-#: ../src/Win_GParted.cc:154
+#: ../src/Win_GParted.cc:157
 msgid "_GParted"
 msgstr "_ജീപാര്‍ട്ടട്"
 
-#: ../src/Win_GParted.cc:173
+#: ../src/Win_GParted.cc:177
 msgid "_Edit"
 msgstr "_ചിട്ടപ്പെടുത്തുക"
 
-#: ../src/Win_GParted.cc:178
+#: ../src/Win_GParted.cc:182
 msgid "Device _Information"
 msgstr "ഉപകരണത്തെ _സംബന്ധിച്ച വിവരങ്ങള്‍"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:184
 msgid "Pending _Operations"
 msgstr "_തീര്‍ക്കാനുള്ള പ്രവര്‍ത്തനങ്ങള്‍"
 
-#: ../src/Win_GParted.cc:181
+#: ../src/Win_GParted.cc:185
 msgid "_View"
 msgstr "_കാണുക"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:189
 msgid "_File System Support"
 msgstr "_ഫയല്‍ സിസ്റ്റം പിന്‍തുണ"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:193
 msgid "_Create Partition Table"
 msgstr "പാര്‍ട്ടിഷന്‍ പട്ടിക _നിര്‍മ്മിക്കുക"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:196
 msgid "_Attempt Data Rescue"
 msgstr "_ഡാറ്റ രക്ഷപ്പെടുത്താന്‍ ശ്രമിക്കുക"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:199
 msgid "_Device"
 msgstr "_ഉപകരണം"
 
-#: ../src/Win_GParted.cc:199
+#: ../src/Win_GParted.cc:203
 msgid "_Partition"
 msgstr "_പാര്‍ട്ടീഷന്‍"
 
-#: ../src/Win_GParted.cc:204
+#: ../src/Win_GParted.cc:208
 msgid "_Contents"
 msgstr "_ഉള്ളടക്കം"
 
-#: ../src/Win_GParted.cc:212
+#: ../src/Win_GParted.cc:216
 msgid "_Help"
 msgstr "_സഹായം"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:224
+#: ../src/Win_GParted.cc:228
 msgid "New"
 msgstr "പുതിയ"
 
-#: ../src/Win_GParted.cc:229
+#: ../src/Win_GParted.cc:233
 msgid "Create a new partition in the selected unallocated space"
 msgstr "തിരഞ്ഞെടുത്ത നീക്കിവെയ്ക്കാത്ത സ്ഥലത്ത് പുതിയ പാര്‍ട്ടിഷന്‍ നിര്‍മ്മിക്കുക"
 
-#: ../src/Win_GParted.cc:234
+#: ../src/Win_GParted.cc:238
 msgid "Delete the selected partition"
 msgstr "തിരഞ്ഞെടുത്ത പാര്‍ട്ടിഷന്‍ നീക്കം ചെയ്യുക"
 
-#: ../src/Win_GParted.cc:256
+#: ../src/Win_GParted.cc:260
 msgid "Resize/Move the selected partition"
 msgstr "തിരഞ്ഞെടുത്ത പാര്‍ട്ടിഷന്‍ വലിപ്പം മാറ്റുകയോ നീക്കുകയോ ചെയ്യുക"
 
-#: ../src/Win_GParted.cc:265
+#: ../src/Win_GParted.cc:269
 msgid "Copy the selected partition to the clipboard"
 msgstr "തിരഞ്ഞെടുത്ത പാര്‍ട്ടിഷന്‍ ക്ലിപ്പ് ബോര്‍ഡിലേയ്ക്ക് പകര്‍ത്തുക"
 
-#: ../src/Win_GParted.cc:270
+#: ../src/Win_GParted.cc:274
 msgid "Paste the partition from the clipboard"
 msgstr "ക്ലിപ്പ് ബോര്‍ഡിലെ പാര്‍ട്ടിഷന്‍ ഒട്ടിക്കുക"
 
-#: ../src/Win_GParted.cc:282
+#: ../src/Win_GParted.cc:286
 msgid "Undo Last Operation"
 msgstr "അവസാന പ്രവര്‍ത്തനം പഴയപടിയാക്കുക"
 
-#: ../src/Win_GParted.cc:290
+#: ../src/Win_GParted.cc:294
 msgid "Apply All Operations"
 msgstr "എല്ലാ പ്രവര്‍ത്തനങ്ങളും പ്രാവര്‍ത്തികമാക്കുക"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:313
+#: ../src/Win_GParted.cc:317
 msgid "_New"
 msgstr "_പുതിയ"
 
-#: ../src/Win_GParted.cc:329
+#: ../src/Win_GParted.cc:334
 msgid "_Resize/Move"
 msgstr "_വലിപ്പം മാറ്റുക അല്ലെങ്കില്‍ നീക്കുക"
 
-#: ../src/Win_GParted.cc:353
+#: ../src/Win_GParted.cc:358
 msgid "_Format to"
 msgstr "_ഫോര്‍മാറ്റ്"
 
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:374
 msgid "_Mount on"
 msgstr "_മൌണ്ട്"
 
-#: ../src/Win_GParted.cc:376
+#: ../src/Win_GParted.cc:381
 msgid "M_anage Flags"
 msgstr "ഫ്ളാഗുകള്‍ _ക്രമീകരിക്കുക"
 
-#: ../src/Win_GParted.cc:381
+#: ../src/Win_GParted.cc:386
 msgid "C_heck"
 msgstr "_പരിശോധിക്കു"
 
-#: ../src/Win_GParted.cc:386
+#: ../src/Win_GParted.cc:391
 msgid "_Label"
 msgstr "_പേര്"
 
-#: ../src/Win_GParted.cc:391
+#: ../src/Win_GParted.cc:396
 msgid "New UU_ID"
 msgstr "പുതിയ UU_ID"
 
-#: ../src/Win_GParted.cc:452
+#: ../src/Win_GParted.cc:463
 msgid "Device Information"
 msgstr "ഉപകരണത്തെ സംബന്ധിച്ച വിവരങ്ങള്‍"
 
 #. model
-#: ../src/Win_GParted.cc:460
+#: ../src/Win_GParted.cc:471
 msgid "Model:"
 msgstr "മാതൃക:"
 
 #. disktype
-#: ../src/Win_GParted.cc:497
+#: ../src/Win_GParted.cc:505
 msgid "Partition table:"
 msgstr "പാര്‍ട്ടിഷന്‍ പട്ടിക:"
 
 #. heads
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:513
 msgid "Heads:"
 msgstr "ഹെഡ്:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:513
+#: ../src/Win_GParted.cc:521
 msgid "Sectors/track:"
 msgstr "സെക്റ്റര്‍/ട്രാക്ക്:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:529
 msgid "Cylinders:"
 msgstr "സിലിണ്ടറുകള്‍:"
 
 #. sector size
-#: ../src/Win_GParted.cc:537
+#: ../src/Win_GParted.cc:545
 msgid "Sector size:"
 msgstr "സെക്ട്ടര്‍ വലിപ്പം:"
 
-#: ../src/Win_GParted.cc:725
+#: ../src/Win_GParted.cc:718
 msgid "Could not add this operation to the list"
 msgstr "ഈ പ്രവര്‍ത്തനം പട്ടികയില്‍ ചേര്‍ക്കാന്‍ പറ്റുന്നില്ല"
 
-#: ../src/Win_GParted.cc:830
+#: ../src/Win_GParted.cc:813
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 പ്രവര്‍ത്തനം ബാക്കിയുണ്ട്"
 msgstr[1] "%1 പ്രവര്‍ത്തങ്ങള്‍ ബാക്കിയുണ്ട്"
 
-#: ../src/Win_GParted.cc:884
+#: ../src/Win_GParted.cc:906
 msgid "Quit GParted?"
 msgstr "ജിപാര്‍ട്ടട് അവസാനിപ്പിക്കട്ടെ?"
 
-#: ../src/Win_GParted.cc:890
+#: ../src/Win_GParted.cc:912
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 പ്രവര്‍ത്തനം ഇപ്പോള്‍ ബാക്കിയുണ്ട്"
 msgstr[1] "%1 പ്രവര്‍ത്തനങ്ങള്‍ ഇപ്പോള്‍ ബാക്കിയുണ്ട്"
 
-#: ../src/Win_GParted.cc:1166
+#: ../src/Win_GParted.cc:1211
 msgid "%1 - GParted"
 msgstr "%1 - ജിപാര്‍ട്ടട്"
 
-#: ../src/Win_GParted.cc:1212
+#: ../src/Win_GParted.cc:1248
 msgid "Scanning all devices..."
 msgstr "എല്ലാ ഉപകരണങ്ങളും തിരയുന്നു..."
 
-#: ../src/Win_GParted.cc:1257
+#: ../src/Win_GParted.cc:1295
 msgid "No devices detected"
 msgstr "ഒരു ഉപകരണവും കണ്ടുപിടിച്ചില്ല"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1338
+#: ../src/Win_GParted.cc:1376
 msgid "No partition table found on device %1"
 msgstr "%1 ഉപകരണത്തില്‍ പാര്‍ട്ടിഷന്‍ പട്ടിക ഇല്ല"
 
-#: ../src/Win_GParted.cc:1343
+#: ../src/Win_GParted.cc:1381
 msgid "A partition table is required before partitions can be added."
 msgstr "പാര്‍ട്ടിഷനുകള്‍ ചേര്‍ക്കുന്നതിന് മുന്‍പ് പാര്‍ട്ടിഷന്‍ പട്ടിക വേണം. "
 
-#: ../src/Win_GParted.cc:1345
+#: ../src/Win_GParted.cc:1383
 msgid "To create a new partition table choose the menu item:"
 msgstr "ഒരു പൂതിയ പാര്‍ട്ടിഷന്‍ പട്ടിക ഉണ്ടാക്കാന്‍ ഈ മെനു തിരഞ്ഞെടുക്കുക:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1348
+#: ../src/Win_GParted.cc:1386
 msgid "Device --> Create Partition Table."
 msgstr "ഉപകരണം --> പാര്‍ട്ടിഷന്‍ പട്ടിക നിര്‍മ്മിക്കുക."
 
-#: ../src/Win_GParted.cc:1384
+#: ../src/Win_GParted.cc:1422
 msgid "Unable to open GParted Manual help file"
 msgstr "ജിപാര്‍ട്ടട് മാനക സഹായ ഫയല്‍ തുറക്കുവാന്‍ സാധ്യമായില്ല"
 
-#: ../src/Win_GParted.cc:1400
+#: ../src/Win_GParted.cc:1438
 msgid "Documentation is not available"
 msgstr "സഹായക്കുറിപ്പുകള്‍ ലഭ്യമല്ല."
 
-#: ../src/Win_GParted.cc:1405
+#: ../src/Win_GParted.cc:1443
 msgid "This build of gparted is configured without documentation."
 msgstr "ജിപാര്‍ട്ടടിന്റെ ഈ നിര്‍മ്മിതി സഹായക്കുറിപ്പുകള്‍ ഇല്ലാതെയാണ് സജ്ജികരിച്ചിരിക്കുന്നത്."
 
-#: ../src/Win_GParted.cc:1407
+#: ../src/Win_GParted.cc:1445
 msgid "Documentation is available at the project web site."
 msgstr "സഹായക്കുറിപ്പുകള്‍ പദ്ധതിയുടെ വെബ് സൈറ്റില്‍ ലഭ്യമാണ്."
 
-#: ../src/Win_GParted.cc:1428
+#: ../src/Win_GParted.cc:1466
 msgid "GNOME Partition Editor"
 msgstr "ഗ്നോം പാര്‍ട്ടീഷന്‍ സംശോധകന്‍"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1454
+#: ../src/Win_GParted.cc:1494
 msgid "translator-credits"
 msgstr "അനീഷ് എ (Anish A)<aneesh.nl@gmail.com>"
 
-#: ../src/Win_GParted.cc:1496
+#: ../src/Win_GParted.cc:1536
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "%1 ല്‍ കൂടുതല്‍ പ്രഥമ പാര്‍ട്ടിഷന്‍ ഉണ്ടാക്കാന്‍ പറ്റില്ല"
 msgstr[1] "%1 ല്‍ കൂടുതല്‍ പ്രഥമ പാര്‍ട്ടിഷനുകള്‍ ഉണ്ടാക്കാന്‍ പറ്റില്ല"
 
-#: ../src/Win_GParted.cc:1508
+#: ../src/Win_GParted.cc:1548
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1688,17 +1659,17 @@ msgstr ""
 "പാര്‍ട്ടിഷന് വേറെ പാര്‍ട്ടിഷനുകള്‍ ഉള്‍കൊള്ളാന്‍ കഴിയും. ദീര്‍ഘിപ്പിച്ച പാര്‍ട്ടിഷനും ഒരു പ്രഥമ "
 "പാര്‍ട്ടിഷന്‍ ആയതിനാല്‍ ചിലപ്പോള്‍ ഒരു പ്രഥമ പാര്‍ട്ടിഷന്‍ നീക്കം ചെയ്യേണ്ടി വരാം."
 
-#: ../src/Win_GParted.cc:1591
+#: ../src/Win_GParted.cc:1631
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "ഒരു പാര്‍ട്ടിഷന്‍ നീക്കുന്നത് പ്രവര്‍ത്തക സംവിധാനത്തിന്റെ ബൂട്ട്  പരാജയപ്പെടുന്നതിന് കാരണമാകാം"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1599
+#: ../src/Win_GParted.cc:1639
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "താങ്കള്‍ %1 പാര്‍ട്ടിഷന്റെ തുടക്ക സെക്ട്ടര്‍ നീക്കാനുള്ള പ്രവര്‍ത്തനം ക്യു ചെയ്തു."
 
-#: ../src/Win_GParted.cc:1602
+#: ../src/Win_GParted.cc:1642
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1706,71 +1677,71 @@ msgstr ""
 "  /boot അടങ്ങിയ ഗ്നു/ലിനക്സ് ഫയല്‍സിസ്റ്റം അല്ലെങ്കില്‍ വിന്‍ഡോസ് C: തുടങ്ങിയവ നീക്കുമ്പോള്‍ "
 "മിക്കാവാറും ബൂട്ട് പരാജയപ്പെടാന്‍ കാരണമാകാം."
 
-#: ../src/Win_GParted.cc:1604
+#: ../src/Win_GParted.cc:1644
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "ജിപാര്‍ട്ടട് സാധാരണ ചോദിക്കുന്ന ചോദ്യങ്ങളില്‍ താങ്കള്‍ക്ക് ബൂട്ട് ക്രമീകരണം ശരിയാക്കുന്നതെങ്ങനെയെന്ന് "
 "മനസിലാക്കാം."
 
-#: ../src/Win_GParted.cc:1608
+#: ../src/Win_GParted.cc:1648
 msgid "Moving a partition might take a very long time to apply."
 msgstr "പാര്‍ട്ടീഷ്യന്‍ നീക്കല്‍ വളരെ സമയമെടുക്കാം"
 
-#: ../src/Win_GParted.cc:1712
+#: ../src/Win_GParted.cc:1754
 msgid "You have pasted into an existing partition"
 msgstr "താങ്കള്‍ നിലനില്‍ക്കുന്ന ഒരു പാര്‍ട്ടിഷനിലാണ് ഒട്ടിച്ചത"
 
-#: ../src/Win_GParted.cc:1720
+#: ../src/Win_GParted.cc:1762
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "%1 ലെ വിവരങ്ങള്‍ താങ്കള്‍ ഈ പ്രവര്‍ത്തനം നടപ്പാക്കിയാല്‍ നഷ്‌ട്ടമാകും."
 
-#: ../src/Win_GParted.cc:1783
+#: ../src/Win_GParted.cc:1829
 msgid "Unable to delete %1!"
 msgstr "%1 നീക്കം ചെയ്യാന്‍ കഴിയുന്നില്ല."
 
-#: ../src/Win_GParted.cc:1790
+#: ../src/Win_GParted.cc:1836
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "%1 നെക്കാള്‍ കൂടിയ സംഖ്യയുള്ള എല്ലാ ലോജിക്കല്‍ പാര്‍ട്ടിഷനും ദയവായി അണ്‍മൌണ്ട് ചെയ്യു"
 
-#: ../src/Win_GParted.cc:1801
+#: ../src/Win_GParted.cc:1847
 msgid "Are you sure you want to delete %1?"
 msgstr "%1 നീക്കം ചെയ്യണമെന്ന് താങ്കള്‍ക്ക് ഉറപ്പാണോ?"
 
-#: ../src/Win_GParted.cc:1808
+#: ../src/Win_GParted.cc:1854
 msgid "After deletion this partition is no longer available for copying."
 msgstr "നീക്കം ചെയ്ത ശേഷം ഈ പാര്‍ട്ടിഷന്‍ പകര്‍ത്താന്‍ ലഭ്യമാകില്ല."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1811
+#: ../src/Win_GParted.cc:1857
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 നീക്കം ചെയ്യുക (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1894
+#: ../src/Win_GParted.cc:1942
 msgid "Cannot format this file system to %1"
 msgstr "ഈ ഫയല്‍ സിസ്റ്റം %1 ലേയ്ക്ക് ഫോര്‍മാറ്റ് ചെയ്യാനാകുന്നില്ല"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1906
+#: ../src/Win_GParted.cc:1954
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "ഒരു %1 ഫയല്‍ സിസ്റ്റത്തിന് കുറഞ്ഞത് %2 എങ്കിലുമുള്ള പാര്‍ട്ടിഷനെങ്കിലും വേണം."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1914
+#: ../src/Win_GParted.cc:1962
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 ഫയല്‍ സിസ്റ്റം ഉള്ള പാര്‍ട്ടിഷന്റെ പരമാവധി വലിപ്പം %2 ആണ്."
 
-#: ../src/Win_GParted.cc:2008
+#: ../src/Win_GParted.cc:2058
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "ഈ പാര്‍ട്ടിഷന്‍ താഴെ പറയുന്ന മൌണ്ട് സ്ഥാനങ്ങളില്‍ നിന്നും അണ്‍മൌണ്ട് ചെയ്യാന്‍ പറ്റുന്നില്ല:"
 
-#: ../src/Win_GParted.cc:2010
+#: ../src/Win_GParted.cc:2060
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1778,19 +1749,19 @@ msgstr ""
 "മിക്കവാറും മറ്റുള്ള പാര്‍ട്ടിഷനുകളും ഈ മൌണ്ട് സ്ഥാനത്തില്‍ മൌണ്ട് ചെയ്തിട്ടുണ്ടാകാം. താങ്കള്‍ അത് "
 "സ്വന്തമായി അണ്‍മൌണ്ട് ചെയ്യണം."
 
-#: ../src/Win_GParted.cc:2085 ../src/Win_GParted.cc:2206
+#: ../src/Win_GParted.cc:2084 ../src/Win_GParted.cc:2210
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%2 പാര്‍ട്ടിഷനില്‍ %1 പ്രവര്‍ത്തനം ഇപ്പോള്‍ ബാക്കിയുണ്ട്"
 msgstr[1] "%2 പാര്‍ട്ടിഷനില്‍ %1 പ്രവര്‍ത്തനങ്ങള്‍ ഇപ്പോള്‍ ബാക്കിയുണ്ട്"
 
-#: ../src/Win_GParted.cc:2101
+#: ../src/Win_GParted.cc:2100
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "പാര്‍ട്ടിഷനില്‍ പ്രവര്‍ത്തനങ്ങള്‍ ബാക്കിയുണ്ടെങ്കില്‍ സ്വാപ്പ് പ്രവര്‍ത്തിപ്പിക്കാന്‍ പറ്റില്ല."
 
-#: ../src/Win_GParted.cc:2103
+#: ../src/Win_GParted.cc:2102
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1798,13 +1769,13 @@ msgstr ""
 "സ്വാപ്പ് പ്രവര്‍ത്തിപ്പിക്കുന്നതിന് മുന്‍പ് എഡിറ്റ് മെനുവിലെ കളയുക, പഴയപടിയാക്കുക അല്ലെങ്ങില്‍ "
 "നടപ്പാക്കുക എന്നതിലേതെങ്കിലുമൊന്ന് തിരഞ്ഞെടുക്കുക."
 
-#: ../src/Win_GParted.cc:2107
+#: ../src/Win_GParted.cc:2106
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
 msgstr "പാര്‍ട്ടിഷനില്‍ പ്രവര്‍ത്തനങ്ങള്‍ ബാക്കിയുണ്ടെങ്കില്‍ വോള്യം ഗ്രൂപ്പ് സജ്ജമാക്കാന്‍ പറ്റില്ല."
 
-#: ../src/Win_GParted.cc:2109
+#: ../src/Win_GParted.cc:2108
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1812,53 +1783,53 @@ msgstr ""
 "ഈ പാര്‍ട്ടിഷ്യനില്‍ വോള്യം ഗ്രൂപ്പ് സജ്ജമാക്കുന്നതതിന് മുന്‍പായി എഡിറ്റ് മെനു ഉപയോഗിച്ച് പ്രവര്‍ത്തനങ്ങള്‍ "
 "കളയുകയോ, പഴയപടിയാക്കുകയോ, നടപ്പാക്കുകയോ ചെയ്യുക"
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2119
 msgid "Deactivating swap on %1"
 msgstr "%1 ലെ സ്വാപ്പ് പ്രവര്‍ത്തനരഹിതമാക്കാനാകുന്നു"
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2119
 msgid "Activating swap on %1"
 msgstr "%1 ലെ സ്വാപ്പ് പ്രവര്‍ത്തനസജ്ജമാക്കാനാകുന്നു"
 
-#: ../src/Win_GParted.cc:2135
+#: ../src/Win_GParted.cc:2134
 msgid "Could not deactivate swap"
 msgstr "സ്വാപ്പ് പ്രവര്‍ത്തനരഹിതമാക്കാനാകുന്നില്ല"
 
-#: ../src/Win_GParted.cc:2135
+#: ../src/Win_GParted.cc:2134
 msgid "Could not activate swap"
 msgstr "സ്വാപ്പ് പ്രവര്‍ത്തനസജ്ജമാക്കാനാകുന്നില്ല"
 
-#: ../src/Win_GParted.cc:2153
+#: ../src/Win_GParted.cc:2149
 msgid "Deactivating Volume Group %1"
 msgstr "%1 എന്ന വോള്യം ഗ്രൂപ് പ്രവര്‍ത്തനരഹിതമാക്കുന്നു"
 
-#: ../src/Win_GParted.cc:2154
+#: ../src/Win_GParted.cc:2150
 msgid "Activating Volume Group %1"
 msgstr "%1 എന്ന വോള്യം ഗ്രൂപ് പ്രവര്‍ത്തനസജ്ജമാക്കുന്നു"
 
-#: ../src/Win_GParted.cc:2162
+#: ../src/Win_GParted.cc:2168
 msgid "Could not deactivate Volume Group"
 msgstr "വോള്യം ഗ്രൂപ് പ്രവര്‍ത്തനരഹിതമാക്കാനാകുന്നില്ല"
 
-#: ../src/Win_GParted.cc:2163
+#: ../src/Win_GParted.cc:2169
 msgid "Could not activate Volume Group"
 msgstr "വോള്യം ഗ്രൂപ്പ് പ്രവര്‍ത്തനസജ്ജമാക്കാനാകുന്നില്ല"
 
-#: ../src/Win_GParted.cc:2179
+#: ../src/Win_GParted.cc:2182
 msgid "Unmounting %1"
 msgstr "%1 അണ്‍മൌണ്ട് ചെയ്യുന്നു"
 
-#: ../src/Win_GParted.cc:2184
+#: ../src/Win_GParted.cc:2188
 msgid "Could not unmount %1"
 msgstr "%1 അണ്‍മൌണ്ട് ചെയ്യാനാകുന്നില്ല"
 
-#: ../src/Win_GParted.cc:2220
+#: ../src/Win_GParted.cc:2224
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "പാര്‍ട്ടിഷനില്‍ പ്രവര്‍ത്തനങ്ങള്‍ ബാക്കിയുണ്ടെങ്കില്‍ മൌണ്ട് ചെയ്യാനാകില്ല."
 
-#: ../src/Win_GParted.cc:2222
+#: ../src/Win_GParted.cc:2226
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1866,7 +1837,7 @@ msgstr ""
 "പാര്‍ട്ടിഷന്‍ മൌണ്ട് ചെയ്യുന്നതിന് മുന്‍പായി എഡിറ്റ് മെനു ഉപയോഗിച്ച് കളയുകയോ, പഴയപടിയാക്കുകയോ, "
 "നടപ്പാക്കുകയോ ചെയ്യുക."
 
-#: ../src/Win_GParted.cc:2240
+#: ../src/Win_GParted.cc:2236
 msgid "mounting %1 on %2"
 msgstr "%1 %2 ല്‍ മൌണ്ട് ചെയ്യുന്നു"
 
@@ -1960,50 +1931,50 @@ msgid "Search for file systems on %1"
 msgstr "%1 ഫയല്‍ സിസ്റ്റത്തിനായി തെരയുക"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2387
+#: ../src/Win_GParted.cc:2384
 msgid "Searching for file systems on %1"
 msgstr "%1 ല്‍ ഫയല്‍ സിസ്റ്റങ്ങള്‍ക്കായി തെരയുക"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2401
+#: ../src/Win_GParted.cc:2400
 msgid "No file systems found on %1"
 msgstr "%1 ല്‍ ഫയല്‍സിസ്റ്റങ്ങള്‍ ഒന്നും കണ്ടെത്തിയില്ല"
 
-#: ../src/Win_GParted.cc:2402
+#: ../src/Win_GParted.cc:2401
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr "gpart ഈ ഡിസ്കില്‍ നടത്തിയ തെരച്ചിലില്‍ തിരിച്ചറിയാവുന്ന ഫയല്‍സിസ്റ്റങ്ങളൊന്നും കണ്ടില്ല."
 
-#: ../src/Win_GParted.cc:2630
+#: ../src/Win_GParted.cc:2635
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "ബാക്കിയുള്ള പ്രവര്‍ത്തനങ്ങള്‍ എല്ലാം നടപ്പാക്കണമെന്ന് താങ്കള്‍ക്ക് ഉറപ്പാണോ?"
 
-#: ../src/Win_GParted.cc:2636
+#: ../src/Win_GParted.cc:2641
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "പാര്‍ട്ടിഷന്‍ മാറ്റുന്നത് വിവരങ്ങള്‍ നഷ്‌ട്ടപ്പെടാനിടയാക്കാം."
 
-#: ../src/Win_GParted.cc:2638
+#: ../src/Win_GParted.cc:2643
 msgid "You are advised to backup your data before proceeding."
 msgstr "താങ്കളുടെ വിവരങ്ങള്‍ തുടരുന്നതിന് മുന്‍പ് മാറ്റി സൂക്ഷിക്കുന്നത് നന്നായിരിക്കും."
 
-#: ../src/Win_GParted.cc:2640
+#: ../src/Win_GParted.cc:2645
 msgid "Apply operations to device"
 msgstr "ഉപകരണത്തിലേയ്ക്ക് പ്രവര്‍ത്തനങ്ങള്‍ നടപ്പാക്കുക"
 
-#: ../src/Win_GParted.cc:2685
+#: ../src/Win_GParted.cc:2690
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "%1 എന്ന ശൂന്യമല്ലാത്ത LVM2 ഫിസിക്കല്‍ വോള്യം താങ്കള്‍ നീക്കം ചെയ്യുകയാണ്"
 
-#: ../src/Win_GParted.cc:2689
+#: ../src/Win_GParted.cc:2694
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "%1 എന്ന ശൂന്യമല്ലാത്ത LVM2 ഫിസിക്കല്‍ വോള്യം താങ്കള്‍ ഫോര്‍മാറ്റ് ചെയ്യുകയാണ്"
 
-#: ../src/Win_GParted.cc:2693
+#: ../src/Win_GParted.cc:2698
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "%1 എന്ന ശൂന്യമല്ലാത്ത LVM2 ഫിസിക്കല്‍ വോള്യത്തിലേക്ക് താങ്കള്‍ ഒട്ടിക്കുകയാണ്"
 
-#: ../src/Win_GParted.cc:2702
+#: ../src/Win_GParted.cc:2707
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2011,7 +1982,7 @@ msgstr ""
 "ഫിസിക്കല്‍ വോള്യം നീക്കം ചെയ്യുകയോ അതിന് പുറത്ത് വേറെന്തെങ്കിലും ചെയ്യുന്നതോ തിരിച്ചെടുക്കാന്‍ "
 "പറ്റാത്തതും വോള്യം ഗ്രൂപ്പിനെ നശിപ്പിക്കുകയോ കേടുവരുത്തുകയോ ചെയ്യുന്നതുമാണ്."
 
-#: ../src/Win_GParted.cc:2705
+#: ../src/Win_GParted.cc:2710
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2020,7 +1991,7 @@ msgstr ""
 "വോള്യം ഗ്രൂപ്പ് നശിപ്പിക്കുകയോ കേടുവരുത്തുകയോ ചെയ്യാതിരാക്കാന്‍, ഈ പ്രവര്‍ത്തനത്തിന് മുന്‍പ് താങ്കള്‍ ഇത് "
 "റദ്ദാക്കിയിട്ട് പുറമേയുള്ള LVM കമാന്റുകള്‍ ഉപയോഗിച്ച് ഈ ഫിസിക്കല്‍ വോള്യം ശൂന്യമാക്കുന്നതാണ് നല്ലത്."
 
-#: ../src/Win_GParted.cc:2708
+#: ../src/Win_GParted.cc:2713
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "ഫിസിക്കല്‍ വോള്യം ബലമായി നീക്കം ചെയ്യണം എന്നുറപ്പാണോ?"
 
@@ -2049,22 +2020,22 @@ msgstr ""
 "സുരക്ഷിതമാണ്‌, പക്ഷേ ഉറപ്പൊന്നും നല്‍കാനാവില്ല. "
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:28
+#: ../src/linux_swap.cc:30
 msgid "_Swapon"
 msgstr "_സ്വാപ്പ് പ്രവര്‍ത്തിപ്പിക്കുക"
 
-#: ../src/linux_swap.cc:29
+#: ../src/linux_swap.cc:31
 msgid "_Swapoff"
 msgstr "_സ്വാപ്പ് അണയ്ക്കുക"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:147
+#: ../src/linux_swap.cc:187
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr "%1 ഫയല്‍ സിസ്റ്റത്തില്‍ വിവരങ്ങള്‍ ഇല്ലാത്ത കാരണം പാര്‍ട്ടിഷന്‍ നീക്കം അവഗണിക്കുന്നു"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:166
+#: ../src/linux_swap.cc:206
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr "%1 ഫയല്‍ സിസ്റ്റത്തില്‍ വിവരങ്ങള്‍ ഇല്ലാത്ത കാരണം പാര്‍ട്ടിഷന്‍ പകര്‍ത്തല്‍ അവഗണിക്കുന്നു"
@@ -2086,11 +2057,11 @@ msgstr ""
 "എക്സ്പോര്‍ട്ട് ചെയ്ത വോള്യം ഗ്രൂപ്പിലെ അംഗമായത്തിനാല്‍ ഈ LVM2 ഫിസിക്കല്‍ വോള്യത്തിന്റെ വലിപ്പം "
 "മാറ്റാന്‍ ഇപ്പോള്‍ പറ്റില്ല."
 
-#: ../src/main.cc:42
+#: ../src/main.cc:43
 msgid "Root privileges are required for running GParted"
 msgstr "ജിപാര്‍ട്ടട് പ്രവര്‍ത്തിക്കാന്‍ റുട്ട് അധികാരം വേണം"
 
-#: ../src/main.cc:47
+#: ../src/main.cc:48
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2107,14 +2078,44 @@ msgstr ""
 "പുതിയ മൂല്യം കൊടുത്തു."
 
 #. simulation..
-#: ../src/ntfs.cc:194
+#: ../src/ntfs.cc:213
 msgid "run simulation"
 msgstr "പരീക്ഷിക്കുക"
 
 #. real resize
-#: ../src/ntfs.cc:201
+#: ../src/ntfs.cc:220
 msgid "real resize"
 msgstr "വലിപ്പം യഥാര്‍ത്ഥമായി മാറ്റുക"
+
+#~ msgid "perform real move"
+#~ msgstr "ശരിയ്ക്കും നീക്കുക"
+
+#~ msgid "perform read-only test"
+#~ msgstr "വായിച്ച് മാത്രം പരിക്ഷണം നടത്തുക"
+
+#~ msgid "read %1"
+#~ msgstr "%1 വായിച്ചു"
+
+#~ msgid "%1 (%2 B) read"
+#~ msgstr "%1 (%2 B) വായിച്ചു"
+
+#~ msgid "%1 of %2 read (%3 remaining)"
+#~ msgstr "%2 ലെ %1 വായിച്ചു (%3 അവശേഷിക്കുന്നു)"
+
+#~ msgid "%1 of %2 read"
+#~ msgstr "%2 ലെ %1 വായിച്ചു"
+
+#~ msgid "read %1 using a block size of %2"
+#~ msgstr "%2 ബ്ളോക്ക് വലിപ്പം ഉപയോഗിച്ച് %1 വായിച്ചു"
+
+#~ msgid "# Temporary file created by gparted.  It may be deleted.\n"
+#~ msgstr "# ജിപാര്‍ട്ടട് നിര്‍മ്മിച്ച താല്‍കാലിക ഫയല്‍. ഇത് വേണമെങ്കില്‍ കളയാം.\n"
+
+#~ msgid "Label operation failed:  Unable to write to temporary file %1.\n"
+#~ msgstr "പേര് കൊടുക്കുന്നത് പരാജയപ്പെട്ടു: താല്‍കാലിക ഫയല്‍ %1 എഴുതാന്‍ പറ്റുന്നില്ല.\n"
+
+#~ msgid "Label operation failed:  Unable to create temporary file %1.\n"
+#~ msgstr "പേര് കൊടുക്കുന്നത് പരാജയപ്പെട്ടു: താല്‍കാലിക ഫയല്‍ %1 നിര്‍മ്മിക്കാന്‍ പറ്റുന്നില്ല.\n"
 
 #~ msgid "Logical Volume Management is not yet supported."
 #~ msgstr "ലോജിക്കല്‍ വോള്യം നടത്തിപ്പ് ഇനിയും പിന്‍തുണച്ചിട്ടില്ല."
