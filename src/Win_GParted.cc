@@ -943,7 +943,10 @@ void Win_GParted::set_valid_operations()
 	//no partition selected...	
 	if ( ! selected_partition .get_paths() .size() )
 		return ;
-	
+
+	//get filesystem capabilities
+	fs = gparted_core .get_fs( selected_partition .filesystem ) ;
+
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
 	
@@ -994,7 +997,16 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_busy_state( true ) ;
 
-	//only unmount/swapoff/VG deactivate/... is allowed if busy
+#ifdef ENABLE_ONLINE_RESIZE
+	//Find out if online resizing is possible
+	if ( selected_partition .busy )
+	{
+		if ( ( fs .online_grow || fs .online_shrink ) && ! devices[ current_device ] .readonly )
+			allow_resize( true ) ;
+	}
+#endif
+
+	//only unmount/swapoff/VG deactivate or online actions allowed if busy
 	if ( selected_partition .busy )
 		return ;
 
@@ -1073,8 +1085,6 @@ void Win_GParted::set_valid_operations()
 	//PRIMARY and LOGICAL
 	if (  selected_partition .type == GParted::TYPE_PRIMARY || selected_partition .type == GParted::TYPE_LOGICAL )
 	{
-		fs = gparted_core .get_fs( selected_partition .filesystem ) ;
-		
 		allow_delete( true ) ;
 		allow_format( true ) ;
 		

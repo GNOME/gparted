@@ -65,6 +65,10 @@ FS reiserfs::get_filesystem_support()
 	}
 
 	fs .online_read = FS::GPARTED ;
+#ifdef ENABLE_ONLINE_RESIZE
+	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
+		fs. online_grow = fs. grow ;
+#endif
 
 	//Actual minimum is at least 18 blocks larger than 32 MiB for the journal offset
 	fs .MIN = 34 * MEBIBYTE ;

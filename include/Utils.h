@@ -138,6 +138,8 @@ struct FS
 	Support copy ;
 	Support remove ;
 	Support online_read ;  //Can and how to read sector usage while active
+	Support online_grow ;
+	Support online_shrink ;
 
 	Byte_Value MIN ; 
 	Byte_Value MAX ;
@@ -145,7 +147,8 @@ struct FS
 	FS()
 	{
 		read = read_label = write_label = read_uuid = write_uuid = create = create_with_label =
-		grow = shrink = move = check = copy = remove = online_read = NONE ;
+		grow = shrink = move = check = copy = remove = online_read =
+		online_grow = online_shrink = NONE ;
 		MIN = MAX = 0 ;
 	} 
 } ;

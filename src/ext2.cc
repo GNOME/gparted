@@ -66,6 +66,10 @@ FS ext2::get_filesystem_support()
 		}
 
 		fs .online_read = FS::EXTERNAL ;
+#ifdef ENABLE_ONLINE_RESIZE
+		if ( specific_type != FS_EXT2 && Utils::kernel_version_at_least( 3, 6, 0 ) )
+			fs .online_grow = fs .grow ;
+#endif
 	}
 
 	return fs ;

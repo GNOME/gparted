@@ -2271,7 +2271,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	}
 
 	bool succes = false ;
-	if ( check_repair_filesystem( partition_new, operationdetail ) )
+	if ( partition_new. busy || check_repair_filesystem( partition_new, operationdetail ) )
 	{
 		succes = true ;
 
@@ -2288,7 +2288,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 		        || partition_new .get_sector_length() > partition_old .get_sector_length()
 		       )
 		   )
-			succes =    check_repair_filesystem( partition_new, operationdetail )
+			succes =    ( partition_new. busy || check_repair_filesystem( partition_new, operationdetail ) )
 			         && maximize_filesystem( partition_new, operationdetail ) ;
 
 		return succes ;

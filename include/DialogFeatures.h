@@ -51,7 +51,9 @@ private:
 		Gtk::TreeModelColumn<Glib::ustring> filesystem;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > online_grow ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > shrink ;
+		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > online_shrink ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > move ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > copy ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > check ;
@@ -64,7 +66,9 @@ private:
 			add( filesystem );
 			add( create ) ;
 			add( grow ) ;
+			add( online_grow ) ;
 			add( shrink ) ;
+			add( online_shrink ) ;
 			add( move ) ;
 			add( copy ) ;
 			add( check ) ;
@@ -76,7 +80,7 @@ private:
 	
 	treeview_filesystems_Columns treeview_filesystems_columns ;
 
-	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no ;
+	Glib::RefPtr<Gdk::Pixbuf> icon_yes, icon_no, icon_blank ;
 };
 
 } //GParted

@@ -78,7 +78,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	}
 
 	//see if we need a fixed_start
-	if ( fs .move )
+	if ( fs .move && ! selected_partition .busy )
 	{
 		set_title( String::ucompose( _("Resize/Move %1"), selected_partition .get_path() ) ) ;
 		frame_resizer_base ->set_fixed_start( false ) ;
@@ -161,7 +161,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	frame_resizer_base ->set_used( Utils::round( min_resize / ( total_length / 500.00 ) ) ) ;
 
 	//set MIN
-	if ( fs .shrink )
+	if (   ( fs .shrink && ! selected_partition .busy )
+	    || ( fs .online_shrink && selected_partition .busy )
+	   )
 	{
 		//since some file systems have lower limits we need to check for this
 		if ( min_resize > (fs .MIN / selected_partition .sector_size) )

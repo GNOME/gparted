@@ -57,6 +57,13 @@ FS nilfs2::get_filesystem_support()
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
+#ifdef ENABLE_ONLINE_RESIZE
+	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
+	{
+		fs .online_grow = fs .grow ;
+		fs .online_shrink = fs .shrink ;
+	}
+#endif
 
 	//Minimum FS size is 128M+4K using mkfs.nilfs2 defaults
 	fs .MIN = 128 * MEBIBYTE + 4 * KIBIBYTE ;
@@ -160,12 +167,16 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 {
 	bool success = true ;
 
-	Glib::ustring mount_point = mk_temp_dir( "", operationdetail ) ;
-	if ( mount_point .empty() )
-		return false ;
+	Glib::ustring mount_point ;
+	if ( ! partition_new .busy )
+	{
+		mount_point = mk_temp_dir( "", operationdetail ) ;
+		if ( mount_point .empty() )
+			return false ;
 
-	success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() + " " + mount_point,
-				      operationdetail, true ) ;
+		success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() + " " + mount_point,
+		                              operationdetail, true ) ;
+	}
 
 	if ( success )
 	{
@@ -178,10 +189,12 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		}
 		success &= ! execute_command( cmd, operationdetail, true ) ;
 
-		success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
+		if ( ! partition_new. busy )
+			success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
 	}
 
-	rm_temp_dir( mount_point, operationdetail ) ;
+	if ( ! partition_new .busy )
+		rm_temp_dir( mount_point, operationdetail ) ;
 
 	return success ;
 }

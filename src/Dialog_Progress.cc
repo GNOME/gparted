@@ -361,6 +361,9 @@ void Dialog_Progress::on_save()
 #ifdef USE_LIBPARTED_DMRAID
 			<< " --enable-libparted-dmraid"
 #endif
+#ifdef ENABLE_ONLINE_RESIZE
+			<< " --enable-online-resize"
+#endif
 			<< "</p>" << std::endl
 			<< "<p>" << _("Libparted") << " " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
 

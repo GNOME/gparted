@@ -391,6 +391,22 @@ else
 	AC_MSG_RESULT([no])
 fi
 
+dnl======================
+dnl check whether to enable online resize support
+dnl======================
+AC_ARG_ENABLE([online_resize],
+  [  --enable-online-resize   enable online resize support],,)
+if test "x${enable_online_resize}" = "x" ; then
+	enable_online_resize=no
+fi
+
+AC_MSG_CHECKING([whether online resize support is enabled])
+if test ${enable_online_resize} = yes; then
+	AC_MSG_RESULT([yes])
+	AC_DEFINE([ENABLE_ONLINE_RESIZE], [1], [Define to 1 if --enable-online-resize specified])
+else
+	AC_MSG_RESULT([no])
+fi
 
 AC_CONFIG_FILES([
 Makefile
@@ -418,6 +434,7 @@ echo ""
 echo "                           Build documentation?  :  $enable_doc"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
+echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
 echo "      Need partition table re-read work around?  :  $need_pt_reread_work_around"
