@@ -1051,9 +1051,20 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				}
 				else
 #endif
-					partition_is_busy =    ped_partition_is_busy( lp_partition )
-					                    || ( filesystem == FS_LVM2_PV      && lvm2_pv_info .has_active_lvs( partition_path ) )
-					                    || ( filesystem == FS_LINUX_SWRAID && Utils::swraid_member_is_active( partition_path ) ) ;
+				{
+					//Determine if partition is busy:
+					//  1st search GParted internal mounted partitions map;
+					//  2nd custom checks for none file system partitions;
+					//  3rd use libparted.
+					iter_mp = mount_info .find( partition_path ) ;
+					if ( iter_mp != mount_info .end() )
+						partition_is_busy = true ;
+
+					partition_is_busy |=    ( filesystem == FS_LVM2_PV      && lvm2_pv_info .has_active_lvs( partition_path ) )
+					                     || ( filesystem == FS_LINUX_SWRAID && Utils::swraid_member_is_active( partition_path ) ) ;
+
+					partition_is_busy |= ped_partition_is_busy( lp_partition ) ;
+				}
 
 				partition_temp .Set( device .get_path(),
 						     partition_path,
@@ -1095,7 +1106,10 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				}
 				else
 #endif
+				{
+					//For extended partitions only use libparted to determine if it's busy.
 					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
+				}
 
 				partition_temp .Set( device .get_path(),
 						     partition_path, 
