@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.16.2">
-  <!ENTITY manrevision "1.5">
-  <!ENTITY date "September 2013">
+  <!ENTITY appversion "0.17.0">
+  <!ENTITY manrevision "1.6">
+  <!ENTITY date "December 2013">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -99,6 +99,15 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
     <revhistory>
+      <revision>
+        <revnumber>&appname; Manual V1.6</revnumber>
+        <date>December 2013</date>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+          <para role="annotations">Describes version 0.17.0 of &appname;</para>
+        </revdescription>
+      </revision>
       <revision>
         <revnumber>&appname; Manual V1.5</revnumber>
         <date>September 2013</date>
@@ -742,8 +751,8 @@
         </para>
         <note>
           <para>
-          Partition operations such as delete, resize, move, copy,
-          format, check, and label require the partition to be 
+          Partition operations such as delete, move, copy, format,
+          check, label, and often resize require the partition to be
           unmounted.
           See <xref linkend="gparted-unmount-partition"/>.
           </para>
@@ -1461,9 +1470,20 @@
           <orderedlist>
             <listitem>
               <para>
-              Select an unmounted partition.
+              Select a partition.
               See <xref linkend="gparted-select-partition"/>.
               </para>
+              <tip>
+                <para>
+                Unmounted or inactive partitions enable the most
+                resize options.
+                </para>
+                <para>
+                Support is available for online resize of some
+                mounted or otherwise active partitions.  However this
+                support is often limited to grow only.
+                </para>
+              </tip>
             </listitem>
             <listitem>
               <para>
@@ -1483,6 +1503,9 @@
                 <para>
                 If you do not want the start of an existing partition
                 to move, then do not change the <guilabel>free space
+                preceding</guilabel> value.  If the partition is
+                mounted or otherwise active, then you will not be able
+                to change the <guilabel>free space
                 preceding</guilabel> value.
                 </para>
               </tip>
