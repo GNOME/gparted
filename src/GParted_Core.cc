@@ -1083,31 +1083,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
-#ifndef USE_LIBPARTED_DMRAID
-				//Handle dmraid devices differently because the minor number might not
-				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
-				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
-				if ( dmraid .is_dmraid_device( device .get_path() ) )
-				{
-					for ( unsigned int k = 5; k < 255; k++ )
-					{
-						//Try device_name + [5 to 255]
-						iter_mp = mount_info .find( device .get_path() + Utils::num_to_str( k ) ) ;
-						if ( iter_mp != mount_info .end() )
-							partition_is_busy = true ;
-						//Try device_name + p + [5 to 255]
-						iter_mp = mount_info .find( device .get_path() + "p" + Utils::num_to_str( k ) ) ;
-						if ( iter_mp != mount_info .end() )
-							partition_is_busy = true ;
-					}
-				}
-				else
-#endif
-				{
-					//For extended partitions only use libparted to determine if it's busy.
-					partition_is_busy = ped_partition_is_busy( lp_partition ) ;
-				}
-
 				partition_temp .Set( device .get_path(),
 						     partition_path, 
 						     lp_partition ->num,
@@ -1117,7 +1092,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 						     lp_partition ->geom .end,
 						     device .sector_size,
 						     false,
-						     partition_is_busy ) ;
+						     false ) ;
 
 				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp, lp_partition ) ;
@@ -1171,12 +1146,25 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	}
 
 	if ( EXT_INDEX > -1 )
+	{
 		insert_unallocated( device .get_path(),
 				    device .partitions[ EXT_INDEX ] .logicals,
 				    device .partitions[ EXT_INDEX ] .sector_start,
 				    device .partitions[ EXT_INDEX ] .sector_end,
 				    device .sector_size,
 				    true ) ;
+
+		//Set busy status of extended partition if and only if
+		//  there is at least one busy logical partition.
+		for ( unsigned int t = 0 ; t < device .partitions[ EXT_INDEX ] .logicals .size() ; t ++ )
+		{
+			if ( device .partitions[ EXT_INDEX ] .logicals[ t ] .busy )
+			{
+				device .partitions[ EXT_INDEX ] .busy = true ;
+				break ;
+			}
+		}
+	}
 
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
