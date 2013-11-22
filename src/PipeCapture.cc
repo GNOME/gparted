@@ -53,8 +53,8 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	//  Linestart, cursor and lineend are offsets into buff like this:
 	//      "Previous line\n
 	//       Current line.  Text progress bar: XXXXXXXXXX----------"
-	//      /\                                          /\        /\
-	//      linestart                                   cursor    lineend
+	//       ^                                           ^         ^
+	//       linestart                                   cursor    lineend
 	Glib::ustring str;
 	Glib::IOStatus status = channel->read( str, 512 );
 	if (status == Glib::IO_STATUS_NORMAL)
