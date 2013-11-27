@@ -311,11 +311,13 @@ void Dialog_Partition_Info::Display_Info()
 				 */
 				str_temp =  _("Busy (At least one logical partition is mounted)") ;
 			}
-			else if ( partition .filesystem == FS_LINUX_SWAP )
+			else if (    partition .filesystem == FS_LINUX_SWAP
+			          || partition .filesystem == FS_LINUX_SWRAID
+			        )
 			{
 				/* TO TRANSLATORS:  Active
-				 * means that this linux swap partition is enabled and being used by
-				 * the operating system.
+				 * means that this linux swap or linux software raid partition
+				 * is enabled and being used by the operating system.
 				 */
 				str_temp = _("Active") ;
 			}
@@ -343,11 +345,13 @@ void Dialog_Partition_Info::Display_Info()
 			 */
 			str_temp = _("Not busy (There are no mounted logical partitions)") ;
 		}
-		else if ( partition.filesystem == GParted::FS_LINUX_SWAP )
+		else if (    partition .filesystem == FS_LINUX_SWAP
+		          || partition .filesystem == FS_LINUX_SWRAID
+		        )
 		{
 			/* TO TRANSLATORS:  Not active
-			 *  means that this linux swap partition is not enabled and is not
-			 *  in use by the operating system.
+			 *  means that this linux swap or linux software raid partition
+			 *  is not enabled and is not in use by the operating system.
 			 */
 			str_temp = _("Not active") ;
 		}
