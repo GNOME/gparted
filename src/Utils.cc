@@ -724,11 +724,11 @@ Byte_Value Utils::ceil_size( Byte_Value value, Byte_Value rounding_size )
 bool Utils::get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver )
 {
 	static bool read_file = false ;
-	static int read_major_ver = -1 ;
-	static int read_minor_ver = -1 ;
-	static int read_patch_ver = -1 ;
+	static int read_major_ver = 0 ;
+	static int read_minor_ver = 0 ;
+	static int read_patch_ver = 0 ;
+	static bool success = false ;
 
-	bool success = false ;
 	if ( ! read_file )
 	{
 		std::ifstream input( "/proc/version" ) ;
@@ -736,18 +736,18 @@ bool Utils::get_kernel_version( int & major_ver, int & minor_ver, int & patch_ve
 		if ( input )
 		{
 			getline( input, line ) ;
-			sscanf( line .c_str(), "Linux version %d.%d.%d",
-			        &read_major_ver, &read_minor_ver, &read_patch_ver ) ;
+			int assigned = sscanf( line .c_str(), "Linux version %d.%d.%d",
+			                       &read_major_ver, &read_minor_ver, &read_patch_ver ) ;
+			success = ( assigned >= 2 ) ;  //At least 2 kernel version components read
 			input .close() ;
 		}
 		read_file = true ;
 	}
-	if ( read_major_ver > -1 && read_minor_ver > -1 && read_patch_ver > -1 )
+	if ( success )
 	{
 		major_ver = read_major_ver ;
 		minor_ver = read_minor_ver ;
 		patch_ver = read_patch_ver ;
-		success = true ;
 	}
 	return success ;
 }
