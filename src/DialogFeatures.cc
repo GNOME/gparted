@@ -26,7 +26,8 @@ DialogFeatures::DialogFeatures()
 {
 	set_title( _("File System Support") ) ;
 	set_has_separator( false ) ;
-	set_resizable( false ) ;
+	//Set minimum dialog height so it fits on an 800x600 screen
+	set_size_request( -1, 500 ) ;
 
 	//initialize icons
 	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR );
@@ -58,9 +59,13 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
 
+	//scrollable file system list
+	filesystems_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
+	filesystems_scrolled .add( treeview_filesystems ) ;
+
 	Gtk::HBox *filesystems_hbox( manage( new Gtk::HBox() ) ) ;
 	filesystems_hbox ->set_border_width( 6 ) ;
-	filesystems_hbox ->pack_start( treeview_filesystems ) ;
+	filesystems_hbox ->pack_start( filesystems_scrolled ) ;
 	this ->get_vbox() ->pack_start( *filesystems_hbox ) ;
 
 	//file system support legend

@@ -24,6 +24,7 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/image.h>
 
 namespace GParted
@@ -43,6 +44,7 @@ private:
 	Gtk::Frame legend_frame ;
 	Gtk::TreeView treeview_filesystems;
 	Gtk::TreeRow treerow;
+	Gtk::ScrolledWindow filesystems_scrolled ;
 	Glib::RefPtr<Gtk::ListStore> liststore_filesystems;
 	
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
