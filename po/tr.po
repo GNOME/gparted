@@ -11,10 +11,10 @@ msgstr ""
 "Project-Id-Version: gparted 0.1\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-18 01:06+0000\n"
-"PO-Revision-Date: 2013-04-18 04:25+0300\n"
+"POT-Creation-Date: 2013-11-25 00:10+0000\n"
+"PO-Revision-Date: 2013-12-07 14:38+0200\n"
 "Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,10 +22,40 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Gtranslator 2.91.6\n"
 
+#: ../gparted.appdata.xml.in.h:1
+msgid ""
+"GParted is a free partition editor for graphically managing your disk "
+"partitions."
+msgstr ""
+"GParted; disk bölümlerinizi görsel olarak yönetmenize olanak tanıyan, "
+"ücretsiz bir bölümleme düzenleyicisidir."
+
+#: ../gparted.appdata.xml.in.h:2
+msgid ""
+"With GParted you can resize, copy, label, and move partitions without data "
+"loss. These actions enable you to grow or shrink your C: drive, create space "
+"for new operating systems, or attempt data rescue from lost partitions."
+msgstr ""
+"GParted ile disk bölümlerinizi veri kaybı olmaksızın yeniden "
+"boyutlandırabilir, kopyalayabilir, etiketleyebilir ve taşıyabilirsiniz. Bu "
+"eylemler C: sürücünüzü büyütmenize veya küçültmenize, yeni işletim "
+"sistemleri için yer açmanıza ya da kayıp bölümlerden veri kurtarmayı "
+"denemenize olanak tanır."
+
+#: ../gparted.appdata.xml.in.h:3
+msgid ""
+"GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"reiser4, ufs, and xfs."
+msgstr ""
+"GParted, şunlar da dahil olmak üzere birçok dosya sistemi ile çalışır: "
+"btrfs, ext2, ext3, ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, "
+"nilfs2, ntfs, reiserfs, reiser4, ufs ve xfs."
+
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:360
-#: ../src/Win_GParted.cc:75 ../src/Win_GParted.cc:1276
-#: ../src/Win_GParted.cc:1467
+#: ../src/Win_GParted.cc:75 ../src/Win_GParted.cc:1282
+#: ../src/Win_GParted.cc:1473
 msgid "GParted"
 msgstr "GParted"
 
@@ -41,53 +71,38 @@ msgstr "GParted Disk Bölümü Düzenleyicisi"
 msgid "Create, reorganize, and delete partitions"
 msgstr "Bölümler oluştur, yeniden düzenle ve sil"
 
-#: ../include/Utils.h:54
+#: ../include/Utils.h:56
 msgid "(New UUID - will be randomly generated)"
 msgstr "(Yeni UUID - rasgele oluşturulacak)"
 
-#: ../include/Utils.h:55
+#: ../include/Utils.h:57
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(Yarı yeni UUID - rasgele oluşturulacak)"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:71
-msgid "%1 of %2 read (%3 remaining)"
-msgstr "%2'ın %1'ı okundu (%3 kaldı)"
-
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:73
+#: ../src/Copy_Blocks.cc:68
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%2'ın %1'ı kopyalandı (%3 kaldı)"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB read
-#: ../src/Copy_Blocks.cc:81 ../src/Copy_Blocks.cc:199
-msgid "%1 of %2 read"
-msgstr "%2'ın %1'ı okundu"
-
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:83 ../src/Copy_Blocks.cc:201
+#: ../src/Copy_Blocks.cc:75 ../src/Copy_Blocks.cc:185
 msgid "%1 of %2 copied"
 msgstr "%2'ın %1'ı kopyalandı"
 
-#. TO TRANSLATORS: looks like  read 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:170
-msgid "read %1 using a block size of %2"
-msgstr "%2 blok boyutu ile %1 oku"
-
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:175
+#: ../src/Copy_Blocks.cc:161
 msgid "copy %1 using a block size of %2"
 msgstr "%2 blok boyutu ile %1 kopyala"
 
-#: ../src/Copy_Blocks.cc:239
+#: ../src/Copy_Blocks.cc:223
 msgid "Operation Canceled"
 msgstr "İşlem İptal Edildi"
 
-#: ../src/Copy_Blocks.cc:251
+#: ../src/Copy_Blocks.cc:235
 msgid "Error while writing block at sector %1"
 msgstr "%1 sektöründeki blok yazılırken hata"
 
-#: ../src/Copy_Blocks.cc:256
+#: ../src/Copy_Blocks.cc:240
 msgid "Error while reading block at sector %1"
 msgstr "%1 seköründeki blok okunurken hata"
 
@@ -131,7 +146,7 @@ msgstr "Hiçbirşeye"
 msgid "Resize"
 msgstr "Boyutlandır"
 
-#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:242
+#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:244
 msgid "Resize/Move"
 msgstr "Boyutlandır/Taşı"
 
@@ -180,39 +195,39 @@ msgstr "Uyarı:"
 
 #. filesystem
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:185 ../src/Dialog_Partition_New.cc:125
+#: ../src/Dialog_Partition_Info.cc:194 ../src/Dialog_Partition_New.cc:127
 msgid "File system:"
 msgstr "Dosya sistemi:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:195 ../src/Win_GParted.cc:475
+#: ../src/Dialog_Partition_Info.cc:204 ../src/Win_GParted.cc:479
 msgid "Size:"
 msgstr "Boy:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:211
+#: ../src/Dialog_Partition_Info.cc:220
 msgid "Used:"
 msgstr "Dolu:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:225
+#: ../src/Dialog_Partition_Info.cc:234
 msgid "Unused:"
 msgstr "Boş:"
 
-#: ../src/Dialog_Partition_Info.cc:242
+#: ../src/Dialog_Partition_Info.cc:251
 msgid "Unallocated:"
 msgstr "Ayrılmamış:"
 
-#: ../src/Dialog_Partition_Info.cc:264
+#: ../src/Dialog_Partition_Info.cc:273
 msgid "Flags:"
 msgstr "Bayraklar:"
 
 #. path
-#: ../src/Dialog_Partition_Info.cc:280 ../src/Win_GParted.cc:483
+#: ../src/Dialog_Partition_Info.cc:289 ../src/Win_GParted.cc:487
 msgid "Path:"
 msgstr "Yol:"
 
-#: ../src/Dialog_Partition_Info.cc:294
+#: ../src/Dialog_Partition_Info.cc:300
 msgid "Status:"
 msgstr "Durum:"
 
@@ -220,7 +235,7 @@ msgstr "Durum:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:306
+#: ../src/Dialog_Partition_Info.cc:312
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Meşgul (En az bir mantıksal bölüm bağlı durumda)"
 
@@ -228,7 +243,7 @@ msgstr "Meşgul (En az bir mantıksal bölüm bağlı durumda)"
 #. * means that this linux swap partition is enabled and being used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:314
+#: ../src/Dialog_Partition_Info.cc:320
 msgid "Active"
 msgstr "Etkin"
 
@@ -236,12 +251,12 @@ msgstr "Etkin"
 #. * means that the partition is a member of an LVM volume group and the
 #. * volume group is active and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:322
+#: ../src/Dialog_Partition_Info.cc:328
 msgid "%1 active"
 msgstr "%1 etkin"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:328
+#: ../src/Dialog_Partition_Info.cc:334
 msgid "Mounted on %1"
 msgstr "%1'e bağlı"
 
@@ -249,7 +264,7 @@ msgstr "%1'e bağlı"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:338
+#: ../src/Dialog_Partition_Info.cc:344
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Meşgul değil (Bağlanmış mantıksal bölüm bulunmuyor)"
 
@@ -257,7 +272,7 @@ msgstr "Meşgul değil (Bağlanmış mantıksal bölüm bulunmuyor)"
 #. *  means that this linux swap partition is not enabled and is not
 #. *  in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:346
+#: ../src/Dialog_Partition_Info.cc:352
 msgid "Not active"
 msgstr "Etkin değil"
 
@@ -266,7 +281,7 @@ msgstr "Etkin değil"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:356
+#: ../src/Dialog_Partition_Info.cc:362
 msgid "Not active (Not a member of any volume group)"
 msgstr "Etkin değil (Hiçbir birim kümesinin üyesi değil)"
 
@@ -276,7 +291,7 @@ msgstr "Etkin değil (Hiçbir birim kümesinin üyesi değil)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:364
+#: ../src/Dialog_Partition_Info.cc:370
 msgid "%1 not active and exported"
 msgstr "%1 etkin değil ve dışa aktarılmış"
 
@@ -284,50 +299,50 @@ msgstr "%1 etkin değil ve dışa aktarılmış"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:370
+#: ../src/Dialog_Partition_Info.cc:376
 msgid "%1 not active"
 msgstr "%1 etkin değil"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:377
+#: ../src/Dialog_Partition_Info.cc:383
 msgid "Not mounted"
 msgstr "Bağlı değil"
 
 #. Label
-#: ../src/Dialog_Partition_Info.cc:386 ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:137
+#: ../src/Dialog_Partition_Info.cc:392 ../src/Dialog_Partition_Label.cc:41
+#: ../src/Dialog_Partition_New.cc:139
 msgid "Label:"
 msgstr "Etiket:"
 
-#: ../src/Dialog_Partition_Info.cc:399
+#: ../src/Dialog_Partition_Info.cc:405
 msgid "UUID:"
 msgstr "UUID:"
 
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:413
+#: ../src/Dialog_Partition_Info.cc:419
 msgid "First sector:"
 msgstr "İlk sektör:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:423
+#: ../src/Dialog_Partition_Info.cc:429
 msgid "Last sector:"
 msgstr "Son sektör:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:433 ../src/Win_GParted.cc:536
+#: ../src/Dialog_Partition_Info.cc:439 ../src/Win_GParted.cc:537
 msgid "Total sectors:"
 msgstr "Toplam sektörler:"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:455 ../src/Win_GParted.cc:2710
+#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2732
 msgid "Volume Group:"
 msgstr "Birim Grubu:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2711
+#: ../src/Dialog_Partition_Info.cc:467 ../src/Win_GParted.cc:2733
 msgid "Members:"
 msgstr "Üyeler:"
 
@@ -342,25 +357,25 @@ msgid "Create new Partition"
 msgstr "Yeni bölüm oluştur:"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:85
+#: ../src/Dialog_Partition_New.cc:87
 msgid "Create as:"
 msgstr "Oluşturma Tipi:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:75
 msgid "Primary Partition"
 msgstr "Birincil Bölüm"
 
-#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:78
+#: ../src/Dialog_Partition_New.cc:93 ../src/OperationCreate.cc:78
 #: ../src/OperationDelete.cc:77
 msgid "Logical Partition"
 msgstr "Mantıksal Bölüm"
 
-#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:94 ../src/OperationCreate.cc:81
 msgid "Extended Partition"
 msgstr "Uzatılmış Bölüm"
 
-#: ../src/Dialog_Partition_New.cc:203
+#: ../src/Dialog_Partition_New.cc:205
 msgid "New Partition #%1"
 msgstr "Yeni Bölüm #%1"
 
@@ -466,7 +481,7 @@ msgstr "Ayrıntıları Kaydet"
 msgid "GParted Details"
 msgstr "GParted Ayrıntılar"
 
-#: ../src/Dialog_Progress.cc:365
+#: ../src/Dialog_Progress.cc:368
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -474,7 +489,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:408
+#: ../src/Dialog_Progress.cc:411
 msgid "EXECUTING"
 msgstr "İŞLENİYOR"
 
@@ -482,7 +497,7 @@ msgstr "İŞLENİYOR"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:416
+#: ../src/Dialog_Progress.cc:419
 msgid "SUCCESS"
 msgstr "BAŞARILI"
 
@@ -490,7 +505,7 @@ msgstr "BAŞARILI"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:424
+#: ../src/Dialog_Progress.cc:427
 msgid "ERROR"
 msgstr "HATA"
 
@@ -499,7 +514,7 @@ msgstr "HATA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:433
+#: ../src/Dialog_Progress.cc:436
 msgid "INFO"
 msgstr "BİLGİ"
 
@@ -508,7 +523,7 @@ msgstr "BİLGİ"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:442
+#: ../src/Dialog_Progress.cc:445
 msgid "N/A"
 msgstr "UYGULANMAZ"
 
@@ -516,51 +531,51 @@ msgstr "UYGULANMAZ"
 msgid "File System Support"
 msgstr "Dosya Sistemi"
 
-#: ../src/DialogFeatures.cc:35 ../src/TreeView_Detail.cc:36
+#: ../src/DialogFeatures.cc:43 ../src/TreeView_Detail.cc:36
 msgid "File System"
 msgstr "Dosya Sistemi"
 
-#: ../src/DialogFeatures.cc:36
+#: ../src/DialogFeatures.cc:44
 msgid "Create"
 msgstr "Oluştur"
 
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:45
 msgid "Grow"
 msgstr "Genişlet"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:49
 msgid "Shrink"
 msgstr "Daralt"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:53
 msgid "Move"
 msgstr "Taşı"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:54
 msgid "Copy"
 msgstr "Kopyala"
 
-#: ../src/DialogFeatures.cc:41
+#: ../src/DialogFeatures.cc:55
 msgid "Check"
 msgstr "Denetle"
 
-#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:38
+#: ../src/DialogFeatures.cc:56 ../src/TreeView_Detail.cc:38
 msgid "Label"
 msgstr "Etiket"
 
-#: ../src/DialogFeatures.cc:43
+#: ../src/DialogFeatures.cc:57
 msgid "UUID"
 msgstr "UUID"
 
-#: ../src/DialogFeatures.cc:44
+#: ../src/DialogFeatures.cc:58
 msgid "Required Software"
 msgstr "Gerekli Yazılım"
 
-#: ../src/DialogFeatures.cc:61
+#: ../src/DialogFeatures.cc:75
 msgid "This chart shows the actions supported on file systems."
 msgstr "Bu çizelge dosya sistemlerince desteklenen eylemleri gösterir."
 
-#: ../src/DialogFeatures.cc:63
+#: ../src/DialogFeatures.cc:77
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -568,26 +583,35 @@ msgstr ""
 "Gerekli yazılımlardaki kısıtlamalar ve dosya sistemlerinin doğası gereği, "
 "bazı işlemler tüm dosya sistemlerinde mevcut değildir."
 
-#. TO TRANSLATORS:  Available
-#. * means that this action is valid for this file system.
+#. TO TRANSLATORS:  Available offline and online
+#. * means that this action is valid for this file system when
+#. * it is both unmounted and mounted.
 #.
-#: ../src/DialogFeatures.cc:81
-msgid "Available"
-msgstr "Mevcut"
+#: ../src/DialogFeatures.cc:98
+msgid "Available offline and online"
+msgstr "Çevrimiçi ve çevrimdışı kullanılabilir"
+
+#. TO TRANSLATORS:  Available offline only
+#. * means that this action is valid for this file system only
+#. * when it is unmounted.
+#.
+#: ../src/DialogFeatures.cc:111
+msgid "Available offline only"
+msgstr "Sadece çevrimdışı kullanılabilir"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:93
+#: ../src/DialogFeatures.cc:125
 msgid "Not Available"
 msgstr "Mevcut değil"
 
-#: ../src/DialogFeatures.cc:99
+#: ../src/DialogFeatures.cc:131
 msgid "Legend"
 msgstr "Gösterge"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:114
+#: ../src/DialogFeatures.cc:142
 msgid "Rescan For Supported Actions"
 msgstr "Mevcut İşlemler Listesini Güncelle"
 
@@ -730,40 +754,40 @@ msgid "update %1 entry"
 msgstr "%1 girdisini güncelle"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:42
+#: ../src/FileSystem.cc:43
 msgid "_Mount"
 msgstr "_Bağla"
 
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:44
 msgid "_Unmount"
 msgstr "_Ayır"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:188
+#: ../src/FileSystem.cc:191
 msgid "Created directory %1"
 msgstr "%1 dizini oluşturuldu"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:215
+#: ../src/FileSystem.cc:218
 msgid "Removed directory %1"
 msgstr "%1 dizini kaldırıldı"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:192 ../src/GParted_Core.cc:201
+#: ../src/GParted_Core.cc:193 ../src/GParted_Core.cc:202
 msgid "Scanning %1"
 msgstr "%1 Taranıyor"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:224
+#: ../src/GParted_Core.cc:225
 msgid "Confirming %1"
 msgstr "%1 doğrulanıyor"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:236
+#: ../src/GParted_Core.cc:237
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "%2 mantıksal sektör boyutlu, %1 aygıtı göz ardı ediliyor."
 
-#: ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:239
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -772,7 +796,7 @@ msgstr ""
 "için, libparted 2.2 veya daha üst bir sürümüne ihtiyaç duyar."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:276
+#: ../src/GParted_Core.cc:277
 msgid "Searching %1 partitions"
 msgstr "%1 bölümleri aranıyor"
 
@@ -780,71 +804,71 @@ msgstr "%1 bölümleri aranıyor"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:325
+#: ../src/GParted_Core.cc:326
 msgid "unrecognized"
 msgstr "tanınmayan"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:644
+#: ../src/GParted_Core.cc:645
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Bir bölüm %1 sektör uzunluğuna sahip olamaz"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:658
+#: ../src/GParted_Core.cc:659
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Kullanılan sektörleri (%1), uzunluğundan (%2) daha büyük olan bir bölüm "
 "geçerli değildir"
 
-#: ../src/GParted_Core.cc:728
+#: ../src/GParted_Core.cc:729
 msgid "libparted messages"
 msgstr "libparted mesajları"
 
-#: ../src/GParted_Core.cc:1194
+#: ../src/GParted_Core.cc:1196
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Linux Unified Key Setup şifrelemesi henüz desteklenmiyor."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1346
+#: ../src/GParted_Core.cc:1353
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Dosya sistemleri tespit edilemedi! Muhtemel nedenleri:"
 
-#: ../src/GParted_Core.cc:1348
+#: ../src/GParted_Core.cc:1355
 msgid "The file system is damaged"
 msgstr "Dosya sistemi zarar görmüş"
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1357
 msgid "The file system is unknown to GParted"
 msgstr "Dosya sistemi GParted tarafından bilinmiyor"
 
-#: ../src/GParted_Core.cc:1352
+#: ../src/GParted_Core.cc:1359
 msgid "There is no file system available (unformatted)"
 msgstr "Kullanılabilir bir dosya sistemi yok (biçimlendirilmemiş)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1355
+#: ../src/GParted_Core.cc:1362
 msgid "The device entry %1 is missing"
 msgstr "Aygıt girdisi %1 eksik"
 
-#: ../src/GParted_Core.cc:1518
+#: ../src/GParted_Core.cc:1527
 msgid "Unable to find mount point"
 msgstr "Bağlanma noktası bulunamıyor"
 
-#: ../src/GParted_Core.cc:1591
+#: ../src/GParted_Core.cc:1601
 msgid "Unable to read the contents of this file system!"
 msgstr "Bu dosya sisteminin içeriği okunamıyor!"
 
-#: ../src/GParted_Core.cc:1593
+#: ../src/GParted_Core.cc:1603
 msgid "Because of this some operations may be unavailable."
 msgstr "Bu nedenle bazı işlemler mevcut olmayabilir."
 
-#: ../src/GParted_Core.cc:1597
+#: ../src/GParted_Core.cc:1607
 msgid "The cause might be a missing software package."
 msgstr "Bunun sebebi eksik bir yazılım paketi olabilir."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1600
+#: ../src/GParted_Core.cc:1610
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -852,7 +876,7 @@ msgstr ""
 "%1 dosya sistemi desteği için gereken yazılım paketlerinin listesi: %2."
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1610
+#: ../src/GParted_Core.cc:1620
 msgid "%1 of unallocated space within the partition."
 msgstr "Bölüm içinde %1 ayrılmamış alan var."
 
@@ -860,7 +884,7 @@ msgstr "Bölüm içinde %1 ayrılmamış alan var."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1621
+#: ../src/GParted_Core.cc:1631
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -868,55 +892,55 @@ msgstr ""
 "Dosya sistemini bölümü dolduracak şekilde büyütmek için, bir bölümü "
 "işaretleyin ve ilgili menü ögesini seçin:"
 
-#: ../src/GParted_Core.cc:1623
+#: ../src/GParted_Core.cc:1633
 msgid "Partition --> Check."
 msgstr "Bölüm --> Denetlendi."
 
-#: ../src/GParted_Core.cc:1721
+#: ../src/GParted_Core.cc:1731
 msgid "create empty partition"
 msgstr "boş bölüm oluştur"
 
-#: ../src/GParted_Core.cc:1791 ../src/GParted_Core.cc:2981
+#: ../src/GParted_Core.cc:1801 ../src/GParted_Core.cc:2977
 msgid "path: %1"
 msgstr "yol: %1"
 
-#: ../src/GParted_Core.cc:1792 ../src/GParted_Core.cc:2982
+#: ../src/GParted_Core.cc:1802 ../src/GParted_Core.cc:2978
 msgid "start: %1"
 msgstr "başlangıç: %1"
 
-#: ../src/GParted_Core.cc:1793 ../src/GParted_Core.cc:2983
+#: ../src/GParted_Core.cc:1803 ../src/GParted_Core.cc:2979
 msgid "end: %1"
 msgstr "bitiş: %1"
 
-#: ../src/GParted_Core.cc:1794 ../src/GParted_Core.cc:2984
+#: ../src/GParted_Core.cc:1804 ../src/GParted_Core.cc:2980
 msgid "size: %1 (%2)"
 msgstr "boyut: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1826 ../src/linux_swap.cc:119
+#: ../src/GParted_Core.cc:1836 ../src/linux_swap.cc:165
 msgid "create new %1 file system"
 msgstr "yeni %1 dosya sistemi oluştur"
 
-#: ../src/GParted_Core.cc:1867
+#: ../src/GParted_Core.cc:1877
 msgid "delete partition"
 msgstr "bölümü sil"
 
-#: ../src/GParted_Core.cc:1922
+#: ../src/GParted_Core.cc:1932
 msgid "delete %1 file system"
 msgstr "%1 dosya sistemini sil"
 
-#: ../src/GParted_Core.cc:1939
+#: ../src/GParted_Core.cc:1949
 msgid "Clear partition label on %1"
 msgstr "%1 üzerindeki bölüm etiketini temizle"
 
-#: ../src/GParted_Core.cc:1944
+#: ../src/GParted_Core.cc:1954
 msgid "Set partition label to \"%1\" on %2"
 msgstr "%2 üzerindeki bölüm etiketini \"%1\" olarak ayarla"
 
-#: ../src/GParted_Core.cc:1978
+#: ../src/GParted_Core.cc:1988
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "%1 üzerindeki UUID'in yarısına yeni ve rasgele bir değer ver"
 
-#: ../src/GParted_Core.cc:1983
+#: ../src/GParted_Core.cc:1993
 msgid "Set UUID on %1 to a new, random value"
 msgstr "%1 üzerindeki UUID'e yeni ve rasgele bir değer ver"
 
@@ -925,27 +949,27 @@ msgstr "%1 üzerindeki UUID'e yeni ve rasgele bir değer ver"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2068
+#: ../src/GParted_Core.cc:2078
 msgid "moving requires old and new length to be the same"
 msgstr "taşımak için, eski ve yeni bölüm uzunlukları aynı olmalı"
 
-#: ../src/GParted_Core.cc:2098
+#: ../src/GParted_Core.cc:2108
 msgid "rollback last change to the partition table"
 msgstr "bölümlendirme tablosuna yapılan son değişikliği geri al"
 
-#: ../src/GParted_Core.cc:2140
+#: ../src/GParted_Core.cc:2150
 msgid "move file system to the left"
 msgstr "dosya sistemini sola taşı"
 
-#: ../src/GParted_Core.cc:2142
+#: ../src/GParted_Core.cc:2152
 msgid "move file system to the right"
 msgstr "dosya sistemini sağa taşı"
 
-#: ../src/GParted_Core.cc:2145
+#: ../src/GParted_Core.cc:2155
 msgid "move file system"
 msgstr "dosya sistemini taşı"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2157
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -953,51 +977,51 @@ msgstr ""
 "yeni ve eski dosya sistemleri aynı konuma sahipler. Bundan dolayı, bu dosya "
 "sistemlerindeki işlemler atlanacak"
 
-#: ../src/GParted_Core.cc:2215
+#: ../src/GParted_Core.cc:2225
 msgid "using libparted"
 msgstr "libparted kullanarak"
 
-#: ../src/GParted_Core.cc:2258
+#: ../src/GParted_Core.cc:2268
 msgid "resizing requires old and new start to be the same"
 msgstr "yeniden boyutlandırma için eski ve yeni başlangıç aynı olmalı"
 
-#: ../src/GParted_Core.cc:2325
+#: ../src/GParted_Core.cc:2335
 msgid "resize/move partition"
 msgstr "bölümü boyutlandır/taşı"
 
-#: ../src/GParted_Core.cc:2328
+#: ../src/GParted_Core.cc:2338
 msgid "move partition to the right"
 msgstr "bölümü sağa taşı"
 
-#: ../src/GParted_Core.cc:2331
+#: ../src/GParted_Core.cc:2341
 msgid "move partition to the left"
 msgstr "bölümü sola taşı"
 
-#: ../src/GParted_Core.cc:2334
+#: ../src/GParted_Core.cc:2344
 msgid "grow partition from %1 to %2"
 msgstr "bölümü %1 boyutundan %2 boyutuna genişlet"
 
-#: ../src/GParted_Core.cc:2337
+#: ../src/GParted_Core.cc:2347
 msgid "shrink partition from %1 to %2"
 msgstr "bölümü %1 boyutundan %2 boyutuna daralt"
 
-#: ../src/GParted_Core.cc:2340
+#: ../src/GParted_Core.cc:2350
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "bölümü sağa taşı ve %1 boyutundan %2 boyutuna genişlet"
 
-#: ../src/GParted_Core.cc:2343
+#: ../src/GParted_Core.cc:2353
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "bölümü sağa taşı ve %1 boyutundan %2 boyutuna daralt"
 
-#: ../src/GParted_Core.cc:2346
+#: ../src/GParted_Core.cc:2356
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "bölümü sola taşı ve %1 boyutundan %2 boyutuna genişlet"
 
-#: ../src/GParted_Core.cc:2349
+#: ../src/GParted_Core.cc:2359
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "bölümü sola taşı ve %1 boyutundan %2 boyutuna daralt"
 
-#: ../src/GParted_Core.cc:2364
+#: ../src/GParted_Core.cc:2374
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1005,255 +1029,231 @@ msgstr ""
 "yeni ve eski bölümler aynı boyut ve konuma sahip olmalılar. Bu sebeple bu "
 "işlem atlanıyor"
 
-#: ../src/GParted_Core.cc:2374
+#: ../src/GParted_Core.cc:2384
 msgid "old start: %1"
 msgstr "eski başlangıç: %1"
 
-#: ../src/GParted_Core.cc:2375
+#: ../src/GParted_Core.cc:2385
 msgid "old end: %1"
 msgstr "eski bitiş: %1"
 
-#: ../src/GParted_Core.cc:2376
+#: ../src/GParted_Core.cc:2386
 msgid "old size: %1 (%2)"
 msgstr "eski boyut: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2441 ../src/GParted_Core.cc:3063
+#: ../src/GParted_Core.cc:2451 ../src/GParted_Core.cc:3059
 msgid "new start: %1"
 msgstr "yeni başlangıç: %1"
 
-#: ../src/GParted_Core.cc:2442 ../src/GParted_Core.cc:3064
+#: ../src/GParted_Core.cc:2452 ../src/GParted_Core.cc:3060
 msgid "new end: %1"
 msgstr "yeni bitiş: %1"
 
-#: ../src/GParted_Core.cc:2443 ../src/GParted_Core.cc:3065
+#: ../src/GParted_Core.cc:2453 ../src/GParted_Core.cc:3061
 msgid "new size: %1 (%2)"
 msgstr "yeni boyut: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2470 ../src/GParted_Core.cc:3011
+#: ../src/GParted_Core.cc:2480 ../src/GParted_Core.cc:3007
 msgid "requested start: %1"
 msgstr "istenen bağlangıç: %1"
 
-#: ../src/GParted_Core.cc:2471 ../src/GParted_Core.cc:3012
+#: ../src/GParted_Core.cc:2481 ../src/GParted_Core.cc:3008
 msgid "requested end: %1"
 msgstr "istenen bitiş: %1"
 
-#: ../src/GParted_Core.cc:2472 ../src/GParted_Core.cc:3013
+#: ../src/GParted_Core.cc:2482 ../src/GParted_Core.cc:3009
 msgid "requested size: %1 (%2)"
 msgstr "istenen boyut: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2507
 msgid "shrink file system"
 msgstr "dosya sistemini daralt"
 
-#: ../src/GParted_Core.cc:2501
+#: ../src/GParted_Core.cc:2511
 msgid "grow file system"
 msgstr "dosya sistemini genişlet"
 
-#: ../src/GParted_Core.cc:2504
+#: ../src/GParted_Core.cc:2514
 msgid "resize file system"
 msgstr "dosya sistemini yeniden boyutlandır"
 
-#: ../src/GParted_Core.cc:2507
+#: ../src/GParted_Core.cc:2517
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "yeni ve eski dosya sistemleri aynı boyuttalar. Bu sebeple, bu işlem atlanıyor"
 
-#: ../src/GParted_Core.cc:2548
+#: ../src/GParted_Core.cc:2558
 msgid "grow file system to fill the partition"
 msgstr "dosya sistemini bölümü dolduracak şekilde genişlet"
 
-#: ../src/GParted_Core.cc:2553
+#: ../src/GParted_Core.cc:2563
 msgid "growing is not available for this file system"
 msgstr "bu dosya sistemi için genişletme işlevi mevcut değil"
 
-#: ../src/GParted_Core.cc:2562
+#: ../src/GParted_Core.cc:2572
 msgid "growing the file system is currently disallowed"
 msgstr "dosya sistemini büyütmeye şu anda izin verilmiyor"
 
-#: ../src/GParted_Core.cc:2588
+#: ../src/GParted_Core.cc:2598
 msgid "the destination is smaller than the source partition"
 msgstr "hedef bölüm kaynak bölümden daha küçük"
 
-#: ../src/GParted_Core.cc:2605
+#: ../src/GParted_Core.cc:2615
 msgid "copy file system of %1 to %2"
 msgstr "%1 dosya sistemini %2 hedefine kopyala"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2713
 msgid "using internal algorithm"
 msgstr "içsel algoritma kullanarak"
 
-#. TO TRANSLATORS: looks like  read 1.00 MiB
-#: ../src/GParted_Core.cc:2712
-msgid "read %1"
-msgstr "%1 oku"
-
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2714
+#: ../src/GParted_Core.cc:2716
 msgid "copy %1"
 msgstr "%1 kopyala"
 
-#: ../src/GParted_Core.cc:2718
+#: ../src/GParted_Core.cc:2719
 msgid "finding optimal block size"
 msgstr "en uygun blok boyutu bulunuyor"
 
-#: ../src/GParted_Core.cc:2759
+#: ../src/GParted_Core.cc:2760
 msgid "%1 seconds"
 msgstr "%1 saniye"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2777
+#: ../src/GParted_Core.cc:2778
 msgid "optimal block size is %1"
 msgstr "en uygun blok boyutu %1"
 
-#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) read
-#: ../src/GParted_Core.cc:2796
-msgid "%1 (%2 B) read"
-msgstr "%1 (%2 B) okunan"
-
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2798
+#: ../src/GParted_Core.cc:2795
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) kopyalanan"
 
-#: ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:2828
 msgid "roll back last transaction"
 msgstr "son işlemi geri al"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2846
+#: ../src/GParted_Core.cc:2842
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1 üzerindeki dosya sistemini hatalar için denetle ve (mümkünse) onar"
 
-#: ../src/GParted_Core.cc:2855
+#: ../src/GParted_Core.cc:2851
 msgid "checking is not available for this file system"
 msgstr "bu dosya sistemi için denetleme işlevi mevcut değil"
 
-#: ../src/GParted_Core.cc:2886
+#: ../src/GParted_Core.cc:2882
 msgid "set partition type on %1"
 msgstr "%1 üzerindeki bölüm tipini ayarla"
 
-#: ../src/GParted_Core.cc:2923
+#: ../src/GParted_Core.cc:2919
 msgid "new partition type: %1"
 msgstr "yeni bölüm bölüm tipi: %1"
 
-#: ../src/GParted_Core.cc:2940
+#: ../src/GParted_Core.cc:2936
 msgid "new partition flag: %1"
 msgstr "yeni bölüm bayrağı: %1"
 
-#: ../src/GParted_Core.cc:2959
+#: ../src/GParted_Core.cc:2955
 msgid "calibrate %1"
 msgstr "ayarla %1"
 
-#: ../src/GParted_Core.cc:3007
+#: ../src/GParted_Core.cc:3003
 msgid "calculate new size and position of %1"
 msgstr "%1 için yeni boyut ve konumu hesapla"
 
-#: ../src/GParted_Core.cc:3123
+#: ../src/GParted_Core.cc:3119
 msgid "clear old file system signatures in %1"
 msgstr "%1'deki eski dosya sistemi imzalarını temizle"
 
-#. Single copy of string for translation purposes
-#. TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0
-#: ../src/GParted_Core.cc:3150
-msgid "wrote %1 of zeros at byte offset %2"
-msgstr "%2 düzeltmesine sıfırların %1'i yazıldı"
-
-#: ../src/GParted_Core.cc:3160
-msgid "clear primary signatures"
-msgstr "birincil imzaları temizle"
-
-#: ../src/GParted_Core.cc:3203
-msgid "clear secondary signatures"
-msgstr "ikincil imzaları temizle"
-
-#: ../src/GParted_Core.cc:3260
+#: ../src/GParted_Core.cc:3279
 msgid "flush operating system cache of %1"
 msgstr "%1'in işletim sistemi önbelleğini temizle"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3292
+#: ../src/GParted_Core.cc:3311
 msgid "update boot sector of %1 file system on %2"
 msgstr "%2 üzerindeki %1 dosya sisteminin açılış sektörünü güncelle"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3328
+#: ../src/GParted_Core.cc:3347
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1 içine açılış sektörü yazılırken hata"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3334
+#: ../src/GParted_Core.cc:3353
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1 içinde 0x1c konumuna atlanırken hata"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3341
+#: ../src/GParted_Core.cc:3360
 msgid "Error trying to open %1"
 msgstr "%1 açılmaya çalışılırken hata"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3351
+#: ../src/GParted_Core.cc:3370
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "NTFS açılış kaydındaki gizli sektör sayısı %1 olarak ayarlanamadı."
 
-#: ../src/GParted_Core.cc:3353
+#: ../src/GParted_Core.cc:3372
 msgid "You might try the following command to correct the problem:"
 msgstr "Sorunu düzeltmek için deneyebileceğiniz komut:"
 
-#: ../src/GParted_Core.cc:3453
+#: ../src/GParted_Core.cc:3472
 msgid "Libparted Warning"
 msgstr "Libparted Uyarısı"
 
-#: ../src/GParted_Core.cc:3457
+#: ../src/GParted_Core.cc:3476
 msgid "Libparted Information"
 msgstr "Libparted Bilgisi"
 
-#: ../src/GParted_Core.cc:3461
+#: ../src/GParted_Core.cc:3480
 msgid "Libparted Error"
 msgstr "Libparted Hatası"
 
-#: ../src/GParted_Core.cc:3463
+#: ../src/GParted_Core.cc:3482
 msgid "Libparted Bug Found!"
 msgstr "Libparted Hatası Bulundu!"
 
-#: ../src/GParted_Core.cc:3466
+#: ../src/GParted_Core.cc:3485
 msgid "Fix"
 msgstr "Onar"
 
-#: ../src/GParted_Core.cc:3468
+#: ../src/GParted_Core.cc:3487
 msgid "Yes"
 msgstr "Evet"
 
-#: ../src/GParted_Core.cc:3470
+#: ../src/GParted_Core.cc:3489
 msgid "Ok"
 msgstr "Tamam"
 
-#: ../src/GParted_Core.cc:3472
+#: ../src/GParted_Core.cc:3491
 msgid "Retry"
 msgstr "Yeniden Dene"
 
-#: ../src/GParted_Core.cc:3474
+#: ../src/GParted_Core.cc:3493
 msgid "No"
 msgstr "Hayır"
 
-#: ../src/GParted_Core.cc:3476
+#: ../src/GParted_Core.cc:3495
 msgid "Cancel"
 msgstr "İptal"
 
-#: ../src/GParted_Core.cc:3478
+#: ../src/GParted_Core.cc:3497
 msgid "Ignore"
 msgstr "Yok say"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:160
+#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:162
 msgid "_Undo Last Operation"
 msgstr "_Son işlemi Geri Al"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:166
+#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:168
 msgid "_Clear All Operations"
 msgstr "_Tüm İşlemleri Temizle"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:171
+#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:173
 msgid "_Apply All Operations"
 msgstr "Tüm İşlemleri _Uygula"
 
@@ -1261,15 +1261,15 @@ msgstr "Tüm İşlemleri _Uygula"
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "Bu Birim Grubuna ait bir ya da daha fazla Fiziksel Birim eksik."
 
-#: ../src/LVM2_PV_Info.cc:280
+#: ../src/LVM2_PV_Info.cc:279
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "LVM2 yapılandırması okunurken bir hata oluştu!"
 
-#: ../src/LVM2_PV_Info.cc:282
+#: ../src/LVM2_PV_Info.cc:281
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Ayrıntıların bir kısmı ya da hepsi eksik veya hatalı olabilir."
 
-#: ../src/LVM2_PV_Info.cc:284
+#: ../src/LVM2_PV_Info.cc:283
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "LVM2 PV bölümlerinden hiçbirini değiştirmemelisiniz."
 
@@ -1402,7 +1402,7 @@ msgstr "Bayraklar"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:193
+#: ../src/Utils.cc:195
 msgid "unallocated"
 msgstr "ayrılmamış"
 
@@ -1411,7 +1411,7 @@ msgstr "ayrılmamış"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:200
+#: ../src/Utils.cc:202
 msgid "unknown"
 msgstr "bilinmeyen"
 
@@ -1419,7 +1419,7 @@ msgstr "bilinmeyen"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:206
+#: ../src/Utils.cc:208
 msgid "unformatted"
 msgstr "biçimlendirilmemiş"
 
@@ -1427,278 +1427,279 @@ msgstr "biçimlendirilmemiş"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:212
+#: ../src/Utils.cc:214
 msgid "cleared"
 msgstr "temizlendi"
 
-#: ../src/Utils.cc:232
+#: ../src/Utils.cc:234
 msgid "used"
 msgstr "dolu"
 
-#: ../src/Utils.cc:233
+#: ../src/Utils.cc:235
 msgid "unused"
 msgstr "boş"
 
-#: ../src/Utils.cc:331
+#: ../src/Utils.cc:368
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:336
+#: ../src/Utils.cc:373
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:341
+#: ../src/Utils.cc:378
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:346
+#: ../src/Utils.cc:383
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:351
+#: ../src/Utils.cc:388
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:144
+#: ../src/Win_GParted.cc:146
 msgid "_Refresh Devices"
 msgstr "_Aygıtları yenile"
 
-#: ../src/Win_GParted.cc:150
+#: ../src/Win_GParted.cc:152
 msgid "_Devices"
 msgstr "_Aygıtlar"
 
-#: ../src/Win_GParted.cc:155
+#: ../src/Win_GParted.cc:157
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:175
+#: ../src/Win_GParted.cc:177
 msgid "_Edit"
 msgstr "Dü_zenle"
 
-#: ../src/Win_GParted.cc:180
+#: ../src/Win_GParted.cc:182
 msgid "Device _Information"
 msgstr "Ay_gıt Bilgisi"
 
-#: ../src/Win_GParted.cc:182
+#: ../src/Win_GParted.cc:184
 msgid "Pending _Operations"
 msgstr "Bekleye_n İşlemler"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:185
 msgid "_View"
 msgstr "Görünü_m"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:189
 msgid "_File System Support"
 msgstr "Dosya Sistemi _Desteği"
 
-#: ../src/Win_GParted.cc:191
+#: ../src/Win_GParted.cc:193
 msgid "_Create Partition Table"
 msgstr "_Yeni bölüm oluştur:"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:196
 msgid "_Attempt Data Rescue"
 msgstr "Veri _Kurtarmayı Dene"
 
-#: ../src/Win_GParted.cc:197
+#: ../src/Win_GParted.cc:199
 msgid "_Device"
 msgstr "_Aygıt"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:203
 msgid "_Partition"
 msgstr "_Bölüm"
 
-#: ../src/Win_GParted.cc:206
+#: ../src/Win_GParted.cc:208
 msgid "_Contents"
 msgstr "İçe_rik"
 
-#: ../src/Win_GParted.cc:214
+#: ../src/Win_GParted.cc:216
 msgid "_Help"
 msgstr "_Yardım"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:226
+#: ../src/Win_GParted.cc:228
 msgid "New"
 msgstr "Yeni"
 
-#: ../src/Win_GParted.cc:231
+#: ../src/Win_GParted.cc:233
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Seçili ayrılmamış boşlukta yeni bir bölüm Oluştur"
 
-#: ../src/Win_GParted.cc:236
+#: ../src/Win_GParted.cc:238
 msgid "Delete the selected partition"
 msgstr "Seçili bölümü Sil"
 
-#: ../src/Win_GParted.cc:258
+#: ../src/Win_GParted.cc:260
 msgid "Resize/Move the selected partition"
 msgstr "Seçili bölümü Boyutlandır/Taşı"
 
-#: ../src/Win_GParted.cc:267
+#: ../src/Win_GParted.cc:269
 msgid "Copy the selected partition to the clipboard"
 msgstr "Seçili bölümü panoya Kopyala"
 
-#: ../src/Win_GParted.cc:272
+#: ../src/Win_GParted.cc:274
 msgid "Paste the partition from the clipboard"
 msgstr "Bölümü panodan Yapıştır"
 
-#: ../src/Win_GParted.cc:284
+#: ../src/Win_GParted.cc:286
 msgid "Undo Last Operation"
 msgstr "Son işlemi Geri Al"
 
-#: ../src/Win_GParted.cc:292
+#: ../src/Win_GParted.cc:294
 msgid "Apply All Operations"
 msgstr "Tüm İşlemleri Uygula"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:315
+#: ../src/Win_GParted.cc:317
 msgid "_New"
 msgstr "_Yeni"
 
-#: ../src/Win_GParted.cc:332
+#: ../src/Win_GParted.cc:334
 msgid "_Resize/Move"
 msgstr "Boyutlandır/_Taşı"
 
-#: ../src/Win_GParted.cc:356
+#: ../src/Win_GParted.cc:358
 msgid "_Format to"
 msgstr "_Biçimlendir"
 
-#: ../src/Win_GParted.cc:372
+#: ../src/Win_GParted.cc:374
 msgid "_Mount on"
 msgstr "Bağ_la"
 
-#: ../src/Win_GParted.cc:379
+#: ../src/Win_GParted.cc:381
 msgid "M_anage Flags"
 msgstr "_Bayrakları Yöner"
 
-#: ../src/Win_GParted.cc:384
+#: ../src/Win_GParted.cc:386
 msgid "C_heck"
 msgstr "_Denetle"
 
-#: ../src/Win_GParted.cc:389
+#: ../src/Win_GParted.cc:391
 msgid "_Label"
 msgstr "_Etiket"
 
-#: ../src/Win_GParted.cc:394
+#: ../src/Win_GParted.cc:396
 msgid "New UU_ID"
 msgstr "Yeni UU_ID"
 
-#: ../src/Win_GParted.cc:459
+#: ../src/Win_GParted.cc:463
 msgid "Device Information"
 msgstr "Aygıt Bilgisi"
 
 #. model
-#: ../src/Win_GParted.cc:467
+#: ../src/Win_GParted.cc:471
 msgid "Model:"
 msgstr "Model:"
 
 #. disktype
-#: ../src/Win_GParted.cc:504
+#: ../src/Win_GParted.cc:505
 msgid "Partition table:"
 msgstr "Bölümlendirme tablosu"
 
 #. heads
-#: ../src/Win_GParted.cc:512
+#: ../src/Win_GParted.cc:513
 msgid "Heads:"
 msgstr "Kafa:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:520
+#: ../src/Win_GParted.cc:521
 msgid "Sectors/track:"
 msgstr "Sektör/iz:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:528
+#: ../src/Win_GParted.cc:529
 msgid "Cylinders:"
 msgstr "Silindir:"
 
 #. sector size
-#: ../src/Win_GParted.cc:544
+#: ../src/Win_GParted.cc:545
 msgid "Sector size:"
 msgstr "Sektör boyutu:"
 
-#: ../src/Win_GParted.cc:735
+#: ../src/Win_GParted.cc:718
 msgid "Could not add this operation to the list"
 msgstr "Bu işlem listeye eklenemedi"
 
-#: ../src/Win_GParted.cc:840
+#: ../src/Win_GParted.cc:813
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 bekleyen İşlem"
 
-#: ../src/Win_GParted.cc:933
+#: ../src/Win_GParted.cc:906
 msgid "Quit GParted?"
 msgstr "GParted'ten Çık?"
 
-#: ../src/Win_GParted.cc:939
+#: ../src/Win_GParted.cc:912
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Şu anda %1 işlem bekliyor."
 
-#: ../src/Win_GParted.cc:1215
+#: ../src/Win_GParted.cc:1221
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1252
+#: ../src/Win_GParted.cc:1258
 msgid "Scanning all devices..."
 msgstr "Tüm aygıtlar taranıyor..."
 
-#: ../src/Win_GParted.cc:1299
+#: ../src/Win_GParted.cc:1305
 msgid "No devices detected"
 msgstr "Hiç aygıt bulunamadı"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1380
+#: ../src/Win_GParted.cc:1386
 msgid "No partition table found on device %1"
 msgstr "%1 aygısında hiç bölümlendirme tablosu bulunamadı"
 
-#: ../src/Win_GParted.cc:1385
+#: ../src/Win_GParted.cc:1391
 msgid "A partition table is required before partitions can be added."
 msgstr "Disk bölümleri ekleyebilmek için bölümlendirme tablosu gerekir."
 
-#: ../src/Win_GParted.cc:1387
+#: ../src/Win_GParted.cc:1393
 msgid "To create a new partition table choose the menu item:"
 msgstr ""
 "Yeni bir bölümlendirme tablosu oluşturmak için seçmeniz gereken menü öğesi:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1390
+#: ../src/Win_GParted.cc:1396
 msgid "Device --> Create Partition Table."
 msgstr "Aygıt --> Bölümlendirme Tablosu Oluştur"
 
-#: ../src/Win_GParted.cc:1426
+#: ../src/Win_GParted.cc:1432
 msgid "Unable to open GParted Manual help file"
 msgstr "GParted Kılavuzu yardım dosyası açılamadı"
 
-#: ../src/Win_GParted.cc:1442
+#: ../src/Win_GParted.cc:1448
 msgid "Documentation is not available"
 msgstr "Belgelendirme mevcut değil"
 
-#: ../src/Win_GParted.cc:1447
+#: ../src/Win_GParted.cc:1453
 msgid "This build of gparted is configured without documentation."
 msgstr "Bu gparted, belgelendirme içermeyecek şekilde inşaa edilmiş."
 
-#: ../src/Win_GParted.cc:1449
+#: ../src/Win_GParted.cc:1455
 msgid "Documentation is available at the project web site."
 msgstr "Projenin internet sayfasından belgelendirmeye erişebilirsiniz."
 
-#: ../src/Win_GParted.cc:1470
+#: ../src/Win_GParted.cc:1476
 msgid "GNOME Partition Editor"
 msgstr "GNOME Bölümleme Düzenleyicisi"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1498
+#: ../src/Win_GParted.cc:1504
 msgid "translator-credits"
 msgstr ""
-"Serkan Kenar <serkan@labristeknoloji.com>GNOME Türkiye <www.gnome.org.tr>\n"
-"Şenol Korkmaz <mail@senolkorkmaz.info>GNOME Türkiye <www.gnome.org.tr>\n"
+"GNOME Türkiye <www.gnome.org.tr>\n"
+"Serkan Kenar <serkan@labristeknoloji.com>\n"
+"Şenol Korkmaz <mail@senolkorkmaz.info>\n"
 "Muhammet Kara <muhammetk@gmail.com>"
 
-#: ../src/Win_GParted.cc:1540
+#: ../src/Win_GParted.cc:1546
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "%1 birincil bölümden fazlasını oluşturmak mümkün değildir"
 
-#: ../src/Win_GParted.cc:1552
+#: ../src/Win_GParted.cc:1558
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1710,16 +1711,16 @@ msgstr ""
 "Uzatılmış bir disk bölümü aynı zamanda birincil bir disk bölümü olduğundan, "
 "önce birincil bölümlerden birini kaldırmanız gerekebilir."
 
-#: ../src/Win_GParted.cc:1635
+#: ../src/Win_GParted.cc:1641
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Bir bölümü taşımak, işletim sisteminizin açılmamasına sebep olabilir"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1643
+#: ../src/Win_GParted.cc:1649
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "%1 bölümünün başlangıç sektörünü taşıyacak bir işlemi kuyruğa aldınız."
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1652
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1727,72 +1728,72 @@ msgstr ""
 "  Eğer /boot yolunu barındıran GNU/Linux bölümünü ya da Windows sistem "
 "bölümü C:'yi taşırsanız, sistem açılışı büyük ihtimalle başarısız olacaktır."
 
-#: ../src/Win_GParted.cc:1648
+#: ../src/Win_GParted.cc:1654
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Açılış yapılandırmasını nasıl onaracağınızı, GParted SSS'dan "
 "öğrenebilirsiniz."
 
-#: ../src/Win_GParted.cc:1652
+#: ../src/Win_GParted.cc:1658
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Bir bölümü taşımak çok zaman alabilir."
 
-#: ../src/Win_GParted.cc:1756
+#: ../src/Win_GParted.cc:1764
 msgid "You have pasted into an existing partition"
 msgstr "Varolan bir disk bölümüne yapıştırdınız"
 
-#: ../src/Win_GParted.cc:1764
+#: ../src/Win_GParted.cc:1772
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Bu işlemi uygularsanız %1 içindeki verileri kaybedeceksiniz."
 
-#: ../src/Win_GParted.cc:1827
+#: ../src/Win_GParted.cc:1839
 msgid "Unable to delete %1!"
 msgstr "%1 silinemiyor!"
 
-#: ../src/Win_GParted.cc:1834
+#: ../src/Win_GParted.cc:1846
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Lütfen %1'den büyük bir numaraya sahip tüm mantıksal bölümlerinizi ayırın"
 
-#: ../src/Win_GParted.cc:1845
+#: ../src/Win_GParted.cc:1857
 msgid "Are you sure you want to delete %1?"
 msgstr "%1 bölümünü silmek istediğinize emin misiniz?"
 
-#: ../src/Win_GParted.cc:1852
+#: ../src/Win_GParted.cc:1864
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Silindikten sonra bu bölüm kopyalamak için uygun olmayacaktır."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1855
+#: ../src/Win_GParted.cc:1867
 msgid "Delete %1 (%2, %3)"
 msgstr "Sil %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1938
+#: ../src/Win_GParted.cc:1952
 msgid "Cannot format this file system to %1"
 msgstr "Bu dosya sistemi %1 olarak biçimlendirilemiyor"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1950
+#: ../src/Win_GParted.cc:1964
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 dosya sistemi en az %2 büyüklüğünde bir bölüm ister."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1958
+#: ../src/Win_GParted.cc:1972
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 dosya sisteminin boyutu en fazla %2 olabilir."
 
-#: ../src/Win_GParted.cc:2052
+#: ../src/Win_GParted.cc:2068
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Disk bölümünün bağı, belirtilen bağlama noktalarından kaldırılamadı:"
 
-#: ../src/Win_GParted.cc:2054
+#: ../src/Win_GParted.cc:2070
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1800,12 +1801,12 @@ msgstr ""
 "Büyük olasılıkla başka disk bölümleri de bu bağlama noktasına bağlanmış "
 "durumda. Bu bağları kaldırmanız önerilir."
 
-#: ../src/Win_GParted.cc:2078 ../src/Win_GParted.cc:2204
+#: ../src/Win_GParted.cc:2094 ../src/Win_GParted.cc:2220
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Disk bölümü %2 için şu anda %1 işlem beklemede"
 
-#: ../src/Win_GParted.cc:2094
+#: ../src/Win_GParted.cc:2110
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1813,7 +1814,7 @@ msgstr ""
 "Disk bölümü için bir işlem beklemede ise, takas belleği açma işlemi "
 "gerçekleştirilemez."
 
-#: ../src/Win_GParted.cc:2096
+#: ../src/Win_GParted.cc:2112
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1822,7 +1823,7 @@ msgstr ""
 "Düzenle menüsündeki, işlemleri geri al, temizle veya uygula seçeneklerini "
 "kullanın."
 
-#: ../src/Win_GParted.cc:2100
+#: ../src/Win_GParted.cc:2116
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
@@ -1830,7 +1831,7 @@ msgstr ""
 "Disk bölümü için beklemede olan bir işlem varsa, Birim Grubunu etkinleştirme "
 "eylemi gerçekleştirilemez."
 
-#: ../src/Win_GParted.cc:2102
+#: ../src/Win_GParted.cc:2118
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1839,47 +1840,47 @@ msgstr ""
 "önce işlemleri geri almak, temizlemek ya da uygulamak için Düzenle menüsünü "
 "kullanın."
 
-#: ../src/Win_GParted.cc:2113
+#: ../src/Win_GParted.cc:2129
 msgid "Deactivating swap on %1"
 msgstr "%1 takas belleği etkisizleştiriliyor"
 
-#: ../src/Win_GParted.cc:2113
+#: ../src/Win_GParted.cc:2129
 msgid "Activating swap on %1"
 msgstr "%1 üzerindeki takas belleği etkinleştiriliyor"
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2144
 msgid "Could not deactivate swap"
 msgstr "Takas belleği etkisizleştirilemedi"
 
-#: ../src/Win_GParted.cc:2128
+#: ../src/Win_GParted.cc:2144
 msgid "Could not activate swap"
 msgstr "Takas belleği etkinleştirilemedi"
 
-#: ../src/Win_GParted.cc:2143
+#: ../src/Win_GParted.cc:2159
 msgid "Deactivating Volume Group %1"
 msgstr "%1 Birim Grubu etkisizleştiriliyor"
 
-#: ../src/Win_GParted.cc:2144
+#: ../src/Win_GParted.cc:2160
 msgid "Activating Volume Group %1"
 msgstr "%1 Birim Grubu etkinleştiriliyor"
 
-#: ../src/Win_GParted.cc:2162
+#: ../src/Win_GParted.cc:2178
 msgid "Could not deactivate Volume Group"
 msgstr "Birim Grubu etkisizleştirilemedi"
 
-#: ../src/Win_GParted.cc:2163
+#: ../src/Win_GParted.cc:2179
 msgid "Could not activate Volume Group"
 msgstr "Birim Grubu etkinleştirilemedi"
 
-#: ../src/Win_GParted.cc:2176
+#: ../src/Win_GParted.cc:2192
 msgid "Unmounting %1"
 msgstr "%1 Ayrılıyor"
 
-#: ../src/Win_GParted.cc:2182
+#: ../src/Win_GParted.cc:2198
 msgid "Could not unmount %1"
 msgstr "%1 ayrılamıyor"
 
-#: ../src/Win_GParted.cc:2218
+#: ../src/Win_GParted.cc:2234
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1887,7 +1888,7 @@ msgstr ""
 "Disk bölümü için beklemede olan bir işlem var ise, bağlama eylemi "
 "gerçekleştirilemez."
 
-#: ../src/Win_GParted.cc:2220
+#: ../src/Win_GParted.cc:2236
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1895,27 +1896,27 @@ msgstr ""
 "Bu disk bölümünde bağlama işlemini gerçekleştirmeden önce, Düzenle "
 "menüsündeki, işlemleri geri al, temizle veya uygula seçeneklerini kullanın."
 
-#: ../src/Win_GParted.cc:2230
+#: ../src/Win_GParted.cc:2246
 msgid "mounting %1 on %2"
 msgstr "%1 disk bölümünü %2 noktasına bağlanıyor"
 
-#: ../src/Win_GParted.cc:2241
+#: ../src/Win_GParted.cc:2257
 msgid "Could not mount %1 on %2"
 msgstr "%1 disk bölümü %2 noktasına bağlanamıyor"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2267
+#: ../src/Win_GParted.cc:2283
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%2 aygıtında şu anda etkin olan %1 disk bölümü bulunuyor"
 
-#: ../src/Win_GParted.cc:2282
+#: ../src/Win_GParted.cc:2298
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Etkin disk bölümleri bulunduğunda yeni bölümlendirme tablosu oluşturulamaz."
 
-#: ../src/Win_GParted.cc:2284
+#: ../src/Win_GParted.cc:2300
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1923,7 +1924,7 @@ msgstr ""
 "Etkin disk bölümleri, bağlı olan dosya sistemleri ya da etkinleştirilmiş "
 "takas bellekleri gibi kullanımda olan bölümlerdir."
 
-#: ../src/Win_GParted.cc:2286
+#: ../src/Win_GParted.cc:2302
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1932,17 +1933,17 @@ msgstr ""
 "etkisizleştimek için, Bölüm menüsünündeki ayır ya da takas belleğini kapat "
 "gibi seçenekleri kullanın."
 
-#: ../src/Win_GParted.cc:2298
+#: ../src/Win_GParted.cc:2314
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "Şu anda %1 işlem beklemede"
 
-#: ../src/Win_GParted.cc:2311
+#: ../src/Win_GParted.cc:2327
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "Bekleyen işlemler varken yeni bir bölümlendirme tablosu oluşturulamaz."
 
-#: ../src/Win_GParted.cc:2313
+#: ../src/Win_GParted.cc:2329
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1950,28 +1951,28 @@ msgstr ""
 "Yeni bir bölümlendirme tablosu oluşturmadan önce, Düzenle menüsünü "
 "kullanarak önceki tüm işlemleri temizleyin ya da uygulayın."
 
-#: ../src/Win_GParted.cc:2328
+#: ../src/Win_GParted.cc:2344
 msgid "Error while creating partition table"
 msgstr "Bölümlendirme tablosu oluşturma hatası"
 
-#: ../src/Win_GParted.cc:2348
+#: ../src/Win_GParted.cc:2364
 msgid "Command gpart was not found"
 msgstr "gpart komutu bulunamadı"
 
-#: ../src/Win_GParted.cc:2349
+#: ../src/Win_GParted.cc:2365
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Bu özellik gpart kullanır. Lütfen gpart yükleyip tekrar deneyin."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2357
+#: ../src/Win_GParted.cc:2373
 msgid "A full disk scan is needed to find file systems."
 msgstr "Dosya sistemlerini bulmak için tam disk taraması gerekiyor."
 
-#: ../src/Win_GParted.cc:2359
+#: ../src/Win_GParted.cc:2375
 msgid "The scan might take a very long time."
 msgstr "Bu tarama çok zaman alabilir."
 
-#: ../src/Win_GParted.cc:2361
+#: ../src/Win_GParted.cc:2377
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -1979,26 +1980,26 @@ msgstr ""
 "Tarama tamamlandıktan sonra, bulunan dosya sistemlerini bağlayabilir ve "
 "verileri başka bir ortama kopyalayabilirsiniz."
 
-#: ../src/Win_GParted.cc:2363
+#: ../src/Win_GParted.cc:2379
 msgid "Do you want to continue?"
 msgstr "Devam etmek istiyor musunuz?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2367
+#: ../src/Win_GParted.cc:2383
 msgid "Search for file systems on %1"
 msgstr "%1 üzerindeki dosya sistemlerini ara"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2378
+#: ../src/Win_GParted.cc:2394
 msgid "Searching for file systems on %1"
 msgstr "%1 üzerindeki dosya sistemleri aranıyor"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2394
+#: ../src/Win_GParted.cc:2410
 msgid "No file systems found on %1"
 msgstr "%1 üzerinde hiç dosya sistemi bulunmadı"
 
-#: ../src/Win_GParted.cc:2395
+#: ../src/Win_GParted.cc:2411
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2006,35 +2007,35 @@ msgstr ""
 "Bu disk üzerinde, gparted tarafından yapılan disk taramasında tanınan "
 "herhangi bir dosya sistemi bulunamadı."
 
-#: ../src/Win_GParted.cc:2623
+#: ../src/Win_GParted.cc:2645
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Bekleyen işlemlerin uygulanmasını istediğinize emin misiniz?"
 
-#: ../src/Win_GParted.cc:2629
+#: ../src/Win_GParted.cc:2651
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Bölümleri düzenleme, VERİ KAYBINA sebep olabilir."
 
-#: ../src/Win_GParted.cc:2631
+#: ../src/Win_GParted.cc:2653
 msgid "You are advised to backup your data before proceeding."
 msgstr "Devam etmeden önce önemli verilerinizi yedeklemeniz önerilir."
 
-#: ../src/Win_GParted.cc:2633
+#: ../src/Win_GParted.cc:2655
 msgid "Apply operations to device"
 msgstr "İşlemleri aygıta uygula"
 
-#: ../src/Win_GParted.cc:2678
+#: ../src/Win_GParted.cc:2700
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Boş olmayan LVM2 Fiziksel Birimi %1'i siliyorsunuz"
 
-#: ../src/Win_GParted.cc:2682
+#: ../src/Win_GParted.cc:2704
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Boş olmayan LVM2 Fiziksel Birimi %1'i biçimlendiriyorsunuz"
 
-#: ../src/Win_GParted.cc:2686
+#: ../src/Win_GParted.cc:2708
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Boş olmayan LVM2 Fiziksel Birimi %1'in üzerine yapıştırıyorsunuz"
 
-#: ../src/Win_GParted.cc:2695
+#: ../src/Win_GParted.cc:2717
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2042,7 +2043,7 @@ msgstr ""
 "Fiziksel Birimi silmek ya da birimin üzerine yazmak geri alınamaz ve Birim "
 "Grubunu yokeder ya da gruba zarar verir"
 
-#: ../src/Win_GParted.cc:2698
+#: ../src/Win_GParted.cc:2720
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2052,7 +2053,7 @@ msgstr ""
 "işlemi iptal edip öncelikle Fiziksel Birimi serbest bırakmak için harici LVM "
 "komutlarını kullanmanız tavsiye edilir."
 
-#: ../src/Win_GParted.cc:2701
+#: ../src/Win_GParted.cc:2723
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Devam etmek ve Fiziksel Birimi zorla silmek istiyor musunuz?"
 
@@ -2082,22 +2083,22 @@ msgstr ""
 "genellikle güvenlidir, fakat garanti verilemez."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:28
+#: ../src/linux_swap.cc:30
 msgid "_Swapon"
 msgstr "_Swap açık"
 
-#: ../src/linux_swap.cc:29
+#: ../src/linux_swap.cc:31
 msgid "_Swapoff"
 msgstr "_Swap kapalı"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:141
+#: ../src/linux_swap.cc:187
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr "%1 dosya sistemi hiç veri içermediğinden bölüm taşıma işlemi geçildi"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:160
+#: ../src/linux_swap.cc:206
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2120,11 +2121,11 @@ msgstr ""
 "LVM2 Fiziksel Birimi şu anda yeniden boyutlandırılamaz, çünkü dışa "
 "aktarılmış bir Birim Grubunun üyesi."
 
-#: ../src/main.cc:40
+#: ../src/main.cc:43
 msgid "Root privileges are required for running GParted"
 msgstr "GParted'i çalıştırabilmek için root yetkileri gereklidir"
 
-#: ../src/main.cc:45
+#: ../src/main.cc:48
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2141,14 +2142,41 @@ msgstr ""
 "sistemlerinde UUID'in sadece yarısına yeni rasgele bir değer verilir."
 
 #. simulation..
-#: ../src/ntfs.cc:206
+#: ../src/ntfs.cc:213
 msgid "run simulation"
 msgstr "simulasyon oynat"
 
 #. real resize
-#: ../src/ntfs.cc:213
+#: ../src/ntfs.cc:220
 msgid "real resize"
 msgstr "gerçek yeniden boyutlandırma"
+
+#~ msgid "%1 of %2 read (%3 remaining)"
+#~ msgstr "%2'ın %1'ı okundu (%3 kaldı)"
+
+#~ msgid "%1 of %2 read"
+#~ msgstr "%2'ın %1'ı okundu"
+
+#~ msgid "read %1 using a block size of %2"
+#~ msgstr "%2 blok boyutu ile %1 oku"
+
+#~ msgid "Available"
+#~ msgstr "Mevcut"
+
+#~ msgid "read %1"
+#~ msgstr "%1 oku"
+
+#~ msgid "%1 (%2 B) read"
+#~ msgstr "%1 (%2 B) okunan"
+
+#~ msgid "wrote %1 of zeros at byte offset %2"
+#~ msgstr "%2 düzeltmesine sıfırların %1'i yazıldı"
+
+#~ msgid "clear primary signatures"
+#~ msgstr "birincil imzaları temizle"
+
+#~ msgid "clear secondary signatures"
+#~ msgstr "ikincil imzaları temizle"
 
 #~ msgid "perform real move"
 #~ msgstr "gerçek taşıma uygula"
