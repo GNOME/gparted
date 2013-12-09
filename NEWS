@@ -1,4 +1,59 @@
 ============================
+GParted 0.17.0  (2013-12-09)
+============================
+
+Release Notes
+-------------
+  This release of GParted adds the ability to perform online resizing
+  for systems that support this capability.  Also included are bug
+  fixes and language translation updates.
+
+### Key changes include:
+
+  * Add support for online resize
+    - requires patched version of libparted, kernel >= 3.6, and a config flag
+    - See README for more details
+  * Recognize Linux Swap Suspend and Software RAID partitions
+  * Fix busy detection for Linux Software RAID and extended partitions
+  * Fix systemctl runtime mask to prevent automounting partitions
+
+Bug Fixes
+---------
+  * Add support for online resize (#694622)
+  * Fix usage of swap space is not reported (#708107)
+  * Turn on resize2fs progress bar (#709276)
+  * Fix systemctl runtime mask to prevent automounting partitions (#708378)
+  * Stop using deprecated method free_colors() (part of #652044)
+  * Stop using deprecated widget alignment enumerators (part of #652044)
+  * Recognize Linux Swap Suspend and Software RAID partitions (#709640)
+    - Prevent GParted starting stopped Linux Software RAID arrays
+  * Fix busy detection for Linux Software RAID and extended partitions (#712633)
+  * Make partition information dialog warnings selectable (#705596)
+  * Change default file system to ext4 with fall back to ext3/2 (#711114)
+  * Add an AppData file (#709164)
+    - Thanks to Piotr Drąg for making the AppData file translatable
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Phillip Susi,
+  Richard Hughes, and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), de(Christian Kirbach), fr(Claude Paroz),
+  it(Milo Casagrande), lv(Rūdolfs Mazurs), ml(Anish Sheela),
+  pl(Piotr Drąg), pt_BR(Rafael Ferreira), ro(Daniel Șerbănescu),
+  tr(Muhammet Kara), zh_HK(Chao-Hsiung Liao), zh_TW(Chao-Hsiung Liao)
+
+Dependencies (new/updated)
+--------------------------
+  * Optionally enable the capability to perform online resizes by
+    using configure flag --enable-online-resize if and only if you
+    have an "online-resize" patched version of libparted and Linux
+    kernel >= 3.6.
+
+
+============================
 GParted 0.16.2  (2013-09-18)
 ============================
 
