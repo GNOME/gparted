@@ -53,27 +53,13 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 			str_temp += "</span>\n";
 			vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
-			str_temp = _("Default is to create an MS-DOS partition table.");
-			str_temp += "\n";
-			vbox->pack_start(*Utils::mk_label(str_temp, true, true),
-					Gtk::PACK_SHRINK);
-
-			str_temp = "<b>";
-			str_temp += _("Advanced");
-			str_temp += "</b>";
-			expander_advanced.set_label(str_temp);
-			expander_advanced.set_use_markup(true);
-
-			vbox->pack_start(expander_advanced, Gtk::PACK_SHRINK);
-
 			hbox = manage(new Gtk::HBox(false, 5));
 			hbox->set_border_width(5);
 			str_temp = _("Select new partition table type:");
 			str_temp += "\t";
 			hbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
+			vbox->pack_start(*hbox, Gtk::PACK_SHRINK);
 		}
-
-		expander_advanced.add(*hbox);
 
 		//create and add combo with partition table types (label types)
 		this ->labeltypes = disklabeltypes ;

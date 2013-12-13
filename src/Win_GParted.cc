@@ -2333,7 +2333,7 @@ void Win_GParted::activate_disklabel()
 	}
 
 	//Display dialog for creating a new partition table.
-	Dialog_Disklabel dialog( devices[ current_device ] .get_path(), gparted_core .get_disklabeltypes() ) ;
+	Dialog_Disklabel dialog( devices[ current_device ] .get_path(), gparted_core .get_disklabeltypes( &devices[ current_device ] ) ) ;
 	dialog .set_transient_for( *this );
 
 	if ( dialog .run() == Gtk::RESPONSE_APPLY )
