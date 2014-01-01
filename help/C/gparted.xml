@@ -544,10 +544,23 @@
           </listitem>
           <listitem>
             <para>
-            If you want a partition table other than msdos, click
-            <guibutton>Advanced</guibutton> and select a partition table type
-            from the list.
+            Optionally select a different partition table type from the
+            list.
             </para>
+            <note>
+              <para>
+              The default partition table type is
+              <guimenuitem>msdos</guimenuitem> for disks smaller than 2
+              Tebibytes in size (assuming a 512 byte sector size) and
+              <guimenuitem>gpt</guimenuitem> for disks 2 Tebibytes and
+              larger.
+              </para>
+              <para>
+              See <xref linkend="gparted-specify-partition-type"/> for
+              <guimenuitem>msdos</guimenuitem> partition table
+              limitations.
+              </para>
+            </note>
           </listitem>
           <listitem>
             <para>
@@ -1354,9 +1367,9 @@
                 </listitem>
                 <listitem>
                   <para>
-                  Maximum size of a partition is 2 Terabytes using
+                  Maximum size of a partition is 2 Tebibytes using
                   a sector size of 512 bytes.  The partition must also
-                  start within the first 2 Terabytes of the disk device.
+                  start within the first 2 Tebibytes of the disk device.
                   </para>
                 </listitem>
               </itemizedlist>
