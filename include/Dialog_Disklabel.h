@@ -20,6 +20,7 @@
 #define GPARTED_DIALOG_DISKLABEL_H
 
 #include "../include/Utils.h"
+#include "../include/Device.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
@@ -33,8 +34,8 @@ namespace GParted
 class Dialog_Disklabel : public Gtk::Dialog
 {
 public:
-	Dialog_Disklabel( const Glib::ustring & device_path, const std::vector<Glib::ustring> & disklabeltypes ) ;
-	
+	Dialog_Disklabel( const Device & device ) ;
+
 	Glib::ustring Get_Disklabel( ) ;
 	
 private:

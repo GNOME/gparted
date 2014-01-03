@@ -824,23 +824,16 @@ const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const
 		return FILESYSTEMS[ unknown ] ;
 }
 
-std::vector<Glib::ustring> GParted_Core::get_disklabeltypes( Device *device )
+//Return all libparted's partition table types in it's preferred ordering,
+//  alphabetic except with "loop" last.
+//  Ref: parted >= 1.8 ./libparted/libparted.c init_disk_types()
+std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 {
 	std::vector<Glib::ustring> disklabeltypes ;
-	const char *default_label ;
-	
-	//Default to MSDOS partition table type for disks < 2^32 sectors
-	//  (2 TiB with 512 byte sectors) and GPT for larger disks.
-	if ( device ->length < 4LL * GIBIBYTE )
-		default_label = "msdos";
-	else
-		default_label = "gpt";
-	disklabeltypes.push_back( default_label ) ;
-	
-	 PedDiskType *disk_type ;
-	 for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) ) 
-		 if ( Glib::ustring( disk_type->name ) != default_label )
-			disklabeltypes .push_back( disk_type->name ) ;
+
+	PedDiskType *disk_type ;
+	for ( disk_type = ped_disk_type_get_next( NULL ) ; disk_type ; disk_type = ped_disk_type_get_next( disk_type ) )
+		disklabeltypes .push_back( disk_type->name ) ;
 
 	 return disklabeltypes ;
 }

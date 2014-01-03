@@ -17,13 +17,16 @@
  */
  
 #include "../include/Dialog_Disklabel.h"
+#include "../include/GParted_Core.h"
 
 namespace GParted
 {
 
-Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std::vector<Glib::ustring> & disklabeltypes )
+Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 : image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_DIALOG)
 {
+	const Glib::ustring device_path = device .get_path() ;
+
 	/*TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda */
 	this ->set_title( String::ucompose( _("Create partition table on %1"), device_path ) );
 	this ->set_has_separator( false ) ;
@@ -61,13 +64,33 @@ Dialog_Disklabel::Dialog_Disklabel( const Glib::ustring & device_path, const std
 			vbox->pack_start(*hbox, Gtk::PACK_SHRINK);
 		}
 
+		//Default to MSDOS partition table type for disks < 2^32 sectors
+		//  (2 TiB with 512 byte sectors) and GPT for larger disks.
+		Glib::ustring default_label ;
+		if ( device .length < 4LL * GIBIBYTE )
+			default_label = "msdos" ;
+		else
+			default_label = "gpt" ;
+
 		//create and add combo with partition table types (label types)
-		this ->labeltypes = disklabeltypes ;
+		this ->labeltypes = GParted_Core::get_disklabeltypes() ;
 
-		for (unsigned int t = 0; t < labeltypes.size(); ++t)
-			combo_labeltypes.append_text(labeltypes[t]);
+		bool set_active = false ;
+		for ( unsigned int t = 0 ; t < labeltypes .size() ; t ++ )
+		{
+			combo_labeltypes .append_text( labeltypes[ t ] ) ;
+			if ( default_label == labeltypes[ t ] )
+			{
+				combo_labeltypes .set_active( t ) ;
+				set_active = true ;
+			}
+		}
+		//Should be impossible for libparted to not known about MSDOS and GPT
+		//  partition table types, but just in case fallback to activating the
+		//  first item in the combobox.
+		if ( ! set_active && labeltypes .size() )
+			combo_labeltypes .set_active( 0 ) ;
 
-		combo_labeltypes.set_active(0);
 		hbox->pack_start(combo_labeltypes, Gtk::PACK_SHRINK);
 	}
 
