@@ -194,11 +194,9 @@ bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ntfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkntfs -Q -v -L \"" + new_partition.get_filesystem_label() + "\" " +
+	return ! execute_command( "mkntfs -Q -v -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail,
-	                          false,
-	                          true );
+	                          operationdetail, false, true );
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

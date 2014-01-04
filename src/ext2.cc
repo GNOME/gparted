@@ -218,11 +218,9 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( mkfs_cmd + " -L \"" + new_partition.get_filesystem_label() + "\" " +
+	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail,
-	                          false,
-	                          true );
+	                          operationdetail, false, true );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
