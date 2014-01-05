@@ -60,8 +60,18 @@ FS ext2::get_filesystem_support()
 
 		if ( fs .check )
 		{
-			fs .copy = FS::GPARTED ;
-			fs .move = FS::GPARTED ;
+			fs.copy = fs.move = FS::GPARTED ;
+
+			//If supported, use e2image to copy/move the file system as it
+			//  only copies used blocks, skipping unused blocks.  This is more
+			//  efficient than copying all blocks used by GParted's internal
+			//  method.
+			if ( ! Glib::find_program_in_path( "e2image" ) .empty() )
+			{
+				Utils::execute_command( "e2image", output, error, true ) ;
+				if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
+					fs.copy = fs.move = FS::EXTERNAL ;
+			}
 		}
 
 		fs .online_read = FS::EXTERNAL ;
@@ -205,6 +215,29 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
 }
 
+bool ext2::move( const Partition & partition_new,
+                 const Partition & partition_old,
+                 OperationDetail & operationdetail )
+{
+	Sector distance;
+	Glib::ustring offset;
+	distance = partition_old.sector_start - partition_new.sector_start;
+	offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
+	if ( distance < 0 )
+		return ! execute_command( "e2image -ra -p -o " + offset + " " + partition_new.get_path(),
+		                          operationdetail, true, true );
+	else
+		return ! execute_command( "e2image -ra -p -O " + offset + " " + partition_new.get_path(),
+		                          operationdetail, true, true );
+
+}
+
+bool ext2::copy( const Partition & src_part,
+                 Partition & dest_part,
+                 OperationDetail & operationdetail )
+{
+	return ! execute_command( "e2image -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
+	                          operationdetail, true, true );
+}
+
 } //GParted
-
-

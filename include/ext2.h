@@ -38,6 +38,12 @@ public:
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool move( const Partition & partition_new,
+	           const Partition & partition_old,
+	           OperationDetail & operationdetail );
+	bool copy( const Partition & partition_new,
+	           Partition & partition_old,
+	           OperationDetail & operationdetail );
 };
 
 } //GParted
