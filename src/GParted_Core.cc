@@ -3112,7 +3112,7 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	bool overall_success = true ;
+	bool overall_success = false ;
 	operationdetail .add_child( OperationDetail(
 			String::ucompose( _("clear old file system signatures in %1"),
 			                  partition .get_path() ) ) ) ;
@@ -3137,6 +3137,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 			if ( buf )
 				memset( buf, 0, bufsize ) ;
 		}
+		overall_success = device_is_open ;
 	}
 
 	//Erase all file system super blocks, including their signatures.  The specified
