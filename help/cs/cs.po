@@ -1,14 +1,14 @@
 # Czech translation for gparted.
 # Copyright (C) 2009 gparted's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gparted package.
-# Marek Černocký <marek@manet.cz>, 2010, 2011, 2012, 2013.
+# Marek Černocký <marek@manet.cz>, 2010, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-24 10:13+0000\n"
-"PO-Revision-Date: 2013-12-07 17:36+0100\n"
+"POT-Creation-Date: 2014-01-06 10:45+0000\n"
+"PO-Revision-Date: 2014-01-11 23:57+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -587,7 +587,7 @@ msgstr ""
 msgid "Viewing Device Information"
 msgstr "Zobrazení informací o zařízení"
 
-#: C/gparted.xml:490(para) C/gparted.xml:531(para) C/gparted.xml:580(para)
+#: C/gparted.xml:490(para) C/gparted.xml:531(para) C/gparted.xml:593(para)
 msgid "Select a disk device. See <xref linkend=\"gparted-select-device\"/>."
 msgstr ""
 "Vyberte diskové zařízení. Viz <xref linkend=\"gparted-select-device\"/>."
@@ -652,14 +652,28 @@ msgstr ""
 "replaceable></guilabel>."
 
 #: C/gparted.xml:546(para)
-msgid ""
-"If you want a partition table other than msdos, click <guibutton>Advanced</"
-"guibutton> and select a partition table type from the list."
-msgstr ""
-"Pokud chcete jinou tabulku oddílů než msdos, klikněte na "
-"<guibutton>Pokročilé</guibutton> a vyberte typ tabulky oddílů ze seznamu."
+msgid "Optionally select a different partition table type from the list."
+msgstr "Volitelně si můžete ze seznamu vybrat jiný typ tabulky oddílů."
 
-#: C/gparted.xml:553(para)
+#: C/gparted.xml:551(para)
+msgid ""
+"The default partition table type is <guimenuitem>msdos</guimenuitem> for "
+"disks smaller than 2 Tebibytes in size (assuming a 512 byte sector size) and "
+"<guimenuitem>gpt</guimenuitem> for disks 2 Tebibytes and larger."
+msgstr ""
+"Výchozím typem tabulky oddílů je <guimenuitem>msdos</guimenuitem> pro disky "
+"s velikostí menší než 2 TiB (předpokládá se velikost sektoru 512 bajtů) a "
+"<guimenuitem>gpt</guimenuitem> pro disky 2 TiB a větší."
+
+#: C/gparted.xml:558(para)
+msgid ""
+"See <xref linkend=\"gparted-specify-partition-type\"/> for "
+"<guimenuitem>msdos</guimenuitem> partition table limitations."
+msgstr ""
+"Viz <xref linkend=\"gparted-specify-partition-type\"/> ohledně omezení "
+"tabulky oddílů typu <guimenuitem>msdos</guimenuitem>."
+
+#: C/gparted.xml:566(para)
 msgid ""
 "Click <guibutton>Apply</guibutton> to create the new partition table. The "
 "application writes the new partition table to the disk device. The "
@@ -676,11 +690,11 @@ msgstr ""
 "Když chcete na diskovém zařízení vytvořit novou tabulku oddílů: "
 "<placeholder-1/>"
 
-#: C/gparted.xml:563(para)
+#: C/gparted.xml:576(para)
 msgid "WARNING: This will ERASE ALL DATA on the ENTIRE DISK DEVICE."
 msgstr "VAROVÁNÍ: Tímto se ODSTRANÍ VŠECHNA DATA na CELÉM DISKOVÉM ZAŘÍZENÍ."
 
-#: C/gparted.xml:566(para)
+#: C/gparted.xml:579(para)
 msgid ""
 "If you accidentally overwrite your partition table, see <xref linkend="
 "\"gparted-recover-partition-table\"/>."
@@ -688,11 +702,11 @@ msgstr ""
 "Pokud svoji tabulku oddílů přepíšete nešťastnou náhodou, podívejte se na "
 "<xref linkend=\"gparted-recover-partition-table\"/>"
 
-#: C/gparted.xml:575(title)
+#: C/gparted.xml:588(title)
 msgid "Attempting Data Rescue"
 msgstr "Pokus o záchranu dat"
 
-#: C/gparted.xml:586(para)
+#: C/gparted.xml:599(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Device</guimenu><guimenuitem>Attempt Data "
 "Rescue</guimenuitem></menuchoice>. The application displays a "
@@ -704,13 +718,13 @@ msgstr ""
 "<guilabel>Hledání souborových systémů na  <replaceable>/cesta-k-zařízení</"
 "replaceable></guilabel>."
 
-#: C/gparted.xml:595(para)
+#: C/gparted.xml:608(para)
 msgid "Click <guibutton>OK</guibutton> to start the full disk scan."
 msgstr ""
 "Klikněte na <guibutton>OK</guibutton> a aplikace započne procházení celého "
 "disku."
 
-#: C/gparted.xml:599(para)
+#: C/gparted.xml:612(para)
 msgid ""
 "Large disk devices can take a very long time to scan. If you do not have the "
 "time to wait for a full disk scan then click <guibutton>Cancel</guibutton>."
@@ -719,7 +733,7 @@ msgstr ""
 "dobu. Pokud na to nemáte dostatek času, klikněte na <guibutton>Zrušit</"
 "guibutton>."
 
-#: C/gparted.xml:606(para)
+#: C/gparted.xml:619(para)
 msgid ""
 "A maximum of 4 partitions with file systems might be discovered. If you want "
 "to discover more than 4 partitions and restore the partition table, see "
@@ -729,15 +743,15 @@ msgstr ""
 "objevit více než 4 oddíly a obnovit tabulku oddílů, podívejte se na <xref "
 "linkend=\"gparted-recover-partition-table\"/>."
 
-#: C/gparted.xml:622(replaceable) C/gparted.xml:643(replaceable)
+#: C/gparted.xml:635(replaceable) C/gparted.xml:656(replaceable)
 msgid "/path-to-device"
 msgstr "/cesta-k-zařízení"
 
-#: C/gparted.xml:621(guilabel)
+#: C/gparted.xml:634(guilabel)
 msgid "No file systems found on <placeholder-1/>"
 msgstr "Na <placeholder-1/> nebyl nalezen žádný souborový systém"
 
-#: C/gparted.xml:625(para)
+#: C/gparted.xml:638(para)
 msgid ""
 "If no file systems are found, you have other options to try to rescue your "
 "data. The <application>photorec</application> application is designed to "
@@ -751,7 +765,7 @@ msgstr ""
 "Více informací o ní najdete na <ulink type=\"http\" url=\"http://www."
 "cgsecurity.org/wiki/PhotoRec\"/>."
 
-#: C/gparted.xml:635(para)
+#: C/gparted.xml:648(para)
 msgid ""
 "Click <guibutton>OK</guibutton> to close the dialog box, and end this "
 "attempt to rescue data."
@@ -759,11 +773,11 @@ msgstr ""
 "Kliknutím na <guibutton>OK</guibutton> zavřete dialogové okno a ukončíte "
 "tento pokus o záchranu dat."
 
-#: C/gparted.xml:642(guilabel)
+#: C/gparted.xml:655(guilabel)
 msgid "File systems found on <placeholder-1/>"
 msgstr "Na <placeholder-1/> byly nalezeny souborové systémy"
 
-#: C/gparted.xml:646(para)
+#: C/gparted.xml:659(para)
 msgid ""
 "If file systems are found, each file system is displayed in a list along "
 "with a <guibutton>View</guibutton> button. The dialog will indicate if there "
@@ -775,7 +789,7 @@ msgstr ""
 "jestli se objevily nějaké nekonzistence v datech. Nekonzistence v datech vám "
 "může zabránit data zobrazit."
 
-#: C/gparted.xml:615(para)
+#: C/gparted.xml:628(para)
 msgid ""
 "When the full disk scan completes one of two possible dialogs is displayed: "
 "<placeholder-1/>"
@@ -783,7 +797,7 @@ msgstr ""
 "Až je úplné procházení disku dokončeno, zobrazí se jedno ze dvou možných "
 "dialogových oken: <placeholder-1/>"
 
-#: C/gparted.xml:663(para)
+#: C/gparted.xml:676(para)
 msgid ""
 "Click <guibutton>View</guibutton> to mount and display the file system. Your "
 "default file manager is opened and displays a read-only view of the file "
@@ -793,7 +807,7 @@ msgstr ""
 "systém připojil a zobrazil. Otevře se váš výchozí správce souborů a obsah "
 "souborového systému zobrazí pouze ke čtení."
 
-#: C/gparted.xml:669(para)
+#: C/gparted.xml:682(para)
 msgid ""
 "If the dialog <guilabel>Unable to open the default file manager</guilabel> "
 "is displayed, then you will need to open a file manager and navigate to the "
@@ -803,7 +817,7 @@ msgstr ""
 "souborů</guilabel>, budete muset správce souborů otevřít sami a přejít do "
 "přípojného bodu pro souborový systém."
 
-#: C/gparted.xml:675(para)
+#: C/gparted.xml:688(para)
 msgid ""
 "The mount point is shown in the dialog, for example \"/tmp/gparted-roview-"
 "XXXXXX\"."
@@ -811,7 +825,7 @@ msgstr ""
 "Přípojný bod je zobrazen v dialogovém okně, například „/tmp/gparted-roview-"
 "XXXXXX“."
 
-#: C/gparted.xml:679(para)
+#: C/gparted.xml:692(para)
 msgid ""
 "Click <guibutton>OK</guibutton> to close the <guilabel>Unable to open the "
 "default file manager</guilabel> dialog."
@@ -819,16 +833,16 @@ msgstr ""
 "Kliknutím na <guibutton>OK</guibutton> dialogové okno <guilabel>Nelze "
 "otevřít výchozího správce souborů</guilabel> zavřete."
 
-#: C/gparted.xml:687(para)
+#: C/gparted.xml:700(para)
 msgid "Use the file manager to copy your data to other storage media."
 msgstr ""
 "Použijte správce souborů k překopírování svých dat na jiné úložné médium."
 
-#: C/gparted.xml:693(para)
+#: C/gparted.xml:706(para)
 msgid "When you are finished copying your data, close the file manager."
 msgstr "Po dokončení kopírování svých data správce souborů zavřete."
 
-#: C/gparted.xml:659(para)
+#: C/gparted.xml:672(para)
 msgid ""
 "To rescue data, use the following steps for each file system: <placeholder-1/"
 ">"
@@ -836,7 +850,7 @@ msgstr ""
 "Pro záchranu dat postupujte v následujících krocích pro každý ze souborových "
 "systémů: <placeholder-1/>"
 
-#: C/gparted.xml:702(para)
+#: C/gparted.xml:715(para)
 msgid ""
 "When you are finished rescuing data, click <guibutton>Close</guibutton> to "
 "end this attempt to rescue data. The application umounts any file systems "
@@ -850,40 +864,40 @@ msgstr ""
 "aktualizuje rozložení oddílů zařízení v okně <application>gparted</"
 "application>."
 
-#: C/gparted.xml:576(para)
+#: C/gparted.xml:589(para)
 msgid "To attempt data rescue from a disk device: <placeholder-1/>"
 msgstr ""
 "Když chcete zkusit zachránit data z diskového zařízení: <placeholder-1/>"
 
-#: C/gparted.xml:720(title)
+#: C/gparted.xml:733(title)
 msgid "Working with Partitions"
 msgstr "Práce s oddíly"
 
-#: C/gparted.xml:724(title)
+#: C/gparted.xml:737(title)
 msgid "Basic Partition Actions"
 msgstr "Základní činnosti s oddíly"
 
-#: C/gparted.xml:725(para)
+#: C/gparted.xml:738(para)
 msgid "These actions will not alter partitions on your disk device."
 msgstr "Tyto činnosti neprovádí v oddílech na vašem diskovém zařízení změny."
 
-#: C/gparted.xml:731(title)
+#: C/gparted.xml:744(title)
 msgid "Selecting a Partition"
 msgstr "Výběr oddílu"
 
-#: C/gparted.xml:736(para)
+#: C/gparted.xml:749(para)
 msgid "Click on a partition in the graphic display area."
 msgstr "Klikněte na oddíl v oblasti s grafickým zobrazením."
 
-#: C/gparted.xml:741(para)
+#: C/gparted.xml:754(para)
 msgid "Click on a partition in the text display area."
 msgstr "Klikněte na oddíl v oblasti s textovým zobrazením."
 
-#: C/gparted.xml:732(para)
+#: C/gparted.xml:745(para)
 msgid "To select a partition, use one of the following: <placeholder-1/>"
 msgstr "Pokud chcete vybrat oddíl, použijte následující: <placeholder-1/>"
 
-#: C/gparted.xml:747(para)
+#: C/gparted.xml:760(para)
 msgid ""
 "The application highlights the partition in both the graphic display area "
 "and the text display area in the <application>gparted</application> window."
@@ -891,36 +905,36 @@ msgstr ""
 "Aplikace zvýrazní oddíl v okně <application>gparted</application> jak v "
 "oblasti s grafickým zobrazením, tak s textovým zobrazením."
 
-#: C/gparted.xml:753(para)
+#: C/gparted.xml:766(para)
 msgid ""
 "Partition operations such as delete, move, copy, format, check, label, and "
 "often resize require the partition to be unmounted. See <xref linkend="
 "\"gparted-unmount-partition\"/>."
 msgstr ""
 "Operace s oddílem, jako smazání, přesun, kopírování, formátování, kontrola, "
-"změna návěští a často i změna velikosti, vyžadují, aby oddíl nebyl připojený. "
-"Viz <xref linkend=\"gparted-unmount-partition\"/>."
+"změna návěští a často i změna velikosti, vyžadují, aby oddíl nebyl "
+"připojený. Viz <xref linkend=\"gparted-unmount-partition\"/>."
 
-#: C/gparted.xml:764(title)
+#: C/gparted.xml:777(title)
 msgid "Selecting Unallocated Space"
 msgstr "Výběr neobsazeného místa"
 
-#: C/gparted.xml:769(para)
+#: C/gparted.xml:782(para)
 msgid "Click on <guilabel>unallocated</guilabel> in the graphic display area."
 msgstr ""
 "Klikněte na <guilabel>neobsazeno</guilabel> v oblasti z grafickým zobrazením."
 
-#: C/gparted.xml:774(para)
+#: C/gparted.xml:787(para)
 msgid "Click on <guilabel>unallocated</guilabel> in the text display area."
 msgstr ""
 "Klikněte na <guilabel>neobsazeno</guilabel> v oblasti s textovým zobrazením."
 
-#: C/gparted.xml:765(para)
+#: C/gparted.xml:778(para)
 msgid "To select unallocated space, use one of the following: <placeholder-1/>"
 msgstr ""
 "Pokud chcete vybrat neobsazené místo, použijte následující: <placeholder-1/>"
 
-#: C/gparted.xml:780(para)
+#: C/gparted.xml:793(para)
 msgid ""
 "The application highlights the unallocated space in both the graphic display "
 "area and the text display area in the <application>gparted</application> "
@@ -929,7 +943,7 @@ msgstr ""
 "Aplikace zvýrazní v okně <application>gparted</application> neobsazené místo "
 "jak v oblasti s grafickým zobrazením, tak s textovým zobrazením."
 
-#: C/gparted.xml:786(para)
+#: C/gparted.xml:799(para)
 msgid ""
 "If you do not have any disk devices with unallocated space, you might try "
 "the following:"
@@ -937,11 +951,11 @@ msgstr ""
 "Jestliže nemáte žádné diskové zařízení s neobsazeným místem, můžete zkusit "
 "následující:"
 
-#: C/gparted.xml:792(para)
+#: C/gparted.xml:805(para)
 msgid "Add a new disk device to your computer."
 msgstr "Přidat nové diskové zařízení do svého počítače."
 
-#: C/gparted.xml:797(para)
+#: C/gparted.xml:810(para)
 msgid ""
 "Shrink a partition that contains unused space. See <xref linkend=\"gparted-"
 "resize-partition\"/>."
@@ -949,15 +963,15 @@ msgstr ""
 "Zmenšit oddíl, který obsahuje nevyužité místo. Viz <xref linkend=\"gparted-"
 "resize-partition\"/>."
 
-#: C/gparted.xml:808(title)
+#: C/gparted.xml:821(title)
 msgid "Viewing Partition Information"
 msgstr "Zobrazení informací o oddíle"
 
-#: C/gparted.xml:813(para) C/gparted.xml:1472(para) C/gparted.xml:1840(para)
+#: C/gparted.xml:826(para) C/gparted.xml:1485(para) C/gparted.xml:1853(para)
 msgid "Select a partition. See <xref linkend=\"gparted-select-partition\"/>."
 msgstr "Vyberte oddíl. Viz <xref linkend=\"gparted-select-partition\"/>."
 
-#: C/gparted.xml:819(para)
+#: C/gparted.xml:832(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Information</"
 "guimenuitem></menuchoice>. The application opens an <guilabel>Information "
@@ -968,11 +982,11 @@ msgstr ""
 "<guilabel>Informace o <replaceable>/cesta-k-zařízení</replaceable></"
 "guilabel>."
 
-#: C/gparted.xml:809(para)
+#: C/gparted.xml:822(para)
 msgid "To view information about a partition: <placeholder-1/>"
 msgstr "Pokud chcete zobrazit informace o oddíle: <placeholder-1/>"
 
-#: C/gparted.xml:828(para)
+#: C/gparted.xml:841(para)
 msgid ""
 "To close the <guilabel>Information about <replaceable>/path-to-partition</"
 "replaceable></guilabel> dialog, click <guibutton>Close</guibutton>."
@@ -981,20 +995,20 @@ msgstr ""
 "<guilabel>Informace o <replaceable>/cesta-k-zařízení</replaceable></"
 "guilabel> zavřete."
 
-#: C/gparted.xml:837(title)
+#: C/gparted.xml:850(title)
 msgid "Mounting a Partition"
 msgstr "Připojení oddílu"
 
-#: C/gparted.xml:842(para) C/gparted.xml:988(para) C/gparted.xml:1092(para)
-#: C/gparted.xml:1122(para) C/gparted.xml:1158(para) C/gparted.xml:1657(para)
-#: C/gparted.xml:1712(para) C/gparted.xml:2030(para)
+#: C/gparted.xml:855(para) C/gparted.xml:1001(para) C/gparted.xml:1105(para)
+#: C/gparted.xml:1135(para) C/gparted.xml:1171(para) C/gparted.xml:1670(para)
+#: C/gparted.xml:1725(para) C/gparted.xml:2043(para)
 msgid ""
 "Select an unmounted partition. See <xref linkend=\"gparted-select-partition"
 "\"/>."
 msgstr ""
 "Vyberte nepřipojený oddíl. Viz <xref linkend=\"gparted-select-partition\"/>."
 
-#: C/gparted.xml:848(para)
+#: C/gparted.xml:861(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Mount</"
 "guimenuitem></menuchoice> and select a mount point from the list. The "
@@ -1006,11 +1020,11 @@ msgstr ""
 "připojí oddíl do přípojného bodu a aktualizuje v okně <application>gparted</"
 "application> rozložení oddílů zařízení."
 
-#: C/gparted.xml:838(para)
+#: C/gparted.xml:851(para)
 msgid "To mount a partition: <placeholder-1/>"
 msgstr "Pokud chcete připojit oddíl: <placeholder-1/>"
 
-#: C/gparted.xml:860(para)
+#: C/gparted.xml:873(para)
 msgid ""
 "If <menuchoice><guimenu>Partition</guimenu><guimenuitem>Mount</guimenuitem></"
 "menuchoice> is not visible, then <application>gparted</application> does not "
@@ -1020,17 +1034,17 @@ msgstr ""
 "guimenu><guimenuitem>Připojit</guimenuitem></menuchoice> viditelná, aplikace "
 "<application>gparted</application> neví, kam by měla oddíl připojit."
 
-#: C/gparted.xml:871(title)
+#: C/gparted.xml:884(title)
 msgid "Unmounting a Partition"
 msgstr "Odpojení oddílu"
 
-#: C/gparted.xml:876(para)
+#: C/gparted.xml:889(para)
 msgid ""
 "Select a mounted partition. See <xref linkend=\"gparted-select-partition\"/>."
 msgstr ""
 "Vyberte připojený oddíl. Viz <xref linkend=\"gparted-select-partition\"/>"
 
-#: C/gparted.xml:882(para)
+#: C/gparted.xml:895(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Unmount</"
 "guimenuitem></menuchoice>. The application unmounts the partition from the "
@@ -1042,11 +1056,11 @@ msgstr ""
 "aktualizuje v okně <application>gparted</application> rozvržení oddílů "
 "zařízení."
 
-#: C/gparted.xml:872(para)
+#: C/gparted.xml:885(para)
 msgid "To unmount a partition: <placeholder-1/>"
 msgstr "Pokud chcete odpojit oddíl: <placeholder-1/>"
 
-#: C/gparted.xml:893(para)
+#: C/gparted.xml:906(para)
 msgid ""
 "If <menuchoice><guimenu>Partition</guimenu><guimenuitem>Unmount</"
 "guimenuitem></menuchoice> does not succeed, then the partition is probably "
@@ -1055,7 +1069,7 @@ msgstr ""
 "Jestliže operace <menuchoice><guimenu>Oddíl</guimenu><guimenuitem>Odpojit</"
 "guimenuitem></menuchoice> nebyl úspěšná, je oddíl pravděpodobně používán."
 
-#: C/gparted.xml:898(para)
+#: C/gparted.xml:911(para)
 msgid ""
 "To have all partitions unmounted and available for partition editing "
 "actions, boot from a Live CD and use <application>gparted</application>. See "
@@ -1065,11 +1079,11 @@ msgstr ""
 "zaveďte systém ze spustitelného CD a použijte aplikaci <application>gparted</"
 "application>. Viz <xref linkend=\"gparted-acquire-livecd\"/>."
 
-#: C/gparted.xml:912(title)
+#: C/gparted.xml:925(title)
 msgid "Intermediate Partition Actions"
 msgstr "Středně pokročilé činnosti s oddíly"
 
-#: C/gparted.xml:913(para)
+#: C/gparted.xml:926(para)
 msgid ""
 "These actions will alter partitions on your disk device. These actions will "
 "not modify the start or end boundaries of your existing partitions."
@@ -1077,11 +1091,11 @@ msgstr ""
 "Tyto akce provádí v oddílech na vašem diskovém zařízení změny. Ale nemění "
 "počáteční a koncovou hranici vašich stávajících oddílů."
 
-#: C/gparted.xml:921(title)
+#: C/gparted.xml:934(title)
 msgid "Creating a New Partition"
 msgstr "Vytvoření nového oddílu"
 
-#: C/gparted.xml:926(para)
+#: C/gparted.xml:939(para)
 msgid ""
 "Select an unallocated space on the disk device. See <xref linkend=\"gparted-"
 "select-unallocated\"/>."
@@ -1089,7 +1103,7 @@ msgstr ""
 "Vyberte neobsazené místo na diskovém zařízení. Viz <xref linkend=\"gparted-"
 "select-unallocated\"/>."
 
-#: C/gparted.xml:932(para)
+#: C/gparted.xml:945(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>New</"
 "guimenuitem></menuchoice>. The application displays the <guilabel>Create new "
@@ -1099,7 +1113,7 @@ msgstr ""
 "menuchoice>. Aplikace zobrazí dialogové okno <guilabel>Vytvořit nový oddíl</"
 "guilabel>."
 
-#: C/gparted.xml:939(para)
+#: C/gparted.xml:952(para)
 msgid ""
 "Specify the size and the location for the partition. See <xref linkend="
 "\"gparted-specify-partition-size-and-location\"/>."
@@ -1107,7 +1121,7 @@ msgstr ""
 "Určete velikost a umístění oddílu. Viz <xref linkend=\"gparted-specify-"
 "partition-size-and-location\"/>."
 
-#: C/gparted.xml:945(para)
+#: C/gparted.xml:958(para)
 msgid ""
 "Specify the alignment for the partition. See <xref linkend=\"gparted-specify-"
 "partition-alignment\"/>."
@@ -1115,14 +1129,14 @@ msgstr ""
 "Určete zarovnání pro oddíl. Viz <xref linkend=\"gparted-specify-partition-"
 "alignment\"/>."
 
-#: C/gparted.xml:951(para)
+#: C/gparted.xml:964(para)
 msgid ""
 "Specify the type of partition. See <xref linkend=\"gparted-specify-partition-"
 "type\"/>."
 msgstr ""
 "Určete typ oddílu. Viz <xref linkend=\"gparted-specify-partition-type\"/>."
 
-#: C/gparted.xml:957(para)
+#: C/gparted.xml:970(para)
 msgid ""
 "Specify the type of file system for the partition. See <xref linkend="
 "\"gparted-specify-partition-file-system\"/>."
@@ -1130,7 +1144,7 @@ msgstr ""
 "Určete typ souborového systému pro oddíl. Viz <xref linkend=\"gparted-"
 "specify-partition-file-system\"/>."
 
-#: C/gparted.xml:963(para)
+#: C/gparted.xml:976(para)
 msgid ""
 "Specify the label for the partition. See <xref linkend=\"gparted-specify-"
 "partition-label\"/>."
@@ -1138,7 +1152,7 @@ msgstr ""
 "Zadejte název pro oddíl. Viz <xref linkend=\"gparted-specify-partition-label"
 "\"/>."
 
-#: C/gparted.xml:969(para)
+#: C/gparted.xml:982(para)
 msgid ""
 "Click <guibutton>Add</guibutton> to add the create partition operation to "
 "the operation queue. The application displays the create partition operation "
@@ -1150,15 +1164,15 @@ msgstr ""
 "<guilabel>Nevyřízené operace</guilabel> v okně <application>gparted</"
 "application>."
 
-#: C/gparted.xml:922(para)
+#: C/gparted.xml:935(para)
 msgid "To create a new partition: <placeholder-1/>"
 msgstr "Pokud chcete vytvořit nový oddíl: <placeholder-1/>"
 
-#: C/gparted.xml:983(title)
+#: C/gparted.xml:996(title)
 msgid "Deleting a Partition"
 msgstr "Smazání oddílu"
 
-#: C/gparted.xml:994(para)
+#: C/gparted.xml:1007(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Delete</"
 "guimenuitem></menuchoice>. The application displays the delete partition "
@@ -1168,11 +1182,11 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace zobrazí operaci smazání v panelu "
 "<guilabel>Nevyřízených operací</guilabel>."
 
-#: C/gparted.xml:984(para)
+#: C/gparted.xml:997(para)
 msgid "To delete a partition: <placeholder-1/>"
 msgstr "Pokud chcete smazat oddíl: <placeholder-1/>"
 
-#: C/gparted.xml:1004(para)
+#: C/gparted.xml:1017(para)
 msgid ""
 "If you delete a logical partition, then all existing logical partitions "
 "after the deleted logical partition will experience changes in device names."
@@ -1180,7 +1194,7 @@ msgstr ""
 "Když smažete logický oddíl, všechny stávající logické oddíly za tímto "
 "smazaným podstoupí změnu názvu zařízení."
 
-#: C/gparted.xml:1009(para)
+#: C/gparted.xml:1022(para)
 msgid ""
 "For example, an extended partition contains four logical partitions A, B, C, "
 "and D. These logical partitions are accessed by the operating system as "
@@ -1189,23 +1203,23 @@ msgstr ""
 "Například, rozšířený oddíl obsahuje logické oddíly A, B, C a D. K těmto "
 "logickým oddílům přistupuje operační systém následovně:"
 
-#: C/gparted.xml:1016(para) C/gparted.xml:1042(para)
+#: C/gparted.xml:1029(para) C/gparted.xml:1055(para)
 msgid "Partition A as /dev/sda5."
 msgstr "Oddíl A jako /dev/sda5."
 
-#: C/gparted.xml:1021(para)
+#: C/gparted.xml:1034(para)
 msgid "Partition B as /dev/sda6."
 msgstr "Oddíl B jako /dev/sda6."
 
-#: C/gparted.xml:1026(para)
+#: C/gparted.xml:1039(para)
 msgid "Partition C as /dev/sda7."
 msgstr "Oddíl C jako /dev/sda7."
 
-#: C/gparted.xml:1031(para)
+#: C/gparted.xml:1044(para)
 msgid "Partition D as /dev/sda8."
 msgstr "Oddíl D jako /dev/sda8."
 
-#: C/gparted.xml:1036(para)
+#: C/gparted.xml:1049(para)
 msgid ""
 "If partition B is deleted, then the remaining logical partitions will be "
 "accessed by the operating system as follows:"
@@ -1213,15 +1227,15 @@ msgstr ""
 "Jakmile je oddíl B smazán, zbývající logické oddíly budou operačním systémem "
 "zpřístupněny následovně:"
 
-#: C/gparted.xml:1047(para)
+#: C/gparted.xml:1060(para)
 msgid "Partition C as /dev/sda6. Note the change in device name."
 msgstr "Oddíl C jako /dev/sda6. Pozor na změnu v názvu zařízení."
 
-#: C/gparted.xml:1052(para)
+#: C/gparted.xml:1065(para)
 msgid "Partition D as /dev/sda7. Note the change in device name."
 msgstr "Oddíl D jako /dev/sda7. Pozor na změnu v názvu zařízení."
 
-#: C/gparted.xml:1057(para)
+#: C/gparted.xml:1070(para)
 msgid ""
 "Changes in a device name can cause problems if a partition is mounted using "
 "a device name. You can avoid the problem by using the label or the "
@@ -1233,12 +1247,12 @@ msgstr ""
 "používáním názvu oddílu nebo UUID (Universally Unique Identifier – "
 "univerzálního jedinečného identifikátoru) oddílu."
 
-#: C/gparted.xml:1069(para)
+#: C/gparted.xml:1082(para)
 msgid "/etc/fstab - Contains a list of file systems to mount."
 msgstr ""
 "/etc/fstab - Obsahuje seznam souborových systému, které se mají připojit."
 
-#: C/gparted.xml:1074(para)
+#: C/gparted.xml:1087(para)
 msgid ""
 "/boot/grub/menu.lst - Contains operating system boot instructions for the "
 "<application>grub</application> boot loader."
@@ -1246,7 +1260,7 @@ msgstr ""
 "/boot/grub/menu.lst - Obsahuje instrukce k zavádění operačního systému pro "
 "zaváděč <application>grub</application>."
 
-#: C/gparted.xml:1064(para)
+#: C/gparted.xml:1077(para)
 msgid ""
 "Changes in a device name might adversely affect the following files: "
 "<placeholder-1/>"
@@ -1254,11 +1268,11 @@ msgstr ""
 "Změny v názvu zařízení mohou nepříznivě ovlivnit následující soubory: "
 "<placeholder-1/>"
 
-#: C/gparted.xml:1087(title)
+#: C/gparted.xml:1100(title)
 msgid "Formatting a Partition"
 msgstr "Formátování oddílu"
 
-#: C/gparted.xml:1098(para)
+#: C/gparted.xml:1111(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Format to</"
 "guimenuitem></menuchoice>, and select a type of file system from the list. "
@@ -1270,7 +1284,7 @@ msgstr ""
 "Aplikace zobrazí operaci formátování oddílu v panelu <guilabel>Nevyřízených "
 "operací</guilabel>."
 
-#: C/gparted.xml:1105(para)
+#: C/gparted.xml:1118(para)
 msgid ""
 "See <xref linkend=\"gparted-specify-partition-file-system\"/> for the "
 "meaning of the <guimenuitem>cleared</guimenuitem> file system type."
@@ -1278,15 +1292,15 @@ msgstr ""
 "Viz <xref linkend=\"gparted-specify-partition-file-system\"/> o účelu "
 "souborového systému typu <guimenuitem>cleared</guimenuitem>."
 
-#: C/gparted.xml:1088(para)
+#: C/gparted.xml:1101(para)
 msgid "To format a partition: <placeholder-1/>"
 msgstr "Pokud chcete naformátovat oddíl: <placeholder-1/>"
 
-#: C/gparted.xml:1117(title)
+#: C/gparted.xml:1130(title)
 msgid "Setting a Partition Label"
 msgstr "Nastavení názvu oddílu"
 
-#: C/gparted.xml:1128(para)
+#: C/gparted.xml:1141(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Label</"
 "guimenuitem></menuchoice>. The application opens a <guilabel>Set partition "
@@ -1296,11 +1310,11 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace otevře dialogové okno <guilabel>Nastavit "
 "název oddílu na <replaceable>/cesta-k-oddílu</replaceable></guilabel>."
 
-#: C/gparted.xml:1136(para)
+#: C/gparted.xml:1149(para)
 msgid "Type a label name in the <guilabel>Label </guilabel> text box."
 msgstr "Název vepište do textového pole <guilabel>Název</guilabel>."
 
-#: C/gparted.xml:1141(para)
+#: C/gparted.xml:1154(para)
 msgid ""
 "Click <guibutton>OK</guibutton>. The application displays the set partition "
 "label operation in the <guilabel>Operations Pending</guilabel> pane."
@@ -1309,15 +1323,15 @@ msgstr ""
 "<guilabel>Nevyřízené operace</guilabel> zobrazí operaci nastavení názvu "
 "oddílu."
 
-#: C/gparted.xml:1118(para)
+#: C/gparted.xml:1131(para)
 msgid "To set a label or a volume name for a partition: <placeholder-1/>"
 msgstr "Pokud chcete nastavit název (návěští) oddílu: <placeholder-1/>"
 
-#: C/gparted.xml:1153(title)
+#: C/gparted.xml:1166(title)
 msgid "Changing a Partition UUID"
 msgstr "Změna UUID oddílu"
 
-#: C/gparted.xml:1164(para)
+#: C/gparted.xml:1177(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>New UUID</"
 "guimenuitem></menuchoice>. The application displays the set a new random "
@@ -1327,12 +1341,12 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace zobrazí operaci nastavení nového "
 "náhodného UUID v <guilabel>Nevyřízených operací</guilabel>."
 
-#: C/gparted.xml:1173(para)
+#: C/gparted.xml:1186(para)
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation key (WPA)."
 msgstr "Změna UUID může zneplatnit klíč Windows Product Activation (WPA)."
 
-#: C/gparted.xml:1177(para)
+#: C/gparted.xml:1190(para)
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -1344,7 +1358,7 @@ msgstr ""
 "je obvykle C:, může zneplatnit klíč WPA. Neplatný klíč WPA pak bude bránit "
 "přihlášení, dokud Windows znovu neaktivujete."
 
-#: C/gparted.xml:1184(para)
+#: C/gparted.xml:1197(para)
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value. On FAT file systems, such a "
@@ -1353,7 +1367,7 @@ msgstr ""
 "Aby se zkusilo předejít zneplatnění klíče WPA, je u souborového systému NTFS "
 "nastavena na novou náhodnou hodnotu pouze polovina UUID."
 
-#: C/gparted.xml:1190(para)
+#: C/gparted.xml:1203(para)
 msgid ""
 "The WPA key should not be affected by changing the UUID of data partitions "
 "or removable media partitions. In rare cases, a partition that is present at "
@@ -1363,7 +1377,7 @@ msgstr ""
 "dojít k ovlivnění klíče WPA. Toto nemusí platit ve výjimečných případech, "
 "kdy je oddíl přípojen již během zavádění systému."
 
-#: C/gparted.xml:1198(para)
+#: C/gparted.xml:1211(para)
 msgid ""
 "Changing the UUID when there is no need to do so might cause a GNU/Linux "
 "system to fail to boot, or to fail to mount a file system."
@@ -1372,7 +1386,7 @@ msgstr ""
 "systémů GNU/Linux způsobit, že se nezavede systém nebo selže připojení "
 "systému souborů."
 
-#: C/gparted.xml:1203(para)
+#: C/gparted.xml:1216(para)
 msgid ""
 "Changing the UUID is only required after copying a partition. The UUID "
 "change is needed to prevent duplicate UUIDs when both the source and the "
@@ -1382,7 +1396,7 @@ msgstr ""
 "zabrání, aby původní oddíl i kopie měli duplicitní UUID v případě, že se "
 "budou používat naráz na stejném počítači."
 
-#: C/gparted.xml:1209(para)
+#: C/gparted.xml:1222(para)
 msgid ""
 "If boot or mount problems occur you might need to edit configuration files, "
 "such as /etc/fstab, and regenerate the grub menu to ensure that the correct "
@@ -1392,7 +1406,7 @@ msgstr ""
 "budete možná muset upravit soubory s nastavením, jako třeba /etc/fstab, a "
 "znovu vygenerovat nabídku grub, aby bylo uvedeno správné UUID."
 
-#: C/gparted.xml:1154(para)
+#: C/gparted.xml:1167(para)
 msgid ""
 "To change the Universally Unique Identifier (UUID) of a partition: "
 "<placeholder-1/>"
@@ -1400,11 +1414,11 @@ msgstr ""
 "Pokud chcete změnit UUID (Universally Unique Identifier – univerzální "
 "jedinečný identifikátor) oddílu: <placeholder-1/>"
 
-#: C/gparted.xml:1223(title)
+#: C/gparted.xml:1236(title)
 msgid "Specifying Partition Details"
 msgstr "Stanovení podrobností oddílů"
 
-#: C/gparted.xml:1224(para)
+#: C/gparted.xml:1237(para)
 msgid ""
 "Specifying partition details is useful when performing actions such as "
 "create, resize, and move."
@@ -1412,11 +1426,11 @@ msgstr ""
 "Stanovení podrobností oddílu je potřebné když se provádí takové činnosti, "
 "jako vytváření, změna velikosti a přesun."
 
-#: C/gparted.xml:1231(title)
+#: C/gparted.xml:1244(title)
 msgid "Specifying Partition Size and Location"
 msgstr "Stanovení velikosti a umístění oddílu"
 
-#: C/gparted.xml:1237(para)
+#: C/gparted.xml:1250(para)
 msgid ""
 "Click-and-hold the arrow at either end of the graphic area. Drag the arrow "
 "left or right within the display range."
@@ -1424,7 +1438,7 @@ msgstr ""
 "Zmáčkněte a držte šipku na jednom z konců grafického znázornění. Táhněte "
 "šipku vlevo nebo vpravo v mezích grafické oblasti."
 
-#: C/gparted.xml:1243(para)
+#: C/gparted.xml:1256(para)
 msgid ""
 "Click-and-hold the middle of the partition in the graphic area. Drag the "
 "partition left or right within the display range."
@@ -1432,19 +1446,19 @@ msgstr ""
 "Zmáčkněte tlačítko myši uvnitř oddílu v grafickém znázornění a držte jej. "
 "Táhněte vlevo nebo vpravo v mezích grafické oblasti."
 
-#: C/gparted.xml:1255(guilabel)
+#: C/gparted.xml:1268(guilabel)
 msgid "Free Space Preceding"
 msgstr "Volné místo před oddílem"
 
-#: C/gparted.xml:1260(guilabel)
+#: C/gparted.xml:1273(guilabel)
 msgid "New Size"
 msgstr "Nová velikost"
 
-#: C/gparted.xml:1265(guilabel)
+#: C/gparted.xml:1278(guilabel)
 msgid "Free Space Following"
 msgstr "Volné místo za oddílem"
 
-#: C/gparted.xml:1249(para)
+#: C/gparted.xml:1262(para)
 msgid ""
 "Click the spin button arrows, or type numeric values to adjust the following "
 "fields: <placeholder-1/>"
@@ -1452,7 +1466,7 @@ msgstr ""
 "V následujících polích upravte hodnoty klikáním na šipky číselníků nebo je "
 "přímo zapište: <placeholder-1/>"
 
-#: C/gparted.xml:1232(para)
+#: C/gparted.xml:1245(para)
 msgid ""
 "To specify the size and the location of the partition, use one or a "
 "combination of the following: <placeholder-1/>"
@@ -1460,7 +1474,7 @@ msgstr ""
 "Pokud chcete stanovit velikost a umístění oddílu, použijte jeden nebo "
 "kombinaci více z následujících postupů: <placeholder-1/>"
 
-#: C/gparted.xml:1273(para)
+#: C/gparted.xml:1286(para)
 msgid ""
 "The application refreshes both the graphic area and the numbers beside the "
 "three field labels."
@@ -1468,11 +1482,11 @@ msgstr ""
 "Aplikace ihned aktualizuje jak grafické znázornění, tak číselné hodnoty ve "
 "všech třech polích."
 
-#: C/gparted.xml:1281(title)
+#: C/gparted.xml:1294(title)
 msgid "Specifying Partition Alignment"
 msgstr "Stanovení zarovnání oddílu"
 
-#: C/gparted.xml:1282(para)
+#: C/gparted.xml:1295(para)
 msgid ""
 "To specify the alignment of the partition, click the <guilabel>Align to</"
 "guilabel> arrow button, and select from the list."
@@ -1480,7 +1494,7 @@ msgstr ""
 "Abyste mohli určit zarovnání oddílu, klikněte na tlačítko se šipkou u pole "
 "<guilabel>Zarovnat na</guilabel> a vyberte jej ze seznamu."
 
-#: C/gparted.xml:1288(para)
+#: C/gparted.xml:1301(para)
 msgid ""
 "Use <guilabel>MiB</guilabel> alignment for modern operating systems. This "
 "setting aligns partitions to start and end on precise mebibyte (1,048,576 "
@@ -1493,7 +1507,7 @@ msgstr ""
 "vyšší výkonnost při použití systémů RAID a disků SSD, stejně jako disků USB "
 "flash."
 
-#: C/gparted.xml:1298(para)
+#: C/gparted.xml:1311(para)
 msgid ""
 "Use <guilabel>Cylinder</guilabel> alignment to maintain compatibility with "
 "operating systems released before the year 2000, such as DOS. This setting "
@@ -1504,7 +1518,7 @@ msgstr ""
 "DOS. Toto nastavení zarovná oddíly tak, aby začínaly a končily na hranicích "
 "cylindrů."
 
-#: C/gparted.xml:1305(para)
+#: C/gparted.xml:1318(para)
 msgid ""
 "The Cylinder/Head/Sector values reported by modern disk devices no longer "
 "have a direct physical relationship to the data stored on the disk device. "
@@ -1516,7 +1530,7 @@ msgstr ""
 "diskovém zařízení. Z toho důvodu již nadále nejsou vhodné k nastavení "
 "zarovnání pro zvýšení výkonu."
 
-#: C/gparted.xml:1315(para)
+#: C/gparted.xml:1328(para)
 msgid ""
 "Use <guilabel>None</guilabel> only if you have an in-depth knowledge of disk "
 "structure, partition tables, and boot records. This setting places partition "
@@ -1530,11 +1544,11 @@ msgstr ""
 "předcházejícího oddílu na diskovém zařízení. Toto nastavení negarantuje "
 "rezervování a respektování místa potřebného pro zaváděcí sektory."
 
-#: C/gparted.xml:1330(title)
+#: C/gparted.xml:1343(title)
 msgid "Specifying Partition Type"
 msgstr "Stanovení typu oddílu"
 
-#: C/gparted.xml:1331(para)
+#: C/gparted.xml:1344(para)
 msgid ""
 "To specify the partition type, click the <guilabel>Create as</guilabel> "
 "arrow button, and select from the list."
@@ -1542,15 +1556,15 @@ msgstr ""
 "Abyste mohli určit typ oddílu, klikněte na tlačítko se šipkou u pole "
 "<guilabel>Vytvořit jako</guilabel> a vyberte jej ze seznamu."
 
-#: C/gparted.xml:1340(para)
+#: C/gparted.xml:1353(para)
 msgid "Maximum of 4 primary partitions."
 msgstr "Maximálně 4 primární oddíly."
 
-#: C/gparted.xml:1345(para)
+#: C/gparted.xml:1358(para)
 msgid "Maximum of 3 primary partitions, and 1 extended partition."
 msgstr "Maximálně 3 primární oddíly a 1 rozšířený oddíl."
 
-#: C/gparted.xml:1348(para)
+#: C/gparted.xml:1361(para)
 msgid ""
 "The extended partition can contain multiple logical partitions. Some GNU/"
 "Linux distributions support accessing at most 15 partitions on a disk device."
@@ -1558,22 +1572,22 @@ msgstr ""
 "Rozšiřující oddíl může obsahovat více logických oddílů. Některé distribuce "
 "GNU/Linux podporují přístup k nanejvýše 15 oddílům na diskovém zařízení."
 
-#: C/gparted.xml:1356(para)
+#: C/gparted.xml:1369(para)
 msgid ""
-"Maximum size of a partition is 2 Terabytes using a sector size of 512 bytes. "
-"The partition must also start within the first 2 Terabytes of the disk "
+"Maximum size of a partition is 2 Tebibytes using a sector size of 512 bytes. "
+"The partition must also start within the first 2 Tebibytes of the disk "
 "device."
 msgstr ""
-"Maximální velikost oddílu je 2 Terabajty při použití velikosti sektoru 512 "
-"bajtů. Oddíl také musí začínat na prvních 2 Terabajtech diskového zařízení."
+"Maximální velikost oddílu je 2 TiB při použití velikosti sektoru 512 bajtů. "
+"Oddíl také musí začínat na prvních 2 TiB diskového zařízení."
 
-#: C/gparted.xml:1336(para)
+#: C/gparted.xml:1349(para)
 msgid ""
 "The msdos partition table limits partitions as follows: <placeholder-1/>"
 msgstr ""
 "Tabulka oddílů msdos má pro oddíly následující omezení: <placeholder-1/>"
 
-#: C/gparted.xml:1366(para)
+#: C/gparted.xml:1379(para)
 msgid ""
 "Primary partitions provide better data recoverability because the partition "
 "boundaries are stored at known locations on the disk device."
@@ -1581,11 +1595,11 @@ msgstr ""
 "Primární oddíl poskytuje lepší možnosti při obnově dat, protože údaje o "
 "hranicích oddílu jsou uložené na známém pevně daném místě diskového zařízení."
 
-#: C/gparted.xml:1376(title)
+#: C/gparted.xml:1389(title)
 msgid "Specifying Partition File System"
 msgstr "Stanovení souborového systému oddílu"
 
-#: C/gparted.xml:1377(para)
+#: C/gparted.xml:1390(para)
 msgid ""
 "To specify the type of file system for the partition, click the "
 "<guilabel>File System</guilabel> arrow button, and select from the list."
@@ -1593,7 +1607,7 @@ msgstr ""
 "Abyste mohli určit typ souborového systému, klikněte na tlačítko se šipkou u "
 "pole <guilabel>Souborový systém</guilabel> a vyberte jej ze seznamu."
 
-#: C/gparted.xml:1386(para)
+#: C/gparted.xml:1399(para)
 msgid ""
 "<guimenuitem>ext2</guimenuitem>, <guimenuitem>ext3</guimenuitem> and "
 "<guimenuitem>ext4</guimenuitem> file systems can be used for installing GNU/"
@@ -1603,7 +1617,7 @@ msgstr ""
 "guimenuitem> a <guimenuitem>ext4</guimenuitem> můžete použít pro instalaci "
 "GNU/Linux a pro data."
 
-#: C/gparted.xml:1394(para)
+#: C/gparted.xml:1407(para)
 msgid ""
 "<guimenuitem>linux-swap</guimenuitem> can be used with GNU/Linux to increase "
 "the virtual memory of your computer."
@@ -1611,7 +1625,7 @@ msgstr ""
 "<guimenuitem>linux-swap</guimenuitem> můžete použít se systémem GNU/Linux ke "
 "zvětšení virtuální paměti svého počítače."
 
-#: C/gparted.xml:1401(para)
+#: C/gparted.xml:1414(para)
 msgid ""
 "<guimenuitem>fat16</guimenuitem> and <guimenuitem>fat32</guimenuitem> file "
 "systems can be used to share data between free and commercial operating "
@@ -1621,7 +1635,7 @@ msgstr ""
 "guimenuitem> můžete použít ke sdílení dat mezi svobodnými a komerčními "
 "operačními systémy."
 
-#: C/gparted.xml:1409(para)
+#: C/gparted.xml:1422(para)
 msgid ""
 "<guimenuitem>cleared</guimenuitem> can be used to clear any existing file "
 "system signatures and ensure that the partition is recognised as empty."
@@ -1630,7 +1644,7 @@ msgstr ""
 "libovolného stávajího souborového systému a zajištění, že oddíl bude "
 "rozpoznán jako prázdný."
 
-#: C/gparted.xml:1416(para)
+#: C/gparted.xml:1429(para)
 msgid ""
 "<guimenuitem>unformatted</guimenuitem> can be used to just create a "
 "partition without writing a file system."
@@ -1638,16 +1652,16 @@ msgstr ""
 "<guimenuitem>unformatted</guimenuitem> můžete použít, pokud chcete vytvořit "
 "oddíl bez souborového systému."
 
-#: C/gparted.xml:1382(para)
+#: C/gparted.xml:1395(para)
 msgid "Examples of uses for some file systems are as follows: <placeholder-1/>"
 msgstr ""
 "Zde jsou příklady použití některých souborových systémů: <placeholder-1/>"
 
-#: C/gparted.xml:1428(title)
+#: C/gparted.xml:1441(title)
 msgid "Specifying Partition Label"
 msgstr "Stanovení názvu oddílu"
 
-#: C/gparted.xml:1429(para)
+#: C/gparted.xml:1442(para)
 msgid ""
 "To specify the partition label, also known as a volume label, type a label "
 "name in the <guilabel>Label</guilabel> text box."
@@ -1655,14 +1669,14 @@ msgstr ""
 "Když chcete zadat název oddílu, někdy také nazývaný návěští, zapište jej do "
 "textového pole <guilabel>Název</guilabel>."
 
-#: C/gparted.xml:1434(para)
+#: C/gparted.xml:1447(para)
 msgid ""
 "Labels can be used to help you remember what is stored in the partition."
 msgstr ""
 "Pojmenování můžete použít jako pomůcku k zapamatování, co je v oddíle "
 "uložené."
 
-#: C/gparted.xml:1438(para)
+#: C/gparted.xml:1451(para)
 msgid ""
 "Unique labels can be used to mount file systems with the GNU/Linux operating "
 "system."
@@ -1670,11 +1684,11 @@ msgstr ""
 "Jedinečné názvy lze použít k připojování souborových systémů v operačním "
 "systému GNU/Linux."
 
-#: C/gparted.xml:1453(title)
+#: C/gparted.xml:1466(title)
 msgid "Advanced Partition Actions"
 msgstr "Pokročilé činnosti s oddíly"
 
-#: C/gparted.xml:1454(para)
+#: C/gparted.xml:1467(para)
 msgid ""
 "These actions will alter partitions on your disk device. These actions might "
 "modify the start or end boundaries of your existing partitions. These "
@@ -1684,11 +1698,11 @@ msgstr ""
 "měnit počáteční a koncovou hranici vašich stávajících oddílů. Tyto akce "
 "mohou způsobit, že selže zavedení operačního systému."
 
-#: C/gparted.xml:1463(title)
+#: C/gparted.xml:1476(title)
 msgid "Resizing a Partition"
 msgstr "Změna velikosti oddílu"
 
-#: C/gparted.xml:1464(para)
+#: C/gparted.xml:1477(para)
 msgid ""
 "Resizing and moving a partition can be performed by a single "
 "<application>gparted</application> operation."
@@ -1696,12 +1710,12 @@ msgstr ""
 "Změnu velikosti a přesun oddílu lze provést naráz jako jednu operaci "
 "aplikace <application>gparted</application>."
 
-#: C/gparted.xml:1477(para)
+#: C/gparted.xml:1490(para)
 msgid "Unmounted or inactive partitions enable the most resize options."
 msgstr ""
 "Nepřipojené a neaktivní oddíly zpřístupňují u změny velikosti více voleb."
 
-#: C/gparted.xml:1481(para)
+#: C/gparted.xml:1494(para)
 msgid ""
 "Support is available for online resize of some mounted or otherwise active "
 "partitions. However this support is often limited to grow only."
@@ -1710,7 +1724,7 @@ msgstr ""
 "připojené nebo jinak aktivní. Často je však omezena pouze na zvětšení "
 "velikosti."
 
-#: C/gparted.xml:1489(para) C/gparted.xml:1663(para)
+#: C/gparted.xml:1502(para) C/gparted.xml:1676(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Resize/Move</"
 "guimenuitem></menuchoice>. The application displays the <guilabel>Resize/"
@@ -1721,7 +1735,7 @@ msgstr ""
 "<guilabel>Změnit velikost/Přesunout <replaceable>/cesta-k-oddílu</"
 "replaceable></guilabel>."
 
-#: C/gparted.xml:1498(para)
+#: C/gparted.xml:1511(para)
 msgid ""
 "Adjust the size of the partition. See <xref linkend=\"gparted-specify-"
 "partition-size-and-location\"/>."
@@ -1729,7 +1743,7 @@ msgstr ""
 "Upravte velikost oddílu. Viz <xref linkend=\"gparted-specify-partition-size-"
 "and-location\"/>."
 
-#: C/gparted.xml:1503(para)
+#: C/gparted.xml:1516(para)
 msgid ""
 "If you do not want the start of an existing partition to move, then do not "
 "change the <guilabel>free space preceding</guilabel> value. If the partition "
@@ -1741,7 +1755,7 @@ msgstr ""
 "oddíl připojen nebo nějak jinak aktivní, <guilabel>volné místo před oddílem</"
 "guilabel> měnit nejde."
 
-#: C/gparted.xml:1514(para) C/gparted.xml:1678(para)
+#: C/gparted.xml:1527(para) C/gparted.xml:1691(para)
 msgid ""
 "Specify the alignment of the partition. See <xref linkend=\"gparted-specify-"
 "partition-alignment\"/>."
@@ -1749,7 +1763,7 @@ msgstr ""
 "Určete zarovnání oddílu. Viz <xref linkend=\"gparted-specify-partition-"
 "alignment\"/>."
 
-#: C/gparted.xml:1520(para) C/gparted.xml:1684(para)
+#: C/gparted.xml:1533(para) C/gparted.xml:1697(para)
 msgid ""
 "Click <guibutton>Resize/Move</guibutton>. The application displays the "
 "resize/move partition operation in the <guilabel>Pending Operations</"
@@ -1759,7 +1773,7 @@ msgstr ""
 "zobrazí operaci změny velikosti/přesunu v panelu <guilabel>Nevyřízené "
 "operace</guilabel>."
 
-#: C/gparted.xml:1527(para)
+#: C/gparted.xml:1540(para)
 msgid ""
 "Examine the operation that was added to the <guilabel>Pending Operations</"
 "guilabel> pane."
@@ -1767,11 +1781,11 @@ msgstr ""
 "Zkontrolujte operaci, která byla přidána do panelu <guilabel>Nevyřízené "
 "operace</guilabel>."
 
-#: C/gparted.xml:1536(para)
+#: C/gparted.xml:1549(para)
 msgid "A move step might take a long time to complete."
 msgstr "Krok s přesunem může trvat velmi dlouho, než je zcela dokončen."
 
-#: C/gparted.xml:1542(para)
+#: C/gparted.xml:1555(para)
 msgid ""
 "If the partition is an operating system boot partition, then a move step "
 "might cause the operating system to fail to boot."
@@ -1779,7 +1793,7 @@ msgstr ""
 "Pokud oddíl obsahuje zavaděč operačního systému, může jeho přesun způsobit "
 "selhání při spuštění tohoto operačního systému."
 
-#: C/gparted.xml:1531(para)
+#: C/gparted.xml:1544(para)
 msgid ""
 "If the operation involves a move step, then consider the following: "
 "<placeholder-1/>"
@@ -1787,7 +1801,7 @@ msgstr ""
 "Jestliže operace zahrnuje krok s přesunem, počítejte s následujícím: "
 "<placeholder-1/>"
 
-#: C/gparted.xml:1550(para)
+#: C/gparted.xml:1563(para)
 msgid ""
 "If you are not prepared to wait or to fix potential operating system boot "
 "problems, then you might want to undo the operation. See <xref linkend="
@@ -1797,11 +1811,11 @@ msgstr ""
 "spouštěním operačního systému, budete možná chtít operaci vrátit zpět. Viz "
 "<xref linkend=\"gparted-undo-last-operation\"/>."
 
-#: C/gparted.xml:1468(para)
+#: C/gparted.xml:1481(para)
 msgid "To resize a partition: <placeholder-1/>"
 msgstr "Pokud chcete změnit velikost oddílu: <placeholder-1/>"
 
-#: C/gparted.xml:1560(para)
+#: C/gparted.xml:1573(para)
 msgid ""
 "To grow or move a partition, unallocated space must be available adjacent to "
 "the partition."
@@ -1809,7 +1823,7 @@ msgstr ""
 "Aby bylo možné oddíl zvětšit nebo přesunou, musí být k dispozici nepřidělené "
 "místo sousedící s oddílem."
 
-#: C/gparted.xml:1564(para)
+#: C/gparted.xml:1577(para)
 msgid ""
 "If you are growing a logical partition, then the unallocated space must be "
 "within the extended partition."
@@ -1817,7 +1831,7 @@ msgstr ""
 "V případě, že zvětšujete logický oddíl, musí být nepřidělené místo součástí "
 "rozšířeného oddílu."
 
-#: C/gparted.xml:1568(para)
+#: C/gparted.xml:1581(para)
 msgid ""
 "If you are growing a primary partition, then the unallocated space must not "
 "be within the extended partition."
@@ -1825,7 +1839,7 @@ msgstr ""
 "V případě, že zvětšujete primární oddíl, nesmí být nepřidělené místo "
 "součástí rozšířeného oddílu."
 
-#: C/gparted.xml:1572(para)
+#: C/gparted.xml:1585(para)
 msgid ""
 "You can move unallocated space to be inside or outside of the extended "
 "partition by resizing the extended partition boundaries."
@@ -1833,11 +1847,11 @@ msgstr ""
 "Nepřidělené místo můžete přesunout tak, aby bylo nebo nebylo součástí "
 "rozšířeného oddílu tím, že změníte velikost rozšířeného oddílu."
 
-#: C/gparted.xml:1583(para)
+#: C/gparted.xml:1596(para)
 msgid "Defragment the file system."
 msgstr "Defragmentujte souborový systém."
 
-#: C/gparted.xml:1586(para)
+#: C/gparted.xml:1599(para)
 msgid ""
 "Booting into Safe Mode with the commercial operating system that uses NTFS "
 "can improve the ability to defragment the file system. To enter Safe Mode "
@@ -1849,7 +1863,7 @@ msgstr ""
 "Do nouzového režimu se dostanete stiskem klávesy <keycap>F8</keycap> ve "
 "chvíli, kdy váš počítač začne operační systém zavádět."
 
-#: C/gparted.xml:1597(para)
+#: C/gparted.xml:1610(para)
 msgid ""
 "Check the partition for errors with the following command: <screen><prompt>C:"
 "&gt; </prompt><command>chkdsk</command> /f /r</screen> Remember to reboot "
@@ -1861,7 +1875,7 @@ msgstr ""
 "mohli spustit příkaz <command>chkdsk</command>, musíte počítač znovu spustit "
 "se systémem, který používá NTFS."
 
-#: C/gparted.xml:1606(para)
+#: C/gparted.xml:1619(para)
 msgid ""
 "Temporarily disable the paging file. The paging file occupies a fixed "
 "location in the partition that the defragmentation process is unable to move."
@@ -1869,7 +1883,7 @@ msgstr ""
 "Dočasně zakažte stránkovací soubor. Stránkovací soubor obsazuje část místa "
 "oddílu napevno a defragmentovací proces jej nemůže přesunout."
 
-#: C/gparted.xml:1614(para)
+#: C/gparted.xml:1627(para)
 msgid ""
 "Temporarily move large files to another partition or disk device. Large "
 "files are defined as greater than a few hundred Megabytes (MB)."
@@ -1878,7 +1892,7 @@ msgstr ""
 "Rozsáhlými soubory se rozumí takové, jejichž velikost přesahuje několik set "
 "megabajtů (MB)."
 
-#: C/gparted.xml:1621(para)
+#: C/gparted.xml:1634(para)
 msgid ""
 "Ensure a proper shut down of the commercial operating system that uses NTFS "
 "before you resize the NTFS partition"
@@ -1886,7 +1900,7 @@ msgstr ""
 "Před změnou velikosti oddílu NTFS zajistěte korektní ukončení komerčního "
 "operačního systému, který NTFS využívá."
 
-#: C/gparted.xml:1628(para)
+#: C/gparted.xml:1641(para)
 msgid ""
 "Leave at least 10 percent unused space in the NTFS partition. If you shrink "
 "the partition too much, then the commercial operating system might have "
@@ -1895,7 +1909,7 @@ msgstr ""
 "Ponechte v oddíle NTFS nejméně 10 % volného místa. Pokud velikost oddílu "
 "zmenšíte příliš, může mít komerční operační systém potíže s provozem."
 
-#: C/gparted.xml:1636(para)
+#: C/gparted.xml:1649(para)
 msgid ""
 "Reboot twice into the commercial operating system that uses NTFS after "
 "shrinking the NTFS partition."
@@ -1903,7 +1917,7 @@ msgstr ""
 "Po zmenšení oddílu NTFS spusťte počítač dvakrát po sobě s komerčním "
 "operačním systémem, který NTFS používá."
 
-#: C/gparted.xml:1578(para)
+#: C/gparted.xml:1591(para)
 msgid ""
 "To improve the ability to shrink NTFS partitions, you might consider one or "
 "more of the following: <placeholder-1/>"
@@ -1911,11 +1925,11 @@ msgstr ""
 "Abyste vylepšili způsobilost oddílu NTFS ke zmenšení velikosti, můžete "
 "zvážit použití některé z následujících možností: <placeholder-1/>"
 
-#: C/gparted.xml:1648(title)
+#: C/gparted.xml:1661(title)
 msgid "Moving a Partition"
 msgstr "Přesouvání oddílu"
 
-#: C/gparted.xml:1649(para)
+#: C/gparted.xml:1662(para)
 msgid ""
 "Moving and resizing a partition can be performed by a single "
 "<application>gparted</application> operation."
@@ -1923,7 +1937,7 @@ msgstr ""
 "Přesun a změnu velikosti oddílu lze provést naráz jako jednu operaci "
 "aplikace <application>gparted</application>."
 
-#: C/gparted.xml:1672(para)
+#: C/gparted.xml:1685(para)
 msgid ""
 "Adjust the location of the partition. See <xref linkend=\"gparted-specify-"
 "partition-size-and-location\"/>."
@@ -1931,11 +1945,11 @@ msgstr ""
 "Změňte umístění oddílu. Viz <xref linkend=\"gparted-specify-partition-size-"
 "and-location\"/>."
 
-#: C/gparted.xml:1653(para)
+#: C/gparted.xml:1666(para)
 msgid "To move a partition: <placeholder-1/>"
 msgstr "Když chcete oddíl přesunout: <placeholder-1/>"
 
-#: C/gparted.xml:1693(para)
+#: C/gparted.xml:1706(para)
 msgid ""
 "If the partition is an operating system boot partition, then the operating "
 "system might not boot after the move operation is applied."
@@ -1943,7 +1957,7 @@ msgstr ""
 "Pokud oddíl obsahuje zavaděč operačního systému, může použití operace "
 "přesunu způsobit, že daný operační systém nepůjde zavést."
 
-#: C/gparted.xml:1698(para)
+#: C/gparted.xml:1711(para)
 msgid ""
 "If the operating system fails to boot, see <xref linkend=\"gparted-fix-"
 "operating-system-boot-problems\"/>."
@@ -1951,11 +1965,11 @@ msgstr ""
 "Jestliže spuštění operačního systému selže, přečtěte si <xref linkend="
 "\"gparted-fix-operating-system-boot-problems\"/>."
 
-#: C/gparted.xml:1707(title)
+#: C/gparted.xml:1720(title)
 msgid "Copying and Pasting a Partition"
 msgstr "Kopírování a vkládání oddílu"
 
-#: C/gparted.xml:1718(para)
+#: C/gparted.xml:1731(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Copy</"
 "guimenuitem></menuchoice>. The application marks the partition as the source "
@@ -1964,11 +1978,11 @@ msgstr ""
 "Zvolte: <menuchoice><guimenu>Oddíl</guimenu><guimenuitem>Kopírovat</"
 "guimenuitem></menuchoice>. Aplikace označí oddíl jako zdrojový."
 
-#: C/gparted.xml:1708(para)
+#: C/gparted.xml:1721(para)
 msgid "To copy a partition: <placeholder-1/>"
 msgstr "Když chcete oddíl kopírovat: <placeholder-1/>"
 
-#: C/gparted.xml:1731(para)
+#: C/gparted.xml:1744(para)
 msgid ""
 "Select an unallocated space on a disk device. See <xref linkend=\"gparted-"
 "select-unallocated\"/>."
@@ -1976,7 +1990,7 @@ msgstr ""
 "Vyberte nepřidělené místo na diskovém zařízení. Viz <xref linkend=\"gparted-"
 "select-unallocated\"/>."
 
-#: C/gparted.xml:1737(para)
+#: C/gparted.xml:1750(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Paste</"
 "guimenuitem></menuchoice>. The application displays the <guilabel>Paste "
@@ -1986,7 +2000,7 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace zobrazí dialogové okno <guilabel>Vložit "
 "<replaceable>/cesta-k-oddílu</replaceable></guilabel>."
 
-#: C/gparted.xml:1746(para)
+#: C/gparted.xml:1759(para)
 msgid ""
 "If you want you can adjust the size and location of the partition. See <xref "
 "linkend=\"gparted-specify-partition-size-and-location\"/>."
@@ -1994,7 +2008,7 @@ msgstr ""
 "Pokud chcete, můžete upravit velikost a umístění oddílu. Viz <xref linkend="
 "\"gparted-specify-partition-size-and-location\"/>."
 
-#: C/gparted.xml:1752(para)
+#: C/gparted.xml:1765(para)
 msgid ""
 "If you want you can specify the alignment of partition. See <xref linkend="
 "\"gparted-specify-partition-alignment\"/>."
@@ -2002,7 +2016,7 @@ msgstr ""
 "Pokud chcete, můžete stanovit zarovnání oddílu. Viz <xref linkend=\"gparted-"
 "specify-partition-alignment\"/>."
 
-#: C/gparted.xml:1758(para)
+#: C/gparted.xml:1771(para)
 msgid ""
 "Click <guibutton>Paste</guibutton>. The application displays the copy "
 "partition operation in the <guilabel>Pending Operations</guilabel> pane."
@@ -2010,11 +2024,11 @@ msgstr ""
 "Klikněte na <guibutton>Vložit</guibutton>. Aplikace zobrazí operaci "
 "kopírování oddílu v panelu <guilabel>Nevyřízené operace</guilabel>."
 
-#: C/gparted.xml:1727(para)
+#: C/gparted.xml:1740(para)
 msgid "To Paste a partition: <placeholder-1/>"
 msgstr "Když chcete oddíl vložit: <placeholder-1/>"
 
-#: C/gparted.xml:1767(para)
+#: C/gparted.xml:1780(para)
 msgid ""
 "The copy of the partition has the same label and the same Universally Unique "
 "Identifier (UUID) as the source partition. This can cause a problem when "
@@ -2026,7 +2040,7 @@ msgstr ""
 "kdy se zavádí systém nebo když se připojuje oddíl podle jeho názvu nebo jeho "
 "UUID. Podstata problému je v tom, že název ani UUID nejsou jednoznačné."
 
-#: C/gparted.xml:1775(para)
+#: C/gparted.xml:1788(para)
 msgid ""
 "The problem is that the operating system will randomly select to mount "
 "either the source, or the copy of the partition. For example, on the first "
@@ -2044,7 +2058,7 @@ msgstr ""
 "připojen. Toto náhodná volba připojování může vést i k poškození dat nebo k "
 "jejich ztrátě."
 
-#: C/gparted.xml:1796(para)
+#: C/gparted.xml:1809(para)
 msgid ""
 "Change the UUID of either the source, or the copy of the partition. See "
 "<xref linkend=\"gparted-changing-partition-uuid\"/>."
@@ -2052,7 +2066,7 @@ msgstr ""
 "Změňte UUID buď u zdrojového oddílu nebo u kopie oddílu. Viz <xref linkend="
 "\"gparted-changing-partition-uuid\"/>."
 
-#: C/gparted.xml:1803(para)
+#: C/gparted.xml:1816(para)
 msgid ""
 "If the partition label is not blank then change the label of either the "
 "source, or the copy of the partition. See <xref linkend=\"gparted-setting-"
@@ -2061,11 +2075,11 @@ msgstr ""
 "Pokud není název oddílu prázdný, změňte název buď u zdrojového oddílu nebo u "
 "kopie oddílu. Viz <xref linkend=\"gparted-specify-partition-label\"/>."
 
-#: C/gparted.xml:1792(para)
+#: C/gparted.xml:1805(para)
 msgid "After you have applied the copy operation: <placeholder-1/>"
 msgstr "Poté, co jste použili operaci kopírování: <placeholder-1/>"
 
-#: C/gparted.xml:1814(para)
+#: C/gparted.xml:1827(para)
 msgid ""
 "After you have applied the copy operation, delete or reformat the source "
 "partition."
@@ -2073,7 +2087,7 @@ msgstr ""
 "Po té, co jste použili operaci kopírování, mazání nebo přeformátování "
 "zdrojového oddílu."
 
-#: C/gparted.xml:1820(para)
+#: C/gparted.xml:1833(para)
 msgid ""
 "Use some other method to ensure that the source partition and the copy of "
 "the partition are not used on the same computer at the same time. For "
@@ -2084,7 +2098,7 @@ msgstr ""
 "oddílu nebudou použity na stejném počítači naráz. Například, jestliže je "
 "zkopírovaný oddíl na jiném fyzickém disku, vyjměte tento disk z počítače."
 
-#: C/gparted.xml:1787(para)
+#: C/gparted.xml:1800(para)
 msgid ""
 "To avoid the problem you are advised to do one of the following: "
 "<placeholder-1/>"
@@ -2092,11 +2106,11 @@ msgstr ""
 "Abyste předešli problému, doporučuje se vám něco z následujícího: "
 "<placeholder-1/>"
 
-#: C/gparted.xml:1835(title)
+#: C/gparted.xml:1848(title)
 msgid "Managing Partition Flags"
 msgstr "Správa příznaků oddílu"
 
-#: C/gparted.xml:1846(para)
+#: C/gparted.xml:1859(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Manage Flags</"
 "guimenuitem></menuchoice>. The application opens a <guilabel>Manage flags on "
@@ -2106,7 +2120,7 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace otevře dialogové okno <guilabel>Nastavit "
 "příznaky na <replaceable>/cesta-k-oddílu</replaceable></guilabel>."
 
-#: C/gparted.xml:1855(para)
+#: C/gparted.xml:1868(para)
 msgid ""
 "To enable a flag, select the check box beside the flag. The application "
 "writes the enabled flag to the partition and refreshes the <guilabel>Manage "
@@ -2117,7 +2131,7 @@ msgstr ""
 "<guilabel>Nastavit příznaky na <replaceable>/cesta-k-oddílu</replaceable></"
 "guilabel>."
 
-#: C/gparted.xml:1863(para)
+#: C/gparted.xml:1876(para)
 msgid ""
 "To disable a flag, deselect the check box beside the flag. The application "
 "writes the disabled flag to the partition and refreshes the <guilabel>Manage "
@@ -2128,11 +2142,11 @@ msgstr ""
 "<guilabel>Nastavit příznaky na <replaceable>/cesta-k-oddílu</replaceable></"
 "guilabel>."
 
-#: C/gparted.xml:1836(para)
+#: C/gparted.xml:1849(para)
 msgid "To manage partition flags: <placeholder-1/>"
 msgstr "Když chcete nastavit příznaky oddílu: <placeholder-1/>"
 
-#: C/gparted.xml:1875(para)
+#: C/gparted.xml:1888(para)
 msgid ""
 "To close the <guilabel>Manage flags on <replaceable>/path-to-partition</"
 "replaceable></guilabel> dialog, click <guibutton>Close</guibutton>."
@@ -2141,7 +2155,7 @@ msgstr ""
 "<guilabel>Nastavit příznaky na <replaceable>/cesta-k-oddílu</replaceable></"
 "guilabel> zavřete."
 
-#: C/gparted.xml:1886(para) C/gparted.xml:1961(para)
+#: C/gparted.xml:1899(para) C/gparted.xml:1974(para)
 msgid ""
 "Boot is used by some commercial operating system boot loaders. The boot flag "
 "indicates the partition is active or bootable. Only one partition on a disk "
@@ -2151,13 +2165,13 @@ msgstr ""
 "Tento příznak označuje oddíl jako aktivní nebo zaveditelný. Pouze jeden "
 "oddíl na diskovém zařízení může být aktivní."
 
-#: C/gparted.xml:1895(para)
+#: C/gparted.xml:1908(para)
 msgid ""
 "Diag is used to indicate the partition is used for diagnostics / recovery."
 msgstr ""
 "Diag je použito k označení, že oddíl se používá pro diagnostiku/obnovu."
 
-#: C/gparted.xml:1901(para) C/gparted.xml:1976(para)
+#: C/gparted.xml:1914(para) C/gparted.xml:1989(para)
 msgid ""
 "Hidden is used by some commercial operating systems. The hidden flag makes "
 "the partition invisible to the operating system."
@@ -2165,7 +2179,7 @@ msgstr ""
 "Hidden je použito k označení některými komerčními operačními systémy. Tento "
 "příznak způsobí, že je oddíl pro operační systém neviditelný."
 
-#: C/gparted.xml:1908(para)
+#: C/gparted.xml:1921(para)
 msgid ""
 "LBA is used by some commercial operating system boot loaders. The LBA flag "
 "indicates the partition should be accessed using Logical Block Addressing "
@@ -2176,7 +2190,7 @@ msgstr ""
 "adresování bloků LBA (Logical Block Addressing) místo adresování CHS "
 "(Cylindr-Hlava-Sektor)."
 
-#: C/gparted.xml:1917(para)
+#: C/gparted.xml:1930(para)
 msgid ""
 "LVM is used to indicate the partition is used by a Logical Volume Manager "
 "(LVM)."
@@ -2184,7 +2198,7 @@ msgstr ""
 "LVM je použito k označení, že oddíl je používán správou logických oddílů LVM "
 "(Logical Volume Manager)."
 
-#: C/gparted.xml:1923(para)
+#: C/gparted.xml:1936(para)
 msgid ""
 "Palo is used by the Precision Architecture - Reduced Instruction Set "
 "Computing (PA-RISC) boot loader, palo."
@@ -2192,7 +2206,7 @@ msgstr ""
 "Palo je použito zaváděcím programem palo na architektuře PA-RISC (Precision "
 "Architecture - Reduced Instruction Set Computing)."
 
-#: C/gparted.xml:1930(para)
+#: C/gparted.xml:1943(para)
 msgid ""
 "Prep is used to indicate the boot partition on Power Performance Computing "
 "(PowerPC) hardware."
@@ -2200,7 +2214,7 @@ msgstr ""
 "Prep je použito k označení zaváděcího oddílu na hardwaru PowerPC (Power "
 "Performance Computing)."
 
-#: C/gparted.xml:1936(para)
+#: C/gparted.xml:1949(para)
 msgid ""
 "RAID is used to indicate the partition is used in a Redundant Array of "
 "Inexpensive Disks (RAID)."
@@ -2208,17 +2222,17 @@ msgstr ""
 "RAID je použito k označení, že oddíl se používá v diskovém poli RAID "
 "(Redundant Array Inexpensive Disks)."
 
-#: C/gparted.xml:1881(para)
+#: C/gparted.xml:1894(para)
 msgid ""
 "A description of flags in an msdos partition table follows: <placeholder-1/>"
 msgstr ""
 "Zde je popis jednotlivých příznaků tabulky oddílu MSDOS: <placeholder-1/>"
 
-#: C/gparted.xml:1949(para)
+#: C/gparted.xml:1962(para)
 msgid "Atvrecv is used to indicate an Apple TV Recovery partition."
 msgstr "Atvrecv je použito k označení oddílu Apple TV Recovery."
 
-#: C/gparted.xml:1955(para)
+#: C/gparted.xml:1968(para)
 msgid ""
 "BIOS_GRUB indicates a BIOS boot partition often used by the GRUB 2 boot "
 "loader."
@@ -2226,16 +2240,16 @@ msgstr ""
 "BIOS_GRUB označuje zaváděcí oddíl BIOS, který je často používán zavaděčem "
 "GRUB 2."
 
-#: C/gparted.xml:1970(para)
+#: C/gparted.xml:1983(para)
 msgid "Diag indicates the partition is used for diagnostics or recovery."
 msgstr "Diag označuje, že oddíl se používá pro diagnostiku a obnovu."
 
-#: C/gparted.xml:1983(para)
+#: C/gparted.xml:1996(para)
 msgid "HP-service is used to indicate a Hewlett Packard service partition."
 msgstr ""
 "HP-service je použito k označení servisního oddílu firmy Hewlett Packard."
 
-#: C/gparted.xml:1989(para)
+#: C/gparted.xml:2002(para)
 msgid ""
 "Legacy_boot is used by some special purpose software to indicate the "
 "partition might be bootable."
@@ -2243,17 +2257,17 @@ msgstr ""
 "Legacy_boot je používáno některým specializovaným softwarem k označení, že "
 "oddíl může být zaveditelný."
 
-#: C/gparted.xml:1995(para)
+#: C/gparted.xml:2008(para)
 msgid "LVM indicates the partition is used by a Logical Volume Manager (LVM)."
 msgstr ""
 "LVM označuje, že oddíl je používán správou logických oddílů (Logical Volume "
 "Manager)."
 
-#: C/gparted.xml:2001(para)
+#: C/gparted.xml:2014(para)
 msgid "Msftres is used to indicate a Microsoft Reserved partition."
 msgstr "Msftres je použito k označení oddílu Microsoft Reserved."
 
-#: C/gparted.xml:2007(para)
+#: C/gparted.xml:2020(para)
 msgid ""
 "RAID indicates the partition is used in a Redundant Array of Inexpensive "
 "Disks (RAID)."
@@ -2261,17 +2275,17 @@ msgstr ""
 "RAID označuje, že oddíl se používá v diskovém poli RAID (Redundant Array "
 "Inexpensive Disks)."
 
-#: C/gparted.xml:1945(para)
+#: C/gparted.xml:1958(para)
 msgid ""
 "A description of flags in a gpt partition table follows: <placeholder-1/>"
 msgstr ""
 "Zde je popis jednotlivých příznaků tabulky oddílu GPT: <placeholder-1/>"
 
-#: C/gparted.xml:2019(title)
+#: C/gparted.xml:2032(title)
 msgid "Checking a Partition"
 msgstr "Kontrolování oddílu"
 
-#: C/gparted.xml:2020(para)
+#: C/gparted.xml:2033(para)
 msgid ""
 "Checking a partition will attempt to find and fix problems in the file "
 "system. Checking a partition will attempt to grow the file system to fill "
@@ -2280,7 +2294,7 @@ msgstr ""
 "Kontrola oddílu zkusí najít a opravit problémy v souborovém systému. "
 "Kontrola oddílu zkusí zvětšit souborový systém tak, aby vyplnit oddíl."
 
-#: C/gparted.xml:2036(para)
+#: C/gparted.xml:2049(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Partition</guimenu><guimenuitem>Check</"
 "guimenuitem></menuchoice>. The application displays the check partition "
@@ -2290,19 +2304,19 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace zobrazí operaci kontroly oddílu v panelu "
 "<guilabel>Nevyřízené operace</guilabel>."
 
-#: C/gparted.xml:2026(para)
+#: C/gparted.xml:2039(para)
 msgid "To check a partition: <placeholder-1/>"
 msgstr "Když chcete oddíl zkontrolovat: <placeholder-1/>"
 
-#: C/gparted.xml:2052(title)
+#: C/gparted.xml:2065(title)
 msgid "Working with the Operation Queue"
 msgstr "Práce s frontou operací"
 
-#: C/gparted.xml:2056(title)
+#: C/gparted.xml:2069(title)
 msgid "Undoing Last Operation"
 msgstr "Vrácení poslední operace zpět"
 
-#: C/gparted.xml:2057(para)
+#: C/gparted.xml:2070(para)
 msgid ""
 "To undo the last operation in the operation queue, choose: "
 "<menuchoice><guimenu>Edit</guimenu><guimenuitem>Undo Last Operation</"
@@ -2318,11 +2332,11 @@ msgstr ""
 "frontě nezůstala žádná operace, aplikace panel <guilabel>Nevyřízené operace</"
 "guilabel> zavře."
 
-#: C/gparted.xml:2070(title)
+#: C/gparted.xml:2083(title)
 msgid "Clearing All Operations"
 msgstr "Vymazání všech operací"
 
-#: C/gparted.xml:2071(para)
+#: C/gparted.xml:2084(para)
 msgid ""
 "To clear all operations in the operation queue, choose: "
 "<menuchoice><guimenu>Edit</guimenu><guimenuitem>Clear All Operations</"
@@ -2334,11 +2348,11 @@ msgstr ""
 "guimenuitem></menuchoice>. Aplikace odstraní všechny operace z fronty a "
 "zavře panel <guilabel>Nevyřízené operace</guilabel>."
 
-#: C/gparted.xml:2081(title)
+#: C/gparted.xml:2094(title)
 msgid "Applying All Operations"
 msgstr "Provedení všech operací"
 
-#: C/gparted.xml:2086(para)
+#: C/gparted.xml:2099(para)
 msgid ""
 "Choose: <menuchoice><guimenu>Edit</guimenu><guimenuitem>Apply All "
 "Operations</guimenuitem></menuchoice>. The application displays an "
@@ -2348,7 +2362,7 @@ msgstr ""
 "operace</guimenuitem></menuchoice>. Aplikace zobrazí dialogové okno "
 "<guilabel>Provést operace na zařízení</guilabel>."
 
-#: C/gparted.xml:2093(para)
+#: C/gparted.xml:2106(para)
 msgid ""
 "Editing partitions has the potential to cause LOSS of DATA. You are advised "
 "to backup your data before applying your partition editing operations."
@@ -2356,7 +2370,7 @@ msgstr ""
 "Úprava oddílu může potenciálně způsobit ZTRÁTU DAT. Doporučujeme vám svá "
 "data zálohovat předtím, než začnete oddíl upravovat."
 
-#: C/gparted.xml:2111(para)
+#: C/gparted.xml:2124(para)
 msgid ""
 "To view more information, click <guibutton>Details</guibutton>. The "
 "application displays more details about operations."
@@ -2364,7 +2378,7 @@ msgstr ""
 "Pokud chcete zobrazit více informací, klikněte na <guibutton>Podrobnosti</"
 "guibutton>. Aplikace zobrazí o operaci více podrobností."
 
-#: C/gparted.xml:2116(para)
+#: C/gparted.xml:2129(para)
 msgid ""
 "To view more information about the steps in each operation, click the arrow "
 "button beside each step."
@@ -2372,7 +2386,7 @@ msgstr ""
 "Pokud chcete více informací o krocích jednotlivých operací, klikněte na "
 "tlačítko se šipkou po straně operace."
 
-#: C/gparted.xml:2122(para)
+#: C/gparted.xml:2135(para)
 msgid ""
 "To stop the operations while they are executing, click <guibutton>Cancel</"
 "guibutton>. The application displays a disabled <guibutton>Force Cancel (5)</"
@@ -2382,7 +2396,7 @@ msgstr ""
 "<guibutton>Zrušit</guibutton>. Aplikace zobrazí tlačítko <guibutton>Násilně "
 "zrušit (5)</guibutton> s odpočtem 5 sekund."
 
-#: C/gparted.xml:2130(para)
+#: C/gparted.xml:2143(para)
 msgid ""
 "<guibutton>Cancel</guibutton> instructs the application to stop or roll back "
 "operations as necessary to ensure data integrity."
@@ -2390,7 +2404,7 @@ msgstr ""
 "<guibutton>Zrušit</guibutton> nakazuje aplikaci zastavit operace, případně "
 "je vrátit do předchozího stavu, aby byla zajištěna celistvost dat."
 
-#: C/gparted.xml:2136(para)
+#: C/gparted.xml:2149(para)
 msgid ""
 "If operations have not halted after 5 seconds the application enables the "
 "<guibutton>Force Cancel</guibutton> button."
@@ -2398,7 +2412,7 @@ msgstr ""
 "Jestliže se operace do 5 sekund neukončí, aplikace zpřístupní tlačítko "
 "<guibutton>Násilně zrušit</guibutton>."
 
-#: C/gparted.xml:2141(para)
+#: C/gparted.xml:2154(para)
 msgid ""
 "To force the operations to stop, click <guibutton>Force Cancel</guibutton>. "
 "The application displays a warning dialog."
@@ -2407,7 +2421,7 @@ msgstr ""
 "<guibutton>Násilně zrušit</guibutton>. Aplikace zobrazí dialogové okno s "
 "varováním."
 
-#: C/gparted.xml:2146(para)
+#: C/gparted.xml:2159(para)
 msgid ""
 "Click <guibutton>Continue Operation</guibutton> to allow the roll back "
 "operations to complete, or click <guibutton>Cancel Operation</guibutton> to "
@@ -2417,7 +2431,7 @@ msgstr ""
 "vrácení operací zpět. A nebo kliknutím na <guibutton>Zrušit operaci</"
 "guibutton> vrácení operací zpět zrušte."
 
-#: C/gparted.xml:2153(para)
+#: C/gparted.xml:2166(para)
 msgid ""
 "<guibutton>Cancel Operation</guibutton> terminates the safe roll back of "
 "operations and might cause SEVERE file system damage and data loss. You are "
@@ -2429,7 +2443,7 @@ msgstr ""
 "doporučuje kliknout na <guibutton>Pokračovat v operaci</guibutton> a tím "
 "vrácení zpět dokončit."
 
-#: C/gparted.xml:2162(para)
+#: C/gparted.xml:2175(para)
 msgid ""
 "When the application finishes performing operations, the application "
 "displays the <guibutton>Save Details</guibutton> button and the "
@@ -2438,7 +2452,7 @@ msgstr ""
 "Po dokončení provádění všech operací aplikace zobrazí tlačítka "
 "<guibutton>Uložit podrobnosti</guibutton> a <guibutton>Zavřít</guibutton>."
 
-#: C/gparted.xml:2101(para)
+#: C/gparted.xml:2114(para)
 msgid ""
 "Click <guibutton>Apply</guibutton>. The application displays an "
 "<guilabel>Applying pending operations</guilabel> dialog. The application "
@@ -2452,7 +2466,7 @@ msgstr ""
 "bude po dokončení každé operace aktualizovat zobrazení stavu. <placeholder-1/"
 ">"
 
-#: C/gparted.xml:2180(para)
+#: C/gparted.xml:2193(para)
 msgid ""
 "If you want to change the default file name, then type a file name in the "
 "<guilabel>Name</guilabel> text box."
@@ -2460,7 +2474,7 @@ msgstr ""
 "Pokud chcete změnit výchozí název souboru, zapiště nový název souboru do "
 "textového pole <guilabel>Název</guilabel>."
 
-#: C/gparted.xml:2187(para)
+#: C/gparted.xml:2200(para)
 msgid ""
 "If you want to save the file in a folder different than /root, Click "
 "<guibutton>Browse for other folders</guibutton>. The application displays a "
@@ -2470,11 +2484,11 @@ msgstr ""
 "<guibutton>Procházet jiné složky</guibutton>. Aplikace zobrazí navigátor "
 "souborového systému."
 
-#: C/gparted.xml:2193(para)
+#: C/gparted.xml:2206(para)
 msgid "Use the file system navigator to select a folder."
 msgstr "Použijte navigátor souborového systému k výběru složky."
 
-#: C/gparted.xml:2198(para)
+#: C/gparted.xml:2211(para)
 msgid ""
 "Click <guibutton>Save</guibutton> to save the file. The application saves "
 "the details file."
@@ -2482,7 +2496,7 @@ msgstr ""
 "Klikněte na <guibutton>Uložit</guibutton> a aplikace uloží podrobnosti do "
 "souboru."
 
-#: C/gparted.xml:2173(para)
+#: C/gparted.xml:2186(para)
 msgid ""
 "If you want to save the details from applying all operations, then click "
 "<guibutton>Save Details</guibutton>. The application displays a "
@@ -2492,7 +2506,7 @@ msgstr ""
 "<guibutton>Uložit podrobnosti</guibutton>. Aplikace zobrazí dialogové okno "
 "<guilabel>Uložit podrobnosti</guilabel>. <placeholder-1/>"
 
-#: C/gparted.xml:2206(para)
+#: C/gparted.xml:2219(para)
 msgid ""
 "If you use <application>gparted</application> from a Live CD, then the root "
 "file system exists in RAM memory. All files saved to the Live CD root file "
@@ -2503,7 +2517,7 @@ msgstr ""
 "paměti. Všechny soubory uložené do kořenového souborového systému "
 "spustitelného CD budou po vypnutí počítače ztraceny."
 
-#: C/gparted.xml:2212(para)
+#: C/gparted.xml:2225(para)
 msgid ""
 "If you saved the gparted details to the Live CD root file system, then you "
 "need to copy the file to more permanent storage. Examples of more permanent "
@@ -2514,7 +2528,7 @@ msgstr ""
 "úložiště. Příklady takovýchto trvalých úložišť jsou pevný disk nebo USB "
 "flash disk."
 
-#: C/gparted.xml:2221(para)
+#: C/gparted.xml:2234(para)
 msgid ""
 "Click <guibutton>Close</guibutton>. The application closes the "
 "<guilabel>Applying pending operations</guilabel> dialog. The application "
@@ -2526,15 +2540,15 @@ msgstr ""
 "všechna disková zařízení a aktualizuje rozložení oddílů zařízení v okně "
 "<application>gparted</application>."
 
-#: C/gparted.xml:2082(para)
+#: C/gparted.xml:2095(para)
 msgid "To apply all operations: <placeholder-1/>"
 msgstr "Pokud chcete provést všechny operace: <placeholder-1/>"
 
-#: C/gparted.xml:2240(title)
+#: C/gparted.xml:2253(title)
 msgid "Acquiring GParted on Live CD"
 msgstr "Získání GParted na spustitelném CD"
 
-#: C/gparted.xml:2241(para)
+#: C/gparted.xml:2254(para)
 msgid ""
 "A Live CD is a Compact Disc that contains a bootable operating system. A "
 "Live CD enables you to boot your computer from the CD."
@@ -2542,13 +2556,13 @@ msgstr ""
 "Spustitelné CD je kompaktní disk, který obsahuje zaveditelný operační "
 "systém. Spustitelné CD vám umožňuje rozjet svůj počítač z CD."
 
-#: C/gparted.xml:2250(para)
+#: C/gparted.xml:2263(para)
 msgid ""
 "You can edit all of your partitions because the partitions are not mounted."
 msgstr ""
 "Můžete upravovat všechny své oddíly, protože žádný z nich není připojený."
 
-#: C/gparted.xml:2256(para)
+#: C/gparted.xml:2269(para)
 msgid ""
 "You can edit partitions on computers that do not have a bootable operating "
 "system."
@@ -2556,7 +2570,7 @@ msgstr ""
 "Můžete upravovat oddíly na počítačích, které nemají zaveditelný operační "
 "systém."
 
-#: C/gparted.xml:2245(para)
+#: C/gparted.xml:2258(para)
 msgid ""
 "Using <application>gparted</application> from a Live CD has the following "
 "advantages: <placeholder-1/>"
@@ -2564,7 +2578,7 @@ msgstr ""
 "Použití aplikace <application>gparted</application> ze spustitelného CD má "
 "následující výhody: <placeholder-1/>"
 
-#: C/gparted.xml:2263(para)
+#: C/gparted.xml:2276(para)
 msgid ""
 "The <application>gparted</application> application is available on many Live "
 "CD distributions."
@@ -2572,19 +2586,19 @@ msgstr ""
 "Aplikace <application>gparted</application> je dostupná na řadě "
 "spustitelných CD distribucí."
 
-#: C/gparted.xml:2272(para)
+#: C/gparted.xml:2285(para)
 msgid ""
 "GParted Live CD <ulink type=\"http\" url=\"http://gparted.org/livecd.php\"/>"
 msgstr ""
 "GParted Live CD <ulink type=\"http\" url=\"http://gparted.org/livecd.php\"/>"
 
-#: C/gparted.xml:2278(para)
+#: C/gparted.xml:2291(para)
 msgid ""
 "System Rescue CD <ulink type=\"http\" url=\"http://www.sysresccd.org\"/>"
 msgstr ""
 "System Rescue CD <ulink type=\"http\" url=\"http://www.sysresccd.org\"/>"
 
-#: C/gparted.xml:2267(para)
+#: C/gparted.xml:2280(para)
 msgid ""
 "You can download a Live CD image containing <application>gparted</"
 "application> from the following web sites: <placeholder-1/>"
@@ -2592,7 +2606,7 @@ msgstr ""
 "Spustitelné CD obsahující aplikaci <application>gparted</application> si "
 "můžete stáhnout z následujících webů: <placeholder-1/>"
 
-#: C/gparted.xml:2286(para)
+#: C/gparted.xml:2299(para)
 msgid ""
 "To avoid wasting a blank CD when burning a CD image file, use the following "
 "tips:"
@@ -2600,7 +2614,7 @@ msgstr ""
 "Abyste předešli znehodnocení prázdného CD při vypalování souboru s obrazem "
 "CD, řiďte se následujícími typy:"
 
-#: C/gparted.xml:2292(para)
+#: C/gparted.xml:2305(para)
 msgid ""
 "Ensure the checksum of the downloaded file matches the checksum posted on "
 "the download page."
@@ -2608,7 +2622,7 @@ msgstr ""
 "Ujistěte se, že kontrolní součet staženého souboru odpovídá kontrolnímu "
 "součtu uvedenému na stránce, ze které stahujete."
 
-#: C/gparted.xml:2298(para)
+#: C/gparted.xml:2311(para)
 msgid ""
 "Be sure to burn the .iso file as an image to the blank CD. If you burn the ."
 "iso file as data to a blank CD then the CD will not boot in your computer."
@@ -2617,26 +2631,26 @@ msgstr ""
 "vypálíte jako soubor .iso na datové CD, nepůjde CD použít ke spuštění "
 "počítače."
 
-#: C/gparted.xml:2310(title)
+#: C/gparted.xml:2323(title)
 msgid "Fixing Operating System Boot Problems"
 msgstr "Oprava problémů se zaváděním operačního systému"
 
-#: C/gparted.xml:2316(para)
+#: C/gparted.xml:2329(para)
 msgid "Delete a partition."
 msgstr "Smažete oddíl."
 
-#: C/gparted.xml:2321(para)
+#: C/gparted.xml:2334(para)
 msgid "Move a partition."
 msgstr "Přesunete oddíl."
 
-#: C/gparted.xml:2326(para)
+#: C/gparted.xml:2339(para)
 msgid ""
 "Install another operating system and overwrite the Master Boot Record (MBR)."
 msgstr ""
 "Nainstalujete další operační systém a přepíšete hlavní zaváděcí záznam "
 "(Master Boot Record - MBR)."
 
-#: C/gparted.xml:2311(para)
+#: C/gparted.xml:2324(para)
 msgid ""
 "Your computer might fail to boot an operating system when you perform one of "
 "the following actions: <placeholder-1/>"
@@ -2644,7 +2658,7 @@ msgstr ""
 "Zavádění operačního systému na vašem počítači může selhat, pokud provedete "
 "jednu z následujících činností: <placeholder-1/>"
 
-#: C/gparted.xml:2333(para)
+#: C/gparted.xml:2346(para)
 msgid ""
 "You are advised to consult documentation for your boot loader to learn how "
 "to fix the problem. You might consult the <ulink type=\"http\" url=\"http://"
@@ -2660,22 +2674,22 @@ msgstr ""
 "také použít Internetový vyhledávač, abyste zjistili, jak problém vyřešili "
 "ostatní uživatelé."
 
-#: C/gparted.xml:2346(title)
+#: C/gparted.xml:2359(title)
 msgid "Fixing GRUB boot problem"
 msgstr "Oprava problémů se zavaděním pomocí GRUB"
 
-#: C/gparted.xml:2352(para)
+#: C/gparted.xml:2365(para)
 msgid "Move the partition containing the GRUB stage2 file."
 msgstr "Přesunete oddíl obsahující soubor GRUB stage2."
 
-#: C/gparted.xml:2357(para)
+#: C/gparted.xml:2370(para)
 msgid ""
 "Install a new operating system that overwrites the Master Boot Record (MBR)."
 msgstr ""
 "Nainstalujete nový operační systém, který přepíše hlavní zaváděcí záznam "
 "(Master Boot Record - MBR)."
 
-#: C/gparted.xml:2347(para)
+#: C/gparted.xml:2360(para)
 msgid ""
 "The Grand Unified Boot loader (GRUB) might fail to boot an operating system "
 "if you do one of the following: <placeholder-1/>"
@@ -2683,7 +2697,7 @@ msgstr ""
 "Grand Unified Boot loader (GRUB) muže při zavádění operačního systému "
 "selhat, pokud provedete jednu z následujících věcí: <placeholder-1/>"
 
-#: C/gparted.xml:2369(para)
+#: C/gparted.xml:2382(para)
 msgid ""
 "Start the <application>grub</application> application from the command line. "
 "<screen><prompt>$ </prompt><command>grub</command></screen>"
@@ -2691,7 +2705,7 @@ msgstr ""
 "Spusťte aplikaci <application>grub</application> z příkazového řádku. "
 "<screen><prompt>$ </prompt><command>grub</command></screen>"
 
-#: C/gparted.xml:2376(para)
+#: C/gparted.xml:2389(para)
 msgid ""
 "Find where <application>grub</application> stage1 is located by using one of "
 "the following:"
@@ -2699,7 +2713,7 @@ msgstr ""
 "Zjistěte, kde se nachází <application>grub</application> stage1 pomocí "
 "jednoho z následujících postupů:"
 
-#: C/gparted.xml:2380(para)
+#: C/gparted.xml:2393(para)
 msgid ""
 "If the /boot folder is stored in the / partition, use the command: "
 "<screen><prompt>grub&gt; </prompt><command>find</command> /boot/grub/stage1</"
@@ -2713,7 +2727,7 @@ msgstr ""
 "použijte příkaz: <screen><prompt>grub&gt; </prompt><command>find</command> /"
 "grub/stage1</screen>"
 
-#: C/gparted.xml:2388(para)
+#: C/gparted.xml:2401(para)
 msgid ""
 "The output from the <command>find</command> command might look like the "
 "following: <screen><computeroutput> <replaceable>(hd0,0)</replaceable></"
@@ -2727,7 +2741,7 @@ msgstr ""
 "řádek, musíte se rozhodnout, které zařízení se používá pro "
 "<application>grub</application>."
 
-#: C/gparted.xml:2397(para)
+#: C/gparted.xml:2410(para)
 msgid ""
 "Set the <application>grub</application> root device by specifying the device "
 "returned by the <command>find</command> command. <screen><prompt>grub&gt; </"
@@ -2737,7 +2751,7 @@ msgstr ""
 "vráceného příkazem <command>find</command>. <screen><prompt>grub&gt; </"
 "prompt>root <replaceable>(hd0,0)</replaceable></screen>"
 
-#: C/gparted.xml:2405(para)
+#: C/gparted.xml:2418(para)
 msgid ""
 "Reinstall <application>grub</application> by specifying the device returned "
 "by the <command>find</command> command. <screen><prompt>grub&gt; </"
@@ -2747,7 +2761,7 @@ msgstr ""
 "vráceného příkazem <command>find</command>. <screen><prompt>grub&gt; </"
 "prompt>setup <replaceable>(hd0,0)</replaceable></screen>"
 
-#: C/gparted.xml:2413(para)
+#: C/gparted.xml:2426(para)
 msgid ""
 "Exit <application>grub</application>. <screen><prompt>grub&gt; </"
 "prompt>quit</screen>"
@@ -2755,11 +2769,11 @@ msgstr ""
 "Ukončete <application>grub</application>. <screen><prompt>grub&gt; </"
 "prompt>quit</screen>"
 
-#: C/gparted.xml:2419(para)
+#: C/gparted.xml:2432(para)
 msgid "Reboot your computer."
 msgstr "Restartujte svůj počítač."
 
-#: C/gparted.xml:2364(para)
+#: C/gparted.xml:2377(para)
 msgid ""
 "To fix these problems, you will need to reinstall the GRUB boot record using "
 "the following steps: <placeholder-1/>"
@@ -2767,7 +2781,7 @@ msgstr ""
 "Abyste opravili tyto problémy, musíte přeinstalovat zaváděcí záznam GRUB "
 "pomocí následujících korků: <placeholder-1/>"
 
-#: C/gparted.xml:2425(para)
+#: C/gparted.xml:2438(para)
 msgid ""
 "The <application>grub</application> application is included on each Live CD "
 "listed in <xref linkend=\"gparted-acquire-livecd\"/>"
@@ -2775,11 +2789,11 @@ msgstr ""
 "Aplikace <application>grub</application> je součástí každého spustitelného "
 "CD, jak je uvádí <xref linkend=\"gparted-acquire-livecd\"/>"
 
-#: C/gparted.xml:2437(title)
+#: C/gparted.xml:2450(title)
 msgid "Recovering Partition Tables"
 msgstr "Obnovení tabulky oddílů"
 
-#: C/gparted.xml:2438(para)
+#: C/gparted.xml:2451(para)
 msgid ""
 "If you accidentally overwrite your partition table, there is a chance that "
 "you might be able to recover it."
@@ -2787,7 +2801,7 @@ msgstr ""
 "Pokud nešťastnou náhodou přepíšete svoji tabulku oddílu, je ještě šance, že "
 "ji můžete obnovit."
 
-#: C/gparted.xml:2442(para)
+#: C/gparted.xml:2455(para)
 msgid ""
 "The <application>testdisk</application> application is designed to help "
 "recover lost partitions. For more information about <application>testdisk</"
@@ -2799,7 +2813,7 @@ msgstr ""
 "application> najdete na <ulink type=\"http\" url=\"http://www.cgsecurity.org/"
 "wiki/TestDisk\"/>."
 
-#: C/gparted.xml:2448(para)
+#: C/gparted.xml:2461(para)
 msgid ""
 "The <application>testdisk</application> application is included on each Live "
 "CD listed in <xref linkend=\"gparted-acquire-livecd\"/>"
