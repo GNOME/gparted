@@ -58,84 +58,71 @@ DialogFeatures::DialogFeatures()
 	treeview_filesystems .get_selection() ->set_mode( Gtk::SELECTION_NONE );
 	treeview_filesystems .set_rules_hint( true ) ;
 
-	{
-		Gtk::HBox* hbox(manage(new Gtk::HBox()));
+	Gtk::HBox *filesystems_hbox( manage( new Gtk::HBox() ) ) ;
+	filesystems_hbox ->set_border_width( 6 ) ;
+	filesystems_hbox ->pack_start( treeview_filesystems ) ;
+	this ->get_vbox() ->pack_start( *filesystems_hbox ) ;
 
-		hbox->set_border_width(6);
-		hbox->pack_start(treeview_filesystems);
-		get_vbox()->pack_start(*hbox);
+	//file system support legend
+	Gtk::HBox *legend_hbox( manage( new Gtk::HBox( false, 6 ) ) ) ;
+	legend_hbox ->set_border_width( 6 ) ;
 
-		//file system support legend
-		Gtk::HBox* hbox2(manage(new Gtk::HBox(false, 6)));
-		hbox2->set_border_width(6);
+	Gtk::HBox *legend_narrative_hbox( manage( new Gtk::HBox() ) ) ;
+	Glib::ustring str_temp( _("This chart shows the actions supported on file systems.") ) ;
+	str_temp += "\n" ;
+	str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.") ;
+	legend_narrative_hbox ->pack_start( *Utils::mk_label( str_temp, true, true ), Gtk::PACK_SHRINK ) ;
+	legend_hbox ->pack_start( *legend_narrative_hbox ) ;
 
-		hbox = manage(new Gtk::HBox());
-		{
-			Glib::ustring str_temp(_("This chart shows the actions supported on file systems."));
-			str_temp += "\n" ;
-			str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.");
-			hbox->pack_start(*Utils::mk_label(str_temp, true, true),
-					Gtk::PACK_SHRINK);
-			hbox2->pack_start(*hbox);
+	//icon legend
+	Gtk::VBox *icon_legend_vbox( manage( new Gtk::VBox() ) ) ;
 
-			{
-				//icon legend
-				Gtk::VBox* vbox(manage(new Gtk::VBox()));
+	Gtk::HBox *available_both_hbox( manage( new Gtk::HBox() ) ) ;
+	Gtk::Image *image_yes( manage( new Gtk::Image( icon_yes ) ) ) ;
+	available_both_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
+	image_yes = manage( new Gtk::Image( icon_yes ) ) ;
+	available_both_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
+	available_both_hbox ->pack_start( *Utils::mk_label(
+			/* TO TRANSLATORS:  Available offline and online
+			* means that this action is valid for this file system when
+			* it is both unmounted and mounted.
+			*/
+			_("Available offline and online")), Gtk::PACK_EXPAND_WIDGET ) ;
+	icon_legend_vbox ->pack_start( *available_both_hbox ) ;
 
-				hbox = manage(new Gtk::HBox());
+	Gtk::HBox *available_offline_hbox = manage(new Gtk::HBox() ) ;
+	image_yes = manage( new Gtk::Image( icon_yes ) ) ;
+	available_offline_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
+	Gtk::Image *image_blank( manage( new Gtk::Image( icon_blank ) ) ) ;
+	available_offline_hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK ) ;
+	available_offline_hbox ->pack_start( *Utils::mk_label(
+			/* TO TRANSLATORS:  Available offline only
+			* means that this action is valid for this file system only
+			* when it is unmounted.
+			*/
+			_("Available offline only")), Gtk::PACK_EXPAND_WIDGET ) ;
+	icon_legend_vbox ->pack_start( *available_offline_hbox ) ;
 
-				{
-					Gtk::Image *image_yes( manage( new Gtk::Image( icon_yes ) ) );
-					hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK );
-					image_yes = manage( new Gtk::Image( icon_yes ) );
-					hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK );
-					hbox->pack_start(*Utils::mk_label(
-							/* TO TRANSLATORS:  Available offline and online
-							* means that this action is valid for this file system when
-							* it is both unmounted and mounted.
-							*/
-							_("Available offline and online")), Gtk::PACK_EXPAND_WIDGET );
-					vbox ->pack_start(*hbox);
+	Gtk::HBox *not_available_hbox = manage( new Gtk::HBox() ) ;
+	Gtk::Image *image_no( manage( new Gtk::Image( icon_no ) ) ) ;
+	not_available_hbox ->pack_start( *image_no, Gtk::PACK_SHRINK ) ;
+	image_blank = manage( new Gtk::Image( icon_blank ) ) ;
+	not_available_hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK ) ;
+	not_available_hbox->pack_start(*Utils::mk_label(
+			/* TO TRANSLATORS:  Not Available
+			* means that this action is not valid for this file system.
+			*/
+			_("Not Available") ), Gtk::PACK_EXPAND_WIDGET ) ;
+	icon_legend_vbox ->pack_start( *not_available_hbox ) ;
+	legend_hbox ->pack_start( *icon_legend_vbox ) ;
 
-					hbox = manage(new Gtk::HBox() );
-					image_yes = manage( new Gtk::Image( icon_yes ) );
-					hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK );
-					Gtk::Image *image_blank( manage( new Gtk::Image( icon_blank ) ) );
-					hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK );
-					hbox ->pack_start( *Utils::mk_label(
-							/* TO TRANSLATORS:  Available offline only
-							* means that this action is valid for this file system only
-							* when it is unmounted.
-							*/
-							_("Available offline only")), Gtk::PACK_EXPAND_WIDGET );
-					vbox ->pack_start( *hbox );
-
-					hbox = manage(new Gtk::HBox());
-					Gtk::Image *image_no( manage( new Gtk::Image( icon_no ) ) );
-					hbox ->pack_start( *image_no, Gtk::PACK_SHRINK );
-					image_blank = manage( new Gtk::Image( icon_blank ) );
-					hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK );
-				}
-
-				hbox->pack_start(*Utils::mk_label(
-						/* TO TRANSLATORS:  Not Available
-						* means that this action is not valid for this file system.
-						*/
-						_("Not Available") ), Gtk::PACK_EXPAND_WIDGET);
-				vbox->pack_start(*hbox);
-				hbox2->pack_start(*vbox);
-			}
-
-			str_temp = "<b>";
-			str_temp += _("Legend");
-			str_temp += "</b>";
-			expander_legend.set_label(str_temp);
-			expander_legend.set_use_markup(true);
-		}
-
-		get_vbox()->pack_start(expander_legend, Gtk::PACK_SHRINK);
-		expander_legend.add(*hbox2);
-	}
+	str_temp = "<b>" ;
+	str_temp += _("Legend") ;
+	str_temp += "</b>" ;
+	expander_legend .set_label( str_temp ) ;
+	expander_legend .set_use_markup( true ) ;
+	expander_legend .add( *legend_hbox ) ;
+	this ->get_vbox() ->pack_start( expander_legend, Gtk::PACK_SHRINK ) ;
 
 	/*TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan For Supported Actions"), Gtk::RESPONSE_OK );
