@@ -116,6 +116,7 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEM_MAP[ FS_REISERFS ]        = new reiserfs() ;
 	FILESYSTEM_MAP[ FS_UFS ]             = new ufs() ;
 	FILESYSTEM_MAP[ FS_XFS ]             = new xfs() ;
+	FILESYSTEM_MAP[ FS_BITLOCKER ]       = NULL ;
 	FILESYSTEM_MAP[ FS_LUKS ]            = NULL ;
 	FILESYSTEM_MAP[ FS_LINUX_SWRAID ]    = NULL ;
 	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
@@ -1346,6 +1347,31 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		return GParted::FS_BTRFS ;
 	}
 
+	//bitlocker
+	//  Detecting BitLocker
+	//  http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
+	//  Validation of BIOS Parameter Block fields is unnecessary for recognition only
+	const size_t BITLOCKER_SIG_OFFSET = 3UL ;
+	const char * const BITLOCKER_SIGNATURE = "-FVE-FS-" ;
+	const size_t BITLOCKER_SIG_LEN = strlen( BITLOCKER_SIGNATURE ) ;
+	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+	if ( buf )
+	{
+		memset( buf, 0, lp_device ->sector_size ) ;
+		if ( ped_device_open( lp_device ) )
+		{
+			if ( ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) != 0 )
+			{
+				memcpy( magic1, buf + BITLOCKER_SIG_OFFSET, BITLOCKER_SIG_LEN ) ;
+			}
+			ped_device_close( lp_device );
+		}
+		free( buf ) ;
+
+		if ( 0 == memcmp( magic1, BITLOCKER_SIGNATURE, BITLOCKER_SIG_LEN ) )
+			return FS_BITLOCKER ;
+	}
+
 	//no file system found....
 	Glib::ustring  temp = _( "Unable to detect file system! Possible reasons are:" ) ;
 	temp += "\n- "; 
@@ -1474,6 +1500,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     ) &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWAP      &&
 		     partitions[ t ] .filesystem != FS_LVM2_PV         &&
+		     partitions[ t ] .filesystem != FS_BITLOCKER       &&
 		     partitions[ t ] .filesystem != FS_LUKS            &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
@@ -1546,6 +1573,7 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( partitions[ t ] .filesystem != FS_UNKNOWN         &&
+		     partitions[ t ] .filesystem != FS_BITLOCKER       &&
 		     partitions[ t ] .filesystem != FS_LUKS            &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND

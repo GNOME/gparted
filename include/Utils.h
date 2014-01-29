@@ -86,9 +86,10 @@ enum FILESYSTEM
 	FS_USED            = 24,
 	FS_UNUSED          = 25,
 
-	FS_LUKS            = 26,
-	FS_LINUX_SWRAID    = 27,
-	FS_LINUX_SWSUSPEND = 28
+	FS_BITLOCKER       = 26,
+	FS_LUKS            = 27,
+	FS_LINUX_SWRAID    = 28,
+	FS_LINUX_SWSUSPEND = 29
 } ;
 
 enum SIZE_UNIT

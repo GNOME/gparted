@@ -52,6 +52,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	{
 		if (   f ->filesystem == FS_UNKNOWN
 		    || f ->filesystem == FS_CLEARED
+		    || f ->filesystem == FS_BITLOCKER
 		    || f ->filesystem == FS_LUKS
 		    || f ->filesystem == FS_LINUX_SWRAID
 		    || f ->filesystem == FS_LINUX_SWSUSPEND

@@ -418,6 +418,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 		//Skip non-file systems or file systems only recognised but not otherwise supported
 		if (    fss[ t ] .filesystem == FS_UNKNOWN
 		     || fss[ t ] .filesystem == FS_CLEARED
+		     || fss[ t ] .filesystem == FS_BITLOCKER
 		     || fss[ t ] .filesystem == FS_LUKS
 		     || fss[ t ] .filesystem == FS_LINUX_SWRAID
 		     || fss[ t ] .filesystem == FS_LINUX_SWSUSPEND
