@@ -203,7 +203,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	Glib::ustring size = "" ;
 	if ( ! fill_partition )
 	{
-		size = " -s " + Utils::num_to_str( Utils::round( Utils::sector_to_unit(
+		size = " -s " + Utils::num_to_str( floor( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
 	}
 	Glib::ustring cmd = "ntfsresize --force --force" + size ;

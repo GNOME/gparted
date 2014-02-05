@@ -189,8 +189,8 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 	Glib::ustring str_temp = "resize2fs -p " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
-		str_temp += " " + Utils::num_to_str( Utils::round( Utils::sector_to_unit( 
-					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
+		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
+					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K";
 
 	return ! execute_command( str_temp, operationdetail ) ;
 }
