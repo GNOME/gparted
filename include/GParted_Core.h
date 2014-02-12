@@ -171,7 +171,6 @@ private:
 	bool calculate_exact_geom( const Partition & partition_old,
 			           Partition & partition_new,
 				   OperationDetail & operationdetail ) ;
-	FileSystem* set_proper_filesystem( const FILESYSTEM & filesystem ) ;
 	bool erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
