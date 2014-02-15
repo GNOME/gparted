@@ -43,7 +43,8 @@ FS linux_swap::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_LINUX_SWAP ;
-	
+
+	fs .busy = FS::GPARTED ;
 	fs .read = FS::EXTERNAL ;
 	fs .online_read = FS::EXTERNAL ;
 

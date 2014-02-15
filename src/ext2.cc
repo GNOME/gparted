@@ -25,6 +25,8 @@ FS ext2::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = specific_type;
 
+	fs .busy = FS::GPARTED ;
+
 	//Only enable any functionality if the relevant mkfs.extX command is
 	//  found to ensure that the version of e2fsprogs is new enough to
 	//  support ext4.  Applying to ext2/3 too is OK as relevant mkfs.ext2/3

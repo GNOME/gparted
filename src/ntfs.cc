@@ -59,6 +59,8 @@ FS ntfs::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_NTFS ;
 
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() )
 	{
 		fs .read = GParted::FS::EXTERNAL ;

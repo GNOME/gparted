@@ -23,9 +23,9 @@ namespace GParted
 FS exfat::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = FS_EXFAT ;
-	
+
+	fs .busy = FS::GPARTED ;
 	fs .copy = FS::GPARTED ;
 	fs .move = FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;

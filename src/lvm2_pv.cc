@@ -52,6 +52,7 @@ FS lvm2_pv::get_filesystem_support()
 	LVM2_PV_Info lvm2_pv_info ;
 	if ( lvm2_pv_info .is_lvm2_pv_supported() )
 	{
+		fs .busy   = FS::EXTERNAL ;
 		fs .read   = FS::EXTERNAL ;
 		fs .create = FS::EXTERNAL ;
 		fs .grow   = FS::EXTERNAL ;
@@ -70,6 +71,12 @@ FS lvm2_pv::get_filesystem_support()
 	}
 
 	return fs ;
+}
+
+bool lvm2_pv::is_busy( const Glib::ustring & path )
+{
+	LVM2_PV_Info lvm2_pv_info ;
+	return lvm2_pv_info .has_active_lvs( path ) ;
 }
 
 void lvm2_pv::set_used_sectors( Partition & partition )

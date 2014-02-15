@@ -25,7 +25,9 @@ FS reiser4::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_REISER4 ;
-	
+
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
 	{
 		fs .read = GParted::FS::EXTERNAL ;

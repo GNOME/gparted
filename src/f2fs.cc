@@ -26,6 +26,8 @@ FS f2fs::get_filesystem_support()
 
 	fs .filesystem = FS_F2FS ;
 
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "mkfs.f2fs" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;

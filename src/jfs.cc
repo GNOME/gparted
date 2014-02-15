@@ -25,7 +25,9 @@ FS jfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_JFS ;
-		
+
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() ) {
 		fs .read = GParted::FS::EXTERNAL ;
 	}

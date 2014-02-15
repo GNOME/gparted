@@ -24,8 +24,9 @@ namespace GParted
 FS hfs::get_filesystem_support()
 {
 	FS fs ;
-		
 	fs .filesystem = GParted::FS_HFS ;
+
+	fs .busy = FS::GPARTED ;
 
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 	fs .read = GParted::FS::LIBPARTED ;

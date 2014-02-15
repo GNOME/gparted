@@ -61,9 +61,11 @@ FS fat16::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = specific_type ;
-		
+
 	// hack to disable silly mtools warnings
 	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );
+
+	fs .busy = FS::GPARTED ;
 
 	//find out if we can create fat file systems
 	if ( ! Glib::find_program_in_path( "mkfs.fat" ) .empty() )

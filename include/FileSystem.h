@@ -38,6 +38,7 @@ public:
 	static const Glib::ustring get_generic_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 
 	virtual FS get_filesystem_support() = 0 ;
+	virtual bool is_busy( const Glib::ustring & path ) { return false ; } ;
 	virtual void set_used_sectors( Partition & partition ) {};
 	virtual void read_label( Partition & partition ) {};
 	virtual bool write_label( const Partition & partition, OperationDetail & operationdetail ) { return false; };

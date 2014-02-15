@@ -24,9 +24,9 @@ namespace GParted
 FS ufs::get_filesystem_support()
 {
 	FS fs ;
-	
 	fs .filesystem = GParted::FS_UFS ;
-	
+
+	fs .busy = FS::GPARTED ;
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;

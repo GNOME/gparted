@@ -25,7 +25,9 @@ FS xfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_XFS ;
-	
+
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "xfs_db" ) .empty() ) 	
 	{
 		fs .read = GParted::FS::EXTERNAL ;

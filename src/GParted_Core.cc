@@ -1010,7 +1010,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;    //Use cache of dmraid device information
 #endif
-	LVM2_PV_Info lvm2_pv_info ;
 
 	//clear partitions
 	device .partitions .clear() ;
@@ -1037,26 +1036,17 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				if ( dmraid .is_dmraid_device( device .get_path() ) )
 				{
 					//Try device_name + partition_number
-					iter_mp = mount_info .find( device .get_path() + Utils::num_to_str( lp_partition ->num ) ) ;
-					if ( iter_mp != mount_info .end() )
-						partition_is_busy = true ;
+					Glib::ustring dmraid_path = device .get_path() + Utils::num_to_str( lp_partition ->num ) ;
+					partition_is_busy = is_busy( filesystem, dmraid_path ) ;
+
 					//Try device_name + p + partition_number
-					iter_mp = mount_info .find( device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ) ;
-					if ( iter_mp != mount_info .end() )
-						partition_is_busy = true ;
+					dmraid_path = device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ;
+					partition_is_busy |= is_busy( filesystem, dmraid_path ) ;
 				}
 				else
 #endif
 				{
-					//Determine if partition is busy:
-					//  1st search GParted internal mounted partitions map;
-					//  2nd custom checks for none file system partitions.
-					iter_mp = mount_info .find( partition_path ) ;
-					if ( iter_mp != mount_info .end() )
-						partition_is_busy = true ;
-
-					partition_is_busy |=    ( filesystem == FS_LVM2_PV      && lvm2_pv_info .has_active_lvs( partition_path ) )
-					                     || ( filesystem == FS_LINUX_SWRAID && Utils::swraid_member_is_active( partition_path ) ) ;
+					partition_is_busy = is_busy( filesystem, partition_path ) ;
 				}
 
 				partition_temp .Set( device .get_path(),
@@ -1564,7 +1554,49 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		}
 	}
 }
-	
+
+//Report whether the partition is busy (mounted/active)
+bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
+{
+	FileSystem * p_filesystem = NULL ;
+	bool busy = false ;
+
+	if ( fstype != FS_UNKNOWN         &&
+	     fstype != FS_BITLOCKER       &&
+	     fstype != FS_LUKS            &&
+	     fstype != FS_LINUX_SWRAID    &&
+	     fstype != FS_LINUX_SWSUSPEND
+	   )
+	{
+		switch ( get_fs( fstype ) .busy )
+		{
+			case FS::GPARTED:
+				//Search GParted internal mounted partitions map
+				iter_mp = mount_info .find( path ) ;
+				if ( iter_mp != mount_info .end() )
+					busy = true ;
+				break ;
+
+			case FS::EXTERNAL:
+				//Call file system specific method
+				p_filesystem = get_filesystem_object( fstype ) ;
+				if ( p_filesystem )
+					busy = p_filesystem -> is_busy( path ) ;
+				break;
+
+			default:
+				break ;
+		}
+	}
+	else
+	{
+		//Custom checks for recognised but other not-supported file system types
+		busy = ( fstype == FS_LINUX_SWRAID && Utils::swraid_member_is_active( path ) ) ;
+	}
+
+	return busy ;
+}
+
 void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )

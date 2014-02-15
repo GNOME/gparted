@@ -86,6 +86,7 @@ private:
 				 Byte_Value sector_size,
 				 bool inside_extended ) ;
 	void set_mountpoints( std::vector<Partition> & partitions ) ;
+	bool is_busy( FILESYSTEM fstype, const Glib::ustring & path ) ;
 	void set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk ) ;
 	void mounted_set_used_sectors( Partition & partition ) ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE

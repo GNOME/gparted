@@ -124,6 +124,7 @@ struct FS
 	};
 
 	FILESYSTEM filesystem ;
+	Support busy ;  //How to determine if partition/file system is busy
 	Support read ;  //Can and how to read sector usage while inactive
 	Support read_label ;
 	Support write_label ;

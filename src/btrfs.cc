@@ -31,6 +31,8 @@ FS btrfs::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_BTRFS ;
 
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;

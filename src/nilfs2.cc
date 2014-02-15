@@ -25,6 +25,8 @@ FS nilfs2::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_NILFS2 ;
 
+	fs .busy = FS::GPARTED ;
+
 	if ( ! Glib::find_program_in_path( "mkfs.nilfs2" ) .empty() )
 	{
 		fs .create = GParted::FS::EXTERNAL ;
