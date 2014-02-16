@@ -2041,7 +2041,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error ) 
 {
-	std::vector<Glib::ustring> errors, failed_mountpoints, mountpoints = gparted_core .get_all_mountpoints() ;
+	std::vector<Glib::ustring> errors, failed_mountpoints, mountpoints = GParted_Core::get_all_mountpoints() ;
 	Glib::ustring dummy ;
 
 	*succes = true ; 

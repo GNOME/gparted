@@ -62,6 +62,18 @@ std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 namespace GParted
 {
 
+//mount_info - Associative array mapping currently mounted devices to
+//  one or more mount points.  E.g.
+//      mount_info["/dev/sda1"] -> ["/boot"]
+//      mount_info["/dev/sda2"] -> [""]  (swap)
+//      mount_info["/dev/sda3"] -> ["/"]
+//fstab_info - Associative array mapping configured devices to one or
+//  more mount points read from /etc/fstab.  E.g.
+//      fstab_info["/dev/sda1"] -> ["/boot"]
+//      fstab_info["/dev/sda3"] -> ["/"]
+static std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
+static std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
+
 GParted_Core::GParted_Core() 
 {
 	thread_status_message = "" ;
@@ -836,8 +848,16 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 	 return disklabeltypes ;
 }
 
+//Return whether the device path, such as /dev/sda3, is mounted or not
+bool GParted_Core::is_dev_mounted( const Glib::ustring & path )
+{
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp = mount_info .find( path ) ;
+	return iter_mp != mount_info .end() ;
+}
+
 std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
 {
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 	std::vector<Glib::ustring> mountpoints ;
 
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
@@ -892,6 +912,7 @@ void GParted_Core::init_maps()
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
 	//sort the mount points and remove duplicates.. (no need to do this for fstab_info)
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
 	{
 		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
@@ -1493,6 +1514,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
 		   )
 		{
+			std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 			if ( partitions[ t ] .busy )
 			{
 #ifndef USE_LIBPARTED_DMRAID
@@ -1572,9 +1594,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 		{
 			case FS::GPARTED:
 				//Search GParted internal mounted partitions map
-				iter_mp = mount_info .find( path ) ;
-				if ( iter_mp != mount_info .end() )
-					busy = true ;
+				busy = is_dev_mounted( path ) ;
 				break ;
 
 			case FS::EXTERNAL:
@@ -1592,9 +1612,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	{
 		//Still search GParted internal mounted partitions map in case an
 		//  unknown file system is mounted
-		iter_mp = mount_info .find( path ) ;
-		if ( iter_mp != mount_info .end() )
-			busy = true ;
+		busy = is_dev_mounted( path ) ;
 
 		//Custom checks for recognised but other not-supported file system types
 		busy |= ( fstype == FS_LINUX_SWRAID && Utils::swraid_member_is_active( path ) ) ;
