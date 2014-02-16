@@ -196,8 +196,6 @@ private:
 	std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
-	
-	char * buf ;
 };
 
 } //GParted
