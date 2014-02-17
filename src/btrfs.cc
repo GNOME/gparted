@@ -17,6 +17,7 @@
 
 
 #include "../include/btrfs.h"
+#include "../include/GParted_Core.h"
 
 #include <ctype.h>
 
@@ -26,12 +27,21 @@ namespace GParted
 bool btrfs_found = false ;
 bool resize_to_same_size_fails = true ;
 
+//Cache of all devices in each btrfs file system by device
+//  E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
+//       on /dev/sd[bcd]1 the cache would be:
+//  btrfs_device_cache["/dev/sda2"] = ["/dev/sda2"]
+//  btrfs_device_cache["/dev/sdb1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
+//  btrfs_device_cache["/dev/sdc1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
+//  btrfs_device_cache["/dev/sdd1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
+std::map< Glib::ustring, std::vector<Glib::ustring> > btrfs_device_cache ;
+
 FS btrfs::get_filesystem_support()
 {
 	FS fs ;
 	fs .filesystem = GParted::FS_BTRFS ;
 
-	fs .busy = FS::GPARTED ;
+	fs .busy = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
 	{
@@ -119,6 +129,23 @@ FS btrfs::get_filesystem_support()
 	resize_to_same_size_fails = ! Utils::kernel_version_at_least( 3, 2, 0 ) ;
 
 	return fs ;
+}
+
+bool btrfs::is_busy( const Glib::ustring & path )
+{
+	//A btrfs file system is busy if any of the member devices are mounted.
+	//  WARNING:
+	//  Removal of the mounting device from a btrfs file system makes it impossible to
+	//  determine whether the file system is mounted or not for linux <= 3.4.  This is
+	//  because /proc/mounts continues to show the old device which is no longer a
+	//  member of the file system.  Fixed in linux 3.5 by commit:
+	//      Btrfs: implement ->show_devname
+	//      https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=9c5085c147989d48dfe74194b48affc23f376650
+	std::vector<Glib::ustring> entry = get_cache_entry( path ) ;
+	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
+		if ( GParted_Core::is_dev_mounted( entry[ i ] ) )
+			return true ;
+	return false ;
 }
 
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
@@ -311,7 +338,52 @@ void btrfs::read_uuid( Partition & partition )
 	}
 }
 
+void btrfs::clear_cache()
+{
+	btrfs_device_cache .clear() ;
+}
+
 //Private methods
+
+//Return btrfs device cache entry, incrementally loading cache as required
+const std::vector<Glib::ustring> btrfs::get_cache_entry( const Glib::ustring & path )
+{
+	std::vector<Glib::ustring> entry = btrfs_device_cache[ path ] ;
+
+	if ( ! entry .empty() )
+		return entry ;
+
+	int exit_status ;
+	Glib::ustring output, error ;
+	if ( btrfs_found )
+		exit_status = Utils::execute_command( "btrfs filesystem show " + path, output, error, true ) ;
+	else
+		exit_status = Utils::execute_command( "btrfs-show " + path, output, error, true ) ;
+	if ( ! exit_status )
+	{
+		//Extract path for each devid from output like this:
+		//  Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
+		//          Total devices 2 FS bytes used 156.00KB
+		//          devid    2 size 2.00GB used 512.00MB path /dev/sdb2
+		//          devid    1 size 2.00GB used 240.75MB path /dev/sdb1
+		Glib::ustring::size_type offset = 0 ;
+		Glib::ustring::size_type index ;
+		while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
+		{
+			Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
+			                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
+			if ( ! devid_path .empty() )
+			{
+				entry .push_back( devid_path ) ;
+			}
+			offset = index + 5 ;  //Next find starts immediately after current "devid"
+		}
+	}
+	//Add cache entries for all found devices
+	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
+		btrfs_device_cache[ entry[ i ] ] = entry ;
+	return entry ;
+}
 
 //Return the value of a btrfs tool formatted size, including reversing
 //  changes in certain cases caused by using binary prefix multipliers

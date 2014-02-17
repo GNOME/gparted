@@ -28,6 +28,7 @@ class btrfs : public FileSystem
 public:
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
+	bool is_busy( const Glib::ustring & path ) ;
 	void read_label( Partition & partition ) ;
 	bool write_label( const Partition & partition, OperationDetail & operationdetail ) ;
 	void read_uuid( Partition & partition ) ;
@@ -35,7 +36,10 @@ public:
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
+	static void clear_cache() ;
+
 private:
+	static const std::vector<Glib::ustring> get_cache_entry( const Glib::ustring & path ) ;
 	static Byte_Value btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) ;
 	static gdouble btrfs_size_max_delta( Glib::ustring str ) ;
 	static gdouble btrfs_size_to_gdouble( Glib::ustring str ) ;
