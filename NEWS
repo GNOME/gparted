@@ -1,4 +1,45 @@
 ============================
+GParted 0.18.0  (2014-02-19)
+============================
+
+Release Notes
+-------------
+  This release of GParted fixes a resize/move problem introduced in
+  0.16.2 that could affect ext2/3/4, ntfs, and reiserfs file systems
+  in certain situations.  Also included are bug fixes and language
+  translation updates.
+
+### Key changes include:
+
+  * Fix partition size less than ext2/3/4, ntfs, reiserfs file system
+  * Prevent crash when creating new partition on disk with loop label
+
+Bug Fixes
+---------
+  * Fix partition size less than ext2/3/4, ntfs, reiserfs file system (#723543)
+  * Fix default partition table can not handle > 2 TiB disks (#711098)
+  * Prevent crash when creating new partition on disk with loop label (#721988)
+  * Replace obsolete FSF postal address in copyright notices (#721565)
+  * Make file system support dialog viewable on 800x600 screens (#342682)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Phillip Susi,
+  Daniel Mustieles, and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), el(Dimitris Spingos), es(Daniel Mustieles),
+  fr(Claude Paroz), gd(GunChleoc), gl(Fran Diéguez), hu(Gabor Kelemen),
+  ko(Seong-ho Cho), lt(Aurimas Černius), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.17.0  (2013-12-09)
 ============================
 
