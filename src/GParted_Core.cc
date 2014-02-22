@@ -1036,7 +1036,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
-				//  This mismatch causes incorrect identification of busy partitions in ped_partition_is_busy(). 
 				if ( dmraid .is_dmraid_device( device .get_path() ) )
 				{
 					//Try device_name + partition_number
