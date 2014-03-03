@@ -141,9 +141,9 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 {
 	Glib::ustring cmd = "" ;
 	if( partition .get_label() .empty() )
-		cmd = String::ucompose( "xfs_admin -L -- %1", partition .get_path() ) ;
+		cmd = "xfs_admin -L -- " + partition .get_path() ;
 	else
-		cmd = String::ucompose( "xfs_admin -L \"%1\" %2", partition .get_label(), partition .get_path() ) ;
+		cmd = "xfs_admin -L \"" + partition .get_label() + "\" " + partition .get_path() ;
 	return ! execute_command( cmd, operationdetail ) ;
 }
 
