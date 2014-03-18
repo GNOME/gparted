@@ -1590,8 +1590,14 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	}
 	else
 	{
+		//Still search GParted internal mounted partitions map in case an
+		//  unknown file system is mounted
+		iter_mp = mount_info .find( path ) ;
+		if ( iter_mp != mount_info .end() )
+			busy = true ;
+
 		//Custom checks for recognised but other not-supported file system types
-		busy = ( fstype == FS_LINUX_SWRAID && Utils::swraid_member_is_active( path ) ) ;
+		busy |= ( fstype == FS_LINUX_SWRAID && Utils::swraid_member_is_active( path ) ) ;
 	}
 
 	return busy ;
