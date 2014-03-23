@@ -80,21 +80,14 @@ GParted_Core::GParted_Core()
 	std::cout << "======================" << std::endl ;
 
 	//initialize file system list
+	init_filesystems() ;
+
+	//Determine file system support capabilities for the first time
 	find_supported_filesystems() ;
 }
 
-void GParted_Core::find_supported_filesystems()
+void GParted_Core::init_filesystems()
 {
-	std::map< FILESYSTEM, FileSystem * >::iterator f ;
-
-	// TODO: determine whether it is safe to initialize this only once
-	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
-		if ( f ->second )
-			delete f ->second ;
-	}
-
-	FILESYSTEM_MAP .clear() ;
-
 	FILESYSTEM_MAP[ FS_UNKNOWN ]         = NULL ;
 	FILESYSTEM_MAP[ FS_CLEARED ]         = NULL ;
 	FILESYSTEM_MAP[ FS_BTRFS ]           = new btrfs() ;
@@ -120,6 +113,11 @@ void GParted_Core::find_supported_filesystems()
 	FILESYSTEM_MAP[ FS_LUKS ]            = NULL ;
 	FILESYSTEM_MAP[ FS_LINUX_SWRAID ]    = NULL ;
 	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
+}
+
+void GParted_Core::find_supported_filesystems()
+{
+	std::map< FILESYSTEM, FileSystem * >::iterator f ;
 
 	//Iteration of std::map is ordered according to operator< of the key.
 	//  Hence the FILESYSTEMS vector is constructed in FILESYSTEM enum
