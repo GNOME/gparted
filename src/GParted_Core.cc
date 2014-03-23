@@ -288,7 +288,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		set_thread_status_message( String::ucompose ( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
 		PedDevice* lp_device = NULL ;
 		PedDisk* lp_disk = NULL ;
-		if ( get_device_and_disk( device_paths[ t ], lp_device, lp_disk, false ) )
+		if ( get_device_and_disk( device_paths[ t ], lp_device, lp_disk, false, true ) )
 		{
 			temp_device .Reset() ;
 
@@ -313,7 +313,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			{
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
-				
+
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
 				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions, lp_disk ) ;
@@ -3393,14 +3393,6 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//  via the whole disk device will read the old data and report the file system
 	//  as still existing.
 	//
-	//  Libparted >= 2.0 works around this by calling ioctl(fd, BLKFLSBUF) to flush
-	//  the cache when opening the whole disk device, but only for kernels before
-	//  2.6.0.
-	//  Ref: parted v3.1-52-g1c659d5 ./libparted/arch/linux.c linux_open()
-	//  1657         /* With kernels < 2.6 flush cache for cache coherence issues */
-	//  1658         if (!_have_kern26())
-	//  1659                 _flush_cache (dev);
-	//
 	//  Calling ped_device_sync() to flush the cache is required when the partition is
 	//  just being cleared.  However the sync can be skipped when the wipe is being
 	//  performed as part of writing a new file system as the partition type is also
@@ -3521,12 +3513,42 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	return true ;
 }
 
+//Flush the Linux kernel caches, and therefore ensure coherency between the caches of the
+//  whole disk device and the partition devices.
+//
+//  Libparted >= 2.0 works around this by calling ioctl(fd, BLKFLSBUF) to flush the cache
+//  when opening the whole disk device, but only for kernels before 2.6.0.
+//  Ref: parted v3.1-52-g1c659d5 ./libparted/arch/linux.c linux_open()
+//  1657         /* With kernels < 2.6 flush cache for cache coherence issues */
+//  1658         if (!_have_kern26())
+//  1659                 _flush_cache (dev);
+//
+//  Libparted >= v3.1-61-gfb99ba5 works around this for all kernel versions.
+//  Ref: parted v3.1-61-gfb99ba5 ./libparted/arch/linux.c linux_open()
+//  1640         _flush_cache (dev);
+bool GParted_Core::flush_device( PedDevice * lp_device )
+{
+	bool success = false ;
+	if ( ped_device_open( lp_device ) )
+	{
+		success = ped_device_sync( lp_device ) ;
+		ped_device_close( lp_device ) ;
+	}
+	return success ;
+}
+
 bool GParted_Core::get_device_and_disk( const Glib::ustring & device_path,
-                                        PedDevice*& lp_device, PedDisk*& lp_disk, bool strict )
+                                        PedDevice*& lp_device, PedDisk*& lp_disk, bool strict, bool flush )
 {
 	lp_device = ped_device_get( device_path .c_str() ) ;
 	if ( lp_device )
 	{
+		if ( flush )
+			//Force cache coherency before reading the partition table so that
+			//  libparted reading the whole disk device and the file system
+			//  tools reading the partition devices read the same data.
+			flush_device( lp_device ) ;
+
 		lp_disk = ped_disk_new( lp_device );
 	
 		//if ! disk and writeable it's probably a HD without disklabel.

@@ -183,8 +183,9 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
+	bool flush_device( PedDevice * lp_device ) ;
 	bool get_device_and_disk( const Glib::ustring & device_path,
-	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true ) ;
+	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false ) ;
 	void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
 	bool commit( PedDisk* lp_disk ) ;
 	bool commit_to_os( PedDisk* lp_disk, std::time_t timeout ) ;
