@@ -141,11 +141,7 @@ bool btrfs::is_busy( const Glib::ustring & path )
 	//  member of the file system.  Fixed in linux 3.5 by commit:
 	//      Btrfs: implement ->show_devname
 	//      https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=9c5085c147989d48dfe74194b48affc23f376650
-	std::vector<Glib::ustring> entry = get_cache_entry( path ) ;
-	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
-		if ( GParted_Core::is_dev_mounted( entry[ i ] ) )
-			return true ;
-	return false ;
+	return ! get_mount_device( path ) .empty() ;
 }
 
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
@@ -341,6 +337,17 @@ void btrfs::read_uuid( Partition & partition )
 void btrfs::clear_cache()
 {
 	btrfs_device_cache .clear() ;
+}
+
+//Return the device which is mounting the btrfs in this partition.
+//  Return empty string if not found (not mounted).
+Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
+{
+	std::vector<Glib::ustring> entry = get_cache_entry( path ) ;
+	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
+		if ( GParted_Core::is_dev_mounted( entry[ i ] ) )
+			return entry[ i ] ;
+	return "" ;
 }
 
 //Private methods

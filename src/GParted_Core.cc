@@ -1515,7 +1515,6 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
 		   )
 		{
-			std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 			if ( partitions[ t ] .busy )
 			{
 #ifndef USE_LIBPARTED_DMRAID
@@ -1526,19 +1525,14 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				if ( dmraid .is_dmraid_device( partitions[ t ] .device_path ) )
 				{
 					//Try device_name + partition_number
-					iter_mp = mount_info .find( partitions[ t ] .device_path + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
-					if ( iter_mp != mount_info .end() )
-					{
-						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+					Glib::ustring dmraid_path = partitions[ t ] .device_path + Utils::num_to_str( partitions[t ] .partition_number ) ;
+					if ( set_mountpoints_helper( partitions[ t ], dmraid_path ) )
 						break ;
-					}
+
 					//Try device_name + p + partition_number
-					iter_mp = mount_info .find( partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ) ;
-					if ( iter_mp != mount_info .end() )
-					{
-						partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+					dmraid_path = partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ;
+					if ( set_mountpoints_helper( partitions[ t ], dmraid_path ) )
 						break ;
-					}
 				}
 				else
 				{
@@ -1546,12 +1540,9 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 					//Normal device, not DMRaid device
 					for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
 					{
-						iter_mp = mount_info .find( partitions[ t ] .get_paths()[ i ] ) ;
-						if ( iter_mp != mount_info .end() )
-						{
-							partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+						Glib::ustring path = partitions[ t ] .get_paths()[ i ] ;
+						if ( set_mountpoints_helper( partitions[ t ], path ) )
 							break ;
-						}
 					}
 #ifndef USE_LIBPARTED_DMRAID
 				}
@@ -1562,6 +1553,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 			}
 			else
 			{
+				std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
 				iter_mp = fstab_info .find( partitions[ t ] .get_path() );
 				if ( iter_mp != fstab_info .end() )
 					partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
@@ -1576,6 +1568,24 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 				partitions[ t ] .add_mountpoint( vgname ) ;
 		}
 	}
+}
+
+bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::ustring & path )
+{
+	Glib::ustring search_path ;
+	if ( partition .filesystem == FS_BTRFS )
+		search_path = btrfs::get_mount_device( path ) ;
+	else
+		search_path = path ;
+
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp = mount_info .find( search_path ) ;
+	if ( iter_mp != mount_info .end() )
+	{
+		partition .add_mountpoints( iter_mp ->second ) ;
+		return true ;
+	}
+
+	return false;
 }
 
 //Report whether the partition is busy (mounted/active)

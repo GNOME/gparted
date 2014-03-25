@@ -37,6 +37,7 @@ public:
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	static void clear_cache() ;
+	static Glib::ustring get_mount_device( const Glib::ustring & path ) ;
 
 private:
 	static const std::vector<Glib::ustring> get_cache_entry( const Glib::ustring & path ) ;
