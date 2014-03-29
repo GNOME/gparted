@@ -18,8 +18,6 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
 
-#include <gtkmm/separator.h>
-
 namespace GParted
 {
 
@@ -179,17 +177,24 @@ void Dialog_Partition_Info::init_drawingarea()
 
 void Dialog_Partition_Info::Display_Info()
 {  
-	int top = 0, bottom = 1 ;
 	Sector ptn_sectors = partition .get_sector_length() ;
+
 	LVM2_PV_Info lvm2_pv_info ;
+	Glib::ustring vgname = "" ;  //Also used in partition status message
+	if ( partition .filesystem == FS_LVM2_PV )
+		vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+
+	//initialize table top and bottom row number attach trackers
+	int top = 0, bottom = 1 ;
 
 	Gtk::Table* table(manage(new Gtk::Table()));
 
 	table ->set_border_width( 5 ) ;
 	table ->set_col_spacings(10 ) ;
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
-	
-	//filesystem
+
+	//FILE SYSTEM DETAIL SECTION
+	//file system
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File system:") ) + "</b>" ),
 			0, 1,
 			top, bottom,
@@ -199,101 +204,35 @@ void Dialog_Partition_Info::Display_Info()
 			top++, bottom++,
 			Gtk::FILL ) ;
 
-	//size
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL) ;
-	table ->attach( * Utils::mk_label( Utils::format_size( ptn_sectors, partition .sector_size ), true, false, true ),
-			1, 2,
-			top++, bottom++,
-			Gtk::FILL ) ;
-	
-	if ( partition .sector_usage_known() )
+	//label
+	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
 	{
-		//calculate relative diskusage
-		int percent_used, percent_unused, percent_unallocated ;
-		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
-
-		//Used
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
 				0, 1,
 				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, false, true ),
-				1, 2,
-				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"),
+				Gtk::FILL) ;
+		table ->attach( * Utils::mk_label( partition .get_label(), true, false, true ),
 				1, 2,
 				top++, bottom++,
-				Gtk::FILL ) ;
-
-		//unused
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
-				0, 1,
-				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, false, true ),
-				1, 2,
-				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unused ) + "% )"),
-				1, 2,
-				top++, bottom++,
-				Gtk::FILL ) ;
-
-		//unallocated
-		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
-		if ( sectors_unallocated > 0 )
-		{
-			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
-					0, 1,
-					top, bottom,
-					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, false, true ),
-					1, 2,
-					top, bottom,
-					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unallocated ) + "% )"),
-					1, 2,
-					top++, bottom++,
-					Gtk::FILL ) ;
-		}
+				Gtk::FILL) ;
 	}
 
-	Glib::ustring vgname = "" ;
-	if ( partition .filesystem == FS_LVM2_PV )
-		vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
-
-	//flags
-	if ( partition.type != GParted::TYPE_UNALLOCATED )
+	//uuid
+	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
 				0, 1,
 				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
-				1, 2, 
+				Gtk::FILL) ;
+		table ->attach( * Utils::mk_label( partition .uuid, true, false, true ),
+				1, 2,
 				top++, bottom++,
-				Gtk::FILL ) ;
+				Gtk::FILL) ;
 	}
-	
-	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
+
+	//status
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
-		//path
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>" ),
-				0, 1,
-				top, bottom,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ), true, false, true ),
-				1, 2,
-				top++, bottom++,
-				Gtk::FILL ) ;
-		
 		//status
 		Glib::ustring str_temp ;
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>" ),
@@ -308,7 +247,7 @@ void Dialog_Partition_Info::Display_Info()
 				 * means that this extended partition contains at least one logical
 				 * partition that is mounted or otherwise active.
 				 */
-				str_temp =  _("Busy (At least one logical partition is mounted)") ;
+				str_temp = _("Busy (At least one logical partition is mounted)") ;
 			}
 			else if (    partition .filesystem == FS_LINUX_SWAP
 			          || partition .filesystem == FS_LINUX_SWRAID
@@ -330,7 +269,7 @@ void Dialog_Partition_Info::Display_Info()
 			}
 			else if ( partition .get_mountpoints() .size() )
 			{
-				str_temp = String::ucompose( 
+				str_temp = String::ucompose(
 						/* TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint */
 						_("Mounted on %1"),
 						Glib::build_path( ", ", partition .get_mountpoints() ) ) ;
@@ -389,30 +328,132 @@ void Dialog_Partition_Info::Display_Info()
 		table ->attach( * Utils::mk_label( str_temp, true, false, true ), 1, 2, top++, bottom++, Gtk::FILL ) ;
 	}
 
-	//label
-	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
+	//Optional Logical Volume Manager Physical Volume details
+	if ( partition .filesystem == FS_LVM2_PV )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
-				0, 1,
-				top, bottom,
-				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .get_label(), true, false, true ),
-				1, 2,
-				top++, bottom++,
-				Gtk::FILL) ;
+		//Volume Group
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
+		                0, 1, top, bottom, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( vgname, true, false, true ),
+		                1, 2, top++, bottom++, Gtk::FILL ) ;
+
+		//Members
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
+		                0, 1, top, bottom, Gtk::FILL ) ;
+
+		std::vector<Glib::ustring> members ;
+		if ( ! vgname .empty() )
+			members = lvm2_pv_info .get_vg_members( vgname ) ;
+
+		if ( members .empty() )
+			table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+		else
+		{
+			table ->attach( * Utils::mk_label( members [0], true, false, true ),
+			                1, 2, top++, bottom++, Gtk::FILL ) ;
+			for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+			{
+				table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL) ;
+				table ->attach( * Utils::mk_label( members [i], true, false, true ),
+				                1, 2, top++, bottom++, Gtk::FILL ) ;
+			}
+		}
 	}
 
-	//uuid
-	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
+	//one blank line
+	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+
+	if ( partition .sector_usage_known() )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
+		//calculate relative diskusage
+		int percent_used, percent_unused, percent_unallocated ;
+		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
+
+		//Used
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
 				0, 1,
 				top, bottom,
-				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .uuid, true, false, true ),
+				Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, false, true ),
+				1, 2,
+				top, bottom,
+				Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"),
 				1, 2,
 				top++, bottom++,
-				Gtk::FILL) ;
+				Gtk::FILL ) ;
+
+		//unused
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
+				0, 1,
+				top, bottom,
+				Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, false, true ),
+				1, 2,
+				top, bottom,
+				Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unused ) + "% )"),
+				1, 2,
+				top++, bottom++,
+				Gtk::FILL ) ;
+
+		//unallocated
+		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
+		if ( sectors_unallocated > 0 )
+		{
+			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
+					0, 1,
+					top, bottom,
+					Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, false, true ),
+					1, 2,
+					top, bottom,
+					Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unallocated ) + "% )"),
+					1, 2,
+					top++, bottom++,
+					Gtk::FILL ) ;
+		}
+	}
+
+	//size
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL) ;
+	table ->attach( * Utils::mk_label( Utils::format_size( ptn_sectors, partition .sector_size ), true, false, true ),
+			1, 2,
+			top++, bottom++,
+			Gtk::FILL ) ;
+
+	//one blank line
+	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+
+	//PARTITION DETAIL SECTION
+	//path
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>" ),
+			0, 1,
+			top, bottom,
+			Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ), true, false, true ),
+			1, 2,
+			top++, bottom++,
+			Gtk::FILL ) ;
+
+	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
+	{
+		//flags
+		if ( partition.type != GParted::TYPE_UNALLOCATED )
+		{
+			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
+					0, 1,
+					top, bottom,
+					Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
+					1, 2,
+					top++, bottom++,
+					Gtk::FILL ) ;
+		}
 	}
 
 	//one blank line
@@ -447,47 +488,6 @@ void Dialog_Partition_Info::Display_Info()
 			1, 2,
 			top++, bottom++,
 			Gtk::FILL ) ;
-
-	if ( partition .filesystem == FS_LVM2_PV )
-	{
-		//one blank line
-		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-
-		//horizontal separator
-		Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
-		table ->attach( * hsep, 0, 2, top++, bottom++, Gtk::FILL ) ;
-
-		//one blank line
-		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-
-		//Volume Group
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
-		                0, 1, top, bottom, Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( vgname, true, false, true ),
-		                1, 2, top++, bottom++, Gtk::FILL ) ;
-
-		//Members
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
-		                0, 1, top, bottom, Gtk::FILL ) ;
-
-		std::vector<Glib::ustring> members ;
-		if ( ! vgname .empty() )
-			members = lvm2_pv_info .get_vg_members( vgname ) ;
-
-		if ( members .empty() )
-			table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-		else
-		{
-			table ->attach( * Utils::mk_label( members [0], true, false, true ),
-			                1, 2, top++, bottom++, Gtk::FILL ) ;
-			for ( unsigned int i = 1 ; i < members .size() ; i ++ )
-			{
-				table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL) ;
-				table ->attach( * Utils::mk_label( members [i], true, false, true ),
-				                1, 2, top++, bottom++, Gtk::FILL ) ;
-			}
-		}
-	}
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
