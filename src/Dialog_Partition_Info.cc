@@ -176,7 +176,18 @@ void Dialog_Partition_Info::init_drawingarea()
 }
 
 void Dialog_Partition_Info::Display_Info()
-{  
+{
+	//The information in this area is in table format.
+	//
+	//For example:
+	//<-- Column Numbers -->
+	//0   1         2      3
+	//+---+---------+------+
+	//Section
+	//    Field:    Value
+	//+---+---------+------+
+	//0   1         2      3
+
 	Sector ptn_sectors = partition .get_sector_length() ;
 
 	LVM2_PV_Info lvm2_pv_info ;
@@ -194,13 +205,19 @@ void Dialog_Partition_Info::Display_Info()
 	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
 
 	//FILE SYSTEM DETAIL SECTION
+	//file system headline
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System") ) + "</b>" ),
+			0, 3,
+			top++, bottom++,
+			Gtk::FILL ) ;
+
 	//file system
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File system:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::get_filesystem_string( partition .filesystem ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
@@ -208,11 +225,11 @@ void Dialog_Partition_Info::Display_Info()
 	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
 	{
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
-				0, 1,
+				1, 2,
 				top, bottom,
 				Gtk::FILL) ;
 		table ->attach( * Utils::mk_label( partition .get_label(), true, false, true ),
-				1, 2,
+				2, 3,
 				top++, bottom++,
 				Gtk::FILL) ;
 	}
@@ -221,11 +238,11 @@ void Dialog_Partition_Info::Display_Info()
 	if ( partition.type != GParted::TYPE_UNALLOCATED && partition.type != GParted::TYPE_EXTENDED )
 	{
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
-				0, 1,
+				1, 2,
 				top, bottom,
 				Gtk::FILL) ;
 		table ->attach( * Utils::mk_label( partition .uuid, true, false, true ),
-				1, 2,
+				2, 3,
 				top++, bottom++,
 				Gtk::FILL) ;
 	}
@@ -236,7 +253,7 @@ void Dialog_Partition_Info::Display_Info()
 		//status
 		Glib::ustring str_temp ;
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>" ),
-				0, 1,
+				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
 		if ( partition .busy )
@@ -325,7 +342,7 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not mounted") ;
 		}
 
-		table ->attach( * Utils::mk_label( str_temp, true, false, true ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( str_temp, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL ) ;
 	}
 
 	//Optional Logical Volume Manager Physical Volume details
@@ -333,35 +350,35 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//Volume Group
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
-		                0, 1, top, bottom, Gtk::FILL ) ;
+		                1, 2, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( vgname, true, false, true ),
-		                1, 2, top++, bottom++, Gtk::FILL ) ;
+		                2, 3, top++, bottom++, Gtk::FILL ) ;
 
 		//Members
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
-		                0, 1, top, bottom, Gtk::FILL ) ;
+		                1, 2, top, bottom, Gtk::FILL ) ;
 
 		std::vector<Glib::ustring> members ;
 		if ( ! vgname .empty() )
 			members = lvm2_pv_info .get_vg_members( vgname ) ;
 
 		if ( members .empty() )
-			table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+			table ->attach( * Utils::mk_label( "" ), 2, 3, top++, bottom++, Gtk::FILL ) ;
 		else
 		{
 			table ->attach( * Utils::mk_label( members [0], true, false, true ),
-			                1, 2, top++, bottom++, Gtk::FILL ) ;
+			                2, 3, top++, bottom++, Gtk::FILL ) ;
 			for ( unsigned int i = 1 ; i < members .size() ; i ++ )
 			{
 				table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL) ;
 				table ->attach( * Utils::mk_label( members [i], true, false, true ),
-				                1, 2, top++, bottom++, Gtk::FILL ) ;
+				                2, 3, top++, bottom++, Gtk::FILL ) ;
 			}
 		}
 	}
 
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
 
 	if ( partition .sector_usage_known() )
 	{
@@ -371,29 +388,29 @@ void Dialog_Partition_Info::Display_Info()
 
 		//Used
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
-				0, 1,
+				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, false, true ),
-				1, 2,
+				2, 3,
 				top, bottom,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"),
-				1, 2,
+				2, 3,
 				top++, bottom++,
 				Gtk::FILL ) ;
 
 		//unused
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
-				0, 1,
+				1, 2,
 				top, bottom,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, false, true ),
-				1, 2,
+				2, 3,
 				top, bottom,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unused ) + "% )"),
-				1, 2,
+				2, 3,
 				top++, bottom++,
 				Gtk::FILL ) ;
 
@@ -402,15 +419,15 @@ void Dialog_Partition_Info::Display_Info()
 		if ( sectors_unallocated > 0 )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
-					0, 1,
+					1, 2,
 					top, bottom,
 					Gtk::FILL ) ;
 			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, false, true ),
-					1, 2,
+					2, 3,
 					top, bottom,
 					Gtk::FILL ) ;
 			table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unallocated ) + "% )"),
-					1, 2,
+					2, 3,
 					top++, bottom++,
 					Gtk::FILL ) ;
 		}
@@ -418,25 +435,31 @@ void Dialog_Partition_Info::Display_Info()
 
 	//size
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL) ;
 	table ->attach( * Utils::mk_label( Utils::format_size( ptn_sectors, partition .sector_size ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
 
 	//PARTITION DETAIL SECTION
+	//partition headline
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Partition") ) + "</b>" ),
+			0, 3,
+			top++, bottom++,
+			Gtk::FILL ) ;
+
 	//path
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
@@ -446,46 +469,46 @@ void Dialog_Partition_Info::Display_Info()
 		if ( partition.type != GParted::TYPE_UNALLOCATED )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
-					0, 1,
+					1, 2,
 					top, bottom,
 					Gtk::FILL ) ;
 			table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
-					1, 2,
+					2, 3,
 					top++, bottom++,
 					Gtk::FILL ) ;
 		}
 	}
 
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
 	
 	//first sector
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First sector:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_start ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ;
 	
 	//last sector
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last sector:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( partition.sector_end ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ; 
 	
 	//total sectors
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total sectors:") ) + "</b>" ),
-			0, 1,
+			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( ptn_sectors ), true, false, true ),
-			1, 2,
+			2, 3,
 			top++, bottom++,
 			Gtk::FILL ) ;
 }
