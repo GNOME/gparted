@@ -180,13 +180,13 @@ void Dialog_Partition_Info::Display_Info()
 	//The information in this area is in table format.
 	//
 	//For example:
-	//<-- Column Numbers -->
-	//0   1         2      3
-	//+---+---------+------+
+	//<------------------ Column Numbers --------------------->
+	//0 1            2             3             4            5
+	//+-+------------+-------------+-------------+------------+
 	//Section
-	//    Field:    Value
-	//+---+---------+------+
-	//0   1         2      3
+	//  Field Left:  Value Left    Field Right:  Value Right
+	//+-+------------+-------------+-------------+------------+
+	//0 1            2             3             4            5
 
 	Sector ptn_sectors = partition .get_sector_length() ;
 
@@ -196,7 +196,8 @@ void Dialog_Partition_Info::Display_Info()
 		vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
 
 	//initialize table top and bottom row number attach trackers
-	int top = 0, bottom = 1 ;
+	int top = 0     , bottom = 1 ;      //Left field & value pairs
+	int topright = 0, bottomright = 1 ; //Right field & value pairs
 
 	Gtk::Table* table(manage(new Gtk::Table()));
 
@@ -207,10 +208,15 @@ void Dialog_Partition_Info::Display_Info()
 	//FILE SYSTEM DETAIL SECTION
 	//file system headline
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System") ) + "</b>" ),
-			0, 3,
+			0, 5,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
+	//use current left row tracker position as anchor for right
+	topright = top ;
+	bottomright = bottom ;
+
+	//Left field & value pair area
 	//file system
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File system:") ) + "</b>" ),
 			1, 2,
@@ -377,9 +383,7 @@ void Dialog_Partition_Info::Display_Info()
 		}
 	}
 
-	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
-
+	//Right field & value pair area
 	if ( partition .sector_usage_known() )
 	{
 		//calculate relative diskusage
@@ -388,30 +392,30 @@ void Dialog_Partition_Info::Display_Info()
 
 		//Used
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
-				1, 2,
-				top, bottom,
+				3, 4,
+				topright, bottomright,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, false, true ),
-				2, 3,
-				top, bottom,
+				4, 5,
+				topright, bottomright,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"),
-				2, 3,
-				top++, bottom++,
+				4, 5,
+				topright++, bottomright++,
 				Gtk::FILL ) ;
 
 		//unused
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
-				1, 2,
-				top, bottom,
+				3, 4,
+				topright, bottomright,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, false, true ),
-				2, 3,
-				top, bottom,
+				4, 5,
+				topright, bottomright,
 				Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unused ) + "% )"),
-				2, 3,
-				top++, bottom++,
+				4, 5,
+				topright++, bottomright++,
 				Gtk::FILL ) ;
 
 		//unallocated
@@ -419,40 +423,49 @@ void Dialog_Partition_Info::Display_Info()
 		if ( sectors_unallocated > 0 )
 		{
 			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
-					1, 2,
-					top, bottom,
+					3, 4,
+					topright, bottomright,
 					Gtk::FILL ) ;
 			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, false, true ),
-					2, 3,
-					top, bottom,
+					4, 5,
+					topright, bottomright,
 					Gtk::FILL ) ;
 			table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unallocated ) + "% )"),
-					2, 3,
-					top++, bottom++,
+					4, 5,
+					topright++, bottomright++,
 					Gtk::FILL ) ;
 		}
 	}
 
 	//size
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
+			3, 4,
+			topright, bottomright,
 			Gtk::FILL) ;
 	table ->attach( * Utils::mk_label( Utils::format_size( ptn_sectors, partition .sector_size ), true, false, true ),
-			2, 3,
-			top++, bottom++,
+			4, 5,
+			topright++, bottomright++,
 			Gtk::FILL ) ;
 
+	//ensure left row tracker set to largest side (left/right)
+	top = std::max( top, topright );
+	bottom = std::max( bottom, bottomright );
+
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "" ), 0, 5, top++, bottom++, Gtk::FILL ) ;
 
 	//PARTITION DETAIL SECTION
 	//partition headline
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Partition") ) + "</b>" ),
-			0, 3,
+			0, 5,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
+	//use current left row tracker position as anchor for right
+	topright = top ;
+	bottomright = bottom ;
+
+	//Left field & value pair area
 	//path
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>" ),
 			1, 2,
@@ -479,37 +492,35 @@ void Dialog_Partition_Info::Display_Info()
 		}
 	}
 
-	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 0, 3, top++, bottom++, Gtk::FILL ) ;
-	
+	//Right field & value pair area
 	//first sector
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First sector:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
+			3, 4,
+			topright, bottomright,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_start ), true, false, true ),
-			2, 3,
-			top++, bottom++,
+			4, 5,
+			topright++, bottomright++,
 			Gtk::FILL ) ;
 	
 	//last sector
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last sector:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
+			3, 4,
+			topright, bottomright,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( partition.sector_end ), true, false, true ),
-			2, 3,
-			top++, bottom++,
+			4, 5,
+			topright++, bottomright++,
 			Gtk::FILL ) ; 
 	
 	//total sectors
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total sectors:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
+			3, 4,
+			topright, bottomright,
 			Gtk::FILL ) ;
 	table ->attach( * Utils::mk_label( Utils::num_to_str( ptn_sectors ), true, false, true ),
-			2, 3,
-			top++, bottom++,
+			4, 5,
+			topright++, bottomright++,
 			Gtk::FILL ) ;
 }
 
