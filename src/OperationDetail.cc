@@ -36,6 +36,11 @@ OperationDetail::OperationDetail( const Glib::ustring & description, OperationDe
 OperationDetail::~OperationDetail()
 {
 	cancelconnection.disconnect();
+	while (sub_details.size())
+	{
+		delete sub_details.back();
+		sub_details.pop_back();
+	}
 }
 
 void OperationDetail::set_description( const Glib::ustring & description, Font font )
@@ -121,23 +126,23 @@ Glib::ustring OperationDetail::get_elapsed_time() const
 
 void OperationDetail::add_child( const OperationDetail & operationdetail ) 
 {
-	sub_details .push_back( operationdetail ) ;
+	sub_details .push_back( new OperationDetail(operationdetail) );
 
-	sub_details .back() .set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() -1 ) ) ;
-	sub_details .back() .signal_update .connect( sigc::mem_fun( this, &OperationDetail::on_update ) ) ;
-	sub_details.back().cancelconnection = signal_cancel.connect(
-				sigc::mem_fun( &sub_details.back(), &OperationDetail::cancel ) );
+	sub_details.back()->set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() -1 ) );
+	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
+	sub_details.back()->cancelconnection = signal_cancel.connect(
+				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
 	if ( cancelflag )
-		sub_details.back().cancel( cancelflag == 2 );
-	on_update( sub_details .back() ) ;
+		sub_details.back()->cancel( cancelflag == 2 );
+	on_update( *sub_details.back() );
 }
 	
-std::vector<OperationDetail> & OperationDetail::get_childs() 
+std::vector<OperationDetail*> & OperationDetail::get_childs()
 {
 	return sub_details ;
 }
 
-const std::vector<OperationDetail> & OperationDetail::get_childs() const
+const std::vector<OperationDetail*> & OperationDetail::get_childs() const
 {
 	return sub_details ;
 }
@@ -148,7 +153,7 @@ OperationDetail & OperationDetail::get_last_child()
 	if ( sub_details .size() == 0 )
 		add_child( OperationDetail( "---", STATUS_ERROR ) ) ;
 
-	return sub_details[sub_details.size() - 1];
+	return *sub_details[sub_details.size() - 1];
 }
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
@@ -161,7 +166,8 @@ void OperationDetail::cancel( bool force )
 {
 	if ( force )
 		cancelflag = 2;
-	else cancelflag = 1;
+	else
+		cancelflag = 1;
 	signal_cancel(force);
 }
 

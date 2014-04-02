@@ -60,8 +60,8 @@ public:
 	Glib::ustring get_elapsed_time() const ;
 	
 	void add_child( const OperationDetail & operationdetail ) ;
-	std::vector<OperationDetail> & get_childs() ;
-	const std::vector<OperationDetail> & get_childs() const ;
+	std::vector<OperationDetail*> & get_childs() ;
+	const std::vector<OperationDetail*> & get_childs() const ;
 	OperationDetail & get_last_child() ;
 
 	double fraction ;
@@ -78,7 +78,7 @@ private:
 
 	Glib::ustring treepath ;
 	
-	std::vector<OperationDetail> sub_details ; 	
+	std::vector<OperationDetail*> sub_details;
 	std::time_t time_start, time_elapsed ;
 	sigc::connection cancelconnection;
 };

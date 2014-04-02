@@ -89,7 +89,7 @@ private:
 	treeview_operations_Columns treeview_operations_columns;
 	
 	std::vector<Operation *> operations ;
-	OperationDetail operationdetail ;
+	Glib::ustring progress_text;
 	bool succes, cancel;
 	double fraction ;
 	unsigned int t, warnings ;

@@ -118,12 +118,12 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 		OperationDetail( output, STATUS_NONE, FONT_ITALIC ) );
 	operationdetail.get_last_child().add_child(
 		OperationDetail( error, STATUS_NONE, FONT_ITALIC ) );
-	std::vector<OperationDetail> &children = operationdetail.get_last_child().get_childs();
+	std::vector<OperationDetail*> &children = operationdetail.get_last_child().get_childs();
 	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
-	                                                 &(children[children.size() - 2]),
+	                                                 children[children.size() - 2],
 	                                                 &output ) );
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
-	                                                &(children[children.size() - 1]),
+	                                                children[children.size() - 1],
 	                                                &error ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();

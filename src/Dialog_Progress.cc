@@ -148,7 +148,7 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		}
 
 		//update the gui elements..
-		this ->operationdetail = operationdetail ;
+		progress_text = operationdetail.progress_text;
 
 		if ( operationdetail .get_status() == STATUS_EXECUTE )
 			label_current_sub_text = operationdetail .get_description() ;
@@ -182,7 +182,7 @@ void Dialog_Progress::update_gui_elements()
 	label_current_sub .set_markup( "<i>" + label_current_sub_text + "</i>\n" ) ;
 	
 	//To ensure progress bar height remains the same, add a space in case message is empty
-	progressbar_current .set_text( operationdetail .progress_text + " " ) ;
+	progressbar_current.set_text( progress_text + " " );
 }
 
 bool Dialog_Progress::pulsebar_pulse()
@@ -458,7 +458,7 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 		<< "<td>" << std::endl ;
 
 		for ( unsigned int t = 0 ; t <  operationdetail .get_childs() .size() ; t++ )
-			echo_operation_details( operationdetail .get_childs()[ t ], out ) ;
+			echo_operation_details( *(operationdetail.get_childs()[ t ]), out );
 
 		out << "</td>" << std::endl << "</tr>" << std::endl ;
 	}
