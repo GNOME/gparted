@@ -23,6 +23,13 @@
 
 namespace GParted
 {
+
+struct BTRFS_Device
+{
+	int				devid ;
+	std::vector<Glib::ustring>	members ;
+} ;
+
 class btrfs : public FileSystem
 {
 public:
@@ -40,7 +47,7 @@ public:
 	static Glib::ustring get_mount_device( const Glib::ustring & path ) ;
 
 private:
-	static const std::vector<Glib::ustring> get_cache_entry( const Glib::ustring & path ) ;
+	static const BTRFS_Device & get_cache_entry( const Glib::ustring & path ) ;
 	static Byte_Value btrfs_size_to_num( Glib::ustring str, Byte_Value ptn_bytes, bool scale_up ) ;
 	static gdouble btrfs_size_max_delta( Glib::ustring str ) ;
 	static gdouble btrfs_size_to_gdouble( Glib::ustring str ) ;

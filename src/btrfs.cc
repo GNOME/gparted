@@ -27,14 +27,14 @@ namespace GParted
 bool btrfs_found = false ;
 bool resize_to_same_size_fails = true ;
 
-//Cache of all devices in each btrfs file system by device
+//Cache of required btrfs file system device information by device
 //  E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
 //       on /dev/sd[bcd]1 the cache would be:
-//  btrfs_device_cache["/dev/sda2"] = ["/dev/sda2"]
-//  btrfs_device_cache["/dev/sdb1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
-//  btrfs_device_cache["/dev/sdc1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
-//  btrfs_device_cache["/dev/sdd1"] = ["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]
-std::map< Glib::ustring, std::vector<Glib::ustring> > btrfs_device_cache ;
+//  btrfs_device_cache["/dev/sda2"] = {devid=1, members=["/dev/sda2"]}
+//  btrfs_device_cache["/dev/sdb1"] = {devid=1, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
+//  btrfs_device_cache["/dev/sdc1"] = {devid=2, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
+//  btrfs_device_cache["/dev/sdd1"] = {devid=3, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
+std::map<Glib::ustring, BTRFS_Device> btrfs_device_cache ;
 
 FS btrfs::get_filesystem_support()
 {
@@ -430,32 +430,33 @@ void btrfs::clear_cache()
 //  Return empty string if not found (not mounted).
 Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 {
-	std::vector<Glib::ustring> entry = get_cache_entry( path ) ;
-	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
-		if ( GParted_Core::is_dev_mounted( entry[ i ] ) )
-			return entry[ i ] ;
+	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	for ( unsigned int i = 0 ; i < btrfs_dev .members .size() ; i ++ )
+		if ( GParted_Core::is_dev_mounted( btrfs_dev .members[ i ] ) )
+			return btrfs_dev .members[ i ] ;
 	return "" ;
 }
 
 //Private methods
 
 //Return btrfs device cache entry, incrementally loading cache as required
-const std::vector<Glib::ustring> btrfs::get_cache_entry( const Glib::ustring & path )
+const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 {
-	std::vector<Glib::ustring> entry = btrfs_device_cache[ path ] ;
-
-	if ( ! entry .empty() )
-		return entry ;
+	std::map<Glib::ustring, BTRFS_Device>::const_iterator bd_iter = btrfs_device_cache .find( path ) ;
+	if ( bd_iter != btrfs_device_cache .end() )
+		return bd_iter ->second ;
 
 	int exit_status ;
 	Glib::ustring output, error ;
+	std::vector<int> devid_list ;
+	std::vector<Glib::ustring> path_list ;
 	if ( btrfs_found )
 		exit_status = Utils::execute_command( "btrfs filesystem show " + path, output, error, true ) ;
 	else
 		exit_status = Utils::execute_command( "btrfs-show " + path, output, error, true ) ;
 	if ( ! exit_status )
 	{
-		//Extract path for each devid from output like this:
+		//Extract devid and path for each device from output like this:
 		//  Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
 		//          Total devices 2 FS bytes used 156.00KB
 		//          devid    2 size 2.00GB used 512.00MB path /dev/sdb2
@@ -464,19 +465,35 @@ const std::vector<Glib::ustring> btrfs::get_cache_entry( const Glib::ustring & p
 		Glib::ustring::size_type index ;
 		while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
 		{
+			int devid = -1 ;
+			sscanf( output .substr( index ) .c_str(), "devid %d", &devid ) ;
 			Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
 			                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
-			if ( ! devid_path .empty() )
+			if ( devid > -1 && ! devid_path .empty() )
 			{
-				entry .push_back( devid_path ) ;
+				devid_list .push_back( devid ) ;
+				path_list .push_back( devid_path ) ;
 			}
 			offset = index + 5 ;  //Next find starts immediately after current "devid"
 		}
 	}
 	//Add cache entries for all found devices
-	for ( unsigned int i = 0 ; i < entry .size() ; i ++ )
-		btrfs_device_cache[ entry[ i ] ] = entry ;
-	return entry ;
+	for ( unsigned int i = 0 ; i < devid_list .size() ; i ++ )
+	{
+		BTRFS_Device btrfs_dev ;
+		btrfs_dev .devid = devid_list[ i ] ;
+		btrfs_dev .members = path_list ;
+		btrfs_device_cache[ path_list[ i ] ] = btrfs_dev ;
+	}
+
+	bd_iter = btrfs_device_cache .find( path ) ;
+	if ( bd_iter != btrfs_device_cache .end() )
+		return bd_iter ->second ;
+
+	//If "btrfs filesystem show" / "btrfs-show" commands not found, returned non-zero
+	//  exit status or failed to parse information return an "unknown" record
+	static BTRFS_Device btrfs_dev = { -1, } ;
+	return btrfs_dev ;
 }
 
 //Return the value of a btrfs tool formatted size, including reversing
