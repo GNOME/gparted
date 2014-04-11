@@ -291,6 +291,16 @@ bool btrfs::write_label( const Partition & partition, OperationDetail & operatio
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	bool success = true ;
+	Glib::ustring path = partition_new .get_path() ;
+
+	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	if ( btrfs_dev .devid == -1 )
+	{
+		operationdetail .add_child( OperationDetail(
+				String::ucompose( _("Failed to find devid for path %1"), path ), STATUS_ERROR ) ) ;
+		return false ;
+	}
+	Glib::ustring devid_str = Utils::num_to_str( btrfs_dev .devid ) ;
 
 	Glib::ustring mount_point ;
 	if ( ! partition_new .busy )
@@ -298,7 +308,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t btrfs " + partition_new .get_path() + " " + mount_point,
+		success &= ! execute_command( "mount -v -t btrfs " + path + " " + mount_point,
 		                              operationdetail, true ) ;
 	}
 	else
@@ -314,9 +324,9 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			size = "max" ;
 		Glib::ustring cmd ;
 		if ( btrfs_found )
-			cmd = "btrfs filesystem resize " + size + " " + mount_point ;
+			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " " + mount_point ;
 		else
-			cmd = "btrfsctl -r " + size + " " + mount_point ;
+			cmd = "btrfsctl -r " + devid_str + ":" + size + " " + mount_point ;
 		exit_status = execute_command( cmd, operationdetail, false ) ;
 		bool resize_succeeded = ( exit_status == 0 ) ;
 		if ( resize_to_same_size_fails )
