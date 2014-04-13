@@ -180,13 +180,13 @@ void Dialog_Partition_Info::Display_Info()
 	//The information in this area is in table format.
 	//
 	//For example:
-	//<------------------ Column Numbers --------------------->
-	//0 1            2             3             4            5
-	//+-+------------+-------------+-------------+------------+
+	//<-------------------------- Column Numbers ----------------------------->
+	//0 1            2             3             4            5               6
+	//+-+------------+-------------+-------------+------------+---------------+
 	//Section
-	//  Field Left:  Value Left    Field Right:  Value Right
-	//+-+------------+-------------+-------------+------------+
-	//0 1            2             3             4            5
+	//  Field Left:  Value Left    Field Right:  Value Right  Optional Right
+	//+-+------------+-------------+-------------+------------+---------------+
+	//0 1            2             3             4            5               6
 
 	Sector ptn_sectors = partition .get_sector_length() ;
 
@@ -208,7 +208,7 @@ void Dialog_Partition_Info::Display_Info()
 	//FILE SYSTEM DETAIL SECTION
 	//file system headline
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System") ) + "</b>" ),
-			0, 5,
+			0, 6,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
@@ -399,8 +399,8 @@ void Dialog_Partition_Info::Display_Info()
 				4, 5,
 				topright, bottomright,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_used ) + "% )"),
-				4, 5,
+		table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_used ) + "% )"),
+				5, 6,
 				topright++, bottomright++,
 				Gtk::FILL ) ;
 
@@ -413,8 +413,8 @@ void Dialog_Partition_Info::Display_Info()
 				4, 5,
 				topright, bottomright,
 				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unused ) + "% )"),
-				4, 5,
+		table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_unused ) + "% )"),
+				5, 6,
 				topright++, bottomright++,
 				Gtk::FILL ) ;
 
@@ -430,8 +430,8 @@ void Dialog_Partition_Info::Display_Info()
 					4, 5,
 					topright, bottomright,
 					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( "\t\t\t( " + Utils::num_to_str( percent_unallocated ) + "% )"),
-					4, 5,
+			table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_unallocated ) + "% )"),
+					5, 6,
 					topright++, bottomright++,
 					Gtk::FILL ) ;
 		}
@@ -452,12 +452,12 @@ void Dialog_Partition_Info::Display_Info()
 	bottom = std::max( bottom, bottomright );
 
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 0, 5, top++, bottom++, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "" ), 0, 6, top++, bottom++, Gtk::FILL ) ;
 
 	//PARTITION DETAIL SECTION
 	//partition headline
 	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Partition") ) + "</b>" ),
-			0, 5,
+			0, 6,
 			top++, bottom++,
 			Gtk::FILL ) ;
 
