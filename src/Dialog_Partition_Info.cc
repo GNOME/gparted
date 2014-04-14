@@ -25,14 +25,28 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 {
 	this ->partition = partition ;
 
-	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
-	
+	//Set minimum dialog height so it fits on an 800x600 screen without
+	//  too much whitespace (~500 px max for GNOME desktop).
+	//  Allow extra space if have messages or LVM2 PV
+	if (   partition .messages .size() > 0
+	    || partition .filesystem == FS_LVM2_PV
+	   )
+		this ->set_size_request( -1, 460) ;
+	else
+		this ->set_size_request( -1, 370 ) ;	//Minimum 370 to avoid scrolling on Fedora 20
+
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
 	this ->set_title( String::ucompose( _("Information about %1"), partition .get_path() ) );
-	 
+
 	init_drawingarea() ;
-	
+
+	//place info and optional messages in scrollable window
+	info_msg_vbox .set_border_width( 6 ) ;
+	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
+	info_scrolled .add( info_msg_vbox ) ;
+	this ->get_vbox() ->pack_start( info_scrolled ) ;
+
 	//add label for detail and fill with relevant info
 	Display_Info() ;
 	
@@ -40,8 +54,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	if ( partition .messages .size() > 0 )
 	{
 		frame = manage( new Gtk::Frame() );
-		frame ->set_border_width( 10 );
-		
+
 		{
 			Gtk::Image* image(manage(new Gtk::Image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON)));
 
@@ -80,9 +93,9 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 		vbox ->pack_start( *Utils::mk_label( all_messages, true, true, true ), Gtk::PACK_SHRINK ) ;
 		frame ->add( *vbox ) ;
 
-		this ->get_vbox() ->pack_start( *frame, Gtk::PACK_SHRINK ) ;
+		info_msg_vbox .pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;
 	}
-		
+
 	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ;
 	this ->show_all_children() ;
 }
@@ -203,7 +216,7 @@ void Dialog_Partition_Info::Display_Info()
 
 	table ->set_border_width( 5 ) ;
 	table ->set_col_spacings(10 ) ;
-	this ->get_vbox() ->pack_start( *table, Gtk::PACK_SHRINK ) ;
+	info_msg_vbox .pack_start( *table, Gtk::PACK_SHRINK ) ;
 
 	//FILE SYSTEM DETAIL SECTION
 	//file system headline

@@ -27,12 +27,13 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
+#include <gtkmm/scrolledwindow.h>
 #include <gtkmm/table.h>
 
 #define BORDER 8
- 
+
 namespace GParted
-{ 
+{
 
 class Dialog_Partition_Info : public Gtk::Dialog
 {
@@ -53,6 +54,8 @@ private:
 	Gtk::HBox *hbox ;
 	Gtk::DrawingArea drawingarea ;
 	Gtk::Frame *frame ;
+	Gtk::VBox info_msg_vbox ;
+	Gtk::ScrolledWindow info_scrolled ;
 
 	Glib::RefPtr<Gdk::GC> gc;
 	Glib::RefPtr<Pango::Layout> pango_layout;
