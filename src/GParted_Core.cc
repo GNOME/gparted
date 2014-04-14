@@ -909,7 +909,20 @@ void GParted_Core::init_maps()
 
 	read_mountpoints_from_file( "/proc/mounts", mount_info ) ;
 	read_mountpoints_from_file_swaps( "/proc/swaps", mount_info ) ;
-	read_mountpoints_from_file( "/etc/mtab", mount_info ) ;
+
+	if ( ! have_rootfs_dev( mount_info ) )
+		//Old distributions only contain 'rootfs' and '/dev/root' device names for
+		//  the / (root) file system in /proc/mounts with '/dev/root' being a
+		//  block device rather than a symlink to the true device.  This prevents
+		//  identification, and therefore busy detection, of the device containing
+		//  the / (root) file system.  Used to read /etc/mtab to get the root file
+		//  system device name, but this contains an out of date device name after
+		//  the mounting device has been dynamically removed from a multi-device
+		//  btrfs, thus identifying the wrong device as busy.  Instead fall back
+		//  to reading mounted file systems from the output of the mount command,
+		//  but only when required.
+		read_mountpoints_from_mount_command( mount_info ) ;
+
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
 	//sort the mount points and remove duplicates.. (no need to do this for fstab_info)
@@ -940,6 +953,7 @@ void GParted_Core::read_mountpoints_from_file(
 	while ( (p = getmntent(fp)) != NULL )
 	{
 		Glib::ustring node = p->mnt_fsname ;
+		Glib::ustring mountpoint = p->mnt_dir ;
 
 		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" ) ;
 		if ( ! uuid .empty() )
@@ -950,28 +964,32 @@ void GParted_Core::read_mountpoints_from_file(
 			node = fs_info .get_path_by_label( label ) ;
 
 		if ( ! node .empty() )
-		{
-			Glib::ustring mountpoint = p->mnt_dir ;
-
-			//Only add node path(s) if mount point exists
-			if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
-			{
-				map[ node ] .push_back( mountpoint ) ;
-
-				//If node is a symbolic link (e.g., /dev/root)
-				//  then find real path and add entry
-				if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
-				{
-					char c_str[4096+1] ;
-					//FIXME: it seems realpath is very unsafe to use (manpage)...
-					if ( realpath( node .c_str(), c_str ) != NULL )
-						map[ c_str ] .push_back( mountpoint ) ;
-				}
-			}
-		}
+			add_node_and_mountpoint( map, node, mountpoint ) ;
 	}
 
 	endmntent( fp ) ;
+}
+
+void GParted_Core::add_node_and_mountpoint(
+	std::map< Glib::ustring, std::vector<Glib::ustring> > & map,
+	Glib::ustring & node,
+	Glib::ustring & mountpoint )
+{
+	//Only add node path(s) if mount point exists
+	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+	{
+		map[ node ] .push_back( mountpoint ) ;
+
+		//If node is a symbolic link (e.g., /dev/root)
+		//  then find real path and add entry too
+		if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
+		{
+			char c_str[4096+1] ;
+			//FIXME: it seems realpath is very unsafe to use (manpage)...
+			if ( realpath( node .c_str(), c_str ) != NULL )
+				map[ c_str ] .push_back( mountpoint ) ;
+		}
+	}
 }
 
 void GParted_Core::read_mountpoints_from_file_swaps(
@@ -991,6 +1009,42 @@ void GParted_Core::read_mountpoints_from_file_swaps(
 				map[ node ] .push_back( "" /* no mountpoint for swap */ ) ;
 		}
 		file .close() ;
+	}
+}
+
+//Return true only if the map contains a device name for the / (root) file system other
+//  than 'rootfs' and '/dev/root'
+bool GParted_Core::have_rootfs_dev( std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+{
+	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; iter_mp ++ )
+	{
+		if ( ! iter_mp ->second .empty() && iter_mp ->second[ 0 ] == "/" )
+		{
+			if ( iter_mp ->first != "rootfs" && iter_mp ->first != "/dev/root" )
+				return true ;
+		}
+	}
+	return false ;
+}
+
+void GParted_Core::read_mountpoints_from_mount_command(
+	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+{
+	Glib::ustring output ;
+	Glib::ustring error ;
+	if ( ! Utils::execute_command( "mount", output, error, true ) )
+	{
+		std::vector<Glib::ustring> lines ;
+		Utils::split( output, lines, "\n") ;
+		for ( unsigned int i = 0 ; i < lines .size() ; i ++ )
+		{
+			//Process line like "/dev/sda3 on / type ext4 (rw)"
+			Glib::ustring node = Utils::regexp_label( lines[ i ], "^([^[:blank:]]+) on " ) ;
+			Glib::ustring mountpoint = Utils::regexp_label( lines[ i ], "^[^[:blank:]]+ on ([^[:blank:]]+) " ) ;
+			if ( ! node .empty() )
+				add_node_and_mountpoint( map, node, mountpoint ) ;
+		}
 	}
 }
 

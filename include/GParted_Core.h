@@ -70,11 +70,14 @@ private:
 	static void init_maps() ;
 	void set_thread_status_message( Glib::ustring msg ) ;
 	static void read_mountpoints_from_file( const Glib::ustring & filename,
-	                                        std::map< Glib::ustring,
-	                                        std::vector<Glib::ustring> > & map ) ;
+	                                        std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
+	static void add_node_and_mountpoint( std::map< Glib::ustring, std::vector<Glib::ustring> > & map,
+	                                     Glib::ustring & node,
+	                                     Glib::ustring & mountpoint ) ;
 	static void read_mountpoints_from_file_swaps( const Glib::ustring & filename,
-	                                              std::map< Glib::ustring,
-	                                              std::vector<Glib::ustring> > & map ) ;
+	                                              std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
+	static bool have_rootfs_dev( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
+	static void read_mountpoints_from_mount_command( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
