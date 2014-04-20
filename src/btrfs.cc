@@ -441,6 +441,18 @@ void btrfs::clear_cache()
 Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 {
 	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	if ( btrfs_dev .devid == -1 || btrfs_dev .members .empty() )
+	{
+		//WARNING:
+		//  No btrfs device cache entry found or entry without any member devices.
+		//  Use fallback busy detection method which can only determine if the
+		//  mounting device is mounted or not, not any of the other members of a
+		//  multi-device btrfs file system.
+		if ( GParted_Core::is_dev_mounted( path ) )
+			return path ;
+		return "" ;
+	}
+
 	for ( unsigned int i = 0 ; i < btrfs_dev .members .size() ; i ++ )
 		if ( GParted_Core::is_dev_mounted( btrfs_dev .members[ i ] ) )
 			return btrfs_dev .members[ i ] ;
