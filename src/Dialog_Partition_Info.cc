@@ -18,6 +18,8 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
 
+#include <gtk/gtk.h>
+
 namespace GParted
 {
 
@@ -45,6 +47,14 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	info_msg_vbox .set_border_width( 6 ) ;
 	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
 	info_scrolled .add( info_msg_vbox ) ;
+	//As Gtk::VBox widget info_msg_vbox doesn't have a native scrolling capability a
+	//  Gtk::Viewport is automatically created to contain it when it is added to the
+	//  Gtk::ScrolledWindow widget info_scrolled.  The Viewport widget is created with
+	//  shadow type GTK_SHADOW_IN by default.  Change to GTK_SHADOW_NONE.  Have to use
+	//  GTK+ C API as the Viewport widget isn't exposed via gtkmm C++ API.
+	//  https://developer.gnome.org/gtkmm/2.24/classGtk_1_1ScrolledWindow.html#a17c588d56d93923841d38f0d5e2ec9d7
+	GtkWidget * scrollable_child = gtk_bin_get_child(GTK_BIN(info_scrolled.gobj()));
+	gtk_viewport_set_shadow_type(GTK_VIEWPORT(scrollable_child), GTK_SHADOW_NONE);
 	this ->get_vbox() ->pack_start( info_scrolled ) ;
 
 	//add label for detail and fill with relevant info
