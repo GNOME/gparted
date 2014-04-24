@@ -391,19 +391,17 @@ void Dialog_Partition_Info::Display_Info()
 		if ( ! vgname .empty() )
 			members = lvm2_pv_info .get_vg_members( vgname ) ;
 
-		if ( members .empty() )
-			table ->attach( * Utils::mk_label( "" ), 2, 3, top++, bottom++, Gtk::FILL ) ;
-		else
+		Glib::ustring members_str = "" ;
+		if ( ! members .empty() )
 		{
-			table ->attach( * Utils::mk_label( members [0], true, false, true ),
-			                2, 3, top++, bottom++, Gtk::FILL ) ;
-			for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+			for ( unsigned int i = 0 ; i < members .size() ; i ++ )
 			{
-				table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL) ;
-				table ->attach( * Utils::mk_label( members [i], true, false, true ),
-				                2, 3, top++, bottom++, Gtk::FILL ) ;
+				if ( i > 0 )
+					members_str += "\n" ;
+				members_str += members[i] ;
 			}
 		}
+		table ->attach( * Utils::mk_label( members_str, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL ) ;
 	}
 
 	//Right field & value pair area
