@@ -19,6 +19,7 @@
 #include "../include/LVM2_PV_Info.h"
 
 #include <gtk/gtk.h>
+#include <gtkmm/alignment.h>
 
 namespace GParted
 {
@@ -55,7 +56,10 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
 	//  https://developer.gnome.org/gtkmm/2.24/classGtk_1_1ScrolledWindow.html#a17c588d56d93923841d38f0d5e2ec9d7
 	GtkWidget * scrollable_child = gtk_bin_get_child(GTK_BIN(info_scrolled.gobj()));
 	gtk_viewport_set_shadow_type(GTK_VIEWPORT(scrollable_child), GTK_SHADOW_NONE);
-	this ->get_vbox() ->pack_start( info_scrolled ) ;
+	//horizontally center the information scrolled window to match partition graphic
+	Gtk::Alignment * center_widget = manage( new Gtk::Alignment(0.5, 0.5, 0.0, 1.0) ) ;
+	center_widget ->add( info_scrolled ) ;
+	this ->get_vbox() ->pack_start( *center_widget ) ;
 
 	//add label for detail and fill with relevant info
 	Display_Info() ;
