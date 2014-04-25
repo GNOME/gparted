@@ -301,21 +301,14 @@ void Dialog_Partition_Info::Display_Info()
 			}
 			else if (    partition .filesystem == FS_LINUX_SWAP
 			          || partition .filesystem == FS_LINUX_SWRAID
-			        )
+			          || partition .filesystem == FS_LVM2_PV
+			         )
 			{
 				/* TO TRANSLATORS:  Active
-				 * means that this linux swap or linux software raid partition
-				 * is enabled and being used by the operating system.
+				 * means that this linux swap, linux software raid partition, or
+				 * LVM physical volume is enabled and being used by the operating system.
 				 */
 				str_temp = _("Active") ;
-			}
-			else if ( partition .filesystem == FS_LVM2_PV )
-			{
-				/* TO TRANSLATORS:  myvgname active
-				 * means that the partition is a member of an LVM volume group and the
-				 * volume group is active and being used by the operating system.
-				 */
-				str_temp = String::ucompose( _("%1 active"), vgname ) ;
 			}
 			else if ( partition .get_mountpoints() .size() )
 			{
@@ -353,19 +346,19 @@ void Dialog_Partition_Info::Display_Info()
 				 */
 				str_temp = _("Not active (Not a member of any volume group)") ;
 			else if ( lvm2_pv_info .is_vg_exported( vgname ) )
-				/* TO TRANSLATORS:  myvgname not active and exported
+				/* TO TRANSLATORS:  Not active and exported
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
 				 * The volume group has also been exported making the LVM physical volumes
 				 * ready for moving to a different computer system.
 				 */
-				str_temp = String::ucompose( _("%1 not active and exported"), vgname ) ;
+				str_temp = _("Not active and exported") ;
 			else
-				/* TO TRANSLATORS:  myvgname not active
+				/* TO TRANSLATORS:  Not active
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
 				 */
-				str_temp = String::ucompose( _("%1 not active"), vgname ) ;
+				str_temp = _("Not active") ;
 		}
 		else
 		{
