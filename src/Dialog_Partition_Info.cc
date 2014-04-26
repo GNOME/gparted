@@ -381,7 +381,7 @@ void Dialog_Partition_Info::Display_Info()
 		                2, 3, top++, bottom++, Gtk::FILL ) ;
 
 		//Members
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>"),
+		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
 		                1, 2, top, bottom, Gtk::FILL ) ;
 
 		std::vector<Glib::ustring> members ;
@@ -398,7 +398,7 @@ void Dialog_Partition_Info::Display_Info()
 				members_str += members[i] ;
 			}
 		}
-		table ->attach( * Utils::mk_label( members_str, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL ) ;
+		table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ), 2, 3, top++, bottom++, Gtk::FILL ) ;
 	}
 
 	//Right field & value pair area
