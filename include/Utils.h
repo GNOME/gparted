@@ -158,11 +158,11 @@ class Utils
 {
 public:
 	static Sector round( double double_value ) ;
-	static Gtk::Label * mk_label( const Glib::ustring & text,
-				      bool use_markup = true,
-				      bool wrap = false,
-				      bool selectable = false,
-				      const Glib::ustring & text_color = "black" ) ;
+	static Gtk::Label * mk_label( const Glib::ustring & text
+	                            , bool use_markup = true
+	                            , bool wrap = false
+	                            , bool selectable = false
+	                            ) ;
 	static Glib::ustring num_to_str( Sector number ) ;
 	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
 	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;

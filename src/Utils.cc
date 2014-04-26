@@ -42,11 +42,11 @@ Sector Utils::round( double double_value )
 	 return static_cast<Sector>( double_value + 0.5 ) ;
 }
 
-Gtk::Label * Utils::mk_label( const Glib::ustring & text,
-			      bool use_markup,
-			      bool wrap,
-			      bool selectable,
-			      const Glib::ustring & text_color )
+Gtk::Label * Utils::mk_label( const Glib::ustring & text
+                            , bool use_markup
+                            , bool wrap
+                            , bool selectable
+                            )
 {
 	//xalign 0.0 == Gtk::ALIGN_LEFT  (gtkmm <= 2.22)
 	//           == Gtk::ALIGN_START (gtkmm >= 2.24)
@@ -56,12 +56,6 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text,
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;
 	label ->set_selectable( selectable ) ;
-
-	if ( text_color != "black" )
-	{
-		Gdk::Color color( text_color ) ;
-		label ->modify_fg( label ->get_state(), color ) ;
-	}
 
 	return label ;
 }
