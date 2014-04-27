@@ -2780,23 +2780,22 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	                1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	//Members
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>"),
-			0, 1, top, bottom, Gtk::FILL ) ;
+	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>",
+	                                   true, false, false, 0.0 /* ALIGN_TOP */ ),
+	                0, 1, top, bottom, Gtk::FILL ) ;
 
-	if ( members .empty() )
-		table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	else
+	Glib::ustring members_str = "" ;
+	if ( ! members .empty() )
 	{
-		table ->attach( * Utils::mk_label( members [0], true, false, true ),
-				1, 2, top++, bottom++, Gtk::FILL ) ;
-		for ( unsigned int i = 1 ; i < members .size() ; i ++ )
+		for ( unsigned int i = 0 ; i < members .size() ; i ++ )
 		{
-			table ->attach( * Utils::mk_label( "" ), 0, 1, top, bottom, Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( members [i], true, false, true ),
-					1, 2, top++, bottom++, Gtk::FILL ) ;
+			if ( i > 0 )
+				members_str += "\n" ;
+			members_str += members[i] ;
 		}
-
 	}
+	table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
+	                1, 2, top++, bottom++, Gtk::FILL ) ;
 #endif /* HAVE_GET_MESSAGE_AREA */
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
