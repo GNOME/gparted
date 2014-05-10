@@ -41,7 +41,11 @@ gboolean PipeCapture::_OnReadable( GIOChannel *source,
 				   GIOCondition condition,
 				   gpointer data )
 {
-	return static_cast<PipeCapture *>(data)->OnReadable( Glib::IOCondition(condition) );
+	PipeCapture *pc = static_cast<PipeCapture *>(data);
+	gboolean rc = pc->OnReadable( Glib::IOCondition(condition) );
+	if (!rc)
+		pc->sourceid = 0;
+	return rc;
 }
 
 
