@@ -459,6 +459,12 @@ Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 	return "" ;
 }
 
+std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
+{
+	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
+	return btrfs_dev .members ;
+}
+
 //Private methods
 
 //Return btrfs device cache entry, incrementally loading cache as required

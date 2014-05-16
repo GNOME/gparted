@@ -17,6 +17,7 @@
  
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
+#include "../include/btrfs.h"
 
 #include <gtk/gtk.h>
 #include <gtkmm/alignment.h>
@@ -371,7 +372,7 @@ void Dialog_Partition_Info::Display_Info()
 		table ->attach( * Utils::mk_label( str_temp, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL ) ;
 	}
 
-	//Optional Logical Volume Manager Physical Volume details
+	//Optional, LVM2 Volume Group name
 	if ( partition .filesystem == FS_LVM2_PV )
 	{
 		//Volume Group
@@ -379,14 +380,29 @@ void Dialog_Partition_Info::Display_Info()
 		                1, 2, top, bottom, Gtk::FILL ) ;
 		table ->attach( * Utils::mk_label( vgname, true, false, true ),
 		                2, 3, top++, bottom++, Gtk::FILL ) ;
+	}
 
+	//Optional, members of multi-device file systems
+	if (    partition .filesystem == FS_LVM2_PV
+	     || partition .filesystem == FS_BTRFS   )
+	{
 		//Members
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
 		                1, 2, top, bottom, Gtk::FILL ) ;
 
 		std::vector<Glib::ustring> members ;
-		if ( ! vgname .empty() )
-			members = lvm2_pv_info .get_vg_members( vgname ) ;
+		switch ( partition .filesystem )
+		{
+			case FS_BTRFS:
+				members = btrfs::get_members( partition .get_path() ) ;
+				break ;
+			case FS_LVM2_PV:
+				if ( ! vgname .empty() )
+					members = lvm2_pv_info .get_vg_members( vgname ) ;
+				break ;
+			default:
+				break ;
+		}
 
 		Glib::ustring members_str = "" ;
 		if ( ! members .empty() )

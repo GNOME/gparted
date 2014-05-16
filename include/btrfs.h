@@ -45,6 +45,7 @@ public:
 
 	static void clear_cache() ;
 	static Glib::ustring get_mount_device( const Glib::ustring & path ) ;
+	static std::vector<Glib::ustring> get_members( const Glib::ustring & path ) ;
 
 private:
 	static const BTRFS_Device & get_cache_entry( const Glib::ustring & path ) ;
