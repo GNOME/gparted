@@ -31,7 +31,6 @@ class PipeCapture
 	Glib::ustring::size_type cursor ;
 	Glib::ustring::size_type lineend ;
 	Glib::RefPtr<Glib::IOChannel> channel;
-	guint sourceid;
 	bool OnReadable( Glib::IOCondition condition );
 	static gboolean _OnReadable( GIOChannel *source,
 	                             GIOCondition condition,

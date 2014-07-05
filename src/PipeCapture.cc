@@ -20,8 +20,7 @@
 namespace GParted {
 
 PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
-                                                            linestart( 0 ), cursor( 0 ), lineend( 0 ),
-                                                            sourceid( 0 )
+                                                            linestart( 0 ), cursor( 0 ), lineend( 0 )
 {
 	// tie fd to string
 	// make channel
@@ -31,10 +30,10 @@ PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
 void PipeCapture::connect_signal()
 {
 	// connect handler to signal input/output
-	sourceid = g_io_add_watch( channel->gobj(),
-	                           GIOCondition(G_IO_IN | G_IO_ERR | G_IO_HUP),
-	                           _OnReadable,
-	                           this );
+	g_io_add_watch( channel->gobj(),
+	                GIOCondition(G_IO_IN | G_IO_ERR | G_IO_HUP),
+	                _OnReadable,
+	                this );
 }
 
 gboolean PipeCapture::_OnReadable( GIOChannel *source,
@@ -43,8 +42,6 @@ gboolean PipeCapture::_OnReadable( GIOChannel *source,
 {
 	PipeCapture *pc = static_cast<PipeCapture *>(data);
 	gboolean rc = pc->OnReadable( Glib::IOCondition(condition) );
-	if (!rc)
-		pc->sourceid = 0;
 	return rc;
 }
 
@@ -104,8 +101,6 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 
 PipeCapture::~PipeCapture()
 {
-	if( sourceid > 0 )
-		g_source_remove( sourceid );
 }
 
 } // namespace GParted
