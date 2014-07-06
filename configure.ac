@@ -12,8 +12,8 @@ AM_MAINTAINER_MODE
 dnl======================
 dnl checks for programs
 dnl======================
-AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_CC
 AM_PROG_LIBTOOL
 
 
