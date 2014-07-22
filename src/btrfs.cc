@@ -365,41 +365,36 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 void btrfs::read_label( Partition & partition )
 {
 	if ( btrfs_found )
+		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+	else
+		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+	//In many cases the exit status doesn't reflect valid output or an error condition
+	//  so rely on parsing the output to determine success.
+
+	if ( output .compare( 0, 18, "Label: none  uuid:" ) == 0 )
 	{
-		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
-		if ( ! exit_status )
-		{
-			partition .set_label( Utils::regexp_label( output, "^Label: '(.*)'  uuid:" ) ) ;
-			//Btrfs filesystem show encloses the label in single
-			//  quotes or reports "none" without single quotes, so
-			//  the cases are distinguishable and this regexp won't
-			//  match the no label case.  In the no match case
-			//  regexp_label() returns "" and this is used to set
-			//  the set the blank label.
-		}
+		//Indistinguishable cases of either no label or the label is actually set
+		//  to "none".  Assume no label case.
+		partition .set_label( "" ) ;
 	}
 	else
 	{
-		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
-		if ( ! exit_status )
-		{
-			Glib::ustring label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
-			//Btrfs-show reports "none" when there is no label, but
-			//  this is indistinguishable from the label actually
-			//  being "none".  Assume no label case.
-			if ( label != "none" )
-				partition .set_label( label ) ;
-			else
-				partition .set_label( "" ) ;
-		}
-	}
-	if ( exit_status )
-	{
-		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+		//Try matching a label enclosed in single quotes, as used by
+		//  btrfs filesystem show, then without quotes, as used by btrfs-show.
+		Glib::ustring label = Utils::regexp_label( output, "^Label: '(.*)'  uuid:" ) ;
+		if ( label .empty() )
+			label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
 
-		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+		if ( ! label .empty() )
+			partition .set_label( label ) ;
+		else
+		{
+			if ( ! output .empty() )
+				partition .messages .push_back( output ) ;
+
+			if ( ! error .empty() )
+				partition .messages .push_back( error ) ;
+		}
 	}
 }
 
