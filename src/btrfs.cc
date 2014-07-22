@@ -207,71 +207,71 @@ void btrfs::set_used_sectors( Partition & partition )
 	//  4) Extents can be and are relocated to other devices within the file system
 	//     when shrinking a device.
 	if ( btrfs_found )
-		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
 	else
-		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
-	if ( ! exit_status )
+		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+	//In many cases the exit status doesn't reflect valid output or an error condition
+	//  so rely on parsing the output to determine success.
+
+	//Extract the per device size figure.  Guesstimate the per device used
+	// figure as discussed above.  Example output:
+	//
+	//      Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
+	//              Total devices 2 FS bytes used 156.00KB
+	//              devid    2 size 2.00GB used 512.00MB path /dev/sdb2
+	//              devid    1 size 2.00GB used 240.75MB path /dev/sdb1
+	//
+	// Calculations:
+	//      ptn fs size = devid size
+	//      ptn fs used = total fs used * devid used / sum devid used
+
+	Byte_Value ptn_size = partition .get_byte_length() ;
+	Byte_Value total_fs_used = -1 ;  //total fs used
+	Byte_Value sum_devid_used = 0 ;  //sum devid used
+	Byte_Value devid_used = -1 ;     //devid used
+	Byte_Value devid_size = -1 ;     //devid size
+
+	//Btrfs file system wide used bytes (extents and items)
+	Glib::ustring str ;
+	if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+( ?[KMGTPE]?i?B)?)" ) ) .empty() )
+		total_fs_used = Utils::round( btrfs_size_to_gdouble( str ) ) ;
+
+	Glib::ustring::size_type offset = 0 ;
+	Glib::ustring::size_type index ;
+	while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
 	{
-		//Extract the per device size figure.  Guesstimate the per device used
-		// figure as discussed above.  Example output:
-		//
-		//      Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
-		//              Total devices 2 FS bytes used 156.00KB
-		//              devid    2 size 2.00GB used 512.00MB path /dev/sdb2
-		//              devid    1 size 2.00GB used 240.75MB path /dev/sdb1
-		//
-		// Calculations:
-		//      ptn fs size = devid size
-		//      ptn fs used = total fs used * devid used / sum devid used
-
-		Byte_Value ptn_size = partition .get_byte_length() ;
-		Byte_Value total_fs_used = -1 ;  //total fs used
-		Byte_Value sum_devid_used = 0 ;  //sum devid used
-		Byte_Value devid_used = -1 ;     //devid used
-		Byte_Value devid_size = -1 ;     //devid size
-
-		//Btrfs file system wide used bytes (extents and items)
-		Glib::ustring str ;
-		if ( ! ( str = Utils::regexp_label( output, "FS bytes used ([0-9\\.]+( ?[KMGTPE]?i?B)?)" ) ) .empty() )
-			total_fs_used = Utils::round( btrfs_size_to_gdouble( str ) ) ;
-
-		Glib::ustring::size_type offset = 0 ;
-		Glib::ustring::size_type index ;
-		while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
+		Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
+		                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
+		if ( ! devid_path .empty() )
 		{
-			Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
-			                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
-			if ( ! devid_path .empty() )
+			//Btrfs per devid used bytes (chunks)
+			Byte_Value used = -1 ;
+			if ( ! ( str = Utils::regexp_label( output .substr( index ),
+			                                    "devid .* used ([0-9\\.]+( ?[KMGTPE]?i?B)?) path" ) ) .empty() )
 			{
-				//Btrfs per devid used bytes (chunks)
-				Byte_Value used = -1 ;
-				if ( ! ( str = Utils::regexp_label( output .substr( index ),
-				                                    "devid .* used ([0-9\\.]+( ?[KMGTPE]?i?B)?) path" ) ) .empty() )
-				{
-					used = btrfs_size_to_num( str, ptn_size, false ) ;
-					sum_devid_used += used ;
-					if ( devid_path == partition .get_path() )
-						devid_used = used ;
-				}
-
+				used = btrfs_size_to_num( str, ptn_size, false ) ;
+				sum_devid_used += used ;
 				if ( devid_path == partition .get_path() )
-				{
-					//Btrfs per device size bytes (chunks)
-					if ( ! ( str = Utils::regexp_label( output .substr( index ),
-					                                    "devid .* size ([0-9\\.]+( ?[KMGTPE]?i?B)?) used " ) ) .empty() )
-						devid_size = btrfs_size_to_num( str, ptn_size, true ) ;
-				}
+					devid_used = used ;
 			}
-			offset = index + 5 ;  //Next find starts immediately after current "devid"
-		}
 
-		if ( total_fs_used > -1 && devid_size > -1 && devid_used > -1 && sum_devid_used > 0 )
-		{
-			T = Utils::round( devid_size / double(partition .sector_size) ) ;               //ptn fs size
-			double ptn_fs_used = total_fs_used * ( devid_used / double(sum_devid_used) ) ;  //ptn fs used
-			N = T - Utils::round( ptn_fs_used / double(partition .sector_size) ) ;
-			partition .set_sector_usage( T, N ) ;
+			if ( devid_path == partition .get_path() )
+			{
+				//Btrfs per device size bytes (chunks)
+				if ( ! ( str = Utils::regexp_label( output .substr( index ),
+				                                    "devid .* size ([0-9\\.]+( ?[KMGTPE]?i?B)?) used " ) ) .empty() )
+					devid_size = btrfs_size_to_num( str, ptn_size, true ) ;
+			}
 		}
+		offset = index + 5 ;  //Next find starts immediately after current "devid"
+	}
+
+	if ( total_fs_used > -1 && devid_size > -1 && devid_used > -1 && sum_devid_used > 0 )
+	{
+		T = Utils::round( devid_size / double(partition .sector_size) ) ;               //ptn fs size
+		double ptn_fs_used = total_fs_used * ( devid_used / double(sum_devid_used) ) ;  //ptn fs used
+		N = T - Utils::round( ptn_fs_used / double(partition .sector_size) ) ;
+		partition .set_sector_usage( T, N ) ;
 	}
 	else
 	{
