@@ -406,22 +406,16 @@ void btrfs::read_label( Partition & partition )
 void btrfs::read_uuid( Partition & partition )
 {
 	if ( btrfs_found )
-	{
-		exit_status = Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
-		if ( ! exit_status )
-		{
-			partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
-		}
-	}
+		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
 	else
-	{
-		exit_status = Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
-		if ( ! exit_status )
-		{
-			partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
-		}
-	}
-	if ( exit_status )
+		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+	//In many cases the exit status doesn't reflect valid output or an error condition
+	//  so rely on parsing the output to determine success.
+
+	Glib::ustring uuid_str = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
+	if ( ! uuid_str .empty() )
+		partition .uuid = uuid_str ;
+	else
 	{
 		if ( ! output .empty() )
 			partition .messages .push_back( output ) ;
