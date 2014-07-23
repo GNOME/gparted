@@ -463,36 +463,35 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
 
-	int exit_status ;
 	Glib::ustring output, error ;
 	std::vector<int> devid_list ;
 	std::vector<Glib::ustring> path_list ;
 	if ( btrfs_found )
-		exit_status = Utils::execute_command( "btrfs filesystem show " + path, output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + path, output, error, true ) ;
 	else
-		exit_status = Utils::execute_command( "btrfs-show " + path, output, error, true ) ;
-	if ( ! exit_status )
+		Utils::execute_command( "btrfs-show " + path, output, error, true ) ;
+	//In many cases the exit status doesn't reflect valid output or an error condition
+	//  so rely on parsing the output to determine success.
+
+	//Extract devid and path for each device from output like this:
+	//  Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
+	//          Total devices 2 FS bytes used 156.00KB
+	//          devid    2 size 2.00GB used 512.00MB path /dev/sdb2
+	//          devid    1 size 2.00GB used 240.75MB path /dev/sdb1
+	Glib::ustring::size_type offset = 0 ;
+	Glib::ustring::size_type index ;
+	while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
 	{
-		//Extract devid and path for each device from output like this:
-		//  Label: none  uuid: 36eb51a2-2927-4c92-820f-b2f0b5cdae50
-		//          Total devices 2 FS bytes used 156.00KB
-		//          devid    2 size 2.00GB used 512.00MB path /dev/sdb2
-		//          devid    1 size 2.00GB used 240.75MB path /dev/sdb1
-		Glib::ustring::size_type offset = 0 ;
-		Glib::ustring::size_type index ;
-		while ( ( index = output .find( "devid ", offset ) ) != Glib::ustring::npos )
+		int devid = -1 ;
+		sscanf( output .substr( index ) .c_str(), "devid %d", &devid ) ;
+		Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
+		                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
+		if ( devid > -1 && ! devid_path .empty() )
 		{
-			int devid = -1 ;
-			sscanf( output .substr( index ) .c_str(), "devid %d", &devid ) ;
-			Glib::ustring devid_path = Utils::regexp_label( output .substr( index ),
-			                                                "devid .* path (/dev/[[:graph:]]+)" ) ;
-			if ( devid > -1 && ! devid_path .empty() )
-			{
-				devid_list .push_back( devid ) ;
-				path_list .push_back( devid_path ) ;
-			}
-			offset = index + 5 ;  //Next find starts immediately after current "devid"
+			devid_list .push_back( devid ) ;
+			path_list .push_back( devid_path ) ;
 		}
+		offset = index + 5 ;  //Next find starts immediately after current "devid"
 	}
 	//Add cache entries for all found devices
 	for ( unsigned int i = 0 ; i < devid_list .size() ; i ++ )
@@ -507,8 +506,7 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
 
-	//If "btrfs filesystem show" / "btrfs-show" commands not found, returned non-zero
-	//  exit status or failed to parse information return an "unknown" record
+	//If for any reason we fail to parse the information return an "unknown" record
 	static BTRFS_Device btrfs_dev = { -1, } ;
 	return btrfs_dev ;
 }
