@@ -96,7 +96,6 @@ LIBPARTED_VERSION=2.2
 AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (has improved pt re-read)])
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
-need_work_around=yes
 AC_RUN_IFELSE(
 	[AC_LANG_SOURCE(
 		[[
@@ -152,7 +151,6 @@ LIBPARTED_VERSION=3.0
 AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted is missing file system resizing API)])
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
-need_work_around=yes
 AC_RUN_IFELSE(
 	[AC_LANG_SOURCE(
 		[[
@@ -207,7 +205,6 @@ LIBPARTED_VERSION=3.1
 AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted has new file system resizing LIB)])
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
-need_work_around=yes
 AC_RUN_IFELSE(
 	[AC_LANG_SOURCE(
 		[[
