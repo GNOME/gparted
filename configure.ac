@@ -14,7 +14,7 @@ dnl checks for programs
 dnl======================
 AC_PROG_CXX
 AC_PROG_CC
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 
 dnl======================
