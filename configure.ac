@@ -198,58 +198,24 @@ int main ()
 LIBS="$LIBS_save"
 
 
-dnl======================
-dnl check whether libparted >= 3.1 (libparted has new file system resizing LIB)
-dnl======================
-LIBPARTED_VERSION=3.1
-AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (libparted has new file system resizing LIB)])
-LIBS_save="$LIBS"
-LIBS="-lparted -luuid -ldl"
-AC_RUN_IFELSE(
-	[AC_LANG_SOURCE(
-		[[
-#include <stdio.h>
-#include <parted/parted.h>
-
-int main ()
-{
-	int min_major = 0;
-	int min_minor = 0;
-	int min_micro = 0;
-	int major = 0;
-	int minor = 0;
-	int micro = 0;
-
-	if ( ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d.%d", &min_major, &min_minor ) == 2 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d", &min_major ) == 1 )
-	   )
-	{
-		if ( ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 ) ||
-		     ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 ) ||
-		     ( sscanf( ped_get_version(), "%d", &major ) == 1 )
-		   )
-		{
-			return ! ( (major > min_major) ||
-			           ( (major == min_major) && (minor > min_minor) ) ||
-			           ( (major == min_major) && (minor == min_minor) && (micro >= min_micro) )
-			         ) ;
-		}
-	}
-
-	return 1 ;
-}
-		]]
-	)],
-	[AC_DEFINE([HAVE_LIBPARTED_3_1_0_PLUS], [1], [Define to 1 if libparted >= 3.1])
-	 have_new_lp_fs_resize_lib=yes
-	 AC_MSG_RESULT([yes])
-	],
-	[have_new_lp_fs_resize_lib=no
-	 AC_MSG_RESULT([no])
-	]
+dnl Check for ped_file_system_resize() function in the parted-fs-resize
+dnl library to determine the need to use the new library.  Available in
+dnl parted >= 3.1.
+dnl
+dnl NOTE:
+dnl For AC_CHECK_LIB the default action-if-found ($3) includes extending
+dnl LIBS with the newly found library ($1) thus:
+dnl     LIBS="-l$1 $LIBS"
+dnl If default action-if-found is overridden, LIBS is not extended when
+dnl the library is found.
+dnl
+dnl As the default action-if-found is overridden, LIBS isn't extended so
+dnl saving and restoring LIBS isn't required.
+AC_CHECK_LIB(
+	[parted-fs-resize], [ped_file_system_resize],
+	[have_new_lp_fs_resize_lib=yes],
+	[have_new_lp_fs_resize_lib=no]
 )
-LIBS="$LIBS_save"
 
 
 dnl Check for availability of libparted fs resize library

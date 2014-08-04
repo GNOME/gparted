@@ -22,9 +22,6 @@
 #include "../include/Operation.h"
 
 #include <parted/parted.h>
-#ifdef HAVE_LIBPARTED_3_1_0_PLUS
-#include <parted/filesys.h>
-#endif
 #include <vector>
 #include <fstream>
 
