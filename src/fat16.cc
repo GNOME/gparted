@@ -108,12 +108,7 @@ FS fat16::get_filesystem_support()
 	fs .grow = GParted::FS::LIBPARTED ;
 	fs .shrink = GParted::FS::LIBPARTED ;
 #endif
-#ifdef HAVE_LIBPARTED_3_0_0_PLUS
 	fs .move = FS::GPARTED ;
-#else
-	fs .move = GParted::FS::LIBPARTED ;
-#endif
-
 	fs .copy = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
 

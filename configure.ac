@@ -187,8 +187,7 @@ int main ()
 }
 		]]
 	)],
-	[AC_DEFINE([HAVE_LIBPARTED_3_0_0_PLUS], [1], [Define to 1 if libparted >= 3.0])
-	 have_old_lp_fs_resize_api=no
+	[have_old_lp_fs_resize_api=no
 	 AC_MSG_RESULT([yes])
 	],
 	[have_old_lp_fs_resize_api=yes

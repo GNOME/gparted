@@ -1464,10 +1464,6 @@ void GParted_Core::read_label( Partition & partition )
 				if ( p_filesystem )
 					p_filesystem ->read_label( partition ) ;
 				break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-			case FS::LIBPARTED:
-				break ;
-#endif
 
 			default:
 				break ;
@@ -1987,10 +1983,8 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
-#ifndef HAVE_LIBPARTED_3_0_PLUS
 		case GParted::FS::LIBPARTED:
 			break ;
-#endif
 		case GParted::FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
@@ -2109,10 +2103,6 @@ bool GParted_Core::label_partition( const Partition & partition, OperationDetail
 				succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 					 p_filesystem ->write_label( partition, operationdetail .get_last_child() ) ;
 				break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
-			case FS::LIBPARTED:
-				break ;
-#endif
 
 			default:
 				break ;
@@ -2337,13 +2327,8 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 							  total_done, true ) ;
 
 			break ;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
 		case GParted::FS::LIBPARTED:
-			succes = resize_move_filesystem_using_libparted( partition_old,
-									 partition_new,
-								  	 operationdetail .get_last_child() ) ;
 			break ;
-#endif
 		case GParted::FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition_new .filesystem ) ) &&
 			         p_filesystem ->move( partition_old
@@ -2769,11 +2754,9 @@ bool GParted_Core::copy( const Partition & partition_src,
 									  true ) ;
 						break ;
 
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 				case GParted::FS::LIBPARTED :
 						//FIXME: see if copying through libparted has any advantages
 						break ;
-#endif
 
 				case GParted::FS::EXTERNAL :
 					succes = ( p_filesystem = get_filesystem_object( partition_dst .filesystem ) ) &&
@@ -3001,10 +2984,8 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			break ;
 		case GParted::FS::GPARTED:
 			break ;
-#ifndef HAVE_LIBPARTED_3_0_0_PLUS
 		case GParted::FS::LIBPARTED:
 			break ;
-#endif
 		case GParted::FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
