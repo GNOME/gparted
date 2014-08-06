@@ -236,7 +236,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				set_thread_status_message( String::ucompose ( _("Confirming %1"), lp_device ->path ) ) ;
 				if ( ped_device_open( lp_device ) )
 				{
-#ifdef HAVE_LIBPARTED_2_2_0_PLUS
+#ifdef USE_LIBPARTED_LARGE_SECTOR_SUPPORT
 					//Devices with sector sizes of 512 bytes and higher are supported
 					if ( ped_device_read( lp_device, buf, 0, 1 ) )
 						device_paths .push_back( lp_device ->path ) ;
@@ -3574,7 +3574,7 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 	{
 #endif
 		succes = ped_disk_commit_to_os( lp_disk ) ;
-#ifndef HAVE_LIBPARTED_2_2_0_PLUS
+#ifdef ENABLE_PT_REREAD_WORKAROUND
 		//Work around to try to alleviate problems caused by
 		//  bug #604298 - Failure to inform kernel of partition changes
 		//  If not successful the first time, try one more time.

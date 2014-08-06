@@ -89,9 +89,9 @@ int main ()
 LIBS="$LIBS_save"
 
 
-dnl======================
-dnl check whether libparted >= 2.2 (has improved partition table re-read code)
-dnl======================
+dnl Check for libparted >= 2.2 for improved informing the kernel to
+dnl re-read the partition table code and support of larger sector sizes
+dnl (> 512 bytes).
 LIBPARTED_VERSION=2.2
 AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (has improved pt re-read)])
 LIBS_save="$LIBS"
@@ -132,12 +132,14 @@ int main ()
 }
 		]]
 	)],
-	[AC_DEFINE([HAVE_LIBPARTED_2_2_0_PLUS], [1],
-	           [Define to 1 if libparted contains improved partition table re-read code])
-	 need_pt_reread_work_around=no; support_sector_size_gt_512=yes
+	[AC_DEFINE([USE_LIBPARTED_LARGE_SECTOR_SUPPORT], 1,
+	           [Define to 1 to use libparted large sector support])
+	 need_pt_reread_workaround=no; support_large_sector_sizes=yes
 	 AC_MSG_RESULT([yes])
 	],
-	[need_pt_reread_work_around=yes; support_sector_size_gt_512=no
+	[AC_DEFINE([ENABLE_PT_REREAD_WORKAROUND], 1,
+	           [Define to 1 to enable partition re-read workaround])
+	 need_pt_reread_workaround=yes; support_large_sector_sizes=no
 	 AC_MSG_RESULT([no])
 	]
 )
@@ -355,8 +357,8 @@ echo "           Use native libparted dmraid support?  :  $enable_libparted_dmra
 echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
-echo "      Need partition table re-read work around?  :  $need_pt_reread_work_around"
-echo "             Supports sector sizes > 512 bytes?  :  $support_sector_size_gt_512"
+echo "       Need partition table re-read workaround?  :  $need_pt_reread_workaround"
+echo "     Supports large sector sizes (> 512 bytes)?  :  $support_large_sector_sizes"
 echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
 echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
 echo ""
