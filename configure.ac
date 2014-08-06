@@ -158,20 +158,23 @@ dnl the library is found.
 dnl
 dnl As the default action-if-found is overridden, LIBS isn't extended so
 dnl saving and restoring LIBS isn't required.
+have_old_lp_fs_resize_api=no
 AC_CHECK_LIB(
 	[parted], [ped_file_system_resize],
-	[have_old_lp_fs_resize_api=yes],
-	[have_old_lp_fs_resize_api=no]
+	[have_old_lp_fs_resize_api=yes]
 )
 
 
-dnl Check for ped_file_system_resize() function in the parted-fs-resize
-dnl library to determine the need to use the new library.  Available in
-dnl parted >= 3.1.
-AC_CHECK_LIB(
-	[parted-fs-resize], [ped_file_system_resize],
-	[have_new_lp_fs_resize_lib=yes],
-	[have_new_lp_fs_resize_lib=no]
+dnl If not already found, check for ped_file_system_resize() function in
+dnl the parted-fs-resize library to determine the need to use the new
+dnl library.  Available in parted >= 3.1.
+have_new_lp_fs_resize_lib=no
+AS_IF(
+	[test "x$have_old_lp_fs_resize_api" != xyes],
+	[AC_CHECK_LIB(
+		[parted-fs-resize], [ped_file_system_resize],
+		[have_new_lp_fs_resize_lib=yes]
+	)]
 )
 
 
