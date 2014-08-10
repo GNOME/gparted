@@ -15,6 +15,7 @@ dnl======================
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_LIBTOOL
+AC_PROG_AWK
 
 
 dnl======================
@@ -42,49 +43,40 @@ AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** dl library (libdl) not found]
 
 
 dnl Check for minimum required libparted version
-LIBPARTED_VERSION=1.7.1
-AC_MSG_CHECKING([for libparted >= $LIBPARTED_VERSION])
+LIBPARTED_REQUIRED_VERSION='1.7.1'
+AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION])
+LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
+	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
 LIBS_save="$LIBS"
 LIBS="-lparted -luuid -ldl"
 AC_RUN_IFELSE(
 	[AC_LANG_SOURCE(
 		[[
 #include <stdio.h>
+#include <stdlib.h>
 #include <parted/parted.h>
 
-int main ()
+int main()
 {
-	int min_major = 0;
-	int min_minor = 0;
-	int min_micro = 0;
-	int major = 0;
-	int minor = 0;
-	int micro = 0;
-
-	if ( ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d.%d", &min_major, &min_minor ) == 2 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d", &min_major ) == 1 )
-	   )
+	const char *version = ped_get_version();
+	if (version == NULL)
 	{
-		if ( ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 ) ||
-		     ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 ) ||
-		     ( sscanf( ped_get_version(), "%d", &major ) == 1 )
-		   )
-		{
-			printf( "Found libparted %s\t", ped_get_version() ) ;
-			return ! ( (major > min_major) ||
-			           ( (major == min_major) && (minor > min_minor) ) ||
-			           ( (major == min_major) && (minor == min_minor) && (micro >= min_micro) )
-			         ) ;
-		}
+		fprintf(stderr, "ERROR: ped_get_version() returned NULL\n");
+		return EXIT_FAILURE;
 	}
-
-	return 1 ;
+	printf("%s\n", version);
+	return EXIT_SUCCESS;
 }
 		]]
 	)],
-	[AC_MSG_RESULT([OK])],
-	[AC_MSG_ERROR([*** Requires libparted >= $LIBPARTED_VERSION.  Perhaps development header files missing?])]
+	dnl Run test program again to cache libparted version.
+	[LIBPARTED_FOUND_VERSION=`./conftest$EXEEXT`
+	 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
+		$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
+		AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
+	],
+	[AC_MSG_ERROR([*** Error querying libparted version.  Check config.log for details.])]
 )
 LIBS="$LIBS_save"
 
@@ -92,58 +84,21 @@ LIBS="$LIBS_save"
 dnl Check for libparted >= 2.2 for improved informing the kernel to
 dnl re-read the partition table code and support of larger sector sizes
 dnl (> 512 bytes).
-LIBPARTED_VERSION=2.2
-AC_MSG_CHECKING([if libparted >= $LIBPARTED_VERSION (has improved pt re-read)])
-LIBS_save="$LIBS"
-LIBS="-lparted -luuid -ldl"
-AC_RUN_IFELSE(
-	[AC_LANG_SOURCE(
-		[[
-#include <stdio.h>
-#include <parted/parted.h>
-
-int main ()
-{
-	int min_major = 0;
-	int min_minor = 0;
-	int min_micro = 0;
-	int major = 0;
-	int minor = 0;
-	int micro = 0;
-
-	if ( ( sscanf( "$LIBPARTED_VERSION", "%d.%d.%d", &min_major, &min_minor, &min_micro ) == 3 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d.%d", &min_major, &min_minor ) == 2 ) ||
-	     ( sscanf( "$LIBPARTED_VERSION", "%d", &min_major ) == 1 )
-	   )
-	{
-		if ( ( sscanf( ped_get_version(), "%d.%d.%d", &major, &minor, &micro ) == 3 ) ||
-		     ( sscanf( ped_get_version(), "%d.%d", &major, &minor ) == 2 ) ||
-		     ( sscanf( ped_get_version(), "%d", &major ) == 1 )
-		   )
-		{
-			return ! ( (major > min_major) ||
-			           ( (major == min_major) && (minor > min_minor) ) ||
-			           ( (major == min_major) && (minor == min_minor) && (micro >= min_micro) )
-			         ) ;
-		}
-	}
-
-	return 1 ;
-}
-		]]
-	)],
-	[AC_DEFINE([USE_LIBPARTED_LARGE_SECTOR_SUPPORT], 1,
-	           [Define to 1 to use libparted large sector support])
-	 need_pt_reread_workaround=no; support_large_sector_sizes=yes
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_DEFINE([ENABLE_PT_REREAD_WORKAROUND], 1,
-	           [Define to 1 to enable partition re-read workaround])
-	 need_pt_reread_workaround=yes; support_large_sector_sizes=no
-	 AC_MSG_RESULT([no])
-	]
-)
-LIBS="$LIBS_save"
+LIBPARTED_WANTED_VERSION='2.2'
+AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (improved pt re-read)])
+LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
+	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
+	AC_DEFINE([USE_LIBPARTED_LARGE_SECTOR_SUPPORT], 1,
+	          [Define to 1 to use libparted large sector support])
+	need_pt_reread_workaround=no; support_large_sector_sizes=yes
+	AC_MSG_RESULT([(cached) yes])
+else
+	AC_DEFINE([ENABLE_PT_REREAD_WORKAROUND], 1,
+	          [Define to 1 to enable partition re-read workaround])
+	need_pt_reread_workaround=yes; support_large_sector_sizes=no
+	AC_MSG_RESULT([(cached) no])
+fi
 
 
 dnl Check for ped_file_system_resize() function to determine the existence
