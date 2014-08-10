@@ -68,11 +68,5 @@ gpartedbin_SOURCES = \
 	ufs.cc				\
 	xfs.cc
 
-gpartedbin_LDFLAGS = -lparted
-
-if USE_LIBPARTED_FS_RESIZE_LIBRARY
-gpartedbin_LDFLAGS += -lparted-fs-resize
-endif
-
 gpartedbin_LDADD = $(GTHREAD_LIBS) $(GTKMM_LIBS)
 

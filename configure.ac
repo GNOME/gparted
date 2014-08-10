@@ -38,8 +38,9 @@ IT_PROG_INTLTOOL([0.35.5])
 dnl======================
 dnl checks for libs
 dnl======================
-AC_CHECK_LIB([uuid], [uuid_generate], [], AC_MSG_ERROR([*** uuid library (libuuid) not found]))
-AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** dl library (libdl) not found]))
+AC_CHECK_LIB([uuid], [uuid_generate], [], AC_MSG_ERROR([*** libuuid not found.]))
+AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** libdl not found.]))
+AC_CHECK_LIB([parted], [ped_device_read], [], AC_MSG_ERROR([*** libparted not found.]))
 
 
 dnl Check for minimum required libparted version
@@ -47,8 +48,6 @@ LIBPARTED_REQUIRED_VERSION='1.7.1'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION])
 LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
 	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
-LIBS_save="$LIBS"
-LIBS="-lparted -luuid -ldl"
 AC_RUN_IFELSE(
 	[AC_LANG_SOURCE(
 		[[
@@ -78,7 +77,6 @@ int main()
 	],
 	[AC_MSG_ERROR([*** Error querying libparted version.  Check config.log for details.])]
 )
-LIBS="$LIBS_save"
 
 
 dnl Check for libparted >= 2.2 for improved informing the kernel to
@@ -128,13 +126,11 @@ AS_IF(
 	[test "x$have_old_lp_fs_resize_api" != xyes],
 	[AC_CHECK_LIB(
 		[parted-fs-resize], [ped_file_system_resize],
-		[have_new_lp_fs_resize_lib=yes]
+		[have_new_lp_fs_resize_lib=yes
+		 LIBS="-lparted-fs-resize $LIBS"
+		]
 	)]
 )
-
-
-dnl Check for availability of libparted fs resize library
-AM_CONDITIONAL([USE_LIBPARTED_FS_RESIZE_LIBRARY], [ test ${have_new_lp_fs_resize_lib} = yes])
 
 
 dnl Check if have libparted fs resize capability
