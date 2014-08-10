@@ -133,6 +133,20 @@ AS_IF(
 )
 
 
+dnl Check for libparted >= 3.2 for online resize support.
+LIBPARTED_WANTED_VERSION='3.2'
+AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (online resize)])
+LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
+	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
+	have_online_resize=yes
+	AC_MSG_RESULT([(cached) yes])
+else
+	have_online_resize=no
+	AC_MSG_RESULT([(cached) no])
+fi
+
+
 dnl Check if have libparted fs resize capability
 if test [ ${have_old_lp_fs_resize_api} = yes -o ${have_new_lp_fs_resize_lib} = yes ]; then
 	AC_DEFINE([HAVE_LIBPARTED_FS_RESIZE], [1], [Define to 1 if have libparted fs resize capability])
@@ -265,22 +279,27 @@ else
 	AC_MSG_RESULT([no])
 fi
 
+
 dnl======================
 dnl check whether to enable online resize support
 dnl======================
-AC_ARG_ENABLE([online_resize],
-  [  --enable-online-resize   enable online resize support],,)
-if test "x${enable_online_resize}" = "x" ; then
-	enable_online_resize=no
-fi
+AC_ARG_ENABLE(
+	[online-resize],
+	AS_HELP_STRING(
+		[--enable-online-resize],
+		[enable online resize support @<:@default=auto@:>@]),
+	[enable_online_resize=$enableval],
+	[enable_online_resize=$have_online_resize]
+)
 
 AC_MSG_CHECKING([whether online resize support is enabled])
-if test ${enable_online_resize} = yes; then
+if test "x$enable_online_resize" = xyes; then
+	AC_DEFINE([ENABLE_ONLINE_RESIZE], [1], [Define to 1 if online resize is enabled])
 	AC_MSG_RESULT([yes])
-	AC_DEFINE([ENABLE_ONLINE_RESIZE], [1], [Define to 1 if --enable-online-resize specified])
 else
 	AC_MSG_RESULT([no])
 fi
+
 
 AC_CONFIG_FILES([
 Makefile
@@ -308,13 +327,13 @@ echo ""
 echo "                           Build documentation?  :  $enable_doc"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
-echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
 echo "       Need partition table re-read workaround?  :  $need_pt_reread_workaround"
 echo "     Supports large sector sizes (> 512 bytes)?  :  $support_large_sector_sizes"
 echo "   Have old libparted file system resizing API?  :  $have_old_lp_fs_resize_api"
 echo "   Have new libparted file system resizing LIB?  :  $have_new_lp_fs_resize_lib"
+echo "                  Enable online resize support?  :  $enable_online_resize"
 echo ""
 echo " If all settings are OK, type make and then (as root) make install"
 echo "========================================================================"

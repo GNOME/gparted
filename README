@@ -114,13 +114,17 @@ b. Building from Source
 
    If you wish to build this package with online resize support then
    the following is required:
-      a)  A version of libparted that includes the online resize patch.
-          At time of writing (November 2013), this patch was only
-          included in Debian and derived distros with parted package
-          version 2.3-14 or higher.
-      b)  Linux kernel version 3.6 or higher.
-   Enable with the --enable-online-resize flag:
-      E.g., ./configure --enable-online-resize
+      a)  Linux kernel version 3.6 or higher.
+      b)  Libparted with online resize support.  Either:
+          i)  Libparted version 3.2 or later which includes online
+              resize support as standard.  In this case GParted is
+              automatically built with online resize support.
+          ii) Online resize support back ported into an earlier version
+              of libparted.  This is only known to be included in Debian
+              and derived distributions with parted version 2.3-14 and
+              higher.  In this case online resize support must be
+              specifically enabled with the --enable-online-resize flag:
+                E.g., ./configure --enable-online-resize
 
    Please note that more than one configure flag can be used:
       E.g., ./configure --disable-doc --enable-libparted-dmraid
