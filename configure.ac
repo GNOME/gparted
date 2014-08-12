@@ -264,17 +264,20 @@ AM_CONDITIONAL([DISABLE_DOC], [test ${enable_doc} = no])
 dnl======================
 dnl check whether to use native libparted dmraid support
 dnl======================
-AC_ARG_ENABLE([libparted_dmraid],
-  [  --enable-libparted-dmraid   do use native libparted /dev/mapper dmraid support],,)
-if test "x${enable_libparted_dmraid}" = "x" ; then
-	enable_libparted_dmraid=no
-fi
+AC_ARG_ENABLE(
+	[libparted_dmraid],
+	AS_HELP_STRING(
+		[--enable-libparted-dmraid],
+		[use native libparted /dev/mapper dmraid support @<:@default=disabled@:>@]),
+	[enable_libparted_dmraid=$enableval],
+	[enable_libparted_dmraid=no]
+)
 
-AC_MSG_CHECKING([whether native libparted /dev/mapper dmraid support should be used])
-if test ${enable_libparted_dmraid} = yes; then
+AC_MSG_CHECKING([whether to use native libparted /dev/mapper dmraid support])
+if test "x$enable_libparted_dmraid" = xyes; then
+	AC_DEFINE([USE_LIBPARTED_DMRAID], [1],
+	          [Define to 1 to use native libparted /dev/mapper dmraid support])
 	AC_MSG_RESULT([yes])
-	dnl Set   #define USE_LIBPARTED_DMRAID 1   to indicate documentation not wanted
-	AC_DEFINE([USE_LIBPARTED_DMRAID], [1], [Define to 1 if --enable-libparted-dmraid specified])
 else
 	AC_MSG_RESULT([no])
 fi
