@@ -1,8 +1,8 @@
-### Do not execute make in the help subdirectory if DISABLE_DOC is set
-if DISABLE_DOC
-SUBDIRS = compose data doc include po src
-else
+# Only execute make in the help subdirectory if BUILD_HELP_DOC is set
+if BUILD_HELP_DOC
 SUBDIRS = help compose data doc include po src
+else
+SUBDIRS = compose data doc include po src
 endif
 
 @INTLTOOL_DESKTOP_RULE@

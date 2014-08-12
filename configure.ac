@@ -236,29 +236,32 @@ PKG_CHECK_EXISTS(
 dnl======================
 dnl check whether to build documentation - Gnome-Doc-Utils
 dnl======================
-AC_ARG_ENABLE([doc],
-  [  --disable-doc           do not build documentation],,)
-if test "x${enable_doc}" = "x" ; then
-	enable_doc=yes
-fi
+AC_ARG_ENABLE(
+	[doc],
+	AS_HELP_STRING(
+		[--disable-doc],
+		dnl Autoconf quadrigraphs '@<:@' = '[' and '@:>@' = ']'
+		[disable building help documentation @<:@default=enabled@:>@]),
+	[enable_doc=$enableval],
+	[enable_doc=yes]
+)
 
-AC_MSG_CHECKING([whether documentation should be built])
-if test ${enable_doc} = no; then
-	AC_MSG_RESULT([no])
-else
+AC_MSG_CHECKING([whether help documentation should be built])
+if test "x$enable_doc" = xyes; then
+	AC_DEFINE([ENABLE_HELP_DOC], [1], [Define to 1 when help documentation is built])
 	AC_MSG_RESULT([yes])
+else
+	AC_MSG_RESULT([no])
 fi
 
-if test ${enable_doc} = yes; then
+if test "x$enable_doc" = xyes; then
 	GNOME_DOC_INIT
 else
 	dnl Do not care if GDU is not found
 	GNOME_DOC_INIT(,,[:])
-	dnl Set   #define HAVE_DISABLE_DOC 1   to indicate documentation not wanted
-	AC_DEFINE([HAVE_DISABLE_DOC], [1], [Define to 1 if --disable-doc specified])
 fi
 
-AM_CONDITIONAL([DISABLE_DOC], [test ${enable_doc} = no])
+AM_CONDITIONAL([BUILD_HELP_DOC], [test "x$enable_doc" = xyes])
 
 
 dnl======================
@@ -327,7 +330,7 @@ echo ""
 echo "======================== Final configuration ==========================="
 echo "                         Installing into prefix  :  $prefix"
 echo ""
-echo "                           Build documentation?  :  $enable_doc"
+echo "                      Build help documentation?  :  $enable_doc"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""

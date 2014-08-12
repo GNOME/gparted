@@ -1442,8 +1442,11 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 
 void Win_GParted::menu_help_contents()
 {
-#ifdef HAVE_DISABLE_DOC
-	//GParted was configured with --disable-doc
+#ifdef ENABLE_HELP_DOC
+	//GParted was built with help documentation
+	show_help_dialog( "gparted", "" );
+#else
+	//GParted was built *without* help documentation using --disable-doc
 	Gtk::MessageDialog dialog( *this,
 			_( "Documentation is not available" ),
 			false,
@@ -1457,9 +1460,6 @@ void Win_GParted::menu_help_contents()
 	tmp_msg += "http://gparted.org" ;
 	dialog .set_secondary_text( tmp_msg ) ;
 	dialog .run() ;
-#else
-	//GParted was configured without --disable-doc
-	show_help_dialog( "gparted", "" );
 #endif
 }
 
