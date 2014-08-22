@@ -209,6 +209,7 @@ private:
 
 	//device combo
 	Glib::RefPtr<Gtk::ListStore> liststore_devices ;
+	sigc::connection combo_devices_changed_connection;
 
 	struct treeview_devices_Columns : public Gtk::TreeModelColumnRecord
 	{

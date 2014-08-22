@@ -300,7 +300,8 @@ void Win_GParted::init_toolbar()
 	combo_devices .pack_start( treeview_devices_columns .device ) ;
 	combo_devices .pack_start( treeview_devices_columns .size, false ) ;
 	
-	combo_devices .signal_changed() .connect( sigc::mem_fun(*this, &Win_GParted::combo_devices_changed) );
+	combo_devices_changed_connection =
+		combo_devices .signal_changed() .connect( sigc::mem_fun(*this, &Win_GParted::combo_devices_changed) );
 
 	hbox_toolbar .pack_start( combo_devices, Gtk::PACK_SHRINK ) ;
 }
@@ -577,6 +578,10 @@ void Win_GParted::init_hpaned_main()
 
 void Win_GParted::refresh_combo_devices()
 {
+	// Temporarily block the on change callback while re-creating the device list
+	// behind the combobox to prevent flashing redraw by being redrawn with an empty
+	// device list.
+	combo_devices_changed_connection .block();
 	liststore_devices ->clear() ;
 	
 	menu = manage( new Gtk::Menu() ) ;
@@ -610,7 +615,8 @@ void Win_GParted::refresh_combo_devices()
 		menu ->show_all() ;
 		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_submenu( *menu ) ;
 	}
-	
+
+	combo_devices_changed_connection .unblock();
 	combo_devices .set_active( current_device ) ;
 }
 
