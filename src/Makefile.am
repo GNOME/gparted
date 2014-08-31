@@ -1,4 +1,4 @@
-INCLUDES =						\
+AM_CPPFLAGS =						\
 	$(GTHREAD_CFLAGS) 				\
 	$(GTKMM_CFLAGS) 				\
 	-DGPARTED_DATADIR=\""$(datadir)"\"			\
