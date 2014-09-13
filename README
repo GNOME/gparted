@@ -65,11 +65,19 @@ a. Pre-built Binary
 
 b. Building from Source
 
-   Building Gparted from source requires that several dependencies are
-   installed.  These include:
+   Briefly, build and install GParted into the default location of
+   /usr/local using:
+      ./configure
+      make
+      sudo make install
+   This assumes all the dependencies are already installed and builds
+   the default configuration.
+
+   The following dependencies are required to build GParted from source:
       g++
       e2fsprogs
       parted
+      gnome-common
       gtkmm24
       gettext
       gnome-doc-utils     - required if help documentation is to be built
@@ -97,8 +105,11 @@ b. Building from Source
                           gnome-doc-utils-devel docbook-xsl-stylesheets
       sudo zypper install -t pattern devel_c_c++
 
-   Briefly, the shell commands `./configure; make; make install' should
-   configure, build, and install this package.
+   Again, build GParted with the default configuration and install into
+   the default location of /usr/local using:
+      ./configure
+      make
+      sudo make install
 
    If you wish to build this package without the help documentation use
    the --disable-doc flag:
