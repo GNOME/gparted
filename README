@@ -142,6 +142,31 @@ b. Building from Source
 
    The INSTALL file contains further GNU installation instructions.
 
+c. Building using a Specific (lib)parted Version
+
+   1) Download the parted version you wish to use (e.g., 3.2) from:
+
+      http://ftp.gnu.org/gnu/parted/
+
+   2) Build and install parted.
+
+      Extract parted tarball, configure, make, and sudo make install.
+      Note that by default this will install into /usr/local.
+
+   3) Set library environment variables to look in /usr/local/lib.
+
+        export LD_LIBRARY_PATH=/usr/local/lib
+        export LD_RUN_PATH=/usr/local/lib
+        export LDFLAGS=-L/usr/local/lib
+
+   4) Build gparted using steps listed above in "Building from Source".
+
+      Note that when you run ./configure you should see the specific
+      version of parted listed in the check for libparted >= 1.7.1.
+
+      You will also see the libparted version listed when running
+      gparted from the command line.
+
 
 DIRECTORIES
 ------------
