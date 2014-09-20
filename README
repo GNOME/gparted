@@ -153,11 +153,12 @@ c. Building using a Specific (lib)parted Version
       Extract parted tarball, configure, make, and sudo make install.
       Note that by default this will install into /usr/local.
 
-   3) Set library environment variables to look in /usr/local/lib.
+   3) Set environment variables to inform the GParted build system to
+      use libparted from /usr/local:
 
-        export LD_LIBRARY_PATH=/usr/local/lib
-        export LD_RUN_PATH=/usr/local/lib
+        export CPPFLAGS=-I/usr/local/include
         export LDFLAGS=-L/usr/local/lib
+        export LD_RUN_PATH=/usr/local/lib
 
    4) Build gparted using steps listed above in "Building from Source".
 
