@@ -57,12 +57,14 @@ const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly
 
 enum FILESYSTEM
 {
+	// Special partition types and functions
 	FS_UNALLOCATED     = 0,
 	FS_UNKNOWN         = 1,
 	FS_UNFORMATTED     = 2,
 	FS_CLEARED         = 3,  //Clear existing file system signatures
 	FS_EXTENDED        = 4,
 
+	// Supported file system types
 	FS_BTRFS           = 5,
 	FS_EXFAT           = 6, /* Also known as fat64 */
 	FS_EXT2            = 7,
@@ -83,13 +85,15 @@ enum FILESYSTEM
 	FS_UFS             = 22,
 	FS_XFS             = 23,
 
-	FS_USED            = 24,
-	FS_UNUSED          = 25,
+	// Recognised signatures but otherwise unsupported file system types
+	FS_BITLOCKER       = 24,
+	FS_LUKS            = 25,
+	FS_LINUX_SWRAID    = 26,
+	FS_LINUX_SWSUSPEND = 27,
 
-	FS_BITLOCKER       = 26,
-	FS_LUKS            = 27,
-	FS_LINUX_SWRAID    = 28,
-	FS_LINUX_SWSUSPEND = 29
+	// Partition space usage colours
+	FS_USED            = 28,
+	FS_UNUSED          = 29
 } ;
 
 enum SIZE_UNIT
