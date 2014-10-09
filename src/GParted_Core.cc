@@ -3209,7 +3209,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	return succes ;
 }
 
-FileSystem * GParted_Core::get_filesystem_object( const FILESYSTEM & filesystem )
+FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
 {
 	if ( FILESYSTEM_MAP .count( filesystem ) )
 	    return FILESYSTEM_MAP[ filesystem ] ;

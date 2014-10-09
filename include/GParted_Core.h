@@ -60,7 +60,7 @@ public:
 	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
 
-	FileSystem * get_filesystem_object( const FILESYSTEM & filesystem ) ;
+	FileSystem * get_filesystem_object( FILESYSTEM filesystem );
 	static bool filesystem_resize_disallowed( const Partition & partition ) ;
 private:
 	//detectionstuff..
