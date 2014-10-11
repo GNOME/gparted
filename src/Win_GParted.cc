@@ -416,17 +416,8 @@ Gtk::Menu * Win_GParted::create_format_menu()
 
 	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
 	{
-		//Skip non-file systems or file systems only recognised but not otherwise supported
-		if (    fss[ t ] .filesystem == FS_UNKNOWN
-		     || fss[ t ] .filesystem == FS_CLEARED
-		     || fss[ t ] .filesystem == FS_BITLOCKER
-		     || fss[ t ] .filesystem == FS_LUKS
-		     || fss[ t ] .filesystem == FS_LINUX_SWRAID
-		     || fss[ t ] .filesystem == FS_LINUX_SWSUSPEND
-		   )
-			continue ;
-
-		create_format_menu_add_item( fss[ t ] .filesystem, fss[ t ] .create ) ;
+		if ( GParted_Core::supported_filesystem( fss[t].filesystem ) )
+			create_format_menu_add_item( fss[t].filesystem, fss[t].create );
 	}
 	//Add cleared at the end of the list
 	create_format_menu_add_item( FS_CLEARED, true ) ;

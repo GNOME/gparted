@@ -16,6 +16,7 @@
  */
 
 #include "../include/Dialog_Partition_New.h"
+#include "../include/GParted_Core.h"
 
 namespace GParted
 {
@@ -50,13 +51,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	std::vector< FS >::iterator f ;
 	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
 	{
-		if (   f ->filesystem == FS_UNKNOWN
-		    || f ->filesystem == FS_CLEARED
-		    || f ->filesystem == FS_BITLOCKER
-		    || f ->filesystem == FS_LUKS
-		    || f ->filesystem == FS_LINUX_SWRAID
-		    || f ->filesystem == FS_LINUX_SWSUSPEND
-		   )
+		if ( ! GParted_Core::supported_filesystem( f->filesystem ) )
 			//Compensate for subsequent 'f++' ...
 			f = this ->FILESYSTEMS .erase( f ) - 1 ;
 	}

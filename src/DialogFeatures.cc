@@ -16,6 +16,7 @@
  */
  
 #include "../include/DialogFeatures.h" 
+#include "../include/GParted_Core.h"
 
 #include <gtkmm/stock.h>
 
@@ -142,16 +143,8 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 	//fill the features chart with valid file systems 
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
 	{
-		//Skip non-file systems or file systems only recognised but not otherwise supported
-		if (    FILESYSTEMS[ t ] .filesystem == FS_UNKNOWN
-		     || FILESYSTEMS[ t ] .filesystem == FS_CLEARED
-		     || FILESYSTEMS[ t ] .filesystem == FS_BITLOCKER
-		     || FILESYSTEMS[ t ] .filesystem == FS_LUKS
-		     || FILESYSTEMS[ t ] .filesystem == FS_LINUX_SWRAID
-		     || FILESYSTEMS[ t ] .filesystem == FS_LINUX_SWSUSPEND
-		   )
-			continue ;
-		show_filesystem( FILESYSTEMS[ t ] ) ;
+		if ( GParted_Core::supported_filesystem( FILESYSTEMS[t].filesystem ) )
+			show_filesystem( FILESYSTEMS[t] );
 	}
 }
 		

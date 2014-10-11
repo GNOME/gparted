@@ -1559,10 +1559,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 		     ) &&
 		     partitions[ t ] .filesystem != FS_LINUX_SWAP      &&
 		     partitions[ t ] .filesystem != FS_LVM2_PV         &&
-		     partitions[ t ] .filesystem != FS_BITLOCKER       &&
-		     partitions[ t ] .filesystem != FS_LUKS            &&
-		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
-		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
+		     supported_filesystem( partitions[ t ] .filesystem )
 		   )
 		{
 			if ( partitions[ t ] .busy )
@@ -1644,12 +1641,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	FileSystem * p_filesystem = NULL ;
 	bool busy = false ;
 
-	if ( fstype != FS_UNKNOWN         &&
-	     fstype != FS_BITLOCKER       &&
-	     fstype != FS_LUKS            &&
-	     fstype != FS_LINUX_SWRAID    &&
-	     fstype != FS_LINUX_SWSUSPEND
-	   )
+	if ( supported_filesystem( fstype ) )
 	{
 		switch ( get_fs( fstype ) .busy )
 		{
@@ -1686,12 +1678,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
-		if ( partitions[ t ] .filesystem != FS_UNKNOWN         &&
-		     partitions[ t ] .filesystem != FS_BITLOCKER       &&
-		     partitions[ t ] .filesystem != FS_LUKS            &&
-		     partitions[ t ] .filesystem != FS_LINUX_SWRAID    &&
-		     partitions[ t ] .filesystem != FS_LINUX_SWSUSPEND
-		   )
+		if ( supported_filesystem( partitions[ t ] .filesystem ) ||
+		     partitions[t].filesystem == FS_EXTENDED                )
 		{
 			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
 			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
