@@ -42,18 +42,14 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
 
-	//Copy GParted FILESYSTEMS vector and re-order it to all real file systems first
-	//  followed by FS_CLEARED, FS_UNFORMATTED and finally FS_EXTENDED.  This decides
-	//  the order of items in the file system menu, built by Build_Filesystems_Menu().
-	this ->FILESYSTEMS = FILESYSTEMS ;
-
-	//... remove all non-file systems or file systems only recognised but not otherwise supported
-	std::vector< FS >::iterator f ;
-	for ( f = this->FILESYSTEMS .begin(); f != this->FILESYSTEMS .end(); f++ )
+	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
+	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
+	// of items in the file system menu built by Build_Filesystems_Menu().
+	this->FILESYSTEMS.clear();
+	for ( unsigned i = 0 ; i < FILESYSTEMS.size() ; i ++ )
 	{
-		if ( ! GParted_Core::supported_filesystem( f->filesystem ) )
-			//Compensate for subsequent 'f++' ...
-			f = this ->FILESYSTEMS .erase( f ) - 1 ;
+		if ( GParted_Core::supported_filesystem( FILESYSTEMS[i].filesystem ) )
+			this->FILESYSTEMS.push_back( FILESYSTEMS[i] );
 	}
 
 	FS fs_tmp ;
@@ -67,7 +63,8 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
-	//... finally add FS_EXTENDED
+	// ... finally add FS_EXTENDED.  Needed so that when creating an extended
+	// partition it is identified correctly before the operation is applied.
 	fs_tmp = FS();
 	fs_tmp .filesystem = GParted::FS_EXTENDED ;
 	fs_tmp .create = GParted::FS::NONE ;
