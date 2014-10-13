@@ -3217,6 +3217,12 @@ FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
 	    return NULL ;
 }
 
+// Return true for file systems with an implementation class, false otherwise
+bool GParted_Core::supported_filesystem( FILESYSTEM fstype )
+{
+	return get_filesystem_object( fstype ) != NULL;
+}
+
 bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 {
 	if ( partition .filesystem == FS_LVM2_PV )
@@ -3698,5 +3704,7 @@ GParted_Core::~GParted_Core()
 }
 
 Glib::Thread *GParted_Core::mainthread;
+
+std::map< FILESYSTEM, FileSystem * > GParted_Core::FILESYSTEM_MAP;
 
 } //GParted
