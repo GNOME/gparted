@@ -70,7 +70,9 @@ Glib::ustring Utils::num_to_str( Sector number )
 	return ss .str() ;
 }
 
-//use palette from http://developer.gnome.org/hig-book/2.32/design-color.html.en as a starting point.
+// Use palette from GNOME Human Interface Guidelines as a starting point.
+//     http://developer.gnome.org/hig-book/2.32/design-color.html.en
+//     http://web.archive.org/web/20130922173112/https://developer.gnome.org/hig-book/stable/design-color.html.en
 Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 {
 	switch( filesystem )
@@ -90,7 +92,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
 		case FS_EXFAT		: return "#2E8B57" ;	// ~ sea green
 		case FS_NILFS2		: return "#826647" ;	//face skin dark
-		case FS_NTFS		: return "#42E5AC" ;	// ~ light turquoise
+		case FS_NTFS		: return "#42E5AC" ;	// ~ light aquamarine
 		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
 		case FS_REISER4		: return "#887FA3" ;	//purple medium
 		case FS_XFS			: return "#EED680" ;	//accent yellow
@@ -105,6 +107,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
 		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
+		case FS_REFS		: return "#1FC48D" ;	// ~ medium aquamarine
 
 		default				: return "#000000" ;
 	}
@@ -235,6 +238,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_LUKS		: return "crypt-luks" ;
 		case FS_LINUX_SWRAID	: return "linux-raid" ;
 		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
+		case FS_REFS		: return "refs" ;
 
 		default			: return "" ;
 	}

@@ -1336,6 +1336,8 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		else if ( fs_type == "swsusp" ||
 		          fs_type == "swsuspend" )
 			return FS_LINUX_SWSUSPEND ;
+		else if ( fs_type == "ReFS" )
+			return FS_REFS;
 	}
 
 
