@@ -27,32 +27,56 @@ FS ext2::get_filesystem_support()
 
 	fs .busy = FS::GPARTED ;
 
-	//Only enable any functionality if the relevant mkfs.extX command is
-	//  found to ensure that the version of e2fsprogs is new enough to
-	//  support ext4.  Applying to ext2/3 too is OK as relevant mkfs.ext2/3
-	//  commands exist.
+	// Only enable functionality if the relevant mkfs.extX command is found to ensure
+	// that the version of e2fsprogs is new enough to support ext4.  Applying to
+	// ext2/3 is OK as relevant mkfs.ext2/3 commands exist.  Also for ext4 only, check
+	// for e4fsprogs commands to support RHEL/CentOS 5.x which uses a separate package
+	// to provide ext4 support.  The existing e2fsprogs commands only support ext2/3.
 	if ( ! Glib::find_program_in_path( "mkfs." + Utils::get_filesystem_string( specific_type ) ).empty() )
 	{
+		mkfs_cmd = "mkfs." + Utils::get_filesystem_string( specific_type );
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
-		if ( ! Glib::find_program_in_path( "dumpe2fs" ) .empty() )
+		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "dumpe4fs" ).empty() )
+			dump_cmd = "dumpe4fs";
+		else if ( ! Glib::find_program_in_path( "dumpe2fs" ).empty() )
+			dump_cmd = "dumpe2fs";
+		if ( dump_cmd != "" )
 			fs .read = FS::EXTERNAL ;
 
-		if ( ! Glib::find_program_in_path( "tune2fs" ) .empty() ) {
+		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "tune4fs" ).empty() )
+			tune_cmd = "tune4fs";
+		else if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
+			tune_cmd = "tune2fs";
+		if ( tune_cmd != "" )
+		{
 			fs .read_uuid = FS::EXTERNAL ;
 			fs .write_uuid = FS::EXTERNAL ;
 		}
 
-		if ( ! Glib::find_program_in_path( "e2label" ) .empty() ) {
+		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4label" ).empty() )
+			label_cmd = "e4label";
+		else if ( ! Glib::find_program_in_path( "e2label" ).empty() )
+			label_cmd = "e2label";
+		if ( label_cmd != "" )
+		{
 			fs .read_label = FS::EXTERNAL ;
 			fs .write_label = FS::EXTERNAL ;
 		}
 
-		if ( ! Glib::find_program_in_path( "e2fsck" ) .empty() )
+		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4fsck" ).empty() )
+			fsck_cmd = "e4fsck";
+		else if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
+			fsck_cmd = "e2fsck";
+		if ( fsck_cmd != "" )
 			fs .check = FS::EXTERNAL ;
 	
-		if ( ! Glib::find_program_in_path( "resize2fs" ) .empty() && fs .check )
+		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "resize4fs" ).empty() )
+			resize_cmd = "resize4fs";
+		else if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
+			resize_cmd = "resize2fs";
+		if ( resize_cmd != "" && fs .check )
 		{
 			fs .grow = FS::EXTERNAL ;
 
@@ -68,9 +92,13 @@ FS ext2::get_filesystem_support()
 			//  only copies used blocks, skipping unused blocks.  This is more
 			//  efficient than copying all blocks used by GParted's internal
 			//  method.
-			if ( ! Glib::find_program_in_path( "e2image" ) .empty() )
+			if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4image" ).empty() )
+				image_cmd = "e4image";
+			else if ( ! Glib::find_program_in_path( "e2image" ).empty() )
+				image_cmd = "e2image";
+			if ( image_cmd != "" )
 			{
-				Utils::execute_command( "e2image", output, error, true ) ;
+				Utils::execute_command( image_cmd, output, error, true ) ;
 				if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
 					fs.copy = fs.move = FS::EXTERNAL ;
 			}
@@ -93,7 +121,7 @@ void ext2::set_used_sectors( Partition & partition )
 	//  avoid overhead subtraction.  Read the free space from the kernel via
 	//  the statvfs() system call when mounted and from the superblock when
 	//  unmounted.
-	if ( ! Utils::execute_command( "dumpe2fs -h " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( dump_cmd + " -h " + partition .get_path(), output, error, true ) )
 	{
 		index = output .find( "Block count:" ) ;
 		if ( index >= output .length() ||
@@ -147,7 +175,7 @@ void ext2::set_used_sectors( Partition & partition )
 	
 void ext2::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "e2label " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( label_cmd + " " + partition .get_path(), output, error, true ) )
 	{
 		partition .set_label( Utils::trim( output ) ) ;
 	}
@@ -163,12 +191,12 @@ void ext2::read_label( Partition & partition )
 
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "e2label " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
+	return ! execute_command( label_cmd + " " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
 }
 
 void ext2::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "tune2fs -l " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( tune_cmd + " -l " + partition .get_path(), output, error, true ) )
 	{
 		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -184,13 +212,12 @@ void ext2::read_uuid( Partition & partition )
 
 bool ext2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "tune2fs -U random " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( tune_cmd + " -U random " + partition .get_path(), operationdetail ) ;
 }
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs." + Utils::get_filesystem_string( specific_type ) +
-				  " -L \"" + new_partition.get_label() + "\" " + new_partition.get_path(),
+	return ! execute_command( mkfs_cmd + " -L \"" + new_partition.get_label() + "\" " + new_partition.get_path(),
 				  operationdetail,
 				  false,
 				  true );
@@ -198,7 +225,7 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring str_temp = "resize2fs -p " + partition_new .get_path() ;
+	Glib::ustring str_temp = resize_cmd + " -p " + partition_new .get_path() ;
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
@@ -209,7 +236,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "e2fsck -f -y -v -C 0 " + partition.get_path(), operationdetail,
+	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
 				       false, true );
 
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
@@ -226,10 +253,10 @@ bool ext2::move( const Partition & partition_new,
 	distance = partition_old.sector_start - partition_new.sector_start;
 	offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
 	if ( distance < 0 )
-		return ! execute_command( "e2image -ra -p -o " + offset + " " + partition_new.get_path(),
+		return ! execute_command( image_cmd + " -ra -p -o " + offset + " " + partition_new.get_path(),
 		                          operationdetail, true, true );
 	else
-		return ! execute_command( "e2image -ra -p -O " + offset + " " + partition_new.get_path(),
+		return ! execute_command( image_cmd + " -ra -p -O " + offset + " " + partition_new.get_path(),
 		                          operationdetail, true, true );
 
 }
@@ -238,7 +265,7 @@ bool ext2::copy( const Partition & src_part,
                  Partition & dest_part,
                  OperationDetail & operationdetail )
 {
-	return ! execute_command( "e2image -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
+	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
 	                          operationdetail, true, true );
 }
 

@@ -27,8 +27,16 @@ namespace GParted
 class ext2 : public FileSystem
 {
 	const enum FILESYSTEM specific_type;
+	Glib::ustring dump_cmd;
+	Glib::ustring fsck_cmd;
+	Glib::ustring image_cmd;
+	Glib::ustring label_cmd;
+	Glib::ustring mkfs_cmd;
+	Glib::ustring resize_cmd;
+	Glib::ustring tune_cmd;
 public:
-	ext2( enum FILESYSTEM type ) : specific_type( type ) {};
+	ext2( enum FILESYSTEM type ) : specific_type( type ), dump_cmd( "" ), fsck_cmd( "" ), image_cmd( "" ),
+	                               label_cmd( "" ), mkfs_cmd( "" ), resize_cmd( "" ), tune_cmd( "" ) {};
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;
