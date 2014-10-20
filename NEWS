@@ -1,4 +1,49 @@
 ============================
+GParted 0.20.0  (2014-10-20)
+============================
+
+Release Notes
+-------------
+  This release of GParted improves resizing multi-device btrfs file
+  systems.  Also included are language translation updates.
+
+### Key changes include:
+
+  * Include devid when resizing multi-device btrfs file systems
+  * Add GRUB 2 restoration steps to help manual
+
+Bug Fixes
+---------
+  * Fix devid needed when resizing multi-device btrfs file systems (#723842)
+  * Fix warnings and missing label with btrfs-progs 3.12 and 3.14 (#733601)
+  * Fix ./configure is successful even when C++ compiler is missing (#732803)
+  * Add GRUB 2 restoration steps to help manual (#734376)
+  * Cleanup autoconf configure.ac and related files (#734718)
+    - All fat16 and fat32 moves performed by GParted internal algorithm
+  * Autodetect parted online partition resizing capability (#734076)
+    - Tidy up autoconf check for --disable-doc and --enable-libparted-dmraid
+  * Prevent automake warning about deprecated INCLUDES (#735742)
+  * Reduce display flashing when refreshing devices (#696149)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), es(Daniel Mustieles), de(Wolfgang Stöggl),
+  fr(Claude Paroz), gd(GunChleoc), hu(Balázs Úr),
+  id(Andika Triwidada), it(Milo Casagrande), nl(Hannie Dumoleyn),
+  pl(Piotr Drąg), pt(Tiago S, Duarte Loreto), pt_BR(Enrico Nicoletto),
+  sk(Dušan Kazik), sr(Мирослав Николић), sr@latin(Miroslav Nikolić),
+  sv(Josef Andersson)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.19.1  (2014-07-15)
 ============================
 
