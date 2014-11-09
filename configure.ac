@@ -252,7 +252,7 @@ PKG_CHECK_EXISTS(
 
 
 dnl======================
-dnl check whether to build documentation - Gnome-Doc-Utils
+dnl check whether to build documentation - gnome-doc-utils
 dnl======================
 AC_ARG_ENABLE(
 	[doc],
