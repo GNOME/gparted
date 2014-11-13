@@ -43,14 +43,31 @@ AC_CHECK_LIB([dl], [dlopen], [], AC_MSG_ERROR([*** libdl not found.]))
 AC_CHECK_LIB([parted], [ped_device_read], [], AC_MSG_ERROR([*** libparted not found.]))
 
 
-dnl Check for minimum required libparted version
+dnl Check for minimum required libparted version.
+dnl 1) Check using pkg-config.
+dnl    (Older distros tend to not provide pkg-config information for libparted).
+dnl 2) Check by linking and running a program to report libparted version directly.
 LIBPARTED_REQUIRED_VERSION='1.7.1'
-AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION])
+AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION (querying pkg-config)])
 LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
 	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
-AC_RUN_IFELSE(
-	[AC_LANG_SOURCE(
-		[[
+dnl 1) Check using pkg-config.
+PKG_CHECK_EXISTS(
+	[libparted],
+	[LIBPARTED_FOUND_VERSION=`$PKG_CONFIG --modversion libparted`
+	 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
+		$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	 AC_MSG_RESULT([$LIBPARTED_FOUND_VERSION])
+	 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
+		AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
+	],
+	[AC_MSG_RESULT([not found])
+	 dnl 2) Check by linking and running a program to report libparted version
+	 dnl    directly.
+	 AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION (querying libparted)])
+	 AC_RUN_IFELSE(
+		[AC_LANG_SOURCE(
+			[[
 #include <stdio.h>
 #include <stdlib.h>
 #include <parted/parted.h>
@@ -66,16 +83,17 @@ int main()
 	printf("%s\n", version);
 	return EXIT_SUCCESS;
 }
-		]]
-	)],
-	dnl Run test program again to cache libparted version.
-	[LIBPARTED_FOUND_VERSION=`./conftest$EXEEXT`
-	 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
-		$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
-	 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
-		AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
-	],
-	[AC_MSG_ERROR([*** Error querying libparted version.  Check config.log for details.])]
+			]]
+		)],
+		dnl Run test program again to cache libparted version.
+		[LIBPARTED_FOUND_VERSION=`./conftest$EXEEXT`
+		 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
+			$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+		 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
+			AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
+		],
+		[AC_MSG_ERROR([*** Error querying libparted version.  Check config.log for details.])]
+	)]
 )
 
 
@@ -106,8 +124,6 @@ dnl NOTE:
 dnl For AC_CHECK_LIB the default action-if-found ($3) includes extending
 dnl LIBS with the newly found library ($1) thus:
 dnl     LIBS="-l$1 $LIBS"
-dnl If default action-if-found is overridden, LIBS is not extended when
-dnl the library is found.
 dnl
 dnl As the default action-if-found is overridden, LIBS isn't extended so
 dnl saving and restoring LIBS isn't required.
