@@ -16,6 +16,8 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_LIBTOOL
 AC_PROG_AWK
+dnl Check for pkg-config early to avoid splitting message when first used.
+PKG_CHECK_EXISTS
 
 
 dnl======================
