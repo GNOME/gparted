@@ -2388,33 +2388,31 @@ bool GParted_Core::resize( const Partition & partition_old,
 		return false ;
 	}
 
-	bool succes = false ;
+	bool success = true;
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not resize
-		succes =    resize_move_partition( partition_old, partition_new, operationdetail )
-		         && resize_filesystem( partition_old, partition_new, operationdetail );
+		success =    resize_move_partition( partition_old, partition_new, operationdetail )
+		          && resize_filesystem( partition_old, partition_new, operationdetail );
 
-		return succes;
+		return success;
 	}
-	else if ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
+
+	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
+	if ( delta < 0LL )  // shrink
 	{
-		succes = true ;
-
-		if ( succes && partition_new .get_sector_length() < partition_old .get_sector_length() )
-			succes = resize_filesystem( partition_old, partition_new, operationdetail ) ;
-
-		if ( succes )
-			succes = resize_move_partition( partition_old, partition_new, operationdetail ) ;
-
-		// Maximize file system if growing
-		if ( succes && partition_new .get_sector_length() > partition_old .get_sector_length() )
-			succes = maximize_filesystem( partition_new, operationdetail );
-
-		return succes ;
+		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
+		          && resize_filesystem( partition_old, partition_new, operationdetail )
+		          && resize_move_partition( partition_old, partition_new, operationdetail );
+	}
+	else if ( delta > 0LL )  // grow
+	{
+		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
+		          && resize_move_partition( partition_old, partition_new, operationdetail )
+		          && maximize_filesystem( partition_new, operationdetail );
 	}
 
-	return false ;
+	return success;
 }
 
 bool GParted_Core::resize_move_partition( const Partition & partition_old,
