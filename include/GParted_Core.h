@@ -111,6 +111,8 @@ private:
 
 	bool label_filesystem( const Partition & partition, OperationDetail & operationdetail );
 
+	bool name_partition( const Partition & partition, OperationDetail & operationdetail );
+
 	bool change_uuid( const Partition & partition, OperationDetail & operation_detail ) ;
 
 	bool resize_move( const Device & device,

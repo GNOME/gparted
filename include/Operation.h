@@ -32,7 +32,8 @@ enum OperationType {
 	OPERATION_FORMAT           = 4,
 	OPERATION_COPY             = 5,
 	OPERATION_LABEL_FILESYSTEM = 6,
-	OPERATION_CHANGE_UUID      = 7
+	OPERATION_CHANGE_UUID      = 7,
+	OPERATION_NAME_PARTITION   = 8
 };
 
 class Operation

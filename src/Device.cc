@@ -32,6 +32,7 @@ void Device::Reset()
 	length = cylsize = 0 ;
 	heads = sectors = cylinders = 0 ;
 	model = disktype = "" ;
+	partition_naming = false;
 	sector_size = max_prims = highest_busy = 0 ;
 	readonly = false ; 	
 }

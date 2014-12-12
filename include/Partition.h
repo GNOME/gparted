@@ -116,6 +116,7 @@ public:
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
 	FILESYSTEM filesystem ;
 	Glib::ustring uuid ;
+	Glib::ustring name;
 	Sector sector_start;
 	Sector sector_end;
 	Sector sectors_used;

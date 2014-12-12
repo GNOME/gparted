@@ -51,7 +51,8 @@ public:
 	int max_prims ;
 	int highest_busy ;
 	bool readonly ; 
-			
+	bool partition_naming;  // Is naming of partitions supported on this device?
+
 private:
 	void sort_paths_and_remove_duplicates() ;
 

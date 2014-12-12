@@ -106,6 +106,9 @@ private:
 	void allow_label_filesystem( bool state ) {
 		toggle_item( state, MENU_LABEL_PARTITION ) ; } 
 
+	void allow_name_partition( bool state ) {
+		toggle_item( state, MENU_NAME_PARTITION ); }
+
 	void allow_change_uuid( bool state )	{
 		toggle_item( state, MENU_CHANGE_UUID ) ; }
 
@@ -169,6 +172,7 @@ private:
 	void activate_check() ;
 	void activate_change_uuid() ;
 	void activate_label_filesystem();
+	void activate_name_partition();
 
 	void activate_undo();
 	void remove_operation( int index = -1, bool remove_all = false ) ;
@@ -236,6 +240,7 @@ private:
         MENU_FORMAT,
         MENU_TOGGLE_BUSY,
         MENU_MOUNT,
+	MENU_NAME_PARTITION,
         MENU_FLAGS,
         MENU_CHECK,
 	MENU_LABEL_PARTITION,

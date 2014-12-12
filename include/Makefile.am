@@ -11,6 +11,7 @@ EXTRA_DIST = \
 	Dialog_FileSystem_Label.h	\
 	Dialog_Partition_Copy.h		\
 	Dialog_Partition_Info.h		\
+	Dialog_Partition_Name.h		\
 	Dialog_Partition_New.h		\
 	Dialog_Partition_Resize_Move.h	\
 	Dialog_Progress.h		\
@@ -32,6 +33,7 @@ EXTRA_DIST = \
 	OperationDetail.h		\
 	OperationFormat.h		\
 	OperationLabelFileSystem.h	\
+	OperationNamePartition.h	\
 	OperationResizeMove.h		\
 	Partition.h			\
 	PipeCapture.h			\

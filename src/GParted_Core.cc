@@ -27,6 +27,7 @@
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelFileSystem.h"
+#include "../include/OperationNamePartition.h"
 #include "../include/Proc_Partitions_Info.h"
 
 #include "../include/btrfs.h"
@@ -313,6 +314,12 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			{
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
+
+				// Determine if partition naming is supported.
+				temp_device.partition_naming = ped_disk_type_check_feature( lp_disk->type,
+				                                                            PED_DISK_TYPE_PARTITION_NAME );
+				// So far only GPTs are supported.
+				temp_device.partition_naming &= ( temp_device.disktype == "gpt" );
 
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
 				set_mountpoints( temp_device .partitions ) ;
@@ -730,6 +737,9 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			case OPERATION_LABEL_FILESYSTEM:
 				succes = label_filesystem( operation->partition_new, operation->operation_detail );
 				break ;
+			case OPERATION_NAME_PARTITION:
+				succes = name_partition( operation->partition_new, operation->operation_detail );
+				break;
 			case OPERATION_CHANGE_UUID:
 				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
@@ -1188,6 +1198,10 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 			{
 				read_uuid( partition_temp ) ;
 			}
+
+			// Retrieve partition name
+			if ( device.partition_naming )
+				partition_temp.name = Glib::ustring( ped_partition_get_name( lp_partition ) );
 		}
 
 		partition_temp .messages .insert( partition_temp .messages .end(),
@@ -2099,6 +2113,34 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 
 	return succes ;	
+}
+
+bool GParted_Core::name_partition( const Partition & partition, OperationDetail & operationdetail )
+{
+	if ( partition.name.empty() )
+		operationdetail.add_child( OperationDetail(
+				String::ucompose( _("Clear partition name on %1"), partition.get_path() ) ) );
+	else
+		operationdetail.add_child( OperationDetail(
+				String::ucompose( _("Set partition name to \"%1\" on %2"),
+				                  partition.name, partition.get_path() ) ) );
+
+	bool success = false;
+	PedDevice *lp_device = NULL;
+	PedDisk *lp_disk = NULL;
+	if ( get_device_and_disk( partition.device_path, lp_device, lp_disk ) )
+	{
+		PedPartition *lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
+		if ( lp_partition )
+		{
+			success =    ped_partition_set_name( lp_partition, partition.name.c_str() )
+			          && commit( lp_disk );
+		}
+	}
+
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+
+	return success;
 }
 
 bool GParted_Core::change_uuid( const Partition & partition, OperationDetail & operationdetail )

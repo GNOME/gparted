@@ -42,6 +42,7 @@ void Partition::Reset()
 	filesystem = GParted::FS_UNALLOCATED ;
 	have_filesystem_label = false;
 	uuid .clear() ;
+	name.clear();
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	sectors_unallocated = 0 ;
 	significant_threshold = 1 ;

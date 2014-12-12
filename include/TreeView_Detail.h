@@ -46,9 +46,10 @@ public:
 
 private:
 	void load_partitions( const std::vector<Partition> & partitions,
-			      bool & mountpoints,
-			      bool & labels,
-			      const Gtk::TreeRow & parent_row = Gtk::TreeRow() ) ;
+	                      bool & mountpoints,
+	                      bool & labels,
+	                      bool & names,
+	                      const Gtk::TreeRow & parent_row = Gtk::TreeRow() );
 	bool set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended = false ) ;
 	void create_row( const Gtk::TreeRow & treerow, const Partition & partition );
 
@@ -66,6 +67,7 @@ private:
 	struct treeview_detail_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> path;
+		Gtk::TreeModelColumn<Glib::ustring> name;
 		Gtk::TreeModelColumn<Glib::ustring> filesystem;
 		Gtk::TreeModelColumn<Glib::ustring> mountpoint;
 		Gtk::TreeModelColumn<Glib::ustring> label ;
@@ -82,7 +84,7 @@ private:
 		
 		treeview_detail_Columns()
 		{
-			add( path ); add( filesystem ); add( mountpoint ) ; add( label ) ;
+			add( path ); add( name ); add( filesystem ); add( mountpoint ); add( label );
 			add( size ); add( used ); add( unused ); add( color );
 			add( text_color ); add( mount_text_color ); add( icon1 );
 			add( icon2 ) ; add( flags ); add( partition );

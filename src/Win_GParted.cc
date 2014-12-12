@@ -25,6 +25,7 @@
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/Dialog_FileSystem_Label.h"
+#include "../include/Dialog_Partition_Name.h"
 #include "../include/DialogManageFlags.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCheck.h"
@@ -34,6 +35,7 @@
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelFileSystem.h"
+#include "../include/OperationNamePartition.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../config.h"
 
@@ -63,6 +65,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
         MENU_FORMAT =
         MENU_TOGGLE_BUSY =
         MENU_MOUNT =
+        MENU_NAME_PARTITION =
         MENU_FLAGS =
         MENU_INFO =
         MENU_LABEL_PARTITION =
@@ -376,6 +379,11 @@ void Win_GParted::init_partition_menu()
 
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
+
+	menu_partition.items().push_back(
+			Gtk::Menu_Helpers::MenuElem( _("_Name Partition"),
+			                             sigc::mem_fun( *this, &Win_GParted::activate_name_partition ) ) );
+	MENU_NAME_PARTITION = index++;
 
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("M_anage Flags"),
@@ -699,6 +707,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 		     operation ->type == OPERATION_CHECK ||
 		     operation ->type == OPERATION_CHANGE_UUID ||
 		     operation ->type == OPERATION_LABEL_FILESYSTEM ||
+		     operation ->type == OPERATION_NAME_PARTITION ||
 		     gparted_core .snap_to_alignment( operation ->device, operation ->partition_new, error )
 		   )
 		{
@@ -750,6 +759,18 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		operations[ first ]->partition_new.set_filesystem_label(
 		                        operations[ second ]->partition_new.get_filesystem_label() );
 		operations[ first ]->create_description() ;
+		remove_operation( second );
+
+		return true;
+	}
+	// Two name change operations on the same partition
+	else if ( operations[first]->type == OPERATION_NAME_PARTITION &&
+	          operations[second]->type == OPERATION_NAME_PARTITION &&
+	          operations[first]->partition_new == operations[second]->partition_original
+	        )
+	{
+		operations[first]->partition_new.name = operations[second]->partition_new.name;
+		operations[first]->create_description();
 		remove_operation( second );
 
 		return true;
@@ -935,8 +956,8 @@ void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_busy_state( false ) ;
-	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_filesystem( false );
-	allow_change_uuid( false ); allow_info( false ) ;
+	allow_name_partition( false ); allow_manage_flags( false ); allow_check( false );
+	allow_label_filesystem( false ); allow_change_uuid( false ); allow_info( false );
 
 	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 		->set_label( FileSystem::get_generic_text ( CTEXT_DEACTIVATE_FILESYSTEM ) ) ;
@@ -1103,6 +1124,10 @@ void Win_GParted::set_valid_operations()
 		//only allow labelling of real partitions that support labelling
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
 			allow_label_filesystem( true );
+
+		// only allow naming of real partitions on devices that support naming
+		if ( selected_partition.status == STAT_REAL && devices[current_device].partition_naming )
+			allow_name_partition( true );
 
 		//only allow changing UUID of real partitions that support it
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
@@ -1695,9 +1720,11 @@ void Win_GParted::activate_paste()
 		{
 			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
 						      devices[ current_device ] .cylsize ) ;
-			//we don't need the messages/mount points of the source partition.
+			// We don't want the messages, mount points or name of the source
+			// partition for the new partition being created.
 			copied_partition .messages .clear() ;
 			copied_partition .clear_mountpoints() ;
+			copied_partition .name.clear() ;
 			dialog .Set_Data( selected_partition, copied_partition ) ;
 			dialog .set_transient_for( *this );
 		
@@ -2504,7 +2531,41 @@ void Win_GParted::activate_label_filesystem()
 		show_operationslist() ;
 	}
 }
-	
+
+void Win_GParted::activate_name_partition()
+{
+	Dialog_Partition_Name dialog( selected_partition );
+	dialog.set_transient_for( *this );
+
+	if (	( dialog.run() == Gtk::RESPONSE_OK )
+	     && ( dialog.get_new_name() != selected_partition.name ) )
+	{
+		dialog.hide();
+		// Make a duplicate of the selected partition (used in UNDO)
+		Partition part_temp = selected_partition;
+
+		part_temp.name = dialog.get_new_name();
+
+		Operation * operation = new OperationNamePartition( devices[current_device],
+		                                                    selected_partition, part_temp );
+		operation->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+		Add_Operation( operation );
+
+		// Verify if the two operations can be merged
+		for ( unsigned int t = 0 ; t < operations.size() - 1 ; t++ )
+		{
+			if ( operations[t]->type == OPERATION_NAME_PARTITION )
+			{
+				if( Merge_Operations( t, operations.size() - 1 ) )
+					break;
+			}
+		}
+
+		show_operationslist();
+	}
+}
+
 void Win_GParted::activate_change_uuid()
 {
 	if ( gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING ) != "" ) {

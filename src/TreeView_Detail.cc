@@ -32,6 +32,7 @@ TreeView_Detail::TreeView_Detail()
 
 	//append columns
 	append_column( _("Partition"), treeview_detail_columns .path );
+	append_column( _("Name"), treeview_detail_columns.name );
 	append_column( _("File System"), treeview_detail_columns .color );
 	append_column( _("Mount Point"), treeview_detail_columns .mountpoint );
 	append_column( _("Label"), treeview_detail_columns .label );
@@ -53,30 +54,30 @@ TreeView_Detail::TreeView_Detail()
 	
 	//FILE SYSTEM
 	//file system text
-	get_column( 1 ) ->pack_start( treeview_detail_columns .filesystem, true );
-	
+	get_column( 2 )->pack_start( treeview_detail_columns.filesystem, true );
+
 	//colored text in File System column 
-	std::vector<Gtk::CellRenderer*> renderers = get_column( 1 ) ->get_cell_renderers() ;
+	std::vector<Gtk::CellRenderer*> renderers = get_column( 2 )->get_cell_renderers();
 	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
-	get_column( 1 ) ->add_attribute( cell_renderer_text ->property_foreground(),
-					 treeview_detail_columns .text_color );
-	
+	get_column( 2 )->add_attribute( cell_renderer_text->property_foreground(),
+	                                treeview_detail_columns.text_color );
+
 	//pixbuf and text are both left aligned
-	get_column( 1 ) ->get_first_cell_renderer() ->property_xalign() = Gtk::ALIGN_LEFT ;
+	get_column( 2 )->get_first_cell_renderer()->property_xalign() = Gtk::ALIGN_LEFT;
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
 	
 	//MOUNT POINT
 	//colored text in mount point column 
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 2 ) ->get_first_cell_renderer() );
-	get_column( 2 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
-					 treeview_detail_columns .mount_text_color );
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 3 )->get_first_cell_renderer() );
+	get_column( 3 )->add_attribute( cell_renderer_text->property_foreground(),
+	                                treeview_detail_columns.mount_text_color );
 
 	//set alignment of numeric columns to right
-	for( short t = 4 ; t < 7 ; t++ )
+	for( short t = 5 ; t < 8 ; t++ )
 		get_column_cell_renderer( t ) ->property_xalign() = 1 ;
 
 	//expand columns and centeralign the headertext
-	for( short t = 4 ; t < 8 ; t++ )
+	for( short t = 5 ; t < 9 ; t++ )
 	{
 		get_column( t ) ->set_expand( true ) ;
 		get_column( t ) ->set_alignment( 0.5 ) ;
@@ -85,14 +86,15 @@ TreeView_Detail::TreeView_Detail()
 
 void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 
 {
-	bool mountpoints = false, labels = false ;
+	bool mountpoints = false, labels = false, names = false;
 	treestore_detail ->clear() ;
-	
-	load_partitions( partitions, mountpoints, labels ) ;
 
-	get_column( 2 ) ->set_visible( mountpoints ) ;
-	get_column( 3 ) ->set_visible( labels ) ;
-	
+	load_partitions( partitions, mountpoints, labels, names );
+
+	get_column( 1 )->set_visible( names );
+	get_column( 3 )->set_visible( mountpoints );
+	get_column( 4 )->set_visible( labels );
+
 	columns_autosize();
 	expand_all() ;
 }
@@ -110,9 +112,10 @@ void TreeView_Detail::clear()
 }
 
 void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions,
-				       bool & mountpoints,
-				       bool & labels,
-				       const Gtk::TreeRow & parent_row ) 
+                                       bool & mountpoints,
+                                       bool & labels,
+                                       bool & names,
+                                       const Gtk::TreeRow & parent_row )
 {
 	Gtk::TreeRow row ;
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
@@ -121,13 +124,16 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 		create_row( row, partitions[ i ] );
 		
 		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
-			load_partitions( partitions[ i ] .logicals, mountpoints, labels, row ) ;
-			
+			load_partitions( partitions[i].logicals, mountpoints, labels, names, row );
+
 		if ( partitions[ i ] .get_mountpoints() .size() )
 			mountpoints = true ;
 					
 		if ( ! partitions[ i ].get_filesystem_label().empty() )
 			labels = true ;
+
+		if ( ! partitions[i].name.empty() )
+			names = true;
 	}
 }
 
@@ -173,6 +179,9 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	//this fixes a weird issue (see #169683 for more info)
 	if ( partition .type == GParted::TYPE_EXTENDED && partition .busy ) 
 		treerow[ treeview_detail_columns .path ] = treerow[ treeview_detail_columns .path ] + "   " ;
+
+	// name
+	treerow[treeview_detail_columns.name] = partition.name;
 
 	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
 
