@@ -2072,15 +2072,12 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 bool GParted_Core::label_partition( const Partition & partition, OperationDetail & operationdetail )	
 {
 	if( partition .get_label() .empty() ) {
-		operationdetail .add_child( OperationDetail( String::ucompose(
-														_("Clear partition label on %1"),
-														partition .get_path()
-													 ) ) ) ;
+		operationdetail.add_child( OperationDetail(
+			String::ucompose( _("Clear file system label on %1"), partition.get_path() ) ) );
 	} else {
-		operationdetail .add_child( OperationDetail( String::ucompose(
-														_("Set partition label to \"%1\" on %2"),
-														partition .get_label(), partition .get_path()
-													 ) ) ) ;
+		operationdetail.add_child( OperationDetail(
+			String::ucompose( _("Set file system label to \"%1\" on %2"),
+			                  partition.get_label(), partition.get_path() ) ) );
 	}
 
 	bool succes = false ;

@@ -388,7 +388,7 @@ void Win_GParted::init_partition_menu()
 	MENU_CHECK = index++ ;
 
 	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("_Label"),
+			Gtk::Menu_Helpers::MenuElem( _("_Label File System"),
 						     sigc::mem_fun( *this, &Win_GParted::activate_label_partition ) ) );
 	MENU_LABEL_PARTITION = index++ ;
 
