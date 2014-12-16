@@ -101,9 +101,9 @@ public:
 	std::vector<Glib::ustring> get_mountpoints() const ;
 	Sector get_sector() const ;
 	bool test_overlap( const Partition & partition ) const ;
-	bool label_known() const ;
-	Glib::ustring get_label() const ;
-	void set_label( const Glib::ustring & label ) ;
+	bool filesystem_label_known() const;
+	Glib::ustring get_filesystem_label() const;
+	void set_filesystem_label( const Glib::ustring & filesystem_label );
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
@@ -145,8 +145,8 @@ private:
 	
 	std::vector<Glib::ustring> paths ;
 	std::vector<Glib::ustring> mountpoints ;
-	bool have_label ;
-	Glib::ustring label ;
+	bool have_filesystem_label;
+	Glib::ustring filesystem_label;
 };
 
 }//GParted

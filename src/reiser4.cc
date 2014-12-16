@@ -106,9 +106,9 @@ void reiser4::read_label( Partition & partition )
 		if ( label .length() > maxlen )
 			label .resize( maxlen ) ;
 		if ( label != "<none>" )
-			partition .set_label( label ) ;
+			partition.set_filesystem_label( label );
 		else
-			partition .set_label( "" ) ;
+			partition.set_filesystem_label( "" );
 	}
 	else
 	{
@@ -138,7 +138,7 @@ void reiser4::read_uuid( Partition & partition )
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --force --yes --label \"" + new_partition.get_label() + "\" " +
+	return ! execute_command( "mkfs.reiser4 --force --yes --label \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(), operationdetail,
 	                          false, true );
 }

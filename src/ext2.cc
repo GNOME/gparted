@@ -177,7 +177,7 @@ void ext2::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( label_cmd + " " + partition .get_path(), output, error, true ) )
 	{
-		partition .set_label( Utils::trim( output ) ) ;
+		partition.set_filesystem_label( Utils::trim( output ) );
 	}
 	else
 	{
@@ -191,7 +191,8 @@ void ext2::read_label( Partition & partition )
 
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( label_cmd + " " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
+	return ! execute_command( label_cmd + " " + partition.get_path() +
+	                          " \"" + partition.get_filesystem_label() + "\"", operationdetail ) ;
 }
 
 void ext2::read_uuid( Partition & partition )
@@ -217,10 +218,11 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( mkfs_cmd + " -L \"" + new_partition.get_label() + "\" " + new_partition.get_path(),
-				  operationdetail,
-				  false,
-				  true );
+	return ! execute_command( mkfs_cmd + " -L \"" + new_partition.get_filesystem_label() + "\" " +
+	                          new_partition.get_path(),
+	                          operationdetail,
+	                          false,
+	                          true );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

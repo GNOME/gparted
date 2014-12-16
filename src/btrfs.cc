@@ -146,7 +146,8 @@ bool btrfs::is_busy( const Glib::ustring & path )
 
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return (! execute_command( "mkfs.btrfs -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) );
+	return ! execute_command( "mkfs.btrfs -L \"" + new_partition.get_filesystem_label() + "\" " +
+	                          new_partition.get_path(), operationdetail );
 }
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -285,7 +286,8 @@ void btrfs::set_used_sectors( Partition & partition )
 
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfs filesystem label " + partition .get_path() + " \"" + partition .get_label() + "\"", operationdetail ) ;
+	return ! execute_command( "btrfs filesystem label " + partition.get_path() +
+	                          " \"" + partition.get_filesystem_label() + "\"", operationdetail );
 }
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -375,7 +377,7 @@ void btrfs::read_label( Partition & partition )
 	{
 		//Indistinguishable cases of either no label or the label is actually set
 		//  to "none".  Assume no label case.
-		partition .set_label( "" ) ;
+		partition.set_filesystem_label( "" );
 	}
 	else
 	{
@@ -386,7 +388,7 @@ void btrfs::read_label( Partition & partition )
 			label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
 
 		if ( ! label .empty() )
-			partition .set_label( label ) ;
+			partition.set_filesystem_label( label );
 		else
 		{
 			if ( ! output .empty() )

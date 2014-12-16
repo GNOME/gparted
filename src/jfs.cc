@@ -117,7 +117,7 @@ void jfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "jfs_tune -l " + partition .get_path(), output, error, true ) )
 	{
-		partition .set_label( Utils::regexp_label( output, "^Volume label:[\t ]*'(.*)'" ) ) ;
+		partition.set_filesystem_label( Utils::regexp_label( output, "^Volume label:[\t ]*'(.*)'" ) );
 	}
 	else
 	{
@@ -131,7 +131,8 @@ void jfs::read_label( Partition & partition )
 
 bool jfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "jfs_tune -L \"" + partition .get_label() + "\" " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "jfs_tune -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path(),
+	                          operationdetail );
 }
 
 void jfs::read_uuid( Partition & partition )
@@ -157,8 +158,8 @@ bool jfs::write_uuid( const Partition & partition, OperationDetail & operationde
 
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.jfs -q -L \"" + new_partition.get_label() +
-				  "\" " + new_partition.get_path(), operationdetail,
+	return ! execute_command( "mkfs.jfs -q -L \"" + new_partition.get_filesystem_label() + "\" " +
+				  new_partition.get_path(), operationdetail,
 				  false, true );
 }
 

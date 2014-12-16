@@ -43,7 +43,8 @@ FS f2fs::get_filesystem_support()
 
 bool f2fs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return (! execute_command( "mkfs.f2fs -l \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) );
+	return ! execute_command( "mkfs.f2fs -l \"" + new_partition.get_filesystem_label() + "\" " +
+	                          new_partition .get_path(), operationdetail );
 }
 
 } //GParted

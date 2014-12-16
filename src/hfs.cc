@@ -61,9 +61,9 @@ void hfs::read_label( Partition & partition )
 		Glib::ustring label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
 		//FIXME: find a better way to see if label is empty.. imagine someone uses 'untitled' as label.... ;)
 		if ( label != "untitled" )
-			partition .set_label( label ) ;
+			partition.set_filesystem_label( label );
 		else
-			partition .set_label( "" ) ;
+			partition.set_filesystem_label( "" );
 	}
 	else
 	{
@@ -78,10 +78,10 @@ void hfs::read_label( Partition & partition )
 bool hfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "";
-	if( new_partition .get_label() .empty() )
+	if( new_partition.get_filesystem_label().empty() )
 		cmd = "hformat " + new_partition .get_path() ;
 	else
-		cmd = "hformat -l \"" + new_partition .get_label() + "\" " + new_partition .get_path() ;
+		cmd = "hformat -l \"" + new_partition.get_filesystem_label() + "\" " + new_partition.get_path();
 	return ! execute_command( cmd , operationdetail ) ;
 }
 

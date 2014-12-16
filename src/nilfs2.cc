@@ -119,9 +119,9 @@ void nilfs2::read_label( Partition & partition )
 	{
 		Glib::ustring label = Utils::regexp_label( output, "^Filesystem volume name:[\t ]*(.*)$" ) ;
 		if ( label != "(none)" )
-			partition .set_label( label ) ;
+			partition.set_filesystem_label( label );
 		else
-			partition .set_label( "" ) ;
+			partition.set_filesystem_label( "" );
 	}
 	else
 	{
@@ -135,7 +135,9 @@ void nilfs2::read_label( Partition & partition )
 
 bool nilfs2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -L \"" + partition .get_label() + "\" " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "nilfs-tune -L \"" + partition.get_filesystem_label() + "\" " +
+	                          partition.get_path(),
+	                          operationdetail );
 }
 
 void nilfs2::read_uuid( Partition & partition )
@@ -161,7 +163,9 @@ bool nilfs2::write_uuid( const Partition & partition, OperationDetail & operatio
 
 bool nilfs2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.nilfs2 -L \"" + new_partition .get_label() + "\" " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "mkfs.nilfs2 -L \"" + new_partition.get_filesystem_label() + "\" " +
+	                          new_partition.get_path(),
+	                          operationdetail );
 }
 
 bool nilfs2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

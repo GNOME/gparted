@@ -40,7 +40,7 @@ void Partition::Reset()
 	type = GParted::TYPE_UNALLOCATED ;
 	alignment = ALIGN_STRICT ;
 	filesystem = GParted::FS_UNALLOCATED ;
-	have_label = false ;
+	have_filesystem_label = false;
 	uuid .clear() ;
 	partition_number = sector_start = sector_end = sectors_used = sectors_unused = -1;
 	sectors_unallocated = 0 ;
@@ -248,23 +248,23 @@ std::vector<Glib::ustring> Partition::get_paths() const
 	return paths ;
 }
 
-bool Partition::label_known() const
+bool Partition::filesystem_label_known() const
 {
-	return have_label ;
+	return have_filesystem_label;
 }
 
-//Return the label or "" if label is unknown.
-Glib::ustring Partition::get_label() const
+//Return the file system label or "" if unknown.
+Glib::ustring Partition::get_filesystem_label() const
 {
-	if ( have_label )
-		return label ;
-	return "" ;
+	if ( have_filesystem_label )
+		return filesystem_label;
+	return "";
 }
 
-void Partition::set_label( const Glib::ustring & label )
+void Partition::set_filesystem_label( const Glib::ustring & filesystem_label )
 {
-	this ->label = label ;
-	have_label = true ;
+	this->filesystem_label = filesystem_label;
+	have_filesystem_label = true;
 }
 
 bool Partition::operator==( const Partition & partition ) const

@@ -117,7 +117,7 @@ void reiserfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
-		partition .set_label( Utils::regexp_label( output, "^label:[\t ]*(.*)$" ) ) ;
+		partition.set_filesystem_label( Utils::regexp_label( output, "^label:[\t ]*(.*)$" ) );
 	}
 	else
 	{
@@ -131,7 +131,9 @@ void reiserfs::read_label( Partition & partition )
 	
 bool reiserfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune --label \"" + partition .get_label() + "\" " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "reiserfstune --label \"" + partition.get_filesystem_label() + "\" " +
+	                          partition.get_path(),
+	                          operationdetail );
 }
 
 void reiserfs::read_uuid( Partition & partition )
@@ -157,9 +159,9 @@ bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operat
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f --label \"" + new_partition.get_label() +
-				  "\" " + new_partition.get_path(), operationdetail,
-				  false, true );
+	return ! execute_command( "mkreiserfs -f --label \"" + new_partition.get_filesystem_label() + "\" " +
+	                          new_partition.get_path(),
+	                          operationdetail, false, true );
 }
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

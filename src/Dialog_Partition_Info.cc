@@ -262,7 +262,7 @@ void Dialog_Partition_Info::Display_Info()
 				1, 2,
 				top, bottom,
 				Gtk::FILL) ;
-		table ->attach( * Utils::mk_label( partition .get_label(), true, false, true ),
+		table ->attach( * Utils::mk_label( partition.get_filesystem_label(), true, false, true ),
 				2, 3,
 				top++, bottom++,
 				Gtk::FILL) ;

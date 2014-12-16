@@ -53,14 +53,14 @@ void OperationLabelPartition::apply_to_visual( std::vector<Partition> & partitio
 
 void OperationLabelPartition::create_description() 
 {
-	if( partition_new .get_label() .empty() ) {
+	if( partition_new.get_filesystem_label().empty() ) {
 		/* TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3 */
 		description = String::ucompose( _("Clear file system label on %1"),
 		                                partition_new.get_path() );
 	} else {
 		/* TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3 */
 		description = String::ucompose( _("Set file system label \"%1\" on %2"),
-		                                partition_new.get_label(),
+		                                partition_new.get_filesystem_label(),
 		                                partition_new.get_path() );
 	}
 }

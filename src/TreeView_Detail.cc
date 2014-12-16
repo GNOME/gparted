@@ -126,7 +126,7 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 		if ( partitions[ i ] .get_mountpoints() .size() )
 			mountpoints = true ;
 					
-		if ( ! partitions[ i ] .get_label() .empty() )
+		if ( ! partitions[ i ].get_filesystem_label().empty() )
 			labels = true ;
 	}
 }
@@ -183,7 +183,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
 
 	//label
-	treerow[ treeview_detail_columns .label ] = partition .get_label() ;
+	treerow[ treeview_detail_columns .label ] = partition.get_filesystem_label();
 		
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_sector_length(), partition .sector_size ) ;

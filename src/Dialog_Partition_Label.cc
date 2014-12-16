@@ -46,7 +46,7 @@ Dialog_Partition_Label::Dialog_Partition_Label( const Partition & partition )
 		entry->set_max_length( Utils::get_filesystem_label_maxlength( partition.filesystem ) ) ;
 		entry->set_width_chars(20);
 		entry->set_activates_default(true);
-		entry->set_text(partition.get_label());
+		entry->set_text(partition.get_filesystem_label());
 		entry->select_region(0, entry ->get_text_length());
 		//Add entry box to table
 		table->attach(*entry,

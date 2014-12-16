@@ -127,7 +127,7 @@ void xfs::read_label( Partition & partition )
 {
 	if ( ! Utils::execute_command( "xfs_db -r -c 'label' " + partition .get_path(), output, error, true ) )
 	{
-		partition .set_label( Utils::regexp_label( output, "^label = \"(.*)\"" ) ) ;
+		partition.set_filesystem_label( Utils::regexp_label( output, "^label = \"(.*)\"" ) );
 	}
 	else
 	{
@@ -142,10 +142,10 @@ void xfs::read_label( Partition & partition )
 bool xfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	Glib::ustring cmd = "" ;
-	if( partition .get_label() .empty() )
+	if( partition.get_filesystem_label().empty() )
 		cmd = "xfs_admin -L -- " + partition .get_path() ;
 	else
-		cmd = "xfs_admin -L \"" + partition .get_label() + "\" " + partition .get_path() ;
+		cmd = "xfs_admin -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path();
 	return ! execute_command( cmd, operationdetail ) ;
 }
 
@@ -172,7 +172,7 @@ bool xfs::write_uuid( const Partition & partition, OperationDetail & operationde
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_label() +
+	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_filesystem_label() + "\" " +
 				  "\" " + new_partition.get_path(),
 				  operationdetail,
 				  false,
