@@ -698,7 +698,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 		     operation ->type == OPERATION_FORMAT ||
 		     operation ->type == OPERATION_CHECK ||
 		     operation ->type == OPERATION_CHANGE_UUID ||
-		     operation ->type == OPERATION_LABEL_PARTITION ||
+		     operation ->type == OPERATION_LABEL_FILESYSTEM ||
 		     gparted_core .snap_to_alignment( operation ->device, operation ->partition_new, error )
 		   )
 		{
@@ -742,8 +742,8 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 		return true;
 	}
 	// Two label change operations on the same partition
-	else if ( operations[ first ]->type == OPERATION_LABEL_PARTITION &&
-	          operations[ second ]->type == OPERATION_LABEL_PARTITION &&
+	else if ( operations[ first ]->type == OPERATION_LABEL_FILESYSTEM &&
+	          operations[ second ]->type == OPERATION_LABEL_FILESYSTEM &&
 	          operations[ first ]->partition_new == operations[ second ]->partition_original
 	        )
 	{
@@ -2493,7 +2493,7 @@ void Win_GParted::activate_label_partition()
 		// Verify if the two operations can be merged
 		for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
 		{
-			if ( operations[ t ] ->type == OPERATION_LABEL_PARTITION )
+			if ( operations[t]->type == OPERATION_LABEL_FILESYSTEM )
 			{
 				if( Merge_Operations( t, operations .size() -1 ) )
 					break;

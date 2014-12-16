@@ -727,7 +727,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_byte_length(),
 					       operation ->operation_detail ) ;
 				break ;
-			case OPERATION_LABEL_PARTITION:
+			case OPERATION_LABEL_FILESYSTEM:
 				succes = label_partition( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_CHANGE_UUID:

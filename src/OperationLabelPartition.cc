@@ -23,7 +23,7 @@ OperationLabelPartition::OperationLabelPartition( const Device & device,
 		const Partition & partition_orig,
 		const Partition & partition_new )
 {
-	type = OPERATION_LABEL_PARTITION ;
+	type = OPERATION_LABEL_FILESYSTEM;
 
 	this ->device = device ;
 	this ->partition_original = partition_orig ;
