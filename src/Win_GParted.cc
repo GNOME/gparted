@@ -389,7 +389,7 @@ void Win_GParted::init_partition_menu()
 
 	menu_partition .items() .push_back(
 			Gtk::Menu_Helpers::MenuElem( _("_Label File System"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_label_partition ) ) );
+			                             sigc::mem_fun( *this, &Win_GParted::activate_label_filesystem ) ) );
 	MENU_LABEL_PARTITION = index++ ;
 
 	menu_partition .items() .push_back(
@@ -935,7 +935,7 @@ void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
 	allow_paste( false ); allow_format( false ); allow_toggle_busy_state( false ) ;
-	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_partition( false ) ;
+	allow_manage_flags( false ) ; allow_check( false ) ; allow_label_filesystem( false );
 	allow_change_uuid( false ); allow_info( false ) ;
 
 	dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
@@ -1102,7 +1102,7 @@ void Win_GParted::set_valid_operations()
 		
 		//only allow labelling of real partitions that support labelling
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
-			allow_label_partition( true ) ;
+			allow_label_filesystem( true );
 
 		//only allow changing UUID of real partitions that support it
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
@@ -2471,7 +2471,7 @@ void Win_GParted::activate_check()
 	show_operationslist() ;
 }
 
-void Win_GParted::activate_label_partition() 
+void Win_GParted::activate_label_filesystem()
 {
 	Dialog_Partition_Label dialog( selected_partition );
 	dialog .set_transient_for( *this );

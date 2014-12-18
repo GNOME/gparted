@@ -728,7 +728,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					       operation ->operation_detail ) ;
 				break ;
 			case OPERATION_LABEL_FILESYSTEM:
-				succes = label_partition( operation ->partition_new, operation ->operation_detail ) ;
+				succes = label_filesystem( operation->partition_new, operation->operation_detail );
 				break ;
 			case OPERATION_CHANGE_UUID:
 				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
@@ -2069,7 +2069,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 	return success ;
 }
 
-bool GParted_Core::label_partition( const Partition & partition, OperationDetail & operationdetail )	
+bool GParted_Core::label_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
 	if( partition.get_filesystem_label().empty() ) {
 		operationdetail.add_child( OperationDetail(

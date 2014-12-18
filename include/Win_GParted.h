@@ -103,7 +103,7 @@ private:
 	void allow_check( bool state ) {
 		toggle_item( state, MENU_CHECK ) ; } 
 	
-	void allow_label_partition( bool state )	{
+	void allow_label_filesystem( bool state ) {
 		toggle_item( state, MENU_LABEL_PARTITION ) ; } 
 
 	void allow_change_uuid( bool state )	{
@@ -168,8 +168,8 @@ private:
 	void activate_manage_flags() ;
 	void activate_check() ;
 	void activate_change_uuid() ;
-	void activate_label_partition() ;
-	
+	void activate_label_filesystem();
+
 	void activate_undo();
 	void remove_operation( int index = -1, bool remove_all = false ) ;
 	int  partition_in_operation_queue_count( const Partition & partition ) ;
