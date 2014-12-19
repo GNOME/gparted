@@ -33,7 +33,7 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationChangeUUID.h"
-#include "../include/OperationLabelPartition.h"
+#include "../include/OperationLabelFileSystem.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../config.h"
 
@@ -2485,7 +2485,7 @@ void Win_GParted::activate_label_filesystem()
 
 		part_temp.set_filesystem_label( dialog.get_new_label() );
 
-		Operation * operation = new OperationLabelPartition( devices[ current_device ],
+		Operation * operation = new OperationLabelFileSystem( devices[current_device],
 									selected_partition, part_temp ) ;
 		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 

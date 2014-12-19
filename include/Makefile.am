@@ -31,7 +31,7 @@ EXTRA_DIST = \
 	OperationDelete.h		\
 	OperationDetail.h		\
 	OperationFormat.h		\
-	OperationLabelPartition.h	\
+	OperationLabelFileSystem.h	\
 	OperationResizeMove.h		\
 	Partition.h			\
 	PipeCapture.h			\

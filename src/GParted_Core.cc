@@ -26,7 +26,7 @@
 #include "../include/OperationFormat.h"
 #include "../include/OperationResizeMove.h"
 #include "../include/OperationChangeUUID.h"
-#include "../include/OperationLabelPartition.h"
+#include "../include/OperationLabelFileSystem.h"
 #include "../include/Proc_Partitions_Info.h"
 
 #include "../include/btrfs.h"

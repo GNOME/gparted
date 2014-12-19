@@ -42,7 +42,7 @@ gpartedbin_SOURCES = \
 	OperationDelete.cc		\
 	OperationDetail.cc		\
 	OperationFormat.cc		\
-	OperationLabelPartition.cc	\
+	OperationLabelFileSystem.cc	\
 	OperationResizeMove.cc		\
 	Partition.cc			\
 	PipeCapture.cc			\

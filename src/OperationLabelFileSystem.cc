@@ -13,15 +13,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/OperationLabelPartition.h"
+
+#include "../include/OperationLabelFileSystem.h"
 
 namespace GParted
 {
 
-OperationLabelPartition::OperationLabelPartition( const Device & device,
-		const Partition & partition_orig,
-		const Partition & partition_new )
+OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
+                                                    const Partition & partition_orig,
+                                                    const Partition & partition_new )
 {
 	type = OPERATION_LABEL_FILESYSTEM;
 
@@ -30,12 +30,12 @@ OperationLabelPartition::OperationLabelPartition( const Device & device,
 	this ->partition_new = partition_new ;
 }
 
-void OperationLabelPartition::apply_to_visual( std::vector<Partition> & partitions ) 
+void OperationLabelFileSystem::apply_to_visual( std::vector<Partition> & partitions )
 {
 	if ( partition_original .inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
-		
+
 		if ( index_extended >= 0 )
 			index = find_index_original( partitions[ index_extended ] .logicals ) ;
 
@@ -51,7 +51,7 @@ void OperationLabelPartition::apply_to_visual( std::vector<Partition> & partitio
 	}
 }
 
-void OperationLabelPartition::create_description() 
+void OperationLabelFileSystem::create_description()
 {
 	if( partition_new.get_filesystem_label().empty() ) {
 		/* TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3 */

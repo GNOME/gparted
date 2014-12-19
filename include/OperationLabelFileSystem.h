@@ -14,22 +14,22 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GPARTED_OPERATIONLABELPARTITION_H
-#define GPARTED_OPERATIONLABELPARTITION_H
+#ifndef GPARTED_OPERATIONLABELFILESYSTEM_H
+#define GPARTED_OPERATIONLABELFILESYSTEM_H
 
 #include "../include/Operation.h"
 
 namespace GParted
 {
 
-class OperationLabelPartition : public Operation
+class OperationLabelFileSystem : public Operation
 {
 public:
-	OperationLabelPartition( const Device & device,
-			const Partition & partition_orig,
-			const Partition & partition_new ) ;
+	OperationLabelFileSystem( const Device & device,
+	                          const Partition & partition_orig,
+	                          const Partition & partition_new );
 
-void apply_to_visual( std::vector<Partition> & partitions ) ;
+	void apply_to_visual( std::vector<Partition> & partitions );
 
 private:
 	void create_description() ;
@@ -37,4 +37,4 @@ private:
 
 } //GParted
 
-#endif /* GPARTED_OPERATIONLABELPARTITION_H */
+#endif /* GPARTED_OPERATIONLABELFILESYSTEM_H */
