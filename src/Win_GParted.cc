@@ -24,7 +24,7 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/Dialog_Partition_New.h"
 #include "../include/Dialog_Partition_Info.h"
-#include "../include/Dialog_Partition_Label.h"
+#include "../include/Dialog_FileSystem_Label.h"
 #include "../include/DialogManageFlags.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCheck.h"
@@ -2473,7 +2473,7 @@ void Win_GParted::activate_check()
 
 void Win_GParted::activate_label_filesystem()
 {
-	Dialog_Partition_Label dialog( selected_partition );
+	Dialog_FileSystem_Label dialog( selected_partition );
 	dialog .set_transient_for( *this );
 
 	if (	( dialog .run() == Gtk::RESPONSE_OK )

@@ -13,18 +13,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/Dialog_Partition_Label.h"
+
+#include "../include/Dialog_FileSystem_Label.h"
 
 namespace GParted
 {
 
-Dialog_Partition_Label::Dialog_Partition_Label( const Partition & partition )
+Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 {
 	this ->set_resizable( false ) ;
 	this ->set_has_separator( false ) ;
 	this ->set_size_request( 300, 80 ) ;
-	
+
 	/* TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3 */
 	this->set_title( String::ucompose( _("Set file system label on %1"), partition.get_path() ) );
 
@@ -61,11 +61,11 @@ Dialog_Partition_Label::Dialog_Partition_Label( const Partition & partition )
 	this ->show_all_children() ;
 }
 
-Dialog_Partition_Label::~Dialog_Partition_Label()
+Dialog_FileSystem_Label::~Dialog_FileSystem_Label()
 {
 }
 
-Glib::ustring Dialog_Partition_Label::get_new_label()
+Glib::ustring Dialog_FileSystem_Label::get_new_label()
 {
 	return Utils::trim( Glib::ustring( entry ->get_text() ) );
 }

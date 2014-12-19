@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GPARTED_DIALOG_PARTITION_LABEL_H
-#define GPARTED_DIALOG_PARTITION_LABEL_H
+#ifndef GPARTED_DIALOG_FILESYSTEM_LABEL_H
+#define GPARTED_DIALOG_FILESYSTEM_LABEL_H
 
 #include "../include/Partition.h"
 #include "../include/i18n.h"
@@ -27,15 +27,15 @@
 #include <gtkmm/entry.h>
 
 #define BORDER 8
- 
-namespace GParted
-{ 
 
-class Dialog_Partition_Label : public Gtk::Dialog
+namespace GParted
+{
+
+class Dialog_FileSystem_Label : public Gtk::Dialog
 {
 public:
-	Dialog_Partition_Label( const Partition & partition );
-	~Dialog_Partition_Label();
+	Dialog_FileSystem_Label( const Partition & partition );
+	~Dialog_FileSystem_Label();
 	Glib::ustring get_new_label();
 
 private:
@@ -44,4 +44,4 @@ private:
 
 } //GParted
 
-#endif /* GPARTED_DIALOG_PARTITION_LABEL_H */
+#endif /* GPARTED_DIALOG_FILESYSTEM_LABEL_H */

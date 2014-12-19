@@ -8,9 +8,9 @@ EXTRA_DIST = \
 	DialogManageFlags.h		\
 	Dialog_Base_Partition.h		\
 	Dialog_Disklabel.h		\
+	Dialog_FileSystem_Label.h	\
 	Dialog_Partition_Copy.h		\
 	Dialog_Partition_Info.h		\
-	Dialog_Partition_Label.h	\
 	Dialog_Partition_New.h		\
 	Dialog_Partition_Resize_Move.h	\
 	Dialog_Progress.h		\
