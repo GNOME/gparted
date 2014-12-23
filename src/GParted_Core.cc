@@ -1250,32 +1250,9 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 {
 	char magic1[16] = "";
 	char magic2[16] = "";
-
-	//Check for LUKS encryption prior to libparted file system detection.
-	//  Otherwise encrypted file systems such as ext3 will be detected by
-	//  libparted as 'ext3'.
-
-	//LUKS encryption
-	char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
-	if ( buf )
-	{
-		ped_device_open( lp_device );
-		ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-		memcpy(magic1, buf+0, 6) ;  //set binary magic data
-		ped_device_close( lp_device );
-		free( buf ) ;
-
-		if ( 0 == memcmp( magic1 , "LUKS\xBA\xBE", 6 ) )
-		{
-			Glib::ustring temp ;
-			temp = _( "Linux Unified Key Setup encryption is not yet supported." ) ;
-			messages .push_back( temp ) ;
-			return GParted::FS_LUKS ;
-		}
-	}
-
 	FS_Info fs_info ;
 	Glib::ustring fs_type = "" ;
+	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
 	//Standard libparted file system detection
 	if ( lp_partition && lp_partition ->fs_type )
@@ -1319,6 +1296,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		          fs_type == "linux-swap(old)" ||
 		          fs_type == "swap" )
 			return GParted::FS_LINUX_SWAP ;
+		else if ( fs_type == "crypto_LUKS" )
+		{
+			messages.push_back( luks_unsupported );
+			return FS_LUKS;
+		}
 		else if ( fs_type == "LVM2_member" )
 			return GParted::FS_LVM2_PV ;
 		else if ( fs_type == "f2fs" )
@@ -1360,7 +1342,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	// - no patches sent to parted for lvm2, or luks
 
 	//reiser4
-	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
+	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
 	if ( buf )
 	{
 		ped_device_open( lp_device );
@@ -1402,6 +1384,23 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 		     && 0 == memcmp( magic2, "LVM2", 4 ) )
 		{
 			return GParted::FS_LVM2_PV ;
+		}
+	}
+
+	//LUKS encryption
+	buf = static_cast<char *>( malloc( lp_device->sector_size ) );
+	if ( buf )
+	{
+		ped_device_open( lp_device );
+		ped_geometry_read( & lp_partition->geom, buf, 0, 1 );
+		memcpy(magic1, buf+0, 6);  // set binary magic data
+		ped_device_close( lp_device );
+		free( buf );
+
+		if ( 0 == memcmp( magic1 , "LUKS\xBA\xBE", 6 ) )
+		{
+			messages.push_back( luks_unsupported );
+			return FS_LUKS;
 		}
 	}
 
