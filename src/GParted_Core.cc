@@ -1245,11 +1245,86 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
+// GParted simple internal file system signature detection.  Use sparingly.  Only when
+// (old versions of) blkid and libparted don't recognise a signature.
+FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, PedPartition * lp_partition )
+{
+	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
+	char magic2[16];
+	FILESYSTEM fstype = FS_UNKNOWN;
+
+	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
+	if ( ! buf )
+		return FS_UNKNOWN;
+
+	if ( ! ped_device_open( lp_device ) )
+	{
+		free( buf );
+		return FS_UNKNOWN;
+	}
+
+	struct {
+		Byte_Value   offset1;
+		const char * sig1;
+		Byte_Value   offset2;
+		const char * sig2;
+		FILESYSTEM   fstype;
+	} signatures[] = {
+		//offset1, sig1          , offset2, sig2  , fstype
+		{ 65536LL, "ReIsEr4"     ,     0LL, NULL  , FS_REISER4   },
+		{   512LL, "LABELONE"    ,   536LL, "LVM2", FS_LVM2_PV   },
+		{     0LL, "LUKS\xBA\xBE",     0LL, NULL  , FS_LUKS      },
+		{ 65600LL, "_BHRfS_M"    ,     0LL, NULL  , FS_BTRFS     },
+		{     3LL, "-FVE-FS-"    ,     0LL, NULL  , FS_BITLOCKER }
+	};
+	// Reference:
+	//   Detecting BitLocker
+	//   http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
+	// Consider validation of BIOS Parameter Block fields as unnecessary for
+	// simple recognition only of BitLocker.
+
+	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
+	{
+		const size_t len1 = std::min( ( signatures[i].sig1 == NULL ) ? 0U : strlen( signatures[i].sig1 ),
+		                              sizeof( magic1 ) );
+		const size_t len2 = std::min( ( signatures[i].sig2 == NULL ) ? 0U : strlen( signatures[i].sig2 ),
+		                              sizeof( magic2 ) );
+		// NOTE: From this point onwards signatures[].sig1 and .sig2 are treated
+		// as character buffers of known lengths len1 and len2, not NUL terminated
+		// strings.
+		if ( len1 == 0UL || ( signatures[i].sig2 != NULL && len2 == 0UL ) )
+			continue;  // Don't allow 0 length signatures to match
+
+		memset( buf, 0, lp_device->sector_size );
+		if ( ped_geometry_read( &lp_partition->geom, buf, signatures[i].offset1 / lp_device->sector_size, 1 ) != 0 )
+		{
+			memcpy( magic1, buf + signatures[i].offset1 % lp_device->sector_size, len1 );
+
+			// WARNING: This assumes offset2 is in the same sector as offset1
+			if ( signatures[i].sig2 != NULL )
+			{
+				memcpy( magic2, buf + signatures[i].offset2 % lp_device->sector_size, len2 );
+			}
+
+			if ( memcmp( magic1, signatures[i].sig1, len1 ) == 0     &&
+			     ( signatures[i].sig2 != NULL ||
+			       memcmp( magic2, signatures[i].sig2, len2 ) == 0 )     )
+			{
+				fstype = signatures[i].fstype;
+				break;
+			}
+		}
+	}
+
+	ped_device_close( lp_device );
+	free( buf );
+
+	return fstype;
+}
+
 GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
                                                   std::vector<Glib::ustring>& messages )
 {
-	char magic1[16] = "";
-	char magic2[16] = "";
 	FS_Info fs_info ;
 	Glib::ustring fs_type = "" ;
 	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
@@ -1336,118 +1411,14 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 			return FS_REFS;
 	}
 
-
-
-	//other file systems libparted couldn't detect (i've send patches for these file systems to the parted guys)
-	// - no patches sent to parted for lvm2, or luks
-
-	//reiser4
-	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
-	if ( buf )
+	// Fallback to GParted simple internal file system detection
+	if ( lp_partition )
 	{
-		ped_device_open( lp_device );
-		ped_geometry_read( & lp_partition ->geom
-		                 , buf
-		                 , (65536 / lp_device ->sector_size) 
-		                 , 1
-		                 ) ;
-		memcpy(magic1, buf+0, 7) ; //set binary magic data
-		ped_device_close( lp_device );
-		free( buf ) ;
-
-		if ( 0 == memcmp( magic1, "ReIsEr4", 7 ) )
-			return GParted::FS_REISER4 ;
-	}
-
-	//lvm2
-	//NOTE: lvm2 is not a file system but we do wish to recognize the Physical Volume
-	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
-	if ( buf )
-	{
-		ped_device_open( lp_device );
-		if ( lp_device ->sector_size == 512 )
-		{
-			ped_geometry_read( & lp_partition ->geom, buf, 1, 1 ) ;
-			memcpy(magic1, buf+ 0, 8) ; // set binary magic data
-			memcpy(magic2, buf+24, 4) ; // set binary magic data
-		}
-		else
-		{
-			ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) ;
-			memcpy(magic1, buf+ 0+512, 8) ; // set binary magic data
-			memcpy(magic2, buf+24+512, 4) ; // set binary magic data
-		}
-		ped_device_close( lp_device );
-		free( buf ) ;
-
-		if (    0 == memcmp( magic1, "LABELONE", 8 )
-		     && 0 == memcmp( magic2, "LVM2", 4 ) )
-		{
-			return GParted::FS_LVM2_PV ;
-		}
-	}
-
-	//LUKS encryption
-	buf = static_cast<char *>( malloc( lp_device->sector_size ) );
-	if ( buf )
-	{
-		ped_device_open( lp_device );
-		ped_geometry_read( & lp_partition->geom, buf, 0, 1 );
-		memcpy(magic1, buf+0, 6);  // set binary magic data
-		ped_device_close( lp_device );
-		free( buf );
-
-		if ( 0 == memcmp( magic1 , "LUKS\xBA\xBE", 6 ) )
-		{
+		FILESYSTEM fstype = recognise_filesystem_signature( lp_device, lp_partition );
+		if ( fstype == FS_LUKS )
 			messages.push_back( luks_unsupported );
-			return FS_LUKS;
-		}
-	}
-
-	//btrfs
-	const Sector BTRFS_SUPER_INFO_SIZE   = 4096 ;
-	const Sector BTRFS_SUPER_INFO_OFFSET = (64 * 1024) ;
-	const char* const BTRFS_SIGNATURE  = "_BHRfS_M" ;
-
-	char    buf_btrfs[BTRFS_SUPER_INFO_SIZE] ;
-
-	ped_device_open( lp_device ) ;
-	ped_geometry_read( & lp_partition ->geom
-	                 , buf_btrfs
-	                 , (BTRFS_SUPER_INFO_OFFSET / lp_device ->sector_size)
-	                 , (BTRFS_SUPER_INFO_SIZE / lp_device ->sector_size)
-	                 ) ;
-	memcpy(magic1, buf_btrfs+64, strlen(BTRFS_SIGNATURE) ) ;  //set binary magic data
-	ped_device_close( lp_device ) ;
-
-	if ( 0 == memcmp( magic1, BTRFS_SIGNATURE, strlen(BTRFS_SIGNATURE) ) )
-	{
-		return GParted::FS_BTRFS ;
-	}
-
-	//bitlocker
-	//  Detecting BitLocker
-	//  http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
-	//  Validation of BIOS Parameter Block fields is unnecessary for recognition only
-	const size_t BITLOCKER_SIG_OFFSET = 3UL ;
-	const char * const BITLOCKER_SIGNATURE = "-FVE-FS-" ;
-	const size_t BITLOCKER_SIG_LEN = strlen( BITLOCKER_SIGNATURE ) ;
-	buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
-	if ( buf )
-	{
-		memset( buf, 0, lp_device ->sector_size ) ;
-		if ( ped_device_open( lp_device ) )
-		{
-			if ( ped_geometry_read( & lp_partition ->geom, buf, 0, 1 ) != 0 )
-			{
-				memcpy( magic1, buf + BITLOCKER_SIG_OFFSET, BITLOCKER_SIG_LEN ) ;
-			}
-			ped_device_close( lp_device );
-		}
-		free( buf ) ;
-
-		if ( 0 == memcmp( magic1, BITLOCKER_SIGNATURE, BITLOCKER_SIG_LEN ) )
-			return FS_BITLOCKER ;
+		if ( fstype != FS_UNKNOWN )
+			return fstype;
 	}
 
 	//no file system found....
