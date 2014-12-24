@@ -333,9 +333,14 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 					libparted_messages .clear() ;
 				}
 			}
-			//harddisk without disklabel
+			// Hard disk without a libparted recognised disklabel
 			else
 			{
+				// FIXME: Replace quick test of whole device signature recognition
+				std::vector<Glib::ustring> dummy;
+				FILESYSTEM fstype = get_filesystem( lp_device, NULL, dummy );
+				std::cout << "DEBUG: " << lp_device->path << " (" << Utils::get_filesystem_string( fstype ) << ")" << std::endl;
+
 				temp_device .disktype =
 						/* TO TRANSLATORS:  unrecognized
 						 * means that the partition table for this
@@ -1295,8 +1300,13 @@ FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, 
 		if ( len1 == 0UL || ( signatures[i].sig2 != NULL && len2 == 0UL ) )
 			continue;  // Don't allow 0 length signatures to match
 
+		Sector start = 0LL;
+		if ( lp_partition )
+			start = lp_partition->geom.start;
+		start += signatures[i].offset1 / lp_device->sector_size;
+
 		memset( buf, 0, lp_device->sector_size );
-		if ( ped_geometry_read( &lp_partition->geom, buf, signatures[i].offset1 / lp_device->sector_size, 1 ) != 0 )
+		if ( ped_device_read( lp_device, buf, start, 1 ) != 0 )
 		{
 			memcpy( magic1, buf + signatures[i].offset1 % lp_device->sector_size, len1 );
 
@@ -1327,18 +1337,29 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 {
 	FS_Info fs_info ;
 	Glib::ustring fsname = "";
+	Glib::ustring path;
 	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
-	//Standard libparted file system detection
-	if ( lp_partition && lp_partition ->fs_type )
+	if ( lp_partition )
 	{
-		fsname = lp_partition->fs_type->name;
+		path = get_partition_path( lp_partition );
 
-		//TODO:  Temporary code to detect ext4.
-		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
-		Glib::ustring temp = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
-		if ( temp == "ext4" || temp == "ext4dev" )
-			fsname = temp;
+		// Standard libparted file system detection
+		if ( lp_partition->fs_type )
+		{
+			fsname = lp_partition->fs_type->name;
+
+			// TODO: Temporary code to detect ext4.  Replace when
+			// libparted >= 1.9.0 is chosen as minimum required version.
+			Glib::ustring temp = fs_info.get_fs_type( path );
+			if ( temp == "ext4" || temp == "ext4dev" )
+				fsname = temp;
+		}
+	}
+	else
+	{
+		// Querying whole disk device instead of libparted PedPartition
+		path = lp_device->path;
 	}
 
 	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
@@ -1346,7 +1367,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	if ( fsname.empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		fsname = fs_info.get_fs_type( get_partition_path( lp_partition ) );
+		fsname = fs_info.get_fs_type( path );
 	}
 
 	if ( ! fsname.empty() )
@@ -1412,14 +1433,11 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	}
 
 	// Fallback to GParted simple internal file system detection
-	if ( lp_partition )
-	{
-		FILESYSTEM fstype = recognise_filesystem_signature( lp_device, lp_partition );
-		if ( fstype == FS_LUKS )
-			messages.push_back( luks_unsupported );
-		if ( fstype != FS_UNKNOWN )
-			return fstype;
-	}
+	FILESYSTEM fstype = recognise_filesystem_signature( lp_device, lp_partition );
+	if ( fstype == FS_LUKS )
+		messages.push_back( luks_unsupported );
+	if ( fstype != FS_UNKNOWN )
+		return fstype;
 
 	//no file system found....
 	Glib::ustring  temp = _( "Unable to detect file system! Possible reasons are:" ) ;
@@ -1431,7 +1449,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	temp += _( "There is no file system available (unformatted)" ) ; 
 	temp += "\n- "; 
 	/* TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing */
-	temp += String::ucompose( _( "The device entry %1 is missing" ), get_partition_path( lp_partition ) ) ;
+	temp += String::ucompose( _("The device entry %1 is missing"), path );
 	
 	messages .push_back( temp ) ;
 	
