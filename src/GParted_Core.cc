@@ -1097,7 +1097,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 {
 	int EXT_INDEX = -1 ;
 	Proc_Partitions_Info pp_info ; //Use cache of proc partitions information
-	FS_Info fs_info ;  //Use cache of file system information
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;    //Use cache of dmraid device information
 #endif
@@ -1184,25 +1183,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		//Avoid reading additional file system information if there is no path
 		if ( partition_temp .get_path() != "" )
 		{
-			//Retrieve file system label
-			//  Use file system specific method first in an effort to ensure multi-byte
-			//  character sets are properly displayed.
-			read_label( partition_temp ) ;
-			if ( ! partition_temp.filesystem_label_known() )
-			{
-				bool label_found = false ;
-				Glib::ustring label = fs_info .get_label( partition_temp .get_path(), label_found ) ;
-				if ( label_found )
-					partition_temp.set_filesystem_label( label );
-			}
-
-			//Retrieve file system UUID
-			//  Use cached method first in an effort to speed up device scanning.
-			partition_temp .uuid = fs_info .get_uuid( partition_temp .get_path() ) ;
-			if ( partition_temp .uuid .empty() )
-			{
-				read_uuid( partition_temp ) ;
-			}
+			set_partition_label_and_uuid( partition_temp );
 
 			// Retrieve partition name
 			if ( device.partition_naming )
@@ -1248,6 +1229,30 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	}
 
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
+}
+
+void GParted_Core::set_partition_label_and_uuid( Partition & partition )
+{
+	FS_Info fs_info;  // Use cache of file system information
+
+	// Retrieve file system label.  Use file system specific method first in an effort
+	// to ensure multi-byte character sets are properly displayed.
+	read_label( partition );
+	if ( ! partition.filesystem_label_known() )
+	{
+		bool label_found = false;
+		Glib::ustring label = fs_info.get_label( partition.get_path(), label_found );
+		if ( label_found )
+			partition.set_filesystem_label( label );
+	}
+
+	// Retrieve file system UUID.  Use cached method first in an effort to speed up
+	// device scanning.
+	partition.uuid = fs_info.get_uuid( partition.get_path() );
+	if ( partition.uuid.empty() )
+	{
+		read_uuid( partition );
+	}
 }
 
 // GParted simple internal file system signature detection.  Use sparingly.  Only when

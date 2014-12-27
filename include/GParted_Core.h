@@ -78,6 +78,7 @@ private:
 	static void read_mountpoints_from_mount_command( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
+	void set_partition_label_and_uuid( Partition & partition );
 	static FILESYSTEM recognise_filesystem_signature( PedDevice * lp_device, PedPartition * lp_partition );
 	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
 	                                    std::vector<Glib::ustring>& messages ) ;
