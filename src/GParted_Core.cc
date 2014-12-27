@@ -336,31 +336,43 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			// Hard disk without a libparted recognised disklabel
 			else
 			{
-				// FIXME: Replace quick test of whole device signature recognition
-				std::vector<Glib::ustring> dummy;
-				FILESYSTEM fstype = get_filesystem( lp_device, NULL, dummy );
-				std::cout << "DEBUG: " << lp_device->path << " (" << Utils::get_filesystem_string( fstype ) << ")" << std::endl;
+				std::vector<Glib::ustring> messages;
+				FILESYSTEM fstype = get_filesystem( lp_device, NULL, messages );
+				// Recognised file system signature on whole disk device
+				if ( fstype != FS_UNKNOWN )
+				{
+					// Clear the "unrecognised disk label" message
+					libparted_messages.clear();
 
-				temp_device .disktype =
+					temp_device.disktype = "none";
+					temp_device.max_prims = 1;
+					set_device_one_partition( temp_device, lp_device, fstype, messages );
+					set_mountpoints( temp_device.partitions );
+					set_used_sectors( temp_device.partitions, NULL );
+				}
+				else
+				{
+					temp_device.disktype =
 						/* TO TRANSLATORS:  unrecognized
 						 * means that the partition table for this
 						 * disk device is unknown or not recognized.
 						 */
 						_("unrecognized") ;
-				temp_device .max_prims = -1 ;
-				
-				Partition partition_temp ;
-				partition_temp .Set_Unallocated( temp_device .get_path(),
-								 0,
-								 temp_device .length - 1,
-								 temp_device .sector_size,
-								 false );
-				//Place libparted messages in this unallocated partition
-				partition_temp .messages .insert( partition_temp .messages .end(),
-								  libparted_messages. begin(),
-								  libparted_messages .end() ) ;
-				libparted_messages .clear() ;
-				temp_device .partitions .push_back( partition_temp );
+					temp_device.max_prims = -1;
+
+					Partition partition_temp;
+					partition_temp.Set_Unallocated( temp_device .get_path(),
+					                                0LL,
+					                                temp_device .length - 1LL,
+					                                temp_device .sector_size,
+					                                false );
+					// Place libparted messages in this unallocated partition
+					partition_temp.messages.insert( partition_temp.messages.end(),
+					                                libparted_messages.begin(),
+					                                libparted_messages.end() );
+					libparted_messages.clear();
+					temp_device.partitions.push_back( partition_temp );
+				}
 			}
 					
 			devices .push_back( temp_device ) ;
@@ -1231,6 +1243,41 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	insert_unallocated( device .get_path(), device .partitions, 0, device .length -1, device .sector_size, false ) ; 
 }
 
+// Create one Partition object spanning the Device after identifying the file system
+// on the whole disk device.  Much simplified equivalent of set_device_partitions().
+void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
+                                             std::vector<Glib::ustring> & messages )
+{
+	Proc_Partitions_Info pp_info;  // Use cache of proc partitions information
+
+	device.partitions.clear();
+
+	Glib::ustring path = lp_device->path;
+	bool partition_is_busy = is_busy( fstype, path );
+
+	Partition partition_temp;
+	partition_temp.Set( device.get_path(),
+	                    path,
+	                    1,
+	                    TYPE_PRIMARY,
+	                    fstype,
+	                    0LL,
+	                    device.length - 1LL,
+	                    device.sector_size,
+	                    false,
+	                    partition_is_busy );
+
+	partition_temp.messages = messages;
+	partition_temp.add_paths( pp_info.get_alternate_paths( partition_temp.get_path() ) );
+
+	if ( partition_temp.busy )
+		device.highest_busy = 1;
+
+	set_partition_label_and_uuid( partition_temp );
+
+	device.partitions.push_back( partition_temp );
+}
+
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 {
 	FS_Info fs_info;  // Use cache of file system information
@@ -1722,7 +1769,8 @@ void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDis
 							break ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 						case GParted::FS::LIBPARTED	:
-							LP_set_used_sectors( partitions[ t ], lp_disk ) ;
+							if ( lp_disk )
+								LP_set_used_sectors( partitions[t], lp_disk );
 							break ;
 #endif
 
