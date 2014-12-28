@@ -974,7 +974,12 @@ void Win_GParted::set_valid_operations()
 
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
-	
+
+	// No manipulation operations are currently supported on file systems using the
+	// whole disk device.
+	if ( devices[current_device].disktype == "none" )
+		return;
+
 	//flag managing..
 	if ( selected_partition .type != GParted::TYPE_UNALLOCATED && selected_partition .status == GParted::STAT_REAL )
 		allow_manage_flags( true ) ; 
