@@ -975,16 +975,7 @@ void Win_GParted::set_valid_operations()
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
 
-	// No manipulation operations are currently supported on file systems using the
-	// whole disk device.
-	if ( devices[current_device].disktype == "none" )
-		return;
-
-	//flag managing..
-	if ( selected_partition .type != GParted::TYPE_UNALLOCATED && selected_partition .status == GParted::STAT_REAL )
-		allow_manage_flags( true ) ; 
-
-	//Activate / deactivate
+	// Set an appropriate name for the activate/deactivate menu item.
 	if ( gparted_core .get_filesystem_object ( selected_partition .filesystem ) )
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 			->set_label( gparted_core .get_filesystem_object ( selected_partition .filesystem )
@@ -999,6 +990,11 @@ void Win_GParted::set_valid_operations()
 			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
+
+	// No manipulation operations are currently supported on file systems using the
+	// whole disk device.
+	if ( devices[current_device].disktype == "none" )
+		return;
 
 	//Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
 	if (    selected_partition .status == GParted::STAT_REAL
@@ -1026,6 +1022,10 @@ void Win_GParted::set_valid_operations()
 	        )
 	   )
 		allow_toggle_busy_state( true ) ;
+
+	// Manage flags
+	if ( selected_partition.type != TYPE_UNALLOCATED && selected_partition.status == STAT_REAL )
+		allow_manage_flags( true );
 
 #ifdef ENABLE_ONLINE_RESIZE
 	//Find out if online resizing is possible
