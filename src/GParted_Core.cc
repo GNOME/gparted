@@ -309,8 +309,9 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			if ( temp_device .cylsize < (MEBIBYTE / temp_device .sector_size) )
 				temp_device .cylsize = (MEBIBYTE / temp_device .sector_size) ;
 				
-			//normal harddisk
-			if ( lp_disk )
+			// Partitioned drive (excluding "loop"), as recognised by libparted
+			if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+			     strcmp( lp_disk->type->name, "loop" ) != 0         )
 			{
 				temp_device .disktype =	lp_disk ->type ->name ;
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
@@ -333,7 +334,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 					libparted_messages .clear() ;
 				}
 			}
-			// Hard disk without a libparted recognised disklabel
+			// Unpartitioned drive (including "loop"), as recognised by libparted
 			else
 			{
 				std::vector<Glib::ustring> messages;
@@ -341,7 +342,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				// Recognised file system signature on whole disk device
 				if ( fstype != FS_UNKNOWN )
 				{
-					// Clear the "unrecognised disk label" message
+					// Clear the possible "unrecognised disk label" message
 					libparted_messages.clear();
 
 					temp_device.disktype = "none";
