@@ -1326,88 +1326,88 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
                                                   std::vector<Glib::ustring>& messages )
 {
 	FS_Info fs_info ;
-	Glib::ustring fs_type = "" ;
+	Glib::ustring fsname = "";
 	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
 	//Standard libparted file system detection
 	if ( lp_partition && lp_partition ->fs_type )
 	{
-		fs_type = lp_partition ->fs_type ->name ;
+		fsname = lp_partition->fs_type->name;
 
 		//TODO:  Temporary code to detect ext4.
 		//       Replace when libparted >= 1.9.0 is chosen as minimum required version.
 		Glib::ustring temp = fs_info .get_fs_type( get_partition_path( lp_partition ) ) ;
 		if ( temp == "ext4" || temp == "ext4dev" )
-			fs_type = temp ;
+			fsname = temp;
 	}
 
 	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
 	//  appear to detect file systems for sector sizes other than 512 bytes.
-	if ( fs_type .empty() )
+	if ( fsname.empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		fs_type = fs_info.get_fs_type( get_partition_path( lp_partition ) ) ;
+		fsname = fs_info.get_fs_type( get_partition_path( lp_partition ) );
 	}
 
-	if ( ! fs_type .empty() )
+	if ( ! fsname.empty() )
 	{
-		if ( fs_type == "extended" )
+		if ( fsname == "extended" )
 			return GParted::FS_EXTENDED ;
-		else if ( fs_type == "btrfs" )
+		else if ( fsname == "btrfs" )
 			return GParted::FS_BTRFS ;
-		else if ( fs_type == "exfat" )
+		else if ( fsname == "exfat" )
 			return GParted::FS_EXFAT ;
-		else if ( fs_type == "ext2" )
+		else if ( fsname == "ext2" )
 			return GParted::FS_EXT2 ;
-		else if ( fs_type == "ext3" )
+		else if ( fsname == "ext3" )
 			return GParted::FS_EXT3 ;
-		else if ( fs_type == "ext4" ||
-		          fs_type == "ext4dev" )
+		else if ( fsname == "ext4"    ||
+		          fsname == "ext4dev"    )
 			return GParted::FS_EXT4 ;
-		else if ( fs_type == "linux-swap" ||
-		          fs_type == "linux-swap(v1)" ||
-		          fs_type == "linux-swap(new)" ||
-		          fs_type == "linux-swap(v0)" ||
-		          fs_type == "linux-swap(old)" ||
-		          fs_type == "swap" )
+		else if ( fsname == "linux-swap"      ||
+		          fsname == "linux-swap(v1)"  ||
+		          fsname == "linux-swap(new)" ||
+		          fsname == "linux-swap(v0)"  ||
+		          fsname == "linux-swap(old)" ||
+		          fsname == "swap"               )
 			return GParted::FS_LINUX_SWAP ;
-		else if ( fs_type == "crypto_LUKS" )
+		else if ( fsname == "crypto_LUKS" )
 		{
 			messages.push_back( luks_unsupported );
 			return FS_LUKS;
 		}
-		else if ( fs_type == "LVM2_member" )
+		else if ( fsname == "LVM2_member" )
 			return GParted::FS_LVM2_PV ;
-		else if ( fs_type == "f2fs" )
+		else if ( fsname == "f2fs" )
 			return GParted::FS_F2FS ;
-		else if ( fs_type == "fat16" )
+		else if ( fsname == "fat16" )
 			return GParted::FS_FAT16 ;
-		else if ( fs_type == "fat32" )
+		else if ( fsname == "fat32" )
 			return GParted::FS_FAT32 ;
-		else if ( fs_type == "nilfs2" )
+		else if ( fsname == "nilfs2" )
 			return GParted::FS_NILFS2 ;
-		else if ( fs_type == "ntfs" )
+		else if ( fsname == "ntfs" )
 			return GParted::FS_NTFS ;
-		else if ( fs_type == "reiserfs" )
+		else if ( fsname == "reiserfs" )
 			return GParted::FS_REISERFS ;
-		else if ( fs_type == "xfs" )
+		else if ( fsname == "xfs" )
 			return GParted::FS_XFS ;
-		else if ( fs_type == "jfs" )
+		else if ( fsname == "jfs" )
 			return GParted::FS_JFS ;
-		else if ( fs_type == "hfs" )
+		else if ( fsname == "hfs" )
 			return GParted::FS_HFS ;
-		else if ( fs_type == "hfs+" ||
-		          fs_type == "hfsx" ||
-		          fs_type == "hfsplus" )
+		else if ( fsname == "hfs+"    ||
+		          fsname == "hfsx"    ||
+		          fsname == "hfsplus"    )
 			return GParted::FS_HFSPLUS ;
-		else if ( fs_type == "ufs" )
+		else if ( fsname == "ufs" )
 			return GParted::FS_UFS ;
-		else if ( fs_type == "linux_raid_member" )
+		else if ( fsname == "linux_raid_member" )
 			return FS_LINUX_SWRAID ;
-		else if ( fs_type == "swsusp" ||
-		          fs_type == "swsuspend" )
+		else if ( fsname == "swsusp"    ||
+		          fsname == "swsuspend"    )
 			return FS_LINUX_SWSUSPEND ;
-		else if ( fs_type == "ReFS" )
+		else if ( fsname == "ReFS" )
 			return FS_REFS;
 	}
 
