@@ -991,11 +991,6 @@ void Win_GParted::set_valid_operations()
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
 
-	// No manipulation operations are currently supported on file systems using the
-	// whole disk device.
-	if ( devices[current_device].disktype == "none" )
-		return;
-
 	//Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
 	if (    selected_partition .status == GParted::STAT_REAL
 	     && selected_partition .type != GParted::TYPE_EXTENDED
@@ -1024,7 +1019,9 @@ void Win_GParted::set_valid_operations()
 		allow_toggle_busy_state( true ) ;
 
 	// Manage flags
-	if ( selected_partition.type != TYPE_UNALLOCATED && selected_partition.status == STAT_REAL )
+	if ( selected_partition.type != TYPE_UNALLOCATED &&
+	     selected_partition.status == STAT_REAL      &&
+	     ! selected_partition.whole_device              )
 		allow_manage_flags( true );
 
 #ifdef ENABLE_ONLINE_RESIZE
@@ -1115,9 +1112,12 @@ void Win_GParted::set_valid_operations()
 	//PRIMARY and LOGICAL
 	if (  selected_partition .type == GParted::TYPE_PRIMARY || selected_partition .type == GParted::TYPE_LOGICAL )
 	{
-		allow_delete( true ) ;
 		allow_format( true ) ;
-		
+
+		// only allow deletion of partitions within a partition table
+		if ( ! selected_partition.whole_device )
+			allow_delete( true );
+
 		//find out if resizing/moving is possible
 		if ( (fs .grow || fs .shrink || fs .move ) && ! devices[ current_device ] .readonly ) 
 			allow_resize( true ) ;
