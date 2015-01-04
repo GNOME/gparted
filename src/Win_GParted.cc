@@ -1644,11 +1644,12 @@ void Win_GParted::activate_resize()
 					
 					//And add the new partition to the end of the operations list
 					//change 'selected_partition' into a suitable 'partition_original') 
-					selected_partition .Set_Unallocated( devices[ current_device ] .get_path(),
-									     selected_partition .sector_start,
-									     selected_partition .sector_end,
-									     devices[current_device] .sector_size,
-									     selected_partition .inside_extended ) ;
+					selected_partition.Set_Unallocated( devices[current_device].get_path(),
+					                                    selected_partition.whole_device,
+					                                    selected_partition.sector_start,
+					                                    selected_partition.sector_end,
+					                                    devices[current_device].sector_size,
+					                                    selected_partition.inside_extended );
 
 					Operation * operation = new OperationCreate( devices[ current_device ],
 										     selected_partition,
@@ -2020,16 +2021,17 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	
 	//ok we made it.  lets create an fitting partition object
 	Partition part_temp ;
-	part_temp .Set( devices[ current_device ] .get_path(),
-			selected_partition .get_path(),
-			selected_partition .partition_number,
-			selected_partition .type,
-			new_fs,
-			selected_partition .sector_start,
-			selected_partition .sector_end,
-			devices[ current_device ] .sector_size,
-			selected_partition .inside_extended,
-			false ) ;
+	part_temp.Set( devices[current_device].get_path(),
+	               selected_partition.get_path(),
+	               selected_partition.partition_number,
+	               selected_partition.type,
+	               selected_partition.whole_device,
+	               new_fs,
+	               selected_partition.sector_start,
+	               selected_partition.sector_end,
+	               devices[current_device].sector_size,
+	               selected_partition.inside_extended,
+	               false );
 	//Leave sector usage figures to new Partition object defaults of
 	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
 	 

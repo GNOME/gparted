@@ -45,7 +45,7 @@ int Operation::find_index_extended( const std::vector<Partition> & partitions )
 void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
 	Partition UNALLOCATED ;
-	UNALLOCATED .Set_Unallocated( device .get_path(), 0, 0, sector_size, inside_extended ) ;
+	UNALLOCATED.Set_Unallocated( device.get_path(), false, 0LL, 0LL, sector_size, inside_extended );
 	
 	//if there are no partitions at all..
 	if ( partitions .empty() )

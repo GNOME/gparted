@@ -429,7 +429,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 			}
 
 			part.Set(dev_path, part_path, part_num,
-				type, fs, sec_start, sec_end, sec_size, false, false);
+			         type, false, fs, sec_start, sec_end, sec_size, false, false);
 
 			this->partitions.push_back(part);
 		}

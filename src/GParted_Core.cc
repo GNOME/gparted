@@ -363,6 +363,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 					Partition partition_temp;
 					partition_temp.Set_Unallocated( temp_device .get_path(),
+					                                true,
 					                                0LL,
 					                                temp_device .length - 1LL,
 					                                temp_device .sector_size,
@@ -1152,16 +1153,17 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 					partition_is_busy = is_busy( filesystem, partition_path ) ;
 				}
 
-				partition_temp .Set( device .get_path(),
-						     partition_path,
-						     lp_partition ->num,
-						     lp_partition ->type == 0 ?	GParted::TYPE_PRIMARY : GParted::TYPE_LOGICAL,
-						     filesystem,
-						     lp_partition ->geom .start,
-						     lp_partition ->geom .end,
-						     device .sector_size,
-						     lp_partition ->type,
-						     partition_is_busy ) ;
+				partition_temp.Set( device .get_path(),
+				                    partition_path,
+				                    lp_partition->num,
+				                    ( lp_partition->type == 0 ) ? TYPE_PRIMARY : TYPE_LOGICAL,
+				                    false,
+				                    filesystem,
+				                    lp_partition->geom.start,
+				                    lp_partition->geom.end,
+				                    device.sector_size,
+				                    lp_partition->type,
+				                    partition_is_busy );
 
 				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp, lp_partition ) ;
@@ -1172,16 +1174,17 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
-				partition_temp .Set( device .get_path(),
-						     partition_path, 
-						     lp_partition ->num,
-						     GParted::TYPE_EXTENDED,
-						     GParted::FS_EXTENDED,
-						     lp_partition ->geom .start,
-						     lp_partition ->geom .end,
-						     device .sector_size,
-						     false,
-						     false ) ;
+				partition_temp.Set( device.get_path(),
+				                    partition_path,
+				                    lp_partition->num,
+				                    TYPE_EXTENDED,
+				                    false,
+				                    FS_EXTENDED,
+				                    lp_partition->geom.start,
+				                    lp_partition->geom.end,
+				                    device.sector_size,
+				                    false,
+				                    false );
 
 				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
 				set_flags( partition_temp, lp_partition ) ;
@@ -1261,6 +1264,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	                    path,
 	                    1,
 	                    TYPE_PRIMARY,
+	                    true,
 	                    fstype,
 	                    0LL,
 	                    device.length - 1LL,
@@ -1556,7 +1560,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 				       bool inside_extended )
 {
 	Partition partition_temp ;
-	partition_temp .Set_Unallocated( device_path, 0, 0, sector_size, inside_extended ) ;
+	partition_temp.Set_Unallocated( device_path, false, 0LL, 0LL, sector_size, inside_extended );
 	
 	//if there are no partitions at all..
 	if ( partitions .empty() )

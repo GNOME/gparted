@@ -193,13 +193,13 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 		new_end = selected_partition.sector_end ;
 	
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp .Set(	selected_partition .device_path,
-			String::ucompose( _("New Partition #%1"), new_count ),
-			new_count, part_type,
-			FILESYSTEMS[ optionmenu_filesystem .get_history() ] .filesystem,
-			new_start, new_end,
-			sector_size,
-			selected_partition .inside_extended, false ) ;
+	part_temp.Set( selected_partition.device_path,
+	               String::ucompose( _("New Partition #%1"), new_count ),
+	               new_count, part_type, selected_partition.whole_device,
+	               FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
+	               new_start, new_end,
+	               sector_size,
+	               selected_partition.inside_extended, false );
 
 	//Retrieve Label info
 	part_temp.set_filesystem_label( Utils::trim( entry.get_text() ) );
@@ -214,11 +214,12 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	if ( part_temp .type == GParted::TYPE_EXTENDED )
 	{
 		Partition UNALLOCATED ;
-		UNALLOCATED .Set_Unallocated( part_temp .device_path,
-					      part_temp .sector_start,
-					      part_temp .sector_end,
-					      sector_size,
-					      true ) ;
+		UNALLOCATED.Set_Unallocated( part_temp.device_path,
+		                             part_temp.whole_device,
+		                             part_temp.sector_start,
+		                             part_temp.sector_end,
+		                             sector_size,
+		                             true );
 		part_temp .logicals .push_back( UNALLOCATED ) ;
 	}
 

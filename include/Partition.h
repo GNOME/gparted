@@ -60,16 +60,17 @@ public:
 	void Reset() ;
 	
 	//simple Set-functions.  only for convenience, since most members are public
-	void Set( 	const Glib::ustring & device_path,
-			const Glib::ustring & partition,
-			int partition_number,
-			PartitionType type,
-			FILESYSTEM filesystem,
-			Sector sector_start,
-			Sector sector_end,
-			Byte_Value sector_size,
-			bool inside_extended,
-			bool busy ) ;
+	void Set( const Glib::ustring & device_path,
+	          const Glib::ustring & partition,
+	          int partition_number,
+	          PartitionType type,
+	          bool whole_device,
+	          FILESYSTEM filesystem,
+	          Sector sector_start,
+	          Sector sector_end,
+	          Byte_Value sector_size,
+	          bool inside_extended,
+	          bool busy );
 
 	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
 	bool sector_usage_known() const ;
@@ -79,11 +80,12 @@ public:
 	Sector get_sectors_unallocated() const ;
 	void get_usage_triple( int imax, int & i1, int & i2, int & i3 ) const ;
 
-	void Set_Unallocated( const Glib::ustring & device_path, 
-			      Sector sector_start,
-			      Sector sector_end,
-			      Byte_Value sector_size,
-			      bool inside_extended );
+	void Set_Unallocated( const Glib::ustring & device_path,
+	                      bool whole_device,
+	                      Sector sector_start,
+	                      Sector sector_end,
+	                      Byte_Value sector_size,
+	                      bool inside_extended );
 
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
@@ -112,6 +114,7 @@ public:
 	Glib::ustring device_path ;
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
+	bool whole_device;  // Is this a virtual partition spanning a whole unpartitioned disk device?
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
 	FILESYSTEM filesystem ;
