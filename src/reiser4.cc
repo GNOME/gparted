@@ -138,9 +138,9 @@ void reiser4::read_uuid( Partition & partition )
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --yes --label \"" + new_partition.get_label() +
-				  "\" " + new_partition.get_path(), operationdetail,
-				  false, true );
+	return ! execute_command( "mkfs.reiser4 --force --yes --label \"" + new_partition.get_label() + "\" " +
+	                          new_partition.get_path(), operationdetail,
+	                          false, true );
 }
 
 bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
