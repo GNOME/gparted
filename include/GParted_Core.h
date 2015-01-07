@@ -188,6 +188,8 @@ private:
 
 	//general..	
 	bool flush_device( PedDevice * lp_device ) ;
+	bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
+	bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
 	bool get_device_and_disk( const Glib::ustring & device_path,
 	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false ) ;
 	void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;

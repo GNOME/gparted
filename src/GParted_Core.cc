@@ -3626,29 +3626,49 @@ bool GParted_Core::flush_device( PedDevice * lp_device )
 	return success ;
 }
 
+bool GParted_Core::get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush )
+{
+	lp_device = ped_device_get( device_path.c_str() );
+	{
+		if ( flush )
+			// Force cache coherency before going on to read the partition
+			// table so that libparted reading the whole disk device and the
+			// file system tools reading the partition devices read the same
+			// data.
+			flush_device( lp_device );
+
+		return true;
+	}
+	return false;
+}
+
+bool GParted_Core::get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict )
+{
+	if ( lp_device )
+	{
+		lp_disk = ped_disk_new( lp_device );
+
+		// if ! disk and writable it's probably a HD without disklabel.
+		// We return true here and deal with them in
+		// GParted_Core::set_devices_thread().
+		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
+			return true;
+
+		destroy_device_and_disk( lp_device, lp_disk );
+	}
+
+	return false;
+}
+
 bool GParted_Core::get_device_and_disk( const Glib::ustring & device_path,
                                         PedDevice*& lp_device, PedDisk*& lp_disk, bool strict, bool flush )
 {
-	lp_device = ped_device_get( device_path .c_str() ) ;
-	if ( lp_device )
+	if ( get_device( device_path, lp_device, flush ) )
 	{
-		if ( flush )
-			//Force cache coherency before reading the partition table so that
-			//  libparted reading the whole disk device and the file system
-			//  tools reading the partition devices read the same data.
-			flush_device( lp_device ) ;
-
-		lp_disk = ped_disk_new( lp_device );
-	
-		//if ! disk and writeable it's probably a HD without disklabel.
-		//We return true here and deal with them in GParted_Core::get_devices
-		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
-			return true ;
-		
-		destroy_device_and_disk( lp_device, lp_disk ) ;
+		return get_disk( lp_device, lp_disk, strict );
 	}
 
-	return false ;
+	return false;
 }
 
 void GParted_Core::destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk )
