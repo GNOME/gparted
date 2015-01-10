@@ -2281,16 +2281,16 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	}
 
 	bool success = false ;
-	Glib::ustring error ;
-	Glib::ustring stdout;
+	Glib::ustring cmd;
+	Glib::ustring output;
+	Glib::ustring error;
 
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
 					 selected_partition .get_path(),
 					 selected_partition .get_mountpoints()[ index ] ) ) ;
-	success = !Utils::execute_command( "mount -v " + selected_partition .get_path() + " \"" +
-					   selected_partition.get_mountpoints()[ index ] + "\"",
-					   stdout,
-					   error ) ;
+	cmd = "mount -v " + selected_partition.get_path() +
+	      " \"" + selected_partition.get_mountpoints()[index] + "\"";
+	success = ! Utils::execute_command( cmd, output, error );
 	hide_pulsebar();
 	if ( ! success )
 	{
@@ -2303,8 +2303,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		dialog .set_secondary_text( error, true ) ;
-	
+		dialog.set_secondary_text( "# " + cmd + "\n" + error );
+
 		dialog.run() ;
 	}
 
