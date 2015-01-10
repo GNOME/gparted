@@ -2059,6 +2059,9 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 {
 	if ( partition .filesystem == FS_CLEARED )
 		return erase_filesystem_signatures( partition, operationdetail ) ;
+	else if ( partition.whole_device )
+		return    erase_filesystem_signatures( partition, operationdetail )
+		       && create_filesystem( partition, operationdetail );
 	else
 		return    erase_filesystem_signatures( partition, operationdetail )
 		       && set_partition_type( partition, operationdetail )
