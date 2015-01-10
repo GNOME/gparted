@@ -1333,7 +1333,8 @@ FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, 
 		{   512LL, "LABELONE"    ,   536LL, "LVM2", FS_LVM2_PV   },
 		{     0LL, "LUKS\xBA\xBE",     0LL, NULL  , FS_LUKS      },
 		{ 65600LL, "_BHRfS_M"    ,     0LL, NULL  , FS_BTRFS     },
-		{     3LL, "-FVE-FS-"    ,     0LL, NULL  , FS_BITLOCKER }
+		{     3LL, "-FVE-FS-"    ,     0LL, NULL  , FS_BITLOCKER },
+		{  1030LL, "\x34\x34"    ,     0LL, NULL  , FS_NILFS2    }
 	};
 	// Reference:
 	//   Detecting BitLocker
