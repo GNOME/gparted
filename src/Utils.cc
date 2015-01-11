@@ -182,6 +182,7 @@ int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 	}
 }
 
+// Return libparted file system name / GParted display name
 Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 {
 	switch( filesystem )
@@ -241,6 +242,33 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_REFS		: return "refs" ;
 
 		default			: return "" ;
+	}
+}
+
+// Return Linux kernel name only for mountable file systems.
+// (Identical to a subset of the libparted names except that it's hfsplus instead of hfs+).
+const Glib::ustring Utils::get_filesystem_kernel_name( FILESYSTEM fstype )
+{
+	switch ( fstype )
+	{
+		case FS_BTRFS    : return "btrfs";
+		case FS_EXFAT    : return "exfat";
+		case FS_EXT2     : return "ext2";
+		case FS_EXT3     : return "ext3";
+		case FS_EXT4     : return "ext4";
+		case FS_F2FS     : return "f2fs";
+		case FS_FAT16    : return "fat16";
+		case FS_FAT32    : return "fat32";
+		case FS_HFS      : return "hfs";
+		case FS_HFSPLUS  : return "hfsplus";
+		case FS_JFS      : return "jfs";
+		case FS_NILFS2   : return "nilfs2";
+		case FS_NTFS     : return "ntfs";
+		case FS_REISER4  : return "reiser4";
+		case FS_REISERFS : return "reiserfs";
+		case FS_UFS      : return "ufs";
+		case FS_XFS      : return "xfs";
+		default          : return "";
 	}
 }
 

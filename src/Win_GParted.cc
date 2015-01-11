@@ -2290,6 +2290,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 					 selected_partition .get_mountpoints()[ index ] ) ) ;
 	cmd = "mount -v " + selected_partition.get_path() +
 	      " \"" + selected_partition.get_mountpoints()[index] + "\"";
+	// FIXME: Replace debugging with mount specifying file system type
+	std::cout << "DEBUG: (" << Utils::get_filesystem_kernel_name( selected_partition.filesystem ) << ") # " << cmd << std::endl;
 	success = ! Utils::execute_command( cmd, output, error );
 	hide_pulsebar();
 	if ( ! success )
