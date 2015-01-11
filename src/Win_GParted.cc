@@ -2284,15 +2284,34 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	Glib::ustring cmd;
 	Glib::ustring output;
 	Glib::ustring error;
+	Glib::ustring message;
 
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
 					 selected_partition .get_path(),
 					 selected_partition .get_mountpoints()[ index ] ) ) ;
+
+	// First try mounting letting mount (libblkid) determine the file system type.
+	// Do this because GParted uses libparted first and blkid second and when there
+	// are multiple signatures GParted may report a different result to blkid alone.
 	cmd = "mount -v " + selected_partition.get_path() +
 	      " \"" + selected_partition.get_mountpoints()[index] + "\"";
-	// FIXME: Replace debugging with mount specifying file system type
-	std::cout << "DEBUG: (" << Utils::get_filesystem_kernel_name( selected_partition.filesystem ) << ") # " << cmd << std::endl;
 	success = ! Utils::execute_command( cmd, output, error );
+	if ( ! success )
+	{
+		message = "# " + cmd + "\n" + error;
+
+		Glib::ustring type = Utils::get_filesystem_kernel_name( selected_partition.filesystem );
+		if ( ! type.empty() )
+		{
+			// Second try mounting specifying the GParted determined file
+			// system type.
+			cmd = "mount -v -t " + type + " " + selected_partition.get_path() +
+			      " \"" + selected_partition.get_mountpoints()[index] + "\"";
+			success = ! Utils::execute_command( cmd, output, error );
+			if ( ! success )
+				message += "\n# " + cmd + "\n" + error;
+		}
+	}
 	hide_pulsebar();
 	if ( ! success )
 	{
@@ -2305,7 +2324,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		dialog.set_secondary_text( "# " + cmd + "\n" + error );
+		dialog.set_secondary_text( message );
 
 		dialog.run() ;
 	}
