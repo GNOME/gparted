@@ -2091,12 +2091,11 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 				 mountpoints .end(),
 				 selected_partition .get_mountpoints()[ t ] ) <= 1 ) 
 		{
-			if ( Utils::execute_command( "umount -v \"" + selected_partition .get_mountpoints()[ t ] + "\"",
-						     dummy,
-						     *error ) )
+			Glib::ustring cmd = "umount -v \"" + selected_partition.get_mountpoints()[t] + "\"";
+			if ( Utils::execute_command( cmd, dummy, *error ) )
 			{
 				*succes = false ;
-				errors .push_back( *error ) ;	
+				errors.push_back( "# " + cmd + "\n" + *error );
 			}
 		}
 		else
@@ -2118,8 +2117,9 @@ void Win_GParted::toggle_busy_state()
 {
 	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
 	bool success = false ;
-	Glib::ustring error ;
+	Glib::ustring cmd;
 	Glib::ustring output;
+	Glib::ustring error;
 
 	if ( operation_count > 0 )
 	{
@@ -2146,13 +2146,13 @@ void Win_GParted::toggle_busy_state()
 		                         , Gtk::BUTTONS_OK
 		                         , true
 		                         ) ;
-		if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+		if ( selected_partition.filesystem == FS_LINUX_SWAP )
 		{
 			tmp_msg = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
 			tmp_msg += "\n" ;
 			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
 		}
-		else if ( selected_partition .filesystem == GParted::FS_LVM2_PV )
+		else if ( selected_partition.filesystem == FS_LVM2_PV )
 		{
 			tmp_msg = _( "The activate Volume Group action cannot be performed if an operation is pending for the partition." ) ;
 			tmp_msg += "\n" ;
@@ -2163,20 +2163,17 @@ void Win_GParted::toggle_busy_state()
 		return ;
 	}
 
-	if ( selected_partition .filesystem == GParted::FS_LINUX_SWAP )
+	if ( selected_partition.filesystem == FS_LINUX_SWAP )
 	{
 		show_pulsebar( 
 			String::ucompose( 
 				selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
 				selected_partition .get_path() ) ) ;
 		if ( selected_partition .busy )
-			success = ! Utils::execute_command( "swapoff -v " + selected_partition .get_path(),
-							    output,
-							    error );
+			cmd = "swapoff -v " + selected_partition.get_path();
 		else
-			success = ! Utils::execute_command( "swapon -v " + selected_partition .get_path(),
-							    output,
-							    error );
+			cmd = "swapon -v " + selected_partition.get_path();
+		success = ! Utils::execute_command( cmd, output, error );
 		hide_pulsebar();
 		if ( ! success )
 		{
@@ -2188,12 +2185,12 @@ void Win_GParted::toggle_busy_state()
 				Gtk::BUTTONS_OK,
 				true ) ;
 
-			dialog .set_secondary_text( error ) ;
-			
+			dialog.set_secondary_text( "# " + cmd + "\n" + error );
+
 			dialog.run() ;
 		}
 	}
-	else if ( selected_partition .filesystem == GParted::FS_LVM2_PV )
+	else if ( selected_partition.filesystem == FS_LVM2_PV )
 	{
 		show_pulsebar(
 			String::ucompose(
@@ -2203,13 +2200,10 @@ void Win_GParted::toggle_busy_state()
 				selected_partition .get_mountpoint() ) ) ;
 		if ( selected_partition .busy )
 			//VGNAME from mount point
-			success = ! Utils::execute_command( "lvm vgchange -a n " + selected_partition .get_mountpoint(),
-							    output,
-							    error );
+			cmd = "lvm vgchange -a n " + selected_partition.get_mountpoint();
 		else
-			success = ! Utils::execute_command( "lvm vgchange -a y " + selected_partition .get_mountpoint(),
-							     output,
-							     error );
+			cmd = "lvm vgchange -a y " + selected_partition.get_mountpoint();
+		success = ! Utils::execute_command( cmd, output, error );
 		hide_pulsebar();
 
 		if ( ! success )
@@ -2223,7 +2217,7 @@ void Win_GParted::toggle_busy_state()
 				Gtk::BUTTONS_OK,
 				true ) ;
 
-			dialog .set_secondary_text( error ) ;
+			dialog.set_secondary_text( "# " + cmd + "\n" + error );
 
 			dialog.run() ;
 		}
