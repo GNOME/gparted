@@ -2821,7 +2821,13 @@ bool GParted_Core::copy( const Partition & partition_src,
 			succes = create_partition( partition_dst, operationdetail, ( (min_size + (partition_dst .sector_size - 1)) / partition_dst .sector_size ) ) ;
 		}
 
-		if ( succes && set_partition_type( partition_dst, operationdetail ) )
+		if ( succes && ! partition_dst.whole_device )
+		{
+			// Only set type of partition on a partitioned device.
+			succes = set_partition_type( partition_dst, operationdetail );
+		}
+
+		if ( succes )
 		{
 			operationdetail .add_child( OperationDetail( 
 				String::ucompose( _("copy file system of %1 to %2"),
@@ -3170,6 +3176,11 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			if ( partition.whole_device )
 			{
 				// Virtual partition spanning whole disk device
+
+				// Re-add the real partition path from libparted.
+				// (See just below for why this is needed).
+				partition.add_path( lp_device->path );
+
 				success = true;
 			}
 			else if ( get_disk( lp_device, lp_disk ) )
