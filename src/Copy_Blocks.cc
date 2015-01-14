@@ -105,9 +105,9 @@ void copy_blocks::copy_thread()
 		{
 			blocksize -= 2*blocksize;
 			done -= 2*done;
-			offset_src += ( (length / src_sector_size) - 1 );
+			offset_src += length / src_sector_size;
 			/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-			offset_dst += ( ((length + (dst_sector_size - 1)) / dst_sector_size) - 1 );
+			offset_dst += (length + (dst_sector_size - 1)) / dst_sector_size;
 		}
 		success = true;
 	} else success = false;
