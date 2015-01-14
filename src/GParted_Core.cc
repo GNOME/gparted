@@ -3645,18 +3645,29 @@ public:
 		{
 			switch( e.type )
 			{
-			case PED_EXCEPTION_WARNING:
-				set_title( _("Libparted Warning") );
-				property_message_type() = Gtk::MESSAGE_WARNING;
-				break;
 			case PED_EXCEPTION_INFORMATION:
 				set_title( _("Libparted Information") );
 				property_message_type() = Gtk::MESSAGE_INFO;
 				break;
+			case PED_EXCEPTION_WARNING:
+				set_title( _("Libparted Warning") );
+				property_message_type() = Gtk::MESSAGE_WARNING;
+				break;
 			case PED_EXCEPTION_ERROR:
 				set_title( _("Libparted Error") );
+				break;
+			case PED_EXCEPTION_FATAL:
+				set_title( _("Libparted Fatal") );
+				break;
+			case PED_EXCEPTION_BUG:
+				set_title( _("Libparted Bug") );
+				break;
+			case PED_EXCEPTION_NO_FEATURE:
+				set_title( _("Libparted Unsupported Feature") );
+				break;
 			default:
-				set_title( _("Libparted Bug Found!") );
+				set_title( _("Libparted unknown exception") );
+				break;
 			}
 			if (e.options & PED_EXCEPTION_FIX)
 				add_button( _("Fix"), PED_EXCEPTION_FIX );
