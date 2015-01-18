@@ -753,17 +753,14 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					 maximize_filesystem( operation ->partition_original, operation ->operation_detail ) ;
 				break ;
 			case OPERATION_CREATE:
-				succes = create( operation ->device, 
-					         operation ->partition_new,
-					         operation ->operation_detail ) ;
+				succes = create( operation->partition_new, operation->operation_detail );
 				break ;
 			case OPERATION_RESIZE_MOVE:
 				//in case the to be resized/moved partition was a 'copy of..', we need a real path...
 				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-				succes = resize_move( operation ->device,
-					       	      operation ->partition_original,
-						      operation ->partition_new,
-						      operation ->operation_detail ) ;
+				succes = resize_move( operation ->partition_original,
+				                      operation ->partition_new,
+				                      operation ->operation_detail );
 				break ;
 			case OPERATION_FORMAT:
 				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
@@ -1961,7 +1958,7 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 			partition .flags .push_back( ped_partition_flag_get_name( flags[ t ] ) ) ;
 }
 
-bool GParted_Core::create( const Device & device, Partition & new_partition, OperationDetail & operationdetail ) 
+bool GParted_Core::create( Partition & new_partition, OperationDetail & operationdetail )
 {
 	if ( new_partition .type == GParted::TYPE_EXTENDED )   
 	{
@@ -2299,10 +2296,9 @@ bool GParted_Core::change_uuid( const Partition & partition, OperationDetail & o
 	return succes ;
 }
 
-bool GParted_Core::resize_move( const Device & device,
-				const Partition & partition_old,
-			  	Partition & partition_new,
-			  	OperationDetail & operationdetail ) 
+bool GParted_Core::resize_move( const Partition & partition_old,
+                                Partition & partition_new,
+                                OperationDetail & operationdetail )
 {
 	if (   (partition_new .alignment == ALIGN_STRICT)
 	    || (partition_new .alignment == ALIGN_MEBIBYTE)
@@ -2317,7 +2313,7 @@ bool GParted_Core::resize_move( const Device & device,
 			return resize( partition_old, partition_new, operationdetail ) ;
 
 		if ( partition_new .get_sector_length() == partition_old .get_sector_length() )
-			return move( device, partition_old, partition_new, operationdetail ) ;
+			return move( partition_old, partition_new, operationdetail );
 
 		Partition temp ;
 		if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
@@ -2336,19 +2332,18 @@ bool GParted_Core::resize_move( const Device & device,
 
 		PartitionAlignment previous_alignment = temp .alignment ;
 		temp .alignment = ALIGN_STRICT ;
-		bool succes = resize_move( device, partition_old, temp, operationdetail ) ;
+		bool succes = resize_move( partition_old, temp, operationdetail );
 		temp .alignment = previous_alignment ;
 
-		return succes && resize_move( device, temp, partition_new, operationdetail ) ;
+		return succes && resize_move( temp, partition_new, operationdetail );
 	}
 
 	return false ;
 }
 
-bool GParted_Core::move( const Device & device,
-			 const Partition & partition_old,
-		   	 const Partition & partition_new,
-		   	 OperationDetail & operationdetail ) 
+bool GParted_Core::move( const Partition & partition_old,
+                         const Partition & partition_new,
+                         OperationDetail & operationdetail )
 {
 	if ( partition_old .get_sector_length() != partition_new .get_sector_length() )
 	{	

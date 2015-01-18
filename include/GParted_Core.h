@@ -105,7 +105,7 @@ private:
 	void set_flags( Partition & partition, PedPartition* lp_partition ) ;
 	
 	//operationstuff...
-	bool create( const Device & device, Partition & new_partition, OperationDetail & operationdetail ) ;
+	bool create( Partition & new_partition, OperationDetail & operationdetail );
 	bool create_partition( Partition & new_partition, OperationDetail & operationdetail, Sector min_size = 0 ) ;
 	bool create_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 
@@ -121,14 +121,12 @@ private:
 
 	bool change_uuid( const Partition & partition, OperationDetail & operation_detail ) ;
 
-	bool resize_move( const Device & device,
-			  const Partition & partition_old,
-			  Partition & partition_new,
-			  OperationDetail & operationdetail ) ;
-	bool move( const Device & device, 
-		   const Partition & partition_old,
-		   const Partition & partition_new,
-		   OperationDetail & operationdetail ) ;
+	bool resize_move( const Partition & partition_old,
+	                  Partition & partition_new,
+	                  OperationDetail & operationdetail );
+	bool move( const Partition & partition_old,
+	           const Partition & partition_new,
+	           OperationDetail & operationdetail );
 	bool move_filesystem( const Partition & partition_old,
 			      const Partition & partition_new,
 			      OperationDetail & operationdetail ) ;
