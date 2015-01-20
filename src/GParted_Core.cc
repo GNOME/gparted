@@ -3154,50 +3154,68 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 	{
 		operationdetail .add_child( OperationDetail( String::ucompose( _("calibrate %1"), partition .get_path() ) ) ) ;
 	
-		bool succes = false ;
+		bool success = false;
 		PedDevice* lp_device = NULL ;
 		PedDisk* lp_disk = NULL ;
-		if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
+		if ( get_device( partition.device_path, lp_device ) )
 		{	
-			PedPartition* lp_partition = NULL ;
-			if ( partition .type == GParted::TYPE_EXTENDED )
-				lp_partition = ped_disk_extended_partition( lp_disk ) ;
-			else	
-				lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-		
-			if ( lp_partition )//FIXME: add check to see if lp_partition ->type matches partition .type..
+			if ( partition.whole_device )
 			{
-				// Re-add the real partition path from libparted.
-				//
-				// When creating a copy operation the list of paths for
-				// the partition object was set to ["copy of /dev/SRC"] to
-				// display in the UI before the operations are applied.
-				// When pasting into an existing partition, this re-adds
-				// the real path to the start of the list making it
-				// ["/dev/DST", "copy of /dev/SRC"].  This provides the
-				// real path for any file system specific tools needed
-				// during the copy operation.  Such as file system check
-				// and grow steps added when the source and destination
-				// aren't identical sizes or when file system specific
-				// tools are used to perform the copy as for XFS or recent
-				// EXT2/3/4 tools.
-				//
-				// FIXME: Having this work just because "/dev/DST" happens
-				// to sort before "copy of /dev/SRC" is ugly!  Probably
-				// have a separate display path which can be changed at
-				// will without affecting the list of real paths for the
-				// partition.
-				partition .add_path( get_partition_path( lp_partition ) ) ;
+				// Virtual partition spanning whole disk device
+				success = true;
+			}
+			else if ( get_disk( lp_device, lp_disk ) )
+			{
+				// Partitioned device
+				PedPartition *lp_partition = NULL;
+				if ( partition.type == TYPE_EXTENDED )
+					lp_partition = ped_disk_extended_partition( lp_disk );
+				else
+					lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
 
-				// Reload the partition boundaries from libparted to
-				// ensure that GParted knows what the actual partition
-				// boundaries are before applying the next operation.
-				// Necessary when the previous operation in the sequence
-				// was a resize/move operation where GParted may have only
-				// estimated where libparted would move the boundaries to.
-				partition .sector_start = lp_partition ->geom .start ;
-				partition .sector_end = lp_partition ->geom .end ;
+				if ( lp_partition )  // FIXME: add check to see if lp_partition->type matches partition.type..
+				{
+					// Re-add the real partition path from libparted.
+					//
+					// When creating a copy operation the list of
+					// paths for the partition object was set to
+					// ["copy of /dev/SRC"] to display in the UI
+					// before the operations are applied.  When
+					// pasting into an existing partition, this
+					// re-adds the real path to the start of the list
+					// making it ["/dev/DST", "copy of /dev/SRC"].
+					// This provides the real path for any file system
+					// specific tools needed during the copy
+					// operation.  Such as file system check and grow
+					// steps added when the source and destination
+					// aren't identical sizes or when file system
+					// specific tools are used to perform the copy as
+					// for XFS or recent EXT2/3/4 tools.
+					//
+					// FIXME: Having this work just because "/dev/DST"
+					// happens to sort before "copy of /dev/SRC" is
+					// ugly!  Probably have a separate display path
+					// which can be changed at will without affecting
+					// the list of real paths for the partition.
+					partition.add_path( get_partition_path( lp_partition ) );
 
+					// Reload the partition boundaries from libparted
+					// to ensure that GParted knows what the actual
+					// partition boundaries are before applying the
+					// next operation.  Necessary when the previous
+					// operation in the sequence was a resize/move
+					// operation where GParted may have only estimated
+					// where libparted would move the boundaries to.
+					partition.sector_start = lp_partition->geom.start;
+					partition.sector_end   = lp_partition->geom.end;
+
+					success = true;
+				}
+			}
+			// else error from get_disk() reading partition table
+
+			if ( success )
+			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail(
 						String::ucompose( _("path: %1"), partition .get_path() ) + "\n" +
@@ -3208,14 +3226,13 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 								Utils::format_size( partition .get_sector_length(), partition .sector_size ) ),
 					STATUS_NONE, 
 					FONT_ITALIC ) ) ;
-				succes = true ;
 			}
 
 			destroy_device_and_disk( lp_device, lp_disk ) ;
 		}
 
-		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-		return succes ;
+		operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+		return success;
 	}
 	else //nothing to calibrate...
 		return true ;
