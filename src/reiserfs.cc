@@ -159,7 +159,7 @@ bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operat
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f --label \"" + new_partition.get_filesystem_label() + "\" " +
+	return ! execute_command( "mkreiserfs -f -f --label \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail, false, true );
 }
