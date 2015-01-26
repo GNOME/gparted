@@ -1477,7 +1477,7 @@ void Win_GParted::menu_help_about()
 	dialog .set_logo_icon_name( "gparted" ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
-	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort\nCopyright © 2008-2014 Curtis Gedak" ) ;
+	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort\nCopyright © 2008-2015 Curtis Gedak" ) ;
 
 	//authors
 	//Names listed in alphabetical order by LAST name.
