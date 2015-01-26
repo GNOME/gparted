@@ -1,4 +1,52 @@
 ============================
+GParted 0.21.0  (2015-01-26)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.  One fix involves an error introduced
+  in 0.15.0 whereby GParted's internal block copy has an off by one
+  sector bug when the source is before the destination; and the copy
+  is performed backwards from high block to low block.  The problem
+  results in incorrect last sectors in partitions.
+
+### Key changes include:
+
+  * Fix off by one sector error in GParted internal block copy
+  * Add support for ext4 on RHEL/CentOS 5.x
+  * Remove unnecessary duplicate actions when resizing a partition
+
+Bug Fixes
+---------
+  * Fix off by one sector error in GParted internal block copy (#742920)
+  * Add support for ext4 on RHEL/CentOS 5.x (#738706)
+  * Add ReFS file system detection (#738471)
+  * Use pkg-config to check for version of libparted (#740004)
+  * Remove unnecessary duplicate actions when resizing a partition (#741211)
+  * Correctly capitalise GNOME in the Manual and man page (#739805)
+  * Allow creation of reiser4 file systems on Linux 3.x (#742511)
+  * Add keywords in .desktop file to improve application discovery
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Phillip Susi and
+  Richard Hughes.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), de(Wolfgang Stöggl), es(Daniel Mustieles),
+  fi(Timo Jyrinki), fr(Alexandre Franke), hu(Balázs Úr),
+  it(Milo Casagrande), kk(Baurzhan Muftakhidinov), pl(Piotr Drąg),
+  pt_BR(Rafael Ferreira, Enrico Nicoletto), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), sv(Anders Jonsson), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.20.0  (2014-10-20)
 ============================
 
