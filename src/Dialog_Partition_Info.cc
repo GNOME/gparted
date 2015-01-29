@@ -512,18 +512,15 @@ void Dialog_Partition_Info::Display_Info()
 
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
-		//flags
-		if ( partition.type != GParted::TYPE_UNALLOCATED )
-		{
-			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
-					1, 2,
-					top, bottom,
-					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
-					2, 3,
-					top++, bottom++,
-					Gtk::FILL ) ;
-		}
+		// flags
+		table->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
+		               1, 2,
+		               top, bottom,
+		               Gtk::FILL );
+		table->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
+		               2, 3,
+		               top++, bottom++,
+		               Gtk::FILL );
 	}
 
 	//Right field & value pair area
