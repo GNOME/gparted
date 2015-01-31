@@ -1103,6 +1103,52 @@
         </caution>
       </sect3>
 
+<!-- ============= To Name a Partition =============================== -->
+      <sect3 id="gparted-name-partition">
+        <title>Naming a Partition</title>
+        <note>
+          <para>
+          Naming of partitions is only available with GUID partition
+          tables (GPT).
+          </para>
+          <para>
+          Also see <xref linkend="gparted-create-partition-table"/>.
+          </para>
+        </note>
+        <para>
+        To set a name of a partition:
+        </para>
+          <orderedlist>
+            <listitem>
+              <para>
+              Select an unmounted partition.
+              See <xref linkend="gparted-select-partition"/>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Choose:
+              <menuchoice><guimenu>Partition</guimenu>
+              <guimenuitem>Name Partition</guimenuitem></menuchoice>.
+              The application opens a <guilabel>Set partition name on
+              <replaceable>/path-to-partition</replaceable></guilabel> dialog.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Type a partition name in the <guilabel>Name</guilabel> text box.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Click <guibutton>OK</guibutton>.
+              The application displays the set partition name operation
+              in the <guilabel>Operations Pending</guilabel> pane.
+              </para>
+            </listitem>
+          </orderedlist>
+      </sect3>
+
 <!-- ============= To Format a Partition ============================= -->
       <sect3 id="gparted-format-partition">
         <title>Formatting a Partition</title>
