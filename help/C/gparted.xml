@@ -982,8 +982,8 @@
             </listitem>
             <listitem>
               <para>
-              Specify the label for the partition.
-              See <xref linkend="gparted-specify-partition-label"/>.
+              Specify the label of the file system for the partition.
+              See <xref linkend="gparted-specify-partition-file-system-label"/>.
               </para>
             </listitem>
             <listitem>
@@ -1078,8 +1078,8 @@
           <para>
           Changes in a device name can cause problems if a
           partition is mounted using a device name.
-          You can avoid the problem by using the label or 
-          the Universally Unique Identifier (UUID) of
+          You can avoid the problem by using the file system label or
+          Universally Unique Identifier (UUID) of
           the partition when mounting the partition.
           </para>
           <para>
@@ -1133,11 +1133,11 @@
         </para>
       </sect3>
 
-<!-- ============= To Set a Partition Label ========================== -->
-      <sect3 id="gparted-setting-partition-label">
-        <title>Setting a Partition Label</title>
+<!-- ============= To Set a Partition File System Label ============== -->
+      <sect3 id="gparted-setting-partition-file-system-label">
+        <title>Setting a Partition File System Label</title>
         <para>
-        To set a label or a volume name for a partition:
+        To set a label or a volume name of a file system in a partition:
           <orderedlist>
             <listitem>
               <para>
@@ -1148,20 +1148,21 @@
             <listitem>
               <para>
               Choose:
-              <menuchoice><guimenu>Partition</guimenu><guimenuitem>Label</guimenuitem></menuchoice>.
-              The application opens a <guilabel>Set partition label on
+              <menuchoice><guimenu>Partition</guimenu>
+              <guimenuitem>Label File System</guimenuitem></menuchoice>.
+              The application opens a <guilabel>Set file system label on
               <replaceable>/path-to-partition</replaceable></guilabel> dialog.
               </para>
             </listitem>
             <listitem>
               <para>
-              Type a label name in the <guilabel>Label </guilabel> text box.
+              Type a label name in the <guilabel>Label</guilabel> text box.
               </para>
             </listitem>
             <listitem>
               <para>
               Click <guibutton>OK</guibutton>.
-              The application displays the set partition label operation
+              The application displays the set file system label operation
               in the <guilabel>Operations Pending</guilabel> pane.
               </para>
             </listitem>
@@ -1445,16 +1446,17 @@
         </sect4>
 
 <!-- ============= To Specify a Partition Label ====================== -->
-        <sect4 id="gparted-specify-partition-label">
-          <title>Specifying Partition Label</title>
+        <sect4 id="gparted-specify-partition-file-system-label">
+          <title>Specifying Partition File System Label</title>
           <para>
-          To specify the partition label, also known as a volume label,
-          type a label name in the <guilabel>Label</guilabel> text box.
+          To specify the file system label in the partition, also known
+          as a volume label, type a label name in the
+          <guilabel>Label</guilabel> text box.
           </para>
           <tip>
             <para>
-            Labels can be used to help you remember what is stored in
-            the partition.
+            File system labels can be used to help you remember what is
+            stored in the partition.
             </para>
             <para>
             Unique labels can be used to mount file systems with the
@@ -1786,12 +1788,11 @@
         </para>
         <caution>
           <para>
-          The copy of the partition has the same label
-          and the same Universally Unique Identifier (UUID)
-          as the source partition.
-          This can cause a problem when booting, or when mount actions
-          use the partition label or the UUID to identify the
+          The copy of the partition has the same file system label
+          and Universally Unique Identifier (UUID) as the source
           partition.
+          This can cause a problem when booting, or when mount actions
+          use the file system label or UUID to identify the partition.
           </para>
           <para>
           The problem is that the operating system will randomly
@@ -1822,10 +1823,10 @@
                     </listitem>
                     <listitem>
                       <para>
-                      If the partition label is not blank then change the
-                      label of either the source, or the copy of the
-                      partition.
-                      See <xref linkend="gparted-setting-partition-label"/>.
+                      If the file system label is not blank then change
+                      the file system label of either the source, or the
+                      copy of the partition.
+                      See <xref linkend="gparted-setting-partition-file-system-label"/>.
                       </para>
                     </listitem>
                   </orderedlist>
