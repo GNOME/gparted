@@ -1,5 +1,5 @@
 /* Copyright (C) 2004 Bart
- * Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2014 Curtis Gedak
+ * Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015 Curtis Gedak
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -1503,7 +1503,11 @@ void Win_GParted::menu_help_about()
 	dialog .set_logo_icon_name( "gparted" ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
-	dialog .set_copyright( "Copyright © 2004-2006 Bart Hakvoort\nCopyright © 2008-2015 Curtis Gedak" ) ;
+	std::string names ;
+	names =    "Copyright © 2004-2006 Bart Hakvoort" ;
+	names += "\nCopyright © 2008-2015 Curtis Gedak" ;
+	names += "\nCopyright © 2011-2015 Mike Fleetwood" ;
+	dialog .set_copyright( names ) ;
 
 	//authors
 	//Names listed in alphabetical order by LAST name.
