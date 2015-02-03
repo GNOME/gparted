@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-02-01 18:19+0000\n"
-"PO-Revision-Date: 2015-02-03 08:39+0100\n"
+"POT-Creation-Date: 2015-02-03 17:04+0000\n"
+"PO-Revision-Date: 2015-02-03 19:26+0100\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -293,12 +293,12 @@ msgstr "Nepřipojen"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:379 ../src/Win_GParted.cc:2798
+#: ../src/Dialog_Partition_Info.cc:379 ../src/Win_GParted.cc:2802
 msgid "Volume Group:"
 msgstr "Skupina svazků:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:390 ../src/Win_GParted.cc:2799
+#: ../src/Dialog_Partition_Info.cc:390 ../src/Win_GParted.cc:2803
 msgid "Members:"
 msgstr "Členové:"
 
@@ -1231,46 +1231,58 @@ msgid "You might try the following command to correct the problem:"
 msgstr "K opravě problému můžete zkusit následující příkaz:"
 
 #: ../src/GParted_Core.cc:3649
-msgid "Libparted Warning"
-msgstr "Varování od libparted"
-
-#: ../src/GParted_Core.cc:3653
 msgid "Libparted Information"
 msgstr "Informace od libparted"
+
+#: ../src/GParted_Core.cc:3653
+msgid "Libparted Warning"
+msgstr "Varování od libparted"
 
 #: ../src/GParted_Core.cc:3657
 msgid "Libparted Error"
 msgstr "Chyba od libparted"
 
-#: ../src/GParted_Core.cc:3659
-msgid "Libparted Bug Found!"
-msgstr "Nalezena chyba v knihovně libparted!"
+#: ../src/GParted_Core.cc:3660
+msgid "Libparted Fatal"
+msgstr "Kritická chyba knihovny libparted"
 
-#: ../src/GParted_Core.cc:3662
+#: ../src/GParted_Core.cc:3663
+msgid "Libparted Bug"
+msgstr "Chyba knihovny libparted"
+
+#: ../src/GParted_Core.cc:3666
+msgid "Libparted Unsupported Feature"
+msgstr "Nepodporovaná funkce knihovnou libparted"
+
+#: ../src/GParted_Core.cc:3669
+msgid "Libparted unknown exception"
+msgstr "Neznámá výjimka v knihovně libparted"
+
+#: ../src/GParted_Core.cc:3673
 msgid "Fix"
 msgstr "Opravit"
 
-#: ../src/GParted_Core.cc:3664
+#: ../src/GParted_Core.cc:3675
 msgid "Yes"
 msgstr "Ano"
 
-#: ../src/GParted_Core.cc:3666
+#: ../src/GParted_Core.cc:3677
 msgid "Ok"
 msgstr "Budiž"
 
-#: ../src/GParted_Core.cc:3668
+#: ../src/GParted_Core.cc:3679
 msgid "Retry"
 msgstr "Znovu"
 
-#: ../src/GParted_Core.cc:3670
+#: ../src/GParted_Core.cc:3681
 msgid "No"
 msgstr "Ne"
 
-#: ../src/GParted_Core.cc:3672
+#: ../src/GParted_Core.cc:3683
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../src/GParted_Core.cc:3674
+#: ../src/GParted_Core.cc:3685
 msgid "Ignore"
 msgstr "Ignorovat"
 
@@ -1722,21 +1734,21 @@ msgstr "Editor oddílů pro GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1534
+#: ../src/Win_GParted.cc:1538
 msgid "translator-credits"
 msgstr ""
 "Miloslav Trmač <mitr@volny.cz>\n"
 "Adrian Guniš <andygun696@gmail.com>\n"
 "Marek Černocký <marek@manet.cz>"
 
-#: ../src/Win_GParted.cc:1576
+#: ../src/Win_GParted.cc:1580
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Není možné vytvořit více než %1 primární oddíl"
 msgstr[1] "Není možné vytvořit více než %1 primární oddíly"
 msgstr[2] "Není možné vytvořit více než %1 primárních oddílů"
 
-#: ../src/Win_GParted.cc:1588
+#: ../src/Win_GParted.cc:1592
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1747,17 +1759,17 @@ msgstr ""
 "Takový oddíl může obsahovat další oddíly. Protože rozšířený oddíl je také "
 "primární oddíl, může být nezbytné odstranit nejdříve primární oddíl."
 
-#: ../src/Win_GParted.cc:1671
+#: ../src/Win_GParted.cc:1675
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Přesun oddílu může způsobit selhání při zavádění operačního systému"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1679
+#: ../src/Win_GParted.cc:1683
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Zařadili jste do fronty operaci k přesunu počátečního sektoru oddílu %1."
 
-#: ../src/Win_GParted.cc:1682
+#: ../src/Win_GParted.cc:1686
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1765,71 +1777,71 @@ msgstr ""
 "  Jestliže přesunete oddíl GNU/Linux obsahující /boot nebo systémový oddíl "
 "oddíl C: Windows, dojde obvykle selhání zavedení systému."
 
-#: ../src/Win_GParted.cc:1684
+#: ../src/Win_GParted.cc:1688
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "V sekci často kladené otázky k GParted můžete zjistit, jak opravit nastavení "
 "zavaděče."
 
-#: ../src/Win_GParted.cc:1688
+#: ../src/Win_GParted.cc:1692
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Provedení přesunu oddílu může zabrat hodně času."
 
-#: ../src/Win_GParted.cc:1796
+#: ../src/Win_GParted.cc:1800
 msgid "You have pasted into an existing partition"
 msgstr "Vložili jste do existujícího oddílu"
 
-#: ../src/Win_GParted.cc:1804
+#: ../src/Win_GParted.cc:1808
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Pokud provedete tuto operaci, ztratíte data v %1."
 
-#: ../src/Win_GParted.cc:1871
+#: ../src/Win_GParted.cc:1875
 msgid "Unable to delete %1!"
 msgstr "Nelze odstranit %1!"
 
-#: ../src/Win_GParted.cc:1878
+#: ../src/Win_GParted.cc:1882
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Odpojte prosím logické oddíly, které mají číslo větší než %1"
 
-#: ../src/Win_GParted.cc:1889
+#: ../src/Win_GParted.cc:1893
 msgid "Are you sure you want to delete %1?"
 msgstr "Opravdu chcete odstranit %1?"
 
-#: ../src/Win_GParted.cc:1896
+#: ../src/Win_GParted.cc:1900
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Po odstranění už nebude tento oddíl k dispozici pro kopírování."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1899
+#: ../src/Win_GParted.cc:1903
 msgid "Delete %1 (%2, %3)"
 msgstr "Odstranit %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1984
+#: ../src/Win_GParted.cc:1988
 msgid "Cannot format this file system to %1"
 msgstr "Nelze zformátovat tento souborový systém jako %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1996
+#: ../src/Win_GParted.cc:2000
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Souborový systém %1 vyžaduje oddíl s minimálně %2"
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2004
+#: ../src/Win_GParted.cc:2008
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Oddíl se souborovým systémem %1 má maximální velikost %2."
 
-#: ../src/Win_GParted.cc:2100
+#: ../src/Win_GParted.cc:2104
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Oddíl nemohl být odpojen z následujících přípojných bodů:"
 
-#: ../src/Win_GParted.cc:2102
+#: ../src/Win_GParted.cc:2106
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1837,14 +1849,14 @@ msgstr ""
 "Na těchto přípojných bodech jsou nejspíše připojeny jiné oddíly. "
 "Doporučujeme odpojit je ručně."
 
-#: ../src/Win_GParted.cc:2126 ../src/Win_GParted.cc:2252
+#: ../src/Win_GParted.cc:2130 ../src/Win_GParted.cc:2256
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Na oddílu %2 není momentálně vyřízena %1 operace"
 msgstr[1] "Na oddílu %2 nejsou momentálně vyřízeny %1 operace"
 msgstr[2] "Na oddílu %2 není momentálně vyřízeno %1 operací"
 
-#: ../src/Win_GParted.cc:2142
+#: ../src/Win_GParted.cc:2146
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1852,7 +1864,7 @@ msgstr ""
 "Připojení odkládacího oddílu nelze provést, pokud je na oddílu nevyřízená "
 "operace."
 
-#: ../src/Win_GParted.cc:2144
+#: ../src/Win_GParted.cc:2148
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1860,14 +1872,14 @@ msgstr ""
 "Před připojením odkládacího oddílu použijte nabídku Upravit k vrácení, "
 "zrušení nebo provedení operací."
 
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2152
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
 msgstr ""
 "Aktivaci skupiny svazků nelze provést, pokud je na oddílu nevyřízená operace."
 
-#: ../src/Win_GParted.cc:2150
+#: ../src/Win_GParted.cc:2154
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1875,53 +1887,53 @@ msgstr ""
 "Před aktivací skupiny svazků v tomto oddíle použijte nabídku Upravit k "
 "vrácení, zrušení nebo provedení operací."
 
-#: ../src/Win_GParted.cc:2161
+#: ../src/Win_GParted.cc:2165
 msgid "Deactivating swap on %1"
 msgstr "Deaktivuje se odkládací oddíl na %1"
 
-#: ../src/Win_GParted.cc:2161
+#: ../src/Win_GParted.cc:2165
 msgid "Activating swap on %1"
 msgstr "Aktivuje se odkládací oddíl na %1"
 
-#: ../src/Win_GParted.cc:2176
+#: ../src/Win_GParted.cc:2180
 msgid "Could not deactivate swap"
 msgstr "Nelze deaktivovat odkládací oddíl"
 
-#: ../src/Win_GParted.cc:2176
+#: ../src/Win_GParted.cc:2180
 msgid "Could not activate swap"
 msgstr "Nelze aktivovat odkládací oddíl"
 
-#: ../src/Win_GParted.cc:2191
+#: ../src/Win_GParted.cc:2195
 msgid "Deactivating Volume Group %1"
 msgstr "Deaktivuje se skupina svazků %1"
 
-#: ../src/Win_GParted.cc:2192
+#: ../src/Win_GParted.cc:2196
 msgid "Activating Volume Group %1"
 msgstr "Aktivuje se skupina svazků %1"
 
-#: ../src/Win_GParted.cc:2210
+#: ../src/Win_GParted.cc:2214
 msgid "Could not deactivate Volume Group"
 msgstr "Nelze deaktivovat skupinu svazků"
 
-#: ../src/Win_GParted.cc:2211
+#: ../src/Win_GParted.cc:2215
 msgid "Could not activate Volume Group"
 msgstr "Nelze aktivovat skupinu svazků"
 
-#: ../src/Win_GParted.cc:2224
+#: ../src/Win_GParted.cc:2228
 msgid "Unmounting %1"
 msgstr "Odpojuje se %1"
 
-#: ../src/Win_GParted.cc:2230
+#: ../src/Win_GParted.cc:2234
 msgid "Could not unmount %1"
 msgstr "Nelze odpojit %1"
 
-#: ../src/Win_GParted.cc:2266
+#: ../src/Win_GParted.cc:2270
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "Připojení nelze provést, pokud je na oddílu nevyřízená operace."
 
-#: ../src/Win_GParted.cc:2268
+#: ../src/Win_GParted.cc:2272
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1929,28 +1941,28 @@ msgstr ""
 "Před připojením tohoto oddílu použijte nabídku Upravit k vrácení, zrušení "
 "nebo provedení operací."
 
-#: ../src/Win_GParted.cc:2278
+#: ../src/Win_GParted.cc:2282
 msgid "mounting %1 on %2"
 msgstr "připojuje se %1 na %2"
 
-#: ../src/Win_GParted.cc:2289
+#: ../src/Win_GParted.cc:2293
 msgid "Could not mount %1 on %2"
 msgstr "Nelze připojit %1 na %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2315
+#: ../src/Win_GParted.cc:2319
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "Na zařízení %2 je momentálně %1 aktivní oddíl"
 msgstr[1] "Na zařízení %2 jsou momentálně %1 aktivní oddíly"
 msgstr[2] "Na zařízení %2 je momentálně %1 aktivních oddílů"
 
-#: ../src/Win_GParted.cc:2330
+#: ../src/Win_GParted.cc:2334
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Pokud máte aktivní oddíly, nelze vytvořit novou tabulku oddílů."
 
-#: ../src/Win_GParted.cc:2332
+#: ../src/Win_GParted.cc:2336
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -1958,7 +1970,7 @@ msgstr ""
 "Aktivní oddíly jsou ty, které jsou v užívání, jako např. připojený souborový "
 "systém nebo povolený odkládací prostor."
 
-#: ../src/Win_GParted.cc:2334
+#: ../src/Win_GParted.cc:2338
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1967,19 +1979,19 @@ msgstr ""
 "tomto zařízení možnosti z nabídky Oddíl, jako např. odpojit nebo odpojit "
 "odkládací oddíl."
 
-#: ../src/Win_GParted.cc:2346
+#: ../src/Win_GParted.cc:2350
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 operace není momentálně vyřízena"
 msgstr[1] "%1 operace nejsou momentálně vyřízeny"
 msgstr[2] "%1 operací není momentálně vyřízeno"
 
-#: ../src/Win_GParted.cc:2359
+#: ../src/Win_GParted.cc:2363
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "Pokud máte nevyřízené operace, nelze vytvořit novou tabulku oddílů."
 
-#: ../src/Win_GParted.cc:2361
+#: ../src/Win_GParted.cc:2365
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1987,30 +1999,30 @@ msgstr ""
 "Před vytvořením nové tabulky oddílů použijte nabídku Upravit buď pro zrušení "
 "nebo provedení všech operací."
 
-#: ../src/Win_GParted.cc:2376
+#: ../src/Win_GParted.cc:2380
 msgid "Error while creating partition table"
 msgstr "Chyba při vytváření tabulky oddílů"
 
-#: ../src/Win_GParted.cc:2396
+#: ../src/Win_GParted.cc:2400
 msgid "Command gpart was not found"
 msgstr "Příkaz gpart nebyl nalezen"
 
-#: ../src/Win_GParted.cc:2397
+#: ../src/Win_GParted.cc:2401
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Tato funkce využívá program gpart. Nainstalujte jej prosím a zkuste to znovu."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2405
+#: ../src/Win_GParted.cc:2409
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "Pro nalezení souborových systémů je zapotřebí provést úplnou analýzu disku."
 
-#: ../src/Win_GParted.cc:2407
+#: ../src/Win_GParted.cc:2411
 msgid "The scan might take a very long time."
 msgstr "Tato analýza může zabrat hodně času."
 
-#: ../src/Win_GParted.cc:2409
+#: ../src/Win_GParted.cc:2413
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2018,26 +2030,26 @@ msgstr ""
 "Po skončení analýzy můžete případné objevené souborové systémy připojit a "
 "zkopírovat si data na jiné médium."
 
-#: ../src/Win_GParted.cc:2411
+#: ../src/Win_GParted.cc:2415
 msgid "Do you want to continue?"
 msgstr "Chcete pokračovat?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2415
+#: ../src/Win_GParted.cc:2419
 msgid "Search for file systems on %1"
 msgstr "Hledání souborových systémů na %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2426
+#: ../src/Win_GParted.cc:2430
 msgid "Searching for file systems on %1"
 msgstr "Vyhledávají se souborové systémy na %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2442
+#: ../src/Win_GParted.cc:2446
 msgid "No file systems found on %1"
 msgstr "Na %1 nebyl nalezen žádný souborový systém"
 
-#: ../src/Win_GParted.cc:2443
+#: ../src/Win_GParted.cc:2447
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2045,35 +2057,35 @@ msgstr ""
 "Na tomto disku nebyly při analýze programem gpart nalezeny žádné "
 "rozpoznatelné souborové systémy."
 
-#: ../src/Win_GParted.cc:2711
+#: ../src/Win_GParted.cc:2715
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Opravdu chcete provést nevyřízené operace?"
 
-#: ../src/Win_GParted.cc:2717
+#: ../src/Win_GParted.cc:2721
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Upravování oddílů může způsobit ZTRÁTU DAT."
 
-#: ../src/Win_GParted.cc:2719
+#: ../src/Win_GParted.cc:2723
 msgid "You are advised to backup your data before proceeding."
 msgstr "Před pokračováním je doporučeno zazálohovat si cenná data."
 
-#: ../src/Win_GParted.cc:2721
+#: ../src/Win_GParted.cc:2725
 msgid "Apply operations to device"
 msgstr "Provést operace na zařízení"
 
-#: ../src/Win_GParted.cc:2766
+#: ../src/Win_GParted.cc:2770
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Mažete neprázdný fyzický svazek LVM2 %1"
 
-#: ../src/Win_GParted.cc:2770
+#: ../src/Win_GParted.cc:2774
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Formátujete na neprázdném fyzickém svazku LVM2 %1"
 
-#: ../src/Win_GParted.cc:2774
+#: ../src/Win_GParted.cc:2778
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Vkládáte na neprázdný fyzický svazek LVM2 %1"
 
-#: ../src/Win_GParted.cc:2783
+#: ../src/Win_GParted.cc:2787
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2081,7 +2093,7 @@ msgstr ""
 "Smazání nebo přepsání fyzického svazku nelze vrátit zpět a přitom zničí nebo "
 "poškodí skupinu svazků."
 
-#: ../src/Win_GParted.cc:2786
+#: ../src/Win_GParted.cc:2790
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2091,7 +2103,7 @@ msgstr ""
 "zrušit a použít externí příkazy LVM k uvolnění fyzického svazku, dříve než "
 "zkusíte tuto operaci."
 
-#: ../src/Win_GParted.cc:2789
+#: ../src/Win_GParted.cc:2793
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Chcete přesto všechno pokračovat ve smazání fyzického svazku?"
 
