@@ -173,10 +173,10 @@ bool xfs::write_uuid( const Partition & partition, OperationDetail & operationde
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_filesystem_label() + "\" " +
-				  "\" " + new_partition.get_path(),
-				  operationdetail,
-				  false,
-				  true );
+	                          new_partition.get_path(),
+	                          operationdetail,
+	                          false,
+	                          true );
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
