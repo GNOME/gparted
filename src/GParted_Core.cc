@@ -2486,7 +2486,8 @@ bool GParted_Core::resize( const Partition & partition_old,
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not resize
-		success =    resize_move_partition( partition_old, partition_new, operationdetail )
+		success =    ( partition_new.whole_device ||
+		               resize_move_partition( partition_old, partition_new, operationdetail ) )
 		          && resize_filesystem( partition_old, partition_new, operationdetail );
 
 		return success;
@@ -2497,12 +2498,14 @@ bool GParted_Core::resize( const Partition & partition_old,
 	{
 		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
 		          && resize_filesystem( partition_old, partition_new, operationdetail )
-		          && resize_move_partition( partition_old, partition_new, operationdetail );
+		          && ( partition_new.whole_device ||
+		               resize_move_partition( partition_old, partition_new, operationdetail ) );
 	}
 	else if ( delta > 0LL )  // grow
 	{
 		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
-		          && resize_move_partition( partition_old, partition_new, operationdetail )
+		          && ( partition_new.whole_device ||
+		               resize_move_partition( partition_old, partition_new, operationdetail ) )
 		          && maximize_filesystem( partition_new, operationdetail );
 	}
 

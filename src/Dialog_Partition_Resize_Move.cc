@@ -76,8 +76,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 		fs .grow   = FS::NONE ;
 	}
 
-	//see if we need a fixed_start
-	if ( fs .move && ! selected_partition .busy )
+	// See if we can allow the start of the file system to move
+	if ( fs.move && ! selected_partition.busy && ! selected_partition.whole_device )
 	{
 		set_title( String::ucompose( _("Resize/Move %1"), selected_partition .get_path() ) ) ;
 		frame_resizer_base ->set_fixed_start( false ) ;
