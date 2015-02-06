@@ -351,6 +351,32 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 					set_mountpoints( temp_device.partitions );
 					set_used_sectors( temp_device.partitions, NULL );
 				}
+				// Drive just containing libparted "loop" signature
+				// "GNU Parted Loopback 0" and nothing else
+				else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+				          strcmp( lp_disk->type->name, "loop" ) == 0         )
+				{
+					temp_device.disktype = lp_disk->type->name;
+					temp_device.max_prims = 1;
+
+					// Create virtual partition covering the whole
+					// disk device with unknown contents
+					Partition partition_temp;
+					partition_temp.Set( temp_device.get_path(),
+					                    lp_device->path,
+					                    1,
+					                    TYPE_PRIMARY,
+					                    true,
+					                    FS_UNKNOWN,
+					                    0LL,
+					                    temp_device.length - 1LL,
+					                    temp_device.sector_size,
+					                    false,
+					                    false );
+					// Place unknown file system message in this partition
+					partition_temp.messages = messages;
+					temp_device.partitions.push_back( partition_temp );
+				}
 				else
 				{
 					temp_device.disktype =
