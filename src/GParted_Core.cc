@@ -1988,7 +1988,12 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 					new_partition .sector_end = lp_partition ->geom .end ;
 					
 					operationdetail .get_last_child() .add_child( OperationDetail( 
-						String::ucompose( _("path: %1"), new_partition .get_path() ) + "\n" +
+						/* TO TRANSLATORS: looks like   path: /dev/sda1 (partition)
+						 * This is showing the name and the fact
+						 * that it is a partition within a device.
+						 */
+						String::ucompose( _("path: %1 (%2)"),
+						                  new_partition.get_path(), _("partition") ) + "\n" +
 						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
@@ -3218,7 +3223,16 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			{
 				operationdetail .get_last_child() .add_child( 
 					OperationDetail(
-						String::ucompose( _("path: %1"), partition .get_path() ) + "\n" +
+						/* TO TRANSLATORS: looks like   path: /dev/sda (device)
+						 *              or looks like   path: /dev/sda1 (partition)
+						 * This is showing the name and whether it
+						 * is a whole disk device or a partition
+						 * within a device.
+						 */
+						String::ucompose( _("path: %1 (%2)"),
+						                  partition.get_path(),
+						                  ( partition.whole_device ) ? _("device")
+						                                             : _("partition") ) + "\n" +
 						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
 						String::ucompose( _("size: %1 (%2)"),
