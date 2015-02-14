@@ -802,10 +802,33 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 	return succes ;
 }
 
-bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) 
+bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & disklabel )
+{
+	Glib::ustring device_path = device.get_path();
+
+	if ( disklabel == "loop" )
+	{
+		// Ensure that any previous whole disk device file system can't be
+		// recognised in preference to the "loop" partition table signature about
+		// to be written.
+		OperationDetail dummy_od;
+		Partition temp_partition;
+		temp_partition.Set_Unallocated( device_path,
+		                                true,
+		                                0LL,
+		                                device.length - 1LL,
+		                                device.sector_size,
+		                                false );
+		erase_filesystem_signatures( temp_partition, dummy_od );
+	}
+
+	return new_disklabel( device_path, disklabel );
+}
+
+bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel )
 {
 	bool return_value = false ;
-	
+
 	PedDevice* lp_device = NULL ;
 	PedDisk* lp_disk = NULL ;
 	if ( get_device( device_path, lp_device ) )

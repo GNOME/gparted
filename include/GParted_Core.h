@@ -46,8 +46,9 @@ public:
 	bool snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) ;
 	bool snap_to_alignment( const Device & device, Partition & partition, Glib::ustring & error ) ;
 	bool apply_operation_to_disk( Operation * operation );
-	
-	bool set_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel ) ;
+
+	bool set_disklabel( const Device & device, const Glib::ustring & disklabel );
+	bool new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel );
 
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
 	

@@ -2396,7 +2396,7 @@ void Win_GParted::activate_disklabel()
 
 	if ( dialog .run() == Gtk::RESPONSE_APPLY )
 	{
-		if ( ! gparted_core .set_disklabel( devices[ current_device ] .get_path(), dialog .Get_Disklabel() ) )
+		if ( ! gparted_core.set_disklabel( devices[current_device], dialog.Get_Disklabel() ) )
 		{
 			Gtk::MessageDialog dialog( *this,
 						   _("Error while creating partition table"),
