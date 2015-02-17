@@ -385,7 +385,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 						 * disk device is unknown or not recognized.
 						 */
 						_("unrecognized") ;
-					temp_device.max_prims = -1;
+					temp_device.max_prims = 1;
 
 					Partition partition_temp;
 					partition_temp.Set_Unallocated( temp_device .get_path(),

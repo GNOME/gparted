@@ -32,7 +32,22 @@ OperationFormat::OperationFormat( const Device & device,
 	
 void OperationFormat::apply_to_visual( std::vector<Partition> & partitions ) 
 {
-	if ( partition_original .inside_extended )
+	if ( partition_original.whole_device && partition_new.filesystem == FS_CLEARED )
+	{
+		// Make format to cleared whole disk device file system preview as
+		// unallocated device, matching what happens when implemented.
+		partitions.clear();
+
+		Partition temp_partition;
+		temp_partition.Set_Unallocated( device.get_path(),
+		                                true,
+		                                0LL,
+		                                device.length -1LL,
+		                                device.sector_size,
+		                                false );
+		partitions.push_back( temp_partition );
+	}
+	else if ( partition_original.inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
 		

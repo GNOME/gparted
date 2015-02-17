@@ -1718,8 +1718,8 @@ void Win_GParted::activate_copy()
 
 void Win_GParted::activate_paste()
 {
-	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
-	if ( devices [ current_device ] .max_prims == -1 )
+	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
+	if ( selected_partition.whole_device && selected_partition.type == TYPE_UNALLOCATED )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 		return ;
@@ -1822,8 +1822,8 @@ void Win_GParted::activate_paste()
 
 void Win_GParted::activate_new()
 {
-	//if max_prims == -1 the current device has an unrecognised disklabel (see also GParted_Core::get_devices)
-	if ( devices [ current_device ] .max_prims == -1 )
+	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
+	if ( selected_partition.whole_device && selected_partition.type == TYPE_UNALLOCATED )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 	}
