@@ -810,6 +810,21 @@ bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & d
 {
 	Glib::ustring device_path = device.get_path();
 
+	// FIXME: Should call file system specific removal actions
+	// (to remove LVM2 PVs before deleting the partitions).
+
+#ifdef ENABLE_LOOP_DELETE_OLD_PTNS_WORKAROUND
+	// When creating a "loop" table with libparted 2.0 to 3.0 inclusive, it doesn't
+	// inform the kernel to delete old partitions so as a consequence blkid's cache
+	// becomes stale and it won't report a file system subsequently created on the
+	// whole disk device.  Create a GPT first to use that code in libparted to delete
+	// any old partitions.  Fixed in parted 3.1 by commit:
+	//     f5c909c0cd50ed52a48dae6d35907dc08b137e88
+	//     libparted: remove has_partitions check to allow loopback partitions
+	if ( disklabel == "loop" )
+		new_disklabel( device_path, "gpt", false );
+#endif
+
 	// Ensure that any previous whole disk device file system can't be recognised by
 	// libparted in preference to the "loop" partition table signature, or by blkid in
 	// preference to any partition table about to be written.
@@ -826,7 +841,8 @@ bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & d
 	return new_disklabel( device_path, disklabel );
 }
 
-bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel )
+bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel,
+                                  bool recreate_dmraid_devs )
 {
 	bool return_value = false ;
 
@@ -850,7 +866,7 @@ bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib:
 #ifndef USE_LIBPARTED_DMRAID
 	//delete and recreate disk entries if dmraid
 	DMRaid dmraid ;
-	if ( return_value && dmraid .is_dmraid_device( device_path ) )
+	if ( recreate_dmraid_devs && return_value && dmraid.is_dmraid_device( device_path ) )
 	{
 		dmraid .purge_dev_map_entries( device_path ) ;
 		dmraid .create_dev_map_entries( device_path ) ;
@@ -859,7 +875,7 @@ bool GParted_Core::new_disklabel( const Glib::ustring & device_path, const Glib:
 
 	return return_value ;	
 }
-	
+
 bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) 
 {
 	bool succes = false ;

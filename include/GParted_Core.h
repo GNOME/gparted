@@ -48,7 +48,8 @@ public:
 	bool apply_operation_to_disk( Operation * operation );
 
 	bool set_disklabel( const Device & device, const Glib::ustring & disklabel );
-	bool new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel );
+	bool new_disklabel( const Glib::ustring & device_path, const Glib::ustring & disklabel,
+	                    bool recreate_dmraid_devs = true );
 
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
 	
