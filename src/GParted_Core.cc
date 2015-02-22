@@ -808,7 +808,7 @@ bool GParted_Core::set_disklabel( const Glib::ustring & device_path, const Glib:
 	
 	PedDevice* lp_device = NULL ;
 	PedDisk* lp_disk = NULL ;
-	if ( get_device_and_disk( device_path, lp_device, lp_disk, false ) )
+	if ( get_device( device_path, lp_device ) )
 	{
 		PedDiskType *type = NULL ;
 		type = ped_disk_type_get( disklabel .c_str() ) ;
