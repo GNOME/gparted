@@ -39,6 +39,7 @@ private:
 	Glib::ustring get_device_entry( const Glib::ustring & path ) ;
 	static bool fs_info_cache_initialized ;
 	static bool blkid_found ;
+	static bool need_blkid_vfat_cache_update_workaround;
 	static bool vol_id_found ;
 	static Glib::ustring fs_info_cache ;
 };

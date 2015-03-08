@@ -22,6 +22,9 @@ namespace GParted
 //initialize static data elements
 bool FS_Info::fs_info_cache_initialized = false ;
 bool FS_Info::blkid_found  = false ;
+// Assume workaround is needed just in case determination fails and as
+// it only costs a fraction of a second to run blkid command again.
+bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 bool FS_Info::vol_id_found  = false ;
 Glib::ustring FS_Info::fs_info_cache = "";
 
@@ -71,6 +74,24 @@ void FS_Info::set_commands_found()
 {
 	//Set status of commands found 
 	blkid_found = (! Glib::find_program_in_path( "blkid" ) .empty() ) ;
+	if ( blkid_found )
+	{
+		// Blkid from util-linux before 2.23 has a cache update bug which prevents
+		// correct identification between FAT16 and FAT32 when overwriting one
+		// with the other.  Detect the need for a workaround.
+		Glib::ustring output, error;
+		Utils::execute_command( "blkid -v", output, error, true );
+		Glib::ustring blkid_version = Utils::regexp_label( output, "blkid.* ([0-9\\.]+) " );
+		int blkid_major_ver = 0;
+		int blkid_minor_ver = 0;
+		if ( sscanf( blkid_version.c_str(), "%d.%d", &blkid_major_ver, &blkid_minor_ver ) == 2 )
+		{
+			need_blkid_vfat_cache_update_workaround =
+					( blkid_major_ver < 2                              ||
+					  ( blkid_major_ver == 2 && blkid_minor_ver < 23 )    );
+		}
+	}
+
 	vol_id_found = (! Glib::find_program_in_path( "vol_id" ) .empty() ) ;
 }
 
@@ -95,8 +116,18 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 	fs_sec_type = Utils::regexp_label( dev_path_line, "SEC_TYPE=\"([^\"]*)\"" ) ;
 
 	//If vfat, decide whether fat16 or fat32
+	Glib::ustring output, error;
 	if ( fs_type == "vfat" )
 	{
+		if ( need_blkid_vfat_cache_update_workaround )
+		{
+			// Blkid cache does not correctly add and remove SEC_TYPE when
+			// overwriting FAT16 and FAT32 file systems with each other, so
+			// prevents correct identification.  Run blkid command again,
+			// bypassing the the cache to get the correct results.
+			if ( ! Utils::execute_command( "blkid -c /dev/null " + path, output, error, true ) )
+				fs_sec_type = Utils::regexp_label( output, "SEC_TYPE=\"([^\"]*)\"" );
+		}
 		if ( fs_sec_type == "msdos" )
 			fs_type = "fat16" ;
 		else
@@ -106,7 +137,6 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 	if ( fs_type .empty() && vol_id_found )
 	{
 		//Retrieve TYPE using vol_id command
-		Glib::ustring output, error ;
 		if ( ! Utils::execute_command( "vol_id " + path, output, error, true ) )
 			fs_type = Utils::regexp_label( output, "ID_FS_TYPE=([^\n]*)" ) ;
 	}
