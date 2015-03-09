@@ -592,6 +592,30 @@
               limitations.
               </para>
             </note>
+            <note>
+              <para>
+              To use a disk without a partition table, choose
+              <guimenuitem>loop</guimenuitem> to create a virtual
+              partition that spans the disk.  Then format to the
+              desired file system.
+              </para>
+              <para>
+              See <xref linkend="gparted-format-partition"/> to format
+              a virtual partition with a file system.
+              </para>
+            </note>
+            <caution>
+              <para>
+              Many operating systems recognize
+              <guimenuitem>gpt</guimenuitem> and
+              <guimenuitem>msdos</guimenuitem> partition tables, but
+              do not recognize all types of file systems.  This lack
+              of file system recognition means that using a disk
+              without a partition table involves more risk.  For
+              example, some operating systems might prompt to format an
+              unpartitioned disk if the file system is not recognized.
+              </para>
+            </caution>
           </listitem>
           <listitem>
             <para>
@@ -1124,6 +1148,22 @@
             </itemizedlist>
           </para>
         </caution>
+        <note>
+          <para>
+          Disks with <guimenuitem>loop</guimenuitem> or
+          <guimenuitem>none</guimenuitem> partition tables do not
+          contain a partition table, and do not contain partitions.  A
+          file system on a disk without a partition table is
+          represented in &appname; by a virtual partition.
+          </para>
+          <para>
+          To delete the file system and virtual partition, choose
+          format to <guimenuitem>cleared</guimenuitem>.
+          </para>
+          <para>
+          See <xref linkend="gparted-format-partition"/>.
+          </para>
+        </note>
       </sect3>
 
 <!-- ============= To Name a Partition =============================== -->
@@ -1960,6 +2000,20 @@
                   </listitem>
                 </itemizedlist>
               </para>
+              <note>
+                <para>
+                <guimenuitem>Manage Flags</guimenuitem> is only
+                available for disks with partition tables.  Disks with
+                <guimenuitem>loop</guimenuitem> or
+                <guimenuitem>none</guimenuitem> partition tables do
+                not contain a partition table, and do not have
+                partition flags.
+                </para>
+                <para>
+                See <xref linkend="gparted-view-device-information"/>
+                to view the type of partition table.
+                </para>
+              </note>
             </listitem>
           </orderedlist>
         </para>
