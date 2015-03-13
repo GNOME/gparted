@@ -1018,6 +1018,12 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_busy_state( true ) ;
 
+	// Allow naming on devices that support it
+	if ( selected_partition.type != TYPE_UNALLOCATED &&
+	     selected_partition.status == STAT_REAL      &&
+	     devices[current_device].partition_naming       )
+		allow_name_partition( true );
+
 	// Manage flags
 	if ( selected_partition.type != TYPE_UNALLOCATED &&
 	     selected_partition.status == STAT_REAL      &&
@@ -1129,10 +1135,6 @@ void Win_GParted::set_valid_operations()
 		//only allow labelling of real partitions that support labelling
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
 			allow_label_filesystem( true );
-
-		// only allow naming of real partitions on devices that support naming
-		if ( selected_partition.status == STAT_REAL && devices[current_device].partition_naming )
-			allow_name_partition( true );
 
 		//only allow changing UUID of real partitions that support it
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
