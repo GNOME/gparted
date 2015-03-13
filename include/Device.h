@@ -34,7 +34,10 @@ public:
 	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
 	Glib::ustring get_path() const ;
 	std::vector<Glib::ustring> get_paths() const ;
-	
+	void enable_partition_naming( int length );  // > 0 => enable partition naming support
+	bool partition_naming_supported() const;
+	int get_max_partition_name_length() const;
+
 	bool operator==( const Device & device ) const ;
 	bool operator!=( const Device & device ) const ;
 	
@@ -51,7 +54,6 @@ public:
 	int max_prims ;
 	int highest_busy ;
 	bool readonly ; 
-	bool partition_naming;  // Is naming of partitions supported on this device?
 
 private:
 	void sort_paths_and_remove_duplicates() ;
@@ -59,7 +61,7 @@ private:
 	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
 	
 	std::vector<Glib::ustring> paths ;
-		
+	int max_partition_name_length;  // > 0 => naming of partitions is supported on this device
 };
  
 } //GParted

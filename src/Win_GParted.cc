@@ -1019,9 +1019,9 @@ void Win_GParted::set_valid_operations()
 		allow_toggle_busy_state( true ) ;
 
 	// Allow naming on devices that support it
-	if ( selected_partition.type != TYPE_UNALLOCATED &&
-	     selected_partition.status == STAT_REAL      &&
-	     devices[current_device].partition_naming       )
+	if ( selected_partition.type != TYPE_UNALLOCATED          &&
+	     selected_partition.status == STAT_REAL               &&
+	     devices[current_device].partition_naming_supported()    )
 		allow_name_partition( true );
 
 	// Manage flags
@@ -2563,7 +2563,8 @@ void Win_GParted::activate_label_filesystem()
 
 void Win_GParted::activate_name_partition()
 {
-	Dialog_Partition_Name dialog( selected_partition );
+	Dialog_Partition_Name dialog( selected_partition,
+	                              devices[current_device].get_max_partition_name_length() );
 	dialog.set_transient_for( *this );
 
 	if (	( dialog.run() == Gtk::RESPONSE_OK )

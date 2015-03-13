@@ -19,13 +19,7 @@
 namespace GParted
 {
 
-// NOTE: Limiting the Gtk::Entry to 36 UTF-8 characters doesn't guarantee that the
-// partition name won't be too long as GPT works in UTF-16LE code units.  Therefore
-// any character taking more that 1 UTF-16LE code unit won't be correctly counted.
-//     http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_entries
-static const int GPT_NAME_LENGTH = 36;
-
-Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition )
+Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int max_length )
 {
 	this->set_resizable( false );
 	this->set_has_separator( false );
@@ -49,7 +43,13 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition )
 		               Gtk::FILL );
 		// Create text entry box
 		entry = manage( new Gtk::Entry() );
-		entry->set_max_length( GPT_NAME_LENGTH ) ;
+
+		// NOTE: This limits the Gtk::Entry size in UTF-8 characters but partition
+		// names are defined in terms of ASCII characters, or for GPT, UTF-16LE
+		// code points.  See Utils::get_max_partition_name_length().  So for
+		// certain extended characters this limit will be too generous.
+		entry->set_max_length( max_length );
+
 		entry->set_width_chars( 20 );
 		entry->set_activates_default( true );
 		entry->set_text( partition.name );

@@ -337,10 +337,11 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 
 				// Determine if partition naming is supported.
-				temp_device.partition_naming = ped_disk_type_check_feature( lp_disk->type,
-				                                                            PED_DISK_TYPE_PARTITION_NAME );
-				// So far only GPTs are supported.
-				temp_device.partition_naming &= ( temp_device.disktype == "gpt" );
+				if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
+				{
+					temp_device.enable_partition_naming(
+							Utils::get_max_partition_name_length( temp_device.disktype ) );
+				}
 
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
 				set_mountpoints( temp_device .partitions ) ;
@@ -1265,7 +1266,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 			set_partition_label_and_uuid( partition_temp );
 
 			// Retrieve partition name
-			if ( device.partition_naming )
+			if ( device.partition_naming_supported() )
 				partition_temp.name = Glib::ustring( ped_partition_get_name( lp_partition ) );
 		}
 
