@@ -2034,6 +2034,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	               devices[current_device].sector_size,
 	               selected_partition.inside_extended,
 	               false );
+	part_temp.name = selected_partition.name;
 	//Leave sector usage figures to new Partition object defaults of
 	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
 	 
