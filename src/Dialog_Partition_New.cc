@@ -131,12 +131,12 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	table_create .attach( * Utils::mk_label( Glib::ustring( _("Label:") ) ),
 			0, 1, 3, 4,	Gtk::FILL ) ;
 	//Create Text entry box
-	entry .set_width_chars( 20 );
-	entry .set_activates_default( true );
-	entry .set_text( partition.get_filesystem_label() );
-	entry .select_region( 0, entry .get_text_length() );
+	filesystem_label_entry.set_width_chars( 20 );
+	filesystem_label_entry.set_activates_default( true );
+	filesystem_label_entry.set_text( partition.get_filesystem_label() );
+	filesystem_label_entry.select_region( 0, filesystem_label_entry.get_text_length() );
 	//Add entry box to table
-	table_create .attach( entry, 1, 2, 3, 4, Gtk::FILL ) ;
+	table_create.attach( filesystem_label_entry, 1, 2, 3, 4, Gtk::FILL );
 
 	//set some widely used values...
 	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
@@ -202,7 +202,7 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	               selected_partition.inside_extended, false );
 
 	//Retrieve Label info
-	part_temp.set_filesystem_label( Utils::trim( entry.get_text() ) );
+	part_temp.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 	
 	//grow new partition a bit if freespaces are < 1 MiB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBIBYTE / sector_size) ) 
@@ -318,8 +318,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
 
-	//set partition name entry box length
-	entry .set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) ) ;
+	// Maximum length of the file system label varies according to the selected file system type.
+	filesystem_label_entry.set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) );
 
 	frame_resizer_base ->Draw_Partition() ;
 }
