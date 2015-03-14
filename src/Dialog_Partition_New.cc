@@ -114,21 +114,30 @@ void Dialog_Partition_New::Set_Data( const Device & device,
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
 	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
+	// Partition name
+	table_create.attach( *Utils::mk_label( static_cast<Glib::ustring>( _("Partition name:") ) + "\t" ),
+	                     0, 1, 1, 2, Gtk::FILL );
+	// Initialise text entry box
+	partition_name_entry.set_width_chars( 20 );
+	partition_name_entry.set_sensitive( device.partition_naming_supported() );
+	partition_name_entry.set_max_length( device.get_max_partition_name_length() );
+	// Add entry box to table
+	table_create .attach( partition_name_entry, 1, 2, 1, 2, Gtk::FILL );
+
 	//file systems to choose from 
 	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("File system:") ) + "\t" ),
-			     0, 1, 1, 2,
-			     Gtk::FILL );
-	
+	                      0, 1, 2, 3, Gtk::FILL );
+
 	Build_Filesystems_Menu( device.readonly );
 	 
 	optionmenu_filesystem .set_menu( menu_filesystem );
 	optionmenu_filesystem .signal_changed() .connect( 
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
-	table_create .attach( optionmenu_filesystem, 1, 2, 1, 2, Gtk::FILL );
+	table_create .attach( optionmenu_filesystem, 1, 2, 2, 3, Gtk::FILL );
 
 	//Label
 	table_create .attach( * Utils::mk_label( Glib::ustring( _("Label:") ) ),
-			0, 1, 3, 4,	Gtk::FILL ) ;
+	                      0, 1, 3, 4, Gtk::FILL );
 	//Create Text entry box
 	filesystem_label_entry.set_width_chars( 20 );
 	//Add entry box to table
@@ -196,6 +205,9 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	               new_start, new_end,
 	               sector_size,
 	               selected_partition.inside_extended, false );
+
+	// Retrieve partition name
+	part_temp.name = Utils::trim( partition_name_entry.get_text() );
 
 	//Retrieve Label info
 	part_temp.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );

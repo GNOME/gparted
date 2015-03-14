@@ -43,6 +43,7 @@ private:
 	Gtk::Table table_create;
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
 	Gtk::Menu menu_type, menu_filesystem;
+	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
 
 	std::vector<FS> FILESYSTEMS ;
