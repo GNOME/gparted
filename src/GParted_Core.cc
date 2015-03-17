@@ -1961,23 +1961,36 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 
 bool GParted_Core::create( Partition & new_partition, OperationDetail & operationdetail )
 {
-	if ( new_partition .type == GParted::TYPE_EXTENDED )   
+	bool success;
+	if ( new_partition.type == TYPE_EXTENDED )
 	{
-		return create_partition( new_partition, operationdetail ) ;
+		success = create_partition( new_partition, operationdetail );
 	}
-	else if ( create_partition( new_partition, operationdetail, (get_fs( new_partition .filesystem ) .MIN / new_partition .sector_size) ) )
+	else
 	{
-		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
-			return true ;
-		else if ( new_partition .filesystem == FS_CLEARED )
-			return erase_filesystem_signatures( new_partition, operationdetail ) ;
-		else
-			return    erase_filesystem_signatures( new_partition, operationdetail )
-			       && set_partition_type( new_partition, operationdetail )
-			       && create_filesystem( new_partition, operationdetail ) ;
+		success = create_partition( new_partition, operationdetail,
+		                            get_fs( new_partition.filesystem ).MIN / new_partition.sector_size );
 	}
-	
-	return false ;
+	if ( ! success )
+		return false;
+
+	if ( ! new_partition.name.empty() )
+	{
+		if ( ! name_partition( new_partition, operationdetail ) )
+			return false;
+	}
+
+	if ( new_partition.type == TYPE_EXTENDED        ||
+	     new_partition.filesystem == FS_UNFORMATTED    )
+		return true;
+	else if ( new_partition.filesystem == FS_CLEARED )
+		return erase_filesystem_signatures( new_partition, operationdetail );
+	else
+		return    erase_filesystem_signatures( new_partition, operationdetail )
+		       && set_partition_type( new_partition, operationdetail )
+		       && create_filesystem( new_partition, operationdetail );
+
+	return false;
 }
 
 bool GParted_Core::create_partition( Partition & new_partition, OperationDetail & operationdetail, Sector min_size )
