@@ -32,12 +32,11 @@ Dialog_Partition_New::Dialog_Partition_New()
 	frame_resizer_base ->set_used( 0 ) ;
 }
 
-void Dialog_Partition_New::Set_Data( const Partition & partition,
-				     bool any_extended,
-				     unsigned short new_count, 
-				     const std::vector<FS> & FILESYSTEMS,
-				     bool only_unformatted,
-				     Glib::ustring disktype )
+void Dialog_Partition_New::Set_Data( const Device & device,
+                                     const Partition & partition,
+                                     bool any_extended,
+                                     unsigned short new_count,
+                                     const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
@@ -86,7 +85,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
 	
 	//determine which PartitionType is allowed
-	if ( disktype != "msdos" && disktype != "dvh" )
+	if ( device.disktype != "msdos" && device.disktype != "dvh" )
 	{
 		menu_type .items()[ 1 ] .set_sensitive( false ); 
 		menu_type .items()[ 2 ] .set_sensitive( false );
@@ -120,7 +119,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 			     0, 1, 1, 2,
 			     Gtk::FILL );
 	
-	Build_Filesystems_Menu( only_unformatted ) ;
+	Build_Filesystems_Menu( device.readonly );
 	 
 	optionmenu_filesystem .set_menu( menu_filesystem );
 	optionmenu_filesystem .signal_changed() .connect( 

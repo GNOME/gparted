@@ -1833,13 +1833,12 @@ void Win_GParted::activate_new()
 	{	
 		Dialog_Partition_New dialog;
 		
-		dialog .Set_Data( selected_partition, 
-				  index_extended > -1,
-				  new_count,
-				  gparted_core .get_filesystems(),
-				  devices[ current_device ] .readonly,
-				  devices[ current_device ] .disktype ) ;
-		
+		dialog .Set_Data( devices[current_device],
+		                  selected_partition,
+		                  index_extended > -1,
+		                  new_count,
+		                  gparted_core.get_filesystems() );
+
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )
