@@ -132,9 +132,6 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 			0, 1, 3, 4,	Gtk::FILL ) ;
 	//Create Text entry box
 	filesystem_label_entry.set_width_chars( 20 );
-	filesystem_label_entry.set_activates_default( true );
-	filesystem_label_entry.set_text( partition.get_filesystem_label() );
-	filesystem_label_entry.select_region( 0, filesystem_label_entry.get_text_length() );
 	//Add entry box to table
 	table_create.attach( filesystem_label_entry, 1, 2, 3, 4, Gtk::FILL );
 
