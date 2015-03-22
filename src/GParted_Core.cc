@@ -739,66 +739,99 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
-	bool succes = false ;
+	bool success = false;
 	libparted_messages .clear() ;
 
-	if ( calibrate_partition( operation ->partition_original, operation ->operation_detail ) )
-		switch ( operation ->type )
-		{	     
-			case OPERATION_DELETE:
-				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-				         Delete( operation ->partition_original, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_CHECK:
-				succes = check_repair_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-					 maximize_filesystem( operation ->partition_original, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_CREATE:
-				succes = create( operation->partition_new, operation->operation_detail );
-				break ;
-			case OPERATION_RESIZE_MOVE:
-				//in case the to be resized/moved partition was a 'copy of..', we need a real path...
-				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-				succes = resize_move( operation ->partition_original,
-				                      operation ->partition_new,
-				                      operation ->operation_detail );
-				break ;
-			case OPERATION_FORMAT:
-				// Reset real path in case the name is "copy of ..." from previous operation
-				operation->partition_new.add_path( operation->partition_original.get_path(), true );
-				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-				         format( operation ->partition_new, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_COPY:
+	switch ( operation->type )
+	{
+		// Call calibrate_partition() first for each operation to ensure the
+		// correct partition path name and boundary is known before performing the
+		// actual modifications.  (See comments in calibrate_partition() for
+		// reasons why this is necessary).  Calibrate the most relevant partition
+		// object(s), either partition_original, partition_new or partition_copy,
+		// as required.  Calibrate also displays details of the partition being
+		// modified in the operation results to inform the user.
+
+		case OPERATION_DELETE:
+			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
+			          && remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && Delete( operation->partition_original, operation->operation_detail );
+			break;
+
+		case OPERATION_CHECK:
+			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
+			          && check_repair_filesystem( operation->partition_original,
+			                                      operation->operation_detail )
+			          && maximize_filesystem( operation->partition_original, operation->operation_detail );
+			break;
+
+		case OPERATION_CREATE:
+			// The partition doesn't exist yet so there's nothing to calibrate.
+			success = create( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_RESIZE_MOVE:
+			success = calibrate_partition( operation->partition_original, operation->operation_detail );
+			if ( ! success )
+				break;
+
+			// Reset the new partition object's real path in case the name is
+			// "copy of ..." from the previous operation.
+			operation->partition_new.add_path( operation->partition_original.get_path(), true );
+
+			success = resize_move( operation->partition_original,
+			                       operation->partition_new,
+			                       operation->operation_detail );
+			break;
+
+		case OPERATION_FORMAT:
+			success = calibrate_partition( operation->partition_new, operation->operation_detail );
+			if ( ! success )
+				break;
+
+			// Reset the original partition object's real path in case the
+			// name is "copy of ..." from the previous operation.
+			operation->partition_original.add_path( operation->partition_new.get_path(), true );
+
+			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && format( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_COPY:
 			//FIXME: in case of a new partition we should make sure the new partition is >= the source partition... 
 			//i think it's best to do this in the dialog_paste
-				succes = ( operation ->partition_original .type == TYPE_UNALLOCATED || 
-					   calibrate_partition( operation ->partition_new, operation ->operation_detail ) ) &&
-				
-					 calibrate_partition( static_cast<OperationCopy*>( operation ) ->partition_copied,
-							      operation ->operation_detail ) &&
-				         remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
-					       operation ->partition_new,
-					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_byte_length(),
-					       operation ->operation_detail ) ;
-				break ;
-			case OPERATION_LABEL_FILESYSTEM:
-				// Reset real path in case the name is "copy of ..." from previous operation
-				operation->partition_new.add_path( operation->partition_original.get_path(), true );
-				succes = label_filesystem( operation->partition_new, operation->operation_detail );
-				break ;
-			case OPERATION_NAME_PARTITION:
-				// Reset real path in case the name is "copy of ..." from previous operation
-				operation->partition_new.add_path( operation->partition_original.get_path(), true );
-				succes = name_partition( operation->partition_new, operation->operation_detail );
+
+			success =    calibrate_partition( static_cast<OperationCopy*>( operation )->partition_copied,
+			                                  operation->operation_detail )
+			             // Only calibrate the destination when pasting into an existing
+			             // partition, rather than when creating a new partition.
+                                  && ( operation->partition_original.type == TYPE_UNALLOCATED                       ||
+			               calibrate_partition( operation->partition_new, operation->operation_detail )    );
+			if ( ! success )
 				break;
-			case OPERATION_CHANGE_UUID:
-				// Reset real path in case the name is "copy of ..." from previous operation
-				operation->partition_new.add_path( operation->partition_original.get_path(), true );
-				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
-				break ;
-		}
+
+			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && copy( static_cast<OperationCopy*>( operation )->partition_copied,
+			                   operation->partition_new,
+			                   static_cast<OperationCopy*>( operation )->partition_copied.get_byte_length(),
+			                   operation->operation_detail );
+			break;
+
+		case OPERATION_LABEL_FILESYSTEM:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && label_filesystem( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_NAME_PARTITION:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && name_partition( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_CHANGE_UUID:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && change_uuid( operation ->partition_new, operation ->operation_detail ) ;
+			break;
+	}
 
 	if ( libparted_messages .size() > 0 )
 	{
@@ -809,7 +842,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				OperationDetail( libparted_messages[ t ], STATUS_NONE, FONT_ITALIC ) ) ;
 	}
 
-	return succes ;
+	return success;
 }
 
 bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & disklabel )
