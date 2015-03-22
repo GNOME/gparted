@@ -764,6 +764,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				                      operation ->operation_detail );
 				break ;
 			case OPERATION_FORMAT:
+				// Reset real path in case the name is "copy of ..." from previous operation
+				operation->partition_new.add_path( operation->partition_original.get_path(), true );
 				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
 				         format( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
@@ -782,12 +784,18 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 					       operation ->operation_detail ) ;
 				break ;
 			case OPERATION_LABEL_FILESYSTEM:
+				// Reset real path in case the name is "copy of ..." from previous operation
+				operation->partition_new.add_path( operation->partition_original.get_path(), true );
 				succes = label_filesystem( operation->partition_new, operation->operation_detail );
 				break ;
 			case OPERATION_NAME_PARTITION:
+				// Reset real path in case the name is "copy of ..." from previous operation
+				operation->partition_new.add_path( operation->partition_original.get_path(), true );
 				succes = name_partition( operation->partition_new, operation->operation_detail );
 				break;
 			case OPERATION_CHANGE_UUID:
+				// Reset real path in case the name is "copy of ..." from previous operation
+				operation->partition_new.add_path( operation->partition_original.get_path(), true );
 				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
 				break ;
 		}
