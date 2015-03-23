@@ -1,4 +1,55 @@
 ============================
+GParted 0.22.0  (2015-03-23)
+============================
+
+Release Notes
+-------------
+  The big news with this release of GParted is support for
+  unpartitioned whole disk drives.  With unpartitioned drive support,
+  GParted can now recognize and also format disk devices that do not
+  contain a partition table.  Another new feature is support for GPT
+  partition names.  This feature enables setting and viewing names on
+  GPT partitions.  Also included are bug fixes and language
+  translation updates.
+
+### Key changes include:
+
+  * Add read and write support for unpartitioned whole disk devices
+  * Add read and write support for GPT partition names
+
+Bug Fixes
+---------
+  * Add support for GPT partition names (#741424)
+    - Fix double quote error creating XFS file systems (#744108)
+  * Make swap usage match figures reported by swapon -s (#742647)
+  * Correct dialog title displaying libparted exceptions (#743825)
+  * GParted cannot recognise LVM signature on unpartitioned drive (#741430)
+  * Nilfs2 file system is unusable on RHEL/CentOS 6 (#742741)
+  * Add unpartitioned drive read-write support (#743181)
+  * If available use udisks2-inhibit to prevent automounting (#745349)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood, Michael Zimmermann,
+  Phillip Susi, and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  bs(Samir Ribic), cs(Marek Černocký), de(Wolfgang Stöggl),
+  el(Maria Mavridou, Γιάννης Κουτσούκος), es(Daniel Mustieles),
+  fr(Alexandre Franke), hu(Balázs Úr), is(Sveinn í Felli),
+  it(Marco Ciampa, Milo Casagrande), kk(Baurzhan Muftakhidinov),
+  lt(Aurimas Černius), nl(Hannie Dumoleyn), pl(Piotr Drąg),
+  pt_BR(Enrico Nicoletto), ru(Stas Solovey), sk(Dušan Kazik),
+  sv(Josef Andersson), tr(Muhammet Kara), uk(Daniel Korostil),
+  zh_TW(Cheng-Chia Tseng)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.21.0  (2015-01-26)
 ============================
 
