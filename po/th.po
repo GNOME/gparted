@@ -1,18 +1,18 @@
 # Thai translation of GParted.
-# Copyright (C) 2006-2012 Free Software Foundation, Inc.
+# Copyright (C) 2006-2015 Free Software Foundation, Inc.
 # This file is distributed under the same license as the GParted package.
 # Isriya Paireepairit <markpeak@gmail.com>, 2006.
 # Theppitak Karoonboonyanan  <thep@linux.thai.net>, 2006, 2009.
 # Pongpichit Panna <pongpichit@gmail.com>, 2008.
-# Akom Chotiphantawanon <knight2000@gmail.com>, 2012-2013.
+# Akom Chotiphantawanon <knight2000@gmail.com>, 2012-2013, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: GParted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-04 08:24+0000\n"
-"PO-Revision-Date: 2013-08-10 18:03+0700\n"
+"POT-Creation-Date: 2015-03-26 20:33+0000\n"
+"PO-Revision-Date: 2015-04-07 12:34+0700\n"
 "Last-Translator: Akom Chotiphantawanon <knight2000@gmail.com>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -20,11 +20,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: ../gparted.appdata.xml.in.h:1
+msgid ""
+"GParted is a free partition editor for graphically managing your disk "
+"partitions."
+msgstr "GParted เป็นเครื่องมือแก้ไขพาร์ทิชันเสรีสำหรับจัดการพาร์ทิชันในดิสก์ของคุณในแบบกราฟิก"
+
+#: ../gparted.appdata.xml.in.h:2
+msgid ""
+"With GParted you can resize, copy, label, and move partitions without data "
+"loss. These actions enable you to grow or shrink your C: drive, create space "
+"for new operating systems, or attempt data rescue from lost partitions."
+msgstr ""
+"ด้วย GParted คุณสามารถปรับขนาด, คัดลอก, ตั้งชื่อ, และย้ายพาร์ทิชันได้โดยไม่สูญเสียข้อมูล "
+"การกระทำเหล่านี้ทำให้คุณสามารถขยายหรือลดขนาดไดรว์ C: ของคุณได้, "
+"สามารถสร้างที่ว่างสำหรับระบบปฏิบัติการใหม่ได้, หรือพยายามกู้ข้อมูลจากพาร์ทิชันที่สูญหาย"
+
+#: ../gparted.appdata.xml.in.h:3
+msgid ""
+"GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"reiser4, ufs, and xfs."
+msgstr ""
+"GParted ทำงานได้กับระบบแฟ้มหลายแบบ รวมถึง: btrfs, ext2, ext3, ext4, fat16, "
+"fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, reiser4, ufs, "
+"และ xfs"
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:360
-#: ../src/Win_GParted.cc:75 ../src/Win_GParted.cc:1274
-#: ../src/Win_GParted.cc:1465
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
+#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1318
+#: ../src/Win_GParted.cc:1509
 msgid "GParted"
 msgstr "GParted"
 
@@ -40,163 +67,155 @@ msgstr "เครื่องมือแก้ไขพาร์ทิชัน
 msgid "Create, reorganize, and delete partitions"
 msgstr "สร้าง ปรับโครงสร้าง และลบพาร์ทิชัน"
 
-#: ../include/Utils.h:54
+#: ../gparted.desktop.in.in.h:5
+msgid "Partition;"
+msgstr "พาร์ทิชัน;"
+
+#: ../include/Utils.h:55
 msgid "(New UUID - will be randomly generated)"
 msgstr "(UUID ใหม่ - จะถูกสร้างแบบสุ่ม)"
 
-#: ../include/Utils.h:55
+#: ../include/Utils.h:56
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(ครึ่งของ UUID ใหม่ - จะถูกสร้างแบบสุ่ม)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:68
+#: ../src/Copy_Blocks.cc:67
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "คัดลอกแล้ว %1 จาก %2 (เหลือ %3)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:75 ../src/Copy_Blocks.cc:185
+#: ../src/Copy_Blocks.cc:74 ../src/Copy_Blocks.cc:184
 msgid "%1 of %2 copied"
 msgstr "คัดลอกแล้ว %1 จาก %2 "
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:161
+#: ../src/Copy_Blocks.cc:160
 msgid "copy %1 using a block size of %2"
 msgstr "คัดลอก %1 โดยใช้ขนาดบล็อค %2"
 
-#: ../src/Copy_Blocks.cc:223
+#: ../src/Copy_Blocks.cc:222
 msgid "Operation Canceled"
 msgstr "ปฏิบัติการถูกยกเลิก"
 
-#: ../src/Copy_Blocks.cc:235
+#: ../src/Copy_Blocks.cc:234
 msgid "Error while writing block at sector %1"
 msgstr "เกิดปัญหาขณะเขียนบล็อคที่ตำแหน่งเซ็กเตอร์ %1"
 
-#: ../src/Copy_Blocks.cc:240
+#: ../src/Copy_Blocks.cc:239
 msgid "Error while reading block at sector %1"
 msgstr "เกิดปัญหาขณะอ่านบล็อคที่ตำแหน่งเซ็กเตอร์ %1"
 
-#: ../src/Dialog_Base_Partition.cc:56
+#: ../src/Dialog_Base_Partition.cc:55
 msgid "Free space preceding (MiB):"
 msgstr "เนื้อที่ว่างก่อนหน้าพาร์ทิชันนี้ (MiB):"
 
 #. add spinbutton_size
-#: ../src/Dialog_Base_Partition.cc:65
+#: ../src/Dialog_Base_Partition.cc:64
 msgid "New size (MiB):"
 msgstr "ขนาดใหม่ (MiB):"
 
 #. add spinbutton_after
-#: ../src/Dialog_Base_Partition.cc:72
+#: ../src/Dialog_Base_Partition.cc:71
 msgid "Free space following (MiB):"
 msgstr "เนื้อที่ว่างถัดจากพาร์ทิชันนี้ (MiB):"
 
 #. add alignment
 #. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
-#: ../src/Dialog_Base_Partition.cc:99
+#: ../src/Dialog_Base_Partition.cc:98
 msgid "Align to:"
 msgstr "จัดลงตำแหน่ง:"
 
 #. fill partition alignment menu
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:104
+#: ../src/Dialog_Base_Partition.cc:103
 msgid "Cylinder"
 msgstr "ไซลินเดอร์:"
 
 #. TO TRANSLATORS: Menu option for label "Align to:"
-#: ../src/Dialog_Base_Partition.cc:106
+#: ../src/Dialog_Base_Partition.cc:105
 msgid "MiB"
 msgstr "MiB"
 
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:108
+#: ../src/Dialog_Base_Partition.cc:107
 msgid "None"
 msgstr "ไม่ต้องจัด"
 
-#: ../src/Dialog_Base_Partition.cc:243
+#: ../src/Dialog_Base_Partition.cc:242
 msgid "Resize"
 msgstr "ปรับขนาด"
 
-#: ../src/Dialog_Base_Partition.cc:243 ../src/Win_GParted.cc:244
+#: ../src/Dialog_Base_Partition.cc:242 ../src/Win_GParted.cc:246
 msgid "Resize/Move"
 msgstr "ปรับขนาด/ย้าย"
 
-#: ../src/Dialog_Base_Partition.cc:261
+#: ../src/Dialog_Base_Partition.cc:260
 msgid "Minimum size: %1 MiB"
 msgstr "ขนาดเล็กสุดที่เป็นไปได้: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:262
+#: ../src/Dialog_Base_Partition.cc:261
 msgid "Maximum size: %1 MiB"
 msgstr "ขนาดใหญ่สุดที่เป็นไปได้: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
-#: ../src/Dialog_Disklabel.cc:28
+#: ../src/Dialog_Disklabel.cc:30
 msgid "Create partition table on %1"
 msgstr "สร้างตารางพาร์ทิชันใน %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
-#: ../src/Dialog_Disklabel.cc:52
+#: ../src/Dialog_Disklabel.cc:54
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
 msgstr "คำเตือน: การกระทำนี้จะ<i>ลบข้อมูลทั้งหมดทั่วทั้งดิสก์</i> %1"
 
-#: ../src/Dialog_Disklabel.cc:56
-msgid "Default is to create an MS-DOS partition table."
-msgstr "ปฏิบัติการปริยายคือ สร้างตารางพาร์ทิชันแบบ MS-DOS"
-
-#: ../src/Dialog_Disklabel.cc:62
-msgid "Advanced"
-msgstr "ระดับสูง"
-
-#: ../src/Dialog_Disklabel.cc:71
+#: ../src/Dialog_Disklabel.cc:60
 msgid "Select new partition table type:"
 msgstr "เลือกชนิดของตารางพาร์ทิชันที่จะสร้าง:"
 
-#: ../src/Dialog_Partition_Copy.cc:37
+#. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
+#: ../src/Dialog_FileSystem_Label.cc:29
+msgid "Set file system label on %1"
+msgstr "กำหนดชื่อระบบแฟ้มใน %1"
+
+#. Label
+#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:261
+#: ../src/Dialog_Partition_New.cc:139
+msgid "Label:"
+msgstr "ชื่อ:"
+
+#: ../src/Dialog_Partition_Copy.cc:36
 msgid "Paste %1"
 msgstr "แปะ %1"
 
+#. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:35
+#: ../src/Dialog_Partition_Info.cc:44
 msgid "Information about %1"
 msgstr "ข้อมูลของ %1"
 
-#: ../src/Dialog_Partition_Info.cc:55
+#: ../src/Dialog_Partition_Info.cc:80
 msgid "Warning:"
 msgstr "คำเตือน:"
 
-#. filesystem
+#. FILE SYSTEM DETAIL SECTION
+#. file system headline
+#: ../src/Dialog_Partition_Info.cc:238 ../src/DialogFeatures.cc:44
+#: ../src/TreeView_Detail.cc:36
+msgid "File System"
+msgstr "ระบบแฟ้ม"
+
+#. Left field & value pair area
+#. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:185 ../src/Dialog_Partition_New.cc:125
+#: ../src/Dialog_Partition_Info.cc:249 ../src/Dialog_Partition_New.cc:128
 msgid "File system:"
 msgstr "ระบบแฟ้ม:"
 
-#. size
-#: ../src/Dialog_Partition_Info.cc:195 ../src/Win_GParted.cc:477
-msgid "Size:"
-msgstr "ขนาดรวม:"
+#: ../src/Dialog_Partition_Info.cc:274
+msgid "UUID:"
+msgstr "UUID:"
 
-#. Used
-#: ../src/Dialog_Partition_Info.cc:211
-msgid "Used:"
-msgstr "ใช้ไป:"
-
-#. unused
-#: ../src/Dialog_Partition_Info.cc:225
-msgid "Unused:"
-msgstr "เหลือ:"
-
-#: ../src/Dialog_Partition_Info.cc:242
-msgid "Unallocated:"
-msgstr "ไม่ได้จัดสรร:"
-
-#: ../src/Dialog_Partition_Info.cc:264
-msgid "Flags:"
-msgstr "แฟล็ก:"
-
-#. path
-#: ../src/Dialog_Partition_Info.cc:280 ../src/Win_GParted.cc:485
-msgid "Path:"
-msgstr "ตำแหน่ง:"
-
-#: ../src/Dialog_Partition_Info.cc:294
+#: ../src/Dialog_Partition_Info.cc:289
 msgid "Status:"
 msgstr "สถานะ:"
 
@@ -204,28 +223,20 @@ msgstr "สถานะ:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:306
+#: ../src/Dialog_Partition_Info.cc:301
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "ถูกใช้งานอยู่ (มีพาร์ทิชันลอจิคัลอย่างน้อยหนึ่งอันถูกเมานท์อยู่)"
 
 #. TO TRANSLATORS:  Active
-#. * means that this linux swap partition is enabled and being used by
-#. * the operating system.
+#. * means that this linux swap, linux software raid partition, or
+#. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:314
+#: ../src/Dialog_Partition_Info.cc:312
 msgid "Active"
 msgstr "เปิดใช้"
 
-#. TO TRANSLATORS:  myvgname active
-#. * means that the partition is a member of an LVM volume group and the
-#. * volume group is active and being used by the operating system.
-#.
-#: ../src/Dialog_Partition_Info.cc:322
-msgid "%1 active"
-msgstr "%1 เปิดใช้อยู่"
-
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:328
+#: ../src/Dialog_Partition_Info.cc:318
 msgid "Mounted on %1"
 msgstr "เมานท์อยู่ที่ %1"
 
@@ -233,15 +244,19 @@ msgstr "เมานท์อยู่ที่ %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:338
+#: ../src/Dialog_Partition_Info.cc:328
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "ไม่ได้ถูกใช้งานอยู่ (ไม่มีพาร์ทิชันลอจิคัลถูกเมานท์อยู่)"
 
 #. TO TRANSLATORS:  Not active
-#. *  means that this linux swap partition is not enabled and is not
-#. *  in use by the operating system.
+#. *  means that this linux swap or linux software raid partition
+#. *  is not enabled and is not in use by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:346
+#. TO TRANSLATORS:  Not active
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:338 ../src/Dialog_Partition_Info.cc:362
 msgid "Not active"
 msgstr "ไม่ได้เปิดใช้"
 
@@ -250,74 +265,99 @@ msgstr "ไม่ได้เปิดใช้"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:356
+#: ../src/Dialog_Partition_Info.cc:348
 msgid "Not active (Not a member of any volume group)"
 msgstr "ไม่ได้เปิดใช้ (ไม่ได้เป็นสมาชิกของกลุ่มโวลุมใด)"
 
-#. TO TRANSLATORS:  myvgname not active and exported
+#. TO TRANSLATORS:  Not active and exported
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:364
-msgid "%1 not active and exported"
-msgstr "%1 ไม่ได้เปิดใช้และมีการส่งออก"
-
-#. TO TRANSLATORS:  myvgname not active
-#. * means that the partition is a member of an LVM volume group but
-#. * the volume group is not active and not being used by the operating system.
-#.
-#: ../src/Dialog_Partition_Info.cc:370
-msgid "%1 not active"
-msgstr "%1 ไม่ได้เปิดใช้"
+#: ../src/Dialog_Partition_Info.cc:356
+msgid "Not active and exported"
+msgstr "ไม่ได้เปิดใช้และมีการส่งออก"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:377
+#: ../src/Dialog_Partition_Info.cc:369
 msgid "Not mounted"
 msgstr "ไม่ได้เมานท์อยู่"
 
-#. Label
-#: ../src/Dialog_Partition_Info.cc:386 ../src/Dialog_Partition_Label.cc:41
-#: ../src/Dialog_Partition_New.cc:137
-msgid "Label:"
-msgstr "ชื่อ:"
-
-#: ../src/Dialog_Partition_Info.cc:399
-msgid "UUID:"
-msgstr "UUID:"
-
-#. first sector
-#: ../src/Dialog_Partition_Info.cc:413
-msgid "First sector:"
-msgstr "เซ็กเตอร์แรก:"
-
-#. last sector
-#: ../src/Dialog_Partition_Info.cc:423
-msgid "Last sector:"
-msgstr "เซ็กเตอร์สุดท้าย:"
-
-#. total sectors
-#: ../src/Dialog_Partition_Info.cc:433 ../src/Win_GParted.cc:538
-msgid "Total sectors:"
-msgstr "จำนวนเซ็กเตอร์ทั้งหมด:"
-
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:455 ../src/Win_GParted.cc:2724
+#: ../src/Dialog_Partition_Info.cc:379 ../src/Win_GParted.cc:2827
 msgid "Volume Group:"
 msgstr "กลุ่มโวลุม:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:461 ../src/Win_GParted.cc:2725
+#: ../src/Dialog_Partition_Info.cc:390 ../src/Win_GParted.cc:2828
 msgid "Members:"
 msgstr "สมาชิก:"
 
-#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
-#: ../src/Dialog_Partition_Label.cc:30
-msgid "Set partition label on %1"
+#. Used
+#: ../src/Dialog_Partition_Info.cc:428
+msgid "Used:"
+msgstr "ใช้ไป:"
+
+#. unused
+#: ../src/Dialog_Partition_Info.cc:442
+msgid "Unused:"
+msgstr "เหลือ:"
+
+#: ../src/Dialog_Partition_Info.cc:459
+msgid "Unallocated:"
+msgstr "ไม่ได้จัดสรร:"
+
+#. size
+#: ../src/Dialog_Partition_Info.cc:475 ../src/Win_GParted.cc:479
+msgid "Size:"
+msgstr "ขนาดรวม:"
+
+#. PARTITION DETAIL SECTION
+#. partition headline
+#. append columns
+#: ../src/Dialog_Partition_Info.cc:493 ../src/TreeView_Detail.cc:34
+msgid "Partition"
+msgstr "พาร์ทิชัน"
+
+#. Left field & value pair area
+#. path
+#: ../src/Dialog_Partition_Info.cc:504 ../src/Win_GParted.cc:487
+msgid "Path:"
+msgstr "ตำแหน่ง:"
+
+#. name
+#: ../src/Dialog_Partition_Info.cc:516 ../src/Dialog_Partition_Name.cc:40
+msgid "Name:"
+msgstr "ชื่อ:"
+
+#. flags
+#: ../src/Dialog_Partition_Info.cc:526
+msgid "Flags:"
+msgstr "แฟล็ก:"
+
+#. Right field & value pair area
+#. first sector
+#: ../src/Dialog_Partition_Info.cc:538
+msgid "First sector:"
+msgstr "เซ็กเตอร์แรก:"
+
+#. last sector
+#: ../src/Dialog_Partition_Info.cc:548
+msgid "Last sector:"
+msgstr "เซ็กเตอร์สุดท้าย:"
+
+#. total sectors
+#: ../src/Dialog_Partition_Info.cc:558 ../src/Win_GParted.cc:537
+msgid "Total sectors:"
+msgstr "จำนวนเซ็กเตอร์ทั้งหมด:"
+
+#. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
+#: ../src/Dialog_Partition_Name.cc:29
+msgid "Set partition name on %1"
 msgstr "กำหนดชื่อพาร์ทิชันใน %1"
 
 #. TO TRANSLATORS: dialogtitle
@@ -326,131 +366,136 @@ msgid "Create new Partition"
 msgstr "สร้างพาร์ทิชันใหม่"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:85
+#: ../src/Dialog_Partition_New.cc:78
 msgid "Create as:"
 msgstr "สร้างเป็น:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:75
+#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:74
 msgid "Primary Partition"
 msgstr "พาร์ทิชันไพรมารี"
 
-#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:78
-#: ../src/OperationDelete.cc:77
+#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:77
+#: ../src/OperationDelete.cc:76
 msgid "Logical Partition"
 msgstr "พาร์ทิชันลอจิคัล"
 
-#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:81
+#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:80
 msgid "Extended Partition"
 msgstr "พาร์ทิชันขยาย"
 
-#: ../src/Dialog_Partition_New.cc:203
+#. Partition name
+#: ../src/Dialog_Partition_New.cc:118
+msgid "Partition name:"
+msgstr "ชื่อพาร์ทิชัน:"
+
+#: ../src/Dialog_Partition_New.cc:202
 msgid "New Partition #%1"
 msgstr "พาร์ทิชันใหม่ #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:83
+#: ../src/Dialog_Partition_Resize_Move.cc:82
 msgid "Resize/Move %1"
 msgstr "ปรับขนาด/ย้าย %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:88
+#: ../src/Dialog_Partition_Resize_Move.cc:87
 msgid "Resize %1"
 msgstr "ปรับขนาด %1"
 
-#: ../src/Dialog_Progress.cc:32
+#: ../src/Dialog_Progress.cc:31
 msgid "Applying pending operations"
 msgstr "กำลังเริ่มทำปฏิบัติการที่รอคิวอยู่"
 
-#: ../src/Dialog_Progress.cc:47
+#: ../src/Dialog_Progress.cc:46
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr "อาจใช้เวลาสักระยะ ขึ้นอยู่กับชนิดและปริมาณงานที่ต้องทำ"
 
-#: ../src/Dialog_Progress.cc:60
+#: ../src/Dialog_Progress.cc:59
 msgid "Completed Operations:"
 msgstr "ปฏิบัติการที่เสร็จแล้ว:"
 
-#: ../src/Dialog_Progress.cc:101
+#: ../src/Dialog_Progress.cc:100
 msgid "Details"
 msgstr "รายละเอียด"
 
-#: ../src/Dialog_Progress.cc:204
+#: ../src/Dialog_Progress.cc:203
 msgid "%1 of %2 operations completed"
 msgstr "ทำเสร็จแล้ว %1 จาก %2 ปฏิบัติการ"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:222
+#: ../src/Dialog_Progress.cc:221
 msgid "_Save Details"
 msgstr "_บันทึกรายละเอียด"
 
-#: ../src/Dialog_Progress.cc:234
+#: ../src/Dialog_Progress.cc:233
 msgid "Operation cancelled"
 msgstr "ปฏิบัติการถูกยกเลิก"
 
-#: ../src/Dialog_Progress.cc:248
+#: ../src/Dialog_Progress.cc:247
 msgid "All operations successfully completed"
 msgstr "ปฏิบัติการทั้งหมดทำเสร็จเรียบร้อย"
 
-#: ../src/Dialog_Progress.cc:252
+#: ../src/Dialog_Progress.cc:251
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "คำเตือน %1 รายการ"
 
-#: ../src/Dialog_Progress.cc:265
+#: ../src/Dialog_Progress.cc:264
 msgid "An error occurred while applying the operations"
 msgstr "เกิดข้อผิดพลาดขณะเริ่มทำปฏิบัติการ"
 
-#: ../src/Dialog_Progress.cc:270
+#: ../src/Dialog_Progress.cc:269
 msgid "See the details for more information."
 msgstr "อ่านรายละเอียดเพื่อดูข้อมูลเพิ่มเติม"
 
-#: ../src/Dialog_Progress.cc:272
+#: ../src/Dialog_Progress.cc:271
 msgid "IMPORTANT"
 msgstr "สำคัญมาก"
 
-#: ../src/Dialog_Progress.cc:273
+#: ../src/Dialog_Progress.cc:272
 msgid "If you want support, you need to provide the saved details!"
 msgstr "ถ้าคุณต้องการบริการสนับสนุน คุณจำเป็นต้องให้รายละเอียดที่บันทึกไว้นี้"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:276
+#: ../src/Dialog_Progress.cc:275
 msgid "See %1 for more information."
 msgstr "ดู %1 เพื่อดูรายละเอียดเพิ่มเติม"
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: ../src/Dialog_Progress.cc:295 ../src/Dialog_Progress.cc:326
+#: ../src/Dialog_Progress.cc:294 ../src/Dialog_Progress.cc:325
 msgid "Force Cancel (%1)"
 msgstr "บังคับยกเลิก (%1)"
 
-#: ../src/Dialog_Progress.cc:297 ../src/Dialog_Progress.cc:330
+#: ../src/Dialog_Progress.cc:296 ../src/Dialog_Progress.cc:329
 msgid "Force Cancel"
 msgstr "บังคับยกเลิก"
 
-#: ../src/Dialog_Progress.cc:308
+#: ../src/Dialog_Progress.cc:307
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "คุณแน่ใจว่าต้องการยกเลิกปฏิบัติการที่กำลังทำอยู่หรือไม่?"
 
-#: ../src/Dialog_Progress.cc:314
+#: ../src/Dialog_Progress.cc:313
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "การยกเลิกอาจทำให้เกิดความเสียหาย<i>ร้ายแรง</i>ต่อระบบแฟ้ม"
 
-#: ../src/Dialog_Progress.cc:316
+#: ../src/Dialog_Progress.cc:315
 msgid "Continue Operation"
 msgstr "ดำเนินการต่อ"
 
-#: ../src/Dialog_Progress.cc:317
+#: ../src/Dialog_Progress.cc:316
 msgid "Cancel Operation"
 msgstr "ยกเลิกปฏิบัติการ"
 
-#: ../src/Dialog_Progress.cc:338
+#: ../src/Dialog_Progress.cc:337
 msgid "Save Details"
 msgstr "บันทึกรายละเอียด"
 
-#: ../src/Dialog_Progress.cc:357
+#: ../src/Dialog_Progress.cc:356
 msgid "GParted Details"
 msgstr "รายละเอียด GParted"
 
-#: ../src/Dialog_Progress.cc:365
+#: ../src/Dialog_Progress.cc:367
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -458,7 +503,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:408
+#: ../src/Dialog_Progress.cc:410
 msgid "EXECUTING"
 msgstr "กำลังดำเนินการ"
 
@@ -466,7 +511,7 @@ msgstr "กำลังดำเนินการ"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:416
+#: ../src/Dialog_Progress.cc:418
 msgid "SUCCESS"
 msgstr "สำเร็จ"
 
@@ -474,7 +519,7 @@ msgstr "สำเร็จ"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:424
+#: ../src/Dialog_Progress.cc:426
 msgid "ERROR"
 msgstr "ผิดพลาด"
 
@@ -483,7 +528,7 @@ msgstr "ผิดพลาด"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:433
+#: ../src/Dialog_Progress.cc:435
 msgid "INFO"
 msgstr "ข้อมูล"
 
@@ -492,7 +537,7 @@ msgstr "ข้อมูล"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:442
+#: ../src/Dialog_Progress.cc:444
 msgid "N/A"
 msgstr "ไม่ระบุ"
 
@@ -500,51 +545,47 @@ msgstr "ไม่ระบุ"
 msgid "File System Support"
 msgstr "การรองรับระบบแฟ้ม"
 
-#: ../src/DialogFeatures.cc:35 ../src/TreeView_Detail.cc:36
-msgid "File System"
-msgstr "ระบบแฟ้ม"
-
-#: ../src/DialogFeatures.cc:36
+#: ../src/DialogFeatures.cc:45
 msgid "Create"
 msgstr "สร้าง"
 
-#: ../src/DialogFeatures.cc:37
+#: ../src/DialogFeatures.cc:46
 msgid "Grow"
 msgstr "ขยาย"
 
-#: ../src/DialogFeatures.cc:38
+#: ../src/DialogFeatures.cc:50
 msgid "Shrink"
 msgstr "หด"
 
-#: ../src/DialogFeatures.cc:39
+#: ../src/DialogFeatures.cc:54
 msgid "Move"
 msgstr "ย้าย"
 
-#: ../src/DialogFeatures.cc:40
+#: ../src/DialogFeatures.cc:55
 msgid "Copy"
 msgstr "คัดลอก"
 
-#: ../src/DialogFeatures.cc:41
+#: ../src/DialogFeatures.cc:56
 msgid "Check"
 msgstr "ตรวจสอบ"
 
-#: ../src/DialogFeatures.cc:42 ../src/TreeView_Detail.cc:38
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:38
 msgid "Label"
 msgstr "ชื่อ"
 
-#: ../src/DialogFeatures.cc:43
+#: ../src/DialogFeatures.cc:58
 msgid "UUID"
 msgstr "UUID"
 
-#: ../src/DialogFeatures.cc:44
+#: ../src/DialogFeatures.cc:59
 msgid "Required Software"
 msgstr "ซอฟต์แวร์ที่ต้องการ"
 
-#: ../src/DialogFeatures.cc:61
+#: ../src/DialogFeatures.cc:77
 msgid "This chart shows the actions supported on file systems."
 msgstr "แผนภูมินี้แสดงการกระทำที่รองรับสำหรับระบบแฟ้มต่างๆ"
 
-#: ../src/DialogFeatures.cc:63
+#: ../src/DialogFeatures.cc:79
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -552,194 +593,203 @@ msgstr ""
 "ไม่สามารถกระทำทุกอย่างกับทุกระบบแฟ้มได้ โดยส่วนหนึ่งขึ้นอยู่กับธรรมชาติของตัวระบบแฟ้มเอง "
 "และข้อจำกัดของซอฟต์แวร์ที่ใช้สำหรับระบบแฟ้มนั้นๆ"
 
-#. TO TRANSLATORS:  Available
-#. * means that this action is valid for this file system.
+#. TO TRANSLATORS:  Available offline and online
+#. * means that this action is valid for this file system when
+#. * it is both unmounted and mounted.
 #.
-#: ../src/DialogFeatures.cc:81
-msgid "Available"
-msgstr "ได้"
+#: ../src/DialogFeatures.cc:96
+msgid "Available offline and online"
+msgstr "ทำได้แบบออฟไลน์และออนไลน์"
+
+#. TO TRANSLATORS:  Available offline only
+#. * means that this action is valid for this file system only
+#. * when it is unmounted.
+#.
+#: ../src/DialogFeatures.cc:109
+msgid "Available offline only"
+msgstr "ทำได้แบบออฟไลน์เท่านั้น"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:93
+#: ../src/DialogFeatures.cc:121
 msgid "Not Available"
 msgstr "ไม่ได้"
 
-#: ../src/DialogFeatures.cc:99
+#: ../src/DialogFeatures.cc:126
 msgid "Legend"
 msgstr "สัญลักษณ์"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:114
+#: ../src/DialogFeatures.cc:134
 msgid "Rescan For Supported Actions"
 msgstr "สำรวจซ้ำเพื่อหาปฏิบัติการที่รองรับ"
 
-#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+#: ../src/DialogManageFlags.cc:30 ../src/DialogManageFlags.cc:35
 msgid "Manage flags on %1"
 msgstr "จัดการแฟล็กของ %1"
 
-#: ../src/Dialog_Rescue_Data.cc:36
+#: ../src/Dialog_Rescue_Data.cc:35
 msgid "Search disk for file systems"
 msgstr "ค้นหาระบบแฟ้มในดิสก์"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: ../src/Dialog_Rescue_Data.cc:53
+#: ../src/Dialog_Rescue_Data.cc:52
 msgid "File systems found on %1"
 msgstr "พบระบบแฟ้มใน %1"
 
-#: ../src/Dialog_Rescue_Data.cc:58
+#: ../src/Dialog_Rescue_Data.cc:57
 msgid "Data found"
 msgstr "พบข้อมูล"
 
-#: ../src/Dialog_Rescue_Data.cc:62
+#: ../src/Dialog_Rescue_Data.cc:61
 msgid "Data found with inconsistencies"
 msgstr "พบข้อมูลที่มีความไม่สอดคล้องกัน"
 
-#: ../src/Dialog_Rescue_Data.cc:64
+#: ../src/Dialog_Rescue_Data.cc:63
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
 msgstr "คำเตือน!: ระบบแฟ้มที่ทำเครื่องหมาย (!) มีความไม่สอดคล้องกัน"
 
-#: ../src/Dialog_Rescue_Data.cc:66
+#: ../src/Dialog_Rescue_Data.cc:65
 msgid "You might encounter errors trying to view these file systems."
 msgstr "คุณอาจพบความผิดพลาดขณะพยายามดูระบบแฟ้มเหล่านี้"
 
-#: ../src/Dialog_Rescue_Data.cc:82
+#: ../src/Dialog_Rescue_Data.cc:81
 msgid "The 'View' buttons create read-only views of each file system."
 msgstr "ปุ่ม 'ดู' จะแสดงเนื้อหาของแต่ละระบบแฟ้มแบบอ่านอย่างเดียว"
 
-#: ../src/Dialog_Rescue_Data.cc:84
+#: ../src/Dialog_Rescue_Data.cc:83
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "การแสดงเนื้อหาทั้งหมดที่มีการเมานท์จะเลิกเมานท์เมื่อคุณปิดกล่องโต้ตอบนี้"
 
-#: ../src/Dialog_Rescue_Data.cc:107
+#: ../src/Dialog_Rescue_Data.cc:106
 msgid "File systems"
 msgstr "ระบบแฟ้ม"
 
 #. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: ../src/Dialog_Rescue_Data.cc:129
+#: ../src/Dialog_Rescue_Data.cc:128
 msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: %2 (%3 MiB)"
 
-#: ../src/Dialog_Rescue_Data.cc:137
+#: ../src/Dialog_Rescue_Data.cc:136
 msgid "View"
 msgstr "ดู"
 
-#: ../src/Dialog_Rescue_Data.cc:167
+#: ../src/Dialog_Rescue_Data.cc:166
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
 msgstr "เกิดข้อผิดพลาดขณะสร้างไดเรกทอรีชั่วคราวสำหรับใช้เป็นจุดเมานท์"
 
-#: ../src/Dialog_Rescue_Data.cc:169
+#: ../src/Dialog_Rescue_Data.cc:168
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
-#: ../src/Dialog_Rescue_Data.cc:175
+#: ../src/Dialog_Rescue_Data.cc:174
 msgid "Failed creating temporary directory"
 msgstr "สร้างไดเรกทอรีชั่วคราวไม่สำเร็จ"
 
-#: ../src/Dialog_Rescue_Data.cc:192
+#: ../src/Dialog_Rescue_Data.cc:191
 msgid "An error occurred while creating the read-only view."
 msgstr "เกิดข้อผิดพลาดขณะสร้างมุมมองแบบอ่านอย่างเดียว"
 
-#: ../src/Dialog_Rescue_Data.cc:194
+#: ../src/Dialog_Rescue_Data.cc:193
 msgid ""
 "Either the file system can not be mounted (like swap), or there are "
 "inconsistencies or errors in the file system."
 msgstr ""
 "ระบบแฟ้มไม่สามารถเมานท์ได้ (เช่น พื้นที่สลับ) หรือมีความไม่สอดคล้องกัน หรือมีข้อผิดพลาดในระบบแฟ้ม"
 
-#: ../src/Dialog_Rescue_Data.cc:198
+#: ../src/Dialog_Rescue_Data.cc:197
 msgid "Failed creating read-only view"
 msgstr "สร้างมุมมองแบบอ่านอย่างเดียวไม่สำเร็จ"
 
-#: ../src/Dialog_Rescue_Data.cc:228
+#: ../src/Dialog_Rescue_Data.cc:227
 msgid "Error:"
 msgstr "ข้อผิดพลาด:"
 
 #. TO TRANSLATORS: looks like
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
-#: ../src/Dialog_Rescue_Data.cc:236
+#: ../src/Dialog_Rescue_Data.cc:235
 msgid "The file system is mounted on:"
 msgstr "ระบบแฟ้มถูกเมานท์ไว้ที่:"
 
-#: ../src/Dialog_Rescue_Data.cc:241
+#: ../src/Dialog_Rescue_Data.cc:240
 msgid "Unable to open the default file manager"
 msgstr "ไม่สามารถเปิดเครื่องมือจัดการแฟ้มปริยายได้"
 
-#: ../src/Dialog_Rescue_Data.cc:260
+#: ../src/Dialog_Rescue_Data.cc:259
 msgid ""
 "Warning: The detected file system area overlaps with at least one existing "
 "partition"
 msgstr "คำเตือน: พื้นที่ของระบบแฟ้มที่ตรวจพบมีการทับซ้อนกับพาร์ทิชันที่มีอยู่แล้วอย่างน้อยหนึ่งพาร์ทิชัน"
 
-#: ../src/Dialog_Rescue_Data.cc:262
+#: ../src/Dialog_Rescue_Data.cc:261
 msgid ""
 "It is recommended that you do not use any overlapping file systems to avoid "
 "disturbing existing data."
 msgstr "ขอแนะนำว่าอย่าใช้ระบบแฟ้มที่มีการทับซ้อน เพื่อหลีกเลี่ยงการกระทบกับข้อมูลที่มีอยู่เดิม"
 
-#: ../src/Dialog_Rescue_Data.cc:264
+#: ../src/Dialog_Rescue_Data.cc:263
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "คุณต้องการปิดการใช้งานจุดเมานท์ต่อไปนี้หรือไม่?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:326
+#: ../src/DMRaid.cc:325
 msgid "create missing %1 entries"
 msgstr "สร้างรายการ %1 ที่ขาดไป"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:425
+#: ../src/DMRaid.cc:424
 msgid "delete affected %1 entries"
 msgstr "ลบรายการ %1 ที่มีผลกระทบ"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:448
+#: ../src/DMRaid.cc:447
 msgid "delete %1 entry"
 msgstr "ลบรายการ %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:498
+#: ../src/DMRaid.cc:497
 msgid "update %1 entry"
 msgstr "ปรับข้อมูลรายการ %1"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:42
 msgid "_Mount"
 msgstr "เ_มานท์"
 
-#: ../src/FileSystem.cc:44
+#: ../src/FileSystem.cc:43
 msgid "_Unmount"
 msgstr "เ_ลิกเมานท์"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:191
+#: ../src/FileSystem.cc:190
 msgid "Created directory %1"
 msgstr "สร้างไดเรกทอรี %1 แล้ว"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:218
+#: ../src/FileSystem.cc:217
 msgid "Removed directory %1"
 msgstr "ลบไดเรกทอรี %1 แล้ว"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:191 ../src/GParted_Core.cc:200
+#: ../src/GParted_Core.cc:205 ../src/GParted_Core.cc:214
 msgid "Scanning %1"
 msgstr "กำลังสำรวจ %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:223
+#: ../src/GParted_Core.cc:237
 msgid "Confirming %1"
 msgstr "กำลังยืนยัน %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:235
+#: ../src/GParted_Core.cc:249
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "จะละเลยอุปกรณ์ %1 ที่ใช้เซ็กเตอร์แบบลอจิคัลขนาด %2 ไบต์"
 
-#: ../src/GParted_Core.cc:237
+#: ../src/GParted_Core.cc:251
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -747,7 +797,7 @@ msgstr ""
 "GParted ต้องการ libparted รุ่น 2.2 ขึ้นไป เพื่อรองรับอุปกรณ์ที่มีขนาดเซ็กเตอร์ใหญ่กว่า 512 ไบต์"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:275
+#: ../src/GParted_Core.cc:289
 msgid "Searching %1 partitions"
 msgstr "กำลังค้นหาพาร์ทิชันต่างๆ ใน %1"
 
@@ -755,76 +805,76 @@ msgstr "กำลังค้นหาพาร์ทิชันต่างๆ
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:393
 msgid "unrecognized"
 msgstr "ไม่ทราบ"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:643
+#: ../src/GParted_Core.cc:713
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "พาร์ทิชันไม่สามารถมีความยาว %1 เซ็กเตอร์ได้"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:657
+#: ../src/GParted_Core.cc:727
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "พาร์ทิชันมีเซ็กเตอร์ใช้งาน (%1) มากกว่าขนาดจริง (%2) ซึ่งไม่ถูกต้อง"
 
-#: ../src/GParted_Core.cc:727
+#: ../src/GParted_Core.cc:838
 msgid "libparted messages"
 msgstr "ข้อความจาก libparted"
 
-#: ../src/GParted_Core.cc:1193
+#: ../src/GParted_Core.cc:1504
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "ยังไม่รองรับ Linux Unified Key Setup"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1346
+#: ../src/GParted_Core.cc:1606
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "ไม่สามารถตรวจหาระบบแฟ้มได้ สาเหตุที่เป็นไปได้คือ:"
 
-#: ../src/GParted_Core.cc:1348
+#: ../src/GParted_Core.cc:1608
 msgid "The file system is damaged"
 msgstr "ระบบแฟ้มเสียหาย"
 
-#: ../src/GParted_Core.cc:1350
+#: ../src/GParted_Core.cc:1610
 msgid "The file system is unknown to GParted"
 msgstr "GParted ไม่รู้จักระบบแฟ้มแบบนี้"
 
-#: ../src/GParted_Core.cc:1352
+#: ../src/GParted_Core.cc:1612
 msgid "There is no file system available (unformatted)"
 msgstr "ไม่มีระบบแฟ้มอยู่เลย (ดิสก์ยังไม่ได้ฟอร์แมต)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1355
+#: ../src/GParted_Core.cc:1615
 msgid "The device entry %1 is missing"
 msgstr "รายการอุปกรณ์ %1 ขาดหายไป"
 
-#: ../src/GParted_Core.cc:1518
+#: ../src/GParted_Core.cc:1766
 msgid "Unable to find mount point"
 msgstr "ไม่สามารถหาจุดเมานท์"
 
-#: ../src/GParted_Core.cc:1591
+#: ../src/GParted_Core.cc:1896
 msgid "Unable to read the contents of this file system!"
 msgstr "ไม่สามารถอ่านเนื้อหาของระบบแฟ้มนี้!"
 
-#: ../src/GParted_Core.cc:1593
+#: ../src/GParted_Core.cc:1898
 msgid "Because of this some operations may be unavailable."
 msgstr "เนื่องจากปัญหานี้ บางปฏิบัติการจึงอาจไม่สามารถกระทำได้"
 
-#: ../src/GParted_Core.cc:1597
+#: ../src/GParted_Core.cc:1902
 msgid "The cause might be a missing software package."
 msgstr "สาเหตุอาจเกิดจากขาดแพกเกจซอฟต์แวร์"
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1600
+#: ../src/GParted_Core.cc:1905
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "ต้องการแพกเกจซอฟต์แวร์ต่อไปนี้เพื่อรองรับระบบแฟ้ม %1:  %2"
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1610
+#: ../src/GParted_Core.cc:1915
 msgid "%1 of unallocated space within the partition."
 msgstr "มีเนื้อที่ที่ยังไม่จัดสรร %1 ในพาร์ทิชัน"
 
@@ -832,61 +882,85 @@ msgstr "มีเนื้อที่ที่ยังไม่จัดสร
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1621
+#: ../src/GParted_Core.cc:1926
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
 msgstr "การขยายระบบแฟ้มให้เต็มพาร์ทิชัน ทำได้โดยเลือกพาร์ทิชันแล้วเลือกรายการเมนู:"
 
-#: ../src/GParted_Core.cc:1623
+#: ../src/GParted_Core.cc:1928
 msgid "Partition --> Check."
 msgstr "พาร์ทิชัน --> ตรวจสอบ"
 
-#: ../src/GParted_Core.cc:1721
+#: ../src/GParted_Core.cc:2039
 msgid "create empty partition"
 msgstr "สร้างพาร์ทิชันว่าง"
 
-#: ../src/GParted_Core.cc:1791 ../src/GParted_Core.cc:2967
-msgid "path: %1"
-msgstr "ตำแหน่ง: %1"
+#. TO TRANSLATORS: looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and the fact
+#. * that it is a partition within a device.
+#.
+#. TO TRANSLATORS: looks like   path: /dev/sda (device)
+#. *              or looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and whether it
+#. * is a whole disk device or a partition
+#. * within a device.
+#.
+#: ../src/GParted_Core.cc:2113 ../src/GParted_Core.cc:3377
+msgid "path: %1 (%2)"
+msgstr "พาธ: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1792 ../src/GParted_Core.cc:2968
+#: ../src/GParted_Core.cc:2114 ../src/GParted_Core.cc:3380
+msgid "partition"
+msgstr "พาร์ทิชัน"
+
+#: ../src/GParted_Core.cc:2115 ../src/GParted_Core.cc:3381
 msgid "start: %1"
 msgstr "เริ่ม: %1"
 
-#: ../src/GParted_Core.cc:1793 ../src/GParted_Core.cc:2969
+#: ../src/GParted_Core.cc:2116 ../src/GParted_Core.cc:3382
 msgid "end: %1"
 msgstr "สิ้นสุด: %1"
 
-#: ../src/GParted_Core.cc:1794 ../src/GParted_Core.cc:2970
+#: ../src/GParted_Core.cc:2117 ../src/GParted_Core.cc:3383
 msgid "size: %1 (%2)"
 msgstr "ขนาด: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1826 ../src/linux_swap.cc:120
+#: ../src/GParted_Core.cc:2149 ../src/linux_swap.cc:172
 msgid "create new %1 file system"
 msgstr "สร้างระบบแฟ้ม %1 ใหม่"
 
-#: ../src/GParted_Core.cc:1867
+#: ../src/GParted_Core.cc:2191
 msgid "delete partition"
 msgstr "ลบพาร์ทิชัน"
 
-#: ../src/GParted_Core.cc:1922
+#: ../src/GParted_Core.cc:2246
 msgid "delete %1 file system"
 msgstr "ลบระบบแฟ้ม %1"
 
-#: ../src/GParted_Core.cc:1939
-msgid "Clear partition label on %1"
+#. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
+#: ../src/GParted_Core.cc:2263 ../src/OperationLabelFileSystem.cc:58
+msgid "Clear file system label on %1"
+msgstr "ล้างชื่อระบบแฟ้มใน %1"
+
+#: ../src/GParted_Core.cc:2266
+msgid "Set file system label to \"%1\" on %2"
+msgstr "กำหนดชื่อระบบแฟ้มเป็น \"%1\" ใน %2"
+
+#. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
+#: ../src/GParted_Core.cc:2295 ../src/OperationNamePartition.cc:59
+msgid "Clear partition name on %1"
 msgstr "ล้างชื่อพาร์ทิชันใน %1"
 
-#: ../src/GParted_Core.cc:1944
-msgid "Set partition label to \"%1\" on %2"
+#: ../src/GParted_Core.cc:2298
+msgid "Set partition name to \"%1\" on %2"
 msgstr "กำหนดชื่อพาร์ทิชันเป็น \"%1\" ใน %2"
 
-#: ../src/GParted_Core.cc:1978
+#: ../src/GParted_Core.cc:2323
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "กำหนดครึ่งหนึ่งของ UUID ของ %1 เป็นค่าใหม่จากการสุ่ม"
 
-#: ../src/GParted_Core.cc:1983
+#: ../src/GParted_Core.cc:2328
 msgid "Set UUID on %1 to a new, random value"
 msgstr "กำหนด UUID ของ %1 เป็นค่าใหม่จากการสุ่ม"
 
@@ -895,439 +969,444 @@ msgstr "กำหนด UUID ของ %1 เป็นค่าใหม่จ�
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2068
+#: ../src/GParted_Core.cc:2411
 msgid "moving requires old and new length to be the same"
 msgstr "การย้ายข้อมูลต้องทำกับพาร์ทิชันขนาดเท่ากัน"
 
-#: ../src/GParted_Core.cc:2098
+#: ../src/GParted_Core.cc:2441
 msgid "rollback last change to the partition table"
 msgstr "ย้อนคืนการแก้ไขที่ได้ทำกับตารางพาร์ทิชันไป"
 
-#: ../src/GParted_Core.cc:2140
+#: ../src/GParted_Core.cc:2483
 msgid "move file system to the left"
 msgstr "ย้ายระบบแฟ้มไปทางซ้าย"
 
-#: ../src/GParted_Core.cc:2142
+#: ../src/GParted_Core.cc:2485
 msgid "move file system to the right"
 msgstr "ย้ายระบบแฟ้มไปทางขวา"
 
-#: ../src/GParted_Core.cc:2145
+#: ../src/GParted_Core.cc:2488
 msgid "move file system"
 msgstr "ย้ายระบบแฟ้ม"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2490
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr "ระบบแฟ้มใหม่อยู่ในตำแหน่งเดิม ดังนั้นจะข้ามปฏิบัติการนี้ไป"
 
-#: ../src/GParted_Core.cc:2215
+#: ../src/GParted_Core.cc:2553
 msgid "using libparted"
 msgstr "ใช้ libparted"
 
-#: ../src/GParted_Core.cc:2258
+#: ../src/GParted_Core.cc:2596
 msgid "resizing requires old and new start to be the same"
 msgstr "การปรับขนาดจำเป็นต้องมีจุดเริ่มต้นพาร์ทิชันที่เดิม"
 
-#: ../src/GParted_Core.cc:2325
+#: ../src/GParted_Core.cc:2666
 msgid "resize/move partition"
 msgstr "ปรับขนาด/ย้ายพาร์ทิชัน"
 
-#: ../src/GParted_Core.cc:2328
+#: ../src/GParted_Core.cc:2669
 msgid "move partition to the right"
 msgstr "ย้ายพาร์ทิชันไปทางขวา"
 
-#: ../src/GParted_Core.cc:2331
+#: ../src/GParted_Core.cc:2672
 msgid "move partition to the left"
 msgstr "ย้ายพาร์ทิชันไปทางซ้าย"
 
-#: ../src/GParted_Core.cc:2334
+#: ../src/GParted_Core.cc:2675
 msgid "grow partition from %1 to %2"
 msgstr "ขยายขนาดพาร์ทิชันจาก %1 เป็น %2"
 
-#: ../src/GParted_Core.cc:2337
+#: ../src/GParted_Core.cc:2678
 msgid "shrink partition from %1 to %2"
 msgstr "หดขนาดพาร์ทิชันจาก %1 เหลือ %2"
 
-#: ../src/GParted_Core.cc:2340
+#: ../src/GParted_Core.cc:2681
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "ย้ายพาร์ทิชันไปทางขวา และขยายขนาดจาก %1 เป็น %2"
 
-#: ../src/GParted_Core.cc:2343
+#: ../src/GParted_Core.cc:2684
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "ย้ายพาร์ทิชันไปทางขวา และหดขนาดจาก %1 เหลือ %2"
 
-#: ../src/GParted_Core.cc:2346
+#: ../src/GParted_Core.cc:2687
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "ย้ายพาร์ทิชันไปทางซ้าย และขยายขนาดจาก %1 เป็น %2"
 
-#: ../src/GParted_Core.cc:2349
+#: ../src/GParted_Core.cc:2690
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "ย้ายพาร์ทิชันไปทางซ้าย และหดขนาดจาก %1 เหลือ %2"
 
-#: ../src/GParted_Core.cc:2364
+#: ../src/GParted_Core.cc:2705
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr "พาร์ทิชันใหม่มีมีขนาดและตำแหน่งเหมือนเดิม ดังนั้นจะข้ามปฏิบัติการนี้ไป"
 
-#: ../src/GParted_Core.cc:2374
+#: ../src/GParted_Core.cc:2715
 msgid "old start: %1"
 msgstr "จุดเริ่มเดิม: %1"
 
-#: ../src/GParted_Core.cc:2375
+#: ../src/GParted_Core.cc:2716
 msgid "old end: %1"
 msgstr "จุดสิ้นสุดเดิม: %1"
 
-#: ../src/GParted_Core.cc:2376
+#: ../src/GParted_Core.cc:2717
 msgid "old size: %1 (%2)"
 msgstr "ขนาดเดิม: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2441 ../src/GParted_Core.cc:3049
+#: ../src/GParted_Core.cc:2782 ../src/GParted_Core.cc:3461
 msgid "new start: %1"
 msgstr "จุดเริ่มใหม่: %1"
 
-#: ../src/GParted_Core.cc:2442 ../src/GParted_Core.cc:3050
+#: ../src/GParted_Core.cc:2783 ../src/GParted_Core.cc:3462
 msgid "new end: %1"
 msgstr "จุดสิ้นสุดใหม่: %1"
 
-#: ../src/GParted_Core.cc:2443 ../src/GParted_Core.cc:3051
+#: ../src/GParted_Core.cc:2784 ../src/GParted_Core.cc:3463
 msgid "new size: %1 (%2)"
 msgstr "ขนาดใหม่: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2470 ../src/GParted_Core.cc:2997
+#: ../src/GParted_Core.cc:2811 ../src/GParted_Core.cc:3409
 msgid "requested start: %1"
 msgstr "จุดเริ่มที่กำหนด: %1"
 
-#: ../src/GParted_Core.cc:2471 ../src/GParted_Core.cc:2998
+#: ../src/GParted_Core.cc:2812 ../src/GParted_Core.cc:3410
 msgid "requested end: %1"
 msgstr "จุดสิ้นสุดที่กำหนด: %1"
 
-#: ../src/GParted_Core.cc:2472 ../src/GParted_Core.cc:2999
+#: ../src/GParted_Core.cc:2813 ../src/GParted_Core.cc:3411
 msgid "requested size: %1 (%2)"
 msgstr "ขนาดที่กำหนด: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2838
 msgid "shrink file system"
 msgstr "หดระบบแฟ้ม"
 
-#: ../src/GParted_Core.cc:2501
+#: ../src/GParted_Core.cc:2842
 msgid "grow file system"
 msgstr "ขยายขนาดระบบแฟ้ม"
 
-#: ../src/GParted_Core.cc:2504
+#: ../src/GParted_Core.cc:2845
 msgid "resize file system"
 msgstr "ปรับขนาดระบบแฟ้ม"
 
-#: ../src/GParted_Core.cc:2507
+#: ../src/GParted_Core.cc:2848
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "ระบบแฟ้มใหม่มีขนาดเท่าเดิม ดังนั้นจะข้ามปฏิบัติการนี้ไป"
 
-#: ../src/GParted_Core.cc:2548
+#: ../src/GParted_Core.cc:2889
 msgid "grow file system to fill the partition"
 msgstr "ขยายระบบแฟ้มให้เต็มพาร์ทิชัน"
 
-#: ../src/GParted_Core.cc:2553
+#: ../src/GParted_Core.cc:2894
 msgid "growing is not available for this file system"
 msgstr "ระบบแฟ้มนี้ไม่สามารถขยายได้"
 
-#: ../src/GParted_Core.cc:2562
+#: ../src/GParted_Core.cc:2903
 msgid "growing the file system is currently disallowed"
 msgstr "ไม่อนุญาตให้ขยายระบบแฟ้มในขณะนี้"
 
-#: ../src/GParted_Core.cc:2588
+#: ../src/GParted_Core.cc:2929
 msgid "the destination is smaller than the source partition"
 msgstr "ตำแหน่งปลายทางมีขนาดเล็กกว่าพาร์ทิชันตั้งต้น"
 
-#: ../src/GParted_Core.cc:2605
+#: ../src/GParted_Core.cc:2952
 msgid "copy file system of %1 to %2"
 msgstr "คัดลอกระบบแฟ้มจาก %1 ไป %2"
 
-#: ../src/GParted_Core.cc:2703
+#: ../src/GParted_Core.cc:3048
 msgid "using internal algorithm"
 msgstr "ใช้อัลกอริทึมภายใน"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2706
+#: ../src/GParted_Core.cc:3051
 msgid "copy %1"
 msgstr "คัดลอก %1"
 
-#: ../src/GParted_Core.cc:2709
+#: ../src/GParted_Core.cc:3054
 msgid "finding optimal block size"
 msgstr "กำลังหาขนาดบล็อคที่เหมาะสม"
 
-#: ../src/GParted_Core.cc:2750
+#: ../src/GParted_Core.cc:3095
 msgid "%1 seconds"
 msgstr "%1 วินาที"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2768
+#: ../src/GParted_Core.cc:3113
 msgid "optimal block size is %1"
 msgstr "ขนาดบล็อคที่เหมาะสมคือ %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2785
+#: ../src/GParted_Core.cc:3130
 msgid "%1 (%2 B) copied"
 msgstr "คัดลอกแล้ว %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:2818
+#: ../src/GParted_Core.cc:3163
 msgid "roll back last transaction"
 msgstr "ย้อนคืนการกระทำล่าสุด"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:3177
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "ตรวจสอบความผิดพลาดของระบบแฟ้มใน %1 และแก้ไขข้อผิดพลาดถ้าทำได้"
 
-#: ../src/GParted_Core.cc:2841
+#: ../src/GParted_Core.cc:3186
 msgid "checking is not available for this file system"
 msgstr "ระบบแฟ้มนี้ไม่สามารถตรวจสอบได้"
 
-#: ../src/GParted_Core.cc:2872
+#: ../src/GParted_Core.cc:3215
 msgid "set partition type on %1"
 msgstr "กำหนดชนิดพาร์ทิชันใน %1"
 
-#: ../src/GParted_Core.cc:2909
+#: ../src/GParted_Core.cc:3257
 msgid "new partition type: %1"
 msgstr "ชนิดพาร์ทิชันใหม่: %1"
 
-#: ../src/GParted_Core.cc:2926
+#: ../src/GParted_Core.cc:3271
 msgid "new partition flag: %1"
 msgstr "แฟล็กพาร์ทิชันใหม่: %1"
 
-#: ../src/GParted_Core.cc:2945
+#: ../src/GParted_Core.cc:3280
+msgid "Skip setting unsupported partition flag: %1"
+msgstr "ข้ามการกำหนดแฟล็กพาร์ทิชันที่ไม่รองรับ: %1"
+
+#: ../src/GParted_Core.cc:3300
 msgid "calibrate %1"
 msgstr "ปรับค่า %1"
 
-#: ../src/GParted_Core.cc:2993
+#: ../src/GParted_Core.cc:3379
+msgid "device"
+msgstr "อุปกรณ์"
+
+#: ../src/GParted_Core.cc:3405
 msgid "calculate new size and position of %1"
 msgstr "คำนวณขนาดและตำแหน่งใหม่ของ %1"
 
-#: ../src/GParted_Core.cc:3109
+#: ../src/GParted_Core.cc:3522
 msgid "clear old file system signatures in %1"
 msgstr "ล้างลายเซ็นของระบบแฟ้มเดิมใน %1"
 
-#. Single copy of string for translation purposes
-#. TO TRANSLATORS: looks like  wrote 68.00 KiB of zeros at byte offset 0
-#: ../src/GParted_Core.cc:3136
-msgid "wrote %1 of zeros at byte offset %2"
-msgstr "เขียนค่าศูนย์ %1 ที่ตำแหน่งไบต์ %2"
-
-#: ../src/GParted_Core.cc:3146
-msgid "clear primary signatures"
-msgstr "ล้างลายเซ็นหลัก"
-
-#: ../src/GParted_Core.cc:3189
-msgid "clear secondary signatures"
-msgstr "ล้างลายเซ็นรอง"
-
-#: ../src/GParted_Core.cc:3246
+#: ../src/GParted_Core.cc:3691
 msgid "flush operating system cache of %1"
 msgstr "ปล่อยข้อมูลคงค้างในแคชระบบปฎิบัติการของ %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3278
+#: ../src/GParted_Core.cc:3723
 msgid "update boot sector of %1 file system on %2"
 msgstr "ปรับข้อมูลบูตเซ็กเตอร์ของระบบแฟ้ม %1 ที่ %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3314
+#: ../src/GParted_Core.cc:3759
 msgid "Error trying to write to boot sector in %1"
 msgstr "เกิดปัญหาขณะพยายามเขียนบูตเซ็กเตอร์ใน %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3320
+#: ../src/GParted_Core.cc:3765
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "เกิดปัญหาขณะพยายามเลื่อนไปยังตำแหน่ง 0x1c ใน %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3327
+#: ../src/GParted_Core.cc:3772
 msgid "Error trying to open %1"
 msgstr "เกิดปัญหาขณะพยายามเปิด %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3337
+#: ../src/GParted_Core.cc:3782
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "กำหนดจำนวนของเซ็กเตอร์ซ่อนเป็น %1 ในบูตเรคอร์ดของ NTFS ไม่สำเร็จ"
 
-#: ../src/GParted_Core.cc:3339
+#: ../src/GParted_Core.cc:3784
 msgid "You might try the following command to correct the problem:"
 msgstr "คุณอาจลองใช้คำสั่งต่อไปนี้เพื่อแก้ปัญหา:"
 
-#: ../src/GParted_Core.cc:3439
-msgid "Libparted Warning"
-msgstr "คำเตือนจาก Libparted"
-
-#: ../src/GParted_Core.cc:3443
+#: ../src/GParted_Core.cc:3934
 msgid "Libparted Information"
 msgstr "ข้อมูลจาก Libparted"
 
-#: ../src/GParted_Core.cc:3447
+#: ../src/GParted_Core.cc:3938
+msgid "Libparted Warning"
+msgstr "คำเตือนจาก Libparted"
+
+#: ../src/GParted_Core.cc:3942
 msgid "Libparted Error"
 msgstr "ข้อผิดพลาดจาก Libparted"
 
-#: ../src/GParted_Core.cc:3449
-msgid "Libparted Bug Found!"
-msgstr "พบบั๊กของ Libparted!"
+#: ../src/GParted_Core.cc:3945
+msgid "Libparted Fatal"
+msgstr "ข้อผิดพลาดร้ายแรงจาก Libparted"
 
-#: ../src/GParted_Core.cc:3452
+#: ../src/GParted_Core.cc:3948
+msgid "Libparted Bug"
+msgstr "บั๊กใน Libparted"
+
+#: ../src/GParted_Core.cc:3951
+msgid "Libparted Unsupported Feature"
+msgstr "ความสามารถที่ยังไม่รองรับใน Libparted"
+
+#: ../src/GParted_Core.cc:3954
+msgid "Libparted unknown exception"
+msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุจาก Libparted"
+
+#: ../src/GParted_Core.cc:3958
 msgid "Fix"
 msgstr "แก้ไข"
 
-#: ../src/GParted_Core.cc:3454
+#: ../src/GParted_Core.cc:3960
 msgid "Yes"
 msgstr "ใช่"
 
-#: ../src/GParted_Core.cc:3456
+#: ../src/GParted_Core.cc:3962
 msgid "Ok"
 msgstr "ตกลง"
 
-#: ../src/GParted_Core.cc:3458
+#: ../src/GParted_Core.cc:3964
 msgid "Retry"
 msgstr "ลองใหม่"
 
-#: ../src/GParted_Core.cc:3460
+#: ../src/GParted_Core.cc:3966
 msgid "No"
 msgstr "ไม่"
 
-#: ../src/GParted_Core.cc:3462
+#: ../src/GParted_Core.cc:3968
 msgid "Cancel"
 msgstr "ยกเลิก"
 
-#: ../src/GParted_Core.cc:3464
+#: ../src/GParted_Core.cc:3970
 msgid "Ignore"
 msgstr "ละเลย"
 
-#: ../src/HBoxOperations.cc:45 ../src/Win_GParted.cc:162
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:164
 msgid "_Undo Last Operation"
 msgstr "เ_รียกคืนปฏิบัติการล่าสุด"
 
-#: ../src/HBoxOperations.cc:50 ../src/Win_GParted.cc:168
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:170
 msgid "_Clear All Operations"
 msgstr "_ลบปฏิบัติการทั้งหมด"
 
-#: ../src/HBoxOperations.cc:55 ../src/Win_GParted.cc:173
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:175
 msgid "_Apply All Operations"
 msgstr "_ดำเนินปฏิบัติการทั้งหมด"
 
-#: ../src/LVM2_PV_Info.cc:194
+#: ../src/LVM2_PV_Info.cc:193
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "โวลุมจริงอย่างน้อยหนึ่งโวลุมในกลุ่มโวลุมนี้ขาดหายไป"
 
-#: ../src/LVM2_PV_Info.cc:280
+#: ../src/LVM2_PV_Info.cc:278
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "เกิดข้อผิดพลาดขณะอ่านค่าตั้ง LVM2"
 
-#: ../src/LVM2_PV_Info.cc:282
+#: ../src/LVM2_PV_Info.cc:280
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "รายละเอียดบางส่วนหรือทั้งหมดอาจขาดหายไปหรือไม่ถูกต้อง"
 
-#: ../src/LVM2_PV_Info.cc:284
+#: ../src/LVM2_PV_Info.cc:282
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "คุณไม่ควรแก้ไขพาร์ทิชันใดๆ ในโวลุมจริงของ LVM2"
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:60
+#: ../src/OperationChangeUUID.cc:59
 msgid "Set half the UUID to a new random value on %1 file system on %2"
 msgstr "กำหนดครึ่งหนึ่งของ UUID เป็นค่าสุ่มใหม่ในระบบแฟ้ม %1 ใน %2"
 
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:66
+#: ../src/OperationChangeUUID.cc:65
 msgid "Set a new random UUID on %1 file system on %2"
 msgstr "กำหนด UUID เป็นค่าสุ่มใหม่ในระบบแฟ้ม %1 ใน %2"
 
-#: ../src/OperationCopy.cc:37
+#: ../src/OperationCopy.cc:36
 msgid "copy of %1"
 msgstr "สำเนาของ %1"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:80
+#: ../src/OperationCopy.cc:79
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "คัดลอก %1 ไปยัง %2 (เริ่มที่ %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:88
+#: ../src/OperationCopy.cc:87
 msgid "Copy %1 to %2"
 msgstr "คัดลอก %1 ไปยัง %2"
 
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
-#: ../src/OperationCheck.cc:38
+#: ../src/OperationCheck.cc:37
 msgid "Check and repair file system (%1) on %2"
 msgstr "ตรวจสอบและซ่อมแซมระบบแฟ้ม (%1) ใน %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:88
+#: ../src/OperationCreate.cc:87
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "สร้าง %1 #%2 (%3, %4) ใน %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:82
+#: ../src/OperationDelete.cc:81
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "ลบ %1 (%2, %3) ออกจาก %4"
 
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:58
+#: ../src/OperationFormat.cc:72
 msgid "Format %1 as %2"
 msgstr "ฟอร์แมต %1 ให้เป็น %2"
 
-#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
-#: ../src/OperationLabelPartition.cc:59
-msgid "Clear Partition Label on %1"
-msgstr "ล้างชื่อพาร์ทิชันใน %1"
+#. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
+#: ../src/OperationLabelFileSystem.cc:62
+msgid "Set file system label \"%1\" on %2"
+msgstr "กำหนดชื่อระบบแฟ้ม \"%1\" ใน %2"
 
-#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
-#: ../src/OperationLabelPartition.cc:63
-msgid "Set Partition Label \"%1\" on %2"
-msgstr "กำหนดชื่อพาร์ทิชัน \"%1\" ใน %1"
+#. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
+#: ../src/OperationNamePartition.cc:65
+msgid "Set partition name \"%1\" on %2"
+msgstr "กำหนดชื่อพาร์ทิชัน \"%1\" ใน %2"
 
-#: ../src/OperationResizeMove.cc:86
+#: ../src/OperationResizeMove.cc:85
 msgid "resize/move %1"
 msgstr "ปรับขนาด/ย้าย %1"
 
-#: ../src/OperationResizeMove.cc:88
+#: ../src/OperationResizeMove.cc:87
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr "พาร์ทิชันใหม่มีขนาดและตำแหน่งเหมือนเดิม ดังนั้นจะดำเนินการต่อไป"
 
-#: ../src/OperationResizeMove.cc:92
+#: ../src/OperationResizeMove.cc:91
 msgid "Move %1 to the right"
 msgstr "ย้าย %1 ไปทางขวา"
 
-#: ../src/OperationResizeMove.cc:95
+#: ../src/OperationResizeMove.cc:94
 msgid "Move %1 to the left"
 msgstr "ย้าย %1 ไปทางซ้าย"
 
-#: ../src/OperationResizeMove.cc:98
+#: ../src/OperationResizeMove.cc:97
 msgid "Grow %1 from %2 to %3"
 msgstr "ขยาย %1 จาก %2 เป็น %3"
 
-#: ../src/OperationResizeMove.cc:101
+#: ../src/OperationResizeMove.cc:100
 msgid "Shrink %1 from %2 to %3"
 msgstr "หด %1 จาก %2 เหลือ %3"
 
-#: ../src/OperationResizeMove.cc:104
+#: ../src/OperationResizeMove.cc:103
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "ย้าย %1 ไปทางขวา และขยายจาก %2 เป็น %3"
 
-#: ../src/OperationResizeMove.cc:107
+#: ../src/OperationResizeMove.cc:106
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "ย้าย %1 ไปทางขวา และหดจาก %2 เหลือ %3"
 
-#: ../src/OperationResizeMove.cc:110
+#: ../src/OperationResizeMove.cc:109
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "ย้าย %1 ไปทางซ้าย และขยายจาก %2 เป็น %3"
 
-#: ../src/OperationResizeMove.cc:113
+#: ../src/OperationResizeMove.cc:112
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "ย้าย %1 ไปทางซ้าย และหดจาก %2 เหลือ %3"
 
-#. append columns
 #: ../src/TreeView_Detail.cc:35
-msgid "Partition"
-msgstr "พาร์ทิชัน"
+msgid "Name"
+msgstr "ชื่อ"
 
 #: ../src/TreeView_Detail.cc:37
 msgid "Mount Point"
@@ -1354,7 +1433,7 @@ msgstr "แฟล็ก"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:193
+#: ../src/Utils.cc:239
 msgid "unallocated"
 msgstr "ไม่ได้จัดสรร"
 
@@ -1363,7 +1442,7 @@ msgstr "ไม่ได้จัดสรร"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:200
+#: ../src/Utils.cc:246
 msgid "unknown"
 msgstr "ไม่ทราบ"
 
@@ -1371,7 +1450,7 @@ msgstr "ไม่ทราบ"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:206
+#: ../src/Utils.cc:252
 msgid "unformatted"
 msgstr "ไม่ได้ฟอร์แมต"
 
@@ -1379,265 +1458,269 @@ msgstr "ไม่ได้ฟอร์แมต"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:212
+#: ../src/Utils.cc:258
 msgid "cleared"
 msgstr "ล้าง"
 
-#: ../src/Utils.cc:232
+#: ../src/Utils.cc:278
 msgid "used"
 msgstr "ใช้ไป"
 
-#: ../src/Utils.cc:233
+#: ../src/Utils.cc:279
 msgid "unused"
 msgstr "เหลือ"
 
-#: ../src/Utils.cc:331
+#: ../src/Utils.cc:441
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:336
+#: ../src/Utils.cc:446
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:341
+#: ../src/Utils.cc:451
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:346
+#: ../src/Utils.cc:456
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:351
+#: ../src/Utils.cc:461
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:146
+#: ../src/Win_GParted.cc:148
 msgid "_Refresh Devices"
 msgstr "เ_รียกข้อมูลอุปกรณ์ใหม่"
 
-#: ../src/Win_GParted.cc:152
+#: ../src/Win_GParted.cc:154
 msgid "_Devices"
 msgstr "_อุปกรณ์"
 
-#: ../src/Win_GParted.cc:157
+#: ../src/Win_GParted.cc:159
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:177
+#: ../src/Win_GParted.cc:179
 msgid "_Edit"
 msgstr "แ_ก้ไข"
 
-#: ../src/Win_GParted.cc:182
+#: ../src/Win_GParted.cc:184
 msgid "Device _Information"
 msgstr "_ข้อมูลอุปกรณ์"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:186
 msgid "Pending _Operations"
 msgstr "_ปฏิบัติการที่รออยู่"
 
-#: ../src/Win_GParted.cc:185
+#: ../src/Win_GParted.cc:187
 msgid "_View"
 msgstr "มุ_มมอง"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:191
 msgid "_File System Support"
 msgstr "การ_รองรับระบบแฟ้ม"
 
-#: ../src/Win_GParted.cc:193
+#: ../src/Win_GParted.cc:195
 msgid "_Create Partition Table"
 msgstr "_สร้างตารางพาร์ทิชัน"
 
-#: ../src/Win_GParted.cc:196
+#: ../src/Win_GParted.cc:198
 msgid "_Attempt Data Rescue"
 msgstr "_พยายามกู้ข้อมูล"
 
-#: ../src/Win_GParted.cc:199
+#: ../src/Win_GParted.cc:201
 msgid "_Device"
 msgstr "_อุปกรณ์"
 
-#: ../src/Win_GParted.cc:203
+#: ../src/Win_GParted.cc:205
 msgid "_Partition"
 msgstr "_พาร์ทิชัน"
 
-#: ../src/Win_GParted.cc:208
+#: ../src/Win_GParted.cc:210
 msgid "_Contents"
 msgstr "เนื้อ_หา"
 
-#: ../src/Win_GParted.cc:216
+#: ../src/Win_GParted.cc:218
 msgid "_Help"
 msgstr "_วิธีใช้"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:228
+#: ../src/Win_GParted.cc:230
 msgid "New"
 msgstr "ใหม่"
 
-#: ../src/Win_GParted.cc:233
+#: ../src/Win_GParted.cc:235
 msgid "Create a new partition in the selected unallocated space"
 msgstr "สร้างพาร์ทิชันใหม่จากเนื้อที่ว่างที่เลือก"
 
-#: ../src/Win_GParted.cc:238
+#: ../src/Win_GParted.cc:240
 msgid "Delete the selected partition"
 msgstr "ลบพาร์ทิชันที่เลือก"
 
-#: ../src/Win_GParted.cc:260
+#: ../src/Win_GParted.cc:262
 msgid "Resize/Move the selected partition"
 msgstr "ปรับขนาด/ย้ายพาร์ทิชันที่เลือก"
 
-#: ../src/Win_GParted.cc:269
+#: ../src/Win_GParted.cc:271
 msgid "Copy the selected partition to the clipboard"
 msgstr "คัดลอกพาร์ทิชันที่เลือกไปที่คลิปบอร์ด"
 
-#: ../src/Win_GParted.cc:274
+#: ../src/Win_GParted.cc:276
 msgid "Paste the partition from the clipboard"
 msgstr "แปะพาร์ทิชันจากคลิปบอร์ด"
 
-#: ../src/Win_GParted.cc:286
+#: ../src/Win_GParted.cc:288
 msgid "Undo Last Operation"
 msgstr "เรียกคืนปฏิบัติการล่าสุด"
 
-#: ../src/Win_GParted.cc:294
+#: ../src/Win_GParted.cc:296
 msgid "Apply All Operations"
 msgstr "ดำเนินปฏิบัติการทั้งหมด"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:317
+#: ../src/Win_GParted.cc:320
 msgid "_New"
 msgstr "ใ_หม่"
 
-#: ../src/Win_GParted.cc:334
+#: ../src/Win_GParted.cc:337
 msgid "_Resize/Move"
 msgstr "_ปรับขนาด/ย้าย"
 
-#: ../src/Win_GParted.cc:358
+#: ../src/Win_GParted.cc:361
 msgid "_Format to"
 msgstr "_ฟอร์แมตเป็น"
 
-#: ../src/Win_GParted.cc:374
+#: ../src/Win_GParted.cc:377
 msgid "_Mount on"
 msgstr "เ_มานท์ที่"
 
-#: ../src/Win_GParted.cc:381
+#: ../src/Win_GParted.cc:384
+msgid "_Name Partition"
+msgstr "กำหนด_ชื่อพาร์ทิชัน"
+
+#: ../src/Win_GParted.cc:389
 msgid "M_anage Flags"
 msgstr "_จัดการแฟล็ก"
 
-#: ../src/Win_GParted.cc:386
+#: ../src/Win_GParted.cc:394
 msgid "C_heck"
 msgstr "_ตรวจสอบ"
 
-#: ../src/Win_GParted.cc:391
-msgid "_Label"
-msgstr "_ชื่อ"
+#: ../src/Win_GParted.cc:399
+msgid "_Label File System"
+msgstr "กำหนด_ชื่อระบบแฟ้ม"
 
-#: ../src/Win_GParted.cc:396
+#: ../src/Win_GParted.cc:404
 msgid "New UU_ID"
 msgstr "UU_ID ใหม่"
 
-#: ../src/Win_GParted.cc:461
+#: ../src/Win_GParted.cc:463
 msgid "Device Information"
 msgstr "ข้อมูลอุปกรณ์"
 
 #. model
-#: ../src/Win_GParted.cc:469
+#: ../src/Win_GParted.cc:471
 msgid "Model:"
 msgstr "รุ่น:"
 
 #. disktype
-#: ../src/Win_GParted.cc:506
+#: ../src/Win_GParted.cc:505
 msgid "Partition table:"
 msgstr "ตารางพาร์ทิชัน:"
 
 #. heads
-#: ../src/Win_GParted.cc:514
+#: ../src/Win_GParted.cc:513
 msgid "Heads:"
 msgstr "หัวอ่าน:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:522
+#: ../src/Win_GParted.cc:521
 msgid "Sectors/track:"
 msgstr "เซ็กเตอร์/แทร็ก:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:530
+#: ../src/Win_GParted.cc:529
 msgid "Cylinders:"
 msgstr "ไซลินเดอร์:"
 
 #. sector size
-#: ../src/Win_GParted.cc:546
+#: ../src/Win_GParted.cc:545
 msgid "Sector size:"
 msgstr "ขนาดเซ็กเตอร์:"
 
-#: ../src/Win_GParted.cc:721
+#: ../src/Win_GParted.cc:724
 msgid "Could not add this operation to the list"
 msgstr "ไม่สามารถเพิ่มปฏิบัติการนี้ในรายการได้"
 
-#: ../src/Win_GParted.cc:816
+#: ../src/Win_GParted.cc:832
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "มีปฏิบัติการ %1 รายการรอคิวอยู่"
 
-#: ../src/Win_GParted.cc:909
+#: ../src/Win_GParted.cc:931
 msgid "Quit GParted?"
 msgstr "ออกจาก GParted หรือไม่?"
 
-#: ../src/Win_GParted.cc:915
+#: ../src/Win_GParted.cc:937
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "มีปฏิบัติการ %1 รายการรอคิวอยู่"
 
-#: ../src/Win_GParted.cc:1213
+#: ../src/Win_GParted.cc:1257
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1250
+#: ../src/Win_GParted.cc:1294
 msgid "Scanning all devices..."
 msgstr "กำลังตรวจหาอุปกรณ์ทั้งหมด..."
 
-#: ../src/Win_GParted.cc:1297
+#: ../src/Win_GParted.cc:1341
 msgid "No devices detected"
 msgstr "ไม่พบอุปกรณ์ใด"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1378
+#: ../src/Win_GParted.cc:1422
 msgid "No partition table found on device %1"
 msgstr "ไม่พบตารางพาร์ทิชันในอุปกรณ์ %1"
 
-#: ../src/Win_GParted.cc:1383
+#: ../src/Win_GParted.cc:1427
 msgid "A partition table is required before partitions can be added."
 msgstr "ตารางพาร์ทิชันเป็นสิ่งจำเป็นก่อนที่จะเพิ่มพาร์ทิชันได้"
 
-#: ../src/Win_GParted.cc:1385
+#: ../src/Win_GParted.cc:1429
 msgid "To create a new partition table choose the menu item:"
 msgstr "สร้างตารางพาร์ทิชันได้โดยเลือกรายการเมนู:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1388
+#: ../src/Win_GParted.cc:1432
 msgid "Device --> Create Partition Table."
 msgstr "อุปกรณ์ --> สร้างตารางพาร์ทิชัน"
 
-#: ../src/Win_GParted.cc:1424
+#: ../src/Win_GParted.cc:1468
 msgid "Unable to open GParted Manual help file"
 msgstr "ไม่สามารถเปิดแฟ้มคู่มือวิธีใช้ GParted"
 
-#: ../src/Win_GParted.cc:1440
+#: ../src/Win_GParted.cc:1487
 msgid "Documentation is not available"
 msgstr "ไม่มีเอกสาร"
 
-#: ../src/Win_GParted.cc:1445
+#: ../src/Win_GParted.cc:1492
 msgid "This build of gparted is configured without documentation."
 msgstr "การประกอบสร้าง gparted ชุดนี้ ตั้งค่าไว้แบบไม่มีเอกสาร"
 
-#: ../src/Win_GParted.cc:1447
+#: ../src/Win_GParted.cc:1494
 msgid "Documentation is available at the project web site."
 msgstr "อ่านเอกสารได้ที่เว็บไซต์ของโครงการ"
 
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1512
 msgid "GNOME Partition Editor"
 msgstr "เครื่องมือแก้ไขพาร์ทิชันของ GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1496
+#: ../src/Win_GParted.cc:1545
 msgid "translator-credits"
 msgstr ""
 "Isriya Paireepairit <markpeak@gmail.com>\n"
@@ -1648,12 +1731,12 @@ msgstr ""
 "ถ้ามีเวลาโปรดมาช่วยกันแปล ;-)\n"
 "http://gnome-th.sf.net"
 
-#: ../src/Win_GParted.cc:1538
+#: ../src/Win_GParted.cc:1587
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "ไม่สามารถสร้างพาร์ทิชันไพรมารีมากกว่า %1 พาร์ทิชันได้"
 
-#: ../src/Win_GParted.cc:1550
+#: ../src/Win_GParted.cc:1599
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1664,16 +1747,16 @@ msgstr ""
 "พาร์ทิชันดังกล่าวสามารถบรรจุพาร์ทิชันอื่นได้ และเนื่องจากพาร์ทิชันขยายถือเป็นพาร์ทิชันไพรมารีด้วย "
 "จึงอาจจำเป็นต้องลบพาร์ทิชันไพรมารีสักพาร์ทิชันก่อน"
 
-#: ../src/Win_GParted.cc:1633
+#: ../src/Win_GParted.cc:1683
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "การย้ายพาร์ทิชันอาจทำให้ระบบปฏิบัติการของคุณบูตไม่ขึ้นได้"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1641
+#: ../src/Win_GParted.cc:1691
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "คุณมีปฏิบัติการย้ายเซ็กเตอร์เริ่มต้นของพาร์ทิชัน %1 รออยู่ในคิว"
 
-#: ../src/Win_GParted.cc:1644
+#: ../src/Win_GParted.cc:1694
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1681,99 +1764,99 @@ msgstr ""
 "  การบูตไม่ขึ้นมีโอกาสเกิดขึ้นได้ถ้าคุณย้ายพาร์ทิชันของกนู/ลินุกซ์ที่เก็บ /boot อยู่ หรือย้ายพาร์ทิชัน C: "
 "ซึ่งเป็นพาร์ทิชันระบบของวินโดวส์"
 
-#: ../src/Win_GParted.cc:1646
+#: ../src/Win_GParted.cc:1696
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "คุณสามารถเรียนรู้วิธีซ่อมแซมค่าตั้งของการบูตได้ในคำถามถามบ่อยของ GParted"
 
-#: ../src/Win_GParted.cc:1650
+#: ../src/Win_GParted.cc:1700
 msgid "Moving a partition might take a very long time to apply."
 msgstr "การย้ายพาร์ทิชันอาจใช้เวลานานในการดำเนินการ"
 
-#: ../src/Win_GParted.cc:1756
+#: ../src/Win_GParted.cc:1808
 msgid "You have pasted into an existing partition"
 msgstr "คุณได้แปะลงในพาร์ทิชันที่มีอยู่ก่อนแล้ว"
 
-#: ../src/Win_GParted.cc:1764
+#: ../src/Win_GParted.cc:1816
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "ข้อมูลใน %1 จะสูญหายถ้าคุณเริ่มปฏิบัติการนี้"
 
-#: ../src/Win_GParted.cc:1831
+#: ../src/Win_GParted.cc:1882
 msgid "Unable to delete %1!"
 msgstr "ไม่สามารถลบ %1!"
 
-#: ../src/Win_GParted.cc:1838
+#: ../src/Win_GParted.cc:1889
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "กรุณาเลิกเมานท์พาร์ทิชันลอจิคัลที่มีหมายเลขมากกว่า %1"
 
-#: ../src/Win_GParted.cc:1849
+#: ../src/Win_GParted.cc:1900
 msgid "Are you sure you want to delete %1?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการลบ %1?"
 
-#: ../src/Win_GParted.cc:1856
+#: ../src/Win_GParted.cc:1907
 msgid "After deletion this partition is no longer available for copying."
 msgstr "หลังการลบ จะไม่สามารถคัดลอกพาร์ทิชันนี้ได้อีก"
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1859
+#: ../src/Win_GParted.cc:1910
 msgid "Delete %1 (%2, %3)"
 msgstr "ลบ %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1944
+#: ../src/Win_GParted.cc:1995
 msgid "Cannot format this file system to %1"
 msgstr "ไม่สามารถฟอร์แมตระบบแฟ้มนี้ให้เป็น %1 ได้"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1956
+#: ../src/Win_GParted.cc:2007
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "ระบบแฟ้ม %1 ต้องการพาร์ทิชันขนาดอย่างน้อย %2"
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1964
+#: ../src/Win_GParted.cc:2015
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "พาร์ทิชันที่มีระบบแฟ้ม %1 มีขนาดใหญ่ที่สุดได้ %2"
 
-#: ../src/Win_GParted.cc:2060
+#: ../src/Win_GParted.cc:2112
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "ไม่สามารถเลิกเมานท์พาร์ทิชันจากจุดเมานท์ต่อไปนี้:"
 
-#: ../src/Win_GParted.cc:2062
+#: ../src/Win_GParted.cc:2114
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
 msgstr ""
 "เป็นไปได้ว่ามีพาร์ทิชันอื่นถูกเมานท์ที่จุดเมานท์เหล่านี้ก่อนแล้ว ขอแนะนำให้คุณสั่งเลิกเมานท์ทีละจุด"
 
-#: ../src/Win_GParted.cc:2086 ../src/Win_GParted.cc:2212
+#: ../src/Win_GParted.cc:2139 ../src/Win_GParted.cc:2259
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "มีปฏิบัติการ %1 รายการรอคิวอยู่สำหรับพาร์ทิชัน %2"
 
-#: ../src/Win_GParted.cc:2102
+#: ../src/Win_GParted.cc:2155
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "ไม่สามารถเปิดใช้พื้นที่สลับได้ ถ้ามีปฏิบัติการสำหรับพาร์ทิชันนี้รอคิวอยู่"
 
-#: ../src/Win_GParted.cc:2104
+#: ../src/Win_GParted.cc:2157
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
 msgstr "ใช้เมนู \"แก้ไข\" เพื่อเรียกคืน ล้าง หรือกระทำปฏิบัติการก่อนที่จะเปิดใช้พื้นที่สลับในพาร์ทิชันนี้"
 
-#: ../src/Win_GParted.cc:2108
+#: ../src/Win_GParted.cc:2161
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
 msgstr "ปฏิบัติการ \"เปิดใช้งานกลุ่มโวลุม\" ไม่สามารถทำได้ ถ้ามีปฏิบัติการสำหรับพาร์ทิชันนี้รอคิวอยู่"
 
-#: ../src/Win_GParted.cc:2110
+#: ../src/Win_GParted.cc:2163
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1781,85 +1864,85 @@ msgstr ""
 "ใช้เมนู \"แก้ไข\" เพื่อเรียกคืน ล้าง หรือกระทำปฏิบัติการก่อนที่จะทำ \"เปิดใช้งานกลุ่มโวลุม\" "
 "กับพาร์ทิชันนี้"
 
-#: ../src/Win_GParted.cc:2121
+#: ../src/Win_GParted.cc:2174
 msgid "Deactivating swap on %1"
 msgstr "กำลังปิดการใช้พื้นที่สลับใน %1"
 
-#: ../src/Win_GParted.cc:2121
+#: ../src/Win_GParted.cc:2174
 msgid "Activating swap on %1"
 msgstr "กำลังเปิดใช้พื้นที่สลับใน %1"
 
-#: ../src/Win_GParted.cc:2136
+#: ../src/Win_GParted.cc:2186
 msgid "Could not deactivate swap"
 msgstr "ไม่สามารถปิดการใช้พื้นที่สลับ"
 
-#: ../src/Win_GParted.cc:2136
+#: ../src/Win_GParted.cc:2186
 msgid "Could not activate swap"
 msgstr "ไม่สามารถเปิดใช้พื้นที่สลับ"
 
-#: ../src/Win_GParted.cc:2151
+#: ../src/Win_GParted.cc:2201
 msgid "Deactivating Volume Group %1"
 msgstr "กำลังปิดการใช้กลุ่มโวลุม %1"
 
-#: ../src/Win_GParted.cc:2152
+#: ../src/Win_GParted.cc:2202
 msgid "Activating Volume Group %1"
 msgstr "กำลังเปิดใช้กลุ่มโวลุม %1"
 
-#: ../src/Win_GParted.cc:2170
+#: ../src/Win_GParted.cc:2217
 msgid "Could not deactivate Volume Group"
 msgstr "ไม่สามารถปิดการใช้กลุ่มโวลุม"
 
-#: ../src/Win_GParted.cc:2171
+#: ../src/Win_GParted.cc:2218
 msgid "Could not activate Volume Group"
 msgstr "ไม่สามารถเปิดใช้กลุ่มโวลุม"
 
-#: ../src/Win_GParted.cc:2184
+#: ../src/Win_GParted.cc:2231
 msgid "Unmounting %1"
 msgstr "กำลังเลิกเมานท์ %1"
 
-#: ../src/Win_GParted.cc:2190
+#: ../src/Win_GParted.cc:2237
 msgid "Could not unmount %1"
 msgstr "ไม่สามารถเลิกเมานท์ %1"
 
-#: ../src/Win_GParted.cc:2226
+#: ../src/Win_GParted.cc:2273
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "ปฏิบัติการ \"เมานท์\" ไม่สามารถทำได้ ถ้ามีปฏิบัติการสำหรับพาร์ทิชันนี้รอคิวอยู่"
 
-#: ../src/Win_GParted.cc:2228
+#: ../src/Win_GParted.cc:2275
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
 msgstr ""
 "ใช้เมนู \"แก้ไข\" เพื่อเรียกคืน ล้าง หรือกระทำปฏิบัติการก่อนที่จะทำ \"เมานท์\" กับพาร์ทิชันนี้"
 
-#: ../src/Win_GParted.cc:2238
+#: ../src/Win_GParted.cc:2287
 msgid "mounting %1 on %2"
 msgstr "กำลังเมานท์ %1 ที่ %2"
 
-#: ../src/Win_GParted.cc:2249
+#: ../src/Win_GParted.cc:2317
 msgid "Could not mount %1 on %2"
 msgstr "ไม่สามารถเมานท์ %1 ที่ %2 ได้"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2275
+#: ../src/Win_GParted.cc:2343
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "มี %1 พาร์ทิชันที่กำล้งเปิดใช้อยู่ที่อุปกรณ์ %2"
 
-#: ../src/Win_GParted.cc:2290
+#: ../src/Win_GParted.cc:2358
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "ไม่สามารถสร้างตารางพาร์ทิชันใหม่ได้ในขณะที่มีพาร์ทิชันเปิดใช้งานอยู่"
 
-#: ../src/Win_GParted.cc:2292
+#: ../src/Win_GParted.cc:2360
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr "พาร์ทิชันที่เปิดใช้งานอยู่ ได้แก่ระบบแฟ้มที่มีการเมานท์ หรือพื้นที่สลับที่กำลังเปิดใช้ เป็นต้น"
 
-#: ../src/Win_GParted.cc:2294
+#: ../src/Win_GParted.cc:2362
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1867,104 +1950,104 @@ msgstr ""
 "ใช้ตัวเลือกในเมนู \"พาร์ทิชัน\" เช่น เลิกเมานท์ หรือปิดใช้พื้นที่สลับ "
 "เพื่อปิดใช้งานทุกพาร์ทิชันในอุปกรณ์นี้ก่อนที่จะสร้างตารางพาร์ทิชันใหม่"
 
-#: ../src/Win_GParted.cc:2306
+#: ../src/Win_GParted.cc:2374
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "มีปฏิบัติการ %1 รายการรอคิวอยู่"
 
-#: ../src/Win_GParted.cc:2319
+#: ../src/Win_GParted.cc:2387
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "ไม่สามารถสร้างตารางพาร์ทิชันใหม่ได้ในขณะที่มีปฏิบัติการรอคิวอยู่"
 
-#: ../src/Win_GParted.cc:2321
+#: ../src/Win_GParted.cc:2389
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr "ใช้เมนู \"แก้ไข\" เพื่อล้างหรือกระทำปฏิบัติการทั้งหมดก่อนที่จะสร้างตารางพาร์ทิชันใหม่"
 
-#: ../src/Win_GParted.cc:2336
+#: ../src/Win_GParted.cc:2404
 msgid "Error while creating partition table"
 msgstr "เกิดข้อผิดพลาดขณะสร้างตารางพาร์ทิชัน"
 
-#: ../src/Win_GParted.cc:2356
+#: ../src/Win_GParted.cc:2424
 msgid "Command gpart was not found"
 msgstr "ไม่พบคำสั่ง gpart"
 
-#: ../src/Win_GParted.cc:2357
+#: ../src/Win_GParted.cc:2425
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "ความสามารถนี้ต้องใช้ gpart กรุณาติดตั้ง gpart แล้วลองอีกครั้ง"
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2365
+#: ../src/Win_GParted.cc:2433
 msgid "A full disk scan is needed to find file systems."
 msgstr "จำเป็นต้องตรวจข้อมูลดิสก์แบบเต็มเพื่อค้นหาระบบแฟ้ม"
 
-#: ../src/Win_GParted.cc:2367
+#: ../src/Win_GParted.cc:2435
 msgid "The scan might take a very long time."
 msgstr "การตรวจข้อมูลอาจใช้เวลานานมาก"
 
-#: ../src/Win_GParted.cc:2369
+#: ../src/Win_GParted.cc:2437
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
 msgstr ""
 "หลังจากตรวจข้อมูลเสร็จแล้ว คุณสามารถเมานท์ระบบแฟ้มใดๆ ที่ค้นพบแล้วคัดลอกข้อมูลไปยังสื่ออื่นได้"
 
-#: ../src/Win_GParted.cc:2371
+#: ../src/Win_GParted.cc:2439
 msgid "Do you want to continue?"
 msgstr "คุณต้องการทำต่อหรือไม่?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2375
+#: ../src/Win_GParted.cc:2443
 msgid "Search for file systems on %1"
 msgstr "ค้นหาระบบแฟ้มใน %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2386
+#: ../src/Win_GParted.cc:2454
 msgid "Searching for file systems on %1"
 msgstr "กำลังค้นหาระบบแฟ้มใน %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2402
+#: ../src/Win_GParted.cc:2470
 msgid "No file systems found on %1"
 msgstr "ไม่พบระบบแฟ้มใน %1"
 
-#: ../src/Win_GParted.cc:2403
+#: ../src/Win_GParted.cc:2471
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr "การตรวจข้อมูลดิสก์ด้วย gpart ไม่พบระบบแฟ้มใดที่รู้จักอยู่ในดิสก์นี้เลย"
 
-#: ../src/Win_GParted.cc:2637
+#: ../src/Win_GParted.cc:2740
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "คุณแน่ใจหรือไม่ว่าต้องการดำเนินปฏิบัติการที่รอคิวอยู่?"
 
-#: ../src/Win_GParted.cc:2643
+#: ../src/Win_GParted.cc:2746
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "การแก้ไขพาร์ทิชันอาจทำให้ข้อมูลเสียหายได้"
 
-#: ../src/Win_GParted.cc:2645
+#: ../src/Win_GParted.cc:2748
 msgid "You are advised to backup your data before proceeding."
 msgstr "ขอแนะนำให้สำรองข้อมูลที่มีค่าก่อนเริ่มดำเนินการ"
 
-#: ../src/Win_GParted.cc:2647
+#: ../src/Win_GParted.cc:2750
 msgid "Apply operations to device"
 msgstr "เริ่มดำเนินปฏิบัติการต่ออุปกรณ์"
 
-#: ../src/Win_GParted.cc:2692
+#: ../src/Win_GParted.cc:2795
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "คุณกำลังจะลบโวลุมจริง %1 ของ LVM2 ที่ไม่ว่างเปล่า"
 
-#: ../src/Win_GParted.cc:2696
+#: ../src/Win_GParted.cc:2799
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "คุณกำลังจะฟอร์แมตโวลุมจริง %1 ของ LVM2 ที่ไม่ว่างเปล่า"
 
-#: ../src/Win_GParted.cc:2700
+#: ../src/Win_GParted.cc:2803
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "คุณกำลังจะแปะข้อมูลลงในโวลุมจริง %1 ของ LVM2 ที่ไม่ว่างเปล่า"
 
-#: ../src/Win_GParted.cc:2709
+#: ../src/Win_GParted.cc:2812
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -1972,7 +2055,7 @@ msgstr ""
 "การลบหรือเขียนทับโวลุมจริงจะไม่สามารถเรียกคืนได้ และจะทำลายกลุ่มโวลุม "
 "หรือทำให้กลุ่มโวลุมเสียหาย"
 
-#: ../src/Win_GParted.cc:2712
+#: ../src/Win_GParted.cc:2815
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -1981,16 +2064,20 @@ msgstr ""
 "เพื่อหลีกเลี่ยงการทำลายกลุ่มโวลุมหรือทำให้กลุ่มโวลุมเสียหาย ขอแนะนำให้คุณยกเลิก แล้วใช้คำสั่ง LVM "
 "ภายนอกเพื่อลบโวลุมจริงก่อนที่จะทำปฏิบัติการนี้"
 
-#: ../src/Win_GParted.cc:2715
+#: ../src/Win_GParted.cc:2818
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "คุณต้องการจะทำต่อไป โดยบังคับลบโวลุมจริงหรือไม่?"
 
-#: ../src/fat16.cc:33 ../src/ntfs.cc:26
+#: ../src/btrfs.cc:302
+msgid "Failed to find devid for path %1"
+msgstr "หา devid สำหรับพาธ %1 ไม่สำเร็จ"
+
+#: ../src/fat16.cc:32 ../src/ntfs.cc:25
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr "การเปลี่ยน UUID อาจทำให้กุญแจ Windows Product Activation (WPA) ใช้การไม่ได้"
 
-#: ../src/fat16.cc:35 ../src/ntfs.cc:28
+#: ../src/fat16.cc:34 ../src/ntfs.cc:27
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2002,7 +2089,7 @@ msgstr ""
 "WPA ใช้การไม่ได้ และเมื่อกุญแจ WPA ใช้การไม่ได้ คุณก็จะไม่สามารถเข้าระบบได้ "
 "จนกว่าจะต่ออายุการใช้วินโดวส์ใหม่"
 
-#: ../src/fat16.cc:41 ../src/ntfs.cc:38
+#: ../src/fat16.cc:40 ../src/ntfs.cc:37
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2011,47 +2098,47 @@ msgstr ""
 "แต่ก็ไม่มีการรับประกันใดๆ"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:28
+#: ../src/linux_swap.cc:29
 msgid "_Swapon"
 msgstr "_เปิดใช้พื้นที่สลับ"
 
-#: ../src/linux_swap.cc:29
+#: ../src/linux_swap.cc:30
 msgid "_Swapoff"
 msgstr "ปิ_ดใช้พื้นที่สลับ"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:142
+#: ../src/linux_swap.cc:194
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr "การย้ายพาร์ทิชันถูกข้ามไปเพราะระบบแฟ้ม %1 ไม่ได้เก็บข้อมูล"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:161
+#: ../src/linux_swap.cc:213
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr "การคัดลอกพาร์ทิชันถูกข้ามไปเพราะระบบแฟ้ม %1 ไม่ได้เก็บข้อมูล"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/lvm2_pv.cc:28
+#: ../src/lvm2_pv.cc:27
 msgid "Ac_tivate"
 msgstr "เ_ปิดใช้งาน"
 
-#: ../src/lvm2_pv.cc:29
+#: ../src/lvm2_pv.cc:28
 msgid "Deac_tivate"
 msgstr "_ปิดการใช้งาน"
 
-#: ../src/lvm2_pv.cc:32
+#: ../src/lvm2_pv.cc:31
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
 msgstr ""
 "ไม่สามารถเปลี่ยนขนาดของโวลุมจริงของ LVM2 นี้ได้ เนื่องจากเป็นสมาชิกของกลุ่มโวลุมที่ส่งออกอยู่"
 
-#: ../src/main.cc:40
+#: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
 msgstr "GParted ต้องการสิทธิ์ root ในการทำงาน"
 
-#: ../src/main.cc:45
+#: ../src/main.cc:47
 msgid ""
 "Since GParted is a powerful tool capable of destroying partition tables and "
 "vast amounts of data, only root may run it."
@@ -2059,7 +2146,7 @@ msgstr ""
 "เนื่องจาก GParted เป็นเครื่องมือที่สามารถทำลายตารางพาร์ทิชันและลบข้อมูลจำนวนมากได้ จึงมีแต่ "
 "root ที่ใช้งานได้"
 
-#: ../src/ntfs.cc:34
+#: ../src/ntfs.cc:33
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2068,14 +2155,47 @@ msgstr ""
 "เป็นค่าสุ่มใหม่เพียงครึ่งเดียวเท่านั้น สำหรับระบบแฟ้ม NTFS"
 
 #. simulation..
-#: ../src/ntfs.cc:213
+#: ../src/ntfs.cc:214
 msgid "run simulation"
 msgstr "จำลองการทำงาน"
 
 #. real resize
-#: ../src/ntfs.cc:220
+#: ../src/ntfs.cc:221
 msgid "real resize"
 msgstr "ปรับขนาดจริง"
+
+#~ msgid "Default is to create an MS-DOS partition table."
+#~ msgstr "ปฏิบัติการปริยายคือ สร้างตารางพาร์ทิชันแบบ MS-DOS"
+
+#~ msgid "Advanced"
+#~ msgstr "ระดับสูง"
+
+#~ msgid "%1 active"
+#~ msgstr "%1 เปิดใช้อยู่"
+
+#~ msgid "%1 not active"
+#~ msgstr "%1 ไม่ได้เปิดใช้"
+
+#~ msgid "Available"
+#~ msgstr "ได้"
+
+#~ msgid "wrote %1 of zeros at byte offset %2"
+#~ msgstr "เขียนค่าศูนย์ %1 ที่ตำแหน่งไบต์ %2"
+
+#~ msgid "clear primary signatures"
+#~ msgstr "ล้างลายเซ็นหลัก"
+
+#~ msgid "clear secondary signatures"
+#~ msgstr "ล้างลายเซ็นรอง"
+
+#~ msgid "Libparted Bug Found!"
+#~ msgstr "พบบั๊กของ Libparted!"
+
+#~ msgid "Clear Partition Label on %1"
+#~ msgstr "ล้างชื่อพาร์ทิชันใน %1"
+
+#~ msgid "_Label"
+#~ msgstr "_ชื่อ"
 
 #~ msgid "perform real move"
 #~ msgstr "ดำเนินการย้ายจริง"
@@ -2164,9 +2284,6 @@ msgstr "ปรับขนาดจริง"
 
 #~ msgid "copy file system"
 #~ msgstr "คัดลอกระบบแฟ้ม"
-
-#~ msgid "Set Disklabel on %1"
-#~ msgstr "กำหนดชื่อดิสก์ใน %1"
 
 #~ msgid ""
 #~ "A disklabel is a piece of data stored at a well known place on the disk, "
