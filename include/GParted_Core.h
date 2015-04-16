@@ -92,6 +92,7 @@ private:
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
 	                               std::vector<Glib::ustring> & messages );
+	void debug_luks_partition( Partition & partition );
 	void set_partition_label_and_uuid( Partition & partition );
 	static FILESYSTEM detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition );
 	static FILESYSTEM detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,

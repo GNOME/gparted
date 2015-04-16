@@ -20,6 +20,7 @@
 #include "../include/DMRaid.h"
 #include "../include/FS_Info.h"
 #include "../include/LVM2_PV_Info.h"
+#include "../include/LUKS_Info.h"
 #include "../include/Operation.h"
 #include "../include/OperationCopy.h"
 #include "../include/Partition.h"
@@ -161,6 +162,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
 	SWRaid_Info::load_cache();
+	LUKS_Info::load_cache();
 
 	init_maps() ;
 	
@@ -1299,6 +1301,9 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 				set_flags( *partition_temp, lp_partition );
 
+				if ( filesystem == FS_LUKS )
+					debug_luks_partition( *partition_temp );
+
 				if ( partition_temp->busy && partition_temp->partition_number > device.highest_busy )
 					device.highest_busy = partition_temp->partition_number;
 				break ;
@@ -1405,12 +1410,26 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	partition_temp->messages = messages;
 	partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 
+	if ( fstype == FS_LUKS )
+		debug_luks_partition( *partition_temp );
+
 	if ( partition_temp->busy )
 		device.highest_busy = 1;
 
 	set_partition_label_and_uuid( *partition_temp );
 
 	device.partitions.push_back_adopt( partition_temp );
+}
+
+void GParted_Core::debug_luks_partition( Partition & partition )
+{
+	// FIXME: Temporary debugging of LUKS mapping.
+	Glib::ustring name = LUKS_Info::get_mapping_name( partition.get_path() );
+	if ( name.empty() )
+		std::cout << "DEBUG: " << partition.get_path() << ": LUKS closed" << std::endl;
+	else
+		std::cout << "DEBUG: " << partition.get_path()
+		          << ": LUKS open mapping " << DEV_MAPPER_PATH << name << std::endl;
 }
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )

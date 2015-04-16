@@ -24,6 +24,7 @@ EXTRA_DIST = \
 	GParted_Core.h			\
 	HBoxOperations.h		\
 	LVM2_PV_Info.h			\
+	LUKS_Info.h			\
 	Operation.h			\
 	OperationChangeUUID.h		\
 	OperationCheck.h		\
