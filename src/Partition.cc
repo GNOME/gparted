@@ -24,13 +24,6 @@ Partition::Partition()
 {
 	Reset() ;
 }
-	
-Partition::Partition( const Glib::ustring & path ) 
-{
-	Reset() ;
-
-	paths .push_back( path ) ;
-}
 
 Partition * Partition::clone() const
 {
