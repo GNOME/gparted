@@ -33,8 +33,8 @@ FS luks::get_filesystem_support()
 
 bool luks::is_busy( const Glib::ustring & path )
 {
-	Glib::ustring name = LUKS_Info::get_mapping_name( path );
-	return ! name.empty();
+	LUKS_Mapping mapping = LUKS_Info::get_cache_entry( path );
+	return ! mapping.name.empty();
 }
 
 } //GParted

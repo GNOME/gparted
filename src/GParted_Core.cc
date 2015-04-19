@@ -1425,12 +1425,13 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 void GParted_Core::debug_luks_partition( Partition & partition )
 {
 	// FIXME: Temporary debugging of LUKS mapping.
-	Glib::ustring name = LUKS_Info::get_mapping_name( partition.get_path() );
-	if ( name.empty() )
+	LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
+	if ( mapping.name.empty() )
 		std::cout << "DEBUG: " << partition.get_path() << ": LUKS closed" << std::endl;
 	else
 		std::cout << "DEBUG: " << partition.get_path()
-		          << ": LUKS open mapping " << DEV_MAPPER_PATH << name << std::endl;
+		          << ": LUKS open mapping " << DEV_MAPPER_PATH << mapping.name << ", offset=" << mapping.offset
+		          << ", length=" << mapping.length << std::endl;
 }
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )

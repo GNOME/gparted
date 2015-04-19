@@ -25,16 +25,32 @@
 #ifndef GPARTED_LUKS_INFO_H
 #define GPARTED_LUKS_INFO_H
 
+#include "../include/Utils.h"
+
 #include <glibmm/ustring.h>
+#include <vector>
 
 namespace GParted
 {
+
+struct LUKS_Mapping
+{
+	Glib::ustring name;    // Name of the dm-crypt mapping
+	unsigned long major;   // Major device number of the underlying block device
+	unsigned long minor;   // Minor device number of the underlying block device
+	Glib::ustring path;    // Path of the underlying block device
+	Byte_Value    offset;  // Offset to the start of the mapping in the underlying block device
+	Byte_Value    length;  // Length of the mapping in the underlying block device
+};
 
 class LUKS_Info
 {
 public:
 	static void load_cache();
-	static Glib::ustring get_mapping_name( const Glib::ustring & path );
+	static const LUKS_Mapping & get_cache_entry( const Glib::ustring & path );
+
+private:
+	static std::vector<LUKS_Mapping> luks_mapping_cache;
 };
 
 }//GParted

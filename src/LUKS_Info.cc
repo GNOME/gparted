@@ -18,6 +18,7 @@
 #include "../include/Utils.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -25,18 +26,10 @@
 namespace GParted
 {
 
-struct LUKS_Mapping
-{
-	Glib::ustring name;   // Name of the dm-crypt mapping
-	unsigned long major;  // Major device number of the underlying block device
-	unsigned long minor;  // Minor device number of the underlying block device
-	Glib::ustring path;   // Path of the underlying block device
-};
-
 // Cache of active dm-crypt mappings.
 // Example entry:
-//     {name="sdb6_crypt", major=8, minor=22, path="/dev/sdb6"}
-static std::vector<LUKS_Mapping> luks_mapping_cache;
+//     {name="sdb6_crypt", major=8, minor=22, path="/dev/sdb6", offset=2097152, length=534773760}
+std::vector<LUKS_Mapping> LUKS_Info::luks_mapping_cache;
 
 void LUKS_Info::load_cache()
 {
@@ -63,9 +56,11 @@ void LUKS_Info::load_cache()
 		std::vector<Glib::ustring> fields;
 		Utils::tokenize( lines[i], fields, " " );
 		const unsigned DMCRYPT_FIELD_Name    = 0;
+		const unsigned DMCRYPT_FIELD_length  = 2;
 		const unsigned DMCRYPT_FIELD_devpath = 7;
+		const unsigned DMCRYPT_FIELD_offset  = 8;
 
-		if ( fields.size() <= DMCRYPT_FIELD_devpath )
+		if ( fields.size() <= DMCRYPT_FIELD_offset )
 			continue;
 
 		// Extract LUKS mapping name
@@ -81,8 +76,8 @@ void LUKS_Info::load_cache()
 		luks_map.minor = 0UL;
 		luks_map.path.clear();
 		Glib::ustring devpath = fields[DMCRYPT_FIELD_devpath];
-		unsigned long maj = 0;
-		unsigned long min = 0;
+		unsigned long maj = 0UL;
+		unsigned long min = 0UL;
 		if ( devpath.length() > 0 && devpath[0] == '/' )
 			luks_map.path = devpath;
 		else if ( sscanf( devpath.c_str(), "%lu:%lu", &maj, &min ) == 2 )
@@ -93,20 +88,34 @@ void LUKS_Info::load_cache()
 		else
 			continue;
 
+		// Extract LUKS offset and length.  Dm-crypt reports all sizes in units of
+		// 512 byte sectors.
+		luks_map.offset = -1LL;
+		luks_map.length = -1LL;
+		Byte_Value offset = atoll( fields[DMCRYPT_FIELD_offset].c_str() );
+		Byte_Value length = atoll( fields[DMCRYPT_FIELD_length].c_str() );
+		if ( offset > 0LL && length > 0LL )
+		{
+			luks_map.offset = offset * 512LL;
+			luks_map.length = length * 512LL;
+		}
+		else
+			continue;
+
 		luks_mapping_cache.push_back( luks_map );
 	}
 }
 
-// Return name of the active LUKS mapping for the underlying block device path,
-// or "" when no such mapping exists.
-Glib::ustring LUKS_Info::get_mapping_name( const Glib::ustring & path )
+// Return LUKS cache entry for the named underlying block device path,
+// or not found substitute when no entry exists.
+const LUKS_Mapping & LUKS_Info::get_cache_entry( const Glib::ustring & path )
 {
 	// First scan the cache looking for an underlying block device path match.
 	// (Totally in memory)
 	for ( unsigned int i = 0 ; i < luks_mapping_cache.size() ; i ++ )
 	{
 		if ( path == luks_mapping_cache[i].path )
-			return luks_mapping_cache[i].name;
+			return luks_mapping_cache[i];
 	}
 
 	// Second scan the cache looking for an underlying block device major, minor
@@ -124,12 +133,13 @@ Glib::ustring LUKS_Info::get_mapping_name( const Glib::ustring & path )
 				// query for the same path.
 				luks_mapping_cache[i].path = path;
 
-				return luks_mapping_cache[i].name;
+				return luks_mapping_cache[i];
 			}
 		}
 	}
 
-	return "";
+	static LUKS_Mapping not_found = {"", 0UL, 0UL, "", -1LL, -1LL};
+	return not_found;
 }
 
 //Private methods
