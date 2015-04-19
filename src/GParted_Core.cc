@@ -281,7 +281,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device .cylsize = (MEBIBYTE / temp_device .sector_size) ;
 
 			std::vector<Glib::ustring> messages;
-			FILESYSTEM fstype = get_filesystem( lp_device, NULL, messages );
+			FILESYSTEM fstype = detect_filesystem( lp_device, NULL, messages );
 			// FS_Info (blkid) recognised file system signature on whole disk
 			// device.  Need to detect before libparted reported partitioning
 			// to avoid bug in libparted 1.9.0 to 2.3 inclusive which
@@ -1209,7 +1209,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = get_filesystem( lp_device, lp_partition, partition_temp .messages ) ;
+				filesystem = detect_filesystem( lp_device, lp_partition, partition_temp.messages );
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1385,7 +1385,7 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 
 // GParted simple internal file system signature detection.  Use sparingly.  Only when
 // (old versions of) blkid and libparted don't recognise a signature.
-FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, PedPartition * lp_partition )
+FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition )
 {
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
@@ -1466,8 +1466,8 @@ FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, 
 	return fstype;
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
-                                                  std::vector<Glib::ustring>& messages )
+FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
+                                            std::vector<Glib::ustring> & messages )
 {
 	FS_Info fs_info ;
 	Glib::ustring fsname = "";
@@ -1567,7 +1567,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	}
 
 	// Fallback to GParted simple internal file system detection
-	FILESYSTEM fstype = recognise_filesystem_signature( lp_device, lp_partition );
+	FILESYSTEM fstype = detect_filesystem_internal( lp_device, lp_partition );
 	if ( fstype == FS_LUKS )
 		messages.push_back( luks_unsupported );
 	if ( fstype != FS_UNKNOWN )
