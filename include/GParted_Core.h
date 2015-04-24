@@ -35,8 +35,6 @@ public:
 	GParted_Core() ;
 	~GParted_Core() ;
 
-	void init_filesystems() ;
-	static void fini_filesystems();
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
@@ -188,6 +186,9 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
+	static void init_filesystems();
+	static void fini_filesystems();
+
 	bool flush_device( PedDevice * lp_device ) ;
 	bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
 	bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );

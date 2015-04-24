@@ -99,45 +99,6 @@ GParted_Core::GParted_Core()
 	find_supported_filesystems() ;
 }
 
-void GParted_Core::init_filesystems()
-{
-	FILESYSTEM_MAP[ FS_UNKNOWN ]         = NULL ;
-	FILESYSTEM_MAP[ FS_CLEARED ]         = NULL ;
-	FILESYSTEM_MAP[ FS_BTRFS ]           = new btrfs() ;
-	FILESYSTEM_MAP[ FS_EXFAT ]           = new exfat() ;
-	FILESYSTEM_MAP[ FS_EXT2 ]            = new ext2( FS_EXT2 ) ;
-	FILESYSTEM_MAP[ FS_EXT3 ]            = new ext2( FS_EXT3 ) ;
-	FILESYSTEM_MAP[ FS_EXT4 ]            = new ext2( FS_EXT4 ) ;
-	FILESYSTEM_MAP[ FS_F2FS ]            = new f2fs() ;
-	FILESYSTEM_MAP[ FS_FAT16 ]           = new fat16( FS_FAT16 ) ;
-	FILESYSTEM_MAP[ FS_FAT32 ]           = new fat16( FS_FAT32 ) ;
-	FILESYSTEM_MAP[ FS_HFS ]             = new hfs() ;
-	FILESYSTEM_MAP[ FS_HFSPLUS ]         = new hfsplus() ;
-	FILESYSTEM_MAP[ FS_JFS ]             = new jfs() ;
-	FILESYSTEM_MAP[ FS_LINUX_SWAP ]      = new linux_swap() ;
-	FILESYSTEM_MAP[ FS_LVM2_PV ]         = new lvm2_pv() ;
-	FILESYSTEM_MAP[ FS_NILFS2 ]          = new nilfs2() ;
-	FILESYSTEM_MAP[ FS_NTFS ]            = new ntfs() ;
-	FILESYSTEM_MAP[ FS_REISER4 ]         = new reiser4() ;
-	FILESYSTEM_MAP[ FS_REISERFS ]        = new reiserfs() ;
-	FILESYSTEM_MAP[ FS_UFS ]             = new ufs() ;
-	FILESYSTEM_MAP[ FS_XFS ]             = new xfs() ;
-	FILESYSTEM_MAP[ FS_BITLOCKER ]       = NULL ;
-	FILESYSTEM_MAP[ FS_LUKS ]            = NULL ;
-	FILESYSTEM_MAP[ FS_LINUX_SWRAID ]    = NULL ;
-	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
-}
-
-void GParted_Core::fini_filesystems()
-{
-	std::map<FILESYSTEM, FileSystem *>::iterator fs_iter;
-	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
-	{
-		delete fs_iter->second;
-		fs_iter->second = NULL;
-	}
-}
-
 void GParted_Core::find_supported_filesystems()
 {
 	std::map< FILESYSTEM, FileSystem * >::iterator f ;
@@ -3802,6 +3763,45 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	}
 
 	return true ;
+}
+
+void GParted_Core::init_filesystems()
+{
+	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
+	FILESYSTEM_MAP[FS_CLEARED]         = NULL;
+	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
+	FILESYSTEM_MAP[FS_EXFAT]           = new exfat();
+	FILESYSTEM_MAP[FS_EXT2]            = new ext2( FS_EXT2 );
+	FILESYSTEM_MAP[FS_EXT3]            = new ext2( FS_EXT3 );
+	FILESYSTEM_MAP[FS_EXT4]            = new ext2( FS_EXT4 );
+	FILESYSTEM_MAP[FS_F2FS]            = new f2fs();
+	FILESYSTEM_MAP[FS_FAT16]           = new fat16( FS_FAT16 );
+	FILESYSTEM_MAP[FS_FAT32]           = new fat16( FS_FAT32 );
+	FILESYSTEM_MAP[FS_HFS]             = new hfs();
+	FILESYSTEM_MAP[FS_HFSPLUS]         = new hfsplus();
+	FILESYSTEM_MAP[FS_JFS]             = new jfs();
+	FILESYSTEM_MAP[FS_LINUX_SWAP]      = new linux_swap();
+	FILESYSTEM_MAP[FS_LVM2_PV]         = new lvm2_pv();
+	FILESYSTEM_MAP[FS_NILFS2]          = new nilfs2();
+	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
+	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
+	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
+	FILESYSTEM_MAP[FS_UFS]             = new ufs();
+	FILESYSTEM_MAP[FS_XFS]             = new xfs();
+	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
+	FILESYSTEM_MAP[FS_LUKS]            = NULL;
+	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
+	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
+}
+
+void GParted_Core::fini_filesystems()
+{
+	std::map<FILESYSTEM, FileSystem *>::iterator fs_iter;
+	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
+	{
+		delete fs_iter->second;
+		fs_iter->second = NULL;
+	}
 }
 
 //Flush the Linux kernel caches, and therefore ensure coherency between the caches of the
