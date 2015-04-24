@@ -128,6 +128,16 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
 }
 
+void GParted_Core::fini_filesystems()
+{
+	std::map<FILESYSTEM, FileSystem *>::iterator fs_iter;
+	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
+	{
+		delete fs_iter->second;
+		fs_iter->second = NULL;
+	}
+}
+
 void GParted_Core::find_supported_filesystems()
 {
 	std::map< FILESYSTEM, FileSystem * >::iterator f ;
@@ -4026,6 +4036,8 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
+	// Delete file system map entries
+	fini_filesystems();
 }
 
 Glib::Thread *GParted_Core::mainthread;
