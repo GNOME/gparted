@@ -189,15 +189,15 @@ private:
 	static void init_filesystems();
 	static void fini_filesystems();
 
-	bool flush_device( PedDevice * lp_device ) ;
-	bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
-	bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
-	bool get_device_and_disk( const Glib::ustring & device_path,
-	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false ) ;
-	void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
-	bool commit( PedDisk* lp_disk ) ;
-	bool commit_to_os( PedDisk* lp_disk, std::time_t timeout ) ;
-	void settle_device( std::time_t timeout ) ;
+	static bool flush_device( PedDevice * lp_device );
+	static bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
+	static bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
+	static bool get_device_and_disk( const Glib::ustring & device_path,
+	                                 PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false );
+	static void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk );
+	static bool commit( PedDisk* lp_disk );
+	static bool commit_to_os( PedDisk* lp_disk, std::time_t timeout );
+	static void settle_device( std::time_t timeout );
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
