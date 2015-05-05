@@ -32,9 +32,9 @@ void Device::Reset()
 	length = cylsize = 0 ;
 	heads = sectors = cylinders = 0 ;
 	model = disktype = "" ;
-	partition_naming = false;
 	sector_size = max_prims = highest_busy = 0 ;
 	readonly = false ; 	
+	max_partition_name_length = 0;
 }
 	
 void Device::add_path( const Glib::ustring & path, bool clear_paths )
@@ -68,6 +68,24 @@ Glib::ustring Device::get_path() const
 std::vector<Glib::ustring> Device::get_paths() const
 {
 	return paths ;
+}
+
+void Device::enable_partition_naming( int max_length )
+{
+	if ( max_length > 0 )
+		max_partition_name_length = max_length;
+	else
+		max_partition_name_length = 0;
+}
+
+bool Device::partition_naming_supported() const
+{
+	return max_partition_name_length > 0;
+}
+
+int Device::get_max_partition_name_length() const
+{
+	return max_partition_name_length;
 }
 
 bool Device::operator==( const Device & device ) const

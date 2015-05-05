@@ -129,6 +129,49 @@ Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int
 	return pixbuf ;
 }
 
+int Utils::get_max_partition_name_length( Glib::ustring & tabletype )
+{
+	// Partition name size found or confirmed by looking at *_partition_set_name()
+	// functions in the relevant libparted label modules:
+	//     dvh.c, gpt.c, mac.c, pc98.c, rdb.c (amiga)
+	// http://git.savannah.gnu.org/cgit/parted.git/tree/libparted/labels
+	//
+	//     Table   Max      Units
+	//     type    length   Reference
+	//     -----   ------   ---------
+	//     amiga       32   ASCII characters
+	//     dvh          8   ASCII characters
+	//     gpt         36   UTF-16LE code points
+	//                      http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_entries
+	//     mac         32   ASCII characters
+	//                      http://en.wikipedia.org/wiki/Apple_Partition_Map#Layout
+	//     pc98        16   ASCII characters
+	//
+	// Found issues:
+	// 1) amiga - Setting partition name to 32 chars is silent ignored.  Setting to 31
+	//            chars or less works.
+	// 2) dvh   - Probably by design, setting names on primary partitions is
+	//            successfully ignored with this libparted message:
+	//                failed to set dvh partition name to NAME:
+	//                Only logical partitions (boot files) have a name.
+	//            Setting names on logical partitions works.
+	// 3) mac   - Setting partition name to 32 chars core dumps in libparted.  Setting
+	//            to 31 chars or less works.
+	//
+	// Suspect usage of these partition tables types other than GPT is *VERY* low.
+	// Given the above issues which need a little coding around, leave support of
+	// naming for partition table types other than GPT disabled.  Mostly just to
+	// reduce ongoing testing effort, at least until there is any user demand for it.
+
+	if      ( tabletype == "amiga" ) return 0;   // Disabled
+	else if ( tabletype == "dvh"   ) return 0;   // Disabled
+	else if ( tabletype == "gpt"   ) return 36;
+	else if ( tabletype == "mac"   ) return 0;   // Disabled
+	else if ( tabletype == "pc98"  ) return 0;   // Disabled
+
+	return 0;
+}
+
 int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 {
 	switch( filesystem )

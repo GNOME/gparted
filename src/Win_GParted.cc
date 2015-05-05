@@ -1018,6 +1018,12 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_busy_state( true ) ;
 
+	// Allow naming on devices that support it
+	if ( selected_partition.type != TYPE_UNALLOCATED          &&
+	     selected_partition.status == STAT_REAL               &&
+	     devices[current_device].partition_naming_supported()    )
+		allow_name_partition( true );
+
 	// Manage flags
 	if ( selected_partition.type != TYPE_UNALLOCATED &&
 	     selected_partition.status == STAT_REAL      &&
@@ -1129,10 +1135,6 @@ void Win_GParted::set_valid_operations()
 		//only allow labelling of real partitions that support labelling
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
 			allow_label_filesystem( true );
-
-		// only allow naming of real partitions on devices that support naming
-		if ( selected_partition.status == STAT_REAL && devices[current_device].partition_naming )
-			allow_name_partition( true );
 
 		//only allow changing UUID of real partitions that support it
 		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
@@ -1831,13 +1833,12 @@ void Win_GParted::activate_new()
 	{	
 		Dialog_Partition_New dialog;
 		
-		dialog .Set_Data( selected_partition, 
-				  index_extended > -1,
-				  new_count,
-				  gparted_core .get_filesystems(),
-				  devices[ current_device ] .readonly,
-				  devices[ current_device ] .disktype ) ;
-		
+		dialog .Set_Data( devices[current_device],
+		                  selected_partition,
+		                  index_extended > -1,
+		                  new_count,
+		                  gparted_core.get_filesystems() );
+
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -2032,6 +2033,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	               devices[current_device].sector_size,
 	               selected_partition.inside_extended,
 	               false );
+	part_temp.name = selected_partition.name;
 	//Leave sector usage figures to new Partition object defaults of
 	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
 	 
@@ -2561,7 +2563,8 @@ void Win_GParted::activate_label_filesystem()
 
 void Win_GParted::activate_name_partition()
 {
-	Dialog_Partition_Name dialog( selected_partition );
+	Dialog_Partition_Name dialog( selected_partition,
+	                              devices[current_device].get_max_partition_name_length() );
 	dialog.set_transient_for( *this );
 
 	if (	( dialog.run() == Gtk::RESPONSE_OK )

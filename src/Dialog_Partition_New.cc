@@ -32,12 +32,11 @@ Dialog_Partition_New::Dialog_Partition_New()
 	frame_resizer_base ->set_used( 0 ) ;
 }
 
-void Dialog_Partition_New::Set_Data( const Partition & partition,
-				     bool any_extended,
-				     unsigned short new_count, 
-				     const std::vector<FS> & FILESYSTEMS,
-				     bool only_unformatted,
-				     Glib::ustring disktype )
+void Dialog_Partition_New::Set_Data( const Device & device,
+                                     const Partition & partition,
+                                     bool any_extended,
+                                     unsigned short new_count,
+                                     const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
 	this ->selected_partition = partition;
@@ -86,7 +85,7 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
 	
 	//determine which PartitionType is allowed
-	if ( disktype != "msdos" && disktype != "dvh" )
+	if ( device.disktype != "msdos" && device.disktype != "dvh" )
 	{
 		menu_type .items()[ 1 ] .set_sensitive( false ); 
 		menu_type .items()[ 2 ] .set_sensitive( false );
@@ -115,28 +114,34 @@ void Dialog_Partition_New::Set_Data( const Partition & partition,
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
 	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
 	
+	// Partition name
+	table_create.attach( *Utils::mk_label( static_cast<Glib::ustring>( _("Partition name:") ) + "\t" ),
+	                     0, 1, 1, 2, Gtk::FILL );
+	// Initialise text entry box
+	partition_name_entry.set_width_chars( 20 );
+	partition_name_entry.set_sensitive( device.partition_naming_supported() );
+	partition_name_entry.set_max_length( device.get_max_partition_name_length() );
+	// Add entry box to table
+	table_create .attach( partition_name_entry, 1, 2, 1, 2, Gtk::FILL );
+
 	//file systems to choose from 
 	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("File system:") ) + "\t" ),
-			     0, 1, 1, 2,
-			     Gtk::FILL );
-	
-	Build_Filesystems_Menu( only_unformatted ) ;
+	                      0, 1, 2, 3, Gtk::FILL );
+
+	Build_Filesystems_Menu( device.readonly );
 	 
 	optionmenu_filesystem .set_menu( menu_filesystem );
 	optionmenu_filesystem .signal_changed() .connect( 
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
-	table_create .attach( optionmenu_filesystem, 1, 2, 1, 2, Gtk::FILL );
+	table_create .attach( optionmenu_filesystem, 1, 2, 2, 3, Gtk::FILL );
 
 	//Label
 	table_create .attach( * Utils::mk_label( Glib::ustring( _("Label:") ) ),
-			0, 1, 3, 4,	Gtk::FILL ) ;
+	                      0, 1, 3, 4, Gtk::FILL );
 	//Create Text entry box
-	entry .set_width_chars( 20 );
-	entry .set_activates_default( true );
-	entry .set_text( partition.get_filesystem_label() );
-	entry .select_region( 0, entry .get_text_length() );
+	filesystem_label_entry.set_width_chars( 20 );
 	//Add entry box to table
-	table_create .attach( entry, 1, 2, 3, 4, Gtk::FILL ) ;
+	table_create.attach( filesystem_label_entry, 1, 2, 3, 4, Gtk::FILL );
 
 	//set some widely used values...
 	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
@@ -201,8 +206,11 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	               sector_size,
 	               selected_partition.inside_extended, false );
 
+	// Retrieve partition name
+	part_temp.name = Utils::trim( partition_name_entry.get_text() );
+
 	//Retrieve Label info
-	part_temp.set_filesystem_label( Utils::trim( entry.get_text() ) );
+	part_temp.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 	
 	//grow new partition a bit if freespaces are < 1 MiB
 	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBIBYTE / sector_size) ) 
@@ -318,8 +326,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
 
-	//set partition name entry box length
-	entry .set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) ) ;
+	// Maximum length of the file system label varies according to the selected file system type.
+	filesystem_label_entry.set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) );
 
 	frame_resizer_base ->Draw_Partition() ;
 }

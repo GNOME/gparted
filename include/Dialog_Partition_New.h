@@ -19,6 +19,7 @@
 #define GPARTED_DIALOG_PARTITION_NEW_H
 
 #include "../include/Dialog_Base_Partition.h"
+#include "../include/Device.h"
 
 #include <gtkmm/optionmenu.h>
 
@@ -29,12 +30,11 @@ class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_New() ;
-	void Set_Data( const Partition & partition,
-		       bool any_extended,
-		       unsigned short new_count,
-		       const std::vector<FS> & FILESYSTEMS,
-		       bool only_unformatted,
-		       Glib::ustring disktype );
+	void Set_Data( const Device & device,
+	               const Partition & partition,
+	               bool any_extended,
+	               unsigned short new_count,
+	               const std::vector<FS> & FILESYSTEMS );
 	Partition Get_New_Partition( Byte_Value sector_size ) ;//overridden function
 
 private:
@@ -43,7 +43,8 @@ private:
 	Gtk::Table table_create;
 	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
 	Gtk::Menu menu_type, menu_filesystem;
-	Gtk::Entry entry;
+	Gtk::Entry partition_name_entry;
+	Gtk::Entry filesystem_label_entry;
 
 	std::vector<FS> FILESYSTEMS ;
 	

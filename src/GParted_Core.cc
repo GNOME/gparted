@@ -337,10 +337,11 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
 
 				// Determine if partition naming is supported.
-				temp_device.partition_naming = ped_disk_type_check_feature( lp_disk->type,
-				                                                            PED_DISK_TYPE_PARTITION_NAME );
-				// So far only GPTs are supported.
-				temp_device.partition_naming &= ( temp_device.disktype == "gpt" );
+				if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
+				{
+					temp_device.enable_partition_naming(
+							Utils::get_max_partition_name_length( temp_device.disktype ) );
+				}
 
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
 				set_mountpoints( temp_device .partitions ) ;
@@ -738,58 +739,99 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
-	bool succes = false ;
+	bool success = false;
 	libparted_messages .clear() ;
 
-	if ( calibrate_partition( operation ->partition_original, operation ->operation_detail ) )
-		switch ( operation ->type )
-		{	     
-			case OPERATION_DELETE:
-				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-				         Delete( operation ->partition_original, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_CHECK:
-				succes = check_repair_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-					 maximize_filesystem( operation ->partition_original, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_CREATE:
-				succes = create( operation->partition_new, operation->operation_detail );
-				break ;
-			case OPERATION_RESIZE_MOVE:
-				//in case the to be resized/moved partition was a 'copy of..', we need a real path...
-				operation ->partition_new .add_path( operation ->partition_original .get_path(), true ) ;
-				succes = resize_move( operation ->partition_original,
-				                      operation ->partition_new,
-				                      operation ->operation_detail );
-				break ;
-			case OPERATION_FORMAT:
-				succes = remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-				         format( operation ->partition_new, operation ->operation_detail ) ;
-				break ;
-			case OPERATION_COPY:
+	switch ( operation->type )
+	{
+		// Call calibrate_partition() first for each operation to ensure the
+		// correct partition path name and boundary is known before performing the
+		// actual modifications.  (See comments in calibrate_partition() for
+		// reasons why this is necessary).  Calibrate the most relevant partition
+		// object(s), either partition_original, partition_new or partition_copy,
+		// as required.  Calibrate also displays details of the partition being
+		// modified in the operation results to inform the user.
+
+		case OPERATION_DELETE:
+			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
+			          && remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && Delete( operation->partition_original, operation->operation_detail );
+			break;
+
+		case OPERATION_CHECK:
+			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
+			          && check_repair_filesystem( operation->partition_original,
+			                                      operation->operation_detail )
+			          && maximize_filesystem( operation->partition_original, operation->operation_detail );
+			break;
+
+		case OPERATION_CREATE:
+			// The partition doesn't exist yet so there's nothing to calibrate.
+			success = create( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_RESIZE_MOVE:
+			success = calibrate_partition( operation->partition_original, operation->operation_detail );
+			if ( ! success )
+				break;
+
+			// Reset the new partition object's real path in case the name is
+			// "copy of ..." from the previous operation.
+			operation->partition_new.add_path( operation->partition_original.get_path(), true );
+
+			success = resize_move( operation->partition_original,
+			                       operation->partition_new,
+			                       operation->operation_detail );
+			break;
+
+		case OPERATION_FORMAT:
+			success = calibrate_partition( operation->partition_new, operation->operation_detail );
+			if ( ! success )
+				break;
+
+			// Reset the original partition object's real path in case the
+			// name is "copy of ..." from the previous operation.
+			operation->partition_original.add_path( operation->partition_new.get_path(), true );
+
+			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && format( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_COPY:
 			//FIXME: in case of a new partition we should make sure the new partition is >= the source partition... 
 			//i think it's best to do this in the dialog_paste
-				succes = ( operation ->partition_original .type == TYPE_UNALLOCATED || 
-					   calibrate_partition( operation ->partition_new, operation ->operation_detail ) ) &&
-				
-					 calibrate_partition( static_cast<OperationCopy*>( operation ) ->partition_copied,
-							      operation ->operation_detail ) &&
-				         remove_filesystem( operation ->partition_original, operation ->operation_detail ) &&
-					 copy( static_cast<OperationCopy*>( operation ) ->partition_copied,
-					       operation ->partition_new,
-					       static_cast<OperationCopy*>( operation ) ->partition_copied .get_byte_length(),
-					       operation ->operation_detail ) ;
-				break ;
-			case OPERATION_LABEL_FILESYSTEM:
-				succes = label_filesystem( operation->partition_new, operation->operation_detail );
-				break ;
-			case OPERATION_NAME_PARTITION:
-				succes = name_partition( operation->partition_new, operation->operation_detail );
+
+			success =    calibrate_partition( static_cast<OperationCopy*>( operation )->partition_copied,
+			                                  operation->operation_detail )
+			             // Only calibrate the destination when pasting into an existing
+			             // partition, rather than when creating a new partition.
+                                  && ( operation->partition_original.type == TYPE_UNALLOCATED                       ||
+			               calibrate_partition( operation->partition_new, operation->operation_detail )    );
+			if ( ! success )
 				break;
-			case OPERATION_CHANGE_UUID:
-				succes = change_uuid( operation ->partition_new, operation ->operation_detail ) ;
-				break ;
-		}
+
+			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
+			          && copy( static_cast<OperationCopy*>( operation )->partition_copied,
+			                   operation->partition_new,
+			                   static_cast<OperationCopy*>( operation )->partition_copied.get_byte_length(),
+			                   operation->operation_detail );
+			break;
+
+		case OPERATION_LABEL_FILESYSTEM:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && label_filesystem( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_NAME_PARTITION:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && name_partition( operation->partition_new, operation->operation_detail );
+			break;
+
+		case OPERATION_CHANGE_UUID:
+			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
+			          && change_uuid( operation ->partition_new, operation ->operation_detail ) ;
+			break;
+	}
 
 	if ( libparted_messages .size() > 0 )
 	{
@@ -800,7 +842,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 				OperationDetail( libparted_messages[ t ], STATUS_NONE, FONT_ITALIC ) ) ;
 	}
 
-	return succes ;
+	return success;
 }
 
 bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & disklabel )
@@ -1265,7 +1307,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 			set_partition_label_and_uuid( partition_temp );
 
 			// Retrieve partition name
-			if ( device.partition_naming )
+			if ( device.partition_naming_supported() )
 				partition_temp.name = Glib::ustring( ped_partition_get_name( lp_partition ) );
 		}
 
@@ -1960,23 +2002,36 @@ void GParted_Core::set_flags( Partition & partition, PedPartition* lp_partition 
 
 bool GParted_Core::create( Partition & new_partition, OperationDetail & operationdetail )
 {
-	if ( new_partition .type == GParted::TYPE_EXTENDED )   
+	bool success;
+	if ( new_partition.type == TYPE_EXTENDED )
 	{
-		return create_partition( new_partition, operationdetail ) ;
+		success = create_partition( new_partition, operationdetail );
 	}
-	else if ( create_partition( new_partition, operationdetail, (get_fs( new_partition .filesystem ) .MIN / new_partition .sector_size) ) )
+	else
 	{
-		if ( new_partition .filesystem == GParted::FS_UNFORMATTED )
-			return true ;
-		else if ( new_partition .filesystem == FS_CLEARED )
-			return erase_filesystem_signatures( new_partition, operationdetail ) ;
-		else
-			return    erase_filesystem_signatures( new_partition, operationdetail )
-			       && set_partition_type( new_partition, operationdetail )
-			       && create_filesystem( new_partition, operationdetail ) ;
+		success = create_partition( new_partition, operationdetail,
+		                            get_fs( new_partition.filesystem ).MIN / new_partition.sector_size );
 	}
-	
-	return false ;
+	if ( ! success )
+		return false;
+
+	if ( ! new_partition.name.empty() )
+	{
+		if ( ! name_partition( new_partition, operationdetail ) )
+			return false;
+	}
+
+	if ( new_partition.type == TYPE_EXTENDED        ||
+	     new_partition.filesystem == FS_UNFORMATTED    )
+		return true;
+	else if ( new_partition.filesystem == FS_CLEARED )
+		return erase_filesystem_signatures( new_partition, operationdetail );
+	else
+		return    erase_filesystem_signatures( new_partition, operationdetail )
+		       && set_partition_type( new_partition, operationdetail )
+		       && create_filesystem( new_partition, operationdetail );
+
+	return false;
 }
 
 bool GParted_Core::create_partition( Partition & new_partition, OperationDetail & operationdetail, Sector min_size )
@@ -3167,55 +3222,67 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		//Lookup libparted file system type using GParted's name, as most match
-		PedFileSystemType * fs_type = 
-			ped_file_system_type_get( Utils::get_filesystem_string( partition .filesystem ) .c_str() ) ;
-
-		//If not found, and FS is linux-swap, then try linux-swap(v1)
-		if ( ! fs_type && Utils::get_filesystem_string( partition .filesystem ) == "linux-swap" )
-			fs_type = ped_file_system_type_get( "linux-swap(v1)" ) ;
-
-		//If not found, and FS is linux-swap, then try linux-swap(new)
-		if ( ! fs_type && Utils::get_filesystem_string( partition .filesystem ) == "linux-swap" )
-			fs_type = ped_file_system_type_get( "linux-swap(new)" ) ;
-
-		//default is Linux (83)
-		if ( ! fs_type )
-			fs_type = ped_file_system_type_get( "ext2" ) ;
-
-		if ( fs_type && partition .filesystem != FS_LVM2_PV )
+		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
+		if ( lp_partition )
 		{
-			PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
+			Glib::ustring fs_type = Utils::get_filesystem_string( partition.filesystem );
 
-			//Also clear any libparted LVM flag so that it doesn't override the file system type
-			if ( lp_partition                                                 &&
-			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 0 ) &&
-			     ped_partition_set_system( lp_partition, fs_type )            &&
-			     commit( lp_disk )                                               )
+			// Lookup libparted file system type using GParted's name, as most match
+			PedFileSystemType * lp_fs_type = ped_file_system_type_get( fs_type.c_str() );
+
+			// If not found, and FS is linux-swap, then try linux-swap(v1)
+			if ( ! lp_fs_type && fs_type == "linux-swap" )
+				lp_fs_type = ped_file_system_type_get( "linux-swap(v1)" );
+
+			// If not found, and FS is linux-swap, then try linux-swap(new)
+			if ( ! lp_fs_type && fs_type == "linux-swap" )
+				lp_fs_type = ped_file_system_type_get( "linux-swap(new)" );
+
+			// default is Linux (83)
+			if ( ! lp_fs_type )
+				lp_fs_type = ped_file_system_type_get( "ext2" );
+
+			bool supports_lvm_flag = ped_partition_is_flag_available( lp_partition, PED_PARTITION_LVM );
+
+			if ( lp_fs_type && partition.filesystem != FS_LVM2_PV )
 			{
-				operationdetail .get_last_child() .add_child( 
-					OperationDetail( String::ucompose( _("new partition type: %1"),
-									   lp_partition ->fs_type ->name ),
-							 STATUS_NONE,
-							 FONT_ITALIC ) ) ;
-
-				return_value = true ;
+				// Also clear any libparted LVM flag so that it doesn't
+				// override the file system type
+				if ( ( ! supports_lvm_flag                                          ||
+				       ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 0 )    ) &&
+				     ped_partition_set_system( lp_partition, lp_fs_type )                &&
+				     commit( lp_disk )                                                      )
+				{
+					operationdetail.get_last_child().add_child(
+						OperationDetail( String::ucompose( _("new partition type: %1"),
+						                                   lp_partition->fs_type->name ),
+						                 STATUS_NONE,
+						                 FONT_ITALIC ) );
+					return_value = true;
+				}
 			}
-		}
-		else if ( partition .filesystem == FS_LVM2_PV )
-		{
-			PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-
-			if ( lp_partition                                                 &&
-			     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
-			     commit( lp_disk )                                               )
+			else if ( partition.filesystem == FS_LVM2_PV )
 			{
-				operationdetail .get_last_child() .add_child(
-					OperationDetail( String::ucompose( _("new partition flag: %1"),
-					                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
-					                 STATUS_NONE,
-					                 FONT_ITALIC ) ) ;
-				return_value = true ;
+				if ( supports_lvm_flag                                            &&
+				     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
+				     commit( lp_disk )                                               )
+				{
+					operationdetail.get_last_child().add_child(
+						OperationDetail( String::ucompose( _("new partition flag: %1"),
+						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
+						                 STATUS_NONE,
+						                 FONT_ITALIC ) );
+					return_value = true;
+				}
+				else if ( ! supports_lvm_flag )
+				{
+					operationdetail.get_last_child().add_child(
+						OperationDetail( String::ucompose( _("Skip setting unsupported partition flag: %1"),
+						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
+						                 STATUS_NONE,
+						                 FONT_ITALIC ) );
+					return_value = true;
+				}
 			}
 		}
 
