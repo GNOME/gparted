@@ -818,12 +818,12 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 
 void Win_GParted::Refresh_Visual()
 {
-	std::vector<Partition> partitions = devices[ current_device ] .partitions ; 
-	
+	display_partitions = devices[current_device].partitions;
+
 	//make all operations visible
 	for ( unsigned int t = 0 ; t < operations .size(); t++ )
 		if ( operations[ t ] ->device == devices[ current_device ] )
-			operations[ t ] ->apply_to_visual( partitions ) ;
+			operations[t]->apply_to_visual( display_partitions );
 			
 	hbox_operations .load_operations( operations ) ;
 
@@ -850,12 +850,12 @@ void Win_GParted::Refresh_Visual()
 	Sector largest_unalloc_size = -1 ;
 	Sector current_size ;
 
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	for ( unsigned int t = 0 ; t < display_partitions.size() ; t++ )
 	{
-		if ( partitions[ t ] .get_path() == copied_partition .get_path() )
-			copied_partition = partitions[ t ] ;
-		
-		switch ( partitions[ t ] .type )
+		if ( display_partitions[t].get_path() == copied_partition.get_path() )
+			copied_partition = display_partitions[t];
+
+		switch ( display_partitions[t].type )
 		{
 			case TYPE_PRIMARY:
 				primary_count++;
@@ -865,16 +865,16 @@ void Win_GParted::Refresh_Visual()
 				index_extended = t ;
 				primary_count++;
 
-				for ( unsigned int u = 0 ; u < partitions[ t ] .logicals .size() ; u ++ )
+				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
 				{
-					switch ( partitions[ t ] .logicals[ u ] .type )
+					switch ( display_partitions[t].logicals[u].type )
 					{
 						case TYPE_UNALLOCATED:
-							current_size = partitions[ t ]. logicals[ u ] .get_sector_length() ;
+							current_size = display_partitions[t].logicals[u].get_sector_length();
 							if ( current_size > largest_unalloc_size )
 							{
 								largest_unalloc_size = current_size ;
-								selected_partition = partitions[ t ] .logicals[ u ] ;
+								selected_partition = display_partitions[t].logicals[u];
 							}
 							break;
 
@@ -885,11 +885,11 @@ void Win_GParted::Refresh_Visual()
 				break;
 
 			case TYPE_UNALLOCATED:
-				current_size = partitions[ t ] .get_sector_length() ;
+				current_size = display_partitions[t].get_sector_length();
 				if ( current_size > largest_unalloc_size )
 				{
 					largest_unalloc_size = current_size ;
-					selected_partition = partitions[ t ] ;
+					selected_partition = display_partitions[t];
 				}
 				break;
 
@@ -897,12 +897,12 @@ void Win_GParted::Refresh_Visual()
 				break;
 		}
 	}
-	
-	//frame visualdisk
-	drawingarea_visualdisk .load_partitions( partitions, devices[ current_device ] .length ) ;
 
-	//treeview details
-	treeview_detail .load_partitions( partitions ) ;
+	// frame visualdisk
+	drawingarea_visualdisk.load_partitions( display_partitions, devices[current_device].length );
+
+	// treeview details
+	treeview_detail.load_partitions( display_partitions );
 
 	set_valid_operations() ;
 

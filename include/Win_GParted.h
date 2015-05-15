@@ -183,6 +183,8 @@ private:
 
 //private variables
 	unsigned int current_device ;
+	std::vector<Partition> display_partitions;  // Copy of current device's partitions with any pending
+	                                            // operations applied, as currently being shown in the GUI.
 	Partition selected_partition, copied_partition;
 	std::vector<Device> devices;
 	std::vector<Operation *> operations;
