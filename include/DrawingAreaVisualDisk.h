@@ -31,11 +31,11 @@ public:
 	~DrawingAreaVisualDisk();
 	
 	void load_partitions( const std::vector<Partition> & partitions, Sector device_length );
-	void set_selected( const Partition & partition ) ;
+	void set_selected( const Partition * partition_ptr );
 	void clear() ;
 
-	//public signals for interclass communication
-	sigc::signal< void, const Partition &, bool > signal_partition_selected ;
+	// Public signals for interclass communication
+	sigc::signal<void, const Partition *, bool> signal_partition_selected;
 	sigc::signal< void > signal_partition_activated ;
 	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 	
@@ -57,8 +57,8 @@ private:
 	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
 	
 	void set_selected( const std::vector<visual_partition> & visual_partitions, int x, int y ) ;
-	void set_selected( const std::vector<visual_partition> & visual_partitions, const Partition & partition ) ;
-	
+	void set_selected( const std::vector<visual_partition> & visual_partitions, const Partition * partition_ptr );
+
 	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
 	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
 	

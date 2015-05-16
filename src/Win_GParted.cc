@@ -914,8 +914,8 @@ void Win_GParted::Refresh_Visual()
 	{
 		// Flashing redraw work around.  Inform visuals of selection of the
 		// largest unallocated partition after drawing those visuals above.
-		drawingarea_visualdisk .set_selected( selected_partition ) ;
-		treeview_detail .set_selected( selected_partition ) ;
+		drawingarea_visualdisk.set_selected( & selected_partition );
+		treeview_detail.set_selected( & selected_partition );
 
 		// Process Gtk events to draw selection
 		while ( Gtk::Main::events_pending() )
@@ -1551,16 +1551,16 @@ void Win_GParted::menu_help_about()
 	dialog .run() ;
 }
 
-void Win_GParted::on_partition_selected( const Partition & partition, bool src_is_treeview ) 
+void Win_GParted::on_partition_selected( const Partition * partition_ptr, bool src_is_treeview )
 {
-	selected_partition = partition;
+	selected_partition = * partition_ptr;
 
 	set_valid_operations() ;
-	
+
 	if ( src_is_treeview )
-		drawingarea_visualdisk .set_selected( partition ) ;
+		drawingarea_visualdisk.set_selected( partition_ptr );
 	else
-		treeview_detail .set_selected( partition ) ;
+		treeview_detail.set_selected( partition_ptr );
 }
 
 void Win_GParted::on_partition_activated() 

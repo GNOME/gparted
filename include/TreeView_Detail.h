@@ -36,11 +36,11 @@ class TreeView_Detail : public Gtk::TreeView
 public:
 	TreeView_Detail();
 	void load_partitions( const std::vector<Partition> & partitions ) ;
-	void set_selected( const Partition & partition );
+	void set_selected( const Partition * partition_ptr );
 	void clear() ;
 
-	//signals for interclass communication
-	sigc::signal< void, const Partition &, bool > signal_partition_selected ;
+	// Signals for interclass communication
+	sigc::signal<void, const Partition *, bool> signal_partition_selected;
 	sigc::signal< void > signal_partition_activated ;
 	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 
@@ -50,7 +50,8 @@ private:
 	                      bool & labels,
 	                      bool & names,
 	                      const Gtk::TreeRow & parent_row = Gtk::TreeRow() );
-	bool set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended = false ) ;
+	bool set_selected( Gtk::TreeModel::Children rows,
+	                   const Partition * partition_ptr, bool inside_extended = false );
 	void create_row( const Gtk::TreeRow & treerow, const Partition & partition );
 
 	//(overridden) signals

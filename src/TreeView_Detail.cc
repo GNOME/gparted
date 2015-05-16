@@ -99,10 +99,10 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 	expand_all() ;
 }
 
-void TreeView_Detail::set_selected( const Partition & partition )
+void TreeView_Detail::set_selected( const Partition * partition_ptr )
 {
 	block = true ;
-	set_selected( treestore_detail ->children(), partition ) ;
+	set_selected( treestore_detail->children(), partition_ptr );
 	block = false ;
 }
 
@@ -137,11 +137,12 @@ void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions
 	}
 }
 
-bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partition & partition, bool inside_extended ) 
+bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
+                                    const Partition * partition_ptr, bool inside_extended )
 {
 	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
-		if ( static_cast<Partition>( rows[ t ] [ treeview_detail_columns .partition ] ) == partition )
+		if ( static_cast<Partition>( rows[t][treeview_detail_columns.partition] ) == *partition_ptr )
 		{
 			if ( inside_extended )
 				expand_all() ;
@@ -150,7 +151,7 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows, const Partiti
 			return true ;
 		}
 
-		if ( set_selected( rows[ t ] .children(), partition, true ) )
+		if ( set_selected( rows[t].children(), partition_ptr, true ) )
 			return true ;
 	}
 	
@@ -240,7 +241,8 @@ void TreeView_Detail::on_selection_changed()
 	if ( ! block && treeselection ->get_selected() != 0 )
 	{
 		Gtk::TreeRow row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
-		signal_partition_selected .emit( row[ treeview_detail_columns .partition ], true ) ;
+		Partition selected_partition = row[treeview_detail_columns.partition];
+		signal_partition_selected.emit( & selected_partition, true );
 	}
 }
 	

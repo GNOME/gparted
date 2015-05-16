@@ -57,10 +57,10 @@ void DrawingAreaVisualDisk::load_partitions( const std::vector<Partition> & part
 	queue_resize() ;
 }
 
-void DrawingAreaVisualDisk::set_selected( const Partition & partition ) 
+void DrawingAreaVisualDisk::set_selected( const Partition * partition_ptr )
 {
 	selected_vp = NULL ;
-	set_selected( visual_partitions, partition ) ;
+	set_selected( visual_partitions, partition_ptr );
 	
 	queue_draw() ;
 }
@@ -307,14 +307,14 @@ void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & 
 }
 
 void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & visual_partitions,
-					  const Partition & partition ) 
+                                          const Partition * partition_ptr )
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() && ! selected_vp ; t++ )
 	{
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
-			set_selected( visual_partitions[ t ] .logicals, partition ) ;
+			set_selected( visual_partitions[t].logicals, partition_ptr );
 
-		if ( ! selected_vp && visual_partitions[ t ] .partition == partition )
+		if ( ! selected_vp && visual_partitions[t].partition == *partition_ptr )
 			selected_vp = & visual_partitions[ t ] ;
 	}
 }
@@ -361,7 +361,7 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 	
 	if ( selected_vp )
 	{
-		signal_partition_selected .emit( selected_vp ->partition, false ) ;	
+		signal_partition_selected.emit( & selected_vp->partition, false );
 
 		if ( event ->type == GDK_2BUTTON_PRESS ) 
 			signal_partition_activated .emit() ;

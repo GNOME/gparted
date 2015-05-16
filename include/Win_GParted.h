@@ -151,7 +151,7 @@ private:
 	void menu_help_contents();
 	void menu_help_about();
 
-	void on_partition_selected( const Partition & partition, bool src_is_treeview ) ;
+	void on_partition_selected( const Partition * partition_ptr, bool src_is_treeview );
 	void on_partition_activated() ;
 	void on_partition_popup_menu( unsigned int button, unsigned int time ) ;
 	
