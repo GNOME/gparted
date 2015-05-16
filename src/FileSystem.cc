@@ -31,7 +31,7 @@ FileSystem::FileSystem()
 {
 }
 
-const Glib::ustring FileSystem::get_custom_text( CUSTOM_TEXT ttype, int index )
+const Glib::ustring FileSystem::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	return get_generic_text( ttype, index ) ;
 }
