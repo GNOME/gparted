@@ -81,14 +81,15 @@ private:
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon1 ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > icon2 ;
 		Gtk::TreeModelColumn<Glib::ustring> flags;
-		Gtk::TreeModelColumn<Partition> partition; //hidden column 
-		
+		Gtk::TreeModelColumn<const Partition *> partition_ptr;  // Hidden column.  (Alias to element in
+		                                                        // Win_GParted::display_partitions[] vector).
+
 		treeview_detail_Columns()
 		{
 			add( path ); add( name ); add( filesystem ); add( mountpoint ); add( label );
 			add( size ); add( used ); add( unused ); add( color );
 			add( text_color ); add( mount_text_color ); add( icon1 );
-			add( icon2 ) ; add( flags ); add( partition );
+			add( icon2 ); add( flags ); add( partition_ptr );
 		}
 	};
 	

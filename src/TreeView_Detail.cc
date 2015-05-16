@@ -142,7 +142,7 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
 {
 	for ( unsigned int t = 0 ; t < rows .size() ; t++ )
 	{
-		if ( static_cast<Partition>( rows[t][treeview_detail_columns.partition] ) == *partition_ptr )
+		if ( * static_cast<const Partition *>( rows[t][treeview_detail_columns.partition_ptr] ) == *partition_ptr )
 		{
 			if ( inside_extended )
 				expand_all() ;
@@ -211,9 +211,9 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	//flags	
 	treerow[ treeview_detail_columns .flags ] = 
 		Glib::build_path( ", ", partition .flags ) ;
-	
-	//hidden column (partition object)
-	treerow[ treeview_detail_columns .partition ] = partition;
+
+	// Hidden column (pointer to partition object)
+	treerow[treeview_detail_columns.partition_ptr] = & partition;
 }
 
 bool TreeView_Detail::on_button_press_event( GdkEventButton * event )
@@ -241,8 +241,7 @@ void TreeView_Detail::on_selection_changed()
 	if ( ! block && treeselection ->get_selected() != 0 )
 	{
 		Gtk::TreeRow row = static_cast<Gtk::TreeRow>( * treeselection ->get_selected() ) ;
-		Partition selected_partition = row[treeview_detail_columns.partition];
-		signal_partition_selected.emit( & selected_partition, true );
+		signal_partition_selected.emit( row[treeview_detail_columns.partition_ptr], true );
 	}
 }
 	
