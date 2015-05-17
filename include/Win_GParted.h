@@ -185,7 +185,9 @@ private:
 	unsigned int current_device ;
 	std::vector<Partition> display_partitions;  // Copy of current device's partitions with any pending
 	                                            // operations applied, as currently being shown in the GUI.
-	Partition selected_partition, copied_partition;
+	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
+	                                            // in Win_GParted::display_partitions[] vector).
+	Partition copied_partition;
 	std::vector<Device> devices;
 	std::vector<Operation *> operations;
 

@@ -51,7 +51,7 @@ namespace GParted
 Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 {
 	copied_partition .Reset() ;
-	selected_partition .Reset() ;
+	selected_partition_ptr = NULL;
 	new_count = 1;
 	current_device = 0 ;
 	OPERATIONSLIST_OPEN = true ;
@@ -846,7 +846,7 @@ void Win_GParted::Refresh_Visual()
 	index_extended = -1 ;
 	primary_count = 0;
 
-	selected_partition .Reset() ;
+	selected_partition_ptr = NULL;
 	Sector largest_unalloc_size = -1 ;
 	Sector current_size ;
 
@@ -874,7 +874,7 @@ void Win_GParted::Refresh_Visual()
 							if ( current_size > largest_unalloc_size )
 							{
 								largest_unalloc_size = current_size ;
-								selected_partition = display_partitions[t].logicals[u];
+								selected_partition_ptr = & display_partitions[t].logicals[u];
 							}
 							break;
 
@@ -889,7 +889,7 @@ void Win_GParted::Refresh_Visual()
 				if ( current_size > largest_unalloc_size )
 				{
 					largest_unalloc_size = current_size ;
-					selected_partition = display_partitions[t];
+					selected_partition_ptr = & display_partitions[t];
 				}
 				break;
 
@@ -914,8 +914,8 @@ void Win_GParted::Refresh_Visual()
 	{
 		// Flashing redraw work around.  Inform visuals of selection of the
 		// largest unallocated partition after drawing those visuals above.
-		drawingarea_visualdisk.set_selected( & selected_partition );
-		treeview_detail.set_selected( & selected_partition );
+		drawingarea_visualdisk.set_selected( selected_partition_ptr );
+		treeview_detail.set_selected( selected_partition_ptr );
 
 		// Process Gtk events to draw selection
 		while ( Gtk::Main::events_pending() )
@@ -965,38 +965,38 @@ void Win_GParted::set_valid_operations()
 	menu_partition .items()[ MENU_TOGGLE_BUSY ] .show() ;
 	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
 
-	//no partition selected...	
-	if ( ! selected_partition .get_paths() .size() )
+	// No partition selected ...
+	if ( ! selected_partition_ptr )
 		return ;
 
-	//get filesystem capabilities
-	fs = gparted_core .get_fs( selected_partition .filesystem ) ;
+	// Get filesystem capabilities
+	fs = gparted_core.get_fs( selected_partition_ptr->filesystem );
 
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
 
 	// Set an appropriate name for the activate/deactivate menu item.
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition.filesystem );
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
 	if ( filesystem_object )
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
-			->set_label( filesystem_object->get_custom_text(   selected_partition.busy
+			->set_label( filesystem_object->get_custom_text(   selected_partition_ptr->busy
 			                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
 	else
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
-			->set_label( FileSystem::get_generic_text (  selected_partition .busy
+			->set_label( FileSystem::get_generic_text (  selected_partition_ptr->busy
 			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
 
-	//Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
-	if (    selected_partition .status == GParted::STAT_REAL
-	     && selected_partition .type != GParted::TYPE_EXTENDED
-	     && selected_partition .filesystem != GParted::FS_LVM2_PV
-	     && selected_partition .filesystem != FS_LINUX_SWRAID
-	     && (    selected_partition .busy
-	          || selected_partition .get_mountpoints() .size() /* Have mount point(s) */
-	          || selected_partition .filesystem == GParted::FS_LINUX_SWAP
+	// Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
+	if (    selected_partition_ptr->status     == STAT_REAL
+	     && selected_partition_ptr->type       != TYPE_EXTENDED
+	     && selected_partition_ptr->filesystem != FS_LVM2_PV
+	     && selected_partition_ptr->filesystem != FS_LINUX_SWRAID
+	     && (    selected_partition_ptr->busy
+	          || selected_partition_ptr->get_mountpoints().size() /* Have mount point(s) */
+	          || selected_partition_ptr->filesystem == FS_LINUX_SWAP
 	        )
 	   )
 		allow_toggle_busy_state( true ) ;
@@ -1005,44 +1005,44 @@ void Win_GParted::set_valid_operations()
 	//  For now specifically allow activation of an exported VG, which LVM will fail
 	//  with "Volume group "VGNAME" is exported", otherwise user won't know why the
 	//  inactive PV can't be activated.
-	if (    selected_partition .status == GParted::STAT_REAL
-	     && selected_partition .type != GParted::TYPE_EXTENDED
-	     && selected_partition .filesystem == GParted::FS_LVM2_PV
-	     && (    selected_partition .busy
-	          || (    ! selected_partition .busy
-                       && ! selected_partition .get_mountpoints() .empty()  //VGNAME from mount point
+	if (    selected_partition_ptr->status     == STAT_REAL
+	     && selected_partition_ptr->type       != TYPE_EXTENDED
+	     && selected_partition_ptr->filesystem == FS_LVM2_PV
+	     && (    selected_partition_ptr->busy
+	          || (    ! selected_partition_ptr->busy
+	               && ! selected_partition_ptr->get_mountpoints().empty()  // VGNAME from mount point
 	             )
 	        )
 	   )
 		allow_toggle_busy_state( true ) ;
 
 	// Allow naming on devices that support it
-	if ( selected_partition.type != TYPE_UNALLOCATED          &&
-	     selected_partition.status == STAT_REAL               &&
+	if ( selected_partition_ptr->type   != TYPE_UNALLOCATED   &&
+	     selected_partition_ptr->status == STAT_REAL          &&
 	     devices[current_device].partition_naming_supported()    )
 		allow_name_partition( true );
 
 	// Manage flags
-	if ( selected_partition.type != TYPE_UNALLOCATED &&
-	     selected_partition.status == STAT_REAL      &&
-	     ! selected_partition.whole_device              )
+	if ( selected_partition_ptr->type   != TYPE_UNALLOCATED &&
+	     selected_partition_ptr->status == STAT_REAL        &&
+	     ! selected_partition_ptr->whole_device                )
 		allow_manage_flags( true );
 
 #ifdef ENABLE_ONLINE_RESIZE
-	//Find out if online resizing is possible
-	if ( selected_partition .busy )
+	// Find out if online resizing is possible
+	if ( selected_partition_ptr->busy )
 	{
 		if ( ( fs .online_grow || fs .online_shrink ) && ! devices[ current_device ] .readonly )
 			allow_resize( true ) ;
 	}
 #endif
 
-	//only unmount/swapoff/VG deactivate or online actions allowed if busy
-	if ( selected_partition .busy )
+	// Only unmount/swapoff/VG deactivate or online actions allowed if busy
+	if ( selected_partition_ptr->busy )
 		return ;
 
-	//UNALLOCATED
-	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
+	// UNALLOCATED
+	if ( selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
 		allow_new( true );
 		
@@ -1059,24 +1059,24 @@ void Win_GParted::set_valid_operations()
 			//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
 			//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
 			//  NOTE:  This logic also contained in Dialog_Base_Partition::MB_Needed_for_Boot_Record
-			if (   (   selected_partition .inside_extended
-			        && selected_partition .type == TYPE_UNALLOCATED
+			if (   (   selected_partition_ptr->inside_extended
+			        && selected_partition_ptr->type == TYPE_UNALLOCATED
 			       )
-			    || ( selected_partition .type == TYPE_LOGICAL )
+			    || ( selected_partition_ptr->type == TYPE_LOGICAL )
 			                                     /* Beginning of disk device */
-			    || ( selected_partition .sector_start <= (MEBIBYTE / selected_partition .sector_size) )
+			    || ( selected_partition_ptr->sector_start <= (MEBIBYTE / selected_partition_ptr->sector_size) )
 			   )
 				required_size += MEBIBYTE;
 
 			//Determine if space is needed for the Extended Boot Record for a logical partition
 			//  after this partition.  Generally an an additional track or MEBIBYTE
 			//  is required so for our purposes reserve a MEBIBYTE in front of the partition.
-			if (   (   (   selected_partition .inside_extended
-			            && selected_partition .type == TYPE_UNALLOCATED
+			if (   (   (   selected_partition_ptr->inside_extended
+			            && selected_partition_ptr->type == TYPE_UNALLOCATED
 			           )
-			        || ( selected_partition .type == TYPE_LOGICAL )
+			        || ( selected_partition_ptr->type == TYPE_LOGICAL )
 			       )
-			    && ( selected_partition .sector_end
+			    && ( selected_partition_ptr->sector_end
 			         < ( devices[ current_device ] .length
 			             - ( 2 * MEBIBYTE / devices[ current_device ] .sector_size )
 			           )
@@ -1086,25 +1086,25 @@ void Win_GParted::set_valid_operations()
 
 			//Determine if space is needed for the backup partition on a GPT partition table
 			if (   ( devices[ current_device ] .disktype == "gpt" )
-			    && ( ( devices[ current_device ] .length - selected_partition .sector_end )
+			    && ( ( devices[current_device].length - selected_partition_ptr->sector_end )
 			         < ( MEBIBYTE / devices[ current_device ] .sector_size )
 			       )
 			   )
 				required_size += MEBIBYTE ;
 
-			if ( required_size <= selected_partition .get_byte_length() )
+			if ( required_size <= selected_partition_ptr->get_byte_length() )
 				allow_paste( true ) ;
 		}
 		
 		return ;
 	}
 	
-	//EXTENDED
-	if ( selected_partition .type == GParted::TYPE_EXTENDED )
+	// EXTENDED
+	if ( selected_partition_ptr->type == TYPE_EXTENDED )
 	{
-		//deletion is only allowed when there are no logical partitions inside.
-		if ( selected_partition .logicals .size() == 1 &&
-		     selected_partition .logicals .back() .type == GParted::TYPE_UNALLOCATED ) 
+		// Deletion is only allowed when there are no logical partitions inside.
+		if ( selected_partition_ptr->logicals.size()      == 1                &&
+		     selected_partition_ptr->logicals.back().type == TYPE_UNALLOCATED    )
 			allow_delete( true ) ;
 		
 		if ( ! devices[ current_device ] .readonly )
@@ -1113,13 +1113,13 @@ void Win_GParted::set_valid_operations()
 		return ;
 	}	
 	
-	//PRIMARY and LOGICAL
-	if (  selected_partition .type == GParted::TYPE_PRIMARY || selected_partition .type == GParted::TYPE_LOGICAL )
+	// PRIMARY and LOGICAL
+	if (  selected_partition_ptr->type == TYPE_PRIMARY || selected_partition_ptr->type == TYPE_LOGICAL )
 	{
 		allow_format( true ) ;
 
 		// only allow deletion of partitions within a partition table
-		if ( ! selected_partition.whole_device )
+		if ( ! selected_partition_ptr->whole_device )
 			allow_delete( true );
 
 		//find out if resizing/moving is possible
@@ -1127,30 +1127,29 @@ void Win_GParted::set_valid_operations()
 			allow_resize( true ) ;
 			
 		//only allow copying of real partitions
-		if ( selected_partition .status == GParted::STAT_REAL && fs .copy )
+		if ( selected_partition_ptr->status == STAT_REAL && fs.copy )
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
-		if ( selected_partition .status == GParted::STAT_REAL && fs .write_label )
+		if ( selected_partition_ptr->status == STAT_REAL && fs.write_label )
 			allow_label_filesystem( true );
 
 		//only allow changing UUID of real partitions that support it
-		if ( selected_partition .status == GParted::STAT_REAL && fs .write_uuid )
+		if ( selected_partition_ptr->status == STAT_REAL && fs.write_uuid )
 			allow_change_uuid( true ) ;
 
-		//Generate Mount on submenu, except for LVM2 PVs
-		//  borrowing mount point to display the VGNAME
-		if (   selected_partition .filesystem != GParted::FS_LVM2_PV
-		    && selected_partition .get_mountpoints() .size()
-		   )
+		// Generate Mount on submenu, except for LVM2 PVs
+		// borrowing mount point to display the VGNAME
+		if ( selected_partition_ptr->filesystem != FS_LVM2_PV &&
+		     selected_partition_ptr->get_mountpoints().size()    )
 		{
 			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
 			menu ->items() .clear() ;
-			for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
+			for ( unsigned int t = 0 ; t < selected_partition_ptr->get_mountpoints().size() ; t++ )
 			{
 				menu ->items() .push_back( 
 					Gtk::Menu_Helpers::MenuElem( 
-						selected_partition .get_mountpoints()[ t ], 
+						selected_partition_ptr->get_mountpoints()[t],
 						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) );
 
 				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
@@ -1162,13 +1161,13 @@ void Win_GParted::set_valid_operations()
 
 		//see if there is an copied partition and if it passes all tests
 		if ( ! copied_partition .get_path() .empty() &&
-		     copied_partition .get_byte_length() <= selected_partition .get_byte_length() &&
-		     selected_partition .status == GParted::STAT_REAL &&
-		     copied_partition != selected_partition )
+		     copied_partition.get_byte_length() <= selected_partition_ptr->get_byte_length() &&
+		     selected_partition_ptr->status == STAT_REAL &&
+		     copied_partition != *selected_partition_ptr )
 		     allow_paste( true ) ;
 
 		//see if we can somehow check/repair this file system....
-		if ( fs .check && selected_partition .status == GParted::STAT_REAL )
+		if ( fs.check && selected_partition_ptr->status == STAT_REAL )
 			allow_check( true ) ;
 	}
 }
@@ -1553,7 +1552,7 @@ void Win_GParted::menu_help_about()
 
 void Win_GParted::on_partition_selected( const Partition * partition_ptr, bool src_is_treeview )
 {
-	selected_partition = * partition_ptr;
+	selected_partition_ptr = partition_ptr;
 
 	set_valid_operations() ;
 
@@ -1578,7 +1577,7 @@ bool Win_GParted::max_amount_prim_reached()
 	//FIXME: this is the only place where primary_count is used... instead of counting the primaries on each
 	//refresh, we could just count them here.
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
-	if ( ! selected_partition .inside_extended && primary_count >= devices[ current_device ] .max_prims )
+	if ( ! selected_partition_ptr->inside_extended && primary_count >= devices[current_device].max_prims )
 	{
 		Gtk::MessageDialog dialog( 
 			*this,
@@ -1613,46 +1612,47 @@ void Win_GParted::activate_resize()
 			if ( operations[ t ] ->device == devices[ current_device ] )
 				operations[ t ] ->apply_to_visual( partitions ) ;
 
-	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition.filesystem ) );
+	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition_ptr->filesystem ) );
 
-	if ( selected_partition .type == GParted::TYPE_LOGICAL )
+	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;
 		while ( ext < partitions .size() && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
-		dialog .Set_Data( selected_partition, partitions[ ext ] .logicals );
+		dialog.Set_Data( *selected_partition_ptr, partitions[ext].logicals );
 	}
 	else
-		dialog .Set_Data( selected_partition, partitions );
-		
+		dialog.Set_Data( *selected_partition_ptr, partitions );
+
 	dialog .set_transient_for( *this ) ;	
 			
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		dialog .hide() ;
 		
-		//if selected_partition is NEW we simply remove the NEW operation from the list and add 
-		//it again with the new size and position ( unless it's an EXTENDED )
-		if ( selected_partition .status == GParted::STAT_NEW && selected_partition .type != GParted::TYPE_EXTENDED )
+		// If selected partition is NEW we simply remove the NEW operation from the list and add
+		// it again with the new size and position ( unless it's an EXTENDED )
+		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
 		{
 			//remove operation which creates this partition
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				if ( operations[ t ] ->partition_new == selected_partition )
+				if ( operations[t]->partition_new == *selected_partition_ptr )
 				{
 					remove_operation( t ) ;
 					
-					//And add the new partition to the end of the operations list
-					//change 'selected_partition' into a suitable 'partition_original') 
-					selected_partition.Set_Unallocated( devices[current_device].get_path(),
-					                                    selected_partition.whole_device,
-					                                    selected_partition.sector_start,
-					                                    selected_partition.sector_end,
-					                                    devices[current_device].sector_size,
-					                                    selected_partition.inside_extended );
+					// And add the new partition to the end of the operations list.
+					// Create a suitable partition from the selected partition.
+					Partition temp_partition = *selected_partition_ptr;
+					temp_partition.Set_Unallocated( devices[current_device].get_path(),
+					                                selected_partition_ptr->whole_device,
+					                                selected_partition_ptr->sector_start,
+					                                selected_partition_ptr->sector_end,
+					                                devices[current_device].sector_size,
+					                                selected_partition_ptr->inside_extended );
 
 					Operation * operation = new OperationCreate( devices[ current_device ],
-										     selected_partition,
-										     dialog .Get_New_Partition( devices[ current_device ] .sector_size ) ) ;
+					                                             temp_partition,
+					                                             dialog.Get_New_Partition( devices[current_device].sector_size ) );
 					operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 					Add_Operation( operation ) ;
@@ -1661,11 +1661,11 @@ void Win_GParted::activate_resize()
 				}
 			}
 		}
-		else//normal move/resize on existing partition
+		else  // Normal move/resize on existing partition
 		{
-			Operation * operation = new OperationResizeMove( devices[ current_device ],
-								         selected_partition,
-								         dialog .Get_New_Partition( devices[ current_device ] .sector_size) );
+			Operation * operation = new OperationResizeMove( devices[current_device],
+			                                                 *selected_partition_ptr,
+			                                                 dialog.Get_New_Partition( devices[current_device].sector_size) );
 			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation ) ;
@@ -1712,19 +1712,19 @@ void Win_GParted::activate_resize()
 
 void Win_GParted::activate_copy()
 {
-	copied_partition = selected_partition ;
+	copied_partition = *selected_partition_ptr;
 }
 
 void Win_GParted::activate_paste()
 {
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
-	if ( selected_partition.whole_device && selected_partition.type == TYPE_UNALLOCATED )
+	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 		return ;
 	}
 
-	if ( selected_partition .type == GParted::TYPE_UNALLOCATED )
+	if ( selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
 		if ( ! max_amount_prim_reached() )
 		{
@@ -1735,17 +1735,17 @@ void Win_GParted::activate_paste()
 			copied_partition .messages .clear() ;
 			copied_partition .clear_mountpoints() ;
 			copied_partition .name.clear() ;
-			dialog .Set_Data( selected_partition, copied_partition ) ;
+			dialog.Set_Data( *selected_partition_ptr, copied_partition );
 			dialog .set_transient_for( *this );
 		
 			if ( dialog .run() == Gtk::RESPONSE_OK )
 			{
 				dialog .hide() ;
 
-				Operation * operation = new OperationCopy( devices[ current_device ],
-									   selected_partition,
-									   dialog .Get_New_Partition( devices[ current_device ] .sector_size ),
-									   copied_partition ) ;
+				Operation * operation = new OperationCopy( devices[current_device],
+				                                           *selected_partition_ptr,
+				                                           dialog.Get_New_Partition( devices[current_device].sector_size ),
+				                                           copied_partition );
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation ) ;
@@ -1755,15 +1755,16 @@ void Win_GParted::activate_paste()
 	else
 	{
 		bool shown_dialog = false ;
-		//VGNAME from mount mount
-		if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+		// VGNAME from mount mount
+		if ( selected_partition_ptr->filesystem == FS_LVM2_PV   &&
+		     ! selected_partition_ptr->get_mountpoint().empty()    )
 		{
 			if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_COPY ) )
 				return ;
 			shown_dialog = true ;
 		}
 
-		Partition partition_new = selected_partition ;
+		Partition partition_new = *selected_partition_ptr;
 		partition_new .alignment = ALIGN_STRICT ;
 		partition_new .filesystem = copied_partition .filesystem ;
 		partition_new.set_filesystem_label( copied_partition.get_filesystem_label() );
@@ -1789,10 +1790,10 @@ void Win_GParted::activate_paste()
 		}
 		partition_new .messages .clear() ;
  
-		Operation * operation = new OperationCopy( devices[ current_device ],
-					 	       	   selected_partition,
-							   partition_new,
-						       	   copied_partition ) ;
+		Operation * operation = new OperationCopy( devices[current_device],
+		                                           *selected_partition_ptr,
+		                                           partition_new,
+		                                           copied_partition );
 		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
@@ -1822,7 +1823,7 @@ void Win_GParted::activate_paste()
 void Win_GParted::activate_new()
 {
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
-	if ( selected_partition.whole_device && selected_partition.type == TYPE_UNALLOCATED )
+	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 	}
@@ -1830,11 +1831,11 @@ void Win_GParted::activate_new()
 	{	
 		Dialog_Partition_New dialog;
 		
-		dialog .Set_Data( devices[current_device],
-		                  selected_partition,
-		                  index_extended > -1,
-		                  new_count,
-		                  gparted_core.get_filesystems() );
+		dialog.Set_Data( devices[current_device],
+		                 *selected_partition_ptr,
+		                 index_extended > -1,
+		                 new_count,
+		                 gparted_core.get_filesystems() );
 
 		dialog .set_transient_for( *this );
 		
@@ -1843,9 +1844,9 @@ void Win_GParted::activate_new()
 			dialog .hide() ;
 			
 			new_count++ ;
-			Operation *operation = new OperationCreate( devices[ current_device ],
-								    selected_partition,
-								    dialog .Get_New_Partition( devices[ current_device ] .sector_size ) ) ;
+			Operation * operation = new OperationCreate( devices[current_device],
+			                                             *selected_partition_ptr,
+			                                             dialog.Get_New_Partition( devices[current_device].sector_size ) );
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation );
@@ -1857,8 +1858,8 @@ void Win_GParted::activate_new()
 
 void Win_GParted::activate_delete()
 { 
-	//VGNAME from mount mount
-	if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+	// VGNAME from mount mount
+	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
 	{
 		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_DELETE ) )
 			return ;
@@ -1871,43 +1872,43 @@ void Win_GParted::activate_delete()
 	 * the new situation is now /dev/hda5 /dev/hda6. If /dev/hda7 was mounted 
 	 * the OS cannot find /dev/hda7 anymore and the results aren't that pretty.
 	 * It seems best to check for this and prohibit deletion with some explanation to the user.*/
-	 if ( 	selected_partition .type == GParted::TYPE_LOGICAL &&
-		selected_partition .status != GParted::STAT_NEW && 
-		selected_partition .partition_number < devices[ current_device ] .highest_busy )
+	 if ( selected_partition_ptr->type             == TYPE_LOGICAL                         &&
+	      selected_partition_ptr->status           != STAT_NEW                             &&
+	      selected_partition_ptr->partition_number <  devices[current_device].highest_busy    )
 	{	
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( _( "Unable to delete %1!"), selected_partition .get_path() ),
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true ) ;
+		                           String::ucompose( _("Unable to delete %1!"), selected_partition_ptr->get_path() ),
+		                           false,
+		                           Gtk::MESSAGE_ERROR,
+		                           Gtk::BUTTONS_OK,
+		                           true );
 
 		dialog .set_secondary_text( 
 			String::ucompose( _("Please unmount any logical partitions having a number higher than %1"),
-					  selected_partition .partition_number ) ) ;
-		
+					  selected_partition_ptr->partition_number ) );
+
 		dialog .run() ;
 		return;
 	}
 	
 	//if partition is on the clipboard...(NOTE: we can't use Partition::== here..)
-	if ( selected_partition .get_path() == copied_partition .get_path() )
+	if ( selected_partition_ptr->get_path() == copied_partition.get_path() )
 	{
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( _( "Are you sure you want to delete %1?"), 
-					      		     selected_partition .get_path() ),
-					   false,
-					   Gtk::MESSAGE_QUESTION,
-					   Gtk::BUTTONS_NONE,
-					   true ) ;
+		                           String::ucompose( _("Are you sure you want to delete %1?"),
+		                                             selected_partition_ptr->get_path() ),
+		                           false,
+		                           Gtk::MESSAGE_QUESTION,
+		                           Gtk::BUTTONS_NONE,
+		                           true );
 
 		dialog .set_secondary_text( _("After deletion this partition is no longer available for copying.") ) ;
 		
 		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
-		dialog .set_title( String::ucompose( _("Delete %1 (%2, %3)"), 
-						     selected_partition .get_path(), 
-						     Utils::get_filesystem_string( selected_partition .filesystem ),
-						     Utils::format_size( selected_partition .get_sector_length(), selected_partition .sector_size ) ) );
+		dialog.set_title( String::ucompose( _("Delete %1 (%2, %3)"),
+		                                    selected_partition_ptr->get_path(),
+		                                    Utils::get_filesystem_string( selected_partition_ptr->filesystem ),
+		                                    Utils::format_size( selected_partition_ptr->get_sector_length(), selected_partition_ptr->sector_size ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
 	
@@ -1918,17 +1919,17 @@ void Win_GParted::activate_delete()
 	}
 	
 	//if deleted partition was on the clipboard we erase it...
-	if ( selected_partition .get_path() == copied_partition .get_path() )
+	if ( selected_partition_ptr->get_path() == copied_partition.get_path() )
 		copied_partition .Reset() ;
 			
-	/* if deleted one is NEW, it doesn't make sense to add it to the operationslist,
-	 * we erase its creation and possible modifications like resize etc.. from the operationslist.
-	 * Calling Refresh_Visual will wipe every memory of its existence ;-)*/
-	if ( selected_partition .status == GParted::STAT_NEW )
+	// If deleted one is NEW, it doesn't make sense to add it to the operationslist,
+	// we erase its creation and possible modifications like resize etc.. from the operationslist.
+	// Calling Refresh_Visual will wipe every memory of its existence ;-)
+	if ( selected_partition_ptr->status == STAT_NEW )
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[ t ] ->partition_new .get_path() == selected_partition .get_path() )
+			if ( operations[t]->partition_new.get_path() == selected_partition_ptr->get_path() )
 				remove_operation( t-- ) ;
 				
 		//determine lowest possible new_count
@@ -1953,7 +1954,7 @@ void Win_GParted::activate_delete()
 	}
 	else //deletion of a real partition...
 	{
-		Operation * operation = new OperationDelete( devices[ current_device ], selected_partition ) ;
+		Operation * operation = new OperationDelete( devices[ current_device ], *selected_partition_ptr );
 		operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
 
 		Add_Operation( operation ) ;
@@ -1964,15 +1965,15 @@ void Win_GParted::activate_delete()
 
 void Win_GParted::activate_info()
 {
-	Dialog_Partition_Info dialog( selected_partition );
+	Dialog_Partition_Info dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
 	dialog .run();
 }
 
 void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 {
-	//VGNAME from mount mount
-	if ( selected_partition .filesystem == FS_LVM2_PV && ! selected_partition .get_mountpoint() .empty() )
+	// VGNAME from mount mount
+	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
 	{
 		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_FORMAT ) )
 			return ;
@@ -1981,8 +1982,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//check for some limits...
 	fs = gparted_core .get_fs( new_fs ) ;
 
-	if ( ( selected_partition .get_byte_length() < fs .MIN ) ||
-	     ( fs .MAX && selected_partition .get_byte_length() > fs .MAX ) )
+	if ( ( selected_partition_ptr->get_byte_length() < fs.MIN )           ||
+	     ( fs.MAX && selected_partition_ptr->get_byte_length() > fs.MAX )    )
 	{
 		Gtk::MessageDialog dialog( *this,
 					   String::ucompose( 
@@ -1996,7 +1997,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 					   Gtk::BUTTONS_OK,
 					   true );
 
-		if ( selected_partition .get_byte_length() < fs .MIN )
+		if ( selected_partition_ptr->get_byte_length() < fs.MIN )
 			dialog .set_secondary_text( String::ucompose(
 						/* TO TRANSLATORS: looks like
 						 * A fat16 file system requires a partition of at least 16.00 MiB.
@@ -2020,30 +2021,30 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	//ok we made it.  lets create an fitting partition object
 	Partition part_temp ;
 	part_temp.Set( devices[current_device].get_path(),
-	               selected_partition.get_path(),
-	               selected_partition.partition_number,
-	               selected_partition.type,
-	               selected_partition.whole_device,
+	               selected_partition_ptr->get_path(),
+	               selected_partition_ptr->partition_number,
+	               selected_partition_ptr->type,
+	               selected_partition_ptr->whole_device,
 	               new_fs,
-	               selected_partition.sector_start,
-	               selected_partition.sector_end,
+	               selected_partition_ptr->sector_start,
+	               selected_partition_ptr->sector_end,
 	               devices[current_device].sector_size,
-	               selected_partition.inside_extended,
+	               selected_partition_ptr->inside_extended,
 	               false );
-	part_temp.name = selected_partition.name;
+	part_temp.name = selected_partition_ptr->name;
 	//Leave sector usage figures to new Partition object defaults of
 	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
 	 
 	part_temp .status = GParted::STAT_FORMATTED ;
 	
-	//if selected_partition is NEW we simply remove the NEW operation from the list and
-	//add it again with the new file system
-	if ( selected_partition .status == GParted::STAT_NEW )
+	// If selected partition is NEW we simply remove the NEW operation from the list and
+	// add it again with the new file system
+	if ( selected_partition_ptr->status == STAT_NEW )
 	{
 		//remove operation which creates this partition
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 		{
-			if ( operations[ t ] ->partition_new == selected_partition )
+			if ( operations[t]->partition_new == *selected_partition_ptr )
 			{
 				remove_operation( t ) ;
 				
@@ -2051,9 +2052,9 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 				//(NOTE: in this case we set status to STAT_NEW)
 				part_temp .status = STAT_NEW ;
 				
-				Operation * operation = new OperationCreate( devices[ current_device ],
-									     selected_partition,
-								 	     part_temp ) ;
+				Operation * operation = new OperationCreate( devices[current_device],
+				                                             *selected_partition_ptr,
+				                                             part_temp );
 				operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation, t ) ;
@@ -2064,9 +2065,9 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	}
 	else//normal formatting of an existing partition
 	{
-		Operation *operation = new OperationFormat( devices[ current_device ],
-				 			    selected_partition,
-						 	    part_temp );
+		Operation * operation = new OperationFormat( devices[current_device],
+		                                             *selected_partition_ptr,
+		                                             part_temp );
 		operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
@@ -2087,12 +2088,12 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 	Glib::ustring dummy ;
 
 	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition .get_mountpoints() .size() ; t++ )
-		if ( std::count( mountpoints .begin(),
-				 mountpoints .end(),
-				 selected_partition .get_mountpoints()[ t ] ) <= 1 ) 
+	for ( unsigned int t = 0 ; t < selected_partition_ptr->get_mountpoints().size() ; t++ )
+		if ( std::count( mountpoints.begin(),
+		                 mountpoints.end(),
+		                 selected_partition_ptr->get_mountpoints()[t] ) <= 1 )
 		{
-			Glib::ustring cmd = "umount -v \"" + selected_partition.get_mountpoints()[t] + "\"";
+			Glib::ustring cmd = "umount -v \"" + selected_partition_ptr->get_mountpoints()[t] + "\"";
 			if ( Utils::execute_command( cmd, dummy, *error ) )
 			{
 				*succes = false ;
@@ -2100,9 +2101,8 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 			}
 		}
 		else
-			failed_mountpoints .push_back( selected_partition .get_mountpoints()[ t ] ) ;
+			failed_mountpoints.push_back( selected_partition_ptr->get_mountpoints()[t] );
 
-	
 	if ( *succes && failed_mountpoints .size() )
 	{
 		*succes = false ;
@@ -2116,7 +2116,7 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 	
 void Win_GParted::toggle_busy_state()
 {
-	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
+	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	bool success = false ;
 	Glib::ustring cmd;
 	Glib::ustring output;
@@ -2138,7 +2138,7 @@ void Win_GParted::toggle_busy_state()
 		                              , operation_count
 		                              )
 		                    , operation_count
-		                    , selected_partition .get_path()
+		                    , selected_partition_ptr->get_path()
 		                    ) ;
 		Gtk::MessageDialog dialog( *this
 		                         , tmp_msg
@@ -2147,13 +2147,13 @@ void Win_GParted::toggle_busy_state()
 		                         , Gtk::BUTTONS_OK
 		                         , true
 		                         ) ;
-		if ( selected_partition.filesystem == FS_LINUX_SWAP )
+		if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP )
 		{
 			tmp_msg = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
 			tmp_msg += "\n" ;
 			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
 		}
-		else if ( selected_partition.filesystem == FS_LVM2_PV )
+		else if ( selected_partition_ptr->filesystem == FS_LVM2_PV )
 		{
 			tmp_msg = _( "The activate Volume Group action cannot be performed if an operation is pending for the partition." ) ;
 			tmp_msg += "\n" ;
@@ -2164,23 +2164,23 @@ void Win_GParted::toggle_busy_state()
 		return ;
 	}
 
-	if ( selected_partition.filesystem == FS_LINUX_SWAP )
+	if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP )
 	{
 		show_pulsebar( 
 			String::ucompose( 
-				selected_partition .busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
-				selected_partition .get_path() ) ) ;
-		if ( selected_partition .busy )
-			cmd = "swapoff -v " + selected_partition.get_path();
+				selected_partition_ptr->busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
+				selected_partition_ptr->get_path() ) );
+		if ( selected_partition_ptr->busy )
+			cmd = "swapoff -v " + selected_partition_ptr->get_path();
 		else
-			cmd = "swapon -v " + selected_partition.get_path();
+			cmd = "swapon -v " + selected_partition_ptr->get_path();
 		success = ! Utils::execute_command( cmd, output, error );
 		hide_pulsebar();
 		if ( ! success )
 		{
 			Gtk::MessageDialog dialog( 
 				*this,
-				selected_partition .busy ? _("Could not deactivate swap") : _("Could not activate swap"),
+				selected_partition_ptr->busy ? _("Could not deactivate swap") : _("Could not activate swap"),
 				false,
 				Gtk::MESSAGE_ERROR,
 				Gtk::BUTTONS_OK,
@@ -2191,19 +2191,19 @@ void Win_GParted::toggle_busy_state()
 			dialog.run() ;
 		}
 	}
-	else if ( selected_partition.filesystem == FS_LVM2_PV )
+	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV )
 	{
 		show_pulsebar(
 			String::ucompose(
-				selected_partition .busy ? _("Deactivating Volume Group %1")
-				                         : _("Activating Volume Group %1"),
-				//VGNAME from mount point
-				selected_partition .get_mountpoint() ) ) ;
-		if ( selected_partition .busy )
-			//VGNAME from mount point
-			cmd = "lvm vgchange -a n " + selected_partition.get_mountpoint();
+				selected_partition_ptr->busy ? _("Deactivating Volume Group %1")
+				                             : _("Activating Volume Group %1"),
+				// VGNAME from mount point
+				selected_partition_ptr->get_mountpoint() ) );
+		if ( selected_partition_ptr->busy )
+			// VGNAME from mount point
+			cmd = "lvm vgchange -a n " + selected_partition_ptr->get_mountpoint();
 		else
-			cmd = "lvm vgchange -a y " + selected_partition.get_mountpoint();
+			cmd = "lvm vgchange -a y " + selected_partition_ptr->get_mountpoint();
 		success = ! Utils::execute_command( cmd, output, error );
 		hide_pulsebar();
 
@@ -2211,8 +2211,8 @@ void Win_GParted::toggle_busy_state()
 		{
 			Gtk::MessageDialog dialog(
 				*this,
-				selected_partition .busy ? _("Could not deactivate Volume Group")
-				                         : _("Could not activate Volume Group"),
+				selected_partition_ptr->busy ? _("Could not deactivate Volume Group")
+				                             : _("Could not activate Volume Group"),
 				false,
 				Gtk::MESSAGE_ERROR,
 				Gtk::BUTTONS_OK,
@@ -2223,19 +2223,20 @@ void Win_GParted::toggle_busy_state()
 			dialog.run() ;
 		}
 	}
-	else if ( selected_partition .busy )
+	else if ( selected_partition_ptr->busy )
 	{
-		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition .get_path() ) ) ;
+		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition_ptr->get_path() ) );
 		unmount_partition( &success, &error );
 		hide_pulsebar();
 		if ( ! success )
 		{
 			Gtk::MessageDialog dialog( *this, 
-						   String::ucompose( _("Could not unmount %1"), selected_partition .get_path() ),
-						   false,
-						   Gtk::MESSAGE_ERROR,
-						   Gtk::BUTTONS_OK,
-						   true );
+			                           String::ucompose( _("Could not unmount %1"),
+			                                             selected_partition_ptr->get_path() ),
+			                           false,
+			                           Gtk::MESSAGE_ERROR,
+			                           Gtk::BUTTONS_OK,
+			                           true );
 
 			dialog .set_secondary_text( error, true ) ;
 		
@@ -2248,7 +2249,7 @@ void Win_GParted::toggle_busy_state()
 
 void Win_GParted::activate_mount_partition( unsigned int index ) 
 {
-	int operation_count = partition_in_operation_queue_count( selected_partition ) ;
+	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	if ( operation_count > 0 )
 	{
 		/*TO TRANSLATORS: Plural case looks like   4 operations are currently pending for partition /dev/sdd8. */
@@ -2258,7 +2259,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 		                              , operation_count
 		                              )
 		                    , operation_count
-		                    , selected_partition .get_path()
+		                    , selected_partition_ptr->get_path()
 		                    ) ;
 		Gtk::MessageDialog dialog( *this
 		                         , tmp_msg
@@ -2282,26 +2283,26 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	Glib::ustring message;
 
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
-					 selected_partition .get_path(),
-					 selected_partition .get_mountpoints()[ index ] ) ) ;
+	                                 selected_partition_ptr->get_path(),
+	                                 selected_partition_ptr->get_mountpoints()[index] ) );
 
 	// First try mounting letting mount (libblkid) determine the file system type.
 	// Do this because GParted uses libparted first and blkid second and when there
 	// are multiple signatures GParted may report a different result to blkid alone.
-	cmd = "mount -v " + selected_partition.get_path() +
-	      " \"" + selected_partition.get_mountpoints()[index] + "\"";
+	cmd = "mount -v " + selected_partition_ptr->get_path() +
+	      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
 	success = ! Utils::execute_command( cmd, output, error );
 	if ( ! success )
 	{
 		message = "# " + cmd + "\n" + error;
 
-		Glib::ustring type = Utils::get_filesystem_kernel_name( selected_partition.filesystem );
+		Glib::ustring type = Utils::get_filesystem_kernel_name( selected_partition_ptr->filesystem );
 		if ( ! type.empty() )
 		{
 			// Second try mounting specifying the GParted determined file
 			// system type.
-			cmd = "mount -v -t " + type + " " + selected_partition.get_path() +
-			      " \"" + selected_partition.get_mountpoints()[index] + "\"";
+			cmd = "mount -v -t " + type + " " + selected_partition_ptr->get_path() +
+			      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
 			success = ! Utils::execute_command( cmd, output, error );
 			if ( ! success )
 				message += "\n# " + cmd + "\n" + error;
@@ -2311,13 +2312,13 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	if ( ! success )
 	{
 		Gtk::MessageDialog dialog( *this, 
-					   String::ucompose( _("Could not mount %1 on %2"),
-						   	     selected_partition .get_path(),
-							     selected_partition .get_mountpoints()[ index ] ),
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true );
+		                           String::ucompose( _("Could not mount %1 on %2"),
+		                                             selected_partition_ptr->get_path(),
+		                                             selected_partition_ptr->get_mountpoints()[index] ),
+		                           false,
+		                           Gtk::MESSAGE_ERROR,
+		                           Gtk::BUTTONS_OK,
+		                           true );
 
 		dialog.set_secondary_text( message );
 
@@ -2487,7 +2488,7 @@ void Win_GParted::activate_manage_flags()
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
 
-	DialogManageFlags dialog( selected_partition, gparted_core .get_available_flags( selected_partition ) ) ;
+	DialogManageFlags dialog( *selected_partition_ptr, gparted_core.get_available_flags( *selected_partition_ptr ) );
 	dialog .set_transient_for( *this ) ;
 	dialog .signal_get_flags .connect(
 		sigc::mem_fun( &gparted_core, &GParted_Core::get_available_flags ) ) ;
@@ -2505,7 +2506,7 @@ void Win_GParted::activate_manage_flags()
 	
 void Win_GParted::activate_check() 
 {
-	Operation *operation = new OperationCheck( devices[ current_device ], selected_partition ) ;
+	Operation * operation = new OperationCheck( devices[current_device], *selected_partition_ptr );
 
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
@@ -2526,20 +2527,20 @@ void Win_GParted::activate_check()
 
 void Win_GParted::activate_label_filesystem()
 {
-	Dialog_FileSystem_Label dialog( selected_partition );
+	Dialog_FileSystem_Label dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
 
-	if (	( dialog .run() == Gtk::RESPONSE_OK )
-	     && ( dialog.get_new_label() != selected_partition.get_filesystem_label() ) )
+	if (	dialog .run() == Gtk::RESPONSE_OK
+	     && dialog.get_new_label() != selected_partition_ptr->get_filesystem_label() )
 	{
 		dialog .hide() ;
-		//Make a duplicate of the selected partition (used in UNDO)
-		Partition part_temp = selected_partition ;
+		// Make a duplicate of the selected partition (used in UNDO)
+		Partition part_temp = *selected_partition_ptr;
 
 		part_temp.set_filesystem_label( dialog.get_new_label() );
 
 		Operation * operation = new OperationLabelFileSystem( devices[current_device],
-									selected_partition, part_temp ) ;
+		                                                      *selected_partition_ptr, part_temp );
 		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
@@ -2560,21 +2561,21 @@ void Win_GParted::activate_label_filesystem()
 
 void Win_GParted::activate_name_partition()
 {
-	Dialog_Partition_Name dialog( selected_partition,
+	Dialog_Partition_Name dialog( *selected_partition_ptr,
 	                              devices[current_device].get_max_partition_name_length() );
 	dialog.set_transient_for( *this );
 
-	if (	( dialog.run() == Gtk::RESPONSE_OK )
-	     && ( dialog.get_new_name() != selected_partition.name ) )
+	if (	dialog.run() == Gtk::RESPONSE_OK
+	     && dialog.get_new_name() != selected_partition_ptr->name )
 	{
 		dialog.hide();
 		// Make a duplicate of the selected partition (used in UNDO)
-		Partition part_temp = selected_partition;
+		Partition part_temp = *selected_partition_ptr;
 
 		part_temp.name = dialog.get_new_name();
 
 		Operation * operation = new OperationNamePartition( devices[current_device],
-		                                                    selected_partition, part_temp );
+		                                                    *selected_partition_ptr, part_temp );
 		operation->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation );
@@ -2595,7 +2596,7 @@ void Win_GParted::activate_name_partition()
 
 void Win_GParted::activate_change_uuid()
 {
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition.filesystem );
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
 	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
 	{
 		int i ;
@@ -2616,8 +2617,8 @@ void Win_GParted::activate_change_uuid()
 		dialog .run() ;
 	}
 
-	//Make a duplicate of the selected partition (used in UNDO)
-	Partition part_temp = selected_partition ;
+	// Make a duplicate of the selected partition (used in UNDO)
+	Partition part_temp = *selected_partition_ptr;
 
 	if ( part_temp .filesystem == GParted::FS_NTFS )
 		//Explicitly ask for half, so that the user will be aware of it
@@ -2627,8 +2628,8 @@ void Win_GParted::activate_change_uuid()
 		part_temp .uuid = UUID_RANDOM ;
 
 
-	Operation * operation = new OperationChangeUUID( devices[ current_device ],
-								selected_partition, part_temp ) ;
+	Operation * operation = new OperationChangeUUID( devices[current_device],
+	                                                 *selected_partition_ptr, part_temp );
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 	Add_Operation( operation ) ;
@@ -2792,15 +2793,15 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	{
 		case OPERATION_DELETE:
 			tmp_msg = String::ucompose( _( "You are deleting non-empty LVM2 Physical Volume %1" ),
-			                            selected_partition .get_path() ) ;
+			                            selected_partition_ptr->get_path() );
 			break ;
 		case OPERATION_FORMAT:
 			tmp_msg = String::ucompose( _( "You are formatting over non-empty LVM2 Physical Volume %1" ),
-			                            selected_partition .get_path() ) ;
+			                            selected_partition_ptr->get_path() );
 			break ;
 		case OPERATION_COPY:
 			tmp_msg = String::ucompose( _( "You are pasting over non-empty LVM2 Physical Volume %1" ),
-			                            selected_partition .get_path() ) ;
+			                            selected_partition_ptr->get_path() );
 			break ;
 		default:
 			break ;
@@ -2817,7 +2818,7 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	tmp_msg += _( "Do you want to continue to forcibly delete the Physical Volume?" ) ;
 
 	LVM2_PV_Info lvm2_pv_info ;
-	Glib::ustring vgname = lvm2_pv_info .get_vg_name( selected_partition .get_path() ) ;
+	Glib::ustring vgname = lvm2_pv_info.get_vg_name( selected_partition_ptr->get_path() );
 	std::vector<Glib::ustring> members ;
 	if ( ! vgname .empty() )
 		members = lvm2_pv_info .get_vg_members( vgname ) ;
