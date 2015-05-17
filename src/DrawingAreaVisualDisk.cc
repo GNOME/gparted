@@ -92,7 +92,7 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 	{
 		visual_partitions .push_back( visual_partition() ) ;
 
-		visual_partitions .back() .partition = partitions[ t ] ; 
+		visual_partitions.back().partition_ptr = & partitions[t];
 		Sector partition_length = partitions[ t ] .get_sector_length() ;
 		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
 
@@ -152,12 +152,12 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		if ( visual_partitions[ t ] .partition .type != GParted::TYPE_UNALLOCATED &&
-		     visual_partitions[ t ] .partition .type != GParted::TYPE_EXTENDED       )
+		if ( visual_partitions[t].partition_ptr->type != TYPE_UNALLOCATED &&
+		     visual_partitions[t].partition_ptr->type != TYPE_EXTENDED       )
 		{
-			if ( visual_partitions[ t ] .partition .sector_usage_known() )
+			if ( visual_partitions[t].partition_ptr->sector_usage_known() )
 			{
-				visual_partitions[ t ] .partition .get_usage_triple(
+				visual_partitions[t].partition_ptr->get_usage_triple(
 						visual_partitions[ t ] .length - BORDER *2,
 						visual_partitions[ t ] .used_length,
 						visual_partitions[ t ] .unused_length,
@@ -314,7 +314,7 @@ void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
 			set_selected( visual_partitions[t].logicals, partition_ptr );
 
-		if ( ! selected_vp && visual_partitions[t].partition == *partition_ptr )
+		if ( ! selected_vp && *visual_partitions[t].partition_ptr == *partition_ptr )
 			selected_vp = & visual_partitions[ t ] ;
 	}
 }
@@ -361,7 +361,7 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 	
 	if ( selected_vp )
 	{
-		signal_partition_selected.emit( & selected_vp->partition, false );
+		signal_partition_selected.emit( selected_vp->partition_ptr, false );
 
 		if ( event ->type == GDK_2BUTTON_PRESS ) 
 			signal_partition_activated .emit() ;

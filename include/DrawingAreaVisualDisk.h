@@ -83,9 +83,9 @@ private:
 		Gdk::Color color ;
 		Glib::RefPtr<Pango::Layout> pango_layout;
 
-		//real partition
-		Partition partition ;
-		
+		// Pointer to real partition.  (Alias to element in Win_GParted::display_partitions[] vector).
+		const Partition * partition_ptr;
+
 		std::vector<visual_partition> logicals ;
 
 		visual_partition()
