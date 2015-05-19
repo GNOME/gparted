@@ -818,6 +818,88 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 
 void Win_GParted::Refresh_Visual()
 {
+	// How GParted displays partitions in the GUI and manages the lifetime and
+	// ownership of that data:
+	//
+	// (1) Queries the devices and partitions on disk and refreshes the model.
+	//
+	//     Data owner: std::vector<Devices> Win_GParted::devices
+	//     Lifetime:   Valid until the next call to Refresh_Visual()
+	//     Call chain:
+	//
+	//         Win_GParted::menu_gparted_refresh_devices()
+	//             gparted_core.set_devices( devices )
+	//                 GParted_Core::set_devices_thread( devices )
+	//                     devices.clear()
+	//                     etc.
+	//
+	// (2) Takes a copy of the partitions for the device currently being shown in the
+	//     GUI and visually applies pending operations.
+	//
+	//     Data owner: std::vector<Partition> Win_GParted::display_partitions
+	//     Lifetime:   Valid until the next call to Refresh_Visual().
+	//     Function:   Refresh_Visual()
+	//
+	// (3) Loads the disk graphic and partition list with partitions to be shown in
+	//     the GUI.  Both classes store pointers pointing back to each partition
+	//     object in the vector of display partitions.
+	//
+	//     Aliases:   Win_GParted::display_partitions[]
+	//     Call chain:
+	//
+	//         Win_GParted::Refresh_Visual()
+	//             drawingarea_visualdisk.load_partitions( display_partitions, device_sectors )
+	//                 DrawingAreaVisualDisk::set_static_data( ... )
+	//             treeview_detail.load_partitions( display_partitions )
+	//                 TreeView_Detail::create_row()
+	//                 TreeView_Detail::load_partitions()
+	//                     TreeView_Detail::create_row()
+	//
+	// (4) Selecting a partition in the disk graphic or in the partition list fires
+	//     the callback which passes a pointer to the selected partition stored in
+	//     step (3).  The callback saves the selected partition and calls the opposite
+	//     class to update it's selection.
+	//
+	//     Data owner: const Partition * Win_GParted::selected_partition_ptr
+	//     Aliases:    Win_GParted::display_partitions[]
+	//     Lifetime:   Valid until the next call to Refresh_Visual().
+	//     Call chain: (example clicking on a partition in the disk graphic)
+	//
+	//         DrawingAreaVisualDisk::on_button_press_event()
+	//             DawingAreaVisualDisk::set_selected( visual_partitions, x, y )
+	//                 signal_partition_selected.emit( ..., false )
+	//                     Win_GParted::on_partition_selected( partition_ptr, src_is_treeview )
+	//                         treeview_detail.set_selected( treestore_detail->children(), partition_ptr )
+	//                             TreeView::set_selected( rows, partition_ptr, inside_extended )
+	//                                 set_cursor()
+	//                                 TreeView::set_selected( rows, partition_ptr, true )
+	//                                     set_cursor()
+	//
+	// (5) Each new operation is added to the vector of pending operations.
+	//     Eventually Refresh_Visual() is call to update the GUI.  This goes to step
+	//     (2) which visually reapplies all pending operations again, including the
+	//     newly added operation.
+	//
+	//     Data owner: std::vector<Operation *> Win_GParted::operations
+	//     Lifetime:   Valid until operations have been applied by
+	//                 GParted_Core::apply_operation_to_disk().  Specifically longer
+	//                 than the next call call to Refresh_Visual().
+	//     Call chain: (example setting a file system label)
+	//
+	//         Win_GParted::activate_label_filesystem()
+	//             Win_GParted::Add_Operation( operation )
+	//             Win_GParted::Merge_Operations( ... )
+	//             Win_GParted::show_operationslist()
+	//                 Win_GParted::Refresh_Visual()
+	//
+	// (6) Selecting a partition as a copy source makes a copy of that partition
+	//     object.
+	//
+	//     Data owner: Partition Win_GParted::copied_partition
+	//     Lifetime:   Valid until GParted closed or the device is removed.
+	//                 Specifically longer than the next call to Refresh_Visual().
+	//     Function:   Win_GParted::activate_copy()
+
 	display_partitions = devices[current_device].partitions;
 
 	//make all operations visible
