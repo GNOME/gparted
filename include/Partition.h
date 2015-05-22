@@ -24,6 +24,7 @@
 #define GPARTED_PARTITION_H
 
 #include "../include/Utils.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -49,6 +50,14 @@ enum PartitionAlignment {
 	ALIGN_STRICT   = 2     //Strict alignment - no rounding
 	                       //  Indicator if start and end sectors must remain unchanged
 };
+
+class Partition;        // Forward declarations as Partition and PartitionVector are
+class PartitionVector;  // mutually recursive classes.
+                        // References:
+                        // *   Mutually recursive classes
+                        //     http://stackoverflow.com/questions/3410637/mutually-recursive-classes
+                        // *   recursive definition in CPP
+                        //     http://stackoverflow.com/questions/4300420/recursive-definition-in-cpp
 
 class Partition
 {

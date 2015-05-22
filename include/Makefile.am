@@ -36,6 +36,7 @@ EXTRA_DIST = \
 	OperationNamePartition.h	\
 	OperationResizeMove.h		\
 	Partition.h			\
+	PartitionVector.h		\
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\
 	SWRaid_Info.h			\
