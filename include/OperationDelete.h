@@ -18,6 +18,8 @@
 #define GPARTED_OPERATIONDELETE_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -26,14 +28,14 @@ class OperationDelete : public Operation
 {
 public:
 	OperationDelete( const Device & device, const Partition & partition_orig ) ;
-	
-	void apply_to_visual( std::vector<Partition> & partitions ) ;
-		
+
+	void apply_to_visual( PartitionVector & partitions );
+
 private:
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-	void remove_original_and_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) ;
-} ;
+	void remove_original_and_adjacent_unallocated( PartitionVector & partitions, int index_orig );
+};
 
 } //GParted
 

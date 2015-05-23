@@ -24,6 +24,7 @@
 
 #include "../include/Device.h"
 #include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/frame.h>
@@ -51,7 +52,7 @@ private:
 	bool is_inconsistent(const Partition &part);
 
 	Device *device; //Parent device
-	std::vector<Partition> partitions; //Partitions readed from the buffer
+	PartitionVector partitions; //Partitions read from the buffer
 	std::vector<int> overlappedPartitions;//List of guessed partitions that
 										  //overlap active partitions
 	Glib::ustring device_path;

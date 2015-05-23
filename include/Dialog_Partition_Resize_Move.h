@@ -18,6 +18,8 @@
 #define GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
 
 #include "../include/Dialog_Base_Partition.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -26,12 +28,12 @@ class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_Resize_Move( const FS & fs, const Partition & selected_partition,
-	                              const std::vector <Partition> & partitions );
+	                              const PartitionVector & partitions );
 
 private:
-	void set_data( const Partition & selected_partition, const std::vector <Partition> & partitions );
-	void Resize_Move_Normal( const std::vector <Partition> & partitions ) ;
-	void Resize_Move_Extended( const std::vector <Partition> & partitions ) ;
+	void set_data( const Partition & selected_partition, const PartitionVector & partitions );
+	void Resize_Move_Normal( const PartitionVector & partitions );
+	void Resize_Move_Extended( const PartitionVector & partitions );
 };
 
 } //GParted

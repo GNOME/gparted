@@ -21,6 +21,7 @@
 #include "../include/Device.h"
 #include "../include/DrawingAreaVisualDisk.h"
 #include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 #include "../include/TreeView_Detail.h"
 #include "../include/GParted_Core.h"
 #include "../include/HBoxOperations.h" 
@@ -191,7 +192,7 @@ private:
 
 //private variables
 	unsigned int current_device ;
-	std::vector<Partition> display_partitions;  // Copy of current device's partitions with any pending
+	PartitionVector display_partitions;         // Copy of current device's partitions with any pending
 	                                            // operations applied, as currently being shown in the GUI.
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::display_partitions[] vector).

@@ -16,6 +16,8 @@
  */
 
 #include "../include/OperationDelete.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -27,8 +29,8 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	this->device = device.get_copy_without_partitions();
 	this ->partition_original = partition_orig ;
 }
-	
-void OperationDelete::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationDelete::apply_to_visual( PartitionVector & partitions )
 {
 	int index_extended;
 	int index;
@@ -96,7 +98,7 @@ bool OperationDelete::merge_operations( const Operation & candidate )
 	return false;  // Can't merge with an already deleted partition
 }
 
-void OperationDelete::remove_original_and_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) 
+void OperationDelete::remove_original_and_adjacent_unallocated( PartitionVector & partitions, int index_orig )
 {
 	//remove unallocated space following the original partition
 	if ( index_orig +1 < static_cast<int>( partitions .size() ) &&

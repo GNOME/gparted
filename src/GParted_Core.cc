@@ -22,6 +22,8 @@
 #include "../include/LVM2_PV_Info.h"
 #include "../include/Operation.h"
 #include "../include/OperationCopy.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 #include "../include/Proc_Partitions_Info.h"
 #include "../include/SWRaid_Info.h"
 
@@ -1677,11 +1679,11 @@ void GParted_Core::read_uuid( Partition & partition )
 }
 
 void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
-				       std::vector<Partition> & partitions,
-				       Sector start,
-				       Sector end,
-				       Byte_Value sector_size,
-				       bool inside_extended )
+                                       PartitionVector & partitions,
+                                       Sector start,
+                                       Sector end,
+                                       Byte_Value sector_size,
+                                       bool inside_extended )
 {
 	Partition partition_temp ;
 	partition_temp.Set_Unallocated( device_path, false, 0LL, 0LL, sector_size, inside_extended );
@@ -1731,8 +1733,8 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 		partitions .push_back( partition_temp );
 	}
 }
-	
-void GParted_Core::set_mountpoints( std::vector<Partition> & partitions ) 
+
+void GParted_Core::set_mountpoints( PartitionVector & partitions )
 {
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
@@ -1865,7 +1867,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	return busy ;
 }
 
-void GParted_Core::set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk )
+void GParted_Core::set_used_sectors( PartitionVector & partitions, PedDisk* lp_disk )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{

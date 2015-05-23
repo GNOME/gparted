@@ -17,6 +17,7 @@
 
 #include "../include/Utils.h"
 #include "../include/Dialog_Rescue_Data.h"
+#include "../include/Partition.h"
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>

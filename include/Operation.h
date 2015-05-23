@@ -20,6 +20,8 @@
 
 #include "../include/Device.h"
 #include "../include/OperationDetail.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -42,8 +44,8 @@ class Operation
 public:
 	Operation() ;
 	virtual ~Operation() {}
-	
-	virtual void apply_to_visual( std::vector<Partition> & partitions ) = 0 ;
+
+	virtual void apply_to_visual( PartitionVector & partitions ) = 0;
 	virtual void create_description() = 0 ;
 	virtual bool merge_operations( const Operation & candidate ) = 0;
 
@@ -59,12 +61,13 @@ public:
 	OperationDetail operation_detail ;
 
 protected:
-	int find_index_original( const std::vector<Partition> & partitions ) ;
-	int find_index_new( const std::vector<Partition> & partitions );
-	int find_index_extended( const std::vector<Partition> & partitions ) ;
-	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
-	void substitute_new( std::vector<Partition> & partitions );
-	void insert_new( std::vector<Partition> & partitions );
+	int find_index_original( const PartitionVector & partitions );
+	int find_index_new( const PartitionVector & partitions );
+	int find_index_extended( const PartitionVector & partitions );
+	void insert_unallocated( PartitionVector & partitions,
+	                         Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
+	void substitute_new( PartitionVector & partitions );
+	void insert_new( PartitionVector & partitions );
 };
 
 } //GParted

@@ -15,6 +15,8 @@
  */
 
 #include "../include/OperationChangeUUID.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -31,7 +33,7 @@ OperationChangeUUID::OperationChangeUUID( const Device & device
 	this ->partition_new = partition_new ;
 }
 
-void OperationChangeUUID::apply_to_visual( std::vector<Partition> & partitions )
+void OperationChangeUUID::apply_to_visual( PartitionVector & partitions )
 {
 	substitute_new( partitions );
 }

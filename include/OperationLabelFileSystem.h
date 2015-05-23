@@ -18,6 +18,8 @@
 #define GPARTED_OPERATIONLABELFILESYSTEM_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -29,7 +31,7 @@ public:
 	                          const Partition & partition_orig,
 	                          const Partition & partition_new );
 
-	void apply_to_visual( std::vector<Partition> & partitions );
+	void apply_to_visual( PartitionVector & partitions );
 
 private:
 	void create_description() ;

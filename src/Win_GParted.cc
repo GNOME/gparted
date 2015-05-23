@@ -36,6 +36,8 @@
 #include "../include/OperationChangeUUID.h"
 #include "../include/OperationLabelFileSystem.h"
 #include "../include/OperationNamePartition.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../config.h"
 
@@ -830,7 +832,7 @@ void Win_GParted::Refresh_Visual()
 	// (2) Takes a copy of the partitions for the device currently being shown in the
 	//     GUI and visually applies pending operations.
 	//
-	//     Data owner: std::vector<Partition> Win_GParted::display_partitions
+	//     Data owner: PartitionVector Win_GParted::display_partitions
 	//     Lifetime:   Valid until the next call to Refresh_Visual().
 	//     Function:   Refresh_Visual()
 	//
@@ -1708,7 +1710,7 @@ void Win_GParted::activate_resize()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	std::vector<Partition> * display_partitions_ptr = &display_partitions;
+	PartitionVector * display_partitions_ptr = &display_partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;

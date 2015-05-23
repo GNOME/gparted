@@ -14,7 +14,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -22,8 +25,8 @@ namespace GParted
 Operation::Operation()
 {
 }
-	
-int Operation::find_index_original( const std::vector<Partition> & partitions ) 
+
+int Operation::find_index_original( const PartitionVector & partitions )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 		if ( partition_original .sector_start >= partitions[ t ] .sector_start &&
@@ -35,7 +38,7 @@ int Operation::find_index_original( const std::vector<Partition> & partitions )
 
 // Find the partition in the vector that exactly matches or fully encloses
 // this->partition_new.  Return vector index or -1 when no match found.
-int Operation::find_index_new( const std::vector<Partition> & partitions )
+int Operation::find_index_new( const PartitionVector & partitions )
 {
 	for ( unsigned int i = 0 ; i < partitions.size() ; i ++ )
 		if ( partition_new.sector_start >= partitions[i].sector_start &&
@@ -45,7 +48,7 @@ int Operation::find_index_new( const std::vector<Partition> & partitions )
 	return -1;
 }
 
-int Operation::find_index_extended( const std::vector<Partition> & partitions ) 
+int Operation::find_index_extended( const PartitionVector & partitions )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
@@ -54,7 +57,8 @@ int Operation::find_index_extended( const std::vector<Partition> & partitions )
 	return -1 ;
 }
 
-void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
+void Operation::insert_unallocated( PartitionVector & partitions,
+                                    Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
 	Partition UNALLOCATED ;
 	UNALLOCATED.Set_Unallocated( device.get_path(), false, 0LL, 0LL, sector_size, inside_extended );
@@ -108,7 +112,7 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 // Visual re-apply this operation, for operations which don't change the partition
 // boundaries.  Matches this operation's original partition in the vector and substitutes
 // it with this operation's new partition.
-void Operation::substitute_new( std::vector<Partition> & partitions )
+void Operation::substitute_new( PartitionVector & partitions )
 {
 	int index_extended;
 	int index;
@@ -132,7 +136,7 @@ void Operation::substitute_new( std::vector<Partition> & partitions )
 }
 
 // Visually re-apply this operation, for operations which create new partitions.
-void Operation::insert_new( std::vector<Partition> & partitions )
+void Operation::insert_new( PartitionVector & partitions )
 {
 	// Create operations are unique in that they apply to unallocated space.  It only
 	// matters that the new partition being created fits in an unallocated space when

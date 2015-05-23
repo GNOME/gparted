@@ -18,6 +18,8 @@
 #define GPARTED_OPERATIONCOPY_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -29,8 +31,8 @@ public:
 		       const Partition & partition_orig,
 		       const Partition & partition_new,
 		       const Partition & partition_copied ) ;
-	
-	void apply_to_visual( std::vector<Partition> & partitions ) ;
+
+	void apply_to_visual( PartitionVector & partitions );
 
 	Partition partition_copied ;
 

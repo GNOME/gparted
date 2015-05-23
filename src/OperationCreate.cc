@@ -16,6 +16,8 @@
  */
 
 #include "../include/OperationCreate.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -30,8 +32,8 @@ OperationCreate::OperationCreate( const Device & device,
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }
-	
-void OperationCreate::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationCreate::apply_to_visual( PartitionVector & partitions )
 {
 	insert_new( partitions );
 }

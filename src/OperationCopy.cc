@@ -16,6 +16,8 @@
  */
 
 #include "../include/OperationCopy.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -35,8 +37,8 @@ OperationCopy::OperationCopy( const Device & device,
 	this ->partition_new .add_path(  
 		String::ucompose( _("copy of %1"), this ->partition_copied .get_path() ), true ) ;
 }
-	
-void OperationCopy::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationCopy::apply_to_visual( PartitionVector & partitions )
 {
 	if ( partition_original.type == TYPE_UNALLOCATED )
 		// Paste into unallocated space creating new partition

@@ -18,6 +18,8 @@
 #define GPARTED_OPERATIONRESIZEMOVE_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -28,18 +30,18 @@ public:
 	OperationResizeMove( const Device & device,
 			     const Partition & partition_orig,
 			     const Partition & partition_new ) ;
-	
-	void apply_to_visual( std::vector<Partition> & partitions ) ;
+
+	void apply_to_visual( PartitionVector & partitions );
 
 private:
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 
-	void apply_normal_to_visual( std::vector<Partition> & partitions ) ;
-	void apply_extended_to_visual( std::vector<Partition> & partitions ) ;
-	
-	void remove_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) ; 
-} ;
+	void apply_normal_to_visual( PartitionVector & partitions );
+	void apply_extended_to_visual( PartitionVector & partitions );
+
+	void remove_adjacent_unallocated( PartitionVector & partitions, int index_orig );
+};
 
 } //GParted
 

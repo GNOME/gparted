@@ -18,6 +18,8 @@
 #define GPARTED_OPERATIONCHECK_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -26,8 +28,8 @@ class OperationCheck : public Operation
 {
 public:
 	OperationCheck( const Device & device, const Partition & partition ) ;
-	
-	void apply_to_visual( std::vector<Partition> & partitions ) ;
+
+	void apply_to_visual( PartitionVector & partitions );
 
 private:
 	void create_description() ;

@@ -18,6 +18,7 @@
 #define GPARTED_DRAWINGAREAVISUALDISK_H
 
 #include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 #include <gtkmm/drawingarea.h>
 
@@ -29,8 +30,8 @@ class DrawingAreaVisualDisk : public Gtk::DrawingArea
 public:
 	DrawingAreaVisualDisk();
 	~DrawingAreaVisualDisk();
-	
-	void load_partitions( const std::vector<Partition> & partitions, Sector device_length );
+
+	void load_partitions( const PartitionVector & partitions, Sector device_length );
 	void set_selected( const Partition * partition_ptr );
 	void clear() ;
 
@@ -43,11 +44,11 @@ private:
 	struct visual_partition ; 
 
 	//private functions	
-	int get_total_separator_px( const std::vector<Partition> & partitions ) ;
-	
-	void set_static_data( const std::vector<Partition> & partitions, 
-			      std::vector<visual_partition> & visual_partitions,
-			      Sector length ) ;
+	int get_total_separator_px( const PartitionVector & partitions );
+
+	void set_static_data( const PartitionVector & partitions,
+	                      std::vector<visual_partition> & visual_partitions,
+	                      Sector length );
 	int calc_length( std::vector<visual_partition> & visual_partitions, int length_px ) ;
 	void calc_position_and_height( std::vector<visual_partition> & visual_partitions, int start, int border ) ;
 	void calc_usage( std::vector<visual_partition> & visual_partitions ) ;

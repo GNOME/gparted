@@ -18,6 +18,7 @@
 #define GPARTED_TREEVIEW_DETAIL_H
 
 #include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
@@ -35,7 +36,7 @@ class TreeView_Detail : public Gtk::TreeView
 {
 public:
 	TreeView_Detail();
-	void load_partitions( const std::vector<Partition> & partitions ) ;
+	void load_partitions( const PartitionVector & partitions );
 	void set_selected( const Partition * partition_ptr );
 	void clear() ;
 
@@ -45,7 +46,7 @@ public:
 	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
 
 private:
-	void load_partitions( const std::vector<Partition> & partitions,
+	void load_partitions( const PartitionVector & partitions,
 	                      bool & mountpoints,
 	                      bool & labels,
 	                      bool & names,

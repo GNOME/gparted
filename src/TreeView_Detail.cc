@@ -16,6 +16,8 @@
  */
  
 #include "../include/TreeView_Detail.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 { 
@@ -84,7 +86,7 @@ TreeView_Detail::TreeView_Detail()
 	}
 }
 
-void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions ) 
+void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 {
 	bool mountpoints = false, labels = false, names = false;
 	treestore_detail ->clear() ;
@@ -111,7 +113,7 @@ void TreeView_Detail::clear()
 	treestore_detail ->clear() ;
 }
 
-void TreeView_Detail::load_partitions( const std::vector<Partition> & partitions,
+void TreeView_Detail::load_partitions( const PartitionVector & partitions,
                                        bool & mountpoints,
                                        bool & labels,
                                        bool & names,

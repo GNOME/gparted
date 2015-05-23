@@ -15,6 +15,8 @@
  */
 
 #include "../include/OperationNamePartition.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -30,7 +32,7 @@ OperationNamePartition::OperationNamePartition( const Device & device,
 	this->partition_new = partition_new;
 }
 
-void OperationNamePartition::apply_to_visual( std::vector<Partition> & partitions )
+void OperationNamePartition::apply_to_visual( PartitionVector & partitions )
 {
 	substitute_new( partitions );
 }

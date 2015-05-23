@@ -15,6 +15,8 @@
  */
 
 #include "../include/OperationCheck.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -26,8 +28,8 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 	this->device = device.get_copy_without_partitions();
 	partition_original = partition ;
 }
-	
-void OperationCheck::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationCheck::apply_to_visual( PartitionVector & partitions )
 {
 }
 

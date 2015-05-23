@@ -16,6 +16,8 @@
  */
 
 #include "../include/OperationResizeMove.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -30,8 +32,8 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }
-	
-void OperationResizeMove::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
 	if ( partition_original .type == GParted::TYPE_EXTENDED )
 		apply_extended_to_visual( partitions ) ;
@@ -119,7 +121,7 @@ void OperationResizeMove::create_description()
 						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ) ;
 }
 
-void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )
+void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {
 	int index_extended;
 	int index;
@@ -159,7 +161,7 @@ void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & parti
 	}
 }
 
-void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & partitions ) 
+void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions )
 {
 	int index_extended;
 
@@ -201,7 +203,7 @@ void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & par
 	}
 }
 
-void OperationResizeMove::remove_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) 
+void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partitions, int index_orig )
 {
 	//remove unallocated space following the original partition
 	if ( index_orig +1 < static_cast<int>( partitions .size() ) &&

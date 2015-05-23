@@ -15,6 +15,8 @@
  */
 
 #include "../include/OperationFormat.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
@@ -29,8 +31,8 @@ OperationFormat::OperationFormat( const Device & device,
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }
-	
-void OperationFormat::apply_to_visual( std::vector<Partition> & partitions ) 
+
+void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
 	if ( partition_original.whole_device && partition_new.filesystem == FS_CLEARED )
 	{

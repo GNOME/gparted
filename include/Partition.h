@@ -140,8 +140,8 @@ public:
 	bool busy;
 	std::vector<Glib::ustring> messages ;
 	std::vector<Glib::ustring> flags ;
-	
-	std::vector<Partition> logicals ;
+
+	PartitionVector logicals;
 
 	bool strict_start ;	//Indicator if start sector must stay unchanged
 	Sector free_space_before ;  //Free space preceding partition value

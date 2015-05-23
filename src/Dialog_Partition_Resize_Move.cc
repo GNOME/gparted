@@ -17,19 +17,21 @@
  
 #include "../include/Dialog_Partition_Resize_Move.h"
 #include "../include/GParted_Core.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 namespace GParted
 {
 
 Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, const Partition & selected_partition,
-                                                            const std::vector<Partition> & partitions )
+                                                            const PartitionVector & partitions )
 {
 	this ->fs = fs ;
 	set_data( selected_partition, partitions );
 }
 
 void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partition,
-                                             const std::vector<Partition> & partitions )
+                                             const PartitionVector & partitions )
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 
@@ -60,7 +62,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	this ->show_all_children() ;
 }
 
-void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partition> & partitions )
+void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & partitions )
 {
 	//little bit of paranoia ;)
 	if ( ! new_partition.sector_usage_known() &&
@@ -215,7 +217,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const std::vector<Partiti
 	               ) ;
 }
 
-void Dialog_Partition_Resize_Move::Resize_Move_Extended( const std::vector<Partition> & partitions )
+void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector & partitions )
 {
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition

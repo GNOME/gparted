@@ -16,6 +16,8 @@
  */
 
 #include "../include/DrawingAreaVisualDisk.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 #define MAIN_BORDER 5
 #define BORDER 4
@@ -46,8 +48,8 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 	
 	set_size_request( -1, HEIGHT ) ;
 }
-	
-void DrawingAreaVisualDisk::load_partitions( const std::vector<Partition> & partitions, Sector device_length )
+
+void DrawingAreaVisualDisk::load_partitions( const PartitionVector & partitions, Sector device_length )
 {
 	clear() ;	
 	
@@ -73,8 +75,8 @@ void DrawingAreaVisualDisk::clear()
 	
 	queue_resize() ;
 }
-	
-int DrawingAreaVisualDisk::get_total_separator_px( const std::vector<Partition> & partitions ) 
+
+int DrawingAreaVisualDisk::get_total_separator_px( const PartitionVector & partitions )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
@@ -84,9 +86,9 @@ int DrawingAreaVisualDisk::get_total_separator_px( const std::vector<Partition> 
 	return ( partitions .size() -1 ) * SEP ;
 }	
 
-void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & partitions,
-					     std::vector<visual_partition> & visual_partitions,
-					     Sector length ) 
+void DrawingAreaVisualDisk::set_static_data( const PartitionVector & partitions,
+                                             std::vector<visual_partition> & visual_partitions,
+                                             Sector length )
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
@@ -100,8 +102,8 @@ void DrawingAreaVisualDisk::set_static_data( const std::vector<Partition> & part
 		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			set_static_data( partitions[ t ] .logicals,
-					 visual_partitions .back() .logicals, partition_length ) ;
+			set_static_data( partitions[t].logicals,
+			                 visual_partitions.back().logicals, partition_length );
 		else
 			visual_partitions .back() .pango_layout = create_pango_layout( 
 				partitions[ t ] .get_path() + "\n" + Utils::format_size( partition_length, partitions[ t ] .sector_size ) ) ;

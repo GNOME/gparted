@@ -20,6 +20,8 @@
 
 #include "../include/FileSystem.h"
 #include "../include/Operation.h"
+#include "../include/Partition.h"
+#include "../include/PartitionVector.h"
 
 #include <parted/parted.h>
 #include <vector>
@@ -90,15 +92,15 @@ private:
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
-				 std::vector<Partition> & partitions,
-				 Sector start,
-				 Sector end,
-				 Byte_Value sector_size,
-				 bool inside_extended ) ;
-	void set_mountpoints( std::vector<Partition> & partitions ) ;
+	                         PartitionVector & partitions,
+	                         Sector start,
+	                         Sector end,
+	                         Byte_Value sector_size,
+	                         bool inside_extended );
+	void set_mountpoints( PartitionVector & partitions );
 	bool set_mountpoints_helper( Partition & partitions, const Glib::ustring & path ) ;
 	bool is_busy( FILESYSTEM fstype, const Glib::ustring & path ) ;
-	void set_used_sectors( std::vector<Partition> & partitions, PedDisk* lp_disk ) ;
+	void set_used_sectors( PartitionVector & partitions, PedDisk* lp_disk );
 	void mounted_set_used_sectors( Partition & partition ) ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 	void LP_set_used_sectors( Partition & partition, PedDisk* lp_disk ) ;
