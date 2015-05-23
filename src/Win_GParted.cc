@@ -1712,23 +1712,17 @@ void Win_GParted::activate_resize()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
-	
-	if ( operations .size() )
-		for (unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] ->device == devices[ current_device ] )
-				operations[ t ] ->apply_to_visual( partitions ) ;
-
 	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition_ptr->filesystem ) );
 
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;
-		while ( ext < partitions .size() && partitions[ ext ] .type != GParted::TYPE_EXTENDED ) ext++ ;
-		dialog.Set_Data( *selected_partition_ptr, partitions[ext].logicals );
+		while ( ext < display_partitions.size() && display_partitions[ext].type != TYPE_EXTENDED )
+			ext++;
+		dialog.Set_Data( *selected_partition_ptr, display_partitions[ext].logicals );
 	}
 	else
-		dialog.Set_Data( *selected_partition_ptr, partitions );
+		dialog.Set_Data( *selected_partition_ptr, display_partitions );
 
 	dialog .set_transient_for( *this ) ;	
 			
