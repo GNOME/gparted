@@ -49,7 +49,7 @@ private:
 	void drawingarea_on_realize();
 	bool drawingarea_on_expose( GdkEventExpose *ev );
 
-	Partition partition ;
+	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
 
 	Gtk::HBox *hbox ;
 	Gtk::DrawingArea drawingarea ;

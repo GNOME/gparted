@@ -25,10 +25,8 @@
 namespace GParted
 {
 
-Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition )
+Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : partition( partition )
 {
-	this ->partition = partition ;
-
 	this ->set_has_separator( false ) ;
 	//Set minimum dialog height so it fits on an 800x600 screen without
 	//  too much whitespace (~500 px max for GNOME desktop).
