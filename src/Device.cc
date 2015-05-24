@@ -36,7 +36,26 @@ void Device::Reset()
 	readonly = false ; 	
 	max_partition_name_length = 0;
 }
-	
+
+Device Device::get_copy_without_partitions() const
+{
+	Device new_device;                                    // (1) Construct new Device object.
+	new_device.length                    = this->length;  // (2) Copy all members except partitions.
+	new_device.heads                     = this->heads;
+	new_device.sectors                   = this->sectors;
+	new_device.cylinders                 = this->cylinders;
+	new_device.cylsize                   = this->cylsize;
+	new_device.model                     = this->model;
+	new_device.disktype                  = this->disktype;
+	new_device.sector_size               = this->sector_size;
+	new_device.max_prims                 = this->max_prims;
+	new_device.highest_busy              = this->highest_busy;
+	new_device.readonly                  = this->readonly;
+	new_device.paths                     = this->paths;
+	new_device.max_partition_name_length = this->max_partition_name_length;
+	return new_device;                                    // (3) Return by value.
+}
+
 void Device::add_path( const Glib::ustring & path, bool clear_paths )
 {
 	if ( clear_paths )

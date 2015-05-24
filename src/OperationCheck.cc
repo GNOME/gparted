@@ -23,7 +23,7 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 {
 	type = OPERATION_CHECK ;
 
-	this ->device = device ;
+	this->device = device.get_copy_without_partitions();
 	partition_original = partition ;
 }
 	

@@ -26,7 +26,7 @@ OperationCreate::OperationCreate( const Device & device,
 {
 	type = OPERATION_CREATE ;
 
-	this ->device = device ;
+	this->device = device.get_copy_without_partitions();
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }

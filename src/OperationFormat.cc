@@ -25,7 +25,7 @@ OperationFormat::OperationFormat( const Device & device,
 {
 	type = OPERATION_FORMAT ;
 
-	this ->device = device ;
+	this->device = device.get_copy_without_partitions();
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }

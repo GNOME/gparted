@@ -25,7 +25,7 @@ OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
 {
 	type = OPERATION_LABEL_FILESYSTEM;
 
-	this ->device = device ;
+	this->device = device.get_copy_without_partitions();
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }

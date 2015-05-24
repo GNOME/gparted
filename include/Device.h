@@ -30,6 +30,7 @@ public:
 	Device() ;
 	~Device() ;
 
+	Device get_copy_without_partitions() const;
 	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
 	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
 	Glib::ustring get_path() const ;

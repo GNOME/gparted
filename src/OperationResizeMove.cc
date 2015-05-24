@@ -25,7 +25,8 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 				  	  const Partition & partition_new )
 {
 	type = OPERATION_RESIZE_MOVE ;
-	this ->device = device ;
+
+	this->device = device.get_copy_without_partitions();
 	this ->partition_original = partition_orig ;
 	this ->partition_new = partition_new ;
 }
