@@ -23,7 +23,8 @@
 namespace GParted
 {
 
-DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib::ustring, bool> flag_info )
+DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib::ustring, bool> flag_info ) :
+                                    partition( partition )
 {
 	any_change = false ;
 
@@ -51,7 +52,6 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 	treeview_flags .set_size_request( 300, -1 ) ;
 	get_vbox() ->pack_start( treeview_flags, Gtk::PACK_SHRINK ) ;
 
-	this ->partition = partition ;
 	this ->flag_info = flag_info ;
 	
 	load_treeview() ;

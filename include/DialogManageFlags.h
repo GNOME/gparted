@@ -60,7 +60,7 @@ private:
 	} ;
 	treeview_flags_Columns treeview_flags_columns ;	
 
-	Partition partition ;
+	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
 	std::map<Glib::ustring, bool> flag_info ;
 };
 
