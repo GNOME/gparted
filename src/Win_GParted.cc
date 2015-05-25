@@ -1728,8 +1728,8 @@ void Win_GParted::activate_paste()
 	{
 		if ( ! max_amount_prim_reached() )
 		{
-			Dialog_Partition_Copy dialog( gparted_core .get_fs( copied_partition .filesystem ),
-						      devices[ current_device ] .cylsize ) ;
+			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition.filesystem ) );
+
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
 			copied_partition .messages .clear() ;

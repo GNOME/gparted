@@ -21,12 +21,10 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, Sector cylinder_size )
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs )
 {
 	this ->fs = fs ;
-	
-	BUF = cylinder_size ;
-	
+
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
 }
@@ -63,16 +61,15 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	//Only allow pasting into a new larger partition if growing the file
 	//  system is implemented and resizing it is currently allowed.
 	if ( fs .grow && ! GParted_Core::filesystem_resize_disallowed( copied_partition ) )
+	{
 		if ( ! fs .MAX || fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
 			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
-		else
-			fs .MAX =  fs .MAX - (BUF * selected_partition .sector_size) ;
+	}
 	else
 		fs .MAX = copied_partition .get_byte_length() ;
 
-	//TODO: Since BUF is the cylinder size of the current device, the cylinder size of the copied device could differ for small disks
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs .MIN = ( min_resize + (BUF * 2) ) * copied_partition .sector_size;
+		fs.MIN = std::max( fs.MIN, min_resize * copied_partition.sector_size );
 	else
 		fs .MIN = COPIED_LENGTH_MB * MEBIBYTE ;
 	
