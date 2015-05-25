@@ -21,11 +21,9 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, Sector cylinder_size )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs )
 {
 	this ->fs = fs ;
-	
-	BUF = cylinder_size * 2 ;
 }
 
 void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition,

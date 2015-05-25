@@ -1612,10 +1612,9 @@ void Win_GParted::activate_resize()
 		for (unsigned int t = 0 ; t < operations .size() ; t++ )
 			if ( operations[ t ] ->device == devices[ current_device ] )
 				operations[ t ] ->apply_to_visual( partitions ) ;
-	
-	Dialog_Partition_Resize_Move dialog( gparted_core .get_fs( selected_partition .filesystem ), 
-					     devices[ current_device ] .cylsize ) ;
-			
+
+	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition.filesystem ) );
+
 	if ( selected_partition .type == GParted::TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;

@@ -90,8 +90,7 @@ protected:
 	bool fixed_start, GRIP ;
 	double before_value ;
 	FS fs ;
-	short BUF ; //used in resize and copy ( safety reasons )
-	
+
 private:
 	void Check_Change( ) ;
 	

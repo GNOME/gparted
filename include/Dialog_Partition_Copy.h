@@ -32,6 +32,7 @@ public:
 	Partition Get_New_Partition( Byte_Value sector_size ) ;
 
 private:
+	short BUF;  // Used in copy (safety reasons)
 };
 
 }//GParted
