@@ -136,7 +136,13 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size ) 
+Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
+{
+	prepare_new_partition( sector_size );
+	return selected_partition;
+}
+
+void Dialog_Base_Partition::prepare_new_partition( Byte_Value sector_size )
 {
 	//set sector size of new partition
 	selected_partition .sector_size = sector_size;
@@ -221,8 +227,6 @@ Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 	//if the original before value has not changed, then set indicator to keep start sector unchanged
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
 		selected_partition .strict_start = TRUE ;
-
-	return selected_partition ;
 }
 
 void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type ) 

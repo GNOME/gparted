@@ -97,7 +97,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	               , ceil( fs .MAX / double(MEBIBYTE) )
 	               ) ;
 
-	//set global selected_partition (see Dialog_Base_Partition::Get_New_Partition )
+	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
 	this ->selected_partition = copied_partition ;
 	this ->selected_partition .device_path = selected_partition .device_path ;
 	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
@@ -118,7 +118,7 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 Partition Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
 {
 	//first call baseclass to get the correct new partition
-	selected_partition = Dialog_Base_Partition::Get_New_Partition( sector_size ) ;
+	Dialog_Base_Partition::prepare_new_partition( sector_size );
 
 	//set proper name and status for partition
 	selected_partition .status = GParted::STAT_COPY ;
