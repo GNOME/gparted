@@ -98,13 +98,12 @@ void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, cons
 	               ) ;
 
 	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
-	this ->selected_partition = copied_partition ;
-	this ->selected_partition .device_path = selected_partition .device_path ;
-	this ->selected_partition .inside_extended = selected_partition .inside_extended ;
-	this ->selected_partition .type = 
-		selected_partition .inside_extended ? GParted::TYPE_LOGICAL : GParted::TYPE_PRIMARY ;
+	new_partition = copied_partition;
+	new_partition.device_path     = selected_partition.device_path;
+	new_partition.inside_extended = selected_partition.inside_extended;
+	new_partition.type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
 	//Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
-	this ->selected_partition .set_sector_usage(
+	new_partition.set_sector_usage(
 			(   ( ( copied_partition .sectors_used + copied_partition .sectors_unused ) * copied_partition .sector_size )
 			  + ( selected_partition .sector_size - 1 )
 			) / selected_partition .sector_size,
@@ -121,9 +120,9 @@ Partition Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
 	Dialog_Base_Partition::prepare_new_partition( sector_size );
 
 	//set proper name and status for partition
-	selected_partition .status = GParted::STAT_COPY ;
+	new_partition.status = STAT_COPY;
 
-	return selected_partition ;
+	return new_partition;
 }
 
 } //GParted

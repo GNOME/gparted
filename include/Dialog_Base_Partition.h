@@ -64,8 +64,8 @@ protected:
 	double MB_PER_PIXEL ;
 	Sector TOTAL_MB ;
 	Frame_Resizer_Base *frame_resizer_base;
-	Partition selected_partition ;
-	
+	Partition new_partition;
+
 	Sector START; //the first sector of the first relevant partition ( this is either current or current -1 )  needed in Get_Resized_Partition()
 	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...)
 

@@ -139,94 +139,92 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 {
 	prepare_new_partition( sector_size );
-	return selected_partition;
+	return new_partition;
 }
 
 void Dialog_Base_Partition::prepare_new_partition( Byte_Value sector_size )
 {
 	//set sector size of new partition
-	selected_partition .sector_size = sector_size;
-	Sector old_size = selected_partition .get_sector_length() ;
+	new_partition.sector_size = sector_size;
+	Sector old_size = new_partition.get_sector_length();
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
-		selected_partition .sector_start = START + Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;	
+		new_partition.sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / sector_size);
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
-		selected_partition .sector_end =
-			selected_partition .sector_start
+		new_partition.sector_end =
+			new_partition.sector_start
 			+ Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size)
 			- 1 /* one sector short of exact mebibyte multiple */;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
 	//the new partition thinks it's bigger then it can be. Here we solve this.
-	if ( selected_partition .sector_start < START )
-		selected_partition .sector_start = START ;
-	if ( selected_partition .sector_end > (START + total_length -1) ) 
-		selected_partition .sector_end = START + total_length -1 ;
+	if ( new_partition.sector_start < START )
+		new_partition.sector_start = START;
+	if ( new_partition.sector_end > ( START + total_length - 1 ) )
+		new_partition.sector_end = START + total_length - 1;
 	
 	//grow a bit into small freespace ( < 1MiB ) 
-	if ( (selected_partition .sector_start - START) < (MEBIBYTE / sector_size) )
-		selected_partition .sector_start = START ;
-	if ( ( START + total_length -1 - selected_partition .sector_end ) < (MEBIBYTE / sector_size) )
-		selected_partition .sector_end = START + total_length -1 ;
-	
+	if ( (new_partition.sector_start - START) < (MEBIBYTE / sector_size) )
+		new_partition.sector_start = START;
+	if ( ( START + total_length -1 - new_partition.sector_end ) < (MEBIBYTE / sector_size) )
+		new_partition.sector_end = START + total_length - 1;
+
 	//set alignment
 	switch ( optionmenu_alignment .get_history() )
 	{
-		case  0 :  selected_partition .alignment = ALIGN_CYLINDER;  break;
-		case  1 :  selected_partition .alignment = ALIGN_MEBIBYTE;
+		case  0 :  new_partition.alignment = ALIGN_CYLINDER;  break;
+		case  1 :  new_partition.alignment = ALIGN_MEBIBYTE;
 		           {
 		               //if partition size is not an integer multiple of MiB
 		               //   or the start or end sectors are not MiB aligned,
 		               //   and space is available,
 		               //   then add 1 MiB to partition so requested size is kept
 		               //   after GParted_Core::snap_to_mebibyte method rounding
-		               Sector partition_size = selected_partition .sector_end - selected_partition .sector_start + Sector(1) ;
-		               Sector sectors_in_mib = MEBIBYTE / selected_partition .sector_size ;
+		               Sector partition_size = new_partition.sector_end - new_partition.sector_start + Sector(1);
+		               Sector sectors_in_mib = MEBIBYTE / new_partition.sector_size;
 		               if (   (   ( ( partition_size % sectors_in_mib ) > 0 )
-		                       || ( ( selected_partition .sector_start % sectors_in_mib ) > 0 )
-		                       || ( ( ( selected_partition .sector_end + Sector(1) ) % sectors_in_mib ) > 0 )
+		                       || ( ( new_partition.sector_start % sectors_in_mib ) > 0 )
+		                       || ( ( ( new_partition.sector_end + Sector(1) ) % sectors_in_mib ) > 0 )
 		                      )
 		                   && ( ( partition_size + sectors_in_mib ) < total_length )
 		                  )
-		                   selected_partition .sector_end += sectors_in_mib ;
+		                   new_partition.sector_end += sectors_in_mib;
 		           }
 		           break;
-		case  2 :  selected_partition .alignment = ALIGN_STRICT;  break;
+		case  2 :  new_partition.alignment = ALIGN_STRICT;  break;
 
-		default :  selected_partition .alignment = ALIGN_MEBIBYTE ;
+		default :  new_partition.alignment = ALIGN_MEBIBYTE;  break;
 	}
 
 	//update partition usage
-	if ( selected_partition .sectors_used != -1 && selected_partition .sectors_unused != -1 )
+	if ( new_partition.sectors_used != -1 && new_partition.sectors_unused != -1 )
 	{
-		Sector new_size = selected_partition .get_sector_length() ;
+		Sector new_size = new_partition.get_sector_length();
 		if ( old_size == new_size )
 		{
 			//Pasting into new same sized partition or moving partition keeping the same size,
 			//  therefore only block copy operation will be performed maintaining file system size.
-			selected_partition .set_sector_usage(
-					selected_partition .sectors_used + selected_partition .sectors_unused,
-					selected_partition .sectors_unused ) ;
+			new_partition.set_sector_usage(
+					new_partition.sectors_used + new_partition.sectors_unused,
+					new_partition.sectors_unused );
 		}
 		else
 		{
 			//Pasting into new larger partition or (moving and) resizing partition larger or smaller,
 			//  therefore block copy followed by file system grow or shrink operations will be
 			//  performed making the file system fill the partition.
-			selected_partition .set_sector_usage(
-					new_size,
-					new_size - selected_partition .sectors_used ) ;
+			new_partition.set_sector_usage( new_size, new_size - new_partition.sectors_used );
 		}
 	}
 
-	selected_partition .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
+	new_partition.free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
 
 	//if the original before value has not changed, then set indicator to keep start sector unchanged
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
-		selected_partition .strict_start = TRUE ;
+		new_partition.strict_start = TRUE;
 }
 
 void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type ) 

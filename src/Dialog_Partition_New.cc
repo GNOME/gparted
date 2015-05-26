@@ -39,7 +39,7 @@ void Dialog_Partition_New::Set_Data( const Device & device,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	this ->selected_partition = partition;
+	new_partition = partition;
 
 	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
 	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
@@ -144,10 +144,10 @@ void Dialog_Partition_New::Set_Data( const Device & device,
 	table_create.attach( filesystem_label_entry, 1, 2, 3, 4, Gtk::FILL );
 
 	//set some widely used values...
-	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
+	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( new_partition );
 	START = partition.sector_start ;
 	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( this ->selected_partition .get_sector_length(), this ->selected_partition .sector_size, UNIT_MIB ) ) ;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( new_partition.get_sector_length(), new_partition.sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled file system
@@ -192,19 +192,19 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
-	if ( new_start < selected_partition.sector_start )
-		new_start = selected_partition.sector_start ;
-	if  ( new_end > selected_partition.sector_end )
-		new_end = selected_partition.sector_end ;
-	
+	if ( new_start < new_partition.sector_start )
+		new_start = new_partition.sector_start;
+	if  ( new_end > new_partition.sector_end )
+		new_end = new_partition.sector_end;
+
 	part_temp .status = GParted::STAT_NEW ;
-	part_temp.Set( selected_partition.device_path,
+	part_temp.Set( new_partition.device_path,
 	               String::ucompose( _("New Partition #%1"), new_count ),
-	               new_count, part_type, selected_partition.whole_device,
+	               new_count, part_type, new_partition.whole_device,
 	               FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
 	               new_start, new_end,
 	               sector_size,
-	               selected_partition.inside_extended, false );
+	               new_partition.inside_extended, false );
 
 	// Retrieve partition name
 	part_temp.name = Utils::trim( partition_name_entry.get_text() );
@@ -213,10 +213,10 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	part_temp.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 	
 	//grow new partition a bit if freespaces are < 1 MiB
-	if ( (part_temp.sector_start - selected_partition.sector_start) < (MEBIBYTE / sector_size) ) 
-		part_temp.sector_start = selected_partition.sector_start ;
-	if ( (selected_partition.sector_end - part_temp.sector_end) < (MEBIBYTE / sector_size) ) 
-		part_temp.sector_end = selected_partition.sector_end ;
+	if ( (part_temp.sector_start - new_partition.sector_start) < (MEBIBYTE / sector_size) )
+		part_temp.sector_start = new_partition.sector_start;
+	if ( (new_partition.sector_end - part_temp.sector_end) < (MEBIBYTE / sector_size) )
+		part_temp.sector_end = new_partition.sector_end;
 	
 	//if new is extended...
 	if ( part_temp .type == GParted::TYPE_EXTENDED )
@@ -286,8 +286,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		if ( fs .MIN < MEBIBYTE )
 			fs .MIN = MEBIBYTE ;
 
-		if ( selected_partition .get_byte_length() < fs .MIN )
-			fs .MIN = selected_partition .get_byte_length() ;
+		if ( new_partition.get_byte_length() < fs.MIN )
+			fs .MIN = new_partition.get_byte_length();
 
 		if ( ! fs .MAX || ( fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
 			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
@@ -345,7 +345,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			this ->selected_partition .get_byte_length() >= FILESYSTEMS[ t ] .MIN ) ;
+			new_partition.get_byte_length() >= FILESYSTEMS[t].MIN );
 		//use ext4/3/2 as first/second/third choice default file system
 		//(Depends on ordering in FILESYSTEMS for preference)
 		if ( ( FILESYSTEMS[ t ] .filesystem == FS_EXT2 ||
