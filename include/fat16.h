@@ -31,7 +31,7 @@ class fat16 : public FileSystem
 	Glib::ustring check_cmd ;
 public:
 	fat16( enum FILESYSTEM type ) : specific_type( type ), create_cmd( "" ), check_cmd( "" ) {} ;
-	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) ;
+	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;

@@ -976,14 +976,12 @@ void Win_GParted::set_valid_operations()
 	allow_info( true ) ;
 
 	// Set an appropriate name for the activate/deactivate menu item.
-	if ( gparted_core .get_filesystem_object ( selected_partition .filesystem ) )
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition.filesystem );
+	if ( filesystem_object )
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
-			->set_label( gparted_core .get_filesystem_object ( selected_partition .filesystem )
-			             ->get_custom_text (  selected_partition .busy
-			                                ? CTEXT_DEACTIVATE_FILESYSTEM
-			                                : CTEXT_ACTIVATE_FILESYSTEM
-			                               )
-			           ) ;
+			->set_label( filesystem_object->get_custom_text(   selected_partition.busy
+			                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
+			                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
 	else
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
 			->set_label( FileSystem::get_generic_text (  selected_partition .busy
@@ -2598,20 +2596,22 @@ void Win_GParted::activate_name_partition()
 
 void Win_GParted::activate_change_uuid()
 {
-	if ( gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING ) != "" ) {
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition.filesystem );
+	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
+	{
 		int i ;
-		Gtk::MessageDialog dialog( *this
-					 , gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, 0 )
-					 , false
-					 , Gtk::MESSAGE_WARNING
-					 , Gtk::BUTTONS_OK
-					 , true
-					 ) ;
+		Gtk::MessageDialog dialog( *this,
+		                           filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING, 0 ),
+		                           false,
+		                           Gtk::MESSAGE_WARNING,
+		                           Gtk::BUTTONS_OK,
+		                           true );
 		Glib::ustring tmp_msg = "" ;
-		for ( i = 1 ; gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, i ) != "" ; i++ ) {
+		for ( i = 1 ; filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING, i ) != "" ; i++ )
+		{
 			if ( i > 1 )
 				tmp_msg += "\n\n" ;
-			tmp_msg += gparted_core .get_filesystem_object( selected_partition .filesystem ) ->get_custom_text ( CTEXT_CHANGE_UUID_WARNING, i ) ;
+			tmp_msg += filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING, i );
 		}
 		dialog .set_secondary_text( tmp_msg ) ;
 		dialog .run() ;

@@ -35,7 +35,6 @@ public:
 	GParted_Core() ;
 	~GParted_Core() ;
 
-	void init_filesystems() ;
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
@@ -78,14 +77,14 @@ private:
 	                                              std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	static bool have_rootfs_dev( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	static void read_mountpoints_from_mount_command( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
-	Glib::ustring get_partition_path( PedPartition * lp_partition ) ;
+	static Glib::ustring get_partition_path( PedPartition * lp_partition );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
 	                               std::vector<Glib::ustring> & messages );
 	void set_partition_label_and_uuid( Partition & partition );
-	static FILESYSTEM recognise_filesystem_signature( PedDevice * lp_device, PedPartition * lp_partition );
-	GParted::FILESYSTEM get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
-	                                    std::vector<Glib::ustring>& messages ) ;
+	static FILESYSTEM detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition );
+	static FILESYSTEM detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
+	                                     std::vector<Glib::ustring> & messages );
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void insert_unallocated( const Glib::ustring & device_path,
@@ -187,15 +186,18 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
-	bool flush_device( PedDevice * lp_device ) ;
-	bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
-	bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
-	bool get_device_and_disk( const Glib::ustring & device_path,
-	                          PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false ) ;
-	void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk ) ;
-	bool commit( PedDisk* lp_disk ) ;
-	bool commit_to_os( PedDisk* lp_disk, std::time_t timeout ) ;
-	void settle_device( std::time_t timeout ) ;
+	static void init_filesystems();
+	static void fini_filesystems();
+
+	static bool flush_device( PedDevice * lp_device );
+	static bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
+	static bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
+	static bool get_device_and_disk( const Glib::ustring & device_path,
+	                                 PedDevice*& lp_device, PedDisk*& lp_disk, bool strict = true, bool flush = false );
+	static void destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_disk );
+	static bool commit( PedDisk* lp_disk );
+	static bool commit_to_os( PedDisk* lp_disk, std::time_t timeout );
+	static void settle_device( std::time_t timeout );
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 

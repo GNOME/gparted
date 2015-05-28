@@ -99,35 +99,6 @@ GParted_Core::GParted_Core()
 	find_supported_filesystems() ;
 }
 
-void GParted_Core::init_filesystems()
-{
-	FILESYSTEM_MAP[ FS_UNKNOWN ]         = NULL ;
-	FILESYSTEM_MAP[ FS_CLEARED ]         = NULL ;
-	FILESYSTEM_MAP[ FS_BTRFS ]           = new btrfs() ;
-	FILESYSTEM_MAP[ FS_EXFAT ]           = new exfat() ;
-	FILESYSTEM_MAP[ FS_EXT2 ]            = new ext2( FS_EXT2 ) ;
-	FILESYSTEM_MAP[ FS_EXT3 ]            = new ext2( FS_EXT3 ) ;
-	FILESYSTEM_MAP[ FS_EXT4 ]            = new ext2( FS_EXT4 ) ;
-	FILESYSTEM_MAP[ FS_F2FS ]            = new f2fs() ;
-	FILESYSTEM_MAP[ FS_FAT16 ]           = new fat16( FS_FAT16 ) ;
-	FILESYSTEM_MAP[ FS_FAT32 ]           = new fat16( FS_FAT32 ) ;
-	FILESYSTEM_MAP[ FS_HFS ]             = new hfs() ;
-	FILESYSTEM_MAP[ FS_HFSPLUS ]         = new hfsplus() ;
-	FILESYSTEM_MAP[ FS_JFS ]             = new jfs() ;
-	FILESYSTEM_MAP[ FS_LINUX_SWAP ]      = new linux_swap() ;
-	FILESYSTEM_MAP[ FS_LVM2_PV ]         = new lvm2_pv() ;
-	FILESYSTEM_MAP[ FS_NILFS2 ]          = new nilfs2() ;
-	FILESYSTEM_MAP[ FS_NTFS ]            = new ntfs() ;
-	FILESYSTEM_MAP[ FS_REISER4 ]         = new reiser4() ;
-	FILESYSTEM_MAP[ FS_REISERFS ]        = new reiserfs() ;
-	FILESYSTEM_MAP[ FS_UFS ]             = new ufs() ;
-	FILESYSTEM_MAP[ FS_XFS ]             = new xfs() ;
-	FILESYSTEM_MAP[ FS_BITLOCKER ]       = NULL ;
-	FILESYSTEM_MAP[ FS_LUKS ]            = NULL ;
-	FILESYSTEM_MAP[ FS_LINUX_SWRAID ]    = NULL ;
-	FILESYSTEM_MAP[ FS_LINUX_SWSUSPEND ] = NULL ;
-}
-
 void GParted_Core::find_supported_filesystems()
 {
 	std::map< FILESYSTEM, FileSystem * >::iterator f ;
@@ -310,7 +281,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device .cylsize = (MEBIBYTE / temp_device .sector_size) ;
 
 			std::vector<Glib::ustring> messages;
-			FILESYSTEM fstype = get_filesystem( lp_device, NULL, messages );
+			FILESYSTEM fstype = detect_filesystem( lp_device, NULL, messages );
 			// FS_Info (blkid) recognised file system signature on whole disk
 			// device.  Need to detect before libparted reported partitioning
 			// to avoid bug in libparted 1.9.0 to 2.3 inclusive which
@@ -1238,7 +1209,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = get_filesystem( lp_device, lp_partition, partition_temp .messages ) ;
+				filesystem = detect_filesystem( lp_device, lp_partition, partition_temp.messages );
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1414,7 +1385,7 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 
 // GParted simple internal file system signature detection.  Use sparingly.  Only when
 // (old versions of) blkid and libparted don't recognise a signature.
-FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, PedPartition * lp_partition )
+FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition )
 {
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
@@ -1495,8 +1466,8 @@ FILESYSTEM GParted_Core::recognise_filesystem_signature( PedDevice * lp_device, 
 	return fstype;
 }
 
-GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedPartition* lp_partition,
-                                                  std::vector<Glib::ustring>& messages )
+FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
+                                            std::vector<Glib::ustring> & messages )
 {
 	FS_Info fs_info ;
 	Glib::ustring fsname = "";
@@ -1596,7 +1567,7 @@ GParted::FILESYSTEM GParted_Core::get_filesystem( PedDevice* lp_device, PedParti
 	}
 
 	// Fallback to GParted simple internal file system detection
-	FILESYSTEM fstype = recognise_filesystem_signature( lp_device, lp_partition );
+	FILESYSTEM fstype = detect_filesystem_internal( lp_device, lp_partition );
 	if ( fstype == FS_LUKS )
 		messages.push_back( luks_unsupported );
 	if ( fstype != FS_UNKNOWN )
@@ -3794,6 +3765,45 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	return true ;
 }
 
+void GParted_Core::init_filesystems()
+{
+	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
+	FILESYSTEM_MAP[FS_CLEARED]         = NULL;
+	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
+	FILESYSTEM_MAP[FS_EXFAT]           = new exfat();
+	FILESYSTEM_MAP[FS_EXT2]            = new ext2( FS_EXT2 );
+	FILESYSTEM_MAP[FS_EXT3]            = new ext2( FS_EXT3 );
+	FILESYSTEM_MAP[FS_EXT4]            = new ext2( FS_EXT4 );
+	FILESYSTEM_MAP[FS_F2FS]            = new f2fs();
+	FILESYSTEM_MAP[FS_FAT16]           = new fat16( FS_FAT16 );
+	FILESYSTEM_MAP[FS_FAT32]           = new fat16( FS_FAT32 );
+	FILESYSTEM_MAP[FS_HFS]             = new hfs();
+	FILESYSTEM_MAP[FS_HFSPLUS]         = new hfsplus();
+	FILESYSTEM_MAP[FS_JFS]             = new jfs();
+	FILESYSTEM_MAP[FS_LINUX_SWAP]      = new linux_swap();
+	FILESYSTEM_MAP[FS_LVM2_PV]         = new lvm2_pv();
+	FILESYSTEM_MAP[FS_NILFS2]          = new nilfs2();
+	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
+	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
+	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
+	FILESYSTEM_MAP[FS_UFS]             = new ufs();
+	FILESYSTEM_MAP[FS_XFS]             = new xfs();
+	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
+	FILESYSTEM_MAP[FS_LUKS]            = NULL;
+	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
+	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
+}
+
+void GParted_Core::fini_filesystems()
+{
+	std::map<FILESYSTEM, FileSystem *>::iterator fs_iter;
+	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
+	{
+		delete fs_iter->second;
+		fs_iter->second = NULL;
+	}
+}
+
 //Flush the Linux kernel caches, and therefore ensure coherency between the caches of the
 //  whole disk device and the partition devices.
 //
@@ -4026,6 +4036,8 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
+	// Delete file system map entries
+	fini_filesystems();
 }
 
 Glib::Thread *GParted_Core::mainthread;
