@@ -923,6 +923,27 @@ void Win_GParted::Refresh_Visual()
 	}
 }
 
+// Confirms that the pointer points to one of the partition objects in the vector of
+// displayed partitions, Win_GParted::display_partitions[].
+// Usage: g_assert( valid_display_partition_ptr( my_partition_ptr ) );
+bool Win_GParted::valid_display_partition_ptr( const Partition * partition_ptr )
+{
+	for ( unsigned int i = 0 ; i < display_partitions.size() ; i++ )
+	{
+		if ( & display_partitions[i] == partition_ptr )
+			return true;
+		else if ( display_partitions[i].type == TYPE_EXTENDED )
+		{
+			for ( unsigned int j = 0 ; j < display_partitions[i].logicals.size() ; j++ )
+			{
+				if ( & display_partitions[i].logicals[j] == partition_ptr )
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool Win_GParted::Quit_Check_Operations()
 {
 	if ( operations .size() )
@@ -968,6 +989,7 @@ void Win_GParted::set_valid_operations()
 	// No partition selected ...
 	if ( ! selected_partition_ptr )
 		return ;
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// Get filesystem capabilities
 	fs = gparted_core.get_fs( selected_partition_ptr->filesystem );
@@ -1606,6 +1628,7 @@ bool Win_GParted::max_amount_prim_reached()
 void Win_GParted::activate_resize()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
 	
@@ -1715,6 +1738,7 @@ void Win_GParted::activate_resize()
 void Win_GParted::activate_copy()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	copied_partition = *selected_partition_ptr;
 }
@@ -1722,6 +1746,7 @@ void Win_GParted::activate_copy()
 void Win_GParted::activate_paste()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
 	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
@@ -1829,6 +1854,7 @@ void Win_GParted::activate_paste()
 void Win_GParted::activate_new()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
 	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
@@ -1867,6 +1893,7 @@ void Win_GParted::activate_new()
 void Win_GParted::activate_delete()
 { 
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// VGNAME from mount mount
 	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
@@ -1976,6 +2003,7 @@ void Win_GParted::activate_delete()
 void Win_GParted::activate_info()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	Dialog_Partition_Info dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
@@ -1985,6 +2013,7 @@ void Win_GParted::activate_info()
 void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// VGNAME from mount mount
 	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
@@ -2131,6 +2160,7 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 void Win_GParted::toggle_busy_state()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	bool success = false ;
@@ -2266,6 +2296,7 @@ void Win_GParted::toggle_busy_state()
 void Win_GParted::activate_mount_partition( unsigned int index ) 
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	if ( operation_count > 0 )
@@ -2503,6 +2534,7 @@ void Win_GParted::activate_attempt_rescue_data()
 void Win_GParted::activate_manage_flags() 
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;
 	while ( Gtk::Main::events_pending() )
@@ -2527,6 +2559,7 @@ void Win_GParted::activate_manage_flags()
 void Win_GParted::activate_check() 
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	Operation * operation = new OperationCheck( devices[current_device], *selected_partition_ptr );
 
@@ -2550,6 +2583,7 @@ void Win_GParted::activate_check()
 void Win_GParted::activate_label_filesystem()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	Dialog_FileSystem_Label dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
@@ -2586,6 +2620,7 @@ void Win_GParted::activate_label_filesystem()
 void Win_GParted::activate_name_partition()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	Dialog_Partition_Name dialog( *selected_partition_ptr,
 	                              devices[current_device].get_max_partition_name_length() );
@@ -2623,6 +2658,7 @@ void Win_GParted::activate_name_partition()
 void Win_GParted::activate_change_uuid()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
 	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
