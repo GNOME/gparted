@@ -21,7 +21,11 @@
 namespace GParted
 {
 
-Dialog_Partition_New::Dialog_Partition_New()
+Dialog_Partition_New::Dialog_Partition_New( const Device & device,
+                                            const Partition & partition,
+                                            bool any_extended,
+                                            unsigned short new_count,
+                                            const std::vector<FS> & FILESYSTEMS )
 {
 	/*TO TRANSLATORS: dialogtitle */
 	this ->set_title( _("Create new Partition") ) ;
@@ -30,9 +34,11 @@ Dialog_Partition_New::Dialog_Partition_New()
 	
 	//set used (in pixels)...
 	frame_resizer_base ->set_used( 0 ) ;
+
+	set_data(device, partition, any_extended, new_count, FILESYSTEMS );
 }
 
-void Dialog_Partition_New::Set_Data( const Device & device,
+void Dialog_Partition_New::set_data( const Device & device,
                                      const Partition & partition,
                                      bool any_extended,
                                      unsigned short new_count,

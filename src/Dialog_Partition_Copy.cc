@@ -21,15 +21,18 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs )
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, const Partition & selected_partition,
+                                              const Partition & copied_partition )
 {
 	this ->fs = fs ;
 
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
+
+	set_data( selected_partition, copied_partition );
 }
 
-void Dialog_Partition_Copy::Set_Data( const Partition & selected_partition, const Partition & copied_partition )
+void Dialog_Partition_Copy::set_data( const Partition & selected_partition, const Partition & copied_partition )
 {
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .get_path() ) ) ;
 	

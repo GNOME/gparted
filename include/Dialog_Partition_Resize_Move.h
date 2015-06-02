@@ -25,10 +25,11 @@ namespace GParted
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Resize_Move( const FS & fs );
-	void Set_Data( const Partition & selected_partition, const std::vector <Partition> & partitions ) ;
+	Dialog_Partition_Resize_Move( const FS & fs, const Partition & selected_partition,
+	                              const std::vector <Partition> & partitions );
 
 private:
+	void set_data( const Partition & selected_partition, const std::vector <Partition> & partitions );
 	void Resize_Move_Normal( const std::vector <Partition> & partitions ) ;
 	void Resize_Move_Extended( const std::vector <Partition> & partitions ) ;
 };

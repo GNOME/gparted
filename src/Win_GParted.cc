@@ -1712,18 +1712,18 @@ void Win_GParted::activate_resize()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition_ptr->filesystem ) );
-
+	std::vector<Partition> & display_partitions_ref = display_partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
 		unsigned int ext = 0 ;
 		while ( ext < display_partitions.size() && display_partitions[ext].type != TYPE_EXTENDED )
 			ext++;
-		dialog.Set_Data( *selected_partition_ptr, display_partitions[ext].logicals );
+		display_partitions_ref = display_partitions[ext].logicals;
 	}
-	else
-		dialog.Set_Data( *selected_partition_ptr, display_partitions );
 
+	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition_ptr->filesystem ),
+	                                     *selected_partition_ptr,
+	                                     display_partitions_ref );
 	dialog .set_transient_for( *this ) ;	
 			
 	if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -1835,14 +1835,15 @@ void Win_GParted::activate_paste()
 	{
 		if ( ! max_amount_prim_reached() )
 		{
-			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition.filesystem ) );
-
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
 			copied_partition .messages .clear() ;
 			copied_partition .clear_mountpoints() ;
 			copied_partition .name.clear() ;
-			dialog.Set_Data( *selected_partition_ptr, copied_partition );
+
+			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition.filesystem ),
+			                              *selected_partition_ptr,
+			                              copied_partition );
 			dialog .set_transient_for( *this );
 		
 			if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -1938,15 +1939,12 @@ void Win_GParted::activate_new()
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 	}
 	else if ( ! max_amount_prim_reached() )
-	{	
-		Dialog_Partition_New dialog;
-		
-		dialog.Set_Data( devices[current_device],
-		                 *selected_partition_ptr,
-		                 index_extended > -1,
-		                 new_count,
-		                 gparted_core.get_filesystems() );
-
+	{
+		Dialog_Partition_New dialog( devices[current_device],
+		                             *selected_partition_ptr,
+		                             index_extended > -1,
+		                             new_count,
+		                             gparted_core.get_filesystems() );
 		dialog .set_transient_for( *this );
 		
 		if ( dialog .run() == Gtk::RESPONSE_OK )

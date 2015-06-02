@@ -26,12 +26,13 @@ namespace GParted
 class Dialog_Partition_Copy : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Copy( const FS & fs );
-	void Set_Data( const Partition & selected_partition, const Partition & copied_partition );
+	Dialog_Partition_Copy( const FS & fs, const Partition & selected_partition,
+	                       const Partition & copied_partition );
 
 	Partition Get_New_Partition( Byte_Value sector_size ) ;
 
 private:
+	void set_data( const Partition & selected_partition, const Partition & copied_partition );
 };
 
 }//GParted

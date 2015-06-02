@@ -29,15 +29,19 @@ namespace GParted
 class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_New() ;
-	void Set_Data( const Device & device,
+	Dialog_Partition_New(const Device & device,
+	                     const Partition & partition,
+	                     bool any_extended,
+	                     unsigned short new_count,
+	                     const std::vector<FS> & FILESYSTEMS );
+	Partition Get_New_Partition( Byte_Value sector_size ) ;//overridden function
+
+private:
+	void set_data( const Device & device,
 	               const Partition & partition,
 	               bool any_extended,
 	               unsigned short new_count,
 	               const std::vector<FS> & FILESYSTEMS );
-	Partition Get_New_Partition( Byte_Value sector_size ) ;//overridden function
-
-private:
 	void Build_Filesystems_Menu( bool only_unformatted ) ;
 	
 	Gtk::Table table_create;

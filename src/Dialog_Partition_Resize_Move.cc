@@ -21,13 +21,15 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, const Partition & selected_partition,
+                                                            const std::vector<Partition> & partitions )
 {
 	this ->fs = fs ;
+	set_data( selected_partition, partitions );
 }
 
-void Dialog_Partition_Resize_Move::Set_Data( const Partition & selected_partition,
-					     const std::vector<Partition> & partitions )
+void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partition,
+                                             const std::vector<Partition> & partitions )
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 
