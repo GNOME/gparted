@@ -1605,6 +1605,8 @@ bool Win_GParted::max_amount_prim_reached()
 
 void Win_GParted::activate_resize()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	std::vector<Partition> partitions = devices[ current_device ] .partitions ;
 	
 	if ( operations .size() )
@@ -1712,11 +1714,15 @@ void Win_GParted::activate_resize()
 
 void Win_GParted::activate_copy()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	copied_partition = *selected_partition_ptr;
 }
 
 void Win_GParted::activate_paste()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
 	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
@@ -1822,6 +1828,8 @@ void Win_GParted::activate_paste()
 
 void Win_GParted::activate_new()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
 	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
@@ -1858,6 +1866,8 @@ void Win_GParted::activate_new()
 
 void Win_GParted::activate_delete()
 { 
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	// VGNAME from mount mount
 	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
 	{
@@ -1965,6 +1975,8 @@ void Win_GParted::activate_delete()
 
 void Win_GParted::activate_info()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	Dialog_Partition_Info dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
 	dialog .run();
@@ -1972,6 +1984,8 @@ void Win_GParted::activate_info()
 
 void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	// VGNAME from mount mount
 	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
 	{
@@ -2116,6 +2130,8 @@ void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error )
 	
 void Win_GParted::toggle_busy_state()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	bool success = false ;
 	Glib::ustring cmd;
@@ -2249,6 +2265,8 @@ void Win_GParted::toggle_busy_state()
 
 void Win_GParted::activate_mount_partition( unsigned int index ) 
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	if ( operation_count > 0 )
 	{
@@ -2484,6 +2502,8 @@ void Win_GParted::activate_attempt_rescue_data()
 
 void Win_GParted::activate_manage_flags() 
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
@@ -2506,6 +2526,8 @@ void Win_GParted::activate_manage_flags()
 	
 void Win_GParted::activate_check() 
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	Operation * operation = new OperationCheck( devices[current_device], *selected_partition_ptr );
 
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
@@ -2527,6 +2549,8 @@ void Win_GParted::activate_check()
 
 void Win_GParted::activate_label_filesystem()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	Dialog_FileSystem_Label dialog( *selected_partition_ptr );
 	dialog .set_transient_for( *this );
 
@@ -2561,6 +2585,8 @@ void Win_GParted::activate_label_filesystem()
 
 void Win_GParted::activate_name_partition()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	Dialog_Partition_Name dialog( *selected_partition_ptr,
 	                              devices[current_device].get_max_partition_name_length() );
 	dialog.set_transient_for( *this );
@@ -2596,6 +2622,8 @@ void Win_GParted::activate_name_partition()
 
 void Win_GParted::activate_change_uuid()
 {
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+
 	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
 	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
 	{
