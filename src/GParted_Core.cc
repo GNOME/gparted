@@ -150,7 +150,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	Proc_Partitions_Info pp_info( true ) ;  //Refresh cache of proc partition information
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
-	LVM2_PV_Info lvm2_pv_info( true ) ;	//Refresh cache of LVM2 PV information
+	LVM2_PV_Info::load_cache();             // Refresh cache of LVM2 PV information
 	btrfs::clear_cache() ;
 
 	init_maps() ;

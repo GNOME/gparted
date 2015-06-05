@@ -33,9 +33,7 @@ namespace GParted
 class LVM2_PV_Info
 {
 public:
-	LVM2_PV_Info() ;
-	LVM2_PV_Info( bool do_refresh ) ;
-	~LVM2_PV_Info() ;
+	static void load_cache();
 	bool is_lvm2_pv_supported() ;
 	Glib::ustring get_vg_name( const Glib::ustring & path ) ;
 	Byte_Value get_size_bytes( const Glib::ustring & path ) ;
@@ -46,8 +44,8 @@ public:
 	std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path ) ;
 private:
 	void initialize_if_required() ;
-	void set_command_found() ;
-	void load_lvm2_pv_info_cache() ;
+	static void set_command_found();
+	static void load_lvm2_pv_info_cache();
 	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const ;
 	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) const ;
 	Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const ;

@@ -84,22 +84,11 @@ std::vector<Glib::ustring> LVM2_PV_Info::lvm2_pv_cache ;
 std::vector<Glib::ustring> LVM2_PV_Info::lvm2_vg_cache ;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
-LVM2_PV_Info::LVM2_PV_Info()
+void LVM2_PV_Info::load_cache()
 {
-}
-
-LVM2_PV_Info::LVM2_PV_Info( bool do_refresh )
-{
-	if ( do_refresh )
-	{
-		set_command_found() ;
-		load_lvm2_pv_info_cache() ;
-		lvm2_pv_info_cache_initialized = true ;
-	}
-}
-
-LVM2_PV_Info::~LVM2_PV_Info()
-{
+	set_command_found();
+	load_lvm2_pv_info_cache();
+	lvm2_pv_info_cache_initialized = true;
 }
 
 bool LVM2_PV_Info::is_lvm2_pv_supported()
