@@ -2955,11 +2955,10 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	tmp_msg += "\n\n" ;
 	tmp_msg += _( "Do you want to continue to forcibly delete the Physical Volume?" ) ;
 
-	LVM2_PV_Info lvm2_pv_info ;
-	Glib::ustring vgname = lvm2_pv_info.get_vg_name( selected_partition_ptr->get_path() );
+	Glib::ustring vgname = LVM2_PV_Info::get_vg_name( selected_partition_ptr->get_path() );
 	std::vector<Glib::ustring> members ;
 	if ( ! vgname .empty() )
-		members = lvm2_pv_info .get_vg_members( vgname ) ;
+		members = LVM2_PV_Info::get_vg_members( vgname );
 
 	//Single copy of each string for translation purposes
 	const Glib::ustring vgname_label  = _( "Volume Group:" ) ;

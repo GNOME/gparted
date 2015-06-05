@@ -216,10 +216,9 @@ void Dialog_Partition_Info::Display_Info()
 
 	Sector ptn_sectors = partition .get_sector_length() ;
 
-	LVM2_PV_Info lvm2_pv_info ;
 	Glib::ustring vgname = "" ;  //Also used in partition status message
 	if ( partition .filesystem == FS_LVM2_PV )
-		vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+		vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
 
 	//initialize table top and bottom row number attach trackers
 	int top = 0     , bottom = 1 ;      //Left field & value pairs
@@ -344,7 +343,7 @@ void Dialog_Partition_Info::Display_Info()
 				 * the operating system.
 				 */
 				str_temp = _("Not active (Not a member of any volume group)") ;
-			else if ( lvm2_pv_info .is_vg_exported( vgname ) )
+			else if ( LVM2_PV_Info::is_vg_exported( vgname ) )
 				/* TO TRANSLATORS:  Not active and exported
 				 * means that the partition is a member of an LVM volume group but
 				 * the volume group is not active and not being used by the operating system.
@@ -396,7 +395,7 @@ void Dialog_Partition_Info::Display_Info()
 				break ;
 			case FS_LVM2_PV:
 				if ( ! vgname .empty() )
-					members = lvm2_pv_info .get_vg_members( vgname ) ;
+					members = LVM2_PV_Info::get_vg_members( vgname );
 				break ;
 			default:
 				break ;

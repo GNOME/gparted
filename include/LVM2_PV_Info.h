@@ -34,22 +34,22 @@ class LVM2_PV_Info
 {
 public:
 	static void load_cache();
-	bool is_lvm2_pv_supported() ;
-	Glib::ustring get_vg_name( const Glib::ustring & path ) ;
-	Byte_Value get_size_bytes( const Glib::ustring & path ) ;
-	Byte_Value get_free_bytes( const Glib::ustring & path ) ;
-	bool has_active_lvs( const Glib::ustring & path ) ;
-	bool is_vg_exported( const Glib::ustring & vgname ) ;
-	std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname ) ;
-	std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path ) ;
+	static bool is_lvm2_pv_supported();
+	static Glib::ustring get_vg_name( const Glib::ustring & path );
+	static Byte_Value get_size_bytes( const Glib::ustring & path );
+	static Byte_Value get_free_bytes( const Glib::ustring & path );
+	static bool has_active_lvs( const Glib::ustring & path );
+	static bool is_vg_exported( const Glib::ustring & vgname );
+	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
+	static std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path );
 private:
-	void initialize_if_required() ;
+	static void initialize_if_required();
 	static void set_command_found();
 	static void load_lvm2_pv_info_cache();
-	Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const ;
-	Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry ) const ;
-	Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const ;
-	Glib::ustring get_vg_attr_by_row( unsigned int row, unsigned int entry ) const ;
+	static Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry );
+	static Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry );
+	static Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry );
+	static Glib::ustring get_vg_attr_by_row( unsigned int row, unsigned int entry );
 	static Glib::ustring get_attr_by_name( const std::vector<Glib::ustring> cache,
 	                                       const Glib::ustring name, unsigned int entry ) ;
 	static Glib::ustring get_attr_by_row( const std::vector<Glib::ustring> cache,

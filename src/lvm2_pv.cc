@@ -49,8 +49,7 @@ FS lvm2_pv::get_filesystem_support()
 	FS fs ;
 	fs .filesystem = GParted::FS_LVM2_PV ;
 
-	LVM2_PV_Info lvm2_pv_info ;
-	if ( lvm2_pv_info .is_lvm2_pv_supported() )
+	if ( LVM2_PV_Info::is_lvm2_pv_supported() )
 	{
 		fs .busy   = FS::EXTERNAL ;
 		fs .read   = FS::EXTERNAL ;
@@ -75,15 +74,13 @@ FS lvm2_pv::get_filesystem_support()
 
 bool lvm2_pv::is_busy( const Glib::ustring & path )
 {
-	LVM2_PV_Info lvm2_pv_info ;
-	return lvm2_pv_info .has_active_lvs( path ) ;
+	return LVM2_PV_Info::has_active_lvs( path );
 }
 
 void lvm2_pv::set_used_sectors( Partition & partition )
 {
-	LVM2_PV_Info lvm2_pv_info ;
-	T = (Sector) lvm2_pv_info .get_size_bytes( partition .get_path() ) ;
-	N = (Sector) lvm2_pv_info .get_free_bytes( partition .get_path() ) ;
+	T = (Sector) LVM2_PV_Info::get_size_bytes( partition.get_path() );
+	N = (Sector) LVM2_PV_Info::get_free_bytes( partition.get_path() );
 	if ( T > -1 && N > -1 )
 	{
 		T = Utils::round( T / double(partition .sector_size) ) ;
@@ -91,7 +88,7 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 		partition .set_sector_usage( T, N ) ;
 	}
 
-	std::vector<Glib::ustring> error_messages = lvm2_pv_info .get_error_messages( partition .get_path() ) ;
+	std::vector<Glib::ustring> error_messages = LVM2_PV_Info::get_error_messages( partition.get_path() );
 	if ( ! error_messages .empty() )
 	{
 		for ( unsigned int i = 0 ; i < error_messages .size() ; i ++ )
@@ -121,8 +118,7 @@ bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & opera
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
 {
-	LVM2_PV_Info lvm2_pv_info ;
-	Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+	Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
 	Glib::ustring cmd ;
 	if ( vgname .empty() )
 		cmd = "lvm pvremove " + partition .get_path() ;

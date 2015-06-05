@@ -1689,7 +1689,6 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
 #endif
-	LVM2_PV_Info lvm2_pv_info ;
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
 	{
 		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
@@ -1748,7 +1747,7 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 			set_mountpoints( partitions[ t ] .logicals ) ;
 		else if ( partitions[ t ] .filesystem == GParted::FS_LVM2_PV )
 		{
-			Glib::ustring vgname = lvm2_pv_info. get_vg_name( partitions[t].get_path() ) ;
+			Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partitions[t].get_path() );
 			if ( ! vgname .empty() )
 				partitions[ t ] .add_mountpoint( vgname ) ;
 		}
@@ -3477,11 +3476,10 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 	if ( partition .filesystem == FS_LVM2_PV )
 	{
 		//The LVM2 PV can't be resized when it's a member of an export VG
-		LVM2_PV_Info lvm2_pv_info ;
-		Glib::ustring vgname = lvm2_pv_info .get_vg_name( partition .get_path() ) ;
+		Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
 		if ( vgname .empty() )
 			return false ;
-		return lvm2_pv_info .is_vg_exported( vgname ) ;
+		return LVM2_PV_Info::is_vg_exported( vgname );
 	}
 	return false ;
 }

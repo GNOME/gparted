@@ -274,22 +274,22 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	}
 }
 
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry ) const
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry )
 {
 	return get_attr_by_name( lvm2_pv_cache, path, entry ) ;
 }
 
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry ) const
+Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry )
 {
 	return get_attr_by_row( lvm2_pv_cache, row, entry ) ;
 }
 
-Glib::ustring LVM2_PV_Info::get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry ) const
+Glib::ustring LVM2_PV_Info::get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry )
 {
 	return get_attr_by_name( lvm2_vg_cache, vgname, entry ) ;
 }
 
-Glib::ustring LVM2_PV_Info::get_vg_attr_by_row( unsigned int row, unsigned int entry ) const
+Glib::ustring LVM2_PV_Info::get_vg_attr_by_row( unsigned int row, unsigned int entry )
 {
 	return get_attr_by_row( lvm2_vg_cache, row, entry ) ;
 }
