@@ -30,6 +30,22 @@
 namespace GParted
 {
 
+struct LVM2_PV
+{
+	Glib::ustring pv_name;
+	Byte_Value    pv_size;
+	Byte_Value    pv_free;
+	Glib::ustring vg_name;
+};
+
+struct LVM2_VG
+{
+	Glib::ustring vg_name;
+	Glib::ustring vg_attr;
+	Glib::ustring lv_name;
+	Glib::ustring lv_attr;
+};
+
 class LVM2_PV_Info
 {
 public:
@@ -46,20 +62,14 @@ private:
 	static void initialize_if_required();
 	static void set_command_found();
 	static void load_lvm2_pv_info_cache();
-	static Glib::ustring get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry );
-	static Glib::ustring get_pv_attr_by_row( unsigned int row, unsigned int entry );
-	static Glib::ustring get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry );
-	static Glib::ustring get_vg_attr_by_row( unsigned int row, unsigned int entry );
-	static Glib::ustring get_attr_by_name( const std::vector<Glib::ustring> cache,
-	                                       const Glib::ustring name, unsigned int entry ) ;
-	static Glib::ustring get_attr_by_row( const std::vector<Glib::ustring> cache,
-	                                      unsigned int row, unsigned int entry ) ;
-	static Byte_Value lvm2_pv_attr_to_num( const Glib::ustring str ) ;
+	static const LVM2_PV & get_pv_cache_entry_by_name( const Glib::ustring & pvname );
+	static const LVM2_VG & get_vg_cache_entry_by_name( const Glib::ustring & vgname );
+	static Byte_Value lvm2_pv_size_to_num( const Glib::ustring str ) ;
 	static bool bit_set( const Glib::ustring & attr, unsigned int bit ) ;
 	static bool lvm2_pv_info_cache_initialized ;
 	static bool lvm_found ;
-	static std::vector<Glib::ustring> lvm2_pv_cache ;
-	static std::vector<Glib::ustring> lvm2_vg_cache ;
+	static std::vector<LVM2_PV> lvm2_pv_cache;
+	static std::vector<LVM2_VG> lvm2_vg_cache;
 	static std::vector<Glib::ustring> error_messages ;
 };
 

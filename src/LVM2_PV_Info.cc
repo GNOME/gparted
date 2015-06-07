@@ -19,22 +19,6 @@
 namespace GParted
 {
 
-enum PV_ATTRIBUTE
-{
-	PVATTR_PV_NAME = 0,
-	PVATTR_PV_SIZE = 1,
-	PVATTR_PV_FREE = 2,
-	PVATTR_VG_NAME = 3
-} ;
-
-enum VG_ATTRIBUTE
-{
-	VGATTR_VG_NAME = 0,
-	VGATTR_VG_BITS = 1,
-	VGATTR_LV_NAME = 2,
-	VGATTR_LV_BITS = 3
-} ;
-
 enum VG_BIT
 {
 	VGBIT_EXPORTED = 2,	//  "x" VG exported,                    "-" VG not exported
@@ -51,28 +35,30 @@ enum LV_BIT
 //  lvm2_pv_info_cache_initialized
 //                      - Has the cache been loaded yet?
 //  lvm_found           - Is the "lvm" command available?
-//  lvm2_pv_cache       - String vector storing PV attributes: pv_name, pv_size, pv_free, vg_name.
-//                        One string per PV.
+//  lvm2_pv_cache       - Vector of PV fields: pv_name, pv_size, pv_free, vg_name.
 //                        E.g.
-//                        ["/dev/sda10,1073741824,1073741824,",
-//                         "/dev/sda11,1069547520,1069547520,Test-VG1",
-//                         "/dev/sda12,1069547520,335544320,Test_VG2",
-//                         "/dev/sda13,1069547520,0,Test_VG3",
-//                         "/dev/sda14,1069547520,566231040,Test_VG3",
-//                         "/dev/sda15,1069547520,545259520,Test-VG4"
+//                        //pv_name     , pv_size   , pv_free   , vg_name
+//                        [{"/dev/sda10", 1073741824, 1073741824, ""        },
+//                         {"/dev/sda11", 1069547520, 1069547520, "Test-VG1"},
+//                         {"/dev/sda12", 1069547520,  335544320, "Test_VG2"},
+//                         {"/dev/sda13", 1069547520,          0, "Test_VG3"},
+//                         {"/dev/sda14", 1069547520,  566231040, "Test_VG3"},
+//                         {"/dev/sda15", 1069547520,  545259520, "Test-VG4"}
 //                        ]
-//  lvm2_vg_cache       - String vector storing VG attributes: vg_name, vg_attr, lv_name, lv_attr.
+//  lvm2_vg_cache       - Vector storing VG fields: vg_name, vg_attr, lv_name, lv_attr.
 //                        See vgs(8) and lvs(8) for details of vg_attr and lv_attr respectively.
-//                        [",r-----,,",
-//                         "Test-VG1,wz--n-,,",
-//                         "Test_VG2,wz--n-,lvol0,-wi---",
-//                         "Test_VG2,wz--n-,lvol1,-wi---",
-//                         "Test_VG2,wz--n-,,",
-//                         "Test_VG3,wz--n-,lvol0,-wi-a-",
-//                         "Test_VG3,wz--n-,lvol0,-wi-a-",
-//                         "Test_VG3,wz--n-,,",
-//                         "Test-VG4,wzx-n-,lvol0,-wi---",
-//                         "Test-VG4,wzx-n-,,"
+//                        E.g.
+//                        //vg_name   , vg_attr , lv_name, lv_attr
+//                        [{""        , "r-----", ""     , ""      },  // (from empty PV)
+//                         {"Test-VG1", "wz--n-", ""     , ""      },  // Empty VG
+//                         {"Test_VG2", "wz--n-", "lvol0", "-wi---"},  // Inactive VG
+//                         {"Test_VG2", "wz--n-", "lvol1", "-wi---"},
+//                         {"Test_VG2", "wz--n-", ""     , ""      },
+//                         {"Test_VG3", "wz--n-", "lvol0", "-wi-a-"},  // Active VG
+//                         {"Test_VG3", "wz--n-", "lvol0", "-wi-a-"},
+//                         {"Test_VG3", "wz--n-", ""     , ""      },
+//                         {"Test-VG4", "wzx-n-", "lvol0", "-wi---"},  // Exported VG
+//                         {"Test-VG4", "wzx-n-", ""     , ""      }
 //                        ]
 //  error_messages      - String vector storing whole cache error messages.
 
@@ -80,8 +66,8 @@ enum LV_BIT
 //Initialize static data elements
 bool LVM2_PV_Info::lvm2_pv_info_cache_initialized = false ;
 bool LVM2_PV_Info::lvm_found = false ;
-std::vector<Glib::ustring> LVM2_PV_Info::lvm2_pv_cache ;
-std::vector<Glib::ustring> LVM2_PV_Info::lvm2_vg_cache ;
+std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
+std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
 void LVM2_PV_Info::load_cache()
@@ -100,39 +86,40 @@ bool LVM2_PV_Info::is_lvm2_pv_supported()
 Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	return get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
+	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	return pv.vg_name;
 }
 
 //Return PV size in bytes, or -1 for error.
 Byte_Value LVM2_PV_Info::get_size_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	Glib::ustring str = get_pv_attr_by_path( path, PVATTR_PV_SIZE ) ;
-	return lvm2_pv_attr_to_num( str ) ;
+	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	return pv.pv_size;
 }
 
 //Return number of free bytes in the PV, or -1 for error.
 Byte_Value LVM2_PV_Info::get_free_bytes( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	Glib::ustring str = get_pv_attr_by_path( path, PVATTR_PV_FREE ) ;
-	return lvm2_pv_attr_to_num( str ) ;
+	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	return pv.pv_free;
 }
 
 //Report if any LVs are active in the VG stored in the PV.
 bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 {
 	initialize_if_required() ;
-	Glib::ustring vgname = get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
-	if ( vgname == "" )
-		//PV not yet included in any VG
+	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	if ( pv.vg_name == "" )
+		// PV not yet included in any VG or PV not found in cache
 		return false ;
 
 	for ( unsigned int i = 0 ; i < lvm2_vg_cache .size() ; i ++ )
 	{
-		if ( vgname == get_vg_attr_by_row( i, VGATTR_VG_NAME ) )
+		if ( pv.vg_name == lvm2_vg_cache[i].vg_name )
 		{
-			if ( bit_set( get_vg_attr_by_row( i, VGATTR_LV_BITS ), LVBIT_STATE ) )
+			if ( bit_set( lvm2_vg_cache[i].lv_attr, LVBIT_STATE ) )
 				//LV in VG is active
 				return true ;
 		}
@@ -144,8 +131,8 @@ bool LVM2_PV_Info::has_active_lvs( const Glib::ustring & path )
 bool LVM2_PV_Info::is_vg_exported( const Glib::ustring & vgname )
 {
 	initialize_if_required() ;
-
-	return bit_set( get_vg_attr_by_name( vgname, VGATTR_VG_BITS ), VGBIT_EXPORTED ) ;
+	LVM2_VG vg = get_vg_cache_entry_by_name( vgname );
+	return bit_set( vg.vg_attr, VGBIT_EXPORTED );
 }
 
 //Return vector of PVs which are members of the VG.  Passing "" returns all empty PVs.
@@ -156,9 +143,9 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & v
 
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
 	{
-		if ( vgname == get_pv_attr_by_row( i, PVATTR_VG_NAME ) )
+		if ( vgname == lvm2_pv_cache[i].vg_name )
 		{
-			members .push_back( get_pv_attr_by_row( i, PVATTR_PV_NAME ) ) ;
+			members.push_back( lvm2_pv_cache[i].pv_name );
 		}
 	}
 
@@ -176,8 +163,9 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring
 	Glib::ustring temp ;
 
 	//Check for partition specific message: partial VG
-	Glib::ustring vgname = get_pv_attr_by_path( path, PVATTR_VG_NAME ) ;
-	if ( bit_set( get_vg_attr_by_name( vgname, VGATTR_VG_BITS ), VGBIT_PARTIAL ) )
+	LVM2_PV pv = get_pv_cache_entry_by_name( path );
+	LVM2_VG vg = get_vg_cache_entry_by_name( pv.vg_name );
+	if ( bit_set( vg.vg_attr, VGBIT_PARTIAL ) )
 	{
 		temp = _("One or more Physical Volumes belonging to the Volume Group is missing.") ;
 		partition_specific_messages .push_back ( temp ) ;
@@ -219,16 +207,38 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 		//  is changed not using lvm commands.
 		Utils::execute_command( "lvm vgscan", output, error, true ) ;
 
-		//Load LVM2 PV attribute cache.  Output PV attributes in PV_ATTRIBUTE order
+		// Load LVM2 PV cache.  Output PV values in PV_FIELD order.
 		Glib::ustring cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix "
 		                    "--noheadings --separator , --units b -o pv_name,pv_size,pv_free,vg_name" ;
+		enum PV_FIELD
+		{
+			PVFIELD_PV_NAME = 0,
+			PVFIELD_PV_SIZE = 1,
+			PVFIELD_PV_FREE = 2,
+			PVFIELD_VG_NAME = 3,
+			PVFIELD_COUNT   = 4
+		};
 		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
 			{
-				Utils::tokenize( output, lvm2_pv_cache, "\n" ) ;
-				for ( i = 0 ; i < lvm2_pv_cache .size() ; i ++ )
-					lvm2_pv_cache [i] = Utils::trim( lvm2_pv_cache [i] ) ;
+				std::vector<Glib::ustring> lines;
+				Utils::tokenize( output, lines, "\n" );
+				for ( i = 0 ; i < lines.size() ; i ++ )
+				{
+					std::vector<Glib::ustring> fields;
+					Utils::split( Utils::trim( lines[i] ), fields, "," );
+					if ( fields.size() < PVFIELD_COUNT )
+						continue;  // Not enough fields
+					LVM2_PV pv;
+					pv.pv_name = fields[PVFIELD_PV_NAME];
+					if ( pv.pv_name.size() == 0 )
+						continue;  // Empty PV name
+					pv.pv_size = lvm2_pv_size_to_num( fields[PVFIELD_PV_SIZE] );
+					pv.pv_free = lvm2_pv_size_to_num( fields[PVFIELD_PV_FREE] );
+					pv.vg_name = fields[PVFIELD_VG_NAME];
+					lvm2_pv_cache.push_back( pv );
+				}
 			}
 		}
 		else
@@ -240,16 +250,37 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 				error_messages .push_back ( error ) ;
 		}
 
-		//Load LVM2 VG attribute cache.  Output VG and LV attributes in VG_ATTRIBUTE order
+		// Load LVM2 VG cache.  Output VG and LV values in VG_FIELD order.
 		cmd = "lvm pvs --config \"log{command_names=0}\" --nosuffix "
 		      "--noheadings --separator , --units b -o vg_name,vg_attr,lv_name,lv_attr" ;
+		enum VG_FIELD
+		{
+			VGFIELD_VG_NAME = 0,
+			VGFIELD_VG_ATTR = 1,
+			VGFIELD_LV_NAME = 2,
+			VGFIELD_LV_ATTR = 3,
+			VGFIELD_COUNT   = 4
+		};
 		if ( ! Utils::execute_command( cmd, output, error, true ) )
 		{
 			if ( output != "" )
 			{
-				Utils::tokenize( output, lvm2_vg_cache, "\n" ) ;
-				for ( i = 0 ; i < lvm2_vg_cache .size() ; i ++ )
-					lvm2_vg_cache [i] = Utils::trim( lvm2_vg_cache [i] ) ;
+				std::vector<Glib::ustring> lines;
+				Utils::tokenize( output, lines, "\n" );
+				for ( i = 0 ; i < lines.size() ; i ++ )
+				{
+					std::vector<Glib::ustring> fields;
+					Utils::split( Utils::trim( lines[i] ), fields, "," );
+					if ( fields.size() < VGFIELD_COUNT )
+						continue;  // Not enough fields
+					LVM2_VG vg;
+					// VG name may be empty.  See data model example above.
+					vg.vg_name = fields[VGFIELD_VG_NAME];
+					vg.vg_attr = fields[VGFIELD_VG_ATTR];
+					vg.lv_name = fields[VGFIELD_LV_NAME];
+					vg.lv_attr = fields[VGFIELD_LV_ATTR];
+					lvm2_vg_cache.push_back( vg );
+				}
 			}
 		}
 		else
@@ -274,68 +305,35 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 	}
 }
 
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_path( const Glib::ustring & path, unsigned int entry )
+// Performs linear search of the PV cache to find the first matching pv_name.
+// Returns found cache entry or not found substitute.
+const LVM2_PV & LVM2_PV_Info::get_pv_cache_entry_by_name( const Glib::ustring & pvname )
 {
-	return get_attr_by_name( lvm2_pv_cache, path, entry ) ;
-}
-
-Glib::ustring LVM2_PV_Info::get_pv_attr_by_row( unsigned int row, unsigned int entry )
-{
-	return get_attr_by_row( lvm2_pv_cache, row, entry ) ;
-}
-
-Glib::ustring LVM2_PV_Info::get_vg_attr_by_name( const Glib::ustring & vgname, unsigned int entry )
-{
-	return get_attr_by_name( lvm2_vg_cache, vgname, entry ) ;
-}
-
-Glib::ustring LVM2_PV_Info::get_vg_attr_by_row( unsigned int row, unsigned int entry )
-{
-	return get_attr_by_row( lvm2_vg_cache, row, entry ) ;
-}
-
-//Performs linear search of the cache and uses the first matching name.
-//  Return nth attribute.  Attributes are numbered 0 upward using
-//  PV_ATTRIBUTE and VG_ATTRIBUTE enumerations for lvm2_pv_cache and
-//  lvm2_vg_cache respectively.
-Glib::ustring LVM2_PV_Info::get_attr_by_name( const std::vector<Glib::ustring> cache,
-                                              const Glib::ustring name, unsigned int entry )
-{
-	for ( unsigned int i = 0 ; i < cache .size() ; i ++ )
+	for ( unsigned int i = 0 ; i < lvm2_pv_cache.size() ; i ++ )
 	{
-		std::vector<Glib::ustring> attrs ;
-		Utils::split( cache [i], attrs, "," ) ;
-		if ( attrs .size() >= 1 && attrs [0] == name )
-		{
-			if ( entry < attrs .size() )
-				return attrs [entry] ;
-			else
-				break ;
-		}
+		if ( pvname == lvm2_pv_cache[i].pv_name )
+			return lvm2_pv_cache[i];
 	}
-
-	return "" ;
+	static LVM2_PV pv = {"", -1, -1, ""};
+	return pv;
 }
 
-//Lookup row from the cache and return nth attribute.  Row is numbered
-//  0 upwards and attributes are numbered 0 upwards using PV_ATTRIBUTE
-//  and VG_ATTRIBUTE enumerations for lvm2_pv_cache and lvm2_vg_cache
-//  respectively.
-Glib::ustring LVM2_PV_Info::get_attr_by_row( const std::vector<Glib::ustring> cache,
-                                             unsigned int row, unsigned int entry )
+// Performs linear search of the VG cache to find the first matching vg_name.
+// Returns found cache entry or not found substitute.
+const LVM2_VG & LVM2_PV_Info::get_vg_cache_entry_by_name( const Glib::ustring & vgname )
 {
-	if ( row >= cache .size() )
-		return "" ;
-	std::vector<Glib::ustring> attrs ;
-	Utils::split( cache [row], attrs, "," ) ;
-	if ( entry < attrs .size() )
-		return attrs [entry] ;
-	return "" ;
+	for ( unsigned int i = 0 ; i < lvm2_vg_cache.size() ; i ++ )
+	{
+		if ( vgname == lvm2_vg_cache[i].vg_name )
+			return lvm2_vg_cache[i];
+	}
+	static LVM2_VG vg = {"", "", "", ""};
+	return vg;
 }
 
 //Return string converted to a number, or -1 for error.
 //Used to convert PVs size or free bytes.
-Byte_Value LVM2_PV_Info::lvm2_pv_attr_to_num( const Glib::ustring str )
+Byte_Value LVM2_PV_Info::lvm2_pv_size_to_num( const Glib::ustring str )
 {
 	Byte_Value num = -1 ;
 	if ( str != "" )
