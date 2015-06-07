@@ -49,8 +49,8 @@ struct LVM2_VG
 class LVM2_PV_Info
 {
 public:
-	static void load_cache();
 	static bool is_lvm2_pv_supported();
+	static void clear_cache();
 	static Glib::ustring get_vg_name( const Glib::ustring & path );
 	static Byte_Value get_size_bytes( const Glib::ustring & path );
 	static Byte_Value get_free_bytes( const Glib::ustring & path );

@@ -70,17 +70,17 @@ std::vector<LVM2_PV> LVM2_PV_Info::lvm2_pv_cache;
 std::vector<LVM2_VG> LVM2_PV_Info::lvm2_vg_cache;
 std::vector<Glib::ustring> LVM2_PV_Info::error_messages ;
 
-void LVM2_PV_Info::load_cache()
-{
-	set_command_found();
-	load_lvm2_pv_info_cache();
-	lvm2_pv_info_cache_initialized = true;
-}
-
 bool LVM2_PV_Info::is_lvm2_pv_supported()
 {
 	set_command_found() ;
 	return ( lvm_found ) ;
+}
+
+void LVM2_PV_Info::clear_cache()
+{
+	lvm2_pv_cache.clear();
+	lvm2_vg_cache.clear();
+	lvm2_pv_info_cache_initialized = false;
 }
 
 Glib::ustring LVM2_PV_Info::get_vg_name( const Glib::ustring & path )
