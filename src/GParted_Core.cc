@@ -151,7 +151,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
-	btrfs::clear_cache() ;
+	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
 
 	init_maps() ;
 	
