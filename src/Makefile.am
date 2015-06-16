@@ -47,6 +47,7 @@ gpartedbin_SOURCES = \
 	OperationNamePartition.cc	\
 	OperationResizeMove.cc		\
 	Partition.cc			\
+	PartitionVector.cc		\
 	PipeCapture.cc			\
 	Proc_Partitions_Info.cc		\
 	SWRaid_Info.cc			\

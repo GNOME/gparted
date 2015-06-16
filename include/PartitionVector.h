@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Minimal implementation of a class that behaves like a std::vector<Partition> which can
- * be used in it's place with minimal change to the existing GParted code which expects to
- * be working with a std::vector<Partition>.
+/* Minimal implementation of a class with some behaviours like a std::vector<Partition>.
+ * However internally the class manages pointers to Partition objects allowing for
+ * Partition object polymorphism.
  * Reference:
  *     C++ Reference to std::vector
  *     http://www.cplusplus.com/reference/vector/vector/
@@ -44,10 +44,13 @@ class PartitionVector;  // mutually recursive classes.
 class PartitionVector {
 public:
 	typedef size_t size_type;
-	typedef std::vector<Partition>::iterator iterator;
+	typedef std::vector<Partition *>::iterator iterator;
 
 	PartitionVector() {};
-	~PartitionVector() {};
+	PartitionVector( const PartitionVector & src );
+	~PartitionVector();
+	void swap( PartitionVector & other );
+	PartitionVector & operator=( PartitionVector rhs );
 
 	// Iterators
 	iterator begin()                                   { return v.begin(); };
@@ -56,22 +59,21 @@ public:
 	bool empty() const                                 { return v.empty(); };
 
 	// Element access
-	Partition & operator[]( size_type n )              { return v[n]; };
-	const Partition & operator[]( size_type n ) const  { return v[n]; };
+	Partition & operator[]( size_type n )              { return *v[n]; };
+	const Partition & operator[]( size_type n ) const  { return *v[n]; };
 	size_type size() const                             { return v.size(); };
-	const Partition & front() const                    { return v.front(); };
-	const Partition & back() const                     { return v.back(); };
+	const Partition & front() const                    { return *v.front(); };
+	const Partition & back() const                     { return *v.back(); };
 
 	// Modifiers
-	void pop_back()                                    { v.pop_back(); };
-	void erase( const iterator position )              { v.erase( position ); };
-	void clear()                                       { v.clear(); };
-	void push_back( const Partition & partition )      { v.push_back( partition ); };
-	void insert( iterator position, const Partition & partition )
-	                                                   { v.insert( position, partition ); };
+	void pop_back();
+	void erase( const iterator position );
+	void clear();
+	void push_back( const Partition & partition );
+	void insert( iterator position, const Partition & partition );
 
 private:
-	std::vector<Partition> v;
+	std::vector<Partition *> v;
 };
 
 } //GParted
