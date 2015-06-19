@@ -107,6 +107,13 @@ FS btrfs::get_filesystem_support()
 		}
 	}
 
+	if ( ! Glib::find_program_in_path( "btrfstune" ).empty() )
+	{
+		Utils::execute_command( "btrfstune --help", output, error, true );
+		if ( Utils::regexp_label( error, "^[[:blank:]]*(-u)[[:blank:]]" ) == "-u" )
+			fs.write_uuid = FS::EXTERNAL;
+	}
+
 	if ( fs .check )
 	{
 		fs .copy = GParted::FS::GPARTED ;
@@ -420,6 +427,11 @@ void btrfs::read_uuid( Partition & partition )
 		if ( ! error .empty() )
 			partition .messages .push_back( error ) ;
 	}
+}
+
+bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "btrfstune -f -u " + partition.get_path(), operationdetail );
 }
 
 void btrfs::clear_cache()
