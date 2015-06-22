@@ -78,6 +78,7 @@ private:
 	static bool have_rootfs_dev( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	static void read_mountpoints_from_mount_command( std::map< Glib::ustring, std::vector<Glib::ustring> > & map ) ;
 	static Glib::ustring get_partition_path( PedPartition * lp_partition );
+	void set_device_serial_number( Device & device );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
 	                               std::vector<Glib::ustring> & messages );

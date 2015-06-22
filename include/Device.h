@@ -50,6 +50,7 @@ public:
 	Sector cylinders ;
 	Sector cylsize ;
 	Glib::ustring model;
+	Glib::ustring serial_number;
  	Glib::ustring disktype;
 	int sector_size ;
 	int max_prims ;

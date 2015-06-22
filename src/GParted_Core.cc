@@ -275,6 +275,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
 			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
 			temp_device .cylsize 	=	temp_device .heads * temp_device .sectors ; 
+			set_device_serial_number( temp_device );
 		
 			//make sure cylsize is at least 1 MiB
 			if ( temp_device .cylsize < (MEBIBYTE / temp_device .sector_size) )
@@ -1177,6 +1178,40 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 #endif
 
 	return partition_path ;
+}
+
+void GParted_Core::set_device_serial_number( Device & device )
+{
+	if ( Glib::find_program_in_path( "hdparm" ).empty() )
+		// Serial number left blank when the hdparm command is not installed.
+		return;
+
+	Glib::ustring output;
+	Glib::ustring error;
+	Utils::execute_command( "hdparm -I " + device.get_path(), output, error, true );
+	if ( ! error.empty() )
+	{
+		// hdparm reported an error message to stderr.  Assume it's a device
+		// without a hard drive serial number.
+		//
+		// Using hdparm -I to query Linux software RAID arrays and BIOS fake RAID
+		// arrays, both devices without their own hard drive serial numbers,
+		// produce this error:
+		//     HDIO_DRIVE_CMD(identify) failed: Inappropriate ioctl for device
+		//
+		// And querying USB flash drives, also a device type without their own
+		// hard drive serial numbers, generates this error:
+		//     SG_IO: bad/missing sense data, sb[]:  70 00 05 00 00 00 00 0a ...
+		device.serial_number = "none";
+	}
+	else
+	{
+		Glib::ustring serial_number = Utils::trim( Utils::regexp_label( output,
+				"^[[:blank:]]*Serial Number:[[:blank:]]*(.*)[[:blank:]]*$" ) );
+		if ( ! serial_number.empty() )
+			device.serial_number = serial_number;
+	}
+	// Otherwise serial number left blank when not found in the hdparm output.
 }
 
 /**

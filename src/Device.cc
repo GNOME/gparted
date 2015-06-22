@@ -31,7 +31,9 @@ void Device::Reset()
 	partitions .clear() ;
 	length = cylsize = 0 ;
 	heads = sectors = cylinders = 0 ;
-	model = disktype = "" ;
+	model = "";
+	serial_number = "";
+	disktype = "";
 	sector_size = max_prims = highest_busy = 0 ;
 	readonly = false ; 	
 	max_partition_name_length = 0;

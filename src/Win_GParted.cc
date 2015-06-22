@@ -474,7 +474,13 @@ void Win_GParted::init_device_info()
 			Gtk::FILL ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
 	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
+
+	// Serial number
+	table->attach( *Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Serial:") ) + "</b>" ),
+	               0, 1, top, bottom, Gtk::FILL );
+	device_info.push_back( Utils::mk_label( "", true, false, true ) );
+	table->attach( *device_info.back(), 1, 2, top++, bottom++, Gtk::FILL );
+
 	//size
 	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
 			0, 1,
@@ -675,6 +681,7 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		
 		//global info...
 		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
+		device_info[ t++ ] ->set_text( devices[current_device].serial_number );
 		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length, devices[ current_device ] .sector_size ) ) ;
 		device_info[ t++ ] ->set_text( Glib::build_path( "\n", devices[ current_device ] .get_paths() ) ) ;
 		
