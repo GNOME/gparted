@@ -25,6 +25,7 @@ PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
 	// tie fd to string
 	// make channel
 	channel = Glib::IOChannel::create_from_fd( fd );
+	channel->set_encoding("");
 }
 
 void PipeCapture::connect_signal()
