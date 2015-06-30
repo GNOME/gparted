@@ -75,6 +75,8 @@ namespace GParted
 static std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 static std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 
+static bool udevadm_found = false;
+static bool udevsettle_found = false;
 static bool hdparm_found = false;
 
 GParted_Core::GParted_Core() 
@@ -105,6 +107,8 @@ GParted_Core::GParted_Core()
 
 void GParted_Core::find_supported_core()
 {
+	udevadm_found = ! Glib::find_program_in_path( "udevadm" ).empty();
+	udevsettle_found = ! Glib::find_program_in_path( "udevsettle" ).empty();
 	hdparm_found = ! Glib::find_program_in_path( "hdparm" ).empty();
 }
 
@@ -3967,9 +3971,9 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 
 void GParted_Core::settle_device( std::time_t timeout )
 {
-	if ( ! Glib::find_program_in_path( "udevsettle" ) .empty() )
+	if ( udevsettle_found )
 		Utils::execute_command( "udevsettle --timeout=" + Utils::num_to_str( timeout ) ) ;
-	else if ( ! Glib::find_program_in_path( "udevadm" ) .empty() )
+	else if ( udevadm_found )
 		Utils::execute_command( "udevadm settle --timeout=" + Utils::num_to_str( timeout ) ) ;
 	else
 		sleep( timeout ) ;
