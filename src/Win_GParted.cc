@@ -1474,6 +1474,10 @@ void Win_GParted::menu_gparted_features()
 	dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 	while ( dialog .run() == Gtk::RESPONSE_OK )
 	{
+		// Button [Rescan For Supported Actions] pressed in the dialog.  Rescan
+		// for available core and file system specific commands and update the
+		// view accordingly in the dialog.
+		GParted_Core::find_supported_core();
 		gparted_core .find_supported_filesystems() ;
 		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 

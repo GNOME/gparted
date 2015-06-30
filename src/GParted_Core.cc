@@ -75,6 +75,8 @@ namespace GParted
 static std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
 static std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
 
+static bool hdparm_found = false;
+
 GParted_Core::GParted_Core() 
 {
 	thread_status_message = "" ;
@@ -92,11 +94,18 @@ GParted_Core::GParted_Core()
 	std::cout << "libparted : " << ped_get_version() << std::endl ;
 	std::cout << "======================" << std::endl ;
 
+	find_supported_core();
+
 	//initialize file system list
 	init_filesystems() ;
 
 	//Determine file system support capabilities for the first time
 	find_supported_filesystems() ;
+}
+
+void GParted_Core::find_supported_core()
+{
+	hdparm_found = ! Glib::find_program_in_path( "hdparm" ).empty();
 }
 
 void GParted_Core::find_supported_filesystems()
@@ -1182,7 +1191,7 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 
 void GParted_Core::set_device_serial_number( Device & device )
 {
-	if ( Glib::find_program_in_path( "hdparm" ).empty() )
+	if ( ! hdparm_found )
 		// Serial number left blank when the hdparm command is not installed.
 		return;
 

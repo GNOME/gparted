@@ -35,6 +35,7 @@ public:
 	GParted_Core() ;
 	~GParted_Core() ;
 
+	static void find_supported_core();
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;
 	void set_devices( std::vector<Device> & devices ) ;
