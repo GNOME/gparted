@@ -2591,7 +2591,19 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 							    partition_new .sector_start,
 							    partition_new .get_sector_length() ) ;
 				if ( lp_geom )
-					return_value = ped_file_system_resize( fs, lp_geom, NULL ) && commit( lp_disk ) ;
+				{
+					// Use thread for libparted FS resize call to avoid blocking GUI
+					Glib::Thread::create( sigc::bind<PedFileSystem *, PedGeometry *, bool *>(
+					                          sigc::mem_fun( *this, &GParted_Core::thread_lp_ped_file_system_resize ),
+					                          fs,
+					                          lp_geom,
+					                          &return_value ),
+					                      false );
+					Gtk::Main::run();
+
+					if ( return_value )
+						commit( lp_disk ) ;
+				}
 
 				ped_file_system_close( fs );
 			}
@@ -2601,6 +2613,14 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 	}
 
 	return return_value ;
+}
+
+void GParted_Core::thread_lp_ped_file_system_resize( PedFileSystem * fs,
+                                                     PedGeometry * lp_geom,
+                                                     bool * return_value )
+{
+	*return_value = ped_file_system_resize( fs, lp_geom, NULL );
+	g_idle_add( (GSourceFunc)_mainquit, NULL );
 }
 #endif
 
