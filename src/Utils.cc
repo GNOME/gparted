@@ -321,7 +321,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 {
 	switch( filesystem )
 	{
-		case FS_BTRFS       : return "btrfs-tools" ;
+		case FS_BTRFS       : return "btrfs-progs / btrfs-tools" ;
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
 		case FS_EXT4        : return "e2fsprogs v1.41+" ;
