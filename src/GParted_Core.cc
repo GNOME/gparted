@@ -1612,6 +1612,8 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 			return FS_LINUX_SWSUSPEND ;
 		else if ( fsname == "ReFS" )
 			return FS_REFS;
+		else if ( fsname == "zfs_member" )
+			return FS_ZFS;
 	}
 
 	// Fallback to GParted simple internal file system detection

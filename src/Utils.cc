@@ -108,6 +108,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
 		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
 		case FS_REFS		: return "#1FC48D" ;	// ~ medium aquamarine
+		case FS_ZFS 		: return "#CC763D" ;	// ~ darker orange
 
 		default				: return "#000000" ;
 	}
@@ -283,6 +284,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_LINUX_SWRAID	: return "linux-raid" ;
 		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
 		case FS_REFS		: return "refs" ;
+		case FS_ZFS 		: return "zfs" ;
 
 		default			: return "" ;
 	}

@@ -91,10 +91,11 @@ enum FILESYSTEM
 	FS_LINUX_SWRAID    = 26,
 	FS_LINUX_SWSUSPEND = 27,
 	FS_REFS            = 28,
+	FS_ZFS             = 29,
 
 	// Partition space usage colours
-	FS_USED            = 29,
-	FS_UNUSED          = 30
+	FS_USED            = 30,
+	FS_UNUSED          = 31
 } ;
 
 enum SIZE_UNIT
