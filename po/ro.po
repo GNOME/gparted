@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-04-23 09:05+0000\n"
-"PO-Revision-Date: 2015-04-23 15:34+0200\n"
+"POT-Creation-Date: 2015-07-01 20:37+0000\n"
+"PO-Revision-Date: 2015-07-26 17:37+0200\n"
 "Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
 "Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
@@ -52,8 +52,8 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
-#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1318
-#: ../src/Win_GParted.cc:1509
+#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1426
+#: ../src/Win_GParted.cc:1621
 msgid "GParted"
 msgstr "GParted"
 
@@ -144,19 +144,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "Nespecificat"
 
-#: ../src/Dialog_Base_Partition.cc:242
+#: ../src/Dialog_Base_Partition.cc:244
 msgid "Resize"
 msgstr "Redimensionează"
 
-#: ../src/Dialog_Base_Partition.cc:242 ../src/Win_GParted.cc:246
+#: ../src/Dialog_Base_Partition.cc:244 ../src/Win_GParted.cc:246
 msgid "Resize/Move"
 msgstr "Redimensionează/Mută"
 
-#: ../src/Dialog_Base_Partition.cc:260
+#: ../src/Dialog_Base_Partition.cc:262
 msgid "Minimum size: %1 MiB"
 msgstr "Dimensiune minimă: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:261
+#: ../src/Dialog_Base_Partition.cc:263
 msgid "Maximum size: %1 MiB"
 msgstr "Dimensiune maximă: %1 MiB"
 
@@ -181,28 +181,28 @@ msgid "Set file system label on %1"
 msgstr "Stabilește eticheta de sisteme de fișiere pe %1"
 
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:261
-#: ../src/Dialog_Partition_New.cc:139
+#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:258
+#: ../src/Dialog_Partition_New.cc:145
 msgid "Label:"
 msgstr "Etichetă:"
 
-#: ../src/Dialog_Partition_Copy.cc:36
+#: ../src/Dialog_Partition_Copy.cc:37
 msgid "Paste %1"
 msgstr "Lipește %1"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:44
+#: ../src/Dialog_Partition_Info.cc:42
 msgid "Information about %1"
 msgstr "Informații despre %1"
 
-#: ../src/Dialog_Partition_Info.cc:80
+#: ../src/Dialog_Partition_Info.cc:78
 msgid "Warning:"
 msgstr "Atenție:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:238 ../src/DialogFeatures.cc:44
+#: ../src/Dialog_Partition_Info.cc:235 ../src/DialogFeatures.cc:44
 #: ../src/TreeView_Detail.cc:36
 msgid "File System"
 msgstr "Sistem de fișiere"
@@ -210,15 +210,15 @@ msgstr "Sistem de fișiere"
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:249 ../src/Dialog_Partition_New.cc:128
+#: ../src/Dialog_Partition_Info.cc:246 ../src/Dialog_Partition_New.cc:134
 msgid "File system:"
 msgstr "Sistem de fișiere:"
 
-#: ../src/Dialog_Partition_Info.cc:274
+#: ../src/Dialog_Partition_Info.cc:271
 msgid "UUID:"
 msgstr "UUID:"
 
-#: ../src/Dialog_Partition_Info.cc:289
+#: ../src/Dialog_Partition_Info.cc:286
 msgid "Status:"
 msgstr "Stare:"
 
@@ -226,7 +226,7 @@ msgstr "Stare:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:301
+#: ../src/Dialog_Partition_Info.cc:298
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Ocupat (Este montată cel puțin o partiție logică)"
 
@@ -234,12 +234,12 @@ msgstr "Ocupat (Este montată cel puțin o partiție logică)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:312
+#: ../src/Dialog_Partition_Info.cc:309
 msgid "Active"
 msgstr "Activă"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:318
+#: ../src/Dialog_Partition_Info.cc:315
 msgid "Mounted on %1"
 msgstr "Montat pe %1"
 
@@ -247,7 +247,7 @@ msgstr "Montat pe %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:328
+#: ../src/Dialog_Partition_Info.cc:325
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Neocupat (Nu sunt partiții logice montate)"
 
@@ -259,7 +259,7 @@ msgstr "Neocupat (Nu sunt partiții logice montate)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:338 ../src/Dialog_Partition_Info.cc:362
+#: ../src/Dialog_Partition_Info.cc:335 ../src/Dialog_Partition_Info.cc:359
 msgid "Not active"
 msgstr "Inactivă"
 
@@ -268,7 +268,7 @@ msgstr "Inactivă"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:348
+#: ../src/Dialog_Partition_Info.cc:345
 msgid "Not active (Not a member of any volume group)"
 msgstr "Nu este activă (nu este membră a vreunui grup de volume)"
 
@@ -278,123 +278,121 @@ msgstr "Nu este activă (nu este membră a vreunui grup de volume)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:356
+#: ../src/Dialog_Partition_Info.cc:353
 msgid "Not active and exported"
 msgstr "Nu este activă și exportată"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:369
+#: ../src/Dialog_Partition_Info.cc:366
 msgid "Not mounted"
 msgstr "Nemontat"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:379 ../src/Win_GParted.cc:2827
+#: ../src/Dialog_Partition_Info.cc:376 ../src/Win_GParted.cc:2975
 msgid "Volume Group:"
 msgstr "Grup de volume:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:390 ../src/Win_GParted.cc:2828
+#: ../src/Dialog_Partition_Info.cc:387 ../src/Win_GParted.cc:2976
 msgid "Members:"
 msgstr "Membrii:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:428
+#: ../src/Dialog_Partition_Info.cc:425
 msgid "Used:"
 msgstr "Utilizat:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:442
+#: ../src/Dialog_Partition_Info.cc:439
 msgid "Unused:"
 msgstr "Neutilizat:"
 
-#: ../src/Dialog_Partition_Info.cc:459
+#: ../src/Dialog_Partition_Info.cc:456
 msgid "Unallocated:"
 msgstr "Nealocat:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:475 ../src/Win_GParted.cc:479
+#: ../src/Dialog_Partition_Info.cc:472 ../src/Win_GParted.cc:485
 msgid "Size:"
 msgstr "Dimensiune:"
 
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:493 ../src/TreeView_Detail.cc:34
+#: ../src/Dialog_Partition_Info.cc:490 ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "Partiție"
 
 #. Left field & value pair area
 #. path
-#: ../src/Dialog_Partition_Info.cc:504 ../src/Win_GParted.cc:487
+#: ../src/Dialog_Partition_Info.cc:501 ../src/Win_GParted.cc:493
 msgid "Path:"
 msgstr "Cale:"
 
 #. name
-#: ../src/Dialog_Partition_Info.cc:516 ../src/Dialog_Partition_Name.cc:40
+#: ../src/Dialog_Partition_Info.cc:513 ../src/Dialog_Partition_Name.cc:40
 msgid "Name:"
 msgstr "Nume:"
 
 #. flags
-#: ../src/Dialog_Partition_Info.cc:526
+#: ../src/Dialog_Partition_Info.cc:523
 msgid "Flags:"
 msgstr "Indicatori:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:538
+#: ../src/Dialog_Partition_Info.cc:535
 msgid "First sector:"
 msgstr "Primul sector:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:548
+#: ../src/Dialog_Partition_Info.cc:545
 msgid "Last sector:"
 msgstr "Ultimul sector:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:558 ../src/Win_GParted.cc:537
+#: ../src/Dialog_Partition_Info.cc:555 ../src/Win_GParted.cc:543
 msgid "Total sectors:"
 msgstr "Totalul sectoarelor:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
 #: ../src/Dialog_Partition_Name.cc:29
-#| msgid "Set partition label on %1"
 msgid "Set partition name on %1"
 msgstr "Definirea numelui partiției de pe %1"
 
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:27
+#: ../src/Dialog_Partition_New.cc:31
 msgid "Create new Partition"
 msgstr "Creare partiție nouă"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:78
+#: ../src/Dialog_Partition_New.cc:84
 msgid "Create as:"
 msgstr "Creează ca:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:83 ../src/OperationCreate.cc:74
+#: ../src/Dialog_Partition_New.cc:89 ../src/OperationCreate.cc:74
 msgid "Primary Partition"
 msgstr "Partiție primară"
 
-#: ../src/Dialog_Partition_New.cc:84 ../src/OperationCreate.cc:77
+#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:77
 #: ../src/OperationDelete.cc:76
 msgid "Logical Partition"
 msgstr "Partiție logică"
 
-#: ../src/Dialog_Partition_New.cc:85 ../src/OperationCreate.cc:80
+#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:80
 msgid "Extended Partition"
 msgstr "Partiție extinsă"
 
 #. Partition name
-#: ../src/Dialog_Partition_New.cc:118
-#| msgid "Partition table:"
+#: ../src/Dialog_Partition_New.cc:124
 msgid "Partition name:"
 msgstr "Nume partiție:"
 
-#: ../src/Dialog_Partition_New.cc:202
+#: ../src/Dialog_Partition_New.cc:208
 msgid "New Partition #%1"
 msgstr "Partiția nouă nr.%1"
 
@@ -635,7 +633,7 @@ msgstr "Legendă"
 msgid "Rescan For Supported Actions"
 msgstr "Rescanează acțiunile suportate"
 
-#: ../src/DialogManageFlags.cc:30 ../src/DialogManageFlags.cc:35
+#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "Administrare indicatori de pe %1"
 
@@ -796,22 +794,22 @@ msgid "Removed directory %1"
 msgstr "Dosarul %1 a fost eliminat"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:205 ../src/GParted_Core.cc:214
+#: ../src/GParted_Core.cc:189 ../src/GParted_Core.cc:198
 msgid "Scanning %1"
 msgstr "Se scanează %1"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:237
+#: ../src/GParted_Core.cc:221
 msgid "Confirming %1"
 msgstr "Se confirmă %1"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:249
+#: ../src/GParted_Core.cc:233
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr ""
 "Se ignoră dispozitivul %1 având mărimea logică a sectorului de %2 octeți."
 
-#: ../src/GParted_Core.cc:251
+#: ../src/GParted_Core.cc:235
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -820,7 +818,7 @@ msgstr ""
 "dispozitive cu dimensiunile sectoarelor mai mari de 512 octeți."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:289
+#: ../src/GParted_Core.cc:273
 msgid "Searching %1 partitions"
 msgstr "Se caută partițiile de pe %1"
 
@@ -828,71 +826,71 @@ msgstr "Se caută partițiile de pe %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:393
+#: ../src/GParted_Core.cc:378
 msgid "unrecognized"
 msgstr "nerecunoscut"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:713
+#: ../src/GParted_Core.cc:698
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "O partiție nu poate avea o lungime de %1 sectoare"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:727
+#: ../src/GParted_Core.cc:712
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "O partiție cu numărul de sectoare utilizate (%1) mai mare decât dimensiunea "
 "ei (%2) nu este validă"
 
-#: ../src/GParted_Core.cc:838
+#: ../src/GParted_Core.cc:823
 msgid "libparted messages"
 msgstr "mesaje libparted"
 
-#: ../src/GParted_Core.cc:1504
+#: ../src/GParted_Core.cc:1523
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "Criptarea LUKS (Linux Unified Key Setup) nu este încă suportată."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1606
+#: ../src/GParted_Core.cc:1625
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Detectarea sistemului de fișiere a eșuat! Motivele posibile sunt:"
 
-#: ../src/GParted_Core.cc:1608
+#: ../src/GParted_Core.cc:1627
 msgid "The file system is damaged"
 msgstr "Sistemul de fișiere este deteriorat"
 
-#: ../src/GParted_Core.cc:1610
+#: ../src/GParted_Core.cc:1629
 msgid "The file system is unknown to GParted"
 msgstr "Sistemul de fișiere nu este recunoscut de GParted"
 
-#: ../src/GParted_Core.cc:1612
+#: ../src/GParted_Core.cc:1631
 msgid "There is no file system available (unformatted)"
 msgstr "Nu este prezent niciun sistem de fișiere (neformatat)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1615
+#: ../src/GParted_Core.cc:1634
 msgid "The device entry %1 is missing"
 msgstr "Lipsește intrarea %1 a dispozitivului"
 
-#: ../src/GParted_Core.cc:1766
+#: ../src/GParted_Core.cc:1784
 msgid "Unable to find mount point"
 msgstr "Nu s-a putut găsi punctul de montare"
 
-#: ../src/GParted_Core.cc:1896
+#: ../src/GParted_Core.cc:1914
 msgid "Unable to read the contents of this file system!"
 msgstr "Nu s-a putut citi conținutul acestui sistem de fișiere!"
 
-#: ../src/GParted_Core.cc:1898
+#: ../src/GParted_Core.cc:1916
 msgid "Because of this some operations may be unavailable."
 msgstr "Din această cauză câteva operații pot fi indisponibile."
 
-#: ../src/GParted_Core.cc:1902
+#: ../src/GParted_Core.cc:1920
 msgid "The cause might be a missing software package."
 msgstr "Cauza poate fi un pachet software lipsă."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1905
+#: ../src/GParted_Core.cc:1923
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -901,7 +899,7 @@ msgstr ""
 "următoarea listă:  %2."
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1915
+#: ../src/GParted_Core.cc:1933
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 de spațiu nealocat în interiorul partiției."
 
@@ -909,7 +907,7 @@ msgstr "%1 de spațiu nealocat în interiorul partiției."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1926
+#: ../src/GParted_Core.cc:1944
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -917,11 +915,11 @@ msgstr ""
 "Pentru a mări sistemul de fișiere în vederea umplerii partiției, selectați "
 "partiția și alegeți elementul din meniu:"
 
-#: ../src/GParted_Core.cc:1928
+#: ../src/GParted_Core.cc:1946
 msgid "Partition --> Check."
 msgstr "Partiție --> Verificat."
 
-#: ../src/GParted_Core.cc:2039
+#: ../src/GParted_Core.cc:2057
 msgid "create empty partition"
 msgstr "creează partiție goală"
 
@@ -935,67 +933,61 @@ msgstr "creează partiție goală"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2113 ../src/GParted_Core.cc:3377
-#| msgid "path: %1"
+#: ../src/GParted_Core.cc:2131 ../src/GParted_Core.cc:3395
 msgid "path: %1 (%2)"
 msgstr "cale: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2114 ../src/GParted_Core.cc:3380
-#| msgid "Partition"
+#: ../src/GParted_Core.cc:2132 ../src/GParted_Core.cc:3398
 msgid "partition"
 msgstr "partiție"
 
-#: ../src/GParted_Core.cc:2115 ../src/GParted_Core.cc:3381
+#: ../src/GParted_Core.cc:2133 ../src/GParted_Core.cc:3399
 msgid "start: %1"
 msgstr "început: %1"
 
-#: ../src/GParted_Core.cc:2116 ../src/GParted_Core.cc:3382
+#: ../src/GParted_Core.cc:2134 ../src/GParted_Core.cc:3400
 msgid "end: %1"
 msgstr "final: %1"
 
-#: ../src/GParted_Core.cc:2117 ../src/GParted_Core.cc:3383
+#: ../src/GParted_Core.cc:2135 ../src/GParted_Core.cc:3401
 msgid "size: %1 (%2)"
 msgstr "dimensiune: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2149 ../src/linux_swap.cc:172
+#: ../src/GParted_Core.cc:2167 ../src/linux_swap.cc:172
 msgid "create new %1 file system"
 msgstr "creează un nou sistem de fișiere %1"
 
-#: ../src/GParted_Core.cc:2191
+#: ../src/GParted_Core.cc:2209
 msgid "delete partition"
 msgstr "șterge partiția"
 
-#: ../src/GParted_Core.cc:2246
+#: ../src/GParted_Core.cc:2264
 msgid "delete %1 file system"
 msgstr "șterge sistemul de fișiere %1"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2263 ../src/OperationLabelFileSystem.cc:58
-#| msgid "Search for file systems on %1"
+#: ../src/GParted_Core.cc:2281 ../src/OperationLabelFileSystem.cc:58
 msgid "Clear file system label on %1"
 msgstr "Curăță eticheta de sistem de fișiere pe %1"
 
-#: ../src/GParted_Core.cc:2266
-#| msgid "Set partition label to \"%1\" on %2"
+#: ../src/GParted_Core.cc:2284
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Definește eticheta sistemului de fișiere la „%1” pe %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2295 ../src/OperationNamePartition.cc:59
-#| msgid "Clear partition label on %1"
+#: ../src/GParted_Core.cc:2313 ../src/OperationNamePartition.cc:59
 msgid "Clear partition name on %1"
 msgstr "Curăță numele partiției de pe %1"
 
-#: ../src/GParted_Core.cc:2298
-#| msgid "Set partition label to \"%1\" on %2"
+#: ../src/GParted_Core.cc:2316
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Definește numele partiției la „%1” pe %2"
 
-#: ../src/GParted_Core.cc:2323
+#: ../src/GParted_Core.cc:2341
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Definește jumătate din UUID pe %1 la o valoare nouă, aleatoare"
 
-#: ../src/GParted_Core.cc:2328
+#: ../src/GParted_Core.cc:2346
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Definește UUID-ul pe %1 la o valoare nouă, aleatoare"
 
@@ -1004,27 +996,27 @@ msgstr "Definește UUID-ul pe %1 la o valoare nouă, aleatoare"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2411
+#: ../src/GParted_Core.cc:2429
 msgid "moving requires old and new length to be the same"
 msgstr "mutarea necesită ca noua și vechea dimensiune să fie egale"
 
-#: ../src/GParted_Core.cc:2441
+#: ../src/GParted_Core.cc:2459
 msgid "rollback last change to the partition table"
 msgstr "anulează ultima modificare a tabelei de partiții"
 
-#: ../src/GParted_Core.cc:2483
+#: ../src/GParted_Core.cc:2501
 msgid "move file system to the left"
 msgstr "mută sistemul de fișiere spre stânga"
 
-#: ../src/GParted_Core.cc:2485
+#: ../src/GParted_Core.cc:2503
 msgid "move file system to the right"
 msgstr "mută sistemul de fișiere spre dreapta"
 
-#: ../src/GParted_Core.cc:2488
+#: ../src/GParted_Core.cc:2506
 msgid "move file system"
 msgstr "mută sistemul de fișiere"
 
-#: ../src/GParted_Core.cc:2490
+#: ../src/GParted_Core.cc:2508
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1032,51 +1024,51 @@ msgstr ""
 "sistemul de fișiere nou și cel vechi au aceeași poziție. Prin urmare, se "
 "omite această operație"
 
-#: ../src/GParted_Core.cc:2553
+#: ../src/GParted_Core.cc:2571
 msgid "using libparted"
 msgstr "folosind libparted"
 
-#: ../src/GParted_Core.cc:2596
+#: ../src/GParted_Core.cc:2614
 msgid "resizing requires old and new start to be the same"
 msgstr "redimensionarea necesită ca vechiul și noul început să fie identice"
 
-#: ../src/GParted_Core.cc:2666
+#: ../src/GParted_Core.cc:2684
 msgid "resize/move partition"
 msgstr "redimensionează/mută partiția"
 
-#: ../src/GParted_Core.cc:2669
+#: ../src/GParted_Core.cc:2687
 msgid "move partition to the right"
 msgstr "mută partiția spre dreapta"
 
-#: ../src/GParted_Core.cc:2672
+#: ../src/GParted_Core.cc:2690
 msgid "move partition to the left"
 msgstr "mută partiția spre stânga"
 
-#: ../src/GParted_Core.cc:2675
+#: ../src/GParted_Core.cc:2693
 msgid "grow partition from %1 to %2"
 msgstr "mărește partiția de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2678
+#: ../src/GParted_Core.cc:2696
 msgid "shrink partition from %1 to %2"
 msgstr "micșorează partiția de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2681
+#: ../src/GParted_Core.cc:2699
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "mută partiția spre dreapta și mărește-o de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2684
+#: ../src/GParted_Core.cc:2702
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "mută partiția spre dreapta și micșorează-o de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2687
+#: ../src/GParted_Core.cc:2705
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "mută partiția spre stânga și mărește-o de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2690
+#: ../src/GParted_Core.cc:2708
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "mută partiția spre stânga și micșorează-o de la %1 la %2"
 
-#: ../src/GParted_Core.cc:2705
+#: ../src/GParted_Core.cc:2723
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1084,250 +1076,244 @@ msgstr ""
 "partiția nouă și cea veche au aceeași dimensiune și poziție. Prin urmare, se "
 "omite această operație"
 
-#: ../src/GParted_Core.cc:2715
+#: ../src/GParted_Core.cc:2733
 msgid "old start: %1"
 msgstr "început vechi: %1"
 
-#: ../src/GParted_Core.cc:2716
+#: ../src/GParted_Core.cc:2734
 msgid "old end: %1"
 msgstr "final vechi: %1"
 
-#: ../src/GParted_Core.cc:2717
+#: ../src/GParted_Core.cc:2735
 msgid "old size: %1 (%2)"
 msgstr "dimensiunea veche: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2782 ../src/GParted_Core.cc:3461
+#: ../src/GParted_Core.cc:2800 ../src/GParted_Core.cc:3479
 msgid "new start: %1"
 msgstr "început nou: %1"
 
-#: ../src/GParted_Core.cc:2783 ../src/GParted_Core.cc:3462
+#: ../src/GParted_Core.cc:2801 ../src/GParted_Core.cc:3480
 msgid "new end: %1"
 msgstr "final nou: %1"
 
-#: ../src/GParted_Core.cc:2784 ../src/GParted_Core.cc:3463
+#: ../src/GParted_Core.cc:2802 ../src/GParted_Core.cc:3481
 msgid "new size: %1 (%2)"
 msgstr "dimensiunea nouă: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2811 ../src/GParted_Core.cc:3409
+#: ../src/GParted_Core.cc:2829 ../src/GParted_Core.cc:3427
 msgid "requested start: %1"
 msgstr "începutul cerut: %1"
 
-#: ../src/GParted_Core.cc:2812 ../src/GParted_Core.cc:3410
+#: ../src/GParted_Core.cc:2830 ../src/GParted_Core.cc:3428
 msgid "requested end: %1"
 msgstr "finalul cerut: %1"
 
-#: ../src/GParted_Core.cc:2813 ../src/GParted_Core.cc:3411
+#: ../src/GParted_Core.cc:2831 ../src/GParted_Core.cc:3429
 msgid "requested size: %1 (%2)"
 msgstr "dimensiunea cerută: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2838
+#: ../src/GParted_Core.cc:2856
 msgid "shrink file system"
 msgstr "micșorează sistemul de fișiere"
 
-#: ../src/GParted_Core.cc:2842
+#: ../src/GParted_Core.cc:2860
 msgid "grow file system"
 msgstr "mărește sistemul de fișiere"
 
-#: ../src/GParted_Core.cc:2845
+#: ../src/GParted_Core.cc:2863
 msgid "resize file system"
 msgstr "redimensionează sistemul de fișiere"
 
-#: ../src/GParted_Core.cc:2848
+#: ../src/GParted_Core.cc:2866
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "sistemul de fișiere nou și cel vechi au aceeași dimensiune. Prin urmare, se "
 "omite această operație"
 
-#: ../src/GParted_Core.cc:2889
+#: ../src/GParted_Core.cc:2907
 msgid "grow file system to fill the partition"
 msgstr "mărește sistemul de fișiere pentru a umple partiția"
 
-#: ../src/GParted_Core.cc:2894
+#: ../src/GParted_Core.cc:2912
 msgid "growing is not available for this file system"
 msgstr "mărirea nu este disponibilă pentru acest sistem de fișiere"
 
-#: ../src/GParted_Core.cc:2903
+#: ../src/GParted_Core.cc:2921
 msgid "growing the file system is currently disallowed"
 msgstr "mărirea sistemului de fișiere nu este permisă momentan"
 
-#: ../src/GParted_Core.cc:2929
+#: ../src/GParted_Core.cc:2947
 msgid "the destination is smaller than the source partition"
 msgstr "destinația este mai mică decât partiția sursă"
 
-#: ../src/GParted_Core.cc:2952
+#: ../src/GParted_Core.cc:2970
 msgid "copy file system of %1 to %2"
 msgstr "copiază sistemul de fișiere de pe %1 pe %2"
 
-#: ../src/GParted_Core.cc:3048
+#: ../src/GParted_Core.cc:3066
 msgid "using internal algorithm"
 msgstr "folosind algoritmul intern"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3051
+#: ../src/GParted_Core.cc:3069
 msgid "copy %1"
 msgstr "copiază %1"
 
-#: ../src/GParted_Core.cc:3054
+#: ../src/GParted_Core.cc:3072
 msgid "finding optimal block size"
 msgstr "se calculează dimensiunea optimă a blocurilor"
 
-#: ../src/GParted_Core.cc:3095
+#: ../src/GParted_Core.cc:3113
 msgid "%1 seconds"
 msgstr "%1 secunde"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3113
+#: ../src/GParted_Core.cc:3131
 msgid "optimal block size is %1"
 msgstr "dimensiunea optimă a blocurilor este %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3130
+#: ../src/GParted_Core.cc:3148
 msgid "%1 (%2 B) copied"
 msgstr "s-au copiat %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:3163
+#: ../src/GParted_Core.cc:3181
 msgid "roll back last transaction"
 msgstr "anulează ultima tranzacție"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3177
+#: ../src/GParted_Core.cc:3195
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "verifică dacă sistemul de fișiere de pe %1 are erori și (dacă este posibil) "
 "repară-le"
 
-#: ../src/GParted_Core.cc:3186
+#: ../src/GParted_Core.cc:3204
 msgid "checking is not available for this file system"
 msgstr "verificarea nu este disponibilă pentru acest sistem de fișiere"
 
-#: ../src/GParted_Core.cc:3215
+#: ../src/GParted_Core.cc:3233
 msgid "set partition type on %1"
 msgstr "definește tipul partiției de pe %1"
 
-#: ../src/GParted_Core.cc:3257
+#: ../src/GParted_Core.cc:3275
 msgid "new partition type: %1"
 msgstr "tipul noii partiții: %1"
 
-#: ../src/GParted_Core.cc:3271
+#: ../src/GParted_Core.cc:3289
 msgid "new partition flag: %1"
 msgstr "indicatorul noii partiții: %1"
 
-#: ../src/GParted_Core.cc:3280
-#| msgid "new partition flag: %1"
+#: ../src/GParted_Core.cc:3298
 msgid "Skip setting unsupported partition flag: %1"
 msgstr "Omite stabilirea indicatorului nesuportat al partiției: %1"
 
-#: ../src/GParted_Core.cc:3300
+#: ../src/GParted_Core.cc:3318
 msgid "calibrate %1"
 msgstr "calibrează %1"
 
-#: ../src/GParted_Core.cc:3379
-#| msgid "_Device"
+#: ../src/GParted_Core.cc:3397
 msgid "device"
 msgstr "dispozitiv"
 
-#: ../src/GParted_Core.cc:3405
+#: ../src/GParted_Core.cc:3423
 msgid "calculate new size and position of %1"
 msgstr "calculează noua dimensiune și poziție pentru %1"
 
-#: ../src/GParted_Core.cc:3522
+#: ../src/GParted_Core.cc:3539
 msgid "clear old file system signatures in %1"
 msgstr "curăță semnăturile sistemelor de fișiere anterioare din %1"
 
-#: ../src/GParted_Core.cc:3691
+#: ../src/GParted_Core.cc:3708
 msgid "flush operating system cache of %1"
 msgstr "curăță memoria cache a sistemului de operare la %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3723
+#: ../src/GParted_Core.cc:3740
 msgid "update boot sector of %1 file system on %2"
 msgstr "actualizează sectorul de boot al sistemului de fișiere %1 de pe %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3759
+#: ../src/GParted_Core.cc:3776
 msgid "Error trying to write to boot sector in %1"
 msgstr "Eroare la scrierea blocului din sectorul %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3765
+#: ../src/GParted_Core.cc:3782
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Eroare la mutarea la poziția 0x1c în %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3772
+#: ../src/GParted_Core.cc:3789
 msgid "Error trying to open %1"
 msgstr "Eroare la deschiderea %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3782
+#: ../src/GParted_Core.cc:3799
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Nu s-a putut modifica numărul de sectoare ascunse la %1 în sectorul de boot "
 "NTFS."
 
-#: ../src/GParted_Core.cc:3784
+#: ../src/GParted_Core.cc:3801
 msgid "You might try the following command to correct the problem:"
 msgstr "Puteți încerca următoarea comandă pentru a corecta problema:"
 
-#: ../src/GParted_Core.cc:3934
+#: ../src/GParted_Core.cc:3990
 msgid "Libparted Information"
 msgstr "Informații Libparted"
 
-#: ../src/GParted_Core.cc:3938
+#: ../src/GParted_Core.cc:3994
 msgid "Libparted Warning"
 msgstr "Avertizare Libparted"
 
-#: ../src/GParted_Core.cc:3942
+#: ../src/GParted_Core.cc:3998
 msgid "Libparted Error"
 msgstr "Eroare Libparted"
 
-#: ../src/GParted_Core.cc:3945
-#| msgid "Libparted"
+#: ../src/GParted_Core.cc:4001
 msgid "Libparted Fatal"
 msgstr "Libparted Fatal"
 
-#: ../src/GParted_Core.cc:3948
-#| msgid "Libparted"
+#: ../src/GParted_Core.cc:4004
 msgid "Libparted Bug"
 msgstr "Libparted Bug"
 
-#: ../src/GParted_Core.cc:3951
-#| msgid "Libparted Information"
+#: ../src/GParted_Core.cc:4007
 msgid "Libparted Unsupported Feature"
 msgstr "Funcționalitate Libparted nesuportată"
 
-#: ../src/GParted_Core.cc:3954
-#| msgid "Libparted Information"
+#: ../src/GParted_Core.cc:4010
 msgid "Libparted unknown exception"
 msgstr "Excepție necunoscută Libparted"
 
-#: ../src/GParted_Core.cc:3958
+#: ../src/GParted_Core.cc:4014
 msgid "Fix"
 msgstr "Repară"
 
-#: ../src/GParted_Core.cc:3960
+#: ../src/GParted_Core.cc:4016
 msgid "Yes"
 msgstr "Da"
 
-#: ../src/GParted_Core.cc:3962
+#: ../src/GParted_Core.cc:4018
 msgid "Ok"
 msgstr "Ok"
 
-#: ../src/GParted_Core.cc:3964
+#: ../src/GParted_Core.cc:4020
 msgid "Retry"
 msgstr "Reîncearcă"
 
-#: ../src/GParted_Core.cc:3966
+#: ../src/GParted_Core.cc:4022
 msgid "No"
 msgstr "Nu"
 
-#: ../src/GParted_Core.cc:3968
+#: ../src/GParted_Core.cc:4024
 msgid "Cancel"
 msgstr "Renunță"
 
-#: ../src/GParted_Core.cc:3970
+#: ../src/GParted_Core.cc:4026
 msgid "Ignore"
 msgstr "Ignoră"
 
@@ -1343,20 +1329,20 @@ msgstr "Șter_ge toate operațiile"
 msgid "_Apply All Operations"
 msgstr "_Aplică toate operațiile"
 
-#: ../src/LVM2_PV_Info.cc:193
+#: ../src/LVM2_PV_Info.cc:170
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr ""
 "Unul sau mai multe volume fizice aparținând grupului de volume lipsește."
 
-#: ../src/LVM2_PV_Info.cc:278
+#: ../src/LVM2_PV_Info.cc:298
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "A apărut o eroare la citirea configurației LVM2!"
 
-#: ../src/LVM2_PV_Info.cc:280
+#: ../src/LVM2_PV_Info.cc:300
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Unele sau toate detaliile ar putea lipsi sau sunt incorecte."
 
-#: ../src/LVM2_PV_Info.cc:282
+#: ../src/LVM2_PV_Info.cc:302
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "NU ar trebui să modificați partițiile LVM2 PV."
 
@@ -1408,21 +1394,19 @@ msgstr "Formatează %1 ca %2"
 
 #. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
 #: ../src/OperationLabelFileSystem.cc:62
-#| msgid "Set Partition Label \"%1\" on %2"
 msgid "Set file system label \"%1\" on %2"
 msgstr "Definește eticheta sistemului de fișiere „%1” pe %2"
 
 #. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
 #: ../src/OperationNamePartition.cc:65
-#| msgid "Set Partition Label \"%1\" on %2"
 msgid "Set partition name \"%1\" on %2"
 msgstr "Definește numele partiției „%1” pe %2"
 
-#: ../src/OperationResizeMove.cc:85
+#: ../src/OperationResizeMove.cc:86
 msgid "resize/move %1"
 msgstr "redimensionează/mută %1"
 
-#: ../src/OperationResizeMove.cc:87
+#: ../src/OperationResizeMove.cc:88
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
@@ -1430,35 +1414,35 @@ msgstr ""
 "noua și vechea partiție au aceeași dimensiune și poziție. Prin urmare, se "
 "omite această operație"
 
-#: ../src/OperationResizeMove.cc:91
+#: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
 msgstr "Mută %1 spre dreapta"
 
-#: ../src/OperationResizeMove.cc:94
+#: ../src/OperationResizeMove.cc:95
 msgid "Move %1 to the left"
 msgstr "Mută %1 spre stânga"
 
-#: ../src/OperationResizeMove.cc:97
+#: ../src/OperationResizeMove.cc:98
 msgid "Grow %1 from %2 to %3"
 msgstr "Mărește %1 de la %2 la %3"
 
-#: ../src/OperationResizeMove.cc:100
+#: ../src/OperationResizeMove.cc:101
 msgid "Shrink %1 from %2 to %3"
 msgstr "Micșorează %1 de la %2 la %3"
 
-#: ../src/OperationResizeMove.cc:103
+#: ../src/OperationResizeMove.cc:104
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "Mută %1 spre dreapta și mărește-o de la %2 la %3"
 
-#: ../src/OperationResizeMove.cc:106
+#: ../src/OperationResizeMove.cc:107
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "Mută %1 spre dreapta și micșorează-o de la %2 la %3"
 
-#: ../src/OperationResizeMove.cc:109
+#: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "Mută %1 spre stânga și mărește-o de la %2 la %3"
 
-#: ../src/OperationResizeMove.cc:112
+#: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "Mută %1 spre stânga și micșorează-o de la %2 la %3"
 
@@ -1655,7 +1639,6 @@ msgid "_Mount on"
 msgstr "_Montează în"
 
 #: ../src/Win_GParted.cc:384
-#| msgid "_Partition"
 msgid "_Name Partition"
 msgstr "_Numește partiția"
 
@@ -1668,7 +1651,6 @@ msgid "C_heck"
 msgstr "_Verifică"
 
 #: ../src/Win_GParted.cc:399
-#| msgid "File System"
 msgid "_Label File System"
 msgstr "_Etichetă sistem de fișiere"
 
@@ -1685,106 +1667,111 @@ msgstr "Informații despre dispozitiv"
 msgid "Model:"
 msgstr "Model:"
 
+#. Serial number
+#: ../src/Win_GParted.cc:479
+msgid "Serial:"
+msgstr "Serie:"
+
 #. disktype
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:511
 msgid "Partition table:"
 msgstr "Tabelă de partiții:"
 
 #. heads
-#: ../src/Win_GParted.cc:513
+#: ../src/Win_GParted.cc:519
 msgid "Heads:"
 msgstr "Capete:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:527
 msgid "Sectors/track:"
 msgstr "Sectoare/pistă:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:529
+#: ../src/Win_GParted.cc:535
 msgid "Cylinders:"
 msgstr "Cilindri:"
 
 #. sector size
-#: ../src/Win_GParted.cc:545
+#: ../src/Win_GParted.cc:551
 msgid "Sector size:"
 msgstr "Dimensiunea sectorului:"
 
-#: ../src/Win_GParted.cc:724
+#: ../src/Win_GParted.cc:731
 msgid "Could not add this operation to the list"
 msgstr "Nu s-a putut adăuga operația în listă"
 
-#: ../src/Win_GParted.cc:832
+#: ../src/Win_GParted.cc:921
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "o operație în așteptare"
 msgstr[1] "%1 operații în așteptare"
 msgstr[2] "%1 de operații în așteptare"
 
-#: ../src/Win_GParted.cc:931
+#: ../src/Win_GParted.cc:1041
 msgid "Quit GParted?"
 msgstr "Închideți GParted?"
 
-#: ../src/Win_GParted.cc:937
+#: ../src/Win_GParted.cc:1047
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "Momentan o operație este în așteptare."
 msgstr[1] "Momentan %1 operații sunt în așteptare."
 msgstr[2] "Momentan %1 de operații sunt în așteptare."
 
-#: ../src/Win_GParted.cc:1257
+#: ../src/Win_GParted.cc:1365
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1294
+#: ../src/Win_GParted.cc:1402
 msgid "Scanning all devices..."
 msgstr "Se scanează toate dispozitivele..."
 
-#: ../src/Win_GParted.cc:1341
+#: ../src/Win_GParted.cc:1449
 msgid "No devices detected"
 msgstr "Nu s-au detectat dispozitive"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1422
+#: ../src/Win_GParted.cc:1534
 msgid "No partition table found on device %1"
 msgstr "Nu a fost găsită nicio tabelă de partiții pe dispozitivul %1"
 
-#: ../src/Win_GParted.cc:1427
+#: ../src/Win_GParted.cc:1539
 msgid "A partition table is required before partitions can be added."
 msgstr "Pentru a putea adăuga partiții este necesară o tabelă de partiții."
 
-#: ../src/Win_GParted.cc:1429
+#: ../src/Win_GParted.cc:1541
 msgid "To create a new partition table choose the menu item:"
 msgstr "Pentru a crea o nouă tabelă de partiții alegeți elementul din meniu:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1432
+#: ../src/Win_GParted.cc:1544
 msgid "Device --> Create Partition Table."
 msgstr "Dispozitiv -> Creează tabelă de partiții."
 
-#: ../src/Win_GParted.cc:1468
+#: ../src/Win_GParted.cc:1580
 msgid "Unable to open GParted Manual help file"
 msgstr "Nu s-a putut deschide manualul GParted"
 
-#: ../src/Win_GParted.cc:1487
+#: ../src/Win_GParted.cc:1599
 msgid "Documentation is not available"
 msgstr "Documentația nu este disponibilă"
 
-#: ../src/Win_GParted.cc:1492
+#: ../src/Win_GParted.cc:1604
 msgid "This build of gparted is configured without documentation."
 msgstr "Această instanță a gparted este construită fără documentație."
 
-#: ../src/Win_GParted.cc:1494
+#: ../src/Win_GParted.cc:1606
 msgid "Documentation is available at the project web site."
 msgstr "Documentația este disponibilă pe pagina web al proiectului."
 
-#: ../src/Win_GParted.cc:1512
+#: ../src/Win_GParted.cc:1624
 msgid "GNOME Partition Editor"
 msgstr "Editorul de partiții din GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1545
+#: ../src/Win_GParted.cc:1657
 msgid "translator-credits"
 msgstr ""
 "Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
@@ -1799,14 +1786,14 @@ msgstr ""
 "  Lucian Adrian Grijincu https://launchpad.net/~lucian.grijincu\n"
 "  Puskas K. Frederic https://launchpad.net/~pkfric"
 
-#: ../src/Win_GParted.cc:1587
+#: ../src/Win_GParted.cc:1699
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Nu se poate crea mai mult de o partiție primară"
 msgstr[1] "Nu se pot crea mai mult de %1 partiții primare"
 msgstr[2] "Nu se pot crea mai mult de %1 de partiții primare"
 
-#: ../src/Win_GParted.cc:1599
+#: ../src/Win_GParted.cc:1711
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1818,18 +1805,18 @@ msgstr ""
 "este tot o partiție primară, este posibil să fie nevoie să ștergeți mai "
 "întâi o partiție primară."
 
-#: ../src/Win_GParted.cc:1683
+#: ../src/Win_GParted.cc:1792
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Mutarea unei partiții poate face sistemul să eșueze la pornire (boot)"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1691
+#: ../src/Win_GParted.cc:1800
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Ați pus la coadă o operație de mutare a sectorului de început al partiției "
 "%1."
 
-#: ../src/Win_GParted.cc:1694
+#: ../src/Win_GParted.cc:1803
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1838,72 +1825,72 @@ msgstr ""
 "care mutați partiția GNU/Linux ce conține /boot, sau dacă mutați partiția de "
 "sistem C: a Windows-ului."
 
-#: ../src/Win_GParted.cc:1696
+#: ../src/Win_GParted.cc:1805
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Puteți învăța cum să reparați configurația de boot în Întrebările frecvente "
 "despre GParted (FAQ)."
 
-#: ../src/Win_GParted.cc:1700
+#: ../src/Win_GParted.cc:1809
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Mutarea unei partiții poate dura un timp îndelungat."
 
-#: ../src/Win_GParted.cc:1808
+#: ../src/Win_GParted.cc:1925
 msgid "You have pasted into an existing partition"
 msgstr "Ați lipit peste o partiție existentă"
 
-#: ../src/Win_GParted.cc:1816
+#: ../src/Win_GParted.cc:1933
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Dacă aplicați această operație, datele de pe %1 vor fi pierdute."
 
-#: ../src/Win_GParted.cc:1882
+#: ../src/Win_GParted.cc:2002
 msgid "Unable to delete %1!"
 msgstr "Nu se poate șterge %1!"
 
-#: ../src/Win_GParted.cc:1889
+#: ../src/Win_GParted.cc:2009
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Demontați toate partițiile logice ale căror număr este mai mare de %1"
 
-#: ../src/Win_GParted.cc:1900
+#: ../src/Win_GParted.cc:2020
 msgid "Are you sure you want to delete %1?"
 msgstr "Sigur doriți să ștergeți %1?"
 
-#: ../src/Win_GParted.cc:1907
+#: ../src/Win_GParted.cc:2027
 msgid "After deletion this partition is no longer available for copying."
 msgstr "După ștergere partiția nu va mai fi disponibilă pentru copiere."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1910
+#: ../src/Win_GParted.cc:2030
 msgid "Delete %1 (%2, %3)"
 msgstr "Șterge %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1995
+#: ../src/Win_GParted.cc:2121
 msgid "Cannot format this file system to %1"
 msgstr "Nu s-a putut formata acest sistem de fișiere în %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2007
+#: ../src/Win_GParted.cc:2133
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Un sistem de fișiere %1 necesită o partiție de cel puțin %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2015
+#: ../src/Win_GParted.cc:2141
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr ""
 "O partiție cu un sistem de fișiere %1 poate avea o dimensiune maximă de %2."
 
-#: ../src/Win_GParted.cc:2112
+#: ../src/Win_GParted.cc:2237
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Partiția nu a putut fi demontată din următoarele puncte de montare:"
 
-#: ../src/Win_GParted.cc:2114
+#: ../src/Win_GParted.cc:2239
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1911,14 +1898,14 @@ msgstr ""
 "Cel mai probabil alte partiții sunt montate la rândul lor pe aceste puncte "
 "de montare. Este indicat să le demontați manual."
 
-#: ../src/Win_GParted.cc:2139 ../src/Win_GParted.cc:2259
+#: ../src/Win_GParted.cc:2267 ../src/Win_GParted.cc:2391
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "Momentan o operație este în așteptare pentru partiția %2"
 msgstr[1] "Momentan %1 operații sunt în așteptare pentru partiția %2"
 msgstr[2] "Momentan %1 de operații sunt în așteptare pentru partiția %2"
 
-#: ../src/Win_GParted.cc:2155
+#: ../src/Win_GParted.cc:2283
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1926,7 +1913,7 @@ msgstr ""
 "Nu se poate efectua activarea zonei de swap dacă partiția are o operațiune "
 "în așteptare."
 
-#: ../src/Win_GParted.cc:2157
+#: ../src/Win_GParted.cc:2285
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1934,7 +1921,7 @@ msgstr ""
 "Înainte de a activa zona de swap pe această partiție, folosiți meniul "
 "Editare pentru a anula, șterge sau aplica toate operațiile în așteptare."
 
-#: ../src/Win_GParted.cc:2161
+#: ../src/Win_GParted.cc:2289
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
@@ -1942,7 +1929,7 @@ msgstr ""
 "Nu se poate efectua acțiunea de activare a grupului de volume dacă partiția "
 "are o operațiune în așteptare."
 
-#: ../src/Win_GParted.cc:2163
+#: ../src/Win_GParted.cc:2291
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1950,47 +1937,47 @@ msgstr ""
 "Înainte de a activa Grupul de Volume pe această partiție, folosiți meniul "
 "Editare pentru a anula, șterge sau aplica toate operațiile în așteptare."
 
-#: ../src/Win_GParted.cc:2174
+#: ../src/Win_GParted.cc:2302
 msgid "Deactivating swap on %1"
 msgstr "Se dezactivează zona de swap de pe %1"
 
-#: ../src/Win_GParted.cc:2174
+#: ../src/Win_GParted.cc:2302
 msgid "Activating swap on %1"
 msgstr "Se activează zona de swap de pe %1"
 
-#: ../src/Win_GParted.cc:2186
+#: ../src/Win_GParted.cc:2314
 msgid "Could not deactivate swap"
 msgstr "Nu s-a putut dezactiva zona de swap"
 
-#: ../src/Win_GParted.cc:2186
+#: ../src/Win_GParted.cc:2314
 msgid "Could not activate swap"
 msgstr "Nu s-a putut activa zona de swap"
 
-#: ../src/Win_GParted.cc:2201
+#: ../src/Win_GParted.cc:2329
 msgid "Deactivating Volume Group %1"
 msgstr "Se dezactivează Grupul de Volume %1"
 
-#: ../src/Win_GParted.cc:2202
+#: ../src/Win_GParted.cc:2330
 msgid "Activating Volume Group %1"
 msgstr "Se activează Grupul de Volume pe %1"
 
-#: ../src/Win_GParted.cc:2217
+#: ../src/Win_GParted.cc:2345
 msgid "Could not deactivate Volume Group"
 msgstr "Nu s-a putut dezactiva Grupul de Volume"
 
-#: ../src/Win_GParted.cc:2218
+#: ../src/Win_GParted.cc:2346
 msgid "Could not activate Volume Group"
 msgstr "Nu s-a putut activa Grupul de Volume"
 
-#: ../src/Win_GParted.cc:2231
+#: ../src/Win_GParted.cc:2359
 msgid "Unmounting %1"
 msgstr "Se demontează %1"
 
-#: ../src/Win_GParted.cc:2237
+#: ../src/Win_GParted.cc:2365
 msgid "Could not unmount %1"
 msgstr "Nu s-a putut demonta %1"
 
-#: ../src/Win_GParted.cc:2273
+#: ../src/Win_GParted.cc:2405
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1998,7 +1985,7 @@ msgstr ""
 "Nu se poate efectua acțiunea de montare dacă partiția are o operațiune în "
 "așteptare."
 
-#: ../src/Win_GParted.cc:2275
+#: ../src/Win_GParted.cc:2407
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -2006,29 +1993,29 @@ msgstr ""
 "Înainte de a monta această partiție, folosiți meniul Editare pentru a anula, "
 "șterge sau aplica toate operațiile în așteptare."
 
-#: ../src/Win_GParted.cc:2287
+#: ../src/Win_GParted.cc:2419
 msgid "mounting %1 on %2"
 msgstr "se montează %1 la %2"
 
-#: ../src/Win_GParted.cc:2317
+#: ../src/Win_GParted.cc:2449
 msgid "Could not mount %1 on %2"
 msgstr "Nu s-a putut monta %1 la %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2343
+#: ../src/Win_GParted.cc:2475
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "Momentan o operație este activă pe \tdispozitivul %2"
 msgstr[1] "Momentan %1 operații sunt active pe dispozitivul %2"
 msgstr[2] "Momentan %1 de operații sunt active pe dispozitivul %2"
 
-#: ../src/Win_GParted.cc:2358
+#: ../src/Win_GParted.cc:2490
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Nu se poate crea o nouă tabelă de partiții cât timp există operații active."
 
-#: ../src/Win_GParted.cc:2360
+#: ../src/Win_GParted.cc:2492
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2036,7 +2023,7 @@ msgstr ""
 "Partițiile active sunt cele care sunt în uz, cum ar fi cele cu un sistem de "
 "fișiere montat sau spațiu swap activat."
 
-#: ../src/Win_GParted.cc:2362
+#: ../src/Win_GParted.cc:2494
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2045,21 +2032,21 @@ msgstr ""
 "zonei de swap, pentru a dezactiva toate partițiile de pe acest dispozitiv "
 "înainte de a crea o nouă tabelă de partiții."
 
-#: ../src/Win_GParted.cc:2374
+#: ../src/Win_GParted.cc:2506
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "Momentan o operație este în așteptare"
 msgstr[1] "Momentan %1 operații sunt în așteptare"
 msgstr[2] "Momentan %1 de operații sunt în așteptare"
 
-#: ../src/Win_GParted.cc:2387
+#: ../src/Win_GParted.cc:2519
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Nu se poate crea o nouă tabelă de partiții cât timp există operații în "
 "așteptare."
 
-#: ../src/Win_GParted.cc:2389
+#: ../src/Win_GParted.cc:2521
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2067,32 +2054,32 @@ msgstr ""
 "Înainte de a crea o nouă tabelă de partiții, folosiți meniul Editare pentru "
 "a șterge sau aplica toate operațiile în așteptare."
 
-#: ../src/Win_GParted.cc:2404
+#: ../src/Win_GParted.cc:2536
 msgid "Error while creating partition table"
 msgstr "A apărut o eroare la crearea tabelei de partiții"
 
-#: ../src/Win_GParted.cc:2424
+#: ../src/Win_GParted.cc:2556
 msgid "Command gpart was not found"
 msgstr "Comanda gpart nu a fost găsită"
 
-#: ../src/Win_GParted.cc:2425
+#: ../src/Win_GParted.cc:2557
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Această funcționalitate utilizează gpart. Instalați gpart și încercați din "
 "nou."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2433
+#: ../src/Win_GParted.cc:2565
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "O scanare completă a discului este necesară pentru a descoperi sistemele de "
 "fișiere."
 
-#: ../src/Win_GParted.cc:2435
+#: ../src/Win_GParted.cc:2567
 msgid "The scan might take a very long time."
 msgstr "Această scanare poate dura un timp îndelungat."
 
-#: ../src/Win_GParted.cc:2437
+#: ../src/Win_GParted.cc:2569
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2100,26 +2087,26 @@ msgstr ""
 "După scanare puteți monta oricare dintre sistemele de fișiere descoperite și "
 "copia date pe alte medii."
 
-#: ../src/Win_GParted.cc:2439
+#: ../src/Win_GParted.cc:2571
 msgid "Do you want to continue?"
 msgstr "Doriți să continuați?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2443
+#: ../src/Win_GParted.cc:2575
 msgid "Search for file systems on %1"
 msgstr "Caută sisteme de fișiere pe %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2454
+#: ../src/Win_GParted.cc:2586
 msgid "Searching for file systems on %1"
 msgstr "Se caută sisteme de fișiere pe %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2470
+#: ../src/Win_GParted.cc:2602
 msgid "No file systems found on %1"
 msgstr "Nu s-a găsit niciun sistem de fișiere pe %1"
 
-#: ../src/Win_GParted.cc:2471
+#: ../src/Win_GParted.cc:2603
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2127,35 +2114,35 @@ msgstr ""
 "Scanarea discului cu gpart nu a găsit niciun sistem de fișiere cunoscut pe "
 "acest disc."
 
-#: ../src/Win_GParted.cc:2740
+#: ../src/Win_GParted.cc:2889
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Sigur doriți să aplicați operațiile aflate în așteptare?"
 
-#: ../src/Win_GParted.cc:2746
+#: ../src/Win_GParted.cc:2895
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Editarea partițiilor poate cauza PIERDERI de DATE."
 
-#: ../src/Win_GParted.cc:2748
+#: ../src/Win_GParted.cc:2897
 msgid "You are advised to backup your data before proceeding."
 msgstr "Înainte de a continua, este indicat să creați o copie de siguranță."
 
-#: ../src/Win_GParted.cc:2750
+#: ../src/Win_GParted.cc:2899
 msgid "Apply operations to device"
 msgstr "Aplică operațiile dispozitivului"
 
-#: ../src/Win_GParted.cc:2795
+#: ../src/Win_GParted.cc:2944
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Sunteți pe cale de a șterge Volumul fizic negol LVM2 %1"
 
-#: ../src/Win_GParted.cc:2799
+#: ../src/Win_GParted.cc:2948
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Sunteți pe cale de a formata peste Volumul fizic negol LVM2 %1"
 
-#: ../src/Win_GParted.cc:2803
+#: ../src/Win_GParted.cc:2952
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Sunteți pe cale de a lipi peste Volumul fizic negol LVM2 %1"
 
-#: ../src/Win_GParted.cc:2812
+#: ../src/Win_GParted.cc:2961
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2163,7 +2150,7 @@ msgstr ""
 "Ștergerea sau suprascrierea Volumului Fizic este irecuperabilă și va "
 "distruge sau deteriora Grupul de volume."
 
-#: ../src/Win_GParted.cc:2815
+#: ../src/Win_GParted.cc:2964
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2173,11 +2160,11 @@ msgstr ""
 "sfătuit să abandonați și să utilizați comenzi LVM externe pentru a elibera "
 "volumul fizic înainte de a încerca această operație."
 
-#: ../src/Win_GParted.cc:2818
+#: ../src/Win_GParted.cc:2967
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Continuați să ștergeți forțat Volumul fizic?"
 
-#: ../src/btrfs.cc:302
+#: ../src/btrfs.cc:309
 msgid "Failed to find devid for path %1"
 msgstr "Nu s-a găsit devid pentru calea %1"
 
