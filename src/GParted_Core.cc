@@ -3318,16 +3318,9 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				}
 				else if ( ! supports_lvm_flag )
 				{
-					operationdetail.get_last_child().add_child(
-						/* TO TRANSLATORS: looks like   Skip setting unsupported partition flag: lvm
-						 *
-						 * Note that this means that this step is skipped because the type of partition
-						 * table in use does not support the partition flag we would like to set.
-						 */
-						OperationDetail( String::ucompose( _("Skip setting unsupported partition flag: %1"),
-						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
-						                 STATUS_NONE,
-						                 FONT_ITALIC ) );
+					// Skip setting the lvm flag because the partition
+					// table type doesn't support it.  Applies to dvh
+					// and pc98 disk labels.
 					return_value = true;
 				}
 			}
