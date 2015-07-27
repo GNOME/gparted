@@ -3292,6 +3292,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				     commit( lp_disk )                                                      )
 				{
 					operationdetail.get_last_child().add_child(
+						/* TO TRANSLATORS: looks like   new partition type: ext4 */
 						OperationDetail( String::ucompose( _("new partition type: %1"),
 						                                   lp_partition->fs_type->name ),
 						                 STATUS_NONE,
@@ -3306,6 +3307,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				     commit( lp_disk )                                               )
 				{
 					operationdetail.get_last_child().add_child(
+						/* TO TRANSLATORS: looks like   new partition flag: lvm */
 						OperationDetail( String::ucompose( _("new partition flag: %1"),
 						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
 						                 STATUS_NONE,
@@ -3315,6 +3317,11 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				else if ( ! supports_lvm_flag )
 				{
 					operationdetail.get_last_child().add_child(
+						/* TO TRANSLATORS: looks like   Skip setting unsupported partition flag: lvm
+						 *
+						 * Note that this means that this step is skipped because the type of partition
+						 * table in use does not support the partition flag we would like to set.
+						 */
 						OperationDetail( String::ucompose( _("Skip setting unsupported partition flag: %1"),
 						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
 						                 STATUS_NONE,
