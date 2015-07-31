@@ -91,7 +91,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_FAT16		: return "#00FF00" ;	//green
 		case FS_FAT32		: return "#18D918" ;	// ~ medium green
 		case FS_EXFAT		: return "#2E8B57" ;	// ~ sea green
-		case FS_NILFS2		: return "#826647" ;	//face skin dark
+		case FS_NILFS2		: return "#826647" ;	//face skin shadow
 		case FS_NTFS		: return "#42E5AC" ;	// ~ light aquamarine
 		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
 		case FS_REISER4		: return "#887FA3" ;	//purple medium
@@ -102,12 +102,12 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UFS			: return "#D1940C" ;	//accent yellow dark
 		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
-		case FS_LVM2_PV		: return "#CC9966" ;	// ~ medium brown
+		case FS_LVM2_PV		: return "#B39169" ;	//face skin dark
 		case FS_BITLOCKER	: return "#494066" ;	//purple shadow
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
 		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
-		case FS_REFS		: return "#1FC48D" ;	// ~ medium aquamarine
+		case FS_REFS		: return "#2AB98A" ;	// ~ medium aquamarine
 		case FS_ZFS 		: return "#CC763D" ;	// ~ darker orange
 
 		default				: return "#000000" ;
