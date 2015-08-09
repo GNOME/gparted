@@ -20,7 +20,11 @@
 #define GPARTED_XFS_H
 
 #include "../include/FileSystem.h"
+#include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -40,6 +44,12 @@ public:
 		   Partition & dest_part,
 		   OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
+
+private:
+	bool copy_progress( OperationDetail * operationdetail );
+
+	Byte_Value src_used;             // Used bytes in the source FS of an XFS copy operation
+	Glib::ustring dest_mount_point;  // Temporary FS mount point of an XFS copy operation
 };
 
 } //GParted

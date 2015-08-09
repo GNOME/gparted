@@ -17,7 +17,12 @@
  
  
 #include "../include/xfs.h"
+#include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+#include "../include/ProgressBar.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -223,7 +228,7 @@ bool xfs::copy( const Partition & src_part,
 	if ( src_mount_point .empty() )
 		return false ;
 
-	Glib::ustring dest_mount_point = mk_temp_dir( "dest", operationdetail ) ;
+	dest_mount_point = mk_temp_dir( "dest", operationdetail );
 	if ( dest_mount_point .empty() )
 	{
 		rm_temp_dir( src_mount_point, operationdetail ) ;
@@ -233,6 +238,14 @@ bool xfs::copy( const Partition & src_part,
 	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part.get_path() +
 	                              " " + src_mount_point, operationdetail, EXEC_CHECK_STATUS );
 
+	// Get source FS used bytes, needed in progress update calculation
+	Byte_Value fs_size;
+	Byte_Value fs_free;
+	if ( Utils::get_mounted_filesystem_usage( src_mount_point, fs_size, fs_free, error ) == 0 )
+		src_used = fs_size - fs_free;
+	else
+		src_used = -1LL;
+
 	if ( success )
 	{
 		success &= ! execute_command( "mount -v -t xfs " + dest_part.get_path() +
@@ -240,9 +253,23 @@ bool xfs::copy( const Partition & src_part,
 
 		if ( success )
 		{
+			ProgressBar & progressbar = operationdetail.get_progressbar();
+			sigc::connection c;
+			if ( src_used > 0LL )
+			{
+				progressbar.start( (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
+				// Get xfs::copy_progress() called every 500 ms to update progress
+				c = Glib::signal_timeout().connect(
+				                sigc::bind<OperationDetail*>( sigc::mem_fun( *this, &xfs::copy_progress ),
+				                                              &operationdetail ),
+				                500 );
+			}
 			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
 			                              " | xfsrestore -J - " + dest_mount_point + "'",
 			                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+			c.disconnect();
+			if ( progressbar.running() )
+				progressbar.stop();
 
 			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
 			                              EXEC_CHECK_STATUS );
@@ -262,6 +289,29 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 {
 	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+}
+
+//Private methods
+
+// Report progress of XFS copy.  Monitor destination FS used bytes and track against
+// recorded source FS used bytes.
+bool xfs::copy_progress( OperationDetail * operationdetail )
+{
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Byte_Value fs_size;
+	Byte_Value fs_free;
+	Byte_Value dst_used;
+	if ( Utils::get_mounted_filesystem_usage( dest_mount_point, fs_size, fs_free, error ) != 0 )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
+		// Failed to get destination FS used bytes.  Remove this timed callback early.
+		return false;
+	}
+	dst_used = fs_size - fs_free;
+	progressbar.update( (double)dst_used );
+	operationdetail->signal_update.emit( *operationdetail );
+	return true;
 }
 
 } //GParted
