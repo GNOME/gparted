@@ -190,15 +190,22 @@ src      - contains C++ source code
 
 DISTRIBUTION NOTES
 ------------------
-Gparted uses GNU libparted to detect and manipulate devices and partition
-tables.  Several optional packages provide additional file system support.
-Optional packages include:
+GParted uses GNU libparted to detect and manipulate devices and
+partition tables.  The blkid command is also required to detect those
+file systems which libparted doesn't detect.  (The blkid command should
+be considered a mandatory requirement).
+
+GParted also queries and manipulates the file systems within those
+devices and partitions.  When available, it uses each file system's
+specific commands.  The following optional file system specific packages
+provide this support:
 
    btrfs-tools
    e2fsprogs
    f2fs-tools
    dosfstools
-   mtools          - required to read and write FAT16/32 volume labels and UUIDs
+   mtools          - required to read and write FAT16/32 volume labels
+                     and UUIDs
    hfsutils
    hfsprogs
    jfsutils
@@ -208,24 +215,16 @@ Optional packages include:
    reiserfsprogs
    xfsprogs, xfsdump
 
-   NOTE:  * If the vol_id command is in the search PATH, it will be used
-            to read linux-swap, reiser4, hfs, and hfs+ file system
-            volume labels.
-          * If the blkid command is in the search path, it will be used
-            to read file system UUIDs and labels.  It is also used for
-            ext4 file system detection.
-            blkid is part of the util-linux package and e2fsprogs
-            package before that.
-
 
 For dmraid support, the following packages are required:
 
    dmsetup         - removes /dev/mapper entries
-   dmraid          - lists dmraid devices and creates /dev/mapper entries
+   dmraid          - lists dmraid devices and creates /dev/mapper
+                     entries
 
 For GNU/Linux distribution dmraid support, the following are required:
-   - kernel built with Device Mapping and Mirroring built.  From menuconfig,
-     it is under Device Drivers -> <something> (RAID & LVM).
+   - kernel built with Device Mapping and Mirroring built.  From
+     menuconfig, it is under Device Drivers -> <something> (RAID & LVM).
    - dmraid drive arrays activated on boot (e.g., dmraid -ay).
 
 
@@ -239,29 +238,33 @@ is required:
    gpart           - guesses PC-type hard disk partitions
 
 
-Several more commands are optionally used by GParted if found on the system.
-These commands include:
+Several more commands are optionally used by GParted if found on the
+system.  These commands include:
 
-   blkid         - used to read volume labels and detect ext4 file systems
-   hdparm        - used to query disk device serial numbers
-   vol_id        - used to read volume labels
-   udisks        - used to prevent automounting of file systems
-   devkit-disks  - used to prevent automounting of file systems
-   {filemanager} - used in attempt data rescue to display discovered
-                   file systems.  (e.g., nautilus, pcmanfm)
-   hal-lock      - used to prevent automounting of file systems
-   gksudo        - used to acquire root privileges in .desktop file,
-                   but only if available when gparted source is configured.
-   gksu          - alternatively used to acquire root privileges in .desktop
-                   file if gksu not available, but only if available when
-                   gparted source is configured.
-   kdesudo       - alternatively used to acquire root privileges in .desktop
-                   file if gksudo and gksu not available, but only if available
-                   when gparted source is configured.
-   xdg-su        - alternatively used to acquire root privileges in .desktop
-                   file if gksudo, gksu, and kdesudo are not available, but only
-                   if available when gparted source is configured.
-   udevinfo      - used in dmraid to query udev name
-   udevadm       - used in dmraid to query udev name
-   yelp          - used to display help manual
+   blkid           - [mandatory requirement] used to detect file systems
+                     libparted doesn't, read UUIDs and volume labels
+   hdparm          - used to query disk device serial numbers
+   vol_id          - used to read volume labels
+   udisks          - used to prevent automounting of file systems
+   devkit-disks    - used to prevent automounting of file systems
+   {filemanager}   - used in attempt data rescue to display discovered
+                     file systems.  (e.g., nautilus, pcmanfm)
+   hal-lock        - used to prevent automounting of file systems
+   gksudo          - used to acquire root privileges in .desktop file,
+                     but only if available when gparted source is
+                     configured.
+   gksu            - alternatively used to acquire root privileges in
+                     .desktop file if gksu not available, but only if
+                     available when gparted source is configured.
+   kdesudo         - alternatively used to acquire root privileges in
+                     .desktop file if gksudo and gksu not available, but
+                     only if available when gparted source is
+                     configured.
+   xdg-su          - alternatively used to acquire root privileges in
+                     .desktop file if gksudo, gksu, and kdesudo are not
+                     available, but only if available when gparted
+                     source is configured.
+   udevinfo        - used in dmraid to query udev name
+   udevadm         - used in dmraid to query udev name
+   yelp            - used to display help manual
 
