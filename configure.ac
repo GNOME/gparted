@@ -52,13 +52,13 @@ dnl 2) Check by linking and running a program to report libparted version direct
 LIBPARTED_REQUIRED_VERSION='1.7.1'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION (querying pkg-config)])
 LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
-	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 dnl 1) Check using pkg-config.
 PKG_CHECK_EXISTS(
 	[libparted],
 	[LIBPARTED_FOUND_VERSION=`$PKG_CONFIG --modversion libparted`
 	 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
-		$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+		$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 	 AC_MSG_RESULT([$LIBPARTED_FOUND_VERSION])
 	 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
 		AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
@@ -90,7 +90,7 @@ int main()
 		dnl Run test program again to cache libparted version.
 		[LIBPARTED_FOUND_VERSION=`./conftest$EXEEXT`
 		 LIBPARTED_FOUND_INT=`echo "$LIBPARTED_FOUND_VERSION" |
-			$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+			$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 		 test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_REQUIRED_INT" ||
 			AC_MSG_ERROR([*** libparted too old.  Require libparted >= $LIBPARTED_REQUIRED_VERSION but only found libparted $LIBPARTED_FOUND_VERSION.])
 		],
@@ -105,9 +105,9 @@ LIBPARTED_MIN_WANTED_VERSION='2.0'
 LIBPARTED_MAX_WANTED_VERSION='3.0'
 AC_MSG_CHECKING([for $LIBPARTED_MIN_WANTED_VERSION <= libparted <= $LIBPARTED_MAX_WANTED_VERSION (loop table creation doesn't delete old partitions)])
 LIBPARTED_MIN_WANTED_INT=`echo "$LIBPARTED_MIN_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 LIBPARTED_MAX_WANTED_INT=`echo "$LIBPARTED_MAX_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 if test "$LIBPARTED_MIN_WANTED_INT" -le "$LIBPARTED_FOUND_INT" -a \
         "$LIBPARTED_FOUND_INT" -le "$LIBPARTED_MAX_WANTED_INT"; then
 	need_loop_delete_old_ptns_workaround=yes
@@ -126,7 +126,7 @@ dnl (> 512 bytes).
 LIBPARTED_WANTED_VERSION='2.2'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (improved pt re-read)])
 LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
 	AC_DEFINE([USE_LIBPARTED_LARGE_SECTOR_SUPPORT], 1,
 	          [Define to 1 to use libparted large sector support])
@@ -176,7 +176,7 @@ dnl Check for libparted >= 3.2 for online resize support.
 LIBPARTED_WANTED_VERSION='3.2'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (online resize)])
 LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 10000 + $2 * 100 + $3}'`
+	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
 if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
 	have_online_resize=yes
 	AC_MSG_RESULT([(cached) yes])
