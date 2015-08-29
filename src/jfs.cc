@@ -159,8 +159,8 @@ bool jfs::write_uuid( const Partition & partition, OperationDetail & operationde
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.jfs -q -L \"" + new_partition.get_filesystem_label() + "\" " +
-				  new_partition.get_path(), operationdetail,
-				  false, true );
+	                          new_partition.get_path(), operationdetail,
+	                          EXEC_CANCEL_SAFE );
 }
 
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -174,7 +174,7 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 		if ( mount_point .empty() )
 			return false ;
 		success &= ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + mount_point,
-		                              operationdetail, true ) ;
+		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
 		mount_point = partition_new .get_mountpoint() ;
@@ -182,10 +182,10 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 	if ( success )
 	{
 		success &= ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + mount_point,
-					      operationdetail, true ) ;
+		                              operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
+			success &= ! execute_command( "umount -v " + mount_point, operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( ! partition_new .busy )
@@ -197,11 +197,9 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 bool jfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "jfs_fsck -f " + partition.get_path(), operationdetail,
-				       false, true );
+	                               EXEC_CANCEL_SAFE );
 
 	return ( exit_status == 0 || exit_status == 1 ) ;
 }
 
 } //GParted
-
-

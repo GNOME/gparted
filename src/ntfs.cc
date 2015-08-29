@@ -196,7 +196,7 @@ bool ntfs::create( const Partition & new_partition, OperationDetail & operationd
 {
 	return ! execute_command( "mkntfs -Q -v -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, false, true );
+	                          operationdetail, EXEC_CANCEL_SAFE );
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -243,9 +243,8 @@ bool ntfs::copy( const Partition & src_part,
 		 OperationDetail & operationdetail )
 {
 	return ! execute_command( "ntfsclone -f --overwrite " + dest_part.get_path() + " " + src_part.get_path(),
-				  operationdetail,
-				  false,
-				  true );
+	                          operationdetail,
+	                          EXEC_CANCEL_SAFE );
 }
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -254,5 +253,3 @@ bool ntfs::check_repair( const Partition & partition, OperationDetail & operatio
 }
 
 } //GParted
-
-

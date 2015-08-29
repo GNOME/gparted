@@ -80,9 +80,11 @@ static void setup_child()
 }
 
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-				 bool checkstatus, bool cancel_safe )
+                                 ExecFlags flags )
 {
-	operationdetail .add_child( OperationDetail( command, checkstatus ? STATUS_EXECUTE : STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
+	operationdetail.add_child( OperationDetail( command,
+	                                            ( flags & EXEC_CHECK_STATUS ) ? STATUS_EXECUTE : STATUS_NONE,
+	                                            FONT_BOLD_ITALIC ) );
 	Glib::Pid pid;
 	// set up pipes for capture
 	int out, err;
@@ -132,10 +134,11 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 		sigc::bind(
 			sigc::ptr_fun( cancel_command ),
 			pid,
-			cancel_safe ));
+			flags & EXEC_CANCEL_SAFE ) );
 	Gtk::Main::run();
 
-	if (checkstatus) {
+	if ( flags & EXEC_CHECK_STATUS )
+	{
 		if ( !exit_status )
 			operationdetail.get_last_child().set_status( STATUS_SUCCES );
 		else

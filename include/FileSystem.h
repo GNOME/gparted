@@ -28,6 +28,25 @@
 namespace GParted
 {
 
+enum ExecFlags
+{
+	EXEC_NONE         = 1 << 0,
+	EXEC_CHECK_STATUS = 1 << 1,  // Time and check exit status of the command in
+	                             // operation details.  Only used when multiple
+	                             // commands are executed in the same file system
+	                             // specific action method.  (GParted_Core displays
+	                             // the time and success of each action method in the
+	                             // parent operation detail so don't bother for single
+	                             // command file system action methods).
+	EXEC_CANCEL_SAFE  = 1 << 2
+};
+
+inline ExecFlags operator|( ExecFlags lhs, ExecFlags rhs )
+	{ return static_cast<ExecFlags>( static_cast<unsigned>(lhs) | static_cast<unsigned>(rhs) ); }
+
+inline ExecFlags operator&( ExecFlags lhs, ExecFlags rhs )
+	{ return static_cast<ExecFlags>( static_cast<unsigned>(lhs) & static_cast<unsigned>(rhs) ); }
+
 class FileSystem
 {
 public:
@@ -60,7 +79,7 @@ public:
 	bool success;
 protected:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-			     bool checkstatus = false, bool cancel_safe = false );
+	                     ExecFlags flags = EXEC_NONE );
 	void execute_command_eof();
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
 	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;

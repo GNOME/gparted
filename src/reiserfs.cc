@@ -161,7 +161,7 @@ bool reiserfs::create( const Partition & new_partition, OperationDetail & operat
 {
 	return ! execute_command( "mkreiserfs -f -f --label \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, false, true );
+	                          operationdetail, EXEC_CANCEL_SAFE );
 }
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -182,8 +182,8 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
-				       operationdetail, false, true );
-	
+	                               operationdetail, EXEC_CANCEL_SAFE );
+
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }
 

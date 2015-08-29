@@ -252,14 +252,13 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 	                          pad_label( new_partition.get_filesystem_label() ) + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail,
-	                          false,
-	                          true );
+	                          EXEC_CANCEL_SAFE );
 }
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( check_cmd + " -a -w -v " + partition .get_path(), operationdetail,
-				       false, true );
+	                               EXEC_CANCEL_SAFE );
 
 	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
 }

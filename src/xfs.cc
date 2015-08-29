@@ -175,8 +175,7 @@ bool xfs::create( const Partition & new_partition, OperationDetail & operationde
 	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail,
-	                          false,
-	                          true );
+	                          EXEC_CANCEL_SAFE );
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -190,17 +189,17 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 		if ( mount_point.empty() )
 			return false ;
 		success &= ! execute_command( "mount -v -t xfs " + partition_new .get_path() + " " + mount_point,
-		                              operationdetail, true ) ;
+		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
 		mount_point = partition_new .get_mountpoint() ;
 
 	if ( success )
 	{
-		success &= ! execute_command( "xfs_growfs " + mount_point, operationdetail, true ) ;
+		success &= ! execute_command( "xfs_growfs " + mount_point, operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + mount_point, operationdetail, true ) ;
+			success &= ! execute_command( "umount -v " + mount_point, operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( ! partition_new .busy )
@@ -215,7 +214,8 @@ bool xfs::copy( const Partition & src_part,
 {
 	bool success = true ;
 
-	success &= ! execute_command( "mkfs.xfs -f " + dest_part.get_path(), operationdetail, true, true );
+	success &= ! execute_command( "mkfs.xfs -f " + dest_part.get_path(), operationdetail,
+	                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 	if ( ! success )
 		return false ;
 
@@ -231,23 +231,24 @@ bool xfs::copy( const Partition & src_part,
 	}
 
 	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part.get_path() +
-				      " " + src_mount_point, operationdetail, true ) ;
+	                              " " + src_mount_point, operationdetail, EXEC_CHECK_STATUS );
 
 	if ( success )
 	{
 		success &= ! execute_command( "mount -v -t xfs " + dest_part.get_path() +
-					      " " + dest_mount_point, operationdetail, true ) ;
+		                              " " + dest_mount_point, operationdetail, EXEC_CHECK_STATUS );
 
 		if ( success )
 		{
 			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
-						      " | xfsrestore -J - " + dest_mount_point + "'",
-						      operationdetail, true, true );
+			                              " | xfsrestore -J - " + dest_mount_point + "'",
+			                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 
-			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail, true ) ;
+			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
+			                              EXEC_CHECK_STATUS );
 		}
 
-		success &= ! execute_command( "umount -v " + src_part.get_path(), operationdetail, true ) ;
+		success &= ! execute_command( "umount -v " + src_part.get_path(), operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	rm_temp_dir( dest_mount_point, operationdetail ) ;
@@ -260,9 +261,7 @@ bool xfs::copy( const Partition & src_part,
 bool xfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail,
-				  false, true );
+	                          EXEC_CANCEL_SAFE );
 }
 
 } //GParted
-
-

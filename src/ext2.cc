@@ -220,7 +220,7 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 {
 	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, false, true );
+	                          operationdetail, EXEC_CANCEL_SAFE );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -237,7 +237,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
-				       false, true );
+	                               EXEC_CANCEL_SAFE );
 
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
@@ -254,10 +254,10 @@ bool ext2::move( const Partition & partition_new,
 	offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
 	if ( distance < 0 )
 		return ! execute_command( image_cmd + " -ra -p -o " + offset + " " + partition_new.get_path(),
-		                          operationdetail, true, true );
+		                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 	else
 		return ! execute_command( image_cmd + " -ra -p -O " + offset + " " + partition_new.get_path(),
-		                          operationdetail, true, true );
+		                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 
 }
 
@@ -266,7 +266,7 @@ bool ext2::copy( const Partition & src_part,
                  OperationDetail & operationdetail )
 {
 	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
-	                          operationdetail, true, true );
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 } //GParted
