@@ -192,7 +192,8 @@ void ext2::read_label( Partition & partition )
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( label_cmd + " " + partition.get_path() +
-	                          " \"" + partition.get_filesystem_label() + "\"", operationdetail ) ;
+	                          " \"" + partition.get_filesystem_label() + "\"",
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void ext2::read_uuid( Partition & partition )
@@ -213,14 +214,15 @@ void ext2::read_uuid( Partition & partition )
 
 bool ext2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( tune_cmd + " -U random " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( tune_cmd + " -U random " + partition .get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, EXEC_CANCEL_SAFE );
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -231,7 +233,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K";
 
-	return ! execute_command( str_temp, operationdetail ) ;
+	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -241,7 +243,9 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 
 	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
 	//this is quite normal (especially after a copy) so we let the function return true...
-	return ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 ) ;
+	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 );
+	set_status( operationdetail, success );
+	return success;
 }
 
 bool ext2::move( const Partition & partition_new,

@@ -98,7 +98,7 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvcreate -M 2 " + new_partition .get_path(), operationdetail ) ;
+	return ! execute_command( "lvm pvcreate -M 2 " + new_partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -108,12 +108,13 @@ bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operati
 		size = " --setphysicalvolumesize " +
 			Utils::num_to_str( floor( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K " ;
-	return ! execute_command( "lvm pvresize -v " + size + partition_new .get_path(), operationdetail ) ;
+	return ! execute_command( "lvm pvresize -v " + size + partition_new.get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvck -v " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "lvm pvck -v " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
@@ -125,7 +126,7 @@ bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationde
 	else
 		//Must force the removal of a PV which is a member of a VG
 		cmd = "lvm pvremove --force --force --yes " + partition .get_path() ;
-	return ! execute_command( cmd, operationdetail ) ;
+	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
 } //GParted

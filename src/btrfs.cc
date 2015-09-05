@@ -154,12 +154,13 @@ bool btrfs::is_busy( const Glib::ustring & path )
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.btrfs -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(), operationdetail );
+	                          new_partition.get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return (! execute_command( "btrfsck " + partition .get_path(), operationdetail )) ;
+	return ! execute_command( "btrfsck " + partition .get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 void btrfs::set_used_sectors( Partition & partition )
@@ -294,7 +295,8 @@ void btrfs::set_used_sectors( Partition & partition )
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "btrfs filesystem label " + partition.get_path() +
-	                          " \"" + partition.get_filesystem_label() + "\"", operationdetail );
+	                          " \"" + partition.get_filesystem_label() + "\"",
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool btrfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -336,7 +338,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " " + mount_point ;
 		else
 			cmd = "btrfsctl -r " + devid_str + ":" + size + " " + mount_point ;
-		exit_status = execute_command( cmd, operationdetail, EXEC_NONE );
+		exit_status = execute_command( cmd, operationdetail );
 		bool resize_succeeded = ( exit_status == 0 ) ;
 		if ( resize_to_same_size_fails )
 		{
@@ -358,7 +360,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			                     || ( ! btrfs_found && exit_status ==  1<<8 )
 			                   ) ;
 		}
-		operationdetail .get_last_child() .set_status( resize_succeeded ? STATUS_SUCCES : STATUS_ERROR ) ;
+		set_status( operationdetail, resize_succeeded );
 		success &= resize_succeeded ;
 
 		if ( ! partition_new .busy )
@@ -432,7 +434,7 @@ void btrfs::read_uuid( Partition & partition )
 
 bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfstune -f -u " + partition.get_path(), operationdetail );
+	return ! execute_command( "btrfstune -f -u " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 void btrfs::clear_cache()

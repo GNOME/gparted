@@ -132,7 +132,7 @@ void jfs::read_label( Partition & partition )
 bool jfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "jfs_tune -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void jfs::read_uuid( Partition & partition )
@@ -153,14 +153,14 @@ void jfs::read_uuid( Partition & partition )
 
 bool jfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "jfs_tune -U random " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "jfs_tune -U random " + partition .get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool jfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.jfs -q -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(), operationdetail,
-	                          EXEC_CANCEL_SAFE );
+	                          new_partition.get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool jfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -198,8 +198,9 @@ bool jfs::check_repair( const Partition & partition, OperationDetail & operation
 {
 	exit_status = execute_command( "jfs_fsck -f " + partition.get_path(), operationdetail,
 	                               EXEC_CANCEL_SAFE );
-
-	return ( exit_status == 0 || exit_status == 1 ) ;
+	bool success = ( exit_status == 0 || exit_status == 1 );
+	set_status( operationdetail, success );
+	return success;
 }
 
 } //GParted

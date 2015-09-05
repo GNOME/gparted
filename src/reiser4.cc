@@ -139,14 +139,14 @@ void reiser4::read_uuid( Partition & partition )
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.reiser4 --force --yes --label \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(), operationdetail,
-	                          EXEC_CANCEL_SAFE );
+	                          new_partition.get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition.get_path(),
-	                          operationdetail, EXEC_CANCEL_SAFE );
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 } //GParted

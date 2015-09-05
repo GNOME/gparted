@@ -146,7 +146,7 @@ bool xfs::write_label( const Partition & partition, OperationDetail & operationd
 		cmd = "xfs_admin -L -- " + partition .get_path() ;
 	else
 		cmd = "xfs_admin -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path();
-	return ! execute_command( cmd, operationdetail ) ;
+	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
 void xfs::read_uuid( Partition & partition )
@@ -167,7 +167,7 @@ void xfs::read_uuid( Partition & partition )
 
 bool xfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "xfs_admin -U generate " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "xfs_admin -U generate " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool xfs::create( const Partition & new_partition, OperationDetail & operationdetail )
@@ -175,7 +175,7 @@ bool xfs::create( const Partition & new_partition, OperationDetail & operationde
 	return ! execute_command( "mkfs.xfs -f -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail,
-	                          EXEC_CANCEL_SAFE );
+	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool xfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -261,7 +261,7 @@ bool xfs::copy( const Partition & src_part,
 bool xfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "xfs_repair -v " + partition .get_path(), operationdetail,
-	                          EXEC_CANCEL_SAFE );
+	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 } //GParted

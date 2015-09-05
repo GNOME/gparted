@@ -82,9 +82,7 @@ static void setup_child()
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
                                  ExecFlags flags )
 {
-	operationdetail.add_child( OperationDetail( command,
-	                                            ( flags & EXEC_CHECK_STATUS ) ? STATUS_EXECUTE : STATUS_NONE,
-	                                            FONT_BOLD_ITALIC ) );
+	operationdetail.add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) );
 	Glib::Pid pid;
 	// set up pipes for capture
 	int out, err;
@@ -147,6 +145,11 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	close( out );
 	close( err );
 	return exit_status;
+}
+
+void FileSystem::set_status( OperationDetail & operationdetail, bool success )
+{
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 }
 
 void FileSystem::execute_command_eof()

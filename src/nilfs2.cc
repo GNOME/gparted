@@ -137,7 +137,7 @@ bool nilfs2::write_label( const Partition & partition, OperationDetail & operati
 {
 	return ! execute_command( "nilfs-tune -L \"" + partition.get_filesystem_label() + "\" " +
 	                          partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void nilfs2::read_uuid( Partition & partition )
@@ -158,14 +158,15 @@ void nilfs2::read_uuid( Partition & partition )
 
 bool nilfs2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -U " + Utils::generate_uuid() + " " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "nilfs-tune -U " + Utils::generate_uuid() + " " + partition .get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool nilfs2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.nilfs2 -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool nilfs2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )

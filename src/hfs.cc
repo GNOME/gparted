@@ -82,13 +82,13 @@ bool hfs::create( const Partition & new_partition, OperationDetail & operationde
 		cmd = "hformat " + new_partition .get_path() ;
 	else
 		cmd = "hformat -l \"" + new_partition.get_filesystem_label() + "\" " + new_partition.get_path();
-	return ! execute_command( cmd , operationdetail ) ;
+	return ! execute_command( cmd , operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool hfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	//FIXME: find out what the returnvalue is in case of modified.. also check what the -a flag does.. (there is no manpage)
-	return ! execute_command( "hfsck -v " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "hfsck -v " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 } //GParted

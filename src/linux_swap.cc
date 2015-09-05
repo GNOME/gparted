@@ -133,7 +133,7 @@ void linux_swap::read_label( Partition & partition )
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "swaplabel -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void linux_swap::read_uuid( Partition & partition )
@@ -155,14 +155,15 @@ void linux_swap::read_uuid( Partition & partition )
 
 bool linux_swap::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -U \"" + Utils::generate_uuid() + "\" " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "swaplabel -U \"" + Utils::generate_uuid() + "\" " + partition .get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkswap -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -176,7 +177,7 @@ bool linux_swap::resize( const Partition & partition_new, OperationDetail & oper
 	if ( ! partition_new .uuid .empty() )
 		command +=  " -U \"" + partition_new .uuid + "\" " ;
 	command += partition_new .get_path() ;
-	bool exit_status = ! execute_command( command , operationdetail .get_last_child() ) ;
+	bool exit_status = ! execute_command( command , operationdetail.get_last_child(), EXEC_CHECK_STATUS );
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return exit_status ;

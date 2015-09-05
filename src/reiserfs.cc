@@ -133,7 +133,7 @@ bool reiserfs::write_label( const Partition & partition, OperationDetail & opera
 {
 	return ! execute_command( "reiserfstune --label \"" + partition.get_filesystem_label() + "\" " +
 	                          partition.get_path(),
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void reiserfs::read_uuid( Partition & partition )
@@ -154,14 +154,15 @@ void reiserfs::read_uuid( Partition & partition )
 
 bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune -u random " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "reiserfstune -u random " + partition.get_path(),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkreiserfs -f -f --label \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, EXEC_CANCEL_SAFE );
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool reiserfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -175,16 +176,18 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	Glib::ustring cmd = "sh -c 'echo y | resize_reiserfs" + size + " " + partition_new .get_path() + "'" ;
 
 	exit_status = execute_command( cmd, operationdetail ) ;
-
-	return ( exit_status == 0 || exit_status == 256 ) ;
+	bool success = ( exit_status == 0 || exit_status == 256 );
+	set_status( operationdetail, success );
+	return success;
 }
 
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
 	                               operationdetail, EXEC_CANCEL_SAFE );
-
-	return ( exit_status == 0 || exit_status == 1 || exit_status == 256 ) ;
+	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 256 );
+	set_status( operationdetail, success );
+	return success;
 }
 
 } //GParted

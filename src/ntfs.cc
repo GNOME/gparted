@@ -175,7 +175,7 @@ bool ntfs::write_label( const Partition & partition, OperationDetail & operation
 {
 	return ! execute_command( "ntfslabel --force " + partition.get_path() +
 	                          " \"" + partition.get_filesystem_label() + "\"",
-	                          operationdetail );
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void ntfs::read_uuid( Partition & partition )
@@ -185,9 +185,11 @@ void ntfs::read_uuid( Partition & partition )
 bool ntfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF )
-		return ! execute_command( "ntfslabel --new-half-serial " + partition .get_path(), operationdetail ) ;
+		return ! execute_command( "ntfslabel --new-half-serial " + partition.get_path(),
+		                          operationdetail, EXEC_CHECK_STATUS );
 	else
-		return ! execute_command( "ntfslabel --new-serial " + partition .get_path(), operationdetail ) ;
+		return ! execute_command( "ntfslabel --new-serial " + partition.get_path(),
+		                          operationdetail, EXEC_CHECK_STATUS );
 
 	return true ;
 }
@@ -196,7 +198,7 @@ bool ntfs::create( const Partition & new_partition, OperationDetail & operationd
 {
 	return ! execute_command( "mkntfs -Q -v -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
-	                          operationdetail, EXEC_CANCEL_SAFE );
+	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool ntfs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -213,14 +215,16 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	//simulation..
 	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
 
-	if ( ! execute_command( cmd + " --no-action " + partition_new .get_path(), operationdetail .get_last_child() ) )
+	if ( ! execute_command( cmd + " --no-action " + partition_new.get_path(),
+	                        operationdetail.get_last_child(), EXEC_CHECK_STATUS ) )
 	{
 		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 
 		//real resize
 		operationdetail .add_child( OperationDetail( _("real resize") ) ) ;
 
-		if ( ! execute_command( cmd + " " + partition_new .get_path(), operationdetail .get_last_child() ) )
+		if ( ! execute_command( cmd + " " + partition_new.get_path(),
+		                        operationdetail.get_last_child(), EXEC_CHECK_STATUS ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			return_value = true ;
@@ -244,12 +248,12 @@ bool ntfs::copy( const Partition & src_part,
 {
 	return ! execute_command( "ntfsclone -f --overwrite " + dest_part.get_path() + " " + src_part.get_path(),
 	                          operationdetail,
-	                          EXEC_CANCEL_SAFE );
+	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "ntfsresize -i -f -v " + partition .get_path(), operationdetail ) ;
+	return ! execute_command( "ntfsresize -i -f -v " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
 }
 
 } //GParted
