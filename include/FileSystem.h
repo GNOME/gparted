@@ -74,7 +74,7 @@ public:
 			   OperationDetail & operationdetail ) { return false; };
 	virtual bool check_repair( const Partition & partition, OperationDetail & operationdetail ) { return false; };
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
-	bool success;
+
 protected:
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
 	                     ExecFlags flags = EXEC_NONE );
