@@ -195,17 +195,7 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 	else
 		cmd = "mlabel ::\"" + pad_label( partition.get_filesystem_label() ) + "\" -i " + partition.get_path();
 
-	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-
-	int exit_status = Utils::execute_command( cmd, output, error ) ;
-
-	if ( ! output .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	if ( ! error .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	return ( exit_status == 0 );
+	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
 void fat16::read_uuid( Partition & partition )
@@ -232,17 +222,7 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 {
 	Glib::ustring cmd = "mlabel -s -n :: -i " + partition.get_path();
 
-	operationdetail .add_child( OperationDetail( cmd, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
-
-	int exit_status = Utils::execute_command( cmd, output, error ) ;
-
-	if ( ! output .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	if ( ! error .empty() )
-		operationdetail .get_last_child() .add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) ) ;
-
-	return ( exit_status == 0 );
+	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
