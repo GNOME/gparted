@@ -33,6 +33,8 @@
 #include <sys/statvfs.h>
 #include <gtkmm/main.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 namespace GParted
 {
@@ -529,7 +531,7 @@ public:
 
 void CommandStatus::store_exit_status( GPid pid, int status )
 {
-	exit_status = status;
+	exit_status = Utils::decode_wait_status( status );
 	running = false;
 	if (pipecount == 0) // pipes finished first
 	{
@@ -596,7 +598,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			&err );
 	} catch (Glib::SpawnError &e) {
 		std::cerr << e.what() << std::endl;
-		return 1;
+		return Utils::get_failure_status( e );
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
 	fcntl( err, F_SETFL, O_NONBLOCK );
@@ -623,6 +625,34 @@ int Utils::execute_command( const Glib::ustring & command,
 	close( out );
 	close( err );
 	return status.exit_status;
+}
+
+// Return shell style exit status when failing to execute a command.  127 for command not
+// found and 126 otherwise.
+// NOTE:
+// Together get_failure_status() and decode_wait_status() provide complete shell style
+// exit status handling.  See bash(1) manual page, EXIT STATUS section for details.
+int Utils::get_failure_status( Glib::SpawnError & e )
+{
+	if ( e.code() == Glib::SpawnError::NOENT )
+		return 127;
+	return 126;
+}
+
+// Return shell style decoding of waitpid(2) encoded exit statuses.  Return command exit
+// status or 128 + signal number when terminated by a signal.
+int Utils::decode_wait_status( int wait_status )
+{
+	if ( WIFEXITED( wait_status ) )
+		return WEXITSTATUS( wait_status );
+	else if ( WIFSIGNALED( wait_status ) )
+		return 128 + WTERMSIG( wait_status );
+
+	// Other cases of WIFSTOPPED() and WIFCONTINUED() occur when the process is
+	// stopped or resumed by signals.  Should be impossible as this function is only
+	// called after the process has exited.
+	std::cerr << "Unexpected wait status " << wait_status << std::endl;
+	return 255;
 }
 
 Glib::ustring Utils::regexp_label( const Glib::ustring & text

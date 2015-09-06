@@ -176,7 +176,12 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 	Glib::ustring cmd = "sh -c 'echo y | resize_reiserfs" + size + " " + partition_new .get_path() + "'" ;
 
 	exit_status = execute_command( cmd, operationdetail ) ;
-	bool success = ( exit_status == 0 || exit_status == 256 );
+	// NOTE: Neither resize_reiserfs manual page nor the following commit, which first
+	// added this check, indicate why exit status 1 also indicates success.  Commit
+	// from 2006-05-23:
+	//     7bb7e8a84f164cd913384509a6adc3739a9d8b78
+	//     Use ped_device_read and ped_device_write instead of 'dd' to copy
+	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;
 }
@@ -185,7 +190,7 @@ bool reiserfs::check_repair( const Partition & partition, OperationDetail & oper
 {
 	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
 	                               operationdetail, EXEC_CANCEL_SAFE );
-	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 256 );
+	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;
 }

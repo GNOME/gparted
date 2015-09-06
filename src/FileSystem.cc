@@ -54,7 +54,7 @@ const Glib::ustring FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index )
 
 void FileSystem::store_exit_status( GPid pid, int status )
 {
-	exit_status = status;
+	exit_status = Utils::decode_wait_status( status );
 	running = false;
 	if (pipecount == 0) // pipes finished first
 		Gtk::Main::quit();
@@ -102,7 +102,7 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 		std::cerr << e.what() << std::endl;
 		operationdetail.get_last_child().add_child(
 			OperationDetail( e.what(), STATUS_ERROR, FONT_ITALIC ) );
-		return 1;
+		return Utils::get_failure_status( e );
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
 	fcntl( err, F_SETFL, O_NONBLOCK );

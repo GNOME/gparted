@@ -121,7 +121,7 @@ void ntfs::set_used_sectors( Partition & partition )
 {
 	exit_status = Utils::execute_command(
 		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) ;
-	if ( exit_status == 0 || exit_status == 1<<8 )
+	if ( exit_status == 0 || exit_status == 1 )
 	{
 		index = output .find( "Current volume size:" ) ;
 		if ( index >= output .length() ||

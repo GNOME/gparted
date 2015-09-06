@@ -240,10 +240,7 @@ bool ext2::check_repair( const Partition & partition, OperationDetail & operatio
 {
 	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
 	                               EXEC_CANCEL_SAFE );
-
-	//exitstatus 256 isn't documented, but it's returned when the 'FILE SYSTEM IS MODIFIED'
-	//this is quite normal (especially after a copy) so we let the function return true...
-	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 || exit_status == 256 );
+	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
 	set_status( operationdetail, success );
 	return success;
 }

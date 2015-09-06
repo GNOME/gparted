@@ -356,8 +356,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			//  but not ignoring them will cause resizing to the
 			//  same size as part of check operation to fail.
 			resize_succeeded = (    exit_status == 0
-			                     || (   btrfs_found && exit_status == 30<<8 )
-			                     || ( ! btrfs_found && exit_status ==  1<<8 )
+			                     || (   btrfs_found && exit_status == 30 )
+			                     || ( ! btrfs_found && exit_status ==  1 )
 			                   ) ;
 		}
 		set_status( operationdetail, resize_succeeded );
