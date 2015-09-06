@@ -152,6 +152,28 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & v
 	return members ;
 }
 
+// Return vector of LVs in the VG.
+std::vector<Glib::ustring> LVM2_PV_Info::get_vg_lvs( const Glib::ustring & vgname )
+{
+	initialize_if_required();
+	std::vector<Glib::ustring> lvs;
+
+	if ( vgname == "" )
+		return lvs;
+
+	for ( unsigned int i = 0 ; i < lvm2_vg_cache.size() ; i ++ )
+	{
+		if ( vgname == lvm2_vg_cache[i].vg_name && lvm2_vg_cache[i].lv_name != "" )
+		{
+			// Only append lv_name if not already in lvs
+			if ( std::find( lvs.begin(), lvs.end(), lvm2_vg_cache[i].lv_name ) == lvs.end() )
+				lvs.push_back( lvm2_vg_cache[i].lv_name );
+		}
+	}
+
+	return lvs;
+}
+
 std::vector<Glib::ustring> LVM2_PV_Info::get_error_messages( const Glib::ustring & path )
 {
 	initialize_if_required() ;

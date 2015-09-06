@@ -57,6 +57,7 @@ public:
 	static bool has_active_lvs( const Glib::ustring & path );
 	static bool is_vg_exported( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_vg_members( const Glib::ustring & vgname );
+	static std::vector<Glib::ustring> get_vg_lvs( const Glib::ustring & vgname );
 	static std::vector<Glib::ustring> get_error_messages( const Glib::ustring & path );
 private:
 	static void initialize_if_required();
