@@ -2,15 +2,15 @@
 # Copyright (C) 2007 THE gparted'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gparted package.
 # Namhyung Kim <namhyung@gmail.com>, 2007.
-# Seong-ho Cho <shcho@gnome.org>, 2012, 2013, 2014.
+# Seong-ho Cho <shcho@gnome.org>, 2012, 2013, 2014, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-05-13 08:11+0000\n"
-"PO-Revision-Date: 2014-05-13 21:00+0900\n"
+"POT-Creation-Date: 2015-09-04 09:11+0000\n"
+"PO-Revision-Date: 2015-09-05 00:15+0900\n"
 "Last-Translator: Seong-ho Cho <shcho@gnome.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.5.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: ../gparted.appdata.xml.in.h:1
@@ -50,8 +50,8 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
-#: ../src/Win_GParted.cc:74 ../src/Win_GParted.cc:1282
-#: ../src/Win_GParted.cc:1473
+#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1426
+#: ../src/Win_GParted.cc:1621
 msgid "GParted"
 msgstr "GParted"
 
@@ -66,6 +66,10 @@ msgstr "GParted 파티션 편집기"
 #: ../gparted.desktop.in.in.h:4
 msgid "Create, reorganize, and delete partitions"
 msgstr "파티션을 만들고, 재배치하고, 삭제합니다"
+
+#: ../gparted.desktop.in.in.h:5
+msgid "Partition;"
+msgstr "Partition;파티션;"
 
 #: ../include/Utils.h:55
 msgid "(New UUID - will be randomly generated)"
@@ -138,19 +142,19 @@ msgstr "MiB"
 msgid "None"
 msgstr "없음"
 
-#: ../src/Dialog_Base_Partition.cc:242
+#: ../src/Dialog_Base_Partition.cc:244
 msgid "Resize"
 msgstr "크기 조정"
 
-#: ../src/Dialog_Base_Partition.cc:242 ../src/Win_GParted.cc:243
+#: ../src/Dialog_Base_Partition.cc:244 ../src/Win_GParted.cc:246
 msgid "Resize/Move"
 msgstr "크기 조정/이동"
 
-#: ../src/Dialog_Base_Partition.cc:260
+#: ../src/Dialog_Base_Partition.cc:262
 msgid "Minimum size: %1 MiB"
 msgstr "최소 크기: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:261
+#: ../src/Dialog_Base_Partition.cc:263
 msgid "Maximum size: %1 MiB"
 msgstr "최대 크기: %1 MiB"
 
@@ -168,45 +172,50 @@ msgstr "경고: 전체 디스크 %1에 있는 모든 데이터를 지웁니다!"
 msgid "Select new partition table type:"
 msgstr "새 파티션 테이블 형식 선택:"
 
-#: ../src/Dialog_Partition_Copy.cc:36
+#. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
+#: ../src/Dialog_FileSystem_Label.cc:29
+msgid "Set file system label on %1"
+msgstr "%1의 파일 시스템 레이블 설정"
+
+#. Label
+#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:258
+#: ../src/Dialog_Partition_New.cc:145
+msgid "Label:"
+msgstr "레이블:"
+
+#: ../src/Dialog_Partition_Copy.cc:37
 msgid "Paste %1"
 msgstr "%1 붙여넣기"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:43
+#: ../src/Dialog_Partition_Info.cc:42
 msgid "Information about %1"
 msgstr "%1 정보"
 
-#: ../src/Dialog_Partition_Info.cc:79
+#: ../src/Dialog_Partition_Info.cc:78
 msgid "Warning:"
 msgstr "경고:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:237 ../src/DialogFeatures.cc:43
-#: ../src/TreeView_Detail.cc:35
+#: ../src/Dialog_Partition_Info.cc:235 ../src/DialogFeatures.cc:44
+#: ../src/TreeView_Detail.cc:36
 msgid "File System"
 msgstr "파일 시스템"
 
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:248 ../src/Dialog_Partition_New.cc:127
+#: ../src/Dialog_Partition_Info.cc:246 ../src/Dialog_Partition_New.cc:134
 msgid "File system:"
 msgstr "파일 시스템:"
 
-#. Label
-#: ../src/Dialog_Partition_Info.cc:260 ../src/Dialog_Partition_Label.cc:40
-#: ../src/Dialog_Partition_New.cc:139
-msgid "Label:"
-msgstr "레이블:"
-
-#: ../src/Dialog_Partition_Info.cc:273
+#: ../src/Dialog_Partition_Info.cc:271
 msgid "UUID:"
 msgstr "UUID:"
 
-#: ../src/Dialog_Partition_Info.cc:288
+#: ../src/Dialog_Partition_Info.cc:286
 msgid "Status:"
 msgstr "상태:"
 
@@ -214,7 +223,7 @@ msgstr "상태:"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:300
+#: ../src/Dialog_Partition_Info.cc:298
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "사용 중(하나 이상의 논리 파티션을 마운트함)"
 
@@ -222,12 +231,12 @@ msgstr "사용 중(하나 이상의 논리 파티션을 마운트함)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:311
+#: ../src/Dialog_Partition_Info.cc:309
 msgid "Active"
 msgstr "활성"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:317
+#: ../src/Dialog_Partition_Info.cc:315
 msgid "Mounted on %1"
 msgstr "%1에 마운트함"
 
@@ -235,7 +244,7 @@ msgstr "%1에 마운트함"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:327
+#: ../src/Dialog_Partition_Info.cc:325
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "사용 안함(마운트한 논리 파티션이 없음)"
 
@@ -247,7 +256,7 @@ msgstr "사용 안함(마운트한 논리 파티션이 없음)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:337 ../src/Dialog_Partition_Info.cc:361
+#: ../src/Dialog_Partition_Info.cc:335 ../src/Dialog_Partition_Info.cc:359
 msgid "Not active"
 msgstr "비활성"
 
@@ -256,7 +265,7 @@ msgstr "비활성"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:347
+#: ../src/Dialog_Partition_Info.cc:345
 msgid "Not active (Not a member of any volume group)"
 msgstr "활성화 하지 않음(임의 볼륨 그룹의 구성 요소 아님)"
 
@@ -266,110 +275,121 @@ msgstr "활성화 하지 않음(임의 볼륨 그룹의 구성 요소 아님)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:355
+#: ../src/Dialog_Partition_Info.cc:353
 msgid "Not active and exported"
 msgstr "활성화 하지 않고 내보냄"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:368
+#: ../src/Dialog_Partition_Info.cc:366
 msgid "Not mounted"
 msgstr "마운트 안함"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:378 ../src/Win_GParted.cc:2732
+#: ../src/Dialog_Partition_Info.cc:376 ../src/Win_GParted.cc:2975
 msgid "Volume Group:"
 msgstr "볼륨 그룹:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:384 ../src/Win_GParted.cc:2733
+#: ../src/Dialog_Partition_Info.cc:387 ../src/Win_GParted.cc:2976
 msgid "Members:"
 msgstr "구성원:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:412
+#: ../src/Dialog_Partition_Info.cc:425
 msgid "Used:"
 msgstr "사용 중인 공간:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:426
+#: ../src/Dialog_Partition_Info.cc:439
 msgid "Unused:"
 msgstr "비어있는 공간:"
 
-#: ../src/Dialog_Partition_Info.cc:443
+#: ../src/Dialog_Partition_Info.cc:456
 msgid "Unallocated:"
 msgstr "할당하지 않음:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:459 ../src/Win_GParted.cc:479
+#: ../src/Dialog_Partition_Info.cc:472 ../src/Win_GParted.cc:485
 msgid "Size:"
 msgstr "크기:"
 
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:477 ../src/TreeView_Detail.cc:34
+#: ../src/Dialog_Partition_Info.cc:490 ../src/TreeView_Detail.cc:34
 msgid "Partition"
 msgstr "파티션"
 
 #. Left field & value pair area
 #. path
-#: ../src/Dialog_Partition_Info.cc:488 ../src/Win_GParted.cc:487
+#: ../src/Dialog_Partition_Info.cc:501 ../src/Win_GParted.cc:493
 msgid "Path:"
 msgstr "경로:"
 
-#: ../src/Dialog_Partition_Info.cc:502
+#. name
+#: ../src/Dialog_Partition_Info.cc:513 ../src/Dialog_Partition_Name.cc:40
+msgid "Name:"
+msgstr "이름:"
+
+#. flags
+#: ../src/Dialog_Partition_Info.cc:523
 msgid "Flags:"
 msgstr "플래그:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:515
+#: ../src/Dialog_Partition_Info.cc:535
 msgid "First sector:"
 msgstr "처음 섹터:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:525
+#: ../src/Dialog_Partition_Info.cc:545
 msgid "Last sector:"
 msgstr "마지막 섹터:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:535 ../src/Win_GParted.cc:537
+#: ../src/Dialog_Partition_Info.cc:555 ../src/Win_GParted.cc:543
 msgid "Total sectors:"
 msgstr "총 섹터 수:"
 
-#. TO TRANSLATORS: dialog title, looks like Set partition label on /dev/hda3
-#: ../src/Dialog_Partition_Label.cc:29
-msgid "Set partition label on %1"
-msgstr "%1의 파티션 레이블 설정"
+#. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
+#: ../src/Dialog_Partition_Name.cc:29
+msgid "Set partition name on %1"
+msgstr "%1의 파티션 이름 설정"
 
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:26
+#: ../src/Dialog_Partition_New.cc:31
 msgid "Create new Partition"
 msgstr "새 파티션 만들기"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:87
+#: ../src/Dialog_Partition_New.cc:84
 msgid "Create as:"
 msgstr "다음 형식으로 만들기:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:92 ../src/OperationCreate.cc:74
+#: ../src/Dialog_Partition_New.cc:89 ../src/OperationCreate.cc:74
 msgid "Primary Partition"
 msgstr "기본 파티션"
 
-#: ../src/Dialog_Partition_New.cc:93 ../src/OperationCreate.cc:77
+#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:77
 #: ../src/OperationDelete.cc:76
 msgid "Logical Partition"
 msgstr "논리 파티션"
 
-#: ../src/Dialog_Partition_New.cc:94 ../src/OperationCreate.cc:80
+#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:80
 msgid "Extended Partition"
 msgstr "확장 파티션"
 
-#: ../src/Dialog_Partition_New.cc:205
+#. Partition name
+#: ../src/Dialog_Partition_New.cc:124
+msgid "Partition name:"
+msgstr "파티션 이름:"
+
+#: ../src/Dialog_Partition_New.cc:208
 msgid "New Partition #%1"
 msgstr "새 파티션 #%1"
 
@@ -521,51 +541,51 @@ msgstr "정보"
 msgid "N/A"
 msgstr "없음"
 
-#: ../src/DialogFeatures.cc:27
+#: ../src/DialogFeatures.cc:28
 msgid "File System Support"
 msgstr "파일 시스템 지원"
 
-#: ../src/DialogFeatures.cc:44
+#: ../src/DialogFeatures.cc:45
 msgid "Create"
 msgstr "만들기"
 
-#: ../src/DialogFeatures.cc:45
+#: ../src/DialogFeatures.cc:46
 msgid "Grow"
 msgstr "늘리기"
 
-#: ../src/DialogFeatures.cc:49
+#: ../src/DialogFeatures.cc:50
 msgid "Shrink"
 msgstr "줄이기"
 
-#: ../src/DialogFeatures.cc:53
+#: ../src/DialogFeatures.cc:54
 msgid "Move"
 msgstr "이동"
 
-#: ../src/DialogFeatures.cc:54
+#: ../src/DialogFeatures.cc:55
 msgid "Copy"
 msgstr "복사"
 
-#: ../src/DialogFeatures.cc:55
+#: ../src/DialogFeatures.cc:56
 msgid "Check"
 msgstr "검사"
 
-#: ../src/DialogFeatures.cc:56 ../src/TreeView_Detail.cc:37
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:38
 msgid "Label"
 msgstr "레이블"
 
-#: ../src/DialogFeatures.cc:57
+#: ../src/DialogFeatures.cc:58
 msgid "UUID"
 msgstr "UUID"
 
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:59
 msgid "Required Software"
 msgstr "필수 프로그램"
 
-#: ../src/DialogFeatures.cc:76
+#: ../src/DialogFeatures.cc:77
 msgid "This chart shows the actions supported on file systems."
 msgstr "이 도표는 파일 시스템에서 지원하는 동작을 보여줍니다."
 
-#: ../src/DialogFeatures.cc:78
+#: ../src/DialogFeatures.cc:79
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -577,7 +597,7 @@ msgstr ""
 #. * means that this action is valid for this file system when
 #. * it is both unmounted and mounted.
 #.
-#: ../src/DialogFeatures.cc:95
+#: ../src/DialogFeatures.cc:96
 msgid "Available offline and online"
 msgstr "마운트, 마운트 해제 상태면 사용 가능"
 
@@ -585,27 +605,27 @@ msgstr "마운트, 마운트 해제 상태면 사용 가능"
 #. * means that this action is valid for this file system only
 #. * when it is unmounted.
 #.
-#: ../src/DialogFeatures.cc:108
+#: ../src/DialogFeatures.cc:109
 msgid "Available offline only"
 msgstr "마운트 해제 상태일 때만 사용 가능"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:120
+#: ../src/DialogFeatures.cc:121
 msgid "Not Available"
 msgstr "사용 불가능"
 
-#: ../src/DialogFeatures.cc:125
+#: ../src/DialogFeatures.cc:126
 msgid "Legend"
 msgstr "범례"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:133
+#: ../src/DialogFeatures.cc:134
 msgid "Rescan For Supported Actions"
 msgstr "지원 동작 다시 검색"
 
-#: ../src/DialogManageFlags.cc:30 ../src/DialogManageFlags.cc:35
+#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
 msgid "Manage flags on %1"
 msgstr "%1의 플래그 관리"
 
@@ -759,21 +779,21 @@ msgid "Removed directory %1"
 msgstr "%1 디렉터리를 제거했습니다"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:191 ../src/GParted_Core.cc:200
+#: ../src/GParted_Core.cc:189 ../src/GParted_Core.cc:198
 msgid "Scanning %1"
 msgstr "%1 검사 중"
 
 #. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:223
+#: ../src/GParted_Core.cc:221
 msgid "Confirming %1"
 msgstr "%1 확인 중"
 
 #. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:235
+#: ../src/GParted_Core.cc:233
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "%2 바이트의 논리 섹터 크기를 지닌 %1 장치를 무시합니다."
 
-#: ../src/GParted_Core.cc:237
+#: ../src/GParted_Core.cc:235
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -782,7 +802,7 @@ msgstr ""
 "상의 libparted가 필요합니다."
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:275
+#: ../src/GParted_Core.cc:273
 msgid "Searching %1 partitions"
 msgstr "%1 파티션 검색 중"
 
@@ -790,77 +810,77 @@ msgstr "%1 파티션 검색 중"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:324
+#: ../src/GParted_Core.cc:378
 msgid "unrecognized"
 msgstr "인식하지 않음"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:643
+#: ../src/GParted_Core.cc:698
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "파티션은 %1 섹터 길이를 가질 수 없습니다"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:657
+#: ../src/GParted_Core.cc:712
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "파티션의 길이(%2)보다 큰 파티션의 사용 중인 섹터 크기(%1)는 유효하지 않습니다"
 
-#: ../src/GParted_Core.cc:727
+#: ../src/GParted_Core.cc:823
 msgid "libparted messages"
 msgstr "libparted 메시지"
 
-#: ../src/GParted_Core.cc:1191
+#: ../src/GParted_Core.cc:1523
 msgid "Linux Unified Key Setup encryption is not yet supported."
 msgstr "리눅스 통합 키 설정 암호화를 아직 지원하지 않습니다."
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1373
+#: ../src/GParted_Core.cc:1627
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "파일 시스템을 인식할 수 없습니다! 가능한 이유는 다음과 같습니다:"
 
-#: ../src/GParted_Core.cc:1375
+#: ../src/GParted_Core.cc:1629
 msgid "The file system is damaged"
 msgstr "파일 시스템이 손상되었습니다"
 
-#: ../src/GParted_Core.cc:1377
+#: ../src/GParted_Core.cc:1631
 msgid "The file system is unknown to GParted"
 msgstr "파일 시스템을 GParted에서 알 수 없습니다"
 
-#: ../src/GParted_Core.cc:1379
+#: ../src/GParted_Core.cc:1633
 msgid "There is no file system available (unformatted)"
-msgstr "파일 시스템이 존재하지 않습니다(포맷하지 않음)"
+msgstr "파일 시스템이 없습니다(포맷하지 않음)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1382
+#: ../src/GParted_Core.cc:1636
 msgid "The device entry %1 is missing"
 msgstr "%1 장치 항목이 빠졌습니다"
 
-#: ../src/GParted_Core.cc:1548
+#: ../src/GParted_Core.cc:1786
 msgid "Unable to find mount point"
 msgstr "마운트 지점을 찾을 수 없습니다"
 
-#: ../src/GParted_Core.cc:1623
+#: ../src/GParted_Core.cc:1916
 msgid "Unable to read the contents of this file system!"
 msgstr "이 파일 시스템의 내용을 읽을 수 없습니다!"
 
-#: ../src/GParted_Core.cc:1625
+#: ../src/GParted_Core.cc:1918
 msgid "Because of this some operations may be unavailable."
 msgstr "이 중 몇몇 작업은 이용할 수 없기 때문입니다."
 
-#: ../src/GParted_Core.cc:1629
+#: ../src/GParted_Core.cc:1922
 msgid "The cause might be a missing software package."
 msgstr "이는 아마도 프로그램 패키지가 빠져서 일어난 문제일 수도 있습니다."
 
 #. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1632
+#: ../src/GParted_Core.cc:1925
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr "다음 프로그램 패키지 목록은 %1 파일 시스템 지원을 위해 필요합니다: %2."
 
 #. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1642
+#: ../src/GParted_Core.cc:1935
 msgid "%1 of unallocated space within the partition."
 msgstr "파티션에서 할당하지 않은 %1 공간이 있습니다."
 
@@ -868,7 +888,7 @@ msgstr "파티션에서 할당하지 않은 %1 공간이 있습니다."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1653
+#: ../src/GParted_Core.cc:1946
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -876,55 +896,79 @@ msgstr ""
 "파티션을 채우도록 파일 시스템을 늘리려면, 파티션을 선택한 후 메뉴 항목을 선택"
 "합니다:"
 
-#: ../src/GParted_Core.cc:1655
+#: ../src/GParted_Core.cc:1948
 msgid "Partition --> Check."
 msgstr "파티션 --> 확인."
 
-#: ../src/GParted_Core.cc:1753
+#: ../src/GParted_Core.cc:2059
 msgid "create empty partition"
 msgstr "빈 파티션 만들기"
 
-#: ../src/GParted_Core.cc:1823 ../src/GParted_Core.cc:2999
-msgid "path: %1"
-msgstr "경로: %1"
+#. TO TRANSLATORS: looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and the fact
+#. * that it is a partition within a device.
+#.
+#. TO TRANSLATORS: looks like   path: /dev/sda (device)
+#. *              or looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and whether it
+#. * is a whole disk device or a partition
+#. * within a device.
+#.
+#: ../src/GParted_Core.cc:2133 ../src/GParted_Core.cc:3417
+msgid "path: %1 (%2)"
+msgstr "경로: %1(%2)"
 
-#: ../src/GParted_Core.cc:1824 ../src/GParted_Core.cc:3000
+#: ../src/GParted_Core.cc:2134 ../src/GParted_Core.cc:3420
+msgid "partition"
+msgstr "파티션"
+
+#: ../src/GParted_Core.cc:2135 ../src/GParted_Core.cc:3421
 msgid "start: %1"
 msgstr "시작 위치: %1"
 
-#: ../src/GParted_Core.cc:1825 ../src/GParted_Core.cc:3001
+#: ../src/GParted_Core.cc:2136 ../src/GParted_Core.cc:3422
 msgid "end: %1"
 msgstr "끝 위치: %1"
 
-#: ../src/GParted_Core.cc:1826 ../src/GParted_Core.cc:3002
+#: ../src/GParted_Core.cc:2137 ../src/GParted_Core.cc:3423
 msgid "size: %1 (%2)"
 msgstr "크기: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1858 ../src/linux_swap.cc:164
+#: ../src/GParted_Core.cc:2169 ../src/linux_swap.cc:172
 msgid "create new %1 file system"
 msgstr "새 %1 파일 시스템 만들기"
 
-#: ../src/GParted_Core.cc:1899
+#: ../src/GParted_Core.cc:2211
 msgid "delete partition"
 msgstr "파티션 삭제"
 
-#: ../src/GParted_Core.cc:1954
+#: ../src/GParted_Core.cc:2266
 msgid "delete %1 file system"
 msgstr "새 %1 파일 시스템 삭제"
 
-#: ../src/GParted_Core.cc:1971
-msgid "Clear partition label on %1"
-msgstr "%1의 파티션 레이블 지우기"
+#. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
+#: ../src/GParted_Core.cc:2283 ../src/OperationLabelFileSystem.cc:58
+msgid "Clear file system label on %1"
+msgstr "%1 파일 시스템 레이블 지우기"
 
-#: ../src/GParted_Core.cc:1976
-msgid "Set partition label to \"%1\" on %2"
-msgstr "%2의 파티션 레이블을 %1(으)로 설정"
+#: ../src/GParted_Core.cc:2286
+msgid "Set file system label to \"%1\" on %2"
+msgstr "%2 파일 시스템 레이블을 \"%1\"(으)로 설정"
 
-#: ../src/GParted_Core.cc:2010
+#. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
+#: ../src/GParted_Core.cc:2315 ../src/OperationNamePartition.cc:59
+msgid "Clear partition name on %1"
+msgstr "%1 파티션 이름 지우기"
+
+#: ../src/GParted_Core.cc:2318
+msgid "Set partition name to \"%1\" on %2"
+msgstr "%2 파티션 이름을 \"%1\"(으)로 설정"
+
+#: ../src/GParted_Core.cc:2343
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "%1의 UUID 절반 값을 새 임의 값으로 설정"
 
-#: ../src/GParted_Core.cc:2015
+#: ../src/GParted_Core.cc:2348
 msgid "Set UUID on %1 to a new, random value"
 msgstr "%1의 UUID를 새 임의 값으로 설정"
 
@@ -933,326 +977,344 @@ msgstr "%1의 UUID를 새 임의 값으로 설정"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2100
+#: ../src/GParted_Core.cc:2431
 msgid "moving requires old and new length to be the same"
 msgstr "이동하려면 이전 크기와 새 크기가 같아야 합니다"
 
-#: ../src/GParted_Core.cc:2130
+#: ../src/GParted_Core.cc:2461
 msgid "rollback last change to the partition table"
 msgstr "파티션 테이블로 최근에 바꾼 내용 되돌리기"
 
-#: ../src/GParted_Core.cc:2172
+#: ../src/GParted_Core.cc:2503
 msgid "move file system to the left"
 msgstr "파일 시스템을 왼쪽으로 이동"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2505
 msgid "move file system to the right"
 msgstr "파일 시스템을 오른쪽으로 이동"
 
-#: ../src/GParted_Core.cc:2177
+#: ../src/GParted_Core.cc:2508
 msgid "move file system"
 msgstr "파일 시스템 이동"
 
-#: ../src/GParted_Core.cc:2179
+#: ../src/GParted_Core.cc:2510
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
 "파일 시스템의 이전 위치와 새 위치가 같습니다. 따라서 이 작업을 건너뜁니다"
 
-#: ../src/GParted_Core.cc:2247
+#: ../src/GParted_Core.cc:2573
 msgid "using libparted"
 msgstr "libparted 사용"
 
-#: ../src/GParted_Core.cc:2290
+#: ../src/GParted_Core.cc:2636
 msgid "resizing requires old and new start to be the same"
 msgstr "크기를 조정하려면 이전의 시작 위치와 새 시작 위치가 같아야 합니다"
 
-#: ../src/GParted_Core.cc:2357
+#: ../src/GParted_Core.cc:2706
 msgid "resize/move partition"
 msgstr "파티션 크기 조정/이동"
 
-#: ../src/GParted_Core.cc:2360
+#: ../src/GParted_Core.cc:2709
 msgid "move partition to the right"
 msgstr "파티션을 오른쪽으로 이동"
 
-#: ../src/GParted_Core.cc:2363
+#: ../src/GParted_Core.cc:2712
 msgid "move partition to the left"
 msgstr "파티션을 왼쪽으로 이동"
 
-#: ../src/GParted_Core.cc:2366
+#: ../src/GParted_Core.cc:2715
 msgid "grow partition from %1 to %2"
 msgstr "파티션을 %1에서 %2(으)로 늘리기"
 
-#: ../src/GParted_Core.cc:2369
+#: ../src/GParted_Core.cc:2718
 msgid "shrink partition from %1 to %2"
 msgstr "파티션을 %1에서 %2(으)로 줄이기"
 
-#: ../src/GParted_Core.cc:2372
+#: ../src/GParted_Core.cc:2721
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "파티션을 오른쪽으로 이동하고 %1에서 %2(으)로 늘이기"
 
-#: ../src/GParted_Core.cc:2375
+#: ../src/GParted_Core.cc:2724
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "파티션을 오른쪽으로 이동하고 %1에서 %2(으)로 줄이기"
 
-#: ../src/GParted_Core.cc:2378
+#: ../src/GParted_Core.cc:2727
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "파티션을 왼쪽으로 이동하고 %1에서 %2(으)로 늘이기"
 
-#: ../src/GParted_Core.cc:2381
+#: ../src/GParted_Core.cc:2730
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "파티션을 왼쪽으로 이동하고 %1에서 %2(으)로 줄이기"
 
-#: ../src/GParted_Core.cc:2396
+#: ../src/GParted_Core.cc:2745
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
 "이전 파티션과 새 파티션의 크기와 위치가 같습니다. 따라서 이 작업을 건너뜁니다"
 
-#: ../src/GParted_Core.cc:2406
+#: ../src/GParted_Core.cc:2755
 msgid "old start: %1"
 msgstr "이전 시작 위치: %1"
 
-#: ../src/GParted_Core.cc:2407
+#: ../src/GParted_Core.cc:2756
 msgid "old end: %1"
 msgstr "이전 끝 위치: %1"
 
-#: ../src/GParted_Core.cc:2408
+#: ../src/GParted_Core.cc:2757
 msgid "old size: %1 (%2)"
 msgstr "이전 크기: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2473 ../src/GParted_Core.cc:3081
+#: ../src/GParted_Core.cc:2822 ../src/GParted_Core.cc:3501
 msgid "new start: %1"
 msgstr "새 시작 위치: %1"
 
-#: ../src/GParted_Core.cc:2474 ../src/GParted_Core.cc:3082
+#: ../src/GParted_Core.cc:2823 ../src/GParted_Core.cc:3502
 msgid "new end: %1"
 msgstr "새 끝 위치: %1"
 
-#: ../src/GParted_Core.cc:2475 ../src/GParted_Core.cc:3083
+#: ../src/GParted_Core.cc:2824 ../src/GParted_Core.cc:3503
 msgid "new size: %1 (%2)"
 msgstr "새 크기: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2502 ../src/GParted_Core.cc:3029
+#: ../src/GParted_Core.cc:2851 ../src/GParted_Core.cc:3449
 msgid "requested start: %1"
 msgstr "요청한 시작 위치: %1"
 
-#: ../src/GParted_Core.cc:2503 ../src/GParted_Core.cc:3030
+#: ../src/GParted_Core.cc:2852 ../src/GParted_Core.cc:3450
 msgid "requested end: %1"
 msgstr "요청한 끝 위치: %1"
 
-#: ../src/GParted_Core.cc:2504 ../src/GParted_Core.cc:3031
+#: ../src/GParted_Core.cc:2853 ../src/GParted_Core.cc:3451
 msgid "requested size: %1 (%2)"
 msgstr "요청한 크기: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2529
+#: ../src/GParted_Core.cc:2878
 msgid "shrink file system"
 msgstr "파일 시스템 줄이기"
 
-#: ../src/GParted_Core.cc:2533
+#: ../src/GParted_Core.cc:2882
 msgid "grow file system"
 msgstr "파일 시스템 늘리기"
 
-#: ../src/GParted_Core.cc:2536
+#: ../src/GParted_Core.cc:2885
 msgid "resize file system"
 msgstr "파일 시스템 크기 조정"
 
-#: ../src/GParted_Core.cc:2539
+#: ../src/GParted_Core.cc:2888
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr ""
 "이전 파일 시스템과 새 파일 시스템의 크기가 같습니다. 따라서 이 작업을 건너뜁"
 "니다"
 
-#: ../src/GParted_Core.cc:2580
+#: ../src/GParted_Core.cc:2929
 msgid "grow file system to fill the partition"
 msgstr "파티션을 채우도록 파일 시스템 늘리기"
 
-#: ../src/GParted_Core.cc:2585
+#: ../src/GParted_Core.cc:2934
 msgid "growing is not available for this file system"
 msgstr "이 파일 시스템은 크기를 늘릴 수 없습니다"
 
-#: ../src/GParted_Core.cc:2594
+#: ../src/GParted_Core.cc:2943
 msgid "growing the file system is currently disallowed"
 msgstr "파일 시스템 크기 증가를 현재 허용하지 않습니다"
 
-#: ../src/GParted_Core.cc:2620
+#: ../src/GParted_Core.cc:2969
 msgid "the destination is smaller than the source partition"
 msgstr "대상 크기가 원본 파티션의 크기보다 작습니다"
 
-#: ../src/GParted_Core.cc:2637
+#: ../src/GParted_Core.cc:2992
 msgid "copy file system of %1 to %2"
 msgstr "%1 파일 시스템을 %2(으)로 복사"
 
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:3088
 msgid "using internal algorithm"
 msgstr "내부 알고리즘 사용"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:2738
+#: ../src/GParted_Core.cc:3091
 msgid "copy %1"
 msgstr "%1 복사"
 
-#: ../src/GParted_Core.cc:2741
+#: ../src/GParted_Core.cc:3094
 msgid "finding optimal block size"
 msgstr "최적 블럭 크기 찾는 중"
 
-#: ../src/GParted_Core.cc:2782
+#: ../src/GParted_Core.cc:3135
 msgid "%1 seconds"
 msgstr "%1초"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:2800
+#: ../src/GParted_Core.cc:3153
 msgid "optimal block size is %1"
 msgstr "최적 블록 크기는 %1 입니다"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:2817
+#: ../src/GParted_Core.cc:3170
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) 복사함"
 
-#: ../src/GParted_Core.cc:2850
+#: ../src/GParted_Core.cc:3203
 msgid "roll back last transaction"
 msgstr "최근 트랜잭션 되돌리기"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:2864
+#: ../src/GParted_Core.cc:3217
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1상의 파일 시스템 오류 검사 및(가능하면) 수정"
 
-#: ../src/GParted_Core.cc:2873
+#: ../src/GParted_Core.cc:3226
 msgid "checking is not available for this file system"
 msgstr "이 파일 시스템의 검사를 진행할 수 없습니다"
 
-#: ../src/GParted_Core.cc:2904
+#: ../src/GParted_Core.cc:3255
 msgid "set partition type on %1"
 msgstr "%1의 파티션 종류 설정"
 
-#: ../src/GParted_Core.cc:2941
+#. TO TRANSLATORS: looks like   new partition type: ext4
+#: ../src/GParted_Core.cc:3298
 msgid "new partition type: %1"
 msgstr "새 파티션 형식: %1"
 
-#: ../src/GParted_Core.cc:2958
+#. TO TRANSLATORS: looks like   new partition flag: lvm
+#: ../src/GParted_Core.cc:3313
 msgid "new partition flag: %1"
 msgstr "새 파티션 플래그: %1"
 
-#: ../src/GParted_Core.cc:2977
+#: ../src/GParted_Core.cc:3340
 msgid "calibrate %1"
 msgstr "%1 분석"
 
-#: ../src/GParted_Core.cc:3025
+#: ../src/GParted_Core.cc:3419
+msgid "device"
+msgstr "장치"
+
+#: ../src/GParted_Core.cc:3445
 msgid "calculate new size and position of %1"
 msgstr "%1의 새 크기와 위치를 계산"
 
-#: ../src/GParted_Core.cc:3136
+#: ../src/GParted_Core.cc:3561
 msgid "clear old file system signatures in %1"
 msgstr "%1의 이전 파일 시스템 서명 지우기"
 
-#: ../src/GParted_Core.cc:3297
+#: ../src/GParted_Core.cc:3730
 msgid "flush operating system cache of %1"
 msgstr "%1의 운영 체제 캐시 비우기"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3329
+#: ../src/GParted_Core.cc:3762
 msgid "update boot sector of %1 file system on %2"
 msgstr "%2에 %1 파일 시스템의 부트 섹터 업데이트"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3365
+#: ../src/GParted_Core.cc:3798
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1에 부트 섹터 기록 중 오류"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3371
+#: ../src/GParted_Core.cc:3804
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1의 0x1c 위치 탐색하려던 중 오류"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3378
+#: ../src/GParted_Core.cc:3811
 msgid "Error trying to open %1"
 msgstr "%1 열려던 중 오류"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3388
+#: ../src/GParted_Core.cc:3821
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "NTFS 부트 레코드의 숨겨진 섹터의 수 %1개 설정에 실패했습니다."
 
-#: ../src/GParted_Core.cc:3390
+#: ../src/GParted_Core.cc:3823
 msgid "You might try the following command to correct the problem:"
 msgstr "이 문제를 해결하려면 다음 명령을 시도해야 할 것입니다:"
 
-#: ../src/GParted_Core.cc:3490
-msgid "Libparted Warning"
-msgstr "libparted 경고"
-
-#: ../src/GParted_Core.cc:3494
+#: ../src/GParted_Core.cc:4012
 msgid "Libparted Information"
 msgstr "libparted 정보"
 
-#: ../src/GParted_Core.cc:3498
+#: ../src/GParted_Core.cc:4016
+msgid "Libparted Warning"
+msgstr "libparted 경고"
+
+#: ../src/GParted_Core.cc:4020
 msgid "Libparted Error"
 msgstr "libparted 오류"
 
-#: ../src/GParted_Core.cc:3500
-msgid "Libparted Bug Found!"
-msgstr "libparted 버그를 찾았습니다!"
+#: ../src/GParted_Core.cc:4023
+msgid "Libparted Fatal"
+msgstr "libparted 치명 오류"
 
-#: ../src/GParted_Core.cc:3503
+#: ../src/GParted_Core.cc:4026
+msgid "Libparted Bug"
+msgstr "libparted 버그"
+
+#: ../src/GParted_Core.cc:4029
+msgid "Libparted Unsupported Feature"
+msgstr "libparted에서 지원하지 않는 기능"
+
+#: ../src/GParted_Core.cc:4032
+msgid "Libparted unknown exception"
+msgstr "libparted에서 알 수 없는 예외"
+
+#: ../src/GParted_Core.cc:4036
 msgid "Fix"
 msgstr "고침"
 
-#: ../src/GParted_Core.cc:3505
+#: ../src/GParted_Core.cc:4038
 msgid "Yes"
 msgstr "예"
 
-#: ../src/GParted_Core.cc:3507
+#: ../src/GParted_Core.cc:4040
 msgid "Ok"
 msgstr "확인"
 
-#: ../src/GParted_Core.cc:3509
+#: ../src/GParted_Core.cc:4042
 msgid "Retry"
 msgstr "재시도"
 
-#: ../src/GParted_Core.cc:3511
+#: ../src/GParted_Core.cc:4044
 msgid "No"
 msgstr "아니요"
 
-#: ../src/GParted_Core.cc:3513
+#: ../src/GParted_Core.cc:4046
 msgid "Cancel"
 msgstr "취소"
 
-#: ../src/GParted_Core.cc:3515
+#: ../src/GParted_Core.cc:4048
 msgid "Ignore"
 msgstr "무시"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:161
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:164
 msgid "_Undo Last Operation"
 msgstr "이전 작업 실행 취소(_U)"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:167
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:170
 msgid "_Clear All Operations"
 msgstr "모든 작업 지우기(_C)"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:172
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:175
 msgid "_Apply All Operations"
 msgstr "모든 작업 진행(_A)"
 
-#: ../src/LVM2_PV_Info.cc:193
+#: ../src/LVM2_PV_Info.cc:170
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "하나 이상의 볼륨 그룹을 가진 물리 볼륨이 빠졌습니다."
 
-#: ../src/LVM2_PV_Info.cc:278
+#: ../src/LVM2_PV_Info.cc:298
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "LVM2 설정을 읽어오는 중 오류가 발생했습니다!"
 
-#: ../src/LVM2_PV_Info.cc:280
+#: ../src/LVM2_PV_Info.cc:300
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "일부 혹은 전체 세부 정보가 빠졌거나 잘못된 것 같습니다."
 
-#: ../src/LVM2_PV_Info.cc:282
+#: ../src/LVM2_PV_Info.cc:302
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "LVM2 PV 파티션을 수정하면 안됩니다."
 
@@ -1296,80 +1358,84 @@ msgid "Delete %1 (%2, %3) from %4"
 msgstr "%4에서 %1 (%2, %3) 삭제"
 
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:57
+#: ../src/OperationFormat.cc:72
 msgid "Format %1 as %2"
 msgstr "%1을(를) %2(으)로 포맷"
 
-#. TO TRANSLATORS: looks like   Clear Partition Label on /dev/hda3
-#: ../src/OperationLabelPartition.cc:58
-msgid "Clear Partition Label on %1"
-msgstr "%1의 파티션 레이블 지우기"
+#. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
+#: ../src/OperationLabelFileSystem.cc:62
+msgid "Set file system label \"%1\" on %2"
+msgstr "%2 파일 시스템 레이블을 \"%1\"(으)로 설정"
 
-#. TO TRANSLATORS: looks like   Set Partition Label "My Label" on /dev/hda3
-#: ../src/OperationLabelPartition.cc:62
-msgid "Set Partition Label \"%1\" on %2"
-msgstr "%2에 \"%1\" 파티션 레이블 설정"
+#. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
+#: ../src/OperationNamePartition.cc:65
+msgid "Set partition name \"%1\" on %2"
+msgstr "%2 파티션 이름을 \"%1\"(으)로 설정"
 
-#: ../src/OperationResizeMove.cc:85
+#: ../src/OperationResizeMove.cc:86
 msgid "resize/move %1"
 msgstr "%1 크기 조정/이동"
 
-#: ../src/OperationResizeMove.cc:87
+#: ../src/OperationResizeMove.cc:88
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
 "이전 파티션과 새 파티션의 크기와 위치가 같습니다. 어쨌든 계속 진행합니다"
 
-#: ../src/OperationResizeMove.cc:91
+#: ../src/OperationResizeMove.cc:92
 msgid "Move %1 to the right"
 msgstr "%1을(를) 오른쪽으로 이동"
 
-#: ../src/OperationResizeMove.cc:94
+#: ../src/OperationResizeMove.cc:95
 msgid "Move %1 to the left"
 msgstr "%1을(를) 왼쪽으로 이동"
 
-#: ../src/OperationResizeMove.cc:97
+#: ../src/OperationResizeMove.cc:98
 msgid "Grow %1 from %2 to %3"
 msgstr "%1을(를) %2에서 %3(으)로 늘리기"
 
-#: ../src/OperationResizeMove.cc:100
+#: ../src/OperationResizeMove.cc:101
 msgid "Shrink %1 from %2 to %3"
 msgstr "%1을(를) %2에서 %3(으)로 줄이기"
 
-#: ../src/OperationResizeMove.cc:103
+#: ../src/OperationResizeMove.cc:104
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "%1을(를) 오른쪽으로 이동하고 %2에서 %3(으)로 늘리기"
 
-#: ../src/OperationResizeMove.cc:106
+#: ../src/OperationResizeMove.cc:107
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "%1을(를) 오른쪽으로 이동하고 %2에서 %3(으)로 줄이기"
 
-#: ../src/OperationResizeMove.cc:109
+#: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "%1을(를) 왼쪽으로 이동하고 %2에서 %3(으)로 늘리기"
 
-#: ../src/OperationResizeMove.cc:112
+#: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "%1을(를) 왼쪽으로 이동하고 %2에서 %3(으)로 줄이기"
 
-#: ../src/TreeView_Detail.cc:36
+#: ../src/TreeView_Detail.cc:35
+msgid "Name"
+msgstr "이름"
+
+#: ../src/TreeView_Detail.cc:37
 msgid "Mount Point"
 msgstr "마운트 지점"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:39
 msgid "Size"
 msgstr "크기"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:40
 msgid "Used"
 msgstr "사용 중"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:41
 msgid "Unused"
 msgstr "사용 가능"
 
-#: ../src/TreeView_Detail.cc:41
+#: ../src/TreeView_Detail.cc:42
 msgid "Flags"
 msgstr "플래그"
 
@@ -1378,7 +1444,7 @@ msgstr "플래그"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:192
+#: ../src/Utils.cc:240
 msgid "unallocated"
 msgstr "할당하지 않음"
 
@@ -1387,7 +1453,7 @@ msgstr "할당하지 않음"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:199
+#: ../src/Utils.cc:247
 msgid "unknown"
 msgstr "알 수 없음"
 
@@ -1395,7 +1461,7 @@ msgstr "알 수 없음"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:205
+#: ../src/Utils.cc:253
 msgid "unformatted"
 msgstr "포맷하지 않음"
 
@@ -1403,157 +1469,161 @@ msgstr "포맷하지 않음"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:211
+#: ../src/Utils.cc:259
 msgid "cleared"
 msgstr "지움"
 
-#: ../src/Utils.cc:231
+#: ../src/Utils.cc:279
 msgid "used"
 msgstr "사용 중"
 
-#: ../src/Utils.cc:232
+#: ../src/Utils.cc:280
 msgid "unused"
 msgstr "사용 가능"
 
-#: ../src/Utils.cc:366
+#: ../src/Utils.cc:443
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:371
+#: ../src/Utils.cc:448
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:376
+#: ../src/Utils.cc:453
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:381
+#: ../src/Utils.cc:458
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:386
+#: ../src/Utils.cc:463
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:145
+#: ../src/Win_GParted.cc:148
 msgid "_Refresh Devices"
 msgstr "장치 새로고침(_R)"
 
-#: ../src/Win_GParted.cc:151
+#: ../src/Win_GParted.cc:154
 msgid "_Devices"
 msgstr "장치(_D)"
 
-#: ../src/Win_GParted.cc:156
+#: ../src/Win_GParted.cc:159
 msgid "_GParted"
 msgstr "GParted(_G)"
 
-#: ../src/Win_GParted.cc:176
+#: ../src/Win_GParted.cc:179
 msgid "_Edit"
 msgstr "편집(_E)"
 
-#: ../src/Win_GParted.cc:181
+#: ../src/Win_GParted.cc:184
 msgid "Device _Information"
 msgstr "장치 정보(_I)"
 
-#: ../src/Win_GParted.cc:183
+#: ../src/Win_GParted.cc:186
 msgid "Pending _Operations"
 msgstr "남은 작업(_O)"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:187
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../src/Win_GParted.cc:188
+#: ../src/Win_GParted.cc:191
 msgid "_File System Support"
 msgstr "파일 시스템 지원(_F)"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:195
 msgid "_Create Partition Table"
 msgstr "새 파티션 테이블 만들기(_C)"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:198
 msgid "_Attempt Data Rescue"
 msgstr "데이터 복구 시도(_A)"
 
-#: ../src/Win_GParted.cc:198
+#: ../src/Win_GParted.cc:201
 msgid "_Device"
 msgstr "장치(_D)"
 
-#: ../src/Win_GParted.cc:202
+#: ../src/Win_GParted.cc:205
 msgid "_Partition"
 msgstr "파티션(_P)"
 
-#: ../src/Win_GParted.cc:207
+#: ../src/Win_GParted.cc:210
 msgid "_Contents"
 msgstr "내용(_C)"
 
-#: ../src/Win_GParted.cc:215
+#: ../src/Win_GParted.cc:218
 msgid "_Help"
 msgstr "도움말(_H)"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:227
+#: ../src/Win_GParted.cc:230
 msgid "New"
 msgstr "새로 만들기"
 
-#: ../src/Win_GParted.cc:232
+#: ../src/Win_GParted.cc:235
 msgid "Create a new partition in the selected unallocated space"
 msgstr "선택한 미할당 공간에 새 파티션을 만듭니다"
 
-#: ../src/Win_GParted.cc:237
+#: ../src/Win_GParted.cc:240
 msgid "Delete the selected partition"
 msgstr "선택한 파티션을 지웁니다"
 
-#: ../src/Win_GParted.cc:259
+#: ../src/Win_GParted.cc:262
 msgid "Resize/Move the selected partition"
 msgstr "선택한 파티션의 크기를 조정하거나 이동합니다"
 
-#: ../src/Win_GParted.cc:268
+#: ../src/Win_GParted.cc:271
 msgid "Copy the selected partition to the clipboard"
 msgstr "선택한 파티션을 클립보드에 복사합니다"
 
-#: ../src/Win_GParted.cc:273
+#: ../src/Win_GParted.cc:276
 msgid "Paste the partition from the clipboard"
 msgstr "클립보드에서 파티션을 붙여넣습니다"
 
-#: ../src/Win_GParted.cc:285
+#: ../src/Win_GParted.cc:288
 msgid "Undo Last Operation"
 msgstr "이전 작업 실행 취소"
 
-#: ../src/Win_GParted.cc:293
+#: ../src/Win_GParted.cc:296
 msgid "Apply All Operations"
 msgstr "모든 작업 진행"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:316
+#: ../src/Win_GParted.cc:320
 msgid "_New"
 msgstr "새로 만들기(_N)"
 
-#: ../src/Win_GParted.cc:333
+#: ../src/Win_GParted.cc:337
 msgid "_Resize/Move"
 msgstr "크기 조정/이동(_R)"
 
-#: ../src/Win_GParted.cc:357
+#: ../src/Win_GParted.cc:361
 msgid "_Format to"
 msgstr "다음으로 포맷(_F)"
 
-#: ../src/Win_GParted.cc:373
+#: ../src/Win_GParted.cc:377
 msgid "_Mount on"
 msgstr "다음에 마운트(_M)"
 
-#: ../src/Win_GParted.cc:380
+#: ../src/Win_GParted.cc:384
+msgid "_Name Partition"
+msgstr "파티션 이름(_N)"
+
+#: ../src/Win_GParted.cc:389
 msgid "M_anage Flags"
 msgstr "플래그 관리(_A)"
 
-#: ../src/Win_GParted.cc:385
+#: ../src/Win_GParted.cc:394
 msgid "C_heck"
 msgstr "검사(_H)"
 
-#: ../src/Win_GParted.cc:390
-msgid "_Label"
-msgstr "레이블(_L)"
+#: ../src/Win_GParted.cc:399
+msgid "_Label File System"
+msgstr "파일 시스템 레이블 지정(_L)"
 
-#: ../src/Win_GParted.cc:395
+#: ../src/Win_GParted.cc:404
 msgid "New UU_ID"
 msgstr "새 UUID(_I)"
 
@@ -1566,113 +1636,118 @@ msgstr "장치 정보"
 msgid "Model:"
 msgstr "모델:"
 
+#. Serial number
+#: ../src/Win_GParted.cc:479
+msgid "Serial:"
+msgstr "일련번호:"
+
 #. disktype
-#: ../src/Win_GParted.cc:505
+#: ../src/Win_GParted.cc:511
 msgid "Partition table:"
 msgstr "파티션 테이블:"
 
 #. heads
-#: ../src/Win_GParted.cc:513
+#: ../src/Win_GParted.cc:519
 msgid "Heads:"
 msgstr "헤드:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:521
+#: ../src/Win_GParted.cc:527
 msgid "Sectors/track:"
 msgstr "섹터/트랙:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:529
+#: ../src/Win_GParted.cc:535
 msgid "Cylinders:"
 msgstr "실린더:"
 
 #. sector size
-#: ../src/Win_GParted.cc:545
+#: ../src/Win_GParted.cc:551
 msgid "Sector size:"
 msgstr "섹터 크기:"
 
-#: ../src/Win_GParted.cc:718
+#: ../src/Win_GParted.cc:731
 msgid "Could not add this operation to the list"
 msgstr "이 작업을 목록에 추가할 수 없습니다"
 
-#: ../src/Win_GParted.cc:813
+#: ../src/Win_GParted.cc:921
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "대기 중인 작업 %1개"
 
-#: ../src/Win_GParted.cc:906
+#: ../src/Win_GParted.cc:1041
 msgid "Quit GParted?"
 msgstr "GParted를 마치겠습니까?"
 
-#: ../src/Win_GParted.cc:912
+#: ../src/Win_GParted.cc:1047
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "현재 대기 중인 작업 %1개가 있습니다."
 
-#: ../src/Win_GParted.cc:1221
+#: ../src/Win_GParted.cc:1365
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1258
+#: ../src/Win_GParted.cc:1402
 msgid "Scanning all devices..."
 msgstr "모든 장치를 검색하는 중..."
 
-#: ../src/Win_GParted.cc:1305
+#: ../src/Win_GParted.cc:1449
 msgid "No devices detected"
 msgstr "아무 장치를 찾을 수 없음"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1386
+#: ../src/Win_GParted.cc:1534
 msgid "No partition table found on device %1"
 msgstr "%1 장치에서 파티션 테이블을 찾지 못했습니다"
 
-#: ../src/Win_GParted.cc:1391
+#: ../src/Win_GParted.cc:1539
 msgid "A partition table is required before partitions can be added."
 msgstr "파티션 이전에 필요한 파티션 테이블을 추가할 수 있습니다."
 
-#: ../src/Win_GParted.cc:1393
+#: ../src/Win_GParted.cc:1541
 msgid "To create a new partition table choose the menu item:"
 msgstr "새 파티션 테이블을 만들려면 다음 메뉴 항목을 선택하십시오:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1396
+#: ../src/Win_GParted.cc:1544
 msgid "Device --> Create Partition Table."
 msgstr "장치 --> 파티션 테이블 만들기."
 
-#: ../src/Win_GParted.cc:1432
+#: ../src/Win_GParted.cc:1580
 msgid "Unable to open GParted Manual help file"
 msgstr "GParted 도움말 파일을 열 수 없습니다"
 
-#: ../src/Win_GParted.cc:1448
+#: ../src/Win_GParted.cc:1599
 msgid "Documentation is not available"
-msgstr "문서가 존재하지 않습니다"
+msgstr "문서가 없습니다"
 
-#: ../src/Win_GParted.cc:1453
+#: ../src/Win_GParted.cc:1604
 msgid "This build of gparted is configured without documentation."
 msgstr "이 gparted 빌드는 문서를 제외하고 설정했습니다."
 
-#: ../src/Win_GParted.cc:1455
+#: ../src/Win_GParted.cc:1606
 msgid "Documentation is available at the project web site."
 msgstr "문서는 프로젝트 웹 사이트에 있습니다."
 
-#: ../src/Win_GParted.cc:1476
+#: ../src/Win_GParted.cc:1624
 msgid "GNOME Partition Editor"
 msgstr "그놈 파티션 편집기"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1504
+#: ../src/Win_GParted.cc:1657
 msgid "translator-credits"
 msgstr ""
 "Namhyung Kim <namhyung@gmail.com>, 2007.\n"
 "Seong-ho Cho <darkcircle.0426@gmail.com>, 2012, 2013, 2014."
 
-#: ../src/Win_GParted.cc:1546
+#: ../src/Win_GParted.cc:1699
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "주 파티션을 %1개 이상 만들 수 없습니다"
 
-#: ../src/Win_GParted.cc:1558
+#: ../src/Win_GParted.cc:1711
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1683,16 +1758,16 @@ msgstr ""
 "은 다른 파티션을 넣을 수 있습니다. 확장 파티션은 또한 주 파티션이기 때문에 다"
 "른 주 파티션을 먼저 지워야 할 것입니다."
 
-#: ../src/Win_GParted.cc:1641
+#: ../src/Win_GParted.cc:1792
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "파티션을 옮기면 운영체제 부팅이 실패할 수도 있습니다"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1649
+#: ../src/Win_GParted.cc:1800
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "파티션 %1 시작 섹터 대상 이동 동작을 대기열에 넣었습니다."
 
-#: ../src/Win_GParted.cc:1652
+#: ../src/Win_GParted.cc:1803
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1700,71 +1775,71 @@ msgstr ""
 "  부트 실패는 대부분 /boot 같은 GNU/리눅스 파티션을 옮겼거나 윈도우 시스템 파"
 "티션 C:를 옮겼을 때 발생합니다."
 
-#: ../src/Win_GParted.cc:1654
+#: ../src/Win_GParted.cc:1805
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "GParted 자주 묻는 질문을 통해 부트 설정을 어떻게 복구하는지 알아볼 수 있습니"
 "다."
 
-#: ../src/Win_GParted.cc:1658
+#: ../src/Win_GParted.cc:1809
 msgid "Moving a partition might take a very long time to apply."
 msgstr "파티션 이동 동작 적용에 꽤 오랜 시간이 걸립니다."
 
-#: ../src/Win_GParted.cc:1764
+#: ../src/Win_GParted.cc:1925
 msgid "You have pasted into an existing partition"
 msgstr "기존 파티션에 붙여넣었습니다"
 
-#: ../src/Win_GParted.cc:1772
+#: ../src/Win_GParted.cc:1933
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "이 동작을 적용하면 %1의 데이터를 잃습니다."
 
-#: ../src/Win_GParted.cc:1839
+#: ../src/Win_GParted.cc:2002
 msgid "Unable to delete %1!"
 msgstr "%1을(를) 지울 수 없습니다!"
 
-#: ../src/Win_GParted.cc:1846
+#: ../src/Win_GParted.cc:2009
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "%1 보다 큰 번호를 가지는 모든 논리 파티션의 마운트를 해제하여 주십시오"
 
-#: ../src/Win_GParted.cc:1857
+#: ../src/Win_GParted.cc:2020
 msgid "Are you sure you want to delete %1?"
 msgstr "정말로 %1 파티션을 삭제하시겠습니까?"
 
-#: ../src/Win_GParted.cc:1864
+#: ../src/Win_GParted.cc:2027
 msgid "After deletion this partition is no longer available for copying."
 msgstr "이 파티션을 지우고 나면 더 이상 복사에 사용할 수 없습니다."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:1867
+#: ../src/Win_GParted.cc:2030
 msgid "Delete %1 (%2, %3)"
 msgstr "%1 (%2, %3) 삭제"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:1952
+#: ../src/Win_GParted.cc:2121
 msgid "Cannot format this file system to %1"
 msgstr "이 파일 시스템을 %1(으)로 포맷할 수 없습니다"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:1964
+#: ../src/Win_GParted.cc:2133
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 파일 시스템은 최소한 %2 이상의 파티션이 필요합니다."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:1972
+#: ../src/Win_GParted.cc:2141
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 파일 시스템을 사용하는 파티션의 최대 크기는 %2입니다."
 
-#: ../src/Win_GParted.cc:2068
+#: ../src/Win_GParted.cc:2237
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "다음 마운트 지점에서 파티션 마운트를 해제할 수 없습니다:"
 
-#: ../src/Win_GParted.cc:2070
+#: ../src/Win_GParted.cc:2239
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1772,18 +1847,18 @@ msgstr ""
 "아마도 이 마운트 지점에는 다른 파티션도 마운트한 것 같습니다. 복수의 파티션"
 "에 대해 수동 마운트 해제를 권장합니다."
 
-#: ../src/Win_GParted.cc:2094 ../src/Win_GParted.cc:2220
+#: ../src/Win_GParted.cc:2267 ../src/Win_GParted.cc:2391
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "파티션 %2에서 현재 대기 중인 작업 %1개가 있습니다"
 
-#: ../src/Win_GParted.cc:2110
+#: ../src/Win_GParted.cc:2283
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "파티션 동작이 대기 중이면 스왑 활성화를 진행할 수 없습니다."
 
-#: ../src/Win_GParted.cc:2112
+#: ../src/Win_GParted.cc:2285
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1791,13 +1866,13 @@ msgstr ""
 "이 파티션의 스왑 활성화 전, 실행 취소, 지우기, 진행 동작을 적용하려면 편집 메"
 "뉴를 사용하십시오."
 
-#: ../src/Win_GParted.cc:2116
+#: ../src/Win_GParted.cc:2289
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
 msgstr "파티션 동작이 대기 중이면 마운트 동작을 진행할 수 없습니다."
 
-#: ../src/Win_GParted.cc:2118
+#: ../src/Win_GParted.cc:2291
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1805,53 +1880,53 @@ msgstr ""
 "이 파티션의 볼륨 그룹 활성화 전, 실행 취소, 지우기, 진행 동작을 적용하려면 편"
 "집 메뉴를 사용하십시오."
 
-#: ../src/Win_GParted.cc:2129
+#: ../src/Win_GParted.cc:2302
 msgid "Deactivating swap on %1"
 msgstr "%1의 스왑 비활성화 중"
 
-#: ../src/Win_GParted.cc:2129
+#: ../src/Win_GParted.cc:2302
 msgid "Activating swap on %1"
 msgstr "%1에 스왑 활성화 중"
 
-#: ../src/Win_GParted.cc:2144
+#: ../src/Win_GParted.cc:2314
 msgid "Could not deactivate swap"
 msgstr "스왑을 비활성화할 수 없음"
 
-#: ../src/Win_GParted.cc:2144
+#: ../src/Win_GParted.cc:2314
 msgid "Could not activate swap"
 msgstr "스왑을 활성화할 수 없음"
 
-#: ../src/Win_GParted.cc:2159
+#: ../src/Win_GParted.cc:2329
 msgid "Deactivating Volume Group %1"
 msgstr "%1 볼륨 그룹 비활성화 중"
 
-#: ../src/Win_GParted.cc:2160
+#: ../src/Win_GParted.cc:2330
 msgid "Activating Volume Group %1"
 msgstr "%1 볼륨 그룹 활성화 중"
 
-#: ../src/Win_GParted.cc:2178
+#: ../src/Win_GParted.cc:2345
 msgid "Could not deactivate Volume Group"
 msgstr "볼륨 그룹을 비활성화할 수 없음"
 
-#: ../src/Win_GParted.cc:2179
+#: ../src/Win_GParted.cc:2346
 msgid "Could not activate Volume Group"
 msgstr "볼륨 그룹을 활성화할 수 없음"
 
-#: ../src/Win_GParted.cc:2192
+#: ../src/Win_GParted.cc:2359
 msgid "Unmounting %1"
 msgstr "%1 마운트 해제 중"
 
-#: ../src/Win_GParted.cc:2198
+#: ../src/Win_GParted.cc:2365
 msgid "Could not unmount %1"
 msgstr "%1 마운트를 해제할 수 없음"
 
-#: ../src/Win_GParted.cc:2234
+#: ../src/Win_GParted.cc:2405
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
 msgstr "파티션 동작이 대기중이면 마운트 동작을 진행할 수 없습니다."
 
-#: ../src/Win_GParted.cc:2236
+#: ../src/Win_GParted.cc:2407
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -1859,33 +1934,33 @@ msgstr ""
 "이 파티션의 마운트 동작 전, 실행 취소, 지우기, 진행 동작을 적용하려면 편집 메"
 "뉴를 사용하십시오."
 
-#: ../src/Win_GParted.cc:2246
+#: ../src/Win_GParted.cc:2419
 msgid "mounting %1 on %2"
 msgstr "%1을(를) %2에 마운트하는 중"
 
-#: ../src/Win_GParted.cc:2257
+#: ../src/Win_GParted.cc:2449
 msgid "Could not mount %1 on %2"
 msgstr "%1을(를) %2에 마운트할 수 없음"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2283
+#: ../src/Win_GParted.cc:2475
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%2 장치의 %1 파티션이 현재 활성화 상태입니다"
 
-#: ../src/Win_GParted.cc:2298
+#: ../src/Win_GParted.cc:2490
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "활성 파티션이 존재하여 새 파티션 테이블을 만들 수 없습니다."
 
-#: ../src/Win_GParted.cc:2300
+#: ../src/Win_GParted.cc:2492
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr ""
 "활성 파티션을 사용 중인 마운트 파일 시스템 또는 활성화 스왑 공간입니다."
 
-#: ../src/Win_GParted.cc:2302
+#: ../src/Win_GParted.cc:2494
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -1893,17 +1968,17 @@ msgstr ""
 "새 파티션 테이블을 만들기전 이 장치의 모든 파티션을 비활성화 하려면 마운트 해"
 "제 또는 스왑 해제와 같은 파티션 메뉴 옵션을 사용하십시오."
 
-#: ../src/Win_GParted.cc:2314
+#: ../src/Win_GParted.cc:2506
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "현재 대기 중인 작업 %1개가 있습니다"
 
-#: ../src/Win_GParted.cc:2327
+#: ../src/Win_GParted.cc:2519
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "대기 중인 동작이 있을 때 새 파티션 테이블을 만들 수 없습니다."
 
-#: ../src/Win_GParted.cc:2329
+#: ../src/Win_GParted.cc:2521
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -1911,28 +1986,28 @@ msgstr ""
 "새 파티션 테이블을 만들기 전에 지우기, 또는 모든 동작을 적용하려면 편집 메뉴"
 "를 사용하십시오."
 
-#: ../src/Win_GParted.cc:2344
+#: ../src/Win_GParted.cc:2536
 msgid "Error while creating partition table"
 msgstr "파티션 테이블을 만드는 중 오류가 발생했습니다"
 
-#: ../src/Win_GParted.cc:2364
+#: ../src/Win_GParted.cc:2556
 msgid "Command gpart was not found"
 msgstr "gpart 명령을 찾을 수 없습니다"
 
-#: ../src/Win_GParted.cc:2365
+#: ../src/Win_GParted.cc:2557
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "이 기능은 gpart를 사용합니다. gpart를 설치하고 다시 시도하여 주십시오."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2373
+#: ../src/Win_GParted.cc:2565
 msgid "A full disk scan is needed to find file systems."
 msgstr "전체 디스크 검사는 파일 시스템을 찾을 때 필요합니다."
 
-#: ../src/Win_GParted.cc:2375
+#: ../src/Win_GParted.cc:2567
 msgid "The scan might take a very long time."
 msgstr "이 검색 동작은 매우 오랜 시간이 걸립니다."
 
-#: ../src/Win_GParted.cc:2377
+#: ../src/Win_GParted.cc:2569
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -1940,26 +2015,26 @@ msgstr ""
 "검색이 끝나면 발견한 파일 시스템을 마운트 할 수 있고 데이터를 다른 미디어에 "
 "복사할 수 있습니다."
 
-#: ../src/Win_GParted.cc:2379
+#: ../src/Win_GParted.cc:2571
 msgid "Do you want to continue?"
 msgstr "계속하시겠습니까?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2383
+#: ../src/Win_GParted.cc:2575
 msgid "Search for file systems on %1"
 msgstr "%1의 파일 시스템 검색"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2394
+#: ../src/Win_GParted.cc:2586
 msgid "Searching for file systems on %1"
 msgstr "%1에서 파일 시스템 검색 중"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2410
+#: ../src/Win_GParted.cc:2602
 msgid "No file systems found on %1"
 msgstr "%1에 파일 시스템이 없습니다"
 
-#: ../src/Win_GParted.cc:2411
+#: ../src/Win_GParted.cc:2603
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -1967,35 +2042,35 @@ msgstr ""
 "gpart가 진행한 디스크 검사에서 이 디스크로부터 인식할 수 있는 파일 시스템을 "
 "찾지 못했습니다."
 
-#: ../src/Win_GParted.cc:2645
+#: ../src/Win_GParted.cc:2889
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "정말로 남은 작업을 진행하시겠습니까?"
 
-#: ../src/Win_GParted.cc:2651
+#: ../src/Win_GParted.cc:2895
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "파티션을 편집하면 잠재적인 데이터 손실을 야기할 수 있습니다."
 
-#: ../src/Win_GParted.cc:2653
+#: ../src/Win_GParted.cc:2897
 msgid "You are advised to backup your data before proceeding."
 msgstr "진행하기 전에 데이터를 백업해 두는 것이 좋습니다."
 
-#: ../src/Win_GParted.cc:2655
+#: ../src/Win_GParted.cc:2899
 msgid "Apply operations to device"
 msgstr "작업 내용을 장치에 적용"
 
-#: ../src/Win_GParted.cc:2700
+#: ../src/Win_GParted.cc:2944
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "비어있지 않은 %1 LVM2 물리 볼륨을 삭제합니다"
 
-#: ../src/Win_GParted.cc:2704
+#: ../src/Win_GParted.cc:2948
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "비어있지 않은 %1 LVM2 물리 볼륨을 포맷합니다"
 
-#: ../src/Win_GParted.cc:2708
+#: ../src/Win_GParted.cc:2952
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "비어있지 않은 %1 LVM2 물리 볼륨에 붙여 넣습니다"
 
-#: ../src/Win_GParted.cc:2717
+#: ../src/Win_GParted.cc:2961
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2003,7 +2078,7 @@ msgstr ""
 "물리 볼륨을 지우거나 덮어쓰면 복구할 수 없으며 볼륨 그룹이 파괴되거나 손상됩"
 "니다."
 
-#: ../src/Win_GParted.cc:2720
+#: ../src/Win_GParted.cc:2964
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2012,9 +2087,13 @@ msgstr ""
 "볼륨 그룹의 파괴 또는 손상을 막으려면, 이 동작을 시도하기 전에 동작을 취소하"
 "고, 물리 볼륨 해제에 외부 LVM 명령 사용을 권장합니다."
 
-#: ../src/Win_GParted.cc:2723
+#: ../src/Win_GParted.cc:2967
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "물리 볼륨을 계속 강제로 삭제시겠습니까?"
+
+#: ../src/btrfs.cc:309
+msgid "Failed to find devid for path %1"
+msgstr "%1 경로의 장치 ID 찾기에 실패했습니다"
 
 #: ../src/fat16.cc:32 ../src/ntfs.cc:25
 msgid ""
@@ -2050,13 +2129,13 @@ msgid "_Swapoff"
 msgstr "스왑 비활성화(_S)"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:186
+#: ../src/linux_swap.cc:194
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr "%1 파일 시스템에 데이터가 없기 때문에 파티션 이동 작업을 건너뜁니다"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:205
+#: ../src/linux_swap.cc:213
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr "%1 파일 시스템에 데이터가 없기 때문에 파티션 복사 동작을 건너뜁니다"
@@ -2099,11 +2178,20 @@ msgstr ""
 "값으로 바꾸었습니다."
 
 #. simulation..
-#: ../src/ntfs.cc:212
+#: ../src/ntfs.cc:214
 msgid "run simulation"
 msgstr "시뮬레이션 실행"
 
 #. real resize
-#: ../src/ntfs.cc:219
+#: ../src/ntfs.cc:221
 msgid "real resize"
 msgstr "실제 크기 조정"
+
+#~ msgid "Libparted Bug Found!"
+#~ msgstr "libparted 버그를 찾았습니다!"
+
+#~ msgid "Clear Partition Label on %1"
+#~ msgstr "%1의 파티션 레이블 지우기"
+
+#~ msgid "_Label"
+#~ msgstr "레이블(_L)"
