@@ -52,7 +52,7 @@ namespace GParted
 	
 Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 {
-	copied_partition .Reset() ;
+	copied_partition = NULL;
 	selected_partition_ptr = NULL;
 	new_count = 1;
 	current_device = 0 ;
@@ -138,6 +138,12 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	
 	//make sure harddisk information is closed..
 	hpaned_main .get_child1() ->hide() ;
+}
+
+Win_GParted::~Win_GParted()
+{
+	delete copied_partition;
+	copied_partition = NULL;
 }
 
 void Win_GParted::init_menubar() 
@@ -926,16 +932,23 @@ void Win_GParted::Refresh_Visual()
 
 	for ( unsigned int t = 0 ; t < display_partitions.size() ; t++ )
 	{
-		if ( display_partitions[t].get_path() == copied_partition.get_path() )
-			copied_partition = display_partitions[t];
+		if ( copied_partition != NULL && display_partitions[t].get_path() == copied_partition->get_path() )
+		{
+			delete copied_partition;
+			copied_partition = new Partition( display_partitions[t] );
+		}
 
 		switch ( display_partitions[t].type )
 		{
 			case TYPE_EXTENDED:
 				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
 				{
-					if ( display_partitions[t].logicals[u].get_path() == copied_partition.get_path() )
-						copied_partition = display_partitions[t].logicals[u];
+					if ( copied_partition != NULL &&
+					     display_partitions[t].logicals[u].get_path() == copied_partition->get_path() )
+					{
+						delete copied_partition;
+						copied_partition = new Partition( display_partitions[t].logicals[u] );
+					}
 
 					switch ( display_partitions[t].logicals[u].type )
 					{
@@ -1138,14 +1151,14 @@ void Win_GParted::set_valid_operations()
 	{
 		allow_new( true );
 		
-		//find out if there is a copied partition and if it fits inside this unallocated space
-		if ( ! copied_partition .get_path() .empty() && ! devices[ current_device ] .readonly )
+		// Find out if there is a partition to be copied and if it fits inside this unallocated space
+		if ( copied_partition != NULL && ! devices[current_device].readonly )
 		{
 			Byte_Value required_size ;
-			if ( copied_partition .filesystem == GParted::FS_XFS )
-				required_size = copied_partition .estimated_min_size() * copied_partition .sector_size;
+			if ( copied_partition->filesystem == FS_XFS )
+				required_size = copied_partition->estimated_min_size() * copied_partition->sector_size;
 			else
-				required_size = copied_partition .get_byte_length() ;
+				required_size = copied_partition->get_byte_length();
 
 			//Determine if space is needed for the Master Boot Record or
 			//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
@@ -1251,12 +1264,12 @@ void Win_GParted::set_valid_operations()
 			menu_partition .items()[ MENU_MOUNT ] .show() ;	
 		}
 
-		//see if there is an copied partition and if it passes all tests
-		if ( ! copied_partition .get_path() .empty() &&
-		     copied_partition.get_byte_length() <= selected_partition_ptr->get_byte_length() &&
+		// See if there is a partition to be copied and it fits inside this selected partition
+		if ( copied_partition != NULL &&
+		     copied_partition->get_byte_length() <= selected_partition_ptr->get_byte_length() &&
 		     selected_partition_ptr->status == STAT_REAL &&
-		     copied_partition != *selected_partition_ptr )
-		     allow_paste( true ) ;
+		     *copied_partition != *selected_partition_ptr )
+			allow_paste( true );
 
 		//see if we can somehow check/repair this file system....
 		if ( fs.check && selected_partition_ptr->status == STAT_REAL )
@@ -1792,11 +1805,13 @@ void Win_GParted::activate_copy()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	copied_partition = *selected_partition_ptr;
+	delete copied_partition;
+	copied_partition = new Partition( *selected_partition_ptr );
 }
 
 void Win_GParted::activate_paste()
 {
+	g_assert( copied_partition != NULL );  // Bug: Paste called without partition to copy
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
@@ -1813,13 +1828,14 @@ void Win_GParted::activate_paste()
 		{
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
-			copied_partition .messages .clear() ;
-			copied_partition .clear_mountpoints() ;
-			copied_partition .name.clear() ;
+			Partition part_temp = *copied_partition;
+			part_temp.messages.clear();
+			part_temp.clear_mountpoints();
+			part_temp.name.clear();
 
-			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition.filesystem ),
+			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition->filesystem ),
 			                              *selected_partition_ptr,
-			                              copied_partition );
+			                              part_temp );
 			dialog .set_transient_for( *this );
 		
 			if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -1829,7 +1845,7 @@ void Win_GParted::activate_paste()
 				Operation * operation = new OperationCopy( devices[current_device],
 				                                           *selected_partition_ptr,
 				                                           dialog.Get_New_Partition( devices[current_device].sector_size ),
-				                                           copied_partition );
+				                                           *copied_partition );
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 				Add_Operation( operation ) ;
@@ -1850,34 +1866,35 @@ void Win_GParted::activate_paste()
 
 		Partition partition_new = *selected_partition_ptr;
 		partition_new .alignment = ALIGN_STRICT ;
-		partition_new .filesystem = copied_partition .filesystem ;
-		partition_new.set_filesystem_label( copied_partition.get_filesystem_label() );
-		partition_new .uuid = copied_partition .uuid ;
-		partition_new .color = copied_partition .color ;
+		partition_new.filesystem = copied_partition->filesystem;
+		partition_new.set_filesystem_label( copied_partition->get_filesystem_label() );
+		partition_new.uuid = copied_partition->uuid;
+		partition_new.color = copied_partition->color;
 		Sector new_size = partition_new .get_sector_length() ;
-		if ( copied_partition .get_sector_length() == new_size )
+		if ( copied_partition->get_sector_length() == new_size )
 		{
-			//Pasting into same size existing partition, therefore only block copy operation
-			//  will be performed maintaining the file system size.
+			// Pasting into same size existing partition, therefore only block
+			// copy operation will be performed maintaining the file system
+			// size.
 			partition_new .set_sector_usage(
-					copied_partition .sectors_used + copied_partition. sectors_unused,
-					copied_partition. sectors_unused ) ;
+					copied_partition->sectors_used + copied_partition->sectors_unused,
+					copied_partition->sectors_unused );
 		}
 		else
 		{
-			//Pasting into larger existing partition, therefore block copy followed by file system
-			//  grow operations (if supported) will be performed making the file system fill the
-			//  partition.
+			// Pasting into larger existing partition, therefore block copy
+			// followed by file system grow operations (if supported) will be
+			// performed making the file system fill the partition.
 			partition_new .set_sector_usage(
 					new_size,
-					new_size - copied_partition .sectors_used ) ;
+					new_size - copied_partition->sectors_used );
 		}
 		partition_new .messages .clear() ;
  
 		Operation * operation = new OperationCopy( devices[current_device],
 		                                           *selected_partition_ptr,
 		                                           partition_new,
-		                                           copied_partition );
+		                                           *copied_partition );
 		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
@@ -1991,7 +2008,7 @@ void Win_GParted::activate_delete()
 	}
 	
 	//if partition is on the clipboard...(NOTE: we can't use Partition::== here..)
-	if ( selected_partition_ptr->get_path() == copied_partition.get_path() )
+	if ( copied_partition != NULL && selected_partition_ptr->get_path() == copied_partition->get_path() )
 	{
 		Gtk::MessageDialog dialog( *this,
 		                           String::ucompose( _("Are you sure you want to delete %1?"),
@@ -2015,12 +2032,12 @@ void Win_GParted::activate_delete()
 
 		if ( dialog .run() != Gtk::RESPONSE_OK )
 			return ;
+
+		// Deleting partition on the clipboard.  Clear clipboard.
+		delete copied_partition;
+		copied_partition = NULL;
 	}
-	
-	//if deleted partition was on the clipboard we erase it...
-	if ( selected_partition_ptr->get_path() == copied_partition.get_path() )
-		copied_partition .Reset() ;
-			
+
 	// If deleted one is NEW, it doesn't make sense to add it to the operationslist,
 	// we erase its creation and possible modifications like resize etc.. from the operationslist.
 	// Calling Refresh_Visual will wipe every memory of its existence ;-)

@@ -50,8 +50,12 @@ class Win_GParted : public Gtk::Window
 {
 public:
 	Win_GParted( const std::vector<Glib::ustring> & user_devices ) ;
+	~Win_GParted();
 
 private:
+	Win_GParted( const Win_GParted & src );              // Not implemented copy constructor
+	Win_GParted & operator=( const Win_GParted & rhs );  // Not implemented copy assignment operator
+
 	void init_menubar() ;
 	void init_toolbar() ;
 	void init_partition_menu() ;
@@ -196,7 +200,7 @@ private:
 	                                            // operations applied, as currently being shown in the GUI.
 	const Partition * selected_partition_ptr;   // Pointer to the selected partition.  (Alias to element
 	                                            // in Win_GParted::display_partitions[] vector).
-	Partition copied_partition;
+	const Partition * copied_partition;         // NULL or copy of source partition object.
 	std::vector<Device> devices;
 	std::vector<Operation *> operations;
 
