@@ -256,7 +256,6 @@ private:
 
 	//usefull variables which are used by many different functions...
 	int index_extended ; //position of the extended partition (-1 means there isn't one)
-	unsigned short primary_count ;//primary_count checks for max. of 4 pimary partitions
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	FS fs ;
 	bool OPERATIONSLIST_OPEN ;

@@ -929,11 +929,9 @@ void Win_GParted::Refresh_Visual()
 	if ( ! operations .size() ) 
 		allow_undo_clear_apply( false ) ;
 
-	// Count primary partitions for check in max_amount_prim_reached(), check for an
-	// extended partition, refresh copy partition source as necessary and select the
-	// largest unallocated partition if there is one.
+	// Check for an extended partition, refresh copy partition source as necessary and
+	// select the largest unallocated partition if there is one.
 	index_extended = -1 ;
-	primary_count = 0;
 
 	selected_partition_ptr = NULL;
 	Sector largest_unalloc_size = -1 ;
@@ -946,13 +944,8 @@ void Win_GParted::Refresh_Visual()
 
 		switch ( display_partitions[t].type )
 		{
-			case TYPE_PRIMARY:
-				primary_count++;
-				break;
-
 			case TYPE_EXTENDED:
 				index_extended = t ;
-				primary_count++;
 
 				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
 				{
@@ -1693,8 +1686,13 @@ void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int tim
 
 bool Win_GParted::max_amount_prim_reached() 
 {
-	//FIXME: this is the only place where primary_count is used... instead of counting the primaries on each
-	//refresh, we could just count them here.
+	int primary_count = 0;
+	for ( unsigned int i = 0 ; i < display_partitions.size() ; i ++ )
+	{
+		if ( display_partitions[i].type == TYPE_PRIMARY || display_partitions[i].type == TYPE_EXTENDED )
+			primary_count ++;
+	}
+
 	//Display error if user tries to create more primary partitions than the partition table can hold. 
 	if ( ! selected_partition_ptr->inside_extended && primary_count >= devices[current_device].max_prims )
 	{
