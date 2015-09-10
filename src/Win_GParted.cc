@@ -929,10 +929,8 @@ void Win_GParted::Refresh_Visual()
 	if ( ! operations .size() ) 
 		allow_undo_clear_apply( false ) ;
 
-	// Check for an extended partition, refresh copy partition source as necessary and
-	// select the largest unallocated partition if there is one.
-	index_extended = -1 ;
-
+	// Refresh copy partition source as necessary and select the largest unallocated
+	// partition if there is one.
 	selected_partition_ptr = NULL;
 	Sector largest_unalloc_size = -1 ;
 	Sector current_size ;
@@ -945,8 +943,6 @@ void Win_GParted::Refresh_Visual()
 		switch ( display_partitions[t].type )
 		{
 			case TYPE_EXTENDED:
-				index_extended = t ;
-
 				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
 				{
 					if ( display_partitions[t].logicals[u].get_path() == copied_partition.get_path() )
@@ -1953,9 +1949,21 @@ void Win_GParted::activate_new()
 	}
 	else if ( ! max_amount_prim_reached() )
 	{
+		// Check if an extended partition already exist; so that the dialog can
+		// decide whether to allow the creation of the only extended partition
+		// type or not.
+		bool any_extended = false;
+		for ( unsigned int i = 0 ; i < display_partitions.size() ; i ++ )
+		{
+			if ( display_partitions[i].type == TYPE_EXTENDED )
+			{
+				any_extended = true;
+				break;
+			}
+		}
 		Dialog_Partition_New dialog( devices[current_device],
 		                             *selected_partition_ptr,
-		                             index_extended > -1,
+		                             any_extended,
 		                             new_count,
 		                             gparted_core.get_filesystems() );
 		dialog .set_transient_for( *this );

@@ -255,7 +255,6 @@ private:
         TOOLBAR_APPLY ;
 
 	//usefull variables which are used by many different functions...
-	int index_extended ; //position of the extended partition (-1 means there isn't one)
 	unsigned short new_count;//new_count keeps track of the new created partitions
 	FS fs ;
 	bool OPERATIONSLIST_OPEN ;
