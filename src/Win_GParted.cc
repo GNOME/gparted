@@ -929,9 +929,9 @@ void Win_GParted::Refresh_Visual()
 	if ( ! operations .size() ) 
 		allow_undo_clear_apply( false ) ;
 
-	//Count primary partitions for check in max_amount_prim_reached(),
-	//  check for an extended partition and select the largest unallocated
-	//  partition if there is one.
+	// Count primary partitions for check in max_amount_prim_reached(), check for an
+	// extended partition, refresh copy partition source as necessary and select the
+	// largest unallocated partition if there is one.
 	index_extended = -1 ;
 	primary_count = 0;
 
@@ -956,6 +956,9 @@ void Win_GParted::Refresh_Visual()
 
 				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
 				{
+					if ( display_partitions[t].logicals[u].get_path() == copied_partition.get_path() )
+						copied_partition = display_partitions[t].logicals[u];
+
 					switch ( display_partitions[t].logicals[u].type )
 					{
 						case TYPE_UNALLOCATED:
