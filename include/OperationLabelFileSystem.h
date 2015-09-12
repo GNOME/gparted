@@ -33,6 +33,7 @@ public:
 
 private:
 	void create_description() ;
+	bool merge_operations( const Operation & candidate );
 } ;
 
 } //GParted

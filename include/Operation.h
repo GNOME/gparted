@@ -45,6 +45,7 @@ public:
 	
 	virtual void apply_to_visual( std::vector<Partition> & partitions ) = 0 ;
 	virtual void create_description() = 0 ;
+	virtual bool merge_operations( const Operation & candidate ) = 0;
 
 	//public variables
 	Device device ;

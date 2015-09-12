@@ -68,4 +68,17 @@ void OperationNamePartition::create_description()
 	}
 }
 
+bool OperationNamePartition::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type == OPERATION_NAME_PARTITION     &&
+	     partition_new  == candidate.partition_original    )
+	{
+		partition_new.name = candidate.partition_new.name;
+		create_description();
+		return true;
+	}
+
+	return false;
+}
+
 } //GParted

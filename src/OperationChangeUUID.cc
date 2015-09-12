@@ -69,4 +69,23 @@ void OperationChangeUUID::create_description()
 	}
 }
 
+bool OperationChangeUUID::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type == OPERATION_CHANGE_UUID        &&
+	     partition_new  == candidate.partition_original    )
+	{
+		// Changing half the UUID must not override changing all of it
+		if ( candidate.partition_new.uuid != UUID_RANDOM_NTFS_HALF )
+		{
+			partition_new.uuid = candidate.partition_new.uuid;
+			create_description();
+		}
+		// Else no change required to this operation to merge candidate
+
+		return true;
+	}
+
+	return false;
+}
+
 } //GParted

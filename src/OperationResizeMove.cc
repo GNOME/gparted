@@ -208,4 +208,17 @@ void OperationResizeMove::remove_adjacent_unallocated( std::vector<Partition> & 
 		partitions .erase( partitions .begin() + ( index_orig -1 ) ) ;
 }
 
+bool OperationResizeMove::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type == OPERATION_RESIZE_MOVE        &&
+	     partition_new  == candidate.partition_original    )
+	{
+		partition_new = candidate.partition_new;
+		create_description();
+		return true;
+	}
+
+	return false;
+}
+
 } //GParted

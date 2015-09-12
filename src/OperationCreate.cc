@@ -92,5 +92,9 @@ void OperationCreate::create_description()
 					device .get_path() ) ;
 }
 
-} //GParted
+bool OperationCreate::merge_operations( const Operation & candidate )
+{
+	return false;  // Never merge create operations
+}
 
+} //GParted

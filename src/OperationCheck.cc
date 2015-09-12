@@ -39,5 +39,14 @@ void OperationCheck::create_description()
 					partition_original .get_path() ) ;
 }
 
-} //GParted
+bool OperationCheck::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type     == OPERATION_CHECK              &&
+	     partition_original == candidate.partition_original    )
+		// No steps required to merge this operation
+		return true;
 
+	return false;
+}
+
+} //GParted

@@ -34,6 +34,7 @@ void apply_to_visual( std::vector<Partition> & partitions ) ;
 
 private:
 	void create_description() ;
+	bool merge_operations( const Operation & candidate );
 } ;
 
 } //GParted

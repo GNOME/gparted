@@ -31,6 +31,7 @@ public:
 		
 private:
 	void create_description() ;
+	bool merge_operations( const Operation & candidate );
 	void remove_original_and_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) ;
 } ;
 

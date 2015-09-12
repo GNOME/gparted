@@ -33,7 +33,8 @@ public:
 
 private:
 	void create_description() ;
-	
+	bool merge_operations( const Operation & candidate );
+
 	void apply_normal_to_visual( std::vector<Partition> & partitions ) ;
 	void apply_extended_to_visual( std::vector<Partition> & partitions ) ;
 	

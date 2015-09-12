@@ -74,5 +74,17 @@ void OperationFormat::create_description()
 					Utils::get_filesystem_string( partition_new .filesystem ) ) ;
 }
 
-} //GParted
+bool OperationFormat::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type == OPERATION_FORMAT             &&
+	     partition_new  == candidate.partition_original    )
+	{
+		partition_new = candidate.partition_new;
+		create_description();
+		return true;
+	}
 
+	return false;
+}
+
+} //GParted

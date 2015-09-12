@@ -84,7 +84,12 @@ void OperationDelete::create_description()
 					Utils::format_size( partition_original .get_sector_length(), partition_original .sector_size ),
 					partition_original .device_path ) ;
 }
-	
+
+bool OperationDelete::merge_operations( const Operation & candidate )
+{
+	return false;  // Can't merge with an already deleted partition
+}
+
 void OperationDelete::remove_original_and_adjacent_unallocated( std::vector<Partition> & partitions, int index_orig ) 
 {
 	//remove unallocated space following the original partition
@@ -101,4 +106,3 @@ void OperationDelete::remove_original_and_adjacent_unallocated( std::vector<Part
 }
 
 } //GParted
-

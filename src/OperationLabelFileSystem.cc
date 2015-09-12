@@ -65,4 +65,17 @@ void OperationLabelFileSystem::create_description()
 	}
 }
 
+bool OperationLabelFileSystem::merge_operations( const Operation & candidate )
+{
+	if ( candidate.type == OPERATION_LABEL_FILESYSTEM   &&
+	     partition_new  == candidate.partition_original    )
+	{
+		partition_new.set_filesystem_label( candidate.partition_new.get_filesystem_label() );
+		create_description();
+		return true;
+	}
+
+	return false;
+}
+
 } //GParted

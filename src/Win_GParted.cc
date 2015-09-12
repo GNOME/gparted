@@ -746,78 +746,9 @@ bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 	if( first >= operations .size() || second >= operations .size() )
 		return false;
 
-	// Two resize operations of the same partition
-	if ( operations[ first ]->type == OPERATION_RESIZE_MOVE &&
-	     operations[ second ]->type == OPERATION_RESIZE_MOVE &&
-	     operations[ first ]->partition_new == operations[ second ]->partition_original
-	   )
-	{
-		operations[ first ]->partition_new = operations[ second ]->partition_new;
-		operations[ first ]->create_description() ;
-		remove_operation( second );
-
-		return true;
-	}
-	// Two label change operations on the same partition
-	else if ( operations[ first ]->type == OPERATION_LABEL_FILESYSTEM &&
-	          operations[ second ]->type == OPERATION_LABEL_FILESYSTEM &&
-	          operations[ first ]->partition_new == operations[ second ]->partition_original
-	        )
-	{
-		operations[ first ]->partition_new.set_filesystem_label(
-		                        operations[ second ]->partition_new.get_filesystem_label() );
-		operations[ first ]->create_description() ;
-		remove_operation( second );
-
-		return true;
-	}
-	// Two name change operations on the same partition
-	else if ( operations[first]->type == OPERATION_NAME_PARTITION &&
-	          operations[second]->type == OPERATION_NAME_PARTITION &&
-	          operations[first]->partition_new == operations[second]->partition_original
-	        )
-	{
-		operations[first]->partition_new.name = operations[second]->partition_new.name;
-		operations[first]->create_description();
-		remove_operation( second );
-
-		return true;
-	}
-	// Two change-uuid change operations on the same partition
-	else if ( operations[ first ]->type == OPERATION_CHANGE_UUID &&
-	          operations[ second ]->type == OPERATION_CHANGE_UUID &&
-	          operations[ first ]->partition_new == operations[ second ]->partition_original
-	        )
-	{
-		// Changing half the UUID should not override changing all of it
-		if ( operations[ first ]->partition_new.uuid == UUID_RANDOM_NTFS_HALF ||
-		     operations[ second ]->partition_new.uuid == UUID_RANDOM )
-			operations[ first ]->partition_new.uuid = operations[ second ]->partition_new.uuid;
-		operations[ first ]->create_description() ;
-		remove_operation( second );
-
-		return true;
-	}
-	// Two check operations of the same partition
-	else if ( operations[ first ]->type == OPERATION_CHECK &&
-	          operations[ second ]->type == OPERATION_CHECK &&
-	          operations[ first ]->partition_original == operations[ second ]->partition_original
-	        )
+	if ( operations[first]->merge_operations( *operations[second] ) )
 	{
 		remove_operation( second );
-
-		return true;
-	}
-	// Two format operations of the same partition
-	else if ( operations[ first ]->type == OPERATION_FORMAT &&
-	          operations[ second ]->type == OPERATION_FORMAT &&
-	          operations[ first ]->partition_new == operations[ second ]->partition_original
-	        )
-	{
-		operations[ first ]->partition_new = operations[ second ]->partition_new;
-		operations[ first ]->create_description() ;
-		remove_operation( second );
-
 		return true;
 	}
 
