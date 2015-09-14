@@ -740,6 +740,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 	}
 }
 
+// Try to merge the second operation into the first in the operations[] vector.
 bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
 {
 	if( first >= operations .size() || second >= operations .size() )
@@ -1809,7 +1810,8 @@ void Win_GParted::activate_resize()
 				dialog .run() ;
 			}
 
-			// Try to merge with previous operation
+			// Try to merge this resize/move operation with the previous
+			// operation only.
 			if ( operations .size() >= 2 )
 			{
 				Merge_Operations(operations .size() - 2, operations .size() - 1);
@@ -2072,8 +2074,12 @@ void Win_GParted::activate_delete()
 				new_count = operations[ t ] ->partition_new .partition_number ;
 			
 		new_count += 1 ;
-			
-		// Verify if the two operations can be merged
+
+		// After deleting all operations for the never applied partition creation,
+		// try to merge all remaining adjacent operations to catch any which are
+		// newly adjacent and can now be merged.  (Applies to resize/move and
+		// format operations on real, already existing partitions which are only
+		// merged when adjacent).
 		for ( int t = 0 ; t < static_cast<int>( operations .size() - 1 ) ; t++ )
 		{
 			Merge_Operations( t, t+1 );
@@ -2210,7 +2216,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 		Add_Operation( operation ) ;
 
-		// Try to merge with previous operation
+		// Try to merge this format operation with the previous operation only.
 		if ( operations .size() >= 2 )
 		{
 			Merge_Operations( operations .size() - 2, operations .size() - 1 );
@@ -2662,7 +2668,7 @@ void Win_GParted::activate_check()
 
 	Add_Operation( operation ) ;
 
-	// Verify if the two operations can be merged
+	// Try to merge this check operation with all previous operations.
 	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
 	{
 		if ( operations[ t ] ->type == OPERATION_CHECK )
@@ -2698,7 +2704,8 @@ void Win_GParted::activate_label_filesystem()
 
 		Add_Operation( operation ) ;
 
-		// Verify if the two operations can be merged
+		// Try to merge this label file system operation with all previous
+		// operations.
 		for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
 		{
 			if ( operations[t]->type == OPERATION_LABEL_FILESYSTEM )
@@ -2736,7 +2743,8 @@ void Win_GParted::activate_name_partition()
 
 		Add_Operation( operation );
 
-		// Verify if the two operations can be merged
+		// Try to merge this name partition operation with all previous
+		// operations.
 		for ( unsigned int t = 0 ; t < operations.size() - 1 ; t++ )
 		{
 			if ( operations[t]->type == OPERATION_NAME_PARTITION )
@@ -2793,7 +2801,7 @@ void Win_GParted::activate_change_uuid()
 
 	Add_Operation( operation ) ;
 
-	// Verify if the two operations can be merged
+	// Try to merge this change UUID operation with all previous operations.
 	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
 	{
 		if ( operations[ t ] ->type == OPERATION_CHANGE_UUID )
