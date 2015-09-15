@@ -38,7 +38,14 @@
 
 namespace GParted
 {
-	
+
+enum MergeType
+{
+	MERGE_LAST_WITH_PREV = 0,
+	MERGE_LAST_WITH_ANY  = 1,
+	MERGE_ALL_ADJACENT   = 2
+};
+
 class Win_GParted : public Gtk::Window
 {
 public:
@@ -61,6 +68,7 @@ private:
 
 	void Add_Operation( Operation * operation, int index = -1 ) ;
 	bool merge_two_operations( unsigned int first, unsigned int second );
+	void merge_operations( MergeType mergetype );
 	void Refresh_Visual();
 	bool valid_display_partition_ptr( const Partition * partition_ptr );
 	bool Quit_Check_Operations();

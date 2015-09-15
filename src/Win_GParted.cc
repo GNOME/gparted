@@ -758,6 +758,38 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 	return false;
 }
 
+void Win_GParted::merge_operations( MergeType mergetype )
+{
+	unsigned int num_ops = operations.size();
+	if ( num_ops <= 1 )
+		return;  // Nothing to merge.  One or fewer operations.
+
+	switch ( mergetype )
+	{
+		case MERGE_LAST_WITH_PREV:
+			merge_two_operations( num_ops-2, num_ops-1 );
+			break;
+
+		case MERGE_LAST_WITH_ANY:
+			for ( unsigned int i = 0 ; i < num_ops-1 ; i ++ )
+			{
+				if ( merge_two_operations( i, num_ops-1 ) )
+					break;
+			}
+			break;
+
+		case MERGE_ALL_ADJACENT:
+			// Must check against operations.size() as looping continues after
+			// merging which might have reduced the number of items in the
+			// vector.
+			for ( unsigned int i = 0 ; i < operations.size()-1 ; i ++ )
+			{
+				merge_two_operations( i, i+1 );
+			}
+			break;
+	}
+}
+
 void Win_GParted::Refresh_Visual()
 {
 	// How GParted displays partitions in the GUI and manages the lifetime and
@@ -830,7 +862,7 @@ void Win_GParted::Refresh_Visual()
 	//
 	//         Win_GParted::activate_label_filesystem()
 	//             Win_GParted::Add_Operation( operation )
-	//             Win_GParted::merge_two_operations( ... )
+	//             Win_GParted::merge_operations( ... )
 	//             Win_GParted::show_operationslist()
 	//                 Win_GParted::Refresh_Visual()
 	//
@@ -1746,10 +1778,7 @@ void Win_GParted::activate_resize()
 
 			// Try to merge this resize/move operation with the previous
 			// operation only.
-			if ( operations .size() >= 2 )
-			{
-				merge_two_operations( operations.size() - 2, operations.size() - 1 );
-			}
+			merge_operations( MERGE_LAST_WITH_PREV );
 		}
 	}
 
@@ -2014,10 +2043,7 @@ void Win_GParted::activate_delete()
 		// newly adjacent and can now be merged.  (Applies to resize/move and
 		// format operations on real, already existing partitions which are only
 		// merged when adjacent).
-		for ( int t = 0 ; t < static_cast<int>( operations .size() - 1 ) ; t++ )
-		{
-			merge_two_operations( t, t+1 );
-		}
+		merge_operations( MERGE_ALL_ADJACENT );
 
 		Refresh_Visual(); 
 				
@@ -2149,12 +2175,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
-
 		// Try to merge this format operation with the previous operation only.
-		if ( operations .size() >= 2 )
-		{
-			merge_two_operations( operations.size() - 2, operations.size() - 1 );
-		}
+		merge_operations( MERGE_LAST_WITH_PREV );
 	}
 
 	show_operationslist() ;
@@ -2601,16 +2623,8 @@ void Win_GParted::activate_check()
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 	Add_Operation( operation ) ;
-
 	// Try to merge this check operation with all previous operations.
-	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
-	{
-		if ( operations[ t ] ->type == OPERATION_CHECK )
-		{
-			if ( merge_two_operations( t, operations.size() - 1 ) )
-				break;
-		}
-	}
+	merge_operations( MERGE_LAST_WITH_ANY );
 
 	show_operationslist() ;
 }
@@ -2637,17 +2651,9 @@ void Win_GParted::activate_label_filesystem()
 		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation ) ;
-
 		// Try to merge this label file system operation with all previous
 		// operations.
-		for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
-		{
-			if ( operations[t]->type == OPERATION_LABEL_FILESYSTEM )
-			{
-				if ( merge_two_operations( t, operations.size() - 1 ) )
-					break;
-			}
-		}
+		merge_operations( MERGE_LAST_WITH_ANY );
 
 		show_operationslist() ;
 	}
@@ -2676,17 +2682,9 @@ void Win_GParted::activate_name_partition()
 		operation->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 		Add_Operation( operation );
-
 		// Try to merge this name partition operation with all previous
 		// operations.
-		for ( unsigned int t = 0 ; t < operations.size() - 1 ; t++ )
-		{
-			if ( operations[t]->type == OPERATION_NAME_PARTITION )
-			{
-				if( merge_two_operations( t, operations.size() - 1 ) )
-					break;
-			}
-		}
+		merge_operations( MERGE_LAST_WITH_ANY );
 
 		show_operationslist();
 	}
@@ -2734,16 +2732,8 @@ void Win_GParted::activate_change_uuid()
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
 	Add_Operation( operation ) ;
-
 	// Try to merge this change UUID operation with all previous operations.
-	for ( unsigned int t = 0 ; t < operations .size() - 1 ; t++ )
-	{
-		if ( operations[ t ] ->type == OPERATION_CHANGE_UUID )
-		{
-			if( merge_two_operations( t, operations .size() - 1 ) )
-				break;
-		}
-	}
+	merge_operations( MERGE_LAST_WITH_ANY );
 
 	show_operationslist() ;
 }
