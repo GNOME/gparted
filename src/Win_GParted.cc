@@ -2138,46 +2138,31 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	part_temp.name = selected_partition_ptr->name;
 	//Leave sector usage figures to new Partition object defaults of
 	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
-	 
-	part_temp .status = GParted::STAT_FORMATTED ;
 	
+	part_temp .status = GParted::STAT_FORMATTED ;
+	// When formatting a partition which already exists on the disk all possible
+	// operations could be pending so only try merging with the previous operation.
+	MergeType mergetype = MERGE_LAST_WITH_PREV;
+
 	// If selected partition is NEW we simply remove the NEW operation from the list and
 	// add it again with the new file system
 	if ( selected_partition_ptr->status == STAT_NEW )
 	{
-		//remove operation which creates this partition
-		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-		{
-			if ( operations[t]->partition_new == *selected_partition_ptr )
-			{
-				remove_operation( t ) ;
-				
-				//And insert the new partition at the old position in the operations list
-				//(NOTE: in this case we set status to STAT_NEW)
-				part_temp .status = STAT_NEW ;
-				
-				Operation * operation = new OperationCreate( devices[current_device],
-				                                             *selected_partition_ptr,
-				                                             part_temp );
-				operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
-
-				Add_Operation( operation, t ) ;
-					
-				break;
-			}
-		}
+		part_temp.status = STAT_NEW;
+		// On a partition which is pending creation only resize/move and format
+		// operations are possible.  These operations are always mergeable with
+		// the pending operation which will create the partition.  Hence merge
+		// with any earlier operations to achieve this.
+		mergetype = MERGE_LAST_WITH_ANY;
 	}
-	else//normal formatting of an existing partition
-	{
-		Operation * operation = new OperationFormat( devices[current_device],
-		                                             *selected_partition_ptr,
-		                                             part_temp );
-		operation ->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
 
-		Add_Operation( operation ) ;
-		// Try to merge this format operation with the previous operation only.
-		merge_operations( MERGE_LAST_WITH_PREV );
-	}
+	Operation * operation = new OperationFormat( devices[current_device],
+	                                             *selected_partition_ptr,
+	                                             part_temp );
+	operation->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+
+	Add_Operation( operation );
+	merge_operations( mergetype );
 
 	show_operationslist() ;
 }

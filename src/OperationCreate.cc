@@ -94,7 +94,18 @@ void OperationCreate::create_description()
 
 bool OperationCreate::merge_operations( const Operation & candidate )
 {
-	return false;  // Never merge create operations
+	if ( candidate.type                      == OPERATION_FORMAT             &&
+	     candidate.partition_original.status == STAT_NEW                     &&
+	     partition_new                       == candidate.partition_original    )
+	{
+		// Merge a format operation on a not yet created partition with the
+		// earlier operation which will create it.
+		partition_new = candidate.partition_new;
+		create_description();
+		return true;
+	}
+
+	return false;
 }
 
 } //GParted
