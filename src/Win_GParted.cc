@@ -741,9 +741,12 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 }
 
 // Try to merge the second operation into the first in the operations[] vector.
-bool Win_GParted::Merge_Operations( unsigned int first, unsigned int second )
+bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second )
 {
-	if( first >= operations .size() || second >= operations .size() )
+	unsigned int num_ops = operations.size();
+	if ( first >= num_ops-1 )
+		return false;
+	if ( first >= second || second >= num_ops )
 		return false;
 
 	if ( operations[first]->merge_operations( *operations[second] ) )
@@ -827,7 +830,7 @@ void Win_GParted::Refresh_Visual()
 	//
 	//         Win_GParted::activate_label_filesystem()
 	//             Win_GParted::Add_Operation( operation )
-	//             Win_GParted::Merge_Operations( ... )
+	//             Win_GParted::merge_two_operations( ... )
 	//             Win_GParted::show_operationslist()
 	//                 Win_GParted::Refresh_Visual()
 	//
@@ -1745,7 +1748,7 @@ void Win_GParted::activate_resize()
 			// operation only.
 			if ( operations .size() >= 2 )
 			{
-				Merge_Operations(operations .size() - 2, operations .size() - 1);
+				merge_two_operations( operations.size() - 2, operations.size() - 1 );
 			}
 		}
 	}
@@ -2013,7 +2016,7 @@ void Win_GParted::activate_delete()
 		// merged when adjacent).
 		for ( int t = 0 ; t < static_cast<int>( operations .size() - 1 ) ; t++ )
 		{
-			Merge_Operations( t, t+1 );
+			merge_two_operations( t, t+1 );
 		}
 
 		Refresh_Visual(); 
@@ -2150,7 +2153,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		// Try to merge this format operation with the previous operation only.
 		if ( operations .size() >= 2 )
 		{
-			Merge_Operations( operations .size() - 2, operations .size() - 1 );
+			merge_two_operations( operations.size() - 2, operations.size() - 1 );
 		}
 	}
 
@@ -2604,7 +2607,7 @@ void Win_GParted::activate_check()
 	{
 		if ( operations[ t ] ->type == OPERATION_CHECK )
 		{
-			if( Merge_Operations( t, operations .size() -1 ) )
+			if ( merge_two_operations( t, operations.size() - 1 ) )
 				break;
 		}
 	}
@@ -2641,7 +2644,7 @@ void Win_GParted::activate_label_filesystem()
 		{
 			if ( operations[t]->type == OPERATION_LABEL_FILESYSTEM )
 			{
-				if( Merge_Operations( t, operations .size() -1 ) )
+				if ( merge_two_operations( t, operations.size() - 1 ) )
 					break;
 			}
 		}
@@ -2680,7 +2683,7 @@ void Win_GParted::activate_name_partition()
 		{
 			if ( operations[t]->type == OPERATION_NAME_PARTITION )
 			{
-				if( Merge_Operations( t, operations.size() - 1 ) )
+				if( merge_two_operations( t, operations.size() - 1 ) )
 					break;
 			}
 		}
@@ -2737,7 +2740,7 @@ void Win_GParted::activate_change_uuid()
 	{
 		if ( operations[ t ] ->type == OPERATION_CHANGE_UUID )
 		{
-			if( Merge_Operations( t, operations .size() -1 ) )
+			if( merge_two_operations( t, operations .size() - 1 ) )
 				break;
 		}
 	}

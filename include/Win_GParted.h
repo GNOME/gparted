@@ -60,9 +60,9 @@ private:
 	void Fill_Label_Device_Info( bool clear = false );
 
 	void Add_Operation( Operation * operation, int index = -1 ) ;
-	bool valid_display_partition_ptr( const Partition * partition_ptr );
-	bool Merge_Operations( unsigned int first, unsigned int second );
+	bool merge_two_operations( unsigned int first, unsigned int second );
 	void Refresh_Visual();
+	bool valid_display_partition_ptr( const Partition * partition_ptr );
 	bool Quit_Check_Operations();
 	void set_valid_operations() ;
 	void show_operationslist() ;
