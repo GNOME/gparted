@@ -99,6 +99,14 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 			//E.g., device = /dev/mmcblk0, partition = /dev/mmcblk0p1
 			if ( device == "" )
 				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(mmcblk[0-9]+)$") ;
+
+			// Recognise /dev/nvme*n* devices
+			// (Non-Volatile Memory Express devices.  SSD type devices which
+			// plug directly into PCIe sockets).
+			// E.g., device = /dev/nvme0n1, partition = /dev/nvme0n1p1
+			if ( device == "" )
+				device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+(nvme[0-9]+n[0-9]+)$");
+
 			//Device names that end with a #[^p]# are HP Smart Array Devices (disks)
 			//  E.g., device = /dev/cciss/c0d0, partition = /dev/cciss/c0d0p1
 			//  (linux-x.y.z/Documentation/blockdev/cciss.txt)
