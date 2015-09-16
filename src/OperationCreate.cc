@@ -104,6 +104,16 @@ bool OperationCreate::merge_operations( const Operation & candidate )
 		create_description();
 		return true;
 	}
+	else if ( candidate.type                      == OPERATION_RESIZE_MOVE        &&
+	          candidate.partition_original.status == STAT_NEW                     &&
+	          partition_new                       == candidate.partition_original    )
+	{
+		// Merge a resize/move operation on a not yet created partition with the
+		// earlier operation which will create it.
+		partition_new = candidate.partition_new;
+		create_description();
+		return true;
+	}
 
 	return false;
 }

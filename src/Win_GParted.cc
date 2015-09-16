@@ -1705,81 +1705,62 @@ void Win_GParted::activate_resize()
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		dialog .hide() ;
-		
+
+		Partition part_temp = dialog.Get_New_Partition( devices[current_device].sector_size );
+		// When resizing/moving a partition which already exists on the disk all
+		// possible operations could be pending so only try merging with the
+		// previous operation.
+		MergeType mergetype = MERGE_LAST_WITH_PREV;
+
 		// If selected partition is NEW we simply remove the NEW operation from the list and add
 		// it again with the new size and position ( unless it's an EXTENDED )
 		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
 		{
-			//remove operation which creates this partition
-			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			{
-				if ( operations[t]->partition_new == *selected_partition_ptr )
-				{
-					remove_operation( t ) ;
-					
-					// And add the new partition to the end of the operations list.
-					// Create a suitable partition from the selected partition.
-					Partition temp_partition = *selected_partition_ptr;
-					temp_partition.Set_Unallocated( devices[current_device].get_path(),
-					                                selected_partition_ptr->whole_device,
-					                                selected_partition_ptr->sector_start,
-					                                selected_partition_ptr->sector_end,
-					                                devices[current_device].sector_size,
-					                                selected_partition_ptr->inside_extended );
-
-					Operation * operation = new OperationCreate( devices[ current_device ],
-					                                             temp_partition,
-					                                             dialog.Get_New_Partition( devices[current_device].sector_size ) );
-					operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
-
-					Add_Operation( operation ) ;
-
-					break;
-				}
-			}
+			part_temp.status = STAT_NEW;
+			// On a partition which is pending creation only resize/move and
+			// format operations are possible.  These operations are always
+			// mergeable with the pending operation which will create the
+			// partition.  Hence merge with any earlier operations to achieve
+			// this.
+			mergetype = MERGE_LAST_WITH_ANY;
 		}
-		else  // Normal move/resize on existing partition
+
+		Operation * operation = new OperationResizeMove( devices[current_device],
+		                                                 *selected_partition_ptr,
+		                                                 part_temp );
+		operation->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
+
+		// Display warning if moving a non-extended partition which already exists
+		// on the disk.
+		if ( operation->partition_original.status       != STAT_NEW                              &&
+		     operation->partition_original.sector_start != operation->partition_new.sector_start &&
+		     operation->partition_original.type         != TYPE_EXTENDED                            )
 		{
-			Operation * operation = new OperationResizeMove( devices[current_device],
-			                                                 *selected_partition_ptr,
-			                                                 dialog.Get_New_Partition( devices[current_device].sector_size) );
-			operation ->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
-
-			Add_Operation( operation ) ;
-
-			//Display notification if move operation has been queued
-			if (   operation ->partition_original .sector_start != operation ->partition_new .sector_start
-			    && operation ->partition_original .type != TYPE_EXTENDED
-			   )
-			{
-				//Warn that move operation might break boot process
-				Gtk::MessageDialog dialog( *this
-				                         , _( "Moving a partition might cause your operating system to fail to boot" )
-				                         , false
-				                         , Gtk::MESSAGE_WARNING
-				                         , Gtk::BUTTONS_OK
-				                         , true
-				                         ) ;
-				Glib::ustring tmp_msg =
+			// Warn that move operation might break boot process
+			Gtk::MessageDialog dialog( *this,
+			                           _("Moving a partition might cause your operating system to fail to boot"),
+			                           false,
+			                           Gtk::MESSAGE_WARNING,
+			                           Gtk::BUTTONS_OK,
+			                           true );
+			Glib::ustring tmp_msg =
 					/*TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3. */
 					String::ucompose( _( "You have queued an operation to move the start sector of partition %1." )
 					                , operation ->partition_original .get_path()
 					                ) ;
-				tmp_msg += _( "  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:." ) ;
-				tmp_msg += "\n" ;
-				tmp_msg += _( "You can learn how to repair the boot configuration in the GParted FAQ." ) ;
-				tmp_msg += "\n" ;
-				tmp_msg += "http://gparted.org/faq.php" ;
-				tmp_msg += "\n\n" ;
-				tmp_msg += _( "Moving a partition might take a very long time to apply." ) ;
-				dialog .set_secondary_text( tmp_msg ) ;
-				dialog .run() ;
-			}
-
-			// Try to merge this resize/move operation with the previous
-			// operation only.
-			merge_operations( MERGE_LAST_WITH_PREV );
+			tmp_msg += _("  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:.");
+			tmp_msg += "\n";
+			tmp_msg += _("You can learn how to repair the boot configuration in the GParted FAQ.");
+			tmp_msg += "\n";
+			tmp_msg += "http://gparted.org/faq.php";
+			tmp_msg += "\n\n";
+			tmp_msg += _("Moving a partition might take a very long time to apply.");
+			dialog.set_secondary_text( tmp_msg );
+			dialog.run();
 		}
+
+		Add_Operation( operation );
+		merge_operations( mergetype );
 	}
 
 	show_operationslist() ;
