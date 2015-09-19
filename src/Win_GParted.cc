@@ -717,7 +717,7 @@ void Win_GParted::Add_Operation( Operation * operation )
 		     operation ->type == OPERATION_CHANGE_UUID ||
 		     operation ->type == OPERATION_LABEL_FILESYSTEM ||
 		     operation ->type == OPERATION_NAME_PARTITION ||
-		     gparted_core .snap_to_alignment( operation ->device, operation ->partition_new, error )
+		     gparted_core.snap_to_alignment( operation->device, operation->get_partition_new(), error )
 		   )
 		{
 			operation ->create_description() ;
@@ -1754,9 +1754,9 @@ void Win_GParted::activate_resize()
 
 		// Display warning if moving a non-extended partition which already exists
 		// on the disk.
-		if ( operation->partition_original.status       != STAT_NEW                              &&
-		     operation->partition_original.sector_start != operation->partition_new.sector_start &&
-		     operation->partition_original.type         != TYPE_EXTENDED                            )
+		if ( operation->get_partition_original().status       != STAT_NEW                                    &&
+		     operation->get_partition_original().sector_start != operation->get_partition_new().sector_start &&
+		     operation->get_partition_original().type         != TYPE_EXTENDED                                  )
 		{
 			// Warn that move operation might break boot process
 			Gtk::MessageDialog dialog( *this,
@@ -1768,8 +1768,7 @@ void Win_GParted::activate_resize()
 			Glib::ustring tmp_msg =
 					/*TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3. */
 					String::ucompose( _( "You have queued an operation to move the start sector of partition %1." )
-					                , operation ->partition_original .get_path()
-					                ) ;
+					                , operation->get_partition_original().get_path() );
 			tmp_msg += _("  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:.");
 			tmp_msg += "\n";
 			tmp_msg += _("You can learn how to repair the boot configuration in the GParted FAQ.");
@@ -2029,15 +2028,15 @@ void Win_GParted::activate_delete()
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[t]->partition_new.get_path() == selected_partition_ptr->get_path() )
+			if ( operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path() )
 				remove_operation( t-- ) ;
 				
 		//determine lowest possible new_count
 		new_count = 0 ; 
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[ t ] ->partition_new .status == GParted::STAT_NEW &&
-			     operations[ t ] ->partition_new .partition_number > new_count )
-				new_count = operations[ t ] ->partition_new .partition_number ;
+			if ( operations[t]->get_partition_new().status           == STAT_NEW  &&
+			     operations[t]->get_partition_new().partition_number >  new_count    )
+				new_count = operations[t]->get_partition_new().partition_number;
 			
 		new_count += 1 ;
 
@@ -2774,7 +2773,7 @@ int Win_GParted::partition_in_operation_queue_count( const Partition & partition
 
 	for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 	{
-		if ( partition .get_path() == operations[ t ] ->partition_original .get_path() )
+		if ( partition.get_path() == operations[t]->get_partition_original().get_path() )
 			operation_count++ ;
 	}
 

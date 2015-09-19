@@ -32,6 +32,9 @@ public:
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	Partition & get_partition_new();
+	const Partition & get_partition_new() const;
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 } ;

@@ -217,10 +217,10 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 
 bool OperationResizeMove::merge_operations( const Operation & candidate )
 {
-	if ( candidate.type == OPERATION_RESIZE_MOVE        &&
-	     partition_new  == candidate.partition_original    )
+	if ( candidate.type == OPERATION_RESIZE_MOVE              &&
+	     partition_new  == candidate.get_partition_original()    )
 	{
-		partition_new = candidate.partition_new;
+		partition_new = candidate.get_partition_new();
 		create_description();
 		return true;
 	}

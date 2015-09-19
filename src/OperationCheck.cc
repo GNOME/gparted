@@ -29,6 +29,22 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 	partition_original = partition ;
 }
 
+Partition & OperationCheck::get_partition_new()
+{
+	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
+
+	// Not reached.  Return value to keep compiler quiet.
+	return partition_new;
+}
+
+const Partition & OperationCheck::get_partition_new() const
+{
+	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
+
+	// Not reached.  Return value to keep compiler quiet.
+	return partition_new;
+}
+
 void OperationCheck::apply_to_visual( PartitionVector & partitions )
 {
 }
@@ -43,8 +59,8 @@ void OperationCheck::create_description()
 
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
-	if ( candidate.type     == OPERATION_CHECK              &&
-	     partition_original == candidate.partition_original    )
+	if ( candidate.type     == OPERATION_CHECK                    &&
+	     partition_original == candidate.get_partition_original()    )
 		// No steps required to merge this operation
 		return true;
 

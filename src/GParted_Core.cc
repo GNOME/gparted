@@ -729,83 +729,92 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		// modified in the operation results to inform the user.
 
 		case OPERATION_DELETE:
-			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
-			          && remove_filesystem( operation->partition_original, operation->operation_detail )
-			          && Delete( operation->partition_original, operation->operation_detail );
+			success =    calibrate_partition( operation->get_partition_original(),
+			                                  operation->operation_detail )
+			          && remove_filesystem( operation->get_partition_original(),
+			                                operation->operation_detail )
+			          && Delete( operation->get_partition_original(), operation->operation_detail );
 			break;
 
 		case OPERATION_CHECK:
-			success =    calibrate_partition( operation->partition_original, operation->operation_detail )
-			          && check_repair_filesystem( operation->partition_original,
+			success =    calibrate_partition( operation->get_partition_original(),
+			                                  operation->operation_detail )
+			          && check_repair_filesystem( operation->get_partition_original(),
 			                                      operation->operation_detail )
-			          && maximize_filesystem( operation->partition_original, operation->operation_detail );
+			          && maximize_filesystem( operation->get_partition_original(),
+			                                  operation->operation_detail );
 			break;
 
 		case OPERATION_CREATE:
 			// The partition doesn't exist yet so there's nothing to calibrate.
-			success = create( operation->partition_new, operation->operation_detail );
+			success = create( operation->get_partition_new(), operation->operation_detail );
 			break;
 
 		case OPERATION_RESIZE_MOVE:
-			success = calibrate_partition( operation->partition_original, operation->operation_detail );
+			success = calibrate_partition( operation->get_partition_original(),
+			                               operation->operation_detail );
 			if ( ! success )
 				break;
 
 			// Reset the new partition object's real path in case the name is
 			// "copy of ..." from the previous operation.
-			operation->partition_new.add_path( operation->partition_original.get_path(), true );
+			operation->get_partition_new().add_path( operation->get_partition_original().get_path(), true );
 
-			success = resize_move( operation->partition_original,
-			                       operation->partition_new,
+			success = resize_move( operation->get_partition_original(),
+			                       operation->get_partition_new(),
 			                       operation->operation_detail );
 			break;
 
 		case OPERATION_FORMAT:
-			success = calibrate_partition( operation->partition_new, operation->operation_detail );
+			success = calibrate_partition( operation->get_partition_new(), operation->operation_detail );
 			if ( ! success )
 				break;
 
 			// Reset the original partition object's real path in case the
 			// name is "copy of ..." from the previous operation.
-			operation->partition_original.add_path( operation->partition_new.get_path(), true );
+			operation->get_partition_original().add_path( operation->get_partition_new().get_path(), true );
 
-			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
-			          && format( operation->partition_new, operation->operation_detail );
+			success =    remove_filesystem( operation->get_partition_original(),
+			                                operation->operation_detail )
+			          && format( operation->get_partition_new(), operation->operation_detail );
 			break;
 
 		case OPERATION_COPY:
+		{
 			//FIXME: in case of a new partition we should make sure the new partition is >= the source partition... 
 			//i think it's best to do this in the dialog_paste
 
-			success =    calibrate_partition( static_cast<OperationCopy*>( operation )->partition_copied,
-			                                  operation->operation_detail )
+			OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
+			success =    calibrate_partition( copy_op->get_partition_copied(),
+			                                  copy_op->operation_detail )
 			             // Only calibrate the destination when pasting into an existing
 			             // partition, rather than when creating a new partition.
-                                  && ( operation->partition_original.type == TYPE_UNALLOCATED                       ||
-			               calibrate_partition( operation->partition_new, operation->operation_detail )    );
+                                  && ( copy_op->get_partition_original().type == TYPE_UNALLOCATED                     ||
+			               calibrate_partition( copy_op->get_partition_new(), copy_op->operation_detail )    );
 			if ( ! success )
 				break;
 
-			success =    remove_filesystem( operation->partition_original, operation->operation_detail )
-			          && copy( static_cast<OperationCopy*>( operation )->partition_copied,
-			                   operation->partition_new,
-			                   static_cast<OperationCopy*>( operation )->partition_copied.get_byte_length(),
-			                   operation->operation_detail );
+			success =    remove_filesystem( copy_op->get_partition_original(), copy_op->operation_detail )
+			          && copy( copy_op->get_partition_copied(),
+			                   copy_op->get_partition_new(),
+			                   copy_op->get_partition_copied().get_byte_length(),
+			                   copy_op->operation_detail );
 			break;
+		}
 
 		case OPERATION_LABEL_FILESYSTEM:
-			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
-			          && label_filesystem( operation->partition_new, operation->operation_detail );
+			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
+			          && label_filesystem( operation->get_partition_new(), operation->operation_detail );
 			break;
 
 		case OPERATION_NAME_PARTITION:
-			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
-			          && name_partition( operation->partition_new, operation->operation_detail );
+			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
+			          && name_partition( operation->get_partition_new(), operation->operation_detail );
 			break;
 
 		case OPERATION_CHANGE_UUID:
-			success =    calibrate_partition( operation->partition_new, operation->operation_detail )
-			          && change_uuid( operation ->partition_new, operation ->operation_detail ) ;
+			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
+			          && change_uuid( operation->get_partition_new(), operation->operation_detail );
 			break;
 	}
 

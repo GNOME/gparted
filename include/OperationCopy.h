@@ -32,14 +32,17 @@ public:
 		       const Partition & partition_new,
 		       const Partition & partition_copied ) ;
 
-	void apply_to_visual( PartitionVector & partitions );
+	Partition & get_partition_copied()              { return partition_copied; };
+	const Partition & get_partition_copied() const  { return partition_copied; };
 
-	Partition partition_copied ;
+	void apply_to_visual( PartitionVector & partitions );
 
 private:
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
-} ;
+
+	Partition partition_copied;
+};
 
 } //GParted
 

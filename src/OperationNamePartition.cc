@@ -56,10 +56,10 @@ void OperationNamePartition::create_description()
 
 bool OperationNamePartition::merge_operations( const Operation & candidate )
 {
-	if ( candidate.type == OPERATION_NAME_PARTITION     &&
-	     partition_new  == candidate.partition_original    )
+	if ( candidate.type == OPERATION_NAME_PARTITION           &&
+	     partition_new  == candidate.get_partition_original()    )
 	{
-		partition_new.name = candidate.partition_new.name;
+		partition_new.name = candidate.get_partition_new().name;
 		create_description();
 		return true;
 	}

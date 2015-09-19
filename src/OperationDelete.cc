@@ -30,6 +30,22 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	this ->partition_original = partition_orig ;
 }
 
+Partition & OperationDelete::get_partition_new()
+{
+	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
+
+	// Not reached.  Return value to keep compiler quiet.
+	return partition_new;
+}
+
+const Partition & OperationDelete::get_partition_new() const
+{
+	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
+
+	// Not reached.  Return value to keep compiler quiet.
+	return partition_new;
+}
+
 void OperationDelete::apply_to_visual( PartitionVector & partitions )
 {
 	int index_extended;

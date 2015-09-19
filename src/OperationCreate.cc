@@ -16,6 +16,8 @@
  */
 
 #include "../include/OperationCreate.h"
+#include "../include/OperationFormat.h"
+#include "../include/OperationResizeMove.h"
 #include "../include/Partition.h"
 #include "../include/PartitionVector.h"
 
@@ -66,23 +68,23 @@ void OperationCreate::create_description()
 
 bool OperationCreate::merge_operations( const Operation & candidate )
 {
-	if ( candidate.type                      == OPERATION_FORMAT             &&
-	     candidate.partition_original.status == STAT_NEW                     &&
-	     partition_new                       == candidate.partition_original    )
+	if ( candidate.type                            == OPERATION_FORMAT                   &&
+	     candidate.get_partition_original().status == STAT_NEW                           &&
+	     partition_new                             == candidate.get_partition_original()    )
 	{
 		// Merge a format operation on a not yet created partition with the
 		// earlier operation which will create it.
-		partition_new = candidate.partition_new;
+		partition_new = candidate.get_partition_new();
 		create_description();
 		return true;
 	}
-	else if ( candidate.type                      == OPERATION_RESIZE_MOVE        &&
-	          candidate.partition_original.status == STAT_NEW                     &&
-	          partition_new                       == candidate.partition_original    )
+	else if ( candidate.type                            == OPERATION_RESIZE_MOVE              &&
+	          candidate.get_partition_original().status == STAT_NEW                           &&
+	          partition_new                             == candidate.get_partition_original()    )
 	{
 		// Merge a resize/move operation on a not yet created partition with the
 		// earlier operation which will create it.
-		partition_new = candidate.partition_new;
+		partition_new = candidate.get_partition_new();
 		create_description();
 		return true;
 	}

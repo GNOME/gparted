@@ -45,6 +45,11 @@ public:
 	Operation() ;
 	virtual ~Operation() {}
 
+	Partition & get_partition_original()                 { return partition_original; };
+	const Partition & get_partition_original() const     { return partition_original; };
+	virtual Partition & get_partition_new()              { return partition_new; };
+	const virtual Partition & get_partition_new() const  { return partition_new; };
+
 	virtual void apply_to_visual( PartitionVector & partitions ) = 0;
 	virtual void create_description() = 0 ;
 	virtual bool merge_operations( const Operation & candidate ) = 0;
@@ -52,8 +57,6 @@ public:
 	//public variables
 	Device device ;
 	OperationType type ;
-	Partition partition_original ; 
-	Partition partition_new ;
 
 	Glib::RefPtr<Gdk::Pixbuf> icon ;
 	Glib::ustring description ;
@@ -68,6 +71,9 @@ protected:
 	                         Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
 	void substitute_new( PartitionVector & partitions );
 	void insert_new( PartitionVector & partitions );
+
+	Partition partition_original;
+	Partition partition_new;
 };
 
 } //GParted
