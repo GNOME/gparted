@@ -758,6 +758,30 @@ bool Win_GParted::merge_two_operations( unsigned int first, unsigned int second 
 	return false;
 }
 
+// Try to merge pending operations in the operations[] vector using the specified merge
+// type.
+//
+// Summary of all the operation merging rules for each operation type coded into the
+// ::activate_*() methods:
+//
+// Operation type      Partition status    Merge type             Method
+// -----------------   ----------------    --------------------   -----------------
+// resize/move         Real                MERGE_LAST_WITH_PREV   activate_resize()
+// resize/move         New                 MERGE_LAST_WITH_ANY    activate_resize()
+// paste               *                   none                   activate_paste()
+// new                 *                   none                   activate_new()
+// delete              Real                none                   activate_delete()
+// delete              New                 MERGE_ALL_ADJACENT     activate_delete()
+// format              Real                MERGE_LAST_WITH_PREV   activate_format()
+// format              New                 MERGE_LAST_WITH_ANY    activate_format()
+// check               Real [1]            MERGE_LAST_WITH_ANY    activate_check()
+// label file system   Real [1]            MERGE_LAST_WITH_ANY    activate_label_filesystem()
+// name partition      Real [1]            MERGE_LAST_WITH_ANY    activate_name_partition()
+// new UUID            Real [1]            MERGE_LAST_WITH_ANY    activate_change_uuid()
+//
+// [1] The UI only allows these operations to be applied to real partitions; where as the
+//     other mergeable operations can be applied to both real partitions and new, pending
+//     create partitions.
 void Win_GParted::merge_operations( MergeType mergetype )
 {
 	unsigned int num_ops = operations.size();
