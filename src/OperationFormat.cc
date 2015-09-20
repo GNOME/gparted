@@ -28,13 +28,24 @@ OperationFormat::OperationFormat( const Device & device,
 	type = OPERATION_FORMAT ;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
-	this ->partition_new = partition_new ;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+}
+
+OperationFormat::~OperationFormat()
+{
+	delete partition_original;
+	delete partition_new;
+	partition_original = NULL;
+	partition_new = NULL;
 }
 
 void OperationFormat::apply_to_visual( PartitionVector & partitions )
 {
-	if ( partition_original.whole_device && partition_new.filesystem == FS_CLEARED )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( partition_original->whole_device && partition_new->filesystem == FS_CLEARED )
 	{
 		// Make format to cleared whole disk device file system preview as
 		// unallocated device, matching what happens when implemented.
@@ -57,18 +68,24 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 
 void OperationFormat::create_description() 
 {
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
 	description = String::ucompose( _("Format %1 as %2"),
-					partition_original .get_path(),
-					Utils::get_filesystem_string( partition_new .filesystem ) ) ;
+	                                partition_original->get_path(),
+	                                Utils::get_filesystem_string( partition_new->filesystem ) );
 }
 
 bool OperationFormat::merge_operations( const Operation & candidate )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	if ( candidate.type == OPERATION_FORMAT                   &&
-	     partition_new  == candidate.get_partition_original()    )
+	     *partition_new == candidate.get_partition_original()    )
 	{
-		partition_new = candidate.get_partition_new();
+		delete partition_new;
+		partition_new = new Partition( candidate.get_partition_new() );
 		create_description();
 		return true;
 	}

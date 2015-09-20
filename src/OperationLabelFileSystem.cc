@@ -28,8 +28,16 @@ OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
 	type = OPERATION_LABEL_FILESYSTEM;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
-	this ->partition_new = partition_new ;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+}
+
+OperationLabelFileSystem::~OperationLabelFileSystem()
+{
+	delete partition_original;
+	delete partition_new;
+	partition_original = NULL;
+	partition_new = NULL;
 }
 
 void OperationLabelFileSystem::apply_to_visual( PartitionVector & partitions )
@@ -39,24 +47,31 @@ void OperationLabelFileSystem::apply_to_visual( PartitionVector & partitions )
 
 void OperationLabelFileSystem::create_description()
 {
-	if( partition_new.get_filesystem_label().empty() ) {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if( partition_new->get_filesystem_label().empty() )
+	{
 		/* TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3 */
 		description = String::ucompose( _("Clear file system label on %1"),
-		                                partition_new.get_path() );
-	} else {
+		                                partition_new->get_path() );
+	}
+	else
+	{
 		/* TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3 */
 		description = String::ucompose( _("Set file system label \"%1\" on %2"),
-		                                partition_new.get_filesystem_label(),
-		                                partition_new.get_path() );
+		                                partition_new->get_filesystem_label(),
+		                                partition_new->get_path() );
 	}
 }
 
 bool OperationLabelFileSystem::merge_operations( const Operation & candidate )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	if ( candidate.type == OPERATION_LABEL_FILESYSTEM         &&
-	     partition_new  == candidate.get_partition_original()    )
+	     *partition_new == candidate.get_partition_original()    )
 	{
-		partition_new.set_filesystem_label( candidate.get_partition_new().get_filesystem_label() );
+		partition_new->set_filesystem_label( candidate.get_partition_new().get_filesystem_label() );
 		create_description();
 		return true;
 	}

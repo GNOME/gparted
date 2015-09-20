@@ -29,13 +29,23 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 	type = OPERATION_RESIZE_MOVE ;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
-	this ->partition_new = partition_new ;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+}
+
+OperationResizeMove::~OperationResizeMove()
+{
+	delete partition_original;
+	delete partition_new;
+	partition_original = NULL;
+	partition_new = NULL;
 }
 
 void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 {
-	if ( partition_original .type == GParted::TYPE_EXTENDED )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( partition_original->type == TYPE_EXTENDED )
 		apply_extended_to_visual( partitions ) ;
 	else 
 		apply_normal_to_visual( partitions ) ;
@@ -43,6 +53,9 @@ void OperationResizeMove::apply_to_visual( PartitionVector & partitions )
 
 void OperationResizeMove::create_description() 
 {
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
 	{
@@ -58,41 +71,46 @@ void OperationResizeMove::create_description()
 	} ;
 	Action action = NONE ;
 
-	if ( partition_new .get_sector_length() > partition_original .get_sector_length() ) {
+	if ( partition_new->get_sector_length() > partition_original->get_sector_length() )
+	{
 		//Grow partition
 		action = GROW ;
-		if ( partition_new .sector_start > partition_original .sector_start )
+		if ( partition_new->sector_start > partition_original->sector_start )
 			action = MOVE_RIGHT_GROW ;
-		if ( partition_new .sector_start < partition_original .sector_start )
+		if ( partition_new->sector_start < partition_original->sector_start )
 			action = MOVE_LEFT_GROW ;
-	} else if ( partition_new .get_sector_length() < partition_original .get_sector_length() ) {
+	}
+	else if ( partition_new->get_sector_length() < partition_original->get_sector_length() )
+	{
 		//Shrink partition
 		action = SHRINK ;
-		if ( partition_new .sector_start > partition_original .sector_start )
+		if ( partition_new->sector_start > partition_original->sector_start )
 			action = MOVE_RIGHT_SHRINK ;
-		if ( partition_new .sector_start < partition_original .sector_start )
+		if ( partition_new->sector_start < partition_original->sector_start )
 			action = MOVE_LEFT_SHRINK ;
-	} else {
+	}
+	else
+	{
 		//No change in partition size
-		if ( partition_new .sector_start > partition_original .sector_start )
+		if ( partition_new->sector_start > partition_original->sector_start )
 			action = MOVE_RIGHT ;
-		if ( partition_new .sector_start < partition_original .sector_start )
+		if ( partition_new->sector_start < partition_original->sector_start )
 			action = MOVE_LEFT ;
 	}
 
 	switch ( action )
 	{
 		case NONE		:
-			description = String::ucompose( _("resize/move %1"), partition_original .get_path() ) ;
+			description = String::ucompose( _("resize/move %1"), partition_original->get_path() );
 			description += " (" ;
 			description += _("new and old partition have the same size and position.  Hence continuing anyway") ;
 			description += ")" ;
 			break ;
 		case MOVE_RIGHT		:
-			description = String::ucompose( _("Move %1 to the right"), partition_original .get_path() ) ;
+			description = String::ucompose( _("Move %1 to the right"), partition_original->get_path() );
 			break ;
 		case MOVE_LEFT		:
-			description = String::ucompose( _("Move %1 to the left"), partition_original .get_path() ) ;
+			description = String::ucompose( _("Move %1 to the left"), partition_original->get_path() );
 			break ;
 		case GROW 		:
 			description = _("Grow %1 from %2 to %3") ;
@@ -116,17 +134,22 @@ void OperationResizeMove::create_description()
 
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
 		description = String::ucompose( description,
-						partition_original .get_path(),
-						Utils::format_size( partition_original .get_sector_length(), partition_original .sector_size ),
-						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ) ;
+		                                partition_original->get_path(),
+		                                Utils::format_size( partition_original->get_sector_length(),
+		                                                    partition_original->sector_size ),
+		                                Utils::format_size( partition_new->get_sector_length(),
+		                                                    partition_new->sector_size ) );
 }
 
 void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 {
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	int index_extended;
 	int index;
 
-	if ( partition_original .inside_extended )
+	if ( partition_original->inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
 			
@@ -136,7 +159,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals[index] = partition_new;
+				partitions[index_extended].logicals[index] = *partition_new;
 				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
 
 				insert_unallocated( partitions[index_extended].logicals,
@@ -153,7 +176,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 		if ( index >= 0 )
 		{
-			partitions[ index ] = partition_new ;
+			partitions[index] = *partition_new;
 			remove_adjacent_unallocated( partitions, index ) ;
 
 			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
@@ -163,6 +186,8 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	int index_extended;
 
 	//stuff OUTSIDE extended partition
@@ -175,8 +200,8 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 		index_extended = find_index_extended( partitions ) ;
 		if ( index_extended >= 0 )
 		{
-			partitions[ index_extended ] .sector_start = partition_new .sector_start ;
-			partitions[ index_extended ] .sector_end = partition_new .sector_end ;
+			partitions[index_extended].sector_start = partition_new->sector_start;
+			partitions[index_extended].sector_end   = partition_new->sector_end;
 		}
 	
 		insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
@@ -217,10 +242,13 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 
 bool OperationResizeMove::merge_operations( const Operation & candidate )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	if ( candidate.type == OPERATION_RESIZE_MOVE              &&
-	     partition_new  == candidate.get_partition_original()    )
+	     *partition_new == candidate.get_partition_original()    )
 	{
-		partition_new = candidate.get_partition_new();
+		delete partition_new;
+		partition_new = new Partition( candidate.get_partition_new() );
 		create_description();
 		return true;
 	}

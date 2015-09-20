@@ -28,10 +28,14 @@ class OperationCheck : public Operation
 {
 public:
 	OperationCheck( const Device & device, const Partition & partition ) ;
+	~OperationCheck();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationCheck( const OperationCheck & src );              // Not implemented copy constructor
+	OperationCheck & operator=( const OperationCheck & rhs );  // Not implemented copy assignment operator
+
 	Partition & get_partition_new();
 	const Partition & get_partition_new() const;
 

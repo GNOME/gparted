@@ -31,17 +31,21 @@ public:
 		       const Partition & partition_orig,
 		       const Partition & partition_new,
 		       const Partition & partition_copied ) ;
+	~OperationCopy();
 
-	Partition & get_partition_copied()              { return partition_copied; };
-	const Partition & get_partition_copied() const  { return partition_copied; };
+	Partition & get_partition_copied();
+	const Partition & get_partition_copied() const;
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationCopy( const OperationCopy & src );              // Not implemented copy constructor
+	OperationCopy & operator=( const OperationCopy & rhs );  // Not implemented copy assignment operator
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 
-	Partition partition_copied;
+	Partition * partition_copied;
 };
 
 } //GParted

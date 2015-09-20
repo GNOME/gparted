@@ -31,8 +31,16 @@ OperationCreate::OperationCreate( const Device & device,
 	type = OPERATION_CREATE ;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
-	this ->partition_new = partition_new ;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+}
+
+OperationCreate::~OperationCreate()
+{
+	delete partition_original;
+	delete partition_new;
+	partition_original = NULL;
+	partition_new = NULL;
 }
 
 void OperationCreate::apply_to_visual( PartitionVector & partitions )
@@ -42,7 +50,9 @@ void OperationCreate::apply_to_visual( PartitionVector & partitions )
 
 void OperationCreate::create_description() 
 {
-	switch( partition_new .type )
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
+	switch( partition_new->type )
 	{
 		case GParted::TYPE_PRIMARY	:
 			description = _("Primary Partition");
@@ -59,32 +69,37 @@ void OperationCreate::create_description()
 	}
 	/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda */
 	description = String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
-				 	description, 
-					partition_new .partition_number, 
-					Utils::get_filesystem_string( partition_new .filesystem ), 
-					Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ),
-					device .get_path() ) ;
+	                                description,
+	                                partition_new->partition_number,
+	                                Utils::get_filesystem_string( partition_new->filesystem ),
+	                                Utils::format_size( partition_new->get_sector_length(),
+	                                                    partition_new->sector_size ),
+	                                device.get_path() );
 }
 
 bool OperationCreate::merge_operations( const Operation & candidate )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	if ( candidate.type                            == OPERATION_FORMAT                   &&
 	     candidate.get_partition_original().status == STAT_NEW                           &&
-	     partition_new                             == candidate.get_partition_original()    )
+	     *partition_new                            == candidate.get_partition_original()    )
 	{
 		// Merge a format operation on a not yet created partition with the
 		// earlier operation which will create it.
-		partition_new = candidate.get_partition_new();
+		delete partition_new;
+		partition_new = new Partition( candidate.get_partition_new() );
 		create_description();
 		return true;
 	}
 	else if ( candidate.type                            == OPERATION_RESIZE_MOVE              &&
 	          candidate.get_partition_original().status == STAT_NEW                           &&
-	          partition_new                             == candidate.get_partition_original()    )
+	          *partition_new                            == candidate.get_partition_original()    )
 	{
 		// Merge a resize/move operation on a not yet created partition with the
 		// earlier operation which will create it.
-		partition_new = candidate.get_partition_new();
+		delete partition_new;
+		partition_new = new Partition( candidate.get_partition_new() );
 		create_description();
 		return true;
 	}

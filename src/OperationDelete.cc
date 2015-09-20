@@ -27,7 +27,13 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	type = OPERATION_DELETE ;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
+	this->partition_original = new Partition( partition_orig );
+}
+
+OperationDelete::~OperationDelete()
+{
+	delete partition_original;
+	partition_original = NULL;
 }
 
 Partition & OperationDelete::get_partition_new()
@@ -35,7 +41,7 @@ Partition & OperationDelete::get_partition_new()
 	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return partition_new;
+	return *partition_new;
 }
 
 const Partition & OperationDelete::get_partition_new() const
@@ -43,15 +49,17 @@ const Partition & OperationDelete::get_partition_new() const
 	g_assert( false );  // Bug: OperationDelete class doesn't use partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return partition_new;
+	return *partition_new;
 }
 
 void OperationDelete::apply_to_visual( PartitionVector & partitions )
 {
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
 	int index_extended;
 	int index;
 
-	if ( partition_original .inside_extended )
+	if ( partition_original->inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
 		
@@ -72,10 +80,10 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 				// If deleted partition was logical we have to decrease
 				// the partition numbers of the logicals with higher
 				// numbers by one (only if its a real partition)
-				if ( partition_original.status != STAT_NEW )
+				if ( partition_original->status != STAT_NEW )
 					for ( unsigned int t = 0 ; t < partitions[index_extended].logicals .size() ; t++ )
 						if ( partitions[index_extended].logicals[t].partition_number >
-						     partition_original.partition_number                       )
+						     partition_original->partition_number                      )
 							partitions[index_extended].logicals[t].Update_Number(
 								partitions[index_extended].logicals[t].partition_number -1 );
 			}
@@ -96,17 +104,20 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 
 void OperationDelete::create_description() 
 {
-	if ( partition_original.type == GParted::TYPE_LOGICAL )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( partition_original->type == TYPE_LOGICAL )
 		description = _("Logical Partition") ;
 	else
-		description = partition_original .get_path() ;
+		description = partition_original->get_path();
 
 	/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
 	description = String::ucompose( _("Delete %1 (%2, %3) from %4"),
-					description,
-					Utils::get_filesystem_string( partition_original .filesystem ), 
-					Utils::format_size( partition_original .get_sector_length(), partition_original .sector_size ),
-					partition_original .device_path ) ;
+	                                description,
+	                                Utils::get_filesystem_string( partition_original->filesystem ),
+	                                Utils::format_size( partition_original->get_sector_length(),
+	                                                    partition_original->sector_size ),
+	                                partition_original->device_path );
 }
 
 bool OperationDelete::merge_operations( const Operation & candidate )

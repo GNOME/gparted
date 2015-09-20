@@ -28,10 +28,14 @@ class OperationDelete : public Operation
 {
 public:
 	OperationDelete( const Device & device, const Partition & partition_orig ) ;
+	~OperationDelete();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationDelete( const OperationDelete & src );              // Not implemented copy constructor
+	OperationDelete & operator=( const OperationDelete & rhs );  // Not implemented copy assignment operator
+
 	Partition & get_partition_new();
 	const Partition & get_partition_new() const;
 

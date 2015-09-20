@@ -30,10 +30,14 @@ public:
 	OperationLabelFileSystem( const Device & device,
 	                          const Partition & partition_orig,
 	                          const Partition & partition_new );
+	~OperationLabelFileSystem();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationLabelFileSystem( const OperationLabelFileSystem & src );              // Not implemented copy constructor
+	OperationLabelFileSystem & operator=( const OperationLabelFileSystem & rhs );  // Not implemented copy assignment operator
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 } ;

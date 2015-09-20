@@ -30,17 +30,43 @@ OperationCopy::OperationCopy( const Device & device,
 	type = OPERATION_COPY ;
 
 	this->device = device.get_copy_without_partitions();
-	this ->partition_original = partition_orig ;
-	this ->partition_new = partition_new ;
-	this ->partition_copied = partition_copied ;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+	this->partition_copied   = new Partition( partition_copied );
 
-	this ->partition_new .add_path(  
-		String::ucompose( _("copy of %1"), this ->partition_copied .get_path() ), true ) ;
+	this->partition_new->add_path(
+			String::ucompose( _("copy of %1"), this->partition_copied->get_path() ), true );
+}
+
+OperationCopy::~OperationCopy()
+{
+	delete partition_original;
+	delete partition_new;
+	delete partition_copied;
+	partition_original = NULL;
+	partition_new = NULL;
+	partition_copied = NULL;
+}
+
+Partition & OperationCopy::get_partition_copied()
+{
+	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+
+	return *partition_copied;
+}
+
+const Partition & OperationCopy::get_partition_copied() const
+{
+	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+
+	return *partition_copied;
 }
 
 void OperationCopy::apply_to_visual( PartitionVector & partitions )
 {
-	if ( partition_original.type == TYPE_UNALLOCATED )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( partition_original->type == TYPE_UNALLOCATED )
 		// Paste into unallocated space creating new partition
 		insert_new( partitions );
 	else
@@ -50,20 +76,25 @@ void OperationCopy::apply_to_visual( PartitionVector & partitions )
 
 void OperationCopy::create_description() 
 {
-	if ( partition_original .type == GParted::TYPE_UNALLOCATED )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+	g_assert( partition_copied != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( partition_original->type == TYPE_UNALLOCATED )
 	{
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB) */
 		description = String::ucompose( _("Copy %1 to %2 (start at %3)"),
-					        partition_copied .get_path(),
-					        device .get_path(),
-					        Utils::format_size( partition_new .sector_start, partition_new .sector_size ) ) ;
+		                                partition_copied->get_path(),
+		                                device.get_path(),
+		                                Utils::format_size( partition_new->sector_start,
+		                                                    partition_new->sector_size ) );
 	}
 	else
 	{
 		/*TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1 */
 		description = String::ucompose( _("Copy %1 to %2"),
-					        partition_copied .get_path(),
-						partition_original .get_path() ) ;
+		                                partition_copied->get_path(),
+		                                partition_original->get_path() );
 	}
 }
 

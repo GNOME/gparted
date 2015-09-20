@@ -31,10 +31,14 @@ public:
 	                   , const Partition & partition_orig
 	                   , const Partition & partition_new
 	                   ) ;
+	~OperationChangeUUID();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationChangeUUID( const OperationChangeUUID & src );              // Not implemented copy constructor
+	OperationChangeUUID & operator=( const OperationChangeUUID & rhs );  // Not implemented copy assignment operator
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 } ;

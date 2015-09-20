@@ -30,10 +30,14 @@ public:
 	OperationResizeMove( const Device & device,
 			     const Partition & partition_orig,
 			     const Partition & partition_new ) ;
+	~OperationResizeMove();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationResizeMove( const OperationResizeMove & src );              // Not implemented copy constructor
+	OperationResizeMove & operator=( const OperationResizeMove & rhs );  // Not implemented copy assignment operator
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 

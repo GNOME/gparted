@@ -30,10 +30,14 @@ public:
 	OperationCreate( const Device & device,
 			 const Partition & partition_orig,
 			 const Partition & partition_new ) ;
+	~OperationCreate();
 
 	void apply_to_visual( PartitionVector & partitions );
 
 private:
+	OperationCreate( const OperationCreate & src );              // Not implemented copy constructor
+	OperationCreate & operator=( const OperationCreate & rhs );  // Not implemented copy assignment operator
+
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 } ;

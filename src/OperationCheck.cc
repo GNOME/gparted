@@ -26,7 +26,13 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 	type = OPERATION_CHECK ;
 
 	this->device = device.get_copy_without_partitions();
-	partition_original = partition ;
+	this->partition_original = new Partition( partition );
+}
+
+OperationCheck::~OperationCheck()
+{
+	delete partition_original;
+	partition_original = NULL;
 }
 
 Partition & OperationCheck::get_partition_new()
@@ -34,7 +40,7 @@ Partition & OperationCheck::get_partition_new()
 	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return partition_new;
+	return *partition_new;
 }
 
 const Partition & OperationCheck::get_partition_new() const
@@ -42,7 +48,7 @@ const Partition & OperationCheck::get_partition_new() const
 	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
 
 	// Not reached.  Return value to keep compiler quiet.
-	return partition_new;
+	return *partition_new;
 }
 
 void OperationCheck::apply_to_visual( PartitionVector & partitions )
@@ -51,16 +57,20 @@ void OperationCheck::apply_to_visual( PartitionVector & partitions )
 
 void OperationCheck::create_description() 
 {
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
 	/*TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4 */
 	description = String::ucompose( _("Check and repair file system (%1) on %2"),
-					Utils::get_filesystem_string( partition_original .filesystem ),	
-					partition_original .get_path() ) ;
+	                                Utils::get_filesystem_string( partition_original->filesystem ),
+	                                partition_original->get_path() );
 }
 
 bool OperationCheck::merge_operations( const Operation & candidate )
 {
-	if ( candidate.type     == OPERATION_CHECK                    &&
-	     partition_original == candidate.get_partition_original()    )
+	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if ( candidate.type      == OPERATION_CHECK                    &&
+	     *partition_original == candidate.get_partition_original()    )
 		// No steps required to merge this operation
 		return true;
 

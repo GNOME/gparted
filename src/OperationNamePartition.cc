@@ -28,8 +28,16 @@ OperationNamePartition::OperationNamePartition( const Device & device,
 	type = OPERATION_NAME_PARTITION;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = partition_orig;
-	this->partition_new = partition_new;
+	this->partition_original = new Partition( partition_orig );
+	this->partition_new      = new Partition( partition_new );
+}
+
+OperationNamePartition::~OperationNamePartition()
+{
+	delete partition_original;
+	delete partition_new;
+	partition_original = NULL;
+	partition_new = NULL;
 }
 
 void OperationNamePartition::apply_to_visual( PartitionVector & partitions )
@@ -39,27 +47,31 @@ void OperationNamePartition::apply_to_visual( PartitionVector & partitions )
 
 void OperationNamePartition::create_description()
 {
-	if( partition_new.name.empty() )
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
+	if( partition_new->name.empty() )
 	{
 		/* TO TRANSLATORS: looks like   Clear partition name on /dev/hda3 */
 		description = String::ucompose( _("Clear partition name on %1"),
-		                                partition_new.get_path() );
+		                                partition_new->get_path() );
 	}
 	else
 	{
 		/* TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3 */
 		description = String::ucompose( _("Set partition name \"%1\" on %2"),
-		                                partition_new.name,
-		                                partition_new.get_path() );
+		                                partition_new->name,
+		                                partition_new->get_path() );
 	}
 }
 
 bool OperationNamePartition::merge_operations( const Operation & candidate )
 {
+	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
+
 	if ( candidate.type == OPERATION_NAME_PARTITION           &&
-	     partition_new  == candidate.get_partition_original()    )
+	     *partition_new == candidate.get_partition_original()    )
 	{
-		partition_new.name = candidate.get_partition_new().name;
+		partition_new->name = candidate.get_partition_new().name;
 		create_description();
 		return true;
 	}
