@@ -1633,6 +1633,7 @@ void Win_GParted::menu_help_about()
 	//See also AUTHORS file -- names listed in opposite order to try to be fair.
 	strings .push_back( "Sinlu Bes <e80f00@gmail.com>" ) ;
 	strings .push_back( "Luca Bruno <lucab@debian.org>" ) ;
+	strings .push_back( "Wrolf Courtney <wrolf@wrolf.net>" ) ;
 	strings .push_back( "Jérôme Dumesnil <jerome.dumesnil@gmail.com>" ) ;
 	strings .push_back( "Markus Elfring <elfring@users.sourceforge.net>" ) ;
 	strings .push_back( "Mike Fleetwood <mike.fleetwood@googlemail.com>" ) ;
