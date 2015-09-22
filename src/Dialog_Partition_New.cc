@@ -224,19 +224,6 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 		part_temp.sector_start = new_partition.sector_start;
 	if ( (new_partition.sector_end - part_temp.sector_end) < (MEBIBYTE / sector_size) )
 		part_temp.sector_end = new_partition.sector_end;
-	
-	//if new is extended...
-	if ( part_temp .type == GParted::TYPE_EXTENDED )
-	{
-		Partition UNALLOCATED ;
-		UNALLOCATED.Set_Unallocated( part_temp.device_path,
-		                             part_temp.whole_device,
-		                             part_temp.sector_start,
-		                             part_temp.sector_end,
-		                             sector_size,
-		                             true );
-		part_temp .logicals .push_back( UNALLOCATED ) ;
-	}
 
 	//set alignment
 	switch ( optionmenu_alignment .get_history() )
@@ -259,6 +246,39 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	}
 
 	part_temp .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
+
+	// Create unallocated space within this new extended partition
+	//
+	// FIXME:
+	// Even after moving creation of the unallocated space within this new extended
+	// partition to here after the above alignment adjustment, the boundaries of the
+	// extended partition may be further adjusted by snap_to_alignment().  However the
+	// UI when creating logical partitions within this extended partition will use the
+	// boundaries as defined now by this unallocated space.  Hence boundaries of
+	// logical partitions may be wrong or overlapping.
+	//
+	// Test case:
+	// On an empty MSDOS formatted disk, create a cylinder aligned extended partition.
+	// Then create a default MiB aligned logical partition filling the extended
+	// partition.  Apply the operations.  Creation of logical partition fails with
+	// libparted message "Can't have overlapping partitions."
+	//
+	// To fix this properly all the alignment constraints need to be applied here in
+	// the dialogs which create and modify partition boundaries.  The logic in
+	// snap_to_alignment() needs including in it.  It will need abstracting into a set
+	// of methods so that it can be used in each dialog which creates and modified
+	// partition boundaries.
+	if ( part_temp.type == TYPE_EXTENDED )
+	{
+		Partition unallocated;
+		unallocated.Set_Unallocated( part_temp.device_path,
+		                             part_temp.whole_device,
+		                             part_temp.sector_start,
+		                             part_temp.sector_end,
+		                             sector_size,
+		                             true );
+		part_temp.logicals.push_back( unallocated );
+	}
 
 	return part_temp;
 }
