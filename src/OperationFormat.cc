@@ -47,22 +47,9 @@ void OperationFormat::apply_to_visual( std::vector<Partition> & partitions )
 		                                false );
 		partitions.push_back( temp_partition );
 	}
-	else if ( partition_original.inside_extended )
-	{
-		index_extended = find_index_extended( partitions ) ;
-		
-		if ( index_extended >= 0 )
-			index = find_index_original( partitions[ index_extended ] .logicals ) ;
-
-		if ( index >= 0 )
-			partitions[ index_extended ] .logicals[ index ] = partition_new ;
-	}
 	else
 	{
-		index = find_index_original( partitions ) ;
-
-		if ( index >= 0 )
-			partitions[ index ] = partition_new ;
+		substitute_new( partitions );
 	}
 }
 

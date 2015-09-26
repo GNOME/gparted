@@ -32,23 +32,7 @@ OperationLabelFileSystem::OperationLabelFileSystem( const Device & device,
 
 void OperationLabelFileSystem::apply_to_visual( std::vector<Partition> & partitions )
 {
-	if ( partition_original .inside_extended )
-	{
-		index_extended = find_index_extended( partitions ) ;
-
-		if ( index_extended >= 0 )
-			index = find_index_original( partitions[ index_extended ] .logicals ) ;
-
-		if ( index >= 0 )
-			partitions[ index_extended ] .logicals[ index ] = partition_new ;
-	}
-	else
-	{
-		index = find_index_original( partitions ) ;
-
-		if ( index >= 0 )
-			partitions[ index ] = partition_new ;
-	}
+	substitute_new( partitions );
 }
 
 void OperationLabelFileSystem::create_description()
