@@ -60,6 +60,7 @@ public:
 
 protected:
 	int find_index_original( const std::vector<Partition> & partitions ) ;
+	int find_index_new( const std::vector<Partition> & partitions );
 	int find_index_extended( const std::vector<Partition> & partitions ) ;
 	void insert_unallocated( std::vector<Partition> & partitions, Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
 

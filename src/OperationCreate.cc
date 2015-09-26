@@ -33,15 +33,24 @@ OperationCreate::OperationCreate( const Device & device,
 	
 void OperationCreate::apply_to_visual( std::vector<Partition> & partitions ) 
 {
+	// Create operations are unique in that they apply to unallocated space.  It only
+	// matters that the new partition being created fits in an unallocated space when
+	// visually re-applying this operation to the disk graphic.  Hence the use of,
+	// find_index_new() below.
+	//
+	// All other operation types apply to existing partitions which do or will exist
+	// on disk.  Therefore they match the original partition when visually re-applying
+	// their operations to the disk graphic.  Hence their use of,
+	// find_index_original().
 	index = index_extended = -1 ;
 
-	if ( partition_original .inside_extended )
+	if ( partition_new.inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
 		
 		if ( index_extended >= 0 )
-			index = find_index_original( partitions[ index_extended ] .logicals ) ;
-		
+			index = find_index_new( partitions[index_extended].logicals );
+
 		if ( index >= 0 )
 		{
 			partitions[ index_extended ] .logicals[ index ] = partition_new ; 	
@@ -55,7 +64,7 @@ void OperationCreate::apply_to_visual( std::vector<Partition> & partitions )
 	}
 	else
 	{
-		index = find_index_original( partitions ) ;
+		index = find_index_new( partitions );
 
 		if ( index >= 0 )
 		{

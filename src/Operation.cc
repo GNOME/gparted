@@ -33,6 +33,18 @@ int Operation::find_index_original( const std::vector<Partition> & partitions )
 	return -1 ;
 }
 
+// Find the partition in the vector that exactly matches or fully encloses
+// this->partition_new.  Return vector index or -1 when no match found.
+int Operation::find_index_new( const std::vector<Partition> & partitions )
+{
+	for ( unsigned int i = 0 ; i < partitions.size() ; i ++ )
+		if ( partition_new.sector_start >= partitions[i].sector_start &&
+		     partition_new.sector_end   <= partitions[i].sector_end      )
+			return i;
+
+	return -1;
+}
+
 int Operation::find_index_extended( const std::vector<Partition> & partitions ) 
 {
 	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
