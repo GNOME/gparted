@@ -700,7 +700,7 @@ bool Win_GParted::on_delete_event( GdkEventAny *event )
 	return ! Quit_Check_Operations();
 }	
 
-void Win_GParted::Add_Operation( Operation * operation, int index )
+void Win_GParted::Add_Operation( Operation * operation )
 {
 	if ( operation )
 	{ 
@@ -719,11 +719,7 @@ void Win_GParted::Add_Operation( Operation * operation, int index )
 		   )
 		{
 			operation ->create_description() ;
-
-			if ( index >= 0 && index < static_cast<int>( operations .size() ) )
-				operations .insert( operations .begin() + index, operation ) ;
-			else
-				operations .push_back( operation );
+			operations.push_back( operation );
 		}
 		else
 		{

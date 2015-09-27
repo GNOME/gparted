@@ -66,7 +66,7 @@ private:
 	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
-	void Add_Operation( Operation * operation, int index = -1 ) ;
+	void Add_Operation( Operation * operation );
 	bool merge_two_operations( unsigned int first, unsigned int second );
 	void merge_operations( MergeType mergetype );
 	void Refresh_Visual();
