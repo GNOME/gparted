@@ -30,6 +30,9 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	
 void OperationDelete::apply_to_visual( std::vector<Partition> & partitions ) 
 {
+	int index_extended;
+	int index;
+
 	if ( partition_original .inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;

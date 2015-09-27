@@ -110,6 +110,9 @@ void Operation::insert_unallocated( std::vector<Partition> & partitions, Sector 
 // it with this operation's new partition.
 void Operation::substitute_new( std::vector<Partition> & partitions )
 {
+	int index_extended;
+	int index;
+
 	if ( partition_original.inside_extended )
 	{
 		index_extended = find_index_extended( partitions );
@@ -140,6 +143,9 @@ void Operation::insert_new( std::vector<Partition> & partitions )
 	// on disk.  Therefore they match the original partition when visually re-applying
 	// their operations to the disk graphic.  Hence their use of,
 	// find_index_original().
+	int index_extended;
+	int index;
+
 	if ( partition_new.inside_extended )
 	{
 		index_extended = find_index_extended( partitions );

@@ -33,8 +33,6 @@ OperationResizeMove::OperationResizeMove( const Device & device,
 	
 void OperationResizeMove::apply_to_visual( std::vector<Partition> & partitions ) 
 {
-	index = index_extended = -1 ;
-	
 	if ( partition_original .type == GParted::TYPE_EXTENDED )
 		apply_extended_to_visual( partitions ) ;
 	else 
@@ -123,23 +121,28 @@ void OperationResizeMove::create_description()
 
 void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & partitions )
 {
+	int index_extended;
+	int index;
+
 	if ( partition_original .inside_extended )
 	{
 		index_extended = find_index_extended( partitions ) ;
 			
 		if ( index_extended >= 0 )
-			index = find_index_original( partitions[ index_extended ] .logicals ) ;
-			
-		if ( index >= 0 )
 		{
-			 partitions[ index_extended ] .logicals[ index ] = partition_new ;
-			 remove_adjacent_unallocated( partitions[ index_extended ] .logicals, index ) ;
+			index = find_index_original( partitions[ index_extended ] .logicals ) ;
 
-			 insert_unallocated( partitions[ index_extended ] .logicals,
-					     partitions[ index_extended ] .sector_start,
-					     partitions[ index_extended ] .sector_end,
-					     device .sector_size,
-					     true ) ;
+			if ( index >= 0 )
+			{
+				partitions[index_extended].logicals[index] = partition_new;
+				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
+
+				insert_unallocated( partitions[index_extended].logicals,
+				                    partitions[index_extended].sector_start,
+				                    partitions[index_extended].sector_end,
+				                    device.sector_size,
+				                    true );
+			}
 		}
 	}
 	else
@@ -158,6 +161,8 @@ void OperationResizeMove::apply_normal_to_visual( std::vector<Partition> & parti
 
 void OperationResizeMove::apply_extended_to_visual( std::vector<Partition> & partitions ) 
 {
+	int index_extended;
+
 	//stuff OUTSIDE extended partition
 	index_extended = find_index_extended( partitions ) ;
 		
