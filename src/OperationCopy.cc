@@ -38,37 +38,12 @@ OperationCopy::OperationCopy( const Device & device,
 	
 void OperationCopy::apply_to_visual( std::vector<Partition> & partitions ) 
 {
-	index = index_extended = -1 ;
-	
-	if ( partition_original .inside_extended )
-	{
-		index_extended = find_index_extended( partitions ) ;
-		
-		if ( index_extended >= 0 )
-			index = find_index_original( partitions[ index_extended ] .logicals ) ;
-
-		if ( index >= 0 )
-		{
-			partitions[ index_extended ] .logicals[ index ] = partition_new ; 	
-
-			insert_unallocated( partitions[ index_extended ] .logicals,
-					    partitions[ index_extended ] .sector_start,
-					    partitions[ index_extended ] .sector_end,
-					    device .sector_size,
-					    true ) ;
-		}
-	}
+	if ( partition_original.type == TYPE_UNALLOCATED )
+		// Paste into unallocated space creating new partition
+		insert_new( partitions );
 	else
-	{
-		index = find_index_original( partitions ) ;
-
-		if ( index >= 0 )
-		{
-			partitions[ index ] = partition_new ;
-		
-			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;
-		}
-	}
+		// Paste into existing partition
+		substitute_new( partitions );
 }
 
 void OperationCopy::create_description() 
