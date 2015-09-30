@@ -193,7 +193,8 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 	if ( partition.get_filesystem_label().empty() )
 		cmd = "mlabel -c :: -i " + partition.get_path();
 	else
-		cmd = "mlabel ::\"" + pad_label( partition.get_filesystem_label() ) + "\" -i " + partition.get_path();
+		cmd = "mlabel ::\"" + sanitize_label( partition.get_filesystem_label() ) + "\" -i "
+		    + partition.get_path();
 
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
@@ -229,7 +230,7 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 {
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
 	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I -n \"" +
-	                          pad_label( new_partition.get_filesystem_label() ) + "\" " +
+	                          sanitize_label( new_partition.get_filesystem_label() ) + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
@@ -246,11 +247,24 @@ bool fat16::check_repair( const Partition & partition, OperationDetail & operati
 
 //Private methods
 
-//Pad fat label with spaces to prevent mlabel writing corrupted labels.  See bug #700228
-const Glib::ustring fat16::pad_label( const Glib::ustring &label ) const
+const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
 {
-	Glib::ustring new_label = label ;
+	Glib::ustring uppercase_label = label.uppercase();
+	Glib::ustring new_label;
+
+	// Copy uppercase label excluding prohibited characters.
+	// [1] Microsoft TechNet: Label
+	//     https://technet.microsoft.com/en-us/library/bb490925.aspx
+	// [2] Replicated in Wikikedia: label (command)
+	//     https://en.wikipedia.org/wiki/Label_%28command%29
+	Glib::ustring prohibited_chars( "*?.,;:/\\|+=<>[]" );
+	for ( unsigned int i = 0 ; i < label.size() ; i ++ )
+		if ( prohibited_chars.find( uppercase_label[i] ) == Glib::ustring::npos )
+			new_label.push_back( uppercase_label[i] );
+
+	// Pad with spaces to prevent mlabel writing corrupted labels.  See bug #700228.
 	new_label .resize( Utils::get_filesystem_label_maxlength( specific_type ), ' ' ) ;
+
 	return new_label ;
 }
 
