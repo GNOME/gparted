@@ -272,6 +272,17 @@ PKG_CHECK_EXISTS(
 )
 
 
+dnl Check for glibmm >= 2.45.40 and if found enable required C++11 compilation.
+AC_MSG_CHECKING([for glibmm >= 2.45.40 which requires C++11 compilation])
+PKG_CHECK_EXISTS(
+	[glibmm-2.4 >= 2.45.40],
+	[AC_MSG_RESULT([yes])
+	 AX_CXX_COMPILE_STDCXX_11()
+	],
+	[AC_MSG_RESULT([no])]
+)
+
+
 dnl======================
 dnl check whether to build documentation - gnome-doc-utils
 dnl======================
