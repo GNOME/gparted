@@ -229,6 +229,14 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	{
 		//Device paths were passed in on the command line.
 
+		// Sort name device paths and remove duplicates.  Avoids repeated scanning
+		// the same device and showing it multiple times in the UI.
+		// Reference:
+		//     What's the most efficient way to erase duplicates and sort a vector?
+		//     http://stackoverflow.com/questions/1041620/whats-the-most-efficient-way-to-erase-duplicates-and-sort-a-vector
+		std::sort( device_paths.begin(), device_paths.end() );
+		device_paths.erase( std::unique( device_paths.begin(), device_paths.end() ), device_paths.end() );
+
 		for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 		{
 			set_thread_status_message( String::ucompose( _("Confirming %1"), device_paths[t] ) );
