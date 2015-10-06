@@ -225,22 +225,32 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 		std::sort( device_paths .begin(), device_paths .end() ) ;
 	}
-#ifndef USE_LIBPARTED_DMRAID
 	else
 	{
 		//Device paths were passed in on the command line.
 
-		//Ensure that dmraid device entries are created
 		for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 		{
+			set_thread_status_message( String::ucompose( _("Confirming %1"), device_paths[t] ) );
+
+#ifndef USE_LIBPARTED_DMRAID
+			// Ensure that dmraid device entries are created
 			if ( dmraid .is_dmraid_supported() &&
 			     dmraid .is_dmraid_device( device_paths[t] ) )
 			{
 				dmraid .create_dev_map_entries( dmraid .get_dmraid_name( device_paths [t] ) ) ;
 			}
+#endif
+
+			PedDevice* lp_device = ped_device_get( device_paths[t].c_str() );
+			if ( lp_device )
+			{
+				if ( ! useable_device( lp_device ) )
+					// Remove this disk device which isn't useable
+					device_paths.erase( device_paths.begin() + t );
+			}
 		}
 	}
-#endif
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
