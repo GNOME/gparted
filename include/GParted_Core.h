@@ -203,6 +203,7 @@ private:
 	static bool commit( PedDisk* lp_disk );
 	static bool commit_to_os( PedDisk* lp_disk, std::time_t timeout );
 	static void settle_device( std::time_t timeout );
+	static bool useable_device( PedDevice * lp_device );
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 

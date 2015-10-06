@@ -213,38 +213,13 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		PedDevice* lp_device = ped_device_get_next( NULL ) ;
 		while ( lp_device ) 
 		{
+			/* TO TRANSLATORS: looks like   Confirming /dev/sda */
+			set_thread_status_message( String::ucompose( _("Confirming %1"), lp_device->path ) );
+
 			//only add this device if we can read the first sector (which means it's a real device)
-			char * buf = static_cast<char *>( malloc( lp_device ->sector_size ) ) ;
-			if ( buf )
-			{
-				/*TO TRANSLATORS: looks like Confirming /dev/sda */ 
-				set_thread_status_message( String::ucompose ( _("Confirming %1"), lp_device ->path ) ) ;
-				if ( ped_device_open( lp_device ) )
-				{
-#ifdef USE_LIBPARTED_LARGE_SECTOR_SUPPORT
-					//Devices with sector sizes of 512 bytes and higher are supported
-					if ( ped_device_read( lp_device, buf, 0, 1 ) )
-						device_paths .push_back( lp_device ->path ) ;
-#else
-					//Only devices with sector sizes of 512 bytes are well supported
-					if ( lp_device ->sector_size != 512 )
-					{
-						/*TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes. */
-						Glib::ustring msg = String::ucompose ( _("Ignoring device %1 with logical sector size of %2 bytes."), lp_device ->path, lp_device ->sector_size ) ;
-						msg += "\n" ;
-						msg += _("GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes.") ;
-						std::cout << msg << std::endl << std::endl ;
-					}
-					else
-					{
-						if ( ped_device_read( lp_device, buf, 0, 1 ) )
-							device_paths .push_back( lp_device ->path ) ;
-					}
-#endif
-					ped_device_close( lp_device ) ;
-				}
-				free( buf ) ;
-			}
+			if ( useable_device( lp_device ) )
+				device_paths.push_back( lp_device->path );
+
 			lp_device = ped_device_get_next( lp_device ) ;
 		}
 
@@ -3870,6 +3845,43 @@ void GParted_Core::fini_filesystems()
 		delete fs_iter->second;
 		fs_iter->second = NULL;
 	}
+}
+
+bool GParted_Core::useable_device( PedDevice * lp_device )
+{
+	g_assert( lp_device != NULL );  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
+
+#ifndef USE_LIBPARTED_LARGE_SECTOR_SUPPORT
+	if ( lp_device->sector_size != 512 )
+	{
+		/* TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes. */
+		Glib::ustring msg = String::ucompose ( _("Ignoring device %1 with logical sector size of %2 bytes."),
+		                                       lp_device ->path, lp_device ->sector_size );
+		msg += "\n";
+		msg += _("GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes.");
+		std::cout << msg << std::endl << std::endl;
+		return false;
+	}
+#endif
+
+	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
+	if ( ! buf )
+		return false;
+
+	// Must be able to read from the first sector before the disk device is considered
+	// useable in GParted.
+	bool success = false;
+	if ( ped_device_open( lp_device )            &&
+	     ped_device_read( lp_device, buf, 0, 1 )    )
+	{
+		success = true;
+
+		ped_device_close( lp_device );
+	}
+
+	free( buf );
+
+	return success;
 }
 
 //Flush the Linux kernel caches, and therefore ensure coherency between the caches of the
