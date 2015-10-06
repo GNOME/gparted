@@ -247,6 +247,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			     dmraid .is_dmraid_device( device_paths[t] ) )
 			{
 				dmraid .create_dev_map_entries( dmraid .get_dmraid_name( device_paths [t] ) ) ;
+				settle_device( 1 );
 			}
 #endif
 
