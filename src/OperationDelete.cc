@@ -38,26 +38,29 @@ void OperationDelete::apply_to_visual( std::vector<Partition> & partitions )
 		index_extended = find_index_extended( partitions ) ;
 		
 		if ( index_extended >= 0 )
+		{
 			index = find_index_original( partitions[ index_extended ] .logicals ) ;
 
-		if ( index >= 0 )
-		{
-			remove_original_and_adjacent_unallocated( partitions[ index_extended ] .logicals, index ) ;
+			if ( index >= 0 )
+			{
+				remove_original_and_adjacent_unallocated( partitions[index_extended].logicals, index );
 
-			insert_unallocated( partitions[ index_extended ] .logicals,
-					    partitions[ index_extended ] .sector_start,
-					    partitions[ index_extended ] .sector_end,
-					    device .sector_size,
-					    true ) ;
-		
-			//if deleted partition was logical we have to decrease the partitionnumbers of the logicals
-			//with higher numbers by one (only if its a real partition)
-			if ( partition_original .status != GParted::STAT_NEW )
-				for ( unsigned int t = 0 ; t < partitions[ index_extended ] .logicals .size() ; t++ )
-					if ( partitions[ index_extended ] .logicals[ t ] .partition_number > 
-					     partition_original .partition_number )
-						partitions[ index_extended ] .logicals[ t ] .Update_Number(
-							partitions[ index_extended ] .logicals[ t ] .partition_number -1 );
+				insert_unallocated( partitions[index_extended].logicals,
+				                    partitions[index_extended].sector_start,
+				                    partitions[index_extended].sector_end,
+				                    device.sector_size,
+				                    true );
+
+				// If deleted partition was logical we have to decrease
+				// the partition numbers of the logicals with higher
+				// numbers by one (only if its a real partition)
+				if ( partition_original.status != STAT_NEW )
+					for ( unsigned int t = 0 ; t < partitions[index_extended].logicals .size() ; t++ )
+						if ( partitions[index_extended].logicals[t].partition_number >
+						     partition_original.partition_number                       )
+							partitions[index_extended].logicals[t].Update_Number(
+								partitions[index_extended].logicals[t].partition_number -1 );
+			}
 		}
 	}
 	else
