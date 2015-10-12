@@ -3930,6 +3930,7 @@ bool GParted_Core::flush_device( PedDevice * lp_device )
 bool GParted_Core::get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush )
 {
 	lp_device = ped_device_get( device_path.c_str() );
+	if ( lp_device )
 	{
 		if ( flush )
 			// Force cache coherency before going on to read the partition
