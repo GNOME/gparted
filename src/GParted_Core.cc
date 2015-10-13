@@ -252,11 +252,10 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 #endif
 
 			PedDevice* lp_device = ped_device_get( device_paths[t].c_str() );
-			if ( lp_device )
+			if ( lp_device == NULL || ! useable_device( lp_device ) )
 			{
-				if ( ! useable_device( lp_device ) )
-					// Remove this disk device which isn't useable
-					device_paths.erase( device_paths.begin() + t );
+				// Remove this disk device which isn't useable
+				device_paths.erase( device_paths.begin() + t );
 			}
 		}
 	}
