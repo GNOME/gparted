@@ -49,6 +49,7 @@ gpartedbin_SOURCES = \
 	Partition.cc			\
 	PipeCapture.cc			\
 	Proc_Partitions_Info.cc		\
+	SWRaid_Info.cc			\
 	TreeView_Detail.cc		\
 	Utils.cc			\
 	Win_GParted.cc			\

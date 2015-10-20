@@ -29,6 +29,7 @@
 #include "../include/OperationLabelFileSystem.h"
 #include "../include/OperationNamePartition.h"
 #include "../include/Proc_Partitions_Info.h"
+#include "../include/SWRaid_Info.h"
 
 #include "../include/btrfs.h"
 #include "../include/exfat.h"
@@ -165,6 +166,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
+	SWRaid_Info::load_cache();
 
 	init_maps() ;
 	
@@ -1516,10 +1518,21 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
 	if ( lp_partition )
-	{
+		// Will query partition using methods: (Q1) SWRaid, (Q2) libparted,
+		// (Q3) blkid, (Q4) internal
 		path = get_partition_path( lp_partition );
+	else
+		// Will query whole disk device using methods: (Q1) SWRaid, (Q3) blkid,
+		// (Q4) internal
+		path = lp_device->path;
 
-		// Standard libparted file system detection
+	// (Q1) Linux Software RAID member detection
+	if ( SWRaid_Info::is_member( path ) )
+		return FS_LINUX_SWRAID;
+
+	if ( lp_partition )
+	{
+		// (Q2) Standard libparted file system detection
 		if ( lp_partition->fs_type )
 		{
 			fsname = lp_partition->fs_type->name;
@@ -1531,14 +1544,10 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 				fsname = temp;
 		}
 	}
-	else
-	{
-		// Querying whole disk device instead of libparted PedPartition
-		path = lp_device->path;
-	}
 
-	//FS_Info (blkid) file system detection because current libparted (v2.2) does not
-	//  appear to detect file systems for sector sizes other than 512 bytes.
+	// (Q3) FS_Info (blkid) file system detection
+	// Originally just because libparted v2.2 didn't appear to detect file system for
+	// sector sizes other than 512 bytes.  Now to also detect what libparted doesn't.
 	if ( fsname.empty() )
 	{
 		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
@@ -1609,7 +1618,7 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 			return FS_ZFS;
 	}
 
-	// Fallback to GParted simple internal file system detection
+	// (Q4) Fallback to GParted simple internal file system detection
 	FILESYSTEM fstype = detect_filesystem_internal( lp_device, lp_partition );
 	if ( fstype == FS_LUKS )
 		messages.push_back( luks_unsupported );

@@ -38,6 +38,7 @@ EXTRA_DIST = \
 	Partition.h			\
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\
+	SWRaid_Info.h			\
 	TreeView_Detail.h		\
 	Utils.h				\
 	Win_GParted.h			\
