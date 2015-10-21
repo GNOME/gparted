@@ -401,39 +401,6 @@ bool Utils::kernel_version_at_least( int major_ver, int minor_ver, int patch_ver
 	return result ;
 }
 
-//Report whether the device is an active member of a Linux Software RAID array
-bool Utils::swraid_member_is_active( const Glib::ustring & path )
-{
-	//Read /proc/mdstat and look for the device name on an active RAID array
-	//  line.   Example line: "md1 : active raid1 sda1[2] sdb1[3]"
-	//                                           ^^^^^^
-	//                                           needle
-	//  Strip "/dev/" prefix and search for device name with surrounding
-	//  " " and "[" to avoid substring matches.
-	if ( path .substr( 0, 5 ) != "/dev/" )
-		return false ;
-
-	bool member_active = false ;
-	Glib::ustring needle = " " + path .substr( 5 ) + "[" ;
-	std::string line ;
-	std::ifstream input( "/proc/mdstat" ) ;
-	if ( input )
-	{
-		while ( getline( input, line ) )
-		{
-			if (    line .find( " : active " ) != std::string::npos
-			     && line .find( needle ) != std::string::npos       )
-			{
-				member_active = true ;
-				break ;
-			}
-		}
-		input .close() ;
-	}
-
-	return member_active ;
-}
-
 Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 {
 	std::stringstream ss ;

@@ -30,18 +30,26 @@
 namespace GParted
 {
 
+struct SWRaid_Member
+{
+	Glib::ustring member;
+	bool          active;
+};
+
 class SWRaid_Info
 {
 public:
 	static void load_cache();
 	static bool is_member( const Glib::ustring & member_path );
+	static bool is_member_active( const Glib::ustring & member_path );
 
 private:
 	static void set_command_found();
 	static void load_swraid_info_cache();
+	static SWRaid_Member & get_cache_entry_by_member( const Glib::ustring & member_path );
 
 	static bool mdadm_found;
-	static std::vector<Glib::ustring> swraid_info_cache;
+	static std::vector<SWRaid_Member> swraid_info_cache;
 };
 
 }//GParted

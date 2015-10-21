@@ -19,19 +19,25 @@
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
+#include <fstream>
 
 namespace GParted
 {
 
 // Data model:
 // mdadm_found       - Is the "mdadm" command available?
-// swraid_info_cache - Vector of /dev entries of members in Linux Software RAID arrays.
+// swraid_info_cache - Vector of member information in Linux Software RAID arrays.
 //                     E.g.
-//                     ["/dev/sda1", "/dev/sda2", ...]
+//                     //member     , active
+//                     [{"/dev/sda1", true },
+//                      {"/dev/sda2", true },
+//                      {"/dev/sda6", false},
+//                      {"/dev/sdb6", false}
+//                     ]
 
 // Initialise static data elements
 bool SWRaid_Info::mdadm_found = false;
-std::vector<Glib::ustring> SWRaid_Info::swraid_info_cache;
+std::vector<SWRaid_Member> SWRaid_Info::swraid_info_cache;
 
 void SWRaid_Info::load_cache()
 {
@@ -41,11 +47,20 @@ void SWRaid_Info::load_cache()
 
 bool SWRaid_Info::is_member( const Glib::ustring & member_path )
 {
-	for ( unsigned int i = 0 ; i < swraid_info_cache.size() ; i ++ )
-		if ( member_path == swraid_info_cache[i] )
-			return true;
+	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
+	if ( memb.member == member_path )
+		return true;
 
 	return false;
+}
+
+bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
+{
+	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
+	if ( memb.member == member_path )
+		return memb.active;
+
+	return false;  // No such member
 }
 
 // Private methods
@@ -113,12 +128,67 @@ void SWRaid_Info::load_swraid_info_cache()
 				std::vector<Glib::ustring> devices;
 				Utils::split( devices_str, devices, "," );
 				for ( unsigned int j = 0 ; j < devices.size() ; j ++ )
-					swraid_info_cache.push_back( devices[j] );
+				{
+					SWRaid_Member memb;
+					memb.member = devices[j];
+					memb.active = false;
+					swraid_info_cache.push_back( memb );
+				}
 			}
 			else
 				line_type = LINE_TYPE_OTHER;
 		}
 	}
+
+	// Set which SWRaid members are active.
+	std::string line;
+	std::ifstream input( "/proc/mdstat" );
+	if ( input )
+	{
+		// Read /proc/mdstat extracting members for active arrays, marking them
+		// active in the cache.  Example fragment of /proc/mdstat:
+		//     md1 : active raid1 sdb1[0] sdb2[1]
+		//           1047552 blocks super 1.2 [2/2] [UU]
+		while ( getline( input, line ) )
+		{
+			if ( line.find( " : active " ) != std::string::npos )
+			{
+				// Found a line for an active array.  Split into space
+				// separated fields.
+				std::vector<Glib::ustring> fields;
+				Utils::tokenize( line, fields, " " );
+				for ( unsigned int i = 0 ; i < fields.size() ; i ++ )
+				{
+					Glib::ustring::size_type index = fields[i].find( "[" );
+					if ( index != Glib::ustring::npos )
+					{
+						// Field contains an "[" so got a short
+						// kernel device name of a member.  Mark
+						// as active.
+						Glib::ustring mpath = "/dev/" +
+						                      fields[i].substr( 0, index );
+						SWRaid_Member & memb = get_cache_entry_by_member( mpath );
+						if ( memb.member == mpath )
+							memb.active = true;
+					}
+				}
+			}
+		}
+		input.close();
+	}
+}
+
+// Perform linear search of the cache to find the matching member.
+// Returns found cache entry or not found substitute.
+SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & member_path )
+{
+	for ( unsigned int i = 0 ; i < swraid_info_cache.size() ; i ++ )
+	{
+		if ( member_path == swraid_info_cache[i].member )
+			return swraid_info_cache[i];
+	}
+	static SWRaid_Member memb = {"", false};
+	return memb;
 }
 
 } //GParted
