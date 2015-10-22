@@ -27,12 +27,13 @@ namespace GParted
 // Data model:
 // mdadm_found       - Is the "mdadm" command available?
 // swraid_info_cache - Vector of member information in Linux Software RAID arrays.
+//                     Only active arrays have /dev entries.
 //                     E.g.
-//                     //member     , uuid                                  , label      , active
-//                     [{"/dev/sda1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {"/dev/sda2", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {"/dev/sda6", "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
-//                      {"/dev/sdb6", "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
+//                     //member     , array     , uuid                                  , label      , active
+//                     [{"/dev/sda1", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {"/dev/sda2", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {"/dev/sda6", ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
+//                      {"/dev/sdb6", ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
 //                     ]
 
 // Initialise static data elements
@@ -61,6 +62,14 @@ bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 		return memb.active;
 
 	return false;  // No such member
+}
+
+// Return array /dev entry (e.g. "/dev/md1") containing the specified member, or "" if the
+// array is not running or there is no such member.
+Glib::ustring SWRaid_Info::get_array( const Glib::ustring & member_path )
+{
+	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
+	return memb.array;
 }
 
 // Return array UUID for the specified member, or "" when failed to parse the UUID or
@@ -159,6 +168,7 @@ void SWRaid_Info::load_swraid_info_cache()
 				{
 					SWRaid_Member memb;
 					memb.member = devices[j];
+					memb.array = "";
 					memb.uuid = uuid;
 					memb.label = label;
 					memb.active = false;
@@ -174,7 +184,7 @@ void SWRaid_Info::load_swraid_info_cache()
 		}
 	}
 
-	// Set which SWRaid members are active.
+	// For active SWRaid members, set array and active flag.
 	std::string line;
 	std::ifstream input( "/proc/mdstat" );
 	if ( input )
@@ -197,13 +207,16 @@ void SWRaid_Info::load_swraid_info_cache()
 					if ( index != Glib::ustring::npos )
 					{
 						// Field contains an "[" so got a short
-						// kernel device name of a member.  Mark
-						// as active.
+						// kernel device name of a member.  Set
+						// array and active flag.
 						Glib::ustring mpath = "/dev/" +
 						                      fields[i].substr( 0, index );
 						SWRaid_Member & memb = get_cache_entry_by_member( mpath );
 						if ( memb.member == mpath )
+						{
+							memb.array = "/dev/" + fields[0];
 							memb.active = true;
+						}
 					}
 				}
 			}
@@ -221,7 +234,7 @@ SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & me
 		if ( member_path == swraid_info_cache[i].member )
 			return swraid_info_cache[i];
 	}
-	static SWRaid_Member memb = {"", "", "", false};
+	static SWRaid_Member memb = {"", "", "", "", false};
 	return memb;
 }
 

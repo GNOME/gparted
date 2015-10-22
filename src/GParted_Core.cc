@@ -1817,6 +1817,12 @@ void GParted_Core::set_mountpoints( std::vector<Partition> & partitions )
 			if ( ! vgname .empty() )
 				partitions[ t ] .add_mountpoint( vgname ) ;
 		}
+		else if ( partitions[t].filesystem == FS_LINUX_SWRAID )
+		{
+			Glib::ustring array_path = SWRaid_Info::get_array( partitions[t].get_path() );
+			if ( ! array_path.empty() )
+				partitions[t].add_mountpoint( array_path );
+		}
 	}
 }
 

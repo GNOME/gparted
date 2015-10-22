@@ -33,6 +33,7 @@ namespace GParted
 struct SWRaid_Member
 {
 	Glib::ustring member;
+	Glib::ustring array;
 	Glib::ustring uuid;
 	Glib::ustring label;
 	bool          active;
@@ -44,6 +45,7 @@ public:
 	static void load_cache();
 	static bool is_member( const Glib::ustring & member_path );
 	static bool is_member_active( const Glib::ustring & member_path );
+	static Glib::ustring get_array( const Glib::ustring & member_path );
 	static Glib::ustring get_uuid( const Glib::ustring & member_path );
 	static Glib::ustring get_label( const Glib::ustring & member_path );
 
