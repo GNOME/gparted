@@ -28,11 +28,11 @@ namespace GParted
 // mdadm_found       - Is the "mdadm" command available?
 // swraid_info_cache - Vector of member information in Linux Software RAID arrays.
 //                     E.g.
-//                     //member     , active
-//                     [{"/dev/sda1", true },
-//                      {"/dev/sda2", true },
-//                      {"/dev/sda6", false},
-//                      {"/dev/sdb6", false}
+//                     //member     , uuid                                  , label      , active
+//                     [{"/dev/sda1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {"/dev/sda2", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {"/dev/sda6", "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
+//                      {"/dev/sdb6", "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
 //                     ]
 
 // Initialise static data elements
@@ -63,6 +63,24 @@ bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 	return false;  // No such member
 }
 
+// Return array UUID for the specified member, or "" when failed to parse the UUID or
+// there is no such member.
+Glib::ustring SWRaid_Info::get_uuid( const Glib::ustring & member_path )
+{
+	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
+	return memb.uuid;
+}
+
+// Return array label (array name in mdadm terminology) for the specified member, or ""
+// when the array has no label or there is no such member.
+// (Metadata 0.90 arrays don't have names.  Metata 1.x arrays are always named, getting a
+// default of hostname ":" array number when not otherwise specified).
+Glib::ustring SWRaid_Info::get_label( const Glib::ustring & member_path )
+{
+	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
+	return memb.label;
+}
+
 // Private methods
 
 void SWRaid_Info::set_command_found()
@@ -79,19 +97,20 @@ void SWRaid_Info::load_swraid_info_cache()
 	if ( ! mdadm_found )
 		return;
 
-	// Load SWRaid members into the cache.
+	// Load SWRaid members into the cache.  Load member device, array UUID and array
+	// label (array name in mdadm terminology).
 	Glib::ustring cmd = "mdadm --examine --scan --verbose";
 	if ( ! Utils::execute_command( cmd, output, error, true ) )
 	{
-		// Extract member /dev entries from Linux Software RAID arrays only,
-		// excluding IMSM and DDF arrays.  Example output:
-		//     ARRAY metadata=imsm UUID=...
+		// Extract information from Linux Software RAID arrays only, excluding
+		// IMSM and DDF arrays.  Example output:
+		//     ARRAY metadata=imsm UUID=9a5e3477:e1e668ea:12066a1b:d3708608
 		//        devices=/dev/sdd,/dev/sdc,/dev/md/imsm0
-		//     ARRAY /dev/md/MyRaid container=...
+		//     ARRAY /dev/md/MyRaid container=9a5e3477:e1e668ea:12066a1b:d3708608 member=0 UUID=47518beb:cc6ef9e7:c80cd1c7:5f6ecb28
 		//
-		//     ARRAY /dev/md/1  level=raid1 metadata=1.0 num-devices=2 UUID=...
+		//     ARRAY /dev/md/1  level=raid1 metadata=1.0 num-devices=2 UUID=15224a42:c25bbcd9:15db6000:4e5fe53a name=chimney:1
 		//        devices=/dev/sda1,/dev/sdb1
-		//     ARRAY /dev/md5 level=raid1 num-devices=2 UUID=...
+		//     ARRAY /dev/md5 level=raid1 num-devices=2 UUID=8dc7483c:d74ee0a8:b6a8dc3c:a57e43f8
 		//        devices=/dev/sda6,/dev/sdb6
 		std::vector<Glib::ustring> lines;
 		Utils::split( output, lines, "\n" );
@@ -102,6 +121,8 @@ void SWRaid_Info::load_swraid_info_cache()
 			LINE_TYPE_DEVICES = 2
 		};
 		LINE_TYPE line_type = LINE_TYPE_OTHER;
+		Glib::ustring uuid;
+		Glib::ustring label;
 		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
 		{
 			Glib::ustring metadata_type;
@@ -116,8 +137,15 @@ void SWRaid_Info::load_swraid_info_cache()
 				if ( metadata_type != ""    && metadata_type != "0.90" &&
 				     metadata_type != "1.0" && metadata_type != "1.1"  &&
 				     metadata_type != "1.2"                               )
+				{
 					// Skip mdadm reported non-Linux Software RAID arrays
 					line_type = LINE_TYPE_OTHER;
+					continue;
+				}
+
+				uuid = mdadm_to_canonical_uuid(
+						Utils::regexp_label( lines[i], "UUID=([[:graph:]]+)" ) );
+				label = Utils::regexp_label( lines[i], "name=(.*)$" );
 			}
 			else if ( line_type == LINE_TYPE_ARRAY                       &&
 			          lines[i].find( "devices=" ) != Glib::ustring::npos    )
@@ -131,12 +159,18 @@ void SWRaid_Info::load_swraid_info_cache()
 				{
 					SWRaid_Member memb;
 					memb.member = devices[j];
+					memb.uuid = uuid;
+					memb.label = label;
 					memb.active = false;
 					swraid_info_cache.push_back( memb );
 				}
+				uuid.clear();
+				label.clear();
 			}
 			else
+			{
 				line_type = LINE_TYPE_OTHER;
+			}
 		}
 	}
 
@@ -187,8 +221,26 @@ SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & me
 		if ( member_path == swraid_info_cache[i].member )
 			return swraid_info_cache[i];
 	}
-	static SWRaid_Member memb = {"", false};
+	static SWRaid_Member memb = {"", "", "", false};
 	return memb;
+}
+
+// Reformat mdadm printed UUID into canonical format.  Returns "" if source not correctly
+// formatted.
+// E.g. "15224a42:c25bbcd9:15db6000:4e5fe53a" -> "15224a42-c25b-bcd9-15db-60004e5fe53a"
+Glib::ustring SWRaid_Info::mdadm_to_canonical_uuid( const Glib::ustring & mdadm_uuid )
+{
+	Glib::ustring verified_uuid = Utils::regexp_label( mdadm_uuid,
+			"^([[:xdigit:]]{8}:[[:xdigit:]]{8}:[[:xdigit:]]{8}:[[:xdigit:]]{8})$" );
+	if ( verified_uuid.empty() )
+		return verified_uuid;
+
+	Glib::ustring canonical_uuid = verified_uuid.substr( 0, 8) + "-" +
+	                               verified_uuid.substr( 9, 4) + "-" +
+	                               verified_uuid.substr(13, 4) + "-" +
+	                               verified_uuid.substr(18, 4) + "-" +
+	                               verified_uuid.substr(22, 4) + verified_uuid.substr(27, 8);
+	return canonical_uuid;
 }
 
 } //GParted

@@ -1405,6 +1405,20 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 {
 	FS_Info fs_info;  // Use cache of file system information
+	Glib::ustring partition_path = partition.get_path();
+
+	// For SWRaid members only get the label and UUID from SWRaid_Info.  Never use
+	// values from FS_Info to avoid showing incorrect information in cases where blkid
+	// reports the wrong values.
+	if ( partition.filesystem == FS_LINUX_SWRAID )
+	{
+		Glib::ustring label = SWRaid_Info::get_label( partition_path );
+		if ( ! label.empty() )
+			partition.set_filesystem_label( label );
+
+		partition.uuid = SWRaid_Info::get_uuid( partition_path );
+		return;
+	}
 
 	// Retrieve file system label.  Use file system specific method first in an effort
 	// to ensure multi-byte character sets are properly displayed.
@@ -1412,14 +1426,14 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	if ( ! partition.filesystem_label_known() )
 	{
 		bool label_found = false;
-		Glib::ustring label = fs_info.get_label( partition.get_path(), label_found );
+		Glib::ustring label = fs_info.get_label( partition_path, label_found );
 		if ( label_found )
 			partition.set_filesystem_label( label );
 	}
 
 	// Retrieve file system UUID.  Use cached method first in an effort to speed up
 	// device scanning.
-	partition.uuid = fs_info.get_uuid( partition.get_path() );
+	partition.uuid = fs_info.get_uuid( partition_path );
 	if ( partition.uuid.empty() )
 	{
 		read_uuid( partition );
