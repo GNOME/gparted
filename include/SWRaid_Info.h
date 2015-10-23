@@ -50,11 +50,13 @@ public:
 	static Glib::ustring get_label( const Glib::ustring & member_path );
 
 private:
+	static void initialise_if_required();
 	static void set_command_found();
 	static void load_swraid_info_cache();
 	static SWRaid_Member & get_cache_entry_by_member( const Glib::ustring & member_path );
 	static Glib::ustring mdadm_to_canonical_uuid( const Glib::ustring & mdadm_uuid );
 
+	static bool cache_initialised;
 	static bool mdadm_found;
 	static std::vector<SWRaid_Member> swraid_info_cache;
 };

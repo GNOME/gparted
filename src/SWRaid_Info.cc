@@ -25,6 +25,7 @@ namespace GParted
 {
 
 // Data model:
+// cache_initialised - Has the cache been loaded?
 // mdadm_found       - Is the "mdadm" command available?
 // swraid_info_cache - Vector of member information in Linux Software RAID arrays.
 //                     Only active arrays have /dev entries.
@@ -37,6 +38,7 @@ namespace GParted
 //                     ]
 
 // Initialise static data elements
+bool SWRaid_Info::cache_initialised = false;
 bool SWRaid_Info::mdadm_found = false;
 std::vector<SWRaid_Member> SWRaid_Info::swraid_info_cache;
 
@@ -44,10 +46,12 @@ void SWRaid_Info::load_cache()
 {
 	set_command_found();
 	load_swraid_info_cache();
+	cache_initialised = true;
 }
 
 bool SWRaid_Info::is_member( const Glib::ustring & member_path )
 {
+	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
 	if ( memb.member == member_path )
 		return true;
@@ -57,6 +61,7 @@ bool SWRaid_Info::is_member( const Glib::ustring & member_path )
 
 bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 {
+	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
 	if ( memb.member == member_path )
 		return memb.active;
@@ -68,6 +73,7 @@ bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 // array is not running or there is no such member.
 Glib::ustring SWRaid_Info::get_array( const Glib::ustring & member_path )
 {
+	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
 	return memb.array;
 }
@@ -76,6 +82,7 @@ Glib::ustring SWRaid_Info::get_array( const Glib::ustring & member_path )
 // there is no such member.
 Glib::ustring SWRaid_Info::get_uuid( const Glib::ustring & member_path )
 {
+	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
 	return memb.uuid;
 }
@@ -86,11 +93,22 @@ Glib::ustring SWRaid_Info::get_uuid( const Glib::ustring & member_path )
 // default of hostname ":" array number when not otherwise specified).
 Glib::ustring SWRaid_Info::get_label( const Glib::ustring & member_path )
 {
+	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
 	return memb.label;
 }
 
 // Private methods
+
+void SWRaid_Info::initialise_if_required()
+{
+	if ( ! cache_initialised )
+	{
+		set_command_found();
+		load_swraid_info_cache();
+		cache_initialised = true;
+	}
+}
 
 void SWRaid_Info::set_command_found()
 {
