@@ -121,13 +121,10 @@ void SWRaid_Info::load_swraid_info_cache()
 
 	swraid_info_cache.clear();
 
-	if ( ! mdadm_found )
-		return;
-
 	// Load SWRaid members into the cache.  Load member device, array UUID and array
 	// label (array name in mdadm terminology).
 	Glib::ustring cmd = "mdadm --examine --scan --verbose";
-	if ( ! Utils::execute_command( cmd, output, error, true ) )
+	if ( mdadm_found && ! Utils::execute_command( cmd, output, error, true ) )
 	{
 		// Extract information from Linux Software RAID arrays only, excluding
 		// IMSM and DDF arrays.  Example output:
@@ -141,13 +138,13 @@ void SWRaid_Info::load_swraid_info_cache()
 		//        devices=/dev/sda6,/dev/sdb6
 		std::vector<Glib::ustring> lines;
 		Utils::split( output, lines, "\n" );
-		enum LINE_TYPE
+		enum MDADM_LINE_TYPE
 		{
-			LINE_TYPE_OTHER   = 0,
-			LINE_TYPE_ARRAY   = 1,
-			LINE_TYPE_DEVICES = 2
+			MDADM_LT_OTHER   = 0,
+			MDADM_LT_ARRAY   = 1,
+			MDADM_LT_DEVICES = 2
 		};
-		LINE_TYPE line_type = LINE_TYPE_OTHER;
+		MDADM_LINE_TYPE mdadm_line_type = MDADM_LT_OTHER;
 		Glib::ustring uuid;
 		Glib::ustring label;
 		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
@@ -155,7 +152,7 @@ void SWRaid_Info::load_swraid_info_cache()
 			Glib::ustring metadata_type;
 			if ( lines[i].substr( 0, 6 ) == "ARRAY " )
 			{
-				line_type = LINE_TYPE_ARRAY;
+				mdadm_line_type = MDADM_LT_ARRAY;
 				Glib::ustring metadata_type = Utils::regexp_label( lines[i],
 				                                                   "metadata=([[:graph:]]+)" );
 				// Mdadm with these flags doesn't seem to print the
@@ -166,7 +163,7 @@ void SWRaid_Info::load_swraid_info_cache()
 				     metadata_type != "1.2"                               )
 				{
 					// Skip mdadm reported non-Linux Software RAID arrays
-					line_type = LINE_TYPE_OTHER;
+					mdadm_line_type = MDADM_LT_OTHER;
 					continue;
 				}
 
@@ -174,10 +171,10 @@ void SWRaid_Info::load_swraid_info_cache()
 						Utils::regexp_label( lines[i], "UUID=([[:graph:]]+)" ) );
 				label = Utils::regexp_label( lines[i], "name=(.*)$" );
 			}
-			else if ( line_type == LINE_TYPE_ARRAY                       &&
+			else if ( mdadm_line_type == MDADM_LT_ARRAY                  &&
 			          lines[i].find( "devices=" ) != Glib::ustring::npos    )
 			{
-				line_type = LINE_TYPE_DEVICES;
+				mdadm_line_type = MDADM_LT_DEVICES;
 				Glib::ustring devices_str = Utils::regexp_label( lines[i],
 				                                                 "devices=([[:graph:]]+)" );
 				std::vector<Glib::ustring> devices;
@@ -197,7 +194,7 @@ void SWRaid_Info::load_swraid_info_cache()
 			}
 			else
 			{
-				line_type = LINE_TYPE_OTHER;
+				mdadm_line_type = MDADM_LT_OTHER;
 			}
 		}
 	}
@@ -207,36 +204,102 @@ void SWRaid_Info::load_swraid_info_cache()
 	std::ifstream input( "/proc/mdstat" );
 	if ( input )
 	{
-		// Read /proc/mdstat extracting members for active arrays, marking them
-		// active in the cache.  Example fragment of /proc/mdstat:
-		//     md1 : active raid1 sdb1[0] sdb2[1]
-		//           1047552 blocks super 1.2 [2/2] [UU]
+		// Read /proc/mdstat extracting information for Linux Software RAID arrays
+		// only, excluding external IMSM and DDF arrays.  Example /proc/mdstat:
+		//     Personalities : [raid1]
+		//     md127 : inactive sdd[1](S) sdc[0](S)
+		//           6306 blocks super external:imsm
+		//
+		//     md126 : active raid1 sdc[1] sdd[0]
+		//           8383831 blocks super external:/md127/0 [2/2] [UU]
+		//
+		//     md1 : active raid1 sdb1[3] sda1[2]
+		//           524224 blocks super 1.0 [2/2] [UU]
+		//
+		//     md5 : active raid1 sda6[0] sdb6[1]
+		//           524224 blocks [2/2] [UU]
+		//
+		//     unused devices: <none>
+		enum MDSTAT_LINE_TYPE
+		{
+			MDSTAT_LT_OTHER  = 0,
+			MDSTAT_LT_ACTIVE = 1,
+			MDSTAT_LT_BLOCKS = 2
+		};
+		MDSTAT_LINE_TYPE mdstat_line_type = MDSTAT_LT_OTHER;
+		Glib::ustring array;
+		std::vector<Glib::ustring> members;
 		while ( getline( input, line ) )
 		{
 			if ( line.find( " : active " ) != std::string::npos )
 			{
+				mdstat_line_type = MDSTAT_LT_ACTIVE;
 				// Found a line for an active array.  Split into space
 				// separated fields.
 				std::vector<Glib::ustring> fields;
 				Utils::tokenize( line, fields, " " );
+				array = "/dev/" + fields[0];
+				members.clear();
 				for ( unsigned int i = 0 ; i < fields.size() ; i ++ )
 				{
 					Glib::ustring::size_type index = fields[i].find( "[" );
 					if ( index != Glib::ustring::npos )
 					{
 						// Field contains an "[" so got a short
-						// kernel device name of a member.  Set
-						// array and active flag.
-						Glib::ustring mpath = "/dev/" +
-						                      fields[i].substr( 0, index );
-						SWRaid_Member & memb = get_cache_entry_by_member( mpath );
-						if ( memb.member == mpath )
-						{
-							memb.array = "/dev/" + fields[0];
-							memb.active = true;
-						}
+						// kernel device name of a member.
+						members.push_back( "/dev/" + fields[i].substr( 0, index ) );
 					}
 				}
+			}
+			else if ( mdstat_line_type == MDSTAT_LT_ACTIVE         &&
+			          line.find( " blocks " ) != std::string::npos    )
+			{
+				mdstat_line_type = MDSTAT_LT_BLOCKS;
+				// Found a blocks line for an array.
+				Glib::ustring super_type = Utils::regexp_label( line, "super ([[:graph:]]+)" );
+
+				// Kernel doesn't seem to print the super block type for
+				// 0.90 version arrays.  Accept no tag (or empty version)
+				// as well as "0.90".
+				if ( super_type != ""    && super_type != "0.90" &&
+				     super_type != "1.0" && super_type != "1.1"  &&
+				     super_type != "1.2"                            )
+				{
+					// Skip /proc/mdstat reported non-Linux Software RAID arrays
+					mdstat_line_type = MDSTAT_LT_OTHER;
+					continue;
+				}
+
+				for ( unsigned int i = 0 ; i < members.size() ; i ++ )
+				{
+					SWRaid_Member & memb = get_cache_entry_by_member( members[i] );
+					if ( memb.member == members[i] )
+					{
+						// Update existing cache entry, setting
+						// array and active flag.
+						memb.array = array;
+						memb.active = true;
+					}
+					else
+					{
+						// Member not already found in the cache.
+						// (Mdadm command possibly missing).
+						// Insert cache entry.
+						SWRaid_Member new_memb;
+						new_memb.member = members[i];
+						new_memb.array = array;
+						new_memb.uuid = "";
+						new_memb.label = "";
+						new_memb.active = true;
+						swraid_info_cache.push_back( new_memb );
+					}
+				}
+				array.clear();
+				members.clear();
+			}
+			else
+			{
+				mdstat_line_type = MDSTAT_LT_OTHER;
 			}
 		}
 		input.close();
