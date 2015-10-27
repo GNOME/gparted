@@ -1,4 +1,58 @@
 ============================
+GParted 0.24.0  (2015-10-27)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Display list of Logical Volumes in Partition Information dialog
+  * Add ZFS file system detection
+  * Add recognition of NVME devices
+  * Prevent hang labeling FAT16/32 if illegal chars in label
+  * Avoid core dump if invalid or non-existent device on command line
+
+Bug Fixes
+---------
+  * Add ZFS file system detection (#752862)
+  * Update documentation of GParted software dependencies (#753436)
+  * Configuration issues when using non-system location of libparted (#753525)
+  * Display list of Logical Volumes in Partition Information dialog (#754649)
+  * Add recognition of NVME devices (#755022)
+  * Updates to FileSystem:: and Utils::execute_command() functions (#754684)
+  * Fix issue with copy, reformat source logical partition and paste (#754827)
+  * Refactor operation merging (#755214)
+  * Prevent hang labeling FAT16/32 if illegal chars in label (#755608)
+    - Upper case FAT16/32 label per MS technet bb490925
+  * Enable C++11 compilation when using glibmm 2.45.40 and later (#756035)
+  * Check disks passed on command line are useable (#755495)
+  * Avoid core dump if invalid or non-existent device on command line (#756434)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Wrolf Courtney, Albert Young, and
+  Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), de(Wolfgang Stöggl), es(Daniel Mustieles),
+  fi(Jiri Grönroos), fr(Alexandre Franke, Claude Paroz), hu(Balázs Úr),
+  id(Andika Triwidada), it(Milo Casagrande), ko(Seong-ho Cho),
+  lt(Aurimas Černius), lv(Rūdolfs Mazurs), nb(Kjartan Maraas),
+  pl(Piotr Drąg), pt(Pedro Albuquerque), pt_BR(Rafael Fontenelle),
+  ro(Daniel Șerbănescu), ru(Stas Solovey), sk(Dušan Kazik),
+  sv(Anders Jonsson), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * Blkid command should be considered mandatory as it is required to
+    detect a number of file systems which libparted doesn't detect.
+
+
+============================
 GParted 0.23.0  (2015-08-03)
 ============================
 
