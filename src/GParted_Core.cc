@@ -3625,14 +3625,25 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//
 	//  First byte range from offset 0 of length 68 KiB covers the primary super block
 	//  of all currently supported file systems and is also likely to include future
-	//  file system super blocks too.  Only a few file systems have additional super
-	//  blocks and signatures.  Overwrite the btrfs super block mirror copies and the
-	//  nilfs2 secondary super block.
+	//  file system super blocks too.  Only a few file systems have super blocks and
+	//  signatures located elsewhere.
 	//
 	//  Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.
 	//  https://btrfs.wiki.kernel.org/index.php/On-disk_Format#Superblock
 	//
-	//  Nilfs2 secondary super block is located at at the last whole 4 KiB block.
+	//  Linux Software RAID metadata 0.90 stores it's super block at 64 KiB before the
+	//  end of the device, aligned to 64 KiB boundary.  Length 4 KiB.
+	//  Ref: mdadm/super0.c load_super0()
+	//       mdadm/md_p.h   #define MD_NEW_SIZE_SECTORS(x) ...
+	//
+	//  Linux Software RAID metadata 1.0 stores it's super block at 8 KiB before the
+	//  end of the device, aligned to 4 KiB boundary.  Length 4 KiB.  (Metadata 1.1
+	//  and 1.2 store their super blocks at 0 KiB and 4 KiB respectively so will be
+	//  erased by the zeroing from offset 0).
+	//  Ref: mdadm/super1.c load_super1()
+	//                      #define MAX_SB_SIZE 4096
+	//
+	//  Nilfs2 secondary super block is located at the last whole 4 KiB block.
 	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
 	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
 	struct {
@@ -3640,12 +3651,14 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		Byte_Value rounding;  //Minimum desired rounding for offset
 		Byte_Value length;
 	} ranges[] = {
-		//offset          , rounding      , length
-		{   0LL           , 1LL           , 68LL * KIBIBYTE },  //All primary super blocks
-		{  64LL * MEBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
-		{ 256LL * GIBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
-		{   1LL * PEBIBYTE, 1LL           ,  4LL * KIBIBYTE },  //Btrfs super block mirror copy
-		{  -4LL * KIBIBYTE, 4LL * KIBIBYTE,  4LL * KIBIBYTE }   //Nilfs2 secondary super block
+		//offset          , rounding       , length
+		{   0LL           ,  1LL           , 68LL * KIBIBYTE },  // All primary super blocks
+		{  64LL * MEBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{ 256LL * GIBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{   1LL * PEBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{ -64LL * KIBIBYTE, 64LL * KIBIBYTE,  4LL * KIBIBYTE },  // SWRaid metadata 0.90 super block
+		{  -8LL * KIBIBYTE,  4LL * KIBIBYTE,  8LL * KIBIBYTE }   // @-8K SWRaid metadata 1.0 super block
+		                                                         // and @-4K Nilfs2 secondary super block
 	} ;
 	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
 	{
