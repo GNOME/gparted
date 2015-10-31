@@ -3623,13 +3623,23 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//  don't try to surgically overwrite just the few bytes of each signature as this
 	//  code overwrites whole sectors and it embeds more knowledge that is necessary.
 	//
-	//  First byte range from offset 0 of length 68 KiB covers the primary super block
-	//  of all currently supported file systems and is also likely to include future
-	//  file system super blocks too.  Only a few file systems have super blocks and
-	//  signatures located elsewhere.
+	//  First byte range from offset 0 of length 512 KiB covers the primary super
+	//  block of all currently supported file systems and is also likely to include
+	//  future file system super blocks too.  Only a few file systems have super
+	//  blocks and signatures located elsewhere.
 	//
 	//  Btrfs super blocks are located at: 64 KiB, 64 MiB, 256 GiB and 1 PiB.
+	//  (The super block at 64 KiB will be erased by the zeroing from offset 0.  Other
+	//  super block mirror copies need to be explicitly cleared).
 	//  https://btrfs.wiki.kernel.org/index.php/On-disk_Format#Superblock
+	//
+	//  ZFS labels are 256 KiB in size and 4 copies are stored on every member device,
+	//  2 at the beginning and 2 at the end of the device, aligned to 256 KiB.  (The
+	//  front two labels, L0 and L1, will be erased by the zeroing from offset 0.  The
+	//  back two labels, L2 and L3, need to be explicitly cleared).
+	//  Reference:
+	//      ZFS On-Disk Specification
+	//      http://maczfs.googlecode.com/files/ZFSOnDiskFormat.pdf
 	//
 	//  Linux Software RAID metadata 0.90 stores it's super block at 64 KiB before the
 	//  end of the device, aligned to 64 KiB boundary.  Length 4 KiB.
@@ -3646,19 +3656,31 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	//  Nilfs2 secondary super block is located at the last whole 4 KiB block.
 	//  Ref: nilfs-utils-2.1.4/include/nilfs2_fs.h
 	//  #define NILFS_SB2_OFFSET_BYTES(devsize) ((((devsize) >> 12) - 1) << 12)
+	//
+	// NOTE:
+	// Most of the time partitions are aligned to whole MiBs so the writing of zeros
+	// at offsets -64 KiB and -8 KiB will be overwriting zeros already just written
+	// at offset -512 KiB, length 512 KiB.  This will double write 12 KiB of zeros.
+	// However partitions don't have to be MiB aligned and real disk drives generally
+	// aren't an exact multiple of 1024^2 bytes in size either.  So zeroing at offsets
+	// -64 KiB and -8 KiB with their smaller rounding / alignment requirements will
+	// write outside the -512 KiB zeroed region and needs to be kept.  Because of the
+	// small amount of double writing it is not worth the effort to suppress it when
+	// not needed.
 	struct {
 		Byte_Value offset;    //Negative offsets work backwards from the end of the partition
 		Byte_Value rounding;  //Minimum desired rounding for offset
 		Byte_Value length;
 	} ranges[] = {
-		//offset          , rounding       , length
-		{   0LL           ,  1LL           , 68LL * KIBIBYTE },  // All primary super blocks
-		{  64LL * MEBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
-		{ 256LL * GIBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
-		{   1LL * PEBIBYTE,  1LL           ,  4LL * KIBIBYTE },  // Btrfs super block mirror copy
-		{ -64LL * KIBIBYTE, 64LL * KIBIBYTE,  4LL * KIBIBYTE },  // SWRaid metadata 0.90 super block
-		{  -8LL * KIBIBYTE,  4LL * KIBIBYTE,  8LL * KIBIBYTE }   // @-8K SWRaid metadata 1.0 super block
-		                                                         // and @-4K Nilfs2 secondary super block
+		//offset           , rounding       , length
+		{    0LL           ,   1LL           , 512LL * KIBIBYTE },  // All primary super blocks
+		{   64LL * MEBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{  256LL * GIBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{    1LL * PEBIBYTE,   1LL           ,   4LL * KIBIBYTE },  // Btrfs super block mirror copy
+		{ -512LL * KIBIBYTE, 256LL * KIBIBYTE, 512LL * KIBIBYTE },  // ZFS labels L2 and L3
+		{  -64LL * KIBIBYTE,  64LL * KIBIBYTE,   4LL * KIBIBYTE },  // SWRaid metadata 0.90 super block
+		{   -8LL * KIBIBYTE,   4LL * KIBIBYTE,   8LL * KIBIBYTE }   // @-8K SWRaid metadata 1.0 super block
+		                                                            // and @-4K Nilfs2 secondary super block
 	} ;
 	for ( unsigned int i = 0 ; overall_success && i < sizeof( ranges ) / sizeof( ranges[0] ) ; i ++ )
 	{
