@@ -3667,19 +3667,21 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		Byte_Value byte_offset ;
 		Byte_Value byte_len ;
 
-		//Compute range to be erased taking into minimum desired rounding requirements and
-		//  negative offsets.  Range may become larger, but not smaller than requested.
+		// Compute range to be erased.  Starting position takes into account
+		// negative offsets from the end of the partition and minimum desired
+		// rounding requirements.  Length is only rounded to device sector size.
+		// Ranges may become larger, but not smaller than requested.
 		if ( ranges[i] .offset >= 0LL )
 		{
 			byte_offset = Utils::floor_size( ranges[i] .offset, rounding_size ) ;
-			byte_len    = Utils::ceil_size( ranges[i] .offset + ranges[i] .length, rounding_size )
+			byte_len    = Utils::ceil_size( ranges[i].offset + ranges[i].length, lp_device->sector_size )
 			              - byte_offset ;
 		}
 		else //Negative offsets
 		{
 			Byte_Value notional_offset = Utils::floor_size( partition .get_byte_length() + ranges[i] .offset, ranges[i]. rounding ) ;
 			byte_offset = Utils::floor_size( notional_offset, rounding_size ) ;
-			byte_len    = Utils::ceil_size( notional_offset + ranges[i] .length, rounding_size )
+			byte_len    = Utils::ceil_size( notional_offset + ranges[i].length, lp_device->sector_size )
 			              - byte_offset ;
 		}
 
