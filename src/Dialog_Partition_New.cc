@@ -22,7 +22,7 @@ namespace GParted
 {
 
 Dialog_Partition_New::Dialog_Partition_New( const Device & device,
-                                            const Partition & partition,
+                                            const Partition & selected_partition,
                                             bool any_extended,
                                             unsigned short new_count,
                                             const std::vector<FS> & FILESYSTEMS )
@@ -35,17 +35,17 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 	//set used (in pixels)...
 	frame_resizer_base ->set_used( 0 ) ;
 
-	set_data(device, partition, any_extended, new_count, FILESYSTEMS );
+	set_data(device, selected_partition, any_extended, new_count, FILESYSTEMS );
 }
 
 void Dialog_Partition_New::set_data( const Device & device,
-                                     const Partition & partition,
+                                     const Partition & selected_partition,
                                      bool any_extended,
                                      unsigned short new_count,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	new_partition = partition;
+	new_partition = selected_partition;
 
 	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
 	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
@@ -97,7 +97,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 		menu_type .items()[ 2 ] .set_sensitive( false );
 		menu_type .set_active( 0 );
 	}
-	else if ( partition .inside_extended )
+	else if ( selected_partition.inside_extended )
 	{
 		menu_type .items()[ 0 ] .set_sensitive( false ); 
 		menu_type .items()[ 2 ] .set_sensitive( false );
@@ -150,10 +150,11 @@ void Dialog_Partition_New::set_data( const Device & device,
 	table_create.attach( filesystem_label_entry, 1, 2, 3, 4, Gtk::FILL );
 
 	//set some widely used values...
-	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( new_partition );
-	START = partition.sector_start ;
-	total_length = partition.sector_end - partition.sector_start ;
-	TOTAL_MB = Utils::round( Utils::sector_to_unit( new_partition.get_sector_length(), new_partition.sector_size, UNIT_MIB ) );
+	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition );
+	START = selected_partition.sector_start;
+	total_length = selected_partition.sector_end - selected_partition.sector_start;
+	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition.get_sector_length(),
+	                                                selected_partition.sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
 	
 	//set first enabled file system

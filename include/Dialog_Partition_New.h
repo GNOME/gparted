@@ -30,7 +30,7 @@ class Dialog_Partition_New : public Dialog_Base_Partition
 {
 public:
 	Dialog_Partition_New(const Device & device,
-	                     const Partition & partition,
+	                     const Partition & selected_partition,
 	                     bool any_extended,
 	                     unsigned short new_count,
 	                     const std::vector<FS> & FILESYSTEMS );
