@@ -179,7 +179,6 @@ void Dialog_Partition_New::set_data( const Device & device,
 
 Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 {
-	Partition part_temp ;
 	PartitionType part_type ;
 	Sector new_start, new_end;
 		
@@ -204,48 +203,50 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	if  ( new_end > new_partition.sector_end )
 		new_end = new_partition.sector_end;
 
-	part_temp .status = GParted::STAT_NEW ;
-	part_temp.Set( new_partition.device_path,
-	               String::ucompose( _("New Partition #%1"), new_count ),
-	               new_count, part_type, new_partition.whole_device,
-	               FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
-	               new_start, new_end,
-	               sector_size,
-	               new_partition.inside_extended, false );
+	// Grow new partition a bit if freespaces are < 1 MiB
+	if ( (new_start - new_partition.sector_start) < (MEBIBYTE / sector_size) )
+		new_start = new_partition.sector_start;
+	if ( (new_partition.sector_end - new_end) < (MEBIBYTE / sector_size) )
+		new_end = new_partition.sector_end;
+
+	new_partition.status = STAT_NEW;
+	new_partition.Set( new_partition.device_path,  // NOTE: Glib::ustring object self assignment
+	                   String::ucompose( _("New Partition #%1"), new_count ),
+	                   new_count, part_type, new_partition.whole_device,
+	                   FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
+	                   new_start, new_end,
+	                   sector_size,
+	                   new_partition.inside_extended, false );
 
 	// Retrieve partition name
-	part_temp.name = Utils::trim( partition_name_entry.get_text() );
+	new_partition.name = Utils::trim( partition_name_entry.get_text() );
 
 	//Retrieve Label info
-	part_temp.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
-	
-	//grow new partition a bit if freespaces are < 1 MiB
-	if ( (part_temp.sector_start - new_partition.sector_start) < (MEBIBYTE / sector_size) )
-		part_temp.sector_start = new_partition.sector_start;
-	if ( (new_partition.sector_end - part_temp.sector_end) < (MEBIBYTE / sector_size) )
-		part_temp.sector_end = new_partition.sector_end;
+	new_partition.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 
 	//set alignment
 	switch ( optionmenu_alignment .get_history() )
 	{
-		case  0 :  part_temp .alignment = GParted::ALIGN_CYLINDER;  break;
-		case  1 :  part_temp .alignment = GParted::ALIGN_MEBIBYTE;
-		           {
-		               //if start sector not MiB aligned and free space available then add ~1 MiB to partition so requested size is kept
-		               Sector diff = ( MEBIBYTE / part_temp .sector_size ) - ( part_temp .sector_end + 1 ) % ( MEBIBYTE / part_temp .sector_size ) ;
-		               if (   diff
-		                   && ( part_temp .sector_start % (MEBIBYTE / part_temp .sector_size ) ) > 0
-		                   && ( ( part_temp .sector_end - START +1 + diff ) < total_length )
-		                  )
-		                   part_temp .sector_end += diff ;
-		           }
-		           break;
-		case  2 :  part_temp .alignment = GParted::ALIGN_STRICT;  break;
+		case 0:   new_partition.alignment = ALIGN_CYLINDER;  break;
+		case 1:   new_partition.alignment = ALIGN_MEBIBYTE;
+			{
+				// If start sector not MiB aligned and free space available
+				// then add ~1 MiB to partition so requested size is kept
+				Sector diff = (MEBIBYTE / new_partition.sector_size) -
+				              (new_partition.sector_end + 1) % (MEBIBYTE / new_partition.sector_size);
+				if (    diff
+				     && ( new_partition.sector_start % (MEBIBYTE / new_partition.sector_size ) ) > 0
+				     && ( (new_partition.sector_end - START + 1 + diff) < total_length )
+				   )
+					new_partition.sector_end += diff;
+			}
+			break;
+		case 2:   new_partition.alignment = ALIGN_STRICT;  break;
 
-		default :  part_temp .alignment = GParted::ALIGN_MEBIBYTE ;
+		default:  new_partition.alignment = ALIGN_MEBIBYTE;  break;
 	}
 
-	part_temp .free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size) ;
+	new_partition.free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
 
 	// Create unallocated space within this new extended partition
 	//
@@ -268,19 +269,19 @@ Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 	// snap_to_alignment() needs including in it.  It will need abstracting into a set
 	// of methods so that it can be used in each dialog which creates and modified
 	// partition boundaries.
-	if ( part_temp.type == TYPE_EXTENDED )
+	if ( new_partition.type == TYPE_EXTENDED )
 	{
 		Partition unallocated;
-		unallocated.Set_Unallocated( part_temp.device_path,
-		                             part_temp.whole_device,
-		                             part_temp.sector_start,
-		                             part_temp.sector_end,
+		unallocated.Set_Unallocated( new_partition.device_path,
+		                             new_partition.whole_device,
+		                             new_partition.sector_start,
+		                             new_partition.sector_end,
 		                             sector_size,
 		                             true );
-		part_temp.logicals.push_back( unallocated );
+		new_partition.logicals.push_back( unallocated );
 	}
 
-	return part_temp;
+	return new_partition;
 }
 
 void Dialog_Partition_New::optionmenu_changed( bool type )
