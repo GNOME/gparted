@@ -117,7 +117,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
 {
 	//first call baseclass to get the correct new partition
 	Dialog_Base_Partition::prepare_new_partition( sector_size );

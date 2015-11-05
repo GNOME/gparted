@@ -29,7 +29,7 @@ public:
 	Dialog_Partition_Copy( const FS & fs, const Partition & selected_partition,
 	                       const Partition & copied_partition );
 
-	Partition Get_New_Partition( Byte_Value sector_size ) ;
+	const Partition & Get_New_Partition( Byte_Value sector_size );
 
 private:
 	void set_data( const Partition & selected_partition, const Partition & copied_partition );

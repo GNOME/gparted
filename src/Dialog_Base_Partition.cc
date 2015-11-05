@@ -136,7 +136,7 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
 {
 	prepare_new_partition( sector_size );
 	return new_partition;

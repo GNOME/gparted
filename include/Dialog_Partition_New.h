@@ -34,7 +34,7 @@ public:
 	                     bool any_extended,
 	                     unsigned short new_count,
 	                     const std::vector<FS> & FILESYSTEMS );
-	Partition Get_New_Partition( Byte_Value sector_size ) ;//overridden function
+	const Partition & Get_New_Partition( Byte_Value sector_size );
 
 private:
 	void set_data( const Device & device,

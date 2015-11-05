@@ -41,7 +41,7 @@ public:
 	~Dialog_Base_Partition( ) ;
 
 	void Set_Resizer( bool extended ) ;
-	Partition Get_New_Partition( Byte_Value sector_size ) ;
+	const Partition & Get_New_Partition( Byte_Value sector_size );
 	
 protected:
 	enum SPINBUTTON {

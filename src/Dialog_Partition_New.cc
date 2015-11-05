@@ -177,7 +177,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this ->show_all_children() ;
 }
 
-Partition Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 {
 	PartitionType part_type ;
 	Sector new_start, new_end;
