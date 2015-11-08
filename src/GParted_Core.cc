@@ -1526,11 +1526,11 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
 	if ( lp_partition )
-		// Will query partition using methods: (Q1) SWRaid, (Q2) libparted,
-		// (Q3) blkid, (Q4) internal
+		// Will query partition using methods: (Q1) SWRaid, (Q2) blkid,
+		// (Q3) libparted, (Q4) internal
 		path = get_partition_path( lp_partition );
 	else
-		// Will query whole disk device using methods: (Q1) SWRaid, (Q3) blkid,
+		// Will query whole disk device using methods: (Q1) SWRaid, (Q2) blkid,
 		// (Q4) internal
 		path = lp_device->path;
 
@@ -1538,29 +1538,17 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	if ( SWRaid_Info::is_member( path ) )
 		return FS_LINUX_SWRAID;
 
-	if ( lp_partition )
-	{
-		// (Q2) Standard libparted file system detection
-		if ( lp_partition->fs_type )
-		{
-			fsname = lp_partition->fs_type->name;
+	// (Q2) FS_Info (blkid) file system detection
+	// Blkid detects more signatures and generally has less limitations so use before
+	// libparted detection, but it doesn't report anything for extended partitions.
+	fsname = fs_info.get_fs_type( path );
 
-			// TODO: Temporary code to detect ext4.  Replace when
-			// libparted >= 1.9.0 is chosen as minimum required version.
-			Glib::ustring temp = fs_info.get_fs_type( path );
-			if ( temp == "ext4" || temp == "ext4dev" )
-				fsname = temp;
-		}
-	}
-
-	// (Q3) FS_Info (blkid) file system detection
-	// Originally just because libparted v2.2 didn't appear to detect file system for
-	// sector sizes other than 512 bytes.  Now to also detect what libparted doesn't.
-	if ( fsname.empty() )
-	{
-		//TODO: blkid does not return anything for an "extended" partition.  Need to handle this somehow
-		fsname = fs_info.get_fs_type( path );
-	}
+	// (Q3) Libparted file system detection
+	// Only used when blkid didn't report anything and only on partitions, not whole
+	// disk devices.  (Doesn't detect anything on non-512 byte sector devices before
+	// libparted 3.2).
+	if ( fsname.empty() && lp_partition && lp_partition->fs_type )
+		fsname = lp_partition->fs_type->name;
 
 	if ( ! fsname.empty() )
 	{
