@@ -37,6 +37,7 @@ EXTRA_DIST = \
 	OperationNamePartition.h	\
 	OperationResizeMove.h		\
 	Partition.h			\
+	PartitionLUKS.h			\
 	PartitionVector.h		\
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\

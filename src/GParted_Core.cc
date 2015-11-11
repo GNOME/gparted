@@ -24,6 +24,7 @@
 #include "../include/Operation.h"
 #include "../include/OperationCopy.h"
 #include "../include/Partition.h"
+#include "../include/PartitionLUKS.h"
 #include "../include/PartitionVector.h"
 #include "../include/Proc_Partitions_Info.h"
 #include "../include/SWRaid_Info.h"
@@ -1281,7 +1282,10 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 					partition_is_busy = is_busy( filesystem, partition_path ) ;
 				}
 
-				partition_temp = new Partition();
+				if ( filesystem == FS_LUKS )
+					partition_temp = new PartitionLUKS();
+				else
+					partition_temp = new Partition();
 				partition_temp->Set( device .get_path(),
 				                     partition_path,
 				                     lp_partition->num,
@@ -1393,7 +1397,11 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	Glib::ustring path = lp_device->path;
 	bool partition_is_busy = is_busy( fstype, path );
 
-	Partition * partition_temp = new Partition();
+	Partition * partition_temp = NULL;
+	if ( fstype == FS_LUKS )
+		partition_temp = new PartitionLUKS();
+	else
+		partition_temp = new Partition();
 	partition_temp->Set( device.get_path(),
 	                     path,
 	                     1,
