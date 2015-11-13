@@ -113,11 +113,10 @@ void GParted_Core::find_supported_filesystems()
 {
 	std::map< FILESYSTEM, FileSystem * >::iterator f ;
 
-	//Iteration of std::map is ordered according to operator< of the key.
-	//  Hence the FILESYSTEMS vector is constructed in FILESYSTEM enum
-	//  order: FS_UNKNOWN, FS_CLEARED, FS_BTRFS, ..., FS_LINUX_SWRAID,
-	//  LINUX_SWSUSPEND which ultimately controls the default order of file
-	//  systems in menus and dialogs.
+	// Iteration of std::map is ordered according to operator< of the key.  Hence the
+	// FILESYSTEMS vector is constructed in FILESYSTEM enum order: FS_UNALLOCATED,
+	// FS_UNKNOWN, FS_CLEARED, FS_BTRFS, ..., FS_LINUX_SWRAID, LINUX_SWSUSPEND which
+	// ultimately controls the default order of file systems in menus and dialogs.
 	FILESYSTEMS .clear() ;
 
 	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
@@ -3897,6 +3896,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 
 void GParted_Core::init_filesystems()
 {
+	FILESYSTEM_MAP[FS_UNALLOCATED]     = NULL;
 	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
 	FILESYSTEM_MAP[FS_CLEARED]         = NULL;
 	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
