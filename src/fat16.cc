@@ -60,8 +60,7 @@ const Glib::ustring fat16::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 
 FS fat16::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = specific_type ;
+	FS fs( specific_type );
 
 	// hack to disable silly mtools warnings
 	setenv( "MTOOLS_SKIP_CHECK", "1", 0 );

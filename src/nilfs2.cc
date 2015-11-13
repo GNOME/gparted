@@ -23,8 +23,7 @@ namespace GParted
 
 FS nilfs2::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_NILFS2 ;
+	FS fs( FS_NILFS2 );
 
 	fs .busy = FS::GPARTED ;
 

@@ -24,8 +24,7 @@ namespace GParted
 
 FS hfsplus::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_HFSPLUS ;
+	FS fs( FS_HFSPLUS );
 
 	fs .busy = FS::GPARTED ;
 

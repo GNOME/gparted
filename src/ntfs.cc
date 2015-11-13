@@ -57,8 +57,7 @@ const Glib::ustring ntfs::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 
 FS ntfs::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_NTFS ;
+	FS fs( FS_NTFS );
 
 	fs .busy = FS::GPARTED ;
 

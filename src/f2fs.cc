@@ -23,9 +23,7 @@ namespace GParted
 
 FS f2fs::get_filesystem_support()
 {
-	FS fs ;
-
-	fs .filesystem = FS_F2FS ;
+	FS fs( FS_F2FS );
 
 	fs .busy = FS::GPARTED ;
 

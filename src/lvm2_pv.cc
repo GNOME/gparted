@@ -47,8 +47,7 @@ const Glib::ustring lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) con
 
 FS lvm2_pv::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_LVM2_PV ;
+	FS fs( FS_LVM2_PV );
 
 	if ( LVM2_PV_Info::is_lvm2_pv_supported() )
 	{

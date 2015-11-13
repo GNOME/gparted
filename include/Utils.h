@@ -151,10 +151,10 @@ struct FS
 	Byte_Value MIN ; 
 	Byte_Value MAX ;
 	
-	FS()
+	FS( FILESYSTEM fstype = FS_UNKNOWN ) : filesystem( fstype )
 	{
-		read = read_label = write_label = read_uuid = write_uuid = create = create_with_label =
-		grow = shrink = move = check = copy = remove = online_read =
+		busy = read = read_label = write_label = read_uuid = write_uuid = create =
+		create_with_label = grow = shrink = move = check = copy = remove = online_read =
 		online_grow = online_shrink = NONE ;
 		MIN = MAX = 0 ;
 	} 

@@ -23,8 +23,7 @@ namespace GParted
 
 FS ext2::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = specific_type;
+	FS fs( specific_type );
 
 	fs .busy = FS::GPARTED ;
 

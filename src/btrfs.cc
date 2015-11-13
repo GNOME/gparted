@@ -39,8 +39,7 @@ std::map<Glib::ustring, BTRFS_Device> btrfs_device_cache ;
 
 FS btrfs::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_BTRFS ;
+	FS fs( FS_BTRFS );
 
 	fs .busy = FS::EXTERNAL ;
 

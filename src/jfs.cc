@@ -24,8 +24,7 @@ namespace GParted
 
 FS jfs::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_JFS ;
+	FS fs( FS_JFS );
 
 	fs .busy = FS::GPARTED ;
 

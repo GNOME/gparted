@@ -120,12 +120,11 @@ void GParted_Core::find_supported_filesystems()
 	//  systems in menus and dialogs.
 	FILESYSTEMS .clear() ;
 
-	FS fs_notsupp;
 	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
 		if ( f ->second )
 			FILESYSTEMS .push_back( f ->second ->get_filesystem_support() ) ;
 		else {
-			fs_notsupp .filesystem = f ->first ;
+			FS fs_notsupp( f->first );
 			FILESYSTEMS .push_back( fs_notsupp ) ;
 		}
 	}
@@ -942,8 +941,7 @@ const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const
 			return FILESYSTEMS[ t ] ;
 	}
 
-	static FS fs_notsupp;
-	fs_notsupp.filesystem = FS_UNKNOWN;
+	static FS fs_notsupp( FS_UNKNOWN );
 	return fs_notsupp;
 }
 

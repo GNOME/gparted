@@ -24,8 +24,7 @@ namespace GParted
 
 FS reiserfs::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_REISERFS ;
+	FS fs( FS_REISERFS );
 
 	fs .busy = FS::GPARTED ;
 

@@ -42,8 +42,7 @@ const Glib::ustring linux_swap::get_custom_text( CUSTOM_TEXT ttype, int index ) 
 
 FS linux_swap::get_filesystem_support()
 {
-	FS fs ;
-	fs .filesystem = GParted::FS_LINUX_SWAP ;
+	FS fs( FS_LINUX_SWAP );
 
 	fs .busy = FS::GPARTED ;
 	fs .read = FS::EXTERNAL ;
