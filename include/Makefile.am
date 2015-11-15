@@ -55,6 +55,7 @@ EXTRA_DIST = \
 	jfs.h				\
 	linux_swap.h			\
 	lvm2_pv.h			\
+	luks.h				\
 	nilfs2.h			\
 	ntfs.h				\
 	reiser4.h			\

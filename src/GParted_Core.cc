@@ -35,6 +35,7 @@
 #include "../include/fat16.h"
 #include "../include/linux_swap.h"
 #include "../include/lvm2_pv.h"
+#include "../include/luks.h"
 #include "../include/reiserfs.h"
 #include "../include/nilfs2.h"
 #include "../include/ntfs.h"
@@ -3948,6 +3949,7 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_JFS]             = new jfs();
 	FILESYSTEM_MAP[FS_LINUX_SWAP]      = new linux_swap();
 	FILESYSTEM_MAP[FS_LVM2_PV]         = new lvm2_pv();
+	FILESYSTEM_MAP[FS_LUKS]            = new luks();
 	FILESYSTEM_MAP[FS_NILFS2]          = new nilfs2();
 	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
 	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
@@ -3955,7 +3957,6 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_UFS]             = new ufs();
 	FILESYSTEM_MAP[FS_XFS]             = new xfs();
 	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
-	FILESYSTEM_MAP[FS_LUKS]            = NULL;
 	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
 	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
 }
