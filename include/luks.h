@@ -19,6 +19,7 @@
 #define GPARTED_LUKS_H
 
 #include "../include/FileSystem.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {
@@ -28,6 +29,7 @@ class luks : public FileSystem
 public:
 	FS get_filesystem_support();
 	bool is_busy( const Glib::ustring & path );
+	void set_used_sectors( Partition & partition );
 };
 
 } //GParted
