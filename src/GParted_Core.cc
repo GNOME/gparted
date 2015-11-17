@@ -1244,6 +1244,20 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		//Retrieve partition path
 		Glib::ustring partition_path = get_partition_path( lp_partition );
 
+		// NOTE: lp_partition->type bit field
+		// lp_partition->type is a bit field using enumerated names for each bit.
+		// GParted is only interested in partitions with these single bits set:
+		// PED_PARTITION_NORMAL, PED_PARTITION_LOGICAL and PED_PARTITION_EXTENDED.
+		// Partitions, ranges of blocks, with other bits set representing free
+		// space and disk label meta-data, PED_PARTITION_FREESPACE and
+		// PED_PARTITION_METADATA bits respectively, are ignore and GParted
+		// creates it own unallocated partitions and accounts for partition
+		// tables.
+		// References:
+		// *   struct PedPartition and type PedPartitionType
+		//     https://www.gnu.org/software/parted/api/struct__PedPartition.html
+		// *   enum _PedPartitionType
+		//     http://git.savannah.gnu.org/cgit/parted.git/tree/include/parted/disk.in.h?id=v3.2#n45
 		switch ( lp_partition ->type )
 		{
 			case PED_PARTITION_NORMAL:
@@ -1272,13 +1286,14 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				partition_temp->Set( device .get_path(),
 				                     partition_path,
 				                     lp_partition->num,
-				                     ( lp_partition->type == 0 ) ? TYPE_PRIMARY : TYPE_LOGICAL,
+				                     ( lp_partition->type == PED_PARTITION_NORMAL ) ? TYPE_PRIMARY
+				                                                                    : TYPE_LOGICAL,
 				                     false,
 				                     filesystem,
 				                     lp_partition->geom.start,
 				                     lp_partition->geom.end,
 				                     device.sector_size,
-				                     lp_partition->type,
+				                     ( lp_partition->type == PED_PARTITION_LOGICAL ),
 				                     partition_is_busy );
 				partition_temp->messages = detect_messages;
 				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
@@ -1309,6 +1324,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				break ;
 
 			default:
+				// Ignore libparted reported partitions with other type
+				// bits set.
 				break;
 		}
 
