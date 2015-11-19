@@ -1639,8 +1639,8 @@ void Win_GParted::menu_help_about()
 		dialog .set_translator_credits( str_credits ) ;
 
 
-  	//the url is not clickable because this would introduce an new dep (gnome-vfsmm) 
-	dialog .set_website( "http://gparted.org" ) ;
+	//the url is not clickable - should not invoke web browser as root
+	dialog .set_website_label( "http://gparted.org" ) ;
 
 	dialog .run() ;
 }
