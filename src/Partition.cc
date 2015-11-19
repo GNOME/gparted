@@ -51,7 +51,6 @@ void Partition::Reset()
 	significant_threshold = 1 ;
 	free_space_before = -1 ;
 	sector_size = 0 ;
-	color .set( "black" ) ;
 	inside_extended = busy = strict_start = false ;
 	logicals .clear() ;
 	flags .clear() ;
@@ -83,8 +82,6 @@ void Partition::Set( const Glib::ustring & device_path,
 	this ->sector_size = sector_size;
 	this ->inside_extended = inside_extended;
 	this ->busy = busy;
-	
-	this ->color .set( Utils::get_color( filesystem ) );
 }
 
 //Set file system size and free space, which also calculates unallocated

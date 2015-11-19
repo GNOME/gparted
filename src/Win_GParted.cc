@@ -1878,7 +1878,6 @@ void Win_GParted::activate_paste()
 		partition_new->filesystem = copied_partition->filesystem;
 		partition_new->set_filesystem_label( copied_partition->get_filesystem_label() );
 		partition_new->uuid = copied_partition->uuid;
-		partition_new->color = copied_partition->color;
 		Sector new_size = partition_new->get_sector_length();
 		if ( copied_partition->get_sector_length() == new_size )
 		{

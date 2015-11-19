@@ -18,6 +18,7 @@
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../include/Partition.h"
+#include "../include/Utils.h"
 #include "../include/btrfs.h"
 
 #include <gtk/gtk.h>
@@ -193,8 +194,8 @@ void Dialog_Partition_Info::init_drawingarea()
 
 	color_text .set( "black" );
 	this ->get_colormap() ->alloc_color( color_text ) ;
-	
-	color_partition = partition .color ;
+
+	color_partition.set( Utils::get_color( partition.filesystem ) );
 	this ->get_colormap() ->alloc_color( color_partition ) ;	 
 	
 	//set text of pangolayout

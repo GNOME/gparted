@@ -18,6 +18,7 @@
 #include "../include/Dialog_Partition_Copy.h"
 #include "../include/GParted_Core.h"
 #include "../include/Partition.h"
+#include "../include/Utils.h"
 
 namespace GParted
 {
@@ -44,8 +45,9 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .get_path() ) ) ;
 	
 	//set partition color
-	frame_resizer_base ->set_rgb_partition_color( copied_partition .color ) ;
-	
+	Gdk::Color partition_color( Utils::get_color( copied_partition.filesystem ) );
+	frame_resizer_base->set_rgb_partition_color( partition_color );
+
 	//set some widely used values...
 	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition ) ;
 	START = selected_partition .sector_start ;

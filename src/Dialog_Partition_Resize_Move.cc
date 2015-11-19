@@ -19,6 +19,7 @@
 #include "../include/GParted_Core.h"
 #include "../include/Partition.h"
 #include "../include/PartitionVector.h"
+#include "../include/Utils.h"
 
 namespace GParted
 {
@@ -55,8 +56,9 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	}
 	
 	//set partition color
-	frame_resizer_base ->set_rgb_partition_color( selected_partition .color ) ;
-	
+	Gdk::Color partition_color( Utils::get_color( selected_partition.filesystem ) );
+	frame_resizer_base->set_rgb_partition_color( partition_color );
+
 	//store the original values
 	ORIG_BEFORE 	= spinbutton_before .get_value_as_int() ;
 	ORIG_SIZE	= spinbutton_size .get_value_as_int() ;

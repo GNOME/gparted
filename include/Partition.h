@@ -135,7 +135,6 @@ public:
 	Sector sectors_unused;
 	Sector sectors_unallocated;  //Difference between the size of the partition and the file system
 	Sector significant_threshold;  //Threshold from intrinsic to significant unallocated sectors
-	Gdk::Color color;
 	bool inside_extended;
 	bool busy;
 	std::vector<Glib::ustring> messages ;
