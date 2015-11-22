@@ -38,9 +38,9 @@ Dialog_Rescue_Data::Dialog_Rescue_Data()
 }
 
 //getters
-std::vector<Partition> Dialog_Rescue_Data::get_partitions()
+bool Dialog_Rescue_Data::found_partitions()
 {
-	return this->partitions;
+	return this->partitions.size() > 0;
 }
 
 // Draws the dialog

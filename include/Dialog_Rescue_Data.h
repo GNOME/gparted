@@ -39,7 +39,7 @@ public:
 
 	void init_partitions(Device *parentDevice, const Glib::ustring &buff);
 
-	std::vector<Partition> get_partitions();
+	bool found_partitions();
 
 private:
 	void draw_dialog();

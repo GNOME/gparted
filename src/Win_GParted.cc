@@ -2551,7 +2551,7 @@ void Win_GParted::activate_attempt_rescue_data()
 	//Reads the output of gpart
 	dialog.init_partitions(&devices[ current_device ], this->gpart_output);
 
-	if(dialog.get_partitions().size()==0) //No partitions found
+	if ( ! dialog.found_partitions() )
 	{
 		//Dialog information
 		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
