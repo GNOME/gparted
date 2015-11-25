@@ -17,6 +17,7 @@
 
 #include "../include/Dialog_Partition_New.h"
 #include "../include/GParted_Core.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

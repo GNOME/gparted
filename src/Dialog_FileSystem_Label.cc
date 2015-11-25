@@ -15,6 +15,7 @@
  */
 
 #include "../include/Dialog_FileSystem_Label.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

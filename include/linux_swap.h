@@ -20,6 +20,7 @@
 #define GPARTED_LINUX_SWAP_H
 
 #include "../include/FileSystem.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

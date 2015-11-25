@@ -15,6 +15,7 @@
  */
 
 #include "../include/DMRaid.h"
+#include "../include/Partition.h"
 
 #include <stdlib.h>		//atoi function
 

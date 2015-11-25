@@ -19,6 +19,7 @@
 #define GPARTED_NILFS2_H
 
 #include "../include/FileSystem.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

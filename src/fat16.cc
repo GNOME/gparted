@@ -17,6 +17,7 @@
  
  
 #include "../include/fat16.h"
+#include "../include/Partition.h"
 
 /*****
 //For some reason unknown, this works without these include statements.

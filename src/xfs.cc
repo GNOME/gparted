@@ -17,6 +17,7 @@
  
  
 #include "../include/xfs.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

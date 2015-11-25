@@ -17,6 +17,7 @@
  
  
 #include "../include/jfs.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

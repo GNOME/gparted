@@ -17,6 +17,7 @@
 
 #include "../include/LVM2_PV_Info.h"
 #include "../include/lvm2_pv.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

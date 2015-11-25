@@ -20,6 +20,7 @@
 #define GPARTED_FAT16_H
 
 #include "../include/FileSystem.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

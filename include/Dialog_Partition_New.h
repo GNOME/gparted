@@ -20,6 +20,7 @@
 
 #include "../include/Dialog_Base_Partition.h"
 #include "../include/Device.h"
+#include "../include/Partition.h"
 
 #include <gtkmm/optionmenu.h>
 

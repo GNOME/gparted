@@ -16,6 +16,7 @@
  */
  
 #include "../include/ext2.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

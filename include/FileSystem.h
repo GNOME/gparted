@@ -20,6 +20,7 @@
 #define GPARTED_FILESYSTEM_H
 
 #include "../include/Operation.h"
+#include "../include/Partition.h"
 #include "../include/PipeCapture.h"
 
 #include <fstream>

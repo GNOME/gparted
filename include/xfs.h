@@ -20,6 +20,7 @@
 #define GPARTED_XFS_H
 
 #include "../include/FileSystem.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

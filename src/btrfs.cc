@@ -18,6 +18,7 @@
 
 #include "../include/btrfs.h"
 #include "../include/GParted_Core.h"
+#include "../include/Partition.h"
 
 #include <ctype.h>
 

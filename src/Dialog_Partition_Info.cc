@@ -17,6 +17,7 @@
  
 #include "../include/Dialog_Partition_Info.h"
 #include "../include/LVM2_PV_Info.h"
+#include "../include/Partition.h"
 #include "../include/btrfs.h"
 
 #include <gtk/gtk.h>

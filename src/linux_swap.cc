@@ -17,6 +17,7 @@
  
  
 #include "../include/linux_swap.h"
+#include "../include/Partition.h"
 
 #include <cerrno>
 

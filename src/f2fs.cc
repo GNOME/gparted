@@ -16,6 +16,7 @@
 
 
 #include "../include/f2fs.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {

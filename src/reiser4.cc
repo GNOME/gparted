@@ -17,6 +17,7 @@
  
  
 #include "../include/reiser4.h"
+#include "../include/Partition.h"
 
 namespace GParted
 {
