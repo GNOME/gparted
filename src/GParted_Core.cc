@@ -303,7 +303,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device.disktype = "none";
 				temp_device.max_prims = 1;
 				set_device_one_partition( temp_device, lp_device, fstype, messages );
-				set_used_sectors( temp_device.partitions, NULL );
 			}
 			// Partitioned drive (excluding "loop"), as recognised by libparted
 			else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
@@ -320,8 +319,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				}
 
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
-				set_used_sectors( temp_device .partitions, lp_disk ) ;
-			
+
 				if ( temp_device .highest_busy )
 				{
 					temp_device .readonly = ! commit_to_os( lp_disk, 1 ) ;
@@ -1339,6 +1337,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			set_partition_label_and_uuid( *partition_temp );
 			set_mountpoints( *partition_temp );
+			set_used_sectors( *partition_temp, lp_disk );
 
 			// Retrieve partition name
 			if ( device.partition_naming_supported() )
@@ -1418,6 +1417,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 
 	set_partition_label_and_uuid( *partition_temp );
 	set_mountpoints( *partition_temp );
+	set_used_sectors( *partition_temp, NULL );
 
 	device.partitions.push_back_adopt( partition_temp );
 }
@@ -1897,105 +1897,92 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	return busy ;
 }
 
-void GParted_Core::set_used_sectors( PartitionVector & partitions, PedDisk* lp_disk )
+void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+	if ( supported_filesystem( partition.filesystem ) )
 	{
-		if ( supported_filesystem( partitions[ t ] .filesystem ) ||
-		     partitions[t].filesystem == FS_EXTENDED                )
+		FileSystem* p_filesystem = NULL;
+		if ( partition.busy )
 		{
-			if ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
-			     partitions[ t ] .type == GParted::TYPE_LOGICAL ) 
+			switch( get_fs( partition.filesystem ).online_read )
 			{
-				FileSystem* p_filesystem = NULL ;
-				if ( partitions[ t ] .busy )
-				{
-					switch( get_fs( partitions[ t ] .filesystem ) .online_read )
-					{
-						case FS::EXTERNAL:
-							p_filesystem = get_filesystem_object( partitions[ t ] .filesystem ) ;
-							if ( p_filesystem )
-								p_filesystem ->set_used_sectors( partitions[ t ] ) ;
-							break ;
-						case FS::GPARTED:
-							mounted_set_used_sectors( partitions[ t ] ) ;
-							break ;
-
-						default:
-							break ;
-					}
-				}
-				else
-				{
-					switch( get_fs( partitions[ t ] .filesystem ) .read )
-					{
-						case GParted::FS::EXTERNAL	:
-							p_filesystem = get_filesystem_object( partitions[ t ] .filesystem ) ;
-							if ( p_filesystem )
-								p_filesystem ->set_used_sectors( partitions[ t ] ) ;
-							break ;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
-						case GParted::FS::LIBPARTED	:
-							if ( lp_disk )
-								LP_set_used_sectors( partitions[t], lp_disk );
-							break ;
-#endif
-
-						default:
-							break ;
-					}
-				}
-
-				Sector unallocated ;
-				if ( ! partitions[ t ] .sector_usage_known() )
-				{
-					Glib::ustring temp = _("Unable to read the contents of this file system!") ;
-					temp += "\n" ;
-					temp += _("Because of this some operations may be unavailable.") ;
-					if ( ! Utils::get_filesystem_software( partitions[ t ] .filesystem ) .empty() )
-					{
-						temp += "\n" ;
-						temp += _( "The cause might be a missing software package.") ;
-						temp += "\n" ;
-						/*TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs. */
-						temp += String::ucompose( _("The following list of software packages is required for %1 file system support:  %2."),
-						                          Utils::get_filesystem_string( partitions[ t ] .filesystem ),
-						                          Utils::get_filesystem_software( partitions[ t ] .filesystem )
-						                        ) ;
-					}
-					partitions[ t ] .messages .push_back( temp ) ;
-				}
-				else if ( ( unallocated = partitions[ t ] .get_sectors_unallocated() ) > 0 )
-				{
-					/* TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition. */
-					Glib::ustring temp = String::ucompose( _("%1 of unallocated space within the partition."),
-					                         Utils::format_size( unallocated, partitions[ t ] .sector_size ) ) ;
-					FS fs = get_fs( partitions[ t ] .filesystem ) ;
-					if (    fs .check != GParted::FS::NONE
-					     && fs .grow  != GParted::FS::NONE )
-					{
-						temp += "\n" ;
-						/* TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
-						 * means that the user can perform a check of the partition which will
-						 * also grow the file system to fill the partition.
-						 */
-						temp += _("To grow the file system to fill the partition, select the partition and choose the menu item:") ;
-						temp += "\n" ;
-						temp += _("Partition --> Check.") ;
-					}
-					partitions[ t ] .messages .push_back( temp ) ;
-				}
-
-				if ( filesystem_resize_disallowed( partitions[ t ] ) )
-				{
-					Glib::ustring temp = get_filesystem_object( partitions[ t ] .filesystem )
-					       ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING ) ;
-					if ( ! temp .empty() )
-						partitions[ t ] .messages .push_back( temp ) ;
-				}
+				case FS::EXTERNAL:
+					p_filesystem = get_filesystem_object( partition.filesystem );
+					if ( p_filesystem )
+						p_filesystem->set_used_sectors( partition );
+					break;
+				case FS::GPARTED:
+					mounted_set_used_sectors( partition );
+					break;
+				default:
+					break;
 			}
-			else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-				set_used_sectors( partitions[ t ] .logicals, lp_disk ) ;
+		}
+		else  // Not busy file system
+		{
+			switch( get_fs( partition.filesystem ).read )
+			{
+				case FS::EXTERNAL:
+					p_filesystem = get_filesystem_object( partition.filesystem );
+					if ( p_filesystem )
+						p_filesystem->set_used_sectors( partition );
+					break;
+#ifdef HAVE_LIBPARTED_FS_RESIZE
+				case FS::LIBPARTED:
+					if ( lp_disk )
+						LP_set_used_sectors( partition, lp_disk );
+					break;
+#endif
+				default:
+					break;
+			}
+		}
+
+		Sector unallocated;
+		if ( ! partition.sector_usage_known() )
+		{
+			Glib::ustring temp = _("Unable to read the contents of this file system!");
+			temp += "\n";
+			temp += _("Because of this some operations may be unavailable.");
+			if ( ! Utils::get_filesystem_software( partition.filesystem ).empty() )
+			{
+				temp += "\n";
+				temp += _("The cause might be a missing software package.");
+				temp += "\n";
+				/*TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs. */
+				temp += String::ucompose( _("The following list of software packages is required for %1 file system support:  %2."),
+				                          Utils::get_filesystem_string( partition.filesystem ),
+				                          Utils::get_filesystem_software( partition.filesystem )
+				                        );
+			}
+			partition.messages.push_back( temp );
+		}
+		else if ( ( unallocated = partition.get_sectors_unallocated() ) > 0 )
+		{
+			/* TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition. */
+			Glib::ustring temp = String::ucompose( _("%1 of unallocated space within the partition."),
+			                                       Utils::format_size( unallocated, partition.sector_size ) );
+			FS fs = get_fs( partition.filesystem );
+			if ( fs.check != FS::NONE && fs.grow != FS::NONE )
+			{
+				temp += "\n";
+				/* TO TRANSLATORS: To grow the file system to fill the partition, select the partition and choose the menu item:
+				 * means that the user can perform a check of the partition which will
+				 * also grow the file system to fill the partition.
+				 */
+				temp += _("To grow the file system to fill the partition, select the partition and choose the menu item:");
+				temp += "\n";
+				temp += _("Partition --> Check.");
+			}
+			partition.messages.push_back( temp );
+		}
+
+		if ( filesystem_resize_disallowed( partition ) )
+		{
+			Glib::ustring temp = get_filesystem_object( partition.filesystem )
+			                     ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING );
+			if ( ! temp.empty() )
+				partition.messages.push_back( temp );
 		}
 	}
 }
