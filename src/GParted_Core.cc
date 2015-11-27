@@ -303,7 +303,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				temp_device.disktype = "none";
 				temp_device.max_prims = 1;
 				set_device_one_partition( temp_device, lp_device, fstype, messages );
-				set_mountpoints( temp_device.partitions );
 				set_used_sectors( temp_device.partitions, NULL );
 			}
 			// Partitioned drive (excluding "loop"), as recognised by libparted
@@ -321,7 +320,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				}
 
 				set_device_partitions( temp_device, lp_device, lp_disk ) ;
-				set_mountpoints( temp_device .partitions ) ;
 				set_used_sectors( temp_device .partitions, lp_disk ) ;
 			
 				if ( temp_device .highest_busy )
@@ -1340,6 +1338,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		if ( partition_temp != NULL )
 		{
 			set_partition_label_and_uuid( *partition_temp );
+			set_mountpoints( *partition_temp );
 
 			// Retrieve partition name
 			if ( device.partition_naming_supported() )
@@ -1418,6 +1417,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 		device.highest_busy = 1;
 
 	set_partition_label_and_uuid( *partition_temp );
+	set_mountpoints( *partition_temp );
 
 	device.partitions.push_back_adopt( partition_temp );
 }
@@ -1767,78 +1767,69 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 }
 
-void GParted_Core::set_mountpoints( PartitionVector & partitions )
+void GParted_Core::set_mountpoints( Partition & partition )
 {
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
 #endif
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
+
+	if ( partition.filesystem == FS_LVM2_PV )
 	{
-		if ( ( partitions[ t ] .type == GParted::TYPE_PRIMARY ||
-		       partitions[ t ] .type == GParted::TYPE_LOGICAL
-		     ) &&
-		     partitions[ t ] .filesystem != FS_LINUX_SWAP      &&
-		     partitions[ t ] .filesystem != FS_LVM2_PV         &&
-		     supported_filesystem( partitions[ t ] .filesystem )
-		   )
+		Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
+		if ( ! vgname.empty() )
+			partition.add_mountpoint( vgname );
+	}
+	else if ( partition.filesystem == FS_LINUX_SWRAID )
+	{
+		Glib::ustring array_path = SWRaid_Info::get_array( partition.get_path() );
+		if ( ! array_path.empty() )
+			partition.add_mountpoint( array_path );
+	}
+	// Swap spaces don't have mount points so don't bother trying to add them.
+	else if ( supported_filesystem( partition.filesystem ) && partition.filesystem != FS_LINUX_SWAP )
+	{
+		if ( partition.busy )
 		{
-			if ( partitions[ t ] .busy )
+#ifndef USE_LIBPARTED_DMRAID
+			// Handle dmraid devices differently because there may be more
+			// than one partition name.
+			// E.g., there might be names with and/or without a 'p' between
+			//       the device name and partition number.
+			if ( dmraid.is_dmraid_device( partition.device_path ) )
 			{
-#ifndef USE_LIBPARTED_DMRAID
-				//Handle dmraid devices differently because there may be more
-				//  than one partition name.
-				//  E.g., there might be names with and/or without a 'p' between
-				//        the device name and partition number.
-				if ( dmraid .is_dmraid_device( partitions[ t ] .device_path ) )
-				{
-					//Try device_name + partition_number
-					Glib::ustring dmraid_path = partitions[ t ] .device_path + Utils::num_to_str( partitions[t ] .partition_number ) ;
-					if ( set_mountpoints_helper( partitions[ t ], dmraid_path ) )
-						break ;
+				// Try device_name + partition_number
+				Glib::ustring dmraid_path = partition.device_path +
+				                            Utils::num_to_str( partition.partition_number );
+				if ( set_mountpoints_helper( partition, dmraid_path ) )
+					return;
 
-					//Try device_name + p + partition_number
-					dmraid_path = partitions[ t ] .device_path + "p" + Utils::num_to_str( partitions[ t ] .partition_number ) ;
-					if ( set_mountpoints_helper( partitions[ t ], dmraid_path ) )
-						break ;
-				}
-				else
-				{
-#endif
-					//Normal device, not DMRaid device
-					for ( unsigned int i = 0 ; i < partitions[ t ] .get_paths() .size() ; i++ )
-					{
-						Glib::ustring path = partitions[ t ] .get_paths()[ i ] ;
-						if ( set_mountpoints_helper( partitions[ t ], path ) )
-							break ;
-					}
-#ifndef USE_LIBPARTED_DMRAID
-				}
-#endif
-
-				if ( partitions[ t ] .get_mountpoints() .empty() )
-					partitions[ t ] .messages .push_back( _("Unable to find mount point") ) ;
+				// Try device_name + p + partition_number
+				dmraid_path = partition.device_path + "p" +
+				              Utils::num_to_str( partition.partition_number );
+				if ( set_mountpoints_helper( partition, dmraid_path ) )
+					return;
 			}
 			else
+#endif
 			{
-				std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
-				iter_mp = fstab_info .find( partitions[ t ] .get_path() );
-				if ( iter_mp != fstab_info .end() )
-					partitions[ t ] .add_mountpoints( iter_mp ->second ) ;
+				// Normal device, not DMRaid device
+				for ( unsigned int i = 0 ; i < partition.get_paths() .size() ; i++ )
+				{
+					Glib::ustring path = partition.get_paths()[i];
+					if ( set_mountpoints_helper( partition, path ) )
+						return;
+				}
 			}
+
+			if ( partition.get_mountpoints().empty() )
+					partition.messages.push_back( _("Unable to find mount point") );
 		}
-		else if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			set_mountpoints( partitions[ t ] .logicals ) ;
-		else if ( partitions[ t ] .filesystem == GParted::FS_LVM2_PV )
+		else  // Not busy file system
 		{
-			Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partitions[t].get_path() );
-			if ( ! vgname .empty() )
-				partitions[ t ] .add_mountpoint( vgname ) ;
-		}
-		else if ( partitions[t].filesystem == FS_LINUX_SWRAID )
-		{
-			Glib::ustring array_path = SWRaid_Info::get_array( partitions[t].get_path() );
-			if ( ! array_path.empty() )
-				partitions[t].add_mountpoint( array_path );
+			std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp;
+			iter_mp = fstab_info.find( partition.get_path() );
+			if ( iter_mp != fstab_info.end() )
+				partition.add_mountpoints( iter_mp->second );
 		}
 	}
 }

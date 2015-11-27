@@ -99,8 +99,8 @@ private:
 	                                     std::vector<Glib::ustring> & messages );
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
-	void set_mountpoints( PartitionVector & partitions );
-	bool set_mountpoints_helper( Partition & partitions, const Glib::ustring & path ) ;
+	void set_mountpoints( Partition & partition );
+	bool set_mountpoints_helper( Partition & partition, const Glib::ustring & path );
 	bool is_busy( FILESYSTEM fstype, const Glib::ustring & path ) ;
 	void set_used_sectors( PartitionVector & partitions, PedDisk* lp_disk );
 	void mounted_set_used_sectors( Partition & partition ) ;
