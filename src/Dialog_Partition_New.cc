@@ -54,13 +54,15 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this ->new_count = new_count;
 	new_partition = selected_partition.clone();
 
-	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
-	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
-	// of items in the file system menu built by Build_Filesystems_Menu().
+	// Copy only supported file systems, excluding LUKS, from GParted_Core FILESYSTEMS
+	// vector.  Add FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This
+	// decides the order of items in the file system menu built by
+	// Build_Filesystems_Menu().
 	this->FILESYSTEMS.clear();
 	for ( unsigned i = 0 ; i < FILESYSTEMS.size() ; i ++ )
 	{
-		if ( GParted_Core::supported_filesystem( FILESYSTEMS[i].filesystem ) )
+		if ( GParted_Core::supported_filesystem( FILESYSTEMS[i].filesystem ) &&
+		     FILESYSTEMS[i].filesystem != FS_LUKS                               )
 			this->FILESYSTEMS.push_back( FILESYSTEMS[i] );
 	}
 
