@@ -46,11 +46,16 @@ struct LUKS_Mapping
 class LUKS_Info
 {
 public:
-	static void load_cache();
+	static void clear_cache();
 	static const LUKS_Mapping & get_cache_entry( const Glib::ustring & path );
 
 private:
+	static void initialise_if_required();
+	static void load_cache();
+	static const LUKS_Mapping & get_cache_entry_internal( const Glib::ustring & path );
+
 	static std::vector<LUKS_Mapping> luks_mapping_cache;
+	static bool cache_initialised;
 };
 
 }//GParted

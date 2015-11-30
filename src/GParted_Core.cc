@@ -163,7 +163,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
 	SWRaid_Info::load_cache();
-	LUKS_Info::load_cache();
+	LUKS_Info::clear_cache();               // Cache automatically loaded if and when needed
 
 	init_maps() ;
 	

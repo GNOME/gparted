@@ -31,6 +31,31 @@ namespace GParted
 //     {name="sdb6_crypt", major=8, minor=22, path="/dev/sdb6", offset=2097152, length=534773760}
 std::vector<LUKS_Mapping> LUKS_Info::luks_mapping_cache;
 
+bool LUKS_Info::cache_initialised = false;
+
+void LUKS_Info::clear_cache()
+{
+	luks_mapping_cache.clear();
+	cache_initialised = false;
+}
+
+const LUKS_Mapping & LUKS_Info::get_cache_entry( const Glib::ustring & path )
+{
+	initialise_if_required();
+	return get_cache_entry_internal( path );
+}
+
+//Private methods
+
+void LUKS_Info::initialise_if_required()
+{
+	if ( ! cache_initialised )
+	{
+		load_cache();
+		cache_initialised = true;
+	}
+}
+
 void LUKS_Info::load_cache()
 {
 	luks_mapping_cache.clear();
@@ -108,7 +133,7 @@ void LUKS_Info::load_cache()
 
 // Return LUKS cache entry for the named underlying block device path,
 // or not found substitute when no entry exists.
-const LUKS_Mapping & LUKS_Info::get_cache_entry( const Glib::ustring & path )
+const LUKS_Mapping & LUKS_Info::get_cache_entry_internal( const Glib::ustring & path )
 {
 	// First scan the cache looking for an underlying block device path match.
 	// (Totally in memory)
@@ -141,7 +166,5 @@ const LUKS_Mapping & LUKS_Info::get_cache_entry( const Glib::ustring & path )
 	static LUKS_Mapping not_found = {"", 0UL, 0UL, "", -1LL, -1LL};
 	return not_found;
 }
-
-//Private methods
 
 }//GParted
