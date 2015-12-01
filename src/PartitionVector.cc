@@ -85,4 +85,14 @@ void PartitionVector::insert( iterator position, const Partition & partition )
 	v.insert( position, p );
 }
 
+void PartitionVector::push_back_adopt( Partition * partition )
+{
+	v.push_back( partition );
+}
+
+void PartitionVector::insert_adopt( iterator position, Partition * partition )
+{
+	v.insert( position, partition );
+}
+
 } //GParted
