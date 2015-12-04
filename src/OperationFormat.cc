@@ -40,14 +40,14 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 		// unallocated device, matching what happens when implemented.
 		partitions.clear();
 
-		Partition temp_partition;
-		temp_partition.Set_Unallocated( device.get_path(),
-		                                true,
-		                                0LL,
-		                                device.length -1LL,
-		                                device.sector_size,
-		                                false );
-		partitions.push_back( temp_partition );
+		Partition * temp_partition = new Partition();
+		temp_partition->Set_Unallocated( device.get_path(),
+		                                 true,
+		                                 0LL,
+		                                 device.length -1LL,
+		                                 device.sector_size,
+		                                 false );
+		partitions.push_back_adopt( temp_partition );
 	}
 	else
 	{

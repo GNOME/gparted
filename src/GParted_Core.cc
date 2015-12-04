@@ -342,21 +342,21 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 				// Create virtual partition covering the whole disk device
 				// with unknown contents.
-				Partition partition_temp;
-				partition_temp.Set( temp_device.get_path(),
-				                    lp_device->path,
-				                    1,
-				                    TYPE_PRIMARY,
-				                    true,
-				                    FS_UNKNOWN,
-				                    0LL,
-				                    temp_device.length - 1LL,
-				                    temp_device.sector_size,
-				                    false,
-				                    false );
+				Partition * partition_temp = new Partition();
+				partition_temp->Set( temp_device.get_path(),
+				                     lp_device->path,
+				                     1,
+				                     TYPE_PRIMARY,
+				                     true,
+				                     FS_UNKNOWN,
+				                     0LL,
+				                     temp_device.length - 1LL,
+				                     temp_device.sector_size,
+				                     false,
+				                     false );
 				// Place unknown file system message in this partition.
-				partition_temp.messages = messages;
-				temp_device.partitions.push_back( partition_temp );
+				partition_temp->messages = messages;
+				temp_device.partitions.push_back_adopt( partition_temp );
 			}
 			// Unrecognised, unpartitioned drive.
 			else
@@ -369,19 +369,19 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 					_("unrecognized") ;
 				temp_device.max_prims = 1;
 
-				Partition partition_temp;
-				partition_temp.Set_Unallocated( temp_device .get_path(),
-				                                true,
-				                                0LL,
-				                                temp_device .length - 1LL,
-				                                temp_device .sector_size,
-				                                false );
+				Partition * partition_temp = new Partition();
+				partition_temp->Set_Unallocated( temp_device.get_path(),
+				                                 true,
+				                                 0LL,
+				                                 temp_device.length - 1LL,
+				                                 temp_device.sector_size,
+				                                 false );
 				// Place libparted messages in this unallocated partition
-				partition_temp.messages.insert( partition_temp.messages.end(),
-				                                libparted_messages.begin(),
-				                                libparted_messages.end() );
+				partition_temp->messages.insert( partition_temp->messages.end(),
+				                                 libparted_messages.begin(),
+				                                 libparted_messages.end() );
 				libparted_messages.clear();
-				temp_device.partitions.push_back( partition_temp );
+				temp_device.partitions.push_back_adopt( partition_temp );
 			}
 					
 			devices .push_back( temp_device ) ;
@@ -1237,9 +1237,10 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 	while ( lp_partition )
 	{
 		libparted_messages .clear() ;
-		Partition partition_temp ;
+		Partition * partition_temp = NULL;
 		bool partition_is_busy = false ;
-		GParted::FILESYSTEM filesystem ;
+		GParted::FILESYSTEM filesystem;
+		std::vector<Glib::ustring> detect_messages;
 
 		//Retrieve partition path
 		Glib::ustring partition_path = get_partition_path( lp_partition );
@@ -1248,7 +1249,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = detect_filesystem( lp_device, lp_partition, partition_temp.messages );
+				filesystem = detect_filesystem( lp_device, lp_partition, detect_messages );
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -1268,41 +1269,42 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 					partition_is_busy = is_busy( filesystem, partition_path ) ;
 				}
 
-				partition_temp.Set( device .get_path(),
-				                    partition_path,
-				                    lp_partition->num,
-				                    ( lp_partition->type == 0 ) ? TYPE_PRIMARY : TYPE_LOGICAL,
-				                    false,
-				                    filesystem,
-				                    lp_partition->geom.start,
-				                    lp_partition->geom.end,
-				                    device.sector_size,
-				                    lp_partition->type,
-				                    partition_is_busy );
+				partition_temp = new Partition();
+				partition_temp->Set( device .get_path(),
+				                     partition_path,
+				                     lp_partition->num,
+				                     ( lp_partition->type == 0 ) ? TYPE_PRIMARY : TYPE_LOGICAL,
+				                     false,
+				                     filesystem,
+				                     lp_partition->geom.start,
+				                     lp_partition->geom.end,
+				                     device.sector_size,
+				                     lp_partition->type,
+				                     partition_is_busy );
+				partition_temp->messages = detect_messages;
+				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
+				set_flags( *partition_temp, lp_partition );
 
-				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
-				set_flags( partition_temp, lp_partition ) ;
-
-				if ( partition_temp .busy && partition_temp .partition_number > device .highest_busy )
-					device .highest_busy = partition_temp .partition_number ;
-
+				if ( partition_temp->busy && partition_temp->partition_number > device.highest_busy )
+					device.highest_busy = partition_temp->partition_number;
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
-				partition_temp.Set( device.get_path(),
-				                    partition_path,
-				                    lp_partition->num,
-				                    TYPE_EXTENDED,
-				                    false,
-				                    FS_EXTENDED,
-				                    lp_partition->geom.start,
-				                    lp_partition->geom.end,
-				                    device.sector_size,
-				                    false,
-				                    false );
+				partition_temp = new Partition();
+				partition_temp->Set( device.get_path(),
+				                     partition_path,
+				                     lp_partition->num,
+				                     TYPE_EXTENDED,
+				                     false,
+				                     FS_EXTENDED,
+				                     lp_partition->geom.start,
+				                     lp_partition->geom.end,
+				                     device.sector_size,
+				                     false,
+				                     false );
 
-				partition_temp .add_paths( pp_info .get_alternate_paths( partition_temp .get_path() ) ) ;
-				set_flags( partition_temp, lp_partition ) ;
+				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
+				set_flags( *partition_temp, lp_partition );
 
 				EXT_INDEX = device .partitions .size() ;
 				break ;
@@ -1311,27 +1313,24 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				break;
 		}
 
-		//Avoid reading additional file system information if there is no path
-		if ( partition_temp .get_path() != "" )
+		// Only for libparted reported partition types that we care about: NORMAL,
+		// LOGICAL, EXTENDED
+		if ( partition_temp != NULL )
 		{
-			set_partition_label_and_uuid( partition_temp );
+			set_partition_label_and_uuid( *partition_temp );
 
 			// Retrieve partition name
 			if ( device.partition_naming_supported() )
-				partition_temp.name = Glib::ustring( ped_partition_get_name( lp_partition ) );
-		}
+				partition_temp->name = Glib::ustring( ped_partition_get_name( lp_partition ) );
 
-		partition_temp .messages .insert( partition_temp .messages .end(),
-						  libparted_messages. begin(),
-						  libparted_messages .end() ) ;
-		
-		//if there's an end, there's a partition ;)
-		if ( partition_temp .sector_end > -1 )
-		{
-			if ( ! partition_temp .inside_extended )
-				device .partitions .push_back( partition_temp );
+			partition_temp->messages.insert( partition_temp->messages.end(),
+							 libparted_messages.begin(),
+							 libparted_messages.end() );
+
+			if ( ! partition_temp->inside_extended )
+				device.partitions.push_back_adopt( partition_temp );
 			else
-				device .partitions[ EXT_INDEX ] .logicals .push_back( partition_temp ) ;
+				device.partitions[EXT_INDEX].logicals.push_back_adopt( partition_temp );
 		}
 
 		//next partition (if any)
@@ -1374,28 +1373,28 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	Glib::ustring path = lp_device->path;
 	bool partition_is_busy = is_busy( fstype, path );
 
-	Partition partition_temp;
-	partition_temp.Set( device.get_path(),
-	                    path,
-	                    1,
-	                    TYPE_PRIMARY,
-	                    true,
-	                    fstype,
-	                    0LL,
-	                    device.length - 1LL,
-	                    device.sector_size,
-	                    false,
-	                    partition_is_busy );
+	Partition * partition_temp = new Partition();
+	partition_temp->Set( device.get_path(),
+	                     path,
+	                     1,
+	                     TYPE_PRIMARY,
+	                     true,
+	                     fstype,
+	                     0LL,
+	                     device.length - 1LL,
+	                     device.sector_size,
+	                     false,
+	                     partition_is_busy );
 
-	partition_temp.messages = messages;
-	partition_temp.add_paths( pp_info.get_alternate_paths( partition_temp.get_path() ) );
+	partition_temp->messages = messages;
+	partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 
-	if ( partition_temp.busy )
+	if ( partition_temp->busy )
 		device.highest_busy = 1;
 
-	set_partition_label_and_uuid( partition_temp );
+	set_partition_label_and_uuid( *partition_temp );
 
-	device.partitions.push_back( partition_temp );
+	device.partitions.push_back_adopt( partition_temp );
 }
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
@@ -1685,27 +1684,22 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
                                        Byte_Value sector_size,
                                        bool inside_extended )
 {
-	Partition partition_temp ;
-	partition_temp.Set_Unallocated( device_path, false, 0LL, 0LL, sector_size, inside_extended );
-	
 	//if there are no partitions at all..
 	if ( partitions .empty() )
 	{
-		partition_temp .sector_start = start ;
-		partition_temp .sector_end = end ;
-		
-		partitions .push_back( partition_temp );
-		
+		Partition * partition_temp = new Partition();
+		partition_temp->Set_Unallocated( device_path, false, start, end, sector_size, inside_extended );
+		partitions.push_back_adopt( partition_temp );
 		return ;
 	}
 		
 	//start <---> first partition start
 	if ( (partitions .front() .sector_start - start) > (MEBIBYTE / sector_size) )
 	{
-		partition_temp .sector_start = start ;
-		partition_temp .sector_end = partitions .front() .sector_start -1 ;
-		
-		partitions .insert( partitions .begin(), partition_temp );
+		Sector temp_end = partitions.front().sector_start - 1;
+		Partition * partition_temp = new Partition();
+		partition_temp->Set_Unallocated( device_path, false, start, temp_end, sector_size, inside_extended );
+		partitions.insert_adopt( partitions.begin(), partition_temp );
 	}
 	
 	//look for gaps in between
@@ -1717,20 +1711,22 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 		       )
 		   )
 		{
-			partition_temp .sector_start = partitions[ t ] .sector_end +1 ;
-			partition_temp .sector_end = partitions[ t +1 ] .sector_start -1 ;
-
-			partitions .insert( partitions .begin() + ++t, partition_temp );
+			Sector temp_start = partitions[t].sector_end + 1;
+			Sector temp_end   = partitions[t+1].sector_start - 1;
+			Partition * partition_temp = new Partition();
+			partition_temp->Set_Unallocated( device_path, false, temp_start, temp_end,
+			                                 sector_size, inside_extended );
+			partitions.insert_adopt( partitions.begin() + ++t, partition_temp );
 		}
 	}
 
 	//last partition end <---> end
 	if ( (end - partitions .back() .sector_end) >= (MEBIBYTE / sector_size) )
 	{
-		partition_temp .sector_start = partitions .back() .sector_end +1 ;
-		partition_temp .sector_end = end ;
-		
-		partitions .push_back( partition_temp );
+		Sector temp_start = partitions.back().sector_end + 1;
+		Partition * partition_temp = new Partition();
+		partition_temp->Set_Unallocated( device_path, false, temp_start, end, sector_size, inside_extended );
+		partitions.push_back_adopt( partition_temp );
 	}
 }
 

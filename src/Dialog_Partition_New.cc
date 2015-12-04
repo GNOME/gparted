@@ -278,14 +278,14 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 	// partition boundaries.
 	if ( new_partition.type == TYPE_EXTENDED )
 	{
-		Partition unallocated;
-		unallocated.Set_Unallocated( new_partition.device_path,
-		                             new_partition.whole_device,
-		                             new_partition.sector_start,
-		                             new_partition.sector_end,
-		                             sector_size,
-		                             true );
-		new_partition.logicals.push_back( unallocated );
+		Partition * unallocated = new Partition();
+		unallocated->Set_Unallocated( new_partition.device_path,
+		                              new_partition.whole_device,
+		                              new_partition.sector_start,
+		                              new_partition.sector_end,
+		                              sector_size,
+		                              true );
+		new_partition.logicals.push_back_adopt( unallocated );
 	}
 
 	return new_partition;
