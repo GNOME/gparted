@@ -26,7 +26,7 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 	type = OPERATION_CHECK ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = new Partition( partition );
+	this->partition_original = partition.clone();
 }
 
 OperationCheck::~OperationCheck()

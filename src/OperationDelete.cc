@@ -27,7 +27,7 @@ OperationDelete::OperationDelete( const Device & device, const Partition & parti
 	type = OPERATION_DELETE ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = new Partition( partition_orig );
+	this->partition_original = partition_orig.clone();
 }
 
 OperationDelete::~OperationDelete()

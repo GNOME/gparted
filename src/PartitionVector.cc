@@ -26,7 +26,7 @@ PartitionVector::PartitionVector( const PartitionVector & src )
 {
 	v.resize( src.size() );
 	for ( unsigned int i = 0 ; i < src.size() ; i ++ )
-		v[i] = new Partition( src[i] );
+		v[i] = src[i].clone();
 }
 
 PartitionVector::~PartitionVector()
@@ -85,7 +85,7 @@ void PartitionVector::insert_adopt( iterator position, Partition * partition )
 
 void PartitionVector::replace_at( size_type n, const Partition * partition )
 {
-	Partition *p = new Partition( *partition );
+	Partition *p = partition->clone();
 	delete v[n];
 	v[n] = p;
 }

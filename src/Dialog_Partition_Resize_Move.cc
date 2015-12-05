@@ -41,7 +41,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 {
 	GRIP = true ; //prevents on spinbutton_changed from getting activated prematurely
 
-	new_partition = new Partition( selected_partition );
+	new_partition = selected_partition.clone();
 
 	if ( selected_partition .type == GParted::TYPE_EXTENDED )
 	{

@@ -28,8 +28,8 @@ OperationFormat::OperationFormat( const Device & device,
 	type = OPERATION_FORMAT ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = new Partition( partition_orig );
-	this->partition_new      = new Partition( partition_new );
+	this->partition_original = partition_orig.clone();
+	this->partition_new      = partition_new.clone();
 }
 
 OperationFormat::~OperationFormat()
@@ -85,7 +85,7 @@ bool OperationFormat::merge_operations( const Operation & candidate )
 	     *partition_new == candidate.get_partition_original()    )
 	{
 		delete partition_new;
-		partition_new = new Partition( candidate.get_partition_new() );
+		partition_new = candidate.get_partition_new().clone();
 		create_description();
 		return true;
 	}

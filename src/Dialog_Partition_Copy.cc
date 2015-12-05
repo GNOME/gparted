@@ -108,7 +108,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	               ) ;
 
 	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
-	new_partition = new Partition( copied_partition );
+	new_partition = copied_partition.clone();
 	new_partition->device_path     = selected_partition.device_path;
 	new_partition->inside_extended = selected_partition.inside_extended;
 	new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;

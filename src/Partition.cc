@@ -32,6 +32,15 @@ Partition::Partition( const Glib::ustring & path )
 	paths .push_back( path ) ;
 }
 
+Partition * Partition::clone() const
+{
+	// Virtual copy constructor method
+	// Reference:
+	//     Wikibooks: More C++ Idioms / Virtual Constructor
+	//     https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Virtual_Constructor
+	return new Partition( *this );
+}
+
 void Partition::Reset()
 {
 	paths .clear() ;

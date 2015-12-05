@@ -935,7 +935,7 @@ void Win_GParted::Refresh_Visual()
 		if ( copied_partition != NULL && display_partitions[t].get_path() == copied_partition->get_path() )
 		{
 			delete copied_partition;
-			copied_partition = new Partition( display_partitions[t] );
+			copied_partition = display_partitions[t].clone();
 		}
 
 		switch ( display_partitions[t].type )
@@ -947,7 +947,7 @@ void Win_GParted::Refresh_Visual()
 					     display_partitions[t].logicals[u].get_path() == copied_partition->get_path() )
 					{
 						delete copied_partition;
-						copied_partition = new Partition( display_partitions[t].logicals[u] );
+						copied_partition = display_partitions[t].logicals[u].clone();
 					}
 
 					switch ( display_partitions[t].logicals[u].type )
@@ -1741,7 +1741,7 @@ void Win_GParted::activate_resize()
 	{
 		dialog .hide() ;
 
-		Partition * part_temp = new Partition( dialog.Get_New_Partition( devices[current_device].sector_size ) );
+		Partition * part_temp = dialog.Get_New_Partition( devices[current_device].sector_size ).clone();
 
 		// When resizing/moving a partition which already exists on the disk all
 		// possible operations could be pending so only try merging with the
@@ -1810,7 +1810,7 @@ void Win_GParted::activate_copy()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	delete copied_partition;
-	copied_partition = new Partition( *selected_partition_ptr );
+	copied_partition = selected_partition_ptr->clone();
 }
 
 void Win_GParted::activate_paste()
@@ -1832,7 +1832,7 @@ void Win_GParted::activate_paste()
 		{
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
-			Partition * part_temp = new Partition( *copied_partition );
+			Partition * part_temp = copied_partition->clone();
 			part_temp->messages.clear();
 			part_temp->clear_mountpoints();
 			part_temp->name.clear();
@@ -1870,7 +1870,7 @@ void Win_GParted::activate_paste()
 			shown_dialog = true ;
 		}
 
-		Partition * partition_new = new Partition( *selected_partition_ptr );
+		Partition * partition_new = selected_partition_ptr->clone();
 		partition_new->alignment = ALIGN_STRICT;
 		partition_new->filesystem = copied_partition->filesystem;
 		partition_new->set_filesystem_label( copied_partition->get_filesystem_label() );
@@ -2655,7 +2655,7 @@ void Win_GParted::activate_label_filesystem()
 	{
 		dialog .hide() ;
 		// Make a duplicate of the selected partition (used in UNDO)
-		Partition * part_temp = new Partition( *selected_partition_ptr );
+		Partition * part_temp = selected_partition_ptr->clone();
 
 		part_temp->set_filesystem_label( dialog.get_new_label() );
 
@@ -2689,7 +2689,7 @@ void Win_GParted::activate_name_partition()
 	{
 		dialog.hide();
 		// Make a duplicate of the selected partition (used in UNDO)
-		Partition * part_temp = new Partition( *selected_partition_ptr );
+		Partition * part_temp = selected_partition_ptr->clone();
 
 		part_temp->name = dialog.get_new_name();
 
@@ -2736,7 +2736,7 @@ void Win_GParted::activate_change_uuid()
 	}
 
 	// Make a duplicate of the selected partition (used in UNDO)
-	Partition * part_temp = new Partition( *selected_partition_ptr );
+	Partition * part_temp = selected_partition_ptr->clone();
 
 	if ( part_temp->filesystem == FS_NTFS )
 		//Explicitly ask for half, so that the user will be aware of it

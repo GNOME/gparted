@@ -29,8 +29,8 @@ OperationChangeUUID::OperationChangeUUID( const Device & device
 	type = OPERATION_CHANGE_UUID ;
 
 	this->device = device.get_copy_without_partitions();
-	this->partition_original = new Partition( partition_orig );
-	this->partition_new      = new Partition( partition_new );
+	this->partition_original = partition_orig.clone();
+	this->partition_new      = partition_new.clone();
 }
 
 OperationChangeUUID::~OperationChangeUUID()

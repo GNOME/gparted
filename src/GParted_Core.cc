@@ -2406,13 +2406,13 @@ bool GParted_Core::resize_move( const Partition & partition_old,
 		if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 		{
 			//first move, then grow. Since old.length < new.length and new.start is valid, temp is valid.
-			temp = new Partition( partition_new );
+			temp = partition_new.clone();
 			temp->sector_end = temp->sector_start + partition_old.get_sector_length() - 1;
 		}
 		else  // ( partition_new.get_sector_length() < partition_old.get_sector_length() )
 		{
 			//first shrink, then move. Since new.length < old.length and old.start is valid, temp is valid.
-			temp = new Partition( partition_old );
+			temp = partition_old.clone();
 			temp->sector_end = partition_old.sector_start + partition_new.get_sector_length() - 1;
 		}
 
@@ -2459,16 +2459,16 @@ bool GParted_Core::move( const Partition & partition_old,
 		//      this partition to the left.  We also prevent overwriting the meta
 		//      data of a following partition when we move this partition to the
 		//      right.
-		Partition partition_all_space = partition_old ;
-		partition_all_space .alignment = ALIGN_STRICT ;
-		if ( partition_new .sector_start < partition_all_space. sector_start )
-			partition_all_space .sector_start = partition_new. sector_start ;
-		if ( partition_new .sector_end > partition_all_space.sector_end )
-			partition_all_space .sector_end = partition_new. sector_end ;
+		Partition * partition_all_space = partition_old.clone();
+		partition_all_space->alignment = ALIGN_STRICT;
+		if ( partition_new.sector_start < partition_all_space->sector_start )
+			partition_all_space->sector_start = partition_new.sector_start;
+		if ( partition_new.sector_end > partition_all_space->sector_end )
+			partition_all_space->sector_end = partition_new.sector_end;
 
 		//Make old partition all encompassing and if move file system fails
 		//  then return partition table to original state
-		if ( resize_move_partition( partition_old, partition_all_space, operationdetail ) )
+		if ( resize_move_partition( partition_old, *partition_all_space, operationdetail ) )
 		{
 			//Note move of file system is from old values to new values, not from
 			//  the all encompassing values.
@@ -2476,23 +2476,30 @@ bool GParted_Core::move( const Partition & partition_old,
 			{
 				operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
 
-				Partition partition_restore = partition_old ;
-				partition_restore .alignment = ALIGN_STRICT ;  //Ensure that old partition boundaries are not modified
+				Partition * partition_restore = partition_old.clone();
+				partition_restore->alignment = ALIGN_STRICT;  //Ensure that old partition boundaries are not modified
 				if ( resize_move_partition(
-					     partition_all_space, partition_restore, operationdetail.get_last_child() ) ) {
+					     *partition_all_space, *partition_restore, operationdetail.get_last_child() ) )
+				{
 					operationdetail.get_last_child().set_status( STATUS_SUCCES );
 					check_repair_filesystem( partition_old, operationdetail );
 				}
 
 				else
 					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+
+				delete partition_restore;
+				partition_restore = NULL;
 			}
 			else
 				succes = true ;
 		}
 
 		//Make new partition from all encompassing partition
-		succes =  succes && resize_move_partition( partition_all_space, partition_new, operationdetail ) ;
+		succes =  succes && resize_move_partition( *partition_all_space, partition_new, operationdetail );
+
+		delete partition_all_space;
+		partition_all_space = NULL;
 
 		succes = (    succes
 		          && update_bootsector( partition_new, operationdetail )
@@ -3196,8 +3203,8 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 	if ( total_done > 0 )
 	{
 		//find out exactly which part of the file system was copied (and to where it was copied)..
-		Partition * temp_src = new Partition( partition_src );
-		Partition * temp_dst = new Partition( partition_dst );
+		Partition * temp_src = partition_src.clone();
+		Partition * temp_dst = partition_dst.clone();
 		bool rollback_needed = true;
 
 		if ( partition_dst .sector_start > partition_src .sector_start )

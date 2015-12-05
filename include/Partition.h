@@ -64,7 +64,8 @@ class Partition
 public:
 	Partition() ;
 	Partition( const Glib::ustring & path ) ;
-	~Partition() ;
+	virtual ~Partition();
+	virtual Partition * clone() const;
 
 	void Reset() ;
 	

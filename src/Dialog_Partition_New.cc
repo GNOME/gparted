@@ -52,7 +52,7 @@ void Dialog_Partition_New::set_data( const Device & device,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	new_partition = new Partition( selected_partition );
+	new_partition = selected_partition.clone();
 
 	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
 	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
