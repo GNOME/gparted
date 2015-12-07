@@ -73,18 +73,6 @@ void PartitionVector::clear()
 	v.clear();
 }
 
-void PartitionVector::push_back( const Partition & partition )
-{
-	Partition * p = new Partition( partition );
-	v.push_back( p );
-}
-
-void PartitionVector::insert( iterator position, const Partition & partition )
-{
-	Partition * p = new Partition( partition );
-	v.insert( position, p );
-}
-
 void PartitionVector::push_back_adopt( Partition * partition )
 {
 	v.push_back( partition );
