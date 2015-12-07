@@ -16,6 +16,7 @@
  */
 
 #include "../include/Operation.h"
+#include "../include/GParted_Core.h"
 #include "../include/Partition.h"
 #include "../include/PartitionVector.h"
 
@@ -60,53 +61,8 @@ int Operation::find_index_extended( const PartitionVector & partitions )
 void Operation::insert_unallocated( PartitionVector & partitions,
                                     Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
-	Partition UNALLOCATED ;
-	UNALLOCATED.Set_Unallocated( device.get_path(), false, 0LL, 0LL, sector_size, inside_extended );
-	
-	//if there are no partitions at all..
-	if ( partitions .empty() )
-	{
-		UNALLOCATED .sector_start = start ;
-		UNALLOCATED .sector_end = end ;
-		
-		partitions .push_back( UNALLOCATED );
-		
-		return ;
-	}
-		
-	//start <---> first partition start
-	if ( (partitions .front() .sector_start - start) > (MEBIBYTE / sector_size) )
-	{
-		UNALLOCATED .sector_start = start ;
-		UNALLOCATED .sector_end = partitions .front() .sector_start -1 ;
-		
-		partitions .insert( partitions .begin(), UNALLOCATED );
-	}
-	
-	//look for gaps in between
-	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
-	{
-		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) > (MEBIBYTE / sector_size) )
-		    || (   ( partitions[ t + 1 ] .type != TYPE_LOGICAL )  // Only show exactly 1 MiB if following partition is not logical.
-		        && ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) == (MEBIBYTE / sector_size) )
-		       )
-		   )
-		{
-			UNALLOCATED .sector_start = partitions[ t ] .sector_end +1 ;
-			UNALLOCATED .sector_end = partitions[ t +1 ] .sector_start -1 ;
-
-			partitions .insert( partitions .begin() + ++t, UNALLOCATED );
-		}
-	}
-
-	//last partition end <---> end
-	if ( (end - partitions .back() .sector_end ) >= (MEBIBYTE / sector_size) )
-	{
-		UNALLOCATED .sector_start = partitions .back() .sector_end +1 ;
-		UNALLOCATED .sector_end = end ;
-		
-		partitions .push_back( UNALLOCATED );
-	}
+	GParted_Core::insert_unallocated( device.get_path(), partitions,
+	                                  start, end, sector_size, inside_extended );
 }
 
 // Visual re-apply this operation, for operations which don't change the partition

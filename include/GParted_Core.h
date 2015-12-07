@@ -67,6 +67,13 @@ public:
 	static FileSystem * get_filesystem_object( FILESYSTEM filesystem );
 	static bool supported_filesystem( FILESYSTEM fstype );
 	static bool filesystem_resize_disallowed( const Partition & partition ) ;
+	static void insert_unallocated( const Glib::ustring & device_path,
+	                                PartitionVector & partitions,
+	                                Sector start,
+	                                Sector end,
+	                                Byte_Value sector_size,
+	                                bool inside_extended );
+
 private:
 	//detectionstuff..
 	static void init_maps() ;
@@ -91,12 +98,6 @@ private:
 	                                     std::vector<Glib::ustring> & messages );
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
-	void insert_unallocated( const Glib::ustring & device_path,
-	                         PartitionVector & partitions,
-	                         Sector start,
-	                         Sector end,
-	                         Byte_Value sector_size,
-	                         bool inside_extended );
 	void set_mountpoints( PartitionVector & partitions );
 	bool set_mountpoints_helper( Partition & partitions, const Glib::ustring & path ) ;
 	bool is_busy( FILESYSTEM fstype, const Glib::ustring & path ) ;
