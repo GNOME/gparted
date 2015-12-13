@@ -33,6 +33,12 @@ Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, const Partition & s
 	set_data( selected_partition, copied_partition );
 }
 
+Dialog_Partition_Copy::~Dialog_Partition_Copy()
+{
+	delete new_partition;
+	new_partition = NULL;
+}
+
 void Dialog_Partition_Copy::set_data( const Partition & selected_partition, const Partition & copied_partition )
 {
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .get_path() ) ) ;
@@ -102,12 +108,12 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	               ) ;
 
 	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
-	new_partition = copied_partition;
-	new_partition.device_path     = selected_partition.device_path;
-	new_partition.inside_extended = selected_partition.inside_extended;
-	new_partition.type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
+	new_partition = new Partition( copied_partition );
+	new_partition->device_path     = selected_partition.device_path;
+	new_partition->inside_extended = selected_partition.inside_extended;
+	new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
 	//Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
-	new_partition.set_sector_usage(
+	new_partition->set_sector_usage(
 			(   ( ( copied_partition .sectors_used + copied_partition .sectors_unused ) * copied_partition .sector_size )
 			  + ( selected_partition .sector_size - 1 )
 			) / selected_partition .sector_size,
@@ -120,13 +126,15 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 
 const Partition & Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
 {
+	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+
 	//first call baseclass to get the correct new partition
 	Dialog_Base_Partition::prepare_new_partition( sector_size );
 
 	//set proper name and status for partition
-	new_partition.status = STAT_COPY;
+	new_partition->status = STAT_COPY;
 
-	return new_partition;
+	return *new_partition;
 }
 
 } //GParted

@@ -29,10 +29,14 @@ class Dialog_Partition_Copy : public Dialog_Base_Partition
 public:
 	Dialog_Partition_Copy( const FS & fs, const Partition & selected_partition,
 	                       const Partition & copied_partition );
+	~Dialog_Partition_Copy();
 
 	const Partition & Get_New_Partition( Byte_Value sector_size );
 
 private:
+	Dialog_Partition_Copy( const Dialog_Partition_Copy & src );              // Not implemented copy constructor
+	Dialog_Partition_Copy & operator=( const Dialog_Partition_Copy & rhs );  // Not implemented copy assignment operator
+
 	void set_data( const Partition & selected_partition, const Partition & copied_partition );
 };
 

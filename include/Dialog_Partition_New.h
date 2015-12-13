@@ -35,9 +35,15 @@ public:
 	                     bool any_extended,
 	                     unsigned short new_count,
 	                     const std::vector<FS> & FILESYSTEMS );
+	~Dialog_Partition_New();
+
 	const Partition & Get_New_Partition( Byte_Value sector_size );
 
 private:
+	Dialog_Partition_New( const Dialog_Partition_New & src );              // Not implemented copy constructor
+	Dialog_Partition_New & operator=( const Dialog_Partition_New & rhs );  // Not implemented copy assignment operator
+
+
 	void set_data( const Device & device,
 	               const Partition & partition,
 	               bool any_extended,

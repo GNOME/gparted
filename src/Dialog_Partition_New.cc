@@ -39,6 +39,12 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
 	set_data(device, selected_partition, any_extended, new_count, FILESYSTEMS );
 }
 
+Dialog_Partition_New::~Dialog_Partition_New()
+{
+	delete new_partition;
+	new_partition = NULL;
+}
+
 void Dialog_Partition_New::set_data( const Device & device,
                                      const Partition & selected_partition,
                                      bool any_extended,
@@ -46,7 +52,7 @@ void Dialog_Partition_New::set_data( const Device & device,
                                      const std::vector<FS> & FILESYSTEMS )
 {
 	this ->new_count = new_count;
-	new_partition = selected_partition;
+	new_partition = new Partition( selected_partition );
 
 	// Copy only supported file systems from GParted_Core FILESYSTEMS vector.  Add
 	// FS_CLEARED, FS_UNFORMATTED and FS_EXTENDED at the end.  This decides the order
@@ -180,6 +186,8 @@ void Dialog_Partition_New::set_data( const Device & device,
 
 const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
 {
+	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+
 	PartitionType part_type ;
 	Sector new_start, new_end;
 		
@@ -199,61 +207,68 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
-	if ( new_start < new_partition.sector_start )
-		new_start = new_partition.sector_start;
-	if  ( new_end > new_partition.sector_end )
-		new_end = new_partition.sector_end;
+	if ( new_start < new_partition->sector_start )
+		new_start = new_partition->sector_start;
+	if  ( new_end > new_partition->sector_end )
+		new_end = new_partition->sector_end;
 
 	// Grow new partition a bit if freespaces are < 1 MiB
-	if ( (new_start - new_partition.sector_start) < (MEBIBYTE / sector_size) )
-		new_start = new_partition.sector_start;
-	if ( (new_partition.sector_end - new_end) < (MEBIBYTE / sector_size) )
-		new_end = new_partition.sector_end;
+	if ( new_start - new_partition->sector_start < MEBIBYTE / sector_size )
+		new_start = new_partition->sector_start;
+	if ( new_partition->sector_end - new_end < MEBIBYTE / sector_size )
+		new_end = new_partition->sector_end;
 
 	// Copy a final few values needed from the original unallocated partition before
 	// resetting the Partition object and populating it as the new partition.
-	Glib::ustring device_path = new_partition.device_path;
-	bool whole_device = new_partition.whole_device;
-	bool inside_extended = new_partition.inside_extended;
-	new_partition.Reset();
-	new_partition.Set( device_path,
-	                   String::ucompose( _("New Partition #%1"), new_count ),
-	                   new_count, part_type, whole_device,
-	                   FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
-	                   new_start, new_end,
-	                   sector_size,
-	                   inside_extended, false );
-	new_partition.status = STAT_NEW;
+	Glib::ustring device_path = new_partition->device_path;
+	bool whole_device = new_partition->whole_device;
+	bool inside_extended = new_partition->inside_extended;
+	new_partition->Reset();
+	new_partition->Set( device_path,
+	                    String::ucompose( _("New Partition #%1"), new_count ),
+	                    new_count, part_type, whole_device,
+	                    FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
+	                    new_start, new_end,
+	                    sector_size,
+	                    inside_extended, false );
+	new_partition->status = STAT_NEW;
 
 	// Retrieve partition name
-	new_partition.name = Utils::trim( partition_name_entry.get_text() );
+	new_partition->name = Utils::trim( partition_name_entry.get_text() );
 
 	//Retrieve Label info
-	new_partition.set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
+	new_partition->set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 
 	//set alignment
 	switch ( optionmenu_alignment .get_history() )
 	{
-		case 0:   new_partition.alignment = ALIGN_CYLINDER;  break;
-		case 1:   new_partition.alignment = ALIGN_MEBIBYTE;
+		case 0:
+			new_partition->alignment = ALIGN_CYLINDER;
+			break;
+		case 1:
+			new_partition->alignment = ALIGN_MEBIBYTE;
 			{
 				// If start sector not MiB aligned and free space available
 				// then add ~1 MiB to partition so requested size is kept
-				Sector diff = (MEBIBYTE / new_partition.sector_size) -
-				              (new_partition.sector_end + 1) % (MEBIBYTE / new_partition.sector_size);
+				Sector diff = (MEBIBYTE / new_partition->sector_size) -
+				              (new_partition->sector_end + 1) % (MEBIBYTE / new_partition->sector_size);
 				if (    diff
-				     && ( new_partition.sector_start % (MEBIBYTE / new_partition.sector_size ) ) > 0
-				     && ( (new_partition.sector_end - START + 1 + diff) < total_length )
+				     && new_partition->sector_start % (MEBIBYTE / new_partition->sector_size ) > 0
+				     && new_partition->sector_end - START + 1 + diff < total_length
 				   )
-					new_partition.sector_end += diff;
+					new_partition->sector_end += diff;
 			}
 			break;
-		case 2:   new_partition.alignment = ALIGN_STRICT;  break;
+		case 2:
+			new_partition->alignment = ALIGN_STRICT;
+			break;
 
-		default:  new_partition.alignment = ALIGN_MEBIBYTE;  break;
+		default:
+			new_partition->alignment = ALIGN_MEBIBYTE;
+			break;
 	}
 
-	new_partition.free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
+	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
 
 	// Create unallocated space within this new extended partition
 	//
@@ -276,23 +291,25 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 	// snap_to_alignment() needs including in it.  It will need abstracting into a set
 	// of methods so that it can be used in each dialog which creates and modified
 	// partition boundaries.
-	if ( new_partition.type == TYPE_EXTENDED )
+	if ( new_partition->type == TYPE_EXTENDED )
 	{
 		Partition * unallocated = new Partition();
-		unallocated->Set_Unallocated( new_partition.device_path,
-		                              new_partition.whole_device,
-		                              new_partition.sector_start,
-		                              new_partition.sector_end,
+		unallocated->Set_Unallocated( new_partition->device_path,
+		                              new_partition->whole_device,
+		                              new_partition->sector_start,
+		                              new_partition->sector_end,
 		                              sector_size,
 		                              true );
-		new_partition.logicals.push_back_adopt( unallocated );
+		new_partition->logicals.push_back_adopt( unallocated );
 	}
 
-	return new_partition;
+	return *new_partition;
 }
 
 void Dialog_Partition_New::optionmenu_changed( bool type )
 {
+	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+
 	//optionmenu_type
 	if ( type )
 	{
@@ -321,8 +338,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		if ( fs .MIN < MEBIBYTE )
 			fs .MIN = MEBIBYTE ;
 
-		if ( new_partition.get_byte_length() < fs.MIN )
-			fs .MIN = new_partition.get_byte_length();
+		if ( new_partition->get_byte_length() < fs.MIN )
+			fs.MIN = new_partition->get_byte_length();
 
 		if ( ! fs .MAX || ( fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
 			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
@@ -369,6 +386,8 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 
 void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted ) 
 {
+	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
+
 	bool set_first=false;
 	//fill the file system menu with the file systems (except for extended) 
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
@@ -380,7 +399,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			new_partition.get_byte_length() >= FILESYSTEMS[t].MIN );
+			new_partition->get_byte_length() >= FILESYSTEMS[t].MIN );
 		//use ext4/3/2 as first/second/third choice default file system
 		//(Depends on ordering in FILESYSTEMS for preference)
 		if ( ( FILESYSTEMS[ t ] .filesystem == FS_EXT2 ||
