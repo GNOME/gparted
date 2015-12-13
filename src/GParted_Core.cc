@@ -2399,29 +2399,34 @@ bool GParted_Core::resize_move( const Partition & partition_old,
 			return resize( partition_old, partition_new, operationdetail ) ;
 
 		if ( partition_new .get_sector_length() == partition_old .get_sector_length() )
+		{
 			return move( partition_old, partition_new, operationdetail );
-
-		Partition temp ;
+		}
+		Partition * temp = NULL;
 		if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
 		{
 			//first move, then grow. Since old.length < new.length and new.start is valid, temp is valid.
-			temp = partition_new ;
-			temp .sector_end = temp .sector_start + partition_old .get_sector_length() -1 ;
+			temp = new Partition( partition_new );
+			temp->sector_end = temp->sector_start + partition_old.get_sector_length() - 1;
 		}
-
-		if ( partition_new .get_sector_length() < partition_old .get_sector_length() )
+		else  // ( partition_new.get_sector_length() < partition_old.get_sector_length() )
 		{
 			//first shrink, then move. Since new.length < old.length and old.start is valid, temp is valid.
-			temp = partition_old ;
-			temp .sector_end = partition_old .sector_start + partition_new .get_sector_length() -1 ;
+			temp = new Partition( partition_old );
+			temp->sector_end = partition_old.sector_start + partition_new.get_sector_length() - 1;
 		}
 
-		PartitionAlignment previous_alignment = temp .alignment ;
-		temp .alignment = ALIGN_STRICT ;
-		bool succes = resize_move( partition_old, temp, operationdetail );
-		temp .alignment = previous_alignment ;
+		PartitionAlignment previous_alignment = temp->alignment;
+		temp->alignment = ALIGN_STRICT;
+		bool success = resize_move( partition_old, *temp, operationdetail );
+		temp->alignment = previous_alignment;
+		if ( success )
+			success = resize_move( *temp, partition_new, operationdetail );
 
-		return succes && resize_move( temp, partition_new, operationdetail );
+		delete temp;
+		temp = NULL;
+
+		return success;
 	}
 
 	return false ;
@@ -3191,32 +3196,43 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 	if ( total_done > 0 )
 	{
 		//find out exactly which part of the file system was copied (and to where it was copied)..
-		Partition temp_src = partition_src ;
-		Partition temp_dst = partition_dst ;
+		Partition * temp_src = new Partition( partition_src );
+		Partition * temp_dst = new Partition( partition_dst );
+		bool rollback_needed = true;
 
 		if ( partition_dst .sector_start > partition_src .sector_start )
 		{
 			Sector distance = partition_dst.sector_start - partition_src.sector_start;
-			temp_src.sector_start = temp_src.sector_end - ( (total_done / temp_src.sector_size) - 1 ) + distance;
-			temp_dst.sector_start = temp_dst.sector_end - ( (total_done / temp_dst.sector_size) - 1 ) + distance;
-			if (temp_src.sector_start > temp_src.sector_end)
-				return;  /* nothing has been overwritten yet, so nothing to roll back */
-
+			temp_src->sector_start = temp_src->sector_end - ( (total_done / temp_src->sector_size) - 1 ) + distance;
+			temp_dst->sector_start = temp_dst->sector_end - ( (total_done / temp_dst->sector_size) - 1 ) + distance;
+			if ( temp_src->sector_start > temp_src->sector_end )
+				// Nothing has been overwritten yet, so nothing to roll back
+				rollback_needed = false;
 		}
 		else
 		{
 			Sector distance = partition_src.sector_start - partition_dst.sector_start;
-			temp_src.sector_end = temp_src.sector_start + ( (total_done / temp_src.sector_size) - 1 ) - distance;
-			temp_dst.sector_end = temp_dst.sector_start + ( (total_done / temp_dst.sector_size) - 1 ) - distance;
-			if (temp_src.sector_start > temp_src.sector_end)
-				return;  /* nothing has been overwritten yet, so nothing to roll back */
+			temp_src->sector_end = temp_src->sector_start + ( (total_done / temp_src->sector_size) - 1 ) - distance;
+			temp_dst->sector_end = temp_dst->sector_start + ( (total_done / temp_dst->sector_size) - 1 ) - distance;
+			if ( temp_src->sector_start > temp_src->sector_end )
+				// Nothing has been overwritten yet, so nothing to roll back
+				rollback_needed = false;
 		}
-		operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
-		//and copy it back (NOTE the reversed dst and src)
-		bool succes = copy_filesystem( temp_dst, temp_src, operationdetail .get_last_child(), false ) ;
+		if ( rollback_needed )
+		{
+			operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
-		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+			//and copy it back (NOTE the reversed dst and src)
+			bool success = copy_filesystem( *temp_dst, *temp_src, operationdetail.get_last_child(), false );
+
+			operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+		}
+
+		delete temp_src;
+		delete temp_dst;
+		temp_src = NULL;
+		temp_dst = NULL;
 	}
 }
 

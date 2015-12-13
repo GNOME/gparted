@@ -1741,7 +1741,8 @@ void Win_GParted::activate_resize()
 	{
 		dialog .hide() ;
 
-		Partition part_temp = dialog.Get_New_Partition( devices[current_device].sector_size );
+		Partition * part_temp = new Partition( dialog.Get_New_Partition( devices[current_device].sector_size ) );
+
 		// When resizing/moving a partition which already exists on the disk all
 		// possible operations could be pending so only try merging with the
 		// previous operation.
@@ -1751,7 +1752,7 @@ void Win_GParted::activate_resize()
 		// it again with the new size and position ( unless it's an EXTENDED )
 		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
 		{
-			part_temp.status = STAT_NEW;
+			part_temp->status = STAT_NEW;
 			// On a partition which is pending creation only resize/move and
 			// format operations are possible.  These operations are always
 			// mergeable with the pending operation which will create the
@@ -1762,8 +1763,11 @@ void Win_GParted::activate_resize()
 
 		Operation * operation = new OperationResizeMove( devices[current_device],
 		                                                 *selected_partition_ptr,
-		                                                 part_temp );
+		                                                 *part_temp );
 		operation->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
+
+		delete part_temp;
+		part_temp = NULL;
 
 		// Display warning if moving a non-extended partition which already exists
 		// on the disk.
@@ -1828,14 +1832,16 @@ void Win_GParted::activate_paste()
 		{
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
-			Partition part_temp = *copied_partition;
-			part_temp.messages.clear();
-			part_temp.clear_mountpoints();
-			part_temp.name.clear();
+			Partition * part_temp = new Partition( *copied_partition );
+			part_temp->messages.clear();
+			part_temp->clear_mountpoints();
+			part_temp->name.clear();
 
 			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition->filesystem ),
 			                              *selected_partition_ptr,
-			                              part_temp );
+			                              *part_temp );
+			delete part_temp;
+			part_temp = NULL;
 			dialog .set_transient_for( *this );
 		
 			if ( dialog .run() == Gtk::RESPONSE_OK )
@@ -1864,19 +1870,19 @@ void Win_GParted::activate_paste()
 			shown_dialog = true ;
 		}
 
-		Partition partition_new = *selected_partition_ptr;
-		partition_new .alignment = ALIGN_STRICT ;
-		partition_new.filesystem = copied_partition->filesystem;
-		partition_new.set_filesystem_label( copied_partition->get_filesystem_label() );
-		partition_new.uuid = copied_partition->uuid;
-		partition_new.color = copied_partition->color;
-		Sector new_size = partition_new .get_sector_length() ;
+		Partition * partition_new = new Partition( *selected_partition_ptr );
+		partition_new->alignment = ALIGN_STRICT;
+		partition_new->filesystem = copied_partition->filesystem;
+		partition_new->set_filesystem_label( copied_partition->get_filesystem_label() );
+		partition_new->uuid = copied_partition->uuid;
+		partition_new->color = copied_partition->color;
+		Sector new_size = partition_new->get_sector_length();
 		if ( copied_partition->get_sector_length() == new_size )
 		{
 			// Pasting into same size existing partition, therefore only block
 			// copy operation will be performed maintaining the file system
 			// size.
-			partition_new .set_sector_usage(
+			partition_new->set_sector_usage(
 					copied_partition->sectors_used + copied_partition->sectors_unused,
 					copied_partition->sectors_unused );
 		}
@@ -1885,17 +1891,20 @@ void Win_GParted::activate_paste()
 			// Pasting into larger existing partition, therefore block copy
 			// followed by file system grow operations (if supported) will be
 			// performed making the file system fill the partition.
-			partition_new .set_sector_usage(
+			partition_new->set_sector_usage(
 					new_size,
 					new_size - copied_partition->sectors_used );
 		}
-		partition_new .messages .clear() ;
+		partition_new->messages.clear();
  
 		Operation * operation = new OperationCopy( devices[current_device],
 		                                           *selected_partition_ptr,
-		                                           partition_new,
+		                                           *partition_new,
 		                                           *copied_partition );
 		operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
+
+		delete partition_new;
+		partition_new = NULL;
 
 		Add_Operation( operation ) ;
 
@@ -1913,7 +1922,7 @@ void Win_GParted::activate_paste()
 			/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
 			dialog .set_secondary_text(
 					String::ucompose( _( "The data in %1 will be lost if you apply this operation." ),
-					partition_new .get_path() ) ) ;
+					selected_partition_ptr->get_path() ) );
 			dialog .run() ;
 		}
 	}
@@ -2646,13 +2655,16 @@ void Win_GParted::activate_label_filesystem()
 	{
 		dialog .hide() ;
 		// Make a duplicate of the selected partition (used in UNDO)
-		Partition part_temp = *selected_partition_ptr;
+		Partition * part_temp = new Partition( *selected_partition_ptr );
 
-		part_temp.set_filesystem_label( dialog.get_new_label() );
+		part_temp->set_filesystem_label( dialog.get_new_label() );
 
 		Operation * operation = new OperationLabelFileSystem( devices[current_device],
-		                                                      *selected_partition_ptr, part_temp );
+		                                                      *selected_partition_ptr, *part_temp );
 		operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+		delete part_temp;
+		part_temp = NULL;
 
 		Add_Operation( operation ) ;
 		// Try to merge this label file system operation with all previous
@@ -2677,13 +2689,16 @@ void Win_GParted::activate_name_partition()
 	{
 		dialog.hide();
 		// Make a duplicate of the selected partition (used in UNDO)
-		Partition part_temp = *selected_partition_ptr;
+		Partition * part_temp = new Partition( *selected_partition_ptr );
 
-		part_temp.name = dialog.get_new_name();
+		part_temp->name = dialog.get_new_name();
 
 		Operation * operation = new OperationNamePartition( devices[current_device],
-		                                                    *selected_partition_ptr, part_temp );
+		                                                    *selected_partition_ptr, *part_temp );
 		operation->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+		delete part_temp;
+		part_temp = NULL;
 
 		Add_Operation( operation );
 		// Try to merge this name partition operation with all previous
@@ -2721,19 +2736,21 @@ void Win_GParted::activate_change_uuid()
 	}
 
 	// Make a duplicate of the selected partition (used in UNDO)
-	Partition part_temp = *selected_partition_ptr;
+	Partition * part_temp = new Partition( *selected_partition_ptr );
 
-	if ( part_temp .filesystem == GParted::FS_NTFS )
+	if ( part_temp->filesystem == FS_NTFS )
 		//Explicitly ask for half, so that the user will be aware of it
 		//Also, keep this kind of policy out of the NTFS code.
-		part_temp .uuid = UUID_RANDOM_NTFS_HALF ;
+		part_temp->uuid = UUID_RANDOM_NTFS_HALF;
 	else
-		part_temp .uuid = UUID_RANDOM ;
-
+		part_temp->uuid = UUID_RANDOM;
 
 	Operation * operation = new OperationChangeUUID( devices[current_device],
-	                                                 *selected_partition_ptr, part_temp );
+	                                                 *selected_partition_ptr, *part_temp );
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
+
+	delete part_temp;
+	part_temp = NULL;
 
 	Add_Operation( operation ) ;
 	// Try to merge this change UUID operation with all previous operations.
