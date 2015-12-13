@@ -151,7 +151,7 @@ void Dialog_Rescue_Data::create_list_of_fs()
  * Callback function for "View" button */
 void Dialog_Rescue_Data::on_view_clicked(int nPart)
 {
-	Partition part=this->partitions[nPart];
+	const Partition & part = this->partitions[nPart];
 
 	Byte_Value initOffset=this->sector_size*part.sector_start;
 	Sector numSectors=part.sector_end-part.sector_start+1;
