@@ -209,14 +209,20 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 	if ( (new_partition.sector_end - new_end) < (MEBIBYTE / sector_size) )
 		new_end = new_partition.sector_end;
 
-	new_partition.status = STAT_NEW;
-	new_partition.Set( new_partition.device_path,  // NOTE: Glib::ustring object self assignment
+	// Copy a final few values needed from the original unallocated partition before
+	// resetting the Partition object and populating it as the new partition.
+	Glib::ustring device_path = new_partition.device_path;
+	bool whole_device = new_partition.whole_device;
+	bool inside_extended = new_partition.inside_extended;
+	new_partition.Reset();
+	new_partition.Set( device_path,
 	                   String::ucompose( _("New Partition #%1"), new_count ),
-	                   new_count, part_type, new_partition.whole_device,
+	                   new_count, part_type, whole_device,
 	                   FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
 	                   new_start, new_end,
 	                   sector_size,
-	                   new_partition.inside_extended, false );
+	                   inside_extended, false );
+	new_partition.status = STAT_NEW;
 
 	// Retrieve partition name
 	new_partition.name = Utils::trim( partition_name_entry.get_text() );
