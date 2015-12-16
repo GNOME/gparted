@@ -1741,7 +1741,7 @@ void Win_GParted::activate_resize()
 	{
 		dialog .hide() ;
 
-		Partition * part_temp = dialog.Get_New_Partition( devices[current_device].sector_size ).clone();
+		Partition * part_temp = dialog.Get_New_Partition().clone();
 
 		// When resizing/moving a partition which already exists on the disk all
 		// possible operations could be pending so only try merging with the
@@ -1850,7 +1850,7 @@ void Win_GParted::activate_paste()
 
 				Operation * operation = new OperationCopy( devices[current_device],
 				                                           *selected_partition_ptr,
-				                                           dialog.Get_New_Partition( devices[current_device].sector_size ),
+				                                           dialog.Get_New_Partition(),
 				                                           *copied_partition );
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
@@ -1968,7 +1968,7 @@ void Win_GParted::activate_new()
 			new_count++ ;
 			Operation * operation = new OperationCreate( devices[current_device],
 			                                             *selected_partition_ptr,
-			                                             dialog.Get_New_Partition( devices[current_device].sector_size ) );
+			                                             dialog.Get_New_Partition() );
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
 			Add_Operation( operation );

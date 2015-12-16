@@ -137,31 +137,29 @@ void Dialog_Base_Partition::Set_Resizer( bool extended )
 	this ->show_all_children() ;
 }
 
-const Partition & Dialog_Base_Partition::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Base_Partition::Get_New_Partition()
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
-	prepare_new_partition( sector_size );
+	prepare_new_partition();
 	return *new_partition;
 }
 
-void Dialog_Base_Partition::prepare_new_partition( Byte_Value sector_size )
+void Dialog_Base_Partition::prepare_new_partition()
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by derived Dialog_Partition_*() constructor calling set_data()
 
-	//set sector size of new partition
-	new_partition->sector_size = sector_size;
 	Sector old_size = new_partition->get_sector_length();
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
 	if ( ORIG_BEFORE != spinbutton_before .get_value_as_int() )
-		new_partition->sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / sector_size);
+		new_partition->sector_start = START + Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
 
 	if ( ORIG_AFTER != spinbutton_after .get_value_as_int() )
 		new_partition->sector_end =
 			new_partition->sector_start
-			+ Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size)
+			+ Sector(spinbutton_size.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size)
 			- 1 /* one sector short of exact mebibyte multiple */;
 
 	//due to loss of precision during calcs from Sector -> MiB and back, it is possible
@@ -172,9 +170,9 @@ void Dialog_Base_Partition::prepare_new_partition( Byte_Value sector_size )
 		new_partition->sector_end = START + total_length - 1;
 
 	//grow a bit into small freespace ( < 1MiB ) 
-	if ( (new_partition->sector_start - START) < (MEBIBYTE / sector_size) )
+	if ( (new_partition->sector_start - START) < (MEBIBYTE / new_partition->sector_size) )
 		new_partition->sector_start = START;
-	if ( ( START + total_length -1 - new_partition->sector_end ) < (MEBIBYTE / sector_size) )
+	if ( ( START + total_length - 1 - new_partition->sector_end ) < (MEBIBYTE / new_partition->sector_size) )
 		new_partition->sector_end = START + total_length - 1;
 
 	//set alignment
@@ -232,7 +230,7 @@ void Dialog_Base_Partition::prepare_new_partition( Byte_Value sector_size )
 		}
 	}
 
-	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
+	new_partition->free_space_before = Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
 
 	//if the original before value has not changed, then set indicator to keep start sector unchanged
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )

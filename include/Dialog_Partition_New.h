@@ -37,7 +37,7 @@ public:
 	                     const std::vector<FS> & FILESYSTEMS );
 	~Dialog_Partition_New();
 
-	const Partition & Get_New_Partition( Byte_Value sector_size );
+	const Partition & Get_New_Partition();
 
 private:
 	Dialog_Partition_New( const Dialog_Partition_New & src );              // Not implemented copy constructor

@@ -112,6 +112,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	new_partition->device_path     = selected_partition.device_path;
 	new_partition->inside_extended = selected_partition.inside_extended;
 	new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
+	new_partition->sector_size     = selected_partition.sector_size;
 	//Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
 	new_partition->set_sector_usage(
 			(   ( ( copied_partition .sectors_used + copied_partition .sectors_unused ) * copied_partition .sector_size )
@@ -124,12 +125,12 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	this ->show_all_children() ;
 }
 
-const Partition & Dialog_Partition_Copy::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Partition_Copy::Get_New_Partition()
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
 	//first call baseclass to get the correct new partition
-	Dialog_Base_Partition::prepare_new_partition( sector_size );
+	Dialog_Base_Partition::prepare_new_partition();
 
 	//set proper name and status for partition
 	new_partition->status = STAT_COPY;

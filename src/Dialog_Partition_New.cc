@@ -184,7 +184,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this ->show_all_children() ;
 }
 
-const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_size )
+const Partition & Dialog_Partition_New::Get_New_Partition()
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
@@ -202,8 +202,11 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
 	//        to the maximum value of signed 4 byte integer.
-	new_start = START + (Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size)) ;
-	new_end  = new_start + (Sector(spinbutton_size .get_value_as_int()) * (MEBIBYTE / sector_size)) - 1 ;
+	new_start = START + Sector(spinbutton_before.get_value_as_int()) *
+	                    (MEBIBYTE / new_partition->sector_size);
+	new_end  = new_start + Sector(spinbutton_size.get_value_as_int()) *
+	                       (MEBIBYTE / new_partition->sector_size)
+	                     - 1;
 	
 	/* due to loss of precision during calcs from Sector -> MiB and back, it is possible the new 
 	 * partition thinks it's bigger then it can be. Here we try to solve this.*/
@@ -213,15 +216,16 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 		new_end = new_partition->sector_end;
 
 	// Grow new partition a bit if freespaces are < 1 MiB
-	if ( new_start - new_partition->sector_start < MEBIBYTE / sector_size )
+	if ( new_start - new_partition->sector_start < MEBIBYTE / new_partition->sector_size )
 		new_start = new_partition->sector_start;
-	if ( new_partition->sector_end - new_end < MEBIBYTE / sector_size )
+	if ( new_partition->sector_end - new_end < MEBIBYTE / new_partition->sector_size )
 		new_end = new_partition->sector_end;
 
 	// Copy a final few values needed from the original unallocated partition before
 	// resetting the Partition object and populating it as the new partition.
 	Glib::ustring device_path = new_partition->device_path;
 	bool whole_device = new_partition->whole_device;
+	Sector sector_size = new_partition->sector_size;
 	bool inside_extended = new_partition->inside_extended;
 	new_partition->Reset();
 	new_partition->Set( device_path,
@@ -268,7 +272,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 			break;
 	}
 
-	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / sector_size);
+	new_partition->free_space_before = Sector(spinbutton_before .get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
 
 	// Create unallocated space within this new extended partition
 	//
@@ -298,7 +302,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition( Byte_Value sector_siz
 		                              new_partition->whole_device,
 		                              new_partition->sector_start,
 		                              new_partition->sector_end,
-		                              sector_size,
+		                              new_partition->sector_size,
 		                              true );
 		new_partition->logicals.push_back_adopt( unallocated );
 	}

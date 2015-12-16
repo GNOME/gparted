@@ -41,8 +41,8 @@ public:
 	~Dialog_Base_Partition( ) ;
 
 	void Set_Resizer( bool extended ) ;
-	const Partition & Get_New_Partition( Byte_Value sector_size );
-	
+	const Partition & Get_New_Partition();
+
 protected:
 	enum SPINBUTTON {
 		BEFORE	= 0,
@@ -56,7 +56,7 @@ protected:
 		PASTE		= 2
 	};
 
-	void prepare_new_partition( Byte_Value sector_size );
+	void prepare_new_partition();
 
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;
 	void Set_MinMax_Text( Sector min, Sector max ) ;

@@ -1250,8 +1250,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		// PED_PARTITION_NORMAL, PED_PARTITION_LOGICAL and PED_PARTITION_EXTENDED.
 		// Partitions, ranges of blocks, with other bits set representing free
 		// space and disk label meta-data, PED_PARTITION_FREESPACE and
-		// PED_PARTITION_METADATA bits respectively, are ignore and GParted
-		// creates it own unallocated partitions and accounts for partition
+		// PED_PARTITION_METADATA bits respectively, are ignored and GParted
+		// creates its own unallocated partitions and accounts for partition
 		// tables.
 		// References:
 		// *   struct PedPartition and type PedPartitionType

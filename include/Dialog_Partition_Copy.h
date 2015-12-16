@@ -31,7 +31,7 @@ public:
 	                       const Partition & copied_partition );
 	~Dialog_Partition_Copy();
 
-	const Partition & Get_New_Partition( Byte_Value sector_size );
+	const Partition & Get_New_Partition();
 
 private:
 	Dialog_Partition_Copy( const Dialog_Partition_Copy & src );              // Not implemented copy constructor
