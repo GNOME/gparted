@@ -83,4 +83,11 @@ void PartitionVector::insert_adopt( iterator position, Partition * partition )
 	v.insert( position, partition );
 }
 
+void PartitionVector::replace_at( size_type n, const Partition * partition )
+{
+	Partition *p = new Partition( *partition );
+	delete v[n];
+	v[n] = p;
+}
+
 } //GParted

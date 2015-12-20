@@ -159,7 +159,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals[index] = *partition_new;
+				partitions[index_extended].logicals.replace_at( index, partition_new );
 				remove_adjacent_unallocated( partitions[index_extended].logicals, index );
 
 				insert_unallocated( partitions[index_extended].logicals,
@@ -176,7 +176,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 		if ( index >= 0 )
 		{
-			partitions[index] = *partition_new;
+			partitions.replace_at( index, partition_new );
 			remove_adjacent_unallocated( partitions, index ) ;
 
 			insert_unallocated( partitions, 0, device .length -1, device .sector_size, false ) ;

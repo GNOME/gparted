@@ -71,6 +71,7 @@ public:
 	void clear();
 	void push_back_adopt( Partition * partition );
 	void insert_adopt( iterator position, Partition * partition );
+	void replace_at( size_type n, const Partition * partition );
 
 private:
 	std::vector<Partition *> v;

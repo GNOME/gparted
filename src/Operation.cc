@@ -115,14 +115,14 @@ void Operation::substitute_new( PartitionVector & partitions )
 		{
 			index = find_index_original( partitions[index_extended].logicals );
 			if ( index >= 0 )
-				partitions[index_extended].logicals[index] = *partition_new;
+				partitions[index_extended].logicals.replace_at( index, partition_new );
 		}
 	}
 	else
 	{
 		index = find_index_original( partitions );
 		if ( index >= 0 )
-			partitions[index] = *partition_new;
+			partitions.replace_at( index, partition_new );
 	}
 }
 
@@ -152,7 +152,7 @@ void Operation::insert_new( PartitionVector & partitions )
 			index = find_index_new( partitions[index_extended].logicals );
 			if ( index >= 0 )
 			{
-				partitions[index_extended].logicals[index] = *partition_new;
+				partitions[index_extended].logicals.replace_at( index, partition_new );
 
 				insert_unallocated( partitions[index_extended].logicals,
 				                    partitions[index_extended].sector_start,
@@ -167,7 +167,7 @@ void Operation::insert_new( PartitionVector & partitions )
 		index = find_index_new( partitions );
 		if ( index >= 0 )
 		{
-			partitions[index] = *partition_new;
+			partitions.replace_at( index, partition_new );
 
 			insert_unallocated( partitions, 0, device.length-1, device.sector_size, false );
 		}

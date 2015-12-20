@@ -149,6 +149,8 @@ public:
 	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.
 
 private:
+	Partition & operator=( Partition & rhs );  // Not implemented copy assignment operator
+
 	static void get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sector s3, int imax, int & i1, int & i2, int & i3 ) ;
 
 	void sort_paths_and_remove_duplicates() ;
