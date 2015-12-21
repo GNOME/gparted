@@ -30,7 +30,7 @@ public:
 	OperationNamePartition( const Device & device,
 	                        const Partition & partition_orig,
 	                        const Partition & partition_new );
-	~OperationNamePartition();
+	virtual ~OperationNamePartition();
 
 	void apply_to_visual( PartitionVector & partitions );
 

@@ -30,7 +30,7 @@ public:
 	OperationResizeMove( const Device & device,
 			     const Partition & partition_orig,
 			     const Partition & partition_new ) ;
-	~OperationResizeMove();
+	virtual ~OperationResizeMove();
 
 	void apply_to_visual( PartitionVector & partitions );
 

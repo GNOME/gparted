@@ -30,7 +30,7 @@ public:
 	OperationLabelFileSystem( const Device & device,
 	                          const Partition & partition_orig,
 	                          const Partition & partition_new );
-	~OperationLabelFileSystem();
+	virtual ~OperationLabelFileSystem();
 
 	void apply_to_visual( PartitionVector & partitions );
 

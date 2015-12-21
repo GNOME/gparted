@@ -28,7 +28,7 @@ class OperationCheck : public Operation
 {
 public:
 	OperationCheck( const Device & device, const Partition & partition ) ;
-	~OperationCheck();
+	virtual ~OperationCheck();
 
 	void apply_to_visual( PartitionVector & partitions );
 

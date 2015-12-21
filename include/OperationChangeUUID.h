@@ -31,7 +31,7 @@ public:
 	                   , const Partition & partition_orig
 	                   , const Partition & partition_new
 	                   ) ;
-	~OperationChangeUUID();
+	virtual ~OperationChangeUUID();
 
 	void apply_to_visual( PartitionVector & partitions );
 

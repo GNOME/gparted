@@ -31,7 +31,7 @@ public:
 		       const Partition & partition_orig,
 		       const Partition & partition_new,
 		       const Partition & partition_copied ) ;
-	~OperationCopy();
+	virtual ~OperationCopy();
 
 	Partition & get_partition_copied();
 	const Partition & get_partition_copied() const;

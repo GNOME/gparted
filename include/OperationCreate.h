@@ -30,7 +30,7 @@ public:
 	OperationCreate( const Device & device,
 			 const Partition & partition_orig,
 			 const Partition & partition_new ) ;
-	~OperationCreate();
+	virtual ~OperationCreate();
 
 	void apply_to_visual( PartitionVector & partitions );
 

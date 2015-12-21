@@ -28,7 +28,7 @@ class OperationDelete : public Operation
 {
 public:
 	OperationDelete( const Device & device, const Partition & partition_orig ) ;
-	~OperationDelete();
+	virtual ~OperationDelete();
 
 	void apply_to_visual( PartitionVector & partitions );
 
