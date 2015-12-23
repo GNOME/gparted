@@ -1303,7 +1303,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				set_flags( *partition_temp, lp_partition );
 
 				if ( filesystem == FS_LUKS )
-					debug_luks_partition( *partition_temp );
+					set_luks_partition( *dynamic_cast<PartitionLUKS *>( partition_temp ) );
 
 				if ( partition_temp->busy && partition_temp->partition_number > device.highest_busy )
 					device.highest_busy = partition_temp->partition_number;
@@ -1418,7 +1418,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 
 	if ( fstype == FS_LUKS )
-		debug_luks_partition( *partition_temp );
+		set_luks_partition( *dynamic_cast<PartitionLUKS *>( partition_temp ) );
 
 	if ( partition_temp->busy )
 		device.highest_busy = 1;
@@ -1430,16 +1430,49 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	device.partitions.push_back_adopt( partition_temp );
 }
 
-void GParted_Core::debug_luks_partition( Partition & partition )
+void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 {
-	// FIXME: Temporary debugging of LUKS mapping.
 	LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
 	if ( mapping.name.empty() )
-		std::cout << "DEBUG: " << partition.get_path() << ": LUKS closed" << std::endl;
-	else
-		std::cout << "DEBUG: " << partition.get_path()
-		          << ": LUKS open mapping " << DEV_MAPPER_PATH << mapping.name << ", offset=" << mapping.offset
-		          << ", length=" << mapping.length << std::endl;
+		// No LUKS mapping found so no device file with which to query the
+		// encrypted file system.  Assume no open dm-crypt mapping exists.
+		// Details of encrypted file system left blank.
+		return;
+
+	Glib::ustring mapping_path = DEV_MAPPER_PATH + mapping.name;
+	PedDevice* lp_device = NULL;
+	std::vector<Glib::ustring> detect_messages;
+	FILESYSTEM fstype = FS_UNKNOWN;
+	if ( get_device( mapping_path, lp_device ) )
+	{
+		fstype = detect_filesystem( lp_device, NULL, detect_messages );
+		PedDisk* lp_disk = NULL;
+		destroy_device_and_disk( lp_device, lp_disk );
+	}
+	bool fs_busy = is_busy( fstype, mapping_path );
+
+	Partition & encrypted = partition.get_encrypted();
+	encrypted.Set( partition.get_path(),
+	               mapping_path,
+	               1,
+	               TYPE_PRIMARY,
+	               false,
+	               fstype,
+	               // Start and end sectors locate the encrypted file system within
+	               // the LUKS partition.  LUKS header is everything before.
+	               mapping.offset / partition.sector_size,
+	               ( mapping.offset + mapping.length ) / partition.sector_size - 1LL,
+	               partition.sector_size,
+	               false,
+	               fs_busy );
+	encrypted.messages = detect_messages;
+
+	Proc_Partitions_Info pp_info;  // Use cache of proc partitions information
+	encrypted.add_paths( pp_info.get_alternate_paths( encrypted.get_path() ) );
+
+	set_partition_label_and_uuid( encrypted );
+	set_mountpoints( encrypted );
+	set_used_sectors( encrypted, NULL );
 }
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
