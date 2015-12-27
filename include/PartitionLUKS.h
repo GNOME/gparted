@@ -31,7 +31,8 @@ public:
 	virtual ~PartitionLUKS();
 	virtual PartitionLUKS * clone() const;
 
-	Partition & get_encrypted()  { return encrypted; };
+	Partition & get_encrypted()              { return encrypted; };
+	const Partition & get_encrypted() const  { return encrypted; };
 
 private:
 	Partition encrypted;

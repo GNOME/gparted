@@ -17,6 +17,7 @@
  
 #include "../include/TreeView_Detail.h"
 #include "../include/Partition.h"
+#include "../include/PartitionLUKS.h"
 #include "../include/PartitionVector.h"
 
 namespace GParted
@@ -186,11 +187,28 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 	// name
 	treerow[treeview_detail_columns.name] = partition.name;
 
-	treerow[ treeview_detail_columns .color ] = Utils::get_color_as_pixbuf( partition .filesystem, 16, 16 ) ; 
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		FILESYSTEM display_fstype = dynamic_cast< const PartitionLUKS *>( &partition )->get_encrypted().filesystem;
+		// file system
+		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( display_fstype, 16, 16 );
+		/* TO TRANSLATORS: means that this is an encrypted file system */
+		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "] " +
+		                                              Utils::get_filesystem_string( display_fstype );
+	}
+	else if ( partition.filesystem == FS_LUKS && ! partition.busy )
+	{
+		// file system
+		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
+		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "]";
+	}
+	else
+	{
+		// file system
+		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
+		treerow[treeview_detail_columns.filesystem] = Utils::get_filesystem_string( partition.filesystem );
+	}
 
-	treerow[ treeview_detail_columns .filesystem ] = 
-		Utils::get_filesystem_string( partition .filesystem ) ;
-	
 	//mount point
 	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
 
