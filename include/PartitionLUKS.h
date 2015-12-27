@@ -34,6 +34,8 @@ public:
 	Partition & get_encrypted()              { return encrypted; };
 	const Partition & get_encrypted() const  { return encrypted; };
 
+	virtual Glib::ustring get_filesystem_label() const;
+
 private:
 	Partition encrypted;
 };

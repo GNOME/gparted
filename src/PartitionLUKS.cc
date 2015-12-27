@@ -37,4 +37,12 @@ PartitionLUKS * PartitionLUKS::clone() const
 	return new PartitionLUKS( *this );
 }
 
+// Return the label of the encrypted file system within, or "" if no open mapping.
+Glib::ustring PartitionLUKS::get_filesystem_label() const
+{
+	if ( busy )
+		return encrypted.get_filesystem_label();
+	return "";
+}
+
 } //GParted
