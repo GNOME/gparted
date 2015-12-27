@@ -1785,6 +1785,12 @@ void GParted_Core::set_mountpoints( Partition & partition )
 		if ( ! array_path.empty() )
 			partition.add_mountpoint( array_path );
 	}
+	else if ( partition.filesystem == FS_LUKS )
+	{
+		LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
+		if ( ! mapping.name.empty() )
+			partition.add_mountpoint( DEV_MAPPER_PATH + mapping.name );
+	}
 	// Swap spaces don't have mount points so don't bother trying to add them.
 	else if ( supported_filesystem( partition.filesystem ) && partition.filesystem != FS_LINUX_SWAP )
 	{
