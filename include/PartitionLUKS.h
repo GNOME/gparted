@@ -34,6 +34,11 @@ public:
 	Partition & get_encrypted()              { return encrypted; };
 	const Partition & get_encrypted() const  { return encrypted; };
 
+	virtual bool sector_usage_known() const;
+	virtual Sector estimated_min_size() const;
+	virtual Sector get_sectors_used() const;
+	virtual Sector get_sectors_unused() const;
+	virtual Sector get_sectors_unallocated() const;
 	virtual Glib::ustring get_filesystem_label() const;
 
 private:

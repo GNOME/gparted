@@ -82,11 +82,11 @@ public:
 	          bool busy );
 
 	void set_sector_usage( Sector sectors_fs_size, Sector sectors_fs_unused ) ;
-	bool sector_usage_known() const ;
-	Sector estimated_min_size() const ;
-	Sector get_sectors_used() const ;
-	Sector get_sectors_unused() const ;
-	Sector get_sectors_unallocated() const ;
+	virtual bool sector_usage_known() const;
+	virtual Sector estimated_min_size() const;
+	virtual Sector get_sectors_used() const;
+	virtual Sector get_sectors_unused() const;
+	virtual Sector get_sectors_unallocated() const;
 	void get_usage_triple( int imax, int & i1, int & i2, int & i3 ) const ;
 
 	void Set_Unallocated( const Glib::ustring & device_path,
