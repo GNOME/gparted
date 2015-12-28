@@ -189,28 +189,35 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 
 	if ( partition.filesystem == FS_LUKS && partition.busy )
 	{
-		FILESYSTEM display_fstype = dynamic_cast< const PartitionLUKS *>( &partition )->get_encrypted().filesystem;
+		const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
+
 		// file system
-		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( display_fstype, 16, 16 );
+		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( encrypted.filesystem, 16, 16 );
 		/* TO TRANSLATORS: means that this is an encrypted file system */
 		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "] " +
-		                                              Utils::get_filesystem_string( display_fstype );
+		                                              Utils::get_filesystem_string( encrypted.filesystem );
+
+		// mount point
+		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", encrypted.get_mountpoints() );
 	}
 	else if ( partition.filesystem == FS_LUKS && ! partition.busy )
 	{
 		// file system
 		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
 		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "]";
+
+		// mount point
+		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", partition.get_mountpoints() );
 	}
 	else
 	{
 		// file system
 		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
 		treerow[treeview_detail_columns.filesystem] = Utils::get_filesystem_string( partition.filesystem );
-	}
 
-	//mount point
-	treerow[ treeview_detail_columns .mountpoint ] = Glib::build_path( ", ", partition .get_mountpoints() ) ;
+		// mount point
+		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", partition.get_mountpoints() );
+	}
 
 	//label
 	treerow[ treeview_detail_columns .label ] = partition.get_filesystem_label();
