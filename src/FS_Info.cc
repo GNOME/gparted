@@ -112,8 +112,8 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 	Glib::ustring dev_path_line = get_device_entry( path ) ;
 	
 	//Retrieve TYPE
-	fs_type     = Utils::regexp_label( dev_path_line, "[^_]TYPE=\"([^\"]*)\"" ) ;
-	fs_sec_type = Utils::regexp_label( dev_path_line, "SEC_TYPE=\"([^\"]*)\"" ) ;
+	fs_type     = Utils::regexp_label( dev_path_line, " TYPE=\"([^\"]*)\"" );
+	fs_sec_type = Utils::regexp_label( dev_path_line, " SEC_TYPE=\"([^\"]*)\"" );
 
 	//If vfat, decide whether fat16 or fat32
 	Glib::ustring output, error;
@@ -126,7 +126,7 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 			// prevents correct identification.  Run blkid command again,
 			// bypassing the the cache to get the correct results.
 			if ( ! Utils::execute_command( "blkid -c /dev/null " + path, output, error, true ) )
-				fs_sec_type = Utils::regexp_label( output, "SEC_TYPE=\"([^\"]*)\"" );
+				fs_sec_type = Utils::regexp_label( output, " SEC_TYPE=\"([^\"]*)\"" );
 		}
 		if ( fs_sec_type == "msdos" )
 			fs_type = "fat16" ;
@@ -153,11 +153,11 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 	Glib::ustring temp = get_device_entry( path ) ;
 	
 	//Set indicator if LABEL found
-	if ( Utils::regexp_label( temp, "(LABEL=\")") != "" )
+	if ( Utils::regexp_label( temp, "( LABEL=\")") != "" )
 		found = true ;
 
 	//Retrieve LABEL
-	label = Utils::regexp_label( temp, "LABEL=\"([^\"]*)\"" ) ;
+	label = Utils::regexp_label( temp, " LABEL=\"([^\"]*)\"" );
 	return label ;
 }
 
@@ -167,7 +167,7 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 	Glib::ustring temp = get_device_entry( path ) ;
 
 	//Retrieve the UUID
-	Glib::ustring uuid = Utils::regexp_label( temp, "UUID=\"([^\"]*)\"" ) ;
+	Glib::ustring uuid = Utils::regexp_label( temp, " UUID=\"([^\"]*)\"" );
 
 	if ( uuid .empty() && vol_id_found )
 	{
@@ -185,7 +185,7 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 {
 	//Retrieve the path given the uuid
-	Glib::ustring regexp = "^([^:]*):.*UUID=\"" + uuid + "\".*$" ;
+	Glib::ustring regexp = "^([^:]*):.* UUID=\"" + uuid + "\".*$";
 	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
 
 	return path ;
@@ -194,7 +194,7 @@ Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 {
 	//Retrieve the path given the label
-	Glib::ustring regexp = "^([^:]*):.*LABEL=\"" + label + "\".*$" ;
+	Glib::ustring regexp = "^([^:]*):.* LABEL=\"" + label + "\".*$";
 	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
 
 	return path ;
