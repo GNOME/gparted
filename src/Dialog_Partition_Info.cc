@@ -451,17 +451,8 @@ void Dialog_Partition_Info::Display_Info()
 				break ;
 		}
 
-		Glib::ustring members_str = "" ;
-		if ( ! members .empty() )
-		{
-			for ( unsigned int i = 0 ; i < members .size() ; i ++ )
-			{
-				if ( i > 0 )
-					members_str += "\n" ;
-				members_str += members[i] ;
-			}
-		}
-		table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ), 2, 3, top++, bottom++, Gtk::FILL ) ;
+		table->attach( *Utils::mk_label( Glib::build_path( "\n", members ), true, false, true ),
+		               2, 3, top++, bottom++, Gtk::FILL );
 	}
 
 	if ( filesystem->filesystem == FS_LVM2_PV )
@@ -470,18 +461,9 @@ void Dialog_Partition_Info::Display_Info()
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Logical Volumes:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
 		                1, 2, top, bottom, Gtk::FILL );
 
-		std::vector<Glib::ustring> lvs;
-		lvs = LVM2_PV_Info::get_vg_lvs( vgname );
-
-		Glib::ustring lvs_str = "";
-		for ( unsigned int i = 0 ; i < lvs .size() ; i ++ )
-		{
-			if ( i > 0 )
-				lvs_str += "\n";
-			lvs_str += lvs[i];
-		}
-
-		table ->attach( * Utils::mk_label( lvs_str, true, false, true, 0.0 /* ALIGN_TOP */ ), 2, 3, top++, bottom++, Gtk::FILL );
+		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
+		table->attach( *Utils::mk_label( Glib::build_path( "\n", lvs ), true, false, true ),
+		               2, 3, top++, bottom++, Gtk::FILL );
 	}
 
 	//Right field & value pair area
