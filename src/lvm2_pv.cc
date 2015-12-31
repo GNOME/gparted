@@ -89,11 +89,7 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 	}
 
 	std::vector<Glib::ustring> error_messages = LVM2_PV_Info::get_error_messages( partition.get_path() );
-	if ( ! error_messages .empty() )
-	{
-		for ( unsigned int i = 0 ; i < error_messages .size() ; i ++ )
-			partition .messages .push_back( error_messages [ i ] ) ;
-	}
+	partition.append_messages( error_messages );
 }
 
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )

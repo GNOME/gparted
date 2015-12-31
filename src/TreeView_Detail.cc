@@ -167,7 +167,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		treerow[ treeview_detail_columns .icon1 ] = 
 			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
-	if ( partition .messages .size() > 0 )
+	if ( partition.have_messages() > 0 )
 	{
 		if ( ! static_cast< Glib::RefPtr<Gdk::Pixbuf> >( treerow[ treeview_detail_columns .icon1 ] )  )
 			treerow[ treeview_detail_columns .icon1 ] = 

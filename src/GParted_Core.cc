@@ -353,7 +353,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				                     false,
 				                     false );
 				// Place unknown file system message in this partition.
-				partition_temp->messages = messages;
+				partition_temp->append_messages( messages );
 				temp_device.partitions.push_back_adopt( partition_temp );
 			}
 			// Unrecognised, unpartitioned drive.
@@ -375,9 +375,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				                                 temp_device.sector_size,
 				                                 false );
 				// Place libparted messages in this unallocated partition
-				partition_temp->messages.insert( partition_temp->messages.end(),
-				                                 libparted_messages.begin(),
-				                                 libparted_messages.end() );
+				partition_temp->append_messages( libparted_messages );
 				libparted_messages.clear();
 				temp_device.partitions.push_back_adopt( partition_temp );
 			}
@@ -1298,7 +1296,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     device.sector_size,
 				                     ( lp_partition->type == PED_PARTITION_LOGICAL ),
 				                     partition_is_busy );
-				partition_temp->messages = detect_messages;
+				partition_temp->append_messages( detect_messages );
 				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 				set_flags( *partition_temp, lp_partition );
 
@@ -1347,9 +1345,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 			if ( device.partition_naming_supported() )
 				partition_temp->name = Glib::ustring( ped_partition_get_name( lp_partition ) );
 
-			partition_temp->messages.insert( partition_temp->messages.end(),
-							 libparted_messages.begin(),
-							 libparted_messages.end() );
+			partition_temp->append_messages( libparted_messages );
 
 			if ( ! partition_temp->inside_extended )
 				device.partitions.push_back_adopt( partition_temp );
@@ -1414,7 +1410,7 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	                     false,
 	                     partition_is_busy );
 
-	partition_temp->messages = messages;
+	partition_temp->append_messages( messages );
 	partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 
 	if ( fstype == FS_LUKS )
@@ -1465,7 +1461,7 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 	               partition.sector_size,
 	               false,
 	               fs_busy );
-	encrypted.messages = detect_messages;
+	encrypted.append_messages( detect_messages );
 
 	Proc_Partitions_Info pp_info;  // Use cache of proc partitions information
 	encrypted.add_paths( pp_info.get_alternate_paths( encrypted.get_path() ) );
@@ -1869,7 +1865,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 			}
 
 			if ( partition.get_mountpoints().empty() )
-					partition.messages.push_back( _("Unable to find mount point") );
+				partition.push_back_message( _("Unable to find mount point") );
 		}
 		else  // Not busy file system
 		{
@@ -1996,7 +1992,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 				                          Utils::get_filesystem_software( partition.filesystem )
 				                        );
 			}
-			partition.messages.push_back( temp );
+			partition.push_back_message( temp );
 		}
 		else if ( ( unallocated = partition.get_sectors_unallocated() ) > 0 )
 		{
@@ -2015,7 +2011,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 				temp += "\n";
 				temp += _("Partition --> Check.");
 			}
-			partition.messages.push_back( temp );
+			partition.push_back_message( temp );
 		}
 
 		if ( filesystem_resize_disallowed( partition ) )
@@ -2023,7 +2019,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 			Glib::ustring temp = get_filesystem_object( partition.filesystem )
 			                     ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING );
 			if ( ! temp.empty() )
-				partition.messages.push_back( temp );
+				partition.push_back_message( temp );
 		}
 	}
 }
@@ -2040,7 +2036,7 @@ void GParted_Core::mounted_set_used_sectors( Partition & partition )
 			partition .set_sector_usage( fs_size / partition .sector_size,
 			                             fs_free / partition .sector_size ) ;
 		else
-			partition .messages .push_back( error_message ) ;
+			partition.push_back_message( error_message );
 	}
 }
 

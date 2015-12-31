@@ -40,7 +40,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
 	// whitespace (~500 px max for GNOME desktop).  Allow extra space if have any
 	// messages or for LVM2 PV or LUKS encryption.
-	if ( partition.messages.size() > 0      ||
+	if ( partition.have_messages()          ||
 	     partition.filesystem == FS_LVM2_PV ||
 	     partition.filesystem == FS_LUKS       )
 		this ->set_size_request( -1, 460) ;
@@ -73,7 +73,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	Display_Info() ;
 	
 	//display messages (if any)
-	if ( partition .messages .size() > 0 )
+	if ( partition.have_messages() )
 	{
 		frame = manage( new Gtk::Frame() );
 
@@ -90,29 +90,30 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 
 		frame ->set_label_widget( *hbox ) ;
 
-		//Merge all messages for display so that they can be selected together.
-		//  Use a blank line between individual messages so that each message can be
-		//  distinguished. Therefore each message should have been formatted as one
-		//  or more non-blank lines, with an optional trailing new line.  This is
-		//  true of GParted internal messages and probably all external messages and
-		//  errors from libparted and executed commands too.
-		Glib::ustring all_messages ;
-		for ( unsigned int t = 0; t < partition .messages .size(); t ++ )
+		// Concatenate all messages for display so that they can be selected
+		// together.  Use a blank line between individual messages so that each
+		// message can be distinguished. Therefore each message should have been
+		// formatted as one or more non-blank lines, with an optional trailing new
+		// line.  This is true of GParted internal messages and probably all
+		// external messages and errors from libparted and executed commands too.
+		std::vector<Glib::ustring> messages = partition.get_messages();
+		Glib::ustring concatenated_messages;
+		for ( unsigned int i = 0; i < messages.size(); i ++ )
 		{
-			if ( all_messages .size() > 0 )
-				all_messages += "\n\n" ;
+			if ( concatenated_messages.size() > 0 )
+				concatenated_messages += "\n\n";
 
-			Glib::ustring::size_type take = partition .messages[ t ] .size() ;
+			Glib::ustring::size_type take = messages[i].size();
 			if ( take > 0 )
 			{
-				if ( partition .messages[ t ][ take-1 ] == '\n' )
+				if ( messages[i][take-1] == '\n' )
 					take -- ;  //Skip optional trailing new line
-				all_messages += "<i>" + partition .messages[ t ] .substr( 0, take ) + "</i>" ;
+				concatenated_messages += "<i>" + messages[i].substr( 0, take ) + "</i>";
 			}
 		}
 		Gtk::VBox *vbox( manage( new Gtk::VBox() ) ) ;
 		vbox ->set_border_width( 5 ) ;
-		vbox ->pack_start( *Utils::mk_label( all_messages, true, true, true ), Gtk::PACK_SHRINK ) ;
+		vbox->pack_start( *Utils::mk_label( concatenated_messages, true, true, true ), Gtk::PACK_SHRINK );
 		frame ->add( *vbox ) ;
 
 		info_msg_vbox .pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;

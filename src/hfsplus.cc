@@ -66,10 +66,10 @@ void hfsplus::read_label( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 		
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 

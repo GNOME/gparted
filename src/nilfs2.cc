@@ -106,10 +106,10 @@ void nilfs2::set_used_sectors( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 
@@ -126,10 +126,10 @@ void nilfs2::read_label( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 
@@ -149,10 +149,10 @@ void nilfs2::read_uuid( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 

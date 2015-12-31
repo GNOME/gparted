@@ -116,6 +116,21 @@ public:
 	virtual Glib::ustring get_filesystem_label() const;
 	void set_filesystem_label( const Glib::ustring & filesystem_label );
 
+	// Message accessors.  Messages are stored locally and accessed globally.
+	// Stored locally means the messages are stored in the Partition object to which
+	// they are added so push_back_messages() and append_messages() are non-virtual.
+	// Accessed globally means that in the case of derived objects which are composed
+	// of more that one Partition object, i.e. PartitionLUKS, the messages have to be
+	// accessible from all copies within the derived object hierarchy.  Hence
+	// have_messages(), get_messages() and clear_messages() are virtual to allow for
+	// overridden implementations.
+	virtual bool have_messages() const                             { return ! messages.empty(); };
+	virtual std::vector<Glib::ustring> get_messages() const        { return messages; };
+	virtual void clear_messages()                                  { messages.clear(); };
+	void push_back_message( Glib::ustring msg )                    { messages.push_back( msg ); };
+	void append_messages( const std::vector<Glib::ustring> msgs )
+	                                { messages.insert( messages.end(), msgs.begin(), msgs.end() ); }
+
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
 		
@@ -137,7 +152,6 @@ public:
 	Sector significant_threshold;  //Threshold from intrinsic to significant unallocated sectors
 	bool inside_extended;
 	bool busy;
-	std::vector<Glib::ustring> messages ;
 	std::vector<Glib::ustring> flags ;
 
 	PartitionVector logicals;
@@ -161,6 +175,7 @@ private:
 	std::vector<Glib::ustring> mountpoints ;
 	bool have_filesystem_label;
 	Glib::ustring filesystem_label;
+	std::vector<Glib::ustring> messages;
 };
 
 }//GParted

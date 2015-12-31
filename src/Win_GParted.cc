@@ -1836,7 +1836,7 @@ void Win_GParted::activate_paste()
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
 			Partition * part_temp = copied_partition->clone();
-			part_temp->messages.clear();
+			part_temp->clear_messages();
 			part_temp->clear_mountpoints();
 			part_temp->name.clear();
 
@@ -1897,7 +1897,7 @@ void Win_GParted::activate_paste()
 					new_size,
 					new_size - copied_partition->sectors_used );
 		}
-		partition_new->messages.clear();
+		partition_new->clear_messages();
  
 		Operation * operation = new OperationCopy( devices[current_device],
 		                                           *selected_partition_ptr,

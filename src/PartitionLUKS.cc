@@ -149,4 +149,29 @@ Glib::ustring PartitionLUKS::get_filesystem_label() const
 	return "";
 }
 
+bool PartitionLUKS::have_messages() const
+{
+	if ( busy )
+		return Partition::have_messages() || encrypted.have_messages();
+	return Partition::have_messages();
+}
+
+std::vector<Glib::ustring> PartitionLUKS::get_messages() const
+{
+	if ( busy )
+	{
+		std::vector<Glib::ustring> msgs  = Partition::get_messages();
+		std::vector<Glib::ustring> msgs2 = encrypted.get_messages();
+		msgs.insert( msgs.end(), msgs2.begin(), msgs2.end() );
+		return msgs;
+	}
+	return Partition::get_messages();
+}
+
+void PartitionLUKS::clear_messages()
+{
+	Partition::clear_messages();
+	encrypted.clear_messages();
+}
+
 } //GParted

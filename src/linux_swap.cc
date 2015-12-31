@@ -93,7 +93,7 @@ void linux_swap::set_used_sectors( Partition & partition )
 		}
 		else
 		{
-			partition .messages .push_back( "open(\"/proc/swaps\", O_RDONLY): " + Glib::strerror( errno ) ) ;
+			partition.push_back_message( "open(\"/proc/swaps\", O_RDONLY): " + Glib::strerror( errno ) );
 		}
 		if ( N > -1 )
 		{
@@ -123,10 +123,10 @@ void linux_swap::read_label( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 		
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 
@@ -145,10 +145,10 @@ void linux_swap::read_uuid( Partition & partition )
 	else
 	{
 		if ( ! output .empty() )
-			partition .messages .push_back( output ) ;
+			partition.push_back_message( output );
 
 		if ( ! error .empty() )
-			partition .messages .push_back( error ) ;
+			partition.push_back_message( error );
 	}
 }
 
