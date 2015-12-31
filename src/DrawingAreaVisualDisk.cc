@@ -17,6 +17,7 @@
 
 #include "../include/DrawingAreaVisualDisk.h"
 #include "../include/Partition.h"
+#include "../include/PartitionLUKS.h"
 #include "../include/PartitionVector.h"
 #include "../include/Utils.h"
 
@@ -99,7 +100,13 @@ void DrawingAreaVisualDisk::set_static_data( const PartitionVector & partitions,
 		Sector partition_length = partitions[ t ] .get_sector_length() ;
 		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
 
-		visual_partitions.back().color.set( Utils::get_color( partitions[t].filesystem ) );
+		Glib::ustring color_str = Utils::get_color( partitions[t].filesystem );
+		if ( partitions[t].filesystem == FS_LUKS && partitions[t].busy )
+		{
+			const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partitions[t] )->get_encrypted();
+			color_str = Utils::get_color( encrypted.filesystem );
+		}
+		visual_partitions.back().color.set( color_str );
 		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
