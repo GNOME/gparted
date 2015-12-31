@@ -1100,6 +1100,7 @@ void Win_GParted::set_valid_operations()
 	     && selected_partition_ptr->type       != TYPE_EXTENDED
 	     && selected_partition_ptr->filesystem != FS_LVM2_PV
 	     && selected_partition_ptr->filesystem != FS_LINUX_SWRAID
+	     && selected_partition_ptr->filesystem != FS_LUKS
 	     && (    selected_partition_ptr->busy
 	          || selected_partition_ptr->get_mountpoints().size() /* Have mount point(s) */
 	          || selected_partition_ptr->filesystem == FS_LINUX_SWAP
@@ -1244,9 +1245,10 @@ void Win_GParted::set_valid_operations()
 		if ( selected_partition_ptr->status == STAT_REAL && fs.write_uuid )
 			allow_change_uuid( true ) ;
 
-		// Generate Mount on submenu, except for LVM2 PVs
-		// borrowing mount point to display the VGNAME
+		// Generate Mount on submenu, except for LVM2 PVs borrowing mount point to
+		// display the VGNAME and read-only supported LUKS.
 		if ( selected_partition_ptr->filesystem != FS_LVM2_PV &&
+		     selected_partition_ptr->filesystem != FS_LUKS    &&
 		     selected_partition_ptr->get_mountpoints().size()    )
 		{
 			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
