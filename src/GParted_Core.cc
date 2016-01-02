@@ -1970,7 +1970,14 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 		}
 
 		Sector unallocated;
-		if ( ! partition.sector_usage_known() )
+		// Only confirm that the above code succeeded in setting the sector usage
+		// values for this base Partition object, hence the explicit call to the
+		// base Partition class sector_usage_known() method.  For LUKS this avoids
+		// calling derived PartitionLUKS class sector_usage_known() which also
+		// checks for known sector usage in the encrypted file system.  But that
+		// wasn't set by the above code so in the case of luks/unknown would
+		// produce a false positive.
+		if ( ! partition.Partition::sector_usage_known() )
 		{
 			Glib::ustring temp = _("Unable to read the contents of this file system!");
 			temp += "\n";
