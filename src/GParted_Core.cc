@@ -1598,7 +1598,6 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	FS_Info fs_info ;
 	Glib::ustring fsname = "";
 	Glib::ustring path;
-	static Glib::ustring luks_unsupported = _("Linux Unified Key Setup encryption is not yet supported.");
 
 	if ( lp_partition )
 		// Will query partition using methods: (Q1) SWRaid, (Q2) blkid,
@@ -1648,10 +1647,7 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 		          fsname == "swap"               )
 			return GParted::FS_LINUX_SWAP ;
 		else if ( fsname == "crypto_LUKS" )
-		{
-			messages.push_back( luks_unsupported );
 			return FS_LUKS;
-		}
 		else if ( fsname == "LVM2_member" )
 			return GParted::FS_LVM2_PV ;
 		else if ( fsname == "f2fs" )
@@ -1691,8 +1687,6 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 
 	// (Q4) Fallback to GParted simple internal file system detection
 	FILESYSTEM fstype = detect_filesystem_internal( lp_device, lp_partition );
-	if ( fstype == FS_LUKS )
-		messages.push_back( luks_unsupported );
 	if ( fstype != FS_UNKNOWN )
 		return fstype;
 
