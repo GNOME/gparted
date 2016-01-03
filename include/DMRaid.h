@@ -32,9 +32,6 @@
 
 #include <vector>
 
-//Declare some constants
-const Glib::ustring DEV_MAP_PATH = "/dev/mapper/" ;
-
 namespace GParted
 {
 

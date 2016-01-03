@@ -39,6 +39,8 @@
 namespace GParted
 {
 
+const Glib::ustring DEV_MAPPER_PATH = "/dev/mapper/";
+
 Sector Utils::round( double double_value )
 {
 	 return static_cast<Sector>( double_value + 0.5 ) ;

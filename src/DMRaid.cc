@@ -167,7 +167,7 @@ void DMRaid::get_devices( std::vector<Glib::ustring> & device_list )
 	device_list .clear() ;
 
 	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
-		device_list .push_back( DEV_MAP_PATH + dmraid_devices[k] ) ;
+		device_list.push_back( DEV_MAPPER_PATH + dmraid_devices[k] );
 }
 
 Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
@@ -220,7 +220,7 @@ void DMRaid::get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector
 
 	//Loop through the entries in the directory
 	Glib::ustring filename = "" ;
-	Glib::Dir dir( DEV_MAP_PATH) ;
+	Glib::Dir dir( DEV_MAPPER_PATH );
 	while ( ( filename = dir .read_name() ) != "" )
 	{
 		if ( filename == "control" )
@@ -287,11 +287,11 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 
 	for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 	{
-		reg_exp = DEV_MAP_PATH + dmraid_devices[ k ] + "p([0-9]+)" ;
+		reg_exp = DEV_MAPPER_PATH + dmraid_devices[k] + "p([0-9]+)";
 		partition_number = Utils::regexp_label( partition_path, reg_exp ) ;
 		if ( ! partition_number .empty() )
 		{
-			partition_path = DEV_MAP_PATH + dmraid_devices[ k ] + partition_number ;
+			partition_path = DEV_MAPPER_PATH + dmraid_devices[k] + partition_number;
 			return partition_path ;
 		}
 	}
@@ -308,7 +308,7 @@ Glib::ustring DMRaid::make_path_dmraid_compatible( Glib::ustring partition_path 
 		if ( ! device_path .empty() )
 		{
 			device_path = get_udev_dm_name( device_path ) ;
-			partition_path = DEV_MAP_PATH + device_path + partition_number ;
+			partition_path = DEV_MAPPER_PATH + device_path + partition_number;
 		}
 	}
 
@@ -323,7 +323,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  create missing /dev/mapper entries */ 
-	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAP_PATH ) ;
+	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
@@ -422,14 +422,14 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete affected /dev/mapper entries */ 
-	Glib::ustring tmp = String::ucompose ( _("delete affected %1 entries"), DEV_MAP_PATH ) ;
+	Glib::ustring tmp = String::ucompose ( _("delete affected %1 entries"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	get_affected_dev_map_entries( partition, affected_entries ) ;
 
 	for ( unsigned int k=0; k < affected_entries .size(); k++ )
 	{
-		command = "dmsetup remove " + DEV_MAP_PATH + affected_entries[k] ;
+		command = "dmsetup remove " + DEV_MAPPER_PATH + affected_entries[k];
 		if ( execute_command( command, operationdetail .get_last_child() ) )
 			exit_status = false ;	//command failed
 	}
@@ -445,7 +445,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete /dev/mapper entry */ 
-	Glib::ustring tmp = String::ucompose ( _("delete %1 entry"), DEV_MAP_PATH ) ;
+	Glib::ustring tmp = String::ucompose ( _("delete %1 entry"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	std::vector<Glib::ustring> partition_entries ;
@@ -476,7 +476,7 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 
 	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
-		command = "dmsetup remove " + DEV_MAP_PATH + dir_list[k] ;
+		command = "dmsetup remove " + DEV_MAPPER_PATH + dir_list[k];
 		if ( Utils::execute_command( command, output, error, true ) )
 			exit_status = false ;	//command failed
 	}
@@ -495,7 +495,7 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  update /dev/mapper entry */ 
-	Glib::ustring tmp = String::ucompose ( _("update %1 entry"), DEV_MAP_PATH ) ;
+	Glib::ustring tmp = String::ucompose ( _("update %1 entry"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	if( ! delete_dev_map_entry( partition , operationdetail .get_last_child() ) )

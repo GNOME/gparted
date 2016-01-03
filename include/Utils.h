@@ -55,6 +55,8 @@ const Byte_Value EXBIBYTE=(PEBIBYTE * KIBIBYTE);
 const Glib::ustring UUID_RANDOM = _("(New UUID - will be randomly generated)") ;
 const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly generated)") ;
 
+extern const Glib::ustring DEV_MAPPER_PATH;
+
 enum FILESYSTEM
 {
 	// Special partition types and functions
