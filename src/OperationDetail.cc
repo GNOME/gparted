@@ -190,7 +190,7 @@ void OperationDetail::cancel( bool force )
 		cancelflag = 2;
 	else
 		cancelflag = 1;
-	signal_cancel(force);
+	signal_cancel.emit( force );
 }
 
 ProgressBar & OperationDetail::get_progressbar() const

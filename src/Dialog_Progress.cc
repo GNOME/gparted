@@ -339,7 +339,7 @@ void Dialog_Progress::on_cancel()
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
 		else cancelbutton->set_label( _("Force Cancel") );
-		operations[t]->operation_detail.signal_cancel( cancel );
+		operations[t]->operation_detail.signal_cancel.emit( cancel );
 		cancel = true;
 	}
 }
