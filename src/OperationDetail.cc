@@ -16,10 +16,14 @@
 
 
 #include "../include/OperationDetail.h"
+#include "../include/ProgressBar.h"
 #include "../include/Utils.h"
 
 namespace GParted
 {
+
+// The single progress bar for the current operation
+static ProgressBar single_progressbar;
 
 OperationDetail::OperationDetail() : fraction( -1 ), cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ),
 				     time_elapsed( -1 )
@@ -155,6 +159,13 @@ OperationDetail & OperationDetail::get_last_child()
 
 	return *sub_details[sub_details.size() - 1];
 }
+
+ProgressBar & OperationDetail::get_progressbar() const
+{
+	return single_progressbar;
+}
+
+// Private methods
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {

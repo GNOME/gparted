@@ -18,7 +18,6 @@
 #define GPARTED_COPY_BLOCKS_H
 
 #include "../include/OperationDetail.h"
-#include "../include/ProgressBar.h"
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
@@ -45,7 +44,6 @@ class copy_blocks {
 	void copy_thread();
 	bool cancel;
 	bool cancel_safe;
-	ProgressBar progressbar;
 	void set_cancel( bool force );
 public:
 	bool set_progress_info();

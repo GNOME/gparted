@@ -18,6 +18,8 @@
 #ifndef GPARTED_OPERATIONDETAIL_H
 #define GPARTED_OPERATIONDETAIL_H
 
+#include "../include/ProgressBar.h"
+
 #include <glibmm/ustring.h>
 #include <glibmm/markup.h>
 
@@ -63,6 +65,7 @@ public:
 	std::vector<OperationDetail*> & get_childs() ;
 	const std::vector<OperationDetail*> & get_childs() const ;
 	OperationDetail & get_last_child() ;
+	ProgressBar & get_progressbar() const;
 
 	double fraction ;
 	Glib::ustring progress_text ;
