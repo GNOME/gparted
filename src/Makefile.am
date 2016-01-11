@@ -52,6 +52,7 @@ gpartedbin_SOURCES = \
 	PartitionVector.cc		\
 	PipeCapture.cc			\
 	Proc_Partitions_Info.cc		\
+	ProgressBar.cc			\
 	SWRaid_Info.cc			\
 	TreeView_Detail.cc		\
 	Utils.cc			\

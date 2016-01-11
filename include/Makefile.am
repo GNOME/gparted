@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	PartitionVector.h		\
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\
+	ProgressBar.h			\
 	SWRaid_Info.h			\
 	TreeView_Detail.h		\
 	Utils.h				\

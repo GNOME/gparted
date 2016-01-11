@@ -17,6 +17,11 @@
  */
 
 #include "../include/Copy_Blocks.h"
+#include "../include/OperationDetail.h"
+#include "../include/ProgressBar.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
 #include <gtkmm/main.h>
 #include <errno.h>
 
@@ -57,6 +62,7 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 bool copy_blocks::set_progress_info()
 {
 	Byte_Value done = llabs(this->done);
+	progressbar.update( (double)done );
 	OperationDetail &operationdetail = this->operationdetail.get_last_child().get_last_child();
 	operationdetail.fraction = done / static_cast<double>( length );
 
@@ -160,6 +166,7 @@ bool copy_blocks::copy()
 			String::ucompose( _("copy %1 using a block size of %2"),
 			                  Utils::format_size( length, 1 ),
 			                  Utils::format_size( blocksize, 1 ) ) ) );
+	progressbar.start( (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
 
 	done = length % blocksize;
 
@@ -195,6 +202,7 @@ bool copy_blocks::copy()
 	else
 		error_message = Glib::strerror( errno );
 
+	progressbar.stop();
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 	return success;
 }
