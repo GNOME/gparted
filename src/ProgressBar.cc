@@ -33,10 +33,6 @@ ProgressBar::~ProgressBar()
 
 void ProgressBar::start( double target, ProgressBar_Text text_mode )
 {
-	std::cout << "DEBUG: ProgressBar::start(target=" << target
-	          << ", text_mode=" << (text_mode==PROGRESSBAR_TEXT_NONE ? "PROGRESSBAR_TEXT_NONE" :
-	                                                                   "PROGRESSBAR_TEXT_BLOCK_COPY") << ")"
-	          << std::endl;
 	m_running = true;
 	m_target = target;
 	m_progress = 0.0;
@@ -47,19 +43,15 @@ void ProgressBar::start( double target, ProgressBar_Text text_mode )
 
 void ProgressBar::update( double progress )
 {
-	std::cout << "DEBUG: ProgressBar::update(progress=" << progress << ")";
 	if ( m_running )
 	{
 		m_progress = progress;
 		do_update();
-		std::cout << " m_fraction=" << m_fraction << " m_text=\"" << m_text << "\"";
 	}
-	std::cout << std::endl;
 }
 
 void ProgressBar::stop()
 {
-	std::cout << "DEBUG: ProgressBar::stop()" << std::endl;
 	m_running = false;
 	m_timer.stop();
 	do_update();

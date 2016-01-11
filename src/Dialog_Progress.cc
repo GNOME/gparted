@@ -16,6 +16,8 @@
  */
  
 #include "../include/Dialog_Progress.h"
+#include "../include/OperationDetail.h"
+#include "../include/ProgressBar.h"
 
 #include <gtkmm/stock.h>
 #include <gtkmm/main.h>
@@ -148,16 +150,26 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 		}
 
 		//update the gui elements..
-		progress_text = operationdetail.progress_text;
-
 		if ( operationdetail .get_status() == STATUS_EXECUTE )
 			label_current_sub_text = operationdetail .get_description() ;
 
-		if ( operationdetail.fraction >= 0 ) {
-			pulsetimer.disconnect();
-			progressbar_current.set_fraction( operationdetail.fraction > 1.0 ? 1.0 : operationdetail.fraction );
-		} else if( !pulsetimer.connected() )
-			pulsetimer = Glib::signal_timeout().connect( sigc::mem_fun(*this, &Dialog_Progress::pulsebar_pulse), 100 );
+		ProgressBar & progressbar_src = operationdetail.get_progressbar();
+		if ( progressbar_src.running() )
+		{
+			if ( pulsetimer.connected() )
+				pulsetimer.disconnect();
+			progressbar_current.set_fraction( progressbar_src.get_fraction() );
+			progress_text = progressbar_src.get_text();
+		}
+		else
+		{
+			if ( ! pulsetimer.connected() )
+			{
+				pulsetimer = Glib::signal_timeout().connect(
+				                sigc::mem_fun( *this, &Dialog_Progress::pulsebar_pulse ), 100 );
+				progress_text.clear();
+			}
+		}
 		update_gui_elements();
 	}
 	else//it's an new od which needs to be added to the model.
