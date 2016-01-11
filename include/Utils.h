@@ -197,6 +197,7 @@ public:
 	                                 , const Glib::ustring & pattern
 	                                 ) ;
 	static Glib::ustring trim( const Glib::ustring & src, const Glib::ustring & c = " \t\r\n" ) ;
+	static Glib::ustring last_line( const Glib::ustring & src );
 	static Glib::ustring get_lang() ;
 	static void tokenize( const Glib::ustring& str,
 	                      std::vector<Glib::ustring>& tokens,

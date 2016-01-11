@@ -16,7 +16,12 @@
  */
  
 #include "../include/ext2.h"
+#include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+#include "../include/ProgressBar.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -282,31 +287,40 @@ bool ext2::copy( const Partition & src_part,
 
 void ext2::resize_progress( OperationDetail *operationdetail )
 {
-	Glib::ustring ss;
-	size_t p = output.find_last_of('\n');
-	// looks like "Scanning inode table          XXXXXXXXXXXXXXXXXXXXXXXXXXXX------------"
-	if ( p == output.npos )
-		return;
-	ss = output.substr( p );
-	if ( ss.empty() )
-		return;
-	size_t sslen = ss.length();
-	if ( ss[sslen-1] != 'X' && ss[sslen-1] != '-' )
-		return;
-	// p = Start of progress bar
-	p = ss.find_last_not_of( "X-" );
-	if ( p == ss.npos )
-		p = 0;
-	else
-		p++;
-	size_t barlen = sslen - p;
-	// q = First dash in progress bar or end of string
-	size_t q = ss.find( '-', p );
-	if ( q == ss.npos )
-		q = sslen;
-	size_t xlen = q - p;
-	operationdetail->fraction = (double)xlen / barlen;
-	operationdetail->signal_update( *operationdetail );
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Glib::ustring line = Utils::last_line( output );
+	size_t llen = line.length();
+	// There may be multiple text progress bars on subsequent last lines which look
+	// like: "Scanning inode table          XXXXXXXXXXXXXXXXXXXXXXXXXXXX------------"
+	if ( llen > 0 && ( line[llen-1] == 'X' || line[llen-1] == '-' ) )
+	{
+		// p = Start of progress bar
+		size_t p = line.find_last_not_of( "X-" );
+		if ( p == line.npos )
+			p = 0;
+		else
+			p++;
+		size_t barlen = llen - p;
+
+		// q = First dash in progress bar or end of string
+		size_t q = line.find( '-', p );
+		if ( q == line.npos )
+			q = llen;
+		size_t xlen = q - p;
+
+		if ( ! progressbar.running() )
+			progressbar.start( (double)barlen );
+		progressbar.update( (double)xlen );
+		operationdetail->signal_update( *operationdetail );
+	}
+	// Ending summary line looks like:
+	// "The filesystem on /dev/sdb3 is now 256000 block long."
+	else if ( output.find( " is now " ) != output.npos )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
+		operationdetail->signal_update( *operationdetail );
+	}
 }
 
 void ext2::create_progress( OperationDetail *operationdetail )

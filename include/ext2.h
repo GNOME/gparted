@@ -20,7 +20,10 @@
 #define GPARTED_EXT2_H
 
 #include "../include/FileSystem.h"
+#include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+
+#include <glibmm/ustring.h>
 
 namespace GParted
 {

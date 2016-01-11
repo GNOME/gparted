@@ -31,6 +31,7 @@
 #include <uuid/uuid.h>
 #include <cerrno>
 #include <sys/statvfs.h>
+#include <glibmm/ustring.h>
 #include <gtkmm/main.h>
 #include <fcntl.h>
 #include <sys/types.h>
@@ -668,6 +669,16 @@ Glib::ustring Utils::trim( const Glib::ustring & src, const Glib::ustring & c /*
 	Glib::ustring::size_type p1 = src.find_first_not_of(c);
 	if (p1 == Glib::ustring::npos) p1 = 0;
 	return src.substr(p1, (p2-p1)+1);
+}
+
+// Return portion of string after the last carriage return character or
+// the whole string when there is no carriage return character.
+Glib::ustring Utils::last_line( const Glib::ustring & src )
+{
+	Glib::ustring::size_type p = src.find_last_of( '\n' );
+	if ( p == Glib::ustring::npos )
+		return src;
+	return src.substr( p+1 );
 }
 
 Glib::ustring Utils::get_lang()
