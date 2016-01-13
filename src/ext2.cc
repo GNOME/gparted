@@ -347,20 +347,30 @@ void ext2::create_progress( OperationDetail *operationdetail )
 
 void ext2::check_repair_progress( OperationDetail *operationdetail )
 {
-	Glib::ustring ss;
-	size_t p = output.find_last_of('\n');
-	// looks like "/dev/loop0p1: |==============================================  \ 95.1%"
-	if ( p == output.npos )
-		return;
-	ss = output.substr( p );
-	p = ss.find_last_of('%');
-	if ( p == ss.npos )
-		return;
-	ss = ss.substr( p-5, p );
-	float frac;
-	if ( sscanf( ss.c_str(), "%f%%", &frac ) == 1 )
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Glib::ustring line = Utils::last_line( output );
+	// Text progress on the LAST LINE looks like
+	// "/dev/sdd3: |=====================================================   \ 95.1%   "
+	size_t p = line.rfind( "%" );
+	Glib::ustring pct;
+	if ( p != line.npos && p >= 5 )
+		pct = line.substr( p-5, 6 );
+	float progress;
+	if ( line.find( ": |" ) != line.npos && sscanf( pct.c_str(), "%f", &progress ) == 1 )
 	{
-		operationdetail->fraction = frac / 100;
+		if ( ! progressbar.running() )
+			progressbar.start( 100.0 );
+		progressbar.update( progress );
+		operationdetail->signal_update( *operationdetail );
+	}
+	// Only allow stopping the progress bar after seeing "non-contiguous" in the
+	// summary at the end to prevent the GUI progress bar flashing back to pulsing
+	// mode when the text progress bar is temporarily missing/incomplete before fsck
+	// output is fully updated when switching from one pass to the next.
+	else if ( output.find( "non-contiguous" ) != output.npos )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
 		operationdetail->signal_update( *operationdetail );
 	}
 }
