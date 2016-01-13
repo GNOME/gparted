@@ -325,16 +325,22 @@ void ext2::resize_progress( OperationDetail *operationdetail )
 
 void ext2::create_progress( OperationDetail *operationdetail )
 {
-	Glib::ustring ss;
-	size_t p = output.find_last_of('\n');
-	// looks like "Writing inode tables: xx/yy"
-	if ( p == output.npos )
-		return;
-	ss = output.substr( p );
-	int x, y;
-	if ( sscanf( ss.c_str(), "\nWriting inode tables: %d/%d", &x, &y ) == 2 )
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Glib::ustring line = Utils::last_line( output );
+	// Text progress on the LAST LINE looks like "Writing inode tables:  105/1600"
+	long long progress, target;
+	if ( sscanf( line.c_str(), "Writing inode tables: %Ld/%Ld", &progress, &target ) == 2 )
 	{
-		operationdetail->fraction = (double)x / y;
+		if ( ! progressbar.running() )
+			progressbar.start( (double)target );
+		progressbar.update( (double)progress );
+		operationdetail->signal_update( *operationdetail );
+	}
+	// Or when finished, on any line, ...
+	else if ( output.find( "Writing inode tables: done" ) != output.npos )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
 		operationdetail->signal_update( *operationdetail );
 	}
 }
