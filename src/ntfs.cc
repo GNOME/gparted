@@ -17,7 +17,12 @@
  
  
 #include "../include/ntfs.h"
+#include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+#include "../include/ProgressBar.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -262,15 +267,22 @@ bool ntfs::check_repair( const Partition & partition, OperationDetail & operatio
 
 void ntfs::resize_progress( OperationDetail *operationdetail )
 {
-	size_t p = output.find_last_of('\n');
-	if ( p == output.npos )
-		return;
-	Glib::ustring ss = output.substr( p );
-	// looks like "12.34 percent completed"
-	float frac;
-	if ( sscanf( ss.c_str(), "%f percent completed", &frac ) == 1 )
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Glib::ustring line = Utils::last_line( output );
+	// Text progress on the LAST LINE looks like " 15.24 percent completed"
+	float percent;
+	if ( sscanf( line.c_str(), "%f percent completed", &percent ) == 1 )
 	{
-		operationdetail->fraction = frac / 100;
+		if ( ! progressbar.running() )
+			progressbar.start( 100.0 );
+		progressbar.update( percent );
+		operationdetail->signal_update( *operationdetail );
+	}
+	// Or when finished, on any line, ...
+	else if ( output.find( "Successfully resized NTFS on device" ) != output.npos )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
 		operationdetail->signal_update( *operationdetail );
 	}
 }
