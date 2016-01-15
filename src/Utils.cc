@@ -44,7 +44,13 @@ const Glib::ustring DEV_MAPPER_PATH = "/dev/mapper/";
 
 Sector Utils::round( double double_value )
 {
-	 return static_cast<Sector>( double_value + 0.5 ) ;
+	// Reference:
+	//     How can I convert a floating-point value to an integer in C?
+	//     https://www.cs.tut.fi/~jkorpela/round.html
+	if ( double_value >= 0.0 )
+		return static_cast<Sector>( double_value + 0.5 );
+	else
+		return static_cast<Sector>( double_value - 0.5 );
 }
 
 Gtk::Label * Utils::mk_label( const Glib::ustring & text
