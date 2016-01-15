@@ -447,6 +447,12 @@ Glib::ustring Utils::format_time( std::time_t seconds )
 {
 	Glib::ustring time ;
 
+	if ( seconds < 0 )
+	{
+		time = "-";
+		seconds = -seconds;
+	}
+
 	int unit = static_cast<int>( seconds / 3600 ) ;
 	if ( unit < 10 )
 		time += "0" ;
