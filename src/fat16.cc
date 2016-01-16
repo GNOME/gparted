@@ -156,7 +156,10 @@ void fat16::set_used_sectors( Partition & partition )
 			S = -1 ;
 	
 		if ( N > -1 && S > -1 )
+		{
 			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
+			partition.fs_block_size = S;
+		}
 
 		if ( T > -1 && N > -1 )
 			partition .set_sector_usage( T, N ) ;

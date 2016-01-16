@@ -26,6 +26,8 @@
 #include "../include/Utils.h"
 #include "../include/PartitionVector.h"
 
+#include <glibmm/ustring.h>
+
 namespace GParted
 {
 	
@@ -160,6 +162,7 @@ public:
 	Sector free_space_before ;  //Free space preceding partition value
 
 	Byte_Value sector_size ;  //Sector size of the disk device needed for converting to/from sectors and bytes.
+	Byte_Value fs_block_size;  // Block size of of the file system, or -1 when unknown.
 
 private:
 	Partition & operator=( Partition & rhs );  // Not implemented copy assignment operator

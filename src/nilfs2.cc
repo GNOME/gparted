@@ -101,6 +101,7 @@ void nilfs2::set_used_sectors( Partition & partition )
 			T = Utils::round( T / double(partition .sector_size) ) ;
 			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
 			partition .set_sector_usage( T, N ) ;
+			partition.fs_block_size = S;
 		}
 	}
 	else

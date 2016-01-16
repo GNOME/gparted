@@ -165,8 +165,11 @@ void ext2::set_used_sectors( Partition & partition )
 				N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
 		}
 
-		if ( T > -1 && N > -1 )
+		if ( T > -1 && N > -1 && S > -1 )
+		{
 			partition .set_sector_usage( T, N ) ;
+			partition.fs_block_size = S;
+		}
 	}
 	else
 	{

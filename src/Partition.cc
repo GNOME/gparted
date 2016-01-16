@@ -51,6 +51,7 @@ void Partition::Reset()
 	significant_threshold = 1 ;
 	free_space_before = -1 ;
 	sector_size = 0 ;
+	fs_block_size = -1;
 	inside_extended = busy = strict_start = false ;
 	logicals .clear() ;
 	flags .clear() ;

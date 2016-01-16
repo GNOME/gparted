@@ -143,12 +143,19 @@ void ntfs::set_used_sectors( Partition & partition )
 		if ( index < output .length() )
 			N = T ;
 
+		index = output.find( "Cluster size" );
+		if ( index == output.npos ||
+		     sscanf( output.substr( index ).c_str(), "Cluster size       : %Ld", &S ) != 1 )
+			S = -1;
+
 		if ( T > -1 && N > -1 )
 		{
 			T = Utils::round( T / double(partition .sector_size) ) ;
 			N = Utils::round( N / double(partition .sector_size) ) ;
 			partition .set_sector_usage( T, T - N );
 		}
+		if ( S > -1 )
+			partition.fs_block_size = S;
 	}
 	else
 	{
