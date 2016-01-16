@@ -22,6 +22,7 @@
 #include "../include/FileSystem.h"
 #include "../include/OperationDetail.h"
 #include "../include/Partition.h"
+#include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
 
@@ -61,6 +62,9 @@ private:
 	void resize_progress( OperationDetail *operationdetail );
 	void create_progress( OperationDetail *operationdetail );
 	void check_repair_progress( OperationDetail *operationdetail );
+	void copy_progress( OperationDetail *operationdetail );
+
+	Byte_Value fs_block_size;  // Holds file system block size for the copy_progress() callback
 };
 
 } //GParted

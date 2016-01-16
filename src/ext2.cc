@@ -265,25 +265,31 @@ bool ext2::move( const Partition & partition_new,
                  const Partition & partition_old,
                  OperationDetail & operationdetail )
 {
-	Sector distance;
-	Glib::ustring offset;
-	distance = partition_old.sector_start - partition_new.sector_start;
-	offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
+	Sector distance = partition_old.sector_start - partition_new.sector_start;
+	Glib::ustring offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
+	Glib::ustring cmd;
 	if ( distance < 0 )
-		return ! execute_command( image_cmd + " -ra -p -o " + offset + " " + partition_new.get_path(),
-		                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+		cmd = image_cmd + " -ra -p -o " + offset + " " + partition_new.get_path();
 	else
-		return ! execute_command( image_cmd + " -ra -p -O " + offset + " " + partition_new.get_path(),
-		                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+		cmd = image_cmd + " -ra -p -O " + offset + " " + partition_new.get_path();
 
+	fs_block_size = partition_old.fs_block_size;
+	sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ext2::copy_progress ) );
+	bool success = ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	c.disconnect();
+	return success;
 }
 
 bool ext2::copy( const Partition & src_part,
                  Partition & dest_part,
                  OperationDetail & operationdetail )
 {
-	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
-	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	fs_block_size = src_part.fs_block_size;
+	sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ext2::copy_progress ) );
+	bool success = ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
+	                                  operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	c.disconnect();
+	return success;
 }
 
 //Private methods
@@ -371,6 +377,28 @@ void ext2::check_repair_progress( OperationDetail *operationdetail )
 	// mode when the text progress bar is temporarily missing/incomplete before fsck
 	// output is fully updated when switching from one pass to the next.
 	else if ( output.find( "non-contiguous" ) != output.npos )
+	{
+		if ( progressbar.running() )
+			progressbar.stop();
+		operationdetail->signal_update( *operationdetail );
+	}
+}
+
+void ext2::copy_progress( OperationDetail *operationdetail )
+{
+	ProgressBar & progressbar = operationdetail->get_progressbar();
+	Glib::ustring line = Utils::last_line( error );
+	// Text progress on the LAST LINE of STDERR looks like "Copying 146483 / 258033 blocks ..."
+	long long progress, target;
+	if ( sscanf( line.c_str(), "Copying %Ld / %Ld blocks", &progress, &target ) == 2 )
+	{
+		if ( ! progressbar.running() )
+			progressbar.start( (double)(target * fs_block_size), PROGRESSBAR_TEXT_COPY_BYTES );
+		progressbar.update( (double)(progress * fs_block_size) );
+		operationdetail->signal_update( *operationdetail );
+	}
+	// Or when finished, on any line of STDERR, looks like "Copied 258033 / 258033 blocks ..."
+	else if ( error.find( "\nCopied " ) != error.npos )
 	{
 		if ( progressbar.running() )
 			progressbar.stop();
