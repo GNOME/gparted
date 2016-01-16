@@ -122,11 +122,13 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                 children[children.size() - 2],
 	                                                 &output ) );
+	outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
+	                                                 &operationdetail ) );
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                children[children.size() - 1],
 	                                                &error ) );
-	outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
-	                                                 &operationdetail ) );
+	errorcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
+	                                                &operationdetail ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
