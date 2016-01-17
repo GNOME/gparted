@@ -254,11 +254,10 @@ bool xfs::copy( const Partition & src_part,
 
 		if ( success )
 		{
-			ProgressBar & progressbar = operationdetail.get_progressbar();
 			sigc::connection c;
 			if ( src_used > 0LL )
 			{
-				progressbar.start( (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
+				operationdetail.run_progressbar( 0.0, (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
 				// Get xfs::copy_progress() called every 500 ms to update progress
 				c = Glib::signal_timeout().connect(
 				                sigc::bind<OperationDetail*>( sigc::mem_fun( *this, &xfs::copy_progress ),
@@ -269,8 +268,7 @@ bool xfs::copy( const Partition & src_part,
 			                              " | xfsrestore -J - " + dest_mount_point + "'",
 			                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 			c.disconnect();
-			if ( progressbar.running() )
-				progressbar.stop();
+			operationdetail.stop_progressbar();
 
 			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
 			                              EXEC_CHECK_STATUS );
@@ -298,20 +296,17 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 // recorded source FS used bytes.
 bool xfs::copy_progress( OperationDetail * operationdetail )
 {
-	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Byte_Value fs_size;
 	Byte_Value fs_free;
 	Byte_Value dst_used;
 	if ( Utils::get_mounted_filesystem_usage( dest_mount_point, fs_size, fs_free, error ) != 0 )
 	{
-		if ( progressbar.running() )
-			progressbar.stop();
+		operationdetail->stop_progressbar();
 		// Failed to get destination FS used bytes.  Remove this timed callback early.
 		return false;
 	}
 	dst_used = fs_size - fs_free;
-	progressbar.update( (double)dst_used );
-	operationdetail->signal_update.emit( *operationdetail );
+	operationdetail->run_progressbar( (double)dst_used, (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
 	return true;
 }
 

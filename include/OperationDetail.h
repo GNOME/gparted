@@ -47,6 +47,10 @@ enum Font {
 
 class OperationDetail
 {
+
+friend class Dialog_Progress;  // To allow Dialog_Progress::on_signal_update() to call
+                               // get_progressbar() and get direct access to the progress bar.
+
 public:	
 	OperationDetail() ;
 	~OperationDetail();
@@ -65,7 +69,8 @@ public:
 	std::vector<OperationDetail*> & get_childs() ;
 	const std::vector<OperationDetail*> & get_childs() const ;
 	OperationDetail & get_last_child() ;
-	ProgressBar & get_progressbar() const;
+	void run_progressbar( double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_NONE );
+	void stop_progressbar();
 
 	double fraction ;
 	Glib::ustring progress_text ;
@@ -73,9 +78,12 @@ public:
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
 	char cancelflag;
+
 private:
 	void on_update( const OperationDetail & operationdetail ) ;
 	void cancel( bool force );
+	ProgressBar & get_progressbar() const;
+
 	Glib::ustring description ;
 	OperationDetailStatus status ; 
 

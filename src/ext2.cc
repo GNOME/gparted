@@ -296,7 +296,6 @@ bool ext2::copy( const Partition & src_part,
 
 void ext2::resize_progress( OperationDetail *operationdetail )
 {
-	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Glib::ustring line = Utils::last_line( output );
 	size_t llen = line.length();
 	// There may be multiple text progress bars on subsequent last lines which look
@@ -317,46 +316,34 @@ void ext2::resize_progress( OperationDetail *operationdetail )
 			q = llen;
 		size_t xlen = q - p;
 
-		if ( ! progressbar.running() )
-			progressbar.start( (double)barlen );
-		progressbar.update( (double)xlen );
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->run_progressbar( (double)xlen, (double)barlen );
 	}
 	// Ending summary line looks like:
 	// "The filesystem on /dev/sdb3 is now 256000 block long."
 	else if ( output.find( " is now " ) != output.npos )
 	{
-		if ( progressbar.running() )
-			progressbar.stop();
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->stop_progressbar();
 	}
 }
 
 void ext2::create_progress( OperationDetail *operationdetail )
 {
-	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like "Writing inode tables:  105/1600"
 	long long progress, target;
 	if ( sscanf( line.c_str(), "Writing inode tables: %Ld/%Ld", &progress, &target ) == 2 )
 	{
-		if ( ! progressbar.running() )
-			progressbar.start( (double)target );
-		progressbar.update( (double)progress );
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->run_progressbar( (double)progress, (double)target );
 	}
 	// Or when finished, on any line, ...
 	else if ( output.find( "Writing inode tables: done" ) != output.npos )
 	{
-		if ( progressbar.running() )
-			progressbar.stop();
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->stop_progressbar();
 	}
 }
 
 void ext2::check_repair_progress( OperationDetail *operationdetail )
 {
-	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like
 	// "/dev/sdd3: |=====================================================   \ 95.1%   "
@@ -367,10 +354,7 @@ void ext2::check_repair_progress( OperationDetail *operationdetail )
 	float progress;
 	if ( line.find( ": |" ) != line.npos && sscanf( pct.c_str(), "%f", &progress ) == 1 )
 	{
-		if ( ! progressbar.running() )
-			progressbar.start( 100.0 );
-		progressbar.update( progress );
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->run_progressbar( progress, 100.0 );
 	}
 	// Only allow stopping the progress bar after seeing "non-contiguous" in the
 	// summary at the end to prevent the GUI progress bar flashing back to pulsing
@@ -378,31 +362,25 @@ void ext2::check_repair_progress( OperationDetail *operationdetail )
 	// output is fully updated when switching from one pass to the next.
 	else if ( output.find( "non-contiguous" ) != output.npos )
 	{
-		if ( progressbar.running() )
-			progressbar.stop();
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->stop_progressbar();
 	}
 }
 
 void ext2::copy_progress( OperationDetail *operationdetail )
 {
-	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Glib::ustring line = Utils::last_line( error );
 	// Text progress on the LAST LINE of STDERR looks like "Copying 146483 / 258033 blocks ..."
 	long long progress, target;
 	if ( sscanf( line.c_str(), "Copying %Ld / %Ld blocks", &progress, &target ) == 2 )
 	{
-		if ( ! progressbar.running() )
-			progressbar.start( (double)(target * fs_block_size), PROGRESSBAR_TEXT_COPY_BYTES );
-		progressbar.update( (double)(progress * fs_block_size) );
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->run_progressbar( (double)(progress * fs_block_size),
+		                                  (double)(target * fs_block_size),
+		                                  PROGRESSBAR_TEXT_COPY_BYTES );
 	}
 	// Or when finished, on any line of STDERR, looks like "Copied 258033 / 258033 blocks ..."
 	else if ( error.find( "\nCopied " ) != error.npos )
 	{
-		if ( progressbar.running() )
-			progressbar.stop();
-		operationdetail->signal_update( *operationdetail );
+		operationdetail->stop_progressbar();
 	}
 }
 

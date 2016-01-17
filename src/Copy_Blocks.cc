@@ -62,7 +62,7 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 bool copy_blocks::set_progress_info()
 {
 	Byte_Value done = llabs(this->done);
-	operationdetail.get_progressbar().update( (double)done );
+	operationdetail.run_progressbar( (double)done, (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
 	OperationDetail &operationdetail = this->operationdetail.get_last_child().get_last_child();
 	operationdetail.fraction = done / static_cast<double>( length );
 
@@ -166,7 +166,7 @@ bool copy_blocks::copy()
 			String::ucompose( _("copy %1 using a block size of %2"),
 			                  Utils::format_size( length, 1 ),
 			                  Utils::format_size( blocksize, 1 ) ) ) );
-	operationdetail.get_progressbar().start( (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
+	operationdetail.run_progressbar( 0.0, (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
 
 	done = length % blocksize;
 
@@ -202,7 +202,7 @@ bool copy_blocks::copy()
 	else
 		error_message = Glib::strerror( errno );
 
-	operationdetail.get_progressbar().stop();
+	operationdetail.stop_progressbar();
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 	return success;
 }

@@ -160,9 +160,21 @@ OperationDetail & OperationDetail::get_last_child()
 	return *sub_details[sub_details.size() - 1];
 }
 
-ProgressBar & OperationDetail::get_progressbar() const
+void OperationDetail::run_progressbar( double progress, double target, ProgressBar_Text text_mode )
 {
-	return single_progressbar;
+	if ( ! single_progressbar.running() )
+		single_progressbar.start( target, text_mode );
+	single_progressbar.update( progress );
+	signal_update.emit( *this );
+}
+
+void OperationDetail::stop_progressbar()
+{
+	if ( single_progressbar.running() )
+	{
+		single_progressbar.stop();
+		signal_update.emit( *this );
+	}
 }
 
 // Private methods
@@ -180,6 +192,11 @@ void OperationDetail::cancel( bool force )
 	else
 		cancelflag = 1;
 	signal_cancel(force);
+}
+
+ProgressBar & OperationDetail::get_progressbar() const
+{
+	return single_progressbar;
 }
 
 } //GParted
