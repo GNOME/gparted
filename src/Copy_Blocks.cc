@@ -64,17 +64,6 @@ bool copy_blocks::set_progress_info()
 	Byte_Value done = llabs(this->done);
 	operationdetail.run_progressbar( (double)done, (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
 	OperationDetail &operationdetail = this->operationdetail.get_last_child().get_last_child();
-	operationdetail.fraction = done / static_cast<double>( length );
-
-	std::time_t time_remaining = Utils::round( (length - done) / ( done / timer_total.elapsed() ) );
-
-	operationdetail.progress_text =
-		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
-				  _("%1 of %2 copied (%3 remaining)"),
-				  Utils::format_size( done, 1 ),
-				  Utils::format_size( length,1 ),
-				  Utils::format_time( time_remaining ) );
-
 	operationdetail.set_description(
 		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 				_("%1 of %2 copied"),
@@ -182,9 +171,6 @@ bool copy_blocks::copy()
 		Gtk::Main::run();
 		if (done == length || !success)
 		{
-			//reset fraction to -1 to make room for a new one (or a pulsebar)
-			operationdetail.get_last_child().get_last_child().fraction = -1;
-
 			//final description
 			operationdetail.get_last_child().get_last_child().set_description(
 				String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */

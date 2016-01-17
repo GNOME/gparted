@@ -25,13 +25,12 @@ namespace GParted
 // The single progress bar for the current operation
 static ProgressBar single_progressbar;
 
-OperationDetail::OperationDetail() : fraction( -1 ), cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ),
-				     time_elapsed( -1 )
+OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
 {
 }
 
 OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font ) :
-	fraction( -1 ), cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
+	cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
 {
 	set_description( description, font );
 	set_status( status );

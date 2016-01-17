@@ -38,7 +38,6 @@ class copy_blocks {
 	PedDevice *lp_device_dst;
 	Sector offset_src;
 	Sector offset_dst;
-	Glib::Timer timer_total;
 	bool success;
 	Glib::ustring error_message;
 	void copy_thread();

@@ -72,9 +72,6 @@ public:
 	void run_progressbar( double progress, double target, ProgressBar_Text text_mode = PROGRESSBAR_TEXT_NONE );
 	void stop_progressbar();
 
-	double fraction ;
-	Glib::ustring progress_text ;
-	
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
 	char cancelflag;
