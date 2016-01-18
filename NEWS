@@ -1,4 +1,49 @@
 ============================
+GParted 0.25.0  (2016-01-18)
+============================
+
+Release Notes
+-------------
+  The big news with this GParted release is the addition of progress
+  bars for checking and resizing ext2/3/4 partitions and for resizing
+  ntfs partitions.  Other changes include bug fixes and language
+  translation updates.
+
+### Key changes include:
+
+  * Add progress bar during additional ext2/3/4 and ntfs operations
+  * Enhance SWRaid member detection and file system clearing
+  * Always use blkid file system detection before libparted
+
+Bug Fixes
+---------
+  * Add progress bar during additional ext2/3/4 and ntfs operations (#467925)
+  * Enhance SWRaid member detection and file system clearing (#756829)
+  * Always use blkid file system detection before libparted (#757781)
+  * Rework Dialog_Partition_New::Get_New_Partition() (#757671)
+  * Fix missing "old end" value in detail log of en_CA translation (#756878)
+  * Make about dialog website link non-clickable (#758131)
+  * Fix temporary path name of new partitions (#759488)
+  * Fix partition names sometimes shown as file system labels (#759972)
+  * Revert tarball compression back to gzip (#760099)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Phillip Susi, Mike Fleetwood and
+  Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  de(Mario Blättermann, Wolfgang Stöggl), is(Sveinn í Felli),
+  nl(Hannie Dumoleyn), pt_BR(Rafael Fontenelle), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), tr(Kaan Özdinçer, Muhammet Kara, Necdet Yücel)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.24.0  (2015-10-27)
 ============================
 
