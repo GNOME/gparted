@@ -270,8 +270,17 @@ void ntfs::resize_progress( OperationDetail *operationdetail )
 	ProgressBar & progressbar = operationdetail->get_progressbar();
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like " 15.24 percent completed"
+	// NOTE:
+	// Specifying text to match following the last converted variable in *scanf() is
+	// ineffective because it reports the number of successfully converted variables
+	// and has no way to indicate following text didn't match.  Specifically:
+	//     sscanf( "%f percent completed", &percent )
+	// will return 1 after successfully converting percent variable as 4 given this
+	// line from the important information at the end of the ntfsresize output:
+	//     "  4)  set the bootable flag for the partit"
+	// Definitely not progress information.
 	float percent;
-	if ( sscanf( line.c_str(), "%f percent completed", &percent ) == 1 )
+	if ( line.find( "percent completed" ) != line.npos && sscanf( line.c_str(), "%f", &percent ) == 1 )
 	{
 		if ( ! progressbar.running() )
 			progressbar.start( 100.0 );
