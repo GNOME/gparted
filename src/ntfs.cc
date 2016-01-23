@@ -234,9 +234,9 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 		//real resize
 		operationdetail .add_child( OperationDetail( _("real resize") ) ) ;
 
-		sigc::connection c = signal_progress.connect( sigc::mem_fun( *this, &ntfs::resize_progress ) );
 		if ( ! execute_command( cmd + " " + partition_new.get_path(),
-		                        operationdetail.get_last_child(), EXEC_CHECK_STATUS ) )
+		                        operationdetail.get_last_child(), EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
+		                        sigc::mem_fun( *this, &ntfs::resize_progress ) ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			return_value = true ;
@@ -245,7 +245,6 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 		{
 			operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
 		}
-		c.disconnect();
 	}
 	else
 	{

@@ -25,19 +25,23 @@
 
 #include <fstream>
 #include <sys/stat.h>
+#include <sigc++/slot.h>
 
 namespace GParted
 {
 
 enum ExecFlags
 {
-	EXEC_NONE         = 1 << 0,
-	EXEC_CHECK_STATUS = 1 << 1,  // Set the status of the command in the operation
-	                             // details based on the exit status being zero or
-	                             // non-zero.  Must either use this flag when calling
-	                             // ::execute_command() or call ::set_status()
-	                             // afterwards.
-	EXEC_CANCEL_SAFE  = 1 << 2
+	EXEC_NONE            = 1 << 0,
+	EXEC_CHECK_STATUS    = 1 << 1,  // Set the status of the command in the operation
+	                                // details based on the exit status being zero or
+	                                // non-zero.  Must either use this flag when calling
+	                                // ::execute_command() or call ::set_status()
+	                                // afterwards.
+	EXEC_CANCEL_SAFE     = 1 << 2,
+	EXEC_PROGRESS_STDOUT = 1 << 3,  // Run progress tracking callback after reading new
+	                                // data on stdout from command.
+	EXEC_PROGRESS_STDERR = 1 << 4   // Same but for stderr.
 };
 
 inline ExecFlags operator|( ExecFlags lhs, ExecFlags rhs )
@@ -77,8 +81,18 @@ public:
 	virtual bool remove( const Partition & partition, OperationDetail & operationdetail ) { return true; };
 
 protected:
+	typedef sigc::slot<void, OperationDetail *> StreamSlot;
+
+	// Use sigc::slot<> class default constructor, via StreamSlot typedef, to create
+	// an empty, unconnected slot to use as the default stream_progress_slot parameter
+	// for when none is provided.
+	// References:
+	// *   How to set default parameter as class object in c++?
+	//     http://stackoverflow.com/questions/12121645/how-to-set-default-parameter-as-class-object-in-c
+	// *   C++ function, what default value can I give for an object?
+	//     http://stackoverflow.com/questions/9909444/c-function-what-default-value-can-i-give-for-an-object
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-	                     ExecFlags flags = EXEC_NONE );
+	                     ExecFlags flags = EXEC_NONE, StreamSlot stream_progress_slot = StreamSlot() );
 	void set_status( OperationDetail & operationdetail, bool success );
 	void execute_command_eof();
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;

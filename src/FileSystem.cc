@@ -23,6 +23,7 @@
 #include <gtkmm/main.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <sigc++/slot.h>
 
 namespace GParted
 {
@@ -80,7 +81,7 @@ static void setup_child()
 }
 
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-                                 ExecFlags flags )
+                                 ExecFlags flags, StreamSlot stream_progress_slot )
 {
 	operationdetail.add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) );
 	Glib::Pid pid;
@@ -122,13 +123,24 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                 children[children.size() - 2],
 	                                                 &output ) );
-	outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
-	                                                 &operationdetail ) );
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                children[children.size() - 1],
 	                                                &error ) );
-	errorcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
-	                                                &operationdetail ) );
+	sigc::connection c;
+	if ( flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty() )
+	{
+		// Call progress tracking callback when stdout updates
+		outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
+		                                                 &operationdetail ) );
+		c = signal_progress.connect( stream_progress_slot );
+	}
+	else if ( flags & EXEC_PROGRESS_STDERR && ! stream_progress_slot.empty() )
+	{
+		// Call progress tracking callback when stderr updates
+		errorcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
+		                                                &operationdetail ) );
+		c = signal_progress.connect( stream_progress_slot );
+	}
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
@@ -148,6 +160,9 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	}
 	close( out );
 	close( err );
+	if ( c.connected() )
+		c.disconnect();
+	operationdetail.stop_progressbar();
 	return exit_status;
 }
 
