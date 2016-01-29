@@ -284,7 +284,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2_PV		: return "lvm2 pv" ;
 		case FS_BITLOCKER	: return "bitlocker" ;
-		case FS_LUKS		: return "crypt-luks" ;
+		case FS_LUKS		: return "luks";
 		case FS_LINUX_SWRAID	: return "linux-raid" ;
 		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
 		case FS_REFS		: return "refs" ;
