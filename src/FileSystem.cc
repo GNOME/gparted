@@ -126,21 +126,12 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                children[children.size() - 1],
 	                                                &error ) );
-	sigc::connection c;
 	if ( flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty() )
-	{
 		// Call progress tracking callback when stdout updates
-		outputcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
-		                                                 &operationdetail ) );
-		c = signal_progress.connect( stream_progress_slot );
-	}
+		outputcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
 	else if ( flags & EXEC_PROGRESS_STDERR && ! stream_progress_slot.empty() )
-	{
 		// Call progress tracking callback when stderr updates
-		errorcapture.signal_update.connect( sigc::bind( sigc::mem_fun( *this, &FileSystem::update_command_progress ),
-		                                                &operationdetail ) );
-		c = signal_progress.connect( stream_progress_slot );
-	}
+		errorcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
@@ -160,15 +151,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	}
 	close( out );
 	close( err );
-	if ( c.connected() )
-		c.disconnect();
 	operationdetail.stop_progressbar();
 	return exit_status;
-}
-
-void FileSystem::update_command_progress( OperationDetail *operationdetail )
-{
-	signal_progress.emit( operationdetail );
 }
 
 void FileSystem::set_status( OperationDetail & operationdetail, bool success )
