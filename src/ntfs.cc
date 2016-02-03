@@ -236,7 +236,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 
 		if ( ! execute_command( cmd + " " + partition_new.get_path(),
 		                        operationdetail.get_last_child(), EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
-		                        sigc::mem_fun( *this, &ntfs::resize_progress ) ) )
+		                        static_cast<StreamSlot>( sigc::mem_fun( *this, &ntfs::resize_progress ) ) ) )
 		{
 			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
 			return_value = true ;

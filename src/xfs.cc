@@ -254,20 +254,13 @@ bool xfs::copy( const Partition & src_part,
 
 		if ( success )
 		{
-			sigc::connection c;
 			if ( src_used > 0LL )
-			{
 				operationdetail.run_progressbar( 0.0, (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
-				// Get xfs::copy_progress() called every 500 ms to update progress
-				c = Glib::signal_timeout().connect(
-				                sigc::bind<OperationDetail*>( sigc::mem_fun( *this, &xfs::copy_progress ),
-				                                              &operationdetail ),
-				                500 );
-			}
 			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
 			                              " | xfsrestore -J - " + dest_mount_point + "'",
-			                              operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
-			c.disconnect();
+			                              operationdetail,
+			                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
+			                              static_cast<TimedSlot>( sigc::mem_fun( *this, &xfs::copy_progress ) ) );
 			operationdetail.stop_progressbar();
 
 			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
@@ -296,6 +289,12 @@ bool xfs::check_repair( const Partition & partition, OperationDetail & operation
 // recorded source FS used bytes.
 bool xfs::copy_progress( OperationDetail * operationdetail )
 {
+	if ( src_used <= 0LL )
+	{
+		operationdetail->stop_progressbar();
+		// Failed to get source FS used bytes.  Remove this timed callback early.
+		return false;
+	}
 	Byte_Value fs_size;
 	Byte_Value fs_free;
 	Byte_Value dst_used;

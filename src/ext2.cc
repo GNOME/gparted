@@ -231,7 +231,7 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
 	                          new_partition.get_path(),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-	                          sigc::mem_fun( *this, &ext2::create_progress ) );
+	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::create_progress ) ) );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -243,14 +243,14 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K";
 
 	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
-	                          sigc::mem_fun( *this, &ext2::resize_progress ) );
+	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::resize_progress ) ) );
 }
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
 	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
 	                               EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
-	                               sigc::mem_fun( *this, &ext2::check_repair_progress ) );
+	                               static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::check_repair_progress ) ) );
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
 	set_status( operationdetail, success );
 	return success;
@@ -270,7 +270,7 @@ bool ext2::move( const Partition & partition_new,
 
 	fs_block_size = partition_old.fs_block_size;
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
-	                          sigc::mem_fun( *this, &ext2::copy_progress ) );
+	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
 }
 
 bool ext2::copy( const Partition & src_part,
@@ -280,7 +280,7 @@ bool ext2::copy( const Partition & src_part,
 	fs_block_size = src_part.fs_block_size;
 	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
-	                          sigc::mem_fun( *this, &ext2::copy_progress ) );
+	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
 }
 
 //Private methods

@@ -81,7 +81,33 @@ static void setup_child()
 }
 
 int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-                                 ExecFlags flags, StreamSlot stream_progress_slot )
+                                 ExecFlags flags )
+{
+	StreamSlot empty_stream_slot;
+	TimedSlot empty_timed_slot;
+	return execute_command_internal( command, operationdetail, flags, empty_stream_slot, empty_timed_slot );
+}
+
+int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+                                 ExecFlags flags,
+                                 StreamSlot stream_progress_slot )
+{
+	TimedSlot empty_timed_slot;
+	return execute_command_internal( command, operationdetail, flags, stream_progress_slot, empty_timed_slot );
+}
+
+int FileSystem::execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+                                 ExecFlags flags,
+                                 TimedSlot timed_progress_slot )
+{
+	StreamSlot empty_stream_slot;
+	return execute_command_internal( command, operationdetail, flags, empty_stream_slot, timed_progress_slot );
+}
+
+int FileSystem::execute_command_internal( const Glib::ustring & command, OperationDetail & operationdetail,
+                                          ExecFlags flags,
+                                          StreamSlot stream_progress_slot,
+                                          TimedSlot timed_progress_slot )
 {
 	operationdetail.add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) );
 	Glib::Pid pid;
@@ -126,12 +152,16 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	errorcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                children[children.size() - 1],
 	                                                &error ) );
+	sigc::connection timed_conn;
 	if ( flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty() )
 		// Call progress tracking callback when stdout updates
 		outputcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
 	else if ( flags & EXEC_PROGRESS_STDERR && ! stream_progress_slot.empty() )
 		// Call progress tracking callback when stderr updates
 		errorcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
+	else if ( flags & EXEC_PROGRESS_TIMED && ! timed_progress_slot.empty() )
+		// Call progress tracking callback every 500 ms
+		timed_conn = Glib::signal_timeout().connect( sigc::bind( timed_progress_slot, &operationdetail ), 500 );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
@@ -151,6 +181,8 @@ int FileSystem::execute_command( const Glib::ustring & command, OperationDetail 
 	}
 	close( out );
 	close( err );
+	if ( timed_conn.connected() )
+		timed_conn.disconnect();
 	operationdetail.stop_progressbar();
 	return exit_status;
 }

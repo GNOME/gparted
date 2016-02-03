@@ -41,7 +41,8 @@ enum ExecFlags
 	EXEC_CANCEL_SAFE     = 1 << 2,
 	EXEC_PROGRESS_STDOUT = 1 << 3,  // Run progress tracking callback after reading new
 	                                // data on stdout from command.
-	EXEC_PROGRESS_STDERR = 1 << 4   // Same but for stderr.
+	EXEC_PROGRESS_STDERR = 1 << 4,  // Same but for stderr.
+	EXEC_PROGRESS_TIMED  = 1 << 5   // Run progress tracking callback periodically.
 };
 
 inline ExecFlags operator|( ExecFlags lhs, ExecFlags rhs )
@@ -82,17 +83,16 @@ public:
 
 protected:
 	typedef sigc::slot<void, OperationDetail *> StreamSlot;
+	typedef sigc::slot<bool, OperationDetail *> TimedSlot;
 
-	// Use sigc::slot<> class default constructor, via StreamSlot typedef, to create
-	// an empty, unconnected slot to use as the default stream_progress_slot parameter
-	// for when none is provided.
-	// References:
-	// *   How to set default parameter as class object in c++?
-	//     http://stackoverflow.com/questions/12121645/how-to-set-default-parameter-as-class-object-in-c
-	// *   C++ function, what default value can I give for an object?
-	//     http://stackoverflow.com/questions/9909444/c-function-what-default-value-can-i-give-for-an-object
 	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
-	                     ExecFlags flags = EXEC_NONE, StreamSlot stream_progress_slot = StreamSlot() );
+	                     ExecFlags flags = EXEC_NONE );
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+	                     ExecFlags flags,
+	                     StreamSlot stream_progress_slot );
+	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail,
+	                     ExecFlags flags,
+	                     TimedSlot timed_progress_slot );
 	void set_status( OperationDetail & operationdetail, bool success );
 	void execute_command_eof();
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
@@ -105,6 +105,10 @@ protected:
 	unsigned int index ;
 
 private:
+	int execute_command_internal( const Glib::ustring & command, OperationDetail & operationdetail,
+	                              ExecFlags flags,
+	                              StreamSlot stream_progress_slot,
+	                              TimedSlot timed_progress_slot );
 	void store_exit_status( GPid pid, int status );
 	bool running;
 	int pipecount;
