@@ -254,14 +254,11 @@ bool xfs::copy( const Partition & src_part,
 
 		if ( success )
 		{
-			if ( src_used > 0LL )
-				operationdetail.run_progressbar( 0.0, (double)src_used, PROGRESSBAR_TEXT_COPY_BYTES );
 			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
 			                              " | xfsrestore -J - " + dest_mount_point + "'",
 			                              operationdetail,
 			                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
 			                              static_cast<TimedSlot>( sigc::mem_fun( *this, &xfs::copy_progress ) ) );
-			operationdetail.stop_progressbar();
 
 			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
 			                              EXEC_CHECK_STATUS );
