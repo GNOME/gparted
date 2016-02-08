@@ -110,6 +110,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
                                           TimedSlot timed_progress_slot )
 {
 	operationdetail.add_child( OperationDetail( command, STATUS_EXECUTE, FONT_BOLD_ITALIC ) );
+	OperationDetail & cmd_operationdetail = operationdetail.get_last_child();
 	Glib::Pid pid;
 	// set up pipes for capture
 	int out, err;
@@ -127,8 +128,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 			&err );
 	} catch (Glib::SpawnError &e) {
 		std::cerr << e.what() << std::endl;
-		operationdetail.get_last_child().add_child(
-			OperationDetail( e.what(), STATUS_ERROR, FONT_ITALIC ) );
+		cmd_operationdetail.add_child( OperationDetail( e.what(), STATUS_ERROR, FONT_ITALIC ) );
 		return Utils::get_failure_status( e );
 	}
 	fcntl( out, F_SETFL, O_NONBLOCK );
@@ -141,11 +141,9 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 	PipeCapture errorcapture( err, error );
 	outputcapture.signal_eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
 	errorcapture.signal_eof.connect( sigc::mem_fun( *this, &FileSystem::execute_command_eof ) );
-	operationdetail.get_last_child().add_child(
-		OperationDetail( output, STATUS_NONE, FONT_ITALIC ) );
-	operationdetail.get_last_child().add_child(
-		OperationDetail( error, STATUS_NONE, FONT_ITALIC ) );
-	std::vector<OperationDetail*> &children = operationdetail.get_last_child().get_childs();
+	cmd_operationdetail.add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) );
+	cmd_operationdetail.add_child( OperationDetail( error, STATUS_NONE, FONT_ITALIC ) );
+	std::vector<OperationDetail*> &children = cmd_operationdetail.get_childs();
 	outputcapture.signal_update.connect( sigc::bind( sigc::ptr_fun( update_command_output ),
 	                                                 children[children.size() - 2],
 	                                                 &output ) );
@@ -155,17 +153,17 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 	sigc::connection timed_conn;
 	if ( flags & EXEC_PROGRESS_STDOUT && ! stream_progress_slot.empty() )
 		// Call progress tracking callback when stdout updates
-		outputcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
+		outputcapture.signal_update.connect( sigc::bind( stream_progress_slot, &cmd_operationdetail ) );
 	else if ( flags & EXEC_PROGRESS_STDERR && ! stream_progress_slot.empty() )
 		// Call progress tracking callback when stderr updates
-		errorcapture.signal_update.connect( sigc::bind( stream_progress_slot, &operationdetail ) );
+		errorcapture.signal_update.connect( sigc::bind( stream_progress_slot, &cmd_operationdetail ) );
 	else if ( flags & EXEC_PROGRESS_TIMED && ! timed_progress_slot.empty() )
 		// Call progress tracking callback every 500 ms
-		timed_conn = Glib::signal_timeout().connect( sigc::bind( timed_progress_slot, &operationdetail ), 500 );
+		timed_conn = Glib::signal_timeout().connect( sigc::bind( timed_progress_slot, &cmd_operationdetail ), 500 );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
 
-	operationdetail.get_last_child().signal_cancel.connect(
+	cmd_operationdetail.signal_cancel.connect(
 		sigc::bind(
 			sigc::ptr_fun( cancel_command ),
 			pid,
@@ -175,15 +173,15 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 	if ( flags & EXEC_CHECK_STATUS )
 	{
 		if ( !exit_status )
-			operationdetail.get_last_child().set_status( STATUS_SUCCES );
+			cmd_operationdetail.set_status( STATUS_SUCCES );
 		else
-			operationdetail.get_last_child().set_status( STATUS_ERROR );
+			cmd_operationdetail.set_status( STATUS_ERROR );
 	}
 	close( out );
 	close( err );
 	if ( timed_conn.connected() )
 		timed_conn.disconnect();
-	operationdetail.stop_progressbar();
+	cmd_operationdetail.stop_progressbar();
 	return exit_status;
 }
 
