@@ -46,6 +46,7 @@ public:
 
 private:
 	void resize_progress( OperationDetail *operationdetail );
+	void clone_progress( OperationDetail *operationdetail );
 };
 
 } //GParted

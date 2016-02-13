@@ -260,7 +260,8 @@ bool ntfs::copy( const Partition & src_part,
 {
 	return ! execute_command( "ntfsclone -f --overwrite " + dest_part.get_path() + " " + src_part.get_path(),
 	                          operationdetail,
-	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+		                  static_cast<StreamSlot>( sigc::mem_fun( *this, &ntfs::clone_progress ) ) );
 }
 
 bool ntfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
@@ -293,6 +294,23 @@ void ntfs::resize_progress( OperationDetail *operationdetail )
 	{
 		operationdetail->stop_progressbar();
 	}
+}
+
+void ntfs::clone_progress( OperationDetail *operationdetail )
+{
+	Glib::ustring line = Utils::last_line( output );
+	// Text progress on the LAST LINE looks like " 15.24 progress completed"
+	float percent;
+	if ( line.find( "percent completed" ) != line.npos && sscanf( line.c_str(), "%f", &percent ) == 1 )
+	{
+		operationdetail->run_progressbar( percent, 100.0 );
+	}
+	// Deliberately don't stop the progress bar when ntfsclone outputs "Syncing ..."
+	// at the end as that is considered a measured part of the copy operation.  The
+	// progress bar will wait at 100% (or just below) until the sync completes.  On
+	// spinning rust that is typically a few seconds and on SSDs it won't be noticed
+	// at all.  Instead it is left for execute_command(), which always stops the
+	// progress bar when the command finishes.
 }
 
 } //GParted
