@@ -32,6 +32,7 @@ class copy_blocks {
 	Byte_Value blocksize;
 	OperationDetail &operationdetail;
 	Byte_Value & total_done;
+	Byte_Value total_length;
 	char *buf;
 	Byte_Value done;
 	PedDevice *lp_device_src;
@@ -54,6 +55,7 @@ public:
 		     Byte_Value in_blocksize,
 		     OperationDetail & in_operationdetail,
 		     Byte_Value & in_total_done,
+		     Byte_Value in_total_length,
 		     bool cancel_safe );
 	bool copy();
 	void copy_block();

@@ -3201,6 +3201,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				      benchmark_blocksize,
 				      operationdetail .get_last_child(),
 				      total_done,
+				      src_length,
 				      cancel_safe ).copy();
 		timer.stop() ;
 
@@ -3236,6 +3237,7 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				      optimal_blocksize,
 				      operationdetail,
 				      total_done,
+				      src_length,
 				      cancel_safe ).copy();
 
 	operationdetail .add_child( OperationDetail( 

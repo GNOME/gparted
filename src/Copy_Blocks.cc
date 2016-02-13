@@ -41,6 +41,7 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 			  Byte_Value in_blocksize,
 			  OperationDetail & in_operationdetail,
 			  Byte_Value & in_total_done,
+			  Byte_Value in_total_length,
 			  bool in_cancel_safe) :
 	src_device( in_src_device ),
 	dst_device ( in_dst_device ),
@@ -48,6 +49,7 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 	blocksize ( in_blocksize ),
 	operationdetail ( in_operationdetail ),
 	total_done ( in_total_done ),
+	total_length ( in_total_length ),
 	offset_src ( src_start ),
 	offset_dst ( dst_start ),
 	cancel( false ),
@@ -62,7 +64,7 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 bool copy_blocks::set_progress_info()
 {
 	Byte_Value done = llabs(this->done);
-	operationdetail.run_progressbar( (double)done, (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
+	operationdetail.run_progressbar( (double)(total_done+done), (double)total_length, PROGRESSBAR_TEXT_COPY_BYTES );
 	OperationDetail &operationdetail = this->operationdetail.get_last_child().get_last_child();
 	operationdetail.set_description(
 		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
@@ -154,7 +156,7 @@ bool copy_blocks::copy()
 			String::ucompose( _("copy %1 using a block size of %2"),
 			                  Utils::format_size( length, 1 ),
 			                  Utils::format_size( blocksize, 1 ) ) ) );
-	operationdetail.run_progressbar( 0.0, (double)length, PROGRESSBAR_TEXT_COPY_BYTES );
+	operationdetail.run_progressbar( (double)total_done, (double)total_length, PROGRESSBAR_TEXT_COPY_BYTES );
 
 	done = length % blocksize;
 
@@ -190,7 +192,8 @@ bool copy_blocks::copy()
 	else
 		error_message = Glib::strerror( errno );
 
-	operationdetail.stop_progressbar();
+	if ( total_done == total_length || ! success )
+		operationdetail.stop_progressbar();
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 	return success;
 }
