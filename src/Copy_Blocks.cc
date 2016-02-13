@@ -128,7 +128,6 @@ void copy_blocks::copy_thread()
 			timer_progress_timeout.reset();
 		}
 	}
-	total_done += llabs( done );
 
 	//close and destroy the devices..
 	ped_device_close( lp_device_src );
@@ -169,6 +168,9 @@ bool copy_blocks::copy()
 		Glib::Thread::create( sigc::mem_fun( *this, &copy_blocks::copy_thread ),
 				      false );
 		Gtk::Main::run();
+
+		total_done += llabs( done );
+
 		if (done == length || !success)
 		{
 			//final description
