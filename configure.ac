@@ -214,27 +214,17 @@ PKG_CHECK_EXISTS(
 )
 
 
-dnl Check for Gtk::Window::set_default_icon_name() method
+dnl Check for gtkmm >= 2.11.1 to determine availability of Gtk::Window::set_default_icon_name()
 dnl NOTE:
-dnl The documentation says that set_default_icon_name() is available in gtkmm >= 2.6.
-dnl     gtkmm GTK::Window Class Reference
+dnl The documentation says that set_default_icon_name() is available in gtkmm >= 2.6,
+dnl however the code reveals that it is only available in gtkmm >= 2.11.1.
+dnl *   gtkmm GTK::Window Class Reference
 dnl     https://developer.gnome.org/gtkmm/3.6/classGtk_1_1Window.html#a533d03e9b92d8ccd142ab3a44005cae4
-dnl However it is not available in RHEL/CentOS 5.9 with gtkmm 2.10.  Therefore a package
-dnl version check isn't sufficient.  Instead perform a more accurate, but slower, compile
-dnl and link a test program check.
-AC_LANG_PUSH([C++])
-CXXFLAGS_save="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS `pkg-config gtkmm-2.4 --cflags`"
-LIBS_save="$LIBS"
-LIBS="`pkg-config gtkmm-2.4 --libs`"
-AC_MSG_CHECKING([for Gtk::Window::set_default_icon_name method])
-AC_LINK_IFELSE(
-	[AC_LANG_PROGRAM(
-		[[#include <gtkmm.h>]],
-		[[Gtk::Window mywindow;
-		  mywindow.set_default_icon_name("myappname");
-		]]
-	)],
+dnl *   gtkmm NEWS file
+dnl     https://git.gnome.org/browse/gtkmm/tree/NEWS?h=gtkmm-2.14.0#n565
+AC_MSG_CHECKING([for Gtk::Window::set_default_icon_name() method])
+PKG_CHECK_EXISTS(
+	[gtkmm-2.4 >= 2.11.1],
 	[AC_DEFINE([HAVE_SET_DEFAULT_ICON_NAME], 1,
 	           [Define to 1 if gtkmm-2.4 provides Gtk::Window::set_default_icon_name() method.])
 	 AM_CONDITIONAL([INSTALL_PIXMAPS_DIR], false)
@@ -244,9 +234,6 @@ AC_LINK_IFELSE(
 	 AC_MSG_RESULT([no])
         ]
 )
-CXXFLAGS="$CXXFLAGS_save"
-LIBS="$LIBS_save"
-AC_LANG_POP([C++])
 
 
 dnl GTKMM 2.16 needed for gtk_show_uri()
