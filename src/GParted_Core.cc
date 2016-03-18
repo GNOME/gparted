@@ -47,11 +47,14 @@
 #include "../include/reiser4.h"
 #include "../include/ufs.h"
 #include "../include/Copy_Blocks.h"
+
 #include <set>
 #include <cerrno>
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <limits.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
 #include <mntent.h>
@@ -1091,10 +1094,12 @@ void GParted_Core::add_node_and_mountpoint(
 		//  then find real path and add entry too
 		if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
 		{
-			char c_str[4096+1] ;
-			//FIXME: it seems realpath is very unsafe to use (manpage)...
-			if ( realpath( node .c_str(), c_str ) != NULL )
-				map[ c_str ] .push_back( mountpoint ) ;
+			char * rpath = realpath( node.c_str(), NULL );
+			if ( rpath != NULL )
+			{
+				map[rpath].push_back( mountpoint );
+				free( rpath );
+			}
 		}
 	}
 }

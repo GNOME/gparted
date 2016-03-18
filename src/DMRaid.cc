@@ -17,6 +17,7 @@
 #include "../include/DMRaid.h"
 #include "../include/Partition.h"
 
+#include <limits.h>
 #include <stdlib.h>		//atoi function
 
 namespace GParted
@@ -126,11 +127,11 @@ bool DMRaid::is_dmraid_device( const Glib::ustring & dev_path )
 		if ( ! device_found && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
 		{
 			//Path is a symbolic link so find real path
-			char c_str[4096+1] ;
-			//FIXME: it seems realpath is very unsafe to use (manpage)...
-			if ( realpath( dev_path .c_str(), c_str ) != NULL )
+			char * rpath = realpath( dev_path.c_str(), NULL );
+			if ( rpath != NULL )
 			{
-				Glib::ustring tmp_path = c_str ;
+				Glib::ustring tmp_path = rpath;
+				free( rpath );
 				if ( tmp_path .length() > 0 )
 					for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 						if ( tmp_path .find( dmraid_devices[k] ) != Glib::ustring::npos )
@@ -196,11 +197,11 @@ Glib::ustring DMRaid::get_dmraid_name( const Glib::ustring & dev_path )
 		if ( dmraid_name .empty() && file_test( dev_path, Glib::FILE_TEST_IS_SYMLINK ) )
 		{
 			//Path is a symbolic link so find real path
-			char c_str[4096+1] ;
-			//FIXME: it seems realpath is very unsafe to use (manpage)...
-			if( realpath( dev_path .c_str(), c_str ) != NULL )
+			char * rpath = realpath( dev_path.c_str(), NULL );
+			if ( rpath != NULL )
 			{
-				Glib::ustring tmp_path = c_str ;
+				Glib::ustring tmp_path = rpath;
+				free( rpath );
 				if ( tmp_path .length() > 0 )
 					for ( unsigned int k=0; k < dmraid_devices .size(); k++ )
 						if ( tmp_path .find( dmraid_devices[k] ) != Glib::ustring::npos )

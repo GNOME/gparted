@@ -17,6 +17,8 @@
 #include "../include/Proc_Partitions_Info.h"
 
 #include <fstream>
+#include <limits.h>
+#include <stdlib.h>
 
 namespace GParted
 {
@@ -131,16 +133,17 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 				line = "/dev/" ; 
 				line += c_str ;
 
-				//FIXME: it seems realpath is very unsafe to use (manpage)...
-				if (   file_test( line, Glib::FILE_TEST_EXISTS )
-				    && realpath( line .c_str(), c_str )
+				char * rpath = NULL;
+				if (    file_test( line, Glib::FILE_TEST_EXISTS )
+				     && ( ( rpath = realpath( line.c_str(), NULL ) ) != NULL )
 				    //&& line != c_str
 				   )
 				{
 					//Because we can make no assumption about which path libparted will
 					//detect, we add all combinations.
-					alternate_paths_cache[ c_str ] = line ;
-					alternate_paths_cache[ line ] = c_str ;
+					alternate_paths_cache[rpath] = line;
+					alternate_paths_cache[line] = rpath;
+					free( rpath );
 				}
 			}
 
