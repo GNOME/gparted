@@ -84,8 +84,7 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 	if ( proc_partitions )
 	{
 		std::string line ;
-		std::string device ;
-		char c_str[4096+1] ;
+		Glib::ustring device;
 
 		while ( getline( proc_partitions, line ) )
 		{
@@ -128,25 +127,23 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 			}
 
 			//Build cache of potential alternate paths
-			if ( sscanf( line .c_str(), "%*d %*d %*d %4096s", c_str ) == 1 )
+			device = Utils::regexp_label( line, "^[ ]*[0-9]+[ ]+[0-9]+[ ]+[0-9]+[ ]+([[:graph:]]+)$" );
+			if ( device != "" )
 			{
-				line = "/dev/" ; 
-				line += c_str ;
-
+				device = "/dev/" + device;
 				char * rpath = NULL;
-				if (    file_test( line, Glib::FILE_TEST_EXISTS )
-				     && ( ( rpath = realpath( line.c_str(), NULL ) ) != NULL )
-				    //&& line != c_str
+				if (    file_test( device, Glib::FILE_TEST_EXISTS )
+				     && ( ( rpath = realpath( device.c_str(), NULL ) ) != NULL )
+				   //&& device != rpath
 				   )
 				{
 					//Because we can make no assumption about which path libparted will
 					//detect, we add all combinations.
-					alternate_paths_cache[rpath] = line;
-					alternate_paths_cache[line] = rpath;
+					alternate_paths_cache[rpath] = device;
+					alternate_paths_cache[device] = rpath;
 					free( rpath );
 				}
 			}
-
 		}
 		proc_partitions .close() ;
 	}
