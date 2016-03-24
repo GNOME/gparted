@@ -259,15 +259,30 @@ PKG_CHECK_EXISTS(
 )
 
 
-dnl Check for glibmm >= 2.45.40 and if found enable required C++11 compilation.
+need_cxx_compile_stdcxx_11=no
+dnl Check for glibmm >= 2.45.40 which requires C++11 compilation.
 AC_MSG_CHECKING([for glibmm >= 2.45.40 which requires C++11 compilation])
 PKG_CHECK_EXISTS(
 	[glibmm-2.4 >= 2.45.40],
-	[AC_MSG_RESULT([yes])
-	 AX_CXX_COMPILE_STDCXX_11()
+	[need_cxx_compile_stdcxx_11=yes
+	 AC_MSG_RESULT([yes])
 	],
 	[AC_MSG_RESULT([no])]
 )
+dnl Check for libsigc++ >= 2.5.1 which requires C++11 compilation.
+AC_MSG_CHECKING([for libsigc++ >= 2.5.1 which requires C++11 compilation])
+PKG_CHECK_EXISTS(
+	[sigc++-2.0 >= 2.5.1],
+	[need_cxx_compile_stdcxx_11=yes
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+dnl Enable C++11 compilation only if required.
+if test "x$need_cxx_compile_stdcxx_11" = xyes; then
+	AX_CXX_COMPILE_STDCXX_11()
+fi
+
 
 
 dnl======================
