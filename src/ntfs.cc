@@ -143,7 +143,7 @@ void ntfs::set_used_sectors( Partition & partition )
 			N = T ;
 
 		index = output.find( "Cluster size" );
-		if ( index == output.npos ||
+		if ( index >= output.length() ||
 		     sscanf( output.substr( index ).c_str(), "Cluster size       : %Ld", &S ) != 1 )
 			S = -1;
 
