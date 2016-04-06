@@ -64,7 +64,7 @@ void reiser4::set_used_sectors( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
 	{
-		index = output .find( "\nblocks:" ) ;
+		Glib::ustring::size_type index = output.find( "\nblocks:" );
 		if ( index >= output .length() ||
 		     sscanf( output.substr( index ) .c_str(), "\nblocks: %Ld", &T ) != 1 )
 			T = -1 ;

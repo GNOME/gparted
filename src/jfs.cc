@@ -79,7 +79,7 @@ void jfs::set_used_sectors( Partition & partition )
 	if ( ! Utils::execute_command( "sh -c 'echo dm | jfs_debugfs " + partition.get_path() + "'", output, error, true ) )
 	{
 		//blocksize
-		index = output .find( "Block Size:" ) ;
+		Glib::ustring::size_type index = output.find( "Block Size:" );
 		if ( index >= output .length() || 
 		     sscanf( output .substr( index ) .c_str(), "Block Size: %Ld", &S ) != 1 ) 
 			S = -1 ;

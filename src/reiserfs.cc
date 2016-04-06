@@ -81,7 +81,7 @@ void reiserfs::set_used_sectors( Partition & partition )
 {
 	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
 	{
-		index = output .find( "Count of blocks on the device:" ) ;
+		Glib::ustring::size_type index = output.find( "Count of blocks on the device:" );
 		if ( index >= output .length() ||
 		     sscanf( output .substr( index ) .c_str(), "Count of blocks on the device: %Ld", &T ) != 1 )
 			T = -1 ;

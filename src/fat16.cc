@@ -136,7 +136,7 @@ void fat16::set_used_sectors( Partition & partition )
 	if ( exit_status == 0 || exit_status == 1 )
 	{
 		//total file system size in logical sectors
-		index = output .rfind( "\n", output .find( "sectors total" ) ) +1 ;
+		Glib::ustring::size_type index = output.rfind( "\n", output.find( "sectors total" ) ) + 1;
 		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &T ) != 1 )
 			T = -1 ;
 

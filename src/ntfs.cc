@@ -127,7 +127,7 @@ void ntfs::set_used_sectors( Partition & partition )
 		"ntfsresize --info --force --no-progress-bar " + partition .get_path(), output, error, true ) ;
 	if ( exit_status == 0 || exit_status == 1 )
 	{
-		index = output .find( "Current volume size:" ) ;
+		Glib::ustring::size_type index = output.find( "Current volume size:" );
 		if ( index >= output .length() ||
 		     sscanf( output .substr( index ) .c_str(), "Current volume size: %Ld", &T ) != 1 )
 			T = -1 ;

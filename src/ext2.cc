@@ -128,7 +128,7 @@ void ext2::set_used_sectors( Partition & partition )
 	//  unmounted.
 	if ( ! Utils::execute_command( dump_cmd + " -h " + partition .get_path(), output, error, true ) )
 	{
-		index = output .find( "Block count:" ) ;
+		Glib::ustring::size_type index = output.find( "Block count:" );
 		if ( index >= output .length() ||
 		     sscanf( output.substr( index ) .c_str(), "Block count: %Ld", &T ) != 1 )
 			T = -1 ;

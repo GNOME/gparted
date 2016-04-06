@@ -99,7 +99,7 @@ void xfs::set_used_sectors( Partition & partition )
 			S = -1 ;
 
 		//filesystem blocks
-		index = output .find( "\ndblocks" ) ;
+		Glib::ustring::size_type index = output.find( "\ndblocks" );
 		if ( index > output .length() ||
 		     sscanf( output .substr( index ) .c_str(), "\ndblocks = %Ld", &T ) != 1 )
 			T = -1 ;

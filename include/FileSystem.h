@@ -102,7 +102,6 @@ protected:
 	Glib::ustring output, error ;
 	Sector T, N, S ;  //File system [T]otal num of blocks, [N]um of free (or used) blocks, block [S]ize
 	int exit_status ;
-	unsigned int index ;
 
 private:
 	int execute_command_internal( const Glib::ustring & command, OperationDetail & operationdetail,
