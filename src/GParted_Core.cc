@@ -3521,6 +3521,12 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			destroy_device_and_disk( lp_device, lp_disk ) ;
 		}
 
+		// (#762941) Above libparted partition querying triggers udev >= 219 to
+		// remove and re-add all the partition specific /dev/ entries.  Wait for
+		// this to complete to avoid FS specific commands failing because they
+		// happen to run just when the needed /dev/PTN entry doesn't exist.
+		settle_device( 10 );
+
 		operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 		return success;
 	}
