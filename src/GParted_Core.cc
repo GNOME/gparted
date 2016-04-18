@@ -66,6 +66,9 @@ std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 namespace GParted
 {
 
+const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
+const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
+
 //mount_info - Associative array mapping currently mounted devices to
 //  one or more mount points.  E.g.
 //      mount_info["/dev/sda1"] -> ["/boot"]
@@ -201,7 +204,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 					set_thread_status_message( String::ucompose ( _("Scanning %1"), dmraid_devices[k] ) ) ;
 #ifndef USE_LIBPARTED_DMRAID
 					dmraid .create_dev_map_entries( dmraid_devices[k] ) ;
-					settle_device( 1 ) ;
+					settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
 #endif
 					ped_device_get( dmraid_devices[k] .c_str() ) ;
 				}
@@ -250,7 +253,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			     dmraid .is_dmraid_device( device_paths[t] ) )
 			{
 				dmraid .create_dev_map_entries( dmraid .get_dmraid_name( device_paths [t] ) ) ;
-				settle_device( 1 );
+				settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
 			}
 #endif
 
@@ -326,7 +329,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 				if ( temp_device .highest_busy )
 				{
-					temp_device .readonly = ! commit_to_os( lp_disk, 1 ) ;
+					temp_device.readonly = ! commit_to_os( lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
 					//Clear libparted messages.  Typically these are:
 					//  The kernel was unable to re-read the partition table...
 					libparted_messages .clear() ;
@@ -3525,7 +3528,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		// remove and re-add all the partition specific /dev/ entries.  Wait for
 		// this to complete to avoid FS specific commands failing because they
 		// happen to run just when the needed /dev/PTN entry doesn't exist.
-		settle_device( 10 );
+		settle_device( SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS );
 
 		operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 		return success;
@@ -4129,7 +4132,7 @@ bool GParted_Core::commit( PedDisk* lp_disk )
 {
 	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
 	
-	succes = commit_to_os( lp_disk, 10 ) && succes ;
+	succes = commit_to_os( lp_disk, SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS ) && succes;
 
 	return succes ;
 }
