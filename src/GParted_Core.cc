@@ -2179,7 +2179,10 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 								      new_partition .get_sector_length() ) ;
 
 				if ( geom )
+				{
 					constraint = ped_constraint_exact( geom ) ;
+					ped_geometry_destroy( geom );
+				}
 			}
 			else
 				constraint = ped_constraint_any( lp_device );
@@ -2673,9 +2676,12 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 		if ( lp_geom )
 		{
 			fs = ped_file_system_open( lp_geom );
+
+			ped_geometry_destroy( lp_geom );
+			lp_geom = NULL;
+
 			if ( fs )
 			{
-				lp_geom = NULL ;
 				lp_geom = ped_geometry_new( lp_device,
 							    partition_new .sector_start,
 							    partition_new .get_sector_length() ) ;
@@ -2692,6 +2698,8 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 
 					if ( return_value )
 						commit( lp_disk ) ;
+
+					ped_geometry_destroy( lp_geom );
 				}
 
 				ped_file_system_close( fs );
@@ -2875,7 +2883,11 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				PedGeometry *geom = ped_geometry_new( lp_device,
 									  partition_new .sector_start,
 									  partition_new .get_sector_length() ) ;
-				constraint = ped_constraint_exact( geom ) ;
+				if ( geom )
+				{
+					constraint = ped_constraint_exact( geom );
+					ped_geometry_destroy( geom );
+				}
 			}
 			else
 				constraint = ped_constraint_any( lp_device ) ;
