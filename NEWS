@@ -1,4 +1,59 @@
 ============================
+GParted 0.26.0  (2016-04-26)
+============================
+
+Release Notes
+-------------
+  This release adds read-only support for LUKS encrypted file systems.
+  GParted identifies these with the addition of "[Encrypted]" and can
+  show the file system within an open LUKS encrypted mapping.  However
+  this release can not open or close the LUKS encryption and can not
+  modify the encrypted file system within.  Other changes include bug
+  fixes and language translation updates.
+
+### Key changes include:
+
+  * Implement read-only LUKS support
+  * Add progress bars to NTFS, XFS, and EXT2/3/4 file system copy methods
+  * Fix operations sometimes fail with: No such file or directory
+
+Bug Fixes
+---------
+
+  * Implement Partition object polymorphism (#759726)
+  * Implement read-only LUKS support (#760080)
+  * Add progress bars to XFS and EXT2/3/4 file system copy methods (#760709)
+  * Add progress bar to NTFS file system specific copy method (#762366)
+  * Use a single progress bar for entire internal copy operation (#762367)
+  * Fix autoconf check for C++11 Gtk::Window::set_default_icon_name (#762184)
+  * Limit FAT32 maximum volume size to 2 TiB (#763896)
+  * Enable C++11 compilation when using libsigc++ 2.5.1 and later (#758545)
+  * Use realpath safely (#764369)
+  * Fix crash reading NTFS usage when there is no /dev/PTN entry (#764658)
+  * Fix operations sometimes fail with: No such file or directory (#762941)
+  * Add missing gettext translation tag to AppData file
+
+Code Credits
+------------
+  Code enhancements are courtesy of Richard Hughes and Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), de(Mario Blättermann),
+  el(Tom Tryfonidis, Γιάννης Κουτσούκος), es(Daniel Mustieles),
+  fr(Claude Paroz), hu(Balázs Úr), is(Sveinn í Felli),
+  it(Milo Casagrande), ko(Seong-ho Cho), lt(Aurimas Černius),
+  nl(Hannie Dumoleyn), oc(Cédric Valmary), pl(Piotr Drąg),
+  pt_BR(Rafael Fontenelle), ro(Daniel Șerbănescu), ru(Stas Solovey),
+  sk(Dušan Kazik), sr(Мирослав Николић), sr@latin(Miroslav Nikolić),
+  sv(Josef Andersson), tr(Muhammet Kara), zh_CN(Shi Jing, YunQiang Su)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.25.0  (2016-01-18)
 ============================
 
