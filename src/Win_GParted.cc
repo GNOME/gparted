@@ -2417,8 +2417,6 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	                                 selected_partition_ptr->get_mountpoints()[index] ) );
 
 	// First try mounting letting mount (libblkid) determine the file system type.
-	// Do this because GParted uses libparted first and blkid second and when there
-	// are multiple signatures GParted may report a different result to blkid alone.
 	cmd = "mount -v " + selected_partition_ptr->get_path() +
 	      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
 	success = ! Utils::execute_command( cmd, output, error );
