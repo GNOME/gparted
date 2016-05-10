@@ -3461,23 +3461,23 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 				{
 					// Re-add the real partition path from libparted.
 					//
-					// When creating a copy operation the list of
-					// paths for the partition object was set to
-					// ["copy of /dev/SRC"] to display in the UI
-					// before the operations are applied.  When
-					// pasting into an existing partition, this
-					// re-adds the real path to the start of the list
-					// making it ["/dev/DST", "copy of /dev/SRC"].
-					// This provides the real path for any file system
-					// specific tools needed during the copy
-					// operation.  Such as file system check and grow
-					// steps added when the source and destination
-					// aren't identical sizes or when file system
-					// specific tools are used to perform the copy as
-					// for XFS or recent EXT2/3/4 tools.
+					// When creating a copy operation by pasting into
+					// unallocated space the list of paths for the
+					// partition object was set to
+					// ["Copy of /dev/SRC"] because the partition
+					// didn't yet exist before the operations were
+					// applied.  Additional operations on that new
+					// partition also got the list of paths set to
+					// ["Copy of /dev/SRC"].  This re-adds the real
+					// path to the start of the list making it
+					// ["/dev/NEW", "Copy of /dev/SRC"].  This
+					// provides the real path for file system specific
+					// tools used during those additional operations
+					// such mkfs for the format operation or fsck and
+					// others for the resize/move operation.
 					//
-					// FIXME: Having this work just because "/dev/DST"
-					// happens to sort before "copy of /dev/SRC" is
+					// FIXME: Having this work just because "/dev/NEW"
+					// happens to sort before "Copy of /dev/SRC" is
 					// ugly!  Probably have a separate display path
 					// which can be changed at will without affecting
 					// the list of real paths for the partition.

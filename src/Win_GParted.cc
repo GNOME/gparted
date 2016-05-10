@@ -1857,6 +1857,15 @@ void Win_GParted::activate_paste()
 				                                           *copied_partition );
 				operation ->icon = render_icon( Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU );
 
+				// When pasting into unallocated space set a temporary
+				// path of "Copy of /dev/SRC" for display purposes until
+				// the partition is created and the real path queried.
+				OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
+				copy_op->get_partition_new().add_path(
+				        String::ucompose( _("Copy of %1"),
+				                          copy_op->get_partition_copied().get_path() ),
+				        true );
+
 				Add_Operation( operation ) ;
 			}
 		}
