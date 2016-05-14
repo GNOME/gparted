@@ -3431,7 +3431,8 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 {
 	if ( partition .type == TYPE_PRIMARY || partition .type == TYPE_LOGICAL || partition .type == TYPE_EXTENDED )
 	{
-		operationdetail .add_child( OperationDetail( String::ucompose( _("calibrate %1"), partition .get_path() ) ) ) ;
+		Glib::ustring curr_path = partition.get_path();
+		operationdetail.add_child( OperationDetail( String::ucompose( _("calibrate %1"), curr_path ) ) );
 	
 		bool success = false;
 		PedDevice* lp_device = NULL ;
@@ -3442,9 +3443,9 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			{
 				// Virtual partition spanning whole disk device
 
-				// Re-add the real partition path from libparted.
-				// (See just below for why this is needed).
-				partition.add_path( lp_device->path );
+				// Re-add alternate path from libparted if different.
+				if ( curr_path != lp_device->path )
+					partition.add_path( lp_device->path );
 
 				success = true;
 			}
@@ -3475,13 +3476,18 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 					// tools used during those additional operations
 					// such mkfs for the format operation or fsck and
 					// others for the resize/move operation.
-					//
-					// FIXME: Having this work just because "/dev/NEW"
-					// happens to sort before "Copy of /dev/SRC" is
-					// ugly!  Probably have a separate display path
-					// which can be changed at will without affecting
-					// the list of real paths for the partition.
-					partition.add_path( get_partition_path( lp_partition ) );
+					Glib::ustring new_path = get_partition_path( lp_partition );
+					if ( curr_path != new_path )
+					{
+						if ( ! file_test( curr_path, Glib::FILE_TEST_EXISTS ) )
+							// Current path doesn't exist, so assume
+							// it's "Copy of /dev/SRC" and replace
+							// with real path from libparted.
+							partition.add_path( new_path, true );
+						else
+							// Add alternate path from libparted.
+							partition.add_path( new_path );
+					}
 
 					// Reload the partition boundaries from libparted
 					// to ensure that GParted knows what the actual
