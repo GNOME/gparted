@@ -758,9 +758,12 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			if ( ! success )
 				break;
 
-			// Reset the new partition object's real path in case the name is
-			// "copy of ..." from the previous operation.
-			operation->get_partition_new().add_path( operation->get_partition_original().get_path(), true );
+			// Replace the new partition object's list of paths from the
+			// calibration in case the first path is "Copy of ..." from the
+			// partition having been newly created by a paste into unallocated
+			// space earlier in the sequence of operations now being applied.
+			operation->get_partition_new().add_paths( operation->get_partition_original().get_paths(),
+			                                          true );
 
 			success = resize_move( operation->get_partition_original(),
 			                       operation->get_partition_new(),
@@ -772,9 +775,12 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			if ( ! success )
 				break;
 
-			// Reset the original partition object's real path in case the
-			// name is "copy of ..." from the previous operation.
-			operation->get_partition_original().add_path( operation->get_partition_new().get_path(), true );
+			// Replace the original partition object's list of paths from the
+			// calibration in case the first path is "Copy of ..." from the
+			// partition having been newly created by a paste into unallocated
+			// space earlier in the sequence of operations now being applied.
+			operation->get_partition_original().add_paths( operation->get_partition_new().get_paths(),
+			                                               true );
 
 			success =    remove_filesystem( operation->get_partition_original(),
 			                                operation->operation_detail )
