@@ -114,6 +114,16 @@ FS ext2::get_filesystem_support()
 		if ( specific_type != FS_EXT2 && Utils::kernel_version_at_least( 3, 6, 0 ) )
 			fs .online_grow = fs .grow ;
 #endif
+
+		// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, ignoring ext4
+		// with 64bit feature.  That is just under 16 TiB with a 4K block size.
+		// *   Ext4 Disk Layout, Blocks
+		//     https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Blocks
+		// FIXME: Rounding down to whole MiB here should not be necessary.  The
+		// Copy, New and Resize/Move dialogs should limit FS correctly without
+		// this.  See bug #766910 comment #12 onwards for further discussion.
+		//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
+		fs.MAX = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
 	}
 
 	return fs ;
