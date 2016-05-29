@@ -43,15 +43,16 @@ FS ext2::get_filesystem_support()
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
-		// Determine availability of ext4 64bit feature
+		// Determine mkfs.ext4 version specific capabilities.
 		bool have_64bit_feature = false;
+		force_auto_64bit = false;
 		if ( specific_type == FS_EXT4 )
 		{
 			Utils::execute_command( mkfs_cmd + " -V", output, error, true );
 			int mke4fs_major_ver = 0;
 			int mke4fs_minor_ver = 0;
 			int mke4fs_patch_ver = 0;
-			if ( sscanf( error.c_str(), "mke2fs %d.%d.%d",
+			if ( sscanf( error.c_str(), "mke%*[24]fs %d.%d.%d",
 			             &mke4fs_major_ver, &mke4fs_minor_ver, &mke4fs_patch_ver ) >= 2 )
 			{
 				// Ext4 64bit feature was added in e2fsprogs 1.42, but
@@ -64,6 +65,17 @@ FS ext2::get_filesystem_support()
 				have_64bit_feature =    ( mke4fs_major_ver > 1 )
 				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver > 42 )
 				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver == 42 && mke4fs_patch_ver >= 9 );
+
+				// (#766910) E2fsprogs 1.43 creates 64bit ext4 file
+				// systems by default.  RHEL/CentOS 7 configured e2fsprogs
+				// 1.42.9 to create 64bit ext4 file systems by default.
+				// Theoretically this can be done when 64bit feature was
+				// added in e2fsprogs 1.42.  GParted will re-implement the
+				// removed mke2fs.conf(5) auto_64-bit_support option to
+				// avoid the issues with multiple boot loaders not working
+				// with 64bit ext4 file systems.
+				force_auto_64bit =    ( mke4fs_major_ver > 1 )
+				                   || ( mke4fs_major_ver == 1 && mke4fs_minor_ver >= 42 );
 			}
 		}
 
@@ -265,8 +277,19 @@ bool ext2::write_uuid( const Partition & partition, OperationDetail & operationd
 
 bool ext2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( mkfs_cmd + " -F -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	Glib::ustring features;
+	if ( force_auto_64bit )
+	{
+		// (#766910) Manually implement mke2fs.conf(5) auto_64-bit_support option
+		// by setting or clearing the 64bit feature on the command line depending
+		// of the partition size.
+		if ( new_partition.get_byte_length() >= 16 * TEBIBYTE )
+			features = " -O 64bit";
+		else
+			features = " -O ^64bit";
+	}
+	return ! execute_command( mkfs_cmd + " -F" + features +
+	                          " -L \"" + new_partition.get_filesystem_label() + "\" " + new_partition.get_path(),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::create_progress ) ) );
 }

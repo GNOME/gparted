@@ -41,7 +41,8 @@ class ext2 : public FileSystem
 	Glib::ustring tune_cmd;
 public:
 	ext2( enum FILESYSTEM type ) : specific_type( type ), dump_cmd( "" ), fsck_cmd( "" ), image_cmd( "" ),
-	                               label_cmd( "" ), mkfs_cmd( "" ), resize_cmd( "" ), tune_cmd( "" ) {};
+	                               label_cmd( "" ), mkfs_cmd( "" ), resize_cmd( "" ), tune_cmd( "" ),
+	                               force_auto_64bit( false ) {};
 	FS get_filesystem_support() ;
 	void set_used_sectors( Partition & partition ) ;
 	void read_label( Partition & partition ) ;
@@ -65,6 +66,7 @@ private:
 	void copy_progress( OperationDetail *operationdetail );
 
 	Byte_Value fs_block_size;  // Holds file system block size for the copy_progress() callback
+	bool force_auto_64bit;     // Manually setting ext4 64bit feature on creation
 };
 
 } //GParted
