@@ -58,7 +58,7 @@ Device Device::get_copy_without_partitions() const
 	return new_device;                                    // (3) Return by value.
 }
 
-void Device::add_path( const Glib::ustring & path, bool clear_paths )
+void Device::set_path( const Glib::ustring & path )
 {
 	this->path = path;
 }
