@@ -278,7 +278,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 			//device info..
 			temp_device .add_path( device_paths[ t ] ) ;
-			temp_device .add_paths( pp_info .get_alternate_paths( temp_device .get_path() ) ) ;
 
 			temp_device .model 	=	lp_device ->model ;
 			temp_device .length 	=	lp_device ->length ;

@@ -692,8 +692,8 @@ void Win_GParted::Fill_Label_Device_Info( bool clear )
 		device_info[ t++ ] ->set_text( devices[ current_device ] .model ) ;
 		device_info[ t++ ] ->set_text( devices[current_device].serial_number );
 		device_info[ t++ ] ->set_text( Utils::format_size( devices[ current_device ] .length, devices[ current_device ] .sector_size ) ) ;
-		device_info[ t++ ] ->set_text( Glib::build_path( "\n", devices[ current_device ] .get_paths() ) ) ;
-		
+		device_info[ t++ ] ->set_text( devices[current_device].get_path() );
+
 		//detailed info
 		device_info[ t++ ] ->set_text( devices[ current_device ] .disktype ) ;
 		device_info[ t++ ] ->set_text( Utils::num_to_str( devices[ current_device ] .heads ) );

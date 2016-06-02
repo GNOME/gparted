@@ -27,7 +27,7 @@ Device::Device()
 
 void Device::Reset()
 {
-	paths .clear() ;
+	path.clear();
 	partitions .clear() ;
 	length = cylsize = 0 ;
 	heads = sectors = cylinders = 0 ;
@@ -53,42 +53,19 @@ Device Device::get_copy_without_partitions() const
 	new_device.max_prims                 = this->max_prims;
 	new_device.highest_busy              = this->highest_busy;
 	new_device.readonly                  = this->readonly;
-	new_device.paths                     = this->paths;
+	new_device.path                      = this->path;
 	new_device.max_partition_name_length = this->max_partition_name_length;
 	return new_device;                                    // (3) Return by value.
 }
 
 void Device::add_path( const Glib::ustring & path, bool clear_paths )
 {
-	if ( clear_paths )
-		paths .clear() ;
-
-	paths .push_back( path ) ;
-
-	sort_paths_and_remove_duplicates() ;
-}
-
-void Device::add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths )
-{
-	if ( clear_paths )
-		this ->paths .clear() ;
-
-	this ->paths .insert( this ->paths .end(), paths .begin(), paths .end() ) ;
-
-	sort_paths_and_remove_duplicates() ;
+	this->path = path;
 }
 
 Glib::ustring Device::get_path() const
 {
-	if ( paths .size() > 0 )
-		return paths .front() ;
-
-	return "" ;
-}
-	
-std::vector<Glib::ustring> Device::get_paths() const
-{
-	return paths ;
+	return path;
 }
 
 void Device::enable_partition_naming( int max_length )
@@ -119,21 +96,6 @@ bool Device::operator!=( const Device & device ) const
 	return ! ( *this == device ) ;
 }
 	
-void Device::sort_paths_and_remove_duplicates()
-{
-	//remove duplicates
-	std::sort( paths .begin(), paths .end() ) ;
-	paths .erase( std::unique( paths .begin(), paths .end() ), paths .end() ) ;
-
-	//sort on length
-	std::sort( paths .begin(), paths .end(), compare_paths ) ;
-}
-
-bool Device::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
-{
-	return A .length() < B .length() ;
-}
-
 Device::~Device()
 {
 }
