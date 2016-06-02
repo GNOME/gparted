@@ -757,12 +757,12 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			if ( ! success )
 				break;
 
-			// Replace the new partition object's list of paths from the
-			// calibration in case the first path is "Copy of ..." from the
-			// partition having been newly created by a paste into unallocated
-			// space earlier in the sequence of operations now being applied.
-			operation->get_partition_new().add_paths( operation->get_partition_original().get_paths(),
-			                                          true );
+			// Replace the new partition object's path from the calibration in
+			// case the path is "Copy of ..." from the partition having been
+			// newly created by a paste into unallocated space earlier in the
+			// sequence of operations now being applied.
+			operation->get_partition_new().add_path( operation->get_partition_original().get_path(),
+			                                         true );
 
 			success = resize_move( operation->get_partition_original(),
 			                       operation->get_partition_new(),
@@ -774,12 +774,12 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			if ( ! success )
 				break;
 
-			// Replace the original partition object's list of paths from the
-			// calibration in case the first path is "Copy of ..." from the
+			// Replace the original partition object's path from the
+			// calibration in case the path is "Copy of ..." from the
 			// partition having been newly created by a paste into unallocated
 			// space earlier in the sequence of operations now being applied.
-			operation->get_partition_original().add_paths( operation->get_partition_new().get_paths(),
-			                                               true );
+			operation->get_partition_original().add_path( operation->get_partition_new().get_path(),
+			                                              true );
 
 			success =    remove_filesystem( operation->get_partition_original(),
 			                                operation->operation_detail )
@@ -1235,7 +1235,6 @@ void GParted_Core::set_device_serial_number( Device & device )
 void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk )
 {
 	int EXT_INDEX = -1 ;
-	Proc_Partitions_Info pp_info ; //Use cache of proc partitions information
 #ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;    //Use cache of dmraid device information
 #endif
@@ -1310,7 +1309,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     ( lp_partition->type == PED_PARTITION_LOGICAL ),
 				                     partition_is_busy );
 				partition_temp->append_messages( detect_messages );
-				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
+
 				set_flags( *partition_temp, lp_partition );
 
 				if ( filesystem == FS_LUKS )
@@ -1334,7 +1333,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     false,
 				                     false );
 
-				partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 				set_flags( *partition_temp, lp_partition );
 
 				EXT_INDEX = device .partitions .size() ;
@@ -1399,8 +1397,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
                                              std::vector<Glib::ustring> & messages )
 {
-	Proc_Partitions_Info pp_info;  // Use cache of proc partitions information
-
 	device.partitions.clear();
 
 	Glib::ustring path = lp_device->path;
@@ -1424,7 +1420,6 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 	                     partition_is_busy );
 
 	partition_temp->append_messages( messages );
-	partition_temp->add_paths( pp_info.get_alternate_paths( partition_temp->get_path() ) );
 
 	if ( fstype == FS_LUKS )
 		set_luks_partition( *dynamic_cast<PartitionLUKS *>( partition_temp ) );
@@ -1475,9 +1470,6 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 	               false,
 	               fs_busy );
 	encrypted.append_messages( detect_messages );
-
-	Proc_Partitions_Info pp_info;  // Use cache of proc partitions information
-	encrypted.add_paths( pp_info.get_alternate_paths( encrypted.get_path() ) );
 
 	set_partition_label_and_uuid( encrypted );
 	set_mountpoints( encrypted );
@@ -1871,12 +1863,8 @@ void GParted_Core::set_mountpoints( Partition & partition )
 #endif
 			{
 				// Normal device, not DMRaid device
-				for ( unsigned int i = 0 ; i < partition.get_paths() .size() ; i++ )
-				{
-					Glib::ustring path = partition.get_paths()[i];
-					if ( set_mountpoints_helper( partition, path ) )
-						return;
-				}
+				if ( set_mountpoints_helper( partition, partition.get_path() ) )
+					return;
 			}
 
 			if ( partition.get_mountpoints().empty() )

@@ -36,7 +36,7 @@ Partition * Partition::clone() const
 
 void Partition::Reset()
 {
-	paths .clear() ;
+	path.clear();
 	messages .clear() ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
@@ -71,9 +71,7 @@ void Partition::Set( const Glib::ustring & device_path,
                      bool busy )
 {
 	this ->device_path = device_path ;
-
-	paths .push_back( partition ) ;
-
+	this->path = partition;
 	this ->partition_number = partition_number;
 	this ->type = type;
 	this->whole_device = whole_device;
@@ -191,40 +189,20 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 
 void Partition::Update_Number( int new_number )
 {  
-	unsigned int index ;
-	for ( unsigned int t = 0 ; t < paths .size() ; t++ )
-	{
-		index = paths[ t ] .rfind( Utils::num_to_str( partition_number ) ) ;
-
-		if ( index < paths[ t ] .length() )
-			paths[ t ] .replace( index,
-				       Utils::num_to_str( partition_number ) .length(),
-				       Utils::num_to_str( new_number ) ) ;
-	}
+	unsigned int index = path.rfind( Utils::num_to_str( partition_number ) );
+	if ( index < path.length() )
+		path.replace( index,
+		              Utils::num_to_str( partition_number ).length(),
+		              Utils::num_to_str( new_number ) );
 
 	partition_number = new_number;
 }
 	
 void Partition::add_path( const Glib::ustring & path, bool clear_paths ) 
 {
-	if ( clear_paths )
-		paths .clear() ;
-
-	paths .push_back( path ) ;
-
-	sort_paths_and_remove_duplicates() ;
+	this->path = path;
 }
 	
-void Partition::add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths )
-{
-	if ( clear_paths )
-		this ->paths .clear() ;
-
-	this ->paths .insert( this ->paths .end(), paths .begin(), paths .end() ) ;
-
-	sort_paths_and_remove_duplicates() ;
-}
-
 Byte_Value Partition::get_byte_length() const 
 {
 	if ( get_sector_length() >= 0 )
@@ -243,15 +221,7 @@ Sector Partition::get_sector_length() const
 
 Glib::ustring Partition::get_path() const
 {
-	if ( paths .size() > 0 )
-		return paths .front() ;
-	
-	return "" ;
-}
-
-std::vector<Glib::ustring> Partition::get_paths() const
-{
-	return paths ;
+	return path;
 }
 
 bool Partition::filesystem_label_known() const
@@ -338,16 +308,6 @@ void Partition::get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sect
 	}
 }
 
-void Partition::sort_paths_and_remove_duplicates()
-{
-	//remove duplicates
-	std::sort( paths .begin(), paths .end() ) ;
-	paths .erase( std::unique( paths .begin(), paths .end() ), paths .end() ) ;
-
-	//sort on length
-	std::sort( paths .begin(), paths .end(), compare_paths ) ;
-}
-
 void Partition::add_mountpoint( const Glib::ustring & mountpoint, bool clear_mountpoints )
 {
 	if ( clear_mountpoints )
@@ -394,11 +354,6 @@ bool Partition::test_overlap( const Partition & partition ) const
 void Partition::clear_mountpoints()
 {
 	mountpoints .clear() ;
-}
-
-bool Partition::compare_paths( const Glib::ustring & A, const Glib::ustring & B )
-{
-	return A .length() < B .length() ;
 }
 
 //Return threshold of sectors which is considered above the intrinsic

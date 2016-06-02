@@ -595,10 +595,10 @@ void Dialog_Partition_Info::Display_Info()
 			1, 2,
 			top, bottom,
 			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Glib::build_path( "\n", partition .get_paths() ), true, false, true ),
-			2, 3,
-			top++, bottom++,
-			Gtk::FILL ) ;
+	table->attach( * Utils::mk_label( partition.get_path(), true, false, true ),
+	               2, 3,
+	               top++, bottom++,
+	               Gtk::FILL );
 
 	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{

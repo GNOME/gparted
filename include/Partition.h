@@ -102,11 +102,9 @@ public:
 	void Update_Number( int new_number );
 	
 	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
-	void add_paths( const std::vector<Glib::ustring> & paths, bool clear_paths = false ) ;
 	Byte_Value get_byte_length() const ;
 	Sector get_sector_length() const ; 
 	Glib::ustring get_path() const ;
-	std::vector<Glib::ustring> get_paths() const ;
 	void add_mountpoint( const Glib::ustring & mountpoint, bool clear_mountpoints = false ) ;
 	void add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints = false ) ;
 	Glib::ustring get_mountpoint() const ; 
@@ -169,12 +167,9 @@ private:
 
 	static void get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sector s3, int imax, int & i1, int & i2, int & i3 ) ;
 
-	void sort_paths_and_remove_duplicates() ;
 	Sector calc_significant_unallocated_sectors() const ;
 
-	static bool compare_paths( const Glib::ustring & A, const Glib::ustring & B ) ;
-	
-	std::vector<Glib::ustring> paths ;
+	Glib::ustring path;
 	std::vector<Glib::ustring> mountpoints ;
 	bool have_filesystem_label;
 	Glib::ustring filesystem_label;
