@@ -1548,19 +1548,27 @@ FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedP
 		const char * sig2;
 		FILESYSTEM   fstype;
 	} signatures[] = {
-		//offset1, sig1          , offset2, sig2  , fstype
-		{ 65536LL, "ReIsEr4"     ,     0LL, NULL  , FS_REISER4   },
-		{   512LL, "LABELONE"    ,   536LL, "LVM2", FS_LVM2_PV   },
-		{     0LL, "LUKS\xBA\xBE",     0LL, NULL  , FS_LUKS      },
-		{ 65600LL, "_BHRfS_M"    ,     0LL, NULL  , FS_BTRFS     },
-		{     3LL, "-FVE-FS-"    ,     0LL, NULL  , FS_BITLOCKER },
-		{  1030LL, "\x34\x34"    ,     0LL, NULL  , FS_NILFS2    }
+		//offset1, sig1              , offset2, sig2  , fstype
+		{ 65536LL, "ReIsEr4"         ,     0LL, NULL  , FS_REISER4        },
+		{   512LL, "LABELONE"        ,   536LL, "LVM2", FS_LVM2_PV        },
+		{     0LL, "LUKS\xBA\xBE"    ,     0LL, NULL  , FS_LUKS           },
+		{ 65600LL, "_BHRfS_M"        ,     0LL, NULL  , FS_BTRFS          },
+		{     3LL, "-FVE-FS-"        ,     0LL, NULL  , FS_BITLOCKER      },
+		{  1030LL, "\x34\x34"        ,     0LL, NULL  , FS_NILFS2         },
+		{     0LL, "\x52\x56\xBE\x1B",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x6F",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\xE8\x28\x01",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG }
 	};
-	// Reference:
-	//   Detecting BitLocker
-	//   http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
-	// Consider validation of BIOS Parameter Block fields as unnecessary for
-	// simple recognition only of BitLocker.
+	// For simple BitLocker recognition consider validation of BIOS Parameter block
+	// fields unnecessary.
+	// *   Detecting BitLocker
+	//     http://blogs.msdn.com/b/si_team/archive/2006/10/26/detecting-bitlocker.aspx
+	//
+	// Recognise GRUB2 core.img just by any of the possible first 4 bytes of x86 CPU
+	// instructions it starts with.
+	// *   bootinfoscript v0.74 line 1963  [GRUB2 core.img possible staring 4 bytes]
+	//     https://github.com/arvidjaar/bootinfoscript/blob/b1f711e39d7aa4021f4ad3d31468a8b1e1b3fda7/bootinfoscript#L1963
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{

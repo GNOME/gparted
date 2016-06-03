@@ -90,14 +90,15 @@ enum FILESYSTEM
 
 	// Recognised signatures but otherwise unsupported file system types
 	FS_BITLOCKER       = 25,
-	FS_LINUX_SWRAID    = 26,
-	FS_LINUX_SWSUSPEND = 27,
-	FS_REFS            = 28,
-	FS_ZFS             = 29,
+	FS_GRUB2_CORE_IMG  = 26,
+	FS_LINUX_SWRAID    = 27,
+	FS_LINUX_SWSUSPEND = 28,
+	FS_REFS            = 29,
+	FS_ZFS             = 30,
 
 	// Partition space usage colours
-	FS_USED            = 30,
-	FS_UNUSED          = 31
+	FS_USED            = 31,
+	FS_UNUSED          = 32
 } ;
 
 enum SIZE_UNIT

@@ -115,6 +115,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
 		case FS_LVM2_PV		: return "#B39169" ;	//face skin dark
 		case FS_BITLOCKER	: return "#494066" ;	//purple shadow
+		case FS_GRUB2_CORE_IMG	: return "#666666" ;	//~ dark gray
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
 		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
@@ -291,6 +292,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2_PV		: return "lvm2 pv" ;
 		case FS_BITLOCKER	: return "bitlocker" ;
+		case FS_GRUB2_CORE_IMG	: return "grub2 core.img";
 		case FS_LUKS		: return "luks";
 		case FS_LINUX_SWRAID	: return "linux-raid" ;
 		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
