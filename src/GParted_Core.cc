@@ -3455,11 +3455,6 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			if ( partition.whole_device )
 			{
 				// Virtual partition spanning whole disk device
-
-				// Re-add alternate path from libparted if different.
-				if ( curr_path != lp_device->path )
-					partition.add_path( lp_device->path );
-
 				success = true;
 			}
 			else if ( get_disk( lp_device, lp_disk ) )
@@ -3473,33 +3468,23 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 
 				if ( lp_partition )  // FIXME: add check to see if lp_partition->type matches partition.type..
 				{
-					// Re-add the real partition path from libparted.
-					//
-					// When creating a copy operation by pasting into
-					// unallocated space the list of paths for the
-					// partition object was set to
-					// ["Copy of /dev/SRC"] because the partition
-					// didn't yet exist before the operations were
-					// applied.  Additional operations on that new
-					// partition also got the list of paths set to
-					// ["Copy of /dev/SRC"].  This re-adds the real
-					// path to the start of the list making it
-					// ["/dev/NEW", "Copy of /dev/SRC"].  This
-					// provides the real path for file system specific
-					// tools used during those additional operations
-					// such mkfs for the format operation or fsck and
-					// others for the resize/move operation.
-					Glib::ustring new_path = get_partition_path( lp_partition );
-					if ( curr_path != new_path )
+					if ( ! file_test( curr_path, Glib::FILE_TEST_EXISTS ) )
 					{
-						if ( ! file_test( curr_path, Glib::FILE_TEST_EXISTS ) )
-							// Current path doesn't exist, so assume
-							// it's "Copy of /dev/SRC" and replace
-							// with real path from libparted.
-							partition.add_path( new_path, true );
-						else
-							// Add alternate path from libparted.
-							partition.add_path( new_path );
+						// Re-set the real partition path from libparted.
+						//
+						// When creating a copy operation by pasting into
+						// unallocated space the path for the partition
+						// object was set to "Copy of /dev/SRC" because
+						// the partition didn't yet exist before the
+						// operations were applied.  Additional operations
+						// on that new partition also got the path set to
+						// "Copy of /dev/SRC".  This re-sets the real path
+						// to "/dev/NEW".  This provides the real path for
+						// file system specific tools used during those
+						// additional operations such mkfs for the format
+						// operation or fsck and others for the
+						// resize/move operation.
+						partition.add_path( get_partition_path( lp_partition ) );
 					}
 
 					// Reload the partition boundaries from libparted
