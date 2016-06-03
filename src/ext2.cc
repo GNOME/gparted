@@ -43,6 +43,30 @@ FS ext2::get_filesystem_support()
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
+		// Determine availability of ext4 64bit feature
+		bool have_64bit_feature = false;
+		if ( specific_type == FS_EXT4 )
+		{
+			Utils::execute_command( mkfs_cmd + " -V", output, error, true );
+			int mke4fs_major_ver = 0;
+			int mke4fs_minor_ver = 0;
+			int mke4fs_patch_ver = 0;
+			if ( sscanf( error.c_str(), "mke2fs %d.%d.%d",
+			             &mke4fs_major_ver, &mke4fs_minor_ver, &mke4fs_patch_ver ) >= 2 )
+			{
+				// Ext4 64bit feature was added in e2fsprogs 1.42, but
+				// only enable large volumes from 1.42.9 when a large
+				// number of 64bit bugs were fixed.
+				// *   Release notes, E2fsprogs 1.42 (November 29, 2011)
+				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42
+				// *   Release notes, E2fsprogs 1.42.9 (December 28, 2013)
+				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42.9
+				have_64bit_feature =    ( mke4fs_major_ver > 1 )
+				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver > 42 )
+				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver == 42 && mke4fs_patch_ver >= 9 );
+			}
+		}
+
 		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "dumpe4fs" ).empty() )
 			dump_cmd = "dumpe4fs";
 		else if ( ! Glib::find_program_in_path( "dumpe2fs" ).empty() )
@@ -115,7 +139,7 @@ FS ext2::get_filesystem_support()
 			fs .online_grow = fs .grow ;
 #endif
 
-		// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, ignoring ext4
+		// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, except for ext4
 		// with 64bit feature.  That is just under 16 TiB with a 4K block size.
 		// *   Ext4 Disk Layout, Blocks
 		//     https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Blocks
@@ -123,7 +147,10 @@ FS ext2::get_filesystem_support()
 		// Copy, New and Resize/Move dialogs should limit FS correctly without
 		// this.  See bug #766910 comment #12 onwards for further discussion.
 		//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
-		fs.MAX = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
+		if ( specific_type == FS_EXT2                             ||
+		     specific_type == FS_EXT3                             ||
+		     ( specific_type == FS_EXT4 && ! have_64bit_feature )    )
+			fs.MAX = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
 	}
 
 	return fs ;
