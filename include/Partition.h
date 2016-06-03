@@ -101,7 +101,7 @@ public:
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );
 	
-	void add_path( const Glib::ustring & path, bool clear_paths = false ) ;
+	void set_path( const Glib::ustring & path );
 	Byte_Value get_byte_length() const ;
 	Sector get_sector_length() const ; 
 	Glib::ustring get_path() const ;

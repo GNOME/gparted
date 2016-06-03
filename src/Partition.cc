@@ -198,7 +198,7 @@ void Partition::Update_Number( int new_number )
 	partition_number = new_number;
 }
 	
-void Partition::add_path( const Glib::ustring & path, bool clear_paths ) 
+void Partition::set_path( const Glib::ustring & path )
 {
 	this->path = path;
 }

@@ -761,8 +761,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			// case the path is "Copy of ..." from the partition having been
 			// newly created by a paste into unallocated space earlier in the
 			// sequence of operations now being applied.
-			operation->get_partition_new().add_path( operation->get_partition_original().get_path(),
-			                                         true );
+			operation->get_partition_new().set_path( operation->get_partition_original().get_path() );
 
 			success = resize_move( operation->get_partition_original(),
 			                       operation->get_partition_new(),
@@ -778,8 +777,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			// calibration in case the path is "Copy of ..." from the
 			// partition having been newly created by a paste into unallocated
 			// space earlier in the sequence of operations now being applied.
-			operation->get_partition_original().add_path( operation->get_partition_new().get_path(),
-			                                              true );
+			operation->get_partition_original().set_path( operation->get_partition_new().get_path() );
 
 			success =    remove_filesystem( operation->get_partition_original(),
 			                                operation->operation_detail )
@@ -2191,8 +2189,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		
 				if ( ped_disk_add_partition( lp_disk, lp_partition, constraint ) && commit( lp_disk ) )
 				{
-					Glib::ustring partition_path = get_partition_path( lp_partition ) ;
-					new_partition .add_path( partition_path, true ) ;
+					new_partition.set_path( get_partition_path( lp_partition ) );
 
 					new_partition .partition_number = lp_partition ->num ;
 					new_partition .sector_start = lp_partition ->geom .start ;
@@ -3484,7 +3481,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 						// additional operations such mkfs for the format
 						// operation or fsck and others for the
 						// resize/move operation.
-						partition.add_path( get_partition_path( lp_partition ) );
+						partition.set_path( get_partition_path( lp_partition ) );
 					}
 
 					// Reload the partition boundaries from libparted

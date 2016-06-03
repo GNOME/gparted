@@ -1861,10 +1861,9 @@ void Win_GParted::activate_paste()
 				// path of "Copy of /dev/SRC" for display purposes until
 				// the partition is created and the real path queried.
 				OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
-				copy_op->get_partition_new().add_path(
+				copy_op->get_partition_new().set_path(
 				        String::ucompose( _("Copy of %1"),
-				                          copy_op->get_partition_copied().get_path() ),
-				        true );
+				                          copy_op->get_partition_copied().get_path() ) );
 
 				Add_Operation( operation ) ;
 			}
