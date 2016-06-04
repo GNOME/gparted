@@ -2065,14 +2065,16 @@ void Win_GParted::activate_delete()
 	{
 		//remove all operations done on this new partition (this includes creation)	
 		for ( int t = 0 ; t < static_cast<int>( operations .size() ) ; t++ ) 
-			if ( operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path() )
+			if ( operations[t]->type                           != OPERATION_DELETE                   &&
+			     operations[t]->get_partition_new().get_path() == selected_partition_ptr->get_path()    )
 				remove_operation( t-- ) ;
 				
 		//determine lowest possible new_count
 		new_count = 0 ; 
 		for ( unsigned int t = 0 ; t < operations .size() ; t++ )
-			if ( operations[t]->get_partition_new().status           == STAT_NEW  &&
-			     operations[t]->get_partition_new().partition_number >  new_count    )
+			if ( operations[t]->type                                 != OPERATION_DELETE &&
+			     operations[t]->get_partition_new().status           == STAT_NEW         &&
+			     operations[t]->get_partition_new().partition_number >  new_count           )
 				new_count = operations[t]->get_partition_new().partition_number;
 			
 		new_count += 1 ;
