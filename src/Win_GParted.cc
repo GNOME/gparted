@@ -2640,6 +2640,9 @@ void Win_GParted::activate_check()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
+	// FIXME: Consider constructing new partition object with zero unallocated and
+	// messages cleared to represent how applying a check operation also grows the
+	// file system to fill the partition.
 	Operation * operation = new OperationCheck( devices[current_device], *selected_partition_ptr );
 
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );

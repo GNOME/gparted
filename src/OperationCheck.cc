@@ -27,28 +27,15 @@ OperationCheck::OperationCheck( const Device & device, const Partition & partiti
 
 	this->device = device.get_copy_without_partitions();
 	this->partition_original = partition.clone();
+	this->partition_new      = partition.clone();
 }
 
 OperationCheck::~OperationCheck()
 {
 	delete partition_original;
+	delete partition_new;
 	partition_original = NULL;
-}
-
-Partition & OperationCheck::get_partition_new()
-{
-	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
-
-	// Not reached.  Return value to keep compiler quiet.
-	return *partition_new;
-}
-
-const Partition & OperationCheck::get_partition_new() const
-{
-	g_assert( false );  // Bug: OperationCheck class doesn't use partition_new
-
-	// Not reached.  Return value to keep compiler quiet.
-	return *partition_new;
+	partition_new = NULL;
 }
 
 void OperationCheck::apply_to_visual( PartitionVector & partitions )

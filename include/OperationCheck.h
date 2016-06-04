@@ -36,9 +36,6 @@ private:
 	OperationCheck( const OperationCheck & src );              // Not implemented copy constructor
 	OperationCheck & operator=( const OperationCheck & rhs );  // Not implemented copy assignment operator
 
-	Partition & get_partition_new();
-	const Partition & get_partition_new() const;
-
 	void create_description() ;
 	bool merge_operations( const Operation & candidate );
 } ;
