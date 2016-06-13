@@ -1,4 +1,45 @@
 ============================
+GParted 0.26.1  (2016-06-13)
+============================
+
+Release Notes
+-------------
+  This release of GParted ensures creation of 32bit ext4 partitions
+  when the size is less than 16 TiB.  This improves compatibility with
+  existing boot loaders.  Also included are bug fixes and language
+  translation updates.
+
+### Key changes include:
+
+  * Ensure boot loaders work on ext4 < 16 TiB by using 32bit feature
+  * Fix core dump crash in OperationDelete::get_partition_new()
+
+Bug Fixes
+---------
+
+  * Clean up partition path "copy of /dev/SRC" code ugliness (#766349)
+  * Fix PedGeometry objects are memory leaked (#767009)
+  * Multiple boot loaders don't work on 64bit EXT4 file systems (#766910)
+  * Fix core dump crash in OperationDelete::get_partition_new() (#767233)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), de(Wolfgang Stöggl), es(Daniel Mustieles),
+  fr(Alexandre Franke), gd(GunChleoc), it(Milo Casagrande),
+  kk(Baurzhan Muftakhidinov), pa(A S Alam), pl(Piotr Drąg),
+  pt_BR(Enrico Nicoletto), ro(Daniel Șerbănescu), sk(Dušan Kazik),
+  sv(Anders Jonsson)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.26.0  (2016-04-26)
 ============================
 
