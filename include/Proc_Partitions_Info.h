@@ -24,7 +24,8 @@
 #ifndef GPARTED_PROC_PARTITIONS_INFO_H
 #define GPARTED_PROC_PARTITIONS_INFO_H
 
-#include "../include/Utils.h"
+#include <glibmm/ustring.h>
+#include <vector>
 
 namespace GParted
 {
@@ -36,12 +37,11 @@ public:
 	Proc_Partitions_Info( bool do_refresh ) ;
 	~Proc_Partitions_Info() ;
 	std::vector<Glib::ustring> get_device_paths() ;
-	std::vector<Glib::ustring> get_alternate_paths( const Glib::ustring & path ) ;
+
 private:
 	void load_proc_partitions_info_cache() ;
 	static bool proc_partitions_info_cache_initialized ;
 	static std::vector<Glib::ustring> device_paths_cache ;
-	static std::map< Glib::ustring, Glib::ustring > alternate_paths_cache ;
 };
 
 }//GParted
