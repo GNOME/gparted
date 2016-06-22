@@ -25,14 +25,18 @@
 #ifndef GPARTED_LVM2_PV_INFO_H
 #define GPARTED_LVM2_PV_INFO_H
 
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
+#include <vector>
 
 namespace GParted
 {
 
 struct LVM2_PV
 {
-	Glib::ustring pv_name;
+	BlockSpecial  pv_name;
 	Byte_Value    pv_size;
 	Byte_Value    pv_free;
 	Glib::ustring vg_name;

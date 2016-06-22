@@ -15,6 +15,7 @@
  */
 
 #include "../include/LVM2_PV_Info.h"
+#include "../include/BlockSpecial.h"
 
 namespace GParted
 {
@@ -37,13 +38,13 @@ enum LV_BIT
 //  lvm_found           - Is the "lvm" command available?
 //  lvm2_pv_cache       - Vector of PV fields: pv_name, pv_size, pv_free, vg_name.
 //                        E.g.
-//                        //pv_name     , pv_size   , pv_free   , vg_name
-//                        [{"/dev/sda10", 1073741824, 1073741824, ""        },
-//                         {"/dev/sda11", 1069547520, 1069547520, "Test-VG1"},
-//                         {"/dev/sda12", 1069547520,  335544320, "Test_VG2"},
-//                         {"/dev/sda13", 1069547520,          0, "Test_VG3"},
-//                         {"/dev/sda14", 1069547520,  566231040, "Test_VG3"},
-//                         {"/dev/sda15", 1069547520,  545259520, "Test-VG4"}
+//                        //pv_name                   , pv_size   , pv_free   , vg_name
+//                        [{BlockSpecial("/dev/sda10"), 1073741824, 1073741824, ""        },
+//                         {BlockSpecial("/dev/sda11"), 1069547520, 1069547520, "Test-VG1"},
+//                         {BlockSpecial("/dev/sda12"), 1069547520,  335544320, "Test_VG2"},
+//                         {BlockSpecial("/dev/sda13"), 1069547520,          0, "Test_VG3"},
+//                         {BlockSpecial("/dev/sda14"), 1069547520,  566231040, "Test_VG3"},
+//                         {BlockSpecial("/dev/sda15"), 1069547520,  545259520, "Test-VG4"}
 //                        ]
 //  lvm2_vg_cache       - Vector storing VG fields: vg_name, vg_attr, lv_name, lv_attr.
 //                        See vgs(8) and lvs(8) for details of vg_attr and lv_attr respectively.
@@ -145,7 +146,7 @@ std::vector<Glib::ustring> LVM2_PV_Info::get_vg_members( const Glib::ustring & v
 	{
 		if ( vgname == lvm2_pv_cache[i].vg_name )
 		{
-			members.push_back( lvm2_pv_cache[i].pv_name );
+			members.push_back( lvm2_pv_cache[i].pv_name.m_name );
 		}
 	}
 
@@ -252,10 +253,10 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 					Utils::split( Utils::trim( lines[i] ), fields, "," );
 					if ( fields.size() < PVFIELD_COUNT )
 						continue;  // Not enough fields
-					LVM2_PV pv;
-					pv.pv_name = fields[PVFIELD_PV_NAME];
-					if ( pv.pv_name.size() == 0 )
+					if ( fields[PVFIELD_PV_NAME] == "" )
 						continue;  // Empty PV name
+					LVM2_PV pv;
+					pv.pv_name = BlockSpecial( fields[PVFIELD_PV_NAME] );
 					pv.pv_size = lvm2_pv_size_to_num( fields[PVFIELD_PV_SIZE] );
 					pv.pv_free = lvm2_pv_size_to_num( fields[PVFIELD_PV_FREE] );
 					pv.vg_name = fields[PVFIELD_VG_NAME];
@@ -331,12 +332,13 @@ void LVM2_PV_Info::load_lvm2_pv_info_cache()
 // Returns found cache entry or not found substitute.
 const LVM2_PV & LVM2_PV_Info::get_pv_cache_entry_by_name( const Glib::ustring & pvname )
 {
+	BlockSpecial bs_pvname( pvname );
 	for ( unsigned int i = 0 ; i < lvm2_pv_cache.size() ; i ++ )
 	{
-		if ( pvname == lvm2_pv_cache[i].pv_name )
+		if ( bs_pvname == lvm2_pv_cache[i].pv_name )
 			return lvm2_pv_cache[i];
 	}
-	static LVM2_PV pv = {"", -1, -1, ""};
+	static LVM2_PV pv = {BlockSpecial(), -1, -1, ""};
 	return pv;
 }
 

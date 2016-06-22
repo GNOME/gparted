@@ -12,6 +12,7 @@ AM_CXXFLAGS = -Wall
 sbin_PROGRAMS = gpartedbin
 
 gpartedbin_SOURCES = \
+	BlockSpecial.cc			\
 	Copy_Blocks.cc			\
 	DMRaid.cc			\
 	Device.cc			\
