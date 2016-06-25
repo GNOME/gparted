@@ -17,6 +17,7 @@
 
 
 #include "../include/btrfs.h"
+#include "../include/BlockSpecial.h"
 #include "../include/GParted_Core.h"
 #include "../include/Partition.h"
 
@@ -28,14 +29,15 @@ namespace GParted
 bool btrfs_found = false ;
 bool resize_to_same_size_fails = true ;
 
-//Cache of required btrfs file system device information by device
-//  E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
-//       on /dev/sd[bcd]1 the cache would be:
-//  btrfs_device_cache["/dev/sda2"] = {devid=1, members=["/dev/sda2"]}
-//  btrfs_device_cache["/dev/sdb1"] = {devid=1, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
-//  btrfs_device_cache["/dev/sdc1"] = {devid=2, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
-//  btrfs_device_cache["/dev/sdd1"] = {devid=3, members=["/dev/sdd1", "/dev/sdc1", "/dev/sdb1"]}
-std::map<Glib::ustring, BTRFS_Device> btrfs_device_cache ;
+// Cache of required btrfs file system device information by device
+// E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
+//      on /dev/sd[bcd]1 the cache would be as follows.  (Note that
+//      BS(str) is short hand for constructor BlockSpecial(str)).
+//  btrfs_device_cache[BS("/dev/sda2")] = {devid=1, members=[BS("/dev/sda2")]}
+//  btrfs_device_cache[BS("/dev/sdb1")] = {devid=1, members=[BS("/dev/sdd1"), BS("/dev/sdc1"), BS("/dev/sdb1")]}
+//  btrfs_device_cache[BS("/dev/sdc1")] = {devid=2, members=[BS("/dev/sdd1"), BS("/dev/sdc1"), BS("/dev/sdb1")]}
+//  btrfs_device_cache[BS("/dev/sdd1")] = {devid=3, members=[BS("/dev/sdd1"), BS("/dev/sdc1"), BS("/dev/sdb1")]}
+std::map<BlockSpecial, BTRFS_Device> btrfs_device_cache;
 
 FS btrfs::get_filesystem_support()
 {
@@ -460,15 +462,18 @@ Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 	}
 
 	for ( unsigned int i = 0 ; i < btrfs_dev .members .size() ; i ++ )
-		if ( GParted_Core::is_dev_mounted( btrfs_dev .members[ i ] ) )
-			return btrfs_dev .members[ i ] ;
+		if ( GParted_Core::is_dev_mounted( btrfs_dev.members[i].m_name ) )
+			return btrfs_dev.members[i].m_name;
 	return "" ;
 }
 
 std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
 {
 	BTRFS_Device btrfs_dev = get_cache_entry( path ) ;
-	return btrfs_dev .members ;
+	std::vector<Glib::ustring> membs;
+	for ( unsigned int i = 0 ; i < btrfs_dev.members.size() ; i ++ )
+		membs.push_back( btrfs_dev.members[i].m_name );
+	return membs;
 }
 
 //Private methods
@@ -476,7 +481,7 @@ std::vector<Glib::ustring> btrfs::get_members( const Glib::ustring & path )
 //Return btrfs device cache entry, incrementally loading cache as required
 const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 {
-	std::map<Glib::ustring, BTRFS_Device>::const_iterator bd_iter = btrfs_device_cache .find( path ) ;
+	std::map<BlockSpecial, BTRFS_Device>::const_iterator bd_iter = btrfs_device_cache.find( BlockSpecial( path ) );
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
 
@@ -511,15 +516,18 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 		offset = index + 5 ;  //Next find starts immediately after current "devid"
 	}
 	//Add cache entries for all found devices
+	std::vector<BlockSpecial> bs_list;
+	for ( unsigned int i = 0 ; i < path_list.size() ; i ++ )
+		bs_list.push_back( BlockSpecial( path_list[i] ) );
 	for ( unsigned int i = 0 ; i < devid_list .size() ; i ++ )
 	{
 		BTRFS_Device btrfs_dev ;
 		btrfs_dev .devid = devid_list[ i ] ;
-		btrfs_dev .members = path_list ;
-		btrfs_device_cache[ path_list[ i ] ] = btrfs_dev ;
+		btrfs_dev.members = bs_list;
+		btrfs_device_cache[ BlockSpecial( path_list[i] ) ] = btrfs_dev;
 	}
 
-	bd_iter = btrfs_device_cache .find( path ) ;
+	bd_iter = btrfs_device_cache.find( BlockSpecial( path ) );
 	if ( bd_iter != btrfs_device_cache .end() )
 		return bd_iter ->second ;
 

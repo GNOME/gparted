@@ -20,6 +20,7 @@
 #define GPARTED_BTRFS_H
 
 #include "../include/FileSystem.h"
+#include "../include/BlockSpecial.h"
 #include "../include/Partition.h"
 
 namespace GParted
@@ -27,8 +28,8 @@ namespace GParted
 
 struct BTRFS_Device
 {
-	int				devid ;
-	std::vector<Glib::ustring>	members ;
+	int                       devid;
+	std::vector<BlockSpecial> members;
 } ;
 
 class btrfs : public FileSystem
