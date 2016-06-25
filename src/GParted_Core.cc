@@ -1538,7 +1538,8 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 		
 	//start <---> first partition start
-	if ( (partitions .front() .sector_start - start) > (MEBIBYTE / sector_size) )
+	Byte_Value gap = (partitions.front().sector_start - start) * sector_size;
+	if (gap > MEBIBYTE)
 	{
 		Sector temp_end = partitions.front().sector_start - 1;
 		Partition * partition_temp = new Partition();
@@ -1549,12 +1550,15 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	//look for gaps in between
 	for ( unsigned int t =0 ; t < partitions .size() -1 ; t++ )
 	{
-		if (   ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) > (MEBIBYTE / sector_size) )
-		    || (   ( partitions[ t + 1 ] .type != TYPE_LOGICAL )  // Only show exactly 1 MiB if following partition is not logical.
-		        && ( ( partitions[ t + 1 ] .sector_start - partitions[ t ] .sector_end - 1 ) == (MEBIBYTE / sector_size) )
-		       )
-		   )
+		PartitionType next_ptntype = partitions[t+1].type;
+		gap = (partitions[t+1].sector_start - partitions[t].sector_end - 1) * sector_size;
+		if ((next_ptntype == TYPE_LOGICAL && gap >  MEBIBYTE) ||
+		    (next_ptntype != TYPE_LOGICAL && gap >= MEBIBYTE)   )
 		{
+			// Don't show gaps between logical partitions of exactly 1 MiB
+			// because the EBR (Extended Boot Record) is written there and
+			// MiB alignment resulted in the 1 MiB separation.
+
 			Sector temp_start = partitions[t].sector_end + 1;
 			Sector temp_end   = partitions[t+1].sector_start - 1;
 			Partition * partition_temp = new Partition();
@@ -1565,7 +1569,8 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	}
 
 	//last partition end <---> end
-	if ( (end - partitions .back() .sector_end) >= (MEBIBYTE / sector_size) )
+	gap = (end - partitions.back().sector_end) * sector_size;
+	if (gap >= MEBIBYTE)
 	{
 		Sector temp_start = partitions.back().sector_end + 1;
 		Partition * partition_temp = new Partition();
