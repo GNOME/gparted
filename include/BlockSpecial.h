@@ -48,6 +48,7 @@ public:
 //     "2. If a binary operator treats both operands equally (it leaves them unchanged),
 //     implement this operator as a non-member function."
 bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs );
+bool operator<( const BlockSpecial & lhs, const BlockSpecial & rhs );
 
 }//GParted
 

@@ -52,4 +52,14 @@ bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs )
 		return lhs.m_name == rhs.m_name;
 }
 
+bool operator<( const BlockSpecial & lhs, const BlockSpecial & rhs )
+{
+	if ( lhs.m_major == 0 && rhs.m_major == 0 && lhs.m_minor == 0 && rhs.m_minor == 0 )
+		// Two non-block special files are ordered by name.
+		return lhs.m_name < rhs.m_name;
+	else
+		// Block special files are ordered by major, minor device numbers.
+		return lhs.m_major < rhs.m_major || ( lhs.m_major == rhs.m_major && lhs.m_minor < rhs.m_minor );
+}
+
 } //GParted

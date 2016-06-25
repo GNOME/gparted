@@ -17,6 +17,7 @@
  
 #include "../include/Win_GParted.h"
 #include "../include/GParted_Core.h"
+#include "../include/BlockSpecial.h"
 #include "../include/DMRaid.h"
 #include "../include/FS_Info.h"
 #include "../include/LVM2_PV_Info.h"
@@ -69,17 +70,18 @@ namespace GParted
 const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
 const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
 
-//mount_info - Associative array mapping currently mounted devices to
-//  one or more mount points.  E.g.
-//      mount_info["/dev/sda1"] -> ["/boot"]
-//      mount_info["/dev/sda2"] -> [""]  (swap)
-//      mount_info["/dev/sda3"] -> ["/"]
-//fstab_info - Associative array mapping configured devices to one or
-//  more mount points read from /etc/fstab.  E.g.
-//      fstab_info["/dev/sda1"] -> ["/boot"]
-//      fstab_info["/dev/sda3"] -> ["/"]
-static std::map< Glib::ustring, std::vector<Glib::ustring> > mount_info ;
-static std::map< Glib::ustring, std::vector<Glib::ustring> > fstab_info ;
+// Associative array mapping currently mounted devices to one or more mount points.
+// E.g.
+//     mount_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
+//     mount_info[BlockSpecial("/dev/sda2")] -> [""]  (swap)
+//     mount_info[BlockSpecial("/dev/sda3")] -> ["/"]
+static GParted_Core::MountMapping mount_info;
+
+// Associative array mapping configured devices to one or more mount points read from
+// /etc/fstab.  E.g.
+//     fstab_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
+//     fstab_info[BlockSpecial("/dev/sda3")] -> ["/"]
+static GParted_Core::MountMapping fstab_info;
 
 static bool udevadm_found = false;
 static bool udevsettle_found = false;
@@ -968,13 +970,13 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 //Return whether the device path, such as /dev/sda3, is mounted or not
 bool GParted_Core::is_dev_mounted( const Glib::ustring & path )
 {
-	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp = mount_info .find( path ) ;
+	MountMapping::iterator iter_mp = mount_info.find( BlockSpecial( path ) );
 	return iter_mp != mount_info .end() ;
 }
 
 std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
 {
-	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+	MountMapping::iterator iter_mp;
 	std::vector<Glib::ustring> mountpoints ;
 
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
@@ -1042,7 +1044,7 @@ void GParted_Core::init_maps()
 	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
 	
 	//sort the mount points and remove duplicates.. (no need to do this for fstab_info)
-	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+	MountMapping::iterator iter_mp;
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
 	{
 		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
@@ -1053,9 +1055,7 @@ void GParted_Core::init_maps()
 	}
 }
 
-void GParted_Core::read_mountpoints_from_file(
-	const Glib::ustring & filename,
-	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map )
 {
 	FS_Info fs_info ;  //Use cache of file system information
 
@@ -1086,15 +1086,14 @@ void GParted_Core::read_mountpoints_from_file(
 	endmntent( fp ) ;
 }
 
-void GParted_Core::add_node_and_mountpoint(
-	std::map< Glib::ustring, std::vector<Glib::ustring> > & map,
-	Glib::ustring & node,
-	Glib::ustring & mountpoint )
+void GParted_Core::add_node_and_mountpoint( MountMapping & map,
+                                            Glib::ustring & node,
+                                            Glib::ustring & mountpoint )
 {
 	//Only add node path(s) if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
 	{
-		map[ node ] .push_back( mountpoint ) ;
+		map[BlockSpecial( node )].push_back( mountpoint );
 
 		//If node is a symbolic link (e.g., /dev/root)
 		//  then find real path and add entry too
@@ -1103,16 +1102,15 @@ void GParted_Core::add_node_and_mountpoint(
 			char * rpath = realpath( node.c_str(), NULL );
 			if ( rpath != NULL )
 			{
-				map[rpath].push_back( mountpoint );
+				map[BlockSpecial( rpath )].push_back( mountpoint );
 				free( rpath );
 			}
 		}
 	}
 }
 
-void GParted_Core::read_mountpoints_from_file_swaps(
-	const Glib::ustring & filename,
-	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+void GParted_Core::read_mountpoints_from_file_swaps( const Glib::ustring & filename,
+                                                     MountMapping & map )
 {
 	std::string line ;
 	std::string node ;
@@ -1124,7 +1122,7 @@ void GParted_Core::read_mountpoints_from_file_swaps(
 		{
 			node = Utils::regexp_label( line, "^(/[^ ]+)" ) ;
 			if ( node .size() > 0 )
-				map[ node ] .push_back( "" /* no mountpoint for swap */ ) ;
+				map[BlockSpecial( node )].push_back( "" /* no mountpoint for swap */ );
 		}
 		file .close() ;
 	}
@@ -1132,22 +1130,21 @@ void GParted_Core::read_mountpoints_from_file_swaps(
 
 //Return true only if the map contains a device name for the / (root) file system other
 //  than 'rootfs' and '/dev/root'
-bool GParted_Core::have_rootfs_dev( std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+bool GParted_Core::have_rootfs_dev( MountMapping & map )
 {
-	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp ;
+	MountMapping::iterator iter_mp;
 	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; iter_mp ++ )
 	{
 		if ( ! iter_mp ->second .empty() && iter_mp ->second[ 0 ] == "/" )
 		{
-			if ( iter_mp ->first != "rootfs" && iter_mp ->first != "/dev/root" )
+			if ( iter_mp->first.m_name != "rootfs" && iter_mp->first.m_name != "/dev/root" )
 				return true ;
 		}
 	}
 	return false ;
 }
 
-void GParted_Core::read_mountpoints_from_mount_command(
-	std::map< Glib::ustring, std::vector<Glib::ustring> > & map )
+void GParted_Core::read_mountpoints_from_mount_command( MountMapping & map )
 {
 	Glib::ustring output ;
 	Glib::ustring error ;
@@ -1870,8 +1867,8 @@ void GParted_Core::set_mountpoints( Partition & partition )
 		}
 		else  // Not busy file system
 		{
-			std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp;
-			iter_mp = fstab_info.find( partition.get_path() );
+			MountMapping::iterator iter_mp;
+			iter_mp = fstab_info.find( BlockSpecial( partition.get_path() ) );
 			if ( iter_mp != fstab_info.end() )
 				partition.add_mountpoints( iter_mp->second );
 		}
@@ -1886,7 +1883,7 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 	else
 		search_path = path ;
 
-	std::map< Glib::ustring, std::vector<Glib::ustring> >::iterator iter_mp = mount_info .find( search_path ) ;
+	MountMapping::iterator iter_mp = mount_info.find( BlockSpecial( search_path ) );
 	if ( iter_mp != mount_info .end() )
 	{
 		partition .add_mountpoints( iter_mp ->second ) ;
