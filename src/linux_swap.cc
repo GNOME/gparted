@@ -85,7 +85,7 @@ void linux_swap::set_used_sectors( Partition & partition )
 			{
 				if ( line .substr( 0, path_len ) == path )
 				{
-					sscanf( line.substr( path_len ).c_str(), " %*s %*d %Ld", &N );
+					sscanf( line.substr( path_len ).c_str(), " %*s %*d %lld", &N );
 					break ;
 				}
 			}

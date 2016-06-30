@@ -137,12 +137,12 @@ void fat16::set_used_sectors( Partition & partition )
 	{
 		//total file system size in logical sectors
 		Glib::ustring::size_type index = output.rfind( "\n", output.find( "sectors total" ) ) + 1;
-		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &T ) != 1 )
+		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &T ) != 1 )
 			T = -1 ;
 
 		//bytes per logical sector
 		index = output .rfind( "\n", output .find( "bytes per logical sector" ) ) +1 ;
-		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 )
+		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &S ) != 1 )
 			S = -1 ;
 
 		if ( T > -1 && S > -1 )
@@ -150,14 +150,14 @@ void fat16::set_used_sectors( Partition & partition )
 
 		//free clusters
 		index = output .find( ",", output .find( partition .get_path() ) + partition .get_path() .length() ) +1 ;
-		if ( index < output .length() && sscanf( output .substr( index ) .c_str(), "%Ld/%Ld", &S, &N ) == 2 ) 
+		if ( index < output.length() && sscanf( output.substr( index ).c_str(), "%lld/%lld", &S, &N ) == 2 )
 			N -= S ;
 		else
 			N = -1 ;
 
 		//bytes per cluster
 		index = output .rfind( "\n", output .find( "bytes per cluster" ) ) +1 ;
-		if ( index >= output .length() || sscanf( output .substr( index ) .c_str(), "%Ld", &S ) != 1 )
+		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &S ) != 1 )
 			S = -1 ;
 	
 		if ( N > -1 && S > -1 )

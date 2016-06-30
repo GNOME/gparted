@@ -83,17 +83,17 @@ void reiserfs::set_used_sectors( Partition & partition )
 	{
 		Glib::ustring::size_type index = output.find( "Count of blocks on the device:" );
 		if ( index >= output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "Count of blocks on the device: %Ld", &T ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "Count of blocks on the device: %lld", &T ) != 1 )
 			T = -1 ;
 
 		index = output .find( "Blocksize:" ) ;
 		if ( index >= output .length() || 
-		     sscanf( output .substr( index ) .c_str(), "Blocksize: %Ld", &S ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "Blocksize: %lld", &S ) != 1 )
 			S = -1 ;
 
 		index = output .find( ":", output .find( "Free blocks" ) ) +1 ;
 		if ( index >= output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "%Ld", &N ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "%lld", &N ) != 1 )
 			N = -1 ;
 
 		if ( T > -1 && N > -1 && S > -1 )

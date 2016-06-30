@@ -129,12 +129,12 @@ void ntfs::set_used_sectors( Partition & partition )
 	{
 		Glib::ustring::size_type index = output.find( "Current volume size:" );
 		if ( index >= output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "Current volume size: %Ld", &T ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "Current volume size: %lld", &T ) != 1 )
 			T = -1 ;
 
 		index = output .find( "resize at" ) ;
 		if ( index >= output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "resize at %Ld", &N ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "resize at %lld", &N ) != 1 )
 			N = -1 ;
 		//For an absolutely full NTFS, "ntfsresize --info" exits
 		//  with status 1 and reports this message instead
@@ -144,7 +144,7 @@ void ntfs::set_used_sectors( Partition & partition )
 
 		index = output.find( "Cluster size" );
 		if ( index >= output.length() ||
-		     sscanf( output.substr( index ).c_str(), "Cluster size       : %Ld", &S ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "Cluster size       : %lld", &S ) != 1 )
 			S = -1;
 
 		if ( T > -1 && N > -1 )

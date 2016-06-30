@@ -66,17 +66,17 @@ void reiser4::set_used_sectors( Partition & partition )
 	{
 		Glib::ustring::size_type index = output.find( "\nblocks:" );
 		if ( index >= output .length() ||
-		     sscanf( output.substr( index ) .c_str(), "\nblocks: %Ld", &T ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "\nblocks: %lld", &T ) != 1 )
 			T = -1 ;
 
 		index = output .find( "\nfree blocks:" ) ;
 		if ( index >= output .length() ||
-		     sscanf( output.substr( index ) .c_str(), "\nfree blocks: %Ld", &N ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "\nfree blocks: %lld", &N ) != 1 )
 			N = -1 ;
 
 		index = output .find( "\nblksize:" ) ;
 		if ( index >= output.length() ||
-		     sscanf( output.substr( index ) .c_str(), "\nblksize: %Ld", &S ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "\nblksize: %lld", &S ) != 1 )
 			S = -1 ;
 
 		if ( T > -1 && N > -1 && S > -1 )

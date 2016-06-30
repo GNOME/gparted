@@ -95,19 +95,19 @@ void xfs::set_used_sectors( Partition & partition )
 			true ) )
 	{
 		//blocksize
-		if ( sscanf( output .c_str(), "blocksize = %Ld", &S ) != 1 )
+		if ( sscanf( output.c_str(), "blocksize = %lld", &S ) != 1 )
 			S = -1 ;
 
 		//filesystem blocks
 		Glib::ustring::size_type index = output.find( "\ndblocks" );
 		if ( index > output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "\ndblocks = %Ld", &T ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "\ndblocks = %lld", &T ) != 1 )
 			T = -1 ;
 
 		//free blocks
 		index = output .find( "\nfdblocks" ) ;
 		if ( index > output .length() ||
-		     sscanf( output .substr( index ) .c_str(), "\nfdblocks = %Ld", &N ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "\nfdblocks = %lld", &N ) != 1 )
 			N = -1 ;
 
 		if ( T > -1 && N > -1 && S > -1 )

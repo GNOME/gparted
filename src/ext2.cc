@@ -179,12 +179,12 @@ void ext2::set_used_sectors( Partition & partition )
 	{
 		Glib::ustring::size_type index = output.find( "Block count:" );
 		if ( index >= output .length() ||
-		     sscanf( output.substr( index ) .c_str(), "Block count: %Ld", &T ) != 1 )
+		     sscanf( output.substr( index ).c_str(), "Block count: %lld", &T ) != 1 )
 			T = -1 ;
 
 		index = output .find( "Block size:" ) ;
 		if ( index >= output.length() || 
-		     sscanf( output.substr( index ) .c_str(), "Block size: %Ld", &S ) != 1 )  
+		     sscanf( output.substr( index ).c_str(), "Block size: %lld", &S ) != 1 )
 			S = -1 ;
 
 		if ( T > -1 && S > -1 )
@@ -207,7 +207,7 @@ void ext2::set_used_sectors( Partition & partition )
 		{
 			index = output .find( "Free blocks:" ) ;
 			if ( index >= output .length() ||
-			     sscanf( output.substr( index ) .c_str(), "Free blocks: %Ld", &N ) != 1 )
+			     sscanf( output.substr( index ).c_str(), "Free blocks: %lld", &N ) != 1 )
 				N = -1 ;
 
 			if ( N > -1 && S > -1 )
@@ -382,7 +382,7 @@ void ext2::create_progress( OperationDetail *operationdetail )
 	Glib::ustring line = Utils::last_line( output );
 	// Text progress on the LAST LINE looks like "Writing inode tables:  105/1600"
 	long long progress, target;
-	if ( sscanf( line.c_str(), "Writing inode tables: %Ld/%Ld", &progress, &target ) == 2 )
+	if ( sscanf( line.c_str(), "Writing inode tables: %lld/%lld", &progress, &target ) == 2 )
 	{
 		operationdetail->run_progressbar( (double)progress, (double)target );
 	}
@@ -422,7 +422,7 @@ void ext2::copy_progress( OperationDetail *operationdetail )
 	Glib::ustring line = Utils::last_line( error );
 	// Text progress on the LAST LINE of STDERR looks like "Copying 146483 / 258033 blocks ..."
 	long long progress, target;
-	if ( sscanf( line.c_str(), "Copying %Ld / %Ld blocks", &progress, &target ) == 2 )
+	if ( sscanf( line.c_str(), "Copying %lld / %lld blocks", &progress, &target ) == 2 )
 	{
 		operationdetail->run_progressbar( (double)(progress * fs_block_size),
 		                                  (double)(target * fs_block_size),

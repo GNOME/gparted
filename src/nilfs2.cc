@@ -79,20 +79,20 @@ void nilfs2::set_used_sectors( Partition & partition )
 		//File system size in bytes
 		Glib::ustring::size_type index = output .find( "Device size:" ) ;
 		if (   index == Glib::ustring::npos
-		    || sscanf( output.substr( index ) .c_str(), "Device size: %Ld", &T ) != 1
+		    || sscanf( output.substr( index ).c_str(), "Device size: %lld", &T ) != 1
 		   )
 			T = -1 ;
 
 		//Free space in blocks
 		index = output .find( "Free blocks count:" ) ;
 		if (   index == Glib::ustring::npos
-		    || sscanf( output.substr( index ) .c_str(), "Free blocks count: %Ld", &N ) != 1
+		    || sscanf( output.substr( index ).c_str(), "Free blocks count: %lld", &N ) != 1
 		   )
 			N = -1 ;
 
 		index = output .find( "Block size:" ) ;
 		if (   index == Glib::ustring::npos
-		    || sscanf( output.substr( index ) .c_str(), "Block size: %Ld", &S ) != 1
+		    || sscanf( output.substr( index ).c_str(), "Block size: %lld", &S ) != 1
 		   )
 			S = -1 ;
 
