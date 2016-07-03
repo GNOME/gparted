@@ -61,6 +61,7 @@ public:
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
 	static bool is_dev_mounted( const Glib::ustring & path ) ;
+	static bool is_dev_mounted( const BlockSpecial & bs );
 	static std::vector<Glib::ustring> get_all_mountpoints() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	Glib::ustring get_libparted_version() ;

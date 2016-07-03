@@ -462,7 +462,7 @@ Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 	}
 
 	for ( unsigned int i = 0 ; i < btrfs_dev .members .size() ; i ++ )
-		if ( GParted_Core::is_dev_mounted( btrfs_dev.members[i].m_name ) )
+		if ( GParted_Core::is_dev_mounted( btrfs_dev.members[i] ) )
 			return btrfs_dev.members[i].m_name;
 	return "" ;
 }

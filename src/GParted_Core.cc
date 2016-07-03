@@ -970,8 +970,14 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 //Return whether the device path, such as /dev/sda3, is mounted or not
 bool GParted_Core::is_dev_mounted( const Glib::ustring & path )
 {
-	MountMapping::iterator iter_mp = mount_info.find( BlockSpecial( path ) );
-	return iter_mp != mount_info .end() ;
+	return is_dev_mounted( BlockSpecial( path ) );
+}
+
+// Return whether the BlockSpecial object, such as {"/dev/sda3", 8, 3}, is mounted or not
+bool GParted_Core::is_dev_mounted( const BlockSpecial & bs )
+{
+	MountMapping::const_iterator iter_mp = mount_info.find( bs );
+	return iter_mp != mount_info.end();
 }
 
 std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
