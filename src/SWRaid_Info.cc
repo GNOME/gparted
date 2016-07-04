@@ -15,7 +15,7 @@
  */
 
 #include "../include/SWRaid_Info.h"
-
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
@@ -29,12 +29,16 @@ namespace GParted
 // mdadm_found       - Is the "mdadm" command available?
 // swraid_info_cache - Vector of member information in Linux Software RAID arrays.
 //                     Only active arrays have /dev entries.
+//                     Notes:
+//                     *   BS(member) is short hand for constructor BlockSpecial(member).
+//                     *   Array is only displayed as the mount point to the user and
+//                         never compared so not constructing BlockSpecial object for it.
 //                     E.g.
-//                     //member     , array     , uuid                                  , label      , active
-//                     [{"/dev/sda1", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {"/dev/sda2", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {"/dev/sda6", ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
-//                      {"/dev/sdb6", ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
+//                     //member         , array     , uuid                                  , label      , active
+//                     [{BS("/dev/sda1)", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {BS("/dev/sda2"), "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {BS("/dev/sda6"), ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
+//                      {BS("/dev/sdb6"), ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
 //                     ]
 
 // Initialise static data elements
@@ -53,20 +57,18 @@ bool SWRaid_Info::is_member( const Glib::ustring & member_path )
 {
 	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
-	if ( memb.member == member_path )
+	if ( memb.member.m_name.length() > 0 )
 		return true;
 
 	return false;
 }
 
+// Return member/array active status, or false when there is no such member.
 bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 {
 	initialise_if_required();
 	const SWRaid_Member & memb = get_cache_entry_by_member( member_path );
-	if ( memb.member == member_path )
-		return memb.active;
-
-	return false;  // No such member
+	return memb.active;
 }
 
 // Return array /dev entry (e.g. "/dev/md1") containing the specified member, or "" if the
@@ -182,7 +184,7 @@ void SWRaid_Info::load_swraid_info_cache()
 				for ( unsigned int j = 0 ; j < devices.size() ; j ++ )
 				{
 					SWRaid_Member memb;
-					memb.member = devices[j];
+					memb.member = BlockSpecial( devices[j] );
 					memb.array = "";
 					memb.uuid = uuid;
 					memb.label = label;
@@ -273,7 +275,7 @@ void SWRaid_Info::load_swraid_info_cache()
 				for ( unsigned int i = 0 ; i < members.size() ; i ++ )
 				{
 					SWRaid_Member & memb = get_cache_entry_by_member( members[i] );
-					if ( memb.member == members[i] )
+					if ( memb.member.m_name.length() > 0 )
 					{
 						// Update existing cache entry, setting
 						// array and active flag.
@@ -286,7 +288,7 @@ void SWRaid_Info::load_swraid_info_cache()
 						// (Mdadm command possibly missing).
 						// Insert cache entry.
 						SWRaid_Member new_memb;
-						new_memb.member = members[i];
+						new_memb.member = BlockSpecial( members[i] );
 						new_memb.array = array;
 						new_memb.uuid = "";
 						new_memb.label = "";
@@ -310,12 +312,13 @@ void SWRaid_Info::load_swraid_info_cache()
 // Returns found cache entry or not found substitute.
 SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & member_path )
 {
+	BlockSpecial bs = BlockSpecial( member_path );
 	for ( unsigned int i = 0 ; i < swraid_info_cache.size() ; i ++ )
 	{
-		if ( member_path == swraid_info_cache[i].member )
+		if ( bs == swraid_info_cache[i].member )
 			return swraid_info_cache[i];
 	}
-	static SWRaid_Member memb = {"", "", "", "", false};
+	static SWRaid_Member memb = {BlockSpecial(), "", "", "", false};
 	return memb;
 }
 

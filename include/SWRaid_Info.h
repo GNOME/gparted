@@ -24,6 +24,8 @@
 #ifndef GPARTED_SWRAID_INFO_H
 #define GPARTED_SWRAID_INFO_H
 
+#include "../include/BlockSpecial.h"
+
 #include <glibmm/ustring.h>
 #include <vector>
 
@@ -32,7 +34,7 @@ namespace GParted
 
 struct SWRaid_Member
 {
-	Glib::ustring member;
+	BlockSpecial  member;
 	Glib::ustring array;
 	Glib::ustring uuid;
 	Glib::ustring label;
