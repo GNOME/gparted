@@ -15,6 +15,7 @@
  */
 
 #include "../include/LUKS_Info.h"
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
 
 #include <stdio.h>
@@ -97,18 +98,16 @@ void LUKS_Info::load_cache()
 
 		// Extract LUKS underlying device containing the encrypted data.  May be
 		// either a device name (/dev/sda1) or major, minor pair (8:1).
-		luks_map.major = 0UL;
-		luks_map.minor = 0UL;
-		luks_map.path.clear();
+		luks_map.container = BlockSpecial();
 		Glib::ustring devpath = fields[DMCRYPT_FIELD_devpath];
 		unsigned long maj = 0UL;
 		unsigned long min = 0UL;
 		if ( devpath.length() > 0 && devpath[0] == '/' )
-			luks_map.path = devpath;
+			luks_map.container = BlockSpecial( devpath );
 		else if ( sscanf( devpath.c_str(), "%lu:%lu", &maj, &min ) == 2 )
 		{
-			luks_map.major = maj;
-			luks_map.minor = min;
+			luks_map.container.m_major = maj;
+			luks_map.container.m_minor = min;
 		}
 		else
 			continue;
@@ -135,35 +134,21 @@ void LUKS_Info::load_cache()
 // or not found substitute when no entry exists.
 const LUKS_Mapping & LUKS_Info::get_cache_entry_internal( const Glib::ustring & path )
 {
-	// First scan the cache looking for an underlying block device path match.
-	// (Totally in memory)
+	BlockSpecial bs = BlockSpecial( path );
 	for ( unsigned int i = 0 ; i < luks_mapping_cache.size() ; i ++ )
 	{
-		if ( path == luks_mapping_cache[i].path )
-			return luks_mapping_cache[i];
-	}
-
-	// Second scan the cache looking for an underlying block device major, minor
-	// match.  (Requires single stat(2) call per search)
-	struct stat sb;
-	if ( stat( path.c_str(), &sb ) == 0 && S_ISBLK( sb.st_mode ) )
-	{
-		unsigned long maj = major( sb.st_rdev );
-		unsigned long min = minor( sb.st_rdev );
-		for ( unsigned int i = 0 ; i < luks_mapping_cache.size() ; i ++ )
+		if ( bs == luks_mapping_cache[i].container )
 		{
-			if ( maj == luks_mapping_cache[i].major && min == luks_mapping_cache[i].minor )
-			{
-				// Store path in cache to avoid stat() call on subsequent
-				// query for the same path.
-				luks_mapping_cache[i].path = path;
+			// Store underlying block device path in the BlockSpecial object
+			// if not already known.  Not required, just for completeness.
+			if ( ! luks_mapping_cache[i].container.m_name.length() )
+				luks_mapping_cache[i].container.m_name = path;
 
-				return luks_mapping_cache[i];
-			}
+			return luks_mapping_cache[i];
 		}
 	}
 
-	static LUKS_Mapping not_found = {"", 0UL, 0UL, "", -1LL, -1LL};
+	static LUKS_Mapping not_found = {"", BlockSpecial(), -1LL, -1LL};
 	return not_found;
 }
 

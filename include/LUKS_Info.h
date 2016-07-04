@@ -25,6 +25,7 @@
 #ifndef GPARTED_LUKS_INFO_H
 #define GPARTED_LUKS_INFO_H
 
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
@@ -35,12 +36,10 @@ namespace GParted
 
 struct LUKS_Mapping
 {
-	Glib::ustring name;    // Name of the dm-crypt mapping
-	unsigned long major;   // Major device number of the underlying block device
-	unsigned long minor;   // Minor device number of the underlying block device
-	Glib::ustring path;    // Path of the underlying block device
-	Byte_Value    offset;  // Offset to the start of the mapping in the underlying block device
-	Byte_Value    length;  // Length of the mapping in the underlying block device
+	Glib::ustring name;       // Name of the dm-crypt mapping
+	BlockSpecial  container;  // Underlying block device containing the LUKS mapping
+	Byte_Value    offset;     // Offset to the start of the mapping in the underlying block device
+	Byte_Value    length;     // Length of the mapping in the underlying block device
 };
 
 class LUKS_Info
