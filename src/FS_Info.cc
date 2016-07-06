@@ -25,7 +25,6 @@ bool FS_Info::blkid_found  = false ;
 // Assume workaround is needed just in case determination fails and as
 // it only costs a fraction of a second to run blkid command again.
 bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
-bool FS_Info::vol_id_found  = false ;
 Glib::ustring FS_Info::fs_info_cache = "";
 
 FS_Info::FS_Info()
@@ -91,8 +90,6 @@ void FS_Info::set_commands_found()
 					  ( blkid_major_ver == 2 && blkid_minor_ver < 23 )    );
 		}
 	}
-
-	vol_id_found = (! Glib::find_program_in_path( "vol_id" ) .empty() ) ;
 }
 
 Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
@@ -134,13 +131,6 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 			fs_type = "fat32" ;
 	}
 
-	if ( fs_type .empty() && vol_id_found )
-	{
-		//Retrieve TYPE using vol_id command
-		if ( ! Utils::execute_command( "vol_id " + path, output, error, true ) )
-			fs_type = Utils::regexp_label( output, "ID_FS_TYPE=([^\n]*)" ) ;
-	}
-
 	return fs_type ;
 }
 
@@ -168,16 +158,6 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 
 	//Retrieve the UUID
 	Glib::ustring uuid = Utils::regexp_label( temp, " UUID=\"([^\"]*)\"" );
-
-	if ( uuid .empty() && vol_id_found )
-	{
-		//Retrieve UUID using vol_id command
-		Glib::ustring output, error ;
-		if ( ! Utils::execute_command( "vol_id " + path, output, error, true ) )
-		{
-			uuid = Utils::regexp_label( output, "ID_FS_UUID=([^\n]*)" ) ;
-		}
-	}
 
 	return uuid ;
 }
