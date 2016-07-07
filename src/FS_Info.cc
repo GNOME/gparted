@@ -15,6 +15,7 @@
  */
 
 #include "../include/FS_Info.h"
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
@@ -32,15 +33,16 @@ bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 
 // Vector of file system information.
 // E.g.
-//     //path                     , type         , sec_type, uuid                                    , have_label, label
-//     [{"/dev/sda1"              , "xfs"        , ""      , "f828ee8c-1e16-4ca9-b234-e4949dcd4bd1"  , false     , ""          },
-//      {"/dev/sda2"              , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
-//      {"/dev/block/8:2"         , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
-//      {"/dev/mapper/centos-root", "xfs"        , ""      , "a195605d-22c1-422d-9213-1ed67f1eee46"  , false     , ""          },
-//      {"/dev/mapper/centos-swap", "swap"       , ""      , "8d419cb6-c663-4db7-b91c-6bcef8418a4d"  , false     , ""          },
-//      {"/dev/sdb1"              , "ext3"       , "ext2"  , "f218c3b8-237e-4fbe-92c5-76623bba4062"  , true      , "test-ext3" },
-//      {"/dev/sdb2"              , "vfat"       , "msdos" , "9F87-1061"                             , true      , "TEST-FAT16"},
-//      {"/dev/sdb3"              , ""           , ""      , ""                                      , false     , ""          }
+// (Note BS(path) is a short hand for constructor BlockSpecial(path)).
+//     //path                         , type         , sec_type, uuid                                    , have_label, label
+//     [{BS("/dev/sda1")              , "xfs"        , ""      , "f828ee8c-1e16-4ca9-b234-e4949dcd4bd1"  , false     , ""          },
+//      {BS("/dev/sda2")              , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
+//      {BS("/dev/block/8:2")         , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
+//      {BS("/dev/mapper/centos-root"), "xfs"        , ""      , "a195605d-22c1-422d-9213-1ed67f1eee46"  , false     , ""          },
+//      {BS("/dev/mapper/centos-swap"), "swap"       , ""      , "8d419cb6-c663-4db7-b91c-6bcef8418a4d"  , false     , ""          },
+//      {BS("/dev/sdb1")              , "ext3"       , "ext2"  , "f218c3b8-237e-4fbe-92c5-76623bba4062"  , true      , "test-ext3" },
+//      {BS("/dev/sdb2")              , "vfat"       , "msdos" , "9F87-1061"                             , true      , "TEST-FAT16"},
+//      {BS("/dev/sdb3")              , ""           , ""      , ""                                      , false     , ""          }
 //     ]
 std::vector<FS_Entry> FS_Info::fs_info_cache;
 
@@ -124,7 +126,7 @@ Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 {
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( uuid == fs_info_cache[i].uuid )
-			return fs_info_cache[i].path;
+			return fs_info_cache[i].path.m_name;
 
 	return "";
 }
@@ -134,7 +136,7 @@ Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 {
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( label == fs_info_cache[i].label )
-			return fs_info_cache[i].path;
+			return fs_info_cache[i].path.m_name;
 
 	return "";
 }
@@ -188,10 +190,11 @@ void FS_Info::load_fs_info_cache()
 		Utils::split( output, lines, "\n" );
 		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
 		{
-			FS_Entry fs_entry = {"", "", "", "", false, ""};
-			fs_entry.path = Utils::regexp_label( lines[i], "^(.*): " );
-			if ( fs_entry.path.length() > 0 )
+			FS_Entry fs_entry = {BlockSpecial(), "", "", "", false, ""};
+			Glib::ustring path = Utils::regexp_label( lines[i], "^(.*): " );
+			if ( path.length() > 0 )
 			{
+				fs_entry.path = BlockSpecial( path );
 				fs_entry.type = Utils::regexp_label( lines[i], " TYPE=\"([^\"]*)\"" );
 				fs_entry.sec_type = Utils::regexp_label( lines[i], " SEC_TYPE=\"([^\"]*)\"" );
 				fs_entry.uuid = Utils::regexp_label( lines[i], " UUID=\"([^\"]*)\"" );
@@ -212,7 +215,7 @@ const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 		if ( path == fs_info_cache[i].path )
 			return fs_info_cache[i];
 
-	static FS_Entry not_found = {"", "", "", "", false, ""};
+	static FS_Entry not_found = {BlockSpecial(), "", "", "", false, ""};
 	return not_found;
 }
 

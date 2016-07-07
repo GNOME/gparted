@@ -17,6 +17,8 @@
 #ifndef GPARTED_FS_INFO_H
 #define GPARTED_FS_INFO_H
 
+#include "../include/BlockSpecial.h"
+
 #include <glibmm/ustring.h>
 #include <vector>
 
@@ -25,7 +27,7 @@ namespace GParted
 
 struct FS_Entry
 {
-	Glib::ustring path;
+	BlockSpecial  path;
 	Glib::ustring type;
 	Glib::ustring sec_type;
 	Glib::ustring uuid;
