@@ -17,10 +17,21 @@
 #ifndef GPARTED_FS_INFO_H
 #define GPARTED_FS_INFO_H
 
-#include "../include/Utils.h"
+#include <glibmm/ustring.h>
+#include <vector>
 
 namespace GParted
 {
+
+struct FS_Entry
+{
+	Glib::ustring path;
+	Glib::ustring type;
+	Glib::ustring sec_type;
+	Glib::ustring uuid;
+	bool          have_label;
+	Glib::ustring label;
+};
 
 class FS_Info
 {
@@ -33,14 +44,16 @@ public:
 	Glib::ustring get_uuid( const Glib::ustring & path ) ;
 	Glib::ustring get_path_by_uuid( const Glib::ustring & uuid ) ;
 	Glib::ustring get_path_by_label( const Glib::ustring & label ) ;
+
 private:
-	void load_fs_info_cache() ;
-	void set_commands_found() ;
-	Glib::ustring get_device_entry( const Glib::ustring & path ) ;
+	static void set_commands_found();
+	static void load_fs_info_cache();
+	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
+
 	static bool fs_info_cache_initialized ;
 	static bool blkid_found ;
 	static bool need_blkid_vfat_cache_update_workaround;
-	static Glib::ustring fs_info_cache ;
+	static std::vector<FS_Entry> fs_info_cache;
 };
 
 }//GParted

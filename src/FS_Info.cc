@@ -15,6 +15,10 @@
  */
 
 #include "../include/FS_Info.h"
+#include "../include/Utils.h"
+
+#include <glibmm/ustring.h>
+#include <vector>
 
 namespace GParted
 {
@@ -25,7 +29,20 @@ bool FS_Info::blkid_found  = false ;
 // Assume workaround is needed just in case determination fails and as
 // it only costs a fraction of a second to run blkid command again.
 bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
-Glib::ustring FS_Info::fs_info_cache = "";
+
+// Vector of file system information.
+// E.g.
+//     //path                     , type         , sec_type, uuid                                    , have_label, label
+//     [{"/dev/sda1"              , "xfs"        , ""      , "f828ee8c-1e16-4ca9-b234-e4949dcd4bd1"  , false     , ""          },
+//      {"/dev/sda2"              , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
+//      {"/dev/block/8:2"         , "LVM2_member", ""      , "p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG", false     , ""          },
+//      {"/dev/mapper/centos-root", "xfs"        , ""      , "a195605d-22c1-422d-9213-1ed67f1eee46"  , false     , ""          },
+//      {"/dev/mapper/centos-swap", "swap"       , ""      , "8d419cb6-c663-4db7-b91c-6bcef8418a4d"  , false     , ""          },
+//      {"/dev/sdb1"              , "ext3"       , "ext2"  , "f218c3b8-237e-4fbe-92c5-76623bba4062"  , true      , "test-ext3" },
+//      {"/dev/sdb2"              , "vfat"       , "msdos" , "9F87-1061"                             , true      , "TEST-FAT16"},
+//      {"/dev/sdb3"              , ""           , ""      , ""                                      , false     , ""          }
+//     ]
+std::vector<FS_Entry> FS_Info::fs_info_cache;
 
 FS_Info::FS_Info()
 {
@@ -57,17 +74,72 @@ FS_Info::~FS_Info()
 {
 }
 
-void FS_Info::load_fs_info_cache()
+// Retrieve the file system type for the path
+Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 {
-	Glib::ustring output, error ;
-	if ( blkid_found )
+	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
+	Glib::ustring fs_type = fs_entry.type;
+	Glib::ustring fs_sec_type = fs_entry.sec_type;
+
+	// If vfat, decide whether fat16 or fat32
+	if ( fs_type == "vfat" )
 	{
-		if ( ! Utils::execute_command( "blkid", output, error, true ) )
-			fs_info_cache = output ;
+		if ( need_blkid_vfat_cache_update_workaround )
+		{
+			// Blkid cache does not correctly add and remove SEC_TYPE when
+			// overwriting FAT16 and FAT32 file systems with each other, so
+			// prevents correct identification.  Run blkid command again,
+			// bypassing the the cache to get the correct results.
+			Glib::ustring output;
+			Glib::ustring error;
+			if ( ! Utils::execute_command( "blkid -c /dev/null " + path, output, error, true ) )
+				fs_sec_type = Utils::regexp_label( output, " SEC_TYPE=\"([^\"]*)\"" );
+		}
+		if ( fs_sec_type == "msdos" )
+			fs_type = "fat16";
 		else
-			fs_info_cache = "" ;
+			fs_type = "fat32";
 	}
+
+	return fs_type;
 }
+
+// Retrieve the label and set found indicator for the path
+Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
+{
+	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
+	found = fs_entry.have_label;
+	return fs_entry.label;
+}
+
+// Retrieve the uuid given for the path
+Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
+{
+	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
+	return fs_entry.uuid;
+}
+
+// Retrieve the path given the uuid
+Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
+{
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( uuid == fs_info_cache[i].uuid )
+			return fs_info_cache[i].path;
+
+	return "";
+}
+
+// Retrieve the path given the label
+Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
+{
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( label == fs_info_cache[i].label )
+			return fs_info_cache[i].path;
+
+	return "";
+}
+
+// Private methods
 
 void FS_Info::set_commands_found()
 {
@@ -92,92 +164,56 @@ void FS_Info::set_commands_found()
 	}
 }
 
-Glib::ustring FS_Info::get_device_entry( const Glib::ustring & path )
+void FS_Info::load_fs_info_cache()
 {
-	//Retrieve the line containing the device path
-	Glib::ustring regexp = "^" + path + ":([^\n]*)$" ;
-	Glib::ustring entry = Utils::regexp_label( fs_info_cache, regexp ) ;
-	return entry;
-}
+	fs_info_cache.clear();
 
-Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
-{
-	Glib::ustring fs_type = "" ;
-	Glib::ustring fs_sec_type = "" ;
-
-	//Retrieve the line containing the device path
-	Glib::ustring dev_path_line = get_device_entry( path ) ;
-	
-	//Retrieve TYPE
-	fs_type     = Utils::regexp_label( dev_path_line, " TYPE=\"([^\"]*)\"" );
-	fs_sec_type = Utils::regexp_label( dev_path_line, " SEC_TYPE=\"([^\"]*)\"" );
-
-	//If vfat, decide whether fat16 or fat32
-	Glib::ustring output, error;
-	if ( fs_type == "vfat" )
+	// Parse blkid output line by line extracting fields mandatory field path and
+	// optional fields: type, sec_type, uuid, label.
+	// Example output:
+	//     /dev/sda1: UUID="f828ee8c-1e16-4ca9-b234-e4949dcd4bd1" TYPE="xfs"
+	//     /dev/sda2: UUID="p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG" TYPE="LVM2_member"
+	//     /dev/block/8:2: UUID="p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG" TYPE="LVM2_member"
+	//     /dev/mapper/centos-root: UUID="a195605d-22c1-422d-9213-1ed67f1eee46" TYPE="xfs"
+	//     /dev/mapper/centos-swap: UUID="8d419cb6-c663-4db7-b91c-6bcef8418a4d" TYPE="swap"
+	//     /dev/sdb1: LABEL="test-ext3" UUID="f218c3b8-237e-4fbe-92c5-76623bba4062" SEC_TYPE="ext2" TYPE="ext3" PARTUUID="71b3e059-30c5-492e-a526-9251dff7bbeb"
+	//     /dev/sdb2: SEC_TYPE="msdos" LABEL="TEST-FAT16" UUID="9F87-1061" TYPE="vfat" PARTUUID="9d07ad9a-d468-428f-9bfd-724f5efae4fb"
+	//     /dev/sdb3: PARTUUID="bb8438e1-d9f1-45d3-9888-e990b598900d"
+	Glib::ustring output;
+	Glib::ustring error;
+	if ( blkid_found                                              &&
+	     ! Utils::execute_command( "blkid", output, error, true )    )
 	{
-		if ( need_blkid_vfat_cache_update_workaround )
+		std::vector<Glib::ustring> lines;
+		Utils::split( output, lines, "\n" );
+		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
 		{
-			// Blkid cache does not correctly add and remove SEC_TYPE when
-			// overwriting FAT16 and FAT32 file systems with each other, so
-			// prevents correct identification.  Run blkid command again,
-			// bypassing the the cache to get the correct results.
-			if ( ! Utils::execute_command( "blkid -c /dev/null " + path, output, error, true ) )
-				fs_sec_type = Utils::regexp_label( output, " SEC_TYPE=\"([^\"]*)\"" );
+			FS_Entry fs_entry = {"", "", "", "", false, ""};
+			fs_entry.path = Utils::regexp_label( lines[i], "^(.*): " );
+			if ( fs_entry.path.length() > 0 )
+			{
+				fs_entry.type = Utils::regexp_label( lines[i], " TYPE=\"([^\"]*)\"" );
+				fs_entry.sec_type = Utils::regexp_label( lines[i], " SEC_TYPE=\"([^\"]*)\"" );
+				fs_entry.uuid = Utils::regexp_label( lines[i], " UUID=\"([^\"]*)\"" );
+				if ( lines[i].find( " LABEL=\"" ) != Glib::ustring::npos )
+				{
+					fs_entry.have_label = true;
+					fs_entry.label = Utils::regexp_label( lines[i], " LABEL=\"([^\"]*)\"" );
+				}
+				fs_info_cache.push_back( fs_entry );
+			}
 		}
-		if ( fs_sec_type == "msdos" )
-			fs_type = "fat16" ;
-		else
-			fs_type = "fat32" ;
 	}
-
-	return fs_type ;
 }
 
-Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
+const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
 {
-	Glib::ustring label = "" ;
-	found = false ;
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( path == fs_info_cache[i].path )
+			return fs_info_cache[i];
 
-	//Retrieve the line containing the device path
-	Glib::ustring temp = get_device_entry( path ) ;
-	
-	//Set indicator if LABEL found
-	if ( Utils::regexp_label( temp, "( LABEL=\")") != "" )
-		found = true ;
-
-	//Retrieve LABEL
-	label = Utils::regexp_label( temp, " LABEL=\"([^\"]*)\"" );
-	return label ;
-}
-
-Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
-{
-	//Retrieve the line containing the device path
-	Glib::ustring temp = get_device_entry( path ) ;
-
-	//Retrieve the UUID
-	Glib::ustring uuid = Utils::regexp_label( temp, " UUID=\"([^\"]*)\"" );
-
-	return uuid ;
-}
-
-Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
-{
-	//Retrieve the path given the uuid
-	Glib::ustring regexp = "^([^:]*):.* UUID=\"" + uuid + "\".*$";
-	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
-
-	return path ;
-}
-
-Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
-{
-	//Retrieve the path given the label
-	Glib::ustring regexp = "^([^:]*):.* LABEL=\"" + label + "\".*$";
-	Glib::ustring path = Utils::regexp_label( fs_info_cache, regexp ) ;
-
-	return path ;
+	static FS_Entry not_found = {"", "", "", "", false, ""};
+	return not_found;
 }
 
 }//GParted
