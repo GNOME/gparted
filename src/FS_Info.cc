@@ -46,39 +46,17 @@ bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 //     ]
 std::vector<FS_Entry> FS_Info::fs_info_cache;
 
-FS_Info::FS_Info()
+void FS_Info::load_cache()
 {
-	//Ensure that cache has been loaded at least once
-	if ( ! fs_info_cache_initialized )
-	{
-		fs_info_cache_initialized = true ;
-		set_commands_found() ;
-		load_fs_info_cache() ;
-	}
-}
-
-FS_Info:: FS_Info( bool do_refresh )
-{
-	//Ensure that cache has been loaded at least once
-	if ( ! fs_info_cache_initialized )
-	{
-		fs_info_cache_initialized = true ;
-		set_commands_found() ;
-		if ( do_refresh == false )
-			load_fs_info_cache() ;
-	}
-
-	if ( do_refresh )
-		load_fs_info_cache() ;
-}
-
-FS_Info::~FS_Info()
-{
+	set_commands_found();
+	load_fs_info_cache();
+	fs_info_cache_initialized = true;
 }
 
 // Retrieve the file system type for the path
 Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 {
+	initialize_if_required();
 	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
 	Glib::ustring fs_type = fs_entry.type;
 	Glib::ustring fs_sec_type = fs_entry.sec_type;
@@ -109,6 +87,7 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 // Retrieve the label and set found indicator for the path
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
+	initialize_if_required();
 	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
 	found = fs_entry.have_label;
 	return fs_entry.label;
@@ -117,6 +96,7 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 // Retrieve the uuid given for the path
 Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 {
+	initialize_if_required();
 	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
 	return fs_entry.uuid;
 }
@@ -124,6 +104,7 @@ Glib::ustring FS_Info::get_uuid( const Glib::ustring & path )
 // Retrieve the path given the uuid
 Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 {
+	initialize_if_required();
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( uuid == fs_info_cache[i].uuid )
 			return fs_info_cache[i].path.m_name;
@@ -134,6 +115,7 @@ Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 // Retrieve the path given the label
 Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 {
+	initialize_if_required();
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( label == fs_info_cache[i].label )
 			return fs_info_cache[i].path.m_name;
@@ -142,6 +124,16 @@ Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 }
 
 // Private methods
+
+void FS_Info::initialize_if_required()
+{
+	if ( ! fs_info_cache_initialized )
+	{
+		set_commands_found();
+		load_fs_info_cache();
+		fs_info_cache_initialized = true;
+	}
+}
 
 void FS_Info::set_commands_found()
 {

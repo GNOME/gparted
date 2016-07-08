@@ -171,7 +171,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	                                        // objects are created in the following caches.
 	Proc_Partitions_Info::load_cache();     // SHOULD BE SECOND.  Caches /proc/partitions and
 	                                        // pre-populates BlockSpecial cache.
-	FS_Info fs_info( true ) ;  //Refresh cache of file system information
+	FS_Info::load_cache();
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
@@ -1067,8 +1067,6 @@ void GParted_Core::init_maps()
 
 void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map )
 {
-	FS_Info fs_info ;  //Use cache of file system information
-
 	FILE* fp = setmntent( filename .c_str(), "r" ) ;
 
 	if ( fp == NULL )
@@ -1083,11 +1081,11 @@ void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename, M
 
 		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" ) ;
 		if ( ! uuid .empty() )
-			node = fs_info .get_path_by_uuid( uuid ) ;
+			node = FS_Info::get_path_by_uuid( uuid );
 
 		Glib::ustring label = Utils::regexp_label( node, "^LABEL=(.*)" ) ;
 		if ( ! label .empty() )
-			node = fs_info .get_path_by_label( label ) ;
+			node = FS_Info::get_path_by_label( label );
 
 		if ( ! node .empty() )
 			add_node_and_mountpoint( map, node, mountpoint ) ;
@@ -1483,7 +1481,6 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 
 void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 {
-	FS_Info fs_info;  // Use cache of file system information
 	Glib::ustring partition_path = partition.get_path();
 
 	// For SWRaid members only get the label and UUID from SWRaid_Info.  Never use
@@ -1505,14 +1502,14 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	if ( ! partition.filesystem_label_known() )
 	{
 		bool label_found = false;
-		Glib::ustring label = fs_info.get_label( partition_path, label_found );
+		Glib::ustring label = FS_Info::get_label( partition_path, label_found );
 		if ( label_found )
 			partition.set_filesystem_label( label );
 	}
 
 	// Retrieve file system UUID.  Use cached method first in an effort to speed up
 	// device scanning.
-	partition.uuid = fs_info.get_uuid( partition_path );
+	partition.uuid = FS_Info::get_uuid( partition_path );
 	if ( partition.uuid.empty() )
 	{
 		read_uuid( partition );
@@ -1613,7 +1610,6 @@ FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedP
 FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
                                             std::vector<Glib::ustring> & messages )
 {
-	FS_Info fs_info ;
 	Glib::ustring fsname = "";
 	Glib::ustring path;
 
@@ -1633,7 +1629,7 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	// (Q2) FS_Info (blkid) file system detection
 	// Blkid detects more signatures and generally has less limitations so use before
 	// libparted detection, but it doesn't report anything for extended partitions.
-	fsname = fs_info.get_fs_type( path );
+	fsname = FS_Info::get_fs_type( path );
 
 	// (Q3) Libparted file system detection
 	// Only used when blkid didn't report anything and only on partitions, not whole

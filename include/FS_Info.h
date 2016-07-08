@@ -38,16 +38,15 @@ struct FS_Entry
 class FS_Info
 {
 public:
-	FS_Info() ;
-	FS_Info( bool do_refresh ) ;
-	~FS_Info() ;
-	Glib::ustring get_fs_type( const Glib::ustring & path ) ;
-	Glib::ustring get_label( const Glib::ustring & path, bool & found ) ;
-	Glib::ustring get_uuid( const Glib::ustring & path ) ;
-	Glib::ustring get_path_by_uuid( const Glib::ustring & uuid ) ;
-	Glib::ustring get_path_by_label( const Glib::ustring & label ) ;
+	static void load_cache();
+	static Glib::ustring get_fs_type( const Glib::ustring & path );
+	static Glib::ustring get_label( const Glib::ustring & path, bool & found );
+	static Glib::ustring get_uuid( const Glib::ustring & path );
+	static Glib::ustring get_path_by_uuid( const Glib::ustring & uuid );
+	static Glib::ustring get_path_by_label( const Glib::ustring & label );
 
 private:
+	static void initialize_if_required();
 	static void set_commands_found();
 	static void load_fs_info_cache();
 	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
