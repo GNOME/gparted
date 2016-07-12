@@ -169,7 +169,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
 	                                        // numbers incrementally loaded when BlockSpecial
 	                                        // objects are created in the following caches.
-	Proc_Partitions_Info pp_info( true ) ;  // SHOULD BE SECOND.  Caches /proc/partitions and
+	Proc_Partitions_Info::load_cache();     // SHOULD BE SECOND.  Caches /proc/partitions and
 	                                        // pre-populates BlockSpecial cache.
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
@@ -191,7 +191,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		//        http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/194
 		//
 		//try to find all available devices if devices exist in /proc/partitions
-		std::vector<Glib::ustring> temp_devices = pp_info .get_device_paths() ;
+		std::vector<Glib::ustring> temp_devices = Proc_Partitions_Info::get_device_paths();
 		if ( ! temp_devices .empty() )
 		{
 			//Try to find all devices in /proc/partitions

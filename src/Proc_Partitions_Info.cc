@@ -30,40 +30,28 @@ namespace GParted
 bool Proc_Partitions_Info::proc_partitions_info_cache_initialized = false ;
 std::vector<Glib::ustring> Proc_Partitions_Info::device_paths_cache ;
 
-Proc_Partitions_Info::Proc_Partitions_Info()
+void Proc_Partitions_Info::load_cache()
 {
-	//Ensure that cache has been loaded at least once
+	load_proc_partitions_info_cache();
+	proc_partitions_info_cache_initialized = true;
+}
+
+const std::vector<Glib::ustring> & Proc_Partitions_Info::get_device_paths()
+{
+	initialize_if_required();
+	return device_paths_cache;
+}
+
+// Private Methods
+
+void Proc_Partitions_Info::initialize_if_required()
+{
 	if ( ! proc_partitions_info_cache_initialized )
 	{
-		proc_partitions_info_cache_initialized = true ;
-		load_proc_partitions_info_cache() ;
+		load_proc_partitions_info_cache();
+		proc_partitions_info_cache_initialized = true;
 	}
 }
-
-Proc_Partitions_Info::Proc_Partitions_Info( bool do_refresh )
-{
-	//Ensure that cache has been loaded at least once
-	if ( ! proc_partitions_info_cache_initialized )
-	{
-		proc_partitions_info_cache_initialized = true ;
-		if ( do_refresh == false )
-			load_proc_partitions_info_cache() ;
-	}
-
-	if ( do_refresh )
-		load_proc_partitions_info_cache() ;
-}
-
-Proc_Partitions_Info::~Proc_Partitions_Info()
-{
-}
-
-std::vector<Glib::ustring> Proc_Partitions_Info::get_device_paths()
-{
-	return device_paths_cache ;
-}
-
-//Private Methods
 
 void Proc_Partitions_Info::load_proc_partitions_info_cache()
 {
