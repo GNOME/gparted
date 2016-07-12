@@ -20,9 +20,26 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <map>
 
 namespace GParted
 {
+
+struct MM_Number
+{
+	unsigned long m_major;
+	unsigned long m_minor;
+};
+
+typedef std::map<Glib::ustring, MM_Number> MMNumberMapping;
+
+// Associative array caching name to major, minor number pairs
+// E.g.
+//     mm_number_cache["/dev/sda"]  = {8, 0}
+//     mm_number_cache["/dev/sda1"] = {8, 1}
+//     mm_number_cache["proc"]      = {0, 0}
+//     mm_number_cache["sysfs"]     = {0, 0}
+static MMNumberMapping mm_number_cache;
 
 BlockSpecial::BlockSpecial() : m_name( "" ), m_major( 0UL ), m_minor( 0UL )
 {
@@ -30,16 +47,36 @@ BlockSpecial::BlockSpecial() : m_name( "" ), m_major( 0UL ), m_minor( 0UL )
 
 BlockSpecial::BlockSpecial( const Glib::ustring & name ) : m_name( name ), m_major( 0UL ), m_minor( 0UL )
 {
+	MMNumberMapping::const_iterator mm_num_iter = mm_number_cache.find( name );
+	if ( mm_num_iter != mm_number_cache.end() )
+	{
+		// Use already cached major, minor pair
+		m_major = mm_num_iter->second.m_major;
+		m_minor = mm_num_iter->second.m_minor;
+		return;
+	}
+
+	MM_Number pair = {0UL, 0UL};
+	// Call stat(name, ...) to get the major, minor pair
 	struct stat sb;
 	if ( stat( name.c_str(), &sb ) == 0 && S_ISBLK( sb.st_mode ) )
 	{
 		m_major = major( sb.st_rdev );
 		m_minor = minor( sb.st_rdev );
+		pair.m_major = m_major;
+		pair.m_minor = m_minor;
 	}
+	// Add new cache entry for name to major, minor pair
+	mm_number_cache[name] = pair;
 }
 
 BlockSpecial::~BlockSpecial()
 {
+}
+
+void BlockSpecial::clear_cache()
+{
+	mm_number_cache.clear();
 }
 
 bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs )

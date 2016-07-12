@@ -41,6 +41,8 @@ public:
 	Glib::ustring m_name;   // E.g. Block special file {"/dev/sda1", 8, 1},
 	unsigned long m_major;  // plain file {"FILENAME", 0, 0} and empty object
 	unsigned long m_minor;  // {"", 0, 0}.
+
+	static void clear_cache();
 };
 
 // Operator overloading > The Decision between Member and Non-member
