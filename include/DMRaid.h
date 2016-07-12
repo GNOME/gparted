@@ -54,8 +54,6 @@ public:
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
-	bool partition_is_mounted_by_path( const Glib::ustring & partition_path
-	                                 , const std::vector<Glib::ustring> & mount_info ) ;
 	bool purge_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 private:
