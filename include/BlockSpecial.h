@@ -43,6 +43,8 @@ public:
 	unsigned long m_minor;  // {"", 0, 0}.
 
 	static void clear_cache();
+	static void register_block_special( const Glib::ustring & name,
+	                                    unsigned long major, unsigned long minor );
 };
 
 // Operator overloading > The Decision between Member and Non-member

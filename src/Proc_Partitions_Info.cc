@@ -15,11 +15,13 @@
  */
 
 #include "../include/Proc_Partitions_Info.h"
+#include "../include/BlockSpecial.h"
 #include "../include/Utils.h"
 
 #include <glibmm/ustring.h>
 #include <vector>
 #include <fstream>
+#include <stdio.h>
 
 namespace GParted
 {
@@ -73,10 +75,23 @@ void Proc_Partitions_Info::load_proc_partitions_info_cache()
 		std::string line ;
 		Glib::ustring device;
 
-		// Read whole disk device names, excluding partitions, from
-		// /proc/partitions and save in this cache.
 		while ( getline( proc_partitions, line ) )
 		{
+			// Pre-populate BlockSpecial cache with major, minor numbers of
+			// all names found from /proc/partitions.
+			Glib::ustring name = Utils::regexp_label( line,
+			        "^[[:blank:]]*[[:digit:]]+[[:blank:]]+[[:digit:]]+[[:blank:]]+[[:digit:]]+[[:blank:]]+([[:graph:]]+)$" );
+			if ( name == "" )
+				continue;
+			unsigned long maj;
+			unsigned long min;
+			if ( sscanf( line.c_str(), "%lu %lu", &maj, &min ) != 2 )
+				continue;
+			BlockSpecial::register_block_special( "/dev/" + name, maj, min );
+
+			// Recognise only whole disk device names, excluding partitions,
+			// from /proc/partitions and save in this cache.
+
 			//Whole disk devices are the ones we want.
 			//Device names without a trailing digit refer to the whole disk.
 			device = Utils::regexp_label(line, "^[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+[0-9]+[\t ]+([^0-9]+)$") ;

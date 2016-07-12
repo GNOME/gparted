@@ -79,6 +79,16 @@ void BlockSpecial::clear_cache()
 	mm_number_cache.clear();
 }
 
+void BlockSpecial::register_block_special( const Glib::ustring & name,
+                                           unsigned long major, unsigned long minor )
+{
+	MM_Number pair;
+	pair.m_major = major;
+	pair.m_minor = minor;
+	// Add new, or update existing, cache entry for name to major, minor pair
+	mm_number_cache[name] = pair;
+}
+
 bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs )
 {
 	if ( lhs.m_major > 0UL && lhs.m_minor > 0UL )

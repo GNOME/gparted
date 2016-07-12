@@ -169,7 +169,8 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
 	                                        // numbers incrementally loaded when BlockSpecial
 	                                        // objects are created in the following caches.
-	Proc_Partitions_Info pp_info( true ) ;  //Refresh cache of proc partition information
+	Proc_Partitions_Info pp_info( true ) ;  // SHOULD BE SECOND.  Caches /proc/partitions and
+	                                        // pre-populates BlockSpecial cache.
 	FS_Info fs_info( true ) ;  //Refresh cache of file system information
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
