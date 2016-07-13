@@ -50,14 +50,11 @@
 #include "../include/ufs.h"
 #include "../include/Copy_Blocks.h"
 
-#include <set>
 #include <cerrno>
 #include <cstring>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <dirent.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
 
