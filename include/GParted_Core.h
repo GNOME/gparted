@@ -60,9 +60,6 @@ public:
 	const std::vector<FS> & get_filesystems() const ;
 	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
-	static bool is_dev_mounted( const Glib::ustring & path ) ;
-	static bool is_dev_mounted( const BlockSpecial & bs );
-	static std::vector<Glib::ustring> get_all_mountpoints() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
@@ -81,16 +78,7 @@ public:
 
 private:
 	//detectionstuff..
-	static void init_maps() ;
 	void set_thread_status_message( Glib::ustring msg ) ;
-	static void read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map );
-	static void add_node_and_mountpoint( MountMapping & map,
-	                                     Glib::ustring & node,
-	                                     Glib::ustring & mountpoint ) ;
-	static void read_mountpoints_from_file_swaps( const Glib::ustring & filename,
-	                                              MountMapping & map );
-	static bool have_rootfs_dev( MountMapping & map );
-	static void read_mountpoints_from_mount_command( MountMapping & map );
 	static Glib::ustring get_partition_path( PedPartition * lp_partition );
 	void set_device_serial_number( Device & device );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;

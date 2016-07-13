@@ -27,6 +27,7 @@
 #include "../include/Dialog_FileSystem_Label.h"
 #include "../include/Dialog_Partition_Name.h"
 #include "../include/DialogManageFlags.h"
+#include "../include/Mount_Info.h"
 #include "../include/OperationCopy.h"
 #include "../include/OperationCheck.h"
 #include "../include/OperationCreate.h"
@@ -2209,7 +2210,9 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error ) 
 {
-	std::vector<Glib::ustring> errors, failed_mountpoints, mountpoints = GParted_Core::get_all_mountpoints() ;
+	std::vector<Glib::ustring> errors;
+	std::vector<Glib::ustring> failed_mountpoints;
+	std::vector<Glib::ustring> mountpoints = Mount_Info::get_all_mountpoints();
 	Glib::ustring dummy ;
 
 	*succes = true ; 

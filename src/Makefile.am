@@ -37,6 +37,7 @@ gpartedbin_SOURCES = \
 	HBoxOperations.cc		\
 	LVM2_PV_Info.cc			\
 	LUKS_Info.cc			\
+	Mount_Info.cc			\
 	Operation.cc			\
 	OperationChangeUUID.cc		\
 	OperationCheck.cc		\

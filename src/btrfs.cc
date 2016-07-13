@@ -18,7 +18,7 @@
 
 #include "../include/btrfs.h"
 #include "../include/BlockSpecial.h"
-#include "../include/GParted_Core.h"
+#include "../include/Mount_Info.h"
 #include "../include/Partition.h"
 
 #include <ctype.h>
@@ -456,13 +456,13 @@ Glib::ustring btrfs::get_mount_device( const Glib::ustring & path )
 		//  Use fallback busy detection method which can only determine if the
 		//  mounting device is mounted or not, not any of the other members of a
 		//  multi-device btrfs file system.
-		if ( GParted_Core::is_dev_mounted( path ) )
+		if ( Mount_Info::is_dev_mounted( path ) )
 			return path ;
 		return "" ;
 	}
 
 	for ( unsigned int i = 0 ; i < btrfs_dev .members .size() ; i ++ )
-		if ( GParted_Core::is_dev_mounted( btrfs_dev.members[i] ) )
+		if ( Mount_Info::is_dev_mounted( btrfs_dev.members[i] ) )
 			return btrfs_dev.members[i].m_name;
 	return "" ;
 }

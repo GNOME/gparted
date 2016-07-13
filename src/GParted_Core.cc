@@ -22,6 +22,7 @@
 #include "../include/FS_Info.h"
 #include "../include/LVM2_PV_Info.h"
 #include "../include/LUKS_Info.h"
+#include "../include/Mount_Info.h"
 #include "../include/Operation.h"
 #include "../include/OperationCopy.h"
 #include "../include/Partition.h"
@@ -54,11 +55,9 @@
 #include <cstring>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
-#include <mntent.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
 
@@ -69,19 +68,6 @@ namespace GParted
 
 const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
 const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
-
-// Associative array mapping currently mounted devices to one or more mount points.
-// E.g.
-//     mount_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
-//     mount_info[BlockSpecial("/dev/sda2")] -> [""]  (swap)
-//     mount_info[BlockSpecial("/dev/sda3")] -> ["/"]
-static GParted_Core::MountMapping mount_info;
-
-// Associative array mapping configured devices to one or more mount points read from
-// /etc/fstab.  E.g.
-//     fstab_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
-//     fstab_info[BlockSpecial("/dev/sda3")] -> ["/"]
-static GParted_Core::MountMapping fstab_info;
 
 static bool udevadm_found = false;
 static bool udevsettle_found = false;
@@ -177,9 +163,8 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();               // Cache automatically loaded if and when needed
+	Mount_Info::load_cache();
 
-	init_maps() ;
-	
 	//only probe if no devices were specified as arguments..
 	if ( probe_devices )
 	{
@@ -400,7 +385,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	//clear leftover information...	
 	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	set_thread_status_message("") ;
-	fstab_info .clear() ;
 	g_idle_add( (GSourceFunc)_mainquit, NULL );
 }
 
@@ -971,30 +955,6 @@ std::vector<Glib::ustring> GParted_Core::get_disklabeltypes()
 	 return disklabeltypes ;
 }
 
-//Return whether the device path, such as /dev/sda3, is mounted or not
-bool GParted_Core::is_dev_mounted( const Glib::ustring & path )
-{
-	return is_dev_mounted( BlockSpecial( path ) );
-}
-
-// Return whether the BlockSpecial object, such as {"/dev/sda3", 8, 3}, is mounted or not
-bool GParted_Core::is_dev_mounted( const BlockSpecial & bs )
-{
-	MountMapping::const_iterator iter_mp = mount_info.find( bs );
-	return iter_mp != mount_info.end();
-}
-
-std::vector<Glib::ustring> GParted_Core::get_all_mountpoints() 
-{
-	MountMapping::iterator iter_mp;
-	std::vector<Glib::ustring> mountpoints ;
-
-	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
-		mountpoints .insert( mountpoints .end(), iter_mp ->second .begin(), iter_mp ->second .end() ) ;
-
-	return mountpoints ;
-}
-	
 std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition & partition ) 
 {
 	std::map<Glib::ustring, bool> flag_info ;
@@ -1029,147 +989,6 @@ Glib::ustring GParted_Core::get_libparted_version()
 }
 
 //private functions...
-
-void GParted_Core::init_maps() 
-{
-	mount_info .clear() ;
-	fstab_info .clear() ;
-
-	read_mountpoints_from_file( "/proc/mounts", mount_info ) ;
-	read_mountpoints_from_file_swaps( "/proc/swaps", mount_info ) ;
-
-	if ( ! have_rootfs_dev( mount_info ) )
-		//Old distributions only contain 'rootfs' and '/dev/root' device names for
-		//  the / (root) file system in /proc/mounts with '/dev/root' being a
-		//  block device rather than a symlink to the true device.  This prevents
-		//  identification, and therefore busy detection, of the device containing
-		//  the / (root) file system.  Used to read /etc/mtab to get the root file
-		//  system device name, but this contains an out of date device name after
-		//  the mounting device has been dynamically removed from a multi-device
-		//  btrfs, thus identifying the wrong device as busy.  Instead fall back
-		//  to reading mounted file systems from the output of the mount command,
-		//  but only when required.
-		read_mountpoints_from_mount_command( mount_info ) ;
-
-	read_mountpoints_from_file( "/etc/fstab", fstab_info ) ;
-	
-	//sort the mount points and remove duplicates.. (no need to do this for fstab_info)
-	MountMapping::iterator iter_mp;
-	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; ++iter_mp )
-	{
-		std::sort( iter_mp ->second .begin(), iter_mp ->second .end() ) ;
-		
-		iter_mp ->second .erase( 
-				std::unique( iter_mp ->second .begin(), iter_mp ->second .end() ),
-				iter_mp ->second .end() ) ;
-	}
-}
-
-void GParted_Core::read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map )
-{
-	FILE* fp = setmntent( filename .c_str(), "r" ) ;
-
-	if ( fp == NULL )
-		return ;
-
-	struct mntent* p = NULL ;
-
-	while ( (p = getmntent(fp)) != NULL )
-	{
-		Glib::ustring node = p->mnt_fsname ;
-		Glib::ustring mountpoint = p->mnt_dir ;
-
-		Glib::ustring uuid = Utils::regexp_label( node, "^UUID=(.*)" ) ;
-		if ( ! uuid .empty() )
-			node = FS_Info::get_path_by_uuid( uuid );
-
-		Glib::ustring label = Utils::regexp_label( node, "^LABEL=(.*)" ) ;
-		if ( ! label .empty() )
-			node = FS_Info::get_path_by_label( label );
-
-		if ( ! node .empty() )
-			add_node_and_mountpoint( map, node, mountpoint ) ;
-	}
-
-	endmntent( fp ) ;
-}
-
-void GParted_Core::add_node_and_mountpoint( MountMapping & map,
-                                            Glib::ustring & node,
-                                            Glib::ustring & mountpoint )
-{
-	//Only add node path(s) if mount point exists
-	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
-	{
-		map[BlockSpecial( node )].push_back( mountpoint );
-
-		//If node is a symbolic link (e.g., /dev/root)
-		//  then find real path and add entry too
-		if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
-		{
-			char * rpath = realpath( node.c_str(), NULL );
-			if ( rpath != NULL )
-			{
-				map[BlockSpecial( rpath )].push_back( mountpoint );
-				free( rpath );
-			}
-		}
-	}
-}
-
-void GParted_Core::read_mountpoints_from_file_swaps( const Glib::ustring & filename,
-                                                     MountMapping & map )
-{
-	std::string line ;
-	std::string node ;
-	
-	std::ifstream file( filename .c_str() ) ;
-	if ( file )
-	{
-		while ( getline( file, line ) )
-		{
-			node = Utils::regexp_label( line, "^(/[^ ]+)" ) ;
-			if ( node .size() > 0 )
-				map[BlockSpecial( node )].push_back( "" /* no mountpoint for swap */ );
-		}
-		file .close() ;
-	}
-}
-
-//Return true only if the map contains a device name for the / (root) file system other
-//  than 'rootfs' and '/dev/root'
-bool GParted_Core::have_rootfs_dev( MountMapping & map )
-{
-	MountMapping::iterator iter_mp;
-	for ( iter_mp = mount_info .begin() ; iter_mp != mount_info .end() ; iter_mp ++ )
-	{
-		if ( ! iter_mp ->second .empty() && iter_mp ->second[ 0 ] == "/" )
-		{
-			if ( iter_mp->first.m_name != "rootfs" && iter_mp->first.m_name != "/dev/root" )
-				return true ;
-		}
-	}
-	return false ;
-}
-
-void GParted_Core::read_mountpoints_from_mount_command( MountMapping & map )
-{
-	Glib::ustring output ;
-	Glib::ustring error ;
-	if ( ! Utils::execute_command( "mount", output, error, true ) )
-	{
-		std::vector<Glib::ustring> lines ;
-		Utils::split( output, lines, "\n") ;
-		for ( unsigned int i = 0 ; i < lines .size() ; i ++ )
-		{
-			//Process line like "/dev/sda3 on / type ext4 (rw)"
-			Glib::ustring node = Utils::regexp_label( lines[ i ], "^([^[:blank:]]+) on " ) ;
-			Glib::ustring mountpoint = Utils::regexp_label( lines[ i ], "^[^[:blank:]]+ on ([^[:blank:]]+) " ) ;
-			if ( ! node .empty() )
-				add_node_and_mountpoint( map, node, mountpoint ) ;
-		}
-	}
-}
 
 Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 {
@@ -1873,10 +1692,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 		}
 		else  // Not busy file system
 		{
-			MountMapping::iterator iter_mp;
-			iter_mp = fstab_info.find( BlockSpecial( partition.get_path() ) );
-			if ( iter_mp != fstab_info.end() )
-				partition.add_mountpoints( iter_mp->second );
+			partition.add_mountpoints( Mount_Info::get_fstab_mountpoints( partition.get_path() ) );
 		}
 	}
 }
@@ -1889,10 +1705,10 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 	else
 		search_path = path ;
 
-	MountMapping::iterator iter_mp = mount_info.find( BlockSpecial( search_path ) );
-	if ( iter_mp != mount_info .end() )
+	const std::vector<Glib::ustring> & mountpoints = Mount_Info::get_mounted_mountpoints( search_path );
+	if ( mountpoints.size() )
 	{
-		partition .add_mountpoints( iter_mp ->second ) ;
+		partition.add_mountpoints( mountpoints );
 		return true ;
 	}
 
@@ -1911,7 +1727,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 		{
 			case FS::GPARTED:
 				//Search GParted internal mounted partitions map
-				busy = is_dev_mounted( path ) ;
+				busy = Mount_Info::is_dev_mounted( path );
 				break ;
 
 			case FS::EXTERNAL:
@@ -1929,7 +1745,7 @@ bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
 	{
 		//Still search GParted internal mounted partitions map in case an
 		//  unknown file system is mounted
-		busy = is_dev_mounted( path ) ;
+		busy = Mount_Info::is_dev_mounted( path );
 
 		//Custom checks for recognised but other not-supported file system types
 		busy |= ( fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active( path ) );
