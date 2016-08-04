@@ -42,35 +42,11 @@ FS hfsplus::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "fsck.hfsplus" ) .empty() )
 		fs .check = FS::EXTERNAL ;
 
-	if ( ! Glib::find_program_in_path( "vol_id" ) .empty() )
-		fs .read_label = FS::EXTERNAL ;
-
 	fs .copy = GParted::FS::GPARTED ;
 	fs .move = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
 
 	return fs ;
-}
-
-void hfsplus::read_label( Partition & partition )
-{
-	if ( ! Utils::execute_command( "vol_id " + partition .get_path(), output, error, true ) )
-	{
-		Glib::ustring label = Utils::regexp_label( output, "ID_FS_LABEL=([^\n]*)" ) ;
-		//FIXME: find a better way to see if label is empty.. imagine someone uses 'untitled' as label.... ;)
-		if ( label != "untitled" )
-			partition.set_filesystem_label( label );
-		else
-			partition.set_filesystem_label( "" );
-	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
 }
 
 bool hfsplus::create( const Partition & new_partition, OperationDetail & operationdetail )

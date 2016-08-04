@@ -29,7 +29,6 @@ class hfs : public FileSystem
 {
 public:
 	FS get_filesystem_support() ;
-	void read_label( Partition & partition ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 };
