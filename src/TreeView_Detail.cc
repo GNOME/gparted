@@ -154,7 +154,10 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
                                   bool & show_mountpoints,
                                   bool & show_labels )
 {
-	if ( partition .busy )
+	const Partition * filesystem_ptn = &partition;
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+		filesystem_ptn = &dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
+	if ( filesystem_ptn->busy )
 		treerow[ treeview_detail_columns .icon1 ] = 
 			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
