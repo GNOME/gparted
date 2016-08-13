@@ -33,10 +33,11 @@ namespace GParted
 	
 
 enum PartitionType {
-	TYPE_PRIMARY		=	0,
-	TYPE_LOGICAL		=	1,
-	TYPE_EXTENDED		=	2,
-	TYPE_UNALLOCATED	=	3 
+	TYPE_PRIMARY       = 0,  // Primary partition on a partitioned drive
+	TYPE_LOGICAL       = 1,  // Logical partition on a partitioned drive
+	TYPE_EXTENDED      = 2,  // Extended partition on a partitioned drive
+	TYPE_UNALLOCATED   = 3,  // Unallocated space on a partitioned drive
+	TYPE_UNPARTITIONED = 4   // Unpartitioned whole drive
 };
 
 enum PartitionStatus {
