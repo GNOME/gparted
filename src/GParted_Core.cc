@@ -707,12 +707,12 @@ bool GParted_Core::set_disklabel( const Device & device, const Glib::ustring & d
 	// preference to any partition table about to be written.
 	OperationDetail dummy_od;
 	Partition temp_partition;
-	temp_partition.Set_Unallocated( device_path,
-	                                true,
-	                                0LL,
-	                                device.length - 1LL,
-	                                device.sector_size,
-	                                false );
+	temp_partition.set_unpartitioned( device_path,
+	                                  "",
+	                                  FS_UNALLOCATED,
+	                                  device.length,
+	                                  device.sector_size,
+	                                  false );
 	erase_filesystem_signatures( temp_partition, dummy_od );
 
 	return new_disklabel( device_path, disklabel );
@@ -953,17 +953,12 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 				// Create virtual partition covering the whole disk device
 				// with unknown contents.
 				Partition * partition_temp = new Partition();
-				partition_temp->Set( device.get_path(),
-				                     lp_device->path,
-				                     1,
-				                     TYPE_PRIMARY,
-				                     true,
-				                     FS_UNKNOWN,
-				                     0LL,
-				                     device.length - 1LL,
-				                     device.sector_size,
-				                     false,
-				                     false );
+				partition_temp->set_unpartitioned( device.get_path(),
+				                                   lp_device->path,
+				                                   FS_UNKNOWN,
+				                                   device.length,
+				                                   device.sector_size,
+				                                   false );
 				// Place unknown file system message in this partition.
 				partition_temp->append_messages( messages );
 				device.partitions.push_back_adopt( partition_temp );
@@ -980,12 +975,12 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 				device.max_prims = 1;
 
 				Partition * partition_temp = new Partition();
-				partition_temp->Set_Unallocated( device.get_path(),
-				                                 true,
-				                                 0LL,
-				                                 device.length - 1LL,
-				                                 device.sector_size,
-				                                 false );
+				partition_temp->set_unpartitioned( device.get_path(),
+				                                   "",  // Overridden with "unallocated"
+				                                   FS_UNALLOCATED,
+				                                   device.length,
+				                                   device.sector_size,
+				                                   false );
 				// Place libparted messages in this unallocated partition
 				partition_temp->append_messages( libparted_messages );
 				libparted_messages.clear();
@@ -1210,17 +1205,12 @@ void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_dev
 		partition_temp = new PartitionLUKS();
 	else
 		partition_temp = new Partition();
-	partition_temp->Set( device.get_path(),
-	                     path,
-	                     1,
-	                     TYPE_PRIMARY,
-	                     true,
-	                     fstype,
-	                     0LL,
-	                     device.length - 1LL,
-	                     device.sector_size,
-	                     false,
-	                     partition_is_busy );
+	partition_temp->set_unpartitioned( device.get_path(),
+	                                   path,
+	                                   fstype,
+	                                   device.length,
+	                                   device.sector_size,
+	                                   partition_is_busy );
 
 	partition_temp->append_messages( messages );
 

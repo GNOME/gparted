@@ -201,6 +201,39 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 	status = GParted::STAT_REAL ;
 }
 
+void Partition::set_unpartitioned( const Glib::ustring & device_path,
+                                   const Glib::ustring & partition_path,
+                                   FILESYSTEM fstype,
+                                   Sector length,
+                                   Byte_Value sector_size,
+                                   bool busy )
+{
+	Reset();
+	Set( device_path,
+	     // The path from the parent Device object and this child Partition object
+	     // spanning the whole device would appear to be the same.  However the former
+	     // may have come from the command line and the later is the canonicalised
+	     // name returned from libparted.  (See GParted_Core::set_device_from_disk()
+	     // "loop" table and GParted_Core::set_device_one_partition() calls to
+	     // set_unpartitioned()).  Therefore they can be different.
+	     //
+	     // For unrecognised whole disk device partitions use "unallocated" as the
+	     // partition path to match what Set_Unallocated() does when it created such
+	     // whole disk device partitions.
+	     ( fstype == FS_UNALLOCATED ) ? Utils::get_filesystem_string( FS_UNALLOCATED )
+	                                  : partition_path,
+	     1,
+	     // FIXME: Replace with TYPE_UNPARTITIONED when whole_device member is removed
+	     ( fstype == FS_UNALLOCATED ) ? TYPE_UNALLOCATED : TYPE_PRIMARY,
+	     true,
+	     fstype,
+	     0LL,
+	     length - 1LL,
+	     sector_size,
+	     false,
+	     busy );
+}
+
 void Partition::Update_Number( int new_number )
 {  
 	unsigned int index = path.rfind( Utils::num_to_str( partition_number ) );

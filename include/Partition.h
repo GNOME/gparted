@@ -98,6 +98,12 @@ public:
 	                      Sector sector_end,
 	                      Byte_Value sector_size,
 	                      bool inside_extended );
+	void set_unpartitioned( const Glib::ustring & device_path,
+	                        const Glib::ustring & partition_path,
+	                        FILESYSTEM fstype,
+	                        Sector length,
+	                        Byte_Value sector_size,
+	                        bool busy );
 
 	//update partition number (used when a logical partition is deleted) 
 	void Update_Number( int new_number );

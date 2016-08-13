@@ -65,10 +65,10 @@ Partition * PartitionLUKS::clone_as_plain() const
 	return plain_ptn;
 }
 
-// Mostly a convenience method calling Partition::Set() on the encrypted Partition but
-// also sets private header_size.  Makes encrypted Partition object look like a whole disk
-// device as /dev/mapper/CRYPTNAME contains no partition table and the file system starts
-// from sector 0 going to the very end.
+// Mostly a convenience method calling Partition::set_unpartitioned() on the encrypted
+// Partition but also sets private header_size.  Makes encrypted Partition object look
+// like a whole disk device as /dev/mapper/CRYPTNAME contains no partition table and the
+// file system starts from sector 0 going to the very end.
 void PartitionLUKS::set_luks( const Glib::ustring & path,
                               FILESYSTEM fstype,
                               Sector header_size,
@@ -76,17 +76,12 @@ void PartitionLUKS::set_luks( const Glib::ustring & path,
                               Byte_Value sector_size,
                               bool busy )
 {
-	encrypted.Set( path,
-	               path,
-	               1,
-	               TYPE_PRIMARY,
-	               true,
-	               fstype,
-	               0LL,
-	               mapping_size - 1LL,
-	               sector_size,
-	               false,
-	               busy );
+	encrypted.set_unpartitioned( path,
+	                             path,
+	                             fstype,
+	                             mapping_size,
+	                             sector_size,
+	                             busy );
 	this->header_size = header_size;
 }
 
