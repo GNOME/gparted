@@ -1515,39 +1515,33 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	
 void GParted_Core::read_label( Partition & partition )
 {
-	if ( partition .type != TYPE_EXTENDED )
+	FileSystem* p_filesystem = NULL;
+	switch ( get_fs( partition.filesystem ).read_label )
 	{
-		FileSystem* p_filesystem = NULL ;
-		switch( get_fs( partition .filesystem ) .read_label )
-		{
-			case FS::EXTERNAL:
-				p_filesystem = get_filesystem_object( partition .filesystem ) ;
-				if ( p_filesystem )
-					p_filesystem ->read_label( partition ) ;
-				break ;
+		case FS::EXTERNAL:
+			p_filesystem = get_filesystem_object( partition.filesystem );
+			if ( p_filesystem )
+				p_filesystem->read_label( partition );
+			break;
 
-			default:
-				break ;
-		}
+		default:
+			break;
 	}
 }
 
 void GParted_Core::read_uuid( Partition & partition )
 {
-	if ( partition .type != TYPE_EXTENDED )
+	FileSystem* p_filesystem = NULL;
+	switch ( get_fs( partition.filesystem ).read_uuid )
 	{
-		FileSystem* p_filesystem = NULL ;
-		switch( get_fs( partition .filesystem ) .read_uuid )
-		{
-			case FS::EXTERNAL:
-				p_filesystem = get_filesystem_object( partition .filesystem ) ;
-				if ( p_filesystem )
-					p_filesystem ->read_uuid( partition ) ;
-				break ;
+		case FS::EXTERNAL:
+			p_filesystem = get_filesystem_object( partition.filesystem );
+			if ( p_filesystem )
+				p_filesystem->read_uuid( partition );
+			break;
 
-			default:
-				break ;
-		}
+		default:
+			break;
 	}
 }
 
@@ -2180,18 +2174,15 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	if ( partition .type != TYPE_EXTENDED )
+	switch ( get_fs( partition.filesystem ).write_label )
 	{
-		switch( get_fs( partition .filesystem ) .write_label )
-		{
-			case FS::EXTERNAL:
-				succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
-					 p_filesystem ->write_label( partition, operationdetail .get_last_child() ) ;
-				break ;
+		case FS::EXTERNAL:
+			succes =    ( p_filesystem = get_filesystem_object( partition.filesystem ) )
+			         && p_filesystem->write_label( partition, operationdetail.get_last_child() );
+			break;
 
-			default:
-				break ;
-		}
+		default:
+			break;
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -2251,18 +2242,15 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	if ( partition .type != TYPE_EXTENDED )
+	switch ( get_fs( partition.filesystem ).write_uuid )
 	{
-		switch( get_fs( partition .filesystem ) .write_uuid )
-		{
-			case FS::EXTERNAL:
-				succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
-					 p_filesystem ->write_uuid( partition, operationdetail .get_last_child() ) ;
-				break ;
+		case FS::EXTERNAL:
+			succes =    ( p_filesystem = get_filesystem_object( partition.filesystem ) )
+			         && p_filesystem->write_uuid( partition, operationdetail.get_last_child() );
+			break;
 
-			default:
-				break;
-		}
+		default:
+			break;
 	}
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
