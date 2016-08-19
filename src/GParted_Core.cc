@@ -1100,7 +1100,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     lp_partition->num,
 				                     ( lp_partition->type == PED_PARTITION_NORMAL ) ? TYPE_PRIMARY
 				                                                                    : TYPE_LOGICAL,
-				                     false,
 				                     filesystem,
 				                     lp_partition->geom.start,
 				                     lp_partition->geom.end,
@@ -1124,7 +1123,6 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     partition_path,
 				                     lp_partition->num,
 				                     TYPE_EXTENDED,
-				                     false,
 				                     FS_EXTENDED,
 				                     lp_partition->geom.start,
 				                     lp_partition->geom.end,
@@ -1557,7 +1555,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	if ( partitions .empty() )
 	{
 		Partition * partition_temp = new Partition();
-		partition_temp->Set_Unallocated( device_path, false, start, end, sector_size, inside_extended );
+		partition_temp->Set_Unallocated( device_path, start, end, sector_size, inside_extended );
 		partitions.push_back_adopt( partition_temp );
 		return ;
 	}
@@ -1567,7 +1565,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	{
 		Sector temp_end = partitions.front().sector_start - 1;
 		Partition * partition_temp = new Partition();
-		partition_temp->Set_Unallocated( device_path, false, start, temp_end, sector_size, inside_extended );
+		partition_temp->Set_Unallocated( device_path, start, temp_end, sector_size, inside_extended );
 		partitions.insert_adopt( partitions.begin(), partition_temp );
 	}
 	
@@ -1583,7 +1581,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 			Sector temp_start = partitions[t].sector_end + 1;
 			Sector temp_end   = partitions[t+1].sector_start - 1;
 			Partition * partition_temp = new Partition();
-			partition_temp->Set_Unallocated( device_path, false, temp_start, temp_end,
+			partition_temp->Set_Unallocated( device_path, temp_start, temp_end,
 			                                 sector_size, inside_extended );
 			partitions.insert_adopt( partitions.begin() + ++t, partition_temp );
 		}
@@ -1594,7 +1592,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 	{
 		Sector temp_start = partitions.back().sector_end + 1;
 		Partition * partition_temp = new Partition();
-		partition_temp->Set_Unallocated( device_path, false, temp_start, end, sector_size, inside_extended );
+		partition_temp->Set_Unallocated( device_path, temp_start, end, sector_size, inside_extended );
 		partitions.push_back_adopt( partition_temp );
 	}
 }
@@ -2669,7 +2667,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				     	  const Partition & partition_new,
 					  OperationDetail & operationdetail )
 {
-	if ( partition_new.whole_device )
+	if ( partition_new.type == TYPE_UNPARTITIONED )
 		// Trying to resize/move a non-partitioned whole disk device is a
 		// successful non-operation.
 		return true;
@@ -3454,7 +3452,7 @@ bool GParted_Core::check_repair_maximize( const Partition & partition,
 
 bool GParted_Core::set_partition_type( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.whole_device )
+	if ( partition.type == TYPE_UNPARTITIONED )
 		// Trying to set the type of a partition on a non-partitioned whole disk
 		// device is a successful non-operation.
 		return true;
@@ -3560,7 +3558,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		PedDisk* lp_disk = NULL ;
 		if ( get_device( partition.device_path, lp_device ) )
 		{	
-			if ( partition.whole_device )
+			if ( partition.type == TYPE_UNPARTITIONED )
 			{
 				// Virtual partition spanning whole disk device
 				success = true;
@@ -3622,7 +3620,8 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 						 */
 						String::ucompose( _("path: %1 (%2)"),
 						                  partition.get_path(),
-						                  ( partition.whole_device ) ? _("device")
+						                  ( partition.type == TYPE_UNPARTITIONED )
+						                                             ? _("device")
 						                                             : _("partition") ) + "\n" +
 						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
 						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
@@ -3799,7 +3798,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	char * buf = NULL ;
 	if ( get_device( partition.device_path, lp_device ) )
 	{
-		if ( partition.whole_device )
+		if ( partition.type == TYPE_UNPARTITIONED )
 		{
 			// Virtual partition spanning whole disk device
 			overall_success = true;

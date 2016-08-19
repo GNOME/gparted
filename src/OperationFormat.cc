@@ -45,7 +45,7 @@ void OperationFormat::apply_to_visual( PartitionVector & partitions )
 	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
 	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
 
-	if ( partition_original->whole_device && partition_new->filesystem == FS_CLEARED )
+	if ( partition_original->type == TYPE_UNPARTITIONED && partition_new->filesystem == FS_CLEARED )
 	{
 		// Make format to cleared whole disk device file system preview as
 		// unallocated device, matching what happens when implemented.

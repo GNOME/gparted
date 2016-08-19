@@ -431,7 +431,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 
 			Partition * part = new Partition();
 			part->Set( dev_path, part_path, part_num,
-			           type, false, fs, sec_start, sec_end, sec_size, false, false );
+			           type, fs, sec_start, sec_end, sec_size, false, false );
 			this->partitions.push_back_adopt( part );
 		}
 	}

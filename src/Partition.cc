@@ -40,7 +40,6 @@ void Partition::Reset()
 	messages .clear() ;
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
-	whole_device = false;
 	alignment = ALIGN_STRICT ;
 	filesystem = GParted::FS_UNALLOCATED ;
 	have_filesystem_label = false;
@@ -62,7 +61,6 @@ void Partition::Set( const Glib::ustring & device_path,
                      const Glib::ustring & partition,
                      int partition_number,
                      PartitionType type,
-                     bool whole_device,
                      FILESYSTEM filesystem,
                      Sector sector_start,
                      Sector sector_end,
@@ -74,7 +72,6 @@ void Partition::Set( const Glib::ustring & device_path,
 	this->path = partition;
 	this ->partition_number = partition_number;
 	this ->type = type;
-	this->whole_device = whole_device;
 	this ->filesystem = filesystem;
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
@@ -178,7 +175,6 @@ void Partition::resize( const Partition & new_size )
 }
 
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
-                                 bool whole_device,
                                  Sector sector_start,
                                  Sector sector_end,
                                  Byte_Value sector_size,
@@ -190,7 +186,6 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 	     Utils::get_filesystem_string( FS_UNALLOCATED ),
 	     -1,
 	     TYPE_UNALLOCATED,
-	     whole_device,
 	     FS_UNALLOCATED,
 	     sector_start,
 	     sector_end,
@@ -223,9 +218,7 @@ void Partition::set_unpartitioned( const Glib::ustring & device_path,
 	     ( fstype == FS_UNALLOCATED ) ? Utils::get_filesystem_string( FS_UNALLOCATED )
 	                                  : partition_path,
 	     1,
-	     // FIXME: Replace with TYPE_UNPARTITIONED when whole_device member is removed
-	     ( fstype == FS_UNALLOCATED ) ? TYPE_UNALLOCATED : TYPE_PRIMARY,
-	     true,
+	     TYPE_UNPARTITIONED,
 	     fstype,
 	     0LL,
 	     length - 1LL,

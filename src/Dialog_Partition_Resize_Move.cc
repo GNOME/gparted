@@ -90,7 +90,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	}
 
 	// See if we can allow the start of the file system to move
-	if ( fs.move && ! new_partition->busy && ! new_partition->whole_device )
+	if ( fs.move && ! new_partition->busy && new_partition->type != TYPE_UNPARTITIONED )
 	{
 		set_title( String::ucompose( _("Resize/Move %1"), new_partition->get_path() ) );
 		frame_resizer_base ->set_fixed_start( false ) ;

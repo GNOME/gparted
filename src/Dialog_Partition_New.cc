@@ -226,13 +226,12 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	// Copy a final few values needed from the original unallocated partition before
 	// resetting the Partition object and populating it as the new partition.
 	Glib::ustring device_path = new_partition->device_path;
-	bool whole_device = new_partition->whole_device;
 	Sector sector_size = new_partition->sector_size;
 	bool inside_extended = new_partition->inside_extended;
 	new_partition->Reset();
 	new_partition->Set( device_path,
 	                    String::ucompose( _("New Partition #%1"), new_count ),
-	                    new_count, part_type, whole_device,
+	                    new_count, part_type,
 	                    FILESYSTEMS[optionmenu_filesystem.get_history()].filesystem,
 	                    new_start, new_end,
 	                    sector_size,
@@ -301,7 +300,6 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	{
 		Partition * unallocated = new Partition();
 		unallocated->Set_Unallocated( new_partition->device_path,
-		                              new_partition->whole_device,
 		                              new_partition->sector_start,
 		                              new_partition->sector_end,
 		                              new_partition->sector_size,

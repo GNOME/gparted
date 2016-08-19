@@ -76,7 +76,6 @@ public:
 	          const Glib::ustring & partition,
 	          int partition_number,
 	          PartitionType type,
-	          bool whole_device,
 	          FILESYSTEM filesystem,
 	          Sector sector_start,
 	          Sector sector_end,
@@ -94,7 +93,6 @@ public:
 	virtual void resize( const Partition & new_size );
 
 	void Set_Unallocated( const Glib::ustring & device_path,
-	                      bool whole_device,
 	                      Sector sector_start,
 	                      Sector sector_end,
 	                      Byte_Value sector_size,
@@ -154,7 +152,6 @@ public:
 	Glib::ustring device_path ;
 	int partition_number;
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
-	bool whole_device;  // Is this a virtual partition spanning a whole unpartitioned disk device?
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
 	FILESYSTEM filesystem ;

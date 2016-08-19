@@ -1134,7 +1134,6 @@ void Win_GParted::set_valid_operations()
 
 	// Allow partition flag management
 	if ( selected_partition_ptr->status == STAT_REAL          &&
-	     ! selected_partition_ptr->whole_device               &&
 	     ( selected_partition_ptr->type == TYPE_PRIMARY  ||
 	       selected_partition_ptr->type == TYPE_LOGICAL  ||
 	       selected_partition_ptr->type == TYPE_EXTENDED    )    )
@@ -1243,14 +1242,18 @@ void Win_GParted::set_valid_operations()
 		return ;
 	}	
 	
-	// PRIMARY and LOGICAL
-	if (  selected_partition_ptr->type == TYPE_PRIMARY || selected_partition_ptr->type == TYPE_LOGICAL )
+	// PRIMARY, LOGICAL and UNPARTITIONED; partitions with supported file system.
+	if ( selected_partition_ptr->type == TYPE_PRIMARY       ||
+	     selected_partition_ptr->type == TYPE_LOGICAL       ||
+	     selected_partition_ptr->type == TYPE_UNPARTITIONED    )
 	{
 		allow_format( true ) ;
 
 		// only allow deletion of partitions within a partition table
 		// Also exclude open LUKS mappings until open/close is supported
-		if ( ! selected_partition_ptr->whole_device & ! selected_partition_ptr->busy )
+		if ( ( selected_partition_ptr->type == TYPE_PRIMARY ||
+		       selected_partition_ptr->type == TYPE_LOGICAL    ) &&
+		     ! selected_partition_ptr->busy                         )
 			allow_delete( true );
 
 		// Resizing/moving always requires the ability to update the partition
@@ -1922,8 +1925,9 @@ void Win_GParted::activate_paste()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
-	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
+	// Unrecognised whole disk device (See GParted_Core::set_device_from_disk(), "unrecognized")
+	if ( selected_partition_ptr->type       == TYPE_UNPARTITIONED &&
+	     selected_partition_ptr->filesystem == FS_UNALLOCATED        )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 		return ;
@@ -2079,8 +2083,9 @@ void Win_GParted::activate_new()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	// Unrecognised whole disk device (See GParted_Core::get_devices_threads(), "unrecognized")
-	if ( selected_partition_ptr->whole_device && selected_partition_ptr->type == TYPE_UNALLOCATED )
+	// Unrecognised whole disk device (See GParted_Core::set_device_from_disk(), "unrecognized")
+	if ( selected_partition_ptr->type       == TYPE_UNPARTITIONED &&
+	     selected_partition_ptr->filesystem == FS_UNALLOCATED        )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 	}
@@ -2331,7 +2336,6 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		                         filesystem_ptn.get_path(),
 		                         filesystem_ptn.partition_number,
 		                         filesystem_ptn.type,
-		                         filesystem_ptn.whole_device,
 		                         new_fs,
 		                         filesystem_ptn.sector_start,
 		                         filesystem_ptn.sector_end,
