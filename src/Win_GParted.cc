@@ -1096,7 +1096,7 @@ void Win_GParted::set_valid_operations()
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
 
-	// Only permit mount/unmount, swapon/swapoff, activate/deactivate if action is available
+	// Only permit file system mount/unmount and swapon/swapoff when available
 	if (    selected_partition_ptr->status     == STAT_REAL
 	     && selected_partition_ptr->type       != TYPE_EXTENDED
 	     && selected_partition_ptr->filesystem != FS_LVM2_PV
@@ -1109,18 +1109,13 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_busy_state( true ) ;
 
-	//Only permit VG deactivation if busy, or activation if not busy and a member of a VG.
-	//  For now specifically allow activation of an exported VG, which LVM will fail
-	//  with "Volume group "VGNAME" is exported", otherwise user won't know why the
-	//  inactive PV can't be activated.
+	// Only permit LVM VG activate/deactivate if the PV is busy or a member of a VG.
+	// For now specifically allow activation of an exported VG, which LVM will fail
+	// with "Volume group "VGNAME" is exported", otherwise user won't know why the
+	// inactive PV can't be activated.
 	if (    selected_partition_ptr->status     == STAT_REAL
-	     && selected_partition_ptr->type       != TYPE_EXTENDED
-	     && selected_partition_ptr->filesystem == FS_LVM2_PV
-	     && (    selected_partition_ptr->busy
-	          || (    ! selected_partition_ptr->busy
-	               && ! selected_partition_ptr->get_mountpoints().empty()  // VGNAME from mount point
-	             )
-	        )
+	     && selected_partition_ptr->filesystem == FS_LVM2_PV          // Active VGNAME from mount point
+	     && ( selected_partition_ptr->busy || selected_partition_ptr->get_mountpoints().size() > 0 )
 	   )
 		allow_toggle_busy_state( true ) ;
 
