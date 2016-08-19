@@ -1124,16 +1124,20 @@ void Win_GParted::set_valid_operations()
 	   )
 		allow_toggle_busy_state( true ) ;
 
-	// Allow naming on devices that support it
-	if ( selected_partition_ptr->type   != TYPE_UNALLOCATED   &&
-	     selected_partition_ptr->status == STAT_REAL          &&
-	     devices[current_device].partition_naming_supported()    )
+	// Allow partition naming on devices that support it
+	if ( selected_partition_ptr->status == STAT_REAL          &&
+	     devices[current_device].partition_naming_supported() &&
+	     ( selected_partition_ptr->type == TYPE_PRIMARY  ||
+	       selected_partition_ptr->type == TYPE_LOGICAL  ||
+	       selected_partition_ptr->type == TYPE_EXTENDED    )    )
 		allow_name_partition( true );
 
-	// Manage flags
-	if ( selected_partition_ptr->type   != TYPE_UNALLOCATED &&
-	     selected_partition_ptr->status == STAT_REAL        &&
-	     ! selected_partition_ptr->whole_device                )
+	// Allow partition flag management
+	if ( selected_partition_ptr->status == STAT_REAL          &&
+	     ! selected_partition_ptr->whole_device               &&
+	     ( selected_partition_ptr->type == TYPE_PRIMARY  ||
+	       selected_partition_ptr->type == TYPE_LOGICAL  ||
+	       selected_partition_ptr->type == TYPE_EXTENDED    )    )
 		allow_manage_flags( true );
 
 #ifdef ENABLE_ONLINE_RESIZE
