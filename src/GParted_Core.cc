@@ -379,8 +379,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		}
 	}
 
-	//clear leftover information...	
-	//NOTE that we cannot clear mountinfo since it might be needed in get_all_mountpoints()
 	set_thread_status_message("") ;
 	g_idle_add( (GSourceFunc)_mainquit, NULL );
 }
