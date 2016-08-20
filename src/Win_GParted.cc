@@ -941,46 +941,37 @@ void Win_GParted::Refresh_Visual()
 			copied_partition = display_partitions[t].clone();
 		}
 
-		switch ( display_partitions[t].type )
+		if ( display_partitions[t].filesystem == FS_UNALLOCATED )
 		{
-			case TYPE_EXTENDED:
-				for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
+			current_size = display_partitions[t].get_sector_length();
+			if ( current_size > largest_unalloc_size )
+			{
+				largest_unalloc_size = current_size;
+				selected_partition_ptr = & display_partitions[t];
+			}
+		}
+
+		if ( display_partitions[t].type == TYPE_EXTENDED )
+		{
+			for ( unsigned int u = 0 ; u < display_partitions[t].logicals.size() ; u ++ )
+			{
+				if ( copied_partition != NULL &&
+				     display_partitions[t].logicals[u].get_path() == copied_partition->get_path() )
 				{
-					if ( copied_partition != NULL &&
-					     display_partitions[t].logicals[u].get_path() == copied_partition->get_path() )
-					{
-						delete copied_partition;
-						copied_partition = display_partitions[t].logicals[u].clone();
-					}
+					delete copied_partition;
+					copied_partition = display_partitions[t].logicals[u].clone();
+				}
 
-					switch ( display_partitions[t].logicals[u].type )
+				if ( display_partitions[t].logicals[u].filesystem == FS_UNALLOCATED )
+				{
+					current_size = display_partitions[t].logicals[u].get_sector_length();
+					if ( current_size > largest_unalloc_size )
 					{
-						case TYPE_UNALLOCATED:
-							current_size = display_partitions[t].logicals[u].get_sector_length();
-							if ( current_size > largest_unalloc_size )
-							{
-								largest_unalloc_size = current_size ;
-								selected_partition_ptr = & display_partitions[t].logicals[u];
-							}
-							break;
-
-						default:
-							break;
+						largest_unalloc_size = current_size;
+						selected_partition_ptr = & display_partitions[t].logicals[u];
 					}
 				}
-				break;
-
-			case TYPE_UNALLOCATED:
-				current_size = display_partitions[t].get_sector_length();
-				if ( current_size > largest_unalloc_size )
-				{
-					largest_unalloc_size = current_size ;
-					selected_partition_ptr = & display_partitions[t];
-				}
-				break;
-
-			default				:
-				break;
+			}
 		}
 	}
 
