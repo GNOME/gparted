@@ -1236,9 +1236,10 @@ void Win_GParted::set_valid_operations()
 	}	
 	
 	// PRIMARY, LOGICAL and UNPARTITIONED; partitions with supported file system.
-	if ( selected_partition_ptr->type == TYPE_PRIMARY       ||
-	     selected_partition_ptr->type == TYPE_LOGICAL       ||
-	     selected_partition_ptr->type == TYPE_UNPARTITIONED    )
+	if ( ( selected_partition_ptr->type == TYPE_PRIMARY       ||
+	       selected_partition_ptr->type == TYPE_LOGICAL       ||
+	       selected_partition_ptr->type == TYPE_UNPARTITIONED    ) &&
+	     selected_partition_ptr->filesystem != FS_UNALLOCATED         )
 	{
 		allow_format( true ) ;
 
