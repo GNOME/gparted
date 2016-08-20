@@ -157,8 +157,8 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		if ( visual_partitions[t].partition_ptr->type != TYPE_UNALLOCATED &&
-		     visual_partitions[t].partition_ptr->type != TYPE_EXTENDED       )
+		if ( visual_partitions[t].partition_ptr->filesystem != FS_UNALLOCATED &&
+		     visual_partitions[t].partition_ptr->type       != TYPE_EXTENDED     )
 		{
 			if ( visual_partitions[t].partition_ptr->sector_usage_known() )
 			{
