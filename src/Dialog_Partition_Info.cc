@@ -126,7 +126,7 @@ void Dialog_Partition_Info::drawingarea_on_realize()
 
 bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 {
-	if ( partition .type != GParted::TYPE_UNALLOCATED ) 
+	if ( partition.filesystem != FS_UNALLOCATED )
 	{
 		//used
 		gc ->set_foreground( color_used );
@@ -270,7 +270,7 @@ void Dialog_Partition_Info::Display_Info()
 	top++, bottom++;
 
 	//label
-	if ( filesystem_ptn.type != TYPE_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
+	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
 	{
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
 				1, 2,
@@ -285,7 +285,7 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	// file system uuid
-	if ( filesystem_ptn.type != TYPE_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
+	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
 	{
 		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
 				1, 2,
@@ -309,7 +309,7 @@ void Dialog_Partition_Info::Display_Info()
 	static Glib::ustring luks_closed = _("Closed");
 
 	//status
-	if ( filesystem_ptn.type != TYPE_UNALLOCATED && filesystem_ptn.status != STAT_NEW )
+	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.status != STAT_NEW )
 	{
 		//status
 		Glib::ustring str_temp ;
@@ -598,7 +598,7 @@ void Dialog_Partition_Info::Display_Info()
 	               top++, bottom++,
 	               Gtk::FILL );
 
-	if ( partition .type != GParted::TYPE_UNALLOCATED && partition .status != GParted::STAT_NEW )
+	if ( partition.filesystem != FS_UNALLOCATED && partition .status != GParted::STAT_NEW )
 	{
 		// name
 		table->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Name:") ) + "</b>"),
