@@ -3548,7 +3548,8 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail & operationdetail ) 
 {
-	if ( partition .type == TYPE_PRIMARY || partition .type == TYPE_LOGICAL || partition .type == TYPE_EXTENDED )
+	if ( partition.type == TYPE_PRIMARY  || partition.type == TYPE_LOGICAL       ||
+	     partition.type == TYPE_EXTENDED || partition.type == TYPE_UNPARTITIONED    )
 	{
 		Glib::ustring curr_path = partition.get_path();
 		operationdetail.add_child( OperationDetail( String::ucompose( _("calibrate %1"), curr_path ) ) );
