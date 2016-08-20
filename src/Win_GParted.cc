@@ -1153,11 +1153,13 @@ void Win_GParted::set_valid_operations()
 	if ( selected_filesystem.busy )
 		return ;
 
-	// UNALLOCATED
+	// UNALLOCATED space within a partition table or UNALLOCATED whole disk device
+	if ( selected_partition_ptr->filesystem == FS_UNALLOCATED )
+		allow_new( true );
+
+	// UNALLOCATED space within a partition table
 	if ( selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
-		allow_new( true );
-		
 		// Find out if there is a partition to be copied and if it fits inside this unallocated space
 		// FIXME:
 		// Temporarily disable copying of encrypted content into new partitions
