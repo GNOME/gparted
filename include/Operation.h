@@ -66,7 +66,6 @@ public:
 protected:
 	int find_index_original( const PartitionVector & partitions );
 	int find_index_new( const PartitionVector & partitions );
-	int find_index_extended( const PartitionVector & partitions );
 	void insert_unallocated( PartitionVector & partitions,
 	                         Sector start, Sector end, Byte_Value sector_size, bool inside_extended );
 	void substitute_new( PartitionVector & partitions );

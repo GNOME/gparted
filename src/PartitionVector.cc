@@ -90,4 +90,13 @@ void PartitionVector::replace_at( size_type n, const Partition * partition )
 	v[n] = p;
 }
 
+// Return index of the extended partition or -1 when not found
+int find_extended_partition( const PartitionVector & partitions )
+{
+	for ( unsigned int i = 0 ; i < partitions.size() ; i ++ )
+		if ( partitions[i].type == TYPE_EXTENDED )
+			return (int)i;
+	return -1;
+}
+
 } //GParted

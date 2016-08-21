@@ -380,17 +380,10 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 		//  available for any following logical partition Extended Boot Record
 		if ( partition .type == TYPE_EXTENDED )
 		{
-			//Locate the extended partition that contains the logical partitions.
-			int index_extended = -1 ;
-			for ( unsigned int t = 0 ; t < device .partitions .size() ; t++ )
-			{
-				if ( device .partitions[ t ] .type == TYPE_EXTENDED )
-					index_extended = t ;
-			}
-
 			//If there is logical partition that starts less than 2 sectors
 			//  from the start of this partition, then reserve a mebibyte for the EBR.
-			if ( index_extended != -1 )
+			int index_extended = find_extended_partition( device.partitions );
+			if ( index_extended >= 0 )
 			{
 				for ( unsigned int t = 0; t < device .partitions[ index_extended ] .logicals .size(); t++ )
 				{
@@ -420,17 +413,10 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 	//  required for a following logical partition Extended Boot Record
 	if ( partition .type == TYPE_LOGICAL )
 	{
-		//Locate the extended partition that contains the logical partitions.
-		int index_extended = -1 ;
-		for ( unsigned int t = 0 ; t < device .partitions .size() ; t++ )
-		{
-			if ( device .partitions[ t ] .type == TYPE_EXTENDED )
-				index_extended = t ;
-		}
-
 		//If there is a following logical partition that starts less than 2 sectors from
 		//  the end of this partition, then reserve at least a mebibyte for the EBR.
-		if ( index_extended != -1 )
+		int index_extended = find_extended_partition( device.partitions );
+		if ( index_extended >= 0 )
 		{
 			for ( unsigned int t = 0; t < device .partitions[ index_extended ] .logicals .size(); t++ )
 			{

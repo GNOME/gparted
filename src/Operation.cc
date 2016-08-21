@@ -81,15 +81,6 @@ int Operation::find_index_new( const PartitionVector & partitions )
 	return -1;
 }
 
-int Operation::find_index_extended( const PartitionVector & partitions )
-{
-	for ( unsigned int t = 0 ; t < partitions .size() ; t++ )
-		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
-			return t ;
-
-	return -1 ;
-}
-
 void Operation::insert_unallocated( PartitionVector & partitions,
                                     Sector start, Sector end, Byte_Value sector_size, bool inside_extended )
 {
@@ -110,7 +101,7 @@ void Operation::substitute_new( PartitionVector & partitions )
 
 	if ( partition_original->inside_extended )
 	{
-		index_extended = find_index_extended( partitions );
+		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
 			index = find_index_original( partitions[index_extended].logicals );
@@ -146,7 +137,7 @@ void Operation::insert_new( PartitionVector & partitions )
 
 	if ( partition_new->inside_extended )
 	{
-		index_extended = find_index_extended( partitions );
+		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
 			index = find_index_new( partitions[index_extended].logicals );

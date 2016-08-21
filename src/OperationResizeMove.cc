@@ -151,8 +151,7 @@ void OperationResizeMove::apply_normal_to_visual( PartitionVector & partitions )
 
 	if ( partition_original->inside_extended )
 	{
-		index_extended = find_index_extended( partitions ) ;
-			
+		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
 			index = find_index_original( partitions[ index_extended ] .logicals ) ;
@@ -191,13 +190,12 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 	int index_extended;
 
 	//stuff OUTSIDE extended partition
-	index_extended = find_index_extended( partitions ) ;
-		
+	index_extended = find_extended_partition( partitions );
 	if ( index_extended >= 0 )
 	{
 		remove_adjacent_unallocated( partitions, index_extended ) ;
-		
-		index_extended = find_index_extended( partitions ) ;
+
+		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
 			partitions[index_extended].sector_start = partition_new->sector_start;
@@ -208,8 +206,7 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 	}
 	
 	//stuff INSIDE extended partition
-	index_extended = find_index_extended( partitions ) ;
-	
+	index_extended = find_extended_partition( partitions );
 	if ( index_extended >= 0 )
 	{
 		if ( partitions[ index_extended ] .logicals .size() > 0 &&

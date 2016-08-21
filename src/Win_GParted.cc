@@ -1783,13 +1783,9 @@ void Win_GParted::activate_resize()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	PartitionVector * display_partitions_ptr = &display_partitions;
-	if ( selected_partition_ptr->type == TYPE_LOGICAL )
-	{
-		unsigned int ext = 0 ;
-		while ( ext < display_partitions.size() && display_partitions[ext].type != TYPE_EXTENDED )
-			ext++;
-		display_partitions_ptr = &display_partitions[ext].logicals;
-	}
+	int index_extended = find_extended_partition( display_partitions );
+	if ( index_extended >= 0 )
+		display_partitions_ptr = &display_partitions[index_extended].logicals;
 
 	FS fs_cap = gparted_core.get_fs( selected_partition_ptr->get_filesystem_partition().filesystem );
 	Partition * working_ptn;
@@ -2085,15 +2081,7 @@ void Win_GParted::activate_new()
 		// Check if an extended partition already exist; so that the dialog can
 		// decide whether to allow the creation of the only extended partition
 		// type or not.
-		bool any_extended = false;
-		for ( unsigned int i = 0 ; i < display_partitions.size() ; i ++ )
-		{
-			if ( display_partitions[i].type == TYPE_EXTENDED )
-			{
-				any_extended = true;
-				break;
-			}
-		}
+		bool any_extended = ( find_extended_partition( display_partitions ) >= 0 );
 		Dialog_Partition_New dialog( devices[current_device],
 		                             *selected_partition_ptr,
 		                             any_extended,

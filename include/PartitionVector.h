@@ -77,6 +77,8 @@ private:
 	std::vector<Partition *> v;
 };
 
+int find_extended_partition( const PartitionVector & partitions );
+
 } //GParted
 
 #endif /* GPARTED_PARTITIONVECTOR_H */

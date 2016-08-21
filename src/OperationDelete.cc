@@ -61,8 +61,7 @@ void OperationDelete::apply_to_visual( PartitionVector & partitions )
 
 	if ( partition_original->inside_extended )
 	{
-		index_extended = find_index_extended( partitions ) ;
-		
+		index_extended = find_extended_partition( partitions );
 		if ( index_extended >= 0 )
 		{
 			index = find_index_original( partitions[ index_extended ] .logicals ) ;
