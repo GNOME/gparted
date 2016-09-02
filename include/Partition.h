@@ -135,6 +135,9 @@ public:
 	// file system.  Will be overridden in derived PartitionLUKS.
 	virtual const Partition & get_filesystem_partition() const     { return *this; };
 
+	virtual const Glib::ustring get_filesystem_string() const
+	                                { return Utils::get_filesystem_string( filesystem ); };
+
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
 		

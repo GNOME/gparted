@@ -54,6 +54,8 @@ public:
 
 	virtual const Partition & get_filesystem_partition() const;
 
+	virtual const Glib::ustring get_filesystem_string() const;
+
 private:
 	Partition encrypted;
 	Sector header_size;  // Size of the LUKS header (everything up to the start of the mapping)

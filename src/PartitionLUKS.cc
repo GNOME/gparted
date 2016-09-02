@@ -200,4 +200,13 @@ const Partition & PartitionLUKS::get_filesystem_partition() const
 	return *this;
 }
 
+const Glib::ustring PartitionLUKS::get_filesystem_string() const
+{
+	/* TO TRANSLATORS: means that this is an encrypted file system */
+	Glib::ustring fs_str = "[" + Glib::ustring( _("Encrypted") ) + "]";
+	if ( busy )
+		fs_str += " " + Utils::get_filesystem_string( encrypted.filesystem );
+	return fs_str;
+}
+
 } //GParted

@@ -184,21 +184,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 
 	// file system
 	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( filesystem_ptn.filesystem, 16, 16 );
-	if ( partition.filesystem == FS_LUKS && partition.busy )
-	{
-		const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
-		/* TO TRANSLATORS: means that this is an encrypted file system */
-		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "] " +
-		                                              Utils::get_filesystem_string( encrypted.filesystem );
-	}
-	else if ( partition.filesystem == FS_LUKS && ! partition.busy )
-	{
-		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "]";
-	}
-	else
-	{
-		treerow[treeview_detail_columns.filesystem] = Utils::get_filesystem_string( partition.filesystem );
-	}
+	treerow[treeview_detail_columns.filesystem] = partition.get_filesystem_string();
 
 	// mount point
 	std::vector<Glib::ustring> temp_mountpoints = filesystem_ptn.get_mountpoints();
