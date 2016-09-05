@@ -3399,6 +3399,14 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 								Utils::format_size( partition .get_sector_length(), partition .sector_size ) ),
 					STATUS_NONE, 
 					FONT_ITALIC ) ) ;
+
+				if ( partition.filesystem == FS_LUKS && partition.busy )
+				{
+					const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
+					operationdetail.get_last_child().add_child( OperationDetail(
+						String::ucompose( _("encryption path: %1"), encrypted.get_path() ),
+						STATUS_NONE, FONT_ITALIC ) );
+				}
 			}
 
 			destroy_device_and_disk( lp_device, lp_disk ) ;
