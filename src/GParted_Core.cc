@@ -571,6 +571,14 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		// object(s), either partition_original, partition_new or partition_copy,
 		// as required.  Calibrate also displays details of the partition being
 		// modified in the operation results to inform the user.
+		//
+		// Win_GParted::set_valid_operations() determines which operations are
+		// allowed on file systems depending on whether each is busy mounted or
+		// not.  For encrypted file systems allowed operations also depends on
+		// whether the encryption mapping is open or not.  Therefore each
+		// operation must leave the status of the file system and any encryption
+		// mapping in the same state which it found it, ready for the next
+		// operation.
 
 		case OPERATION_DELETE:
 			success =    calibrate_partition( operation->get_partition_original(),
@@ -662,7 +670,7 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 		case OPERATION_CHANGE_UUID:
 			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && change_filesystem_uuid( operation->get_partition_new(),
+			          && change_filesystem_uuid( operation->get_partition_new().get_filesystem_partition(),
 			                                     operation->operation_detail );
 			break;
 	}

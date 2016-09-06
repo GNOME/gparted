@@ -200,6 +200,13 @@ const Partition & PartitionLUKS::get_filesystem_partition() const
 	return *this;
 }
 
+Partition & PartitionLUKS::get_filesystem_partition()
+{
+	if ( busy )
+		return encrypted;
+	return *this;
+}
+
 const Glib::ustring PartitionLUKS::get_filesystem_string() const
 {
 	/* TO TRANSLATORS: means that this is an encrypted file system */

@@ -1076,8 +1076,12 @@ void Win_GParted::set_valid_operations()
 		return ;
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
+	// Reference to the Partition object directly containing the file system.
+	const Partition & selected_filesystem = selected_partition_ptr->get_filesystem_partition();
+
 	// Get filesystem capabilities
 	fs = gparted_core.get_fs( selected_partition_ptr->filesystem );
+	const FS & fs_cap = gparted_core.get_fs( selected_filesystem.filesystem );
 
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
@@ -1141,7 +1145,7 @@ void Win_GParted::set_valid_operations()
 #endif
 
 	// Only unmount/swapoff/VG deactivate or online actions allowed if busy
-	if ( selected_partition_ptr->busy )
+	if ( selected_filesystem.busy )
 		return ;
 
 	// UNALLOCATED
@@ -1238,7 +1242,7 @@ void Win_GParted::set_valid_operations()
 			allow_label_filesystem( true );
 
 		//only allow changing UUID of real partitions that support it
-		if ( selected_partition_ptr->status == STAT_REAL && fs.write_uuid )
+		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.write_uuid )
 			allow_change_uuid( true ) ;
 
 		// Generate Mount on submenu, except for LVM2 PVs borrowing mount point to
@@ -2738,7 +2742,8 @@ void Win_GParted::activate_change_uuid()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
+	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( filesystem_ptn.filesystem );
 	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
 	{
 		int i ;
@@ -2760,21 +2765,26 @@ void Win_GParted::activate_change_uuid()
 	}
 
 	// Make a duplicate of the selected partition (used in UNDO)
-	Partition * part_temp = selected_partition_ptr->clone();
+	Partition * temp_ptn = selected_partition_ptr->clone();
 
-	if ( part_temp->filesystem == FS_NTFS )
-		//Explicitly ask for half, so that the user will be aware of it
-		//Also, keep this kind of policy out of the NTFS code.
-		part_temp->uuid = UUID_RANDOM_NTFS_HALF;
-	else
-		part_temp->uuid = UUID_RANDOM;
+	{
+		// Sub-block so that temp_filesystem_ptn reference goes out of scope
+		// before temp_ptn pointer is deallocated.
+		Partition & temp_filesystem_ptn = temp_ptn->get_filesystem_partition();
+		if ( temp_filesystem_ptn.filesystem == FS_NTFS )
+			// Explicitly ask for half, so that the user will be aware of it
+			// Also, keep this kind of policy out of the NTFS code.
+			temp_filesystem_ptn.uuid = UUID_RANDOM_NTFS_HALF;
+		else
+			temp_filesystem_ptn.uuid = UUID_RANDOM;
+	}
 
 	Operation * operation = new OperationChangeUUID( devices[current_device],
-	                                                 *selected_partition_ptr, *part_temp );
+	                                                 *selected_partition_ptr, *temp_ptn );
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
-	delete part_temp;
-	part_temp = NULL;
+	delete temp_ptn;
+	temp_ptn = NULL;
 
 	Add_Operation( operation ) ;
 	// Try to merge this change UUID operation with all previous operations.

@@ -50,18 +50,18 @@ void OperationChangeUUID::create_description()
 {
 	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
 
-	if ( partition_new->uuid == UUID_RANDOM_NTFS_HALF )
+	if ( partition_new->get_filesystem_partition().uuid == UUID_RANDOM_NTFS_HALF )
 	{
 		/*TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1 */
 		description = String::ucompose( _("Set half the UUID to a new random value on %1 file system on %2"),
-		                                Utils::get_filesystem_string( partition_new->filesystem ),
+		                                partition_new->get_filesystem_string(),
 		                                partition_new->get_path() );
 	}
 	else
 	{
 		/*TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1 */
 		description = String::ucompose( _("Set a new random UUID on %1 file system on %2"),
-		                                Utils::get_filesystem_string( partition_new->filesystem ),
+		                                partition_new->get_filesystem_string(),
 		                                partition_new->get_path() );
 	}
 }

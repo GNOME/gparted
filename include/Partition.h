@@ -134,6 +134,7 @@ public:
 	// Interface to return reference to the Partition object directly containing the
 	// file system.  Will be overridden in derived PartitionLUKS.
 	virtual const Partition & get_filesystem_partition() const     { return *this; };
+	virtual Partition & get_filesystem_partition()                 { return *this; };
 
 	virtual const Glib::ustring get_filesystem_string() const
 	                                { return Utils::get_filesystem_string( filesystem ); };

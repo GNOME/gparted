@@ -53,6 +53,7 @@ public:
 	virtual void clear_messages();
 
 	virtual const Partition & get_filesystem_partition() const;
+	virtual Partition & get_filesystem_partition();
 
 	virtual const Glib::ustring get_filesystem_string() const;
 
