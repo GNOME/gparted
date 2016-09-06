@@ -131,6 +131,10 @@ public:
 	void append_messages( const std::vector<Glib::ustring> msgs )
 	                                { messages.insert( messages.end(), msgs.begin(), msgs.end() ); }
 
+	// Interface to return reference to the Partition object directly containing the
+	// file system.  Will be overridden in derived PartitionLUKS.
+	virtual const Partition & get_filesystem_partition() const     { return *this; };
+
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
 		

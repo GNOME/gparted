@@ -50,7 +50,6 @@ private:
 	bool drawingarea_on_expose( GdkEventExpose *ev );
 
 	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
-	const Partition * filesystem;  // (Alias to above partition or encrypted file system within).
 
 	Gtk::HBox *hbox ;
 	Gtk::DrawingArea drawingarea ;

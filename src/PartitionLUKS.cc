@@ -201,4 +201,11 @@ void PartitionLUKS::clear_messages()
 	encrypted.clear_messages();
 }
 
+const Partition & PartitionLUKS::get_filesystem_partition() const
+{
+	if ( busy )
+		return encrypted;
+	return *this;
+}
+
 } //GParted

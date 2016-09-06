@@ -53,6 +53,8 @@ public:
 	virtual std::vector<Glib::ustring> get_messages() const;
 	virtual void clear_messages();
 
+	virtual const Partition & get_filesystem_partition() const;
+
 private:
 	Partition encrypted;
 	Sector header_size;  // Size of the LUKS header (everything up to the start of the mapping)

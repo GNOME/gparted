@@ -24,6 +24,7 @@
 #include <gtkmm/cellrenderer.h>
 #include <gtkmm/cellrenderertext.h>
 #include <pangomm/layout.h>
+#include <glibmm/ustring.h>
 
 namespace GParted
 { 
@@ -154,10 +155,8 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
                                   bool & show_mountpoints,
                                   bool & show_labels )
 {
-	const Partition * filesystem_ptn = &partition;
-	if ( partition.filesystem == FS_LUKS && partition.busy )
-		filesystem_ptn = &dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
-	if ( filesystem_ptn->busy )
+	const Partition & filesystem_ptn = partition.get_filesystem_partition();
+	if ( filesystem_ptn.busy )
 		treerow[ treeview_detail_columns .icon1 ] = 
 			render_icon( Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON );
 	
@@ -183,42 +182,32 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 	if ( ! partition.name.empty() )
 		show_names = true;
 
+	// file system
+	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( filesystem_ptn.filesystem, 16, 16 );
 	if ( partition.filesystem == FS_LUKS && partition.busy )
 	{
 		const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
-
-		// file system
-		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( encrypted.filesystem, 16, 16 );
 		/* TO TRANSLATORS: means that this is an encrypted file system */
 		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "] " +
 		                                              Utils::get_filesystem_string( encrypted.filesystem );
-
-		// mount point
-		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", encrypted.get_mountpoints() );
 	}
 	else if ( partition.filesystem == FS_LUKS && ! partition.busy )
 	{
-		// file system
-		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
 		treerow[treeview_detail_columns.filesystem] = "[" + Glib::ustring( _("Encrypted") ) + "]";
-
-		// mount point
-		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", partition.get_mountpoints() );
 	}
 	else
 	{
-		// file system
-		treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( partition.filesystem, 16, 16 );
 		treerow[treeview_detail_columns.filesystem] = Utils::get_filesystem_string( partition.filesystem );
-
-		// mount point
-		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", partition.get_mountpoints() );
 	}
-	if ( ! static_cast<Glib::ustring>( treerow[treeview_detail_columns.mountpoint] ).empty() )
+
+	// mount point
+	std::vector<Glib::ustring> temp_mountpoints = filesystem_ptn.get_mountpoints();
+	treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", temp_mountpoints );
+	if ( ! temp_mountpoints.empty() )
 		show_mountpoints = true;
 
 	//label
-	Glib::ustring temp_filesystem_label = partition.get_filesystem_label();
+	Glib::ustring temp_filesystem_label = filesystem_ptn.get_filesystem_label();
 	treerow[treeview_detail_columns.label] = temp_filesystem_label;
 	if ( ! temp_filesystem_label.empty() )
 		show_labels = true;
