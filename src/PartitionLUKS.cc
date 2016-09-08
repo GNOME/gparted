@@ -168,14 +168,6 @@ Sector PartitionLUKS::get_sectors_unallocated() const
 	return Partition::get_sectors_unallocated();
 }
 
-// Return the label of the encrypted file system within, or "" if no open mapping.
-Glib::ustring PartitionLUKS::get_filesystem_label() const
-{
-	if ( busy )
-		return encrypted.get_filesystem_label();
-	return "";
-}
-
 bool PartitionLUKS::have_messages() const
 {
 	if ( busy )

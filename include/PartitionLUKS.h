@@ -48,7 +48,6 @@ public:
 	virtual Sector get_sectors_used() const;
 	virtual Sector get_sectors_unused() const;
 	virtual Sector get_sectors_unallocated() const;
-	virtual Glib::ustring get_filesystem_label() const;
 	virtual bool have_messages() const;
 	virtual std::vector<Glib::ustring> get_messages() const;
 	virtual void clear_messages();

@@ -113,7 +113,7 @@ public:
 	Sector get_sector() const ;
 	bool test_overlap( const Partition & partition ) const ;
 	bool filesystem_label_known() const;
-	virtual Glib::ustring get_filesystem_label() const;
+	Glib::ustring get_filesystem_label() const;
 	void set_filesystem_label( const Glib::ustring & filesystem_label );
 
 	// Message accessors.  Messages are stored locally and accessed globally.
