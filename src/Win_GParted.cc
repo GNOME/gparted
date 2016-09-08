@@ -1238,7 +1238,7 @@ void Win_GParted::set_valid_operations()
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
-		if ( selected_partition_ptr->status == STAT_REAL && fs.write_label )
+		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.write_label )
 			allow_label_filesystem( true );
 
 		//only allow changing UUID of real partitions that support it
@@ -2675,17 +2675,18 @@ void Win_GParted::activate_label_filesystem()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	Dialog_FileSystem_Label dialog( *selected_partition_ptr );
+	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+	Dialog_FileSystem_Label dialog( filesystem_ptn );
 	dialog .set_transient_for( *this );
 
 	if (	dialog .run() == Gtk::RESPONSE_OK
-	     && dialog.get_new_label() != selected_partition_ptr->get_filesystem_label() )
+	     && dialog.get_new_label() != filesystem_ptn.get_filesystem_label() )
 	{
 		dialog .hide() ;
 		// Make a duplicate of the selected partition (used in UNDO)
 		Partition * part_temp = selected_partition_ptr->clone();
 
-		part_temp->set_filesystem_label( dialog.get_new_label() );
+		part_temp->get_filesystem_partition().set_filesystem_label( dialog.get_new_label() );
 
 		Operation * operation = new OperationLabelFileSystem( devices[current_device],
 		                                                      *selected_partition_ptr, *part_temp );

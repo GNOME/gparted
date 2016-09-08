@@ -660,7 +660,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 		case OPERATION_LABEL_FILESYSTEM:
 			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && label_filesystem( operation->get_partition_new(), operation->operation_detail );
+			          && label_filesystem( operation->get_partition_new().get_filesystem_partition(),
+			                               operation->operation_detail );
 			break;
 
 		case OPERATION_NAME_PARTITION:
