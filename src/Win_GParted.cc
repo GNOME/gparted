@@ -1275,7 +1275,7 @@ void Win_GParted::set_valid_operations()
 			allow_paste( true );
 
 		//see if we can somehow check/repair this file system....
-		if ( fs.check && selected_partition_ptr->status == STAT_REAL )
+		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.check )
 			allow_check( true ) ;
 	}
 }

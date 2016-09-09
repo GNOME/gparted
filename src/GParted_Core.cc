@@ -592,9 +592,9 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 		case OPERATION_CHECK:
 			success =    calibrate_partition( operation->get_partition_original(),
 			                                  operation->operation_detail )
-			          && check_repair_filesystem( operation->get_partition_original(),
+			          && check_repair_filesystem( operation->get_partition_original().get_filesystem_partition(),
 			                                      operation->operation_detail )
-			          && maximize_filesystem( operation->get_partition_original(),
+			          && maximize_filesystem( operation->get_partition_original().get_filesystem_partition(),
 			                                  operation->operation_detail );
 			break;
 

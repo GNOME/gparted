@@ -48,7 +48,7 @@ void OperationCheck::create_description()
 
 	/*TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4 */
 	description = String::ucompose( _("Check and repair file system (%1) on %2"),
-	                                Utils::get_filesystem_string( partition_original->filesystem ),
+	                                partition_original->get_filesystem_string(),
 	                                partition_original->get_path() );
 }
 
