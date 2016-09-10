@@ -141,10 +141,9 @@ private:
 		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 2 ] )
 			->set_sensitive( state ) ; 
 	}
-		
-	//threads..
-	void unmount_partition( bool * succes, Glib::ustring * error );
-		
+
+	static bool unmount_partition( const Partition & partition, Glib::ustring & error );
+
 	//signal handlers
 	void open_operationslist() ;
 	void close_operationslist() ;

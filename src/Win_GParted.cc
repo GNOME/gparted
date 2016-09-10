@@ -2221,40 +2221,50 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	show_operationslist() ;
 }
 
-void Win_GParted::unmount_partition( bool * succes, Glib::ustring * error ) 
+bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring & error )
 {
-	std::vector<Glib::ustring> errors;
-	std::vector<Glib::ustring> failed_mountpoints;
-	std::vector<Glib::ustring> mountpoints = Mount_Info::get_all_mountpoints();
-	Glib::ustring dummy ;
+	const std::vector<Glib::ustring> fs_mountpoints = partition.get_mountpoints();
+	const std::vector<Glib::ustring> all_mountpoints = Mount_Info::get_all_mountpoints();
 
-	*succes = true ; 
-	for ( unsigned int t = 0 ; t < selected_partition_ptr->get_mountpoints().size() ; t++ )
-		if ( std::count( mountpoints.begin(),
-		                 mountpoints.end(),
-		                 selected_partition_ptr->get_mountpoints()[t] ) <= 1 )
+	std::vector<Glib::ustring> skipped_mountpoints;
+	std::vector<Glib::ustring> umount_errors;
+
+	for ( unsigned int i = 0 ; i < fs_mountpoints.size() ; i ++ )
+	{
+		if ( std::count( all_mountpoints.begin(), all_mountpoints.end(), fs_mountpoints[i] ) >= 2 )
 		{
-			Glib::ustring cmd = "umount -v \"" + selected_partition_ptr->get_mountpoints()[t] + "\"";
-			if ( Utils::execute_command( cmd, dummy, *error ) )
-			{
-				*succes = false ;
-				errors.push_back( "# " + cmd + "\n" + *error );
-			}
+			// This mount point has two or more different file systems mounted
+			// on top of each other.  Refuse to unmount it as in the general
+			// case all have to be unmounted and then all except the file
+			// system being unmounted have to be remounted.  This is too rare
+			// a case to write such complicated code for.
+			skipped_mountpoints.push_back( fs_mountpoints[i] );
 		}
 		else
-			failed_mountpoints.push_back( selected_partition_ptr->get_mountpoints()[t] );
-
-	if ( *succes && failed_mountpoints .size() )
-	{
-		*succes = false ;
-		*error = _("The partition could not be unmounted from the following mount points:") ;
-		*error += "\n\n<i>" + Glib::build_path( "\n", failed_mountpoints ) + "</i>\n\n" ;
-		*error +=  _("Most likely other partitions are also mounted on these mount points. You are advised to unmount them manually.") ;
+		{
+			Glib::ustring cmd = "umount -v \"" + fs_mountpoints[i] + "\"";
+			Glib::ustring dummy;
+			Glib::ustring umount_error;
+			if ( Utils::execute_command( cmd, dummy, umount_error ) )
+				umount_errors.push_back( "# " + cmd + "\n" + umount_error );
+		}
 	}
-	else
-		*error = "<i>" + Glib::build_path( "\n", errors ) + "</i>" ;
+
+	if ( umount_errors.size() > 0 )
+	{
+		error = "<i>" + Glib::build_path( "</i>\n<i>", umount_errors ) + "</i>";
+		return false;
+	}
+	if ( skipped_mountpoints.size() > 0 )
+	{
+		error = _("The partition could not be unmounted from the following mount points:");
+		error += "\n\n<i>" + Glib::build_path( "\n", skipped_mountpoints ) + "</i>\n\n";
+		error += _("This is because other partitions are also mounted on these mount points.  You are advised to unmount them manually.");
+		return false;
+	}
+	return true;
 }
-	
+
 void Win_GParted::toggle_busy_state()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
@@ -2370,7 +2380,7 @@ void Win_GParted::toggle_busy_state()
 	else if ( selected_partition_ptr->busy )
 	{
 		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition_ptr->get_path() ) );
-		unmount_partition( &success, &error );
+		success = unmount_partition( *selected_partition_ptr, error );
 		hide_pulsebar();
 		if ( ! success )
 		{
