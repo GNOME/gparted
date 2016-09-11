@@ -177,6 +177,9 @@ private:
 	void activate_delete();
 	void activate_info();
 	void activate_format( GParted::FILESYSTEM new_fs );
+	bool check_toggle_busy_allowed( const Glib::ustring & disallowed_msg );
+	void show_toggle_failure_dialog( const Glib::ustring & failure_summary,
+	                                 const Glib::ustring & marked_up_error );
 	void toggle_busy_state() ;
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;

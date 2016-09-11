@@ -2265,138 +2265,157 @@ bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring 
 	return true;
 }
 
+bool Win_GParted::check_toggle_busy_allowed( const Glib::ustring & disallowed_msg )
+{
+	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
+	if ( operation_count > 0 )
+	{
+		Glib::ustring primary_msg = String::ucompose(
+			/* TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1 */
+			ngettext( "%1 operation is currently pending for partition %2",
+			/* TO TRANSLATORS: Plural case looks like   3 operations are currently pending for partition /dev/sdb1 */
+			          "%1 operations are currently pending for partition %2",
+			          operation_count ),
+			operation_count,
+			selected_partition_ptr->get_path() );
+
+		Gtk::MessageDialog dialog( *this,
+		                           primary_msg,
+		                           false,
+		                           Gtk::MESSAGE_INFO,
+		                           Gtk::BUTTONS_OK,
+		                           true );
+
+		Glib::ustring secondary_msg = disallowed_msg + "\n" +
+			_("Use the Edit menu to undo, clear or apply pending operations.");
+		dialog.set_secondary_text( secondary_msg );
+		dialog.run();
+		return false;
+	}
+	return true;
+}
+
+void Win_GParted::show_toggle_failure_dialog( const Glib::ustring & failure_summary,
+                                              const Glib::ustring & marked_up_error )
+{
+	Gtk::MessageDialog dialog( *this,
+	                           failure_summary,
+	                           false,
+	                           Gtk::MESSAGE_ERROR,
+	                           Gtk::BUTTONS_OK,
+	                           true );
+	dialog.set_secondary_text( marked_up_error, true );
+	dialog.run();
+}
+
 void Win_GParted::toggle_busy_state()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
-	bool success = false ;
-	Glib::ustring cmd;
-	Glib::ustring output;
-	Glib::ustring error;
-
-	if ( operation_count > 0 )
+	enum Action
 	{
-		//Note that this situation will only occur when trying to swapon a partition
-		//  or activate the Volume Group of a Physical Volume.  This is because
-		//  GParted does not permit queueing operations on partitions that are
-		//  currently active (i.e., swap enabled, mounted or active VG).  Hence
-		//  this situation will not occur for the swapoff, unmount or deactivate VG
-		//  actions that this method handles.
-
-		/*TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdd8. */
-		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2"
-		                              , "%1 operations are currently pending for partition %2"
-		                              , operation_count
-		                              )
-		                    , operation_count
-		                    , selected_partition_ptr->get_path()
-		                    ) ;
-		Gtk::MessageDialog dialog( *this
-		                         , tmp_msg
-		                         , false
-		                         , Gtk::MESSAGE_INFO
-		                         , Gtk::BUTTONS_OK
-		                         , true
-		                         ) ;
-		if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP )
-		{
-			tmp_msg = _( "The swapon action cannot be performed if an operation is pending for the partition." ) ;
-			tmp_msg += "\n" ;
-			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using swapon with this partition." ) ;
-		}
-		else if ( selected_partition_ptr->filesystem == FS_LVM2_PV )
-		{
-			tmp_msg = _( "The activate Volume Group action cannot be performed if an operation is pending for the partition." ) ;
-			tmp_msg += "\n" ;
-			tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using activate Volume Group with this partition." ) ;
-		}
-		dialog .set_secondary_text( tmp_msg ) ;
-		dialog .run() ;
-		return ;
+		NONE          = 0,
+		SWAPOFF       = 1,
+		SWAPON        = 2,
+		DEACTIVATE_VG = 3,
+		ACTIVATE_VG   = 4,
+		UNMOUNT       = 5
+	};
+	Action action = NONE;
+	Glib::ustring disallowed_msg;
+	Glib::ustring pulse_msg;
+	Glib::ustring failure_msg;
+	if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP && selected_partition_ptr->busy )
+	{
+		action = SWAPOFF;
+		disallowed_msg = _("The swapoff action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Deactivating swap on %1"), selected_partition_ptr->get_path() );
+		failure_msg = _("Could not deactivate swap");
 	}
-
-	if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP )
+	else if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP && ! selected_partition_ptr->busy )
 	{
-		show_pulsebar( 
-			String::ucompose( 
-				selected_partition_ptr->busy ? _("Deactivating swap on %1") : _("Activating swap on %1"),
-				selected_partition_ptr->get_path() ) );
-		if ( selected_partition_ptr->busy )
-			cmd = "swapoff -v " + selected_partition_ptr->get_path();
-		else
-			cmd = "swapon -v " + selected_partition_ptr->get_path();
-		success = ! Utils::execute_command( cmd, output, error );
-		hide_pulsebar();
-		if ( ! success )
-		{
-			Gtk::MessageDialog dialog( 
-				*this,
-				selected_partition_ptr->busy ? _("Could not deactivate swap") : _("Could not activate swap"),
-				false,
-				Gtk::MESSAGE_ERROR,
-				Gtk::BUTTONS_OK,
-				true ) ;
-
-			dialog.set_secondary_text( "# " + cmd + "\n" + error );
-
-			dialog.run() ;
-		}
+		action = SWAPON;
+		disallowed_msg = _("The swapon action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Activating swap on %1"), selected_partition_ptr->get_path() );
+		failure_msg = _("Could not activate swap");
 	}
-	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV )
+	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV && selected_partition_ptr->busy )
 	{
-		show_pulsebar(
-			String::ucompose(
-				selected_partition_ptr->busy ? _("Deactivating Volume Group %1")
-				                             : _("Activating Volume Group %1"),
-				// VGNAME from mount point
-				selected_partition_ptr->get_mountpoint() ) );
-		if ( selected_partition_ptr->busy )
-			// VGNAME from mount point
-			cmd = "lvm vgchange -a n " + selected_partition_ptr->get_mountpoint();
-		else
-			cmd = "lvm vgchange -a y " + selected_partition_ptr->get_mountpoint();
-		success = ! Utils::execute_command( cmd, output, error );
-		hide_pulsebar();
-
-		if ( ! success )
-		{
-			Gtk::MessageDialog dialog(
-				*this,
-				selected_partition_ptr->busy ? _("Could not deactivate Volume Group")
-				                             : _("Could not activate Volume Group"),
-				false,
-				Gtk::MESSAGE_ERROR,
-				Gtk::BUTTONS_OK,
-				true ) ;
-
-			dialog.set_secondary_text( "# " + cmd + "\n" + error );
-
-			dialog.run() ;
-		}
+		action = DEACTIVATE_VG;
+		disallowed_msg = _("The deactivate Volume Group action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Deactivating Volume Group %1"),
+		                              selected_partition_ptr->get_mountpoint() );  // VGNAME from point point
+		failure_msg = _("Could not deactivate Volume Group");
+	}
+	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->busy )
+	{
+		action = ACTIVATE_VG;
+		disallowed_msg = _("The activate Volume Group action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Activating Volume Group %1"),
+		                              selected_partition_ptr->get_mountpoint() );  // VGNAME from point point
+		failure_msg = _("Could not activate Volume Group");
 	}
 	else if ( selected_partition_ptr->busy )
 	{
-		show_pulsebar( String::ucompose( _("Unmounting %1"), selected_partition_ptr->get_path() ) );
-		success = unmount_partition( *selected_partition_ptr, error );
-		hide_pulsebar();
-		if ( ! success )
-		{
-			Gtk::MessageDialog dialog( *this, 
-			                           String::ucompose( _("Could not unmount %1"),
-			                                             selected_partition_ptr->get_path() ),
-			                           false,
-			                           Gtk::MESSAGE_ERROR,
-			                           Gtk::BUTTONS_OK,
-			                           true );
-
-			dialog .set_secondary_text( error, true ) ;
-		
-			dialog.run() ;
-		}
+		action = UNMOUNT;
+		disallowed_msg = _("The unmount action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Unmounting %1"), selected_partition_ptr->get_path() );
+		failure_msg = String::ucompose( _("Could not unmount %1"), selected_partition_ptr->get_path() );
 	}
+	else
+		// Impossible.  Mounting a file system calls activate_mount_partition().
+		return;
+
+	if ( ! check_toggle_busy_allowed( disallowed_msg ) )
+		// One or more operations are pending for this partition so changing the
+		// busy state is not allowed.
+		//
+		// After set_valid_operations() has allowed the operations to be queued
+		// the rest of the code assumes the busy state of the partition won't
+		// change.  Therefore pending operations must prevent changing the busy
+		// state of the partition.
+		return;
+
+	show_pulsebar( pulse_msg );
+	bool success = false;
+	Glib::ustring cmd;
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring error_msg;
+	switch ( action )
+	{
+		case SWAPOFF:
+			cmd = "swapoff -v " + selected_partition_ptr->get_path();
+			success = ! Utils::execute_command( cmd, output, error );
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
+			break;
+		case SWAPON:
+			cmd = "swapon -v " + selected_partition_ptr->get_path();
+			success = ! Utils::execute_command( cmd, output, error );
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
+			break;
+		case DEACTIVATE_VG:
+			cmd = "lvm vgchange -a n " + selected_partition_ptr->get_mountpoint();
+			success = ! Utils::execute_command( cmd, output, error );
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
+			break;
+		case ACTIVATE_VG:
+			cmd = "lvm vgchange -a y " + selected_partition_ptr->get_mountpoint();
+			success = ! Utils::execute_command( cmd, output, error );
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
+			break;
+		case UNMOUNT:
+			success = unmount_partition( *selected_partition_ptr, error_msg );
+			break;
+		default:
+			// Impossible
+			break;
+	}
+	hide_pulsebar();
+
+	if ( ! success )
+		show_toggle_failure_dialog( failure_msg, error_msg );
 
 	menu_gparted_refresh_devices() ;
 }
@@ -2406,38 +2425,17 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
-	if ( operation_count > 0 )
-	{
-		/*TO TRANSLATORS: Plural case looks like   4 operations are currently pending for partition /dev/sdd8. */
-		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending for partition %2"
-		                              , "%1 operations are currently pending for partition %2"
-		                              , operation_count
-		                              )
-		                    , operation_count
-		                    , selected_partition_ptr->get_path()
-		                    ) ;
-		Gtk::MessageDialog dialog( *this
-		                         , tmp_msg
-		                         , false
-		                         , Gtk::MESSAGE_INFO
-		                         , Gtk::BUTTONS_OK
-		                         , true
-		                         ) ;
-		tmp_msg  = _( "The mount action cannot be performed if an operation is pending for the partition." ) ;
-		tmp_msg += "\n" ;
-		tmp_msg += _( "Use the Edit menu to undo, clear, or apply operations before using mount with this partition." ) ;
-		dialog .set_secondary_text( tmp_msg ) ;
-		dialog .run() ;
-		return ;
-	}
+	Glib::ustring disallowed_msg = _("The mount action cannot be performed when an operation is pending for the partition.");
+	if ( ! check_toggle_busy_allowed( disallowed_msg ) )
+		// One or more operations are pending for this partition so changing the
+		// busy state by mounting the file system is not allowed.
+		return;
 
-	bool success = false ;
+	bool success;
 	Glib::ustring cmd;
 	Glib::ustring output;
 	Glib::ustring error;
-	Glib::ustring message;
+	Glib::ustring error_msg;
 
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
 	                                 selected_partition_ptr->get_path(),
@@ -2449,7 +2447,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	success = ! Utils::execute_command( cmd, output, error );
 	if ( ! success )
 	{
-		message = "# " + cmd + "\n" + error;
+		error_msg = "<i># " + cmd + "\n" + error + "</i>";
 
 		Glib::ustring type = Utils::get_filesystem_kernel_name( selected_partition_ptr->filesystem );
 		if ( ! type.empty() )
@@ -2460,24 +2458,16 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 			      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
 			success = ! Utils::execute_command( cmd, output, error );
 			if ( ! success )
-				message += "\n# " + cmd + "\n" + error;
+				error_msg += "\n<i># " + cmd + "\n" + error + "</i>";
 		}
 	}
 	hide_pulsebar();
 	if ( ! success )
 	{
-		Gtk::MessageDialog dialog( *this, 
-		                           String::ucompose( _("Could not mount %1 on %2"),
-		                                             selected_partition_ptr->get_path(),
-		                                             selected_partition_ptr->get_mountpoints()[index] ),
-		                           false,
-		                           Gtk::MESSAGE_ERROR,
-		                           Gtk::BUTTONS_OK,
-		                           true );
-
-		dialog.set_secondary_text( message );
-
-		dialog.run() ;
+		Glib::ustring failure_msg = String::ucompose( _("Could not mount %1 on %2"),
+		                                              selected_partition_ptr->get_path(),
+		                                              selected_partition_ptr->get_mountpoints()[index] );
+		show_toggle_failure_dialog( failure_msg, error_msg );
 	}
 
 	menu_gparted_refresh_devices() ;
