@@ -74,8 +74,6 @@ public:
 	                                Byte_Value sector_size,
 	                                bool inside_extended );
 
-	typedef std::map<BlockSpecial, std::vector<Glib::ustring> > MountMapping;
-
 private:
 	//detectionstuff..
 	void set_thread_status_message( Glib::ustring msg ) ;
