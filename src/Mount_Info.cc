@@ -144,23 +144,9 @@ void Mount_Info::add_node_and_mountpoint( MountMapping & map,
                                           Glib::ustring & node,
                                           Glib::ustring & mountpoint )
 {
-	// Only add node path(s) if mount point exists
+	// Only add node path if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
-	{
 		map[BlockSpecial( node )].push_back( mountpoint );
-
-		// If node is a symbolic link (e.g., /dev/root)
-		// then find real path and add entry too
-		if ( file_test( node, Glib::FILE_TEST_IS_SYMLINK ) )
-		{
-			char * rpath = realpath( node.c_str(), NULL );
-			if ( rpath != NULL )
-			{
-				map[BlockSpecial( rpath )].push_back( mountpoint );
-				free( rpath );
-			}
-		}
-	}
 }
 
 void Mount_Info::read_mountpoints_from_file_swaps( const Glib::ustring & filename, MountMapping & map )
