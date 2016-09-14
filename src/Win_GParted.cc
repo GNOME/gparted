@@ -47,6 +47,7 @@
 #include <gtkmm/radiobuttongroup.h>
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
+#include <glibmm/ustring.h>
 
 namespace GParted
 {
@@ -1087,28 +1088,28 @@ void Win_GParted::set_valid_operations()
 	allow_info( true ) ;
 
 	// Set an appropriate name for the activate/deactivate menu item.
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_partition_ptr->filesystem );
+	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_filesystem.filesystem );
 	if ( filesystem_object )
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
-			->set_label( filesystem_object->get_custom_text(   selected_partition_ptr->busy
+			->set_label( filesystem_object->get_custom_text(   selected_filesystem.busy
 			                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
 	else
 		dynamic_cast<Gtk::Label*>( menu_partition .items()[ MENU_TOGGLE_BUSY ] .get_child() )
-			->set_label( FileSystem::get_generic_text (  selected_partition_ptr->busy
+			->set_label( FileSystem::get_generic_text (  selected_filesystem.busy
 			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                           : CTEXT_ACTIVATE_FILESYSTEM )
 			                                          ) ;
 
 	// Only permit file system mount/unmount and swapon/swapoff when available
-	if (    selected_partition_ptr->status     == STAT_REAL
-	     && selected_partition_ptr->type       != TYPE_EXTENDED
-	     && selected_partition_ptr->filesystem != FS_LVM2_PV
-	     && selected_partition_ptr->filesystem != FS_LINUX_SWRAID
-	     && selected_partition_ptr->filesystem != FS_LUKS
-	     && (    selected_partition_ptr->busy
-	          || selected_partition_ptr->get_mountpoints().size() /* Have mount point(s) */
-	          || selected_partition_ptr->filesystem == FS_LINUX_SWAP
+	if (    selected_partition_ptr->status == STAT_REAL
+	     && selected_partition_ptr->type   != TYPE_EXTENDED
+	     && selected_filesystem.filesystem != FS_LVM2_PV
+	     && selected_filesystem.filesystem != FS_LINUX_SWRAID
+	     && selected_filesystem.filesystem != FS_LUKS
+	     && (    selected_filesystem.busy
+	          || selected_filesystem.get_mountpoints().size() /* Have mount point(s) */
+	          || selected_filesystem.filesystem == FS_LINUX_SWAP
 	        )
 	   )
 		allow_toggle_busy_state( true ) ;
@@ -1117,9 +1118,9 @@ void Win_GParted::set_valid_operations()
 	// For now specifically allow activation of an exported VG, which LVM will fail
 	// with "Volume group "VGNAME" is exported", otherwise user won't know why the
 	// inactive PV can't be activated.
-	if (    selected_partition_ptr->status     == STAT_REAL
-	     && selected_partition_ptr->filesystem == FS_LVM2_PV          // Active VGNAME from mount point
-	     && ( selected_partition_ptr->busy || selected_partition_ptr->get_mountpoints().size() > 0 )
+	if (    selected_partition_ptr->status == STAT_REAL
+	     && selected_filesystem.filesystem == FS_LVM2_PV      // Active VGNAME from mount point
+	     && ( selected_filesystem.busy || selected_filesystem.get_mountpoints().size() > 0 )
 	   )
 		allow_toggle_busy_state( true ) ;
 
@@ -1247,17 +1248,18 @@ void Win_GParted::set_valid_operations()
 
 		// Generate Mount on submenu, except for LVM2 PVs borrowing mount point to
 		// display the VGNAME and read-only supported LUKS.
-		if ( selected_partition_ptr->filesystem != FS_LVM2_PV &&
-		     selected_partition_ptr->filesystem != FS_LUKS    &&
-		     selected_partition_ptr->get_mountpoints().size()    )
+		if ( selected_filesystem.filesystem != FS_LVM2_PV &&
+		     selected_filesystem.filesystem != FS_LUKS    &&
+		     selected_filesystem.get_mountpoints().size()    )
 		{
 			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
 			menu ->items() .clear() ;
-			for ( unsigned int t = 0 ; t < selected_partition_ptr->get_mountpoints().size() ; t++ )
+			std::vector<Glib::ustring> temp_mountpoints = selected_filesystem.get_mountpoints();
+			for ( unsigned int t = 0 ; t < temp_mountpoints.size() ; t++ )
 			{
 				menu ->items() .push_back( 
 					Gtk::Menu_Helpers::MenuElem( 
-						selected_partition_ptr->get_mountpoints()[t],
+						temp_mountpoints[t],
 						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) );
 
 				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
@@ -2325,42 +2327,43 @@ void Win_GParted::toggle_busy_state()
 	Glib::ustring disallowed_msg;
 	Glib::ustring pulse_msg;
 	Glib::ustring failure_msg;
-	if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP && selected_partition_ptr->busy )
+	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+	if ( filesystem_ptn.filesystem == FS_LINUX_SWAP && filesystem_ptn.busy )
 	{
 		action = SWAPOFF;
 		disallowed_msg = _("The swapoff action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Deactivating swap on %1"), selected_partition_ptr->get_path() );
+		pulse_msg = String::ucompose( _("Deactivating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not deactivate swap");
 	}
-	else if ( selected_partition_ptr->filesystem == FS_LINUX_SWAP && ! selected_partition_ptr->busy )
+	else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP && ! filesystem_ptn.busy )
 	{
 		action = SWAPON;
 		disallowed_msg = _("The swapon action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Activating swap on %1"), selected_partition_ptr->get_path() );
+		pulse_msg = String::ucompose( _("Activating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not activate swap");
 	}
-	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV && selected_partition_ptr->busy )
+	else if ( filesystem_ptn.filesystem == FS_LVM2_PV && filesystem_ptn.busy )
 	{
 		action = DEACTIVATE_VG;
 		disallowed_msg = _("The deactivate Volume Group action cannot be performed when there are operations pending for the partition.");
 		pulse_msg = String::ucompose( _("Deactivating Volume Group %1"),
-		                              selected_partition_ptr->get_mountpoint() );  // VGNAME from point point
+		                              filesystem_ptn.get_mountpoint() );  // VGNAME from point point
 		failure_msg = _("Could not deactivate Volume Group");
 	}
-	else if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->busy )
+	else if ( filesystem_ptn.filesystem == FS_LVM2_PV && ! filesystem_ptn.busy )
 	{
 		action = ACTIVATE_VG;
 		disallowed_msg = _("The activate Volume Group action cannot be performed when there are operations pending for the partition.");
 		pulse_msg = String::ucompose( _("Activating Volume Group %1"),
-		                              selected_partition_ptr->get_mountpoint() );  // VGNAME from point point
+		                              filesystem_ptn.get_mountpoint() );  // VGNAME from point point
 		failure_msg = _("Could not activate Volume Group");
 	}
-	else if ( selected_partition_ptr->busy )
+	else if ( filesystem_ptn.busy )
 	{
 		action = UNMOUNT;
 		disallowed_msg = _("The unmount action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Unmounting %1"), selected_partition_ptr->get_path() );
-		failure_msg = String::ucompose( _("Could not unmount %1"), selected_partition_ptr->get_path() );
+		pulse_msg = String::ucompose( _("Unmounting %1"), filesystem_ptn.get_path() );
+		failure_msg = String::ucompose( _("Could not unmount %1"), filesystem_ptn.get_path() );
 	}
 	else
 		// Impossible.  Mounting a file system calls activate_mount_partition().
@@ -2385,27 +2388,27 @@ void Win_GParted::toggle_busy_state()
 	switch ( action )
 	{
 		case SWAPOFF:
-			cmd = "swapoff -v " + selected_partition_ptr->get_path();
+			cmd = "swapoff -v " + filesystem_ptn.get_path();
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case SWAPON:
-			cmd = "swapon -v " + selected_partition_ptr->get_path();
+			cmd = "swapon -v " + filesystem_ptn.get_path();
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case DEACTIVATE_VG:
-			cmd = "lvm vgchange -a n " + selected_partition_ptr->get_mountpoint();
+			cmd = "lvm vgchange -a n " + filesystem_ptn.get_mountpoint();
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case ACTIVATE_VG:
-			cmd = "lvm vgchange -a y " + selected_partition_ptr->get_mountpoint();
+			cmd = "lvm vgchange -a y " + filesystem_ptn.get_mountpoint();
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case UNMOUNT:
-			success = unmount_partition( *selected_partition_ptr, error_msg );
+			success = unmount_partition( filesystem_ptn, error_msg );
 			break;
 		default:
 			// Impossible
@@ -2436,25 +2439,26 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	Glib::ustring error;
 	Glib::ustring error_msg;
 
+	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
 	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
-	                                 selected_partition_ptr->get_path(),
-	                                 selected_partition_ptr->get_mountpoints()[index] ) );
+	                                 filesystem_ptn.get_path(),
+	                                 filesystem_ptn.get_mountpoints()[index] ) );
 
 	// First try mounting letting mount (libblkid) determine the file system type.
-	cmd = "mount -v " + selected_partition_ptr->get_path() +
-	      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
+	cmd = "mount -v " + filesystem_ptn.get_path() +
+	      " \"" + filesystem_ptn.get_mountpoints()[index] + "\"";
 	success = ! Utils::execute_command( cmd, output, error );
 	if ( ! success )
 	{
 		error_msg = "<i># " + cmd + "\n" + error + "</i>";
 
-		Glib::ustring type = Utils::get_filesystem_kernel_name( selected_partition_ptr->filesystem );
+		Glib::ustring type = Utils::get_filesystem_kernel_name( filesystem_ptn.filesystem );
 		if ( ! type.empty() )
 		{
 			// Second try mounting specifying the GParted determined file
 			// system type.
-			cmd = "mount -v -t " + type + " " + selected_partition_ptr->get_path() +
-			      " \"" + selected_partition_ptr->get_mountpoints()[index] + "\"";
+			cmd = "mount -v -t " + type + " " + filesystem_ptn.get_path() +
+			      " \"" + filesystem_ptn.get_mountpoints()[index] + "\"";
 			success = ! Utils::execute_command( cmd, output, error );
 			if ( ! success )
 				error_msg += "\n<i># " + cmd + "\n" + error + "</i>";
@@ -2464,8 +2468,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	if ( ! success )
 	{
 		Glib::ustring failure_msg = String::ucompose( _("Could not mount %1 on %2"),
-		                                              selected_partition_ptr->get_path(),
-		                                              selected_partition_ptr->get_mountpoints()[index] );
+		                                              filesystem_ptn.get_path(),
+		                                              filesystem_ptn.get_mountpoints()[index] );
 		show_toggle_failure_dialog( failure_msg, error_msg );
 	}
 
