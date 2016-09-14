@@ -17,6 +17,7 @@
  
  
 #include "../include/linux_swap.h"
+#include "../include/BlockSpecial.h"
 #include "../include/Partition.h"
 
 #include <cerrno>
@@ -79,13 +80,13 @@ void linux_swap::set_used_sectors( Partition & partition )
 		std::ifstream input( "/proc/swaps" ) ;
 		if ( input )
 		{
-			Glib::ustring path = partition .get_path() ;
-			Glib::ustring::size_type path_len = path.length() ;
+			BlockSpecial bs_path = BlockSpecial( partition.get_path() );
 			while ( getline( input, line ) )
 			{
-				if ( line .substr( 0, path_len ) == path )
+				Glib::ustring filename = Utils::regexp_label( line, "^([[:graph:]]+)" );
+				if ( bs_path == BlockSpecial( filename ) )
 				{
-					sscanf( line.substr( path_len ).c_str(), " %*s %*d %lld", &N );
+					sscanf( line.c_str(), "%*s %*s %*d %lld", &N );
 					break ;
 				}
 			}
