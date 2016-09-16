@@ -631,9 +631,10 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			// space earlier in the sequence of operations now being applied.
 			operation->get_partition_original().set_path( operation->get_partition_new().get_path() );
 
-			success =    remove_filesystem( operation->get_partition_original(),
+			success =    remove_filesystem( operation->get_partition_original().get_filesystem_partition(),
 			                                operation->operation_detail )
-			          && format( operation->get_partition_new(), operation->operation_detail );
+			          && format( operation->get_partition_new().get_filesystem_partition(),
+			                     operation->operation_detail );
 			break;
 
 		case OPERATION_COPY:

@@ -2131,30 +2131,42 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	// VGNAME from mount mount
-	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
+	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+
+	// For non-empty LVM2 PV confirm overwrite before continuing.  VGNAME from mount mount.
+	if ( filesystem_ptn.filesystem == FS_LVM2_PV && ! filesystem_ptn.get_mountpoint().empty() )
 	{
 		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_FORMAT ) )
 			return ;
 	}
 
-	//check for some limits...
+	// Generate minimum and maximum partition size limits for the new file system.
 	fs = gparted_core .get_fs( new_fs ) ;
+	bool encrypted = false;
+	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
+	{
+		encrypted = true;
+		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
+		                                 filesystem_ptn.get_byte_length();
+		fs.MIN += encryption_overhead;
+		if ( fs.MAX > 0 )
+			fs.MAX += encryption_overhead;
+	}
 
+	// Confirm partition is the right size to store the file system before continuing.
 	if ( ( selected_partition_ptr->get_byte_length() < fs.MIN )           ||
 	     ( fs.MAX && selected_partition_ptr->get_byte_length() > fs.MAX )    )
 	{
 		Gtk::MessageDialog dialog( *this,
-					   String::ucompose( 
-							/* TO TRANSLATORS: looks like
-							* Cannot format this file system to fat16.
-							*/
-							_( "Cannot format this file system to %1" ),
-							   Utils::get_filesystem_string( new_fs ) ) ,
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK,
-					   true );
+		                           String::ucompose( /* TO TRANSLATORS: looks like
+		                                              * Cannot format this file system to fat16.
+		                                              */
+		                                             _("Cannot format this file system to %1"),
+		                                             Utils::get_filesystem_string( encrypted, new_fs ) ),
+		                           false,
+		                           Gtk::MESSAGE_ERROR,
+		                           Gtk::BUTTONS_OK,
+		                           true );
 
 		if ( selected_partition_ptr->get_byte_length() < fs.MIN )
 			dialog .set_secondary_text( String::ucompose(
@@ -2162,7 +2174,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 						 * A fat16 file system requires a partition of at least 16.00 MiB.
 						 */
 						_( "A %1 file system requires a partition of at least %2."),
-						Utils::get_filesystem_string( new_fs ),
+						Utils::get_filesystem_string( encrypted, new_fs ),
 						Utils::format_size( fs .MIN, 1 /* Byte */ ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose(
@@ -2170,32 +2182,58 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 						 * A partition with a hfs file system has a maximum size of 2.00 GiB.
 						 */
 						_( "A partition with a %1 file system has a maximum size of %2."),
-						Utils::get_filesystem_string( new_fs ),
+						Utils::get_filesystem_string( encrypted, new_fs ),
 						Utils::format_size( fs .MAX, 1 /* Byte */ ) ) );
 		
 		dialog .run() ;
 		return ;
 	}
-	
-	//ok we made it.  lets create an fitting partition object
-	Partition part_temp ;
-	part_temp.Set( devices[current_device].get_path(),
-	               selected_partition_ptr->get_path(),
-	               selected_partition_ptr->partition_number,
-	               selected_partition_ptr->type,
-	               selected_partition_ptr->whole_device,
-	               new_fs,
-	               selected_partition_ptr->sector_start,
-	               selected_partition_ptr->sector_end,
-	               devices[current_device].sector_size,
-	               selected_partition_ptr->inside_extended,
-	               false );
-	part_temp.name = selected_partition_ptr->name;
-	//Leave sector usage figures to new Partition object defaults of
-	//  -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
-	
-	part_temp .status = GParted::STAT_FORMATTED ;
-	// When formatting a partition which already exists on the disk all possible
+
+	// Compose Partition object to represent the format operation.
+	Partition * temp_ptn;
+	if ( selected_partition_ptr->filesystem == FS_LUKS && ! selected_partition_ptr->busy )
+	{
+		// Formatting a closed LUKS encrypted partition will erase the encryption
+		// replacing it with a non-encrypted file system.  Start with a plain
+		// Partition object instead of cloning the existing PartitionLUKS object
+		// containing a Partition object.
+		// FIXME:
+		// Expect to remove this case when creating and removing LUKS encryption
+		// is added as a separate action when full LUKS read-write support is
+		// implemented.
+		temp_ptn = new Partition;
+	}
+	else
+	{
+		// Formatting a file system, either a plain file system or one within an
+		// open LUKS encryption mapping.  Start with a clone of the existing
+		// Partition object whether it be a plain Partition object or a
+		// PartitionLUKS object containing a Partition object.
+		temp_ptn = selected_partition_ptr->clone();
+	}
+	{
+		// Sub-block so that temp_filesystem_ptn reference goes out of scope
+		// before temp_ptn pointer is deallocated.
+		Partition & temp_filesystem_ptn = temp_ptn->get_filesystem_partition();
+		temp_filesystem_ptn.Reset();
+		temp_filesystem_ptn.Set( filesystem_ptn.device_path,
+		                         filesystem_ptn.get_path(),
+		                         filesystem_ptn.partition_number,
+		                         filesystem_ptn.type,
+		                         filesystem_ptn.whole_device,
+		                         new_fs,
+		                         filesystem_ptn.sector_start,
+		                         filesystem_ptn.sector_end,
+		                         filesystem_ptn.sector_size,
+		                         filesystem_ptn.inside_extended,
+		                         false );
+		// Leave sector usage figures as new Partition object defaults of
+		// -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
+	}
+	temp_ptn->name = selected_partition_ptr->name;
+	temp_ptn->status = STAT_FORMATTED;
+
+	// When formatting a partition which already exists on the disk, all possible
 	// operations could be pending so only try merging with the previous operation.
 	MergeType mergetype = MERGE_LAST_WITH_PREV;
 
@@ -2203,7 +2241,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	// add it again with the new file system
 	if ( selected_partition_ptr->status == STAT_NEW )
 	{
-		part_temp.status = STAT_NEW;
+		temp_ptn->status = STAT_NEW;
 		// On a partition which is pending creation only resize/move and format
 		// operations are possible.  These operations are always mergeable with
 		// the pending operation which will create the partition.  Hence merge
@@ -2213,8 +2251,11 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 
 	Operation * operation = new OperationFormat( devices[current_device],
 	                                             *selected_partition_ptr,
-	                                             part_temp );
+	                                             *temp_ptn );
 	operation->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+
+	delete temp_ptn;
+	temp_ptn = NULL;
 
 	Add_Operation( operation );
 	merge_operations( mergetype );
