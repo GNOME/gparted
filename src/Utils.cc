@@ -305,6 +305,17 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 	}
 }
 
+const Glib::ustring Utils::get_encrypted_string()
+{
+	/* TO TRANSLATORS: means that this is an encrypted file system */
+	return "[" + Glib::ustring( _("Encrypted") ) + "]";
+}
+
+const Glib::ustring Utils::get_filesystem_string( bool encrypted, FILESYSTEM fstype )
+{
+	return get_encrypted_string() + " " + get_filesystem_string( fstype );
+}
+
 // Return Linux kernel name only for mountable file systems.
 // (Identical to a subset of the libparted names except that it's hfsplus instead of hfs+).
 const Glib::ustring Utils::get_filesystem_kernel_name( FILESYSTEM fstype )

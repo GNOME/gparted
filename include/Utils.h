@@ -181,6 +181,8 @@ public:
 	static int get_max_partition_name_length( Glib::ustring & tabletype );
 	static int get_filesystem_label_maxlength( FILESYSTEM filesystem ) ;
 	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
+	static const Glib::ustring get_encrypted_string();
+	static const Glib::ustring get_filesystem_string( bool encrypted, FILESYSTEM fstype );
 	static const Glib::ustring get_filesystem_kernel_name( FILESYSTEM fstype );
 	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
 	static bool kernel_supports_fs( const Glib::ustring & fs ) ;
