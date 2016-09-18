@@ -20,6 +20,10 @@
 #include "../include/PartitionLUKS.h"
 #include "../include/PartitionVector.h"
 
+#include <vector>
+#include <gtkmm/cellrenderer.h>
+#include <gtkmm/cellrenderertext.h>
+
 namespace GParted
 { 
 
@@ -43,37 +47,19 @@ TreeView_Detail::TreeView_Detail()
 	append_column( _("Used"), treeview_detail_columns .used );
 	append_column( _("Unused"), treeview_detail_columns .unused );
 	append_column( _("Flags"), treeview_detail_columns .flags );
-	
-	//icons
+
+	// Tree view column "Partition"; add icon cells.
 	get_column( 0 ) ->pack_start( treeview_detail_columns .icon2, false );
 	get_column( 0 ) ->pack_start( treeview_detail_columns .icon1, false );
 
-	//PARTITION
-	//colored text in Partition column 
-	Gtk::CellRendererText *cell_renderer_text = 
-		dynamic_cast<Gtk::CellRendererText*>( get_column( 0 ) ->get_first_cell_renderer() );
-	get_column( 0 ) ->add_attribute( cell_renderer_text ->property_foreground(), 
-					 treeview_detail_columns .text_color );
-	
-	//FILE SYSTEM
-	//file system text
+	// Tree view column "File System"; add file system text cell.
 	get_column( 2 )->pack_start( treeview_detail_columns.filesystem, true );
-
-	//colored text in File System column 
-	std::vector<Gtk::CellRenderer*> renderers = get_column( 2 )->get_cell_renderers();
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers .back() ) ;
-	get_column( 2 )->add_attribute( cell_renderer_text->property_foreground(),
-	                                treeview_detail_columns.text_color );
-
-	//pixbuf and text are both left aligned
+	// Color pixbuf cell is left aligned.
 	get_column( 2 )->get_first_cell_renderer()->property_xalign() = Gtk::ALIGN_LEFT;
+	// File system text cell is left aligned.
+	std::vector<Gtk::CellRenderer*> renderers = get_column( 2 )->get_cell_renderers();
+	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
-	
-	//MOUNT POINT
-	//colored text in mount point column 
-	cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( get_column( 3 )->get_first_cell_renderer() );
-	get_column( 3 )->add_attribute( cell_renderer_text->property_foreground(),
-	                                treeview_detail_columns.mount_text_color );
 
 	//set alignment of numeric columns to right
 	for( short t = 5 ; t < 8 ; t++ )
