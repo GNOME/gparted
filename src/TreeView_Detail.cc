@@ -23,6 +23,7 @@
 #include <vector>
 #include <gtkmm/cellrenderer.h>
 #include <gtkmm/cellrenderertext.h>
+#include <pangomm/layout.h>
 
 namespace GParted
 { 
@@ -60,6 +61,12 @@ TreeView_Detail::TreeView_Detail()
 	std::vector<Gtk::CellRenderer*> renderers = get_column( 2 )->get_cell_renderers();
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
 	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
+
+	// Tree view column "Mount Point", make column resizable and show too wide text
+	// with ellipsis.
+	get_column( 3 )->set_resizable( true );
+	cell_renderer_text = dynamic_cast<Gtk::CellRendererText *>( get_column( 3 )->get_first_cell_renderer() );
+	cell_renderer_text->property_ellipsize() = Pango::ELLIPSIZE_END;
 
 	//set alignment of numeric columns to right
 	for( short t = 5 ; t < 8 ; t++ )
