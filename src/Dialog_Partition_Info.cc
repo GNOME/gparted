@@ -314,10 +314,9 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//status
 		Glib::ustring str_temp ;
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>" ),
-				1, 2,
-				top, bottom,
-				Gtk::FILL ) ;
+		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>",
+		                                 true, false, false, 0.0 /* ALIGN_TOP */ ),
+		               1, 2, top, bottom, Gtk::FILL );
 		if ( ! filesystem_accessible )
 		{
 			/* TO TRANSLATORS:   Not accessible (Encrypted)
@@ -416,7 +415,7 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not mounted") ;
 		}
 
-		table ->attach( * Utils::mk_label( str_temp, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL ) ;
+		table->attach( *Utils::mk_label( str_temp, true, true, true ), 2, 3, top++, bottom++, Gtk::FILL );
 	}
 
 	//Optional, LVM2 Volume Group name
