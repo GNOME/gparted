@@ -1392,9 +1392,22 @@ void Win_GParted::on_show()
 	vpaned_main .set_position( vpaned_main .get_height() ) ;
 	close_operationslist() ;
 
-	menu_gparted_refresh_devices() ;
+	// Register callback for as soon as the main window has been shown to perform the
+	// first load of the disk device details.  Do it this way because the Gtk::main
+	// loop doesn't seem to enable quit handling until on_show(), this function, has
+	// drawn the main window for the first time and returned, and we want Close Window [Alt-quit to work
+	// during the initial load of the disk device details.
+	g_idle_add( initial_device_refresh, this );
 }
-	
+
+// Callback used to load the disk device details for the first time
+gboolean Win_GParted::initial_device_refresh( gpointer data )
+{
+	Win_GParted *win_gparted = static_cast<Win_GParted *>( data );
+	win_gparted->menu_gparted_refresh_devices();
+	return false;  // one shot g_idle_add() callback
+}
+
 void Win_GParted::menu_gparted_refresh_devices()
 {
 	show_pulsebar( _("Scanning all devices...") ) ;
