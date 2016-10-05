@@ -91,7 +91,7 @@ void BlockSpecial::register_block_special( const Glib::ustring & name,
 
 bool operator==( const BlockSpecial & lhs, const BlockSpecial & rhs )
 {
-	if ( lhs.m_major > 0UL && lhs.m_minor > 0UL )
+	if ( lhs.m_major > 0UL || lhs.m_minor > 0UL )
 		// Match block special files by major, minor device numbers.
 		return lhs.m_major == rhs.m_major && lhs.m_minor == rhs.m_minor;
 	else
