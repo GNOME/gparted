@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gparted.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-30 17:39+0000\n"
-"PO-Revision-Date: 2016-04-19 19:57+0000\n"
+"POT-Creation-Date: 2016-05-20 16:05+0000\n"
+"PO-Revision-Date: 2016-10-10 16:27+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic <translation-team-is@lists.sourceforge.net>\n"
 "Language: is\n"
@@ -48,7 +48,7 @@ msgstr ""
 "reiser4, ufs, og xfs."
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
 #: ../src/Win_GParted.cc:79 ../src/Win_GParted.cc:1423
 #: ../src/Win_GParted.cc:1618
 msgid "GParted"
@@ -78,30 +78,26 @@ msgstr "(Nýtt UUID - verður útbúið á slembinn hátt)"
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(Nýtt hálft UUID - verður útbúið á slembinn hátt)"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:67
-msgid "%1 of %2 copied (%3 remaining)"
-msgstr "%1 af %2 afritaðir (%3 eftir)"
-
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:74 ../src/Copy_Blocks.cc:184
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
+#: ../src/Copy_Blocks.cc:71 ../src/Copy_Blocks.cc:181 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 af %2 afritaðir"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:160
+#: ../src/Copy_Blocks.cc:156
 msgid "copy %1 using a block size of %2"
 msgstr "afrita %1 með blokkarstærðina %2"
 
-#: ../src/Copy_Blocks.cc:222
+#: ../src/Copy_Blocks.cc:221
 msgid "Operation Canceled"
 msgstr "Hætt var við aðgerð"
 
-#: ../src/Copy_Blocks.cc:234
+#: ../src/Copy_Blocks.cc:233
 msgid "Error while writing block at sector %1"
 msgstr "Villa kom upp við að skrifa bálk í geiranum %1"
 
-#: ../src/Copy_Blocks.cc:239
+#: ../src/Copy_Blocks.cc:238
 msgid "Error while reading block at sector %1"
 msgstr "Villa kom upp við að lesa bálk í geiranum %1"
 
@@ -311,12 +307,12 @@ msgstr "Ekki tengd"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:2940
+#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:2947
 msgid "Volume Group:"
 msgstr "Sýndardiskur (volume group):"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:437 ../src/Win_GParted.cc:2941
+#: ../src/Dialog_Partition_Info.cc:437 ../src/Win_GParted.cc:2948
 msgid "Members:"
 msgstr "Meðlimir:"
 
@@ -442,106 +438,106 @@ msgstr "Færa eða breyta stærð á %1"
 msgid "Resize %1"
 msgstr "Breyta stærð %1"
 
-#: ../src/Dialog_Progress.cc:31
+#: ../src/Dialog_Progress.cc:33
 msgid "Applying pending operations"
 msgstr "Framkvæma þær aðgerðir sem bíða"
 
-#: ../src/Dialog_Progress.cc:46
+#: ../src/Dialog_Progress.cc:48
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr ""
 "Tíminn sem fer í þetta fer eftir hvernig aðgerðir á að framkvæma og hve "
 "margar þær eru."
 
-#: ../src/Dialog_Progress.cc:59
+#: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
 msgstr "Framkvæmdar aðgerðir:"
 
-#: ../src/Dialog_Progress.cc:100
+#: ../src/Dialog_Progress.cc:102
 msgid "Details"
 msgstr "Smáatriði"
 
-#: ../src/Dialog_Progress.cc:203
+#: ../src/Dialog_Progress.cc:215
 msgid "%1 of %2 operations completed"
 msgstr "%1 af %2 aðgerðum lokið"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:221
+#: ../src/Dialog_Progress.cc:233
 msgid "_Save Details"
 msgstr "Vi_sta smáatriði"
 
-#: ../src/Dialog_Progress.cc:233
+#: ../src/Dialog_Progress.cc:245
 msgid "Operation cancelled"
 msgstr "Hætt var við aðgerð"
 
-#: ../src/Dialog_Progress.cc:247
+#: ../src/Dialog_Progress.cc:259
 msgid "All operations successfully completed"
 msgstr "Allar aðgerðir heppnuðust"
 
-#: ../src/Dialog_Progress.cc:251
+#: ../src/Dialog_Progress.cc:263
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 viðvörun"
 msgstr[1] "%1 viðvaranir"
 
-#: ../src/Dialog_Progress.cc:264
+#: ../src/Dialog_Progress.cc:276
 msgid "An error occurred while applying the operations"
 msgstr "Villa kom upp við að framkvæma aðgerðirnar"
 
-#: ../src/Dialog_Progress.cc:269
+#: ../src/Dialog_Progress.cc:281
 msgid "See the details for more information."
 msgstr "Skoðaðu 'Smáatriði' til að fá frekari upplýsingar."
 
-#: ../src/Dialog_Progress.cc:271
+#: ../src/Dialog_Progress.cc:283
 msgid "IMPORTANT"
 msgstr "MIKILVÆGT"
 
-#: ../src/Dialog_Progress.cc:272
+#: ../src/Dialog_Progress.cc:284
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Ef þú vilt fá hjálp þá verðurðu að gefa upp vistuð smáatriði!"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:287
 msgid "See %1 for more information."
 msgstr "Sjá %1 til að fá frekari upplýsingar."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: ../src/Dialog_Progress.cc:294 ../src/Dialog_Progress.cc:325
+#: ../src/Dialog_Progress.cc:306 ../src/Dialog_Progress.cc:337
 msgid "Force Cancel (%1)"
 msgstr "Þvinga til að hætta við (%1)"
 
-#: ../src/Dialog_Progress.cc:296 ../src/Dialog_Progress.cc:329
+#: ../src/Dialog_Progress.cc:308 ../src/Dialog_Progress.cc:341
 msgid "Force Cancel"
 msgstr "Þvinga til að hætta við"
 
-#: ../src/Dialog_Progress.cc:307
+#: ../src/Dialog_Progress.cc:319
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Ertu viss um að þú viljir hætta við þessa aðgerð?"
 
-#: ../src/Dialog_Progress.cc:313
+#: ../src/Dialog_Progress.cc:325
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr ""
 "Að hætta við aðgerð í miðjum klíðum getur leitt til ALVARLEGRA SKEMMDA á "
 "kerfinu."
 
-#: ../src/Dialog_Progress.cc:315
+#: ../src/Dialog_Progress.cc:327
 msgid "Continue Operation"
 msgstr "Halda áfram með aðgerð"
 
-#: ../src/Dialog_Progress.cc:316
+#: ../src/Dialog_Progress.cc:328
 msgid "Cancel Operation"
 msgstr "Hætta við aðgerð"
 
-#: ../src/Dialog_Progress.cc:337
+#: ../src/Dialog_Progress.cc:349
 msgid "Save Details"
 msgstr "Vista smáatriði"
 
-#: ../src/Dialog_Progress.cc:356
+#: ../src/Dialog_Progress.cc:368
 msgid "GParted Details"
 msgstr "Nánar um GParted"
 
-#: ../src/Dialog_Progress.cc:367
+#: ../src/Dialog_Progress.cc:379
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -549,7 +545,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:410
+#: ../src/Dialog_Progress.cc:422
 msgid "EXECUTING"
 msgstr "FRAMKVÆMI"
 
@@ -557,7 +553,7 @@ msgstr "FRAMKVÆMI"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:418
+#: ../src/Dialog_Progress.cc:430
 msgid "SUCCESS"
 msgstr "HEPPNAÐIST"
 
@@ -565,7 +561,7 @@ msgstr "HEPPNAÐIST"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:438
 msgid "ERROR"
 msgstr "VILLA"
 
@@ -574,7 +570,7 @@ msgstr "VILLA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:447
 msgid "INFO"
 msgstr "UPPLÝSINGAR"
 
@@ -583,7 +579,7 @@ msgstr "UPPLÝSINGAR"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:444
+#: ../src/Dialog_Progress.cc:456
 msgid "N/A"
 msgstr "Ekki tiltækt"
 
@@ -791,56 +787,56 @@ msgid "Do you want to try to deactivate the following mount points?"
 msgstr "Viltu reyna að gera eftirfarandi tengipunkta óvirka?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:326
+#: ../src/DMRaid.cc:327
 msgid "create missing %1 entries"
 msgstr "bý til %1 færslur sem vantar"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:425
+#: ../src/DMRaid.cc:426
 msgid "delete affected %1 entries"
 msgstr "eyði viðkomandi %1 færslu"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:448
+#: ../src/DMRaid.cc:449
 msgid "delete %1 entry"
 msgstr "eyði %1 færslu"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:498
+#: ../src/DMRaid.cc:499
 msgid "update %1 entry"
 msgstr "uppfæri %1 færslu"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:42
+#: ../src/FileSystem.cc:43
 msgid "_Mount"
 msgstr "_Tengja í skráarkerfi"
 
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:44
 msgid "_Unmount"
 msgstr "_Aftengja"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:203
+#: ../src/FileSystem.cc:234
 msgid "Created directory %1"
 msgstr "Bjó til %1 möppuna"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:230
+#: ../src/FileSystem.cc:261
 msgid "Removed directory %1"
 msgstr "Fjarlægði %1 möppuna"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:189 ../src/GParted_Core.cc:198
+#: ../src/GParted_Core.cc:195 ../src/GParted_Core.cc:204
 msgid "Scanning %1"
 msgstr "Leita %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:217 ../src/GParted_Core.cc:242
+#: ../src/GParted_Core.cc:223 ../src/GParted_Core.cc:248
 msgid "Confirming %1"
 msgstr "Staðfesti %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:266
+#: ../src/GParted_Core.cc:272
 msgid "Searching %1 partitions"
 msgstr "Leita á %1 disksneiðum"
 
@@ -848,68 +844,68 @@ msgstr "Leita á %1 disksneiðum"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:367
+#: ../src/GParted_Core.cc:373
 msgid "unrecognized"
 msgstr "óþekkjanlegt"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:685
+#: ../src/GParted_Core.cc:691
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Disksneið getur ekki verið %1 geira löng"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:699
+#: ../src/GParted_Core.cc:705
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Ekki er hægt að láta disksneið hafa fleiri notaða geira (%1) en lengd hennar "
 "(%2)"
 
-#: ../src/GParted_Core.cc:819
+#: ../src/GParted_Core.cc:831
 msgid "libparted messages"
 msgstr "libparted skilaboð"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1694
+#: ../src/GParted_Core.cc:1708
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Kannast ekki við skráakerfi! Hugsanlegar ástæður gætu verið:"
 
-#: ../src/GParted_Core.cc:1696
+#: ../src/GParted_Core.cc:1710
 msgid "The file system is damaged"
 msgstr "Skráakerfið er skemmt"
 
-#: ../src/GParted_Core.cc:1698
+#: ../src/GParted_Core.cc:1712
 msgid "The file system is unknown to GParted"
 msgstr "GParted þekkir ekki skráakerfið"
 
-#: ../src/GParted_Core.cc:1700
+#: ../src/GParted_Core.cc:1714
 msgid "There is no file system available (unformatted)"
 msgstr "Það er ekkert skráakerfi tiltækt (óforsniðið)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1703
+#: ../src/GParted_Core.cc:1717
 msgid "The device entry %1 is missing"
 msgstr "Tækisfærslan %1 finnst ekki"
 
-#: ../src/GParted_Core.cc:1862
+#: ../src/GParted_Core.cc:1876
 msgid "Unable to find mount point"
 msgstr "Fann ekki tengipunkt"
 
-#: ../src/GParted_Core.cc:1982
+#: ../src/GParted_Core.cc:1996
 msgid "Unable to read the contents of this file system!"
 msgstr "Get ekki lesið innihald þessa skráakerfis!"
 
-#: ../src/GParted_Core.cc:1984
+#: ../src/GParted_Core.cc:1998
 msgid "Because of this some operations may be unavailable."
 msgstr ""
 "Vegna þessa er mögulegt að ekki sé hægt að framkvæma einhverjar aðgerðir."
 
-#: ../src/GParted_Core.cc:1988
+#: ../src/GParted_Core.cc:2002
 msgid "The cause might be a missing software package."
 msgstr "Ástæðan gæti verið hugbúnaðarpakki sem vantar."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1991
+#: ../src/GParted_Core.cc:2005
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -918,7 +914,7 @@ msgstr ""
 "geta stutt %1 skráakerfi:  %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:2001
+#: ../src/GParted_Core.cc:2015
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 af lausu plássi innan disksneiðarinnar."
 
@@ -926,7 +922,7 @@ msgstr "%1 af lausu plássi innan disksneiðarinnar."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:2011
+#: ../src/GParted_Core.cc:2025
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -934,11 +930,11 @@ msgstr ""
 "Til að láta skráakerfið fylla disksneiðina, veldu disksneiðina og veldu "
 "valmyndarfærsluna:"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2027
 msgid "Partition --> Check."
 msgstr "Disksneið --> Athuga."
 
-#: ../src/GParted_Core.cc:2120
+#: ../src/GParted_Core.cc:2134
 msgid "create empty partition"
 msgstr "búa til auða disksneið"
 
@@ -952,61 +948,61 @@ msgstr "búa til auða disksneið"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2194 ../src/GParted_Core.cc:3501
+#: ../src/GParted_Core.cc:2208 ../src/GParted_Core.cc:3523
 msgid "path: %1 (%2)"
 msgstr "slóð: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2195 ../src/GParted_Core.cc:3504
+#: ../src/GParted_Core.cc:2209 ../src/GParted_Core.cc:3526
 msgid "partition"
 msgstr "disksneið"
 
-#: ../src/GParted_Core.cc:2196 ../src/GParted_Core.cc:3505
+#: ../src/GParted_Core.cc:2210 ../src/GParted_Core.cc:3527
 msgid "start: %1"
 msgstr "upphaf: %1"
 
-#: ../src/GParted_Core.cc:2197 ../src/GParted_Core.cc:3506
+#: ../src/GParted_Core.cc:2211 ../src/GParted_Core.cc:3528
 msgid "end: %1"
 msgstr "endir: %1"
 
-#: ../src/GParted_Core.cc:2198 ../src/GParted_Core.cc:3507
+#: ../src/GParted_Core.cc:2212 ../src/GParted_Core.cc:3529
 msgid "size: %1 (%2)"
 msgstr "stærð: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2230 ../src/linux_swap.cc:173
+#: ../src/GParted_Core.cc:2244 ../src/linux_swap.cc:173
 msgid "create new %1 file system"
 msgstr "búa til nýtt %1 skráakerfi"
 
-#: ../src/GParted_Core.cc:2272
+#: ../src/GParted_Core.cc:2286
 msgid "delete partition"
 msgstr "eyða disksneið"
 
-#: ../src/GParted_Core.cc:2327
+#: ../src/GParted_Core.cc:2341
 msgid "delete %1 file system"
 msgstr "eyða %1 skráakerfi"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2344 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2358 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Stroka út merki á disksneiðinni %1"
 
-#: ../src/GParted_Core.cc:2347
+#: ../src/GParted_Core.cc:2361
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Setja merki disksneiðarinnar sem \"%1\" á %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2376 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2390 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Stroka út heiti disksneiðar á %1"
 
-#: ../src/GParted_Core.cc:2379
+#: ../src/GParted_Core.cc:2393
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Setja heiti disksneiðarinnar sem \"%1\" á %2"
 
-#: ../src/GParted_Core.cc:2404
+#: ../src/GParted_Core.cc:2418
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Setja helming UUID á %1 á nýtt slembið gildi"
 
-#: ../src/GParted_Core.cc:2409
+#: ../src/GParted_Core.cc:2423
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Setja UUID á %1 á nýtt slembið gildi"
 
@@ -1015,79 +1011,79 @@ msgstr "Setja UUID á %1 á nýtt slembið gildi"
 #. * must be the same.  If the sector sizes of the old partition and the
 #. * new partition are the same, then the length in sectors must be the same.
 #.
-#: ../src/GParted_Core.cc:2497
+#: ../src/GParted_Core.cc:2511
 msgid "moving requires old and new length to be the same"
 msgstr "það að færa krefst þess að bæði gamla og nýja lengdin séu þær sömu"
 
-#: ../src/GParted_Core.cc:2527
+#: ../src/GParted_Core.cc:2541
 msgid "rollback last change to the partition table"
 msgstr "taka aftur síðustu breytingu á disksneiðatöflunni"
 
-#: ../src/GParted_Core.cc:2576
+#: ../src/GParted_Core.cc:2590
 msgid "move file system to the left"
 msgstr "færa skráakerfi til vinstri"
 
-#: ../src/GParted_Core.cc:2578
+#: ../src/GParted_Core.cc:2592
 msgid "move file system to the right"
 msgstr "færa skráakerfi til hægri"
 
-#: ../src/GParted_Core.cc:2581
+#: ../src/GParted_Core.cc:2595
 msgid "move file system"
 msgstr "færa skráakerfi"
 
-#: ../src/GParted_Core.cc:2583
+#: ../src/GParted_Core.cc:2597
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
 "nýja og gamla skráakerfið hafa sömu staðsetningu -- sleppi þessari aðgerð"
 
-#: ../src/GParted_Core.cc:2646
+#: ../src/GParted_Core.cc:2660
 msgid "using libparted"
 msgstr "nota libparted"
 
-#: ../src/GParted_Core.cc:2709
+#: ../src/GParted_Core.cc:2723
 msgid "resizing requires old and new start to be the same"
 msgstr ""
 "það að breyta stærð krefst þess að gamli og nýi upphafispunkturinn séu eins"
 
-#: ../src/GParted_Core.cc:2779
+#: ../src/GParted_Core.cc:2793
 msgid "resize/move partition"
 msgstr "færa eða breyta stærð á disksneið"
 
-#: ../src/GParted_Core.cc:2782
+#: ../src/GParted_Core.cc:2796
 msgid "move partition to the right"
 msgstr "færa disksneið til hægri"
 
-#: ../src/GParted_Core.cc:2785
+#: ../src/GParted_Core.cc:2799
 msgid "move partition to the left"
 msgstr "færa disksneið til vinstri"
 
-#: ../src/GParted_Core.cc:2788
+#: ../src/GParted_Core.cc:2802
 msgid "grow partition from %1 to %2"
 msgstr "stækka disksneið úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2791
+#: ../src/GParted_Core.cc:2805
 msgid "shrink partition from %1 to %2"
 msgstr "minnka disksneið úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2794
+#: ../src/GParted_Core.cc:2808
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "færa disksneiðina til hægri og stækka hana úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2797
+#: ../src/GParted_Core.cc:2811
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "færa disksneiðina til hægri og minnka hana úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2800
+#: ../src/GParted_Core.cc:2814
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "færa disksneiðina til vinstri og stækka hana úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2803
+#: ../src/GParted_Core.cc:2817
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "færa disksneiðina til vinstri og minnka hana úr %1 í %2"
 
-#: ../src/GParted_Core.cc:2818
+#: ../src/GParted_Core.cc:2832
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1095,189 +1091,189 @@ msgstr ""
 "nýja og gamla disksneiðin eru á sama stað og eru jafn stórar -- sleppi "
 "þessari aðgerð"
 
-#: ../src/GParted_Core.cc:2828
+#: ../src/GParted_Core.cc:2842
 msgid "old start: %1"
 msgstr "gamli upphafspunktur: %1"
 
-#: ../src/GParted_Core.cc:2829
+#: ../src/GParted_Core.cc:2843
 msgid "old end: %1"
 msgstr "gamli endir: %1"
 
-#: ../src/GParted_Core.cc:2830
+#: ../src/GParted_Core.cc:2844
 msgid "old size: %1 (%2)"
 msgstr "gamla stærðin: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2895 ../src/GParted_Core.cc:3585
+#: ../src/GParted_Core.cc:2909 ../src/GParted_Core.cc:3613
 msgid "new start: %1"
 msgstr "nýr upphafspunktur: %1"
 
-#: ../src/GParted_Core.cc:2896 ../src/GParted_Core.cc:3586
+#: ../src/GParted_Core.cc:2910 ../src/GParted_Core.cc:3614
 msgid "new end: %1"
 msgstr "nýr endir: %1"
 
-#: ../src/GParted_Core.cc:2897 ../src/GParted_Core.cc:3587
+#: ../src/GParted_Core.cc:2911 ../src/GParted_Core.cc:3615
 msgid "new size: %1 (%2)"
 msgstr "nýja stærðin: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2924 ../src/GParted_Core.cc:3533
+#: ../src/GParted_Core.cc:2938 ../src/GParted_Core.cc:3561
 msgid "requested start: %1"
 msgstr "umbeðið upphaf: %1"
 
-#: ../src/GParted_Core.cc:2925 ../src/GParted_Core.cc:3534
+#: ../src/GParted_Core.cc:2939 ../src/GParted_Core.cc:3562
 msgid "requested end: %1"
 msgstr "umbeðinn endir: %1"
 
-#: ../src/GParted_Core.cc:2926 ../src/GParted_Core.cc:3535
+#: ../src/GParted_Core.cc:2940 ../src/GParted_Core.cc:3563
 msgid "requested size: %1 (%2)"
 msgstr "umbeðin stærð: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2951
+#: ../src/GParted_Core.cc:2965
 msgid "shrink file system"
 msgstr "minnka skráakerfi"
 
-#: ../src/GParted_Core.cc:2955
+#: ../src/GParted_Core.cc:2969
 msgid "grow file system"
 msgstr "stækka skráakerfi"
 
-#: ../src/GParted_Core.cc:2958
+#: ../src/GParted_Core.cc:2972
 msgid "resize file system"
 msgstr "breyta stærð skráakerfis"
 
-#: ../src/GParted_Core.cc:2961
+#: ../src/GParted_Core.cc:2975
 msgid ""
 "new and old file system have the same size.  Hence skipping this operation"
 msgstr "nýja og gamla skráakerfið eru jafnstór -- sleppi þessari aðgerð"
 
-#: ../src/GParted_Core.cc:3002
+#: ../src/GParted_Core.cc:3016
 msgid "grow file system to fill the partition"
 msgstr "láta skráakerfið vaxa upp í fulla stærð disksneiðarinnar"
 
-#: ../src/GParted_Core.cc:3007
+#: ../src/GParted_Core.cc:3021
 msgid "growing is not available for this file system"
 msgstr "stækkun er ekki möguleg fyrir þetta skráakerfi"
 
-#: ../src/GParted_Core.cc:3016
+#: ../src/GParted_Core.cc:3030
 msgid "growing the file system is currently disallowed"
 msgstr "að stækka skráakerfið er ekki leyfilegt í augnablikinu"
 
-#: ../src/GParted_Core.cc:3042
+#: ../src/GParted_Core.cc:3056
 msgid "the destination is smaller than the source partition"
 msgstr "úttaksstaðurinn er minni en upprunalega disksneiðin"
 
-#: ../src/GParted_Core.cc:3065
+#: ../src/GParted_Core.cc:3079
 msgid "copy file system of %1 to %2"
 msgstr "afrita skráakerfið %1 í %2"
 
-#: ../src/GParted_Core.cc:3161
+#: ../src/GParted_Core.cc:3175
 msgid "using internal algorithm"
 msgstr "nota innra algrím"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3164
+#: ../src/GParted_Core.cc:3178
 msgid "copy %1"
 msgstr "afrita %1"
 
-#: ../src/GParted_Core.cc:3167
+#: ../src/GParted_Core.cc:3181
 msgid "finding optimal block size"
 msgstr "finn bestu blokkarstærð"
 
-#: ../src/GParted_Core.cc:3208
+#: ../src/GParted_Core.cc:3223
 msgid "%1 seconds"
 msgstr "%1 sekúndur"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3226
+#: ../src/GParted_Core.cc:3241
 msgid "optimal block size is %1"
 msgstr "besta blokkarstærð er %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3243
+#: ../src/GParted_Core.cc:3259
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) afritað"
 
-#: ../src/GParted_Core.cc:3281
+#: ../src/GParted_Core.cc:3297
 msgid "roll back last transaction"
 msgstr "afturkalla aftur síðustu aðgerð"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3301
+#: ../src/GParted_Core.cc:3317
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "kanna skráakerfið á %1 eftir villum og laga þær (ef það er mögulegt)"
 
-#: ../src/GParted_Core.cc:3310
+#: ../src/GParted_Core.cc:3326
 msgid "checking is not available for this file system"
 msgstr "könnun þessa skráakerfis er ekki möguleg"
 
-#: ../src/GParted_Core.cc:3339
+#: ../src/GParted_Core.cc:3355
 msgid "set partition type on %1"
 msgstr "setja tegund disksneiðar á %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3382
+#: ../src/GParted_Core.cc:3398
 msgid "new partition type: %1"
 msgstr "ný tegund disksneiðar: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3397
+#: ../src/GParted_Core.cc:3413
 msgid "new partition flag: %1"
 msgstr "nýtt disksneiðaflagg: %1"
 
-#: ../src/GParted_Core.cc:3424
+#: ../src/GParted_Core.cc:3441
 msgid "calibrate %1"
 msgstr "kvarða %1"
 
-#: ../src/GParted_Core.cc:3503
+#: ../src/GParted_Core.cc:3525
 msgid "device"
 msgstr "tæki"
 
-#: ../src/GParted_Core.cc:3529
+#: ../src/GParted_Core.cc:3557
 msgid "calculate new size and position of %1"
 msgstr "reikna út nýja stærð og staðsetningu %1"
 
-#: ../src/GParted_Core.cc:3645
+#: ../src/GParted_Core.cc:3673
 msgid "clear old file system signatures in %1"
 msgstr "hreinsa út gamlar færslur (signatures) skráakerfis á %1"
 
-#: ../src/GParted_Core.cc:3851
+#: ../src/GParted_Core.cc:3879
 msgid "flush operating system cache of %1"
 msgstr "henda út skyndiminni stýrikerfis á %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3883
+#: ../src/GParted_Core.cc:3911
 msgid "update boot sector of %1 file system on %2"
 msgstr "uppfæri ræsigeira %1 skráakerfisins á %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3919
+#: ../src/GParted_Core.cc:3947
 msgid "Error trying to write to boot sector in %1"
 msgstr "Villa kom upp við skrifun á ræsigeira %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3925
+#: ../src/GParted_Core.cc:3953
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Villa kom uppþegar reynt var að koma 0x1c fyrir á %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3932
+#: ../src/GParted_Core.cc:3960
 msgid "Error trying to open %1"
 msgstr "Villa við að opna %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3942
+#: ../src/GParted_Core.cc:3970
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "Ekki tókst að setja fjölda falinna geira sem %1 á NTFS ræsigeiranum."
 
-#: ../src/GParted_Core.cc:3944
+#: ../src/GParted_Core.cc:3972
 msgid "You might try the following command to correct the problem:"
 msgstr "Þú gætir reynt eftirfarandi skipun til að laga vandamálið:"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4005
+#: ../src/GParted_Core.cc:4033
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Hunsa tækið %1 sem er með röklegra geira af stærðinni %2 bæti."
 
-#: ../src/GParted_Core.cc:4008
+#: ../src/GParted_Core.cc:4036
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1285,59 +1281,59 @@ msgstr ""
 "GParted þarfnast libparted útgáfu 2.2 eða hærri til að geta stutt tæki með "
 "geirastærð sem er stærri en 512 bæti."
 
-#: ../src/GParted_Core.cc:4172
+#: ../src/GParted_Core.cc:4200
 msgid "Libparted Information"
 msgstr "Libparted upplýsingar"
 
-#: ../src/GParted_Core.cc:4176
+#: ../src/GParted_Core.cc:4204
 msgid "Libparted Warning"
 msgstr "Libparted aðvörun"
 
-#: ../src/GParted_Core.cc:4180
+#: ../src/GParted_Core.cc:4208
 msgid "Libparted Error"
 msgstr "Villa í Libparted"
 
-#: ../src/GParted_Core.cc:4183
+#: ../src/GParted_Core.cc:4211
 msgid "Libparted Fatal"
 msgstr "Libparted banvænt"
 
-#: ../src/GParted_Core.cc:4186
+#: ../src/GParted_Core.cc:4214
 msgid "Libparted Bug"
 msgstr "Villa fannst í Libparted"
 
-#: ../src/GParted_Core.cc:4189
+#: ../src/GParted_Core.cc:4217
 msgid "Libparted Unsupported Feature"
 msgstr "Óstuddur eiginleiki í Libparted"
 
-#: ../src/GParted_Core.cc:4192
+#: ../src/GParted_Core.cc:4220
 msgid "Libparted unknown exception"
 msgstr "Óþekkt undantekning í Libparted"
 
-#: ../src/GParted_Core.cc:4196
+#: ../src/GParted_Core.cc:4224
 msgid "Fix"
 msgstr "Laga"
 
-#: ../src/GParted_Core.cc:4198
+#: ../src/GParted_Core.cc:4226
 msgid "Yes"
 msgstr "Já"
 
-#: ../src/GParted_Core.cc:4200
+#: ../src/GParted_Core.cc:4228
 msgid "Ok"
 msgstr "Í lagi"
 
-#: ../src/GParted_Core.cc:4202
+#: ../src/GParted_Core.cc:4230
 msgid "Retry"
 msgstr "Reyna aftur"
 
-#: ../src/GParted_Core.cc:4204
+#: ../src/GParted_Core.cc:4232
 msgid "No"
 msgstr "Nei"
 
-#: ../src/GParted_Core.cc:4206
+#: ../src/GParted_Core.cc:4234
 msgid "Cancel"
 msgstr "Hætta við"
 
-#: ../src/GParted_Core.cc:4208
+#: ../src/GParted_Core.cc:4236
 msgid "Ignore"
 msgstr "Hunsa"
 
@@ -1379,17 +1375,13 @@ msgstr "Setja helming UUID á nýtt slembið gildi á %1 skráakerfinu á %2"
 msgid "Set a new random UUID on %1 file system on %2"
 msgstr "Set nýtt slembið UUID á %1 skráakerfinu á %2"
 
-#: ../src/OperationCopy.cc:38
-msgid "copy of %1"
-msgstr "afrit af %1"
-
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:86
+#: ../src/OperationCopy.cc:83
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Afrita %1 yfir á %2 (byrjar á %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:95
+#: ../src/OperationCopy.cc:92
 msgid "Copy %1 to %2"
 msgstr "Afrita %1 yfir á %2"
 
@@ -1469,6 +1461,11 @@ msgstr "Færa %1 til vinstri og stækka það úr %2 í %3"
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "Færa %1 til vinstri og minnka það úr %2 í %3"
 
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/ProgressBar.cc:98
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 af %2 afritaðir (%3 eftir)"
+
 #: ../src/TreeView_Detail.cc:38
 msgid "Name"
 msgstr "Heiti"
@@ -1503,7 +1500,7 @@ msgstr "Dulritað"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:244
+#: ../src/Utils.cc:251
 msgid "unallocated"
 msgstr "óúthlutað"
 
@@ -1512,7 +1509,7 @@ msgstr "óúthlutað"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:251
+#: ../src/Utils.cc:258
 msgid "unknown"
 msgstr "óþekkt"
 
@@ -1520,7 +1517,7 @@ msgstr "óþekkt"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:257
+#: ../src/Utils.cc:264
 msgid "unformatted"
 msgstr "ekki forsniðið"
 
@@ -1528,35 +1525,35 @@ msgstr "ekki forsniðið"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:263
+#: ../src/Utils.cc:270
 msgid "cleared"
 msgstr "hreinsað"
 
-#: ../src/Utils.cc:283
+#: ../src/Utils.cc:290
 msgid "used"
 msgstr "notað"
 
-#: ../src/Utils.cc:284
+#: ../src/Utils.cc:291
 msgid "unused"
 msgstr "ónotað"
 
-#: ../src/Utils.cc:415
+#: ../src/Utils.cc:422
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:420
+#: ../src/Utils.cc:427
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:425
+#: ../src/Utils.cc:432
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:430
+#: ../src/Utils.cc:437
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:435
+#: ../src/Utils.cc:442
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1846,61 +1843,66 @@ msgstr ""
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Að færa disksneið getur tekið mjög langan tíma í framkvæmd."
 
-#: ../src/Win_GParted.cc:1918
+#: ../src/Win_GParted.cc:1865
+#| msgid "copy of %1"
+msgid "Copy of %1"
+msgstr "Afrit af %1"
+
+#: ../src/Win_GParted.cc:1927
 msgid "You have pasted into an existing partition"
 msgstr "Þú hefur límt inn í áður gerða disksneið"
 
-#: ../src/Win_GParted.cc:1926
+#: ../src/Win_GParted.cc:1935
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Gögnin á %1 munu tapast ef þú virkjar þessa aðgerð."
 
-#: ../src/Win_GParted.cc:2007
+#: ../src/Win_GParted.cc:2016
 msgid "Unable to delete %1!"
 msgstr "Get ekki eytt %1!"
 
-#: ../src/Win_GParted.cc:2014
+#: ../src/Win_GParted.cc:2023
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Aftengdu þær rökrænu disksneiðar sem hafa númer sem er hærra en %1"
 
-#: ../src/Win_GParted.cc:2025
+#: ../src/Win_GParted.cc:2034
 msgid "Are you sure you want to delete %1?"
 msgstr "Ertu viss um að þú viljir eyða %1?"
 
-#: ../src/Win_GParted.cc:2032
+#: ../src/Win_GParted.cc:2041
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Ekki er hægt að afrita þessa disksneið þegar þú hefur eytt henni."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2035
+#: ../src/Win_GParted.cc:2044
 msgid "Delete %1 (%2, %3)"
 msgstr "Eyða %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2127
+#: ../src/Win_GParted.cc:2136
 msgid "Cannot format this file system to %1"
 msgstr "Get ekki forsniðið þetta skráakerfi sem %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2139
+#: ../src/Win_GParted.cc:2148
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Skráakerfi af gerðinni %1 krefst disksneiðar sem er amk. %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2147
+#: ../src/Win_GParted.cc:2156
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Disksneið með %1 skráakerfi hefur hámarksstærðina %2."
 
-#: ../src/Win_GParted.cc:2224
+#: ../src/Win_GParted.cc:2233
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Ekki var hægt að aftengja disksneiðina frá eftirfarandi tengipunktum:"
 
-#: ../src/Win_GParted.cc:2226
+#: ../src/Win_GParted.cc:2235
 msgid ""
 "Most likely other partitions are also mounted on these mount points. You are "
 "advised to unmount them manually."
@@ -1908,13 +1910,13 @@ msgstr ""
 "Líkast til eru aðrar disksneiðar einnig tengdar inn á þessa tengipunkta. Þér "
 "er ráðlegast að aftengja þá handvirkt."
 
-#: ../src/Win_GParted.cc:2254 ../src/Win_GParted.cc:2378
+#: ../src/Win_GParted.cc:2263 ../src/Win_GParted.cc:2387
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 aðgerð er í bið vegna disksneiðarinnar %2"
 msgstr[1] "%1 aðgerðir eru í bið vegna disksneiðarinnar %2"
 
-#: ../src/Win_GParted.cc:2270
+#: ../src/Win_GParted.cc:2279
 msgid ""
 "The swapon action cannot be performed if an operation is pending for the "
 "partition."
@@ -1922,7 +1924,7 @@ msgstr ""
 "'swapon' aðgerðina er ekki hægt að framkvæma ef aðgerð er í bið vegna "
 "disksneiðarinnar ."
 
-#: ../src/Win_GParted.cc:2272
+#: ../src/Win_GParted.cc:2281
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using swapon "
 "with this partition."
@@ -1930,14 +1932,14 @@ msgstr ""
 "Notaðu 'Breyta' valmyndina til að virkja eða hreinsa út allar aðgerðir áður "
 "en 'swapon' er notað með þessari disksneið."
 
-#: ../src/Win_GParted.cc:2276
+#: ../src/Win_GParted.cc:2285
 msgid ""
 "The activate Volume Group action cannot be performed if an operation is "
 "pending for the partition."
 msgstr ""
 "Ekki er hægt að virkja sýndardisk ef aðgerð er í bið vegna disksneiðarinnar ."
 
-#: ../src/Win_GParted.cc:2278
+#: ../src/Win_GParted.cc:2287
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using activate "
 "Volume Group with this partition."
@@ -1945,47 +1947,47 @@ msgstr ""
 "Notaðu 'Breyta' valmyndina til að afturkalla, virkja eða hreinsa út allar "
 "aðgerðir áður en sýndardiskur er virkjaður með þessari disksneið."
 
-#: ../src/Win_GParted.cc:2289
+#: ../src/Win_GParted.cc:2298
 msgid "Deactivating swap on %1"
 msgstr "Afvirkja diskminni á %1"
 
-#: ../src/Win_GParted.cc:2289
+#: ../src/Win_GParted.cc:2298
 msgid "Activating swap on %1"
 msgstr "Virkja diskminni á %1"
 
-#: ../src/Win_GParted.cc:2301
+#: ../src/Win_GParted.cc:2310
 msgid "Could not deactivate swap"
 msgstr "Get ekki aftengt diskminnið"
 
-#: ../src/Win_GParted.cc:2301
+#: ../src/Win_GParted.cc:2310
 msgid "Could not activate swap"
 msgstr "Get ekki virkjað diskminni"
 
-#: ../src/Win_GParted.cc:2316
+#: ../src/Win_GParted.cc:2325
 msgid "Deactivating Volume Group %1"
 msgstr "Geri sýndardisk %1 óvirkan"
 
-#: ../src/Win_GParted.cc:2317
+#: ../src/Win_GParted.cc:2326
 msgid "Activating Volume Group %1"
 msgstr "Geri sýndardisk %1 virkan"
 
-#: ../src/Win_GParted.cc:2332
+#: ../src/Win_GParted.cc:2341
 msgid "Could not deactivate Volume Group"
 msgstr "Get ekki gert sýndardiskinn óvirkan"
 
-#: ../src/Win_GParted.cc:2333
+#: ../src/Win_GParted.cc:2342
 msgid "Could not activate Volume Group"
 msgstr "Get ekki gert sýndardiskinn virkan"
 
-#: ../src/Win_GParted.cc:2346
+#: ../src/Win_GParted.cc:2355
 msgid "Unmounting %1"
 msgstr "Aftengi %1"
 
-#: ../src/Win_GParted.cc:2352
+#: ../src/Win_GParted.cc:2361
 msgid "Could not unmount %1"
 msgstr "Gat ekki aftengt %1"
 
-#: ../src/Win_GParted.cc:2392
+#: ../src/Win_GParted.cc:2401
 msgid ""
 "The mount action cannot be performed if an operation is pending for the "
 "partition."
@@ -1993,7 +1995,7 @@ msgstr ""
 "Tengiaðgerðina er ekki hægt að framkvæma ef aðgerð er í bið vegna "
 "disksneiðarinnar ."
 
-#: ../src/Win_GParted.cc:2394
+#: ../src/Win_GParted.cc:2403
 msgid ""
 "Use the Edit menu to undo, clear, or apply operations before using mount "
 "with this partition."
@@ -2001,29 +2003,29 @@ msgstr ""
 "Notaðu 'Breyta' valmyndina til að virkja eða hreinsa út allar aðgerðir áður "
 "en tenging er notuð með þessari disksneið."
 
-#: ../src/Win_GParted.cc:2406
+#: ../src/Win_GParted.cc:2415
 msgid "mounting %1 on %2"
 msgstr "tengi %1 við %2"
 
-#: ../src/Win_GParted.cc:2436
+#: ../src/Win_GParted.cc:2443
 msgid "Could not mount %1 on %2"
 msgstr "Gat ekki tengt %1 við %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2462
+#: ../src/Win_GParted.cc:2469
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 disksneið er núna virk á tækinu %2"
 msgstr[1] "%1 disksneiðar eru núna virkar á tækinu %2"
 
-#: ../src/Win_GParted.cc:2477
+#: ../src/Win_GParted.cc:2484
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Það er ekki hægt að búa til nýja disksneiðatöflu ef það eru einhverjar "
 "virkar disksneiðar."
 
-#: ../src/Win_GParted.cc:2479
+#: ../src/Win_GParted.cc:2486
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2031,7 +2033,7 @@ msgstr ""
 "Virkar disksneiðar eru þær sem eru í notkun, eins og tengd skráakerfi, eða "
 "virkt diskminni (víxlpláss/swap)."
 
-#: ../src/Win_GParted.cc:2481
+#: ../src/Win_GParted.cc:2488
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2040,20 +2042,20 @@ msgstr ""
 "swapoff, til að gera allar disksneiðar á þessu tæki óvirk áður en búin er "
 "til ný disksneiðatafla."
 
-#: ../src/Win_GParted.cc:2493
+#: ../src/Win_GParted.cc:2500
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 aðgerð bíður núna"
 msgstr[1] "%1 aðgerðir bíða núna."
 
-#: ../src/Win_GParted.cc:2506
+#: ../src/Win_GParted.cc:2513
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Það er ekki hægt að búa til nýja disksneiðatöflu ef það eru einhverjar "
 "aðgerðir í bið."
 
-#: ../src/Win_GParted.cc:2508
+#: ../src/Win_GParted.cc:2515
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2061,28 +2063,28 @@ msgstr ""
 "Notaðu 'Breyta' valmyndina til að virkja eða hreinsa út allar aðgerðir áður "
 "en farið er í að gera nýja disksneiðatöflu."
 
-#: ../src/Win_GParted.cc:2523
+#: ../src/Win_GParted.cc:2530
 msgid "Error while creating partition table"
 msgstr "Villa kom upp við að búa til disksneiðatöflu"
 
-#: ../src/Win_GParted.cc:2543
+#: ../src/Win_GParted.cc:2550
 msgid "Command gpart was not found"
 msgstr "Skipunin gpart fannst ekki"
 
-#: ../src/Win_GParted.cc:2544
+#: ../src/Win_GParted.cc:2551
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Þetta notar gpart. Settu upp gpart og reyndu aftur."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2552
+#: ../src/Win_GParted.cc:2559
 msgid "A full disk scan is needed to find file systems."
 msgstr "Full diskaskönnun er nauðsynleg til að finna skráakerfi."
 
-#: ../src/Win_GParted.cc:2554
+#: ../src/Win_GParted.cc:2561
 msgid "The scan might take a very long time."
 msgstr "Skönnunin gæti tekið mjög langan tíma."
 
-#: ../src/Win_GParted.cc:2556
+#: ../src/Win_GParted.cc:2563
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2090,61 +2092,61 @@ msgstr ""
 "Eftir skönnunina geturðu tengt öll skráakerfi sem fundust og afritað gögnin "
 "yfir á aðra miðla."
 
-#: ../src/Win_GParted.cc:2558
+#: ../src/Win_GParted.cc:2565
 msgid "Do you want to continue?"
 msgstr "Viltu halda áfram?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2562
+#: ../src/Win_GParted.cc:2569
 msgid "Search for file systems on %1"
 msgstr "Leita að skráakerfi á %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2573
+#: ../src/Win_GParted.cc:2580
 msgid "Searching for file systems on %1"
 msgstr "Leita að skráakerfum á %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2589
+#: ../src/Win_GParted.cc:2596
 msgid "No file systems found on %1"
 msgstr "Engin skráakerfi fundust á %1"
 
-#: ../src/Win_GParted.cc:2590
+#: ../src/Win_GParted.cc:2597
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr ""
 "Diskaskönnun með gpart fann ekki nein þekkjanleg skráakerfi á þessum diski."
 
-#: ../src/Win_GParted.cc:2854
+#: ../src/Win_GParted.cc:2861
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Viltu framkvæma þær aðgerðir sem bíða?"
 
-#: ../src/Win_GParted.cc:2860
+#: ../src/Win_GParted.cc:2867
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Breytingar á disksneiðum geta haft GAGNATAP í för með sér."
 
-#: ../src/Win_GParted.cc:2862
+#: ../src/Win_GParted.cc:2869
 msgid "You are advised to backup your data before proceeding."
 msgstr "Þér er ráðlagt að gera öryggisafrit af gögnunum þínum."
 
-#: ../src/Win_GParted.cc:2864
+#: ../src/Win_GParted.cc:2871
 msgid "Apply operations to device"
 msgstr "Beita aðgerðum á tæki"
 
-#: ../src/Win_GParted.cc:2909
+#: ../src/Win_GParted.cc:2916
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Þú ert að eyða LVM2 raundiskinum %1 sem ekki er tómur"
 
-#: ../src/Win_GParted.cc:2913
+#: ../src/Win_GParted.cc:2920
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Þú ert að forsníða yfir LVM2 raundiskinn %1 sem ekki er tómur"
 
-#: ../src/Win_GParted.cc:2917
+#: ../src/Win_GParted.cc:2924
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Þú ert að líma yfir LVM2 raundiskinn %1 sem ekki er tómur"
 
-#: ../src/Win_GParted.cc:2926
+#: ../src/Win_GParted.cc:2933
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2152,7 +2154,7 @@ msgstr ""
 "Að eyða eða skrifa yfir raundiskinn (physical volume) er óafturkallanlegt og "
 "mun eyðileggja eða skemma sýndardiskinn."
 
-#: ../src/Win_GParted.cc:2929
+#: ../src/Win_GParted.cc:2936
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2162,7 +2164,7 @@ msgstr ""
 "ráðlegast að hætta við og nota utanaðkomandi LVM-skipanir til að losa um "
 "raundiskinn áður en þú gerir tilraun til að framkvæma þessa aðgerð."
 
-#: ../src/Win_GParted.cc:2932
+#: ../src/Win_GParted.cc:2939
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Viltu halda áfram að þvinga fram eyðingu raundisksins?"
 
@@ -2170,13 +2172,13 @@ msgstr "Viltu halda áfram að þvinga fram eyðingu raundisksins?"
 msgid "Failed to find devid for path %1"
 msgstr "Mistókst að finna devid tækjauðkenni fyrir slóðina %1"
 
-#: ../src/fat16.cc:33 ../src/ntfs.cc:26
+#: ../src/fat16.cc:33 ../src/ntfs.cc:30
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Breyting á UUID gæti gert Windows Product Activation (WPA) lykilinn ógildan"
 
-#: ../src/fat16.cc:35 ../src/ntfs.cc:28
+#: ../src/fat16.cc:35 ../src/ntfs.cc:32
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2188,7 +2190,7 @@ msgstr ""
 "C:, gæti gert WPA-lykilinn ógildan. Ógildur WPA-lykill mun koma í veg fyrir "
 "innskráningu í Windows þangað til það hefur verið endurvirkjað (reactivated)."
 
-#: ../src/fat16.cc:41 ../src/ntfs.cc:38
+#: ../src/fat16.cc:41 ../src/ntfs.cc:42
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2253,7 +2255,7 @@ msgstr ""
 "öflugt forrit sem getur valdið miklum skaða á disksneiðum og gögnum, sé það "
 "ekki notað rétt."
 
-#: ../src/ntfs.cc:34
+#: ../src/ntfs.cc:38
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2262,12 +2264,12 @@ msgstr ""
 "með NTFS skráakerfi einungis fá helming UUID stillt á nýtt slembið gildi."
 
 #. simulation..
-#: ../src/ntfs.cc:216
+#: ../src/ntfs.cc:227
 msgid "run simulation"
 msgstr "keyra eftirlíkingu"
 
 #. real resize
-#: ../src/ntfs.cc:224
+#: ../src/ntfs.cc:235
 msgid "real resize"
 msgstr "raunveruleg breyting á stærð"
 
