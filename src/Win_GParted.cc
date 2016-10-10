@@ -1393,10 +1393,10 @@ void Win_GParted::on_show()
 	close_operationslist() ;
 
 	// Register callback for as soon as the main window has been shown to perform the
-	// first load of the disk device details.  Do it this way because the Gtk::main
+	// first load of the disk device details.  Do it this way because the Gtk  main
 	// loop doesn't seem to enable quit handling until on_show(), this function, has
-	// drawn the main window for the first time and returned, and we want Close Window [Alt-quit to work
-	// during the initial load of the disk device details.
+	// drawn the main window for the first time and returned, and we want Close Window
+	// [Alt-F4] to work during the initial load of the disk device details.
 	g_idle_add( initial_device_refresh, this );
 }
 
