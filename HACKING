@@ -20,6 +20,18 @@ Curtis
 
 
 
+Translatable files
+==================
+
+The file po/POTFILES.in lists all source files which do or could contain
+translatable strings.  Remember to update when adding new and removing
+old source code files include/*.h and src/*.cc.  Generally .cc files are
+included and .h files are not, but there are exceptions.  Some mistakes
+can be detected using:
+    make distcheck
+
+
+
 partition usage and unallocated space
 =====================================
 
