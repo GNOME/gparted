@@ -1,8 +1,8 @@
-# Only execute make in the help subdirectory if BUILD_HELP_DOC is set
-if BUILD_HELP_DOC
-SUBDIRS = help compose data doc include po src
-else
 SUBDIRS = compose data doc include po src
+# Only build GParted help documentation when enabled.  (Can be disabled
+# with './configure --disable-doc').
+if BUILD_HELP_DOC
+  SUBDIRS += help
 endif
 
 @INTLTOOL_DESKTOP_RULE@
