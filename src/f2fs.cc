@@ -14,9 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/f2fs.h"
-#include "../include/Partition.h"
+#include "f2fs.h"
+#include "Partition.h"
 
 namespace GParted
 {

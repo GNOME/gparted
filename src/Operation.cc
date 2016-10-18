@@ -15,10 +15,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Operation.h"
-#include "../include/GParted_Core.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Operation.h"
+#include "GParted_Core.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

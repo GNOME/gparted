@@ -18,8 +18,8 @@
 #ifndef GPARTED_LUKS_H
 #define GPARTED_LUKS_H
 
-#include "../include/FileSystem.h"
-#include "../include/Partition.h"
+#include "FileSystem.h"
+#include "Partition.h"
 
 namespace GParted
 {

@@ -13,12 +13,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/Win_GParted.h"
+
+#include "GParted_Core.h"
+#include "Win_GParted.h"
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
-#include "../include/GParted_Core.h"
 
 int main( int argc, char *argv[] )
 {

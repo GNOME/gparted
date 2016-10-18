@@ -17,8 +17,8 @@
 #ifndef GPARTED_DIALOG_FILESYSTEM_LABEL_H
 #define GPARTED_DIALOG_FILESYSTEM_LABEL_H
 
-#include "../include/Partition.h"
-#include "../include/i18n.h"
+#include "Partition.h"
+#include "i18n.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>

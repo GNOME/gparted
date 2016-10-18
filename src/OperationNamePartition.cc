@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/OperationNamePartition.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "OperationNamePartition.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

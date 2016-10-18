@@ -17,8 +17,8 @@
 #ifndef GPARTED_TREEVIEW_DETAIL_H
 #define GPARTED_TREEVIEW_DETAIL_H
 
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>

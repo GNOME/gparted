@@ -14,12 +14,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/Dialog_Partition_Resize_Move.h"
-#include "../include/GParted_Core.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
-#include "../include/Utils.h"
+
+#include "Dialog_Partition_Resize_Move.h"
+#include "GParted_Core.h"
+#include "Partition.h"
+#include "PartitionVector.h"
+#include "Utils.h"
 
 namespace GParted
 {

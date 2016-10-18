@@ -1,4 +1,5 @@
 AM_CPPFLAGS =						\
+	-I$(top_srcdir)/include				\
 	$(GTHREAD_CFLAGS) 				\
 	$(GTKMM_CFLAGS) 				\
 	-DGPARTED_DATADIR=\""$(datadir)"\"			\

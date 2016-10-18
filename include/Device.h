@@ -18,8 +18,8 @@
 #ifndef GPARTED_DEVICE_H
 #define GPARTED_DEVICE_H
 
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

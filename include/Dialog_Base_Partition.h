@@ -18,8 +18,8 @@
 #ifndef GPARTED_DIALOG_BASE_PARTITION_H
 #define GPARTED_DIALOG_BASE_PARTITION_H
 
-#include "../include/Frame_Resizer_Extended.h"
-#include "../include/Partition.h"
+#include "Frame_Resizer_Extended.h"
+#include "Partition.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>

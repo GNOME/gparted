@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/ProgressBar.h"
-#include "../include/Utils.h"
+#include "ProgressBar.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 

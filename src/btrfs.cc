@@ -15,11 +15,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/btrfs.h"
-#include "../include/BlockSpecial.h"
-#include "../include/Mount_Info.h"
-#include "../include/Partition.h"
+#include "btrfs.h"
+#include "BlockSpecial.h"
+#include "Mount_Info.h"
+#include "Partition.h"
 
 #include <ctype.h>
 

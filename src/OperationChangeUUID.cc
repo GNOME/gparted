@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/OperationChangeUUID.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "OperationChangeUUID.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

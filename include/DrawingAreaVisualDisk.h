@@ -17,8 +17,8 @@
 #ifndef GPARTED_DRAWINGAREAVISUALDISK_H
 #define GPARTED_DRAWINGAREAVISUALDISK_H
 
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 #include <gtkmm/drawingarea.h>
 

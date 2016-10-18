@@ -17,9 +17,9 @@
 #ifndef GPARTED_OPERATIONLABELFILESYSTEM_H
 #define GPARTED_OPERATIONLABELFILESYSTEM_H
 
-#include "../include/Operation.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Operation.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

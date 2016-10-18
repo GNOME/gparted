@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/PartitionLUKS.h"
-#include "../include/Utils.h"
+#include "PartitionLUKS.h"
+#include "Utils.h"
 
 namespace GParted
 {

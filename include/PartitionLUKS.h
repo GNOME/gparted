@@ -18,8 +18,8 @@
 #ifndef GPARTED_PARTITIONLUKS_H
 #define GPARTED_PARTITIONLUKS_H
 
-#include "../include/Partition.h"
-#include "../include/Utils.h"
+#include "Partition.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 

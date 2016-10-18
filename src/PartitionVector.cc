@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 #include <algorithm>
 

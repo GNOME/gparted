@@ -15,11 +15,11 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/DrawingAreaVisualDisk.h"
-#include "../include/Partition.h"
-#include "../include/PartitionLUKS.h"
-#include "../include/PartitionVector.h"
-#include "../include/Utils.h"
+#include "DrawingAreaVisualDisk.h"
+#include "Partition.h"
+#include "PartitionLUKS.h"
+#include "PartitionVector.h"
+#include "Utils.h"
 
 #define MAIN_BORDER 5
 #define BORDER 4

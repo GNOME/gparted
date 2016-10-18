@@ -14,9 +14,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/DialogFeatures.h" 
-#include "../include/GParted_Core.h"
+
+#include "DialogFeatures.h"
+#include "GParted_Core.h"
 
 #include <gtkmm/stock.h>
 

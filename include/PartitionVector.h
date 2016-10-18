@@ -25,7 +25,7 @@
 #ifndef GPARTED_PARTITIONVECTOR_H
 #define GPARTED_PARTITIONVECTOR_H
 
-#include "../include/Partition.h"
+#include "Partition.h"
 
 #include <cstddef>
 #include <vector>

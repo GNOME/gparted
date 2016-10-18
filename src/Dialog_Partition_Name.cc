@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Dialog_Partition_Name.h"
-#include "../include/Partition.h"
+#include "Dialog_Partition_Name.h"
+#include "Partition.h"
 
 namespace GParted
 {

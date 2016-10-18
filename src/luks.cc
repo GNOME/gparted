@@ -14,10 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/LUKS_Info.h"
-#include "../include/Utils.h"
-#include "../include/luks.h"
+#include "LUKS_Info.h"
+#include "Utils.h"
+#include "luks.h"
 
 namespace GParted
 {

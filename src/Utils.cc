@@ -15,9 +15,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Utils.h"
-#include "../include/GParted_Core.h"
-#include "../include/PipeCapture.h"
+#include "Utils.h"
+#include "GParted_Core.h"
+#include "PipeCapture.h"
 
 #include <sstream>
 #include <fstream>

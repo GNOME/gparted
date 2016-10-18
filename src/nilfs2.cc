@@ -14,9 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/nilfs2.h"
-#include "../include/Partition.h"
+#include "nilfs2.h"
+#include "Partition.h"
 
 namespace GParted
 {

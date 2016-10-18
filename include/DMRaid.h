@@ -26,9 +26,9 @@
 #ifndef GPARTED_DMRAID_H
 #define GPARTED_DMRAID_H
 
-#include "../include/Utils.h"
-#include "../include/Partition.h"
-#include "../include/OperationDetail.h"
+#include "Utils.h"
+#include "Partition.h"
+#include "OperationDetail.h"
 
 #include <vector>
 

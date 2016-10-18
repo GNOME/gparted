@@ -18,7 +18,7 @@
 #ifndef GPARTED_EXFAT_H
 #define GPARTED_EXFAT_H
 
-#include "../include/FileSystem.h"
+#include "FileSystem.h"
 
 namespace GParted
 {

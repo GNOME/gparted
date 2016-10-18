@@ -22,9 +22,9 @@
 #ifndef GPARTED_DIALOG_RESCUE_DATA_H
 #define GPARTED_DIALOG_RESCUE_DATA_H
 
-#include "../include/Device.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Device.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/frame.h>

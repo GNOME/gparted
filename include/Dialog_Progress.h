@@ -18,9 +18,9 @@
 #ifndef GPARTED_DIALOG_PROGRESS_H
 #define GPARTED_DIALOG_PROGRESS_H
 
-#include "../include/i18n.h"
-#include "../include/Utils.h"
-#include "../include/Operation.h"
+#include "i18n.h"
+#include "Utils.h"
+#include "Operation.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>

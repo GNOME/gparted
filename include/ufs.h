@@ -19,7 +19,7 @@
 #ifndef GPARTED_UFS_H
 #define GPARTED_UFS_H
 
-#include "../include/FileSystem.h"
+#include "FileSystem.h"
 
 namespace GParted
 {

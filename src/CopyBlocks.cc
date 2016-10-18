@@ -16,10 +16,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/CopyBlocks.h"
-#include "../include/OperationDetail.h"
-#include "../include/ProgressBar.h"
-#include "../include/Utils.h"
+#include "CopyBlocks.h"
+#include "OperationDetail.h"
+#include "ProgressBar.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <gtkmm/main.h>

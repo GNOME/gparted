@@ -15,10 +15,10 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Dialog_Partition_Copy.h"
-#include "../include/GParted_Core.h"
-#include "../include/Partition.h"
-#include "../include/Utils.h"
+#include "Dialog_Partition_Copy.h"
+#include "GParted_Core.h"
+#include "Partition.h"
+#include "Utils.h"
 
 namespace GParted
 {

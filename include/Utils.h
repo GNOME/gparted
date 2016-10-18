@@ -24,7 +24,7 @@
 #ifndef GPARTED_UTILS_H
 #define GPARTED_UTILS_H
 
-#include "../include/i18n.h"
+#include "i18n.h"
 
 #include <gtkmm/label.h>
 #include <glibmm/ustring.h>

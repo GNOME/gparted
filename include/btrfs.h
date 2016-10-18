@@ -19,9 +19,9 @@
 #ifndef GPARTED_BTRFS_H
 #define GPARTED_BTRFS_H
 
-#include "../include/FileSystem.h"
-#include "../include/BlockSpecial.h"
-#include "../include/Partition.h"
+#include "FileSystem.h"
+#include "BlockSpecial.h"
+#include "Partition.h"
 
 namespace GParted
 {

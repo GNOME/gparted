@@ -23,8 +23,8 @@
 #ifndef GPARTED_PARTITION_H
 #define GPARTED_PARTITION_H
 
-#include "../include/Utils.h"
-#include "../include/PartitionVector.h"
+#include "Utils.h"
+#include "PartitionVector.h"
 
 #include <glibmm/ustring.h>
 

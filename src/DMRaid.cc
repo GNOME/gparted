@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/DMRaid.h"
-#include "../include/Partition.h"
+#include "DMRaid.h"
+#include "Partition.h"
 
 #include <limits.h>
 #include <stdlib.h>		//atoi function

@@ -15,9 +15,9 @@
  */
 
 
-#include "../include/OperationDetail.h"
-#include "../include/ProgressBar.h"
-#include "../include/Utils.h"
+#include "OperationDetail.h"
+#include "ProgressBar.h"
+#include "Utils.h"
 
 namespace GParted
 {

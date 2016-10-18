@@ -14,7 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/BlockSpecial.h"
+#include "BlockSpecial.h"
 
 #include <glibmm/ustring.h>
 #include <sys/types.h>

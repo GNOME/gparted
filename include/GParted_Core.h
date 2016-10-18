@@ -18,12 +18,12 @@
 #ifndef GPARTED_GPARTED_CORE_H
 #define GPARTED_GPARTED_CORE_H
 
-#include "../include/BlockSpecial.h"
-#include "../include/FileSystem.h"
-#include "../include/Operation.h"
-#include "../include/Partition.h"
-#include "../include/PartitionLUKS.h"
-#include "../include/PartitionVector.h"
+#include "BlockSpecial.h"
+#include "FileSystem.h"
+#include "Operation.h"
+#include "Partition.h"
+#include "PartitionLUKS.h"
+#include "PartitionVector.h"
 
 #include <parted/parted.h>
 #include <vector>

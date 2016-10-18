@@ -18,9 +18,9 @@
 #ifndef GPARTED_DIALOG_PARTITION_NEW_H
 #define GPARTED_DIALOG_PARTITION_NEW_H
 
-#include "../include/Dialog_Base_Partition.h"
-#include "../include/Device.h"
-#include "../include/Partition.h"
+#include "Dialog_Base_Partition.h"
+#include "Device.h"
+#include "Partition.h"
 
 #include <gtkmm/optionmenu.h>
 

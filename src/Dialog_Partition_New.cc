@@ -15,9 +15,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Dialog_Partition_New.h"
-#include "../include/GParted_Core.h"
-#include "../include/Partition.h"
+#include "Dialog_Partition_New.h"
+#include "GParted_Core.h"
+#include "Partition.h"
 
 namespace GParted
 {

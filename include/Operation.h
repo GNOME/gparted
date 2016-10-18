@@ -18,10 +18,10 @@
 #ifndef GPARTED_OPERATION_H
 #define GPARTED_OPERATION_H
 
-#include "../include/Device.h"
-#include "../include/OperationDetail.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Device.h"
+#include "OperationDetail.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

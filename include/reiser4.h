@@ -19,8 +19,8 @@
 #ifndef GPARTED_REISER4_H
 #define GPARTED_REISER4_H
 
-#include "../include/FileSystem.h"
-#include "../include/Partition.h"
+#include "FileSystem.h"
+#include "Partition.h"
 
 namespace GParted
 {

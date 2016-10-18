@@ -18,7 +18,7 @@
 #ifndef GPARTED_DIALOGMANAGEFLAGS_H
 #define GPARTED_DIALOGMANAGEFLAGS_H
 
-#include "../include/Partition.h"
+#include "Partition.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>

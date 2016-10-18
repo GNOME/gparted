@@ -17,8 +17,8 @@
 #ifndef GPARTED_COPYBLOCKS_H
 #define GPARTED_COPYBLOCKS_H
 
-#include "../include/OperationDetail.h"
-#include "../include/Utils.h"
+#include "OperationDetail.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <parted/parted.h>

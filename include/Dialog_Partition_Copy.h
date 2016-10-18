@@ -18,8 +18,8 @@
 #ifndef GPARTED_DIALOG_PARTITION_COPY_H
 #define GPARTED_DIALOG_PARTITION_COPY_H
 
-#include "../include/Dialog_Base_Partition.h"
-#include "../include/Partition.h"
+#include "Dialog_Base_Partition.h"
+#include "Partition.h"
 
 namespace GParted
 {

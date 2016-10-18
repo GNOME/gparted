@@ -19,9 +19,9 @@
 #ifndef GPARTED_FILESYSTEM_H
 #define GPARTED_FILESYSTEM_H
 
-#include "../include/Operation.h"
-#include "../include/Partition.h"
-#include "../include/PipeCapture.h"
+#include "Operation.h"
+#include "Partition.h"
+#include "PipeCapture.h"
 
 #include <fstream>
 #include <sys/stat.h>

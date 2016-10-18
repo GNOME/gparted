@@ -18,7 +18,7 @@
 #ifndef GPARTED_OPERATIONDETAIL_H
 #define GPARTED_OPERATIONDETAIL_H
 
-#include "../include/ProgressBar.h"
+#include "ProgressBar.h"
 
 #include <glibmm/ustring.h>
 #include <glibmm/markup.h>

@@ -14,11 +14,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/TreeView_Detail.h"
-#include "../include/Partition.h"
-#include "../include/PartitionLUKS.h"
-#include "../include/PartitionVector.h"
+
+#include "TreeView_Detail.h"
+#include "Partition.h"
+#include "PartitionLUKS.h"
+#include "PartitionVector.h"
 
 #include <vector>
 #include <gtkmm/cellrenderer.h>

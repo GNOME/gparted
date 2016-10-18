@@ -18,8 +18,8 @@
 #ifndef GPARTED_FRAME_RESIZER_EXTENDED_H
 #define GPARTED_FRAME_RESIZER_EXTENDED_H
 
-#include "../include/Frame_Resizer_Base.h"
- 
+#include "Frame_Resizer_Base.h"
+
 class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:

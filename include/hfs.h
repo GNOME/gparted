@@ -19,8 +19,8 @@
 #ifndef GPARTED_HFS_H
 #define GPARTED_HFS_H
 
-#include "../include/FileSystem.h"
-#include "../include/Partition.h"
+#include "FileSystem.h"
+#include "Partition.h"
 
 namespace GParted
 {

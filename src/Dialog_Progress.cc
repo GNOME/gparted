@@ -14,10 +14,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/Dialog_Progress.h"
-#include "../include/OperationDetail.h"
-#include "../include/ProgressBar.h"
+
+#include "Dialog_Progress.h"
+#include "OperationDetail.h"
+#include "ProgressBar.h"
 
 #include <gtkmm/stock.h>
 #include <gtkmm/main.h>

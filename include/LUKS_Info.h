@@ -25,8 +25,8 @@
 #ifndef GPARTED_LUKS_INFO_H
 #define GPARTED_LUKS_INFO_H
 
-#include "../include/BlockSpecial.h"
-#include "../include/Utils.h"
+#include "BlockSpecial.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <vector>

@@ -17,7 +17,7 @@
 #ifndef GPARTED_FS_INFO_H
 #define GPARTED_FS_INFO_H
 
-#include "../include/BlockSpecial.h"
+#include "BlockSpecial.h"
 
 #include <glibmm/ustring.h>
 #include <vector>

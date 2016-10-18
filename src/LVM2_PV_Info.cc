@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/LVM2_PV_Info.h"
-#include "../include/BlockSpecial.h"
+#include "LVM2_PV_Info.h"
+#include "BlockSpecial.h"
 
 namespace GParted
 {

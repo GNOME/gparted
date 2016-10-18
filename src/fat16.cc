@@ -14,10 +14,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
- 
-#include "../include/fat16.h"
-#include "../include/Partition.h"
+
+#include "fat16.h"
+#include "Partition.h"
 
 /*****
 //For some reason unknown, this works without these include statements.

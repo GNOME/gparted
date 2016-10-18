@@ -14,10 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/LVM2_PV_Info.h"
-#include "../include/lvm2_pv.h"
-#include "../include/Partition.h"
+#include "LVM2_PV_Info.h"
+#include "lvm2_pv.h"
+#include "Partition.h"
 
 namespace GParted
 {

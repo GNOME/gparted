@@ -17,9 +17,9 @@
 #ifndef GPARTED_OPERATIONCHECK_H
 #define GPARTED_OPERATIONCHECK_H
 
-#include "../include/Operation.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "Operation.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

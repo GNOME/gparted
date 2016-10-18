@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Mount_Info.h"
-#include "../include/FS_Info.h"
-#include "../include/Utils.h"
+#include "Mount_Info.h"
+#include "FS_Info.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <stdio.h>

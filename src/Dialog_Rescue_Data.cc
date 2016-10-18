@@ -15,9 +15,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Utils.h"
-#include "../include/Dialog_Rescue_Data.h"
-#include "../include/Partition.h"
+#include "Utils.h"
+#include "Dialog_Rescue_Data.h"
+#include "Partition.h"
 
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>

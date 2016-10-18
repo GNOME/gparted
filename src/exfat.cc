@@ -14,8 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include "../include/exfat.h"
+#include "exfat.h"
 
 namespace GParted
 {

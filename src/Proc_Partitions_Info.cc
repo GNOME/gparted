@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Proc_Partitions_Info.h"
-#include "../include/BlockSpecial.h"
-#include "../include/Utils.h"
+#include "Proc_Partitions_Info.h"
+#include "BlockSpecial.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <vector>

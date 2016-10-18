@@ -14,9 +14,9 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/LUKS_Info.h"
-#include "../include/BlockSpecial.h"
-#include "../include/Utils.h"
+#include "LUKS_Info.h"
+#include "BlockSpecial.h"
+#include "Utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>

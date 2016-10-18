@@ -15,11 +15,11 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/OperationCreate.h"
-#include "../include/OperationFormat.h"
-#include "../include/OperationResizeMove.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
+#include "OperationCreate.h"
+#include "OperationFormat.h"
+#include "OperationResizeMove.h"
+#include "Partition.h"
+#include "PartitionVector.h"
 
 namespace GParted
 {

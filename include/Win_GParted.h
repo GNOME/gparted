@@ -18,13 +18,13 @@
 #ifndef GPARTED_WIN_GPARTED_H
 #define GPARTED_WIN_GPARTED_H
 
-#include "../include/Device.h"
-#include "../include/DrawingAreaVisualDisk.h"
-#include "../include/Partition.h"
-#include "../include/PartitionVector.h"
-#include "../include/TreeView_Detail.h"
-#include "../include/GParted_Core.h"
-#include "../include/HBoxOperations.h" 
+#include "Device.h"
+#include "DrawingAreaVisualDisk.h"
+#include "Partition.h"
+#include "PartitionVector.h"
+#include "TreeView_Detail.h"
+#include "GParted_Core.h"
+#include "HBoxOperations.h"
 
 #include <gtkmm/paned.h>
 #include <gtkmm/toolbar.h>

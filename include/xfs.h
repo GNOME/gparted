@@ -19,10 +19,10 @@
 #ifndef GPARTED_XFS_H
 #define GPARTED_XFS_H
 
-#include "../include/FileSystem.h"
-#include "../include/OperationDetail.h"
-#include "../include/Partition.h"
-#include "../include/Utils.h"
+#include "FileSystem.h"
+#include "OperationDetail.h"
+#include "Partition.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 

@@ -18,8 +18,8 @@
 #ifndef GPARTED_DIALOG_DISKLABEL_H
 #define GPARTED_DIALOG_DISKLABEL_H
 
-#include "../include/Utils.h"
-#include "../include/Device.h"
+#include "Utils.h"
+#include "Device.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>

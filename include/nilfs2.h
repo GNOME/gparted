@@ -18,8 +18,8 @@
 #ifndef GPARTED_NILFS2_H
 #define GPARTED_NILFS2_H
 
-#include "../include/FileSystem.h"
-#include "../include/Partition.h"
+#include "FileSystem.h"
+#include "Partition.h"
 
 namespace GParted
 {

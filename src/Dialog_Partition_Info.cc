@@ -14,13 +14,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "../include/Dialog_Partition_Info.h"
-#include "../include/LVM2_PV_Info.h"
-#include "../include/Partition.h"
-#include "../include/PartitionLUKS.h"
-#include "../include/Utils.h"
-#include "../include/btrfs.h"
+
+#include "Dialog_Partition_Info.h"
+#include "LVM2_PV_Info.h"
+#include "Partition.h"
+#include "PartitionLUKS.h"
+#include "Utils.h"
+#include "btrfs.h"
 
 #include <gtk/gtk.h>
 #include <gtkmm/alignment.h>

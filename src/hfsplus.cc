@@ -14,10 +14,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
- 
-#include "../include/hfsplus.h"
-#include "../include/Partition.h"
+
+#include "hfsplus.h"
+#include "Partition.h"
 
 namespace GParted
 {

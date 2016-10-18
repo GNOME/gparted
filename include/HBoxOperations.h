@@ -17,7 +17,7 @@
 #ifndef GPARTED_HBOXOPERATIONS_H
 #define GPARTED_HBOXOPERATIONS_H
 
-#include "../include/Operation.h"
+#include "Operation.h"
 
 #include <gtkmm/box.h>
 #include <gtkmm/liststore.h>

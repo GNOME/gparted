@@ -14,13 +14,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
- 
-#include "../include/xfs.h"
-#include "../include/OperationDetail.h"
-#include "../include/Partition.h"
-#include "../include/ProgressBar.h"
-#include "../include/Utils.h"
+
+#include "xfs.h"
+#include "OperationDetail.h"
+#include "Partition.h"
+#include "ProgressBar.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 
