@@ -1,4 +1,53 @@
 ============================
+GParted 0.27.0  (2016-10-19)
+============================
+
+Release Notes
+-------------
+  This release of GParted improves handling of devices with multiple
+  device paths and includes bug fixes and language translation
+  updates.
+
+### Key changes include:
+
+  * Recognize GRUB2 core.img
+  * Fix Mount Point column is wider than the screen on openSUSE
+  * Make GParted exit when closed before the initial load completes
+
+Bug Fixes
+---------
+
+  * Recognize GRUB2 core.img (#766989)
+  * Fix file system usage missing when tools use alt blk dev names (#767842)
+  * Fix sscanf modifier for long long (#768239)
+  * Fix duplicate mounts shown for unmounted encrypted file systems (#771323)
+  * Fix usage of active encrypted swap is not shown (#771670)
+  * Include extended partitions in the count of active partitions
+  * Fix Mount Point column is wider than the screen on openSUSE (771693)
+  * Make GParted exit when closed before the initial load completes (771816)
+  * Prevent the UI hanging while gpart data rescue is running (#772123)
+  * Add language headers to po files
+
+Code Credits
+------------
+  Code enhancements are courtesy of Natanael Copa, Piotr Drąg and Mike
+  Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  da(Alan Mortensen), en_GB(David King, Chris Leonard), es(Daniel Mustieles),
+  eu(Inaki Larranaga Murgoitio), fi(Jiri Grönroos), hr(gogo),
+  hu(Balázs Úr), id(Andika Triwidada), is(Sveinn í Felli),
+  kk(Baurzhan Muftakhidinov), lt(Aurimas Černius), pl(Piotr Drąg),
+  pt(Tiago Santos), ro(Daniel Șerbănescu), sr(Мирослав Николић),
+  sr@latin(Miroslav Nikolić), sv(Anders Jonsson), uk(Daniel Korostil)
+
+Dependencies (new/updated)
+--------------------------
+  * no change.
+
+
+============================
 GParted 0.26.1  (2016-06-13)
 ============================
 
