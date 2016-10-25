@@ -69,6 +69,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
         MENU_COPY = TOOLBAR_COPY =
         MENU_PASTE = TOOLBAR_PASTE =
         MENU_FORMAT =
+	MENU_TOGGLE_CRYPT_BUSY =
 	MENU_TOGGLE_FS_BUSY =
         MENU_MOUNT =
         MENU_NAME_PARTITION =
@@ -373,7 +374,13 @@ void Win_GParted::init_partition_menu()
 	
 	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
 	index++ ;
-	
+
+	menu_partition.items().push_back(
+			// Placeholder text, replaced in set_valid_operations() before the menu is shown
+			Gtk::Menu_Helpers::MenuElem( "--toggle crypt busy--",
+			                             sigc::mem_fun( *this, &Win_GParted::toggle_crypt_busy_state ) ) );
+	MENU_TOGGLE_CRYPT_BUSY = index++;
+
 	menu_partition .items() .push_back(
 			// Placeholder text, replaced in set_valid_operations() before the menu is shown
 			Gtk::Menu_Helpers::MenuElem( "--toggle fs busy--",
@@ -1050,13 +1057,19 @@ bool Win_GParted::Quit_Check_Operations()
 void Win_GParted::set_valid_operations()
 {
 	allow_new( false ); allow_delete( false ); allow_resize( false ); allow_copy( false );
-	allow_paste( false ); allow_format( false ); allow_toggle_fs_busy_state( false );
+	allow_paste( false ); allow_format( false );
+	allow_toggle_crypt_busy_state( false ); allow_toggle_fs_busy_state( false );
 	allow_name_partition( false ); allow_manage_flags( false ); allow_check( false );
 	allow_label_filesystem( false ); allow_change_uuid( false ); allow_info( false );
 
+	// Set default name for the open/close crypt menu item.
+	const FileSystem * luks_filesystem_object = gparted_core.get_filesystem_object( FS_LUKS );
+	g_assert( luks_filesystem_object != NULL );  // Bug: LUKS FileSystem object not found
+	dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_CRYPT_BUSY].get_child() )
+		->set_label( luks_filesystem_object->get_custom_text( CTEXT_ACTIVATE_FILESYSTEM ) );
 	// Set default name for the file system active/deactivate menu item.
 	dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
-		->set_label( FileSystem::get_generic_text ( CTEXT_DEACTIVATE_FILESYSTEM ) ) ;
+		->set_label( FileSystem::get_generic_text( CTEXT_ACTIVATE_FILESYSTEM ) );
 
 	menu_partition.items()[MENU_TOGGLE_FS_BUSY].show();
 	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
@@ -1076,19 +1089,33 @@ void Win_GParted::set_valid_operations()
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
 
-	// Set an appropriate name for the activate/deactivate menu item.
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_filesystem.filesystem );
-	if ( filesystem_object )
-		dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
-			->set_label( filesystem_object->get_custom_text(   selected_filesystem.busy
-			                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
-			                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
-	else
-		dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
-			->set_label( FileSystem::get_generic_text (  selected_filesystem.busy
-			                                           ? CTEXT_DEACTIVATE_FILESYSTEM
-			                                           : CTEXT_ACTIVATE_FILESYSTEM )
-			                                          ) ;
+	// Set appropriate name for the open/close crypt menu item.
+	if ( selected_partition_ptr->filesystem == FS_LUKS )
+	{
+		dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_CRYPT_BUSY].get_child() )
+			->set_label( luks_filesystem_object->get_custom_text(   selected_partition_ptr->busy
+			                                                      ? CTEXT_DEACTIVATE_FILESYSTEM
+			                                                      : CTEXT_ACTIVATE_FILESYSTEM ) );
+	}
+	// Set appropriate name for the file system active/deactivate menu item.
+	if ( selected_partition_ptr->filesystem != FS_LUKS || selected_partition_ptr->busy )
+	{
+		const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_filesystem.filesystem );
+		if ( filesystem_object )
+		{
+			dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
+				->set_label( filesystem_object->get_custom_text(   selected_filesystem.busy
+				                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
+				                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
+		}
+		else
+		{
+			dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
+				->set_label( FileSystem::get_generic_text (  selected_filesystem.busy
+				                                           ? CTEXT_DEACTIVATE_FILESYSTEM
+				                                           : CTEXT_ACTIVATE_FILESYSTEM ) );
+		}
+	}
 
 	// Only permit file system mount/unmount and swapon/swapoff when available
 	if (    selected_partition_ptr->status == STAT_REAL
@@ -2383,6 +2410,12 @@ void Win_GParted::activate_format( FSType new_fs )
 
 	delete temp_ptn;
 	temp_ptn = NULL;
+}
+
+void Win_GParted::toggle_crypt_busy_state()
+{
+	// Method not yet implemented as MENU_TOGGLE_CRYPT_BUSY item "Open/Close encrypted
+	// volume" in the partition menu is never enabled.
 }
 
 bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring & error )

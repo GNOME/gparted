@@ -107,6 +107,9 @@ private:
 	void allow_format( bool state )	{ 
 		toggle_item( state, MENU_FORMAT ) ; }
 
+	void allow_toggle_crypt_busy_state( bool state ) {
+		toggle_item( state, MENU_TOGGLE_CRYPT_BUSY ); }
+
 	void allow_toggle_fs_busy_state( bool state ) {
 		toggle_item( state, MENU_TOGGLE_FS_BUSY ); }
 
@@ -177,6 +180,7 @@ private:
 	void activate_delete();
 	void activate_info();
 	void activate_format( FSType new_fs );
+	void toggle_crypt_busy_state();
 	bool check_toggle_busy_allowed( const Glib::ustring & disallowed_msg );
 	void show_toggle_failure_dialog( const Glib::ustring & failure_summary,
 	                                 const Glib::ustring & marked_up_error );
@@ -258,6 +262,7 @@ private:
         MENU_COPY, TOOLBAR_COPY,
         MENU_PASTE, TOOLBAR_PASTE,
         MENU_FORMAT,
+	MENU_TOGGLE_CRYPT_BUSY,
 	MENU_TOGGLE_FS_BUSY,
         MENU_MOUNT,
 	MENU_NAME_PARTITION,
