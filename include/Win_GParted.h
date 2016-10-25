@@ -107,8 +107,8 @@ private:
 	void allow_format( bool state )	{ 
 		toggle_item( state, MENU_FORMAT ) ; }
 
-	void allow_toggle_busy_state( bool state )	{
-		toggle_item( state, MENU_TOGGLE_BUSY ) ; }
+	void allow_toggle_fs_busy_state( bool state ) {
+		toggle_item( state, MENU_TOGGLE_FS_BUSY ); }
 
 	void allow_manage_flags( bool state ) {
 		toggle_item( state, MENU_FLAGS ) ; } 
@@ -180,7 +180,7 @@ private:
 	bool check_toggle_busy_allowed( const Glib::ustring & disallowed_msg );
 	void show_toggle_failure_dialog( const Glib::ustring & failure_summary,
 	                                 const Glib::ustring & marked_up_error );
-	void toggle_busy_state() ;
+	void toggle_fs_busy_state();
 	void activate_mount_partition( unsigned int index ) ;
 	void activate_disklabel() ;
 	void activate_attempt_rescue_data();
@@ -258,7 +258,7 @@ private:
         MENU_COPY, TOOLBAR_COPY,
         MENU_PASTE, TOOLBAR_PASTE,
         MENU_FORMAT,
-        MENU_TOGGLE_BUSY,
+	MENU_TOGGLE_FS_BUSY,
         MENU_MOUNT,
 	MENU_NAME_PARTITION,
         MENU_FLAGS,
