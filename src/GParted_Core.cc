@@ -2521,7 +2521,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	{
 		// linux-swap is recreated, not resize
 		success =    resize_move_partition( partition_old, partition_new, operationdetail )
-		          && resize_filesystem( partition_old, partition_new, operationdetail );
+		          && maximize_filesystem( partition_new, operationdetail );
 
 		return success;
 	}
@@ -2530,7 +2530,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	if ( delta < 0LL )  // shrink
 	{
 		success =    check_repair_filesystem( partition_new, operationdetail )
-		          && resize_filesystem( partition_old, partition_new, operationdetail )
+		          && shrink_filesystem( partition_old, partition_new, operationdetail )
 		          && resize_move_partition( partition_old, partition_new, operationdetail );
 	}
 	else if ( delta > 0LL )  // grow
@@ -2747,71 +2747,38 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	return return_value ;
 }
 
-bool GParted_Core::resize_filesystem( const Partition & partition_old,
-				      const Partition & partition_new,
-				      OperationDetail & operationdetail,
-				      bool fill_partition ) 
+bool GParted_Core::shrink_filesystem( const Partition & partition_old,
+                                      const Partition & partition_new,
+                                      OperationDetail & operationdetail )
 {
-	//by default 'grow' to accomodate expand_filesystem()
-	GParted::FS::Support action = get_fs( partition_old .filesystem ) .grow ;
-
-	if ( ! fill_partition )
+	if ( partition_new.get_sector_length() >= partition_old.get_sector_length() )
 	{
-		if ( partition_new .get_sector_length() < partition_old .get_sector_length() )
-		{
-			operationdetail .add_child( OperationDetail( _("shrink file system") ) ) ;
-			action = get_fs( partition_old .filesystem ) .shrink ;
-		}
-		else if ( partition_new .get_sector_length() > partition_old .get_sector_length() )
-			operationdetail .add_child( OperationDetail( _("grow file system") ) ) ;
-		else
-		{
-			operationdetail .add_child( OperationDetail( _("resize file system") ) ) ;
-			operationdetail .get_last_child() .add_child( 
-				OperationDetail( 
-					_("new and old file system have the same size.  Hence skipping this operation"),
-					STATUS_NONE,
-					FONT_ITALIC ) ) ;
-		
-			operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
-			return true ;
-		}
+		operationdetail.add_child( OperationDetail(
+			/* TO TRANSLATORS:
+			 * means that GParted has encountered a programming bug and tried
+			 * to grow the partition size or keep it the same when performing
+			 * a shrink partition only step.
+			 */
+			GPARTED_BUG + ": " + _("the new partition size is larger or the same for a shrink only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
 	}
 
-	bool succes = false ;
-	FileSystem* p_filesystem = NULL ;
-	switch ( action )
-	{
-		case GParted::FS::NONE:
-			break ;
-		case GParted::FS::GPARTED:
-			break ;
-#ifdef HAVE_LIBPARTED_FS_RESIZE
-		case GParted::FS::LIBPARTED:
-			succes = resize_move_filesystem_using_libparted( partition_old,
-									 partition_new,
-								  	 operationdetail .get_last_child() ) ;
-			break ;
-#endif
-		case GParted::FS::EXTERNAL:
-			succes = ( p_filesystem = get_filesystem_object( partition_new .filesystem ) ) &&
-				 p_filesystem ->resize( partition_new,
-							operationdetail .get_last_child(), 
-							fill_partition ) ;
-			break ;
-
-		default:
-			break ;
-	}
-
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-	return succes ;
+	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
 }
-	
+
 bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( _("grow file system to fill the partition") ) ) ;
 
+	// Checking if growing is available or allowed is only relevant for the check
+	// repair operation to inform the user why the grow step is being skipped.  For a
+	// resize/move operation these growing checks are merely retesting those performed
+	// to allow the operation to be queued in the first place.  See
+	// Win_GParted::set_valid_operations() and
+	// Dialog_Partition_Resize_Move::Resize_Move_Normal().
 	if ( get_fs( partition .filesystem ) .grow == GParted::FS::NONE )
 	{
 		operationdetail .get_last_child() .add_child( 
@@ -2837,7 +2804,57 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 		return true ;
 	}
 
-	return resize_filesystem( partition, partition, operationdetail, true ) ;
+	bool success = resize_filesystem_implement( partition, partition, operationdetail );
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
+}
+
+bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
+                                                const Partition & partition_new,
+                                                OperationDetail & operationdetail )
+{
+
+	bool fill_partition = false;
+	const FS & fs_cap = get_fs( partition_new.filesystem );
+	FS::Support action = FS::NONE;
+	if ( partition_new.get_sector_length() >= partition_old.get_sector_length() )
+	{
+		// grow (always maximises the file system to fill the partition)
+		fill_partition = true;
+		action = fs_cap.grow;
+	}
+	else
+	{
+		// shrink
+		fill_partition = false;
+		action = fs_cap.shrink;
+	}
+	bool success = false;
+	FileSystem* p_filesystem = NULL;
+	switch ( action )
+	{
+		case FS::NONE:
+			break;
+		case FS::GPARTED:
+			break;
+#ifdef HAVE_LIBPARTED_FS_RESIZE
+		case FS::LIBPARTED:
+			success = resize_move_filesystem_using_libparted( partition_old,
+			                                                  partition_new,
+			                                                  operationdetail.get_last_child() );
+			break;
+#endif
+		case FS::EXTERNAL:
+			success = ( p_filesystem = get_filesystem_object( partition_new.filesystem ) ) &&
+			          p_filesystem->resize( partition_new,
+			                                operationdetail.get_last_child(),
+			                                fill_partition );
+			break;
+		default:
+			break;
+	}
+
+	return success;
 }
 
 bool GParted_Core::copy( const Partition & partition_src,

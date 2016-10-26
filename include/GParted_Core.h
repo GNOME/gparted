@@ -139,12 +139,14 @@ private:
 	bool resize_move_partition( const Partition & partition_old,
 			       	    const Partition & partition_new,
 				    OperationDetail & operationdetail ) ;
-	bool resize_filesystem( const Partition & partition_old,
-				const Partition & partition_new,
-				OperationDetail & operationdetail,
-				bool fill_partition = false ) ;
+	bool shrink_filesystem( const Partition & partition_old,
+	                        const Partition & partition_new,
+	                        OperationDetail & operationdetail );
 	bool maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
-				
+	bool resize_filesystem_implement( const Partition & partition_old,
+	                                  const Partition & partition_new,
+	                                  OperationDetail & operationdetail );
+
 	bool copy( const Partition & partition_src,
 	           Partition & partition_dst,
 	           OperationDetail & operationdetail );
