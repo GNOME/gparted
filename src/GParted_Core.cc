@@ -2821,13 +2821,13 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 	{
 		// grow (always maximises the file system to fill the partition)
 		fill_partition = true;
-		action = fs_cap.grow;
+		action = ( partition_old.busy ) ? fs_cap.online_grow : fs_cap.grow;
 	}
 	else
 	{
 		// shrink
 		fill_partition = false;
-		action = fs_cap.shrink;
+		action = ( partition_old.busy ) ? fs_cap.online_shrink : fs_cap.shrink;
 	}
 	bool success = false;
 	FileSystem* p_filesystem = NULL;
