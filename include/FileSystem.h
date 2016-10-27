@@ -69,8 +69,8 @@ public:
 	virtual bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) { return false; };
 	virtual bool create( const Partition & new_partition, OperationDetail & operationdetail ) { return false; };
 	virtual bool resize( const Partition & partition_new,
-			     OperationDetail & operationdetail,
-			     bool fill_partition = false ) { return false; };
+	                     OperationDetail & operationdetail,
+	                     bool fill_partition ) { return false; };
 	virtual bool move( const Partition & partition_new
 	                 , const Partition & partition_old
 	                 , OperationDetail & operationdetail

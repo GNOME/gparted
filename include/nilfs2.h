@@ -34,7 +34,7 @@ public:
 	void read_uuid( Partition & partition ) ;
 	bool write_uuid( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
-	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition = false ) ;
+	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition );
 };
 
 } //GParted
