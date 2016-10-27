@@ -359,7 +359,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_JFS         : return "jfsutils" ;
 		case FS_LINUX_SWAP  : return "util-linux" ;
 		case FS_LVM2_PV     : return "lvm2" ;
-		case FS_LUKS        : return "dmsetup";
+		case FS_LUKS        : return "cryptsetup, dmsetup";
 		case FS_NILFS2      : return "nilfs-utils" ;
 		case FS_NTFS        : return "ntfs-3g / ntfsprogs" ;
 		case FS_REISER4     : return "reiser4progs" ;
