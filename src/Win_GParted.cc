@@ -1155,13 +1155,21 @@ void Win_GParted::set_valid_operations()
 		allow_new( true );
 		
 		// Find out if there is a partition to be copied and if it fits inside this unallocated space
-		if ( copied_partition != NULL && ! devices[current_device].readonly )
+		// FIXME:
+		// Temporarily disable copying of encrypted content into new partitions
+		// which can't yet be encrypted, until full LUKS read-write support is
+		// implemented.
+		if ( copied_partition             != NULL    &&
+		     ! devices[current_device].readonly      &&
+		     copied_partition->filesystem != FS_LUKS    )
 		{
+			const Partition & copied_filesystem_ptn = copied_partition->get_filesystem_partition();
 			Byte_Value required_size ;
-			if ( copied_partition->filesystem == FS_XFS )
-				required_size = copied_partition->estimated_min_size() * copied_partition->sector_size;
+			if ( copied_filesystem_ptn.filesystem == FS_XFS )
+				required_size = copied_filesystem_ptn.estimated_min_size() *
+				                copied_filesystem_ptn.sector_size;
 			else
-				required_size = copied_partition->get_byte_length();
+				required_size = copied_filesystem_ptn.get_byte_length();
 
 			//Determine if space is needed for the Master Boot Record or
 			//  the Extended Boot Record.  Generally an an additional track or MEBIBYTE
@@ -1235,7 +1243,7 @@ void Win_GParted::set_valid_operations()
 			allow_resize( true ) ;
 			
 		//only allow copying of real partitions
-		if ( selected_partition_ptr->status == STAT_REAL && fs.copy )
+		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.copy )
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
@@ -1270,10 +1278,11 @@ void Win_GParted::set_valid_operations()
 		}
 
 		// See if there is a partition to be copied and it fits inside this selected partition
-		if ( copied_partition != NULL &&
-		     copied_partition->get_byte_length() <= selected_partition_ptr->get_byte_length() &&
-		     selected_partition_ptr->status == STAT_REAL &&
-		     *copied_partition != *selected_partition_ptr )
+		if ( copied_partition != NULL                                              &&
+		     ( copied_partition->get_filesystem_partition().get_byte_length() <=
+		       selected_filesystem.get_byte_length()                             ) &&
+		     selected_partition_ptr->status == STAT_REAL                           &&
+		     *copied_partition != *selected_partition_ptr                             )
 			allow_paste( true );
 
 		//see if we can somehow check/repair this file system....
@@ -1844,18 +1853,20 @@ void Win_GParted::activate_paste()
 		return ;
 	}
 
+	const Partition & copied_filesystem_ptn = copied_partition->get_filesystem_partition();
+
 	if ( selected_partition_ptr->type == TYPE_UNALLOCATED )
 	{
 		if ( ! max_amount_prim_reached() )
 		{
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
-			Partition * part_temp = copied_partition->clone();
+			Partition * part_temp = copied_filesystem_ptn.clone();
 			part_temp->clear_messages();
 			part_temp->clear_mountpoints();
 			part_temp->name.clear();
 
-			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_partition->filesystem ),
+			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_filesystem_ptn.filesystem ),
 			                              *selected_partition_ptr,
 			                              *part_temp );
 			delete part_temp;
@@ -1886,41 +1897,73 @@ void Win_GParted::activate_paste()
 	}
 	else
 	{
+		const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+
 		bool shown_dialog = false ;
 		// VGNAME from mount mount
-		if ( selected_partition_ptr->filesystem == FS_LVM2_PV   &&
-		     ! selected_partition_ptr->get_mountpoint().empty()    )
+		if ( selected_filesystem_ptn.filesystem == FS_LVM2_PV   &&
+		     ! selected_filesystem_ptn.get_mountpoint().empty()    )
 		{
 			if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_COPY ) )
 				return ;
 			shown_dialog = true ;
 		}
 
-		Partition * partition_new = selected_partition_ptr->clone();
-		partition_new->alignment = ALIGN_STRICT;
-		partition_new->filesystem = copied_partition->filesystem;
-		partition_new->set_filesystem_label( copied_partition->get_filesystem_label() );
-		partition_new->uuid = copied_partition->uuid;
-		Sector new_size = partition_new->get_sector_length();
-		if ( copied_partition->get_sector_length() == new_size )
+		Partition * partition_new;
+		if ( selected_partition_ptr->filesystem == FS_LUKS && ! selected_partition_ptr->busy )
 		{
-			// Pasting into same size existing partition, therefore only block
-			// copy operation will be performed maintaining the file system
-			// size.
-			partition_new->set_sector_usage(
-					copied_partition->sectors_used + copied_partition->sectors_unused,
-					copied_partition->sectors_unused );
+			// Pasting into a closed LUKS encrypted partition will overwrite
+			// the encryption replacing it with a non-encrypted file system.
+			// Start with a plain Partition object instead of cloning the
+			// existing PartitionLUKS object containing a Partition object.
+			// FIXME:
+			// Expect to remove this case when creating and removing LUKS
+			// encryption is added as a separate action when full LUKS
+			// read-write support is implemented.
+			// WARNING:
+			// Deliberate object slicing of *selected_partition_ptr from
+			// PartitionLUKS to Partition.
+			partition_new = new Partition( *selected_partition_ptr );
 		}
 		else
 		{
-			// Pasting into larger existing partition, therefore block copy
-			// followed by file system grow operations (if supported) will be
-			// performed making the file system fill the partition.
-			partition_new->set_sector_usage(
-					new_size,
-					new_size - copied_partition->sectors_used );
+			// Pasting over a file system, either a plain file system or one
+			// within an open LUKS encryption mapping.  Start with a clone of
+			// the existing Partition object whether it be a plain Partition
+			// object or a PartitionLUKS object containing a Partition object.
+			partition_new = selected_partition_ptr->clone();
 		}
-		partition_new->clear_messages();
+		partition_new->alignment = ALIGN_STRICT;
+
+		{
+			// Sub-block so that filesystem_ptn_new reference goes out of
+			// scope before partition_new pointer is deallocated.
+			Partition & filesystem_ptn_new = partition_new->get_filesystem_partition();
+			filesystem_ptn_new.filesystem = copied_filesystem_ptn.filesystem;
+			filesystem_ptn_new.set_filesystem_label( copied_filesystem_ptn.get_filesystem_label() );
+			filesystem_ptn_new.uuid = copied_filesystem_ptn.uuid;
+			Sector new_size = filesystem_ptn_new.get_sector_length();
+			if ( copied_filesystem_ptn.get_sector_length() == new_size )
+			{
+				// Pasting into same size existing partition, therefore
+				// only block copy operation will be performed maintaining
+				// the file system size.
+				filesystem_ptn_new.set_sector_usage(
+					copied_filesystem_ptn.sectors_used + copied_filesystem_ptn.sectors_unused,
+					copied_filesystem_ptn.sectors_unused );
+			}
+			else
+			{
+				// Pasting into larger existing partition, therefore block
+				// copy followed by file system grow operations (if
+				// supported) will be performed making the file system
+				// fill the partition.
+				filesystem_ptn_new.set_sector_usage(
+					new_size,
+					new_size - copied_filesystem_ptn.sectors_used );
+			}
+			filesystem_ptn_new.clear_messages();
+		}
  
 		Operation * operation = new OperationCopy( devices[current_device],
 		                                           *selected_partition_ptr,
