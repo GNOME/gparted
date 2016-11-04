@@ -759,7 +759,6 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			success =    remove_filesystem( copy_op->get_partition_original(), copy_op->operation_detail )
 			          && copy( copy_op->get_partition_copied(),
 			                   copy_op->get_partition_new(),
-			                   copy_op->get_partition_copied().get_byte_length(),
 			                   copy_op->operation_detail );
 			break;
 		}
@@ -2838,7 +2837,6 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 
 bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dst,
-			 Byte_Value min_size,
 			 OperationDetail & operationdetail ) 
 {
 	if (   partition_dst .get_byte_length() < partition_src .get_byte_length()
@@ -2851,71 +2849,82 @@ bool GParted_Core::copy( const Partition & partition_src,
 		return false ;
 	}
 
-	if ( check_repair_filesystem( partition_src, operationdetail ) )
+	if ( ! check_repair_filesystem( partition_src, operationdetail ) )
+		return false;
+
+	if ( partition_dst.status == STAT_COPY )
 	{
-		bool succes = true ;
-		if ( partition_dst .status == GParted::STAT_COPY )
-		{
-			/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-			succes = create_partition( partition_dst, operationdetail, ( (min_size + (partition_dst .sector_size - 1)) / partition_dst .sector_size ) ) ;
-		}
-
-		if ( succes && ! partition_dst.whole_device )
-		{
-			// Only set type of partition on a partitioned device.
-			succes = set_partition_type( partition_dst, operationdetail );
-		}
-
-		if ( succes )
-		{
-			operationdetail .add_child( OperationDetail( 
-				String::ucompose( _("copy file system of %1 to %2"),
-						  partition_src .get_path(),
-						  partition_dst .get_path() ) ) ) ;
-
-			FileSystem* p_filesystem = NULL ;
-			switch ( get_fs( partition_dst .filesystem ) .copy )
-			{
-				case GParted::FS::GPARTED :
-						succes = copy_filesystem_internal( partition_src,
-						                                   partition_dst,
-						                                   operationdetail.get_last_child(),
-						                                   true );
-						break ;
-
-				case GParted::FS::LIBPARTED :
-						//FIXME: see if copying through libparted has any advantages
-						break ;
-
-				case GParted::FS::EXTERNAL :
-					succes = ( p_filesystem = get_filesystem_object( partition_dst .filesystem ) ) &&
-							 p_filesystem ->copy( partition_src,
-									      partition_dst,
-									      operationdetail .get_last_child() ) ;
-						break ;
-
-				default :
-						succes = false ;
-						break ;
-			}
-
-			operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-
-			return (   succes
-			        && update_bootsector( partition_dst, operationdetail )
-			        && (   //Do not maximize file system if FS not linux-swap and destination size <= source
-			               (   partition_dst .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not copied
-			                && partition_dst .get_sector_length() <= partition_src .get_sector_length()
-			               )
-			            || (   check_repair_filesystem( partition_dst, operationdetail )
-			                && maximize_filesystem( partition_dst, operationdetail )
-			               )
-			           )
-			       );
-		}
+		// Handle situation where src sector size is smaller than dst sector size
+		// and an additional partial dst sector is required.
+		Sector min_size = ( partition_src.get_byte_length() + partition_dst.sector_size - 1 ) /
+		                  partition_dst.sector_size;
+		if ( ! create_partition( partition_dst, operationdetail, min_size ) )
+			return false;
 	}
 
-	return false ;
+	if ( ! partition_dst.whole_device )
+	{
+		// Only set type of partition on a partitioned device.
+		if ( ! set_partition_type( partition_dst, operationdetail ) )
+			return false;
+	}
+
+	bool success =    copy_filesystem( partition_src, partition_dst, operationdetail )
+	               && update_bootsector( partition_dst, operationdetail );
+	if ( ! success )
+		return false;
+
+	if ( partition_dst.filesystem == FS_LINUX_SWAP )
+	{
+		// linux-swap is recreated, not copied
+		return maximize_filesystem( partition_dst, operationdetail );
+	}
+	else if ( partition_dst.get_byte_length() > partition_src.get_byte_length() )
+	{
+		// Copied into a bigger partition so maximise file system
+		return    check_repair_filesystem( partition_dst, operationdetail )
+		       && maximize_filesystem( partition_dst, operationdetail );
+	}
+	return true;
+}
+
+bool GParted_Core::copy_filesystem( const Partition & partition_src,
+                                    Partition & partition_dst,
+                                    OperationDetail & operationdetail )
+{
+	operationdetail.add_child( OperationDetail(
+			String::ucompose( _("copy file system from %1 to %2"),
+			                  partition_src.get_path(),
+			                  partition_dst.get_path() ) ) );
+
+	bool success = false;
+	FileSystem* p_filesystem = NULL;
+	switch ( get_fs( partition_dst.filesystem ).copy )
+	{
+		case FS::GPARTED:
+			success = copy_filesystem_internal( partition_src,
+			                                    partition_dst,
+			                                    operationdetail.get_last_child(),
+			                                    true );
+			break;
+
+		case FS::LIBPARTED:
+			// FIXME: see if copying through libparted has any advantages
+			break;
+
+		case FS::EXTERNAL:
+			success = ( p_filesystem = get_filesystem_object( partition_dst.filesystem ) ) &&
+			          p_filesystem->copy( partition_src,
+			                              partition_dst,
+			                              operationdetail.get_last_child() );
+			break;
+
+		default:
+			break;
+	}
+
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
 }
 
 bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,

@@ -146,9 +146,11 @@ private:
 	bool maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 				
 	bool copy( const Partition & partition_src,
-		   Partition & partition_dst,
-		   Byte_Value min_size,
-		   OperationDetail & operationdetail ) ; 
+	           Partition & partition_dst,
+	           OperationDetail & operationdetail );
+	bool copy_filesystem( const Partition & partition_src,
+	                      Partition & partition_dst,
+	                      OperationDetail & operationdetail );
 	bool copy_filesystem_internal( const Partition & partition_src,
 	                               const Partition & partition_dst,
 	                               OperationDetail & operationdetail,
