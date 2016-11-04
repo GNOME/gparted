@@ -2,7 +2,7 @@ gparted_includedir = $(pkgincludedir)
 
 EXTRA_DIST = \
 	BlockSpecial.h			\
-	Copy_Blocks.h			\
+	CopyBlocks.h			\
 	DMRaid.h			\
 	Device.h			\
 	DialogFeatures.h		\

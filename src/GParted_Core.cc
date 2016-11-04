@@ -48,7 +48,7 @@
 #include "../include/hfsplus.h"
 #include "../include/reiser4.h"
 #include "../include/ufs.h"
-#include "../include/Copy_Blocks.h"
+#include "../include/CopyBlocks.h"
 
 #include <cerrno>
 #include <cstring>
@@ -2997,16 +2997,16 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 		benchmark_blocksize <= N )
 	{
 		timer .reset() ;
-		succes = copy_blocks( src_device, 
-				      dst_device,
-				      offset_read  + (done / src_sector_size),
-				      offset_write + (done / dst_sector_size),
-				      N,
-				      benchmark_blocksize,
-				      operationdetail .get_last_child(),
-				      total_done,
-				      src_length,
-				      cancel_safe ).copy();
+		succes = CopyBlocks( src_device,
+		                     dst_device,
+		                     offset_read  + (done / src_sector_size),
+		                     offset_write + (done / dst_sector_size),
+		                     N,
+		                     benchmark_blocksize,
+		                     operationdetail .get_last_child(),
+		                     total_done,
+		                     src_length,
+		                     cancel_safe ).copy();
 		timer.stop() ;
 
 		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
@@ -3033,16 +3033,16 @@ bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
 				STATUS_NONE ) ) ;
 
 	if ( succes && llabs( done ) < src_length )
-		succes = copy_blocks( src_device, 
-				      dst_device,
-				      src_start + ((done > 0 ? done : 0) / src_sector_size),
-				      dst_start + ((done > 0 ? done : 0) / dst_sector_size),
-				      src_length - llabs( done ),
-				      optimal_blocksize,
-				      operationdetail,
-				      total_done,
-				      src_length,
-				      cancel_safe ).copy();
+		succes = CopyBlocks( src_device,
+		                     dst_device,
+		                     src_start + ((done > 0 ? done : 0) / src_sector_size),
+		                     dst_start + ((done > 0 ? done : 0) / dst_sector_size),
+		                     src_length - llabs( done ),
+		                     optimal_blocksize,
+		                     operationdetail,
+		                     total_done,
+		                     src_length,
+		                     cancel_safe ).copy();
 
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */

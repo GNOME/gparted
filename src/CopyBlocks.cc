@@ -16,7 +16,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../include/Copy_Blocks.h"
+#include "../include/CopyBlocks.h"
 #include "../include/OperationDetail.h"
 #include "../include/ProgressBar.h"
 #include "../include/Utils.h"
@@ -27,22 +27,22 @@
 
 namespace GParted {
 
-void copy_blocks::set_cancel( bool force )
+void CopyBlocks::set_cancel( bool force )
 {
 	if ( force || cancel_safe )
 		cancel = true;
 }
 
-copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
-			  const Glib::ustring & in_dst_device,
-			  Sector src_start,
-			  Sector dst_start,
-			  Byte_Value in_length,
-			  Byte_Value in_blocksize,
-			  OperationDetail & in_operationdetail,
-			  Byte_Value & in_total_done,
-			  Byte_Value in_total_length,
-			  bool in_cancel_safe) :
+CopyBlocks::CopyBlocks( const Glib::ustring & in_src_device,
+                        const Glib::ustring & in_dst_device,
+                        Sector src_start,
+                        Sector dst_start,
+                        Byte_Value in_length,
+                        Byte_Value in_blocksize,
+                        OperationDetail & in_operationdetail,
+                        Byte_Value & in_total_done,
+                        Byte_Value in_total_length,
+                        bool in_cancel_safe) :
 	src_device( in_src_device ),
 	dst_device ( in_dst_device ),
 	length ( in_length ),
@@ -56,12 +56,12 @@ copy_blocks::copy_blocks( const Glib::ustring & in_src_device,
 	cancel_safe ( in_cancel_safe )
 {
 	operationdetail.signal_cancel.connect(
-		sigc::mem_fun(*this, &copy_blocks::set_cancel));
+		sigc::mem_fun(*this, &CopyBlocks::set_cancel));
 	if (operationdetail.cancelflag)
 		set_cancel( operationdetail.cancelflag == 2 );
 }
 
-bool copy_blocks::set_progress_info()
+bool CopyBlocks::set_progress_info()
 {
 	Byte_Value done = llabs(this->done);
 	operationdetail.run_progressbar( (double)(total_done+done), (double)total_length, PROGRESSBAR_TEXT_COPY_BYTES );
@@ -74,7 +74,7 @@ bool copy_blocks::set_progress_info()
 	return false;
 }
 
-static bool mainquit(copy_blocks *cb)
+static bool mainquit( CopyBlocks *cb )
 {
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration();
@@ -84,11 +84,11 @@ static bool mainquit(copy_blocks *cb)
 
 static gboolean _set_progress_info( gpointer data )
 {
-	copy_blocks *cb = (copy_blocks *)data;
+	CopyBlocks *cb = (CopyBlocks *)data;
 	return cb->set_progress_info();
 }
 
-void copy_blocks::copy_thread()
+void CopyBlocks::copy_thread()
 {
 	if ( ped_device_open( lp_device_src ) &&
 	     (lp_device_src == lp_device_dst || ped_device_open( lp_device_dst ) ) )
@@ -146,7 +146,7 @@ void copy_blocks::copy_thread()
 	g_idle_add( (GSourceFunc)mainquit, this );
 }
 
-bool copy_blocks::copy()
+bool CopyBlocks::copy()
 {
 	if ( blocksize > length )
 		blocksize = length;
@@ -167,7 +167,7 @@ bool copy_blocks::copy()
 	buf = static_cast<char *>( malloc( llabs( blocksize ) ) );
 	if ( buf )
 	{
-		Glib::Thread::create( sigc::mem_fun( *this, &copy_blocks::copy_thread ),
+		Glib::Thread::create( sigc::mem_fun( *this, &CopyBlocks::copy_thread ),
 				      false );
 		Gtk::Main::run();
 
@@ -198,7 +198,7 @@ bool copy_blocks::copy()
 	return success;
 }
 
-void copy_blocks::copy_block()
+void CopyBlocks::copy_block()
 {
 	Byte_Value sector_size_src = lp_device_src ->sector_size;
 	Byte_Value sector_size_dst = lp_device_dst ->sector_size;

@@ -14,8 +14,8 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GPARTED_COPY_BLOCKS_H
-#define GPARTED_COPY_BLOCKS_H
+#ifndef GPARTED_COPYBLOCKS_H
+#define GPARTED_COPYBLOCKS_H
 
 #include "../include/OperationDetail.h"
 #include "../include/Utils.h"
@@ -25,7 +25,8 @@
 
 namespace GParted {
 
-class copy_blocks {
+class CopyBlocks
+{
 	const Glib::ustring & src_device;
 	const Glib::ustring & dst_device;
 	Byte_Value length;
@@ -45,22 +46,23 @@ class copy_blocks {
 	bool cancel;
 	bool cancel_safe;
 	void set_cancel( bool force );
+	void copy_block();
+
 public:
 	bool set_progress_info();
-	copy_blocks( const Glib::ustring & in_src_device,
-		     const Glib::ustring & in_dst_device,
-		     Sector src_start,
-		     Sector dst_start,
-		     Byte_Value in_length,
-		     Byte_Value in_blocksize,
-		     OperationDetail & in_operationdetail,
-		     Byte_Value & in_total_done,
-		     Byte_Value in_total_length,
-		     bool cancel_safe );
+	CopyBlocks( const Glib::ustring & in_src_device,
+	            const Glib::ustring & in_dst_device,
+	            Sector src_start,
+	            Sector dst_start,
+	            Byte_Value in_length,
+	            Byte_Value in_blocksize,
+	            OperationDetail & in_operationdetail,
+	            Byte_Value & in_total_done,
+	            Byte_Value in_total_length,
+	            bool cancel_safe );
 	bool copy();
-	void copy_block();
 };
 
 } // namespace GParted
 
-#endif /* GPARTED_COPY_BLOCKS_H */
+#endif /* GPARTED_COPYBLOCKS_H */

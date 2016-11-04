@@ -13,7 +13,7 @@ sbin_PROGRAMS = gpartedbin
 
 gpartedbin_SOURCES = \
 	BlockSpecial.cc			\
-	Copy_Blocks.cc			\
+	CopyBlocks.cc			\
 	DMRaid.cc			\
 	Device.cc			\
 	DialogFeatures.cc		\
