@@ -2394,11 +2394,11 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			succes = false ;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
-				succes = copy_filesystem( partition_old,
-							  partition_new,
-							  operationdetail.get_last_child(),
-							  total_done,
-							  true );
+				succes = copy_filesystem_internal( partition_old,
+				                                   partition_new,
+				                                   operationdetail.get_last_child(),
+				                                   total_done,
+				                                   true );
 
 				operationdetail.get_last_child().get_last_child()
 					.set_status( succes ? STATUS_SUCCES : STATUS_ERROR );
@@ -2411,8 +2411,11 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				}
 			}
 			else
-				succes = copy_filesystem( partition_old, partition_new, operationdetail .get_last_child(),
-							  total_done, true ) ;
+				succes = copy_filesystem_internal( partition_old,
+				                                   partition_new,
+				                                   operationdetail.get_last_child(),
+				                                   total_done,
+				                                   true );
 
 			break ;
 		case GParted::FS::LIBPARTED:
@@ -2874,10 +2877,10 @@ bool GParted_Core::copy( const Partition & partition_src,
 			switch ( get_fs( partition_dst .filesystem ) .copy )
 			{
 				case GParted::FS::GPARTED :
-						succes = copy_filesystem( partition_src,
-									  partition_dst,
-									  operationdetail .get_last_child(),
-									  true ) ;
+						succes = copy_filesystem_internal( partition_src,
+						                                   partition_dst,
+						                                   operationdetail.get_last_child(),
+						                                   true );
 						break ;
 
 				case GParted::FS::LIBPARTED :
@@ -2915,52 +2918,52 @@ bool GParted_Core::copy( const Partition & partition_src,
 	return false ;
 }
 
-bool GParted_Core::copy_filesystem( const Partition & partition_src,
-				    const Partition & partition_dst,
-				    OperationDetail & operationdetail,
-				    bool cancel_safe )
+bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,
+                                             const Partition & partition_dst,
+                                             OperationDetail & operationdetail,
+                                             bool cancel_safe )
 {
 	Sector dummy ;
-	return copy_filesystem( partition_src .device_path,
-				partition_dst .device_path,
-				partition_src .sector_start,
-				partition_dst .sector_start,
-				partition_src .sector_size,
-				partition_dst .sector_size,
-				partition_src .get_byte_length(),
-				operationdetail,
-				dummy,
-				cancel_safe ) ;
+	return copy_blocks( partition_src.device_path,
+	                    partition_dst.device_path,
+	                    partition_src.sector_start,
+	                    partition_dst.sector_start,
+	                    partition_src.sector_size,
+	                    partition_dst.sector_size,
+	                    partition_src.get_byte_length(),
+	                    operationdetail,
+	                    dummy,
+	                    cancel_safe );
 }
 
-bool GParted_Core::copy_filesystem( const Partition & partition_src,
-				    const Partition & partition_dst,
-				    OperationDetail & operationdetail,
-				    Byte_Value & total_done,
-				    bool cancel_safe )
+bool GParted_Core::copy_filesystem_internal( const Partition & partition_src,
+                                             const Partition & partition_dst,
+                                             OperationDetail & operationdetail,
+                                             Byte_Value & total_done,
+                                             bool cancel_safe )
 {
-	return copy_filesystem( partition_src .device_path,
-				partition_dst .device_path,
-				partition_src .sector_start,
-				partition_dst .sector_start,
-				partition_src .sector_size,
-				partition_dst .sector_size,
-				partition_src .get_byte_length(),
-				operationdetail,
-				total_done,
-				cancel_safe ) ;
+	return copy_blocks( partition_src.device_path,
+	                    partition_dst.device_path,
+	                    partition_src.sector_start,
+	                    partition_dst.sector_start,
+	                    partition_src.sector_size,
+	                    partition_dst.sector_size,
+	                    partition_src.get_byte_length(),
+	                    operationdetail,
+	                    total_done,
+	                    cancel_safe );
 }
 	
-bool GParted_Core::copy_filesystem( const Glib::ustring & src_device,
-				    const Glib::ustring & dst_device,
-				    Sector src_start,
-				    Sector dst_start,
-				    Byte_Value src_sector_size,
-				    Byte_Value dst_sector_size,
-				    Byte_Value src_length,
-				    OperationDetail & operationdetail,
-				    Byte_Value & total_done,
-				    bool cancel_safe )
+bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
+                                const Glib::ustring & dst_device,
+                                Sector src_start,
+                                Sector dst_start,
+                                Byte_Value src_sector_size,
+                                Byte_Value dst_sector_size,
+                                Byte_Value src_length,
+                                OperationDetail & operationdetail,
+                                Byte_Value & total_done,
+                                bool cancel_safe )
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
 	operationdetail .add_child( OperationDetail(
@@ -3087,7 +3090,10 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 			operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
 
 			//and copy it back (NOTE the reversed dst and src)
-			bool success = copy_filesystem( *temp_dst, *temp_src, operationdetail.get_last_child(), false );
+			bool success = copy_filesystem_internal( *temp_dst,
+			                                         *temp_src,
+			                                         operationdetail.get_last_child(),
+			                                         false );
 
 			operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 		}
