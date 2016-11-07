@@ -652,7 +652,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			if ( ! success )
 				break;
 
-			success =    remove_filesystem( copy_op->get_partition_original(), copy_op->operation_detail )
+			success =    remove_filesystem( copy_op->get_partition_original().get_filesystem_partition(),
+			                                copy_op->operation_detail )
 			          && copy( copy_op->get_partition_copied(),
 			                   copy_op->get_partition_new(),
 			                   copy_op->operation_detail );
@@ -2956,8 +2957,11 @@ bool GParted_Core::copy( const Partition & partition_src,
 			 Partition & partition_dst,
 			 OperationDetail & operationdetail ) 
 {
-	if (   partition_dst .get_byte_length() < partition_src .get_byte_length()
-	    && partition_src .filesystem != FS_XFS // Permit copying to smaller xfs partition
+	const Partition & filesystem_ptn_src = partition_src.get_filesystem_partition();
+	Partition & filesystem_ptn_dst = partition_dst.get_filesystem_partition();
+
+	if (   filesystem_ptn_dst.get_byte_length() < filesystem_ptn_src.get_byte_length()
+	    && filesystem_ptn_src.filesystem != FS_XFS  // Permit copying to smaller xfs partition
 	   )
 	{
 		operationdetail .add_child( OperationDetail( 
@@ -2966,7 +2970,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 		return false ;
 	}
 
-	if ( ! check_repair_filesystem( partition_src, operationdetail ) )
+	if ( ! check_repair_filesystem( filesystem_ptn_src, operationdetail ) )
 		return false;
 
 	if ( partition_dst.status == STAT_COPY )
@@ -2979,22 +2983,28 @@ bool GParted_Core::copy( const Partition & partition_src,
 			return false;
 	}
 
-	bool success =    set_partition_type( partition_dst, operationdetail )
-	               && copy_filesystem( partition_src, partition_dst, operationdetail )
+	// NOTE:
+	// Deliberately call set_partition_type() on the Partition object directly
+	// containing the file system, rather than the Partition object containing the
+	// partition.  When copying into an existing open LUKS encryption mapping this
+	// will avoid changing partition type, where as when copying into a plain
+	// partition the type will be set.
+	bool success =    set_partition_type( filesystem_ptn_dst, operationdetail )
+	               && copy_filesystem( filesystem_ptn_src, filesystem_ptn_dst, operationdetail )
 	               && update_bootsector( partition_dst, operationdetail );
 	if ( ! success )
 		return false;
 
-	if ( partition_dst.filesystem == FS_LINUX_SWAP )
+	if ( filesystem_ptn_dst.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not copied
-		return recreate_linux_swap_filesystem( partition_dst, operationdetail );
+		return recreate_linux_swap_filesystem( filesystem_ptn_dst, operationdetail );
 	}
-	else if ( partition_dst.get_byte_length() > partition_src.get_byte_length() )
+	else if ( filesystem_ptn_dst.get_byte_length() > filesystem_ptn_src.get_byte_length() )
 	{
 		// Copied into a bigger partition so maximise file system
-		return    check_repair_filesystem( partition_dst, operationdetail )
-		       && maximize_filesystem( partition_dst, operationdetail );
+		return    check_repair_filesystem( filesystem_ptn_dst, operationdetail )
+		       && maximize_filesystem( filesystem_ptn_dst, operationdetail );
 	}
 	return true;
 }
