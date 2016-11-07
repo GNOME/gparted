@@ -2046,9 +2046,6 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 {
 	if ( partition .filesystem == FS_CLEARED )
 		return erase_filesystem_signatures( partition, operationdetail ) ;
-	else if ( partition.whole_device )
-		return    erase_filesystem_signatures( partition, operationdetail )
-		       && create_filesystem( partition, operationdetail );
 	else
 		return    erase_filesystem_signatures( partition, operationdetail )
 		       && set_partition_type( partition, operationdetail )
@@ -2856,14 +2853,8 @@ bool GParted_Core::copy( const Partition & partition_src,
 			return false;
 	}
 
-	if ( ! partition_dst.whole_device )
-	{
-		// Only set type of partition on a partitioned device.
-		if ( ! set_partition_type( partition_dst, operationdetail ) )
-			return false;
-	}
-
-	bool success =    copy_filesystem( partition_src, partition_dst, operationdetail )
+	bool success =    set_partition_type( partition_dst, operationdetail )
+	               && copy_filesystem( partition_src, partition_dst, operationdetail )
 	               && update_bootsector( partition_dst, operationdetail );
 	if ( ! success )
 		return false;
@@ -3150,6 +3141,11 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 
 bool GParted_Core::set_partition_type( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.whole_device )
+		// Trying to set the type of a partition on a non-partitioned whole disk
+		// device is a successful non-operation.
+		return true;
+
 	operationdetail .add_child( OperationDetail(
 				String::ucompose( _("set partition type on %1"), partition .get_path() ) ) ) ;
 	//Set partition type appropriately for the type of file system stored in the partition.
