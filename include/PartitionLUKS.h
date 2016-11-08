@@ -21,6 +21,8 @@
 #include "../include/Partition.h"
 #include "../include/Utils.h"
 
+#include <glibmm/ustring.h>
+
 namespace GParted
 {
 
@@ -30,6 +32,13 @@ public:
 	PartitionLUKS();
 	virtual ~PartitionLUKS();
 	virtual PartitionLUKS * clone() const;
+
+	void set_luks( const Glib::ustring & path,
+	               FILESYSTEM fstype,
+	               Sector header_size,
+	               Sector mapping_size,
+	               Byte_Value sector_size,
+	               bool busy );
 
 	Partition & get_encrypted()              { return encrypted; };
 	const Partition & get_encrypted() const  { return encrypted; };
@@ -46,6 +55,7 @@ public:
 
 private:
 	Partition encrypted;
+	Sector header_size;  // Size of the LUKS header (everything up to the start of the mapping)
 };
 
 }//GParted

@@ -1243,20 +1243,14 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 	}
 	bool fs_busy = is_busy( fstype, mapping_path );
 
+	partition.set_luks( mapping_path,
+	                    fstype,
+	                    mapping.offset / partition.sector_size,
+	                    mapping.length / partition.sector_size,
+	                    partition.sector_size,
+	                    fs_busy );
+
 	Partition & encrypted = partition.get_encrypted();
-	encrypted.Set( partition.get_path(),
-	               mapping_path,
-	               1,
-	               TYPE_PRIMARY,
-	               false,
-	               fstype,
-	               // Start and end sectors locate the encrypted file system within
-	               // the LUKS partition.  LUKS header is everything before.
-	               mapping.offset / partition.sector_size,
-	               ( mapping.offset + mapping.length ) / partition.sector_size - 1LL,
-	               partition.sector_size,
-	               false,
-	               fs_busy );
 	encrypted.append_messages( detect_messages );
 
 	set_partition_label_and_uuid( encrypted );

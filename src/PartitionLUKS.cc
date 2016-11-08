@@ -20,7 +20,7 @@
 namespace GParted
 {
 
-PartitionLUKS::PartitionLUKS()
+PartitionLUKS::PartitionLUKS() : header_size( 0 )
 {
 	// Nothing further to do here as the base class Partition default constructor,
 	// which calls Partition::Reset(), is called for this object and also to
@@ -35,6 +35,31 @@ PartitionLUKS * PartitionLUKS::clone() const
 {
 	// Virtual copy constructor method
 	return new PartitionLUKS( *this );
+}
+
+// Mostly a convenience method calling Partition::Set() on the encrypted Partition but
+// also sets private header_size.  Makes encrypted Partition object look like a whole disk
+// device as /dev/mapper/CRYPTNAME contains no partition table and the file system starts
+// from sector 0 going to the very end.
+void PartitionLUKS::set_luks( const Glib::ustring & path,
+                              FILESYSTEM fstype,
+                              Sector header_size,
+                              Sector mapping_size,
+                              Byte_Value sector_size,
+                              bool busy )
+{
+	encrypted.Set( path,
+	               path,
+	               1,
+	               TYPE_PRIMARY,
+	               true,
+	               fstype,
+	               0LL,
+	               mapping_size - 1LL,
+	               sector_size,
+	               false,
+	               busy );
+	this->header_size = header_size;
 }
 
 bool PartitionLUKS::sector_usage_known() const
@@ -53,25 +78,27 @@ bool PartitionLUKS::sector_usage_known() const
 //     LUKS   LUKS
 //     Header Mapping
 //     |<--->||<----------------------->|           <- encrypted Partition object member
+//     hhhhhhh                                      <- this->header_size
 //     1111111111111111111111111111111111uuuuuuuuuu <- this->sectors_{used,unused,unallocated}
 //            Encrypted file system
 //            |<----------------->|
 //            111111111111110000000uuuuuu           <- encrypted.sectors_{used,unused,unallocated}
-//            ^                         ^
-//            |                         `------------- encrypted.sector_end
-//            `--------------------------------------- encrypted.sector_start (== size of LUKS header)
+//                                                     encrypted.sector_start = 0
+//                                                     encrypted.sector_end = (last sector in LUKS mapping)
+//
 //     1111111111111111111110000000uuuuuuuuuuuuuuuu <- Overall usage figures as used in the following
 //                                                     usage related methods.
 // Legend:
 // 1 - used sectors
 // 0 - unused sectors
 // u - unallocated sectors
+// h - LUKS header sectors
 //
 // Calculations:
 //     total_used        = LUKS Header size + Encrypted file system used
-//                       = encrypted.sector_start + encrypted.sectors_used
+//                       = this->header_size + encrypted.sectors_used
 //     total_unallocated = LUKS unallocated + Encrypted file system unallocated
-//                       = this->sectors_unallocated + encrypted_unallocated
+//                       = this->sectors_unallocated + encrypted.sectors_unallocated
 //     total_unused      = LUKS unused + Encrypted file system unused
 //                       = 0 + encrypted.sectors_unused
 //
@@ -86,7 +113,7 @@ Sector PartitionLUKS::estimated_min_size() const
 		// For an open dm-crypt mapping work with above described totals.
 		if ( sectors_used >= 0 && encrypted.sectors_used >= 0 )
 		{
-			Sector total_used        = encrypted.sector_start + encrypted.sectors_used;
+			Sector total_used        = header_size + encrypted.sectors_used;
 			Sector total_unallocated = sectors_unallocated + encrypted.sectors_unallocated;
 			return total_used + std::min( total_unallocated, significant_threshold );
 		}
@@ -104,7 +131,7 @@ Sector PartitionLUKS::get_sectors_used() const
 		// For an open dm-crypt mapping work with above described totals.
 		if ( sectors_used >= 0 && encrypted.sectors_used >= 0 )
 		{
-			Sector total_used        = encrypted.sector_start + encrypted.sectors_used;
+			Sector total_used        = header_size + encrypted.sectors_used;
 			Sector total_unallocated = sectors_unallocated + encrypted.sectors_unallocated;
 			if ( total_unallocated < significant_threshold )
 				return total_used + total_unallocated;
