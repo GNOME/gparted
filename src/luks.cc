@@ -34,6 +34,16 @@ FS luks::get_filesystem_support()
 	fs.copy = FS::GPARTED;
 
 	fs.online_read = FS::EXTERNAL;
+	fs.move = FS::GPARTED;
+
+#ifdef ENABLE_ONLINE_RESIZE
+	if ( ! Glib::find_program_in_path( "cryptsetup" ).empty() &&
+	     Utils::kernel_version_at_least( 3, 6, 0 )               )
+	{
+		fs.online_grow   = FS::EXTERNAL;
+		fs.online_shrink = FS::EXTERNAL;
+	}
+#endif
 
 	return fs;
 }

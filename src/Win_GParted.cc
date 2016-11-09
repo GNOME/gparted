@@ -1080,9 +1080,9 @@ void Win_GParted::set_valid_operations()
 	// Reference to the Partition object directly containing the file system.
 	const Partition & selected_filesystem = selected_partition_ptr->get_filesystem_partition();
 
-	// Get filesystem capabilities
-	fs = gparted_core.get_fs( selected_partition_ptr->filesystem );
+	// Get file system and LUKS encryption capabilities
 	const FS & fs_cap = gparted_core.get_fs( selected_filesystem.filesystem );
+	const FS & enc_cap = gparted_core.get_fs( FS_LUKS );
 
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
@@ -1137,11 +1137,21 @@ void Win_GParted::set_valid_operations()
 		allow_manage_flags( true );
 
 #ifdef ENABLE_ONLINE_RESIZE
-	// Find out if online resizing is possible
-	if ( selected_partition_ptr->busy )
+	// Online resizing always required the ability to update the partition table ...
+	if ( ! devices[current_device].readonly &&
+	     selected_filesystem.busy              )
 	{
-		if ( ( fs .online_grow || fs .online_shrink ) && ! devices[ current_device ] .readonly )
-			allow_resize( true ) ;
+		// Can the plain file system be online resized?
+		if ( selected_partition_ptr->filesystem != FS_LUKS  &&
+		     ( fs_cap.online_grow || fs_cap.online_shrink )    )
+			allow_resize( true );
+		// Is resizing an open LUKS mapping and the online file system within
+		// supported?
+		if ( selected_partition_ptr->filesystem == FS_LUKS            &&
+		     selected_partition_ptr->busy                             &&
+		     ( ( enc_cap.online_grow && fs_cap.online_grow )     ||
+		       ( enc_cap.online_shrink && fs_cap.online_shrink )    )    )
+			allow_resize( true );
 	}
 #endif
 
@@ -1238,10 +1248,28 @@ void Win_GParted::set_valid_operations()
 		if ( ! selected_partition_ptr->whole_device )
 			allow_delete( true );
 
-		//find out if resizing/moving is possible
-		if ( (fs .grow || fs .shrink || fs .move ) && ! devices[ current_device ] .readonly ) 
-			allow_resize( true ) ;
-			
+		// Resizing/moving always requires the ability to update the partition
+		// table ...
+		if ( ! devices[current_device].readonly )
+		{
+			// Can the plain file system be resized or moved?
+			if ( selected_partition_ptr->filesystem != FS_LUKS   &&
+			     ( fs_cap.grow || fs_cap.shrink || fs_cap.move )    )
+				allow_resize( true );
+			// Is moving this closed LUKS mapping permitted?
+			if ( selected_partition_ptr->filesystem == FS_LUKS &&
+			     ! selected_partition_ptr->busy                &&
+			     enc_cap.move                                     )
+				allow_resize( true );
+			// Is resizing an open LUKS mapping and the file system within
+			// supported?
+			if ( selected_partition_ptr->filesystem == FS_LUKS     &&
+			     selected_partition_ptr->busy                      &&
+	                     ( ( enc_cap.online_grow && fs_cap.grow )     ||
+			       ( enc_cap.online_shrink && fs_cap.shrink )    )    )
+				allow_resize( true );
+		}
+
 		// Only allow copying of real partitions, excluding closed encryption
 		// (which are only copied while open).
 		if ( selected_partition_ptr->status == STAT_REAL &&
