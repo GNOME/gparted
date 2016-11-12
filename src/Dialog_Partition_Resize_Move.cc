@@ -74,7 +74,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
-	//little bit of paranoia ;)
+	// Don't permit shrinking an existing file system (other than linux-swap) when the
+	// usage is unknown as that sets the minimum resize.
 	if ( ! new_partition->sector_usage_known()      &&
 	     new_partition->status     != STAT_NEW      &&
 	     new_partition->filesystem != FS_LINUX_SWAP    )
