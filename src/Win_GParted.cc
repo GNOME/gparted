@@ -1790,16 +1790,56 @@ void Win_GParted::activate_resize()
 		display_partitions_ptr = &display_partitions[ext].logicals;
 	}
 
-	Dialog_Partition_Resize_Move dialog( gparted_core.get_fs( selected_partition_ptr->filesystem ),
-	                                     *selected_partition_ptr,
-	                                     *display_partitions_ptr );
+	FS fs_cap = gparted_core.get_fs( selected_partition_ptr->get_filesystem_partition().filesystem );
+	Partition * working_ptn;
+	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
+	{
+		const FS & enc_cap = gparted_core.get_fs( FS_LUKS );
+
+		// For an open LUKS mapping containing a file system being resized/moved
+		// create a plain Partition object with the equivalent usage for the
+		// Resize/Move dialog to work with.
+		working_ptn = static_cast<const PartitionLUKS *>( selected_partition_ptr )->clone_as_plain();
+
+		// Construct common capabilities from the file system ones.
+		// Open LUKS encryption mapping can't be moved.
+		fs_cap.move = FS::NONE;
+		// Mask out resizing not also supported by open LUKS mapping.
+		if ( ! enc_cap.online_grow )
+		{
+			fs_cap.grow        = FS::NONE;
+			fs_cap.online_grow = FS::NONE;
+		}
+		if ( ! enc_cap.online_shrink )
+		{
+			fs_cap.shrink        = FS::NONE;
+			fs_cap.online_shrink = FS::NONE;
+		}
+		// Adjust file system size limits accounting for LUKS encryption overhead.
+		Sector luks_header_size = static_cast<const PartitionLUKS *>( selected_partition_ptr )->get_header_size();
+		fs_cap.MIN = luks_header_size * working_ptn->sector_size +
+		             ( fs_cap.MIN < MEBIBYTE ) ? MEBIBYTE : fs_cap.MIN;
+		if ( fs_cap.MAX > 0 )
+			fs_cap.MAX += luks_header_size * working_ptn->sector_size;
+	}
+	else
+	{
+		working_ptn = selected_partition_ptr->clone();
+	}
+
+	Dialog_Partition_Resize_Move dialog( fs_cap, *working_ptn, *display_partitions_ptr );
 	dialog .set_transient_for( *this ) ;	
-			
+
+	delete working_ptn;
+	working_ptn = NULL;
+
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		dialog .hide() ;
 
-		Partition * part_temp = dialog.Get_New_Partition().clone();
+		// Apply resize/move from the dialog to a copy of the selected partition.
+		Partition * resized_ptn = selected_partition_ptr->clone();
+		resized_ptn->resize( dialog.Get_New_Partition() );
 
 		// When resizing/moving a partition which already exists on the disk all
 		// possible operations could be pending so only try merging with the
@@ -1810,7 +1850,7 @@ void Win_GParted::activate_resize()
 		// it again with the new size and position ( unless it's an EXTENDED )
 		if ( selected_partition_ptr->status == STAT_NEW && selected_partition_ptr->type != TYPE_EXTENDED )
 		{
-			part_temp->status = STAT_NEW;
+			resized_ptn->status = STAT_NEW;
 			// On a partition which is pending creation only resize/move and
 			// format operations are possible.  These operations are always
 			// mergeable with the pending operation which will create the
@@ -1821,11 +1861,11 @@ void Win_GParted::activate_resize()
 
 		Operation * operation = new OperationResizeMove( devices[current_device],
 		                                                 *selected_partition_ptr,
-		                                                 *part_temp );
+		                                                 *resized_ptn );
 		operation->icon = render_icon( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU );
 
-		delete part_temp;
-		part_temp = NULL;
+		delete resized_ptn;
+		resized_ptn = NULL;
 
 		// Display warning if moving a non-extended partition which already exists
 		// on the disk.

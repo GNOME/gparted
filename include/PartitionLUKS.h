@@ -44,6 +44,8 @@ public:
 	Partition & get_encrypted()              { return encrypted; };
 	const Partition & get_encrypted() const  { return encrypted; };
 
+	Sector get_header_size() const           { return header_size; };
+
 	virtual bool sector_usage_known() const;
 	virtual Sector estimated_min_size() const;
 	virtual Sector get_sectors_used() const;
