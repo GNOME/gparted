@@ -2518,14 +2518,14 @@ bool GParted_Core::resize( const Partition & partition_old,
 	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
 	if ( delta < 0LL )  // shrink
 	{
-		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
+		success =    check_repair_filesystem( partition_new, operationdetail )
 		          && resize_filesystem( partition_old, partition_new, operationdetail )
 		          && ( partition_new.whole_device ||
 		               resize_move_partition( partition_old, partition_new, operationdetail ) );
 	}
 	else if ( delta > 0LL )  // grow
 	{
-		success =    ( partition_new.busy || check_repair_filesystem( partition_new, operationdetail ) )
+		success =    check_repair_filesystem( partition_new, operationdetail )
 		          && ( partition_new.whole_device ||
 		               resize_move_partition( partition_old, partition_new, operationdetail ) )
 		          && maximize_filesystem( partition_new, operationdetail );
@@ -3101,6 +3101,10 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
+	if ( partition.busy )
+		// Trying to check an online file system is a successful non-operation.
+		return true;
+
 	operationdetail .add_child( OperationDetail( 
 				String::ucompose(
 						/* TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them */
