@@ -2508,8 +2508,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not resize
-		success =    ( partition_new.whole_device ||
-		               resize_move_partition( partition_old, partition_new, operationdetail ) )
+		success =    resize_move_partition( partition_old, partition_new, operationdetail )
 		          && resize_filesystem( partition_old, partition_new, operationdetail );
 
 		return success;
@@ -2520,14 +2519,12 @@ bool GParted_Core::resize( const Partition & partition_old,
 	{
 		success =    check_repair_filesystem( partition_new, operationdetail )
 		          && resize_filesystem( partition_old, partition_new, operationdetail )
-		          && ( partition_new.whole_device ||
-		               resize_move_partition( partition_old, partition_new, operationdetail ) );
+		          && resize_move_partition( partition_old, partition_new, operationdetail );
 	}
 	else if ( delta > 0LL )  // grow
 	{
 		success =    check_repair_filesystem( partition_new, operationdetail )
-		          && ( partition_new.whole_device ||
-		               resize_move_partition( partition_old, partition_new, operationdetail ) )
+		          && resize_move_partition( partition_old, partition_new, operationdetail )
 		          && maximize_filesystem( partition_new, operationdetail );
 	}
 
@@ -2538,6 +2535,11 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 				     	  const Partition & partition_new,
 					  OperationDetail & operationdetail )
 {
+	if ( partition_new.whole_device )
+		// Trying to resize/move a non-partitioned whole disk device is a
+		// successful non-operation.
+		return true;
+
 	//i'm not too happy with this, but i think it is the correct way from a i18n POV
 	enum Action
 	{
