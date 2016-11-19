@@ -2284,73 +2284,75 @@ bool GParted_Core::move( const Partition & partition_old,
 		return false ;
 	}
 
-	bool succes = false ;
-	if ( check_repair_filesystem( partition_old, operationdetail ) )
+	if ( ! check_repair_filesystem( partition_old, operationdetail ) )
+		return false;
+
+	// NOTE:
+	// Logical partitions are preceded by meta data.  To prevent this meta data from
+	// being overwritten we first expand the partition to encompass all of the space
+	// involved in the move.  In this way we prevent overwriting the meta data for
+	// this partition when we move this partition to the left.  We also prevent
+	// overwriting the meta data of a following partition when we move this partition
+	// to the right.
+	Partition * partition_all_space = partition_old.clone();
+	partition_all_space->alignment = ALIGN_STRICT;
+	if ( partition_new.sector_start < partition_all_space->sector_start )
+		partition_all_space->sector_start = partition_new.sector_start;
+	if ( partition_new.sector_end > partition_all_space->sector_end )
+		partition_all_space->sector_end = partition_new.sector_end;
+
+	// Make old partition all encompassing and if move file system fails then return
+	// partition table to original state
+	bool success = false;
+	if ( resize_move_partition( partition_old, *partition_all_space, operationdetail ) )
 	{
-		//NOTE: Logical partitions are preceded by meta data.  To prevent this
-		//      meta data from being overwritten we first expand the partition to
-		//      encompass all of the space involved in the move.  In this way we
-		//      prevent overwriting the meta data for this partition when we move
-		//      this partition to the left.  We also prevent overwriting the meta
-		//      data of a following partition when we move this partition to the
-		//      right.
-		Partition * partition_all_space = partition_old.clone();
-		partition_all_space->alignment = ALIGN_STRICT;
-		if ( partition_new.sector_start < partition_all_space->sector_start )
-			partition_all_space->sector_start = partition_new.sector_start;
-		if ( partition_new.sector_end > partition_all_space->sector_end )
-			partition_all_space->sector_end = partition_new.sector_end;
-
-		//Make old partition all encompassing and if move file system fails
-		//  then return partition table to original state
-		if ( resize_move_partition( partition_old, *partition_all_space, operationdetail ) )
+		// Note move of file system is from old values to new values, not from the
+		// all encompassing values.
+		if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
 		{
-			//Note move of file system is from old values to new values, not from
-			//  the all encompassing values.
-			if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
+			operationdetail.add_child( OperationDetail(
+					_("rollback last change to the partition table") ) );
+
+			Partition * partition_restore = partition_old.clone();
+			partition_restore->alignment = ALIGN_STRICT;  // Ensure that old partition boundaries are not modified
+			if ( resize_move_partition( *partition_all_space,
+			                            *partition_restore, operationdetail.get_last_child() ) )
 			{
-				operationdetail .add_child( OperationDetail( _("rollback last change to the partition table") ) ) ;
-
-				Partition * partition_restore = partition_old.clone();
-				partition_restore->alignment = ALIGN_STRICT;  //Ensure that old partition boundaries are not modified
-				if ( resize_move_partition(
-					     *partition_all_space, *partition_restore, operationdetail.get_last_child() ) )
-				{
-					operationdetail.get_last_child().set_status( STATUS_SUCCES );
-					check_repair_filesystem( partition_old, operationdetail );
-				}
-
-				else
-					operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
-
-				delete partition_restore;
-				partition_restore = NULL;
+				operationdetail.get_last_child().set_status( STATUS_SUCCES );
+				check_repair_filesystem( partition_old, operationdetail );
 			}
 			else
-				succes = true ;
+			{
+				operationdetail.get_last_child().set_status( STATUS_ERROR );
+			}
+
+			delete partition_restore;
+			partition_restore = NULL;
 		}
-
-		//Make new partition from all encompassing partition
-		succes =  succes && resize_move_partition( *partition_all_space, partition_new, operationdetail );
-
-		delete partition_all_space;
-		partition_all_space = NULL;
-
-		succes = (    succes
-		          && update_bootsector( partition_new, operationdetail )
-		          && (   //Do not maximize file system if FS not linux-swap and new size <= old
-		                 (   partition_new .filesystem != FS_LINUX_SWAP  //linux-swap is recreated, not moved
-		                  && partition_new .get_sector_length() <= partition_old .get_sector_length()
-		                 )
-		              || (   check_repair_filesystem( partition_new, operationdetail )
-		                  && maximize_filesystem( partition_new, operationdetail )
-		                 )
-		             )
-		         );
-
+		else
+		{
+			success = true;
+		}
 	}
 
-	return succes ;
+	// Make new partition from all encompassing partition
+	if ( success )
+	{
+		success =    resize_move_partition( *partition_all_space, partition_new, operationdetail )
+		          && update_bootsector( partition_new, operationdetail );
+	}
+
+	delete partition_all_space;
+	partition_all_space = NULL;
+
+	if ( ! success )
+		return false;
+
+	if ( partition_new.filesystem == FS_LINUX_SWAP )
+		// linux-swap is recreated, not moved
+		return maximize_filesystem( partition_new, operationdetail );
+
+	return true;
 }
 
 bool GParted_Core::move_filesystem( const Partition & partition_old,
