@@ -55,6 +55,8 @@ FS linux_swap::get_filesystem_support()
 		fs .create_with_label = GParted::FS::EXTERNAL ;
 		fs .grow = GParted::FS::EXTERNAL ;
 		fs .shrink = GParted::FS::EXTERNAL ;
+		fs.copy = FS::EXTERNAL;
+		fs.move = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "swaplabel" ) .empty() )
@@ -65,9 +67,6 @@ FS linux_swap::get_filesystem_support()
 		fs .write_uuid = FS::EXTERNAL ;
 	}
 
-	fs .copy = GParted::FS::EXTERNAL ;
-	fs .move = GParted::FS::EXTERNAL ;
-	
 	return fs ;
 }
 
