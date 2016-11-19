@@ -693,7 +693,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			                                  operation->operation_detail )
 			          && remove_filesystem( operation->get_partition_original(),
 			                                operation->operation_detail )
-			          && Delete( operation->get_partition_original(), operation->operation_detail );
+			          && delete_partition( operation->get_partition_original(),
+			                               operation->operation_detail );
 			break;
 
 		case OPERATION_CHECK:
@@ -777,7 +778,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 
 		case OPERATION_CHANGE_UUID:
 			success =    calibrate_partition( operation->get_partition_new(), operation->operation_detail )
-			          && change_uuid( operation->get_partition_new(), operation->operation_detail );
+			          && change_filesystem_uuid( operation->get_partition_new(),
+			                                     operation->operation_detail );
 			break;
 	}
 
@@ -2054,7 +2056,7 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 		       && create_filesystem( partition, operationdetail ) ;
 }
 
-bool GParted_Core::Delete( const Partition & partition, OperationDetail & operationdetail ) 
+bool GParted_Core::delete_partition( const Partition & partition, OperationDetail & operationdetail )
 {
 	operationdetail .add_child( OperationDetail( _("delete partition") ) ) ;
 
@@ -2184,7 +2186,7 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 	return success;
 }
 
-bool GParted_Core::change_uuid( const Partition & partition, OperationDetail & operationdetail )
+bool GParted_Core::change_filesystem_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF ) {
 		operationdetail .add_child( OperationDetail( String::ucompose(

@@ -106,7 +106,7 @@ private:
 
 	bool format( const Partition & partition, OperationDetail & operationdetail ) ;
 
-	bool Delete( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool delete_partition( const Partition & partition, OperationDetail & operationdetail );
 
 	bool remove_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 
@@ -114,7 +114,7 @@ private:
 
 	bool name_partition( const Partition & partition, OperationDetail & operationdetail );
 
-	bool change_uuid( const Partition & partition, OperationDetail & operation_detail ) ;
+	bool change_filesystem_uuid( const Partition & partition, OperationDetail & operation_detail );
 
 	bool resize_move( const Partition & partition_old,
 	                  Partition & partition_new,
