@@ -143,6 +143,8 @@ private:
 	                        const Partition & partition_new,
 	                        OperationDetail & operationdetail );
 	bool maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool recreate_linux_swap_filesystem( const Partition & partition,
+	                                     OperationDetail & operationdetail );
 	bool resize_filesystem_implement( const Partition & partition_old,
 	                                  const Partition & partition_new,
 	                                  OperationDetail & operationdetail );

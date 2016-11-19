@@ -168,19 +168,12 @@ bool linux_swap::create( const Partition & new_partition, OperationDetail & oper
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	/*TO TRANSLATORS: looks like create new linux-swap file system */ 
-	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("create new %1 file system"), Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) ) ;
-
 	//Maintain label and uuid when recreating swap
 	Glib::ustring command = "mkswap -L \"" + partition_new.get_filesystem_label() + "\" ";
 	if ( ! partition_new .uuid .empty() )
 		command +=  " -U \"" + partition_new .uuid + "\" " ;
 	command += partition_new .get_path() ;
-	bool exit_status = ! execute_command( command , operationdetail.get_last_child(), EXEC_CHECK_STATUS );
-
-	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
-	return exit_status ;
+	return ! execute_command( command, operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool linux_swap::move( const Partition & partition_new

@@ -2354,7 +2354,7 @@ bool GParted_Core::move( const Partition & partition_old,
 
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 		// linux-swap is recreated, not moved
-		return maximize_filesystem( partition_new, operationdetail );
+		return recreate_linux_swap_filesystem( partition_new, operationdetail );
 
 	return true;
 }
@@ -2521,7 +2521,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 	{
 		// linux-swap is recreated, not resize
 		success =    resize_move_partition( partition_old, partition_new, operationdetail )
-		          && maximize_filesystem( partition_new, operationdetail );
+		          && recreate_linux_swap_filesystem( partition_new, operationdetail );
 
 		return success;
 	}
@@ -2809,6 +2809,33 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	return success;
 }
 
+bool GParted_Core::recreate_linux_swap_filesystem( const Partition & partition, OperationDetail & operationdetail )
+{
+	if ( partition.filesystem != FS_LINUX_SWAP )
+	{
+		operationdetail.add_child( OperationDetail(
+			/* TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step */
+			GPARTED_BUG + ": " + String::ucompose( _("not a %1 file system for a recreate %1 only step"),
+			                                       Utils::get_filesystem_string( FS_LINUX_SWAP ),
+			                                       Utils::get_filesystem_string( FS_LINUX_SWAP ) ),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
+	if ( ! erase_filesystem_signatures( partition, operationdetail ) )
+		return false;
+
+	operationdetail.add_child( OperationDetail(
+		/* TO TRANSLATORS: looks like   recreate linux-swap file system */
+		String::ucompose( _("recreate %1 file system"),
+		                  Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) );
+
+	// Linux-swap is recreated by using the linux_swap::resize() method
+	bool success = resize_filesystem_implement( partition, partition, operationdetail );
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
+}
+
 bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
                                                 const Partition & partition_new,
                                                 OperationDetail & operationdetail )
@@ -2893,7 +2920,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	if ( partition_dst.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not copied
-		return maximize_filesystem( partition_dst, operationdetail );
+		return recreate_linux_swap_filesystem( partition_dst, operationdetail );
 	}
 	else if ( partition_dst.get_byte_length() > partition_src.get_byte_length() )
 	{
