@@ -70,6 +70,8 @@ static bool udevadm_found = false;
 static bool udevsettle_found = false;
 static bool hdparm_found = false;
 
+static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
+
 GParted_Core::GParted_Core() 
 {
 	thread_status_message = "" ;
@@ -2274,13 +2276,13 @@ bool GParted_Core::move( const Partition & partition_old,
 	if ( partition_old .get_sector_length() != partition_new .get_sector_length() )
 	{	
 		operationdetail .add_child( OperationDetail(
-				/* TO TRANSLATORS:  moving requires old and new length to be the same
-				 * means that the length in bytes of the old partition and new partition
-				 * must be the same.  If the sector sizes of the old partition and the
-				 * new partition are the same, then the length in sectors must be the same.
-				 */
-				_("moving requires old and new length to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
-
+			/* TO TRANSLATORS:
+			 * means that GParted has encountered a programming bug and tried
+			 * to change the size of a partition when performing a move only
+			 * step which is not permitted to change the partition size.
+			 */
+			GPARTED_BUG + ": " + _("size of the partition is changing for a move only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
 		return false ;
 	}
 
@@ -2501,8 +2503,14 @@ bool GParted_Core::resize( const Partition & partition_old,
 	if ( partition_old .sector_start != partition_new .sector_start )
 	{	
 		operationdetail .add_child( OperationDetail( 
-			_("resizing requires old and new start to be the same"), STATUS_ERROR, FONT_ITALIC ) ) ;
-
+			/* TO TRANSLATORS:
+			 * means that GParted has encountered a programming bug and tried
+			 * to move the start of the partition when performing a resize
+			 * only step which is not permitted to change the start of the
+			 * partition.
+			 */
+			GPARTED_BUG + ": " + _("start of the partition is changing for a resize only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
 		return false ;
 	}
 
