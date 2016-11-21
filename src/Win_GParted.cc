@@ -1245,7 +1245,8 @@ void Win_GParted::set_valid_operations()
 		allow_format( true ) ;
 
 		// only allow deletion of partitions within a partition table
-		if ( ! selected_partition_ptr->whole_device )
+		// Also exclude open LUKS mappings until open/close is supported
+		if ( ! selected_partition_ptr->whole_device & ! selected_partition_ptr->busy )
 			allow_delete( true );
 
 		// Resizing/moving always requires the ability to update the partition
