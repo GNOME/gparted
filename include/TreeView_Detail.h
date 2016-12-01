@@ -53,7 +53,11 @@ private:
 	                      const Gtk::TreeRow & parent_row = Gtk::TreeRow() );
 	bool set_selected( Gtk::TreeModel::Children rows,
 	                   const Partition * partition_ptr, bool inside_extended = false );
-	void create_row( const Gtk::TreeRow & treerow, const Partition & partition );
+	void create_row( const Gtk::TreeRow & treerow,
+	                 const Partition & partition,
+	                 bool & show_names,
+	                 bool & show_mountpoints,
+	                 bool & show_labels );
 
 	//(overridden) signals
 	bool on_button_press_event( GdkEventButton * event );

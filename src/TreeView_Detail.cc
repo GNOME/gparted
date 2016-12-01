@@ -117,19 +117,10 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions,
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
 	{	
 		row = parent_row ? *( treestore_detail ->append( parent_row .children() ) ) : *( treestore_detail ->append() ) ;
-		create_row( row, partitions[ i ] );
-		
+		create_row( row, partitions[i], names, mountpoints, labels );
+
 		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
 			load_partitions( partitions[i].logicals, mountpoints, labels, names, row );
-
-		if ( partitions[ i ] .get_mountpoints() .size() )
-			mountpoints = true ;
-					
-		if ( ! partitions[ i ].get_filesystem_label().empty() )
-			labels = true ;
-
-		if ( ! partitions[i].name.empty() )
-			names = true;
 	}
 }
 
@@ -154,7 +145,11 @@ bool TreeView_Detail::set_selected( Gtk::TreeModel::Children rows,
 	return false ;
 }
 
-void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition & partition )
+void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
+                                  const Partition & partition,
+                                  bool & show_names,
+                                  bool & show_mountpoints,
+                                  bool & show_labels )
 {
 	if ( partition .busy )
 		treerow[ treeview_detail_columns .icon1 ] = 
@@ -179,6 +174,8 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 
 	// name
 	treerow[treeview_detail_columns.name] = partition.name;
+	if ( ! partition.name.empty() )
+		show_names = true;
 
 	if ( partition.filesystem == FS_LUKS && partition.busy )
 	{
@@ -211,10 +208,15 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow, const Partition 
 		// mount point
 		treerow[treeview_detail_columns.mountpoint] = Glib::build_path( ", ", partition.get_mountpoints() );
 	}
+	if ( ! static_cast<Glib::ustring>( treerow[treeview_detail_columns.mountpoint] ).empty() )
+		show_mountpoints = true;
 
 	//label
-	treerow[ treeview_detail_columns .label ] = partition.get_filesystem_label();
-		
+	Glib::ustring temp_filesystem_label = partition.get_filesystem_label();
+	treerow[treeview_detail_columns.label] = temp_filesystem_label;
+	if ( ! temp_filesystem_label.empty() )
+		show_labels = true;
+
 	//size
 	treerow[ treeview_detail_columns .size ] = Utils::format_size( partition .get_sector_length(), partition .sector_size ) ;
 	
