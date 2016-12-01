@@ -82,14 +82,17 @@ TreeView_Detail::TreeView_Detail()
 
 void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 {
-	bool mountpoints = false, labels = false, names = false;
+	bool show_names       = false;
+	bool show_mountpoints = false;
+	bool show_labels      = false;
+
 	treestore_detail ->clear() ;
 
-	load_partitions( partitions, mountpoints, labels, names );
+	load_partitions( partitions, show_names, show_mountpoints, show_labels );
 
-	get_column( 1 )->set_visible( names );
-	get_column( 3 )->set_visible( mountpoints );
-	get_column( 4 )->set_visible( labels );
+	get_column( 1 )->set_visible( show_names );
+	get_column( 3 )->set_visible( show_mountpoints );
+	get_column( 4 )->set_visible( show_labels );
 
 	columns_autosize();
 	expand_all() ;
@@ -108,19 +111,19 @@ void TreeView_Detail::clear()
 }
 
 void TreeView_Detail::load_partitions( const PartitionVector & partitions,
-                                       bool & mountpoints,
-                                       bool & labels,
-                                       bool & names,
+                                       bool & show_names,
+                                       bool & show_mountpoints,
+                                       bool & show_labels,
                                        const Gtk::TreeRow & parent_row )
 {
 	Gtk::TreeRow row ;
 	for ( unsigned int i = 0 ; i < partitions .size() ; i++ ) 
 	{	
 		row = parent_row ? *( treestore_detail ->append( parent_row .children() ) ) : *( treestore_detail ->append() ) ;
-		create_row( row, partitions[i], names, mountpoints, labels );
+		create_row( row, partitions[i], show_names, show_mountpoints, show_labels );
 
 		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
-			load_partitions( partitions[i].logicals, mountpoints, labels, names, row );
+			load_partitions( partitions[i].logicals, show_names, show_mountpoints, show_labels, row );
 	}
 }
 

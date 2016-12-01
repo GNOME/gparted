@@ -47,9 +47,9 @@ public:
 
 private:
 	void load_partitions( const PartitionVector & partitions,
-	                      bool & mountpoints,
-	                      bool & labels,
-	                      bool & names,
+	                      bool & show_names,
+	                      bool & show_mountpoints,
+	                      bool & show_labels,
 	                      const Gtk::TreeRow & parent_row = Gtk::TreeRow() );
 	bool set_selected( Gtk::TreeModel::Children rows,
 	                   const Partition * partition_ptr, bool inside_extended = false );
