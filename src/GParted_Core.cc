@@ -2806,6 +2806,14 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
 
 bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a maximize file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	operationdetail .add_child( OperationDetail( _("grow file system to fill the partition") ) ) ;
 
 	// Checking if growing is available or allowed is only relevant for the check
@@ -3194,6 +3202,14 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a check repair file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	if ( partition.busy )
 		// Trying to check an online file system is a successful non-operation.
 		return true;
