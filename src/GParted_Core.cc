@@ -2205,6 +2205,14 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 
 bool GParted_Core::change_filesystem_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a change file system UUID only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF ) {
 		operationdetail .add_child( OperationDetail( String::ucompose(
 										_("Set half of the UUID on %1 to a new, random value"),
