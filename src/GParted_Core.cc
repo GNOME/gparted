@@ -2146,6 +2146,14 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::label_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a label file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	if( partition.get_filesystem_label().empty() ) {
 		operationdetail.add_child( OperationDetail(
 			String::ucompose( _("Clear file system label on %1"), partition.get_path() ) ) );
