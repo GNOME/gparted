@@ -2036,6 +2036,14 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a create file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	/*TO TRANSLATORS: looks like create new ext3 file system */ 
 	operationdetail .add_child( OperationDetail( String::ucompose(
 							_("create new %1 file system"),
@@ -2067,6 +2075,14 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a format file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	if ( partition .filesystem == FS_CLEARED )
 		return erase_filesystem_signatures( partition, operationdetail ) ;
 	else
@@ -2122,6 +2138,14 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 
 bool GParted_Core::remove_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a delete file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	bool success = true ;
 	FileSystem* p_filesystem = NULL ;
 
@@ -3570,6 +3594,14 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( partition.filesystem == FS_LUKS && partition.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for an erase file system signatures only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	bool overall_success = false ;
 	operationdetail .add_child( OperationDetail(
 			String::ucompose( _("clear old file system signatures in %1"),
