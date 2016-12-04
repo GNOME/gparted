@@ -49,6 +49,7 @@ public:
 	virtual Sector get_sectors_used() const;
 	virtual Sector get_sectors_unused() const;
 	virtual Sector get_sectors_unallocated() const;
+	virtual void resize( const Partition & new_size );
 	virtual bool have_messages() const;
 	virtual std::vector<Glib::ustring> get_messages() const;
 	virtual void clear_messages();

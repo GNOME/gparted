@@ -90,6 +90,7 @@ public:
 	virtual Sector get_sectors_unused() const;
 	virtual Sector get_sectors_unallocated() const;
 	void get_usage_triple( int imax, int & i1, int & i2, int & i3 ) const ;
+	virtual void resize( const Partition & new_size );
 
 	void Set_Unallocated( const Glib::ustring & device_path,
 	                      bool whole_device,

@@ -163,6 +163,20 @@ Sector Partition::get_sectors_unallocated() const
 		return sectors_unallocated ;
 }
 
+// Update size, position and FS usage from new_size.
+void Partition::resize( const Partition & new_size )
+{
+	sector_start      = new_size.sector_start;
+	sector_end        = new_size.sector_end;
+	alignment         = new_size.alignment;
+	free_space_before = new_size.free_space_before;
+	strict_start      = new_size.strict_start;
+
+	Sector fs_size   = new_size.sectors_used + new_size.sectors_unused;
+	Sector fs_unused = fs_size - new_size.sectors_used;
+	set_sector_usage( fs_size, fs_unused );
+}
+
 void Partition::Set_Unallocated( const Glib::ustring & device_path,
                                  bool whole_device,
                                  Sector sector_start,

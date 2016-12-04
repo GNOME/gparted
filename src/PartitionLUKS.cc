@@ -196,6 +196,20 @@ Sector PartitionLUKS::get_sectors_unallocated() const
 	return Partition::get_sectors_unallocated();
 }
 
+// Update size, position and FS usage from new_size.
+void PartitionLUKS::resize( const Partition & new_size )
+{
+	Partition::resize( new_size );
+	// As per discussion in luks::set_used_sectors() LUKS itself is always 100% used.
+	set_sector_usage( get_sector_length(), 0LL );
+
+	Sector mapping_size = get_sector_length() - header_size;
+	encrypted.sector_end = mapping_size - 1LL;
+
+	Sector fs_unused = mapping_size - encrypted.sectors_used;
+	encrypted.set_sector_usage( mapping_size, fs_unused );
+}
+
 bool PartitionLUKS::have_messages() const
 {
 	if ( busy )
