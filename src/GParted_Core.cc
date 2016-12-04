@@ -3013,6 +3013,21 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
                                     Partition & partition_dst,
                                     OperationDetail & operationdetail )
 {
+	if ( partition_src.filesystem == FS_LUKS && partition_src.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("source partition contains open LUKS encryption for a file system copy only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+	if ( partition_dst.filesystem == FS_LUKS && partition_dst.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("destination partition contains open LUKS encryption for a file system copy only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	operationdetail.add_child( OperationDetail(
 			String::ucompose( _("copy file system from %1 to %2"),
 			                  partition_src.get_path(),
