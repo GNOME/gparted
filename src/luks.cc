@@ -28,7 +28,6 @@ FS luks::get_filesystem_support()
 
 	fs.busy = FS::EXTERNAL;
 	fs.read = FS::EXTERNAL;
-	fs.grow = FS::EXTERNAL;
 
 	// Setting .copy is just for displaying in the File System Support dialog.
 	// (Copying of encrypted content is only performed while open).
@@ -37,14 +36,22 @@ FS luks::get_filesystem_support()
 	fs.online_read = FS::EXTERNAL;
 	fs.move = FS::GPARTED;
 
-#ifdef ENABLE_ONLINE_RESIZE
-	if ( ! Glib::find_program_in_path( "cryptsetup" ).empty() &&
-	     Utils::kernel_version_at_least( 3, 6, 0 )               )
+	if ( ! Glib::find_program_in_path( "cryptsetup" ).empty() )
 	{
-		fs.online_grow   = FS::EXTERNAL;
-		fs.online_shrink = FS::EXTERNAL;
-	}
+		// Offline grow doesn't require cryptsetup.  However check repair
+		// encrypted file system routes it's grow online LUKS volume via offline
+		// grow to avoid also needing online partition resizing from libparted and
+		// the kernel, which it doesn't need.
+		fs.grow = FS::EXTERNAL;
+
+#ifdef ENABLE_ONLINE_RESIZE
+		if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
+		{
+			fs.online_grow   = FS::EXTERNAL;
+			fs.online_shrink = FS::EXTERNAL;
+		}
 #endif
+	}
 
 	return fs;
 }

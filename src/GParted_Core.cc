@@ -594,8 +594,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			                                  operation->operation_detail )
 			          && check_repair_filesystem( operation->get_partition_original().get_filesystem_partition(),
 			                                      operation->operation_detail )
-			          && maximize_filesystem( operation->get_partition_original().get_filesystem_partition(),
-			                                  operation->operation_detail );
+			          && check_repair_maximize( operation->get_partition_original(),
+			                                    operation->operation_detail );
 			break;
 
 		case OPERATION_CREATE:
@@ -2920,6 +2920,21 @@ bool GParted_Core::maximize_encryption( const Partition & partition, OperationDe
 	}
 
 	operationdetail.add_child( OperationDetail( _("grow encryption volume to fill the partition") ) );
+
+	// Checking if growing is allowed is only relevant for the check repair operation
+	// to inform the user why the grow step is being skipped.  For a resize/move
+	// operation these growing checks are merely retesting those performed to allow
+	// the operation to be queued in the first place.  See
+	// Win_GParted::set_valid_operations().
+	if ( get_fs( partition.filesystem ).grow == FS::NONE )
+	{
+		operationdetail.get_last_child().add_child( OperationDetail(
+				_("growing is not available for this encryption volume"),
+				STATUS_NONE, FONT_ITALIC ) );
+		operationdetail.get_last_child().set_status( STATUS_N_A );
+		return true;
+	}
+
 	bool success = resize_filesystem_implement( partition, partition, operationdetail );
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 	return success;
@@ -3425,6 +3440,38 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 
 	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
 	return succes ;
+}
+
+bool GParted_Core::check_repair_maximize( const Partition & partition,
+                                          OperationDetail & operationdetail )
+{
+	if ( partition.filesystem == FS_LUKS )
+	{
+		// Pretend that the LUKS partition is closed so that
+		// resize_filesystem_implement() checks the offline .grow capability
+		// rather than .online_grow so that maximising LUKS in the context of a
+		// check encrypted file system operation, which doesn't want to change the
+		// partition boundaries, can be performed even if libparted and/or the
+		// kernel aren't new enough to support online partition resizing.
+		// luks::resize() determines the open status of the LUKS mapping by
+		// querying the LUKS_Info module cache so doesn't care if the partition
+		// busy status is wrong.
+		Partition * temp_offline = partition.clone();
+		temp_offline->busy = false;
+		bool success = maximize_encryption( *temp_offline, operationdetail );
+		delete temp_offline;
+		temp_offline = NULL;
+		if ( ! success )
+			return false;
+
+		if ( partition.busy )
+			success = maximize_filesystem( partition.get_filesystem_partition(), operationdetail );
+		return success;
+	}
+	else
+	{
+		return maximize_filesystem( partition, operationdetail );
+	}
 }
 
 bool GParted_Core::set_partition_type( const Partition & partition, OperationDetail & operationdetail )
