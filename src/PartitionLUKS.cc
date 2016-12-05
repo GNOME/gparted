@@ -14,6 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Partition.h"
 #include "PartitionLUKS.h"
 #include "Utils.h"
 
@@ -35,6 +36,33 @@ PartitionLUKS * PartitionLUKS::clone() const
 {
 	// Virtual copy constructor method
 	return new PartitionLUKS( *this );
+}
+
+// Specialist clone creating a plain Partition object from a PartitionLUKS object.
+// Created partition is as though the file system wasn't encrypted, but adds the LUKS
+// overhead into the file system usage.
+Partition * PartitionLUKS::clone_as_plain() const
+{
+	// Clone the partition.
+	// WARNING:
+	// Deliberate object slicing of *this from PartitionLUKS to Partition.
+	Partition * plain_ptn = new Partition( *this );
+
+	// Copy over file system attributes.
+	plain_ptn->filesystem    = this->encrypted.filesystem;
+	plain_ptn->uuid          = this->encrypted.uuid;
+	plain_ptn->busy          = this->encrypted.busy;
+	plain_ptn->fs_block_size = this->encrypted.fs_block_size;
+	Sector fs_size = this->header_size + this->encrypted.sectors_used + this->encrypted.sectors_unused;
+	plain_ptn->set_sector_usage( fs_size, this->encrypted.sectors_unused );
+	plain_ptn->clear_mountpoints();
+	plain_ptn->add_mountpoints( this->encrypted.get_mountpoints() );
+	if ( this->encrypted.filesystem_label_known() )
+		plain_ptn->set_filesystem_label( this->encrypted.get_filesystem_label() );
+	plain_ptn->clear_messages();
+	plain_ptn->append_messages( this->encrypted.get_messages() );
+
+	return plain_ptn;
 }
 
 // Mostly a convenience method calling Partition::Set() on the encrypted Partition but

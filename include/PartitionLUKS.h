@@ -32,6 +32,7 @@ public:
 	PartitionLUKS();
 	virtual ~PartitionLUKS();
 	virtual PartitionLUKS * clone() const;
+	Partition * clone_as_plain() const;
 
 	void set_luks( const Glib::ustring & path,
 	               FILESYSTEM fstype,
