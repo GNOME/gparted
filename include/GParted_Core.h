@@ -137,9 +137,20 @@ private:
 	bool resize( const Partition & partition_old,
 		     const Partition & partition_new,
 		     OperationDetail & operationdetail ) ;
+	bool resize_encryption( const Partition & partition_old,
+	                        const Partition & partition_new,
+	                        OperationDetail & operationdetail );
+	bool resize_plain( const Partition & partition_old,
+	                   const Partition & partition_new,
+	                   OperationDetail & operationdetail );
 	bool resize_move_partition( const Partition & partition_old,
 			       	    const Partition & partition_new,
 				    OperationDetail & operationdetail ) ;
+	bool shrink_encryption( const Partition & partition_old,
+	                        const Partition & partition_new,
+	                        OperationDetail & operationdetail );
+	bool maximize_encryption( const Partition & partition,
+	                          OperationDetail & operationdetail );
 	bool shrink_filesystem( const Partition & partition_old,
 	                        const Partition & partition_new,
 	                        OperationDetail & operationdetail );

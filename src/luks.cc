@@ -101,4 +101,23 @@ void luks::set_used_sectors( Partition & partition )
 	}
 }
 
+bool luks::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
+{
+	LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition_new.get_path() );
+	if ( mapping.name.empty() )
+		// Only active device-mapper encryption mappings can be resized.
+		return false;
+
+	Glib::ustring size = "";
+	if ( ! fill_partition )
+		// Cryptsetup resize takes the size of the encryption mapping, not the
+		// size of the underlying block device.  Both device-mapper and cryptsetup
+		// always work in units of 512 byte sectors regardless of the actual
+		// device sector size.
+		size = "--size " + Utils::num_to_str( ( partition_new.get_byte_length() - mapping.offset ) / 512LL ) + " ";
+
+	return ! execute_command( "cryptsetup -v " + size + "resize " + mapping.name,
+	                          operationdetail, EXEC_CHECK_STATUS );
+}
+
 } //GParted

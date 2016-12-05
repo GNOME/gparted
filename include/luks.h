@@ -30,6 +30,7 @@ public:
 	FS get_filesystem_support();
 	bool is_busy( const Glib::ustring & path );
 	void set_used_sectors( Partition & partition );
+	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition );
 };
 
 } //GParted

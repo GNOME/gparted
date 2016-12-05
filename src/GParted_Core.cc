@@ -2576,31 +2576,81 @@ bool GParted_Core::resize( const Partition & partition_old,
 		return false ;
 	}
 
-	bool success = true;
+	if ( partition_new.filesystem == FS_LUKS )
+		return resize_encryption( partition_old, partition_new, operationdetail );
+	else
+		return resize_plain( partition_old, partition_new, operationdetail );
+}
+
+bool GParted_Core::resize_encryption( const Partition & partition_old,
+                                      const Partition & partition_new,
+                                      OperationDetail & operationdetail )
+{
+	const Partition & filesystem_ptn_new = partition_new.get_filesystem_partition();
+	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
+
+	if ( filesystem_ptn_new.filesystem == FS_LINUX_SWAP )
+	{
+		// LUKS is resized, but linux-swap is recreated, not resized
+		if ( delta < 0LL )  // shrink
+		{
+			return    shrink_encryption( partition_old, partition_new, operationdetail )
+			       && resize_move_partition( partition_old, partition_new, operationdetail )
+			       && recreate_linux_swap_filesystem( filesystem_ptn_new, operationdetail );
+		}
+		else if ( delta > 0LL ) // grow
+		{
+			return    resize_move_partition( partition_old, partition_new, operationdetail )
+			       && maximize_encryption( partition_new, operationdetail )
+			       && recreate_linux_swap_filesystem( filesystem_ptn_new, operationdetail );
+		}
+	}
+
+	const Partition & filesystem_ptn_old = partition_old.get_filesystem_partition();
+	if ( delta < 0LL )  // shrink
+	{
+		return    check_repair_filesystem( filesystem_ptn_old, operationdetail )
+		       && shrink_filesystem( filesystem_ptn_old, filesystem_ptn_new, operationdetail )
+		       && shrink_encryption( partition_old, partition_new, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail );
+	}
+	else if ( delta > 0LL )  // grow
+	{
+		return    check_repair_filesystem( filesystem_ptn_old, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail )
+		       && maximize_encryption( partition_new, operationdetail )
+		       && maximize_filesystem( filesystem_ptn_new, operationdetail );
+	}
+
+	return true;
+}
+
+bool GParted_Core::resize_plain( const Partition & partition_old,
+                                 const Partition & partition_new,
+                                 OperationDetail & operationdetail )
+{
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
-		// linux-swap is recreated, not resize
-		success =    resize_move_partition( partition_old, partition_new, operationdetail )
-		          && recreate_linux_swap_filesystem( partition_new, operationdetail );
-
-		return success;
+		// linux-swap is recreated, not resized
+		return    resize_move_partition( partition_old, partition_new, operationdetail )
+		       && recreate_linux_swap_filesystem( partition_new, operationdetail );
 	}
 
 	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
 	if ( delta < 0LL )  // shrink
 	{
-		success =    check_repair_filesystem( partition_new, operationdetail )
-		          && shrink_filesystem( partition_old, partition_new, operationdetail )
-		          && resize_move_partition( partition_old, partition_new, operationdetail );
+		return    check_repair_filesystem( partition_new, operationdetail )
+		       && shrink_filesystem( partition_old, partition_new, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail );
 	}
 	else if ( delta > 0LL )  // grow
 	{
-		success =    check_repair_filesystem( partition_new, operationdetail )
-		          && resize_move_partition( partition_old, partition_new, operationdetail )
-		          && maximize_filesystem( partition_new, operationdetail );
+		return    check_repair_filesystem( partition_new, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail )
+		       && maximize_filesystem( partition_new, operationdetail );
 	}
 
-	return success;
+	return true;
 }
 
 bool GParted_Core::resize_move_partition( const Partition & partition_old,
@@ -2805,6 +2855,24 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
 	
 	return return_value ;
+}
+
+bool GParted_Core::shrink_encryption( const Partition & partition_old,
+                                      const Partition & partition_new,
+                                      OperationDetail & operationdetail )
+{
+	operationdetail.add_child( OperationDetail( _("shrink encryption volume") ) );
+	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
+}
+
+bool GParted_Core::maximize_encryption( const Partition & partition, OperationDetail & operationdetail )
+{
+	operationdetail.add_child( OperationDetail( _("grow encryption volume to fill the partition") ) );
+	bool success = resize_filesystem_implement( partition, partition, operationdetail );
+	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	return success;
 }
 
 bool GParted_Core::shrink_filesystem( const Partition & partition_old,
