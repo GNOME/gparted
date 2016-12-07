@@ -28,6 +28,11 @@ FS luks::get_filesystem_support()
 
 	fs.busy = FS::EXTERNAL;
 	fs.read = FS::EXTERNAL;
+
+	// Setting .copy is just for displaying in the File System Support dialog.
+	// (Copying of encrypted content is only performed while open).
+	fs.copy = FS::GPARTED;
+
 	fs.online_read = FS::EXTERNAL;
 
 	return fs;

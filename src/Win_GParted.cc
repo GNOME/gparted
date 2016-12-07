@@ -1242,8 +1242,11 @@ void Win_GParted::set_valid_operations()
 		if ( (fs .grow || fs .shrink || fs .move ) && ! devices[ current_device ] .readonly ) 
 			allow_resize( true ) ;
 			
-		//only allow copying of real partitions
-		if ( selected_partition_ptr->status == STAT_REAL && fs_cap.copy )
+		// Only allow copying of real partitions, excluding closed encryption
+		// (which are only copied while open).
+		if ( selected_partition_ptr->status == STAT_REAL &&
+		     selected_filesystem.filesystem != FS_LUKS   &&
+		     fs_cap.copy                                    )
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
