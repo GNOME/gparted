@@ -2586,6 +2586,14 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
+	if ( ! ( partition_old.filesystem == FS_LUKS && partition_old.busy ) )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a resize encryption only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	const Partition & filesystem_ptn_new = partition_new.get_filesystem_partition();
 	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
 
@@ -2629,6 +2637,14 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
                                  const Partition & partition_new,
                                  OperationDetail & operationdetail )
 {
+	if ( partition_old.filesystem == FS_LUKS && partition_old.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a resize file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not resized
@@ -2861,6 +2877,14 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
+	if ( ! ( partition_old.filesystem == FS_LUKS && partition_old.busy ) )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a shrink encryption only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	operationdetail.add_child( OperationDetail( _("shrink encryption volume") ) );
 	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
@@ -2869,6 +2893,14 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
 
 bool GParted_Core::maximize_encryption( const Partition & partition, OperationDetail & operationdetail )
 {
+	if ( ! ( partition.filesystem == FS_LUKS && partition.busy ) )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a maximize encryption only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
 	operationdetail.add_child( OperationDetail( _("grow encryption volume to fill the partition") ) );
 	bool success = resize_filesystem_implement( partition, partition, operationdetail );
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
@@ -2879,6 +2911,13 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
+	if ( partition_old.filesystem == FS_LUKS && partition_old.busy )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a shrink file system only step"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
 	if ( partition_new.get_sector_length() >= partition_old.get_sector_length() )
 	{
 		operationdetail.add_child( OperationDetail(
