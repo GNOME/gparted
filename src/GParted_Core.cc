@@ -2586,16 +2586,34 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
-	if ( ! ( partition_old.filesystem == FS_LUKS && partition_old.busy ) )
+	if ( partition_old.filesystem != FS_LUKS )
 	{
 		operationdetail.add_child( OperationDetail(
-			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a resize encryption only step"),
+			GPARTED_BUG + ": " + _("partition does not contain LUKS encryption for a resize encryption only step"),
 			STATUS_ERROR, FONT_ITALIC ) );
 		return false;
 	}
 
-	const Partition & filesystem_ptn_new = partition_new.get_filesystem_partition();
 	Sector delta = partition_new.get_sector_length() - partition_old.get_sector_length();
+
+	if ( ! partition_old.busy && delta < 0LL )
+	{
+		operationdetail.add_child( OperationDetail(
+			GPARTED_BUG + ": " + _("impossible to shrink a closed LUKS encryption volume"),
+			STATUS_ERROR, FONT_ITALIC ) );
+		return false;
+	}
+
+	if ( ! partition_old.busy )
+	{
+		// grow closed LUKS.
+		// maximize_encryption() is only called to display no action needed
+		// operation message generated in luks::resize() for this case.
+		return    resize_move_partition( partition_old, partition_new, operationdetail )
+		       && maximize_encryption( partition_new, operationdetail );
+	}
+
+	const Partition & filesystem_ptn_new = partition_new.get_filesystem_partition();
 
 	if ( filesystem_ptn_new.filesystem == FS_LINUX_SWAP )
 	{
@@ -2893,10 +2911,10 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
 
 bool GParted_Core::maximize_encryption( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( ! ( partition.filesystem == FS_LUKS && partition.busy ) )
+	if ( partition.filesystem != FS_LUKS )
 	{
 		operationdetail.add_child( OperationDetail(
-			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a maximize encryption only step"),
+			GPARTED_BUG + ": " + _("partition does not contain LUKS encryption for a maximize encryption only step"),
 			STATUS_ERROR, FONT_ITALIC ) );
 		return false;
 	}

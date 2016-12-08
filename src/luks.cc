@@ -28,6 +28,7 @@ FS luks::get_filesystem_support()
 
 	fs.busy = FS::EXTERNAL;
 	fs.read = FS::EXTERNAL;
+	fs.grow = FS::EXTERNAL;
 
 	// Setting .copy is just for displaying in the File System Support dialog.
 	// (Copying of encrypted content is only performed while open).
@@ -105,8 +106,20 @@ bool luks::resize( const Partition & partition_new, OperationDetail & operationd
 {
 	LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition_new.get_path() );
 	if ( mapping.name.empty() )
-		// Only active device-mapper encryption mappings can be resized.
-		return false;
+	{
+		if ( ! fill_partition )
+		{
+			// Can't shrink closed LUKS encryption.
+			return false;
+		}
+		else
+		{
+			operationdetail.add_child( OperationDetail(
+				_("Maximize closed LUKS encryption skipped because it will automatically fill the partition when opened"),
+				STATUS_NONE, FONT_ITALIC ) ) ;
+			return true;
+		}
+	}
 
 	Glib::ustring size = "";
 	if ( ! fill_partition )

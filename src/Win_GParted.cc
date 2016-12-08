@@ -1256,10 +1256,10 @@ void Win_GParted::set_valid_operations()
 			if ( selected_partition_ptr->filesystem != FS_LUKS   &&
 			     ( fs_cap.grow || fs_cap.shrink || fs_cap.move )    )
 				allow_resize( true );
-			// Is moving this closed LUKS mapping permitted?
+			// Is growing or moving this closed LUKS mapping permitted?
 			if ( selected_partition_ptr->filesystem == FS_LUKS &&
 			     ! selected_partition_ptr->busy                &&
-			     enc_cap.move                                     )
+			     ( enc_cap.grow || enc_cap.move )                 )
 				allow_resize( true );
 			// Is resizing an open LUKS mapping and the file system within
 			// supported?
