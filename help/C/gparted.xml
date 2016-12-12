@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.22.0">
-  <!ENTITY manrevision "1.9">
-  <!ENTITY date "March 2015">
+  <!ENTITY appversion "0.27.0">
+  <!ENTITY manrevision "1.10">
+  <!ENTITY date "December 2016">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -46,7 +46,7 @@
     </abstract>
 
     <copyright>
-      <year>2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015</year>
+      <year>2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016</year>
       <holder>Curtis Gedak</holder>
     </copyright>
     <copyright>
@@ -113,6 +113,15 @@
 <!-- According to GNU FDL, revision history is mandatory if you are -->
 <!-- modifying/reusing someone else's document.  If not, you can omit it. -->
     <revhistory>
+      <revision>
+        <revnumber>&appname; Manual V1.10</revnumber>
+        <date>December 2016</date>
+        <revdescription>
+          <para role="author">Curtis Gedak</para>
+          <para role="publisher">&appname; Project</para>
+          <para role="annotations">Describes version 0.27.0 of &appname;</para>
+        </revdescription>
+      </revision>
       <revision>
         <revnumber>&appname; Manual V1.9</revnumber>
         <date>March 2015</date>
@@ -2044,9 +2053,24 @@
               </listitem>
               <listitem>
                 <para>
+                ESP indicates an EFI System Partition used to boot
+                computers with the Unified Extensible Firmware
+                Interface (UEFI) class 2 that includes compatibility
+                support for BIOS functions including the MBR partition
+                structure.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
                 Hidden is used by some commercial operating systems.
                 The hidden flag makes the partition invisible to the
                 operating system.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                Irst identifies an Intel Rapid Start Technology
+                partition.
                 </para>
               </listitem>
               <listitem>
@@ -2074,7 +2098,7 @@
               <listitem>
                 <para>
                 Prep is used to indicate the boot partition
-                on Power Performance Computing (PowerPC) hardware. 
+                on Power Performance Computing (PowerPC) hardware.
                 </para>
               </listitem>
               <listitem>
@@ -2119,6 +2143,14 @@
               </listitem>
               <listitem>
                 <para>
+                ESP indicates an EFI System Partition used to boot
+                computers with Extensible Firmware Interface (EFI)
+                class 1 or Unified Extensible Firmware Interface
+                (UEFI) class 2 or UEFI class 3.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
                 Hidden is used by some commercial operating systems.
                 The hidden flag makes the partition invisible to the
                 operating system.
@@ -2128,6 +2160,12 @@
                 <para>
                 HP-service is used to indicate a Hewlett Packard
                 service partition.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                Irst identifies an Intel Rapid Start Technology
+                partition.
                 </para>
               </listitem>
               <listitem>
@@ -2144,8 +2182,20 @@
               </listitem>
               <listitem>
                 <para>
+                Msftdata identifies partitions that contain Microsoft
+                file systems such as NTFS or FAT.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
                 Msftres is used to indicate a Microsoft Reserved
                 partition.
+                </para>
+              </listitem>
+              <listitem>
+                <para>
+                Prep is used to indicate the boot partition
+                on Power Performance Computing (PowerPC) hardware.
                 </para>
               </listitem>
               <listitem>
@@ -2746,15 +2796,22 @@
               <para>
               Set the <application>grub</application> root device by
               specifying the device returned by the
-              <command>find</command> command.
+              <command>find</command> command.  This should be the
+              partition containing the boot directory.
               <screen><prompt>grub&gt; </prompt>root <replaceable>(hd0,0)</replaceable></screen>
               </para>
             </listitem>
             <listitem>
               <para>
-              Reinstall <application>grub</application> by specifying
-              the device returned by the <command>find</command>
-              command.
+              Reinstall the <application>grub</application> boot
+              loader into the Master Boot Record (MBR) with:
+              <screen><prompt>grub&gt; </prompt>setup <replaceable>(hd0)</replaceable></screen>
+              </para>
+              <para>
+              If you want to install the
+              <application>grub</application> boat loader into the
+              boot sector of a partition, instead specify a partition
+              with:
               <screen><prompt>grub&gt; </prompt>setup <replaceable>(hd0,0)</replaceable></screen>
               </para>
             </listitem>
