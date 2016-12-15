@@ -114,7 +114,7 @@ void OperationDelete::create_description()
 	/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
 	description = String::ucompose( _("Delete %1 (%2, %3) from %4"),
 	                                description,
-	                                Utils::get_filesystem_string( partition_original->filesystem ),
+	                                partition_original->get_filesystem_string(),
 	                                Utils::format_size( partition_original->get_sector_length(),
 	                                                    partition_original->sector_size ),
 	                                partition_original->device_path );

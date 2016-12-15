@@ -71,7 +71,7 @@ void OperationCreate::create_description()
 	description = String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
 	                                description,
 	                                partition_new->partition_number,
-	                                Utils::get_filesystem_string( partition_new->filesystem ),
+	                                partition_new->get_filesystem_string(),
 	                                Utils::format_size( partition_new->get_sector_length(),
 	                                                    partition_new->sector_size ),
 	                                device.get_path() );
