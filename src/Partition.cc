@@ -322,19 +322,13 @@ void Partition::get_usage_triple_helper( Sector stot, Sector s1, Sector s2, Sect
 	}
 }
 
-void Partition::add_mountpoint( const Glib::ustring & mountpoint, bool clear_mountpoints )
+void Partition::add_mountpoint( const Glib::ustring & mountpoint )
 {
-	if ( clear_mountpoints )
-		this ->mountpoints .clear() ;
-
 	this ->mountpoints .push_back( mountpoint ) ;
 }
 
-void Partition::add_mountpoints( const std::vector<Glib::ustring> & mountpoints, bool clear_mountpoints ) 
+void Partition::add_mountpoints( const std::vector<Glib::ustring> & mountpoints )
 {
-	if ( clear_mountpoints )
-		this ->mountpoints .clear() ;
-
 	this ->mountpoints .insert( this ->mountpoints .end(), mountpoints .begin(), mountpoints .end() ) ;
 }
 
