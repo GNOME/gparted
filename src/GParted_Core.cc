@@ -2764,6 +2764,7 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
 		return false;
 	}
 
+	operationdetail.add_child( OperationDetail( _("shrink file system") ) );
 	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
 	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
 	return success;
