@@ -2256,21 +2256,21 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	}
 
 	// Generate minimum and maximum partition size limits for the new file system.
-	fs = gparted_core .get_fs( new_fs ) ;
+	FS fs_cap = gparted_core.get_fs( new_fs );
 	bool encrypted = false;
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
 		encrypted = true;
 		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
 		                                 filesystem_ptn.get_byte_length();
-		fs.MIN += encryption_overhead;
-		if ( fs.MAX > 0 )
-			fs.MAX += encryption_overhead;
+		fs_cap.MIN += encryption_overhead;
+		if ( fs_cap.MAX > 0 )
+			fs_cap.MAX += encryption_overhead;
 	}
 
 	// Confirm partition is the right size to store the file system before continuing.
-	if ( ( selected_partition_ptr->get_byte_length() < fs.MIN )           ||
-	     ( fs.MAX && selected_partition_ptr->get_byte_length() > fs.MAX )    )
+	if ( ( selected_partition_ptr->get_byte_length() < fs_cap.MIN )               ||
+	     ( fs_cap.MAX && selected_partition_ptr->get_byte_length() > fs_cap.MAX )    )
 	{
 		Gtk::MessageDialog dialog( *this,
 		                           String::ucompose( /* TO TRANSLATORS: looks like
@@ -2283,14 +2283,14 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		                           Gtk::BUTTONS_OK,
 		                           true );
 
-		if ( selected_partition_ptr->get_byte_length() < fs.MIN )
+		if ( selected_partition_ptr->get_byte_length() < fs_cap.MIN )
 			dialog .set_secondary_text( String::ucompose(
 						/* TO TRANSLATORS: looks like
 						 * A fat16 file system requires a partition of at least 16.00 MiB.
 						 */
 						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs .MIN, 1 /* Byte */ ) ) );
+						Utils::format_size( fs_cap.MIN, 1 /* Byte */ ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose(
 						/* TO TRANSLATORS: looks like
@@ -2298,7 +2298,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 						 */
 						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs .MAX, 1 /* Byte */ ) ) );
+						Utils::format_size( fs_cap.MAX, 1 /* Byte */ ) ) );
 		
 		dialog .run() ;
 		return ;
@@ -2754,14 +2754,14 @@ void Win_GParted::activate_attempt_rescue_data()
 
 	/*TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb */
 	show_pulsebar(String::ucompose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
-	gpart_output="";
+	Glib::ustring gpart_output;
 	gparted_core.guess_partition_table(devices[ current_device ], gpart_output);
 	hide_pulsebar();
 	Dialog_Rescue_Data dialog;
 	dialog .set_transient_for( *this );
 
 	//Reads the output of gpart
-	dialog.init_partitions(&devices[ current_device ], this->gpart_output);
+	dialog.init_partitions( &devices[current_device], gpart_output );
 
 	if ( ! dialog.found_partitions() )
 	{

@@ -271,10 +271,8 @@ private:
 
 	//usefull variables which are used by many different functions...
 	unsigned short new_count;//new_count keeps track of the new created partitions
-	FS fs ;
 	bool OPERATIONSLIST_OPEN ;
-	Glib::ustring gpart_output;//Output of gpart command
-									
+
 	GParted_Core gparted_core ;
 	std::vector<Gtk::Label *> device_info ;
 					
