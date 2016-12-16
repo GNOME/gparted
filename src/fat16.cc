@@ -265,7 +265,7 @@ const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
 	// [2] Replicated in Wikikedia: label (command)
 	//     https://en.wikipedia.org/wiki/Label_%28command%29
 	Glib::ustring prohibited_chars( "*?.,;:/\\|+=<>[]" );
-	for ( unsigned int i = 0 ; i < label.size() ; i ++ )
+	for ( unsigned int i = 0 ; i < uppercase_label.size() ; i ++ )
 		if ( prohibited_chars.find( uppercase_label[i] ) == Glib::ustring::npos )
 			new_label.push_back( uppercase_label[i] );
 
