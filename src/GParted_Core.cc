@@ -3742,6 +3742,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	PedDevice* lp_device = NULL ;
 	PedDisk* lp_disk = NULL ;
 	PedPartition* lp_partition = NULL ;
+	PedGeometry *lp_geom = NULL;
 	bool device_is_open = false ;
 	Byte_Value bufsize = 4LL * KIBIBYTE ;
 	char * buf = NULL ;
@@ -3749,17 +3750,20 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	{
 		if ( partition.type == TYPE_UNPARTITIONED )
 		{
-			// Virtual partition spanning whole disk device
-			overall_success = true;
+			// Whole disk device; create a matching geometry
+			lp_geom = ped_geometry_new(lp_device,
+			                           partition.sector_start,
+			                           partition.get_sector_length());
 		}
 		else if ( get_disk( lp_device, lp_disk ) )
 		{
-			// Partitioned device
+			// Partitioned device; copy partition geometry
 			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
-			overall_success = ( lp_partition != NULL );
+			if (lp_partition)
+				lp_geom = ped_geometry_duplicate(&lp_partition->geom);
 		}
 
-		if ( overall_success && ped_device_open( lp_device ) )
+		if (lp_geom != NULL && ped_device_open(lp_device))
 		{
 			device_is_open = true ;
 
@@ -3768,7 +3772,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 			if ( buf )
 				memset( buf, 0, bufsize ) ;
 		}
-		overall_success &= device_is_open;
+		overall_success = device_is_open;
 	}
 
 	// Erase all file system super blocks, including their signatures.  The specified
@@ -3877,19 +3881,15 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 					                  Utils::format_size( byte_len, 1 ),
 					                  byte_offset ) ) ) ;
 
-			// Start sector of the whole disk device or the partition
-			Sector ptn_start = 0LL;
-			if ( lp_partition )
-				ptn_start = lp_partition->geom.start;
-
 			while ( written < byte_len )
 			{
 				//Write in bufsize amounts.  Last write may be smaller but
 				//  will still be a whole number of sectors.
 				Byte_Value amount = std::min( bufsize, byte_len - written ) ;
-				zero_success = ped_device_write( lp_device, buf,
-				                                 ptn_start + ( byte_offset + written ) / lp_device->sector_size,
-				                                 amount / lp_device->sector_size );
+				zero_success = ped_geometry_write(lp_geom,
+				                                  buf,
+				                                  (byte_offset + written) / lp_device->sector_size,
+				                                  amount / lp_device->sector_size);
 				if ( ! zero_success )
 					break ;
 				written += amount ;
@@ -3901,6 +3901,8 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	}
 	if ( buf )
 		free( buf ) ;
+	if (lp_geom != NULL)
+		ped_geometry_destroy(lp_geom);
 
 	//Linux kernel doesn't maintain buffer cache coherency between the whole disk
 	//  device and partition devices.  So even though the file system signatures
