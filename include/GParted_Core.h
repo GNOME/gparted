@@ -78,6 +78,7 @@ private:
 	//detectionstuff..
 	void set_thread_status_message( Glib::ustring msg ) ;
 	static Glib::ustring get_partition_path( PedPartition * lp_partition );
+	void set_device_from_disk( Device & device, const Glib::ustring & device_path );
 	void set_device_serial_number( Device & device );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
 	void set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,

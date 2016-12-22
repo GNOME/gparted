@@ -150,7 +150,6 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 {
 	std::vector<Device> &devices = *pdevices;
 	devices .clear() ;
-	Device temp_device ;
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
 	                                        // numbers incrementally loaded when BlockSpecial
 	                                        // objects are created in the following caches.
@@ -260,125 +259,9 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
 		set_thread_status_message( String::ucompose ( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
-		PedDevice* lp_device = NULL ;
-		PedDisk* lp_disk = NULL ;
-		if ( get_device_and_disk( device_paths[ t ], lp_device, lp_disk, false, true ) )
-		{
-			temp_device .Reset() ;
-
-			//device info..
-			temp_device.set_path( device_paths[t] );
-
-			temp_device .model 	=	lp_device ->model ;
-			temp_device .length 	=	lp_device ->length ;
-			temp_device .sector_size	=	lp_device ->sector_size ;
-			temp_device .heads 	=	lp_device ->bios_geom .heads ;
-			temp_device .sectors 	=	lp_device ->bios_geom .sectors ;
-			temp_device .cylinders	=	lp_device ->bios_geom .cylinders ;
-			temp_device .cylsize 	=	temp_device .heads * temp_device .sectors ; 
-			set_device_serial_number( temp_device );
-		
-			//make sure cylsize is at least 1 MiB
-			if ( temp_device .cylsize < (MEBIBYTE / temp_device .sector_size) )
-				temp_device .cylsize = (MEBIBYTE / temp_device .sector_size) ;
-
-			std::vector<Glib::ustring> messages;
-			FILESYSTEM fstype = detect_filesystem( lp_device, NULL, messages );
-			// FS_Info (blkid) recognised file system signature on whole disk
-			// device.  Need to detect before libparted reported partitioning
-			// to avoid bug in libparted 1.9.0 to 2.3 inclusive which
-			// recognised FAT file systems as MSDOS partition tables.  Fixed
-			// in parted 2.4 by commit:
-			//     616a2a1659d89ff90f9834016a451da8722df509
-			//     libparted: avoid regression when processing a whole-disk FAT partition
-			if ( fstype != FS_UNKNOWN )
-			{
-				// Clear the possible "unrecognised disk label" message
-				libparted_messages.clear();
-
-				temp_device.disktype = "none";
-				temp_device.max_prims = 1;
-				set_device_one_partition( temp_device, lp_device, fstype, messages );
-			}
-			// Partitioned drive (excluding "loop"), as recognised by libparted
-			else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
-			          strcmp( lp_disk->type->name, "loop" ) != 0         )
-			{
-				temp_device .disktype =	lp_disk ->type ->name ;
-				temp_device .max_prims = ped_disk_get_max_primary_partition_count( lp_disk ) ;
-
-				// Determine if partition naming is supported.
-				if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
-				{
-					temp_device.enable_partition_naming(
-							Utils::get_max_partition_name_length( temp_device.disktype ) );
-				}
-
-				set_device_partitions( temp_device, lp_device, lp_disk ) ;
-
-				if ( temp_device .highest_busy )
-				{
-					temp_device.readonly = ! commit_to_os( lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
-					//Clear libparted messages.  Typically these are:
-					//  The kernel was unable to re-read the partition table...
-					libparted_messages .clear() ;
-				}
-			}
-			// Drive just containing libparted "loop" signature and nothing
-			// else.  (Actually any drive reported by libparted as "loop" but
-			// not recognised by blkid on the whole disk device).
-			else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
-			          strcmp( lp_disk->type->name, "loop" ) == 0         )
-			{
-				temp_device.disktype = lp_disk->type->name;
-				temp_device.max_prims = 1;
-
-				// Create virtual partition covering the whole disk device
-				// with unknown contents.
-				Partition * partition_temp = new Partition();
-				partition_temp->Set( temp_device.get_path(),
-				                     lp_device->path,
-				                     1,
-				                     TYPE_PRIMARY,
-				                     true,
-				                     FS_UNKNOWN,
-				                     0LL,
-				                     temp_device.length - 1LL,
-				                     temp_device.sector_size,
-				                     false,
-				                     false );
-				// Place unknown file system message in this partition.
-				partition_temp->append_messages( messages );
-				temp_device.partitions.push_back_adopt( partition_temp );
-			}
-			// Unrecognised, unpartitioned drive.
-			else
-			{
-				temp_device.disktype =
-					/* TO TRANSLATORS:  unrecognized
-					 * means that the partition table for this
-					 * disk device is unknown or not recognized.
-					 */
-					_("unrecognized") ;
-				temp_device.max_prims = 1;
-
-				Partition * partition_temp = new Partition();
-				partition_temp->Set_Unallocated( temp_device.get_path(),
-				                                 true,
-				                                 0LL,
-				                                 temp_device.length - 1LL,
-				                                 temp_device.sector_size,
-				                                 false );
-				// Place libparted messages in this unallocated partition
-				partition_temp->append_messages( libparted_messages );
-				libparted_messages.clear();
-				temp_device.partitions.push_back_adopt( partition_temp );
-			}
-					
-			devices .push_back( temp_device ) ;
-			
-			destroy_device_and_disk( lp_device, lp_disk) ;
-		}
+		Device temp_device;
+		set_device_from_disk( temp_device, device_paths[t] );
+		devices.push_back( temp_device );
 	}
 
 	set_thread_status_message("") ;
@@ -984,6 +867,125 @@ Glib::ustring GParted_Core::get_partition_path( PedPartition * lp_partition )
 #endif
 
 	return partition_path ;
+}
+
+void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & device_path )
+{
+	PedDevice* lp_device = NULL;
+	PedDisk* lp_disk = NULL;
+	if ( get_device_and_disk( device_path, lp_device, lp_disk, false, true ) )
+	{
+		device.Reset();
+
+		// Device info ...
+		device.set_path( device_path );
+		device.model       = lp_device->model;
+		device.length      = lp_device->length;
+		device.sector_size = lp_device->sector_size;
+		device.heads       = lp_device->bios_geom.heads;
+		device.sectors     = lp_device->bios_geom.sectors;
+		device.cylinders   = lp_device->bios_geom.cylinders;
+		device.cylsize     = device.heads * device.sectors;
+		set_device_serial_number( device );
+
+		// Make sure cylsize is at least 1 MiB
+		if ( device.cylsize < (MEBIBYTE / device.sector_size) )
+			device.cylsize = MEBIBYTE / device.sector_size;
+
+		std::vector<Glib::ustring> messages;
+		FILESYSTEM fstype = detect_filesystem( lp_device, NULL, messages );
+		// FS_Info (blkid) recognised file system signature on whole disk device.
+		// Need to detect before libparted reported partitioning to avoid bug in
+		// libparted 1.9.0 to 2.3 inclusive which recognised FAT file systems as
+		// MSDOS partition tables.  Fixed in parted 2.4 by commit:
+		//     616a2a1659d89ff90f9834016a451da8722df509
+		//     libparted: avoid regression when processing a whole-disk FAT partition
+		if ( fstype != FS_UNKNOWN )
+		{
+			// Clear the possible "unrecognised disk label" message
+			libparted_messages.clear();
+
+			device.disktype = "none";
+			device.max_prims = 1;
+			set_device_one_partition( device, lp_device, fstype, messages );
+		}
+		// Partitioned drive (excluding "loop"), as recognised by libparted
+		else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+		          strcmp( lp_disk->type->name, "loop" ) != 0         )
+		{
+			device.disktype = lp_disk->type->name;
+			device.max_prims = ped_disk_get_max_primary_partition_count( lp_disk );
+
+			// Determine if partition naming is supported.
+			if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
+			{
+				device.enable_partition_naming(
+						Utils::get_max_partition_name_length( device.disktype ) );
+			}
+
+			set_device_partitions( device, lp_device, lp_disk );
+
+			if ( device.highest_busy )
+			{
+				device.readonly = ! commit_to_os( lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
+				// Clear libparted messages.  Typically these are:
+				//     The kernel was unable to re-read the partition table...
+				libparted_messages.clear();
+			}
+		}
+		// Drive just containing libparted "loop" signature and nothing else.
+		// (Actually any drive reported by libparted as "loop" but not recognised
+		// by blkid on the whole disk device).
+		else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+		          strcmp( lp_disk->type->name, "loop" ) == 0         )
+		{
+			device.disktype = lp_disk->type->name;
+			device.max_prims = 1;
+
+			// Create virtual partition covering the whole disk device with
+			// unknown contents.
+			Partition * partition_temp = new Partition();
+			partition_temp->Set( device.get_path(),
+			                     lp_device->path,
+			                     1,
+			                     TYPE_PRIMARY,
+			                     true,
+			                     FS_UNKNOWN,
+			                     0LL,
+			                     device.length - 1LL,
+			                     device.sector_size,
+			                     false,
+			                     false );
+			// Place unknown file system message in this partition.
+			partition_temp->append_messages( messages );
+			device.partitions.push_back_adopt( partition_temp );
+		}
+		// Unrecognised, unpartitioned drive.
+		else
+		{
+			device.disktype =
+				/* TO TRANSLATORS:  unrecognized
+				 * means that the partition table for this disk device is
+				 * unknown or not recognized.
+				 */
+				_("unrecognized");
+			device.max_prims = 1;
+
+			Partition * partition_temp = new Partition();
+			partition_temp->Set_Unallocated( device.get_path(),
+			                                 true,
+			                                 0LL,
+			                                 device.length - 1LL,
+			                                 device.sector_size,
+			                                 false );
+			// Place libparted messages in this unallocated partition
+			partition_temp->append_messages( libparted_messages );
+			libparted_messages.clear();
+			device.partitions.push_back_adopt( partition_temp );
+		}
+
+		destroy_device_and_disk( lp_device, lp_disk);
+	}
 }
 
 void GParted_Core::set_device_serial_number( Device & device )
@@ -3953,7 +3955,7 @@ bool GParted_Core::get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool st
 
 		// if ! disk and writable it's probably a HD without disklabel.
 		// We return true here and deal with them in
-		// GParted_Core::set_devices_thread().
+		// GParted_Core::set_device_from_disk().
 		if ( lp_disk || ( ! strict && ! lp_device ->read_only ) )
 			return true;
 
