@@ -873,7 +873,7 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 {
 	PedDevice* lp_device = NULL;
 	PedDisk* lp_disk = NULL;
-	if ( get_device_and_disk( device_path, lp_device, lp_disk, false, true ) )
+	if ( get_device( device_path, lp_device, true ) )
 	{
 		device.Reset();
 
@@ -909,79 +909,83 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 			device.max_prims = 1;
 			set_device_one_partition( device, lp_device, fstype, messages );
 		}
-		// Partitioned drive (excluding "loop"), as recognised by libparted
-		else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
-		          strcmp( lp_disk->type->name, "loop" ) != 0         )
+		// Partitioned drive
+		else if ( get_disk( lp_device, lp_disk, false ) )
 		{
-			device.disktype = lp_disk->type->name;
-			device.max_prims = ped_disk_get_max_primary_partition_count( lp_disk );
-
-			// Determine if partition naming is supported.
-			if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
+			// Partitioned drive (excluding "loop"), as recognised by libparted
+			if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+			     strcmp( lp_disk->type->name, "loop" ) != 0         )
 			{
-				device.enable_partition_naming(
-						Utils::get_max_partition_name_length( device.disktype ) );
+				device.disktype = lp_disk->type->name;
+				device.max_prims = ped_disk_get_max_primary_partition_count( lp_disk );
+
+				// Determine if partition naming is supported.
+				if ( ped_disk_type_check_feature( lp_disk->type, PED_DISK_TYPE_PARTITION_NAME ) )
+				{
+					device.enable_partition_naming(
+							Utils::get_max_partition_name_length( device.disktype ) );
+				}
+
+				set_device_partitions( device, lp_device, lp_disk );
+
+				if ( device.highest_busy )
+				{
+					device.readonly = ! commit_to_os( lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
+					// Clear libparted messages.  Typically these are:
+					//     The kernel was unable to re-read the partition table...
+					libparted_messages.clear();
+				}
 			}
-
-			set_device_partitions( device, lp_device, lp_disk );
-
-			if ( device.highest_busy )
+			// Drive just containing libparted "loop" signature and nothing
+			// else.  (Actually any drive reported by libparted as "loop" but
+			// not recognised by blkid on the whole disk device).
+			else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
+			          strcmp( lp_disk->type->name, "loop" ) == 0         )
 			{
-				device.readonly = ! commit_to_os( lp_disk, SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
-				// Clear libparted messages.  Typically these are:
-				//     The kernel was unable to re-read the partition table...
+				device.disktype = lp_disk->type->name;
+				device.max_prims = 1;
+
+				// Create virtual partition covering the whole disk device
+				// with unknown contents.
+				Partition * partition_temp = new Partition();
+				partition_temp->Set( device.get_path(),
+				                     lp_device->path,
+				                     1,
+				                     TYPE_PRIMARY,
+				                     true,
+				                     FS_UNKNOWN,
+				                     0LL,
+				                     device.length - 1LL,
+				                     device.sector_size,
+				                     false,
+				                     false );
+				// Place unknown file system message in this partition.
+				partition_temp->append_messages( messages );
+				device.partitions.push_back_adopt( partition_temp );
+			}
+			// Unrecognised, unpartitioned drive.
+			else
+			{
+				device.disktype =
+					/* TO TRANSLATORS:  unrecognized
+					 * means that the partition table for this disk
+					 * device is unknown or not recognized.
+					 */
+					_("unrecognized");
+				device.max_prims = 1;
+
+				Partition * partition_temp = new Partition();
+				partition_temp->Set_Unallocated( device.get_path(),
+				                                 true,
+				                                 0LL,
+				                                 device.length - 1LL,
+				                                 device.sector_size,
+				                                 false );
+				// Place libparted messages in this unallocated partition
+				partition_temp->append_messages( libparted_messages );
 				libparted_messages.clear();
+				device.partitions.push_back_adopt( partition_temp );
 			}
-		}
-		// Drive just containing libparted "loop" signature and nothing else.
-		// (Actually any drive reported by libparted as "loop" but not recognised
-		// by blkid on the whole disk device).
-		else if ( lp_disk && lp_disk->type && lp_disk->type->name &&
-		          strcmp( lp_disk->type->name, "loop" ) == 0         )
-		{
-			device.disktype = lp_disk->type->name;
-			device.max_prims = 1;
-
-			// Create virtual partition covering the whole disk device with
-			// unknown contents.
-			Partition * partition_temp = new Partition();
-			partition_temp->Set( device.get_path(),
-			                     lp_device->path,
-			                     1,
-			                     TYPE_PRIMARY,
-			                     true,
-			                     FS_UNKNOWN,
-			                     0LL,
-			                     device.length - 1LL,
-			                     device.sector_size,
-			                     false,
-			                     false );
-			// Place unknown file system message in this partition.
-			partition_temp->append_messages( messages );
-			device.partitions.push_back_adopt( partition_temp );
-		}
-		// Unrecognised, unpartitioned drive.
-		else
-		{
-			device.disktype =
-				/* TO TRANSLATORS:  unrecognized
-				 * means that the partition table for this disk device is
-				 * unknown or not recognized.
-				 */
-				_("unrecognized");
-			device.max_prims = 1;
-
-			Partition * partition_temp = new Partition();
-			partition_temp->Set_Unallocated( device.get_path(),
-			                                 true,
-			                                 0LL,
-			                                 device.length - 1LL,
-			                                 device.sector_size,
-			                                 false );
-			// Place libparted messages in this unallocated partition
-			partition_temp->append_messages( libparted_messages );
-			libparted_messages.clear();
-			device.partitions.push_back_adopt( partition_temp );
 		}
 
 		destroy_device_and_disk( lp_device, lp_disk);
