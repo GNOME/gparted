@@ -16,6 +16,7 @@
 
 #include "FS_Info.h"
 #include "BlockSpecial.h"
+#include "Proc_Partitions_Info.h"
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
@@ -158,12 +159,55 @@ void FS_Info::set_commands_found()
 	}
 }
 
+const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
+{
+	BlockSpecial bs = BlockSpecial( path );
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( bs == fs_info_cache[i].path )
+			return fs_info_cache[i];
+
+	static FS_Entry not_found = {BlockSpecial(), "", "", "", false, ""};
+	return not_found;
+}
+
 void FS_Info::load_fs_info_cache()
 {
 	fs_info_cache.clear();
+	// Run "blkid" and load entries into the cache.
+	run_blkid_load_cache();
 
-	// Parse blkid output line by line extracting fields mandatory field path and
-	// optional fields: type, sec_type, uuid, label.
+	// (#771244) Ensure the cache has entries for all whole disk devices, even if
+	// those entries are blank.  Needed so that an ISO9660 image stored on a whole
+	// disk device is detected before any embedded partitions within the image.
+	const BlockSpecial empty_bs = BlockSpecial();
+	std::vector<Glib::ustring> all_devices = Proc_Partitions_Info::get_device_paths();
+	for ( unsigned int i = 0 ; i < all_devices.size() ; i ++ )
+	{
+		const FS_Entry & fs_entry = get_cache_entry_by_path( all_devices[i] );
+		if ( fs_entry.path == empty_bs )
+		{
+			// Run "blkid PATH" and load entry into cache for missing entries.
+			load_fs_info_cache_extra_for_path( all_devices[i] );
+		}
+	}
+}
+
+void FS_Info::load_fs_info_cache_extra_for_path( const Glib::ustring & path )
+{
+	bool entry_added = run_blkid_load_cache( path );
+	if ( ! entry_added )
+	{
+		// Ran "blkid PATH" but didn't find details suitable for loading as a
+		// cache entry so add a blank entry for PATH name here.
+		FS_Entry fs_entry = {BlockSpecial( path ), "", "", "", false, ""};
+		fs_info_cache.push_back( fs_entry );
+	}
+}
+
+bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
+{
+	// Parse blkid output line by line extracting mandatory field: path and optional
+	// fields: type, sec_type, uuid, label.
 	// Example output:
 	//     /dev/sda1: UUID="f828ee8c-1e16-4ca9-b234-e4949dcd4bd1" TYPE="xfs"
 	//     /dev/sda2: UUID="p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG" TYPE="LVM2_member"
@@ -173,20 +217,24 @@ void FS_Info::load_fs_info_cache()
 	//     /dev/sdb1: LABEL="test-ext3" UUID="f218c3b8-237e-4fbe-92c5-76623bba4062" SEC_TYPE="ext2" TYPE="ext3" PARTUUID="71b3e059-30c5-492e-a526-9251dff7bbeb"
 	//     /dev/sdb2: SEC_TYPE="msdos" LABEL="TEST-FAT16" UUID="9F87-1061" TYPE="vfat" PARTUUID="9d07ad9a-d468-428f-9bfd-724f5efae4fb"
 	//     /dev/sdb3: PARTUUID="bb8438e1-d9f1-45d3-9888-e990b598900d"
+	Glib::ustring cmd = "blkid";
+	if ( path.size() )
+		cmd = cmd + " " + path;
 	Glib::ustring output;
 	Glib::ustring error;
-	if ( blkid_found                                              &&
-	     ! Utils::execute_command( "blkid", output, error, true )    )
+	bool loaded_entries = false;
+	if ( blkid_found                                          &&
+	     ! Utils::execute_command( cmd, output, error, true )    )
 	{
 		std::vector<Glib::ustring> lines;
 		Utils::split( output, lines, "\n" );
 		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
 		{
 			FS_Entry fs_entry = {BlockSpecial(), "", "", "", false, ""};
-			Glib::ustring path = Utils::regexp_label( lines[i], "^(.*): " );
-			if ( path.length() > 0 )
+			Glib::ustring entry_path = Utils::regexp_label( lines[i], "^(.*): " );
+			if ( entry_path.length() > 0 )
 			{
-				fs_entry.path = BlockSpecial( path );
+				fs_entry.path = BlockSpecial( entry_path );
 				fs_entry.type = Utils::regexp_label( lines[i], " TYPE=\"([^\"]*)\"" );
 				fs_entry.sec_type = Utils::regexp_label( lines[i], " SEC_TYPE=\"([^\"]*)\"" );
 				fs_entry.uuid = Utils::regexp_label( lines[i], " UUID=\"([^\"]*)\"" );
@@ -196,19 +244,12 @@ void FS_Info::load_fs_info_cache()
 					fs_entry.label = Utils::regexp_label( lines[i], " LABEL=\"([^\"]*)\"" );
 				}
 				fs_info_cache.push_back( fs_entry );
+				loaded_entries = true;
 			}
 		}
 	}
-}
 
-const FS_Entry & FS_Info::get_cache_entry_by_path( const Glib::ustring & path )
-{
-	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
-		if ( path == fs_info_cache[i].path )
-			return fs_info_cache[i];
-
-	static FS_Entry not_found = {BlockSpecial(), "", "", "", false, ""};
-	return not_found;
+	return loaded_entries;
 }
 
 }//GParted

@@ -155,7 +155,8 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	                                        // objects are created in the following caches.
 	Proc_Partitions_Info::load_cache();     // SHOULD BE SECOND.  Caches /proc/partitions and
 	                                        // pre-populates BlockSpecial cache.
-	FS_Info::load_cache();
+	FS_Info::load_cache();                  // SHOULD BE THRID.  Caches file system details
+	                                        // from blkid output.
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
 	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
 	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed

@@ -48,8 +48,10 @@ public:
 private:
 	static void initialize_if_required();
 	static void set_commands_found();
-	static void load_fs_info_cache();
 	static const FS_Entry & get_cache_entry_by_path( const Glib::ustring & path );
+	static void load_fs_info_cache();
+	static void load_fs_info_cache_extra_for_path( const Glib::ustring & path );
+	static bool run_blkid_load_cache( const Glib::ustring & path = "" );
 
 	static bool fs_info_cache_initialized ;
 	static bool blkid_found ;
