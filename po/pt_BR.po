@@ -16,18 +16,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-20 16:05+0000\n"
-"PO-Revision-Date: 2016-05-30 17:27-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted"
+"&keywords=I18N+L10N&component=application\n"
+"POT-Creation-Date: 2016-12-16 21:29+0000\n"
+"PO-Revision-Date: 2016-12-26 06:56-0200\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Virtaal 1.0.0-beta1\n"
 "X-Project-Style: gnome\n"
 
 #: ../gparted.appdata.xml.in.h:1
@@ -45,8 +45,8 @@ msgid ""
 "for new operating systems, or attempt data rescue from lost partitions."
 msgstr ""
 "Com GParted você pode redimensionar, copiar, rotular e mover partições se "
-"perda de dados. Essas ações permitem que você aumente ou reduza seu drive "
-"C:, cria espaço para novos sistemas operacionais ou tente recuperar dados de "
+"perda de dados. Essas ações permitem que você aumente ou reduza seu drive C:"
+", cria espaço para novos sistemas operacionais ou tente recuperar dados de "
 "partições perdidas."
 
 #: ../gparted.appdata.xml.in.h:3
@@ -61,8 +61,8 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
-#: ../src/Win_GParted.cc:79 ../src/Win_GParted.cc:1423
-#: ../src/Win_GParted.cc:1618
+#: ../src/Win_GParted.cc:80 ../src/Win_GParted.cc:1432
+#: ../src/Win_GParted.cc:1627
 msgid "GParted"
 msgstr "GParted"
 
@@ -92,24 +92,24 @@ msgstr "(UUID parcialmente novo - será gerado aleatoriamente)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:71 ../src/Copy_Blocks.cc:181 ../src/ProgressBar.cc:106
+#: ../src/CopyBlocks.cc:71 ../src/CopyBlocks.cc:181 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 de %2 copiados"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:156
+#: ../src/CopyBlocks.cc:156
 msgid "copy %1 using a block size of %2"
 msgstr "copiar %1 usando um tamanho de bloco de %2"
 
-#: ../src/Copy_Blocks.cc:221
+#: ../src/CopyBlocks.cc:221
 msgid "Operation Canceled"
 msgstr "Operação cancelada"
 
-#: ../src/Copy_Blocks.cc:233
+#: ../src/CopyBlocks.cc:233
 msgid "Error while writing block at sector %1"
 msgstr "Erro ao gravar bloco no setor %1"
 
-#: ../src/Copy_Blocks.cc:238
+#: ../src/CopyBlocks.cc:238
 msgid "Error while reading block at sector %1"
 msgstr "Erro ao ler bloco no setor %1"
 
@@ -153,7 +153,7 @@ msgstr "Nenhum"
 msgid "Resize"
 msgstr "Redimensionar"
 
-#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:254
+#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:255
 msgid "Resize/Move"
 msgstr "Redimensionar/Mover"
 
@@ -207,7 +207,7 @@ msgstr "Aviso:"
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
 #: ../src/Dialog_Partition_Info.cc:251 ../src/DialogFeatures.cc:44
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:44
 msgid "File System"
 msgstr "Sistema de arquivos"
 
@@ -219,7 +219,7 @@ msgid "File system:"
 msgstr "Sistema de arquivos:"
 
 #. LUKS uuid
-#: ../src/Dialog_Partition_Info.cc:291 ../src/Dialog_Partition_Info.cc:562
+#: ../src/Dialog_Partition_Info.cc:291 ../src/Dialog_Partition_Info.cc:561
 msgid "UUID:"
 msgstr "UUID:"
 
@@ -238,7 +238,7 @@ msgid "Closed"
 msgstr "Fechada"
 
 #. LUKS status
-#: ../src/Dialog_Partition_Info.cc:317 ../src/Dialog_Partition_Info.cc:568
+#: ../src/Dialog_Partition_Info.cc:317 ../src/Dialog_Partition_Info.cc:567
 msgid "Status:"
 msgstr "Status:"
 
@@ -246,7 +246,7 @@ msgstr "Status:"
 #. * means that the data in encrypted and hasn't been made
 #. * accessible by opening it with the passphrase.
 #.
-#: ../src/Dialog_Partition_Info.cc:327
+#: ../src/Dialog_Partition_Info.cc:326
 msgid "Not accessible (Encrypted)"
 msgstr "Não acessível (criptografia)"
 
@@ -254,7 +254,7 @@ msgstr "Não acessível (criptografia)"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:337
+#: ../src/Dialog_Partition_Info.cc:336
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Ocupada (Pelo menos uma partição lógica está montada)"
 
@@ -262,14 +262,14 @@ msgstr "Ocupada (Pelo menos uma partição lógica está montada)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:347
+#: ../src/Dialog_Partition_Info.cc:346
 msgid "Active"
 msgstr "Ativa"
 
 # Essa mensagem ainda não existe, mas está aqui
 # antecipando uma correção na mensagem anterior
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:361
+#: ../src/Dialog_Partition_Info.cc:360
 msgid "Mounted on %1"
 msgstr "Montada em %1"
 
@@ -277,7 +277,7 @@ msgstr "Montada em %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:371
+#: ../src/Dialog_Partition_Info.cc:370
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Desocupada (Não há nenhuma partição lógica montada)"
 
@@ -289,7 +289,7 @@ msgstr "Desocupada (Não há nenhuma partição lógica montada)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:380 ../src/Dialog_Partition_Info.cc:409
+#: ../src/Dialog_Partition_Info.cc:379 ../src/Dialog_Partition_Info.cc:408
 msgid "Not active"
 msgstr "Não ativa"
 
@@ -298,7 +298,7 @@ msgstr "Não ativa"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:395
+#: ../src/Dialog_Partition_Info.cc:394
 msgid "Not active (Not a member of any volume group)"
 msgstr "Inativa (Não faz parte de nenhum grupo de volumes)"
 
@@ -308,101 +308,101 @@ msgstr "Inativa (Não faz parte de nenhum grupo de volumes)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:403
+#: ../src/Dialog_Partition_Info.cc:402
 msgid "Not active and exported"
 msgstr "Não ativa e exportada"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:416
+#: ../src/Dialog_Partition_Info.cc:415
 msgid "Not mounted"
 msgstr "Não montada"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:2947
+#: ../src/Dialog_Partition_Info.cc:425 ../src/Win_GParted.cc:2961
 msgid "Volume Group:"
 msgstr "Grupo de volume:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:437 ../src/Win_GParted.cc:2948
+#: ../src/Dialog_Partition_Info.cc:436 ../src/Win_GParted.cc:2962
 msgid "Members:"
 msgstr "Membros:"
 
 #. Logical Volumes
-#: ../src/Dialog_Partition_Info.cc:461
+#: ../src/Dialog_Partition_Info.cc:460
 msgid "Logical Volumes:"
 msgstr "Unidades lógicas:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:477
+#: ../src/Dialog_Partition_Info.cc:476
 msgid "Used:"
 msgstr "Usado:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:491
+#: ../src/Dialog_Partition_Info.cc:490
 msgid "Unused:"
 msgstr "Livre:"
 
-#: ../src/Dialog_Partition_Info.cc:508
+#: ../src/Dialog_Partition_Info.cc:507
 msgid "Unallocated:"
 msgstr "Não alocado:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:524 ../src/Win_GParted.cc:494
+#: ../src/Dialog_Partition_Info.cc:523 ../src/Win_GParted.cc:495
 msgid "Size:"
 msgstr "Tamanho:"
 
 #. ENCRYPTION DETAIL SECTION
 #. encryption headline
-#: ../src/Dialog_Partition_Info.cc:544
+#: ../src/Dialog_Partition_Info.cc:543
 msgid "Encryption"
 msgstr "Criptografia"
 
 #. Encryption
-#: ../src/Dialog_Partition_Info.cc:548
+#: ../src/Dialog_Partition_Info.cc:547
 msgid "Encryption:"
 msgstr "Criptografia:"
 
 #. LUKS path
 #. Left field & value pair area
 #. path
-#: ../src/Dialog_Partition_Info.cc:554 ../src/Dialog_Partition_Info.cc:594
-#: ../src/Win_GParted.cc:502
+#: ../src/Dialog_Partition_Info.cc:553 ../src/Dialog_Partition_Info.cc:593
+#: ../src/Win_GParted.cc:503
 msgid "Path:"
 msgstr "Caminho:"
 
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:583 ../src/TreeView_Detail.cc:37
+#: ../src/Dialog_Partition_Info.cc:582 ../src/TreeView_Detail.cc:42
 msgid "Partition"
 msgstr "Partição"
 
 #. name
-#: ../src/Dialog_Partition_Info.cc:606 ../src/Dialog_Partition_Name.cc:41
+#: ../src/Dialog_Partition_Info.cc:605 ../src/Dialog_Partition_Name.cc:41
 msgid "Name:"
 msgstr "Nome:"
 
 #. flags
-#: ../src/Dialog_Partition_Info.cc:616
+#: ../src/Dialog_Partition_Info.cc:615
 msgid "Flags:"
 msgstr "Flags:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:628
+#: ../src/Dialog_Partition_Info.cc:627
 msgid "First sector:"
 msgstr "Primeiro setor:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:638
+#: ../src/Dialog_Partition_Info.cc:637
 msgid "Last sector:"
 msgstr "Último setor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:648 ../src/Win_GParted.cc:552
+#: ../src/Dialog_Partition_Info.cc:647 ../src/Win_GParted.cc:553
 msgid "Total sectors:"
 msgstr "Total de setores:"
 
@@ -444,11 +444,11 @@ msgstr "Nome da partição:"
 msgid "New Partition #%1"
 msgstr "Nova partição nº %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:94
+#: ../src/Dialog_Partition_Resize_Move.cc:95
 msgid "Resize/Move %1"
 msgstr "Redimensionar/Mover %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:99
+#: ../src/Dialog_Partition_Resize_Move.cc:100
 msgid "Resize %1"
 msgstr "Redimensionar %1"
 
@@ -622,7 +622,7 @@ msgstr "Copiar"
 msgid "Check"
 msgstr "Verificar"
 
-#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:41
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:46
 msgid "Label"
 msgstr "Rótulo"
 
@@ -820,36 +820,41 @@ msgid "update %1 entry"
 msgstr "atualizar entrada em %1"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:42
 msgid "_Mount"
 msgstr "_Montar em"
 
-#: ../src/FileSystem.cc:44
+#: ../src/FileSystem.cc:43
 msgid "_Unmount"
 msgstr "_Desmontar"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:234
+#: ../src/FileSystem.cc:233
 msgid "Created directory %1"
 msgstr "Criado o diretório %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:261
+#: ../src/FileSystem.cc:260
 msgid "Removed directory %1"
 msgstr "Removido o diretório %1"
 
+#: ../src/GParted_Core.cc:73
+#| msgid "GParted"
+msgid "GParted Bug"
+msgstr "Erro do GParted"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:195 ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:185 ../src/GParted_Core.cc:194
 msgid "Scanning %1"
 msgstr "Varrendo %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:223 ../src/GParted_Core.cc:248
+#: ../src/GParted_Core.cc:213 ../src/GParted_Core.cc:238
 msgid "Confirming %1"
 msgstr "Confirmando %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:262
 msgid "Searching %1 partitions"
 msgstr "Pesquisando partições de %1"
 
@@ -857,68 +862,68 @@ msgstr "Pesquisando partições de %1"
 #. * means that the partition table for this
 #. * disk device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:373
+#: ../src/GParted_Core.cc:362
 msgid "unrecognized"
 msgstr "não reconhecido"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:691
+#: ../src/GParted_Core.cc:649
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "A partição não pode ter um comprimento de %1 setores"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:705
+#: ../src/GParted_Core.cc:663
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Uma partição com (%1) setores utilizados maior que o comprimento (%2) não é "
 "válido"
 
-#: ../src/GParted_Core.cc:831
+#: ../src/GParted_Core.cc:788
 msgid "libparted messages"
 msgstr "mensagens da libparted"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1708
+#: ../src/GParted_Core.cc:1491
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr ""
 "Não foi possível detectar o sistema de arquivos! As possíveis razões são:"
 
-#: ../src/GParted_Core.cc:1710
+#: ../src/GParted_Core.cc:1493
 msgid "The file system is damaged"
 msgstr "O sistema de arquivos está danificado"
 
-#: ../src/GParted_Core.cc:1712
+#: ../src/GParted_Core.cc:1495
 msgid "The file system is unknown to GParted"
 msgstr "O sistema de arquivos é desconhecido para o GParted"
 
-#: ../src/GParted_Core.cc:1714
+#: ../src/GParted_Core.cc:1497
 msgid "There is no file system available (unformatted)"
 msgstr "Não há nenhum sistema de arquivos disponível (não formatado)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1717
+#: ../src/GParted_Core.cc:1500
 msgid "The device entry %1 is missing"
 msgstr "A entrada do dispositivo %1 está faltando"
 
-#: ../src/GParted_Core.cc:1876
+#: ../src/GParted_Core.cc:1655
 msgid "Unable to find mount point"
 msgstr "Não foi possível localizar o ponto de montagem"
 
-#: ../src/GParted_Core.cc:1996
+#: ../src/GParted_Core.cc:1772
 msgid "Unable to read the contents of this file system!"
 msgstr "Não foi possível ler o conteúdo deste sistema de arquivos!"
 
-#: ../src/GParted_Core.cc:1998
+#: ../src/GParted_Core.cc:1774
 msgid "Because of this some operations may be unavailable."
 msgstr "Por isso, algumas operações podem ficar indisponíveis."
 
-#: ../src/GParted_Core.cc:2002
+#: ../src/GParted_Core.cc:1778
 msgid "The cause might be a missing software package."
 msgstr "A causa pode ser um pacote de software ausente."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:2005
+#: ../src/GParted_Core.cc:1781
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -927,7 +932,7 @@ msgstr ""
 "%1:  %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:2015
+#: ../src/GParted_Core.cc:1791
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 de espaço não alocado dentro da partição."
 
@@ -935,7 +940,7 @@ msgstr "%1 de espaço não alocado dentro da partição."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:2025
+#: ../src/GParted_Core.cc:1801
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -943,11 +948,11 @@ msgstr ""
 "Para aumentar o sistema de arquivos a fim de preencher a partição, selecione "
 "a partição e escolha o item do menu:"
 
-#: ../src/GParted_Core.cc:2027
+#: ../src/GParted_Core.cc:1803
 msgid "Partition --> Check."
 msgstr "Partição --> Verificar."
 
-#: ../src/GParted_Core.cc:2134
+#: ../src/GParted_Core.cc:1910
 msgid "create empty partition"
 msgstr "criar partição vazia"
 
@@ -961,90 +966,90 @@ msgstr "criar partição vazia"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2208 ../src/GParted_Core.cc:3523
+#: ../src/GParted_Core.cc:1986 ../src/GParted_Core.cc:3366
 msgid "path: %1 (%2)"
 msgstr "caminho: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2209 ../src/GParted_Core.cc:3526
+#: ../src/GParted_Core.cc:1987 ../src/GParted_Core.cc:3369
 msgid "partition"
 msgstr "partição"
 
-#: ../src/GParted_Core.cc:2210 ../src/GParted_Core.cc:3527
+#: ../src/GParted_Core.cc:1988 ../src/GParted_Core.cc:3370
 msgid "start: %1"
 msgstr "início: %1"
 
-#: ../src/GParted_Core.cc:2211 ../src/GParted_Core.cc:3528
+#: ../src/GParted_Core.cc:1989 ../src/GParted_Core.cc:3371
 msgid "end: %1"
 msgstr "fim: %1"
 
-#: ../src/GParted_Core.cc:2212 ../src/GParted_Core.cc:3529
+#: ../src/GParted_Core.cc:1990 ../src/GParted_Core.cc:3372
 msgid "size: %1 (%2)"
 msgstr "tamanho: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2244 ../src/linux_swap.cc:173
+#: ../src/GParted_Core.cc:2022
 msgid "create new %1 file system"
 msgstr "criar novo sistema de arquivos %1"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2061
 msgid "delete partition"
 msgstr "excluir partição"
 
-#: ../src/GParted_Core.cc:2341
+#: ../src/GParted_Core.cc:2116
 msgid "delete %1 file system"
 msgstr "apagar %1 sistema de arquivos"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2358 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2133 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Limpa o rótulo do sistema de arquivos em %1"
 
-#: ../src/GParted_Core.cc:2361
+#: ../src/GParted_Core.cc:2136
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Define o rótulo do sistema de arquivos para \"%1\" em %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2390 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2165 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Limpa o nome da partição em %1"
 
-#: ../src/GParted_Core.cc:2393
+#: ../src/GParted_Core.cc:2168
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Define o nome da partição para \"%1\" em %2"
 
-#: ../src/GParted_Core.cc:2418
+#: ../src/GParted_Core.cc:2193
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Define metade do UUID em %1 como um novo valor aleatório"
 
-#: ../src/GParted_Core.cc:2423
+#: ../src/GParted_Core.cc:2198
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Define o UUID em %1 como um novo valor aleatório"
 
-#. TO TRANSLATORS:  moving requires old and new length to be the same
-#. * means that the length in bytes of the old partition and new partition
-#. * must be the same.  If the sector sizes of the old partition and the
-#. * new partition are the same, then the length in sectors must be the same.
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to change the size of a partition when performing a move only
+#. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2511
-msgid "moving requires old and new length to be the same"
-msgstr "mover requer que o antigo e novo comprimento sejam o mesmo"
+#: ../src/GParted_Core.cc:2286
+msgid "size of the partition is changing for a move only step"
+msgstr "tamanho da partição está mudando para uma etapa de apenas movimentação"
 
-#: ../src/GParted_Core.cc:2541
+#: ../src/GParted_Core.cc:2318
 msgid "rollback last change to the partition table"
 msgstr "desfazer a última mudança na tabela de partições"
 
-#: ../src/GParted_Core.cc:2590
+#: ../src/GParted_Core.cc:2367
 msgid "move file system to the left"
 msgstr "mover o sistema de arquivos para a esquerda"
 
-#: ../src/GParted_Core.cc:2592
+#: ../src/GParted_Core.cc:2369
 msgid "move file system to the right"
 msgstr "mover o sistema de arquivos para a direita"
 
-#: ../src/GParted_Core.cc:2595
+#: ../src/GParted_Core.cc:2372
 msgid "move file system"
 msgstr "mover o sistema de arquivos"
 
-#: ../src/GParted_Core.cc:2597
+#: ../src/GParted_Core.cc:2374
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1052,51 +1057,58 @@ msgstr ""
 "o antigo e o novo sistema de arquivos possuem a mesma posição. Ignorando "
 "esta operação"
 
-#: ../src/GParted_Core.cc:2660
+#: ../src/GParted_Core.cc:2440
 msgid "using libparted"
 msgstr "usando libparted"
 
-#: ../src/GParted_Core.cc:2723
-msgid "resizing requires old and new start to be the same"
-msgstr "redimensionar requer que o antigo e o novo início sejam o mesmo"
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to move the start of the partition when performing a resize
+#. * only step which is not permitted to change the start of the
+#. * partition.
+#.
+#: ../src/GParted_Core.cc:2514
+msgid "start of the partition is changing for a resize only step"
+msgstr ""
+"início da partição está mudando para uma etapa de apenas redimensionamento"
 
-#: ../src/GParted_Core.cc:2793
+#: ../src/GParted_Core.cc:2586
 msgid "resize/move partition"
 msgstr "redimensionar/mover partição"
 
-#: ../src/GParted_Core.cc:2796
+#: ../src/GParted_Core.cc:2589
 msgid "move partition to the right"
 msgstr "mover partição para a direita"
 
-#: ../src/GParted_Core.cc:2799
+#: ../src/GParted_Core.cc:2592
 msgid "move partition to the left"
 msgstr "mover partição para a esquerda"
 
-#: ../src/GParted_Core.cc:2802
+#: ../src/GParted_Core.cc:2595
 msgid "grow partition from %1 to %2"
 msgstr "aumentar partição de %1 para %2"
 
-#: ../src/GParted_Core.cc:2805
+#: ../src/GParted_Core.cc:2598
 msgid "shrink partition from %1 to %2"
 msgstr "diminuir partição de %1 para %2"
 
-#: ../src/GParted_Core.cc:2808
+#: ../src/GParted_Core.cc:2601
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "mover partição para a direita e aumentá-la de %1 para %2"
 
-#: ../src/GParted_Core.cc:2811
+#: ../src/GParted_Core.cc:2604
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "mover partição para a direita e diminuí-la de %1 para %2"
 
-#: ../src/GParted_Core.cc:2814
+#: ../src/GParted_Core.cc:2607
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "mover partição para a esquerda e aumentá-la de %1 para %2"
 
-#: ../src/GParted_Core.cc:2817
+#: ../src/GParted_Core.cc:2610
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "mover partição para a esquerda e diminuí-la de %1 para %2"
 
-#: ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:2625
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1104,193 +1116,201 @@ msgstr ""
 "a nova e a antiga partição possuem o mesmo tamanho e posição. Ignorando esta "
 "operação"
 
-#: ../src/GParted_Core.cc:2842
+#: ../src/GParted_Core.cc:2635
 msgid "old start: %1"
 msgstr "início antigo: %1"
 
-#: ../src/GParted_Core.cc:2843
+#: ../src/GParted_Core.cc:2636
 msgid "old end: %1"
 msgstr "fim antigo: %1"
 
-#: ../src/GParted_Core.cc:2844
+#: ../src/GParted_Core.cc:2637
 msgid "old size: %1 (%2)"
 msgstr "tamanho antigo: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2909 ../src/GParted_Core.cc:3613
+#: ../src/GParted_Core.cc:2706 ../src/GParted_Core.cc:3456
 msgid "new start: %1"
 msgstr "novo início: %1"
 
-#: ../src/GParted_Core.cc:2910 ../src/GParted_Core.cc:3614
+#: ../src/GParted_Core.cc:2707 ../src/GParted_Core.cc:3457
 msgid "new end: %1"
 msgstr "novo fim: %1"
 
-#: ../src/GParted_Core.cc:2911 ../src/GParted_Core.cc:3615
+#: ../src/GParted_Core.cc:2708 ../src/GParted_Core.cc:3458
 msgid "new size: %1 (%2)"
 msgstr "novo tamanho: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2938 ../src/GParted_Core.cc:3561
+#: ../src/GParted_Core.cc:2735 ../src/GParted_Core.cc:3404
 msgid "requested start: %1"
 msgstr "início requisitado: %1"
 
-#: ../src/GParted_Core.cc:2939 ../src/GParted_Core.cc:3562
+#: ../src/GParted_Core.cc:2736 ../src/GParted_Core.cc:3405
 msgid "requested end: %1"
 msgstr "fim requisitado: %1"
 
-#: ../src/GParted_Core.cc:2940 ../src/GParted_Core.cc:3563
+#: ../src/GParted_Core.cc:2737 ../src/GParted_Core.cc:3406
 msgid "requested size: %1 (%2)"
 msgstr "tamanho requisitado: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2965
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to grow the partition size or keep it the same when performing
+#. * a shrink partition only step.
+#.
+#: ../src/GParted_Core.cc:2762
+msgid "the new partition size is larger or the same for a shrink only step"
+msgstr ""
+"o novo tamanho da partição é maior que, ou mesmo tamanho, para uma etapa de "
+"apenas redução"
+
+#: ../src/GParted_Core.cc:2767
 msgid "shrink file system"
 msgstr "reduzir o sistema de arquivos"
 
-#: ../src/GParted_Core.cc:2969
-msgid "grow file system"
-msgstr "aumentar o sistema de arquivos"
-
-#: ../src/GParted_Core.cc:2972
-msgid "resize file system"
-msgstr "redimensionar o sistema de arquivos"
-
-#: ../src/GParted_Core.cc:2975
-msgid ""
-"new and old file system have the same size.  Hence skipping this operation"
-msgstr ""
-"o novo e o antigo sistema de arquivos possuem o mesmo tamanho. Ignorando "
-"esta operação"
-
-#: ../src/GParted_Core.cc:3016
+#: ../src/GParted_Core.cc:2775
 msgid "grow file system to fill the partition"
 msgstr "aumentar o sistema de arquivos para preencher a partição"
 
-#: ../src/GParted_Core.cc:3021
+#: ../src/GParted_Core.cc:2786
 msgid "growing is not available for this file system"
 msgstr "aumentar não está disponível para este sistema de arquivos"
 
-#: ../src/GParted_Core.cc:3030
+#: ../src/GParted_Core.cc:2795
 msgid "growing the file system is currently disallowed"
 msgstr "aumentar o sistema de arquivos está atualmente desabilitado"
 
-#: ../src/GParted_Core.cc:3056
+#. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
+#: ../src/GParted_Core.cc:2819
+msgid "not a %1 file system for a recreate %1 only step"
+msgstr "não é um sistema de arquivos %1 para recriar uma etapa de apenas %1"
+
+#. TO TRANSLATORS: looks like   recreate linux-swap file system
+#: ../src/GParted_Core.cc:2831
+#| msgid "create new %1 file system"
+msgid "recreate %1 file system"
+msgstr "recriar o sistema de arquivos %1"
+
+#: ../src/GParted_Core.cc:2897
 msgid "the destination is smaller than the source partition"
 msgstr "o destino é menor do que a partição origem"
 
-#: ../src/GParted_Core.cc:3079
-msgid "copy file system of %1 to %2"
+#: ../src/GParted_Core.cc:2940
+#| msgid "copy file system of %1 to %2"
+msgid "copy file system from %1 to %2"
 msgstr "copiar o sistema de arquivos de %1 para %2"
 
-#: ../src/GParted_Core.cc:3175
+#: ../src/GParted_Core.cc:3021
 msgid "using internal algorithm"
 msgstr "usando algoritmo interno"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3178
+#: ../src/GParted_Core.cc:3024
 msgid "copy %1"
 msgstr "copiar %1"
 
-#: ../src/GParted_Core.cc:3181
+#: ../src/GParted_Core.cc:3027
 msgid "finding optimal block size"
 msgstr "localizando tamanho de bloco otimizado"
 
-#: ../src/GParted_Core.cc:3223
+#: ../src/GParted_Core.cc:3069
 msgid "%1 seconds"
 msgstr "%1 segundos"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3241
+#: ../src/GParted_Core.cc:3087
 msgid "optimal block size is %1"
 msgstr "tamanho de bloco otimizado é %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3259
+#: ../src/GParted_Core.cc:3105
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) copiados"
 
-#: ../src/GParted_Core.cc:3297
+#: ../src/GParted_Core.cc:3143
 msgid "roll back last transaction"
 msgstr "desfazer última transação"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3317
+#: ../src/GParted_Core.cc:3170
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "verificar erros no sistema de arquivos em %1 e (se possível) corrigi-lo"
 
-#: ../src/GParted_Core.cc:3326
+#: ../src/GParted_Core.cc:3179
 msgid "checking is not available for this file system"
 msgstr "verificação não está disponível para este sistema de arquivos"
 
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3213
 msgid "set partition type on %1"
 msgstr "definir tipo de partição em %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3398
+#: ../src/GParted_Core.cc:3256
 msgid "new partition type: %1"
 msgstr "novo tipo de partição: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3413
+#: ../src/GParted_Core.cc:3271
 msgid "new partition flag: %1"
 msgstr "novo sinalizador de partição: %1"
 
-#: ../src/GParted_Core.cc:3441
+#: ../src/GParted_Core.cc:3299
 msgid "calibrate %1"
 msgstr "calibrar %1"
 
-#: ../src/GParted_Core.cc:3525
+#: ../src/GParted_Core.cc:3368
 msgid "device"
 msgstr "dispositivo"
 
-#: ../src/GParted_Core.cc:3557
+#: ../src/GParted_Core.cc:3400
 msgid "calculate new size and position of %1"
 msgstr "calcular novo tamanho e posição de %1"
 
-#: ../src/GParted_Core.cc:3673
+#: ../src/GParted_Core.cc:3516
 msgid "clear old file system signatures in %1"
 msgstr "limpar assinaturas antigas do sistema de arquivos em %1"
 
-#: ../src/GParted_Core.cc:3879
+#: ../src/GParted_Core.cc:3722
 msgid "flush operating system cache of %1"
 msgstr "apagar cache de sistema operacional de %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3911
+#: ../src/GParted_Core.cc:3754
 msgid "update boot sector of %1 file system on %2"
 msgstr "atualizar o setor de boot do sistema de arquivos %1 em %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3947
+#: ../src/GParted_Core.cc:3790
 msgid "Error trying to write to boot sector in %1"
 msgstr "Erro ao tentar gravar para o setor de boot em %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3953
+#: ../src/GParted_Core.cc:3796
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Erro ao tentar procurar a posição 0x1 em %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3960
+#: ../src/GParted_Core.cc:3803
 msgid "Error trying to open %1"
 msgstr "Erro ao tentar copiar %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3970
+#: ../src/GParted_Core.cc:3813
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Falha ao definir o número de setores ocultos para %1 no setor de boot NTFS."
 
-#: ../src/GParted_Core.cc:3972
+#: ../src/GParted_Core.cc:3815
 msgid "You might try the following command to correct the problem:"
 msgstr "Você pode tentar o seguinte comando para corrigir o problema:"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4033
+#: ../src/GParted_Core.cc:3876
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Ignorando o dispositivo %1 com tamanho do setor lógico de %2 bytes."
 
-#: ../src/GParted_Core.cc:4036
+#: ../src/GParted_Core.cc:3879
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1298,88 +1318,88 @@ msgstr ""
 "O GParted requer libparted versão 2.2 ou superior para suportar dispositivos "
 "com tamanho de setores maiores que 512 bytes."
 
-#: ../src/GParted_Core.cc:4200
+#: ../src/GParted_Core.cc:4043
 msgid "Libparted Information"
 msgstr "Informações da libparted"
 
-#: ../src/GParted_Core.cc:4204
+#: ../src/GParted_Core.cc:4047
 msgid "Libparted Warning"
 msgstr "Aviso da libparted"
 
-#: ../src/GParted_Core.cc:4208
+#: ../src/GParted_Core.cc:4051
 msgid "Libparted Error"
 msgstr "Erro da libparted"
 
-#: ../src/GParted_Core.cc:4211
+#: ../src/GParted_Core.cc:4054
 msgid "Libparted Fatal"
 msgstr "Erro fatal do Libparted"
 
-#: ../src/GParted_Core.cc:4214
+#: ../src/GParted_Core.cc:4057
 msgid "Libparted Bug"
 msgstr "Bug do Libparted"
 
-#: ../src/GParted_Core.cc:4217
+#: ../src/GParted_Core.cc:4060
 msgid "Libparted Unsupported Feature"
 msgstr "Recurso sem suporte do Libparted"
 
-#: ../src/GParted_Core.cc:4220
+#: ../src/GParted_Core.cc:4063
 msgid "Libparted unknown exception"
-msgstr "Exceção desconhecida do Libparted"
+msgstr "Exceção desconhecida do libparted"
 
-#: ../src/GParted_Core.cc:4224
+#: ../src/GParted_Core.cc:4067
 msgid "Fix"
 msgstr "Corrigir"
 
-#: ../src/GParted_Core.cc:4226
+#: ../src/GParted_Core.cc:4069
 msgid "Yes"
 msgstr "Sim"
 
-#: ../src/GParted_Core.cc:4228
+#: ../src/GParted_Core.cc:4071
 msgid "Ok"
 msgstr "OK"
 
-#: ../src/GParted_Core.cc:4230
+#: ../src/GParted_Core.cc:4073
 msgid "Retry"
 msgstr "Tentar novamente"
 
-#: ../src/GParted_Core.cc:4232
+#: ../src/GParted_Core.cc:4075
 msgid "No"
 msgstr "Não"
 
-#: ../src/GParted_Core.cc:4234
+#: ../src/GParted_Core.cc:4077
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/GParted_Core.cc:4236
+#: ../src/GParted_Core.cc:4079
 msgid "Ignore"
 msgstr "Ignorar"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:172
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:173
 msgid "_Undo Last Operation"
 msgstr "_Desfazer a última operação"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:178
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:179
 msgid "_Clear All Operations"
 msgstr "_Limpar todas as operações"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:183
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:184
 msgid "_Apply All Operations"
 msgstr "_Aplicar todas as operações"
 
-#: ../src/LVM2_PV_Info.cc:192
+#: ../src/LVM2_PV_Info.cc:193
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr ""
 "Um ou mais volumes físicos pertencentes ao grupo de volumes está faltando."
 
-#: ../src/LVM2_PV_Info.cc:320
+#: ../src/LVM2_PV_Info.cc:321
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "Ocorreu um erro ao ler a configuração de LVM2!"
 
-#: ../src/LVM2_PV_Info.cc:322
+#: ../src/LVM2_PV_Info.cc:323
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Alguns ou todos os detalhes podem estar ausentes ou incorretos."
 
-#: ../src/LVM2_PV_Info.cc:324
+#: ../src/LVM2_PV_Info.cc:325
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "Você NÃO deveria modificar nenhuma partição LVM2 PV."
 
@@ -1407,7 +1427,7 @@ msgstr "Copiar %1 para %2"
 
 #. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
-#: ../src/OperationCheck.cc:63
+#: ../src/OperationCheck.cc:50
 msgid "Check and repair file system (%1) on %2"
 msgstr "Verificar e reparar o sistema de arquivos (%1) em %2"
 
@@ -1487,32 +1507,32 @@ msgstr "Mover %1 para a esquerda e diminui-lo de %2 para %3"
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "%1 de %2 copiados (%3 restantes)"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:43
 msgid "Name"
 msgstr "Nome"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:45
 msgid "Mount Point"
 msgstr "Ponto de montagem"
 
-#: ../src/TreeView_Detail.cc:42
+#: ../src/TreeView_Detail.cc:47
 msgid "Size"
 msgstr "Tamanho"
 
-#: ../src/TreeView_Detail.cc:43
+#: ../src/TreeView_Detail.cc:48
 msgid "Used"
 msgstr "Usado"
 
-#: ../src/TreeView_Detail.cc:44
+#: ../src/TreeView_Detail.cc:49
 msgid "Unused"
 msgstr "Livre"
 
-#: ../src/TreeView_Detail.cc:45
+#: ../src/TreeView_Detail.cc:50
 msgid "Flags"
 msgstr "Flags"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: ../src/TreeView_Detail.cc:197 ../src/TreeView_Detail.cc:207
+#: ../src/TreeView_Detail.cc:190 ../src/TreeView_Detail.cc:200
 msgid "Encrypted"
 msgstr "Criptografado"
 
@@ -1521,7 +1541,7 @@ msgstr "Criptografado"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:251
+#: ../src/Utils.cc:252
 msgid "unallocated"
 msgstr "não alocada"
 
@@ -1530,7 +1550,7 @@ msgstr "não alocada"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:258
+#: ../src/Utils.cc:259
 msgid "unknown"
 msgstr "desconhecida"
 
@@ -1538,7 +1558,7 @@ msgstr "desconhecida"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:264
+#: ../src/Utils.cc:265
 msgid "unformatted"
 msgstr "não formatada"
 
@@ -1546,277 +1566,277 @@ msgstr "não formatada"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:270
+#: ../src/Utils.cc:271
 msgid "cleared"
 msgstr "limpa"
 
-#: ../src/Utils.cc:290
+#: ../src/Utils.cc:291
 msgid "used"
 msgstr "usado"
 
-#: ../src/Utils.cc:291
+#: ../src/Utils.cc:292
 msgid "unused"
 msgstr "livre"
 
-#: ../src/Utils.cc:422
+#: ../src/Utils.cc:424
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:427
+#: ../src/Utils.cc:429
 msgid "%1 KiB"
 msgstr "%1 KB"
 
-#: ../src/Utils.cc:432
+#: ../src/Utils.cc:434
 msgid "%1 MiB"
 msgstr "%1 MB"
 
-#: ../src/Utils.cc:437
+#: ../src/Utils.cc:439
 msgid "%1 GiB"
 msgstr "%1 GB"
 
-#: ../src/Utils.cc:442
+#: ../src/Utils.cc:444
 msgid "%1 TiB"
 msgstr "%1 TB"
 
-#: ../src/Win_GParted.cc:156
+#: ../src/Win_GParted.cc:157
 msgid "_Refresh Devices"
 msgstr "_Atualizar dispositivos"
 
-#: ../src/Win_GParted.cc:162
+#: ../src/Win_GParted.cc:163
 msgid "_Devices"
 msgstr "_Dispositivos"
 
-#: ../src/Win_GParted.cc:167
+#: ../src/Win_GParted.cc:168
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:188
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:193
 msgid "Device _Information"
 msgstr "_Informações do dispositivo"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:195
 msgid "Pending _Operations"
 msgstr "_Operações pendentes"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:196
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/Win_GParted.cc:199
+#: ../src/Win_GParted.cc:200
 msgid "_File System Support"
 msgstr "_Suporte ao sistema de arquivos"
 
-#: ../src/Win_GParted.cc:203
+#: ../src/Win_GParted.cc:204
 msgid "_Create Partition Table"
 msgstr "_Criar tabela de partição"
 
-#: ../src/Win_GParted.cc:206
+#: ../src/Win_GParted.cc:207
 msgid "_Attempt Data Rescue"
 msgstr "_Tentativa de resgatar dados"
 
-#: ../src/Win_GParted.cc:209
+#: ../src/Win_GParted.cc:210
 msgid "_Device"
 msgstr "_Dispositivo"
 
-#: ../src/Win_GParted.cc:213
+#: ../src/Win_GParted.cc:214
 msgid "_Partition"
 msgstr "_Partição"
 
-#: ../src/Win_GParted.cc:218
+#: ../src/Win_GParted.cc:219
 msgid "_Contents"
 msgstr "_Sumário"
 
-#: ../src/Win_GParted.cc:226
+#: ../src/Win_GParted.cc:227
 msgid "_Help"
 msgstr "A_juda"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:238
+#: ../src/Win_GParted.cc:239
 msgid "New"
 msgstr "Novo"
 
-#: ../src/Win_GParted.cc:243
+#: ../src/Win_GParted.cc:244
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Cria uma nova partição no espaço não alocado selecionado"
 
-#: ../src/Win_GParted.cc:248
+#: ../src/Win_GParted.cc:249
 msgid "Delete the selected partition"
 msgstr "Exclui a partição selecionada"
 
-#: ../src/Win_GParted.cc:270
+#: ../src/Win_GParted.cc:271
 msgid "Resize/Move the selected partition"
 msgstr "Redimensiona/move a partição selecionada"
 
-#: ../src/Win_GParted.cc:279
+#: ../src/Win_GParted.cc:280
 msgid "Copy the selected partition to the clipboard"
 msgstr "Copia a partição selecionada para a área de transferência"
 
-#: ../src/Win_GParted.cc:284
+#: ../src/Win_GParted.cc:285
 msgid "Paste the partition from the clipboard"
 msgstr "Cola a partição a partir da área de transferência"
 
-#: ../src/Win_GParted.cc:296
+#: ../src/Win_GParted.cc:297
 msgid "Undo Last Operation"
 msgstr "Desfaz a última operação"
 
-#: ../src/Win_GParted.cc:304
+#: ../src/Win_GParted.cc:305
 msgid "Apply All Operations"
 msgstr "Aplica todas as operações"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:328
+#: ../src/Win_GParted.cc:329
 msgid "_New"
 msgstr "_Novo"
 
-#: ../src/Win_GParted.cc:345
+#: ../src/Win_GParted.cc:346
 msgid "_Resize/Move"
 msgstr "_Redimensionar/Mover"
 
-#: ../src/Win_GParted.cc:369
+#: ../src/Win_GParted.cc:370
 msgid "_Format to"
 msgstr "_Formatar para"
 
-#: ../src/Win_GParted.cc:385
+#: ../src/Win_GParted.cc:386
 msgid "_Mount on"
 msgstr "_Montar em"
 
-#: ../src/Win_GParted.cc:392
+#: ../src/Win_GParted.cc:393
 msgid "_Name Partition"
 msgstr "N_omear partição"
 
-#: ../src/Win_GParted.cc:397
+#: ../src/Win_GParted.cc:398
 msgid "M_anage Flags"
 msgstr "Gerenci_ar sinalizadores"
 
-#: ../src/Win_GParted.cc:402
+#: ../src/Win_GParted.cc:403
 msgid "C_heck"
 msgstr "Mar_car"
 
-#: ../src/Win_GParted.cc:407
+#: ../src/Win_GParted.cc:408
 msgid "_Label File System"
 msgstr "Ro_tular sistema de arquivos"
 
-#: ../src/Win_GParted.cc:412
+#: ../src/Win_GParted.cc:413
 msgid "New UU_ID"
 msgstr "Novo UU_ID"
 
-#: ../src/Win_GParted.cc:472
+#: ../src/Win_GParted.cc:473
 msgid "Device Information"
 msgstr "Informações sobre o dispositivo"
 
 #. model
-#: ../src/Win_GParted.cc:480
+#: ../src/Win_GParted.cc:481
 msgid "Model:"
 msgstr "Modelo:"
 
 #. Serial number
-#: ../src/Win_GParted.cc:488
+#: ../src/Win_GParted.cc:489
 msgid "Serial:"
 msgstr "Serial:"
 
 #. disktype
-#: ../src/Win_GParted.cc:520
+#: ../src/Win_GParted.cc:521
 msgid "Partition table:"
 msgstr "Tabela de partições:"
 
 #. heads
-#: ../src/Win_GParted.cc:528
+#: ../src/Win_GParted.cc:529
 msgid "Heads:"
 msgstr "Cabeças:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:536
+#: ../src/Win_GParted.cc:537
 msgid "Sectors/track:"
 msgstr "Setores/trilhas:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:544
+#: ../src/Win_GParted.cc:545
 msgid "Cylinders:"
 msgstr "Cilindros:"
 
 #. sector size
-#: ../src/Win_GParted.cc:560
+#: ../src/Win_GParted.cc:561
 msgid "Sector size:"
 msgstr "Tamanho do setor:"
 
-#: ../src/Win_GParted.cc:736
+#: ../src/Win_GParted.cc:737
 msgid "Could not add this operation to the list"
 msgstr "Não foi possível adicionar esta operação à lista"
 
-#: ../src/Win_GParted.cc:917
+#: ../src/Win_GParted.cc:918
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 operação pendente"
 msgstr[1] "%1 operações pendentes"
 
-#: ../src/Win_GParted.cc:1036
+#: ../src/Win_GParted.cc:1037
 msgid "Quit GParted?"
 msgstr "Deseja sair do GParted?"
 
-#: ../src/Win_GParted.cc:1042
+#: ../src/Win_GParted.cc:1043
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 operação está atualmente pendente."
 msgstr[1] "%1 operações estão atualmente pendentes."
 
-#: ../src/Win_GParted.cc:1362
+#: ../src/Win_GParted.cc:1358
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1399
+#: ../src/Win_GParted.cc:1408
 msgid "Scanning all devices..."
 msgstr "Varrendo todos os dispositivos..."
 
-#: ../src/Win_GParted.cc:1446
+#: ../src/Win_GParted.cc:1455
 msgid "No devices detected"
 msgstr "Nenhum dispositivo detectado"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1531
+#: ../src/Win_GParted.cc:1540
 msgid "No partition table found on device %1"
 msgstr "Nenhuma tabela de partições localizada no dispositivo %1"
 
-#: ../src/Win_GParted.cc:1536
+#: ../src/Win_GParted.cc:1545
 msgid "A partition table is required before partitions can be added."
 msgstr ""
 "Uma tabela de partições é necessária para partições poderem ser adicionadas."
 
-#: ../src/Win_GParted.cc:1538
+#: ../src/Win_GParted.cc:1547
 msgid "To create a new partition table choose the menu item:"
 msgstr "Para criar uma nova tabela de partições escolha o item do menu:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1541
+#: ../src/Win_GParted.cc:1550
 msgid "Device --> Create Partition Table."
 msgstr "Dispositivo --> Criar tabela de partições."
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1586
 msgid "Unable to open GParted Manual help file"
 msgstr "Não foi possível abrir o arquivo de ajuda do Manual do GParted"
 
-#: ../src/Win_GParted.cc:1596
+#: ../src/Win_GParted.cc:1605
 msgid "Documentation is not available"
 msgstr "Sem documentação disponível"
 
-#: ../src/Win_GParted.cc:1601
+#: ../src/Win_GParted.cc:1610
 msgid "This build of gparted is configured without documentation."
 msgstr "Esta compilação do gparted é configurado sem documentação."
 
-#: ../src/Win_GParted.cc:1603
+#: ../src/Win_GParted.cc:1612
 msgid "Documentation is available at the project web site."
 msgstr "Há documentação disponível no site do projeto."
 
-#: ../src/Win_GParted.cc:1621
+#: ../src/Win_GParted.cc:1630
 msgid "GNOME Partition Editor"
 msgstr "Editor de Partições do GNOME"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1655
+#: ../src/Win_GParted.cc:1664
 msgid "translator-credits"
 msgstr ""
 "Raphael Higino <In memoriam>\n"
@@ -1829,15 +1849,15 @@ msgstr ""
 "Carlos José Pereira <carlao2005@gmail.com>\n"
 "Luana Campos Ferreira <luana@syst.com.br>\n"
 "Enrico Nicoletto <liverig@gmail.com>\n"
-"Rafael Fontenelle <rffontenelle@gmail.com>"
+"Rafael Fontenelle <rafaelff@gnome.org>"
 
-#: ../src/Win_GParted.cc:1702
+#: ../src/Win_GParted.cc:1711
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Não é possível criar mais de %1 partição primária"
 msgstr[1] "Não é possível criar mais de %1 partições primárias"
 
-#: ../src/Win_GParted.cc:1714
+#: ../src/Win_GParted.cc:1723
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1849,17 +1869,17 @@ msgstr ""
 "partição estendida é também uma partição primária, pode ser necessário "
 "remover uma partição primária antes."
 
-#: ../src/Win_GParted.cc:1783
+#: ../src/Win_GParted.cc:1792
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Mover uma partição pode causar falha na inicialização do seu sistema"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1790
+#: ../src/Win_GParted.cc:1799
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Você solicitou uma operação para mover o início da sessão da partição %1."
 
-#: ../src/Win_GParted.cc:1792
+#: ../src/Win_GParted.cc:1801
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1868,198 +1888,233 @@ msgstr ""
 "GNU/Linux contendo o diretório /boot, ou se você mover a partição de sistema "
 "C: do Windows."
 
-#: ../src/Win_GParted.cc:1794
+#: ../src/Win_GParted.cc:1803
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Você pode aprender formas de reparar a configuração do boot na FAQ do "
 "GParted."
 
-#: ../src/Win_GParted.cc:1798
+#: ../src/Win_GParted.cc:1807
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Mover uma partição pode demorar um longo tempo para ser aplicado."
 
-#: ../src/Win_GParted.cc:1865
+#: ../src/Win_GParted.cc:1874
 msgid "Copy of %1"
 msgstr "Cópia de %1"
 
-#: ../src/Win_GParted.cc:1927
+#: ../src/Win_GParted.cc:1935
 msgid "You have pasted into an existing partition"
 msgstr "Você colou dentro de uma partição existente"
 
-#: ../src/Win_GParted.cc:1935
+#: ../src/Win_GParted.cc:1943
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Os dados em %1 serão perdidos se você concluir esta operação."
 
-#: ../src/Win_GParted.cc:2016
+#: ../src/Win_GParted.cc:2024
 msgid "Unable to delete %1!"
 msgstr "Não foi possível excluir %1!"
 
-#: ../src/Win_GParted.cc:2023
+#: ../src/Win_GParted.cc:2031
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Por favor, desmonte todas as partições lógicas com número maior que %1"
 
-#: ../src/Win_GParted.cc:2034
+#: ../src/Win_GParted.cc:2042
 msgid "Are you sure you want to delete %1?"
 msgstr "Você tem certeza que deseja excluir %1?"
 
-#: ../src/Win_GParted.cc:2041
+#: ../src/Win_GParted.cc:2049
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Após a exclusão, essa partição não estará mais disponível para cópia."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2044
+#: ../src/Win_GParted.cc:2052
 msgid "Delete %1 (%2, %3)"
 msgstr "Excluir %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2136
+#: ../src/Win_GParted.cc:2146
 msgid "Cannot format this file system to %1"
 msgstr "Não é possível formatar esse sistema de arquivos para %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2158
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Um sistema de arquivos %1 requer uma partição de pelo menos %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2156
+#: ../src/Win_GParted.cc:2166
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Uma partição com um sistema de arquivos %1 tem tamanho máximo de %2."
 
-#: ../src/Win_GParted.cc:2233
+#: ../src/Win_GParted.cc:2255
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "A partição não pôde ser desmontada dos seguintes pontos de montagem:"
 
-#: ../src/Win_GParted.cc:2235
+#: ../src/Win_GParted.cc:2257
+#| msgid ""
+#| "Most likely other partitions are also mounted on these mount points. You "
+#| "are advised to unmount them manually."
 msgid ""
-"Most likely other partitions are also mounted on these mount points. You are "
-"advised to unmount them manually."
+"This is because other partitions are also mounted on these mount points.  "
+"You are advised to unmount them manually."
 msgstr ""
-"Provavelmente outras partições também estão montadas nesses pontos de "
+"Isto ocorre porque outras partições também estão montadas nesses pontos de "
 "montagem. Recomendamos que você as desmonte manualmente."
 
-#: ../src/Win_GParted.cc:2263 ../src/Win_GParted.cc:2387
+#. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
+#: ../src/Win_GParted.cc:2270
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 operação está atualmente pendente relativa à partição %2"
 msgstr[1] "%1 operações estão atualmente pendentes relativas à partição %2"
 
-#: ../src/Win_GParted.cc:2279
-msgid ""
-"The swapon action cannot be performed if an operation is pending for the "
-"partition."
-msgstr ""
-"A ação ativar swap não pode ser executada se uma operação estiver pendente "
-"para a partição."
-
-#: ../src/Win_GParted.cc:2281
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using swapon "
-"with this partition."
-msgstr ""
-"Use o menu editar para desfazer, limpar ou aplicar todas as operações antes "
-"de ativar swap nesta partição."
-
 #: ../src/Win_GParted.cc:2285
-msgid ""
-"The activate Volume Group action cannot be performed if an operation is "
-"pending for the partition."
+#| msgid ""
+#| "Use the Edit menu to undo, clear, or apply operations before using mount "
+#| "with this partition."
+msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
-"A ação ativar grupo de volume não pode ser executada se uma operação estiver "
-"pendente para a partição."
+"Use o menu Editar para desfazer, limpar ou aplicar todas as operações "
+"pendentes."
 
-#: ../src/Win_GParted.cc:2287
+#: ../src/Win_GParted.cc:2327
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using activate "
-"Volume Group with this partition."
+"The swapoff action cannot be performed when there are operations pending for "
+"the partition."
 msgstr ""
-"Use o menu Editar para desfazer, limpar ou aplicar todas as operações antes "
-"de ativar grupo de volume com esta partição."
+"A ação de desativar swap não pode ser executada quando há operações "
+"pendentes para a partição."
 
-#: ../src/Win_GParted.cc:2298
+#: ../src/Win_GParted.cc:2328
 msgid "Deactivating swap on %1"
 msgstr "Desativando swap em %1"
 
-#: ../src/Win_GParted.cc:2298
-msgid "Activating swap on %1"
-msgstr "Ativando swap em %1"
-
-#: ../src/Win_GParted.cc:2310
+#: ../src/Win_GParted.cc:2329
 msgid "Could not deactivate swap"
 msgstr "Não foi possível desativar swap"
 
-#: ../src/Win_GParted.cc:2310
+#: ../src/Win_GParted.cc:2334
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The swapon action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"A ação de ativar swap não pode ser executada quando há operações pendentes "
+"para a partição."
+
+#: ../src/Win_GParted.cc:2335
+msgid "Activating swap on %1"
+msgstr "Ativando swap em %1"
+
+#: ../src/Win_GParted.cc:2336
 msgid "Could not activate swap"
 msgstr "Não foi possível ativar swap"
 
-#: ../src/Win_GParted.cc:2325
+#: ../src/Win_GParted.cc:2341
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The deactivate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"A ação de desativar grupo de volume não pode ser executada quando há "
+"operações pendentes para a partição."
+
+#: ../src/Win_GParted.cc:2342
 msgid "Deactivating Volume Group %1"
 msgstr "Desativando grupo de volume %1"
 
-#: ../src/Win_GParted.cc:2326
-msgid "Activating Volume Group %1"
-msgstr "Ativando grupo de volume em %1"
-
-#: ../src/Win_GParted.cc:2341
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2344
 msgid "Could not deactivate Volume Group"
 msgstr "Não foi possível desativar grupo de volume"
 
-#: ../src/Win_GParted.cc:2342
+#: ../src/Win_GParted.cc:2349
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The activate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"A ação de ativar grupo de volume não pode ser executada quando há operações "
+"pendentes para a partição."
+
+#: ../src/Win_GParted.cc:2350
+msgid "Activating Volume Group %1"
+msgstr "Ativando grupo de volume em %1"
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2352
 msgid "Could not activate Volume Group"
 msgstr "Não foi possível ativar grupo de volume"
 
-#: ../src/Win_GParted.cc:2355
+#: ../src/Win_GParted.cc:2357
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The unmount action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"A ação de desmontar não pode ser executada quando há operações pendentes "
+"para a partição."
+
+#: ../src/Win_GParted.cc:2358
 msgid "Unmounting %1"
 msgstr "Desmontando %1"
 
-#: ../src/Win_GParted.cc:2361
+#: ../src/Win_GParted.cc:2359
 msgid "Could not unmount %1"
 msgstr "Não foi possível desmontar %1"
 
-#: ../src/Win_GParted.cc:2401
+#. Bug: Partition callback without a selected partition
+#. Bug: Not pointing at a valid display partition object
+#: ../src/Win_GParted.cc:2423
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"The mount action cannot be performed if an operation is pending for the "
+"The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
-"A ação montar não pode ser executada se uma operação estiver pendente para a "
+"A ação de montar não pode ser executada quando há operação pendente para a "
 "partição."
 
-#: ../src/Win_GParted.cc:2403
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using mount "
-"with this partition."
-msgstr ""
-"Use o menu Editar para desfazer, limpar ou aplicar todas as operações antes "
-"de montar esta partição."
-
-#: ../src/Win_GParted.cc:2415
+#: ../src/Win_GParted.cc:2435
 msgid "mounting %1 on %2"
 msgstr "montando %1 em %2"
 
-#: ../src/Win_GParted.cc:2443
+#: ../src/Win_GParted.cc:2462
 msgid "Could not mount %1 on %2"
 msgstr "Não foi possível montar %1 em %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2469
+#: ../src/Win_GParted.cc:2481
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 partição está atualmente ativa no dispositivo %2"
 msgstr[1] "%1 partições estão atualmente ativas no dispositivo %2"
 
-#: ../src/Win_GParted.cc:2484
+#: ../src/Win_GParted.cc:2496
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Uma nova tabela de partições não pode ser criada quando há partições ativas."
 
-#: ../src/Win_GParted.cc:2486
+#: ../src/Win_GParted.cc:2498
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2067,7 +2122,7 @@ msgstr ""
 "Partições ativas são aquelas que estão em uso, tais como um sistema de "
 "arquivos montado ou área de troca (swap) habilitada."
 
-#: ../src/Win_GParted.cc:2488
+#: ../src/Win_GParted.cc:2500
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2076,20 +2131,20 @@ msgstr ""
 "desativar todas as partições neste dispositivo antes de criar uma nova "
 "tabela de partições."
 
-#: ../src/Win_GParted.cc:2500
+#: ../src/Win_GParted.cc:2512
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 operação está atualmente pendente"
 msgstr[1] "%1 operações estão atualmente pendentes"
 
-#: ../src/Win_GParted.cc:2513
+#: ../src/Win_GParted.cc:2525
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Uma nova tabela de partições não pode ser criada quando há operações "
 "pendentes."
 
-#: ../src/Win_GParted.cc:2515
+#: ../src/Win_GParted.cc:2527
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2097,31 +2152,31 @@ msgstr ""
 "Use o menu Editar para limpar ou aplicar todas as operações antes de criar "
 "uma nova tabela de partições."
 
-#: ../src/Win_GParted.cc:2530
+#: ../src/Win_GParted.cc:2542
 msgid "Error while creating partition table"
 msgstr "Erro ao criar tabela de partições"
 
-#: ../src/Win_GParted.cc:2550
+#: ../src/Win_GParted.cc:2562
 msgid "Command gpart was not found"
 msgstr "Comando gpart não foi encontrado"
 
-#: ../src/Win_GParted.cc:2551
+#: ../src/Win_GParted.cc:2563
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Este recurso utiliza o gpart. Por favor instale o gpart e tente novamente."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2559
+#: ../src/Win_GParted.cc:2571
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "Uma varredura completa do disco é necessária para encontrar sistemas de "
 "arquivos."
 
-#: ../src/Win_GParted.cc:2561
+#: ../src/Win_GParted.cc:2573
 msgid "The scan might take a very long time."
 msgstr "A varredura pode durar muito tempo."
 
-#: ../src/Win_GParted.cc:2563
+#: ../src/Win_GParted.cc:2575
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2129,26 +2184,26 @@ msgstr ""
 "Após a varredura você pode montar qualquer sistema de arquivos descoberto e "
 "copiar os dados para outra mídia."
 
-#: ../src/Win_GParted.cc:2565
+#: ../src/Win_GParted.cc:2577
 msgid "Do you want to continue?"
 msgstr "Você deseja continuar?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2569
+#: ../src/Win_GParted.cc:2581
 msgid "Search for file systems on %1"
 msgstr "Busca por sistema de arquivos em %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2580
+#: ../src/Win_GParted.cc:2592
 msgid "Searching for file systems on %1"
 msgstr "Busca por sistema de arquivos em %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2596
+#: ../src/Win_GParted.cc:2608
 msgid "No file systems found on %1"
 msgstr "Nenhum sistema de arquivos encontrado em %1"
 
-#: ../src/Win_GParted.cc:2597
+#: ../src/Win_GParted.cc:2609
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2156,35 +2211,35 @@ msgstr ""
 "O disco varrido pelo gpart não encontrou nenhum arquivo de sistema "
 "reconhecível no disco."
 
-#: ../src/Win_GParted.cc:2861
+#: ../src/Win_GParted.cc:2875
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Você tem certeza que deseja aplicar as operações pendentes?"
 
-#: ../src/Win_GParted.cc:2867
+#: ../src/Win_GParted.cc:2881
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Editar partições pode causar PERDA de DADOS."
 
-#: ../src/Win_GParted.cc:2869
+#: ../src/Win_GParted.cc:2883
 msgid "You are advised to backup your data before proceeding."
 msgstr "É aconselhável fazer backup de seus dados antes de continuar."
 
-#: ../src/Win_GParted.cc:2871
+#: ../src/Win_GParted.cc:2885
 msgid "Apply operations to device"
 msgstr "Aplicar as operações no dispositivo"
 
-#: ../src/Win_GParted.cc:2916
+#: ../src/Win_GParted.cc:2930
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Você está apagando um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:2920
+#: ../src/Win_GParted.cc:2934
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Você está formatando um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:2924
+#: ../src/Win_GParted.cc:2938
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Você está colando sobre um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:2933
+#: ../src/Win_GParted.cc:2947
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2192,7 +2247,7 @@ msgstr ""
 "Apagar ou sobrescrever um volume físico é irreversível e você irá destruir "
 "ou danificar o grupo de volume."
 
-#: ../src/Win_GParted.cc:2936
+#: ../src/Win_GParted.cc:2950
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2202,21 +2257,21 @@ msgstr ""
 "cancelar e usar comandos LVM externos para liberar o volume físico antes de "
 "executar essa operação."
 
-#: ../src/Win_GParted.cc:2939
+#: ../src/Win_GParted.cc:2953
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Você deseja continuar e forçar a exclusão do volume físico?"
 
-#: ../src/btrfs.cc:311
+#: ../src/btrfs.cc:312
 msgid "Failed to find devid for path %1"
 msgstr "Falha em localizar id de dispositivo para o caminho %1"
 
-#: ../src/fat16.cc:33 ../src/ntfs.cc:30
+#: ../src/fat16.cc:32 ../src/ntfs.cc:29
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Mudar o UUID pode invalidar a chave de Ativação de Produto do Windows (WPA)"
 
-#: ../src/fat16.cc:35 ../src/ntfs.cc:32
+#: ../src/fat16.cc:34 ../src/ntfs.cc:31
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2228,7 +2283,7 @@ msgstr ""
 "normalmente C:, pode invalidar a chave WPA. Uma chave WPA inválida irá "
 "impedir o login até que você reative o Windows."
 
-#: ../src/fat16.cc:41 ../src/ntfs.cc:42
+#: ../src/fat16.cc:40 ../src/ntfs.cc:41
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2246,7 +2301,7 @@ msgid "_Swapoff"
 msgstr "Desativar _swap"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:195
+#: ../src/linux_swap.cc:187
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2254,7 +2309,7 @@ msgstr ""
 "contém dados"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:214
+#: ../src/linux_swap.cc:206
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2262,15 +2317,15 @@ msgstr ""
 "contém dados"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/lvm2_pv.cc:28
+#: ../src/lvm2_pv.cc:27
 msgid "Ac_tivate"
 msgstr "A_tivar"
 
-#: ../src/lvm2_pv.cc:29
+#: ../src/lvm2_pv.cc:28
 msgid "Deac_tivate"
 msgstr "Des_ativar"
 
-#: ../src/lvm2_pv.cc:32
+#: ../src/lvm2_pv.cc:31
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
@@ -2290,7 +2345,7 @@ msgstr ""
 "Já que o GParted pode ser uma arma de destruição de dados em massa, somente "
 "o root pode executá-lo."
 
-#: ../src/ntfs.cc:38
+#: ../src/ntfs.cc:37
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2299,14 +2354,46 @@ msgstr ""
 "NTFS apenas metade do UUID é definido como um novo valor aleatório."
 
 #. simulation..
-#: ../src/ntfs.cc:227
+#: ../src/ntfs.cc:226
 msgid "run simulation"
 msgstr "executar simulação"
 
 #. real resize
-#: ../src/ntfs.cc:235
+#: ../src/ntfs.cc:234
 msgid "real resize"
 msgstr "redimensionamento real"
+
+#~ msgid "moving requires old and new length to be the same"
+#~ msgstr "mover requer que o antigo e novo comprimento sejam o mesmo"
+
+#~ msgid "resizing requires old and new start to be the same"
+#~ msgstr "redimensionar requer que o antigo e o novo início sejam o mesmo"
+
+#~ msgid "grow file system"
+#~ msgstr "aumentar o sistema de arquivos"
+
+#~ msgid "resize file system"
+#~ msgstr "redimensionar o sistema de arquivos"
+
+#~ msgid ""
+#~ "new and old file system have the same size.  Hence skipping this operation"
+#~ msgstr ""
+#~ "o novo e o antigo sistema de arquivos possuem o mesmo tamanho. Ignorando "
+#~ "esta operação"
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using swapon "
+#~ "with this partition."
+#~ msgstr ""
+#~ "Use o menu editar para desfazer, limpar ou aplicar todas as operações "
+#~ "antes de ativar swap nesta partição."
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using "
+#~ "activate Volume Group with this partition."
+#~ msgstr ""
+#~ "Use o menu Editar para desfazer, limpar ou aplicar todas as operações "
+#~ "antes de ativar grupo de volume com esta partição."
 
 #~ msgid "Linux Unified Key Setup encryption is not yet supported."
 #~ msgstr "Ainda não há suporte a LUKS (Linux Unified Key Setup)."
