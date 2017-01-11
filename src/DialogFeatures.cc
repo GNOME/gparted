@@ -96,6 +96,19 @@ DialogFeatures::DialogFeatures()
 			_("Available offline and online")), Gtk::PACK_EXPAND_WIDGET ) ;
 	icon_legend_vbox ->pack_start( *available_both_hbox ) ;
 
+	Gtk::HBox *available_online_hbox = manage( new Gtk::HBox() );
+	Gtk::Image *image_no( manage( new Gtk::Image( icon_no ) ) );
+	available_online_hbox->pack_start( *image_no, Gtk::PACK_SHRINK );
+	image_yes = manage( new Gtk::Image( icon_yes ) );
+	available_online_hbox->pack_start( *image_yes, Gtk::PACK_SHRINK );
+	available_online_hbox->pack_start( *Utils::mk_label(
+			/* TO TRANSLATORS:  Available online only
+			 * means that this action is valid for this file system only
+			 * when it is mounted.
+			 */
+			_("Available online only")), Gtk::PACK_EXPAND_WIDGET );
+	icon_legend_vbox->pack_start( *available_online_hbox );
+
 	Gtk::HBox *available_offline_hbox = manage(new Gtk::HBox() ) ;
 	image_yes = manage( new Gtk::Image( icon_yes ) ) ;
 	available_offline_hbox ->pack_start( *image_yes, Gtk::PACK_SHRINK ) ;
@@ -110,7 +123,7 @@ DialogFeatures::DialogFeatures()
 	icon_legend_vbox ->pack_start( *available_offline_hbox ) ;
 
 	Gtk::HBox *not_available_hbox = manage( new Gtk::HBox() ) ;
-	Gtk::Image *image_no( manage( new Gtk::Image( icon_no ) ) ) ;
+	image_no = manage( new Gtk::Image( icon_no ) );
 	not_available_hbox ->pack_start( *image_no, Gtk::PACK_SHRINK ) ;
 	image_blank = manage( new Gtk::Image( icon_blank ) ) ;
 	not_available_hbox ->pack_start( *image_blank, Gtk::PACK_SHRINK ) ;
