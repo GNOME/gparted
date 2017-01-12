@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-  <!ENTITY appversion "0.27.0">
+  <!ENTITY appversion "0.28.0">
   <!ENTITY manrevision "1.10">
-  <!ENTITY date "December 2016">
+  <!ENTITY date "January 2017">
   <!ENTITY app "gparted">
   <!ENTITY appname "GParted">
   <!-- Information about the entities:
@@ -50,7 +50,7 @@
       <holder>Curtis Gedak</holder>
     </copyright>
     <copyright>
-      <year>2014, 2015</year>
+      <year>2014, 2015, 2017</year>
       <holder>Mike Fleetwood</holder>
     </copyright>
 
@@ -115,11 +115,11 @@
     <revhistory>
       <revision>
         <revnumber>&appname; Manual V1.10</revnumber>
-        <date>December 2016</date>
+        <date>January 2017</date>
         <revdescription>
-          <para role="author">Curtis Gedak</para>
+          <para role="author">Curtis Gedak &amp; Mike Fleetwood</para>
           <para role="publisher">&appname; Project</para>
-          <para role="annotations">Describes version 0.27.0 of &appname;</para>
+          <para role="annotations">Describes version 0.28.0 of &appname;</para>
         </revdescription>
       </revision>
       <revision>
@@ -297,7 +297,11 @@
       </para>
       <para>
       You are advised to BACKUP your DATA before using
-      the <application>&app;</application> application.
+      the <application>&app;</application> application.  This is
+      especially true for encrypted data where all of the data can
+      become permanently inaccessible after a failure.  Please refer to
+      <ulink type="http" url="http://gitlab.com/cryptsetup/cryptsetup/wikis/FrequentlyAskedQuestions">The Cryptsetup FAQ</ulink>
+      for backup and recovery advice of encrypted data.
       </para>
     </caution>
   </sect1>
@@ -1717,6 +1721,12 @@
         </tip>
         <tip>
           <para>
+          A LUKS encrypted partition and the file system within can only
+          be resized when the encryption mapping is open.
+          </para>
+        </tip>
+        <tip>
+          <para>
           To improve the ability to shrink NTFS partitions, you
           might consider one or more of the following:
             <itemizedlist>
@@ -1839,6 +1849,12 @@
           <para>
           If the operating system fails to boot, see
           <xref linkend="gparted-fix-operating-system-boot-problems"/>.
+          </para>
+        </tip>
+        <tip>
+          <para>
+          A LUKS encrypted partition can only be moved when the
+          encryption mapping is closed.
           </para>
         </tip>
       </sect3>
@@ -1968,6 +1984,22 @@
             </itemizedlist>
           </para>
         </caution>
+        <tip>
+          <para>
+          The file system within a LUKS encrypted partition can only be
+          copied when the encryption mapping is open.
+          </para>
+        </tip>
+        <note>
+          <para>
+          To prevent unintended decryption of data, pasting into
+          unallocated space creating a new partition is not permitted.
+          However a LUKS encrypted partition can be pasted into an
+          existing open LUKS encrypted partition maintaining an
+          encrypted, or pasted into a plain partition making an
+          unencrypted copy of the file system.
+          </para>
+        </note>
       </sect3>
 
 <!-- ============= To Manage Partition Flags ========================= -->
