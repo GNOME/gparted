@@ -366,8 +366,8 @@ void Win_GParted::init_partition_menu()
 	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
-	/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
 	menu_partition .items() .push_back(
+			/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
 			Gtk::Menu_Helpers::ImageMenuElem( _("_Format to"),
 							  *image,
 							  * create_format_menu() ) ) ;
@@ -382,8 +382,8 @@ void Win_GParted::init_partition_menu()
 						     sigc::mem_fun( *this, &Win_GParted::toggle_busy_state ) ) );
 	MENU_TOGGLE_BUSY = index++ ;
 
-	/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
 	menu_partition .items() .push_back(
+			/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
 			Gtk::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) ;
 	MENU_MOUNT = index++ ;
 
@@ -2055,8 +2055,8 @@ void Win_GParted::activate_paste()
 			                         , Gtk::BUTTONS_OK
 			                         , true
 			                         ) ;
-			/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
 			dialog .set_secondary_text(
+					/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
 					String::ucompose( _( "The data in %1 will be lost if you apply this operation." ),
 					selected_partition_ptr->get_path() ) );
 			dialog .run() ;
