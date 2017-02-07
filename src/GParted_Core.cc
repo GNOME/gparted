@@ -3381,7 +3381,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 	if ( partition.filesystem == FS_LUKS && partition.busy )
 	{
 		operationdetail.add_child( OperationDetail(
-			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a check repair file system only step"),
+			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a check file system only step"),
 			STATUS_ERROR, FONT_ITALIC ) );
 		return false;
 	}
