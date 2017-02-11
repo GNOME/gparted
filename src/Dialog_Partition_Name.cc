@@ -24,7 +24,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 {
 	this->set_resizable( false );
 	this->set_has_separator( false );
-	this->set_size_request( 300, 80 );
+	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3 */
 	this->set_title( String::ucompose( _("Set partition name on %1"), partition.get_path() ) );
@@ -51,7 +51,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 		// certain extended characters this limit will be too generous.
 		entry->set_max_length( max_length );
 
-		entry->set_width_chars( 20 );
+		entry->set_width_chars( 30 );
 		entry->set_activates_default( true );
 		entry->set_text( partition.name );
 		entry->select_region( 0, entry->get_text_length() );
