@@ -1,16 +1,16 @@
 # Serbian translation for gparted
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the gparted package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2010—2016.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2010—2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-05-20 16:05+0000\n"
-"PO-Revision-Date: 2016-08-20 22:41+0200\n"
+"&keywords=I18N+L10N&component=application\n"
+"POT-Creation-Date: 2017-02-07 19:33+0000\n"
+"PO-Revision-Date: 2017-02-12 07:22+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: Serbian <gnom@prevod.org>\n"
+"Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,8 +51,8 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
-#: ../src/Win_GParted.cc:79 ../src/Win_GParted.cc:1423
-#: ../src/Win_GParted.cc:1618
+#: ../src/Win_GParted.cc:81 ../src/Win_GParted.cc:1479
+#: ../src/Win_GParted.cc:1674
 msgid "GParted"
 msgstr "Gparted"
 
@@ -82,24 +82,24 @@ msgstr "(Polovina novog UUID-a — biće nasumično stvoren)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:71 ../src/Copy_Blocks.cc:181 ../src/ProgressBar.cc:106
+#: ../src/CopyBlocks.cc:71 ../src/CopyBlocks.cc:181 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "umnožio sam %1 od %2"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:156
+#: ../src/CopyBlocks.cc:156
 msgid "copy %1 using a block size of %2"
 msgstr "umnožavam %1 koristeći veličinu bloka od %2"
 
-#: ../src/Copy_Blocks.cc:221
+#: ../src/CopyBlocks.cc:221
 msgid "Operation Canceled"
 msgstr "Radnja je otkazana"
 
-#: ../src/Copy_Blocks.cc:233
+#: ../src/CopyBlocks.cc:233
 msgid "Error while writing block at sector %1"
 msgstr "Greška prilikom upisivanja bloka na sektoru %1"
 
-#: ../src/Copy_Blocks.cc:238
+#: ../src/CopyBlocks.cc:238
 msgid "Error while reading block at sector %1"
 msgstr "Greška prilikom čitanja bloka na sektoru %1"
 
@@ -143,7 +143,7 @@ msgstr "Ništa"
 msgid "Resize"
 msgstr "Promeni veličinu"
 
-#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:254
+#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:256
 msgid "Resize/Move"
 msgstr "Promeni veličinu/Premesti"
 
@@ -175,7 +175,7 @@ msgid "Set file system label on %1"
 msgstr "Postavljam natpis sistema datoteka na „%1“"
 
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:276
+#: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:275
 #: ../src/Dialog_Partition_New.cc:154
 msgid "Label:"
 msgstr "Natpis:"
@@ -186,49 +186,49 @@ msgstr "Ubaci „%1“"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:51
+#: ../src/Dialog_Partition_Info.cc:45
 msgid "Information about %1"
 msgstr " Podaci o „%1“"
 
-#: ../src/Dialog_Partition_Info.cc:87
+#: ../src/Dialog_Partition_Info.cc:81
 msgid "Warning:"
 msgstr "Upozorenje:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:251 ../src/DialogFeatures.cc:44
-#: ../src/TreeView_Detail.cc:39
+#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:44
+#: ../src/TreeView_Detail.cc:45
 msgid "File System"
 msgstr "Sistem datoteka"
 
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:262 ../src/Dialog_Partition_New.cc:143
+#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:143
 msgid "File system:"
 msgstr "Sistem datoteka:"
 
 #. LUKS uuid
-#: ../src/Dialog_Partition_Info.cc:291 ../src/Dialog_Partition_Info.cc:562
+#: ../src/Dialog_Partition_Info.cc:290 ../src/Dialog_Partition_Info.cc:560
 msgid "UUID:"
 msgstr "UUID:"
 
 #. TO TRANSLATORS:   Open
 #. * means that the LUKS encryption is open and the encrypted data within is accessible.
 #.
-#: ../src/Dialog_Partition_Info.cc:306
+#: ../src/Dialog_Partition_Info.cc:305
 msgid "Open"
 msgstr "Otvoreno"
 
 #. TO TRANSLATORS:   Closed
 #. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
 #.
-#: ../src/Dialog_Partition_Info.cc:310
+#: ../src/Dialog_Partition_Info.cc:309
 msgid "Closed"
 msgstr "Zatvoreno"
 
 #. LUKS status
-#: ../src/Dialog_Partition_Info.cc:317 ../src/Dialog_Partition_Info.cc:568
+#: ../src/Dialog_Partition_Info.cc:316 ../src/Dialog_Partition_Info.cc:566
 msgid "Status:"
 msgstr "Stanje:"
 
@@ -236,7 +236,7 @@ msgstr "Stanje:"
 #. * means that the data in encrypted and hasn't been made
 #. * accessible by opening it with the passphrase.
 #.
-#: ../src/Dialog_Partition_Info.cc:327
+#: ../src/Dialog_Partition_Info.cc:325
 msgid "Not accessible (Encrypted)"
 msgstr "Nepristupačno (šifrovano)"
 
@@ -244,7 +244,7 @@ msgstr "Nepristupačno (šifrovano)"
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:337
+#: ../src/Dialog_Partition_Info.cc:335
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Zauzeta (najmanje jedna logička paticija je montirana)"
 
@@ -252,12 +252,12 @@ msgstr "Zauzeta (najmanje jedna logička paticija je montirana)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:347
+#: ../src/Dialog_Partition_Info.cc:345
 msgid "Active"
 msgstr "Aktivna"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:361
+#: ../src/Dialog_Partition_Info.cc:359
 msgid "Mounted on %1"
 msgstr "Montirana je na „%1“"
 
@@ -265,7 +265,7 @@ msgstr "Montirana je na „%1“"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:371
+#: ../src/Dialog_Partition_Info.cc:369
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Slobodna (nema montiranih logičkih particija)"
 
@@ -277,7 +277,7 @@ msgstr "Slobodna (nema montiranih logičkih particija)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:380 ../src/Dialog_Partition_Info.cc:409
+#: ../src/Dialog_Partition_Info.cc:378 ../src/Dialog_Partition_Info.cc:407
 msgid "Not active"
 msgstr "Nije aktivna"
 
@@ -286,7 +286,7 @@ msgstr "Nije aktivna"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:395
+#: ../src/Dialog_Partition_Info.cc:393
 msgid "Not active (Not a member of any volume group)"
 msgstr "Nije aktivna (Nije član nijedne grupe volumena)"
 
@@ -296,101 +296,101 @@ msgstr "Nije aktivna (Nije član nijedne grupe volumena)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:403
+#: ../src/Dialog_Partition_Info.cc:401
 msgid "Not active and exported"
 msgstr "Nije radna i izvezena je"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:416
+#: ../src/Dialog_Partition_Info.cc:414
 msgid "Not mounted"
 msgstr "Nije montirana"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:426 ../src/Win_GParted.cc:2947
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3120
 msgid "Volume Group:"
 msgstr "Grupa volumena:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:437 ../src/Win_GParted.cc:2948
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3121
 msgid "Members:"
 msgstr "Članovi:"
 
 #. Logical Volumes
-#: ../src/Dialog_Partition_Info.cc:461
+#: ../src/Dialog_Partition_Info.cc:459
 msgid "Logical Volumes:"
 msgstr "Logički volumeni:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:477
+#: ../src/Dialog_Partition_Info.cc:475
 msgid "Used:"
 msgstr "Zauzeto:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:491
+#: ../src/Dialog_Partition_Info.cc:489
 msgid "Unused:"
 msgstr "Slobodno:"
 
-#: ../src/Dialog_Partition_Info.cc:508
+#: ../src/Dialog_Partition_Info.cc:506
 msgid "Unallocated:"
 msgstr "Neraspoređeno:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:524 ../src/Win_GParted.cc:494
+#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:496
 msgid "Size:"
 msgstr "Veličina:"
 
 #. ENCRYPTION DETAIL SECTION
 #. encryption headline
-#: ../src/Dialog_Partition_Info.cc:544
+#: ../src/Dialog_Partition_Info.cc:542
 msgid "Encryption"
 msgstr "Šifrovanje"
 
 #. Encryption
-#: ../src/Dialog_Partition_Info.cc:548
+#: ../src/Dialog_Partition_Info.cc:546
 msgid "Encryption:"
 msgstr "Šifrovanje:"
 
 #. LUKS path
 #. Left field & value pair area
 #. path
-#: ../src/Dialog_Partition_Info.cc:554 ../src/Dialog_Partition_Info.cc:594
-#: ../src/Win_GParted.cc:502
+#: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Partition_Info.cc:592
+#: ../src/Win_GParted.cc:504
 msgid "Path:"
 msgstr "Putanja:"
 
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:583 ../src/TreeView_Detail.cc:37
+#: ../src/Dialog_Partition_Info.cc:581 ../src/TreeView_Detail.cc:43
 msgid "Partition"
 msgstr "Particija"
 
 #. name
-#: ../src/Dialog_Partition_Info.cc:606 ../src/Dialog_Partition_Name.cc:41
+#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:41
 msgid "Name:"
 msgstr "Naziv:"
 
 #. flags
-#: ../src/Dialog_Partition_Info.cc:616
+#: ../src/Dialog_Partition_Info.cc:614
 msgid "Flags:"
 msgstr "Parametri:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:628
+#: ../src/Dialog_Partition_Info.cc:626
 msgid "First sector:"
 msgstr "Prvi sektor:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:638
+#: ../src/Dialog_Partition_Info.cc:636
 msgid "Last sector:"
 msgstr "Poslednji sektor:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:648 ../src/Win_GParted.cc:552
+#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:554
 msgid "Total sectors:"
 msgstr "Ukupan broj sektora:"
 
@@ -415,7 +415,7 @@ msgid "Primary Partition"
 msgstr "Primarnu particiju"
 
 #: ../src/Dialog_Partition_New.cc:99 ../src/OperationCreate.cc:61
-#: ../src/OperationDelete.cc:110
+#: ../src/OperationDelete.cc:109
 msgid "Logical Partition"
 msgstr "Logičku particiju"
 
@@ -432,11 +432,11 @@ msgstr "Naziv particije:"
 msgid "New Partition #%1"
 msgstr "Nova particija #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:94
+#: ../src/Dialog_Partition_Resize_Move.cc:95
 msgid "Resize/Move %1"
 msgstr "Promena veličine/premeštanje „%1“"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:99
+#: ../src/Dialog_Partition_Resize_Move.cc:100
 msgid "Resize %1"
 msgstr "Promena veličine „%1“"
 
@@ -613,7 +613,7 @@ msgstr "Umnožavanje"
 msgid "Check"
 msgstr "Proveravanje"
 
-#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:41
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:47
 msgid "Label"
 msgstr "Natpis"
 
@@ -645,27 +645,36 @@ msgstr ""
 msgid "Available offline and online"
 msgstr "I otkačen i prikačen"
 
+#. TO TRANSLATORS:  Available online only
+#. * means that this action is valid for this file system only
+#. * when it is mounted.
+#.
+#: ../src/DialogFeatures.cc:109
+#| msgid "Available offline only"
+msgid "Available online only"
+msgstr "Samo prikačen"
+
 #. TO TRANSLATORS:  Available offline only
 #. * means that this action is valid for this file system only
 #. * when it is unmounted.
 #.
-#: ../src/DialogFeatures.cc:109
+#: ../src/DialogFeatures.cc:122
 msgid "Available offline only"
 msgstr "Samo otkačen"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:121
+#: ../src/DialogFeatures.cc:134
 msgid "Not Available"
 msgstr "Nedostupna"
 
-#: ../src/DialogFeatures.cc:126
+#: ../src/DialogFeatures.cc:139
 msgid "Legend"
 msgstr "Legenda"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:134
+#: ../src/DialogFeatures.cc:147
 msgid "Rescan For Supported Actions"
 msgstr "Proveri za podržanim radnjama"
 
@@ -809,104 +818,109 @@ msgid "update %1 entry"
 msgstr "osvežavam stavku „%1“"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/FileSystem.cc:43
+#: ../src/FileSystem.cc:42
 msgid "_Mount"
 msgstr "_Prikači"
 
-#: ../src/FileSystem.cc:44
+#: ../src/FileSystem.cc:43
 msgid "_Unmount"
 msgstr "_Otkači"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:234
+#: ../src/FileSystem.cc:233
 msgid "Created directory %1"
 msgstr "Napravio sam direktorijum %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:261
+#: ../src/FileSystem.cc:260
 msgid "Removed directory %1"
 msgstr "Uklonio sam direktorijum %1"
 
+#: ../src/GParted_Core.cc:73
+#| msgid "GParted"
+msgid "GParted Bug"
+msgstr "Greška Gparteda"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:195 ../src/GParted_Core.cc:204
+#: ../src/GParted_Core.cc:185 ../src/GParted_Core.cc:194
 msgid "Scanning %1"
 msgstr "Skeniram „%1“"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:223 ../src/GParted_Core.cc:248
+#: ../src/GParted_Core.cc:213 ../src/GParted_Core.cc:238
 msgid "Confirming %1"
 msgstr "Potvrđujem „%1“"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:262
 msgid "Searching %1 partitions"
 msgstr "Pretražujem particije na „%1“"
 
-#. TO TRANSLATORS:  unrecognized
-#. * means that the partition table for this
-#. * disk device is unknown or not recognized.
-#.
-#: ../src/GParted_Core.cc:373
-msgid "unrecognized"
-msgstr "neprepoznato"
-
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:691
+#: ../src/GParted_Core.cc:519
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Particija ne može imati dužinu od %1 sektora"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:705
+#: ../src/GParted_Core.cc:533
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Particija sa iskorišćenim sektorima (%1) većim od svoje dužine (%2) nije "
 "ispravna"
 
-#: ../src/GParted_Core.cc:831
+#: ../src/GParted_Core.cc:669
 msgid "libparted messages"
 msgstr "libparted poruke"
 
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this disk
+#. * device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:972
+msgid "unrecognized"
+msgstr "neprepoznato"
+
 #. no file system found....
-#: ../src/GParted_Core.cc:1708
+#: ../src/GParted_Core.cc:1497
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Ne mogu da otkrijem sistem datoteka! Mogući razlozi su:"
 
-#: ../src/GParted_Core.cc:1710
+#: ../src/GParted_Core.cc:1499
 msgid "The file system is damaged"
 msgstr "Sistem datoteka je oštećen"
 
-#: ../src/GParted_Core.cc:1712
+#: ../src/GParted_Core.cc:1501
 msgid "The file system is unknown to GParted"
 msgstr "Sistem datoteka nije poznat Gpartedu"
 
-#: ../src/GParted_Core.cc:1714
+#: ../src/GParted_Core.cc:1503
 msgid "There is no file system available (unformatted)"
 msgstr "Nema dostupnog sistema datoteka (neformatiranog)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1717
+#: ../src/GParted_Core.cc:1506
 msgid "The device entry %1 is missing"
 msgstr "Nedostaje „%1“ stavka uređaja"
 
-#: ../src/GParted_Core.cc:1876
+#: ../src/GParted_Core.cc:1661
 msgid "Unable to find mount point"
 msgstr "Nije moguće naći tačku montiranja"
 
-#: ../src/GParted_Core.cc:1996
+#: ../src/GParted_Core.cc:1778
 msgid "Unable to read the contents of this file system!"
 msgstr "Nije moguće pročitati sadržaj sistema datoteka!"
 
-#: ../src/GParted_Core.cc:1998
+#: ../src/GParted_Core.cc:1780
 msgid "Because of this some operations may be unavailable."
 msgstr "Zbog toga neke operacije mogu biti nedostupne."
 
-#: ../src/GParted_Core.cc:2002
+#: ../src/GParted_Core.cc:1784
 msgid "The cause might be a missing software package."
 msgstr "Razlog može biti nedostajući softverski paket."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:2005
+#: ../src/GParted_Core.cc:1787
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -915,7 +929,7 @@ msgstr ""
 "„%2“."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:2015
+#: ../src/GParted_Core.cc:1797
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 neraspoređenog prostora unutar particije."
 
@@ -923,7 +937,7 @@ msgstr "%1 neraspoređenog prostora unutar particije."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:2025
+#: ../src/GParted_Core.cc:1807
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -931,11 +945,11 @@ msgstr ""
 "Da uvećate sistem datoteka da ispuni particiju, odaberite particiju i "
 "izaberite stavku izbornika:"
 
-#: ../src/GParted_Core.cc:2027
+#: ../src/GParted_Core.cc:1809
 msgid "Partition --> Check."
 msgstr "Particija ——> Proveri."
 
-#: ../src/GParted_Core.cc:2134
+#: ../src/GParted_Core.cc:1916
 msgid "create empty partition"
 msgstr "pravim praznu particiju"
 
@@ -949,90 +963,127 @@ msgstr "pravim praznu particiju"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2208 ../src/GParted_Core.cc:3523
+#: ../src/GParted_Core.cc:1992 ../src/GParted_Core.cc:3624
 msgid "path: %1 (%2)"
 msgstr "putanja: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2209 ../src/GParted_Core.cc:3526
+#: ../src/GParted_Core.cc:1993 ../src/GParted_Core.cc:3627
 msgid "partition"
 msgstr "particija"
 
-#: ../src/GParted_Core.cc:2210 ../src/GParted_Core.cc:3527
+#: ../src/GParted_Core.cc:1994 ../src/GParted_Core.cc:3628
 msgid "start: %1"
 msgstr "početak: %1"
 
-#: ../src/GParted_Core.cc:2211 ../src/GParted_Core.cc:3528
+#: ../src/GParted_Core.cc:1995 ../src/GParted_Core.cc:3629
 msgid "end: %1"
 msgstr "kraj: %1"
 
-#: ../src/GParted_Core.cc:2212 ../src/GParted_Core.cc:3529
+#: ../src/GParted_Core.cc:1996 ../src/GParted_Core.cc:3630
 msgid "size: %1 (%2)"
 msgstr "veličina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2244 ../src/linux_swap.cc:173
+#: ../src/GParted_Core.cc:2029
+msgid ""
+"partition contains open LUKS encryption for a create file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak stvaranja sistema "
+"datoteka"
+
+#. TO TRANSLATORS: looks like create new ext3 file system
+#: ../src/GParted_Core.cc:2036
 msgid "create new %1 file system"
 msgstr "stvaram novi %1 sistema datoteka"
 
-#: ../src/GParted_Core.cc:2286
+#: ../src/GParted_Core.cc:2068
+msgid ""
+"partition contains open LUKS encryption for a format file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak formatiranja sistema "
+"datoteka"
+
+#: ../src/GParted_Core.cc:2083
 msgid "delete partition"
 msgstr "brišem particiju"
 
-#: ../src/GParted_Core.cc:2341
+#: ../src/GParted_Core.cc:2131
+msgid ""
+"partition contains open LUKS encryption for a delete file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak brisanja sistema "
+"datoteka"
+
+#: ../src/GParted_Core.cc:2146
 msgid "delete %1 file system"
 msgstr "brišem %1 sistem datoteka"
 
+#: ../src/GParted_Core.cc:2164
+msgid ""
+"partition contains open LUKS encryption for a label file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak natpisa sistema "
+"datoteka"
+
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2358 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2171 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Čistim natpis sistema datoteka na „%1“"
 
-#: ../src/GParted_Core.cc:2361
+#: ../src/GParted_Core.cc:2174
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Postavljam natpis sistema datoteka „%1“ na „%2“"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2390 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2203 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Uklanjam naziv particije sa „%1“"
 
-#: ../src/GParted_Core.cc:2393
+#: ../src/GParted_Core.cc:2206
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Postavljam naziv particije „%1“ na „%2“"
 
-#: ../src/GParted_Core.cc:2418
+#: ../src/GParted_Core.cc:2232
+msgid ""
+"partition contains open LUKS encryption for a change file system UUID only "
+"step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak promene UUID-a "
+"sistema datoteka"
+
+#: ../src/GParted_Core.cc:2239
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Podešavam polovinu UUID-a na „%1“ na novu, nasumičnu vrednost"
 
-#: ../src/GParted_Core.cc:2423
+#: ../src/GParted_Core.cc:2244
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Podešavam UUID na „%1“ na novu, nasumičnu vrednost"
 
-#. TO TRANSLATORS:  moving requires old and new length to be the same
-#. * means that the length in bytes of the old partition and new partition
-#. * must be the same.  If the sector sizes of the old partition and the
-#. * new partition are the same, then the length in sectors must be the same.
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to change the size of a partition when performing a move only
+#. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2511
-msgid "moving requires old and new length to be the same"
-msgstr "za premeštanje je potrebno da stara i nova veličina budu jednake"
+#: ../src/GParted_Core.cc:2332
+msgid "size of the partition is changing for a move only step"
+msgstr "veličina particije se promenila za korak premeštanja"
 
-#: ../src/GParted_Core.cc:2541
+#: ../src/GParted_Core.cc:2364
 msgid "rollback last change to the partition table"
 msgstr "vraćam particionu tabelu na stanje pre poslednje promene"
 
-#: ../src/GParted_Core.cc:2590
+#: ../src/GParted_Core.cc:2413
 msgid "move file system to the left"
 msgstr "premeštam sistem datoteka ulevo"
 
-#: ../src/GParted_Core.cc:2592
+#: ../src/GParted_Core.cc:2415
 msgid "move file system to the right"
 msgstr "premeštam sistem datoteka udesno"
 
-#: ../src/GParted_Core.cc:2595
+#: ../src/GParted_Core.cc:2418
 msgid "move file system"
 msgstr "premeštam sistem datoteka"
 
-#: ../src/GParted_Core.cc:2597
+#: ../src/GParted_Core.cc:2420
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1040,51 +1091,74 @@ msgstr ""
 "I novi i stari sistem datoteka zauzimaju istu poziciju.  Dakle preskačem ovu "
 "operaciju."
 
-#: ../src/GParted_Core.cc:2660
+#: ../src/GParted_Core.cc:2486
 msgid "using libparted"
 msgstr "koristim libparted"
 
-#: ../src/GParted_Core.cc:2723
-msgid "resizing requires old and new start to be the same"
-msgstr "promena veličine zahteva da stari i novi početak budu isti"
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to move the start of the partition when performing a resize
+#. * only step which is not permitted to change the start of the
+#. * partition.
+#.
+#: ../src/GParted_Core.cc:2560
+msgid "start of the partition is changing for a resize only step"
+msgstr "početak particije se promenio za korak promene veličine"
 
-#: ../src/GParted_Core.cc:2793
+#: ../src/GParted_Core.cc:2578
+msgid ""
+"partition does not contain LUKS encryption for a resize encryption only step"
+msgstr ""
+"particija ne sadrži LUKS šifrovanje samo za korak šifrovanja promene veličine"
+
+#: ../src/GParted_Core.cc:2588
+msgid "impossible to shrink a closed LUKS encryption volume"
+msgstr "ne mogu da skupim zatvoreni volumen LUKS šifrovanja"
+
+#: ../src/GParted_Core.cc:2647
+msgid ""
+"partition contains open LUKS encryption for a resize file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak promene veličine "
+"sistema datoteka"
+
+#: ../src/GParted_Core.cc:2716
 msgid "resize/move partition"
 msgstr "menjam veličinu/premeštam particiju"
 
-#: ../src/GParted_Core.cc:2796
+#: ../src/GParted_Core.cc:2719
 msgid "move partition to the right"
 msgstr "premeštam particiju udesno"
 
-#: ../src/GParted_Core.cc:2799
+#: ../src/GParted_Core.cc:2722
 msgid "move partition to the left"
 msgstr "premeštam particiju ulevo"
 
-#: ../src/GParted_Core.cc:2802
+#: ../src/GParted_Core.cc:2725
 msgid "grow partition from %1 to %2"
 msgstr "povećavam particiju sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2805
+#: ../src/GParted_Core.cc:2728
 msgid "shrink partition from %1 to %2"
 msgstr "smanjujem particiju sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2808
+#: ../src/GParted_Core.cc:2731
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "premeštam particiju udesno i povećavam je sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2811
+#: ../src/GParted_Core.cc:2734
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "premeštam particiju udesno i smanjujem je sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2814
+#: ../src/GParted_Core.cc:2737
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "premeštam particiju ulevo i povećavam je sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2817
+#: ../src/GParted_Core.cc:2740
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "premeštam particiju ulevo i smanjujem je sa %1 na %2"
 
-#: ../src/GParted_Core.cc:2832
+#: ../src/GParted_Core.cc:2755
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1092,194 +1166,277 @@ msgstr ""
 "I nova i stara particija imaju istu i veličinu i poziciju.  Dakle preskačem "
 "tu operaciju."
 
-#: ../src/GParted_Core.cc:2842
+#: ../src/GParted_Core.cc:2765
 msgid "old start: %1"
 msgstr "stari početak: %1"
 
-#: ../src/GParted_Core.cc:2843
+#: ../src/GParted_Core.cc:2766
 msgid "old end: %1"
 msgstr "stari kraj: %1"
 
-#: ../src/GParted_Core.cc:2844
+#: ../src/GParted_Core.cc:2767
 msgid "old size: %1 (%2)"
 msgstr "stara veličina: %1"
 
-#: ../src/GParted_Core.cc:2909 ../src/GParted_Core.cc:3613
+#: ../src/GParted_Core.cc:2836 ../src/GParted_Core.cc:3722
 msgid "new start: %1"
 msgstr "novi početak: %1"
 
-#: ../src/GParted_Core.cc:2910 ../src/GParted_Core.cc:3614
+#: ../src/GParted_Core.cc:2837 ../src/GParted_Core.cc:3723
 msgid "new end: %1"
 msgstr "novi kraj: %1"
 
-#: ../src/GParted_Core.cc:2911 ../src/GParted_Core.cc:3615
+#: ../src/GParted_Core.cc:2838 ../src/GParted_Core.cc:3724
 msgid "new size: %1 (%2)"
 msgstr "nova veličina: %1"
 
-#: ../src/GParted_Core.cc:2938 ../src/GParted_Core.cc:3561
+#: ../src/GParted_Core.cc:2865 ../src/GParted_Core.cc:3670
 msgid "requested start: %1"
 msgstr "željeni početak: %1"
 
-#: ../src/GParted_Core.cc:2939 ../src/GParted_Core.cc:3562
+#: ../src/GParted_Core.cc:2866 ../src/GParted_Core.cc:3671
 msgid "requested end: %1"
 msgstr "željeni kraj: %1"
 
-#: ../src/GParted_Core.cc:2940 ../src/GParted_Core.cc:3563
+#: ../src/GParted_Core.cc:2867 ../src/GParted_Core.cc:3672
 msgid "requested size: %1 (%2)"
 msgstr "željena veličina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2965
+#: ../src/GParted_Core.cc:2887
+msgid ""
+"partition does not contain open LUKS encryption for a shrink encryption only "
+"step"
+msgstr "particija ne sadrži LUKS šifrovanje samo za korak šifrovanja skupljanja"
+
+#: ../src/GParted_Core.cc:2892
+msgid "shrink encryption volume"
+msgstr "skupljam volumen šifrovanja"
+
+#: ../src/GParted_Core.cc:2903
+msgid ""
+"partition does not contain LUKS encryption for a maximize encryption only "
+"step"
+msgstr ""
+"particija ne sadrži LUKS šifrovanje samo za korak šifrovanja najveće veličine"
+
+#: ../src/GParted_Core.cc:2908
+#| msgid "grow file system to fill the partition"
+msgid "grow encryption volume to fill the partition"
+msgstr "povećavam volumen šifrovanja da popunim particiju"
+
+#: ../src/GParted_Core.cc:2918
+#| msgid "growing is not available for this file system"
+msgid "growing is not available for this encryption volume"
+msgstr "povećavanje nije dostupno za ovaj volumen šifrovanja"
+
+#: ../src/GParted_Core.cc:2936
+msgid ""
+"partition contains open LUKS encryption for a shrink file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak skupljanja sistema "
+"datoteka"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to grow the partition size or keep it the same when performing
+#. * a shrink partition only step.
+#.
+#: ../src/GParted_Core.cc:2948
+msgid "the new partition size is larger or the same for a shrink only step"
+msgstr "nova veličina particije je veća ili je jednaka kao i u koraku skupljanja"
+
+#: ../src/GParted_Core.cc:2953
 msgid "shrink file system"
 msgstr "smanjujem sistem datoteka"
 
-#: ../src/GParted_Core.cc:2969
-msgid "grow file system"
-msgstr "povećavam sistem datoteka"
-
-#: ../src/GParted_Core.cc:2972
-msgid "resize file system"
-msgstr "menjam veličinu sistema datoteka"
-
-#: ../src/GParted_Core.cc:2975
+#: ../src/GParted_Core.cc:2964
 msgid ""
-"new and old file system have the same size.  Hence skipping this operation"
+"partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
-"I novi i stari sistem datoteka imaju istu veličinu.  Dakle preskačem tu "
-"operaciju."
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak najveće veličine "
+"sistema datoteka"
 
-#: ../src/GParted_Core.cc:3016
+#: ../src/GParted_Core.cc:2969
 msgid "grow file system to fill the partition"
 msgstr "povećavam sistem datoteka da popunim particiju"
 
-#: ../src/GParted_Core.cc:3021
+#: ../src/GParted_Core.cc:2980
 msgid "growing is not available for this file system"
 msgstr "povećavanje nije dostupno za ovaj sistem datoteka"
 
-#: ../src/GParted_Core.cc:3030
+#: ../src/GParted_Core.cc:2989
 msgid "growing the file system is currently disallowed"
 msgstr "povećavanje sistema datoteka trenutno nije dopušteno"
 
-#: ../src/GParted_Core.cc:3056
+#. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
+#: ../src/GParted_Core.cc:3013
+msgid "not a %1 file system for a recreate %1 only step"
+msgstr "nije „%1“ sistem datoteka za korak ponovnog stvaranja „%1“-a"
+
+#. TO TRANSLATORS: looks like   recreate linux-swap file system
+#: ../src/GParted_Core.cc:3025
+#| msgid "create new %1 file system"
+msgid "recreate %1 file system"
+msgstr "ponovo stvaram „%1“ sistema datoteka"
+
+#: ../src/GParted_Core.cc:3094
 msgid "the destination is smaller than the source partition"
 msgstr "krajnja particija je manja od izvorne particije"
 
-#: ../src/GParted_Core.cc:3079
-msgid "copy file system of %1 to %2"
+#: ../src/GParted_Core.cc:3145
+msgid ""
+"source partition contains open LUKS encryption for a file system copy only "
+"step"
+msgstr ""
+"izvorna particija sadrži otvoreno LUKS šifrovanje jedino za korak umnožavanja "
+"sistema datoteka"
+
+#: ../src/GParted_Core.cc:3152
+msgid ""
+"destination partition contains open LUKS encryption for a file system copy "
+"only step"
+msgstr ""
+"odredišna particija sadrži otvoreno LUKS šifrovanje jedino za korak "
+"umnožavanja sistema datoteka"
+
+#: ../src/GParted_Core.cc:3158
+#| msgid "copy file system of %1 to %2"
+msgid "copy file system from %1 to %2"
 msgstr "umnožavam sistem datoteka %1 na %2"
 
-#: ../src/GParted_Core.cc:3175
+#: ../src/GParted_Core.cc:3239
 msgid "using internal algorithm"
 msgstr "koristim unutrašnji algoritam"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3178
+#: ../src/GParted_Core.cc:3242
 msgid "copy %1"
 msgstr "umnožavam %1"
 
-#: ../src/GParted_Core.cc:3181
+#: ../src/GParted_Core.cc:3245
 msgid "finding optimal block size"
 msgstr "tražim optimalnu veličinu bloka"
 
-#: ../src/GParted_Core.cc:3223
+#: ../src/GParted_Core.cc:3287
 msgid "%1 seconds"
 msgstr "%1 sekunde"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3241
+#: ../src/GParted_Core.cc:3305
 msgid "optimal block size is %1"
 msgstr "optimalna veličina bloka je %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3259
+#: ../src/GParted_Core.cc:3323
 msgid "%1 (%2 B) copied"
 msgstr "umnožio sam %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:3297
+#: ../src/GParted_Core.cc:3361
 msgid "roll back last transaction"
 msgstr "poništavam poslednju transakciju"
 
+#: ../src/GParted_Core.cc:3384
+msgid ""
+"partition contains open LUKS encryption for a check file system only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak provere sistema "
+"datoteka"
+
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3317
+#: ../src/GParted_Core.cc:3396
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "proveravam sistem datoteka na „%1“ za greškama i (ako je moguće) ispravljam ih"
 
-#: ../src/GParted_Core.cc:3326
+#: ../src/GParted_Core.cc:3405
 msgid "checking is not available for this file system"
 msgstr "Proveravanje nije dostupno za ovaj sistem datoteka"
 
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3471
 msgid "set partition type on %1"
 msgstr "postavljam tip particije na %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3398
+#: ../src/GParted_Core.cc:3514
 msgid "new partition type: %1"
 msgstr "vrsta nove particije: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3413
+#: ../src/GParted_Core.cc:3529
 msgid "new partition flag: %1"
 msgstr "opcija nove particije: %1"
 
-#: ../src/GParted_Core.cc:3441
+#: ../src/GParted_Core.cc:3557
 msgid "calibrate %1"
 msgstr "kalibriram %1"
 
-#: ../src/GParted_Core.cc:3525
+#: ../src/GParted_Core.cc:3626
 msgid "device"
 msgstr "uređaj"
 
-#: ../src/GParted_Core.cc:3557
+#: ../src/GParted_Core.cc:3640
+#| msgid "Encryption:"
+msgid "encryption path: %1"
+msgstr "putanja šifrovanja: %1"
+
+#: ../src/GParted_Core.cc:3666
 msgid "calculate new size and position of %1"
 msgstr "određujem novu veličinu i poziciju %1"
 
-#: ../src/GParted_Core.cc:3673
+#: ../src/GParted_Core.cc:3783
+msgid ""
+"partition contains open LUKS encryption for an erase file system signatures "
+"only step"
+msgstr ""
+"particija sadrži otvoreno LUKS šifrovanje jedino za korak brisanja potpisa "
+"sistema datoteka"
+
+#: ../src/GParted_Core.cc:3790
 msgid "clear old file system signatures in %1"
 msgstr "čistim stare potpise sistema datoteka u „%1“"
 
-#: ../src/GParted_Core.cc:3879
+#: ../src/GParted_Core.cc:3996
 msgid "flush operating system cache of %1"
 msgstr "osvežavam ostavu operativnog sistema od %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3911
+#: ../src/GParted_Core.cc:4028
 msgid "update boot sector of %1 file system on %2"
 msgstr "ažuriram sektor pokretanja %1 sistema datoteka na „%2“"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3947
+#: ../src/GParted_Core.cc:4064
 msgid "Error trying to write to boot sector in %1"
 msgstr "Greška prilikom pisanja u sektor pokretanja na „%1“"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3953
+#: ../src/GParted_Core.cc:4070
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Greška prilikom pokušaja da stignem do pozicije 0x1c na „%1“"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3960
+#: ../src/GParted_Core.cc:4077
 msgid "Error trying to open %1"
 msgstr "Greška prilikom otvaranja „%1“"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3970
+#: ../src/GParted_Core.cc:4087
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Nisam uspeo da postavim broj skrivenih sektora na „%1“ u NTFS zapis podizanja "
 "sistema."
 
-#: ../src/GParted_Core.cc:3972
+#: ../src/GParted_Core.cc:4089
 msgid "You might try the following command to correct the problem:"
 msgstr "Moraćete da probate sledeću naredbu da biste rešili problem:"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4033
+#: ../src/GParted_Core.cc:4150
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Zanemarujem uređaj „%1“ sa veličinom logičkog sektora od %2 bajta."
 
-#: ../src/GParted_Core.cc:4036
+#: ../src/GParted_Core.cc:4153
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1287,88 +1444,88 @@ msgstr ""
 "Gparted zahteva libparted verziju 2.2 ili višu da bi podržao uređaje sa "
 "veličinom sektora većim od 512 bajta."
 
-#: ../src/GParted_Core.cc:4200
+#: ../src/GParted_Core.cc:4317
 msgid "Libparted Information"
 msgstr "Informacije Libparteda"
 
-#: ../src/GParted_Core.cc:4204
+#: ../src/GParted_Core.cc:4321
 msgid "Libparted Warning"
 msgstr "Upozorenje Libparteda"
 
-#: ../src/GParted_Core.cc:4208
+#: ../src/GParted_Core.cc:4325
 msgid "Libparted Error"
 msgstr "Greška Libparteda"
 
-#: ../src/GParted_Core.cc:4211
+#: ../src/GParted_Core.cc:4328
 msgid "Libparted Fatal"
 msgstr "Kobnost Libparteda"
 
-#: ../src/GParted_Core.cc:4214
+#: ../src/GParted_Core.cc:4331
 msgid "Libparted Bug"
 msgstr "Greška Libparteda"
 
-#: ../src/GParted_Core.cc:4217
+#: ../src/GParted_Core.cc:4334
 msgid "Libparted Unsupported Feature"
 msgstr "Nepodržana funkcija Libparteda"
 
-#: ../src/GParted_Core.cc:4220
+#: ../src/GParted_Core.cc:4337
 msgid "Libparted unknown exception"
 msgstr "Nepoznat izuzetak Libparteda"
 
-#: ../src/GParted_Core.cc:4224
+#: ../src/GParted_Core.cc:4341
 msgid "Fix"
 msgstr "Ispravi"
 
-#: ../src/GParted_Core.cc:4226
+#: ../src/GParted_Core.cc:4343
 msgid "Yes"
 msgstr "Da"
 
-#: ../src/GParted_Core.cc:4228
+#: ../src/GParted_Core.cc:4345
 msgid "Ok"
 msgstr "U redu"
 
-#: ../src/GParted_Core.cc:4230
+#: ../src/GParted_Core.cc:4347
 msgid "Retry"
 msgstr "Pokušaj ponovo"
 
-#: ../src/GParted_Core.cc:4232
+#: ../src/GParted_Core.cc:4349
 msgid "No"
 msgstr "Ne"
 
-#: ../src/GParted_Core.cc:4234
+#: ../src/GParted_Core.cc:4351
 msgid "Cancel"
 msgstr "Otkaži"
 
-#: ../src/GParted_Core.cc:4236
+#: ../src/GParted_Core.cc:4353
 msgid "Ignore"
 msgstr "Zanemari"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:172
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:174
 msgid "_Undo Last Operation"
 msgstr "_Opozovi poslednju operaciju"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:178
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:180
 msgid "_Clear All Operations"
 msgstr "_Obriši sve operacije"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:183
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:185
 msgid "_Apply All Operations"
 msgstr "_Primeni sve operacije"
 
-#: ../src/LVM2_PV_Info.cc:192
+#: ../src/LVM2_PV_Info.cc:193
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr ""
 "Nedostaju jedan ili više fizičkih volumena koji pripadaju grupi volumena."
 
-#: ../src/LVM2_PV_Info.cc:320
+#: ../src/LVM2_PV_Info.cc:321
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "Došlo je do greške prilikom čitalja ULV2 podešavanja!"
 
-#: ../src/LVM2_PV_Info.cc:322
+#: ../src/LVM2_PV_Info.cc:323
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Može biti da su neispravni ili da nedostaju neki ili svi detalji."
 
-#: ../src/LVM2_PV_Info.cc:324
+#: ../src/LVM2_PV_Info.cc:325
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "NE biste trebali da menjate nijednu ULV2 FV particiju."
 
@@ -1396,7 +1553,7 @@ msgstr "Umnoži „%1“ na „%2“"
 
 #. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
-#: ../src/OperationCheck.cc:63
+#: ../src/OperationCheck.cc:50
 msgid "Check and repair file system (%1) on %2"
 msgstr "Proveri i popravi sistem datoteka (%1) na „%2“"
 
@@ -1406,7 +1563,7 @@ msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Napravi %1 #%2 (%3, %4) na „%5“"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:115
+#: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Obriši %1 (%2, %3) sa „%4“"
 
@@ -1475,41 +1632,36 @@ msgstr "Pomeri %1 ulevo i smanji sa %2 na %3"
 msgid "%1 of %2 copied (%3 remaining)"
 msgstr "umnožio sam %1 od %2 (%3 preostaje)"
 
-#: ../src/TreeView_Detail.cc:38
+#: ../src/TreeView_Detail.cc:44
 msgid "Name"
 msgstr "Naziv"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:46
 msgid "Mount Point"
 msgstr "Tačka kačenja"
 
-#: ../src/TreeView_Detail.cc:42
+#: ../src/TreeView_Detail.cc:48
 msgid "Size"
 msgstr "Veličina"
 
-#: ../src/TreeView_Detail.cc:43
+#: ../src/TreeView_Detail.cc:49
 msgid "Used"
 msgstr "Zauzeto"
 
-#: ../src/TreeView_Detail.cc:44
+#: ../src/TreeView_Detail.cc:50
 msgid "Unused"
 msgstr "Slobodno"
 
-#: ../src/TreeView_Detail.cc:45
+#: ../src/TreeView_Detail.cc:51
 msgid "Flags"
 msgstr "Parametri"
-
-#. TO TRANSLATORS: means that this is an encrypted file system
-#: ../src/TreeView_Detail.cc:197 ../src/TreeView_Detail.cc:207
-msgid "Encrypted"
-msgstr "Šifrovano"
 
 #. TO TRANSLATORS:  unallocated
 #. * means that this space on the disk device does
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:251
+#: ../src/Utils.cc:253
 msgid "unallocated"
 msgstr "neraspoređeno"
 
@@ -1518,7 +1670,7 @@ msgstr "neraspoređeno"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:258
+#: ../src/Utils.cc:260
 msgid "unknown"
 msgstr "nepoznato"
 
@@ -1526,7 +1678,7 @@ msgstr "nepoznato"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:264
+#: ../src/Utils.cc:266
 msgid "unformatted"
 msgstr "neformatirano"
 
@@ -1534,208 +1686,215 @@ msgstr "neformatirano"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:270
+#: ../src/Utils.cc:272
 msgid "cleared"
 msgstr "očišćeno"
 
-#: ../src/Utils.cc:290
+#: ../src/Utils.cc:293
 msgid "used"
 msgstr "zauzeto"
 
-#: ../src/Utils.cc:291
+#: ../src/Utils.cc:294
 msgid "unused"
 msgstr "slobodno"
 
-#: ../src/Utils.cc:422
+#. TO TRANSLATORS: means that this is an encrypted file system
+#: ../src/Utils.cc:311
+msgid "Encrypted"
+msgstr "Šifrovano"
+
+#: ../src/Utils.cc:437
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:427
+#: ../src/Utils.cc:442
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:432
+#: ../src/Utils.cc:447
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:437
+#: ../src/Utils.cc:452
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:442
+#: ../src/Utils.cc:457
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:156
+#: ../src/Win_GParted.cc:158
 msgid "_Refresh Devices"
 msgstr "_Osveži uređaje"
 
-#: ../src/Win_GParted.cc:162
+#: ../src/Win_GParted.cc:164
 msgid "_Devices"
 msgstr "U_ređaji"
 
-#: ../src/Win_GParted.cc:167
+#: ../src/Win_GParted.cc:169
 msgid "_GParted"
 msgstr "_Gparted"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:189
 msgid "_Edit"
 msgstr "_Uređivanje"
 
-#: ../src/Win_GParted.cc:192
+#: ../src/Win_GParted.cc:194
 msgid "Device _Information"
 msgstr "_Informacije o uređaju"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:196
 msgid "Pending _Operations"
 msgstr "_Zakazane operacije"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:197
 msgid "_View"
 msgstr "_Pregled"
 
-#: ../src/Win_GParted.cc:199
+#: ../src/Win_GParted.cc:201
 msgid "_File System Support"
 msgstr "Podrška _sistema datoteka"
 
-#: ../src/Win_GParted.cc:203
+#: ../src/Win_GParted.cc:205
 msgid "_Create Partition Table"
 msgstr "_Napravi particionu tabelu"
 
-#: ../src/Win_GParted.cc:206
+#: ../src/Win_GParted.cc:208
 msgid "_Attempt Data Rescue"
 msgstr "_Pokušaj spašavanje podataka"
 
-#: ../src/Win_GParted.cc:209
+#: ../src/Win_GParted.cc:211
 msgid "_Device"
 msgstr "U_ređaj"
 
-#: ../src/Win_GParted.cc:213
+#: ../src/Win_GParted.cc:215
 msgid "_Partition"
 msgstr "Parti_cija"
 
-#: ../src/Win_GParted.cc:218
+#: ../src/Win_GParted.cc:220
 msgid "_Contents"
 msgstr "_Sadržaj"
 
-#: ../src/Win_GParted.cc:226
+#: ../src/Win_GParted.cc:228
 msgid "_Help"
 msgstr "Po_moć"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:238
+#: ../src/Win_GParted.cc:240
 msgid "New"
 msgstr "Nova"
 
-#: ../src/Win_GParted.cc:243
+#: ../src/Win_GParted.cc:245
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Napravite novu particiju na izabranom neraspoređenom prostoru"
 
-#: ../src/Win_GParted.cc:248
+#: ../src/Win_GParted.cc:250
 msgid "Delete the selected partition"
 msgstr "Obrišite izabranu particiju"
 
-#: ../src/Win_GParted.cc:270
+#: ../src/Win_GParted.cc:272
 msgid "Resize/Move the selected partition"
 msgstr "Promenite veličinu/premestite izabranu particiju"
 
-#: ../src/Win_GParted.cc:279
+#: ../src/Win_GParted.cc:281
 msgid "Copy the selected partition to the clipboard"
 msgstr "Umnožite izabranu particiju u beležnicu"
 
-#: ../src/Win_GParted.cc:284
+#: ../src/Win_GParted.cc:286
 msgid "Paste the partition from the clipboard"
 msgstr "Ubacite particiju iz beležnice"
 
-#: ../src/Win_GParted.cc:296
+#: ../src/Win_GParted.cc:298
 msgid "Undo Last Operation"
 msgstr "Opozovite poslednju operaciju"
 
-#: ../src/Win_GParted.cc:304
+#: ../src/Win_GParted.cc:306
 msgid "Apply All Operations"
 msgstr "Primenite sve operacije"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:328
+#: ../src/Win_GParted.cc:330
 msgid "_New"
 msgstr "_Nova"
 
-#: ../src/Win_GParted.cc:345
+#: ../src/Win_GParted.cc:347
 msgid "_Resize/Move"
 msgstr "Promeni _veličinu/premesti"
 
-#: ../src/Win_GParted.cc:369
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
+#: ../src/Win_GParted.cc:371
 msgid "_Format to"
 msgstr "_Formatiraj"
 
-#: ../src/Win_GParted.cc:385
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
+#: ../src/Win_GParted.cc:387
 msgid "_Mount on"
 msgstr "_Montiraj na"
 
-#: ../src/Win_GParted.cc:392
+#: ../src/Win_GParted.cc:394
 msgid "_Name Partition"
 msgstr "Naziv _particije"
 
-#: ../src/Win_GParted.cc:397
+#: ../src/Win_GParted.cc:399
 msgid "M_anage Flags"
 msgstr "_Upravljaj zastavicama"
 
-#: ../src/Win_GParted.cc:402
+#: ../src/Win_GParted.cc:404
 msgid "C_heck"
 msgstr "_Proveri"
 
-#: ../src/Win_GParted.cc:407
+#: ../src/Win_GParted.cc:409
 msgid "_Label File System"
 msgstr "Natpis _sistema datoteka"
 
-#: ../src/Win_GParted.cc:412
+#: ../src/Win_GParted.cc:414
 msgid "New UU_ID"
 msgstr "Novi UU_ID"
 
-#: ../src/Win_GParted.cc:472
+#: ../src/Win_GParted.cc:474
 msgid "Device Information"
 msgstr "Podaci o uređaju"
 
 #. model
-#: ../src/Win_GParted.cc:480
+#: ../src/Win_GParted.cc:482
 msgid "Model:"
 msgstr "Model:"
 
 #. Serial number
-#: ../src/Win_GParted.cc:488
+#: ../src/Win_GParted.cc:490
 msgid "Serial:"
 msgstr "Serijski:"
 
 #. disktype
-#: ../src/Win_GParted.cc:520
+#: ../src/Win_GParted.cc:522
 msgid "Partition table:"
 msgstr "Particiona tabela:"
 
 #. heads
-#: ../src/Win_GParted.cc:528
+#: ../src/Win_GParted.cc:530
 msgid "Heads:"
 msgstr "Broj glava:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:536
+#: ../src/Win_GParted.cc:538
 msgid "Sectors/track:"
 msgstr "Broj sektora/traka:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:544
+#: ../src/Win_GParted.cc:546
 msgid "Cylinders:"
 msgstr "Broj cilindara:"
 
 #. sector size
-#: ../src/Win_GParted.cc:560
+#: ../src/Win_GParted.cc:562
 msgid "Sector size:"
 msgstr "Veličina sektora:"
 
-#: ../src/Win_GParted.cc:736
+#: ../src/Win_GParted.cc:738
 msgid "Could not add this operation to the list"
 msgstr "Ne mogu da dodam ovu operaciju na spisak"
 
-#: ../src/Win_GParted.cc:917
+#: ../src/Win_GParted.cc:919
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 zakazana operacija"
@@ -1743,11 +1902,11 @@ msgstr[1] "%1 zakazane operacije"
 msgstr[2] "%1 zakazanih operacija"
 msgstr[3] "Jedna zakazana operacija"
 
-#: ../src/Win_GParted.cc:1036
+#: ../src/Win_GParted.cc:1038
 msgid "Quit GParted?"
 msgstr "Da zatvorim Gparted?"
 
-#: ../src/Win_GParted.cc:1042
+#: ../src/Win_GParted.cc:1044
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 operacija je trenutno zakazana."
@@ -1755,59 +1914,59 @@ msgstr[1] "%1 operacije su trenutno zakazane."
 msgstr[2] "%1 operacija je trenutno zakazano."
 msgstr[3] "Jedna operacija je trenutno zakazana."
 
-#: ../src/Win_GParted.cc:1362
+#: ../src/Win_GParted.cc:1405
 msgid "%1 - GParted"
 msgstr "%1 — Gparted"
 
-#: ../src/Win_GParted.cc:1399
+#: ../src/Win_GParted.cc:1455
 msgid "Scanning all devices..."
 msgstr "Skeniram sve uređaje..."
 
-#: ../src/Win_GParted.cc:1446
+#: ../src/Win_GParted.cc:1502
 msgid "No devices detected"
 msgstr "Nema detektovanih uređaja"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1531
+#: ../src/Win_GParted.cc:1587
 msgid "No partition table found on device %1"
 msgstr "Na uređaju „%1“ nije pronađena particiona tabela"
 
-#: ../src/Win_GParted.cc:1536
+#: ../src/Win_GParted.cc:1592
 msgid "A partition table is required before partitions can be added."
 msgstr "Particiona tabela je neophodna pre dodavanja particija."
 
-#: ../src/Win_GParted.cc:1538
+#: ../src/Win_GParted.cc:1594
 msgid "To create a new partition table choose the menu item:"
 msgstr "Da napravite novu particionu tabelu izaberite stavku izbornika:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1541
+#: ../src/Win_GParted.cc:1597
 msgid "Device --> Create Partition Table."
 msgstr "Uređaj ——> Napravi particionu tabelu."
 
-#: ../src/Win_GParted.cc:1577
+#: ../src/Win_GParted.cc:1633
 msgid "Unable to open GParted Manual help file"
 msgstr "Ne mogu da otvorim datoteku pomoći „Uputstvo Gparteda“"
 
-#: ../src/Win_GParted.cc:1596
+#: ../src/Win_GParted.cc:1652
 msgid "Documentation is not available"
 msgstr "Dokumentacija nije dostupna"
 
-#: ../src/Win_GParted.cc:1601
+#: ../src/Win_GParted.cc:1657
 msgid "This build of gparted is configured without documentation."
 msgstr "Ovo izdanje gparteda je podešeno bez dokumentacije."
 
-#: ../src/Win_GParted.cc:1603
+#: ../src/Win_GParted.cc:1659
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentacija je dostupna na veb stranici projekta."
 
-#: ../src/Win_GParted.cc:1621
+#: ../src/Win_GParted.cc:1677
 msgid "GNOME Partition Editor"
 msgstr "Gnomov uređivač particija"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1655
+#: ../src/Win_GParted.cc:1711
 msgid "translator-credits"
 msgstr ""
 "  Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
@@ -1817,7 +1976,7 @@ msgstr ""
 "  Launchpad Contributions:\n"
 "  Saša Pavić https://launchpad.net/~provalia"
 
-#: ../src/Win_GParted.cc:1702
+#: ../src/Win_GParted.cc:1758
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Nije moguće napraviti više od %1 primarne particije"
@@ -1825,7 +1984,7 @@ msgstr[1] "Nije moguće napraviti više od %1 primarne particije"
 msgstr[2] "Nije moguće napraviti više od %1 primarnih particija"
 msgstr[3] "Nije moguće napraviti više od jedne primarne particije"
 
-#: ../src/Win_GParted.cc:1714
+#: ../src/Win_GParted.cc:1770
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1837,18 +1996,18 @@ msgstr ""
 "takođe vrsta primarne particije, možda će biti neophodno da prvo uklonite "
 "primarnu particiju."
 
-#: ../src/Win_GParted.cc:1783
+#: ../src/Win_GParted.cc:1875
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Premeštanje particije može dovesti do toga da se vaš operativni sistem ne "
 "pokrene"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1790
+#: ../src/Win_GParted.cc:1882
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "Zakazali ste operaciju za premeštanje početnog sektora particije „%1“."
 
-#: ../src/Win_GParted.cc:1792
+#: ../src/Win_GParted.cc:1884
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1857,82 +2016,86 @@ msgstr ""
 "particiju GNU/Linuksa koja sadrži „/boot“, ili ako premestite „C:“ sistemsku "
 "particiju Vindouza."
 
-#: ../src/Win_GParted.cc:1794
+#: ../src/Win_GParted.cc:1886
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "Možete naučiti kako da popravite podešavanje pokretanja u ČPP Gparteda."
 
-#: ../src/Win_GParted.cc:1798
+#: ../src/Win_GParted.cc:1890
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Premeštanje particije može poprilično dugo da potraje."
 
-#: ../src/Win_GParted.cc:1865
-#| msgid "copy of %1"
+#: ../src/Win_GParted.cc:1959
 msgid "Copy of %1"
 msgstr "Umnožavam %1"
 
-#: ../src/Win_GParted.cc:1927
+#: ../src/Win_GParted.cc:2052
 msgid "You have pasted into an existing partition"
 msgstr "Ubacili ste unutar jedne postojeće particije"
 
-#: ../src/Win_GParted.cc:1935
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:2060
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Ako primenite ovu operaciju podaci na „%1“ će biti izgubljeni."
 
-#: ../src/Win_GParted.cc:2016
+#: ../src/Win_GParted.cc:2133
 msgid "Unable to delete %1!"
 msgstr "Ne mogu da obrišem „%1“!"
 
-#: ../src/Win_GParted.cc:2023
+#: ../src/Win_GParted.cc:2140
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Demontirajte svaku logičku particiju sa brojem većim od %1"
 
-#: ../src/Win_GParted.cc:2034
+#: ../src/Win_GParted.cc:2151
 msgid "Are you sure you want to delete %1?"
 msgstr "Da li ste sigurni da želite da obrišete „%1“?"
 
-#: ../src/Win_GParted.cc:2041
+#: ../src/Win_GParted.cc:2158
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Nakon brisanja ova particija neće biti dostupna za umnožavanje."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2044
+#: ../src/Win_GParted.cc:2161
 msgid "Delete %1 (%2, %3)"
 msgstr "Obriši „%1“ (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2136
+#: ../src/Win_GParted.cc:2267
 msgid "Cannot format this file system to %1"
 msgstr "Ne mogu da formatiram ovaj sistem datoteka kao %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2148
+#: ../src/Win_GParted.cc:2279
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 sistem datoteka zahteva particiju najmanje od %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2156
+#: ../src/Win_GParted.cc:2287
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Particija sa %1 sistemom datoteka ima najveću veličinu od %2."
 
-#: ../src/Win_GParted.cc:2233
+#: ../src/Win_GParted.cc:2405
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Particija ne može biti demontirana sa sledećih tačaka montiranja:"
 
-#: ../src/Win_GParted.cc:2235
+#: ../src/Win_GParted.cc:2407
+#| msgid ""
+#| "Most likely other partitions are also mounted on these mount points. You "
+#| "are advised to unmount them manually."
 msgid ""
-"Most likely other partitions are also mounted on these mount points. You are "
-"advised to unmount them manually."
+"This is because other partitions are also mounted on these mount points.  "
+"You are advised to unmount them manually."
 msgstr ""
-"Najverovatnije da su i druge particije montirane na ovim tačkama montiranja. "
-"Savetuje vam se da ih demontirate ručno."
+"Ovo je zbog toga što su i druge particije montirane na ovim tačkama kačenja. "
+"Savetuje vam se da ih ručno otkačite."
 
-#: ../src/Win_GParted.cc:2263 ../src/Win_GParted.cc:2387
+#. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
+#: ../src/Win_GParted.cc:2420
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 operacija je trenutno zakazana za particiju %2"
@@ -1940,104 +2103,135 @@ msgstr[1] "%1 operacije su trenutno zakazane za particiju %2"
 msgstr[2] "%1 operacija je trenutno zakazano za particiju %2"
 msgstr[3] "Jedna operacija je trenutno zakazana za particiju %2."
 
-#: ../src/Win_GParted.cc:2279
-msgid ""
-"The swapon action cannot be performed if an operation is pending for the "
-"partition."
+#: ../src/Win_GParted.cc:2435
+#| msgid ""
+#| "Use the Edit menu to undo, clear, or apply operations before using mount "
+#| "with this partition."
+msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
-"Radnja uključivanja svopa ne može biti izvršena ako postoji zakazana operacija "
-"za particiju."
+"Koristite izbornik „Uređivanje“ da opozovete, poništite ili primenite "
+"zakazane operacije."
 
-#: ../src/Win_GParted.cc:2281
+#: ../src/Win_GParted.cc:2478
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using swapon "
-"with this partition."
+"The swapoff action cannot be performed when there are operations pending for "
+"the partition."
 msgstr ""
-"Koristite izbornik „Uređivanje“ da biste opozvali, poništili ili primenili "
-"operacije pre korišćenja uključivanja svopa sa ovom particijom."
+"Radnja isključivanja pomoćne memorije ne može biti izvršena kada postoje "
+"zakazane operacije za particiju."
 
-#: ../src/Win_GParted.cc:2285
-msgid ""
-"The activate Volume Group action cannot be performed if an operation is "
-"pending for the partition."
-msgstr ""
-"Radnja aktiviranja grupe volumena ne može biti izvršena ako postoji zakazana "
-"operacija za particiju."
-
-#: ../src/Win_GParted.cc:2287
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using activate "
-"Volume Group with this partition."
-msgstr ""
-"Koristite izbornik „Uređivanje“ da biste opozvali, poništili ili primenili "
-"operacije pre korišćenja aktiviranja grupe volumena sa ovom particijom."
-
-#: ../src/Win_GParted.cc:2298
+#: ../src/Win_GParted.cc:2479
 msgid "Deactivating swap on %1"
 msgstr "Deaktiviram svop na „%1“"
 
-#: ../src/Win_GParted.cc:2298
-msgid "Activating swap on %1"
-msgstr "Aktiviram svop na „%1“"
-
-#: ../src/Win_GParted.cc:2310
+#: ../src/Win_GParted.cc:2480
 msgid "Could not deactivate swap"
 msgstr "Ne mogu da dizaktiviram svop"
 
-#: ../src/Win_GParted.cc:2310
+#: ../src/Win_GParted.cc:2485
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The swapon action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Radnja uključivanja pomoćne memorije ne može biti izvršena ako postoji zakazana "
+"operacija za particiju."
+
+#: ../src/Win_GParted.cc:2486
+msgid "Activating swap on %1"
+msgstr "Aktiviram svop na „%1“"
+
+#: ../src/Win_GParted.cc:2487
 msgid "Could not activate swap"
 msgstr "Ne mogu da aktiviram svop"
 
-#: ../src/Win_GParted.cc:2325
+#: ../src/Win_GParted.cc:2492
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The deactivate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Radnja poništavanja grupe volumena ne može biti izvršena kada postoje zakazane "
+"operacije za particiju."
+
+#: ../src/Win_GParted.cc:2493
 msgid "Deactivating Volume Group %1"
 msgstr "Dizaktiviram grupu volumena „%1“"
 
-#: ../src/Win_GParted.cc:2326
-msgid "Activating Volume Group %1"
-msgstr "Aktiviram grupu volumena „%1“"
-
-#: ../src/Win_GParted.cc:2341
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2495
 msgid "Could not deactivate Volume Group"
 msgstr "Ne mogu da dizaktiviram grupu volumena"
 
-#: ../src/Win_GParted.cc:2342
+#: ../src/Win_GParted.cc:2500
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The activate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Radnja aktiviranja grupe volumena ne može biti izvršena kada postoje zakazane "
+"operacije za particiju."
+
+#: ../src/Win_GParted.cc:2501
+msgid "Activating Volume Group %1"
+msgstr "Aktiviram grupu volumena „%1“"
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2503
 msgid "Could not activate Volume Group"
 msgstr "Ne mogu da aktiviram grupu volumena"
 
-#: ../src/Win_GParted.cc:2355
+#: ../src/Win_GParted.cc:2508
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The unmount action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Radnja otkačinjanja ne može biti izvršena kada postoje zakazane operacije za "
+"particiju."
+
+#: ../src/Win_GParted.cc:2509
 msgid "Unmounting %1"
 msgstr "Demontiram „%1“"
 
-#: ../src/Win_GParted.cc:2361
+#: ../src/Win_GParted.cc:2510
 msgid "Could not unmount %1"
 msgstr "Ne mogu da demontiram „%1“"
 
-#: ../src/Win_GParted.cc:2401
+#. Bug: Partition callback without a selected partition
+#. Bug: Not pointing at a valid display partition object
+#: ../src/Win_GParted.cc:2574
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"The mount action cannot be performed if an operation is pending for the "
+"The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
-"Radnja montiranja ne može biti izvršena ako postoji zakazana operacija za "
+"Radnja kačenja ne može biti izvršena kada postoje zakazane operacije za "
 "particiju."
 
-#: ../src/Win_GParted.cc:2403
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using mount "
-"with this partition."
-msgstr ""
-"Koristite izbornik „Uređivanje“ da biste opozvali, poništili ili primenili "
-"operacije pre korišćenja montiranja sa ovom particijom."
-
-#: ../src/Win_GParted.cc:2415
+#: ../src/Win_GParted.cc:2587
 msgid "mounting %1 on %2"
 msgstr "montiram %1 na %2"
 
-#: ../src/Win_GParted.cc:2443
+#: ../src/Win_GParted.cc:2614
 msgid "Could not mount %1 on %2"
 msgstr "Ne mogu da montiram %1 na %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2469
+#: ../src/Win_GParted.cc:2633
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 particija je trenutno aktivna na uređaju „%2“"
@@ -2045,14 +2239,14 @@ msgstr[1] "%1 particije su trenutno aktivne na uređaju „%2“"
 msgstr[2] "%1 particija je trenutno aktivno na uređaju „%2“"
 msgstr[3] "Jedna particija je trenutno aktivna na uređaju „%2“."
 
-#: ../src/Win_GParted.cc:2484
+#: ../src/Win_GParted.cc:2648
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Nova particiona tabela ne može biti napravljena kada su neke particije "
 "aktivne."
 
-#: ../src/Win_GParted.cc:2486
+#: ../src/Win_GParted.cc:2650
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2060,7 +2254,7 @@ msgstr ""
 "Aktivne particije su one koje su u upotrebi, kao što je to montirani sistem "
 "datoteka ili uključeni prostor pomoćne memorije."
 
-#: ../src/Win_GParted.cc:2488
+#: ../src/Win_GParted.cc:2652
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2069,7 +2263,7 @@ msgstr ""
 "svop, da dizaktivirate sve particije na tom uređaju pre nego što napravite "
 "novu particionu tabelu."
 
-#: ../src/Win_GParted.cc:2500
+#: ../src/Win_GParted.cc:2664
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 operacija je trenutno zakazana"
@@ -2077,14 +2271,14 @@ msgstr[1] "%1 operacije su trenutno zakazane"
 msgstr[2] "%1 operacija je trenutno zakazano"
 msgstr[3] "Jedna operacija je trenutno zakazana."
 
-#: ../src/Win_GParted.cc:2513
+#: ../src/Win_GParted.cc:2677
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Nova particiona tabela ne može biti napravljena kada postoje zakazane "
 "operacije."
 
-#: ../src/Win_GParted.cc:2515
+#: ../src/Win_GParted.cc:2679
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2092,30 +2286,30 @@ msgstr ""
 "Koristite izbornik „Uređivanje“ da biste poništili ili primenili sve "
 "operacije pre pravljenja nove particione tabele."
 
-#: ../src/Win_GParted.cc:2530
+#: ../src/Win_GParted.cc:2694
 msgid "Error while creating partition table"
 msgstr "Greška prilikom pravljenja particione tabele"
 
-#: ../src/Win_GParted.cc:2550
+#: ../src/Win_GParted.cc:2714
 msgid "Command gpart was not found"
 msgstr "Naredba „gpart“ nije pronađena"
 
-#: ../src/Win_GParted.cc:2551
+#: ../src/Win_GParted.cc:2715
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Ova funkcija koristi gpart. Molim instalirajte „gpart“ i pokušajte opet."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2559
+#: ../src/Win_GParted.cc:2723
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "Za pronalaženje sistema datoteka potrebno je pretraživanje celokupnog diska."
 
-#: ../src/Win_GParted.cc:2561
+#: ../src/Win_GParted.cc:2725
 msgid "The scan might take a very long time."
 msgstr "Pretraživanje može dugo da potraje."
 
-#: ../src/Win_GParted.cc:2563
+#: ../src/Win_GParted.cc:2727
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2123,26 +2317,26 @@ msgstr ""
 "Nakon pretraživanja moći ćete da montirate otkrivene sisteme datoteka i da "
 "umnožite podatke na druge medije."
 
-#: ../src/Win_GParted.cc:2565
+#: ../src/Win_GParted.cc:2729
 msgid "Do you want to continue?"
 msgstr "Da li želite da nastavite?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2569
+#: ../src/Win_GParted.cc:2733
 msgid "Search for file systems on %1"
 msgstr "Traži sisteme datoteka na „%1“"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2580
+#: ../src/Win_GParted.cc:2744
 msgid "Searching for file systems on %1"
 msgstr "Tražim sisteme datoteka na „%1“"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2596
+#: ../src/Win_GParted.cc:2760
 msgid "No file systems found on %1"
 msgstr "Nisu pronađeni sistemi datoteka na „%1“"
 
-#: ../src/Win_GParted.cc:2597
+#: ../src/Win_GParted.cc:2761
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2150,37 +2344,37 @@ msgstr ""
 "Pretraživanjem diska gpartom nisam našao nijedan prepoznatljivi sistem "
 "datoteka na ovom disku."
 
-#: ../src/Win_GParted.cc:2861
+#: ../src/Win_GParted.cc:3034
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Da li ste sigurni da želite da primenite zakazane operacije?"
 
-#: ../src/Win_GParted.cc:2867
+#: ../src/Win_GParted.cc:3040
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Uređivanje particija može dovesti do GUBITKA PODATAKA."
 
-#: ../src/Win_GParted.cc:2869
+#: ../src/Win_GParted.cc:3042
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 "Savetuje vam se da napravite rezervni primerak podataka pre nego što "
 "nastavite."
 
-#: ../src/Win_GParted.cc:2871
+#: ../src/Win_GParted.cc:3044
 msgid "Apply operations to device"
 msgstr "Primeni operacije na uređaj"
 
-#: ../src/Win_GParted.cc:2916
+#: ../src/Win_GParted.cc:3089
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Obrisaćete LVM2 fizički volumen „%1“ koji nije prazan"
 
-#: ../src/Win_GParted.cc:2920
+#: ../src/Win_GParted.cc:3093
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Formatiraćete LVM2 fizički volumen „%1“ koji nije prazan"
 
-#: ../src/Win_GParted.cc:2924
+#: ../src/Win_GParted.cc:3097
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Ubacićete LVM2 fizički volumen „%1“ koji nije prazan"
 
-#: ../src/Win_GParted.cc:2933
+#: ../src/Win_GParted.cc:3106
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2188,7 +2382,7 @@ msgstr ""
 "Brisanje ili prepisivanje fizičkog volumena je nepovratno i uništiće ili "
 "oštetiće grupu volumena."
 
-#: ../src/Win_GParted.cc:2936
+#: ../src/Win_GParted.cc:3109
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2198,21 +2392,21 @@ msgstr ""
 "da otkažete i da koristite spoljne LVM naredbe da oslobodite fizički volumen "
 "pre nego što pokušate ovu operaciju."
 
-#: ../src/Win_GParted.cc:2939
+#: ../src/Win_GParted.cc:3112
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Da li želite da nastavite da nasilno obrišete fizički volumen?"
 
-#: ../src/btrfs.cc:311
+#: ../src/btrfs.cc:312
 msgid "Failed to find devid for path %1"
 msgstr "Nisam uspeo da nađem ib uređaja za putanju „%1“"
 
-#: ../src/fat16.cc:33 ../src/ntfs.cc:30
+#: ../src/fat16.cc:32 ../src/ntfs.cc:29
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Izmena UUID-a može da poništi ključ za aktiviranje Vindouzovih proizvoda (WPA)"
 
-#: ../src/fat16.cc:35 ../src/ntfs.cc:32
+#: ../src/fat16.cc:34 ../src/ntfs.cc:31
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2224,7 +2418,7 @@ msgstr ""
 "obično je to „C:“, može da poništi VPA ključ. Neispravan VPA ključ će sprečiti "
 "prijavljivanje sve dok ponovo ne aktivirate Vindouz."
 
-#: ../src/fat16.cc:41 ../src/ntfs.cc:42
+#: ../src/fat16.cc:40 ../src/ntfs.cc:41
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2242,7 +2436,7 @@ msgid "_Swapoff"
 msgstr "_Isključi razmensku memoriju"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:195
+#: ../src/linux_swap.cc:187
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2250,7 +2444,7 @@ msgstr ""
 "podatke"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:214
+#: ../src/linux_swap.cc:206
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2258,21 +2452,29 @@ msgstr ""
 "podatke"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/lvm2_pv.cc:28
+#: ../src/lvm2_pv.cc:27
 msgid "Ac_tivate"
 msgstr "Ak_tiviraj"
 
-#: ../src/lvm2_pv.cc:29
+#: ../src/lvm2_pv.cc:28
 msgid "Deac_tivate"
 msgstr "Dizak_tiviraj"
 
-#: ../src/lvm2_pv.cc:32
+#: ../src/lvm2_pv.cc:31
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
 msgstr ""
 "LVM2 fizičkom volumenu trenutno ne može biti promenjena veličina zato što je "
 "član izvezene grupe volumena."
+
+#: ../src/luks.cc:125
+msgid ""
+"Maximize closed LUKS encryption skipped because it will automatically fill "
+"the partition when opened"
+msgstr ""
+"Maksimiziranje zatvorenog LUKS šifrovanja je preskočeno zato što će samostalno "
+"popuniti particiju prilikom otvaranja"
 
 #: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
@@ -2286,7 +2488,7 @@ msgstr ""
 "Gparted je moćan alat koji može uništiti particione tabele i velike količine "
 "podataka i zato ga samo administrator može koristiti."
 
-#: ../src/ntfs.cc:38
+#: ../src/ntfs.cc:37
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2295,14 +2497,46 @@ msgstr ""
 "samo polovina UUID-a biva podešena na novu nasumičnu vrednost."
 
 #. simulation..
-#: ../src/ntfs.cc:227
+#: ../src/ntfs.cc:226
 msgid "run simulation"
 msgstr "pokrećem simulaciju"
 
 #. real resize
-#: ../src/ntfs.cc:235
+#: ../src/ntfs.cc:234
 msgid "real resize"
 msgstr "stvarno menjam veličinu"
+
+#~ msgid "moving requires old and new length to be the same"
+#~ msgstr "za premeštanje je potrebno da stara i nova veličina budu jednake"
+
+#~ msgid "resizing requires old and new start to be the same"
+#~ msgstr "promena veličine zahteva da stari i novi početak budu isti"
+
+#~ msgid "grow file system"
+#~ msgstr "povećavam sistem datoteka"
+
+#~ msgid "resize file system"
+#~ msgstr "menjam veličinu sistema datoteka"
+
+#~ msgid ""
+#~ "new and old file system have the same size.  Hence skipping this operation"
+#~ msgstr ""
+#~ "I novi i stari sistem datoteka imaju istu veličinu.  Dakle preskačem tu "
+#~ "operaciju."
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using swapon "
+#~ "with this partition."
+#~ msgstr ""
+#~ "Koristite izbornik „Uređivanje“ da biste opozvali, poništili ili primenili "
+#~ "operacije pre korišćenja uključivanja svopa sa ovom particijom."
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using "
+#~ "activate Volume Group with this partition."
+#~ msgstr ""
+#~ "Koristite izbornik „Uređivanje“ da biste opozvali, poništili ili primenili "
+#~ "operacije pre korišćenja aktiviranja grupe volumena sa ovom particijom."
 
 #~ msgid "Linux Unified Key Setup encryption is not yet supported."
 #~ msgstr ""
