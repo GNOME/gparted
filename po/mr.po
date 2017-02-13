@@ -1,0 +1,2348 @@
+# Marathi translation for gparted.
+# Copyright (C) 2017 gparted's COPYRIGHT HOLDER
+# This file is distributed under the same license as the gparted package.
+# Tushar <agey.tushar3@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gparted master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=gparted&keywords=I18N+L10N&component=application\n"
+"POT-Creation-Date: 2017-02-12 22:09+0000\n"
+"PO-Revision-Date: 2017-02-12 22:09+0000\n"
+"Last-Translator: Tushar Sandeep Agey <agey.tushar3@gmail.com>\n"
+"Language-Team: Marathi <mr@li.org>\n"
+"Language: mr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../gparted.appdata.xml.in.h:1
+msgid ""
+"GParted is a free partition editor for graphically managing your disk "
+"partitions."
+msgstr "जीपार्टेड हा मुक्त विभाजन संपादक आहे जो चित्रांच्या सहाय्याने तुमची डिस्क मैनेज करण्यास सक्षम आहे."
+
+#: ../gparted.appdata.xml.in.h:2
+msgid ""
+"With GParted you can resize, copy, label, and move partitions without data "
+"loss. These actions enable you to grow or shrink your C: drive, create space "
+"for new operating systems, or attempt data rescue from lost partitions."
+msgstr "जीपार्टेड वापरून तुम्ही माहिती सुरक्षित ठेवून डिस्कचा आकार बदलू शकता, नक्कल करू शकता, विभाजन हलवु शकतात."
+"ही कार्ये वापरून तुम्ही तुमची C: ड्राइव्ह  छोटी किंवा मोठी करू शकतात, नविन ऑपरेटिंग प्रणाली साठी जागा बनवू शकतात, किंवा हरवलेल्या विभाजनवरून माहिती परत आनु  शकतात."
+
+#: ../gparted.appdata.xml.in.h:3
+msgid ""
+"gparted can work with many file systems like: btrfs, ext2, ext3, ext4, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"reiser4, ufs, and xfs."
+msgstr ""
+"जीपार्टेड खुप प्रकारच्या फाइल प्रणाली सोबत काम करू शकतो जसे की:: btrfs, ext2, ext3, ext4, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"reiser4, ufs, and xfs."
+
+#. ==== GUI =========================
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
+#: ../src/Win_GParted.cc:81 ../src/Win_GParted.cc:1479
+#: ../src/Win_GParted.cc:1674
+msgid "GParted"
+msgstr "जीपार्टेड"
+
+#: ../gparted.desktop.in.in.h:2
+msgid "Partition Editor"
+msgstr "विभाजन संपादक"
+
+#: ../gparted.desktop.in.in.h:3
+msgid "GParted Partition Editor"
+msgstr "जीपार्टेड विभाजन संपादक"
+
+#: ../gparted.desktop.in.in.h:4
+msgid "Create, reorganize, and delete partitions"
+msgstr "बनवा, पुनर्रचना करा, आणि विभाजन नष्ट करा"
+
+#: ../gparted.desktop.in.in.h:5
+msgid "Partition;"
+msgstr "विभाजन;"
+
+#: ../include/Utils.h:55
+msgid "(New UUID - will be randomly generated)"
+msgstr "(नविन UUID - विनाक्रम निर्मीत केला जाईल)"
+
+#: ../include/Utils.h:56
+msgid "(Half new UUID - will be randomly generated)"
+msgstr "(अर्धा नविन UUID - विनाक्रम निर्मीत केला जाईल)"
+
+#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
+#: ../src/CopyBlocks.cc:71 ../src/CopyBlocks.cc:181 ../src/ProgressBar.cc:106
+msgid "%1 of %2 copied"
+msgstr "%2 पैकी %1 नक्कल पूर्"
+
+#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/CopyBlocks.cc:156
+msgid "copy %1 using a block size of %2"
+msgstr "%2 चा ब्लॉक आकार वापरून %1 ची नक्कल करा"
+
+#: ../src/CopyBlocks.cc:221
+msgid "Operation Canceled"
+msgstr "कार्य रद्द"
+
+#: ../src/CopyBlocks.cc:233
+msgid "Error while writing block at sector %1"
+msgstr "%1 क्षेत्र मधे ब्लॉक लिहितांना त्रुटी"
+
+#: ../src/CopyBlocks.cc:238
+msgid "Error while reading block at sector %1"
+msgstr "%1 क्षेत्र मधे ब्लॉक वाचतांना त्रुटी"
+
+#: ../src/Dialog_Base_Partition.cc:56
+msgid "Free space preceding (MiB):"
+msgstr "मागील मोकळी जागा (MiB):"
+
+#. add spinbutton_size
+#: ../src/Dialog_Base_Partition.cc:65
+msgid "New size (MiB):"
+msgstr "नवीन आकार (MiB):"
+
+#. add spinbutton_after
+#: ../src/Dialog_Base_Partition.cc:72
+msgid "Free space following (MiB):"
+msgstr "खालील मोकळी जागा (MiB):"
+
+#. add alignment
+#. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
+#: ../src/Dialog_Base_Partition.cc:99
+msgid "Align to:"
+msgstr "संरेखित करा:"
+
+#. fill partition alignment menu
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:104
+msgid "Cylinder"
+msgstr "सिलेंडर"
+
+#. TO TRANSLATORS: Menu option for label "Align to:"
+#: ../src/Dialog_Base_Partition.cc:106
+msgid "MiB"
+msgstr "MiBs"
+
+#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#: ../src/Dialog_Base_Partition.cc:108
+msgid "None"
+msgstr "काहीच नाही"
+
+#: ../src/Dialog_Base_Partition.cc:254
+msgid "Resize"
+msgstr "आकार बदला"
+
+#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:256
+msgid "Resize/Move"
+msgstr "आकार बदला/हलवा"
+
+#: ../src/Dialog_Base_Partition.cc:272
+msgid "Minimum size: %1 MiB"
+msgstr "किमान आकार: %1 MiB"
+
+#: ../src/Dialog_Base_Partition.cc:273
+msgid "Maximum size: %1 MiB"
+msgstr "कमाल आकार: %1 MiB"
+
+#. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
+#: ../src/Dialog_Disklabel.cc:30
+msgid "Create partition table on %1"
+msgstr "%1 वर विभाजन टेबल बनवा"
+
+#. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
+#: ../src/Dialog_Disklabel.cc:54
+msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
+msgstr "चेतावनी: यामुळे संपूर्ण डिस्क %1 वरील सगळा डाटा डिलीट होईल"
+
+#: ../src/Dialog_Disklabel.cc:60
+msgid "Select new partition table type:"
+msgstr "नविन विभाजन टेबल प्रकार निवडा:"
+
+#. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
+#: ../src/Dialog_FileSystem_Label.cc:30
+msgid "Set file system label on %1"
+msgstr "%1 व्रती फाइल प्रणाली लेबल लावा"
+
+#. Label
+#: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:275
+#: ../src/Dialog_Partition_New.cc:154
+msgid "Label:"
+msgstr "लेबल:"
+
+#: ../src/Dialog_Partition_Copy.cc:45
+msgid "Paste %1"
+msgstr "पेस्ट %1"
+
+#. Minimum 370 to avoid scrolling on Fedora 20
+#. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
+#: ../src/Dialog_Partition_Info.cc:45
+msgid "Information about %1"
+msgstr "%1 बद्दल माहिती"
+
+#: ../src/Dialog_Partition_Info.cc:81
+msgid "Warning:"
+msgstr "चेतावनी:"
+
+#. FILE SYSTEM DETAIL SECTION
+#. file system headline
+#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:44
+#: ../src/TreeView_Detail.cc:45
+msgid "File System"
+msgstr "फाइल प्रणाली"
+
+#. Left field & value pair area
+#. file system
+#. file systems to choose from
+#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:143
+msgid "File system:"
+msgstr "फाइल प्रणाली:"
+
+#. LUKS uuid
+#: ../src/Dialog_Partition_Info.cc:290 ../src/Dialog_Partition_Info.cc:560
+msgid "UUID:"
+msgstr "UUID:"
+
+#. TO TRANSLATORS:   Open
+#. * means that the LUKS encryption is open and the encrypted data within is accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:305
+msgid "Open"
+msgstr "उघडा"
+
+#. TO TRANSLATORS:   Closed
+#. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:309
+msgid "Closed"
+msgstr "बंद"
+
+#. LUKS status
+#: ../src/Dialog_Partition_Info.cc:316 ../src/Dialog_Partition_Info.cc:566
+msgid "Status:"
+msgstr "स्थिती:"
+
+#. TO TRANSLATORS:   Not accessible (Encrypted)
+#. * means that the data in encrypted and hasn't been made
+#. * accessible by opening it with the passphrase.
+#.
+#: ../src/Dialog_Partition_Info.cc:325
+msgid "Not accessible (Encrypted)"
+msgstr "उपलब्ध नाही (एनक्रिप्टेड)"
+
+#. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
+#. * means that this extended partition contains at least one logical
+#. * partition that is mounted or otherwise active.
+#.
+#: ../src/Dialog_Partition_Info.cc:335
+msgid "Busy (At least one logical partition is mounted)"
+msgstr "व्यस्त (एक तरी लॉजिकल विभाजन आरोहित)"
+
+#. TO TRANSLATORS:  Active
+#. * means that this linux swap, linux software raid partition, or
+#. * LVM physical volume is enabled and being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:345
+msgid "Active"
+msgstr "सक्रिय"
+
+#. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
+#: ../src/Dialog_Partition_Info.cc:359
+msgid "Mounted on %1"
+msgstr "%1 वर आरोहित"
+
+#. TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
+#. * means that this extended partition contains no mounted or otherwise
+#. * active partitions.
+#.
+#: ../src/Dialog_Partition_Info.cc:369
+msgid "Not busy (There are no mounted logical partitions)"
+msgstr "उपलब्ध (कुठलाही लॉजिकल विभाजन आरोहित नाही)"
+
+#. TO TRANSLATORS:  Not active
+#. *  means that this linux swap or linux software raid partition
+#. *  is not enabled and is not in use by the operating system.
+#.
+#. TO TRANSLATORS:  Not active
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:378 ../src/Dialog_Partition_Info.cc:407
+msgid "Not active"
+msgstr "सक्रिय नाही"
+
+#. TO TRANSLATORS:  Not active (Not a member of any volume group)
+#. * means that the partition is not yet a member of an LVM volume
+#. * group and therefore is not active and can not yet be used by
+#. * the operating system.
+#.
+#: ../src/Dialog_Partition_Info.cc:393
+msgid "Not active (Not a member of any volume group)"
+msgstr "सक्रिय नाही (कोणत्याही वॉल्यूम ग्रुपचा  सदस्य नाही)"
+
+#. TO TRANSLATORS:  Not active and exported
+#. * means that the partition is a member of an LVM volume group but
+#. * the volume group is not active and not being used by the operating system.
+#. * The volume group has also been exported making the LVM physical volumes
+#. * ready for moving to a different computer system.
+#.
+#: ../src/Dialog_Partition_Info.cc:401
+msgid "Not active and exported"
+msgstr "सक्रिय आणि निर्यात नाही"
+
+#. TO TRANSLATORS:  Not mounted
+#. * means that this partition is not mounted.
+#.
+#: ../src/Dialog_Partition_Info.cc:414
+msgid "Not mounted"
+msgstr "आरोहित नाही"
+
+#. Volume Group
+#. Single copy of each string for translation purposes
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3120
+msgid "Volume Group:"
+msgstr "वॉल्यूम ग्रुप:"
+
+#. Members
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3121
+msgid "Members:"
+msgstr "सदस्य:"
+
+#. Logical Volumes
+#: ../src/Dialog_Partition_Info.cc:459
+msgid "Logical Volumes:"
+msgstr "लॉजिकल वॉल्यूम:"
+
+#. Used
+#: ../src/Dialog_Partition_Info.cc:475
+msgid "Used:"
+msgstr "वापरलेले"
+
+#. unused
+#: ../src/Dialog_Partition_Info.cc:489
+msgid "Unused:"
+msgstr "न वापरलेले"
+
+#: ../src/Dialog_Partition_Info.cc:506
+msgid "Unallocated:"
+msgstr "कुठलीही फाइल प्रणाली नाही"
+
+#. size
+#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:496
+msgid "Size:"
+msgstr "आकार:"
+
+#. ENCRYPTION DETAIL SECTION
+#. encryption headline
+#: ../src/Dialog_Partition_Info.cc:542
+msgid "Encryption"
+msgstr "एन्क्रिप्शन"
+
+#. Encryption
+#: ../src/Dialog_Partition_Info.cc:546
+msgid "Encryption:"
+msgstr "एन्क्रिप्शन:"
+
+#. LUKS path
+#. Left field & value pair area
+#. path
+#: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Partition_Info.cc:592
+#: ../src/Win_GParted.cc:504
+msgid "Path:"
+msgstr "मार्ग:"
+
+#. PARTITION DETAIL SECTION
+#. partition headline
+#. append columns
+#: ../src/Dialog_Partition_Info.cc:581 ../src/TreeView_Detail.cc:43
+msgid "Partition"
+msgstr "विभाजन"
+
+#. name
+#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:41
+msgid "Name:"
+msgstr "नाव"
+
+#. flags
+#: ../src/Dialog_Partition_Info.cc:614
+msgid "Flags:"
+msgstr "फ्लैग्स:"
+
+#. Right field & value pair area
+#. first sector
+#: ../src/Dialog_Partition_Info.cc:626
+msgid "First sector:"
+msgstr "पहिले क्षेत्र:"
+
+#. last sector
+#: ../src/Dialog_Partition_Info.cc:636
+msgid "Last sector:"
+msgstr "शेवटचे  क्षेत्र:"
+
+#. total sectors
+#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:554
+msgid "Total sectors:"
+msgstr "एकूण क्षेत्र:"
+
+#. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
+#: ../src/Dialog_Partition_Name.cc:30
+msgid "Set partition name on %1"
+msgstr "विभाजन %1 वरती नाव लावा"
+
+#. TO TRANSLATORS: dialogtitle
+#: ../src/Dialog_Partition_New.cc:32
+msgid "Create new Partition"
+msgstr "नविन विभाजन बनवा"
+
+#. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
+#: ../src/Dialog_Partition_New.cc:93
+msgid "Create as:"
+msgstr "असे बनवा:"
+
+#. fill partitiontype menu
+#: ../src/Dialog_Partition_New.cc:98 ../src/OperationCreate.cc:58
+msgid "Primary Partition"
+msgstr "प्राथमिक विभाजन"
+
+#: ../src/Dialog_Partition_New.cc:99 ../src/OperationCreate.cc:61
+#: ../src/OperationDelete.cc:109
+msgid "Logical Partition"
+msgstr "लॉजिकल विभाजन"
+
+#: ../src/Dialog_Partition_New.cc:100 ../src/OperationCreate.cc:64
+msgid "Extended Partition"
+msgstr "विस्तारित विभाजन"
+
+#. Partition name
+#: ../src/Dialog_Partition_New.cc:133
+msgid "Partition name:"
+msgstr "विभाजन नाव:"
+
+#: ../src/Dialog_Partition_New.cc:234
+msgid "New Partition #%1"
+msgstr "नविन  विभाजन #%1"
+
+#: ../src/Dialog_Partition_Resize_Move.cc:95
+msgid "Resize/Move %1"
+msgstr "%1 चा आकार बदला/हलवा"
+
+#: ../src/Dialog_Partition_Resize_Move.cc:100
+msgid "Resize %1"
+msgstr "%1 चा आकार बदला"
+
+#: ../src/Dialog_Progress.cc:33
+msgid "Applying pending operations"
+msgstr "प्रलंबित कार्य पूर्ण केल्या जात आहेत"
+
+#: ../src/Dialog_Progress.cc:48
+msgid ""
+"Depending on the number and type of operations this might take a long time."
+msgstr "कार्य आणि त्यांची संख्या यांवरती 'लागणार वेळ' अवलंबून आहे."
+
+#: ../src/Dialog_Progress.cc:61
+msgid "Completed Operations:"
+msgstr "कार्य सम्पन्न:"
+
+#: ../src/Dialog_Progress.cc:102
+msgid "Details"
+msgstr "तपशील"
+
+#: ../src/Dialog_Progress.cc:215
+msgid "%1 of %2 operations completed"
+msgstr "%2 पैकी %1 कार्य पूर्ण"
+
+#. add save button
+#: ../src/Dialog_Progress.cc:233
+msgid "_Save Details"
+msgstr "_तपशील साठवून ठेवा"
+
+#: ../src/Dialog_Progress.cc:245
+msgid "Operation cancelled"
+msgstr "कार्य रद्द"
+
+#: ../src/Dialog_Progress.cc:259
+msgid "All operations successfully completed"
+msgstr "सर्वे कार्य यशस्वीरित्या सम्पन्न"
+
+#: ../src/Dialog_Progress.cc:263
+msgid "%1 warning"
+msgid_plural "%1 warnings"
+msgstr[0] "%1 चेतावणी"
+msgstr[1] "%1 चेतावन्या"
+
+#: ../src/Dialog_Progress.cc:276
+msgid "An error occurred while applying the operations"
+msgstr "कार्य सम्पन्न करतांना त्रुटी आलेली आहे"
+
+#: ../src/Dialog_Progress.cc:281
+msgid "See the details for more information."
+msgstr "अधिक माहिती साठी तपशील बघा."
+
+#: ../src/Dialog_Progress.cc:283
+msgid "IMPORTANT"
+msgstr "महत्वाचे"
+
+#: ../src/Dialog_Progress.cc:284
+msgid "If you want support, you need to provide the saved details!"
+msgstr "जर तुम्हाला आधार हवा असेल तर तुम्हाला साठवलेली माहिती द्यावी लागेल!"
+
+#. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
+#: ../src/Dialog_Progress.cc:287
+msgid "See %1 for more information."
+msgstr "जास्त माहिती साठी %1 बघा."
+
+#. TO TRANSLATORS: looks like  Force Cancel (5)
+#. *  where the number represents a count down in seconds until the button is enabled
+#: ../src/Dialog_Progress.cc:306 ../src/Dialog_Progress.cc:337
+msgid "Force Cancel (%1)"
+msgstr "बळजबरीने बंद करा  (%1)"
+
+#: ../src/Dialog_Progress.cc:308 ../src/Dialog_Progress.cc:341
+msgid "Force Cancel"
+msgstr "बळजबरीने बंद करा"
+
+#: ../src/Dialog_Progress.cc:319
+msgid "Are you sure you want to cancel the current operation?"
+msgstr "चालू कार्य खरच रद्द करायच?"
+
+#: ../src/Dialog_Progress.cc:325
+msgid "Canceling an operation might cause SEVERE file system damage."
+msgstr "कार्य रद्द केल्यामुळे तीव्र फाइल प्रणाली नुकसान होउ शकते."
+
+#: ../src/Dialog_Progress.cc:327
+msgid "Continue Operation"
+msgstr "कार्य चालू ठेवा"
+
+#: ../src/Dialog_Progress.cc:328
+msgid "Cancel Operation"
+msgstr "कार्य रद्द करा"
+
+#: ../src/Dialog_Progress.cc:349
+msgid "Save Details"
+msgstr "तपशील जतन करा"
+
+#: ../src/Dialog_Progress.cc:368
+msgid "GParted Details"
+msgstr "जीपार्टेडचा तपशील"
+
+#: ../src/Dialog_Progress.cc:379
+msgid "Libparted"
+msgstr "लिबपार्टेड"
+
+#. TO TRANSLATORS:  EXECUTING
+#. * means that the status for this operation is
+#. * executing or currently in progress.
+#.
+#: ../src/Dialog_Progress.cc:422
+msgid "EXECUTING"
+msgstr "कार्यान्वयन"
+
+#. TO" TRANSLATORS:  SUCCESS
+#. * means that the status for this operation is
+#. * completed successfully.
+#.
+#: ../src/Dialog_Progress.cc:430
+msgid "SUCCESS"
+msgstr "यश"
+
+#. TO TRANSLATORS:  ERROR
+#. * means that the status for this operation is
+#. * completed with errors.
+#.
+#: ../src/Dialog_Progress.cc:438
+msgid "ERROR"
+msgstr "त्रुटी"
+
+#. TO TRANSLATORS:  INFO
+#. * means that the status for this operation is
+#. * for your information , or messages from the
+#. * libparted library.
+#.
+#: ../src/Dialog_Progress.cc:447
+msgid "INFO"
+msgstr "माहिती"
+
+#. TO TRANSLATORS:  N/A
+#. * means that the status for this operation is
+#. * not applicable because the operation is not
+#. * supported on the file system in the partition.
+#.
+#: ../src/Dialog_Progress.cc:456
+msgid "N/A"
+msgstr "लागू नाही"
+
+#: ../src/DialogFeatures.cc:28
+msgid "File System Support"
+msgstr "फाइल प्रणाली मदत"
+
+#: ../src/DialogFeatures.cc:45
+msgid "Create"
+msgstr "बनवा"
+
+#: ../src/DialogFeatures.cc:46
+msgid "Grow"
+msgstr "वाढवा"
+
+#: ../src/DialogFeatures.cc:50
+msgid "Shrink"
+msgstr "कमी करा"
+
+#: ../src/DialogFeatures.cc:54
+msgid "Move"
+msgstr "हलवा"
+
+#: ../src/DialogFeatures.cc:55
+msgid "Copy"
+msgstr "प्रत"
+
+#: ../src/DialogFeatures.cc:56
+msgid "Check"
+msgstr "तपासा"
+
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:47
+msgid "Label"
+msgstr "लेबल"
+
+#: ../src/DialogFeatures.cc:58
+msgid "UUID"
+msgstr "UUID"
+
+#: ../src/DialogFeatures.cc:59
+msgid "Required Software"
+msgstr "आवश्यक सॉफ्टवेअर"
+
+#: ../src/DialogFeatures.cc:77
+msgid "This chart shows the actions supported on file systems."
+msgstr "पुढील चार्ट फाइल प्रणाली वरील शक्य कार्य दर्शवितो."
+
+#: ../src/DialogFeatures.cc:79
+msgid ""
+"Not all actions are available on all file systems, in part due to the nature "
+"of file systems and limitations in the required software."
+msgstr "फाइल प्रणाली वरील मर्यादा अणि आवश्यक सॉफ्टवेर वरील मर्यादा यांच्या स्वरूपामुळे, "
+"सर्वे कार्य सगळ्या फाइल प्रणाली वर शक्य नाहीत."
+
+#. TO TRANSLATORS:  Available offline and online
+#. * means that this action is valid for this file system when
+#. * it is both unmounted and mounted.
+#.
+#: ../src/DialogFeatures.cc:96
+msgid "Available offline and online"
+msgstr "आरोहित / अनारोहित असतांनाही उपलब्ध "
+
+#. TO TRANSLATORS:  Available online only
+#. * means that this action is valid for this file system only
+#. * when it is mounted.
+#.
+#: ../src/DialogFeatures.cc:109
+msgid "Available online only"
+msgstr "फक्त आरोहित असतांना उपलब्ध "
+
+#. TO TRANSLATORS:  Available offline only
+#. * means that this action is valid for this file system only
+#. * when it is unmounted.
+#.
+#: ../src/DialogFeatures.cc:122
+msgid "Available offline only"
+msgstr "फक्त अनारोहित असतांना उपलब्ध"
+
+#. TO TRANSLATORS:  Not Available
+#. * means that this action is not valid for this file system.
+#.
+#: ../src/DialogFeatures.cc:134
+msgid "Not Available"
+msgstr "उपलब्ध नाही"
+
+#: ../src/DialogFeatures.cc:139
+msgid "Legend"
+msgstr "आख्यायिका"
+
+#. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
+#: ../src/DialogFeatures.cc:147
+msgid "Rescan For Supported Actions"
+msgstr "समर्पित कर्यांसाठी पुन्हा तपसा."
+
+#: ../src/DialogManageFlags.cc:32 ../src/DialogManageFlags.cc:37
+msgid "Manage flags on %1"
+msgstr "%1 वर फ्लैग्स मैनेज करा."
+
+#: ../src/Dialog_Rescue_Data.cc:36
+msgid "Search disk for file systems"
+msgstr "फाइल प्रणाली बघण्यासाठी डिस्क वर शोधा"
+
+#. TO TRANSLATORS: looks like    File systems found on /dev/sdb
+#: ../src/Dialog_Rescue_Data.cc:53
+msgid "File systems found on %1"
+msgstr "%1 वर फाइल प्रणाली सापडली"
+
+#: ../src/Dialog_Rescue_Data.cc:58
+msgid "Data found"
+msgstr "माहिती मिळाली"
+
+#: ../src/Dialog_Rescue_Data.cc:62
+msgid "Data found with inconsistencies"
+msgstr "विसंगत माहिती मिळाली"
+
+#: ../src/Dialog_Rescue_Data.cc:64
+msgid "WARNING!: The file systems marked with (!) are inconsistent."
+msgstr "चेतावनी!: (!) ने चिन्हांकित केलेली फाइल प्रणाली विसंगत आहे."
+
+#: ../src/Dialog_Rescue_Data.cc:66
+msgid "You might encounter errors trying to view these file systems."
+msgstr "ही फाइल प्रणाली बघण्याचा प्रयत्न करतांना तुम्हाला त्रुटी दिसू शकते."
+
+#: ../src/Dialog_Rescue_Data.cc:82
+msgid "The 'View' buttons create read-only views of each file system."
+msgstr "व्यू बटन प्रत्येक फाइल प्रणालीचा रीड-ओनली व्यू बनावतो."
+
+#: ../src/Dialog_Rescue_Data.cc:84
+msgid "All mounted views will be unmounted when you close this dialog."
+msgstr "हा संवाद बॉक्स बंद केल्यावर सर्वे आरोहित व्यूज अनारोहित होतील."
+
+#: ../src/Dialog_Rescue_Data.cc:107
+msgid "File systems"
+msgstr "फाइल प्रणाली"
+
+#. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
+#: ../src/Dialog_Rescue_Data.cc:129
+msgid "#%1: %2 (%3 MiB)"
+msgstr "#%1: %2 (%3 MiB)"
+
+#: ../src/Dialog_Rescue_Data.cc:137
+msgid "View"
+msgstr "व्यू"
+
+#: ../src/Dialog_Rescue_Data.cc:167
+msgid ""
+"An error occurred while creating a temporary directory for use as a mount "
+"point."
+msgstr ""
+"माउंट पॉईंट म्हणून वापर करण्यासाठी तात्पुरती डिरेक्टरी तयार करताना एक त्रुटी आली"
+
+#: ../src/Dialog_Rescue_Data.cc:169
+msgid "Error"
+msgstr "त्रुटि"
+
+#: ../src/Dialog_Rescue_Data.cc:175
+msgid "Failed creating temporary directory"
+msgstr "तात्पुरती निर्देशिका तयार करणे अयशस्वी झाले."
+
+#: ../src/Dialog_Rescue_Data.cc:192
+msgid "An error occurred while creating the read-only view."
+msgstr "रीड ओनली व्यू बनवतांना त्रुटि आली आहे."
+
+#: ../src/Dialog_Rescue_Data.cc:194
+msgid ""
+"Either the file system can not be mounted (like swap), or there are "
+"inconsistencies or errors in the file system."
+msgstr ""
+"एकतर फाइल प्रणाली आरोहित करता येत नहिये(स्वैप सारखा), किंवा फाइल प्रणाली मधे विसंगती किंवा त्रुटि आहेत."
+
+#: ../src/Dialog_Rescue_Data.cc:198
+msgid "Failed creating read-only view"
+msgstr "रीड-ओनली व्यू बनवने अयशस्वी"
+
+#: ../src/Dialog_Rescue_Data.cc:228
+msgid "Error:"
+msgstr "त्रुटि:"
+
+#. TO TRANSLATORS: looks like
+#. * The file system is mounted on:
+#. * /tmp/gparted-roview-Nlhb3R.
+#: ../src/Dialog_Rescue_Data.cc:236
+msgid "The file system is mounted on:"
+msgstr "फाइल प्रणाली पुढील जागेवर आरोहित केलेली आहे:"
+
+#: ../src/Dialog_Rescue_Data.cc:241
+msgid "Unable to open the default file manager"
+msgstr "डिफ़ॉल्ट फाइल मेनेजर चालू करने शक्कय नाही"
+
+#: ../src/Dialog_Rescue_Data.cc:260
+msgid ""
+"Warning: The detected file system area overlaps with at least one existing "
+"partition"
+msgstr ""
+"चेतावनी: आढळलेली फाइल प्रणाली जागा एकातरी जुन्या विभाजनावरती जात आहे"
+
+#: ../src/Dialog_Rescue_Data.cc:262
+msgid ""
+"It is recommended that you do not use any overlapping file systems to avoid "
+"disturbing existing data."
+msgstr ""
+"असलेली माहिती वाचवण्यासाठी तुम्हाला शिफारस आहे की ओवरलैपिंग(एक वरती एक ) फाइल प्रणाली वापरु नका."
+
+#: ../src/Dialog_Rescue_Data.cc:264
+msgid "Do you want to try to deactivate the following mount points?"
+msgstr "खालील माउंट पॉईंट निष्क्रिय करण्याचा प्रयत्न करू इछितां?"
+
+#. TO TRANSLATORS: looks like  create missing /dev/mapper entries
+#: ../src/DMRaid.cc:327
+msgid "create missing %1 entries"
+msgstr "%1 गहाळ नोंदी तयार करा"
+
+#. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
+#: ../src/DMRaid.cc:426
+msgid "delete affected %1 entries"
+msgstr "परिणाम ज़ालेल्या %1 नोंदी काढून टाका"
+
+#. TO TRANSLATORS: looks like  delete /dev/mapper entry
+#: ../src/DMRaid.cc:449
+msgid "delete %1 entry"
+msgstr "%1 नोंदी काढून टाका"
+
+#. TO TRANSLATORS: looks like  update /dev/mapper entry
+#: ../src/DMRaid.cc:499
+msgid "update %1 entry"
+msgstr "%1 नोंदी अद्यायावत करा"
+
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/FileSystem.cc:42
+msgid "_Mount"
+msgstr "_आरोहित करा"
+
+#: ../src/FileSystem.cc:43
+msgid "_Unmount"
+msgstr "_अनारोहित करा"
+
+#. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:233
+msgid "Created directory %1"
+msgstr "%1 डिरेक्टरी बनवली"
+
+#. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
+#: ../src/FileSystem.cc:260
+msgid "Removed directory %1"
+msgstr "%1 डिरेक्टरी काढली "
+
+#: ../src/GParted_Core.cc:73
+msgid "GParted Bug"
+msgstr "जीपार्टेड दोष"
+
+#. TO TRANSLATORS: looks like Scanning /dev/sda
+#: ../src/GParted_Core.cc:185 ../src/GParted_Core.cc:194
+msgid "Scanning %1"
+msgstr "स्कॅनिंग %1"
+
+#. TO TRANSLATORS: looks like   Confirming /dev/sda
+#: ../src/GParted_Core.cc:213 ../src/GParted_Core.cc:238
+msgid "Confirming %1"
+msgstr "%1 ची खात्री चालू"
+
+#. TO TRANSLATORS: looks like Searching /dev/sda partitions
+#: ../src/GParted_Core.cc:262
+msgid "Searching %1 partitions"
+msgstr "%1 विभाजन शोधल्या जात आहेत"
+
+#. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
+#: ../src/GParted_Core.cc:519
+msgid "A partition cannot have a length of %1 sectors"
+msgstr "विभाजनाला %1 क्षेत्रांची लांबी असू शकत नाही"
+
+#. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
+#: ../src/GParted_Core.cc:533
+msgid ""
+"A partition with used sectors (%1) greater than its length (%2) is not valid"
+msgstr ""
+"(%2) लांबी पेक्षा जास्त वापरलेले क्षेत्र (%1) असे विभाजन असणे शाक्य नाही"
+
+#: ../src/GParted_Core.cc:669
+msgid "libparted messages"
+msgstr "लिबपार्टेड संदेश"
+
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this disk
+#. * device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:972
+msgid "unrecognized"
+msgstr "माहिती नाही"
+
+#. no file system found....
+#: ../src/GParted_Core.cc:1497
+msgid "Unable to detect file system! Possible reasons are:"
+msgstr "फाइल प्रणाली ओळखता येत नाहीये! शक्य कारणे:"
+
+#: ../src/GParted_Core.cc:1499
+msgid "The file system is damaged"
+msgstr "फाइल प्रणाली ला नुकसान पोहचले आहे"
+
+#: ../src/GParted_Core.cc:1501
+msgid "The file system is unknown to GParted"
+msgstr "जीपार्टेडला ही फाइल प्रणाली माहिती नाही"
+
+#: ../src/GParted_Core.cc:1503
+msgid "There is no file system available (unformatted)"
+msgstr "कुठलीही फाइल प्रणाली नाहीये (अनफॉरमॅटेड)"
+
+#. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
+#: ../src/GParted_Core.cc:1506
+msgid "The device entry %1 is missing"
+msgstr "%1 साधन नोंद गहाळ आहे"
+
+#: ../src/GParted_Core.cc:1661
+msgid "Unable to find mount point"
+msgstr "आरोहित जागा मिळत नाहीये"
+
+#: ../src/GParted_Core.cc:1778
+msgid "Unable to read the contents of this file system!"
+msgstr "या फाइल प्रणाली मधील गोष्टी वाचता येत नाहीये!"
+
+#: ../src/GParted_Core.cc:1780
+msgid "Because of this some operations may be unavailable."
+msgstr "यामुळे काही ऑपरेशन्स शक्य होणार नाहीत."
+
+#: ../src/GParted_Core.cc:1784
+msgid "The cause might be a missing software package."
+msgstr "सॉफ्टवेर पैकेज नसणे हे यामागचे कारण असू शकते."
+
+#. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
+#: ../src/GParted_Core.cc:1787
+msgid ""
+"The following list of software packages is required for %1 file system "
+"support:  %2."
+msgstr "%2 ला सपोर्ट देण्यासाठी %1 फाइल सिस्टम मधे पुढील सॉफ्टवेर पैकेजेस ची गरज आहे."
+
+#. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
+#: ../src/GParted_Core.cc:1797
+msgid "%1 of unallocated space within the partition."
+msgstr "विभाजनामधे %1 न वाटलेली जागा आहे"
+
+#. TO TRANSLATORS: To grow the file system to fill the partition, select the partition and choose the menu item:
+#. * means that the user can perform a check of the partition which will
+#. * also grow the file system to fill the partition.
+#.
+#: ../src/GParted_Core.cc:1807
+msgid ""
+"To grow the file system to fill the partition, select the partition and "
+"choose the menu item:"
+msgstr "विभाजन भरण्यासाठी फाइल प्रणाली वाढवण्यास विभाजन ठरवा व मेन्यू घटक निवडा"
+
+#: ../src/GParted_Core.cc:1809
+msgid "Partition --> Check."
+msgstr "विभाजन ---> तपासा"
+
+#: ../src/GParted_Core.cc:1916
+msgid "create empty partition"
+msgstr "रिकामे विभाजन बनवा"
+
+#. TO TRANSLATORS: looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and the fact
+#. * that it is a partition within a device.
+#.
+#. TO TRANSLATORS: looks like   path: /dev/sda (device)
+#. *              or looks like   path: /dev/sda1 (partition)
+#. * This is showing the name and whether it
+#. * is a whole disk device or a partition
+#. * within a device.
+#.
+#: ../src/GParted_Core.cc:1992 ../src/GParted_Core.cc:3624
+msgid "path: %1 (%2)"
+msgstr "मार्ग: %1"
+
+#: ../src/GParted_Core.cc:1993 ../src/GParted_Core.cc:3627
+msgid "partition"
+msgstr "विभाजन"
+
+#: ../src/GParted_Core.cc:1994 ../src/GParted_Core.cc:3628
+msgid "start: %1"
+msgstr "प्रारंभ: %1"
+
+#: ../src/GParted_Core.cc:1995 ../src/GParted_Core.cc:3629
+msgid "end: %1"
+msgstr "शेवट: %1"
+
+#: ../src/GParted_Core.cc:1996 ../src/GParted_Core.cc:3630
+msgid "size: %1 (%2)"
+msgstr "आकार: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2029
+msgid ""
+"partition contains open LUKS encryption for a create file system only step"
+msgstr "फाइल सिस्टम बनवायच्या वेळेस विभाजनामधे  ओपन LUKS एनक्रिप्शन आहे."
+
+#. TO TRANSLATORS: looks like create new ext3 file system
+#: ../src/GParted_Core.cc:2036
+msgid "create new %1 file system"
+msgstr "नविन %1 फाइल प्रणाली बनवा"
+
+#: ../src/GParted_Core.cc:2068
+msgid ""
+"partition contains open LUKS encryption for a format file system only step"
+msgstr "फाइल सिस्टम फॉर्मेट करण्याच्या वेळेस विभाजनामधे  ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:2083
+msgid "delete partition"
+msgstr "विभाजन हटवा"
+
+#: ../src/GParted_Core.cc:2131
+msgid ""
+"partition contains open LUKS encryption for a delete file system only step"
+msgstr "फाइल सिस्टम डिलीट करण्याच्या वेळेस विभाजनामधे  ओपन LUKS एनक्रिप्शन आहे."
+
+#: ../src/GParted_Core.cc:2146
+msgid "delete %1 file system"
+msgstr "%१ फाइल प्रणाली काढून टाका"
+
+#: ../src/GParted_Core.cc:2164
+msgid ""
+"partition contains open LUKS encryption for a label file system only step"
+msgstr "फाइल सिस्टम लेबल लावण्याच्या वेळेस विभाजनामधे  ओपन LUKS एनक्रिप्शन आहे"
+
+#. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
+#: ../src/GParted_Core.cc:2171 ../src/OperationLabelFileSystem.cc:55
+msgid "Clear file system label on %1"
+msgstr "%१ वरचा फाइल प्रणाली लेबल काढून ताका"
+
+#: ../src/GParted_Core.cc:2174
+msgid "Set file system label to \"%1\" on %2"
+msgstr "%२ वरती \"%१\" फाइल प्रणाली लेबल लावा"
+
+#. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
+#: ../src/GParted_Core.cc:2203 ../src/OperationNamePartition.cc:55
+msgid "Clear partition name on %1"
+msgstr "%1 वरील विभाजन नाव काढ़ा "
+
+#: ../src/GParted_Core.cc:2206
+msgid "Set partition name to \"%1\" on %2"
+msgstr "%2 वरती \"%1\" विभाजनाचे नाव लावा"
+
+#: ../src/GParted_Core.cc:2232
+msgid ""
+"partition contains open LUKS encryption for a change file system UUID only "
+"step"
+msgstr "फाइल सिस्टम UUID बदलण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:2239
+msgid "Set half of the UUID on %1 to a new, random value"
+msgstr "%1 वरील अर्धा UUID ला नविन (यादृच्छिक) मूल्य लावा"
+
+#: ../src/GParted_Core.cc:2244
+msgid "Set UUID on %1 to a new, random value"
+msgstr "%1 वरील UUID ला नविन (यादृच्छिक) मूल्य लावा"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to change the size of a partition when performing a move only
+#. * step which is not permitted to change the partition size.
+#.
+#: ../src/GParted_Core.cc:2332
+msgid "size of the partition is changing for a move only step"
+msgstr "फक्त हलावण्याच्या कार्यासाठी विभाजनाचा आकार बदलणार"
+
+#: ../src/GParted_Core.cc:2364
+msgid "rollback last change to the partition table"
+msgstr "विभाजन टेबल वरील मागील बदल रद्द करा"
+
+#: ../src/GParted_Core.cc:2413
+msgid "move file system to the left"
+msgstr "फाइल प्रणाली ला डावीकडे घेवुन जा"
+
+#: ../src/GParted_Core.cc:2415
+msgid "move file system to the right"
+msgstr "फाइल प्रणाली ला उजवीकडे घेवुन जा"
+
+#: ../src/GParted_Core.cc:2418
+msgid "move file system"
+msgstr "फाइल प्रणाली ला सरकवा"
+
+#: ../src/GParted_Core.cc:2420
+msgid ""
+"new and old file system have the same position.  Hence skipping this "
+"operation"
+msgstr ""
+"नवी आणि जुनि फाइल प्रणाली त्याच जागेवर आहे. त्यामुळे हे ऑपरेशन सोडून केल्या जात नहिये"
+
+#: ../src/GParted_Core.cc:2486
+msgid "using libparted"
+msgstr "लिबपार्टेड वापरात आहे"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to move the start of the partition when performing a resize
+#. * only step which is not permitted to change the start of the
+#. * partition.
+#.
+#: ../src/GParted_Core.cc:2560
+msgid "start of the partition is changing for a resize only step"
+msgstr "फक्त आकार बदलण्याच्या कार्यासाठी विभाजनाची सुरुवात बदलणार"
+
+#: ../src/GParted_Core.cc:2578
+msgid ""
+"partition does not contain LUKS encryption for a resize encryption only step"
+msgstr "एनक्रिप्शन आकार बदल करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन नाहीये."
+
+#: ../src/GParted_Core.cc:2588
+msgid "impossible to shrink a closed LUKS encryption volume"
+msgstr "LUKS एनक्रिप्शन बंद असलेले विभाजन छोटे करने अशक्य आहे"
+
+#: ../src/GParted_Core.cc:2647
+msgid ""
+"partition contains open LUKS encryption for a resize file system only step"
+msgstr "एनक्रिप्शन आकार बदल करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन आहे."
+
+#: ../src/GParted_Core.cc:2716
+msgid "resize/move partition"
+msgstr "विभाजन आकार बदल/जागा बदल "
+
+#: ../src/GParted_Core.cc:2719
+msgid "move partition to the right"
+msgstr "विभाजनाला उजवीकडे न्या"
+
+#: ../src/GParted_Core.cc:2722
+msgid "move partition to the left"
+msgstr "विभाजनाला डावीकडे न्या"
+
+#: ../src/GParted_Core.cc:2725
+msgid "grow partition from %1 to %2"
+msgstr "%1 पासून  %2 पर्यन्त विभाजनाला वाढवा"
+
+#: ../src/GParted_Core.cc:2728
+msgid "shrink partition from %1 to %2"
+msgstr "%1 पासून %2 पर्यन्त विभाजन लहान करा"
+
+#: ../src/GParted_Core.cc:2731
+msgid "move partition to the right and grow it from %1 to %2"
+msgstr "विभाजनाला उजवीकडे न्या आणि  %1 पासून  %2 पर्यन्त वाढवा"
+
+#: ../src/GParted_Core.cc:2734
+msgid "move partition to the right and shrink it from %1 to %2"
+msgstr "विभाजनाला उजवीकडे न्या आणि  %1 पासून  %2 पर्यन्त लहान करा"
+
+#: ../src/GParted_Core.cc:2737
+msgid "move partition to the left and grow it from %1 to %2"
+msgstr "विभाजनाला डावीकडे न्या आणि  %1 पासून  %2 पर्यन्त वाढवा"
+
+#: ../src/GParted_Core.cc:2740
+msgid "move partition to the left and shrink it from %1 to %2"
+msgstr "विभाजनाला डावीकडे न्या आणि  %1 पासून  %2 पर्यन्त लहान करा"
+
+#: ../src/GParted_Core.cc:2755
+msgid ""
+"new and old partition have the same size and position.  Hence skipping this "
+"operation"
+msgstr ""
+"जुन्या अणि नवीन विभाजणाचा आकार आणि जागा सारखी असल्यामुळे हे ऑपरेशन वगळल्या जात आहे "
+
+#: ../src/GParted_Core.cc:2765
+msgid "old start: %1"
+msgstr "जुनि  सुरुवात: %1"
+
+#: ../src/GParted_Core.cc:2766
+msgid "old end: %1"
+msgstr "जुना शेवट : %1"
+
+#: ../src/GParted_Core.cc:2767
+msgid "old size: %1 (%2)"
+msgstr "जुना आकार : %1 (%2)"
+
+#: ../src/GParted_Core.cc:2836 ../src/GParted_Core.cc:3722
+msgid "new start: %1"
+msgstr "नवीन सुरुवात : %1"
+
+#: ../src/GParted_Core.cc:2837 ../src/GParted_Core.cc:3723
+msgid "new end: %1"
+msgstr "नवीन  शेवट: %1"
+
+#: ../src/GParted_Core.cc:2838 ../src/GParted_Core.cc:3724
+msgid "new size: %1 (%2)"
+msgstr "नवीन आकार : %1 (%2)"
+
+#: ../src/GParted_Core.cc:2865 ../src/GParted_Core.cc:3670
+msgid "requested start: %1"
+msgstr "मागणी केलेली सुरुवात : %1"
+
+#: ../src/GParted_Core.cc:2866 ../src/GParted_Core.cc:3671
+msgid "requested end: %1"
+msgstr "मागणी केलेला शेवट : %1"
+
+#: ../src/GParted_Core.cc:2867 ../src/GParted_Core.cc:3672
+msgid "requested size: %1 (%2)"
+msgstr "मागणी केलेला आकार : %1 (%2)"
+
+#: ../src/GParted_Core.cc:2887
+msgid ""
+"partition does not contain open LUKS encryption for a shrink encryption only "
+"step"
+msgstr "एनक्रिप्शन आकार कमी करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन नाहीये"
+
+#: ../src/GParted_Core.cc:2892
+msgid "shrink encryption volume"
+msgstr "एनक्रिप्शन विभाजन छोटे करा"
+
+#: ../src/GParted_Core.cc:2903
+msgid ""
+"partition does not contain LUKS encryption for a maximize encryption only "
+"step"
+msgstr "एनक्रिप्शन आकार जास्तीत जास्त करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन नाहीये"
+
+#: ../src/GParted_Core.cc:2908
+msgid "grow encryption volume to fill the partition"
+msgstr "विभाजन पूर्ण भरण्यासाठी एनक्रिप्शन विभाजन वाढवा"
+
+#: ../src/GParted_Core.cc:2918
+msgid "growing is not available for this encryption volume"
+msgstr "या एनक्रिप्शन विभाजनासाठी आकार वाढवणे शक्य नाही"
+
+#: ../src/GParted_Core.cc:2936
+msgid ""
+"partition contains open LUKS encryption for a shrink file system only step"
+msgstr "एनक्रिप्शन आकार कमी करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to grow the partition size or keep it the same when performing
+#. * a shrink partition only step.
+#.
+#: ../src/GParted_Core.cc:2948
+msgid "the new partition size is larger or the same for a shrink only step"
+msgstr "आकार कमी करण्याच्या कार्यासाठी नविन विभाजन आकार हा जास्त किंवा सारखा आहे"
+
+#: ../src/GParted_Core.cc:2953
+msgid "shrink file system"
+msgstr "फाइल प्रणालीला लहान करा"
+
+#: ../src/GParted_Core.cc:2964
+msgid ""
+"partition contains open LUKS encryption for a maximize file system only step"
+msgstr "फाइल प्रणाली आकार जास्तीत जास्त करण्याच्या वेळेस विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:2969
+msgid "grow file system to fill the partition"
+msgstr "विभाजन भरण्यासाठी फाइल प्रणाली चा आकार वाढवा"
+
+#: ../src/GParted_Core.cc:2980
+msgid "growing is not available for this file system"
+msgstr "या फाइल प्रणालीचा आकार वाढवणे शक्य नाही"
+
+#: ../src/GParted_Core.cc:2989
+msgid "growing the file system is currently disallowed"
+msgstr "फाइल प्रणाली वाढवण्यास सध्या अनुमती नाही"
+
+#. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
+#: ../src/GParted_Core.cc:3013
+msgid "not a %1 file system for a recreate %1 only step"
+msgstr "%1 पुनर्निर्माण करण्याच्या कार्यासाठी ही %१ फाइल प्रणाली नाहीये"
+
+#. TO TRANSLATORS: looks like   recreate linux-swap file system
+#: ../src/GParted_Core.cc:3025
+msgid "recreate %1 file system"
+msgstr "%१ फाइल प्रणाली पुनर्निर्माण करा"
+
+#: ../src/GParted_Core.cc:3094
+msgid "the destination is smaller than the source partition"
+msgstr "स्रोत विभाजनापेक्षा शेवट लहान आहे"
+
+#: ../src/GParted_Core.cc:3145
+msgid ""
+"source partition contains open LUKS encryption for a file system copy only "
+"step"
+msgstr "फाइल प्रणाली नक्कल कार्यासाठी स्रोत विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:3152
+msgid ""
+"destination partition contains open LUKS encryption for a file system copy "
+"only step"
+msgstr "फाइल प्रणाली नक्कल कार्यासाठी शेवटच्या विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:3158
+msgid "copy file system from %1 to %2"
+msgstr "%1 पासून %2 मधे फाइल प्रणालीची नक्कल करा "
+
+#: ../src/GParted_Core.cc:3239
+msgid "using internal algorithm"
+msgstr "अंतर्गत अल्गोरिदम वापरून"
+
+#. TO TRANSLATORS: looks like  copy 1.00 MiB
+#: ../src/GParted_Core.cc:3242
+msgid "copy %1"
+msgstr "%1 ची नकल करा"
+
+#: ../src/GParted_Core.cc:3245
+msgid "finding optimal block size"
+msgstr "चांगल्या ब्लॉक आकाराला शोधत आहे"
+
+#: ../src/GParted_Core.cc:3287
+msgid "%1 seconds"
+msgstr "%1 सेकंद"
+
+#. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
+#: ../src/GParted_Core.cc:3305
+msgid "optimal block size is %1"
+msgstr "%1 हा चांगला ब्लॉक आकार आ"
+
+#. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
+#: ../src/GParted_Core.cc:3323
+msgid "%1 (%2 B) copied"
+msgstr "%1 (%2 B) नकल पूर्"
+
+#: ../src/GParted_Core.cc:3361
+msgid "roll back last transaction"
+msgstr "शेवटचा व्यवहार नाहीसा करा"
+
+#: ../src/GParted_Core.cc:3384
+msgid ""
+"partition contains open LUKS encryption for a check file system only step"
+msgstr "फाइल प्रणाली तापस कार्यासाठी विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
+#: ../src/GParted_Core.cc:3396
+msgid "check file system on %1 for errors and (if possible) fix them"
+msgstr "%1 वरील फाइल प्रणाली त्रुटी साठी बघा, (शक्य असल्यास) त्यांचे निराकरण करा"
+
+#: ../src/GParted_Core.cc:3405
+msgid "checking is not available for this file system"
+msgstr "या फाइल प्रणालीला तपासणी शक्य नाही"
+
+#: ../src/GParted_Core.cc:3471
+msgid "set partition type on %1"
+msgstr "%1 वरती विभाजन प्रकार लावा"
+
+#. TO TRANSLATORS: looks like   new partition type: ext4
+#: ../src/GParted_Core.cc:3514
+msgid "new partition type: %1"
+msgstr "नविन विभाजन प्रकार: %1"
+
+#. TO TRANSLATORS: looks like   new partition flag: lvm
+#: ../src/GParted_Core.cc:3529
+msgid "new partition flag: %1"
+msgstr "नविन विभाजन निशाण: %1"
+
+#: ../src/GParted_Core.cc:3557
+msgid "calibrate %1"
+msgstr "%1 चे अंशांकन करा"
+
+#: ../src/GParted_Core.cc:3626
+msgid "device"
+msgstr "डिव्हाइस"
+
+#: ../src/GParted_Core.cc:3640
+msgid "encryption path: %1"
+msgstr "एनक्रिप्शन मार्ग: %1"
+
+#: ../src/GParted_Core.cc:3666
+msgid "calculate new size and position of %1"
+msgstr "%1 ची नविन जागा आणि आकार मोजा"
+
+#: ../src/GParted_Core.cc:3783
+msgid ""
+"partition contains open LUKS encryption for an erase file system signatures "
+"only step"
+msgstr "फाइल प्रणाली स्वाक्षरी पुसण्याच्या कार्यासाठी विभाजनामधे ओपन LUKS एनक्रिप्शन आहे"
+
+#: ../src/GParted_Core.cc:3790
+msgid "clear old file system signatures in %1"
+msgstr "जूनि फाइल प्रणाली स्वाक्षरी काढून टाका"
+
+#: ../src/GParted_Core.cc:3996
+msgid "flush operating system cache of %1"
+msgstr "%१ चा ऑपरेटिंग प्रणाली कॅशे काढून टाका"
+
+#. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
+#: ../src/GParted_Core.cc:4028
+msgid "update boot sector of %1 file system on %2"
+msgstr "%1 फाइल प्रणाली चा %2 वरील बूट क्षेत्र अद्यायावत करा"
+
+#. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
+#: ../src/GParted_Core.cc:4064
+msgid "Error trying to write to boot sector in %1"
+msgstr "%1 वर बूट क्षेत्र लिहितांना त्रुटी"
+
+#. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
+#: ../src/GParted_Core.cc:4070
+msgid "Error trying to seek to position 0x1c in %1"
+msgstr "%1 वर 0x1c जागा शोधण्याचा प्रयत्न करतांना त्रुटी"
+
+#. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
+#: ../src/GParted_Core.cc:4077
+msgid "Error trying to open %1"
+msgstr "%१ उघडण्याचा प्रयत्न करतांना त्रुटी"
+
+#. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
+#: ../src/GParted_Core.cc:4087
+msgid ""
+"Failed to set the number of hidden sectors to %1 in the NTFS boot record."
+msgstr ""
+"NTFS बूट  रेकॉर्ड मधे लपलेले क्षेत्राचा नंबर %1 करण्यात अयशस्वी ."
+
+#: ../src/GParted_Core.cc:4089
+msgid "You might try the following command to correct the problem:"
+msgstr "आपण समस्या दुरुस्त करण्यासाठी खालील आदेश वापरून बघु शकतात:"
+
+#. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
+#: ../src/GParted_Core.cc:4150
+msgid "Ignoring device %1 with logical sector size of %2 bytes."
+msgstr "लॉजिकल क्षेत्र आकार %2 bytes असलेल्या डिवाइस %1 ला दुर्लक्ष केल्या जात आहे."
+
+#: ../src/GParted_Core.cc:4153
+msgid ""
+"GParted requires libparted version 2.2 or higher to support devices with "
+"sector sizes larger than 512 bytes."
+msgstr ""
+"क्षेत्र आकार ५१२ bytes पेक्षा जास्त असलेल्या डिवाइस साठी जीपार्टेड ला लिबपार्टेड version 2.2 किंवा जास्त ची गरज आहे."
+
+#: ../src/GParted_Core.cc:4317
+msgid "Libparted Information"
+msgstr "लिबपार्टेड माहिती"
+
+#: ../src/GParted_Core.cc:4321
+msgid "Libparted Warning"
+msgstr "लिबपार्टेड चेतावनी"
+
+#: ../src/GParted_Core.cc:4325
+msgid "Libparted Error"
+msgstr "लिबपार्टेड त्रुटि"
+
+#: ../src/GParted_Core.cc:4328
+msgid "Libparted Fatal"
+msgstr "लिबपार्टेड प्राणघातक त्रुटि"
+
+#: ../src/GParted_Core.cc:4331
+msgid "Libparted Bug"
+msgstr "लिबपार्टेड दोष"
+
+#: ../src/GParted_Core.cc:4334
+msgid "Libparted Unsupported Feature"
+msgstr "लिबपार्टेड असमर्थित वैशिष्ट्य"
+
+#: ../src/GParted_Core.cc:4337
+msgid "Libparted unknown exception"
+msgstr "लिबपार्टेड अज्ञात अपवाद"
+
+#: ../src/GParted_Core.cc:4341
+msgid "Fix"
+msgstr "निराकरण"
+
+#: ../src/GParted_Core.cc:4343
+msgid "Yes"
+msgstr "होय"
+
+#: ../src/GParted_Core.cc:4345
+msgid "Ok"
+msgstr "ठीक आहे"
+
+#: ../src/GParted_Core.cc:4347
+msgid "Retry"
+msgstr "पुन्हा प्रयत्न करा"
+
+#: ../src/GParted_Core.cc:4349
+msgid "No"
+msgstr "नाही"
+
+#: ../src/GParted_Core.cc:4351
+msgid "Cancel"
+msgstr "रद्द"
+
+#: ../src/GParted_Core.cc:4353
+msgid "Ignore"
+msgstr "दुर्लक्ष"
+
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:174
+msgid "_Undo Last Operation"
+msgstr "_मागील क्रिया नाहिसि  करा"
+
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:180
+msgid "_Clear All Operations"
+msgstr "_सगळे कार्य काढून टाका"
+
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:185
+msgid "_Apply All Operations"
+msgstr "_सगळे कार्य लागु करा"
+
+#: ../src/LVM2_PV_Info.cc:193
+msgid "One or more Physical Volumes belonging to the Volume Group is missing."
+msgstr "विभाजन ग्रुप मधे असलेले एक किंवा जास्त भौतिक विभाजन गहाळ आहे"
+
+#: ../src/LVM2_PV_Info.cc:321
+msgid "An error occurred reading LVM2 configuration!"
+msgstr "LVM2 कॉन्फिगरेशन वाचन करताना त्रुटी आली"
+
+#: ../src/LVM2_PV_Info.cc:323
+msgid "Some or all of the details might be missing or incorrect."
+msgstr "काही किंवा सर्व तपशील गहाळ किंवा चुकीची आहे"
+
+#: ../src/LVM2_PV_Info.cc:325
+msgid "You should NOT modify any LVM2 PV partitions."
+msgstr "आपण कोणत्याही LVM2 PV विभाजने बदलू नये"
+
+#. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
+#: ../src/OperationChangeUUID.cc:56
+msgid "Set half the UUID to a new random value on %1 file system on %2"
+msgstr "%2 फाइल प्रणाली वर %1 वरती अर्ध्या UUID ला नविन (यादृच्छिक) क्रमांक लावा"
+
+#. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
+#: ../src/OperationChangeUUID.cc:63
+msgid "Set a new random UUID on %1 file system on %2"
+msgstr "%२ फाइल प्रणाली वर %१ वरती UUID ला नविन (यादृच्छिक) क्रमांक लावा "
+
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
+#: ../src/OperationCopy.cc:83
+msgid "Copy %1 to %2 (start at %3)"
+msgstr "%1 ची %2 मधे नक्कल करा  (%3 ला सुरु)"
+
+#. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
+#: ../src/OperationCopy.cc:92
+msgid "Copy %1 to %2"
+msgstr "%1 ची %2 मधे नक्कल करा"
+
+#. Bug: Not initialised by constructor or reset later
+#. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
+#: ../src/OperationCheck.cc:50
+msgid "Check and repair file system (%1) on %2"
+msgstr "%2 वरील (%1) फाइल प्रणाली तापस आणि दुरुस्त करा"
+
+#. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
+#: ../src/OperationCreate.cc:71
+msgid "Create %1 #%2 (%3, %4) on %5"
+msgstr "बनवा  %1 #%2 (%3, %4) on %5"
+
+#. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
+#: ../src/OperationDelete.cc:114
+msgid "Delete %1 (%2, %3) from %4"
+msgstr "हटवा %1 (%2, %3) from %4"
+
+#. Bug: Not initialised by constructor or reset later
+#. Bug: Not initialised by constructor or reset later
+#. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
+#: ../src/OperationFormat.cc:75
+msgid "Format %1 as %2"
+msgstr "%1 ला %2 चे स्वरूप लावा"
+
+#. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
+#: ../src/OperationLabelFileSystem.cc:61
+msgid "Set file system label \"%1\" on %2"
+msgstr "%२ वर \"%१\" विभाजन लेबल लावा"
+
+#. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
+#: ../src/OperationNamePartition.cc:61
+msgid "Set partition name \"%1\" on %2"
+msgstr "%२ वर \"%१\" विभाजन नाव लावा"
+
+#: ../src/OperationResizeMove.cc:104
+msgid "resize/move %1"
+msgstr "आकार बदला/सरकवा %1"
+
+#: ../src/OperationResizeMove.cc:106
+msgid ""
+"new and old partition have the same size and position.  Hence continuing "
+"anyway"
+msgstr ""
+"नविन आणि जुन्या विभाजनाची जागा आणि आकार सारखा आहे. त्यामुळे चालू ठेवत आहोत"
+
+#: ../src/OperationResizeMove.cc:110
+msgid "Move %1 to the right"
+msgstr "%1 ला उजवीकडे सरकवा"
+
+#: ../src/OperationResizeMove.cc:113
+msgid "Move %1 to the left"
+msgstr "%1 ला डावीकडे सरकवा"
+
+#: ../src/OperationResizeMove.cc:116
+msgid "Grow %1 from %2 to %3"
+msgstr "%1 ला %2 ते %3 वाढवा"
+
+#: ../src/OperationResizeMove.cc:119
+msgid "Shrink %1 from %2 to %3"
+msgstr "%1 ला %2 ते %3 कमी करा"
+
+#: ../src/OperationResizeMove.cc:122
+msgid "Move %1 to the right and grow it from %2 to %3"
+msgstr "%1 ला उजवीकडे सरकवा आणि त्याला %2 ते %3 वाढवा"
+
+#: ../src/OperationResizeMove.cc:125
+msgid "Move %1 to the right and shrink it from %2 to %3"
+msgstr "%1 ला उजवीकडे सरकवा आणि त्याला %2 ते %3 कमी करा"
+
+#: ../src/OperationResizeMove.cc:128
+msgid "Move %1 to the left and grow it from %2 to %3"
+msgstr "%1 ला डावीकडे सरकवा आणि त्याला %2 ते %3 वाढवा"
+
+#: ../src/OperationResizeMove.cc:131
+msgid "Move %1 to the left and shrink it from %2 to %3"
+msgstr "%1 ला डावीकडे सरकवा आणि त्याला %2 ते %3 कमी करा"
+
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/ProgressBar.cc:98
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%2 पैकी %1 ची नकल पूर्ण  (%3 बाकि)"
+
+#: ../src/TreeView_Detail.cc:44
+msgid "Name"
+msgstr "नाव"
+
+#: ../src/TreeView_Detail.cc:46
+msgid "Mount Point"
+msgstr "आरोहित केंद्र"
+
+#: ../src/TreeView_Detail.cc:48
+msgid "Size"
+msgstr "आकार"
+
+#: ../src/TreeView_Detail.cc:49
+msgid "Used"
+msgstr "वापरलेले"
+
+#: ../src/TreeView_Detail.cc:50
+msgid "Unused"
+msgstr "न वापरलेले"
+
+#: ../src/TreeView_Detail.cc:51
+msgid "Flags"
+msgstr "फ्लैग्स"
+
+#. TO TRANSLATORS:  unallocated
+#. * means that this space on the disk device does
+#. * not contain a recognized file system, and is in
+#. * other words unallocated.
+#.
+#: ../src/Utils.cc:253
+msgid "unallocated"
+msgstr "कुठलीही फाइल प्रणाली नाही"
+
+#. TO TRANSLATORS:  unknown
+#. * means that this space within this partition does
+#. * not contain a file system known to GParted, and
+#. * is in other words unknown.
+#.
+#: ../src/Utils.cc:260
+msgid "unknown"
+msgstr "अज्ञात फाइल प्रणाली"
+
+#. TO TRANSLATORS:  unformatted
+#. * means that the space within this partition will not
+#. * be formatted with a known file system by GParted.
+#.
+#: ../src/Utils.cc:266
+msgid "unformatted"
+msgstr "विना रूपण"
+
+#. TO TRANSLATORS:  cleared
+#. * means that all file system signatures in the partition
+#. * will be cleared by GParted.
+#.
+#: ../src/Utils.cc:272
+msgid "cleared"
+msgstr "साफ"
+
+#: ../src/Utils.cc:293
+msgid "used"
+msgstr "वापरलेले"
+
+#: ../src/Utils.cc:294
+msgid "unused"
+msgstr "न वापरलेले"
+
+#. TO TRANSLATORS: means that this is an encrypted file system
+#: ../src/Utils.cc:311
+msgid "Encrypted"
+msgstr "एनक्रिप्टेड"
+
+#: ../src/Utils.cc:437
+msgid "%1 B"
+msgstr "%1 B"
+
+#: ../src/Utils.cc:442
+msgid "%1 KiB"
+msgstr "%1 KiB"
+
+#: ../src/Utils.cc:447
+msgid "%1 MiB"
+msgstr "%1 MiB"
+
+#: ../src/Utils.cc:452
+msgid "%1 GiB"
+msgstr "%1 GiB"
+
+#: ../src/Utils.cc:457
+msgid "%1 TiB"
+msgstr "%1 TiB"
+
+#: ../src/Win_GParted.cc:158
+msgid "_Refresh Devices"
+msgstr "_रिफ्रेश डिव्हाइस"
+
+#: ../src/Win_GParted.cc:164
+msgid "_Devices"
+msgstr "_डिव्हाइस"
+
+#: ../src/Win_GParted.cc:169
+msgid "_GParted"
+msgstr "_जीपार्टेड"
+
+#: ../src/Win_GParted.cc:189
+msgid "_Edit"
+msgstr "_संपादन"
+
+#: ../src/Win_GParted.cc:194
+msgid "Device _Information"
+msgstr "डिव्हाइस _माहिती"
+
+#: ../src/Win_GParted.cc:196
+msgid "Pending _Operations"
+msgstr "प्रलंबित _कार्य"
+
+#: ../src/Win_GParted.cc:197
+msgid "_View"
+msgstr "_दृश्य"
+
+#: ../src/Win_GParted.cc:201
+msgid "_File System Support"
+msgstr "_फाइल प्रणाली चा आधार"
+
+#: ../src/Win_GParted.cc:205
+msgid "_Create Partition Table"
+msgstr "_विभाजन टेबल बनवा"
+
+#: ../src/Win_GParted.cc:208
+msgid "_Attempt Data Rescue"
+msgstr "_माहिती वाचवण्याचा प्रयत्न करा"
+
+#: ../src/Win_GParted.cc:211
+msgid "_Device"
+msgstr "_डिव्हाइस"
+
+#: ../src/Win_GParted.cc:215
+msgid "_Partition"
+msgstr "_विभाजन"
+
+#: ../src/Win_GParted.cc:220
+msgid "_Contents"
+msgstr "_सामग्री"
+
+#: ../src/Win_GParted.cc:228
+msgid "_Help"
+msgstr "_मदत"
+
+#. TO TRANSLATORS: "New" is a tool bar item for partition actions.
+#: ../src/Win_GParted.cc:240
+msgid "New"
+msgstr "नवीन"
+
+#: ../src/Win_GParted.cc:245
+msgid "Create a new partition in the selected unallocated space"
+msgstr "न वपरलेल्या जागेवर नविन विभाजन तयार करा"
+
+#: ../src/Win_GParted.cc:250
+msgid "Delete the selected partition"
+msgstr "निवडलेले विभाजन नष्ट करा"
+
+#: ../src/Win_GParted.cc:272
+msgid "Resize/Move the selected partition"
+msgstr "निवलेल्या विभाजनाचा आकार बदला/सरकवा"
+
+#: ../src/Win_GParted.cc:281
+msgid "Copy the selected partition to the clipboard"
+msgstr "निवडलेले विभाजनाची क्लिपबोर्ड व्रती नक्कल करा"
+
+#: ../src/Win_GParted.cc:286
+msgid "Paste the partition from the clipboard"
+msgstr "क्लिपबोर्ड वरतुन विभाजन पेस्ट करा"
+
+#: ../src/Win_GParted.cc:298
+msgid "Undo Last Operation"
+msgstr "मागील क्रिया नाहिसि करा"
+
+#: ../src/Win_GParted.cc:306
+msgid "Apply All Operations"
+msgstr "सगळे कार्य लागु करा"
+
+#. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
+#: ../src/Win_GParted.cc:330
+msgid "_New"
+msgstr "_नविन"
+
+#: ../src/Win_GParted.cc:347
+msgid "_Resize/Move"
+msgstr "_आकार बदला/सरकवा"
+
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
+#: ../src/Win_GParted.cc:371
+msgid "_Format to"
+msgstr "_ला स्वरूप बदला"
+
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
+#: ../src/Win_GParted.cc:387
+msgid "_Mount on"
+msgstr "_वरती आरोहित करा"
+
+#: ../src/Win_GParted.cc:394
+msgid "_Name Partition"
+msgstr "_विभाजनाला नाव द्या"
+
+#: ../src/Win_GParted.cc:399
+msgid "M_anage Flags"
+msgstr "_फ्लैग्स व्यवस्थापित करा"
+
+#: ../src/Win_GParted.cc:404
+msgid "C_heck"
+msgstr "_तपासा"
+
+#: ../src/Win_GParted.cc:409
+msgid "_Label File System"
+msgstr "_लेबल फाइल प्रणाली"
+
+#: ../src/Win_GParted.cc:414
+msgid "New UU_ID"
+msgstr "नविन UU_ID"
+
+#: ../src/Win_GParted.cc:474
+msgid "Device Information"
+msgstr "डिव्हाइस माहिती"
+
+#. model
+#: ../src/Win_GParted.cc:482
+msgid "Model:"
+msgstr "मॉडल:"
+
+#. Serial number
+#: ../src/Win_GParted.cc:490
+msgid "Serial:"
+msgstr "सिरियल:"
+
+#. disktype
+#: ../src/Win_GParted.cc:522
+msgid "Partition table:"
+msgstr "विभाजन टेबल:"
+
+#. heads
+#: ../src/Win_GParted.cc:530
+msgid "Heads:"
+msgstr "हेड्स:"
+
+#. sectors/track
+#: ../src/Win_GParted.cc:538
+msgid "Sectors/track:"
+msgstr "क्षेत्र/ट्रॅक:"
+
+#. cylinders
+#: ../src/Win_GParted.cc:546
+msgid "Cylinders:"
+msgstr "सिलिंडर:"
+
+#. sector size
+#: ../src/Win_GParted.cc:562
+msgid "Sector size:"
+msgstr "क्षेत्र आकार:"
+
+#: ../src/Win_GParted.cc:738
+msgid "Could not add this operation to the list"
+msgstr "हे कार्य यादि मधे टाकणे शक्य नाही"
+
+#: ../src/Win_GParted.cc:919
+msgid "%1 operation pending"
+msgid_plural "%1 operations pending"
+msgstr[0] "%1 कार्य बाकि"
+msgstr[1] "%1 कार्ये बाकि"
+
+#: ../src/Win_GParted.cc:1038
+msgid "Quit GParted?"
+msgstr "जीपार्टेडला बंद करायचे?"
+
+#: ../src/Win_GParted.cc:1044
+msgid "%1 operation is currently pending."
+msgid_plural "%1 operations are currently pending."
+msgstr[0] "%1 कार्य सध्या बाकि आहे ."
+msgstr[1] "%1 कार्ये सध्या बाकि आहे ."
+
+#: ../src/Win_GParted.cc:1405
+msgid "%1 - GParted"
+msgstr "%1 - जीपार्टेड"
+
+#: ../src/Win_GParted.cc:1455
+msgid "Scanning all devices..."
+msgstr "सर्वे साधने निराखल्या जात आहेत..."
+
+#: ../src/Win_GParted.cc:1502
+msgid "No devices detected"
+msgstr "कोणताच साधन मिळाला नाही"
+
+#. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
+#: ../src/Win_GParted.cc:1587
+msgid "No partition table found on device %1"
+msgstr "%1 साधनावर विभाजन टेबल मिळाला नाही"
+
+#: ../src/Win_GParted.cc:1592
+msgid "A partition table is required before partitions can be added."
+msgstr "विभाजन करण्या अगोदर विभाजन टेबल असणे आवश्यक आहे."
+
+#: ../src/Win_GParted.cc:1594
+msgid "To create a new partition table choose the menu item:"
+msgstr "नविन विभाजन टेबल बनवण्यासाठी मेनू आइटम निवडा:"
+
+#. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
+#: ../src/Win_GParted.cc:1597
+msgid "Device --> Create Partition Table."
+msgstr "साधन --> विभाजन टेबल बनवा."
+
+#: ../src/Win_GParted.cc:1633
+msgid "Unable to open GParted Manual help file"
+msgstr "जीपार्टेड ची मैन्युअल मदत फाइल उघडतांना त्रुटि."
+
+#: ../src/Win_GParted.cc:1652
+msgid "Documentation is not available"
+msgstr "दस्तऐवज उपलब्ध नाही."
+
+#: ../src/Win_GParted.cc:1657
+msgid "This build of gparted is configured without documentation."
+msgstr "हा जीपार्टेड बिना दस्तऐवज चा आहे."
+
+#: ../src/Win_GParted.cc:1659
+msgid "Documentation is available at the project web site."
+msgstr "प्रकल्प वेबसाइट वरती दस्तऐवज मिळेल."
+
+#: ../src/Win_GParted.cc:1677
+msgid "GNOME Partition Editor"
+msgstr "जीनोम विभाजन संपादक"
+
+#. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
+#. It's a good idea to provide the url of your translation team as well. Thanks!
+#: ../src/Win_GParted.cc:1711
+msgid "translator-credits"
+msgstr ""
+"Tushar Sandeep Agey <agey.tushar3@gmail.com>"
+
+#: ../src/Win_GParted.cc:1758
+msgid "It is not possible to create more than %1 primary partition"
+msgid_plural "It is not possible to create more than %1 primary partitions"
+msgstr[0] "%1 पेक्षा जास्त प्राथमिक विभाजन बनवणे शक्य नाही"
+msgstr[1] "%१ पेक्षा जास्त प्राथमिक विभाजन बनवणे शक्य नाही."
+
+#: ../src/Win_GParted.cc:1770
+msgid ""
+"If you want more partitions you should first create an extended partition. "
+"Such a partition can contain other partitions. Because an extended partition "
+"is also a primary partition it might be necessary to remove a primary "
+"partition first."
+msgstr ""
+"जर तुम्हाला एक पेक्षा जास्त विभाजन बनवायचे असतील, तर तुम्ही एक विस्तारित विभाजन बनवायला हवे. "
+"असे विभाजन बाकी विभजनांना निग्रह करू शकते. Because an extended partition "
+"विस्तारित विभाजन हे सुद्धा एक प्राथमिक विभाजन असल्यामुळे पहिले असलेले एक प्राथमिक विभाजन काढून टाकावे लागेल."
+
+#: ../src/Win_GParted.cc:1875
+msgid "Moving a partition might cause your operating system to fail to boot"
+msgstr "विभाजन हलवल्यामुळे तुमची ऑपरेटिंग प्रणाली चालू होण्यास अपयशी होउ शकते."
+
+#. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
+#: ../src/Win_GParted.cc:1882
+msgid "You have queued an operation to move the start sector of partition %1."
+msgstr "%1 विभाजनाचे सुरुवातीचे क्षेत्र हलावण्याचे कार्य तुम्ही सांगितलेले आहे."
+
+#: ../src/Win_GParted.cc:1884
+msgid ""
+"  Failure to boot is most likely to occur if you move the GNU/Linux "
+"partition containing /boot, or if you move the Windows system partition C:."
+msgstr "जर तुम्ही /boot असलेल्या GNU/Linux विभाजनाला हलवलेत किंवा विंडोज सिस्टम विभाजन C: ला हलवलेत, तर सिस्टम बूट होण्यात अपयशी होउ शकते"
+
+#: ../src/Win_GParted.cc:1886
+msgid "You can learn how to repair the boot configuration in the GParted FAQ."
+msgstr "बूट संरचना दुरुस्त करण्याचे कार्य तुम्ही जीपार्टेड नेहमी विचारले जाणारे प्रश्न मधे शिकू शकतात."
+
+#: ../src/Win_GParted.cc:1890
+msgid "Moving a partition might take a very long time to apply."
+msgstr "विभाजन हलावण्यास खूप जास्त वेळ लागू शकतो."
+
+#: ../src/Win_GParted.cc:1959
+msgid "Copy of %1"
+msgstr "%1 ची नक्कल"
+
+#: ../src/Win_GParted.cc:2052
+msgid "You have pasted into an existing partition"
+msgstr "पहिल्यापासून असलेल्या विभाजना वरती तुम्ही पेस्ट केले आहे."
+
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:2060
+msgid "The data in %1 will be lost if you apply this operation."
+msgstr "जर तुम्ही हे कार्य केले, तर %1 मधील माहिती गमवाल."
+
+#: ../src/Win_GParted.cc:2133
+msgid "Unable to delete %1!"
+msgstr "%1 ला डिलीट करता येत नाहीये!"
+
+#: ../src/Win_GParted.cc:2140
+msgid "Please unmount any logical partitions having a number higher than %1"
+msgstr "कृपया %1 पेक्षा जास्त नंबर असलेले सगळे लॉजिकल विभाजन अनारोहित करा"
+
+#: ../src/Win_GParted.cc:2151
+msgid "Are you sure you want to delete %1?"
+msgstr "%1 ला नक्की डिलीट करायचे?"
+
+#: ../src/Win_GParted.cc:2158
+msgid "After deletion this partition is no longer available for copying."
+msgstr "डिलीट केल्यानंतर हा विभाजन नक्कल करण्यासाठी उपलब्ध नाहीये."
+
+#. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
+#: ../src/Win_GParted.cc:2161
+msgid "Delete %1 (%2, %3)"
+msgstr "डिलीट  %1 (%2, %3)"
+
+#. TO TRANSLATORS: looks like
+#. * Cannot format this file system to fat16.
+#.
+#: ../src/Win_GParted.cc:2267
+msgid "Cannot format this file system to %1"
+msgstr "या फाइल प्रणाली ला %1 मधे फॉर्मेट करने शक्य नाही."
+
+#. TO TRANSLATORS: looks like
+#. * A fat16 file system requires a partition of at least 16.00 MiB.
+#.
+#: ../src/Win_GParted.cc:2279
+msgid "A %1 file system requires a partition of at least %2."
+msgstr "%1 फाइल प्रणालीला कमीत कमी %2 चा विभाजन हवा आहे."
+
+#. TO TRANSLATORS: looks like
+#. * A partition with a hfs file system has a maximum size of 2.00 GiB.
+#.
+#: ../src/Win_GParted.cc:2287
+msgid "A partition with a %1 file system has a maximum size of %2."
+msgstr "%1 फाइल प्रणाली असलेल्या विभाजनाचा जास्तीत जास्त आकार %2 असू शकतो."
+
+#: ../src/Win_GParted.cc:2405
+msgid "The partition could not be unmounted from the following mount points:"
+msgstr "पुढील माउंट पॉइंट्स वरुन हे विभाजन अनारोहित करने शक्य नाही:"
+
+#: ../src/Win_GParted.cc:2407
+msgid ""
+"This is because other partitions are also mounted on these mount points.  "
+"You are advised to unmount them manually."
+msgstr "बहुधा इतर विभाजन या माउंट पॉइंट वर आरोहित आहेत. आपण स्वतः त्यांना अनारोहित करावे."
+
+#. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
+#: ../src/Win_GParted.cc:2420
+msgid "%1 operation is currently pending for partition %2"
+msgid_plural "%1 operations are currently pending for partition %2"
+msgstr[0] "%2 विभाजनासाठी %1 कार्य प्रलंबित."
+msgstr[1] "%2 विभाजनासाठी %1 कार्ये प्रलंबित ."
+
+#: ../src/Win_GParted.cc:2435
+msgid "Use the Edit menu to undo, clear or apply pending operations."
+msgstr "एडिट मेनू वापरून undo, क्लियर, किंवा कार्य लागु करा."
+
+#: ../src/Win_GParted.cc:2478
+msgid ""
+"The swapoff action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"जर विभाजनवरील ऑपरेशन प्रलंबित असतील तर swapoff क्रिया केली जाऊ शकत नाही."
+
+#: ../src/Win_GParted.cc:2479
+msgid "Deactivating swap on %1"
+msgstr "%1 वरती swap असक्रिय करत आहोत"
+
+#: ../src/Win_GParted.cc:2480
+msgid "Could not deactivate swap"
+msgstr "swap असक्रिय करू शकत नाही "
+
+#: ../src/Win_GParted.cc:2485
+msgid ""
+"The swapon action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"जर विभाजनवरील ऑपरेशन प्रलंबित असतील तर swapon क्रिया केली जाऊ शकत नाही."
+
+#: ../src/Win_GParted.cc:2486
+msgid "Activating swap on %1"
+msgstr "%1 वरती swap सक्रिय करत आहोत"
+
+#: ../src/Win_GParted.cc:2487
+msgid "Could not activate swap"
+msgstr "swap सक्रिय करू शकत नाही"
+
+#: ../src/Win_GParted.cc:2492
+msgid ""
+"The deactivate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr "जर विभाजनवरचे कार्य प्रलंबित असतील तर डीएक्टिवेट वॉल्यूम ग्रुप कार्य केल्या जाऊ शकत नाही."
+
+#: ../src/Win_GParted.cc:2493
+msgid "Deactivating Volume Group %1"
+msgstr "%1 वॉल्यूम ग्रुप निष्क्रिय करत आहे "
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2495
+msgid "Could not deactivate Volume Group"
+msgstr "%१ वॉल्यूम ग्रुप निष्क्रिय करू शकत नाही "
+
+#: ../src/Win_GParted.cc:2500
+msgid ""
+"The activate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr "जर विभाजनवरचे कार्य प्रलंबित असतील तर एक्टिवेट वॉल्यूम ग्रुप कार्य केल्या जाऊ शकत नाही"
+
+#: ../src/Win_GParted.cc:2501
+msgid "Activating Volume Group %1"
+msgstr "%1 वॉल्यूम ग्रुप सक्रिय करत आहे"
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2503
+msgid "Could not activate Volume Group"
+msgstr "%1 वॉल्यूम ग्रुप सक्रिय करू शकत नाही"
+
+#: ../src/Win_GParted.cc:2508
+msgid ""
+"The unmount action cannot be performed when there are operations pending for "
+"the partition."
+msgstr "जर विभाजनवरचे कार्य प्रलंबित असतील तर अनारोहित कार्य केल्या जाऊ शकत नाही"
+
+#: ../src/Win_GParted.cc:2509
+msgid "Unmounting %1"
+msgstr "%1 ला अनारोहित करत आहोत"
+
+#: ../src/Win_GParted.cc:2510
+msgid "Could not unmount %1"
+msgstr "%1 ला अनारोहित केल्या गेले नाही"
+
+#. Bug: Partition callback without a selected partition
+#. Bug: Not pointing at a valid display partition object
+#: ../src/Win_GParted.cc:2574
+msgid ""
+"The mount action cannot be performed when an operation is pending for the "
+"partition."
+msgstr "जर विभाजनवरचे कार्य प्रलंबित असतील तर आरोहित कार्य केल्या जाऊ शकत नाही"
+
+#: ../src/Win_GParted.cc:2587
+msgid "mounting %1 on %2"
+msgstr "%1 %2 वरती आरोहित करत आहे"
+
+#: ../src/Win_GParted.cc:2614
+msgid "Could not mount %1 on %2"
+msgstr "%1 %2 वरती आरोहित केल्या गेले नाही "
+
+#. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
+#: ../src/Win_GParted.cc:2633
+msgid "%1 partition is currently active on device %2"
+msgid_plural "%1 partitions are currently active on device %2"
+msgstr[0] "%1 विभाजन %2 डिव्हाइसवर सध्या सक्रिय आहे."
+msgstr[1] "%1 विभाजन %2 डिव्हाइसवर सध्या सक्रिय आहे."
+
+#: ../src/Win_GParted.cc:2648
+msgid ""
+"A new partition table cannot be created when there are active partitions."
+msgstr "जेव्हा सक्रिय विभाजने आहेत तेव्हा एक नवीन विभाजन तक्ता बनवला जाऊ शकत नाही."
+
+#: ../src/Win_GParted.cc:2650
+msgid ""
+"Active partitions are those that are in use, such as a mounted file system, "
+"or enabled swap space."
+msgstr ""
+"सक्रिय विभाजन म्हणजे जे विभाजन सद्ध्या वापरात आहेत जसे की आरोहित केलेले विभाजन किंवा swap space."
+
+#: ../src/Win_GParted.cc:2652
+msgid ""
+"Use Partition menu options, such as unmount or swapoff, to deactivate all "
+"partitions on this device before creating a new partition table."
+msgstr "नवीन विभाजन तक्ता तयार करण्यापूर्वी या डिव्हाइसवरील सर्व विभाजने निष्क्रिय करण्यासाठी अनारोहण, swapoff सारखे विभाजन मेनू पर्याय वापरा."
+
+#: ../src/Win_GParted.cc:2664
+msgid "%1 operation is currently pending"
+msgid_plural "%1 operations are currently pending"
+msgstr[0] "%1 कार्य सध्या बाकि आहे ."
+msgstr[1] "%1 कार्य सध्या बाकि आहे ."
+
+#: ../src/Win_GParted.cc:2677
+msgid ""
+"A new partition table cannot be created when there are pending operations."
+msgstr ""
+"प्रलंबित ऑपरेशन असल्यामुळे एक नवीन विभाजन तक्ता बनवला जाऊ शकत नाही."
+
+#: ../src/Win_GParted.cc:2679
+msgid ""
+"Use the Edit menu to either clear or apply all operations before creating a "
+"new partition table."
+msgstr ""
+"नविन विभाजन टेबल बनावण्या आधि एडिट मेनू वापरून सगळे कार्य लागु करा किंवा काढून टाका."
+
+#: ../src/Win_GParted.cc:2694
+msgid "Error while creating partition table"
+msgstr "विभाजन टेबल बनवतांना त्रुटि."
+
+#: ../src/Win_GParted.cc:2714
+msgid "Command gpart was not found"
+msgstr "gpart आदेश सापडला नाही"
+
+#: ../src/Win_GParted.cc:2715
+msgid "This feature uses gpart. Please install gpart and try again."
+msgstr "हे वैशिष्ट्य gpart वापरते. gpart स्थापित करा आणि पुन्हा प्रयत्न करा."
+
+#. Dialog information
+#: ../src/Win_GParted.cc:2723
+msgid "A full disk scan is needed to find file systems."
+msgstr "संपूर्ण डिस्क स्कॅन फाइल प्रणाली शोधण्यासाठी आवश्यक आहे."
+
+#: ../src/Win_GParted.cc:2725
+msgid "The scan might take a very long time."
+msgstr "स्कॅन करण्यास खूप वेळ लागू शकतो."
+
+#: ../src/Win_GParted.cc:2727
+msgid ""
+"After the scan you can mount any discovered file systems and copy the data "
+"to other media."
+msgstr ""
+"स्कॅन केल्यानंतर आपण कोणत्याही सापडलेल्या फाइल प्रणालीला माउंट करू शकता आणि डेटा कॉपी करू शकता."
+
+#: ../src/Win_GParted.cc:2729
+msgid "Do you want to continue?"
+msgstr "आपण सुरू ठेवू इच्छिता का?"
+
+#. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2733
+msgid "Search for file systems on %1"
+msgstr "%1 वरती फाइल प्रणाली साठी शोध घ्या"
+
+#. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
+#: ../src/Win_GParted.cc:2744
+msgid "Searching for file systems on %1"
+msgstr "%1 वरती फाइल प्रणाली साथी शोध चालू"
+
+#. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
+#: ../src/Win_GParted.cc:2760
+msgid "No file systems found on %1"
+msgstr "%1 वरती कोणतीही फाइल प्रणाली मिळाली नाही"
+
+#: ../src/Win_GParted.cc:2761
+msgid ""
+"The disk scan by gpart did not find any recognizable file systems on this "
+"disk."
+msgstr ""
+"जीपार्ट ने केलेल्या डिस्क स्कॅन नंतर कोणतीही माहित असलेली फाइल प्रणाली मिळाली नाही."
+
+#: ../src/Win_GParted.cc:3034
+msgid "Are you sure you want to apply the pending operations?"
+msgstr "राहिलेले कार्य नक्की लागु करायचे?"
+
+#: ../src/Win_GParted.cc:3040
+msgid "Editing partitions has the potential to cause LOSS of DATA."
+msgstr "विभाजन संपादनाने डेटा हानि होण्याची शक्यता आहे."
+
+#: ../src/Win_GParted.cc:3042
+msgid "You are advised to backup your data before proceeding."
+msgstr "पुढे जाण्यापूर्वी आपण आपला डेटा बॅकअप करावा."
+
+#: ../src/Win_GParted.cc:3044
+msgid "Apply operations to device"
+msgstr "साधनाला सगळे कार्य लागु करा"
+
+#: ../src/Win_GParted.cc:3089
+msgid "You are deleting non-empty LVM2 Physical Volume %1"
+msgstr "आपण रिकामी नसलेला %1 LVM2 भौतिक वॉल्यूम हटवत आहात"
+
+#: ../src/Win_GParted.cc:3093
+msgid "You are formatting over non-empty LVM2 Physical Volume %1"
+msgstr "आपण रिकामी नसलेला %1 LVM2 भौतिक वॉल्यूम फॉर्मेट करत आहात"
+
+#: ../src/Win_GParted.cc:3097
+msgid "You are pasting over non-empty LVM2 Physical Volume %1"
+msgstr "आपण रिकामी नसलेला %1 LVM2 भौतिक वॉल्यूम वरती पेस्ट करत आहात"
+
+#: ../src/Win_GParted.cc:3106
+msgid ""
+"Deleting or overwriting the Physical Volume is irrecoverable and will "
+"destroy or damage the  Volume Group."
+msgstr "जर भौतिक विभाजन हटवले किंवा त्यावरती लिहिले, तर असे कार्य नाहीसे करने शक्य नाही अणि यामुळे वॉल्यूम गट नष्ट किंवा त्याचे नुकसान होउ शकते"
+
+#: ../src/Win_GParted.cc:3109
+msgid ""
+"To avoid destroying or damaging the Volume Group, you are advised to cancel "
+"and use external LVM commands to free the Physical Volume before attempting "
+"this operation."
+msgstr "जर वॉल्यूम गटाला नष्ट होण्यापासून वचवायचेय असेल, तर तुम्ही हे कार्य रद्द करा अणि LVM आदेश वापरून भौतिक वॉल्यूम रिकामा करा अणि मगच हे कार्य करा"
+
+#: ../src/Win_GParted.cc:3112
+msgid "Do you want to continue to forcibly delete the Physical Volume?"
+msgstr "खरच भौतिक वॉल्यूम नष्ट करायचा?"
+
+#: ../src/btrfs.cc:312
+msgid "Failed to find devid for path %1"
+msgstr "%1 मार्गासाठी devid मिळवू शकलो नाही"
+
+#: ../src/fat16.cc:32 ../src/ntfs.cc:29
+msgid ""
+"Changing the UUID might invalidate the Windows Product Activation (WPA) key"
+msgstr "UUID बदलण्याच्या कार्यामुळे विंडोज Product एक्टिवेशन (WPA) key रद्द होउ शकते"
+
+#: ../src/fat16.cc:34 ../src/ntfs.cc:31
+msgid ""
+"On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
+"Changing the Volume Serial Number on the Windows system partition, normally "
+"C:, might invalidate the WPA key. An invalid WPA key will prevent login "
+"until you reactivate Windows."
+msgstr ""
+"FAT अणि NTFS फाइल प्रणाली वरती वॉल्यूम सीरियल नंबर हा UUID म्हणून वापरल्या जातो."
+"विंडोज प्रणाली असलेल्या विभाजनाचा (सहसा C:) वॉल्यूम सीरियल नंबर बदलल्यास WPA key रद्द होउ शकते"
+"रद्द असलेली WPA key असल्यास जोपर्यंत तुम्ही विंडोज पुन्हा सक्रिय करत नाहीत, तोपर्यंत लॉगिन अशक्य होईल."
+
+
+#: ../src/fat16.cc:40 ../src/ntfs.cc:41
+msgid ""
+"Changing the UUID on external storage media and non-system partitions is "
+"usually safe, but guarantees cannot be given."
+msgstr "बाह्य संचय मीडिया आणि विना-प्रणाली विभाजने वर UUID बदलणे सहसा सुरक्षित आहे, पण हमी देता येणार नाही"
+
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/linux_swap.cc:30
+msgid "_Swapon"
+msgstr "_Swapon"
+
+#: ../src/linux_swap.cc:31
+msgid "_Swapoff"
+msgstr "_Swapoff"
+
+#. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:187
+msgid ""
+"Partition move action skipped because %1 file system does not contain data"
+msgstr "%१ फाइल प्रणाली मधे माहिती नसल्यामुळे विभाजन हलवण्याचे कार्य सोडून दिल्या जात आहे"
+
+#. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
+#: ../src/linux_swap.cc:206
+msgid ""
+"Partition copy action skipped because %1 file system does not contain data"
+msgstr "%1 फाइल प्रणाली मधे माहिती नसल्यामुळे विभाजन नक्कल करण्याचे कार्य सोडून दिल्या जात आहे"
+
+#. TO TRANSLATORS: these labels will be used in the partition menu
+#: ../src/lvm2_pv.cc:27
+msgid "Ac_tivate"
+msgstr "सक्रिय"
+
+#: ../src/lvm2_pv.cc:28
+msgid "Deac_tivate"
+msgstr "निष्क्रिय"
+
+#: ../src/lvm2_pv.cc:31
+msgid ""
+"The LVM2 Physical Volume can not currently be resized because it is a member "
+"of an exported Volume Group."
+msgstr " LVM2 फिजीकल वॉल्यूम सध्या रिसाइज करणे शक्य नाही कारण तो निर्यात वॉल्यूम गट सदस्य आहे."
+
+#: ../src/luks.cc:125
+msgid ""
+"Maximize closed LUKS encryption skipped because it will automatically fill "
+"the partition when opened"
+msgstr "Maximize LUKS एनक्रिप्शन कार्य वगळल्या गेले कारण की ते कार्य केल्यास विभाजन उघडल्यावर विभाजन पूर्ण भरुन जाईल."
+
+#: ../src/main.cc:42
+msgid "Root privileges are required for running GParted"
+msgstr "जीपार्टेड चालू करण्यासाठी रुट विशेषाधिकार लागतात"
+
+#: ../src/main.cc:47
+msgid ""
+"Since GParted is a powerful tool capable of destroying partition tables and "
+"vast amounts of data, only root may run it."
+msgstr "जीपार्टेड हे एक शक्तिशाली साधन आहे, जे विभाजन टेबलला अणि खुप जास्त माहितीला सुद्धा नष्ट करू शकते, त्यामुळे फक्त रुट त्याला चालू करू शकतो."
+
+#: ../src/ntfs.cc:37
+msgid ""
+"In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
+"half of the UUID is set to a new random value."
+msgstr "WPA key ला अवैध होण्यापासून वाचवण्यासाठी फक्त NTFS फाइल प्रणाली वरती अर्ध्या UUID ला नविन (यादृच्छिक) नंबर दिल्या जात आहे "
+
+#. simulation..
+#: ../src/ntfs.cc:226
+msgid "run simulation"
+msgstr "नक़ल चालू करा"
+
+#. real resize
+#: ../src/ntfs.cc:234
+msgid "real resize"
+msgstr "वास्तविक आकार बदल"
