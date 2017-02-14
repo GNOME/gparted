@@ -1,4 +1,64 @@
 ============================
+GParted 0.28.0  (2017-02-14)
+============================
+
+Release Notes
+-------------
+  This release adds partial read-write support for LUKS encrypted file
+  systems.  GParted can't create, open or close LUKS encryption
+  volumes; however it can copy, resize and manipulate file systems
+  inside open LUKS volumes and move closed LUKS volumes.  (Resizing
+  requires Linux kernel >= 3.6 and libparted >= 3.2 for online
+  partition resizing).
+
+  Also included are bug fixes and language translation updates.
+
+  REMINDER:
+
+  You are strongly advised to backup you data before editing
+  partitions as a failure can lead to data loss.  This is especially
+  true for encrypted data where all of the data can become permanently
+  inaccessible after a failure.  Please refer to the Cryptsetup FAQ [1]
+  for backup and recovery advice of encrypted data.
+
+  [1]: https://gitlab.com/cryptsetup/cryptsetup/wikis/FrequentlyAskedQuestions
+
+### Key changes include:
+
+  * Implement LUKS read-write actions NOT requiring a passphrase
+  * Add detection of iso9660 file system
+
+Bug Fixes
+---------
+
+  * Implement LUKS read-write actions NOT requiring a passphrase (#774818)
+  * Fix mount column shown for non-mounted encrypted file systems (#775475)
+  * Refactor mostly applying of operations (#775932)
+  * Update help with additional partition flags (#776002)
+  * Include sys/sysmacros.h for major and minor macros (#776173)
+  * Add detection of iso9660 file system (#771244)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Michał Górny, Mike Fleetwood
+  and Curtis Gedak.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Černocký), da(Alan Mortensen), de(Bernd Homuth, Mario Blättermann),
+  es(Daniel Mustieles), fr(Alexandre Franke, Julien Hardelin),
+  id(Andika Triwidada), kk(Baurzhan Muftakhidinov), lt(Aurimas Černius),
+  pl(Piotr Drąg), pt_BR(Rafael Fontenelle), sk(Dušan Kazik),
+  sl(Matej Urbančič), sr(Мирослав Николић), sr@latin(Miroslav Nikolić),
+  sv(Josef Andersson), vi(Trần Ngọc Quân)
+
+Dependencies (new/updated)
+--------------------------
+  * cryptsetup command is required to work with LUKS encrypted
+    volumes.
+
+
+============================
 GParted 0.27.0  (2016-10-19)
 ============================
 
