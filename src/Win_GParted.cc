@@ -1783,9 +1783,12 @@ void Win_GParted::activate_resize()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	PartitionVector * display_partitions_ptr = &display_partitions;
-	int index_extended = find_extended_partition( display_partitions );
-	if ( index_extended >= 0 )
-		display_partitions_ptr = &display_partitions[index_extended].logicals;
+	if ( selected_partition_ptr->type == TYPE_LOGICAL )
+	{
+		int index_extended = find_extended_partition( display_partitions );
+		if ( index_extended >= 0 )
+			display_partitions_ptr = &display_partitions[index_extended].logicals;
+	}
 
 	FS fs_cap = gparted_core.get_fs( selected_partition_ptr->get_filesystem_partition().filesystem );
 	Partition * working_ptn;
