@@ -15,7 +15,10 @@
  */
 
 #include "PipeCapture.h"
+
 #include <iostream>
+#include <glib.h>            // typedef gunichar
+#include <glibmm/ustring.h>
 
 namespace GParted {
 
@@ -60,31 +63,32 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	Glib::IOStatus status = channel->read( str, 512 );
 	if (status == Glib::IO_STATUS_NORMAL)
 	{
-		for( Glib::ustring::iterator s = str.begin(); s != str.end(); s++ )
+		for ( unsigned int i = 0 ; i < str.size() ; i ++ )
 		{
-			if( *s == '\b' ) {
+			gunichar uc = str[i];
+			if ( uc == '\b' ) {
 				if ( cursor > linestart )
 					cursor -- ;
 			}
-			else if( *s == '\r' )
+			else if ( uc == '\r' )
 				cursor = linestart ;
-			else if( *s == '\n' ) {
+			else if ( uc == '\n' ) {
 				cursor = lineend ;
 				buff .append( 1, '\n' ) ;
 				cursor ++ ;
 				linestart = cursor ;
 				lineend = cursor ;
 			}
-			else if (*s == '\x01' || *s == '\x02' )
+			else if ( uc == '\x01' || uc == '\x02' )
 				//Skip Ctrl-A and Ctrl-B chars e2fsck uses to bracket the progress bar
 				continue;
 			else {
 				if ( cursor < lineend ) {
-					buff .replace( cursor, 1, 1, *s ) ;
+					buff.replace( cursor, 1, 1, uc );
 					cursor ++ ;
 				}
 				else {
-					buff .append( 1, *s ) ;
+					buff.append( 1, uc );
 					cursor ++ ;
 					lineend = cursor ;
 				}
