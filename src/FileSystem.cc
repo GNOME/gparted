@@ -133,8 +133,6 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 	fcntl( out, F_SETFL, O_NONBLOCK );
 	fcntl( err, F_SETFL, O_NONBLOCK );
 	Glib::signal_child_watch().connect( sigc::mem_fun( *this, &FileSystem::store_exit_status ), pid );
-	output.clear();
-	error.clear();
 	pipecount = 2;
 	PipeCapture outputcapture( out, output );
 	PipeCapture errorcapture( err, error );

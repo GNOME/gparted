@@ -601,8 +601,6 @@ int Utils::execute_command( const Glib::ustring & command,
 	fcntl( out, F_SETFL, O_NONBLOCK );
 	fcntl( err, F_SETFL, O_NONBLOCK );
 	g_child_watch_add( pid, _store_exit_status, &status );
-	output.clear();
-	error.clear();
 	//Lock mutex so we have time to setup pipecapture for output and error streams
 	//  before connecting the input/output signal handler
 	if( !status.foreground )

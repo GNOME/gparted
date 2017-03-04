@@ -25,6 +25,7 @@ namespace GParted {
 PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
                                                             linestart( 0 ), cursor( 0 ), lineend( 0 )
 {
+	buff.clear();
 	// tie fd to string
 	// make channel
 	channel = Glib::IOChannel::create_from_fd( fd );
