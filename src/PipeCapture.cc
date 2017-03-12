@@ -17,15 +17,25 @@
 #include "PipeCapture.h"
 
 #include <iostream>
-#include <glib.h>            // typedef gunichar
+#include <string>
+#include <vector>
+#include <stddef.h>
+#include <string.h>
+#include <glib.h>
 #include <glibmm/ustring.h>
+#include <glibmm/iochannel.h>
 
 namespace GParted {
 
-PipeCapture::PipeCapture( int fd, Glib::ustring &string ) : buff( string ),
-                                                            linestart( 0 ), cursor( 0 ), lineend( 0 )
+const size_t READBUF_SIZE = 512;
+
+PipeCapture::PipeCapture( int fd, Glib::ustring &buffer ) : fill_offset( 0 ),
+                                                            cursor( 0 ),
+                                                            line_start( 0 ),
+                                                            callerbuf( buffer )
 {
-	buff.clear();
+	readbuf = new char[READBUF_SIZE];
+	callerbuf.clear();
 	// tie fd to string
 	// make channel
 	channel = Glib::IOChannel::create_from_fd( fd );
@@ -53,60 +63,171 @@ gboolean PipeCapture::_OnReadable( GIOChannel *source,
 
 bool PipeCapture::OnReadable( Glib::IOCondition condition )
 {
-	//Read from pipe and store in buff.  Provide minimal interpretation so
-	//  programs which use text progress bars are displayed correctly.
-	//  Linestart, cursor and lineend are offsets into buff like this:
-	//      "Previous line\n
-	//       Current line.  Text progress bar: XXXXXXXXXX----------"
-	//       ^                                           ^         ^
-	//       linestart                                   cursor    lineend
-	Glib::ustring str;
-	Glib::IOStatus status = channel->read( str, 512 );
-	if (status == Glib::IO_STATUS_NORMAL)
+	// Reads UTF-8 characters from channel.  Provides minimal interpretation so
+	// programs which use text progress bars are displayed correctly.  Captures the
+	// output in a buffer and runs callbacks when updated or EOF reached.
+	//
+	// Data model:
+	//
+	//                 fill_offset
+	//                 v
+	//     readbuf    "XXXX......................"
+	//                 ^   ^
+	//                 |   end_ptr
+	//                 read_ptr
+	//
+	//     linevec    "Current line.  Text progress bar: XXXXXXXX--------"
+	//                                                           ^
+	//                                                           cursor
+	//
+	//     capturebuf "First line\n
+	//                 Current line.  Text progress bar: XXXX-----------"
+	//                 ^
+	//                 line_start
+	//
+	// Processing details:
+	// Bytes are read into readbuf.  Valid UTF-8 character byte sequences are
+	// recognised and, applying a simple line discipline, added into the vector of
+	// characters storing the current line, linevec.  (Linevec uses UCS-4 encoding for
+	// fixed sized values accessible in constant time via pointer arithmetic).  When
+	// a new line character is encountered the complete current line, or when readbuf
+	// is drained the partial current line, is pasted into capturebuf at the offset
+	// where the last line starts.  (Capturebuf stores UTF-8 encoded characters in a
+	// std::string for constant time access to line_start offset).  When readbuf
+	// is drained capturebuf is copied into callerbuf and signal_update slot fired.
+	// (Callerbuf stores UTF-8 encoded characters in a Glib::ustring).  When EOF is
+	// encountered capturebuf is copied into callerbuf if required and signal_eof slot
+	// fired.
+	//
+	// Golden rule:
+	// Use Glib::ustrings as little as possible for large amounts of data!
+	// 1) Glib::ustring::iterators use pointer access under the hood and are fast, but
+	//    1.1) the Glib::ustring must only contain valid UTF-8 bytes otherwise
+	//         operator++(), operator--() and operator*() may read past the end of the
+	//         string until a segfault occurs; and
+	//    1.2) become invalid leaving them pointing at the old memory after the
+	//         underlying storage is reallocated to accommodate storing extra
+	//         characters.
+	// 2) Indexed character access into Glib::ustrings reads all the variable width
+	//    UTF-8 encoded characters from the start of the string until the particular
+	//    indexed character is reached.  Replacing characters gets exponentially
+	//    slower as the string gets longer and all characters beyond those replaced
+	//    have to be moved in memory.
+
+	gsize bytes_read;
+	Glib::IOStatus status = channel->read( readbuf + fill_offset, READBUF_SIZE - fill_offset, bytes_read );
+	if ( status == Glib::IO_STATUS_NORMAL )
 	{
-		for ( unsigned int i = 0 ; i < str.size() ; i ++ )
+		const char * read_ptr = readbuf;
+		const char * end_ptr = readbuf + fill_offset + bytes_read;
+		fill_offset = 0;
+		while ( read_ptr < end_ptr )
 		{
-			gunichar uc = str[i];
-			if ( uc == '\b' ) {
-				if ( cursor > linestart )
-					cursor -- ;
+			const gunichar UTF8_PARTIAL = (gunichar)-2;
+			const gunichar UTF8_INVALID = (gunichar)-1;
+			gunichar uc = g_utf8_get_char_validated( read_ptr, end_ptr - read_ptr );
+			if ( uc == UTF8_PARTIAL )
+			{
+				// Partial UTF-8 character at end of read buffer.  Copy to
+				// start of read buffer.
+				size_t bytes_remaining = end_ptr - read_ptr;
+				memcpy( readbuf, read_ptr, bytes_remaining );
+				fill_offset = bytes_remaining;
+				break;
+			}
+			else if ( uc == UTF8_INVALID )
+			{
+				// Skip invalid byte.
+				read_ptr ++;
+				continue;
+			}
+			else
+			{
+				// Advance read pointer past the read UTF-8 character.
+				read_ptr = g_utf8_find_next_char( read_ptr, end_ptr );
+				if ( read_ptr == NULL )
+					read_ptr = end_ptr;
+			}
+
+			if ( uc == '\b' )
+			{
+				if ( cursor > 0 )
+					cursor --;
 			}
 			else if ( uc == '\r' )
-				cursor = linestart ;
-			else if ( uc == '\n' ) {
-				cursor = lineend ;
-				buff .append( 1, '\n' ) ;
-				cursor ++ ;
-				linestart = cursor ;
-				lineend = cursor ;
+			{
+				cursor = 0;
+			}
+			else if ( uc == '\n' )
+			{
+				// Append char to current line; paste current line to
+				// capture buffer; reset current line.
+				linevec.push_back( '\n' );
+				cursor ++;
+
+				capturebuf.resize( line_start );
+				append_unichar_vector_to_utf8( capturebuf, linevec );
+				line_start = capturebuf.size();
+
+				linevec.clear();
+				cursor = 0;
 			}
 			else if ( uc == '\x01' || uc == '\x02' )
-				//Skip Ctrl-A and Ctrl-B chars e2fsck uses to bracket the progress bar
+			{
+				// Skip Ctrl-A and Ctrl-B chars e2fsck uses to bracket the progress bar
 				continue;
-			else {
-				if ( cursor < lineend ) {
-					buff.replace( cursor, 1, 1, uc );
-					cursor ++ ;
+			}
+			else
+			{
+				if ( cursor < linevec.size() )
+				{
+					// Replace char in current line.
+					linevec[cursor] = uc;
+					cursor ++;
 				}
-				else {
-					buff.append( 1, uc );
-					cursor ++ ;
-					lineend = cursor ;
+				else
+				{
+					// Append char to current line.
+					linevec.push_back( uc );
+					cursor ++;
 				}
 			}
 		}
+
+		// Paste partial line to capture buffer; copy that to callers buffer; and
+		// fire any update callbacks.
+		capturebuf.resize( line_start );
+		append_unichar_vector_to_utf8( capturebuf, linevec );
+
+		callerbuf = capturebuf;
 		signal_update.emit();
 		return true;
 	}
-	if (status != Glib::IO_STATUS_EOF)
+
+	if ( status != Glib::IO_STATUS_EOF )
+	{
 		std::cerr << "Pipe IOChannel read failed" << std::endl;
+	}
+
 	// signal completion
 	signal_eof.emit();
 	return false;
 }
 
+void PipeCapture::append_unichar_vector_to_utf8( std::string & str, const std::vector<gunichar> & ucvec )
+{
+	const size_t MAX_UTF8_BYTES = 6;
+	char buf[MAX_UTF8_BYTES];
+	for ( unsigned int i = 0 ; i < ucvec.size() ; i ++ )
+	{
+		int bytes_written = g_unichar_to_utf8( ucvec[i], buf );
+		str.append( buf, bytes_written );
+	}
+}
+
 PipeCapture::~PipeCapture()
 {
+	delete[] readbuf;
 }
 
 } // namespace GParted
