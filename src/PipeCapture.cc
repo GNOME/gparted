@@ -144,7 +144,13 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 			else
 			{
 				// Advance read pointer past the read UTF-8 character.
-				read_ptr = g_utf8_find_next_char( read_ptr, end_ptr );
+				const char * new_ptr = g_utf8_find_next_char( read_ptr, end_ptr );
+				if ( new_ptr == read_ptr && *read_ptr == '\0' )
+					// Workaround bug in g_utf8_find_next_char() which
+					// stops it advancing past NUL char in buffer
+					// delimited by an end pointer.
+					new_ptr ++;
+				read_ptr = new_ptr;
 				if ( read_ptr == NULL )
 					read_ptr = end_ptr;
 			}
