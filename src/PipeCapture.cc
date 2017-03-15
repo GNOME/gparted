@@ -128,6 +128,18 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 			gunichar uc = g_utf8_get_char_validated( read_ptr, end_ptr - read_ptr );
 			if ( uc == UTF8_PARTIAL )
 			{
+				// Workaround bug in g_utf8_get_char_validated() in which
+				// it reports an partial UTF-8 char when a NUL byte is
+				// encountered in the middle of a multi-byte character,
+				// yet there are more bytes available in the length
+				// specified buffer.  Report as invalid character instead.
+				int len = utf8_char_length( *read_ptr );
+				if ( len == -1 || read_ptr + len <= end_ptr )
+					uc = UTF8_INVALID;
+			}
+
+			if ( uc == UTF8_PARTIAL )
+			{
 				// Partial UTF-8 character at end of read buffer.  Copy to
 				// start of read buffer.
 				size_t bytes_remaining = end_ptr - read_ptr;
@@ -229,6 +241,31 @@ void PipeCapture::append_unichar_vector_to_utf8( std::string & str, const std::v
 		int bytes_written = g_unichar_to_utf8( ucvec[i], buf );
 		str.append( buf, bytes_written );
 	}
+}
+
+int PipeCapture::utf8_char_length( unsigned char firstbyte )
+{
+	// Recognise the size of FSS-UTF (1992) / UTF-8 (1993) characters given the first
+	// byte.  Characters can be up to 6 bytes.  (Later UTF-8 (2003) limited characters
+	// to 4 bytes and 21-bits of Unicode code-space).
+	// Reference:
+	//     https://en.wikipedia.org/wiki/UTF-8
+	if ( ( firstbyte & 0x80 ) == 0x00 )       // 0xxxxxxx - 1 byte UTF-8 char
+		return 1;
+	else if ( ( firstbyte & 0xE0 ) == 0xC0 )  // 110xxxxx - First byte of a 2 byte UTF-8 char
+		return 2;
+	else if ( ( firstbyte & 0xF0 ) == 0xE0 )  // 1110xxxx - First byte of a 3 byte UTF-8 char
+		return 3;
+	else if ( ( firstbyte & 0xF8 ) == 0xF0 )  // 11110xxx - First byte of a 4 byte UTF-8 char
+		return 4;
+	else if ( ( firstbyte & 0xFC ) == 0xF8 )  // 111110xx - First byte of a 5 byte UTF-8 char
+		return 5;
+	else if ( ( firstbyte & 0xFE ) == 0xFC )  // 1111110x - First byte of a 6 byte UTF-8 char
+		return 6;
+	else if ( ( firstbyte & 0xC0 ) == 0x80 )  // 10xxxxxx - Continuation byte
+		return -1;
+	else                                      // Invalid byte
+		return -1;
 }
 
 PipeCapture::~PipeCapture()
