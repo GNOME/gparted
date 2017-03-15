@@ -6,7 +6,7 @@
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2009-2013, 2016-2017.
 # Jan Janssen <medhefgo@web.de>, 2009.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2012-2016.
-# Christian Kirbach <christian.kirbach@gmail.com>, 2009, 2010, 2012, 2013.
+# Christian Kirbach <christian.kirbach@gmail.com>, 2009-2010, 2012-2013.
 # Jan Simon <jan.simon@gmx.de>, 2014.
 #
 msgid ""
@@ -14,16 +14,16 @@ msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-01-14 15:52+0000\n"
-"PO-Revision-Date: 2017-02-04 20:08+0100\n"
+"POT-Creation-Date: 2017-02-07 19:33+0000\n"
+"PO-Revision-Date: 2017-03-15 10:03+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
-"Language-Team: Deutsch <>\n"
+"Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: ../gparted.appdata.xml.in.h:1
 msgid ""
@@ -1000,6 +1000,7 @@ msgstr ""
 "Die Partition enthält eine geöffnete LUKS-Verschlüsselung, die nur die "
 "Erstellung eines Dateisystems erlaubt"
 
+#. TO TRANSLATORS: looks like create new ext3 file system
 #: ../src/GParted_Core.cc:2036
 msgid "create new %1 file system"
 msgstr "Neues %1-Dateisystem erzeugen"
@@ -1115,7 +1116,6 @@ msgid "start of the partition is changing for a resize only step"
 msgstr "Anfang der Partition ändert sich durch die Größenänderung"
 
 #: ../src/GParted_Core.cc:2578
-#, fuzzy
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
@@ -1220,6 +1220,8 @@ msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr ""
+"Die Partition enthält keine LUKS-Verschlüsselung für eine Verkleinerung der "
+"Verschlüsselung"
 
 #: ../src/GParted_Core.cc:2892
 msgid "shrink encryption volume"
@@ -1230,6 +1232,8 @@ msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
 msgstr ""
+"Die Partition enthält keine LUKS-Verschlüsselung für eine Maximierung der "
+"Verschlüsselung"
 
 #: ../src/GParted_Core.cc:2908
 msgid "grow encryption volume to fill the partition"
@@ -1244,6 +1248,8 @@ msgstr ""
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
+"Die Partition enthält eine geöffnete LUKS-Verschlüsselung, die die "
+"Verkleinerung eines Dateisystems erlaubt"
 
 #. TO TRANSLATORS:
 #. * means that GParted has encountered a programming bug and tried
@@ -1263,6 +1269,8 @@ msgstr "Dateisystem verkleinern"
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
+"Die Partition enthält eine geöffnete LUKS-Verschlüsselung, die die "
+"Maximierung eines Dateisystems erlaubt"
 
 #: ../src/GParted_Core.cc:2969
 msgid "grow file system to fill the partition"
@@ -1343,8 +1351,7 @@ msgstr "Letzte Transaktion wird rückgängig gemacht"
 
 #: ../src/GParted_Core.cc:3384
 msgid ""
-"partition contains open LUKS encryption for a check repair file system only "
-"step"
+"partition contains open LUKS encryption for a check file system only step"
 msgstr ""
 "Die Partition enthält eine geöffnete LUKS-Verschlüsselung, die die "
 "Überprüfung und Reparatur eines Dateisystems erlaubt"
@@ -1830,10 +1837,12 @@ msgstr "_Neu"
 msgid "_Resize/Move"
 msgstr "_Größe ändern/Verschieben"
 
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
 #: ../src/Win_GParted.cc:371
 msgid "_Format to"
 msgstr "_Formatieren als"
 
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
 #: ../src/Win_GParted.cc:387
 msgid "_Mount on"
 msgstr "_Einhängen auf"
@@ -2043,6 +2052,7 @@ msgstr "Kopie von %1"
 msgid "You have pasted into an existing partition"
 msgstr "Sie haben in eine bestehende Partition eingefügt"
 
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
 #: ../src/Win_GParted.cc:2060
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr ""
@@ -2498,147 +2508,3 @@ msgstr "Simulation starten"
 #: ../src/ntfs.cc:234
 msgid "real resize"
 msgstr "Echtes Vergrößern/Verkleinern"
-
-#~ msgid "moving requires old and new length to be the same"
-#~ msgstr "Das Verschieben erfordert, dass die alte und neue Länge gleich sind"
-
-#~ msgid "resizing requires old and new start to be the same"
-#~ msgstr ""
-#~ "Das Ändern der Größe erfordert, das alter und neuer Anfang identisch sind"
-
-#~ msgid "grow file system"
-#~ msgstr "Dateisystem vergrößern"
-
-#~ msgid "resize file system"
-#~ msgstr "Dateisystemgröße ändern"
-
-#~ msgid ""
-#~ "new and old file system have the same size.  Hence skipping this operation"
-#~ msgstr ""
-#~ "Neues und altes Dateisystem haben dieselbe Größe. Diese Operation wird "
-#~ "übersprungen."
-
-#~ msgid ""
-#~ "Use the Edit menu to undo, clear, or apply operations before using swapon "
-#~ "with this partition."
-#~ msgstr ""
-#~ "Verwenden Sie das »Bearbeiten«-Menü, um entweder Operationen rückgängig "
-#~ "zu machen, zu löschen oder alle anzuwenden, bevor die Swap-Partition "
-#~ "aktiviert wird."
-
-#~ msgid ""
-#~ "Use the Edit menu to undo, clear, or apply operations before using "
-#~ "activate Volume Group with this partition."
-#~ msgstr ""
-#~ "Verwenden Sie das »Bearbeiten«-Menü, um entweder Operationen rückgängig "
-#~ "zu machen, zu löschen oder alle Vorgänge anzuwenden, bevor Sie diese "
-#~ "Datenträgergruppe mit dieser Partition aktivieren können."
-
-#~ msgid "Linux Unified Key Setup encryption is not yet supported."
-#~ msgstr ""
-#~ "Verschlüsselung durch Linux Unified Key Setup wird noch nicht unterstützt."
-
-#~ msgid "Skip setting unsupported partition flag: %1"
-#~ msgstr "Setzen der ungültigen Partitionsmarkierung: %1 überspringen"
-
-#~ msgid "Libparted Bug Found!"
-#~ msgstr "Fehler in Libparted gefunden!"
-
-#~ msgid "Clear Partition Label on %1"
-#~ msgstr "Partition auf %1 löschen"
-
-#~ msgid "_Label"
-#~ msgstr "_Bezeichnung"
-
-#~ msgid "%1 active"
-#~ msgstr "%1 ist aktiv"
-
-#~ msgid "%1 not active"
-#~ msgstr "%1 ist nicht aktiv"
-
-#~ msgid "Default is to create an MS-DOS partition table."
-#~ msgstr "Vorgabe ist, eine MS-DOS-Partitionstabelle zu erzeugen."
-
-#~ msgid "Advanced"
-#~ msgstr "Erweitert"
-
-#~ msgid "%1 of %2 read (%3 remaining)"
-#~ msgstr "%1 von %2 gelesen (%3 verbleiben)"
-
-#~ msgid "%1 of %2 read"
-#~ msgstr "%1 von %2 gelesen"
-
-#~ msgid "read %1 using a block size of %2"
-#~ msgstr "%1 mit einer Blockgröße von %2 lesen"
-
-#~ msgid "Available"
-#~ msgstr "Verfügbar"
-
-#~ msgid "read %1"
-#~ msgstr "%1 lesen"
-
-#~ msgid "%1 (%2 B) read"
-#~ msgstr "%1 (%2 B) gelesen"
-
-#~ msgid "wrote %1 of zeros at byte offset %2"
-#~ msgstr "%1 Nullen bei Byte-Versatz %2 geschrieben"
-
-#~ msgid "clear primary signatures"
-#~ msgstr "primäre Signaturen löschen"
-
-#~ msgid "clear secondary signatures"
-#~ msgstr "sekundäre Signaturen löschen"
-
-#~ msgid "perform read-only test"
-#~ msgstr "Nur-Lesen-Test wird durchgeführt"
-
-#~ msgid "perform real move"
-#~ msgstr "Echtes Verschieben durchführen"
-
-#~ msgid "# Temporary file created by gparted.  It may be deleted.\n"
-#~ msgstr ""
-#~ "# Temporäre Datei von GParted angelegt. Diese wird möglicherweise "
-#~ "gelöscht.\n"
-
-#~ msgid "Label operation failed:  Unable to write to temporary file %1.\n"
-#~ msgstr ""
-#~ "Bezeichnungsoperation gescheitert: temporäre Datei %1 konnte nicht "
-#~ "geschrieben werden.\n"
-
-#~ msgid "Label operation failed:  Unable to create temporary file %1.\n"
-#~ msgstr ""
-#~ "Bezeichnungsoperation gescheitert: temporäre Datei %1 konnte nicht "
-#~ "erzeugt werden.\n"
-
-#~ msgid "Unmount"
-#~ msgstr "Aushängen"
-
-#~ msgid "Logical Volume Management is not yet supported."
-#~ msgstr "Logical Volume Management wird noch nicht unterstützt."
-
-#~ msgid "create temporary directory"
-#~ msgstr "Temporären Ordner erstellen"
-
-#~ msgid "Failed to create temporary directory."
-#~ msgstr "Erstellung des temporären Ordners ist gescheitert."
-
-#~ msgid "create temporary mount point (%1)"
-#~ msgstr "Temporären Einhängepunkt (%1) erzeugen"
-
-#~ msgid "mount %1 on %2"
-#~ msgstr "%1 auf %2 einhängen"
-
-#~ msgid "remount %1 on %2 with the 'resize' flag enabled"
-#~ msgstr "%1 auf %2 mit der aktivierten Markierung »resize« neu einhängen"
-
-#~ msgid "unmount %1"
-#~ msgstr "%1 aushängen"
-
-#~ msgid "remove temporary mount point (%1)"
-#~ msgstr "Temporären Einhängepunkt (%1) entfernen"
-
-#~ msgid "grow mounted file system"
-#~ msgstr "Eingehängtes Dateisystem vergrößern"
-
-#~ msgid "copy file system"
-#~ msgstr "Dateisystem kopieren"
