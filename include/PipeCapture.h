@@ -55,6 +55,7 @@ private:
 	std::string capturebuf;         // Captured output as UTF-8 characters
 	size_t line_start;              // Index into bytebuf where current line starts
 	Glib::ustring & callerbuf;      // Reference to caller supplied buffer
+	bool callerbuf_uptodate;        // Has capturebuf changed since last copied to callerbuf?
 };
 
 } // namepace GParted

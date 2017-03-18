@@ -37,6 +37,7 @@ PipeCapture::PipeCapture( int fd, Glib::ustring &buffer ) : fill_offset( 0 ),
 {
 	readbuf = new char[READBUF_SIZE];
 	callerbuf.clear();
+	callerbuf_uptodate = true;
 	// tie fd to string
 	// make channel
 	channel = Glib::IOChannel::create_from_fd( fd );
@@ -95,10 +96,10 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 	// is drained the partial current line, is pasted into capturebuf at the offset
 	// where the last line starts.  (Capturebuf stores UTF-8 encoded characters in a
 	// std::string for constant time access to line_start offset).  When readbuf
-	// is drained capturebuf is copied into callerbuf and signal_update slot fired.
-	// (Callerbuf stores UTF-8 encoded characters in a Glib::ustring).  When EOF is
-	// encountered capturebuf is copied into callerbuf if required and signal_eof slot
-	// fired.
+	// is drained and there are registered update callbacks, capturebuf is copied into
+	// callerbuf and signal_update slot fired.  (Callerbuf stores UTF-8 encoded
+	// characters in a Glib::ustring).  When EOF is encountered capturebuf is copied
+	// into callerbuf if required and signal_eof slot fired.
 	//
 	// Golden rule:
 	// Use Glib::ustrings as little as possible for large amounts of data!
@@ -187,6 +188,7 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 				capturebuf.resize( line_start );
 				append_unichar_vector_to_utf8( capturebuf, linevec );
 				line_start = capturebuf.size();
+				callerbuf_uptodate = false;
 
 				linevec.clear();
 				cursor = 0;
@@ -213,13 +215,20 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 			}
 		}
 
-		// Paste partial line to capture buffer; copy that to callers buffer; and
-		// fire any update callbacks.
+		// Paste partial line to capture buffer.
 		capturebuf.resize( line_start );
 		append_unichar_vector_to_utf8( capturebuf, linevec );
+		callerbuf_uptodate = false;
 
-		callerbuf = capturebuf;
-		signal_update.emit();
+		if ( ! signal_update.empty() )
+		{
+			// Performance optimisation, especially for large capture buffers:
+			// only copy capture buffer to callers buffer and fire update
+			// callbacks when there are any registered update callbacks.
+			callerbuf = capturebuf;
+			callerbuf_uptodate = true;
+			signal_update.emit();
+		}
 		return true;
 	}
 
@@ -228,6 +237,11 @@ bool PipeCapture::OnReadable( Glib::IOCondition condition )
 		std::cerr << "Pipe IOChannel read failed" << std::endl;
 	}
 
+	if ( ! callerbuf_uptodate )
+	{
+		callerbuf = capturebuf;
+		callerbuf_uptodate = true;
+	}
 	// signal completion
 	signal_eof.emit();
 	return false;
