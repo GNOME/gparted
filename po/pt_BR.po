@@ -1,5 +1,5 @@
 # Brazilian Portuguese translation for gparted
-# Copyright (C) 2004-2016 Free Software Foundation, Inc.
+# Copyright (C) 2004-2017 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gparted package.
 # Raphael Higino <In memoriam>, 2004-2006.
 # Djavan Fagundes <djavan@comum.org>, 2007, 2008, 2009, 2010, 2011, 2012.
@@ -16,10 +16,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gparted"
-"&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-01-14 15:52+0000\n"
-"PO-Revision-Date: 2017-01-16 23:16-0200\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gparte"
+"d&keywords=I18N+L10N&component=application\n"
+"POT-Creation-Date: 2017-03-15 09:04+0000\n"
+"PO-Revision-Date: 2017-03-25 21:35-0200\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -321,12 +321,12 @@ msgstr "Não montada"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3120
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3123
 msgid "Volume Group:"
 msgstr "Grupo de volume:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3121
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3124
 msgid "Members:"
 msgstr "Membros:"
 
@@ -660,7 +660,6 @@ msgstr "Disponível offline e online"
 #. * when it is mounted.
 #.
 #: ../src/DialogFeatures.cc:109
-#| msgid "Available offline only"
 msgid "Available online only"
 msgstr "Disponível apenas online"
 
@@ -1001,6 +1000,7 @@ msgstr ""
 "a partição contém criptografia LUKS aberta para uma etapa de apenas criação "
 "de sistema de arquivos"
 
+#. TO TRANSLATORS: looks like create new ext3 file system
 #: ../src/GParted_Core.cc:2036
 msgid "create new %1 file system"
 msgstr "criar novo sistema de arquivos %1"
@@ -1117,7 +1117,6 @@ msgstr ""
 "início da partição está mudando para uma etapa de apenas redimensionamento"
 
 #: ../src/GParted_Core.cc:2578
-#| msgid "start of the partition is changing for a resize only step"
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
@@ -1236,12 +1235,10 @@ msgstr ""
 "de criptografia"
 
 #: ../src/GParted_Core.cc:2908
-#| msgid "grow file system to fill the partition"
 msgid "grow encryption volume to fill the partition"
 msgstr "aumentar o volume de criptografia para preencher a partição"
 
 #: ../src/GParted_Core.cc:2918
-#| msgid "growing is not available for this file system"
 msgid "growing is not available for this encryption volume"
 msgstr "aumentar não está disponível para este volume de criptografia"
 
@@ -1352,12 +1349,14 @@ msgid "roll back last transaction"
 msgstr "desfazer última transação"
 
 #: ../src/GParted_Core.cc:3384
+#| msgid ""
+#| "partition contains open LUKS encryption for a check repair file system "
+#| "only step"
 msgid ""
-"partition contains open LUKS encryption for a check repair file system only "
-"step"
+"partition contains open LUKS encryption for a check file system only step"
 msgstr ""
 "a partição contém criptografia LUKS aberta para uma etapa de apenas "
-"verificação de reparo de sistema de arquivos"
+"verificação de sistema de arquivos"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
 #: ../src/GParted_Core.cc:3396
@@ -1392,7 +1391,6 @@ msgid "device"
 msgstr "dispositivo"
 
 #: ../src/GParted_Core.cc:3640
-#| msgid "Encryption:"
 msgid "encryption path: %1"
 msgstr "caminho de criptografia: %1"
 
@@ -1838,10 +1836,12 @@ msgstr "_Novo"
 msgid "_Resize/Move"
 msgstr "_Redimensionar/Mover"
 
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
 #: ../src/Win_GParted.cc:371
 msgid "_Format to"
 msgstr "_Formatar para"
 
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
 #: ../src/Win_GParted.cc:387
 msgid "_Mount on"
 msgstr "_Montar em"
@@ -2011,17 +2011,17 @@ msgstr ""
 "partição estendida é também uma partição primária, pode ser necessário "
 "remover uma partição primária antes."
 
-#: ../src/Win_GParted.cc:1875
+#: ../src/Win_GParted.cc:1878
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Mover uma partição pode causar falha na inicialização do seu sistema"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1882
+#: ../src/Win_GParted.cc:1885
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Você solicitou uma operação para mover o início da sessão da partição %1."
 
-#: ../src/Win_GParted.cc:1884
+#: ../src/Win_GParted.cc:1887
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -2030,75 +2030,76 @@ msgstr ""
 "GNU/Linux contendo o diretório /boot, ou se você mover a partição de sistema "
 "C: do Windows."
 
-#: ../src/Win_GParted.cc:1886
+#: ../src/Win_GParted.cc:1889
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Você pode aprender formas de reparar a configuração do boot na FAQ do "
 "GParted."
 
-#: ../src/Win_GParted.cc:1890
+#: ../src/Win_GParted.cc:1893
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Mover uma partição pode demorar um longo tempo para ser aplicado."
 
-#: ../src/Win_GParted.cc:1959
+#: ../src/Win_GParted.cc:1962
 msgid "Copy of %1"
 msgstr "Cópia de %1"
 
-#: ../src/Win_GParted.cc:2052
+#: ../src/Win_GParted.cc:2055
 msgid "You have pasted into an existing partition"
 msgstr "Você colou dentro de uma partição existente"
 
-#: ../src/Win_GParted.cc:2060
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:2063
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Os dados em %1 serão perdidos se você concluir esta operação."
 
-#: ../src/Win_GParted.cc:2133
+#: ../src/Win_GParted.cc:2136
 msgid "Unable to delete %1!"
 msgstr "Não foi possível excluir %1!"
 
-#: ../src/Win_GParted.cc:2140
+#: ../src/Win_GParted.cc:2143
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Por favor, desmonte todas as partições lógicas com número maior que %1"
 
-#: ../src/Win_GParted.cc:2151
+#: ../src/Win_GParted.cc:2154
 msgid "Are you sure you want to delete %1?"
 msgstr "Você tem certeza que deseja excluir %1?"
 
-#: ../src/Win_GParted.cc:2158
+#: ../src/Win_GParted.cc:2161
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Após a exclusão, essa partição não estará mais disponível para cópia."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2161
+#: ../src/Win_GParted.cc:2164
 msgid "Delete %1 (%2, %3)"
 msgstr "Excluir %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2267
+#: ../src/Win_GParted.cc:2270
 msgid "Cannot format this file system to %1"
 msgstr "Não é possível formatar esse sistema de arquivos para %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2279
+#: ../src/Win_GParted.cc:2282
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Um sistema de arquivos %1 requer uma partição de pelo menos %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2287
+#: ../src/Win_GParted.cc:2290
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Uma partição com um sistema de arquivos %1 tem tamanho máximo de %2."
 
-#: ../src/Win_GParted.cc:2405
+#: ../src/Win_GParted.cc:2408
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "A partição não pôde ser desmontada dos seguintes pontos de montagem:"
 
-#: ../src/Win_GParted.cc:2407
+#: ../src/Win_GParted.cc:2410
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2107,19 +2108,19 @@ msgstr ""
 "montagem. Recomendamos que você as desmonte manualmente."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2420
+#: ../src/Win_GParted.cc:2423
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 operação está atualmente pendente relativa à partição %2"
 msgstr[1] "%1 operações estão atualmente pendentes relativas à partição %2"
 
-#: ../src/Win_GParted.cc:2435
+#: ../src/Win_GParted.cc:2438
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 "Use o menu Editar para desfazer, limpar ou aplicar todas as operações "
 "pendentes."
 
-#: ../src/Win_GParted.cc:2478
+#: ../src/Win_GParted.cc:2481
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2127,15 +2128,15 @@ msgstr ""
 "A ação de desativar swap não pode ser executada quando há operações "
 "pendentes para a partição."
 
-#: ../src/Win_GParted.cc:2479
+#: ../src/Win_GParted.cc:2482
 msgid "Deactivating swap on %1"
 msgstr "Desativando swap em %1"
 
-#: ../src/Win_GParted.cc:2480
+#: ../src/Win_GParted.cc:2483
 msgid "Could not deactivate swap"
 msgstr "Não foi possível desativar swap"
 
-#: ../src/Win_GParted.cc:2485
+#: ../src/Win_GParted.cc:2488
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2143,15 +2144,15 @@ msgstr ""
 "A ação de ativar swap não pode ser executada quando há operações pendentes "
 "para a partição."
 
-#: ../src/Win_GParted.cc:2486
+#: ../src/Win_GParted.cc:2489
 msgid "Activating swap on %1"
 msgstr "Ativando swap em %1"
 
-#: ../src/Win_GParted.cc:2487
+#: ../src/Win_GParted.cc:2490
 msgid "Could not activate swap"
 msgstr "Não foi possível ativar swap"
 
-#: ../src/Win_GParted.cc:2492
+#: ../src/Win_GParted.cc:2495
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2159,16 +2160,16 @@ msgstr ""
 "A ação de desativar grupo de volume não pode ser executada quando há "
 "operações pendentes para a partição."
 
-#: ../src/Win_GParted.cc:2493
+#: ../src/Win_GParted.cc:2496
 msgid "Deactivating Volume Group %1"
 msgstr "Desativando grupo de volume %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2495
+#: ../src/Win_GParted.cc:2498
 msgid "Could not deactivate Volume Group"
 msgstr "Não foi possível desativar grupo de volume"
 
-#: ../src/Win_GParted.cc:2500
+#: ../src/Win_GParted.cc:2503
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2176,16 +2177,16 @@ msgstr ""
 "A ação de ativar grupo de volume não pode ser executada quando há operações "
 "pendentes para a partição."
 
-#: ../src/Win_GParted.cc:2501
+#: ../src/Win_GParted.cc:2504
 msgid "Activating Volume Group %1"
 msgstr "Ativando grupo de volume em %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2503
+#: ../src/Win_GParted.cc:2506
 msgid "Could not activate Volume Group"
 msgstr "Não foi possível ativar grupo de volume"
 
-#: ../src/Win_GParted.cc:2508
+#: ../src/Win_GParted.cc:2511
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
@@ -2193,17 +2194,17 @@ msgstr ""
 "A ação de desmontar não pode ser executada quando há operações pendentes "
 "para a partição."
 
-#: ../src/Win_GParted.cc:2509
+#: ../src/Win_GParted.cc:2512
 msgid "Unmounting %1"
 msgstr "Desmontando %1"
 
-#: ../src/Win_GParted.cc:2510
+#: ../src/Win_GParted.cc:2513
 msgid "Could not unmount %1"
 msgstr "Não foi possível desmontar %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:2574
+#: ../src/Win_GParted.cc:2577
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
@@ -2211,28 +2212,28 @@ msgstr ""
 "A ação de montar não pode ser executada quando há operação pendente para a "
 "partição."
 
-#: ../src/Win_GParted.cc:2587
+#: ../src/Win_GParted.cc:2590
 msgid "mounting %1 on %2"
 msgstr "montando %1 em %2"
 
-#: ../src/Win_GParted.cc:2614
+#: ../src/Win_GParted.cc:2617
 msgid "Could not mount %1 on %2"
 msgstr "Não foi possível montar %1 em %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2633
+#: ../src/Win_GParted.cc:2636
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 partição está atualmente ativa no dispositivo %2"
 msgstr[1] "%1 partições estão atualmente ativas no dispositivo %2"
 
-#: ../src/Win_GParted.cc:2648
+#: ../src/Win_GParted.cc:2651
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Uma nova tabela de partições não pode ser criada quando há partições ativas."
 
-#: ../src/Win_GParted.cc:2650
+#: ../src/Win_GParted.cc:2653
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2240,7 +2241,7 @@ msgstr ""
 "Partições ativas são aquelas que estão em uso, tais como um sistema de "
 "arquivos montado ou área de troca (swap) habilitada."
 
-#: ../src/Win_GParted.cc:2652
+#: ../src/Win_GParted.cc:2655
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2249,20 +2250,20 @@ msgstr ""
 "desativar todas as partições neste dispositivo antes de criar uma nova "
 "tabela de partições."
 
-#: ../src/Win_GParted.cc:2664
+#: ../src/Win_GParted.cc:2667
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 operação está atualmente pendente"
 msgstr[1] "%1 operações estão atualmente pendentes"
 
-#: ../src/Win_GParted.cc:2677
+#: ../src/Win_GParted.cc:2680
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Uma nova tabela de partições não pode ser criada quando há operações "
 "pendentes."
 
-#: ../src/Win_GParted.cc:2679
+#: ../src/Win_GParted.cc:2682
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2270,31 +2271,31 @@ msgstr ""
 "Use o menu Editar para limpar ou aplicar todas as operações antes de criar "
 "uma nova tabela de partições."
 
-#: ../src/Win_GParted.cc:2694
+#: ../src/Win_GParted.cc:2697
 msgid "Error while creating partition table"
 msgstr "Erro ao criar tabela de partições"
 
-#: ../src/Win_GParted.cc:2714
+#: ../src/Win_GParted.cc:2717
 msgid "Command gpart was not found"
 msgstr "Comando gpart não foi encontrado"
 
-#: ../src/Win_GParted.cc:2715
+#: ../src/Win_GParted.cc:2718
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Este recurso utiliza o gpart. Por favor instale o gpart e tente novamente."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2723
+#: ../src/Win_GParted.cc:2726
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 "Uma varredura completa do disco é necessária para encontrar sistemas de "
 "arquivos."
 
-#: ../src/Win_GParted.cc:2725
+#: ../src/Win_GParted.cc:2728
 msgid "The scan might take a very long time."
 msgstr "A varredura pode durar muito tempo."
 
-#: ../src/Win_GParted.cc:2727
+#: ../src/Win_GParted.cc:2730
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2302,26 +2303,26 @@ msgstr ""
 "Após a varredura você pode montar qualquer sistema de arquivos descoberto e "
 "copiar os dados para outra mídia."
 
-#: ../src/Win_GParted.cc:2729
+#: ../src/Win_GParted.cc:2732
 msgid "Do you want to continue?"
 msgstr "Você deseja continuar?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2733
+#: ../src/Win_GParted.cc:2736
 msgid "Search for file systems on %1"
 msgstr "Busca por sistema de arquivos em %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2744
+#: ../src/Win_GParted.cc:2747
 msgid "Searching for file systems on %1"
 msgstr "Busca por sistema de arquivos em %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2760
+#: ../src/Win_GParted.cc:2763
 msgid "No file systems found on %1"
 msgstr "Nenhum sistema de arquivos encontrado em %1"
 
-#: ../src/Win_GParted.cc:2761
+#: ../src/Win_GParted.cc:2764
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2329,35 +2330,35 @@ msgstr ""
 "O disco varrido pelo gpart não encontrou nenhum arquivo de sistema "
 "reconhecível no disco."
 
-#: ../src/Win_GParted.cc:3034
+#: ../src/Win_GParted.cc:3037
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Você tem certeza que deseja aplicar as operações pendentes?"
 
-#: ../src/Win_GParted.cc:3040
+#: ../src/Win_GParted.cc:3043
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Editar partições pode causar PERDA de DADOS."
 
-#: ../src/Win_GParted.cc:3042
+#: ../src/Win_GParted.cc:3045
 msgid "You are advised to backup your data before proceeding."
 msgstr "É aconselhável fazer backup de seus dados antes de continuar."
 
-#: ../src/Win_GParted.cc:3044
+#: ../src/Win_GParted.cc:3047
 msgid "Apply operations to device"
 msgstr "Aplicar as operações no dispositivo"
 
-#: ../src/Win_GParted.cc:3089
+#: ../src/Win_GParted.cc:3092
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Você está apagando um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:3093
+#: ../src/Win_GParted.cc:3096
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Você está formatando um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:3097
+#: ../src/Win_GParted.cc:3100
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Você está colando sobre um volume físico LVM2 não-vazio %1"
 
-#: ../src/Win_GParted.cc:3106
+#: ../src/Win_GParted.cc:3109
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2365,7 +2366,7 @@ msgstr ""
 "Apagar ou sobrescrever um volume físico é irreversível e você irá destruir "
 "ou danificar o grupo de volume."
 
-#: ../src/Win_GParted.cc:3109
+#: ../src/Win_GParted.cc:3112
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2375,7 +2376,7 @@ msgstr ""
 "cancelar e usar comandos LVM externos para liberar o volume físico antes de "
 "executar essa operação."
 
-#: ../src/Win_GParted.cc:3112
+#: ../src/Win_GParted.cc:3115
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Você deseja continuar e forçar a exclusão do volume físico?"
 
