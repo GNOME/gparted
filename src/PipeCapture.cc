@@ -15,6 +15,7 @@
  */
 
 #include "PipeCapture.h"
+#include "Utils.h"
 
 #include <iostream>
 #include <string>
@@ -27,7 +28,7 @@
 
 namespace GParted {
 
-const size_t READBUF_SIZE = 512;
+const size_t READBUF_SIZE = 64*KIBIBYTE;
 
 PipeCapture::PipeCapture( int fd, Glib::ustring &buffer ) : fill_offset( 0 ),
                                                             cursor( 0 ),
