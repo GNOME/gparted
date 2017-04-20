@@ -285,6 +285,18 @@ fi
 
 
 
+dnl Definitions for building of and with gtest.  Gets flags for pthread via earlier
+dnl gthread package check.
+GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"
+GTEST_CXXFLAGS="$GTHREAD_CFLAGS"
+GTEST_LDFLAGS=
+GTEST_LIBS="$GTHREAD_LIBS"
+AC_SUBST([GTEST_CPPFLAGS])
+AC_SUBST([GTEST_CXXFLAGS])
+AC_SUBST([GTEST_LDFLAGS])
+AC_SUBST([GTEST_LIBS])
+
+
 dnl======================
 dnl check whether to build documentation - gnome-doc-utils
 dnl======================
@@ -367,6 +379,8 @@ data/icons/Makefile
 doc/Makefile
 help/Makefile
 include/Makefile
+lib/Makefile
+lib/gtest/Makefile
 src/Makefile
 po/Makefile.in
 ])
