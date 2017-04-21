@@ -711,7 +711,7 @@ bool Win_GParted::on_delete_event( GdkEventAny *event )
 	return ! Quit_Check_Operations();
 }	
 
-void Win_GParted::Add_Operation( Operation * operation )
+void Win_GParted::Add_Operation( const Device & device, Operation * operation )
 {
 	if ( operation )
 	{ 
@@ -726,7 +726,7 @@ void Win_GParted::Add_Operation( Operation * operation )
 		     operation ->type == OPERATION_CHANGE_UUID ||
 		     operation ->type == OPERATION_LABEL_FILESYSTEM ||
 		     operation ->type == OPERATION_NAME_PARTITION ||
-		     gparted_core.snap_to_alignment( operation->device, operation->get_partition_new(), error )
+		     gparted_core.snap_to_alignment( device, operation->get_partition_new(), error )
 		   )
 		{
 			operation ->create_description() ;
@@ -1895,7 +1895,7 @@ void Win_GParted::activate_resize()
 			dialog.run();
 		}
 
-		Add_Operation( operation );
+		Add_Operation( devices[current_device], operation );
 		merge_operations( mergetype );
 	}
 
@@ -1962,7 +1962,7 @@ void Win_GParted::activate_paste()
 				        String::ucompose( _("Copy of %1"),
 				                          copy_op->get_partition_copied().get_path() ) );
 
-				Add_Operation( operation ) ;
+				Add_Operation( devices[current_device], operation );
 			}
 		}
 	}
@@ -2045,7 +2045,7 @@ void Win_GParted::activate_paste()
 		delete partition_new;
 		partition_new = NULL;
 
-		Add_Operation( operation ) ;
+		Add_Operation( devices[current_device], operation );
 
 		if ( ! shown_dialog )
 		{
@@ -2102,7 +2102,7 @@ void Win_GParted::activate_new()
 			                                             dialog.Get_New_Partition() );
 			operation ->icon = render_icon( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU );
 
-			Add_Operation( operation );
+			Add_Operation( devices[current_device], operation );
 
 			show_operationslist() ;
 		}
@@ -2216,7 +2216,7 @@ void Win_GParted::activate_delete()
 		Operation * operation = new OperationDelete( devices[ current_device ], *selected_partition_ptr );
 		operation ->icon = render_icon( Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU ) ;
 
-		Add_Operation( operation ) ;
+		Add_Operation( devices[current_device], operation );
 	}
 
 	show_operationslist() ;
@@ -2363,7 +2363,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	delete temp_ptn;
 	temp_ptn = NULL;
 
-	Add_Operation( operation );
+	Add_Operation( devices[current_device], operation );
 	merge_operations( mergetype );
 
 	show_operationslist() ;
@@ -2814,7 +2814,7 @@ void Win_GParted::activate_check()
 
 	operation ->icon = render_icon( Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU );
 
-	Add_Operation( operation ) ;
+	Add_Operation( devices[current_device], operation );
 	// Try to merge this check operation with all previous operations.
 	merge_operations( MERGE_LAST_WITH_ANY );
 
@@ -2846,7 +2846,7 @@ void Win_GParted::activate_label_filesystem()
 		delete part_temp;
 		part_temp = NULL;
 
-		Add_Operation( operation ) ;
+		Add_Operation( devices[current_device], operation );
 		// Try to merge this label file system operation with all previous
 		// operations.
 		merge_operations( MERGE_LAST_WITH_ANY );
@@ -2880,7 +2880,7 @@ void Win_GParted::activate_name_partition()
 		delete part_temp;
 		part_temp = NULL;
 
-		Add_Operation( operation );
+		Add_Operation( devices[current_device], operation );
 		// Try to merge this name partition operation with all previous
 		// operations.
 		merge_operations( MERGE_LAST_WITH_ANY );
@@ -2938,7 +2938,7 @@ void Win_GParted::activate_change_uuid()
 	delete temp_ptn;
 	temp_ptn = NULL;
 
-	Add_Operation( operation ) ;
+	Add_Operation( devices[current_device], operation );
 	// Try to merge this change UUID operation with all previous operations.
 	merge_operations( MERGE_LAST_WITH_ANY );
 
