@@ -1,4 +1,4 @@
-SUBDIRS = compose data doc include lib po src
+SUBDIRS = compose data doc include lib po src tests
 # Only build GParted help documentation when enabled.  (Can be disabled
 # with './configure --disable-doc').
 if BUILD_HELP_DOC

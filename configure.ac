@@ -383,6 +383,7 @@ lib/Makefile
 lib/gtest/Makefile
 src/Makefile
 po/Makefile.in
+tests/Makefile
 ])
 
 AC_OUTPUT
