@@ -11,9 +11,11 @@ LDADD =  \
 
 # Programs to be built by "make check"
 check_PROGRAMS =  \
-	test_dummy
+	test_dummy         \
+	test_BlockSpecial
 
 # Test cases to be run by "make check"
 TESTS = $(check_PROGRAMS)
 
-test_dummy_SOURCES = test_dummy.cc
+test_dummy_SOURCES        = test_dummy.cc
+test_BlockSpecial_SOURCES = test_BlockSpecial.cc ../src/BlockSpecial.cc
