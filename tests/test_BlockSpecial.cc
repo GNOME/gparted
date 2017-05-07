@@ -25,7 +25,8 @@
  *     Name                        Access    Note
  *     -------------------------   -------   -----
  *     /                           Stat
- *     /proc/partitions            Read      To find any two block
+ *     /proc/partitions            Stat
+ *                                 Read      To find any two block
  *                                           devices
  *     /dev/BLOCK0                 Stat      First entry from
  *                                           /proc/partitions
@@ -260,6 +261,87 @@ TEST( BlockSpecialTest, PreRegisteredCacheUsedBeforeFileSystem )
 	EXPECT_BSEQTUP( bs, "/dev/null", 4, 8 );
 }
 
-// FIXME: Write tests to fully check operator==() and operator<() are working as intended.
+TEST( BlockSpecialTest, OperatorEqualsTwoEmptyObjects )
+{
+	// Test equality of two empty BlockSpecial objects.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2;
+	EXPECT_TRUE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsSamePlainFiles )
+{
+	// Test equality of two named plain file or directory BlockSpecial objects;
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( "/" );
+	BlockSpecial bs2( "/" );
+	EXPECT_TRUE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndPlainFile )
+{
+	// Test inequality of empty and plain file BlockSpecial objects.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2( "/" );
+	EXPECT_FALSE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsDifferentPlainFiles )
+{
+	// Test inequality of two different plain file or directory BlockSpecial objects;
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( "/" );
+	BlockSpecial bs2( "/proc/partitions" );
+	EXPECT_FALSE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsSameBlockDevices )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test equality of two BlockSpecial objects using the same named block device.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( bname );
+	BlockSpecial bs2( bname );
+	EXPECT_TRUE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndBlockDevice )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test inequality of empty and named block device BlockSpecial objects.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2( bname );
+	EXPECT_FALSE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsPlainFileAndBlockDevice )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test inequality of plain file and block device BlockSpecial objects.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( "/" );
+	BlockSpecial bs2( bname );
+	EXPECT_FALSE( bs1 == bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorEqualsTwoDifferentBlockDevices )
+{
+	std::string bname1 = get_block_name( 0 );
+	std::string bname2 = get_block_name( 1 );
+
+	// Test inequality of two different named block device BlockSpecial objects.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( bname1 );
+	BlockSpecial bs2( bname2 );
+	EXPECT_FALSE( bs1 == bs2 );
+}
+
+// FIXME: Write tests to fully check operator<() is working as intended.
 
 }  // namespace GParted
