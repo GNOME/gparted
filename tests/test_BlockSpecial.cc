@@ -342,6 +342,18 @@ TEST( BlockSpecialTest, OperatorEqualsTwoDifferentBlockDevices )
 	EXPECT_FALSE( bs1 == bs2 );
 }
 
+TEST( BlockSpecialTest, OperatorEqualsSameBlockDevicesWithMinorZero )
+{
+	// Test for fix in bug #771670.  Ensure that block devices with minor number 0 are
+	// compared by major, minor pair rather than by name.
+	BlockSpecial::clear_cache();
+	BlockSpecial::register_block_special( "/dev/mapper/encrypted_swap", 254, 0 );
+	BlockSpecial::register_block_special( "/dev/dm-0", 254, 0 );
+	BlockSpecial bs1( "/dev/mapper/encrypted_swap" );
+	BlockSpecial bs2( "/dev/dm-0" );
+	EXPECT_TRUE( bs1 == bs2 );
+}
+
 // FIXME: Write tests to fully check operator<() is working as intended.
 
 }  // namespace GParted
