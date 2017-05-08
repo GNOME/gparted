@@ -354,6 +354,102 @@ TEST( BlockSpecialTest, OperatorEqualsSameBlockDevicesWithMinorZero )
 	EXPECT_TRUE( bs1 == bs2 );
 }
 
-// FIXME: Write tests to fully check operator<() is working as intended.
+TEST( BlockSpecialTest, OperatorLessThanTwoEmptyObjects )
+{
+	// Test one empty BlockSpecial object is not ordered before another empty one.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2;
+	EXPECT_FALSE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanSamePlainFiles )
+{
+	// Test one plain file BlockSpecial object is not ordered before another of the
+	// same name.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( "/" );
+	BlockSpecial bs2( "/" );
+	EXPECT_FALSE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanDifferentPlainFiles )
+{
+	// Test one plain file BlockSpecial object with the lower name is ordered before
+	// the other plain file with a higher name.
+	BlockSpecial::clear_cache();
+	BlockSpecial::register_block_special( "/dummy_file1", 0, 0 );
+	BlockSpecial::register_block_special( "/dummy_file2", 0, 0 );
+	BlockSpecial bs1( "/dummy_file1" );
+	BlockSpecial bs2( "/dummy_file2" );
+	EXPECT_TRUE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndPlainFile )
+{
+	// Test empty BlockSpecial object with name "" is before a plain file of any name.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2( "/" );
+	EXPECT_TRUE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanSameBlockDevices )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test one name block device BlockSpecial object is not ordered before another
+	// from the same name.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( bname );
+	BlockSpecial bs2( bname );
+	EXPECT_FALSE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndBlockDevice )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test empty BlockSpecial object with name "" is before any block device.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1;
+	BlockSpecial bs2( bname );
+	EXPECT_TRUE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanPlainFileAndBlockDevice )
+{
+	std::string bname = get_block_name( 0 );
+
+	// Test one plain file BlockSpecial object is ordered before any block device.
+	BlockSpecial::clear_cache();
+	BlockSpecial bs1( "/" );
+	BlockSpecial bs2( bname );
+	EXPECT_TRUE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMajorNumbers )
+{
+	// Test one block device BlockSpecial object is ordered before another based on
+	// major numbers.
+	BlockSpecial::clear_cache();
+	BlockSpecial::register_block_special( "/dummy_block2", 1, 1 );
+	BlockSpecial::register_block_special( "/dummy_block1", 2, 0 );
+	BlockSpecial bs1( "/dummy_block2" );
+	BlockSpecial bs2( "/dummy_block1" );
+	EXPECT_TRUE( bs1 < bs2 );
+}
+
+TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMinorNumbers )
+{
+	// Test one block device BlockSpecial object is ordered before another based on
+	// minor numbers.
+	BlockSpecial::clear_cache();
+	BlockSpecial::register_block_special( "/dummy_block2", 2, 0 );
+	BlockSpecial::register_block_special( "/dummy_block1", 2, 1 );
+	BlockSpecial bs1( "/dummy_block2" );
+	BlockSpecial bs2( "/dummy_block1" );
+	EXPECT_TRUE( bs1 < bs2 );
+}
 
 }  // namespace GParted
