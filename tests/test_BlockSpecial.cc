@@ -88,6 +88,13 @@ std::ostream& operator<<( std::ostream & out, const BlockSpecial & bs )
 #define EXPECT_BSEQTUP(bs, name, major, minor)  \
 	EXPECT_PRED_FORMAT4(CompareHelperBS2TUP, bs, name, major, minor)
 
+// Helper to print two compared BlockSpecial objects on failure.
+// Usage:
+//     EXPECT_TRUE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
+#define ON_FAILURE_WHERE(b1, b2)  \
+	"   Where: " << #b1 << " = " << (b1) << "\n"  \
+	"     And: " << #b2 << " = " << (b2);
+
 // Return block device names numbered 0 upwards like "/dev/sda" by reading entries from
 // /proc/partitions.
 static std::string get_block_name( unsigned want )
@@ -267,7 +274,7 @@ TEST( BlockSpecialTest, OperatorEqualsTwoEmptyObjects )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2;
-	EXPECT_TRUE( bs1 == bs2 );
+	EXPECT_TRUE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsSamePlainFiles )
@@ -276,7 +283,7 @@ TEST( BlockSpecialTest, OperatorEqualsSamePlainFiles )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( "/" );
 	BlockSpecial bs2( "/" );
-	EXPECT_TRUE( bs1 == bs2 );
+	EXPECT_TRUE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndPlainFile )
@@ -285,7 +292,7 @@ TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndPlainFile )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2( "/" );
-	EXPECT_FALSE( bs1 == bs2 );
+	EXPECT_FALSE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsDifferentPlainFiles )
@@ -294,7 +301,7 @@ TEST( BlockSpecialTest, OperatorEqualsDifferentPlainFiles )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( "/" );
 	BlockSpecial bs2( "/proc/partitions" );
-	EXPECT_FALSE( bs1 == bs2 );
+	EXPECT_FALSE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsSameBlockDevices )
@@ -305,7 +312,7 @@ TEST( BlockSpecialTest, OperatorEqualsSameBlockDevices )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( bname );
 	BlockSpecial bs2( bname );
-	EXPECT_TRUE( bs1 == bs2 );
+	EXPECT_TRUE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndBlockDevice )
@@ -316,7 +323,7 @@ TEST( BlockSpecialTest, OperatorEqualsEmptyObjectAndBlockDevice )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2( bname );
-	EXPECT_FALSE( bs1 == bs2 );
+	EXPECT_FALSE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsPlainFileAndBlockDevice )
@@ -327,7 +334,7 @@ TEST( BlockSpecialTest, OperatorEqualsPlainFileAndBlockDevice )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( "/" );
 	BlockSpecial bs2( bname );
-	EXPECT_FALSE( bs1 == bs2 );
+	EXPECT_FALSE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsTwoDifferentBlockDevices )
@@ -339,7 +346,7 @@ TEST( BlockSpecialTest, OperatorEqualsTwoDifferentBlockDevices )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( bname1 );
 	BlockSpecial bs2( bname2 );
-	EXPECT_FALSE( bs1 == bs2 );
+	EXPECT_FALSE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorEqualsSameBlockDevicesWithMinorZero )
@@ -351,7 +358,7 @@ TEST( BlockSpecialTest, OperatorEqualsSameBlockDevicesWithMinorZero )
 	BlockSpecial::register_block_special( "/dev/dm-0", 254, 0 );
 	BlockSpecial bs1( "/dev/mapper/encrypted_swap" );
 	BlockSpecial bs2( "/dev/dm-0" );
-	EXPECT_TRUE( bs1 == bs2 );
+	EXPECT_TRUE( bs1 == bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanTwoEmptyObjects )
@@ -360,7 +367,7 @@ TEST( BlockSpecialTest, OperatorLessThanTwoEmptyObjects )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2;
-	EXPECT_FALSE( bs1 < bs2 );
+	EXPECT_FALSE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanSamePlainFiles )
@@ -370,7 +377,7 @@ TEST( BlockSpecialTest, OperatorLessThanSamePlainFiles )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( "/" );
 	BlockSpecial bs2( "/" );
-	EXPECT_FALSE( bs1 < bs2 );
+	EXPECT_FALSE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanDifferentPlainFiles )
@@ -382,7 +389,7 @@ TEST( BlockSpecialTest, OperatorLessThanDifferentPlainFiles )
 	BlockSpecial::register_block_special( "/dummy_file2", 0, 0 );
 	BlockSpecial bs1( "/dummy_file1" );
 	BlockSpecial bs2( "/dummy_file2" );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndPlainFile )
@@ -391,7 +398,7 @@ TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndPlainFile )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2( "/" );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanSameBlockDevices )
@@ -403,7 +410,7 @@ TEST( BlockSpecialTest, OperatorLessThanSameBlockDevices )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( bname );
 	BlockSpecial bs2( bname );
-	EXPECT_FALSE( bs1 < bs2 );
+	EXPECT_FALSE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndBlockDevice )
@@ -414,7 +421,7 @@ TEST( BlockSpecialTest, OperatorLessThanEmptyObjectAndBlockDevice )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1;
 	BlockSpecial bs2( bname );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanPlainFileAndBlockDevice )
@@ -425,7 +432,7 @@ TEST( BlockSpecialTest, OperatorLessThanPlainFileAndBlockDevice )
 	BlockSpecial::clear_cache();
 	BlockSpecial bs1( "/" );
 	BlockSpecial bs2( bname );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMajorNumbers )
@@ -437,7 +444,7 @@ TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMajorNumbers )
 	BlockSpecial::register_block_special( "/dummy_block1", 2, 0 );
 	BlockSpecial bs1( "/dummy_block2" );
 	BlockSpecial bs2( "/dummy_block1" );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMinorNumbers )
@@ -449,7 +456,7 @@ TEST( BlockSpecialTest, OperatorLessThanTwoDifferentBlockDevicesMinorNumbers )
 	BlockSpecial::register_block_special( "/dummy_block1", 2, 1 );
 	BlockSpecial bs1( "/dummy_block2" );
 	BlockSpecial bs2( "/dummy_block1" );
-	EXPECT_TRUE( bs1 < bs2 );
+	EXPECT_TRUE( bs1 < bs2 ) << ON_FAILURE_WHERE( bs1, bs2 );
 }
 
 }  // namespace GParted
