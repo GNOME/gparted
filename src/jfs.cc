@@ -173,7 +173,8 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t jfs " + partition_new .get_path() + " " + mount_point,
+		success &= ! execute_command( "mount -v -t jfs " + partition_new .get_path() +
+		                              " \"" + mount_point + "\"",
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
@@ -181,11 +182,13 @@ bool jfs::resize( const Partition & partition_new, OperationDetail & operationde
 
 	if ( success )
 	{
-		success &= ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .get_path() + " " + mount_point,
+		success &= ! execute_command( "mount -v -t jfs -o remount,resize " + partition_new .get_path() +
+		                              " \"" + mount_point + "\"",
 		                              operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + mount_point, operationdetail, EXEC_CHECK_STATUS );
+			success &= ! execute_command( "umount -v \"" + mount_point + "\"",
+			                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( ! partition_new .busy )
