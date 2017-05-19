@@ -183,7 +183,7 @@ void Dialog_Rescue_Data::on_view_clicked(int nPart)
 	Glib::ustring mountPoint=tmpDir;
 
 	Glib::ustring commandLine= "mount -o ro,loop,offset="+Utils::num_to_str(initOffset)
-		+",sizelimit="+Utils::num_to_str(totalSize)+" "+this->device_path+" "+mountPoint;
+		+",sizelimit="+Utils::num_to_str(totalSize)+" "+this->device_path+" \""+mountPoint+"\"";
 
 	int mountResult=Utils::execute_command(commandLine);
 
@@ -279,7 +279,7 @@ void Dialog_Rescue_Data::check_overlaps(int nPart)
 			{
 				Glib::ustring mountP=this->device->partitions[i].get_mountpoint();
 
-				Glib::ustring commandUmount= "umount "+mountP;
+				Glib::ustring commandUmount = "umount \"" + mountP + "\"";
 				Utils::execute_command(commandUmount);
 			}
 		}
