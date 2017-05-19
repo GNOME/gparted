@@ -180,7 +180,8 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		if ( mount_point .empty() )
 			return false ;
 
-		success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() + " " + mount_point,
+		success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() +
+		                              " \"" + mount_point + "\"",
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
@@ -196,7 +197,8 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		success &= ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new. busy )
-			success &= ! execute_command( "umount -v " + mount_point, operationdetail, EXEC_CHECK_STATUS );
+			success &= ! execute_command( "umount -v \"" + mount_point + "\"",
+			                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( ! partition_new .busy )
