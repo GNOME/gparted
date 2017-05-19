@@ -193,7 +193,8 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point.empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t xfs " + partition_new .get_path() + " " + mount_point,
+		success &= ! execute_command( "mount -v -t xfs " + partition_new .get_path() +
+		                              " \"" + mount_point + "\"",
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
@@ -201,10 +202,12 @@ bool xfs::resize( const Partition & partition_new, OperationDetail & operationde
 
 	if ( success )
 	{
-		success &= ! execute_command( "xfs_growfs " + mount_point, operationdetail, EXEC_CHECK_STATUS );
+		success &= ! execute_command( "xfs_growfs \"" + mount_point + "\"",
+		                              operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v " + mount_point, operationdetail, EXEC_CHECK_STATUS );
+			success &= ! execute_command( "umount -v \"" + mount_point + "\"",
+			                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( ! partition_new .busy )
@@ -236,7 +239,8 @@ bool xfs::copy( const Partition & src_part,
 	}
 
 	success &= ! execute_command( "mount -v -t xfs -o noatime,ro " + src_part.get_path() +
-	                              " " + src_mount_point, operationdetail, EXEC_CHECK_STATUS );
+	                              " \"" + src_mount_point + "\"",
+	                              operationdetail, EXEC_CHECK_STATUS );
 
 	// Get source FS used bytes, needed in progress update calculation
 	Byte_Value fs_size;
@@ -249,21 +253,23 @@ bool xfs::copy( const Partition & src_part,
 	if ( success )
 	{
 		success &= ! execute_command( "mount -v -t xfs " + dest_part.get_path() +
-		                              " " + dest_mount_point, operationdetail, EXEC_CHECK_STATUS );
+		                              " \"" + dest_mount_point + "\"",
+		                              operationdetail, EXEC_CHECK_STATUS );
 
 		if ( success )
 		{
-			success &= ! execute_command( "sh -c 'xfsdump -J - " + src_mount_point +
-			                              " | xfsrestore -J - " + dest_mount_point + "'",
+			success &= ! execute_command( "sh -c 'xfsdump -J - \"" + src_mount_point +
+			                              "\" | xfsrestore -J - \"" + dest_mount_point + "\"'",
 			                              operationdetail,
 			                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
 			                              static_cast<TimedSlot>( sigc::mem_fun( *this, &xfs::copy_progress ) ) );
 
-			success &= ! execute_command( "umount -v " + dest_part.get_path(), operationdetail,
-			                              EXEC_CHECK_STATUS );
+			success &= ! execute_command( "umount -v \"" + dest_mount_point + "\"",
+			                              operationdetail, EXEC_CHECK_STATUS );
 		}
 
-		success &= ! execute_command( "umount -v " + src_part.get_path(), operationdetail, EXEC_CHECK_STATUS );
+		success &= ! execute_command( "umount -v \"" + src_mount_point + "\"",
+		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	rm_temp_dir( dest_mount_point, operationdetail ) ;
