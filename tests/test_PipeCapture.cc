@@ -25,6 +25,7 @@
 #include "gtest/gtest.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
@@ -159,3 +160,19 @@ TEST_F( PipeCaptureTest, ShortASCIIText )
 }
 
 }  // namespace GParted
+
+// Custom Google Test main() which also initialises the Glib threading system for
+// distributions with glib/glibmm before version 2.32.
+// References:
+// *   Google Test, Primer, Writing the main() Function
+// *   Deprecated thread API, g_thread_init()
+//     https://developer.gnome.org/glib/stable/glib-Deprecated-Thread-APIs.html#g-thread-init
+int main( int argc, char **argv )
+{
+	printf("Running main() from %s\n", __FILE__ );
+	testing::InitGoogleTest( &argc, argv );
+
+	Glib::thread_init();
+
+	return RUN_ALL_TESTS();
+}

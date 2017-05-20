@@ -21,3 +21,4 @@ TESTS = $(check_PROGRAMS)
 test_dummy_SOURCES        = test_dummy.cc
 test_BlockSpecial_SOURCES = test_BlockSpecial.cc ../src/BlockSpecial.cc
 test_PipeCapture_SOURCES  = test_PipeCapture.cc ../src/PipeCapture.cc
+test_PipeCapture_LDADD    = $(GTEST_LIBS) $(top_builddir)/lib/gtest/lib/libgtest.la
