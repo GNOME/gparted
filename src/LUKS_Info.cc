@@ -29,7 +29,7 @@ namespace GParted
 
 // Cache of active dm-crypt mappings.
 // Example entry:
-//     {name="sdb6_crypt", major=8, minor=22, path="/dev/sdb6", offset=2097152, length=534773760}
+//     {name="sdb6_crypt", container=BlockSpecial{"/dev/sdb6", 8, 22}, offset=2097152, length=534773760}
 std::vector<LUKS_Mapping> LUKS_Info::luks_mapping_cache;
 
 bool LUKS_Info::cache_initialised = false;
