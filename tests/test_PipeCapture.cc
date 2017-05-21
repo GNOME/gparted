@@ -37,6 +37,15 @@
 namespace GParted
 {
 
+// Repeat a C++ string count times, where count >= 0.
+static std::string repeat( const std::string & str, size_t count )
+{
+	std::string result = "";
+	while ( count -- > 0 )
+		result += str;
+	return result;
+}
+
 // Explicit test fixture class with common variables and methods used in each test.
 // Reference:
 //     Google Test, Primer, Test Fixtures: Using the Same Data Configuration for Multiple Tests
@@ -151,6 +160,18 @@ TEST_F( PipeCaptureTest, ShortASCIIText )
 {
 	// Test capturing small amount of ASCII text.
 	inputstr = "The quick brown fox jumps over the lazy dog";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
+	pc.connect_signal();
+	run_writer_thread();
+	EXPECT_STREQ( inputstr.c_str(), capturedstr.c_str() );
+	EXPECT_TRUE( eof_signalled );
+}
+
+TEST_F( PipeCaptureTest, LongASCIIText )
+{
+	// Test capturing 1 MiB of ASCII text (requiring multiple reads in PipeCapture).
+	inputstr = repeat( "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\n", 16384 );
 	PipeCapture pc( pipefds[ReaderFD], capturedstr );
 	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
 	pc.connect_signal();
