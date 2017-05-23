@@ -26,6 +26,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <sstream>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
@@ -45,6 +46,95 @@ static std::string repeat( const std::string & str, size_t count )
 		result += str;
 	return result;
 }
+
+// Number of bytes of binary data to compare and report.
+const size_t BinaryStringDiffSize = 16;
+
+// Format up to 16 bytes of binary data ready for printing as:
+//      Hex offset     ASCII text          Hex bytes
+//     "0x000000000  \"ABCDEFGHabcdefgh\"  41 42 43 44 45 46 47 48 61 62 63 64 65 66 67 68"
+std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
+{
+	std::ostringstream result;
+
+	result << "0x";
+	result.fill( '0' );
+	result << std::setw( 8 ) << std::hex << std::uppercase << offset << "  \"";
+
+	size_t i;
+	for ( i = 0 ; i < BinaryStringDiffSize && i < len ; i ++ )
+		result.put( ( isprint( s[i] ) ) ? s[i] : '.' );
+	result.put( '\"' );
+
+	if ( len > 0 )
+	{
+		for ( ; i < BinaryStringDiffSize ; i ++ )
+			result.put( ' ' );
+		result.put( ' ' );
+
+		for ( i = 0 ; i < BinaryStringDiffSize && i < len ; i ++ )
+			result << " "
+			       << std::setw( 2 ) << std::hex << std::uppercase
+			       << (unsigned int)(unsigned char)s[i];
+	}
+
+	return result.str();
+}
+
+// Helper to construct and return message for equality assertion of C++ strings containing
+// binary data used in:
+//     EXPECT_BINARYSTRINGEQ( str1, str2 )
+::testing::AssertionResult CompareHelperBinaryStringEQ( const char * lhs_expr, const char * rhs_expr,
+                                                        const std::string & lhs, const std::string & rhs )
+{
+	// Loop comparing binary data in 16 byte amounts, stopping and reporting the first
+	// difference encountered.
+	bool diff = false;
+	const char * p1 = lhs.data();
+	const char * p2 = rhs.data();
+	size_t len1 = lhs.length();
+	size_t len2 = rhs.length();
+	while ( len1 > 0 || len2 > 0 )
+	{
+		size_t cmp_span = BinaryStringDiffSize;
+		cmp_span = ( len1 < cmp_span ) ? len1 : cmp_span;
+		cmp_span = ( len2 < cmp_span ) ? len2 : cmp_span;
+		if ( cmp_span < BinaryStringDiffSize && len1 != len2 )
+		{
+			diff = true;
+			break;
+		}
+		if ( memcmp( p1, p2, cmp_span ) != 0 )
+		{
+			diff = true;
+			break;
+		}
+		p1 += cmp_span;
+		p2 += cmp_span;
+		len1 -= cmp_span;
+		len2 -= cmp_span;
+	}
+
+	if ( ! diff )
+		return ::testing::AssertionSuccess();
+	else
+	{
+		size_t offset = p1 - lhs.data();
+		return ::testing::AssertionFailure()
+		       << "      Expected: " << lhs_expr << "\n"
+		       << "     Of length: " << lhs.length() << "\n"
+		       << "To be equal to: " << rhs_expr << "\n"
+		       << "     Of length: " << rhs.length() << "\n"
+		       << "With first binary difference:\n"
+		       << "< " << BinaryStringToPrint( offset, p1, len1 ) << "\n"
+		       << "--\n"
+		       << "> " << BinaryStringToPrint( offset, p2, len2 );
+	}
+}
+
+// Nonfatal assertion that binary data in C++ strings are equal.
+#define EXPECT_BINARYSTRINGEQ(str1, str2)  \
+	EXPECT_PRED_FORMAT2(CompareHelperBinaryStringEQ, str1, str2)
 
 // Explicit test fixture class with common variables and methods used in each test.
 // Reference:
@@ -140,7 +230,7 @@ TEST_F( PipeCaptureTest, EmptyPipe )
 	PipeCapture pc( pipefds[ReaderFD], capturedstr );
 	pc.connect_signal();
 	run_writer_thread();
-	EXPECT_STREQ( inputstr.c_str(), capturedstr.c_str() );
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
 	EXPECT_FALSE( eof_signalled );
 }
 
@@ -152,7 +242,7 @@ TEST_F( PipeCaptureTest, EmptyPipeWithEOF )
 	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
 	pc.connect_signal();
 	run_writer_thread();
-	EXPECT_STREQ( inputstr.c_str(), capturedstr.c_str() );
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
 	EXPECT_TRUE( eof_signalled );
 }
 
@@ -164,7 +254,7 @@ TEST_F( PipeCaptureTest, ShortASCIIText )
 	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
 	pc.connect_signal();
 	run_writer_thread();
-	EXPECT_STREQ( inputstr.c_str(), capturedstr.c_str() );
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
 	EXPECT_TRUE( eof_signalled );
 }
 
@@ -176,7 +266,7 @@ TEST_F( PipeCaptureTest, LongASCIIText )
 	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
 	pc.connect_signal();
 	run_writer_thread();
-	EXPECT_STREQ( inputstr.c_str(), capturedstr.c_str() );
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
 	EXPECT_TRUE( eof_signalled );
 }
 
