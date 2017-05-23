@@ -142,7 +142,7 @@ std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
 class PipeCaptureTest : public ::testing::Test
 {
 protected:
-	PipeCaptureTest() : eof_signalled( false )  {};
+	PipeCaptureTest() : eof_signalled( false ), update_signalled( 0U )  {};
 
 	virtual void SetUp();
 	virtual void TearDown();
@@ -157,11 +157,13 @@ protected:
 	std::string inputstr;
 	Glib::ustring capturedstr;
 	bool eof_signalled;
+	unsigned update_signalled;
 	int pipefds[2];
 	Glib::RefPtr<Glib::MainLoop> glib_main_loop;
 
 public:
 	void eof_callback()  { eof_signalled = true; };
+	void update_callback_leading_match();
 };
 
 // Further setup PipeCaptureTest fixture before running each test.  Create pipe and Glib
@@ -223,6 +225,23 @@ void PipeCaptureTest::run_writer_thread()
 	glib_main_loop->run();
 }
 
+// Callback fired from CapturePipe counting calls and ensuring captured string matches
+// leading portion of input string.
+void PipeCaptureTest::update_callback_leading_match()
+{
+	update_signalled ++;
+	EXPECT_BINARYSTRINGEQ( inputstr.substr( 0, capturedstr.raw().length() ),
+	                       capturedstr.raw() );
+	if ( HasFailure() )
+		// No point trying to PipeCapture the rest of the input and report
+		// hundreds of further failures in the same test, so end the currently
+		// running Glib main loop immediately.
+		// References:
+		// *   Google Test, AdvancedGuide, Propagating Fatal Failures
+		// *   Google Test, AdvancedGuide, Checking for Failures in the Current Test
+		glib_main_loop->quit();
+}
+
 TEST_F( PipeCaptureTest, EmptyPipe )
 {
 	// Test capturing 0 bytes with no on EOF callback registered.
@@ -267,6 +286,21 @@ TEST_F( PipeCaptureTest, LongASCIIText )
 	pc.connect_signal();
 	run_writer_thread();
 	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
+	EXPECT_TRUE( eof_signalled );
+}
+
+TEST_F( PipeCaptureTest, LongASCIITextWithUpdate )
+{
+	// Test capturing 1 MiB of ASCII text, that registered update callback occurs and
+	// intermediate captured string is a leading match for the input string.
+	inputstr = repeat( "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_\n", 16384 );
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
+	pc.signal_update.connect( sigc::mem_fun( *this, &PipeCaptureTest::update_callback_leading_match ) );
+	pc.connect_signal();
+	run_writer_thread();
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
+	EXPECT_GT( update_signalled, 0U );
 	EXPECT_TRUE( eof_signalled );
 }
 
