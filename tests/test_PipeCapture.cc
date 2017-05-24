@@ -304,6 +304,20 @@ TEST_F( PipeCaptureTest, LongASCIITextWithUpdate )
 	EXPECT_TRUE( eof_signalled );
 }
 
+TEST_F( PipeCaptureTest, MinimalBinaryCrash777973 )
+{
+	// Test for bug #777973.  Minimal test case of binary data returned by fsck.fat
+	// as file names from a very corrupt FAT, leading to GParted crashing from a
+	// segmentation fault.
+	inputstr = "/LOST.DIR/!\xE2\x95\x9F\xE2\x88\xA9\xC2\xA0!\xE2\x95\x9F\xE2\x88\xA9\xC2";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
+	pc.connect_signal();
+	run_writer_thread();
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
+	EXPECT_TRUE( eof_signalled );
+}
+
 }  // namespace GParted
 
 // Custom Google Test main() which also initialises the Glib threading system for
