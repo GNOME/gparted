@@ -142,7 +142,8 @@ std::string BinaryStringToPrint( size_t offset, const char * s, size_t len )
 class PipeCaptureTest : public ::testing::Test
 {
 protected:
-	PipeCaptureTest() : eof_signalled( false ), update_signalled( 0U )  {};
+	PipeCaptureTest() : capturedstr( "text to be replaced" ),
+	                    eof_signalled( false ), update_signalled( 0U )  {};
 
 	virtual void SetUp();
 	virtual void TearDown();
