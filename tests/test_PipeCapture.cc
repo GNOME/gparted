@@ -337,6 +337,23 @@ TEST_F( PipeCaptureTest, ReadEmbeddedNULCharacter )
 	EXPECT_TRUE( eof_signalled );
 }
 
+TEST_F( PipeCaptureTest, ReadNULByteInMiddleOfMultiByteUTF8Character )
+{
+	// Test NUL byte in the middle of reading a multi-byte UTF-8 character.
+	const char * buf = "\xC0\x00_45678";
+	inputstr = std::string( buf, 8 );
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
+	pc.connect_signal();
+	run_writer_thread();
+	// Initial \xC0 byte is part of an incomplete UTF-8 characters so will be skipped
+	// by PipeCapture.
+	buf = "\x00_45678";
+	expectedstr = std::string( buf, 7 );
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+	EXPECT_TRUE( eof_signalled );
+}
+
 }  // namespace GParted
 
 // Custom Google Test main() which also initialises the Glib threading system for
