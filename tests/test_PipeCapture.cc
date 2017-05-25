@@ -18,7 +18,8 @@
  *
  * All the tests work by creating a pipe(3) and using a separate thread to write data into
  * the pipe with PipeCapture running in the initial thread.  Captured data is then checked
- * that it matches the input.
+ * that it either matches the input or different expected output depending on the features
+ * being tested.
  */
 
 #include "PipeCapture.h"
@@ -156,6 +157,7 @@ protected:
 	static const size_t WriterFD = 1;
 
 	std::string inputstr;
+	std::string expectedstr;
 	Glib::ustring capturedstr;
 	bool eof_signalled;
 	unsigned update_signalled;
@@ -315,7 +317,10 @@ TEST_F( PipeCaptureTest, MinimalBinaryCrash777973 )
 	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
 	pc.connect_signal();
 	run_writer_thread();
-	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
+	// Final \xC2 byte is part of an incomplete UTF-8 character so will be skipped by
+	// PipeCapture.
+	expectedstr = "/LOST.DIR/!\xE2\x95\x9F\xE2\x88\xA9\xC2\xA0!\xE2\x95\x9F\xE2\x88\xA9";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
 	EXPECT_TRUE( eof_signalled );
 }
 
