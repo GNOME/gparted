@@ -324,6 +324,19 @@ TEST_F( PipeCaptureTest, MinimalBinaryCrash777973 )
 	EXPECT_TRUE( eof_signalled );
 }
 
+TEST_F( PipeCaptureTest, ReadEmbeddedNULCharacter )
+{
+	// Test embedded NUL character in the middle of the input is read correctly.
+	const char * buf = "ABC\0EF";
+	inputstr = std::string( buf, 6 );
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.signal_eof.connect( sigc::mem_fun( *this, &PipeCaptureTest::eof_callback ) );
+	pc.connect_signal();
+	run_writer_thread();
+	EXPECT_BINARYSTRINGEQ( inputstr, capturedstr.raw() );
+	EXPECT_TRUE( eof_signalled );
+}
+
 }  // namespace GParted
 
 // Custom Google Test main() which also initialises the Glib threading system for
