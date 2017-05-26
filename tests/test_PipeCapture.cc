@@ -354,6 +354,62 @@ TEST_F( PipeCaptureTest, ReadNULByteInMiddleOfMultiByteUTF8Character )
 	EXPECT_TRUE( eof_signalled );
 }
 
+TEST_F( PipeCaptureTest, LineDisciplineCarriageReturn )
+{
+	// Test PipeCapture line discipline processes carriage return character.
+	inputstr = "1111\n2222\r33";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.connect_signal();
+	run_writer_thread();
+	expectedstr = "1111\n3322";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+}
+
+TEST_F( PipeCaptureTest, LineDisciplineCarriageReturn2 )
+{
+	// Test PipeCapture line discipline processes multiple carriage return characters.
+	inputstr = "1111\n2222\r33\r\r4";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.connect_signal();
+	run_writer_thread();
+	expectedstr = "1111\n4322";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+}
+
+TEST_F( PipeCaptureTest, LineDisciplineBackspace )
+{
+	// Test PipeCapture line discipline processes backspace character.
+	inputstr = "1111\n2222\b33";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.connect_signal();
+	run_writer_thread();
+	expectedstr = "1111\n22233";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+}
+
+TEST_F( PipeCaptureTest, LineDisciplineBackspace2 )
+{
+	// Test PipeCapture line discipline processes too many backspace characters moving
+	// the cursor back only to the beginning of the current line.
+	inputstr = "1111\n2222\b\b\b\b\b\b33\b4";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.connect_signal();
+	run_writer_thread();
+	expectedstr = "1111\n3422";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+}
+
+TEST_F( PipeCaptureTest, LineDisciplineSkipCtrlAB )
+{
+	// Test PipeCapture line discipline skips Ctrl-A and Ctrl-B.
+	inputstr = "ij\x01kl\x02mn";
+	PipeCapture pc( pipefds[ReaderFD], capturedstr );
+	pc.connect_signal();
+	run_writer_thread();
+	expectedstr = "ijklmn";
+	EXPECT_BINARYSTRINGEQ( expectedstr, capturedstr.raw() );
+}
+
 }  // namespace GParted
 
 // Custom Google Test main() which also initialises the Glib threading system for
