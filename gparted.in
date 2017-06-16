@@ -37,6 +37,30 @@ if test "z`ps -e | grep gpartedbin`" != "z"; then
 fi
 
 #
+#  Define base command for executing GParted
+#
+BASE_CMD="@installdir@/gpartedbin $*"
+
+#
+#  For non-root users try to get authorisation to run GParted as root.
+#
+if test "x`id -u`" != "x0"; then
+	#
+	#  If there is no configured SU program run gpartedbin as
+	#  non-root to display the graphical error about needing root
+	#  privileges.
+	#
+	if test "x@gksuprog@" = "x"; then
+		echo "Root privileges are required for running gparted."
+		$BASE_CMD
+		exit 1
+	fi
+
+	@gksuprog@ '@installdir@/gparted' "$@"
+	exit $?
+fi
+
+#
 #  Search PATH to determine if systemctl program can be found
 #  and if appropriate daemon is running.
 #
@@ -103,24 +127,6 @@ for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 		fi
 	fi
 done
-
-#
-#  Define base command for executing GParted
-#
-BASE_CMD="@installdir@/gpartedbin $*"
-
-#
-#  If no root privileges, then invoke gpartedbin directly
-#  so that a graphical warning is displayed.
-#  Otherwise udisks, devkit-disks, or hal-lock in the later
-#  invocation may prevent gpartedbin from starting and hence
-#  the user will not see a graphical warning.
-#
-if test "x`id -u`" != "x0"; then
-	echo "Root privileges are required for running gparted."
-	$BASE_CMD
-	exit 1
-fi
 
 #
 #  Use systemctl to prevent automount by masking currently unmasked mount points
