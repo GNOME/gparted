@@ -21,9 +21,17 @@ PKG_CHECK_EXISTS
 
 
 dnl======================
-dnl checks for other programs
+dnl Find graphical privilege escalation program
 dnl======================
-AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo "xdg-su -c"], [])
+AC_CHECK_PROGS([GKSUPROG], [pkexec gksudo gksu kdesudo "xdg-su -c"], [])
+
+if test "x$GKSUPROG" = 'xpkexec'; then
+	AC_MSG_CHECKING([how to run pkexec])
+	if pkexec --help 2>&1 | grep -q -- --disable-internal-agent; then
+		GKSUPROG="$GKSUPROG --disable-internal-agent"
+	fi
+	AC_MSG_RESULT([$GKSUPROG])
+fi
 
 
 dnl======================
