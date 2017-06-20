@@ -1379,7 +1379,7 @@ FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedP
 			}
 
 			if ( memcmp( magic1, signatures[i].sig1, len1 ) == 0     &&
-			     ( signatures[i].sig2 != NULL ||
+			     ( signatures[i].sig2 == NULL ||
 			       memcmp( magic2, signatures[i].sig2, len2 ) == 0 )     )
 			{
 				fstype = signatures[i].fstype;
