@@ -20,8 +20,15 @@ APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(APPDATA_FILES)
 
+@INTLTOOL_POLICY_RULE@
+polkit_action_in_in_FILES = org.gnome.gparted.policy.in.in
+polkit_action_in_FILES = org.gnome.gparted.policy.in
+polkit_action_FILES = $(polkit_action_in_FILES:.policy.in=.policy)
+polkit_actiondir = $(datadir)/polkit-1/actions
+polkit_action_DATA = $(polkit_action_FILES)
+
 bin_SCRIPTS = gparted
-CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES)
+CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES) $(polkit_action_in_FILES)
 
 do_subst = sed -e 's,[@]sbindir[@],$(sbindir),g' \
 	-e 's,[@]bindir[@],$(bindir),g' \
@@ -33,6 +40,9 @@ gparted.desktop.in:  gparted.desktop.in.in Makefile
 gparted:  gparted.in Makefile
 	$(do_subst) < $(srcdir)/gparted.in > gparted
 	chmod +x gparted
+
+org.gnome.gparted.policy.in: org.gnome.gparted.policy.in.in Makefile
+	$(do_subst) < $(srcdir)/org.gnome.gparted.policy.in.in > org.gnome.gparted.policy.in
 
 dist-hook:
 	@if test -d "$(srcdir)/.git"; \
@@ -62,6 +72,7 @@ EXTRA_DIST =			\
 	$(APPDATA_FILES)	\
 	$(DESKTOP_IN_IN_FILES)	\
 	$(DESKTOP_FILES)	\
+	$(polkit_action_in_in_FILES)  \
 	intltool-extract.in  	\
 	intltool-merge.in	\
 	intltool-update.in	\
@@ -71,6 +82,7 @@ EXTRA_DIST =			\
 DISTCLEANFILES =		\
 	$(appdata_DATA)		\
 	$(desktop_DATA)		\
+	$(polkit_action_DATA)  \
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update		\

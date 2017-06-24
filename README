@@ -75,8 +75,11 @@ b. Building from Source
       ./configure
       make
       sudo make install
-   This assumes all the dependencies are already installed and builds
-   the default configuration.
+      sudo install -m 644 org.gnome.gparted.policy \
+             /usr/share/polkit-1/actions/org.gnome.gparted.local.policy
+   This assumes all the dependencies are already installed, builds the
+   default configuration and polkit is being used as the graphical su
+   program.
 
    The following dependencies are required to build GParted from source:
       g++
@@ -147,7 +150,46 @@ b. Building from Source
 
    The INSTALL file contains further GNU installation instructions.
 
-c. Building using a Specific (lib)parted Version
+c. Installing polkit's Action File
+
+   GParted needs to run as root therefore it needs a graphical switch
+   user program to allow normal users to run it.  Most desktops now use
+   polkit as their preferred authorisation mechanism.  Therefore
+   ./configure looks for polkit's pkexec as the first choice with
+   fallbacks in order being: gksudo, gksu, kdesudo and finally xdg-su.
+   Also polkit reads action files only from directory
+   /usr/share/polkit-1/actions.  Therefore it is likely that a polkit
+   action file will need to be installed into this directory.
+
+   To determine if polkit's pkexec program is being used as the
+   graphical privilege escalation program examine the output from
+   ./configure.  These lines report that pkexec is being used:
+
+      checking for pkexec... pkexec
+      checking how to run pkexec... pkexec --disable-internal-agent
+
+   Where as this line of ./configure output reports that pkexec is not
+   being used:
+
+      checking for pkexec... no
+
+   When GParted is configured with prefix /usr (using command
+   ./configure --prefix=/usr) then make install will automatically
+   install the polkit action file into the correct directory and no
+   further steps need to be taken.  This is typically the case for
+   distribution builds of GParted.
+
+   However when GParted is configured with the default prefix of
+   /usr/local, or any prefix other than /usr, then the polkit action
+   file has to be manually installed into the correct directory.  Also
+   it should have a unique file name to avoid overwriting the action
+   file from the distribution's package.  Install the polkit action file
+   with a unique name including an extra ".local" in the name:
+
+      sudo install -m 644 org.gnome.gparted.policy \
+             /usr/share/polkit-1/actions/org.gnome.gparted.local.policy
+
+d. Building using a Specific (lib)parted Version
 
    1) Download the parted version you wish to use (e.g., 3.2) from:
 
