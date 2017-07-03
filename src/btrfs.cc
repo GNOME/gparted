@@ -111,7 +111,7 @@ FS btrfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "btrfstune" ).empty() )
 	{
 		Utils::execute_command( "btrfstune --help", output, error, true );
-		if ( Utils::regexp_label( error, "^[[:blank:]]*(-u)[[:blank:]]" ) == "-u" )
+		if ( Utils::regexp_label( output + error, "^[[:blank:]]*(-u)[[:blank:]]" ) == "-u" )
 			fs.write_uuid = FS::EXTERNAL;
 	}
 
