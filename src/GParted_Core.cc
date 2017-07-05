@@ -48,6 +48,7 @@
 #include "hfs.h"
 #include "hfsplus.h"
 #include "reiser4.h"
+#include "udf.h"
 #include "ufs.h"
 
 #include <cerrno>
@@ -1473,6 +1474,8 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 		          fsname == "hfsx"    ||
 		          fsname == "hfsplus"    )
 			return GParted::FS_HFSPLUS ;
+		else if ( fsname == "udf" )
+			return GParted::FS_UDF;
 		else if ( fsname == "ufs" )
 			return GParted::FS_UFS ;
 		else if ( fsname == "iso9660" )
@@ -3494,6 +3497,13 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			if ( ! lp_fs_type && fs_type == "linux-swap" )
 				lp_fs_type = ped_file_system_type_get( "linux-swap(new)" );
 
+			// If not found, and FS is udf, then try ntfs.
+			// Actually MBR 07 IFS (Microsoft Installable File System) or
+			// GPT BDP (Windows Basic Data Partition).
+			// Ref: https://serverfault.com/a/829172
+			if ( ! lp_fs_type && fs_type == "udf" )
+				lp_fs_type = ped_file_system_type_get( "ntfs" );
+
 			// default is Linux (83)
 			if ( ! lp_fs_type )
 				lp_fs_type = ped_file_system_type_get( "ext2" );
@@ -4122,6 +4132,7 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
 	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
 	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
+	FILESYSTEM_MAP[FS_UDF]             = new udf();
 	FILESYSTEM_MAP[FS_UFS]             = new ufs();
 	FILESYSTEM_MAP[FS_XFS]             = new xfs();
 	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;

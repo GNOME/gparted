@@ -111,6 +111,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 		case FS_JFS			: return "#E0C39E" ;	//face skin medium
 		case FS_HFS			: return "#E0B6AF" ;	//red hilight
 		case FS_HFSPLUS		: return "#C0A39E" ;	// ~ serene red
+		case FS_UDF		: return "#105210";	// Accent Green Shadow
 		case FS_UFS			: return "#D1940C" ;	//accent yellow dark
 		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
@@ -232,6 +233,7 @@ int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 		case FS_NTFS		: return 128 ;
 		case FS_REISER4		: return 16 ;
 		case FS_REISERFS	: return 16 ;
+		case FS_UDF		: return 30;  // and only 15 if label contains character above U+FF
 		//case FS_UFS		: return  ;
 		case FS_XFS		: return 12 ;
 
@@ -289,6 +291,7 @@ Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
 		case FS_JFS		: return "jfs" ;
 		case FS_HFS		: return "hfs" ;
 		case FS_HFSPLUS		: return "hfs+" ;
+		case FS_UDF		: return "udf";
 		case FS_UFS		: return "ufs" ;
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
@@ -337,6 +340,7 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FILESYSTEM fstype )
 		case FS_NTFS     : return "ntfs";
 		case FS_REISER4  : return "reiser4";
 		case FS_REISERFS : return "reiserfs";
+		case FS_UDF      : return "udf";
 		case FS_UFS      : return "ufs";
 		case FS_XFS      : return "xfs";
 		default          : return "";
@@ -364,6 +368,7 @@ Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
 		case FS_NTFS        : return "ntfs-3g / ntfsprogs" ;
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs / reiserfs-utils" ;
+		case FS_UDF         : return "udftools";
 		case FS_UFS         : return "" ;
 		case FS_XFS         : return "xfsprogs, xfsdump" ;
 

@@ -75,6 +75,7 @@ gpartedbin_SOURCES = \
 	ntfs.cc				\
 	reiser4.cc			\
 	reiserfs.cc			\
+	udf.cc				\
 	ufs.cc				\
 	xfs.cc
 

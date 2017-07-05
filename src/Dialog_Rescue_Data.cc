@@ -386,7 +386,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 							fs=GParted::FS_FAT32;
 							break;
 						}
-						case 0x07: //NTFS and HPFS
+						case 0x07: //NTFS, HPFS, exFAT and UDF
 						{
 							fs=GParted::FS_NTFS;
 							break;

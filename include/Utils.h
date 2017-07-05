@@ -85,21 +85,22 @@ enum FILESYSTEM
 	FS_NTFS            = 20,
 	FS_REISER4         = 21,
 	FS_REISERFS        = 22,
-	FS_UFS             = 23,
-	FS_XFS             = 24,
+	FS_UDF             = 23,
+	FS_UFS             = 24,
+	FS_XFS             = 25,
 
 	// Recognised signatures but otherwise unsupported file system types
-	FS_BITLOCKER       = 25,
-	FS_GRUB2_CORE_IMG  = 26,
-	FS_ISO9660         = 27,
-	FS_LINUX_SWRAID    = 28,
-	FS_LINUX_SWSUSPEND = 29,
-	FS_REFS            = 30,
-	FS_ZFS             = 31,
+	FS_BITLOCKER       = 26,
+	FS_GRUB2_CORE_IMG  = 27,
+	FS_ISO9660         = 28,
+	FS_LINUX_SWRAID    = 29,
+	FS_LINUX_SWSUSPEND = 30,
+	FS_REFS            = 31,
+	FS_ZFS             = 32,
 
 	// Partition space usage colours
-	FS_USED            = 32,
-	FS_UNUSED          = 33
+	FS_USED            = 33,
+	FS_UNUSED          = 34
 } ;
 
 enum SIZE_UNIT
