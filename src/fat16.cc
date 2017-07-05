@@ -236,8 +236,9 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
-	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I -n \"" +
-	                          sanitize_label( new_partition.get_filesystem_label() ) + "\" " +
+	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
+	                           "-n \"" + sanitize_label( new_partition.get_filesystem_label() ) + "\" ";
+	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I " + label_args +
 	                          new_partition.get_path(),
 	                          operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
