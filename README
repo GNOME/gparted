@@ -145,6 +145,11 @@ b. Building from Source
               specifically enabled with the --enable-online-resize flag:
                 E.g., ./configure --enable-online-resize
 
+   If you wish to build GParted to allow it to use xhost to grant root
+   access to the X11 server use the --enable-xhost-root flag.  This is
+   required to allow GParted to display under Wayland.
+      ./configure --enable-xhost-root
+
    Please note that more than one configure flag can be used:
       E.g., ./configure --disable-doc --enable-libparted-dmraid
 
@@ -332,4 +337,6 @@ system.  These commands include:
    udevinfo        - used in dmraid to query udev name
    udevadm         - used in dmraid to query udev name
    yelp            - used to display help manual
+   xhost           - used to grant root access to the X11 server, only
+                     when configured to do so
 

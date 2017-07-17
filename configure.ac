@@ -392,6 +392,25 @@ else
 fi
 
 
+dnl Check whether to explicitly grant root access to the display.
+AC_ARG_ENABLE(
+	[xhost-root],
+	AS_HELP_STRING(
+		[--enable-xhost-root],
+		[enable explicitly granting root access to the display @<:@default=disabled@:>@]),
+	[enable_xhost_root=$enableval],
+	[enable_xhost_root=no]
+)
+
+AC_MSG_CHECKING([whether to explicitly grant root access to the display])
+if test "x$enable_xhost_root" = 'xyes'; then
+	AC_MSG_RESULT([yes])
+else
+	AC_MSG_RESULT([no])
+fi
+AC_SUBST([ENABLE_XHOST_ROOT], $enable_xhost_root)
+
+
 AC_CONFIG_FILES([
 Makefile
 compose/Makefile
@@ -421,6 +440,8 @@ echo ""
 echo "                      Build help documentation?  :  $enable_doc"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
+echo ""
+echo "   Explicitly grant root access to the display?  :  $enable_xhost_root"
 echo ""
 echo "       --- Features Based On Libparted Version ---"
 echo "       Need delete old partitions before"

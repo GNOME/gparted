@@ -56,8 +56,35 @@ if test "x`id -u`" != "x0"; then
 		exit 1
 	fi
 
+	#
+	# Interim workaround to allow GParted run by root access to the
+	# X11 display server under Wayland.  If configured with
+	# './configure --enable-xhost-root', the xhost command is
+	# available and root has not been granted access to the X11
+	# display via xhost, then grant access.
+	#
+	ENABLE_XHOST_ROOT=@enable_xhost_root@
+	GRANTED_XHOST_ROOT=no
+	if test "x$ENABLE_XHOST_ROOT" = 'xyes' && xhost 1> /dev/null 2>&1; then
+		if ! xhost | grep -qi 'SI:localuser:root$'; then
+			xhost +SI:localuser:root
+			GRANTED_XHOST_ROOT=yes
+		fi
+	fi
+
+	#
+	# Run gparted as root.
+	#
 	@gksuprog@ '@bindir@/gparted' "$@"
-	exit $?
+	status=$?
+
+	#
+	# Revoke root access to the X11 display, only if we granted it.
+	#
+	if test "x$GRANTED_XHOST_ROOT" = 'xyes'; then
+		xhost -SI:localuser:root
+	fi
+	exit $status
 fi
 
 #
