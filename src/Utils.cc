@@ -233,7 +233,7 @@ int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 		case FS_NTFS		: return 128 ;
 		case FS_REISER4		: return 16 ;
 		case FS_REISERFS	: return 16 ;
-		case FS_UDF		: return 30;  // and only 15 if label contains character above U+FF
+		case FS_UDF		: return 126;  // and only 63 if label contains character above U+FF
 		//case FS_UFS		: return  ;
 		case FS_XFS		: return 12 ;
 

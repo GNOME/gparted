@@ -27,8 +27,13 @@ namespace GParted
 class udf : public FileSystem
 {
 public:
+	udf() : old_mkudffs( false ) {};
+
 	FS get_filesystem_support();
 	bool create( const Partition & new_partition, OperationDetail & operationdetail );
+
+private:
+	bool old_mkudffs;  // Pre 1.1 version of mkudffs
 };
 
 } //GParted

@@ -44,6 +44,10 @@ FS udf::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 	}
 
+	// Detect old mkudffs prior to version 1.1 by lack of --label option.
+	Utils::execute_command( "mkudffs --help", output, error, true );
+	old_mkudffs = Utils::regexp_label( output + error, "--label" ).empty();
+
 	// NOTE: Other external programs do not exist yet
 
 	return fs;
@@ -73,16 +77,69 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	// NOTE: UDF Logical Volume Identifier (--lvid) represents the label but blkid
 	// (from util-linux) prior to version v2.26 used the Volume Identifier (--vid).
 	// Therefore for compatibility reasons store label in both locations.
+
 	Glib::ustring label_args;
 	if ( ! new_partition.get_filesystem_label().empty() )
-		label_args = "--lvid=\"" + new_partition.get_filesystem_label() + "\" " +
-		             "--vid=\"" + new_partition.get_filesystem_label() + "\" ";
+	{
+		const Glib::ustring label = new_partition.get_filesystem_label();
+		int non_ascii_pos_label = -1;
+		int non_latin1_pos_label = -1;
+		int pos = 0;
+
+		for ( Glib::ustring::const_iterator it = label.begin(); it != label.end(); ++it )
+		{
+			if ( *it > 0x7F && non_ascii_pos_label == -1 )
+				non_ascii_pos_label = pos;
+			if ( *it > 0xFF && non_latin1_pos_label == -1 )
+				non_latin1_pos_label = pos;
+			if ( non_ascii_pos_label != -1 && non_latin1_pos_label != -1 )
+				break;
+			++pos;
+		}
+
+		// NOTE: mkudffs from udftools prior to version 1.1 damage label if contains
+		// non-ASCII characters. So do not allow non-ASCII characters in old mkudffs.
+		if ( old_mkudffs && non_ascii_pos_label != -1 )
+		{
+			operationdetail.add_child( OperationDetail(
+			                           _("mkudffs prior to version 1.1 does not support non-ASCII characters in the label."),
+			                           STATUS_ERROR ) );
+			return false;
+		}
+
+		// NOTE: UDF Volume Identifier (--vid) can contain maximally 30 Unicode code
+		// points. And if one is above U+FF then only 15. UDF Logical Volume Identifier
+		// (--lvid) can contain maximally 126 resp. 63 Unicode code points. To allow
+		// long 126 characters in label, UDF Volume Identifier would be truncated.
+		// When UDF Volume Identifier or UDF Logical Volume Identifier is too long
+		// mkuddfs fail with error.
+
+		// NOTE: According to the OSTA specification, UDF supports only strings
+		// encoded in 8-bit or 16-bit OSTA Compressed Unicode format.  They are
+		// equivalent to ISO-8859-1 (Latin 1) and UCS-2BE respectively.
+		// Conversion from UTF-8 passed on the command line to OSTA format is done
+		// by mkudffs.  Strictly speaking UDF does not support UTF-16 as the UDF
+		// specification was created before the introduction of UTF-16, but lots
+		// of UDF tools are able to decode UTF-16 including UTF-16 Surrogate pairs
+		// outside the BMP (Basic Multilingual Plane).
+
+		Glib::ustring vid_arg;
+		if ( non_latin1_pos_label > 30 )
+			vid_arg = new_partition.get_filesystem_label().substr(0, 30);
+		else if ( non_latin1_pos_label > 15 )
+			vid_arg = new_partition.get_filesystem_label().substr(0, non_latin1_pos_label-1);
+		else if ( non_latin1_pos_label == -1 && label.length() > 30 )
+			vid_arg = new_partition.get_filesystem_label().substr(0, 30);
+		else if ( label.length() > 15 )
+			vid_arg = new_partition.get_filesystem_label().substr(0, 15);
+		else
+			vid_arg = new_partition.get_filesystem_label();
+
+		label_args = "--lvid=\"" + label + "\" " + "--vid=\"" + vid_arg + "\" ";
+	}
 
 	// NOTE: UDF block size must match logical sector size of underlying media.
 	Glib::ustring blocksize_args = "--blocksize=" + Utils::num_to_str( new_partition.sector_size ) + " ";
-
-	// FIXME: mkudffs from udftools prior to version 1.1 damage label if contains
-	// non-ascii characters.
 
 	// TODO: Add GUI option for choosing different optical disks and UDF revision.
 	// For now format as UDF revision 2.01 for hard disk media type.
