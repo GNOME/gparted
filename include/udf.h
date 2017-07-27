@@ -21,6 +21,9 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+#include <stddef.h>
+#include <glibmm/ustring.h>
+
 namespace GParted
 {
 
@@ -33,6 +36,9 @@ public:
 	bool create( const Partition & new_partition, OperationDetail & operationdetail );
 
 private:
+	static bool contains_only_ascii( const Glib::ustring & str );
+	static size_t find_first_non_latin1( const Glib::ustring & str );
+
 	bool old_mkudffs;  // Pre 1.1 version of mkudffs
 };
 

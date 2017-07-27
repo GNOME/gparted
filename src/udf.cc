@@ -18,6 +18,9 @@
 #include "Partition.h"
 #include "Utils.h"
 
+#include <stddef.h>
+#include <glibmm/ustring.h>
+
 namespace GParted
 {
 
@@ -74,45 +77,21 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 		return false;
 	}
 
-	// NOTE: UDF Logical Volume Identifier (--lvid) represents the label but blkid
-	// (from util-linux) prior to version v2.26 used the Volume Identifier (--vid).
-	// Therefore for compatibility reasons store label in both locations.
-
 	Glib::ustring label_args;
 	if ( ! new_partition.get_filesystem_label().empty() )
 	{
 		const Glib::ustring label = new_partition.get_filesystem_label();
-		int non_ascii_pos_label = -1;
-		int non_latin1_pos_label = -1;
-		int pos = 0;
 
-		for ( Glib::ustring::const_iterator it = label.begin(); it != label.end(); ++it )
-		{
-			if ( *it > 0x7F && non_ascii_pos_label == -1 )
-				non_ascii_pos_label = pos;
-			if ( *it > 0xFF && non_latin1_pos_label == -1 )
-				non_latin1_pos_label = pos;
-			if ( non_ascii_pos_label != -1 && non_latin1_pos_label != -1 )
-				break;
-			++pos;
-		}
-
-		// NOTE: mkudffs from udftools prior to version 1.1 damage label if contains
-		// non-ASCII characters. So do not allow non-ASCII characters in old mkudffs.
-		if ( old_mkudffs && non_ascii_pos_label != -1 )
+		// Mkudffs from udftools prior to version 1.1 damages the label if it
+		// contains non-ASCII characters.  Therefore do not allow a label with
+		// such characters with old versions of mkudffs.
+		if ( old_mkudffs && ! contains_only_ascii( label ) )
 		{
 			operationdetail.add_child( OperationDetail(
-			                           _("mkudffs prior to version 1.1 does not support non-ASCII characters in the label."),
-			                           STATUS_ERROR ) );
+				_("mkudffs prior to version 1.1 does not support non-ASCII characters in the label."),
+				STATUS_ERROR ) );
 			return false;
 		}
-
-		// NOTE: UDF Volume Identifier (--vid) can contain maximally 30 Unicode code
-		// points. And if one is above U+FF then only 15. UDF Logical Volume Identifier
-		// (--lvid) can contain maximally 126 resp. 63 Unicode code points. To allow
-		// long 126 characters in label, UDF Volume Identifier would be truncated.
-		// When UDF Volume Identifier or UDF Logical Volume Identifier is too long
-		// mkuddfs fail with error.
 
 		// NOTE: According to the OSTA specification, UDF supports only strings
 		// encoded in 8-bit or 16-bit OSTA Compressed Unicode format.  They are
@@ -122,20 +101,25 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 		// specification was created before the introduction of UTF-16, but lots
 		// of UDF tools are able to decode UTF-16 including UTF-16 Surrogate pairs
 		// outside the BMP (Basic Multilingual Plane).
+		//
+		// The Volume Identifier (--vid) can only contain 30 bytes, either 30
+		// ISO-8859-1 (Latin 1) characters or 15 UCS-2BE characters.  Store the
+		// most characters possible in the Volume Identifier.  Either up to 15
+		// UCS-2BE characters when a character needing 16-bit encoding is found in
+		// the first 15 characters, or up to 30 characters when a character
+		// needing 16-bit encoding is found in the second 15 characters.
+		Glib::ustring vid = label.substr( 0, 30 );
+		size_t first_non_latin1_pos = find_first_non_latin1( label );
+		if ( first_non_latin1_pos < 15 )
+			vid = label.substr( 0, 15 );
+		else if ( first_non_latin1_pos < 30 )
+			vid = label.substr( 0, first_non_latin1_pos );
 
-		Glib::ustring vid_arg;
-		if ( non_latin1_pos_label > 30 )
-			vid_arg = new_partition.get_filesystem_label().substr(0, 30);
-		else if ( non_latin1_pos_label > 15 )
-			vid_arg = new_partition.get_filesystem_label().substr(0, non_latin1_pos_label-1);
-		else if ( non_latin1_pos_label == -1 && label.length() > 30 )
-			vid_arg = new_partition.get_filesystem_label().substr(0, 30);
-		else if ( label.length() > 15 )
-			vid_arg = new_partition.get_filesystem_label().substr(0, 15);
-		else
-			vid_arg = new_partition.get_filesystem_label();
-
-		label_args = "--lvid=\"" + label + "\" " + "--vid=\"" + vid_arg + "\" ";
+		// UDF Logical Volume Identifier (--lvid) represents the label, but blkid
+		// (from util-linux) prior to version v2.26 reads the Volume Identifier
+		// (--vid).  Therefore for compatibility reasons store the label in both
+		// locations.
+		label_args = "--lvid=\"" + label + "\" " + "--vid=\"" + vid + "\" ";
 	}
 
 	// NOTE: UDF block size must match logical sector size of underlying media.
@@ -147,6 +131,32 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	                          blocksize_args + label_args + new_partition.get_path(),
 	                          operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+}
+
+// Private methods
+
+// Return true only if all the characters in the string are ASCII (<= 0x7F), otherwise false.
+bool udf::contains_only_ascii( const Glib::ustring & str )
+{
+	for ( Glib::ustring::const_iterator it = str.begin() ; it != str.end() ; ++it )
+	{
+		if ( *it > 0x7F )
+			return false;
+	}
+	return true;
+}
+
+// Return the offset of the first non-Latin1 character (> 0xFF), or npos when none found.
+size_t udf::find_first_non_latin1( const Glib::ustring & str )
+{
+	size_t pos = 0;
+	for ( Glib::ustring::const_iterator it = str.begin() ; it != str.end() ; ++it )
+	{
+		if ( *it > 0xFF )
+			return pos;
+		++pos;
+	}
+	return Glib::ustring::npos;
 }
 
 } //GParted
