@@ -25,7 +25,9 @@ polkit_action_in_in_FILES = org.gnome.gparted.policy.in.in
 polkit_action_in_FILES = org.gnome.gparted.policy.in
 polkit_action_FILES = $(polkit_action_in_FILES:.policy.in=.policy)
 polkit_actiondir = $(datadir)/polkit-1/actions
-polkit_action_DATA = $(polkit_action_FILES)
+if INSTALL_POLKIT_ACTIONS
+  polkit_action_DATA = $(polkit_action_FILES)
+endif
 
 bin_SCRIPTS = gparted
 CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES) $(polkit_action_in_FILES)
