@@ -39,7 +39,7 @@ fi
 #
 #  Define base command for executing GParted
 #
-BASE_CMD="@installdir@/gpartedbin $*"
+BASE_CMD="@sbindir@/gpartedbin $*"
 
 #
 #  For non-root users try to get authorisation to run GParted as root.
@@ -56,7 +56,7 @@ if test "x`id -u`" != "x0"; then
 		exit 1
 	fi
 
-	@gksuprog@ '@installdir@/gparted' "$@"
+	@gksuprog@ '@bindir@/gparted' "$@"
 	exit $?
 fi
 

@@ -20,10 +20,11 @@ APPDATA_FILES =$(APPDATA_IN_FILES:.xml.in=.xml)
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(APPDATA_FILES)
 
-sbin_SCRIPTS = gparted
-CLEANFILES = $(sbin_SCRIPTS) $(DESKTOP_IN_FILES)
+bin_SCRIPTS = gparted
+CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES)
 
-do_subst = sed -e 's,[@]installdir[@],$(sbindir),g' \
+do_subst = sed -e 's,[@]sbindir[@],$(sbindir),g' \
+	-e 's,[@]bindir[@],$(bindir),g' \
 	-e 's,[@]gksuprog[@],$(GKSUPROG),g'
 
 gparted.desktop.in:  gparted.desktop.in.in Makefile
