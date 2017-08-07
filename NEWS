@@ -1,4 +1,48 @@
 ============================
+GParted 0.29.0  (2017-08-07)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Add support for UDF file system
+  * Fix segmentation fault on disk with corrupted FAT file system
+  * Fix snap-to-alignment of operations creating partitions
+
+Bug Fixes
+---------
+  * Fix segmentation fault on disk with corrupted FAT file system (#777973)
+  * Fix snap-to-alignment of operations creating partitions (#779339)
+  * Fix btrfs partitions mounted with whitespace cannot be resized (#782681)
+  * Add Google Test C++ test framework (#781978)
+  * Fix LVM2 PV detected regardless if second magic matches or not (#783997)
+  * Fix no longer detecting btrfs change UUID capability (#784467)
+  * Fix setting empty label when creating FAT16/32 file systems (#784564)
+  * Add support for UDF file system (#784533)
+  * Fix make distcheck fails with *.Po: No such file or directory (#785308)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Pali Rohár and Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  cs(Marek Cernocky), da(Alan Mortensen), de(Mario Blättermann),
+  es(Daniel Mustieles), fi(Jiri Grönroos), fr(Claude Paroz), hr(gogo),
+  id(Kukuh Syafaat), kk(Baurzhan Muftakhidinov), pl(Piotr Drąg),
+  pt_BR(Rafael Fontenelle), ro(Daniel Șerbănescu), sv(Anders Jonsson),
+  tr(Emin Tufan Çetin)
+
+Dependencies (new/updated)
+--------------------------
+  * udftools package is required for optional udf file system support.
+
+
+============================
 GParted 0.28.1  (2017-02-17)
 ============================
 
