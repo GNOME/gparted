@@ -41,15 +41,16 @@ FS udf::get_filesystem_support()
 	fs.MIN = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
 	fs.MAX = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
 
+	old_mkudffs = false;
 	if ( ! Glib::find_program_in_path( "mkudffs" ).empty() )
 	{
 		fs.create = FS::EXTERNAL;
 		fs.create_with_label = FS::EXTERNAL;
-	}
 
-	// Detect old mkudffs prior to version 1.1 by lack of --label option.
-	Utils::execute_command( "mkudffs --help", output, error, true );
-	old_mkudffs = Utils::regexp_label( output + error, "--label" ).empty();
+		// Detect old mkudffs prior to version 1.1 by lack of --label option.
+		Utils::execute_command( "mkudffs --help", output, error, true );
+		old_mkudffs = Utils::regexp_label( output + error, "--label" ).empty();
+	}
 
 	// NOTE: Other external programs do not exist yet
 
