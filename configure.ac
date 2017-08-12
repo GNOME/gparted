@@ -23,16 +23,33 @@ PKG_CHECK_EXISTS
 dnl======================
 dnl Find graphical privilege escalation program
 dnl======================
-AC_CHECK_PROGS([GKSUPROG], [pkexec gksudo gksu kdesudo "xdg-su -c"], [])
-
+dnl Check for pkexec >= 0.102 for it's ability to run X11 apps and
+dnl whether the --disable-internal-agent option is available.
 AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], false)
-if test "x$GKSUPROG" = 'xpkexec'; then
-	AC_MSG_CHECKING([how to run pkexec])
-	if pkexec --help 2>&1 | grep -q -- --disable-internal-agent; then
-		GKSUPROG="$GKSUPROG --disable-internal-agent"
+PKEXEC_REQUIRED_VERSION='0.102'
+AC_MSG_CHECKING([for pkexec >= $PKEXEC_REQUIRED_VERSION])
+PKEXEC_REQUIRED_INT=`echo "$PKEXEC_REQUIRED_VERSION" | $AWK -F. '{print $1 * 10000 + $2}'`
+PKEXEC_VERSION_OUTPUT=`pkexec --version 2> /dev/null` ||
+	AC_MSG_RESULT([not found])
+if test "x$PKEXEC_VERSION_OUTPUT" != 'x'; then
+	PKEXEC_FOUND_VERSION=`echo "$PKEXEC_VERSION_OUTPUT" | head -1 | cut -d' ' -f3`
+	PKEXEC_FOUND_INT=`echo "$PKEXEC_FOUND_VERSION" | $AWK -F. '{print $1 * 10000 + $2}'`
+	AC_MSG_RESULT([$PKEXEC_FOUND_VERSION found])
+	if test "$PKEXEC_FOUND_INT" -ge "$PKEXEC_REQUIRED_INT"; then
+		GKSUPROG='pkexec'
+		AC_MSG_CHECKING([how to run pkexec])
+		if pkexec --help 2>&1 | grep -q -- --disable-internal-agent; then
+			GKSUPROG="$GKSUPROG --disable-internal-agent"
+		fi
+		AC_MSG_RESULT([$GKSUPROG])
+		AC_SUBST([GKSUPROG])
+		AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], true)
 	fi
-	AC_MSG_RESULT([$GKSUPROG])
-	AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], true)
+fi
+
+dnl Check for alternative graphical privilege escalation programs.
+if test "x$GKSUPROG" = 'x'; then
+	AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo "xdg-su -c"], [])
 fi
 
 

@@ -165,13 +165,16 @@ c. Installing polkit's Action File
    graphical privilege escalation program examine the output from
    ./configure.  These lines report that pkexec is being used:
 
-      checking for pkexec... pkexec
+      checking for pkexec >= 0.102... 0.112 found
       checking how to run pkexec... pkexec --disable-internal-agent
 
-   Where as this line of ./configure output reports that pkexec is not
-   being used:
+   Where as either of these lines of ./configure output report that
+   pkexec is not being used because either it was too old a version or
+   it was not found:
 
-      checking for pkexec... no
+      checking for pkexec >= 0.102... 0.96 found
+
+      checking for pkexec >= 0.102... not found
 
    When GParted is configured with prefix /usr (using command
    ./configure --prefix=/usr) then make install will automatically
