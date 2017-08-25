@@ -89,9 +89,26 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
 	initialize_if_required();
-	const FS_Entry & fs_entry = get_cache_entry_by_path( path );
-	found = fs_entry.have_label;
-	return fs_entry.label;
+	if ( ! blkid_found )
+	{
+		found = false;
+		return "";
+	}
+
+	// (#786502) Run a separate blkid execution for a single partition to get the
+	// label without blkid's default non-reversible encoding.
+	Glib::ustring output;
+	Glib::ustring error;
+	found = ! Utils::execute_command( "blkid -o value -s LABEL " + path, output, error, true );
+	size_t len = output.length();
+	if ( len > 0 && output[len-1] == '\n' )
+	{
+		// Output is either the label with a terminating new line or zero bytes
+		// when the file system has no label.  Strip optional trailing new line
+		// from blkid output.
+		output.resize( len-1 );
+	}
+	return output;
 }
 
 // Retrieve the uuid given for the path
