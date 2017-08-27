@@ -89,26 +89,26 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 {
 	initialize_if_required();
-	if ( ! blkid_found )
-	{
-		found = false;
-		return "";
-	}
+	BlockSpecial bs = BlockSpecial( path );
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( bs == fs_info_cache[i].path )
+		{
+			if ( fs_info_cache[i].type == "" )
+			{
+				// This is a blank cache entry for a whole disk device
+				// containing a partition table, so no label (as created
+				// by load_fs_info_cache_extra_for_path()).
+				found = false;
+				return "";
+			}
 
-	// (#786502) Run a separate blkid execution for a single partition to get the
-	// label without blkid's default non-reversible encoding.
-	Glib::ustring output;
-	Glib::ustring error;
-	found = ! Utils::execute_command( "blkid -o value -s LABEL " + path, output, error, true );
-	size_t len = output.length();
-	if ( len > 0 && output[len-1] == '\n' )
-	{
-		// Output is either the label with a terminating new line or zero bytes
-		// when the file system has no label.  Strip optional trailing new line
-		// from blkid output.
-		output.resize( len-1 );
-	}
-	return output;
+			// Run blkid to get the label for this one partition, update the
+			// cache and return the found label.
+			found = run_blkid_update_cache_one_label( fs_info_cache[i] );
+			return fs_info_cache[i].label;
+		}
+	found = false;
+	return "";
 }
 
 // Retrieve the uuid given for the path
@@ -267,6 +267,34 @@ bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 	}
 
 	return loaded_entries;
+}
+
+bool FS_Info::run_blkid_update_cache_one_label( FS_Entry & fs_entry )
+{
+	if ( ! blkid_found )
+		return false;
+
+	// (#786502) Run a separate blkid execution for a single partition to get the
+	// label without blkid's default non-reversible encoding.
+	Glib::ustring output;
+	Glib::ustring error;
+	bool success = ! Utils::execute_command( "blkid -o value -s LABEL " + fs_entry.path.m_name,
+	                                         output, error, true );
+	if ( ! success )
+		return false;
+
+	size_t len = output.length();
+	if ( len > 0 && output[len-1] == '\n' )
+	{
+		// Output is either the label with a terminating new line or zero bytes
+		// when the file system has no label.  Strip optional trailing new line
+		// from blkid output.
+		output.resize( len-1 );
+	}
+	// Update cache entry with the read label.
+	fs_entry.have_label = true;
+	fs_entry.label = output;
+	return true;
 }
 
 }//GParted
