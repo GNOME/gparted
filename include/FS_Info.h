@@ -52,6 +52,7 @@ private:
 	static void load_fs_info_cache();
 	static void load_fs_info_cache_extra_for_path( const Glib::ustring & path );
 	static bool run_blkid_load_cache( const Glib::ustring & path = "" );
+	static void update_fs_info_cache_all_labels();
 	static bool run_blkid_update_cache_one_label( FS_Entry & fs_entry );
 
 	static bool fs_info_cache_initialized ;

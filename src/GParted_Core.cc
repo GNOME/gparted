@@ -1284,8 +1284,12 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 		return;
 	}
 
-	// Retrieve file system label.  Use file system specific method first in an effort
-	// to ensure multi-byte character sets are properly displayed.
+	// Retrieve file system label.  Use file system specific method first because it
+	// has been that way since (#662537) to display Unicode labels correctly.
+	// (#786502) adds support for reading Unicode labels through the FS_Info cache.
+	// Either method should produce the same labels however the FS specific command is
+	// run in the users locale where as blkid is run in the C locale.  Shouldn't
+	// matter but who knows for sure!
 	read_label( partition );
 	if ( ! partition.filesystem_label_known() )
 	{

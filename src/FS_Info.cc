@@ -93,13 +93,14 @@ Glib::ustring FS_Info::get_label( const Glib::ustring & path, bool & found )
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( bs == fs_info_cache[i].path )
 		{
-			if ( fs_info_cache[i].type == "" )
+			if ( fs_info_cache[i].have_label || fs_info_cache[i].type == "" )
 			{
-				// This is a blank cache entry for a whole disk device
-				// containing a partition table, so no label (as created
-				// by load_fs_info_cache_extra_for_path()).
-				found = false;
-				return "";
+				// Already have the label or this is a blank cache entry
+				// for a whole disk device containing a partition table,
+				// so no label (as created by
+				// load_fs_info_cache_extra_for_path()).
+				found = fs_info_cache[i].have_label;
+				return fs_info_cache[i].label;
 			}
 
 			// Run blkid to get the label for this one partition, update the
@@ -134,6 +135,7 @@ Glib::ustring FS_Info::get_path_by_uuid( const Glib::ustring & uuid )
 Glib::ustring FS_Info::get_path_by_label( const Glib::ustring & label )
 {
 	initialize_if_required();
+	update_fs_info_cache_all_labels();
 	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
 		if ( label == fs_info_cache[i].label )
 			return fs_info_cache[i].path.m_name;
@@ -224,7 +226,8 @@ void FS_Info::load_fs_info_cache_extra_for_path( const Glib::ustring & path )
 bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 {
 	// Parse blkid output line by line extracting mandatory field: path and optional
-	// fields: type, sec_type, uuid, label.
+	// fields: type, sec_type, uuid.  Label is not extracted here because of blkid's
+	// default non-reversible encoding of non printable ASCII bytes.
 	// Example output:
 	//     /dev/sda1: UUID="f828ee8c-1e16-4ca9-b234-e4949dcd4bd1" TYPE="xfs"
 	//     /dev/sda2: UUID="p31pR5-qPLm-YICz-O09i-sB4u-mAH2-GVSNWG" TYPE="LVM2_member"
@@ -255,11 +258,6 @@ bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 				fs_entry.type = Utils::regexp_label( lines[i], " TYPE=\"([^\"]*)\"" );
 				fs_entry.sec_type = Utils::regexp_label( lines[i], " SEC_TYPE=\"([^\"]*)\"" );
 				fs_entry.uuid = Utils::regexp_label( lines[i], " UUID=\"([^\"]*)\"" );
-				if ( lines[i].find( " LABEL=\"" ) != Glib::ustring::npos )
-				{
-					fs_entry.have_label = true;
-					fs_entry.label = Utils::regexp_label( lines[i], " LABEL=\"([^\"]*)\"" );
-				}
 				fs_info_cache.push_back( fs_entry );
 				loaded_entries = true;
 			}
@@ -267,6 +265,18 @@ bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 	}
 
 	return loaded_entries;
+}
+
+void FS_Info::update_fs_info_cache_all_labels()
+{
+	if ( ! blkid_found )
+		return;
+
+	// For all cache entries which are file systems but don't yet have a label load it
+	// now.
+	for ( unsigned int i = 0 ; i < fs_info_cache.size() ; i ++ )
+		if ( fs_info_cache[i].type != "" && ! fs_info_cache[i].have_label )
+			run_blkid_update_cache_one_label( fs_info_cache[i] );
 }
 
 bool FS_Info::run_blkid_update_cache_one_label( FS_Entry & fs_entry )
