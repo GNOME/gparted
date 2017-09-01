@@ -8,10 +8,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-02-07 19:33+0000\n"
-"PO-Revision-Date: 2017-02-18 18:20+0200\n"
+"POT-Creation-Date: 2017-07-30 08:50+0000\n"
+"PO-Revision-Date: 2017-09-01 10:45+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -41,14 +41,18 @@ msgstr ""
 "yrittää palauttaa tietoja poistetuilta osioilta."
 
 #: ../gparted.appdata.xml.in.h:3
+#| msgid ""
+#| "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
+#| "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+#| "reiser4, ufs, and xfs."
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
 "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs, and xfs."
+"reiser4, udf, ufs, and xfs."
 msgstr ""
 "GParted tukee seuraavia tiedostojärjestelmiä: btrfs, ext2, ext3, ext4, "
 "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs ja xfs."
+"reiser4, udf, ufs ja xfs."
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
@@ -293,7 +297,7 @@ msgstr "Ei aktiivinen"
 #.
 #: ../src/Dialog_Partition_Info.cc:393
 msgid "Not active (Not a member of any volume group)"
-msgstr ""
+msgstr "Ei aktiivinen (ei jäsen yhdessäkään taltioryhmässä)"
 
 #. TO TRANSLATORS:  Not active and exported
 #. * means that the partition is a member of an LVM volume group but
@@ -316,19 +320,19 @@ msgstr "Ei liitetty"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3120
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3124
 msgid "Volume Group:"
-msgstr ""
+msgstr "Taltioryhmä:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3121
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3125
 msgid "Members:"
 msgstr "Jäsenet:"
 
 #. Logical Volumes
 #: ../src/Dialog_Partition_Info.cc:459
 msgid "Logical Volumes:"
-msgstr ""
+msgstr "Loogiset taltiot:"
 
 #. Used
 #: ../src/Dialog_Partition_Info.cc:475
@@ -658,10 +662,9 @@ msgstr "Käytettävissä offline- ja online-tiloissa"
 #. * when it is mounted.
 #.
 #: ../src/DialogFeatures.cc:109
-#, fuzzy
 #| msgid "Available offline only"
 msgid "Available online only"
-msgstr "Käytettävissä vain offline-tilassa"
+msgstr "Käytettävissä vain online-tilassa"
 
 #. TO TRANSLATORS:  Available offline only
 #. * means that this action is valid for this file system only
@@ -706,15 +709,19 @@ msgstr "Dataa löytyi"
 
 #: ../src/Dialog_Rescue_Data.cc:62
 msgid "Data found with inconsistencies"
-msgstr ""
+msgstr "Dataa löytyi epäjohdonmukaisuuksien kera"
 
 #: ../src/Dialog_Rescue_Data.cc:64
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
 msgstr ""
+"VAROITUS!: Huutomerkillä (!) merkityt tiedostojärjestelmät ovat "
+"epäjohdonmukaisia."
 
 #: ../src/Dialog_Rescue_Data.cc:66
 msgid "You might encounter errors trying to view these file systems."
 msgstr ""
+"Saatat kohdata virheitä, kun yrität käyttää näillä tiedostojärjestelmillä "
+"olevia tiedostoja."
 
 #: ../src/Dialog_Rescue_Data.cc:82
 msgid "The 'View' buttons create read-only views of each file system."
@@ -780,7 +787,7 @@ msgstr "Tiedostojärjestelmä on liitetty:"
 
 #: ../src/Dialog_Rescue_Data.cc:241
 msgid "Unable to open the default file manager"
-msgstr ""
+msgstr "Oletusarvoisen tiedostonhallinnin avaaminen epäonnistui"
 
 #: ../src/Dialog_Rescue_Data.cc:260
 msgid ""
@@ -828,47 +835,46 @@ msgid "_Unmount"
 msgstr "_Irrota"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:233
+#: ../src/FileSystem.cc:231
 msgid "Created directory %1"
 msgstr "Luotiin hakemisto %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:260
+#: ../src/FileSystem.cc:258
 msgid "Removed directory %1"
 msgstr "Poistettiin hakemisto %1"
 
-#: ../src/GParted_Core.cc:73
-#| msgid "GParted"
+#: ../src/GParted_Core.cc:74
 msgid "GParted Bug"
 msgstr "GParted-ohjelmistovirhe"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:185 ../src/GParted_Core.cc:194
+#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
 msgid "Scanning %1"
 msgstr "Skannataan %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:213 ../src/GParted_Core.cc:238
+#: ../src/GParted_Core.cc:214 ../src/GParted_Core.cc:239
 msgid "Confirming %1"
 msgstr "Varmennetaan %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:262
+#: ../src/GParted_Core.cc:263
 msgid "Searching %1 partitions"
 msgstr "Etsitään osioita levystä %1"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:519
+#: ../src/GParted_Core.cc:520
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Osion pituus ei voi olla %1 sektoria"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:533
+#: ../src/GParted_Core.cc:534
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 
-#: ../src/GParted_Core.cc:669
+#: ../src/GParted_Core.cc:670
 msgid "libparted messages"
 msgstr "libpartedin viestit"
 
@@ -876,57 +882,57 @@ msgstr "libpartedin viestit"
 #. * means that the partition table for this disk
 #. * device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:972
+#: ../src/GParted_Core.cc:973
 msgid "unrecognized"
 msgstr "tunnistamaton"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1497
+#: ../src/GParted_Core.cc:1500
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Tiedostojärjestelmää ei voitu tunnistaa. Mahdollisia syitä ovat:"
 
-#: ../src/GParted_Core.cc:1499
+#: ../src/GParted_Core.cc:1502
 msgid "The file system is damaged"
 msgstr "Tiedostojärjestelmä on vahingoittunut"
 
-#: ../src/GParted_Core.cc:1501
+#: ../src/GParted_Core.cc:1504
 msgid "The file system is unknown to GParted"
 msgstr "Tiedostojärjestelmä on tuntematon GPartedille"
 
-#: ../src/GParted_Core.cc:1503
+#: ../src/GParted_Core.cc:1506
 msgid "There is no file system available (unformatted)"
 msgstr "Tiedostojärjestelmää ei ole (osiota ei ole alustettu)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1506
+#: ../src/GParted_Core.cc:1509
 msgid "The device entry %1 is missing"
 msgstr ""
 
-#: ../src/GParted_Core.cc:1661
+#: ../src/GParted_Core.cc:1664
 msgid "Unable to find mount point"
 msgstr "Liitospistettä ei löydetty"
 
-#: ../src/GParted_Core.cc:1778
+#: ../src/GParted_Core.cc:1781
 msgid "Unable to read the contents of this file system!"
 msgstr "Tiedostojärjestelmän sisältöä ei voida lukea."
 
-#: ../src/GParted_Core.cc:1780
+#: ../src/GParted_Core.cc:1783
 msgid "Because of this some operations may be unavailable."
 msgstr "Tästä johtuen osa toiminnoista ei ole käytettävissä."
 
-#: ../src/GParted_Core.cc:1784
+#: ../src/GParted_Core.cc:1787
 msgid "The cause might be a missing software package."
 msgstr "Syy saattaa olla puuttuva ohjelmistopaketti."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1787
+#: ../src/GParted_Core.cc:1790
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
 msgstr ""
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1797
+#: ../src/GParted_Core.cc:1800
 msgid "%1 of unallocated space within the partition."
 msgstr ""
 
@@ -934,7 +940,7 @@ msgstr ""
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1807
+#: ../src/GParted_Core.cc:1810
 #, fuzzy
 #| msgid "To create a new partition table choose the menu item:"
 msgid ""
@@ -942,13 +948,13 @@ msgid ""
 "choose the menu item:"
 msgstr "Luodaksesi uuden osiotaulun valitse valikosta kohta:"
 
-#: ../src/GParted_Core.cc:1809
+#: ../src/GParted_Core.cc:1812
 #, fuzzy
 #| msgid "Partition"
 msgid "Partition --> Check."
 msgstr "Osio"
 
-#: ../src/GParted_Core.cc:1916
+#: ../src/GParted_Core.cc:1919
 msgid "create empty partition"
 msgstr "luo tyhjä osio"
 
@@ -962,96 +968,96 @@ msgstr "luo tyhjä osio"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1992 ../src/GParted_Core.cc:3624
+#: ../src/GParted_Core.cc:1995 ../src/GParted_Core.cc:3634
 msgid "path: %1 (%2)"
 msgstr "polku: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1993 ../src/GParted_Core.cc:3627
+#: ../src/GParted_Core.cc:1996 ../src/GParted_Core.cc:3637
 msgid "partition"
 msgstr "osio"
 
-#: ../src/GParted_Core.cc:1994 ../src/GParted_Core.cc:3628
+#: ../src/GParted_Core.cc:1997 ../src/GParted_Core.cc:3638
 msgid "start: %1"
 msgstr "alkaa: %1"
 
-#: ../src/GParted_Core.cc:1995 ../src/GParted_Core.cc:3629
+#: ../src/GParted_Core.cc:1998 ../src/GParted_Core.cc:3639
 msgid "end: %1"
 msgstr "loppuu: %1"
 
-#: ../src/GParted_Core.cc:1996 ../src/GParted_Core.cc:3630
+#: ../src/GParted_Core.cc:1999 ../src/GParted_Core.cc:3640
 msgid "size: %1 (%2)"
 msgstr "koko: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2029
+#: ../src/GParted_Core.cc:2032
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: ../src/GParted_Core.cc:2036
+#: ../src/GParted_Core.cc:2039
 msgid "create new %1 file system"
 msgstr "luo uusi %1-tiedostojärjestelmä"
 
-#: ../src/GParted_Core.cc:2068
+#: ../src/GParted_Core.cc:2071
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2083
+#: ../src/GParted_Core.cc:2086
 msgid "delete partition"
 msgstr "poista osio"
 
-#: ../src/GParted_Core.cc:2131
+#: ../src/GParted_Core.cc:2134
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2146
+#: ../src/GParted_Core.cc:2149
 msgid "delete %1 file system"
 msgstr "poista %1-tiedostojärjestelmä"
 
-#: ../src/GParted_Core.cc:2164
+#: ../src/GParted_Core.cc:2167
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2171 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2174 ../src/OperationLabelFileSystem.cc:55
 #, fuzzy
 #| msgid "Search for file systems on %1"
 msgid "Clear file system label on %1"
 msgstr "Etsi tiedostojärjestelmiä kohteesta %1"
 
-#: ../src/GParted_Core.cc:2174
+#: ../src/GParted_Core.cc:2177
 #, fuzzy
 #| msgid "Set partition label to \"%1\" on %2"
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Aseta osioiden nimeksi \"%1\" laitteella %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2203 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2206 ../src/OperationNamePartition.cc:55
 #, fuzzy
 #| msgid "Clear partition label on %1"
 msgid "Clear partition name on %1"
 msgstr "Tyhjennä osioiden nimi laiteella %1"
 
-#: ../src/GParted_Core.cc:2206
+#: ../src/GParted_Core.cc:2209
 #, fuzzy
 #| msgid "Set partition label to \"%1\" on %2"
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Aseta osioiden nimeksi \"%1\" laitteella %2"
 
-#: ../src/GParted_Core.cc:2232
+#: ../src/GParted_Core.cc:2235
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2239
+#: ../src/GParted_Core.cc:2242
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2244
+#: ../src/GParted_Core.cc:2247
 msgid "Set UUID on %1 to a new, random value"
 msgstr ""
 
@@ -1060,33 +1066,33 @@ msgstr ""
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2332
+#: ../src/GParted_Core.cc:2335
 msgid "size of the partition is changing for a move only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2364
+#: ../src/GParted_Core.cc:2367
 msgid "rollback last change to the partition table"
 msgstr "peru viimeisin osiotaululle tehty toimenpide"
 
-#: ../src/GParted_Core.cc:2413
+#: ../src/GParted_Core.cc:2416
 msgid "move file system to the left"
 msgstr "siirrä tiedostojärjestelmä vasemmalle"
 
-#: ../src/GParted_Core.cc:2415
+#: ../src/GParted_Core.cc:2418
 msgid "move file system to the right"
 msgstr "siirrä tiedostojärjestelmä oikealle"
 
-#: ../src/GParted_Core.cc:2418
+#: ../src/GParted_Core.cc:2421
 msgid "move file system"
 msgstr "siirrä tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:2420
+#: ../src/GParted_Core.cc:2423
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2486
+#: ../src/GParted_Core.cc:2489
 msgid "using libparted"
 msgstr "käytetään libpartedia"
 
@@ -1096,131 +1102,131 @@ msgstr "käytetään libpartedia"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2560
+#: ../src/GParted_Core.cc:2563
 msgid "start of the partition is changing for a resize only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2578
+#: ../src/GParted_Core.cc:2581
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2588
+#: ../src/GParted_Core.cc:2591
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2647
+#: ../src/GParted_Core.cc:2650
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2716
+#: ../src/GParted_Core.cc:2719
 msgid "resize/move partition"
 msgstr "siirrä tai muuta osion kokoa"
 
-#: ../src/GParted_Core.cc:2719
+#: ../src/GParted_Core.cc:2722
 msgid "move partition to the right"
 msgstr "siirrä osiota oikealle"
 
-#: ../src/GParted_Core.cc:2722
+#: ../src/GParted_Core.cc:2725
 msgid "move partition to the left"
 msgstr "siirrä osiota vasemmalle"
 
-#: ../src/GParted_Core.cc:2725
+#: ../src/GParted_Core.cc:2728
 msgid "grow partition from %1 to %2"
 msgstr "kasvata osio koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2728
+#: ../src/GParted_Core.cc:2731
 msgid "shrink partition from %1 to %2"
 msgstr "kutista osio koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2731
+#: ../src/GParted_Core.cc:2734
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "siirrä osiota oikealle ja kasvata koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2734
+#: ../src/GParted_Core.cc:2737
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "siirrä osiota oikealle ja kutista koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2737
+#: ../src/GParted_Core.cc:2740
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "siirrä osiota vasemmalle ja kasvata koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2740
+#: ../src/GParted_Core.cc:2743
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "siirrä osiota vasemmalle ja kutista koosta %1 kokoon %2"
 
-#: ../src/GParted_Core.cc:2755
+#: ../src/GParted_Core.cc:2758
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2765
+#: ../src/GParted_Core.cc:2768
 msgid "old start: %1"
 msgstr "vanha alku: %1"
 
-#: ../src/GParted_Core.cc:2766
+#: ../src/GParted_Core.cc:2769
 msgid "old end: %1"
 msgstr "vanha loppu: %1"
 
-#: ../src/GParted_Core.cc:2767
+#: ../src/GParted_Core.cc:2770
 msgid "old size: %1 (%2)"
 msgstr "vanha koko: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2836 ../src/GParted_Core.cc:3722
+#: ../src/GParted_Core.cc:2839 ../src/GParted_Core.cc:3732
 msgid "new start: %1"
 msgstr "Uusi alku: %1"
 
-#: ../src/GParted_Core.cc:2837 ../src/GParted_Core.cc:3723
+#: ../src/GParted_Core.cc:2840 ../src/GParted_Core.cc:3733
 msgid "new end: %1"
 msgstr "uusi loppu: %1"
 
-#: ../src/GParted_Core.cc:2838 ../src/GParted_Core.cc:3724
+#: ../src/GParted_Core.cc:2841 ../src/GParted_Core.cc:3734
 msgid "new size: %1 (%2)"
 msgstr "uusi koko: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2865 ../src/GParted_Core.cc:3670
+#: ../src/GParted_Core.cc:2868 ../src/GParted_Core.cc:3680
 msgid "requested start: %1"
 msgstr "pyynnön alku: %1"
 
-#: ../src/GParted_Core.cc:2866 ../src/GParted_Core.cc:3671
+#: ../src/GParted_Core.cc:2869 ../src/GParted_Core.cc:3681
 msgid "requested end: %1"
 msgstr "pyynnön loppu: %1"
 
-#: ../src/GParted_Core.cc:2867 ../src/GParted_Core.cc:3672
+#: ../src/GParted_Core.cc:2870 ../src/GParted_Core.cc:3682
 msgid "requested size: %1 (%2)"
 msgstr "pyynnön koko: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2887
+#: ../src/GParted_Core.cc:2890
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2892
+#: ../src/GParted_Core.cc:2895
 msgid "shrink encryption volume"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2903
+#: ../src/GParted_Core.cc:2906
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2908
+#: ../src/GParted_Core.cc:2911
 #, fuzzy
 #| msgid "grow file system to fill the partition"
 msgid "grow encryption volume to fill the partition"
 msgstr "laajenna tiedostojärjestelmä täyttämään osio"
 
-#: ../src/GParted_Core.cc:2918
+#: ../src/GParted_Core.cc:2921
 #, fuzzy
 #| msgid "growing is not available for this file system"
 msgid "growing is not available for this encryption volume"
 msgstr "laajentaminen ei ole mahdollista tälle tiedostojärjestelmälle"
 
-#: ../src/GParted_Core.cc:2936
+#: ../src/GParted_Core.cc:2939
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1230,196 +1236,195 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2948
+#: ../src/GParted_Core.cc:2951
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2953
+#: ../src/GParted_Core.cc:2956
 msgid "shrink file system"
 msgstr "pienennä tiedostojärjestelmää"
 
-#: ../src/GParted_Core.cc:2964
+#: ../src/GParted_Core.cc:2967
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:2969
+#: ../src/GParted_Core.cc:2972
 msgid "grow file system to fill the partition"
 msgstr "laajenna tiedostojärjestelmä täyttämään osio"
 
-#: ../src/GParted_Core.cc:2980
+#: ../src/GParted_Core.cc:2983
 msgid "growing is not available for this file system"
 msgstr "laajentaminen ei ole mahdollista tälle tiedostojärjestelmälle"
 
-#: ../src/GParted_Core.cc:2989
+#: ../src/GParted_Core.cc:2992
 #, fuzzy
 #| msgid "The file system is damaged"
 msgid "growing the file system is currently disallowed"
 msgstr "Tiedostojärjestelmä on vahingoittunut"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:3013
+#: ../src/GParted_Core.cc:3016
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:3025
+#: ../src/GParted_Core.cc:3028
 #, fuzzy
 #| msgid "create new %1 file system"
 msgid "recreate %1 file system"
 msgstr "luo uusi %1-tiedostojärjestelmä"
 
-#: ../src/GParted_Core.cc:3094
+#: ../src/GParted_Core.cc:3097
 msgid "the destination is smaller than the source partition"
 msgstr "kohde on lähdeosiota pienempi"
 
-#: ../src/GParted_Core.cc:3145
+#: ../src/GParted_Core.cc:3148
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:3152
+#: ../src/GParted_Core.cc:3155
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:3158
+#: ../src/GParted_Core.cc:3161
 #, fuzzy
 #| msgid "copy file system of %1 to %2"
 msgid "copy file system from %1 to %2"
 msgstr "kopioi tiedostojärjestelmä lähteestä %1 kohteeseen %2"
 
-#: ../src/GParted_Core.cc:3239
+#: ../src/GParted_Core.cc:3242
 msgid "using internal algorithm"
 msgstr "käytetään sisäistä algoritmia"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3242
+#: ../src/GParted_Core.cc:3245
 msgid "copy %1"
 msgstr "kopioi %1"
 
-#: ../src/GParted_Core.cc:3245
+#: ../src/GParted_Core.cc:3248
 msgid "finding optimal block size"
 msgstr "etsitään optimaalinen lohkokoko"
 
-#: ../src/GParted_Core.cc:3287
+#: ../src/GParted_Core.cc:3290
 msgid "%1 seconds"
 msgstr "%1 sekuntia"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3305
+#: ../src/GParted_Core.cc:3308
 msgid "optimal block size is %1"
 msgstr "optimaalinen lohkokoko on %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3323
+#: ../src/GParted_Core.cc:3326
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 t) kopioitu"
 
-#: ../src/GParted_Core.cc:3361
+#: ../src/GParted_Core.cc:3364
 msgid "roll back last transaction"
 msgstr ""
 
-#: ../src/GParted_Core.cc:3384
+#: ../src/GParted_Core.cc:3387
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3396
+#: ../src/GParted_Core.cc:3399
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "tarkasta tiedostojärjestelmä %1 virheiden varalta ja korjaa ne, jos "
 "mahdollista"
 
-#: ../src/GParted_Core.cc:3405
+#: ../src/GParted_Core.cc:3408
 msgid "checking is not available for this file system"
 msgstr "tarkastaminen ei ole saatavilla tälle tiedostojärjestelmälle"
 
-#: ../src/GParted_Core.cc:3471
+#: ../src/GParted_Core.cc:3474
 msgid "set partition type on %1"
 msgstr "aseta %1:lle osiotyyppi"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3514
+#: ../src/GParted_Core.cc:3524
 msgid "new partition type: %1"
 msgstr "uusi osiotyyppi: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3529
+#: ../src/GParted_Core.cc:3539
 msgid "new partition flag: %1"
 msgstr "uusi osiolippu: %1"
 
-#: ../src/GParted_Core.cc:3557
+#: ../src/GParted_Core.cc:3567
 msgid "calibrate %1"
 msgstr "kalibroi %1"
 
-#: ../src/GParted_Core.cc:3626
+#: ../src/GParted_Core.cc:3636
 msgid "device"
 msgstr "laite"
 
-#: ../src/GParted_Core.cc:3640
-#, fuzzy
+#: ../src/GParted_Core.cc:3650
 #| msgid "Encryption:"
 msgid "encryption path: %1"
-msgstr "Salaus:"
+msgstr "salauspolku: %1"
 
-#: ../src/GParted_Core.cc:3666
+#: ../src/GParted_Core.cc:3676
 msgid "calculate new size and position of %1"
 msgstr "laske uusi koko ja sijainti kohteelle %1"
 
-#: ../src/GParted_Core.cc:3783
+#: ../src/GParted_Core.cc:3793
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr ""
 
-#: ../src/GParted_Core.cc:3790
+#: ../src/GParted_Core.cc:3800
 msgid "clear old file system signatures in %1"
 msgstr ""
 
-#: ../src/GParted_Core.cc:3996
+#: ../src/GParted_Core.cc:4006
 msgid "flush operating system cache of %1"
 msgstr ""
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:4028
+#: ../src/GParted_Core.cc:4038
 msgid "update boot sector of %1 file system on %2"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4064
+#: ../src/GParted_Core.cc:4074
 msgid "Error trying to write to boot sector in %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4070
+#: ../src/GParted_Core.cc:4080
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4077
+#: ../src/GParted_Core.cc:4087
 msgid "Error trying to open %1"
 msgstr ""
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4087
+#: ../src/GParted_Core.cc:4097
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 
-#: ../src/GParted_Core.cc:4089
+#: ../src/GParted_Core.cc:4099
 msgid "You might try the following command to correct the problem:"
 msgstr "Voit yrittää korjata ongelman suorittamalla seuraavan komennon: "
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4150
+#: ../src/GParted_Core.cc:4161
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr ""
 
-#: ../src/GParted_Core.cc:4153
+#: ../src/GParted_Core.cc:4164
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1427,67 +1432,67 @@ msgstr ""
 "GParted vaatii libpartedin version 2.2 tai uudemman tukeakseen laitteita, "
 "joiden sektorikoko on suurempi kuin 512 tavua."
 
-#: ../src/GParted_Core.cc:4317
+#: ../src/GParted_Core.cc:4328
 msgid "Libparted Information"
 msgstr "Libparted-ilmoitus"
 
-#: ../src/GParted_Core.cc:4321
+#: ../src/GParted_Core.cc:4332
 msgid "Libparted Warning"
 msgstr "Libparted-varoitus"
 
-#: ../src/GParted_Core.cc:4325
+#: ../src/GParted_Core.cc:4336
 msgid "Libparted Error"
 msgstr "Libparted-virhe"
 
-#: ../src/GParted_Core.cc:4328
+#: ../src/GParted_Core.cc:4339
 #, fuzzy
 #| msgid "Libparted"
 msgid "Libparted Fatal"
 msgstr "Libparted"
 
-#: ../src/GParted_Core.cc:4331
+#: ../src/GParted_Core.cc:4342
 #, fuzzy
 #| msgid "Libparted"
 msgid "Libparted Bug"
 msgstr "Libparted"
 
-#: ../src/GParted_Core.cc:4334
+#: ../src/GParted_Core.cc:4345
 #, fuzzy
 #| msgid "Libparted Information"
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted-ilmoitus"
 
-#: ../src/GParted_Core.cc:4337
+#: ../src/GParted_Core.cc:4348
 #, fuzzy
 #| msgid "Libparted Information"
 msgid "Libparted unknown exception"
 msgstr "Libparted-ilmoitus"
 
-#: ../src/GParted_Core.cc:4341
+#: ../src/GParted_Core.cc:4352
 msgid "Fix"
 msgstr "Korjaa"
 
-#: ../src/GParted_Core.cc:4343
+#: ../src/GParted_Core.cc:4354
 msgid "Yes"
 msgstr "Kyllä"
 
-#: ../src/GParted_Core.cc:4345
+#: ../src/GParted_Core.cc:4356
 msgid "Ok"
 msgstr "OK"
 
-#: ../src/GParted_Core.cc:4347
+#: ../src/GParted_Core.cc:4358
 msgid "Retry"
 msgstr "Yritä uudelleen"
 
-#: ../src/GParted_Core.cc:4349
+#: ../src/GParted_Core.cc:4360
 msgid "No"
 msgstr "Ei"
 
-#: ../src/GParted_Core.cc:4351
+#: ../src/GParted_Core.cc:4362
 msgid "Cancel"
 msgstr "Peru"
 
-#: ../src/GParted_Core.cc:4353
+#: ../src/GParted_Core.cc:4364
 msgid "Ignore"
 msgstr "Ohita"
 
@@ -1654,7 +1659,7 @@ msgstr "Liput"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:253
+#: ../src/Utils.cc:255
 msgid "unallocated"
 msgstr "varaamaton"
 
@@ -1663,7 +1668,7 @@ msgstr "varaamaton"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:260
+#: ../src/Utils.cc:262
 msgid "unknown"
 msgstr "tuntematon"
 
@@ -1671,7 +1676,7 @@ msgstr "tuntematon"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:266
+#: ../src/Utils.cc:268
 msgid "unformatted"
 msgstr "alustamaton"
 
@@ -1679,40 +1684,40 @@ msgstr "alustamaton"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:272
+#: ../src/Utils.cc:274
 msgid "cleared"
 msgstr ""
 
-#: ../src/Utils.cc:293
+#: ../src/Utils.cc:296
 msgid "used"
 msgstr "käytetty"
 
-#: ../src/Utils.cc:294
+#: ../src/Utils.cc:297
 msgid "unused"
 msgstr "käyttämätön"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: ../src/Utils.cc:311
+#: ../src/Utils.cc:314
 msgid "Encrypted"
 msgstr "Salattu"
 
-#: ../src/Utils.cc:437
+#: ../src/Utils.cc:442
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:442
+#: ../src/Utils.cc:447
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:447
+#: ../src/Utils.cc:452
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:452
+#: ../src/Utils.cc:457
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:457
+#: ../src/Utils.cc:462
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -1957,7 +1962,7 @@ msgstr "Gnomen levyosioiden muokkain"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1711
+#: ../src/Win_GParted.cc:1712
 msgid "translator-credits"
 msgstr ""
 "Jiri Grönroos, 2015-2017\n"
@@ -1973,13 +1978,13 @@ msgstr ""
 "  Petri Järvisalo https://launchpad.net/~reaby\n"
 "  Tomi Juntunen https://launchpad.net/~tojuntu"
 
-#: ../src/Win_GParted.cc:1758
+#: ../src/Win_GParted.cc:1759
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Ei ole mahdollista luoda enemmän kuin %1 ensisijainen osio"
 msgstr[1] "Ei ole mahdollista luoda enemmän kuin %1 ensisijaista osiota"
 
-#: ../src/Win_GParted.cc:1770
+#: ../src/Win_GParted.cc:1771
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1990,69 +1995,69 @@ msgstr ""
 "Tällainen osio voi sisältää muita osioita. Koska laajennettu osio on samalla "
 "ensisijainen osio, voi olla että joku ensisijainen osio täytyy poistaa ensin."
 
-#: ../src/Win_GParted.cc:1875
+#: ../src/Win_GParted.cc:1879
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Osion siirtäminen saattaa aiheuttaa sen, että käyttöjärjestelmäsi ei "
 "käynnisty"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1882
+#: ../src/Win_GParted.cc:1886
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1884
+#: ../src/Win_GParted.cc:1888
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1886
+#: ../src/Win_GParted.cc:1890
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1890
+#: ../src/Win_GParted.cc:1894
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Osion siirtämisen toteuttaminen saattaa kestää hyvin kauan."
 
-#: ../src/Win_GParted.cc:1959
+#: ../src/Win_GParted.cc:1963
 msgid "Copy of %1"
 msgstr "Kohteen %1 kopio"
 
-#: ../src/Win_GParted.cc:2052
+#: ../src/Win_GParted.cc:2056
 msgid "You have pasted into an existing partition"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:2060
+#: ../src/Win_GParted.cc:2064
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2133
+#: ../src/Win_GParted.cc:2137
 msgid "Unable to delete %1!"
 msgstr "Osiota %1 ei voi poistaa!"
 
-#: ../src/Win_GParted.cc:2140
+#: ../src/Win_GParted.cc:2144
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Irrota kaikki loogiset osiot, joiden osionumero on suurempi kuin %1"
 
-#: ../src/Win_GParted.cc:2151
+#: ../src/Win_GParted.cc:2155
 msgid "Are you sure you want to delete %1?"
 msgstr "Haluatko varmasti poistaa osion %1?"
 
-#: ../src/Win_GParted.cc:2158
+#: ../src/Win_GParted.cc:2162
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Poiston jälkeen tätä osiota ei voi enää kopioida."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2161
+#: ../src/Win_GParted.cc:2165
 msgid "Delete %1 (%2, %3)"
 msgstr "Poista %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2267
+#: ../src/Win_GParted.cc:2271
 #, fuzzy
 #| msgid "Cannot format this file system to %1."
 msgid "Cannot format this file system to %1"
@@ -2061,22 +2066,22 @@ msgstr "Ei voida alustaa tätä tiedostojärjestelmää muotoon %1."
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2279
+#: ../src/Win_GParted.cc:2283
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1-tiedostojärjestelmä vaatii osion joka on vähintään %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2287
+#: ../src/Win_GParted.cc:2291
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1-tiedostojärjestelmää käyttävän osion enimmäiskoko on %2."
 
-#: ../src/Win_GParted.cc:2405
+#: ../src/Win_GParted.cc:2409
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Osiota ei voitu irrottaa seuraavista liitoskohdista:"
 
-#: ../src/Win_GParted.cc:2407
+#: ../src/Win_GParted.cc:2411
 #, fuzzy
 #| msgid ""
 #| "Most likely other partitions are also mounted on these mount points. You "
@@ -2089,19 +2094,19 @@ msgstr ""
 "On suositeltua irrottaa ne manuaalisesti."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2420
+#: ../src/Win_GParted.cc:2424
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 toimenpide on vielä tekemättä osiolle %2"
 msgstr[1] "%1 toimenpidettä on vielä tekemättä osiolle %2"
 
-#: ../src/Win_GParted.cc:2435
+#: ../src/Win_GParted.cc:2439
 #, fuzzy
 #| msgid "Are you sure you want to apply the pending operations?"
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr "Haluatko varmasti toteuttaa kaikki tekemättömät toimenpiteet?"
 
-#: ../src/Win_GParted.cc:2478
+#: ../src/Win_GParted.cc:2482
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2110,15 +2115,15 @@ msgid ""
 "the partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2479
+#: ../src/Win_GParted.cc:2483
 msgid "Deactivating swap on %1"
 msgstr "Poistetaan sivutusosio %1 käytöstä"
 
-#: ../src/Win_GParted.cc:2480
+#: ../src/Win_GParted.cc:2484
 msgid "Could not deactivate swap"
 msgstr "Sivutusosiota ei voitu poistaa käytöstä"
 
-#: ../src/Win_GParted.cc:2485
+#: ../src/Win_GParted.cc:2489
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2127,15 +2132,15 @@ msgid ""
 "the partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2486
+#: ../src/Win_GParted.cc:2490
 msgid "Activating swap on %1"
 msgstr "Otetaan sivutusosio %1 käyttöön"
 
-#: ../src/Win_GParted.cc:2487
+#: ../src/Win_GParted.cc:2491
 msgid "Could not activate swap"
 msgstr "Sivutusosiota ei voitu ottaa käyttöön"
 
-#: ../src/Win_GParted.cc:2492
+#: ../src/Win_GParted.cc:2496
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2144,20 +2149,20 @@ msgid ""
 "operations pending for the partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2493
+#: ../src/Win_GParted.cc:2497
 #, fuzzy
 #| msgid "Deactivating swap on %1"
 msgid "Deactivating Volume Group %1"
 msgstr "Poistetaan sivutusosio %1 käytöstä"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2495
+#: ../src/Win_GParted.cc:2499
 #, fuzzy
 #| msgid "Could not deactivate swap"
 msgid "Could not deactivate Volume Group"
 msgstr "Sivutusosiota ei voitu poistaa käytöstä"
 
-#: ../src/Win_GParted.cc:2500
+#: ../src/Win_GParted.cc:2504
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2166,20 +2171,18 @@ msgid ""
 "operations pending for the partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2501
-#, fuzzy
+#: ../src/Win_GParted.cc:2505
 #| msgid "Activating swap on %1"
 msgid "Activating Volume Group %1"
-msgstr "Otetaan sivutusosio %1 käyttöön"
+msgstr "Aktivoidaan taltioryhmää %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2503
-#, fuzzy
+#: ../src/Win_GParted.cc:2507
 #| msgid "Could not activate swap"
 msgid "Could not activate Volume Group"
-msgstr "Sivutusosiota ei voitu ottaa käyttöön"
+msgstr "Ei voitu aktivoida taltioryhmää"
 
-#: ../src/Win_GParted.cc:2508
+#: ../src/Win_GParted.cc:2512
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2188,17 +2191,17 @@ msgid ""
 "the partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2509
+#: ../src/Win_GParted.cc:2513
 msgid "Unmounting %1"
 msgstr "Irrotetaan osio %1"
 
-#: ../src/Win_GParted.cc:2510
+#: ../src/Win_GParted.cc:2514
 msgid "Could not unmount %1"
 msgstr "Osiota %1 ei voitu irrottaa"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:2574
+#: ../src/Win_GParted.cc:2578
 #, fuzzy
 #| msgid ""
 #| "A new partition table cannot be created when there are pending operations."
@@ -2207,27 +2210,27 @@ msgid ""
 "partition."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2587
+#: ../src/Win_GParted.cc:2591
 msgid "mounting %1 on %2"
 msgstr "liitetään %1 kohtaan %2"
 
-#: ../src/Win_GParted.cc:2614
+#: ../src/Win_GParted.cc:2618
 msgid "Could not mount %1 on %2"
 msgstr "Osiota %1 ei voitu liittää kohtaan %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2633
+#: ../src/Win_GParted.cc:2637
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 osio on parhaillaan aktiivisena laitteella %2"
 msgstr[1] "%1 osiota on parhaillaan aktiivisena laitteella %2"
 
-#: ../src/Win_GParted.cc:2648
+#: ../src/Win_GParted.cc:2652
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Uutta osiointitaulua ei voi luoda, kun osioita on aktiivisena."
 
-#: ../src/Win_GParted.cc:2650
+#: ../src/Win_GParted.cc:2654
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2235,76 +2238,76 @@ msgstr ""
 "Aktiiviset osiot ovat sellaisia, jotka ovat käytössä, kuten liitetyt "
 "tiedostojärjestelmät, tai käytössä olevat swap-tilat "
 
-#: ../src/Win_GParted.cc:2652
+#: ../src/Win_GParted.cc:2656
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2664
+#: ../src/Win_GParted.cc:2668
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 toimenpide odottaa"
 msgstr[1] "%1 toimenpidettä odottaa"
 
-#: ../src/Win_GParted.cc:2677
+#: ../src/Win_GParted.cc:2681
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr "Uutta osiointitaulua ei voi luoda, kun on odottavia toimenpiteitä."
 
-#: ../src/Win_GParted.cc:2679
+#: ../src/Win_GParted.cc:2683
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2694
+#: ../src/Win_GParted.cc:2698
 msgid "Error while creating partition table"
 msgstr "Virhe osiointitaulua luotaessa"
 
-#: ../src/Win_GParted.cc:2714
+#: ../src/Win_GParted.cc:2718
 msgid "Command gpart was not found"
 msgstr "Komentoa gpart ei löytynyt"
 
-#: ../src/Win_GParted.cc:2715
+#: ../src/Win_GParted.cc:2719
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Tämä ominaisuus käyttää gpartia. Asenna gpart ja yritä uudelleen."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2723
+#: ../src/Win_GParted.cc:2727
 msgid "A full disk scan is needed to find file systems."
 msgstr "Tiedostojärjestelmien löytämiseksi tulee tehdä täysi levyn tarkistus."
 
-#: ../src/Win_GParted.cc:2725
+#: ../src/Win_GParted.cc:2729
 msgid "The scan might take a very long time."
 msgstr "Tarkistus saattaa kestää hyvin kauan."
 
-#: ../src/Win_GParted.cc:2727
+#: ../src/Win_GParted.cc:2731
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2729
+#: ../src/Win_GParted.cc:2733
 msgid "Do you want to continue?"
 msgstr "Haluatko jatkaa?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2733
+#: ../src/Win_GParted.cc:2737
 msgid "Search for file systems on %1"
 msgstr "Etsi tiedostojärjestelmiä kohteesta %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2744
+#: ../src/Win_GParted.cc:2748
 msgid "Searching for file systems on %1"
 msgstr "Etsitään tiedostojärjestelmiä kohteesta %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2760
+#: ../src/Win_GParted.cc:2764
 msgid "No file systems found on %1"
 msgstr "Kohteesta %1 ei löytynyt tiedostojärjestelmiä"
 
-#: ../src/Win_GParted.cc:2761
+#: ../src/Win_GParted.cc:2765
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2312,48 +2315,48 @@ msgstr ""
 "Gpartin levyn tarkistus ei löytänyt yhtäkään tunnistettavaa "
 "tiedostojärjestelmää tältä levyltä."
 
-#: ../src/Win_GParted.cc:3034
+#: ../src/Win_GParted.cc:3038
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Haluatko varmasti toteuttaa kaikki tekemättömät toimenpiteet?"
 
-#: ../src/Win_GParted.cc:3040
+#: ../src/Win_GParted.cc:3044
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Osioiden muokkaus voi johtaa TIEDOSTOJEN KATOAMISEEN."
 
-#: ../src/Win_GParted.cc:3042
+#: ../src/Win_GParted.cc:3046
 msgid "You are advised to backup your data before proceeding."
 msgstr "On suositeltua ottaa varmuuskopio tiedostoistasi ennen jatkamista."
 
-#: ../src/Win_GParted.cc:3044
+#: ../src/Win_GParted.cc:3048
 msgid "Apply operations to device"
 msgstr "Suorita toimenpiteet laitteelle"
 
-#: ../src/Win_GParted.cc:3089
+#: ../src/Win_GParted.cc:3093
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3093
+#: ../src/Win_GParted.cc:3097
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3097
+#: ../src/Win_GParted.cc:3101
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3106
+#: ../src/Win_GParted.cc:3110
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3109
+#: ../src/Win_GParted.cc:3113
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
 "this operation."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3112
+#: ../src/Win_GParted.cc:3116
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr ""
 
@@ -2455,6 +2458,20 @@ msgstr "suorita simulaatio"
 #: ../src/ntfs.cc:234
 msgid "real resize"
 msgstr "todellinen koon muuttaminen"
+
+#: ../src/udf.cc:66
+msgid "Partition is too large, maximum size is %1"
+msgstr "Osio on liian suuri, enimmäiskoko on %1"
+
+#: ../src/udf.cc:74
+msgid "Partition is too small, minimum size is %1"
+msgstr "Osio on liian pieni, vähimmäiskoko n %1"
+
+#: ../src/udf.cc:91
+msgid ""
+"mkudffs prior to version 1.1 does not support non-ASCII characters in the "
+"label."
+msgstr ""
 
 #~ msgid "moving requires old and new length to be the same"
 #~ msgstr "siirtäminen vaatii, että vanha ja uusi pituus ovat samat"
