@@ -39,6 +39,7 @@ class FS_Info
 {
 public:
 	static void load_cache();
+	static void load_cache_for_paths( const std::vector<Glib::ustring> &device_paths );
 	static Glib::ustring get_fs_type( const Glib::ustring & path );
 	static Glib::ustring get_label( const Glib::ustring & path, bool & found );
 	static Glib::ustring get_uuid( const Glib::ustring & path );

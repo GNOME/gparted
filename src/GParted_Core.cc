@@ -257,6 +257,11 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		}
 	}
 
+	// Ensure all named paths have FS_Info blkid cache entries specifically so that
+	// command line named file system image files, which blkid can't otherwise know
+	// about, can be identified.
+	FS_Info::load_cache_for_paths( device_paths );
+
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 

@@ -54,6 +54,21 @@ void FS_Info::load_cache()
 	fs_info_cache_initialized = true;
 }
 
+void FS_Info::load_cache_for_paths( const std::vector<Glib::ustring> &device_paths )
+{
+	initialize_if_required();
+	const BlockSpecial empty_bs = BlockSpecial();
+	for ( unsigned int i = 0 ; i < device_paths.size() ; i ++ )
+	{
+		const FS_Entry & fs_entry = get_cache_entry_by_path( device_paths[i] );
+		if ( fs_entry.path == empty_bs )
+		{
+			// Run "blkid PATH" and load entry into cache for missing entries.
+			load_fs_info_cache_extra_for_path( device_paths[i] );
+		}
+	}
+}
+
 // Retrieve the file system type for the path
 Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 {
