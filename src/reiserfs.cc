@@ -78,7 +78,8 @@ FS reiserfs::get_filesystem_support()
 
 void reiserfs::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                         )
 	{
 		Glib::ustring::size_type index = output.find( "Count of blocks on the device:" );
 		if ( index >= output .length() ||
@@ -115,7 +116,8 @@ void reiserfs::set_used_sectors( Partition & partition )
 
 void reiserfs::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                         )
 	{
 		partition.set_filesystem_label( Utils::regexp_label( output, "^label:[\t ]*(.*)$" ) );
 	}
@@ -131,14 +133,14 @@ void reiserfs::read_label( Partition & partition )
 	
 bool reiserfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune --label \"" + partition.get_filesystem_label() + "\" " +
-	                          partition.get_path(),
+	return ! execute_command( "reiserfstune --label " + Glib::shell_quote( partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void reiserfs::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "debugreiserfs " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugreiserfs " + Glib::shell_quote( partition .get_path() ), output, error, true ) )
 	{
 		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -154,14 +156,15 @@ void reiserfs::read_uuid( Partition & partition )
 
 bool reiserfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "reiserfstune -u random " + partition.get_path(),
+	return ! execute_command( "reiserfstune -u random " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool reiserfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkreiserfs -f -f --label \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	return ! execute_command( "mkreiserfs -f -f --label " +
+	                          Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
@@ -188,7 +191,8 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 
 bool reiserfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " + partition.get_path(),
+	exit_status = execute_command( "reiserfsck --yes --fix-fixable --quiet " +
+	                               Glib::shell_quote( partition.get_path() ),
 	                               operationdetail, EXEC_CANCEL_SAFE );
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );

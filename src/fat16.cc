@@ -131,7 +131,8 @@ FS fat16::get_filesystem_support()
 
 void fat16::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( check_cmd + " -n -v " + partition .get_path(), output, error, true ) ;
+	exit_status = Utils::execute_command( check_cmd + " -n -v " + Glib::shell_quote( partition.get_path() ),
+	                                      output, error, true );
 	if ( exit_status == 0 || exit_status == 1 )
 	{
 		//total file system size in logical sectors
@@ -180,7 +181,8 @@ void fat16::set_used_sectors( Partition & partition )
 
 void fat16::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "mlabel -s :: -i " + partition.get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "mlabel -s :: -i " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                           )
 	{
 		partition.set_filesystem_label( Utils::trim( Utils::regexp_label( output, "Volume label is ([^(]*)" ) ) );
 	}
@@ -198,17 +200,17 @@ bool fat16::write_label( const Partition & partition, OperationDetail & operatio
 {
 	Glib::ustring cmd = "" ;
 	if ( partition.get_filesystem_label().empty() )
-		cmd = "mlabel -c :: -i " + partition.get_path();
+		cmd = "mlabel -c :: -i " + Glib::shell_quote( partition.get_path() );
 	else
-		cmd = "mlabel ::\"" + sanitize_label( partition.get_filesystem_label() ) + "\" -i "
-		    + partition.get_path();
+		cmd = "mlabel ::" + Glib::shell_quote( sanitize_label( partition.get_filesystem_label() ) ) +
+		      " -i " + Glib::shell_quote( partition.get_path() );
 
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 
 void fat16::read_uuid( Partition & partition )
 {
-	Glib::ustring cmd = "mdir -f :: -i " + partition.get_path();
+	Glib::ustring cmd = "mdir -f :: -i " + Glib::shell_quote( partition.get_path() );
 
 	if ( ! Utils::execute_command( cmd, output, error, true ) )
 	{
@@ -228,7 +230,7 @@ void fat16::read_uuid( Partition & partition )
 
 bool fat16::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	Glib::ustring cmd = "mlabel -s -n :: -i " + partition.get_path();
+	Glib::ustring cmd = "mlabel -s -n :: -i " + Glib::shell_quote( partition.get_path() );
 
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
@@ -237,16 +239,17 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 {
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
 	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
-	                           "-n \"" + sanitize_label( new_partition.get_filesystem_label() ) + "\" ";
+	                           "-n " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label() ) ) + " ";
 	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I " + label_args +
-	                          new_partition.get_path(),
+	                          Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( check_cmd + " -a -w -v " + partition .get_path(), operationdetail,
+	exit_status = execute_command( check_cmd + " -a -w -v " + Glib::shell_quote( partition .get_path() ),
+	                               operationdetail,
 	                               EXEC_CANCEL_SAFE );
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );

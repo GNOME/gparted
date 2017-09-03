@@ -246,9 +246,11 @@ Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 	Glib::ustring dm_name = "" ;
 
 	if ( udevinfo_found )
-		Utils::execute_command( "udevinfo --query=all --name=" + dev_path, output, error, true ) ;
+		Utils::execute_command( "udevinfo --query=all --name=" + Glib::shell_quote( dev_path ),
+		                        output, error, true );
 	else if ( udevadm_found )
-		Utils::execute_command( "udevadm info --query=all --name=" + dev_path, output, error, true ) ;
+		Utils::execute_command( "udevadm info --query=all --name=" + Glib::shell_quote( dev_path ),
+		                        output, error, true );
 
 	if ( ! output .empty() )
 	{
@@ -430,7 +432,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 
 	for ( unsigned int k=0; k < affected_entries .size(); k++ )
 	{
-		command = "dmsetup remove " + DEV_MAPPER_PATH + affected_entries[k];
+		command = "dmsetup remove " + Glib::shell_quote( DEV_MAPPER_PATH + affected_entries[k] );
 		if ( execute_command( command, operationdetail .get_last_child() ) )
 			exit_status = false ;	//command failed
 	}
@@ -454,7 +456,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	
 	for ( unsigned int k = 0; k < partition_entries .size(); k++ )
 	{
-		Glib::ustring command = "dmsetup remove " + partition_entries[k] ;
+		Glib::ustring command = "dmsetup remove " + Glib::shell_quote( partition_entries[k] );
 		if ( execute_command( command, operationdetail .get_last_child() ) )
 			exit_status = false ;	//command failed
 	}
@@ -477,7 +479,7 @@ bool DMRaid::purge_dev_map_entries( const Glib::ustring & dev_path )
 
 	for ( unsigned int k=0; k < dir_list .size(); k++ )
 	{
-		command = "dmsetup remove " + DEV_MAPPER_PATH + dir_list[k];
+		command = "dmsetup remove " + Glib::shell_quote( DEV_MAPPER_PATH + dir_list[k] );
 		if ( Utils::execute_command( command, output, error, true ) )
 			exit_status = false ;	//command failed
 	}

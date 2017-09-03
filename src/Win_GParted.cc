@@ -2391,7 +2391,7 @@ bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring 
 		}
 		else
 		{
-			Glib::ustring cmd = "umount -v \"" + fs_mountpoints[i] + "\"";
+			Glib::ustring cmd = "umount -v " + Glib::shell_quote( fs_mountpoints[i] );
 			Glib::ustring dummy;
 			Glib::ustring umount_error;
 			if ( Utils::execute_command( cmd, dummy, umount_error ) )
@@ -2536,22 +2536,22 @@ void Win_GParted::toggle_busy_state()
 	switch ( action )
 	{
 		case SWAPOFF:
-			cmd = "swapoff -v " + filesystem_ptn.get_path();
+			cmd = "swapoff -v " + Glib::shell_quote( filesystem_ptn.get_path() );
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case SWAPON:
-			cmd = "swapon -v " + filesystem_ptn.get_path();
+			cmd = "swapon -v " + Glib::shell_quote( filesystem_ptn.get_path() );
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case DEACTIVATE_VG:
-			cmd = "lvm vgchange -a n " + filesystem_ptn.get_mountpoint();
+			cmd = "lvm vgchange -a n " + Glib::shell_quote( filesystem_ptn.get_mountpoint() );
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case ACTIVATE_VG:
-			cmd = "lvm vgchange -a y " + filesystem_ptn.get_mountpoint();
+			cmd = "lvm vgchange -a y " + Glib::shell_quote( filesystem_ptn.get_mountpoint() );
 			success = ! Utils::execute_command( cmd, output, error );
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
@@ -2593,8 +2593,8 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	                                 filesystem_ptn.get_mountpoints()[index] ) );
 
 	// First try mounting letting mount (libblkid) determine the file system type.
-	cmd = "mount -v " + filesystem_ptn.get_path() +
-	      " \"" + filesystem_ptn.get_mountpoints()[index] + "\"";
+	cmd = "mount -v " + Glib::shell_quote( filesystem_ptn.get_path() ) +
+	      " " + Glib::shell_quote( filesystem_ptn.get_mountpoints()[index] );
 	success = ! Utils::execute_command( cmd, output, error );
 	if ( ! success )
 	{
@@ -2605,8 +2605,9 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 		{
 			// Second try mounting specifying the GParted determined file
 			// system type.
-			cmd = "mount -v -t " + type + " " + filesystem_ptn.get_path() +
-			      " \"" + filesystem_ptn.get_mountpoints()[index] + "\"";
+			cmd = "mount -v -t " + Glib::shell_quote( type ) +
+			      " " + Glib::shell_quote( filesystem_ptn.get_path() ) +
+			      " " + Glib::shell_quote( filesystem_ptn.get_mountpoints()[index] );
 			success = ! Utils::execute_command( cmd, output, error );
 			if ( ! success )
 				error_msg += "\n<i># " + cmd + "\n" + error + "</i>";

@@ -175,7 +175,8 @@ void ext2::set_used_sectors( Partition & partition )
 	//  avoid overhead subtraction.  Read the free space from the kernel via
 	//  the statvfs() system call when mounted and from the superblock when
 	//  unmounted.
-	if ( ! Utils::execute_command( dump_cmd + " -h " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( dump_cmd + " -h " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                          )
 	{
 		Glib::ustring::size_type index = output.find( "Block count:" );
 		if ( index >= output .length() ||
@@ -232,7 +233,8 @@ void ext2::set_used_sectors( Partition & partition )
 	
 void ext2::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( label_cmd + " " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( label_cmd + " " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                        )
 	{
 		partition.set_filesystem_label( Utils::trim( output ) );
 	}
@@ -248,14 +250,15 @@ void ext2::read_label( Partition & partition )
 
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( label_cmd + " " + partition.get_path() +
-	                          " \"" + partition.get_filesystem_label() + "\"",
+	return ! execute_command( label_cmd + " " + Glib::shell_quote( partition.get_path() ) +
+	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void ext2::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( tune_cmd + " -l " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( tune_cmd + " -l " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                          )
 	{
 		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -271,7 +274,7 @@ void ext2::read_uuid( Partition & partition )
 
 bool ext2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( tune_cmd + " -U random " + partition .get_path(),
+	return ! execute_command( tune_cmd + " -U random " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
@@ -289,14 +292,15 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 			features = " -O ^64bit";
 	}
 	return ! execute_command( mkfs_cmd + " -F" + features +
-	                          " -L \"" + new_partition.get_filesystem_label() + "\" " + new_partition.get_path(),
+	                          " -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::create_progress ) ) );
 }
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring str_temp = resize_cmd + " -p " + partition_new .get_path() ;
+	Glib::ustring str_temp = resize_cmd + " -p " + Glib::shell_quote( partition_new.get_path() );
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
@@ -308,8 +312,8 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + partition.get_path(), operationdetail,
-	                               EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
+	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + Glib::shell_quote( partition.get_path() ),
+	                               operationdetail, EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                               static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::check_repair_progress ) ) );
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
 	set_status( operationdetail, success );
@@ -324,9 +328,9 @@ bool ext2::move( const Partition & partition_new,
 	Glib::ustring offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
 	Glib::ustring cmd;
 	if ( distance < 0 )
-		cmd = image_cmd + " -ra -p -o " + offset + " " + partition_new.get_path();
+		cmd = image_cmd + " -ra -p -o " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 	else
-		cmd = image_cmd + " -ra -p -O " + offset + " " + partition_new.get_path();
+		cmd = image_cmd + " -ra -p -O " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 
 	fs_block_size = partition_old.fs_block_size;
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
@@ -338,7 +342,8 @@ bool ext2::copy( const Partition & src_part,
                  OperationDetail & operationdetail )
 {
 	fs_block_size = src_part.fs_block_size;
-	return ! execute_command( image_cmd + " -ra -p " + src_part.get_path() + " " + dest_part.get_path(),
+	return ! execute_command( image_cmd + " -ra -p " + Glib::shell_quote( src_part.get_path() ) +
+	                          " " + Glib::shell_quote( dest_part.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
 }

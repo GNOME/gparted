@@ -61,7 +61,8 @@ FS reiser4::get_filesystem_support()
 
 void reiser4::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                           )
 	{
 		Glib::ustring::size_type index = output.find( "\nblocks:" );
 		if ( index >= output .length() ||
@@ -98,7 +99,8 @@ void reiser4::set_used_sectors( Partition & partition )
 
 void reiser4::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                           )
 	{
 		Glib::ustring::size_type maxlen = Utils::get_filesystem_label_maxlength( FS_REISER4 ) ;
 		Glib::ustring label = Utils::regexp_label( output, "^label:[[:blank:]]*(.*)$" ) ;
@@ -122,7 +124,8 @@ void reiser4::read_label( Partition & partition )
 
 void reiser4::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "debugfs.reiser4 " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "debugfs.reiser4 " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                           )
 	{
 		partition .uuid = Utils::regexp_label( output, "uuid:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -138,14 +141,15 @@ void reiser4::read_uuid( Partition & partition )
 
 bool reiser4::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.reiser4 --force --yes --label \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	return ! execute_command( "mkfs.reiser4 --force --yes --label " +
+	                          Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 bool reiser4::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + partition.get_path(),
+	return ! execute_command( "fsck.reiser4 --yes --fix --quiet " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 

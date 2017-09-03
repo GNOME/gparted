@@ -402,7 +402,7 @@ bool Utils::kernel_supports_fs( const Glib::ustring & fs )
 		return true ;
 
 	Glib::ustring output, error ;
-	execute_command( "modprobe " + fs, output, error, true );
+	execute_command( "modprobe " + Glib::shell_quote( fs ), output, error, true );
 
 	input .open( "/proc/filesystems" ) ;
 	if ( input )

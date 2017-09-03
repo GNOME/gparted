@@ -154,14 +154,15 @@ bool btrfs::is_busy( const Glib::ustring & path )
 
 bool btrfs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.btrfs -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	return ! execute_command( "mkfs.btrfs -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfsck " + partition .get_path(), operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command( "btrfsck " + Glib::shell_quote( partition.get_path() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void btrfs::set_used_sectors( Partition & partition )
@@ -217,9 +218,11 @@ void btrfs::set_used_sectors( Partition & partition )
 	//  4) Extents can be and are relocated to other devices within the file system
 	//     when shrinking a device.
 	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	else
-		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -295,8 +298,8 @@ void btrfs::set_used_sectors( Partition & partition )
 
 bool btrfs::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfs filesystem label " + partition.get_path() +
-	                          " \"" + partition.get_filesystem_label() + "\"",
+	return ! execute_command( "btrfs filesystem label " + Glib::shell_quote( partition.get_path() ) +
+	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
@@ -320,7 +323,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		mount_point = mk_temp_dir( "", operationdetail ) ;
 		if ( mount_point .empty() )
 			return false ;
-		success &= ! execute_command( "mount -v -t btrfs " + path + " \"" + mount_point + "\"",
+		success &= ! execute_command( "mount -v -t btrfs " + Glib::shell_quote( path ) +
+		                              " " + Glib::shell_quote( mount_point ),
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 	else
@@ -336,9 +340,9 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			size = "max" ;
 		Glib::ustring cmd ;
 		if ( btrfs_found )
-			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " \"" + mount_point + "\"";
+			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
 		else
-			cmd = "btrfsctl -r " + devid_str + ":" + size + " \"" + mount_point + "\"";
+			cmd = "btrfsctl -r " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
 		exit_status = execute_command( cmd, operationdetail );
 		bool resize_succeeded = ( exit_status == 0 ) ;
 		if ( resize_to_same_size_fails )
@@ -365,7 +369,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 		success &= resize_succeeded ;
 
 		if ( ! partition_new .busy )
-			success &= ! execute_command( "umount -v \"" + mount_point + "\"",
+			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
 			                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
@@ -378,9 +382,11 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 void btrfs::read_label( Partition & partition )
 {
 	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	else
-		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -414,9 +420,11 @@ void btrfs::read_label( Partition & partition )
 void btrfs::read_uuid( Partition & partition )
 {
 	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	else
-		Utils::execute_command( "btrfs-show " + partition .get_path(), output, error, true ) ;
+		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
+		                        output, error, true );
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -435,7 +443,8 @@ void btrfs::read_uuid( Partition & partition )
 
 bool btrfs::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfstune -f -u " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command( "btrfstune -f -u " + Glib::shell_quote( partition.get_path() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void btrfs::clear_cache()
@@ -488,9 +497,9 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	std::vector<int> devid_list ;
 	std::vector<Glib::ustring> path_list ;
 	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + path, output, error, true ) ;
+		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( path ), output, error, true );
 	else
-		Utils::execute_command( "btrfs-show " + path, output, error, true ) ;
+		Utils::execute_command( "btrfs-show " + Glib::shell_quote( path ), output, error, true );
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 

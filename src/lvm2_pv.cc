@@ -93,7 +93,8 @@ void lvm2_pv::set_used_sectors( Partition & partition )
 
 bool lvm2_pv::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvcreate -M 2 " + new_partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command( "lvm pvcreate -M 2 " + Glib::shell_quote( new_partition.get_path() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
@@ -103,13 +104,14 @@ bool lvm2_pv::resize( const Partition & partition_new, OperationDetail & operati
 		size = " --setphysicalvolumesize " +
 			Utils::num_to_str( floor( Utils::sector_to_unit(
 				partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K " ;
-	return ! execute_command( "lvm pvresize -v " + size + partition_new.get_path(),
+	return ! execute_command( "lvm pvresize -v " + size + Glib::shell_quote( partition_new.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "lvm pvck -v " + partition.get_path(), operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command( "lvm pvck -v " + Glib::shell_quote( partition.get_path() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationdetail )
@@ -117,10 +119,10 @@ bool lvm2_pv::remove( const Partition & partition, OperationDetail & operationde
 	Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
 	Glib::ustring cmd ;
 	if ( vgname .empty() )
-		cmd = "lvm pvremove " + partition .get_path() ;
+		cmd = "lvm pvremove " + Glib::shell_quote( partition.get_path() );
 	else
 		//Must force the removal of a PV which is a member of a VG
-		cmd = "lvm pvremove --force --force --yes " + partition .get_path() ;
+		cmd = "lvm pvremove --force --force --yes " + Glib::shell_quote( partition.get_path() );
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 }
 

@@ -136,7 +136,7 @@ bool luks::resize( const Partition & partition_new, OperationDetail & operationd
 		// device sector size.
 		size = "--size " + Utils::num_to_str( ( partition_new.get_byte_length() - mapping.offset ) / 512LL ) + " ";
 
-	return ! execute_command( "cryptsetup -v " + size + "resize " + mapping.name,
+	return ! execute_command( "cryptsetup -v " + size + "resize " + Glib::shell_quote( mapping.name ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 

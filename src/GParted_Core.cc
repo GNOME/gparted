@@ -279,7 +279,8 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 void GParted_Core::guess_partition_table(const Device & device, Glib::ustring &buff)
 {
 	Glib::ustring error;
-	Glib::ustring cmd = "gpart -s " + Utils::num_to_str( device.sector_size ) + " " + device.get_path();
+	Glib::ustring cmd = "gpart -s " + Utils::num_to_str( device.sector_size ) +
+	                    " " + Glib::shell_quote( device.get_path() );
 	Utils::execute_command( cmd, buff, error, true );
 }
 
@@ -1004,7 +1005,7 @@ void GParted_Core::set_device_serial_number( Device & device )
 
 	Glib::ustring output;
 	Glib::ustring error;
-	Utils::execute_command( "hdparm -I " + device.get_path(), output, error, true );
+	Utils::execute_command( "hdparm -I " + Glib::shell_quote( device.get_path() ), output, error, true );
 	if ( ! error.empty() )
 	{
 		// hdparm reported an error message to stderr.  Assume it's a device

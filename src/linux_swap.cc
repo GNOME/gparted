@@ -115,7 +115,7 @@ void linux_swap::set_used_sectors( Partition & partition )
 
 void linux_swap::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "swaplabel " + Glib::shell_quote( partition.get_path() ), output, error, true ) )
 	{
 		partition.set_filesystem_label( Utils::regexp_label( output, "^LABEL:[[:blank:]]*(.*)$" ) );
 	}
@@ -131,13 +131,14 @@ void linux_swap::read_label( Partition & partition )
 
 bool linux_swap::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -L \"" + partition.get_filesystem_label() + "\" " + partition.get_path(),
+	return ! execute_command( "swaplabel -L " + Glib::shell_quote( partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void linux_swap::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "swaplabel " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "swaplabel " + Glib::shell_quote( partition.get_path() ), output, error, true ) )
 	{
 		partition .uuid = Utils::regexp_label( output, "^UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -154,24 +155,25 @@ void linux_swap::read_uuid( Partition & partition )
 
 bool linux_swap::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "swaplabel -U \"" + Utils::generate_uuid() + "\" " + partition .get_path(),
+	return ! execute_command( "swaplabel -U " + Glib::shell_quote( Utils::generate_uuid() ) +
+	                          " " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool linux_swap::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkswap -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	return ! execute_command( "mkswap -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool linux_swap::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
 	//Maintain label and uuid when recreating swap
-	Glib::ustring command = "mkswap -L \"" + partition_new.get_filesystem_label() + "\" ";
+	Glib::ustring command = "mkswap -L " + Glib::shell_quote( partition_new.get_filesystem_label() ) + " ";
 	if ( ! partition_new .uuid .empty() )
-		command +=  " -U \"" + partition_new .uuid + "\" " ;
-	command += partition_new .get_path() ;
+		command +=  " -U " + Glib::shell_quote( partition_new.uuid ) + " ";
+	command += Glib::shell_quote( partition_new.get_path() );
 	return ! execute_command( command, operationdetail, EXEC_CHECK_STATUS );
 }
 

@@ -88,7 +88,8 @@ Glib::ustring FS_Info::get_fs_type( const Glib::ustring & path )
 			// bypassing the the cache to get the correct results.
 			Glib::ustring output;
 			Glib::ustring error;
-			if ( ! Utils::execute_command( "blkid -c /dev/null " + path, output, error, true ) )
+			if ( ! Utils::execute_command( "blkid -c /dev/null " + Glib::shell_quote( path ),
+			                               output, error, true )                              )
 				fs_sec_type = Utils::regexp_label( output, " SEC_TYPE=\"([^\"]*)\"" );
 		}
 		if ( fs_sec_type == "msdos" )
@@ -254,7 +255,7 @@ bool FS_Info::run_blkid_load_cache( const Glib::ustring & path )
 	//     /dev/sdb3: PARTUUID="bb8438e1-d9f1-45d3-9888-e990b598900d"
 	Glib::ustring cmd = "blkid";
 	if ( path.size() )
-		cmd = cmd + " " + path;
+		cmd = cmd + " " + Glib::shell_quote( path );
 	Glib::ustring output;
 	Glib::ustring error;
 	bool loaded_entries = false;
@@ -303,7 +304,7 @@ bool FS_Info::run_blkid_update_cache_one_label( FS_Entry & fs_entry )
 	// label without blkid's default non-reversible encoding.
 	Glib::ustring output;
 	Glib::ustring error;
-	bool success = ! Utils::execute_command( "blkid -o value -s LABEL " + fs_entry.path.m_name,
+	bool success = ! Utils::execute_command( "blkid -o value -s LABEL " + Glib::shell_quote( fs_entry.path.m_name ),
 	                                         output, error, true );
 	if ( ! success )
 		return false;

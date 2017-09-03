@@ -120,7 +120,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 		// (from util-linux) prior to version v2.26 reads the Volume Identifier
 		// (--vid).  Therefore for compatibility reasons store the label in both
 		// locations.
-		label_args = "--lvid=\"" + label + "\" " + "--vid=\"" + vid + "\" ";
+		label_args = "--lvid=" + Glib::shell_quote( label ) + " --vid=" + Glib::shell_quote( vid ) + " ";
 	}
 
 	// NOTE: UDF block size must match logical sector size of underlying media.
@@ -129,7 +129,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	// TODO: Add GUI option for choosing different optical disks and UDF revision.
 	// For now format as UDF revision 2.01 for hard disk media type.
 	return ! execute_command( "mkudffs --utf8 --media-type=hd --udfrev=0x201 " +
-	                          blocksize_args + label_args + new_partition.get_path(),
+	                          blocksize_args + label_args + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail,
 	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }

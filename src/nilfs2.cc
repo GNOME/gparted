@@ -73,7 +73,8 @@ FS nilfs2::get_filesystem_support()
 
 void nilfs2::set_used_sectors( Partition & partition )
 {
-	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                         )
 	{
 		//File system size in bytes
 		Glib::ustring::size_type index = output .find( "Device size:" ) ;
@@ -115,7 +116,8 @@ void nilfs2::set_used_sectors( Partition & partition )
 
 void nilfs2::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                         )
 	{
 		Glib::ustring label = Utils::regexp_label( output, "^Filesystem volume name:[\t ]*(.*)$" ) ;
 		if ( label != "(none)" )
@@ -135,14 +137,15 @@ void nilfs2::read_label( Partition & partition )
 
 bool nilfs2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -L \"" + partition.get_filesystem_label() + "\" " +
-	                          partition.get_path(),
+	return ! execute_command( "nilfs-tune -L " + Glib::shell_quote( partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void nilfs2::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( "nilfs-tune -l " + partition .get_path(), output, error, true ) )
+	if ( ! Utils::execute_command( "nilfs-tune -l " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                         )
 	{
 		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -158,14 +161,15 @@ void nilfs2::read_uuid( Partition & partition )
 
 bool nilfs2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "nilfs-tune -U " + Utils::generate_uuid() + " " + partition .get_path(),
+	return ! execute_command( "nilfs-tune -U " + Glib::shell_quote( Utils::generate_uuid() ) +
+	                          " " + Glib::shell_quote( partition .get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool nilfs2::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "mkfs.nilfs2 -L \"" + new_partition.get_filesystem_label() + "\" " +
-	                          new_partition.get_path(),
+	return ! execute_command( "mkfs.nilfs2 -L " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
+	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
@@ -180,14 +184,14 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		if ( mount_point .empty() )
 			return false ;
 
-		success &= ! execute_command( "mount -v -t nilfs2 " + partition_new .get_path() +
-		                              " \"" + mount_point + "\"",
+		success &= ! execute_command( "mount -v -t nilfs2 " + Glib::shell_quote( partition_new.get_path() ) +
+		                              " " + Glib::shell_quote( mount_point ),
 		                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
 	if ( success )
 	{
-		Glib::ustring cmd = "nilfs-resize -v -y " + partition_new .get_path() ;
+		Glib::ustring cmd = "nilfs-resize -v -y " + Glib::shell_quote( partition_new.get_path() );
 		if ( ! fill_partition )
 		{
 			Glib::ustring size = Utils::num_to_str( floor( Utils::sector_to_unit(
@@ -197,7 +201,7 @@ bool nilfs2::resize( const Partition & partition_new, OperationDetail & operatio
 		success &= ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS );
 
 		if ( ! partition_new. busy )
-			success &= ! execute_command( "umount -v \"" + mount_point + "\"",
+			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
 			                              operationdetail, EXEC_CHECK_STATUS );
 	}
 
