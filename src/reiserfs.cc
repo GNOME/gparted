@@ -173,9 +173,9 @@ bool reiserfs::resize( const Partition & partition_new, OperationDetail & operat
 		size = " -s " + Utils::num_to_str( floor( Utils::sector_to_unit(
 		                   partition_new .get_sector_length(), partition_new .sector_size, UNIT_BYTE ) ) ) ;
 	}
-	Glib::ustring cmd = "sh -c 'echo y | resize_reiserfs" + size + " " + partition_new .get_path() + "'" ;
-
-	exit_status = execute_command( cmd, operationdetail ) ;
+	const Glib::ustring resize_cmd = "echo y | resize_reiserfs" + size +
+	                                 " " + Glib::shell_quote( partition_new.get_path() );
+	exit_status = execute_command( "sh -c " + Glib::shell_quote( resize_cmd ), operationdetail );
 	// NOTE: Neither resize_reiserfs manual page nor the following commit, which first
 	// added this check, indicate why exit status 1 also indicates success.  Commit
 	// from 2006-05-23:

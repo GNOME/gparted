@@ -258,8 +258,9 @@ bool xfs::copy( const Partition & src_part,
 
 		if ( success )
 		{
-			success &= ! execute_command( "sh -c 'xfsdump -J - \"" + src_mount_point +
-			                              "\" | xfsrestore -J - \"" + dest_mount_point + "\"'",
+			const Glib::ustring copy_cmd = "xfsdump -J - " + Glib::shell_quote( src_mount_point ) +
+			                               " | xfsrestore -J - " + Glib::shell_quote( dest_mount_point );
+			success &= ! execute_command( "sh -c " + Glib::shell_quote( copy_cmd ),
 			                              operationdetail,
 			                              EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_TIMED,
 			                              static_cast<TimedSlot>( sigc::mem_fun( *this, &xfs::copy_progress ) ) );
