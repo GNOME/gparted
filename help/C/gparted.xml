@@ -1036,6 +1036,13 @@
             </listitem>
             <listitem>
               <para>
+              Specify the name of the partition when the field is
+              enabled.
+              See <xref linkend="gparted-specify-partition-name"/>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
               Specify the type of file system for the partition.
               See <xref linkend="gparted-specify-partition-file-system"/>.
               </para>
@@ -1513,6 +1520,25 @@
             locations on the disk device.
             </para>
           </tip>
+        </sect4>
+
+<!-- ============= To Specify a Partition Name ======================= -->
+        <sect4 id="gparted-specify-partition-name">
+          <title>Specifying Partition Name</title>
+          <note>
+            <para>
+            Naming of partitions is only available with GUID partition
+            tables (GPT).  Therefore the field is only enabled on disk
+            devices partitioned using GPT.
+            </para>
+            <para>
+            Also see <xref linkend="gparted-create-partition-table"/>.
+            </para>
+          </note>
+          <para>
+          To specify the partition name, type the name in the
+          <guilabel>Partition name</guilabel> text box.
+          </para>
         </sect4>
 
 <!-- ============= To Specify a Partition File System ================ -->
