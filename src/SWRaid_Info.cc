@@ -125,8 +125,8 @@ void SWRaid_Info::load_swraid_info_cache()
 
 	// Load SWRaid members into the cache.  Load member device, array UUID and array
 	// label (array name in mdadm terminology).
-	Glib::ustring cmd = "mdadm --examine --scan --verbose";
-	if ( mdadm_found && ! Utils::execute_command( cmd, output, error, true ) )
+	if ( mdadm_found                                                                         &&
+	     ! Utils::execute_command( "mdadm --examine --scan --verbose", output, error, true )    )
 	{
 		// Extract information from Linux Software RAID arrays only, excluding
 		// IMSM and DDF arrays.  Example output:

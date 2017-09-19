@@ -2772,9 +2772,7 @@ void Win_GParted::activate_attempt_rescue_data()
 	dialog.run();
 	dialog.hide();
 
-	Glib::ustring commandUmount= "umount /tmp/gparted-roview*";
-
-	Utils::execute_command(commandUmount);
+	Utils::execute_command( "umount /tmp/gparted-roview*" );
 
 	menu_gparted_refresh_devices() ;
 }

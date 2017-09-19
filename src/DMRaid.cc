@@ -322,7 +322,6 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 {
 	//Create all missing dev mapper entries for a specified device.
 
-	Glib::ustring command ;
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  create missing /dev/mapper entries */ 
@@ -331,8 +330,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
 	//  and the partition number.
-	command = "dmraid -ay -P \"\" -v" ;
-	if ( execute_command( command, operationdetail .get_last_child() ) )
+	if ( execute_command( "dmraid -ay -P \"\" -v", operationdetail.get_last_child() ) )
 		exit_status = false;  // command failed
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
@@ -344,13 +342,12 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 {
 	//Create all missing dev mapper entries for a specified device.
 
-	Glib::ustring command, output, error ;
+	Glib::ustring output, error ;
 	bool exit_status = true ;
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
 	//  and the partition number.
-	command = "dmraid -ay -P \"\" -v" ;
-	if ( Utils::execute_command( command, output, error, true ) )
+	if ( Utils::execute_command( "dmraid -ay -P \"\" -v", output, error, true ) )
 		exit_status = false;  // command failed
 
 	return exit_status ;
