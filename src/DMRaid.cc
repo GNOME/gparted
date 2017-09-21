@@ -151,7 +151,7 @@ int DMRaid::execute_command( const Glib::ustring & command, OperationDetail & op
 
 	operationdetail .add_child( OperationDetail( command, STATUS_NONE, FONT_BOLD_ITALIC ) ) ;
 
-	int exit_status = Utils::execute_command( "nice -n 19 " + command, output, error ) ;
+	int exit_status = Utils::execute_command( command, output, error );
 
 	if ( ! output .empty() )
 		operationdetail .get_last_child() .add_child( OperationDetail( output, STATUS_NONE, FONT_ITALIC ) ) ;
