@@ -330,16 +330,10 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
-	//  and the partition number.  Since the '-P' option is not valid for older dmraid
-	//  versions, try with and without the '-P' option.
+	//  and the partition number.
 	command = "dmraid -ay -P \"\" -v" ;
 	if ( execute_command( command, operationdetail .get_last_child() ) )
-	{
-		//Above command failed, so try without the '-P' option.
-		command = "dmraid -ay -v" ;
-		if ( execute_command( command, operationdetail .get_last_child() ) )
-			exit_status = false ;	//command failed
-	}
+		exit_status = false;  // command failed
 
 	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
 
@@ -354,16 +348,10 @@ bool DMRaid::create_dev_map_entries( const Glib::ustring & dev_path )
 	bool exit_status = true ;
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
-	//  and the partition number.  Since the '-P' option is not valid for older dmraid
-	//  versions, try with and without the '-P' option.
+	//  and the partition number.
 	command = "dmraid -ay -P \"\" -v" ;
 	if ( Utils::execute_command( command, output, error, true ) )
-	{
-		//Above command failed, so try without the '-P' option.
-		command = "dmraid -ay -v" ;
-		if ( Utils::execute_command( command, output, error, true ) )
-			exit_status = false;	//command failed
-	}
+		exit_status = false;  // command failed
 
 	return exit_status ;
 }
