@@ -51,6 +51,7 @@
 #include "udf.h"
 #include "ufs.h"
 
+#include <parted/parted.h>
 #include <cerrno>
 #include <cstring>
 #include <sys/types.h>
@@ -761,12 +762,7 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		PedPartition* lp_partition = NULL ;
-		if ( partition .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-	
+		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
 		if ( lp_partition )
 		{
 			PedPartitionFlag lp_flag = ped_partition_flag_get_by_name( flag .c_str() ) ;
@@ -822,12 +818,7 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		PedPartition* lp_partition = NULL ;
-		if ( partition .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-	
+		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
 		if ( lp_partition )
 		{
 			for ( unsigned int t = 0 ; t < flags .size() ; t++ )
@@ -2083,12 +2074,8 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition .device_path, lp_device, lp_disk ) )
 	{
-		PedPartition* lp_partition = NULL ;
-		if ( partition .type == TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition .get_sector() ) ;
-		
+		PedPartition* lp_partition = get_lp_partition( lp_disk, partition );
+
 		succes = ped_disk_delete_partition( lp_disk, lp_partition ) && commit( lp_disk ) ;
 	
 		destroy_device_and_disk( lp_device, lp_disk ) ;
@@ -2773,12 +2760,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
-		PedPartition* lp_partition = NULL ;
-		if ( partition_old .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else		
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
-		
+		PedPartition* lp_partition = get_lp_partition( lp_disk, partition_old );
 		if ( lp_partition )
 		{
 			if (   (partition_new .alignment == ALIGN_STRICT)
@@ -3567,12 +3549,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			else if ( get_disk( lp_device, lp_disk ) )
 			{
 				// Partitioned device
-				PedPartition *lp_partition = NULL;
-				if ( partition.type == TYPE_EXTENDED )
-					lp_partition = ped_disk_extended_partition( lp_disk );
-				else
-					lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
-
+				PedPartition *lp_partition = get_lp_partition( lp_disk, partition );
 				if ( lp_partition )  // FIXME: add check to see if lp_partition->type matches partition.type..
 				{
 					if ( ! file_test( curr_path, Glib::FILE_TEST_EXISTS ) )
@@ -3679,12 +3656,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	PedDisk* lp_disk = NULL ;
 	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
 	{
-		PedPartition* lp_partition = NULL ;
-		if ( partition_old .type == GParted::TYPE_EXTENDED )
-			lp_partition = ped_disk_extended_partition( lp_disk ) ;
-		else		
-			lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition_old .get_sector() ) ;
-
+		PedPartition* lp_partition = get_lp_partition( lp_disk, partition_old );
 		if ( lp_partition )
 		{
 			PedConstraint *constraint = NULL ;
@@ -4305,6 +4277,13 @@ void GParted_Core::settle_device( std::time_t timeout )
 		Utils::execute_command( "udevadm settle --timeout=" + Utils::num_to_str( timeout ) ) ;
 	else
 		sleep( timeout ) ;
+}
+
+PedPartition* GParted_Core::get_lp_partition( const PedDisk* lp_disk, const Partition & partition )
+{
+	if ( partition.type == TYPE_EXTENDED )
+		return ped_disk_extended_partition( lp_disk );
+	return ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
 }
 
 class PedExceptionMsg : public Gtk::MessageDialog

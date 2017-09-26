@@ -218,6 +218,7 @@ private:
 	static bool commit_to_os( PedDisk* lp_disk, std::time_t timeout );
 	static void settle_device( std::time_t timeout );
 	static bool useable_device( PedDevice * lp_device );
+	static PedPartition* get_lp_partition( const PedDisk* lp_disk, const Partition & partition );
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
