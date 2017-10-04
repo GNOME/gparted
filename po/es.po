@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: gparted.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-07-30 08:50+0000\n"
-"PO-Revision-Date: 2017-08-01 09:48+0200\n"
+"POT-Creation-Date: 2017-09-01 16:33+0000\n"
+"PO-Revision-Date: 2017-10-04 09:22+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -46,10 +46,6 @@ msgstr ""
 "particiones perdidas."
 
 #: ../gparted.appdata.xml.in.h:3
-#| msgid ""
-#| "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-#| "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-#| "reiser4, ufs, and xfs."
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
 "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
@@ -81,6 +77,16 @@ msgstr "Cree, reorganice y elimine particiones"
 #: ../gparted.desktop.in.in.h:5
 msgid "Partition;"
 msgstr "Partición;"
+
+#: ../org.gnome.gparted.policy.in.in.h:1
+msgid "Run GParted as root"
+msgstr "Ejecutar GParted como root"
+
+#: ../org.gnome.gparted.policy.in.in.h:2
+msgid "Authentication is required to run the GParted Partition Editor as root"
+msgstr ""
+"Se necesita autenticación para ejecutar el editor de particiones GParted "
+"como root"
 
 #: ../include/Utils.h:55
 msgid "(New UUID - will be randomly generated)"
@@ -661,7 +667,6 @@ msgstr "Disponible con el volumen montado y desmontado"
 #. * when it is mounted.
 #.
 #: ../src/DialogFeatures.cc:109
-#| msgid "Available offline only"
 msgid "Available online only"
 msgstr "Sólo disponible con el volumen montado"
 
@@ -1116,7 +1121,6 @@ msgstr ""
 "el tamaño de la partición está cambiando para redimensionarla en un solo paso"
 
 #: ../src/GParted_Core.cc:2581
-#| msgid "start of the partition is changing for a resize only step"
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
@@ -1235,12 +1239,10 @@ msgstr ""
 "un sólo paso"
 
 #: ../src/GParted_Core.cc:2911
-#| msgid "grow file system to fill the partition"
 msgid "grow encryption volume to fill the partition"
 msgstr "aumentar el volumen de cifrado hasta llenar la partición"
 
 #: ../src/GParted_Core.cc:2921
-#| msgid "growing is not available for this file system"
 msgid "growing is not available for this encryption volume"
 msgstr "ampliar no está disponible para este volumen de cifrado"
 
@@ -1390,7 +1392,6 @@ msgid "device"
 msgstr "dispositivo"
 
 #: ../src/GParted_Core.cc:3650
-#| msgid "Encryption:"
 msgid "encryption path: %1"
 msgstr "ruta de cifrado: %1"
 
@@ -2493,15 +2494,15 @@ msgstr "ejecutar una simulación"
 msgid "real resize"
 msgstr "redimensión real"
 
-#: ../src/udf.cc:66
+#: ../src/udf.cc:67
 msgid "Partition is too large, maximum size is %1"
 msgstr "La partición es muy grande, el tamaño máximo es %1"
 
-#: ../src/udf.cc:74
+#: ../src/udf.cc:75
 msgid "Partition is too small, minimum size is %1"
 msgstr "La partición es muy pequeña, el tamaño mínimo es %1"
 
-#: ../src/udf.cc:91
+#: ../src/udf.cc:92
 msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
