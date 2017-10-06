@@ -41,6 +41,7 @@ EXTRA_DIST = \
 	Partition.h			\
 	PartitionLUKS.h			\
 	PartitionVector.h		\
+	PasswordRAMStore.h		\
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\
 	ProgressBar.h			\

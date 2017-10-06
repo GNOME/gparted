@@ -51,6 +51,7 @@ gpartedbin_SOURCES = \
 	Partition.cc			\
 	PartitionLUKS.cc		\
 	PartitionVector.cc		\
+	PasswordRAMStore.cc		\
 	PipeCapture.cc			\
 	Proc_Partitions_Info.cc		\
 	ProgressBar.cc			\
