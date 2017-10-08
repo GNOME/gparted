@@ -3,21 +3,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 #
+#
 # Raivis Dejus <orvils@gmail.com>, 2006, 2009.
 # Peteris Krisjanis <pecisk@gmail.com>, 2010.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012.
 # Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2010, 2012, 2013, 2014.
-# Rudolfs Mazurs <rudolfs.mazurs@gmail.com>, 2015.
-#
+# Rudolfs Mazurs <rudolfs.mazurs@gmail.com>, 2015, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=gparted&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-07-01 20:37+0000\n"
-"PO-Revision-Date: 2015-08-03 21:07+0300\n"
-"Last-Translator: Rudolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latviešu <>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=gparted"
+"&keywords=I18N+L10N&component=application\n"
+"POT-Creation-Date: 2017-09-01 16:33+0000\n"
+"PO-Revision-Date: 2017-10-08 10:09+0200\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,9 +25,9 @@ msgstr ""
 "X-Poedit-Language: Latvian\n"
 "X-Poedit-Country: LATVIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Gtranslator 2.91.6\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
+"X-Generator: Lokalize 2.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
+" 2);\n"
 
 #: ../gparted.appdata.xml.in.h:1
 msgid ""
@@ -48,19 +48,23 @@ msgstr ""
 "nodalījumiem."
 
 #: ../gparted.appdata.xml.in.h:3
+#| msgid ""
+#| "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
+#| "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+#| "reiser4, ufs, and xfs."
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
 "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs, and xfs."
+"reiser4, udf, ufs, and xfs."
 msgstr ""
-"GParted srādā ar daudzām datņu sistēmām, tai skaitā  btrfs, ext2, ext3, "
+"GParted strādā ar daudzām datņu sistēmām, tai skaitā  btrfs, ext2, ext3, "
 "ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, ufs, and xfs."
+"reiser4, udf, ufs, and xfs."
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:359
-#: ../src/Win_GParted.cc:77 ../src/Win_GParted.cc:1426
-#: ../src/Win_GParted.cc:1621
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
+#: ../src/Win_GParted.cc:81 ../src/Win_GParted.cc:1479
+#: ../src/Win_GParted.cc:1674
 msgid "GParted"
 msgstr "GParted"
 
@@ -77,9 +81,18 @@ msgid "Create, reorganize, and delete partitions"
 msgstr "Veido, pārkārto un dzēš disku nodalījumus"
 
 #: ../gparted.desktop.in.in.h:5
-#| msgid "Partition"
 msgid "Partition;"
 msgstr "Nodalījums;"
+
+#: ../org.gnome.gparted.policy.in.in.h:1
+msgid "Run GParted as root"
+msgstr "Palaist GParted kā root"
+
+#: ../org.gnome.gparted.policy.in.in.h:2
+msgid "Authentication is required to run the GParted Partition Editor as root"
+msgstr ""
+"Nepieciešama autentificēšana, lai palaistu GParted nodalījumu redaktoru ar"
+" root tiesībām"
 
 #: ../include/Utils.h:55
 msgid "(New UUID - will be randomly generated)"
@@ -89,82 +102,78 @@ msgstr "(Jauns UUID - tiks nejauši uzģenerēts)"
 msgid "(Half new UUID - will be randomly generated)"
 msgstr "(Pus-jauns UUID - tiks nejauši uzģenerēts)"
 
-#. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
-#: ../src/Copy_Blocks.cc:67
-msgid "%1 of %2 copied (%3 remaining)"
-msgstr "%1 no %2 nokopēti (%3 atlikuši)"
-
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
-#: ../src/Copy_Blocks.cc:74 ../src/Copy_Blocks.cc:184
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
+#: ../src/CopyBlocks.cc:71 ../src/CopyBlocks.cc:181 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 no %2 nokopēti"
 
 #. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/Copy_Blocks.cc:160
+#: ../src/CopyBlocks.cc:156
 msgid "copy %1 using a block size of %2"
 msgstr "kopēt %1, izmantojot bloka izmēru %2"
 
-#: ../src/Copy_Blocks.cc:222
+#: ../src/CopyBlocks.cc:221
 msgid "Operation Canceled"
 msgstr "Darbība atcelta"
 
-#: ../src/Copy_Blocks.cc:234
+#: ../src/CopyBlocks.cc:233
 msgid "Error while writing block at sector %1"
 msgstr "Kļūda, rakstot %1 sektora bloku"
 
-#: ../src/Copy_Blocks.cc:239
+#: ../src/CopyBlocks.cc:238
 msgid "Error while reading block at sector %1"
 msgstr "Kļūda, lasot %1 sektora bloku"
 
-#: ../src/Dialog_Base_Partition.cc:55
+#: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
 msgstr "Brīva vieta pirms (MiB):"
 
 #. add spinbutton_size
-#: ../src/Dialog_Base_Partition.cc:64
+#: ../src/Dialog_Base_Partition.cc:65
 msgid "New size (MiB):"
 msgstr "Jaunais izmērs (MiB):"
 
 #. add spinbutton_after
-#: ../src/Dialog_Base_Partition.cc:71
+#: ../src/Dialog_Base_Partition.cc:72
 msgid "Free space following (MiB):"
 msgstr "Brīva vieta pēc (MiB):"
 
 #. add alignment
 #. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
-#: ../src/Dialog_Base_Partition.cc:98
+#: ../src/Dialog_Base_Partition.cc:99
 msgid "Align to:"
 msgstr "Līdzināt pie:"
 
 #. fill partition alignment menu
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:103
+#: ../src/Dialog_Base_Partition.cc:104
 msgid "Cylinder"
 msgstr "Cilindriem"
 
 #. TO TRANSLATORS: Menu option for label "Align to:"
-#: ../src/Dialog_Base_Partition.cc:105
+#: ../src/Dialog_Base_Partition.cc:106
 msgid "MiB"
 msgstr "MiB"
 
 #. TO TRANSLATORS: Menu option for drop down menu "Align to:"
-#: ../src/Dialog_Base_Partition.cc:107
+#: ../src/Dialog_Base_Partition.cc:108
 msgid "None"
 msgstr "Nekā"
 
-#: ../src/Dialog_Base_Partition.cc:244
+#: ../src/Dialog_Base_Partition.cc:254
 msgid "Resize"
 msgstr "Mainīt izmēru"
 
-#: ../src/Dialog_Base_Partition.cc:244 ../src/Win_GParted.cc:246
+#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:256
 msgid "Resize/Move"
 msgstr "Mainīt/Pārvietot"
 
-#: ../src/Dialog_Base_Partition.cc:262
+#: ../src/Dialog_Base_Partition.cc:272
 msgid "Minimum size: %1 MiB"
 msgstr "Minimālais izmērs — %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:263
+#: ../src/Dialog_Base_Partition.cc:273
 msgid "Maximum size: %1 MiB"
 msgstr "Maksimālais izmērs — %1 MiB"
 
@@ -183,58 +192,81 @@ msgid "Select new partition table type:"
 msgstr "Izvēlieties jaunu nodalījumu tabulas tipu:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
-#: ../src/Dialog_FileSystem_Label.cc:29
-#| msgid "Search for file systems on %1"
+#: ../src/Dialog_FileSystem_Label.cc:30
 msgid "Set file system label on %1"
 msgstr "Iestatīt datņu sistēmas etiķeti uz %1"
 
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:40 ../src/Dialog_Partition_Info.cc:258
-#: ../src/Dialog_Partition_New.cc:145
+#: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:275
+#: ../src/Dialog_Partition_New.cc:154
 msgid "Label:"
 msgstr "Nosaukums:"
 
-#: ../src/Dialog_Partition_Copy.cc:37
+#: ../src/Dialog_Partition_Copy.cc:45
 msgid "Paste %1"
 msgstr "Ielīmēt %1"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:42
+#: ../src/Dialog_Partition_Info.cc:45
 msgid "Information about %1"
 msgstr "Informācija par %1"
 
-#: ../src/Dialog_Partition_Info.cc:78
+#: ../src/Dialog_Partition_Info.cc:81
 msgid "Warning:"
 msgstr "Brīdinājums:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:235 ../src/DialogFeatures.cc:44
-#: ../src/TreeView_Detail.cc:36
+#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:44
+#: ../src/TreeView_Detail.cc:45
 msgid "File System"
 msgstr "Datņu sistēma"
 
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:246 ../src/Dialog_Partition_New.cc:134
+#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:143
 msgid "File system:"
 msgstr "Datņu sistēma:"
 
-#: ../src/Dialog_Partition_Info.cc:271
+#. LUKS uuid
+#: ../src/Dialog_Partition_Info.cc:290 ../src/Dialog_Partition_Info.cc:560
 msgid "UUID:"
 msgstr "UUID:"
 
-#: ../src/Dialog_Partition_Info.cc:286
+#. TO TRANSLATORS:   Open
+#. * means that the LUKS encryption is open and the encrypted data within is accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:305
+msgid "Open"
+msgstr "Atvērt"
+
+#. TO TRANSLATORS:   Closed
+#. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
+#.
+#: ../src/Dialog_Partition_Info.cc:309
+msgid "Closed"
+msgstr "Aizvērts"
+
+#. LUKS status
+#: ../src/Dialog_Partition_Info.cc:316 ../src/Dialog_Partition_Info.cc:566
 msgid "Status:"
 msgstr "Statuss:"
+
+#. TO TRANSLATORS:   Not accessible (Encrypted)
+#. * means that the data in encrypted and hasn't been made
+#. * accessible by opening it with the passphrase.
+#.
+#: ../src/Dialog_Partition_Info.cc:325
+msgid "Not accessible (Encrypted)"
+msgstr "Nav pieejams (šifrēts)"
 
 #. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:298
+#: ../src/Dialog_Partition_Info.cc:335
 msgid "Busy (At least one logical partition is mounted)"
 msgstr "Aizņemts (vismaz 1 loģiskais nodalījums ir piemontēts)"
 
@@ -242,12 +274,12 @@ msgstr "Aizņemts (vismaz 1 loģiskais nodalījums ir piemontēts)"
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:309
+#: ../src/Dialog_Partition_Info.cc:345
 msgid "Active"
 msgstr "Aktīvs"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:315
+#: ../src/Dialog_Partition_Info.cc:359
 msgid "Mounted on %1"
 msgstr "Piemontēts %1"
 
@@ -255,7 +287,7 @@ msgstr "Piemontēts %1"
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:325
+#: ../src/Dialog_Partition_Info.cc:369
 msgid "Not busy (There are no mounted logical partitions)"
 msgstr "Nav aizņemts (nav piemontēto loģisko nodalījumu)"
 
@@ -267,7 +299,7 @@ msgstr "Nav aizņemts (nav piemontēto loģisko nodalījumu)"
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:335 ../src/Dialog_Partition_Info.cc:359
+#: ../src/Dialog_Partition_Info.cc:378 ../src/Dialog_Partition_Info.cc:407
 msgid "Not active"
 msgstr "Nav aktīvs"
 
@@ -276,7 +308,7 @@ msgstr "Nav aktīvs"
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:345
+#: ../src/Dialog_Partition_Info.cc:393
 msgid "Not active (Not a member of any volume group)"
 msgstr "Nav aktīvs (nav daļā no nevienas sējumu grupas)"
 
@@ -286,235 +318,250 @@ msgstr "Nav aktīvs (nav daļā no nevienas sējumu grupas)"
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:353
-#| msgid "%1 not active and exported"
+#: ../src/Dialog_Partition_Info.cc:401
 msgid "Not active and exported"
 msgstr "Nav aktīvs un eksportēts"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:366
+#: ../src/Dialog_Partition_Info.cc:414
 msgid "Not mounted"
 msgstr "Nav piemontēts"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:376 ../src/Win_GParted.cc:2975
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3124
 msgid "Volume Group:"
 msgstr "Sējumu grupa:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:387 ../src/Win_GParted.cc:2976
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3125
 msgid "Members:"
 msgstr "Dalībnieki:"
 
+#. Logical Volumes
+#: ../src/Dialog_Partition_Info.cc:459
+msgid "Logical Volumes:"
+msgstr "Loģiskais sējums:"
+
 #. Used
-#: ../src/Dialog_Partition_Info.cc:425
+#: ../src/Dialog_Partition_Info.cc:475
 msgid "Used:"
 msgstr "Izmantots:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:439
+#: ../src/Dialog_Partition_Info.cc:489
 msgid "Unused:"
 msgstr "Neizmantots:"
 
-#: ../src/Dialog_Partition_Info.cc:456
+#: ../src/Dialog_Partition_Info.cc:506
 msgid "Unallocated:"
 msgstr "Nepiešķirts:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:472 ../src/Win_GParted.cc:485
+#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:496
 msgid "Size:"
 msgstr "Izmērs:"
+
+#. ENCRYPTION DETAIL SECTION
+#. encryption headline
+#: ../src/Dialog_Partition_Info.cc:542
+msgid "Encryption"
+msgstr "Šifrēšana"
+
+#. Encryption
+#: ../src/Dialog_Partition_Info.cc:546
+msgid "Encryption:"
+msgstr "Šifrēšana:"
+
+#. LUKS path
+#. Left field & value pair area
+#. path
+#: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Partition_Info.cc:592
+#: ../src/Win_GParted.cc:504
+msgid "Path:"
+msgstr "Ceļš:"
 
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:490 ../src/TreeView_Detail.cc:34
+#: ../src/Dialog_Partition_Info.cc:581 ../src/TreeView_Detail.cc:43
 msgid "Partition"
 msgstr "Nodalījums"
 
-#. Left field & value pair area
-#. path
-#: ../src/Dialog_Partition_Info.cc:501 ../src/Win_GParted.cc:493
-msgid "Path:"
-msgstr "Ceļš:"
-
 #. name
-#: ../src/Dialog_Partition_Info.cc:513 ../src/Dialog_Partition_Name.cc:40
+#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:41
 msgid "Name:"
 msgstr "Nosaukums:"
 
 #. flags
-#: ../src/Dialog_Partition_Info.cc:523
+#: ../src/Dialog_Partition_Info.cc:614
 msgid "Flags:"
 msgstr "Karogi:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:535
+#: ../src/Dialog_Partition_Info.cc:626
 msgid "First sector:"
 msgstr "Pirmais sektors:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:545
+#: ../src/Dialog_Partition_Info.cc:636
 msgid "Last sector:"
 msgstr "Pēdējais sektors:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:555 ../src/Win_GParted.cc:543
+#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:554
 msgid "Total sectors:"
 msgstr "Sektori kopā:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
-#: ../src/Dialog_Partition_Name.cc:29
-#| msgid "Set partition label on %1"
+#: ../src/Dialog_Partition_Name.cc:30
 msgid "Set partition name on %1"
 msgstr "Iestatīt %1 nodalījuma nosaukumu"
 
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:31
+#: ../src/Dialog_Partition_New.cc:32
 msgid "Create new Partition"
 msgstr "Izveidot jaunu nodalījumu"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:84
+#: ../src/Dialog_Partition_New.cc:93
 msgid "Create as:"
 msgstr "Izveidot kā:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:89 ../src/OperationCreate.cc:74
+#: ../src/Dialog_Partition_New.cc:98 ../src/OperationCreate.cc:58
 msgid "Primary Partition"
 msgstr "Primārais nodalījums"
 
-#: ../src/Dialog_Partition_New.cc:90 ../src/OperationCreate.cc:77
-#: ../src/OperationDelete.cc:76
+#: ../src/Dialog_Partition_New.cc:99 ../src/OperationCreate.cc:61
+#: ../src/OperationDelete.cc:109
 msgid "Logical Partition"
 msgstr "Loģiskais nodalījums"
 
-#: ../src/Dialog_Partition_New.cc:91 ../src/OperationCreate.cc:80
+#: ../src/Dialog_Partition_New.cc:100 ../src/OperationCreate.cc:64
 msgid "Extended Partition"
 msgstr "Paplašinātais nodalījums"
 
 #. Partition name
-#: ../src/Dialog_Partition_New.cc:124
-#| msgid "Partition table:"
+#: ../src/Dialog_Partition_New.cc:133
 msgid "Partition name:"
 msgstr "Nodalījuma nosaukums:"
 
-#: ../src/Dialog_Partition_New.cc:208
+#: ../src/Dialog_Partition_New.cc:234
 msgid "New Partition #%1"
 msgstr "Jauns nodalījums #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:82
+#: ../src/Dialog_Partition_Resize_Move.cc:95
 msgid "Resize/Move %1"
 msgstr "Mainīt izmēru/pārvietot %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:87
+#: ../src/Dialog_Partition_Resize_Move.cc:100
 msgid "Resize %1"
 msgstr "Mainīt izmēru %1"
 
-#: ../src/Dialog_Progress.cc:31
+#: ../src/Dialog_Progress.cc:33
 msgid "Applying pending operations"
 msgstr "Izpildīt dotās darbības"
 
-#: ../src/Dialog_Progress.cc:46
+#: ../src/Dialog_Progress.cc:48
 msgid ""
 "Depending on the number and type of operations this might take a long time."
 msgstr ""
 "Atkarībā no darbību skaita un tipiem, šis process varētu aizņemt daudz laika."
 
-#: ../src/Dialog_Progress.cc:59
+#: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
 msgstr "Izpildītās darbības:"
 
-#: ../src/Dialog_Progress.cc:100
+#: ../src/Dialog_Progress.cc:102
 msgid "Details"
 msgstr "Detalizētāka informācija"
 
-#: ../src/Dialog_Progress.cc:203
+#: ../src/Dialog_Progress.cc:215
 msgid "%1 of %2 operations completed"
 msgstr "Pabeigtas %1 no %2 darbībām"
 
 #. add save button
-#: ../src/Dialog_Progress.cc:221
+#: ../src/Dialog_Progress.cc:233
 msgid "_Save Details"
 msgstr "_Saglabāt"
 
-#: ../src/Dialog_Progress.cc:233
+#: ../src/Dialog_Progress.cc:245
 msgid "Operation cancelled"
 msgstr "Darbība atsaukta"
 
-#: ../src/Dialog_Progress.cc:247
+#: ../src/Dialog_Progress.cc:259
 msgid "All operations successfully completed"
 msgstr "Visas darbības ir veiksmīgi pabeigtas"
 
-#: ../src/Dialog_Progress.cc:251
+#: ../src/Dialog_Progress.cc:263
 msgid "%1 warning"
 msgid_plural "%1 warnings"
 msgstr[0] "%1 brīdinājums"
 msgstr[1] "%1 brīdinājumi"
 msgstr[2] "%1 brīdinājumu"
 
-#: ../src/Dialog_Progress.cc:264
+#: ../src/Dialog_Progress.cc:276
 msgid "An error occurred while applying the operations"
 msgstr "Kļūda izpildot dotās darbības"
 
-#: ../src/Dialog_Progress.cc:269
+#: ../src/Dialog_Progress.cc:281
 msgid "See the details for more information."
 msgstr "Skatieties detalizēto informāciju, lai uzzinātu vairāk."
 
-#: ../src/Dialog_Progress.cc:271
+#: ../src/Dialog_Progress.cc:283
 msgid "IMPORTANT"
 msgstr "SVARĪGI"
 
-#: ../src/Dialog_Progress.cc:272
+#: ../src/Dialog_Progress.cc:284
 msgid "If you want support, you need to provide the saved details!"
 msgstr ""
 "Ja jūs vēlaties atbalstu, jums nepieciešams nodrošināt saglabāto detalizētu "
 "informāciju!"
 
 #. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:275
+#: ../src/Dialog_Progress.cc:287
 msgid "See %1 for more information."
 msgstr "Skatiet %1, lai uzzinātu vairāk."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: ../src/Dialog_Progress.cc:294 ../src/Dialog_Progress.cc:325
+#: ../src/Dialog_Progress.cc:306 ../src/Dialog_Progress.cc:337
 msgid "Force Cancel (%1)"
 msgstr "Piespiest atcelt (%1)"
 
-#: ../src/Dialog_Progress.cc:296 ../src/Dialog_Progress.cc:329
+#: ../src/Dialog_Progress.cc:308 ../src/Dialog_Progress.cc:341
 msgid "Force Cancel"
 msgstr "Piespiest atcelt"
 
-#: ../src/Dialog_Progress.cc:307
+#: ../src/Dialog_Progress.cc:319
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Vai tiešām vēlaties pārtraukt pašreizējo operāciju?"
 
-#: ../src/Dialog_Progress.cc:313
+#: ../src/Dialog_Progress.cc:325
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "Darbības apturēšana var IEVĒROJAMI bojāt datņu sistēmu."
 
-#: ../src/Dialog_Progress.cc:315
+#: ../src/Dialog_Progress.cc:327
 msgid "Continue Operation"
 msgstr "Turpināt darbību"
 
-#: ../src/Dialog_Progress.cc:316
+#: ../src/Dialog_Progress.cc:328
 msgid "Cancel Operation"
 msgstr "Atcelt darbību"
 
-#: ../src/Dialog_Progress.cc:337
+#: ../src/Dialog_Progress.cc:349
 msgid "Save Details"
 msgstr "Saglabāt detaļas"
 
-#: ../src/Dialog_Progress.cc:356
+#: ../src/Dialog_Progress.cc:368
 msgid "GParted Details"
 msgstr "GParted papildus informācija"
 
-#: ../src/Dialog_Progress.cc:367
+#: ../src/Dialog_Progress.cc:379
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -522,7 +569,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:410
+#: ../src/Dialog_Progress.cc:422
 msgid "EXECUTING"
 msgstr "IZPILDA"
 
@@ -530,7 +577,7 @@ msgstr "IZPILDA"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:418
+#: ../src/Dialog_Progress.cc:430
 msgid "SUCCESS"
 msgstr "VEIKSMĪGI"
 
@@ -538,7 +585,7 @@ msgstr "VEIKSMĪGI"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:426
+#: ../src/Dialog_Progress.cc:438
 msgid "ERROR"
 msgstr "KĻŪDA"
 
@@ -547,7 +594,7 @@ msgstr "KĻŪDA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:435
+#: ../src/Dialog_Progress.cc:447
 msgid "INFO"
 msgstr "INFORMĀCIJA"
 
@@ -556,7 +603,7 @@ msgstr "INFORMĀCIJA"
 #. * not applicable because the operation is not
 #. * supported on the file system in the partition.
 #.
-#: ../src/Dialog_Progress.cc:444
+#: ../src/Dialog_Progress.cc:456
 msgid "N/A"
 msgstr "N/A"
 
@@ -588,7 +635,7 @@ msgstr "Kopēt"
 msgid "Check"
 msgstr "Pārbaudīt"
 
-#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:38
+#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:47
 msgid "Label"
 msgstr "Nosaukums"
 
@@ -620,81 +667,90 @@ msgstr ""
 msgid "Available offline and online"
 msgstr "Pieejams nesaistē un tiešsaistē"
 
+#. TO TRANSLATORS:  Available online only
+#. * means that this action is valid for this file system only
+#. * when it is mounted.
+#.
+#: ../src/DialogFeatures.cc:109
+#| msgid "Available offline only"
+msgid "Available online only"
+msgstr "Pieejams tikai tiešsaistē"
+
 #. TO TRANSLATORS:  Available offline only
 #. * means that this action is valid for this file system only
 #. * when it is unmounted.
 #.
-#: ../src/DialogFeatures.cc:109
+#: ../src/DialogFeatures.cc:122
 msgid "Available offline only"
 msgstr "Pieejams tikai nesaistē"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:121
+#: ../src/DialogFeatures.cc:134
 msgid "Not Available"
 msgstr "Nav pieejams"
 
-#: ../src/DialogFeatures.cc:126
+#: ../src/DialogFeatures.cc:139
 msgid "Legend"
 msgstr "Apzīmējumi"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:134
+#: ../src/DialogFeatures.cc:147
 msgid "Rescan For Supported Actions"
 msgstr "Noskaidrot vēlreiz atbalstītās darbības"
 
-#: ../src/DialogManageFlags.cc:31 ../src/DialogManageFlags.cc:36
+#: ../src/DialogManageFlags.cc:32 ../src/DialogManageFlags.cc:37
 msgid "Manage flags on %1"
 msgstr "Pārvaldīt karogus uz %1 "
 
-#: ../src/Dialog_Rescue_Data.cc:35
+#: ../src/Dialog_Rescue_Data.cc:36
 msgid "Search disk for file systems"
 msgstr "Diskā meklēt datņu sistēmas"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
-#: ../src/Dialog_Rescue_Data.cc:52
+#: ../src/Dialog_Rescue_Data.cc:53
 msgid "File systems found on %1"
 msgstr "Datņu sistēma atrasta uz %1"
 
-#: ../src/Dialog_Rescue_Data.cc:57
+#: ../src/Dialog_Rescue_Data.cc:58
 msgid "Data found"
 msgstr "Dati atrasti"
 
-#: ../src/Dialog_Rescue_Data.cc:61
+#: ../src/Dialog_Rescue_Data.cc:62
 msgid "Data found with inconsistencies"
 msgstr "Dati atrasti ar nekonsekvencēm"
 
-#: ../src/Dialog_Rescue_Data.cc:63
+#: ../src/Dialog_Rescue_Data.cc:64
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
 msgstr "BRĪDINĀJUMS! — datņu sistēmas, kas marķētas ar (!), ir nekonsekventas."
 
-#: ../src/Dialog_Rescue_Data.cc:65
+#: ../src/Dialog_Rescue_Data.cc:66
 msgid "You might encounter errors trying to view these file systems."
 msgstr "Jūs varat saskarties ar problēmām, mēģinot skatīt šīs datņu sistēmas."
 
-#: ../src/Dialog_Rescue_Data.cc:81
+#: ../src/Dialog_Rescue_Data.cc:82
 msgid "The 'View' buttons create read-only views of each file system."
 msgstr "“Skats” pogas veido tikai lasāmus skatus katrai datņu sistēmai."
 
-#: ../src/Dialog_Rescue_Data.cc:83
+#: ../src/Dialog_Rescue_Data.cc:84
 msgid "All mounted views will be unmounted when you close this dialog."
 msgstr "Visi montētie skati tiks atmontēti, kad aizvērsiet šo dialoglodziņu."
 
-#: ../src/Dialog_Rescue_Data.cc:106
+#: ../src/Dialog_Rescue_Data.cc:107
 msgid "File systems"
 msgstr "Datņu sistēmas"
 
 #. TO TRANSLATORS: looks like    1: ntfs (10240 MiB)
-#: ../src/Dialog_Rescue_Data.cc:128
+#: ../src/Dialog_Rescue_Data.cc:129
 msgid "#%1: %2 (%3 MiB)"
 msgstr "#%1: %2 (%3 MiB)"
 
-#: ../src/Dialog_Rescue_Data.cc:136
+#: ../src/Dialog_Rescue_Data.cc:137
 msgid "View"
 msgstr "Skats"
 
-#: ../src/Dialog_Rescue_Data.cc:166
+#: ../src/Dialog_Rescue_Data.cc:167
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
@@ -702,19 +758,19 @@ msgstr ""
 "Gadījās kļūda, izveidojot pagaidu direktoriju, ko izmantot kā montēšanas "
 "punktu."
 
-#: ../src/Dialog_Rescue_Data.cc:168
+#: ../src/Dialog_Rescue_Data.cc:169
 msgid "Error"
 msgstr "Kļūda"
 
-#: ../src/Dialog_Rescue_Data.cc:174
+#: ../src/Dialog_Rescue_Data.cc:175
 msgid "Failed creating temporary directory"
 msgstr "Neizdevās izveidot pagaidu direktoriju"
 
-#: ../src/Dialog_Rescue_Data.cc:191
+#: ../src/Dialog_Rescue_Data.cc:192
 msgid "An error occurred while creating the read-only view."
 msgstr "Gadījās kļūda, izveidojot tikai lasāmu skatu."
 
-#: ../src/Dialog_Rescue_Data.cc:193
+#: ../src/Dialog_Rescue_Data.cc:194
 msgid ""
 "Either the file system can not be mounted (like swap), or there are "
 "inconsistencies or errors in the file system."
@@ -722,26 +778,26 @@ msgstr ""
 "Vai nu datņu sistēmu nevar uzmontēt (piemēram, maiņvietu), vai arī ir "
 "nekonsekvences vai kļūdas datņu sistēmā."
 
-#: ../src/Dialog_Rescue_Data.cc:197
+#: ../src/Dialog_Rescue_Data.cc:198
 msgid "Failed creating read-only view"
 msgstr "Neizdevās izveidot tikai lasāmu skatu."
 
-#: ../src/Dialog_Rescue_Data.cc:227
+#: ../src/Dialog_Rescue_Data.cc:228
 msgid "Error:"
 msgstr "Kļūda:"
 
 #. TO TRANSLATORS: looks like
 #. * The file system is mounted on:
 #. * /tmp/gparted-roview-Nlhb3R.
-#: ../src/Dialog_Rescue_Data.cc:235
+#: ../src/Dialog_Rescue_Data.cc:236
 msgid "The file system is mounted on:"
 msgstr "Datņu sistēma ir montēta uz:"
 
-#: ../src/Dialog_Rescue_Data.cc:240
+#: ../src/Dialog_Rescue_Data.cc:241
 msgid "Unable to open the default file manager"
 msgstr "Neizdevās atvērt noklusējuma datņu pārvaldnieku"
 
-#: ../src/Dialog_Rescue_Data.cc:259
+#: ../src/Dialog_Rescue_Data.cc:260
 msgid ""
 "Warning: The detected file system area overlaps with at least one existing "
 "partition"
@@ -749,7 +805,7 @@ msgstr ""
 "Brīdinājums — atrasto datņu sistēmu apgabali pārklājas ar vismaz vienu esošu "
 "nodalījumu."
 
-#: ../src/Dialog_Rescue_Data.cc:261
+#: ../src/Dialog_Rescue_Data.cc:262
 msgid ""
 "It is recommended that you do not use any overlapping file systems to avoid "
 "disturbing existing data."
@@ -757,27 +813,27 @@ msgstr ""
 "Ir ieteicams NEizmantot pārklājošas datņu sistēmas, lai izvairītos no esošo "
 "datu aiztikšanas."
 
-#: ../src/Dialog_Rescue_Data.cc:263
+#: ../src/Dialog_Rescue_Data.cc:264
 msgid "Do you want to try to deactivate the following mount points?"
 msgstr "Vai vēlaties mēģināt deaktivizēt sekojošos montēšanas punktus?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
-#: ../src/DMRaid.cc:325
+#: ../src/DMRaid.cc:327
 msgid "create missing %1 entries"
 msgstr "izveido trūkstošos %1 ierakstus"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:424
+#: ../src/DMRaid.cc:426
 msgid "delete affected %1 entries"
 msgstr "dzēš ietekmētos %1 ierakstus"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:447
+#: ../src/DMRaid.cc:449
 msgid "delete %1 entry"
 msgstr "dzēš %1 ierakstu"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:497
+#: ../src/DMRaid.cc:499
 msgid "update %1 entry"
 msgstr "atjaunina %1 ierakstu"
 
@@ -791,112 +847,100 @@ msgid "_Unmount"
 msgstr "_Nomontēt"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:190
+#: ../src/FileSystem.cc:231
 msgid "Created directory %1"
 msgstr "Izveidoja direktoriju %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:217
+#: ../src/FileSystem.cc:258
 msgid "Removed directory %1"
 msgstr "Izņēma direktoriju %1"
 
+#: ../src/GParted_Core.cc:74
+#| msgid "GParted"
+msgid "GParted Bug"
+msgstr "GParted kļūda"
+
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:189 ../src/GParted_Core.cc:198
+#: ../src/GParted_Core.cc:186 ../src/GParted_Core.cc:195
 msgid "Scanning %1"
 msgstr "Skenē %1"
 
-#. TO TRANSLATORS: looks like Confirming /dev/sda
-#: ../src/GParted_Core.cc:221
+#. TO TRANSLATORS: looks like   Confirming /dev/sda
+#: ../src/GParted_Core.cc:214 ../src/GParted_Core.cc:239
 msgid "Confirming %1"
 msgstr "Apliecina %1"
 
-#. TO TRANSLATORS: looks like  Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:233
-msgid "Ignoring device %1 with logical sector size of %2 bytes."
-msgstr "Ignorē ierīci %1 loģisko sektoru izmēru %s baiti."
-
-#: ../src/GParted_Core.cc:235
-msgid ""
-"GParted requires libparted version 2.2 or higher to support devices with "
-"sector sizes larger than 512 bytes."
-msgstr ""
-"GParted vajag libparted ar versiju 2.2 vai jaunāku, lai atbalstītu ierīces "
-"ar sektoru izmēru lielāku ka 512 baiti."
-
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:273
+#: ../src/GParted_Core.cc:263
 msgid "Searching %1 partitions"
 msgstr "Meklē %1 nodalījums"
 
-#. TO TRANSLATORS:  unrecognized
-#. * means that the partition table for this
-#. * disk device is unknown or not recognized.
-#.
-#: ../src/GParted_Core.cc:378
-msgid "unrecognized"
-msgstr "neatpazīta"
-
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:698
+#: ../src/GParted_Core.cc:520
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Nodalījuma garums nevar būt %1 sektori"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:712
+#: ../src/GParted_Core.cc:534
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Nodalījums ar izmantoto sektoru skaitu (%1), kas lielāks par tās garumu "
 "(%2), nav korekts"
 
-#: ../src/GParted_Core.cc:823
+#: ../src/GParted_Core.cc:670
 msgid "libparted messages"
 msgstr "libparted paziņojumi"
 
-#: ../src/GParted_Core.cc:1523
-msgid "Linux Unified Key Setup encryption is not yet supported."
-msgstr "Linux Unified Key Setup šifrēšana vēl nav atbalstīta."
+#. TO TRANSLATORS:  unrecognized
+#. * means that the partition table for this disk
+#. * device is unknown or not recognized.
+#.
+#: ../src/GParted_Core.cc:973
+msgid "unrecognized"
+msgstr "neatpazīta"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1625
+#: ../src/GParted_Core.cc:1500
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Neizdevās noteikt datņu sistēmu! Iespējamie iemesli:"
 
-#: ../src/GParted_Core.cc:1627
+#: ../src/GParted_Core.cc:1502
 msgid "The file system is damaged"
 msgstr "Datņu sistēma ir bojāta"
 
-#: ../src/GParted_Core.cc:1629
+#: ../src/GParted_Core.cc:1504
 msgid "The file system is unknown to GParted"
 msgstr "GParted neatpazina datņu sistēmu"
 
-#: ../src/GParted_Core.cc:1631
+#: ../src/GParted_Core.cc:1506
 msgid "There is no file system available (unformatted)"
 msgstr "Nav pieejamu datņu sistēmu (neformatēts)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1634
+#: ../src/GParted_Core.cc:1509
 msgid "The device entry %1 is missing"
 msgstr "Trūkst ierīces ieraksts %1"
 
-#: ../src/GParted_Core.cc:1784
+#: ../src/GParted_Core.cc:1664
 msgid "Unable to find mount point"
 msgstr "Neizdevās atrast montēšanas punktu"
 
-#: ../src/GParted_Core.cc:1914
+#: ../src/GParted_Core.cc:1781
 msgid "Unable to read the contents of this file system!"
 msgstr "Neizdevās nolasīt datņu sistēmas saturu!"
 
-#: ../src/GParted_Core.cc:1916
+#: ../src/GParted_Core.cc:1783
 msgid "Because of this some operations may be unavailable."
 msgstr "Sakarā ar to, dažas operācijas var būt nepieejamas."
 
-#: ../src/GParted_Core.cc:1920
+#: ../src/GParted_Core.cc:1787
 msgid "The cause might be a missing software package."
 msgstr "Iemesls varētu būt trūkstoša programmatūras pakotne."
 
-#. TO TRANSLATORS: looks like The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1923
+#. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
+#: ../src/GParted_Core.cc:1790
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -904,16 +948,16 @@ msgstr ""
 "Sekojošās programmatūras pakotnes ir nepieciešamas %1 datņu sistēmas "
 "atbalstam — %2."
 
-#. TO TRANSLATORS: looks like  1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1933
+#. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
+#: ../src/GParted_Core.cc:1800
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 no nepiešķirtās vietas nodalījumā."
 
-#. TO TRANSLATORS:  To grow the file system to fill the partition, select the partition and choose the menu item:
+#. TO TRANSLATORS: To grow the file system to fill the partition, select the partition and choose the menu item:
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1944
+#: ../src/GParted_Core.cc:1810
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -921,11 +965,11 @@ msgstr ""
 "Lai palielinātu datņu sistēmu, lai aizpildītu nodalījumu, izvēlieties "
 "nodalījumu un izvēlieties izvēlnes vienumu:"
 
-#: ../src/GParted_Core.cc:1946
+#: ../src/GParted_Core.cc:1812
 msgid "Partition --> Check."
 msgstr "Nodalījums --> Ir!."
 
-#: ../src/GParted_Core.cc:2057
+#: ../src/GParted_Core.cc:1919
 msgid "create empty partition"
 msgstr "izveidot tukšu nodalījumu"
 
@@ -939,96 +983,125 @@ msgstr "izveidot tukšu nodalījumu"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:2131 ../src/GParted_Core.cc:3395
-#| msgid "path: %1"
+#: ../src/GParted_Core.cc:1995 ../src/GParted_Core.cc:3634
 msgid "path: %1 (%2)"
 msgstr "ceļš — %1 (%2)"
 
-#: ../src/GParted_Core.cc:2132 ../src/GParted_Core.cc:3398
-#| msgid "Partition"
+#: ../src/GParted_Core.cc:1996 ../src/GParted_Core.cc:3637
 msgid "partition"
 msgstr "nodalījums"
 
-#: ../src/GParted_Core.cc:2133 ../src/GParted_Core.cc:3399
+#: ../src/GParted_Core.cc:1997 ../src/GParted_Core.cc:3638
 msgid "start: %1"
 msgstr "sākums — %1"
 
-#: ../src/GParted_Core.cc:2134 ../src/GParted_Core.cc:3400
+#: ../src/GParted_Core.cc:1998 ../src/GParted_Core.cc:3639
 msgid "end: %1"
 msgstr "beigas — %1"
 
-#: ../src/GParted_Core.cc:2135 ../src/GParted_Core.cc:3401
+#: ../src/GParted_Core.cc:1999 ../src/GParted_Core.cc:3640
 msgid "size: %1 (%2)"
 msgstr "izmērs – %1 (%2)"
 
-#: ../src/GParted_Core.cc:2167 ../src/linux_swap.cc:172
+#: ../src/GParted_Core.cc:2032
+msgid ""
+"partition contains open LUKS encryption for a create file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai izveidot datņu sistēmu”"
+
+#. TO TRANSLATORS: looks like create new ext3 file system
+#: ../src/GParted_Core.cc:2039
 msgid "create new %1 file system"
 msgstr "izveidot jaunu datņu sistēmu %1"
 
-#: ../src/GParted_Core.cc:2209
+#: ../src/GParted_Core.cc:2071
+msgid ""
+"partition contains open LUKS encryption for a format file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai formatēt datņu sistēmu”"
+
+#: ../src/GParted_Core.cc:2086
 msgid "delete partition"
 msgstr "dzēst nodalījumu"
 
-#: ../src/GParted_Core.cc:2264
+#: ../src/GParted_Core.cc:2134
+msgid ""
+"partition contains open LUKS encryption for a delete file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai dzēst datņu sistēmu”"
+
+#: ../src/GParted_Core.cc:2149
 msgid "delete %1 file system"
 msgstr "dzēst %1 datņu sistēmu"
 
+#: ../src/GParted_Core.cc:2167
+msgid ""
+"partition contains open LUKS encryption for a label file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai pielikt etiķeti datņu"
+" sistēmai”"
+
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2281 ../src/OperationLabelFileSystem.cc:58
-#| msgid "Search for file systems on %1"
+#: ../src/GParted_Core.cc:2174 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Attīrīt datņu sistēmas etiķeti uz %1"
 
-#: ../src/GParted_Core.cc:2284
-#| msgid "Set partition label to \"%1\" on %2"
+#: ../src/GParted_Core.cc:2177
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Iestatīt %1 nodalījumu nosaukumu %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2313 ../src/OperationNamePartition.cc:59
-#| msgid "Clear partition label on %1"
+#: ../src/GParted_Core.cc:2206 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Notīrīt %1 nodalījuma nosaukumu"
 
-#: ../src/GParted_Core.cc:2316
-#| msgid "Set partition label to \"%1\" on %2"
+#: ../src/GParted_Core.cc:2209
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Iestatīt %2 nodalījumu nosaukumu uz “%1”"
 
-#: ../src/GParted_Core.cc:2341
+#: ../src/GParted_Core.cc:2235
+msgid ""
+"partition contains open LUKS encryption for a change file system UUID only "
+"step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai mainīt datņu sistēmas"
+" UUID”"
+
+#: ../src/GParted_Core.cc:2242
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Iestatīt pusi no UUID uz %1 jaunai, nejaušai vērtībai"
 
-#: ../src/GParted_Core.cc:2346
+#: ../src/GParted_Core.cc:2247
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Iestatīt UUID uz %1 jaunai, nejaušai vērtībai"
 
-#. TO TRANSLATORS:  moving requires old and new length to be the same
-#. * means that the length in bytes of the old partition and new partition
-#. * must be the same.  If the sector sizes of the old partition and the
-#. * new partition are the same, then the length in sectors must be the same.
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to change the size of a partition when performing a move only
+#. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2429
-msgid "moving requires old and new length to be the same"
-msgstr "lai pārvietotu, sadaļas vecajam un jaunajam izmēram jāsakrīt"
+#: ../src/GParted_Core.cc:2335
+msgid "size of the partition is changing for a move only step"
+msgstr ""
+"nodalījuma izmērs ir mainījies, kad tika veikts tikai pārvietošanas solis"
 
-#: ../src/GParted_Core.cc:2459
+#: ../src/GParted_Core.cc:2367
 msgid "rollback last change to the partition table"
 msgstr "atsaukt nodalījumu tabulas pēdējo izmaiņu"
 
-#: ../src/GParted_Core.cc:2501
+#: ../src/GParted_Core.cc:2416
 msgid "move file system to the left"
 msgstr "pārvietot datņu sistēmu pa kreisi"
 
-#: ../src/GParted_Core.cc:2503
+#: ../src/GParted_Core.cc:2418
 msgid "move file system to the right"
 msgstr "pārvietot datņu sistēmu pa labi"
 
-#: ../src/GParted_Core.cc:2506
+#: ../src/GParted_Core.cc:2421
 msgid "move file system"
 msgstr "pārvietot datņu sistēmu"
 
-#: ../src/GParted_Core.cc:2508
+#: ../src/GParted_Core.cc:2423
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1036,53 +1109,73 @@ msgstr ""
 "jaunā un vecā datņu sistēma atrodas tajā pašā vietā. Tāpēc izlaiž doto "
 "darbību"
 
-#: ../src/GParted_Core.cc:2571
+#: ../src/GParted_Core.cc:2489
 msgid "using libparted"
 msgstr "izmanto libparted"
 
-#: ../src/GParted_Core.cc:2614
-msgid "resizing requires old and new start to be the same"
-msgstr ""
-"sadaļas izmēra mainīšanai nepieciešams, lai vecais un jaunais sākums "
-"atrastos vienā vietā"
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to move the start of the partition when performing a resize
+#. * only step which is not permitted to change the start of the
+#. * partition.
+#.
+#: ../src/GParted_Core.cc:2563
+msgid "start of the partition is changing for a resize only step"
+msgstr "nodalījuma sākums ir mainījies veicot tikai izmēra maiņas soli"
 
-#: ../src/GParted_Core.cc:2684
+#: ../src/GParted_Core.cc:2581
+msgid ""
+"partition does not contain LUKS encryption for a resize encryption only step"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2591
+msgid "impossible to shrink a closed LUKS encryption volume"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2650
+msgid ""
+"partition contains open LUKS encryption for a resize file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai mainīt datņu sistēmas"
+" izmēru”"
+
+#: ../src/GParted_Core.cc:2719
 msgid "resize/move partition"
 msgstr "mainīt nodalījuma izmēru/pārvietot to"
 
-#: ../src/GParted_Core.cc:2687
+#: ../src/GParted_Core.cc:2722
 msgid "move partition to the right"
 msgstr "pārvietot nodalījumu pa labi"
 
-#: ../src/GParted_Core.cc:2690
+#: ../src/GParted_Core.cc:2725
 msgid "move partition to the left"
 msgstr "pārvietot nodalījumu pa kreisi"
 
-#: ../src/GParted_Core.cc:2693
+#: ../src/GParted_Core.cc:2728
 msgid "grow partition from %1 to %2"
 msgstr "palielināt nodalījumu no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2696
+#: ../src/GParted_Core.cc:2731
 msgid "shrink partition from %1 to %2"
 msgstr "samazināt nodalījumu no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2699
+#: ../src/GParted_Core.cc:2734
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "pārvietot nodalījumu pa labi un palielināt tā izmēru no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2702
+#: ../src/GParted_Core.cc:2737
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "pārvietot nodalījumu pa labi un samazināt tā izmēru no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2705
+#: ../src/GParted_Core.cc:2740
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "pārvietot nodalījumu pa kreisi un palielināt tā izmēru no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2743
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "pārvietot nodalījumu pa kreisi un samazināt tā izmēru no %1 uz %2"
 
-#: ../src/GParted_Core.cc:2723
+#: ../src/GParted_Core.cc:2758
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1090,338 +1183,423 @@ msgstr ""
 "jaunais un vecais nodalījums atrodas vienā un tajā pašā vietā un tie ir "
 "vienāda izmēra. Tāpēc izlaiž doto darbību"
 
-#: ../src/GParted_Core.cc:2733
+#: ../src/GParted_Core.cc:2768
 msgid "old start: %1"
 msgstr "vecais sākums — %1"
 
-#: ../src/GParted_Core.cc:2734
+#: ../src/GParted_Core.cc:2769
 msgid "old end: %1"
 msgstr "vecās beigas — %1"
 
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2770
 msgid "old size: %1 (%2)"
 msgstr "vecais izmērs — %1 (%2)"
 
-#: ../src/GParted_Core.cc:2800 ../src/GParted_Core.cc:3479
+#: ../src/GParted_Core.cc:2839 ../src/GParted_Core.cc:3732
 msgid "new start: %1"
 msgstr "jaunais sākums — %1"
 
-#: ../src/GParted_Core.cc:2801 ../src/GParted_Core.cc:3480
+#: ../src/GParted_Core.cc:2840 ../src/GParted_Core.cc:3733
 msgid "new end: %1"
 msgstr "jaunās beigas — %1"
 
-#: ../src/GParted_Core.cc:2802 ../src/GParted_Core.cc:3481
+#: ../src/GParted_Core.cc:2841 ../src/GParted_Core.cc:3734
 msgid "new size: %1 (%2)"
 msgstr "jaunais izmērs — %1 (%2)"
 
-#: ../src/GParted_Core.cc:2829 ../src/GParted_Core.cc:3427
+#: ../src/GParted_Core.cc:2868 ../src/GParted_Core.cc:3680
 msgid "requested start: %1"
 msgstr "pieprasītais sākums — %1"
 
-#: ../src/GParted_Core.cc:2830 ../src/GParted_Core.cc:3428
+#: ../src/GParted_Core.cc:2869 ../src/GParted_Core.cc:3681
 msgid "requested end: %1"
 msgstr "pieprasītās beigas — %1"
 
-#: ../src/GParted_Core.cc:2831 ../src/GParted_Core.cc:3429
+#: ../src/GParted_Core.cc:2870 ../src/GParted_Core.cc:3682
 msgid "requested size: %1 (%2)"
 msgstr "pieprasītais izmērs — %1 (%2)"
 
-#: ../src/GParted_Core.cc:2856
+#: ../src/GParted_Core.cc:2890
+msgid ""
+"partition does not contain open LUKS encryption for a shrink encryption only "
+"step"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2895
+msgid "shrink encryption volume"
+msgstr "samazināt šifrēšanas sējumu"
+
+#: ../src/GParted_Core.cc:2906
+msgid ""
+"partition does not contain LUKS encryption for a maximize encryption only "
+"step"
+msgstr ""
+
+#: ../src/GParted_Core.cc:2911
+#| msgid "grow file system to fill the partition"
+msgid "grow encryption volume to fill the partition"
+msgstr "palielināt šifrēto sējumu, līdz tas piepilda nodalījumu"
+
+#: ../src/GParted_Core.cc:2921
+#| msgid "growing is not available for this file system"
+msgid "growing is not available for this encryption volume"
+msgstr "palielināšana nav pieejama šim šifrētajam sējumam"
+
+#: ../src/GParted_Core.cc:2939
+msgid ""
+"partition contains open LUKS encryption for a shrink file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai samazināt datņu sistēmu”"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug and tried
+#. * to grow the partition size or keep it the same when performing
+#. * a shrink partition only step.
+#.
+#: ../src/GParted_Core.cc:2951
+msgid "the new partition size is larger or the same for a shrink only step"
+msgstr ""
+"jaunais nodalījuma izmērs ir lielāks vai tāds pats, bet tas ir samazināšanas"
+" solis"
+
+#: ../src/GParted_Core.cc:2956
 msgid "shrink file system"
 msgstr "samazināt datņu sistēmu"
 
-#: ../src/GParted_Core.cc:2860
-msgid "grow file system"
-msgstr "palielināt datņu sistēmu"
-
-#: ../src/GParted_Core.cc:2863
-msgid "resize file system"
-msgstr "mainīt datņu sistēmas izmēru"
-
-#: ../src/GParted_Core.cc:2866
+#: ../src/GParted_Core.cc:2967
 msgid ""
-"new and old file system have the same size.  Hence skipping this operation"
-msgstr "jaunā un vecā sadaļa ir vienāda izmēra. Tāpēc izlaiž šo darbību"
+"partition contains open LUKS encryption for a maximize file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai maksimizēt datņu sistēmu”"
 
-#: ../src/GParted_Core.cc:2907
+#: ../src/GParted_Core.cc:2972
 msgid "grow file system to fill the partition"
 msgstr "palielināt datņu sistēmu, līdz tā piepilda nodalījumu"
 
-#: ../src/GParted_Core.cc:2912
+#: ../src/GParted_Core.cc:2983
 msgid "growing is not available for this file system"
 msgstr "šo datņu sistēmu nevar palielināt"
 
-#: ../src/GParted_Core.cc:2921
+#: ../src/GParted_Core.cc:2992
 msgid "growing the file system is currently disallowed"
 msgstr "datņu sistēmas palielināšana pašlaik ir aizliegta"
 
-#: ../src/GParted_Core.cc:2947
+#. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
+#: ../src/GParted_Core.cc:3016
+msgid "not a %1 file system for a recreate %1 only step"
+msgstr "nav %1 datņu sistēma, bet solis ir atkārtoti izveidot %1"
+
+#. TO TRANSLATORS: looks like   recreate linux-swap file system
+#: ../src/GParted_Core.cc:3028
+#| msgid "create new %1 file system"
+msgid "recreate %1 file system"
+msgstr "no jauna izveidot %1 datņu sistēmu"
+
+#: ../src/GParted_Core.cc:3097
 msgid "the destination is smaller than the source partition"
 msgstr "izvēlētā vieta ir mazāka nekā nodalījums"
 
-#: ../src/GParted_Core.cc:2970
-msgid "copy file system of %1 to %2"
+#: ../src/GParted_Core.cc:3148
+msgid ""
+"source partition contains open LUKS encryption for a file system copy only "
+"step"
+msgstr ""
+"avota nodalījums satur atvērtu LUKS šifrējumu solim “tikai kopēt datņu"
+" sistēmu”"
+
+#: ../src/GParted_Core.cc:3155
+msgid ""
+"destination partition contains open LUKS encryption for a file system copy "
+"only step"
+msgstr ""
+"mērķa nodalījums satur atvērtu LUKS šifrējumu solim “tikai kopēt datņu"
+" sistēmu”"
+
+#: ../src/GParted_Core.cc:3161
+#| msgid "copy file system of %1 to %2"
+msgid "copy file system from %1 to %2"
 msgstr "kopēt datņu sistēmu no %1 uz %2"
 
-#: ../src/GParted_Core.cc:3066
+#: ../src/GParted_Core.cc:3242
 msgid "using internal algorithm"
 msgstr "izmanto iekšējo algoritmu"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3069
+#: ../src/GParted_Core.cc:3245
 msgid "copy %1"
 msgstr "kopēt %1"
 
-#: ../src/GParted_Core.cc:3072
+#: ../src/GParted_Core.cc:3248
 msgid "finding optimal block size"
 msgstr "meklē optimālu bloka izmēru"
 
-#: ../src/GParted_Core.cc:3113
+#: ../src/GParted_Core.cc:3290
 msgid "%1 seconds"
 msgstr "%1 sekundes"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3131
+#: ../src/GParted_Core.cc:3308
 msgid "optimal block size is %1"
 msgstr "optimāls bloka izmērs ir %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3148
+#: ../src/GParted_Core.cc:3326
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) nokopēti"
 
-#: ../src/GParted_Core.cc:3181
+#: ../src/GParted_Core.cc:3364
 msgid "roll back last transaction"
 msgstr "atsaukt pēdējo darbību"
 
+#: ../src/GParted_Core.cc:3387
+msgid ""
+"partition contains open LUKS encryption for a check file system only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai pārbaudīt datņu sistēmu”"
+
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3195
+#: ../src/GParted_Core.cc:3399
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "pārbaudīt, vai %1 datņu sistēmā ir kļūdas un, ja iespējams, izlabot tās"
 
-#: ../src/GParted_Core.cc:3204
+#: ../src/GParted_Core.cc:3408
 msgid "checking is not available for this file system"
 msgstr "šo datņu sistēmu nevar pārbaudīt"
 
-#: ../src/GParted_Core.cc:3233
+#: ../src/GParted_Core.cc:3474
 msgid "set partition type on %1"
 msgstr "iestatīt nodalījuma tipu kā %1"
 
-#: ../src/GParted_Core.cc:3275
+#. TO TRANSLATORS: looks like   new partition type: ext4
+#: ../src/GParted_Core.cc:3524
 msgid "new partition type: %1"
 msgstr "jaunā nodalījuma tips — %1"
 
-#: ../src/GParted_Core.cc:3289
+#. TO TRANSLATORS: looks like   new partition flag: lvm
+#: ../src/GParted_Core.cc:3539
 msgid "new partition flag: %1"
 msgstr "jaunā nodalījuma karogs — %1"
 
-#: ../src/GParted_Core.cc:3298
-#| msgid "new partition flag: %1"
-msgid "Skip setting unsupported partition flag: %1"
-msgstr "Izlaist neatblastīta nodalījuma karoga iestatīšanu — %1"
-
-#: ../src/GParted_Core.cc:3318
+#: ../src/GParted_Core.cc:3567
 msgid "calibrate %1"
 msgstr "kalibrēt %1"
 
-#: ../src/GParted_Core.cc:3397
-#| msgid "_Device"
+#: ../src/GParted_Core.cc:3636
 msgid "device"
 msgstr "ierīce"
 
-#: ../src/GParted_Core.cc:3423
+#: ../src/GParted_Core.cc:3650
+#| msgid "Information about %1"
+msgid "encryption path: %1"
+msgstr "šifrēšanas ceļš: %1"
+
+#: ../src/GParted_Core.cc:3676
 msgid "calculate new size and position of %1"
 msgstr "izrēķināt jauno %1 izmēru un pozīciju"
 
-#: ../src/GParted_Core.cc:3539
+#: ../src/GParted_Core.cc:3793
+msgid ""
+"partition contains open LUKS encryption for an erase file system signatures "
+"only step"
+msgstr ""
+"nodalījums satur atvērtu LUKS šifrējumu solim “tikai izdzēst datņu sistēmas"
+" parakstus”"
+
+#: ../src/GParted_Core.cc:3800
 msgid "clear old file system signatures in %1"
 msgstr "attīrīt veco datņu sistēmu parakstus uz %1"
 
-#: ../src/GParted_Core.cc:3708
+#: ../src/GParted_Core.cc:4006
 msgid "flush operating system cache of %1"
 msgstr "nopludināt operētājsistēmas kešatmiņu uz %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3740
+#: ../src/GParted_Core.cc:4038
 msgid "update boot sector of %1 file system on %2"
 msgstr "atjaunināt %1 datņu sistēmas ielādes sektoru %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:3776
+#: ../src/GParted_Core.cc:4074
 msgid "Error trying to write to boot sector in %1"
 msgstr "Kļūda, mēģinot rakstīt %1 ielādes sektoru"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:3782
+#: ../src/GParted_Core.cc:4080
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Kļūda, mēģinot meklēt pozīciju 0x1c %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:3789
+#: ../src/GParted_Core.cc:4087
 msgid "Error trying to open %1"
 msgstr "Kļūda, mēģinot atvērt %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:3799
+#: ../src/GParted_Core.cc:4097
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr "Neizdevās iestatīt %1 slēpto sektoru skaitu NTFS ielādes ierakstā."
 
-#: ../src/GParted_Core.cc:3801
+#: ../src/GParted_Core.cc:4099
 msgid "You might try the following command to correct the problem:"
 msgstr "Lai risinātu šo problēmu, varat pamēģināt šādu komandu:"
 
-#: ../src/GParted_Core.cc:3990
+#. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
+#: ../src/GParted_Core.cc:4161
+msgid "Ignoring device %1 with logical sector size of %2 bytes."
+msgstr "Ignorē ierīci %1 loģisko sektoru izmēru %s baiti."
+
+#: ../src/GParted_Core.cc:4164
+msgid ""
+"GParted requires libparted version 2.2 or higher to support devices with "
+"sector sizes larger than 512 bytes."
+msgstr ""
+"GParted vajag libparted ar versiju 2.2 vai jaunāku, lai atbalstītu ierīces "
+"ar sektoru izmēru lielāku ka 512 baiti."
+
+#: ../src/GParted_Core.cc:4328
 msgid "Libparted Information"
 msgstr "Libparted informācija"
 
-#: ../src/GParted_Core.cc:3994
+#: ../src/GParted_Core.cc:4332
 msgid "Libparted Warning"
 msgstr "Libparted brīdinājums"
 
-#: ../src/GParted_Core.cc:3998
+#: ../src/GParted_Core.cc:4336
 msgid "Libparted Error"
 msgstr "Libparted kļūda"
 
-#: ../src/GParted_Core.cc:4001
-#| msgid "Libparted"
+#: ../src/GParted_Core.cc:4339
 msgid "Libparted Fatal"
 msgstr "Libparted fatāla kļūda"
 
-#: ../src/GParted_Core.cc:4004
-#| msgid "Libparted"
+#: ../src/GParted_Core.cc:4342
 msgid "Libparted Bug"
 msgstr "Libparted problēma"
 
-#: ../src/GParted_Core.cc:4007
-#| msgid "Libparted Information"
+#: ../src/GParted_Core.cc:4345
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted neatbalstīta iespēja"
 
-#: ../src/GParted_Core.cc:4010
-#| msgid "Libparted Information"
+#: ../src/GParted_Core.cc:4348
 msgid "Libparted unknown exception"
 msgstr "Libparted nezināms izņēmums"
 
-#: ../src/GParted_Core.cc:4014
+#: ../src/GParted_Core.cc:4352
 msgid "Fix"
 msgstr "Labot"
 
-#: ../src/GParted_Core.cc:4016
+#: ../src/GParted_Core.cc:4354
 msgid "Yes"
 msgstr "Jā"
 
-#: ../src/GParted_Core.cc:4018
+#: ../src/GParted_Core.cc:4356
 msgid "Ok"
 msgstr "Labi"
 
-#: ../src/GParted_Core.cc:4020
+#: ../src/GParted_Core.cc:4358
 msgid "Retry"
 msgstr "Mēģināt vēlreiz"
 
-#: ../src/GParted_Core.cc:4022
+#: ../src/GParted_Core.cc:4360
 msgid "No"
 msgstr "Nē"
 
-#: ../src/GParted_Core.cc:4024
+#: ../src/GParted_Core.cc:4362
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: ../src/GParted_Core.cc:4026
+#: ../src/GParted_Core.cc:4364
 msgid "Ignore"
 msgstr "Ignorēt"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:164
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:174
 msgid "_Undo Last Operation"
 msgstr "Atcelt pēdējo darbīb_u"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:170
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:180
 msgid "_Clear All Operations"
 msgstr "_Notīrīt visas darbības"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:175
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:185
 msgid "_Apply All Operations"
 msgstr "Pielietot vis_as darbības"
 
-#: ../src/LVM2_PV_Info.cc:170
+#: ../src/LVM2_PV_Info.cc:193
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr "Trūkst viens vai vairāki fiziskie sējumi, kas pieder sējumu grupai."
 
-#: ../src/LVM2_PV_Info.cc:298
+#: ../src/LVM2_PV_Info.cc:321
 msgid "An error occurred reading LVM2 configuration!"
 msgstr "Gadījās kļūda, nolasot LVM2 konfigurāciju!"
 
-#: ../src/LVM2_PV_Info.cc:300
+#: ../src/LVM2_PV_Info.cc:323
 msgid "Some or all of the details might be missing or incorrect."
 msgstr "Iztrūkst vai nav pareiza daļa vai visa informācija."
 
-#: ../src/LVM2_PV_Info.cc:302
+#: ../src/LVM2_PV_Info.cc:325
 msgid "You should NOT modify any LVM2 PV partitions."
 msgstr "Jums NEvajadzētu mainīt LVM2 PV nodalījumus."
 
 #. TO TRANSLATORS: looks like   Set half the UUID to a new random value on ntfs file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:59
+#: ../src/OperationChangeUUID.cc:56
 msgid "Set half the UUID to a new random value on %1 file system on %2"
 msgstr ""
 "Iestatīt pusi no UUID uz jaunu, nejaušai vērtību datņu sistēmai %1 uz %2"
 
 #. TO TRANSLATORS: looks like   Set a new random UUID on ext4 file system on /dev/sda1
-#: ../src/OperationChangeUUID.cc:65
+#: ../src/OperationChangeUUID.cc:63
 msgid "Set a new random UUID on %1 file system on %2"
 msgstr "Iestatīt jaunu, nejaušu UUID datņu sistēmai %1 uz %2"
 
-#: ../src/OperationCopy.cc:36
-msgid "copy of %1"
-msgstr "%1 kopija"
-
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
-#: ../src/OperationCopy.cc:79
+#: ../src/OperationCopy.cc:83
 msgid "Copy %1 to %2 (start at %3)"
 msgstr "Kopēt %1 uz %2 (sākt no %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
-#: ../src/OperationCopy.cc:87
+#: ../src/OperationCopy.cc:92
 msgid "Copy %1 to %2"
 msgstr "Kopēt %1 uz %2"
 
+#. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
-#: ../src/OperationCheck.cc:37
+#: ../src/OperationCheck.cc:50
 msgid "Check and repair file system (%1) on %2"
 msgstr "Pārbaudīt un salabot datņu sistēmu (%1) uz %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
-#: ../src/OperationCreate.cc:87
+#: ../src/OperationCreate.cc:71
 msgid "Create %1 #%2 (%3, %4) on %5"
 msgstr "Izveidot %1 #%2(%3, %4) uz %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
-#: ../src/OperationDelete.cc:81
+#: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Dzēst %1 (%2, %3) no %4"
 
+#. Bug: Not initialised by constructor or reset later
+#. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
-#: ../src/OperationFormat.cc:72
+#: ../src/OperationFormat.cc:75
 msgid "Format %1 as %2"
 msgstr "Formatēt %1 kā %2"
 
 #. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
-#: ../src/OperationLabelFileSystem.cc:62
-#| msgid "Set Partition Label \"%1\" on %2"
+#: ../src/OperationLabelFileSystem.cc:61
 msgid "Set file system label \"%1\" on %2"
 msgstr "Iestatīt %2 datņu sistēmas etiķeti uz “%1”"
 
 #. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
-#: ../src/OperationNamePartition.cc:65
-#| msgid "Set Partition Label \"%1\" on %2"
+#: ../src/OperationNamePartition.cc:61
 msgid "Set partition name \"%1\" on %2"
 msgstr "Iestatīt %2 nodalījuma nosaukumu uz “%1”"
 
-#: ../src/OperationResizeMove.cc:86
+#: ../src/OperationResizeMove.cc:104
 msgid "resize/move %1"
 msgstr "mainīt izmēru/pārvietot %1"
 
-#: ../src/OperationResizeMove.cc:88
+#: ../src/OperationResizeMove.cc:106
 msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
@@ -1429,59 +1607,64 @@ msgstr ""
 "jaunajam un vecajam nodalījumam ir tāds pats izmērs un pozīcija. Turpinām "
 "tāpat"
 
-#: ../src/OperationResizeMove.cc:92
+#: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the right"
 msgstr "Pārvietot %1 pa labi"
 
-#: ../src/OperationResizeMove.cc:95
+#: ../src/OperationResizeMove.cc:113
 msgid "Move %1 to the left"
 msgstr "Pārvietot %1 pa kreisi"
 
-#: ../src/OperationResizeMove.cc:98
+#: ../src/OperationResizeMove.cc:116
 msgid "Grow %1 from %2 to %3"
 msgstr "Palielināt %1 no %2 uz %3"
 
-#: ../src/OperationResizeMove.cc:101
+#: ../src/OperationResizeMove.cc:119
 msgid "Shrink %1 from %2 to %3"
 msgstr "Samazināt %1 no %2 uz %3"
 
-#: ../src/OperationResizeMove.cc:104
+#: ../src/OperationResizeMove.cc:122
 msgid "Move %1 to the right and grow it from %2 to %3"
 msgstr "Pārvietot %1 pa labi un palielināt to no %2 uz %3"
 
-#: ../src/OperationResizeMove.cc:107
+#: ../src/OperationResizeMove.cc:125
 msgid "Move %1 to the right and shrink it from %2 to %3"
 msgstr "Pārvietot %1 pa labi un samazināt to no %2 uz %3"
 
-#: ../src/OperationResizeMove.cc:110
+#: ../src/OperationResizeMove.cc:128
 msgid "Move %1 to the left and grow it from %2 to %3"
 msgstr "Pārvietot %1 pa kreisi un palielināt to no %2 uz %3"
 
-#: ../src/OperationResizeMove.cc:113
+#: ../src/OperationResizeMove.cc:131
 msgid "Move %1 to the left and shrink it from %2 to %3"
 msgstr "Pārvietot %1 pa kreisi un samazināt to no %2 uz %3"
 
-#: ../src/TreeView_Detail.cc:35
+#. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
+#: ../src/ProgressBar.cc:98
+msgid "%1 of %2 copied (%3 remaining)"
+msgstr "%1 no %2 nokopēti (%3 atlikuši)"
+
+#: ../src/TreeView_Detail.cc:44
 msgid "Name"
 msgstr "Nosaukums"
 
-#: ../src/TreeView_Detail.cc:37
+#: ../src/TreeView_Detail.cc:46
 msgid "Mount Point"
 msgstr "Montēšanas punkts"
 
-#: ../src/TreeView_Detail.cc:39
+#: ../src/TreeView_Detail.cc:48
 msgid "Size"
 msgstr "Izmērs"
 
-#: ../src/TreeView_Detail.cc:40
+#: ../src/TreeView_Detail.cc:49
 msgid "Used"
 msgstr "Izmantots"
 
-#: ../src/TreeView_Detail.cc:41
+#: ../src/TreeView_Detail.cc:50
 msgid "Unused"
 msgstr "Neizmantots"
 
-#: ../src/TreeView_Detail.cc:42
+#: ../src/TreeView_Detail.cc:51
 msgid "Flags"
 msgstr "Karogi"
 
@@ -1490,7 +1673,7 @@ msgstr "Karogi"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:239
+#: ../src/Utils.cc:255
 msgid "unallocated"
 msgstr "neizvietots"
 
@@ -1499,7 +1682,7 @@ msgstr "neizvietots"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:246
+#: ../src/Utils.cc:262
 msgid "unknown"
 msgstr "nezināms"
 
@@ -1507,7 +1690,7 @@ msgstr "nezināms"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:252
+#: ../src/Utils.cc:268
 msgid "unformatted"
 msgstr "neformatēts"
 
@@ -1515,293 +1698,298 @@ msgstr "neformatēts"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:258
+#: ../src/Utils.cc:274
 msgid "cleared"
 msgstr "attīrīt"
 
-#: ../src/Utils.cc:278
+#: ../src/Utils.cc:296
 msgid "used"
 msgstr "izmantots"
 
-#: ../src/Utils.cc:279
+#: ../src/Utils.cc:297
 msgid "unused"
 msgstr "neizmantots"
 
-#: ../src/Utils.cc:441
+#. TO TRANSLATORS: means that this is an encrypted file system
+#: ../src/Utils.cc:314
+msgid "Encrypted"
+msgstr "Šifrēta"
+
+#: ../src/Utils.cc:442
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:446
+#: ../src/Utils.cc:447
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:451
+#: ../src/Utils.cc:452
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:456
+#: ../src/Utils.cc:457
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:461
+#: ../src/Utils.cc:462
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:148
+#: ../src/Win_GParted.cc:158
 msgid "_Refresh Devices"
 msgstr "Atjaunināt ie_rīces"
 
-#: ../src/Win_GParted.cc:154
+#: ../src/Win_GParted.cc:164
 msgid "_Devices"
 msgstr "_Ierīces"
 
-#: ../src/Win_GParted.cc:159
+#: ../src/Win_GParted.cc:169
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:179
+#: ../src/Win_GParted.cc:189
 msgid "_Edit"
 msgstr "R_ediģēt"
 
-#: ../src/Win_GParted.cc:184
+#: ../src/Win_GParted.cc:194
 msgid "Device _Information"
 msgstr "_Informācija par ierīci"
 
-#: ../src/Win_GParted.cc:186
+#: ../src/Win_GParted.cc:196
 msgid "Pending _Operations"
 msgstr "Plān_otās darbības"
 
-#: ../src/Win_GParted.cc:187
+#: ../src/Win_GParted.cc:197
 msgid "_View"
 msgstr "_Skats"
 
-#: ../src/Win_GParted.cc:191
+#: ../src/Win_GParted.cc:201
 msgid "_File System Support"
 msgstr "_Datņu sistēmu atbalsts"
 
-#: ../src/Win_GParted.cc:195
+#: ../src/Win_GParted.cc:205
 msgid "_Create Partition Table"
 msgstr "Iz_veidot nodalījumu tabulu"
 
-#: ../src/Win_GParted.cc:198
+#: ../src/Win_GParted.cc:208
 msgid "_Attempt Data Rescue"
 msgstr "Mēģināt d_atu glābšanu"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:211
 msgid "_Device"
 msgstr "_Ierīce"
 
-#: ../src/Win_GParted.cc:205
+#: ../src/Win_GParted.cc:215
 msgid "_Partition"
 msgstr "_Nodalījums"
 
-#: ../src/Win_GParted.cc:210
+#: ../src/Win_GParted.cc:220
 msgid "_Contents"
 msgstr "_Saturs"
 
-#: ../src/Win_GParted.cc:218
+#: ../src/Win_GParted.cc:228
 msgid "_Help"
 msgstr "_Palīdzība"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:230
+#: ../src/Win_GParted.cc:240
 msgid "New"
 msgstr "Jauna"
 
-#: ../src/Win_GParted.cc:235
+#: ../src/Win_GParted.cc:245
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Izveidot jaunu nodalījumu izvēlētajā, bet neizmantotajā apgabalā"
 
-#: ../src/Win_GParted.cc:240
+#: ../src/Win_GParted.cc:250
 msgid "Delete the selected partition"
 msgstr "Dzēst izvēlēto nodalījumu"
 
-#: ../src/Win_GParted.cc:262
+#: ../src/Win_GParted.cc:272
 msgid "Resize/Move the selected partition"
 msgstr "Pārvietot vai mainīt izmēru izvēlētajam nodalījumam"
 
-#: ../src/Win_GParted.cc:271
+#: ../src/Win_GParted.cc:281
 msgid "Copy the selected partition to the clipboard"
 msgstr "Kopēt izvēlēto nodalījumu uz starpliktuvi"
 
-#: ../src/Win_GParted.cc:276
+#: ../src/Win_GParted.cc:286
 msgid "Paste the partition from the clipboard"
 msgstr "Ielīmēt nodalījumu no starpliktuves"
 
-#: ../src/Win_GParted.cc:288
+#: ../src/Win_GParted.cc:298
 msgid "Undo Last Operation"
 msgstr "Atcelt pēdējo darbību"
 
-#: ../src/Win_GParted.cc:296
+#: ../src/Win_GParted.cc:306
 msgid "Apply All Operations"
 msgstr "Pielietot visas darbības"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:320
+#: ../src/Win_GParted.cc:330
 msgid "_New"
 msgstr "Jau_na"
 
-#: ../src/Win_GParted.cc:337
+#: ../src/Win_GParted.cc:347
 msgid "_Resize/Move"
 msgstr "Mainīt izmēru/Pā_rvietot"
 
-#: ../src/Win_GParted.cc:361
+#. TO TRANSLATORS: menuitem which holds a submenu with file systems..
+#: ../src/Win_GParted.cc:371
 msgid "_Format to"
 msgstr "_Formatēt kā"
 
-#: ../src/Win_GParted.cc:377
+#. TO TRANSLATORS: menuitem which holds a submenu with mount points..
+#: ../src/Win_GParted.cc:387
 msgid "_Mount on"
 msgstr "Pie_montēt pie"
 
-#: ../src/Win_GParted.cc:384
-#| msgid "_Partition"
+#: ../src/Win_GParted.cc:394
 msgid "_Name Partition"
 msgstr "_Nosaukt nodalījumu"
 
-#: ../src/Win_GParted.cc:389
+#: ../src/Win_GParted.cc:399
 msgid "M_anage Flags"
 msgstr "_Apstrādāt karogus"
 
-#: ../src/Win_GParted.cc:394
+#: ../src/Win_GParted.cc:404
 msgid "C_heck"
 msgstr "_Pārbaudīt"
 
-#: ../src/Win_GParted.cc:399
-#| msgid "File System"
+#: ../src/Win_GParted.cc:409
 msgid "_Label File System"
 msgstr "D_ot etiķeti datņu sistēmai"
 
-#: ../src/Win_GParted.cc:404
+#: ../src/Win_GParted.cc:414
 msgid "New UU_ID"
 msgstr "Jauns UU_ID"
 
-#: ../src/Win_GParted.cc:463
+#: ../src/Win_GParted.cc:474
 msgid "Device Information"
 msgstr "Informācija par ierīci"
 
 #. model
-#: ../src/Win_GParted.cc:471
+#: ../src/Win_GParted.cc:482
 msgid "Model:"
 msgstr "Modelis:"
 
 #. Serial number
-#: ../src/Win_GParted.cc:479
+#: ../src/Win_GParted.cc:490
 msgid "Serial:"
 msgstr "Sērijas numurs:"
 
 #. disktype
-#: ../src/Win_GParted.cc:511
+#: ../src/Win_GParted.cc:522
 msgid "Partition table:"
 msgstr "Nodalījumu tabula:"
 
 #. heads
-#: ../src/Win_GParted.cc:519
+#: ../src/Win_GParted.cc:530
 msgid "Heads:"
 msgstr "Galviņas:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:527
+#: ../src/Win_GParted.cc:538
 msgid "Sectors/track:"
 msgstr "Sektori celiņā:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:535
+#: ../src/Win_GParted.cc:546
 msgid "Cylinders:"
 msgstr "Cilindri:"
 
 #. sector size
-#: ../src/Win_GParted.cc:551
+#: ../src/Win_GParted.cc:562
 msgid "Sector size:"
 msgstr "Sektora izmērs:"
 
-#: ../src/Win_GParted.cc:731
+#: ../src/Win_GParted.cc:738
 msgid "Could not add this operation to the list"
 msgstr "Neizdevās pievienot šo darbību sarakstam"
 
-#: ../src/Win_GParted.cc:921
+#: ../src/Win_GParted.cc:919
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 darbība gaida izpildi"
 msgstr[1] "%1 darbības gaida izpildi"
 msgstr[2] "%1 darbību gaida izpildi"
 
-#: ../src/Win_GParted.cc:1041
+#: ../src/Win_GParted.cc:1038
 msgid "Quit GParted?"
 msgstr "Iziet no GParted?"
 
-#: ../src/Win_GParted.cc:1047
+#: ../src/Win_GParted.cc:1044
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 darbība šobrīd gaida izpildi."
 msgstr[1] "%1 darbības šobrīd gaida izpildi."
 msgstr[2] "%1 darbību šobrīd gaida izpildi."
 
-#: ../src/Win_GParted.cc:1365
+#: ../src/Win_GParted.cc:1405
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1402
+#: ../src/Win_GParted.cc:1455
 msgid "Scanning all devices..."
 msgstr "Skenē visas ierīces..."
 
-#: ../src/Win_GParted.cc:1449
+#: ../src/Win_GParted.cc:1502
 msgid "No devices detected"
 msgstr "Ierīces nav atrastas"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1534
+#: ../src/Win_GParted.cc:1587
 msgid "No partition table found on device %1"
 msgstr "Ierīcei %1 nav atrodama nodalījumu tabula"
 
-#: ../src/Win_GParted.cc:1539
+#: ../src/Win_GParted.cc:1592
 msgid "A partition table is required before partitions can be added."
 msgstr "Lai pievienotu nodalījumus, ir jābūt izveidotai sadaļu tabulai."
 
-#: ../src/Win_GParted.cc:1541
+#: ../src/Win_GParted.cc:1594
 msgid "To create a new partition table choose the menu item:"
 msgstr "Lai izveidotu jaunu nodalījumu tabulu, izvēlieties no izvēlnes:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1544
+#: ../src/Win_GParted.cc:1597
 msgid "Device --> Create Partition Table."
 msgstr "Ierīce --> Izveidot nodalījumu tabulu."
 
-#: ../src/Win_GParted.cc:1580
+#: ../src/Win_GParted.cc:1633
 msgid "Unable to open GParted Manual help file"
 msgstr "Neizdevās atvērt GParted rokasgrāmatas palīdzības datni"
 
-#: ../src/Win_GParted.cc:1599
+#: ../src/Win_GParted.cc:1652
 msgid "Documentation is not available"
 msgstr "Dokumentācija nav pieejama"
 
-#: ../src/Win_GParted.cc:1604
+#: ../src/Win_GParted.cc:1657
 msgid "This build of gparted is configured without documentation."
 msgstr "Šis gparted būvējums ir konfigurēts bez dokumentācijas."
 
-#: ../src/Win_GParted.cc:1606
+#: ../src/Win_GParted.cc:1659
 msgid "Documentation is available at the project web site."
 msgstr "Dokumentācija ir pieejama projekta tīmekļa vietnē."
 
-#: ../src/Win_GParted.cc:1624
+#: ../src/Win_GParted.cc:1677
 msgid "GNOME Partition Editor"
 msgstr "GNOME nodalījumu redaktors"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1657
+#: ../src/Win_GParted.cc:1712
 msgid "translator-credits"
 msgstr ""
 "Gvido Sprogis <gvido.sprogis@gmail.com> Pēteris Krišjānis <pecisk@gmail.com> "
 "Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>"
 
-#: ../src/Win_GParted.cc:1699
+#: ../src/Win_GParted.cc:1759
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Nav iespējams izveidot vairāk kā %1 primāro nodalījumu"
 msgstr[1] "Nav iespējams izveidot vairāk kā %1 primāros nodalījumus"
 msgstr[2] "Nav iespējams izveidot vairāk kā %1 primāro nodalījumu"
 
-#: ../src/Win_GParted.cc:1711
+#: ../src/Win_GParted.cc:1771
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1813,17 +2001,17 @@ msgstr ""
 "paplašinātais nodalījums var būt arī galvenais nodalījums, iespējams, būtu "
 "nepieciešams vispirms noņemt galveno nodalījumu."
 
-#: ../src/Win_GParted.cc:1792
+#: ../src/Win_GParted.cc:1879
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr "Pēc nodalījuma pārvietošanas operētājsistēma var neielādēties"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1800
+#: ../src/Win_GParted.cc:1886
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Jūs esat ierindojis darbību, kas pārvietos nodalījuma %s starta sektoru."
 
-#: ../src/Win_GParted.cc:1803
+#: ../src/Win_GParted.cc:1888
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1832,193 +2020,235 @@ msgstr ""
 "nodalījumu, kas satur /boot, vai arī pārvietojot Windows sistēmas nodalījumu "
 "C:."
 
-#: ../src/Win_GParted.cc:1805
+#: ../src/Win_GParted.cc:1890
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr "Jūs varat uzzināt, kā salabot ielādes konfigurāciju, GParted BUJ."
 
-#: ../src/Win_GParted.cc:1809
+#: ../src/Win_GParted.cc:1894
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Skenēšana var aizņemt ļoti daudz laika."
 
-#: ../src/Win_GParted.cc:1925
+#: ../src/Win_GParted.cc:1963
+#| msgid "copy of %1"
+msgid "Copy of %1"
+msgstr "%1 kopija"
+
+#: ../src/Win_GParted.cc:2056
 msgid "You have pasted into an existing partition"
 msgstr "Jūs esat ielicis kopēto nodalījumu eksistējoša nodalījuma vietā"
 
-#: ../src/Win_GParted.cc:1933
+#. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
+#: ../src/Win_GParted.cc:2064
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Dati, kas atrodas %1, tiks zaudēti, ja jūs pielietosiet šo darbību."
 
-#: ../src/Win_GParted.cc:2002
+#: ../src/Win_GParted.cc:2137
 msgid "Unable to delete %1!"
 msgstr "Neizdevās izdzēst %1!"
 
-#: ../src/Win_GParted.cc:2009
+#: ../src/Win_GParted.cc:2144
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Lūdzu, nomontējiet visus loģiskos nodalījumus, kuru numuri ir lielāki par %1"
 
-#: ../src/Win_GParted.cc:2020
+#: ../src/Win_GParted.cc:2155
 msgid "Are you sure you want to delete %1?"
 msgstr "Vai tiešām vēlaties dzēst %1?"
 
-#: ../src/Win_GParted.cc:2027
+#: ../src/Win_GParted.cc:2162
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Pēc dzēšanas šis nodalījums vairs nebūs pieejams kopēšanai."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2030
+#: ../src/Win_GParted.cc:2165
 msgid "Delete %1 (%2, %3)"
 msgstr "Dzēst %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2121
+#: ../src/Win_GParted.cc:2271
 msgid "Cannot format this file system to %1"
 msgstr "Neizdodas formatēt šo datņu sistēmu uz %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2133
+#: ../src/Win_GParted.cc:2283
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 datņu sistēmai ir nepieciešama vismaz %2 nodalījums."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2141
+#: ../src/Win_GParted.cc:2291
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 datņu sistēmas nodalījuma maksimālais izmērs ir %2."
 
-#: ../src/Win_GParted.cc:2237
+#: ../src/Win_GParted.cc:2409
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Nodalījumu neizdevās nomontēt no sekojošiem montēšanas punktiem:"
 
-#: ../src/Win_GParted.cc:2239
+#: ../src/Win_GParted.cc:2411
+#| msgid ""
+#| "Most likely other partitions are also mounted on these mount points. You "
+#| "are advised to unmount them manually."
 msgid ""
-"Most likely other partitions are also mounted on these mount points. You are "
-"advised to unmount them manually."
+"This is because other partitions are also mounted on these mount points.  "
+"You are advised to unmount them manually."
 msgstr ""
-"Iespējams, citi nodalījumi ir piemontēti pie šī montēšanas punkta. Tos būtu "
+"Tas ir tāpēc, ka citi nodalījumi ir piemontēti pie šī montēšanas punkta. Tos"
+" būtu "
 "ieteicams nomontēt."
 
-#: ../src/Win_GParted.cc:2267 ../src/Win_GParted.cc:2391
+#. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
+#: ../src/Win_GParted.cc:2424
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 darbība šobrīd gaida izpildi nodalījumam %2"
 msgstr[1] "%1 darbības šobrīd gaida izpildi nodalījumam %2"
 msgstr[2] "%1 darbību šobrīd gaida izpildi nodalījumam %2"
 
-#: ../src/Win_GParted.cc:2283
-msgid ""
-"The swapon action cannot be performed if an operation is pending for the "
-"partition."
+#: ../src/Win_GParted.cc:2439
+#| msgid ""
+#| "Use the Edit menu to undo, clear, or apply operations before using mount "
+#| "with this partition."
+msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
-"Darbību swapon nevar veikt, ja cita darbība jau gaida izpildi šim "
-"nodalījumam."
+"Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu rindā esošās"
+" darbības."
 
-#: ../src/Win_GParted.cc:2285
+#: ../src/Win_GParted.cc:2482
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using swapon "
-"with this partition."
+"The swapoff action cannot be performed when there are operations pending for "
+"the partition."
 msgstr ""
-"Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu darbības, pirms "
-"izmantot swapon darbību šim nodalījumam."
+"Darbību swapoff nevar veikt, ja citas darbības jau gaida izpildi šim"
+" nodalījumam."
 
-#: ../src/Win_GParted.cc:2289
-msgid ""
-"The activate Volume Group action cannot be performed if an operation is "
-"pending for the partition."
-msgstr ""
-"Darbību “aktivēt sējumu grupu” nevar veikt, ja cita darbība jau gaida "
-"izpildi šim nodalījumam."
-
-#: ../src/Win_GParted.cc:2291
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using activate "
-"Volume Group with this partition."
-msgstr ""
-"Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu darbības, pirms "
-"izmantot “aktivēt sējumu grupu” darbību šim nodalījumam."
-
-#: ../src/Win_GParted.cc:2302
+#: ../src/Win_GParted.cc:2483
 msgid "Deactivating swap on %1"
 msgstr "Deaktivizē maiņvietu %1"
 
-#: ../src/Win_GParted.cc:2302
-msgid "Activating swap on %1"
-msgstr "Aktivizē maiņvietu %1"
-
-#: ../src/Win_GParted.cc:2314
+#: ../src/Win_GParted.cc:2484
 msgid "Could not deactivate swap"
 msgstr "Neizdevās deaktivizēt maiņvietu"
 
-#: ../src/Win_GParted.cc:2314
+#: ../src/Win_GParted.cc:2489
+#| msgid ""
+#| "The swapon action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The swapon action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Darbību swapon nevar veikt, ja citas darbības jau gaida izpildi šim"
+" nodalījumam."
+
+#: ../src/Win_GParted.cc:2490
+msgid "Activating swap on %1"
+msgstr "Aktivizē maiņvietu %1"
+
+#: ../src/Win_GParted.cc:2491
 msgid "Could not activate swap"
 msgstr "Neizdevās aktivizēt maiņvietu"
 
-#: ../src/Win_GParted.cc:2329
+#: ../src/Win_GParted.cc:2496
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The deactivate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Darbību “deaktivizēt sējumu grupu” nevar veikt, ja citas darbības jau gaida"
+" izpildi šim nodalījumam."
+
+#: ../src/Win_GParted.cc:2497
 msgid "Deactivating Volume Group %1"
 msgstr "Deaktivizē sējumu grupu %1"
 
-#: ../src/Win_GParted.cc:2330
-msgid "Activating Volume Group %1"
-msgstr "Aktivizē sējumu grupu %1"
-
-#: ../src/Win_GParted.cc:2345
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2499
 msgid "Could not deactivate Volume Group"
 msgstr "Neizdevās deaktivizēt sējumu grupu"
 
-#: ../src/Win_GParted.cc:2346
+#: ../src/Win_GParted.cc:2504
+#| msgid ""
+#| "The activate Volume Group action cannot be performed if an operation is "
+#| "pending for the partition."
+msgid ""
+"The activate Volume Group action cannot be performed when there are "
+"operations pending for the partition."
+msgstr ""
+"Darbību “aktivizēt sējumu grupu” nevar veikt, ja citas darbības jau gaida"
+" izpildi šim nodalījumam."
+
+#: ../src/Win_GParted.cc:2505
+msgid "Activating Volume Group %1"
+msgstr "Aktivizē sējumu grupu %1"
+
+#. VGNAME from point point
+#: ../src/Win_GParted.cc:2507
 msgid "Could not activate Volume Group"
 msgstr "Neizdevās aktivizēt sējumu grupu"
 
-#: ../src/Win_GParted.cc:2359
+#: ../src/Win_GParted.cc:2512
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
+msgid ""
+"The unmount action cannot be performed when there are operations pending for "
+"the partition."
+msgstr ""
+"Darbību unmount nevar veikt, ja citas darbības jau gaida izpildi šim"
+" nodalījumam."
+
+#: ../src/Win_GParted.cc:2513
 msgid "Unmounting %1"
 msgstr "Nomontē %1"
 
-#: ../src/Win_GParted.cc:2365
+#: ../src/Win_GParted.cc:2514
 msgid "Could not unmount %1"
 msgstr "Neizdevās nomontēt %1"
 
-#: ../src/Win_GParted.cc:2405
+#. Bug: Partition callback without a selected partition
+#. Bug: Not pointing at a valid display partition object
+#: ../src/Win_GParted.cc:2578
+#| msgid ""
+#| "The mount action cannot be performed if an operation is pending for the "
+#| "partition."
 msgid ""
-"The mount action cannot be performed if an operation is pending for the "
+"The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
-"Darbību mount nevar veikt, ja cita darbība jau gaida izpildi šim nodalījumam."
+"Darbību mount nevar veikt, kad cita darbība jau gaida izpildi šim nodalījumam."
 
-#: ../src/Win_GParted.cc:2407
-msgid ""
-"Use the Edit menu to undo, clear, or apply operations before using mount "
-"with this partition."
-msgstr ""
-"Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu darbības, pirms "
-"izmantot mount darbību šim nodalījumam."
-
-#: ../src/Win_GParted.cc:2419
+#: ../src/Win_GParted.cc:2591
 msgid "mounting %1 on %2"
 msgstr "montē %1 pie %2"
 
-#: ../src/Win_GParted.cc:2449
+#: ../src/Win_GParted.cc:2618
 msgid "Could not mount %1 on %2"
 msgstr "Neizdevās piemontēt %1 pie %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2475
+#: ../src/Win_GParted.cc:2637
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 nodalījums pašlaik ir aktīvs uz ierīces %2"
 msgstr[1] "%1 nodalījumi pašlaik ir aktīvi uz ierīces %2"
 msgstr[2] "%1 nodalījumu pašlaik ir aktīvu uz ierīces %2"
 
-#: ../src/Win_GParted.cc:2490
+#: ../src/Win_GParted.cc:2652
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Jaunu nodalījumu tabulu nevar izveidot, ja tajā ir aktīvu nodalījumu."
 
-#: ../src/Win_GParted.cc:2492
+#: ../src/Win_GParted.cc:2654
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2026,7 +2256,7 @@ msgstr ""
 "Aktīvie nodalījumi ir tie, kuri tiek izmantoti, piemēram, ir montētas datņu "
 "sistēmas, vai izmantotas maiņvietas."
 
-#: ../src/Win_GParted.cc:2494
+#: ../src/Win_GParted.cc:2656
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2035,21 +2265,21 @@ msgstr ""
 "“Maiņvietas atslēgšana”, lai deaktivētu visus nodalījumus uz šīs ierīces, "
 "pirms pirms jaunas nodalījumu tabulas izveides."
 
-#: ../src/Win_GParted.cc:2506
+#: ../src/Win_GParted.cc:2668
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 darbība šobrīd gaida izpildi"
 msgstr[1] "%1 darbības šobrīd gaida izpildi"
 msgstr[2] "%1 darbību šobrīd gaida izpildi"
 
-#: ../src/Win_GParted.cc:2519
+#: ../src/Win_GParted.cc:2681
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Jaunu nodalījumu tabulu nevar izveidot, ja vēl ir neizpildītas plānotās "
 "darbības."
 
-#: ../src/Win_GParted.cc:2521
+#: ../src/Win_GParted.cc:2683
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2057,29 +2287,29 @@ msgstr ""
 "Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu visas darbības "
 "pirms jaunas nodalījumu tabulas izveides."
 
-#: ../src/Win_GParted.cc:2536
+#: ../src/Win_GParted.cc:2698
 msgid "Error while creating partition table"
 msgstr "Kļūda, veidojot nodalījumu tabulu"
 
-#: ../src/Win_GParted.cc:2556
+#: ../src/Win_GParted.cc:2718
 msgid "Command gpart was not found"
 msgstr "Komanda gpart nav atrasta"
 
-#: ../src/Win_GParted.cc:2557
+#: ../src/Win_GParted.cc:2719
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 "Šī iespēja izmanto gpart. Lūdzu, uzinstalējiet gpart un mēģiniet vēlreiz."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2565
+#: ../src/Win_GParted.cc:2727
 msgid "A full disk scan is needed to find file systems."
 msgstr "Lai atrastu datņu sistēmas, jāveic pilna diska skenēšana."
 
-#: ../src/Win_GParted.cc:2567
+#: ../src/Win_GParted.cc:2729
 msgid "The scan might take a very long time."
 msgstr "Skenēšana var aizņemt ļoti daudz laika."
 
-#: ../src/Win_GParted.cc:2569
+#: ../src/Win_GParted.cc:2731
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2087,26 +2317,26 @@ msgstr ""
 "Pēc skenēšanas jūs varēsiet montēt jebkuru atrasto datņu sistēmu un nokopēt "
 "datus uz citu datu nesēju."
 
-#: ../src/Win_GParted.cc:2571
+#: ../src/Win_GParted.cc:2733
 msgid "Do you want to continue?"
 msgstr "Vai vēlaties turpināt?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2575
+#: ../src/Win_GParted.cc:2737
 msgid "Search for file systems on %1"
 msgstr "Meklēt datņu sistēmas uz %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2586
+#: ../src/Win_GParted.cc:2748
 msgid "Searching for file systems on %1"
 msgstr "Meklē datņu sistēmas uz %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2602
+#: ../src/Win_GParted.cc:2764
 msgid "No file systems found on %1"
 msgstr "Uz %1 nav atrastu datņu sistēmu"
 
-#: ../src/Win_GParted.cc:2603
+#: ../src/Win_GParted.cc:2765
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2114,35 +2344,35 @@ msgstr ""
 "Disku skenēšana ar gpart neatrada nevienu atpazīstamu datņu sistēmu uz šī "
 "diska."
 
-#: ../src/Win_GParted.cc:2889
+#: ../src/Win_GParted.cc:3038
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Vai tiešām vēlaties izpildīt plānotās darbības?"
 
-#: ../src/Win_GParted.cc:2895
+#: ../src/Win_GParted.cc:3044
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Nodalījumu rediģēšana var izraisīt DATU ZAUDĒŠANU."
 
-#: ../src/Win_GParted.cc:2897
+#: ../src/Win_GParted.cc:3046
 msgid "You are advised to backup your data before proceeding."
 msgstr "Pirms turpināšanas ir ieteicams izveidot datu rezerves kopijas."
 
-#: ../src/Win_GParted.cc:2899
+#: ../src/Win_GParted.cc:3048
 msgid "Apply operations to device"
 msgstr "Pielietot darbības ierīcei"
 
-#: ../src/Win_GParted.cc:2944
+#: ../src/Win_GParted.cc:3093
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Jūs dzēšat netukšu LVM2 fizisko sējumu %1"
 
-#: ../src/Win_GParted.cc:2948
+#: ../src/Win_GParted.cc:3097
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Jūs pārformatējat netukšu LVM2 fizisko sējumu %1"
 
-#: ../src/Win_GParted.cc:2952
+#: ../src/Win_GParted.cc:3101
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Jūs ielīmējat pāri netukšam LVM2 fiziskam sējumam %1"
 
-#: ../src/Win_GParted.cc:2961
+#: ../src/Win_GParted.cc:3110
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2150,7 +2380,7 @@ msgstr ""
 "Fiziska sējuma dzēšana vai pārrakstīšanas nav atsaucama un iznīcinās vai "
 "bojās sējumu grupu."
 
-#: ../src/Win_GParted.cc:2964
+#: ../src/Win_GParted.cc:3113
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2160,21 +2390,21 @@ msgstr ""
 "un lietot ārējas LVM komandas, lai atbrīvotu fizisko sējumu, pirms mēģināt "
 "šo darbību."
 
-#: ../src/Win_GParted.cc:2967
+#: ../src/Win_GParted.cc:3116
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Vai vēlaties turpināt dzēst fizisko sējumu piespiedu kārtā?"
 
-#: ../src/btrfs.cc:309
+#: ../src/btrfs.cc:312
 msgid "Failed to find devid for path %1"
 msgstr "Neizdevās atrast devid ceļam %1"
 
-#: ../src/fat16.cc:32 ../src/ntfs.cc:25
+#: ../src/fat16.cc:32 ../src/ntfs.cc:29
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "UUID maiņa var padarīt nederīgu Windows Product Activation (WPA) atslēgu"
 
-#: ../src/fat16.cc:34 ../src/ntfs.cc:27
+#: ../src/fat16.cc:34 ../src/ntfs.cc:31
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2186,7 +2416,7 @@ msgstr ""
 "padarīt WPA atslēgu par nederīgu. Nederīga WPA atslēga neļaus pieteikties "
 "sistēmā līdz Windows netiks atkārtoti aktivēts."
 
-#: ../src/fat16.cc:40 ../src/ntfs.cc:37
+#: ../src/fat16.cc:40 ../src/ntfs.cc:41
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2195,23 +2425,23 @@ msgstr ""
 "bet garantēt to nevar."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:29
+#: ../src/linux_swap.cc:30
 msgid "_Swapon"
 msgstr "_Maiņvietas pieslēgšana"
 
-#: ../src/linux_swap.cc:30
+#: ../src/linux_swap.cc:31
 msgid "_Swapoff"
 msgstr "_Maiņvietas atslēgšana"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:194
+#: ../src/linux_swap.cc:187
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
 "Nodalījuma pārvietošanas darbība izlaista, jo %1 datņu sistēma nesatur datus"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:213
+#: ../src/linux_swap.cc:206
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2234,6 +2464,14 @@ msgstr ""
 "LVM2 fiziskajam sējumam pašlaik nevar mainīt izmēru, jo tas ir eksportētas "
 "sējumu grupas biedrs."
 
+#: ../src/luks.cc:125
+msgid ""
+"Maximize closed LUKS encryption skipped because it will automatically fill "
+"the partition when opened"
+msgstr ""
+"Tika izlaists “maksimizēt aizvērtu LUKS šifrēšanu”, jo tas automātiski"
+" aizpildīs nodalījumu, kad tiks atvērts"
+
 #: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
 msgstr "Ir nepieciešamas root privilēģijas, lai darbinātu GParted"
@@ -2246,7 +2484,7 @@ msgstr ""
 "Tā kā GParted ir rīks, kas spēj iznīcināt nodalījumu tabulas un lielus datu "
 "apjomus, tikai root lietotājs var to izmantot."
 
-#: ../src/ntfs.cc:33
+#: ../src/ntfs.cc:37
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2255,14 +2493,67 @@ msgstr ""
 "nejaušām vērtībām tiek mainīts tikai puse UUID."
 
 #. simulation..
-#: ../src/ntfs.cc:214
+#: ../src/ntfs.cc:226
 msgid "run simulation"
 msgstr "palaist simulāciju"
 
 #. real resize
-#: ../src/ntfs.cc:221
+#: ../src/ntfs.cc:234
 msgid "real resize"
 msgstr "reāla izmēra maiņa"
+
+#: ../src/udf.cc:67
+msgid "Partition is too large, maximum size is %1"
+msgstr "Nodalījums ir pārāk liels, maksimālais izmērs ir %1"
+
+#: ../src/udf.cc:75
+msgid "Partition is too small, minimum size is %1"
+msgstr "Nodalījums ir mazs liels, minimālais izmērs ir %1"
+
+#: ../src/udf.cc:92
+msgid ""
+"mkudffs prior to version 1.1 does not support non-ASCII characters in the "
+"label."
+msgstr "mkudffs pirms versijas 1.1 etiķetēs neatbalsta ne-ASCII rakstzīmes."
+
+#~ msgid "Linux Unified Key Setup encryption is not yet supported."
+#~ msgstr "Linux Unified Key Setup šifrēšana vēl nav atbalstīta."
+
+#~ msgid "moving requires old and new length to be the same"
+#~ msgstr "lai pārvietotu, sadaļas vecajam un jaunajam izmēram jāsakrīt"
+
+#~ msgid "resizing requires old and new start to be the same"
+#~ msgstr ""
+#~ "sadaļas izmēra mainīšanai nepieciešams, lai vecais un jaunais sākums "
+#~ "atrastos vienā vietā"
+
+#~ msgid "grow file system"
+#~ msgstr "palielināt datņu sistēmu"
+
+#~ msgid "resize file system"
+#~ msgstr "mainīt datņu sistēmas izmēru"
+
+#~ msgid ""
+#~ "new and old file system have the same size.  Hence skipping this operation"
+#~ msgstr "jaunā un vecā sadaļa ir vienāda izmēra. Tāpēc izlaiž šo darbību"
+
+#~| msgid "new partition flag: %1"
+#~ msgid "Skip setting unsupported partition flag: %1"
+#~ msgstr "Izlaist neatblastīta nodalījuma karoga iestatīšanu — %1"
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using swapon "
+#~ "with this partition."
+#~ msgstr ""
+#~ "Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu darbības, "
+#~ "pirms izmantot swapon darbību šim nodalījumam."
+
+#~ msgid ""
+#~ "Use the Edit menu to undo, clear, or apply operations before using "
+#~ "activate Volume Group with this partition."
+#~ msgstr ""
+#~ "Izmantojiet “Rediģēt” izvēlni, lai attīrītu vai pielietotu darbības, "
+#~ "pirms izmantot “aktivēt sējumu grupu” darbību šim nodalījumam."
 
 #~ msgid "%1 active"
 #~ msgstr "%1 aktīvs"
