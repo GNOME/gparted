@@ -18,7 +18,6 @@
 
 #include "CopyBlocks.h"
 #include "OperationDetail.h"
-#include "ProgressBar.h"
 #include "Utils.h"
 
 #include <glibmm/ustring.h>

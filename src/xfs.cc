@@ -18,7 +18,6 @@
 #include "xfs.h"
 #include "OperationDetail.h"
 #include "Partition.h"
-#include "ProgressBar.h"
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
