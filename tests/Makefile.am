@@ -11,8 +11,9 @@ LDADD =  \
 
 # Programs to be built by "make check"
 check_PROGRAMS =  \
-	test_dummy         \
-	test_BlockSpecial  \
+	test_dummy             \
+	test_BlockSpecial      \
+	test_PasswordRAMStore  \
 	test_PipeCapture
 
 # Test cases to be run by "make check"
@@ -23,6 +24,11 @@ test_dummy_SOURCES        = test_dummy.cc
 test_BlockSpecial_SOURCES = test_BlockSpecial.cc
 test_BlockSpecial_LDADD   =  \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)  \
+	$(LDADD)
+
+test_PasswordRAMStore_SOURCES = test_PasswordRAMStore.cc
+test_PasswordRAMStore_LDADD   =  \
+	$(top_builddir)/src/PasswordRAMStore.$(OBJEXT)  \
 	$(LDADD)
 
 test_PipeCapture_SOURCES  = test_PipeCapture.cc
