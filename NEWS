@@ -1,4 +1,83 @@
 ============================
+GParted 0.30.0  (2017-10-10)
+============================
+
+Release Notes
+-------------
+
+  This release of GParted includes an interim fix to enable running
+  GParted as root under Wayland in addition to other bug fixes and
+  language translation updates.
+
+  ATTENTION PACKAGERS:
+
+  The installation location of the gparted script has changed and
+  package scripts calling pkexec can be dropped.
+
+  This release provides an interim workaround to allow GParted to run
+  under Wayland by using xhost to grant and revoke root access to the
+  X11 display.  This must be enabled while building the software with:
+
+      ./configure --enable-xhost-root
+
+  Pkexec from polkit has been made the first choice graphical SU
+  program as all the desktops have settled on using polkit as the
+  privileged access mechanism.  See "Installing polkit's Action File"
+  section in the README file for when an additional installation step
+  may be needed.
+
+  Also changed is that execution of the graphical SU program has been
+  moved from gparted.desktop to the gparted shell wrapper.  Therefore
+  gparted can be run either by an unprivileged user or by root and as
+  such is installed in $prefix/bin rather than $prefix/sbin.  This
+  additionally means distributions can drop their pkexec scripts used
+  to launch gparted.
+
+### Key changes include:
+
+  * Interim fix for GParted fails to run as root under Wayland
+  * Fix reading Unicode labels when no FS specific tools available
+  * Safely quote and escape external programs arguments
+
+Bug Fixes
+---------
+  * Interim fix for GParted fails to run as root under Wayland (#776437)
+  * Fix message failed to execute "mkudffs" when not installed (#786050)
+  * Fix reading Unicode labels when no FS specific tools available (#786502)
+  * Update list of prohibited fat label characters (#787202)
+  * Fix detection of file system images (#787181)
+  * Safely quote and escape external programs arguments (#787203)
+  * Fix problems with space in device names (#649509)
+  * Remove minor bits of legacy from DMRaid module (#788007)
+  * Remove whole_device partition flag (#788308)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Pali Rohár and Mike Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  ca(Carles Ferrando Garcia, Jordi Mas), cs(Marek Černocký),
+  de(Mario Blättermann), en_GB(Andre Klapper), es(Daniel Mustieles),
+  fi(Jiri Grönroos), fr(Claude Paroz), hr(gogo),
+  hu(Gabor Kelemen, Balázs Meskó, Balázs Úr),
+  id(Kukuh Syafaat, Andika Triwidada), lv(Rūdolfs Mazurs),
+  nl(Hannie Dumoleyn), pl(Piotr Drąg),
+  pt_BR(Rafael Fontenelle, Andre Klapper),
+  ro(Daniel Șerbănescu, Andre Klapper),
+  sk(Dušan Kazik), sr(Мирослав Николић), sr@latin(Miroslav Nikolić),
+  sv(Anders Jonsson), vi(Trần Ngọc Quân), zh_CN(Andre Klapper),
+  zh_TW(Andre Klapper)
+
+Dependencies (new/updated)
+--------------------------
+  * Uses pkexec command (part of polkit) for root privilege escalation
+    when available.
+  * Uses xhost command to grant and revoke root access to the display
+    when configured to do so.
+
+
+============================
 GParted 0.29.0  (2017-08-07)
 ============================
 
