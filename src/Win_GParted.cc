@@ -1117,6 +1117,12 @@ void Win_GParted::set_valid_operations()
 		}
 	}
 
+	// Only permit encryption open/close when available
+	if ( selected_partition_ptr->status     == STAT_REAL &&
+	     selected_partition_ptr->filesystem == FS_LUKS   &&
+	     ! selected_filesystem.busy                         )
+		allow_toggle_crypt_busy_state( true );
+
 	// Only permit file system mount/unmount and swapon/swapoff when available
 	if (    selected_partition_ptr->status == STAT_REAL
 	     && selected_partition_ptr->type   != TYPE_EXTENDED
@@ -2414,8 +2420,86 @@ void Win_GParted::activate_format( FSType new_fs )
 
 void Win_GParted::toggle_crypt_busy_state()
 {
-	// Method not yet implemented as MENU_TOGGLE_CRYPT_BUSY item "Open/Close encrypted
-	// volume" in the partition menu is never enabled.
+	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
+	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
+
+	enum Action
+	{
+		NONE      = 0,
+		LUKSCLOSE = 1,
+		LUKSOPEN  = 2
+	};
+	Action action = NONE;
+	Glib::ustring disallowed_msg;
+	Glib::ustring pulse_msg;
+	Glib::ustring failure_msg;
+	if ( selected_partition_ptr->busy )
+	{
+		action = LUKSCLOSE;
+		disallowed_msg = _("The close encryption action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Closing encryption on %1"), selected_partition_ptr->get_path() );
+		failure_msg = _("Could not close encryption");
+	}
+	else  // ( ! selected_partition_ptr->busy )
+	{
+		action = LUKSOPEN;
+		disallowed_msg = _("The open encryption action cannot be performed when there are operations pending for the partition.");
+		pulse_msg = String::ucompose( _("Opening encryption on %1"), selected_partition_ptr->get_path() );
+		failure_msg = _("Could not open encryption");
+	}
+
+	if ( ! check_toggle_busy_allowed( disallowed_msg ) )
+		// One or more operations are pending for this partition so changing the
+		// busy state is not allowed.
+		//
+		// After set_valid_operations() has allowed the operations to be queued
+		// the rest of the code assumes the busy state of the partition won't
+		// change.  Therefore pending operations must prevent changing the busy
+		// state of the partition.
+		return;
+
+	show_pulsebar( pulse_msg );
+	bool success = false;
+	Glib::ustring cmd;
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring error_msg;
+	switch ( action )
+	{
+		case LUKSCLOSE:
+			cmd = "cryptsetup luksClose " +
+			      Glib::shell_quote( selected_partition_ptr->get_mountpoint() );
+			success = ! Utils::execute_command( cmd, output, error );
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
+			break;
+		case LUKSOPEN:
+		{
+			// Create LUKS mapping name from partition name:
+			// "/dev/sdb1" -> "sdb1_crypt"
+			Glib::ustring mapping_name = selected_partition_ptr->get_path();
+			Glib::ustring::size_type last_slash = mapping_name.rfind( "/" );
+			if ( last_slash != Glib::ustring::npos )
+				mapping_name = mapping_name.substr( last_slash + 1 );
+			mapping_name += "_crypt";
+
+			cmd = "cryptsetup luksOpen " +
+			      Glib::shell_quote( selected_partition_ptr->get_path() ) + " " +
+			      Glib::shell_quote( mapping_name );
+			error_msg = "Opening LUKS encryption mapping is not yet implemented\n"
+			            "<i># " + cmd + "</i>";
+			success = false;
+			break;
+		}
+		default:
+			// Impossible
+			break;
+	}
+	hide_pulsebar();
+
+	if ( ! success )
+		show_toggle_failure_dialog( failure_msg, error_msg );
+
+	menu_gparted_refresh_devices();
 }
 
 bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring & error )
