@@ -32,6 +32,8 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <string.h>
+#include <unistd.h>
 
 namespace GParted
 {
@@ -515,7 +517,7 @@ double Utils::sector_to_unit( Sector sectors, Byte_Value sector_size, SIZE_UNIT 
 int Utils::execute_command( const Glib::ustring & command )
 {
 	Glib::ustring dummy ;
-	return execute_command( command, dummy, dummy ) ;
+	return execute_command( command, NULL, dummy, dummy );
 }
 
 class CommandStatus
@@ -580,7 +582,17 @@ int Utils::execute_command( const Glib::ustring & command,
 			    Glib::ustring & error,
 			    bool use_C_locale )
 {
+	return execute_command( command, NULL, output, error, use_C_locale );
+}
+
+int Utils::execute_command( const Glib::ustring & command,
+                            const char * input,
+                            Glib::ustring & output,
+                            Glib::ustring & error,
+                            bool use_C_locale )
+{
 	Glib::Pid pid;
+	int in = -1;
 	// set up pipes for capture
 	int out, err;
 	CommandStatus status;
@@ -595,7 +607,7 @@ int Utils::execute_command( const Glib::ustring & command,
 			Glib::SPAWN_DO_NOT_REAP_CHILD | Glib::SPAWN_SEARCH_PATH,
 			use_C_locale ? sigc::ptr_fun( set_locale ) : sigc::slot< void >(),
 			&pid,
-			0,
+			( input != NULL ) ? &in : 0,
 			&out,
 			&err );
 	} catch (Glib::SpawnError &e) {
@@ -615,6 +627,17 @@ int Utils::execute_command( const Glib::ustring & command,
 	errorcapture.signal_eof.connect( sigc::mem_fun( status, &CommandStatus::execute_command_eof ) );
 	outputcapture.connect_signal();
 	errorcapture.connect_signal();
+
+	if ( input != NULL && in != -1 )
+	{
+		// Write small amount of input to pipe to the child process.  Linux will
+		// always accept up 4096 bytes without blocking.  See pipe(7).
+		size_t len = strlen( input );
+		ssize_t written = write( in, input, len );
+		if ( written == -1 || (size_t)written < len )
+			std::cerr << "Write to child failed: " << Glib::strerror( errno ) << std::endl;
+		close( in );
+	}
 
 	if( status.foreground)
 		Gtk::Main::run();
