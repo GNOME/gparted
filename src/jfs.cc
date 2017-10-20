@@ -76,8 +76,8 @@ FS jfs::get_filesystem_support()
 
 void jfs::set_used_sectors( Partition & partition ) 
 {
-	const Glib::ustring jfs_debug_cmd = "echo dm | jfs_debugfs " + Glib::shell_quote( partition.get_path() );
-	if ( ! Utils::execute_command( "sh -c " + Glib::shell_quote( jfs_debug_cmd ), output, error, true ) )
+	const Glib::ustring jfs_debug_cmd = "jfs_debugfs " + Glib::shell_quote( partition.get_path() );
+	if ( ! Utils::execute_command( jfs_debug_cmd, "dm\n", output, error, true ) )
 	{
 		//blocksize
 		Glib::ustring::size_type index = output.find( "Block Size:" );
