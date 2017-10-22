@@ -17,6 +17,7 @@ gpartedbin_SOURCES = \
 	Device.cc			\
 	DialogFeatures.cc		\
 	DialogManageFlags.cc		\
+	DialogPasswordEntry.cc		\
 	Dialog_Base_Partition.cc	\
 	Dialog_Disklabel.cc		\
 	Dialog_FileSystem_Label.cc	\

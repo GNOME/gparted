@@ -18,6 +18,7 @@
 #include "Win_GParted.h"
 #include "Dialog_Progress.h"
 #include "DialogFeatures.h"
+#include "DialogPasswordEntry.h"
 #include "Dialog_Disklabel.h"
 #include "Dialog_Rescue_Data.h"
 #include "Dialog_Partition_Resize_Move.h"
@@ -40,10 +41,12 @@
 #include "OperationNamePartition.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "PasswordRAMStore.h"
 #include "LVM2_PV_Info.h"
 #include "Utils.h"
 #include "../config.h"
 
+#include <string.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
@@ -2458,7 +2461,6 @@ void Win_GParted::toggle_crypt_busy_state()
 		// state of the partition.
 		return;
 
-	show_pulsebar( pulse_msg );
 	bool success = false;
 	Glib::ustring cmd;
 	Glib::ustring output;
@@ -2469,11 +2471,20 @@ void Win_GParted::toggle_crypt_busy_state()
 		case LUKSCLOSE:
 			cmd = "cryptsetup luksClose " +
 			      Glib::shell_quote( selected_partition_ptr->get_mountpoint() );
+			show_pulsebar( pulse_msg );
 			success = ! Utils::execute_command( cmd, output, error );
+			hide_pulsebar();
 			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		case LUKSOPEN:
 		{
+
+			DialogPasswordEntry dialog( *selected_partition_ptr );
+			dialog.set_transient_for( *this );
+			if ( dialog.run() != Gtk::RESPONSE_OK )
+				// Password dialog cancelled or closed
+				return;
+
 			// Create LUKS mapping name from partition name:
 			// "/dev/sdb1" -> "sdb1_crypt"
 			Glib::ustring mapping_name = selected_partition_ptr->get_path();
@@ -2485,16 +2496,17 @@ void Win_GParted::toggle_crypt_busy_state()
 			cmd = "cryptsetup luksOpen " +
 			      Glib::shell_quote( selected_partition_ptr->get_path() ) + " " +
 			      Glib::shell_quote( mapping_name );
-			error_msg = "Opening LUKS encryption mapping is not yet implemented\n"
-			            "<i># " + cmd + "</i>";
-			success = false;
+			show_pulsebar( pulse_msg );
+			success = ! Utils::execute_command( cmd, dialog.get_password().c_str(),
+			                                    output, error );
+			hide_pulsebar();
+			error_msg = "<i># " + cmd + "\n" + error + "</i>";
 			break;
 		}
 		default:
 			// Impossible
 			break;
 	}
-	hide_pulsebar();
 
 	if ( ! success )
 		show_toggle_failure_dialog( failure_msg, error_msg );

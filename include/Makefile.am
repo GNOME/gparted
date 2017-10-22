@@ -7,6 +7,7 @@ EXTRA_DIST = \
 	Device.h			\
 	DialogFeatures.h		\
 	DialogManageFlags.h		\
+	DialogPasswordEntry.h		\
 	Dialog_Base_Partition.h		\
 	Dialog_Disklabel.h		\
 	Dialog_FileSystem_Label.h	\
