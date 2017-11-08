@@ -47,6 +47,7 @@ public:
 
 private:
 	iterator find_key( const Glib::ustring & key );
+	void erase_all();
 
 	std::vector<PWEntry> pw_entries;     // Linear vector of password entries
 	char *               protected_mem;  // Block of virtual memory locked into RAM
@@ -94,24 +95,9 @@ PWStore::PWStore()
 
 PWStore::~PWStore()
 {
-	// WARNING:
-	// memset() can be optimised away if the compiler knows the memory is not accessed
-	// again.  In this case the pointer to the zeroed memory is passed to munmap()
-	// afterwards so the compiler has to assume the memory is accessed so can't
-	// optimise the memset() away.
-	// Reference:
-	// * SEI CERT C Coding Standard, MSC06-C. Beware of compiler optimizations
-	//   https://www.securecoding.cert.org/confluence/display/c/MSC06-C.+Beware+of+compiler+optimizations
-	//
-	// NOTE:
-	// For secure overwriting of memory C11 has memset_s(), Linux kernel has
-	// memzero_explicit(), FreeBSD/OpenBSD have explicit_bzero() and Windows has
-	// SecureZeroMemory().
+	erase_all();
 	if ( protected_mem != NULL )
-	{
-		memset( protected_mem, '\0', ProtectedMemSize );
 		munmap( protected_mem, ProtectedMemSize );
-	}
 }
 
 bool PWStore::insert( const Glib::ustring & key, const char * password )
@@ -182,6 +168,28 @@ PWStore::iterator PWStore::find_key( const Glib::ustring & key )
 	}
 
 	return pw_entries.end();
+}
+
+void PWStore::erase_all()
+{
+	pw_entries.clear();
+	if ( protected_mem != NULL );
+		// WARNING:
+		// memset() can be optimised away if the compiler knows the memory is not
+		// accessed again.  In this case this memset() is in a separate method
+		// which usually bounds such optimisations.  Also in the parent method the
+		// the pointer to the zeroed memory is passed to munmap() afterwards which
+		// the compiler has to assume the memory is accessed so it can't optimise
+		// the memset() away.
+		// Reference:
+		// * SEI CERT C Coding Standard, MSC06-C. Beware of compiler optimizations
+		//   https://www.securecoding.cert.org/confluence/display/c/MSC06-C.+Beware+of+compiler+optimizations
+		//
+		// NOTE:
+		// For secure overwriting of memory C11 has memset_s(), Linux kernel has
+		// memzero_explicit(), FreeBSD/OpenBSD have explicit_bzero() and Windows
+		// has SecureZeroMemory().
+		memset( protected_mem, '\0', ProtectedMemSize );
 }
 
 // The single password RAM store
