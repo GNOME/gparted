@@ -16,9 +16,9 @@
 
 /* Test PasswordRAMStore
  *
- * WARNING:
- * This unit testing calls the public API of PasswordRAMStore and also the private member.
- * It also uses knowledge of the implementation to look through the API to the internals
+ * NOTE:
+ * As well as calling the public API of PasswordRAMStore this unit testing also accesses
+ * the private members of PasswordRAMStore and uses knowledge of the implementation,
  * making this white box testing.  This is so that the hidden behaviour of zeroing
  * password storing memory before and after use can be tested.
  *
@@ -97,21 +97,11 @@ const char * PasswordRAMStoreTest::protected_mem = NULL;
 
 const size_t ProtectedMemSize = 4096;  // [Implementation knowledge: size]
 
-// Common test case initialisation discovering the underlying password store address.
+// Common test case initialisation recording the underlying password store address.
 void PasswordRAMStoreTest::SetUpTestCase()
 {
-	const Glib::ustring key = "key-setup";
-	bool success = PasswordRAMStore::insert( key, "" );
-	ASSERT_TRUE( success ) << __func__ << "(): Insert \"" << key << "\" password failed";
-
-	// First password is stored at the start of the locked memory.
-	// [Implementation knowledge: locked memory layout]
-	protected_mem = PasswordRAMStore::lookup( key );
-	ASSERT_TRUE( protected_mem != NULL ) << __func__
-	                                     << "(): Find \"" << key << "\" password failed";
-
-	success = PasswordRAMStore::erase( key );
-	ASSERT_TRUE( success ) << __func__ << "(): Erase \"" << key << "\" password failed";
+	protected_mem = PasswordRAMStore::get_protected_mem();
+	ASSERT_TRUE( protected_mem != NULL ) << __func__ << "(): No locked virtual memory for password RAM store";
 }
 
 TEST_F( PasswordRAMStoreTest, Initialisation )

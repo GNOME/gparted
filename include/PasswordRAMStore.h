@@ -37,7 +37,7 @@ namespace GParted
 class PasswordRAMStore
 {
 friend class PasswordRAMStoreTest;  // To allow unit testing PasswordRAMStoreTest class
-                                    // access to private erase_all() method.
+                                    // access to private methods.
 
 public:
 	static bool insert( const Glib::ustring & key, const char * password );
@@ -46,6 +46,7 @@ public:
 
 private:
 	static void erase_all();
+	static const char * get_protected_mem();
 };
 
 } //GParted

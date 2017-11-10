@@ -45,6 +45,7 @@ public:
 	bool erase( const Glib::ustring & key );
 	const char * lookup( const Glib::ustring & key );
 	void erase_all();
+	const char * get_protected_mem();
 
 private:
 	iterator find_key( const Glib::ustring & key );
@@ -192,6 +193,11 @@ void PWStore::erase_all()
 		memset( protected_mem, '\0', ProtectedMemSize );
 }
 
+const char * PWStore::get_protected_mem()
+{
+	return protected_mem;
+}
+
 // The single password RAM store
 static PWStore single_pwstore;
 
@@ -217,6 +223,11 @@ const char * PasswordRAMStore::lookup( const Glib::ustring & key )
 void PasswordRAMStore::erase_all()
 {
 	single_pwstore.erase_all();
+}
+
+const char * PasswordRAMStore::get_protected_mem()
+{
+	return single_pwstore.get_protected_mem();
 }
 
 } //GParted
