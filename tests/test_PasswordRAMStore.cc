@@ -17,12 +17,10 @@
 /* Test PasswordRAMStore
  *
  * WARNING:
- * This unit testing only calls the public API of the PasswordRAMStore so would normally
- * be black box testing, however knowledge of the implementation is used to look through
- * the API to the internals making this white box testing.  This is so that the hidden
- * behaviour of zeroing password storing memory before and after use can be tested.
- * FIXME: Can't currently test memory is zeroed when the password store is destroyed
- * because destructor zeros memory AND removes it from the process address space.
+ * This unit testing calls the public API of PasswordRAMStore and also the private member.
+ * It also uses knowledge of the implementation to look through the API to the internals
+ * making this white box testing.  This is so that the hidden behaviour of zeroing
+ * password storing memory before and after use can be tested.
  *
  * WARNING:
  * Each test fixture would normally initialise separate resources to make the tests
@@ -84,6 +82,8 @@ protected:
 	PasswordRAMStoreTest() : looked_up_pw( NULL )  {};
 
 	static void SetUpTestCase();
+
+	static void erase_all()  { PasswordRAMStore::erase_all(); };
 
 	static const char *  protected_mem;
 
@@ -259,6 +259,22 @@ TEST_F( PasswordRAMStoreTest, TooLongPassword )
 	EXPECT_TRUE( looked_up_pw == NULL );
 
 	EXPECT_FALSE( PasswordRAMStore::erase( "key-long" ) );
+	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
+}
+
+TEST_F( PasswordRAMStoreTest, TotalErasure )
+{
+	// Test all passwords are erased (and zeroed using the same code called during
+	// password cache destruction).
+	unsigned int i;
+	for ( i = 0 ; i < 100 ; i ++ )
+	{
+		pw = gen_passwd( i );
+		EXPECT_TRUE( PasswordRAMStore::insert( gen_key(i), pw.c_str() ) );
+	}
+	EXPECT_FALSE( mem_is_zero( protected_mem, ProtectedMemSize ) );
+
+	PasswordRAMStoreTest::erase_all();
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 }
 

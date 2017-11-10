@@ -44,10 +44,10 @@ public:
 	bool insert( const Glib::ustring & key, const char * password );
 	bool erase( const Glib::ustring & key );
 	const char * lookup( const Glib::ustring & key );
+	void erase_all();
 
 private:
 	iterator find_key( const Glib::ustring & key );
-	void erase_all();
 
 	std::vector<PWEntry> pw_entries;     // Linear vector of password entries
 	char *               protected_mem;  // Block of virtual memory locked into RAM
@@ -210,6 +210,13 @@ bool PasswordRAMStore::erase( const Glib::ustring & key )
 const char * PasswordRAMStore::lookup( const Glib::ustring & key )
 {
 	return single_pwstore.lookup( key );
+}
+
+// PasswordRAMStore private methods
+
+void PasswordRAMStore::erase_all()
+{
+	single_pwstore.erase_all();
 }
 
 } //GParted
