@@ -90,6 +90,7 @@ void OperationDetail::set_status( OperationDetailStatus status )
 				time_start = std::time( NULL ) ;
 				break ;
 			case STATUS_ERROR:
+			case STATUS_N_A:
 			case STATUS_SUCCES:
 				if( time_start != -1 )
 					time_elapsed = std::time( NULL ) - time_start ;

@@ -245,7 +245,6 @@ void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & op
 		//Don't mark operation as errored just because rmdir
 		//  failed.  Set to Warning (N/A) instead.
 		int e = errno ;
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;  //Stop timer
 		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				String::ucompose( "rmdir(%1): ", dir_name ) + Glib::strerror( e ), STATUS_NONE ) ) ;
