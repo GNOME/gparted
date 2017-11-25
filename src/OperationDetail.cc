@@ -197,6 +197,7 @@ void OperationDetail::add_child_implement( const OperationDetail & operationdeta
 				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
 	if ( cancelflag )
 		sub_details.back()->cancel( cancelflag == 2 );
+	sub_details.back()->signal_capture_errors.connect( this->signal_capture_errors );
 	on_update( *sub_details.back() );
 }
 
