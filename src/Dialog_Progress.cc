@@ -64,10 +64,10 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 
 		//create some icons here, instead of recreating them every time
 		icon_execute = render_icon(Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_succes = render_icon(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_success = render_icon(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 		icon_error = render_icon(Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 		icon_info = render_icon(Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_n_a = render_icon(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_warning = render_icon(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 
 		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
 		treeview_operations.set_model(treestore_operations);
@@ -130,8 +130,8 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 			case STATUS_EXECUTE:
 				treerow[ treeview_operations_columns .status_icon ] = icon_execute ;
 				break ;
-			case STATUS_SUCCES:
-				treerow[ treeview_operations_columns .status_icon ] = icon_succes ;
+			case STATUS_SUCCESS:
+				treerow[treeview_operations_columns.status_icon] = icon_success;
 				break ;
 			case STATUS_ERROR:
 				treerow[ treeview_operations_columns .status_icon ] = icon_error ;
@@ -139,8 +139,8 @@ void Dialog_Progress::on_signal_update( const OperationDetail & operationdetail 
 			case STATUS_INFO:
 				treerow[ treeview_operations_columns .status_icon ] = icon_info ;
 				break ;
-			case STATUS_N_A:
-				treerow[ treeview_operations_columns .status_icon ] = icon_n_a ;
+			case STATUS_WARNING:
+				treerow[treeview_operations_columns.status_icon] = icon_warning;
 				warnings++ ;
 				break ;
 			case STATUS_NONE:
@@ -421,7 +421,7 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 						 */
 						_("EXECUTING") << " )" ;
 				break ;
-			case STATUS_SUCCES:
+			case STATUS_SUCCESS:
 				out << "( " <<
 						/* TO" TRANSLATORS:  SUCCESS
 						 * means that the status for this operation is
@@ -446,14 +446,16 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 						 */
 						_("INFO") << " )" ;
 				break ;
-			case STATUS_N_A:
+			case STATUS_WARNING:
 				out << "( " <<
-						/* TO TRANSLATORS:  N/A
+						/* TO TRANSLATORS:  WARNING
 						 * means that the status for this operation is
-						 * not applicable because the operation is not
-						 * supported on the file system in the partition.
+						 * completed with warnings.  Either the operation
+						 * is not supported on the file system in the
+						 * partition, or the operation failed but it does
+						 * not matter that it failed.
 						 */
-						_("N/A") << " )" ;
+						_("WARNING") << " )" ;
 				break ;
 
 			default:

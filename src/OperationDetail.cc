@@ -91,8 +91,8 @@ void OperationDetail::set_status( OperationDetailStatus status )
 				time_start = std::time( NULL ) ;
 				break ;
 			case STATUS_ERROR:
-			case STATUS_N_A:
-			case STATUS_SUCCES:
+			case STATUS_WARNING:
+			case STATUS_SUCCESS:
 				if( time_start != -1 )
 					time_elapsed = std::time( NULL ) - time_start ;
 				break ;
@@ -108,7 +108,7 @@ void OperationDetail::set_status( OperationDetailStatus status )
 
 void OperationDetail::set_success_and_capture_errors( bool success )
 {
-	set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	set_status( success ? STATUS_SUCCESS : STATUS_ERROR );
 	signal_capture_errors.emit( *this, success );
 	no_more_children = true;
 }

@@ -30,12 +30,12 @@ namespace GParted
 {
 
 enum OperationDetailStatus {
-	STATUS_NONE	= 0, 
-	STATUS_EXECUTE	= 1,
-	STATUS_SUCCES	= 2,
-	STATUS_ERROR	= 3,
-	STATUS_INFO	= 4,
-	STATUS_N_A	= 5
+	STATUS_NONE    = 0,
+	STATUS_EXECUTE = 1,
+	STATUS_SUCCESS = 2,
+	STATUS_ERROR   = 3,
+	STATUS_INFO    = 4,
+	STATUS_WARNING = 5
 };
 
 enum Font {

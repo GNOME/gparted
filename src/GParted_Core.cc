@@ -2877,7 +2877,7 @@ bool GParted_Core::maximize_encryption( const Partition & partition, OperationDe
 		operationdetail.get_last_child().add_child( OperationDetail(
 				_("growing is not available for this encryption volume"),
 				STATUS_NONE, FONT_ITALIC ) );
-		operationdetail.get_last_child().set_status( STATUS_N_A );
+		operationdetail.get_last_child().set_status( STATUS_WARNING );
 		return true;
 	}
 
@@ -2940,8 +2940,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 			OperationDetail( _("growing is not available for this file system"),
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
-
-		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
+		operationdetail.get_last_child().set_status( STATUS_WARNING );
 		return true ;
 	}
 	else if ( filesystem_resize_disallowed( partition ) )
@@ -2955,7 +2954,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 			msg += custom_msg ;
 		}
 		operationdetail .get_last_child() .add_child( OperationDetail( msg, STATUS_NONE, FONT_ITALIC ) ) ;
-		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
+		operationdetail.get_last_child().set_status( STATUS_WARNING );
 		return true ;
 	}
 
@@ -3365,8 +3364,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 				OperationDetail( _("checking is not available for this file system"),
 						 STATUS_NONE,
 						 FONT_ITALIC ) ) ;
-
-			operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
+			operationdetail.get_last_child().set_status( STATUS_WARNING );
 			return true ;	
 
 			break ;
