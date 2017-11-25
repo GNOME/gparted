@@ -106,6 +106,13 @@ void OperationDetail::set_status( OperationDetailStatus status )
 	}
 }
 
+void OperationDetail::set_success_and_capture_errors( bool success )
+{
+	set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	signal_capture_errors.emit( *this );
+	no_more_children = true;
+}
+
 OperationDetailStatus OperationDetail::get_status() const
 {
 	return status ;

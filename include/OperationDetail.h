@@ -60,6 +60,7 @@ public:
 	void set_description( const Glib::ustring & description, Font font = FONT_NORMAL ) ;
 	Glib::ustring get_description() const ;
 	void set_status( OperationDetailStatus status ) ;
+	void set_success_and_capture_errors( bool success );
 	OperationDetailStatus get_status() const ;
 	void set_treepath( const Glib::ustring & treepath ) ;
 	Glib::ustring get_treepath() const ;
@@ -74,6 +75,7 @@ public:
 
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
+	sigc::signal< void, OperationDetail & > signal_capture_errors;
 	char cancelflag;
 
 private:
