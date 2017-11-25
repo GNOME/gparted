@@ -168,12 +168,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 	Gtk::Main::run();
 
 	if ( flags & EXEC_CHECK_STATUS )
-	{
-		if ( !exit_status )
-			cmd_operationdetail.set_status( STATUS_SUCCES );
-		else
-			cmd_operationdetail.set_status( STATUS_ERROR );
-	}
+		cmd_operationdetail.set_success_and_capture_errors( exit_status == 0 );
 	close( out );
 	close( err );
 	if ( timed_conn.connected() )
@@ -184,7 +179,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 
 void FileSystem::set_status( OperationDetail & operationdetail, bool success )
 {
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 }
 
 void FileSystem::execute_command_eof()
@@ -215,7 +210,7 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 	if ( NULL == dir_name )
 	{
 		int e = errno ;
-		operationdetail .get_last_child() .set_status( STATUS_ERROR ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( false );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				String::ucompose( "mkdtemp(%1): %2", dir_buf, Glib::strerror( e ) ), STATUS_NONE ) ) ;
 		dir_name = "" ;
@@ -225,7 +220,7 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 		//Update command with actually created temporary directory
 		operationdetail .get_last_child() .set_description(
 				Glib::ustring( "mkdir -v " ) + dir_name, FONT_BOLD_ITALIC ) ;
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp */
 				String::ucompose( _("Created directory %1"), dir_name ), STATUS_NONE ) ) ;
@@ -251,7 +246,7 @@ void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & op
 	}
 	else
 	{
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp */
 				String::ucompose( _("Removed directory %1"), dir_name ), STATUS_NONE ) ) ;

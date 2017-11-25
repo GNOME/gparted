@@ -228,7 +228,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	operationdetail .add_child( OperationDetail( _("run simulation") ) ) ;
 	success = ! execute_command( cmd + " --no-action " + Glib::shell_quote( partition_new.get_path() ),
 	                             operationdetail.get_last_child(), EXEC_CHECK_STATUS );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	if ( ! success )
 		return false;
 
@@ -237,7 +237,7 @@ bool ntfs::resize( const Partition & partition_new, OperationDetail & operationd
 	success = ! execute_command( cmd + " " + Glib::shell_quote( partition_new.get_path() ),
 		                     operationdetail.get_last_child(), EXEC_CHECK_STATUS|EXEC_PROGRESS_STDOUT,
 		                     static_cast<StreamSlot>( sigc::mem_fun( *this, &ntfs::resize_progress ) ) );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 

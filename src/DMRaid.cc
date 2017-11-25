@@ -333,8 +333,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	if ( execute_command( "dmraid -ay -P \"\" -v", operationdetail.get_last_child() ) )
 		exit_status = false;  // command failed
 
-	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
 	return exit_status ;
 }
 
@@ -422,8 +421,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 			exit_status = false ;	//command failed
 	}
 
-	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
 	return exit_status ;
 }
 
@@ -446,8 +444,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 			exit_status = false ;	//command failed
 	}
 
-	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
 	return exit_status ;
 }
 
@@ -492,8 +489,7 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	if( ! create_dev_map_entries( partition , operationdetail .get_last_child() ) )
 		exit_status = false ;	//command failed
 
-	operationdetail .get_last_child() .set_status( exit_status ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
 	return exit_status ;
 }
 
