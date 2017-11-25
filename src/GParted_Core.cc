@@ -1996,8 +1996,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		succes = dmraid .create_dev_map_entries( new_partition, operationdetail .get_last_child() ) ;
 #endif
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 	
@@ -2036,7 +2035,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status(  succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -2095,7 +2094,7 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 	}
 #endif
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -2123,7 +2122,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
 			success = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 			          p_filesystem ->remove( partition, operationdetail .get_last_child() ) ;
-			operationdetail .get_last_child() .set_status( success ? STATUS_SUCCES : STATUS_ERROR ) ;
+			operationdetail.get_last_child().set_success_and_capture_errors( success );
 			break ;
 
 		default:
@@ -2164,8 +2163,7 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 			break;
 	}
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;	
 }
 
@@ -2192,8 +2190,7 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 		}
 	}
 
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
-
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -2232,8 +2229,7 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 			break;
 	}
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
-
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -2338,12 +2334,12 @@ bool GParted_Core::move( const Partition & partition_old,
 			if ( resize_move_partition( *partition_all_space,
 			                            *partition_restore, operationdetail.get_last_child() ) )
 			{
-				operationdetail.get_last_child().set_status( STATUS_SUCCES );
+				operationdetail.get_last_child().set_success_and_capture_errors( true );
 				check_repair_filesystem( partition_old, operationdetail );
 			}
 			else
 			{
-				operationdetail.get_last_child().set_status( STATUS_ERROR );
+				operationdetail.get_last_child().set_success_and_capture_errors( false );
 			}
 
 			delete partition_restore;
@@ -2391,7 +2387,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 					 STATUS_NONE,
 					 FONT_ITALIC ) ) ;
 
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		return true ;
 	}
 
@@ -2413,7 +2409,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				                                   true );
 
 				operationdetail.get_last_child().get_last_child()
-					.set_status( succes ? STATUS_SUCCES : STATUS_ERROR );
+					.set_success_and_capture_errors( succes );
 				if ( ! succes )
 				{
 					rollback_transaction( partition_old,
@@ -2444,7 +2440,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -2726,7 +2722,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 					  STATUS_NONE,
 					  FONT_ITALIC ) ) ;
 
-		operationdetail .get_last_child() .set_status( STATUS_SUCCES ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		return true ;
 	}
 
@@ -2837,8 +2833,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 								) ;
 	}
 
-	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
-	
+	operationdetail.get_last_child().set_success_and_capture_errors( return_value );
 	return return_value ;
 }
 
@@ -2856,7 +2851,7 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
 
 	operationdetail.add_child( OperationDetail( _("shrink encryption volume") ) );
 	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -2887,7 +2882,7 @@ bool GParted_Core::maximize_encryption( const Partition & partition, OperationDe
 	}
 
 	bool success = resize_filesystem_implement( partition, partition, operationdetail );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -2917,7 +2912,7 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
 
 	operationdetail.add_child( OperationDetail( _("shrink file system") ) );
 	bool success = resize_filesystem_implement( partition_old, partition_new, operationdetail );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -2965,7 +2960,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	}
 
 	bool success = resize_filesystem_implement( partition, partition, operationdetail );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -2992,7 +2987,7 @@ bool GParted_Core::recreate_linux_swap_filesystem( const Partition & partition, 
 
 	// Linux-swap is recreated by using the linux_swap::resize() method
 	bool success = resize_filesystem_implement( partition, partition, operationdetail );
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -3150,7 +3145,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			break;
 	}
 
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
@@ -3331,7 +3326,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 			                                         operationdetail.get_last_child(),
 			                                         false );
 
-			operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+			operationdetail.get_last_child().set_success_and_capture_errors( success );
 		}
 
 		delete temp_src;
@@ -3389,7 +3384,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			break ;
 	}
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -3517,7 +3512,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		destroy_device_and_disk( lp_device, lp_disk ) ;
 	}
 
-	operationdetail .get_last_child() .set_status( return_value ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( return_value );
 	return return_value ;
 }
 
@@ -3620,7 +3615,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 		// happen to run just when the needed /dev/PTN entry doesn't exist.
 		settle_device( SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS );
 
-		operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+		operationdetail.get_last_child().set_success_and_capture_errors( success );
 		return success;
 	}
 	else //nothing to calibrate...
@@ -3708,7 +3703,7 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 #endif
 	}
 
-	operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
 }
 
@@ -3930,7 +3925,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 				written += amount ;
 			}
 
-			od .get_last_child() .set_status( zero_success ? STATUS_SUCCES : STATUS_ERROR ) ;
+			od.get_last_child().set_success_and_capture_errors( zero_success );
 		}
 		overall_success &= zero_success ;
 	}
@@ -3966,12 +3961,12 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 			flush_success = ped_device_sync( lp_device ) ;
 			ped_device_close( lp_device ) ;
 		}
-		od .get_last_child() .set_status( flush_success ? STATUS_SUCCES : STATUS_ERROR ) ;
+		od.get_last_child().set_success_and_capture_errors( flush_success );
 		overall_success &= flush_success ;
 	}
 	destroy_device_and_disk( lp_device, lp_disk ) ;
 
-	operationdetail .get_last_child() .set_status( overall_success ? STATUS_SUCCES : STATUS_ERROR ) ;
+	operationdetail.get_last_child().set_success_and_capture_errors( overall_success );
 	return overall_success ;
 }
 
@@ -4056,7 +4051,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 
-		operationdetail .get_last_child() .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( succes );
 		return succes ;
 	}
 

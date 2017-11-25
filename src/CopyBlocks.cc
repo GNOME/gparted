@@ -194,7 +194,7 @@ bool CopyBlocks::copy()
 
 	if ( total_done == total_length || ! success )
 		operationdetail.stop_progressbar();
-	operationdetail.get_last_child().set_status( success ? STATUS_SUCCES : STATUS_ERROR );
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
 	return success;
 }
 
