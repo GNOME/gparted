@@ -77,6 +77,7 @@ public:
 	char cancelflag;
 
 private:
+	void add_child_implement( const OperationDetail & operationdetail );
 	void on_update( const OperationDetail & operationdetail ) ;
 	void cancel( bool force );
 	ProgressBar & get_progressbar() const;
@@ -88,6 +89,9 @@ private:
 	
 	std::vector<OperationDetail*> sub_details;
 	std::time_t time_start, time_elapsed ;
+	bool no_more_children;  // Disallow adding more children to ensure captured errors
+	                        // remain the last child of this operation detail.
+
 	sigc::connection cancelconnection;
 };
 

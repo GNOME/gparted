@@ -25,12 +25,13 @@ namespace GParted
 // The single progress bar for the current operation
 static ProgressBar single_progressbar;
 
-OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
+OperationDetail::OperationDetail() : cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ),
+                                     no_more_children( false )
 {
 }
 
 OperationDetail::OperationDetail( const Glib::ustring & description, OperationDetailStatus status, Font font ) :
-	cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 )
+	cancelflag( 0 ), status( STATUS_NONE ), time_start( -1 ), time_elapsed( -1 ), no_more_children( false )
 {
 	set_description( description, font );
 	set_status( status );
@@ -128,19 +129,19 @@ Glib::ustring OperationDetail::get_elapsed_time() const
 	return "" ;
 }
 
-void OperationDetail::add_child( const OperationDetail & operationdetail ) 
+void OperationDetail::add_child( const OperationDetail & operationdetail )
 {
-	sub_details .push_back( new OperationDetail(operationdetail) );
-
-	sub_details.back()->set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() -1 ) );
-	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
-	sub_details.back()->cancelconnection = signal_cancel.connect(
-				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
-	if ( cancelflag )
-		sub_details.back()->cancel( cancelflag == 2 );
-	on_update( *sub_details.back() );
+	if ( no_more_children )
+		// Adding a child after this OperationDetail has been set to prevent it is
+		// a programming bug.  However the best way to report it is by adding yet
+		// another child containing the bug report, and allowing the child to be
+		// added anyway.
+		add_child_implement( OperationDetail( "GParted Bug: Adding another child after no_more_children set "
+		                                      "on this OperationDetail",
+		                                      STATUS_ERROR, FONT_ITALIC ) );
+	add_child_implement( operationdetail );
 }
-	
+
 std::vector<OperationDetail*> & OperationDetail::get_childs()
 {
 	return sub_details ;
@@ -178,6 +179,19 @@ void OperationDetail::stop_progressbar()
 }
 
 // Private methods
+
+void OperationDetail::add_child_implement( const OperationDetail & operationdetail )
+{
+	sub_details .push_back( new OperationDetail( operationdetail ) );
+
+	sub_details.back()->set_treepath( treepath + ":" + Utils::num_to_str( sub_details .size() - 1 ) );
+	sub_details.back()->signal_update.connect( sigc::mem_fun( this, &OperationDetail::on_update ) );
+	sub_details.back()->cancelconnection = signal_cancel.connect(
+				sigc::mem_fun( sub_details.back(), &OperationDetail::cancel ) );
+	if ( cancelflag )
+		sub_details.back()->cancel( cancelflag == 2 );
+	on_update( *sub_details.back() );
+}
 
 void OperationDetail::on_update( const OperationDetail & operationdetail ) 
 {
