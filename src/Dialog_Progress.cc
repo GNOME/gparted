@@ -226,7 +226,7 @@ void Dialog_Progress::on_signal_show()
 		succes = signal_apply_operation.emit( operations[t] );
 
 		//set status (succes/error) for this operation
-		operations[ t ] ->operation_detail .set_status( succes ? STATUS_SUCCES : STATUS_ERROR ) ;
+		operations[t]->operation_detail.set_success_and_capture_errors( succes );
 	}
 	
 	//add save button

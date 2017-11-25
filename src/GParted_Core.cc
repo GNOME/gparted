@@ -556,6 +556,8 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 {
 	bool success = false;
 	libparted_messages .clear() ;
+	operation->operation_detail.signal_capture_errors.connect(
+			sigc::mem_fun( *this, &GParted_Core::capture_libparted_messages ) );
 
 	switch ( operation->type )
 	{
@@ -671,15 +673,6 @@ bool GParted_Core::apply_operation_to_disk( Operation * operation )
 			          && change_filesystem_uuid( operation->get_partition_new().get_filesystem_partition(),
 			                                     operation->operation_detail );
 			break;
-	}
-
-	if ( libparted_messages .size() > 0 )
-	{
-		operation ->operation_detail .add_child( OperationDetail( _("libparted messages"), STATUS_INFO ) ) ;
-
-		for ( unsigned int t = 0 ; t < libparted_messages .size() ; t++ )
-			operation ->operation_detail .get_last_child() .add_child(
-				OperationDetail( libparted_messages[ t ], STATUS_NONE, FONT_ITALIC ) ) ;
 	}
 
 	return success;
@@ -4109,6 +4102,18 @@ void GParted_Core::fini_filesystems()
 	{
 		delete fs_iter->second;
 		fs_iter->second = NULL;
+	}
+}
+
+void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail )
+{
+	if ( libparted_messages.size() > 0 )
+	{
+		operationdetail.add_child( OperationDetail( _("libparted messages"), STATUS_INFO ) );
+		for ( unsigned int i = 0 ; i < libparted_messages.size() ; i++ )
+			operationdetail.get_last_child().add_child(
+					OperationDetail( libparted_messages[i], STATUS_NONE, FONT_ITALIC ) );
+		libparted_messages.clear();
 	}
 }
 

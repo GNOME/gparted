@@ -208,6 +208,8 @@ private:
 	static void init_filesystems();
 	static void fini_filesystems();
 
+	void capture_libparted_messages( OperationDetail & operationdetail );
+
 	static bool flush_device( PedDevice * lp_device );
 	static bool get_device( const Glib::ustring & device_path, PedDevice *& lp_device, bool flush = false );
 	static bool get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool strict = true );
