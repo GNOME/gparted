@@ -210,9 +210,9 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 	if ( NULL == dir_name )
 	{
 		int e = errno ;
-		operationdetail.get_last_child().set_success_and_capture_errors( false );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				String::ucompose( "mkdtemp(%1): %2", dir_buf, Glib::strerror( e ) ), STATUS_NONE ) ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( false );
 		dir_name = "" ;
 	}
 	else
@@ -220,10 +220,10 @@ Glib::ustring FileSystem::mk_temp_dir( const Glib::ustring & infix, OperationDet
 		//Update command with actually created temporary directory
 		operationdetail .get_last_child() .set_description(
 				Glib::ustring( "mkdir -v " ) + dir_name, FONT_BOLD_ITALIC ) ;
-		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp */
 				String::ucompose( _("Created directory %1"), dir_name ), STATUS_NONE ) ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 	}
 
 	return Glib::ustring( dir_name ) ;
@@ -240,16 +240,16 @@ void FileSystem::rm_temp_dir( const Glib::ustring dir_name, OperationDetail & op
 		//Don't mark operation as errored just because rmdir
 		//  failed.  Set to Warning (N/A) instead.
 		int e = errno ;
-		operationdetail .get_last_child() .set_status( STATUS_N_A ) ;
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				String::ucompose( "rmdir(%1): ", dir_name ) + Glib::strerror( e ), STATUS_NONE ) ) ;
+		operationdetail.get_last_child().set_status( STATUS_N_A );
 	}
 	else
 	{
-		operationdetail.get_last_child().set_success_and_capture_errors( true );
 		operationdetail .get_last_child() .add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp */
 				String::ucompose( _("Removed directory %1"), dir_name ), STATUS_NONE ) ) ;
+		operationdetail.get_last_child().set_success_and_capture_errors( true );
 	}
 }
 
