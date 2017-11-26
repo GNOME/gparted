@@ -4100,11 +4100,12 @@ void GParted_Core::fini_filesystems()
 	}
 }
 
-void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail )
+void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail, bool success )
 {
 	if ( libparted_messages.size() > 0 )
 	{
-		operationdetail.add_child( OperationDetail( _("libparted messages"), STATUS_INFO ) );
+		operationdetail.add_child( OperationDetail( _("libparted messages"),
+		                                            success ? STATUS_INFO : STATUS_ERROR ) );
 		for ( unsigned int i = 0 ; i < libparted_messages.size() ; i++ )
 			operationdetail.get_last_child().add_child(
 					OperationDetail( libparted_messages[i], STATUS_NONE, FONT_ITALIC ) );

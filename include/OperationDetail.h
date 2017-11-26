@@ -75,7 +75,7 @@ public:
 
 	sigc::signal< void, const OperationDetail & > signal_update ;
 	sigc::signal< void, bool > signal_cancel;
-	sigc::signal< void, OperationDetail & > signal_capture_errors;
+	sigc::signal< void, OperationDetail &, bool > signal_capture_errors;
 	char cancelflag;
 
 private:
