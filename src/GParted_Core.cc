@@ -4231,9 +4231,19 @@ void GParted_Core::destroy_device_and_disk( PedDevice*& lp_device, PedDisk*& lp_
 
 bool GParted_Core::commit( PedDisk* lp_disk )
 {
+	// (#790418) Hold a file handle open across the ped_disk_commit_to_dev() and
+	// commit_to_os()->ped_disk_commit_to_os() calls to avoid libparted having to open
+	// and close the device twice itself.  This avoids the kernel and udev events
+	// removing and re-adding partitions exactly when ped_disk_commit_to_os() is
+	// trying to doing the same thing.
+	bool opened = ped_device_open( lp_disk->dev );
+
 	bool succes = ped_disk_commit_to_dev( lp_disk ) ;
 	
 	succes = commit_to_os( lp_disk, SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS ) && succes;
+
+	if ( opened )
+		ped_device_close( lp_disk->dev );
 
 	return succes ;
 }
