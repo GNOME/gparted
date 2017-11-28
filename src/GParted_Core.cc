@@ -4243,7 +4243,12 @@ bool GParted_Core::commit( PedDisk* lp_disk )
 	succes = commit_to_os( lp_disk, SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS ) && succes;
 
 	if ( opened )
+	{
 		ped_device_close( lp_disk->dev );
+		// Wait for udev rules to complete and partition device nodes to settle
+		// from this ped_device_close().
+		settle_device( SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS );
+	}
 
 	return succes ;
 }
@@ -4273,6 +4278,8 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 	}
 #endif
 
+	// Wait for udev rules to complete and partition device nodes to settle from above
+	// ped_disk_commit_to_os() initiated kernel update of the partitions.
 	settle_device( timeout ) ;
 
 	return succes ;
