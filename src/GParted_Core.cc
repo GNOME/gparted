@@ -2326,8 +2326,7 @@ bool GParted_Core::move( const Partition & partition_old,
 		// all encompassing values.
 		if ( ! move_filesystem( partition_old, partition_new, operationdetail ) )
 		{
-			operationdetail.add_child( OperationDetail(
-					_("rollback last change to the partition table") ) );
+			operationdetail.add_child( OperationDetail( _("rollback last change to the partition") ) );
 
 			Partition * partition_restore = partition_old.clone();
 			partition_restore->alignment = ALIGN_STRICT;  // Ensure that old partition boundaries are not modified
@@ -2412,10 +2411,10 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 					.set_success_and_capture_errors( succes );
 				if ( ! succes )
 				{
-					rollback_transaction( partition_old,
-							      partition_new,
-							      operationdetail .get_last_child(),
-							      total_done );
+					rollback_move_filesystem( partition_old,
+					                          partition_new,
+					                          operationdetail.get_last_child(),
+					                          total_done );
 				}
 			}
 			else
@@ -3338,10 +3337,10 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	return succes ;
 }
 
-void GParted_Core::rollback_transaction( const Partition & partition_src,
-					 const Partition & partition_dst,
-					 OperationDetail & operationdetail,
-					 Byte_Value total_done )
+void GParted_Core::rollback_move_filesystem( const Partition & partition_src,
+                                             const Partition & partition_dst,
+                                             OperationDetail & operationdetail,
+                                             Byte_Value total_done )
 {
 	if ( total_done > 0 )
 	{
@@ -3371,7 +3370,7 @@ void GParted_Core::rollback_transaction( const Partition & partition_src,
 
 		if ( rollback_needed )
 		{
-			operationdetail.add_child( OperationDetail( _("roll back last transaction") ) );
+			operationdetail.add_child( OperationDetail( _("rollback failed file system move") ) );
 
 			//and copy it back (NOTE the reversed dst and src)
 			bool success = copy_filesystem_internal( *temp_dst,

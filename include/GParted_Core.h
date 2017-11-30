@@ -191,10 +191,10 @@ private:
 	                  OperationDetail & operationdetail,
 	                  Byte_Value & total_done,
 	                  bool cancel_safe );
-	void rollback_transaction( const Partition & partition_src,
-				   const Partition & partition_dst,
-				   OperationDetail & operationdetail,
-				   Byte_Value total_done ) ;
+	void rollback_move_filesystem( const Partition & partition_src,
+	                               const Partition & partition_dst,
+	                               OperationDetail & operationdetail,
+	                               Byte_Value total_done );
 
 	bool check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool check_repair_maximize( const Partition & partition,
