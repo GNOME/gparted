@@ -143,9 +143,17 @@ void OperationDetail::add_child( const OperationDetail & operationdetail )
 		// a programming bug.  However the best way to report it is by adding yet
 		// another child containing the bug report, and allowing the child to be
 		// added anyway.
-		add_child_implement( OperationDetail( "GParted Bug: Adding another child after no_more_children set "
-		                                      "on this OperationDetail",
-		                                      STATUS_ERROR, FONT_ITALIC ) );
+		add_child_implement( OperationDetail( Glib::ustring( _("GParted Bug") ) + ": " +
+		                                      /* TO TRANSLATORS:
+		                                       * means that GParted has encountered a programming bug.  More
+		                                       * information about a step is being added after the step was
+		                                       * marked as complete.  This bug description as well as the
+		                                       * information being added will be visible in the details of the
+		                                       * applied operations.
+		                                       */
+		                                      _("Adding more information to the results of this step after it "
+		                                        "has been marked as completed"),
+		                                      STATUS_WARNING, FONT_ITALIC ) );
 	add_child_implement( operationdetail );
 }
 
