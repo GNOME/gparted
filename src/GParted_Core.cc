@@ -3223,12 +3223,19 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	Glib::Timer timer ;
 	double smallest_time = 1000000 ;
 	bool succes = true ;
+	OperationDetail & benchmark_od = operationdetail.get_last_child();
 
 	//Benchmark copy times using different block sizes to determine optimal size
 	while ( succes &&
 		llabs( done ) + N <= src_length && 
 		benchmark_blocksize <= N )
 	{
+		benchmark_od.add_child( OperationDetail(
+				/*TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB */
+				String::ucompose( _("copy %1 using a block size of %2"),
+				                  Utils::format_size( N, 1 ),
+				                  Utils::format_size( benchmark_blocksize, 1 ) ) ) );
+
 		timer .reset() ;
 		succes = CopyBlocks( src_device,
 		                     dst_device,
@@ -3236,15 +3243,15 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		                     offset_write + (done / dst_sector_size),
 		                     N,
 		                     benchmark_blocksize,
-		                     operationdetail .get_last_child(),
+		                     benchmark_od,
 		                     total_done,
 		                     src_length,
 		                     cancel_safe ).copy();
 		timer.stop() ;
 
-		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
+		benchmark_od.get_last_child().add_child( OperationDetail(
 			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
-		operationdetail.get_last_child().get_last_child().set_success_and_capture_errors( succes );
+		benchmark_od.get_last_child().set_success_and_capture_errors( succes );
 
 		if ( timer .elapsed() <= smallest_time )
 		{
@@ -3268,11 +3275,17 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 	if ( succes && llabs( done ) < src_length )
 	{
+		Byte_Value remaining_length = src_length - llabs( done );
+		operationdetail.add_child( OperationDetail(
+				/*TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB */
+				String::ucompose( _("copy %1 using a block size of %2"),
+				                  Utils::format_size( remaining_length, 1 ),
+				                  Utils::format_size( optimal_blocksize, 1 ) ) ) );
 		succes = CopyBlocks( src_device,
 		                     dst_device,
 		                     src_start + ((done > 0 ? done : 0) / src_sector_size),
 		                     dst_start + ((done > 0 ? done : 0) / dst_sector_size),
-		                     src_length - llabs( done ),
+		                     remaining_length,
 		                     optimal_blocksize,
 		                     operationdetail,
 		                     total_done,

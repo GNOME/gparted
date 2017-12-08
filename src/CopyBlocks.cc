@@ -150,11 +150,6 @@ bool CopyBlocks::copy()
 	if ( blocksize > length )
 		blocksize = length;
 
-	operationdetail.add_child( OperationDetail(
-			/*TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB */
-			String::ucompose( _("copy %1 using a block size of %2"),
-			                  Utils::format_size( length, 1 ),
-			                  Utils::format_size( blocksize, 1 ) ) ) );
 	operationdetail.run_progressbar( (double)total_done, (double)total_length, PROGRESSBAR_TEXT_COPY_BYTES );
 
 	done = length % blocksize;
