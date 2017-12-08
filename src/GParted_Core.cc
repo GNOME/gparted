@@ -2737,59 +2737,10 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		FONT_ITALIC ) ) ;
 	
 	//finally the actual resize/move
-	bool return_value = false ;
-	
-	PedConstraint *constraint = NULL ;
-
-	//sometimes the lp_partition ->geom .start,end and length values display random numbers
-	//after going out of the 'if ( lp_partition)' scope. That's why we use some variables here.
-	Sector new_start = -1, new_end = -1 ;
-		
-	PedDevice* lp_device = NULL ;
-	PedDisk* lp_disk = NULL ;
-	if ( get_device_and_disk( partition_old .device_path, lp_device, lp_disk ) )
-	{
-		PedPartition* lp_partition = get_lp_partition( lp_disk, partition_old );
-		if ( lp_partition )
-		{
-			if (   (partition_new .alignment == ALIGN_STRICT)
-			    || (partition_new .alignment == ALIGN_MEBIBYTE)
-			    || partition_new .strict_start
-			   ) {
-				PedGeometry *geom = ped_geometry_new( lp_device,
-									  partition_new .sector_start,
-									  partition_new .get_sector_length() ) ;
-				if ( geom )
-				{
-					constraint = ped_constraint_exact( geom );
-					ped_geometry_destroy( geom );
-				}
-			}
-			else
-				constraint = ped_constraint_any( lp_device ) ;
-
-			if ( constraint )
-			{
-				if ( ped_disk_set_partition_geom( lp_disk,
-								  lp_partition,
-								  constraint,
-								  partition_new .sector_start,
-								  partition_new .sector_end ) )
-				{
-					new_start = lp_partition ->geom .start ;
-					new_end = lp_partition ->geom .end ;
-
-					return_value = commit( lp_disk ) ;
-				}
-									
-				ped_constraint_destroy( constraint );
-			}
-		}
-		
-		destroy_device_and_disk( lp_device, lp_disk ) ;
-	}
-	
-	if ( return_value )
+	Sector new_start = -1;
+	Sector new_end = -1;
+	bool success = resize_move_partition_implement( partition_old, partition_new, new_start, new_end );
+	if ( success )
 	{
 		//Change to partition succeeded
 		operationdetail .get_last_child() .add_child( 
@@ -2805,14 +2756,14 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 #ifndef USE_LIBPARTED_DMRAID
 		//update dev mapper entry if partition is dmraid.
 		DMRaid dmraid ;
-		if ( return_value && dmraid .is_dmraid_device( partition_new .device_path ) )
+		if ( success && dmraid.is_dmraid_device( partition_new.device_path ) )
 		{
 			PedDevice* lp_device = NULL ;
 			PedDisk* lp_disk = NULL ;
 			//Open disk handle before and close after to prevent application crash.
 			if ( get_device_and_disk( partition_new .device_path, lp_device, lp_disk ) )
 			{
-				return_value = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
+				success = dmraid.update_dev_map_entry( partition_new, operationdetail.get_last_child() );
 				destroy_device_and_disk( lp_device, lp_disk ) ;
 			}
 		}
@@ -2833,8 +2784,64 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 								) ;
 	}
 
-	operationdetail.get_last_child().set_success_and_capture_errors( return_value );
-	return return_value ;
+	operationdetail.get_last_child().set_success_and_capture_errors( success );
+	return success;
+}
+
+bool GParted_Core::resize_move_partition_implement( const Partition & partition_old,
+                                                    const Partition & partition_new,
+                                                    Sector & new_start,
+                                                    Sector & new_end )
+{
+	bool success = false;
+	PedDevice *lp_device = NULL;
+	PedDisk *lp_disk = NULL;
+	if ( get_device_and_disk( partition_old.device_path, lp_device, lp_disk ) )
+	{
+		PedPartition *lp_partition = get_lp_partition( lp_disk, partition_old );
+		if ( lp_partition )
+		{
+			PedConstraint *constraint = NULL;
+			if ( partition_new.alignment == ALIGN_STRICT   ||
+			     partition_new.alignment == ALIGN_MEBIBYTE ||
+			     partition_new.strict_start                   )
+			{
+				PedGeometry *geom = ped_geometry_new( lp_device,
+				                                      partition_new.sector_start,
+				                                      partition_new.get_sector_length() );
+				if ( geom )
+				{
+					constraint = ped_constraint_exact( geom );
+					ped_geometry_destroy( geom );
+				}
+			}
+			else
+			{
+				constraint = ped_constraint_any( lp_device );
+			}
+
+			if ( constraint )
+			{
+				if ( ped_disk_set_partition_geom( lp_disk,
+				                                  lp_partition,
+				                                  constraint,
+				                                  partition_new.sector_start,
+				                                  partition_new.sector_end ) )
+				{
+					new_start = lp_partition->geom.start;
+					new_end = lp_partition->geom.end;
+
+					success = commit( lp_disk );
+				}
+
+				ped_constraint_destroy( constraint );
+			}
+		}
+
+		destroy_device_and_disk( lp_device, lp_disk );
+	}
+
+	return success;
 }
 
 bool GParted_Core::shrink_encryption( const Partition & partition_old,
