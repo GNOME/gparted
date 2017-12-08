@@ -2640,8 +2640,9 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
 }
 
 bool GParted_Core::resize_move_partition( const Partition & partition_old,
-				     	  const Partition & partition_new,
-					  OperationDetail & operationdetail )
+                                          const Partition & partition_new,
+                                          OperationDetail & operationdetail,
+                                          bool rollback_on_fail )
 {
 	if ( partition_new.type == TYPE_UNPARTITIONED )
 		// Trying to resize/move a non-partitioned whole disk device is a
@@ -2770,8 +2771,38 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 								FONT_ITALIC )
 								) ;
 	}
-
 	operationdetail.get_last_child().set_success_and_capture_errors( success );
+
+	if ( ! success && rollback_on_fail )
+	{
+		operationdetail.add_child(
+				OperationDetail( _("attempt to rollback failed change to the partition") ) );
+
+		Partition *partition_restore = partition_old.clone();
+		// Ensure that old partition boundaries are not modified
+		partition_restore->alignment = ALIGN_STRICT;
+
+		bool rollback_success = resize_move_partition_implement( partition_new, *partition_restore,
+		                                                         new_start, new_end );
+
+		operationdetail.get_last_child().add_child(
+			OperationDetail(
+				String::ucompose( _("original start: %1"), partition_restore->sector_start ) + "\n" +
+				String::ucompose( _("original end: %1"), partition_restore->sector_end ) + "\n" +
+				String::ucompose( _("original size: %1 (%2)"),
+					partition_restore->get_sector_length(),
+					Utils::format_size( partition_restore->get_sector_length(), partition_restore->sector_size ) ),
+				STATUS_NONE, FONT_ITALIC ) );
+
+		// Update dev mapper entry if partition is dmraid.
+		rollback_success = rollback_success && update_dmraid_entry( *partition_restore, operationdetail );
+
+		delete partition_restore;
+		partition_restore = NULL;
+
+		operationdetail.get_last_child().set_success_and_capture_errors( rollback_success );
+	}
+
 	return success;
 }
 
