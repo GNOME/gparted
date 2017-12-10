@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-03 18:32+0100\n"
-"PO-Revision-Date: 2017-12-03 18:33+0100\n"
+"POT-Creation-Date: 2017-12-10 16:05+0100\n"
+"PO-Revision-Date: 2017-12-10 16:07+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -853,7 +853,11 @@ msgstr "Utworzono katalog %1"
 msgid "Removed directory %1"
 msgstr "Usunięto katalog %1"
 
-#: ../src/GParted_Core.cc:75
+#. Adding a child after this OperationDetail has been set to prevent it is
+#. a programming bug.  However the best way to report it is by adding yet
+#. another child containing the bug report, and allowing the child to be
+#. added anyway.
+#: ../src/GParted_Core.cc:75 ../src/OperationDetail.cc:146
 msgid "GParted Bug"
 msgstr "Błąd programu GParted"
 
@@ -1583,6 +1587,21 @@ msgstr "Tworzenie %1 #%2 (%3, %4) na %5"
 #: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Usuwanie %1 (%2, %3) z %4"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug.  More
+#. * information about a step is being added after the step was
+#. * marked as complete.  This bug description as well as the
+#. * information being added will be visible in the details of the
+#. * applied operations.
+#.
+#: ../src/OperationDetail.cc:154
+msgid ""
+"Adding more information to the results of this step after it has been marked "
+"as completed"
+msgstr ""
+"Dodawanie więcej informacji do wyników tego kroku po oznaczeniu go jako "
+"ukończony"
 
 #. Bug: Not initialised by constructor or reset later
 #. Bug: Not initialised by constructor or reset later
