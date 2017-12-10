@@ -3244,6 +3244,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 
 		operationdetail .get_last_child() .get_last_child() .add_child( OperationDetail( 
 			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
+		operationdetail.get_last_child().get_last_child().set_success_and_capture_errors( succes );
 
 		if ( timer .elapsed() <= smallest_time )
 		{
@@ -3266,6 +3267,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 				STATUS_NONE ) ) ;
 
 	if ( succes && llabs( done ) < src_length )
+	{
 		succes = CopyBlocks( src_device,
 		                     dst_device,
 		                     src_start + ((done > 0 ? done : 0) / src_sector_size),
@@ -3276,6 +3278,8 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		                     total_done,
 		                     src_length,
 		                     cancel_safe ).copy();
+		operationdetail.get_last_child().set_success_and_capture_errors( succes );
+	}
 
 	operationdetail .add_child( OperationDetail( 
 		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
