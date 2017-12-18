@@ -2244,7 +2244,7 @@ bool GParted_Core::resize_move( const Partition & partition_old,
 	   )
 	{
 		if ( partition_old .type == TYPE_EXTENDED )
-			return resize_move_partition( partition_old, partition_new, operationdetail ) ;
+			return resize_move_partition( partition_old, partition_new, operationdetail, false );
 
 		if ( partition_new .sector_start == partition_old .sector_start )
 			return resize( partition_old, partition_new, operationdetail ) ;
@@ -2320,7 +2320,7 @@ bool GParted_Core::move( const Partition & partition_old,
 	// Make old partition all encompassing and if move file system fails then return
 	// partition table to original state
 	bool success = false;
-	if ( resize_move_partition( partition_old, *partition_all_space, operationdetail ) )
+	if ( resize_move_partition( partition_old, *partition_all_space, operationdetail, true ) )
 	{
 		// Note move of file system is from old values to new values, not from the
 		// all encompassing values.
@@ -2331,8 +2331,8 @@ bool GParted_Core::move( const Partition & partition_old,
 
 			Partition * partition_restore = partition_old.clone();
 			partition_restore->alignment = ALIGN_STRICT;  // Ensure that old partition boundaries are not modified
-			if ( resize_move_partition( *partition_all_space,
-			                            *partition_restore, operationdetail.get_last_child() ) )
+			if ( resize_move_partition( *partition_all_space, *partition_restore,
+			                            operationdetail.get_last_child(), false ) )
 			{
 				operationdetail.get_last_child().set_success_and_capture_errors( true );
 				check_repair_filesystem( partition_old, operationdetail );
@@ -2354,7 +2354,7 @@ bool GParted_Core::move( const Partition & partition_old,
 	// Make new partition from all encompassing partition
 	if ( success )
 	{
-		success =    resize_move_partition( *partition_all_space, partition_new, operationdetail )
+		success =    resize_move_partition( *partition_all_space, partition_new, operationdetail, false )
 		          && update_bootsector( partition_new, operationdetail );
 	}
 
@@ -2561,7 +2561,7 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
 		// grow closed LUKS.
 		// maximize_encryption() is only called to display no action needed
 		// operation message generated in luks::resize() for this case.
-		return    resize_move_partition( partition_old, partition_new, operationdetail )
+		return    resize_move_partition( partition_old, partition_new, operationdetail, true )
 		       && maximize_encryption( partition_new, operationdetail );
 	}
 
@@ -2573,12 +2573,12 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
 		if ( delta < 0LL )  // shrink
 		{
 			return    shrink_encryption( partition_old, partition_new, operationdetail )
-			       && resize_move_partition( partition_old, partition_new, operationdetail )
+			       && resize_move_partition( partition_old, partition_new, operationdetail, false )
 			       && recreate_linux_swap_filesystem( filesystem_ptn_new, operationdetail );
 		}
 		else if ( delta > 0LL ) // grow
 		{
-			return    resize_move_partition( partition_old, partition_new, operationdetail )
+			return    resize_move_partition( partition_old, partition_new, operationdetail, true )
 			       && maximize_encryption( partition_new, operationdetail )
 			       && recreate_linux_swap_filesystem( filesystem_ptn_new, operationdetail );
 		}
@@ -2590,12 +2590,12 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
 		return    check_repair_filesystem( filesystem_ptn_old, operationdetail )
 		       && shrink_filesystem( filesystem_ptn_old, filesystem_ptn_new, operationdetail )
 		       && shrink_encryption( partition_old, partition_new, operationdetail )
-		       && resize_move_partition( partition_old, partition_new, operationdetail );
+		       && resize_move_partition( partition_old, partition_new, operationdetail, false );
 	}
 	else if ( delta > 0LL )  // grow
 	{
 		return    check_repair_filesystem( filesystem_ptn_old, operationdetail )
-		       && resize_move_partition( partition_old, partition_new, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail, true )
 		       && maximize_encryption( partition_new, operationdetail )
 		       && maximize_filesystem( filesystem_ptn_new, operationdetail );
 	}
@@ -2618,7 +2618,7 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
 	if ( partition_new.filesystem == FS_LINUX_SWAP )
 	{
 		// linux-swap is recreated, not resized
-		return    resize_move_partition( partition_old, partition_new, operationdetail )
+		return    resize_move_partition( partition_old, partition_new, operationdetail, true )
 		       && recreate_linux_swap_filesystem( partition_new, operationdetail );
 	}
 
@@ -2627,12 +2627,12 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
 	{
 		return    check_repair_filesystem( partition_new, operationdetail )
 		       && shrink_filesystem( partition_old, partition_new, operationdetail )
-		       && resize_move_partition( partition_old, partition_new, operationdetail );
+		       && resize_move_partition( partition_old, partition_new, operationdetail, false );
 	}
 	else if ( delta > 0LL )  // grow
 	{
 		return    check_repair_filesystem( partition_new, operationdetail )
-		       && resize_move_partition( partition_old, partition_new, operationdetail )
+		       && resize_move_partition( partition_old, partition_new, operationdetail, true )
 		       && maximize_filesystem( partition_new, operationdetail );
 	}
 

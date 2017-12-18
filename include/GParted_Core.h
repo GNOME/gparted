@@ -146,7 +146,7 @@ private:
 	bool resize_move_partition( const Partition & partition_old,
 	                            const Partition & partition_new,
 	                            OperationDetail & operationdetail,
-	                            bool rollback_on_fail = false );
+	                            bool rollback_on_fail );
 	bool resize_move_partition_implement( const Partition & partition_old,
 	                                      const Partition & partition_new,
 	                                      Sector & new_start,
