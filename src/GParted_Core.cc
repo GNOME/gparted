@@ -2753,21 +2753,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 			STATUS_NONE, 
 			FONT_ITALIC ) ) ;
 
-#ifndef USE_LIBPARTED_DMRAID
 		//update dev mapper entry if partition is dmraid.
-		DMRaid dmraid ;
-		if ( success && dmraid.is_dmraid_device( partition_new.device_path ) )
-		{
-			PedDevice* lp_device = NULL ;
-			PedDisk* lp_disk = NULL ;
-			//Open disk handle before and close after to prevent application crash.
-			if ( get_device_and_disk( partition_new .device_path, lp_device, lp_disk ) )
-			{
-				success = dmraid.update_dev_map_entry( partition_new, operationdetail.get_last_child() );
-				destroy_device_and_disk( lp_device, lp_disk ) ;
-			}
-		}
-#endif
+		success = success && update_dmraid_entry( partition_new, operationdetail );
 	}
 	else
 	{
@@ -3708,25 +3695,32 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 			STATUS_NONE,
 			FONT_ITALIC ) ) ;
 
-#ifndef USE_LIBPARTED_DMRAID
 		//Update dev mapper entry if partition is dmraid.
-		DMRaid dmraid ;
-		if ( succes && dmraid .is_dmraid_device( partition_new .device_path ) )
-		{
-			PedDevice* lp_device = NULL ;
-			PedDisk* lp_disk = NULL ;
-			//Open disk handle before and close after to prevent application crash.
-			if ( get_device_and_disk( partition_new .device_path, lp_device, lp_disk ) )
-			{
-				succes = dmraid .update_dev_map_entry( partition_new, operationdetail .get_last_child() ) ;
-				destroy_device_and_disk( lp_device, lp_disk ) ;
-			}
-		}
-#endif
+		succes = succes && update_dmraid_entry( partition_new, operationdetail );
 	}
 
 	operationdetail.get_last_child().set_success_and_capture_errors( succes );
 	return succes ;
+}
+
+bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDetail & operationdetail )
+{
+	bool success = true;
+#ifndef USE_LIBPARTED_DMRAID
+	DMRaid dmraid;
+	if ( dmraid.is_dmraid_device( partition.device_path ) )
+	{
+		PedDevice *lp_device = NULL;
+		PedDisk *lp_disk;
+		// Open disk handle before and close after to prevent application crash.
+		if ( get_device_and_disk( partition.device_path, lp_device, lp_disk ) )
+		{
+			success = dmraid.update_dev_map_entry( partition, operationdetail.get_last_child() );
+			destroy_device_and_disk( lp_device, lp_disk );
+		}
+	}
+#endif
+	return success;
 }
 
 FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
