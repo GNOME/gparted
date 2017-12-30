@@ -2778,11 +2778,21 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		operationdetail.add_child(
 				OperationDetail( _("attempt to rollback failed change to the partition") ) );
 
+		// Create a temporary partition which is the intersection of the old and
+		// new partitions so that the middle sector can be used to identify the
+		// partition needing rollback, whether or not the above failed partition
+		// change made it to the drive or not.
+		Partition *partition_intersection = partition_new.clone();
+		partition_intersection->sector_start = std::max( partition_old.sector_start,
+		                                                 partition_new.sector_start );
+		partition_intersection->sector_end   = std::min( partition_old.sector_end,
+		                                                 partition_new.sector_end );
+
 		Partition *partition_restore = partition_old.clone();
 		// Ensure that old partition boundaries are not modified
 		partition_restore->alignment = ALIGN_STRICT;
 
-		bool rollback_success = resize_move_partition_implement( partition_new, *partition_restore,
+		bool rollback_success = resize_move_partition_implement( *partition_intersection, *partition_restore,
 		                                                         new_start, new_end );
 
 		operationdetail.get_last_child().add_child(
@@ -2799,6 +2809,8 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 		delete partition_restore;
 		partition_restore = NULL;
+		delete partition_intersection;
+		partition_intersection = NULL;
 
 		operationdetail.get_last_child().set_success_and_capture_errors( rollback_success );
 	}
