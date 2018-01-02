@@ -19,12 +19,13 @@
 #include "Utils.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <glibmm/ustring.h>
 
 namespace GParted
 {
 
-const Byte_Value MIN_UDF_BLOCKS = 282;
+const Byte_Value MIN_UDF_BLOCKS = 300;
 const Byte_Value MAX_UDF_BLOCKS = (1LL << 32) - 1;
 
 const Byte_Value MIN_UDF_BLOCKSIZE = 512;
@@ -38,8 +39,6 @@ FS udf::get_filesystem_support()
 	fs.move = FS::GPARTED;
 	fs.copy = FS::GPARTED;
 	fs.online_read = FS::GPARTED;
-	fs.MIN = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
-	fs.MAX = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
 
 	old_mkudffs = false;
 	if ( ! Glib::find_program_in_path( "mkudffs" ).empty() )
@@ -52,9 +51,121 @@ FS udf::get_filesystem_support()
 		old_mkudffs = Utils::regexp_label( output + error, "--label" ).empty();
 	}
 
-	// NOTE: Other external programs do not exist yet
+	if ( ! Glib::find_program_in_path( "udfinfo" ).empty() )
+	{
+		fs.read = FS::EXTERNAL;
+		fs.read_uuid = FS::EXTERNAL;
+	}
+
+	if ( ! Glib::find_program_in_path( "udflabel" ).empty() )
+	{
+		fs.read_label = FS::EXTERNAL;
+		fs.write_label = FS::EXTERNAL;
+		fs.write_uuid = FS::EXTERNAL;
+	}
+
+	fs.MIN = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
+	fs.MAX = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
 
 	return fs;
+}
+
+void udf::set_used_sectors( Partition & partition )
+{
+	exit_status = Utils::execute_command( "udfinfo --utf8 " + Glib::shell_quote( partition.get_path() ),
+	                                      output, error, true );
+	if ( exit_status != 0 )
+	{
+		if ( ! output.empty() )
+			partition.push_back_message( output );
+
+		if ( ! error.empty() )
+			partition.push_back_message( error );
+		return;
+	}
+
+	// UDF file system block size.  All other values are numbers of blocks.
+	const Glib::ustring block_size_str = Utils::regexp_label( output, "^blocksize=([0-9]+)$" );
+	// Number of available blocks on block device usable for UDF
+	const Glib::ustring blocks_str = Utils::regexp_label( output, "^blocks=([0-9]+)$" );
+	// Number of blocks already used for stored files
+	const Glib::ustring used_blocks_str = Utils::regexp_label( output, "^usedblocks=([0-9]+)$" );
+	// Number of blocks which are free for storing new files
+	const Glib::ustring free_blocks_str = Utils::regexp_label( output, "^freeblocks=([0-9]+)$" );
+	// Number of blocks which are after the last block used by UDF
+	const Glib::ustring behind_blocks_str = Utils::regexp_label( output, "^behindblocks=([0-9]+)$" );
+
+	if ( block_size_str.empty()  || blocks_str.empty()      ||
+	     used_blocks_str.empty() || free_blocks_str.empty() || behind_blocks_str.empty() )
+		return;
+
+	unsigned long long int block_size = atoll( block_size_str.c_str() );
+	unsigned long long int blocks = atoll( blocks_str.c_str() );
+	unsigned long long int used_blocks = atoll( used_blocks_str.c_str() );
+	unsigned long long int free_blocks = atoll( free_blocks_str.c_str() );
+	unsigned long long int behind_blocks = atoll( behind_blocks_str.c_str() );
+
+	// Number of blocks used by UDF
+	unsigned long long int udf_blocks = blocks - behind_blocks;
+
+	// Number of used blocks stored in UDF file system does not have to be correct
+	if ( used_blocks > udf_blocks )
+		used_blocks = udf_blocks;
+	if ( free_blocks > udf_blocks - used_blocks )
+		free_blocks = 0;
+
+	Sector total_sectors = ( udf_blocks * block_size + partition.sector_size - 1 ) / partition.sector_size;
+	Sector free_sectors = ( free_blocks * block_size ) / partition.sector_size;
+
+	partition.set_sector_usage( total_sectors, free_sectors );
+	partition.fs_block_size = block_size;
+}
+
+void udf::read_label( Partition & partition )
+{
+	if ( ! Utils::execute_command( "udflabel --utf8 " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                           )
+	{
+		partition.set_filesystem_label( Utils::trim( output ) );
+	}
+	else
+	{
+		if ( ! output.empty() )
+			partition.push_back_message( output );
+
+		if ( ! error.empty() )
+			partition.push_back_message( error );
+	}
+}
+
+bool udf::write_label( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "udflabel --utf8 " + Glib::shell_quote( partition.get_path() ) +
+	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
+}
+
+void udf::read_uuid( Partition & partition )
+{
+	if ( ! Utils::execute_command( "udfinfo --utf8 " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                          )
+	{
+		partition.uuid = Utils::regexp_label( output, "^uuid=(.*)$" );
+	}
+	else
+	{
+		if ( ! output.empty() )
+			partition.push_back_message( output );
+
+		if ( ! error.empty() )
+			partition.push_back_message( error );
+	}
+}
+
+bool udf::write_uuid( const Partition & partition, OperationDetail & operationdetail )
+{
+	return ! execute_command( "udflabel --utf8 --uuid=random " + Glib::shell_quote( partition.get_path() ),
+	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool udf::create( const Partition & new_partition, OperationDetail & operationdetail )
