@@ -35,7 +35,7 @@ public:
 	Partition * clone_as_plain() const;
 
 	void set_luks( const Glib::ustring & path,
-	               FILESYSTEM fstype,
+	               FSType fstype,
 	               Sector header_size,
 	               Sector mapping_size,
 	               Byte_Value sector_size,

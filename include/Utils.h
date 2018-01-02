@@ -57,7 +57,7 @@ const Glib::ustring UUID_RANDOM_NTFS_HALF = _("(Half new UUID - will be randomly
 
 extern const Glib::ustring DEV_MAPPER_PATH;
 
-enum FILESYSTEM
+enum FSType
 {
 	// Special partition types and functions
 	FS_UNALLOCATED     = 0,
@@ -144,7 +144,7 @@ struct FS
 		EXTERNAL	= 3
 	};
 
-	FILESYSTEM filesystem ;
+	FSType filesystem;
 	Support busy ;  //How to determine if partition/file system is busy
 	Support read ;  //Can and how to read sector usage while inactive
 	Support read_label ;
@@ -163,7 +163,7 @@ struct FS
 	Support online_grow ;
 	Support online_shrink ;
 
-	FS( FILESYSTEM fstype = FS_UNKNOWN ) : filesystem( fstype )
+	FS( FSType fstype = FS_UNKNOWN ) : filesystem( fstype )
 	{
 		busy = read = read_label = write_label = read_uuid = write_uuid = create =
 		create_with_label = grow = shrink = move = check = copy = remove = online_read =
@@ -183,15 +183,15 @@ public:
 	                            , float yalign = 0.5 /* ALIGN_CENTER */
 	                            ) ;
 	static Glib::ustring num_to_str( Sector number ) ;
-	static Glib::ustring get_color( FILESYSTEM filesystem ) ;
-	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height ) ;
+	static Glib::ustring get_color( FSType filesystem );
+	static Glib::RefPtr<Gdk::Pixbuf> get_color_as_pixbuf( FSType filesystem, int width, int height );
 	static int get_max_partition_name_length( Glib::ustring & tabletype );
-	static int get_filesystem_label_maxlength( FILESYSTEM filesystem ) ;
-	static Glib::ustring get_filesystem_string( FILESYSTEM filesystem ) ;
+	static int get_filesystem_label_maxlength( FSType filesystem );
+	static Glib::ustring get_filesystem_string( FSType filesystem );
 	static const Glib::ustring get_encrypted_string();
-	static const Glib::ustring get_filesystem_string( bool encrypted, FILESYSTEM fstype );
-	static const Glib::ustring get_filesystem_kernel_name( FILESYSTEM fstype );
-	static Glib::ustring get_filesystem_software( FILESYSTEM filesystem ) ;
+	static const Glib::ustring get_filesystem_string( bool encrypted, FSType fstype );
+	static const Glib::ustring get_filesystem_kernel_name( FSType fstype );
+	static Glib::ustring get_filesystem_software( FSType filesystem );
 	static bool kernel_supports_fs( const Glib::ustring & fs ) ;
 	static bool kernel_version_at_least( int major_ver, int minor_ver, int patch_ver ) ;
 	static Glib::ustring format_size( Sector sectors, Byte_Value sector_size ) ;

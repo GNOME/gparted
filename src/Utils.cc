@@ -84,7 +84,7 @@ Glib::ustring Utils::num_to_str( Sector number )
 // Use palette from GNOME Human Interface Guidelines as a starting point.
 //     http://developer.gnome.org/hig-book/2.32/design-color.html.en
 //     http://web.archive.org/web/20130922173112/https://developer.gnome.org/hig-book/stable/design-color.html.en
-Glib::ustring Utils::get_color( FILESYSTEM filesystem )
+Glib::ustring Utils::get_color( FSType filesystem )
 {
 	switch( filesystem )
 	{
@@ -128,7 +128,7 @@ Glib::ustring Utils::get_color( FILESYSTEM filesystem )
 	}
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FILESYSTEM filesystem, int width, int height )
+Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FSType filesystem, int width, int height )
 {
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, false, 8, width, height ) ;
 
@@ -187,7 +187,7 @@ int Utils::get_max_partition_name_length( Glib::ustring & tabletype )
 	return 0;
 }
 
-int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
+int Utils::get_filesystem_label_maxlength( FSType filesystem )
 {
 	switch( filesystem )
 	{
@@ -242,7 +242,7 @@ int Utils::get_filesystem_label_maxlength( FILESYSTEM filesystem )
 }
 
 // Return libparted file system name / GParted display name
-Glib::ustring Utils::get_filesystem_string( FILESYSTEM filesystem )
+Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 {
 	switch( filesystem )
 	{
@@ -314,7 +314,7 @@ const Glib::ustring Utils::get_encrypted_string()
 	return "[" + Glib::ustring( _("Encrypted") ) + "]";
 }
 
-const Glib::ustring Utils::get_filesystem_string( bool encrypted, FILESYSTEM fstype )
+const Glib::ustring Utils::get_filesystem_string( bool encrypted, FSType fstype )
 {
 	if ( encrypted )
 		return get_encrypted_string() + " " + get_filesystem_string( fstype );
@@ -324,7 +324,7 @@ const Glib::ustring Utils::get_filesystem_string( bool encrypted, FILESYSTEM fst
 
 // Return Linux kernel name only for mountable file systems.
 // (Identical to a subset of the libparted names except that it's hfsplus instead of hfs+).
-const Glib::ustring Utils::get_filesystem_kernel_name( FILESYSTEM fstype )
+const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 {
 	switch ( fstype )
 	{
@@ -350,7 +350,7 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FILESYSTEM fstype )
 	}
 }
 
-Glib::ustring Utils::get_filesystem_software( FILESYSTEM filesystem )
+Glib::ustring Utils::get_filesystem_software( FSType filesystem )
 {
 	switch( filesystem )
 	{

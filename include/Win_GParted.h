@@ -60,7 +60,7 @@ private:
 	void init_toolbar() ;
 	void init_partition_menu() ;
 	Gtk::Menu * create_format_menu() ;
-	void create_format_menu_add_item( FILESYSTEM filesystem, bool activate ) ;
+	void create_format_menu_add_item( FSType filesystem, bool activate );
 	void init_device_info() ;
 	void init_hpaned_main() ;
 
@@ -176,7 +176,7 @@ private:
 	void activate_new();
 	void activate_delete();
 	void activate_info();
-	void activate_format( GParted::FILESYSTEM new_fs );
+	void activate_format( FSType new_fs );
 	bool check_toggle_busy_allowed( const Glib::ustring & disallowed_msg );
 	void show_toggle_failure_dialog( const Glib::ustring & failure_summary,
 	                                 const Glib::ustring & marked_up_error );

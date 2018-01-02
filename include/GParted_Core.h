@@ -59,15 +59,15 @@ public:
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
 	
 	const std::vector<FS> & get_filesystems() const ;
-	const FS & get_fs( GParted::FILESYSTEM filesystem ) const ;
+	const FS & get_fs( FSType filesystem ) const;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
 
-	static FileSystem * get_filesystem_object( FILESYSTEM filesystem );
-	static bool supported_filesystem( FILESYSTEM fstype );
-	static FS_Limits get_filesystem_limits( FILESYSTEM fstype, const Partition & partition );
+	static FileSystem * get_filesystem_object( FSType filesystem );
+	static bool supported_filesystem( FSType fstype );
+	static FS_Limits get_filesystem_limits( FSType fstype, const Partition & partition );
 	static bool filesystem_resize_disallowed( const Partition & partition ) ;
 	static void insert_unallocated( const Glib::ustring & device_path,
 	                                PartitionVector & partitions,
@@ -83,18 +83,18 @@ private:
 	void set_device_from_disk( Device & device, const Glib::ustring & device_path );
 	void set_device_serial_number( Device & device );
 	void set_device_partitions( Device & device, PedDevice* lp_device, PedDisk* lp_disk ) ;
-	void set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
+	void set_device_one_partition( Device & device, PedDevice * lp_device, FSType fstype,
 	                               std::vector<Glib::ustring> & messages );
 	void set_luks_partition( PartitionLUKS & partition );
 	void set_partition_label_and_uuid( Partition & partition );
-	static FILESYSTEM detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition );
-	static FILESYSTEM detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
-	                                     std::vector<Glib::ustring> & messages );
+	static FSType detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition );
+	static FSType detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
+	                                 std::vector<Glib::ustring> & messages );
 	void read_label( Partition & partition ) ;
 	void read_uuid( Partition & partition ) ;
 	void set_mountpoints( Partition & partition );
 	bool set_mountpoints_helper( Partition & partition, const Glib::ustring & path );
-	bool is_busy( FILESYSTEM fstype, const Glib::ustring & path ) ;
+	bool is_busy( FSType fstype, const Glib::ustring & path );
 	void set_used_sectors( Partition & partition, PedDisk* lp_disk );
 	void mounted_set_used_sectors( Partition & partition ) ;
 #ifdef HAVE_LIBPARTED_FS_RESIZE
@@ -233,7 +233,7 @@ private:
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
 	std::vector<FS> FILESYSTEMS ;
-	static std::map< FILESYSTEM, FileSystem * > FILESYSTEM_MAP ;
+	static std::map< FSType, FileSystem * > FILESYSTEM_MAP;
 	std::vector<PedPartitionFlag> flags;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;

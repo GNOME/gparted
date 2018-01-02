@@ -31,7 +31,7 @@ namespace GParted
 
 class ext2 : public FileSystem
 {
-	const enum FILESYSTEM specific_type;
+	const enum FSType specific_type;
 	Glib::ustring dump_cmd;
 	Glib::ustring fsck_cmd;
 	Glib::ustring image_cmd;
@@ -40,7 +40,7 @@ class ext2 : public FileSystem
 	Glib::ustring resize_cmd;
 	Glib::ustring tune_cmd;
 public:
-	ext2( enum FILESYSTEM type ) : specific_type( type ), dump_cmd( "" ), fsck_cmd( "" ), image_cmd( "" ),
+	ext2( enum FSType type ) : specific_type( type ), dump_cmd( "" ), fsck_cmd( "" ), image_cmd( "" ),
 	                               label_cmd( "" ), mkfs_cmd( "" ), resize_cmd( "" ), tune_cmd( "" ),
 	                               force_auto_64bit( false ) {};
 	FS get_filesystem_support() ;

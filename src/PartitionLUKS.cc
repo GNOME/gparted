@@ -70,7 +70,7 @@ Partition * PartitionLUKS::clone_as_plain() const
 // like a whole disk device as /dev/mapper/CRYPTNAME contains no partition table and the
 // file system starts from sector 0 going to the very end.
 void PartitionLUKS::set_luks( const Glib::ustring & path,
-                              FILESYSTEM fstype,
+                              FSType fstype,
                               Sector header_size,
                               Sector mapping_size,
                               Byte_Value sector_size,

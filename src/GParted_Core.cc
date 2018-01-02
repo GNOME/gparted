@@ -111,10 +111,10 @@ void GParted_Core::find_supported_core()
 
 void GParted_Core::find_supported_filesystems()
 {
-	std::map< FILESYSTEM, FileSystem * >::iterator f ;
+	std::map< FSType, FileSystem * >::iterator f;
 
 	// Iteration of std::map is ordered according to operator< of the key.  Hence the
-	// FILESYSTEMS vector is constructed in FILESYSTEM enum order: FS_UNALLOCATED,
+	// FILESYSTEMS vector is constructed in FSType enum order: FS_UNALLOCATED,
 	// FS_UNKNOWN, FS_CLEARED, FS_EXTENDED, FS_BTRFS, ..., FS_LINUX_SWRAID,
 	// LINUX_SWSUSPEND which ultimately controls the default order of file systems in
 	// menus and dialogs.
@@ -779,7 +779,7 @@ const std::vector<FS> & GParted_Core::get_filesystems() const
 
 // Return supported capabilities of the file system type or, if not found, not supported
 // capabilities set.
-const FS & GParted_Core::get_fs( GParted::FILESYSTEM filesystem ) const 
+const FS & GParted_Core::get_fs( FSType filesystem ) const
 {
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
 	{
@@ -885,7 +885,7 @@ void GParted_Core::set_device_from_disk( Device & device, const Glib::ustring & 
 			device.cylsize = MEBIBYTE / device.sector_size;
 
 		std::vector<Glib::ustring> messages;
-		FILESYSTEM fstype = detect_filesystem( lp_device, NULL, messages );
+		FSType fstype = detect_filesystem( lp_device, NULL, messages );
 		// FS_Info (blkid) recognised file system signature on whole disk device.
 		// Need to detect before libparted reported partitioning to avoid bug in
 		// libparted 1.9.0 to 2.3 inclusive which recognised FAT file systems as
@@ -1033,7 +1033,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		libparted_messages .clear() ;
 		Partition * partition_temp = NULL;
 		bool partition_is_busy = false ;
-		GParted::FILESYSTEM filesystem;
+		FSType filesystem;
 		std::vector<Glib::ustring> detect_messages;
 
 		//Retrieve partition path
@@ -1177,7 +1177,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 
 // Create one Partition object spanning the Device after identifying the file system
 // on the whole disk device.  Much simplified equivalent of set_device_partitions().
-void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_device, FILESYSTEM fstype,
+void GParted_Core::set_device_one_partition( Device & device, PedDevice * lp_device, FSType fstype,
                                              std::vector<Glib::ustring> & messages )
 {
 	device.partitions.clear();
@@ -1224,7 +1224,7 @@ void GParted_Core::set_luks_partition( PartitionLUKS & partition )
 	Glib::ustring mapping_path = DEV_MAPPER_PATH + mapping.name;
 	PedDevice* lp_device = NULL;
 	std::vector<Glib::ustring> detect_messages;
-	FILESYSTEM fstype = FS_UNKNOWN;
+	FSType fstype = FS_UNKNOWN;
 	if ( get_device( mapping_path, lp_device ) )
 	{
 		fstype = detect_filesystem( lp_device, NULL, detect_messages );
@@ -1291,11 +1291,11 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 
 // GParted simple internal file system signature detection.  Use sparingly.  Only when
 // (old versions of) blkid and libparted don't recognise a signature.
-FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition )
+FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition )
 {
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
-	FILESYSTEM fstype = FS_UNKNOWN;
+	FSType fstype = FS_UNKNOWN;
 
 	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
 	if ( ! buf )
@@ -1312,7 +1312,7 @@ FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedP
 		const char * sig1;
 		Byte_Value   offset2;
 		const char * sig2;
-		FILESYSTEM   fstype;
+		FSType       fstype;
 	} signatures[] = {
 		//offset1, sig1              , offset2, sig2  , fstype
 		{ 65536LL, "ReIsEr4"         ,     0LL, NULL  , FS_REISER4        },
@@ -1380,8 +1380,8 @@ FILESYSTEM GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedP
 	return fstype;
 }
 
-FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
-                                            std::vector<Glib::ustring> & messages )
+FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
+                                        std::vector<Glib::ustring> & messages )
 {
 	Glib::ustring fsname = "";
 	Glib::ustring path;
@@ -1477,7 +1477,7 @@ FILESYSTEM GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition 
 	}
 
 	// (Q4) Fallback to GParted simple internal file system detection
-	FILESYSTEM fstype = detect_filesystem_internal( lp_device, lp_partition );
+	FSType fstype = detect_filesystem_internal( lp_device, lp_partition );
 	if ( fstype != FS_UNKNOWN )
 		return fstype;
 
@@ -1668,7 +1668,7 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 }
 
 //Report whether the partition is busy (mounted/active)
-bool GParted_Core::is_busy( FILESYSTEM fstype, const Glib::ustring & path )
+bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
 {
 	FileSystem * p_filesystem = NULL ;
 	bool busy = false ;
@@ -3768,7 +3768,7 @@ bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDe
 	return success;
 }
 
-FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
+FileSystem * GParted_Core::get_filesystem_object( FSType filesystem )
 {
 	if ( FILESYSTEM_MAP .count( filesystem ) )
 	    return FILESYSTEM_MAP[ filesystem ] ;
@@ -3777,12 +3777,12 @@ FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
 }
 
 // Return true for file systems with an implementation class, false otherwise
-bool GParted_Core::supported_filesystem( FILESYSTEM fstype )
+bool GParted_Core::supported_filesystem( FSType fstype )
 {
 	return get_filesystem_object( fstype ) != NULL;
 }
 
-FS_Limits GParted_Core::get_filesystem_limits( FILESYSTEM fstype, const Partition & partition )
+FS_Limits GParted_Core::get_filesystem_limits( FSType fstype, const Partition & partition )
 {
 	FileSystem *p_filesystem = get_filesystem_object( fstype );
 	FS_Limits fs_limits;
@@ -4162,7 +4162,7 @@ void GParted_Core::init_filesystems()
 
 void GParted_Core::fini_filesystems()
 {
-	std::map<FILESYSTEM, FileSystem *>::iterator fs_iter;
+	std::map<FSType, FileSystem *>::iterator fs_iter;
 	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
 	{
 		delete fs_iter->second;
@@ -4483,6 +4483,6 @@ GParted_Core::~GParted_Core()
 
 Glib::Thread *GParted_Core::mainthread;
 
-std::map< FILESYSTEM, FileSystem * > GParted_Core::FILESYSTEM_MAP;
+std::map< FSType, FileSystem * > GParted_Core::FILESYSTEM_MAP;
 
 } //GParted

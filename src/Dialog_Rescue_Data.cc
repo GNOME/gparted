@@ -335,7 +335,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 			Glib::ustring part_path;
 			int part_num;
 			PartitionType type=GParted::TYPE_PRIMARY;
-			FILESYSTEM fs=GParted::FS_UNALLOCATED;
+			FSType fs = FS_UNALLOCATED;
 			Sector sec_start=0;
 			Sector sec_end=0;
 			Byte_Value sec_size=this->sector_size;

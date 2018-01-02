@@ -447,7 +447,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 }
 
 //Add one entry to the Partition --> Format to --> (file system list) menu
-void Win_GParted::create_format_menu_add_item( FILESYSTEM filesystem, bool activate )
+void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate )
 {
 	hbox = manage( new Gtk::HBox() ) ;
 	//the colored square
@@ -460,8 +460,7 @@ void Win_GParted::create_format_menu_add_item( FILESYSTEM filesystem, bool activ
 	menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) ) ;
 	if ( activate )
 		menu ->items() .back() .signal_activate() .connect(
-			sigc::bind<GParted::FILESYSTEM>( sigc::mem_fun( *this, &Win_GParted::activate_format ),
-			                                 filesystem ) ) ;
+			sigc::bind<FSType>( sigc::mem_fun( *this, &Win_GParted::activate_format ), filesystem ) );
 	else
 		menu ->items() .back() .set_sensitive( false ) ;
 }
@@ -1796,7 +1795,7 @@ void Win_GParted::activate_resize()
 
 	Partition * working_ptn;
 	const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
-	const FILESYSTEM fstype = selected_filesystem_ptn.filesystem;
+	const FSType fstype = selected_filesystem_ptn.filesystem;
 	FS fs_cap = gparted_core.get_fs( fstype );
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( fstype, selected_filesystem_ptn );
 
@@ -2248,7 +2247,7 @@ void Win_GParted::activate_info()
 	dialog .run();
 }
 
-void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
+void Win_GParted::activate_format( FSType new_fs )
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object

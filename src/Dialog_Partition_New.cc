@@ -429,7 +429,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 	}
 }
 
-Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FILESYSTEM fstype )
+Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FSType fstype )
 {
 	return GParted_Core::get_filesystem_limits( fstype, *new_partition ).min_size;
 }

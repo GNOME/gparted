@@ -76,7 +76,7 @@ public:
 	          const Glib::ustring & partition,
 	          int partition_number,
 	          PartitionType type,
-	          FILESYSTEM filesystem,
+	          FSType filesystem,
 	          Sector sector_start,
 	          Sector sector_end,
 	          Byte_Value sector_size,
@@ -99,7 +99,7 @@ public:
 	                      bool inside_extended );
 	void set_unpartitioned( const Glib::ustring & device_path,
 	                        const Glib::ustring & partition_path,
-	                        FILESYSTEM fstype,
+	                        FSType fstype,
 	                        Sector length,
 	                        Byte_Value sector_size,
 	                        bool busy );
@@ -154,7 +154,7 @@ public:
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
-	FILESYSTEM filesystem ;
+	FSType filesystem;
 	Glib::ustring uuid ;
 	Glib::ustring name;
 	Sector sector_start;
