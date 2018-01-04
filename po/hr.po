@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-12-04 20:36+0000\n"
-"PO-Revision-Date: 2017-12-08 19:50+0100\n"
+"POT-Creation-Date: 2018-01-02 17:40+0000\n"
+"PO-Revision-Date: 2018-01-04 19:30+0100\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -93,24 +93,19 @@ msgstr "(Pola novog UUID-a - biti će naizmjenično generiran)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:180 ../src/ProgressBar.cc:106
+#: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:175 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 od %2 kopirano"
 
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/CopyBlocks.cc:155
-msgid "copy %1 using a block size of %2"
-msgstr "kopiraj %1 koristeći veličinu bloka od %2"
-
-#: ../src/CopyBlocks.cc:220
+#: ../src/CopyBlocks.cc:215
 msgid "Operation Canceled"
 msgstr "Radnja prekinuta"
 
-#: ../src/CopyBlocks.cc:232
+#: ../src/CopyBlocks.cc:227
 msgid "Error while writing block at sector %1"
 msgstr "Greška pri zapisivanju bloka na sektoru %1"
 
-#: ../src/CopyBlocks.cc:237
+#: ../src/CopyBlocks.cc:232
 msgid "Error while reading block at sector %1"
 msgstr "Greška pri čitanju bloka na sektoru %1"
 
@@ -970,23 +965,23 @@ msgstr "stvori praznu particiju"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1972 ../src/GParted_Core.cc:3585
+#: ../src/GParted_Core.cc:1972 ../src/GParted_Core.cc:3638
 msgid "path: %1 (%2)"
 msgstr "putanja: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1973 ../src/GParted_Core.cc:3589
+#: ../src/GParted_Core.cc:1973 ../src/GParted_Core.cc:3642
 msgid "partition"
 msgstr "particija"
 
-#: ../src/GParted_Core.cc:1974 ../src/GParted_Core.cc:3590
+#: ../src/GParted_Core.cc:1974 ../src/GParted_Core.cc:3643
 msgid "start: %1"
 msgstr "početak: %1"
 
-#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3591
+#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3644
 msgid "end: %1"
 msgstr "kraj: %1"
 
-#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3592
+#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3645
 msgid "size: %1 (%2)"
 msgstr "veličina: %1 (%2)"
 
@@ -1074,30 +1069,30 @@ msgstr "Postavi UUID-a na %1 na novu, naizmjeničnu vrijednost"
 msgid "size of the partition is changing for a move only step"
 msgstr "veličina particije se mijenja samo za korak premještanja"
 
-#: ../src/GParted_Core.cc:2330
-msgid "rollback last change to the partition table"
-msgstr "vrati posljednju promjenu na particijskoj tablici"
+#: ../src/GParted_Core.cc:2329
+msgid "rollback last change to the partition"
+msgstr "vrati posljednju promjenu na particiji"
 
-#: ../src/GParted_Core.cc:2379
+#: ../src/GParted_Core.cc:2378
 msgid "move file system to the left"
 msgstr "pomakni datotečni sustav lijevo"
 
-#: ../src/GParted_Core.cc:2381
+#: ../src/GParted_Core.cc:2380
 msgid "move file system to the right"
 msgstr "pomakni datotečni sustav desno"
 
-#: ../src/GParted_Core.cc:2384
+#: ../src/GParted_Core.cc:2383
 msgid "move file system"
 msgstr "pomakni datotečni sustav"
 
-#: ../src/GParted_Core.cc:2386
+#: ../src/GParted_Core.cc:2385
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
 msgstr ""
 "novi i stari datotečni sustav imaju identičan položaj. Promjena preskočena"
 
-#: ../src/GParted_Core.cc:2452
+#: ../src/GParted_Core.cc:2451
 msgid "using libparted"
 msgstr "koristeći libparted"
 
@@ -1107,22 +1102,22 @@ msgstr "koristeći libparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2526
+#: ../src/GParted_Core.cc:2525
 msgid "start of the partition is changing for a resize only step"
 msgstr "početak particije se mijenja samo za korak promjene veličine"
 
-#: ../src/GParted_Core.cc:2544
+#: ../src/GParted_Core.cc:2543
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 "particija ne sadrži otvoreno LUKS šifriranje samo za korak promjene veličine "
 "šifriranja"
 
-#: ../src/GParted_Core.cc:2554
+#: ../src/GParted_Core.cc:2553
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "nemoguće je smanjiti uređaj zatvorenog LUKS šifriranja"
 
-#: ../src/GParted_Core.cc:2613
+#: ../src/GParted_Core.cc:2612
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
@@ -1185,31 +1180,47 @@ msgstr "stari kraj: %1"
 msgid "old size: %1 (%2)"
 msgstr "stara veličina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2797 ../src/GParted_Core.cc:3679
+#: ../src/GParted_Core.cc:2748 ../src/GParted_Core.cc:3732
 msgid "new start: %1"
 msgstr "novi početak: %1"
 
-#: ../src/GParted_Core.cc:2798 ../src/GParted_Core.cc:3680
+#: ../src/GParted_Core.cc:2749 ../src/GParted_Core.cc:3733
 msgid "new end: %1"
 msgstr "novi kraj: %1"
 
-#: ../src/GParted_Core.cc:2799 ../src/GParted_Core.cc:3681
+#: ../src/GParted_Core.cc:2750 ../src/GParted_Core.cc:3734
 msgid "new size: %1 (%2)"
 msgstr "nova veličina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2826 ../src/GParted_Core.cc:3632
+#: ../src/GParted_Core.cc:2764 ../src/GParted_Core.cc:3685
 msgid "requested start: %1"
 msgstr "zatraženi početak: %1"
 
-#: ../src/GParted_Core.cc:2827 ../src/GParted_Core.cc:3633
+#: ../src/GParted_Core.cc:2765 ../src/GParted_Core.cc:3686
 msgid "requested end: %1"
 msgstr "zatraženi kraj: %1"
 
-#: ../src/GParted_Core.cc:2828 ../src/GParted_Core.cc:3634
+#: ../src/GParted_Core.cc:2766 ../src/GParted_Core.cc:3687
 msgid "requested size: %1 (%2)"
 msgstr "zatražena veličina: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2847
+#: ../src/GParted_Core.cc:2778
+msgid "attempt to rollback failed change to the partition"
+msgstr "pokušaj vraćanja nije uspio promijeniti particiju"
+
+#: ../src/GParted_Core.cc:2799
+msgid "original start: %1"
+msgstr "izvorni početak: %1"
+
+#: ../src/GParted_Core.cc:2800
+msgid "original end: %1"
+msgstr "izvorni kraj: %1"
+
+#: ../src/GParted_Core.cc:2801
+msgid "original size: %1 (%2)"
+msgstr "izvorna veličina: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2883
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
@@ -1217,11 +1228,11 @@ msgstr ""
 "particija ne sadrži otvoreno LUKS šifriranje samo za korak smanjenja "
 "šifriranja"
 
-#: ../src/GParted_Core.cc:2852
+#: ../src/GParted_Core.cc:2888
 msgid "shrink encryption volume"
 msgstr "smanji šifrirani uređaj"
 
-#: ../src/GParted_Core.cc:2863
+#: ../src/GParted_Core.cc:2899
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1229,15 +1240,15 @@ msgstr ""
 "particija ne sadrži otvoreno LUKS šifriranje samo za korak povećanja "
 "šifriranja"
 
-#: ../src/GParted_Core.cc:2868
+#: ../src/GParted_Core.cc:2904
 msgid "grow encryption volume to fill the partition"
 msgstr "povećaj šifrirani uređaj kako bi se ispunila particija"
 
-#: ../src/GParted_Core.cc:2878
+#: ../src/GParted_Core.cc:2914
 msgid "growing is not available for this encryption volume"
 msgstr "povećavanje nije dostupno za ovaj šifrirani uređaj"
 
-#: ../src/GParted_Core.cc:2896
+#: ../src/GParted_Core.cc:2932
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1248,47 +1259,47 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2908
+#: ../src/GParted_Core.cc:2944
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr "veličina nove particije je veća ili ista samo za korak smanjivanja"
 
-#: ../src/GParted_Core.cc:2913
+#: ../src/GParted_Core.cc:2949
 msgid "shrink file system"
 msgstr "smanji datotečni sustav"
 
-#: ../src/GParted_Core.cc:2924
+#: ../src/GParted_Core.cc:2960
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "particija sadrži otvoreno LUKS šifriranje samo za korak povećanja šifriranja"
 
-#: ../src/GParted_Core.cc:2929
+#: ../src/GParted_Core.cc:2965
 msgid "grow file system to fill the partition"
 msgstr "povećaj datotečni sustav kako bi se ispunila particija"
 
-#: ../src/GParted_Core.cc:2940
+#: ../src/GParted_Core.cc:2976
 msgid "growing is not available for this file system"
 msgstr "povećavanje nije dostupno za ovaj datotečni sustav"
 
-#: ../src/GParted_Core.cc:2948
+#: ../src/GParted_Core.cc:2984
 msgid "growing the file system is currently disallowed"
 msgstr "povećavanje datotečnog sustava trenutno je nedopušteno"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:2972
+#: ../src/GParted_Core.cc:3008
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "nije %1 datotečni sustav samo za korak stvaranja %1"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:2984
+#: ../src/GParted_Core.cc:3020
 msgid "recreate %1 file system"
 msgstr "stvori novi %1 datotečni sustav"
 
-#: ../src/GParted_Core.cc:3053
+#: ../src/GParted_Core.cc:3089
 msgid "the destination is smaller than the source partition"
 msgstr "odredišna particija je manje od izvorne"
 
-#: ../src/GParted_Core.cc:3104
+#: ../src/GParted_Core.cc:3140
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1296,7 +1307,7 @@ msgstr ""
 "particija sadrži otvoreno LUKS šifriranje samo za korak kopiranja datotečnog "
 "sustava"
 
-#: ../src/GParted_Core.cc:3111
+#: ../src/GParted_Core.cc:3147
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
@@ -1304,42 +1315,47 @@ msgstr ""
 "odredišna particija sadrži otvoreno LUKS šifriranje samo za korak kopiranja "
 "datotečnog sustava"
 
-#: ../src/GParted_Core.cc:3117
+#: ../src/GParted_Core.cc:3153
 msgid "copy file system from %1 to %2"
 msgstr "kopiranje datotečnog sustava s %1 na %2"
 
-#: ../src/GParted_Core.cc:3198
+#: ../src/GParted_Core.cc:3234
 msgid "using internal algorithm"
 msgstr "koristeći unutrašnji algoritam"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3201
+#: ../src/GParted_Core.cc:3237
 msgid "copy %1"
 msgstr "kopiraj %1"
 
-#: ../src/GParted_Core.cc:3204
+#: ../src/GParted_Core.cc:3240
 msgid "finding optimal block size"
 msgstr "pronalazak optimalne veličine bloka"
 
-#: ../src/GParted_Core.cc:3246
+#. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:3271 ../src/GParted_Core.cc:3317
+msgid "copy %1 using a block size of %2"
+msgstr "kopiraj %1 koristeći veličinu bloka od %2"
+
+#: ../src/GParted_Core.cc:3289
 msgid "%1 seconds"
 msgstr "%1 sekunda"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3264
+#: ../src/GParted_Core.cc:3308
 msgid "optimal block size is %1"
 msgstr "optimalna veličina bloka je %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3282
+#: ../src/GParted_Core.cc:3335
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) kopirano"
 
-#: ../src/GParted_Core.cc:3320
-msgid "roll back last transaction"
-msgstr "vrati posljednju transakciju"
+#: ../src/GParted_Core.cc:3373
+msgid "rollback failed file system move"
+msgstr "vraćanje premještanja datotečnog sustava nije uspjelo"
 
-#: ../src/GParted_Core.cc:3343
+#: ../src/GParted_Core.cc:3396
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
@@ -1347,45 +1363,45 @@ msgstr ""
 "sustava"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3408
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "provjeri datotečni sustav na %1 za greške i (ako je moguće) ispravi ih"
 
-#: ../src/GParted_Core.cc:3364
+#: ../src/GParted_Core.cc:3417
 msgid "checking is not available for this file system"
 msgstr "provjera nije dostupna za ovaj datotečni sustav"
 
-#: ../src/GParted_Core.cc:3429
+#: ../src/GParted_Core.cc:3482
 msgid "set partition type on %1"
 msgstr "postavi vrstu particije na %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3479
+#: ../src/GParted_Core.cc:3532
 msgid "new partition type: %1"
 msgstr "nova vrsta particije: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3494
+#: ../src/GParted_Core.cc:3547
 msgid "new partition flag: %1"
 msgstr "nova oznaka particije: %1"
 
-#: ../src/GParted_Core.cc:3523
+#: ../src/GParted_Core.cc:3576
 msgid "calibrate %1"
 msgstr "kalibriraj %1"
 
-#: ../src/GParted_Core.cc:3588
+#: ../src/GParted_Core.cc:3641
 msgid "device"
 msgstr "uređaj"
 
-#: ../src/GParted_Core.cc:3602
+#: ../src/GParted_Core.cc:3655
 msgid "encryption path: %1"
 msgstr "putanja šifriranja: %1"
 
-#: ../src/GParted_Core.cc:3628
+#: ../src/GParted_Core.cc:3681
 msgid "calculate new size and position of %1"
 msgstr "izračunaj novu veličinu i položaj za %1"
 
-#: ../src/GParted_Core.cc:3740
+#: ../src/GParted_Core.cc:3800
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1393,55 +1409,55 @@ msgstr ""
 "particija sadrži otvoreno LUKS šifriranje samo za korak brisanja potpisa "
 "datotečnog sustava"
 
-#: ../src/GParted_Core.cc:3747
+#: ../src/GParted_Core.cc:3807
 msgid "clear old file system signatures in %1"
 msgstr "obriši stare potpise datotečnog sustava u %1"
 
-#: ../src/GParted_Core.cc:3953
+#: ../src/GParted_Core.cc:4013
 msgid "flush operating system cache of %1"
 msgstr "isprazni predmemoriju operativnog sustava %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3985
+#: ../src/GParted_Core.cc:4045
 msgid "update boot sector of %1 file system on %2"
 msgstr "nadopuni boot sektor %1 datotečnog sustava na %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4021
+#: ../src/GParted_Core.cc:4081
 msgid "Error trying to write to boot sector in %1"
 msgstr "Greška pri pokušaju zapisivanja boot sektora na %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4027
+#: ../src/GParted_Core.cc:4087
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Greška pri pokušaju traženja položaja 0x1c na %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4034
+#: ../src/GParted_Core.cc:4094
 msgid "Error trying to open %1"
 msgstr "Greška pri pokušaju otvaranja %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4044
+#: ../src/GParted_Core.cc:4104
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Postavljanje broja skrivenih sektora na %1 na NTFS boot zapisu nije uspjelo."
 
-#: ../src/GParted_Core.cc:4046
+#: ../src/GParted_Core.cc:4106
 msgid "You might try the following command to correct the problem:"
 msgstr "Možda ćete htjeli izvršiti sljedeću naredbu za ispravljanje problema:"
 
-#: ../src/GParted_Core.cc:4105
+#: ../src/GParted_Core.cc:4165
 msgid "libparted messages"
 msgstr "libparted poruke"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4122
+#: ../src/GParted_Core.cc:4182
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Zanemarivanje %1 s logičkom veličinom sektora od %2 bajtova."
 
-#: ../src/GParted_Core.cc:4125
+#: ../src/GParted_Core.cc:4185
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1449,59 +1465,59 @@ msgstr ""
 "GParted zahtijeva libparted inačice 2.2 ili novije za podršku uređaja sa "
 "sektorima većim od 512 bajtova."
 
-#: ../src/GParted_Core.cc:4313
+#: ../src/GParted_Core.cc:4373
 msgid "Libparted Information"
 msgstr "Libparted informacije"
 
-#: ../src/GParted_Core.cc:4317
+#: ../src/GParted_Core.cc:4377
 msgid "Libparted Warning"
 msgstr "Libparted upozorenje"
 
-#: ../src/GParted_Core.cc:4321
+#: ../src/GParted_Core.cc:4381
 msgid "Libparted Error"
 msgstr "Libparted greška"
 
-#: ../src/GParted_Core.cc:4324
+#: ../src/GParted_Core.cc:4384
 msgid "Libparted Fatal"
 msgstr "Libparted kobna greška"
 
-#: ../src/GParted_Core.cc:4327
+#: ../src/GParted_Core.cc:4387
 msgid "Libparted Bug"
 msgstr "Libparted greška"
 
-#: ../src/GParted_Core.cc:4330
+#: ../src/GParted_Core.cc:4390
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted nepodržana značajka"
 
-#: ../src/GParted_Core.cc:4333
+#: ../src/GParted_Core.cc:4393
 msgid "Libparted unknown exception"
 msgstr "Libparted nepoznata iznimka"
 
-#: ../src/GParted_Core.cc:4337
+#: ../src/GParted_Core.cc:4397
 msgid "Fix"
 msgstr "Popravi"
 
-#: ../src/GParted_Core.cc:4339
+#: ../src/GParted_Core.cc:4399
 msgid "Yes"
 msgstr "Da"
 
-#: ../src/GParted_Core.cc:4341
+#: ../src/GParted_Core.cc:4401
 msgid "Ok"
 msgstr "U redu"
 
-#: ../src/GParted_Core.cc:4343
+#: ../src/GParted_Core.cc:4403
 msgid "Retry"
 msgstr "Pokušaj ponovno"
 
-#: ../src/GParted_Core.cc:4345
+#: ../src/GParted_Core.cc:4405
 msgid "No"
 msgstr "Ne"
 
-#: ../src/GParted_Core.cc:4347
+#: ../src/GParted_Core.cc:4407
 msgid "Cancel"
 msgstr "Odustani"
 
-#: ../src/GParted_Core.cc:4349
+#: ../src/GParted_Core.cc:4409
 msgid "Ignore"
 msgstr "Zanemari"
 
@@ -2507,6 +2523,9 @@ msgid ""
 "label."
 msgstr "mkudffs prije inačice 1.1 ne podržava ne-ASCII znakove u nazivu."
 
+#~ msgid "roll back last transaction"
+#~ msgstr "vrati posljednju transakciju"
+
 #~ msgid "N/A"
 #~ msgstr "NEDOSTUPNO"
 
@@ -2526,9 +2545,6 @@ msgstr "mkudffs prije inačice 1.1 ne podržava ne-ASCII znakove u nazivu."
 
 #~ msgid "copy file system of %1 to %2"
 #~ msgstr "kopiranje datotečnog sustava s %1 na %2"
-
-#~ msgid "resize file system"
-#~ msgstr "promijeni veličinu datotečnog sustava"
 
 #~ msgid "grow file system"
 #~ msgstr "povećaj datotečni sustav"
