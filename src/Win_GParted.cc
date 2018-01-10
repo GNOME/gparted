@@ -2313,6 +2313,10 @@ void Win_GParted::activate_format( FSType new_fs )
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
 		encrypted = true;
+		// Calculate the actual overhead rather than just using the size of the
+		// LUKS header so that correct limits are reported in cases when the
+		// active LUKS mapping doesn't extend to the end of the partition for this
+		// format file system only operation.
 		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
 		                                 filesystem_ptn.get_byte_length();
 		fs_limits.min_size += encryption_overhead;
