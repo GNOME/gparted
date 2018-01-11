@@ -123,6 +123,16 @@ enum CUSTOM_TEXT
 	CTEXT_RESIZE_DISALLOWED_WARNING		// File system resizing currently disallowed reason
 } ;
 
+// Minimum and maximum file system size limits
+struct FS_Limits
+{
+	Byte_Value min_size;  // 0 => no limit, +ve => limit defined.  (As implemented by)
+	Byte_Value max_size;  // -----------------"-----------------   (code using these.)
+
+	FS_Limits()                                 : min_size( 0 )  , max_size( 0 )    {};
+	FS_Limits( Byte_Value min, Byte_Value max ) : min_size( min ), max_size( max )  {};
+};
+
 //struct to store file system information
 struct FS
 {
