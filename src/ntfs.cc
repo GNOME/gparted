@@ -116,6 +116,7 @@ FS ntfs::get_filesystem_support()
 	//                            = (1 MiB) + (1 sector)
 	// For GParted this means 2 MiB because smallest GUI unit is MiB.
 	fs. MIN = 2 * MEBIBYTE;
+	fs_limits.min_size = 2 * MEBIBYTE;
 
 	return fs ;
 }

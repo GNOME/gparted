@@ -131,6 +131,7 @@ FS btrfs::get_filesystem_support()
 #endif
 
 	fs .MIN = 256 * MEBIBYTE ;
+	fs_limits.min_size = 256 * MEBIBYTE;
 
 	//Linux before version 3.2 fails when resizing btrfs file system
 	//  to the same size.

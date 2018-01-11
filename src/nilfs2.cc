@@ -67,6 +67,7 @@ FS nilfs2::get_filesystem_support()
 
 	//Minimum FS size is 128M+4K using mkfs.nilfs2 defaults
 	fs .MIN = 128 * MEBIBYTE + 4 * KIBIBYTE ;
+	fs_limits.min_size = 128 * MEBIBYTE + 4 * KIBIBYTE;
 
 	return fs ;
 }
