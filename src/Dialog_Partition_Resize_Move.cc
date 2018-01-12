@@ -28,6 +28,7 @@ Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, const
                                                             const PartitionVector & partitions )
 {
 	this ->fs = fs ;
+	fs_limits = FS_Limits( fs.MIN, fs.MAX );
 	set_data( selected_partition, partitions );
 }
 
@@ -176,36 +177,36 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	     ( fs.online_shrink && new_partition->busy   )    )
 	{
 		//since some file systems have lower limits we need to check for this
-		if ( min_resize > fs.MIN / new_partition->sector_size )
-			fs.MIN = min_resize * new_partition->sector_size;
+		if ( min_resize > fs_limits.min_size / new_partition->sector_size )
+			fs_limits.min_size = min_resize * new_partition->sector_size;
 
 		//ensure that minimum size is at least one mebibyte
-		if ( ! fs .MIN || fs .MIN < MEBIBYTE )
-			fs .MIN = MEBIBYTE ;
+		if ( ! fs_limits.min_size || fs_limits.min_size < MEBIBYTE )
+			fs_limits.min_size = MEBIBYTE;
 	}
 	else
-		fs.MIN = new_partition->get_byte_length();
+	{
+		fs_limits.min_size = new_partition->get_byte_length();
+	}
 
 	//set MAX
 	if ( fs .grow )
-		fs .MAX = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE ;
+		fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 	else
-		fs.MAX = new_partition->get_byte_length();
+		fs_limits.max_size = new_partition->get_byte_length();
 
 	//set values of spinbutton_before
 	if ( ! fixed_start )
 	{
-		spinbutton_before .set_range( MIN_SPACE_BEFORE_MB
-		                            , TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) )
-		                            ) ;
+		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
+		                             TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 		spinbutton_before .set_value(
 			Utils::round( Utils::sector_to_unit( previous, new_partition->sector_size, UNIT_MIB ) ) );
 	}
 
 	//set values of spinbutton_size 
-	spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) )
-	                          , ceil( fs .MAX / double(MEBIBYTE) )
-	                          ) ;
+	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+	                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	spinbutton_size .set_value( 
 		Utils::round( Utils::sector_to_unit( new_partition->get_sector_length(), new_partition->sector_size, UNIT_MIB ) ) );
 
@@ -213,17 +214,16 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	Sector after_min = ( ! fs .grow && ! fs .move ) ? next : 0 ;
 	spinbutton_after .set_range( 
 		Utils::round( Utils::sector_to_unit( after_min, new_partition->sector_size, UNIT_MIB ) ),
-		TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+		TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 	spinbutton_after .set_value( 
 		Utils::round( Utils::sector_to_unit( next, new_partition->sector_size, UNIT_MIB ) ) );
 
-	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+	frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
+	                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
 
 	//set contents of label_minmax
-	Set_MinMax_Text( ceil( fs .MIN / double(MEBIBYTE) )
-	               , ceil( fs .MAX / double(MEBIBYTE) )
-	               ) ;
+	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+	                 ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 }
 
 void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector & partitions )
@@ -291,15 +291,13 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	}
 	//set MIN
 	if ( used == 0 )
-	{
 		//Reasonable minimum of 1 MiB for EBR plus 1 MiB for small partition
-		fs .MIN = MEBIBYTE ;
-	}
+		fs_limits.min_size = MEBIBYTE;
 	else 
-		fs.MIN = used * new_partition->sector_size;
+		fs_limits.min_size = used * new_partition->sector_size;
 
 	//set MAX
-	fs .MAX = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE ;
+	fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 
 	dynamic_cast<Frame_Resizer_Extended *>( frame_resizer_base ) ->
 		set_used_start( Utils::round( (first - START) / ( total_length / 500.00 ) ) ) ;
@@ -307,7 +305,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	
 	//set values of spinbutton_before (we assume there is no fixed start.)
 	if ( first == 0 ) //no logicals
-		spinbutton_before .set_range( MIN_SPACE_BEFORE_MB, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
+		                             TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size /
+		                                                                    double(MEBIBYTE) ) );
 	else
 		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
 		                             Utils::round( Utils::sector_to_unit( first - START,
@@ -318,15 +318,17 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	                                                                  new_partition->sector_size, UNIT_MIB ) ) );
 
 	//set values of spinbutton_size
-	spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) ), TOTAL_MB - MIN_SPACE_BEFORE_MB ) ;
+	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+	                           TOTAL_MB - MIN_SPACE_BEFORE_MB );
 
 	spinbutton_size.set_value( Utils::round( Utils::sector_to_unit( new_partition->get_sector_length(),
 	                                                                new_partition->sector_size, UNIT_MIB ) ) );
 
 	//set values of spinbutton_after
 	if ( first == 0 ) //no logicals
-		spinbutton_after .set_range( 
-			0, TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) ) - MIN_SPACE_BEFORE_MB ) ;
+		spinbutton_after.set_range( 0, TOTAL_MB -
+		                               ceil( fs_limits.min_size / double(MEBIBYTE) ) -
+		                               MIN_SPACE_BEFORE_MB );
 	else
 		spinbutton_after.set_range( 0, Utils::round( Utils::sector_to_unit( total_length + START - first - used,
 		                                                                    new_partition->sector_size,
@@ -336,7 +338,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 	                                                                 new_partition->sector_size, UNIT_MIB ) ) );
 
 	//set contents of label_minmax
-	Set_MinMax_Text( ceil( fs.MIN / double(MEBIBYTE) ),
+	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
 	                 Utils::round( Utils::sector_to_unit( total_length - MIN_SPACE_BEFORE_MB * (MEBIBYTE / new_partition->sector_size),
 	                                                      new_partition->sector_size, UNIT_MIB ) ) );
 }
