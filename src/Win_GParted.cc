@@ -2266,21 +2266,24 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	}
 
 	// Generate minimum and maximum partition size limits for the new file system.
-	FS fs_cap = gparted_core.get_fs( new_fs );
+	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( new_fs );
+	FS_Limits fs_limits;
+	if ( filesystem_object != NULL )
+		fs_limits = filesystem_object->get_filesystem_limits();
 	bool encrypted = false;
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
 		encrypted = true;
 		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
 		                                 filesystem_ptn.get_byte_length();
-		fs_cap.MIN += encryption_overhead;
-		if ( fs_cap.MAX > 0 )
-			fs_cap.MAX += encryption_overhead;
+		fs_limits.min_size += encryption_overhead;
+		if ( fs_limits.max_size > 0 )
+			fs_limits.max_size += encryption_overhead;
 	}
 
 	// Confirm partition is the right size to store the file system before continuing.
-	if ( ( selected_partition_ptr->get_byte_length() < fs_cap.MIN )               ||
-	     ( fs_cap.MAX && selected_partition_ptr->get_byte_length() > fs_cap.MAX )    )
+	if ( ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )                       ||
+	     ( fs_limits.max_size && selected_partition_ptr->get_byte_length() > fs_limits.max_size )    )
 	{
 		Gtk::MessageDialog dialog( *this,
 		                           String::ucompose( /* TO TRANSLATORS: looks like
@@ -2293,14 +2296,14 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		                           Gtk::BUTTONS_OK,
 		                           true );
 
-		if ( selected_partition_ptr->get_byte_length() < fs_cap.MIN )
+		if ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )
 			dialog .set_secondary_text( String::ucompose(
 						/* TO TRANSLATORS: looks like
 						 * A fat16 file system requires a partition of at least 16.00 MiB.
 						 */
 						_( "A %1 file system requires a partition of at least %2."),
 						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs_cap.MIN, 1 /* Byte */ ) ) );
+						Utils::format_size( fs_limits.min_size, 1 /* Byte */ ) ) );
 		else
 			dialog .set_secondary_text( String::ucompose(
 						/* TO TRANSLATORS: looks like
@@ -2308,8 +2311,8 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 						 */
 						_( "A partition with a %1 file system has a maximum size of %2."),
 						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs_cap.MAX, 1 /* Byte */ ) ) );
-		
+						Utils::format_size( fs_limits.max_size, 1 /* Byte */ ) ) );
+
 		dialog .run() ;
 		return ;
 	}
