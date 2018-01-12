@@ -40,6 +40,7 @@
 #include "Partition.h"
 #include "PartitionVector.h"
 #include "LVM2_PV_Info.h"
+#include "Utils.h"
 #include "../config.h"
 
 #include <gtkmm/aboutdialog.h>
@@ -1933,6 +1934,12 @@ void Win_GParted::activate_paste()
 	{
 		if ( ! max_amount_prim_reached() )
 		{
+			const FileSystem *filesystem_object = gparted_core.get_filesystem_object(
+			                                                      copied_filesystem_ptn.filesystem );
+			FS_Limits fs_limits;
+			if ( filesystem_object != NULL )
+				fs_limits = filesystem_object->get_filesystem_limits();
+
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
 			Partition * part_temp = copied_filesystem_ptn.clone();
@@ -1941,6 +1948,7 @@ void Win_GParted::activate_paste()
 			part_temp->name.clear();
 
 			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_filesystem_ptn.filesystem ),
+			                              fs_limits,
 			                              *selected_partition_ptr,
 			                              *part_temp );
 			delete part_temp;

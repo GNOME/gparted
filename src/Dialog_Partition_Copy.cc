@@ -23,11 +23,12 @@
 namespace GParted
 {
 
-Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, const Partition & selected_partition,
+Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, const FS_Limits & fs_limits,
+                                              const Partition & selected_partition,
                                               const Partition & copied_partition )
 {
 	this ->fs = fs ;
-	fs_limits = FS_Limits( fs.MIN, fs.MAX );
+	this->fs_limits = fs_limits;
 
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
