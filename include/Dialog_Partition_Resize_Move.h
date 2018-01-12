@@ -20,6 +20,7 @@
 #include "Dialog_Base_Partition.h"
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "Utils.h"
 
 namespace GParted
 {
@@ -27,7 +28,8 @@ namespace GParted
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Resize_Move( const FS & fs, const Partition & selected_partition,
+	Dialog_Partition_Resize_Move( const FS & fs, const FS_Limits & fs_limits,
+	                              const Partition & selected_partition,
 	                              const PartitionVector & partitions );
 	~Dialog_Partition_Resize_Move();
 

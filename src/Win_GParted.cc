@@ -1793,8 +1793,14 @@ void Win_GParted::activate_resize()
 			display_partitions_ptr = &display_partitions[index_extended].logicals;
 	}
 
-	FS fs_cap = gparted_core.get_fs( selected_partition_ptr->get_filesystem_partition().filesystem );
 	Partition * working_ptn;
+	const FILESYSTEM fstype = selected_partition_ptr->get_filesystem_partition().filesystem;
+	FS fs_cap = gparted_core.get_fs( fstype );
+	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( fstype );
+	FS_Limits fs_limits;
+	if ( filesystem_object != NULL )
+		fs_limits = filesystem_object->get_filesystem_limits();
+
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
 		const FS & enc_cap = gparted_core.get_fs( FS_LUKS );
@@ -1818,19 +1824,20 @@ void Win_GParted::activate_resize()
 			fs_cap.shrink        = FS::NONE;
 			fs_cap.online_shrink = FS::NONE;
 		}
+
 		// Adjust file system size limits accounting for LUKS encryption overhead.
 		Sector luks_header_size = static_cast<const PartitionLUKS *>( selected_partition_ptr )->get_header_size();
-		fs_cap.MIN = luks_header_size * working_ptn->sector_size +
-		             ( fs_cap.MIN < MEBIBYTE ) ? MEBIBYTE : fs_cap.MIN;
-		if ( fs_cap.MAX > 0 )
-			fs_cap.MAX += luks_header_size * working_ptn->sector_size;
+		fs_limits.min_size = luks_header_size * working_ptn->sector_size +
+		                     ( fs_limits.min_size < MEBIBYTE ) ? MEBIBYTE : fs_limits.min_size;
+		if ( fs_limits.max_size > 0 )
+			fs_limits.max_size += luks_header_size * working_ptn->sector_size;
 	}
 	else
 	{
 		working_ptn = selected_partition_ptr->clone();
 	}
 
-	Dialog_Partition_Resize_Move dialog( fs_cap, *working_ptn, *display_partitions_ptr );
+	Dialog_Partition_Resize_Move dialog( fs_cap, fs_limits, *working_ptn, *display_partitions_ptr );
 	dialog .set_transient_for( *this ) ;	
 
 	delete working_ptn;
