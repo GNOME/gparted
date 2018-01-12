@@ -27,6 +27,7 @@ Dialog_Partition_Copy::Dialog_Partition_Copy( const FS & fs, const Partition & s
                                               const Partition & copied_partition )
 {
 	this ->fs = fs ;
+	fs_limits = FS_Limits( fs.MIN, fs.MAX );
 
 	Set_Resizer( false ) ;	
 	Set_Confirm_Button( PASTE ) ;
@@ -74,40 +75,40 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	//  system is implemented and resizing it is currently allowed.
 	if ( fs .grow && ! GParted_Core::filesystem_resize_disallowed( copied_partition ) )
 	{
-		if ( ! fs .MAX || fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
-			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
+		if ( ! fs_limits.max_size || fs_limits.max_size > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) )
+			fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 	}
 	else
-		fs .MAX = copied_partition .get_byte_length() ;
+	{
+		fs_limits.max_size = copied_partition.get_byte_length();
+	}
 
 	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
-		fs.MIN = std::max( fs.MIN, min_resize * copied_partition.sector_size );
+		fs_limits.min_size = std::max( fs_limits.min_size, min_resize * copied_partition.sector_size );
 	else
-		fs .MIN = COPIED_LENGTH_MB * MEBIBYTE ;
-	
+		fs_limits.min_size = COPIED_LENGTH_MB * MEBIBYTE;
+
 	GRIP = true ;
 	//set values of spinbutton_before
-	spinbutton_before .set_range( MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+	spinbutton_before.set_range( MIN_SPACE_BEFORE_MB, TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
 
 	//set values of spinbutton_size
-	spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) )
-	                          , ceil( fs .MAX / double(MEBIBYTE) )
-	                          ) ;
+	spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+	                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	spinbutton_size .set_value( COPIED_LENGTH_MB ) ;
 	
 	//set values of spinbutton_after
-	spinbutton_after .set_range( 0, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs .MIN / double(MEBIBYTE) ) ) ;
+	spinbutton_after.set_range( 0, TOTAL_MB - MIN_SPACE_BEFORE_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 	spinbutton_after .set_value( TOTAL_MB - MIN_SPACE_BEFORE_MB - COPIED_LENGTH_MB ) ; 
 	GRIP = false ;
 	
-	frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-					      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
-	
+	frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
+	                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
+
 	//set contents of label_minmax
-	Set_MinMax_Text( ceil( fs .MIN / double(MEBIBYTE) )
-	               , ceil( fs .MAX / double(MEBIBYTE) )
-	               ) ;
+	Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+	                 ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 
 	// Set member variable used in Dialog_Base_Partition::prepare_new_partition()
 	new_partition = copied_partition.clone();

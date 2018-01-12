@@ -20,6 +20,7 @@
 
 #include "Frame_Resizer_Extended.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>
@@ -92,6 +93,7 @@ protected:
 	bool fixed_start, GRIP ;
 	double before_value ;
 	FS fs ;
+	FS_Limits fs_limits;  // Working copy of file system min/max size limits
 
 private:
 	Dialog_Base_Partition( const Dialog_Base_Partition & src );              // Not implemented copy constructor
