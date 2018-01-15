@@ -18,6 +18,7 @@
 #include "Dialog_Partition_New.h"
 #include "GParted_Core.h"
 #include "Partition.h"
+#include "Utils.h"
 
 namespace GParted
 {
@@ -172,7 +173,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
-	spinbutton_size .set_value( ceil( fs .MAX / double(MEBIBYTE) ) ) ; 
+	spinbutton_size.set_value( ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	spinbutton_before .set_value( MIN_SPACE_BEFORE_MB ) ;
 	
 	//Disable resizing when the total area is less than two mebibytes
@@ -339,35 +340,36 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
 
-		if ( fs .MIN < MEBIBYTE )
-			fs .MIN = MEBIBYTE ;
+		FileSystem *filesystem_object = GParted_Core::get_filesystem_object( fs.filesystem );
+		fs_limits = FS_Limits();  // Copy new default no limits struct
+		if ( filesystem_object != NULL )
+			fs_limits = filesystem_object->get_filesystem_limits();
 
-		if ( new_partition->get_byte_length() < fs.MIN )
-			fs.MIN = new_partition->get_byte_length();
+		if ( fs_limits.min_size < MEBIBYTE )
+			fs_limits.min_size = MEBIBYTE;
 
-		if ( ! fs .MAX || ( fs .MAX > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
-			fs .MAX = ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ;
+		if ( new_partition->get_byte_length() < fs_limits.min_size )
+			fs_limits.min_size = new_partition->get_byte_length();
+
+		if ( ! fs_limits.max_size || ( fs_limits.max_size > ((TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE) ) )
+			fs_limits.max_size = (TOTAL_MB - MIN_SPACE_BEFORE_MB) * MEBIBYTE;
 
 		frame_resizer_base ->set_x_min_space_before( Utils::round( MIN_SPACE_BEFORE_MB / MB_PER_PIXEL ) ) ;
-		frame_resizer_base ->set_size_limits( Utils::round( fs .MIN / (MB_PER_PIXEL * MEBIBYTE) ),
-						      Utils::round( fs .MAX / (MB_PER_PIXEL * MEBIBYTE) ) ) ;
+		frame_resizer_base->set_size_limits( Utils::round( fs_limits.min_size / (MB_PER_PIXEL * MEBIBYTE) ),
+		                                     Utils::round( fs_limits.max_size / (MB_PER_PIXEL * MEBIBYTE) ) );
 
 		//set new spinbutton ranges
-		spinbutton_before .set_range( MIN_SPACE_BEFORE_MB
-		                            , TOTAL_MB - ceil( fs .MIN / double(MEBIBYTE) )
-		                            ) ;
-		spinbutton_size .set_range( ceil( fs .MIN / double(MEBIBYTE) )
-		                          , ceil( fs .MAX / double(MEBIBYTE) )
-		                          ) ;
-		spinbutton_after .set_range( 0
-		                           , TOTAL_MB - MIN_SPACE_BEFORE_MB
-		                             - ceil( fs .MIN / double(MEBIBYTE) )
-		                           ) ;
+		spinbutton_before.set_range( MIN_SPACE_BEFORE_MB,
+		                             TOTAL_MB - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
+		spinbutton_size.set_range( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+		                           ceil( fs_limits.max_size / double(MEBIBYTE) ) );
+		spinbutton_after.set_range( 0,
+		                            TOTAL_MB - MIN_SPACE_BEFORE_MB
+		                            - ceil( fs_limits.min_size / double(MEBIBYTE) ) );
 
 		//set contents of label_minmax
-		Set_MinMax_Text( ceil( fs .MIN / double(MEBIBYTE) )
-		               , ceil( fs .MAX / double(MEBIBYTE) )
-		               ) ;
+		Set_MinMax_Text( ceil( fs_limits.min_size / double(MEBIBYTE) ),
+		                 ceil( fs_limits.max_size / double(MEBIBYTE) ) );
 	}
 
 	//set fitting resizer colors
@@ -403,7 +405,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 			Gtk::Menu_Helpers::MenuElem( Utils::get_filesystem_string( FILESYSTEMS[ t ] .filesystem ) ) ) ;
 		menu_filesystem .items() .back() .set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			new_partition->get_byte_length() >= FILESYSTEMS[t].MIN );
+			new_partition->get_byte_length() >= get_filesystem_min_limit( FILESYSTEMS[t].filesystem ) );
 		//use ext4/3/2 as first/second/third choice default file system
 		//(Depends on ordering in FILESYSTEMS for preference)
 		if ( ( FILESYSTEMS[ t ] .filesystem == FS_EXT2 ||
@@ -429,6 +431,15 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 				break ;
 			}
 	}
+}
+
+Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FILESYSTEM fstype )
+{
+	FileSystem *filesystem_object = GParted_Core::get_filesystem_object( fstype );
+	FS_Limits fs_limits;
+	if ( filesystem_object != NULL )
+		fs_limits = filesystem_object->get_filesystem_limits();
+	return fs_limits.min_size;
 }
 
 } //GParted
