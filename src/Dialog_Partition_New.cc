@@ -339,11 +339,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	if ( ! type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
-
-		FileSystem *filesystem_object = GParted_Core::get_filesystem_object( fs.filesystem );
-		fs_limits = FS_Limits();  // Copy new default no limits struct
-		if ( filesystem_object != NULL )
-			fs_limits = filesystem_object->get_filesystem_limits( *new_partition );
+		fs_limits = GParted_Core::get_filesystem_limits( fs.filesystem, *new_partition );
 
 		if ( fs_limits.min_size < MEBIBYTE )
 			fs_limits.min_size = MEBIBYTE;
@@ -435,11 +431,7 @@ void Dialog_Partition_New::Build_Filesystems_Menu( bool only_unformatted )
 
 Byte_Value Dialog_Partition_New::get_filesystem_min_limit( FILESYSTEM fstype )
 {
-	FileSystem *filesystem_object = GParted_Core::get_filesystem_object( fstype );
-	FS_Limits fs_limits;
-	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits( *new_partition );
-	return fs_limits.min_size;
+	return GParted_Core::get_filesystem_limits( fstype, *new_partition ).min_size;
 }
 
 } //GParted

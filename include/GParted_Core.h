@@ -24,6 +24,7 @@
 #include "Partition.h"
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
+#include "Utils.h"
 
 #include <parted/parted.h>
 #include <vector>
@@ -66,6 +67,7 @@ public:
 
 	static FileSystem * get_filesystem_object( FILESYSTEM filesystem );
 	static bool supported_filesystem( FILESYSTEM fstype );
+	static FS_Limits get_filesystem_limits( FILESYSTEM fstype, const Partition & partition );
 	static bool filesystem_resize_disallowed( const Partition & partition ) ;
 	static void insert_unallocated( const Glib::ustring & device_path,
 	                                PartitionVector & partitions,

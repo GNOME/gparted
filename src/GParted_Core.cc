@@ -20,6 +20,7 @@
 #include "CopyBlocks.h"
 #include "BlockSpecial.h"
 #include "DMRaid.h"
+#include "FileSystem.h"
 #include "FS_Info.h"
 #include "LVM2_PV_Info.h"
 #include "LUKS_Info.h"
@@ -31,6 +32,7 @@
 #include "PartitionVector.h"
 #include "Proc_Partitions_Info.h"
 #include "SWRaid_Info.h"
+#include "Utils.h"
 
 #include "btrfs.h"
 #include "exfat.h"
@@ -1866,11 +1868,7 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 	}
 	else
 	{
-		FileSystem *p_filesystem = get_filesystem_object( new_partition.filesystem );
-		FS_Limits fs_limits;
-		if ( p_filesystem != NULL )
-			fs_limits = p_filesystem->get_filesystem_limits( new_partition );
-
+		FS_Limits fs_limits = get_filesystem_limits( new_partition.filesystem, new_partition );
 		success = create_partition( new_partition, operationdetail,
 		                            fs_limits.min_size / new_partition.sector_size );
 	}
@@ -3782,6 +3780,15 @@ FileSystem * GParted_Core::get_filesystem_object( FILESYSTEM filesystem )
 bool GParted_Core::supported_filesystem( FILESYSTEM fstype )
 {
 	return get_filesystem_object( fstype ) != NULL;
+}
+
+FS_Limits GParted_Core::get_filesystem_limits( FILESYSTEM fstype, const Partition & partition )
+{
+	FileSystem *p_filesystem = get_filesystem_object( fstype );
+	FS_Limits fs_limits;
+	if ( p_filesystem != NULL )
+		fs_limits = p_filesystem->get_filesystem_limits( partition );
+	return fs_limits;
 }
 
 bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )

@@ -27,6 +27,7 @@
 #include "Dialog_FileSystem_Label.h"
 #include "Dialog_Partition_Name.h"
 #include "DialogManageFlags.h"
+#include "GParted_Core.h"
 #include "Mount_Info.h"
 #include "OperationCopy.h"
 #include "OperationCheck.h"
@@ -1797,10 +1798,7 @@ void Win_GParted::activate_resize()
 	const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
 	const FILESYSTEM fstype = selected_filesystem_ptn.filesystem;
 	FS fs_cap = gparted_core.get_fs( fstype );
-	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( fstype );
-	FS_Limits fs_limits;
-	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits( selected_filesystem_ptn );
+	FS_Limits fs_limits = gparted_core.get_filesystem_limits( fstype, selected_filesystem_ptn );
 
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
@@ -1942,11 +1940,9 @@ void Win_GParted::activate_paste()
 	{
 		if ( ! max_amount_prim_reached() )
 		{
-			const FileSystem *filesystem_object = gparted_core.get_filesystem_object(
-			                                                      copied_filesystem_ptn.filesystem );
-			FS_Limits fs_limits;
-			if ( filesystem_object != NULL )
-				fs_limits = filesystem_object->get_filesystem_limits( copied_filesystem_ptn );
+			FS_Limits fs_limits = gparted_core.get_filesystem_limits(
+			                                      copied_filesystem_ptn.filesystem,
+			                                      copied_filesystem_ptn );
 
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
@@ -2313,10 +2309,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	temp_ptn->status = STAT_FORMATTED;
 
 	// Generate minimum and maximum partition size limits for the new file system.
-	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( new_fs );
-	FS_Limits fs_limits;
-	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits( temp_ptn->get_filesystem_partition() );
+	FS_Limits fs_limits = gparted_core.get_filesystem_limits( new_fs, temp_ptn->get_filesystem_partition() );
 	bool encrypted = false;
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
