@@ -71,7 +71,6 @@ FS reiserfs::get_filesystem_support()
 #endif
 
 	//Actual minimum is at least 18 blocks larger than 32 MiB for the journal offset
-	fs .MIN = 34 * MEBIBYTE ;
 	fs_limits.min_size = 34 * MEBIBYTE;
 
 	return fs ;

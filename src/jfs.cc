@@ -68,7 +68,6 @@ FS jfs::get_filesystem_support()
 		fs .online_grow = fs .grow ;
 #endif
 
-	fs .MIN = 16 * MEBIBYTE ;
 	fs_limits.min_size = 16 * MEBIBYTE;
 
 	return fs ;

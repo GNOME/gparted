@@ -79,8 +79,8 @@ FS xfs::get_filesystem_support()
 		fs .online_grow = fs .grow ;
 #endif
 
-	fs .MIN = 32 * MEBIBYTE ;//official minsize = 16MB, but the smallest xfs_repair can handle is 32MB...
-	fs_limits.min_size = 32 * MEBIBYTE;  // Official minsize = 16MB, but the smallest xfs_repair can handle is 32MB.
+	// Official minsize = 16MB, but the smallest xfs_repair can handle is 32MB.
+	fs_limits.min_size = 32 * MEBIBYTE;
 
 	return fs ;
 }

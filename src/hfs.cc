@@ -45,7 +45,6 @@ FS hfs::get_filesystem_support()
 	fs .move = GParted::FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
 
-	fs .MAX = 2048 * MEBIBYTE ;
 	fs_limits.max_size = 2048 * MEBIBYTE;
 
 	return fs ;

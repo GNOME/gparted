@@ -64,8 +64,6 @@ FS udf::get_filesystem_support()
 		fs.write_uuid = FS::EXTERNAL;
 	}
 
-	fs.MIN = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
-	fs.MAX = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
 	fs_limits.min_size = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
 	fs_limits.max_size = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
 

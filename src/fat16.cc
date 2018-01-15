@@ -113,20 +113,16 @@ FS fat16::get_filesystem_support()
 
 	if ( fs .filesystem == FS_FAT16 )
 	{
-		fs .MIN = 16 * MEBIBYTE ;
-		fs .MAX = (4096 - 1) * MEBIBYTE ;  //Maximum seems to be just less than 4096 MiB
 		fs_limits.min_size = 16 * MEBIBYTE;
 		fs_limits.max_size = (4096 - 1) * MEBIBYTE;  // Maximum seems to be just less than 4096 MiB.
 	}
 	else //FS_FAT32
 	{
-		fs .MIN = 33 * MEBIBYTE ; //Smaller file systems will cause windows scandisk to fail.
 		fs_limits.min_size = 33 * MEBIBYTE;  // Smaller file systems will cause Windows' scandisk to fail.
 
 		// Maximum FAT32 volume size with 512 byte sectors is 2 TiB.
 		// *   Wikipedia: File Allocation Table / FAT32
 		//     https://en.wikipedia.org/wiki/File_Allocation_Table#FAT32
-		fs.MAX = 2 * TEBIBYTE;
 		fs_limits.max_size = 2 * TEBIBYTE;
 	}
 
