@@ -2265,58 +2265,6 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 			return ;
 	}
 
-	// Generate minimum and maximum partition size limits for the new file system.
-	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( new_fs );
-	FS_Limits fs_limits;
-	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits();
-	bool encrypted = false;
-	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
-	{
-		encrypted = true;
-		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
-		                                 filesystem_ptn.get_byte_length();
-		fs_limits.min_size += encryption_overhead;
-		if ( fs_limits.max_size > 0 )
-			fs_limits.max_size += encryption_overhead;
-	}
-
-	// Confirm partition is the right size to store the file system before continuing.
-	if ( ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )                       ||
-	     ( fs_limits.max_size && selected_partition_ptr->get_byte_length() > fs_limits.max_size )    )
-	{
-		Gtk::MessageDialog dialog( *this,
-		                           String::ucompose( /* TO TRANSLATORS: looks like
-		                                              * Cannot format this file system to fat16.
-		                                              */
-		                                             _("Cannot format this file system to %1"),
-		                                             Utils::get_filesystem_string( encrypted, new_fs ) ),
-		                           false,
-		                           Gtk::MESSAGE_ERROR,
-		                           Gtk::BUTTONS_OK,
-		                           true );
-
-		if ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )
-			dialog .set_secondary_text( String::ucompose(
-						/* TO TRANSLATORS: looks like
-						 * A fat16 file system requires a partition of at least 16.00 MiB.
-						 */
-						_( "A %1 file system requires a partition of at least %2."),
-						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs_limits.min_size, 1 /* Byte */ ) ) );
-		else
-			dialog .set_secondary_text( String::ucompose(
-						/* TO TRANSLATORS: looks like
-						 * A partition with a hfs file system has a maximum size of 2.00 GiB.
-						 */
-						_( "A partition with a %1 file system has a maximum size of %2."),
-						Utils::get_filesystem_string( encrypted, new_fs ),
-						Utils::format_size( fs_limits.max_size, 1 /* Byte */ ) ) );
-
-		dialog .run() ;
-		return ;
-	}
-
 	// Compose Partition object to represent the format operation.
 	Partition * temp_ptn;
 	if ( selected_partition_ptr->filesystem == FS_LUKS && ! selected_partition_ptr->busy )
@@ -2360,34 +2308,89 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	temp_ptn->name = selected_partition_ptr->name;
 	temp_ptn->status = STAT_FORMATTED;
 
-	// When formatting a partition which already exists on the disk, all possible
-	// operations could be pending so only try merging with the previous operation.
-	MergeType mergetype = MERGE_LAST_WITH_PREV;
-
-	// If selected partition is NEW we simply remove the NEW operation from the list and
-	// add it again with the new file system
-	if ( selected_partition_ptr->status == STAT_NEW )
+	// Generate minimum and maximum partition size limits for the new file system.
+	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( new_fs );
+	FS_Limits fs_limits;
+	if ( filesystem_object != NULL )
+		fs_limits = filesystem_object->get_filesystem_limits();
+	bool encrypted = false;
+	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
-		temp_ptn->status = STAT_NEW;
-		// On a partition which is pending creation only resize/move and format
-		// operations are possible.  These operations are always mergeable with
-		// the pending operation which will create the partition.  Hence merge
-		// with any earlier operations to achieve this.
-		mergetype = MERGE_LAST_WITH_ANY;
+		encrypted = true;
+		Byte_Value encryption_overhead = selected_partition_ptr->get_byte_length() -
+		                                 filesystem_ptn.get_byte_length();
+		fs_limits.min_size += encryption_overhead;
+		if ( fs_limits.max_size > 0 )
+			fs_limits.max_size += encryption_overhead;
 	}
 
-	Operation * operation = new OperationFormat( devices[current_device],
-	                                             *selected_partition_ptr,
-	                                             *temp_ptn );
-	operation->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+	// Confirm partition is the right size to store the file system.
+	if ( ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )                       ||
+	     ( fs_limits.max_size && selected_partition_ptr->get_byte_length() > fs_limits.max_size )    )
+	{
+		Gtk::MessageDialog dialog( *this,
+		                           String::ucompose( /* TO TRANSLATORS: looks like
+		                                              * Cannot format this file system to fat16.
+		                                              */
+		                                             _("Cannot format this file system to %1"),
+		                                             Utils::get_filesystem_string( encrypted, new_fs ) ),
+		                           false,
+		                           Gtk::MESSAGE_ERROR,
+		                           Gtk::BUTTONS_OK,
+		                           true );
+
+		if ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )
+			dialog.set_secondary_text( String::ucompose(
+					/* TO TRANSLATORS: looks like
+					 * A fat16 file system requires a partition of at least 16.00 MiB.
+					 */
+					 _( "A %1 file system requires a partition of at least %2."),
+					 Utils::get_filesystem_string( encrypted, new_fs ),
+					 Utils::format_size( fs_limits.min_size, 1 /* Byte */ ) ) );
+		else
+			dialog.set_secondary_text( String::ucompose(
+					/* TO TRANSLATORS: looks like
+					 * A partition with a hfs file system has a maximum size of 2.00 GiB.
+					 */
+					 _( "A partition with a %1 file system has a maximum size of %2."),
+					 Utils::get_filesystem_string( encrypted, new_fs ),
+					 Utils::format_size( fs_limits.max_size, 1 /* Byte */ ) ) );
+
+		dialog.run();
+	}
+	else
+	{
+		// When formatting a partition which already exists on the disk, all
+		// possible operations could be pending so only try merging with the
+		// previous operation.
+		MergeType mergetype = MERGE_LAST_WITH_PREV;
+
+		// If selected partition is NEW we simply remove the NEW operation from
+		// the list and add it again with the new file system
+		if ( selected_partition_ptr->status == STAT_NEW )
+		{
+			temp_ptn->status = STAT_NEW;
+			// On a partition which is pending creation only resize/move and
+			// format operations are possible.  These operations are always
+			// mergeable with the pending operation which will create the
+			// partition.  Hence merge with any earlier operations to achieve
+			// this.
+			mergetype = MERGE_LAST_WITH_ANY;
+		}
+
+		Operation * operation = new OperationFormat( devices[current_device],
+		                                             *selected_partition_ptr,
+		                                             *temp_ptn );
+		operation->icon = render_icon( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU );
+
+		Add_Operation( devices[current_device], operation );
+		merge_operations( mergetype );
+
+		show_operationslist();
+	}
 
 	delete temp_ptn;
 	temp_ptn = NULL;
-
-	Add_Operation( devices[current_device], operation );
-	merge_operations( mergetype );
-
-	show_operationslist() ;
 }
 
 bool Win_GParted::unmount_partition( const Partition & partition, Glib::ustring & error )
