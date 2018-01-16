@@ -62,7 +62,7 @@ public:
 	static const Glib::ustring get_generic_text( CUSTOM_TEXT ttype, int index = 0 ) ;
 
 	virtual FS get_filesystem_support() = 0 ;
-	virtual FS_Limits get_filesystem_limits() const  { return fs_limits; };
+	virtual FS_Limits get_filesystem_limits( const Partition & partition ) const  { return fs_limits; };
 	virtual bool is_busy( const Glib::ustring & path ) { return false ; } ;
 	virtual void set_used_sectors( Partition & partition ) {};
 	virtual void read_label( Partition & partition ) {};
@@ -100,7 +100,9 @@ protected:
 	Glib::ustring mk_temp_dir( const Glib::ustring & infix, OperationDetail & operationdetail ) ;
 	void rm_temp_dir( const Glib::ustring dir_name, OperationDetail & operationdetail ) ;
 
-	FS_Limits fs_limits;  // File system minimum and maximum size limits
+	FS_Limits fs_limits;  // File system minimum and maximum size limits.  In derived
+	                      // classes either assign fixed values in get_filesystem_support()
+	                      // or implement get_filesystem_limits() for dynamic values.
 
 	//those are used in several places..
 	Glib::ustring output, error ;

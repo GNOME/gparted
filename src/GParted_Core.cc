@@ -1869,7 +1869,7 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 		FileSystem *p_filesystem = get_filesystem_object( new_partition.filesystem );
 		FS_Limits fs_limits;
 		if ( p_filesystem != NULL )
-			fs_limits = p_filesystem->get_filesystem_limits();
+			fs_limits = p_filesystem->get_filesystem_limits( new_partition );
 
 		success = create_partition( new_partition, operationdetail,
 		                            fs_limits.min_size / new_partition.sector_size );

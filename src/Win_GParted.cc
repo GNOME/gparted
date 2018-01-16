@@ -1794,12 +1794,13 @@ void Win_GParted::activate_resize()
 	}
 
 	Partition * working_ptn;
-	const FILESYSTEM fstype = selected_partition_ptr->get_filesystem_partition().filesystem;
+	const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+	const FILESYSTEM fstype = selected_filesystem_ptn.filesystem;
 	FS fs_cap = gparted_core.get_fs( fstype );
 	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( fstype );
 	FS_Limits fs_limits;
 	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits();
+		fs_limits = filesystem_object->get_filesystem_limits( selected_filesystem_ptn );
 
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
@@ -1945,7 +1946,7 @@ void Win_GParted::activate_paste()
 			                                                      copied_filesystem_ptn.filesystem );
 			FS_Limits fs_limits;
 			if ( filesystem_object != NULL )
-				fs_limits = filesystem_object->get_filesystem_limits();
+				fs_limits = filesystem_object->get_filesystem_limits( copied_filesystem_ptn );
 
 			// We don't want the messages, mount points or name of the source
 			// partition for the new partition being created.
@@ -2304,6 +2305,9 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 		                         false );
 		// Leave sector usage figures as new Partition object defaults of
 		// -1, -1, 0 (_used, _unused, _unallocated) representing unknown.
+		// Also leaves fs_block_size default of -1 so that FileSystem derived
+		// get_filesystem_limits() call below can differentiate reformat to same
+		// file system case apart from resize case.
 	}
 	temp_ptn->name = selected_partition_ptr->name;
 	temp_ptn->status = STAT_FORMATTED;
@@ -2312,7 +2316,7 @@ void Win_GParted::activate_format( GParted::FILESYSTEM new_fs )
 	const FileSystem *filesystem_object = gparted_core.get_filesystem_object( new_fs );
 	FS_Limits fs_limits;
 	if ( filesystem_object != NULL )
-		fs_limits = filesystem_object->get_filesystem_limits();
+		fs_limits = filesystem_object->get_filesystem_limits( temp_ptn->get_filesystem_partition() );
 	bool encrypted = false;
 	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
 	{
