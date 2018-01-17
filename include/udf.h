@@ -33,6 +33,7 @@ public:
 	udf() : old_mkudffs( false ) {};
 
 	FS get_filesystem_support();
+	FS_Limits get_filesystem_limits( const Partition & partition ) const;
 	void set_used_sectors( Partition & partition );
 	void read_label( Partition & partition );
 	bool write_label( const Partition & partition, OperationDetail & operationdetail );

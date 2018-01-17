@@ -28,9 +28,6 @@ namespace GParted
 const Byte_Value MIN_UDF_BLOCKS = 300;
 const Byte_Value MAX_UDF_BLOCKS = (1LL << 32) - 1;
 
-const Byte_Value MIN_UDF_BLOCKSIZE = 512;
-const Byte_Value MAX_UDF_BLOCKSIZE = 4096;
-
 FS udf::get_filesystem_support()
 {
 	FS fs( FS_UDF );
@@ -64,10 +61,17 @@ FS udf::get_filesystem_support()
 		fs.write_uuid = FS::EXTERNAL;
 	}
 
-	fs_limits.min_size = MIN_UDF_BLOCKS * MIN_UDF_BLOCKSIZE;
-	fs_limits.max_size = MAX_UDF_BLOCKS * MAX_UDF_BLOCKSIZE;
-
 	return fs;
+}
+
+FS_Limits udf::get_filesystem_limits( const Partition & partition ) const
+{
+	if ( partition.filesystem == FS_UDF && partition.fs_block_size > 0 )
+		// Resizing existing UDF file system
+		return FS_Limits( MIN_UDF_BLOCKS * partition.fs_block_size, MAX_UDF_BLOCKS * partition.fs_block_size );
+	else
+		// Creating new UDF file system
+		return FS_Limits( MIN_UDF_BLOCKS * partition.sector_size  , MAX_UDF_BLOCKS * partition.sector_size );
 }
 
 void udf::set_used_sectors( Partition & partition )
