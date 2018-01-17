@@ -316,7 +316,10 @@ const Glib::ustring Utils::get_encrypted_string()
 
 const Glib::ustring Utils::get_filesystem_string( bool encrypted, FILESYSTEM fstype )
 {
-	return get_encrypted_string() + " " + get_filesystem_string( fstype );
+	if ( encrypted )
+		return get_encrypted_string() + " " + get_filesystem_string( fstype );
+	else
+		return get_filesystem_string( fstype );
 }
 
 // Return Linux kernel name only for mountable file systems.
