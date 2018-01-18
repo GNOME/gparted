@@ -15,6 +15,7 @@
  */
 
 #include "f2fs.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 namespace GParted

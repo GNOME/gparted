@@ -16,6 +16,7 @@
  */
 
 #include "xfs.h"
+#include "FileSystem.h"
 #include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"

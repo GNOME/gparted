@@ -15,6 +15,7 @@
  */
 
 #include "udf.h"
+#include "FileSystem.h"
 #include "Partition.h"
 #include "Utils.h"
 

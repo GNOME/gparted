@@ -17,6 +17,7 @@
 
 #include "linux_swap.h"
 #include "BlockSpecial.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 #include <cerrno>

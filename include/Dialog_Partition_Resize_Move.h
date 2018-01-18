@@ -18,9 +18,9 @@
 #define GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
 
 #include "Dialog_Base_Partition.h"
+#include "FileSystem.h"
 #include "Partition.h"
 #include "PartitionVector.h"
-#include "Utils.h"
 
 namespace GParted
 {

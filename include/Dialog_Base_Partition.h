@@ -19,8 +19,8 @@
 #define GPARTED_DIALOG_BASE_PARTITION_H
 
 #include "Frame_Resizer_Extended.h"
+#include "FileSystem.h"
 #include "Partition.h"
-#include "Utils.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/stock.h>

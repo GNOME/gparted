@@ -16,6 +16,7 @@
  */
 
 #include "reiser4.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 namespace GParted

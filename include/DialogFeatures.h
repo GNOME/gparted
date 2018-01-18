@@ -18,7 +18,7 @@
 #ifndef GPARTED_DIALOGFEATURES_H
 #define GPARTED_DIALOGFEATURES_H
 
-#include "Utils.h"
+#include "FileSystem.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/frame.h>

@@ -16,6 +16,7 @@
  */
 
 #include "fat16.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 /*****

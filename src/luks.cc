@@ -14,6 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "FileSystem.h"
 #include "LUKS_Info.h"
 #include "Utils.h"
 #include "luks.h"

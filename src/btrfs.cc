@@ -17,6 +17,7 @@
 
 #include "btrfs.h"
 #include "BlockSpecial.h"
+#include "FileSystem.h"
 #include "Mount_Info.h"
 #include "Partition.h"
 

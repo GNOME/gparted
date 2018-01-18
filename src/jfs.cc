@@ -16,6 +16,7 @@
  */
 
 #include "jfs.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 namespace GParted

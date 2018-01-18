@@ -16,6 +16,7 @@
  */
 
 #include "ufs.h"
+#include "FileSystem.h"
 
 namespace GParted
 {

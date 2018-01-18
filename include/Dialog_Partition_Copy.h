@@ -19,8 +19,8 @@
 #define GPARTED_DIALOG_PARTITION_COPY_H
 
 #include "Dialog_Base_Partition.h"
+#include "FileSystem.h"
 #include "Partition.h"
-#include "Utils.h"
 
 namespace GParted
 {

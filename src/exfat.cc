@@ -15,6 +15,7 @@
  */
 
 #include "exfat.h"
+#include "FileSystem.h"
 
 namespace GParted
 {
@@ -32,4 +33,3 @@ FS exfat::get_filesystem_support()
 }
 
 } //GParted
-

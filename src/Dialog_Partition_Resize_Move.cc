@@ -16,6 +16,7 @@
  */
 
 #include "Dialog_Partition_Resize_Move.h"
+#include "FileSystem.h"
 #include "GParted_Core.h"
 #include "Partition.h"
 #include "PartitionVector.h"

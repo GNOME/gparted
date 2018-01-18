@@ -15,6 +15,7 @@
  */
 
 #include "nilfs2.h"
+#include "FileSystem.h"
 #include "Partition.h"
 
 namespace GParted

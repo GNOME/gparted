@@ -16,6 +16,7 @@
  */
 
 #include "DialogFeatures.h"
+#include "FileSystem.h"
 #include "GParted_Core.h"
 
 #include <gtkmm/stock.h>

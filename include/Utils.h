@@ -123,55 +123,6 @@ enum CUSTOM_TEXT
 	CTEXT_RESIZE_DISALLOWED_WARNING		// File system resizing currently disallowed reason
 } ;
 
-// Minimum and maximum file system size limits
-struct FS_Limits
-{
-	Byte_Value min_size;  // 0 => no limit, +ve => limit defined.  (As implemented by)
-	Byte_Value max_size;  // -----------------"-----------------   (code using these.)
-
-	FS_Limits()                                 : min_size( 0 )  , max_size( 0 )    {};
-	FS_Limits( Byte_Value min, Byte_Value max ) : min_size( min ), max_size( max )  {};
-};
-
-//struct to store file system information
-struct FS
-{
-	enum Support
-	{
-		NONE		= 0,
-		GPARTED		= 1,
-		LIBPARTED	= 2,
-		EXTERNAL	= 3
-	};
-
-	FSType filesystem;
-	Support busy ;  //How to determine if partition/file system is busy
-	Support read ;  //Can and how to read sector usage while inactive
-	Support read_label ;
-	Support write_label ;
-	Support read_uuid ;
-	Support write_uuid ;
-	Support create ;
-	Support create_with_label ;  //Can and how to format file system with label
-	Support grow ;
-	Support shrink ;
-	Support move ; //startpoint and endpoint
-	Support check ; //some checktool available?
-	Support copy ;
-	Support remove ;
-	Support online_read ;  //Can and how to read sector usage while active
-	Support online_grow ;
-	Support online_shrink ;
-
-	FS( FSType fstype = FS_UNKNOWN ) : filesystem( fstype )
-	{
-		busy = read = read_label = write_label = read_uuid = write_uuid = create =
-		create_with_label = grow = shrink = move = check = copy = remove = online_read =
-		online_grow = online_shrink = NONE ;
-	} 
-} ;
-
-
 class Utils
 {
 public:

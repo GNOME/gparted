@@ -14,6 +14,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "FileSystem.h"
 #include "LVM2_PV_Info.h"
 #include "lvm2_pv.h"
 #include "Partition.h"
