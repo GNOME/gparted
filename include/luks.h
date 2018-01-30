@@ -27,7 +27,7 @@ namespace GParted
 class luks : public FileSystem
 {
 public:
-	const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
+	const Glib::ustring & get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
 	FS get_filesystem_support();
 	bool is_busy( const Glib::ustring & path );
 	void set_used_sectors( Partition & partition );

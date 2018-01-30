@@ -44,7 +44,7 @@ const Glib::ustring fat16::Change_UUID_Warning [] =
 	,    ""
 	} ;
 
-const Glib::ustring fat16::get_custom_text( CUSTOM_TEXT ttype, int index ) const
+const Glib::ustring & fat16::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	int i ;
 	switch ( ttype ) {

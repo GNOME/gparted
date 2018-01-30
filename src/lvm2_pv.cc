@@ -22,7 +22,7 @@
 namespace GParted
 {
 
-const Glib::ustring lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) const
+const Glib::ustring & lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	/*TO TRANSLATORS: these labels will be used in the partition menu */
 	static const Glib::ustring activate_text = _( "Ac_tivate" ) ;
@@ -31,17 +31,18 @@ const Glib::ustring lvm2_pv::get_custom_text( CUSTOM_TEXT ttype, int index ) con
 	static const Glib::ustring resize_warning =
 		_( "The LVM2 Physical Volume can not currently be resized because it is a member of an exported "
 		   "Volume Group." ) ;
+	static const Glib::ustring empty_text;
 
 	switch ( ttype )
 	{
 		case CTEXT_ACTIVATE_FILESYSTEM:
-			return index == 0 ? activate_text : "" ;
+			return index == 0 ? activate_text : empty_text;
 		case CTEXT_DEACTIVATE_FILESYSTEM:
-			return index == 0 ? deactivate_text : "" ;
+			return index == 0 ? deactivate_text : empty_text;
 		case CTEXT_RESIZE_DISALLOWED_WARNING:
-			return index == 0 ? resize_warning : "" ;
+			return index == 0 ? resize_warning : empty_text;
 		default:
-			return "" ;
+			return empty_text;
 	}
 }
 

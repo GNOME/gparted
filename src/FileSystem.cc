@@ -31,24 +31,25 @@ FileSystem::FileSystem()
 {
 }
 
-const Glib::ustring FileSystem::get_custom_text( CUSTOM_TEXT ttype, int index ) const
+const Glib::ustring & FileSystem::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	return get_generic_text( ttype, index ) ;
 }
 
-const Glib::ustring FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index )
+const Glib::ustring & FileSystem::get_generic_text( CUSTOM_TEXT ttype, int index )
 {
 	/*TO TRANSLATORS: these labels will be used in the partition menu */
 	static const Glib::ustring activate_text = _( "_Mount" ) ;
 	static const Glib::ustring deactivate_text = _( "_Unmount" ) ;
+	static const Glib::ustring empty_text;
 
 	switch ( ttype ) {
 		case CTEXT_ACTIVATE_FILESYSTEM :
-			return index == 0 ? activate_text : "" ;
+			return index == 0 ? activate_text : empty_text;
 		case CTEXT_DEACTIVATE_FILESYSTEM :
-			return index == 0 ? deactivate_text : "" ;
+			return index == 0 ? deactivate_text : empty_text;
 		default :
-			return "" ;
+			return empty_text;
 	}
 }
 

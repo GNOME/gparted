@@ -45,7 +45,7 @@ const Glib::ustring ntfs::Change_UUID_Warning [] =
 	,    ""
 	} ;
 
-const Glib::ustring ntfs::get_custom_text( CUSTOM_TEXT ttype, int index ) const
+const Glib::ustring & ntfs::get_custom_text( CUSTOM_TEXT ttype, int index ) const
 {
 	int i ;
 	switch ( ttype ) {

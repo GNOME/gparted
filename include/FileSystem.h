@@ -106,8 +106,8 @@ public:
 	FileSystem() ;
 	virtual ~FileSystem() {}
 
-	virtual const Glib::ustring get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
-	static const Glib::ustring get_generic_text( CUSTOM_TEXT ttype, int index = 0 ) ;
+	virtual const Glib::ustring & get_custom_text( CUSTOM_TEXT ttype, int index = 0 ) const;
+	static const Glib::ustring & get_generic_text( CUSTOM_TEXT ttype, int index = 0 );
 
 	virtual FS get_filesystem_support() = 0 ;
 	virtual FS_Limits get_filesystem_limits( const Partition & partition ) const  { return fs_limits; };
