@@ -102,8 +102,8 @@ b. Building from Source
    On Fedora, you will need to run (as root);
       yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  gnome-doc-utils docbook-dtds rarian-compat intltool \
-                  gnome-common gcc-c++
+                  gnome-doc-utils docbook-dtds intltool gnome-common \
+                  gcc-c++
       yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
@@ -123,9 +123,13 @@ b. Building from Source
    the --disable-doc flag:
       E.g., ./configure --disable-doc
 
-   If you wish to build this package for use on a desktop that does not
-   support scrollkeeper use the --disable-scrollkeeper flag:
+   Scrollkeeper is needed on GNOME/Gtk 2 desktops to update the OMF
+   catalog files to allow yelp to display the GParted help manual.  On
+   GNOME/Gtk 3 desktops scrollkeeper in not required.  Use can be
+   explicitly disabled with the --disable-scrollkeeper flag:
       E.g., ./configure --disable-scrollkeeper
+   Note that the configure script will automatically disable
+   scrollkeeper if the scrollkeeper-update command is not found.
 
    If you wish to build this package to use native libparted /dev/mapper
    dmraid support use the --enable-libparted-dmraid flag:

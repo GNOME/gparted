@@ -348,6 +348,23 @@ fi
 
 AM_CONDITIONAL([BUILD_HELP_DOC], [test "x$enable_doc" = xyes])
 
+dnl GNOME 2 yelp needs scrollkeeper database updates to find installed GNOME help files.
+dnl GNOME 3 yelp doesn't need scrollkeeper and its use is deprecated.  To avoid requiring
+dnl deprecated scrollkeeper on GNOME 3, automatically disable scrollkeeper database
+dnl updates when the command is not available.
+dnl (See /usr/share/aclocal/gnome-doc-utils.m4 for the GNOME_DOC_INIT macro which has
+dnl already parsed the --disable-scrollkeeper option and set enable_scrollkeeper and
+dnl ENABLE_SK).
+AC_CHECK_PROG([have_scrollkeeper_update], [scrollkeeper-update], yes, no)
+AC_MSG_CHECKING([whether to enable scrollkeeper database update])
+if test "$enable_scrollkeeper" = "yes" -a "$have_scrollkeeper_update" = "yes"; then
+	AC_MSG_RESULT([yes])
+else
+	enable_scrollkeeper=no
+	AM_CONDITIONAL([ENABLE_SK], false)
+	AC_MSG_RESULT([no])
+fi
+
 
 dnl======================
 dnl check whether to use native libparted dmraid support
@@ -438,6 +455,7 @@ echo "======================== Final configuration ==========================="
 echo "                         Installing into prefix  :  $prefix"
 echo ""
 echo "                      Build help documentation?  :  $enable_doc"
+echo "                  Update scrollkeeper database?  :  $enable_scrollkeeper"
 echo ""
 echo "           Use native libparted dmraid support?  :  $enable_libparted_dmraid"
 echo ""
