@@ -2421,6 +2421,77 @@ void Win_GParted::activate_format( FSType new_fs )
 	temp_ptn = NULL;
 }
 
+bool Win_GParted::open_encrypted_partition( const Partition & partition,
+                                            const char * entered_password,
+                                            Glib::ustring & message )
+{
+	const char * pw = NULL;
+	if ( entered_password == NULL )
+	{
+		pw = PasswordRAMStore::lookup( partition.uuid );
+		if ( pw == NULL )
+		{
+			// Internal documentation message never shown to user.
+			message = "No stored password available";
+			return false;
+		}
+	}
+	else
+	{
+		pw = entered_password;
+		if ( strlen( pw ) == 0 )
+		{
+			// Internal documentation message never shown to user.
+			message = "Invalid zero length password";
+			return false;
+		}
+	}
+
+	// Create LUKS mapping name from partition name:
+	// "/dev/sdb1" -> "sdb1_crypt"
+	Glib::ustring mapping_name = selected_partition_ptr->get_path();
+	Glib::ustring::size_type last_slash = mapping_name.rfind( "/" );
+	if ( last_slash != Glib::ustring::npos )
+		mapping_name = mapping_name.substr( last_slash + 1 );
+	mapping_name += "_crypt";
+
+	Glib::ustring cmd = "cryptsetup luksOpen " +
+	                    Glib::shell_quote( partition.get_path() ) + " " +
+	                    Glib::shell_quote( mapping_name );
+
+	show_pulsebar( String::ucompose( _("Opening encryption on %1"), partition.get_path() ) );
+	Glib::ustring output;
+	Glib::ustring error;
+	bool success = ! Utils::execute_command( cmd, pw, output, error );
+	hide_pulsebar();
+	if ( success && pw != NULL )
+	{
+		// Replace the password just successfully used to open the LUKS mapping if
+		// it is different to the one already saved, or there is no saved
+		// password.
+		const char * stored_pw = PasswordRAMStore::lookup( partition.uuid );
+		if ( stored_pw != NULL            &&
+		     strcmp( pw, stored_pw ) == 0    )
+		{
+			PasswordRAMStore::erase( partition.uuid );
+			stored_pw = NULL;
+		}
+		if ( stored_pw == NULL )
+		{
+			PasswordRAMStore::insert( partition.uuid, pw );
+		}
+	}
+	else if ( ! success )
+	{
+		// Erase the password used during for the failure to open the LUKS
+		// mapping.
+		PasswordRAMStore::erase( partition.uuid );
+	}
+
+	message = "<i># " + cmd + "\n" + error + "\n" + output + "</i>";
+	return success;
+}
+
 void Win_GParted::toggle_crypt_busy_state()
 {
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
@@ -2447,8 +2518,6 @@ void Win_GParted::toggle_crypt_busy_state()
 	{
 		action = LUKSOPEN;
 		disallowed_msg = _("The open encryption action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Opening encryption on %1"), selected_partition_ptr->get_path() );
-		failure_msg = _("Could not open encryption");
 	}
 
 	if ( ! check_toggle_busy_allowed( disallowed_msg ) )
@@ -2478,30 +2547,25 @@ void Win_GParted::toggle_crypt_busy_state()
 			break;
 		case LUKSOPEN:
 		{
+			// Attempt to unlock LUKS using stored passphrase first.
+			success = open_encrypted_partition( *selected_partition_ptr, NULL, error_msg );
+			if ( success )
+				break;
 
+			// Open password dialog and attempt to unlock LUKS mapping.
 			DialogPasswordEntry dialog( *selected_partition_ptr );
 			dialog.set_transient_for( *this );
-			if ( dialog.run() != Gtk::RESPONSE_OK )
-				// Password dialog cancelled or closed
-				return;
+			do
+			{
+				if ( dialog.run() != Gtk::RESPONSE_OK )
+					// Password dialog cancelled or closed without the
+					// LUKS mapping having been opened.  Skip refresh.
+					return;
 
-			// Create LUKS mapping name from partition name:
-			// "/dev/sdb1" -> "sdb1_crypt"
-			Glib::ustring mapping_name = selected_partition_ptr->get_path();
-			Glib::ustring::size_type last_slash = mapping_name.rfind( "/" );
-			if ( last_slash != Glib::ustring::npos )
-				mapping_name = mapping_name.substr( last_slash + 1 );
-			mapping_name += "_crypt";
-
-			cmd = "cryptsetup luksOpen " +
-			      Glib::shell_quote( selected_partition_ptr->get_path() ) + " " +
-			      Glib::shell_quote( mapping_name );
-			show_pulsebar( pulse_msg );
-			success = ! Utils::execute_command( cmd, dialog.get_password().c_str(),
-			                                    output, error );
-			hide_pulsebar();
-			error_msg = "<i># " + cmd + "\n" + error + "</i>";
-			break;
+				success = open_encrypted_partition( *selected_partition_ptr,
+				                                    dialog.get_password().c_str(),
+				                                    error_msg );
+			} while ( ! success );
 		}
 		default:
 			// Impossible

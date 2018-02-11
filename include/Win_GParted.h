@@ -180,6 +180,7 @@ private:
 	void activate_delete();
 	void activate_info();
 	void activate_format( FSType new_fs );
+	bool open_encrypted_partition( const Partition & partition, const char * password, Glib::ustring & message );
 	void toggle_crypt_busy_state();
 	bool check_toggle_busy_allowed( const Glib::ustring & disallowed_msg );
 	void show_toggle_failure_dialog( const Glib::ustring & failure_summary,
