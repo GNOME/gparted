@@ -8,15 +8,15 @@
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2004, 2005, 2006, 2008, 2009, 2010, 2011.
 # Nicolás Satragno <nsatragno@gnome.org>, 2013.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted.master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-12-04 20:36+0000\n"
-"PO-Revision-Date: 2017-12-14 13:19+0100\n"
+"POT-Creation-Date: 2018-01-02 17:40+0000\n"
+"PO-Revision-Date: 2018-02-22 13:22+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: es <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -98,24 +98,19 @@ msgstr "(La mitad del UUID nuevo se generará aleatoriamente)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:180 ../src/ProgressBar.cc:106
+#: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:175 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
 msgstr "%1 de %2 copiados"
 
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/CopyBlocks.cc:155
-msgid "copy %1 using a block size of %2"
-msgstr "copiar %1 usando un tamaño de bloque de %2"
-
-#: ../src/CopyBlocks.cc:220
+#: ../src/CopyBlocks.cc:215
 msgid "Operation Canceled"
 msgstr "Operación cancelada"
 
-#: ../src/CopyBlocks.cc:232
+#: ../src/CopyBlocks.cc:227
 msgid "Error while writing block at sector %1"
 msgstr "Error al crear escribir el bloque en el sector %1"
 
-#: ../src/CopyBlocks.cc:237
+#: ../src/CopyBlocks.cc:232
 msgid "Error while reading block at sector %1"
 msgstr "Error al leer el bloque en el sector %1"
 
@@ -979,23 +974,23 @@ msgstr "crear una partición vacía"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1972 ../src/GParted_Core.cc:3585
+#: ../src/GParted_Core.cc:1972 ../src/GParted_Core.cc:3638
 msgid "path: %1 (%2)"
 msgstr "ruta: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1973 ../src/GParted_Core.cc:3589
+#: ../src/GParted_Core.cc:1973 ../src/GParted_Core.cc:3642
 msgid "partition"
 msgstr "partición"
 
-#: ../src/GParted_Core.cc:1974 ../src/GParted_Core.cc:3590
+#: ../src/GParted_Core.cc:1974 ../src/GParted_Core.cc:3643
 msgid "start: %1"
 msgstr "inicio: %1"
 
-#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3591
+#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3644
 msgid "end: %1"
 msgstr "fin: %1"
 
-#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3592
+#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3645
 msgid "size: %1 (%2)"
 msgstr "tamaño: %1 (%2)"
 
@@ -1083,23 +1078,24 @@ msgstr "Establecer UUID de %1 a un valor nuevo aleatorio"
 msgid "size of the partition is changing for a move only step"
 msgstr "el tamaño de la partición está cambiando para moverla en un solo paso"
 
-#: ../src/GParted_Core.cc:2330
-msgid "rollback last change to the partition table"
-msgstr "deshacer el último cambio en la tabla de particiones"
+#: ../src/GParted_Core.cc:2329
+#| msgid "rollback last change to the partition table"
+msgid "rollback last change to the partition"
+msgstr "deshacer el último cambio en la partición"
 
-#: ../src/GParted_Core.cc:2379
+#: ../src/GParted_Core.cc:2378
 msgid "move file system to the left"
 msgstr "mover el sistema de archivos a la izquierda"
 
-#: ../src/GParted_Core.cc:2381
+#: ../src/GParted_Core.cc:2380
 msgid "move file system to the right"
 msgstr "mover el sistema de archivos a la derecha"
 
-#: ../src/GParted_Core.cc:2384
+#: ../src/GParted_Core.cc:2383
 msgid "move file system"
 msgstr "mover el sistema de archivos"
 
-#: ../src/GParted_Core.cc:2386
+#: ../src/GParted_Core.cc:2385
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1107,7 +1103,7 @@ msgstr ""
 "el sistema de archivos nuevo y el antiguo tienen la misma posición; "
 "omitiendo esta operación"
 
-#: ../src/GParted_Core.cc:2452
+#: ../src/GParted_Core.cc:2451
 msgid "using libparted"
 msgstr "usando libparted"
 
@@ -1117,23 +1113,23 @@ msgstr "usando libparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2526
+#: ../src/GParted_Core.cc:2525
 msgid "start of the partition is changing for a resize only step"
 msgstr ""
 "el tamaño de la partición está cambiando para redimensionarla en un solo paso"
 
-#: ../src/GParted_Core.cc:2544
+#: ../src/GParted_Core.cc:2543
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 "la partición no contiene cifrado LUKS abierto para cifrar el redimensionado "
 "en un sólo paso"
 
-#: ../src/GParted_Core.cc:2554
+#: ../src/GParted_Core.cc:2553
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "imposible reducir un volumen de cifrado LUKS cerrado"
 
-#: ../src/GParted_Core.cc:2613
+#: ../src/GParted_Core.cc:2612
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
@@ -1196,31 +1192,51 @@ msgstr "fin antiguo: %1"
 msgid "old size: %1 (%2)"
 msgstr "tamaño antiguo: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2797 ../src/GParted_Core.cc:3679
+#: ../src/GParted_Core.cc:2748 ../src/GParted_Core.cc:3732
 msgid "new start: %1"
 msgstr "nuevo inicio: %1"
 
-#: ../src/GParted_Core.cc:2798 ../src/GParted_Core.cc:3680
+#: ../src/GParted_Core.cc:2749 ../src/GParted_Core.cc:3733
 msgid "new end: %1"
 msgstr "nuevo final: %1"
 
-#: ../src/GParted_Core.cc:2799 ../src/GParted_Core.cc:3681
+#: ../src/GParted_Core.cc:2750 ../src/GParted_Core.cc:3734
 msgid "new size: %1 (%2)"
 msgstr "tamaño nuevo: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2826 ../src/GParted_Core.cc:3632
+#: ../src/GParted_Core.cc:2764 ../src/GParted_Core.cc:3685
 msgid "requested start: %1"
 msgstr "inicio solicitado: %1"
 
-#: ../src/GParted_Core.cc:2827 ../src/GParted_Core.cc:3633
+#: ../src/GParted_Core.cc:2765 ../src/GParted_Core.cc:3686
 msgid "requested end: %1"
 msgstr "fin solicitado: %1"
 
-#: ../src/GParted_Core.cc:2828 ../src/GParted_Core.cc:3634
+#: ../src/GParted_Core.cc:2766 ../src/GParted_Core.cc:3687
 msgid "requested size: %1 (%2)"
 msgstr "tamaño solicitado: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2847
+#: ../src/GParted_Core.cc:2778
+#| msgid "rollback last change to the partition table"
+msgid "attempt to rollback failed change to the partition"
+msgstr "falló el intento de deshacer el cambio en la partición"
+
+#: ../src/GParted_Core.cc:2799
+#| msgid "old start: %1"
+msgid "original start: %1"
+msgstr "inicio original: %1"
+
+#: ../src/GParted_Core.cc:2800
+#| msgid "old end: %1"
+msgid "original end: %1"
+msgstr "fin original: %1"
+
+#: ../src/GParted_Core.cc:2801
+#| msgid "old size: %1 (%2)"
+msgid "original size: %1 (%2)"
+msgstr "tamaño original: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2883
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
@@ -1228,11 +1244,11 @@ msgstr ""
 "la partición no contiene cifrado LUKS abierto para cifrar la reducción en un "
 "sólo paso"
 
-#: ../src/GParted_Core.cc:2852
+#: ../src/GParted_Core.cc:2888
 msgid "shrink encryption volume"
 msgstr "reducir volumen de cifrado"
 
-#: ../src/GParted_Core.cc:2863
+#: ../src/GParted_Core.cc:2899
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1240,15 +1256,15 @@ msgstr ""
 "la partición no contiene cifrado LUKS abierto para cifrar el maximizado en "
 "un sólo paso"
 
-#: ../src/GParted_Core.cc:2868
+#: ../src/GParted_Core.cc:2904
 msgid "grow encryption volume to fill the partition"
 msgstr "aumentar el volumen de cifrado hasta llenar la partición"
 
-#: ../src/GParted_Core.cc:2878
+#: ../src/GParted_Core.cc:2914
 msgid "growing is not available for this encryption volume"
 msgstr "ampliar no está disponible para este volumen de cifrado"
 
-#: ../src/GParted_Core.cc:2896
+#: ../src/GParted_Core.cc:2932
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1260,49 +1276,49 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2908
+#: ../src/GParted_Core.cc:2944
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 "la nueva partición es más grande o la misma para reducirla en un solo paso"
 
-#: ../src/GParted_Core.cc:2913
+#: ../src/GParted_Core.cc:2949
 msgid "shrink file system"
 msgstr "encoger el sistema de archivos"
 
-#: ../src/GParted_Core.cc:2924
+#: ../src/GParted_Core.cc:2960
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "la partición contiene cifrado LUKS abierto para maximizar un sistema de "
 "archivos en un sólo paso"
 
-#: ../src/GParted_Core.cc:2929
+#: ../src/GParted_Core.cc:2965
 msgid "grow file system to fill the partition"
 msgstr "aumentar el tamaño del sistema de archivos hasta llenar la partición"
 
-#: ../src/GParted_Core.cc:2940
+#: ../src/GParted_Core.cc:2976
 msgid "growing is not available for this file system"
 msgstr "ampliar no está disponible para este sistema de ficheros."
 
-#: ../src/GParted_Core.cc:2948
+#: ../src/GParted_Core.cc:2984
 msgid "growing the file system is currently disallowed"
 msgstr "actualmente no se permite aumentar el sistema de archivos"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:2972
+#: ../src/GParted_Core.cc:3008
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "no hay un sistema de archivos %1 para recrear %1 en un solo paso"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:2984
+#: ../src/GParted_Core.cc:3020
 msgid "recreate %1 file system"
 msgstr "recrear el sistema de archivos %1"
 
-#: ../src/GParted_Core.cc:3053
+#: ../src/GParted_Core.cc:3089
 msgid "the destination is smaller than the source partition"
 msgstr "el destino es más pequeño que la partición de origen"
 
-#: ../src/GParted_Core.cc:3104
+#: ../src/GParted_Core.cc:3140
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1310,7 +1326,7 @@ msgstr ""
 "la partición de origen contiene cifrado LUKS abierto para copiar un sistema "
 "de archivos en un sólo paso"
 
-#: ../src/GParted_Core.cc:3111
+#: ../src/GParted_Core.cc:3147
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
@@ -1318,42 +1334,48 @@ msgstr ""
 "la partición de destino contiene cifrado LUKS abierto para copiar un sistema "
 "de archivos en un sólo paso"
 
-#: ../src/GParted_Core.cc:3117
+#: ../src/GParted_Core.cc:3153
 msgid "copy file system from %1 to %2"
 msgstr "copiar el sistema de archivos de %1 a %2"
 
-#: ../src/GParted_Core.cc:3198
+#: ../src/GParted_Core.cc:3234
 msgid "using internal algorithm"
 msgstr "usando algoritmo interno"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3201
+#: ../src/GParted_Core.cc:3237
 msgid "copy %1"
 msgstr "copiar %1"
 
-#: ../src/GParted_Core.cc:3204
+#: ../src/GParted_Core.cc:3240
 msgid "finding optimal block size"
 msgstr "buscando tamaño de bloque óptimo"
 
-#: ../src/GParted_Core.cc:3246
+#. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:3271 ../src/GParted_Core.cc:3317
+msgid "copy %1 using a block size of %2"
+msgstr "copiar %1 usando un tamaño de bloque de %2"
+
+#: ../src/GParted_Core.cc:3289
 msgid "%1 seconds"
 msgstr "%1 segundos"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3264
+#: ../src/GParted_Core.cc:3308
 msgid "optimal block size is %1"
 msgstr "el tamaño de bloque óptimo es %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3282
+#: ../src/GParted_Core.cc:3335
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) copiados"
 
-#: ../src/GParted_Core.cc:3320
-msgid "roll back last transaction"
-msgstr "deshacer la última transacción"
+#: ../src/GParted_Core.cc:3373
+#| msgid "grow mounted file system"
+msgid "rollback failed file system move"
+msgstr "falló al deshacer mover archivo del sistema"
 
-#: ../src/GParted_Core.cc:3343
+#: ../src/GParted_Core.cc:3396
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
@@ -1361,47 +1383,47 @@ msgstr ""
 "archivos en un sólo paso"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3355
+#: ../src/GParted_Core.cc:3408
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "comprobar errores en el sistema de archivos en %1 y (si es posible) "
 "arreglarlos"
 
-#: ../src/GParted_Core.cc:3364
+#: ../src/GParted_Core.cc:3417
 msgid "checking is not available for this file system"
 msgstr "la comprobación no está disponible para este sistema de archivos"
 
-#: ../src/GParted_Core.cc:3429
+#: ../src/GParted_Core.cc:3482
 msgid "set partition type on %1"
 msgstr "establecer el tipo de partición en %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3479
+#: ../src/GParted_Core.cc:3532
 msgid "new partition type: %1"
 msgstr "tipo de partición nuevo: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3494
+#: ../src/GParted_Core.cc:3547
 msgid "new partition flag: %1"
 msgstr "tipo de partición nuevo: %1"
 
-#: ../src/GParted_Core.cc:3523
+#: ../src/GParted_Core.cc:3576
 msgid "calibrate %1"
 msgstr "calibrar %1"
 
-#: ../src/GParted_Core.cc:3588
+#: ../src/GParted_Core.cc:3641
 msgid "device"
 msgstr "dispositivo"
 
-#: ../src/GParted_Core.cc:3602
+#: ../src/GParted_Core.cc:3655
 msgid "encryption path: %1"
 msgstr "ruta de cifrado: %1"
 
-#: ../src/GParted_Core.cc:3628
+#: ../src/GParted_Core.cc:3681
 msgid "calculate new size and position of %1"
 msgstr "calcular el tamaño nuevo y la posición de %1"
 
-#: ../src/GParted_Core.cc:3740
+#: ../src/GParted_Core.cc:3800
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1409,57 +1431,57 @@ msgstr ""
 "la partición contiene cifrado LUKS abierto para borrar un sistema de "
 "archivos en un sólo paso"
 
-#: ../src/GParted_Core.cc:3747
+#: ../src/GParted_Core.cc:3807
 msgid "clear old file system signatures in %1"
 msgstr "limpiar firmas de sistemas de archivos antiguos en %1"
 
-#: ../src/GParted_Core.cc:3953
+#: ../src/GParted_Core.cc:4013
 msgid "flush operating system cache of %1"
 msgstr "vaciar caché del sistema operativo de %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3985
+#: ../src/GParted_Core.cc:4045
 msgid "update boot sector of %1 file system on %2"
 msgstr "actualizar el sector de arranque del sistema de archivos %1 en %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4021
+#: ../src/GParted_Core.cc:4081
 msgid "Error trying to write to boot sector in %1"
 msgstr "Error al intentar escribir el sector de arranque en %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4027
+#: ../src/GParted_Core.cc:4087
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Error al intentar buscar la posición 0x1c en %s"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4034
+#: ../src/GParted_Core.cc:4094
 msgid "Error trying to open %1"
 msgstr "Error al intentar abrir %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4044
+#: ../src/GParted_Core.cc:4104
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Falló al establecer el número de sectores ocultos en %1 en el registro de "
 "arranque NTFS."
 
-#: ../src/GParted_Core.cc:4046
+#: ../src/GParted_Core.cc:4106
 msgid "You might try the following command to correct the problem:"
 msgstr "Puede probar el siguiente comando para corregir el problema:"
 
-#: ../src/GParted_Core.cc:4105
+#: ../src/GParted_Core.cc:4165
 msgid "libparted messages"
 msgstr "mensajes de libparted"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4122
+#: ../src/GParted_Core.cc:4182
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr ""
 "Ignorando el dispositivo %1 con un tamaño de sector lógico de %2 bytes."
 
-#: ../src/GParted_Core.cc:4125
+#: ../src/GParted_Core.cc:4185
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1467,59 +1489,59 @@ msgstr ""
 "GParted requiere la versión 2.2 o superior de libparted para soportar "
 "dispositivos con tamaños de sectores mayores de 512 bytes."
 
-#: ../src/GParted_Core.cc:4313
+#: ../src/GParted_Core.cc:4373
 msgid "Libparted Information"
 msgstr "Información del libparted"
 
-#: ../src/GParted_Core.cc:4317
+#: ../src/GParted_Core.cc:4377
 msgid "Libparted Warning"
 msgstr "Advertencia de libparted"
 
-#: ../src/GParted_Core.cc:4321
+#: ../src/GParted_Core.cc:4381
 msgid "Libparted Error"
 msgstr "Error de libparted"
 
-#: ../src/GParted_Core.cc:4324
+#: ../src/GParted_Core.cc:4384
 msgid "Libparted Fatal"
 msgstr "Error fatal de Libparted"
 
-#: ../src/GParted_Core.cc:4327
+#: ../src/GParted_Core.cc:4387
 msgid "Libparted Bug"
 msgstr "Error en Libparted"
 
-#: ../src/GParted_Core.cc:4330
+#: ../src/GParted_Core.cc:4390
 msgid "Libparted Unsupported Feature"
 msgstr "Característica de Libparted no soportada"
 
-#: ../src/GParted_Core.cc:4333
+#: ../src/GParted_Core.cc:4393
 msgid "Libparted unknown exception"
 msgstr "Excepción de Libparted desconocida"
 
-#: ../src/GParted_Core.cc:4337
+#: ../src/GParted_Core.cc:4397
 msgid "Fix"
 msgstr "Corregir"
 
-#: ../src/GParted_Core.cc:4339
+#: ../src/GParted_Core.cc:4399
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/GParted_Core.cc:4341
+#: ../src/GParted_Core.cc:4401
 msgid "Ok"
 msgstr "Aceptar"
 
-#: ../src/GParted_Core.cc:4343
+#: ../src/GParted_Core.cc:4403
 msgid "Retry"
 msgstr "Reintentar"
 
-#: ../src/GParted_Core.cc:4345
+#: ../src/GParted_Core.cc:4405
 msgid "No"
 msgstr "No"
 
-#: ../src/GParted_Core.cc:4347
+#: ../src/GParted_Core.cc:4407
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../src/GParted_Core.cc:4349
+#: ../src/GParted_Core.cc:4409
 msgid "Ignore"
 msgstr "Ignorar"
 
@@ -2531,6 +2553,9 @@ msgstr ""
 "Las versiones de mkudffs anteriores a la 1.1 no soportan caracteres no ASCII "
 "en la etiqueta."
 
+#~ msgid "roll back last transaction"
+#~ msgstr "deshacer la última transacción"
+
 #~ msgid "N/A"
 #~ msgstr "N/D"
 
@@ -2667,9 +2692,6 @@ msgstr ""
 
 #~ msgid "remove temporary mount point (%1)"
 #~ msgstr "Eliminar el punto de montaje temporal (%1)"
-
-#~ msgid "grow mounted file system"
-#~ msgstr "aumentar el sistema de archivos montado"
 
 #~ msgid "copy file system"
 #~ msgstr "copiar el sistema de archivos"
