@@ -224,15 +224,8 @@ AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
-dnl Check for glibmm >= 2.14 to determine availability of Glib::Regex class
-AC_MSG_CHECKING([for Glib::Regex class])
-PKG_CHECK_EXISTS(
-	[glibmm-2.4 >= 2.14.0],
-	[AC_DEFINE([HAVE_GLIB_REGEX], 1, [Define to 1 if glibmm provides Glib::Regex class.])
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
+dnl Check for glibmm minimum required version.
+PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
 
 
 dnl Check for gtkmm >= 2.11.1 to determine availability of Gtk::Window::set_default_icon_name()
