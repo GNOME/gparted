@@ -85,11 +85,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	
 	try
 	{
-#ifdef HAVE_SET_DEFAULT_ICON_NAME
 		this ->set_default_icon_name( "gparted" ) ;
-#else
-		this ->set_icon_from_file( GNOME_ICONDIR "/gparted.png" ) ;
-#endif
 	}
 	catch ( Glib::Exception & e )
 	{

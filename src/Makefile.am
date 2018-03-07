@@ -2,7 +2,6 @@ AM_CPPFLAGS =						\
 	-I$(top_srcdir)/include				\
 	$(GTHREAD_CFLAGS) 				\
 	$(GTKMM_CFLAGS) 				\
-	-DGNOME_ICONDIR=\""$(datadir)/pixmaps"\"		\
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
 
 AM_CFLAGS = -Wall	

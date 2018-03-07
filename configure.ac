@@ -219,35 +219,13 @@ AC_SUBST([GTHREAD_LIBS])
 AC_SUBST([GTHREAD_CFLAGS])
 
 dnl GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 > 2.8])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 >= 2.11.1])
 AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
 dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
-
-
-dnl Check for gtkmm >= 2.11.1 to determine availability of Gtk::Window::set_default_icon_name()
-dnl NOTE:
-dnl The documentation says that set_default_icon_name() is available in gtkmm >= 2.6,
-dnl however the code reveals that it is only available in gtkmm >= 2.11.1.
-dnl *   gtkmm GTK::Window Class Reference
-dnl     https://developer.gnome.org/gtkmm/3.6/classGtk_1_1Window.html#a533d03e9b92d8ccd142ab3a44005cae4
-dnl *   gtkmm NEWS file
-dnl     https://git.gnome.org/browse/gtkmm/tree/NEWS?h=gtkmm-2.14.0#n565
-AC_MSG_CHECKING([for Gtk::Window::set_default_icon_name() method])
-PKG_CHECK_EXISTS(
-	[gtkmm-2.4 >= 2.11.1],
-	[AC_DEFINE([HAVE_SET_DEFAULT_ICON_NAME], 1,
-	           [Define to 1 if gtkmm-2.4 provides Gtk::Window::set_default_icon_name() method.])
-	 AM_CONDITIONAL([INSTALL_PIXMAPS_DIR], false)
-	 AC_MSG_RESULT([yes])
-	],
-	[AM_CONDITIONAL([INSTALL_PIXMAPS_DIR], true)
-	 AC_MSG_RESULT([no])
-        ]
-)
 
 
 dnl GTKMM 2.16 needed for gtk_show_uri()
