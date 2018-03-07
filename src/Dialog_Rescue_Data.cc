@@ -217,12 +217,7 @@ void Dialog_Rescue_Data::open_ro_view(Glib::ustring mountPoint)
 
 	gscreen = gdk_screen_get_default() ;
 
-#ifdef HAVE_GTK_SHOW_URI
 	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
-#else
-	Glib::ustring command = "gnome-open " + uri ;
-	gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
-#endif
 
 	if ( error != NULL )
 	{

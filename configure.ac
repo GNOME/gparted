@@ -219,24 +219,13 @@ AC_SUBST([GTHREAD_LIBS])
 AC_SUBST([GTHREAD_CFLAGS])
 
 dnl GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 >= 2.11.1])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 >= 2.16.0])
 AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
 dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
-
-
-dnl GTKMM 2.16 needed for gtk_show_uri()
-AC_MSG_CHECKING([for gtk_show_uri function])
-PKG_CHECK_EXISTS(
-	[gtkmm-2.4 >= 2.16.0],
-	[AC_DEFINE([HAVE_GTK_SHOW_URI], 1, [Define to 1 if gtkmm provides gtk_show_uri() function.])
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
 
 
 dnl Check for gtkmm >= 2.22 to determine availability of Gtk::MessageDialog::get_message_area().
