@@ -34,12 +34,10 @@ FS ext2::get_filesystem_support()
 
 	// Only enable functionality if the relevant mkfs.extX command is found to ensure
 	// that the version of e2fsprogs is new enough to support ext4.  Applying to
-	// ext2/3 is OK as relevant mkfs.ext2/3 commands exist.  Also for ext4 only, check
-	// for e4fsprogs commands to support RHEL/CentOS 5.x which uses a separate package
-	// to provide ext4 support.  The existing e2fsprogs commands only support ext2/3.
-	if ( ! Glib::find_program_in_path( "mkfs." + Utils::get_filesystem_string( specific_type ) ).empty() )
+	// ext2/3 is OK as relevant mkfs.ext2/3 commands exist.
+	mkfs_cmd = "mkfs." + Utils::get_filesystem_string( specific_type );
+	if ( ! Glib::find_program_in_path( mkfs_cmd ).empty() )
 	{
-		mkfs_cmd = "mkfs." + Utils::get_filesystem_string( specific_type );
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
@@ -79,45 +77,25 @@ FS ext2::get_filesystem_support()
 			}
 		}
 
-		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "dumpe4fs" ).empty() )
-			dump_cmd = "dumpe4fs";
-		else if ( ! Glib::find_program_in_path( "dumpe2fs" ).empty() )
-			dump_cmd = "dumpe2fs";
-		if ( dump_cmd != "" )
+		if ( ! Glib::find_program_in_path( "dumpe2fs").empty() )
 			fs .read = FS::EXTERNAL ;
 
-		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "tune4fs" ).empty() )
-			tune_cmd = "tune4fs";
-		else if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
-			tune_cmd = "tune2fs";
-		if ( tune_cmd != "" )
+		if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
 		{
 			fs .read_uuid = FS::EXTERNAL ;
 			fs .write_uuid = FS::EXTERNAL ;
 		}
 
-		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4label" ).empty() )
-			label_cmd = "e4label";
-		else if ( ! Glib::find_program_in_path( "e2label" ).empty() )
-			label_cmd = "e2label";
-		if ( label_cmd != "" )
+		if ( ! Glib::find_program_in_path( "e2label" ).empty() )
 		{
 			fs .read_label = FS::EXTERNAL ;
 			fs .write_label = FS::EXTERNAL ;
 		}
 
-		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4fsck" ).empty() )
-			fsck_cmd = "e4fsck";
-		else if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
-			fsck_cmd = "e2fsck";
-		if ( fsck_cmd != "" )
+		if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
 			fs .check = FS::EXTERNAL ;
 	
-		if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "resize4fs" ).empty() )
-			resize_cmd = "resize4fs";
-		else if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
-			resize_cmd = "resize2fs";
-		if ( resize_cmd != "" && fs .check )
+		if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
 		{
 			fs .grow = FS::EXTERNAL ;
 
@@ -133,13 +111,9 @@ FS ext2::get_filesystem_support()
 			//  only copies used blocks, skipping unused blocks.  This is more
 			//  efficient than copying all blocks used by GParted's internal
 			//  method.
-			if ( specific_type == FS_EXT4 && ! Glib::find_program_in_path( "e4image" ).empty() )
-				image_cmd = "e4image";
-			else if ( ! Glib::find_program_in_path( "e2image" ).empty() )
-				image_cmd = "e2image";
-			if ( image_cmd != "" )
+			if ( ! Glib::find_program_in_path( "e2image" ).empty() )
 			{
-				Utils::execute_command( image_cmd, output, error, true ) ;
+				Utils::execute_command( "e2image", output, error, true ) ;
 				if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
 					fs.copy = fs.move = FS::EXTERNAL ;
 			}
@@ -175,8 +149,8 @@ void ext2::set_used_sectors( Partition & partition )
 	//  avoid overhead subtraction.  Read the free space from the kernel via
 	//  the statvfs() system call when mounted and from the superblock when
 	//  unmounted.
-	if ( ! Utils::execute_command( dump_cmd + " -h " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                          )
+	if ( ! Utils::execute_command( "dumpe2fs -h " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                       )
 	{
 		Glib::ustring::size_type index = output.find( "Block count:" );
 		if ( index >= output .length() ||
@@ -233,8 +207,8 @@ void ext2::set_used_sectors( Partition & partition )
 	
 void ext2::read_label( Partition & partition )
 {
-	if ( ! Utils::execute_command( label_cmd + " " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                        )
+	if ( ! Utils::execute_command( "e2label " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                   )
 	{
 		partition.set_filesystem_label( Utils::trim( output ) );
 	}
@@ -250,15 +224,15 @@ void ext2::read_label( Partition & partition )
 
 bool ext2::write_label( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( label_cmd + " " + Glib::shell_quote( partition.get_path() ) +
+	return ! execute_command( "e2label " + Glib::shell_quote( partition.get_path() ) +
 	                          " " + Glib::shell_quote( partition.get_filesystem_label() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
 void ext2::read_uuid( Partition & partition )
 {
-	if ( ! Utils::execute_command( tune_cmd + " -l " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                          )
+	if ( ! Utils::execute_command( "tune2fs -l " + Glib::shell_quote( partition.get_path() ),
+	                               output, error, true )                                      )
 	{
 		partition .uuid = Utils::regexp_label( output, "^Filesystem UUID:[[:blank:]]*(" RFC4122_NONE_NIL_UUID_REGEXP ")" ) ;
 	}
@@ -274,7 +248,7 @@ void ext2::read_uuid( Partition & partition )
 
 bool ext2::write_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( tune_cmd + " -U random " + Glib::shell_quote( partition.get_path() ),
+	return ! execute_command( "tune2fs -U random " + Glib::shell_quote( partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
 
@@ -300,7 +274,7 @@ bool ext2::create( const Partition & new_partition, OperationDetail & operationd
 
 bool ext2::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring str_temp = resize_cmd + " -p " + Glib::shell_quote( partition_new.get_path() );
+	Glib::ustring str_temp = "resize2fs -p " + Glib::shell_quote( partition_new.get_path() );
 	
 	if ( ! fill_partition )
 		str_temp += " " + Utils::num_to_str( floor( Utils::sector_to_unit(
@@ -312,7 +286,7 @@ bool ext2::resize( const Partition & partition_new, OperationDetail & operationd
 
 bool ext2::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( fsck_cmd + " -f -y -v -C 0 " + Glib::shell_quote( partition.get_path() ),
+	exit_status = execute_command( "e2fsck -f -y -v -C 0 " + Glib::shell_quote( partition.get_path() ),
 	                               operationdetail, EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDOUT,
 	                               static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::check_repair_progress ) ) );
 	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
@@ -328,9 +302,9 @@ bool ext2::move( const Partition & partition_new,
 	Glib::ustring offset = Utils::num_to_str( llabs(distance) * partition_new.sector_size );
 	Glib::ustring cmd;
 	if ( distance < 0 )
-		cmd = image_cmd + " -ra -p -o " + offset + " " + Glib::shell_quote( partition_new.get_path() );
+		cmd = "e2image -ra -p -o " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 	else
-		cmd = image_cmd + " -ra -p -O " + offset + " " + Glib::shell_quote( partition_new.get_path() );
+		cmd = "e2image -ra -p -O " + offset + " " + Glib::shell_quote( partition_new.get_path() );
 
 	fs_block_size = partition_old.fs_block_size;
 	return ! execute_command( cmd, operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
@@ -342,7 +316,7 @@ bool ext2::copy( const Partition & src_part,
                  OperationDetail & operationdetail )
 {
 	fs_block_size = src_part.fs_block_size;
-	return ! execute_command( image_cmd + " -ra -p " + Glib::shell_quote( src_part.get_path() ) +
+	return ! execute_command( "e2image -ra -p " + Glib::shell_quote( src_part.get_path() ) +
 	                          " " + Glib::shell_quote( dest_part.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE|EXEC_PROGRESS_STDERR,
 	                          static_cast<StreamSlot>( sigc::mem_fun( *this, &ext2::copy_progress ) ) );
