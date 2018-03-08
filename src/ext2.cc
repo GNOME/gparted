@@ -32,17 +32,14 @@ FS ext2::get_filesystem_support()
 
 	fs .busy = FS::GPARTED ;
 
-	// Only enable functionality if the relevant mkfs.extX command is found to ensure
-	// that the version of e2fsprogs is new enough to support ext4.  Applying to
-	// ext2/3 is OK as relevant mkfs.ext2/3 commands exist.
 	mkfs_cmd = "mkfs." + Utils::get_filesystem_string( specific_type );
+	bool have_64bit_feature = false;
 	if ( ! Glib::find_program_in_path( mkfs_cmd ).empty() )
 	{
 		fs .create = FS::EXTERNAL ;
 		fs .create_with_label = FS::EXTERNAL ;
 
 		// Determine mkfs.ext4 version specific capabilities.
-		bool have_64bit_feature = false;
 		force_auto_64bit = false;
 		if ( specific_type == FS_EXT4 )
 		{
@@ -76,68 +73,69 @@ FS ext2::get_filesystem_support()
 				                   || ( mke4fs_major_ver == 1 && mke4fs_minor_ver >= 42 );
 			}
 		}
+	}
 
-		if ( ! Glib::find_program_in_path( "dumpe2fs").empty() )
-			fs .read = FS::EXTERNAL ;
+	if ( ! Glib::find_program_in_path( "dumpe2fs").empty() )
+	{
+		fs.read = FS::EXTERNAL;
+		fs.online_read = FS::EXTERNAL;
+	}
 
-		if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
+	if ( ! Glib::find_program_in_path( "tune2fs" ).empty() )
+	{
+		fs.read_uuid = FS::EXTERNAL;
+		fs.write_uuid = FS::EXTERNAL;
+	}
+
+	if ( ! Glib::find_program_in_path( "e2label" ).empty() )
+	{
+		fs.read_label = FS::EXTERNAL;
+		fs.write_label = FS::EXTERNAL;
+	}
+
+	if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
+		fs.check = FS::EXTERNAL;
+
+	if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
+	{
+		fs.grow = FS::EXTERNAL;
+
+		if ( fs.read )  // Needed to determine a min file system size..
+			fs.shrink = FS::EXTERNAL;
+	}
+
+	if ( fs.check )
+	{
+		fs.copy = fs.move = FS::GPARTED;
+
+		// If supported, use e2image to copy/move the file system as it only
+		// copies used blocks, skipping unused blocks.  This is more efficient
+		// than copying all blocks used by GParted's internal method.
+		if ( ! Glib::find_program_in_path( "e2image" ).empty() )
 		{
-			fs .read_uuid = FS::EXTERNAL ;
-			fs .write_uuid = FS::EXTERNAL ;
+			Utils::execute_command( "e2image", output, error, true );
+			if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
+				fs.copy = fs.move = FS::EXTERNAL;
 		}
+	}
 
-		if ( ! Glib::find_program_in_path( "e2label" ).empty() )
-		{
-			fs .read_label = FS::EXTERNAL ;
-			fs .write_label = FS::EXTERNAL ;
-		}
-
-		if ( ! Glib::find_program_in_path( "e2fsck" ).empty() )
-			fs .check = FS::EXTERNAL ;
-	
-		if ( ! Glib::find_program_in_path( "resize2fs" ).empty() )
-		{
-			fs .grow = FS::EXTERNAL ;
-
-			if ( fs .read ) //needed to determine a min file system size..
-				fs .shrink = FS::EXTERNAL ;
-		}
-
-		if ( fs .check )
-		{
-			fs.copy = fs.move = FS::GPARTED ;
-
-			//If supported, use e2image to copy/move the file system as it
-			//  only copies used blocks, skipping unused blocks.  This is more
-			//  efficient than copying all blocks used by GParted's internal
-			//  method.
-			if ( ! Glib::find_program_in_path( "e2image" ).empty() )
-			{
-				Utils::execute_command( "e2image", output, error, true ) ;
-				if ( Utils::regexp_label( error, "(-o src_offset)" ) == "-o src_offset" )
-					fs.copy = fs.move = FS::EXTERNAL ;
-			}
-		}
-
-		fs .online_read = FS::EXTERNAL ;
 #ifdef ENABLE_ONLINE_RESIZE
-		if ( specific_type != FS_EXT2 && Utils::kernel_version_at_least( 3, 6, 0 ) )
-			fs .online_grow = fs .grow ;
+	if ( specific_type != FS_EXT2 && Utils::kernel_version_at_least( 3, 6, 0 ) )
+		fs.online_grow = fs.grow;
 #endif
 
-		// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, except for ext4
-		// with 64bit feature.  That is just under 16 TiB with a 4K block size.
-		// *   Ext4 Disk Layout, Blocks
-		//     https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Blocks
-		// FIXME: Rounding down to whole MiB here should not be necessary.  The
-		// Copy, New and Resize/Move dialogs should limit FS correctly without
-		// this.  See bug #766910 comment #12 onwards for further discussion.
-		//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
-		if ( specific_type == FS_EXT2                             ||
-		     specific_type == FS_EXT3                             ||
-		     ( specific_type == FS_EXT4 && ! have_64bit_feature )    )
-			fs_limits.max_size = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
-	}
+	// Maximum size of an ext2/3/4 volume is 2^32 - 1 blocks, except for ext4 with
+	// 64bit feature.  That is just under 16 TiB with a 4K block size.
+	// *   Ext4 Disk Layout, Blocks
+	//     https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Blocks
+	// FIXME: Rounding down to whole MiB here should not be necessary.  The Copy, New
+	// and Resize/Move dialogs should limit FS correctly without this.  See bug
+	// #766910 comment #12 onwards for further discussion.
+	//     https://bugzilla.gnome.org/show_bug.cgi?id=766910#c12
+	if ( specific_type == FS_EXT2                             ||
+	     specific_type == FS_EXT3                             ||
+	     ( specific_type == FS_EXT4 && ! have_64bit_feature )    )
+		fs_limits.max_size = Utils::floor_size( 16 * TEBIBYTE - 4 * KIBIBYTE, MEBIBYTE );
 
 	return fs ;
 }
