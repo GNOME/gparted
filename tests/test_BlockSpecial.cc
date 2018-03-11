@@ -22,21 +22,21 @@
  * names and symbolic link name.  The following files are explicitly
  * needed for the tests:
  *
- *     Name                        Access    Note
- *     -------------------------   -------   -----
- *     /                           Stat
- *     /proc/partitions            Stat
- *                                 Read      To find any two block
- *                                           devices
- *     /dev/BLOCK0                 Stat      First entry from
- *                                           /proc/partitions
- *     /dev/BLOCK1                 stat      Second entry from
- *                                           /proc/partitions
- *     /dev/disk/by-path/          Readdir   To find any symlink to a
- *                                           block device
- *     /dev/disk/by-path/SYMLINK   Stat      First directory entry
- *     /dev/RBLOCK                 Stat      Device to which SYMLINK
- *                                           refers
+ *     Name                      Access    Note
+ *     -----------------------   -------   -----
+ *     /                         Stat
+ *     /proc/partitions          Stat
+ *                               Read      To find any two block
+ *                                         devices
+ *     /dev/BLOCK0               Stat      First entry from
+ *                                         /proc/partitions
+ *     /dev/BLOCK1               stat      Second entry from
+ *                                         /proc/partitions
+ *     /dev/disk/by-id/          Readdir   To find any symlink to a
+ *                                         block device
+ *     /dev/disk/by-id/SYMLINK   Stat      First directory entry
+ *     /dev/RBLOCK               Stat      Device to which SYMLINK
+ *                                         refers
  *
  * Other dummy names are pre-loaded into the internal BlockSpecial cache
  * and never queried from the file system.
@@ -128,13 +128,13 @@ static std::string get_block_name( unsigned want )
 }
 
 // Return symbolic link to a block device by reading the first entry in the directory
-// /dev/disk/by-path/.
+// /dev/disk/by-id/.
 static std::string get_link_name()
 {
-	DIR * dir = opendir( "/dev/disk/by-path" );
+	DIR * dir = opendir( "/dev/disk/by-id" );
 	if ( dir == NULL )
 	{
-		ADD_FAILURE() << __func__ << "(): Failed to open directory '/dev/disk/by-path'";
+		ADD_FAILURE() << __func__ << "(): Failed to open directory '/dev/disk/by-id'";
 		return "";
 	}
 
@@ -153,9 +153,9 @@ static std::string get_link_name()
 	closedir( dir );
 
 	if ( found )
-		return std::string( "/dev/disk/by-path/" ) + dentry->d_name;
+		return std::string( "/dev/disk/by-id/" ) + dentry->d_name;
 
-	ADD_FAILURE() << __func__ << "(): No entries found in directory '/dev/disk/by-path'";
+	ADD_FAILURE() << __func__ << "(): No entries found in directory '/dev/disk/by-id'";
 	return "";
 }
 
