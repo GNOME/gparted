@@ -1,15 +1,15 @@
 # Vietnamese translation for the Gnome Partition Editor.
 # Copyright © 2006 Gnome i18n Project for Vietnamese.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2006.
-# Trần Ngọc Quân <vnwildman@gmail.com>, 2017.
+# Trần Ngọc Quân <vnwildman@gmail.com>, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted master\n"
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=gparted&keywords=I18N+L10N&component=application\n"
-"POT-Creation-Date: 2017-10-03 19:01+0000\n"
-"PO-Revision-Date: 2017-10-04 07:08+0700\n"
+"POT-Creation-Date: 2018-03-12 16:48+0000\n"
+"PO-Revision-Date: 2018-03-13 07:20+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
 "Language: vi\n"
@@ -24,8 +24,8 @@ msgid ""
 "GParted is a free partition editor for graphically managing your disk "
 "partitions."
 msgstr ""
-"GParted là một bộ chỉnh sửa phân vùng miễn phí dành cho việc quản lý các "
-"phân vùng trên đĩa của bạn bằng môi trường đồ họa."
+"GParted là một ứng dụng chỉnh sửa phân vùng miễn phí dành cho việc quản lý "
+"các phân vùng trên đĩa của bạn bằng môi trường đồ họa."
 
 #: ../gparted.appdata.xml.in.h:2
 msgid ""
@@ -50,8 +50,8 @@ msgstr ""
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
-#: ../src/Win_GParted.cc:81 ../src/Win_GParted.cc:1480
-#: ../src/Win_GParted.cc:1675
+#: ../src/Win_GParted.cc:83 ../src/Win_GParted.cc:1481
+#: ../src/Win_GParted.cc:1676
 msgid "GParted"
 msgstr "GParted"
 
@@ -90,24 +90,19 @@ msgstr "(UUID nửa mới - sẽ được tạo ngẫu nhiên)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
-#: ../src/CopyBlocks.cc:71 ../src/CopyBlocks.cc:181 ../src/ProgressBar.cc:106
+#: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:175 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
-msgstr "%1 trên %2 đã sao chép"
+msgstr "đã chép %1 trên %2"
 
-#. TO TRANSLATORS: looks like  copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/CopyBlocks.cc:156
-msgid "copy %1 using a block size of %2"
-msgstr "sao chép %1 dùng kích cỡ khối của %2"
-
-#: ../src/CopyBlocks.cc:221
+#: ../src/CopyBlocks.cc:215
 msgid "Operation Canceled"
 msgstr "Thao tác bị hủy bỏ"
 
-#: ../src/CopyBlocks.cc:233
+#: ../src/CopyBlocks.cc:227
 msgid "Error while writing block at sector %1"
 msgstr "Gặp lỗi khi ghi khối tại cung từ %1"
 
-#: ../src/CopyBlocks.cc:238
+#: ../src/CopyBlocks.cc:232
 msgid "Error while reading block at sector %1"
 msgstr "Gặp lỗi khi đọc khối tại cung từ %1"
 
@@ -151,7 +146,7 @@ msgstr "Không"
 msgid "Resize"
 msgstr "Đổi cỡ"
 
-#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:256
+#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:258
 msgid "Resize/Move"
 msgstr "Đổi cỡ/Chuyển"
 
@@ -184,11 +179,11 @@ msgstr "Đặt nhãn hệ thống tập tin trên %1"
 
 #. Label
 #: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:275
-#: ../src/Dialog_Partition_New.cc:154
+#: ../src/Dialog_Partition_New.cc:156
 msgid "Label:"
 msgstr "Nhãn:"
 
-#: ../src/Dialog_Partition_Copy.cc:45
+#: ../src/Dialog_Partition_Copy.cc:48
 msgid "Paste %1"
 msgstr "Dán %1"
 
@@ -204,7 +199,7 @@ msgstr "Cảnh báo :"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:44
+#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:45
 #: ../src/TreeView_Detail.cc:45
 msgid "File System"
 msgstr "Hệ thống tập tin"
@@ -214,7 +209,7 @@ msgstr "Hệ thống tập tin"
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:143
+#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:145
 msgid "File system:"
 msgstr "Hệ thống tập tin:"
 
@@ -320,12 +315,12 @@ msgstr "Chưa gắn kết"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3125
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3146
 msgid "Volume Group:"
 msgstr "Nhóm phân vùng:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3126
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3147
 msgid "Members:"
 msgstr "Thành viên:"
 
@@ -349,7 +344,7 @@ msgid "Unallocated:"
 msgstr "Chưa cấp phát:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:496
+#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:497
 msgid "Size:"
 msgstr "Cỡ :"
 
@@ -368,7 +363,7 @@ msgstr "Mã hóa:"
 #. Left field & value pair area
 #. path
 #: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Partition_Info.cc:592
-#: ../src/Win_GParted.cc:504
+#: ../src/Win_GParted.cc:505
 msgid "Path:"
 msgstr "Đường dẫn:"
 
@@ -401,7 +396,7 @@ msgid "Last sector:"
 msgstr "Cung từ cuối:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:554
+#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:555
 msgid "Total sectors:"
 msgstr "Tổng số cung từ:"
 
@@ -413,45 +408,45 @@ msgstr "Đặt tên phân vùng trên %1"
 # Type: text
 # Description
 #. TO TRANSLATORS: dialogtitle
-#: ../src/Dialog_Partition_New.cc:32
+#: ../src/Dialog_Partition_New.cc:34
 msgid "Create new Partition"
 msgstr "Tạo phân vùng mới"
 
 #. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
-#: ../src/Dialog_Partition_New.cc:93
+#: ../src/Dialog_Partition_New.cc:95
 msgid "Create as:"
 msgstr "Tạo là:"
 
 #. fill partitiontype menu
-#: ../src/Dialog_Partition_New.cc:98 ../src/OperationCreate.cc:58
+#: ../src/Dialog_Partition_New.cc:100 ../src/OperationCreate.cc:58
 msgid "Primary Partition"
 msgstr "Phân vùng chính"
 
-#: ../src/Dialog_Partition_New.cc:99 ../src/OperationCreate.cc:61
+#: ../src/Dialog_Partition_New.cc:101 ../src/OperationCreate.cc:61
 #: ../src/OperationDelete.cc:109
 msgid "Logical Partition"
 msgstr "Phân vùng lô-gíc"
 
-#: ../src/Dialog_Partition_New.cc:100 ../src/OperationCreate.cc:64
+#: ../src/Dialog_Partition_New.cc:102 ../src/OperationCreate.cc:64
 msgid "Extended Partition"
 msgstr "Phân vùng đã mở rộng"
 
 #. Partition name
-#: ../src/Dialog_Partition_New.cc:133
+#: ../src/Dialog_Partition_New.cc:135
 msgid "Partition name:"
 msgstr "Tên phân vùng:"
 
 # Type: string
 # Description
-#: ../src/Dialog_Partition_New.cc:233
+#: ../src/Dialog_Partition_New.cc:235
 msgid "New Partition #%1"
 msgstr "Phân vùng mới #%1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:95
+#: ../src/Dialog_Partition_Resize_Move.cc:98
 msgid "Resize/Move %1"
 msgstr "Đổi cỡ/Chuyển %1"
 
-#: ../src/Dialog_Partition_Resize_Move.cc:100
+#: ../src/Dialog_Partition_Resize_Move.cc:103
 msgid "Resize %1"
 msgstr "Đổi cỡ %1"
 
@@ -587,60 +582,62 @@ msgstr "LỖI"
 msgid "INFO"
 msgstr "THÔNG TIN"
 
-#. TO TRANSLATORS:  N/A
+#. TO TRANSLATORS:  WARNING
 #. * means that the status for this operation is
-#. * not applicable because the operation is not
-#. * supported on the file system in the partition.
+#. * completed with warnings.  Either the operation
+#. * is not supported on the file system in the
+#. * partition, or the operation failed but it does
+#. * not matter that it failed.
 #.
-#: ../src/Dialog_Progress.cc:456
-msgid "N/A"
-msgstr "N/A"
+#: ../src/Dialog_Progress.cc:458
+msgid "WARNING"
+msgstr "CẢNH BÁO"
 
-#: ../src/DialogFeatures.cc:28
+#: ../src/DialogFeatures.cc:29
 msgid "File System Support"
 msgstr "Hỗ trợ Hệ thống tập tin"
 
-#: ../src/DialogFeatures.cc:45
+#: ../src/DialogFeatures.cc:46
 msgid "Create"
 msgstr "Tạo"
 
-#: ../src/DialogFeatures.cc:46
+#: ../src/DialogFeatures.cc:47
 msgid "Grow"
 msgstr "Lớn hơn"
 
-#: ../src/DialogFeatures.cc:50
+#: ../src/DialogFeatures.cc:51
 msgid "Shrink"
 msgstr "Nhỏ hơn"
 
-#: ../src/DialogFeatures.cc:54
+#: ../src/DialogFeatures.cc:55
 msgid "Move"
 msgstr "Chuyển"
 
-#: ../src/DialogFeatures.cc:55
+#: ../src/DialogFeatures.cc:56
 msgid "Copy"
 msgstr "Chép"
 
-#: ../src/DialogFeatures.cc:56
+#: ../src/DialogFeatures.cc:57
 msgid "Check"
 msgstr "Kiểm tra"
 
-#: ../src/DialogFeatures.cc:57 ../src/TreeView_Detail.cc:47
+#: ../src/DialogFeatures.cc:58 ../src/TreeView_Detail.cc:47
 msgid "Label"
 msgstr "Nhãn"
 
-#: ../src/DialogFeatures.cc:58
+#: ../src/DialogFeatures.cc:59
 msgid "UUID"
 msgstr "UUID"
 
-#: ../src/DialogFeatures.cc:59
+#: ../src/DialogFeatures.cc:60
 msgid "Required Software"
 msgstr "Phần mềm yêu cầu"
 
-#: ../src/DialogFeatures.cc:77
+#: ../src/DialogFeatures.cc:78
 msgid "This chart shows the actions supported on file systems."
 msgstr "Biểu đồ này hiển thị các hành động được hỗ trợ trên hệ thống tập tin."
 
-#: ../src/DialogFeatures.cc:79
+#: ../src/DialogFeatures.cc:80
 msgid ""
 "Not all actions are available on all file systems, in part due to the nature "
 "of file systems and limitations in the required software."
@@ -652,7 +649,7 @@ msgstr ""
 #. * means that this action is valid for this file system when
 #. * it is both unmounted and mounted.
 #.
-#: ../src/DialogFeatures.cc:96
+#: ../src/DialogFeatures.cc:97
 msgid "Available offline and online"
 msgstr "Sẵn sàng cả trực tuyến và không"
 
@@ -660,7 +657,7 @@ msgstr "Sẵn sàng cả trực tuyến và không"
 #. * means that this action is valid for this file system only
 #. * when it is mounted.
 #.
-#: ../src/DialogFeatures.cc:109
+#: ../src/DialogFeatures.cc:110
 msgid "Available online only"
 msgstr "Chỉ sẵn sàng trực tuyến"
 
@@ -668,23 +665,23 @@ msgstr "Chỉ sẵn sàng trực tuyến"
 #. * means that this action is valid for this file system only
 #. * when it is unmounted.
 #.
-#: ../src/DialogFeatures.cc:122
+#: ../src/DialogFeatures.cc:123
 msgid "Available offline only"
 msgstr "Chỉ sẵn sàng khi không trực tuyến"
 
 #. TO TRANSLATORS:  Not Available
 #. * means that this action is not valid for this file system.
 #.
-#: ../src/DialogFeatures.cc:134
+#: ../src/DialogFeatures.cc:135
 msgid "Not Available"
 msgstr "Không sẵn sàng"
 
-#: ../src/DialogFeatures.cc:139
+#: ../src/DialogFeatures.cc:140
 msgid "Legend"
 msgstr "Ghi chú"
 
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
-#: ../src/DialogFeatures.cc:147
+#: ../src/DialogFeatures.cc:148
 msgid "Rescan For Supported Actions"
 msgstr "Quét lại các thao tác được hỗ trợ"
 
@@ -811,17 +808,17 @@ msgid "create missing %1 entries"
 msgstr "tạo các mục tin còn thiếu %1"
 
 #. TO TRANSLATORS: looks like  delete affected /dev/mapper entries
-#: ../src/DMRaid.cc:413
+#: ../src/DMRaid.cc:412
 msgid "delete affected %1 entries"
 msgstr "xóa các mục tin chịu ảnh hưởng %1"
 
 #. TO TRANSLATORS: looks like  delete /dev/mapper entry
-#: ../src/DMRaid.cc:436
+#: ../src/DMRaid.cc:434
 msgid "delete %1 entry"
 msgstr "xóa mục tin %1"
 
 #. TO TRANSLATORS: looks like  update /dev/mapper entry
-#: ../src/DMRaid.cc:486
+#: ../src/DMRaid.cc:483
 msgid "update %1 entry"
 msgstr "cập nhật mục tin %1"
 
@@ -835,98 +832,98 @@ msgid "_Unmount"
 msgstr "_Bỏ gắn kết"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:231
+#: ../src/FileSystem.cc:225
 msgid "Created directory %1"
 msgstr "Đã tạo thư mục %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:258
+#: ../src/FileSystem.cc:251
 msgid "Removed directory %1"
 msgstr "Đã xóa bỏ thư mục %1"
 
-#: ../src/GParted_Core.cc:75
+#. Adding a child after this OperationDetail has been set to prevent it is
+#. a programming bug.  However the best way to report it is by adding yet
+#. another child containing the bug report, and allowing the child to be
+#. added anyway.
+#: ../src/GParted_Core.cc:77 ../src/OperationDetail.cc:146
 msgid "GParted Bug"
 msgstr "Lỗi GParted"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:188 ../src/GParted_Core.cc:197
+#: ../src/GParted_Core.cc:190 ../src/GParted_Core.cc:199
 msgid "Scanning %1"
 msgstr "Đang quét %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:216 ../src/GParted_Core.cc:241
+#: ../src/GParted_Core.cc:218 ../src/GParted_Core.cc:243
 msgid "Confirming %1"
 msgstr "Đang chứng thực %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:270
+#: ../src/GParted_Core.cc:272
 msgid "Searching %1 partitions"
 msgstr "Đang tìm kiếm các phân vùng %1"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:528
+#: ../src/GParted_Core.cc:530
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Không cho phép phân vùng có độ dài %1 cung từ"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:542
+#: ../src/GParted_Core.cc:544
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
 "Không hợp lệ khi phân vùng có số cung từ đã dùng (%1) lớn hơn độ dài (%2)"
 
-#: ../src/GParted_Core.cc:678
-msgid "libparted messages"
-msgstr "thông điệp libparted"
-
 #. TO TRANSLATORS:  unrecognized
 #. * means that the partition table for this disk
 #. * device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:966
+#: ../src/GParted_Core.cc:961
 msgid "unrecognized"
 msgstr "không nhận ra"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1490
+#: ../src/GParted_Core.cc:1485
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Không thể phát hiện hệ thống tập tin! Hầu như chắn chắn lý do là:"
 
-#: ../src/GParted_Core.cc:1492
+#: ../src/GParted_Core.cc:1487
 msgid "The file system is damaged"
 msgstr "Hệ thống tập tin bị hỏng"
 
-#: ../src/GParted_Core.cc:1494
+#: ../src/GParted_Core.cc:1489
 msgid "The file system is unknown to GParted"
 msgstr "GParted không biết hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:1496
+#: ../src/GParted_Core.cc:1491
 msgid "There is no file system available (unformatted)"
 msgstr "Không có hệ thống tập tin nào sẵn sàng (chưa định dạng)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1499
+#: ../src/GParted_Core.cc:1494
 msgid "The device entry %1 is missing"
 msgstr "Mục thiết bị %1 bị thiếu"
 
-#: ../src/GParted_Core.cc:1648
+#: ../src/GParted_Core.cc:1643
 msgid "Unable to find mount point"
 msgstr "Không tìm thấy điểm gắn kết"
 
-#: ../src/GParted_Core.cc:1765
+#: ../src/GParted_Core.cc:1760
 msgid "Unable to read the contents of this file system!"
 msgstr "Không thể đọc nội dung của hệ thống tập tin này!"
 
-#: ../src/GParted_Core.cc:1767
+#: ../src/GParted_Core.cc:1762
 msgid "Because of this some operations may be unavailable."
 msgstr "Như thế thì một số thao tác có thể là không sẵn sàng."
 
-#: ../src/GParted_Core.cc:1771
+#: ../src/GParted_Core.cc:1766
 msgid "The cause might be a missing software package."
 msgstr "Nguyên nhân có thể là do thiếu gói phần mềm."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1774
+#: ../src/GParted_Core.cc:1769
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -935,7 +932,7 @@ msgstr ""
 "%1:  %2"
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1784
+#: ../src/GParted_Core.cc:1779
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 trong số chỗ chưa cấp phát nằm trong phân vùng."
 
@@ -943,7 +940,7 @@ msgstr "%1 trong số chỗ chưa cấp phát nằm trong phân vùng."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1794
+#: ../src/GParted_Core.cc:1789
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -951,13 +948,13 @@ msgstr ""
 "Để mở rộng hệ thống tập tin cho đầy phân vùng, chọn phân vùng và chọn mục "
 "trình đơn:"
 
-#: ../src/GParted_Core.cc:1796
+#: ../src/GParted_Core.cc:1791
 msgid "Partition --> Check."
 msgstr "Phân vùng --> Kiểm tra"
 
 # Type: text
 # Description
-#: ../src/GParted_Core.cc:1903
+#: ../src/GParted_Core.cc:1899
 msgid "create empty partition"
 msgstr "tạo phân vùng trống"
 
@@ -971,89 +968,89 @@ msgstr "tạo phân vùng trống"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1979 ../src/GParted_Core.cc:3599
+#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3641
 msgid "path: %1 (%2)"
 msgstr "đường dẫn: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1980 ../src/GParted_Core.cc:3603
+#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3645
 msgid "partition"
 msgstr "phân vùng"
 
-#: ../src/GParted_Core.cc:1981 ../src/GParted_Core.cc:3604
+#: ../src/GParted_Core.cc:1977 ../src/GParted_Core.cc:3646
 msgid "start: %1"
 msgstr "đầu : %1"
 
-#: ../src/GParted_Core.cc:1982 ../src/GParted_Core.cc:3605
+#: ../src/GParted_Core.cc:1978 ../src/GParted_Core.cc:3647
 msgid "end: %1"
 msgstr "cuối: %1"
 
-#: ../src/GParted_Core.cc:1983 ../src/GParted_Core.cc:3606
+#: ../src/GParted_Core.cc:1979 ../src/GParted_Core.cc:3648
 msgid "size: %1 (%2)"
 msgstr "cỡ: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2016
+#: ../src/GParted_Core.cc:2011
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước tạo hệ thống tập tin"
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: ../src/GParted_Core.cc:2023
+#: ../src/GParted_Core.cc:2018
 msgid "create new %1 file system"
 msgstr "tạo hệ thống tập tin %1 mới"
 
-#: ../src/GParted_Core.cc:2055
+#: ../src/GParted_Core.cc:2050
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước định dạng hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2070
+#: ../src/GParted_Core.cc:2065
 msgid "delete partition"
 msgstr "xóa phân vùng"
 
-#: ../src/GParted_Core.cc:2114
+#: ../src/GParted_Core.cc:2109
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước xóa hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2129
+#: ../src/GParted_Core.cc:2124
 msgid "delete %1 file system"
 msgstr "xóa hệ thống tập tin %1"
 
-#: ../src/GParted_Core.cc:2147
+#: ../src/GParted_Core.cc:2142
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước đánh nhãn hệ thống tập tin"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2154 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2149 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Xóa nhãn hệ thống tập tin trên %1"
 
-#: ../src/GParted_Core.cc:2157
+#: ../src/GParted_Core.cc:2152
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Đặt nhãn hệ thống tập tin thành %1 trên %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2183 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2177 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Xóa tên phân vùng trên %1"
 
-#: ../src/GParted_Core.cc:2186
+#: ../src/GParted_Core.cc:2180
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Đặt tên phân vùng thành %1 lên %2"
 
-#: ../src/GParted_Core.cc:2212
+#: ../src/GParted_Core.cc:2205
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
 msgstr ""
 "phân vùng chứa mã hóa LUKS mở chỉ cho bước thay đổi UUID hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2219
+#: ../src/GParted_Core.cc:2212
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Đặt nửa của UUID trên %1 thành một cái mới, giá trị ngẫu nhiên"
 
-#: ../src/GParted_Core.cc:2224
+#: ../src/GParted_Core.cc:2217
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Đặt UUID trên %1 thành một cái mới, giá trị ngẫu nhiên"
 
@@ -1062,27 +1059,27 @@ msgstr "Đặt UUID trên %1 thành một cái mới, giá trị ngẫu nhiên"
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2309
+#: ../src/GParted_Core.cc:2301
 msgid "size of the partition is changing for a move only step"
 msgstr "cỡ của phân vùng đang thay đổi chỉ cho một bước di chuyển"
 
-#: ../src/GParted_Core.cc:2341
-msgid "rollback last change to the partition table"
-msgstr "quay trở lại thay đổi cuối cho bảng phân vùng"
+#: ../src/GParted_Core.cc:2332
+msgid "rollback last change to the partition"
+msgstr "hủy giao dịch thay đổi cuối cho bảng phân vùng"
 
-#: ../src/GParted_Core.cc:2390
+#: ../src/GParted_Core.cc:2381
 msgid "move file system to the left"
 msgstr "chuyển hệ thống tập tin sang trái"
 
-#: ../src/GParted_Core.cc:2392
+#: ../src/GParted_Core.cc:2383
 msgid "move file system to the right"
 msgstr "chuyển hệ thống tập tin sang phải"
 
-#: ../src/GParted_Core.cc:2395
+#: ../src/GParted_Core.cc:2386
 msgid "move file system"
 msgstr "di chuyển hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2397
+#: ../src/GParted_Core.cc:2388
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1090,7 +1087,7 @@ msgstr ""
 "hệ thống tập tin cả mới lẫn cũ đều có cùng một vị trí. Do vậy bỏ qua thao "
 "tác này"
 
-#: ../src/GParted_Core.cc:2463
+#: ../src/GParted_Core.cc:2454
 msgid "using libparted"
 msgstr "dùng libparted"
 
@@ -1100,61 +1097,61 @@ msgstr "dùng libparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2537
+#: ../src/GParted_Core.cc:2528
 msgid "start of the partition is changing for a resize only step"
 msgstr "điểm đầu của phân vùng đang thay đổi chỉ cho bước đổi cỡ"
 
-#: ../src/GParted_Core.cc:2555
+#: ../src/GParted_Core.cc:2546
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr "phân vùng không chứa mã hóa LUKS chỉ cho bước mã hóa đổi cỡ"
 
-#: ../src/GParted_Core.cc:2565
+#: ../src/GParted_Core.cc:2556
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "không thể co nhỏ một vùng mã hóa LUKS đóng"
 
-#: ../src/GParted_Core.cc:2624
+#: ../src/GParted_Core.cc:2615
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước đổi cỡ hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2693
+#: ../src/GParted_Core.cc:2685
 msgid "resize/move partition"
 msgstr "đổi cỡ/chuyển phân vùng"
 
-#: ../src/GParted_Core.cc:2696
+#: ../src/GParted_Core.cc:2688
 msgid "move partition to the right"
 msgstr "chuyển phân vùng sang phải"
 
-#: ../src/GParted_Core.cc:2699
+#: ../src/GParted_Core.cc:2691
 msgid "move partition to the left"
 msgstr "chuyển phân vùng sang trái"
 
-#: ../src/GParted_Core.cc:2702
+#: ../src/GParted_Core.cc:2694
 msgid "grow partition from %1 to %2"
 msgstr "tăng phân vùng từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:2705
+#: ../src/GParted_Core.cc:2697
 msgid "shrink partition from %1 to %2"
 msgstr "giảm phân vùng từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2700
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "chuyển phân vùng sang phải và tăng nó từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:2711
+#: ../src/GParted_Core.cc:2703
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "chuyển phân vùng sang phải và giảm nó từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:2714
+#: ../src/GParted_Core.cc:2706
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "chuyển phân vùng sang trái và tăng nó từ %1 lên %2"
 
-#: ../src/GParted_Core.cc:2717
+#: ../src/GParted_Core.cc:2709
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "chuyển phân vùng sang trái và giảm nó từ %1 xuống %2"
 
-#: ../src/GParted_Core.cc:2732
+#: ../src/GParted_Core.cc:2724
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1162,69 +1159,85 @@ msgstr ""
 "phân vùng cả mới lẫn cũ đều có cùng một kích cỡ và vị trí. Do đó bỏ qua thao "
 "tác này"
 
-#: ../src/GParted_Core.cc:2742
+#: ../src/GParted_Core.cc:2734
 msgid "old start: %1"
 msgstr "đầu cũ : %1"
 
-#: ../src/GParted_Core.cc:2743
+#: ../src/GParted_Core.cc:2735
 msgid "old end: %1"
 msgstr "cuối cũ : %1"
 
-#: ../src/GParted_Core.cc:2744
+#: ../src/GParted_Core.cc:2736
 msgid "old size: %1 (%2)"
 msgstr "cỡ cũ : %1 (%2)"
 
 # Type: string
 # Description
-#: ../src/GParted_Core.cc:2808 ../src/GParted_Core.cc:3693
+#: ../src/GParted_Core.cc:2751 ../src/GParted_Core.cc:3735
 msgid "new start: %1"
 msgstr "đầu mới: %1"
 
-#: ../src/GParted_Core.cc:2809 ../src/GParted_Core.cc:3694
+#: ../src/GParted_Core.cc:2752 ../src/GParted_Core.cc:3736
 msgid "new end: %1"
 msgstr "cuối mới: %1"
 
-#: ../src/GParted_Core.cc:2810 ../src/GParted_Core.cc:3695
+#: ../src/GParted_Core.cc:2753 ../src/GParted_Core.cc:3737
 msgid "new size: %1 (%2)"
 msgstr "cỡ mới: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2837 ../src/GParted_Core.cc:3646
+#: ../src/GParted_Core.cc:2767 ../src/GParted_Core.cc:3688
 msgid "requested start: %1"
 msgstr "yêu cầu đầu : %1"
 
-#: ../src/GParted_Core.cc:2838 ../src/GParted_Core.cc:3647
+#: ../src/GParted_Core.cc:2768 ../src/GParted_Core.cc:3689
 msgid "requested end: %1"
 msgstr "yêu cầu cuối: %1"
 
-#: ../src/GParted_Core.cc:2839 ../src/GParted_Core.cc:3648
+#: ../src/GParted_Core.cc:2769 ../src/GParted_Core.cc:3690
 msgid "requested size: %1 (%2)"
 msgstr "yêu cầu cỡ : %1 (%2)"
 
-#: ../src/GParted_Core.cc:2859
+#: ../src/GParted_Core.cc:2781
+msgid "attempt to rollback failed change to the partition"
+msgstr "có hủy giao dịch thay đổi bị lỗi cho bảng phân vùng"
+
+#: ../src/GParted_Core.cc:2802
+msgid "original start: %1"
+msgstr "điểm đầu nguyên gốc: %1"
+
+#: ../src/GParted_Core.cc:2803
+msgid "original end: %1"
+msgstr "điểm cuối nguyên gốc: %1"
+
+#: ../src/GParted_Core.cc:2804
+msgid "original size: %1 (%2)"
+msgstr "cỡ nguyên gốc: %1 (%2)"
+
+#: ../src/GParted_Core.cc:2886
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr "phân vùng không chứa mã hóa LUKS mở chỉ cho bước co nhỏ mã hóa"
 
-#: ../src/GParted_Core.cc:2864
+#: ../src/GParted_Core.cc:2891
 msgid "shrink encryption volume"
 msgstr "co nhỏ vùng mã hóa"
 
-#: ../src/GParted_Core.cc:2875
+#: ../src/GParted_Core.cc:2902
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
 msgstr "phân vùng không chứa mã hóa LUKS chỉ cho bước tối đa hóa mã hóa"
 
-#: ../src/GParted_Core.cc:2880
+#: ../src/GParted_Core.cc:2907
 msgid "grow encryption volume to fill the partition"
 msgstr "tăng kích cỡ của vùng mã hóa để chiếm toàn bộ phân vùng"
 
-#: ../src/GParted_Core.cc:2890
+#: ../src/GParted_Core.cc:2917
 msgid "growing is not available for this encryption volume"
 msgstr "khả năng tăng kích cỡ không sẵn dùng cho vùng mã hóa này"
 
-#: ../src/GParted_Core.cc:2908
+#: ../src/GParted_Core.cc:2935
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước co nhỏ hệ thống tập tin"
@@ -1234,46 +1247,46 @@ msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước co nhỏ hệ th
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2920
+#: ../src/GParted_Core.cc:2947
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr "cỡ mới của phân vùng lớn hơn hoặc bằng chỉ cho bước co nhỏ"
 
-#: ../src/GParted_Core.cc:2925
+#: ../src/GParted_Core.cc:2952
 msgid "shrink file system"
 msgstr "co nhỏ hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2936
+#: ../src/GParted_Core.cc:2963
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước tối đa hóa hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:2941
+#: ../src/GParted_Core.cc:2968
 msgid "grow file system to fill the partition"
 msgstr "tăng kích cỡ của hệ thống tập tin để chiếm toàn bộ phân vùng"
 
-#: ../src/GParted_Core.cc:2952
+#: ../src/GParted_Core.cc:2979
 msgid "growing is not available for this file system"
 msgstr "khả năng tăng kích cỡ không sẵn sàng cho hệ thống tập tin này"
 
-#: ../src/GParted_Core.cc:2961
+#: ../src/GParted_Core.cc:2987
 msgid "growing the file system is currently disallowed"
 msgstr "tăng kích cỡ hệ thống tập tin hiện đang bị cấm"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:2985
+#: ../src/GParted_Core.cc:3011
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "không phải một hệ thống tập tin %1 cho chỉ bước tạo lại %1"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:2997
+#: ../src/GParted_Core.cc:3023
 msgid "recreate %1 file system"
 msgstr "tạo lại hệ thống tập tin %1"
 
-#: ../src/GParted_Core.cc:3066
+#: ../src/GParted_Core.cc:3092
 msgid "the destination is smaller than the source partition"
 msgstr "đích đến nhỏ hơn phân vùng nguồn"
 
-#: ../src/GParted_Core.cc:3117
+#: ../src/GParted_Core.cc:3143
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1281,144 +1294,153 @@ msgstr ""
 "phân vùng nguồn có chứa mã hóa LUKS mở chỉ dành cho bước chép hệ thống tập "
 "tin"
 
-#: ../src/GParted_Core.cc:3124
+#: ../src/GParted_Core.cc:3150
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
 msgstr "phân vùng đích chứa mã hóa LUKS mở chỉ cho bước chép hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:3130
+#: ../src/GParted_Core.cc:3156
 msgid "copy file system from %1 to %2"
 msgstr "chép hệ thống tập tin từ %1 sang %2"
 
-#: ../src/GParted_Core.cc:3211
+#: ../src/GParted_Core.cc:3237
 msgid "using internal algorithm"
 msgstr "dùng thuật toán nội bộ"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3214
+#: ../src/GParted_Core.cc:3240
 msgid "copy %1"
 msgstr "sao chép %1"
 
-#: ../src/GParted_Core.cc:3217
+#: ../src/GParted_Core.cc:3243
 msgid "finding optimal block size"
 msgstr "đang tìm kích cỡ khối tối ưu"
 
-#: ../src/GParted_Core.cc:3259
+#. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
+#: ../src/GParted_Core.cc:3274 ../src/GParted_Core.cc:3320
+msgid "copy %1 using a block size of %2"
+msgstr "sao chép %1 dùng kích cỡ khối của %2"
+
+#: ../src/GParted_Core.cc:3292
 msgid "%1 seconds"
 msgstr "%1 giây"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3277
+#: ../src/GParted_Core.cc:3311
 msgid "optimal block size is %1"
 msgstr "kích cỡ khối tối ưu là %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3295
+#: ../src/GParted_Core.cc:3338
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 B) đã sao chép"
 
-#: ../src/GParted_Core.cc:3333
-msgid "roll back last transaction"
-msgstr "quay lại giao dịch cuối"
+#: ../src/GParted_Core.cc:3376
+msgid "rollback failed file system move"
+msgstr "hủy giao dịch di chuyển hệ thống tập tin bị lỗi"
 
-#: ../src/GParted_Core.cc:3356
+#: ../src/GParted_Core.cc:3399
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ cho bước kiểm tra hệ thống tập tin"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3368
+#: ../src/GParted_Core.cc:3411
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "kiểm tra xem hệ thống tập tin trên %1 xem có lỗi không và (nếu có thể) sửa "
 "chúng"
 
-#: ../src/GParted_Core.cc:3377
+#: ../src/GParted_Core.cc:3420
 msgid "checking is not available for this file system"
 msgstr "khả năng kiểm tra không phải sẵn sàng cho hệ thống tập tin này"
 
-#: ../src/GParted_Core.cc:3443
+#: ../src/GParted_Core.cc:3485
 msgid "set partition type on %1"
 msgstr "đặt kiểu phân vùng trên %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3493
+#: ../src/GParted_Core.cc:3535
 msgid "new partition type: %1"
 msgstr "kiểu phân vùng mới: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3508
+#: ../src/GParted_Core.cc:3550
 msgid "new partition flag: %1"
 msgstr "cờ phân vùng mới: %1"
 
-#: ../src/GParted_Core.cc:3537
+#: ../src/GParted_Core.cc:3579
 msgid "calibrate %1"
 msgstr "cân chỉnh %1"
 
-#: ../src/GParted_Core.cc:3602
+#: ../src/GParted_Core.cc:3644
 msgid "device"
 msgstr "thiết bị"
 
-#: ../src/GParted_Core.cc:3616
+#: ../src/GParted_Core.cc:3658
 msgid "encryption path: %1"
 msgstr "đường dẫn mã hóa: %1"
 
-#: ../src/GParted_Core.cc:3642
+#: ../src/GParted_Core.cc:3684
 msgid "calculate new size and position of %1"
 msgstr "tính kích cỡ và vị trí mới của %1"
 
-#: ../src/GParted_Core.cc:3754
+#: ../src/GParted_Core.cc:3812
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
 msgstr "phân vùng chứa mã hóa LUKS mở chỉ tẩy xóa chữ ký hệ thống tập tin"
 
-#: ../src/GParted_Core.cc:3761
+#: ../src/GParted_Core.cc:3819
 msgid "clear old file system signatures in %1"
 msgstr "xóa chữ ký hệ thống tập tin cũ trong %1"
 
-#: ../src/GParted_Core.cc:3967
+#: ../src/GParted_Core.cc:4025
 msgid "flush operating system cache of %1"
 msgstr "đẩy lên đĩa bộ nhớ đệm của hệ điều hành của %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:3999
+#: ../src/GParted_Core.cc:4057
 msgid "update boot sector of %1 file system on %2"
 msgstr "cập nhật cung từ khởi động của hệ thống tập tin %1 trên %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4035
+#: ../src/GParted_Core.cc:4093
 msgid "Error trying to write to boot sector in %1"
 msgstr "Gặp lỗi khi có cung từ khởi động ở %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4041
+#: ../src/GParted_Core.cc:4099
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Gặp lỗi khi cố di chuyển vị trí đọc đến 0x1c trên %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4048
+#: ../src/GParted_Core.cc:4106
 msgid "Error trying to open %1"
 msgstr "Lỗi khi cố mở %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4058
+#: ../src/GParted_Core.cc:4116
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "Gặp lỗi khi đặt số lượng cung từ ẩn thành %1 trong cung từ khởi động NTFS."
 
-#: ../src/GParted_Core.cc:4060
+#: ../src/GParted_Core.cc:4118
 msgid "You might try the following command to correct the problem:"
 msgstr "Bạn có lẽ thử lệnh sau đây để mà sửa trục trặc:"
 
+#: ../src/GParted_Core.cc:4177
+msgid "libparted messages"
+msgstr "thông điệp libparted"
+
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4123
+#: ../src/GParted_Core.cc:4194
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Bỏ qua thiết bị %1 với cỡ cung từ lô-gíc là %2 byte."
 
-#: ../src/GParted_Core.cc:4126
+#: ../src/GParted_Core.cc:4197
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1426,71 +1448,71 @@ msgstr ""
 "GParted cần libparted phiên bản 2.2 hay mới hơn để hỗ trợ các thiết bị với "
 "cỡ cung từ lớn hơn 512 byte."
 
-#: ../src/GParted_Core.cc:4297
+#: ../src/GParted_Core.cc:4385
 msgid "Libparted Information"
 msgstr "Thông tin libparted"
 
-#: ../src/GParted_Core.cc:4301
+#: ../src/GParted_Core.cc:4389
 msgid "Libparted Warning"
 msgstr "Cảnh báo libparted"
 
-#: ../src/GParted_Core.cc:4305
+#: ../src/GParted_Core.cc:4393
 msgid "Libparted Error"
 msgstr "Lỗi libparted"
 
-#: ../src/GParted_Core.cc:4308
+#: ../src/GParted_Core.cc:4396
 msgid "Libparted Fatal"
 msgstr "Lỗi nghiêm trọng libparted"
 
-#: ../src/GParted_Core.cc:4311
+#: ../src/GParted_Core.cc:4399
 msgid "Libparted Bug"
 msgstr "Lỗi libparted"
 
-#: ../src/GParted_Core.cc:4314
+#: ../src/GParted_Core.cc:4402
 msgid "Libparted Unsupported Feature"
 msgstr "Tính năng libparted không hỗ trợ"
 
-#: ../src/GParted_Core.cc:4317
+#: ../src/GParted_Core.cc:4405
 msgid "Libparted unknown exception"
 msgstr "Ngoại lệ libparted chưa biết"
 
-#: ../src/GParted_Core.cc:4321
+#: ../src/GParted_Core.cc:4409
 msgid "Fix"
 msgstr "Sửa"
 
-#: ../src/GParted_Core.cc:4323
+#: ../src/GParted_Core.cc:4411
 msgid "Yes"
 msgstr "Có"
 
-#: ../src/GParted_Core.cc:4325
+#: ../src/GParted_Core.cc:4413
 msgid "Ok"
 msgstr "Ok"
 
-#: ../src/GParted_Core.cc:4327
+#: ../src/GParted_Core.cc:4415
 msgid "Retry"
 msgstr "Thử lại"
 
-#: ../src/GParted_Core.cc:4329
+#: ../src/GParted_Core.cc:4417
 msgid "No"
 msgstr "Không"
 
-#: ../src/GParted_Core.cc:4331
+#: ../src/GParted_Core.cc:4419
 msgid "Cancel"
 msgstr "Thôi"
 
-#: ../src/GParted_Core.cc:4333
+#: ../src/GParted_Core.cc:4421
 msgid "Ignore"
 msgstr "Bỏ qua"
 
-#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:174
+#: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:176
 msgid "_Undo Last Operation"
 msgstr "_Hủy bước cuối cùng"
 
-#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:180
+#: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:182
 msgid "_Clear All Operations"
 msgstr "_Xóa danh sách thao tác"
 
-#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:185
+#: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:187
 msgid "_Apply All Operations"
 msgstr "Á_p dụng mọi thao tác"
 
@@ -1546,6 +1568,21 @@ msgstr "Tạo %1 #%2 (%3, %4) trên %5"
 #: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
 msgstr "Xóa bỏ %1 (%2, %3) ra %4"
+
+#. TO TRANSLATORS:
+#. * means that GParted has encountered a programming bug.  More
+#. * information about a step is being added after the step was
+#. * marked as complete.  This bug description as well as the
+#. * information being added will be visible in the details of the
+#. * applied operations.
+#.
+#: ../src/OperationDetail.cc:154
+msgid ""
+"Adding more information to the results of this step after it has been marked "
+"as completed"
+msgstr ""
+"Thêm nhiều thông tin hơn vào kết quả của bước này sau khi nó được đánh dấu "
+"là đã hoàn tất"
 
 #. Bug: Not initialised by constructor or reset later
 #. Bug: Not initialised by constructor or reset later
@@ -1687,277 +1724,277 @@ msgstr "chưa dùng"
 msgid "Encrypted"
 msgstr "Đã mã hóa"
 
-#: ../src/Utils.cc:442
+#: ../src/Utils.cc:445
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:447
+#: ../src/Utils.cc:450
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:452
+#: ../src/Utils.cc:455
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:457
+#: ../src/Utils.cc:460
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:462
+#: ../src/Utils.cc:465
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
-#: ../src/Win_GParted.cc:158
+#: ../src/Win_GParted.cc:160
 msgid "_Refresh Devices"
 msgstr "_Cập nhật các thiết bị"
 
-#: ../src/Win_GParted.cc:164
+#: ../src/Win_GParted.cc:166
 msgid "_Devices"
 msgstr "Thiết _bị"
 
-#: ../src/Win_GParted.cc:169
+#: ../src/Win_GParted.cc:171
 msgid "_GParted"
 msgstr "_GParted"
 
-#: ../src/Win_GParted.cc:189
+#: ../src/Win_GParted.cc:191
 msgid "_Edit"
 msgstr "_Sửa"
 
-#: ../src/Win_GParted.cc:194
+#: ../src/Win_GParted.cc:196
 msgid "Device _Information"
 msgstr "Thông t_in thiết bị"
 
-#: ../src/Win_GParted.cc:196
+#: ../src/Win_GParted.cc:198
 msgid "Pending _Operations"
 msgstr "Thao tác h_oãn"
 
-#: ../src/Win_GParted.cc:197
+#: ../src/Win_GParted.cc:199
 msgid "_View"
 msgstr "_Xem"
 
-#: ../src/Win_GParted.cc:201
+#: ../src/Win_GParted.cc:203
 msgid "_File System Support"
 msgstr "Hỗ _trợ hệ thống tập tin"
 
 # Type: text
 # Description
-#: ../src/Win_GParted.cc:205
+#: ../src/Win_GParted.cc:207
 msgid "_Create Partition Table"
 msgstr "Tạ_o bảng phân vùng"
 
-#: ../src/Win_GParted.cc:208
+#: ../src/Win_GParted.cc:210
 msgid "_Attempt Data Rescue"
 msgstr "_Cố thử cứu dữ liệu"
 
-#: ../src/Win_GParted.cc:211
+#: ../src/Win_GParted.cc:213
 msgid "_Device"
 msgstr "Thiết _bị"
 
-#: ../src/Win_GParted.cc:215
+#: ../src/Win_GParted.cc:217
 msgid "_Partition"
 msgstr "_Phân vùng"
 
-#: ../src/Win_GParted.cc:220
+#: ../src/Win_GParted.cc:222
 msgid "_Contents"
 msgstr "Mục _lục"
 
-#: ../src/Win_GParted.cc:228
+#: ../src/Win_GParted.cc:230
 msgid "_Help"
 msgstr "Trợ _giúp"
 
 #. TO TRANSLATORS: "New" is a tool bar item for partition actions.
-#: ../src/Win_GParted.cc:240
+#: ../src/Win_GParted.cc:242
 msgid "New"
 msgstr "Mới"
 
-#: ../src/Win_GParted.cc:245
+#: ../src/Win_GParted.cc:247
 msgid "Create a new partition in the selected unallocated space"
 msgstr "Tạo phân vùng mới trong sức chứa chưa cấp phát đã chọn"
 
-#: ../src/Win_GParted.cc:250
+#: ../src/Win_GParted.cc:252
 msgid "Delete the selected partition"
 msgstr "Xóa bỏ phân vùng đã chọn"
 
-#: ../src/Win_GParted.cc:272
+#: ../src/Win_GParted.cc:274
 msgid "Resize/Move the selected partition"
 msgstr "Thay đổi kích cỡ / di chuyển phân vùng đã chọn"
 
-#: ../src/Win_GParted.cc:281
+#: ../src/Win_GParted.cc:283
 msgid "Copy the selected partition to the clipboard"
 msgstr "Sao chép phân vùng đã chọn vào clipboard"
 
-#: ../src/Win_GParted.cc:286
+#: ../src/Win_GParted.cc:288
 msgid "Paste the partition from the clipboard"
 msgstr "Dán phân vùng chọn từ clipboard"
 
-#: ../src/Win_GParted.cc:298
+#: ../src/Win_GParted.cc:300
 msgid "Undo Last Operation"
 msgstr "Hủy bước cuối cùng"
 
-#: ../src/Win_GParted.cc:306
+#: ../src/Win_GParted.cc:308
 msgid "Apply All Operations"
 msgstr "Áp dụng mọi thao tác"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
-#: ../src/Win_GParted.cc:330
+#: ../src/Win_GParted.cc:332
 msgid "_New"
 msgstr "Mớ_i"
 
-#: ../src/Win_GParted.cc:347
+#: ../src/Win_GParted.cc:349
 msgid "_Resize/Move"
 msgstr "Đổi cỡ/Di chu_yển"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with file systems..
-#: ../src/Win_GParted.cc:371
+#: ../src/Win_GParted.cc:373
 msgid "_Format to"
 msgstr "Định _dạng thành"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with mount points..
-#: ../src/Win_GParted.cc:387
+#: ../src/Win_GParted.cc:389
 msgid "_Mount on"
 msgstr "_Gắn vào"
 
-#: ../src/Win_GParted.cc:394
+#: ../src/Win_GParted.cc:396
 msgid "_Name Partition"
 msgstr "Đặt _tên phân vùng"
 
-#: ../src/Win_GParted.cc:399
+#: ../src/Win_GParted.cc:401
 msgid "M_anage Flags"
 msgstr "_Quản lý cờ"
 
-#: ../src/Win_GParted.cc:404
+#: ../src/Win_GParted.cc:406
 msgid "C_heck"
 msgstr "_Kiểm tra"
 
-#: ../src/Win_GParted.cc:409
+#: ../src/Win_GParted.cc:411
 msgid "_Label File System"
 msgstr "Gán _nhãn hệ thống tập tin"
 
-#: ../src/Win_GParted.cc:414
+#: ../src/Win_GParted.cc:416
 msgid "New UU_ID"
 msgstr "UU_ID mới"
 
-#: ../src/Win_GParted.cc:474
+#: ../src/Win_GParted.cc:475
 msgid "Device Information"
 msgstr "Thông tin thiết bị"
 
 #. model
-#: ../src/Win_GParted.cc:482
+#: ../src/Win_GParted.cc:483
 msgid "Model:"
 msgstr "Mô hình:"
 
 #. Serial number
-#: ../src/Win_GParted.cc:490
+#: ../src/Win_GParted.cc:491
 msgid "Serial:"
 msgstr "Số sê-ri:"
 
 #. disktype
-#: ../src/Win_GParted.cc:522
+#: ../src/Win_GParted.cc:523
 msgid "Partition table:"
 msgstr "Bảng phân vùng:"
 
 #. heads
-#: ../src/Win_GParted.cc:530
+#: ../src/Win_GParted.cc:531
 msgid "Heads:"
 msgstr "Đầu:"
 
 #. sectors/track
-#: ../src/Win_GParted.cc:538
+#: ../src/Win_GParted.cc:539
 msgid "Sectors/track:"
 msgstr "Cung từ/Rãnh:"
 
 #. cylinders
-#: ../src/Win_GParted.cc:546
+#: ../src/Win_GParted.cc:547
 msgid "Cylinders:"
 msgstr "Trụ:"
 
 #. sector size
-#: ../src/Win_GParted.cc:562
+#: ../src/Win_GParted.cc:563
 msgid "Sector size:"
 msgstr "Kích cỡ cung từ:"
 
-#: ../src/Win_GParted.cc:738
+#: ../src/Win_GParted.cc:739
 msgid "Could not add this operation to the list"
 msgstr "Không thể thêm thao tác này vào danh sách."
 
-#: ../src/Win_GParted.cc:919
+#: ../src/Win_GParted.cc:920
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
 msgstr[0] "%1 thao tác còn chưa giải quyết"
 
-#: ../src/Win_GParted.cc:1029
+#: ../src/Win_GParted.cc:1030
 msgid "Quit GParted?"
 msgstr "Thoát GParted không?"
 
-#: ../src/Win_GParted.cc:1035
+#: ../src/Win_GParted.cc:1036
 msgid "%1 operation is currently pending."
 msgid_plural "%1 operations are currently pending."
 msgstr[0] "%1 thao tác hiện tại còn chưa giải quyết."
 
 # Name: don't translate / Tên: đừng dịch
 # Variable: don't translate / Biến: đừng dịch
-#: ../src/Win_GParted.cc:1406
+#: ../src/Win_GParted.cc:1407
 msgid "%1 - GParted"
 msgstr "%1 - GParted"
 
-#: ../src/Win_GParted.cc:1456
+#: ../src/Win_GParted.cc:1457
 msgid "Scanning all devices..."
 msgstr "Đang quét mọi thiết bị…"
 
-#: ../src/Win_GParted.cc:1503
+#: ../src/Win_GParted.cc:1504
 msgid "No devices detected"
 msgstr "Chưa phát hiện thiết bị nào"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1588
+#: ../src/Win_GParted.cc:1589
 msgid "No partition table found on device %1"
 msgstr "Không tìm thấy bảng phân vùng trên thiết bị %1"
 
-#: ../src/Win_GParted.cc:1593
+#: ../src/Win_GParted.cc:1594
 msgid "A partition table is required before partitions can be added."
 msgstr "Cần có bảng phân vùng trước khi có thể thêm phân vùng."
 
-#: ../src/Win_GParted.cc:1595
+#: ../src/Win_GParted.cc:1596
 msgid "To create a new partition table choose the menu item:"
 msgstr "Để tạo bảng phân vùng mới chọn trình đơn:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1598
+#: ../src/Win_GParted.cc:1599
 msgid "Device --> Create Partition Table."
 msgstr "Thiết bị --> Tạo bảng phân vùng."
 
-#: ../src/Win_GParted.cc:1634
+#: ../src/Win_GParted.cc:1635
 msgid "Unable to open GParted Manual help file"
 msgstr "Không thể mở tập tin trợ giúp GParted Manual"
 
-#: ../src/Win_GParted.cc:1653
+#: ../src/Win_GParted.cc:1654
 msgid "Documentation is not available"
 msgstr "Không có tài liệu"
 
-#: ../src/Win_GParted.cc:1658
+#: ../src/Win_GParted.cc:1659
 msgid "This build of gparted is configured without documentation."
 msgstr "Lần biên dịch này của gparted được cấu hình không có tài liệu."
 
-#: ../src/Win_GParted.cc:1660
+#: ../src/Win_GParted.cc:1661
 msgid "Documentation is available at the project web site."
 msgstr "Tài liệu sẵn có ở trang thông tin điện tử của dự án."
 
-#: ../src/Win_GParted.cc:1678
+#: ../src/Win_GParted.cc:1679
 msgid "GNOME Partition Editor"
 msgstr "Bộ hiệu chỉnh phân vùng Gnome"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1713
+#: ../src/Win_GParted.cc:1714
 msgid "translator-credits"
 msgstr "Nhóm Việt hóa Gnome <gnomevi-list@lists.sourceforge.net>"
 
-#: ../src/Win_GParted.cc:1760
+#: ../src/Win_GParted.cc:1761
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "Không thể tạo hơn %1 phân vùng chính"
 
-#: ../src/Win_GParted.cc:1772
+#: ../src/Win_GParted.cc:1773
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -1969,19 +2006,19 @@ msgstr ""
 "rộng cũng là phân vùng chính, có lẽ cần thiết gỡ bỏ một phân vùng chính "
 "trước tiên."
 
-#: ../src/Win_GParted.cc:1880
+#: ../src/Win_GParted.cc:1886
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Di chuyển một phân vùng có thể là nguyên nhân dẫn đến hệ điều hành của bạn "
 "không thể khởi động"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1887
+#: ../src/Win_GParted.cc:1893
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 "Bạn có thao tác trong hàng đợi để di chuyển cung từ đầu của phân vùng %1."
 
-#: ../src/Win_GParted.cc:1889
+#: ../src/Win_GParted.cc:1895
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -1990,75 +2027,75 @@ msgstr ""
 "phân vùng GNU/Linux  chứa /boot, hoặc là bạn di chuyển phân vùng hệ thống "
 "Windows C:."
 
-#: ../src/Win_GParted.cc:1891
+#: ../src/Win_GParted.cc:1897
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "Bạn có thể học cách sửa cấu hình khởi động trong câu hỏi thường gặp GParted."
 
-#: ../src/Win_GParted.cc:1895
+#: ../src/Win_GParted.cc:1901
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Di chuyển một phân vùng có thể mấu nhiều thời gian để thực hiện."
 
-#: ../src/Win_GParted.cc:1965
+#: ../src/Win_GParted.cc:1976
 msgid "Copy of %1"
 msgstr "Bản sao của %1"
 
-#: ../src/Win_GParted.cc:2058
+#: ../src/Win_GParted.cc:2069
 msgid "You have pasted into an existing partition"
 msgstr "Bạn đã chuyển vào một phân vùng đã có sẵn"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:2066
+#: ../src/Win_GParted.cc:2077
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "dữ liệu trong %1 sẽ mất nếu bạn áp dụng thao tác này."
 
-#: ../src/Win_GParted.cc:2140
+#: ../src/Win_GParted.cc:2151
 msgid "Unable to delete %1!"
 msgstr "Không thể xóa bỏ %1."
 
-#: ../src/Win_GParted.cc:2147
+#: ../src/Win_GParted.cc:2158
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr "Bạn hãy tháo lắp phân vùng lô-gíc nào có số hiệu cao hơn %1."
 
-#: ../src/Win_GParted.cc:2158
+#: ../src/Win_GParted.cc:2169
 msgid "Are you sure you want to delete %1?"
 msgstr "Bạn có chắc muốn xóa bỏ %1 không?"
 
-#: ../src/Win_GParted.cc:2165
+#: ../src/Win_GParted.cc:2176
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Sau khi xóa bỏ thì phân vùng này không còn sẵn sàng để sao chép."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2168
+#: ../src/Win_GParted.cc:2179
 msgid "Delete %1 (%2, %3)"
 msgstr "Xóa bỏ %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2274
+#: ../src/Win_GParted.cc:2335
 msgid "Cannot format this file system to %1"
 msgstr "Không thể định dạng hệ thống tập tin này thành %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2286
+#: ../src/Win_GParted.cc:2347
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "Hệ thống tập tin %1 cần một phân vùng có kích cỡ ít nhất %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2294
+#: ../src/Win_GParted.cc:2355
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "Một phân vùng với một hệ thống tập tin %1 thì có kích cỡ tối đa là %2."
 
-#: ../src/Win_GParted.cc:2411
+#: ../src/Win_GParted.cc:2432
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Phân vùng không thể bỏ gắn khỏi những điểm gắn kết theo đây:"
 
-#: ../src/Win_GParted.cc:2413
+#: ../src/Win_GParted.cc:2434
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2067,18 +2104,18 @@ msgstr ""
 "bạn tự tháo lắp chúng bằn tay."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2426
+#: ../src/Win_GParted.cc:2447
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 thao tác hiện đang còn treo với phân vùng %2"
 
-#: ../src/Win_GParted.cc:2441
+#: ../src/Win_GParted.cc:2462
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 "Bạn dùng trình đơn Sửa để hoàn lại thao tác, xóa bỏ hay áp dụng các thao tác "
 "còn treo đó."
 
-#: ../src/Win_GParted.cc:2484
+#: ../src/Win_GParted.cc:2505
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
@@ -2086,15 +2123,15 @@ msgstr ""
 "Thao tác swapoff không thể thực hiện được khi ở đây có các thao tác còn treo "
 "cho phân vùng."
 
-#: ../src/Win_GParted.cc:2485
+#: ../src/Win_GParted.cc:2506
 msgid "Deactivating swap on %1"
 msgstr "Đang tắt khả năng trao đổi trên %1"
 
-#: ../src/Win_GParted.cc:2486
+#: ../src/Win_GParted.cc:2507
 msgid "Could not deactivate swap"
 msgstr "Không thể tắt khả năng trao đổi"
 
-#: ../src/Win_GParted.cc:2491
+#: ../src/Win_GParted.cc:2512
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
@@ -2102,15 +2139,15 @@ msgstr ""
 "Thao tác swapon không thể thực hiện được khi ở đây có các thao tác còn treo "
 "cho phân vùng."
 
-#: ../src/Win_GParted.cc:2492
+#: ../src/Win_GParted.cc:2513
 msgid "Activating swap on %1"
 msgstr "Đang bật khả năng trao đổi trên %1"
 
-#: ../src/Win_GParted.cc:2493
+#: ../src/Win_GParted.cc:2514
 msgid "Could not activate swap"
 msgstr "Không thể bật khả năng trao đổi"
 
-#: ../src/Win_GParted.cc:2498
+#: ../src/Win_GParted.cc:2519
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2118,16 +2155,16 @@ msgstr ""
 "Thao tác tắt kích hoạt Nhóm Phân vùng không thể thực hiện được khi ở đây có "
 "các thao tác còn treo cho phân vùng."
 
-#: ../src/Win_GParted.cc:2499
+#: ../src/Win_GParted.cc:2520
 msgid "Deactivating Volume Group %1"
 msgstr "Đang tắt Nhóm Phân vùng %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2501
+#: ../src/Win_GParted.cc:2522
 msgid "Could not deactivate Volume Group"
 msgstr "Không thể tắt Nhóm Phân vùng"
 
-#: ../src/Win_GParted.cc:2506
+#: ../src/Win_GParted.cc:2527
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2135,16 +2172,16 @@ msgstr ""
 "Thao tác kích hoạt Nhóm Phân vùng không thể thực hiện được khi ở đây có các "
 "thao tác còn treo cho phân vùng."
 
-#: ../src/Win_GParted.cc:2507
+#: ../src/Win_GParted.cc:2528
 msgid "Activating Volume Group %1"
 msgstr "Đang bật Nhóm phân vùng %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2509
+#: ../src/Win_GParted.cc:2530
 msgid "Could not activate Volume Group"
 msgstr "Không thể bật Nhóm phân vùng"
 
-#: ../src/Win_GParted.cc:2514
+#: ../src/Win_GParted.cc:2535
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
@@ -2152,17 +2189,17 @@ msgstr ""
 "Thao tác bỏ gắn đĩa không thể thực hiện được khi ở đây có các thao tác còn "
 "treo cho phân vùng."
 
-#: ../src/Win_GParted.cc:2515
+#: ../src/Win_GParted.cc:2536
 msgid "Unmounting %1"
 msgstr "Đang bỏ gắn %1"
 
-#: ../src/Win_GParted.cc:2516
+#: ../src/Win_GParted.cc:2537
 msgid "Could not unmount %1"
 msgstr "Không thể bỏ gắn kết %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:2580
+#: ../src/Win_GParted.cc:2601
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
@@ -2170,27 +2207,27 @@ msgstr ""
 "Thao tác gắn đĩa không thể thực hiện được khi ở đây có các thao tác còn treo "
 "cho phân vùng."
 
-#: ../src/Win_GParted.cc:2593
+#: ../src/Win_GParted.cc:2614
 msgid "mounting %1 on %2"
 msgstr "đang gắn kết %1 vào %2"
 
-#: ../src/Win_GParted.cc:2621
+#: ../src/Win_GParted.cc:2642
 msgid "Could not mount %1 on %2"
 msgstr "Không thể gắn kết %1 vào %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2640
+#: ../src/Win_GParted.cc:2661
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 phân vùng hiện đã kích hoạt trên thiết bị %2"
 
-#: ../src/Win_GParted.cc:2655
+#: ../src/Win_GParted.cc:2676
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 "Không thể tạo bảng phân vùng mới khi ở đây có các phân vùng đang kích hoạt."
 
-#: ../src/Win_GParted.cc:2657
+#: ../src/Win_GParted.cc:2678
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2198,7 +2235,7 @@ msgstr ""
 "Kích hoạt các phân vùng mà chúng đang được dùng, như là một hệ thống tập tin "
 "đã gắn, hay chỗ tráo đổi được bật."
 
-#: ../src/Win_GParted.cc:2659
+#: ../src/Win_GParted.cc:2680
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2207,19 +2244,19 @@ msgstr ""
 "kích hoạt mọi phân vùng trên thiết bị này trước khi tạo một bảng phân vùng "
 "mới."
 
-#: ../src/Win_GParted.cc:2671
+#: ../src/Win_GParted.cc:2692
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 thao tác hiện đang còn treo"
 
-#: ../src/Win_GParted.cc:2684
+#: ../src/Win_GParted.cc:2705
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Không thể tạo bảng phân vùng mới khi ở đây có các thao tác còn treo chưa xử "
 "lý."
 
-#: ../src/Win_GParted.cc:2686
+#: ../src/Win_GParted.cc:2707
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2227,28 +2264,28 @@ msgstr ""
 "Dùng trình đơn Sửa để hoặc là xóa hoặc là áp dụng tất cả các thao tác trước "
 "khi tạo một bảng phân vùng mới."
 
-#: ../src/Win_GParted.cc:2701
+#: ../src/Win_GParted.cc:2722
 msgid "Error while creating partition table"
 msgstr "Gặp lỗi khi đang tạo bảng phân vùng"
 
-#: ../src/Win_GParted.cc:2721
+#: ../src/Win_GParted.cc:2742
 msgid "Command gpart was not found"
 msgstr "Không tìm thấy lệnh gpart"
 
-#: ../src/Win_GParted.cc:2722
+#: ../src/Win_GParted.cc:2743
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Tính năng này sử dụng gpart. Vui lòng cài đặt gpart rồi thử lại."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2730
+#: ../src/Win_GParted.cc:2751
 msgid "A full disk scan is needed to find file systems."
 msgstr "Cần quét toàn bộ đĩa để tìm hệ thống tập tin."
 
-#: ../src/Win_GParted.cc:2732
+#: ../src/Win_GParted.cc:2753
 msgid "The scan might take a very long time."
 msgstr "Quá trình quét có thể mất nhiều thời gian."
 
-#: ../src/Win_GParted.cc:2734
+#: ../src/Win_GParted.cc:2755
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2256,26 +2293,26 @@ msgstr ""
 "Sau khi quét vạn có thể gắn bất kỳ hệ thống tập tin nào đã tìm thấy và chép "
 "dữ liệu vào thiết bị đa phương tiện khác."
 
-#: ../src/Win_GParted.cc:2736
+#: ../src/Win_GParted.cc:2757
 msgid "Do you want to continue?"
 msgstr "Bạn có muốn tiếp tục không?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2740
+#: ../src/Win_GParted.cc:2761
 msgid "Search for file systems on %1"
 msgstr "Tim hệ thống tập tin trên %1."
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2751
+#: ../src/Win_GParted.cc:2772
 msgid "Searching for file systems on %1"
 msgstr "Đang tim hệ thống tập tin trên %1."
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2767
+#: ../src/Win_GParted.cc:2788
 msgid "No file systems found on %1"
 msgstr "Không thấy hệ thống tập tin nào trên %1"
 
-#: ../src/Win_GParted.cc:2768
+#: ../src/Win_GParted.cc:2789
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2283,35 +2320,35 @@ msgstr ""
 "Gpart thực hiện quét nhưng không tìm thấy bất kỳ hệ thống tập tin đã biết "
 "nào trên đĩa này."
 
-#: ../src/Win_GParted.cc:3039
+#: ../src/Win_GParted.cc:3060
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Bạn có chắc muốn áp dụng các thao tác còn chưa giải quyết không?"
 
-#: ../src/Win_GParted.cc:3045
+#: ../src/Win_GParted.cc:3066
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Sửa các phân vùng tiềm ẩn nguy cơ dẫn đến MẤT DỮ LIỆU."
 
-#: ../src/Win_GParted.cc:3047
+#: ../src/Win_GParted.cc:3068
 msgid "You are advised to backup your data before proceeding."
 msgstr "Khuyên bạn sao lưu các dữ liệu quan trọng trước khi xử lý."
 
-#: ../src/Win_GParted.cc:3049
+#: ../src/Win_GParted.cc:3070
 msgid "Apply operations to device"
 msgstr "Áp dụng các thao tác vào thiết bị"
 
-#: ../src/Win_GParted.cc:3094
+#: ../src/Win_GParted.cc:3115
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Bạn đang xóa một Phân vùng Vật lý LVM2 không rỗng %1"
 
-#: ../src/Win_GParted.cc:3098
+#: ../src/Win_GParted.cc:3119
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Bạn đang định dạng một Phân vùng Vật lý LVM2 không rỗng %1"
 
-#: ../src/Win_GParted.cc:3102
+#: ../src/Win_GParted.cc:3123
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Bạn đang dán một Phân vùng Vật lý LVM2 không rỗng %1"
 
-#: ../src/Win_GParted.cc:3111
+#: ../src/Win_GParted.cc:3132
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2319,7 +2356,7 @@ msgstr ""
 "Việc xóa hay ghi đè Phân vùng Vật lý là không thể hoàn lại được và sẽ phá "
 "hủy hay làm hỏng Nhóm Phân vùng."
 
-#: ../src/Win_GParted.cc:3114
+#: ../src/Win_GParted.cc:3135
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2329,22 +2366,22 @@ msgstr ""
 "lệnh LVM bên ngoài để làm trống Phân vùng Vật lý trước khi thử thực hiện "
 "thao tác này."
 
-#: ../src/Win_GParted.cc:3117
+#: ../src/Win_GParted.cc:3138
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Bạn có thực sự muốn tiếp tục ép buộc xóa Phân vùng Vật lý?"
 
-#: ../src/btrfs.cc:315
+#: ../src/btrfs.cc:316
 msgid "Failed to find devid for path %1"
 msgstr "Gặp lỗi khi tìm mã số thiết bị cho đường dẫn %1"
 
-#: ../src/fat16.cc:32 ../src/ntfs.cc:29
+#: ../src/fat16.cc:33 ../src/ntfs.cc:30
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr ""
 "Thay đổi UUID có thể làm mất hiệu lực của khóa Windows Product Activation "
 "(WPA)"
 
-#: ../src/fat16.cc:34 ../src/ntfs.cc:31
+#: ../src/fat16.cc:35 ../src/ntfs.cc:32
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2356,7 +2393,7 @@ msgstr ""
 "có thể làm mất hiệu lực của khóa WPA. Một khóa sẽ ngăn chặn bạn đăng nhập "
 "cho đến khi bạn kích hoạt lại Windows."
 
-#: ../src/fat16.cc:40 ../src/ntfs.cc:41
+#: ../src/fat16.cc:41 ../src/ntfs.cc:42
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2365,16 +2402,16 @@ msgstr ""
 "thống thường là vô hại, nhưng không có đảm bảo nào được đưa ra."
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/linux_swap.cc:30
+#: ../src/linux_swap.cc:31
 msgid "_Swapon"
 msgstr "_Bật tráo đổi"
 
-#: ../src/linux_swap.cc:31
+#: ../src/linux_swap.cc:32
 msgid "_Swapoff"
 msgstr "_Tắt tráo đổi"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:189
+#: ../src/linux_swap.cc:190
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2382,7 +2419,7 @@ msgstr ""
 "dữ liệu"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:208
+#: ../src/linux_swap.cc:209
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2390,15 +2427,15 @@ msgstr ""
 "dữ liệu"
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
-#: ../src/lvm2_pv.cc:27
+#: ../src/lvm2_pv.cc:28
 msgid "Ac_tivate"
 msgstr "Kích hoạ_t"
 
-#: ../src/lvm2_pv.cc:28
+#: ../src/lvm2_pv.cc:29
 msgid "Deac_tivate"
 msgstr "_Bất hoạt"
 
-#: ../src/lvm2_pv.cc:31
+#: ../src/lvm2_pv.cc:32
 msgid ""
 "The LVM2 Physical Volume can not currently be resized because it is a member "
 "of an exported Volume Group."
@@ -2406,7 +2443,7 @@ msgstr ""
 "Phân vùng Vật lý LVM2 hiện không thể đổi cỡ bởi vì nó là thành viên của Nhóm "
 "Phân vùng đã xuất."
 
-#: ../src/luks.cc:125
+#: ../src/luks.cc:126
 msgid ""
 "Maximize closed LUKS encryption skipped because it will automatically fill "
 "the partition when opened"
@@ -2426,7 +2463,7 @@ msgstr ""
 "Vì GParted là một công cụ mạnh mẽ có khả năng phá hủy bản phân vùng và lượng "
 "dữ liệu lớn, nên chỉ cho phép người siêu quản trị nó."
 
-#: ../src/ntfs.cc:37
+#: ../src/ntfs.cc:38
 msgid ""
 "In an attempt to avoid invalidating the WPA key, on NTFS file systems only "
 "half of the UUID is set to a new random value."
@@ -2435,30 +2472,36 @@ msgstr ""
 "nửa của UUID được đặt thành giá trị ngẫu nhiên mới."
 
 #. simulation..
-#: ../src/ntfs.cc:228
+#: ../src/ntfs.cc:229
 msgid "run simulation"
 msgstr "chạy mô phỏng"
 
-#. real resize
-#: ../src/ntfs.cc:236
+#. Real resize
+#: ../src/ntfs.cc:237
 msgid "real resize"
 msgstr "đổi cỡ thật"
 
-#: ../src/udf.cc:67
+#: ../src/udf.cc:183
 msgid "Partition is too large, maximum size is %1"
 msgstr "Phân vùng quá lớn, cỡ tối đa là %1"
 
-#: ../src/udf.cc:75
+#: ../src/udf.cc:191
 msgid "Partition is too small, minimum size is %1"
 msgstr "Phân vùng quá nhỏ, cỡ tối thiểu là %1"
 
-#: ../src/udf.cc:92
+#: ../src/udf.cc:208
 msgid ""
 "mkudffs prior to version 1.1 does not support non-ASCII characters in the "
 "label."
 msgstr ""
 "mkudffs trước phiên bản 1.1 không hỗ trợ nhãn có chứa các ký tự không nằm "
 "trong bảng mã ASCII."
+
+#~ msgid "N/A"
+#~ msgstr "N/A"
+
+#~ msgid "roll back last transaction"
+#~ msgstr "quay lại giao dịch cuối"
 
 #~ msgid "moving requires old and new length to be the same"
 #~ msgstr ""
@@ -2471,10 +2514,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "grow file system"
 #~ msgstr "tăng hệ thống tập tin"
-
-#, fuzzy
-#~ msgid "resize file system"
-#~ msgstr "đổi cỡ hệ thống tập tin"
 
 #, fuzzy
 #~ msgid ""
