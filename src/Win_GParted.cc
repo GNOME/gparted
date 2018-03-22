@@ -2563,7 +2563,7 @@ void Win_GParted::toggle_crypt_busy_state()
 					return;
 
 				success = open_encrypted_partition( *selected_partition_ptr,
-				                                    dialog.get_password().c_str(),
+				                                    dialog.get_password(),
 				                                    error_msg );
 			} while ( ! success );
 		}

@@ -20,7 +20,6 @@
 #include "Partition.h"
 
 #include <gtkmm/dialog.h>
-#include <glibmm/ustring.h>
 #include <gtkmm/entry.h>
 
 namespace GParted
@@ -31,7 +30,7 @@ class DialogPasswordEntry : public Gtk::Dialog
 public:
 	DialogPasswordEntry( const Partition & partition );
 	~DialogPasswordEntry();
-	Glib::ustring get_password();
+	const char * get_password();
 
 private:
 	Gtk::Entry *entry;

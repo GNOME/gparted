@@ -20,6 +20,7 @@
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
+#include <gtk/gtkentry.h>
 
 namespace GParted
 {
@@ -68,9 +69,12 @@ DialogPasswordEntry::~DialogPasswordEntry()
 {
 }
 
-Glib::ustring DialogPasswordEntry::get_password()
+const char * DialogPasswordEntry::get_password()
 {
-	return Glib::ustring( entry->get_text() );
+	// Avoid using the gtkmm C++ entry->get_text() because that constructs a
+	// Glib::ustring, copying the password from the underlying C GtkEntry object into
+	// an unsecured malloced chunk of memory.
+	return (const char *)gtk_entry_get_text( GTK_ENTRY( entry->gobj() ) );
 }
 
 } //GParted
