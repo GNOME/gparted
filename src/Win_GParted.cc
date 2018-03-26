@@ -2441,8 +2441,8 @@ bool Win_GParted::open_encrypted_partition( const Partition & partition,
 		pw = entered_password;
 		if ( strlen( pw ) == 0 )
 		{
-			// Internal documentation message never shown to user.
-			message = "Invalid zero length password";
+			// "cryptsetup" won't accept a zero length password.
+			message = "";
 			return false;
 		}
 	}
@@ -2488,7 +2488,7 @@ bool Win_GParted::open_encrypted_partition( const Partition & partition,
 		PasswordRAMStore::erase( partition.uuid );
 	}
 
-	message = "<i># " + cmd + "\n" + error + "\n" + output + "</i>";
+	message = ( success ) ? "" : _("Failed to open LUKS encryption");
 	return success;
 }
 
@@ -2565,6 +2565,7 @@ void Win_GParted::toggle_crypt_busy_state()
 				success = open_encrypted_partition( *selected_partition_ptr,
 				                                    dialog.get_password(),
 				                                    error_msg );
+				dialog.set_error_message( error_msg );
 			} while ( ! success );
 		}
 		default:

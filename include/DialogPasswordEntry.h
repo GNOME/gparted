@@ -20,7 +20,9 @@
 #include "Partition.h"
 
 #include <gtkmm/dialog.h>
+#include <glibmm/ustring.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/label.h>
 
 namespace GParted
 {
@@ -31,9 +33,11 @@ public:
 	DialogPasswordEntry( const Partition & partition );
 	~DialogPasswordEntry();
 	const char * get_password();
+	void set_error_message( const Glib::ustring & message );
 
 private:
 	Gtk::Entry *entry;
+	Gtk::Label *error_message;
 };
 
 } //GParted

@@ -59,6 +59,10 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	// Line 3: blank
 	vbox->pack_start( *Utils::mk_label( "" ) );
 
+	// Line 4: error message
+	error_message = Utils::mk_label( "" );
+	vbox->pack_start( *error_message );
+
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this->add_button( _("Unlock"), Gtk::RESPONSE_OK );
 	this->set_default_response( Gtk::RESPONSE_OK );
@@ -75,6 +79,11 @@ const char * DialogPasswordEntry::get_password()
 	// Glib::ustring, copying the password from the underlying C GtkEntry object into
 	// an unsecured malloced chunk of memory.
 	return (const char *)gtk_entry_get_text( GTK_ENTRY( entry->gobj() ) );
+}
+
+void DialogPasswordEntry::set_error_message( const Glib::ustring & message )
+{
+	error_message->set_label( message );
 }
 
 } //GParted
