@@ -2465,28 +2465,13 @@ bool Win_GParted::open_encrypted_partition( const Partition & partition,
 	bool success = ! Utils::execute_command( cmd, pw, output, error );
 	hide_pulsebar();
 	if ( success && pw != NULL )
-	{
-		// Replace the password just successfully used to open the LUKS mapping if
-		// it is different to the one already saved, or there is no saved
-		// password.
-		const char * stored_pw = PasswordRAMStore::lookup( partition.uuid );
-		if ( stored_pw != NULL            &&
-		     strcmp( pw, stored_pw ) == 0    )
-		{
-			PasswordRAMStore::erase( partition.uuid );
-			stored_pw = NULL;
-		}
-		if ( stored_pw == NULL )
-		{
-			PasswordRAMStore::insert( partition.uuid, pw );
-		}
-	}
+		// Save the password just entered and successfully used to open the LUKS
+		// mapping.
+		PasswordRAMStore::store( partition.uuid, pw );
 	else if ( ! success )
-	{
 		// Erase the password used during for the failure to open the LUKS
 		// mapping.
 		PasswordRAMStore::erase( partition.uuid );
-	}
 
 	message = ( success ) ? "" : _("Failed to open LUKS encryption");
 	return success;

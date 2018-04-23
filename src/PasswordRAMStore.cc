@@ -203,9 +203,17 @@ static PWStore single_pwstore;
 
 // PasswordRAMStore public methods
 
-bool PasswordRAMStore::insert( const Glib::ustring & key, const char * password )
+bool PasswordRAMStore::store( const Glib::ustring & key, const char * password )
 {
-	return single_pwstore.insert( key, password );
+	const char * looked_up_pw = single_pwstore.lookup( key );
+	if ( looked_up_pw == NULL )
+		return single_pwstore.insert( key, password );
+
+	if ( strcmp( looked_up_pw, password ) == 0 )
+		return true;
+
+	return    single_pwstore.erase( key )
+	       && single_pwstore.insert( key, password );
 }
 
 bool PasswordRAMStore::erase( const Glib::ustring & key )

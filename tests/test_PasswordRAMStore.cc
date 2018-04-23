@@ -127,7 +127,7 @@ TEST_F( PasswordRAMStoreTest, SinglePassword )
 {
 	// Test a single password can be stored, looked up and erased (and zeroed).
 	pw = "password";
-	EXPECT_TRUE( PasswordRAMStore::insert( "key-single", pw.c_str() ) );
+	EXPECT_TRUE( PasswordRAMStore::store( "key-single", pw.c_str() ) );
 
 	looked_up_pw = PasswordRAMStore::lookup( "key-single" );
 	EXPECT_STREQ( pw.c_str(), looked_up_pw );
@@ -139,17 +139,41 @@ TEST_F( PasswordRAMStoreTest, SinglePassword )
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 }
 
-TEST_F( PasswordRAMStoreTest, DuplicatePassword )
+TEST_F( PasswordRAMStoreTest, IdenticalPassword )
 {
-	// Test storing a password with a duplicate key fails (and single password can be
-	// erased and zeroed).
+	// Test a password can be saved twice with the same key and looked up (and the
+	// single password can be erased and zeroed).
 	pw = "password";
-	EXPECT_TRUE( PasswordRAMStore::insert( "key-single", pw.c_str() ) );
+	EXPECT_TRUE( PasswordRAMStore::store( "key-single", pw.c_str() ) );
+
+	EXPECT_TRUE( PasswordRAMStore::store( "key-single", pw.c_str() ) );
 
 	looked_up_pw = PasswordRAMStore::lookup( "key-single" );
 	EXPECT_STREQ( pw.c_str(), looked_up_pw );
 
-	EXPECT_FALSE( PasswordRAMStore::insert( "key-single", pw.c_str() ) );
+	looked_up_len = strlen( looked_up_pw );
+	EXPECT_TRUE( PasswordRAMStore::erase( "key-single" ) );
+	EXPECT_TRUE( mem_is_zero( looked_up_pw, looked_up_len ) );
+
+	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
+}
+
+TEST_F( PasswordRAMStoreTest, ReplacePassword )
+{
+	// Test a password can be saved and looked up, then saved again with a different
+	// password using the same key and looked up (and the single replaced password
+	// is erased and zeroed).
+	pw = "password";
+	EXPECT_TRUE( PasswordRAMStore::store( "key-single", pw.c_str() ) );
+
+	looked_up_pw = PasswordRAMStore::lookup( "key-single" );
+	EXPECT_STREQ( pw.c_str(), looked_up_pw );
+
+	pw = "password2";
+	EXPECT_TRUE( PasswordRAMStore::store( "key-single", pw.c_str() ) );
+
+	looked_up_pw = PasswordRAMStore::lookup( "key-single" );
+	EXPECT_STREQ( pw.c_str(), looked_up_pw );
 
 	looked_up_len = strlen( looked_up_pw );
 	EXPECT_TRUE( PasswordRAMStore::erase( "key-single" ) );
@@ -166,7 +190,7 @@ TEST_F( PasswordRAMStoreTest, OneHundredPasswordsForwards )
 	for ( i = 0 ; i < 100 ; i ++ )
 	{
 		pw = gen_passwd( i );
-		EXPECT_TRUE( PasswordRAMStore::insert( gen_key(i), pw.c_str() ) );
+		EXPECT_TRUE( PasswordRAMStore::store( gen_key(i), pw.c_str() ) );
 	}
 
 	for ( i = 0 ; i < 100 ; i ++ )
@@ -196,7 +220,7 @@ TEST_F( PasswordRAMStoreTest, OneHundredPasswordsBackwards )
 	for ( i = 0 ; i < 100 ; i ++ )
 	{
 		pw = gen_passwd( i );
-		EXPECT_TRUE( PasswordRAMStore::insert( gen_key(i), pw.c_str() ) );
+		EXPECT_TRUE( PasswordRAMStore::store( gen_key(i), pw.c_str() ) );
 	}
 
 	for ( i = 0 ; i < 100 ; i ++ )
@@ -224,7 +248,7 @@ TEST_F( PasswordRAMStoreTest, LongPassword )
 	// [Implementation knowledge: size]
 	pw = std::string( ProtectedMemSize-1, 'X' );
 
-	EXPECT_TRUE( PasswordRAMStore::insert( "key-long", pw.c_str() ) );
+	EXPECT_TRUE( PasswordRAMStore::store( "key-long", pw.c_str() ) );
 
 	looked_up_pw = PasswordRAMStore::lookup( "key-long" );
 	EXPECT_STREQ( pw.c_str(), looked_up_pw );
@@ -242,7 +266,7 @@ TEST_F( PasswordRAMStoreTest, TooLongPassword )
 	// [Implementation knowledge: size]
 	std::string pw = std::string( ProtectedMemSize, 'X' );
 
-	EXPECT_FALSE( PasswordRAMStore::insert( "key-too-long", pw.c_str() ) );
+	EXPECT_FALSE( PasswordRAMStore::store( "key-too-long", pw.c_str() ) );
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 
 	looked_up_pw = PasswordRAMStore::lookup( "key-too-long" );
@@ -260,7 +284,7 @@ TEST_F( PasswordRAMStoreTest, TotalErasure )
 	for ( i = 0 ; i < 100 ; i ++ )
 	{
 		pw = gen_passwd( i );
-		EXPECT_TRUE( PasswordRAMStore::insert( gen_key(i), pw.c_str() ) );
+		EXPECT_TRUE( PasswordRAMStore::store( gen_key(i), pw.c_str() ) );
 	}
 	EXPECT_FALSE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 

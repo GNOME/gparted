@@ -40,7 +40,7 @@ friend class PasswordRAMStoreTest;  // To allow unit testing PasswordRAMStoreTes
                                     // access to private methods.
 
 public:
-	static bool insert( const Glib::ustring & key, const char * password );
+	static bool store( const Glib::ustring & key, const char * password );
 	static bool erase( const Glib::ustring & key );
 	static const char * lookup( const Glib::ustring & key );
 
