@@ -36,14 +36,14 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 
 	// Pack resizer hbox
 	hbox_resizer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
-	
-	//add label_minmax
-	this ->get_vbox() ->pack_start( label_minmax, Gtk::PACK_SHRINK );
+	this->get_content_area()->pack_start(hbox_resizer, Gtk::PACK_SHRINK);
+
+	// Add label_minmax
+	this->get_content_area()->pack_start(label_minmax, Gtk::PACK_SHRINK);
 
 	// Pack hbox_main
 	hbox_main.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-	this ->get_vbox() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
+	this->get_content_area()->pack_start(hbox_main, Gtk::PACK_SHRINK);
 
 	// Put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	vbox_resize_move.set_orientation(Gtk::ORIENTATION_VERTICAL);

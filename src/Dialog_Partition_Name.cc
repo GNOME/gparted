@@ -37,7 +37,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	Gtk::Box *hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	hbox->set_border_width( 5 );
 	hbox->set_spacing( 10 );
-	get_vbox()->pack_start( *hbox, Gtk::PACK_SHRINK );
+	get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 	// Only line: "Name: [EXISTINGNAME  ]"
 	hbox->pack_start( *Utils::mk_label( "<b>" + Glib::ustring(_("Name:")) + "</b>" ),

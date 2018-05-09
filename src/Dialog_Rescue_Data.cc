@@ -70,14 +70,14 @@ void Dialog_Rescue_Data::draw_dialog()
 		
 		Gtk::Label *inconsis_label=manage(Utils::mk_label(msg_label));
 		inconsis_label->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
-		this->get_vbox()->pack_end(*inconsis_label, Gtk::PACK_SHRINK, 5);
+		this->get_content_area()->pack_end(*inconsis_label, Gtk::PACK_SHRINK, 5);
 	}
 	message->append("</b></big>");
 
-	this->get_vbox()->set_spacing(5);
+	this->get_content_area()->set_spacing(5);
 
 	Gtk::Label *msgLbl=Utils::mk_label(*message);
-	this->get_vbox()->pack_start(*msgLbl, Gtk::PACK_SHRINK);
+	this->get_content_area()->pack_start(*msgLbl, Gtk::PACK_SHRINK);
 
 	this->create_list_of_fs();
 
@@ -92,7 +92,7 @@ void Dialog_Rescue_Data::draw_dialog()
 	infoBox->pack_start(*infoImg, Gtk::PACK_SHRINK, 5);
 	infoBox->pack_start(*infoLabel, Gtk::PACK_SHRINK);
 
-	this->get_vbox()->pack_start(*infoBox, Gtk::PACK_SHRINK);
+	this->get_content_area()->pack_start(*infoBox, Gtk::PACK_SHRINK);
 
 	this->show_all_children();
 
@@ -146,7 +146,7 @@ void Dialog_Rescue_Data::create_list_of_fs()
         vb->pack_start(*hb, Gtk::PACK_SHRINK);
 	}
 
-	this->get_vbox()->pack_start(*this->frm, Gtk::PACK_SHRINK);
+	this->get_content_area()->pack_start(*this->frm, Gtk::PACK_SHRINK);
 }
 
 /*

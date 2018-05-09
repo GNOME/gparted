@@ -34,7 +34,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 	{
 		Gtk::Box *hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
-		get_vbox()->pack_start(*hbox, Gtk::PACK_SHRINK);
+		get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 		Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 

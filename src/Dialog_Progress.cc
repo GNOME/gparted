@@ -52,7 +52,7 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 
 		vbox->set_border_width(10);
-		this->get_vbox()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
+		this->get_content_area()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
 
 		Glib::ustring str_temp(_("Depending on the number and type of operations this might take a long time."));
 		str_temp += "\n";
