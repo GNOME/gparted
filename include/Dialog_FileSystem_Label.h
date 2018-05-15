@@ -20,13 +20,9 @@
 #include "Partition.h"
 #include "i18n.h"
 
+#include <glibmm/ustring.h>
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/table.h>
 #include <gtkmm/entry.h>
-
-#define BORDER 8
 
 namespace GParted
 {

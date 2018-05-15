@@ -17,6 +17,11 @@
 #include "Dialog_FileSystem_Label.h"
 #include "Partition.h"
 
+#include <glibmm/ustring.h>
+#include <gtkmm/box.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/entry.h>
+
 namespace GParted
 {
 
@@ -29,32 +34,22 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	/* TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3 */
 	this->set_title( String::ucompose( _("Set file system label on %1"), partition.get_path() ) );
 
-	{
-		int top = 0, bottom = 1;
+	// HBox to hold the label and entry box line
+	Gtk::HBox *hbox( manage( new Gtk::HBox() ) );
+	hbox->set_border_width( 5 );
+	hbox->set_spacing( 10 );
+	get_vbox()->pack_start( *hbox, Gtk::PACK_SHRINK );
 
-		//Create table to hold Label and entry box
-		Gtk::Table* table(manage(new Gtk::Table()));
-
-		table->set_border_width(5);
-		table->set_col_spacings(10);
-		get_vbox()->pack_start(*table, Gtk::PACK_SHRINK);
-		table->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>"),
-				0, 1,
-				top, bottom,
-				Gtk::FILL);
-		//Create Text entry box
-		entry = manage(new Gtk::Entry());
-		entry->set_max_length( Utils::get_filesystem_label_maxlength( partition.filesystem ) ) ;
-		entry->set_width_chars( 30 );
-		entry->set_activates_default(true);
-		entry->set_text(partition.get_filesystem_label());
-		entry->select_region(0, entry ->get_text_length());
-		//Add entry box to table
-		table->attach(*entry,
-				1, 2,
-				top++, bottom++,
-				Gtk::FILL);
-	}
+	// Only line: "Label: [EXISTINGLABEL ]"
+	hbox->pack_start( *Utils::mk_label("<b>" + Glib::ustring( _("Label:") ) + "</b>"),
+	                  Gtk::PACK_SHRINK );
+	entry = manage( new Gtk::Entry() );
+	entry->set_max_length( Utils::get_filesystem_label_maxlength( partition.filesystem ) );
+	entry->set_width_chars( 30 );
+	entry->set_activates_default( true );
+	entry->set_text( partition.get_filesystem_label() );
+	entry->select_region( 0, entry->get_text_length() );
+	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
 
 	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
 	this ->add_button( Gtk::Stock::OK, Gtk::RESPONSE_OK ) ;
