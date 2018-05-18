@@ -1463,6 +1463,8 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 			return GParted::FS_UDF;
 		else if ( fsname == "ufs" )
 			return GParted::FS_UFS ;
+		else if ( fsname == "BitLocker" )
+			return FS_BITLOCKER;
 		else if ( fsname == "iso9660" )
 			return FS_ISO9660;
 		else if ( fsname == "linux_raid_member" )
