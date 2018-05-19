@@ -88,8 +88,8 @@ FS xfs::get_filesystem_support()
 
 void xfs::set_used_sectors( Partition & partition ) 
 {
-	if ( ! Utils::execute_command( "xfs_db -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
-	                               " -c 'print fdblocks' -r " + Glib::shell_quote( partition.get_path() ),
+	if ( ! Utils::execute_command( "xfs_db -r -c 'sb 0' -c 'print blocksize' -c 'print dblocks'"
+	                               " -c 'print fdblocks' " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                                   )
 	{
 		//blocksize
