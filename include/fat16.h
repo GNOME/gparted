@@ -43,7 +43,6 @@ public:
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail ) ;
 
 private:
-	static const Glib::ustring Change_UUID_Warning [] ;
 	const Glib::ustring sanitize_label( const Glib::ustring & label ) const;
 };
 
