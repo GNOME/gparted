@@ -174,7 +174,7 @@ PWStore::iterator PWStore::find_key( const Glib::ustring & key )
 void PWStore::erase_all()
 {
 	pw_entries.clear();
-	if ( protected_mem != NULL );
+	if ( protected_mem != NULL )
 		// WARNING:
 		// memset() can be optimised away if the compiler knows the memory is not
 		// accessed again.  In this case this memset() is in a separate method
