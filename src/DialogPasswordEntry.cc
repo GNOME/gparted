@@ -53,6 +53,7 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	entry->set_width_chars( 30 );
 	entry->set_visibility( false );
 	entry->set_activates_default( true );
+	entry->grab_focus();
 	entry_hbox->pack_start( *entry );
 	vbox->pack_start( *entry_hbox );
 
@@ -84,6 +85,10 @@ const char * DialogPasswordEntry::get_password()
 void DialogPasswordEntry::set_error_message( const Glib::ustring & message )
 {
 	error_message->set_label( message );
+	// After unlock failure, also select failed password and make the password entry
+	// box have focus ready for retyping the correct password.
+	entry->select_region( 0, -1 );
+	entry->grab_focus();
 }
 
 } //GParted
