@@ -20,6 +20,7 @@
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/button.h>
 #include <gtk/gtkentry.h>
 
 namespace GParted
@@ -65,7 +66,8 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	vbox->pack_start( *error_message );
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	this->add_button( _("Unlock"), Gtk::RESPONSE_OK );
+	Gtk::Button *unlock_button = this->add_button( _("Unlock"), Gtk::RESPONSE_OK );
+	unlock_button->signal_clicked().connect( sigc::mem_fun( *this, &DialogPasswordEntry::on_button_unlock ) );
 	this->set_default_response( Gtk::RESPONSE_OK );
 	this->show_all_children();
 }
@@ -89,6 +91,14 @@ void DialogPasswordEntry::set_error_message( const Glib::ustring & message )
 	// box have focus ready for retyping the correct password.
 	entry->select_region( 0, -1 );
 	entry->grab_focus();
+}
+
+// Private methods
+
+void DialogPasswordEntry::on_button_unlock()
+{
+	// Clear any previous unlock failure message before starting new attempt.
+	error_message->set_label( "" );
 }
 
 } //GParted

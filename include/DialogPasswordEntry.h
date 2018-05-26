@@ -36,6 +36,8 @@ public:
 	void set_error_message( const Glib::ustring & message );
 
 private:
+	void on_button_unlock();
+
 	Gtk::Entry *entry;
 	Gtk::Label *error_message;
 };
