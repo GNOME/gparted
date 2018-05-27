@@ -1688,7 +1688,7 @@ void Win_GParted::menu_help_contents()
 	tmp_msg += "\n" ;
 	tmp_msg += _( "Documentation is available at the project web site." ) ;
 	tmp_msg += "\n" ;
-	tmp_msg += "http://gparted.org" ;
+	tmp_msg += "https://gparted.org";
 	dialog .set_secondary_text( tmp_msg ) ;
 	dialog .run() ;
 #endif
@@ -1745,7 +1745,7 @@ void Win_GParted::menu_help_about()
 
 
 	//the url is not clickable - should not invoke web browser as root
-	dialog .set_website_label( "http://gparted.org" ) ;
+	dialog.set_website_label( "https://gparted.org" );
 
 	dialog .run() ;
 }
@@ -1924,7 +1924,7 @@ void Win_GParted::activate_resize()
 			tmp_msg += "\n";
 			tmp_msg += _("You can learn how to repair the boot configuration in the GParted FAQ.");
 			tmp_msg += "\n";
-			tmp_msg += "http://gparted.org/faq.php";
+			tmp_msg += "https://gparted.org/faq.php";
 			tmp_msg += "\n\n";
 			tmp_msg += _("Moving a partition might take a very long time to apply.");
 			dialog.set_secondary_text( tmp_msg );
