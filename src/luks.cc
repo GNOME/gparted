@@ -42,8 +42,7 @@ const Glib::ustring & luks::get_custom_text( CUSTOM_TEXT ttype, int index ) cons
 
 FS luks::get_filesystem_support()
 {
-	FS fs;
-	fs.filesystem = FS_LUKS;
+	FS fs( FS_LUKS );
 
 	fs.busy = FS::EXTERNAL;
 	fs.read = FS::EXTERNAL;
