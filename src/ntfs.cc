@@ -32,8 +32,8 @@ const Glib::ustring & ntfs::get_custom_text( CUSTOM_TEXT ttype, int index ) cons
 		{ _("Changing the UUID might invalidate the Windows Product Activation "
 		    "(WPA) key"),
 		  _("On FAT and NTFS file systems, the Volume Serial Number is used as "
-		    "the UUID.  Changing the Volume Serial Number on the Windows system "
-		    "partition, normally C:, might invalidate the WPA key.   An invalid "
+		    "the UUID. Changing the Volume Serial Number on the Windows system "
+		    "partition, normally C:, might invalidate the WPA key. An invalid "
 		    "WPA key will prevent login until you reactivate Windows."),
 		  _("In an attempt to avoid invalidating the WPA key, on NTFS file "
 		    "systems only half of the UUID is set to a new random value."),
