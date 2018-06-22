@@ -5,10 +5,11 @@ before_script:
   - yum update -y
   - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
                    gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
-                   polkit
+                   polkit file
 
 stages:
   - build
+  - test
 
 # Check GParted can be built and installed.
 build:
@@ -17,3 +18,12 @@ build:
     - ./autogen.sh
     - make
     - make install
+
+# Check GParted unit tests and distcheck pass.
+test:
+  stage: test
+  script:
+    - ./autogen.sh
+    - make
+    - make check
+    - make distcheck
