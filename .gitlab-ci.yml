@@ -23,16 +23,9 @@ build:
 test:
   stage: test
   script:
-    - ls -lR /dev
     - ./autogen.sh
     - make
+    # Exclude specific unit test which fails without /dev/disk in Docker images.
+    - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
     - make check
     - make distcheck
-  # Capture all GParted files from the Docker image for investigation.
-  artifacts:
-    when: always
-    name: "$CI_PROJECT_NAME-ci-job-$CI_JOB_ID-$CI_JOB_NAME"
-    untracked: true
-    paths:
-      - ./
-    expire_in: 1 week
