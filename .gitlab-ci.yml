@@ -1,0 +1,19 @@
+# Use official CentOS image https://hub.docker.com/_/centos/.
+image: centos:latest
+
+before_script:
+  - yum update -y
+  - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
+                   gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
+                   polkit
+
+stages:
+  - build
+
+# Check GParted can be built and installed.
+build:
+  stage: build
+  script:
+    - ./autogen.sh
+    - make
+    - make install
