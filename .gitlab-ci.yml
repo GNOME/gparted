@@ -12,7 +12,7 @@ stages:
   - test
 
 # Check GParted can be built and installed.
-build:
+centos_build:
   stage: build
   script:
     - ./autogen.sh
@@ -20,7 +20,7 @@ build:
     - make install
 
 # Check GParted unit tests and distcheck pass.
-test:
+centos_test:
   stage: test
   script:
     - ./autogen.sh
