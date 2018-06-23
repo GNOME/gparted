@@ -1,26 +1,24 @@
-# Use official CentOS image https://hub.docker.com/_/centos/.
-image: centos:latest
-
-before_script:
-  - yum update -y
-  - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
-                   gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
-                   polkit file
-
 stages:
   - build
   - test
 
-# Check GParted can be built and installed.
-centos_build:
+.centos_image_template: &centos_image_definition
+  # Use official CentOS image https://hub.docker.com/_/centos/.
+  image: centos:latest
+  before_script:
+    - yum update -y
+    - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
+                     gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
+                     polkit file
+
+.build_stage_template: &build_stage_definition
   stage: build
   script:
     - ./autogen.sh
     - make
     - make install
 
-# Check GParted unit tests and distcheck pass.
-centos_test:
+.test_stage_template: &test_stage_definition
   stage: test
   script:
     - ./autogen.sh
@@ -29,3 +27,13 @@ centos_test:
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
     - make check
     - make distcheck
+
+# Check GParted can be built and installed.
+centos_build:
+  <<: *centos_image_definition
+  <<: *build_stage_definition
+
+# Check GParted unit tests and distcheck pass.
+centos_test:
+  <<: *centos_image_definition
+  <<: *test_stage_definition
