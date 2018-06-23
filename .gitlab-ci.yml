@@ -11,6 +11,15 @@ stages:
                      gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
                      polkit file
 
+.dummy_ubuntu_image: &ubuntu_image_template
+  # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
+  image: ubuntu:latest
+  before_script:
+    - apt-get update
+    - apt-get install -y gnome-common gnome-doc-utils libglib2.0-dev-bin
+                         uuid-dev libparted-dev libgtkmm-2.4-dev make
+                         policykit-1
+
 .dummy_build_stage: &build_stage_template
   stage: build
   script:
@@ -28,9 +37,13 @@ stages:
     - make check
     - make distcheck
 
-# Check GParted can be built and installed.
+# Check GParted can be built and installed on CentOS and Ubuntu.
 centos_build:
   <<: *centos_image_template
+  <<: *build_stage_template
+
+ubuntu_build:
+  <<: *ubuntu_image_template
   <<: *build_stage_template
 
 # Check GParted unit tests and distcheck pass.
