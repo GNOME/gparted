@@ -46,7 +46,11 @@ ubuntu_build:
   <<: *ubuntu_image_definition
   <<: *build_stage_definition
 
-# Check GParted unit tests and distcheck pass.
+# Check GParted unit tests and distcheck pass on CentOS and Ubuntu.
 centos_test:
   <<: *centos_image_definition
+  <<: *test_stage_definition
+
+ubuntu_test:
+  <<: *ubuntu_image_definition
   <<: *test_stage_definition
