@@ -46,7 +46,11 @@ ubuntu_build:
   <<: *ubuntu_image_template
   <<: *build_stage_template
 
-# Check GParted unit tests and distcheck pass.
+# Check GParted unit tests and distcheck pass on CentOS and Ubuntu.
 centos_test:
   <<: *centos_image_template
+  <<: *test_stage_template
+
+ubuntu_test:
+  <<: *ubuntu_image_template
   <<: *test_stage_template
