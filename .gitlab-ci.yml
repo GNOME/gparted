@@ -39,7 +39,7 @@ stages:
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
     - make check
-    - make distcheck -j $nproc
+    - make distcheck
 
 # Check GParted can be built and installed on CentOS and Ubuntu.
 centos_build:
