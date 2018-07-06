@@ -24,18 +24,22 @@ stages:
   stage: build
   script:
     - ./autogen.sh
-    - make
+    - nproc=`grep -c '^processor' /proc/cpuinfo` || nproc=1
+    - echo nproc=$nproc
+    - make -j $nproc
     - make install
 
 .test_stage_template: &test_stage_definition
   stage: test
   script:
     - ./autogen.sh
-    - make
+    - nproc=`grep -c '^processor' /proc/cpuinfo` || nproc=1
+    - echo nproc=$nproc
+    - make -j $nproc
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
     - make check
-    - make distcheck
+    - make distcheck -j $nproc
 
 # Check GParted can be built and installed on CentOS and Ubuntu.
 centos_build:
