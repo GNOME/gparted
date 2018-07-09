@@ -225,7 +225,6 @@ private:
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
 	Gtk::ScrolledWindow *scrollwindow;
-	Gtk::Label label_device_info1, label_device_info2, *label;
 	Gtk::Tooltips tooltips ;
 	Gtk::Table *table ;
 	Gtk::MenuItem *menu_item;
