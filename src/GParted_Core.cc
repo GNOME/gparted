@@ -1324,7 +1324,9 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 		{     0LL, "\x52\x56\xBE\x1B",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\x56\xBE\x6F",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\xE8\x28\x01",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG }
+		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x63",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{     0LL, "\x52\x56\xBE\x56",     0LL, NULL  , FS_GRUB2_CORE_IMG }
 	};
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
@@ -1333,8 +1335,8 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 	//
 	// Recognise GRUB2 core.img just by any of the possible first 4 bytes of x86 CPU
 	// instructions it starts with.
-	// *   bootinfoscript v0.74 line 1963  [GRUB2 core.img possible staring 4 bytes]
-	//     https://github.com/arvidjaar/bootinfoscript/blob/b1f711e39d7aa4021f4ad3d31468a8b1e1b3fda7/bootinfoscript#L1963
+	// *   bootinfoscript v0.77 line 1990  [GRUB2 core.img possible staring 4 bytes]
+	//     https://github.com/arvidjaar/bootinfoscript/blob/009f509d59e2f0d39b8d44692e2a81720f5af7b6/bootinfoscript#L1990
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
