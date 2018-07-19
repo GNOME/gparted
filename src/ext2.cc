@@ -142,11 +142,11 @@ FS ext2::get_filesystem_support()
 
 void ext2::set_used_sectors( Partition & partition ) 
 {
-	//Called when file system is unmounted *and* when mounted.  Always read
-	//  the file system size from the on disk superblock using dumpe2fs to
-	//  avoid overhead subtraction.  Read the free space from the kernel via
-	//  the statvfs() system call when mounted and from the superblock when
-	//  unmounted.
+	// Called when file system is unmounted *and* when mounted.  Always read
+	// the file system size from the on disk superblock using dumpe2fs to
+	// avoid overhead subtraction.  When mounted read the free space from
+	// the kernel via the statvfs() system call.  When unmounted read the
+	// free space using resize2fs itself.
 	if ( ! Utils::execute_command( "dumpe2fs -h " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                       )
 	{
@@ -177,10 +177,18 @@ void ext2::set_used_sectors( Partition & partition )
 		}
 		else
 		{
-			index = output .find( "Free blocks:" ) ;
-			if ( index >= output .length() ||
-			     sscanf( output.substr( index ).c_str(), "Free blocks: %lld", &N ) != 1 )
-				N = -1 ;
+			// Resize2fs won't shrink a file system smaller than it's own
+			// estimated minimum size, so use that to derive the free space.
+			N = -1;
+			if ( ! Utils::execute_command( "resize2fs -P " + Glib::shell_quote( partition.get_path() ),
+			                               output, error, true )                                        )
+			{
+				if ( sscanf( output.c_str(), "Estimated minimum size of the filesystem: %lld", &N ) == 1 )
+					N = T - N;
+			}
+
+			if ( N == -1 && ! error.empty() )
+				partition.push_back_message( error );
 		}
 
 		if ( T > -1 && N > -1 && S > -1 )
