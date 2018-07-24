@@ -9,7 +9,7 @@ stages:
     - yum update -y
     - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
                      gcc-c++ libuuid-devel parted-devel gtkmm24-devel make
-                     polkit file
+                     polkit file rarian-compat
 
 .ubuntu_image_template: &ubuntu_image_definition
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
@@ -18,7 +18,7 @@ stages:
     - apt-get update
     - apt-get install -y gnome-common gnome-doc-utils libglib2.0-dev-bin
                          uuid-dev libparted-dev libgtkmm-2.4-dev make
-                         policykit-1
+                         policykit-1 rarian-compat
 
 .build_stage_template: &build_stage_definition
   stage: build
@@ -35,6 +35,8 @@ stages:
     - ./autogen.sh
     - nproc=`grep -c '^processor' /proc/cpuinfo` || nproc=1
     - echo nproc=$nproc
+    # Prevent xmllint fetching scrollkeeper DTD file remotely.
+    - sed -i '/xmllint.*http.*scrollkeeper-omf.dtd/s|xmllint |xmllint --nonet |' help/Makefile
     - make -j $nproc
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
