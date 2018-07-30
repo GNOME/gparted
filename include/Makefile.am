@@ -39,6 +39,7 @@ EXTRA_DIST = \
 	OperationLabelFileSystem.h	\
 	OperationNamePartition.h	\
 	OperationResizeMove.h		\
+	OptionComboBox.h		\
 	Partition.h			\
 	PartitionLUKS.h			\
 	PartitionVector.h		\
