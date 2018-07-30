@@ -49,6 +49,7 @@ gpartedbin_SOURCES = \
 	OperationLabelFileSystem.cc	\
 	OperationNamePartition.cc	\
 	OperationResizeMove.cc		\
+	OptionComboBox.cc		\
 	Partition.cc			\
 	PartitionLUKS.cc		\
 	PartitionVector.cc		\
