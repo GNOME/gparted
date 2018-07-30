@@ -160,16 +160,15 @@ void ext2::set_used_sectors( Partition & partition )
 		     sscanf( output.substr( index ).c_str(), "Block size: %lld", &S ) != 1 )
 			S = -1 ;
 
-		if ( T > -1 && S > -1 )
-			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
-
 		if ( partition .busy )
 		{
 			Byte_Value ignored ;
 			Byte_Value fs_free ;
 			if ( Utils::get_mounted_filesystem_usage( partition .get_mountpoint(),
 			                                          ignored, fs_free, error ) == 0 )
-				N = Utils::round( fs_free / double(partition .sector_size) ) ;
+			{
+				N = fs_free / S;
+			}
 			else
 			{
 				N = -1 ;
@@ -182,13 +181,13 @@ void ext2::set_used_sectors( Partition & partition )
 			if ( index >= output .length() ||
 			     sscanf( output.substr( index ).c_str(), "Free blocks: %lld", &N ) != 1 )
 				N = -1 ;
-
-			if ( N > -1 && S > -1 )
-				N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
 		}
 
 		if ( T > -1 && N > -1 && S > -1 )
 		{
+			T = Utils::round( T * ( S / double(partition.sector_size) ) );
+			N = Utils::round( N * ( S / double(partition.sector_size) ) );
+
 			partition .set_sector_usage( T, N ) ;
 			partition.fs_block_size = S;
 		}
