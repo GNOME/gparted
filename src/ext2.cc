@@ -77,6 +77,10 @@ FS ext2::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "dumpe2fs").empty() )
 	{
+		// Resize2fs is preferred, but not required, to determine the minimum FS
+		// size.  Can fall back to using dumpe2fs instead.  Dumpe2fs is required
+		// for reading FS size and FS block size.  See ext2::set_used_sectors()
+		// implementation for details.
 		fs.read = FS::EXTERNAL;
 		fs.online_read = FS::EXTERNAL;
 	}
@@ -146,7 +150,7 @@ void ext2::set_used_sectors( Partition & partition )
 	// the file system size from the on disk superblock using dumpe2fs to
 	// avoid overhead subtraction.  When mounted read the free space from
 	// the kernel via the statvfs() system call.  When unmounted read the
-	// free space using resize2fs itself.
+	// free space using resize2fs itself falling back to using dumpe2fs.
 	if ( ! Utils::execute_command( "dumpe2fs -h " + Glib::shell_quote( partition.get_path() ),
 	                               output, error, true )                                       )
 	{
@@ -180,14 +184,25 @@ void ext2::set_used_sectors( Partition & partition )
 			// Resize2fs won't shrink a file system smaller than it's own
 			// estimated minimum size, so use that to derive the free space.
 			N = -1;
+			Glib::ustring output2;
+			Glib::ustring error2;
 			if ( ! Utils::execute_command( "resize2fs -P " + Glib::shell_quote( partition.get_path() ),
-			                               output, error, true )                                        )
+			                               output2, error2, true )                                      )
 			{
-				if ( sscanf( output.c_str(), "Estimated minimum size of the filesystem: %lld", &N ) == 1 )
+				if ( sscanf( output2.c_str(), "Estimated minimum size of the filesystem: %lld", &N ) == 1 )
 					N = T - N;
 			}
 
-			if ( N == -1 && ! error.empty() )
+			// Resize2fs can fail reporting please run fsck first.  Fall back
+			// to reading dumpe2fs output for free space.
+			if ( N == -1 )
+			{
+				index = output.find( "Free blocks:" );
+				if ( index < output.length() )
+					sscanf( output.substr( index ).c_str(), "Free blocks: %lld", &N );
+			}
+
+			if ( N == -1 && ! error2.empty() )
 				partition.push_back_message( error );
 		}
 
