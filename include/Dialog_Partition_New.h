@@ -20,6 +20,7 @@
 
 #include "Dialog_Base_Partition.h"
 #include "Device.h"
+#include "OptionComboBox.h"
 #include "Partition.h"
 #include "Utils.h"
 
@@ -54,8 +55,9 @@ private:
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
 	Gtk::Table table_create;
-	Gtk::OptionMenu optionmenu_type, optionmenu_filesystem;
-	Gtk::Menu menu_type, menu_filesystem;
+	OptionComboBox combo_type;
+	Gtk::OptionMenu optionmenu_filesystem;
+	Gtk::Menu menu_filesystem;
 	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
 
