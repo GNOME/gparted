@@ -27,6 +27,7 @@ EXTRA_DIST = \
 	HBoxOperations.h		\
 	LVM2_PV_Info.h			\
 	LUKS_Info.h			\
+	MenuHelpers.h			\
 	Mount_Info.h			\
 	Operation.h			\
 	OperationChangeUUID.h		\
