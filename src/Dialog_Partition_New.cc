@@ -181,8 +181,8 @@ void Dialog_Partition_New::set_data( const Device & device,
 	if ( TOTAL_MB < 2 )
 		frame_resizer_base ->set_sensitive( false ) ;
 
-	//connect signal handler for Dialog_Base_Partiton optionmenu_alignment
-	optionmenu_alignment .signal_changed() .connect( 
+	// Connect signal handler for Dialog_Base_Partiton combo_alignment.
+	combo_alignment.signal_changed().connect(
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
 
 	this ->show_all_children() ;
@@ -247,7 +247,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	new_partition->set_filesystem_label( Utils::trim( filesystem_label_entry.get_text() ) );
 
 	//set alignment
-	switch ( optionmenu_alignment .get_history() )
+	switch ( combo_alignment.get_active_row_number() )
 	{
 		case 0:
 			new_partition->alignment = ALIGN_CYLINDER;
@@ -336,7 +336,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 		}
 	}
 	
-	//optionmenu_filesystem and optionmenu_alignment
+	// optionmenu_filesystem and combo_alignment
 	if ( ! type )
 	{
 		fs = FILESYSTEMS[ optionmenu_filesystem .get_history() ] ;
