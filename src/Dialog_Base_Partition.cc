@@ -95,22 +95,21 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
 
 	//add alignment
-	/*TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices> */
+	/*TO TRANSLATORS: used as label for a list of choices.   Align to: <combo box with choices> */
 	table_resize .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Align to:") ) + "\t" ),
 	                      0, 1, 3, 4, Gtk::FILL );
 
-	//fill partition alignment menu
-	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
-	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Cylinder") ) ) ;
-	/*TO TRANSLATORS: Menu option for label "Align to:" */
-	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("MiB") ) ) ;
-	/*TO TRANSLATORS: Menu option for drop down menu "Align to:" */
-	menu_alignment .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("None") ) ) ;
+	//fill partition alignment combo
+	/*TO TRANSLATORS: Option for combo box "Align to:" */
+	combo_alignment .items() .push_back( _("Cylinder") ) ;
+	/*TO TRANSLATORS: Option for combo box "Align to:" */
+	combo_alignment .items() .push_back( _("MiB") ) ;
+	/*TO TRANSLATORS: Option for combo box "Align to:" */
+	combo_alignment .items() .push_back( _("None") ) ;
 
-	optionmenu_alignment .set_menu( menu_alignment );
-	optionmenu_alignment .set_history( ALIGN_MEBIBYTE );  //Default setting
+	combo_alignment .set_active( ALIGN_MEBIBYTE );  //Default setting
 
-	table_resize .attach( optionmenu_alignment, 1, 2, 3, 4, Gtk::FILL );
+	table_resize .attach( combo_alignment, 1, 2, 3, 4, Gtk::FILL );
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;
@@ -176,7 +175,7 @@ void Dialog_Base_Partition::prepare_new_partition()
 		new_partition->sector_end = START + total_length - 1;
 
 	//set alignment
-	switch ( optionmenu_alignment .get_history() )
+	switch ( combo_alignment .get_active_row_number() )
 	{
 		case 0:
 			new_partition->alignment = ALIGN_CYLINDER;
