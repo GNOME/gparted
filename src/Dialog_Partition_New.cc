@@ -91,45 +91,44 @@ void Dialog_Partition_New::set_data( const Device & device,
 	table_create .set_row_spacings( 5 ) ;
 	hbox_main .pack_start( table_create, Gtk::PACK_SHRINK );
 	
-	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices> */
+	/*TO TRANSLATORS: used as label for a list of choices.   Create as: <combo box with choices> */
 	table_create .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Create as:") ) + "\t" ), 
 			      0, 1, 0, 1,
 			      Gtk::FILL );
 	
-	//fill partitiontype menu
-	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Primary Partition") ) ) ;
-	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Logical Partition") ) ) ;
-	menu_type .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("Extended Partition") ) ) ;
+	//fill partitiontype combo
+	combo_type .append( _("Primary Partition") ) ;
+	combo_type .append( _("Logical Partition") ) ;
+	combo_type .append( _("Extended Partition") ) ;
 	
 	//determine which PartitionType is allowed
 	if ( device.disktype != "msdos" && device.disktype != "dvh" )
 	{
-		menu_type .items()[ 1 ] .set_sensitive( false ); 
-		menu_type .items()[ 2 ] .set_sensitive( false );
-		menu_type .set_active( 0 );
+		combo_type .set_row_sensitive( 1, false ); 
+		combo_type .set_row_sensitive( 2, false );
+		combo_type .set_active_row( 0 );
 	}
 	else if ( selected_partition.inside_extended )
 	{
-		menu_type .items()[ 0 ] .set_sensitive( false ); 
-		menu_type .items()[ 2 ] .set_sensitive( false );
-		menu_type .set_active( 1 );
+		combo_type .set_row_sensitive( 0, false ); 
+		combo_type .set_row_sensitive( 2, false );
+		combo_type .set_active_row( 1 );
 	}
 	else
 	{
-		menu_type .items()[ 1 ] .set_sensitive( false ); 
+		combo_type .set_row_sensitive( 1, false ); 
 		if ( any_extended )
-			menu_type .items()[ 2 ] .set_sensitive( false );
+			combo_type .set_row_sensitive( 2, false );
+		combo_type .set_active_row( 0 );
 	}
-	
-	optionmenu_type .set_menu( menu_type );
 	
 	//160 is the ideal width for this table column.
 	//(when one widget is set, the rest wil take this width as well)
-	optionmenu_type .set_size_request( 160, -1 ); 
+	combo_type .set_size_request( 160, -1 ); 
 	
-	optionmenu_type .signal_changed() .connect( 
+	combo_type .signal_changed() .connect( 
 		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
-	table_create .attach( optionmenu_type, 1, 2, 0, 1, Gtk::FILL );
+	table_create .attach( combo_type, 1, 2, 0, 1, Gtk::FILL );
 	
 	// Partition name
 	table_create.attach( *Utils::mk_label( static_cast<Glib::ustring>( _("Partition name:") ) + "\t" ),
@@ -195,7 +194,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	PartitionType part_type ;
 	Sector new_start, new_end;
 		
-	switch ( optionmenu_type .get_history() )
+	switch ( combo_type .get_active_row_index() )
 	{
 		case 0	:	part_type = GParted::TYPE_PRIMARY;  break;
 		case 1	:	part_type = GParted::TYPE_LOGICAL;  break;
@@ -316,10 +315,10 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
-	//optionmenu_type
+	//combo_type
 	if ( type )
 	{
-		if ( optionmenu_type .get_history() == GParted::TYPE_EXTENDED &&
+		if ( combo_type .get_active_row_index() == GParted::TYPE_EXTENDED &&
 		     menu_filesystem .items() .size() < FILESYSTEMS .size() )
 		{
 			menu_filesystem .items() .push_back( 
@@ -327,7 +326,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 			optionmenu_filesystem .set_history( menu_filesystem .items() .size() -1 ) ;
 			optionmenu_filesystem .set_sensitive( false ) ;
 		}
-		else if ( optionmenu_type .get_history() != GParted::TYPE_EXTENDED &&
+		else if ( combo_type .get_active_row_index() != GParted::TYPE_EXTENDED &&
 			  menu_filesystem .items() .size() == FILESYSTEMS .size() ) 
 		{
 			menu_filesystem .items() .remove( menu_filesystem .items() .back() ) ;
@@ -373,7 +372,7 @@ void Dialog_Partition_New::optionmenu_changed( bool type )
 	{
 		Gdk::Color color_temp;
 		//Background color
-		color_temp.set((optionmenu_type.get_history() == 2) ? "darkgrey" : "white");
+		color_temp.set((combo_type.get_active_row_index() == 2) ? "darkgrey" : "white");
 		frame_resizer_base->override_default_rgb_unused_color(color_temp);
 
 		//Partition color
