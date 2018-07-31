@@ -29,6 +29,7 @@
 #include "Dialog_Partition_Name.h"
 #include "DialogManageFlags.h"
 #include "GParted_Core.h"
+#include "MenuHelpers.h"
 #include "Mount_Info.h"
 #include "OperationCopy.h"
 #include "OperationCheck.h"
@@ -156,78 +157,87 @@ void Win_GParted::init_menubar()
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem(
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Refresh Devices"),
 		Gtk::AccelKey("<control>r"),
 		*image, 
-		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) );
+		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices) ) ) );
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( _("_Devices"), *image ) ) ; 
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem(
+		_("_Devices"), *image ) ) ); 
 	
-	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem( 
-		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) );
-	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_GParted"), *menu ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::SeparatorElem( ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::StockMenuElem( 
+		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit) ) ) );
+	menubar_main .append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_GParted"), *menu ) ) );
 	
 	//edit
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem( 
 		_("_Undo Last Operation"), 
 		Gtk::AccelKey("<control>z"),
 		* manage( new Gtk::Image( Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::activate_undo) ) );
+		sigc::mem_fun(*this, &Win_GParted::activate_undo) ) ) );
 
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem( 
 		_("_Clear All Operations"), 
 		* manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) );
+		sigc::mem_fun(*this, &Win_GParted::clear_operationslist) ) ) );
 
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem( 
 		_("_Apply All Operations"),
 		Gtk::AccelKey(GDK_KEY_Return, Gdk::CONTROL_MASK),
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
-	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
+		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) ) );
+	menubar_main .append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_Edit"), *menu ) ) );
 
 	//view
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem(
-		_("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::CheckMenuElem( 
-		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) );
-	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_View"), *menu ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::CheckMenuElem(
+		_("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info) ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::CheckMenuElem( 
+		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations) ) ) );
+	menubar_main .append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_View"), *menu ) ) );
 
-	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem(
-		_("_File System Support"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::SeparatorElem( ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_File System Support"), sigc::mem_fun( *this, &Win_GParted::menu_gparted_features ) ) ) );
 
 	//device
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Create Partition Table") ) + "...",
-								sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::MenuElem(
+		Glib::ustring( _("_Create Partition Table") ) + "...",
+		sigc::mem_fun(*this, &Win_GParted::activate_disklabel) ) ) );
 
-	menu ->items() .push_back( Gtk::Menu_Helpers::MenuElem( Glib::ustring( _("_Attempt Data Rescue") ) + "...",
-								sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::MenuElem(
+		Glib::ustring( _("_Attempt Data Rescue") ) + "...",
+		sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data) ) ) );
 
-	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Device"), *menu ) );
+	menubar_main .append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_Device"), *menu ) ) );
 
 	//partition
 	init_partition_menu() ;
-	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Partition"), menu_partition ) );
+	menubar_main .append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_Partition"), menu_partition ) ) );
 
 	//help
 	menu = manage( new Gtk::Menu() ) ;
-	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
+	menu ->append( *manage( new GParted::Menu_Helpers::ImageMenuElem( 
 		_("_Contents"), 
 		Gtk::AccelKey("F1"),
 		* manage( new Gtk::Image( Gtk::Stock::HELP, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::SeparatorElem( ) );
-	menu ->items() .push_back( Gtk::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) );
+		sigc::mem_fun(*this, &Win_GParted::menu_help_contents) ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::SeparatorElem( ) ) );
+	menu ->append( *manage( new GParted::Menu_Helpers::StockMenuElem(
+		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about) ) ) );
 
-	menubar_main.items() .push_back( Gtk::Menu_Helpers::MenuElem(_("_Help"), *menu ) );
+	menubar_main.append( *manage( new GParted::Menu_Helpers::MenuElem(
+		_("_Help"), *menu ) ));
 }
 
 void Win_GParted::init_toolbar() 
@@ -327,108 +337,108 @@ void Win_GParted::init_partition_menu()
 
 	//fill menu_partition
 	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU ) );
-	menu_partition .items() .push_back( 
+	menu_partition .append( *manage( new 
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
-			Gtk::Menu_Helpers::ImageMenuElem( _("_New"),
+			GParted::Menu_Helpers::ImageMenuElem( _("_New"),
 							  Gtk::AccelKey( GDK_KEY_Insert, Gdk::BUTTON1_MASK),
 							  *image,
-							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
+							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) ) );
 	MENU_NEW = index++ ;
-
-	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, 
+	
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, 
 							  Gtk::AccelKey( GDK_KEY_Delete, Gdk::BUTTON1_MASK ),
-							  sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
+							  sigc::mem_fun(*this, &Win_GParted::activate_delete) ) ) );
 	MENU_DEL = index++ ;
 
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
-	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::ImageMenuElem( _("_Resize/Move"), 
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::ImageMenuElem( _("_Resize/Move"), 
 							  *image, 
-							  sigc::mem_fun(*this, &Win_GParted::activate_resize) ) );
+							  sigc::mem_fun(*this, &Win_GParted::activate_resize) ) ) );
 	MENU_RESIZE_MOVE = index++ ;
 	
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 	
-	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY,
-							  sigc::mem_fun(*this, &Win_GParted::activate_copy) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::StockMenuElem( Gtk::Stock::COPY,
+							  sigc::mem_fun(*this, &Win_GParted::activate_copy) ) ) );
 	MENU_COPY = index++ ;
 	
-	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE,
-							  sigc::mem_fun(*this, &Win_GParted::activate_paste) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::StockMenuElem( Gtk::Stock::PASTE,
+							  sigc::mem_fun(*this, &Win_GParted::activate_paste) ) ) );
 	MENU_PASTE = index++ ;
 	
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() );
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
-	menu_partition .items() .push_back(
+	menu_partition .append( *manage( new 
 			/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
-			Gtk::Menu_Helpers::ImageMenuElem( _("_Format to"),
+			GParted::Menu_Helpers::ImageMenuElem( _("_Format to"),
 							  *image,
-							  * create_format_menu() ) ) ;
+							  * create_format_menu() ) ) );
 	MENU_FORMAT = index++ ;
 	
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 
-	menu_partition.items().push_back(
+	menu_partition.append( *manage( new 
 			// Placeholder text, replaced in set_valid_operations() before the menu is shown
-			Gtk::Menu_Helpers::MenuElem( "--toggle crypt busy--",
-			                             sigc::mem_fun( *this, &Win_GParted::toggle_crypt_busy_state ) ) );
+			GParted::Menu_Helpers::MenuElem( "--toggle crypt busy--",
+			                             sigc::mem_fun( *this, &Win_GParted::toggle_crypt_busy_state ) ) ) );
 	MENU_TOGGLE_CRYPT_BUSY = index++;
 
-	menu_partition .items() .push_back(
+	menu_partition .append( *manage( new 
 			// Placeholder text, replaced in set_valid_operations() before the menu is shown
-			Gtk::Menu_Helpers::MenuElem( "--toggle fs busy--",
-						     sigc::mem_fun( *this, &Win_GParted::toggle_fs_busy_state ) ) );
+			GParted::Menu_Helpers::MenuElem( "--toggle fs busy--",
+						     sigc::mem_fun( *this, &Win_GParted::toggle_fs_busy_state ) ) ) );
 	MENU_TOGGLE_FS_BUSY = index++;
 
-	menu_partition .items() .push_back(
+	menu_partition .append( *manage( new 
 			/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
-			Gtk::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) ;
+			GParted::Menu_Helpers::MenuElem( _("_Mount on"), * manage( new Gtk::Menu() ) ) ) );
 	MENU_MOUNT = index++ ;
 
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 
-	menu_partition.items().push_back(
-			Gtk::Menu_Helpers::MenuElem( _("_Name Partition"),
-			                             sigc::mem_fun( *this, &Win_GParted::activate_name_partition ) ) );
+	menu_partition.append( *manage( new 
+			GParted::Menu_Helpers::MenuElem( _("_Name Partition"),
+			                             sigc::mem_fun( *this, &Win_GParted::activate_name_partition ) ) ) );
 	MENU_NAME_PARTITION = index++;
 
-	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("M_anage Flags"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::MenuElem( _("M_anage Flags"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_manage_flags ) ) ) );
 	MENU_FLAGS = index++ ;
 
-	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("C_heck"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_check ) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::MenuElem( _("C_heck"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_check ) ) ) );
 	MENU_CHECK = index++ ;
 
-	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("_Label File System"),
-			                             sigc::mem_fun( *this, &Win_GParted::activate_label_filesystem ) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::MenuElem( _("_Label File System"),
+			                             sigc::mem_fun( *this, &Win_GParted::activate_label_filesystem ) ) ) );
 	MENU_LABEL_PARTITION = index++ ;
 
-	menu_partition .items() .push_back(
-			Gtk::Menu_Helpers::MenuElem( _("New UU_ID"),
-						     sigc::mem_fun( *this, &Win_GParted::activate_change_uuid ) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::MenuElem( _("New UU_ID"),
+						     sigc::mem_fun( *this, &Win_GParted::activate_change_uuid ) ) ) );
 	MENU_CHANGE_UUID = index++ ;
 
-	menu_partition .items() .push_back( Gtk::Menu_Helpers::SeparatorElem() ) ;
+	menu_partition .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	index++ ;
 	
-	menu_partition .items() .push_back( 
-			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO,
-							  sigc::mem_fun(*this, &Win_GParted::activate_info) ) );
+	menu_partition .append( *manage( new 
+			GParted::Menu_Helpers::StockMenuElem( Gtk::Stock::DIALOG_INFO,
+							  sigc::mem_fun(*this, &Win_GParted::activate_info) ) ) );
 	MENU_INFO = index++ ;
 	
 	menu_partition .accelerate( *this ) ;  
@@ -1332,10 +1342,10 @@ void Win_GParted::set_valid_operations()
 			std::vector<Glib::ustring> temp_mountpoints = selected_filesystem.get_mountpoints();
 			for ( unsigned int t = 0 ; t < temp_mountpoints.size() ; t++ )
 			{
-				menu ->items() .push_back( 
-					Gtk::Menu_Helpers::MenuElem( 
+				menu ->append( *manage( new 
+					GParted::Menu_Helpers::MenuElem( 
 						temp_mountpoints[t],
-						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) );
+						sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t ) ) ) );
 
 				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
 			}
