@@ -24,8 +24,6 @@
 #include "Utils.h"
 #include "OptionComboBox.h"
 
-#include <gtkmm/optionmenu.h>
-
 namespace GParted
 {
 
@@ -51,13 +49,12 @@ private:
 	               bool any_extended,
 	               unsigned short new_count,
 	               const std::vector<FS> & FILESYSTEMS );
-	void Build_Filesystems_Menu( bool only_unformatted ) ;
+	void build_filesystems_combo( bool only_unformatted );
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
 	Gtk::Table table_create;
 	OptionComboBox combo_type;
-	Gtk::OptionMenu optionmenu_filesystem;
-	Gtk::Menu menu_filesystem;
+	OptionComboBox combo_filesystem;
 	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
 
