@@ -67,22 +67,13 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	OPERATIONSLIST_OPEN = true ;
 	gparted_core .set_user_devices( user_devices ) ;
 	
-	MENU_NEW = TOOLBAR_NEW =
-        MENU_DEL = TOOLBAR_DEL =
-        MENU_RESIZE_MOVE = TOOLBAR_RESIZE_MOVE =
-        MENU_COPY = TOOLBAR_COPY =
-        MENU_PASTE = TOOLBAR_PASTE =
-        MENU_FORMAT =
-	MENU_TOGGLE_CRYPT_BUSY =
-	MENU_TOGGLE_FS_BUSY =
-        MENU_MOUNT =
-        MENU_NAME_PARTITION =
-        MENU_FLAGS =
-        MENU_INFO =
-        MENU_LABEL_PARTITION =
-        MENU_CHANGE_UUID =
-        TOOLBAR_UNDO =
-        TOOLBAR_APPLY = -1 ;
+	TOOLBAR_NEW =
+	TOOLBAR_DEL =
+	TOOLBAR_RESIZE_MOVE =
+	TOOLBAR_COPY =
+	TOOLBAR_PASTE =
+	TOOLBAR_UNDO =
+	TOOLBAR_APPLY = -1;
 
 	//==== GUI =========================
 	this ->set_title( _("GParted") );
@@ -153,91 +144,137 @@ Win_GParted::~Win_GParted()
 
 void Win_GParted::init_menubar() 
 {
+	Gtk::MenuItem *item;
+
 	//fill menubar_main and connect callbacks 
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
 	image = manage( new Gtk::Image( Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU ) );
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Refresh Devices"),
 		Gtk::AccelKey("<control>r"),
 		*image, 
-		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices))));
+		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices)));
+	menu->append(*item);
 	
 	image = manage( new Gtk::Image( Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU ) );
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
-		_("_Devices"), *image)));
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
+		_("_Devices"), *image));
+	menu->append(*item);
+	mainmenu_items[MENU_DEVICES] = item;
 	
-	menu->append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	menu->append(*manage(new GParted::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit))));
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_GParted"), *menu)));
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu->append(*item);
+
+	item = manage(new GParted::Menu_Helpers::StockMenuElem(
+		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit)));
+	menu->append(*item);
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_GParted"), *menu));
+	menubar_main.append(*item);
 	
 	//edit
 	menu = manage( new Gtk::Menu() ) ;
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Undo Last Operation"), 
 		Gtk::AccelKey("<control>z"),
 		* manage( new Gtk::Image( Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::activate_undo))));
+		sigc::mem_fun(*this, &Win_GParted::activate_undo)));
+	menu->append(*item);
+	mainmenu_items[MENU_UNDO_OPERATION] = item;
 
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Clear All Operations"), 
 		* manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::clear_operationslist))));
+		sigc::mem_fun(*this, &Win_GParted::clear_operationslist)));
+	menu->append(*item);
+	mainmenu_items[MENU_CLEAR_OPERATIONS] = item;
 
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Apply All Operations"),
 		Gtk::AccelKey(GDK_KEY_Return, Gdk::CONTROL_MASK),
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::activate_apply))));
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_Edit"), *menu)));
+		sigc::mem_fun(*this, &Win_GParted::activate_apply)));
+	menu->append(*item);
+	mainmenu_items[MENU_APPLY_OPERATIONS] = item;
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_Edit"), *menu));
+	menubar_main.append(*item);
+	mainmenu_items[MENU_EDIT] = item;
 
 	//view
 	menu = manage( new Gtk::Menu() ) ;
-	menu->append(*manage(new GParted::Menu_Helpers::CheckMenuElem(
-		_("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info))));
-	menu->append(*manage(new GParted::Menu_Helpers::CheckMenuElem(
-		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations))));
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_View"), *menu)));
 
-	menu->append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	menu->append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_File System Support"), sigc::mem_fun(*this, &Win_GParted::menu_gparted_features))));
+	item = manage(new GParted::Menu_Helpers::CheckMenuElem(
+		_("Device _Information"), sigc::mem_fun(*this, &Win_GParted::menu_view_harddisk_info)));
+	menu->append(*item);
+	mainmenu_items[MENU_DEVICE_INFORMATION] = item;
+
+	item = manage(new GParted::Menu_Helpers::CheckMenuElem(
+		_("Pending _Operations"), sigc::mem_fun(*this, &Win_GParted::menu_view_operations)));
+	menu->append(*item);
+	mainmenu_items[MENU_PENDING_OPERATIONS] = item;
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_View"), *menu));
+	menubar_main.append(*item);
+
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu->append(*item);
+
+	item = manage( new GParted::Menu_Helpers::MenuElem(
+		_("_File System Support"), sigc::mem_fun(*this, &Win_GParted::menu_gparted_features)));
+	menu->append(*item);
+	mainmenu_items[MENU_VIEW] = item;
 
 	//device
 	menu = manage( new Gtk::Menu() ) ;
-	menu->append(*manage(new GParted::Menu_Helpers::MenuElem(
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
 		Glib::ustring(_("_Create Partition Table") ) + "...",
-		sigc::mem_fun(*this, &Win_GParted::activate_disklabel))));
+		sigc::mem_fun(*this, &Win_GParted::activate_disklabel)));
+	menu->append(*item);
 
-	menu->append(*manage(new GParted::Menu_Helpers::MenuElem(
+	item = manage(new GParted::Menu_Helpers::MenuElem(
 		Glib::ustring(_("_Attempt Data Rescue") ) + "...",
-		sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data))));
+		sigc::mem_fun(*this, &Win_GParted::activate_attempt_rescue_data)));
+	menu->append(*item);
 
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_Device"), *menu)));
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_Device"), *menu));
+	menubar_main.append(*item);
+	mainmenu_items[MENU_DEVICE] = item;
 
 	//partition
 	init_partition_menu() ;
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_Partition"), menu_partition)));
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_Partition"), menu_partition));
+	menubar_main.append(*item);
+	mainmenu_items[MENU_PARTITION] = item;
 
 	//help
 	menu = manage( new Gtk::Menu() ) ;
-	menu->append(*manage(new GParted::Menu_Helpers::ImageMenuElem(
+
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Contents"), 
 		Gtk::AccelKey("F1"),
 		* manage( new Gtk::Image( Gtk::Stock::HELP, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &Win_GParted::menu_help_contents))));
-	menu->append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	menu->append(*manage(new GParted::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about))));
+		sigc::mem_fun(*this, &Win_GParted::menu_help_contents)));
+	menu->append(*item);
 
-	menubar_main.append(*manage(new GParted::Menu_Helpers::MenuElem(
-		_("_Help"), *menu)));
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu->append(*item);
+
+	item = manage( new GParted::Menu_Helpers::StockMenuElem(
+		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about)));
+	menu->append(*item);
+
+	item = manage(new GParted::Menu_Helpers::MenuElem(
+		_("_Help"), *menu));
+	menubar_main.append(*item);
 }
 
 void Win_GParted::init_toolbar() 
@@ -333,113 +370,128 @@ void Win_GParted::init_toolbar()
 
 void Win_GParted::init_partition_menu() 
 {
-	int index = 0 ;
+	Gtk::MenuItem *item;
 
 	//fill menu_partition
 	image = manage( new Gtk::Image( Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU ) );
-	menu_partition.append(*manage(new
+	item = manage(new
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
 			GParted::Menu_Helpers::ImageMenuElem(_("_New"),
 							  Gtk::AccelKey(GDK_KEY_Insert, Gdk::BUTTON1_MASK),
 							  *image,
-							  sigc::mem_fun(*this, &Win_GParted::activate_new))));
-	MENU_NEW = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_new)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_NEW] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::DELETE,
 							  Gtk::AccelKey(GDK_KEY_Delete, Gdk::BUTTON1_MASK),
-							  sigc::mem_fun(*this, &Win_GParted::activate_delete))));
-	MENU_DEL = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_delete)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_DEL] = item;
 
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
 	
 	image = manage( new Gtk::Image( Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU ) );
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::ImageMenuElem(_("_Resize/Move"),
 							  *image, 
-							  sigc::mem_fun(*this, &Win_GParted::activate_resize))));
-	MENU_RESIZE_MOVE = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_resize)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_RESIZE_MOVE] = item;
 	
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
 	
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::COPY,
-							  sigc::mem_fun(*this, &Win_GParted::activate_copy))));
-	MENU_COPY = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_copy)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_COPY] = item;
 	
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::PASTE,
-							  sigc::mem_fun(*this, &Win_GParted::activate_paste))));
-	MENU_PASTE = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_paste)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_PASTE] = item;
 	
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
 	
 	image = manage( new Gtk::Image( Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU ) );
-	menu_partition.append(*manage(new
+	item = manage(new
 			/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
 			GParted::Menu_Helpers::ImageMenuElem(_("_Format to"),
 							  *image,
-							  *create_format_menu())));
-	MENU_FORMAT = index++ ;
+							  *create_format_menu()));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_FORMAT] = item;
 	
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			// Placeholder text, replaced in set_valid_operations() before the menu is shown
 			GParted::Menu_Helpers::MenuElem("--toggle crypt busy--",
-			                             sigc::mem_fun(*this, &Win_GParted::toggle_crypt_busy_state))));
-	MENU_TOGGLE_CRYPT_BUSY = index++;
+			                             sigc::mem_fun(*this, &Win_GParted::toggle_crypt_busy_state)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_TOGGLE_CRYPT_BUSY] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			// Placeholder text, replaced in set_valid_operations() before the menu is shown
 			GParted::Menu_Helpers::MenuElem("--toggle fs busy--",
-						     sigc::mem_fun(*this, &Win_GParted::toggle_fs_busy_state))));
-	MENU_TOGGLE_FS_BUSY = index++;
+						     sigc::mem_fun(*this, &Win_GParted::toggle_fs_busy_state)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_TOGGLE_FS_BUSY] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			/*TO TRANSLATORS: menuitem which holds a submenu with mount points.. */
-			GParted::Menu_Helpers::MenuElem(_("_Mount on"), *manage(new Gtk::Menu()))));
-	MENU_MOUNT = index++ ;
+			GParted::Menu_Helpers::MenuElem(_("_Mount on"), *manage(new Gtk::Menu())));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_MOUNT] = item;
 
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("_Name Partition"),
-			                             sigc::mem_fun(*this, &Win_GParted::activate_name_partition))));
-	MENU_NAME_PARTITION = index++;
+			                             sigc::mem_fun(*this, &Win_GParted::activate_name_partition)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_NAME_PARTITION] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("M_anage Flags"),
-						     sigc::mem_fun(*this, &Win_GParted::activate_manage_flags))));
-	MENU_FLAGS = index++ ;
+						     sigc::mem_fun(*this, &Win_GParted::activate_manage_flags)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_FLAGS] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("C_heck"),
-						     sigc::mem_fun(*this, &Win_GParted::activate_check))));
-	MENU_CHECK = index++ ;
+						     sigc::mem_fun(*this, &Win_GParted::activate_check)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_CHECK] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("_Label File System"),
-			                             sigc::mem_fun(*this, &Win_GParted::activate_label_filesystem))));
-	MENU_LABEL_PARTITION = index++ ;
+			                             sigc::mem_fun(*this, &Win_GParted::activate_label_filesystem)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_LABEL_PARTITION] = item;
 
-	menu_partition.append(*manage(new
+	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("New UU_ID"),
-						     sigc::mem_fun(*this, &Win_GParted::activate_change_uuid))));
-	MENU_CHANGE_UUID = index++ ;
+						     sigc::mem_fun(*this, &Win_GParted::activate_change_uuid)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_CHANGE_UUID] = item;
 
-	menu_partition.append(*manage(new GParted::Menu_Helpers::SeparatorElem()));
-	index++ ;
-	
-	menu_partition.append(*manage(new
+	item = manage(new GParted::Menu_Helpers::SeparatorElem());
+	menu_partition.append(*item);
+
+	item = manage(new
 			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::DIALOG_INFO,
-							  sigc::mem_fun(*this, &Win_GParted::activate_info))));
-	MENU_INFO = index++ ;
+							  sigc::mem_fun(*this, &Win_GParted::activate_info)));
+	menu_partition.append(*item);
+	partitionmenu_items[MENU_INFO] = item;
 	
 	menu_partition .accelerate( *this ) ;  
 }
@@ -473,12 +525,13 @@ void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate 
 	hbox ->pack_start( * Utils::mk_label( " " + Utils::get_filesystem_string( filesystem ) ),
 	                   Gtk::PACK_SHRINK ) ;
 
-	menu ->items() .push_back( * manage( new Gtk::MenuItem( *hbox ) ) ) ;
+	Gtk::MenuItem *item = manage(new Gtk::MenuItem(*hbox));
+	menu->append(*item);
 	if ( activate )
-		menu ->items() .back() .signal_activate() .connect(
+		item->signal_activate().connect(
 			sigc::bind<FSType>( sigc::mem_fun( *this, &Win_GParted::activate_format ), filesystem ) );
 	else
-		menu ->items() .back() .set_sensitive( false ) ;
+		item->set_sensitive(false);
 }
 
 void Win_GParted::init_device_info()
@@ -635,18 +688,19 @@ void Win_GParted::refresh_combo_devices()
 		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ),
 		                   Gtk::PACK_SHRINK ) ;
 
-		menu ->items() .push_back( * manage( new Gtk::RadioMenuItem( radio_group ) ) ) ;
-		menu ->items() .back() .add( *hbox ) ;
-		menu ->items() .back() .signal_activate() .connect( 
+		Gtk::RadioMenuItem *item = manage(new Gtk::RadioMenuItem(radio_group));
+		menu->append(*item);
+		item->add(*hbox);
+		item->signal_activate().connect(
 			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ;
 	}
 
-	menubar_main.items()[0].get_submenu()->items()[1].unset_submenu();
+	mainmenu_items[MENU_DEVICES]->unset_submenu();
 
-	if ( menu ->items() .size() )
+	if (menu->get_children().size())
 	{
 		menu ->show_all() ;
-		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_submenu( *menu ) ;
+		mainmenu_items[MENU_DEVICES]->set_submenu(*menu);
 	}
 
 	combo_devices_changed_connection .unblock();
@@ -1078,14 +1132,14 @@ void Win_GParted::set_valid_operations()
 	// Set default name for the open/close crypt menu item.
 	const FileSystem * luks_filesystem_object = gparted_core.get_filesystem_object( FS_LUKS );
 	g_assert( luks_filesystem_object != NULL );  // Bug: LUKS FileSystem object not found
-	dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_CRYPT_BUSY].get_child() )
+	dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_CRYPT_BUSY]->get_child())
 		->set_label( luks_filesystem_object->get_custom_text( CTEXT_ACTIVATE_FILESYSTEM ) );
 	// Set default name for the file system active/deactivate menu item.
-	dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
+	dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_FS_BUSY]->get_child())
 		->set_label( FileSystem::get_generic_text( CTEXT_ACTIVATE_FILESYSTEM ) );
 
-	menu_partition.items()[MENU_TOGGLE_FS_BUSY].show();
-	menu_partition .items()[ MENU_MOUNT ] .hide() ;	
+	partitionmenu_items[MENU_TOGGLE_FS_BUSY]->show();
+	partitionmenu_items[MENU_MOUNT]->hide();
 
 	// No partition selected ...
 	if ( ! selected_partition_ptr )
@@ -1105,7 +1159,7 @@ void Win_GParted::set_valid_operations()
 	// Set appropriate name for the open/close crypt menu item.
 	if ( selected_partition_ptr->filesystem == FS_LUKS )
 	{
-		dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_CRYPT_BUSY].get_child() )
+		dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_CRYPT_BUSY]->get_child())
 			->set_label( luks_filesystem_object->get_custom_text(   selected_partition_ptr->busy
 			                                                      ? CTEXT_DEACTIVATE_FILESYSTEM
 			                                                      : CTEXT_ACTIVATE_FILESYSTEM ) );
@@ -1116,14 +1170,14 @@ void Win_GParted::set_valid_operations()
 		const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_filesystem.filesystem );
 		if ( filesystem_object )
 		{
-			dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
+			dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_FS_BUSY]->get_child())
 				->set_label( filesystem_object->get_custom_text(   selected_filesystem.busy
 				                                                 ? CTEXT_DEACTIVATE_FILESYSTEM
 				                                                 : CTEXT_ACTIVATE_FILESYSTEM ) );
 		}
 		else
 		{
-			dynamic_cast<Gtk::Label*>( menu_partition.items()[MENU_TOGGLE_FS_BUSY].get_child() )
+			dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_FS_BUSY]->get_child())
 				->set_label( FileSystem::get_generic_text (  selected_filesystem.busy
 				                                           ? CTEXT_DEACTIVATE_FILESYSTEM
 				                                           : CTEXT_ACTIVATE_FILESYSTEM ) );
@@ -1337,21 +1391,26 @@ void Win_GParted::set_valid_operations()
 		     selected_filesystem.filesystem != FS_LUKS    &&
 		     selected_filesystem.get_mountpoints().size()    )
 		{
-			menu = menu_partition .items()[ MENU_MOUNT ] .get_submenu() ;
-			menu ->items() .clear() ;
+			partitionmenu_items[MENU_MOUNT]->unset_submenu();
+
+			Gtk::Menu *menu = manage(new Gtk::Menu());
 			std::vector<Glib::ustring> temp_mountpoints = selected_filesystem.get_mountpoints();
 			for ( unsigned int t = 0 ; t < temp_mountpoints.size() ; t++ )
 			{
-				menu->append(*manage(new
+				Gtk::MenuItem *item;
+
+				item = manage(new
 					GParted::Menu_Helpers::MenuElem(
 						temp_mountpoints[t],
-						sigc::bind<unsigned int>(sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t))));
+						sigc::bind<unsigned int>(sigc::mem_fun(*this, &Win_GParted::activate_mount_partition), t)));
+				menu->append(*item);
 
-				dynamic_cast<Gtk::Label*>( menu ->items() .back() .get_child() ) ->set_use_underline( false ) ;
+				dynamic_cast<Gtk::Label *>(item->get_child())->set_use_underline(false);
 			}
+			partitionmenu_items[MENU_MOUNT]->set_submenu(*menu);
 
-			menu_partition.items()[MENU_TOGGLE_FS_BUSY].hide();
-			menu_partition .items()[ MENU_MOUNT ] .show() ;	
+			partitionmenu_items[MENU_TOGGLE_FS_BUSY]->hide();
+			partitionmenu_items[MENU_MOUNT]->show();
 		}
 
 		// See if there is a partition to be copied and it fits inside this selected partition
@@ -1404,7 +1463,7 @@ void Win_GParted::open_operationslist()
 				Gtk::Main::iteration() ;
 		}
 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 1 ] )
+		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_PENDING_OPERATIONS])
 			->set_active( true ) ;
 	}
 }
@@ -1425,7 +1484,7 @@ void Win_GParted::close_operationslist()
 		
 		hbox_operations .hide() ;
 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 1 ] )
+		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_PENDING_OPERATIONS])
 			->set_active( false ) ;
 	}
 }
@@ -1455,21 +1514,21 @@ void Win_GParted::combo_devices_changed()
 	//rebuild visualdisk and treeview
 	Refresh_Visual();
 	
-	//uodate radiobuttons..
-	if ( menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() )
-		static_cast<Gtk::RadioMenuItem *>( 
-			& menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() ->
-			items()[ current_device ] ) ->set_active( true ) ;
+	// Update radio buttons..
+	if (mainmenu_items[MENU_DEVICES]->has_submenu()) {
+		std::vector<Gtk::Widget *> child_items;
+		child_items = mainmenu_items[MENU_DEVICES]->get_submenu()->get_children();
+		static_cast<Gtk::RadioMenuItem *>(child_items[current_device])
+			->set_active(true);
+	}
 }
 
 void Win_GParted::radio_devices_changed( unsigned int item ) 
 {
-	if ( static_cast<Gtk::RadioMenuItem *>( 
-	     	& menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .get_submenu() ->
-		items()[ item ] ) ->get_active() )
-	{
+	std::vector<Gtk::Widget *> child_items;
+	child_items = mainmenu_items[MENU_DEVICES]->get_submenu()->get_children();
+	if (static_cast<Gtk::RadioMenuItem *>(child_items[item])->get_active())
 		combo_devices .set_active( item ) ;
-	}
 }
 
 void Win_GParted::on_show()
@@ -1524,11 +1583,11 @@ void Win_GParted::menu_gparted_refresh_devices()
 		this ->set_title( _("GParted") );
 		combo_devices .hide() ;
 		
-		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( false ) ;
-		menubar_main .items()[ 1 ] .set_sensitive( false ) ;
-		menubar_main .items()[ 2 ] .set_sensitive( false ) ;
-		menubar_main .items()[ 3 ] .set_sensitive( false ) ;
-		menubar_main .items()[ 4 ] .set_sensitive( false ) ;
+		mainmenu_items[MENU_DEVICES]->set_sensitive(false);
+		mainmenu_items[MENU_EDIT]->set_sensitive(false);
+		mainmenu_items[MENU_VIEW]->set_sensitive(false);
+		mainmenu_items[MENU_DEVICE]->set_sensitive(false);
+		mainmenu_items[MENU_PARTITION]->set_sensitive(false);
 		toolbar_main .set_sensitive( false ) ;
 		drawingarea_visualdisk .set_sensitive( false ) ;
 		treeview_detail .set_sensitive( false ) ;
@@ -1550,11 +1609,11 @@ void Win_GParted::menu_gparted_refresh_devices()
 	{
 		combo_devices .show() ;
 		
-		menubar_main .items()[ 0 ] .get_submenu() ->items()[ 1 ] .set_sensitive( true ) ;
-		menubar_main .items()[ 1 ] .set_sensitive( true ) ;
-		menubar_main .items()[ 2 ] .set_sensitive( true ) ;
-		menubar_main .items()[ 3 ] .set_sensitive( true ) ;
-		menubar_main .items()[ 4 ] .set_sensitive( true ) ;
+		mainmenu_items[MENU_DEVICES]->set_sensitive(true);
+		mainmenu_items[MENU_EDIT]->set_sensitive(true);
+		mainmenu_items[MENU_VIEW]->set_sensitive(true);
+		mainmenu_items[MENU_DEVICE]->set_sensitive(true);
+		mainmenu_items[MENU_PARTITION]->set_sensitive(true);
 
 		toolbar_main .set_sensitive( true ) ;
 		drawingarea_visualdisk .set_sensitive( true ) ;
@@ -1592,9 +1651,9 @@ void Win_GParted::menu_gparted_features()
 		dialog.load_filesystems( show_fs_actions );
 
 		//recreate format menu...
-		menu_partition.items()[MENU_FORMAT].unset_submenu();
-		menu_partition .items()[ MENU_FORMAT ] .set_submenu( * create_format_menu() ) ;
-		menu_partition .items()[ MENU_FORMAT ] .get_submenu() ->show_all_children() ;
+		partitionmenu_items[MENU_FORMAT]->unset_submenu();
+		partitionmenu_items[MENU_FORMAT]->set_submenu(*create_format_menu());
+		partitionmenu_items[MENU_FORMAT]->get_submenu()->show_all_children();
 	}
 }
 
@@ -1606,7 +1665,7 @@ void Win_GParted::menu_gparted_quit()
 
 void Win_GParted::menu_view_harddisk_info()
 { 
-	if ( static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 0 ] ) ->get_active() )
+	if (static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_DEVICE_INFORMATION])->get_active())
 	{	//open harddisk information
 		hpaned_main .get_child1() ->show() ;		
 		for ( int t = hpaned_main .get_position() ; t < 250 ; t += 15 )
@@ -1630,7 +1689,7 @@ void Win_GParted::menu_view_harddisk_info()
 
 void Win_GParted::menu_view_operations()
 {
-	if ( static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 2 ] .get_submenu() ->items()[ 1 ] ) ->get_active() )
+	if (static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_PENDING_OPERATIONS])->get_active())
 		open_operationslist() ;
 	else 
 		close_operationslist() ;

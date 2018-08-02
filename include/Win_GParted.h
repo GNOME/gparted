@@ -82,8 +82,8 @@ private:
 	//convenience functions
 	void toggle_item( bool state, int menu_item, int toolbar_item = -1 )
         {
-                if ( menu_item >= 0 && menu_item < static_cast<int>( menu_partition .items() .size() ) )
-                        menu_partition .items()[ menu_item ] .set_sensitive( state ) ;
+                if (menu_item >= 0 && partitionmenu_items.count(menu_item))
+                        partitionmenu_items[menu_item]->set_sensitive(state);
 
                 if ( toolbar_item >= 0 && toolbar_item < toolbar_main .get_n_items() )
                         toolbar_main .get_nth_item( toolbar_item ) ->set_sensitive( state ) ;
@@ -134,14 +134,14 @@ private:
 	void allow_undo_clear_apply( bool state )
 	{
 		toggle_item( state, -1, TOOLBAR_UNDO ) ; 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 0 ] )
+		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_UNDO_OPERATION])
 			->set_sensitive( state ) ; 
 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 1 ] )
+		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_CLEAR_OPERATIONS])
 			->set_sensitive( state ) ; 
 
 		toggle_item( state, -1, TOOLBAR_APPLY ) ; 
-		static_cast<Gtk::CheckMenuItem *>( & menubar_main .items()[ 1 ] .get_submenu() ->items()[ 2 ] )
+		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_APPLY_OPERATIONS])
 			->set_sensitive( state ) ; 
 	}
 
@@ -253,25 +253,50 @@ private:
 	};
 	treeview_devices_Columns treeview_devices_columns ;
 	
-	//indices for partitionmenu and toolbar
-        int
-        MENU_NEW, TOOLBAR_NEW,
-        MENU_DEL, TOOLBAR_DEL,
-        MENU_RESIZE_MOVE, TOOLBAR_RESIZE_MOVE,
-        MENU_COPY, TOOLBAR_COPY,
-        MENU_PASTE, TOOLBAR_PASTE,
-        MENU_FORMAT,
-	MENU_TOGGLE_CRYPT_BUSY,
-	MENU_TOGGLE_FS_BUSY,
-        MENU_MOUNT,
-	MENU_NAME_PARTITION,
-        MENU_FLAGS,
-        MENU_CHECK,
-	MENU_LABEL_PARTITION,
-	MENU_CHANGE_UUID,
-        MENU_INFO,
-        TOOLBAR_UNDO,
-        TOOLBAR_APPLY ;
+	// Indices for toolbar
+	int
+	TOOLBAR_NEW,
+	TOOLBAR_DEL,
+	TOOLBAR_RESIZE_MOVE,
+	TOOLBAR_COPY,
+	TOOLBAR_PASTE,
+	TOOLBAR_UNDO,
+	TOOLBAR_APPLY;
+
+	enum MainMenu_Items
+	{
+		MENU_DEVICES = 0,
+		MENU_EDIT,
+		MENU_UNDO_OPERATION,
+		MENU_CLEAR_OPERATIONS,
+		MENU_APPLY_OPERATIONS,
+		MENU_VIEW,
+		MENU_DEVICE_INFORMATION,
+		MENU_PENDING_OPERATIONS,
+		MENU_DEVICE,
+		MENU_PARTITION
+	};
+
+	enum PartitionMenu_Items
+	{
+		MENU_NEW = 0,
+		MENU_DEL,
+		MENU_RESIZE_MOVE,
+		MENU_COPY,
+		MENU_PASTE,
+		MENU_FORMAT,
+		MENU_TOGGLE_CRYPT_BUSY,
+		MENU_TOGGLE_FS_BUSY,
+		MENU_MOUNT,
+		MENU_NAME_PARTITION,
+		MENU_FLAGS,
+		MENU_CHECK,
+		MENU_LABEL_PARTITION,
+		MENU_CHANGE_UUID,
+		MENU_INFO
+	};
+	std::map<int, Gtk::MenuItem*> mainmenu_items;
+	std::map<int, Gtk::MenuItem*> partitionmenu_items;
 
 	//usefull variables which are used by many different functions...
 	unsigned short new_count;//new_count keeps track of the new created partitions

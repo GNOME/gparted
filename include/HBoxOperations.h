@@ -53,7 +53,8 @@ private:
 	Gtk::ScrolledWindow scrollwindow ;
 	Gtk::TreeView treeview_operations ;
 	Glib::RefPtr<Gtk::ListStore> liststore_operations ;
-	
+	std::map<int, Gtk::MenuItem*> menu_popup_items;
+
 	struct treeview_operations_Columns : public Gtk::TreeModelColumnRecord             
 	{
 		Gtk::TreeModelColumn<Glib::ustring> operation_description;
