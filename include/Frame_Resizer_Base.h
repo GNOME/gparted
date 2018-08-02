@@ -47,7 +47,9 @@ public:
 	int get_x_start() ;
 	int get_x_end() ;
 
-	virtual void Draw_Partition() ;
+	virtual void Draw_Partition( const Cairo::RefPtr<Cairo::Context>& cr ) ;
+
+	void redraw();
 
 	//public signals  (emitted upon resize/move)
 	sigc::signal<void,int,int, ArrowType> signal_resize;
@@ -67,12 +69,9 @@ protected:
 	bool drawingarea_on_button_release_event( GdkEventButton * ev ) ;
 	bool drawingarea_on_leave_notify( GdkEventCrossing * ev ) ;
 		
-	void Draw_Resize_Grip( ArrowType ) ;
+	void Draw_Resize_Grip( const Cairo::RefPtr<Cairo::Context>& cr, ArrowType ) ;
 
 	Gtk::DrawingArea drawingarea ;
-	Glib::RefPtr<Gdk::GC> gc_drawingarea ;
-	Glib::RefPtr<Gdk::Pixmap> pixmap ;
-	Glib::RefPtr<Gdk::GC> gc_pixmap ;
 
 	Gdk::Color color_used, color_unused, color_arrow, color_background, color_partition, color_arrow_rectangle;
 
