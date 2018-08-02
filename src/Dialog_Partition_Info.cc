@@ -117,33 +117,54 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	this ->show_all_children() ;
 }
 
-void Dialog_Partition_Info::drawingarea_on_realize()
-{
-	gc = Gdk::GC::create( drawingarea .get_window() ) ;
-	
-	drawingarea .get_window() ->set_background( color_partition ) ;
-}
-
 bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 {
-	if ( partition.filesystem != FS_UNALLOCATED )
+	Glib::RefPtr<Gdk::Window> window = drawingarea.get_window();
+	if (window)
 	{
-		//used
-		gc ->set_foreground( color_used );
-		drawingarea .get_window() ->draw_rectangle( gc, true, BORDER, BORDER, used, 44 ) ;
-		
-		//unused
-		gc ->set_foreground( color_unused );
-		drawingarea .get_window() ->draw_rectangle( gc, true, BORDER + used, BORDER, unused, 44 ) ;
+		Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 
-		//unallocated
-		gc ->set_foreground( color_unallocated );
-		drawingarea .get_window() ->draw_rectangle( gc, true, BORDER + used + unused, BORDER, unallocated, 44 ) ;
+		// clip to the area indicated by the expose event so that we only redraw
+		// the portion of the window that needs to be redrawn
+		cr->rectangle(ev->area.x, ev->area.y, ev->area.width, ev->area.height);
+		cr->clip();
+
+		gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
+		cr ->rectangle(0, 0, 400, 60);
+		cr ->fill();
+
+		if ( partition.filesystem != FS_UNALLOCATED )
+		{
+			//used
+			gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+			cr ->rectangle( BORDER,
+				            BORDER,
+				            used,
+				            60 - 2 * BORDER ) ;
+			cr ->fill( );
+			
+			//unused
+			gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
+			cr ->rectangle( BORDER + used,
+				            BORDER,
+				            unused,
+				            60 - 2 * BORDER ) ;
+			cr ->fill( );
+
+			//unallocated
+			gdk_cairo_set_source_color(cr->cobj(), color_unallocated.gobj());
+			cr ->rectangle( BORDER + used + unused,
+				            BORDER,
+				            unallocated,
+				            60 - 2 * BORDER ) ;
+			cr ->fill( );
+		}
+		
+		//text
+		gdk_cairo_set_source_color(cr->cobj(), color_text.gobj());
+		cr ->move_to( 180, BORDER + 6 ) ; /*TODO*/
+		pango_layout->show_in_cairo_context(cr);
 	}
-	
-	//text
-	gc ->set_foreground( color_text );
-	drawingarea .get_window() ->draw_layout( gc, 180, BORDER + 6, pango_layout ) ;
 	
 	return true;
 }
@@ -151,7 +172,6 @@ bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 void Dialog_Partition_Info::init_drawingarea() 
 {
 	drawingarea .set_size_request( 400, 60 ) ;
-	drawingarea .signal_realize().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_realize) ) ;
 	drawingarea .signal_expose_event().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_expose) ) ;
 	
 	frame = manage( new Gtk::Frame() ) ;
@@ -184,21 +204,12 @@ void Dialog_Partition_Info::init_drawingarea()
 		unallocated = 0 ;
 	}
 	
-	//allocate some colors
+	//colors
 	color_used.set( "#F8F8BA" );
-	this ->get_colormap() ->alloc_color( color_used ) ;
-	
 	color_unused .set( "white" ) ;
-	this ->get_colormap() ->alloc_color( color_unused ) ;
-
 	color_unallocated .set( "darkgrey" ) ;
-	this ->get_colormap() ->alloc_color( color_unallocated ) ;
-
 	color_text .set( "black" );
-	this ->get_colormap() ->alloc_color( color_text ) ;
-
-	color_partition.set( Utils::get_color( partition.get_filesystem_partition().filesystem ) );
-	this ->get_colormap() ->alloc_color( color_partition ) ;	 
+	color_partition.set( Utils::get_color( partition.get_filesystem_partition().filesystem ) ); 
 	
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
@@ -655,10 +666,6 @@ void Dialog_Partition_Info::Display_Info()
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
 {
-	this ->get_colormap() ->free_color( color_used ) ;
-	this ->get_colormap() ->free_color( color_unused ) ;
-	this ->get_colormap() ->free_color( color_text ) ;
-	this ->get_colormap() ->free_color( color_partition ) ;
 }
 
 } //GParted
