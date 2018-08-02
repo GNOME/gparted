@@ -41,20 +41,27 @@ HBoxOperations::HBoxOperations()
 	pack_start( scrollwindow, Gtk::PACK_EXPAND_WIDGET );
 
 	//create popupmenu
-	menu_popup .append( *manage( new GParted::Menu_Helpers::ImageMenuElem(
+	Gtk::MenuItem *item;
+	item = manage( new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Undo Last Operation"), 
 		* manage( new Gtk::Image( Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &HBoxOperations::on_undo) ) ) );
+		sigc::mem_fun(*this, &HBoxOperations::on_undo) ) );
+	menu_popup .append( *item );
+	menu_popup_items[0] = item;
 
-	menu_popup .append( *manage( new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage( new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Clear All Operations"), 
 		* manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &HBoxOperations::on_clear) ) ) );
+		sigc::mem_fun(*this, &HBoxOperations::on_clear) ) );
+	menu_popup .append( *item );
+	menu_popup_items[1] = item;
 
-	menu_popup .append( *manage( new GParted::Menu_Helpers::ImageMenuElem(
+	item = manage( new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Apply All Operations"), 
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
-		sigc::mem_fun(*this, &HBoxOperations::on_apply) ) ) );
+		sigc::mem_fun(*this, &HBoxOperations::on_apply) ) );
+	menu_popup .append( *item );
+	menu_popup_items[2] = item;
 
 	menu_popup .append( *manage( new GParted::Menu_Helpers::SeparatorElem() ) );
 	menu_popup .append( *manage( new GParted::Menu_Helpers::StockMenuElem(
@@ -89,9 +96,9 @@ bool HBoxOperations::on_signal_button_press_event( GdkEventButton * event )
 	//right-click
 	if ( event ->button == 3 )
 	{
-		menu_popup .items()[0] .set_sensitive( liststore_operations ->children() .size() > 0 ) ;
-		menu_popup .items()[1] .set_sensitive( liststore_operations ->children() .size() > 0 ) ;
-		menu_popup .items()[2] .set_sensitive( liststore_operations ->children() .size() > 0 ) ;
+		menu_popup_items[0] ->set_sensitive( liststore_operations ->children() .size() > 0 ) ;
+		menu_popup_items[1] ->set_sensitive( liststore_operations ->children() .size() > 0 ) ;
+		menu_popup_items[2] ->set_sensitive( liststore_operations ->children() .size() > 0 ) ;
 
 		menu_popup .popup( event ->button, event ->time ) ;
 	}
