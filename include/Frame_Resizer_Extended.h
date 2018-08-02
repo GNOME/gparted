@@ -33,7 +33,7 @@ private:
 	//overridden signal handler
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion * ev ) ;
 
-	virtual void Draw_Partition() ;
+	virtual void Draw_Partition(const Cairo::RefPtr<Cairo::Context>& cr) ;
 };
 
 #endif /* GPARTED_FRAME_RESIZER_EXTENDED_H */
