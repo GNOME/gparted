@@ -54,17 +54,17 @@ private:
 	void calc_usage( std::vector<visual_partition> & visual_partitions ) ;
 	void calc_text( std::vector<visual_partition> & visual_partitions ) ;
 	
-	void draw_partition( const visual_partition & vp ) ;
-	void draw_partitions( const std::vector<visual_partition> & visual_partitions ) ;
+	void draw_partition( const Cairo::RefPtr<Cairo::Context> & cr,
+	                     const visual_partition & vp ) ;
+	void draw_partitions( const Cairo::RefPtr<Cairo::Context> & cr,
+	                      const std::vector<visual_partition> & visual_partitions ) ;
 	
 	void set_selected( const std::vector<visual_partition> & visual_partitions, int x, int y ) ;
 	void set_selected( const std::vector<visual_partition> & visual_partitions, const Partition * partition_ptr );
 
 	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
-	void free_colors( std::vector<visual_partition> & visual_partitions ) ;
 	
 	//overridden signalhandlers
-	void on_realize() ;
 	bool on_expose_event( GdkEventExpose * event ) ;
 	bool on_button_press_event( GdkEventButton * event ) ;
 	void on_size_allocate( Gtk::Allocation & allocation ) ;
@@ -115,7 +115,6 @@ private:
 	const visual_partition * selected_vp ;
 	int TOT_SEP, MIN_SIZE ;
 
-	Glib::RefPtr<Gdk::GC> gc;
 	Gdk::Color color_used, color_unused, color_unallocated, color_text;
 };
 
