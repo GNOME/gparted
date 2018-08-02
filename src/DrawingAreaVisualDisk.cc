@@ -20,6 +20,7 @@
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
 #include "Utils.h"
+#include <gdkmm/general.h>
 
 #define MAIN_BORDER 5
 #define BORDER 4
@@ -33,19 +34,11 @@ DrawingAreaVisualDisk::DrawingAreaVisualDisk()
 {
 	selected_vp = NULL ;
 
-	//set and allocated some standard colors
+	//set some standard colors
 	color_used .set( Utils::get_color( GParted::FS_USED ) );
-	get_colormap() ->alloc_color( color_used ) ;
-	
 	color_unused .set( Utils::get_color( GParted::FS_UNUSED ) );
-	get_colormap() ->alloc_color( color_unused ) ;
-	
 	color_unallocated .set( Utils::get_color( GParted::FS_UNALLOCATED ) );
-	get_colormap() ->alloc_color( color_unallocated ) ;
-
 	color_text .set( "black" );
-	get_colormap() ->alloc_color( color_text ) ;
-
 	add_events( Gdk::BUTTON_PRESS_MASK );
 	
 	set_size_request( -1, HEIGHT ) ;
@@ -71,7 +64,6 @@ void DrawingAreaVisualDisk::set_selected( const Partition * partition_ptr )
 
 void DrawingAreaVisualDisk::clear()
 {
-	free_colors( visual_partitions ) ;
 	visual_partitions .clear() ;
 	selected_vp = NULL ;
 	
@@ -102,7 +94,6 @@ void DrawingAreaVisualDisk::set_static_data( const PartitionVector & partitions,
 
 		Glib::ustring color_str = Utils::get_color( partitions[t].get_filesystem_partition().filesystem );
 		visual_partitions.back().color.set( color_str );
-		get_colormap() ->alloc_color( visual_partitions .back() .color );
 
 		if ( partitions[ t ] .type == GParted::TYPE_EXTENDED )
 			set_static_data( partitions[t].logicals,
@@ -224,72 +215,69 @@ void DrawingAreaVisualDisk::calc_text( std::vector<visual_partition> & visual_pa
 	}
 }
 
-void DrawingAreaVisualDisk::draw_partition( const visual_partition & vp ) 
+void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> & cr,
+                                            const visual_partition & vp ) 
 {
 	//partition...
-	gc ->set_foreground( vp .color );
-	get_window() ->draw_rectangle( gc, 
-			 	       true,
-				       vp .x_start,
-				       vp .y_start,
-				       vp .length,
-				       vp .height );
+	Gdk::Cairo::set_source_color(cr, vp .color);
+	cr ->rectangle( vp .x_start,
+				    vp .y_start,
+				    vp .length,
+				    vp .height );
+	cr ->fill();
 			
 	//used..
 	if ( vp .used_length > 0 )
 	{
-		gc ->set_foreground( color_used );
-		get_window() ->draw_rectangle( gc,
-					       true,
-					       vp .x_used_start, 
-					       vp .y_usage_start,
-					       vp .used_length,
-					       vp .usage_height );
+		Gdk::Cairo::set_source_color(cr, color_used);
+		cr ->rectangle( vp .x_used_start, 
+					    vp .y_usage_start,
+					    vp .used_length,
+					    vp .usage_height );
+		cr ->fill();
 	}
 		
 	//unused
 	if ( vp .unused_length > 0 )
 	{
-		gc ->set_foreground( color_unused );
-		get_window() ->draw_rectangle( gc,
-					       true,
-					       vp .x_unused_start, 
-					       vp .y_usage_start,
-					       vp .unused_length,
-					       vp .usage_height );
+		Gdk::Cairo::set_source_color(cr, color_unused);
+		cr ->rectangle( vp .x_unused_start, 
+					    vp .y_usage_start,
+					    vp .unused_length,
+					    vp .usage_height );
+		cr ->fill();
 	}
 
 	//unallocated
 	if ( vp .unallocated_length > 0 )
 	{
-		gc ->set_foreground( color_unallocated );
-		get_window() ->draw_rectangle( gc,
-					       true,
-					       vp .x_unallocated_start,
-					       vp .y_usage_start,
-					       vp .unallocated_length,
-					       vp .usage_height );
+		Gdk::Cairo::set_source_color(cr, color_unallocated);
+		cr ->rectangle( vp .x_unallocated_start,
+					    vp .y_usage_start,
+					    vp .unallocated_length,
+					    vp .usage_height );
+		cr ->fill();
 	}
 
 	//text
 	if ( vp .x_text > 0 )
 	{
-		gc ->set_foreground( color_text );
-		get_window() ->draw_layout( gc,
-					    vp .x_text,
-					    vp .y_text,
-					    vp .pango_layout ) ;
+		Gdk::Cairo::set_source_color(cr, color_text);
+		cr ->move_to( vp .x_text,
+					  vp .y_text );
+		vp .pango_layout->show_in_cairo_context(cr);
 	}
 }
 
-void DrawingAreaVisualDisk::draw_partitions( const std::vector<visual_partition> & visual_partitions ) 
+void DrawingAreaVisualDisk::draw_partitions( const Cairo::RefPtr<Cairo::Context> & cr,
+                                             const std::vector<visual_partition> & visual_partitions ) 
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		draw_partition( visual_partitions[ t ] ) ;
+		draw_partition( cr, visual_partitions[ t ] ) ;
 
 		if ( visual_partitions[ t ] .logicals .size() > 0 )
-			draw_partitions( visual_partitions[ t ] .logicals ) ;
+			draw_partitions( cr, visual_partitions[ t ] .logicals ) ;
 	}
 }
 
@@ -323,34 +311,39 @@ void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & 
 			selected_vp = & visual_partitions[ t ] ;
 	}
 }
-
-void DrawingAreaVisualDisk::on_realize()
-{
-	Gtk::DrawingArea::on_realize() ;
-
-	gc = Gdk::GC::create( get_window() );
-	gc ->set_line_attributes( 2,
-				  Gdk::LINE_ON_OFF_DASH,
-				  Gdk::CAP_BUTT,
-				  Gdk::JOIN_MITER ) ;
-}
 	
 bool DrawingAreaVisualDisk::on_expose_event( GdkEventExpose * event )
 {
 	bool ret_val = Gtk::DrawingArea::on_expose_event( event ) ;
 	
-	draw_partitions( visual_partitions ) ;
-	 
+	Glib::RefPtr<Gdk::Window> window = get_window();
+	if (!window)
+		return true;
+
+	Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+
+	// clip to the area indicated by the expose event so that we only redraw
+	// the portion of the window that needs to be redrawn
+	cr->rectangle(event->area.x, event->area.y,
+	              event->area.width, event->area.height);
+	cr->clip();
+
+	cr ->set_line_width( 2.0 );
+	cr ->set_line_join( Cairo::LINE_JOIN_MITER ); // default
+	cr ->set_line_cap( Cairo::LINE_CAP_BUTT ); // default
+	cr ->set_dash( std::vector<double>(1, 4.0) , 0.0 );
+
+	draw_partitions( cr, visual_partitions ) ;
+
 	//selection 
 	if ( selected_vp )
 	{
-		gc ->set_foreground( color_used ) ;
-		get_window() ->draw_rectangle( gc,
-					       false,
-					       selected_vp ->x_start + BORDER/2 ,
-					       selected_vp ->y_start + BORDER/2 ,
-					       selected_vp ->length - BORDER,
-			       		       selected_vp ->height - BORDER ) ;
+		Gdk::Cairo::set_source_color(cr, color_used);
+		cr ->rectangle( selected_vp ->x_start + BORDER/2 ,
+		                selected_vp ->y_start + BORDER/2 ,
+		                selected_vp ->length - BORDER,
+		                selected_vp ->height - BORDER  ) ;
+		cr ->stroke();
 	}
 
 	return ret_val ;
@@ -441,26 +434,9 @@ int DrawingAreaVisualDisk::spreadout_leftover_px( std::vector<visual_partition> 
 	return pixels ;
 }
 
-void DrawingAreaVisualDisk::free_colors( std::vector<visual_partition> & visual_partitions ) 
-{
-	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
-	{
-		get_colormap() ->free_color( visual_partitions[ t ] .color ) ;
-
-		if ( visual_partitions[ t ] .logicals .size() > 0 )
-			free_colors( visual_partitions[ t ] .logicals ) ;
-	}
-}
-
 DrawingAreaVisualDisk::~DrawingAreaVisualDisk()
 {
 	clear() ;
-
-	//free the allocated colors
-	get_colormap() ->free_color( color_used ) ;
-	get_colormap() ->free_color( color_unused ) ;
-	get_colormap() ->free_color( color_unallocated ) ;
-	get_colormap() ->free_color( color_text ) ;
 }
 
 } //GParted
