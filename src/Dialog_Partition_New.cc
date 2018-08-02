@@ -381,7 +381,7 @@ void Dialog_Partition_New::combobox_changed( bool type )
 	// Maximum length of the file system label varies according to the selected file system type.
 	filesystem_label_entry.set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) );
 
-	frame_resizer_base ->Draw_Partition() ;
+	frame_resizer_base->redraw();
 }
 
 void Dialog_Partition_New::build_filesystems_combo( bool only_unformatted )
