@@ -373,7 +373,7 @@ void Dialog_Base_Partition::on_spinbutton_value_changed( SPINBUTTON spinbutton )
 		
 		frame_resizer_base ->set_x_end( 500 - Utils::round( spinbutton_after .get_value() / MB_PER_PIXEL ) ) ;
 		
-		frame_resizer_base ->Draw_Partition() ;
+		frame_resizer_base ->redraw() ;
 		
 		Check_Change() ;
 	}
