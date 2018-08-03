@@ -28,7 +28,6 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 
 	/*TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda */
 	this ->set_title( String::ucompose( _("Create partition table on %1"), device_path ) );
-	this ->set_has_separator( false ) ;
 	this ->set_resizable( false );
 
 	{
