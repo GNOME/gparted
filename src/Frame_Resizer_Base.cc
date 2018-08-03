@@ -53,8 +53,8 @@ void Frame_Resizer_Base::init()
 	color_background .set( "darkgrey" );
 	color_arrow_rectangle .set( "lightgrey" );
 	
-	cursor_resize = new Gdk::Cursor( Gdk::SB_H_DOUBLE_ARROW ) ; 
-	cursor_move   = new Gdk::Cursor( Gdk::FLEUR ) ; 
+	cursor_resize = Gdk::Cursor::create( Gdk::SB_H_DOUBLE_ARROW ) ; 
+	cursor_move   = Gdk::Cursor::create( Gdk::FLEUR ) ; 
 	  
 	GRIP_MOVE = GRIP_LEFT = GRIP_RIGHT = false;
 	X_END = 0;
@@ -300,18 +300,18 @@ bool Frame_Resizer_Base::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		     ev ->x <= X_START &&
 		     ev ->y >= 5 &&
 		     ev ->y <= 45 )
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea .get_parent_window() ->set_cursor( cursor_resize ) ;
 		//right grip
 		else if ( ev ->x >= X_END &&
 			  ev ->x <= X_END + GRIPPER &&
 			  ev ->y >= 5 && 
 			  ev ->y <= 45 )
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea .get_parent_window() ->set_cursor( cursor_resize ) ;
 		//move grip
 		else if ( ! fixed_start && 
 			  ev ->x >= X_START && 
 			  ev ->x <= X_END )
-			drawingarea .get_parent_window() ->set_cursor( *cursor_move ) ;
+			drawingarea .get_parent_window() ->set_cursor( cursor_move ) ;
 		//normal pointer 
 		else								
 			drawingarea .get_parent_window() ->set_cursor() ;		
@@ -442,6 +442,4 @@ void Frame_Resizer_Base::redraw()
 
 Frame_Resizer_Base::~Frame_Resizer_Base()
 {
-	delete cursor_resize;
-	delete cursor_move;
 }
