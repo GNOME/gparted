@@ -63,7 +63,7 @@ protected:
 
 	//signal handlers
 	void drawingarea_on_realize();
-	bool drawingarea_on_expose( GdkEventExpose * ev );
+	bool drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 	virtual bool drawingarea_on_mouse_motion( GdkEventMotion * ev ) ;
 	bool drawingarea_on_button_press_event( GdkEventButton * ev ) ;
 	bool drawingarea_on_button_release_event( GdkEventButton * ev ) ;
