@@ -139,13 +139,13 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 		     ev ->x <= X_START &&
 		     ev ->y >= 5 &&
 		     ev ->y <= 45 ) 
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea.get_parent_window()->set_cursor(cursor_resize);
 		//right grip
 		else if (  ev ->x >= X_END &&
 			   ev ->x <= X_END + GRIPPER &&
 			   ev ->y >= 5 &&
 			   ev ->y <= 45 ) 
-			drawingarea .get_parent_window() ->set_cursor( *cursor_resize ) ;
+			drawingarea.get_parent_window()->set_cursor(cursor_resize);
 		//normal pointer
 		else 
 			drawingarea .get_parent_window() ->set_cursor() ;		
