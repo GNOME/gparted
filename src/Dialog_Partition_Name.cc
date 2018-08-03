@@ -28,7 +28,6 @@ namespace GParted
 Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int max_length )
 {
 	this->set_resizable( false );
-	this->set_has_separator( false );
 	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3 */
