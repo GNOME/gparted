@@ -23,7 +23,6 @@ namespace GParted
 	
 Dialog_Base_Partition::Dialog_Base_Partition()
 {
-	this ->set_has_separator( false ) ;
 	frame_resizer_base = NULL;
 	GRIP = false ;
 	this ->fixed_start = false ;
