@@ -311,38 +311,26 @@ void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & 
 	}
 }
 	
-bool DrawingAreaVisualDisk::on_expose_event( GdkEventExpose * event )
+bool DrawingAreaVisualDisk::on_draw( const Cairo::RefPtr<Cairo::Context> & cr )
 {
-	bool ret_val = Gtk::DrawingArea::on_expose_event( event ) ;
-	
-	Glib::RefPtr<Gdk::Window> window = get_window();
-	if (window)
+	bool ret_val = Gtk::DrawingArea::on_draw( cr ) ;
+
+	cr ->set_line_width( 2.0 );
+	cr ->set_line_join( Cairo::LINE_JOIN_MITER ); // default
+	cr ->set_line_cap( Cairo::LINE_CAP_BUTT ); // default
+	cr ->set_dash( std::vector<double>(1, 4.0) , 0.0 );
+
+	draw_partitions( cr, visual_partitions ) ;
+ 
+	//selection 
+	if ( selected_vp )
 	{
-		Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-		
-		// clip to the area indicated by the expose event so that we only redraw
-		// the portion of the window that needs to be redrawn
-		cr->rectangle(event->area.x, event->area.y,
-		              event->area.width, event->area.height);
-		cr->clip();
-		
-		cr ->set_line_width( 2.0 );
-		cr ->set_line_join( Cairo::LINE_JOIN_MITER ); // default
-		cr ->set_line_cap( Cairo::LINE_CAP_BUTT ); // default
-		cr ->set_dash( std::vector<double>(1, 4.0) , 0.0 );
-	
-		draw_partitions( cr, visual_partitions ) ;
-	 
-		//selection 
-		if ( selected_vp )
-		{
-			gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
-			cr ->rectangle( selected_vp ->x_start + BORDER/2 ,
-			                selected_vp ->y_start + BORDER/2 ,
-			                selected_vp ->length - BORDER,
-			                selected_vp ->height - BORDER  ) ;
-			cr ->stroke();
-		}
+		gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+		cr ->rectangle( selected_vp ->x_start + BORDER/2 ,
+		                selected_vp ->y_start + BORDER/2 ,
+		                selected_vp ->length - BORDER,
+		                selected_vp ->height - BORDER  ) ;
+		cr ->stroke();
 	}
 
 	return ret_val ;
