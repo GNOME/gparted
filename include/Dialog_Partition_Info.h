@@ -46,7 +46,7 @@ private:
 	void Display_Info();
 
 	//signalhandlers
-	bool drawingarea_on_expose( GdkEventExpose *ev );
+	bool drawingarea_on_draw( const Cairo::RefPtr<Cairo::Context>& cr );
 
 	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
 
