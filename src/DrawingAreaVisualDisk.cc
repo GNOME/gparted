@@ -314,21 +314,9 @@ void DrawingAreaVisualDisk::set_selected( const std::vector<visual_partition> & 
 }
 
 
-bool DrawingAreaVisualDisk::on_expose_event( GdkEventExpose * event )
+bool DrawingAreaVisualDisk::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	bool ret_val = Gtk::DrawingArea::on_expose_event( event ) ;
-	
-	Glib::RefPtr<Gdk::Window> window = get_window();
-	if (!window)
-		return true;
-
-	Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-
-	// Clip to the area indicated by the expose event so that we only redraw
-	// the portion of the window that needs to be redrawn.
-	cr->rectangle(event->area.x, event->area.y,
-	              event->area.width, event->area.height);
-	cr->clip();
+	bool ret_val = Gtk::DrawingArea::on_draw(cr);
 
 	cr->set_line_width(2.0);
 	cr->set_line_join(Cairo::LINE_JOIN_MITER);  // default
