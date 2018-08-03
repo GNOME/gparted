@@ -33,6 +33,14 @@
 #include <ctime>
 #include <vector>
 
+//commonly used headers
+#include <glibmm/main.h>
+#include <glibmm/spawn.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/shell.h>
+
 #define UUID_STRING_LENGTH 36
 //Match RFC 4122 UUID strings.  Exclude Nil UUID (all zeros) by excluding
 //  zero from the version field nibble.
