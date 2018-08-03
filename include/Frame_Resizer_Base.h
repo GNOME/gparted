@@ -82,7 +82,8 @@ protected:
 
 	std::vector<Gdk::Point> arrow_points;
 	
-	Gdk::Cursor *cursor_resize, *cursor_move;
+	Glib::RefPtr<Gdk::Cursor> cursor_resize;
+	Glib::RefPtr<Gdk::Cursor> cursor_move;
 	
 	int temp_x, temp_y ;
 	bool fixed_start; //a fixed start disables moving the start and thereby the whole move functionality..
