@@ -219,25 +219,13 @@ AC_SUBST([GTHREAD_LIBS])
 AC_SUBST([GTHREAD_CFLAGS])
 
 dnl GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4 >= 2.16.0])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.0.0])
 AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
 dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
-
-
-dnl Check for gtkmm >= 2.22 to determine availability of Gtk::MessageDialog::get_message_area().
-AC_MSG_CHECKING([for Gtk::MessageDialog::get_message_area() method])
-PKG_CHECK_EXISTS(
-	[gtkmm-2.4 >= 2.22.0],
-	[AC_DEFINE([HAVE_GET_MESSAGE_AREA], 1,
-	           [Define to 1 if gtkmm provides Gtk::MessageDialog::get_message_area() method.])
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
 
 
 need_cxx_compile_stdcxx_11=no
@@ -254,6 +242,15 @@ dnl Check for libsigc++ >= 2.5.1 which requires C++11 compilation.
 AC_MSG_CHECKING([for libsigc++ >= 2.5.1 which requires C++11 compilation])
 PKG_CHECK_EXISTS(
 	[sigc++-2.0 >= 2.5.1],
+	[need_cxx_compile_stdcxx_11=yes
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+dnl Check for gtkmm >= 3.18 which requires C++11 compilation.
+AC_MSG_CHECKING([for gtkmm >= 3.18 which requires C++11 compilation])
+PKG_CHECK_EXISTS(
+	[gtkmm-3.0 >= 3.18],
 	[need_cxx_compile_stdcxx_11=yes
 	 AC_MSG_RESULT([yes])
 	],
