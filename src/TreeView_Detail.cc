@@ -57,11 +57,11 @@ TreeView_Detail::TreeView_Detail()
 	// Tree view column "File System"; add file system text cell.
 	get_column( 2 )->pack_start( treeview_detail_columns.filesystem, true );
 	// Color pixbuf cell is left aligned.
-	get_column( 2 )->get_first_cell_renderer()->property_xalign() = Gtk::ALIGN_LEFT;
+	get_column( 2 )->get_first_cell_renderer()->property_xalign() = Gtk::ALIGN_START;
 	// File system text cell is left aligned.
 	std::vector<Gtk::CellRenderer*> renderers = get_column( 2 )->get_cell_renderers();
 	Gtk::CellRendererText *cell_renderer_text = dynamic_cast<Gtk::CellRendererText*>( renderers.back() );
-	cell_renderer_text ->property_xalign() = Gtk::ALIGN_LEFT ;
+	cell_renderer_text ->property_xalign() = Gtk::ALIGN_START ;
 
 	// Tree view column "Mount Point", make column resizable and show too wide text
 	// with ellipsis.
