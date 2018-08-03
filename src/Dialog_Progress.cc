@@ -79,7 +79,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 
 		treeview_operations.get_column(0)->set_expand(true);
 		treeview_operations.get_column(0)->set_cell_data_func(
-			*(treeview_operations.get_column(0)->get_first_cell_renderer()),
+			*(treeview_operations.get_column(0)->get_first_cell()),
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
 
 		//fill 'er up
