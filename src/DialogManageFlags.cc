@@ -30,7 +30,6 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 	any_change = false ;
 
 	set_title( String::ucompose( _("Manage flags on %1"), partition .get_path() ) );
-	set_has_separator( false ) ;
 	set_resizable( false ) ;
 
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
