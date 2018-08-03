@@ -29,7 +29,6 @@ namespace GParted
 
 Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 {
-	this ->set_has_separator( false ) ;
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
 	succes = true ;
