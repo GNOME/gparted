@@ -65,7 +65,7 @@ private:
 	int spreadout_leftover_px( std::vector<visual_partition> & visual_partitions, int pixels ) ;
 	
 	//overridden signalhandlers
-	bool on_expose_event( GdkEventExpose * event ) ;
+	bool on_draw( const Cairo::RefPtr<Cairo::Context> & cr ) ;
 	bool on_button_press_event( GdkEventButton * event ) ;
 	void on_size_allocate( Gtk::Allocation & allocation ) ;
 
