@@ -3046,7 +3046,7 @@ void Win_GParted::activate_manage_flags()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
-	get_window() ->set_cursor( Gdk::Cursor( Gdk::WATCH ) ) ;
+	get_window() ->set_cursor( Gdk::Cursor::create( Gdk::WATCH ) ) ;
 	while ( Gtk::Main::events_pending() )
 		Gtk::Main::iteration() ;
 
