@@ -29,6 +29,7 @@
 #include <gtkmm/paned.h>
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>
+#include <gtkmm/checkmenuitem.h>
 #include <gtkmm/menubar.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/combobox.h>
