@@ -34,8 +34,8 @@ void Frame_Resizer_Base::init()
 
 	drawingarea .signal_realize() .connect( 
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_realize) ) ;
-	drawingarea .signal_expose_event() .connect( 
-			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_expose) ) ;
+	drawingarea .signal_draw() .connect( 
+			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_draw) ) ;
 	drawingarea .signal_motion_notify_event() .connect( 
 			sigc::mem_fun(*this, &Frame_Resizer_Base::drawingarea_on_mouse_motion) ) ;
 	drawingarea .signal_button_press_event() .connect( 
@@ -132,20 +132,8 @@ void Frame_Resizer_Base::drawingarea_on_realize()
 	drawingarea .add_events( Gdk::LEAVE_NOTIFY_MASK );
 }
 
-bool Frame_Resizer_Base::drawingarea_on_expose( GdkEventExpose * ev )
+bool Frame_Resizer_Base::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Context> & cr )
 {
-	Glib::RefPtr<Gdk::Window> window = drawingarea.get_window();
-	if (!window)
-		return true;
-
-	Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-
-	// clip to the area indicated by the expose event so that we only redraw
-	// the portion of the window that needs to be redrawn
-	cr->rectangle(ev->area.x, ev->area.y,
-	              ev->area.width, ev->area.height);
-	cr->clip();
-
 	cr->set_line_cap(Cairo::LINE_CAP_SQUARE);
 	cr->set_line_width(1.0);
 
