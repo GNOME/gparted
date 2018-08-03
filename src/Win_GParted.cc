@@ -51,6 +51,7 @@
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
+#include <gtkmm/radiomenuitem.h>
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
 #include <glibmm/ustring.h>
