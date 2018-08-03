@@ -27,7 +27,6 @@ namespace GParted
 DialogFeatures::DialogFeatures() 
 {
 	set_title( _("File System Support") ) ;
-	set_has_separator( false ) ;
 	//Set minimum dialog height so it fits on an 800x600 screen
 	set_size_request( -1, 500 ) ;
 
