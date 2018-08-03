@@ -185,7 +185,7 @@ void Win_GParted::init_menubar()
 
 	menu ->items() .push_back( Gtk::Menu_Helpers::ImageMenuElem( 
 		_("_Apply All Operations"),
-		Gtk::AccelKey(GDK_Return, Gdk::CONTROL_MASK),
+		Gtk::AccelKey(GDK_KEY_Return, Gdk::CONTROL_MASK),
 		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
 		sigc::mem_fun(*this, &Win_GParted::activate_apply) ) );
 	menubar_main .items() .push_back( Gtk::Menu_Helpers::MenuElem( _("_Edit"), *menu ) );
@@ -330,14 +330,14 @@ void Win_GParted::init_partition_menu()
 	menu_partition .items() .push_back( 
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
 			Gtk::Menu_Helpers::ImageMenuElem( _("_New"),
-							  Gtk::AccelKey( GDK_Insert, Gdk::BUTTON1_MASK),
+							  Gtk::AccelKey(GDK_KEY_Insert, Gdk::BUTTON1_MASK),
 							  *image,
 							  sigc::mem_fun(*this, &Win_GParted::activate_new) ) );
 	MENU_NEW = index++ ;
 	
 	menu_partition .items() .push_back( 
 			Gtk::Menu_Helpers::StockMenuElem( Gtk::Stock::DELETE, 
-							  Gtk::AccelKey( GDK_Delete, Gdk::BUTTON1_MASK ),
+							  Gtk::AccelKey(GDK_KEY_Delete, Gdk::BUTTON1_MASK),
 							  sigc::mem_fun(*this, &Win_GParted::activate_delete) ) );
 	MENU_DEL = index++ ;
 
