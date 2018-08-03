@@ -31,8 +31,8 @@ DialogFeatures::DialogFeatures()
 	set_size_request( -1, 500 ) ;
 
 	//initialize icons
-	icon_yes = render_icon( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR );
-	icon_no = render_icon( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR );
+	icon_yes = render_icon_pixbuf( Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR );
+	icon_no = render_icon_pixbuf( Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR );
 	icon_blank = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, true, 8,
 	                                  icon_yes ->get_width(), icon_yes ->get_height() );
 	icon_blank ->fill( 0xFFFFFF00 );
