@@ -116,62 +116,51 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	this ->show_all_children() ;
 }
 
-bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
+bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Context>& cr )
 {
-	Glib::RefPtr<Gdk::Window> window = drawingarea.get_window();
-	if (window)
+	gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
+	cr ->rectangle(0, 0, 400, 60);
+	cr ->fill();
+
+	if ( partition.filesystem != FS_UNALLOCATED )
 	{
-		Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+		//used
+		gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+		cr ->rectangle( BORDER,
+			            BORDER,
+			            used,
+			            60 - 2 * BORDER ) ;
+		cr ->fill( );
 
-		// clip to the area indicated by the expose event so that we only redraw
-		// the portion of the window that needs to be redrawn
-		cr->rectangle(ev->area.x, ev->area.y, ev->area.width, ev->area.height);
-		cr->clip();
+		//unused
+		gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
+		cr ->rectangle( BORDER + used,
+			            BORDER,
+			            unused,
+			            60 - 2 * BORDER ) ;
+		cr ->fill( );
 
-		gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
-		cr ->rectangle(0, 0, 400, 60);
-		cr ->fill();
-
-		if ( partition.filesystem != FS_UNALLOCATED )
-		{
-			//used
-			gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
-			cr ->rectangle( BORDER,
-				            BORDER,
-				            used,
-				            60 - 2 * BORDER ) ;
-			cr ->fill( );
-			
-			//unused
-			gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
-			cr ->rectangle( BORDER + used,
-				            BORDER,
-				            unused,
-				            60 - 2 * BORDER ) ;
-			cr ->fill( );
-
-			//unallocated
-			gdk_cairo_set_source_color(cr->cobj(), color_unallocated.gobj());
-			cr ->rectangle( BORDER + used + unused,
-				            BORDER,
-				            unallocated,
-				            60 - 2 * BORDER ) ;
-			cr ->fill( );
-		}
-		
-		//text
-		gdk_cairo_set_source_color(cr->cobj(), color_text.gobj());
-		cr ->move_to( 180, BORDER + 6 ) ; /*TODO*/
-		pango_layout->show_in_cairo_context(cr);
+		//unallocated
+		gdk_cairo_set_source_color(cr->cobj(), color_unallocated.gobj());
+		cr ->rectangle( BORDER + used + unused,
+			            BORDER,
+			            unallocated,
+			            60 - 2 * BORDER ) ;
+		cr ->fill( );
 	}
 	
+	//text
+	gdk_cairo_set_source_color(cr->cobj(), color_text.gobj());
+	cr ->move_to( 180, BORDER + 6 ) ; /*TODO*/
+	pango_layout->show_in_cairo_context(cr);
+
 	return true;
 }
 
 void Dialog_Partition_Info::init_drawingarea() 
 {
 	drawingarea .set_size_request( 400, 60 ) ;
-	drawingarea .signal_expose_event().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_expose) ) ;
+	drawingarea .signal_draw().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw) ) ;
 	
 	frame = manage( new Gtk::Frame() ) ;
 	frame ->add( drawingarea ) ;
