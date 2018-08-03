@@ -21,6 +21,7 @@
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <glibmm/thread.h>
 #include <gtkmm/main.h>
 #include <errno.h>
 
