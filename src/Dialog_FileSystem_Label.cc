@@ -28,7 +28,6 @@ namespace GParted
 Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 {
 	this ->set_resizable( false ) ;
-	this ->set_has_separator( false ) ;
 	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3 */
