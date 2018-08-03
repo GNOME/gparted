@@ -61,7 +61,7 @@ private:
 	std::vector<FS> FILESYSTEMS ;
 	
 	//signal handlers
-	void optionmenu_changed( bool );
+	void combobox_changed( bool );
 
 	unsigned short new_count, first_creatable_fs ;
 };

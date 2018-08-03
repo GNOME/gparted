@@ -127,7 +127,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	combo_type.set_size_request( 160, -1 );
 
 	combo_type.signal_changed().connect(
-		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), true ) );
+		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::combobox_changed ), true ) );
 	table_create.attach( combo_type, 1, 2, 0, 1, Gtk::FILL );
 
 	// Partition name
@@ -147,7 +147,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	build_filesystems_combo( device.readonly );
 
 	combo_filesystem.signal_changed().connect(
-		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
+		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::combobox_changed ), false ) );
 	table_create.attach( combo_filesystem, 1, 2, 2, 3, Gtk::FILL );
 
 	//Label
@@ -168,8 +168,8 @@ void Dialog_Partition_New::set_data( const Device & device,
 	
 	//set first enabled file system
 	combo_filesystem.set_active( first_creatable_fs );
-	optionmenu_changed( false ) ;
-	
+	combobox_changed( false );
+
 	//set spinbuttons initial values
 	spinbutton_after .set_value( 0 ) ;
 	spinbutton_size.set_value( ceil( fs_limits.max_size / double(MEBIBYTE) ) );
@@ -181,7 +181,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 
 	// Connect signal handler for Dialog_Base_Partiton combo_alignment.
 	combo_alignment.signal_changed().connect(
-		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::optionmenu_changed ), false ) );
+		sigc::bind<bool>( sigc::mem_fun( *this, &Dialog_Partition_New::combobox_changed ), false ) );
 
 	this ->show_all_children() ;
 }
@@ -310,7 +310,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	return *new_partition;
 }
 
-void Dialog_Partition_New::optionmenu_changed( bool type )
+void Dialog_Partition_New::combobox_changed( bool type )
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
