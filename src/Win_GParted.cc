@@ -696,7 +696,7 @@ void Win_GParted::refresh_combo_devices()
 			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ;
 	}
 				
-	mainmenu_items[ MENU_DEVICES ] ->remove_submenu() ;
+	mainmenu_items[ MENU_DEVICES ] ->unset_submenu() ;
 
 	if ( menu ->get_children() .size() )
 	{
@@ -1518,14 +1518,14 @@ void Win_GParted::combo_devices_changed()
 	//update radiobuttons..
 	if ( mainmenu_items [ MENU_DEVICES ] ->has_submenu() )
 		static_cast<Gtk::RadioMenuItem *>( 
-			&mainmenu_items [ MENU_DEVICES ] ->get_submenu() ->items()[current_device])
+			mainmenu_items [ MENU_DEVICES ] ->get_submenu() ->get_children()[current_device])
 				->set_active( true ) ;
 }
 
 void Win_GParted::radio_devices_changed( unsigned int item ) 
 {
 	if ( static_cast<Gtk::RadioMenuItem *>( 
-	     	&mainmenu_items[MENU_DEVICES] ->get_submenu() ->items()[item] )
+	     	mainmenu_items[MENU_DEVICES] ->get_submenu() ->get_children()[item] )
 	     		->get_active() )
 	{
 		combo_devices .set_active( item ) ;
@@ -1640,7 +1640,7 @@ void Win_GParted::menu_gparted_features()
 		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 
 		//recreate format menu...
-		partitionmenu_items [ MENU_FORMAT ] ->remove_submenu() ;
+		partitionmenu_items [ MENU_FORMAT ] ->unset_submenu() ;
 		partitionmenu_items [ MENU_FORMAT ] ->set_submenu( * create_format_menu() ) ;
 		partitionmenu_items [ MENU_FORMAT ] ->get_submenu() ->show_all_children() ;
 	}
