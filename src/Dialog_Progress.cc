@@ -62,11 +62,11 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
 
 		//create some icons here, instead of recreating them every time
-		icon_execute = render_icon(Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_success = render_icon(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_error = render_icon(Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_info = render_icon(Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_warning = render_icon(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_execute = render_icon_pixbuf(Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_success = render_icon_pixbuf(Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_error = render_icon_pixbuf(Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_info = render_icon_pixbuf(Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_warning = render_icon_pixbuf(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
 
 		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
 		treeview_operations.set_model(treestore_operations);
