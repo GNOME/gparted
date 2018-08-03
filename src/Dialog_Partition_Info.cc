@@ -116,19 +116,8 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	this ->show_all_children() ;
 }
 
-bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
+bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Context>& cr )
 {
-	Glib::RefPtr<Gdk::Window> window = drawingarea.get_window();
-	if (!window)
-		return true;
-
-	Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-
-	// clip to the area indicated by the expose event so that we only redraw
-	// the portion of the window that needs to be redrawn
-	cr->rectangle(ev->area.x, ev->area.y, ev->area.width, ev->area.height);
-	cr->clip();
-
 	gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
 	cr ->rectangle(0, 0, 400, 60);
 	cr ->fill();
@@ -171,7 +160,7 @@ bool Dialog_Partition_Info::drawingarea_on_expose( GdkEventExpose *ev )
 void Dialog_Partition_Info::init_drawingarea() 
 {
 	drawingarea .set_size_request( 400, 60 ) ;
-	drawingarea .signal_expose_event().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_expose) ) ;
+	drawingarea .signal_draw().connect( sigc::mem_fun(*this, &Dialog_Partition_Info::drawingarea_on_draw) ) ;
 	
 	frame = manage( new Gtk::Frame() ) ;
 	frame ->add( drawingarea ) ;
