@@ -98,8 +98,8 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 		case FS_F2FS		: return "#DF421E" ;	//accent red
-		case FS_FAT16		: return "#00FF00" ;	//green
-		case FS_FAT32		: return "#18D918" ;	// ~ medium green
+		case FS_FAT16		: return "#60C160";	// Accent Green Hilight
+		case FS_FAT32		: return "#46A046";	// Accent Green
 		case FS_EXFAT		: return "#267726" ;	// Accent Green Dark
 		case FS_NILFS2		: return "#826647" ;	//face skin shadow
 		case FS_NTFS		: return "#42E5AC" ;	// ~ light aquamarine
