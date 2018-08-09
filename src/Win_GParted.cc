@@ -1746,28 +1746,52 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 		uri = uri + "?" + link_id ;
 	}
 
-	gscreen = gdk_screen_get_default() ;
-
+	gscreen = get_window() ->get_screen() ->gobj();
 	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
 	if ( error != NULL )
 	{
 		//Try opening yelp application directly
-		g_clear_error( &error );  // Clear error from trying to open gparted help manual above (gtk_show_uri).
-		Glib::ustring command = "yelp " + uri ;
-		gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
-	}
+		
+		// TODO
+		// 
+		// we can make use of g_desktop_app_info_new () to launch yelp from the desktop file
+		// as written there: https://developer.gnome.org/gtk3/stable/gtk-migrating-2-to-3.html#id-1.6.3.3.7
+		// like:
+		// 
+		// Glib::RefPtr<Gio::DesktopAppInfo> yelp
+		//      = Gio::DesktopAppInfo::create("yelp.desktop");
+		//
+		Glib::RefPtr<Gio::AppInfo> yelp
+		     = Gio::AppInfo::create_from_commandline("yelp", "", Gio::APP_INFO_CREATE_SUPPORTS_URIS);
+		
+		Glib::RefPtr<Gdk::AppLaunchContext> context
+		     = get_window() ->get_display() ->get_app_launch_context();
 
-	if ( error != NULL )
-	{
-		Gtk::MessageDialog dialog( *this
-		                         , _( "Unable to open GParted Manual help file" )
-		                         , false
-		                         , Gtk::MESSAGE_ERROR
-		                         , Gtk::BUTTONS_OK
-		                         , true
-		                         ) ;
-		dialog .set_secondary_text( error ->message ) ;
-		dialog .run() ;
+		context ->set_timestamp ( gtk_get_current_event_time () );
+
+		bool launch_ok;
+		try {
+			launch_ok = yelp ->launch_uris ( std::vector<std::string>(1, uri), context ) ;
+		}
+		catch (Glib::Error& e) {
+			std::cout << e.what() << std::endl;
+			launch_ok = false;
+		}
+		
+		if (!launch_ok)
+		{
+			Gtk::MessageDialog dialog( *this
+			                         , _( "Unable to open GParted Manual help file" )
+			                         , false
+			                         , Gtk::MESSAGE_ERROR
+			                         , Gtk::BUTTONS_OK
+			                         , true
+			                         ) ;
+			dialog .set_secondary_text( error ->message ) ;
+			dialog .run() ;
+		}
+
+		g_clear_error( &error );
 	}
 }
 
