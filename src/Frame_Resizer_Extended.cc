@@ -156,24 +156,24 @@ bool Frame_Resizer_Extended::drawingarea_on_mouse_motion( GdkEventMotion * ev )
 void Frame_Resizer_Extended::Draw_Partition( const Cairo::RefPtr<Cairo::Context>& cr )
 {
 	//background color
-	Gdk::Cairo::set_source_color( cr, color_background );
+	Gdk::Cairo::set_source_rgba( cr, color_background );
 	cr ->rectangle( 0, 0, 536, 50 );
 	cr ->fill();
 	
 	//the two rectangles on each side of the partition
-	Gdk::Cairo::set_source_color( cr, color_arrow_rectangle );
+	Gdk::Cairo::set_source_rgba( cr, color_arrow_rectangle );
 	cr ->rectangle( 0, 0, 10, 50 );
 	cr ->fill();
 	cr ->rectangle( 526, 0, 10, 50 );
 	cr ->fill();
 	
 	//used
-	Gdk::Cairo::set_source_color( cr, color_used );
+	Gdk::Cairo::set_source_rgba( cr, color_used );
 	cr ->rectangle( USED_START + BORDER, BORDER, USED, 34 );
 	cr ->fill();
 	
 	//partition
-	Gdk::Cairo::set_source_color( cr, color_partition );
+	Gdk::Cairo::set_source_rgba( cr, color_partition );
 	for( short t = 0; t < 9 ; t++ )
 	{
 		cr ->rectangle( (X_START +t) +0.5, t +0.5, X_END - X_START -t*2, 50 - t*2 );

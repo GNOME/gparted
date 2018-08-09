@@ -81,7 +81,7 @@ private:
 		int y_usage_start, usage_height ;
 		int x_text, y_text ;
 
-		Gdk::Color color ;
+		Gdk::RGBA color ;
 		Glib::RefPtr<Pango::Layout> pango_layout;
 
 		// Pointer to real partition.  (Alias to element in Win_GParted::display_partitions[] vector).
@@ -115,7 +115,7 @@ private:
 	const visual_partition * selected_vp ;
 	int TOT_SEP, MIN_SIZE ;
 
-	Gdk::Color color_used, color_unused, color_unallocated, color_text;
+	Gdk::RGBA color_used, color_unused, color_unallocated, color_text;
 };
 
 } //GParted
