@@ -1724,22 +1724,42 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 	if ( error != NULL )
 	{
 		//Try opening yelp application directly
-		g_clear_error( &error );  // Clear error from trying to open gparted help manual above (gtk_show_uri).
-		Glib::ustring command = "yelp " + uri ;
-		gdk_spawn_command_line_on_screen( gscreen, command .c_str(), &error ) ;
-	}
+		
+		// TODO
+		// 
+		// we can make use of g_desktop_app_info_new () to launch yelp from the desktop file
+		// as written there: https://developer.gnome.org/gtk3/stable/gtk-migrating-2-to-3.html#id-1.6.3.3.7
+		// like:
+		// 
+		// Glib::RefPtr<Gio::DesktopAppInfo> yelp
+		//      = Gio::DesktopAppInfo::create("yelp.desktop");
+		//
+		Glib::RefPtr<Gio::AppInfo> yelp
+		     = Gio::AppInfo::create_from_commandline("", "yelp", Gio::APP_INFO_CREATE_SUPPORTS_URIS);
+		
+		Glib::RefPtr<Gdk::AppLaunchContext> context
+		     = Gdk::AppLaunchContext::create();
 
-	if ( error != NULL )
-	{
-		Gtk::MessageDialog dialog( *this
-		                         , _( "Unable to open GParted Manual help file" )
-		                         , false
-		                         , Gtk::MESSAGE_ERROR
-		                         , Gtk::BUTTONS_OK
-		                         , true
-		                         ) ;
-		dialog .set_secondary_text( error ->message ) ;
-		dialog .run() ;
+		context ->set_screen ( get_window() ->get_screen () ) ;
+		context ->set_timestamp ( gtk_get_current_event_time () );
+
+		bool launched;
+		launched = yelp ->launch_uris ( std::vector<std::string>(1, uri), context ) ;
+		
+		if (! launched)
+		{
+			Gtk::MessageDialog dialog( *this
+			                         , _( "Unable to open GParted Manual help file" )
+			                         , false
+			                         , Gtk::MESSAGE_ERROR
+			                         , Gtk::BUTTONS_OK
+			                         , true
+			                         ) ;
+			dialog .set_secondary_text( error ->message ) ;
+			dialog .run() ;
+		}
+
+		g_clear_error( &error );
 	}
 }
 
