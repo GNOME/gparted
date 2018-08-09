@@ -1003,6 +1003,77 @@
         </tip>
       </sect3>
 
+<!-- ============= To Open an Encrypted Partition ==================== -->
+      <sect3 id="gparted-open-encrypted-partition">
+        <title>Opening an Encrypted Partition</title>
+        <para>
+        To open a LUKS encrypted partition:
+          <orderedlist>
+            <listitem>
+              <para>
+              Select a closed LUKS encrypted partition.
+              See <xref linkend="gparted-select-partition"/>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Choose:
+              <menuchoice><guimenu>Partition</guimenu><guimenuitem>Open Encryption</guimenuitem></menuchoice>.
+              </para>
+              <para>
+              If <application>&app;</application> doesn't yet know the
+              LUKS Passphrase it will open a <guilabel>LUKS Passphrase
+              <replaceable>/path-to-partition</replaceable></guilabel>
+              dialog.  Type the LUKS Passphrase into the
+              <guilabel>Passphrase</guilabel> text box and click
+              <guibutton>Unlock</guibutton>.
+              </para>
+              <para>
+              The application opens the encrypted partition and
+              refreshes the device partition layout in the
+              <application>&app;</application> window.
+              </para>
+            </listitem>
+          </orderedlist>
+        </para>
+        <note>
+          <para>
+          <application>&app;</application> remembers each LUKS
+          Passphrase in the computer's memory for as long as it is
+          running.  This is so that it doesn't have to prompt when
+          reopening the same encrypted partition again.  When
+          <application>&app;</application> is closed all remembered LUKS
+          Passphrases are cleared from memory and forgotten.
+          </para>
+        </note>
+      </sect3>
+
+
+<!-- ============= To Close an Encrypted Partition =================== -->
+      <sect3 id="gparted-close-encrypted-partition">
+        <title>Closing an Encrypted Partition</title>
+        <para>
+        To close a LUKS encrypted partition:
+          <orderedlist>
+            <listitem>
+              <para>
+              Select an unmounted and LUKS encrypted partition.
+              See <xref linkend="gparted-select-partition"/>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+              Choose:
+              <menuchoice><guimenu>Partition</guimenu><guimenuitem>Close Encryption</guimenuitem></menuchoice>.
+              The application closed the LUKS encryption and refreshes
+              the device partition layout in the
+              <application>&app;</application> window.
+              </para>
+            </listitem>
+          </orderedlist>
+        </para>
+      </sect3>
+
     </sect2>
 <!-- ============= End of Basic Partition Actions ==================== -->
 
