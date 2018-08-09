@@ -19,6 +19,7 @@
 #include "Dialog_Rescue_Data.h"
 #include "Partition.h"
 
+#include <gtk/gtk.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/checkbutton.h>
@@ -67,7 +68,7 @@ void Dialog_Rescue_Data::draw_dialog()
 		
 		Gtk::Label *inconsis_label=manage(Utils::mk_label(msg_label));
 		Gdk::Color c( "red" );
-		inconsis_label->modify_fg(Gtk::STATE_NORMAL, c );
+		gtk_widget_modify_fg(GTK_WIDGET(inconsis_label->gobj()), GTK_STATE_NORMAL, c.gobj());
 		this->get_vbox()->pack_end(*inconsis_label, Gtk::PACK_SHRINK, 5);
 	}
 	message->append("</b></big>");
