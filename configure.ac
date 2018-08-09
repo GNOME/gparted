@@ -219,13 +219,13 @@ AC_SUBST([GTHREAD_LIBS])
 AC_SUBST([GTHREAD_CFLAGS])
 
 dnl GTKMM
-PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.0.0])
+PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.4.0])
 AC_SUBST([GTKMM_LIBS])
 AC_SUBST([GTKMM_CFLAGS])
 
 
 dnl Check for glibmm minimum required version.
-PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
+PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.16.0])
 
 
 need_cxx_compile_stdcxx_11=no
