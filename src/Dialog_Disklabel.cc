@@ -77,7 +77,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		bool set_active = false ;
 		for ( unsigned int t = 0 ; t < labeltypes .size() ; t ++ )
 		{
-			combo_labeltypes .append_text( labeltypes[ t ] ) ;
+			combo_labeltypes.append(labeltypes[t]);
 			if ( default_label == labeltypes[ t ] )
 			{
 				combo_labeltypes .set_active( t ) ;
