@@ -49,13 +49,13 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		str_temp += "\n";
 		vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
-		label_current.set_alignment(Gtk::ALIGN_LEFT);
+		label_current.set_alignment(Gtk::ALIGN_START);
 		vbox->pack_start(label_current, Gtk::PACK_SHRINK);
 
 		progressbar_current.set_pulse_step(0.01);
 		vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
 
-		label_current_sub.set_alignment(Gtk::ALIGN_LEFT);
+		label_current_sub.set_alignment(Gtk::ALIGN_START);
 		vbox->pack_start(label_current_sub, Gtk::PACK_SHRINK);
 
 		vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
