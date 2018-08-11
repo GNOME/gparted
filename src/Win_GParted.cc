@@ -1701,7 +1701,7 @@ void Win_GParted::menu_help_about()
 	Gtk::AboutDialog dialog ;
 	dialog .set_transient_for( *this ) ;
 	
-	dialog .set_name( _("GParted") ) ;
+	dialog .set_program_name( _("GParted") ) ;
 	dialog .set_logo_icon_name( "gparted" ) ;
 	dialog .set_version( VERSION ) ;
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
