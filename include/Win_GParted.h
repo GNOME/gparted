@@ -227,7 +227,6 @@ private:
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
 	Gtk::ScrolledWindow *scrollwindow;
-	Gtk::Table *table ;
 	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
 	
