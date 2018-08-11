@@ -54,6 +54,7 @@
 #include <gtkmm/radiomenuitem.h>
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
+#include <gtkmm/grid.h>
 #include <glibmm/ustring.h>
 
 namespace GParted
@@ -538,106 +539,97 @@ void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate 
 void Win_GParted::init_device_info()
 {
 	vbox_info.set_spacing( 5 );
-	int top = 0, bottom = 1;
 	
 	//title
 	vbox_info .pack_start( 
 		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + "</b>" ),
 		Gtk::PACK_SHRINK );
 	
+	Gtk::Grid *grid;
+	
 	//GENERAL DEVICE INFO
-	table = manage( new Gtk::Table() ) ;
-	table ->set_col_spacings( 10 ) ;
+	grid = manage( new Gtk::Grid() ) ;
+	grid ->set_column_spacing( 10 ) ;
 	
 	//model
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Model:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Model:") ) + "</b>" ),
+			0, 0,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 0, 1, 1 ) ;
 
 	// Serial number
-	table->attach( *Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Serial:") ) + "</b>" ),
-	               0, 1, top, bottom, Gtk::FILL );
+	grid->attach( *Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Serial:") ) + "</b>" ),
+	               0, 1, 1, 1 );
 	device_info.push_back( Utils::mk_label( "", true, false, true ) );
-	table->attach( *device_info.back(), 1, 2, top++, bottom++, Gtk::FILL );
+	grid->attach( *device_info.back(), 1, 1, 1, 1 );
 
 	//size
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
+			0, 2,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 2, 1, 1 ) ;
 	
 	//path
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>" ),
+			0, 3,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 3, 1, 1 ) ;
 	
-	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
+	vbox_info .pack_start( *grid, Gtk::PACK_SHRINK );
 	
 	//DETAILED DEVICE INFO 
-	top = 0 ; bottom = 1;
-	table = manage( new Gtk::Table() ) ;
-	table ->set_col_spacings( 10 ) ;
+	grid = manage( new Gtk::Grid() ) ;
+	grid ->set_column_spacing( 10 ) ;
 	
 	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
+	grid ->attach( * Utils::mk_label( "" ), 1, 0, 1, 1 );
 	
 	//disktype
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Partition table:") ) + "</b>" ),
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Partition table:") ) + "</b>" ),
 			0, 1,
-			top, bottom,
-			Gtk::FILL );
+			1, 1 );
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 1, 1, 1 ) ;
 	
 	//heads
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Heads:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Heads:") ) + "</b>" ),
+			0, 2,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 2, 1, 1 ) ;
 	
 	//sectors/track
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/track:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/track:") ) + "</b>" ),
+			0, 3,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL );
+	grid ->attach( * device_info .back(), 1, 3, 1, 1 );
 	
 	//cylinders
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Cylinders:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Cylinders:") ) + "</b>" ),
+			0, 4,
+			1, 1 ) ;
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 4, 1, 1 ) ;
 	
 	//total sectors
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total sectors:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL );
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total sectors:") ) + "</b>" ),
+			0, 5,
+			1, 1 );
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 5, 1, 1 ) ;
 
 	//sector size
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sector size:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL );
+	grid ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sector size:") ) + "</b>" ),
+			0, 6,
+			1, 1 );
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * device_info .back(), 1, 6, 1, 1 ) ;
 
-	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
+	vbox_info .pack_start( *grid, Gtk::PACK_SHRINK );
 }
 
 void Win_GParted::init_hpaned_main() 
@@ -3415,23 +3407,21 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	Gtk::Separator * hsep( manage( new Gtk::Separator(Gtk::ORIENTATION_HORIZONTAL) ) ) ;
 	msg_area ->pack_start( * hsep ) ;
 
-	Gtk::Table * table( manage( new Gtk::Table() ) ) ;
-        table ->set_border_width( 0 ) ;
-        table ->set_col_spacings( 10 ) ;
-        msg_area ->pack_start( * table ) ;
-
-	int top = 0, bottom = 1 ;
+	Gtk::Grid * grid( manage( new Gtk::Grid() ) ) ;
+        grid ->set_border_width( 0 ) ;
+        grid ->set_column_spacing( 10 ) ;
+        msg_area ->pack_start( * grid ) ;
 
 	//Volume Group
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( vgname_label ) + "</b>" ),
-	                0, 1, top, bottom, Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( vgname, true, false, true ),
-	                1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( "<b>" + Glib::ustring( vgname_label ) + "</b>" ),
+	                0, 0, 1, 1) ;
+	grid ->attach( * Utils::mk_label( vgname, true, false, true ),
+	                1, 0, 1, 1) ;
 
 	//Members
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>",
+	grid ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>",
 	                                   true, false, false, 0.0 /* ALIGN_TOP */ ),
-	                0, 1, top, bottom, Gtk::FILL ) ;
+	                0, 1, 1, 1 ) ;
 
 	Glib::ustring members_str = "" ;
 	if ( ! members .empty() )
@@ -3443,8 +3433,8 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 			members_str += members[i] ;
 		}
 	}
-	table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
-	                1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
+	                1, 1, 1, 1 ) ;
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
