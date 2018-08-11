@@ -218,7 +218,7 @@ void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> 
                                             const visual_partition & vp ) 
 {
 	//partition...
-	gdk_cairo_set_source_color(cr->cobj(), vp .color .gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), vp .color .gobj());
 	cr ->rectangle( vp .x_start,
 				    vp .y_start,
 				    vp .length,
@@ -228,7 +228,7 @@ void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> 
 	//used..
 	if ( vp .used_length > 0 )
 	{
-		gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_used.gobj());
 		cr ->rectangle( vp .x_used_start, 
 					    vp .y_usage_start,
 					    vp .used_length,
@@ -239,7 +239,7 @@ void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> 
 	//unused
 	if ( vp .unused_length > 0 )
 	{
-		gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_unused.gobj());
 		cr ->rectangle( vp .x_unused_start, 
 					    vp .y_usage_start,
 					    vp .unused_length,
@@ -250,7 +250,7 @@ void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> 
 	//unallocated
 	if ( vp .unallocated_length > 0 )
 	{
-		gdk_cairo_set_source_color(cr->cobj(), color_unallocated.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_unallocated.gobj());
 		cr ->rectangle( vp .x_unallocated_start,
 					    vp .y_usage_start,
 					    vp .unallocated_length,
@@ -261,7 +261,7 @@ void DrawingAreaVisualDisk::draw_partition( const Cairo::RefPtr<Cairo::Context> 
 	//text
 	if ( vp .x_text > 0 )
 	{
-		gdk_cairo_set_source_color(cr->cobj(), color_text.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_text.gobj());
 		cr ->move_to( vp .x_text,
 					  vp .y_text );
 		vp .pango_layout->show_in_cairo_context(cr);
@@ -325,7 +325,7 @@ bool DrawingAreaVisualDisk::on_draw( const Cairo::RefPtr<Cairo::Context> & cr )
 	//selection 
 	if ( selected_vp )
 	{
-		gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_used.gobj());
 		cr ->rectangle( selected_vp ->x_start + BORDER/2 ,
 		                selected_vp ->y_start + BORDER/2 ,
 		                selected_vp ->length - BORDER,
