@@ -52,7 +52,7 @@ private:
 	void Build_Filesystems_Combo( bool only_unformatted ) ;
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
-	Gtk::Table table_create;
+	Gtk::Grid grid_create;
 	OptionComboBox combo_type, combo_filesystem;
 	Gtk::Entry partition_name_entry;
 	Gtk::Entry filesystem_label_entry;
