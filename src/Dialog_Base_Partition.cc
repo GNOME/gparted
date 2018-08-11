@@ -43,36 +43,35 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
 	
 	//fill table
-	table_resize .set_border_width( 5 ) ;
-	table_resize .set_row_spacings( 5 ) ;
-	hbox_table.pack_start( table_resize, Gtk::PACK_EXPAND_PADDING ) ;
+	grid_resize .set_border_width( 5 ) ;
+	grid_resize .set_row_spacing( 5 ) ;
+	hbox_table.pack_start( grid_resize, Gtk::PACK_EXPAND_PADDING ) ;
 	
 	hbox_table .set_border_width( 5 ) ;
 	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
-	table_resize .attach(
+	grid_resize .attach(
 		* Utils::mk_label( static_cast<Glib::ustring>( _( "Free space preceding (MiB):") ) + " \t" ),
-		0, 1, 0, 1,
-		Gtk::SHRINK );
+		0, 0, 1, 1 );
 		
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL );
+	grid_resize.attach( spinbutton_before, 1, 0, 1, 1 );
 	
 	//add spinbutton_size
-	table_resize.attach( * Utils::mk_label( _( "New size (MiB):" ) ), 0, 1, 1, 2 );
+	grid_resize.attach( * Utils::mk_label( _( "New size (MiB):" ) ), 0, 1, 1, 1 );
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL );
+	grid_resize.attach( spinbutton_size, 1, 1, 1, 1 );
 	
 	//add spinbutton_after
-	table_resize.attach( * Utils::mk_label( _( "Free space following (MiB):") ), 0, 1, 2, 3 ) ;
+	grid_resize.attach( * Utils::mk_label( _( "Free space following (MiB):") ), 0, 2, 1, 1 ) ;
 	
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
-	table_resize.attach( spinbutton_after, 1, 2, 2, 3, Gtk::FILL );
+	grid_resize.attach( spinbutton_after, 1, 2, 1, 1 );
 	
 	if ( ! fixed_start )
 		before_value = spinbutton_before .get_value() ;
@@ -95,8 +94,8 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 
 	//add alignment
 	/*TO TRANSLATORS: used as label for a list of choices.   Align to: <combo box with choices> */
-	table_resize .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Align to:") ) + "\t" ),
-	                      0, 1, 3, 4, Gtk::FILL );
+	grid_resize .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Align to:") ) + "\t" ),
+	                      0, 3, 1, 1 );
 
 	//fill partition alignment combo
 	/*TO TRANSLATORS: Option for combo box "Align to:" */
@@ -108,7 +107,7 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 
 	combo_alignment .set_active( ALIGN_MEBIBYTE );  //Default setting
 
-	table_resize .attach( combo_alignment, 1, 2, 3, 4, Gtk::FILL );
+	grid_resize .attach( combo_alignment, 1, 3, 1, 1 );
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;
