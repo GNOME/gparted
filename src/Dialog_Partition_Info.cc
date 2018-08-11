@@ -118,14 +118,14 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 
 bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Context>& cr )
 {
-	gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_partition.gobj());
 	cr ->rectangle(0, 0, 400, 60);
 	cr ->fill();
 
 	if ( partition.filesystem != FS_UNALLOCATED )
 	{
 		//used
-		gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_used.gobj());
 		cr ->rectangle( BORDER,
 			            BORDER,
 			            used,
@@ -133,7 +133,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Cont
 		cr ->fill( );
 
 		//unused
-		gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_unused.gobj());
 		cr ->rectangle( BORDER + used,
 			            BORDER,
 			            unused,
@@ -141,7 +141,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Cont
 		cr ->fill( );
 
 		//unallocated
-		gdk_cairo_set_source_color(cr->cobj(), color_unallocated.gobj());
+		gdk_cairo_set_source_rgba(cr->cobj(), color_unallocated.gobj());
 		cr ->rectangle( BORDER + used + unused,
 			            BORDER,
 			            unallocated,
@@ -150,7 +150,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw( const Cairo::RefPtr<Cairo::Cont
 	}
 	
 	//text
-	gdk_cairo_set_source_color(cr->cobj(), color_text.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_text.gobj());
 	cr ->move_to( 180, BORDER + 6 ) ; /*TODO*/
 	pango_layout->show_in_cairo_context(cr);
 

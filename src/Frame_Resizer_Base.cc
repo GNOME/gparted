@@ -67,12 +67,12 @@ void Frame_Resizer_Base::init()
 	this ->show_all_children();
 }
 
-void Frame_Resizer_Base::set_rgb_partition_color( const Gdk::Color & color )
+void Frame_Resizer_Base::set_rgb_partition_color( const Gdk::RGBA & color )
 {
 	this ->color_partition = color ;
 }
 
-void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::Color & color ) 
+void Frame_Resizer_Base::override_default_rgb_unused_color( const Gdk::RGBA & color ) 
 {
 	this ->color_unused = color ;
 }
@@ -358,29 +358,29 @@ void Frame_Resizer_Base::Draw_Partition(const Cairo::RefPtr<Cairo::Context>& cr)
 		UNUSED = 0 ;
 
 	//background color
-	gdk_cairo_set_source_color(cr->cobj(), color_background.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_background.gobj());
 	cr ->rectangle( 0, 0, 536, 50 );
 	cr ->fill();
 		
 	//the two rectangles on each side of the partition
-	gdk_cairo_set_source_color(cr->cobj(), color_arrow_rectangle.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_arrow_rectangle.gobj());
 	cr ->rectangle( 0, 0, 10, 50 );
 	cr ->fill();
 	cr ->rectangle( 526, 0, 10, 50 );
 	cr ->fill();
 		
 	//partition
-	gdk_cairo_set_source_color(cr->cobj(), color_partition.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_partition.gobj());
 	cr ->rectangle( X_START, 0, X_END - X_START, 50 );
 	cr ->fill();
 		
 	//used
-	gdk_cairo_set_source_color(cr->cobj(), color_used.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_used.gobj());
 	cr ->rectangle( X_START +BORDER, BORDER, USED, 34 );
 	cr ->fill();
 		
 	//unused
-	gdk_cairo_set_source_color(cr->cobj(), color_unused.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_unused.gobj());
 	cr ->rectangle( X_START +BORDER +USED, BORDER, UNUSED, 34 );
 	cr ->fill();
 		
@@ -407,14 +407,14 @@ void Frame_Resizer_Base::Draw_Resize_Grip( const Cairo::RefPtr<Cairo::Context>& 
 	}
 	
 	//attach resize arrows to the partition
-	gdk_cairo_set_source_color(cr->cobj(), color_arrow_rectangle.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_arrow_rectangle.gobj());
 	cr ->rectangle( (arrow_type == ARROW_LEFT ? X_START - GRIPPER : X_END +1) + 0.5,
 	                5 + 0.5,
 	                9,
 	                40 ) ;
 	cr ->stroke();
 
-	gdk_cairo_set_source_color(cr->cobj(), color_arrow.gobj());
+	gdk_cairo_set_source_rgba(cr->cobj(), color_arrow.gobj());
 	cr ->move_to( arrow_points[0].get_x(), arrow_points[0].get_y() );
 	cr ->line_to( arrow_points[1].get_x(), arrow_points[1].get_y() );
 	cr ->line_to( arrow_points[2].get_x(), arrow_points[2].get_y() );
