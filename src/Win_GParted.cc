@@ -3412,7 +3412,7 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	//  in the dialog.  Uses Gtk::MessageDialog::get_message_area()
 	Gtk::Box * msg_area = dialog .get_message_area() ;
 
-	Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
+	Gtk::Separator * hsep( manage( new Gtk::Separator(Gtk::ORIENTATION_HORIZONTAL) ) ) ;
 	msg_area ->pack_start( * hsep ) ;
 
 	Gtk::Table * table( manage( new Gtk::Table() ) ) ;
