@@ -28,9 +28,8 @@ xml2po = find_program('xml2po')
 xml2po_command = [xml2po, '-o', '@OUTPUT@', '-m', 'docbook', '-e', '-t', '@INPUT0@', '@INPUT1@']
 xsltproc = find_program('xsltproc')
 scrollkeeper_config = find_program('scrollkeeper-config')
-pkgconfig = find_program('pkg-config')
 scrollkeeper_output = run_command(scrollkeeper_config, '--pkgdatadir').stdout().strip()
-pkgconfig_output = run_command(pkgconfig, '--variable', 'db2omf', 'gnome-doc-utils').stdout().strip()
+pkgconfig_output = gnome_doc_utils_dep.get_pkgconfig_variable('db2omf')
 gnome_help_prefix = join_paths(get_option('prefix'), get_option('datadir'), 'gnome', 'help', 'gparted')
 
 foreach l: linguas
