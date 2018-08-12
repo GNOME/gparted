@@ -101,6 +101,7 @@ conf.set('HAVE_LIBUUID', 1)
 conf.set('HAVE_STRING_H', 1)
 
 if get_option('help')
+  gnome_doc_utils_dep = dependency('gnome-doc-utils')
   conf.set('ENABLE_HELP_DOC', 1)
   subdir('help')
 else
@@ -127,13 +128,17 @@ podir = join_paths(meson.current_source_dir(), 'po')
 
 intltool_cache = join_paths(meson.current_build_dir(), 'intltool-merge-cache')
 
-intltool_xml_command = [intltool, '-x', '-u',
-                    '-c', intltool_cache,
-                    podir, '@INPUT@', '@OUTPUT@']
+intltool_xml_command = [
+  intltool, '-x', '-u',
+  '-c', intltool_cache,
+  podir, '@INPUT@', '@OUTPUT@',
+]
 
-intltool_desktop_command = [intltool, '-d', '-u',
-                    '-c', intltool_cache,
-                    podir, '@INPUT@', '@OUTPUT@']
+intltool_desktop_command = [
+  intltool, '-d', '-u',
+  '-c', intltool_cache,
+  podir, '@INPUT@', '@OUTPUT@',
+]
 
 gettext_package = 'gparted'
 add_project_arguments('-DGETTEXT_PACKAGE="' + gettext_package + '"', language: 'cpp')
@@ -146,7 +151,7 @@ po_conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
 desktop_in = configure_file(
   input: 'gparted.desktop.in.in',
   output: 'gparted.desktop.in',
-  configuration: po_conf
+  configuration: po_conf,
 )
 
 # TODO: maybe drop intltool and use pure gettext so that we can use i18n.merge_file instead
@@ -156,7 +161,7 @@ custom_target(
   output: 'gparted.appdata.xml',
   command: intltool_xml_command,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'appdata')
+  install_dir: join_paths(get_option('datadir'), 'appdata'),
 )
 
 custom_target(
@@ -165,7 +170,7 @@ custom_target(
   output: 'gparted.desktop',
   command: intltool_desktop_command,
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'applications')
+  install_dir: join_paths(get_option('datadir'), 'applications'),
 )
 
 if get_option('polkit')
@@ -174,7 +179,7 @@ if get_option('polkit')
   polkit_policy_in = configure_file(
     input: 'org.gnome.gparted.policy.in.in',
     output: 'org.gnome.gparted.policy.in',
-    configuration: po_conf
+    configuration: po_conf,
   )
 
   custom_target(
@@ -183,14 +188,14 @@ if get_option('polkit')
     output: 'org.gnome.gparted.policy',
     command: intltool_xml_command,
     install: true,
-    install_dir: polkitpolicydir
+    install_dir: polkitpolicydir,
   )
 endif
 
 # Find graphical privilege escalation program
 gksuprog = ''
 if get_option('polkit')
-  # Check for pkexec >= 0.102 for it's ability to run X11 apps.
+  # Check for pkexec >= 0.102 for its ability to run X11 apps.
   polkit_dep = dependency('polkit-agent-1', version: '>=0.102')
   gksuprog = 'pkexec --disable-internal-agent'
 elif find_program('gksudo', required: false).found()
@@ -206,7 +211,7 @@ endif
 # Configure the gparted script
 gparted_bin_conf = configuration_data()
 
-gparted_bin_conf.set('sbindir', join_paths(get_option('prefix'), get_option('bindir')))
+gparted_bin_conf.set('sbindir', join_paths(get_option('prefix'), get_option('sbindir')))
 gparted_bin_conf.set('gksuprog', gksuprog)
 gparted_bin_conf.set('enable_xhost_root', get_option('xhost_root'))
 gparted_bin_conf.set('bindir', join_paths(get_option('prefix'), get_option('bindir')))
@@ -214,14 +219,14 @@ gparted_bin_conf.set('bindir', join_paths(get_option('prefix'), get_option('bind
 gparted_bin = configure_file(
   input: 'gparted.in',
   output: 'gparted',
-  configuration: gparted_bin_conf
+  configuration: gparted_bin_conf,
 )
 
 install_data(
   gparted_bin,
   install_dir: join_paths(get_option('bindir')),
   rename: 'gparted',
-  install_mode: 'rwxr-xr-x'
+  install_mode: 'rwxr-xr-x',
 )
 
 # Optional stuff

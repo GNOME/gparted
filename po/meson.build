@@ -1,4 +1,1 @@
-i18n.gettext(
-  gettext_package,
-  install: true
-)
+i18n.gettext(gettext_package)
