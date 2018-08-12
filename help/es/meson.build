@@ -8,7 +8,7 @@ mo = custom_target(
 
 xml = custom_target(
   l + '_lingua_xml',
-  input: [mo, 'gparted.xml'],
+  input: [mo, '../C/gparted.xml'],
   output: 'gparted.xml',
   command: xml2po_command,
   install: true,
