@@ -7,9 +7,12 @@ project(
 
 cpp = meson.get_compiler('cpp')
 
-add_project_arguments('-DHAVE_CONFIG_H', language: 'cpp')
-add_project_arguments('-DGNOME_ICONDIR="' + join_paths(get_option('prefix'), get_option('datadir'), 'pixmaps') + '"', language: 'cpp')
-add_project_arguments('-DGNOMELOCALEDIR="' + join_paths(get_option('prefix'), get_option('datadir'), 'locale') + '"', language: 'cpp')
+add_project_arguments(
+  '-DHAVE_CONFIG_H',
+  '-DGNOME_ICONDIR="' + join_paths(get_option('prefix'), get_option('datadir'), 'pixmaps') + '"',
+  '-DGNOMELOCALEDIR="' + join_paths(get_option('prefix'), get_option('datadir'), 'locale') + '"',
+  language: 'cpp',
+)
 
 glibmm_dep = dependency('glibmm-2.4', version: '>=2.14.0')
 gtkmm_dep = dependency('gtkmm-2.4', version: '>2.8')
