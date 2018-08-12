@@ -70,7 +70,7 @@ endif
 cxx_std = 'c++98'
 
 # Check for glibmm >= 2.45.40 which requires C++11 compilation
-if dependency('glimm-2.4', version: '>=2.45.40', required: false).found()
+if dependency('glibmm-2.4', version: '>=2.45.40', required: false).found()
   cxx_std = 'c++11'
 endif
 
