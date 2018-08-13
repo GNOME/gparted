@@ -42,13 +42,13 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
 	
-	//fill table
+	//fill grid
 	grid_resize .set_border_width( 5 ) ;
 	grid_resize .set_row_spacing( 5 ) ;
-	hbox_table.pack_start( grid_resize, Gtk::PACK_EXPAND_PADDING ) ;
+	hbox_grid.pack_start( grid_resize, Gtk::PACK_EXPAND_PADDING ) ;
 	
-	hbox_table .set_border_width( 5 ) ;
-	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
+	hbox_grid .set_border_width( 5 ) ;
+	vbox_resize_move .pack_start( hbox_grid, Gtk::PACK_SHRINK );
 	
 	//add spinbutton_before
 	grid_resize .attach(

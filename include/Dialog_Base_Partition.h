@@ -102,7 +102,7 @@ private:
 	Gtk::VBox vbox_resize_move;
 	Gtk::Label label_minmax ;
 	Gtk::Grid grid_resize;
-	Gtk::HBox hbox_table, hbox_resizer;
+	Gtk::HBox hbox_grid, hbox_resizer;
 	Gtk::Button button_resize_move ;
 };
 
