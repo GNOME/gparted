@@ -695,7 +695,7 @@ void Win_GParted::refresh_combo_devices()
 			sigc::bind<unsigned int>( sigc::mem_fun(*this, &Win_GParted::radio_devices_changed), i ) ) ;
 	}
 				
-	mainmenu_items[ MENU_DEVICES ] ->remove_submenu() ;
+	mainmenu_items[ MENU_DEVICES ] ->unset_submenu() ;
 
 	if ( menu ->get_children() .size() )
 	{
@@ -1391,7 +1391,7 @@ void Win_GParted::set_valid_operations()
 		     selected_filesystem.filesystem != FS_LUKS    &&
 		     selected_filesystem.get_mountpoints().size()    )
 		{
-			partitionmenu_items[ MENU_MOUNT ] ->remove_submenu() ;
+			partitionmenu_items[ MENU_MOUNT ] ->unset_submenu() ;
 			
 			Gtk::Menu *menu = manage( new Gtk::Menu() );
 			std::vector<Glib::ustring> temp_mountpoints = selected_filesystem.get_mountpoints();
@@ -1639,7 +1639,7 @@ void Win_GParted::menu_gparted_features()
 		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
 
 		//recreate format menu...
-		partitionmenu_items [ MENU_FORMAT ] ->remove_submenu() ;
+		partitionmenu_items [ MENU_FORMAT ] ->unset_submenu() ;
 		partitionmenu_items [ MENU_FORMAT ] ->set_submenu( * create_format_menu() ) ;
 		partitionmenu_items [ MENU_FORMAT ] ->get_submenu() ->show_all_children() ;
 	}
