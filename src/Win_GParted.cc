@@ -244,12 +244,12 @@ void Win_GParted::init_toolbar()
 	toolbutton ->signal_clicked() .connect( sigc::mem_fun( *this, &Win_GParted::activate_new ) );
 	toolbar_main .append( *toolbutton );
 	TOOLBAR_NEW = index++ ;
-	toolbutton ->set_tooltip(tooltips, _("Create a new partition in the selected unallocated space") );		
+	toolbutton ->set_tooltip_text( _("Create a new partition in the selected unallocated space") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::DELETE));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_DEL = index++ ;
-	toolbutton ->set_tooltip(tooltips, _("Delete the selected partition") );		
+	toolbutton ->set_tooltip_text( _("Delete the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	index++ ;
 	
@@ -271,7 +271,7 @@ void Win_GParted::init_toolbar()
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_RESIZE_MOVE = index++ ;
-	toolbutton ->set_tooltip(tooltips, _("Resize/Move the selected partition") );		
+	toolbutton ->set_tooltip_text( _("Resize/Move the selected partition") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	index++ ;
 
@@ -280,12 +280,12 @@ void Win_GParted::init_toolbar()
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_COPY = index++ ;
-	toolbutton ->set_tooltip(tooltips, _("Copy the selected partition to the clipboard") );		
+	toolbutton ->set_tooltip_text( _("Copy the selected partition to the clipboard") );		
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::PASTE));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_PASTE = index++ ;
-	toolbutton ->set_tooltip(tooltips, _("Paste the partition from the clipboard") );		
+	toolbutton ->set_tooltip_text( _("Paste the partition from the clipboard") );		
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	index++ ;
 	
@@ -297,7 +297,7 @@ void Win_GParted::init_toolbar()
 		toolbar_main.append(*toolbutton);
 		TOOLBAR_UNDO = index++ ;
 		toolbutton ->set_sensitive( false );
-		toolbutton ->set_tooltip(tooltips, _("Undo Last Operation") );
+		toolbutton ->set_tooltip_text( _("Undo Last Operation") );
 	}
 	
 	toolbutton = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::APPLY));
@@ -305,7 +305,7 @@ void Win_GParted::init_toolbar()
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_APPLY = index++ ;
 	toolbutton ->set_sensitive( false );
-	toolbutton ->set_tooltip(tooltips, _("Apply All Operations") );		
+	toolbutton ->set_tooltip_text( _("Apply All Operations") );		
 	
 	//initialize and pack combo_devices
 	liststore_devices = Gtk::ListStore::create( treeview_devices_columns ) ;
