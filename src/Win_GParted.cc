@@ -113,6 +113,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	init_hpaned_main() ;
 	vpaned_main .pack1( hpaned_main, true, true ) ;
 	
+	vpaned_main .set_orientation(Gtk::ORIENTATION_VERTICAL);	
 	//vpaned_main....
 	vbox_main .pack_start( vpaned_main );
 	
@@ -642,6 +643,8 @@ void Win_GParted::init_device_info()
 
 void Win_GParted::init_hpaned_main() 
 {
+	hpaned_main .set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+
 	//left scrollwindow (holds device info)
 	scrollwindow = manage( new Gtk::ScrolledWindow() ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
