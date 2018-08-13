@@ -1516,20 +1516,22 @@ void Win_GParted::combo_devices_changed()
 	Refresh_Visual();
 	
 	// Update radio buttons..
-	if (mainmenu_items[MENU_DEVICES]->has_submenu()) {
-		std::vector<Gtk::Widget *> child_items;
-		child_items = mainmenu_items[MENU_DEVICES]->get_submenu()->get_children();
-		static_cast<Gtk::RadioMenuItem *>(child_items[current_device])
+	if (mainmenu_items[MENU_DEVICES]->has_submenu())
+		static_cast<Gtk::RadioMenuItem *>
+		(mainmenu_items[MENU_DEVICES]->get_submenu()->get_children()[current_device])
 			->set_active(true);
-	}
+
 }
 
 void Win_GParted::radio_devices_changed( unsigned int item ) 
 {
-	std::vector<Gtk::Widget *> child_items;
-	child_items = mainmenu_items[MENU_DEVICES]->get_submenu()->get_children();
-	if (static_cast<Gtk::RadioMenuItem *>(child_items[item])->get_active())
+	if (static_cast<Gtk::RadioMenuItem *>
+	     (mainmenu_items[MENU_DEVICES]->get_submenu()->get_children()[item])
+	      ->get_active())
+	{
 		combo_devices .set_active( item ) ;
+	}
+
 }
 
 void Win_GParted::on_show()
