@@ -114,6 +114,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
 		case FS_UNUSED		: return "#FFFFFF" ;	//white
 		case FS_LVM2_PV		: return "#B39169" ;	//face skin dark
+		case FS_MINIX           : return "#9DB8D2" ;	// Blue Highlight
 		case FS_BITLOCKER	: return "#494066" ;	//purple shadow
 		case FS_GRUB2_CORE_IMG	: return "#666666" ;	//~ dark gray
 		case FS_ISO9660		: return "#D3D3D3" ;	// ~ light gray
@@ -227,6 +228,7 @@ int Utils::get_filesystem_label_maxlength( FSType filesystem )
 		case FS_JFS		: return 11 ;
 		case FS_LINUX_SWAP	: return 15 ;
 		//case FS_LVM2_PV	: return  ;
+		case FS_MINIX		: return 0;  // MINIX doesn't support labelling.
 		case FS_NILFS2		: return 80 ;
 		case FS_NTFS		: return 128 ;
 		case FS_REISER4		: return 16 ;
@@ -294,6 +296,7 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 		case FS_USED		: return _("used") ;
 		case FS_UNUSED		: return _("unused") ;
 		case FS_LVM2_PV		: return "lvm2 pv" ;
+		case FS_MINIX		: return "minix";
 		case FS_BITLOCKER	: return "bitlocker" ;
 		case FS_GRUB2_CORE_IMG	: return "grub2 core.img";
 		case FS_ISO9660		: return "iso9660";
@@ -337,6 +340,7 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 		case FS_HFS      : return "hfs";
 		case FS_HFSPLUS  : return "hfsplus";
 		case FS_JFS      : return "jfs";
+		case FS_MINIX    : return "minix";
 		case FS_NILFS2   : return "nilfs2";
 		case FS_NTFS     : return "ntfs";
 		case FS_REISER4  : return "reiser4";
@@ -365,6 +369,7 @@ Glib::ustring Utils::get_filesystem_software( FSType filesystem )
 		case FS_LINUX_SWAP  : return "util-linux" ;
 		case FS_LVM2_PV     : return "lvm2" ;
 		case FS_LUKS        : return "cryptsetup, dmsetup";
+		case FS_MINIX       : return "util-linux";
 		case FS_NILFS2      : return "nilfs-utils" ;
 		case FS_NTFS        : return "ntfs-3g / ntfsprogs" ;
 		case FS_REISER4     : return "reiser4progs" ;

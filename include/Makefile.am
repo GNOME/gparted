@@ -62,6 +62,7 @@ EXTRA_DIST = \
 	linux_swap.h			\
 	lvm2_pv.h			\
 	luks.h				\
+	minix.h				\
 	nilfs2.h			\
 	ntfs.h				\
 	reiser4.h			\

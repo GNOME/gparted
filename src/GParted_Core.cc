@@ -43,6 +43,7 @@
 #include "lvm2_pv.h"
 #include "luks.h"
 #include "reiserfs.h"
+#include "minix.h"
 #include "nilfs2.h"
 #include "ntfs.h"
 #include "xfs.h"
@@ -1445,6 +1446,8 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 			return GParted::FS_FAT16 ;
 		else if ( fsname == "fat32" )
 			return GParted::FS_FAT32 ;
+		else if ( fsname == "minix" )
+			return FS_MINIX;
 		else if ( fsname == "nilfs2" )
 			return GParted::FS_NILFS2 ;
 		else if ( fsname == "ntfs" )
@@ -4152,6 +4155,7 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_LINUX_SWAP]      = new linux_swap();
 	FILESYSTEM_MAP[FS_LVM2_PV]         = new lvm2_pv();
 	FILESYSTEM_MAP[FS_LUKS]            = new luks();
+	FILESYSTEM_MAP[FS_MINIX]           = new minix();
 	FILESYSTEM_MAP[FS_NILFS2]          = new nilfs2();
 	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
 	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();

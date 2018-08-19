@@ -72,6 +72,7 @@ gpartedbin_SOURCES = \
 	lvm2_pv.cc			\
 	luks.cc				\
 	main.cc				\
+	minix.cc			\
 	nilfs2.cc			\
 	ntfs.cc				\
 	reiser4.cc			\

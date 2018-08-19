@@ -81,26 +81,27 @@ enum FSType
 	FS_LINUX_SWAP      = 16,
 	FS_LUKS            = 17,
 	FS_LVM2_PV         = 18,
-	FS_NILFS2          = 19,
-	FS_NTFS            = 20,
-	FS_REISER4         = 21,
-	FS_REISERFS        = 22,
-	FS_UDF             = 23,
-	FS_UFS             = 24,
-	FS_XFS             = 25,
+	FS_MINIX           = 19,
+	FS_NILFS2          = 20,
+	FS_NTFS            = 21,
+	FS_REISER4         = 22,
+	FS_REISERFS        = 23,
+	FS_UDF             = 24,
+	FS_UFS             = 25,
+	FS_XFS             = 26,
 
 	// Recognised signatures but otherwise unsupported file system types
-	FS_BITLOCKER       = 26,
-	FS_GRUB2_CORE_IMG  = 27,
-	FS_ISO9660         = 28,
-	FS_LINUX_SWRAID    = 29,
-	FS_LINUX_SWSUSPEND = 30,
-	FS_REFS            = 31,
-	FS_ZFS             = 32,
+	FS_BITLOCKER       = 27,
+	FS_GRUB2_CORE_IMG  = 28,
+	FS_ISO9660         = 29,
+	FS_LINUX_SWRAID    = 30,
+	FS_LINUX_SWSUSPEND = 31,
+	FS_REFS            = 32,
+	FS_ZFS             = 33,
 
 	// Partition space usage colours
-	FS_USED            = 33,
-	FS_UNUSED          = 34
+	FS_USED            = 34,
+	FS_UNUSED          = 35
 } ;
 
 enum SIZE_UNIT
