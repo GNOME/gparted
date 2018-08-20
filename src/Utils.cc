@@ -92,9 +92,9 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_CLEARED		: return "#000000" ;	//black
 		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
 		case FS_BTRFS		: return "#FF9955" ;	//orange
-		case FS_EXT2		: return "#9DB8D2" ;	//blue hilight
-		case FS_EXT3		: return "#7590AE" ;	//blue medium
-		case FS_EXT4		: return "#4B6983" ;	//blue dark
+		case FS_EXT2		: return "#7590AE";	// Blue Medium
+		case FS_EXT3		: return "#4B6983";	// Blue Dark
+		case FS_EXT4		: return "#314E6C";	// Blue Shadow
 		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
 		case FS_LUKS		: return "#625B81" ;	//purple dark
 		case FS_F2FS		: return "#DF421E" ;	//accent red
