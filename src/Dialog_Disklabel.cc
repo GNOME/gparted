@@ -33,7 +33,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 	{
 		Gtk::HBox* hbox(manage(new Gtk::HBox()));
 
-		get_vbox()->pack_start(*hbox, Gtk::PACK_SHRINK);
+		get_content_area()->pack_start(*hbox, Gtk::PACK_SHRINK);
 
 		Gtk::VBox* vbox(manage(new Gtk::VBox()));
 
