@@ -67,7 +67,7 @@ DialogFeatures::DialogFeatures()
 	Gtk::HBox *filesystems_hbox( manage( new Gtk::HBox() ) ) ;
 	filesystems_hbox ->set_border_width( 6 ) ;
 	filesystems_hbox ->pack_start( filesystems_scrolled ) ;
-	this ->get_vbox() ->pack_start( *filesystems_hbox ) ;
+	this ->get_content_area() ->pack_start( *filesystems_hbox ) ;
 
 	//file system support legend
 	Gtk::HBox *legend_hbox( manage( new Gtk::HBox( false, 6 ) ) ) ;
@@ -141,7 +141,7 @@ DialogFeatures::DialogFeatures()
 	legend_frame .set_label_widget( *Utils::mk_label( str_temp ) ) ;
 	legend_frame .set_shadow_type( Gtk::SHADOW_NONE ) ;
 	legend_frame .add( *legend_hbox ) ;
-	this ->get_vbox() ->pack_start( legend_frame, Gtk::PACK_SHRINK ) ;
+	this ->get_content_area() ->pack_start( legend_frame, Gtk::PACK_SHRINK ) ;
 
 	/*TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan For Supported Actions"), Gtk::RESPONSE_OK );

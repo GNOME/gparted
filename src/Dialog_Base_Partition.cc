@@ -31,13 +31,13 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	MIN_SPACE_BEFORE_MB = -1 ;
 	
 	//pack resizer hbox
-	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
+	this ->get_content_area() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
 	
 	//add label_minmax
-	this ->get_vbox() ->pack_start( label_minmax, Gtk::PACK_SHRINK );
+	this ->get_content_area() ->pack_start( label_minmax, Gtk::PACK_SHRINK );
 	
 	//pack hbox_main
-	this ->get_vbox() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
+	this ->get_content_area() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
 
 	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );

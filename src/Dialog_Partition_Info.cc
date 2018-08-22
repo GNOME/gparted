@@ -62,7 +62,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	//horizontally center the information scrolled window to match partition graphic
 	Gtk::Alignment * center_widget = manage( new Gtk::Alignment(0.5, 0.5, 0.0, 1.0) ) ;
 	center_widget ->add( info_scrolled ) ;
-	this ->get_vbox() ->pack_start( *center_widget ) ;
+	this ->get_content_area() ->pack_start( *center_widget ) ;
 
 	//add label for detail and fill with relevant info
 	Display_Info() ;
@@ -172,7 +172,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	hbox = manage( new Gtk::HBox() ) ;
 	hbox ->pack_start( *frame, Gtk::PACK_EXPAND_PADDING ) ;
 	
-	this ->get_vbox() ->pack_start( *hbox, Gtk::PACK_SHRINK ) ;
+	this ->get_content_area() ->pack_start( *hbox, Gtk::PACK_SHRINK ) ;
 	
 	//calculate proportional width of used, unused and unallocated
 	if ( partition .type == GParted::TYPE_EXTENDED )
