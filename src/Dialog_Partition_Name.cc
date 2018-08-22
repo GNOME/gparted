@@ -33,8 +33,8 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	/* TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3 */
 	this->set_title( String::ucompose( _("Set partition name on %1"), partition.get_path() ) );
 
-	// HBox to hole the label and entry box line
-	Gtk::HBox *hbox( manage( new Gtk::HBox() ) );
+	// Horizontal box to hole the label and entry box line
+	Gtk::Box *hbox( manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ) );
 	hbox->set_border_width( 5 );
 	hbox->set_spacing( 10 );
 	get_content_area()->pack_start( *hbox, Gtk::PACK_SHRINK );
