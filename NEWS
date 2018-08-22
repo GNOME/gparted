@@ -1,4 +1,59 @@
 ============================
+GParted 0.32.0  (2018-08-22)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Implement opening and closing of LUKS mappings
+  * Fix can't shrink LVM partition due to pvresize prompt
+  * Recognise additional GRUB2 core.img signatures
+  * Honour resize2fs minimum FS sizes
+
+Bug Fixes
+---------
+  * Desupport RHEL / CentOS 5 (#794253)
+  * Implement opening and closing of LUKS mappings (#795617)
+  * Fix null pointer check accidentally disabled (#796293)
+  * Add logo.png for automatic GitLab/GitHub project avatar
+  * Fix volume label is incorrect for bitlocker encrypted partitions (#795127)
+  * Update URL links to https://gparted.org (#796411)
+  * Avoid unnecessary string change (!1)
+  * Fix can't shrink LVM partition due to pvresize prompt (#1)(#2)(!3)
+  * Remove support for obsolete devkit-disks automount inhibitor (!2)
+  * Add GitLab CI jobs to build and test GParted (!4)
+  * Recognise additional GRUB2 core.img signatures (!5)
+  * Reduce the time taken by the GitLab CI jobs (!6)
+  * Stop xmllint scrollkeeper-omf.dtd fetch fail breaking CI tests (#9)(!7)
+  * Honour resize2fs minimum FS sizes (#8)(!8)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Robert Ancell, Piotr Drąg and Mike
+  Fleetwood.
+
+Translations (new/updated)
+--------------------------
+  ar(Safa Alfulaij, Khalid Abu Shawarib), ca(Jordi Mas),
+  cs(Marek Černocký), da(Alan Mortensen), de(Mario Blättermann),
+  es(Daniel Mustieles), fi(Jiri Grönroos), fr(Claude Paroz),
+  fur(Fabio Tomat), kk(Baurzhan Muftakhidinov), lt(Aurimas Černius),
+  nl(Hannie Dumoleyn), pa(A S Alam), pl(Piotr Drąg),
+  pt_BR(Rafael Fontenelle), ro(Daniel Șerbănescu, Andre Klapper),
+  sv(Anders Jonsson), tr(Emin Tufan Çetin), vi(Trần Ngọc Quân),
+  zh_TW(Yi-Jyun Pan)
+
+Dependencies (new/updated)
+--------------------------
+  * glibmm >= 2.14.0
+  * gtkmm  >= 2.16.0
+
+
+============================
 GParted 0.31.0  (2018-03-19)
 ============================
 
