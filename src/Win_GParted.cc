@@ -89,9 +89,10 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	{
 		std::cout << e .what() << std::endl ;
 	}
-	
+
 	//Pack the main box
 	this ->add( vbox_main ); 
+	vbox_main .set_orientation( Gtk::ORIENTATION_VERTICAL );
 	
 	//menubar....
 	init_menubar() ;
@@ -100,6 +101,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	//toolbar....
 	init_toolbar() ;
 	vbox_main.pack_start( hbox_toolbar, Gtk::PACK_SHRINK );
+	hbox_toolbar .set_orientation( Gtk::ORIENTATION_HORIZONTAL );
 	
 	//drawingarea_visualdisk...  ( contains the visual represenation of the disks )
 	drawingarea_visualdisk .signal_partition_selected .connect( 
@@ -520,7 +522,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 //Add one entry to the Partition --> Format to --> (file system list) menu
 void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate )
 {
-	hbox = manage( new Gtk::HBox() ) ;
+	hbox = manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ) ;
 	//the colored square
 	hbox ->pack_start( * manage( new Gtk::Image( Utils::get_color_as_pixbuf( filesystem, 16, 16 ) ) ),
 	                   Gtk::PACK_SHRINK ) ;
@@ -539,6 +541,7 @@ void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate 
 
 void Win_GParted::init_device_info()
 {
+	vbox_info.set_orientation( Gtk::ORIENTATION_VERTICAL );
 	vbox_info.set_spacing( 5 );
 	
 	//title
@@ -679,7 +682,7 @@ void Win_GParted::refresh_combo_devices()
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ; 
 	
 		//devices submenu....
-		hbox = manage( new Gtk::HBox() ) ;
+		hbox = manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ) ;
 		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_EXPAND_WIDGET ) ;
 		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ),
 		                   Gtk::PACK_SHRINK ) ;

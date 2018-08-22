@@ -30,6 +30,11 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	ORIG_BEFORE = ORIG_SIZE = ORIG_AFTER = -1 ;
 	MIN_SPACE_BEFORE_MB = -1 ;
 	
+	hbox_main .set_orientation( Gtk::ORIENTATION_HORIZONTAL );
+	vbox_resize_move .set_orientation( Gtk::ORIENTATION_VERTICAL );
+	hbox_grid .set_orientation( Gtk::ORIENTATION_HORIZONTAL );
+	hbox_resizer .set_orientation( Gtk::ORIENTATION_HORIZONTAL );
+	
 	//pack resizer hbox
 	this ->get_content_area() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
 	
@@ -245,7 +250,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case RESIZE_MOVE:
 			{
 				Gtk::Image* image_temp(manage(new Gtk::Image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON)));
-				Gtk::HBox* hbox_resize_move(manage(new Gtk::HBox()));
+				Gtk::Box* hbox_resize_move(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
 				hbox_resize_move->pack_start(*image_temp, Gtk::PACK_EXPAND_PADDING);
 				hbox_resize_move->pack_start(*Utils::mk_label(fixed_start ? _("Resize") : _("Resize/Move")),

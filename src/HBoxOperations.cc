@@ -24,6 +24,8 @@ namespace GParted
 
 HBoxOperations::HBoxOperations() 
 {
+	set_orientation( Gtk::ORIENTATION_HORIZONTAL );
+
 	//create listview for pending operations
 	liststore_operations = Gtk::ListStore::create( treeview_operations_columns );
 	treeview_operations .set_model( liststore_operations );

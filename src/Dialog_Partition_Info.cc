@@ -47,10 +47,11 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	init_drawingarea() ;
 
 	//place info and optional messages in scrollable window
+	info_msg_vbox .set_orientation( Gtk::ORIENTATION_VERTICAL ) ;
 	info_msg_vbox .set_border_width( 6 ) ;
 	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
 	info_scrolled .add( info_msg_vbox ) ;
-	//As Gtk::VBox widget info_msg_vbox doesn't have a native scrolling capability a
+	//As Gtk::Box widget info_msg_vbox doesn't have a native scrolling capability a
 	//  Gtk::Viewport is automatically created to contain it when it is added to the
 	//  Gtk::ScrolledWindow widget info_scrolled.  The Viewport widget is created with
 	//  shadow type GTK_SHADOW_IN by default.  Change to GTK_SHADOW_NONE.  Have to use
@@ -74,7 +75,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		{
 			Gtk::Image* image(manage(new Gtk::Image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON)));
 
-			hbox = manage(new Gtk::HBox());
+			hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 			hbox->pack_start(*image, Gtk::PACK_SHRINK);
 		}
 
@@ -105,7 +106,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 				concatenated_messages += "<i>" + messages[i].substr( 0, take ) + "</i>";
 			}
 		}
-		Gtk::VBox *vbox( manage( new Gtk::VBox() ) ) ;
+		Gtk::Box *vbox( manage( new Gtk::Box(Gtk::ORIENTATION_VERTICAL) ) ) ;
 		vbox ->set_border_width( 5 ) ;
 		vbox->pack_start( *Utils::mk_label( concatenated_messages, true, true, true ), Gtk::PACK_SHRINK );
 		frame ->add( *vbox ) ;
@@ -168,7 +169,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	
 	frame ->set_shadow_type( Gtk::SHADOW_ETCHED_OUT ) ;
 	frame ->set_border_width( 10 ) ;
-	hbox = manage( new Gtk::HBox() ) ;
+	hbox = manage( new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL) ) ;
 	hbox ->pack_start( *frame, Gtk::PACK_EXPAND_PADDING ) ;
 	
 	this ->get_content_area() ->pack_start( *hbox, Gtk::PACK_SHRINK ) ;
