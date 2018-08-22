@@ -35,7 +35,7 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
 	str_temp += String::ucompose( _("Manage flags on %1"), partition .get_path() ) ;
 	str_temp += "</span>\n" ;
-	get_vbox() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
+	get_content_area() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	
 	//setup treeview
 	liststore_flags = Gtk::ListStore::create( treeview_flags_columns ) ;
@@ -50,7 +50,7 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 		->signal_toggled() .connect( sigc::mem_fun( *this, &DialogManageFlags::on_flag_toggled ) ) ;
 
 	treeview_flags .set_size_request( 300, -1 ) ;
-	get_vbox() ->pack_start( treeview_flags, Gtk::PACK_SHRINK ) ;
+	get_content_area() ->pack_start( treeview_flags, Gtk::PACK_SHRINK ) ;
 
 	this ->flag_info = flag_info ;
 	

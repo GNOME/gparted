@@ -37,7 +37,7 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	Gtk::HBox *hbox( manage( new Gtk::HBox() ) );
 	hbox->set_border_width( 5 );
 	hbox->set_spacing( 10 );
-	get_vbox()->pack_start( *hbox, Gtk::PACK_SHRINK );
+	get_content_area()->pack_start( *hbox, Gtk::PACK_SHRINK );
 
 	// Only line: "Label: [EXISTINGLABEL ]"
 	hbox->pack_start( *Utils::mk_label("<b>" + Glib::ustring( _("Label:") ) + "</b>"),
