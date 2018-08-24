@@ -80,50 +80,51 @@ Glib::ustring Utils::num_to_str( Sector number )
 }
 
 // Use palette from GNOME Human Interface Guidelines as a starting point.
+// [+] Lighter or darker shade of an existing colour in the GNOME palette.
+// [*] Colour not from the GNOME palette.
 //     http://developer.gnome.org/hig-book/2.32/design-color.html.en
 //     http://web.archive.org/web/20130922173112/https://developer.gnome.org/hig-book/stable/design-color.html.en
 Glib::ustring Utils::get_color( FSType filesystem )
 {
 	switch( filesystem )
 	{
-		case FS_UNALLOCATED	: return "#A9A9A9" ;	// ~ medium grey
-		case FS_UNKNOWN		: return "#000000" ;	//black
-		case FS_UNFORMATTED	: return "#000000" ;	//black
-		case FS_CLEARED		: return "#000000" ;	//black
-		case FS_EXTENDED	: return "#7DFCFE" ;	// ~ light blue
-		case FS_BTRFS		: return "#FF9955" ;	//orange
-		case FS_EXT2		: return "#7590AE";	// Blue Medium
-		case FS_EXT3		: return "#4B6983";	// Blue Dark
-		case FS_EXT4		: return "#314E6C";	// Blue Shadow
-		case FS_LINUX_SWAP	: return "#C1665A" ;	//red medium
-		case FS_LUKS		: return "#625B81" ;	//purple dark
-		case FS_F2FS		: return "#DF421E" ;	//accent red
-		case FS_FAT16		: return "#60C160";	// Accent Green Hilight
-		case FS_FAT32		: return "#46A046";	// Accent Green
-		case FS_EXFAT		: return "#267726" ;	// Accent Green Dark
-		case FS_NILFS2		: return "#826647" ;	//face skin shadow
-		case FS_NTFS		: return "#42E5AC" ;	// ~ light aquamarine
-		case FS_REISERFS	: return "#ADA7C8" ;	//purple hilight
-		case FS_REISER4		: return "#887FA3" ;	//purple medium
-		case FS_XFS			: return "#EED680" ;	//accent yellow
-		case FS_JFS			: return "#E0C39E" ;	//face skin medium
-		case FS_HFS			: return "#E0B6AF" ;	//red hilight
-		case FS_HFSPLUS		: return "#C0A39E" ;	// ~ serene red
-		case FS_UDF		: return "#105210";	// Accent Green Shadow
-		case FS_UFS			: return "#D1940C" ;	//accent yellow dark
-		case FS_USED		: return "#F8F8BA" ;	// ~ light tan yellow
-		case FS_UNUSED		: return "#FFFFFF" ;	//white
-		case FS_LVM2_PV		: return "#B39169" ;	//face skin dark
-		case FS_MINIX           : return "#9DB8D2" ;	// Blue Highlight
-		case FS_BITLOCKER	: return "#494066" ;	//purple shadow
-		case FS_GRUB2_CORE_IMG	: return "#666666" ;	//~ dark gray
-		case FS_ISO9660		: return "#D3D3D3" ;	// ~ light gray
-		case FS_LINUX_SWRAID   	: return "#5A4733" ;	// ~ dark brown
-		case FS_LINUX_SWSUSPEND	: return "#884631" ;	//red dark
-		case FS_REFS		: return "#2AB98A" ;	// ~ medium aquamarine
-		case FS_ZFS 		: return "#CC763D" ;	// ~ darker orange
-
-		default				: return "#000000" ;
+		case FS_UNALLOCATED:     return "#A9A9A9";  // Medium Grey [*]
+		case FS_UNKNOWN:         return "#000000";  // Black
+		case FS_UNFORMATTED:     return "#000000";  // Black
+		case FS_CLEARED:         return "#000000";  // Black
+		case FS_EXTENDED:        return "#7DFCFE";  // Light Blue [*]
+		case FS_BTRFS:           return "#FF9955";  // Orange [*]
+		case FS_EXFAT:           return "#267726";  // Accent Green Dark
+		case FS_EXT2:            return "#7590AE";  // Blue Medium
+		case FS_EXT3:            return "#4B6983";  // Blue Dark
+		case FS_EXT4:            return "#314E6C";  // Blue Shadow
+		case FS_F2FS:            return "#DF421E";  // Accent Red
+		case FS_FAT16:           return "#60C160";  // Accent Green Hilight [+]
+		case FS_FAT32:           return "#46A046";  // Accent Green
+		case FS_HFS:             return "#E0B6AF";  // Red Hilight
+		case FS_HFSPLUS:         return "#C0A39E";  // Serene Red [*]
+		case FS_JFS:             return "#E0C39E";  // Face Skin Medium
+		case FS_LINUX_SWAP:      return "#C1665A";  // Red Medium
+		case FS_LUKS:            return "#625B81";  // Purple Dark
+		case FS_LVM2_PV:         return "#B39169";  // Face Skin Dark
+		case FS_MINIX:           return "#9DB8D2";  // Blue Highlight
+		case FS_NILFS2:          return "#826647";  // Face Skin Shadow
+		case FS_NTFS:            return "#42E5AC";  // Light Aquamarine [*]
+		case FS_REISER4:         return "#887FA3";  // Purple Medium
+		case FS_REISERFS:        return "#ADA7C8";  // Purple Hilight
+		case FS_UDF:             return "#105210";  // Accent Green Shadow [+]
+		case FS_UFS:             return "#D1940C";  // Accent Yellow Dark
+		case FS_XFS:             return "#EED680";  // Accent Yellow
+		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
+		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
+		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
+		case FS_LINUX_SWRAID:    return "#5A4733";  // Dark brown [*]
+		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
+		case FS_REFS:            return "#2AB98A";  // Medium Aquamarine [*]
+		case FS_ZFS:             return "#CC763D";  // Darker Orange [*]
+		case FS_USED:            return "#F8F8BA";  // Light Tan Yellow [*]
+		case FS_UNUSED:          return "#FFFFFF";  // White
+		default:                 return "#000000";  // Black
 	}
 }
 
