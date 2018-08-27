@@ -228,18 +228,6 @@ dnl Check for glibmm minimum required version.
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4 >= 2.14.0])
 
 
-dnl Check for gtkmm >= 2.22 to determine availability of Gtk::MessageDialog::get_message_area().
-AC_MSG_CHECKING([for Gtk::MessageDialog::get_message_area() method])
-PKG_CHECK_EXISTS(
-	[gtkmm-2.4 >= 2.22.0],
-	[AC_DEFINE([HAVE_GET_MESSAGE_AREA], 1,
-	           [Define to 1 if gtkmm provides Gtk::MessageDialog::get_message_area() method.])
-	 AC_MSG_RESULT([yes])
-	],
-	[AC_MSG_RESULT([no])]
-)
-
-
 need_cxx_compile_stdcxx_11=no
 dnl Check for glibmm >= 2.45.40 which requires C++11 compilation.
 AC_MSG_CHECKING([for glibmm >= 2.45.40 which requires C++11 compilation])
