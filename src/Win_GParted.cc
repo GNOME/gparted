@@ -3361,35 +3361,10 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	const Glib::ustring vgname_label  = _( "Volume Group:" ) ;
 	const Glib::ustring members_label = _( "Members:" ) ;
 
-#ifndef HAVE_GET_MESSAGE_AREA
-	//Basic method of displaying VG members by appending it to the secondary text in the dialog.
-	tmp_msg += "\n____________________\n\n" ;
-	tmp_msg += "<b>" ;
-	tmp_msg +=       vgname_label ;
-	tmp_msg +=                    "</b>    " ;
-	tmp_msg +=                               vgname ;
-	tmp_msg += "\n" ;
-	tmp_msg += "<b>" ;
-	tmp_msg +=       members_label ;
-	tmp_msg +=                     "</b>" ;
-	if ( ! members .empty() )
-	{
-		tmp_msg += "    " ;
-		tmp_msg +=        members [0] ;
-		for ( unsigned int i = 1 ; i < members .size() ; i ++ )
-		{
-			tmp_msg += "    " ;
-			tmp_msg +=        members [i] ;
-		}
-	}
-#endif /* ! HAVE_GET_MESSAGE_AREA */
-
 	dialog .set_secondary_text( tmp_msg, true ) ;
 
-#ifdef HAVE_GET_MESSAGE_AREA
-	//Nicely formatted method of displaying VG members by using a table below the secondary text
-	//  in the dialog.  Uses Gtk::MessageDialog::get_message_area() which was new in gtkmm-2.22
-	//  released September 2010.
+	// Nicely formatted display of VG members by using a table below the secondary
+	// text in the dialog.
 	Gtk::Box * msg_area = dialog .get_message_area() ;
 
 	Gtk::HSeparator * hsep( manage( new Gtk::HSeparator() ) ) ;
@@ -3425,7 +3400,6 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	}
 	table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
 	                1, 2, top++, bottom++, Gtk::FILL ) ;
-#endif /* HAVE_GET_MESSAGE_AREA */
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
