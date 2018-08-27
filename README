@@ -86,7 +86,7 @@ b. Building from Source
       e2fsprogs
       parted
       gnome-common
-      gtkmm24
+      gtkmm3
       gettext
       gnome-doc-utils     - required if help documentation is to be built
 
@@ -96,11 +96,11 @@ b. Building from Source
       sudo apt-get build-dep gparted
      Or;
       sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
-                           gnome-common libparted-dev libgtkmm-2.4-dev \
+                           gnome-common libparted-dev libgtkmm-3.0-dev \
                            libdevmapper-dev gnome-doc-utils docbook-xml
 
    On Fedora, you will need to run (as root);
-      yum install gtkmm24-devel parted-devel e2fsprogs-devel gettext \
+      yum install gtkmm30-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
                   gnome-doc-utils docbook-dtds intltool gnome-common \
                   gcc-c++
@@ -109,7 +109,7 @@ b. Building from Source
    On openSUSE, these dependencies may be obtained by running the
    following commands;
       sudo zypper install automake autoconf make gnome-common \
-                          libuuid-devel parted-devel gtkmm2-devel \
+                          libuuid-devel parted-devel gtkmm3-devel \
                           gnome-doc-utils-devel docbook-xsl-stylesheets
       sudo zypper install -t pattern devel_c_c++
 
