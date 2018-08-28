@@ -128,7 +128,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 
 	//statusbar... 
 	pulsebar .set_pulse_step( 0.01 );
-	statusbar .add( pulsebar );
+	statusbar .pack_end( pulsebar, true, true, 5 );
 	vbox_main .pack_start( statusbar, Gtk::PACK_SHRINK );
 	
 	this ->show_all_children();
