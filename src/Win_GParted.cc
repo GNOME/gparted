@@ -48,6 +48,7 @@
 #include "../config.h"
 
 #include <string.h>
+#include <gtkmm/cssprovider.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
@@ -127,6 +128,22 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	vpaned_main .pack2( hbox_operations, true, true ) ;
 
 	//statusbar... 
+	Glib::RefPtr<Gtk::CssProvider> custom_css = Gtk::CssProvider::create();
+	try {
+		// CSS changed starting from gtk3 3.20, see:
+		// https://developer.gnome.org/gtk3/stable/ch32s10.html
+		custom_css->load_from_data(gtk_get_minor_version() >= 20?
+			"progress, trough { min-height: 8px; }"
+			  :
+			"min-horizontal-bar-height: 8px;"
+		);
+	}
+	catch (Glib::Error& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
+	pulsebar.get_style_context()->add_provider(custom_css,
+	                                           GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 	pulsebar .set_pulse_step( 0.01 );
 	pulsebar.set_valign(Gtk::ALIGN_CENTER);
 	statusbar.pack_end(pulsebar, true, true, 10);
