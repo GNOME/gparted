@@ -21,7 +21,8 @@
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/button.h>
-#include <gtk/gtkentry.h>
+#include <gtk/gtk.h>
+
 
 namespace GParted
 {
