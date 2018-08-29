@@ -19,6 +19,7 @@
 #include <gtkmm/imagemenuitem.h>
 #include <gtkmm/checkmenuitem.h>
 #include <gtkmm/separatormenuitem.h>
+#include <gtkmm/stock.h>
 
 namespace GParted
 {
@@ -28,28 +29,38 @@ namespace Menu_Helpers
 MenuElem::MenuElem( const Glib::ustring & label,
                          const Gtk::AccelKey & key,
                          const CallSlot & slot )
- : Gtk::MenuItem( label, true )
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
 
 	set_accel_key( key );
+
+	set_label( label );
+	set_use_underline( true );
+
 	show_all();
 }
 MenuElem::MenuElem( const Glib::ustring & label,
                          const CallSlot & slot )
- : Gtk::MenuItem( label, true )
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
+
+	set_label( label );
+	set_use_underline( true );
 
 	show_all();
 }
 MenuElem::MenuElem( const Glib::ustring & label,
                          Gtk::Menu & submenu )
- : Gtk::MenuItem( label, true )
+ : Gtk::MenuItem()
 {
 	set_submenu( submenu );
+
+	set_label( label );
+	set_use_underline( true );
 
 	show_all();
 }
@@ -58,30 +69,43 @@ ImageMenuElem::ImageMenuElem( const Glib::ustring & label,
                               const Gtk::AccelKey & key,
                               Gtk::Widget & image_widget,
                               const CallSlot & slot )
- : ImageMenuItem( image_widget, label, true )
+ : ImageMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
 
 	set_accel_key( key );
+
+	set_image( image_widget );
+	set_label( label );
+	set_use_underline( true );
+
 	show_all();
 }
 ImageMenuElem::ImageMenuElem( const Glib::ustring & label,
                               Gtk::Widget & image_widget,
                               const CallSlot & slot )
- : ImageMenuItem( image_widget, label, true )
+ : ImageMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
+
+	set_image( image_widget );
+	set_label( label );
+	set_use_underline( true );
 
 	show_all();
 }
 ImageMenuElem::ImageMenuElem( const Glib::ustring & label,
                               Gtk::Widget & image_widget,
                               Gtk::Menu & submenu )
- : ImageMenuItem( image_widget, label, true )
+ : ImageMenuItem()
 {
 	set_submenu( submenu );
+
+	set_image( image_widget );
+	set_label( label );
+	set_use_underline( true );
 
 	show_all();
 }
@@ -95,28 +119,43 @@ SeparatorElem::SeparatorElem( )
 StockMenuElem::StockMenuElem( const Gtk::StockID & stock_id,
                               const Gtk::AccelKey & key,
                               const CallSlot & slot )
- : Gtk::ImageMenuItem( stock_id )
+ : Gtk::ImageMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
 
 	set_accel_key( key );
+
+	set_use_stock();
+	set_label( stock_id.get_string() );
+
 	show_all();
 }
 StockMenuElem::StockMenuElem( const Gtk::StockID & stock_id,
                               const CallSlot & slot )
- : Gtk::ImageMenuItem( stock_id )
+ : Gtk::ImageMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
+
+	Gtk::StockItem stock;
+	if (Gtk::Stock::lookup(stock_id, stock))
+		set_accel_key( Gtk::AccelKey( stock.get_keyval(),
+		                              stock.get_modifier() ) );
+
+	set_use_stock();
+	set_label( stock_id.get_string() );
 
 	show_all();
 }
 StockMenuElem::StockMenuElem( const Gtk::StockID & stock_id,
                               Gtk::Menu & submenu )
- : Gtk::ImageMenuItem( stock_id )
+ : Gtk::ImageMenuItem()
 {
 	set_submenu( submenu );
+
+	set_use_stock();
+	set_label( stock_id.get_string() );
 
 	show_all();
 }
@@ -124,20 +163,27 @@ StockMenuElem::StockMenuElem( const Gtk::StockID & stock_id,
 CheckMenuElem::CheckMenuElem( const Glib::ustring & label,
                               const Gtk::AccelKey & key,
                               const CallSlot & slot )
- : Gtk::CheckMenuItem( label, true )
+ : Gtk::CheckMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
 
 	set_accel_key( key );
+	
+	set_label( label );
+	set_use_underline( true );
+
 	show_all();
 }
 CheckMenuElem::CheckMenuElem( const Glib::ustring & label,
                               const CallSlot & slot )
- : Gtk::CheckMenuItem( label, true )
+ : Gtk::CheckMenuItem()
 {
 	if (slot)
 		signal_activate() .connect( slot );
+
+	set_label( label );
+	set_use_underline( true );
 
 	show_all();
 }
