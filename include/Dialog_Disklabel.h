@@ -34,6 +34,7 @@ class Dialog_Disklabel : public Gtk::Dialog
 {
 public:
 	Dialog_Disklabel( const Device & device ) ;
+	~Dialog_Disklabel();
 
 	Glib::ustring Get_Disklabel( ) ;
 	

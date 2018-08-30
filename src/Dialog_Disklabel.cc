@@ -102,4 +102,9 @@ Glib::ustring Dialog_Disklabel::Get_Disklabel()
 	return labeltypes[ combo_labeltypes .get_active_row_number() ] ;
 }
 
+Dialog_Disklabel::~Dialog_Disklabel()
+{
+	hide();
+}
+
 }//GParted
