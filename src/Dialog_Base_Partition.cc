@@ -392,6 +392,8 @@ Dialog_Base_Partition::~Dialog_Base_Partition()
 	size_change_connection .disconnect() ;
 	after_change_connection .disconnect() ;
 	delete frame_resizer_base;
+	
+	hide();
 }
 
 } //GParted
