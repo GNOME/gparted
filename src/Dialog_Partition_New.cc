@@ -45,6 +45,8 @@ Dialog_Partition_New::~Dialog_Partition_New()
 {
 	delete new_partition;
 	new_partition = NULL;
+	
+	hide();
 }
 
 void Dialog_Partition_New::set_data( const Device & device,
