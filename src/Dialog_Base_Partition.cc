@@ -392,6 +392,10 @@ Dialog_Base_Partition::~Dialog_Base_Partition()
 	size_change_connection .disconnect() ;
 	after_change_connection .disconnect() ;
 	delete frame_resizer_base;
+
+	// Work around a Gtk issue fixed in 3.24.0.
+	// https://gitlab.gnome.org/GNOME/gtk/issues/125
+	hide();
 }
 
 } //GParted

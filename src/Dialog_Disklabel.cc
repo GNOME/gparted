@@ -102,4 +102,11 @@ Glib::ustring Dialog_Disklabel::Get_Disklabel()
 	return labeltypes[ combo_labeltypes .get_active_row_number() ] ;
 }
 
+Dialog_Disklabel::~Dialog_Disklabel()
+{
+	// Work around a Gtk issue fixed in 3.24.0.
+	// https://gitlab.gnome.org/GNOME/gtk/issues/125
+	hide();
+}
+
 }//GParted

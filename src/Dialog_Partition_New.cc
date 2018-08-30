@@ -45,6 +45,10 @@ Dialog_Partition_New::~Dialog_Partition_New()
 {
 	delete new_partition;
 	new_partition = NULL;
+
+	// Work around a Gtk issue fixed in 3.24.0.
+	// https://gitlab.gnome.org/GNOME/gtk/issues/125
+	hide();
 }
 
 void Dialog_Partition_New::set_data( const Device & device,
