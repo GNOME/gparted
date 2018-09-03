@@ -118,14 +118,24 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 	new_partition->inside_extended = selected_partition.inside_extended;
 	new_partition->type            = selected_partition.inside_extended ? TYPE_LOGICAL : TYPE_PRIMARY;
 	new_partition->sector_size     = selected_partition.sector_size;
-	//Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required.
-	new_partition->set_sector_usage(
-			(   ( ( copied_partition .sectors_used + copied_partition .sectors_unused ) * copied_partition .sector_size )
-			  + ( selected_partition .sector_size - 1 )
-			) / selected_partition .sector_size,
-			(   ( copied_partition .sectors_unused * copied_partition .sector_size )
-			  + ( selected_partition .sector_size - 1 )
-			) / selected_partition .sector_size ) ;
+	if ( copied_partition.sector_usage_known() )
+	{
+		// Handle situation where src sector size is smaller than dst sector size
+		// and an additional partial dst sector is required.
+		Byte_Value src_fs_bytes     = ( copied_partition.sectors_used + copied_partition.sectors_unused ) *
+		                              copied_partition.sector_size;
+		Byte_Value src_unused_bytes = copied_partition.sectors_unused * copied_partition.sector_size;
+		Sector dst_fs_sectors       = ( src_fs_bytes + selected_partition.sector_size - 1 ) /
+		                              selected_partition.sector_size;
+		Sector dst_unused_sectors   = ( src_unused_bytes + selected_partition.sector_size - 1 ) /
+		                              selected_partition.sector_size;
+		new_partition->set_sector_usage( dst_fs_sectors, dst_unused_sectors );
+	}
+	else
+	{
+		// FS usage of src is unknown so set dst usage unknown too.
+		new_partition->set_sector_usage( -1, -1 );
+	}
 
 	this ->show_all_children() ;
 }
