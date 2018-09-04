@@ -2068,24 +2068,32 @@ void Win_GParted::activate_paste()
 			filesystem_ptn_new.set_filesystem_label( copied_filesystem_ptn.get_filesystem_label() );
 			filesystem_ptn_new.uuid = copied_filesystem_ptn.uuid;
 			Sector new_size = filesystem_ptn_new.get_sector_length();
-			if ( copied_filesystem_ptn.get_sector_length() == new_size )
+			if ( copied_filesystem_ptn.sector_usage_known() )
 			{
-				// Pasting into same size existing partition, therefore
-				// only block copy operation will be performed maintaining
-				// the file system size.
-				filesystem_ptn_new.set_sector_usage(
-					copied_filesystem_ptn.sectors_used + copied_filesystem_ptn.sectors_unused,
-					copied_filesystem_ptn.sectors_unused );
+				if ( copied_filesystem_ptn.get_sector_length() == new_size )
+				{
+					// Pasting into same size existing partition, therefore
+					// only block copy operation will be performed maintaining
+					// the file system size.
+					filesystem_ptn_new.set_sector_usage(
+						copied_filesystem_ptn.sectors_used + copied_filesystem_ptn.sectors_unused,
+						copied_filesystem_ptn.sectors_unused );
+				}
+				else
+				{
+					// Pasting into larger existing partition, therefore block
+					// copy followed by file system grow operations (if
+					// supported) will be performed making the file system
+					// fill the partition.
+					filesystem_ptn_new.set_sector_usage(
+						new_size,
+						new_size - copied_filesystem_ptn.sectors_used );
+				}
 			}
 			else
 			{
-				// Pasting into larger existing partition, therefore block
-				// copy followed by file system grow operations (if
-				// supported) will be performed making the file system
-				// fill the partition.
-				filesystem_ptn_new.set_sector_usage(
-					new_size,
-					new_size - copied_filesystem_ptn.sectors_used );
+				// FS usage of source is unknown so set destination usage unknown too.
+				filesystem_ptn_new.set_sector_usage( -1, -1 );
 			}
 			filesystem_ptn_new.clear_messages();
 		}
