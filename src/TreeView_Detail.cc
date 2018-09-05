@@ -88,7 +88,9 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions )
 	bool show_mountpoints = false;
 	bool show_labels      = false;
 
+	block = true;
 	treestore_detail ->clear() ;
+	block = false;
 
 	load_partitions( partitions, show_names, show_mountpoints, show_labels );
 
