@@ -210,7 +210,7 @@ void Dialog_Base_Partition::prepare_new_partition()
 	}
 
 	//update partition usage
-	if ( new_partition->sectors_used != -1 && new_partition->sectors_unused != -1 )
+	if ( new_partition->sector_usage_known() )
 	{
 		Sector new_size = new_partition->get_sector_length();
 		if ( old_size == new_size )
