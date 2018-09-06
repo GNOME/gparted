@@ -1621,7 +1621,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 			partition.add_mountpoint( DEV_MAPPER_PATH + mapping.name );
 	}
 	// Swap spaces don't have mount points so don't bother trying to add them.
-	else if ( supported_filesystem( partition.filesystem ) && partition.filesystem != FS_LINUX_SWAP )
+	else if ( partition.filesystem != FS_LINUX_SWAP )
 	{
 		if ( partition.busy )
 		{
@@ -1813,6 +1813,12 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 			if ( ! temp.empty() )
 				partition.push_back_message( temp );
 		}
+	}
+	else
+	{
+		// Set usage of mouted but unsupported file systems
+		if ( partition.busy )
+			mounted_set_used_sectors( partition );
 	}
 }
 
