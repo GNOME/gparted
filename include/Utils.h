@@ -89,16 +89,16 @@ enum FSType
 	FS_REISER4         = 24,
 	FS_REISERFS        = 25,
 	FS_UDF             = 26,
-	FS_UFS             = 27,
-	FS_XFS             = 28,
+	FS_XFS             = 27,
 
 	// Other recognised file system types
-	FS_BITLOCKER       = 29,
-	FS_GRUB2_CORE_IMG  = 30,
-	FS_ISO9660         = 31,
-	FS_LINUX_SWRAID    = 32,
-	FS_LINUX_SWSUSPEND = 33,
-	FS_REFS            = 34,
+	FS_BITLOCKER       = 28,
+	FS_GRUB2_CORE_IMG  = 29,
+	FS_ISO9660         = 30,
+	FS_LINUX_SWRAID    = 31,
+	FS_LINUX_SWSUSPEND = 32,
+	FS_REFS            = 33,
+	FS_UFS             = 34,
 	FS_ZFS             = 35,
 
 	// Partition space usage colours

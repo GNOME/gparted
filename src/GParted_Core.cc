@@ -52,7 +52,6 @@
 #include "hfsplus.h"
 #include "reiser4.h"
 #include "udf.h"
-#include "ufs.h"
 
 #include <parted/parted.h>
 #include <cerrno>
@@ -4180,7 +4179,6 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
 	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
 	FILESYSTEM_MAP[FS_UDF]             = new udf();
-	FILESYSTEM_MAP[FS_UFS]             = new ufs();
 	FILESYSTEM_MAP[FS_XFS]             = new xfs();
 	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
 	FILESYSTEM_MAP[FS_GRUB2_CORE_IMG]  = NULL;
@@ -4188,6 +4186,7 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
 	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
 	FILESYSTEM_MAP[FS_REFS]            = NULL;
+	FILESYSTEM_MAP[FS_UFS]             = NULL;
 	FILESYSTEM_MAP[FS_ZFS]             = NULL;
 }
 

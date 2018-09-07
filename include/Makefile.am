@@ -68,5 +68,4 @@ EXTRA_DIST = \
 	reiser4.h			\
 	reiserfs.h			\
 	udf.h				\
-	ufs.h				\
 	xfs.h
