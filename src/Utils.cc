@@ -93,6 +93,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_UNKNOWN:         return "#000000";  // Black
 		case FS_UNFORMATTED:     return "#000000";  // Black
 		case FS_CLEARED:         return "#000000";  // Black
+		case FS_OTHER:           return "#000000";  // Black (never displayed)
 		case FS_EXTENDED:        return "#7DFCFE";  // Light Blue [*]
 		case FS_BTRFS:           return "#FF9955";  // Orange [*]
 		case FS_EXFAT:           return "#267726";  // Accent Green Dark
@@ -269,6 +270,13 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 				 * be formatted with a known file system by GParted.
 				 */
 				_("unformatted") ;
+		case FS_OTHER		: return
+				/* TO TRANSLATORS:  other
+				 * name shown in the File System Support dialog to list
+				 * actions which can be performed on other file systems
+				 * not specifically listed as supported.
+				 */
+				_("other");
 		case FS_CLEARED		: return
 				/* TO TRANSLATORS:  cleared
 				 * means that all file system signatures in the partition

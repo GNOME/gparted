@@ -4153,6 +4153,7 @@ void GParted_Core::init_filesystems()
 	// 3)  Unsupported file systems have no entry.
 	//     supported_filesystem() -> false
 	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
+	FILESYSTEM_MAP[FS_OTHER]           = NULL;
 	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
 	FILESYSTEM_MAP[FS_EXFAT]           = new exfat();
 	FILESYSTEM_MAP[FS_EXT2]            = new ext2( FS_EXT2 );
