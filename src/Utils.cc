@@ -115,7 +115,6 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_REISER4:         return "#887FA3";  // Purple Medium
 		case FS_REISERFS:        return "#ADA7C8";  // Purple Hilight
 		case FS_UDF:             return "#105210";  // Accent Green Shadow [+]
-		case FS_UFS:             return "#D1940C";  // Accent Yellow Dark
 		case FS_XFS:             return "#EED680";  // Accent Yellow
 		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
 		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
@@ -123,6 +122,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_LINUX_SWRAID:    return "#5A4733";  // Dark brown [*]
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
 		case FS_REFS:            return "#2AB98A";  // Medium Aquamarine [*]
+		case FS_UFS:             return "#D1940C";  // Accent Yellow Dark
 		case FS_ZFS:             return "#CC763D";  // Darker Orange [*]
 		case FS_USED:            return "#F8F8BA";  // Light Tan Yellow [*]
 		case FS_UNUSED:          return "#FFFFFF";  // White
@@ -237,7 +237,6 @@ int Utils::get_filesystem_label_maxlength( FSType filesystem )
 		case FS_REISER4		: return 16 ;
 		case FS_REISERFS	: return 16 ;
 		case FS_UDF		: return 126;  // and only 63 if label contains character above U+FF
-		//case FS_UFS		: return  ;
 		case FS_XFS		: return 12 ;
 
 		default			: return 30 ;
@@ -357,7 +356,6 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 		case FS_REISER4  : return "reiser4";
 		case FS_REISERFS : return "reiserfs";
 		case FS_UDF      : return "udf";
-		case FS_UFS      : return "ufs";
 		case FS_XFS      : return "xfs";
 		default          : return "";
 	}
@@ -386,7 +384,6 @@ Glib::ustring Utils::get_filesystem_software( FSType filesystem )
 		case FS_REISER4     : return "reiser4progs" ;
 		case FS_REISERFS    : return "reiserfsprogs / reiserfs-utils" ;
 		case FS_UDF         : return "udftools";
-		case FS_UFS         : return "" ;
 		case FS_XFS         : return "xfsprogs, xfsdump" ;
 
 		default             : return "" ;
