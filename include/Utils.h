@@ -65,44 +65,45 @@ enum FSType
 	FS_UNKNOWN         = 2,  // Unrecognised content in a drive or partition
 	FS_UNFORMATTED     = 3,  // Create a partition without a file system
 	FS_CLEARED         = 4,  // Clear existing file system signatures
-	FS_EXTENDED        = 5,
+	FS_OTHER           = 5,  // Just for showing in the File System Support dialog
+	FS_EXTENDED        = 6,
 
 	// Fully supported file system types
-	FS_BTRFS           = 6,
-	FS_EXFAT           = 7, /* Also known as fat64 */
-	FS_EXT2            = 8,
-	FS_EXT3            = 9,
-	FS_EXT4            = 10,
-	FS_F2FS            = 11,
-	FS_FAT16           = 12,
-	FS_FAT32           = 13,
-	FS_HFS             = 14,
-	FS_HFSPLUS         = 15,
-	FS_JFS             = 16,
-	FS_LINUX_SWAP      = 17,
-	FS_LUKS            = 18,
-	FS_LVM2_PV         = 19,
-	FS_MINIX           = 20,
-	FS_NILFS2          = 21,
-	FS_NTFS            = 22,
-	FS_REISER4         = 23,
-	FS_REISERFS        = 24,
-	FS_UDF             = 25,
-	FS_UFS             = 26,
-	FS_XFS             = 27,
+	FS_BTRFS           = 7,
+	FS_EXFAT           = 8, /* Also known as fat64 */
+	FS_EXT2            = 9,
+	FS_EXT3            = 10,
+	FS_EXT4            = 11,
+	FS_F2FS            = 12,
+	FS_FAT16           = 13,
+	FS_FAT32           = 14,
+	FS_HFS             = 15,
+	FS_HFSPLUS         = 16,
+	FS_JFS             = 17,
+	FS_LINUX_SWAP      = 18,
+	FS_LUKS            = 19,
+	FS_LVM2_PV         = 20,
+	FS_MINIX           = 21,
+	FS_NILFS2          = 22,
+	FS_NTFS            = 23,
+	FS_REISER4         = 24,
+	FS_REISERFS        = 25,
+	FS_UDF             = 26,
+	FS_UFS             = 27,
+	FS_XFS             = 28,
 
 	// Other recognised file system types
-	FS_BITLOCKER       = 28,
-	FS_GRUB2_CORE_IMG  = 29,
-	FS_ISO9660         = 30,
-	FS_LINUX_SWRAID    = 31,
-	FS_LINUX_SWSUSPEND = 32,
-	FS_REFS            = 33,
-	FS_ZFS             = 34,
+	FS_BITLOCKER       = 29,
+	FS_GRUB2_CORE_IMG  = 30,
+	FS_ISO9660         = 31,
+	FS_LINUX_SWRAID    = 32,
+	FS_LINUX_SWSUSPEND = 33,
+	FS_REFS            = 34,
+	FS_ZFS             = 35,
 
 	// Partition space usage colours
-	FS_USED            = 35,
-	FS_UNUSED          = 36
+	FS_USED            = 36,
+	FS_UNUSED          = 37
 } ;
 
 enum SIZE_UNIT
