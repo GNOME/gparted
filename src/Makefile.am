@@ -78,7 +78,6 @@ gpartedbin_SOURCES = \
 	reiser4.cc			\
 	reiserfs.cc			\
 	udf.cc				\
-	ufs.cc				\
 	xfs.cc
 
 gpartedbin_LDADD = $(GTHREAD_LIBS) $(GTKMM_LIBS)
