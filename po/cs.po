@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2018-04-30 18:41+0000\n"
-"PO-Revision-Date: 2018-04-30 23:22+0200\n"
+"POT-Creation-Date: 2018-08-25 14:52+0000\n"
+"PO-Revision-Date: 2018-09-07 08:17+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -45,15 +45,15 @@ msgstr ""
 #: ../gparted.appdata.xml.in.h:3
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
 "reiser4, udf, ufs, and xfs."
 msgstr ""
 "GParted pracuje s řadou různých souborových systémů, včetně: Btrfs, ext2, "
-"ext3, ext4, FAT16, FAT32, HFS, HFS+, Linux-Swap, LVM2 PV, NILFS2, NTFS, "
-"ReiserFS, Reiser4, UDF, UFS a XFS."
+"ext3, ext4, FAT16, FAT32, HFS, HFS+, Linux-Swap, LVM2 PV, MINIX, NILFS2, "
+"NTFS, ReiserFS, Reiser4, UDF, UFS a XFS."
 
 #. ==== GUI =========================
-#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:371
+#: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:376
 #: ../src/Win_GParted.cc:87 ../src/Win_GParted.cc:1514
 #: ../src/Win_GParted.cc:1704
 msgid "GParted"
@@ -111,19 +111,19 @@ msgid "Error while reading block at sector %1"
 msgstr "Chyba při čtení bloku v sektoru %1"
 
 #. TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1
-#: ../src/DialogPasswordEntry.cc:35
+#: ../src/DialogPasswordEntry.cc:36
 msgid "LUKS Passphrase %1"
 msgstr "Heslová fráze LUKS pro %s"
 
-#: ../src/DialogPasswordEntry.cc:45
+#: ../src/DialogPasswordEntry.cc:46
 msgid "Enter LUKS passphrase to open %1"
 msgstr "Zadejte heslovou frázi LUKS pro otevření %s"
 
-#: ../src/DialogPasswordEntry.cc:51
+#: ../src/DialogPasswordEntry.cc:52
 msgid "Passphrase:"
 msgstr "Heslová fráze:"
 
-#: ../src/DialogPasswordEntry.cc:67
+#: ../src/DialogPasswordEntry.cc:69
 msgid "Unlock"
 msgstr "Odemknout"
 
@@ -194,12 +194,13 @@ msgid "Select new partition table type:"
 msgstr "Zvolit typ nové tabulky oddílů:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
-#: ../src/Dialog_FileSystem_Label.cc:30
+#: ../src/Dialog_FileSystem_Label.cc:35
 msgid "Set file system label on %1"
 msgstr "Nastavit návěští souborového systému na %1"
 
+#. Only line: "Label: [EXISTINGLABEL ]"
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:41 ../src/Dialog_Partition_Info.cc:275
+#: ../src/Dialog_FileSystem_Label.cc:44 ../src/Dialog_Partition_Info.cc:275
 #: ../src/Dialog_Partition_New.cc:156
 msgid "Label:"
 msgstr "Návěští:"
@@ -393,7 +394,8 @@ msgid "Partition"
 msgstr "Oddíl"
 
 #. name
-#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:41
+#. Only line: "Name: [EXISTINGNAME  ]"
+#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:44
 msgid "Name:"
 msgstr "Název:"
 
@@ -419,7 +421,7 @@ msgid "Total sectors:"
 msgstr "Celkem sektorů:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
-#: ../src/Dialog_Partition_Name.cc:30
+#: ../src/Dialog_Partition_Name.cc:35
 msgid "Set partition name on %1"
 msgstr "Nastavit název oddílu na %1"
 
@@ -522,46 +524,48 @@ msgstr "DŮLEŽITÉ"
 msgid "If you want support, you need to provide the saved details!"
 msgstr "Pokud potřebujete podporu, musíte poskytnout uložené podrobnosti!"
 
-#. TO TRANSLATORS: looks like   See http://gparted.org/save-details.htm for more information.
-#: ../src/Dialog_Progress.cc:287
+#. TO TRANSLATORS: looks like
+#. * See https://gparted.org/save-details.htm for more information.
+#.
+#: ../src/Dialog_Progress.cc:290
 msgid "See %1 for more information."
 msgstr "Podívejte se na %1 pro více informací."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
-#: ../src/Dialog_Progress.cc:306 ../src/Dialog_Progress.cc:337
+#: ../src/Dialog_Progress.cc:311 ../src/Dialog_Progress.cc:342
 msgid "Force Cancel (%1)"
 msgstr "Násilně zrušit (%1)"
 
-#: ../src/Dialog_Progress.cc:308 ../src/Dialog_Progress.cc:341
+#: ../src/Dialog_Progress.cc:313 ../src/Dialog_Progress.cc:346
 msgid "Force Cancel"
 msgstr "Násilně zrušit"
 
-#: ../src/Dialog_Progress.cc:319
+#: ../src/Dialog_Progress.cc:324
 msgid "Are you sure you want to cancel the current operation?"
 msgstr "Opravdu chcete zrušit aktuální operaci?"
 
-#: ../src/Dialog_Progress.cc:325
+#: ../src/Dialog_Progress.cc:330
 msgid "Canceling an operation might cause SEVERE file system damage."
 msgstr "Zrušení operace může způsobit VÁŽNÉ poškození souborového systému."
 
-#: ../src/Dialog_Progress.cc:327
+#: ../src/Dialog_Progress.cc:332
 msgid "Continue Operation"
 msgstr "Pokračovat v operaci"
 
-#: ../src/Dialog_Progress.cc:328
+#: ../src/Dialog_Progress.cc:333
 msgid "Cancel Operation"
 msgstr "Zrušit operaci"
 
-#: ../src/Dialog_Progress.cc:349
+#: ../src/Dialog_Progress.cc:354
 msgid "Save Details"
 msgstr "Uložit podrobnosti"
 
-#: ../src/Dialog_Progress.cc:368
+#: ../src/Dialog_Progress.cc:373
 msgid "GParted Details"
 msgstr "Podrobnosti o GParted"
 
-#: ../src/Dialog_Progress.cc:379
+#: ../src/Dialog_Progress.cc:384
 msgid "Libparted"
 msgstr "Libparted"
 
@@ -569,7 +573,7 @@ msgstr "Libparted"
 #. * means that the status for this operation is
 #. * executing or currently in progress.
 #.
-#: ../src/Dialog_Progress.cc:422
+#: ../src/Dialog_Progress.cc:427
 msgid "EXECUTING"
 msgstr "PROVÁDÍ SE"
 
@@ -577,7 +581,7 @@ msgstr "PROVÁDÍ SE"
 #. * means that the status for this operation is
 #. * completed successfully.
 #.
-#: ../src/Dialog_Progress.cc:430
+#: ../src/Dialog_Progress.cc:435
 msgid "SUCCESS"
 msgstr "ÚSPĚCH"
 
@@ -585,7 +589,7 @@ msgstr "ÚSPĚCH"
 #. * means that the status for this operation is
 #. * completed with errors.
 #.
-#: ../src/Dialog_Progress.cc:438
+#: ../src/Dialog_Progress.cc:443
 msgid "ERROR"
 msgstr "CHYBA"
 
@@ -594,7 +598,7 @@ msgstr "CHYBA"
 #. * for your information , or messages from the
 #. * libparted library.
 #.
-#: ../src/Dialog_Progress.cc:447
+#: ../src/Dialog_Progress.cc:452
 msgid "INFO"
 msgstr "INFO"
 
@@ -605,7 +609,7 @@ msgstr "INFO"
 #. * partition, or the operation failed but it does
 #. * not matter that it failed.
 #.
-#: ../src/Dialog_Progress.cc:458
+#: ../src/Dialog_Progress.cc:463
 msgid "WARNING"
 msgstr "VAROVÁNÍ"
 
@@ -851,12 +855,12 @@ msgid "_Unmount"
 msgstr "_Odpojit"
 
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:225
+#: ../src/FileSystem.cc:226
 msgid "Created directory %1"
 msgstr "Vytvořena složka %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
-#: ../src/FileSystem.cc:251
+#: ../src/FileSystem.cc:252
 msgid "Removed directory %1"
 msgstr "Odstraněna složka %1"
 
@@ -864,32 +868,32 @@ msgstr "Odstraněna složka %1"
 #. a programming bug.  However the best way to report it is by adding yet
 #. another child containing the bug report, and allowing the child to be
 #. added anyway.
-#: ../src/GParted_Core.cc:77 ../src/OperationDetail.cc:146
+#: ../src/GParted_Core.cc:78 ../src/OperationDetail.cc:146
 msgid "GParted Bug"
 msgstr "Chyba v GParted"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:190 ../src/GParted_Core.cc:199
+#: ../src/GParted_Core.cc:191 ../src/GParted_Core.cc:200
 msgid "Scanning %1"
 msgstr "Prochází se %1"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:218 ../src/GParted_Core.cc:243
+#: ../src/GParted_Core.cc:219 ../src/GParted_Core.cc:244
 msgid "Confirming %1"
 msgstr "Potvrzuje se %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:273
 msgid "Searching %1 partitions"
 msgstr "Hledají se oddíly %1"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:530
+#: ../src/GParted_Core.cc:531
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Oddíl nemůže mít délku %1 sektorů"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:544
+#: ../src/GParted_Core.cc:545
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr "Oddíl s použitými sektory (%1) větší než jeho délka (%2) není platný"
@@ -898,50 +902,50 @@ msgstr "Oddíl s použitými sektory (%1) větší než jeho délka (%2) není p
 #. * means that the partition table for this disk
 #. * device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:961
+#: ../src/GParted_Core.cc:962
 msgid "unrecognized"
 msgstr "nerozpoznáno"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1485
+#: ../src/GParted_Core.cc:1492
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Nelze detekovat souborový systém! Možné důvody jsou:"
 
-#: ../src/GParted_Core.cc:1487
+#: ../src/GParted_Core.cc:1494
 msgid "The file system is damaged"
 msgstr "Souborový systém je poškozen"
 
-#: ../src/GParted_Core.cc:1489
+#: ../src/GParted_Core.cc:1496
 msgid "The file system is unknown to GParted"
 msgstr "GParted nezná tento souborový systém"
 
-#: ../src/GParted_Core.cc:1491
+#: ../src/GParted_Core.cc:1498
 msgid "There is no file system available (unformatted)"
 msgstr "Není dostupný žádný souborový systém (nezformátováno)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1494
+#: ../src/GParted_Core.cc:1501
 msgid "The device entry %1 is missing"
 msgstr "Schází přístup k zařízení %1"
 
-#: ../src/GParted_Core.cc:1643
+#: ../src/GParted_Core.cc:1650
 msgid "Unable to find mount point"
 msgstr "Nelze najít přípojný bod"
 
-#: ../src/GParted_Core.cc:1760
+#: ../src/GParted_Core.cc:1767
 msgid "Unable to read the contents of this file system!"
 msgstr "Nelze číst obsah tohoto souborového systému!"
 
-#: ../src/GParted_Core.cc:1762
+#: ../src/GParted_Core.cc:1769
 msgid "Because of this some operations may be unavailable."
 msgstr "Kvůli tomu nebudou možná některé operace dostupné."
 
-#: ../src/GParted_Core.cc:1766
+#: ../src/GParted_Core.cc:1773
 msgid "The cause might be a missing software package."
 msgstr "To může být způsobeno chybějícím softwarovým balíčkem."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1769
+#: ../src/GParted_Core.cc:1776
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -950,7 +954,7 @@ msgstr ""
 "systému %1: %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1779
+#: ../src/GParted_Core.cc:1786
 msgid "%1 of unallocated space within the partition."
 msgstr "%1 neobsazeného místa v rámci oddílu."
 
@@ -958,7 +962,7 @@ msgstr "%1 neobsazeného místa v rámci oddílu."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1789
+#: ../src/GParted_Core.cc:1796
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -966,11 +970,11 @@ msgstr ""
 "Pokud chcete zvětšit souborový systém, aby vyplnil oddíl, vyberte oddíl a "
 "zvolte položku nabídky:"
 
-#: ../src/GParted_Core.cc:1791
+#: ../src/GParted_Core.cc:1798
 msgid "Partition --> Check."
 msgstr "Oddíl → Zkontrolovat."
 
-#: ../src/GParted_Core.cc:1899
+#: ../src/GParted_Core.cc:1906
 msgid "create empty partition"
 msgstr "vytváří se prázdný oddíl"
 
@@ -984,27 +988,27 @@ msgstr "vytváří se prázdný oddíl"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1975 ../src/GParted_Core.cc:3641
+#: ../src/GParted_Core.cc:1982 ../src/GParted_Core.cc:3648
 msgid "path: %1 (%2)"
 msgstr "cesta: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1976 ../src/GParted_Core.cc:3645
+#: ../src/GParted_Core.cc:1983 ../src/GParted_Core.cc:3652
 msgid "partition"
 msgstr "oddíl"
 
-#: ../src/GParted_Core.cc:1977 ../src/GParted_Core.cc:3646
+#: ../src/GParted_Core.cc:1984 ../src/GParted_Core.cc:3653
 msgid "start: %1"
 msgstr "začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:1978 ../src/GParted_Core.cc:3647
+#: ../src/GParted_Core.cc:1985 ../src/GParted_Core.cc:3654
 msgid "end: %1"
 msgstr "konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:1979 ../src/GParted_Core.cc:3648
+#: ../src/GParted_Core.cc:1986 ../src/GParted_Core.cc:3655
 msgid "size: %1 (%2)"
 msgstr "velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2011
+#: ../src/GParted_Core.cc:2018
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr ""
@@ -1012,33 +1016,33 @@ msgstr ""
 "systému"
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: ../src/GParted_Core.cc:2018
+#: ../src/GParted_Core.cc:2025
 msgid "create new %1 file system"
 msgstr "vytváří se nový souborový systém %1"
 
-#: ../src/GParted_Core.cc:2050
+#: ../src/GParted_Core.cc:2057
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr ""
 "oddíl obsahuje šifrování LUKS otevřené jen pro krok formátování souborového "
 "systému"
 
-#: ../src/GParted_Core.cc:2065
+#: ../src/GParted_Core.cc:2072
 msgid "delete partition"
 msgstr "odstraňuje se oddíl"
 
-#: ../src/GParted_Core.cc:2109
+#: ../src/GParted_Core.cc:2116
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr ""
 "oddíl obsahuje šifrování LUKS otevřené jen pro krok smazání souborového "
 "systému"
 
-#: ../src/GParted_Core.cc:2124
+#: ../src/GParted_Core.cc:2131
 msgid "delete %1 file system"
 msgstr "maže se souborový systém %1"
 
-#: ../src/GParted_Core.cc:2142
+#: ../src/GParted_Core.cc:2149
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
@@ -1046,24 +1050,24 @@ msgstr ""
 "systému návěštím"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2149 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2156 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "Smazat návěští souborového systému na %1"
 
-#: ../src/GParted_Core.cc:2152
+#: ../src/GParted_Core.cc:2159
 msgid "Set file system label to \"%1\" on %2"
 msgstr "Nastavit návěští souborového systému na %2 na „%1“"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2177 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2184 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "Smazat název oddílu na %1"
 
-#: ../src/GParted_Core.cc:2180
+#: ../src/GParted_Core.cc:2187
 msgid "Set partition name to \"%1\" on %2"
 msgstr "Nastavit název oddílu na %2 na „%1“"
 
-#: ../src/GParted_Core.cc:2205
+#: ../src/GParted_Core.cc:2212
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
@@ -1071,11 +1075,11 @@ msgstr ""
 "oddíl obsahuje šifrování LUKS otevřené jen pro krok změny UUID souborového "
 "systému"
 
-#: ../src/GParted_Core.cc:2212
+#: ../src/GParted_Core.cc:2219
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "Nastavit polovinu UUID na %1 na novou náhodnou hodnotu"
 
-#: ../src/GParted_Core.cc:2217
+#: ../src/GParted_Core.cc:2224
 msgid "Set UUID on %1 to a new, random value"
 msgstr "Nastavit UUID na %1 na novou náhodnou hodnotu"
 
@@ -1084,27 +1088,27 @@ msgstr "Nastavit UUID na %1 na novou náhodnou hodnotu"
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2301
+#: ../src/GParted_Core.cc:2308
 msgid "size of the partition is changing for a move only step"
 msgstr "velikost oddílu se mění u kroku řešícího jen přesun"
 
-#: ../src/GParted_Core.cc:2332
+#: ../src/GParted_Core.cc:2339
 msgid "rollback last change to the partition"
 msgstr "poslední změna v oddílu se vrací zpět"
 
-#: ../src/GParted_Core.cc:2381
+#: ../src/GParted_Core.cc:2388
 msgid "move file system to the left"
 msgstr "souborový systém se přesunuje doleva"
 
-#: ../src/GParted_Core.cc:2383
+#: ../src/GParted_Core.cc:2390
 msgid "move file system to the right"
 msgstr "souborový systém se přesunuje doprava"
 
-#: ../src/GParted_Core.cc:2386
+#: ../src/GParted_Core.cc:2393
 msgid "move file system"
 msgstr "přesunuje se souborový systém"
 
-#: ../src/GParted_Core.cc:2388
+#: ../src/GParted_Core.cc:2395
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1112,7 +1116,7 @@ msgstr ""
 "nový a minulý souborový systém mají stejnou pozici.  Proto se tato operace "
 "přeskakuje."
 
-#: ../src/GParted_Core.cc:2454
+#: ../src/GParted_Core.cc:2461
 msgid "using libparted"
 msgstr "používá se libparted"
 
@@ -1122,63 +1126,63 @@ msgstr "používá se libparted"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2528
+#: ../src/GParted_Core.cc:2535
 msgid "start of the partition is changing for a resize only step"
 msgstr "začátek oddílu se mění u kroku řešícího jen změnu velikosti"
 
-#: ../src/GParted_Core.cc:2546
+#: ../src/GParted_Core.cc:2553
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr "oddíl neobsahuje šifrování LUKS jen pro krok změny velikosti"
 
-#: ../src/GParted_Core.cc:2556
+#: ../src/GParted_Core.cc:2563
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "není možné zmenšit zavřený svaze šifrovaný pomocí LUKS"
 
-#: ../src/GParted_Core.cc:2615
+#: ../src/GParted_Core.cc:2622
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 "oddíl obsahuje šifrování LUKS otevřené jen pro krok změny velikosti "
 "souborového systému"
 
-#: ../src/GParted_Core.cc:2685
+#: ../src/GParted_Core.cc:2692
 msgid "resize/move partition"
 msgstr "mění se velikost/přesunuje se oddíl"
 
-#: ../src/GParted_Core.cc:2688
+#: ../src/GParted_Core.cc:2695
 msgid "move partition to the right"
 msgstr "oddíl se přesunuje doprava"
 
-#: ../src/GParted_Core.cc:2691
+#: ../src/GParted_Core.cc:2698
 msgid "move partition to the left"
 msgstr "oddíl se přesunuje doleva"
 
-#: ../src/GParted_Core.cc:2694
+#: ../src/GParted_Core.cc:2701
 msgid "grow partition from %1 to %2"
 msgstr "oddíl se zvětšuje z %1 na %2"
 
-#: ../src/GParted_Core.cc:2697
+#: ../src/GParted_Core.cc:2704
 msgid "shrink partition from %1 to %2"
 msgstr "oddíl se zmenšuje z %1 na %2"
 
-#: ../src/GParted_Core.cc:2700
+#: ../src/GParted_Core.cc:2707
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr "oddíl se přesunuje doprava a zvětšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2703
+#: ../src/GParted_Core.cc:2710
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr "oddíl se přesunuje doprava a zmenšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2706
+#: ../src/GParted_Core.cc:2713
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr "oddíl se přesunuje doleva a zvětšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2709
+#: ../src/GParted_Core.cc:2716
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr "oddíl se přesunuje doleva a zmenšuje se z %1 na %2"
 
-#: ../src/GParted_Core.cc:2724
+#: ../src/GParted_Core.cc:2731
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1186,70 +1190,70 @@ msgstr ""
 "nový a minulý oddíl mají stejnou velikost a pozici.  Proto se tato operace "
 "přeskakuje."
 
-#: ../src/GParted_Core.cc:2734
+#: ../src/GParted_Core.cc:2741
 msgid "old start: %1"
 msgstr "minulý začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2735
+#: ../src/GParted_Core.cc:2742
 msgid "old end: %1"
 msgstr "minulý konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2736
+#: ../src/GParted_Core.cc:2743
 msgid "old size: %1 (%2)"
 msgstr "minulá velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2751 ../src/GParted_Core.cc:3735
+#: ../src/GParted_Core.cc:2758 ../src/GParted_Core.cc:3742
 msgid "new start: %1"
 msgstr "nový začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2752 ../src/GParted_Core.cc:3736
+#: ../src/GParted_Core.cc:2759 ../src/GParted_Core.cc:3743
 msgid "new end: %1"
 msgstr "nový konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2753 ../src/GParted_Core.cc:3737
+#: ../src/GParted_Core.cc:2760 ../src/GParted_Core.cc:3744
 msgid "new size: %1 (%2)"
 msgstr "nová velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2767 ../src/GParted_Core.cc:3688
+#: ../src/GParted_Core.cc:2774 ../src/GParted_Core.cc:3695
 msgid "requested start: %1"
 msgstr "požadovaný začátek oddílu: %1"
 
-#: ../src/GParted_Core.cc:2768 ../src/GParted_Core.cc:3689
+#: ../src/GParted_Core.cc:2775 ../src/GParted_Core.cc:3696
 msgid "requested end: %1"
 msgstr "požadovaný konec oddílu: %1"
 
-#: ../src/GParted_Core.cc:2769 ../src/GParted_Core.cc:3690
+#: ../src/GParted_Core.cc:2776 ../src/GParted_Core.cc:3697
 msgid "requested size: %1 (%2)"
 msgstr "požadovaná velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2781
+#: ../src/GParted_Core.cc:2788
 msgid "attempt to rollback failed change to the partition"
 msgstr "pokus o vrácení změny v oddílu, která selhala, zpět"
 
-#: ../src/GParted_Core.cc:2802
+#: ../src/GParted_Core.cc:2809
 msgid "original start: %1"
 msgstr "původní začátek: %1"
 
-#: ../src/GParted_Core.cc:2803
+#: ../src/GParted_Core.cc:2810
 msgid "original end: %1"
 msgstr "původní konec: %1"
 
-#: ../src/GParted_Core.cc:2804
+#: ../src/GParted_Core.cc:2811
 msgid "original size: %1 (%2)"
 msgstr "původní velikost: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2886
+#: ../src/GParted_Core.cc:2893
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
 msgstr ""
 "oddíl neobsahuje šifrování LUKS otevřené jen pro krok zmenšení velikosti"
 
-#: ../src/GParted_Core.cc:2891
+#: ../src/GParted_Core.cc:2898
 msgid "shrink encryption volume"
 msgstr "zmenšuje se šifrovaný svazek"
 
-#: ../src/GParted_Core.cc:2902
+#: ../src/GParted_Core.cc:2909
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1257,15 +1261,15 @@ msgstr ""
 "oddíl neobsahuje šifrování LUKS otevřené jen pro krok zvětšení velikosti na "
 "maximum"
 
-#: ../src/GParted_Core.cc:2907
+#: ../src/GParted_Core.cc:2914
 msgid "grow encryption volume to fill the partition"
 msgstr "zvětšuje se šifrovaný svazek až do zaplnění oddílu"
 
-#: ../src/GParted_Core.cc:2917
+#: ../src/GParted_Core.cc:2924
 msgid "growing is not available for this encryption volume"
 msgstr "zvětšení není pro tento šifrovaný svazek dostupné"
 
-#: ../src/GParted_Core.cc:2935
+#: ../src/GParted_Core.cc:2942
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1277,50 +1281,50 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2947
+#: ../src/GParted_Core.cc:2954
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 "nová velikost oddílu je větší nebo stejná u kroku řešícího jen zmenšení"
 
-#: ../src/GParted_Core.cc:2952
+#: ../src/GParted_Core.cc:2959
 msgid "shrink file system"
 msgstr "zmenšuje se souborový systém"
 
-#: ../src/GParted_Core.cc:2963
+#: ../src/GParted_Core.cc:2970
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "oddíl obsahuje šifrování LUKS otevřené jen pro krok maximálního zvětšení "
 "souborového systému"
 
-#: ../src/GParted_Core.cc:2968
+#: ../src/GParted_Core.cc:2975
 msgid "grow file system to fill the partition"
 msgstr "zvětšuje se souborový systém až do zaplnění oddílu"
 
-#: ../src/GParted_Core.cc:2979
+#: ../src/GParted_Core.cc:2986
 msgid "growing is not available for this file system"
 msgstr "zvětšení není pro tento souborový systém dostupné"
 
-#: ../src/GParted_Core.cc:2987
+#: ../src/GParted_Core.cc:2994
 msgid "growing the file system is currently disallowed"
 msgstr "zvětšení souborového systému je v tuto chvíli nepřípustné"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:3011
+#: ../src/GParted_Core.cc:3018
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr ""
 "nejedná se o souborový systém %1 u kroku řešícího jen opětovné vytvoření %1"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:3023
+#: ../src/GParted_Core.cc:3030
 msgid "recreate %1 file system"
 msgstr "vytvořit souborový systém %1"
 
-#: ../src/GParted_Core.cc:3092
+#: ../src/GParted_Core.cc:3099
 msgid "the destination is smaller than the source partition"
 msgstr "cíl je menší než původní oddíl"
 
-#: ../src/GParted_Core.cc:3143
+#: ../src/GParted_Core.cc:3150
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1328,7 +1332,7 @@ msgstr ""
 "zdrojový oddíl obsahuje šifrování LUKS otevřené jen pro krok zkopírování "
 "souborového systému"
 
-#: ../src/GParted_Core.cc:3150
+#: ../src/GParted_Core.cc:3157
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
@@ -1336,47 +1340,47 @@ msgstr ""
 "cílový oddíl obsahuje šifrování LUKS otevřené jen pro krok zkopírování "
 "souborového systému"
 
-#: ../src/GParted_Core.cc:3156
+#: ../src/GParted_Core.cc:3163
 msgid "copy file system from %1 to %2"
 msgstr "kopírovat souborový systém z %1 na %2"
 
-#: ../src/GParted_Core.cc:3237
+#: ../src/GParted_Core.cc:3244
 msgid "using internal algorithm"
 msgstr "používá se interní algoritmus"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3240
+#: ../src/GParted_Core.cc:3247
 msgid "copy %1"
 msgstr "zkopírovat %1"
 
-#: ../src/GParted_Core.cc:3243
+#: ../src/GParted_Core.cc:3250
 msgid "finding optimal block size"
 msgstr "hledá se optimální velikost bloku"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:3274 ../src/GParted_Core.cc:3320
+#: ../src/GParted_Core.cc:3281 ../src/GParted_Core.cc:3327
 msgid "copy %1 using a block size of %2"
 msgstr "kopíruje se %1 používající velikost bloku %2"
 
-#: ../src/GParted_Core.cc:3292
+#: ../src/GParted_Core.cc:3299
 msgid "%1 seconds"
 msgstr "%1 sekund"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3311
+#: ../src/GParted_Core.cc:3318
 msgid "optimal block size is %1"
 msgstr "optimální velikost bloku je %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3338
+#: ../src/GParted_Core.cc:3345
 msgid "%1 (%2 B) copied"
 msgstr "zkopírováno %1 (%2 B)"
 
-#: ../src/GParted_Core.cc:3376
+#: ../src/GParted_Core.cc:3383
 msgid "rollback failed file system move"
 msgstr "vrací se zpět přesun souborového systému, který selhal"
 
-#: ../src/GParted_Core.cc:3399
+#: ../src/GParted_Core.cc:3406
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr ""
@@ -1384,46 +1388,46 @@ msgstr ""
 "systému"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3411
+#: ../src/GParted_Core.cc:3418
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr ""
 "kontrolují se chyby souborového systému na %1 a (podle možností) se opraví"
 
-#: ../src/GParted_Core.cc:3420
+#: ../src/GParted_Core.cc:3427
 msgid "checking is not available for this file system"
 msgstr "kontrola není pro tento souborový systém dostupná"
 
-#: ../src/GParted_Core.cc:3485
+#: ../src/GParted_Core.cc:3492
 msgid "set partition type on %1"
 msgstr "nastavuje se typ oddílu na %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3535
+#: ../src/GParted_Core.cc:3542
 msgid "new partition type: %1"
 msgstr "nový typ oddílu: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3550
+#: ../src/GParted_Core.cc:3557
 msgid "new partition flag: %1"
 msgstr "příznaky nového oddílu: %1"
 
-#: ../src/GParted_Core.cc:3579
+#: ../src/GParted_Core.cc:3586
 msgid "calibrate %1"
 msgstr "kalibruje se %1"
 
-#: ../src/GParted_Core.cc:3644
+#: ../src/GParted_Core.cc:3651
 msgid "device"
 msgstr "zařízení"
 
-#: ../src/GParted_Core.cc:3658
+#: ../src/GParted_Core.cc:3665
 msgid "encryption path: %1"
 msgstr "cesta k šifrování: %1"
 
-#: ../src/GParted_Core.cc:3684
+#: ../src/GParted_Core.cc:3691
 msgid "calculate new size and position of %1"
 msgstr "počítá se nová velikost a pozice %1"
 
-#: ../src/GParted_Core.cc:3812
+#: ../src/GParted_Core.cc:3819
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1431,56 +1435,56 @@ msgstr ""
 "zdrojový oddíl obsahuje šifrování LUKS otevřené jen pro krok smazání značek "
 "souborového systému"
 
-#: ../src/GParted_Core.cc:3819
+#: ../src/GParted_Core.cc:3826
 msgid "clear old file system signatures in %1"
 msgstr "mažou se značky starého souborového systému v %1"
 
-#: ../src/GParted_Core.cc:4025
+#: ../src/GParted_Core.cc:4032
 msgid "flush operating system cache of %1"
 msgstr "vyprazdňuje se mezipaměť operačního systému pro %1"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:4057
+#: ../src/GParted_Core.cc:4064
 msgid "update boot sector of %1 file system on %2"
 msgstr "aktualizuje se sektor zavaděče souborového systému %1 na %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4093
+#: ../src/GParted_Core.cc:4100
 msgid "Error trying to write to boot sector in %1"
 msgstr "Chyba při zapisování do sektoru zavaděče na %1"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4099
+#: ../src/GParted_Core.cc:4106
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "Chyba při přechodu na pozici 0x1c na %1"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4106
+#: ../src/GParted_Core.cc:4113
 msgid "Error trying to open %1"
 msgstr "Chyba při otevírání %1"
 
 # Použil jsem návrh M. Černockého
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4116
+#: ../src/GParted_Core.cc:4123
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "V záznamu zavaděče NTFS se nepodařilo nastavit počet skrytých sektorů na %1."
 
-#: ../src/GParted_Core.cc:4118
+#: ../src/GParted_Core.cc:4125
 msgid "You might try the following command to correct the problem:"
 msgstr "K opravě problému můžete zkusit následující příkaz:"
 
-#: ../src/GParted_Core.cc:4177
+#: ../src/GParted_Core.cc:4185
 msgid "libparted messages"
 msgstr "hlášení libparted"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4194
+#: ../src/GParted_Core.cc:4202
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "Ignoruje se zařízení %1 s velikostí logického sektoru %2 bajtů."
 
-#: ../src/GParted_Core.cc:4197
+#: ../src/GParted_Core.cc:4205
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1488,59 +1492,59 @@ msgstr ""
 "Aby byla zajištěna podpora zařízení s velikostí sektoru větší než 512 bajtů, "
 "vyžaduje GParted knihovnu libparted ve verzi 2.2 nebo vyšší."
 
-#: ../src/GParted_Core.cc:4385
+#: ../src/GParted_Core.cc:4393
 msgid "Libparted Information"
 msgstr "Informace od libparted"
 
-#: ../src/GParted_Core.cc:4389
+#: ../src/GParted_Core.cc:4397
 msgid "Libparted Warning"
 msgstr "Varování od libparted"
 
-#: ../src/GParted_Core.cc:4393
+#: ../src/GParted_Core.cc:4401
 msgid "Libparted Error"
 msgstr "Chyba od libparted"
 
-#: ../src/GParted_Core.cc:4396
+#: ../src/GParted_Core.cc:4404
 msgid "Libparted Fatal"
 msgstr "Kritická chyba knihovny libparted"
 
-#: ../src/GParted_Core.cc:4399
+#: ../src/GParted_Core.cc:4407
 msgid "Libparted Bug"
 msgstr "Chyba knihovny libparted"
 
-#: ../src/GParted_Core.cc:4402
+#: ../src/GParted_Core.cc:4410
 msgid "Libparted Unsupported Feature"
 msgstr "Nepodporovaná funkce knihovnou libparted"
 
-#: ../src/GParted_Core.cc:4405
+#: ../src/GParted_Core.cc:4413
 msgid "Libparted unknown exception"
 msgstr "Neznámá výjimka v knihovně libparted"
 
-#: ../src/GParted_Core.cc:4409
+#: ../src/GParted_Core.cc:4417
 msgid "Fix"
 msgstr "Opravit"
 
-#: ../src/GParted_Core.cc:4411
+#: ../src/GParted_Core.cc:4419
 msgid "Yes"
 msgstr "Ano"
 
-#: ../src/GParted_Core.cc:4413
+#: ../src/GParted_Core.cc:4421
 msgid "Ok"
 msgstr "Budiž"
 
-#: ../src/GParted_Core.cc:4415
+#: ../src/GParted_Core.cc:4423
 msgid "Retry"
 msgstr "Znovu"
 
-#: ../src/GParted_Core.cc:4417
+#: ../src/GParted_Core.cc:4425
 msgid "No"
 msgstr "Ne"
 
-#: ../src/GParted_Core.cc:4419
+#: ../src/GParted_Core.cc:4427
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../src/GParted_Core.cc:4421
+#: ../src/GParted_Core.cc:4429
 msgid "Ignore"
 msgstr "Ignorovat"
 
@@ -1720,7 +1724,7 @@ msgstr "Příznaky"
 #. * not contain a recognized file system, and is in
 #. * other words unallocated.
 #.
-#: ../src/Utils.cc:253
+#: ../src/Utils.cc:256
 msgid "unallocated"
 msgstr "neobsazeno"
 
@@ -1729,7 +1733,7 @@ msgstr "neobsazeno"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:260
+#: ../src/Utils.cc:263
 msgid "unknown"
 msgstr "neznámý"
 
@@ -1737,7 +1741,7 @@ msgstr "neznámý"
 #. * means that the space within this partition will not
 #. * be formatted with a known file system by GParted.
 #.
-#: ../src/Utils.cc:266
+#: ../src/Utils.cc:269
 msgid "unformatted"
 msgstr "nezformátováno"
 
@@ -1745,40 +1749,40 @@ msgstr "nezformátováno"
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:272
+#: ../src/Utils.cc:275
 msgid "cleared"
 msgstr "smazáno"
 
-#: ../src/Utils.cc:294
+#: ../src/Utils.cc:297
 msgid "used"
 msgstr "použito"
 
-#: ../src/Utils.cc:295
+#: ../src/Utils.cc:298
 msgid "unused"
 msgstr "nepoužito"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: ../src/Utils.cc:312
+#: ../src/Utils.cc:316
 msgid "Encrypted"
 msgstr "Šifrováno"
 
-#: ../src/Utils.cc:443
+#: ../src/Utils.cc:449
 msgid "%1 B"
 msgstr "%1 B"
 
-#: ../src/Utils.cc:448
+#: ../src/Utils.cc:454
 msgid "%1 KiB"
 msgstr "%1 KiB"
 
-#: ../src/Utils.cc:453
+#: ../src/Utils.cc:459
 msgid "%1 MiB"
 msgstr "%1 MiB"
 
-#: ../src/Utils.cc:458
+#: ../src/Utils.cc:464
 msgid "%1 GiB"
 msgstr "%1 GiB"
 
-#: ../src/Utils.cc:463
+#: ../src/Utils.cc:469
 msgid "%1 TiB"
 msgstr "%1 TiB"
 
@@ -2445,12 +2449,12 @@ msgstr "Chcete přesto všechno pokračovat ve smazání fyzického svazku?"
 msgid "Failed to find devid for path %1"
 msgstr "Selhalo vyhledání zařízení pro cestu %1"
 
-#: ../src/fat16.cc:33 ../src/ntfs.cc:30
+#: ../src/fat16.cc:35 ../src/ntfs.cc:32
 msgid ""
 "Changing the UUID might invalidate the Windows Product Activation (WPA) key"
 msgstr "Změna UUID může zneplatnit klíč Windows Product Activation (WPA)"
 
-#: ../src/fat16.cc:35 ../src/ntfs.cc:32
+#: ../src/fat16.cc:37 ../src/ntfs.cc:34
 msgid ""
 "On FAT and NTFS file systems, the Volume Serial Number is used as the UUID. "
 "Changing the Volume Serial Number on the Windows system partition, normally "
@@ -2462,7 +2466,7 @@ msgstr ""
 "je obvykle C:, může zneplatnit klíč WPA. Neplatný klíč WPA pak bude bránit "
 "přihlášení, dokud Windows znovu neaktivujete."
 
-#: ../src/fat16.cc:41 ../src/ntfs.cc:42
+#: ../src/fat16.cc:41 ../src/ntfs.cc:40
 msgid ""
 "Changing the UUID on external storage media and non-system partitions is "
 "usually safe, but guarantees cannot be given."
@@ -2480,14 +2484,14 @@ msgid "_Swapoff"
 msgstr "Deaktivovat _odkládací oddíl"
 
 #. TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:190
+#: ../src/linux_swap.cc:191
 msgid ""
 "Partition move action skipped because %1 file system does not contain data"
 msgstr ""
 "Akce Přesun oddílu přeskočena, protože souborový systém %1 neobsahuje data"
 
 #. TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data
-#: ../src/linux_swap.cc:209
+#: ../src/linux_swap.cc:210
 msgid ""
 "Partition copy action skipped because %1 file system does not contain data"
 msgstr ""
@@ -2549,12 +2553,12 @@ msgstr ""
 "nastavena na novou náhodnou hodnotu pouze polovina UUID."
 
 #. simulation..
-#: ../src/ntfs.cc:229
+#: ../src/ntfs.cc:223
 msgid "run simulation"
 msgstr "spouští se simulace"
 
 #. Real resize
-#: ../src/ntfs.cc:237
+#: ../src/ntfs.cc:231
 msgid "real resize"
 msgstr "provádí se skutečná změna velikosti"
 
