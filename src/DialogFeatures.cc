@@ -156,10 +156,7 @@ void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
 
 	//fill the features chart with valid file systems 
 	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
-	{
-		if ( GParted_Core::supported_filesystem( FILESYSTEMS[t].filesystem ) )
-			show_filesystem( FILESYSTEMS[t] );
-	}
+		show_filesystem( FILESYSTEMS[t] );
 }
 		
 void DialogFeatures::show_filesystem( const FS & fs )

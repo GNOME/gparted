@@ -1558,8 +1558,20 @@ void Win_GParted::menu_gparted_features()
 {
 	DialogFeatures dialog ;
 	dialog .set_transient_for( *this ) ;
-	
-	dialog .load_filesystems( gparted_core .get_filesystems() ) ;
+
+	// Create the list of fully supported file system action, adding "other" at the
+	// end for all the basic supported file systems, ready for showing in the dialog.
+	const std::vector<FS> fs_actions = gparted_core.get_filesystems();
+	std::vector<FS> show_fs_actions;
+	show_fs_actions.reserve( fs_actions.size() );
+	for ( unsigned i = 0 ; i < fs_actions.size() ; i ++ )
+	{
+		if ( GParted_Core::supported_filesystem( fs_actions[i].filesystem ) )
+			show_fs_actions.push_back( fs_actions[i] );
+	}
+	show_fs_actions.push_back( gparted_core.get_fs( FS_OTHER ) );
+
+	dialog.load_filesystems( show_fs_actions );
 	while ( dialog .run() == Gtk::RESPONSE_OK )
 	{
 		// Button [Rescan For Supported Actions] pressed in the dialog.  Rescan
@@ -1567,7 +1579,7 @@ void Win_GParted::menu_gparted_features()
 		// view accordingly in the dialog.
 		GParted_Core::find_supported_core();
 		gparted_core .find_supported_filesystems() ;
-		dialog .load_filesystems( gparted_core .get_filesystems() ) ;
+		dialog.load_filesystems( show_fs_actions );
 
 		//recreate format menu...
 		menu_partition .items()[ MENU_FORMAT ] .remove_submenu() ;
