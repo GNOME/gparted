@@ -80,7 +80,7 @@ struct FS
 	Support online_grow;
 	Support online_shrink;
 
-	FS( FSType fstype = FS_UNKNOWN ) : filesystem( fstype )
+	FS( FSType fstype = FS_UNSUPPORTED ) : filesystem( fstype )
 	{
 		busy = read = read_label = write_label = read_uuid = write_uuid = create =
 		create_with_label = grow = shrink = move = check = copy = remove = online_read =
