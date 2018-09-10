@@ -3786,12 +3786,13 @@ bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDe
 	return success;
 }
 
-FileSystem * GParted_Core::get_filesystem_object( FSType filesystem )
+FileSystem * GParted_Core::get_filesystem_object( FSType fstype )
 {
-	if ( FILESYSTEM_MAP .count( filesystem ) )
-	    return FILESYSTEM_MAP[ filesystem ] ;
+	std::map<FSType, FileSystem *>::const_iterator fs_iter = FILESYSTEM_MAP.find( fstype );
+	if ( fs_iter == FILESYSTEM_MAP.end() )
+		return NULL;
 	else
-	    return NULL ;
+		return fs_iter->second;
 }
 
 // Return true for file systems with an implementation class, false otherwise
