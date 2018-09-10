@@ -115,9 +115,9 @@ void GParted_Core::find_supported_filesystems()
 	std::map< FSType, FileSystem * >::iterator f;
 
 	// Iteration of std::map is ordered according to operator< of the key.  Hence the
-	// FILESYSTEMS vector is constructed in FSType enum order: FS_UNSUPPORTED, ...
-	// FS_BTRFS, ..., FS_XFS, ... .  This ultimately controls the default order of the
-	// file systems in the menus and dialogs.
+	// FILESYSTEMS vector is constructed in FSType enum order: FS_UNKNOWN, FS_BTRFS,
+	// ..., FS_XFS, ... .  This ultimately controls the default order of the file
+	// systems in the menus and dialogs.
 	FILESYSTEMS .clear() ;
 
 	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
@@ -4136,11 +4136,16 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 
 void GParted_Core::init_filesystems()
 {
-	FILESYSTEM_MAP[FS_UNSUPPORTED]     = NULL;
-	FILESYSTEM_MAP[FS_UNALLOCATED]     = NULL;
+	// File system support falls into 3 categories determined by their entry in
+	// FILESYSTEM_MAP:
+	// 1)  Fully supported file systems have an entry pointing to the instance of
+	//     their derived FileSystem object.
+	//     supported_filesystem() -> true
+	// 2)  Basic supported file systems have a NULL pointer entry.
+	//     supported_filesystem() -> false
+	// 3)  Unsupported file systems have no entry.
+	//     supported_filesystem() -> false
 	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
-	FILESYSTEM_MAP[FS_CLEARED]         = NULL;
-	FILESYSTEM_MAP[FS_EXTENDED]        = NULL;
 	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
 	FILESYSTEM_MAP[FS_EXFAT]           = new exfat();
 	FILESYSTEM_MAP[FS_EXT2]            = new ext2( FS_EXT2 );
@@ -4164,8 +4169,12 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_UFS]             = new ufs();
 	FILESYSTEM_MAP[FS_XFS]             = new xfs();
 	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
+	FILESYSTEM_MAP[FS_GRUB2_CORE_IMG]  = NULL;
+	FILESYSTEM_MAP[FS_ISO9660]         = NULL;
 	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
 	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
+	FILESYSTEM_MAP[FS_REFS]            = NULL;
+	FILESYSTEM_MAP[FS_ZFS]             = NULL;
 }
 
 void GParted_Core::fini_filesystems()
