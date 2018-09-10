@@ -88,6 +88,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 {
 	switch( filesystem )
 	{
+		case FS_UNSUPPORTED:     return "#000000";  // Black (never displayed)
 		case FS_UNALLOCATED:     return "#A9A9A9";  // Medium Grey [*]
 		case FS_UNKNOWN:         return "#000000";  // Black
 		case FS_UNFORMATTED:     return "#000000";  // Black
@@ -247,6 +248,7 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 {
 	switch( filesystem )
 	{
+		case FS_UNSUPPORTED: return "unsupported";  // Never displayed
 		case FS_UNALLOCATED	: return
 				/* TO TRANSLATORS:  unallocated
 				 * means that this space on the disk device does

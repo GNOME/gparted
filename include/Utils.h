@@ -60,48 +60,49 @@ extern const Glib::ustring DEV_MAPPER_PATH;
 enum FSType
 {
 	// Special partition types and functions
-	FS_UNALLOCATED     = 0,
-	FS_UNKNOWN         = 1,
-	FS_UNFORMATTED     = 2,
-	FS_CLEARED         = 3,  //Clear existing file system signatures
-	FS_EXTENDED        = 4,
+	FS_UNSUPPORTED     = 0,  // Type with no supported actions
+	FS_UNALLOCATED     = 1,  // Unallocated space on a partitioned drive
+	FS_UNKNOWN         = 2,  // Unrecognised content in a drive or partition
+	FS_UNFORMATTED     = 3,  // Create a partition without a file system
+	FS_CLEARED         = 4,  // Clear existing file system signatures
+	FS_EXTENDED        = 5,
 
 	// Supported file system types
-	FS_BTRFS           = 5,
-	FS_EXFAT           = 6, /* Also known as fat64 */
-	FS_EXT2            = 7,
-	FS_EXT3            = 8,
-	FS_EXT4            = 9,
-	FS_F2FS            = 10,
-	FS_FAT16           = 11,
-	FS_FAT32           = 12,
-	FS_HFS             = 13,
-	FS_HFSPLUS         = 14,
-	FS_JFS             = 15,
-	FS_LINUX_SWAP      = 16,
-	FS_LUKS            = 17,
-	FS_LVM2_PV         = 18,
-	FS_MINIX           = 19,
-	FS_NILFS2          = 20,
-	FS_NTFS            = 21,
-	FS_REISER4         = 22,
-	FS_REISERFS        = 23,
-	FS_UDF             = 24,
-	FS_UFS             = 25,
-	FS_XFS             = 26,
+	FS_BTRFS           = 6,
+	FS_EXFAT           = 7, /* Also known as fat64 */
+	FS_EXT2            = 8,
+	FS_EXT3            = 9,
+	FS_EXT4            = 10,
+	FS_F2FS            = 11,
+	FS_FAT16           = 12,
+	FS_FAT32           = 13,
+	FS_HFS             = 14,
+	FS_HFSPLUS         = 15,
+	FS_JFS             = 16,
+	FS_LINUX_SWAP      = 17,
+	FS_LUKS            = 18,
+	FS_LVM2_PV         = 19,
+	FS_MINIX           = 20,
+	FS_NILFS2          = 21,
+	FS_NTFS            = 22,
+	FS_REISER4         = 23,
+	FS_REISERFS        = 24,
+	FS_UDF             = 25,
+	FS_UFS             = 26,
+	FS_XFS             = 27,
 
 	// Recognised signatures but otherwise unsupported file system types
-	FS_BITLOCKER       = 27,
-	FS_GRUB2_CORE_IMG  = 28,
-	FS_ISO9660         = 29,
-	FS_LINUX_SWRAID    = 30,
-	FS_LINUX_SWSUSPEND = 31,
-	FS_REFS            = 32,
-	FS_ZFS             = 33,
+	FS_BITLOCKER       = 28,
+	FS_GRUB2_CORE_IMG  = 29,
+	FS_ISO9660         = 30,
+	FS_LINUX_SWRAID    = 31,
+	FS_LINUX_SWSUSPEND = 32,
+	FS_REFS            = 33,
+	FS_ZFS             = 34,
 
 	// Partition space usage colours
-	FS_USED            = 34,
-	FS_UNUSED          = 35
+	FS_USED            = 35,
+	FS_UNUSED          = 36
 } ;
 
 enum SIZE_UNIT
