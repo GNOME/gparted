@@ -122,10 +122,17 @@ void GParted_Core::find_supported_filesystems()
 
 	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
 		if ( f ->second )
+		{
 			FILESYSTEMS .push_back( f ->second ->get_filesystem_support() ) ;
-		else {
-			FS fs_notsupp( f->first );
-			FILESYSTEMS .push_back( fs_notsupp ) ;
+		}
+		else
+		{
+			// For basic supported file systems create the supported action
+			// set.
+			FS fs_basicsupp( f->first );
+			fs_basicsupp.move = FS::GPARTED;
+			fs_basicsupp.copy = FS::GPARTED;
+			FILESYSTEMS.push_back( fs_basicsupp );
 		}
 	}
 }
