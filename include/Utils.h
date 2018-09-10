@@ -67,7 +67,7 @@ enum FSType
 	FS_CLEARED         = 4,  // Clear existing file system signatures
 	FS_EXTENDED        = 5,
 
-	// Supported file system types
+	// Fully supported file system types
 	FS_BTRFS           = 6,
 	FS_EXFAT           = 7, /* Also known as fat64 */
 	FS_EXT2            = 8,
@@ -91,7 +91,7 @@ enum FSType
 	FS_UFS             = 26,
 	FS_XFS             = 27,
 
-	// Recognised signatures but otherwise unsupported file system types
+	// Other recognised file system types
 	FS_BITLOCKER       = 28,
 	FS_GRUB2_CORE_IMG  = 29,
 	FS_ISO9660         = 30,
