@@ -65,7 +65,7 @@ public:
 	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
 
-	static FileSystem * get_filesystem_object( FSType filesystem );
+	static FileSystem * get_filesystem_object( FSType fstype );
 	static bool supported_filesystem( FSType fstype );
 	static FS_Limits get_filesystem_limits( FSType fstype, const Partition & partition );
 	static bool filesystem_resize_disallowed( const Partition & partition ) ;
