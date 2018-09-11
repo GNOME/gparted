@@ -248,74 +248,73 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 {
 	switch( filesystem )
 	{
-		case FS_UNSUPPORTED: return "unsupported";  // Never displayed
-		case FS_UNALLOCATED	: return
-				/* TO TRANSLATORS:  unallocated
-				 * means that this space on the disk device does
-				 * not contain a recognized file system, and is in
-				 * other words unallocated.
-				 */
-				_("unallocated") ;
-		case FS_UNKNOWN		: return
-				/* TO TRANSLATORS:  unknown
-				 * means that this space within this partition does
-				 * not contain a file system known to GParted, and
-				 * is in other words unknown.
-				 */
-				_("unknown") ;
-		case FS_UNFORMATTED	: return
-				/* TO TRANSLATORS:  unformatted
-				 * means that the space within this partition will not
-				 * be formatted with a known file system by GParted.
-				 */
-				_("unformatted") ;
-		case FS_OTHER		: return
-				/* TO TRANSLATORS:  other
-				 * name shown in the File System Support dialog to list
-				 * actions which can be performed on other file systems
-				 * not specifically listed as supported.
-				 */
-				_("other");
-		case FS_CLEARED		: return
-				/* TO TRANSLATORS:  cleared
-				 * means that all file system signatures in the partition
-				 * will be cleared by GParted.
-				 */
-				_("cleared") ;
-		case FS_EXTENDED	: return "extended" ;
-		case FS_BTRFS		: return "btrfs" ;
-		case FS_EXT2		: return "ext2" ;
-		case FS_EXT3		: return "ext3" ;
-		case FS_EXT4		: return "ext4" ;
-		case FS_LINUX_SWAP	: return "linux-swap" ;
-		case FS_LUKS		: return "luks";
-		case FS_F2FS		: return "f2fs" ;
-		case FS_FAT16		: return "fat16" ;
-		case FS_FAT32		: return "fat32" ;
-		case FS_EXFAT		: return "exfat" ;
-		case FS_NILFS2		: return "nilfs2" ;
-		case FS_NTFS		: return "ntfs" ;
-		case FS_REISERFS	: return "reiserfs" ;
-		case FS_REISER4		: return "reiser4" ;
-		case FS_XFS		: return "xfs" ;
-		case FS_JFS		: return "jfs" ;
-		case FS_HFS		: return "hfs" ;
-		case FS_HFSPLUS		: return "hfs+" ;
-		case FS_UDF		: return "udf";
-		case FS_UFS		: return "ufs" ;
-		case FS_USED		: return _("used") ;
-		case FS_UNUSED		: return _("unused") ;
-		case FS_LVM2_PV		: return "lvm2 pv" ;
-		case FS_MINIX		: return "minix";
-		case FS_BITLOCKER	: return "bitlocker" ;
-		case FS_GRUB2_CORE_IMG	: return "grub2 core.img";
-		case FS_ISO9660		: return "iso9660";
-		case FS_LINUX_SWRAID	: return "linux-raid" ;
-		case FS_LINUX_SWSUSPEND	: return "linux-suspend" ;
-		case FS_REFS		: return "refs" ;
-		case FS_ZFS 		: return "zfs" ;
-
-		default			: return "" ;
+		case FS_UNSUPPORTED:     return "unsupported";  // Never displayed
+		case FS_UNALLOCATED:
+		                         /* TO TRANSLATORS:  unallocated
+		                          * means that this space on the disk device is
+		                          * outside any partition, so is in other words
+		                          * unallocated.
+		                          */
+		                         return _("unallocated");
+		case FS_UNKNOWN:
+		                         /* TO TRANSLATORS:  unknown
+		                          * means that this space within this partition does
+		                          * not contain a file system known to GParted, and
+		                          * is in other words unknown.
+		                          */
+		                         return _("unknown");
+		case FS_UNFORMATTED:
+		                         /* TO TRANSLATORS:  unformatted
+		                          * means that the space within this partition will not
+		                          * be formatted with a known file system by GParted.
+		                          */
+		                         return _("unformatted");
+		case FS_OTHER:
+		                         /* TO TRANSLATORS:  other
+		                          * name shown in the File System Support dialog to list
+		                          * actions which can be performed on other file systems
+		                          * not specifically listed as supported.
+		                          */
+		                         return _("other");
+		case FS_CLEARED:
+		                         /* TO TRANSLATORS:  cleared
+		                          * means that all file system signatures in the partition
+		                          * will be cleared by GParted.
+		                          */
+		                         return _("cleared");
+		case FS_EXTENDED:        return "extended";
+		case FS_BTRFS:           return "btrfs";
+		case FS_EXFAT:           return "exfat";
+		case FS_EXT2:            return "ext2";
+		case FS_EXT3:            return "ext3";
+		case FS_EXT4:            return "ext4";
+		case FS_F2FS:            return "f2fs";
+		case FS_FAT16:           return "fat16";
+		case FS_FAT32:           return "fat32";
+		case FS_HFS:             return "hfs";
+		case FS_HFSPLUS:         return "hfs+";
+		case FS_JFS:             return "jfs";
+		case FS_LINUX_SWAP:      return "linux-swap";
+		case FS_LUKS:            return "luks";
+		case FS_LVM2_PV:         return "lvm2 pv";
+		case FS_MINIX:           return "minix";
+		case FS_NILFS2:          return "nilfs2";
+		case FS_NTFS:            return "ntfs";
+		case FS_REISER4:         return "reiser4";
+		case FS_REISERFS:        return "reiserfs";
+		case FS_UDF:             return "udf";
+		case FS_XFS:             return "xfs";
+		case FS_BITLOCKER:       return "bitlocker";
+		case FS_GRUB2_CORE_IMG:  return "grub2 core.img";
+		case FS_ISO9660:         return "iso9660";
+		case FS_LINUX_SWRAID:    return "linux-raid";
+		case FS_LINUX_SWSUSPEND: return "linux-suspend";
+		case FS_REFS:            return "refs";
+		case FS_UFS:             return "ufs";
+		case FS_ZFS:             return "zfs";
+		case FS_USED:            return _("used");
+		case FS_UNUSED:          return _("unused");
+		default:                 return "";
 	}
 }
 
