@@ -1646,6 +1646,22 @@ void Win_GParted::show_disklabel_unrecognized ( Glib::ustring device_name )
 	dialog .run() ;
 }
 
+void Win_GParted::show_resize_readonly( const Glib::ustring & path )
+{
+	Gtk::MessageDialog dialog( *this,
+	                           /* TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1 */
+	                           String::ucompose( _("Unable to resize read-only file system %1"), path ),
+	                           false,
+	                           Gtk::MESSAGE_INFO,
+	                           Gtk::BUTTONS_OK,
+	                           true );
+	Glib::ustring msg = _("The file system can not be resized while it is mounted read-only.");
+	msg += "\n";
+	msg += _("Either unmount the file system or remount it read-write.");
+	dialog.set_secondary_text( msg );
+	dialog.run();
+}
+
 void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gparted */
                                   , const Glib::ustring & link_id  /* For context sensitive help */
                                   )
@@ -1825,6 +1841,15 @@ void Win_GParted::activate_resize()
 	g_assert( selected_partition_ptr != NULL );  // Bug: Partition callback without a selected partition
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
+	const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
+	if ( selected_filesystem_ptn.busy && selected_filesystem_ptn.fs_readonly )
+	{
+		// Disallow online resizing of *all* file systems mounted read-only as
+		// none of them allow it, except for reiserfs.
+		show_resize_readonly( selected_partition_ptr->get_path() );
+		return;
+	}
+
 	PartitionVector * display_partitions_ptr = &display_partitions;
 	if ( selected_partition_ptr->type == TYPE_LOGICAL )
 	{
@@ -1834,7 +1859,6 @@ void Win_GParted::activate_resize()
 	}
 
 	Partition * working_ptn;
-	const Partition & selected_filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
 	const FSType fstype = selected_filesystem_ptn.filesystem;
 	FS fs_cap = gparted_core.get_fs( fstype );
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( fstype, selected_filesystem_ptn );
