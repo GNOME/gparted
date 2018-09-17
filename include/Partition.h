@@ -165,6 +165,7 @@ public:
 	Sector significant_threshold;  //Threshold from intrinsic to significant unallocated sectors
 	bool inside_extended;
 	bool busy;
+	bool fs_readonly;  // Is the file system mounted read-only?
 	std::vector<Glib::ustring> flags ;
 
 	PartitionVector logicals;
