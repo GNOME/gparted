@@ -55,9 +55,11 @@ public:
 
 private:
 	static void read_mountpoints_from_file( const Glib::ustring & filename, MountMapping & map );
-	static void add_node_and_mountpoint( MountMapping & map,
-	                                     Glib::ustring & node,
-	                                     Glib::ustring & mountpoint );
+	static void add_mountpoint_entry( MountMapping & map,
+	                                  Glib::ustring & node,
+	                                  Glib::ustring & mountpoint,
+	                                  bool readonly );
+	static bool parse_readonly_flag( const Glib::ustring & str );
 	static void read_mountpoints_from_file_swaps( const Glib::ustring & filename,
 	                                              MountMapping & map );
 	static bool have_rootfs_dev( MountMapping & map );
