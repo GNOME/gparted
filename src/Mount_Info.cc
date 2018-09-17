@@ -31,15 +31,17 @@ namespace GParted
 
 // Associative array mapping currently mounted devices to one or more mount points.
 // E.g.
-//     mount_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
-//     mount_info[BlockSpecial("/dev/sda2")] -> [""]  (swap)
-//     mount_info[BlockSpecial("/dev/sda3")] -> ["/"]
+//     //                                         readonly, mountpoints
+//     mount_info[BlockSpecial("/dev/sda1")] -> {false   , ["/boot"]}
+//     mount_info[BlockSpecial("/dev/sda2")] -> {false   , [""]     }  // swap
+//     mount_info[BlockSpecial("/dev/sda3")] -> {false   , ["/"]    }
 static Mount_Info::MountMapping mount_info;
 
 // Associative array mapping configured devices to one or more mount points read from
 // /etc/fstab.  E.g.
-//     fstab_info[BlockSpecial("/dev/sda1")] -> ["/boot"]
-//     fstab_info[BlockSpecial("/dev/sda3")] -> ["/"]
+//     //                                        readonly, mountpoints
+//     fstab_info[BlockSpecial("/dev/sda1")] -> {false   ,["/boot"]}
+//     fstab_info[BlockSpecial("/dev/sda3")] -> {false   ,["/"]    }
 static Mount_Info::MountMapping fstab_info;
 
 void Mount_Info::load_cache()
@@ -69,11 +71,11 @@ void Mount_Info::load_cache()
 	MountMapping::iterator iter_mp;
 	for ( iter_mp = mount_info.begin() ; iter_mp != mount_info.end() ; ++ iter_mp )
 	{
-		std::sort( iter_mp->second.begin(), iter_mp->second.end() );
+		std::sort( iter_mp->second.mountpoints.begin(), iter_mp->second.mountpoints.end() );
 
-		iter_mp->second.erase(
-				std::unique( iter_mp->second.begin(), iter_mp->second.end() ),
-				iter_mp->second.end() );
+		iter_mp->second.mountpoints.erase(
+				std::unique( iter_mp->second.mountpoints.begin(), iter_mp->second.mountpoints.end() ),
+				iter_mp->second.mountpoints.end() );
 	}
 }
 
@@ -96,19 +98,20 @@ std::vector<Glib::ustring> Mount_Info::get_all_mountpoints()
 	std::vector<Glib::ustring> mountpoints;
 
 	for ( iter_mp = mount_info.begin() ; iter_mp != mount_info.end() ; ++ iter_mp )
-		mountpoints.insert( mountpoints.end(), iter_mp->second.begin(), iter_mp->second.end() );
+		mountpoints.insert( mountpoints.end(),
+		                    iter_mp->second.mountpoints.begin(), iter_mp->second.mountpoints.end() );
 
 	return mountpoints;
 }
 
 const std::vector<Glib::ustring> & Mount_Info::get_mounted_mountpoints( const Glib::ustring & path )
 {
-	return find( mount_info, path );
+	return find( mount_info, path ).mountpoints;
 }
 
 const std::vector<Glib::ustring> & Mount_Info::get_fstab_mountpoints( const Glib::ustring & path )
 {
-	return find( fstab_info, path );
+	return find( fstab_info, path ).mountpoints;
 }
 
 // Private methods
@@ -146,7 +149,8 @@ void Mount_Info::add_node_and_mountpoint( MountMapping & map,
 {
 	// Only add node path if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
-		map[BlockSpecial( node )].push_back( mountpoint );
+		// Map::operator[] default constructs MountEntry for new keys (nodes).
+		map[BlockSpecial( node )].mountpoints.push_back( mountpoint );
 }
 
 void Mount_Info::read_mountpoints_from_file_swaps( const Glib::ustring & filename, MountMapping & map )
@@ -161,7 +165,7 @@ void Mount_Info::read_mountpoints_from_file_swaps( const Glib::ustring & filenam
 		{
 			node = Utils::regexp_label( line, "^(/[^ ]+)" );
 			if ( node.size() > 0 )
-				map[BlockSpecial( node )].push_back( "" /* no mountpoint for swap */ );
+				map[BlockSpecial( node )].mountpoints.push_back( "" /* no mountpoint for swap */ );
 		}
 		file.close();
 	}
@@ -174,7 +178,7 @@ bool Mount_Info::have_rootfs_dev( MountMapping & map )
 	MountMapping::const_iterator iter_mp;
 	for ( iter_mp = mount_info.begin() ; iter_mp != mount_info.end() ; iter_mp ++ )
 	{
-		if ( ! iter_mp->second.empty() && iter_mp->second[0] == "/" )
+		if ( ! iter_mp->second.mountpoints.empty() && iter_mp->second.mountpoints[0] == "/" )
 		{
 			if ( iter_mp->first.m_name != "rootfs" && iter_mp->first.m_name != "/dev/root" )
 				return true;
@@ -202,13 +206,14 @@ void Mount_Info::read_mountpoints_from_mount_command( MountMapping & map )
 	}
 }
 
-const std::vector<Glib::ustring> & Mount_Info::find( const MountMapping & map, const Glib::ustring & path )
+const MountEntry & Mount_Info::find( const MountMapping & map, const Glib::ustring & path )
 {
 	MountMapping::const_iterator iter_mp = map.find( BlockSpecial( path ) );
 	if ( iter_mp != map.end() )
 		return iter_mp->second;
 
-	static std::vector<Glib::ustring> empty;
-	return empty;
+	static MountEntry not_mounted = MountEntry();
+	return not_mounted;
 }
+
 } //GParted

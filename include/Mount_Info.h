@@ -33,10 +33,18 @@
 namespace GParted
 {
 
+struct MountEntry
+{
+	bool                       readonly;     // Is the file system mounted read-only?
+	std::vector<Glib::ustring> mountpoints;  // File system mounted on ...
+
+	MountEntry() : readonly( false )  {};
+};
+
 class Mount_Info
 {
 public:
-	typedef std::map<BlockSpecial, std::vector<Glib::ustring> > MountMapping;
+	typedef std::map<BlockSpecial, MountEntry> MountMapping;
 
 	static void load_cache();
 	static bool is_dev_mounted( const Glib::ustring & path );
@@ -54,7 +62,7 @@ private:
 	                                              MountMapping & map );
 	static bool have_rootfs_dev( MountMapping & map );
 	static void read_mountpoints_from_mount_command( MountMapping & map );
-	static const std::vector<Glib::ustring> & find( const MountMapping & map, const Glib::ustring & path );
+	static const MountEntry & find( const MountMapping & map, const Glib::ustring & path );
 };
 
 } //GParted
