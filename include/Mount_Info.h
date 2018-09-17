@@ -49,6 +49,8 @@ public:
 	static void load_cache();
 	static bool is_dev_mounted( const Glib::ustring & path );
 	static bool is_dev_mounted( const BlockSpecial & bs );
+	static bool is_dev_mounted_readonly( const Glib::ustring & path );
+	static bool is_dev_mounted_readonly( const BlockSpecial & bs );
 	static std::vector<Glib::ustring> get_all_mountpoints();
 	static const std::vector<Glib::ustring> & get_mounted_mountpoints( const Glib::ustring & path );
 	static const std::vector<Glib::ustring> & get_fstab_mountpoints( const Glib::ustring & path );

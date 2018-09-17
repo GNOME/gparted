@@ -1673,6 +1673,7 @@ bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::us
 	if ( mountpoints.size() )
 	{
 		partition.add_mountpoints( mountpoints );
+		partition.fs_readonly = Mount_Info::is_dev_mounted_readonly( search_path );
 		return true ;
 	}
 

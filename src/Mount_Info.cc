@@ -93,6 +93,21 @@ bool Mount_Info::is_dev_mounted( const BlockSpecial & bs )
 	return iter_mp != mount_info.end();
 }
 
+// Return whether the device path, such as /dev/sda3, is mounted read-only or not
+bool Mount_Info::is_dev_mounted_readonly( const Glib::ustring & path )
+{
+	return is_dev_mounted_readonly( BlockSpecial( path ) );
+}
+
+// Return whether the BlockSpecial object, such as {"/dev/sda3", 8, 3}, is mounted read-only or not
+bool Mount_Info::is_dev_mounted_readonly( const BlockSpecial & bs )
+{
+	MountMapping::const_iterator iter_mp = mount_info.find( bs );
+	if ( iter_mp == mount_info.end() )
+		return false;
+	return iter_mp->second.readonly;
+}
+
 std::vector<Glib::ustring> Mount_Info::get_all_mountpoints()
 {
 	MountMapping::const_iterator iter_mp;

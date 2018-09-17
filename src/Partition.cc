@@ -52,6 +52,7 @@ void Partition::Reset()
 	sector_size = 0 ;
 	fs_block_size = -1;
 	inside_extended = busy = strict_start = false ;
+	fs_readonly = false;
 	logicals .clear() ;
 	flags .clear() ;
 	mountpoints .clear() ;
