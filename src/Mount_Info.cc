@@ -31,10 +31,11 @@ namespace GParted
 
 // Associative array mapping currently mounted devices to one or more mount points.
 // E.g.
-//     //                                         readonly, mountpoints
-//     mount_info[BlockSpecial("/dev/sda1")] -> {false   , ["/boot"]}
-//     mount_info[BlockSpecial("/dev/sda2")] -> {false   , [""]     }  // swap
-//     mount_info[BlockSpecial("/dev/sda3")] -> {false   , ["/"]    }
+//     //                                        readonly, mountpoints
+//     mount_info[BlockSpecial("/dev/sda1")] -> {false   , ["/boot"]                       }
+//     mount_info[BlockSpecial("/dev/sda2")] -> {false   , [""]                            }  // swap
+//     mount_info[BlockSpecial("/dev/sda3")] -> {false   , ["/"]                           }
+//     mount_info[BlockSpecial("/dev/sr0")]  -> {true    , ["/run/media/user/GParted-live"]}
 static Mount_Info::MountMapping mount_info;
 
 // Associative array mapping configured devices to one or more mount points read from
@@ -137,20 +138,42 @@ void Mount_Info::read_mountpoints_from_file( const Glib::ustring & filename, Mou
 			node = FS_Info::get_path_by_label( label );
 
 		if ( ! node.empty() )
-			add_node_and_mountpoint( map, node, mountpoint );
+			add_mountpoint_entry( map, node, mountpoint, parse_readonly_flag( p->mnt_opts ) );
 	}
 
 	endmntent( fp );
 }
 
-void Mount_Info::add_node_and_mountpoint( MountMapping & map,
-                                          Glib::ustring & node,
-                                          Glib::ustring & mountpoint )
+void Mount_Info::add_mountpoint_entry( MountMapping & map,
+                                       Glib::ustring & node,
+                                       Glib::ustring & mountpoint,
+                                       bool readonly )
 {
 	// Only add node path if mount point exists
 	if ( file_test( mountpoint, Glib::FILE_TEST_EXISTS ) )
+	{
 		// Map::operator[] default constructs MountEntry for new keys (nodes).
-		map[BlockSpecial( node )].mountpoints.push_back( mountpoint );
+		MountEntry & mountentry = map[BlockSpecial( node )];
+		mountentry.readonly = readonly;
+		mountentry.mountpoints.push_back( mountpoint );
+	}
+}
+
+// Parse file system mount options string into read-only boolean
+// E.g. "ro,relatime" -> true
+//      "rw,seclabel,relatime,attr2,inode64,noquota" -> false
+bool Mount_Info::parse_readonly_flag( const Glib::ustring & str )
+{
+	std::vector<Glib::ustring> mntopts;
+	Utils::split( str, mntopts, "," );
+	for ( unsigned int i = 0 ; i < mntopts.size() ; i ++ )
+	{
+		if ( mntopts[i] == "rw" )
+			return false;
+		else if ( mntopts[i] == "ro" )
+			return true;
+	}
+	return false;  // Default is read-write mount
 }
 
 void Mount_Info::read_mountpoints_from_file_swaps( const Glib::ustring & filename, MountMapping & map )
@@ -200,8 +223,9 @@ void Mount_Info::read_mountpoints_from_mount_command( MountMapping & map )
 			// Process line like "/dev/sda3 on / type ext4 (rw)"
 			Glib::ustring node = Utils::regexp_label( lines[ i ], "^([^[:blank:]]+) on " );
 			Glib::ustring mountpoint = Utils::regexp_label( lines[ i ], "^[^[:blank:]]+ on ([^[:blank:]]+) " );
+			Glib::ustring mntopts = Utils::regexp_label( lines[i], " type [^[:blank:]]+ \\(([^\\)]*)\\)" );
 			if ( ! node.empty() )
-				add_node_and_mountpoint( map, node, mountpoint );
+				add_mountpoint_entry( map, node, mountpoint, parse_readonly_flag( mntopts ) );
 		}
 	}
 }
