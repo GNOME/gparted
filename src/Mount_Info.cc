@@ -169,7 +169,7 @@ void Mount_Info::add_mountpoint_entry( MountMapping & map,
 	{
 		// Map::operator[] default constructs MountEntry for new keys (nodes).
 		MountEntry & mountentry = map[BlockSpecial( node )];
-		mountentry.readonly = readonly;
+		mountentry.readonly = mountentry.readonly || readonly;
 		mountentry.mountpoints.push_back( mountpoint );
 	}
 }
