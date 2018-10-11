@@ -76,6 +76,12 @@ FS fat16::get_filesystem_support()
 		fs .create_with_label = GParted::FS::EXTERNAL ;
 		create_cmd = "mkdosfs" ;
 	}
+	else if ( ! Glib::find_program_in_path( "mformat" ) .empty() )
+	{
+		fs .create = GParted::FS::EXTERNAL ;
+		fs .create_with_label = GParted::FS::EXTERNAL ;
+		create_cmd = "mformat" ;
+	}
 
 	if ( ! Glib::find_program_in_path( "fsck.fat" ) .empty() )
 	{
@@ -234,6 +240,23 @@ bool fat16::write_uuid( const Partition & partition, OperationDetail & operation
 
 bool fat16::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
+	if ( create_cmd == "mformat" ) {
+		// -m 0xf8 specify hard disk (default is removable floppy)
+		Glib::ustring common_args = " -m 0xf8";
+
+		// -F forces FAT32 (default type is based on disk size)
+		Glib::ustring fat32_args = (specific_type == FS_FAT16) ? "" : " -F";
+
+		// -v specify label (default no label)
+		Glib::ustring label_args = "";
+		if ( ! new_partition.get_filesystem_label().empty() )
+			label_args = " -v " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label().uppercase() ) );
+
+		return ! execute_command( create_cmd + common_args + fat32_args + label_args + " :: -i " +
+		                          Glib::shell_quote( new_partition.get_path() ),
+		                          operationdetail,
+		                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	}
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
 	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
 	                           "-n " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label() ) ) + " ";
