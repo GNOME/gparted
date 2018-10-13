@@ -29,9 +29,9 @@ FS jfs::get_filesystem_support()
 	fs .busy = FS::GPARTED ;
 
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() ) {
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
 	}
-	
+
 	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
@@ -41,26 +41,26 @@ FS jfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkfs.jfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "jfs_fsck" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
-	
+		fs.check = FS::EXTERNAL;
+
 	//resizing of jfs requires mount, unmount, check/repair functionality and jfs support in the kernel
 	if ( ! Glib::find_program_in_path( "mount" ) .empty()  &&
 	     ! Glib::find_program_in_path( "umount" ) .empty() &&
 	     fs .check                                         &&
 	     Utils::kernel_supports_fs( "jfs" )                   )
 	{
-		fs .grow = GParted::FS::EXTERNAL ;
+		fs.grow = FS::EXTERNAL;
 	}
 
 	if ( fs .check )
 	{
-		fs .move = GParted::FS::GPARTED ;
-		fs .copy = GParted::FS::GPARTED ;
+		fs.move = FS::GPARTED;
+		fs.copy = FS::GPARTED;
 	}
 
 	fs .online_read = FS::GPARTED ;

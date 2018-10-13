@@ -34,7 +34,7 @@ FS xfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "xfs_db" ) .empty() ) 	
 	{
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
 	}
 
@@ -47,13 +47,13 @@ FS xfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkfs.xfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
-	
+
 	if ( ! Glib::find_program_in_path( "xfs_repair" ) .empty() ) 	
-		fs .check = GParted::FS::EXTERNAL ;
-	
+		fs.check = FS::EXTERNAL;
+
 	//Mounted operations require mount, umount and xfs support in the kernel
 	if ( ! Glib::find_program_in_path( "mount" ) .empty()  &&
 	     ! Glib::find_program_in_path( "umount" ) .empty() &&
@@ -72,7 +72,7 @@ FS xfs::get_filesystem_support()
 	}
 
 	if ( fs .check )
-		fs .move = GParted::FS::GPARTED ;
+		fs.move = FS::GPARTED;
 
 	fs .online_read = FS::GPARTED ;
 #ifdef ENABLE_ONLINE_RESIZE

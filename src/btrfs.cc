@@ -47,12 +47,12 @@ FS btrfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkfs.btrfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
+		fs.check = FS::EXTERNAL;
 
 	btrfs_found = ( ! Glib::find_program_in_path( "btrfs" ) .empty() ) ;
 	if ( btrfs_found )
@@ -61,7 +61,7 @@ FS btrfs::get_filesystem_support()
 		//  to test for filesystem show and filesystem resize
 		//  sub-commands as they were always included.
 
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
 
@@ -89,7 +89,7 @@ FS btrfs::get_filesystem_support()
 
 		if ( ! Glib::find_program_in_path( "btrfs-show" ) .empty() )
 		{
-			fs .read = GParted::FS::EXTERNAL ;
+			fs.read = FS::EXTERNAL;
 			fs .read_label = FS::EXTERNAL ;
 			fs .read_uuid = FS::EXTERNAL ;
 		}
@@ -118,8 +118,8 @@ FS btrfs::get_filesystem_support()
 
 	if ( fs .check )
 	{
-		fs .copy = GParted::FS::GPARTED ;
-		fs .move = GParted::FS::GPARTED ;
+		fs.copy = FS::GPARTED;
+		fs.move = FS::GPARTED;
 	}
 
 	fs .online_read = FS::EXTERNAL ;

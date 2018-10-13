@@ -29,21 +29,21 @@ FS hfs::get_filesystem_support()
 	fs .busy = FS::GPARTED ;
 
 #ifdef HAVE_LIBPARTED_FS_RESIZE
-	fs .read = GParted::FS::LIBPARTED ;
-	fs .shrink = GParted::FS::LIBPARTED ;
+	fs.read = FS::LIBPARTED;
+	fs.shrink = FS::LIBPARTED;
 #endif
 
 	if ( ! Glib::find_program_in_path( "hformat" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "hfsck" ) .empty() )
 		fs .check = FS::EXTERNAL ;
 
-	fs .copy = GParted::FS::GPARTED ;
-	fs .move = GParted::FS::GPARTED ;
+	fs.copy = FS::GPARTED;
+	fs.move = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;
 
 	fs_limits.max_size = 2048 * MEBIBYTE;

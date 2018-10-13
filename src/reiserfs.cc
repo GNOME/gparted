@@ -30,7 +30,7 @@ FS reiserfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "debugreiserfs" ) .empty() )
 	{
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
 	}
 
@@ -43,26 +43,26 @@ FS reiserfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkreiserfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
-	
+
 	if ( ! Glib::find_program_in_path( "reiserfsck" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
-		
+		fs.check = FS::EXTERNAL;
+
 	//resizing is a delicate process ...
 	if ( ! Glib::find_program_in_path( "resize_reiserfs" ) .empty() && fs .check )
 	{
-		fs .grow = GParted::FS::EXTERNAL ;
-		
+		fs.grow = FS::EXTERNAL;
+
 		if ( fs .read ) //needed to determine a min file system size..
-			fs .shrink = GParted::FS::EXTERNAL ;
+			fs.shrink = FS::EXTERNAL;
 	}
 
 	if ( fs .check )
 	{
-		fs .copy = GParted::FS::GPARTED ;
-		fs .move = GParted::FS::GPARTED ;
+		fs.copy = FS::GPARTED;
+		fs.move = FS::GPARTED;
 	}
 
 	fs .online_read = FS::GPARTED ;

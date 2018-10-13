@@ -2055,13 +2055,13 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 	FileSystem* p_filesystem = NULL ;
 	switch ( get_fs( partition .filesystem ) .create )
 	{
-		case GParted::FS::NONE:
+		case FS::NONE:
 			break ;
-		case GParted::FS::GPARTED:
+		case FS::GPARTED:
 			break ;
-		case GParted::FS::LIBPARTED:
+		case FS::LIBPARTED:
 			break ;
-		case GParted::FS::EXTERNAL:
+		case FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
 
@@ -2431,9 +2431,9 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	Sector total_done = 0;
 	switch ( get_fs( partition_old .filesystem ) .move )
 	{
-		case GParted::FS::NONE:
+		case FS::NONE:
 			break ;
-		case GParted::FS::GPARTED:
+		case FS::GPARTED:
 			succes = false ;
 			if ( partition_new .test_overlap( partition_old ) )
 			{
@@ -2461,9 +2461,9 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 				                                   true );
 
 			break ;
-		case GParted::FS::LIBPARTED:
+		case FS::LIBPARTED:
 			break ;
-		case GParted::FS::EXTERNAL:
+		case FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition_new .filesystem ) ) &&
 			         p_filesystem ->move( partition_old
 			                            , partition_new
@@ -3006,7 +3006,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	// to allow the operation to be queued in the first place.  See
 	// Win_GParted::set_valid_operations() and
 	// Dialog_Partition_Resize_Move::Resize_Move_Normal().
-	if ( get_fs( partition .filesystem ) .grow == GParted::FS::NONE )
+	if (get_fs(partition.filesystem).grow == FS::NONE)
 	{
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail( _("growing is not available for this file system"),
@@ -3448,7 +3448,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 	FileSystem* p_filesystem = NULL ;
 	switch ( get_fs( partition .filesystem ) .check )
 	{
-		case GParted::FS::NONE:
+		case FS::NONE:
 			operationdetail .get_last_child() .add_child(
 				OperationDetail( _("checking is not available for this file system"),
 						 STATUS_NONE,
@@ -3457,11 +3457,11 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 			return true ;	
 
 			break ;
-		case GParted::FS::GPARTED:
+		case FS::GPARTED:
 			break ;
-		case GParted::FS::LIBPARTED:
+		case FS::LIBPARTED:
 			break ;
-		case GParted::FS::EXTERNAL:
+		case FS::EXTERNAL:
 			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
 				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
 

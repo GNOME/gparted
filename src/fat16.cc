@@ -66,27 +66,27 @@ FS fat16::get_filesystem_support()
 	//find out if we can create fat file systems
 	if ( ! Glib::find_program_in_path( "mkfs.fat" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 		create_cmd = "mkfs.fat" ;
 	}
 	else if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 		create_cmd = "mkdosfs" ;
 	}
 
 	if ( ! Glib::find_program_in_path( "fsck.fat" ) .empty() )
 	{
-		fs .check = GParted::FS::EXTERNAL ;
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.check = FS::EXTERNAL;
+		fs.read = FS::EXTERNAL;
 		check_cmd = "fsck.fat" ;
 	}
 	else if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
 	{
-		fs .check = GParted::FS::EXTERNAL ;
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.check = FS::EXTERNAL;
+		fs.read = FS::EXTERNAL;
 		check_cmd = "dosfsck" ;
 	}
 
@@ -101,11 +101,11 @@ FS fat16::get_filesystem_support()
 
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 	//resizing of start and endpoint are provided by libparted
-	fs .grow = GParted::FS::LIBPARTED ;
-	fs .shrink = GParted::FS::LIBPARTED ;
+	fs.grow = FS::LIBPARTED;
+	fs.shrink = FS::LIBPARTED;
 #endif
 	fs .move = FS::GPARTED ;
-	fs .copy = GParted::FS::GPARTED ;
+	fs.copy = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;
 
 	if ( fs .filesystem == FS_FAT16 )
