@@ -29,17 +29,17 @@ FS nilfs2::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkfs.nilfs2" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "nilfs-tune" ) .empty() )
 	{
-		fs .read = GParted::FS::EXTERNAL ;
-		fs .read_label = GParted::FS::EXTERNAL ;
-		fs .write_label = GParted::FS::EXTERNAL ;
-		fs .read_uuid = GParted::FS::EXTERNAL ;
-		fs .write_uuid = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
+		fs.read_label = FS::EXTERNAL;
+		fs.write_label = FS::EXTERNAL;
+		fs.read_uuid = FS::EXTERNAL;
+		fs.write_uuid = FS::EXTERNAL;
 	}
 
 	//Nilfs2 resizing is an online only operation and needs:
@@ -50,13 +50,13 @@ FS nilfs2::get_filesystem_support()
 	     Utils::kernel_supports_fs( "nilfs2" )                   &&
 	     Utils::kernel_version_at_least( 3, 0, 0 )                  )
 	{
-		fs .grow = GParted::FS::EXTERNAL ;
+		fs.grow = FS::EXTERNAL;
 		if ( fs .read ) //needed to determine a minimum file system size.
-			fs .shrink = GParted::FS::EXTERNAL ;
+			fs.shrink = FS::EXTERNAL;
 	}
 
-	fs .copy = GParted::FS::GPARTED ;
-	fs .move = GParted::FS::GPARTED ;
+	fs.copy = FS::GPARTED;
+	fs.move = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;
 #ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )

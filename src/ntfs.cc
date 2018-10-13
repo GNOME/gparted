@@ -61,8 +61,8 @@ FS ntfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() )
 	{
-		fs .read = GParted::FS::EXTERNAL ;
-		fs .check = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
+		fs.check = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
@@ -85,25 +85,25 @@ FS ntfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
 
 	//resizing is a delicate process ...
 	if ( fs .read && fs .check )
 	{
-		fs .grow = GParted::FS::EXTERNAL ;
-		
+		fs.grow = FS::EXTERNAL;
+
 		if ( fs .read ) //needed to determine a min file system size..
-			fs .shrink = GParted::FS::EXTERNAL ;
+			fs.shrink = FS::EXTERNAL;
 	}
 
 	//we need ntfsresize to set correct used/unused after cloning
 	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() )
-		fs .copy = GParted::FS::EXTERNAL ;
+		fs.copy = FS::EXTERNAL;
 
 	if ( fs .check )
-		fs .move = GParted::FS::GPARTED ;
+		fs.move = FS::GPARTED;
 
 	fs .online_read = FS::GPARTED ;
 

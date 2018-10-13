@@ -30,24 +30,24 @@ FS reiser4::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "debugfs.reiser4" ) .empty() )
 	{
-		fs .read = GParted::FS::EXTERNAL ;
+		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
-		fs .read_uuid = GParted::FS::EXTERNAL ;
+		fs.read_uuid = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkfs.reiser4" ) .empty() )
 	{
-		fs .create = GParted::FS::EXTERNAL ;
-		fs .create_with_label = GParted::FS::EXTERNAL ;
+		fs.create = FS::EXTERNAL;
+		fs.create_with_label = FS::EXTERNAL;
 	}
-	
+
 	if ( ! Glib::find_program_in_path( "fsck.reiser4" ) .empty() )
-		fs .check = GParted::FS::EXTERNAL ;
+		fs.check = FS::EXTERNAL;
 
 	if ( fs .check )
 	{
-		fs .copy = GParted::FS::GPARTED ;
-		fs .move = GParted::FS::GPARTED ;
+		fs.copy = FS::GPARTED;
+		fs.move = FS::GPARTED;
 	}
 
 	fs .online_read = FS::GPARTED ;

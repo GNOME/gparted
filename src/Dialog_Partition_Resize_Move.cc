@@ -82,8 +82,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	if ( ! new_partition->sector_usage_known()      &&
 	     new_partition->status     != STAT_NEW      &&
 	     new_partition->filesystem != FS_LINUX_SWAP    )
-		fs .shrink = GParted::FS::NONE ;
-	
+		fs.shrink = FS::NONE;
+
 	//Disable resizing as it's currently disallowed for the file system in this partition.
 	//  (Updates this class's copy of file system support information).
 	if ( GParted_Core::filesystem_resize_disallowed( *new_partition ) )

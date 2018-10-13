@@ -83,7 +83,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	// partition it is identified correctly before the operation is applied.
 	fs_tmp = FS();
 	fs_tmp .filesystem = GParted::FS_EXTENDED ;
-	fs_tmp .create = GParted::FS::NONE ;
+	fs_tmp.create = FS::NONE;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 	
 	//add table with selection menu's...
