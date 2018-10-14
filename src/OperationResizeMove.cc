@@ -210,11 +210,11 @@ void OperationResizeMove::apply_extended_to_visual( PartitionVector & partitions
 	if ( index_extended >= 0 )
 	{
 		if ( partitions[ index_extended ] .logicals .size() > 0 &&
-		     partitions[ index_extended ] .logicals .front() .type == GParted::TYPE_UNALLOCATED )
+		     partitions[index_extended].logicals.front().type == TYPE_UNALLOCATED )
 			partitions[ index_extended ] .logicals .erase( partitions[ index_extended ] .logicals .begin() ) ;
 	
 		if ( partitions[ index_extended ] .logicals .size() &&
-		     partitions[ index_extended ] .logicals .back() .type == GParted::TYPE_UNALLOCATED )
+		     partitions[index_extended].logicals.back().type == TYPE_UNALLOCATED )
 			partitions[ index_extended ] .logicals .pop_back() ;
 	
 		insert_unallocated( partitions[ index_extended ] .logicals,
@@ -229,11 +229,11 @@ void OperationResizeMove::remove_adjacent_unallocated( PartitionVector & partiti
 {
 	//remove unallocated space following the original partition
 	if ( index_orig +1 < static_cast<int>( partitions .size() ) &&
-	     partitions[ index_orig +1 ] .type == GParted::TYPE_UNALLOCATED )
+	     partitions[index_orig+1].type == TYPE_UNALLOCATED )
 		partitions .erase( partitions .begin() + index_orig +1 );
 	
 	//remove unallocated space preceding the original partition
-	if ( index_orig -1 >= 0 && partitions[ index_orig -1 ] .type == GParted::TYPE_UNALLOCATED )
+	if (index_orig-1 >= 0 && partitions[index_orig-1].type == TYPE_UNALLOCATED)
 		partitions .erase( partitions .begin() + ( index_orig -1 ) ) ;
 }
 

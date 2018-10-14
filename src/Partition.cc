@@ -39,7 +39,7 @@ void Partition::Reset()
 	path.clear();
 	messages .clear() ;
 	status = GParted::STAT_REAL ;
-	type = GParted::TYPE_UNALLOCATED ;
+	type = TYPE_UNALLOCATED;
 	alignment = ALIGN_STRICT ;
 	filesystem = FS_UNALLOCATED;
 	have_filesystem_label = false;

@@ -1943,13 +1943,13 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 		//create new partition
 		switch ( new_partition .type )
 		{
-			case GParted::TYPE_PRIMARY:
+			case TYPE_PRIMARY:
 				type = PED_PARTITION_NORMAL ;
 				break ;
-			case GParted::TYPE_LOGICAL:
+			case TYPE_LOGICAL:
 				type = PED_PARTITION_LOGICAL ;
 				break ;
-			case GParted::TYPE_EXTENDED:
+			case TYPE_EXTENDED:
 				type = PED_PARTITION_EXTENDED ;
 				break ;
 				
@@ -1957,7 +1957,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 				type = PED_PARTITION_FREESPACE;
 		}
 
-		if ( new_partition .type != GParted::TYPE_EXTENDED )
+		if (new_partition.type != TYPE_EXTENDED)
 			fs_type = ped_file_system_type_get( "ext2" ) ;
 
 		PedPartition* lp_partition = ped_partition_new( lp_disk,

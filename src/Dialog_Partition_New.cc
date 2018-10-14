@@ -195,11 +195,11 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 
 	switch (combo_type.get_active_row_number())
 	{
-		case 0	:	part_type = GParted::TYPE_PRIMARY;  break;
-		case 1	:	part_type = GParted::TYPE_LOGICAL;  break;
-		case 2	:	part_type = GParted::TYPE_EXTENDED; break;
+		case 0:	  part_type = TYPE_PRIMARY;   break;
+		case 1:	  part_type = TYPE_LOGICAL;   break;
+		case 2:	  part_type = TYPE_EXTENDED;  break;
 
-		default	:	part_type = GParted::TYPE_UNALLOCATED ;
+		default:  part_type = TYPE_UNALLOCATED;
 	}
 
 	//FIXME:  Partition size is limited to just less than 1024 TeraBytes due
