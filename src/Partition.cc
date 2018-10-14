@@ -38,7 +38,7 @@ void Partition::Reset()
 {
 	path.clear();
 	messages .clear() ;
-	status = GParted::STAT_REAL ;
+	status = STAT_REAL;
 	type = TYPE_UNALLOCATED;
 	alignment = ALIGN_STRICT ;
 	filesystem = FS_UNALLOCATED;
@@ -193,8 +193,8 @@ void Partition::Set_Unallocated( const Glib::ustring & device_path,
 	     sector_size,
 	     inside_extended,
 	     false ); 
-	
-	status = GParted::STAT_REAL ;
+
+	status = STAT_REAL;
 }
 
 void Partition::set_unpartitioned( const Glib::ustring & device_path,

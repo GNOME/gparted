@@ -610,7 +610,7 @@ void Dialog_Partition_Info::Display_Info()
 	               top++, bottom++,
 	               Gtk::FILL );
 
-	if ( partition.filesystem != FS_UNALLOCATED && partition .status != GParted::STAT_NEW )
+	if (partition.filesystem != FS_UNALLOCATED && partition.status != STAT_NEW)
 	{
 		// name
 		table->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Name:") ) + "</b>"),
