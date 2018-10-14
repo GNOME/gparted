@@ -85,7 +85,7 @@ void Dialog_Partition_Copy::set_data( const Partition & selected_partition, cons
 		fs_limits.max_size = copied_partition.get_byte_length();
 	}
 
-	if ( fs .filesystem == GParted::FS_XFS ) //bit hackisch, but most effective, since it's a unique situation
+	if (fs.filesystem == FS_XFS)  // Bit hackish, but most effective, since it's a unique situation.
 		fs_limits.min_size = std::max( fs_limits.min_size, min_resize * copied_partition.sector_size );
 	else
 		fs_limits.min_size = COPIED_LENGTH_MB * MEBIBYTE;

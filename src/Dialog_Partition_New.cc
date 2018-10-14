@@ -75,14 +75,14 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	//... add FS_UNFORMATTED
-	fs_tmp .filesystem = GParted::FS_UNFORMATTED ;
+	fs_tmp.filesystem = FS_UNFORMATTED;
 	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	// ... finally add FS_EXTENDED.  Needed so that when creating an extended
 	// partition it is identified correctly before the operation is applied.
 	fs_tmp = FS();
-	fs_tmp .filesystem = GParted::FS_EXTENDED ;
+	fs_tmp.filesystem = FS_EXTENDED;
 	fs_tmp.create = FS::NONE;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 	
@@ -396,7 +396,7 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
 		//skip extended
-		if( FILESYSTEMS[ t ] .filesystem == GParted::FS_EXTENDED )
+		if (FILESYSTEMS[t].filesystem == FS_EXTENDED)
 			continue ;
 		combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].filesystem));
 		combo_filesystem.items().back().set_sensitive(
