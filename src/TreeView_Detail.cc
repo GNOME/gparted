@@ -123,7 +123,7 @@ void TreeView_Detail::load_partitions( const PartitionVector & partitions,
 		row = parent_row ? *( treestore_detail ->append( parent_row .children() ) ) : *( treestore_detail ->append() ) ;
 		create_row( row, partitions[i], show_names, show_mountpoints, show_labels );
 
-		if ( partitions[ i ] .type == GParted::TYPE_EXTENDED )
+		if (partitions[i].type == TYPE_EXTENDED)
 			load_partitions( partitions[i].logicals, show_names, show_mountpoints, show_labels, row );
 	}
 }
@@ -174,7 +174,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 	treerow[ treeview_detail_columns .path ] = partition .get_path() ;
 
 	//this fixes a weird issue (see #169683 for more info)
-	if ( partition .type == GParted::TYPE_EXTENDED && partition .busy ) 
+	if (partition.type == TYPE_EXTENDED && partition.busy)
 		treerow[ treeview_detail_columns .path ] = treerow[ treeview_detail_columns .path ] + "   " ;
 
 	// name

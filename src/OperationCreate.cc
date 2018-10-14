@@ -54,13 +54,13 @@ void OperationCreate::create_description()
 
 	switch( partition_new->type )
 	{
-		case GParted::TYPE_PRIMARY	:
+		case TYPE_PRIMARY:
 			description = _("Primary Partition");
 			break;
-		case GParted::TYPE_LOGICAL	:
+		case TYPE_LOGICAL:
 			description = _("Logical Partition") ;
 			break;	
-		case GParted::TYPE_EXTENDED	:
+		case TYPE_EXTENDED:
 			description = _("Extended Partition");
 			break;
 	

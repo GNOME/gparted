@@ -186,7 +186,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	this ->get_vbox() ->pack_start( *hbox, Gtk::PACK_SHRINK ) ;
 	
 	//calculate proportional width of used, unused and unallocated
-	if ( partition .type == GParted::TYPE_EXTENDED )
+	if (partition.type == TYPE_EXTENDED)
 	{
 		//Specifically show extended partitions as unallocated
 		used        = 0 ;

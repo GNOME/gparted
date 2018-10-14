@@ -109,12 +109,12 @@ void Dialog_Rescue_Data::create_list_of_fs()
 
 	for(unsigned int i=0;i<this->partitions.size();i++)
 	{
-		if (this->partitions[i].filesystem == FS_UNALLOCATED
-			|| this->partitions[i].filesystem == FS_UNKNOWN
-			|| this->partitions[i].filesystem == FS_UNFORMATTED
-			|| this->partitions[i].filesystem == FS_EXTENDED
-			|| this->partitions[i].type==GParted::TYPE_EXTENDED
-			|| this->partitions[i].type==GParted::TYPE_UNALLOCATED)
+		if (this->partitions[i].filesystem == FS_UNALLOCATED   ||
+		    this->partitions[i].filesystem == FS_UNKNOWN       ||
+		    this->partitions[i].filesystem == FS_UNFORMATTED   ||
+		    this->partitions[i].filesystem == FS_EXTENDED      ||
+		    this->partitions[i].type       == TYPE_EXTENDED    ||
+		    this->partitions[i].type       == TYPE_UNALLOCATED   )
 		{
 			continue;
 		}
@@ -329,7 +329,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 			Glib::ustring dev_path=this->device_path;
 			Glib::ustring part_path;
 			int part_num;
-			PartitionType type=GParted::TYPE_PRIMARY;
+			PartitionType type = TYPE_PRIMARY;
 			FSType fs = FS_UNALLOCATED;
 			Sector sec_start=0;
 			Sector sec_end=0;
@@ -392,7 +392,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 						case 0x85: //Extended
 						{
 							fs = FS_EXTENDED;
-							type=GParted::TYPE_EXTENDED;
+							type = TYPE_EXTENDED;
 							break;
 						}
 						default:

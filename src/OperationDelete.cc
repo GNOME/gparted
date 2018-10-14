@@ -128,11 +128,11 @@ void OperationDelete::remove_original_and_adjacent_unallocated( PartitionVector 
 {
 	//remove unallocated space following the original partition
 	if ( index_orig +1 < static_cast<int>( partitions .size() ) &&
-	     partitions[ index_orig +1 ] .type == GParted::TYPE_UNALLOCATED )
+	     partitions[index_orig+1].type == TYPE_UNALLOCATED )
 		partitions .erase( partitions .begin() + index_orig +1 );
 	
 	//remove unallocated space preceding the original partition and the original partition
-	if ( index_orig -1 >= 0 && partitions[ index_orig -1 ] .type == GParted::TYPE_UNALLOCATED )
+	if (index_orig-1 >= 0 && partitions[index_orig-1].type == TYPE_UNALLOCATED)
 		partitions .erase( partitions .begin() + --index_orig ) ;
 				
 	//and finally remove the original partition
