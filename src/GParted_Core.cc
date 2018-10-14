@@ -1434,57 +1434,57 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 	if ( ! fsname.empty() )
 	{
 		if ( fsname == "extended" )
-			return GParted::FS_EXTENDED ;
+			return FS_EXTENDED;
 		else if ( fsname == "btrfs" )
-			return GParted::FS_BTRFS ;
+			return FS_BTRFS;
 		else if ( fsname == "exfat" )
-			return GParted::FS_EXFAT ;
+			return FS_EXFAT;
 		else if ( fsname == "ext2" )
-			return GParted::FS_EXT2 ;
+			return FS_EXT2;
 		else if ( fsname == "ext3" )
-			return GParted::FS_EXT3 ;
+			return FS_EXT3;
 		else if ( fsname == "ext4"    ||
 		          fsname == "ext4dev"    )
-			return GParted::FS_EXT4 ;
+			return FS_EXT4;
 		else if ( fsname == "linux-swap"      ||
 		          fsname == "linux-swap(v1)"  ||
 		          fsname == "linux-swap(new)" ||
 		          fsname == "linux-swap(v0)"  ||
 		          fsname == "linux-swap(old)" ||
 		          fsname == "swap"               )
-			return GParted::FS_LINUX_SWAP ;
+			return FS_LINUX_SWAP;
 		else if ( fsname == "crypto_LUKS" )
 			return FS_LUKS;
 		else if ( fsname == "LVM2_member" )
-			return GParted::FS_LVM2_PV ;
+			return FS_LVM2_PV;
 		else if ( fsname == "f2fs" )
-			return GParted::FS_F2FS ;
+			return FS_F2FS;
 		else if ( fsname == "fat16" )
-			return GParted::FS_FAT16 ;
+			return FS_FAT16;
 		else if ( fsname == "fat32" )
-			return GParted::FS_FAT32 ;
+			return FS_FAT32;
 		else if ( fsname == "minix" )
 			return FS_MINIX;
 		else if ( fsname == "nilfs2" )
-			return GParted::FS_NILFS2 ;
+			return FS_NILFS2;
 		else if ( fsname == "ntfs" )
-			return GParted::FS_NTFS ;
+			return FS_NTFS;
 		else if ( fsname == "reiserfs" )
-			return GParted::FS_REISERFS ;
+			return FS_REISERFS;
 		else if ( fsname == "xfs" )
-			return GParted::FS_XFS ;
+			return FS_XFS;
 		else if ( fsname == "jfs" )
-			return GParted::FS_JFS ;
+			return FS_JFS;
 		else if ( fsname == "hfs" )
-			return GParted::FS_HFS ;
+			return FS_HFS;
 		else if ( fsname == "hfs+"    ||
 		          fsname == "hfsx"    ||
 		          fsname == "hfsplus"    )
-			return GParted::FS_HFSPLUS ;
+			return FS_HFSPLUS;
 		else if ( fsname == "udf" )
-			return GParted::FS_UDF;
+			return FS_UDF;
 		else if ( fsname == "ufs" )
-			return GParted::FS_UFS ;
+			return FS_UFS;
 		else if ( fsname == "apfs" )
 			return FS_APFS;
 		else if ( fsname == "BitLocker" )
@@ -1520,8 +1520,8 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 	temp += String::ucompose( _("The device entry %1 is missing"), path );
 	
 	messages .push_back( temp ) ;
-	
-	return GParted::FS_UNKNOWN ;
+
+	return FS_UNKNOWN;
 }
 	
 void GParted_Core::read_label( Partition & partition )

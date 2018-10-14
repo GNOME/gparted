@@ -109,10 +109,10 @@ void Dialog_Rescue_Data::create_list_of_fs()
 
 	for(unsigned int i=0;i<this->partitions.size();i++)
 	{
-		if(this->partitions[i].filesystem==GParted::FS_UNALLOCATED
-			|| this->partitions[i].filesystem==GParted::FS_UNKNOWN
-			|| this->partitions[i].filesystem==GParted::FS_UNFORMATTED
-			|| this->partitions[i].filesystem==GParted::FS_EXTENDED
+		if (this->partitions[i].filesystem == FS_UNALLOCATED
+			|| this->partitions[i].filesystem == FS_UNKNOWN
+			|| this->partitions[i].filesystem == FS_UNFORMATTED
+			|| this->partitions[i].filesystem == FS_EXTENDED
 			|| this->partitions[i].type==GParted::TYPE_EXTENDED
 			|| this->partitions[i].type==GParted::TYPE_UNALLOCATED)
 		{
@@ -358,14 +358,14 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 					{
 						case 0x83: //FS code for ext2, reiserfs and xfs
 						{
-							fs=GParted::FS_EXT2;
+							fs = FS_EXT2;
 							break;
 						}
 						case 0x18:
 						case 0x82:
 						case 0xB8: //SWAP partition
 						{
-							fs=GParted::FS_LINUX_SWAP;
+							fs = FS_LINUX_SWAP;
 							break;
 						}
 						case 0x04:
@@ -373,31 +373,31 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 						case 0x86:
 						case 0xE4: //FAT16
 						{
-							fs=GParted::FS_FAT16;
+							fs = FS_FAT16;
 							break;
 						}
 						case 0x0B:
 						case 0x0C: //FAT32
 						{
-							fs=GParted::FS_FAT32;
+							fs = FS_FAT32;
 							break;
 						}
 						case 0x07: //NTFS, HPFS, exFAT and UDF
 						{
-							fs=GParted::FS_NTFS;
+							fs = FS_NTFS;
 							break;
 						}
 						case 0x05:
 						case 0x0F:
 						case 0x85: //Extended
 						{
-							fs=GParted::FS_EXTENDED;
+							fs = FS_EXTENDED;
 							type=GParted::TYPE_EXTENDED;
 							break;
 						}
 						default:
 						{
-							fs=GParted::FS_UNKNOWN;
+							fs = FS_UNKNOWN;
 						}
 					}
 				}
@@ -419,7 +419,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 			}
 
 			//Swap partitions don't contain data
-			if(fs==GParted::FS_LINUX_SWAP)
+			if (fs == FS_LINUX_SWAP)
 			{
 				continue;
 			}

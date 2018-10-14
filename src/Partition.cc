@@ -41,7 +41,7 @@ void Partition::Reset()
 	status = GParted::STAT_REAL ;
 	type = GParted::TYPE_UNALLOCATED ;
 	alignment = ALIGN_STRICT ;
-	filesystem = GParted::FS_UNALLOCATED ;
+	filesystem = FS_UNALLOCATED;
 	have_filesystem_label = false;
 	uuid .clear() ;
 	name.clear();
