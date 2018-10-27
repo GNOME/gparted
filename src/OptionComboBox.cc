@@ -27,10 +27,7 @@ namespace GParted
 // NOTE: As stated in Gtkmm3 documentation, slots can be shared for all model instances.
 // See: Class Reference for Gtk::TreeModelColumn and Gtk::TreeModelColumnRecord.
 //     https://developer.gnome.org/gtkmm/3.22/classGtk_1_1TreeModelColumnRecord.html#details
-Gtk::TreeModelColumn<Glib::ustring> OptionStore::Slots::text;
-Gtk::TreeModelColumn<bool>          OptionStore::Slots::sensitive;
-
-Gtk::TreeModel::ColumnRecord        OptionStore::Slots::record_;
+OptionStore::Slots *OptionStore::m_slots = NULL;
 
 
 OptionStore_Item::OptionStore_Item(const Glib::RefPtr<OptionStore>& ref_model,
@@ -54,36 +51,36 @@ void OptionStore_Item::set(const Glib::ustring& text,
                            bool sensitive)
 {
 	Gtk::TreeModel::iterator iter = *this;
-	(*iter)[OptionStore::Slots::text] = text;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_text] = text;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
 void OptionStore_Item::set_text(const Glib::ustring& text)
 {
 	Gtk::TreeModel::iterator iter = *this;
-	(*iter)[OptionStore::Slots::text] = text;
+	(*iter)[OptionStore::m_slots->m_text] = text;
 }
 
 
 void OptionStore_Item::set_sensitive(bool sensitive)
 {
 	Gtk::TreeModel::iterator iter = *this;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
 Glib::ustring OptionStore_Item::text() const
 {
 	Gtk::TreeModel::const_iterator iter = *this;
-	return (*iter)[OptionStore::Slots::text];
+	return (*iter)[OptionStore::m_slots->m_text];
 }
 
 
 bool OptionStore_Item::sensitive() const
 {
 	Gtk::TreeModel::const_iterator iter = *this;
-	return (*iter)[OptionStore::Slots::sensitive];
+	return (*iter)[OptionStore::m_slots->m_sensitive];
 }
 
 
@@ -110,8 +107,8 @@ void OptionStore_Item_Collection::push_front(const Glib::ustring& text,
                                              bool sensitive)
 {
 	Gtk::TreeModel::iterator iter = m_ref_model->prepend();
-	(*iter)[OptionStore::Slots::text] = text;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_text] = text;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
@@ -119,8 +116,8 @@ void OptionStore_Item_Collection::push_back(const Glib::ustring& text,
                                             bool sensitive)
 {
 	Gtk::TreeModel::iterator iter = m_ref_model->append();
-	(*iter)[OptionStore::Slots::text] = text;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_text] = text;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
@@ -130,8 +127,8 @@ void OptionStore_Item_Collection::insert(const OptionStore_Item& item,
 {
 	Gtk::TreeModel::iterator previous_iter = item.to_iterator_();
 	Gtk::TreeModel::iterator iter = m_ref_model->insert(previous_iter);
-	(*iter)[OptionStore::Slots::text] = text;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_text] = text;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
@@ -141,8 +138,8 @@ void OptionStore_Item_Collection::insert(unsigned position,
 {
 	Gtk::TreeModel::iterator previous_iter = m_ref_model->children()[position];
 	Gtk::TreeModel::iterator iter = m_ref_model->insert(previous_iter);
-	(*iter)[OptionStore::Slots::text] = text;
-	(*iter)[OptionStore::Slots::sensitive] = sensitive;
+	(*iter)[OptionStore::m_slots->m_text] = text;
+	(*iter)[OptionStore::m_slots->m_sensitive] = sensitive;
 }
 
 
@@ -269,13 +266,10 @@ OptionStore_Item_Const OptionStore_Item_Collection::operator[](unsigned position
 OptionStore::OptionStore()
  : Glib::ObjectBase("GParted_OptionStore")
 {
-	if (!Slots::record_.size())
-	{
-		Slots::record_.add(Slots::text);
-		Slots::record_.add(Slots::sensitive);
-	}
+	if (!m_slots)
+		m_slots = new Slots();
 
-	set_column_types(Slots::record_);
+	set_column_types(*m_slots);
 }
 
 
@@ -323,8 +317,8 @@ void OptionComboBox::pack_cell_renderers()
 
 	Gtk::CellRendererText *cell = manage(new Gtk::CellRendererText());
 	pack_start(*cell);
-	add_attribute(*cell, "text", OptionStore::Slots::text);
-	add_attribute(*cell, "sensitive", OptionStore::Slots::sensitive);
+	add_attribute(*cell, "text", OptionStore::m_slots->m_text);
+	add_attribute(*cell, "sensitive", OptionStore::m_slots->m_sensitive);
 }
 
 
