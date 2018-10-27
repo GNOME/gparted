@@ -150,15 +150,20 @@ public:
 	Item_Collection       items();
 	Item_Collection_Const items() const;
 
-	struct Slots
+	class Slots
+	 : public Gtk::TreeModelColumnRecord
 	{
-		static Gtk::TreeModelColumn<Glib::ustring> text;
-		static Gtk::TreeModelColumn<bool> sensitive;
+	public:
+		Gtk::TreeModelColumn<Glib::ustring> m_text;
+		Gtk::TreeModelColumn<bool>          m_sensitive;
 
-	private:
-		static Gtk::TreeModel::ColumnRecord record_;
-		friend class OptionStore;
+		Slots()
+		{
+			add( m_text );
+			add( m_sensitive );
+		}
 	};
+	static Slots *m_slots;
 
 protected:
 	explicit OptionStore();
