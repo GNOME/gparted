@@ -266,8 +266,9 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 		                         return _("unknown");
 		case FS_UNFORMATTED:
 		                         /* TO TRANSLATORS:  unformatted
-		                          * means that the space within this partition will not
-		                          * be formatted with a known file system by GParted.
+		                          * means that when the new partition is created by
+		                          * GParted the space within it will not be formatted
+		                          * with a file system.
 		                          */
 		                         return _("unformatted");
 		case FS_OTHER:
