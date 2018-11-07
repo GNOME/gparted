@@ -1332,7 +1332,8 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 		{     0LL, "\x52\xE8\x28\x01",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\x56\xBE\x63",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{     0LL, "\x52\x56\xBE\x56",     0LL, NULL  , FS_GRUB2_CORE_IMG }
+		{     0LL, "\x52\x56\xBE\x56",     0LL, NULL  , FS_GRUB2_CORE_IMG },
+		{    24LL, "\x01\x00"        ,    32LL, "NXSB", FS_APFS           }
 	};
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
@@ -1343,6 +1344,17 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 	// instructions it starts with.
 	// *   bootinfoscript v0.77 line 1990  [GRUB2 core.img possible staring 4 bytes]
 	//     https://github.com/arvidjaar/bootinfoscript/blob/009f509d59e2f0d39b8d44692e2a81720f5af7b6/bootinfoscript#L1990
+	//
+	// Simple APFS recognition based on matching the following fields in the
+	// superblock:
+	// 1)  Object type is OBJECT_TYPE_NX_SUPERBLOCK, lower 16-bits of the object type
+	//     field is 0x0001 stored as little endian bytes 0x01, 0x00.
+	//     WARNING: The magic signatures are defined as NUL terminated strings so the
+	//     below code only does a 1-byte match for 0x01, rather than a 2-byte match
+	//     for 0x01, 0x00.
+	// 2)  4 byte magic "NXSB".
+	// *   Apple File System Reference
+	//     https://developer.apple.com/support/apple-file-system/Apple-File-System-Reference.pdf
 
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
@@ -1473,6 +1485,8 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 			return GParted::FS_UDF;
 		else if ( fsname == "ufs" )
 			return GParted::FS_UFS ;
+		else if ( fsname == "apfs" )
+			return FS_APFS;
 		else if ( fsname == "BitLocker" )
 			return FS_BITLOCKER;
 		else if ( fsname == "iso9660" )
@@ -4182,6 +4196,7 @@ void GParted_Core::init_filesystems()
 	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
 	FILESYSTEM_MAP[FS_UDF]             = new udf();
 	FILESYSTEM_MAP[FS_XFS]             = new xfs();
+	FILESYSTEM_MAP[FS_APFS]            = NULL;
 	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
 	FILESYSTEM_MAP[FS_GRUB2_CORE_IMG]  = NULL;
 	FILESYSTEM_MAP[FS_ISO9660]         = NULL;
