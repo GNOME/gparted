@@ -94,8 +94,8 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_UNFORMATTED:     return "#000000";  // Black
 		case FS_CLEARED:         return "#000000";  // Black
 		case FS_OTHER:           return "#000000";  // Black (never displayed)
-		case FS_EXTENDED:        return "#7DFCFE";  // Light Blue [*]
-		case FS_BTRFS:           return "#FF9955";  // Orange [*]
+		case FS_EXTENDED:        return "#95E3E5";  // Cyan Hilight [*]
+		case FS_BTRFS:           return "#E58749";  // Orange Medium [*]
 		case FS_EXFAT:           return "#267726";  // Accent Green Dark
 		case FS_EXT2:            return "#7590AE";  // Blue Medium
 		case FS_EXT3:            return "#4B6983";  // Blue Dark
@@ -111,7 +111,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_LVM2_PV:         return "#B39169";  // Face Skin Dark
 		case FS_MINIX:           return "#9DB8D2";  // Blue Highlight
 		case FS_NILFS2:          return "#826647";  // Face Skin Shadow
-		case FS_NTFS:            return "#42E5AC";  // Light Aquamarine [*]
+		case FS_NTFS:            return "#70D2B1";  // Aquamarine Medium [*]
 		case FS_REISER4:         return "#887FA3";  // Purple Medium
 		case FS_REISERFS:        return "#ADA7C8";  // Purple Hilight
 		case FS_UDF:             return "#105210";  // Accent Green Shadow [+]
@@ -122,9 +122,9 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
 		case FS_LINUX_SWRAID:    return "#5A4733";  // Dark brown [*]
 		case FS_LINUX_SWSUSPEND: return "#884631";  // Red Dark
-		case FS_REFS:            return "#2AB98A";  // Medium Aquamarine [*]
+		case FS_REFS:            return "#3EA281";  // Aquamarine Dark [*]
 		case FS_UFS:             return "#D1940C";  // Accent Yellow Dark
-		case FS_ZFS:             return "#CC763D";  // Darker Orange [*]
+		case FS_ZFS:             return "#C26825";  // Orange Dark [*]
 		case FS_USED:            return "#F8F8BA";  // Light Tan Yellow [*]
 		case FS_UNUSED:          return "#FFFFFF";  // White
 		default:                 return "#000000";  // Black
