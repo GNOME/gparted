@@ -4167,11 +4167,13 @@ void GParted_Core::init_filesystems()
 	// File system support falls into 3 categories determined by their entry in
 	// FILESYSTEM_MAP:
 	// 1)  Fully supported file systems have an entry pointing to the instance of
-	//     their derived FileSystem object.
+	//     their derived FileSystem object, which determines and implements their
+	//     supported actions.
 	//     supported_filesystem() -> true
-	// 2)  Basic supported file systems have a NULL pointer entry.
+	// 2)  Basic supported file systems have a NULL pointer entry, with
+	//     find_supported_filesystems() creating a basic set of supported actions.
 	//     supported_filesystem() -> false
-	// 3)  Unsupported file systems have no entry.
+	// 3)  Unsupported file systems have no entry, and no supported actions.
 	//     supported_filesystem() -> false
 	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
 	FILESYSTEM_MAP[FS_OTHER]           = NULL;
