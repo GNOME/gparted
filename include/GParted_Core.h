@@ -96,7 +96,7 @@ private:
 	bool set_mountpoints_helper( Partition & partition, const Glib::ustring & path );
 	bool is_busy( FSType fstype, const Glib::ustring & path );
 	void set_used_sectors( Partition & partition, PedDisk* lp_disk );
-	void mounted_set_used_sectors( Partition & partition ) ;
+	void mounted_fs_set_used_sectors(Partition& partition);
 #ifdef HAVE_LIBPARTED_FS_RESIZE
 	void LP_set_used_sectors( Partition & partition, PedDisk* lp_disk ) ;
 #endif
