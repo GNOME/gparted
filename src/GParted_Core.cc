@@ -1748,7 +1748,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 						p_filesystem->set_used_sectors( partition );
 					break;
 				case FS::GPARTED:
-					mounted_set_used_sectors( partition );
+					mounted_fs_set_used_sectors( partition );
 					break;
 				default:
 					break;
@@ -1830,15 +1830,15 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 	}
 	else
 	{
-		// Set usage of mouted but unsupported file systems
+		// Set usage of mounted but unsupported file systems.
 		if ( partition.busy )
-			mounted_set_used_sectors( partition );
+			mounted_fs_set_used_sectors(partition);
 	}
 }
 
-void GParted_Core::mounted_set_used_sectors( Partition & partition )
+void GParted_Core::mounted_fs_set_used_sectors( Partition & partition )
 {
-	if ( partition .get_mountpoints() .size() > 0 )
+	if (partition.get_mountpoints().size() > 0 && Mount_Info::is_dev_mounted(partition.get_path()))
 	{
 		Byte_Value fs_size ;
 		Byte_Value fs_free ;
