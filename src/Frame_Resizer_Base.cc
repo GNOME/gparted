@@ -20,6 +20,10 @@
 #include <gdkmm/general.h>
 
 
+namespace GParted
+{
+
+
 Frame_Resizer_Base::Frame_Resizer_Base()
 {
 	BORDER = 8 ;
@@ -450,3 +454,6 @@ Frame_Resizer_Base::~Frame_Resizer_Base()
 	delete cursor_resize;
 	delete cursor_move;
 }
+
+
+} //GParted

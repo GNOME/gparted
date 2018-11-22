@@ -22,6 +22,11 @@
 #include <gtkmm/drawingarea.h>
 #include <gdkmm/cursor.h>
  
+
+namespace GParted
+{
+
+
 class Frame_Resizer_Base : public Gtk::Frame
 {
 public:
@@ -86,5 +91,8 @@ private:
 	void init() ;
 
 };
+
+
+} //GParted
 
 #endif /* GPARTED_FRAME_RESIZER_BASE_H */
