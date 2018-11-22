@@ -20,6 +20,11 @@
 
 #include "Frame_Resizer_Base.h"
 
+
+namespace GParted
+{
+
+
 class Frame_Resizer_Extended : public Frame_Resizer_Base
 {
 public:
@@ -35,5 +40,8 @@ private:
 
 	virtual void draw_partition(const Cairo::RefPtr<Cairo::Context>& cr);
 };
+
+
+} //GParted
 
 #endif /* GPARTED_FRAME_RESIZER_EXTENDED_H */

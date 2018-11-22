@@ -20,6 +20,10 @@
 #include <gdkmm/general.h>
 
 
+namespace GParted
+{
+
+
 Frame_Resizer_Extended::Frame_Resizer_Extended()
 {
 }
@@ -186,3 +190,6 @@ void Frame_Resizer_Extended::draw_partition(const Cairo::RefPtr<Cairo::Context>&
 	draw_resize_grip(cr, ARROW_LEFT);
 	draw_resize_grip(cr, ARROW_RIGHT);
 }
+
+
+} //GParted
