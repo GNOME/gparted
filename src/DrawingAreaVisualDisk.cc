@@ -353,8 +353,9 @@ bool DrawingAreaVisualDisk::on_button_press_event( GdkEventButton * event )
 
 		if ( event ->type == GDK_2BUTTON_PRESS ) 
 			signal_partition_activated .emit() ;
-		else if ( event ->button == 3 )  
-			signal_popup_menu .emit( event ->button, event ->time ) ;
+		else if (gdk_event_triggers_context_menu((GdkEvent*) event) &&
+		         event->type == GDK_BUTTON_PRESS)
+			signal_popup_context_menu.emit(*this, event);
 	}
 	
 	return ret_val ;

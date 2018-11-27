@@ -37,6 +37,7 @@ TreeView_Detail::TreeView_Detail()
 	treestore_detail = Gtk::TreeStore::create( treeview_detail_columns );
 	set_model( treestore_detail );
 	set_rules_hint( true );
+	signal_popup_menu().connect(sigc::mem_fun(*this, &TreeView_Detail::on_popup_menu));
 	treeselection = get_selection();
 	treeselection ->signal_changed() .connect( sigc::mem_fun( *this, &TreeView_Detail::on_selection_changed ) );
 
@@ -222,16 +223,23 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 	treerow[treeview_detail_columns.partition_ptr] = & partition;
 }
 
+bool TreeView_Detail::on_popup_menu()
+{
+	signal_popup_context_menu.emit(*this, NULL);
+	return TRUE;
+}
+
 bool TreeView_Detail::on_button_press_event( GdkEventButton * event )
 {
 	//Call base class, to allow normal handling,
 	bool handled = Gtk::TreeView::on_button_press_event( event ) ;
 
-	//right-click
-	if ( event ->button == 3 )  
-		signal_popup_menu .emit( event ->button, event ->time ) ;
+	// Ignore double-clicks and triple-clicks */
+	if (gdk_event_triggers_context_menu((GdkEvent*) event)
+	    && event->type == GDK_BUTTON_PRESS)
+		signal_popup_context_menu.emit(*this, event);
 
-	return handled ;
+	return handled;
 }
 
 void TreeView_Detail::on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) 

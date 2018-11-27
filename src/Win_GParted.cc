@@ -109,8 +109,8 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 			sigc::mem_fun( this, &Win_GParted::on_partition_selected ) ) ;
 	drawingarea_visualdisk .signal_partition_activated .connect( 
 			sigc::mem_fun( this, &Win_GParted::on_partition_activated ) ) ;
-	drawingarea_visualdisk .signal_popup_menu .connect( 
-			sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
+	drawingarea_visualdisk .signal_popup_context_menu.connect(
+			sigc::mem_fun(this, &Win_GParted::on_partition_popup_menu));
 	vbox_main .pack_start( drawingarea_visualdisk, Gtk::PACK_SHRINK ) ;
 	
 	//hpaned_main (NOTE: added to vpaned_main)
@@ -680,7 +680,7 @@ void Win_GParted::init_hpaned_main()
 	//connect signals and add treeview_detail
 	treeview_detail .signal_partition_selected .connect( sigc::mem_fun( this, &Win_GParted::on_partition_selected ) );
 	treeview_detail .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) );
-	treeview_detail .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
+	treeview_detail .signal_popup_context_menu.connect(sigc::mem_fun(this, &Win_GParted::on_partition_popup_menu));
 	scrollwindow ->add( treeview_detail );
 	hpaned_main .pack2( *scrollwindow, true, true );
 }
@@ -1914,9 +1914,22 @@ void Win_GParted::on_partition_activated()
 	activate_info() ;
 }
 
-void Win_GParted::on_partition_popup_menu( unsigned int button, unsigned int time ) 
+void Win_GParted::on_partition_popup_menu(Gtk::Widget& on_widget, const GdkEventButton *event)
 {
-	menu_partition .popup( button, time );
+#ifdef HAVE_GTKMM_MENU_POPUP_AT_WIDGET_AND_POINTER
+	if (event)
+		menu_partition.popup_at_pointer((const GdkEvent*)event);
+	else
+		menu_partition.popup_at_widget(&on_widget,
+		                               Gdk::GRAVITY_NORTH_WEST,
+		                               Gdk::GRAVITY_NORTH_WEST,
+		                               NULL);
+#else
+	if (event)
+		menu_partition.popup(event->button, event->time);
+	else
+		menu_partition.popup(0, gtk_get_current_event_time());
+#endif
 }
 
 bool Win_GParted::max_amount_prim_reached() 

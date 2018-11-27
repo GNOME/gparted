@@ -262,6 +262,17 @@ if test "x$need_cxx_compile_stdcxx_11" = xyes; then
 fi
 
 
+dnl Check for gtkmm >= 3.22 to determine availability of Gtk::Menu::popup_at_{widget,pointer}().
+AC_MSG_CHECKING([for Gtk::Menu::popup_at_{widget,pointer} methods])
+PKG_CHECK_EXISTS(
+	[gtkmm-3.0 >= 3.22.0],
+	[AC_DEFINE([HAVE_GTKMM_MENU_POPUP_AT_WIDGET_AND_POINTER], 1,
+	           [Define to 1 if gtkmm provides Gtk::Menu::popup_at{widget,pointer}() methods.])
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+
 
 dnl Definitions for building of and with gtest.  Gets flags for pthread via earlier
 dnl gthread package check.

@@ -43,7 +43,7 @@ public:
 	// Signals for interclass communication
 	sigc::signal<void, const Partition *, bool> signal_partition_selected;
 	sigc::signal< void > signal_partition_activated ;
-	sigc::signal< void, unsigned int, unsigned int > signal_popup_menu ;
+	sigc::signal<void, Gtk::Widget&, const GdkEventButton*> signal_popup_context_menu;
 
 private:
 	void load_partitions( const PartitionVector & partitions,
@@ -63,7 +63,9 @@ private:
 	bool on_button_press_event( GdkEventButton * event );
 	void on_row_activated( const Gtk::TreeModel::Path & path, Gtk::TreeViewColumn * column ) ;
 	void on_selection_changed() ;
-	
+	//(explicitely subscribed) signal handlers
+	bool on_popup_menu();
+
 	Glib::RefPtr<Gtk::TreeStore> treestore_detail;
 	Glib::RefPtr<Gtk::TreeSelection> treeselection;
 
