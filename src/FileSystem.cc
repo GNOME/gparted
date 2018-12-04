@@ -19,6 +19,10 @@
 
 #include <cerrno>
 #include <iostream>
+#include <glibmm/miscutils.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/shell.h>
+#include <glibmm/main.h>
 #include <gtkmm/main.h>
 #include <signal.h>
 #include <fcntl.h>

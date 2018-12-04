@@ -20,6 +20,10 @@
 #include <limits.h>
 #include <stdlib.h>		//atoi function
 
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/shell.h>
+
 namespace GParted
 {
 

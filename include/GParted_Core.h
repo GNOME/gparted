@@ -30,6 +30,8 @@
 #include <vector>
 #include <fstream>
 
+#include <glibmm/thread.h>
+
 namespace GParted
 {
 
