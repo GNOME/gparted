@@ -29,6 +29,8 @@
 #include <parted/parted.h>
 #include <vector>
 #include <fstream>
+#include <glibmm/thread.h>
+
 
 namespace GParted
 {

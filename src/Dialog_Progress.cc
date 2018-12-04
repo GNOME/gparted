@@ -19,6 +19,8 @@
 #include "OperationDetail.h"
 #include "ProgressBar.h"
 
+#include <glibmm/miscutils.h>
+#include <glibmm/main.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>

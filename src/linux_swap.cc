@@ -21,6 +21,10 @@
 #include "Partition.h"
 
 #include <cerrno>
+#include <glibmm/miscutils.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/shell.h>
+
 
 namespace GParted
 {

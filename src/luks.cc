@@ -19,6 +19,10 @@
 #include "Utils.h"
 #include "luks.h"
 
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+
+
 namespace GParted
 {
 
