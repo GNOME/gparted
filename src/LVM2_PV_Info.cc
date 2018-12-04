@@ -17,6 +17,8 @@
 #include "LVM2_PV_Info.h"
 #include "BlockSpecial.h"
 
+#include <glibmm/miscutils.h>
+
 namespace GParted
 {
 

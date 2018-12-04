@@ -22,6 +22,8 @@
 #include "Utils.h"
 #include "btrfs.h"
 
+#include <glibmm/miscutils.h>
+
 #include <gtkmm/alignment.h>
 #include <gtkmm/viewport.h>
 #include <gdkmm/general.h>
