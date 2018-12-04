@@ -19,6 +19,8 @@
 #include "lvm2_pv.h"
 #include "Partition.h"
 
+#include <glibmm/shell.h>
+
 namespace GParted
 {
 

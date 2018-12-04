@@ -19,6 +19,9 @@
 #include "FileSystem.h"
 #include "Partition.h"
 
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+
 namespace GParted
 {
 

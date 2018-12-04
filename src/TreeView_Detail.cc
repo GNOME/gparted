@@ -24,6 +24,7 @@
 #include <gtkmm/cellrenderer.h>
 #include <gtkmm/cellrenderertext.h>
 #include <pangomm/layout.h>
+#include <glibmm/miscutils.h>
 #include <glibmm/ustring.h>
 
 namespace GParted

@@ -59,6 +59,9 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/shell.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
 
