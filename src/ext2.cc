@@ -22,6 +22,9 @@
 #include "Utils.h"
 
 #include <glibmm/ustring.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+
 
 namespace GParted
 {

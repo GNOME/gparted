@@ -19,6 +19,8 @@
 #include "Dialog_Rescue_Data.h"
 #include "Partition.h"
 
+#include <glibmm/stringutils.h>
+#include <glibmm/shell.h>
 #include <gtk/gtk.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>

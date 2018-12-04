@@ -22,6 +22,9 @@
 #include "Partition.h"
 
 #include <ctype.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+
 
 namespace GParted
 {
