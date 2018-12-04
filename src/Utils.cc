@@ -28,6 +28,8 @@
 #include <cerrno>
 #include <sys/statvfs.h>
 #include <glibmm/ustring.h>
+#include <glibmm/stringutils.h>
+#include <glibmm/shell.h>
 #include <gtkmm/main.h>
 #include <fcntl.h>
 #include <sys/types.h>

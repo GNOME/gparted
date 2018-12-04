@@ -54,6 +54,9 @@
 #include <gtkmm/main.h>
 #include <gtkmm/separator.h>
 #include <glibmm/ustring.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+#include <glibmm/main.h>
 
 namespace GParted
 {

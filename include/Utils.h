@@ -28,6 +28,7 @@
 
 #include <gtkmm/label.h>
 #include <glibmm/ustring.h>
+#include <glibmm/spawn.h>
 
 #include <iostream>
 #include <ctime>
