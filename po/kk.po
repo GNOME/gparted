@@ -7,18 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2018-06-19 16:53+0000\n"
-"PO-Revision-Date: 2018-08-17 21:58+0500\n"
+"POT-Creation-Date: 2018-11-13 13:23+0000\n"
+"PO-Revision-Date: 2018-12-09 16:17+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 
-#: ../gparted.appdata.xml.in.h:1
+#: ../gparted.appdata.xml.in.h:1 ../gparted.desktop.in.in.h:3
+msgid "GParted Partition Editor"
+msgstr "GParted бөлімдерді басқарушысы"
+
+#: ../gparted.appdata.xml.in.h:2 ../gparted.desktop.in.in.h:4
+msgid "Create, reorganize, and delete partitions"
+msgstr "Бөлімдерді жасау, басқару және өшіру"
+
+#: ../gparted.appdata.xml.in.h:3
 msgid ""
 "GParted is a free partition editor for graphically managing your disk "
 "partitions."
@@ -26,7 +34,7 @@ msgstr ""
 "GParted - бұл диск бөлімдерін графикалық түрде басқаруға арналған тегін "
 "қолданба."
 
-#: ../gparted.appdata.xml.in.h:2
+#: ../gparted.appdata.xml.in.h:4
 msgid ""
 "With GParted you can resize, copy, label, and move partitions without data "
 "loss. These actions enable you to grow or shrink your C: drive, create space "
@@ -38,34 +46,26 @@ msgstr ""
 "орынды босата аласыз, немесе жоғалған бөлімдерден деректерді қалпына келтіру "
 "талабын жасай аласыз."
 
-#: ../gparted.appdata.xml.in.h:3
+#: ../gparted.appdata.xml.in.h:5
 msgid ""
 "GParted works with many file systems including: btrfs, ext2, ext3, ext4, "
-"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
+"fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
 "reiser4, udf, ufs, and xfs."
 msgstr ""
 "GParted көптеген файлдық жүйелермен жұмыс жасайды, олар: btrfs, ext2, ext3, "
-"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, nilfs2, ntfs, reiserfs, "
-"reiser4, udf, ufs және xfs."
+"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+"reiserfs, reiser4, udf, ufs және xfs."
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:376
 #: ../src/Win_GParted.cc:87 ../src/Win_GParted.cc:1514
-#: ../src/Win_GParted.cc:1704
+#: ../src/Win_GParted.cc:1732
 msgid "GParted"
 msgstr "GParted"
 
 #: ../gparted.desktop.in.in.h:2
 msgid "Partition Editor"
 msgstr "Қатты диск бөлімдерін басқару"
-
-#: ../gparted.desktop.in.in.h:3
-msgid "GParted Partition Editor"
-msgstr "GParted бөлімдерді басқарушысы"
-
-#: ../gparted.desktop.in.in.h:4
-msgid "Create, reorganize, and delete partitions"
-msgstr "Бөлімдерді жасау, басқару және өшіру"
 
 #: ../gparted.desktop.in.in.h:5
 msgid "Partition;"
@@ -107,19 +107,19 @@ msgid "Error while reading block at sector %1"
 msgstr "%1 секторында блокты оқу кезінде қате кетті"
 
 #. TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1
-#: ../src/DialogPasswordEntry.cc:35
+#: ../src/DialogPasswordEntry.cc:36
 msgid "LUKS Passphrase %1"
 msgstr "LUKS кілттік фразасы, %1"
 
-#: ../src/DialogPasswordEntry.cc:45
+#: ../src/DialogPasswordEntry.cc:46
 msgid "Enter LUKS passphrase to open %1"
 msgstr "%1 ашу үшін LUKS кілттік фразасын енгізіңіз"
 
-#: ../src/DialogPasswordEntry.cc:51
+#: ../src/DialogPasswordEntry.cc:52
 msgid "Passphrase:"
 msgstr "Кілттік фраза:"
 
-#: ../src/DialogPasswordEntry.cc:67
+#: ../src/DialogPasswordEntry.cc:69
 msgid "Unlock"
 msgstr "Босату"
 
@@ -330,12 +330,12 @@ msgstr "Тіркелмеген"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3317
+#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3361
 msgid "Volume Group:"
 msgstr "Томдар тобы:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3318
+#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3362
 msgid "Members:"
 msgstr "Мүшелер:"
 
@@ -863,27 +863,27 @@ msgid "GParted Bug"
 msgstr "GParted ақаулығы"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
-#: ../src/GParted_Core.cc:190 ../src/GParted_Core.cc:199
+#: ../src/GParted_Core.cc:196 ../src/GParted_Core.cc:205
 msgid "Scanning %1"
 msgstr "%1 қаралуда"
 
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
-#: ../src/GParted_Core.cc:218 ../src/GParted_Core.cc:243
+#: ../src/GParted_Core.cc:224 ../src/GParted_Core.cc:249
 msgid "Confirming %1"
 msgstr "%1 рұқсат беру"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
-#: ../src/GParted_Core.cc:272
+#: ../src/GParted_Core.cc:278
 msgid "Searching %1 partitions"
 msgstr "%1 бөлімдерін іздеу"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
-#: ../src/GParted_Core.cc:530
+#: ../src/GParted_Core.cc:536
 msgid "A partition cannot have a length of %1 sectors"
 msgstr "Бөлім ұзындығы %1 сектор болуы мүмкін емес"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
-#: ../src/GParted_Core.cc:544
+#: ../src/GParted_Core.cc:550
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
@@ -894,50 +894,50 @@ msgstr ""
 #. * means that the partition table for this disk
 #. * device is unknown or not recognized.
 #.
-#: ../src/GParted_Core.cc:961
+#: ../src/GParted_Core.cc:967
 msgid "unrecognized"
 msgstr "анықталмаған"
 
 #. no file system found....
-#: ../src/GParted_Core.cc:1487
+#: ../src/GParted_Core.cc:1511
 msgid "Unable to detect file system! Possible reasons are:"
 msgstr "Файлдық жүйені анықтау мүмкін емес! Мүмкін себептер:"
 
-#: ../src/GParted_Core.cc:1489
+#: ../src/GParted_Core.cc:1513
 msgid "The file system is damaged"
 msgstr "Файлдық жүйе зақымдалған"
 
-#: ../src/GParted_Core.cc:1491
+#: ../src/GParted_Core.cc:1515
 msgid "The file system is unknown to GParted"
 msgstr "GParted үшін файлдық жүйе белгісіз"
 
-#: ../src/GParted_Core.cc:1493
+#: ../src/GParted_Core.cc:1517
 msgid "There is no file system available (unformatted)"
 msgstr "Файлдық жүйелер жоқ (пішімделмеген)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
-#: ../src/GParted_Core.cc:1496
+#: ../src/GParted_Core.cc:1520
 msgid "The device entry %1 is missing"
 msgstr "%1 құрылғысы жоқ болып тұр"
 
-#: ../src/GParted_Core.cc:1645
+#: ../src/GParted_Core.cc:1669
 msgid "Unable to find mount point"
 msgstr "Тіркелу нүктесін табу мүмкін емес"
 
-#: ../src/GParted_Core.cc:1762
+#: ../src/GParted_Core.cc:1787
 msgid "Unable to read the contents of this file system!"
 msgstr "Бұл файлдық жүйенің құрамасын оқу мүмкін емес!"
 
-#: ../src/GParted_Core.cc:1764
+#: ../src/GParted_Core.cc:1789
 msgid "Because of this some operations may be unavailable."
 msgstr "Осы себептен кейбір әрекеттер орындалмайды."
 
-#: ../src/GParted_Core.cc:1768
+#: ../src/GParted_Core.cc:1793
 msgid "The cause might be a missing software package."
 msgstr "Оның себебі жоқ болып тұрған бағдарламалық дестесі болуы мүмкін."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
-#: ../src/GParted_Core.cc:1771
+#: ../src/GParted_Core.cc:1796
 msgid ""
 "The following list of software packages is required for %1 file system "
 "support:  %2."
@@ -945,7 +945,7 @@ msgstr ""
 "%1 файлдық жүйені қолдау үшін келесі бағдарламалық қамтама тізімі керек:  %2."
 
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
-#: ../src/GParted_Core.cc:1781
+#: ../src/GParted_Core.cc:1806
 msgid "%1 of unallocated space within the partition."
 msgstr "Бөлімде %1 бөлінбеген орын бар."
 
@@ -953,7 +953,7 @@ msgstr "Бөлімде %1 бөлінбеген орын бар."
 #. * means that the user can perform a check of the partition which will
 #. * also grow the file system to fill the partition.
 #.
-#: ../src/GParted_Core.cc:1791
+#: ../src/GParted_Core.cc:1816
 msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
@@ -961,11 +961,11 @@ msgstr ""
 "Файлдық жүйені диск бөлімін толығымен алатындай ұлғайту үшін, бөлімді "
 "таңдаңыз және мәзірден таңдаңыз:"
 
-#: ../src/GParted_Core.cc:1793
+#: ../src/GParted_Core.cc:1818
 msgid "Partition --> Check."
 msgstr "Бөлім --> Тексеру."
 
-#: ../src/GParted_Core.cc:1901
+#: ../src/GParted_Core.cc:1932
 msgid "create empty partition"
 msgstr "бос бөлімді құру"
 
@@ -979,90 +979,90 @@ msgstr "бос бөлімді құру"
 #. * is a whole disk device or a partition
 #. * within a device.
 #.
-#: ../src/GParted_Core.cc:1977 ../src/GParted_Core.cc:3643
+#: ../src/GParted_Core.cc:2008 ../src/GParted_Core.cc:3674
 msgid "path: %1 (%2)"
 msgstr "жолы: %1 (%2)"
 
-#: ../src/GParted_Core.cc:1978 ../src/GParted_Core.cc:3647
+#: ../src/GParted_Core.cc:2009 ../src/GParted_Core.cc:3678
 msgid "partition"
 msgstr "бөлім"
 
-#: ../src/GParted_Core.cc:1979 ../src/GParted_Core.cc:3648
+#: ../src/GParted_Core.cc:2010 ../src/GParted_Core.cc:3679
 msgid "start: %1"
 msgstr "басы: %1"
 
-#: ../src/GParted_Core.cc:1980 ../src/GParted_Core.cc:3649
+#: ../src/GParted_Core.cc:2011 ../src/GParted_Core.cc:3680
 msgid "end: %1"
 msgstr "соңы: %1"
 
-#: ../src/GParted_Core.cc:1981 ../src/GParted_Core.cc:3650
+#: ../src/GParted_Core.cc:2012 ../src/GParted_Core.cc:3681
 msgid "size: %1 (%2)"
 msgstr "өлшемі: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2013
+#: ../src/GParted_Core.cc:2044
 msgid ""
 "partition contains open LUKS encryption for a create file system only step"
 msgstr "бөлімде файлдық жүйені тек жасау қадамы үшін ашық LUKS шифрлеуі бар"
 
 #. TO TRANSLATORS: looks like create new ext3 file system
-#: ../src/GParted_Core.cc:2020
+#: ../src/GParted_Core.cc:2051
 msgid "create new %1 file system"
 msgstr "жаңа %1 файлдық жүйені жасау"
 
-#: ../src/GParted_Core.cc:2052
+#: ../src/GParted_Core.cc:2083
 msgid ""
 "partition contains open LUKS encryption for a format file system only step"
 msgstr "бөлімде файлдық жүйені тек пішімдеу қадамы үшін ашық LUKS шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:2067
+#: ../src/GParted_Core.cc:2098
 msgid "delete partition"
 msgstr "бөлімді өшіру"
 
-#: ../src/GParted_Core.cc:2111
+#: ../src/GParted_Core.cc:2142
 msgid ""
 "partition contains open LUKS encryption for a delete file system only step"
 msgstr "бөлімде файлдық жүйені тек өшіру қадамы үшін ашық LUKS шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:2126
+#: ../src/GParted_Core.cc:2157
 msgid "delete %1 file system"
 msgstr "%1 файлдық жүйесін өшіру"
 
-#: ../src/GParted_Core.cc:2144
+#: ../src/GParted_Core.cc:2175
 msgid ""
 "partition contains open LUKS encryption for a label file system only step"
 msgstr ""
 "бөлімде файлдық жүйеге тек белгіні орнату қадамы үшін ашық LUKS шифрлеуі бар"
 
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
-#: ../src/GParted_Core.cc:2151 ../src/OperationLabelFileSystem.cc:55
+#: ../src/GParted_Core.cc:2182 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
 msgstr "%1 үшін файлдық жүйе белгісін өшіру"
 
-#: ../src/GParted_Core.cc:2154
+#: ../src/GParted_Core.cc:2185
 msgid "Set file system label to \"%1\" on %2"
 msgstr "\"%1\" етіп файлдық жүйе белгісін %2 үшін орнату"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
-#: ../src/GParted_Core.cc:2179 ../src/OperationNamePartition.cc:55
+#: ../src/GParted_Core.cc:2210 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
 msgstr "%1 үшін бөлім атын өшіру"
 
-#: ../src/GParted_Core.cc:2182
+#: ../src/GParted_Core.cc:2213
 msgid "Set partition name to \"%1\" on %2"
 msgstr "\"%1\" етіп бөлім атын %2 үшін орнату"
 
-#: ../src/GParted_Core.cc:2207
+#: ../src/GParted_Core.cc:2238
 msgid ""
 "partition contains open LUKS encryption for a change file system UUID only "
 "step"
 msgstr ""
 "бөлімде файлдық жүйенің тек UUID-ін өзгерту үшін ашық LUKS шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:2214
+#: ../src/GParted_Core.cc:2245
 msgid "Set half of the UUID on %1 to a new, random value"
 msgstr "%1 жеріндегі UUID-ң жартысын жаңа, кездейсоқ мәніне орнату"
 
-#: ../src/GParted_Core.cc:2219
+#: ../src/GParted_Core.cc:2250
 msgid "Set UUID on %1 to a new, random value"
 msgstr "%1 үшін UUID-ді жаңа, кездейсоқ мәніне орнату"
 
@@ -1071,27 +1071,27 @@ msgstr "%1 үшін UUID-ді жаңа, кездейсоқ мәніне орна
 #. * to change the size of a partition when performing a move only
 #. * step which is not permitted to change the partition size.
 #.
-#: ../src/GParted_Core.cc:2303
+#: ../src/GParted_Core.cc:2334
 msgid "size of the partition is changing for a move only step"
 msgstr "бөлім өлшемі тек жылжыту қадамы үшін өзгертілуде"
 
-#: ../src/GParted_Core.cc:2334
+#: ../src/GParted_Core.cc:2365
 msgid "rollback last change to the partition"
 msgstr "бөлімге жасалған соңғы әрекетті қайтару"
 
-#: ../src/GParted_Core.cc:2383
+#: ../src/GParted_Core.cc:2414
 msgid "move file system to the left"
 msgstr "файлдық жүйені солға жылжыту"
 
-#: ../src/GParted_Core.cc:2385
+#: ../src/GParted_Core.cc:2416
 msgid "move file system to the right"
 msgstr "файлдық жүйені оңға жылжыту"
 
-#: ../src/GParted_Core.cc:2388
+#: ../src/GParted_Core.cc:2419
 msgid "move file system"
 msgstr "файлдық жүйені жылжыту"
 
-#: ../src/GParted_Core.cc:2390
+#: ../src/GParted_Core.cc:2421
 msgid ""
 "new and old file system have the same position.  Hence skipping this "
 "operation"
@@ -1099,7 +1099,7 @@ msgstr ""
 "жаңа және ескі файлдық жүйелер бір жерде жатыр. Сондықтан бұл әрекетті аттап "
 "өтеміз"
 
-#: ../src/GParted_Core.cc:2456
+#: ../src/GParted_Core.cc:2487
 msgid "using libparted"
 msgstr "libparted қолдану"
 
@@ -1109,70 +1109,70 @@ msgstr "libparted қолдану"
 #. * only step which is not permitted to change the start of the
 #. * partition.
 #.
-#: ../src/GParted_Core.cc:2530
+#: ../src/GParted_Core.cc:2561
 msgid "start of the partition is changing for a resize only step"
 msgstr "бөлім басы тек өлшемін өзгерту қадамы үшін өзгертілуде"
 
-#: ../src/GParted_Core.cc:2548
+#: ../src/GParted_Core.cc:2579
 msgid ""
 "partition does not contain LUKS encryption for a resize encryption only step"
 msgstr ""
 "бөлімде файлдық жүйенің тек шифрлеу өлшемін өзгерту қадамы үшін ашық LUKS "
 "шифрлеуі жоқ"
 
-#: ../src/GParted_Core.cc:2558
+#: ../src/GParted_Core.cc:2589
 msgid "impossible to shrink a closed LUKS encryption volume"
 msgstr "жабық LUKS шифрлеу бөлімінің өлшемін кішірейту мүмкін емес"
 
-#: ../src/GParted_Core.cc:2617
+#: ../src/GParted_Core.cc:2648
 msgid ""
 "partition contains open LUKS encryption for a resize file system only step"
 msgstr ""
 "бөлімде файлдық жүйенің тек өлшемін өзгерту қадамы үшін ашық LUKS шифрлеуі "
 "бар"
 
-#: ../src/GParted_Core.cc:2687
+#: ../src/GParted_Core.cc:2718
 msgid "resize/move partition"
 msgstr "бөлімнің өлшемін өзгерту/бөлімді жылжыту"
 
-#: ../src/GParted_Core.cc:2690
+#: ../src/GParted_Core.cc:2721
 msgid "move partition to the right"
 msgstr "бөлімді оңға жылжыту"
 
-#: ../src/GParted_Core.cc:2693
+#: ../src/GParted_Core.cc:2724
 msgid "move partition to the left"
 msgstr "бөлімді солға жылжыту"
 
-#: ../src/GParted_Core.cc:2696
+#: ../src/GParted_Core.cc:2727
 msgid "grow partition from %1 to %2"
 msgstr "бөлімді %1 мәнінен %2 мәніне дейін ұлғайту"
 
-#: ../src/GParted_Core.cc:2699
+#: ../src/GParted_Core.cc:2730
 msgid "shrink partition from %1 to %2"
 msgstr "бөлімді %1 мәнінен %2 мәніне дейін кішірейту"
 
-#: ../src/GParted_Core.cc:2702
+#: ../src/GParted_Core.cc:2733
 msgid "move partition to the right and grow it from %1 to %2"
 msgstr ""
 "бөлімді оңға жылжытып, өлшемін ескі %1 мәнінен жаңа %2 мәніне дейін ұлғайту"
 
-#: ../src/GParted_Core.cc:2705
+#: ../src/GParted_Core.cc:2736
 msgid "move partition to the right and shrink it from %1 to %2"
 msgstr ""
 "бөлімді оңға жылжытып, өлшемін ескі %1 мәнінен жаңа %2 мәніне дейін кішірейту"
 
-#: ../src/GParted_Core.cc:2708
+#: ../src/GParted_Core.cc:2739
 msgid "move partition to the left and grow it from %1 to %2"
 msgstr ""
 "бөлімді солға жылжытып, өлшемін ескі %1 мәнінен жаңа %2 мәніне дейін ұлғайту"
 
-#: ../src/GParted_Core.cc:2711
+#: ../src/GParted_Core.cc:2742
 msgid "move partition to the left and shrink it from %1 to %2"
 msgstr ""
 "бөлімді солға жылжытып, өлшемін ескі %1 мәнінен жаңа %2 мәніне дейін "
 "кішірейту"
 
-#: ../src/GParted_Core.cc:2726
+#: ../src/GParted_Core.cc:2757
 msgid ""
 "new and old partition have the same size and position.  Hence skipping this "
 "operation"
@@ -1180,59 +1180,59 @@ msgstr ""
 "жаңа мен ескі бөлімдердің өлшемдері мен орны сәйкес келеді. Сондықтан бұл "
 "әрекетті аттап өтеміз"
 
-#: ../src/GParted_Core.cc:2736
+#: ../src/GParted_Core.cc:2767
 msgid "old start: %1"
 msgstr "ескі басы: %1"
 
-#: ../src/GParted_Core.cc:2737
+#: ../src/GParted_Core.cc:2768
 msgid "old end: %1"
 msgstr "ескі соңы: %1"
 
-#: ../src/GParted_Core.cc:2738
+#: ../src/GParted_Core.cc:2769
 msgid "old size: %1 (%2)"
 msgstr "ескі өлшемі: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2753 ../src/GParted_Core.cc:3737
+#: ../src/GParted_Core.cc:2784 ../src/GParted_Core.cc:3768
 msgid "new start: %1"
 msgstr "жаңа басы: %1"
 
-#: ../src/GParted_Core.cc:2754 ../src/GParted_Core.cc:3738
+#: ../src/GParted_Core.cc:2785 ../src/GParted_Core.cc:3769
 msgid "new end: %1"
 msgstr "жаңа соңы: %1"
 
-#: ../src/GParted_Core.cc:2755 ../src/GParted_Core.cc:3739
+#: ../src/GParted_Core.cc:2786 ../src/GParted_Core.cc:3770
 msgid "new size: %1 (%2)"
 msgstr "жаңа өлшемі: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2769 ../src/GParted_Core.cc:3690
+#: ../src/GParted_Core.cc:2800 ../src/GParted_Core.cc:3721
 msgid "requested start: %1"
 msgstr "сұралған басы: %1"
 
-#: ../src/GParted_Core.cc:2770 ../src/GParted_Core.cc:3691
+#: ../src/GParted_Core.cc:2801 ../src/GParted_Core.cc:3722
 msgid "requested end: %1"
 msgstr "сұралған соңы: %1"
 
-#: ../src/GParted_Core.cc:2771 ../src/GParted_Core.cc:3692
+#: ../src/GParted_Core.cc:2802 ../src/GParted_Core.cc:3723
 msgid "requested size: %1 (%2)"
 msgstr "сұралған өлшемі: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2783
+#: ../src/GParted_Core.cc:2814
 msgid "attempt to rollback failed change to the partition"
 msgstr "бөлімге жасалған соңғы сәтсіз әрекетті қайтару"
 
-#: ../src/GParted_Core.cc:2804
+#: ../src/GParted_Core.cc:2835
 msgid "original start: %1"
 msgstr "бастапқы басы: %1"
 
-#: ../src/GParted_Core.cc:2805
+#: ../src/GParted_Core.cc:2836
 msgid "original end: %1"
 msgstr "бастапқы соңы: %1"
 
-#: ../src/GParted_Core.cc:2806
+#: ../src/GParted_Core.cc:2837
 msgid "original size: %1 (%2)"
 msgstr "бастапқы өлшемі: %1 (%2)"
 
-#: ../src/GParted_Core.cc:2888
+#: ../src/GParted_Core.cc:2919
 msgid ""
 "partition does not contain open LUKS encryption for a shrink encryption only "
 "step"
@@ -1240,11 +1240,11 @@ msgstr ""
 "бөлімде файлдық жүйенің тек шифрлеу өлшемін кішірейту қадамы үшін ашық LUKS "
 "шифрлеуі жоқ"
 
-#: ../src/GParted_Core.cc:2893
+#: ../src/GParted_Core.cc:2924
 msgid "shrink encryption volume"
 msgstr "шифрлеу бөлімінің өлшемін кішірейту"
 
-#: ../src/GParted_Core.cc:2904
+#: ../src/GParted_Core.cc:2935
 msgid ""
 "partition does not contain LUKS encryption for a maximize encryption only "
 "step"
@@ -1252,15 +1252,15 @@ msgstr ""
 "бөлімде файлдық жүйенің тек шифрлеу өлшемін максималды қылу қадамы үшін ашық "
 "LUKS шифрлеуі жоқ"
 
-#: ../src/GParted_Core.cc:2909
+#: ../src/GParted_Core.cc:2940
 msgid "grow encryption volume to fill the partition"
 msgstr "шифрлеу томын бөлімді толтыратындай ұлғайту"
 
-#: ../src/GParted_Core.cc:2919
+#: ../src/GParted_Core.cc:2950
 msgid "growing is not available for this encryption volume"
 msgstr "бұл шифрлеу томын ұлғайту мүмкін емес"
 
-#: ../src/GParted_Core.cc:2937
+#: ../src/GParted_Core.cc:2968
 msgid ""
 "partition contains open LUKS encryption for a shrink file system only step"
 msgstr ""
@@ -1272,50 +1272,50 @@ msgstr ""
 #. * to grow the partition size or keep it the same when performing
 #. * a shrink partition only step.
 #.
-#: ../src/GParted_Core.cc:2949
+#: ../src/GParted_Core.cc:2980
 msgid "the new partition size is larger or the same for a shrink only step"
 msgstr ""
 "бөлімнің жаңа өлшемі тек өлшемін кішірейту қадамы үшін үлкенірек немесе дәл "
 "сондай"
 
-#: ../src/GParted_Core.cc:2954
+#: ../src/GParted_Core.cc:2985
 msgid "shrink file system"
 msgstr "файлдық жүйені кішірейту"
 
-#: ../src/GParted_Core.cc:2965
+#: ../src/GParted_Core.cc:2996
 msgid ""
 "partition contains open LUKS encryption for a maximize file system only step"
 msgstr ""
 "бөлімде файлдық жүйенің тек өлшемін максималды қылу қадамы үшін ашық LUKS "
 "шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:2970
+#: ../src/GParted_Core.cc:3001
 msgid "grow file system to fill the partition"
 msgstr "файлдық жүйені бөлімді толтыратындай ұлғайту"
 
-#: ../src/GParted_Core.cc:2981
+#: ../src/GParted_Core.cc:3012
 msgid "growing is not available for this file system"
 msgstr "бұл файлдық жүйені ұлғайту мүмкін емес"
 
-#: ../src/GParted_Core.cc:2989
+#: ../src/GParted_Core.cc:3020
 msgid "growing the file system is currently disallowed"
 msgstr "файлдық жүйені өсіру қазір рұқсат етілмеген"
 
 #. TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step
-#: ../src/GParted_Core.cc:3013
+#: ../src/GParted_Core.cc:3044
 msgid "not a %1 file system for a recreate %1 only step"
 msgstr "%1 файлдық жүйесі емес, тек %1 қайта жасау қадамы үшін"
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
-#: ../src/GParted_Core.cc:3025
+#: ../src/GParted_Core.cc:3056
 msgid "recreate %1 file system"
 msgstr "%1 файлдық жүйеcін қайта жасау"
 
-#: ../src/GParted_Core.cc:3094
+#: ../src/GParted_Core.cc:3125
 msgid "the destination is smaller than the source partition"
 msgstr "мақсат бөлім бастапқы бөлімнен кіші"
 
-#: ../src/GParted_Core.cc:3145
+#: ../src/GParted_Core.cc:3176
 msgid ""
 "source partition contains open LUKS encryption for a file system copy only "
 "step"
@@ -1323,98 +1323,98 @@ msgstr ""
 "қайнар көз бөлімде файлдық жүйені тек көшіру қадамы үшін ашық LUKS шифрлеуі "
 "бар"
 
-#: ../src/GParted_Core.cc:3152
+#: ../src/GParted_Core.cc:3183
 msgid ""
 "destination partition contains open LUKS encryption for a file system copy "
 "only step"
 msgstr ""
 "мақсат бөлімде файлдық жүйені тек көшіру қадамы үшін ашық LUKS шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:3158
+#: ../src/GParted_Core.cc:3189
 msgid "copy file system from %1 to %2"
 msgstr "%1 жерінен файлдық жүйені %2 жеріне көшіру"
 
-#: ../src/GParted_Core.cc:3239
+#: ../src/GParted_Core.cc:3270
 msgid "using internal algorithm"
 msgstr "ішкі алгоритмді қолдану"
 
 #. TO TRANSLATORS: looks like  copy 1.00 MiB
-#: ../src/GParted_Core.cc:3242
+#: ../src/GParted_Core.cc:3273
 msgid "copy %1"
 msgstr "көшіру %1"
 
-#: ../src/GParted_Core.cc:3245
+#: ../src/GParted_Core.cc:3276
 msgid "finding optimal block size"
 msgstr "тиімді блок өлшемін табу"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
-#: ../src/GParted_Core.cc:3276 ../src/GParted_Core.cc:3322
+#: ../src/GParted_Core.cc:3307 ../src/GParted_Core.cc:3353
 msgid "copy %1 using a block size of %2"
 msgstr "%1 көшіру, блок өлшемі %2"
 
-#: ../src/GParted_Core.cc:3294
+#: ../src/GParted_Core.cc:3325
 msgid "%1 seconds"
 msgstr "%1 секунд"
 
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
-#: ../src/GParted_Core.cc:3313
+#: ../src/GParted_Core.cc:3344
 msgid "optimal block size is %1"
 msgstr "тиімді блок өлшемі - %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
-#: ../src/GParted_Core.cc:3340
+#: ../src/GParted_Core.cc:3371
 msgid "%1 (%2 B) copied"
 msgstr "%1 (%2 Б) көшірілді"
 
-#: ../src/GParted_Core.cc:3378
+#: ../src/GParted_Core.cc:3409
 msgid "rollback failed file system move"
 msgstr "файлдық жүйені сәтсіз жылжытуын қайтару"
 
-#: ../src/GParted_Core.cc:3401
+#: ../src/GParted_Core.cc:3432
 msgid ""
 "partition contains open LUKS encryption for a check file system only step"
 msgstr "бөлімде файлдық жүйені тек тексеру қадамы үшін ашық LUKS шифрлеуі бар"
 
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
-#: ../src/GParted_Core.cc:3413
+#: ../src/GParted_Core.cc:3444
 msgid "check file system on %1 for errors and (if possible) fix them"
 msgstr "%1 файлдық жүйесін қателерге тексеру мен (мүмкін болса) жөндеп көру"
 
-#: ../src/GParted_Core.cc:3422
+#: ../src/GParted_Core.cc:3453
 msgid "checking is not available for this file system"
 msgstr "бұл файлдық жүйесін тексеруге қолдау жоқ"
 
-#: ../src/GParted_Core.cc:3487
+#: ../src/GParted_Core.cc:3518
 msgid "set partition type on %1"
 msgstr "бөлім түрін %1 деп орнату"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
-#: ../src/GParted_Core.cc:3537
+#: ../src/GParted_Core.cc:3568
 msgid "new partition type: %1"
 msgstr "бөлімнің жаңа түрі: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
-#: ../src/GParted_Core.cc:3552
+#: ../src/GParted_Core.cc:3583
 msgid "new partition flag: %1"
 msgstr "бөлімнің жаңа жалаушасы: %1"
 
-#: ../src/GParted_Core.cc:3581
+#: ../src/GParted_Core.cc:3612
 msgid "calibrate %1"
 msgstr "баптау %1"
 
-#: ../src/GParted_Core.cc:3646
+#: ../src/GParted_Core.cc:3677
 msgid "device"
 msgstr "құрылғы"
 
-#: ../src/GParted_Core.cc:3660
+#: ../src/GParted_Core.cc:3691
 msgid "encryption path: %1"
 msgstr "шифрлеу жолы: %1"
 
-#: ../src/GParted_Core.cc:3686
+#: ../src/GParted_Core.cc:3717
 msgid "calculate new size and position of %1"
 msgstr "%1 үшін жаңа өлшем мен орнын есептеу"
 
-#: ../src/GParted_Core.cc:3814
+#: ../src/GParted_Core.cc:3846
 msgid ""
 "partition contains open LUKS encryption for an erase file system signatures "
 "only step"
@@ -1422,55 +1422,55 @@ msgstr ""
 "бөлімде файлдық жүйенің тек қолтаңбаларын өшіру қадамы үшін ашық LUKS "
 "шифрлеуі бар"
 
-#: ../src/GParted_Core.cc:3821
+#: ../src/GParted_Core.cc:3853
 msgid "clear old file system signatures in %1"
 msgstr "%1 ішінен ескі файлдық жүйелер сигнатураларын өшіру"
 
-#: ../src/GParted_Core.cc:4027
+#: ../src/GParted_Core.cc:4059
 msgid "flush operating system cache of %1"
 msgstr "%1 үшін операциялық жүйе кэшін тастау"
 
 #. TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1
-#: ../src/GParted_Core.cc:4059
+#: ../src/GParted_Core.cc:4091
 msgid "update boot sector of %1 file system on %2"
 msgstr "%1 файлдық жүйенің жүктелу секторын жаңарту, қайда: %2"
 
 #. TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1
-#: ../src/GParted_Core.cc:4095
+#: ../src/GParted_Core.cc:4127
 msgid "Error trying to write to boot sector in %1"
 msgstr "%1 ішінде жүктелу секторын жазу кезінде қате кетті"
 
 #. TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1
-#: ../src/GParted_Core.cc:4101
+#: ../src/GParted_Core.cc:4133
 msgid "Error trying to seek to position 0x1c in %1"
 msgstr "%1 ішінде 0x1 орнына өтіп көру сәтсіз"
 
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
-#: ../src/GParted_Core.cc:4108
+#: ../src/GParted_Core.cc:4140
 msgid "Error trying to open %1"
 msgstr "%1 ашып көру кезіндегі қате"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
-#: ../src/GParted_Core.cc:4118
+#: ../src/GParted_Core.cc:4150
 msgid ""
 "Failed to set the number of hidden sectors to %1 in the NTFS boot record."
 msgstr ""
 "NTFS жүктелу жазбасына жасырын секторлар санын %1 мәніне орнату сәтсіз."
 
-#: ../src/GParted_Core.cc:4120
+#: ../src/GParted_Core.cc:4152
 msgid "You might try the following command to correct the problem:"
 msgstr "Мәселені шешу үшін келесі командаларды қолдана аласыз:"
 
-#: ../src/GParted_Core.cc:4179
+#: ../src/GParted_Core.cc:4226
 msgid "libparted messages"
 msgstr "libparted хабарламалары"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
-#: ../src/GParted_Core.cc:4196
+#: ../src/GParted_Core.cc:4243
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
 msgstr "%1 құрылғысын, логикалық сектор өлшемі %2 байт, елемеу."
 
-#: ../src/GParted_Core.cc:4199
+#: ../src/GParted_Core.cc:4246
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
@@ -1478,59 +1478,59 @@ msgstr ""
 "GParted сектор өлшемі 512 байттан үлкен құрылғыларды қолдау үшін libparted "
 "нұсқасын 2.2 не одан жоғарғысын талап етеді."
 
-#: ../src/GParted_Core.cc:4387
+#: ../src/GParted_Core.cc:4434
 msgid "Libparted Information"
 msgstr "Libparted ақпараты"
 
-#: ../src/GParted_Core.cc:4391
+#: ../src/GParted_Core.cc:4438
 msgid "Libparted Warning"
 msgstr "Libparted ескертуі"
 
-#: ../src/GParted_Core.cc:4395
+#: ../src/GParted_Core.cc:4442
 msgid "Libparted Error"
 msgstr "Libparted қатесі"
 
-#: ../src/GParted_Core.cc:4398
+#: ../src/GParted_Core.cc:4445
 msgid "Libparted Fatal"
 msgstr "Libparted қатаң"
 
-#: ../src/GParted_Core.cc:4401
+#: ../src/GParted_Core.cc:4448
 msgid "Libparted Bug"
 msgstr "Libparted ақаулығы"
 
-#: ../src/GParted_Core.cc:4404
+#: ../src/GParted_Core.cc:4451
 msgid "Libparted Unsupported Feature"
 msgstr "Libparted қолдауы жоқ ақпараты"
 
-#: ../src/GParted_Core.cc:4407
+#: ../src/GParted_Core.cc:4454
 msgid "Libparted unknown exception"
 msgstr "Libparted белгісіз тыс жағдайы"
 
-#: ../src/GParted_Core.cc:4411
+#: ../src/GParted_Core.cc:4458
 msgid "Fix"
 msgstr "Түзеу"
 
-#: ../src/GParted_Core.cc:4413
+#: ../src/GParted_Core.cc:4460
 msgid "Yes"
 msgstr "Иә"
 
-#: ../src/GParted_Core.cc:4415
+#: ../src/GParted_Core.cc:4462
 msgid "Ok"
 msgstr "ОК"
 
-#: ../src/GParted_Core.cc:4417
+#: ../src/GParted_Core.cc:4464
 msgid "Retry"
 msgstr "Қайталау"
 
-#: ../src/GParted_Core.cc:4419
+#: ../src/GParted_Core.cc:4466
 msgid "No"
 msgstr "Жоқ"
 
-#: ../src/GParted_Core.cc:4421
+#: ../src/GParted_Core.cc:4468
 msgid "Cancel"
 msgstr "Бас тарту"
 
-#: ../src/GParted_Core.cc:4423
+#: ../src/GParted_Core.cc:4470
 msgid "Ignore"
 msgstr "Елемеу"
 
@@ -1706,11 +1706,11 @@ msgid "Flags"
 msgstr "Жалаушалар"
 
 #. TO TRANSLATORS:  unallocated
-#. * means that this space on the disk device does
-#. * not contain a recognized file system, and is in
-#. * other words unallocated.
+#. * means that this space on the disk device is
+#. * outside any partition, so is in other words
+#. * unallocated.
 #.
-#: ../src/Utils.cc:253
+#: ../src/Utils.cc:259
 msgid "unallocated"
 msgstr "бөлінбеген"
 
@@ -1719,56 +1719,66 @@ msgstr "бөлінбеген"
 #. * not contain a file system known to GParted, and
 #. * is in other words unknown.
 #.
-#: ../src/Utils.cc:260
+#: ../src/Utils.cc:266
 msgid "unknown"
 msgstr "белгісіз"
 
 #. TO TRANSLATORS:  unformatted
-#. * means that the space within this partition will not
-#. * be formatted with a known file system by GParted.
+#. * means that when the new partition is created by
+#. * GParted the space within it will not be formatted
+#. * with a file system.
 #.
-#: ../src/Utils.cc:266
+#: ../src/Utils.cc:273
 msgid "unformatted"
 msgstr "пішімделмеген"
+
+#. TO TRANSLATORS:  other
+#. * name shown in the File System Support dialog to list
+#. * actions which can be performed on other file systems
+#. * not specifically listed as supported.
+#.
+#: ../src/Utils.cc:280
+msgid "other"
+msgstr "басқа"
 
 #. TO TRANSLATORS:  cleared
 #. * means that all file system signatures in the partition
 #. * will be cleared by GParted.
 #.
-#: ../src/Utils.cc:272
+#: ../src/Utils.cc:286
 msgid "cleared"
 msgstr "тазартылған"
 
-#: ../src/Utils.cc:294
+#: ../src/Utils.cc:318
 msgid "used"
 msgstr "қолдануда"
 
-#: ../src/Utils.cc:295
+#: ../src/Utils.cc:319
 msgid "unused"
 msgstr "қолданылмаған"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
-#: ../src/Utils.cc:312
+#: ../src/Utils.cc:327
 msgid "Encrypted"
 msgstr "Шифрленген"
 
-#: ../src/Utils.cc:443
+#: ../src/Utils.cc:458
 msgid "%1 B"
 msgstr "%1 Б"
 
-#: ../src/Utils.cc:448
+#: ../src/Utils.cc:463
 msgid "%1 KiB"
 msgstr "%1 КиБ"
 
-#: ../src/Utils.cc:453
+#: ../src/Utils.cc:468
 msgid "%1 MiB"
 msgstr "%1 МиБ"
 
-#: ../src/Utils.cc:458
+#: ../src/Utils.cc:473
 msgid "%1 GiB"
 msgstr "%1 ГиБ"
 
-#: ../src/Utils.cc:463
+#: ../src/Utils.cc:478
 msgid "%1 TiB"
 msgstr "%1 ТиБ"
 
@@ -1970,55 +1980,72 @@ msgid "No devices detected"
 msgstr "Құрылғылар табылмады"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
-#: ../src/Win_GParted.cc:1622
+#: ../src/Win_GParted.cc:1634
 msgid "No partition table found on device %1"
 msgstr "%1 құрылғысында бөлімдер кестесі табылмады"
 
-#: ../src/Win_GParted.cc:1627
+#: ../src/Win_GParted.cc:1639
 msgid "A partition table is required before partitions can be added."
 msgstr "Бөлімдерді қосу алдында бөлімдер кестесін жасау керек."
 
-#: ../src/Win_GParted.cc:1629
+#: ../src/Win_GParted.cc:1641
 msgid "To create a new partition table choose the menu item:"
 msgstr "Жаңа бөлімдер кестесін жасау үшін мәзірден бір нұсқаны таңдаңыз:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
-#: ../src/Win_GParted.cc:1632
+#: ../src/Win_GParted.cc:1644
 msgid "Device --> Create Partition Table."
 msgstr "Құрылғы --> Бөлімдер кестесін жасау."
 
-#: ../src/Win_GParted.cc:1663
+#. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
+#: ../src/Win_GParted.cc:1653
+#| msgid "Unable to read the contents of this file system!"
+msgid "Unable to resize read-only file system %1"
+msgstr "Тек оқу үшін қолжетерлік файлдық жүйе өлшемін өзгерту мүмкін емес: %1"
+
+#: ../src/Win_GParted.cc:1658
+msgid "The file system can not be resized while it is mounted read-only."
+msgstr ""
+"Файлдық жүйе тек оқу үшін тіркелген кезде оның өлшемін өзгерту мүмкін емес."
+
+#: ../src/Win_GParted.cc:1660
+msgid "Either unmount the file system or remount it read-write."
+msgstr ""
+"Файлдық жүйені тіркеуден босатыңыз, немесе оны оқу мен жазу режимінде қайта "
+"тіркеңіз."
+
+#: ../src/Win_GParted.cc:1691
 msgid "Unable to open GParted Manual help file"
 msgstr "GParted құжаттама файлын ашу мүмкін емес"
 
-#: ../src/Win_GParted.cc:1682
+#: ../src/Win_GParted.cc:1710
 msgid "Documentation is not available"
 msgstr "Құжаттама қолжетерсіз"
 
-#: ../src/Win_GParted.cc:1687
+#: ../src/Win_GParted.cc:1715
 msgid "This build of gparted is configured without documentation."
 msgstr "Бұл gparted нұсқасы құжаттамасыз жиналған."
 
-#: ../src/Win_GParted.cc:1689
+#: ../src/Win_GParted.cc:1717
 msgid "Documentation is available at the project web site."
 msgstr "Құжаттама жобаның веб сайтында бар."
 
-#: ../src/Win_GParted.cc:1707
+#: ../src/Win_GParted.cc:1735
 msgid "GNOME Partition Editor"
 msgstr "GNOME бөлімдерді басқарушысы"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1742
+#: ../src/Win_GParted.cc:1770
 msgid "translator-credits"
 msgstr "Baurzhan Muftakhidinov <baurthefirst@gmail.com>"
 
-#: ../src/Win_GParted.cc:1789
+#: ../src/Win_GParted.cc:1817
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
 msgstr[0] "%1-н көп біріншілік бөлімдерді жасау мүмкін емес"
 
-#: ../src/Win_GParted.cc:1801
+#: ../src/Win_GParted.cc:1829
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2030,17 +2057,17 @@ msgstr ""
 "біріншілік бөлім болған соң, алдымен барлық біріншілік бөлімдерді өшіру "
 "керек болуы мүмкін."
 
-#: ../src/Win_GParted.cc:1914
+#: ../src/Win_GParted.cc:1950
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 "Бөлімді жылжыту операциялық жүйеңіздің жүктемей қалуына әкеп соғуы мүмкін"
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1921
+#: ../src/Win_GParted.cc:1957
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr "Сіздің кезегіңізде %1 бөлімнің бірінші секторын жылжыту әрекеті бар."
 
-#: ../src/Win_GParted.cc:1923
+#: ../src/Win_GParted.cc:1959
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
@@ -2048,83 +2075,82 @@ msgstr ""
 "  Егер сіз /boot орналасқан GNU/Linux бөлімін немесе Windows-тың C: жүйелік "
 "бөлімін жылжытсаңыз, жүйеңіз жүктеле алмайтын күйге келуі мүмкін."
 
-#: ../src/Win_GParted.cc:1925
+#: ../src/Win_GParted.cc:1961
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 "GParted жиі қойылатын сұрақтар ішінен жүктелу баптауларын қалпына келтіруді "
 "оқи аласыз."
 
-#: ../src/Win_GParted.cc:1929
+#: ../src/Win_GParted.cc:1965
 msgid "Moving a partition might take a very long time to apply."
 msgstr "Бөлімді жылжыту көп уақытты алуы мүмкін."
 
-#: ../src/Win_GParted.cc:2004
+#: ../src/Win_GParted.cc:2040
 msgid "Copy of %1"
 msgstr "%1 көшірмесі"
 
-#: ../src/Win_GParted.cc:2097
+#: ../src/Win_GParted.cc:2141
 msgid "You have pasted into an existing partition"
 msgstr "Сіз бар болып тұрған бөлімнің ішіне кірістіргенсіз"
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:2105
+#: ../src/Win_GParted.cc:2149
 msgid "The data in %1 will be lost if you apply this operation."
 msgstr "Осы әрекетті іске асырсаңыз, %1 ішіндегі ақпарат жоғалады."
 
-#: ../src/Win_GParted.cc:2179
+#: ../src/Win_GParted.cc:2223
 msgid "Unable to delete %1!"
 msgstr "%1 өшіру мүмкін емес!"
 
-#: ../src/Win_GParted.cc:2186
+#: ../src/Win_GParted.cc:2230
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
 "Нөмірі %1-н үлкен болып тұрған барлық логикалық бөлімдерді тіркелуден "
 "босатыңыз"
 
-#: ../src/Win_GParted.cc:2197
+#: ../src/Win_GParted.cc:2241
 msgid "Are you sure you want to delete %1?"
 msgstr "%1 өшіруді шынымен қалайсыз ба?"
 
-#: ../src/Win_GParted.cc:2204
+#: ../src/Win_GParted.cc:2248
 msgid "After deletion this partition is no longer available for copying."
 msgstr "Өшірілгеннен кейін бұл бөлім көшіруге қол жетерсіз болады."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2207
+#: ../src/Win_GParted.cc:2251
 msgid "Delete %1 (%2, %3)"
 msgstr "Өшіру %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2363
+#: ../src/Win_GParted.cc:2407
 msgid "Cannot format this file system to %1"
 msgstr "Бұл файлдық жүйені %1 түріне пішімдеу мүмкін емес"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2375
+#: ../src/Win_GParted.cc:2419
 msgid "A %1 file system requires a partition of at least %2."
 msgstr "%1 файлдық жүйесі өлшемі кем дегенде %2 болатын бөлімді сұрап тұр."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2383
+#: ../src/Win_GParted.cc:2427
 msgid "A partition with a %1 file system has a maximum size of %2."
 msgstr "%1 файлдық жүйесі бар бөлімнің максималды өлшемі %2."
 
-#: ../src/Win_GParted.cc:2462
-#| msgid "encryption path: %1"
+#: ../src/Win_GParted.cc:2506
 msgid "Opening encryption on %1"
 msgstr "%1 шифрлеуін ашу"
 
-#: ../src/Win_GParted.cc:2476
+#: ../src/Win_GParted.cc:2520
 msgid "Failed to open LUKS encryption"
 msgstr "LUKS шифрлеуін ашу сәтсіз аяқталды"
 
-#: ../src/Win_GParted.cc:2498
+#: ../src/Win_GParted.cc:2542
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2132,15 +2158,15 @@ msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, шифрлеуді жабу әрекетін орындау "
 "мүмкін емес."
 
-#: ../src/Win_GParted.cc:2499
+#: ../src/Win_GParted.cc:2543
 msgid "Closing encryption on %1"
 msgstr "%1 шифрлеуін жабу"
 
-#: ../src/Win_GParted.cc:2500
+#: ../src/Win_GParted.cc:2544
 msgid "Could not close encryption"
 msgstr "Шифрлеуді жабу мүмкін емес"
 
-#: ../src/Win_GParted.cc:2505
+#: ../src/Win_GParted.cc:2549
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
@@ -2148,11 +2174,11 @@ msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, шифрлеуді ашу әрекетін орындау "
 "мүмкін емес."
 
-#: ../src/Win_GParted.cc:2603
+#: ../src/Win_GParted.cc:2647
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr "Бөлімді келесі тіркелу нүктелерінен босату мүмкін емес:"
 
-#: ../src/Win_GParted.cc:2605
+#: ../src/Win_GParted.cc:2649
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
@@ -2161,48 +2187,48 @@ msgstr ""
 "қолмен тіркелуден босату ұсынылады."
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2618
+#: ../src/Win_GParted.cc:2662
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
 msgstr[0] "%1 әрекет қазір кезекте, %2 бөлімі үшін"
 
-#: ../src/Win_GParted.cc:2633
+#: ../src/Win_GParted.cc:2677
 msgid "Use the Edit menu to undo, clear or apply pending operations."
 msgstr ""
 "Кезектегі әрекеттерді болдырмау, өшіру немесе іске асыру үшін түзету мәзірін "
 "қолданыңыз."
 
-#: ../src/Win_GParted.cc:2676
+#: ../src/Win_GParted.cc:2720
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, swapoff әрекетін орындау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2677
+#: ../src/Win_GParted.cc:2721
 msgid "Deactivating swap on %1"
 msgstr "%1 жерінде swap-ты сөндіру"
 
-#: ../src/Win_GParted.cc:2678
+#: ../src/Win_GParted.cc:2722
 msgid "Could not deactivate swap"
 msgstr "Swap-ты сөндіру мүмкін емес"
 
-#: ../src/Win_GParted.cc:2683
+#: ../src/Win_GParted.cc:2727
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, swapon әрекетін орындау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2684
+#: ../src/Win_GParted.cc:2728
 msgid "Activating swap on %1"
 msgstr "%1 жерінде swap-ты қосу"
 
-#: ../src/Win_GParted.cc:2685
+#: ../src/Win_GParted.cc:2729
 msgid "Could not activate swap"
 msgstr "Swap-ты қосу мүмкін емес"
 
-#: ../src/Win_GParted.cc:2690
+#: ../src/Win_GParted.cc:2734
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2210,16 +2236,16 @@ msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, томдар тобын белсенді емес қылу "
 "әрекетін жасау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2691
+#: ../src/Win_GParted.cc:2735
 msgid "Deactivating Volume Group %1"
 msgstr "%1 томдар тобын белсенді емес қылу"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2693
+#: ../src/Win_GParted.cc:2737
 msgid "Could not deactivate Volume Group"
 msgstr "Томдар тобын белсенді емес қылу мүмкін емес"
 
-#: ../src/Win_GParted.cc:2698
+#: ../src/Win_GParted.cc:2742
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
@@ -2227,59 +2253,59 @@ msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, томдар тобын белсендіру әрекетін "
 "жасау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2699
+#: ../src/Win_GParted.cc:2743
 msgid "Activating Volume Group %1"
 msgstr "%1 томдар тобын белсендіру"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2701
+#: ../src/Win_GParted.cc:2745
 msgid "Could not activate Volume Group"
 msgstr "Томдар тобын белсендіру мүмкін емес"
 
-#: ../src/Win_GParted.cc:2706
+#: ../src/Win_GParted.cc:2750
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, unmount әрекетін орындау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2707
+#: ../src/Win_GParted.cc:2751
 msgid "Unmounting %1"
 msgstr "Тіркелуден босату %1"
 
-#: ../src/Win_GParted.cc:2708
+#: ../src/Win_GParted.cc:2752
 msgid "Could not unmount %1"
 msgstr "%1 тіркелуден босату мүмкін емес"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:2772
+#: ../src/Win_GParted.cc:2816
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
 "Бөлім үшін кезекте әрекет болғандықтан, mount әрекетін орындау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2785
+#: ../src/Win_GParted.cc:2829
 msgid "mounting %1 on %2"
 msgstr "%1 қазір %2 жеріне тіркеледі"
 
-#: ../src/Win_GParted.cc:2813
+#: ../src/Win_GParted.cc:2857
 msgid "Could not mount %1 on %2"
 msgstr "%1 бөлімін %2 жеріне тіркеу мүмкін емес"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2832
+#: ../src/Win_GParted.cc:2876
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
 msgstr[0] "%1 бөлім қазір белсенді, %2 құрылғысында"
 
-#: ../src/Win_GParted.cc:2847
+#: ../src/Win_GParted.cc:2891
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr "Белсенді бөлімдер бар кезде жаңа бөлімдер кестесін жасау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2849
+#: ../src/Win_GParted.cc:2893
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
@@ -2287,7 +2313,7 @@ msgstr ""
 "Белсенді дегеніміз - қолданудағы бөлімдер (тіркелген), немесе іске қосулы "
 "тұрған swap орны."
 
-#: ../src/Win_GParted.cc:2851
+#: ../src/Win_GParted.cc:2895
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
@@ -2296,18 +2322,18 @@ msgstr ""
 "құрылғыды жаңа бөлімдер кестесін жасау алдында, оның барлық бөлімдерін "
 "белсенді емес қылыңыз."
 
-#: ../src/Win_GParted.cc:2863
+#: ../src/Win_GParted.cc:2907
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
 msgstr[0] "%1 әрекет қазір кезекте"
 
-#: ../src/Win_GParted.cc:2876
+#: ../src/Win_GParted.cc:2920
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 "Кезекте әрекеттер тұрған кезде жаңа бөлімдер кестесін жасау мүмкін емес."
 
-#: ../src/Win_GParted.cc:2878
+#: ../src/Win_GParted.cc:2922
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
@@ -2315,28 +2341,28 @@ msgstr ""
 "Жаңа бөлімдер кестесін жасау алдында, Түзету мәзірін қолданып, барлық "
 "әрекеттерді өшіріңіз не іске асырыңыз."
 
-#: ../src/Win_GParted.cc:2893
+#: ../src/Win_GParted.cc:2937
 msgid "Error while creating partition table"
 msgstr "Бөлімдер кестесін жасағанда қате кетті"
 
-#: ../src/Win_GParted.cc:2913
+#: ../src/Win_GParted.cc:2957
 msgid "Command gpart was not found"
 msgstr "gpart командасы табылмады"
 
-#: ../src/Win_GParted.cc:2914
+#: ../src/Win_GParted.cc:2958
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr "Бұл мүмкіндік gpart-ты қолданады. gpart орнатып, қайталап көріңіз."
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2922
+#: ../src/Win_GParted.cc:2966
 msgid "A full disk scan is needed to find file systems."
 msgstr "Файлдық жүйелерді табу үшін дискті толығымен скандау керек."
 
-#: ../src/Win_GParted.cc:2924
+#: ../src/Win_GParted.cc:2968
 msgid "The scan might take a very long time."
 msgstr "Скандау көп уақытты алуы мүмкін."
 
-#: ../src/Win_GParted.cc:2926
+#: ../src/Win_GParted.cc:2970
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
@@ -2344,26 +2370,26 @@ msgstr ""
 "Скандаудан кейін сіз табылған файлдық жүйелерді тіркеп, олардан мәліметті "
 "басқа тасушыға көшіре аласыз."
 
-#: ../src/Win_GParted.cc:2928
+#: ../src/Win_GParted.cc:2972
 msgid "Do you want to continue?"
 msgstr "Жалғастыруды қалайсыз ба?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2932
+#: ../src/Win_GParted.cc:2976
 msgid "Search for file systems on %1"
 msgstr "%1 ішінен файлдық жүйелерді іздеу"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2943
+#: ../src/Win_GParted.cc:2987
 msgid "Searching for file systems on %1"
 msgstr "%1 ішінен файлдық жүйелер ізделуде"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:2959
+#: ../src/Win_GParted.cc:3003
 msgid "No file systems found on %1"
 msgstr "%1 ішінен файлдық жүйелер табылмады"
 
-#: ../src/Win_GParted.cc:2960
+#: ../src/Win_GParted.cc:3004
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
@@ -2371,35 +2397,35 @@ msgstr ""
 "gpart көмегімен дискті скандау ешбір танитын файлдық жүйені бұл дисктен "
 "таппаған."
 
-#: ../src/Win_GParted.cc:3231
+#: ../src/Win_GParted.cc:3275
 msgid "Are you sure you want to apply the pending operations?"
 msgstr "Кезекте тұрған әрекеттерді іске асыруды шынымен қалайсыз ба?"
 
-#: ../src/Win_GParted.cc:3237
+#: ../src/Win_GParted.cc:3281
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr "Бөлімдерді түзету АҚПАРАТТЫҢ ЖОҒАЛУЫНА әкеп соғуы мүмкін."
 
-#: ../src/Win_GParted.cc:3239
+#: ../src/Win_GParted.cc:3283
 msgid "You are advised to backup your data before proceeding."
 msgstr "Жалғастыру алдында ақпаратты басқа жерге көшіру ұсынылады."
 
-#: ../src/Win_GParted.cc:3241
+#: ../src/Win_GParted.cc:3285
 msgid "Apply operations to device"
 msgstr "Құрылғы үшін әрекеттерді іске асыру"
 
-#: ../src/Win_GParted.cc:3286
+#: ../src/Win_GParted.cc:3330
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr "Сіз бос емес %1 LVM2 физикалық томын өшірудесіз"
 
-#: ../src/Win_GParted.cc:3290
+#: ../src/Win_GParted.cc:3334
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr "Сіз бос емес %1 LVM2 физикалық томын пішімдеудесіз"
 
-#: ../src/Win_GParted.cc:3294
+#: ../src/Win_GParted.cc:3338
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr "Сіз бос емес %1 LVM2 физикалық томына кірістірудесіз"
 
-#: ../src/Win_GParted.cc:3303
+#: ../src/Win_GParted.cc:3347
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
@@ -2407,7 +2433,7 @@ msgstr ""
 "Физикалық томды өшіру не оның үстіне жазу әрекетін болдырмау мүмкін емес, ол "
 "томдар тобын өшіреді не зақымдайды."
 
-#: ../src/Win_GParted.cc:3306
+#: ../src/Win_GParted.cc:3350
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
@@ -2417,7 +2443,7 @@ msgstr ""
 "алдында бас тартып, сыртқы LVM командалары көмегімен физикалық томды босату "
 "ұсынылады."
 
-#: ../src/Win_GParted.cc:3309
+#: ../src/Win_GParted.cc:3353
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr "Физикалық томды мәжбүрлі түрде өшіруді жалғастыруды қалайсыз ба?"
 
@@ -2502,7 +2528,7 @@ msgstr "Шифрлеуді ашу"
 msgid "Close Encryption"
 msgstr "Шифрлеуді жабу"
 
-#: ../src/luks.cc:144
+#: ../src/luks.cc:143
 msgid ""
 "Maximize closed LUKS encryption skipped because it will automatically fill "
 "the partition when opened"
