@@ -1,4 +1,4 @@
-AC_INIT([gparted],[0.33.0],[https://gitlab.gnome.org/GNOME/gparted/issues])
+AC_INIT([gparted],[0.33.0-git],[https://gitlab.gnome.org/GNOME/gparted/issues])
 AC_PREREQ([2.50])
 
 AC_CONFIG_SRCDIR([src/main.cc])
