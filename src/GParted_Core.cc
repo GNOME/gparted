@@ -4236,19 +4236,6 @@ bool GParted_Core::useable_device( PedDevice * lp_device )
 {
 	g_assert( lp_device != NULL );  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
-#ifndef USE_LIBPARTED_LARGE_SECTOR_SUPPORT
-	if ( lp_device->sector_size != 512 )
-	{
-		/* TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes. */
-		Glib::ustring msg = String::ucompose ( _("Ignoring device %1 with logical sector size of %2 bytes."),
-		                                       lp_device ->path, lp_device ->sector_size );
-		msg += "\n";
-		msg += _("GParted requires libparted version 2.2 or higher to support devices with sector sizes larger than 512 bytes.");
-		std::cout << msg << std::endl << std::endl;
-		return false;
-	}
-#endif
-
 	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
 	if ( ! buf )
 		return false;
@@ -4385,16 +4372,6 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 	{
 #endif
 		succes = ped_disk_commit_to_os( lp_disk ) ;
-#ifdef ENABLE_PT_REREAD_WORKAROUND
-		//Work around to try to alleviate problems caused by
-		//  bug #604298 - Failure to inform kernel of partition changes
-		//  If not successful the first time, try one more time.
-		if ( ! succes )
-		{
-			sleep( 1 ) ;
-			succes = ped_disk_commit_to_os( lp_disk ) ;
-		}
-#endif
 #ifndef USE_LIBPARTED_DMRAID
 	}
 #endif

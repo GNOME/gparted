@@ -70,7 +70,7 @@ dnl Check for minimum required libparted version.
 dnl 1) Check using pkg-config.
 dnl    (Older distros tend to not provide pkg-config information for libparted).
 dnl 2) Check by linking and running a program to report libparted version directly.
-LIBPARTED_REQUIRED_VERSION='1.7.1'
+LIBPARTED_REQUIRED_VERSION='2.2'
 AC_MSG_CHECKING([for libparted >= $LIBPARTED_REQUIRED_VERSION (querying pkg-config)])
 LIBPARTED_REQUIRED_INT=`echo "$LIBPARTED_REQUIRED_VERSION" |
 	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
@@ -137,26 +137,6 @@ if test "$LIBPARTED_MIN_WANTED_INT" -le "$LIBPARTED_FOUND_INT" -a \
 	AC_MSG_RESULT([(cached) yes])
 else
 	need_loop_delete_old_ptns_workaround=no
-	AC_MSG_RESULT([(cached) no])
-fi
-
-
-dnl Check for libparted >= 2.2 for improved informing the kernel to
-dnl re-read the partition table code and support of larger sector sizes
-dnl (> 512 bytes).
-LIBPARTED_WANTED_VERSION='2.2'
-AC_MSG_CHECKING([for libparted >= $LIBPARTED_WANTED_VERSION (improved pt re-read)])
-LIBPARTED_WANTED_INT=`echo "$LIBPARTED_WANTED_VERSION" |
-	$AWK -F. '{print $1 * 1000000 + $2 * 10000 + $3}'`
-if test "$LIBPARTED_FOUND_INT" -ge "$LIBPARTED_WANTED_INT"; then
-	AC_DEFINE([USE_LIBPARTED_LARGE_SECTOR_SUPPORT], 1,
-	          [Define to 1 to use libparted large sector support])
-	need_pt_reread_workaround=no; support_large_sector_sizes=yes
-	AC_MSG_RESULT([(cached) yes])
-else
-	AC_DEFINE([ENABLE_PT_REREAD_WORKAROUND], 1,
-	          [Define to 1 to enable partition re-read workaround])
-	need_pt_reread_workaround=yes; support_large_sector_sizes=no
 	AC_MSG_RESULT([(cached) no])
 fi
 
