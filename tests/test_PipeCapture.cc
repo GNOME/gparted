@@ -412,18 +412,14 @@ TEST_F( PipeCaptureTest, LineDisciplineSkipCtrlAB )
 
 }  // namespace GParted
 
-// Custom Google Test main() which also initialises the Glib threading system for
-// distributions with glib/glibmm before version 2.32.
-// References:
+// Custom Google Test main().
+// Reference:
 // *   Google Test, Primer, Writing the main() Function
-// *   Deprecated thread API, g_thread_init()
-//     https://developer.gnome.org/glib/stable/glib-Deprecated-Thread-APIs.html#g-thread-init
+//     https://github.com/google/googletest/blob/master/googletest/docs/primer.md#writing-the-main-function
 int main( int argc, char **argv )
 {
 	printf("Running main() from %s\n", __FILE__ );
 	testing::InitGoogleTest( &argc, argv );
-
-	Glib::thread_init();
 
 	return RUN_ALL_TESTS();
 }
