@@ -17,13 +17,12 @@
 #include "GParted_Core.h"
 #include "Win_GParted.h"
 
+#include <glibmm.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
 
 int main( int argc, char *argv[] )
 {
-	//initialize thread system
-	Glib::thread_init() ;
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
 
 	Gtk::Main kit( argc, argv ) ;
