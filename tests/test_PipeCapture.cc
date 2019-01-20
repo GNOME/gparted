@@ -411,15 +411,3 @@ TEST_F( PipeCaptureTest, LineDisciplineSkipCtrlAB )
 }
 
 }  // namespace GParted
-
-// Custom Google Test main().
-// Reference:
-// *   Google Test, Primer, Writing the main() Function
-//     https://github.com/google/googletest/blob/master/googletest/docs/primer.md#writing-the-main-function
-int main( int argc, char **argv )
-{
-	printf("Running main() from %s\n", __FILE__ );
-	testing::InitGoogleTest( &argc, argv );
-
-	return RUN_ALL_TESTS();
-}
