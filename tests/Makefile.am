@@ -34,5 +34,4 @@ test_PasswordRAMStore_LDADD   =  \
 test_PipeCapture_SOURCES  = test_PipeCapture.cc
 test_PipeCapture_LDADD    =  \
 	$(top_builddir)/src/PipeCapture.$(OBJEXT)  \
-	$(GTEST_LIBS)                              \
-	$(top_builddir)/lib/gtest/lib/libgtest.la
+	$(LDADD)
