@@ -4,13 +4,14 @@
 # Stephen BROWN < >, 2010.
 # Emmanuel Gil PEYROT < >, 2010.
 # Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>, 2011, 2018.
+# Carmen Bianca BAKKER <carmen@carmenbianca.eu>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: gparted\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/gparted/issues\n"
-"POT-Creation-Date: 2018-11-13 13:23+0000\n"
-"PO-Revision-Date: 2018-12-05 22:52+0200\n"
-"Last-Translator: Kristjan SCHMIDT <kristjan.schmidt@googlemail.com>\n"
+"POT-Creation-Date: 2018-12-05 21:53+0000\n"
+"PO-Revision-Date: 2019-01-20 13:03+0200\n"
+"Last-Translator: Carmen Bianca BAKKER <carmen@carmenbianca.eu>\n"
 "Language-Team: Esperanto <gnome-eo-list@gnome.org>\n"
 "Language: eo\n"
 "MIME-Version: 1.0\n"
@@ -25,13 +26,14 @@ msgstr "GParted Subdiskoredaktilo"
 
 #: ../gparted.appdata.xml.in.h:2 ../gparted.desktop.in.in.h:4
 msgid "Create, reorganize, and delete partitions"
-msgstr ""
+msgstr "Krei, reorganizi, kaj forigi subdiskojn"
 
 #: ../gparted.appdata.xml.in.h:3
 msgid ""
 "GParted is a free partition editor for graphically managing your disk "
 "partitions."
 msgstr ""
+"GParted estas libera subdiskoredaktilo por grafike mastrumi viajn subdiskojn."
 
 #: ../gparted.appdata.xml.in.h:4
 msgid ""
@@ -39,6 +41,10 @@ msgid ""
 "loss. These actions enable you to grow or shrink your C: drive, create space "
 "for new operating systems, or attempt data rescue from lost partitions."
 msgstr ""
+"Kun GParted vi povas aligrandigi, kopii, etikedi, kaj movi subdiskojn sen "
+"datumperdo. Ĉi tiuj agoj ebligas vin grandigi kaj ŝrumpi vian C:-"
+"datumportilon, krei spacon por aliaj operaciumoj, aŭ provi datumsavi el "
+"perditajn subdiskojn."
 
 #: ../gparted.appdata.xml.in.h:5
 msgid ""
@@ -46,6 +52,9 @@ msgid ""
 "fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, reiserfs, "
 "reiser4, udf, ufs, and xfs."
 msgstr ""
+"GParted funkcias kun multe da dosiersistemoj, inkluzive: btrfs, ext2, ext3, "
+"ext4, fat16, fat32, hfs, hfs+, linux-swap, lvm2 pv, minix, nilfs2, ntfs, "
+"reiserfs, reiser4, udf, ufs, kaj xfs."
 
 #. ==== GUI =========================
 #: ../gparted.desktop.in.in.h:1 ../src/Dialog_Progress.cc:376
@@ -59,53 +68,51 @@ msgid "Partition Editor"
 msgstr "Subdiskoredaktilo"
 
 #: ../gparted.desktop.in.in.h:5
-#| msgid "Partition"
 msgid "Partition;"
 msgstr "Subdisko;"
 
 #: ../org.gnome.gparted.policy.in.in.h:1
 msgid "Run GParted as root"
-msgstr ""
+msgstr "Ruli GParted kiel root"
 
 #: ../org.gnome.gparted.policy.in.in.h:2
 msgid "Authentication is required to run the GParted Partition Editor as root"
-msgstr ""
+msgstr "Necesas aŭtentigo por ruli GParted Subdiskoredaktilo kiel root"
 
 #: ../include/Utils.h:55
 msgid "(New UUID - will be randomly generated)"
-msgstr ""
+msgstr "(Nova UUID - generiĝos hazarde)"
 
 #: ../include/Utils.h:56
 msgid "(Half new UUID - will be randomly generated)"
-msgstr ""
+msgstr "(Duona nova UUID - generiĝos hazarde)"
 
 #. TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied
 #: ../src/CopyBlocks.cc:70 ../src/CopyBlocks.cc:175 ../src/ProgressBar.cc:106
 msgid "%1 of %2 copied"
-msgstr "%1 de %2 kopiita(j)"
+msgstr "%1 el %2 kopiita(j)"
 
 #: ../src/CopyBlocks.cc:215
-#| msgid "Operation cancelled"
 msgid "Operation Canceled"
-msgstr "Operacio haltigita"
+msgstr "Operacio nuligita"
 
 #: ../src/CopyBlocks.cc:227
 msgid "Error while writing block at sector %1"
-msgstr ""
+msgstr "Eraro dum skribado de bloko ĉe sektoro %1"
 
 #: ../src/CopyBlocks.cc:232
 msgid "Error while reading block at sector %1"
-msgstr ""
+msgstr "Eraro dum legado de bloko ĉe sektoro %1"
 
 #. TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1
 #: ../src/DialogPasswordEntry.cc:36
 msgid "LUKS Passphrase %1"
-msgstr ""
+msgstr "LUKS-pasfrazo %1"
 
 #: ../src/DialogPasswordEntry.cc:46
 msgid "Enter LUKS passphrase to open %1"
-msgstr ""
+msgstr "Enigu LUKS-pasfrazon por malfermi %1"
 
 #: ../src/DialogPasswordEntry.cc:52
 msgid "Passphrase:"
@@ -117,80 +124,79 @@ msgstr "Malŝlosi"
 
 #: ../src/Dialog_Base_Partition.cc:56
 msgid "Free space preceding (MiB):"
-msgstr ""
+msgstr "Libera spaco antaŭe (MiB):"
 
 #. add spinbutton_size
 #: ../src/Dialog_Base_Partition.cc:65
 msgid "New size (MiB):"
-msgstr "Nova grando (MiB):"
+msgstr "Nova grandeco (MiB):"
 
 #. add spinbutton_after
 #: ../src/Dialog_Base_Partition.cc:72
 msgid "Free space following (MiB):"
-msgstr ""
+msgstr "Libera spaco poste (MiB):"
 
 #. add alignment
-#. TO TRANSLATORS: used as label for a list of choices.   Align to: <optionmenu with choices>
+#. TO TRANSLATORS: used as label for a list of choices.  Align to: <combo box with choices>
 #: ../src/Dialog_Base_Partition.cc:99
 msgid "Align to:"
-msgstr "Laŭlinnigi al:"
+msgstr "Ĝisrandigi al:"
 
-#. fill partition alignment menu
-#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#. Fill partition alignment combo
+#. TO TRANSLATORS: Option for combo box "Align to:"
 #: ../src/Dialog_Base_Partition.cc:104
 msgid "Cylinder"
 msgstr "Cilindro"
 
-#. TO TRANSLATORS: Menu option for label "Align to:"
+#. TO TRANSLATORS: Option for combo box "Align to:"
 #: ../src/Dialog_Base_Partition.cc:106
 msgid "MiB"
 msgstr "MiB"
 
-#. TO TRANSLATORS: Menu option for drop down menu "Align to:"
+#. TO TRANSLATORS: Option for combo box "Align to:"
 #: ../src/Dialog_Base_Partition.cc:108
 msgid "None"
 msgstr "Neniu"
 
-#: ../src/Dialog_Base_Partition.cc:254
+#: ../src/Dialog_Base_Partition.cc:253
 msgid "Resize"
 msgstr "Aligrandigi"
 
-#: ../src/Dialog_Base_Partition.cc:254 ../src/Win_GParted.cc:258
+#: ../src/Dialog_Base_Partition.cc:253 ../src/Win_GParted.cc:258
 msgid "Resize/Move"
 msgstr "Aligrandigi/Movi"
 
-#: ../src/Dialog_Base_Partition.cc:272
+#: ../src/Dialog_Base_Partition.cc:271
 msgid "Minimum size: %1 MiB"
-msgstr "Minimuma grando: %1 MiB"
+msgstr "Minimuma grandeco: %1 MiB"
 
-#: ../src/Dialog_Base_Partition.cc:273
+#: ../src/Dialog_Base_Partition.cc:272
 msgid "Maximum size: %1 MiB"
-msgstr "Maksimuma grando: %1 MiB"
+msgstr "Maksimuma grandeco: %1 MiB"
 
 #. TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda
 #: ../src/Dialog_Disklabel.cc:30
 msgid "Create partition table on %1"
-msgstr ""
+msgstr "Krei subdiskan tabelon sur %1"
 
 #. TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda
 #: ../src/Dialog_Disklabel.cc:54
 msgid "WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"
-msgstr ""
+msgstr "AVERTO:  Ĉi tio FORGIS ĈIUJN DATUMOJN sur la TUTA DISKO %1"
 
 #: ../src/Dialog_Disklabel.cc:60
 msgid "Select new partition table type:"
-msgstr ""
+msgstr "Elekti novan subdiskan tabelan tipon:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3
 #: ../src/Dialog_FileSystem_Label.cc:35
-#| msgid "move file system"
 msgid "Set file system label on %1"
-msgstr "Agordi dosiersisteman etikedon al %1"
+msgstr "Agordi dosiersisteman etikedon sur %1"
 
 #. Only line: "Label: [EXISTINGLABEL ]"
 #. Label
-#: ../src/Dialog_FileSystem_Label.cc:44 ../src/Dialog_Partition_Info.cc:275
-#: ../src/Dialog_Partition_New.cc:156
+#: ../src/Dialog_FileSystem_Label.cc:44 ../src/Dialog_Partition_Info.cc:287
+#: ../src/Dialog_Partition_New.cc:154
 msgid "Label:"
 msgstr "Etikedo:"
 
@@ -200,7 +206,7 @@ msgstr "Alglui %1"
 
 #. Minimum 370 to avoid scrolling on Fedora 20
 #. TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3
-#: ../src/Dialog_Partition_Info.cc:45
+#: ../src/Dialog_Partition_Info.cc:46
 msgid "Information about %1"
 msgstr "Informoj pri %1"
 
@@ -210,7 +216,7 @@ msgstr "Averto:"
 
 #. FILE SYSTEM DETAIL SECTION
 #. file system headline
-#: ../src/Dialog_Partition_Info.cc:250 ../src/DialogFeatures.cc:45
+#: ../src/Dialog_Partition_Info.cc:262 ../src/DialogFeatures.cc:45
 #: ../src/TreeView_Detail.cc:45
 msgid "File System"
 msgstr "Dosiersistemo"
@@ -218,31 +224,31 @@ msgstr "Dosiersistemo"
 #. Left field & value pair area
 #. file system
 #. file systems to choose from
-#: ../src/Dialog_Partition_Info.cc:261 ../src/Dialog_Partition_New.cc:145
+#: ../src/Dialog_Partition_Info.cc:273 ../src/Dialog_Partition_New.cc:144
 msgid "File system:"
 msgstr "Dosiersistemo:"
 
 #. LUKS uuid
-#: ../src/Dialog_Partition_Info.cc:290 ../src/Dialog_Partition_Info.cc:560
+#: ../src/Dialog_Partition_Info.cc:302 ../src/Dialog_Partition_Info.cc:572
 msgid "UUID:"
-msgstr ""
+msgstr "UUID:"
 
 #. TO TRANSLATORS:   Open
 #. * means that the LUKS encryption is open and the encrypted data within is accessible.
 #.
-#: ../src/Dialog_Partition_Info.cc:305
+#: ../src/Dialog_Partition_Info.cc:317
 msgid "Open"
 msgstr "Malfermi"
 
 #. TO TRANSLATORS:   Closed
 #. * means that the LUKS encryption is closed and the encrypted data within is not accessible.
 #.
-#: ../src/Dialog_Partition_Info.cc:309
+#: ../src/Dialog_Partition_Info.cc:321
 msgid "Closed"
 msgstr "Fermita"
 
 #. LUKS status
-#: ../src/Dialog_Partition_Info.cc:316 ../src/Dialog_Partition_Info.cc:566
+#: ../src/Dialog_Partition_Info.cc:328 ../src/Dialog_Partition_Info.cc:578
 msgid "Status:"
 msgstr "Stato:"
 
@@ -250,38 +256,38 @@ msgstr "Stato:"
 #. * means that the data in encrypted and hasn't been made
 #. * accessible by opening it with the passphrase.
 #.
-#: ../src/Dialog_Partition_Info.cc:325
+#: ../src/Dialog_Partition_Info.cc:337
 msgid "Not accessible (Encrypted)"
-msgstr ""
+msgstr "Neatingebla (ĉifrita)"
 
 #. TO TRANSLATORS:  Busy (At least one logical partition is mounted)
 #. * means that this extended partition contains at least one logical
 #. * partition that is mounted or otherwise active.
 #.
-#: ../src/Dialog_Partition_Info.cc:335
+#: ../src/Dialog_Partition_Info.cc:347
 msgid "Busy (At least one logical partition is mounted)"
-msgstr ""
+msgstr "Okupita (malpleje unu logika subdisko estas surmetita)"
 
 #. TO TRANSLATORS:  Active
 #. * means that this linux swap, linux software raid partition, or
 #. * LVM physical volume is enabled and being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:345
+#: ../src/Dialog_Partition_Info.cc:357
 msgid "Active"
-msgstr "Aktive"
+msgstr "Aktiva"
 
 #. TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint
-#: ../src/Dialog_Partition_Info.cc:359
+#: ../src/Dialog_Partition_Info.cc:371
 msgid "Mounted on %1"
-msgstr ""
+msgstr "Surmetita sur %1"
 
 #. TO TRANSLATORS:  Not busy (There are no mounted logical partitions)
 #. * means that this extended partition contains no mounted or otherwise
 #. * active partitions.
 #.
-#: ../src/Dialog_Partition_Info.cc:369
+#: ../src/Dialog_Partition_Info.cc:381
 msgid "Not busy (There are no mounted logical partitions)"
-msgstr ""
+msgstr "Neokupita (estas neniu surmetita logika subdisko)"
 
 #. TO TRANSLATORS:  Not active
 #. *  means that this linux swap or linux software raid partition
@@ -291,18 +297,18 @@ msgstr ""
 #. * means that the partition is a member of an LVM volume group but
 #. * the volume group is not active and not being used by the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:378 ../src/Dialog_Partition_Info.cc:407
+#: ../src/Dialog_Partition_Info.cc:390 ../src/Dialog_Partition_Info.cc:419
 msgid "Not active"
-msgstr "Neaktive"
+msgstr "Neaktiva"
 
 #. TO TRANSLATORS:  Not active (Not a member of any volume group)
 #. * means that the partition is not yet a member of an LVM volume
 #. * group and therefore is not active and can not yet be used by
 #. * the operating system.
 #.
-#: ../src/Dialog_Partition_Info.cc:393
+#: ../src/Dialog_Partition_Info.cc:405
 msgid "Not active (Not a member of any volume group)"
-msgstr ""
+msgstr "Neaktiva (ne membro de iu ajn datumportila grupo)"
 
 #. TO TRANSLATORS:  Not active and exported
 #. * means that the partition is a member of an LVM volume group but
@@ -310,68 +316,67 @@ msgstr ""
 #. * The volume group has also been exported making the LVM physical volumes
 #. * ready for moving to a different computer system.
 #.
-#: ../src/Dialog_Partition_Info.cc:401
-#| msgid "Not active"
+#: ../src/Dialog_Partition_Info.cc:413
 msgid "Not active and exported"
 msgstr "Ne aktiva kaj elportita"
 
 #. TO TRANSLATORS:  Not mounted
 #. * means that this partition is not mounted.
 #.
-#: ../src/Dialog_Partition_Info.cc:414
+#: ../src/Dialog_Partition_Info.cc:426
 msgid "Not mounted"
 msgstr "Ne surmetita"
 
 #. Volume Group
 #. Single copy of each string for translation purposes
-#: ../src/Dialog_Partition_Info.cc:424 ../src/Win_GParted.cc:3361
+#: ../src/Dialog_Partition_Info.cc:436 ../src/Win_GParted.cc:3362
 msgid "Volume Group:"
-msgstr ""
+msgstr "Datumportila grupo:"
 
 #. Members
-#: ../src/Dialog_Partition_Info.cc:435 ../src/Win_GParted.cc:3362
+#: ../src/Dialog_Partition_Info.cc:447 ../src/Win_GParted.cc:3363
 msgid "Members:"
 msgstr "Membroj:"
 
 #. Logical Volumes
-#: ../src/Dialog_Partition_Info.cc:459
+#: ../src/Dialog_Partition_Info.cc:471
 msgid "Logical Volumes:"
-msgstr ""
+msgstr "Logikaj datumportiloj:"
 
 #. Used
-#: ../src/Dialog_Partition_Info.cc:475
+#: ../src/Dialog_Partition_Info.cc:487
 msgid "Used:"
-msgstr "Uzate:"
+msgstr "Uzata:"
 
 #. unused
-#: ../src/Dialog_Partition_Info.cc:489
+#: ../src/Dialog_Partition_Info.cc:501
 msgid "Unused:"
-msgstr "Neuzate:"
+msgstr "Neuzata:"
 
-#: ../src/Dialog_Partition_Info.cc:506
+#: ../src/Dialog_Partition_Info.cc:518
 msgid "Unallocated:"
-msgstr ""
+msgstr "Neasignita:"
 
 #. size
-#: ../src/Dialog_Partition_Info.cc:522 ../src/Win_GParted.cc:503
+#: ../src/Dialog_Partition_Info.cc:534 ../src/Win_GParted.cc:503
 msgid "Size:"
-msgstr "Grando:"
+msgstr "Grandeco:"
 
 #. ENCRYPTION DETAIL SECTION
 #. encryption headline
-#: ../src/Dialog_Partition_Info.cc:542
+#: ../src/Dialog_Partition_Info.cc:554
 msgid "Encryption"
 msgstr "Ĉifrado"
 
 #. Encryption
-#: ../src/Dialog_Partition_Info.cc:546
+#: ../src/Dialog_Partition_Info.cc:558
 msgid "Encryption:"
 msgstr "Ĉifrado:"
 
 #. LUKS path
 #. Left field & value pair area
 #. path
-#: ../src/Dialog_Partition_Info.cc:552 ../src/Dialog_Partition_Info.cc:592
+#: ../src/Dialog_Partition_Info.cc:564 ../src/Dialog_Partition_Info.cc:604
 #: ../src/Win_GParted.cc:511
 msgid "Path:"
 msgstr "Vojo:"
@@ -379,79 +384,78 @@ msgstr "Vojo:"
 #. PARTITION DETAIL SECTION
 #. partition headline
 #. append columns
-#: ../src/Dialog_Partition_Info.cc:581 ../src/TreeView_Detail.cc:43
+#: ../src/Dialog_Partition_Info.cc:593 ../src/TreeView_Detail.cc:43
 msgid "Partition"
 msgstr "Subdisko"
 
 #. name
 #. Only line: "Name: [EXISTINGNAME  ]"
-#: ../src/Dialog_Partition_Info.cc:604 ../src/Dialog_Partition_Name.cc:44
+#: ../src/Dialog_Partition_Info.cc:616 ../src/Dialog_Partition_Name.cc:44
 msgid "Name:"
 msgstr "Nomo:"
 
 #. flags
-#: ../src/Dialog_Partition_Info.cc:614
+#: ../src/Dialog_Partition_Info.cc:626
 msgid "Flags:"
 msgstr "Flagoj:"
 
 #. Right field & value pair area
 #. first sector
-#: ../src/Dialog_Partition_Info.cc:626
+#: ../src/Dialog_Partition_Info.cc:638
 msgid "First sector:"
-msgstr ""
+msgstr "Unua sektoro:"
 
 #. last sector
-#: ../src/Dialog_Partition_Info.cc:636
+#: ../src/Dialog_Partition_Info.cc:648
 msgid "Last sector:"
-msgstr ""
+msgstr "Lasta sektoro:"
 
 #. total sectors
-#: ../src/Dialog_Partition_Info.cc:646 ../src/Win_GParted.cc:561
+#: ../src/Dialog_Partition_Info.cc:658 ../src/Win_GParted.cc:561
 msgid "Total sectors:"
-msgstr ""
+msgstr "Totalaj sektoroj:"
 
 #. TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3
 #: ../src/Dialog_Partition_Name.cc:35
 msgid "Set partition name on %1"
-msgstr ""
+msgstr "Agordi subdiskan nomon sur %1"
 
 #. TO TRANSLATORS: dialogtitle
 #: ../src/Dialog_Partition_New.cc:34
 msgid "Create new Partition"
-msgstr ""
+msgstr "Krei novan subdiskon"
 
-#. TO TRANSLATORS: used as label for a list of choices.   Create as: <optionmenu with choices>
+#. TO TRANSLATORS: used as label for a list of choices.  Create as: <combo box with choices>
 #: ../src/Dialog_Partition_New.cc:95
 msgid "Create as:"
 msgstr "Krei kiel:"
 
-#. fill partitiontype menu
+#. Fill partition type combo.
 #: ../src/Dialog_Partition_New.cc:100 ../src/OperationCreate.cc:58
 msgid "Primary Partition"
-msgstr ""
+msgstr "Ĉefa subdisko"
 
 #: ../src/Dialog_Partition_New.cc:101 ../src/OperationCreate.cc:61
 #: ../src/OperationDelete.cc:109
 msgid "Logical Partition"
-msgstr ""
+msgstr "Logika subdisko"
 
 #: ../src/Dialog_Partition_New.cc:102 ../src/OperationCreate.cc:64
 msgid "Extended Partition"
-msgstr ""
+msgstr "Etendita subdisko"
 
 #. Partition name
-#: ../src/Dialog_Partition_New.cc:135
-#| msgid "Partition"
+#: ../src/Dialog_Partition_New.cc:134
 msgid "Partition name:"
 msgstr "Subdiska nomo:"
 
-#: ../src/Dialog_Partition_New.cc:235
+#: ../src/Dialog_Partition_New.cc:233
 msgid "New Partition #%1"
-msgstr ""
+msgstr "Nova subdisko #%1"
 
 #: ../src/Dialog_Partition_Resize_Move.cc:98
 msgid "Resize/Move %1"
-msgstr "Aligrandigi/Movi %1"
+msgstr "Aligrandigi/movi %1"
 
 #: ../src/Dialog_Partition_Resize_Move.cc:103
 msgid "Resize %1"
@@ -459,7 +463,7 @@ msgstr "Aligrandigi %1"
 
 #: ../src/Dialog_Progress.cc:33
 msgid "Applying pending operations"
-msgstr ""
+msgstr "Aplikante endajn operaciojn"
 
 #: ../src/Dialog_Progress.cc:48
 msgid ""
@@ -468,7 +472,7 @@ msgstr ""
 
 #: ../src/Dialog_Progress.cc:61
 msgid "Completed Operations:"
-msgstr ""
+msgstr "Plenumitaj operacioj:"
 
 #: ../src/Dialog_Progress.cc:102
 msgid "Details"
@@ -476,7 +480,7 @@ msgstr "Detaloj"
 
 #: ../src/Dialog_Progress.cc:215
 msgid "%1 of %2 operations completed"
-msgstr ""
+msgstr "%1 el %2 operacioj plenumitaj"
 
 #. add save button
 #: ../src/Dialog_Progress.cc:233
@@ -485,11 +489,11 @@ msgstr "Kon_servi detalojn"
 
 #: ../src/Dialog_Progress.cc:245
 msgid "Operation cancelled"
-msgstr "Operacio haltigita"
+msgstr "Operacio nuligita"
 
 #: ../src/Dialog_Progress.cc:259
 msgid "All operations successfully completed"
-msgstr ""
+msgstr "Ĉiuj operacioj sukcese plenumis"
 
 #: ../src/Dialog_Progress.cc:263
 msgid "%1 warning"
@@ -499,52 +503,52 @@ msgstr[1] "%1 avertoj"
 
 #: ../src/Dialog_Progress.cc:276
 msgid "An error occurred while applying the operations"
-msgstr ""
+msgstr "Okazis eraro dum aplikado de operacioj"
 
 #: ../src/Dialog_Progress.cc:281
 msgid "See the details for more information."
-msgstr ""
+msgstr "Vidu la detalojn por pli da informoj."
 
 #: ../src/Dialog_Progress.cc:283
 msgid "IMPORTANT"
-msgstr ""
+msgstr "GRAVA"
 
 #: ../src/Dialog_Progress.cc:284
 msgid "If you want support, you need to provide the saved details!"
-msgstr ""
+msgstr "Se vi volas subtenon, necesas ke vi provizu la konservitajn detalojn!"
 
 #. TO TRANSLATORS: looks like
 #. * See https://gparted.org/save-details.htm for more information.
 #.
 #: ../src/Dialog_Progress.cc:290
 msgid "See %1 for more information."
-msgstr ""
+msgstr "Vidu %1 por pli da informoj."
 
 #. TO TRANSLATORS: looks like  Force Cancel (5)
 #. *  where the number represents a count down in seconds until the button is enabled
 #: ../src/Dialog_Progress.cc:311 ../src/Dialog_Progress.cc:342
 msgid "Force Cancel (%1)"
-msgstr ""
+msgstr "Devige nuligi (%1)"
 
 #: ../src/Dialog_Progress.cc:313 ../src/Dialog_Progress.cc:346
 msgid "Force Cancel"
-msgstr ""
+msgstr "Devigi nuligi"
 
 #: ../src/Dialog_Progress.cc:324
 msgid "Are you sure you want to cancel the current operation?"
-msgstr ""
+msgstr "Ĉu vi certe volas nuligi la aktualan operacion?"
 
 #: ../src/Dialog_Progress.cc:330
 msgid "Canceling an operation might cause SEVERE file system damage."
-msgstr ""
+msgstr "Nuligado de operacio povus kaŭzi TREEGAN dosiersisteman difekton."
 
 #: ../src/Dialog_Progress.cc:332
 msgid "Continue Operation"
-msgstr ""
+msgstr "Daŭrigi operacion"
 
 #: ../src/Dialog_Progress.cc:333
 msgid "Cancel Operation"
-msgstr ""
+msgstr "Nuligi operacion"
 
 #: ../src/Dialog_Progress.cc:354
 msgid "Save Details"
@@ -556,7 +560,7 @@ msgstr "Detaloj pri GParted"
 
 #: ../src/Dialog_Progress.cc:384
 msgid "Libparted"
-msgstr ""
+msgstr "Libparted"
 
 #. TO TRANSLATORS:  EXECUTING
 #. * means that the status for this operation is
@@ -564,7 +568,7 @@ msgstr ""
 #.
 #: ../src/Dialog_Progress.cc:427
 msgid "EXECUTING"
-msgstr ""
+msgstr "RULANTE"
 
 #. TO" TRANSLATORS:  SUCCESS
 #. * means that the status for this operation is
@@ -604,7 +608,7 @@ msgstr "AVERTO"
 
 #: ../src/DialogFeatures.cc:29
 msgid "File System Support"
-msgstr ""
+msgstr "Dosiersistema subteno"
 
 #: ../src/DialogFeatures.cc:46
 msgid "Create"
@@ -612,7 +616,7 @@ msgstr "Krei"
 
 #: ../src/DialogFeatures.cc:47
 msgid "Grow"
-msgstr ""
+msgstr "Grandigi"
 
 #: ../src/DialogFeatures.cc:51
 msgid "Shrink"
@@ -665,10 +669,8 @@ msgstr ""
 #. * when it is mounted.
 #.
 #: ../src/DialogFeatures.cc:110
-#, fuzzy
-#| msgid "Available"
 msgid "Available online only"
-msgstr "Disponeble"
+msgstr ""
 
 #. TO TRANSLATORS:  Available offline only
 #. * means that this action is valid for this file system only
@@ -683,7 +685,7 @@ msgstr ""
 #.
 #: ../src/DialogFeatures.cc:135
 msgid "Not Available"
-msgstr "Nedisponeble"
+msgstr "Nedisponebla"
 
 #: ../src/DialogFeatures.cc:140
 msgid "Legend"
@@ -692,45 +694,44 @@ msgstr "Klarigeto"
 #. TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported.
 #: ../src/DialogFeatures.cc:148
 msgid "Rescan For Supported Actions"
-msgstr ""
+msgstr "Reskani por subtenataj agoj"
 
 #: ../src/DialogManageFlags.cc:32 ../src/DialogManageFlags.cc:37
 msgid "Manage flags on %1"
-msgstr ""
+msgstr "Mastrumi flagojn sur %1"
 
 #: ../src/Dialog_Rescue_Data.cc:36
 msgid "Search disk for file systems"
-msgstr ""
+msgstr "Serĉi diskon por dosiersistemoj"
 
 #. TO TRANSLATORS: looks like    File systems found on /dev/sdb
 #: ../src/Dialog_Rescue_Data.cc:53
-#| msgid "File systems"
 msgid "File systems found on %1"
 msgstr "Dosiersistemoj trovitaj sur %1"
 
 #: ../src/Dialog_Rescue_Data.cc:58
 msgid "Data found"
-msgstr ""
+msgstr "Datumoj trovitaj"
 
 #: ../src/Dialog_Rescue_Data.cc:62
 msgid "Data found with inconsistencies"
-msgstr ""
+msgstr "Datumoj trovitaj kun nekoheraĵoj"
 
 #: ../src/Dialog_Rescue_Data.cc:64
 msgid "WARNING!: The file systems marked with (!) are inconsistent."
-msgstr ""
+msgstr "AVERTO!: La dosiersistemoj markitaj per (!) estas nekoheraj."
 
 #: ../src/Dialog_Rescue_Data.cc:66
 msgid "You might encounter errors trying to view these file systems."
-msgstr ""
+msgstr "Vi povus trafi erarojn se vi provas vidi tiujn dosiersistemojn."
 
 #: ../src/Dialog_Rescue_Data.cc:82
 msgid "The 'View' buttons create read-only views of each file system."
-msgstr ""
+msgstr "La “Vidi” butonoj kreas nurlegaj vidojn de ĉiu dosiersistemo."
 
 #: ../src/Dialog_Rescue_Data.cc:84
 msgid "All mounted views will be unmounted when you close this dialog."
-msgstr ""
+msgstr "Ĉiuj surmetitaj vidoj estos demetitaj kiam vi fermas ĉi tiun dialogon."
 
 #: ../src/Dialog_Rescue_Data.cc:107
 msgid "File systems"
@@ -743,36 +744,38 @@ msgstr "#%1: %2 (%3 MiB)"
 
 #: ../src/Dialog_Rescue_Data.cc:137
 msgid "View"
-msgstr "Vido"
+msgstr "Vidi"
 
 #: ../src/Dialog_Rescue_Data.cc:167
 msgid ""
 "An error occurred while creating a temporary directory for use as a mount "
 "point."
 msgstr ""
+"Okazis eraro dum kreado de provizora dosierujo destinita por surmetingo."
 
 #: ../src/Dialog_Rescue_Data.cc:169
-#| msgid "Error:"
 msgid "Error"
 msgstr "Eraro"
 
 #: ../src/Dialog_Rescue_Data.cc:175
 msgid "Failed creating temporary directory"
-msgstr ""
+msgstr "Malsukcesis krei provizoran dosierujon"
 
 #: ../src/Dialog_Rescue_Data.cc:193
 msgid "An error occurred while creating the read-only view."
-msgstr ""
+msgstr "Okazis eraro dum kreado de nurlega vido."
 
 #: ../src/Dialog_Rescue_Data.cc:195
 msgid ""
 "Either the file system can not be mounted (like swap), or there are "
 "inconsistencies or errors in the file system."
 msgstr ""
+"Aŭ la dosiersistemo ne surmeteblas (kiel swap), aŭ estas alia nekoheraĵoj aŭ "
+"eraroj en la dosiersistemo."
 
 #: ../src/Dialog_Rescue_Data.cc:199
 msgid "Failed creating read-only view"
-msgstr ""
+msgstr "Malsukcesis krei nurlegan vidon"
 
 #: ../src/Dialog_Rescue_Data.cc:224
 msgid "Error:"
@@ -783,11 +786,11 @@ msgstr "Eraro:"
 #. * /tmp/gparted-roview-Nlhb3R.
 #: ../src/Dialog_Rescue_Data.cc:232
 msgid "The file system is mounted on:"
-msgstr ""
+msgstr "La dosiersistemo estas surmetita sur:"
 
 #: ../src/Dialog_Rescue_Data.cc:237
 msgid "Unable to open the default file manager"
-msgstr "Ne eblas malfermi la defaŭltan dosieradministrilon"
+msgstr "Ne eblas malfermi la implicitan dosierfoliumilon"
 
 #: ../src/Dialog_Rescue_Data.cc:256
 msgid ""
@@ -803,7 +806,7 @@ msgstr ""
 
 #: ../src/Dialog_Rescue_Data.cc:260
 msgid "Do you want to try to deactivate the following mount points?"
-msgstr ""
+msgstr "Ĉu vi vere volas malaktivigi la sekvajn surmetingojn?"
 
 #. TO TRANSLATORS: looks like  create missing /dev/mapper entries
 #: ../src/DMRaid.cc:328
@@ -827,7 +830,6 @@ msgstr ""
 
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: ../src/FileSystem.cc:42
-#| msgid "_Unmount"
 msgid "_Mount"
 msgstr "Sur_meti"
 
@@ -838,22 +840,20 @@ msgstr "_Demeti"
 #. TO TRANSLATORS: looks like   Created directory /tmp/gparted-CEzvSp
 #: ../src/FileSystem.cc:226
 msgid "Created directory %1"
-msgstr ""
+msgstr "Kreis dosierujon %1"
 
 #. TO TRANSLATORS: looks like   Removed directory /tmp/gparted-CEzvSp
 #: ../src/FileSystem.cc:252
 msgid "Removed directory %1"
-msgstr ""
+msgstr "Forigis dosierujon %1"
 
 #. Adding a child after this OperationDetail has been set to prevent it is
 #. a programming bug.  However the best way to report it is by adding yet
 #. another child containing the bug report, and allowing the child to be
 #. added anyway.
 #: ../src/GParted_Core.cc:77 ../src/OperationDetail.cc:146
-#, fuzzy
-#| msgid "GParted"
 msgid "GParted Bug"
-msgstr "GParted"
+msgstr "GParted cimo"
 
 #. TO TRANSLATORS: looks like Scanning /dev/sda
 #: ../src/GParted_Core.cc:196 ../src/GParted_Core.cc:205
@@ -863,23 +863,25 @@ msgstr "Skanante %1"
 #. TO TRANSLATORS: looks like   Confirming /dev/sda
 #: ../src/GParted_Core.cc:224 ../src/GParted_Core.cc:249
 msgid "Confirming %1"
-msgstr ""
+msgstr "Konfirmante %1"
 
 #. TO TRANSLATORS: looks like Searching /dev/sda partitions
 #: ../src/GParted_Core.cc:278
 msgid "Searching %1 partitions"
-msgstr ""
+msgstr "Serĉante %1 subdiskojn"
 
 #. TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors
 #: ../src/GParted_Core.cc:536
 msgid "A partition cannot have a length of %1 sectors"
-msgstr ""
+msgstr "Subdisko ne povas havi longon de %1 sektorojn"
 
 #. TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid
 #: ../src/GParted_Core.cc:550
 msgid ""
 "A partition with used sectors (%1) greater than its length (%2) is not valid"
 msgstr ""
+"Subdisko kun uzitaj sektoroj (%1) pli grandaj ol ĝia longo (%2) ne estas "
+"valida"
 
 #. TO TRANSLATORS:  unrecognized
 #. * means that the partition table for this disk
@@ -887,24 +889,24 @@ msgstr ""
 #.
 #: ../src/GParted_Core.cc:967
 msgid "unrecognized"
-msgstr ""
+msgstr "nerekonata"
 
 #. no file system found....
 #: ../src/GParted_Core.cc:1511
 msgid "Unable to detect file system! Possible reasons are:"
-msgstr ""
+msgstr "Ne eblas detekti dosiersistemon! Eblaj kialoj estas:"
 
 #: ../src/GParted_Core.cc:1513
 msgid "The file system is damaged"
-msgstr ""
+msgstr "La dosiersistemo estas difektita"
 
 #: ../src/GParted_Core.cc:1515
 msgid "The file system is unknown to GParted"
-msgstr ""
+msgstr "La dosiersistemon ne konas GParted"
 
 #: ../src/GParted_Core.cc:1517
 msgid "There is no file system available (unformatted)"
-msgstr ""
+msgstr "Neniu dosiersistemo disponeblas (nestrukturita)"
 
 #. TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing
 #: ../src/GParted_Core.cc:1520
@@ -913,19 +915,19 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:1669
 msgid "Unable to find mount point"
-msgstr ""
+msgstr "Ne eblas trovi surmetingon"
 
 #: ../src/GParted_Core.cc:1787
 msgid "Unable to read the contents of this file system!"
-msgstr ""
+msgstr "Ne eblas legi la enhavojn de ĉi tiu dosiersistemo!"
 
 #: ../src/GParted_Core.cc:1789
 msgid "Because of this some operations may be unavailable."
-msgstr ""
+msgstr "Pro tio, kelkaj operacioj povus esti nedisponeblaj."
 
 #: ../src/GParted_Core.cc:1793
 msgid "The cause might be a missing software package."
-msgstr ""
+msgstr "La kaŭzo povus esti mankanta programaro."
 
 #. TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs.
 #: ../src/GParted_Core.cc:1796
@@ -937,7 +939,7 @@ msgstr ""
 #. TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition.
 #: ../src/GParted_Core.cc:1806
 msgid "%1 of unallocated space within the partition."
-msgstr ""
+msgstr "%1 da neasignita spacon ene de la subdisko."
 
 #. TO TRANSLATORS: To grow the file system to fill the partition, select the partition and choose the menu item:
 #. * means that the user can perform a check of the partition which will
@@ -948,16 +950,16 @@ msgid ""
 "To grow the file system to fill the partition, select the partition and "
 "choose the menu item:"
 msgstr ""
+"Por grandigi la dosiersistemon por plenigi la subdiskon, elektu la subdiskon "
+"kaj elektu la menueron:"
 
 #: ../src/GParted_Core.cc:1818
-#, fuzzy
-#| msgid "Partition"
 msgid "Partition --> Check."
-msgstr "Subdisko --> kontrolo."
+msgstr "Subdisko --> Kontroli."
 
 #: ../src/GParted_Core.cc:1932
 msgid "create empty partition"
-msgstr ""
+msgstr "krei malplenan subdiskon"
 
 #. TO TRANSLATORS: looks like   path: /dev/sda1 (partition)
 #. * This is showing the name and the fact
@@ -970,12 +972,10 @@ msgstr ""
 #. * within a device.
 #.
 #: ../src/GParted_Core.cc:2008 ../src/GParted_Core.cc:3674
-#| msgid "path: %1"
 msgid "path: %1 (%2)"
 msgstr "vojo: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2009 ../src/GParted_Core.cc:3678
-#| msgid "Partition"
 msgid "partition"
 msgstr "subdisko"
 
@@ -989,7 +989,7 @@ msgstr "fino: %1"
 
 #: ../src/GParted_Core.cc:2012 ../src/GParted_Core.cc:3681
 msgid "size: %1 (%2)"
-msgstr "grando: %1 (%2)"
+msgstr "grandeco: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2044
 msgid ""
@@ -1008,7 +1008,7 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:2098
 msgid "delete partition"
-msgstr ""
+msgstr "forigi subdiskon"
 
 #: ../src/GParted_Core.cc:2142
 msgid ""
@@ -1016,10 +1016,8 @@ msgid ""
 msgstr ""
 
 #: ../src/GParted_Core.cc:2157
-#, fuzzy
-#| msgid "create new %1 file system"
 msgid "delete %1 file system"
-msgstr "krei novan %1 dosiersistemon"
+msgstr "forigi %1 dosiersistemon"
 
 #: ../src/GParted_Core.cc:2175
 msgid ""
@@ -1029,20 +1027,20 @@ msgstr ""
 #. TO TRANSLATORS: looks like   Clear file system Label on /dev/hda3
 #: ../src/GParted_Core.cc:2182 ../src/OperationLabelFileSystem.cc:55
 msgid "Clear file system label on %1"
-msgstr ""
+msgstr "Vakigi dosiersisteman etikedon sur %1"
 
 #: ../src/GParted_Core.cc:2185
 msgid "Set file system label to \"%1\" on %2"
-msgstr ""
+msgstr "Agordi dosiersisteman etikedon de “%1” sur %2"
 
 #. TO TRANSLATORS: looks like   Clear partition name on /dev/hda3
 #: ../src/GParted_Core.cc:2210 ../src/OperationNamePartition.cc:55
 msgid "Clear partition name on %1"
-msgstr ""
+msgstr "Vakigi subdiskan nomon sur %1"
 
 #: ../src/GParted_Core.cc:2213
 msgid "Set partition name to \"%1\" on %2"
-msgstr ""
+msgstr "Agordi subdiskan nomon de “%1” sur %2"
 
 #: ../src/GParted_Core.cc:2238
 msgid ""
@@ -1091,7 +1089,7 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:2487
 msgid "using libparted"
-msgstr ""
+msgstr "uzante libparted"
 
 #. TO TRANSLATORS:
 #. * means that GParted has encountered a programming bug and tried
@@ -1119,39 +1117,39 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:2718
 msgid "resize/move partition"
-msgstr ""
+msgstr "aligrandigi/movi subdiskon"
 
 #: ../src/GParted_Core.cc:2721
 msgid "move partition to the right"
-msgstr ""
+msgstr "movi subdiskon dekstren"
 
 #: ../src/GParted_Core.cc:2724
 msgid "move partition to the left"
-msgstr ""
+msgstr "movi subdiskon maldekstren"
 
 #: ../src/GParted_Core.cc:2727
 msgid "grow partition from %1 to %2"
-msgstr ""
+msgstr "grandigi subdiskon de %1 al %2"
 
 #: ../src/GParted_Core.cc:2730
 msgid "shrink partition from %1 to %2"
-msgstr ""
+msgstr "ŝrumpi subdiskon de %1 al %2"
 
 #: ../src/GParted_Core.cc:2733
 msgid "move partition to the right and grow it from %1 to %2"
-msgstr ""
+msgstr "movi subdiskon dekstren kaj grandigi ĝin de %1 al %2"
 
 #: ../src/GParted_Core.cc:2736
 msgid "move partition to the right and shrink it from %1 to %2"
-msgstr ""
+msgstr "movi subdiskon dekstren kaj ŝrumpi ĝin de %1 al %2"
 
 #: ../src/GParted_Core.cc:2739
 msgid "move partition to the left and grow it from %1 to %2"
-msgstr ""
+msgstr "movi subdiskon maldekstren kaj grandigi ĝin de %1 al %2"
 
 #: ../src/GParted_Core.cc:2742
 msgid "move partition to the left and shrink it from %1 to %2"
-msgstr ""
+msgstr "movi subdiskon maldekstren kaj ŝrumpi ĝin de %1 al %2"
 
 #: ../src/GParted_Core.cc:2757
 msgid ""
@@ -1169,7 +1167,7 @@ msgstr "malnova fino: %1"
 
 #: ../src/GParted_Core.cc:2769
 msgid "old size: %1 (%2)"
-msgstr "malnova grando: %1 (%2)"
+msgstr "malnova grandeco: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2784 ../src/GParted_Core.cc:3768
 msgid "new start: %1"
@@ -1181,7 +1179,7 @@ msgstr "nova fino: %1"
 
 #: ../src/GParted_Core.cc:2786 ../src/GParted_Core.cc:3770
 msgid "new size: %1 (%2)"
-msgstr "nova gando: %1 (%2)"
+msgstr "nova grandeco: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2800 ../src/GParted_Core.cc:3721
 msgid "requested start: %1"
@@ -1193,26 +1191,23 @@ msgstr "petita dino: %1"
 
 #: ../src/GParted_Core.cc:2802 ../src/GParted_Core.cc:3723
 msgid "requested size: %1 (%2)"
-msgstr "petita grando: %1 (%2)"
+msgstr "petita grandeco: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2814
 msgid "attempt to rollback failed change to the partition"
 msgstr ""
 
 #: ../src/GParted_Core.cc:2835
-#| msgid "old start: %1"
 msgid "original start: %1"
 msgstr "origina komenco: %1"
 
 #: ../src/GParted_Core.cc:2836
-#| msgid "old end: %1"
 msgid "original end: %1"
 msgstr "origina fino: %1"
 
 #: ../src/GParted_Core.cc:2837
-#| msgid "old size: %1 (%2)"
 msgid "original size: %1 (%2)"
-msgstr "origina grando: %1 (%2)"
+msgstr "origina grandeco: %1 (%2)"
 
 #: ../src/GParted_Core.cc:2919
 msgid ""
@@ -1222,7 +1217,7 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:2924
 msgid "shrink encryption volume"
-msgstr ""
+msgstr "ŝrumpi ĉifran datumportilon"
 
 #: ../src/GParted_Core.cc:2935
 msgid ""
@@ -1232,11 +1227,11 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:2940
 msgid "grow encryption volume to fill the partition"
-msgstr ""
+msgstr "grandigi ĉifran datumportilon por ke ĝi plenigas la subdiskon"
 
 #: ../src/GParted_Core.cc:2950
 msgid "growing is not available for this encryption volume"
-msgstr ""
+msgstr "grandigo ne disponeblas por ĉi tiu ĉifra datumportilo"
 
 #: ../src/GParted_Core.cc:2968
 msgid ""
@@ -1263,11 +1258,11 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:3001
 msgid "grow file system to fill the partition"
-msgstr ""
+msgstr "grandigi dosiersistemon por ke ĝi plenigas la subdiskon"
 
 #: ../src/GParted_Core.cc:3012
 msgid "growing is not available for this file system"
-msgstr ""
+msgstr "grandigo ne disponeblas por ĉi tiu dosiersistemo"
 
 #: ../src/GParted_Core.cc:3020
 msgid "growing the file system is currently disallowed"
@@ -1280,10 +1275,8 @@ msgstr ""
 
 #. TO TRANSLATORS: looks like   recreate linux-swap file system
 #: ../src/GParted_Core.cc:3056
-#, fuzzy
-#| msgid "create new %1 file system"
 msgid "recreate %1 file system"
-msgstr "krei novan %1 dosiersistemon"
+msgstr "rekrei %1 dosiersistemon"
 
 #: ../src/GParted_Core.cc:3125
 msgid "the destination is smaller than the source partition"
@@ -1302,7 +1295,6 @@ msgid ""
 msgstr ""
 
 #: ../src/GParted_Core.cc:3189
-#| msgid "copy file system"
 msgid "copy file system from %1 to %2"
 msgstr "kopii dosiersistemon de %1 al %2"
 
@@ -1317,12 +1309,12 @@ msgstr "kopii %1"
 
 #: ../src/GParted_Core.cc:3276
 msgid "finding optimal block size"
-msgstr ""
+msgstr "serĉante optimuman blok-grandecon"
 
 #. TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB
 #: ../src/GParted_Core.cc:3307 ../src/GParted_Core.cc:3353
 msgid "copy %1 using a block size of %2"
-msgstr ""
+msgstr "kopii %1 uzante la blok-grandecon de %2"
 
 #: ../src/GParted_Core.cc:3325
 msgid "%1 seconds"
@@ -1331,18 +1323,16 @@ msgstr "%1 sekundoj"
 #. TO TRANSLATORS: looks like  optimal block size is 1.00 MiB
 #: ../src/GParted_Core.cc:3344
 msgid "optimal block size is %1"
-msgstr ""
+msgstr "optimuma blok-grandeco estas %1"
 
 #. TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied
 #: ../src/GParted_Core.cc:3371
 msgid "%1 (%2 B) copied"
-msgstr ""
+msgstr "%1 (%2 B) kopiitaj"
 
 #: ../src/GParted_Core.cc:3409
-#, fuzzy
-#| msgid "resize file system"
 msgid "rollback failed file system move"
-msgstr "aligrandigi dosiersistemon"
+msgstr ""
 
 #: ../src/GParted_Core.cc:3432
 msgid ""
@@ -1352,46 +1342,41 @@ msgstr ""
 #. TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them
 #: ../src/GParted_Core.cc:3444
 msgid "check file system on %1 for errors and (if possible) fix them"
-msgstr ""
+msgstr "kontroli ĉu dosiersistemo %1 enhavas erarojn kaj (se eble) ripari ilin"
 
 #: ../src/GParted_Core.cc:3453
 msgid "checking is not available for this file system"
-msgstr ""
+msgstr "kontrolado ne disponeblas por ĉi tiu dosiersistemo"
 
 #: ../src/GParted_Core.cc:3518
 msgid "set partition type on %1"
-msgstr ""
+msgstr "agordi subdiskan tipon sur %1"
 
 #. TO TRANSLATORS: looks like   new partition type: ext4
 #: ../src/GParted_Core.cc:3568
 msgid "new partition type: %1"
-msgstr ""
+msgstr "nova subdiska tipo: %1"
 
 #. TO TRANSLATORS: looks like   new partition flag: lvm
 #: ../src/GParted_Core.cc:3583
-#, fuzzy
-#| msgid "new start: %1"
 msgid "new partition flag: %1"
-msgstr "nova komenco: %1"
+msgstr "nova subdiska flago: %1"
 
 #: ../src/GParted_Core.cc:3612
 msgid "calibrate %1"
-msgstr ""
+msgstr "laŭnormigi %1"
 
 #: ../src/GParted_Core.cc:3677
-#| msgid "_Device"
 msgid "device"
 msgstr "aparato"
 
 #: ../src/GParted_Core.cc:3691
-#, fuzzy
-#| msgid "Information about %1"
 msgid "encryption path: %1"
-msgstr "informoj vojo: %1"
+msgstr "ĉifra vojo: %1"
 
 #: ../src/GParted_Core.cc:3717
 msgid "calculate new size and position of %1"
-msgstr ""
+msgstr "kalkuli novan grandecon kaj pozicion de %1"
 
 #: ../src/GParted_Core.cc:3846
 msgid ""
@@ -1425,7 +1410,7 @@ msgstr ""
 #. TO TRANSLATORS: looks like Error trying to open /dev/sdd1
 #: ../src/GParted_Core.cc:4140
 msgid "Error trying to open %1"
-msgstr ""
+msgstr "Eraro dum malfermado de %1"
 
 #. TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record.
 #: ../src/GParted_Core.cc:4150
@@ -1439,32 +1424,32 @@ msgstr ""
 
 #: ../src/GParted_Core.cc:4226
 msgid "libparted messages"
-msgstr ""
+msgstr "libparted-mesaĝoj"
 
 #. TO TRANSLATORS: looks like   Ignoring device /dev/sde with logical sector size of 2048 bytes.
 #: ../src/GParted_Core.cc:4243
 msgid "Ignoring device %1 with logical sector size of %2 bytes."
-msgstr ""
+msgstr "Malatentante aparaton %1 kun logika sektora grandeco de %2 bajtoj."
 
 #: ../src/GParted_Core.cc:4246
 msgid ""
 "GParted requires libparted version 2.2 or higher to support devices with "
 "sector sizes larger than 512 bytes."
 msgstr ""
+"GParted bezonas libparted-version 2.2 aŭ pli alta por subteni aparatojn kun "
+"sektor-grandecojn pli grandaj ol 512 bajtoj."
 
 #: ../src/GParted_Core.cc:4434
-#, fuzzy
-#| msgid "Device Information"
 msgid "Libparted Information"
-msgstr "Aparatoinformo"
+msgstr "Libparted-informoj"
 
 #: ../src/GParted_Core.cc:4438
 msgid "Libparted Warning"
-msgstr ""
+msgstr "Libparted-averto"
 
 #: ../src/GParted_Core.cc:4442
 msgid "Libparted Error"
-msgstr ""
+msgstr "Libparted-eraro"
 
 #: ../src/GParted_Core.cc:4445
 #, fuzzy
@@ -1474,65 +1459,65 @@ msgstr "Detaloj pri GParted"
 
 #: ../src/GParted_Core.cc:4448
 msgid "Libparted Bug"
-msgstr ""
+msgstr "Libparted-cimo"
 
 #: ../src/GParted_Core.cc:4451
 msgid "Libparted Unsupported Feature"
-msgstr ""
+msgstr "Libparted nesubtenita funkcio"
 
 #: ../src/GParted_Core.cc:4454
 msgid "Libparted unknown exception"
-msgstr ""
+msgstr "Libparted nekonata eraro"
 
 #: ../src/GParted_Core.cc:4458
 msgid "Fix"
-msgstr ""
+msgstr "Ripari"
 
 #: ../src/GParted_Core.cc:4460
 msgid "Yes"
-msgstr ""
+msgstr "Jes"
 
 #: ../src/GParted_Core.cc:4462
 msgid "Ok"
-msgstr ""
+msgstr "Bone"
 
 #: ../src/GParted_Core.cc:4464
 msgid "Retry"
-msgstr ""
+msgstr "Reprovi"
 
 #: ../src/GParted_Core.cc:4466
-#, fuzzy
-#| msgid "None"
 msgid "No"
-msgstr "Neniu"
+msgstr "Ne"
 
 #: ../src/GParted_Core.cc:4468
 msgid "Cancel"
-msgstr ""
+msgstr "Nuligi"
 
 #: ../src/GParted_Core.cc:4470
 msgid "Ignore"
-msgstr ""
+msgstr "Malatenti"
 
 #: ../src/HBoxOperations.cc:44 ../src/Win_GParted.cc:176
 msgid "_Undo Last Operation"
-msgstr ""
+msgstr "_Malfari lastan operacion"
 
 #: ../src/HBoxOperations.cc:49 ../src/Win_GParted.cc:182
 msgid "_Clear All Operations"
-msgstr ""
+msgstr "_Vakigi ĉiujn operaciojn"
 
 #: ../src/HBoxOperations.cc:54 ../src/Win_GParted.cc:187
 msgid "_Apply All Operations"
-msgstr ""
+msgstr "_Apliki ĉiujn operaciojn"
 
 #: ../src/LVM2_PV_Info.cc:193
 msgid "One or more Physical Volumes belonging to the Volume Group is missing."
 msgstr ""
+"Unu aŭ pli da fizikaj datumportiloj apartenante de la datumportila grupo "
+"mankas."
 
 #: ../src/LVM2_PV_Info.cc:321
 msgid "An error occurred reading LVM2 configuration!"
-msgstr ""
+msgstr "Okazis eraro dum legado de LVM2-agordoj!"
 
 #: ../src/LVM2_PV_Info.cc:323
 msgid "Some or all of the details might be missing or incorrect."
@@ -1557,28 +1542,28 @@ msgstr "Agordi novan hazardan UUID sur %1 dosiersistemon sur %2"
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd (start at 250 MiB)
 #: ../src/OperationCopy.cc:83
 msgid "Copy %1 to %2 (start at %3)"
-msgstr ""
+msgstr "Kopii %1 al %2 (komenco ĉe %3)"
 
 #. TO TRANSLATORS: looks like  Copy /dev/hda4 to /dev/hdd1
 #: ../src/OperationCopy.cc:92
 msgid "Copy %1 to %2"
-msgstr ""
+msgstr "Kopii %1 al %2"
 
 #. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4
 #: ../src/OperationCheck.cc:50
 msgid "Check and repair file system (%1) on %2"
-msgstr ""
+msgstr "Kontroli kaj ripari dosiersistemon (%1) sur %2"
 
 #. TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda
 #: ../src/OperationCreate.cc:71
 msgid "Create %1 #%2 (%3, %4) on %5"
-msgstr ""
+msgstr "Krei %1 #%2 (%3, %4) sur %5"
 
 #. TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda
 #: ../src/OperationDelete.cc:114
 msgid "Delete %1 (%2, %3) from %4"
-msgstr ""
+msgstr "Forigi %1 (%2, %3) el %4"
 
 #. TO TRANSLATORS:
 #. * means that GParted has encountered a programming bug.  More
@@ -1592,23 +1577,25 @@ msgid ""
 "Adding more information to the results of this step after it has been marked "
 "as completed"
 msgstr ""
+"Aldoni pli da informoj al la rezultoj de ĉi tiu paŝo post ol oni markis ĝin "
+"kiel plenumita"
 
 #. Bug: Not initialised by constructor or reset later
 #. Bug: Not initialised by constructor or reset later
 #. TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap
 #: ../src/OperationFormat.cc:75
 msgid "Format %1 as %2"
-msgstr ""
+msgstr "Strukturi %1 kiel %2"
 
 #. TO TRANSLATORS: looks like   Set file system label "My Label" on /dev/hda3
 #: ../src/OperationLabelFileSystem.cc:61
 msgid "Set file system label \"%1\" on %2"
-msgstr ""
+msgstr "Agordi dosiersisteman etikedon “%1” sur %2"
 
 #. TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3
 #: ../src/OperationNamePartition.cc:61
 msgid "Set partition name \"%1\" on %2"
-msgstr ""
+msgstr "Agordi subdiskan nomon “%1” sur %2"
 
 #: ../src/OperationResizeMove.cc:104
 msgid "resize/move %1"
@@ -1619,6 +1606,8 @@ msgid ""
 "new and old partition have the same size and position.  Hence continuing "
 "anyway"
 msgstr ""
+"nova kaj malnova subdisko havas la saman grandecon kaj pozicion.  Tial "
+"daŭrigante malgraŭe"
 
 #: ../src/OperationResizeMove.cc:110
 msgid "Move %1 to the right"
@@ -1630,36 +1619,36 @@ msgstr "Movi %1 maldekstren"
 
 #: ../src/OperationResizeMove.cc:116
 msgid "Grow %1 from %2 to %3"
-msgstr ""
+msgstr "Grandigi %1 de %2 al %3"
 
 #: ../src/OperationResizeMove.cc:119
 msgid "Shrink %1 from %2 to %3"
-msgstr ""
+msgstr "Ŝrumpi %1 de %2 al %3"
 
 #: ../src/OperationResizeMove.cc:122
 msgid "Move %1 to the right and grow it from %2 to %3"
-msgstr ""
+msgstr "Movi %1 dekstren kaj grandigi ĝin de %2 al %3"
 
 #: ../src/OperationResizeMove.cc:125
 msgid "Move %1 to the right and shrink it from %2 to %3"
-msgstr ""
+msgstr "Movi %1 dekstren kaj ŝrumpi ĝin de %2 al %3"
 
 #: ../src/OperationResizeMove.cc:128
 msgid "Move %1 to the left and grow it from %2 to %3"
-msgstr ""
+msgstr "Movi %1 maldekstren kaj grandigi ĝin de %2 al %3"
 
 #: ../src/OperationResizeMove.cc:131
 msgid "Move %1 to the left and shrink it from %2 to %3"
-msgstr ""
+msgstr "Movi %1 maldekstren kaj ŝrumpi ĝin de %2 al %3"
 
 #. TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining)
 #: ../src/ProgressBar.cc:98
 msgid "%1 of %2 copied (%3 remaining)"
-msgstr ""
+msgstr "%1 el %2 kopiitaj (restas %3)"
 
 #: ../src/TreeView_Detail.cc:44
 msgid "Name"
-msgstr ""
+msgstr "Nomo"
 
 #: ../src/TreeView_Detail.cc:46
 msgid "Mount Point"
@@ -1667,15 +1656,15 @@ msgstr "Surmetingo"
 
 #: ../src/TreeView_Detail.cc:48
 msgid "Size"
-msgstr "Grando"
+msgstr "Grandeco"
 
 #: ../src/TreeView_Detail.cc:49
 msgid "Used"
-msgstr "Uzate"
+msgstr "Uzita"
 
 #: ../src/TreeView_Detail.cc:50
 msgid "Unused"
-msgstr "Neuzate"
+msgstr "Neuzata"
 
 #: ../src/TreeView_Detail.cc:51
 msgid "Flags"
@@ -1688,7 +1677,7 @@ msgstr "Flagoj"
 #.
 #: ../src/Utils.cc:259
 msgid "unallocated"
-msgstr ""
+msgstr "neasignita"
 
 #. TO TRANSLATORS:  unknown
 #. * means that this space within this partition does
@@ -1697,7 +1686,7 @@ msgstr ""
 #.
 #: ../src/Utils.cc:266
 msgid "unknown"
-msgstr "nekonate"
+msgstr "nekonata"
 
 #. TO TRANSLATORS:  unformatted
 #. * means that when the new partition is created by
@@ -1706,7 +1695,7 @@ msgstr "nekonate"
 #.
 #: ../src/Utils.cc:273
 msgid "unformatted"
-msgstr ""
+msgstr "nestrukturita"
 
 #. TO TRANSLATORS:  other
 #. * name shown in the File System Support dialog to list
@@ -1715,7 +1704,7 @@ msgstr ""
 #.
 #: ../src/Utils.cc:280
 msgid "other"
-msgstr ""
+msgstr "alia"
 
 #. TO TRANSLATORS:  cleared
 #. * means that all file system signatures in the partition
@@ -1723,20 +1712,20 @@ msgstr ""
 #.
 #: ../src/Utils.cc:286
 msgid "cleared"
-msgstr ""
+msgstr "vakigita"
 
 #: ../src/Utils.cc:318
 msgid "used"
-msgstr "uzate"
+msgstr "uzita"
 
 #: ../src/Utils.cc:319
 msgid "unused"
-msgstr "neuzate"
+msgstr "neuzita"
 
 #. TO TRANSLATORS: means that this is an encrypted file system
 #: ../src/Utils.cc:327
 msgid "Encrypted"
-msgstr ""
+msgstr "Ĉifrita"
 
 #: ../src/Utils.cc:458
 msgid "%1 B"
@@ -1760,7 +1749,7 @@ msgstr "%1 TiB"
 
 #: ../src/Win_GParted.cc:160
 msgid "_Refresh Devices"
-msgstr ""
+msgstr "Aktualigi aparatojn"
 
 #: ../src/Win_GParted.cc:166
 msgid "_Devices"
@@ -1780,23 +1769,23 @@ msgstr "Aparat_informoj"
 
 #: ../src/Win_GParted.cc:198
 msgid "Pending _Operations"
-msgstr ""
+msgstr "Endaj _operacioj"
 
 #: ../src/Win_GParted.cc:199
 msgid "_View"
-msgstr "_Vido"
+msgstr "_Vidi"
 
 #: ../src/Win_GParted.cc:203
 msgid "_File System Support"
-msgstr ""
+msgstr "_Dosiersistema subteno"
 
 #: ../src/Win_GParted.cc:207
 msgid "_Create Partition Table"
-msgstr ""
+msgstr "_Krei subdiskan tabelon"
 
 #: ../src/Win_GParted.cc:210
 msgid "_Attempt Data Rescue"
-msgstr ""
+msgstr "_Provi datuman savon"
 
 #: ../src/Win_GParted.cc:213
 msgid "_Device"
@@ -1804,7 +1793,7 @@ msgstr "_Aparato"
 
 #: ../src/Win_GParted.cc:217
 msgid "_Partition"
-msgstr ""
+msgstr "_Subdisko"
 
 #: ../src/Win_GParted.cc:222
 msgid "_Contents"
@@ -1821,31 +1810,31 @@ msgstr "Nova"
 
 #: ../src/Win_GParted.cc:247
 msgid "Create a new partition in the selected unallocated space"
-msgstr ""
+msgstr "Krei novan subdiskon en la elektitan neasignitan spacon"
 
 #: ../src/Win_GParted.cc:252
 msgid "Delete the selected partition"
-msgstr ""
+msgstr "Forigi la elektitan subdiskon"
 
 #: ../src/Win_GParted.cc:274
 msgid "Resize/Move the selected partition"
-msgstr ""
+msgstr "Aligrandigi/movi la elektitan subdiskon"
 
 #: ../src/Win_GParted.cc:283
 msgid "Copy the selected partition to the clipboard"
-msgstr ""
+msgstr "Kopii la elektitan subdiskon al la tondujo"
 
 #: ../src/Win_GParted.cc:288
 msgid "Paste the partition from the clipboard"
-msgstr ""
+msgstr "Alglui la subdiskon el la tondujo"
 
 #: ../src/Win_GParted.cc:300
 msgid "Undo Last Operation"
-msgstr ""
+msgstr "Malfari lastan operacion"
 
 #: ../src/Win_GParted.cc:308
 msgid "Apply All Operations"
-msgstr ""
+msgstr "Apliki ĉiujn operaciojn"
 
 #. TO TRANSLATORS: "_New" is a sub menu item for the partition menu.
 #: ../src/Win_GParted.cc:332
@@ -1859,40 +1848,36 @@ msgstr "_Aligrandigi/movi"
 #. TO TRANSLATORS: menuitem which holds a submenu with file systems..
 #: ../src/Win_GParted.cc:373
 msgid "_Format to"
-msgstr ""
+msgstr "_Strukturi al"
 
 #. TO TRANSLATORS: menuitem which holds a submenu with mount points..
 #: ../src/Win_GParted.cc:395
 msgid "_Mount on"
-msgstr ""
+msgstr "S_urmeti sur"
 
 #: ../src/Win_GParted.cc:402
-#, fuzzy
-#| msgid "Partition"
 msgid "_Name Partition"
 msgstr "_Nomi subdiskon"
 
 #: ../src/Win_GParted.cc:407
 msgid "M_anage Flags"
-msgstr ""
+msgstr "M_astrumi flagojn"
 
 #: ../src/Win_GParted.cc:412
 msgid "C_heck"
-msgstr ""
+msgstr "_Kontroli"
 
 #: ../src/Win_GParted.cc:417
-#, fuzzy
-#| msgid "File System"
 msgid "_Label File System"
 msgstr "_Etikedi dosiersistemon"
 
 #: ../src/Win_GParted.cc:422
 msgid "New UU_ID"
-msgstr ""
+msgstr "Nova UU_ID"
 
 #: ../src/Win_GParted.cc:481
 msgid "Device Information"
-msgstr "Aparatoinformo"
+msgstr "Aparatinformoj"
 
 #. model
 #: ../src/Win_GParted.cc:489
@@ -1907,7 +1892,7 @@ msgstr ""
 #. disktype
 #: ../src/Win_GParted.cc:529
 msgid "Partition table:"
-msgstr ""
+msgstr "Subdiska tabelo:"
 
 #. heads
 #: ../src/Win_GParted.cc:537
@@ -1917,31 +1902,31 @@ msgstr ""
 #. sectors/track
 #: ../src/Win_GParted.cc:545
 msgid "Sectors/track:"
-msgstr ""
+msgstr "Sektoroj/trako:"
 
 #. cylinders
 #: ../src/Win_GParted.cc:553
 msgid "Cylinders:"
-msgstr ""
+msgstr "Cilindroj:"
 
 #. sector size
 #: ../src/Win_GParted.cc:569
 msgid "Sector size:"
-msgstr ""
+msgstr "Sektor-grandeco:"
 
 #: ../src/Win_GParted.cc:745
 msgid "Could not add this operation to the list"
-msgstr ""
+msgstr "Ne povis aldoni ĉi tiun operacion al la listo"
 
 #: ../src/Win_GParted.cc:926
 msgid "%1 operation pending"
 msgid_plural "%1 operations pending"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 operacio endas"
+msgstr[1] "%1 operacioj endas"
 
 #: ../src/Win_GParted.cc:1036
 msgid "Quit GParted?"
-msgstr "Ĉu ĉesi na GParted?"
+msgstr "Ĉu ĉesigi GParted?"
 
 #: ../src/Win_GParted.cc:1042
 msgid "%1 operation is currently pending."
@@ -1955,53 +1940,51 @@ msgstr "%1 - GParted"
 
 #: ../src/Win_GParted.cc:1490
 msgid "Scanning all devices..."
-msgstr ""
+msgstr "Skanante ĉiujn aparatojn..."
 
 #: ../src/Win_GParted.cc:1537
 msgid "No devices detected"
-msgstr ""
+msgstr "Neniu aparato detektita"
 
 #. TO TRANSLATORS: looks like   No partition table found on device /dev/sda
 #: ../src/Win_GParted.cc:1634
 msgid "No partition table found on device %1"
-msgstr ""
+msgstr "Neniu subdiska tabelo trovita sur aparato %1"
 
 #: ../src/Win_GParted.cc:1639
 msgid "A partition table is required before partitions can be added."
-msgstr ""
+msgstr "Subdiska tabelo necesas antaŭ ol oni povas aldoni subdiskojn."
 
 #: ../src/Win_GParted.cc:1641
 msgid "To create a new partition table choose the menu item:"
-msgstr ""
+msgstr "Por krei novan subdiskan tabelon, elektu la menueron:"
 
 #. TO TRANSLATORS: this message represents the menu item Create Partition Table under the Device menu.
 #: ../src/Win_GParted.cc:1644
 msgid "Device --> Create Partition Table."
-msgstr ""
+msgstr "Aparato --> Krei subdiskan tabelon."
 
 #. TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1
 #: ../src/Win_GParted.cc:1653
-#| msgid "resize file system"
 msgid "Unable to resize read-only file system %1"
 msgstr "Ne eblas aligrandigi nurlegeblan dosiersistemon %1"
 
 #: ../src/Win_GParted.cc:1658
 msgid "The file system can not be resized while it is mounted read-only."
 msgstr ""
+"Oni ne povas aligrandigi la dosiersistemon kiam ĝi estas surmetita nurlege."
 
 #: ../src/Win_GParted.cc:1660
 msgid "Either unmount the file system or remount it read-write."
-msgstr ""
+msgstr "Aŭ demetu la dosiersistemon aŭ denove surmetu ĝin skrib-lege."
 
 #: ../src/Win_GParted.cc:1691
-#, fuzzy
-#| msgid "Unable to open the default file manager"
 msgid "Unable to open GParted Manual help file"
-msgstr "Ne eblas malfermi la defaŭltan dosieradministrilon"
+msgstr "Ne eblas malfermi la GParted manlibron"
 
 #: ../src/Win_GParted.cc:1710
 msgid "Documentation is not available"
-msgstr ""
+msgstr "Dokumentado ne disponeblas"
 
 #: ../src/Win_GParted.cc:1715
 msgid "This build of gparted is configured without documentation."
@@ -2009,28 +1992,29 @@ msgstr ""
 
 #: ../src/Win_GParted.cc:1717
 msgid "Documentation is available at the project web site."
-msgstr ""
+msgstr "Dokumentado disponeblas sur la retejo de la projekto."
 
 #: ../src/Win_GParted.cc:1735
 msgid "GNOME Partition Editor"
-msgstr ""
+msgstr "GNOME Subdiskoredaktilo"
 
 #. TO TRANSLATORS: your name(s) here please, if there are more translators put newlines (\n) between the names.
 #. It's a good idea to provide the url of your translation team as well. Thanks!
-#: ../src/Win_GParted.cc:1770
+#: ../src/Win_GParted.cc:1771
 msgid "translator-credits"
 msgstr ""
 "Emmanuel Gil PEYROT\n"
 "Kristjan SCHMIDT\n"
-"Stephen BROWN"
+"Stephen BROWN\n"
+"Carmen Bianca BAKKER <carmen@carmenbianca.eu>"
 
-#: ../src/Win_GParted.cc:1817
+#: ../src/Win_GParted.cc:1818
 msgid "It is not possible to create more than %1 primary partition"
 msgid_plural "It is not possible to create more than %1 primary partitions"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ne eblas krei pli ol %1 ĉefa subdisko"
+msgstr[1] "Ne eblas krei pli ol %1 ĉefa subdiskoj"
 
-#: ../src/Win_GParted.cc:1829
+#: ../src/Win_GParted.cc:1830
 msgid ""
 "If you want more partitions you should first create an extended partition. "
 "Such a partition can contain other partitions. Because an extended partition "
@@ -2038,357 +2022,357 @@ msgid ""
 "partition first."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1950
+#: ../src/Win_GParted.cc:1951
 msgid "Moving a partition might cause your operating system to fail to boot"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3.
-#: ../src/Win_GParted.cc:1957
+#: ../src/Win_GParted.cc:1958
 msgid "You have queued an operation to move the start sector of partition %1."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1959
+#: ../src/Win_GParted.cc:1960
 msgid ""
 "  Failure to boot is most likely to occur if you move the GNU/Linux "
 "partition containing /boot, or if you move the Windows system partition C:."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1961
+#: ../src/Win_GParted.cc:1962
 msgid "You can learn how to repair the boot configuration in the GParted FAQ."
 msgstr ""
 
-#: ../src/Win_GParted.cc:1965
+#: ../src/Win_GParted.cc:1966
 msgid "Moving a partition might take a very long time to apply."
-msgstr ""
+msgstr "Movado de subdisko povas longdaŭri."
 
-#: ../src/Win_GParted.cc:2040
-#| msgid "copy %1"
+#: ../src/Win_GParted.cc:2041
 msgid "Copy of %1"
 msgstr "Kopio de %1"
 
-#: ../src/Win_GParted.cc:2141
+#: ../src/Win_GParted.cc:2142
 msgid "You have pasted into an existing partition"
 msgstr ""
 
 #. TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation.
-#: ../src/Win_GParted.cc:2149
+#: ../src/Win_GParted.cc:2150
 msgid "The data in %1 will be lost if you apply this operation."
-msgstr ""
+msgstr "La datumoj ene de %1 estos perditaj se vi aplikas ĉi tiun operacion."
 
-#: ../src/Win_GParted.cc:2223
+#: ../src/Win_GParted.cc:2224
 msgid "Unable to delete %1!"
 msgstr "Ne eblas forigi %1!"
 
-#: ../src/Win_GParted.cc:2230
+#: ../src/Win_GParted.cc:2231
 msgid "Please unmount any logical partitions having a number higher than %1"
 msgstr ""
+"Bonvolu demeti iun ajn logikan subdiskon havante numeron pli granda ol %1"
 
-#: ../src/Win_GParted.cc:2241
+#: ../src/Win_GParted.cc:2242
 msgid "Are you sure you want to delete %1?"
-msgstr ""
+msgstr "Ĉu vi certe volas forigi %1?"
 
-#: ../src/Win_GParted.cc:2248
+#: ../src/Win_GParted.cc:2249
 msgid "After deletion this partition is no longer available for copying."
-msgstr ""
+msgstr "Post forigo ĉi tiu subdisko ne plu disponeblas por kopiado."
 
 #. TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB)
-#: ../src/Win_GParted.cc:2251
+#: ../src/Win_GParted.cc:2252
 msgid "Delete %1 (%2, %3)"
 msgstr "Forigi %1 (%2, %3)"
 
 #. TO TRANSLATORS: looks like
 #. * Cannot format this file system to fat16.
 #.
-#: ../src/Win_GParted.cc:2407
+#: ../src/Win_GParted.cc:2408
 msgid "Cannot format this file system to %1"
-msgstr ""
+msgstr "Ne povas strukturi ĉi tiun dosiersistemon al %1"
 
 #. TO TRANSLATORS: looks like
 #. * A fat16 file system requires a partition of at least 16.00 MiB.
 #.
-#: ../src/Win_GParted.cc:2419
+#: ../src/Win_GParted.cc:2420
 msgid "A %1 file system requires a partition of at least %2."
-msgstr ""
+msgstr "%1 dosiersistemo bezonas subdiskon de malpleje %2."
 
 #. TO TRANSLATORS: looks like
 #. * A partition with a hfs file system has a maximum size of 2.00 GiB.
 #.
-#: ../src/Win_GParted.cc:2427
+#: ../src/Win_GParted.cc:2428
 msgid "A partition with a %1 file system has a maximum size of %2."
-msgstr ""
+msgstr "Subdisko kun la %1 dosiersistemo havas maksimuman grandecon de %2."
 
-#: ../src/Win_GParted.cc:2506
+#: ../src/Win_GParted.cc:2507
 msgid "Opening encryption on %1"
-msgstr ""
+msgstr "Malfermante ĉifradon sur %1"
 
-#: ../src/Win_GParted.cc:2520
+#: ../src/Win_GParted.cc:2521
 msgid "Failed to open LUKS encryption"
-msgstr ""
+msgstr "Malsukcesis malfermi LUKS-ĉifradon"
 
-#: ../src/Win_GParted.cc:2542
+#: ../src/Win_GParted.cc:2543
 msgid ""
 "The close encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2543
-msgid "Closing encryption on %1"
-msgstr ""
-
 #: ../src/Win_GParted.cc:2544
-msgid "Could not close encryption"
-msgstr ""
+msgid "Closing encryption on %1"
+msgstr "Fermante ĉifradon sur %1"
 
-#: ../src/Win_GParted.cc:2549
+#: ../src/Win_GParted.cc:2545
+msgid "Could not close encryption"
+msgstr "Ne povis fermi ĉifradon"
+
+#: ../src/Win_GParted.cc:2550
 msgid ""
 "The open encryption action cannot be performed when there are operations "
 "pending for the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2647
+#: ../src/Win_GParted.cc:2648
 msgid "The partition could not be unmounted from the following mount points:"
 msgstr ""
 
-#: ../src/Win_GParted.cc:2649
+#: ../src/Win_GParted.cc:2650
 msgid ""
 "This is because other partitions are also mounted on these mount points.  "
 "You are advised to unmount them manually."
 msgstr ""
 
 #. TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1
-#: ../src/Win_GParted.cc:2662
+#: ../src/Win_GParted.cc:2663
 msgid "%1 operation is currently pending for partition %2"
 msgid_plural "%1 operations are currently pending for partition %2"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 operacio endas por subdisko %2"
+msgstr[1] "%1 operacioj endas por subdisko %2"
 
-#: ../src/Win_GParted.cc:2677
+#: ../src/Win_GParted.cc:2678
 msgid "Use the Edit menu to undo, clear or apply pending operations."
-msgstr ""
+msgstr "Uzu la Redakti-menuon por malfari, vakigi aŭ apliki endajn operaciojn."
 
-#: ../src/Win_GParted.cc:2720
+#: ../src/Win_GParted.cc:2721
 msgid ""
 "The swapoff action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2721
-msgid "Deactivating swap on %1"
-msgstr ""
-
 #: ../src/Win_GParted.cc:2722
-msgid "Could not deactivate swap"
-msgstr ""
+msgid "Deactivating swap on %1"
+msgstr "Malaktivigante permuton sur %1"
 
-#: ../src/Win_GParted.cc:2727
+#: ../src/Win_GParted.cc:2723
+msgid "Could not deactivate swap"
+msgstr "Ne povis malaktivigi permuton"
+
+#: ../src/Win_GParted.cc:2728
 msgid ""
 "The swapon action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2728
-msgid "Activating swap on %1"
-msgstr ""
-
 #: ../src/Win_GParted.cc:2729
-msgid "Could not activate swap"
-msgstr ""
+msgid "Activating swap on %1"
+msgstr "Aktivigante permuton sur %1"
 
-#: ../src/Win_GParted.cc:2734
+#: ../src/Win_GParted.cc:2730
+msgid "Could not activate swap"
+msgstr "Ne povis aktivigi permuton"
+
+#: ../src/Win_GParted.cc:2735
 msgid ""
 "The deactivate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2735
+#: ../src/Win_GParted.cc:2736
 msgid "Deactivating Volume Group %1"
-msgstr ""
+msgstr "Malaktivigante datumportilan grupon %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2737
+#: ../src/Win_GParted.cc:2738
 msgid "Could not deactivate Volume Group"
-msgstr ""
+msgstr "Ne povis malaktivigi datumportilan grupon"
 
-#: ../src/Win_GParted.cc:2742
+#: ../src/Win_GParted.cc:2743
 msgid ""
 "The activate Volume Group action cannot be performed when there are "
 "operations pending for the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2743
+#: ../src/Win_GParted.cc:2744
 msgid "Activating Volume Group %1"
-msgstr ""
+msgstr "Aktivigante datumportilan grupon %1"
 
 #. VGNAME from point point
-#: ../src/Win_GParted.cc:2745
+#: ../src/Win_GParted.cc:2746
 msgid "Could not activate Volume Group"
-msgstr ""
+msgstr "Ne povis aktivigi datumportilan grupon"
 
-#: ../src/Win_GParted.cc:2750
+#: ../src/Win_GParted.cc:2751
 msgid ""
 "The unmount action cannot be performed when there are operations pending for "
 "the partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2751
-msgid "Unmounting %1"
-msgstr ""
-
 #: ../src/Win_GParted.cc:2752
+msgid "Unmounting %1"
+msgstr "Demetante %1"
+
+#: ../src/Win_GParted.cc:2753
 msgid "Could not unmount %1"
-msgstr ""
+msgstr "Ne povis demeti %1"
 
 #. Bug: Partition callback without a selected partition
 #. Bug: Not pointing at a valid display partition object
-#: ../src/Win_GParted.cc:2816
+#: ../src/Win_GParted.cc:2817
 msgid ""
 "The mount action cannot be performed when an operation is pending for the "
 "partition."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2829
+#: ../src/Win_GParted.cc:2830
 msgid "mounting %1 on %2"
-msgstr ""
+msgstr "surmetante %1 sur %2"
 
-#: ../src/Win_GParted.cc:2857
+#: ../src/Win_GParted.cc:2858
 msgid "Could not mount %1 on %2"
-msgstr ""
+msgstr "Ne povis surmeti %1 sur %2"
 
 #. TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda
-#: ../src/Win_GParted.cc:2876
+#: ../src/Win_GParted.cc:2877
 msgid "%1 partition is currently active on device %2"
 msgid_plural "%1 partitions are currently active on device %2"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 subdisko ĉimomente aktivas sur aparato %2"
+msgstr[1] "%1 subdiskoj ĉimomente aktivas sur aparato %2"
 
-#: ../src/Win_GParted.cc:2891
+#: ../src/Win_GParted.cc:2892
 msgid ""
 "A new partition table cannot be created when there are active partitions."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2893
+#: ../src/Win_GParted.cc:2894
 msgid ""
 "Active partitions are those that are in use, such as a mounted file system, "
 "or enabled swap space."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2895
+#: ../src/Win_GParted.cc:2896
 msgid ""
 "Use Partition menu options, such as unmount or swapoff, to deactivate all "
 "partitions on this device before creating a new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2907
+#: ../src/Win_GParted.cc:2908
 msgid "%1 operation is currently pending"
 msgid_plural "%1 operations are currently pending"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 operacio endas ĉimomente"
+msgstr[1] "%1 operacioj endas ĉimomente"
 
-#: ../src/Win_GParted.cc:2920
+#: ../src/Win_GParted.cc:2921
 msgid ""
 "A new partition table cannot be created when there are pending operations."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2922
+#: ../src/Win_GParted.cc:2923
 msgid ""
 "Use the Edit menu to either clear or apply all operations before creating a "
 "new partition table."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2937
+#: ../src/Win_GParted.cc:2938
 msgid "Error while creating partition table"
-msgstr ""
-
-#: ../src/Win_GParted.cc:2957
-msgid "Command gpart was not found"
-msgstr ""
+msgstr "Eraro dum kreado de subdiska tabelo"
 
 #: ../src/Win_GParted.cc:2958
+msgid "Command gpart was not found"
+msgstr "Komando gpart ne trovita"
+
+#: ../src/Win_GParted.cc:2959
 msgid "This feature uses gpart. Please install gpart and try again."
 msgstr ""
 
 #. Dialog information
-#: ../src/Win_GParted.cc:2966
+#: ../src/Win_GParted.cc:2967
 msgid "A full disk scan is needed to find file systems."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2968
+#: ../src/Win_GParted.cc:2969
 msgid "The scan might take a very long time."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2970
+#: ../src/Win_GParted.cc:2971
 msgid ""
 "After the scan you can mount any discovered file systems and copy the data "
 "to other media."
 msgstr ""
 
-#: ../src/Win_GParted.cc:2972
+#: ../src/Win_GParted.cc:2973
 msgid "Do you want to continue?"
-msgstr ""
+msgstr "Cu vi volas daŭrigi?"
 
 #. TO TRANSLATORS: looks like	Search for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2976
+#: ../src/Win_GParted.cc:2977
 msgid "Search for file systems on %1"
-msgstr ""
+msgstr "Serĉi dosiersistemojn sur %1"
 
 #. TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb
-#: ../src/Win_GParted.cc:2987
+#: ../src/Win_GParted.cc:2988
 msgid "Searching for file systems on %1"
-msgstr ""
+msgstr "Serĉante dosiersistemojn sur %1"
 
 #. TO TRANSLATORS: looks like	No file systems found on /deb/sdb
-#: ../src/Win_GParted.cc:3003
-msgid "No file systems found on %1"
-msgstr ""
-
 #: ../src/Win_GParted.cc:3004
+msgid "No file systems found on %1"
+msgstr "Neniu dosiersistemo trovita sur %1"
+
+#: ../src/Win_GParted.cc:3005
 msgid ""
 "The disk scan by gpart did not find any recognizable file systems on this "
 "disk."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3275
+#: ../src/Win_GParted.cc:3276
 msgid "Are you sure you want to apply the pending operations?"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3281
+#: ../src/Win_GParted.cc:3282
 msgid "Editing partitions has the potential to cause LOSS of DATA."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3283
+#: ../src/Win_GParted.cc:3284
 msgid "You are advised to backup your data before proceeding."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3285
+#: ../src/Win_GParted.cc:3286
 msgid "Apply operations to device"
-msgstr ""
+msgstr "Apliki operaciojn al aparato"
 
-#: ../src/Win_GParted.cc:3330
+#: ../src/Win_GParted.cc:3331
 msgid "You are deleting non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3334
+#: ../src/Win_GParted.cc:3335
 msgid "You are formatting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3338
+#: ../src/Win_GParted.cc:3339
 msgid "You are pasting over non-empty LVM2 Physical Volume %1"
 msgstr ""
 
-#: ../src/Win_GParted.cc:3347
+#: ../src/Win_GParted.cc:3348
 msgid ""
 "Deleting or overwriting the Physical Volume is irrecoverable and will "
 "destroy or damage the  Volume Group."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3350
+#: ../src/Win_GParted.cc:3351
 msgid ""
 "To avoid destroying or damaging the Volume Group, you are advised to cancel "
 "and use external LVM commands to free the Physical Volume before attempting "
 "this operation."
 msgstr ""
 
-#: ../src/Win_GParted.cc:3353
+#: ../src/Win_GParted.cc:3354
 msgid "Do you want to continue to forcibly delete the Physical Volume?"
 msgstr ""
 
@@ -2439,11 +2423,11 @@ msgstr ""
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: ../src/lvm2_pv.cc:28
 msgid "Ac_tivate"
-msgstr ""
+msgstr "Ak_tivigi"
 
 #: ../src/lvm2_pv.cc:29
 msgid "Deac_tivate"
-msgstr ""
+msgstr "Malak_tivigi"
 
 #: ../src/lvm2_pv.cc:32
 msgid ""
@@ -2454,11 +2438,11 @@ msgstr ""
 #. TO TRANSLATORS: these labels will be used in the partition menu
 #: ../src/luks.cc:28
 msgid "Open Encryption"
-msgstr ""
+msgstr "Malfermi ĉifradon"
 
 #: ../src/luks.cc:29
 msgid "Close Encryption"
-msgstr ""
+msgstr "Fermi ĉifradon"
 
 #: ../src/luks.cc:143
 msgid ""
@@ -2468,7 +2452,7 @@ msgstr ""
 
 #: ../src/main.cc:42
 msgid "Root privileges are required for running GParted"
-msgstr ""
+msgstr "Necesas root-rajtoj por ruli GParted"
 
 #: ../src/main.cc:47
 msgid ""
@@ -2494,11 +2478,11 @@ msgstr ""
 
 #: ../src/udf.cc:183
 msgid "Partition is too large, maximum size is %1"
-msgstr ""
+msgstr "Subdisko estas tro granda, maksimuma grandeco estas %1"
 
 #: ../src/udf.cc:191
 msgid "Partition is too small, minimum size is %1"
-msgstr ""
+msgstr "Subdisko estas tro malgranda, minimuma grandeco estas %1"
 
 #: ../src/udf.cc:208
 msgid ""
