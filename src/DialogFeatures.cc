@@ -77,7 +77,9 @@ DialogFeatures::DialogFeatures()
 	Glib::ustring str_temp( _("This chart shows the actions supported on file systems.") ) ;
 	str_temp += "\n" ;
 	str_temp += _("Not all actions are available on all file systems, in part due to the nature of file systems and limitations in the required software.") ;
-	legend_narrative_hbox ->pack_start( *Utils::mk_label( str_temp, true, true ), Gtk::PACK_SHRINK ) ;
+	Gtk::Label *label_narrative = Utils::mk_label(str_temp, true, true);
+	label_narrative->set_max_width_chars(45);
+	legend_narrative_hbox->pack_start(*label_narrative, Gtk::PACK_EXPAND_WIDGET);
 	legend_hbox ->pack_start( *legend_narrative_hbox, Gtk::PACK_EXPAND_WIDGET, 6 ) ;
 
 	//icon legend
