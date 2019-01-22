@@ -1,0 +1,69 @@
+From a4b74772b1715fbd5202a9c1a5e7fdb49c5baba6 Mon Sep 17 00:00:00 2001
+From: Luca Bacci <luca.bacci982@gmail.com>
+Date: Tue, 28 Aug 2018 16:03:58 +0200
+Subject: [PATCH] Change pulsebar appearance by custom CSS (!9)
+
+In Gtk3 the progress bar height is fixed and defined by the CSS theme in use.
+Changing the widget allocation size does nothing, it is always rendered the
+same way.
+
+In many themes, including Adwaita, the progressbar is very, very thin. While
+this may look good for progress indicators, it's not very appealing for an
+activity indicator like the pulsebar. The pulsebar is the activity indicator
+that is located on the right side of the statusbar.
+
+Provide custom CSS to specify a minimum height of 8 pixels.
+
+The CSS source string has to be differentiated for Gtk pre and post 3.20
+because Gtk 3.20 introduced some breaking changes in the way CSS is handled.
+
+Reference:
+[1] Migrating from GTK+ 2.x to GTK+ 3 - Parsing of custom resources
+    https://developer.gnome.org/gtk3/stable/gtk-migrating-GtkStyleContext-parsing.html
+
+[2] Gtk3 Reference Documentation - Changes in GTK+ 3.20
+    https://developer.gnome.org/gtk3/stable/ch32s10.html
+
+Closes (!9) - GParted Gtk3
+---
+ src/Win_GParted.cc | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/src/Win_GParted.cc b/src/Win_GParted.cc
+index 777d0282..846404ca 100644
+--- a/src/Win_GParted.cc
++++ b/src/Win_GParted.cc
+@@ -48,6 +48,7 @@
+ #include "../config.h"
+ 
+ #include <string.h>
++#include <gtkmm/cssprovider.h>
+ #include <gtkmm/aboutdialog.h>
+ #include <gtkmm/messagedialog.h>
+ #include <gtkmm/radiobuttongroup.h>
+@@ -130,6 +131,22 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
+ 	vpaned_main .pack2( hbox_operations, true, true ) ;
+ 
+ 	//statusbar... 
++	Glib::RefPtr<Gtk::CssProvider> custom_css = Gtk::CssProvider::create();
++	try {
++		// Differentiate CSS string for Gtk3 pre and post 3.20.
++		// https://developer.gnome.org/gtk3/stable/ch32s10.html
++		custom_css->load_from_data(gtk_get_minor_version() >= 20?
++			"progress, trough { min-height: 8px; }"
++			  :
++			"GtkProgressBar { -GtkProgressBar-min-horizontal-bar-height: 8px; }"
++		);
++	}
++	catch (Glib::Error& e) {
++		std::cerr << e.what() << std::endl;
++	}
++
++	pulsebar.get_style_context()->add_provider(custom_css,
++	                                           GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+ 	pulsebar .set_pulse_step( 0.01 );
+ 	pulsebar.set_valign(Gtk::ALIGN_CENTER);
+ 	statusbar.pack_end(pulsebar, true, true, 10);
+-- 
+2.20.1
+
