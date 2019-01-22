@@ -64,6 +64,7 @@ private:
 	void create_format_menu_add_item( FSType filesystem, bool activate );
 	void init_device_info() ;
 	void init_hpaned_main() ;
+	void add_custom_css();
 
 	void refresh_combo_devices() ;
 	void show_pulsebar( const Glib::ustring & status_message ) ;

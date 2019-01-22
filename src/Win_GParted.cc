@@ -48,6 +48,7 @@
 #include "../config.h"
 
 #include <string.h>
+#include <gtkmm/cssprovider.h>
 #include <gtkmm/aboutdialog.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
@@ -140,6 +141,8 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	
 	//make sure harddisk information is closed..
 	hpaned_main .get_child1() ->hide() ;
+
+	add_custom_css();
 }
 
 Win_GParted::~Win_GParted()
@@ -666,6 +669,35 @@ void Win_GParted::init_hpaned_main()
 	treeview_detail .signal_popup_menu .connect( sigc::mem_fun( this, &Win_GParted::on_partition_popup_menu ) );
 	scrollwindow ->add( treeview_detail );
 	hpaned_main .pack2( *scrollwindow, true, true );
+}
+
+void Win_GParted::add_custom_css()
+{
+	Glib::RefPtr<Gdk::Screen> default_screen = Gdk::Screen::get_default();
+	Glib::RefPtr<Gtk::CssProvider> provider = Gtk::CssProvider::create();
+
+	Glib::ustring custom_css;
+	if (gtk_get_minor_version() >= 20)
+	{
+		custom_css = "progressbar progress, trough { min-height: 8px; }";
+	}
+	else
+	{
+		custom_css = "GtkProgressBar { -GtkProgressBar-min-horizontal-bar-height: 8px; }";
+	}
+
+	try
+	{
+		provider->load_from_data(custom_css);
+	}
+	catch (Glib::Error& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+
+	Gtk::StyleContext::add_provider_for_screen(default_screen,
+	                                           provider,
+	                                           GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 void Win_GParted::refresh_combo_devices()
