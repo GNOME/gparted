@@ -54,6 +54,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 		vbox->pack_start(label_current, Gtk::PACK_SHRINK);
 
 		progressbar_current.set_pulse_step(0.01);
+		progressbar_current.set_show_text();
 		vbox->pack_start(progressbar_current, Gtk::PACK_SHRINK);
 
 		label_current_sub.set_alignment(Gtk::ALIGN_START);
@@ -61,6 +62,8 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 
 		vbox->pack_start(*Utils::mk_label("<b>" + Glib::ustring(_("Completed Operations:")) + "</b>"),
 					Gtk::PACK_SHRINK);
+
+		progressbar_all.set_show_text();
 		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
 
 		//create some icons here, instead of recreating them every time
