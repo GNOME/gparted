@@ -22,12 +22,6 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/shell.h>
 
-/*****
-//For some reason unknown, this works without these include statements.
-#include <stdlib.h>    // 'C' library for mkstemp()
-#include <unistd.h>    // 'C' library for write(), close()
-#include <stdio.h>     // 'C' library for remove()
-*****/
 
 namespace GParted
 {
