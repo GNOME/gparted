@@ -1279,6 +1279,9 @@ void Win_GParted::set_valid_operations()
 		     ( ( enc_cap.online_grow && fs_cap.online_grow )     ||
 		       ( enc_cap.online_shrink && fs_cap.online_shrink )    )    )
 			allow_resize( true );
+		// Always allow an extended partition to be resized online.
+		if (selected_partition_ptr->type == TYPE_EXTENDED)
+			allow_resize(true);
 	}
 #endif
 
