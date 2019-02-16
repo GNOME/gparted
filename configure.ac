@@ -277,30 +277,12 @@ else
 fi
 
 if test "x$enable_doc" = xyes; then
-	GNOME_DOC_INIT
-else
-	dnl Do not care if GDU is not found
-	GNOME_DOC_INIT(,,[:])
+dnl YELP_HELP_INIT has to start from column 0 for gnome-autogen.sh to detect and
+dnl automatically required yelp.m4.
+YELP_HELP_INIT
 fi
 
 AM_CONDITIONAL([BUILD_HELP_DOC], [test "x$enable_doc" = xyes])
-
-dnl GNOME 2 yelp needs scrollkeeper database updates to find installed GNOME help files.
-dnl GNOME 3 yelp doesn't need scrollkeeper and its use is deprecated.  To avoid requiring
-dnl deprecated scrollkeeper on GNOME 3, automatically disable scrollkeeper database
-dnl updates when the command is not available.
-dnl (See /usr/share/aclocal/gnome-doc-utils.m4 for the GNOME_DOC_INIT macro which has
-dnl already parsed the --disable-scrollkeeper option and set enable_scrollkeeper and
-dnl ENABLE_SK).
-AC_CHECK_PROG([have_scrollkeeper_update], [scrollkeeper-update], yes, no)
-AC_MSG_CHECKING([whether to enable scrollkeeper database update])
-if test "$enable_scrollkeeper" = "yes" -a "$have_scrollkeeper_update" = "yes"; then
-	AC_MSG_RESULT([yes])
-else
-	enable_scrollkeeper=no
-	AM_CONDITIONAL([ENABLE_SK], false)
-	AC_MSG_RESULT([no])
-fi
 
 
 dnl======================
