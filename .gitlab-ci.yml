@@ -9,7 +9,7 @@ stages:
     - yum update -y
     - yum install -y which gnome-common gnome-doc-utils glib2-devel intltool
                      gcc-c++ libuuid-devel parted-devel gtkmm30-devel make
-                     polkit file rarian-compat
+                     polkit file yelp-tools
 
 .ubuntu_image_template: &ubuntu_image_definition
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
@@ -18,7 +18,7 @@ stages:
     - apt-get update
     - apt-get install -y gnome-common gnome-doc-utils libglib2.0-dev-bin
                          uuid-dev libparted-dev libgtkmm-3.0-dev make
-                         policykit-1 rarian-compat
+                         policykit-1 yelp-tools
 
 .build_stage_template: &build_stage_definition
   stage: build
