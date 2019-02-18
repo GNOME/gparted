@@ -79,8 +79,7 @@ EXTRA_DIST =			\
 	intltool-extract.in  	\
 	intltool-merge.in	\
 	intltool-update.in	\
-	gparted.in			\
-	gnome-doc-utils.make
+	gparted.in
 
 DISTCLEANFILES =		\
 	$(appdata_DATA)		\
@@ -88,8 +87,7 @@ DISTCLEANFILES =		\
 	$(polkit_action_DATA)  \
 	intltool-extract	\
 	intltool-merge		\
-	intltool-update		\
-	gnome-doc-utils.make
+	intltool-update
 
 DISTCHECK_CONFIGURE_FLAGS =	\
 	--disable-scrollkeeper
