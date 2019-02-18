@@ -57,15 +57,10 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
                             , bool use_markup
                             , bool wrap
                             , bool selectable
-                            , float yalign
+                            , Gtk::Align yalign
                             )
 {
-	//xalign 0.0 == Gtk::ALIGN_LEFT  (gtkmm <= 2.22)
-	//           == Gtk::ALIGN_START (gtkmm >= 2.24)
-	//yalign 0.5 == Gtk::ALIGN_CENTER
-	//       0.0 == Gtk::ALIGN_TOP   (gtkmm <= 2.22)
-	//              Gtk::ALIGN_START (gtkmm >= 2.24)
-	Gtk::Label * label = manage( new Gtk::Label( text, 0.0, yalign ) ) ;
+	Gtk::Label * label = manage(new Gtk::Label(text, Gtk::ALIGN_START, yalign));
 
 	label ->set_use_markup( use_markup ) ;
 	label ->set_line_wrap( wrap ) ;

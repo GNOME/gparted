@@ -314,9 +314,9 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//status
 		Glib::ustring str_temp ;
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>",
-		                                 true, false, false, 0.0 /* ALIGN_TOP */ ),
-		               1, 2, top, bottom, Gtk::FILL );
+		table->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>",
+		                               true, false, false, Gtk::ALIGN_START),
+		              1, 2, top, bottom, Gtk::FILL);
 		if ( ! filesystem_accessible )
 		{
 			/* TO TRANSLATORS:   Not accessible (Encrypted)
@@ -433,8 +433,9 @@ void Dialog_Partition_Info::Display_Info()
 	     filesystem_ptn.filesystem == FS_BTRFS      )
 	{
 		//Members
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
-		                1, 2, top, bottom, Gtk::FILL ) ;
+		table->attach(* Utils::mk_label("<b>" + Glib::ustring(_("Members:")) + "</b>",
+		                                true, false, false, Gtk::ALIGN_START),
+		               1, 2, top, bottom, Gtk::FILL);
 
 		std::vector<Glib::ustring> members ;
 		switch ( filesystem_ptn.filesystem )
@@ -457,8 +458,9 @@ void Dialog_Partition_Info::Display_Info()
 	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
 	{
 		//Logical Volumes
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Logical Volumes:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
-		                1, 2, top, bottom, Gtk::FILL );
+		table->attach(* Utils::mk_label("<b>" + Glib::ustring(_("Logical Volumes:")) + "</b>",
+		                                true, false, false, Gtk::ALIGN_START),
+		              1, 2, top, bottom, Gtk::FILL);
 
 		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
 		table->attach( *Utils::mk_label( Glib::build_path( "\n", lvs ), true, false, true ),

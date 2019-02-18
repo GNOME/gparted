@@ -126,7 +126,7 @@ public:
 	                            , bool use_markup = true
 	                            , bool wrap = false
 	                            , bool selectable = false
-	                            , float yalign = 0.5 /* ALIGN_CENTER */
+	                            , Gtk::Align yalign = Gtk::ALIGN_CENTER
 	                            ) ;
 	static Glib::ustring num_to_str( Sector number ) ;
 	static Glib::ustring get_color( FSType filesystem );

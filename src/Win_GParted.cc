@@ -3508,9 +3508,9 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	                1, 2, top++, bottom++, Gtk::FILL ) ;
 
 	//Members
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>",
-	                                   true, false, false, 0.0 /* ALIGN_TOP */ ),
-	                0, 1, top, bottom, Gtk::FILL ) ;
+	table->attach(* Utils::mk_label("<b>" + Glib::ustring(members_label) + "</b>",
+	                                true, false, false, Gtk::ALIGN_START),
+	              0, 1, top, bottom, Gtk::FILL);
 
 	Glib::ustring members_str = "" ;
 	if ( ! members .empty() )
@@ -3522,8 +3522,8 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 			members_str += members[i] ;
 		}
 	}
-	table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
-	                1, 2, top++, bottom++, Gtk::FILL ) ;
+	table->attach(* Utils::mk_label(members_str, true, false, true, Gtk::ALIGN_START),
+	              1, 2, top++, bottom++, Gtk::FILL);
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
