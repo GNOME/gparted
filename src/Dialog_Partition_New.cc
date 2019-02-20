@@ -373,7 +373,7 @@ void Dialog_Partition_New::combobox_changed(bool type)
 
 	//set fitting resizer colors
 	{
-		Gdk::Color color_temp;
+		Gdk::RGBA color_temp;
 		//Background color
 		color_temp.set((combo_type.get_active_row_number() == 2) ? "darkgrey" : "white");
 		frame_resizer_base->override_default_rgb_unused_color(color_temp);
