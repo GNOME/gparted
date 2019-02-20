@@ -46,9 +46,9 @@ Dialog_Partition_Copy::~Dialog_Partition_Copy()
 void Dialog_Partition_Copy::set_data( const Partition & selected_partition, const Partition & copied_partition )
 {
 	this ->set_title( String::ucompose( _("Paste %1"), copied_partition .get_path() ) ) ;
-	
-	//set partition color
-	Gdk::Color partition_color( Utils::get_color( copied_partition.filesystem ) );
+
+	// Set partition color
+	Gdk::RGBA partition_color(Utils::get_color(copied_partition.filesystem));
 	frame_resizer_base->set_rgb_partition_color( partition_color );
 
 	//set some widely used values...

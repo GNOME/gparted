@@ -120,14 +120,14 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 
 bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	Gdk::Cairo::set_source_color(cr, color_partition);
+	Gdk::Cairo::set_source_rgba(cr, color_partition);
 	cr->rectangle(0, 0, 400, 60);
 	cr->fill();
 
 	if ( partition.filesystem != FS_UNALLOCATED )
 	{
 		// Used
-		Gdk::Cairo::set_source_color(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, color_used);
 		cr->rectangle(BORDER,
 		              BORDER,
 		              used,
@@ -135,7 +135,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->fill();
 
 		// Unused
-		Gdk::Cairo::set_source_color(cr, color_unused);
+		Gdk::Cairo::set_source_rgba(cr, color_unused);
 		cr->rectangle(BORDER + used,
 		              BORDER,
 		              unused,
@@ -143,7 +143,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 		cr->fill();
 
 		// Unallocated
-		Gdk::Cairo::set_source_color(cr, color_unallocated);
+		Gdk::Cairo::set_source_rgba(cr, color_unallocated);
 		cr->rectangle(BORDER + used + unused,
 		              BORDER,
 		              unallocated,
@@ -152,7 +152,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 	}
 
 	// Text
-	Gdk::Cairo::set_source_color(cr, color_text);
+	Gdk::Cairo::set_source_rgba(cr, color_text);
 	cr->move_to(180, BORDER + 6);
 	pango_layout->show_in_cairo_context(cr);
 
