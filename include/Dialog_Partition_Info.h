@@ -58,7 +58,11 @@ private:
 
 	Glib::RefPtr<Pango::Layout> pango_layout;
 
-	Gdk::Color color_partition, color_used, color_unused, color_unallocated, color_text ;
+	Gdk::RGBA color_partition;
+	Gdk::RGBA color_used;
+	Gdk::RGBA color_unused;
+	Gdk::RGBA color_unallocated;
+	Gdk::RGBA color_text;
 
 	int used, unused, unallocated ;
 };

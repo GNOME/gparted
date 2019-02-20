@@ -38,8 +38,8 @@ public:
 	Frame_Resizer_Base() ;
 	~Frame_Resizer_Base() ;
 
-	void set_rgb_partition_color( const Gdk::Color & color ) ;
-	void override_default_rgb_unused_color( const Gdk::Color & color ) ;
+	void set_rgb_partition_color(const Gdk::RGBA& color);
+	void override_default_rgb_unused_color(const Gdk::RGBA& color);
 	
 	void set_x_min_space_before( int x_min_space_before ) ;
 	void set_x_start( int x_start ) ;
@@ -78,7 +78,12 @@ protected:
 
 	Gtk::DrawingArea drawingarea ;
 
-	Gdk::Color color_used, color_unused, color_arrow, color_background, color_partition, color_arrow_rectangle;
+	Gdk::RGBA color_used;
+	Gdk::RGBA color_unused;
+	Gdk::RGBA color_arrow;
+	Gdk::RGBA color_background;
+	Gdk::RGBA color_partition;
+	Gdk::RGBA color_arrow_rectangle;
 
 	std::vector<Gdk::Point> arrow_points;
 	

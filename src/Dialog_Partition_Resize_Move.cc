@@ -59,7 +59,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	}
 	
 	//set partition color
-	Gdk::Color partition_color( Utils::get_color( selected_partition.filesystem ) );
+	Gdk::RGBA partition_color(Utils::get_color(selected_partition.filesystem));
 	frame_resizer_base->set_rgb_partition_color( partition_color );
 
 	//store the original values
