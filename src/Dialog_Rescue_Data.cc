@@ -69,8 +69,7 @@ void Dialog_Rescue_Data::draw_dialog()
 		msg_label.append(_("You might encounter errors trying to view these file systems."));
 		
 		Gtk::Label *inconsis_label=manage(Utils::mk_label(msg_label));
-		Gdk::Color c( "red" );
-		gtk_widget_modify_fg(GTK_WIDGET(inconsis_label->gobj()), GTK_STATE_NORMAL, c.gobj());
+		inconsis_label->override_color(Gdk::RGBA("red"), Gtk::STATE_FLAG_NORMAL);
 		this->get_vbox()->pack_end(*inconsis_label, Gtk::PACK_SHRINK, 5);
 	}
 	message->append("</b></big>");
