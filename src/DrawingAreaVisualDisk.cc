@@ -220,7 +220,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
                                            const visual_partition& vp)
 {
 	//partition...
-	Gdk::Cairo::set_source_color(cr, vp.color);
+	Gdk::Cairo::set_source_rgba(cr, vp.color);
 	cr->rectangle(vp.x_start,
 	              vp.y_start,
 	              vp.length,
@@ -230,7 +230,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//used..
 	if ( vp .used_length > 0 )
 	{
-		Gdk::Cairo::set_source_color(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, color_used);
 		cr->rectangle(vp.x_used_start,
 		              vp.y_usage_start,
 		              vp.used_length,
@@ -241,7 +241,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//unused
 	if ( vp .unused_length > 0 )
 	{
-		Gdk::Cairo::set_source_color(cr, color_unused);
+		Gdk::Cairo::set_source_rgba(cr, color_unused);
 		cr->rectangle(vp.x_unused_start,
 		              vp.y_usage_start,
 		              vp.unused_length,
@@ -252,7 +252,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//unallocated
 	if ( vp .unallocated_length > 0 )
 	{
-		Gdk::Cairo::set_source_color(cr, color_unallocated);
+		Gdk::Cairo::set_source_rgba(cr, color_unallocated);
 		cr->rectangle(vp.x_unallocated_start,
 		              vp.y_usage_start,
 		              vp.unallocated_length,
@@ -263,7 +263,7 @@ void DrawingAreaVisualDisk::draw_partition(const Cairo::RefPtr<Cairo::Context>& 
 	//text
 	if ( vp .x_text > 0 )
 	{
-		Gdk::Cairo::set_source_color(cr, color_text);
+		Gdk::Cairo::set_source_rgba(cr, color_text);
 		cr->move_to(vp.x_text, vp.y_text);
 		vp.pango_layout->show_in_cairo_context(cr);
 	}
@@ -328,7 +328,7 @@ bool DrawingAreaVisualDisk::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	//selection 
 	if ( selected_vp )
 	{
-		Gdk::Cairo::set_source_color(cr, color_used);
+		Gdk::Cairo::set_source_rgba(cr, color_used);
 		cr->rectangle(selected_vp->x_start + BORDER/2,
 		              selected_vp->y_start + BORDER/2,
 		              selected_vp->length - BORDER,
