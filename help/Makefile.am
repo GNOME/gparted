@@ -1,6 +1,3 @@
-include $(top_srcdir)/gnome-doc-utils.make
-dist-hook: doc-dist-hook
-
 #The name of the help document to build.
 #  This is the filename without the .xml extension.
 DOC_MODULE = gparted
