@@ -88,7 +88,6 @@ b. Building from Source
       gnome-common
       gtkmm3
       gettext
-      gnome-doc-utils     - required if help documentation is to be built
 
    On Debian or Ubuntu, these dependencies may be obtained by running
    one of the following commands:
@@ -97,20 +96,19 @@ b. Building from Source
      Or;
       sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
                            gnome-common libparted-dev libgtkmm-3.0-dev \
-                           libdevmapper-dev gnome-doc-utils docbook-xml
+                           libdevmapper-dev docbook-xml
 
    On Fedora, you will need to run (as root);
       yum install gtkmm30-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  gnome-doc-utils docbook-dtds intltool gnome-common \
-                  gcc-c++
+                  docbook-dtds intltool gnome-common gcc-c++
       yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
    following commands;
       sudo zypper install automake autoconf make gnome-common \
                           libuuid-devel parted-devel gtkmm3-devel \
-                          gnome-doc-utils-devel docbook-xsl-stylesheets
+                          docbook-xsl-stylesheets
       sudo zypper install -t pattern devel_c_c++
 
    Again, build GParted with the default configuration and install into
@@ -122,14 +120,6 @@ b. Building from Source
    If you wish to build this package without the help documentation use
    the --disable-doc flag:
       E.g., ./configure --disable-doc
-
-   Scrollkeeper is needed on GNOME/Gtk 2 desktops to update the OMF
-   catalog files to allow yelp to display the GParted help manual.  On
-   GNOME/Gtk 3 desktops scrollkeeper in not required.  Use can be
-   explicitly disabled with the --disable-scrollkeeper flag:
-      E.g., ./configure --disable-scrollkeeper
-   Note that the configure script will automatically disable
-   scrollkeeper if the scrollkeeper-update command is not found.
 
    If you wish to build this package to use native libparted /dev/mapper
    dmraid support use the --enable-libparted-dmraid flag:
