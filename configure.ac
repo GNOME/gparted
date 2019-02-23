@@ -277,9 +277,9 @@ else
 fi
 
 if test "x$enable_doc" = xyes; then
-	:
-else
-	:
+dnl YELP_HELP_INIT has to start at column 0 for gnome-autogen.sh to detect it
+dnl and automatically required yelp.m4.
+YELP_HELP_INIT
 fi
 
 AM_CONDITIONAL([BUILD_HELP_DOC], [test "x$enable_doc" = xyes])
