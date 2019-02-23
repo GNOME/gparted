@@ -7,7 +7,7 @@ stages:
   image: centos:latest
   before_script:
     - yum update -y
-    - yum install -y which gnome-common glib2-devel intltool
+    - yum install -y which gnome-common yelp-tools glib2-devel intltool
                      gcc-c++ libuuid-devel parted-devel gtkmm30-devel make
                      polkit file
 
@@ -16,7 +16,7 @@ stages:
   image: ubuntu:latest
   before_script:
     - apt-get update
-    - apt-get install -y gnome-common libglib2.0-dev-bin
+    - apt-get install -y gnome-common yelp-tools libglib2.0-dev-bin
                          uuid-dev libparted-dev libgtkmm-3.0-dev make
                          policykit-1
 
