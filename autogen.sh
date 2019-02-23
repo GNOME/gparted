@@ -25,4 +25,10 @@ if ! test -d $srcdir/m4; then
 	mkdir $srcdir/m4
 fi
 
+which yelp-build || {
+	echo "ERROR: Command 'yelp-build' not found"
+	echo "ERROR: Package 'yelp-tools' needs to be installed"
+	exit 1
+}
+
 REQUIRED_AUTOMAKE_VERSION=1.9 . gnome-autogen.sh

@@ -88,6 +88,7 @@ b. Building from Source
       gnome-common
       gtkmm3
       gettext
+      yelp-tools          - required if help documentation is to be built
 
    On Debian or Ubuntu, these dependencies may be obtained by running
    one of the following commands:
@@ -96,19 +97,19 @@ b. Building from Source
      Or;
       sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
                            gnome-common libparted-dev libgtkmm-3.0-dev \
-                           libdevmapper-dev docbook-xml
+                           libdevmapper-dev yelp-tools docbook-xml
 
    On Fedora, you will need to run (as root);
       yum install gtkmm30-devel parted-devel e2fsprogs-devel gettext \
                   'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  docbook-dtds intltool gnome-common gcc-c++
+                  yelp-tools docbook-dtds intltool gnome-common gcc-c++
       yum groupinstall 'Development Tools'
 
    On openSUSE, these dependencies may be obtained by running the
    following commands;
       sudo zypper install automake autoconf make gnome-common \
                           libuuid-devel parted-devel gtkmm3-devel \
-                          docbook-xsl-stylesheets
+                          yelp-tools docbook-xsl-stylesheets
       sudo zypper install -t pattern devel_c_c++
 
    Again, build GParted with the default configuration and install into
