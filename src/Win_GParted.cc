@@ -1777,10 +1777,9 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 	GError *error = NULL ;
 	GdkScreen *gscreen = NULL ;
 
-	Glib::ustring uri = "ghelp:" + filename ;
-	if (link_id .size() > 0 ) {
-		uri = uri + "?" + link_id ;
-	}
+	Glib::ustring uri = "help:" + filename;
+	if (link_id.size() > 0)
+		uri = uri + "/" + link_id;
 
 	gscreen = get_window()->get_screen()->gobj();
 	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
