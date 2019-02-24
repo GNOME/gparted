@@ -35,8 +35,6 @@ stages:
     - ./autogen.sh
     - nproc=`grep -c '^processor' /proc/cpuinfo` || nproc=1
     - echo nproc=$nproc
-    # Prevent xmllint fetching scrollkeeper DTD file remotely.
-    - sed -i '/xmllint.*http.*scrollkeeper-omf.dtd/s|xmllint |xmllint --nonet |' help/Makefile
     - make -j $nproc
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
