@@ -13,8 +13,6 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="gparted"
-
 which gnome-autogen.sh || {
     echo "You need to install gnome-common"
     exit 1
