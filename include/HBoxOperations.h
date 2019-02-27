@@ -28,7 +28,7 @@
 namespace GParted
 {
 
-class HBoxOperations : public Gtk::HBox
+class HBoxOperations : public Gtk::Box
 {
 public:
 	HBoxOperations() ;
