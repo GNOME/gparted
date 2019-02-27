@@ -95,6 +95,7 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	}
 	
 	//Pack the main box
+	vbox_main.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	this ->add( vbox_main ); 
 	
 	//menubar....
@@ -291,6 +292,7 @@ void Win_GParted::init_toolbar()
 {
 	int index = 0 ;
 	//initialize and pack toolbar_main 
+	hbox_toolbar.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	hbox_toolbar.pack_start( toolbar_main );
 	
 	//NEW and DELETE
@@ -527,7 +529,7 @@ Gtk::Menu * Win_GParted::create_format_menu()
 //Add one entry to the Partition --> Format to --> (file system list) menu
 void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate )
 {
-	hbox = manage( new Gtk::HBox() ) ;
+	Gtk::Box *hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	//the colored square
 	hbox ->pack_start( * manage( new Gtk::Image( Utils::get_color_as_pixbuf( filesystem, 16, 16 ) ) ),
 	                   Gtk::PACK_SHRINK ) ;
@@ -546,6 +548,7 @@ void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate 
 
 void Win_GParted::init_device_info()
 {
+	vbox_info.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	vbox_info.set_spacing( 5 );
 	int top = 0, bottom = 1;
 	
@@ -718,7 +721,7 @@ void Win_GParted::refresh_combo_devices()
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ; 
 	
 		//devices submenu....
-		hbox = manage( new Gtk::HBox() ) ;
+		Gtk::Box *hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 		hbox ->pack_start( * Utils::mk_label( devices[ i ] .get_path() ), Gtk::PACK_EXPAND_WIDGET ) ;
 		hbox ->pack_start( * Utils::mk_label( "   (" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ),
 		                   Gtk::PACK_SHRINK ) ;
