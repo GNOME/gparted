@@ -35,8 +35,8 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	/* TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1 */
 	this->set_title( Glib::ustring::compose( _("LUKS Passphrase %1"), partition.get_path() ) );
 
-	// Separate VBox to hold lines in the dialog.
-	Gtk::VBox *vbox( manage( new Gtk::VBox() ) );
+	// Separate vertical box to hold lines in the dialog.
+	Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 	vbox->set_border_width( 5 );
 	vbox->set_spacing( 5 );
 	get_vbox()->pack_start( *vbox, Gtk::PACK_SHRINK );
@@ -47,8 +47,8 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 			Gtk::PACK_SHRINK );
 
 	// Line 2: "Passphrase: [              ]"
-	// (HBox holding prompt and entry box)
-	Gtk::HBox *entry_hbox( manage( new Gtk::HBox() ) );
+	// (Horizontal box holding prompt and entry box)
+	Gtk::Box *entry_hbox(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 	entry_hbox->pack_start( *Utils::mk_label( "<b>"+ Glib::ustring( _("Passphrase:") ) + "</b>" ) );
 	entry = manage( new Gtk::Entry() );
 	entry->set_width_chars( 30 );
