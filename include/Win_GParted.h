@@ -218,8 +218,10 @@ private:
 //gui stuff
 	Gtk::HPaned hpaned_main;
 	Gtk::VPaned vpaned_main;
-	Gtk::VBox vbox_main,vbox_info ;
-	Gtk::HBox hbox_toolbar, *hbox;
+	Gtk::Box vbox_main;
+	Gtk::Box vbox_info;
+	Gtk::Box hbox_toolbar;
+	Gtk::Box *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::ComboBox combo_devices ;
