@@ -31,22 +31,26 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	this ->set_resizable( false );
 	ORIG_BEFORE = ORIG_SIZE = ORIG_AFTER = -1 ;
 	MIN_SPACE_BEFORE_MB = -1 ;
-	
-	//pack resizer hbox
+
+	// Pack resizer hbox
+	hbox_resizer.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	this ->get_vbox() ->pack_start( hbox_resizer, Gtk::PACK_SHRINK );
 	
 	//add label_minmax
 	this ->get_vbox() ->pack_start( label_minmax, Gtk::PACK_SHRINK );
-	
-	//pack hbox_main
+
+	// Pack hbox_main
+	hbox_main.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	this ->get_vbox() ->pack_start( hbox_main, Gtk::PACK_SHRINK );
 
-	//put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
+	// Put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
+	vbox_resize_move.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
 	
 	//fill table
 	table_resize .set_border_width( 5 ) ;
 	table_resize .set_row_spacings( 5 ) ;
+	hbox_table.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	hbox_table.pack_start( table_resize, Gtk::PACK_EXPAND_PADDING ) ;
 	
 	hbox_table .set_border_width( 5 ) ;
@@ -251,7 +255,7 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 		case RESIZE_MOVE:
 			{
 				Gtk::Image* image_temp = Utils::mk_image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON);
-				Gtk::HBox* hbox_resize_move(manage(new Gtk::HBox()));
+				Gtk::Box* hbox_resize_move(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
 				hbox_resize_move->pack_start(*image_temp, Gtk::PACK_EXPAND_PADDING);
 				hbox_resize_move->pack_start(*Utils::mk_label(fixed_start ? _("Resize") : _("Resize/Move")),
