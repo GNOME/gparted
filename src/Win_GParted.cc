@@ -97,6 +97,8 @@ Win_GParted::Win_GParted( const std::vector<Glib::ustring> & user_devices )
 	vbox_main.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	vbox_info.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	hbox_toolbar.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+	hpaned_main.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+	vpaned_main.set_orientation(Gtk::ORIENTATION_VERTICAL);
 
 	//Pack the main box
 	this ->add( vbox_main ); 
