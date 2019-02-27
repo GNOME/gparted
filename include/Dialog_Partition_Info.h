@@ -50,10 +50,9 @@ private:
 
 	const Partition & partition;  // (Alias to element in Win_GParted::display_partitions[] vector).
 
-	Gtk::HBox *hbox ;
 	Gtk::DrawingArea drawingarea ;
 	Gtk::Frame *frame ;
-	Gtk::VBox info_msg_vbox ;
+	Gtk::Box info_msg_vbox;
 	Gtk::ScrolledWindow info_scrolled ;
 
 	Glib::RefPtr<Pango::Layout> pango_layout;
