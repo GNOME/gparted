@@ -1774,7 +1774,7 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
                                   , const Glib::ustring & link_id  /* For context sensitive help */
                                   )
 {
-	GError *error = NULL ;
+	GError *error1 = NULL;
 	GdkScreen *gscreen = NULL ;
 
 	Glib::ustring uri = "help:" + filename;
@@ -1782,8 +1782,8 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 		uri = uri + "/" + link_id;
 
 	gscreen = get_window()->get_screen()->gobj();
-	gtk_show_uri( gscreen, uri .c_str(), gtk_get_current_event_time(), &error ) ;
-	if ( error != NULL )
+	gtk_show_uri(gscreen, uri.c_str(), gtk_get_current_event_time(), &error1);
+	if (error1 != NULL)
 	{
 		//Try opening yelp application directly
 
@@ -1796,13 +1796,14 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 		context->set_timestamp(gtk_get_current_event_time());
 
 		bool launched;
+		Glib::ustring error2_msg;
 		try
 		{
 			launched = yelp->launch_uris(std::vector<std::string>(1, uri), context);
 		}
 		catch (Glib::Error& e)
 		{
-			std::cerr << e.what() << std::endl;
+			error2_msg = e.what();
 			launched = false;
 		}
 
@@ -1814,11 +1815,11 @@ void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gpar
 			                          Gtk::MESSAGE_ERROR,
 			                          Gtk::BUTTONS_OK,
 			                          true);
-			dialog.set_secondary_text(error->message);
+			dialog.set_secondary_text(error2_msg);
 			dialog.run();
 		}
 
-		g_clear_error(&error);
+		g_clear_error(&error1);
 	}
 }
 
