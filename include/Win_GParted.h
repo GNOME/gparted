@@ -216,8 +216,8 @@ private:
 	std::vector<Operation *> operations;
 
 //gui stuff
-	Gtk::HPaned hpaned_main;
-	Gtk::VPaned vpaned_main;
+	Gtk::Paned hpaned_main;
+	Gtk::Paned vpaned_main;
 	Gtk::Box vbox_main;
 	Gtk::Box vbox_info;
 	Gtk::Box hbox_toolbar;
