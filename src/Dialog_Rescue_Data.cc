@@ -85,7 +85,7 @@ void Dialog_Rescue_Data::draw_dialog()
 	info_txt+="\n";
 	info_txt+=_("All mounted views will be unmounted when you close this dialog.");
 
-	Gtk::HBox *infoBox=manage(new Gtk::HBox());
+	Gtk::Box *infoBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	Gtk::Image *infoImg=manage(new Gtk::Image( Gtk::Stock::DIALOG_INFO, Gtk::ICON_SIZE_DIALOG));
 	Gtk::Label *infoLabel= manage(new Gtk::Label (info_txt));
 
@@ -103,7 +103,7 @@ void Dialog_Rescue_Data::draw_dialog()
  * Create the list of the filesystems found */
 void Dialog_Rescue_Data::create_list_of_fs()
 {
-	Gtk::VBox *vb=manage(new Gtk::VBox());
+	Gtk::Box *vb = manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL));
 	vb->set_border_width(5);
 	vb->set_spacing(5);
 	this->frm=Gtk::manage(new Gtk::Frame(_("File systems")));
@@ -134,7 +134,7 @@ void Dialog_Rescue_Data::create_list_of_fs()
 			fsLbl->set_label(fsLbl->get_label().append(" (!)"));
 		}
 
-		Gtk::HBox *hb=manage(new Gtk::HBox());
+		Gtk::Box *hb = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 
 		Gtk::Button *btn=manage(new Gtk::Button(_("View")));
 
