@@ -45,7 +45,7 @@ Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
 	this->property_default_width() = 700;
 
 	{
-		Gtk::VBox* vbox(manage(new Gtk::VBox()));
+		Gtk::Box *vbox(manage(new Gtk::Box(Gtk::ORIENTATION_VERTICAL)));
 
 		vbox->set_border_width(10);
 		this->get_vbox()->pack_start(*vbox, Gtk::PACK_EXPAND_WIDGET);
