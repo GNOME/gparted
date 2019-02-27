@@ -69,7 +69,7 @@ protected:
 	Sector START; //the first sector of the first relevant partition ( this is either current or current -1 )  needed in Get_Resized_Partition()
 	Sector total_length ; //total amount of sectors ( this can be up to 3 partitions...)
 
-	Gtk::HBox hbox_main ;
+	Gtk::Box hbox_main;
 	Gtk::SpinButton spinbutton_before, spinbutton_size, spinbutton_after;
 	OptionComboBox combo_alignment;
 
@@ -99,10 +99,11 @@ private:
 
 	void Check_Change( ) ;
 	
-	Gtk::VBox vbox_resize_move;
+	Gtk::Box vbox_resize_move;
 	Gtk::Label label_minmax ;
 	Gtk::Table table_resize;
-	Gtk::HBox hbox_table, hbox_resizer;
+	Gtk::Box hbox_table;
+	Gtk::Box hbox_resizer;
 	Gtk::Button button_resize_move ;
 };
 
