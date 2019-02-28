@@ -1795,7 +1795,7 @@ void Win_GParted::show_help(const Glib::ustring & filename /* E.g., "gparted" */
 
 		context->set_timestamp(gtk_get_current_event_time());
 
-		bool launched;
+		bool launched = false;
 		Glib::ustring error2_msg;
 		try
 		{
@@ -1804,7 +1804,6 @@ void Win_GParted::show_help(const Glib::ustring & filename /* E.g., "gparted" */
 		catch (Glib::Error& e)
 		{
 			error2_msg = e.what();
-			launched = false;
 		}
 
 		if (!launched)
