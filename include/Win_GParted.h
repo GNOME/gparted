@@ -166,7 +166,7 @@ private:
 	void menu_view_operations();
 	void show_disklabel_unrecognized( Glib::ustring device_name );
 	void show_resize_readonly( const Glib::ustring & path );
-	void show_help_dialog( const Glib::ustring & filename, const Glib::ustring & link_id );
+	void show_help(const Glib::ustring & filename, const Glib::ustring & link_id);
 	void menu_help_contents();
 	void menu_help_about();
 

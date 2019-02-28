@@ -1770,9 +1770,9 @@ void Win_GParted::show_resize_readonly( const Glib::ustring & path )
 	dialog.run();
 }
 
-void Win_GParted::show_help_dialog( const Glib::ustring & filename /* E.g., gparted */
-                                  , const Glib::ustring & link_id  /* For context sensitive help */
-                                  )
+
+void Win_GParted::show_help(const Glib::ustring & filename /* E.g., "gparted" */,
+                            const Glib::ustring & link_id  /* For context sensitive help */)
 {
 	GError *error1 = NULL;
 	GdkScreen *gscreen = NULL ;
@@ -1827,7 +1827,7 @@ void Win_GParted::menu_help_contents()
 {
 #ifdef ENABLE_HELP_DOC
 	//GParted was built with help documentation
-	show_help_dialog( "gparted", "" );
+	show_help("gparted", "");
 #else
 	//GParted was built *without* help documentation using --disable-doc
 	Gtk::MessageDialog dialog( *this,
