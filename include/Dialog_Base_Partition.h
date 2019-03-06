@@ -27,7 +27,6 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 #include <gtkmm/spinbutton.h>
-#include <gtkmm/table.h>
 #include <gtkmm/grid.h>
 #include <gtkmm/box.h>
 
