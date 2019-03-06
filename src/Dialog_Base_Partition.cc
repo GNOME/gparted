@@ -19,6 +19,8 @@
 #include "Partition.h"
 #include "Utils.h"
 
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {
@@ -46,43 +48,41 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	// Put the vbox with resizer stuff (cool widget and spinbuttons) in the hbox_main
 	vbox_resize_move.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	hbox_main .pack_start( vbox_resize_move, Gtk::PACK_EXPAND_PADDING );
-	
-	//fill table
-	table_resize .set_border_width( 5 ) ;
-	table_resize .set_row_spacings( 5 ) ;
-	hbox_table.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-	hbox_table.pack_start( table_resize, Gtk::PACK_EXPAND_PADDING ) ;
-	
-	hbox_table .set_border_width( 5 ) ;
-	vbox_resize_move .pack_start( hbox_table, Gtk::PACK_SHRINK );
-	
-	//add spinbutton_before
-	table_resize .attach(
-		* Utils::mk_label( static_cast<Glib::ustring>( _( "Free space preceding (MiB):") ) + " \t" ),
-		0, 1, 0, 1,
-		Gtk::SHRINK );
-		
+
+	// Fill grid
+	grid_resize.set_border_width(5);
+	grid_resize.set_row_spacing(5);
+	hbox_grid.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
+	hbox_grid.pack_start(grid_resize, Gtk::PACK_EXPAND_PADDING);
+
+	hbox_grid.set_border_width(5);
+	vbox_resize_move.pack_start(hbox_grid, Gtk::PACK_SHRINK);
+
+	// Add spinbutton_before
+	grid_resize.attach(*Utils::mk_label(Glib::ustring(_("Free space preceding (MiB):")) + " \t"),
+	                   0, 0, 1, 1);
+
 	spinbutton_before .set_numeric( true );
 	spinbutton_before .set_increments( 1, 100 );
 	spinbutton_before.set_width_chars(7);
-	table_resize.attach( spinbutton_before, 1, 2, 0, 1, Gtk::FILL );
-	
-	//add spinbutton_size
-	table_resize.attach( * Utils::mk_label( _( "New size (MiB):" ) ), 0, 1, 1, 2 );
+	grid_resize.attach(spinbutton_before, 1, 0, 1, 1);
+
+	// Add spinbutton_size
+	grid_resize.attach(*Utils::mk_label(_("New size (MiB):")), 0, 1, 1, 1);
 
 	spinbutton_size .set_numeric( true );
 	spinbutton_size .set_increments( 1, 100 );
 	spinbutton_size.set_width_chars(7);
-	table_resize.attach( spinbutton_size, 1, 2, 1, 2, Gtk::FILL );
-	
-	//add spinbutton_after
-	table_resize.attach( * Utils::mk_label( _( "Free space following (MiB):") ), 0, 1, 2, 3 ) ;
-	
+	grid_resize.attach(spinbutton_size, 1, 1, 1, 1);
+
+	// Add spinbutton_after
+	grid_resize.attach(*Utils::mk_label(_("Free space following (MiB):")), 0, 2, 1, 1);
+
 	spinbutton_after .set_numeric( true );
 	spinbutton_after .set_increments( 1, 100 );
 	spinbutton_after.set_width_chars(7);
-	table_resize.attach( spinbutton_after, 1, 2, 2, 3, Gtk::FILL );
-	
+	grid_resize.attach(spinbutton_after, 1, 2, 1, 1);
+
 	if ( ! fixed_start )
 		before_value = spinbutton_before .get_value() ;
 
@@ -102,10 +102,9 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 		sigc::bind<SPINBUTTON>( 
 			sigc::mem_fun(*this, &Dialog_Base_Partition::on_spinbutton_value_changed), AFTER ) ) ;
 
-	//add alignment
+	// Add alignment
 	/* TO TRANSLATORS: used as label for a list of choices.  Align to: <combo box with choices> */
-	table_resize .attach( * Utils::mk_label( static_cast<Glib::ustring>( _("Align to:") ) + "\t" ),
-	                      0, 1, 3, 4, Gtk::FILL );
+	grid_resize.attach(*Utils::mk_label(Glib::ustring(_("Align to:")) + "\t"), 0, 3, 1, 1);
 
 	// Fill partition alignment combo
 	/* TO TRANSLATORS: Option for combo box "Align to:" */
@@ -117,7 +116,12 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 
 	combo_alignment.set_active(ALIGN_MEBIBYTE);  // Default setting
 
-	table_resize.attach(combo_alignment, 1, 2, 3, 4, Gtk::FILL);
+	grid_resize.attach(combo_alignment, 1, 3, 1, 1);
+
+	// Set vexpand on all grid_resize child widgets
+	std::vector<Gtk::Widget*> children = grid_resize.get_children();
+	for (std::vector<Gtk::Widget*>::iterator it = children.begin(); it != children.end(); ++it)
+		(*it)->set_vexpand();
 
 	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	this ->show_all_children() ;
