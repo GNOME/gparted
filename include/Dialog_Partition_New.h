@@ -24,6 +24,8 @@
 #include "Partition.h"
 #include "Utils.h"
 
+#include <gtkmm/grid.h>
+
 namespace GParted
 {
 
@@ -52,7 +54,7 @@ private:
 	void build_filesystems_combo(bool only_unformatted);
 	Byte_Value get_filesystem_min_limit( FSType fstype );
 
-	Gtk::Table table_create;
+	Gtk::Grid grid_create;
 	OptionComboBox combo_type;
 	OptionComboBox combo_filesystem;
 	Gtk::Entry partition_name_entry;
