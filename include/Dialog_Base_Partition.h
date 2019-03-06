@@ -28,6 +28,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/table.h>
+#include <gtkmm/grid.h>
 #include <gtkmm/box.h>
 
 namespace GParted
@@ -101,8 +102,8 @@ private:
 	
 	Gtk::Box vbox_resize_move;
 	Gtk::Label label_minmax ;
-	Gtk::Table table_resize;
-	Gtk::Box hbox_table;
+	Gtk::Grid grid_resize;
+	Gtk::Box hbox_grid;
 	Gtk::Box hbox_resizer;
 	Gtk::Button button_resize_move ;
 };
