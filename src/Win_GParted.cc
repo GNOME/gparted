@@ -3492,30 +3492,27 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 
 	dialog .set_secondary_text( tmp_msg, true ) ;
 
-	// Nicely formatted display of VG members by using a table below the secondary
+	// Nicely formatted display of VG members by using a grid below the secondary
 	// text in the dialog.
 	Gtk::Box * msg_area = dialog .get_message_area() ;
 
 	Gtk::Separator *hsep(manage(new Gtk::Separator(Gtk::ORIENTATION_HORIZONTAL)));
 	msg_area ->pack_start( * hsep ) ;
 
-	Gtk::Table * table( manage( new Gtk::Table() ) ) ;
-        table ->set_border_width( 0 ) ;
-        table ->set_col_spacings( 10 ) ;
-        msg_area ->pack_start( * table ) ;
+	Gtk::Grid *grid(manage(new Gtk::Grid()));
+	grid->set_column_spacing(10);
+	msg_area->pack_start(*grid);
 
-	int top = 0, bottom = 1 ;
+	// Volume Group
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(vgname_label) + "</b>"),
+	              0, 0, 1, 1);
+	grid->attach(*Utils::mk_label(vgname, true, false, true),
+	              1, 0, 1, 1);
 
-	//Volume Group
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( vgname_label ) + "</b>" ),
-	                0, 1, top, bottom, Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( vgname, true, false, true ),
-	                1, 2, top++, bottom++, Gtk::FILL ) ;
-
-	//Members
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( members_label ) + "</b>",
-	                                   true, false, false, 0.0 /* ALIGN_TOP */ ),
-	                0, 1, top, bottom, Gtk::FILL ) ;
+	// Members
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(members_label) + "</b>",
+	                              true, false, false, 0.0 /* ALIGN_START */ ),
+	              0, 1, 1, 1);
 
 	Glib::ustring members_str = "" ;
 	if ( ! members .empty() )
@@ -3527,8 +3524,8 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 			members_str += members[i] ;
 		}
 	}
-	table ->attach( * Utils::mk_label( members_str, true, false, true, 0.0 /* ALIGN_TOP */ ),
-	                1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid->attach(*Utils::mk_label(members_str, true, false, true, 0.0 /* ALIGN_START */ ),
+	              1, 1, 1, 1);
 
 	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
