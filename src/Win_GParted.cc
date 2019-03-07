@@ -567,106 +567,88 @@ void Win_GParted::init_device_info()
 {
 	vbox_info.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	vbox_info.set_spacing( 5 );
-	int top = 0, bottom = 1;
-	
+	int top = 0;
+
 	//title
 	vbox_info .pack_start( 
 		* Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Device Information") ) + "</b>" ),
 		Gtk::PACK_SHRINK );
-	
+
 	//GENERAL DEVICE INFO
-	table = manage( new Gtk::Table() ) ;
-	table ->set_col_spacings( 10 ) ;
-	
-	//model
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Model:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	Gtk::Grid *grid = manage(new Gtk::Grid());
+	grid->set_column_spacing(10);
+
+	// Model
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Model:")) + "</b>"),
+	             0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
 
 	// Serial number
-	table->attach( *Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Serial:") ) + "</b>" ),
-	               0, 1, top, bottom, Gtk::FILL );
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Serial:")) + "</b>"),
+	             0, top, 1, 1);
 	device_info.push_back( Utils::mk_label( "", true, false, true ) );
-	table->attach( *device_info.back(), 1, 2, top++, bottom++, Gtk::FILL );
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
 
-	//size
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Size:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
+	// Size
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Size:")) + "</b>"),
+	             0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
-	//path
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Path:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
-	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
-	
-	//DETAILED DEVICE INFO 
-	top = 0 ; bottom = 1;
-	table = manage( new Gtk::Table() ) ;
-	table ->set_col_spacings( 10 ) ;
-	
-	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 1, 2, top++, bottom++, Gtk::FILL );
-	
-	//disktype
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Partition table:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
-	//heads
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Heads:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
-	//sectors/track
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sectors/track:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL );
-	
-	//cylinders
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Cylinders:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL ) ;
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
-	
-	//total sectors
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Total sectors:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL );
-	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
 
-	//sector size
-	table ->attach( * Utils::mk_label( " <b>" + static_cast<Glib::ustring>( _("Sector size:") ) + "</b>" ),
-			0, 1,
-			top, bottom,
-			Gtk::FILL );
+	// Path
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Path:")) + "</b>"),
+	             0, top, 1, 1);
 	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
-	table ->attach( * device_info .back(), 1, 2, top++, bottom++, Gtk::FILL ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
 
-	vbox_info .pack_start( *table, Gtk::PACK_SHRINK );
+	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
+
+	//DETAILED DEVICE INFO
+	top = 0;
+	grid = manage(new Gtk::Grid());
+	grid->set_column_spacing(10);
+
+	// One blank line
+	grid->attach(*Utils::mk_label(""), 1, top++, 1, 1);
+
+	// Disktype
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Partition table:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	// Heads
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Heads:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	// Sectors / track
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sectors/track:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	// Cylinders
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Cylinders:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	// Total sectors
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Total sectors:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	// Sector size
+	grid->attach(*Utils::mk_label(" <b>" + static_cast<Glib::ustring>(_("Sector size:")) + "</b>"),
+	             0, top, 1, 1);
+	device_info .push_back( Utils::mk_label( "", true, false, true ) ) ;
+	grid->attach(*device_info.back(), 1, top++, 1, 1);
+
+	vbox_info.pack_start(*grid, Gtk::PACK_SHRINK);
 }
 
 void Win_GParted::init_hpaned_main() 
