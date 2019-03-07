@@ -35,7 +35,6 @@
 #include <gtkmm/combobox.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/window.h>
-#include <gtkmm/table.h>
 
 namespace GParted
 {
@@ -229,7 +228,6 @@ private:
 	Gtk::Statusbar statusbar;
 	Gtk::Image *image ;
 	Gtk::ScrolledWindow *scrollwindow;
-	Gtk::Table *table ;
 	Gtk::ProgressBar pulsebar ;
 	Gtk::TreeRow treerow;
 	
