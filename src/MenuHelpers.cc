@@ -16,10 +16,13 @@
 
 #include "MenuHelpers.h"
 
-#include <gtkmm/imagemenuitem.h>
 #include <gtkmm/checkmenuitem.h>
 #include <gtkmm/separatormenuitem.h>
+#include <gtkmm/box.h>
+#include <gtkmm/image.h>
+#include <gtkmm/accellabel.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/settings.h>
 
 namespace GParted
 {
@@ -75,49 +78,91 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
                              const Gtk::AccelKey& key,
                              Gtk::Widget& image_widget,
                              const CallSlot& slot)
- : ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate().connect(slot);
 
 	set_accel_key(key);
 
-	set_image(image_widget);
-	set_label(label);
-	set_use_underline(true);
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::AccelLabel *label_widget = Gtk::manage(new Gtk::AccelLabel(label));
+	label_widget->set_use_underline(true);
+	label_widget->set_accel_widget(*this);
+#ifdef GTKMM_HAVE_LABEL_SET_XALIGN
+	label_widget->set_xalign(0.0);
+#else
+	label_widget->set_alignment(0.0, 0.5);
+#endif
+
+	box_widget->add(image_widget);
+	box_widget->pack_end(*label_widget, true, true, 0);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget.gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 
 ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
                              Gtk::Widget& image_widget,
                              const CallSlot& slot)
- : ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate().connect(slot);
 
-	set_image(image_widget);
-	set_label(label);
-	set_use_underline(true);
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::Label *label_widget = Gtk::manage(new Gtk::Label(label));
+	label_widget->set_use_underline(true);
+
+	box_widget->add(image_widget);
+	box_widget->add(*label_widget);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget.gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 
 ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
                              Gtk::Widget& image_widget,
                              Gtk::Menu& submenu)
- : ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	set_submenu(submenu);
 
-	set_image(image_widget);
-	set_label(label);
-	set_use_underline(true);
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::Label *label_widget = Gtk::manage(new Gtk::Label(label));
+	label_widget->set_use_underline(true);
+
+	box_widget->add(image_widget);
+	box_widget->add(*label_widget);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget.gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 
@@ -131,23 +176,47 @@ SeparatorElem::SeparatorElem()
 StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              const Gtk::AccelKey& key,
                              const CallSlot& slot)
- : Gtk::ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate().connect(slot);
 
 	set_accel_key(key);
 
-	set_use_stock();
-	set_label(stock_id.get_string());
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::AccelLabel *label_widget = Gtk::manage(new Gtk::AccelLabel());
+	Gtk::StockItem stock;
+	if (Gtk::Stock::lookup(stock_id, stock))
+		label_widget->set_label(stock.get_label());
+	label_widget->set_use_underline(true);
+	label_widget->set_accel_widget(*this);
+#ifdef GTKMM_HAVE_LABEL_SET_XALIGN
+	label_widget->set_xalign(0.0);
+#else
+	label_widget->set_alignment(0.0, 0.5);
+#endif
+
+	Gtk::Image *image_widget = Gtk::manage(new Gtk::Image(stock_id, Gtk::ICON_SIZE_MENU));
+
+	box_widget->add(*image_widget);
+	box_widget->pack_end(*label_widget, true, true, 0);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget->gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 
 StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              const CallSlot& slot)
- : Gtk::ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	if (slot)
 		signal_activate().connect(slot);
@@ -157,23 +226,58 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
 		set_accel_key(Gtk::AccelKey(stock.get_keyval(),
 		                            stock.get_modifier()));
 
-	set_use_stock();
-	set_label(stock_id.get_string());
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::Label *label_widget = Gtk::manage(new Gtk::Label(stock_id.get_string()));
+	if (Gtk::Stock::lookup(stock_id, stock))
+		label_widget->set_label(stock.get_label());
+	label_widget->set_use_underline(true);
+
+	Gtk::Image *image_widget = Gtk::manage(new Gtk::Image(stock_id, Gtk::ICON_SIZE_MENU));
+
+	box_widget->add(*image_widget);
+	box_widget->add(*label_widget);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget->gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 
 StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              Gtk::Menu& submenu)
- : Gtk::ImageMenuItem()
+ : Gtk::MenuItem()
 {
 	set_submenu(submenu);
 
-	set_use_stock();
-	set_label(stock_id.get_string());
+	Gtk::Box *box_widget = Gtk::manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
+	box_widget->set_spacing(6);
+
+	Gtk::Label *label_widget = Gtk::manage(new Gtk::Label(stock_id.get_string()));
+	Gtk::StockItem stock;
+	if (Gtk::Stock::lookup(stock_id, stock))
+		label_widget->set_label(stock.get_label());
+	label_widget->set_use_underline(true);
+
+	Gtk::Image *image_widget = Gtk::manage(new Gtk::Image(stock_id, Gtk::ICON_SIZE_MENU));
+
+	box_widget->add(*image_widget);
+	box_widget->add(*label_widget);
+	add(*box_widget);
 
 	show_all();
+
+	g_object_bind_property(Gtk::Settings::get_default()->gobj(),
+	                       "gtk-menu-images",
+	                       image_widget->gobj(),
+	                       "visible",
+	                       (GBindingFlags) (G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE));
 }
 
 

@@ -21,7 +21,6 @@
 #include <glibmm/ustring.h>
 #include <gtkmm/menu.h>
 #include <gtkmm/menuitem.h>
-#include <gtkmm/imagemenuitem.h>
 #include <gtkmm/separatormenuitem.h>
 #include <gtkmm/checkmenuitem.h>
 
@@ -47,7 +46,7 @@ public:
 
 
 class ImageMenuElem
- : public Gtk::ImageMenuItem
+ : public Gtk::MenuItem
 {
 public:
 	ImageMenuElem(const Glib::ustring&  label,
@@ -72,7 +71,7 @@ public:
 
 
 class StockMenuElem
- : public Gtk::ImageMenuItem
+ : public Gtk::MenuItem
 {
 public:
 	StockMenuElem(const Gtk::StockID&   stock_id,
