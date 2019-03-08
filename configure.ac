@@ -242,6 +242,17 @@ if test "x$need_cxx_compile_stdcxx_11" = xyes; then
 fi
 
 
+dnl Check for gtkmm >= 3.16.0 to determine availability of Gtk::Label::set_xalign() method.
+AC_MSG_CHECKING([for Gtk::Label::set_xalign() method])
+PKG_CHECK_EXISTS(
+       [gtkmm-3.0 >= 3.16.0],
+       [AC_DEFINE([GTKMM_HAVE_LABEL_SET_XALIGN], 1,
+                  [Define to 1 if gtkmm provides Gtk::Label::set_xalign() method.])
+        AC_MSG_RESULT([yes])
+       ],
+       [AC_MSG_RESULT([no])]
+)
+
 
 dnl Definitions for building of and with gtest.  Gets flags for pthread via earlier
 dnl gthread package check.
