@@ -3279,7 +3279,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	operationdetail .add_child( OperationDetail( _("finding optimal block size"), STATUS_NONE ) ) ;
 
 	Byte_Value benchmark_blocksize = (1 * MEBIBYTE) ;
-	Byte_Value N = (16 * MEBIBYTE) ;
+	Byte_Value benchmark_copysize = 16 * MEBIBYTE;
 	Byte_Value optimal_blocksize = benchmark_blocksize ;
 	Sector offset_read = src_start ;
 	Sector offset_write = dst_start ;
@@ -3288,9 +3288,9 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	//  with the end of the partition and finishing with the start.
 	if ( dst_start > src_start )
 	{
-		offset_read  += (src_length/src_sector_size) - (N/src_sector_size) ;
+		offset_read  += (src_length/src_sector_size) - (benchmark_copysize/src_sector_size);
 		/* Handle situation where src sector size is smaller than dst sector size and an additional partial dst sector is required. */
-		offset_write += ((src_length + (dst_sector_size - 1))/dst_sector_size) - (N/dst_sector_size) ;
+		offset_write += ((src_length + (dst_sector_size - 1))/dst_sector_size) - (benchmark_copysize/dst_sector_size);
 	}
 
 	total_done = 0 ;
@@ -3301,22 +3301,22 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	OperationDetail & benchmark_od = operationdetail.get_last_child();
 
 	//Benchmark copy times using different block sizes to determine optimal size
-	while ( succes &&
-		llabs( done ) + N <= src_length && 
-		benchmark_blocksize <= N )
+	while (succes                                         &&
+	       llabs(done) + benchmark_copysize <= src_length &&
+	       benchmark_blocksize <= benchmark_copysize        )
 	{
 		benchmark_od.add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB */
-				Glib::ustring::compose( _("copy %1 using a block size of %2"),
-				                  Utils::format_size( N, 1 ),
-				                  Utils::format_size( benchmark_blocksize, 1 ) ) ) );
+				Glib::ustring::compose(_("copy %1 using a block size of %2"),
+				                       Utils::format_size(benchmark_copysize, 1),
+				                       Utils::format_size(benchmark_blocksize, 1))));
 
 		timer .reset() ;
 		succes = CopyBlocks( src_device,
 		                     dst_device,
 		                     offset_read  + (done / src_sector_size),
 		                     offset_write + (done / dst_sector_size),
-		                     N,
+		                     benchmark_copysize,
 		                     benchmark_blocksize,
 		                     benchmark_od,
 		                     total_done,
@@ -3336,9 +3336,9 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		benchmark_blocksize *= 2 ;
 
 		if ( ( dst_start > src_start ) )
-			done -= N ;
+			done -= benchmark_copysize;
 		else
-			done += N ;
+			done += benchmark_copysize;
 	}
 	
 	if ( succes )
