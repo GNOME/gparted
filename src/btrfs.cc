@@ -30,7 +30,6 @@ namespace GParted
 {
 
 bool btrfs_found = false ;
-bool resize_to_same_size_fails = true ;
 
 // Cache of required btrfs file system device information by device
 // E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
@@ -135,10 +134,6 @@ FS btrfs::get_filesystem_support()
 #endif
 
 	fs_limits.min_size = 256 * MEBIBYTE;
-
-	//Linux before version 3.2 fails when resizing btrfs file system
-	//  to the same size.
-	resize_to_same_size_fails = ! Utils::kernel_version_at_least( 3, 2, 0 ) ;
 
 	return fs ;
 }
@@ -347,30 +342,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
 		else
 			cmd = "btrfsctl -r " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
-		exit_status = execute_command( cmd, operationdetail );
-		bool resize_succeeded = ( exit_status == 0 ) ;
-		if ( resize_to_same_size_fails )
-		{
-			//Linux before version 3.2 fails when resizing a
-			//  btrfs file system to the same size with ioctl()
-			//  returning -1 EINVAL (Invalid argument) from the
-			//  kernel btrfs code.
-			//  *   Btrfs filesystem resize reports this as exit
-			//      status 30:
-			//          ERROR: Unable to resize '/MOUNTPOINT'
-			//  *   Btrfsctl -r reports this as exit status 1:
-			//          ioctl:: Invalid argument
-			//  WARNING:
-			//  Ignoring these errors could mask real failures,
-			//  but not ignoring them will cause resizing to the
-			//  same size as part of check operation to fail.
-			resize_succeeded = (    exit_status == 0
-			                     || (   btrfs_found && exit_status == 30 )
-			                     || ( ! btrfs_found && exit_status ==  1 )
-			                   ) ;
-		}
-		set_status( operationdetail, resize_succeeded );
-		success &= resize_succeeded ;
+		success &= ! execute_command(cmd, operationdetail, EXEC_CHECK_STATUS);
 
 		if ( ! partition_new .busy )
 			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
