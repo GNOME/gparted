@@ -51,18 +51,19 @@ FS btrfs::get_filesystem_support()
 		fs.create_with_label = FS::EXTERNAL;
 	}
 
-	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
-		fs.check = FS::EXTERNAL;
-
 	if (! Glib::find_program_in_path("btrfs").empty())
 	{
-		//Use newer btrfs multi-tool control command.  No need
-		//  to test for filesystem show and filesystem resize
-		//  sub-commands as they were always included.
+		// Use these btrfs multi-tool sub-commands without further checking for
+		// their availability:
+		//     btrfs check
+		//     btrfs filesystem resize
+		//     btrfs filesystem show
+		// as they are all available in btrfs-progs >= 3.12.
 
 		fs.read = FS::EXTERNAL;
 		fs .read_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
+		fs.check = FS::EXTERNAL;
 
 		//Resizing of btrfs requires mount, umount and kernel
 		//  support as well as btrfs filesystem resize
@@ -131,8 +132,8 @@ bool btrfs::create( const Partition & new_partition, OperationDetail & operation
 
 bool btrfs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	return ! execute_command( "btrfsck " + Glib::shell_quote( partition.get_path() ),
-	                          operationdetail, EXEC_CHECK_STATUS );
+	return ! execute_command("btrfs check " + Glib::shell_quote(partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS);
 }
 
 void btrfs::set_used_sectors( Partition & partition )
