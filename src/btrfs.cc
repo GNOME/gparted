@@ -29,8 +29,6 @@
 namespace GParted
 {
 
-bool btrfs_found = false ;
-
 // Cache of required btrfs file system device information by device
 // E.g. For a single device btrfs on /dev/sda2 and a three device btrfs
 //      on /dev/sd[bcd]1 the cache would be as follows.  (Note that
@@ -56,8 +54,7 @@ FS btrfs::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "btrfsck" ) .empty() )
 		fs.check = FS::EXTERNAL;
 
-	btrfs_found = ( ! Glib::find_program_in_path( "btrfs" ) .empty() ) ;
-	if ( btrfs_found )
+	if (! Glib::find_program_in_path("btrfs").empty())
 	{
 		//Use newer btrfs multi-tool control command.  No need
 		//  to test for filesystem show and filesystem resize
@@ -83,24 +80,6 @@ FS btrfs::get_filesystem_support()
 		//Test for labelling capability in btrfs command
 		if ( ! Utils::execute_command( "btrfs filesystem label --help", output, error, true ) )
 			fs .write_label = FS::EXTERNAL;
-	}
-	else
-	{
-		// Fall back to using btrfsctl which was depreciated October 2011.
-
-		//Resizing of btrfs requires btrfsctl, mount, umount
-		//  and kernel support
-		if (    ! Glib::find_program_in_path( "btrfsctl" ) .empty()
-		     && ! Glib::find_program_in_path( "mount" ) .empty()
-		     && ! Glib::find_program_in_path( "umount" ) .empty()
-		     && fs .check
-		     && Utils::kernel_supports_fs( "btrfs" )
-		   )
-		{
-			fs .grow = FS::EXTERNAL ;
-			if ( fs .read ) //needed to determine a minimum file system size.
-				fs .shrink = FS::EXTERNAL ;
-		}
 	}
 
 	if ( ! Glib::find_program_in_path( "btrfstune" ).empty() )
@@ -325,12 +304,9 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + "K" ;
 		else
 			size = "max" ;
-		Glib::ustring cmd ;
-		if ( btrfs_found )
-			cmd = "btrfs filesystem resize " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
-		else
-			cmd = "btrfsctl -r " + devid_str + ":" + size + " " + Glib::shell_quote( mount_point );
-		success &= ! execute_command(cmd, operationdetail, EXEC_CHECK_STATUS);
+		success &= ! execute_command("btrfs filesystem resize " + devid_str + ":" + size +
+		                             " " + Glib::shell_quote(mount_point),
+                                             operationdetail, EXEC_CHECK_STATUS);
 
 		if ( ! partition_new .busy )
 			success &= ! execute_command( "umount -v " + Glib::shell_quote( mount_point ),
