@@ -357,12 +357,8 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 
 void btrfs::read_label( Partition & partition )
 {
-	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
-	else
-		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
+	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
+		               output, error, true);
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -374,8 +370,8 @@ void btrfs::read_label( Partition & partition )
 	}
 	else
 	{
-		//Try matching a label enclosed in single quotes, as used by
-		//  btrfs filesystem show, then without quotes, as used by btrfs-show.
+		// Try matching a label enclosed in single quotes, then without quotes, to
+		// handle reporting of mounted file systems by old btrfs-progs 3.12.
 		Glib::ustring label = Utils::regexp_label( output, "^Label: '(.*)'  uuid:" ) ;
 		if ( label .empty() )
 			label = Utils::regexp_label( output, "^Label: (.*)  uuid:" ) ;
