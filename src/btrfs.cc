@@ -86,15 +86,7 @@ FS btrfs::get_filesystem_support()
 	}
 	else
 	{
-		//Fall back to using btrfs-show and btrfsctl, which
-		//  were depreciated October 2011
-
-		if ( ! Glib::find_program_in_path( "btrfs-show" ) .empty() )
-		{
-			fs.read = FS::EXTERNAL;
-			fs .read_label = FS::EXTERNAL ;
-			fs .read_uuid = FS::EXTERNAL ;
-		}
+		// Fall back to using btrfsctl which was depreciated October 2011.
 
 		//Resizing of btrfs requires btrfsctl, mount, umount
 		//  and kernel support
@@ -216,12 +208,8 @@ void btrfs::set_used_sectors( Partition & partition )
 	//     devices.
 	//  4) Extents can be and are relocated to other devices within the file system
 	//     when shrinking a device.
-	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
-	else
-		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
+	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
+		               output, error, true);
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -391,12 +379,8 @@ void btrfs::read_label( Partition & partition )
 
 void btrfs::read_uuid( Partition & partition )
 {
-	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
-	else
-		Utils::execute_command( "btrfs-show " + Glib::shell_quote( partition.get_path() ),
-		                        output, error, true );
+	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(partition.get_path()),
+		               output, error, true);
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
@@ -468,10 +452,7 @@ const BTRFS_Device & btrfs::get_cache_entry( const Glib::ustring & path )
 	Glib::ustring output, error ;
 	std::vector<int> devid_list ;
 	std::vector<Glib::ustring> path_list ;
-	if ( btrfs_found )
-		Utils::execute_command( "btrfs filesystem show " + Glib::shell_quote( path ), output, error, true );
-	else
-		Utils::execute_command( "btrfs-show " + Glib::shell_quote( path ), output, error, true );
+	Utils::execute_command("btrfs filesystem show " + Glib::shell_quote(path), output, error, true);
 	//In many cases the exit status doesn't reflect valid output or an error condition
 	//  so rely on parsing the output to determine success.
 
