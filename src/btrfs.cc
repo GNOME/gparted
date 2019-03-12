@@ -56,6 +56,7 @@ FS btrfs::get_filesystem_support()
 		// Use these btrfs multi-tool sub-commands without further checking for
 		// their availability:
 		//     btrfs check
+		//     btrfs filesystem label
 		//     btrfs filesystem resize
 		//     btrfs filesystem show
 		// as they are all available in btrfs-progs >= 3.12.
@@ -64,6 +65,7 @@ FS btrfs::get_filesystem_support()
 		fs .read_label = FS::EXTERNAL ;
 		fs .read_uuid = FS::EXTERNAL ;
 		fs.check = FS::EXTERNAL;
+		fs.write_label = FS::EXTERNAL;
 
 		//Resizing of btrfs requires mount, umount and kernel
 		//  support as well as btrfs filesystem resize
@@ -77,10 +79,6 @@ FS btrfs::get_filesystem_support()
 			if ( fs .read ) //needed to determine a minimum file system size.
 				fs .shrink = FS::EXTERNAL ;
 		}
-
-		//Test for labelling capability in btrfs command
-		if ( ! Utils::execute_command( "btrfs filesystem label --help", output, error, true ) )
-			fs .write_label = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "btrfstune" ).empty() )
