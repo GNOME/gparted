@@ -28,7 +28,6 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/scrolledwindow.h>
-#include <gtkmm/table.h>
 
 #define BORDER 8
 
