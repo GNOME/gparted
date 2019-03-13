@@ -23,6 +23,26 @@ PKG_CHECK_EXISTS
 dnl======================
 dnl Find graphical privilege escalation program
 dnl======================
+
+AC_ARG_WITH(
+	[gksuprog],
+	AS_HELP_STRING(
+		[--with-gksuprog=XXX],
+		[Graphical program to get root permisisons, default is pkexec (polkit)]),
+	[GKSUPROG="$withval"],
+	[GKSUPROG="pkexec --disable-internal-agent"]
+)
+
+AC_ARG_WITH(
+	[gksuprog-fallback],
+	AS_HELP_STRING(
+		[--with-gksuprog-fallback=XXX],
+		[Enable runtime fallback to another graphical program to get root permisisons]),
+	[GKSUPROG_FALLBACK="$withval"],
+	[GKSUPROG_FALLBACK=""]
+)
+
+if echo "$GKSUPROG" | grep -q ^pkexec; then
 dnl Check for pkexec >= 0.102 for it's ability to run X11 apps.
 AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], false)
 PKEXEC_REQUIRED_VERSION='0.102'
@@ -35,14 +55,19 @@ if test "x$PKEXEC_VERSION_OUTPUT" != 'x'; then
 	PKEXEC_FOUND_INT=`echo "$PKEXEC_FOUND_VERSION" | $AWK -F. '{print $1 * 10000 + $2}'`
 	AC_MSG_RESULT([$PKEXEC_FOUND_VERSION found])
 	if test "$PKEXEC_FOUND_INT" -ge "$PKEXEC_REQUIRED_INT"; then
-		GKSUPROG='pkexec --disable-internal-agent'
-		AC_SUBST([GKSUPROG])
 		AM_CONDITIONAL([INSTALL_POLKIT_ACTIONS], true)
+	else
+		# unset default GKSUPROG from pkexec
+		GKSUPROG=''
 	fi
 fi
+fi
+
+AC_SUBST(GKSUPROG)
+AC_SUBST(GKSUPROG_FALLBACK)
 
 dnl Check for alternative graphical privilege escalation programs.
-if test "x$GKSUPROG" = 'x'; then
+if test "x$GKSUPROG" = 'x' && test "x$GKSUPROG_FALLBACK" = 'x'; then
 	AC_CHECK_PROGS([GKSUPROG], [gksudo gksu kdesudo "xdg-su -c"], [])
 fi
 
@@ -345,7 +370,6 @@ else
 	AC_MSG_RESULT([no])
 fi
 AC_SUBST([ENABLE_XHOST_ROOT], $enable_xhost_root)
-
 
 AC_CONFIG_FILES([
 Makefile
