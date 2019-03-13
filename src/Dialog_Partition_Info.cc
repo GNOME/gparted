@@ -25,6 +25,7 @@
 #include <glibmm/miscutils.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/viewport.h>
+#include <gtkmm/grid.h>
 #include <gdkmm/general.h>
 
 namespace GParted
@@ -445,8 +446,8 @@ void Dialog_Partition_Info::Display_Info()
 		              1, top, 1, 1);
 
 		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
-		grd->attach(*Utils::mk_label(Glib::build_path("\n", lvs), true, false, true),
-		             2, top++, 1, 1);
+		grid->attach(*Utils::mk_label(Glib::build_path("\n", lvs), true, false, true),
+		              2, top++, 1, 1);
 	}
 
 	// Initialize grid top attach tracker (right side of the grid)
