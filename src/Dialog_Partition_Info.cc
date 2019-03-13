@@ -25,6 +25,7 @@
 #include <glibmm/miscutils.h>
 #include <gtkmm/alignment.h>
 #include <gtkmm/viewport.h>
+#include <gtkmm/grid.h>
 #include <gdkmm/general.h>
 
 namespace GParted
@@ -237,68 +238,53 @@ void Dialog_Partition_Info::Display_Info()
 		// file system is accessible.
 		filesystem_accessible = true;
 
-	//initialize table top and bottom row number attach trackers
-	int top = 0     , bottom = 1 ;      //Left field & value pairs
-	int topright = 0, bottomright = 1 ; //Right field & value pairs
+	Gtk::Grid *grid(Gtk::manage(new Gtk::Grid()));
 
-	Gtk::Table* table(manage(new Gtk::Table()));
-
-	table ->set_border_width( 5 ) ;
-	table ->set_col_spacings(10 ) ;
-	info_msg_vbox .pack_start( *table, Gtk::PACK_SHRINK ) ;
+	grid->set_border_width(5);
+	grid->set_column_spacing(10);
+	info_msg_vbox.pack_start(*grid, Gtk::PACK_SHRINK);
 
 	//FILE SYSTEM DETAIL SECTION
-	//file system headline
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File System") ) + "</b>" ),
-			0, 6,
-			top++, bottom++,
-			Gtk::FILL ) ;
+	// File system headline
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("File System")) + "</b>"), 0, 0, 6, 1);
 
-	//use current left row tracker position as anchor for right
-	topright = top ;
-	bottomright = bottom ;
+	// Initialize grid top attach tracker (left side of the grid)
+	int top = 1;
 
 	//Left field & value pair area
-	//file system
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("File system:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
-			Gtk::FILL ) ;
+	// File system
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("File system:")) + "</b>"), 1, top, 1, 1);
 	if ( filesystem_accessible )
 	{
-		table->attach( *Utils::mk_label( Utils::get_filesystem_string( filesystem_ptn.filesystem ), true, false, true ),
-		               2, 3, top, bottom, Gtk::FILL );
+		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(filesystem_ptn.filesystem), true, false, true),
+		              2, top, 1, 1);
 	}
-	top++, bottom++;
+	top++;
 
 	//label
 	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Label:") ) + "</b>"),
-				1, 2,
-				top, bottom,
-				Gtk::FILL) ;
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>"),
+		1, top, 1, 1);
 		if ( filesystem_accessible )
 		{
-			table->attach( *Utils::mk_label( filesystem_ptn.get_filesystem_label(), true, false, true ),
-			               2, 3, top, bottom, Gtk::FILL);
+			grid->attach(*Utils::mk_label(filesystem_ptn.get_filesystem_label(), true, false, true),
+			              2, top, 1, 1);
 		}
-		top++, bottom++;
+		top++;
 	}
 
 	// file system uuid
 	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
 	{
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
-				1, 2,
-				top, bottom,
-				Gtk::FILL) ;
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>"),
+		1, top, 1, 1);
 		if ( filesystem_accessible )
 		{
-			table->attach( *Utils::mk_label( filesystem_ptn.uuid, true, false, true ),
-			               2, 3, top, bottom, Gtk::FILL);
+			grid->attach(*Utils::mk_label(filesystem_ptn.uuid, true, false, true),
+			              2, top, 1, 1);
 		}
-		top++, bottom++;
+		top++;
 	}
 
 	/* TO TRANSLATORS:   Open
@@ -315,9 +301,9 @@ void Dialog_Partition_Info::Display_Info()
 	{
 		//status
 		Glib::ustring str_temp ;
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>",
-		                                 true, false, false, 0.0 /* ALIGN_TOP */ ),
-		               1, 2, top, bottom, Gtk::FILL );
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>",
+		                              true, false, false, 0.0 /* ALIGN_START */),
+		              1, top, 1, 1);
 		if ( ! filesystem_accessible )
 		{
 			/* TO TRANSLATORS:   Not accessible (Encrypted)
@@ -416,26 +402,26 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not mounted") ;
 		}
 
-		table->attach( *Utils::mk_label( str_temp, true, true, true ), 2, 3, top++, bottom++, Gtk::FILL );
+		grid->attach(*Utils::mk_label(str_temp, true, true, true), 2, top++, 1, 1);
 	}
 
 	//Optional, LVM2 Volume Group name
 	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
 	{
 		//Volume Group
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Volume Group:") ) + "</b>"),
-		                1, 2, top, bottom, Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( vgname, true, false, true ),
-		                2, 3, top++, bottom++, Gtk::FILL ) ;
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Volume Group:")) + "</b>"),
+		              1, top, 1, 1);
+		grid->attach(*Utils::mk_label(vgname, true, false, true),
+		              2, top++, 1, 1);
 	}
 
 	//Optional, members of multi-device file systems
 	if ( filesystem_ptn.filesystem == FS_LVM2_PV ||
 	     filesystem_ptn.filesystem == FS_BTRFS      )
 	{
-		//Members
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Members:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
-		                1, 2, top, bottom, Gtk::FILL ) ;
+		// Members
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Members:")) + "</b>", true, false, false, 0.0 /* ALIGN_START */),
+		              1, top, 1, 1);
 
 		std::vector<Glib::ustring> members ;
 		switch ( filesystem_ptn.filesystem )
@@ -451,20 +437,23 @@ void Dialog_Partition_Info::Display_Info()
 				break ;
 		}
 
-		table->attach( *Utils::mk_label( Glib::build_path( "\n", members ), true, false, true ),
-		               2, 3, top++, bottom++, Gtk::FILL );
+		grid->attach(*Utils::mk_label(Glib::build_path("\n", members), true, false, true),
+		              2, top++, 1, 1);
 	}
 
 	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
 	{
-		//Logical Volumes
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Logical Volumes:") ) + "</b>", true, false, false, 0.0 /* ALIGN_TOP */ ),
-		                1, 2, top, bottom, Gtk::FILL );
+		// Logical Volumes
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Logical Volumes:")) + "</b>", true, false, false, 0.0 /* ALIGN_START */),
+		              1, top, 1, 1);
 
 		std::vector<Glib::ustring> lvs = LVM2_PV_Info::get_vg_lvs( vgname );
-		table->attach( *Utils::mk_label( Glib::build_path( "\n", lvs ), true, false, true ),
-		               2, 3, top++, bottom++, Gtk::FILL );
+		grid->attach(*Utils::mk_label(Glib::build_path("\n", lvs), true, false, true),
+		              2, top++, 1, 1);
 	}
+
+	// Initialize grid top attach tracker (right side of the grid)
+	int topright = 1;
 
 	//Right field & value pair area
 	if ( partition .sector_usage_known() )
@@ -473,186 +462,136 @@ void Dialog_Partition_Info::Display_Info()
 		int percent_used, percent_unused, percent_unallocated ;
 		partition .get_usage_triple( 100, percent_used, percent_unused, percent_unallocated ) ;
 
-		//Used
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Used:") ) + "</b>" ),
-				3, 4,
-				topright, bottomright,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_used(), partition .sector_size ), true, false, true ),
-				4, 5,
-				topright, bottomright,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_used ) + "% )"),
-				5, 6,
-				topright++, bottomright++,
-				Gtk::FILL ) ;
+		// Used
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Used:")) + "</b>"),
+		              3, topright, 1, 1);
+		grid->attach(*Utils::mk_label(Utils::format_size(partition.get_sectors_used(), partition.sector_size), true, false, true),
+		              4, topright, 1, 1);
+		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_used) + "% )"),
+		              5, topright++, 1, 1);
 
-		//unused
-		table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unused:") ) + "</b>" ),
-				3, 4,
-				topright, bottomright,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( Utils::format_size( partition .get_sectors_unused(), partition .sector_size ), true, false, true ),
-				4, 5,
-				topright, bottomright,
-				Gtk::FILL ) ;
-		table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_unused ) + "% )"),
-				5, 6,
-				topright++, bottomright++,
-				Gtk::FILL ) ;
+		// Unused
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Unused:")) + "</b>"),
+		              3, topright, 1, 1);
+		grid->attach(*Utils::mk_label(Utils::format_size(partition.get_sectors_unused(), partition.sector_size), true, false, true),
+		              4, topright, 1, 1);
+		grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unused) + "% )"),
+		              5, topright++, 1, 1);
 
 		//unallocated
 		Sector sectors_unallocated = partition .get_sectors_unallocated() ;
 		if ( sectors_unallocated > 0 )
 		{
-			table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Unallocated:") ) + "</b>" ),
-					3, 4,
-					topright, bottomright,
-					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( Utils::format_size( sectors_unallocated, partition .sector_size ), true, false, true ),
-					4, 5,
-					topright, bottomright,
-					Gtk::FILL ) ;
-			table ->attach( * Utils::mk_label( "( " + Utils::num_to_str( percent_unallocated ) + "% )"),
-					5, 6,
-					topright++, bottomright++,
-					Gtk::FILL ) ;
+			grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Unallocated:")) + "</b>"),
+			              3, topright, 1, 1);
+			grid->attach(*Utils::mk_label(Utils::format_size(sectors_unallocated, partition.sector_size), true, false, true),
+			              4, topright, 1, 1);
+			grid->attach(*Utils::mk_label("( " + Utils::num_to_str(percent_unallocated) + "% )"),
+			              5, topright++, 1, 1);
 		}
 	}
 
-	//size
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Size:") ) + "</b>" ),
-			3, 4,
-			topright, bottomright,
-			Gtk::FILL) ;
-	table ->attach( * Utils::mk_label( Utils::format_size( ptn_sectors, partition .sector_size ), true, false, true ),
-			4, 5,
-			topright++, bottomright++,
-			Gtk::FILL ) ;
+	// Size
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Size:")) + "</b>"),
+	              3, topright, 1, 1);
+	grid->attach(*Utils::mk_label(Utils::format_size(ptn_sectors, partition.sector_size), true, false, true),
+	              4, topright++, 1, 1);
 
 	//ensure left row tracker set to largest side (left/right)
 	top = std::max( top, topright );
-	bottom = std::max( bottom, bottomright );
 
-	//one blank line
-	table ->attach( * Utils::mk_label( "" ), 0, 6, top++, bottom++, Gtk::FILL ) ;
+	// One blank line
+	grid->attach(*Utils::mk_label(""), 0, top++, 6, 1);
 
 	if ( partition.filesystem == FS_LUKS )
 	{
-		// ENCRYPTION DETAIL SECTION
-		// encryption headline
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Encryption") ) + "</b>" ),
-		               0, 6, top++, bottom++, Gtk::FILL );
+		//ENCRYPTION DETAIL SECTION
+		// Encryption headline
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Encryption")) + "</b>"),
+		              0, top++, 6, 1);
 
 		// Encryption
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Encryption:") ) + "</b>"),
-		               1, 2, top, bottom, Gtk::FILL);
-		table->attach( *Utils::mk_label( Utils::get_filesystem_string( partition.filesystem ), true, false, true ),
-		               2, 3, top++, bottom++, Gtk::FILL);
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Encryption:")) + "</b>"),
+		              1, top, 1, 1);
+		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(partition.filesystem), true, false, true),
+		              2, top++, 1, 1);
 
 		// LUKS path
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>"),
-		               1, 2, top, bottom, Gtk::FILL);
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>"),
+		              1, top, 1, 1);
 		if ( partition.busy )
-			table->attach( *Utils::mk_label( partition.get_mountpoint(), true, false, true ),
-			               2, 3, top, bottom, Gtk::FILL);
-		top++, bottom++;
+			grid->attach(*Utils::mk_label(partition.get_mountpoint(), true, false, true),
+			              2, top, 1, 1);
+		top++;
 
 		// LUKS uuid
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("UUID:") ) + "</b>"),
-		               1, 2, top, bottom, Gtk::FILL);
-		table->attach( *Utils::mk_label( partition.uuid, true, false, true ),
-		               2, 3, top++, bottom++, Gtk::FILL);
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>"),
+		              1, top, 1, 1);
+		grid->attach(*Utils::mk_label(partition.uuid, true, false, true),
+		              2, top++, 1, 1);
 
 		// LUKS status
-		table->attach( *Utils::mk_label( "<b>" + Glib::ustring( _("Status:") ) + "</b>" ),
-		               1, 2, top, bottom, Gtk::FILL );
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Status:")) + "</b>"),
+		              1, top, 1, 1);
 		Glib::ustring str_temp;
 		if ( partition.busy )
 			str_temp = luks_open;
 		else
 			str_temp = luks_closed;
-		table->attach( *Utils::mk_label( str_temp, true, false, true ), 2, 3, top++, bottom++, Gtk::FILL );
+		grid->attach(*Utils::mk_label(str_temp, true, false, true), 2, top++, 1, 1);
 
-		// one blank line
-		table->attach( *Utils::mk_label( "" ), 0, 6, top++, bottom++, Gtk::FILL );
+		// One blank line
+		grid->attach(*Utils::mk_label(""), 0, top++, 6, 1);
 	}
 
 	//PARTITION DETAIL SECTION
-	//partition headline
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Partition") ) + "</b>" ),
-			0, 6,
-			top++, bottom++,
-			Gtk::FILL ) ;
+	// Partition headline
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Partition")) + "</b>"),
+	              0, top++, 6, 1);
 
 	//use current left row tracker position as anchor for right
 	topright = top ;
-	bottomright = bottom ;
 
 	//Left field & value pair area
-	//path
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Path:") ) + "</b>" ),
-			1, 2,
-			top, bottom,
-			Gtk::FILL ) ;
-	table->attach( * Utils::mk_label( partition.get_path(), true, false, true ),
-	               2, 3,
-	               top++, bottom++,
-	               Gtk::FILL );
+	// Path
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Path:")) + "</b>"),
+	              1, top, 1, 1);
+	grid->attach(*Utils::mk_label(partition.get_path(), true, false, true),
+	              2, top++, 1, 1);
 
 	if (partition.filesystem != FS_UNALLOCATED && partition.status != STAT_NEW)
 	{
-		// name
-		table->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Name:") ) + "</b>"),
-		               1, 2,
-		               top, bottom,
-		               Gtk::FILL );
-		table->attach( * Utils::mk_label( partition.name, true, false, true ),
-		               2, 3,
-		               top++, bottom++,
-		               Gtk::FILL );
+		// Name
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>"),
+		              1, top, 1, 1);
+		grid->attach(*Utils::mk_label(partition.name, true, false, true),
+		              2, top++, 1, 1);
 
-		// flags
-		table->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Flags:") ) + "</b>" ),
-		               1, 2,
-		               top, bottom,
-		               Gtk::FILL );
-		table->attach( * Utils::mk_label( Glib::build_path( ", ", partition .flags ), true, false, true ),
-		               2, 3,
-		               top++, bottom++,
-		               Gtk::FILL );
+		// Flags
+		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Flags:")) + "</b>"),
+		              1, top, 1, 1);
+		grid->attach(*Utils::mk_label(Glib::build_path(", ", partition.flags), true, false, true),
+		              2, top++, 1, 1);
 	}
 
 	//Right field & value pair area
-	//first sector
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("First sector:") ) + "</b>" ),
-			3, 4,
-			topright, bottomright,
-			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition .sector_start ), true, false, true ),
-			4, 5,
-			topright++, bottomright++,
-			Gtk::FILL ) ;
-	
-	//last sector
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Last sector:") ) + "</b>" ),
-			3, 4,
-			topright, bottomright,
-			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( partition.sector_end ), true, false, true ),
-			4, 5,
-			topright++, bottomright++,
-			Gtk::FILL ) ; 
-	
-	//total sectors
-	table ->attach( * Utils::mk_label( "<b>" + Glib::ustring( _("Total sectors:") ) + "</b>" ),
-			3, 4,
-			topright, bottomright,
-			Gtk::FILL ) ;
-	table ->attach( * Utils::mk_label( Utils::num_to_str( ptn_sectors ), true, false, true ),
-			4, 5,
-			topright++, bottomright++,
-			Gtk::FILL ) ;
+	// First sector
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("First sector:")) + "</b>"),
+	              3, topright, 1, 1);
+	grid->attach(*Utils::mk_label(Utils::num_to_str(partition.sector_start), true, false, true),
+	              4, topright++, 1, 1);
+
+	// Last sector
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Last sector:")) + "</b>"),
+	              3, topright, 1, 1);
+	grid->attach(*Utils::mk_label(Utils::num_to_str(partition.sector_end), true, false, true),
+	              4, topright++, 1, 1);
+
+	// Total sectors
+	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Total sectors:")) + "</b>"),
+	              3, topright, 1, 1);
+	grid->attach(*Utils::mk_label(Utils::num_to_str(ptn_sectors), true, false, true),
+	              4, topright++, 1, 1);
 }
 
 Dialog_Partition_Info::~Dialog_Partition_Info()
