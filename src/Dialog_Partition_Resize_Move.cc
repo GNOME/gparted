@@ -232,6 +232,8 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
+	set_title(String::ucompose(_("Resize/Move %1"), new_partition->get_path()));
+
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition
 	unsigned int t = 0;
