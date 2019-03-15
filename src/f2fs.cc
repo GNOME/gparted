@@ -31,11 +31,20 @@ FS f2fs::get_filesystem_support()
 
 	fs .busy = FS::GPARTED ;
 
+	if (! Glib::find_program_in_path("dump.f2fs").empty())
+		fs.read = FS::EXTERNAL;
+
 	if ( ! Glib::find_program_in_path( "mkfs.f2fs" ) .empty() )
 	{
 		fs.create = FS::EXTERNAL;
 		fs.create_with_label = FS::EXTERNAL;
 	}
+
+	if (! Glib::find_program_in_path("fsck.f2fs").empty())
+		fs.check = FS::EXTERNAL;
+
+	if (! Glib::find_program_in_path("resize.f2fs").empty())
+		fs.grow = FS::EXTERNAL;
 
 	fs .copy = FS::GPARTED ;
 	fs .move = FS::GPARTED ;
@@ -44,11 +53,80 @@ FS f2fs::get_filesystem_support()
 	return fs ;
 }
 
+
+void f2fs::set_used_sectors(Partition & partition)
+{
+	if (! Utils::execute_command("dump.f2fs -d 1 " + Glib::shell_quote(partition.get_path()), output, error, true))
+	{
+		long long int user_block_count;
+		long long int valid_block_count;
+		long long int log_blocksize;
+		long long int blocksize;
+		long long int total_fs_sectors;
+
+		Glib::ustring temp;
+		temp = Utils::regexp_label(output, "user_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
+		sscanf(temp.c_str(), "%lld", &user_block_count);
+
+		temp = Utils::regexp_label(output, "valid_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
+		sscanf(temp.c_str(), "%lld", &valid_block_count);
+
+		temp = Utils::regexp_label(output, "log_blocksize\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
+		sscanf(temp.c_str(), "%lld", &log_blocksize);
+
+		temp = Utils::regexp_label(output, "sector size = ([0-9]+)");
+		sscanf(temp.c_str(), "%lld", &S);
+
+		temp = Utils::regexp_label(output, "total FS sectors = ([0-9]+)");
+		sscanf(temp.c_str(), "%lld", &total_fs_sectors);
+
+		blocksize = (1 << log_blocksize);
+		N = (user_block_count - valid_block_count)*blocksize;
+		T = total_fs_sectors * S;
+
+		T = Utils::round(T / double(partition.sector_size));
+		N = Utils::round(N / double(partition.sector_size));
+
+		partition.set_sector_usage(T, N);
+		partition.fs_block_size = S;
+	}
+	else
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+
+		if (! error.empty())
+			partition.push_back_message(error);
+	}
+}
+
+
 bool f2fs::create( const Partition & new_partition, OperationDetail & operationdetail )
 {
 	return ! execute_command( "mkfs.f2fs -l " + Glib::shell_quote( new_partition.get_filesystem_label() ) +
 	                          " " + Glib::shell_quote( new_partition.get_path() ),
 	                          operationdetail, EXEC_CHECK_STATUS );
 }
+
+
+bool f2fs::resize(const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition)
+{
+	Glib::ustring size = "";
+	if (! fill_partition)
+		// resize.f2fs works in sector size units of whatever device the file
+		// system is currently stored on.
+		size = "-t " + Utils::num_to_str(partition_new.get_sector_length()) + " ";
+
+	return ! execute_command("resize.f2fs " + size + Glib::shell_quote(partition_new.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS);
+}
+
+
+bool f2fs::check_repair(const Partition & partition, OperationDetail & operationdetail)
+{
+	return ! execute_command("fsck.f2fs -f -y -a " + Glib::shell_quote(partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+}
+
 
 } //GParted
