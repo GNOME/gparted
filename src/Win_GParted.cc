@@ -53,7 +53,6 @@
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/radiobuttongroup.h>
 #include <gtkmm/radiomenuitem.h>
-#include <gtkmm/main.h>
 #include <gtkmm/separator.h>
 #include <glibmm/ustring.h>
 #include <glibmm/miscutils.h>
@@ -1077,8 +1076,8 @@ void Win_GParted::Refresh_Visual()
 	set_valid_operations() ;
 
 	// Process Gtk events to redraw visuals with reloaded partition details
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration();
+	while (Utils::events_pending())
+		Utils::events_iteration();
 
 	if ( largest_unalloc_size >= 0 )
 	{
@@ -1088,8 +1087,8 @@ void Win_GParted::Refresh_Visual()
 		treeview_detail.set_selected( selected_partition_ptr );
 
 		// Process Gtk events to draw selection
-		while ( Gtk::Main::events_pending() )
-			Gtk::Main::iteration();
+		while (Utils::events_pending())
+			Utils::events_iteration();
 	}
 }
 
@@ -1484,8 +1483,8 @@ void Win_GParted::open_operationslist()
 		for ( int t = vpaned_main .get_height() ; t > ( vpaned_main .get_height() - 100 ) ; t -= 5 )
 		{
 			vpaned_main .set_position( t );
-			while ( Gtk::Main::events_pending() ) 
-				Gtk::Main::iteration() ;
+			while (Utils::events_pending())
+				Utils::events_iteration();
 		}
 
 		static_cast<Gtk::CheckMenuItem *>(mainmenu_items[MENU_PENDING_OPERATIONS])
@@ -1502,9 +1501,9 @@ void Win_GParted::close_operationslist()
 		for ( int t = vpaned_main .get_position() ; t < vpaned_main .get_height() ; t += 5 )
 		{
 			vpaned_main .set_position( t ) ;
-		
-			while ( Gtk::Main::events_pending() )
-				Gtk::Main::iteration();
+
+			while (Utils::events_pending())
+				Utils::events_iteration();
 		}
 		
 		hbox_operations .hide() ;
@@ -1697,8 +1696,8 @@ void Win_GParted::menu_view_harddisk_info()
 		for ( int t = hpaned_main .get_position() ; t < 250 ; t += 15 )
 		{
 			hpaned_main .set_position( t );
-			while ( Gtk::Main::events_pending() )
-				Gtk::Main::iteration();
+			while (Utils::events_pending())
+				Utils::events_iteration();
 		}
 	}
 	else 
@@ -1706,8 +1705,8 @@ void Win_GParted::menu_view_harddisk_info()
 		for ( int t = hpaned_main .get_position() ;  t > 0 ; t -= 15 )
 		{
 			hpaned_main .set_position( t );
-			while ( Gtk::Main::events_pending() )
-				Gtk::Main::iteration();
+			while (Utils::events_pending())
+				Utils::events_iteration();
 		}
 		hpaned_main .get_child1() ->hide() ;
 	}
@@ -3132,8 +3131,8 @@ void Win_GParted::activate_manage_flags()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	get_window()->set_cursor(Gdk::Cursor::create(Gdk::WATCH));
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration() ;
+	while (Utils::events_pending())
+		Utils::events_iteration();
 
 	DialogManageFlags dialog( *selected_partition_ptr, gparted_core.get_available_flags( *selected_partition_ptr ) );
 	dialog .set_transient_for( *this ) ;
