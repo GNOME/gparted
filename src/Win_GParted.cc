@@ -1573,8 +1573,8 @@ void Win_GParted::radio_devices_changed( unsigned int item )
 
 void Win_GParted::on_show()
 {
-	Gtk::Window::on_show() ;
-	
+	Gtk::ApplicationWindow::on_show();
+
 	vpaned_main .set_position( vpaned_main .get_height() ) ;
 	close_operationslist() ;
 
