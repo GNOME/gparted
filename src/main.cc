@@ -19,21 +19,47 @@
 
 #include <glibmm.h>
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
 
-int main( int argc, char *argv[] )
+Glib::RefPtr<Gtk::Application> app;
+GParted::Win_GParted *win_gparted;
+
+void activate()
+{
+	if (!win_gparted)
+	{
+		win_gparted = new GParted::Win_GParted(std::vector<Glib::ustring>());
+		app->add_window(*win_gparted);
+	}
+
+	win_gparted->present();
+}
+
+void file_open(const Gio::Application::type_vec_files& files,
+               const Glib::ustring&)
+{
+	if (!win_gparted)
+	{
+		std::vector<Glib::ustring> user_devices;
+		for (Gio::Application::type_vec_files::const_iterator
+			 it = files.begin(); it != files.end(); ++it)
+		{
+			user_devices.push_back((*it)->get_path());
+		}
+
+		win_gparted = new GParted::Win_GParted(user_devices);
+		app->add_window(*win_gparted);
+
+		win_gparted->present();
+	}
+}
+
+void startup()
 {
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
 
-	Gtk::Main kit( argc, argv ) ;
-
-	//Set WM_CLASS X Window property for correct naming under GNOME Shell
-	gdk_set_program_class( "GParted" ) ;
-
-	//i18n
-	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
-	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
-	textdomain( GETTEXT_PACKAGE ) ;
+	// Set WM_CLASS X Window property for correct naming under GNOME Shell
+	gdk_set_program_class("GParted");
 
 	//check UID
 	if ( getuid() != 0 )
@@ -48,13 +74,29 @@ int main( int argc, char *argv[] )
 		dialog .run() ;
 		exit( 0 ) ;
 	}
+}
 
-	//deal with arguments..
-	std::vector<Glib::ustring> user_devices(argv + 1, argv + argc);
-	
-	GParted::Win_GParted win_gparted( user_devices ) ; 
-	Gtk::Main::run( win_gparted ) ;
+void shutdown()
+{
+	delete win_gparted;
+}
 
+int main( int argc, char *argv[] )
+{
+	//i18n
+	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
+	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
+	textdomain( GETTEXT_PACKAGE ) ;
+
+	app = Gtk::Application::create("org.gnome.GParted",
+	                                 Gio::APPLICATION_NON_UNIQUE
+	                               | Gio::APPLICATION_HANDLES_OPEN);
+
+	app->signal_startup().connect(sigc::ptr_fun(startup));
+	app->signal_open().connect(sigc::ptr_fun(file_open));
+	app->signal_activate().connect(sigc::ptr_fun(activate));
+
+	app->run(argc, argv);
 	return 0 ;
 }
 

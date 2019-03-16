@@ -23,7 +23,6 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
 #include <glibmm/main.h>
-#include <gtkmm/main.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <sigc++/slot.h>
@@ -62,7 +61,7 @@ void FileSystem::store_exit_status( GPid pid, int status )
 	exit_status = Utils::decode_wait_status( status );
 	running = false;
 	if (pipecount == 0) // pipes finished first
-		Gtk::Main::quit();
+		Utils::nested_loop_quit();
 	Glib::spawn_close_pid( pid );
 }
 
@@ -170,7 +169,7 @@ int FileSystem::execute_command_internal( const Glib::ustring & command, Operati
 			sigc::ptr_fun( cancel_command ),
 			pid,
 			flags & EXEC_CANCEL_SAFE ) );
-	Gtk::Main::run();
+	Utils::nested_loop_run();
 
 	if ( flags & EXEC_CHECK_STATUS )
 		cmd_operationdetail.set_success_and_capture_errors( exit_status == 0 );
@@ -192,7 +191,7 @@ void FileSystem::execute_command_eof()
 	if (--pipecount)
 		return; // wait for second pipe to eof
 	if ( !running ) // already got exit status
-		Gtk::Main::quit();
+		Utils::nested_loop_quit();
 }
 
 //Create uniquely named temporary directory and add results to operation detail
