@@ -34,7 +34,7 @@
 #include <gtkmm/statusbar.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/progressbar.h>
-#include <gtkmm/window.h>
+#include <gtkmm/applicationwindow.h>
 
 namespace GParted
 {
@@ -46,7 +46,7 @@ enum MergeType
 	MERGE_ALL_ADJACENT   = 2
 };
 
-class Win_GParted : public Gtk::Window
+class Win_GParted : public Gtk::ApplicationWindow
 {
 public:
 	Win_GParted( const std::vector<Glib::ustring> & user_devices ) ;
