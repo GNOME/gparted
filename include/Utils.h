@@ -182,6 +182,11 @@ public:
 	static Byte_Value floor_size( Byte_Value value, Byte_Value rounding_size ) ;
 	static Byte_Value ceil_size( Byte_Value value, Byte_Value rounding_size ) ;
 
+	static void nested_loop_run();
+	static void nested_loop_quit();
+	static bool events_pending();
+	static void events_iteration();
+
 private:
 	static bool get_kernel_version( int & major_ver, int & minor_ver, int & patch_ver ) ;
 };

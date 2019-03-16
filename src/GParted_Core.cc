@@ -64,7 +64,6 @@
 #include <glibmm/fileutils.h>
 #include <glibmm/shell.h>
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/main.h>
 
 std::vector<Glib::ustring> libparted_messages ; //see ped_exception_handler()
 
@@ -172,12 +171,12 @@ void GParted_Core::set_devices( std::vector<Device> & devices )
 				sigc::mem_fun( *this, &GParted_Core::set_devices_thread ),
 				&devices),
 			      false );
-	Gtk::Main::run();
+	Utils::nested_loop_run();
 }
 
 static bool _mainquit( void *dummy )
 {
-	Gtk::Main::quit();
+	Utils::nested_loop_quit();
 	return false;
 }
 
@@ -2538,7 +2537,7 @@ bool GParted_Core::resize_move_filesystem_using_libparted( const Partition & par
 					                          lp_geom,
 					                          &return_value ),
 					                      false );
-					Gtk::Main::run();
+					Utils::nested_loop_run();
 
 					if ( return_value )
 						commit( lp_disk ) ;

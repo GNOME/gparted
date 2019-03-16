@@ -23,7 +23,6 @@
 #include <glibmm/ustring.h>
 #include <glibmm/thread.h>
 #include <glibmm/stringutils.h>
-#include <gtkmm/main.h>
 #include <errno.h>
 
 namespace GParted {
@@ -77,9 +76,9 @@ bool CopyBlocks::set_progress_info()
 
 static bool mainquit( CopyBlocks *cb )
 {
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration();
-	Gtk::Main::quit();
+	while (Utils::events_pending())
+		Utils::events_iteration();
+	Utils::nested_loop_quit();
 	return false;
 }
 
@@ -165,7 +164,7 @@ bool CopyBlocks::copy()
 	{
 		Glib::Thread::create( sigc::mem_fun( *this, &CopyBlocks::copy_thread ),
 				      false );
-		Gtk::Main::run();
+		Utils::nested_loop_run();
 
 		total_done += llabs( done );
 

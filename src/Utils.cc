@@ -22,6 +22,7 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <stack>
 #include <glibmm/regex.h>
 #include <locale.h>
 #include <uuid/uuid.h>
@@ -30,7 +31,7 @@
 #include <glibmm/ustring.h>
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
-#include <gtkmm/main.h>
+#include <glibmm/main.h>
 #include <gtkmm/enums.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/stockitem.h>
@@ -46,6 +47,8 @@ namespace GParted
 {
 
 const Glib::ustring DEV_MAPPER_PATH = "/dev/mapper/";
+
+std::stack< Glib::RefPtr<Glib::MainLoop> > nested_loop_stack;
 
 Sector Utils::round( double double_value )
 {
@@ -604,7 +607,7 @@ void CommandStatus::store_exit_status( GPid pid, int status )
 	if (pipecount == 0) // pipes finished first
 	{
 		if (foreground)
-			Gtk::Main::quit();
+			Utils::nested_loop_quit();
 		else {
 			mutex.lock();
 			cond.signal();
@@ -621,7 +624,7 @@ void CommandStatus::execute_command_eof()
 	if ( !running ) // already got exit status
 	{
 		if (foreground)
-			Gtk::Main::quit();
+			Utils::nested_loop_quit();
 		else {
 			mutex.lock();
 			cond.signal();
@@ -704,7 +707,7 @@ int Utils::execute_command( const Glib::ustring & command,
 	}
 
 	if( status.foreground)
-		Gtk::Main::run();
+		Utils::nested_loop_run();
 	else {
 		status.cond.wait( status.mutex );
 		status.mutex.unlock();
@@ -903,6 +906,29 @@ Byte_Value Utils::floor_size( Byte_Value value, Byte_Value rounding_size )
 Byte_Value Utils::ceil_size( Byte_Value value, Byte_Value rounding_size )
 {
 	return ( value + rounding_size - 1LL ) / rounding_size * rounding_size ;
+}
+
+void Utils::nested_loop_run()
+{
+	nested_loop_stack.push(Glib::MainLoop::create());
+	nested_loop_stack.top()->run();
+	nested_loop_stack.pop();
+}
+
+void Utils::nested_loop_quit()
+{
+	g_assert(nested_loop_stack.size());
+	nested_loop_stack.top()->quit();
+}
+
+bool Utils::events_pending()
+{
+	return Glib::MainContext::get_default()->pending();
+}
+
+void Utils::events_iteration()
+{
+	Glib::MainContext::get_default()->iteration(true);
 }
 
 //private functions ...
