@@ -19,23 +19,45 @@
 
 #include <glibmm.h>
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/main.h>
+#include <gtkmm/application.h>
+
+Glib::RefPtr<Gtk::Application> app;
+GParted::Win_GParted *win_gparted;
+
+void activate()
+{
+	g_assert(win_gparted);
+	win_gparted->present();
+}
+
+void startup()
+{
+	//Set WM_CLASS X Window property for correct naming under GNOME Shell /*TODO*/
+	/*gdk_set_program_class( "GParted" ) ;*/
+
+	//deal with arguments../*TODO*/
+	/*std::vector<Glib::ustring> user_devices(argv + 1, argv + argc);*/
+	std::vector<Glib::ustring> user_devices;
+	win_gparted = new GParted::Win_GParted(user_devices);
+
+	app->signal_activate().connect(sigc::ptr_fun(activate));
+
+	app->add_window(*win_gparted);
+}
 
 int main( int argc, char *argv[] )
 {
-	GParted::GParted_Core::mainthread = Glib::Thread::self();
+	GParted::GParted_Core::mainthread = Glib::Thread::self(); /*TODO*/
 
-	Gtk::Main kit( argc, argv ) ;
-
-	//Set WM_CLASS X Window property for correct naming under GNOME Shell
-	gdk_set_program_class( "GParted" ) ;
-
-	//i18n
+	//i18n /*TODO*/
 	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
 	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
 	textdomain( GETTEXT_PACKAGE ) ;
 
-	//check UID
+	app = Gtk::Application::create("org.gnome.GParted");
+	/*uniqueness of your application is scoped to the current session*/
+
+	//check UID /*TODO*/
 	if ( getuid() != 0 )
 	{
 		Gtk::MessageDialog dialog( _("Root privileges are required for running GParted"), 
@@ -49,11 +71,8 @@ int main( int argc, char *argv[] )
 		exit( 0 ) ;
 	}
 
-	//deal with arguments..
-	std::vector<Glib::ustring> user_devices(argv + 1, argv + argc);
-	
-	GParted::Win_GParted win_gparted( user_devices ) ; 
-	Gtk::Main::run( win_gparted ) ;
+	app->signal_startup().connect(sigc::ptr_fun(startup));
+	app->run(argc, argv);
 
 	return 0 ;
 }
