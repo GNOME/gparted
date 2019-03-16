@@ -17,7 +17,6 @@
 #include "DialogManageFlags.h"
 #include "Partition.h"
 
-#include <gtkmm/main.h>
 #include <gtkmm/stock.h>
 #include <gdkmm/cursor.h>
 
@@ -76,9 +75,9 @@ void DialogManageFlags::on_flag_toggled( const Glib::ustring & path )
 {
 	get_window()->set_cursor(Gdk::Cursor::create(Gdk::WATCH));
 	set_sensitive( false ) ;
-	while ( Gtk::Main::events_pending() )
-		Gtk::Main::iteration() ;
-	
+	while (Utils::events_pending())
+		Utils::events_iteration();
+
 	any_change = true ;
 
 	row = *( liststore_flags ->get_iter( path ) ) ;
