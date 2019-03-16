@@ -24,7 +24,6 @@
 #include <glibmm/main.h>
 #include <glibmm/ustring.h>
 #include <gtkmm/stock.h>
-#include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
 #include <vector>
