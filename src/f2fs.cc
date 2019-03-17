@@ -51,12 +51,6 @@ FS f2fs::get_filesystem_support()
 		fs.read = FS::EXTERNAL;
 	}
 
-	if ( ! Glib::find_program_in_path( "blkid" ).empty() )
-	{
-		fs.read_label = FS::EXTERNAL;
-		//fs.write_label = FS::EXTERNAL;
-	}
-
 	fs .copy = FS::GPARTED ;
 	fs .move = FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
@@ -64,65 +58,49 @@ FS f2fs::get_filesystem_support()
 	return fs ;
 }
 
-void f2fs::read_label( Partition & partition )
-{
-	if ( ! Utils::execute_command( "blkid -s LABEL  " + Glib::shell_quote( partition.get_path() ),
-	                               output, error, true )                                   )
-	{
-		partition.set_filesystem_label( Utils::regexp_label( output, "LABEL=\"(\\w*)\"" )  );
-	}
-	else
-	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-
-		if ( ! error .empty() )
-			partition.push_back_message( error );
-	}
-}
-
 void f2fs::set_used_sectors( Partition & partition )
 {
-	// Try to get an estimation on how many free "segments" there is. It seems to be proportional.
 	if ( ! Utils::execute_command( "dump.f2fs -d 1 " + Glib::shell_quote( partition.get_path() ), output, error, true ))
 	{
+		long long int user_block_count;
+		long long int valid_block_count;
+		long long int log_blocksize;
+		long long int blocksize;
+		long long int total_fs_sectors;
 
-		if ( partition .busy )
-		{
-			Byte_Value ignored ;
-			Byte_Value fs_free ;
-			if ( Utils::get_mounted_filesystem_usage( partition .get_mountpoint(),
-			                                          ignored, fs_free, error ) == 0 )
-			{
-				N = fs_free / S;
-			}
-			else
-			{
-				N = -1 ;
-				partition.push_back_message( error );
-			}
-		} else {
-			Glib::ustring temp;
-			temp = Utils::regexp_label( output, "segment_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]" ) ;
-			sscanf( temp.c_str(), "%lld", &T );
-			temp = Utils::regexp_label( output, "free_segment_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]" ) ;
-			sscanf( temp.c_str(), "%lld", &N );
-			temp = Utils::regexp_label( output, "sector size = ([0-9]+)" ) ;
-			sscanf( temp.c_str(), "%lld", &S );
+		Glib::ustring temp;
+		temp = Utils::regexp_label( output, "user_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]" ) ;
+		sscanf( temp.c_str(), "%lld", &user_block_count );
 
-			T = T * S * 8;
-			N = N * S * 8;
-			partition.sector_size = S;
-		}
 
-		if ( T > -1 && N > -1 && S > -1 )
-		{
-			T = Utils::round( T * ( S / double(partition.sector_size) ) );
-			N = Utils::round( N * ( S / double(partition.sector_size) ) );
+		temp = Utils::regexp_label( output, "valid_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]" ) ;
+		sscanf( temp.c_str(), "%lld", &valid_block_count );
 
-			partition .set_sector_usage( T, N );
-			partition.fs_block_size = S;
-		}
+
+		temp = Utils::regexp_label( output, "log_blocksize\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]" ) ;
+		sscanf( temp.c_str(), "%lld", &log_blocksize );
+
+
+		temp = Utils::regexp_label( output, "sector size = ([0-9]+)" ) ;
+		sscanf( temp.c_str(), "%lld", &S );
+
+
+		temp = Utils::regexp_label( output, "total FS sectors = ([0-9]+)" ) ;
+		sscanf( temp.c_str(), "%lld", &total_fs_sectors );
+
+
+		blocksize = (1 << log_blocksize);
+		N = (user_block_count - valid_block_count)*blocksize;
+		T = (total_fs_sectors * S);
+
+
+
+		T = Utils::round( T / double(partition.sector_size) );
+		N = Utils::round( N / double(partition.sector_size) );
+
+
+		partition.set_sector_usage( T, N );
+		partition.fs_block_size = S;
 	}
 	else
 	{
@@ -143,22 +121,21 @@ bool f2fs::create( const Partition & new_partition, OperationDetail & operationd
 
 bool f2fs::resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition )
 {
-	Glib::ustring str_temp = "resize.f2fs " + Glib::shell_quote( partition_new.get_path() );
+	Glib::ustring args = "";
 
 	if ( ! fill_partition )
-		str_temp += " -t " + Utils::num_to_str( floor( Utils::sector_to_unit(
-					partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) );
+		args += " -t " + Utils::num_to_str( floor( Utils::sector_to_unit(
+			 partition_new .get_sector_length(), partition_new .sector_size, UNIT_KIB ) ) ) + " ";
+
+	Glib::ustring str_temp = "resize.f2fs " + args + Glib::shell_quote( partition_new.get_path() );
 
 	return ! execute_command( str_temp, operationdetail, EXEC_CHECK_STATUS );
 }
 
 bool f2fs::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( "fsck.f2fs -f -y -a " + Glib::shell_quote( partition.get_path() ),
-	                               operationdetail, EXEC_CANCEL_SAFE );
-	bool success = ( exit_status == 0 || exit_status == 1 || exit_status == 2 );
-	set_status( operationdetail, success );
-	return success;
+	return ! execute_command( "fsck.f2fs -f -y -a " + Glib::shell_quote( partition.get_path() ),
+	                               operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
 }
 
 } //GParted
