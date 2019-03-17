@@ -32,7 +32,6 @@ public:
 	bool resize( const Partition & partition_new, OperationDetail & operationdetail, bool fill_partition );
 	bool check_repair( const Partition & partition, OperationDetail & operationdetail );
 	void set_used_sectors( Partition & partition ) ;
-	void read_label( Partition & partition );
 };
 
 } //GParted
