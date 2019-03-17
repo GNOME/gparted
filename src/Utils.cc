@@ -203,11 +203,9 @@ int Utils::get_filesystem_label_maxlength( FSType filesystem )
 		case FS_EXT2		: return 16 ;
 		case FS_EXT3		: return 16 ;
 		case FS_EXT4		: return 16 ;
-		//mkfs.f2fs says that it can create file systems with labels up to 512
-		//  characters, but it core dumps with labels of 29 characters or larger!
-		//  Also blkid only correctly displays labels up to 19 characters.
-		//  (Suspect it is all part of a memory corruption bug in mkfs.f2fs).
-		case FS_F2FS		: return 19 ;
+		// mkfs.f2fs supports labels up to 512 characters, however only blkid is
+		// used to read the label and that only displays the first 127 characters.
+		case FS_F2FS		: return 127;
 		case FS_FAT16		: return 11 ;
 		case FS_FAT32		: return 11 ;
 		//mkfs.hfsplus can create hfs and hfs+ file systems with labels up to 255
