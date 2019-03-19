@@ -141,7 +141,7 @@ bool f2fs::resize(const Partition & partition_new, OperationDetail & operationde
 
 bool f2fs::check_repair(const Partition & partition, OperationDetail & operationdetail)
 {
-	return ! execute_command("fsck.f2fs -f -y -a " + Glib::shell_quote(partition.get_path()),
+	return ! execute_command("fsck.f2fs -f -a " + Glib::shell_quote(partition.get_path()),
 	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
