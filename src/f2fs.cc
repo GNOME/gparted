@@ -97,15 +97,20 @@ void f2fs::set_used_sectors(Partition & partition)
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "Info: total FS sectors = %lld", &total_fs_sectors);
 
-	if (user_block_count > -1 && valid_block_count > -1 &&
-	    log_blocksize > -1 && fs_sector_size > -1 && total_fs_sectors > -1)
+	if (user_block_count > -1 && valid_block_count > -1 && log_blocksize > -1)
 	{
 		long long blocksize  = 1 << log_blocksize;
 		long long fs_free_bytes = (user_block_count - valid_block_count) * blocksize;
-		long long fs_size_bytes = total_fs_sectors * fs_sector_size;
-
 		Sector fs_free_sectors = fs_free_bytes / partition.sector_size;
-		Sector fs_size_sectors = fs_size_bytes / partition.sector_size;
+
+		// dump.f2fs < 1.5.0 doesn't report "total FS sectors" so leave
+		// fs_size_sectors = -1 for unknown.
+		Sector fs_size_sectors = -1;
+		if (fs_sector_size > -1 && total_fs_sectors > -1)
+		{
+			long long fs_size_bytes = total_fs_sectors * fs_sector_size;
+			fs_size_sectors = fs_size_bytes / partition.sector_size;
+		}
 
 		partition.set_sector_usage(fs_size_sectors, fs_free_sectors);
 		partition.fs_block_size = blocksize;
