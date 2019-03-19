@@ -56,47 +56,59 @@ FS f2fs::get_filesystem_support()
 
 void f2fs::set_used_sectors(Partition & partition)
 {
-	if (! Utils::execute_command("dump.f2fs -d 1 " + Glib::shell_quote(partition.get_path()), output, error, true))
-	{
-		long long int user_block_count;
-		long long int valid_block_count;
-		long long int log_blocksize;
-		long long int blocksize;
-		long long int total_fs_sectors;
-
-		Glib::ustring temp;
-		temp = Utils::regexp_label(output, "user_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
-		sscanf(temp.c_str(), "%lld", &user_block_count);
-
-		temp = Utils::regexp_label(output, "valid_block_count\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
-		sscanf(temp.c_str(), "%lld", &valid_block_count);
-
-		temp = Utils::regexp_label(output, "log_blocksize\\s+\\[0x\\s+[0-9a-f]+ : ([0-9]+)\\]");
-		sscanf(temp.c_str(), "%lld", &log_blocksize);
-
-		temp = Utils::regexp_label(output, "sector size = ([0-9]+)");
-		sscanf(temp.c_str(), "%lld", &S);
-
-		temp = Utils::regexp_label(output, "total FS sectors = ([0-9]+)");
-		sscanf(temp.c_str(), "%lld", &total_fs_sectors);
-
-		blocksize = (1 << log_blocksize);
-		N = (user_block_count - valid_block_count)*blocksize;
-		T = total_fs_sectors * S;
-
-		T = Utils::round(T / double(partition.sector_size));
-		N = Utils::round(N / double(partition.sector_size));
-
-		partition.set_sector_usage(T, N);
-		partition.fs_block_size = S;
-	}
-	else
+	exit_status = Utils::execute_command("dump.f2fs -d 1 " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
 		if (! output.empty())
 			partition.push_back_message(output);
-
 		if (! error.empty())
 			partition.push_back_message(error);
+		return;
+	}
+
+	// used FS blocks
+	long long user_block_count = -1;
+	Glib::ustring::size_type index = output.find("user_block_count");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "user_block_count [0x %*x : %lld]", &user_block_count);
+
+	// total FS blocks
+	long long valid_block_count = -1;
+	index = output.find("valid_block_count");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "valid_block_count [0x %*x : %lld]", &valid_block_count);
+
+	// log2 of FS block size
+	long long log_blocksize = -1;
+	index = output.find("log_blocksize");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "log_blocksize [0x %*x : %lld]", &log_blocksize);
+
+	// FS "sector" size
+	long long fs_sector_size = -1;
+	index = output.find("Info: sector size =");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Info: sector size = %lld", &fs_sector_size);
+
+	// FS size in "sectors"
+	long long total_fs_sectors = -1;
+	index = output.find("Info: total FS sectors =");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Info: total FS sectors = %lld", &total_fs_sectors);
+
+	if (user_block_count > -1 && valid_block_count > -1 &&
+	    log_blocksize > -1 && fs_sector_size > -1 && total_fs_sectors > -1)
+	{
+		long long blocksize  = 1 << log_blocksize;
+		long long fs_free_bytes = (user_block_count - valid_block_count) * blocksize;
+		long long fs_size_bytes = total_fs_sectors * fs_sector_size;
+
+		Sector fs_free_sectors = fs_free_bytes / partition.sector_size;
+		Sector fs_size_sectors = fs_size_bytes / partition.sector_size;
+
+		partition.set_sector_usage(fs_size_sectors, fs_free_sectors);
+		partition.fs_block_size = blocksize;
 	}
 }
 
