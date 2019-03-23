@@ -1880,6 +1880,7 @@ void Win_GParted::menu_help_about()
 	strings .push_back( "Joan Lledó <joanlluislledo@gmail.com>" ) ;
 	strings .push_back( "Pali Rohár <pali.rohar@gmail.com>" );
 	strings .push_back( "Phillip Susi <psusi@cfl.rr.com>" ) ;
+	strings .push_back( "Antoine Viallon <antoine.viallon@gmail.com>" );
 	strings. push_back( "Michael Zimmermann <sigmaepsilon92@gmail.com>" ) ;
 	dialog .set_authors( strings ) ;
 	strings .clear() ;
