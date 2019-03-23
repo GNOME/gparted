@@ -133,8 +133,8 @@ public:
 	virtual bool have_messages() const                             { return ! messages.empty(); };
 	virtual std::vector<Glib::ustring> get_messages() const        { return messages; };
 	virtual void clear_messages()                                  { messages.clear(); };
-	void push_back_message( Glib::ustring msg )                    { messages.push_back( msg ); };
-	void append_messages( const std::vector<Glib::ustring> msgs )
+	void push_back_message(const Glib::ustring& msg)               { messages.push_back(msg); };
+	void append_messages(const std::vector<Glib::ustring>& msgs)
 	                                { messages.insert( messages.end(), msgs.begin(), msgs.end() ); }
 
 	// Interface to return reference to the Partition object directly containing the
