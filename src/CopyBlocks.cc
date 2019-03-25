@@ -68,7 +68,7 @@ bool CopyBlocks::set_progress_info()
 	operationdetail.run_progressbar( (double)(total_done+done), (double)total_length, PROGRESSBAR_TEXT_COPY_BYTES );
 	OperationDetail &operationdetail = this->operationdetail.get_last_child().get_last_child();
 	operationdetail.set_description(
-		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
+		Glib::ustring::compose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 				_("%1 of %2 copied"),
 				Utils::format_size( done, 1 ), Utils::format_size( length, 1 ) ),
 		FONT_ITALIC );
@@ -173,7 +173,7 @@ bool CopyBlocks::copy()
 		{
 			//final description
 			operationdetail.get_last_child().get_last_child().set_description(
-				String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
+				Glib::ustring::compose( /*TO TRANSLATORS: looks like  1.00 MiB of 16.00 MiB copied */
 						  _("%1 of %2 copied"),
 						  Utils::format_size( llabs( done ), 1 ),
 						  Utils::format_size( length, 1 ) ),
@@ -226,12 +226,12 @@ void CopyBlocks::copy_block()
 			if ( ped_device_write( lp_device_dst, buf, offset_dst, num_blocks_dst ) )
 				success = true;
 			else {
-				error_message = String::ucompose( _("Error while writing block at sector %1"), offset_dst );
+				error_message = Glib::ustring::compose( _("Error while writing block at sector %1"), offset_dst );
 				success = false;
 			}
 		}
 		else
-			error_message = String::ucompose( _("Error while reading block at sector %1"), offset_src ) ;
+			error_message = Glib::ustring::compose( _("Error while reading block at sector %1"), offset_src ) ;
 	}
 	if ( blocksize > 0 )
 	{

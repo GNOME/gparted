@@ -68,7 +68,7 @@ void OperationCreate::create_description()
 			break;
 	}
 	/*TO TRANSLATORS: looks like   Create Logical Partition #1 (ntfs, 345 MiB) on /dev/hda */
-	description = String::ucompose( _("Create %1 #%2 (%3, %4) on %5"),
+	description = Glib::ustring::compose( _("Create %1 #%2 (%3, %4) on %5"),
 	                                description,
 	                                partition_new->partition_number,
 	                                partition_new->get_filesystem_string(),

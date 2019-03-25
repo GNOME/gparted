@@ -47,7 +47,7 @@ void OperationCheck::create_description()
 	g_assert( partition_original != NULL );  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Check and repair file system (ext3) on /dev/hda4 */
-	description = String::ucompose( _("Check and repair file system (%1) on %2"),
+	description = Glib::ustring::compose( _("Check and repair file system (%1) on %2"),
 	                                partition_original->get_filesystem_string(),
 	                                partition_original->get_path() );
 }
