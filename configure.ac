@@ -349,7 +349,6 @@ AC_SUBST([ENABLE_XHOST_ROOT], $enable_xhost_root)
 
 AC_CONFIG_FILES([
 Makefile
-compose/Makefile
 data/Makefile
 data/icons/Makefile
 doc/Makefile
