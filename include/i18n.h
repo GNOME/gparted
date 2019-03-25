@@ -7,9 +7,6 @@
 	
 	#ifdef ENABLE_NLS
 		#include <glibmm/i18n.h>
-		
-		//compose library, dedicated to the translators :P
-		#include "../compose/ucompose.hpp"
 	#endif /* ENABLE_NLS */
 
 #endif /* GPARTED_I18N_H */
