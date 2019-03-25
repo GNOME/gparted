@@ -31,7 +31,7 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   Set partition name on /dev/hda3 */
-	this->set_title( String::ucompose( _("Set partition name on %1"), partition.get_path() ) );
+	this->set_title( Glib::ustring::compose( _("Set partition name on %1"), partition.get_path() ) );
 
 	// HBox to hole the label and entry box line
 	Gtk::HBox *hbox( manage( new Gtk::HBox() ) );

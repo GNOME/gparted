@@ -33,7 +33,7 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   LUKS Passphrase /dev/sda1 */
-	this->set_title( String::ucompose( _("LUKS Passphrase %1"), partition.get_path() ) );
+	this->set_title( Glib::ustring::compose( _("LUKS Passphrase %1"), partition.get_path() ) );
 
 	// Separate VBox to hold lines in the dialog.
 	Gtk::VBox *vbox( manage( new Gtk::VBox() ) );
@@ -43,7 +43,7 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 
 	// Line 1: "Enter LUKS passphrase to open /dev/sda1"
 	vbox->pack_start( *Utils::mk_label(
-			String::ucompose( _("Enter LUKS passphrase to open %1"), partition.get_path() ) ),
+			Glib::ustring::compose( _("Enter LUKS passphrase to open %1"), partition.get_path() ) ),
 			Gtk::PACK_SHRINK );
 
 	// Line 2: "Passphrase: [              ]"

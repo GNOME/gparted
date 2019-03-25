@@ -94,7 +94,7 @@ void ProgressBar::do_update()
 			 */
 			std::time_t remaining = Utils::round( (m_target - m_progress) /
 			                                      (m_progress / elapsed) );
-			m_text = String::ucompose( /* TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
+			m_text = Glib::ustring::compose( /* TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied (00:01:59 remaining) */
 			                         _("%1 of %2 copied (%3 remaining)"),
 			                         Utils::format_size( (long long)m_progress, 1 ),
 			                         Utils::format_size( (long long)m_target, 1 ),
@@ -102,7 +102,7 @@ void ProgressBar::do_update()
 		}
 		else
 		{
-			m_text = String::ucompose( /* TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied */
+			m_text = Glib::ustring::compose( /* TO TRANSLATORS: looks like   1.00 MiB of 16.00 MiB copied */
 			                         _("%1 of %2 copied"),
 			                         Utils::format_size( m_progress, 1 ),
 			                         Utils::format_size( m_target, 1 ) );

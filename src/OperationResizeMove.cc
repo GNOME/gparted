@@ -101,16 +101,16 @@ void OperationResizeMove::create_description()
 	switch ( action )
 	{
 		case NONE		:
-			description = String::ucompose( _("resize/move %1"), partition_original->get_path() );
+			description = Glib::ustring::compose( _("resize/move %1"), partition_original->get_path() );
 			description += " (" ;
 			description += _("new and old partition have the same size and position.  Hence continuing anyway") ;
 			description += ")" ;
 			break ;
 		case MOVE_RIGHT		:
-			description = String::ucompose( _("Move %1 to the right"), partition_original->get_path() );
+			description = Glib::ustring::compose( _("Move %1 to the right"), partition_original->get_path() );
 			break ;
 		case MOVE_LEFT		:
-			description = String::ucompose( _("Move %1 to the left"), partition_original->get_path() );
+			description = Glib::ustring::compose( _("Move %1 to the left"), partition_original->get_path() );
 			break ;
 		case GROW 		:
 			description = _("Grow %1 from %2 to %3") ;
@@ -133,7 +133,7 @@ void OperationResizeMove::create_description()
 	}
 
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
-		description = String::ucompose( description,
+		description = Glib::ustring::compose( description,
 		                                partition_original->get_path(),
 		                                Utils::format_size( partition_original->get_sector_length(),
 		                                                    partition_original->sector_size ),

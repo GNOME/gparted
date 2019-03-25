@@ -43,7 +43,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		this ->set_size_request( -1, 370 ) ;	//Minimum 370 to avoid scrolling on Fedora 20
 
 	/*TO TRANSLATORS: dialogtitle, looks like Information about /dev/hda3 */
-	this ->set_title( String::ucompose( _("Information about %1"), partition .get_path() ) );
+	this ->set_title( Glib::ustring::compose( _("Information about %1"), partition .get_path() ) );
 
 	init_drawingarea() ;
 
@@ -355,7 +355,7 @@ void Dialog_Partition_Info::Display_Info()
 			}
 			else if ( filesystem_ptn.get_mountpoints().size() )
 			{
-				str_temp = String::ucompose(
+				str_temp = Glib::ustring::compose(
 						/* TO TRANSLATORS: looks like   Mounted on /mnt/mymountpoint */
 						_("Mounted on %1"),
 						Glib::build_path( ", ", filesystem_ptn.get_mountpoints() ) );

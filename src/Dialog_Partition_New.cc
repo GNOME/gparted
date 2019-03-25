@@ -234,7 +234,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	bool inside_extended = new_partition->inside_extended;
 	new_partition->Reset();
 	new_partition->Set( device_path,
-	                    String::ucompose( _("New Partition #%1"), new_count ),
+	                    Glib::ustring::compose( _("New Partition #%1"), new_count ),
 	                    new_count, part_type,
 	                    FILESYSTEMS[combo_filesystem.get_active_row_number()].filesystem,
 	                    new_start, new_end,

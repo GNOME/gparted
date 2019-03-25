@@ -182,7 +182,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	// limits and crashes.
 	if ( new_partition.get_sector_length() > MAX_UDF_BLOCKS )
 	{
-		operationdetail.add_child( OperationDetail( String::ucompose(
+		operationdetail.add_child( OperationDetail( Glib::ustring::compose(
 		                           _("Partition is too large, maximum size is %1"),
 		                           Utils::format_size( MAX_UDF_BLOCKS, new_partition.sector_size ) ),
 		                           STATUS_ERROR ) );
@@ -190,7 +190,7 @@ bool udf::create( const Partition & new_partition, OperationDetail & operationde
 	}
 	else if ( new_partition.get_sector_length() < MIN_UDF_BLOCKS )
 	{
-		operationdetail.add_child( OperationDetail( String::ucompose(
+		operationdetail.add_child( OperationDetail( Glib::ustring::compose(
 		                           _("Partition is too small, minimum size is %1"),
 		                           Utils::format_size( MIN_UDF_BLOCKS, new_partition.sector_size ) ),
 		                           STATUS_ERROR ) );
