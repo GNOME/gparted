@@ -72,7 +72,7 @@ void OperationFormat::create_description()
 	g_assert( partition_new != NULL );  // Bug: Not initialised by constructor or reset later
 
 	/*TO TRANSLATORS: looks like  Format /dev/hda4 as linux-swap */
-	description = String::ucompose( _("Format %1 as %2"),
+	description = Glib::ustring::compose( _("Format %1 as %2"),
 	                                partition_original->get_path(),
 	                                partition_new->get_filesystem_string() );
 }

@@ -53,7 +53,7 @@ void Dialog_Rescue_Data::draw_dialog()
 	Glib::ustring *message;
 
 	/*TO TRANSLATORS: looks like    File systems found on /dev/sdb */
-	this ->set_title( String::ucompose( _("File systems found on %1"), this->device_path ) );
+	this ->set_title( Glib::ustring::compose( _("File systems found on %1"), this->device_path ) );
 
 	message=new Glib::ustring("<big><b>");
 	if(!this->inconsistencies)
@@ -129,7 +129,7 @@ void Dialog_Rescue_Data::create_list_of_fs()
 		}
 
 		/*TO TRANSLATORS: looks like    1: ntfs (10240 MiB)*/
-		Gtk::Label *fsLbl= manage(new Gtk::Label( String::ucompose(_("#%1: %2 (%3 MiB)"), i+1, fs_name, (this->partitions[i].get_byte_length()/1024/1024))));
+		Gtk::Label *fsLbl= manage(new Gtk::Label( Glib::ustring::compose(_("#%1: %2 (%3 MiB)"), i+1, fs_name, (this->partitions[i].get_byte_length()/1024/1024))));
 		if(this->is_inconsistent(this->partitions[i]))
 		{
 			fsLbl->set_label(fsLbl->get_label().append(" (!)"));
@@ -343,7 +343,7 @@ void Dialog_Rescue_Data::read_partitions_from_buffer()
 			part_num=Utils::convert_to_int(num);
 
 			//Get the part_path
-			part_path=String::ucompose ( "%1%2", this->device_path, num );
+			part_path=Glib::ustring::compose( "%1%2", this->device_path, num );
 
 			while(getline(*this->buffer, line))
 			{

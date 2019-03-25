@@ -192,7 +192,7 @@ bool linux_swap::move( const Partition & partition_new
 	operationdetail .add_child(
 	    OperationDetail(
 	                     /* TO TRANSLATORS: looks like   Partition move action skipped because linux-swap file system does not contain data */
-	                     String::ucompose( _("Partition move action skipped because %1 file system does not contain data")
+	                     Glib::ustring::compose( _("Partition move action skipped because %1 file system does not contain data")
 	                                     , Utils::get_filesystem_string( FS_LINUX_SWAP )
 	                                     )
 	                   , STATUS_NONE
@@ -211,7 +211,7 @@ bool linux_swap::copy( const Partition & src_part,
 	operationdetail .add_child(
 	    OperationDetail(
 	                     /* TO TRANSLATORS: looks like   Partition copy action skipped because linux-swap file system does not contain data */
-	                     String::ucompose( _("Partition copy action skipped because %1 file system does not contain data")
+	                     Glib::ustring::compose( _("Partition copy action skipped because %1 file system does not contain data")
 	                                     , Utils::get_filesystem_string( FS_LINUX_SWAP )
 	                                     )
 	                   , STATUS_NONE

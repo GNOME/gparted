@@ -216,7 +216,7 @@ void Dialog_Progress::on_signal_show()
 
 		label_current .set_markup( "<b>" + operations[ t ] ->description + "</b>" ) ;
 		
-		progressbar_all .set_text( String::ucompose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
+		progressbar_all .set_text( Glib::ustring::compose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
 		progressbar_all .set_fraction( fraction * t > 1.0 ? 1.0 : fraction * t ) ;
 		
 		treerow = treestore_operations ->children()[ t ] ;
@@ -264,7 +264,7 @@ void Dialog_Progress::on_signal_show()
 
 		if ( warnings > 0 )
 			str_temp += " ("
-			         +  String::ucompose( ngettext("%1 warning", "%1 warnings", warnings), warnings )
+			         +  Glib::ustring::compose( ngettext("%1 warning", "%1 warnings", warnings), warnings )
 			         +  ")" ;
 
 		progressbar_all .set_text( str_temp ) ;
@@ -287,7 +287,7 @@ void Dialog_Progress::on_signal_show()
 			str_temp += "\n\n<i><b>" + Glib::ustring( _("IMPORTANT") ) + "</b>\n" ;
 			str_temp += _("If you want support, you need to provide the saved details!") ;
 			str_temp += "\n";
-			str_temp += String::ucompose(
+			str_temp += Glib::ustring::compose(
 			                    /* TO TRANSLATORS: looks like
 			                     * See https://gparted.org/save-details.htm for more information.
 			                     */
@@ -312,7 +312,7 @@ bool Dialog_Progress::cancel_timeout()
 	if (--cancel_countdown) {
 		/*TO TRANSLATORS: looks like  Force Cancel (5)
 		 *  where the number represents a count down in seconds until the button is enabled */
-		cancelbutton->set_label( String::ucompose( _("Force Cancel (%1)"), cancel_countdown ) );
+		cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
 	} else {
 		cancelbutton->set_label( _("Force Cancel") );
 		canceltimer.disconnect();
@@ -343,7 +343,7 @@ void Dialog_Progress::on_cancel()
 			cancel_countdown = 5;
 			/*TO TRANSLATORS: looks like  Force Cancel (5)
 			 *  where the number represents a count down in seconds until the button is enabled */
-			cancelbutton->set_label( String::ucompose( _("Force Cancel (%1)"), cancel_countdown ) );
+			cancelbutton->set_label( Glib::ustring::compose( _("Force Cancel (%1)"), cancel_countdown ) );
 			canceltimer = Glib::signal_timeout().connect(
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}

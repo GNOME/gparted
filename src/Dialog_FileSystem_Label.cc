@@ -31,7 +31,7 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	this->set_size_request( 400, -1 );
 
 	/* TO TRANSLATORS: dialog title, looks like   Set file system label on /dev/hda3 */
-	this->set_title( String::ucompose( _("Set file system label on %1"), partition.get_path() ) );
+	this->set_title( Glib::ustring::compose( _("Set file system label on %1"), partition.get_path() ) );
 
 	// HBox to hold the label and entry box line
 	Gtk::HBox *hbox( manage( new Gtk::HBox() ) );

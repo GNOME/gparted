@@ -27,7 +27,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 	const Glib::ustring device_path = device .get_path() ;
 
 	/*TO TRANSLATORS: dialogtitle, looks like Create partition table on /dev/hda */
-	this ->set_title( String::ucompose( _("Create partition table on %1"), device_path ) );
+	this ->set_title( Glib::ustring::compose( _("Create partition table on %1"), device_path ) );
 	this ->set_resizable( false );
 
 	{
@@ -50,7 +50,7 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 			Glib::ustring str_temp("<span weight=\"bold\" size=\"larger\">");
 
 			/*TO TRANSLATORS: looks like WARNING:  This will ERASE ALL DATA on the ENTIRE DISK /dev/hda */
-			str_temp += String::ucompose(_("WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"), device_path);
+			str_temp += Glib::ustring::compose(_("WARNING:  This will ERASE ALL DATA on the ENTIRE DISK %1"), device_path);
 			str_temp += "</span>\n";
 			vbox->pack_start(*Utils::mk_label(str_temp), Gtk::PACK_SHRINK);
 
