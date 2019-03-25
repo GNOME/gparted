@@ -29,11 +29,11 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 {
 	any_change = false ;
 
-	set_title( String::ucompose( _("Manage flags on %1"), partition .get_path() ) );
+	set_title( Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) );
 	set_resizable( false ) ;
 
 	Glib::ustring str_temp = "<span weight=\"bold\" size=\"larger\">" ;
-	str_temp += String::ucompose( _("Manage flags on %1"), partition .get_path() ) ;
+	str_temp += Glib::ustring::compose( _("Manage flags on %1"), partition .get_path() ) ;
 	str_temp += "</span>\n" ;
 	get_vbox() ->pack_start( * Utils::mk_label( str_temp ), Gtk::PACK_SHRINK );
 	

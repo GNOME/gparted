@@ -277,7 +277,7 @@ bool btrfs::resize( const Partition & partition_new, OperationDetail & operation
 	if ( btrfs_dev .devid == -1 )
 	{
 		operationdetail .add_child( OperationDetail(
-				String::ucompose( _("Failed to find devid for path %1"), path ), STATUS_ERROR ) ) ;
+				Glib::ustring::compose( _("Failed to find devid for path %1"), path ), STATUS_ERROR ) ) ;
 		return false ;
 	}
 	Glib::ustring devid_str = Utils::num_to_str( btrfs_dev .devid ) ;

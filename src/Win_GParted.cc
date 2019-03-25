@@ -1022,7 +1022,7 @@ void Win_GParted::Refresh_Visual()
 
 	//set new statusbartext
 	statusbar .pop() ;
-	statusbar .push( String::ucompose( ngettext( "%1 operation pending"
+	statusbar .push( Glib::ustring::compose( ngettext( "%1 operation pending"
 	                                           , "%1 operations pending"
 	                                           , operations .size()
 	                                           )
@@ -1138,7 +1138,7 @@ bool Win_GParted::Quit_Check_Operations()
 					   Gtk::BUTTONS_NONE,
 					   true );
 
-		dialog .set_secondary_text( String::ucompose( ngettext( "%1 operation is currently pending."
+		dialog .set_secondary_text( Glib::ustring::compose( ngettext( "%1 operation is currently pending."
 		                                                      , "%1 operations are currently pending."
 		                                                      , operations .size()
 		                                                      )
@@ -1544,7 +1544,7 @@ void Win_GParted::combo_devices_changed()
 		current_device = old_current_device;
 	if ( current_device >= devices .size() )
 		current_device = 0 ;
-	set_title( String::ucompose( _("%1 - GParted"), devices[ current_device ] .get_path() ) );
+	set_title( Glib::ustring::compose( _("%1 - GParted"), devices[ current_device ] .get_path() ) );
 	
 	//refresh label_device_info
 	Fill_Label_Device_Info();
@@ -1739,7 +1739,7 @@ void Win_GParted::show_disklabel_unrecognized ( Glib::ustring device_name )
 	//Display dialog box indicating that no partition table was found on the device
 	Gtk::MessageDialog dialog( *this,
 			/*TO TRANSLATORS: looks like   No partition table found on device /dev/sda */
-			String::ucompose( _( "No partition table found on device %1" ), device_name ),
+			Glib::ustring::compose( _( "No partition table found on device %1" ), device_name ),
 			false,
 			Gtk::MESSAGE_INFO,
 			Gtk::BUTTONS_OK,
@@ -1758,7 +1758,7 @@ void Win_GParted::show_resize_readonly( const Glib::ustring & path )
 {
 	Gtk::MessageDialog dialog( *this,
 	                           /* TO TRANSLATORS: looks like   Unable to resize read-only file system /dev/sda1 */
-	                           String::ucompose( _("Unable to resize read-only file system %1"), path ),
+	                           Glib::ustring::compose( _("Unable to resize read-only file system %1"), path ),
 	                           false,
 	                           Gtk::MESSAGE_INFO,
 	                           Gtk::BUTTONS_OK,
@@ -1938,7 +1938,7 @@ bool Win_GParted::max_amount_prim_reached()
 	{
 		Gtk::MessageDialog dialog( 
 			*this,
-			String::ucompose( ngettext( "It is not possible to create more than %1 primary partition"
+			Glib::ustring::compose( ngettext( "It is not possible to create more than %1 primary partition"
 			                          , "It is not possible to create more than %1 primary partitions"
 			                          , devices[ current_device ] .max_prims
 			                          )
@@ -2078,7 +2078,7 @@ void Win_GParted::activate_resize()
 			                           true );
 			Glib::ustring tmp_msg =
 					/*TO TRANSLATORS: looks like   You queued an operation to move the start sector of partition /dev/sda3. */
-					String::ucompose( _( "You have queued an operation to move the start sector of partition %1." )
+					Glib::ustring::compose( _( "You have queued an operation to move the start sector of partition %1." )
 					                , operation->get_partition_original().get_path() );
 			tmp_msg += _("  Failure to boot is most likely to occur if you move the GNU/Linux partition containing /boot, or if you move the Windows system partition C:.");
 			tmp_msg += "\n";
@@ -2161,7 +2161,7 @@ void Win_GParted::activate_paste()
 				// the partition is created and the real path queried.
 				OperationCopy * copy_op = static_cast<OperationCopy*>( operation );
 				copy_op->get_partition_new().set_path(
-				        String::ucompose( _("Copy of %1"),
+				        Glib::ustring::compose( _("Copy of %1"),
 				                          copy_op->get_partition_copied().get_path() ) );
 
 				Add_Operation( devices[current_device], operation );
@@ -2270,7 +2270,7 @@ void Win_GParted::activate_paste()
 			                         ) ;
 			dialog .set_secondary_text(
 					/*TO TRANSLATORS: looks like   The data in /dev/sda3 will be lost if you apply this operation. */
-					String::ucompose( _( "The data in %1 will be lost if you apply this operation." ),
+					Glib::ustring::compose( _( "The data in %1 will be lost if you apply this operation." ),
 					selected_partition_ptr->get_path() ) );
 			dialog .run() ;
 		}
@@ -2344,14 +2344,14 @@ void Win_GParted::activate_delete()
 	      selected_partition_ptr->partition_number <  devices[current_device].highest_busy    )
 	{	
 		Gtk::MessageDialog dialog( *this,
-		                           String::ucompose( _("Unable to delete %1!"), selected_partition_ptr->get_path() ),
+		                           Glib::ustring::compose( _("Unable to delete %1!"), selected_partition_ptr->get_path() ),
 		                           false,
 		                           Gtk::MESSAGE_ERROR,
 		                           Gtk::BUTTONS_OK,
 		                           true );
 
 		dialog .set_secondary_text( 
-			String::ucompose( _("Please unmount any logical partitions having a number higher than %1"),
+			Glib::ustring::compose( _("Please unmount any logical partitions having a number higher than %1"),
 					  selected_partition_ptr->partition_number ) );
 
 		dialog .run() ;
@@ -2362,7 +2362,7 @@ void Win_GParted::activate_delete()
 	if ( copied_partition != NULL && selected_partition_ptr->get_path() == copied_partition->get_path() )
 	{
 		Gtk::MessageDialog dialog( *this,
-		                           String::ucompose( _("Are you sure you want to delete %1?"),
+		                           Glib::ustring::compose( _("Are you sure you want to delete %1?"),
 		                                             selected_partition_ptr->get_path() ),
 		                           false,
 		                           Gtk::MESSAGE_QUESTION,
@@ -2372,7 +2372,7 @@ void Win_GParted::activate_delete()
 		dialog .set_secondary_text( _("After deletion this partition is no longer available for copying.") ) ;
 		
 		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
-		dialog.set_title( String::ucompose( _("Delete %1 (%2, %3)"),
+		dialog.set_title( Glib::ustring::compose( _("Delete %1 (%2, %3)"),
 		                                    selected_partition_ptr->get_path(),
 		                                    Utils::get_filesystem_string( selected_partition_ptr->filesystem ),
 		                                    Utils::format_size( selected_partition_ptr->get_sector_length(), selected_partition_ptr->sector_size ) ) );
@@ -2525,7 +2525,7 @@ void Win_GParted::activate_format( FSType new_fs )
 	     ( fs_limits.max_size && selected_partition_ptr->get_byte_length() > fs_limits.max_size )    )
 	{
 		Gtk::MessageDialog dialog( *this,
-		                           String::ucompose( /* TO TRANSLATORS: looks like
+		                           Glib::ustring::compose( /* TO TRANSLATORS: looks like
 		                                              * Cannot format this file system to fat16.
 		                                              */
 		                                             _("Cannot format this file system to %1"),
@@ -2536,7 +2536,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		                           true );
 
 		if ( selected_partition_ptr->get_byte_length() < fs_limits.min_size )
-			dialog.set_secondary_text( String::ucompose(
+			dialog.set_secondary_text( Glib::ustring::compose(
 					/* TO TRANSLATORS: looks like
 					 * A fat16 file system requires a partition of at least 16.00 MiB.
 					 */
@@ -2544,7 +2544,7 @@ void Win_GParted::activate_format( FSType new_fs )
 					 Utils::get_filesystem_string( encrypted, new_fs ),
 					 Utils::format_size( fs_limits.min_size, 1 /* Byte */ ) ) );
 		else
-			dialog.set_secondary_text( String::ucompose(
+			dialog.set_secondary_text( Glib::ustring::compose(
 					/* TO TRANSLATORS: looks like
 					 * A partition with a hfs file system has a maximum size of 2.00 GiB.
 					 */
@@ -2627,7 +2627,7 @@ bool Win_GParted::open_encrypted_partition( const Partition & partition,
 	                    Glib::shell_quote( partition.get_path() ) + " " +
 	                    Glib::shell_quote( mapping_name );
 
-	show_pulsebar( String::ucompose( _("Opening encryption on %1"), partition.get_path() ) );
+	show_pulsebar( Glib::ustring::compose( _("Opening encryption on %1"), partition.get_path() ) );
 	Glib::ustring output;
 	Glib::ustring error;
 	bool success = ! Utils::execute_command( cmd, pw, output, error );
@@ -2664,7 +2664,7 @@ void Win_GParted::toggle_crypt_busy_state()
 	{
 		action = LUKSCLOSE;
 		disallowed_msg = _("The close encryption action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Closing encryption on %1"), selected_partition_ptr->get_path() );
+		pulse_msg = Glib::ustring::compose( _("Closing encryption on %1"), selected_partition_ptr->get_path() );
 		failure_msg = _("Could not close encryption");
 	}
 	else  // ( ! selected_partition_ptr->busy )
@@ -2781,7 +2781,7 @@ bool Win_GParted::check_toggle_busy_allowed( const Glib::ustring & disallowed_ms
 	int operation_count = partition_in_operation_queue_count( *selected_partition_ptr );
 	if ( operation_count > 0 )
 	{
-		Glib::ustring primary_msg = String::ucompose(
+		Glib::ustring primary_msg = Glib::ustring::compose(
 			/* TO TRANSLATORS: Singular case looks like   1 operation is currently pending for partition /dev/sdb1 */
 			ngettext( "%1 operation is currently pending for partition %2",
 			/* TO TRANSLATORS: Plural case looks like   3 operations are currently pending for partition /dev/sdb1 */
@@ -2842,21 +2842,21 @@ void Win_GParted::toggle_fs_busy_state()
 	{
 		action = SWAPOFF;
 		disallowed_msg = _("The swapoff action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Deactivating swap on %1"), filesystem_ptn.get_path() );
+		pulse_msg = Glib::ustring::compose( _("Deactivating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not deactivate swap");
 	}
 	else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP && ! filesystem_ptn.busy )
 	{
 		action = SWAPON;
 		disallowed_msg = _("The swapon action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Activating swap on %1"), filesystem_ptn.get_path() );
+		pulse_msg = Glib::ustring::compose( _("Activating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not activate swap");
 	}
 	else if ( filesystem_ptn.filesystem == FS_LVM2_PV && filesystem_ptn.busy )
 	{
 		action = DEACTIVATE_VG;
 		disallowed_msg = _("The deactivate Volume Group action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Deactivating Volume Group %1"),
+		pulse_msg = Glib::ustring::compose( _("Deactivating Volume Group %1"),
 		                              filesystem_ptn.get_mountpoint() );  // VGNAME from point point
 		failure_msg = _("Could not deactivate Volume Group");
 	}
@@ -2864,7 +2864,7 @@ void Win_GParted::toggle_fs_busy_state()
 	{
 		action = ACTIVATE_VG;
 		disallowed_msg = _("The activate Volume Group action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Activating Volume Group %1"),
+		pulse_msg = Glib::ustring::compose( _("Activating Volume Group %1"),
 		                              filesystem_ptn.get_mountpoint() );  // VGNAME from point point
 		failure_msg = _("Could not activate Volume Group");
 	}
@@ -2872,8 +2872,8 @@ void Win_GParted::toggle_fs_busy_state()
 	{
 		action = UNMOUNT;
 		disallowed_msg = _("The unmount action cannot be performed when there are operations pending for the partition.");
-		pulse_msg = String::ucompose( _("Unmounting %1"), filesystem_ptn.get_path() );
-		failure_msg = String::ucompose( _("Could not unmount %1"), filesystem_ptn.get_path() );
+		pulse_msg = Glib::ustring::compose( _("Unmounting %1"), filesystem_ptn.get_path() );
+		failure_msg = Glib::ustring::compose( _("Could not unmount %1"), filesystem_ptn.get_path() );
 	}
 	else
 		// Impossible.  Mounting a file system calls activate_mount_partition().
@@ -2950,7 +2950,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	Glib::ustring error_msg;
 
 	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
-	show_pulsebar( String::ucompose( _("mounting %1 on %2"),
+	show_pulsebar( Glib::ustring::compose( _("mounting %1 on %2"),
 	                                 filesystem_ptn.get_path(),
 	                                 filesystem_ptn.get_mountpoints()[index] ) );
 
@@ -2978,7 +2978,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	hide_pulsebar();
 	if ( ! success )
 	{
-		Glib::ustring failure_msg = String::ucompose( _("Could not mount %1 on %2"),
+		Glib::ustring failure_msg = Glib::ustring::compose( _("Could not mount %1 on %2"),
 		                                              filesystem_ptn.get_path(),
 		                                              filesystem_ptn.get_mountpoints()[index] );
 		show_toggle_failure_dialog( failure_msg, error_msg );
@@ -2996,7 +2996,7 @@ void Win_GParted::activate_disklabel()
 	if ( active_count > 0 )
 	{
 		Glib::ustring tmp_msg =
-		    String::ucompose( /*TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda */
+		    Glib::ustring::compose( /*TO TRANSLATORS: Singular case looks like  1 partition is currently active on device /dev/sda */
 		                      ngettext( "%1 partition is currently active on device %2"
 		                      /*TO TRANSLATORS: Plural case looks like    3 partitions are currently active on device /dev/sda */
 		                              , "%1 partitions are currently active on device %2"
@@ -3028,7 +3028,7 @@ void Win_GParted::activate_disklabel()
 	if ( operations .size() )
 	{
 		Glib::ustring tmp_msg =
-		    String::ucompose( ngettext( "%1 operation is currently pending"
+		    Glib::ustring::compose( ngettext( "%1 operation is currently pending"
 		                              , "%1 operations are currently pending"
 		                              , operations .size()
 		                              )
@@ -3097,7 +3097,7 @@ void Win_GParted::activate_attempt_rescue_data()
 
 	Gtk::MessageDialog messageDialog(*this, "", true, Gtk::MESSAGE_WARNING, Gtk::BUTTONS_OK_CANCEL, true);
 	/*TO TRANSLATORS: looks like	Search for file systems on /deb/sdb */
-	messageDialog.set_message(String::ucompose(_("Search for file systems on %1"), devices[ current_device ] .get_path()));
+	messageDialog.set_message(Glib::ustring::compose(_("Search for file systems on %1"), devices[ current_device ] .get_path()));
 	messageDialog.set_secondary_text(sec_text);
 
 	if(messageDialog.run()!=Gtk::RESPONSE_OK)
@@ -3108,7 +3108,7 @@ void Win_GParted::activate_attempt_rescue_data()
 	messageDialog.hide();
 
 	/*TO TRANSLATORS: looks like	Searching for file systems on /deb/sdb */
-	show_pulsebar(String::ucompose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
+	show_pulsebar(Glib::ustring::compose( _("Searching for file systems on %1"), devices[ current_device ] .get_path()));
 	Glib::ustring gpart_output;
 	gparted_core.guess_partition_table(devices[ current_device ], gpart_output);
 	hide_pulsebar();
@@ -3124,7 +3124,7 @@ void Win_GParted::activate_attempt_rescue_data()
 		Gtk::MessageDialog errorDialog(*this, "", true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
 		
 		/*TO TRANSLATORS: looks like	No file systems found on /deb/sdb */
-		errorDialog.set_message(String::ucompose(_("No file systems found on %1"), devices[ current_device ] .get_path()));
+		errorDialog.set_message(Glib::ustring::compose(_("No file systems found on %1"), devices[ current_device ] .get_path()));
 		errorDialog.set_secondary_text(_("The disk scan by gpart did not find any recognizable file systems on this disk."));
 
 		errorDialog.run();
@@ -3451,15 +3451,15 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	switch ( optype )
 	{
 		case OPERATION_DELETE:
-			tmp_msg = String::ucompose( _( "You are deleting non-empty LVM2 Physical Volume %1" ),
+			tmp_msg = Glib::ustring::compose( _( "You are deleting non-empty LVM2 Physical Volume %1" ),
 			                            selected_partition_ptr->get_path() );
 			break ;
 		case OPERATION_FORMAT:
-			tmp_msg = String::ucompose( _( "You are formatting over non-empty LVM2 Physical Volume %1" ),
+			tmp_msg = Glib::ustring::compose( _( "You are formatting over non-empty LVM2 Physical Volume %1" ),
 			                            selected_partition_ptr->get_path() );
 			break ;
 		case OPERATION_COPY:
-			tmp_msg = String::ucompose( _( "You are pasting over non-empty LVM2 Physical Volume %1" ),
+			tmp_msg = Glib::ustring::compose( _( "You are pasting over non-empty LVM2 Physical Volume %1" ),
 			                            selected_partition_ptr->get_path() );
 			break ;
 		default:

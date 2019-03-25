@@ -111,7 +111,7 @@ void OperationDelete::create_description()
 		description = partition_original->get_path();
 
 	/*TO TRANSLATORS: looks like   Delete /dev/hda2 (ntfs, 345 MiB) from /dev/hda */
-	description = String::ucompose( _("Delete %1 (%2, %3) from %4"),
+	description = Glib::ustring::compose( _("Delete %1 (%2, %3) from %4"),
 	                                description,
 	                                partition_original->get_filesystem_string(),
 	                                Utils::format_size( partition_original->get_sector_length(),

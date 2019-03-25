@@ -52,13 +52,13 @@ void OperationNamePartition::create_description()
 	if( partition_new->name.empty() )
 	{
 		/* TO TRANSLATORS: looks like   Clear partition name on /dev/hda3 */
-		description = String::ucompose( _("Clear partition name on %1"),
+		description = Glib::ustring::compose( _("Clear partition name on %1"),
 		                                partition_new->get_path() );
 	}
 	else
 	{
 		/* TO TRANSLATORS: looks like   Set partition name "My Name" on /dev/hda3 */
-		description = String::ucompose( _("Set partition name \"%1\" on %2"),
+		description = Glib::ustring::compose( _("Set partition name \"%1\" on %2"),
 		                                partition_new->name,
 		                                partition_new->get_path() );
 	}

@@ -196,7 +196,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			for (unsigned int k=0; k < temp_devices .size(); k++)
 			{
 				/*TO TRANSLATORS: looks like Scanning /dev/sda */
-				set_thread_status_message( String::ucompose ( _("Scanning %1"), temp_devices[ k ] ) ) ;
+				set_thread_status_message( Glib::ustring::compose( _("Scanning %1"), temp_devices[ k ] ) ) ;
 				ped_device_get( temp_devices[ k ] .c_str() ) ;
 			}
 
@@ -205,7 +205,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 				std::vector<Glib::ustring> dmraid_devices ;
 				dmraid .get_devices( dmraid_devices ) ;
 				for ( unsigned int k=0; k < dmraid_devices .size(); k++ ) {
-					set_thread_status_message( String::ucompose ( _("Scanning %1"), dmraid_devices[k] ) ) ;
+					set_thread_status_message( Glib::ustring::compose( _("Scanning %1"), dmraid_devices[k] ) ) ;
 #ifndef USE_LIBPARTED_DMRAID
 					dmraid .create_dev_map_entries( dmraid_devices[k] ) ;
 					settle_device( SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS );
@@ -224,7 +224,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 		while ( lp_device ) 
 		{
 			/* TO TRANSLATORS: looks like   Confirming /dev/sda */
-			set_thread_status_message( String::ucompose( _("Confirming %1"), lp_device->path ) );
+			set_thread_status_message( Glib::ustring::compose( _("Confirming %1"), lp_device->path ) );
 
 			//only add this device if we can read the first sector (which means it's a real device)
 			if ( useable_device( lp_device ) )
@@ -249,7 +249,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 
 		for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 		{
-			set_thread_status_message( String::ucompose( _("Confirming %1"), device_paths[t] ) );
+			set_thread_status_message( Glib::ustring::compose( _("Confirming %1"), device_paths[t] ) );
 
 #ifndef USE_LIBPARTED_DMRAID
 			// Ensure that dmraid device entries are created
@@ -278,7 +278,7 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{
 		/*TO TRANSLATORS: looks like Searching /dev/sda partitions */ 
-		set_thread_status_message( String::ucompose ( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
+		set_thread_status_message( Glib::ustring::compose( _("Searching %1 partitions"), device_paths[ t ] ) ) ;
 		Device temp_device;
 		set_device_from_disk( temp_device, device_paths[t] );
 		devices.push_back( temp_device );
@@ -534,7 +534,7 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 	//do some basic checks on the partition
 	if ( partition .get_sector_length() <= 0 )
 	{
-		error = String::ucompose(
+		error = Glib::ustring::compose(
 				/* TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors */
 				_("A partition cannot have a length of %1 sectors"),
 				partition .get_sector_length() ) ;
@@ -548,7 +548,7 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 	//  the above reasoning.  Confirm condition is impossible and consider removing this code.
 	if ( partition .get_sector_length() < partition .sectors_used )
 	{
-		error = String::ucompose(
+		error = Glib::ustring::compose(
 				/* TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid */
 				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
 				partition .sectors_used,
@@ -1520,7 +1520,7 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 	temp += _( "There is no file system available (unformatted)" ) ; 
 	temp += "\n- "; 
 	/* TO TRANSLATORS: looks like  The device entry /dev/sda5 is missing */
-	temp += String::ucompose( _("The device entry %1 is missing"), path );
+	temp += Glib::ustring::compose( _("The device entry %1 is missing"), path );
 	
 	messages .push_back( temp ) ;
 
@@ -1796,7 +1796,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 				temp += _("The cause might be a missing software package.");
 				temp += "\n";
 				/*TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs. */
-				temp += String::ucompose( _("The following list of software packages is required for %1 file system support:  %2."),
+				temp += Glib::ustring::compose( _("The following list of software packages is required for %1 file system support:  %2."),
 				                          Utils::get_filesystem_string( partition.filesystem ),
 				                          Utils::get_filesystem_software( partition.filesystem )
 				                        );
@@ -1806,7 +1806,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 		else if ( ( unallocated = partition.get_sectors_unallocated() ) > 0 )
 		{
 			/* TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition. */
-			Glib::ustring temp = String::ucompose( _("%1 of unallocated space within the partition."),
+			Glib::ustring temp = Glib::ustring::compose( _("%1 of unallocated space within the partition."),
 			                                       Utils::format_size( unallocated, partition.sector_size ) );
 			FS fs = get_fs( partition.filesystem );
 			if ( fs.check != FS::NONE && fs.grow != FS::NONE )
@@ -2008,11 +2008,11 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 						 * This is showing the name and the fact
 						 * that it is a partition within a device.
 						 */
-						String::ucompose( _("path: %1 (%2)"),
+						Glib::ustring::compose( _("path: %1 (%2)"),
 						                  new_partition.get_path(), _("partition") ) + "\n" +
-						String::ucompose( _("start: %1"), new_partition .sector_start ) + "\n" +
-						String::ucompose( _("end: %1"), new_partition .sector_end ) + "\n" +
-						String::ucompose( _("size: %1 (%2)"),
+						Glib::ustring::compose( _("start: %1"), new_partition .sector_start ) + "\n" +
+						Glib::ustring::compose( _("end: %1"), new_partition .sector_end ) + "\n" +
+						Glib::ustring::compose( _("size: %1 (%2)"),
 								new_partition .get_sector_length(),
 								Utils::format_size( new_partition .get_sector_length(), new_partition .sector_size ) ),
 						STATUS_NONE,
@@ -2049,7 +2049,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 		return false;
 	}
 
-	operationdetail .add_child( OperationDetail( String::ucompose(
+	operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 							/*TO TRANSLATORS: looks like create new ext3 file system */ 
 							_("create new %1 file system"),
 							Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
@@ -2156,7 +2156,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 			//Run file system specific remove method to delete the file system.  Most
 			//  file systems should NOT implement a remove() method as it will prevent
 			//  recovery from accidental partition deletion.
-			operationdetail .add_child( OperationDetail( String::ucompose(
+			operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 								_("delete %1 file system"),
 								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
 			success = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
@@ -2182,10 +2182,10 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 
 	if( partition.get_filesystem_label().empty() ) {
 		operationdetail.add_child( OperationDetail(
-			String::ucompose( _("Clear file system label on %1"), partition.get_path() ) ) );
+			Glib::ustring::compose( _("Clear file system label on %1"), partition.get_path() ) ) );
 	} else {
 		operationdetail.add_child( OperationDetail(
-			String::ucompose( _("Set file system label to \"%1\" on %2"),
+			Glib::ustring::compose( _("Set file system label to \"%1\" on %2"),
 			                  partition.get_filesystem_label(), partition.get_path() ) ) );
 	}
 
@@ -2210,10 +2210,10 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 {
 	if ( partition.name.empty() )
 		operationdetail.add_child( OperationDetail(
-				String::ucompose( _("Clear partition name on %1"), partition.get_path() ) ) );
+				Glib::ustring::compose( _("Clear partition name on %1"), partition.get_path() ) ) );
 	else
 		operationdetail.add_child( OperationDetail(
-				String::ucompose( _("Set partition name to \"%1\" on %2"),
+				Glib::ustring::compose( _("Set partition name to \"%1\" on %2"),
 				                  partition.name, partition.get_path() ) ) );
 
 	bool success = false;
@@ -2244,12 +2244,12 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 	}
 
 	if ( partition .uuid == UUID_RANDOM_NTFS_HALF ) {
-		operationdetail .add_child( OperationDetail( String::ucompose(
+		operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 										_("Set half of the UUID on %1 to a new, random value"),
 										 partition .get_path()
 									 ) ) ) ;
 	} else {
-		operationdetail .add_child( OperationDetail( String::ucompose(
+		operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 										_("Set UUID on %1 to a new, random value"),
 										 partition .get_path()
 									 ) ) ) ;
@@ -2747,7 +2747,7 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 	}
 
 	if ( ! description .empty() && action != NONE && action != MOVE_LEFT && action != MOVE_RIGHT )
-		description = String::ucompose( description,
+		description = Glib::ustring::compose( description,
 						Utils::format_size( partition_old .get_sector_length(), partition_old .sector_size ),
 						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ) ;
 
@@ -2767,9 +2767,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 	operationdetail .get_last_child() .add_child( 
 		OperationDetail(
-			String::ucompose( _("old start: %1"), partition_old .sector_start ) + "\n" +
-			String::ucompose( _("old end: %1"), partition_old .sector_end ) + "\n" +
-			String::ucompose( _("old size: %1 (%2)"),
+			Glib::ustring::compose( _("old start: %1"), partition_old .sector_start ) + "\n" +
+			Glib::ustring::compose( _("old end: %1"), partition_old .sector_end ) + "\n" +
+			Glib::ustring::compose( _("old size: %1 (%2)"),
 					partition_old .get_sector_length(),
 					Utils::format_size( partition_old .get_sector_length(), partition_old .sector_size ) ),
 		STATUS_NONE, 
@@ -2784,9 +2784,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		//Change to partition succeeded
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail(
-				String::ucompose( _("new start: %1"), new_start ) + "\n" +
-				String::ucompose( _("new end: %1"), new_end ) + "\n" +
-				String::ucompose( _("new size: %1 (%2)"),
+				Glib::ustring::compose( _("new start: %1"), new_start ) + "\n" +
+				Glib::ustring::compose( _("new end: %1"), new_end ) + "\n" +
+				Glib::ustring::compose( _("new size: %1 (%2)"),
 						new_end - new_start + 1,
 						Utils::format_size( new_end - new_start + 1, partition_new .sector_size ) ),
 			STATUS_NONE, 
@@ -2800,9 +2800,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 		//Change to partition failed
 		operationdetail .get_last_child() .add_child(
 			OperationDetail(
-				String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
-				String::ucompose( _("requested end: %1"), partition_new . sector_end ) + "\n" +
-				String::ucompose( _("requested size: %1 (%2)"),
+				Glib::ustring::compose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
+				Glib::ustring::compose( _("requested end: %1"), partition_new . sector_end ) + "\n" +
+				Glib::ustring::compose( _("requested size: %1 (%2)"),
 						partition_new .get_sector_length(),
 						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 								STATUS_NONE,
@@ -2835,9 +2835,9 @@ bool GParted_Core::resize_move_partition( const Partition & partition_old,
 
 		operationdetail.get_last_child().add_child(
 			OperationDetail(
-				String::ucompose( _("original start: %1"), partition_restore->sector_start ) + "\n" +
-				String::ucompose( _("original end: %1"), partition_restore->sector_end ) + "\n" +
-				String::ucompose( _("original size: %1 (%2)"),
+				Glib::ustring::compose( _("original start: %1"), partition_restore->sector_start ) + "\n" +
+				Glib::ustring::compose( _("original end: %1"), partition_restore->sector_end ) + "\n" +
+				Glib::ustring::compose( _("original size: %1 (%2)"),
 					partition_restore->get_sector_length(),
 					Utils::format_size( partition_restore->get_sector_length(), partition_restore->sector_size ) ),
 				STATUS_NONE, FONT_ITALIC ) );
@@ -3044,7 +3044,7 @@ bool GParted_Core::recreate_linux_swap_filesystem( const Partition & partition, 
 	{
 		operationdetail.add_child( OperationDetail(
 			/* TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step */
-			GPARTED_BUG + ": " + String::ucompose( _("not a %1 file system for a recreate %1 only step"),
+			GPARTED_BUG + ": " + Glib::ustring::compose( _("not a %1 file system for a recreate %1 only step"),
 			                                       Utils::get_filesystem_string( FS_LINUX_SWAP ),
 			                                       Utils::get_filesystem_string( FS_LINUX_SWAP ) ),
 			STATUS_ERROR, FONT_ITALIC ) );
@@ -3056,7 +3056,7 @@ bool GParted_Core::recreate_linux_swap_filesystem( const Partition & partition, 
 
 	operationdetail.add_child( OperationDetail(
 		/* TO TRANSLATORS: looks like   recreate linux-swap file system */
-		String::ucompose( _("recreate %1 file system"),
+		Glib::ustring::compose( _("recreate %1 file system"),
 		                  Utils::get_filesystem_string( FS_LINUX_SWAP ) ) ) );
 
 	// Linux-swap is recreated by using the linux_swap::resize() method
@@ -3189,7 +3189,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 	}
 
 	operationdetail.add_child( OperationDetail(
-			String::ucompose( _("copy file system from %1 to %2"),
+			Glib::ustring::compose( _("copy file system from %1 to %2"),
 			                  partition_src.get_path(),
 			                  partition_dst.get_path() ) ) );
 
@@ -3272,7 +3272,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 {
 	operationdetail .add_child( OperationDetail( _("using internal algorithm"), STATUS_NONE ) ) ;
 	operationdetail .add_child( OperationDetail(
-		String::ucompose( /*TO TRANSLATORS: looks like  copy 1.00 MiB */
+		Glib::ustring::compose( /*TO TRANSLATORS: looks like  copy 1.00 MiB */
 		                  _("copy %1"), Utils::format_size( src_length, 1 ) ),
 		STATUS_NONE ) ) ;
 
@@ -3307,7 +3307,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	{
 		benchmark_od.add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("copy %1 using a block size of %2"),
+				Glib::ustring::compose( _("copy %1 using a block size of %2"),
 				                  Utils::format_size( N, 1 ),
 				                  Utils::format_size( benchmark_blocksize, 1 ) ) ) );
 
@@ -3325,7 +3325,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		timer.stop() ;
 
 		benchmark_od.get_last_child().add_child( OperationDetail(
-			String::ucompose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
+			Glib::ustring::compose( _("%1 seconds"), timer .elapsed() ), STATUS_NONE, FONT_ITALIC ) ) ;
 		benchmark_od.get_last_child().set_success_and_capture_errors( succes );
 
 		if ( timer .elapsed() <= smallest_time )
@@ -3342,7 +3342,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	}
 	
 	if ( succes )
-		operationdetail .get_last_child() .add_child( OperationDetail( String::ucompose( 
+		operationdetail .get_last_child() .add_child( OperationDetail( Glib::ustring::compose( 
 				/*TO TRANSLATORS: looks like  optimal block size is 1.00 MiB */
 				_("optimal block size is %1"),
 				Utils::format_size( optimal_blocksize, 1 ) ),
@@ -3353,7 +3353,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 		Byte_Value remaining_length = src_length - llabs( done );
 		operationdetail.add_child( OperationDetail(
 				/*TO TRANSLATORS: looks like   copy 16.00 MiB using a block size of 1.00 MiB */
-				String::ucompose( _("copy %1 using a block size of %2"),
+				Glib::ustring::compose( _("copy %1 using a block size of %2"),
 				                  Utils::format_size( remaining_length, 1 ),
 				                  Utils::format_size( optimal_blocksize, 1 ) ) ) );
 		succes = CopyBlocks( src_device,
@@ -3370,7 +3370,7 @@ bool GParted_Core::copy_blocks( const Glib::ustring & src_device,
 	}
 
 	operationdetail .add_child( OperationDetail( 
-		String::ucompose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
+		Glib::ustring::compose( /*TO TRANSLATORS: looks like  1.00 MiB (1048576 B) copied */
 		                  _("%1 (%2 B) copied"), Utils::format_size( total_done, 1 ), total_done ),
 		STATUS_NONE ) ) ;
 	return succes ;
@@ -3442,7 +3442,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 		return true;
 
 	operationdetail .add_child( OperationDetail( 
-				String::ucompose(
+				Glib::ustring::compose(
 						/* TO TRANSLATORS: looks like   check file system on /dev/sda5 for errors and (if possible) fix them */
 						_("check file system on %1 for errors and (if possible) fix them"),
 						  partition .get_path() ) ) ) ;
@@ -3518,7 +3518,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		return true;
 
 	operationdetail .add_child( OperationDetail(
-				String::ucompose( _("set partition type on %1"), partition .get_path() ) ) ) ;
+				Glib::ustring::compose( _("set partition type on %1"), partition .get_path() ) ) ) ;
 	//Set partition type appropriately for the type of file system stored in the partition.
 	//  Libparted treats every type as a file system, except LVM which it treats as a flag.
 
@@ -3568,7 +3568,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				{
 					operationdetail.get_last_child().add_child(
 						/* TO TRANSLATORS: looks like   new partition type: ext4 */
-						OperationDetail( String::ucompose( _("new partition type: %1"),
+						OperationDetail( Glib::ustring::compose( _("new partition type: %1"),
 						                                   lp_partition->fs_type->name ),
 						                 STATUS_NONE,
 						                 FONT_ITALIC ) );
@@ -3583,7 +3583,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 				{
 					operationdetail.get_last_child().add_child(
 						/* TO TRANSLATORS: looks like   new partition flag: lvm */
-						OperationDetail( String::ucompose( _("new partition flag: %1"),
+						OperationDetail( Glib::ustring::compose( _("new partition flag: %1"),
 						                                   ped_partition_flag_get_name( PED_PARTITION_LVM ) ),
 						                 STATUS_NONE,
 						                 FONT_ITALIC ) );
@@ -3612,7 +3612,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 	     partition.type == TYPE_EXTENDED || partition.type == TYPE_UNPARTITIONED    )
 	{
 		Glib::ustring curr_path = partition.get_path();
-		operationdetail.add_child( OperationDetail( String::ucompose( _("calibrate %1"), curr_path ) ) );
+		operationdetail.add_child( OperationDetail( Glib::ustring::compose( _("calibrate %1"), curr_path ) ) );
 	
 		bool success = false;
 		PedDevice* lp_device = NULL ;
@@ -3674,14 +3674,14 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 						 * is a whole disk device or a partition
 						 * within a device.
 						 */
-						String::ucompose( _("path: %1 (%2)"),
+						Glib::ustring::compose( _("path: %1 (%2)"),
 						                  partition.get_path(),
 						                  ( partition.type == TYPE_UNPARTITIONED )
 						                                             ? _("device")
 						                                             : _("partition") ) + "\n" +
-						String::ucompose( _("start: %1"), partition .sector_start ) + "\n" +
-						String::ucompose( _("end: %1"), partition .sector_end ) + "\n" +
-						String::ucompose( _("size: %1 (%2)"),
+						Glib::ustring::compose( _("start: %1"), partition .sector_start ) + "\n" +
+						Glib::ustring::compose( _("end: %1"), partition .sector_end ) + "\n" +
+						Glib::ustring::compose( _("size: %1 (%2)"),
 								partition .get_sector_length(),
 								Utils::format_size( partition .get_sector_length(), partition .sector_size ) ),
 					STATUS_NONE, 
@@ -3691,7 +3691,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 				{
 					const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
 					operationdetail.get_last_child().add_child( OperationDetail(
-						String::ucompose( _("encryption path: %1"), encrypted.get_path() ),
+						Glib::ustring::compose( _("encryption path: %1"), encrypted.get_path() ),
 						STATUS_NONE, FONT_ITALIC ) );
 				}
 			}
@@ -3717,13 +3717,13 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 				         OperationDetail & operationdetail ) 
 {
 	operationdetail .add_child( OperationDetail( 
-		String::ucompose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
+		Glib::ustring::compose( _("calculate new size and position of %1"), partition_new .get_path() ) ) ) ;
 
 	operationdetail .get_last_child() .add_child( 
 		OperationDetail(
-			String::ucompose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
-			String::ucompose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
-			String::ucompose( _("requested size: %1 (%2)"),
+			Glib::ustring::compose( _("requested start: %1"), partition_new .sector_start ) + "\n" +
+			Glib::ustring::compose( _("requested end: %1"), partition_new .sector_end ) + "\n" +
+			Glib::ustring::compose( _("requested size: %1 (%2)"),
 					partition_new .get_sector_length(),
 					Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 		STATUS_NONE,
@@ -3768,9 +3768,9 @@ bool GParted_Core::calculate_exact_geom( const Partition & partition_old,
 	{
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail(
-				String::ucompose( _("new start: %1"), partition_new .sector_start ) + "\n" +
-				String::ucompose( _("new end: %1"), partition_new .sector_end ) + "\n" +
-				String::ucompose( _("new size: %1 (%2)"),
+				Glib::ustring::compose( _("new start: %1"), partition_new .sector_start ) + "\n" +
+				Glib::ustring::compose( _("new end: %1"), partition_new .sector_end ) + "\n" +
+				Glib::ustring::compose( _("new size: %1 (%2)"),
 						partition_new .get_sector_length(),
 						Utils::format_size( partition_new .get_sector_length(), partition_new .sector_size ) ),
 			STATUS_NONE,
@@ -3853,7 +3853,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 
 	bool overall_success = false ;
 	operationdetail .add_child( OperationDetail(
-			String::ucompose( _("clear old file system signatures in %1"),
+			Glib::ustring::compose( _("clear old file system signatures in %1"),
 			                  partition .get_path() ) ) ) ;
 
 	//Get device, disk & partition and open the device.  Allocate buffer and fill with
@@ -4010,7 +4010,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		{
 			od .add_child( OperationDetail(
 					/*TO TRANSLATORS: looks like  write 68.00 KiB of zeros at byte offset 0 */
-					String::ucompose( "write %1 of zeros at byte offset %2",
+					Glib::ustring::compose( "write %1 of zeros at byte offset %2",
 					                  Utils::format_size( byte_len, 1 ),
 					                  byte_offset ) ) ) ;
 
@@ -4059,7 +4059,7 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 	if ( overall_success )
 	{
 		OperationDetail & od = operationdetail .get_last_child() ;
-		od .add_child( OperationDetail( String::ucompose( _("flush operating system cache of %1"),
+		od .add_child( OperationDetail( Glib::ustring::compose( _("flush operating system cache of %1"),
 		                                                  lp_device ->path ) ) ) ;
 
 		bool flush_success = false ;
@@ -4091,7 +4091,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 
 		operationdetail .add_child( OperationDetail( 
 				/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
-				String::ucompose( _("update boot sector of %1 file system on %2"),
+				Glib::ustring::compose( _("update boot sector of %1 file system on %2"),
 					  Utils::get_filesystem_string( partition .filesystem ),
 					  partition .get_path() ) ) ) ;
 
@@ -4127,20 +4127,20 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 				if ( dev_file .bad() )
 				{
 					/*TO TRANSLATORS: looks like Error trying to write to boot sector in /dev/sdd1 */
-					error_message = String::ucompose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;
+					error_message = Glib::ustring::compose( _("Error trying to write to boot sector in %1"), partition .get_path() ) ;
 				}
 			}
 			else
 			{
 				/*TO TRANSLATORS: looks like Error trying to seek to position 0x1C in /dev/sdd1 */
-				error_message = String::ucompose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;
+				error_message = Glib::ustring::compose( _("Error trying to seek to position 0x1c in %1"), partition .get_path() ) ;
 			}
 			dev_file .close( ) ;
 		}
 		else
 		{
 			/*TO TRANSLATORS: looks like Error trying to open /dev/sdd1 */
-			error_message = String::ucompose( _("Error trying to open %1"), partition .get_path() ) ;
+			error_message = Glib::ustring::compose( _("Error trying to open %1"), partition .get_path() ) ;
 		}
 
 		//append error messages if any found
@@ -4150,11 +4150,11 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 			succes = false ;
 			error_message += "\n" ;
 			/*TO TRANSLATORS: looks like Failed to set the number of hidden sectors to 05ab4f00 in the ntfs boot record. */
-			error_message += String::ucompose( _("Failed to set the number of hidden sectors to %1 in the NTFS boot record."), reversed_hex ) ;
+			error_message += Glib::ustring::compose( _("Failed to set the number of hidden sectors to %1 in the NTFS boot record."), reversed_hex ) ;
 			error_message += "\n" ;
-			error_message += String::ucompose( _("You might try the following command to correct the problem:"), reversed_hex ) ;
+			error_message += Glib::ustring::compose( _("You might try the following command to correct the problem:"), reversed_hex ) ;
 			error_message += "\n" ;
-			error_message += String::ucompose( "echo %1 | xxd -r -p | dd conv=notrunc of=%2 bs=1 seek=28", reversed_hex, partition .get_path() ) ;
+			error_message += Glib::ustring::compose( "echo %1 | xxd -r -p | dd conv=notrunc of=%2 bs=1 seek=28", reversed_hex, partition .get_path() ) ;
 			operationdetail .get_last_child() .add_child( OperationDetail( error_message, STATUS_NONE, FONT_ITALIC ) ) ;
 		}
 

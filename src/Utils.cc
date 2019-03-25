@@ -457,27 +457,27 @@ Glib::ustring Utils::format_size( Sector sectors, Byte_Value sector_size )
 	if ( (sectors * sector_size) < KIBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_BYTE ) ;
-		return String::ucompose( _("%1 B"), ss .str() ) ;
+		return Glib::ustring::compose( _("%1 B"), ss .str() ) ;
 	}
 	else if ( (sectors * sector_size) < MEBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_KIB ) ;
-		return String::ucompose( _("%1 KiB"), ss .str() ) ;
+		return Glib::ustring::compose( _("%1 KiB"), ss .str() ) ;
 	}
 	else if ( (sectors * sector_size) < GIBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_MIB ) ;
-		return String::ucompose( _("%1 MiB"), ss .str() ) ;
+		return Glib::ustring::compose( _("%1 MiB"), ss .str() ) ;
 	}
 	else if ( (sectors * sector_size) < TEBIBYTE )
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_GIB ) ;
-		return String::ucompose( _("%1 GiB"), ss .str() ) ;
+		return Glib::ustring::compose( _("%1 GiB"), ss .str() ) ;
 	}
 	else
 	{
 		ss << sector_to_unit( sectors, sector_size, UNIT_TIB ) ;
-		return String::ucompose( _("%1 TiB"), ss .str() ) ;
+		return Glib::ustring::compose( _("%1 TiB"), ss .str() ) ;
 	}
 }
 

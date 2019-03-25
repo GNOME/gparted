@@ -95,12 +95,12 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 	// See if we can allow the start of the file system to move
 	if ( fs.move && ! new_partition->busy && new_partition->type != TYPE_UNPARTITIONED )
 	{
-		set_title( String::ucompose( _("Resize/Move %1"), new_partition->get_path() ) );
+		set_title( Glib::ustring::compose( _("Resize/Move %1"), new_partition->get_path() ) );
 		frame_resizer_base ->set_fixed_start( false ) ;
 	}
 	else
 	{
-		set_title( String::ucompose( _("Resize %1"), new_partition->get_path() ) );
+		set_title( Glib::ustring::compose( _("Resize %1"), new_partition->get_path() ) );
 		this ->fixed_start = true;
 		frame_resizer_base ->set_fixed_start( true ) ;
 		spinbutton_before .set_sensitive( false ) ;
@@ -232,7 +232,7 @@ void Dialog_Partition_Resize_Move::Resize_Move_Extended( const PartitionVector &
 {
 	g_assert( new_partition != NULL );  // Bug: Not initialised by constructor calling set_data()
 
-	set_title(String::ucompose(_("Resize/Move %1"), new_partition->get_path()));
+	set_title(Glib::ustring::compose(_("Resize/Move %1"), new_partition->get_path()));
 
 	//calculate total size in MiB's of previous, current and next partition
 	//first find index of partition

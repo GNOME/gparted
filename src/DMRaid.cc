@@ -329,7 +329,7 @@ bool DMRaid::create_dev_map_entries( const Partition & partition, OperationDetai
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  create missing /dev/mapper entries */ 
-	Glib::ustring tmp = String::ucompose ( _("create missing %1 entries"), DEV_MAPPER_PATH );
+	Glib::ustring tmp = Glib::ustring::compose( _("create missing %1 entries"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	//Newer dmraid defaults to always inserting the letter 'p' between the device name
@@ -413,7 +413,7 @@ bool DMRaid::delete_affected_dev_map_entries( const Partition & partition, Opera
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete affected /dev/mapper entries */ 
-	Glib::ustring tmp = String::ucompose ( _("delete affected %1 entries"), DEV_MAPPER_PATH );
+	Glib::ustring tmp = Glib::ustring::compose( _("delete affected %1 entries"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	get_affected_dev_map_entries( partition, affected_entries ) ;
@@ -435,7 +435,7 @@ bool DMRaid::delete_dev_map_entry( const Partition & partition, OperationDetail 
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  delete /dev/mapper entry */ 
-	Glib::ustring tmp = String::ucompose ( _("delete %1 entry"), DEV_MAPPER_PATH );
+	Glib::ustring tmp = Glib::ustring::compose( _("delete %1 entry"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	std::vector<Glib::ustring> partition_entries ;
@@ -484,7 +484,7 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	bool exit_status = true ;
 
 	/*TO TRANSLATORS: looks like  update /dev/mapper entry */ 
-	Glib::ustring tmp = String::ucompose ( _("update %1 entry"), DEV_MAPPER_PATH );
+	Glib::ustring tmp = Glib::ustring::compose( _("update %1 entry"), DEV_MAPPER_PATH );
 	operationdetail .add_child( OperationDetail( tmp ) );
 
 	if( ! delete_dev_map_entry( partition , operationdetail .get_last_child() ) )
