@@ -270,8 +270,8 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 
 void Dialog_Base_Partition::Set_MinMax_Text( Sector min, Sector max )
 {
-	Glib::ustring str_temp(String::ucompose( _("Minimum size: %1 MiB"), min ) + "\t\t");
-	str_temp += String::ucompose( _("Maximum size: %1 MiB"), max ) ;
+	Glib::ustring str_temp(Glib::ustring::compose( _("Minimum size: %1 MiB"), min ) + "\t\t");
+	str_temp += Glib::ustring::compose( _("Maximum size: %1 MiB"), max ) ;
 	label_minmax .set_text( str_temp ) ; 
 }
 
