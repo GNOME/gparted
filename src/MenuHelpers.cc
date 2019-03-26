@@ -85,6 +85,7 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 	set_image(image_widget);
 	set_label(label);
 	set_use_underline(true);
+	set_always_show_image(true);
 
 	show_all();
 }
@@ -101,6 +102,7 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 	set_image(image_widget);
 	set_label(label);
 	set_use_underline(true);
+	set_always_show_image(true);
 
 	show_all();
 }
@@ -116,6 +118,7 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 	set_image(image_widget);
 	set_label(label);
 	set_use_underline(true);
+	set_always_show_image(true);
 
 	show_all();
 }
@@ -140,6 +143,7 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
 
 	set_use_stock();
 	set_label(stock_id.get_string());
+	set_always_show_image(true);
 
 	show_all();
 }
@@ -159,6 +163,7 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
 
 	set_use_stock();
 	set_label(stock_id.get_string());
+	set_always_show_image(true);
 
 	show_all();
 }
@@ -172,6 +177,7 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
 
 	set_use_stock();
 	set_label(stock_id.get_string());
+	set_always_show_image(true);
 
 	show_all();
 }
