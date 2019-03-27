@@ -39,7 +39,6 @@ public:
 	Glib::ustring Get_Disklabel( ) ;
 	
 private:
-	Gtk::Image image ;
 	Gtk::ComboBoxText combo_labeltypes ;
 	std::vector<Glib::ustring> labeltypes ;
 };
