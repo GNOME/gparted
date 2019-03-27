@@ -31,6 +31,9 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
 #include <gtkmm/main.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/stockitem.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -67,6 +70,44 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 	label ->set_selectable( selectable ) ;
 
 	return label ;
+}
+
+Gtk::Image* Utils::mk_image(const Gtk::StockID& stock_id,
+                          Gtk::IconSize icon_size)
+{
+	Gtk::Image *image = Gtk::manage(new Gtk::Image(stock_id, icon_size));
+
+	// Force icon size. See https://gitlab.gnome.org/GNOME/gparted/issues/39
+	int pixel_size = 0, dummy = 0;
+	if (Gtk::IconSize::lookup(icon_size, pixel_size, dummy) && pixel_size > 0)
+		image->set_pixel_size(pixel_size);
+
+	return image;
+}
+
+Glib::RefPtr<Gdk::Pixbuf> Utils::mk_pixbuf(Gtk::Widget& widget,
+                                           const Gtk::StockID& stock_id,
+                                           Gtk::IconSize icon_size)
+{
+	Glib::RefPtr<Gdk::Pixbuf> icon = widget.render_icon_pixbuf(stock_id, icon_size);
+
+	// Force icon size. See https://gitlab.gnome.org/GNOME/gparted/issues/39
+	int pixel_size = 0, dummy = 0;
+	if (Gtk::IconSize::lookup(icon_size, pixel_size, dummy) && pixel_size > 0)
+		if (icon->get_width() != pixel_size || icon->get_height() != pixel_size)
+			return icon->scale_simple(pixel_size, pixel_size, Gdk::INTERP_BILINEAR);
+
+	return icon;
+}
+
+Glib::ustring Utils::get_stock_label(const Gtk::StockID& stock_id)
+{
+	Gtk::StockItem stock_item;
+
+	if (Gtk::Stock::lookup(stock_id, stock_item))
+		return stock_item.get_label();
+
+	return "";
 }
 
 Glib::ustring Utils::num_to_str( Sector number )
