@@ -17,12 +17,13 @@
 
 #include "Dialog_Disklabel.h"
 #include "GParted_Core.h"
+#include "Utils.h"
+
 
 namespace GParted
 {
 
 Dialog_Disklabel::Dialog_Disklabel( const Device & device )
-: image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_DIALOG)
 {
 	const Glib::ustring device_path = device .get_path() ;
 
@@ -40,7 +41,8 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		vbox->set_border_width(10);
 		hbox->pack_start(*vbox, Gtk::PACK_SHRINK);
 
-		vbox->pack_start(image, Gtk::PACK_SHRINK);
+		Gtk::Image* image(Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_DIALOG));
+		vbox->pack_start(*image, Gtk::PACK_SHRINK);
 
 		vbox = manage(new Gtk::VBox());
 		vbox->set_border_width(10);

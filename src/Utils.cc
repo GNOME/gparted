@@ -31,11 +31,16 @@
 #include <glibmm/stringutils.h>
 #include <glibmm/shell.h>
 #include <gtkmm/main.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/stockitem.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <unistd.h>
+#include <algorithm>
+
 
 namespace GParted
 {
@@ -68,6 +73,55 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 
 	return label ;
 }
+
+
+Gtk::Image* Utils::mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_size)
+{
+	Gtk::Image *image = Gtk::manage(new Gtk::Image(stock_id, icon_size));
+
+	// Ensure icon size
+	int width = 0;
+	int height = 0;
+	if (Gtk::IconSize::lookup(icon_size, width, height) && width > 0 && height > 0)
+	{
+		int pixel_size = std::min(width, height);
+		image->set_pixel_size(pixel_size);
+	}
+
+	return image;
+}
+
+
+Glib::RefPtr<Gdk::Pixbuf> Utils::mk_pixbuf(Gtk::Widget& widget,
+                                           const Gtk::StockID& stock_id,
+                                           Gtk::IconSize icon_size)
+{
+	Glib::RefPtr<Gdk::Pixbuf> theme_icon = widget.render_icon_pixbuf(stock_id, icon_size);
+
+	// Ensure icon size
+	int width = 0;
+	int height = 0;
+	if (Gtk::IconSize::lookup(icon_size, width, height) && width > 0 && height > 0)
+	{
+		int pixel_size = std::min(width, height);
+		if (theme_icon->get_width() > pixel_size || theme_icon->get_height() > pixel_size)
+			return theme_icon->scale_simple(pixel_size, pixel_size, Gdk::INTERP_BILINEAR);
+	}
+
+	return theme_icon;
+}
+
+
+Glib::ustring Utils::get_stock_label(const Gtk::StockID& stock_id)
+{
+	Gtk::StockItem stock_item;
+
+	if (Gtk::Stock::lookup(stock_id, stock_item))
+		return stock_item.get_label();
+
+	return "";
+}
+
 
 Glib::ustring Utils::num_to_str( Sector number )
 {

@@ -72,7 +72,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		frame = manage( new Gtk::Frame() );
 
 		{
-			Gtk::Image* image(manage(new Gtk::Image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON)));
+			Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 
 			hbox = manage(new Gtk::HBox());
 			hbox->pack_start(*image, Gtk::PACK_SHRINK);

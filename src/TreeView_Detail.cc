@@ -19,6 +19,7 @@
 #include "Partition.h"
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
+#include "Utils.h"
 
 #include <vector>
 #include <gtkmm/cellrenderer.h>
@@ -161,16 +162,16 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 	const Partition & filesystem_ptn = partition.get_filesystem_partition();
 	if ( filesystem_ptn.busy )
 		treerow[ treeview_detail_columns .icon1 ] = 
-			render_icon_pixbuf(Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON);
-	
+			Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_BUTTON);
+
 	if ( partition.have_messages() > 0 )
 	{
 		if ( ! static_cast< Glib::RefPtr<Gdk::Pixbuf> >( treerow[ treeview_detail_columns .icon1 ] )  )
 			treerow[ treeview_detail_columns .icon1 ] = 
-				render_icon_pixbuf(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+				Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 		else
 			treerow[ treeview_detail_columns .icon2 ] = 
-				render_icon_pixbuf(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+				Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
 	}
 
 	

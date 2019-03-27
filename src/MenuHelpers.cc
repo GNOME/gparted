@@ -15,6 +15,7 @@
  */
 
 #include "MenuHelpers.h"
+#include "Utils.h"
 
 #include <gtkmm/imagemenuitem.h>
 #include <gtkmm/checkmenuitem.h>
@@ -136,14 +137,22 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              const CallSlot& slot)
  : Gtk::ImageMenuItem()
 {
+	Gtk::StockItem stock;
+
 	if (slot)
 		signal_activate().connect(slot);
 
 	set_accel_key(key);
 
-	set_use_stock();
-	set_label(stock_id.get_string());
+	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
+	set_image(*image);
 	set_always_show_image(true);
+
+	if (Gtk::Stock::lookup(stock_id, stock))
+	{
+		set_label(Utils::get_stock_label(stock_id));
+		set_use_underline(true);
+	}
 
 	show_all();
 }
@@ -153,17 +162,23 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              const CallSlot& slot)
  : Gtk::ImageMenuItem()
 {
+	Gtk::StockItem stock;
+
 	if (slot)
 		signal_activate().connect(slot);
 
-	Gtk::StockItem stock;
+	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
+	set_image(*image);
+	set_always_show_image(true);
+
 	if (Gtk::Stock::lookup(stock_id, stock))
+	{
 		set_accel_key(Gtk::AccelKey(stock.get_keyval(),
 		                            stock.get_modifier()));
 
-	set_use_stock();
-	set_label(stock_id.get_string());
-	set_always_show_image(true);
+		set_label(Utils::get_stock_label(stock_id));
+		set_use_underline(true);
+	}
 
 	show_all();
 }
@@ -173,11 +188,22 @@ StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
                              Gtk::Menu& submenu)
  : Gtk::ImageMenuItem()
 {
+	Gtk::StockItem stock;
+
 	set_submenu(submenu);
 
-	set_use_stock();
-	set_label(stock_id.get_string());
+	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
+	set_image(*image);
 	set_always_show_image(true);
+
+	if (Gtk::Stock::lookup(stock_id, stock))
+	{
+		set_accel_key(Gtk::AccelKey(stock.get_keyval(),
+		                            stock.get_modifier()));
+
+		set_label(Utils::get_stock_label(stock_id));
+		set_use_underline(true);
+	}
 
 	show_all();
 }

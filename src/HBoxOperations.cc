@@ -16,6 +16,7 @@
 
 #include "HBoxOperations.h"
 #include "MenuHelpers.h"
+#include "Utils.h"
 
 #include <gtkmm/stock.h>
 
@@ -44,21 +45,21 @@ HBoxOperations::HBoxOperations()
 	Gtk::MenuItem *item;
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Undo Last Operation"), 
-		* manage( new Gtk::Image( Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU ) ), 
+		*Utils::mk_image(Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_undo)));
 	menu_popup.append(*item);
 	menu_popup_items[0] = item;
 
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Clear All Operations"), 
-		* manage( new Gtk::Image( Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU ) ), 
+		*Utils::mk_image(Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_clear)));
 	menu_popup.append(*item);
 	menu_popup_items[1] = item;
 
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Apply All Operations"), 
-		* manage( new Gtk::Image( Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU ) ), 
+		*Utils::mk_image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &HBoxOperations::on_apply)));
 	menu_popup.append(*item);
 	menu_popup_items[2] = item;
