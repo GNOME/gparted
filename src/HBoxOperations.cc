@@ -68,7 +68,8 @@ HBoxOperations::HBoxOperations()
 		Gtk::Stock::CLOSE, sigc::mem_fun(*this, &HBoxOperations::on_close))));
 }
 
-void HBoxOperations::load_operations( const std::vector<Operation *> operations ) 
+
+void HBoxOperations::load_operations(const std::vector<Operation *>& operations)
 {
 	liststore_operations ->clear();
 

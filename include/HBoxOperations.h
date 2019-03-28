@@ -34,7 +34,7 @@ public:
 	HBoxOperations() ;
 	~HBoxOperations() ;
 
-	void load_operations( const std::vector<Operation *> operations ) ;
+	void load_operations(const std::vector<Operation *>& operations);
 	void clear() ;
 
 	sigc::signal< void > signal_undo ;
