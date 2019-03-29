@@ -22,6 +22,7 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/shell.h>
+#include <glibmm/ustring.h>
 
 
 namespace GParted
@@ -75,8 +76,7 @@ void DMRaid::load_dmraid_cache()
 	{
 		if ( ! Utils::execute_command( "dmraid -sa -c", output, error, true ) )
 		{
-			Glib::ustring temp = Utils::regexp_label( output, "^(no raid disks).*" ) ;
-			if ( temp != "no raid disks" )
+			if (output.substr(0, 13).lowercase() != "no raid disks")
 				Utils::tokenize( output, dmraid_devices, "\n" ) ;
 		}
 	}
