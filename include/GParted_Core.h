@@ -30,6 +30,7 @@
 #include <vector>
 #include <fstream>
 #include <glibmm/thread.h>
+#include <glibmm/ustring.h>
 
 
 namespace GParted
@@ -42,6 +43,7 @@ public:
 	GParted_Core() ;
 	~GParted_Core() ;
 
+	static Glib::ustring get_version_and_config_string();
 	static void find_supported_core();
 	void find_supported_filesystems() ;
 	void set_user_devices( const std::vector<Glib::ustring> & user_devices ) ;

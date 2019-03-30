@@ -33,6 +33,7 @@
 #include "Proc_Partitions_Info.h"
 #include "SWRaid_Info.h"
 #include "Utils.h"
+#include "../config.h"
 
 #include "btrfs.h"
 #include "exfat.h"
@@ -90,11 +91,9 @@ GParted_Core::GParted_Core()
 	      flag ;
 	      flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;
-	
-	//throw libpartedversion to the stdout to see which version is actually used.
-	std::cout << "======================" << std::endl ;
-	std::cout << "libparted : " << ped_get_version() << std::endl ;
-	std::cout << "======================" << std::endl ;
+
+	// Display version and configuration info when starting for command line users.
+	std::cout << get_version_and_config_string() << std::endl;
 
 	find_supported_core();
 
@@ -104,6 +103,31 @@ GParted_Core::GParted_Core()
 	//Determine file system support capabilities for the first time
 	find_supported_filesystems() ;
 }
+
+
+Glib::ustring GParted_Core::get_version_and_config_string()
+{
+	Glib::ustring str = Glib::ustring("GParted ") + VERSION + "\n";
+
+	str += "configuration";
+	bool added_config_flag = false;
+#ifdef USE_LIBPARTED_DMRAID
+	str += " --enable-libparted-dmraid";
+	added_config_flag = true;
+#endif
+#ifdef ENABLE_ONLINE_RESIZE
+	str += " --enable-online-resize";
+	added_config_flag = true;
+#endif
+	if (! added_config_flag)
+		str += " (none)";
+	str += "\n";
+
+	str += Glib::ustring("libparted ") + ped_get_version();
+
+	return str;
+}
+
 
 void GParted_Core::find_supported_core()
 {
