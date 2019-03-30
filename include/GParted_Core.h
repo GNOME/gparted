@@ -66,7 +66,6 @@ public:
 	const FS & get_fs( FSType filesystem ) const;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
-	Glib::ustring get_libparted_version() ;
 	Glib::ustring get_thread_status_message() ;
 
 	static FileSystem * get_filesystem_object( FSType fstype );

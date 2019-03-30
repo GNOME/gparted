@@ -26,6 +26,8 @@
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
+#include <vector>
+
 
 namespace GParted
 {
@@ -378,6 +380,7 @@ void Dialog_Progress::on_save()
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "</head>" << std::endl
 			<< "<body>" << std::endl;
+
 			std::vector<Glib::ustring> lines;
 			Utils::split(GParted_Core::get_version_and_config_string(), lines, "\n");
 			for (unsigned int i = 0; i < lines.size(); i++)
