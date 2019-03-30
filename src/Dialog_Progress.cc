@@ -16,6 +16,7 @@
  */
 
 #include "Dialog_Progress.h"
+#include "GParted_Core.h"
 #include "OperationDetail.h"
 #include "ProgressBar.h"
 
@@ -376,16 +377,11 @@ void Dialog_Progress::on_save()
 			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "</head>" << std::endl
-			<< "<body>" << std::endl
-			<< "<p>" << _("GParted") << " " << VERSION
-#ifdef USE_LIBPARTED_DMRAID
-			<< " --enable-libparted-dmraid"
-#endif
-#ifdef ENABLE_ONLINE_RESIZE
-			<< " --enable-online-resize"
-#endif
-			<< "</p>" << std::endl
-			<< "<p>" << _("Libparted") << " " << signal_get_libparted_version .emit() << "</p>" << std::endl ;
+			<< "<body>" << std::endl;
+			std::vector<Glib::ustring> lines;
+			Utils::split(GParted_Core::get_version_and_config_string(), lines, "\n");
+			for (unsigned int i = 0; i < lines.size(); i++)
+				out << "<p>" << lines[i] << "</p>" << std::endl;
 
 			//Write out each operation
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
