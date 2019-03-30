@@ -860,11 +860,7 @@ std::map<Glib::ustring, bool> GParted_Core::get_available_flags( const Partition
 
 	return flag_info ;
 }
-	
-Glib::ustring GParted_Core::get_libparted_version() 
-{
-	return ped_get_version() ;
-}
+
 
 //private functions...
 
