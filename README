@@ -55,14 +55,19 @@ a. Pre-built Binary
    package for GParted.  Instructions on how to install GParted on
    some distributions is given below:
 
+      CentOS/RHEL
+      -----------
+      su -
+      yum install gparted
+
       Debian or Ubuntu
       ----------------
       sudo apt-get install gparted
 
-      Fedora or CentOS/RHEL
-      ---------------------
+      Fedora
+      ------
       su -
-      yum install gparted
+      dnf install gparted
 
       OpenSUSE
       --------
@@ -83,34 +88,37 @@ b. Building from Source
 
    The following dependencies are required to build GParted from source:
       g++
-      e2fsprogs
+      make
       parted
       gnome-common
       gtkmm3
       gettext
+      intltool
       yelp-tools          - required if help documentation is to be built
+
+   On CentOS/RHEL, these dependencies may be obtained by running the
+   following command as root:
+      yum install gnome-common yelp-tools glib2-devel intltool gcc-c++ \
+                  libuuid-devel parted-devel gtkmm30-devel make
 
    On Debian or Ubuntu, these dependencies may be obtained by running
    one of the following commands:
      Either;
       sudo apt-get build-dep gparted
      Or;
-      sudo apt-get install build-essential e2fsprogs uuid uuid-dev \
-                           gnome-common libparted-dev libgtkmm-3.0-dev \
-                           libdevmapper-dev yelp-tools docbook-xml
+      sudo apt-get install build-essential gnome-common yelp-tools \
+                           libglib2.0-dev uuid-dev libparted-dev \
+                           libgtkmm-3.0-dev
 
-   On Fedora, you will need to run (as root);
-      yum install gtkmm30-devel parted-devel e2fsprogs-devel gettext \
-                  'perl(XML::Parser)' desktop-file-utils libuuid-devel \
-                  yelp-tools docbook-dtds intltool gnome-common gcc-c++
-      yum groupinstall 'Development Tools'
+   On Fedora, these dependencies may be obtained by running the
+   following command as root:
+      dnf install gnome-common yelp-tools glib2-devel intltool gcc-c++ \
+                  parted-devel gtkmm30-devel make
 
    On openSUSE, these dependencies may be obtained by running the
-   following commands;
-      sudo zypper install automake autoconf make gnome-common \
-                          libuuid-devel parted-devel gtkmm3-devel \
-                          yelp-tools docbook-xsl-stylesheets
-      sudo zypper install -t pattern devel_c_c++
+   following commands:
+      sudo zypper install gnome-common gcc-c++ libuuid-devel \
+                          parted-devel gtkmm3-devel make
 
    Again, build GParted with the default configuration and install into
    the default location of /usr/local using:
