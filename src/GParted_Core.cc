@@ -92,9 +92,6 @@ GParted_Core::GParted_Core()
 	      flag = ped_partition_flag_next( flag ) )
 		flags .push_back( flag ) ;
 
-	// Display version and configuration info when starting for command line users.
-	std::cout << get_version_and_config_string() << std::endl;
-
 	find_supported_core();
 
 	//initialize file system list
