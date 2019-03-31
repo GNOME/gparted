@@ -20,6 +20,8 @@
 #include <glibmm.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
+#include <iostream>
+
 
 int main( int argc, char *argv[] )
 {
@@ -34,6 +36,9 @@ int main( int argc, char *argv[] )
 	bindtextdomain( GETTEXT_PACKAGE, GNOMELOCALEDIR ) ;
 	bind_textdomain_codeset( GETTEXT_PACKAGE, "UTF-8" ) ;
 	textdomain( GETTEXT_PACKAGE ) ;
+
+	// Display version and configuration info when starting for command line users.
+	std::cout << GParted::GParted_Core::get_version_and_config_string() << std::endl;
 
 	//check UID
 	if ( getuid() != 0 )
