@@ -21,6 +21,7 @@
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/main.h>
 #include <iostream>
+#include <stdlib.h>
 
 
 int main( int argc, char *argv[] )
@@ -43,15 +44,15 @@ int main( int argc, char *argv[] )
 	//check UID
 	if ( getuid() != 0 )
 	{
-		Gtk::MessageDialog dialog( _("Root privileges are required for running GParted"), 
-					   false,
-					   Gtk::MESSAGE_ERROR,
-					   Gtk::BUTTONS_OK ) ;
+		const Glib::ustring error_msg(_("Root privileges are required for running GParted"));
+		std::cerr << error_msg << std::endl;
+
+		Gtk::MessageDialog dialog(error_msg, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK);
 		dialog .set_secondary_text(
 				_("Since GParted is a powerful tool capable of destroying partition tables and vast amounts of data, only root may run it.") ) ;
 		
 		dialog .run() ;
-		exit( 0 ) ;
+		exit(EXIT_FAILURE);
 	}
 
 	//deal with arguments..
@@ -60,7 +61,5 @@ int main( int argc, char *argv[] )
 	GParted::Win_GParted win_gparted( user_devices ) ; 
 	Gtk::Main::run( win_gparted ) ;
 
-	return 0 ;
+	return EXIT_SUCCESS;
 }
-
-
