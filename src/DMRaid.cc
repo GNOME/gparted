@@ -32,7 +32,6 @@ namespace GParted
 bool DMRaid::dmraid_cache_initialized = false ;
 bool DMRaid::dmraid_found  = false ;
 bool DMRaid::dmsetup_found = false ;
-bool DMRaid::udevinfo_found = false ;
 bool DMRaid::udevadm_found  = false ;
 std::vector<Glib::ustring> DMRaid::dmraid_devices ;
 
@@ -87,7 +86,6 @@ void DMRaid::set_commands_found()
 	//Set status of commands found 
 	dmraid_found = (! Glib::find_program_in_path( "dmraid" ) .empty() ) ;
 	dmsetup_found = (! Glib::find_program_in_path( "dmsetup" ) .empty() ) ;
-	udevinfo_found = (! Glib::find_program_in_path( "udevinfo" ) .empty() ) ;
 	udevadm_found = (! Glib::find_program_in_path( "udevadm" ) .empty() ) ;
 }
 
@@ -249,10 +247,7 @@ Glib::ustring DMRaid::get_udev_dm_name( const Glib::ustring & dev_path )
 	Glib::ustring error  = "" ;
 	Glib::ustring dm_name = "" ;
 
-	if ( udevinfo_found )
-		Utils::execute_command( "udevinfo --query=all --name=" + Glib::shell_quote( dev_path ),
-		                        output, error, true );
-	else if ( udevadm_found )
+	if (udevadm_found)
 		Utils::execute_command( "udevadm info --query=all --name=" + Glib::shell_quote( dev_path ),
 		                        output, error, true );
 
