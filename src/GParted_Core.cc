@@ -15,7 +15,6 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Win_GParted.h"
 #include "GParted_Core.h"
 #include "CopyBlocks.h"
 #include "BlockSpecial.h"
