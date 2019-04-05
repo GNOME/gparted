@@ -20,6 +20,7 @@
 
 #include "i18n.h"
 #include "Utils.h"
+#include "Device.h"
 #include "Operation.h"
 
 #include <gtkmm/dialog.h>
@@ -28,8 +29,9 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/expander.h>
-
 #include <fstream>
+#include <vector>
+
 
 namespace GParted
 {
@@ -37,9 +39,9 @@ namespace GParted
 class Dialog_Progress : public Gtk::Dialog
 {
 public:
-	Dialog_Progress( const std::vector<Operation *> & operations ) ;
+	Dialog_Progress(const std::vector<Device>& devices, const std::vector<Operation *>& operations);
 	~Dialog_Progress();
-	
+
 	sigc::signal< bool, Operation * > signal_apply_operation ;
 
 private:
@@ -49,6 +51,7 @@ private:
 	void on_cell_data_description( Gtk::CellRenderer * renderer, const Gtk::TreeModel::iterator & iter) ;
 	void on_cancel() ;
 	void on_save() ;
+	void write_device_details(const Device& device, std::ofstream& out);
 	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
 	
 	void on_response( int response_id ) ;
@@ -86,7 +89,8 @@ private:
 		} 
 	};
 	treeview_operations_Columns treeview_operations_columns;
-	
+
+	const std::vector<Device>& m_devices;
 	std::vector<Operation *> operations ;
 	Glib::ustring progress_text;
 	bool succes, cancel;

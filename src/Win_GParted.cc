@@ -3431,8 +3431,8 @@ void Win_GParted::activate_apply()
 	if ( dialog.run() == Gtk::RESPONSE_OK )
 	{
 		dialog .hide() ; //hide confirmationdialog
-		
-		Dialog_Progress dialog_progress( operations ) ;
+
+		Dialog_Progress dialog_progress(devices, operations);
 		dialog_progress .set_transient_for( *this ) ;
 		dialog_progress .signal_apply_operation .connect(
 			sigc::mem_fun(gparted_core, &GParted_Core::apply_operation_to_disk) ) ;

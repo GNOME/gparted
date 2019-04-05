@@ -16,6 +16,7 @@
  */
 
 #include "Dialog_Progress.h"
+#include "Device.h"
 #include "GParted_Core.h"
 #include "OperationDetail.h"
 #include "ProgressBar.h"
@@ -34,7 +35,8 @@
 namespace GParted
 {
 
-Dialog_Progress::Dialog_Progress( const std::vector<Operation *> & operations )
+Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::vector<Operation *>& operations)
+ : m_devices(devices)
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
@@ -380,6 +382,9 @@ void Dialog_Progress::on_save()
 			<< "<head>" << std::endl
 			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
+			<< "<style type='text/css'>" << std::endl
+			<< "th {text-align:left}" << std::endl  // Left align all table headers
+			<< "</style>" << std::endl
 			<< "</head>" << std::endl
 			<< "<body>" << std::endl;
 
@@ -388,11 +393,18 @@ void Dialog_Progress::on_save()
 			for (unsigned int i = 0; i < lines.size(); i++)
 				out << "<p>" << lines[i] << "</p>" << std::endl;
 
+			// Write out starting device layout
+			for (unsigned int i = 0; i < m_devices.size(); i++)
+			{
+				out << "<p>========================================</p>" << std::endl;
+				write_device_details(m_devices[i], out);
+			}
+
 			//Write out each operation
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
-				echo_operation_details( operations[ t ] ->operation_detail, out ) ;
-				out << "<p>========================================</p>" << std::endl ;
+				out << "<p>========================================</p>" << std::endl;
+				echo_operation_details(operations[t]->operation_detail, out);
 			}
 
 			//Write out proper HTML finish
@@ -401,6 +413,33 @@ void Dialog_Progress::on_save()
 		}
 	}
 }
+
+
+void Dialog_Progress::write_device_details(const Device& device, std::ofstream& out)
+{
+	out << "<table border='0'>" << std::endl;
+
+	// Device overview information
+	out << "<tr><th>" << _("Device:") << "</th><td>" << device.get_path() << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Model:") << "</th><td>" << device.model << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Serial:") << "</th><td>" << device.serial_number << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Sector size:") << "</th><td>" << device.sector_size << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Total sectors:") << "</th><td>" << device.length << "</td></tr>" << std::endl;
+
+	out << "<tr><td colspan='2'>&nbsp;</td></tr>" << std::endl;
+
+	out << "<tr><th>" << _("Heads:") << "</th><td>" << device.heads << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Sectors/track:") << "</th><td>" << device.sectors << "</td></tr>" << std::endl;
+	out << "<tr><th>" << _("Cylinders:") << "</th><td>" << device.cylinders << "</td></tr>" << std::endl;
+
+	out << "<tr><td colspan='2'>&nbsp;</td></tr>" << std::endl;
+
+	// Partition table type
+	out << "<tr><th>" << _("Partition table:") << "</th><td>" << device.disktype << "</td></tr>" << std::endl;
+
+	out << "</table>" << std::endl;
+}
+
 
 void Dialog_Progress::echo_operation_details( const OperationDetail & operationdetail, std::ofstream & out ) 
 {
