@@ -22,6 +22,7 @@
 #include "Utils.h"
 #include "Device.h"
 #include "Operation.h"
+#include "Partition.h"
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/progressbar.h>
@@ -52,6 +53,7 @@ private:
 	void on_cancel() ;
 	void on_save() ;
 	void write_device_details(const Device& device, std::ofstream& out);
+	void write_partition_details(const Partition& partition, std::ofstream& out);
 	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
 	
 	void on_response( int response_id ) ;

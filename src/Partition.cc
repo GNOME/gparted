@@ -391,6 +391,41 @@ void Partition::clear_mountpoints()
 	mountpoints .clear() ;
 }
 
+
+const Glib::ustring Partition::get_partition_type_string(PartitionType type)
+{
+	switch (type)
+	{
+		case TYPE_PRIMARY:
+		                         /* TO TRANSLATORS: Primary
+		                          * A "Primary" type of partition on a partitioned drive.
+		                          */
+		                         return _("Primary");
+		case TYPE_LOGICAL:
+		                         /* TO TRANSLATORS: Logical
+		                          * A "Logical" type of partition on a partitioned drive.
+		                          */
+		                         return _("Logical");
+		case TYPE_EXTENDED:
+		                         /* TO TRANSLATORS: Extended
+		                          * An "Extended" type of partition on a partitioned drive.
+		                          */
+		                        return _("Extended");
+		case TYPE_UNALLOCATED:
+		                         /* TO TRANSLATORS: Unallocated
+		                          * Unused space outside of any partition on a partitioned drive.
+		                          */
+		                         return _("Unallocated");
+		case TYPE_UNPARTITIONED:
+		                         /* TO TRANSLATORS: Unpartitioned
+		                          * A drive which has no partition table.
+		                          */
+		                         return _("Unpartitioned");
+		default:                 return "";
+	}
+}
+
+
 //Return threshold of sectors which is considered above the intrinsic
 //  level for a file system which "fills" the partition.  Calculation
 //  is:

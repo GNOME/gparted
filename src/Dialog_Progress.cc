@@ -19,6 +19,7 @@
 #include "Device.h"
 #include "GParted_Core.h"
 #include "OperationDetail.h"
+#include "Partition.h"
 #include "ProgressBar.h"
 #include "Utils.h"
 
@@ -384,6 +385,7 @@ void Dialog_Progress::on_save()
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "<style type='text/css'>" << std::endl
 			<< "th {text-align:left}" << std::endl  // Left align all table headers
+			<< ".number_col {text-align:right}" << std::endl  // Class for right alignment
 			<< "</style>" << std::endl
 			<< "</head>" << std::endl
 			<< "<body>" << std::endl;
@@ -437,7 +439,57 @@ void Dialog_Progress::write_device_details(const Device& device, std::ofstream& 
 	// Partition table type
 	out << "<tr><th>" << _("Partition table:") << "</th><td>" << device.disktype << "</td></tr>" << std::endl;
 
+	out << "<tr><td colspan='2'>&nbsp;</td></tr>" << std::endl;
 	out << "</table>" << std::endl;
+
+	out << "<table border='0'>" << std::endl;
+
+	// Partition headings
+	out << "<tr>"
+	    << "<th>" << _("Partition") << "</th>"
+	    << "<th>" << _("Type") << "</th>"
+	    << "<th class='number_col'>" << _("Start") << "</th>"
+	    << "<th class='number_col'>" << _("End") << "</th>"
+	    << "<th>" << _("Flags") << "</th>"
+	    << "<th>" << _("Partition Name") << "</th>"
+	    << "<th>" << _("File System") << "</th>"
+	    << "<th>" << _("Label") << "</th>"
+	    << "<th>" << _("Mount Point") << "</th>"
+	    << "</tr>" << std::endl;
+
+	// Partition details
+	for (unsigned int i = 0; i < device.partitions.size(); i++)
+	{
+		if (device.partitions[i].type != TYPE_UNALLOCATED)
+			write_partition_details(device.partitions[i], out);
+
+		if (device.partitions[i].type == TYPE_EXTENDED)
+		{
+			for (unsigned int j = 0; j < device.partitions[i].logicals.size(); j++)
+			{
+				if (device.partitions[i].logicals[j].type != TYPE_UNALLOCATED)
+					write_partition_details(device.partitions[i].logicals[j], out);
+			}
+		}
+	}
+
+	out << "</table>" << std::endl;
+}
+
+
+void Dialog_Progress::write_partition_details(const Partition& partition, std::ofstream& out)
+{
+	out << "<tr>"
+	    << "<td>" << (partition.inside_extended ? "&nbsp;&nbsp;&nbsp; " : "") << partition.get_path() << "</td>"
+	    << "<td>" << Partition::get_partition_type_string(partition.type) << "</td>"
+	    << "<td class='number_col'>" << partition.sector_start << "</td>"
+	    << "<td class='number_col'>" << partition.sector_end << "</td>"
+	    << "<td>" << Glib::build_path(", ", partition.flags) << "</td>"
+	    << "<td>" << partition.name << "</td>"
+	    << "<td>" << Utils::get_filesystem_string(partition.filesystem) << "</td>"
+	    << "<td>" << partition.get_filesystem_label() << "</td>"
+	    << "<td>" << Glib::build_path(", ", partition.get_mountpoints()) << "</td>"
+	    << "</tr>" << std::endl;
 }
 
 

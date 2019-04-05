@@ -147,7 +147,9 @@ public:
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
-		
+
+	static const Glib::ustring get_partition_type_string(PartitionType type);
+
 	//some public members
 	Glib::ustring device_path ;
 	int partition_number;
