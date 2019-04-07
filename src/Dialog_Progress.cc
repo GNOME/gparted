@@ -384,6 +384,7 @@ void Dialog_Progress::on_save()
 			<< "<meta http-equiv='Content-Type' content='text/html;charset=utf-8' />" << std::endl
 			<< "<title>" << _("GParted Details") << "</title>" << std::endl
 			<< "<style type='text/css'>" << std::endl
+			<< "table {border:0}" << std::endl  // Disable borders for all tables
 			<< "th {text-align:left}" << std::endl  // Left align all table headers
 			<< ".number_col {text-align:right}" << std::endl  // Class for right alignment
 			<< "</style>" << std::endl
@@ -419,7 +420,7 @@ void Dialog_Progress::on_save()
 
 void Dialog_Progress::write_device_details(const Device& device, std::ofstream& out)
 {
-	out << "<table border='0'>" << std::endl;
+	out << "<table>" << std::endl;
 
 	// Device overview information
 	out << "<tr><th>" << _("Device:") << "</th><td>" << device.get_path() << "</td></tr>" << std::endl;
@@ -442,7 +443,7 @@ void Dialog_Progress::write_device_details(const Device& device, std::ofstream& 
 	out << "<tr><td colspan='2'>&nbsp;</td></tr>" << std::endl;
 	out << "</table>" << std::endl;
 
-	out << "<table border='0'>" << std::endl;
+	out << "<table>" << std::endl;
 
 	// Partition headings
 	out << "<tr>"
@@ -501,7 +502,7 @@ void Dialog_Progress::write_operation_details(const OperationDetail& operationde
 		temp .replace( index, 1, "<br />" ) ;
 	
 	//and export everything to some kind of html...
-	out << "<table border='0'>" << std::endl
+	out << "<table>" << std::endl
 	<< "<tr>" << std::endl
 	<< "<td colspan='2'>" << std::endl
 	<< temp ;
