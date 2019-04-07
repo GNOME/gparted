@@ -406,7 +406,7 @@ void Dialog_Progress::on_save()
 			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
 			{
 				out << "<p>========================================</p>" << std::endl;
-				echo_operation_details(operations[t]->operation_detail, out);
+				write_operation_details(operations[t]->operation_detail, out);
 			}
 
 			//Write out proper HTML finish
@@ -493,9 +493,9 @@ void Dialog_Progress::write_partition_details(const Partition& partition, std::o
 }
 
 
-void Dialog_Progress::echo_operation_details( const OperationDetail & operationdetail, std::ofstream & out ) 
+void Dialog_Progress::write_operation_details(const OperationDetail& operationdetail, std::ofstream& out)
 {
-	//replace '\n' with '<br>'
+	// Replace '\n' with '<br />'
 	Glib::ustring temp = operationdetail .get_description() ;
 	for ( unsigned int index = temp .find( "\n" ) ; index < temp .length() ; index = temp .find( "\n" ) )
 		temp .replace( index, 1, "<br />" ) ;
@@ -573,7 +573,7 @@ void Dialog_Progress::echo_operation_details( const OperationDetail & operationd
 		<< "<td>" << std::endl ;
 
 		for ( unsigned int t = 0 ; t <  operationdetail .get_childs() .size() ; t++ )
-			echo_operation_details( *(operationdetail.get_childs()[ t ]), out );
+			write_operation_details(*(operationdetail.get_childs()[t]), out);
 
 		out << "</td>" << std::endl << "</tr>" << std::endl ;
 	}

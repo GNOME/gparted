@@ -54,8 +54,8 @@ private:
 	void on_save() ;
 	void write_device_details(const Device& device, std::ofstream& out);
 	void write_partition_details(const Partition& partition, std::ofstream& out);
-	void echo_operation_details( const OperationDetail & operation_detail, std::ofstream & out ) ;
-	
+	void write_operation_details(const OperationDetail& operation_detail, std::ofstream& out);
+
 	void on_response( int response_id ) ;
 	bool on_delete_event( GdkEventAny * event ) ;
 	bool pulsebar_pulse();
