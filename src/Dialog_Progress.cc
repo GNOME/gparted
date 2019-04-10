@@ -96,14 +96,14 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 			sigc::mem_fun(*this, &Dialog_Progress::on_cell_data_description) );
 
 		//fill 'er up
-		for (unsigned int t = 0; t < operations.size(); ++t)
+		for (unsigned int i = 0; i < operations.size(); ++i)
 		{
-			this->operations[t]->operation_detail.set_description(operations[t]->description, FONT_BOLD);
-			this->operations[t]->operation_detail.set_treepath(Utils::num_to_str(t));
+			this->operations[i]->operation_detail.set_description(operations[i]->description, FONT_BOLD);
+			this->operations[i]->operation_detail.set_treepath(Utils::num_to_str(i));
 
 			treerow = *(treestore_operations->append());
 			treerow[treeview_operations_columns.operation_description] =
-				this ->operations[t]->operation_detail.get_description();
+				this->operations[i]->operation_detail.get_description();
 		}
 
 		scrolledwindow.set_shadow_type(Gtk::SHADOW_ETCHED_IN);
@@ -404,10 +404,10 @@ void Dialog_Progress::on_save()
 			}
 
 			//Write out each operation
-			for ( unsigned int t = 0 ; t < operations .size() ; t++ )
+			for (unsigned int i = 0; i < operations.size(); i++)
 			{
 				out << "<p>========================================</p>" << std::endl;
-				write_operation_details(operations[t]->operation_detail, out);
+				write_operation_details(operations[i]->operation_detail, out);
 			}
 
 			//Write out proper HTML finish
@@ -573,8 +573,8 @@ void Dialog_Progress::write_operation_details(const OperationDetail& operationde
 		<< "<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>" << std::endl
 		<< "<td>" << std::endl ;
 
-		for ( unsigned int t = 0 ; t <  operationdetail .get_childs() .size() ; t++ )
-			write_operation_details(*(operationdetail.get_childs()[t]), out);
+		for (unsigned int i = 0; i < operationdetail.get_childs().size(); i++)
+			write_operation_details(*(operationdetail.get_childs()[i]), out);
 
 		out << "</td>" << std::endl << "</tr>" << std::endl ;
 	}
