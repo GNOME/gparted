@@ -97,7 +97,8 @@ private:
 	Glib::ustring progress_text;
 	bool succes, cancel;
 	double fraction ;
-	unsigned int t, warnings ;
+	unsigned int m_curr_op;
+	unsigned int warnings;
 	sigc::connection pulsetimer;
 	Glib::ustring label_current_sub_text ;
 	unsigned int cancel_countdown;

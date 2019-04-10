@@ -37,7 +37,7 @@ namespace GParted
 {
 
 Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::vector<Operation *>& operations)
- : m_devices(devices)
+ : m_devices(devices), m_curr_op(0)
 {
 	this ->set_title( _("Applying pending operations") ) ;
 	this ->operations = operations ;
@@ -217,28 +217,29 @@ bool Dialog_Progress::pulsebar_pulse()
 
 void Dialog_Progress::on_signal_show()
 {
-	for ( t = 0 ; t < operations .size() && succes && ! cancel ; t++ )
+	for (m_curr_op = 0; m_curr_op < operations.size() && succes && ! cancel; m_curr_op++)
 	{
-		operations[ t ] ->operation_detail .signal_update .connect(
+		operations[m_curr_op]->operation_detail.signal_update.connect(
 			sigc::mem_fun( this, &Dialog_Progress::on_signal_update ) ) ;
 
-		label_current .set_markup( "<b>" + operations[ t ] ->description + "</b>" ) ;
-		
-		progressbar_all .set_text( Glib::ustring::compose( _("%1 of %2 operations completed"), t, operations .size() ) ) ;
-		progressbar_all .set_fraction( fraction * t > 1.0 ? 1.0 : fraction * t ) ;
-		
-		treerow = treestore_operations ->children()[ t ] ;
+		label_current.set_markup("<b>" + operations[m_curr_op]->description + "</b>");
+
+		progressbar_all.set_text(Glib::ustring::compose(_("%1 of %2 operations completed"),
+		                                                m_curr_op, operations.size()));
+		progressbar_all.set_fraction(fraction * m_curr_op > 1.0 ? 1.0 : fraction * m_curr_op);
+
+		treerow = treestore_operations ->children()[m_curr_op];
 
 		//set status to 'execute'
-		operations[ t ] ->operation_detail .set_status( STATUS_EXECUTE ) ;
+		operations[m_curr_op]->operation_detail.set_status(STATUS_EXECUTE);
 
 		//set focus...
 		treeview_operations .set_cursor( static_cast<Gtk::TreePath>( treerow ) ) ;
-		
-		succes = signal_apply_operation.emit( operations[t] );
+
+		succes = signal_apply_operation.emit(operations[m_curr_op]);
 
 		//set status (succes/error) for this operation
-		operations[t]->operation_detail.set_success_and_capture_errors( succes );
+		operations[m_curr_op]->operation_detail.set_success_and_capture_errors(succes);
 	}
 	
 	//add save button
@@ -356,7 +357,7 @@ void Dialog_Progress::on_cancel()
 				sigc::mem_fun(*this, &Dialog_Progress::cancel_timeout), 1000 );
 		}
 		else cancelbutton->set_label( _("Force Cancel") );
-		operations[t]->operation_detail.signal_cancel.emit( cancel );
+		operations[m_curr_op]->operation_detail.signal_cancel.emit(cancel);
 		cancel = true;
 	}
 }
