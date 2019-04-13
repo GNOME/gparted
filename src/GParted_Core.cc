@@ -3558,7 +3558,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			// Actually MBR 07 IFS (Microsoft Installable File System) or
 			// GPT BDP (Windows Basic Data Partition).
 			// Ref: https://serverfault.com/a/829172
-			if ( ! lp_fs_type && fs_type == "udf" )
+			if (! lp_fs_type && partition.filesystem == FS_UDF)
 				lp_fs_type = ped_file_system_type_get( "ntfs" );
 
 			// default is Linux (83)
