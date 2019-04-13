@@ -1465,12 +1465,9 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 		else if ( fsname == "ext4"    ||
 		          fsname == "ext4dev"    )
 			return FS_EXT4;
-		else if ( fsname == "linux-swap"      ||
-		          fsname == "linux-swap(v1)"  ||
-		          fsname == "linux-swap(new)" ||
-		          fsname == "linux-swap(v0)"  ||
-		          fsname == "linux-swap(old)" ||
-		          fsname == "swap"               )
+		else if (fsname == "linux-swap(v0)" ||
+		         fsname == "linux-swap(v1)" ||
+		         fsname == "swap"             )
 			return FS_LINUX_SWAP;
 		else if ( fsname == "crypto_LUKS" )
 			return FS_LUKS;
