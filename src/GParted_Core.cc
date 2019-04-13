@@ -3555,14 +3555,6 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			if (partition.filesystem != FS_CLEARED)
 				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
 
-			// If not found, and FS is linux-swap, then try linux-swap(v1)
-			if ( ! lp_fs_type && fs_type == "linux-swap" )
-				lp_fs_type = ped_file_system_type_get( "linux-swap(v1)" );
-
-			// If not found, and FS is linux-swap, then try linux-swap(new)
-			if ( ! lp_fs_type && fs_type == "linux-swap" )
-				lp_fs_type = ped_file_system_type_get( "linux-swap(new)" );
-
 			// If not found, and FS is udf, then try ntfs.
 			// Actually MBR 07 IFS (Microsoft Installable File System) or
 			// GPT BDP (Windows Basic Data Partition).
