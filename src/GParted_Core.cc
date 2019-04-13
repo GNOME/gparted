@@ -2106,7 +2106,8 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 	}
 
 	if ( partition .filesystem == FS_CLEARED )
-		return erase_filesystem_signatures( partition, operationdetail ) ;
+		return    erase_filesystem_signatures(partition, operationdetail)
+		       && set_partition_type(partition, operationdetail);
 	else
 		return    erase_filesystem_signatures( partition, operationdetail )
 		       && set_partition_type( partition, operationdetail )
@@ -3550,8 +3551,12 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		{
 			Glib::ustring fs_type = Utils::get_filesystem_string( partition.filesystem );
 
-			// Lookup libparted file system type using GParted's name, as most match
-			PedFileSystemType * lp_fs_type = ped_file_system_type_get( fs_type.c_str() );
+			// Lookup libparted file system type using GParted's name, as most
+			// match.  Exclude cleared as the name won't be recognised by
+			// libparted and get_filesystem_string() has also translated it.
+			PedFileSystemType *lp_fs_type = NULL;
+			if (partition.filesystem != FS_CLEARED)
+				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
 
 			// If not found, and FS is linux-swap, then try linux-swap(v1)
 			if ( ! lp_fs_type && fs_type == "linux-swap" )
