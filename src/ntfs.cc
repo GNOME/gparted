@@ -62,11 +62,11 @@ FS ntfs::get_filesystem_support()
 
 	fs .busy = FS::GPARTED ;
 
-	if ( ! Glib::find_program_in_path( "ntfsresize" ) .empty() )
-	{
+	if (! Glib::find_program_in_path("ntfsinfo").empty())
 		fs.read = FS::EXTERNAL;
+
+	if (! Glib::find_program_in_path("ntfsresize").empty())
 		fs.check = FS::EXTERNAL;
-	}
 
 	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
 		Glib::ustring version ;
@@ -93,7 +93,7 @@ FS ntfs::get_filesystem_support()
 	}
 
 	//resizing is a delicate process ...
-	if ( fs .read && fs .check )
+	if (fs.check)
 	{
 		fs.grow = FS::EXTERNAL;
 
@@ -101,7 +101,6 @@ FS ntfs::get_filesystem_support()
 			fs.shrink = FS::EXTERNAL;
 	}
 
-	//we need ntfsresize to set correct used/unused after cloning
 	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() )
 		fs.copy = FS::EXTERNAL;
 
@@ -120,47 +119,38 @@ FS ntfs::get_filesystem_support()
 
 void ntfs::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( "ntfsresize --info --force --no-progress-bar " +
-	                                      Glib::shell_quote( partition.get_path() ),
-	                                      output, error, true );
-	if ( exit_status == 0 || exit_status == 1 )
+	exit_status = Utils::execute_command("ntfsinfo --mft " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		Glib::ustring::size_type index = output.find( "Current volume size:" );
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ).c_str(), "Current volume size: %lld", &T ) != 1 )
-			T = -1 ;
-
-		index = output .find( "resize at" ) ;
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ).c_str(), "resize at %lld", &N ) != 1 )
-			N = -1 ;
-		//For an absolutely full NTFS, "ntfsresize --info" exits
-		//  with status 1 and reports this message instead
-		index = output .find( "ERROR: Volume is full" ) ;
-		if ( index < output .length() )
-			N = T ;
-
-		index = output.find( "Cluster size" );
-		if ( index >= output.length() ||
-		     sscanf( output.substr( index ).c_str(), "Cluster size       : %lld", &S ) != 1 )
-			S = -1;
-
-		if ( T > -1 && N > -1 )
-		{
-			T = Utils::round( T / double(partition .sector_size) ) ;
-			N = Utils::round( N / double(partition .sector_size) ) ;
-			partition .set_sector_usage( T, T - N );
-		}
-		if ( S > -1 )
-			partition.fs_block_size = S;
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(output);
+		return;
 	}
-	else
+
+	long long cluster_size = -1;
+	Glib::ustring::size_type index = output.find("Cluster Size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Cluster Size: %lld", &cluster_size);
+
+	long long volume_size = -1;
+	index = output.find("Volume Size in Clusters:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Volume Size in Clusters: %lld", &volume_size);
+
+	long long free_clusters = -1;
+	index = output.find("Free Clusters:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "Free Clusters: %lld", &free_clusters);
+
+	if (cluster_size > -1 && volume_size > -1 && free_clusters > -1)
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector fs_size = volume_size * cluster_size / partition.sector_size;
+		Sector fs_free = free_clusters * cluster_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = cluster_size;
 	}
 }
 
