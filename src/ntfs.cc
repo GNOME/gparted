@@ -65,9 +65,6 @@ FS ntfs::get_filesystem_support()
 	if (! Glib::find_program_in_path("ntfsinfo").empty())
 		fs.read = FS::EXTERNAL;
 
-	if (! Glib::find_program_in_path("ntfsresize").empty())
-		fs.check = FS::EXTERNAL;
-
 	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
 		Glib::ustring version ;
 
@@ -93,19 +90,19 @@ FS ntfs::get_filesystem_support()
 	}
 
 	//resizing is a delicate process ...
-	if (fs.check)
+	if (! Glib::find_program_in_path("ntfsresize").empty())
 	{
+		fs.check = FS::EXTERNAL;
 		fs.grow = FS::EXTERNAL;
 
 		if ( fs .read ) //needed to determine a min file system size..
 			fs.shrink = FS::EXTERNAL;
+
+		fs.move = FS::GPARTED;
 	}
 
 	if ( ! Glib::find_program_in_path( "ntfsclone" ) .empty() )
 		fs.copy = FS::EXTERNAL;
-
-	if ( fs .check )
-		fs.move = FS::GPARTED;
 
 	fs .online_read = FS::GPARTED ;
 
