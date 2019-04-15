@@ -65,22 +65,11 @@ FS ntfs::get_filesystem_support()
 	if (! Glib::find_program_in_path("ntfsinfo").empty())
 		fs.read = FS::EXTERNAL;
 
-	if ( ! Glib::find_program_in_path( "ntfslabel" ) .empty() ) {
-		Glib::ustring version ;
-
+	if (! Glib::find_program_in_path("ntfslabel").empty())
+	{
 		fs .read_label = FS::EXTERNAL ;
 		fs .write_label = FS::EXTERNAL ;
-
-		//Not all versions of ntfslabel support setting the Volume Serial Number
-		//The advanced (AR) release does as of the first 2012 release
-		//The stable release does not have it yet, at the time of this writing
-		//So: check for the presence of the command-line option.
-
-		//ntfslabel --help exits with non-zero error code (1)
-		Utils::execute_command( "ntfslabel --help ", output, error, false ) ;
-
-		if ( ! ( version = Utils::regexp_label( output, "--new-serial[[:blank:]]" ) ) .empty() )
-			fs .write_uuid = FS::EXTERNAL ;
+		fs.write_uuid = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "mkntfs" ) .empty() )
