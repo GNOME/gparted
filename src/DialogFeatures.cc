@@ -152,13 +152,27 @@ DialogFeatures::DialogFeatures()
 	show_all_children() ;
 }
 
-void DialogFeatures::load_filesystems( const std::vector<FS> & FILESYSTEMS )
+
+void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 {
 	liststore_filesystems ->clear() ;
 
-	//fill the features chart with valid file systems 
-	for ( unsigned short t = 0; t < FILESYSTEMS .size() ; t++ )
-		show_filesystem( FILESYSTEMS[t] );
+	// Fill the features chart with fully supported file systems.
+	for (unsigned i = 0; i < fss.size(); i++)
+	{
+		if (GParted_Core::supported_filesystem(fss[i].filesystem))
+			show_filesystem(fss[i]);
+	}
+
+	// Find and add "other" at the end, for all the basic supported file systems.
+	for (unsigned i = 0; i < fss.size(); i++)
+	{
+		if (fss[i].filesystem == FS_OTHER)
+		{
+			show_filesystem(fss[i]);
+			break;
+		}
+	}
 }
 		
 void DialogFeatures::show_filesystem( const FS & fs )

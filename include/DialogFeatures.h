@@ -36,8 +36,8 @@ public:
 	DialogFeatures() ;
 	~DialogFeatures() ;
 
-	void load_filesystems( const std::vector<FS> & FILESYSTEMS ) ;
-	
+	void load_filesystems(const std::vector<FS>& fss);
+
 private:
 	void show_filesystem( const FS & fs ) ;
 
