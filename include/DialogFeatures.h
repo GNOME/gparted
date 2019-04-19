@@ -39,7 +39,7 @@ public:
 	void load_filesystems(const std::vector<FS>& fss);
 
 private:
-	void show_filesystem( const FS & fs ) ;
+	void load_one_filesystem(const FS& fs);
 
 	Gtk::Frame legend_frame ;
 	Gtk::TreeView treeview_filesystems;
