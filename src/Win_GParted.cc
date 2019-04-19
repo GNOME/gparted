@@ -1696,6 +1696,9 @@ void Win_GParted::menu_gparted_features()
 		partitionmenu_items[MENU_FORMAT]->unset_submenu();
 		partitionmenu_items[MENU_FORMAT]->set_submenu(*create_format_menu());
 		partitionmenu_items[MENU_FORMAT]->get_submenu()->show_all_children();
+
+		// Update valid operations for the currently selected partition.
+		set_valid_operations();
 	}
 }
 
