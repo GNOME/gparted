@@ -161,7 +161,7 @@ void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 	for (unsigned i = 0; i < fss.size(); i++)
 	{
 		if (GParted_Core::supported_filesystem(fss[i].filesystem))
-			show_filesystem(fss[i]);
+			load_one_filesystem(fss[i]);
 	}
 
 	// Find and add "other" at the end, for all the basic supported file systems.
@@ -169,13 +169,14 @@ void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 	{
 		if (fss[i].filesystem == FS_OTHER)
 		{
-			show_filesystem(fss[i]);
+			load_one_filesystem(fss[i]);
 			break;
 		}
 	}
 }
-		
-void DialogFeatures::show_filesystem( const FS & fs )
+
+
+void DialogFeatures::load_one_filesystem(const FS& fs)
 {
 	treerow = *( liststore_filesystems ->append() );
 	treerow[ treeview_filesystems_columns .filesystem ] = Utils::get_filesystem_string( fs .filesystem ) ;
