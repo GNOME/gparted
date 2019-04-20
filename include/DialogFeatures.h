@@ -18,6 +18,7 @@
 #ifndef GPARTED_DIALOGFEATURES_H
 #define GPARTED_DIALOGFEATURES_H
 
+
 #include "FileSystem.h"
 
 #include <gtkmm/dialog.h>
@@ -25,7 +26,10 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
-#include <gtkmm/image.h>
+#include <glibmm/ustring.h>
+#include <gdkmm/pixbuf.h>
+#include <vector>
+
 
 namespace GParted
 {

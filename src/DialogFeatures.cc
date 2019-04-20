@@ -15,12 +15,22 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "DialogFeatures.h"
 #include "FileSystem.h"
 #include "GParted_Core.h"
 #include "Utils.h"
 
 #include <gtkmm/stock.h>
+#include <gdkmm/pixbuf.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/box.h>
+#include <glibmm/ustring.h>
+#include <gtkmm/label.h>
+#include <gtkmm/image.h>
+#include <vector>
+
 
 namespace GParted
 {
@@ -200,5 +210,3 @@ DialogFeatures::~DialogFeatures()
 }
 
 } //GParted
-
-
