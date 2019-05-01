@@ -52,6 +52,9 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	info_msg_vbox.set_orientation(Gtk::ORIENTATION_VERTICAL);
 	info_msg_vbox .set_border_width( 6 ) ;
 	info_scrolled .set_policy( Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC ) ;
+#if HAVE_SET_PROPAGATE_NATURAL_WIDTH
+	info_scrolled.set_propagate_natural_width(true);
+#endif
 	info_scrolled .add( info_msg_vbox ) ;
 	//  As Gtk::Box widget info_msg_vbox doesn't have a native scrolling capability a
 	//  Gtk::Viewport is automatically created to contain it when it is added to the
