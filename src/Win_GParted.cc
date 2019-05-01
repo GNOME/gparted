@@ -658,6 +658,10 @@ void Win_GParted::init_hpaned_main()
 	scrollwindow = manage( new Gtk::ScrolledWindow() ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
+#if GTKMM_HAVE_GTK_SCROLLED_WINDOW_SET_PROPAGATE_NATURAL_WIDTH_HEIGHT
+	scrollwindow->set_propagate_natural_width(true);
+	scrollwindow->set_propagate_natural_height(true);
+#endif
 
 	hpaned_main .pack1( *scrollwindow, true, true );
 	scrollwindow ->add( vbox_info );
@@ -666,7 +670,11 @@ void Win_GParted::init_hpaned_main()
 	scrollwindow = manage( new Gtk::ScrolledWindow() ) ;
 	scrollwindow ->set_shadow_type( Gtk::SHADOW_ETCHED_IN );
 	scrollwindow ->set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
-	
+#if GTKMM_HAVE_GTK_SCROLLED_WINDOW_SET_PROPAGATE_NATURAL_WIDTH_HEIGHT
+	scrollwindow->set_propagate_natural_width(true);
+	scrollwindow->set_propagate_natural_height(true);
+#endif
+
 	//connect signals and add treeview_detail
 	treeview_detail .signal_partition_selected .connect( sigc::mem_fun( this, &Win_GParted::on_partition_selected ) );
 	treeview_detail .signal_partition_activated .connect( sigc::mem_fun( this, &Win_GParted::on_partition_activated ) );

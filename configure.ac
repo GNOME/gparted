@@ -242,6 +242,17 @@ if test "x$need_cxx_compile_stdcxx_11" = xyes; then
 fi
 
 
+dnl Check for gtkmm >= 3.22 to determine availability of Gtk::ScrolledWindow::set_propagate_natural_width/height().
+AC_MSG_CHECKING([for Gtk::ScrolledWindow::set_propagate_natural_width/height() methods])
+PKG_CHECK_EXISTS(
+	[gtkmm-3.0 >= 3.22.0],
+	[AC_DEFINE([GTKMM_HAVE_GTK_SCROLLED_WINDOW_SET_PROPAGATE_NATURAL_WIDTH_HEIGHT], 1,
+	           [Define to 1 if gtkmm provides Gtk::ScrolledWindow::set_propagate_natural_width/height() methods.])
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+
 
 dnl Definitions for building of and with gtest.  Gets flags for pthread via earlier
 dnl gthread package check.
