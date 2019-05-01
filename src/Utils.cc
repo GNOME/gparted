@@ -68,7 +68,11 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 	Gtk::Label * label = manage(new Gtk::Label(text, Gtk::ALIGN_START, yalign));
 
 	label ->set_use_markup( use_markup ) ;
-	label ->set_line_wrap( wrap ) ;
+	if (wrap)
+	{
+		label->set_line_wrap(true);
+		label->set_max_width_chars(40);
+	}
 	label ->set_selectable( selectable ) ;
 
 	return label ;
