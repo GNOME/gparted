@@ -72,6 +72,7 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 	{
 		label->set_line_wrap(true);
 		label->set_max_width_chars(40);
+		label->property_xalign().set_value(0.0);
 	}
 	label ->set_selectable( selectable ) ;
 
