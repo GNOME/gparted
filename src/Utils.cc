@@ -62,11 +62,13 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
                             , bool use_markup
                             , bool wrap
                             , bool selectable
-                            , Gtk::Align yalign
+                            , Gtk::Align valign
                             )
 {
-	Gtk::Label * label = manage(new Gtk::Label(text, Gtk::ALIGN_START, yalign));
+	Gtk::Label *label = manage(new Gtk::Label(text));
 
+	label->set_valign(valign);
+	label->property_xalign().set_value(0.0);
 	label ->set_use_markup( use_markup ) ;
 	if (wrap)
 	{

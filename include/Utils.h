@@ -128,7 +128,7 @@ public:
 	                            , bool use_markup = true
 	                            , bool wrap = false
 	                            , bool selectable = false
-	                            , Gtk::Align yalign = Gtk::ALIGN_CENTER
+	                            , Gtk::Align valign = Gtk::ALIGN_CENTER
 	                            ) ;
 	static Gtk::Image* mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_size);
 	static Glib::RefPtr<Gdk::Pixbuf> mk_pixbuf(Gtk::Widget& widget,
