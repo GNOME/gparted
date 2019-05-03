@@ -242,6 +242,17 @@ if test "x$need_cxx_compile_stdcxx_11" = xyes; then
 fi
 
 
+dnl Check for gtkmm >= 3.16 to determine availability of Gtk::Label::set_xalign().
+AC_MSG_CHECKING([for Gtk::Label::set_xalign() method])
+PKG_CHECK_EXISTS(
+	[gtkmm-3.0 >= 3.16.0],
+	[AC_DEFINE([HAVE_LABEL_SET_XALIGN], 1,
+	           [Define to 1 if gtkmm provides Gtk::Label::set_xalign() method.])
+	 AC_MSG_RESULT([yes])
+	],
+	[AC_MSG_RESULT([no])]
+)
+
 dnl Check for gtkmm >= 3.22 to determine availability of Gtk::ScrolledWindow::set_propagate_natural_width().
 AC_MSG_CHECKING([for Gtk::ScrolledWindow::set_propagate_natural_width() method])
 PKG_CHECK_EXISTS(
