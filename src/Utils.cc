@@ -65,8 +65,10 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
                             , Gtk::Align yalign
                             )
 {
-	Gtk::Label * label = manage(new Gtk::Label(text, Gtk::ALIGN_START, yalign));
+	Gtk::Label *label = manage(new Gtk::Label(text));
 
+	label->set_yalign(yalign);
+	label->property_xalign().set_value(0.0);
 	label ->set_use_markup( use_markup ) ;
 	if (wrap)
 	{
