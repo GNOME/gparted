@@ -841,7 +841,7 @@ void Win_GParted::Add_Operation( const Device & device, Operation * operation )
 		     operation ->type == OPERATION_CHANGE_UUID ||
 		     operation ->type == OPERATION_LABEL_FILESYSTEM ||
 		     operation ->type == OPERATION_NAME_PARTITION ||
-		     gparted_core.snap_to_alignment( device, operation->get_partition_new(), error )
+		     gparted_core.valid_partition(device, operation->get_partition_new(), error)
 		   )
 		{
 			operation ->create_description() ;
