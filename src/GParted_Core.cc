@@ -545,6 +545,14 @@ bool GParted_Core::snap_to_alignment( const Device & device, Partition & partiti
 	else if ( partition .alignment == ALIGN_MEBIBYTE )
 		rc = snap_to_mebibyte( device, partition, error ) ;
 
+	return rc;
+}
+
+
+bool GParted_Core::valid_partition(const Device& device, Partition& partition, Glib::ustring& error)
+{
+	bool rc = snap_to_alignment(device, partition, error);
+
 	//Ensure that partition start and end are not beyond the ends of the disk device
 	if ( partition .sector_start < 0 )
 		partition .sector_start = 0 ;
