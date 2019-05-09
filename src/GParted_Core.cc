@@ -328,7 +328,8 @@ Glib::ustring GParted_Core::get_thread_status_message( )
 	return thread_status_message ;
 }
 
-bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) 
+
+void GParted_Core::snap_to_cylinder(const Device& device, Partition& partition) 
 {
 	Sector diff = 0;
 
@@ -374,11 +375,10 @@ bool GParted_Core::snap_to_cylinder( const Device & device, Partition & partitio
 		else
 			partition .sector_end += (device .cylsize - diff ) ;
 	}
-
-	return true ;
 }
 
-bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) 
+
+void GParted_Core::snap_to_mebibyte(const Device& device, Partition& partition) 
 {
 	Sector diff = 0;
 	if ( partition .sector_start < 2 || partition .type == TYPE_LOGICAL )
@@ -532,26 +532,21 @@ bool GParted_Core::snap_to_mebibyte( const Device & device, Partition & partitio
 	{
 		partition .sector_end -= ( MEBIBYTE / partition .sector_size ) ;
 	}
-
-	return true ;
 }
 
-bool GParted_Core::snap_to_alignment( const Device & device, Partition & partition, Glib::ustring & error )
+
+void GParted_Core::snap_to_alignment(const Device& device, Partition& partition)
 {
-	bool rc = true ;
-
 	if ( partition .alignment == ALIGN_CYLINDER )
-		rc = snap_to_cylinder( device, partition, error ) ;
+		snap_to_cylinder(device, partition);
 	else if ( partition .alignment == ALIGN_MEBIBYTE )
-		rc = snap_to_mebibyte( device, partition, error ) ;
-
-	return rc;
+		snap_to_mebibyte(device, partition);
 }
 
 
 bool GParted_Core::valid_partition(const Device& device, Partition& partition, Glib::ustring& error)
 {
-	bool rc = snap_to_alignment(device, partition, error);
+	snap_to_alignment(device, partition);
 
 	//Ensure that partition start and end are not beyond the ends of the disk device
 	if ( partition .sector_start < 0 )
@@ -588,7 +583,7 @@ bool GParted_Core::valid_partition(const Device& device, Partition& partition, G
 	//however, finding the adjacent partitions is not as easy as it seems and at this moment all the dialogs
 	//already perform these checks. A perfect 'fixme-later' ;)
 
-	return rc ;
+	return true;
 }
 
 bool GParted_Core::apply_operation_to_disk( Operation * operation )

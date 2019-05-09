@@ -50,10 +50,10 @@ public:
 	void set_devices( std::vector<Device> & devices ) ;
 	void set_devices_thread( std::vector<Device> * pdevices );
 	void guess_partition_table(const Device & device, Glib::ustring &buff);
-	
-	bool snap_to_cylinder( const Device & device, Partition & partition, Glib::ustring & error ) ;
-	bool snap_to_mebibyte( const Device & device, Partition & partition, Glib::ustring & error ) ;
-	bool snap_to_alignment( const Device & device, Partition & partition, Glib::ustring & error ) ;
+
+	void snap_to_cylinder(const Device& device, Partition& partition);
+	void snap_to_mebibyte(const Device& device, Partition& partition);
+	void snap_to_alignment(const Device& device, Partition& partition);
 	bool valid_partition(const Device& device, Partition& partition, Glib::ustring& error);
 	bool apply_operation_to_disk( Operation * operation );
 
