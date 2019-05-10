@@ -18,6 +18,7 @@
 #include "GParted_Core.h"
 #include "CopyBlocks.h"
 #include "BlockSpecial.h"
+#include "Device.h"
 #include "DMRaid.h"
 #include "FileSystem.h"
 #include "FS_Info.h"
