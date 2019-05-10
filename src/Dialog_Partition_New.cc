@@ -15,6 +15,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Device.h"
 #include "Dialog_Partition_New.h"
 #include "FileSystem.h"
 #include "GParted_Core.h"
@@ -32,6 +33,7 @@ Dialog_Partition_New::Dialog_Partition_New( const Device & device,
                                             bool any_extended,
                                             unsigned short new_count,
                                             const std::vector<FS> & FILESYSTEMS )
+ : Dialog_Base_Partition(device)
 {
 	/*TO TRANSLATORS: dialogtitle */
 	this ->set_title( _("Create new Partition") ) ;

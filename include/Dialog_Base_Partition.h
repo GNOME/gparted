@@ -18,6 +18,8 @@
 #ifndef GPARTED_DIALOG_BASE_PARTITION_H
 #define GPARTED_DIALOG_BASE_PARTITION_H
 
+
+#include "Device.h"
 #include "Frame_Resizer_Extended.h"
 #include "FileSystem.h"
 #include "OptionComboBox.h"
@@ -37,7 +39,7 @@ class Dialog_Base_Partition : public Gtk::Dialog
 {
 public:
 	
-	Dialog_Base_Partition( ) ;
+	Dialog_Base_Partition(const Device& device);
 	~Dialog_Base_Partition( ) ;
 
 	void Set_Resizer( bool extended ) ;
@@ -90,6 +92,7 @@ protected:
 
 	bool fixed_start, GRIP ;
 	double before_value ;
+	const Device& m_device;
 	FS fs ;
 	FS_Limits fs_limits;  // Working copy of file system min/max size limits
 

@@ -18,6 +18,8 @@
 #ifndef GPARTED_DIALOG_PARTITION_COPY_H
 #define GPARTED_DIALOG_PARTITION_COPY_H
 
+
+#include "Device.h"
 #include "Dialog_Base_Partition.h"
 #include "FileSystem.h"
 #include "Partition.h"
@@ -28,9 +30,10 @@ namespace GParted
 class Dialog_Partition_Copy : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Copy( const FS & fs, const FS_Limits & fs_limits,
-	                       const Partition & selected_partition,
-	                       const Partition & copied_partition );
+	Dialog_Partition_Copy(const Device& device, const FS& fs,
+	                      const FS_Limits& fs_limits,
+	                      const Partition& selected_partition,
+	                      const Partition& copied_partition);
 	~Dialog_Partition_Copy();
 
 	const Partition & Get_New_Partition();

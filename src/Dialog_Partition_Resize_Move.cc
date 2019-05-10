@@ -15,6 +15,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Device.h"
 #include "Dialog_Partition_Resize_Move.h"
 #include "FileSystem.h"
 #include "GParted_Core.h"
@@ -25,9 +26,11 @@
 namespace GParted
 {
 
-Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move( const FS & fs, const FS_Limits & fs_limits,
-                                                            const Partition & selected_partition,
-                                                            const PartitionVector & partitions )
+Dialog_Partition_Resize_Move::Dialog_Partition_Resize_Move(const Device& device, const FS & fs,
+                                                           const FS_Limits & fs_limits,
+                                                           const Partition & selected_partition,
+                                                           const PartitionVector & partitions)
+ : Dialog_Base_Partition(device)
 {
 	this ->fs = fs ;
 	this->fs_limits = fs_limits;

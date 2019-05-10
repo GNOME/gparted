@@ -2024,7 +2024,11 @@ void Win_GParted::activate_resize()
 		working_ptn = selected_partition_ptr->clone();
 	}
 
-	Dialog_Partition_Resize_Move dialog( fs_cap, fs_limits, *working_ptn, *display_partitions_ptr );
+	Dialog_Partition_Resize_Move dialog(devices[current_device],
+	                                    fs_cap,
+	                                    fs_limits,
+	                                    *working_ptn,
+	                                    *display_partitions_ptr);
 	dialog .set_transient_for( *this ) ;	
 
 	delete working_ptn;
@@ -2139,10 +2143,11 @@ void Win_GParted::activate_paste()
 			part_temp->clear_mountpoints();
 			part_temp->name.clear();
 
-			Dialog_Partition_Copy dialog( gparted_core.get_fs( copied_filesystem_ptn.filesystem ),
-			                              fs_limits,
-			                              *selected_partition_ptr,
-			                              *part_temp );
+			Dialog_Partition_Copy dialog(devices[current_device],
+			                             gparted_core.get_fs(copied_filesystem_ptn.filesystem),
+			                             fs_limits,
+			                             *selected_partition_ptr,
+			                             *part_temp);
 			delete part_temp;
 			part_temp = NULL;
 			dialog .set_transient_for( *this );
