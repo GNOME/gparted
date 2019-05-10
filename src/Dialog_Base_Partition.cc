@@ -220,6 +220,12 @@ void Dialog_Base_Partition::prepare_new_partition()
 			break;
 	}
 
+	new_partition->free_space_before = Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
+
+	// If the original before value has not changed, then set indicator to keep start sector unchanged.
+	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
+		new_partition->strict_start = TRUE;
+
 	//update partition usage
 	if ( new_partition->sector_usage_known() )
 	{
@@ -240,12 +246,6 @@ void Dialog_Base_Partition::prepare_new_partition()
 			new_partition->set_sector_usage( new_size, new_size - new_partition->sectors_used );
 		}
 	}
-
-	new_partition->free_space_before = Sector(spinbutton_before.get_value_as_int()) * (MEBIBYTE / new_partition->sector_size);
-
-	//if the original before value has not changed, then set indicator to keep start sector unchanged
-	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
-		new_partition->strict_start = TRUE;
 }
 
 void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type ) 
