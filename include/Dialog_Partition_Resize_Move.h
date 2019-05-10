@@ -17,6 +17,8 @@
 #ifndef GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
 #define GPARTED_DIALOG_PARTITION_RESIZE_MOVE_H
 
+
+#include "Device.h"
 #include "Dialog_Base_Partition.h"
 #include "FileSystem.h"
 #include "Partition.h"
@@ -28,9 +30,10 @@ namespace GParted
 class Dialog_Partition_Resize_Move : public Dialog_Base_Partition
 {
 public:
-	Dialog_Partition_Resize_Move( const FS & fs, const FS_Limits & fs_limits,
-	                              const Partition & selected_partition,
-	                              const PartitionVector & partitions );
+	Dialog_Partition_Resize_Move(const Device& device, const FS& fs,
+	                             const FS_Limits& fs_limits,
+	                             const Partition& selected_partition,
+	                             const PartitionVector& partitions);
 	~Dialog_Partition_Resize_Move();
 
 private:

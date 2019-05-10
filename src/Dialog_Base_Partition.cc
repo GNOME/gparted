@@ -15,6 +15,7 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Device.h"
 #include "Dialog_Base_Partition.h"
 #include "Partition.h"
 #include "Utils.h"
@@ -24,8 +25,9 @@
 
 namespace GParted
 {
-	
-Dialog_Base_Partition::Dialog_Base_Partition()
+
+Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
+ : m_device(device)
 {
 	frame_resizer_base = NULL;
 	GRIP = false ;
