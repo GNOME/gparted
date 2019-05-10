@@ -16,6 +16,7 @@
  */
 
 #include "Win_GParted.h"
+#include "Device.h"
 #include "Dialog_Progress.h"
 #include "DialogFeatures.h"
 #include "DialogPasswordEntry.h"

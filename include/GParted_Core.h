@@ -19,6 +19,7 @@
 #define GPARTED_GPARTED_CORE_H
 
 #include "BlockSpecial.h"
+#include "Device.h"
 #include "FileSystem.h"
 #include "Operation.h"
 #include "Partition.h"
