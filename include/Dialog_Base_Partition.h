@@ -59,6 +59,9 @@ protected:
 	};
 
 	void prepare_new_partition();
+	static void snap_to_alignment(const Device& device, Partition& partition);
+	static void snap_to_cylinder(const Device& device, Partition& partition);
+	static void snap_to_mebibyte(const Device& device, Partition& partition);
 
 	void Set_Confirm_Button( CONFIRMBUTTON button_type ) ;
 	void Set_MinMax_Text( Sector min, Sector max ) ;

@@ -319,6 +319,8 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 		new_partition->logicals.push_back_adopt( unallocated );
 	}
 
+	Dialog_Base_Partition::snap_to_alignment(m_device, *new_partition);
+
 	return *new_partition;
 }
 
