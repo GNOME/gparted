@@ -332,29 +332,43 @@ Glib::ustring GParted_Core::get_thread_status_message( )
 bool GParted_Core::valid_partition(const Device& device, Partition& partition, Glib::ustring& error)
 {
 	//Ensure that partition start and end are not beyond the ends of the disk device
-	if ( partition .sector_start < 0 )
-		partition .sector_start = 0 ;
-	if ( partition .sector_end > device .length )
-		partition .sector_end = device .length - 1 ;
+	if (partition.sector_start < 0)
+	{
+		error = GPARTED_BUG + ": " +
+		        Glib::ustring::compose(
+		            /* TO TRANSLATORS: looks like   A partition cannot start (-2048)
+		             * before the start of the device */
+		            _("A partition cannot start (%1) before the start of the device"),
+		            partition.sector_start);
+		return false;
+	}
+	if (partition.sector_end >= device.length)
+	{
+		error = GPARTED_BUG + ": " +
+		        Glib::ustring::compose(
+		                /* TO TRANSLATORS: looks like   A partition cannot end (2099199)
+		                 * after the end of the device (2097151) */
+		                _("A partition cannot end (%1) after the end of the device (%2)"),
+		                partition.sector_start);
+		return false;
+	}
 
 	//do some basic checks on the partition
 	if ( partition .get_sector_length() <= 0 )
 	{
-		error = Glib::ustring::compose(
+		error = GPARTED_BUG + ": " +
+		        Glib::ustring::compose(
 				/* TO TRANSLATORS:  looks like   A partition cannot have a length of -1 sectors */
 				_("A partition cannot have a length of %1 sectors"),
 				partition .get_sector_length() ) ;
 		return false ;
 	}
 
-	//FIXME: I think that this if condition should be impossible because Partition::set_sector_usage(),
-	//  and ::set_used() and ::Set_Unused() before that, don't allow setting file usage figures to be
-	//  larger than the partition size.  A btrfs file system spanning muiltiple partitions will have
-	//  usage figures larger than any single partition but the figures will won't be set because of
-	//  the above reasoning.  Confirm condition is impossible and consider removing this code.
+	// Check this partition's file system usage is valid.
 	if ( partition .get_sector_length() < partition .sectors_used )
 	{
-		error = Glib::ustring::compose(
+		error = GPARTED_BUG + ": " +
+		        Glib::ustring::compose(
 				/* TO TRANSLATORS: looks like   A partition with used sectors (2048) greater than its length (1536) is not valid */
 				_("A partition with used sectors (%1) greater than its length (%2) is not valid"),
 				partition .sectors_used,
