@@ -150,10 +150,12 @@ static std::string get_link_name()
 			break;
 		}
 	}
+
+	std::string d_name = found ? dentry->d_name : "";
 	closedir( dir );
 
 	if ( found )
-		return std::string( "/dev/disk/by-id/" ) + dentry->d_name;
+		return std::string( "/dev/disk/by-id/" ) + d_name;
 
 	ADD_FAILURE() << __func__ << "(): No entries found in directory '/dev/disk/by-id'";
 	return "";
