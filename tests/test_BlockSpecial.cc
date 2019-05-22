@@ -138,6 +138,7 @@ static std::string get_link_name()
 		return "";
 	}
 
+	std::string name;
 	bool found = false;
 	struct dirent * dentry;
 	// Silence GCC [-Wparentheses] warning with double parentheses
@@ -146,6 +147,7 @@ static std::string get_link_name()
 		if ( strcmp( dentry->d_name, "." )  != 0 &&
 		     strcmp( dentry->d_name, ".." ) != 0    )
 		{
+			name = dentry->d_name;
 			found = true;
 			break;
 		}
@@ -153,7 +155,7 @@ static std::string get_link_name()
 	closedir( dir );
 
 	if ( found )
-		return std::string( "/dev/disk/by-id/" ) + dentry->d_name;
+		return std::string("/dev/disk/by-id/") + name;
 
 	ADD_FAILURE() << __func__ << "(): No entries found in directory '/dev/disk/by-id'";
 	return "";
