@@ -26,7 +26,6 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/main.h>
 #include <glibmm/ustring.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
@@ -75,11 +74,11 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
 
 		//create some icons here, instead of recreating them every time
-		icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_success = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_error = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_info = Utils::mk_pixbuf(*this, Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_execute = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_success = Utils::mk_pixbuf("gtk-apply", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_error = Utils::mk_pixbuf("dialog-error", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_info = Utils::mk_pixbuf("dialog-information", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_warning = Utils::mk_pixbuf("dialog-warning", Gtk::ICON_SIZE_LARGE_TOOLBAR);
 
 		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
 		treeview_operations.set_model(treestore_operations);

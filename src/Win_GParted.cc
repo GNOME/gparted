@@ -162,25 +162,27 @@ void Win_GParted::init_menubar()
 	//fill menubar_main and connect callbacks 
 	//gparted
 	menu = manage( new Gtk::Menu() ) ;
-	image = Utils::mk_image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_MENU);
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Refresh Devices"),
+		"view-refresh",
 		Gtk::AccelKey("<control>r"),
-		*image, 
 		sigc::mem_fun(*this, &Win_GParted::menu_gparted_refresh_devices)));
 	menu->append(*item);
-	
-	image = Utils::mk_image(Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_MENU);
+
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
-		_("_Devices"), *image));
+		_("_Devices"),
+		"drive-harddisk"));
 	menu->append(*item);
 	mainmenu_items[MENU_DEVICES] = item;
 	
 	item = manage(new GParted::Menu_Helpers::SeparatorElem());
 	menu->append(*item);
 
-	item = manage(new GParted::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::QUIT, sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit)));
+	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
+		Utils::get_stock_label(Gtk::Stock::QUIT),
+		"application-exit",
+		Gtk::AccelKey("<control>q"),
+		sigc::mem_fun(*this, &Win_GParted::menu_gparted_quit)));
 	menu->append(*item);
 
 	item = manage(new GParted::Menu_Helpers::MenuElem(
@@ -191,29 +193,30 @@ void Win_GParted::init_menubar()
 	menu = manage( new Gtk::Menu() ) ;
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Undo Last Operation"), 
+		"edit-undo",
 		Gtk::AccelKey("<control>z"),
-		*Utils::mk_image(Gtk::Stock::UNDO, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &Win_GParted::activate_undo)));
 	menu->append(*item);
 	mainmenu_items[MENU_UNDO_OPERATION] = item;
 
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Clear All Operations"), 
-		*Utils::mk_image(Gtk::Stock::CLEAR, Gtk::ICON_SIZE_MENU),
+		"edit-clear",
 		sigc::mem_fun(*this, &Win_GParted::clear_operationslist)));
 	menu->append(*item);
 	mainmenu_items[MENU_CLEAR_OPERATIONS] = item;
 
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Apply All Operations"),
+		"gtk-apply",
 		Gtk::AccelKey(GDK_KEY_Return, Gdk::CONTROL_MASK),
-		*Utils::mk_image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &Win_GParted::activate_apply)));
 	menu->append(*item);
 	mainmenu_items[MENU_APPLY_OPERATIONS] = item;
 
 	item = manage(new GParted::Menu_Helpers::MenuElem(
-		_("_Edit"), *menu));
+		_("_Edit"),
+		*menu));
 	menubar_main.append(*item);
 	mainmenu_items[MENU_EDIT] = item;
 
@@ -273,16 +276,18 @@ void Win_GParted::init_menubar()
 
 	item = manage(new GParted::Menu_Helpers::ImageMenuElem(
 		_("_Contents"), 
+		"help-contents",
 		Gtk::AccelKey("F1"),
-		*Utils::mk_image(Gtk::Stock::HELP, Gtk::ICON_SIZE_MENU),
 		sigc::mem_fun(*this, &Win_GParted::menu_help_contents)));
 	menu->append(*item);
 
 	item = manage(new GParted::Menu_Helpers::SeparatorElem());
 	menu->append(*item);
 
-	item = manage( new GParted::Menu_Helpers::StockMenuElem(
-		Gtk::Stock::ABOUT, sigc::mem_fun(*this, &Win_GParted::menu_help_about)));
+	item = manage( new GParted::Menu_Helpers::ImageMenuElem(
+		Utils::get_stock_label(Gtk::Stock::ABOUT),
+		"help-about",
+		sigc::mem_fun(*this, &Win_GParted::menu_help_about)));
 	menu->append(*item);
 
 	item = manage(new GParted::Menu_Helpers::MenuElem(
@@ -296,19 +301,20 @@ void Win_GParted::init_toolbar()
 	// Initialize and pack toolbar_main
 	hbox_toolbar.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 	hbox_toolbar.pack_start( toolbar_main );
-	
-	//NEW and DELETE
-	image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_BUTTON);
-	/*TO TRANSLATORS: "New" is a tool bar item for partition actions. */
-	Glib::ustring str_temp = _("New") ;
-	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, str_temp ));
+
+	// NEW and DELETE
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("document-new", Gtk::ICON_SIZE_BUTTON),
+		/*TO TRANSLATORS: "New" is a tool bar item for partition actions. */
+		_("New")));
 	toolbutton ->signal_clicked() .connect( sigc::mem_fun( *this, &Win_GParted::activate_new ) );
 	toolbar_main .append( *toolbutton );
 	TOOLBAR_NEW = index++ ;
 	toolbutton->set_tooltip_text(_("Create a new partition in the selected unallocated space"));
-	image = Utils::mk_image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_BUTTON);
-	str_temp = Utils::get_stock_label(Gtk::Stock::DELETE);
-	toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("edit-delete", Gtk::ICON_SIZE_BUTTON),
+		Utils::get_stock_label(Gtk::Stock::DELETE)));
 	toolbutton->set_use_underline(true);
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_delete) );
 	toolbar_main.append(*toolbutton);
@@ -316,10 +322,9 @@ void Win_GParted::init_toolbar()
 	toolbutton->set_tooltip_text(_("Delete the selected partition"));
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	index++ ;
-	
-	//RESIZE/MOVE
-	image = Utils::mk_image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON);
-	str_temp = _("Resize/Move") ;
+
+	// RESIZE/MOVE
+	Glib::ustring str_temp = _("Resize/Move");
 	//Condition string split and Undo button.
 	//  for longer translated string, split string in two and skip the Undo button to permit full toolbar to display
 	//  FIXME:  Is there a better way to do this, perhaps without the conditional?  At the moment this seems to be the best compromise.
@@ -331,7 +336,9 @@ void Win_GParted::init_toolbar()
 			display_undo = false ;
 		}
 	}
-	toolbutton = Gtk::manage(new Gtk::ToolButton( *image, str_temp ));
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("go-last", Gtk::ICON_SIZE_BUTTON),
+		str_temp));
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_resize) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_RESIZE_MOVE = index++ ;
@@ -339,18 +346,19 @@ void Win_GParted::init_toolbar()
 	toolbar_main.append( *(Gtk::manage(new Gtk::SeparatorToolItem)) );
 	index++ ;
 
-	//COPY and PASTE
-	image = Utils::mk_image(Gtk::Stock::COPY, Gtk::ICON_SIZE_BUTTON);
-	str_temp = Utils::get_stock_label(Gtk::Stock::COPY);
-	toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+	// COPY and PASTE
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("edit-copy", Gtk::ICON_SIZE_BUTTON),
+		Utils::get_stock_label(Gtk::Stock::COPY)));
 	toolbutton->set_use_underline(true);
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_copy) );
 	toolbar_main.append(*toolbutton);
 	TOOLBAR_COPY = index++ ;
 	toolbutton->set_tooltip_text(_("Copy the selected partition to the clipboard"));
-	image = Utils::mk_image(Gtk::Stock::PASTE, Gtk::ICON_SIZE_BUTTON);
-	str_temp = Utils::get_stock_label(Gtk::Stock::PASTE);
-	toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("edit-paste", Gtk::ICON_SIZE_BUTTON),
+		Utils::get_stock_label(Gtk::Stock::PASTE)));
 	toolbutton->set_use_underline(true);
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_paste) );
 	toolbar_main.append(*toolbutton);
@@ -362,9 +370,9 @@ void Win_GParted::init_toolbar()
 	//UNDO and APPLY
 	if ( display_undo ) {
 		//Undo button is displayed only if translated language "Resize/Move" is not too long.  See above setting of this condition.
-		image = Utils::mk_image(Gtk::Stock::UNDO, Gtk::ICON_SIZE_BUTTON);
-		str_temp = Utils::get_stock_label(Gtk::Stock::UNDO);
-		toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+		toolbutton = Gtk::manage(new Gtk::ToolButton(
+			*Utils::mk_image("edit-undo", Gtk::ICON_SIZE_BUTTON),
+			Utils::get_stock_label(Gtk::Stock::UNDO)));
 		toolbutton->set_use_underline(true);
 		toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_undo) );
 		toolbar_main.append(*toolbutton);
@@ -373,9 +381,9 @@ void Win_GParted::init_toolbar()
 		toolbutton->set_tooltip_text(_("Undo Last Operation"));
 	}
 
-	image = Utils::mk_image(Gtk::Stock::APPLY, Gtk::ICON_SIZE_BUTTON);
-	str_temp = Utils::get_stock_label(Gtk::Stock::APPLY);
-	toolbutton = Gtk::manage(new Gtk::ToolButton(*image, str_temp));
+	toolbutton = Gtk::manage(new Gtk::ToolButton(
+		*Utils::mk_image("gtk-apply", Gtk::ICON_SIZE_BUTTON),
+		Utils::get_stock_label(Gtk::Stock::APPLY)));
 	toolbutton->set_use_underline(true);
 	toolbutton ->signal_clicked().connect( sigc::mem_fun(*this, &Win_GParted::activate_apply) );
 	toolbar_main.append(*toolbutton);
@@ -402,18 +410,19 @@ void Win_GParted::init_partition_menu()
 	Gtk::MenuItem *item;
 
 	//fill menu_partition
-	image = Utils::mk_image(Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
 	item = manage(new
 			/*TO TRANSLATORS: "_New" is a sub menu item for the partition menu. */
 			GParted::Menu_Helpers::ImageMenuElem(_("_New"),
+							  "document-new",
 							  Gtk::AccelKey(GDK_KEY_Insert, Gdk::BUTTON1_MASK),
-							  *image,
 							  sigc::mem_fun(*this, &Win_GParted::activate_new)));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_NEW] = item;
 
 	item = manage(new
-			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::DELETE,
+			GParted::Menu_Helpers::ImageMenuElem(
+							  Utils::get_stock_label(Gtk::Stock::DELETE),
+							  "edit-delete",
 							  Gtk::AccelKey(GDK_KEY_Delete, Gdk::BUTTON1_MASK),
 							  sigc::mem_fun(*this, &Win_GParted::activate_delete)));
 	menu_partition.append(*item);
@@ -422,10 +431,9 @@ void Win_GParted::init_partition_menu()
 	item = manage(new GParted::Menu_Helpers::SeparatorElem());
 	menu_partition.append(*item);
 
-	image = Utils::mk_image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
 	item = manage(new
 			GParted::Menu_Helpers::ImageMenuElem(_("_Resize/Move"),
-							  *image, 
+							  "go-last",
 							  sigc::mem_fun(*this, &Win_GParted::activate_resize)));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_RESIZE_MOVE] = item;
@@ -434,13 +442,17 @@ void Win_GParted::init_partition_menu()
 	menu_partition.append(*item);
 	
 	item = manage(new
-			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::COPY,
+			GParted::Menu_Helpers::ImageMenuElem(
+							  Utils::get_stock_label(Gtk::Stock::COPY),
+							  "edit-copy",
 							  sigc::mem_fun(*this, &Win_GParted::activate_copy)));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_COPY] = item;
 	
 	item = manage(new
-			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::PASTE,
+			GParted::Menu_Helpers::ImageMenuElem(
+							  Utils::get_stock_label(Gtk::Stock::PASTE),
+							  "edit-paste",
 							  sigc::mem_fun(*this, &Win_GParted::activate_paste)));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_PASTE] = item;
@@ -448,11 +460,10 @@ void Win_GParted::init_partition_menu()
 	item = manage(new GParted::Menu_Helpers::SeparatorElem());
 	menu_partition.append(*item);
 
-	image = Utils::mk_image(Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
 	item = manage(new
 			/*TO TRANSLATORS: menuitem which holds a submenu with file systems.. */
 			GParted::Menu_Helpers::ImageMenuElem(_("_Format to"),
-							  *image,
+							  "gtk-convert",
 							  *create_format_menu()));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_FORMAT] = item;
@@ -517,7 +528,9 @@ void Win_GParted::init_partition_menu()
 	menu_partition.append(*item);
 
 	item = manage(new
-			GParted::Menu_Helpers::StockMenuElem(Gtk::Stock::DIALOG_INFO,
+			GParted::Menu_Helpers::ImageMenuElem(
+							  Utils::get_stock_label(Gtk::Stock::DIALOG_INFO),
+							  "dialog-information",
 							  sigc::mem_fun(*this, &Win_GParted::activate_info)));
 	menu_partition.append(*item);
 	partitionmenu_items[MENU_INFO] = item;
@@ -722,7 +735,7 @@ void Win_GParted::refresh_combo_devices()
 		//combo...
 		treerow = *( liststore_devices ->append() ) ;
 		treerow[ treeview_devices_columns .icon ] =
-			Utils::mk_pixbuf(*this, Gtk::Stock::HARDDISK, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+			Utils::mk_pixbuf("drive-harddisk", Gtk::ICON_SIZE_LARGE_TOOLBAR);
 		treerow[ treeview_devices_columns .device ] = devices[ i ] .get_path() ;
 		treerow[ treeview_devices_columns .size ] = "(" + Utils::format_size( devices[ i ] .length, devices[ i ] .sector_size ) + ")" ; 
 
@@ -2059,7 +2072,7 @@ void Win_GParted::activate_resize()
 		Operation * operation = new OperationResizeMove( devices[current_device],
 		                                                 *selected_partition_ptr,
 		                                                 *resized_ptn );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("go-last", Gtk::ICON_SIZE_MENU);
 
 		delete resized_ptn;
 		resized_ptn = NULL;
@@ -2155,7 +2168,7 @@ void Win_GParted::activate_paste()
 				                                           *selected_partition_ptr,
 				                                           dialog.Get_New_Partition(),
 				                                           *copied_partition );
-				operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+				operation->icon = Utils::mk_pixbuf("edit-copy", Gtk::ICON_SIZE_MENU);
 
 				// When pasting into unallocated space set a temporary
 				// path of "Copy of /dev/SRC" for display purposes until
@@ -2251,7 +2264,7 @@ void Win_GParted::activate_paste()
 		                                           *selected_partition_ptr,
 		                                           *partition_new,
 		                                           *copied_partition );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::COPY, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("edit-copy", Gtk::ICON_SIZE_MENU);
 
 		delete partition_new;
 		partition_new = NULL;
@@ -2312,7 +2325,7 @@ void Win_GParted::activate_new()
 			Operation * operation = new OperationCreate( devices[current_device],
 			                                             *selected_partition_ptr,
 			                                             dialog.Get_New_Partition() );
-			operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::NEW, Gtk::ICON_SIZE_MENU);
+			operation->icon = Utils::mk_pixbuf("document-new", Gtk::ICON_SIZE_MENU);
 
 			Add_Operation( devices[current_device], operation );
 
@@ -2426,7 +2439,7 @@ void Win_GParted::activate_delete()
 	else //deletion of a real partition...
 	{
 		Operation * operation = new OperationDelete( devices[ current_device ], *selected_partition_ptr );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::DELETE, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("edit-delete", Gtk::ICON_SIZE_MENU);
 
 		Add_Operation( devices[current_device], operation );
 	}
@@ -2578,7 +2591,7 @@ void Win_GParted::activate_format( FSType new_fs )
 		Operation * operation = new OperationFormat( devices[current_device],
 		                                             *selected_partition_ptr,
 		                                             *temp_ptn );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::CONVERT, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("gtk-convert", Gtk::ICON_SIZE_MENU);
 
 		Add_Operation( devices[current_device], operation );
 		merge_operations( mergetype );
@@ -3175,7 +3188,7 @@ void Win_GParted::activate_check()
 	// file system to fill the partition.
 	Operation * operation = new OperationCheck( devices[current_device], *selected_partition_ptr );
 
-	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+	operation->icon = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_MENU);
 
 	Add_Operation( devices[current_device], operation );
 	// Try to merge this check operation with all previous operations.
@@ -3204,7 +3217,7 @@ void Win_GParted::activate_label_filesystem()
 
 		Operation * operation = new OperationLabelFileSystem( devices[current_device],
 		                                                      *selected_partition_ptr, *part_temp );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = NULL;
@@ -3238,7 +3251,7 @@ void Win_GParted::activate_name_partition()
 
 		Operation * operation = new OperationNamePartition( devices[current_device],
 		                                                    *selected_partition_ptr, *part_temp );
-		operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+		operation->icon = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_MENU);
 
 		delete part_temp;
 		part_temp = NULL;
@@ -3296,7 +3309,7 @@ void Win_GParted::activate_change_uuid()
 
 	Operation * operation = new OperationChangeUUID( devices[current_device],
 	                                                 *selected_partition_ptr, *temp_ptn );
-	operation->icon = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_MENU);
+	operation->icon = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_MENU);
 
 	delete temp_ptn;
 	temp_ptn = NULL;

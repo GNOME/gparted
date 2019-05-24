@@ -28,6 +28,7 @@
 
 #include <gtkmm/label.h>
 #include <gtkmm/image.h>
+#include <gtkmm/stock.h>
 #include <gdkmm/pixbuf.h>
 #include <glibmm/ustring.h>
 #include <glibmm/spawn.h>
@@ -130,10 +131,8 @@ public:
 	                            , bool selectable = false
 	                            , Gtk::Align valign = Gtk::ALIGN_CENTER
 	                            ) ;
-	static Gtk::Image* mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_size);
-	static Glib::RefPtr<Gdk::Pixbuf> mk_pixbuf(Gtk::Widget& widget,
-	                                           const Gtk::StockID& stock_id,
-	                                           Gtk::IconSize icon_size);
+	static Gtk::Image* mk_image(const Glib::ustring& icon_name, Gtk::IconSize icon_size);
+	static Glib::RefPtr<Gdk::Pixbuf> mk_pixbuf(const Glib::ustring& icon_name, Gtk::IconSize icon_size);
 	static Glib::ustring get_stock_label(const Gtk::StockID& stock_id);
 	static Glib::ustring num_to_str( Sector number ) ;
 	static Glib::ustring get_color( FSType filesystem );

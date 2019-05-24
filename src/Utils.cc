@@ -34,6 +34,7 @@
 #include <gtkmm/enums.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/stockitem.h>
+#include <gtkmm/icontheme.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -85,9 +86,10 @@ Gtk::Label * Utils::mk_label( const Glib::ustring & text
 }
 
 
-Gtk::Image* Utils::mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_size)
+Gtk::Image* Utils::mk_image(const Glib::ustring& icon_name,
+                            Gtk::IconSize icon_size)
 {
-	Gtk::Image *image = Gtk::manage(new Gtk::Image(stock_id, icon_size));
+	Gtk::Image *image = Gtk::manage(new Gtk::Image(icon_name, icon_size));
 
 	// Ensure icon size
 	int width = 0;
@@ -102,23 +104,21 @@ Gtk::Image* Utils::mk_image(const Gtk::StockID& stock_id, Gtk::IconSize icon_siz
 }
 
 
-Glib::RefPtr<Gdk::Pixbuf> Utils::mk_pixbuf(Gtk::Widget& widget,
-                                           const Gtk::StockID& stock_id,
+Glib::RefPtr<Gdk::Pixbuf> Utils::mk_pixbuf(const Glib::ustring& icon_name,
                                            Gtk::IconSize icon_size)
 {
-	Glib::RefPtr<Gdk::Pixbuf> theme_icon = widget.render_icon_pixbuf(stock_id, icon_size);
-
-	// Ensure icon size
 	int width = 0;
 	int height = 0;
+	int pixel_size = 16;
 	if (Gtk::IconSize::lookup(icon_size, width, height) && width > 0 && height > 0)
-	{
-		int pixel_size = std::min(width, height);
-		if (theme_icon->get_width() > pixel_size || theme_icon->get_height() > pixel_size)
-			return theme_icon->scale_simple(pixel_size, pixel_size, Gdk::INTERP_BILINEAR);
-	}
+		pixel_size = std::min(width, height);
 
-	return theme_icon;
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+	pixbuf = Gtk::IconTheme::get_default()->load_icon(icon_name, pixel_size,
+	                                                  Gtk::ICON_LOOKUP_FORCE_SIZE);
+	// Take a copy to avoid keeping a reference on old icon themes
+	// when icon theme is changed. See documentation for gtk_icon_theme_load_icon()
+	return pixbuf->copy();
 }
 
 

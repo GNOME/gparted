@@ -18,7 +18,6 @@
 #include "Partition.h"
 
 #include <gtkmm/main.h>
-#include <gtkmm/stock.h>
 #include <gdkmm/cursor.h>
 
 namespace GParted

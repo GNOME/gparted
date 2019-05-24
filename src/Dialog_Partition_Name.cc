@@ -19,7 +19,6 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 
 namespace GParted
