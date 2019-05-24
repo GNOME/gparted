@@ -112,7 +112,7 @@ void ntfs::set_used_sectors( Partition & partition )
 		if (! output.empty())
 			partition.push_back_message(output);
 		if (! error.empty())
-			partition.push_back_message(output);
+			partition.push_back_message(error);
 		return;
 	}
 
