@@ -51,14 +51,14 @@ class ImageMenuElem
 {
 public:
 	ImageMenuElem(const Glib::ustring&  label,
+	              const Glib::ustring&  icon_name,
 	              const Gtk::AccelKey&  key,
-	                    Gtk::Widget&    image_widget,
 	              const CallSlot&       slot = CallSlot());
 	ImageMenuElem(const Glib::ustring&  label,
-	                    Gtk::Widget&    image_widget,
+	              const Glib::ustring&  icon_name,
 	              const CallSlot&       slot = CallSlot());
 	ImageMenuElem(const Glib::ustring&  label,
-	                    Gtk::Widget&    image_widget,
+	              const Glib::ustring&  icon_name,
 	                    Gtk::Menu&      submenu);
 };
 
@@ -68,20 +68,6 @@ class SeparatorElem
 {
 public:
 	SeparatorElem();
-};
-
-
-class StockMenuElem
- : public Gtk::ImageMenuItem
-{
-public:
-	StockMenuElem(const Gtk::StockID&   stock_id,
-	              const Gtk::AccelKey&  key,
-	              const CallSlot&       slot = CallSlot());
-	StockMenuElem(const Gtk::StockID&   stock_id,
-	              const CallSlot&       slot = CallSlot());
-	StockMenuElem(const Gtk::StockID&   stock_id,
-	                    Gtk::Menu&      submenu);
 };
 
 
