@@ -105,7 +105,7 @@ FS ntfs::get_filesystem_support()
 
 void ntfs::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command("ntfsinfo --mft " + Glib::shell_quote(partition.get_path()),
+	exit_status = Utils::execute_command("ntfsinfo --mft --force " + Glib::shell_quote(partition.get_path()),
 	                                     output, error, true);
 	if (exit_status != 0)
 	{
