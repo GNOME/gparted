@@ -24,7 +24,6 @@
 #include "i18n.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/scrolledwindow.h>

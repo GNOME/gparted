@@ -23,7 +23,6 @@
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/button.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/expander.h>
 #include <gtkmm/comboboxtext.h>
 

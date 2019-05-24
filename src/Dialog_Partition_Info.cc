@@ -77,7 +77,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		frame = manage( new Gtk::Frame() );
 
 		{
-			Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+			Gtk::Image *image = Utils::mk_image("dialog-warning", Gtk::ICON_SIZE_BUTTON);
 
 			hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 			hbox->pack_start(*image, Gtk::PACK_SHRINK);
