@@ -123,7 +123,11 @@ Dialog_Base_Partition::Dialog_Base_Partition()
 	for (std::vector<Gtk::Widget*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->set_vexpand();
 
-	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 	this ->show_all_children() ;
 }
 
@@ -253,8 +257,11 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 	switch( button_type )
 	{
 		case NEW	:
-			this ->add_button( Gtk::Stock::ADD, Gtk::RESPONSE_OK );
-			
+			add_button(
+				Utils::get_stock_label(Gtk::Stock::ADD),
+				Gtk::RESPONSE_OK)
+			->set_image(*Utils::mk_image("document-add", Gtk::ICON_SIZE_BUTTON));
+
 			break ;
 		case RESIZE_MOVE:
 			{
@@ -272,8 +279,11 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 			
 			break ;
 		case PASTE	:
-			this ->add_button( Gtk::Stock::PASTE, Gtk::RESPONSE_OK );
-			
+			add_button(
+				Utils::get_stock_label(Gtk::Stock::PASTE),
+				Gtk::RESPONSE_OK)
+			->set_image(*Utils::mk_image("edit-paste", Gtk::ICON_SIZE_BUTTON));
+
 			break ;
 	}
 }

@@ -118,7 +118,11 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		info_msg_vbox .pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;
 	}
 
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ;
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
+
 	this ->show_all_children() ;
 }
 

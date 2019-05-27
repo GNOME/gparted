@@ -54,8 +54,13 @@ DialogManageFlags::DialogManageFlags( const Partition & partition, std::map<Glib
 	this ->flag_info = flag_info ;
 	
 	load_treeview() ;
-	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ->grab_focus() ;
-		
+
+	Gtk::Button *close_button = add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_OK);
+	close_button->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
+	close_button->grab_focus();
+
 	show_all_children() ;
 }
 

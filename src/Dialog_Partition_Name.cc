@@ -55,8 +55,16 @@ Dialog_Partition_Name::Dialog_Partition_Name( const Partition & partition, int m
 	entry->select_region( 0, entry->get_text_length() );
 	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
 
-	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	this->add_button( Gtk::Stock::OK, Gtk::RESPONSE_OK );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::OK),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("gtk-ok", Gtk::ICON_SIZE_BUTTON));
+
 	this->set_default_response( Gtk::RESPONSE_OK );
 	this->show_all_children() ;
 }

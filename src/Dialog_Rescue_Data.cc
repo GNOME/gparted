@@ -37,7 +37,10 @@ Dialog_Rescue_Data::Dialog_Rescue_Data()
 {
 	this ->set_title( _("Search disk for file systems") );
 
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
 }
 
 //getters

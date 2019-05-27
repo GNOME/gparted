@@ -118,8 +118,11 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		vbox ->set_spacing(5);
 	}
 
-	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	
+	cancelbutton = add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL);
+	cancelbutton->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
 }
@@ -248,7 +251,11 @@ void Dialog_Progress::on_signal_show()
 	canceltimer.disconnect();
 	delete cancelbutton;
 	cancelbutton = 0;
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
 
 	pulsetimer.disconnect();
 
@@ -368,8 +375,16 @@ void Dialog_Progress::on_save()
 	dialog .set_current_folder( Glib::get_home_dir() ) ;
 	dialog .set_current_name( "gparted_details.htm" ) ;
 	dialog .set_do_overwrite_confirmation( true ) ; 
-	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ; 
-	dialog .add_button( Gtk::Stock::SAVE, Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::SAVE),
+		Gtk::RESPONSE_OK) //there's no enum for SAVE
+	->set_image(*Utils::mk_image("document-save", Gtk::ICON_SIZE_BUTTON));
 
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{

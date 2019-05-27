@@ -94,8 +94,16 @@ Dialog_Disklabel::Dialog_Disklabel( const Device & device )
 		hbox->pack_start(combo_labeltypes, Gtk::PACK_SHRINK);
 	}
 
-	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	this ->add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::APPLY),
+		Gtk::RESPONSE_APPLY)
+	->set_image(*Utils::mk_image("gtk-apply", Gtk::ICON_SIZE_BUTTON));
+
 	this ->show_all_children() ;
 }
 

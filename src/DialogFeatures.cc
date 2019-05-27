@@ -157,7 +157,13 @@ DialogFeatures::DialogFeatures()
 
 	/*TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan For Supported Actions"), Gtk::RESPONSE_OK );
-	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
+
+	Gtk::Button *close_button = add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE);
+	close_button->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
+	close_button->grab_focus();
+
 	show_all_children() ;
 }
 

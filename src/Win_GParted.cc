@@ -1169,10 +1169,17 @@ bool Win_GParted::Quit_Check_Operations()
 		                                            , operations .size()
 		                                            )
 		                          ) ;
-	
-		dialog .add_button( Gtk::Stock::QUIT, Gtk::RESPONSE_CLOSE );
-		dialog .add_button( Gtk::Stock::CANCEL,Gtk::RESPONSE_CANCEL );
-		
+
+		dialog.add_button(
+			Utils::get_stock_label(Gtk::Stock::QUIT),
+			Gtk::RESPONSE_CLOSE)
+		->set_image(*Utils::mk_image("application-exit", Gtk::ICON_SIZE_BUTTON));
+
+		dialog.add_button(
+			Utils::get_stock_label(Gtk::Stock::CANCEL),
+			Gtk::RESPONSE_CANCEL)
+		->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 		if ( dialog .run() == Gtk::RESPONSE_CANCEL )
 			return false;//don't close GParted
 	}
@@ -2392,9 +2399,16 @@ void Win_GParted::activate_delete()
 		                                    selected_partition_ptr->get_path(),
 		                                    Utils::get_filesystem_string( selected_partition_ptr->filesystem ),
 		                                    Utils::format_size( selected_partition_ptr->get_sector_length(), selected_partition_ptr->sector_size ) ) );
-		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
-	
+		dialog.add_button(
+			Utils::get_stock_label(Gtk::Stock::CANCEL),
+			Gtk::RESPONSE_CANCEL)
+		->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+		dialog.add_button(
+			Utils::get_stock_label(Gtk::Stock::DELETE),
+			Gtk::RESPONSE_OK)
+		->set_image(*Utils::mk_image("edit-delete", Gtk::ICON_SIZE_BUTTON));
+
 		dialog .show_all_children() ;
 
 		if ( dialog .run() != Gtk::RESPONSE_OK )
@@ -3423,10 +3437,17 @@ void Win_GParted::activate_apply()
 	temp += _( "You are advised to backup your data before proceeding." ) ;
 	dialog .set_secondary_text( temp ) ;
 	dialog .set_title( _( "Apply operations to device" ) );
-	
-	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	dialog .add_button( Gtk::Stock::APPLY, Gtk::RESPONSE_OK );
-	
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::APPLY),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("gtk-apply", Gtk::ICON_SIZE_BUTTON));
+
 	dialog .show_all_children() ;
 	if ( dialog.run() == Gtk::RESPONSE_OK )
 	{
@@ -3536,8 +3557,16 @@ bool Win_GParted::remove_non_empty_lvm2_pv_dialog( const OperationType optype )
 	grid->attach(*Utils::mk_label(members_str, true, false, true, Gtk::ALIGN_START),
 	             1, 1, 1, 1);
 
-	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::DELETE),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("edit-delete", Gtk::ICON_SIZE_BUTTON));
+
 	dialog .show_all() ;
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 		return true ;

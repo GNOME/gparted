@@ -64,7 +64,11 @@ DialogPasswordEntry::DialogPasswordEntry( const Partition & partition )
 	error_message = Utils::mk_label( "" );
 	vbox->pack_start( *error_message );
 
-	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 	Gtk::Button *unlock_button = this->add_button( _("Unlock"), Gtk::RESPONSE_OK );
 	unlock_button->signal_clicked().connect( sigc::mem_fun( *this, &DialogPasswordEntry::on_button_unlock ) );
 	this->set_default_response( Gtk::RESPONSE_OK );
