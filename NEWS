@@ -1,4 +1,85 @@
 ============================
+GParted 1.0.0   (2019-05-29)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes a significant undertaking to
+  migrate the code base from gtkmm2 to gtkmm3 (our GTK3 port).  Thanks
+  go to Luca Bacci and Mike Fleetwood for making this happen.
+
+  With this major change we bump up the major version number.  This
+  1.0.0 release is not meant to indicate that GParted is more stable
+  or less stable than before.  Instead it means that GParted now
+  requires gtkmm3 instead of gtkmm2.  Note that several other
+  dependencies have changed as well.
+
+  As with our other releases, this one also includes several
+  enhancements, bug fixes and language translation updates.
+
+### Key changes include:
+
+  * Port to Gtkmm 3
+  * Port to GNOME 3 yelp-tools documentation infrastructure
+  * Enable online resizing of extended partitions
+  * Add F2FS support for read disk usage, grow, and check
+  * Fix slow refreshing of NTFS file systems
+
+Bug Fixes
+---------
+  * Port to Gtkmm 3 (#7, !9)
+  * Increase minimums to libparted 2.2 and glibmm 2.32 (!22)
+  * Enable online resizing of extended partitions (!23)
+  * Port to GNOME 3 yelp-tools documentation infrastructure (!24)
+  * Remove support for btrfs-progs < 3.12 (!26)
+  * Set title of Resize/Move dialog for an extended partition (#44, !28)
+  * Add F2FS support for read disk usage, grow, and check (!29)
+  * Replace String::ucompose() with Glibmm equivalent (#46, !31)
+  * Always show menu images (!32)
+  * Save partition layout to gparted_details.htm (#639176)
+  * Could not stat device /dev/mapper/No RAID disks - No such file (#786031)
+  * File include/Partition.h: performance problem (#788813)
+  * File include/HBoxOperations.h: performance problem (#788814)
+  * Display more version and configuration information (!34)
+  * After GTK3 port icons are too big on KDE (#39, !35)
+  * Set partition type when clearing partition contents (!36)
+  * Fix slow refreshing of NTFS file systems (#47, !37)
+  * Fix minor issues with File System Support rescanning (!38)
+  * Modern Gtk3 - part 1 (!25)
+  * Improve partition information mount status formatting (#52)
+  * Request natural width in Gtk::ScrolledWindows for Gtk >= 3.22 (!39)
+  * Limit wrapping Gtk::Labels (!40)
+  * NTFS Resize results in Partition Information Warning on Refresh (#57, !42)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Luca Bacci, Mike Fleetwood,
+  Antoine Viallon, and Jeremy Bicha.
+
+Translations (new/updated)
+--------------------------
+  be(Yuras Shumovich, Zmicer Turok), eo(Carmen Bianca Bakker),
+  es(Daniel Mustieles), fi(Jiri Grönroos), fr(Charles Monzat, Claude Paroz),
+  hu(Balázs Úr), id(Kukuh Syafaat), is(Sveinn í Felli),
+  ko(Seong-ho Cho), nl(Nathan Follens), plPiotr Drąg(),
+  pt_BR(Rafael Fontenelle), ru(Stas Solovey), sv(Anders Jonsson),
+  vi(Trần Ngọc Quân)
+
+Dependencies (new/updated)
+--------------------------
+  * gtkmm >= 3.4.0
+  * glibmm >= 2.32
+  * libparted >= 2.2
+  * yelp-tools
+
+Dependencies (no longer needed)
+-------------------------------
+  * gnome-doc-utils
+  * rarian
+  * rarian-compat
+
+
+============================
 GParted 0.33.0  (2018-12-13)
 ============================
 
