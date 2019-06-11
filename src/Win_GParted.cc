@@ -1842,6 +1842,7 @@ void Win_GParted::menu_help_contents()
 	tmp_msg += "\n" ;
 	tmp_msg += "https://gparted.org";
 	dialog .set_secondary_text( tmp_msg ) ;
+	dialog .set_title( _("GParted Manual") );
 	dialog .run() ;
 #endif
 }
