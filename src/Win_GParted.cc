@@ -1057,7 +1057,7 @@ void Win_GParted::Refresh_Visual()
 			copied_partition = display_partitions[t].clone();
 		}
 
-		if ( display_partitions[t].filesystem == FS_UNALLOCATED )
+		if (display_partitions[t].fstype == FS_UNALLOCATED)
 		{
 			current_size = display_partitions[t].get_sector_length();
 			if ( current_size > largest_unalloc_size )
@@ -1078,7 +1078,7 @@ void Win_GParted::Refresh_Visual()
 					copied_partition = display_partitions[t].logicals[u].clone();
 				}
 
-				if ( display_partitions[t].logicals[u].filesystem == FS_UNALLOCATED )
+				if (display_partitions[t].logicals[u].fstype == FS_UNALLOCATED)
 				{
 					current_size = display_partitions[t].logicals[u].get_sector_length();
 					if ( current_size > largest_unalloc_size )
@@ -1195,14 +1195,14 @@ void Win_GParted::set_valid_operations()
 	const Partition & selected_filesystem = selected_partition_ptr->get_filesystem_partition();
 
 	// Get file system and LUKS encryption capabilities
-	const FS & fs_cap = gparted_core.get_fs( selected_filesystem.filesystem );
+	const FS& fs_cap = gparted_core.get_fs(selected_filesystem.fstype);
 	const FS & enc_cap = gparted_core.get_fs( FS_LUKS );
 
 	//if there's something, there's some info ;)
 	allow_info( true ) ;
 
 	// Set appropriate name for the open/close crypt menu item.
-	if ( selected_partition_ptr->filesystem == FS_LUKS )
+	if (selected_partition_ptr->fstype == FS_LUKS)
 	{
 		dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_CRYPT_BUSY]->get_child())
 			->set_label( luks_filesystem_object->get_custom_text(   selected_partition_ptr->busy
@@ -1210,9 +1210,9 @@ void Win_GParted::set_valid_operations()
 			                                                      : CTEXT_ACTIVATE_FILESYSTEM ) );
 	}
 	// Set appropriate name for the file system active/deactivate menu item.
-	if ( selected_partition_ptr->filesystem != FS_LUKS || selected_partition_ptr->busy )
+	if (selected_partition_ptr->fstype != FS_LUKS || selected_partition_ptr->busy)
 	{
-		const FileSystem * filesystem_object = gparted_core.get_filesystem_object( selected_filesystem.filesystem );
+		const FileSystem *filesystem_object = gparted_core.get_filesystem_object(selected_filesystem.fstype);
 		if ( filesystem_object )
 		{
 			dynamic_cast<Gtk::Label *>(partitionmenu_items[MENU_TOGGLE_FS_BUSY]->get_child())
@@ -1230,21 +1230,21 @@ void Win_GParted::set_valid_operations()
 	}
 
 	// Only permit encryption open/close when available
-	if ( selected_partition_ptr->status     == STAT_REAL &&
-	     selected_partition_ptr->filesystem == FS_LUKS   &&
-	     ! selected_filesystem.busy                         )
+	if (selected_partition_ptr->status == STAT_REAL &&
+	    selected_partition_ptr->fstype == FS_LUKS   &&
+	    ! selected_filesystem.busy                    )
 		allow_toggle_crypt_busy_state( true );
 
 	// Only permit file system mount/unmount and swapon/swapoff when available
 	if (    selected_partition_ptr->status == STAT_REAL
 	     && selected_partition_ptr->type   != TYPE_EXTENDED
-	     && selected_filesystem.filesystem != FS_LVM2_PV
-	     && selected_filesystem.filesystem != FS_LINUX_SWRAID
-	     && selected_filesystem.filesystem != FS_ATARAID
-	     && selected_filesystem.filesystem != FS_LUKS
+	     && selected_filesystem.fstype     != FS_LVM2_PV
+	     && selected_filesystem.fstype     != FS_LINUX_SWRAID
+	     && selected_filesystem.fstype     != FS_ATARAID
+	     && selected_filesystem.fstype     != FS_LUKS
 	     && (    selected_filesystem.busy
 	          || selected_filesystem.get_mountpoints().size() /* Have mount point(s) */
-	          || selected_filesystem.filesystem == FS_LINUX_SWAP
+	          || selected_filesystem.fstype == FS_LINUX_SWAP
 	        )
 	   )
 		allow_toggle_fs_busy_state( true );
@@ -1254,7 +1254,7 @@ void Win_GParted::set_valid_operations()
 	// with "Volume group "VGNAME" is exported", otherwise user won't know why the
 	// inactive PV can't be activated.
 	if (    selected_partition_ptr->status == STAT_REAL
-	     && selected_filesystem.filesystem == FS_LVM2_PV      // Active VGNAME from mount point
+	     && selected_filesystem.fstype     == FS_LVM2_PV      // Active VGNAME from mount point
 	     && ( selected_filesystem.busy || selected_filesystem.get_mountpoints().size() > 0 )
 	   )
 		allow_toggle_fs_busy_state( true );
@@ -1280,12 +1280,12 @@ void Win_GParted::set_valid_operations()
 	     selected_filesystem.busy              )
 	{
 		// Can the plain file system be online resized?
-		if ( selected_partition_ptr->filesystem != FS_LUKS  &&
-		     ( fs_cap.online_grow || fs_cap.online_shrink )    )
+		if (selected_partition_ptr->fstype != FS_LUKS    &&
+		    (fs_cap.online_grow || fs_cap.online_shrink)   )
 			allow_resize( true );
 		// Is resizing an open LUKS mapping and the online file system within
 		// supported?
-		if ( selected_partition_ptr->filesystem == FS_LUKS            &&
+		if ( selected_partition_ptr->fstype == FS_LUKS                &&
 		     selected_partition_ptr->busy                             &&
 		     ( ( enc_cap.online_grow && fs_cap.online_grow )     ||
 		       ( enc_cap.online_shrink && fs_cap.online_shrink )    )    )
@@ -1301,7 +1301,7 @@ void Win_GParted::set_valid_operations()
 		return ;
 
 	// UNALLOCATED space within a partition table or UNALLOCATED whole disk device
-	if ( selected_partition_ptr->filesystem == FS_UNALLOCATED )
+	if (selected_partition_ptr->fstype == FS_UNALLOCATED)
 		allow_new( true );
 
 	// UNALLOCATED space within a partition table
@@ -1314,11 +1314,11 @@ void Win_GParted::set_valid_operations()
 		// implemented.
 		if ( copied_partition             != NULL    &&
 		     ! devices[current_device].readonly      &&
-		     copied_partition->filesystem != FS_LUKS    )
+		     copied_partition->fstype     != FS_LUKS    )
 		{
 			const Partition & copied_filesystem_ptn = copied_partition->get_filesystem_partition();
 			Byte_Value required_size ;
-			if ( copied_filesystem_ptn.filesystem == FS_XFS )
+			if (copied_filesystem_ptn.fstype == FS_XFS)
 				required_size = copied_filesystem_ptn.estimated_min_size() *
 				                copied_filesystem_ptn.sector_size;
 			else
@@ -1386,7 +1386,7 @@ void Win_GParted::set_valid_operations()
 	if ( ( selected_partition_ptr->type == TYPE_PRIMARY       ||
 	       selected_partition_ptr->type == TYPE_LOGICAL       ||
 	       selected_partition_ptr->type == TYPE_UNPARTITIONED    ) &&
-	     selected_partition_ptr->filesystem != FS_UNALLOCATED         )
+	     selected_partition_ptr->fstype != FS_UNALLOCATED             )
 	{
 		allow_format( true ) ;
 
@@ -1402,17 +1402,17 @@ void Win_GParted::set_valid_operations()
 		if ( ! devices[current_device].readonly )
 		{
 			// Can the plain file system be resized or moved?
-			if ( selected_partition_ptr->filesystem != FS_LUKS   &&
-			     ( fs_cap.grow || fs_cap.shrink || fs_cap.move )    )
+			if (selected_partition_ptr->fstype != FS_LUKS     &&
+			    (fs_cap.grow || fs_cap.shrink || fs_cap.move)   )
 				allow_resize( true );
 			// Is growing or moving this closed LUKS mapping permitted?
-			if ( selected_partition_ptr->filesystem == FS_LUKS &&
-			     ! selected_partition_ptr->busy                &&
-			     ( enc_cap.grow || enc_cap.move )                 )
+			if (selected_partition_ptr->fstype == FS_LUKS &&
+			    ! selected_partition_ptr->busy            &&
+			    (enc_cap.grow || enc_cap.move)              )
 				allow_resize( true );
 			// Is resizing an open LUKS mapping and the file system within
 			// supported?
-			if ( selected_partition_ptr->filesystem == FS_LUKS     &&
+			if ( selected_partition_ptr->fstype == FS_LUKS         &&
 			     selected_partition_ptr->busy                      &&
 	                     ( ( enc_cap.online_grow && fs_cap.grow )     ||
 			       ( enc_cap.online_shrink && fs_cap.shrink )    )    )
@@ -1421,9 +1421,9 @@ void Win_GParted::set_valid_operations()
 
 		// Only allow copying of real partitions, excluding closed encryption
 		// (which are only copied while open).
-		if ( selected_partition_ptr->status == STAT_REAL &&
-		     selected_filesystem.filesystem != FS_LUKS   &&
-		     fs_cap.copy                                    )
+		if (selected_partition_ptr->status == STAT_REAL &&
+		    selected_filesystem.fstype     != FS_LUKS   &&
+		    fs_cap.copy                                   )
 			allow_copy( true ) ;
 		
 		//only allow labelling of real partitions that support labelling
@@ -1436,9 +1436,9 @@ void Win_GParted::set_valid_operations()
 
 		// Generate Mount on submenu, except for LVM2 PVs borrowing mount point to
 		// display the VGNAME and read-only supported LUKS.
-		if ( selected_filesystem.filesystem != FS_LVM2_PV &&
-		     selected_filesystem.filesystem != FS_LUKS    &&
-		     selected_filesystem.get_mountpoints().size()    )
+		if (selected_filesystem.fstype != FS_LVM2_PV     &&
+		    selected_filesystem.fstype != FS_LUKS        &&
+		    selected_filesystem.get_mountpoints().size()   )
 		{
 			partitionmenu_items[MENU_MOUNT]->unset_submenu();
 
@@ -1987,11 +1987,11 @@ void Win_GParted::activate_resize()
 	}
 
 	Partition * working_ptn;
-	const FSType fstype = selected_filesystem_ptn.filesystem;
+	const FSType fstype = selected_filesystem_ptn.fstype;
 	FS fs_cap = gparted_core.get_fs( fstype );
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( fstype, selected_filesystem_ptn );
 
-	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
+	if (selected_partition_ptr->fstype == FS_LUKS && selected_partition_ptr->busy)
 	{
 		const FS & enc_cap = gparted_core.get_fs( FS_LUKS );
 
@@ -2122,8 +2122,8 @@ void Win_GParted::activate_paste()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// Unrecognised whole disk device (See GParted_Core::set_device_from_disk(), "unrecognized")
-	if ( selected_partition_ptr->type       == TYPE_UNPARTITIONED &&
-	     selected_partition_ptr->filesystem == FS_UNALLOCATED        )
+	if (selected_partition_ptr->type   == TYPE_UNPARTITIONED &&
+	    selected_partition_ptr->fstype == FS_UNALLOCATED       )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 		return ;
@@ -2136,7 +2136,7 @@ void Win_GParted::activate_paste()
 		if ( ! max_amount_prim_reached() )
 		{
 			FS_Limits fs_limits = gparted_core.get_filesystem_limits(
-			                                      copied_filesystem_ptn.filesystem,
+			                                      copied_filesystem_ptn.fstype,
 			                                      copied_filesystem_ptn );
 
 			// We don't want the messages, mount points or name of the source
@@ -2147,7 +2147,7 @@ void Win_GParted::activate_paste()
 			part_temp->name.clear();
 
 			Dialog_Partition_Copy dialog(devices[current_device],
-			                             gparted_core.get_fs(copied_filesystem_ptn.filesystem),
+			                             gparted_core.get_fs(copied_filesystem_ptn.fstype),
 			                             fs_limits,
 			                             *selected_partition_ptr,
 			                             *part_temp);
@@ -2183,8 +2183,8 @@ void Win_GParted::activate_paste()
 
 		bool shown_dialog = false ;
 		// VGNAME from mount mount
-		if ( selected_filesystem_ptn.filesystem == FS_LVM2_PV   &&
-		     ! selected_filesystem_ptn.get_mountpoint().empty()    )
+		if (selected_filesystem_ptn.fstype == FS_LVM2_PV       &&
+		    ! selected_filesystem_ptn.get_mountpoint().empty()   )
 		{
 			if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_COPY ) )
 				return ;
@@ -2192,7 +2192,7 @@ void Win_GParted::activate_paste()
 		}
 
 		Partition * partition_new;
-		if ( selected_partition_ptr->filesystem == FS_LUKS && ! selected_partition_ptr->busy )
+		if (selected_partition_ptr->fstype == FS_LUKS && ! selected_partition_ptr->busy)
 		{
 			// Pasting into a closed LUKS encrypted partition will overwrite
 			// the encryption replacing it with a non-encrypted file system.
@@ -2221,7 +2221,7 @@ void Win_GParted::activate_paste()
 			// Sub-block so that filesystem_ptn_new reference goes out of
 			// scope before partition_new pointer is deallocated.
 			Partition & filesystem_ptn_new = partition_new->get_filesystem_partition();
-			filesystem_ptn_new.filesystem = copied_filesystem_ptn.filesystem;
+			filesystem_ptn_new.fstype = copied_filesystem_ptn.fstype;
 			filesystem_ptn_new.set_filesystem_label( copied_filesystem_ptn.get_filesystem_label() );
 			filesystem_ptn_new.uuid = copied_filesystem_ptn.uuid;
 			Sector new_size = filesystem_ptn_new.get_sector_length();
@@ -2294,8 +2294,8 @@ void Win_GParted::activate_new()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// Unrecognised whole disk device (See GParted_Core::set_device_from_disk(), "unrecognized")
-	if ( selected_partition_ptr->type       == TYPE_UNPARTITIONED &&
-	     selected_partition_ptr->filesystem == FS_UNALLOCATED        )
+	if (selected_partition_ptr->type   == TYPE_UNPARTITIONED &&
+	    selected_partition_ptr->fstype == FS_UNALLOCATED       )
 	{
 		show_disklabel_unrecognized( devices [current_device ] .get_path() ) ;
 	}
@@ -2335,7 +2335,7 @@ void Win_GParted::activate_delete()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	// VGNAME from mount mount
-	if ( selected_partition_ptr->filesystem == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty() )
+	if (selected_partition_ptr->fstype == FS_LVM2_PV && ! selected_partition_ptr->get_mountpoint().empty())
 	{
 		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_DELETE ) )
 			return ;
@@ -2383,7 +2383,7 @@ void Win_GParted::activate_delete()
 		/*TO TRANSLATORS: dialogtitle, looks like   Delete /dev/hda2 (ntfs, 2345 MiB) */
 		dialog.set_title( Glib::ustring::compose( _("Delete %1 (%2, %3)"),
 		                                    selected_partition_ptr->get_path(),
-		                                    Utils::get_filesystem_string( selected_partition_ptr->filesystem ),
+		                                    Utils::get_filesystem_string(selected_partition_ptr->fstype),
 		                                    Utils::format_size( selected_partition_ptr->get_sector_length(), selected_partition_ptr->sector_size ) ) );
 		dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
 		dialog .add_button( Gtk::Stock::DELETE, Gtk::RESPONSE_OK );
@@ -2460,7 +2460,7 @@ void Win_GParted::activate_format( FSType new_fs )
 	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
 
 	// For non-empty LVM2 PV confirm overwrite before continuing.  VGNAME from mount mount.
-	if ( filesystem_ptn.filesystem == FS_LVM2_PV && ! filesystem_ptn.get_mountpoint().empty() )
+	if (filesystem_ptn.fstype == FS_LVM2_PV && ! filesystem_ptn.get_mountpoint().empty())
 	{
 		if ( ! remove_non_empty_lvm2_pv_dialog( OPERATION_FORMAT ) )
 			return ;
@@ -2468,7 +2468,7 @@ void Win_GParted::activate_format( FSType new_fs )
 
 	// Compose Partition object to represent the format operation.
 	Partition * temp_ptn;
-	if ( selected_partition_ptr->filesystem == FS_LUKS && ! selected_partition_ptr->busy )
+	if (selected_partition_ptr->fstype == FS_LUKS && ! selected_partition_ptr->busy)
 	{
 		// Formatting a closed LUKS encrypted partition will erase the encryption
 		// replacing it with a non-encrypted file system.  Start with a plain
@@ -2515,7 +2515,7 @@ void Win_GParted::activate_format( FSType new_fs )
 	// Generate minimum and maximum partition size limits for the new file system.
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( new_fs, temp_ptn->get_filesystem_partition() );
 	bool encrypted = false;
-	if ( selected_partition_ptr->filesystem == FS_LUKS && selected_partition_ptr->busy )
+	if (selected_partition_ptr->fstype == FS_LUKS && selected_partition_ptr->busy)
 	{
 		encrypted = true;
 		// Calculate the actual overhead rather than just using the size of the
@@ -2847,21 +2847,21 @@ void Win_GParted::toggle_fs_busy_state()
 	Glib::ustring pulse_msg;
 	Glib::ustring failure_msg;
 	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
-	if ( filesystem_ptn.filesystem == FS_LINUX_SWAP && filesystem_ptn.busy )
+	if (filesystem_ptn.fstype == FS_LINUX_SWAP && filesystem_ptn.busy)
 	{
 		action = SWAPOFF;
 		disallowed_msg = _("The swapoff action cannot be performed when there are operations pending for the partition.");
 		pulse_msg = Glib::ustring::compose( _("Deactivating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not deactivate swap");
 	}
-	else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP && ! filesystem_ptn.busy )
+	else if (filesystem_ptn.fstype == FS_LINUX_SWAP && ! filesystem_ptn.busy)
 	{
 		action = SWAPON;
 		disallowed_msg = _("The swapon action cannot be performed when there are operations pending for the partition.");
 		pulse_msg = Glib::ustring::compose( _("Activating swap on %1"), filesystem_ptn.get_path() );
 		failure_msg = _("Could not activate swap");
 	}
-	else if ( filesystem_ptn.filesystem == FS_LVM2_PV && filesystem_ptn.busy )
+	else if (filesystem_ptn.fstype == FS_LVM2_PV && filesystem_ptn.busy)
 	{
 		action = DEACTIVATE_VG;
 		disallowed_msg = _("The deactivate Volume Group action cannot be performed when there are operations pending for the partition.");
@@ -2869,7 +2869,7 @@ void Win_GParted::toggle_fs_busy_state()
 		                              filesystem_ptn.get_mountpoint() );  // VGNAME from point point
 		failure_msg = _("Could not deactivate Volume Group");
 	}
-	else if ( filesystem_ptn.filesystem == FS_LVM2_PV && ! filesystem_ptn.busy )
+	else if (filesystem_ptn.fstype == FS_LVM2_PV && ! filesystem_ptn.busy)
 	{
 		action = ACTIVATE_VG;
 		disallowed_msg = _("The activate Volume Group action cannot be performed when there are operations pending for the partition.");
@@ -2971,7 +2971,7 @@ void Win_GParted::activate_mount_partition( unsigned int index )
 	{
 		error_msg = "<i># " + cmd + "\n" + error + "</i>";
 
-		Glib::ustring type = Utils::get_filesystem_kernel_name( filesystem_ptn.filesystem );
+		Glib::ustring type = Utils::get_filesystem_kernel_name(filesystem_ptn.fstype);
 		if ( ! type.empty() )
 		{
 			// Second try mounting specifying the GParted determined file
@@ -3266,7 +3266,7 @@ void Win_GParted::activate_change_uuid()
 	g_assert( valid_display_partition_ptr( selected_partition_ptr ) );  // Bug: Not pointing at a valid display partition object
 
 	const Partition & filesystem_ptn = selected_partition_ptr->get_filesystem_partition();
-	const FileSystem * filesystem_object = gparted_core.get_filesystem_object( filesystem_ptn.filesystem );
+	const FileSystem *filesystem_object = gparted_core.get_filesystem_object(filesystem_ptn.fstype);
 	if ( filesystem_object->get_custom_text( CTEXT_CHANGE_UUID_WARNING ) != "" )
 	{
 		int i ;
@@ -3294,7 +3294,7 @@ void Win_GParted::activate_change_uuid()
 		// Sub-block so that temp_filesystem_ptn reference goes out of scope
 		// before temp_ptn pointer is deallocated.
 		Partition & temp_filesystem_ptn = temp_ptn->get_filesystem_partition();
-		if ( temp_filesystem_ptn.filesystem == FS_NTFS )
+		if (temp_filesystem_ptn.fstype == FS_NTFS)
 			// Explicitly ask for half, so that the user will be aware of it
 			// Also, keep this kind of policy out of the NTFS code.
 			temp_filesystem_ptn.uuid = UUID_RANDOM_NTFS_HALF;

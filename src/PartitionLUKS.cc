@@ -49,7 +49,7 @@ Partition * PartitionLUKS::clone_as_plain() const
 	Partition * plain_ptn = new Partition( *this );
 
 	// Copy over file system attributes.
-	plain_ptn->filesystem    = this->encrypted.filesystem;
+	plain_ptn->fstype        = this->encrypted.fstype;
 	plain_ptn->uuid          = this->encrypted.uuid;
 	plain_ptn->busy          = this->encrypted.busy;
 	plain_ptn->fs_block_size = this->encrypted.fs_block_size;
@@ -247,7 +247,7 @@ Partition & PartitionLUKS::get_filesystem_partition()
 const Glib::ustring PartitionLUKS::get_filesystem_string() const
 {
 	if ( busy )
-		return Utils::get_filesystem_string( true, encrypted.filesystem );
+		return Utils::get_filesystem_string(true, encrypted.fstype);
 	return Utils::get_encrypted_string();
 }
 

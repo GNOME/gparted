@@ -70,7 +70,7 @@ FS udf::get_filesystem_support()
 
 FS_Limits udf::get_filesystem_limits( const Partition & partition ) const
 {
-	if ( partition.filesystem == FS_UDF && partition.fs_block_size > 0 )
+	if (partition.fstype == FS_UDF && partition.fs_block_size > 0)
 		// Resizing existing UDF file system
 		return FS_Limits( MIN_UDF_BLOCKS * partition.fs_block_size, MAX_UDF_BLOCKS * partition.fs_block_size );
 	else

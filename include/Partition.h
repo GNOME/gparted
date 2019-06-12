@@ -76,7 +76,7 @@ public:
 	          const Glib::ustring & partition,
 	          int partition_number,
 	          PartitionType type,
-	          FSType filesystem,
+	          FSType fstype,
 	          Sector sector_start,
 	          Sector sector_end,
 	          Byte_Value sector_size,
@@ -143,7 +143,7 @@ public:
 	virtual Partition & get_filesystem_partition()                 { return *this; };
 
 	virtual const Glib::ustring get_filesystem_string() const
-	                                { return Utils::get_filesystem_string( filesystem ); };
+	                                { return Utils::get_filesystem_string(fstype); };
 
 	bool operator==( const Partition & partition ) const ;
 	bool operator!=( const Partition & partition ) const ;
@@ -156,7 +156,7 @@ public:
 	PartitionType type;// UNALLOCATED, PRIMARY, LOGICAL, etc...
 	PartitionStatus status; //STAT_REAL, STAT_NEW, etc..
 	PartitionAlignment alignment;   //ALIGN_CYLINDER, ALIGN_STRICT, etc
-	FSType filesystem;
+	FSType fstype;
 	Glib::ustring uuid ;
 	Glib::ustring name;
 	Sector sector_start;

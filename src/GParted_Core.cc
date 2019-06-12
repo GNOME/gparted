@@ -1039,8 +1039,8 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	// For SWRaid members only get the label and UUID from SWRaid_Info.  Never use
 	// values from FS_Info to avoid showing incorrect information in cases where blkid
 	// reports the wrong values.
-	if (partition.filesystem == FS_LINUX_SWRAID ||
-	    partition.filesystem == FS_ATARAID        )
+	if (partition.fstype == FS_LINUX_SWRAID ||
+	    partition.fstype == FS_ATARAID        )
 	{
 		Glib::ustring label = SWRaid_Info::get_label( partition_path );
 		if ( ! label.empty() )
@@ -1329,10 +1329,10 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 void GParted_Core::read_label( Partition & partition )
 {
 	FileSystem* p_filesystem = NULL;
-	switch ( get_fs( partition.filesystem ).read_label )
+	switch (get_fs(partition.fstype).read_label)
 	{
 		case FS::EXTERNAL:
-			p_filesystem = get_filesystem_object( partition.filesystem );
+			p_filesystem = get_filesystem_object(partition.fstype);
 			if ( p_filesystem )
 				p_filesystem->read_label( partition );
 			break;
@@ -1345,10 +1345,10 @@ void GParted_Core::read_label( Partition & partition )
 void GParted_Core::read_uuid( Partition & partition )
 {
 	FileSystem* p_filesystem = NULL;
-	switch ( get_fs( partition.filesystem ).read_uuid )
+	switch (get_fs(partition.fstype).read_uuid)
 	{
 		case FS::EXTERNAL:
-			p_filesystem = get_filesystem_object( partition.filesystem );
+			p_filesystem = get_filesystem_object(partition.fstype);
 			if ( p_filesystem )
 				p_filesystem->read_uuid( partition );
 			break;
@@ -1415,19 +1415,19 @@ void GParted_Core::set_mountpoints( Partition & partition )
 {
 	DMRaid dmraid ;	//Use cache of dmraid device information
 
-	if ( partition.filesystem == FS_LVM2_PV )
+	if (partition.fstype == FS_LVM2_PV)
 	{
 		Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
 		if ( ! vgname.empty() )
 			partition.add_mountpoint( vgname );
 	}
-	else if ( partition.filesystem == FS_LINUX_SWRAID )
+	else if (partition.fstype == FS_LINUX_SWRAID)
 	{
 		Glib::ustring array_path = SWRaid_Info::get_array( partition.get_path() );
 		if ( ! array_path.empty() )
 			partition.add_mountpoint( array_path );
 	}
-	else if (partition.filesystem == FS_ATARAID)
+	else if (partition.fstype == FS_ATARAID)
 	{
 		Glib::ustring array_path = SWRaid_Info::get_array(partition.get_path());
 		if (! array_path.empty())
@@ -1441,14 +1441,14 @@ void GParted_Core::set_mountpoints( Partition & partition )
 				partition.add_mountpoint(array_path);
 		}
 	}
-	else if ( partition.filesystem == FS_LUKS )
+	else if (partition.fstype == FS_LUKS)
 	{
 		LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
 		if ( ! mapping.name.empty() )
 			partition.add_mountpoint( DEV_MAPPER_PATH + mapping.name );
 	}
 	// Swap spaces don't have mount points so don't bother trying to add them.
-	else if ( partition.filesystem != FS_LINUX_SWAP )
+	else if (partition.fstype != FS_LINUX_SWAP)
 	{
 		if ( partition.busy )
 		{
@@ -1492,7 +1492,7 @@ void GParted_Core::set_mountpoints( Partition & partition )
 bool GParted_Core::set_mountpoints_helper( Partition & partition, const Glib::ustring & path )
 {
 	Glib::ustring search_path ;
-	if ( partition .filesystem == FS_BTRFS )
+	if (partition.fstype == FS_BTRFS)
 		search_path = btrfs::get_mount_device( path ) ;
 	else
 		search_path = path ;
@@ -1553,15 +1553,15 @@ bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
 
 void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 {
-	if ( supported_filesystem( partition.filesystem ) )
+	if (supported_filesystem(partition.fstype))
 	{
 		FileSystem* p_filesystem = NULL;
 		if ( partition.busy )
 		{
-			switch( get_fs( partition.filesystem ).online_read )
+			switch(get_fs(partition.fstype).online_read)
 			{
 				case FS::EXTERNAL:
-					p_filesystem = get_filesystem_object( partition.filesystem );
+					p_filesystem = get_filesystem_object(partition.fstype);
 					if ( p_filesystem )
 						p_filesystem->set_used_sectors( partition );
 					break;
@@ -1574,10 +1574,10 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 		}
 		else  // Not busy file system
 		{
-			switch( get_fs( partition.filesystem ).read )
+			switch(get_fs(partition.fstype).read)
 			{
 				case FS::EXTERNAL:
-					p_filesystem = get_filesystem_object( partition.filesystem );
+					p_filesystem = get_filesystem_object(partition.fstype);
 					if ( p_filesystem )
 						p_filesystem->set_used_sectors( partition );
 					break;
@@ -1605,16 +1605,16 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 			Glib::ustring temp = _("Unable to read the contents of this file system!");
 			temp += "\n";
 			temp += _("Because of this some operations may be unavailable.");
-			if ( ! Utils::get_filesystem_software( partition.filesystem ).empty() )
+			if (! Utils::get_filesystem_software(partition.fstype).empty())
 			{
 				temp += "\n";
 				temp += _("The cause might be a missing software package.");
 				temp += "\n";
 				/*TO TRANSLATORS: looks like   The following list of software packages is required for NTFS file system support:  ntfsprogs. */
 				temp += Glib::ustring::compose( _("The following list of software packages is required for %1 file system support:  %2."),
-				                          Utils::get_filesystem_string( partition.filesystem ),
-				                          Utils::get_filesystem_software( partition.filesystem )
-				                        );
+				                               Utils::get_filesystem_string(partition.fstype),
+				                               Utils::get_filesystem_software(partition.fstype)
+				                              );
 			}
 			partition.push_back_message( temp );
 		}
@@ -1623,7 +1623,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 			/* TO TRANSLATORS: looks like   1.28GiB of unallocated space within the partition. */
 			Glib::ustring temp = Glib::ustring::compose( _("%1 of unallocated space within the partition."),
 			                                       Utils::format_size( unallocated, partition.sector_size ) );
-			FS fs = get_fs( partition.filesystem );
+			FS fs = get_fs(partition.fstype);
 			if ( fs.check != FS::NONE && fs.grow != FS::NONE )
 			{
 				temp += "\n";
@@ -1640,7 +1640,7 @@ void GParted_Core::set_used_sectors( Partition & partition, PedDisk* lp_disk )
 
 		if ( filesystem_resize_disallowed( partition ) )
 		{
-			Glib::ustring temp = get_filesystem_object( partition.filesystem )
+			Glib::ustring temp = get_filesystem_object(partition.fstype)
 			                     ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING );
 			if ( ! temp.empty() )
 				partition.push_back_message( temp );
@@ -1719,7 +1719,7 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 	}
 	else
 	{
-		FS_Limits fs_limits = get_filesystem_limits( new_partition.filesystem, new_partition );
+		FS_Limits fs_limits = get_filesystem_limits(new_partition.fstype, new_partition);
 		success = create_partition( new_partition, operationdetail,
 		                            fs_limits.min_size / new_partition.sector_size );
 	}
@@ -1732,10 +1732,10 @@ bool GParted_Core::create( Partition & new_partition, OperationDetail & operatio
 			return false;
 	}
 
-	if ( new_partition.type == TYPE_EXTENDED        ||
-	     new_partition.filesystem == FS_UNFORMATTED    )
+	if (new_partition.type   == TYPE_EXTENDED  ||
+	    new_partition.fstype == FS_UNFORMATTED   )
 		return true;
-	else if ( new_partition.filesystem == FS_CLEARED )
+	else if (new_partition.fstype == FS_CLEARED)
 		return erase_filesystem_signatures( new_partition, operationdetail );
 	else
 		return    erase_filesystem_signatures( new_partition, operationdetail )
@@ -1806,7 +1806,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 			if ( constraint )
 			{
 				if (   min_size > 0
-				    && new_partition .filesystem != FS_XFS // Permit copying to smaller xfs partition
+				    && new_partition.fstype != FS_XFS  // Permit copying to smaller xfs partition
 				   )
 					constraint ->min_size = min_size ;
 		
@@ -1856,7 +1856,7 @@ bool GParted_Core::create_partition( Partition & new_partition, OperationDetail 
 	
 bool GParted_Core::create_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a create file system only step"),
@@ -1867,11 +1867,11 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 	operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 							/*TO TRANSLATORS: looks like create new ext3 file system */ 
 							_("create new %1 file system"),
-							Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
+							Utils::get_filesystem_string(partition.fstype))));
 	
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	switch ( get_fs( partition .filesystem ) .create )
+	switch (get_fs(partition.fstype).create)
 	{
 		case FS::NONE:
 			break ;
@@ -1880,7 +1880,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
+			succes = (p_filesystem = get_filesystem_object(partition.fstype)) &&
 				 p_filesystem ->create( partition, operationdetail .get_last_child() ) ;
 
 			break ;
@@ -1895,7 +1895,7 @@ bool GParted_Core::create_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::format( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a format file system only step"),
@@ -1903,7 +1903,7 @@ bool GParted_Core::format( const Partition & partition, OperationDetail & operat
 		return false;
 	}
 
-	if ( partition .filesystem == FS_CLEARED )
+	if (partition.fstype == FS_CLEARED)
 		return    erase_filesystem_signatures(partition, operationdetail)
 		       && set_partition_type(partition, operationdetail);
 	else
@@ -1955,7 +1955,7 @@ bool GParted_Core::delete_partition( const Partition & partition, OperationDetai
 
 bool GParted_Core::remove_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a delete file system only step"),
@@ -1966,7 +1966,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 	bool success = true ;
 	FileSystem* p_filesystem = NULL ;
 
-	switch ( get_fs( partition .filesystem ) .remove )
+	switch (get_fs(partition.fstype ).remove)
 	{
 		case FS::EXTERNAL:
 			//Run file system specific remove method to delete the file system.  Most
@@ -1974,8 +1974,8 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 			//  recovery from accidental partition deletion.
 			operationdetail .add_child( OperationDetail( Glib::ustring::compose(
 								_("delete %1 file system"),
-								Utils::get_filesystem_string( partition .filesystem ) ) ) ) ;
-			success = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
+								Utils::get_filesystem_string(partition.fstype))));
+			success = (p_filesystem = get_filesystem_object(partition.fstype)) &&
 			          p_filesystem ->remove( partition, operationdetail .get_last_child() ) ;
 			operationdetail.get_last_child().set_success_and_capture_errors( success );
 			break ;
@@ -1988,7 +1988,7 @@ bool GParted_Core::remove_filesystem( const Partition & partition, OperationDeta
 
 bool GParted_Core::label_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a label file system only step"),
@@ -2007,10 +2007,10 @@ bool GParted_Core::label_filesystem( const Partition & partition, OperationDetai
 
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	switch ( get_fs( partition.filesystem ).write_label )
+	switch (get_fs(partition.fstype).write_label)
 	{
 		case FS::EXTERNAL:
-			succes =    ( p_filesystem = get_filesystem_object( partition.filesystem ) )
+			succes =    (p_filesystem = get_filesystem_object(partition.fstype))
 			         && p_filesystem->write_label( partition, operationdetail.get_last_child() );
 			break;
 
@@ -2051,7 +2051,7 @@ bool GParted_Core::name_partition( const Partition & partition, OperationDetail 
 
 bool GParted_Core::change_filesystem_uuid( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a change file system UUID only step"),
@@ -2073,10 +2073,10 @@ bool GParted_Core::change_filesystem_uuid( const Partition & partition, Operatio
 
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	switch ( get_fs( partition.filesystem ).write_uuid )
+	switch (get_fs(partition.fstype).write_uuid)
 	{
 		case FS::EXTERNAL:
-			succes =    ( p_filesystem = get_filesystem_object( partition.filesystem ) )
+			succes =    (p_filesystem = get_filesystem_object(partition.fstype))
 			         && p_filesystem->write_uuid( partition, operationdetail.get_last_child() );
 			break;
 
@@ -2218,7 +2218,7 @@ bool GParted_Core::move( const Partition & partition_old,
 	if ( ! success )
 		return false;
 
-	if ( partition_new.filesystem == FS_LINUX_SWAP )
+	if (partition_new.fstype == FS_LINUX_SWAP)
 		// linux-swap is recreated, not moved
 		return recreate_linux_swap_filesystem( partition_new, operationdetail );
 
@@ -2248,7 +2248,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
 	Sector total_done = 0;
-	switch ( get_fs( partition_old .filesystem ) .move )
+	switch (get_fs(partition_old.fstype).move)
 	{
 		case FS::NONE:
 			break ;
@@ -2283,7 +2283,7 @@ bool GParted_Core::move_filesystem( const Partition & partition_old,
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = ( p_filesystem = get_filesystem_object( partition_new .filesystem ) ) &&
+			succes = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&
 			         p_filesystem ->move( partition_old
 			                            , partition_new
 			                            , operationdetail .get_last_child()
@@ -2382,7 +2382,7 @@ bool GParted_Core::resize( const Partition & partition_old,
 		return false ;
 	}
 
-	if ( partition_new.filesystem == FS_LUKS )
+	if (partition_new.fstype == FS_LUKS)
 		return resize_encryption( partition_old, partition_new, operationdetail );
 	else
 		return resize_plain( partition_old, partition_new, operationdetail );
@@ -2392,7 +2392,7 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
-	if ( partition_old.filesystem != FS_LUKS )
+	if (partition_old.fstype != FS_LUKS)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition does not contain LUKS encryption for a resize encryption only step"),
@@ -2421,7 +2421,7 @@ bool GParted_Core::resize_encryption( const Partition & partition_old,
 
 	const Partition & filesystem_ptn_new = partition_new.get_filesystem_partition();
 
-	if ( filesystem_ptn_new.filesystem == FS_LINUX_SWAP )
+	if (filesystem_ptn_new.fstype == FS_LINUX_SWAP)
 	{
 		// LUKS is resized, but linux-swap is recreated, not resized
 		if ( delta < 0LL )  // shrink
@@ -2461,7 +2461,7 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
                                  const Partition & partition_new,
                                  OperationDetail & operationdetail )
 {
-	if ( partition_old.filesystem == FS_LUKS && partition_old.busy )
+	if (partition_old.fstype == FS_LUKS && partition_old.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a resize file system only step"),
@@ -2469,7 +2469,7 @@ bool GParted_Core::resize_plain( const Partition & partition_old,
 		return false;
 	}
 
-	if ( partition_new.filesystem == FS_LINUX_SWAP )
+	if (partition_new.fstype == FS_LINUX_SWAP)
 	{
 		// linux-swap is recreated, not resized
 		return    resize_move_partition( partition_old, partition_new, operationdetail, true )
@@ -2732,7 +2732,7 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
-	if ( ! ( partition_old.filesystem == FS_LUKS && partition_old.busy ) )
+	if (! (partition_old.fstype == FS_LUKS && partition_old.busy))
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition does not contain open LUKS encryption for a shrink encryption only step"),
@@ -2748,7 +2748,7 @@ bool GParted_Core::shrink_encryption( const Partition & partition_old,
 
 bool GParted_Core::maximize_encryption( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem != FS_LUKS )
+	if (partition.fstype != FS_LUKS)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition does not contain LUKS encryption for a maximize encryption only step"),
@@ -2763,7 +2763,7 @@ bool GParted_Core::maximize_encryption( const Partition & partition, OperationDe
 	// operation these growing checks are merely retesting those performed to allow
 	// the operation to be queued in the first place.  See
 	// Win_GParted::set_valid_operations().
-	if ( get_fs( partition.filesystem ).grow == FS::NONE )
+	if (get_fs(partition.fstype).grow == FS::NONE)
 	{
 		operationdetail.get_last_child().add_child( OperationDetail(
 				_("growing is not available for this encryption volume"),
@@ -2781,7 +2781,7 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
                                       const Partition & partition_new,
                                       OperationDetail & operationdetail )
 {
-	if ( partition_old.filesystem == FS_LUKS && partition_old.busy )
+	if (partition_old.fstype == FS_LUKS && partition_old.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a shrink file system only step"),
@@ -2809,7 +2809,7 @@ bool GParted_Core::shrink_filesystem( const Partition & partition_old,
 
 bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a maximize file system only step"),
@@ -2825,7 +2825,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	// to allow the operation to be queued in the first place.  See
 	// Win_GParted::set_valid_operations() and
 	// Dialog_Partition_Resize_Move::Resize_Move_Normal().
-	if (get_fs(partition.filesystem).grow == FS::NONE)
+	if (get_fs(partition.fstype).grow == FS::NONE)
 	{
 		operationdetail .get_last_child() .add_child( 
 			OperationDetail( _("growing is not available for this file system"),
@@ -2837,7 +2837,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 	else if ( filesystem_resize_disallowed( partition ) )
 	{
 		Glib::ustring msg        = _("growing the file system is currently disallowed") ;
-		Glib::ustring custom_msg = get_filesystem_object( partition .filesystem )
+		Glib::ustring custom_msg = get_filesystem_object(partition.fstype)
 		                           ->get_custom_text( CTEXT_RESIZE_DISALLOWED_WARNING ) ;
 		if ( ! custom_msg .empty() )
 		{
@@ -2856,7 +2856,7 @@ bool GParted_Core::maximize_filesystem( const Partition & partition, OperationDe
 
 bool GParted_Core::recreate_linux_swap_filesystem( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem != FS_LINUX_SWAP )
+	if (partition.fstype != FS_LINUX_SWAP)
 	{
 		operationdetail.add_child( OperationDetail(
 			/* TO TRANSLATORS: looks like   not a linux-swap file system for a recreate linux-swap only step */
@@ -2887,7 +2887,7 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 {
 
 	bool fill_partition = false;
-	const FS & fs_cap = get_fs( partition_new.filesystem );
+	const FS& fs_cap = get_fs(partition_new.fstype);
 	FS::Support action = FS::NONE;
 	if ( partition_new.get_sector_length() >= partition_old.get_sector_length() )
 	{
@@ -2917,7 +2917,7 @@ bool GParted_Core::resize_filesystem_implement( const Partition & partition_old,
 			break;
 #endif
 		case FS::EXTERNAL:
-			success = ( p_filesystem = get_filesystem_object( partition_new.filesystem ) ) &&
+			success = (p_filesystem = get_filesystem_object(partition_new.fstype)) &&
 			          p_filesystem->resize( partition_new,
 			                                operationdetail.get_last_child(),
 			                                fill_partition );
@@ -2937,7 +2937,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	Partition & filesystem_ptn_dst = partition_dst.get_filesystem_partition();
 
 	if (   filesystem_ptn_dst.get_byte_length() < filesystem_ptn_src.get_byte_length()
-	    && filesystem_ptn_src.filesystem != FS_XFS  // Permit copying to smaller xfs partition
+	    && filesystem_ptn_src.fstype != FS_XFS  // Permit copying to smaller xfs partition
 	   )
 	{
 		operationdetail .add_child( OperationDetail( 
@@ -2971,7 +2971,7 @@ bool GParted_Core::copy( const Partition & partition_src,
 	if ( ! success )
 		return false;
 
-	if ( filesystem_ptn_dst.filesystem == FS_LINUX_SWAP )
+	if (filesystem_ptn_dst.fstype == FS_LINUX_SWAP)
 	{
 		// linux-swap is recreated, not copied
 		return recreate_linux_swap_filesystem( filesystem_ptn_dst, operationdetail );
@@ -2989,14 +2989,14 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
                                     Partition & partition_dst,
                                     OperationDetail & operationdetail )
 {
-	if ( partition_src.filesystem == FS_LUKS && partition_src.busy )
+	if (partition_src.fstype == FS_LUKS && partition_src.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("source partition contains open LUKS encryption for a file system copy only step"),
 			STATUS_ERROR, FONT_ITALIC ) );
 		return false;
 	}
-	if ( partition_dst.filesystem == FS_LUKS && partition_dst.busy )
+	if (partition_dst.fstype == FS_LUKS && partition_dst.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("destination partition contains open LUKS encryption for a file system copy only step"),
@@ -3011,7 +3011,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 
 	bool success = false;
 	FileSystem* p_filesystem = NULL;
-	switch ( get_fs( partition_dst.filesystem ).copy )
+	switch (get_fs(partition_dst.fstype).copy)
 	{
 		case FS::GPARTED:
 			success = copy_filesystem_internal( partition_src,
@@ -3025,7 +3025,7 @@ bool GParted_Core::copy_filesystem( const Partition & partition_src,
 			break;
 
 		case FS::EXTERNAL:
-			success = ( p_filesystem = get_filesystem_object( partition_dst.filesystem ) ) &&
+			success = (p_filesystem = get_filesystem_object(partition_dst.fstype)) &&
 			          p_filesystem->copy( partition_src,
 			                              partition_dst,
 			                              operationdetail.get_last_child() );
@@ -3245,7 +3245,7 @@ void GParted_Core::rollback_move_filesystem( const Partition & partition_src,
 
 bool GParted_Core::check_repair_filesystem( const Partition & partition, OperationDetail & operationdetail ) 
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for a check file system only step"),
@@ -3265,7 +3265,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 	
 	bool succes = false ;
 	FileSystem* p_filesystem = NULL ;
-	switch ( get_fs( partition .filesystem ) .check )
+	switch (get_fs(partition.fstype).check)
 	{
 		case FS::NONE:
 			operationdetail .get_last_child() .add_child(
@@ -3281,7 +3281,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 		case FS::LIBPARTED:
 			break ;
 		case FS::EXTERNAL:
-			succes = ( p_filesystem = get_filesystem_object( partition .filesystem ) ) &&
+			succes = (p_filesystem = get_filesystem_object(partition.fstype)) &&
 				 p_filesystem ->check_repair( partition, operationdetail .get_last_child() ) ;
 
 			break ;
@@ -3297,7 +3297,7 @@ bool GParted_Core::check_repair_filesystem( const Partition & partition, Operati
 bool GParted_Core::check_repair_maximize( const Partition & partition,
                                           OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS )
+	if (partition.fstype == FS_LUKS)
 	{
 		// Pretend that the LUKS partition is closed so that
 		// resize_filesystem_implement() checks the offline .grow capability
@@ -3347,20 +3347,20 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 		PedPartition* lp_partition = ped_disk_get_partition_by_sector( lp_disk, partition.get_sector() );
 		if ( lp_partition )
 		{
-			Glib::ustring fs_type = Utils::get_filesystem_string( partition.filesystem );
+			Glib::ustring fs_type = Utils::get_filesystem_string(partition.fstype);
 
 			// Lookup libparted file system type using GParted's name, as most
 			// match.  Exclude cleared as the name won't be recognised by
 			// libparted and get_filesystem_string() has also translated it.
 			PedFileSystemType *lp_fs_type = NULL;
-			if (partition.filesystem != FS_CLEARED)
+			if (partition.fstype != FS_CLEARED)
 				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
 
 			// If not found, and FS is udf, then try ntfs.
 			// Actually MBR 07 IFS (Microsoft Installable File System) or
 			// GPT BDP (Windows Basic Data Partition).
 			// Ref: https://serverfault.com/a/829172
-			if (! lp_fs_type && partition.filesystem == FS_UDF)
+			if (! lp_fs_type && partition.fstype == FS_UDF)
 				lp_fs_type = ped_file_system_type_get( "ntfs" );
 
 			// default is Linux (83)
@@ -3369,7 +3369,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 
 			bool supports_lvm_flag = ped_partition_is_flag_available( lp_partition, PED_PARTITION_LVM );
 
-			if ( lp_fs_type && partition.filesystem != FS_LVM2_PV )
+			if (lp_fs_type && partition.fstype != FS_LVM2_PV)
 			{
 				// Also clear any libparted LVM flag so that it doesn't
 				// override the file system type
@@ -3387,7 +3387,7 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 					return_value = true;
 				}
 			}
-			else if ( partition.filesystem == FS_LVM2_PV )
+			else if (partition.fstype == FS_LVM2_PV)
 			{
 				if ( supports_lvm_flag                                            &&
 				     ped_partition_set_flag( lp_partition, PED_PARTITION_LVM, 1 ) &&
@@ -3499,7 +3499,7 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 					STATUS_NONE, 
 					FONT_ITALIC ) ) ;
 
-				if ( partition.filesystem == FS_LUKS && partition.busy )
+				if (partition.fstype == FS_LUKS && partition.busy)
 				{
 					const Partition & encrypted = dynamic_cast<const PartitionLUKS *>( &partition )->get_encrypted();
 					operationdetail.get_last_child().add_child( OperationDetail(
@@ -3635,7 +3635,7 @@ FS_Limits GParted_Core::get_filesystem_limits( FSType fstype, const Partition & 
 
 bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 {
-	if ( partition .filesystem == FS_LVM2_PV )
+	if (partition.fstype == FS_LVM2_PV)
 	{
 		//The LVM2 PV can't be resized when it's a member of an export VG
 		Glib::ustring vgname = LVM2_PV_Info::get_vg_name( partition.get_path() );
@@ -3648,7 +3648,7 @@ bool GParted_Core::filesystem_resize_disallowed( const Partition & partition )
 
 bool GParted_Core::erase_filesystem_signatures( const Partition & partition, OperationDetail & operationdetail )
 {
-	if ( partition.filesystem == FS_LUKS && partition.busy )
+	if (partition.fstype == FS_LUKS && partition.busy)
 	{
 		operationdetail.add_child( OperationDetail(
 			GPARTED_BUG + ": " + _("partition contains open LUKS encryption for an erase file system signatures only step"),
@@ -3886,7 +3886,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 {
 	//only for ntfs atm...
 	//FIXME: this should probably be done in the fs classes...
-	if ( partition .filesystem == FS_NTFS )
+	if (partition.fstype == FS_NTFS)
 	{
 		//The NTFS file system stores a value in the boot record called the
 		//  Number of Hidden Sectors.  This value must match the partition start
@@ -3897,7 +3897,7 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 		operationdetail .add_child( OperationDetail( 
 				/*TO TRANSLATORS: update boot sector of ntfs file system on /dev/sdd1 */
 				Glib::ustring::compose( _("update boot sector of %1 file system on %2"),
-					  Utils::get_filesystem_string( partition .filesystem ),
+					  Utils::get_filesystem_string(partition.fstype),
 					  partition .get_path() ) ) ) ;
 
 		//convert start sector to hex string

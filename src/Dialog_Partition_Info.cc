@@ -36,9 +36,9 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 	// Set minimum dialog height so it fits on an 800x600 screen without too much
 	// whitespace (~500 px max for GNOME desktop).  Allow extra space if have any
 	// messages or for LVM2 PV or LUKS encryption.
-	if ( partition.have_messages()          ||
-	     partition.filesystem == FS_LVM2_PV ||
-	     partition.filesystem == FS_LUKS       )
+	if (partition.have_messages()      ||
+	    partition.fstype == FS_LVM2_PV ||
+	    partition.fstype == FS_LUKS      )
 		this ->set_size_request( -1, 460) ;
 	else
 		this ->set_size_request( -1, 370 ) ;	//Minimum 370 to avoid scrolling on Fedora 20
@@ -129,7 +129,7 @@ bool Dialog_Partition_Info::drawingarea_on_draw(const Cairo::RefPtr<Cairo::Conte
 	cr->rectangle(0, 0, 400, 60);
 	cr->fill();
 
-	if ( partition.filesystem != FS_UNALLOCATED )
+	if (partition.fstype != FS_UNALLOCATED)
 	{
 		// Used
 		Gdk::Cairo::set_source_rgba(cr, color_used);
@@ -204,7 +204,7 @@ void Dialog_Partition_Info::init_drawingarea()
 	color_unused.set("white");
 	color_unallocated.set("darkgrey");
 	color_text.set("black");
-	color_partition.set( Utils::get_color( partition.get_filesystem_partition().filesystem ) );
+	color_partition.set(Utils::get_color(partition.get_filesystem_partition().fstype));
 
 	//set text of pangolayout
 	pango_layout = drawingarea .create_pango_layout( 
@@ -232,11 +232,11 @@ void Dialog_Partition_Info::Display_Info()
 	Sector ptn_sectors = partition .get_sector_length() ;
 
 	Glib::ustring vgname = "" ;  //Also used in partition status message
-	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
+	if (filesystem_ptn.fstype == FS_LVM2_PV)
 		vgname = LVM2_PV_Info::get_vg_name( filesystem_ptn.get_path() );
 
 	bool filesystem_accessible = false;
-	if ( partition.filesystem != FS_LUKS || partition.busy )
+	if (partition.fstype != FS_LUKS || partition.busy)
 		// As long as this is not a LUKS encrypted partition which is closed the
 		// file system is accessible.
 		filesystem_accessible = true;
@@ -259,13 +259,13 @@ void Dialog_Partition_Info::Display_Info()
 	grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("File system:")) + "</b>"), 1, top, 1, 1);
 	if ( filesystem_accessible )
 	{
-		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(filesystem_ptn.filesystem), true, false, true),
+		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(filesystem_ptn.fstype), true, false, true),
 		             2, top, 1, 1);
 	}
 	top++;
 
 	//label
-	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
+	if (filesystem_ptn.fstype != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED)
 	{
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Label:")) + "</b>"),
 		             1, top, 1, 1);
@@ -278,7 +278,7 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	// file system uuid
-	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED )
+	if (filesystem_ptn.fstype != FS_UNALLOCATED && filesystem_ptn.type != TYPE_EXTENDED)
 	{
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("UUID:")) + "</b>"),
 		             1, top, 1, 1);
@@ -300,7 +300,7 @@ void Dialog_Partition_Info::Display_Info()
 	static Glib::ustring luks_closed = _("Closed");
 
 	//status
-	if ( filesystem_ptn.filesystem != FS_UNALLOCATED && filesystem_ptn.status != STAT_NEW )
+	if (filesystem_ptn.fstype != FS_UNALLOCATED && filesystem_ptn.status != STAT_NEW)
 	{
 		//status
 		Glib::ustring str_temp ;
@@ -325,10 +325,10 @@ void Dialog_Partition_Info::Display_Info()
 				 */
 				str_temp = _("Busy (At least one logical partition is mounted)") ;
 			}
-			else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP   ||
-			          filesystem_ptn.filesystem == FS_LINUX_SWRAID ||
-			          filesystem_ptn.filesystem == FS_ATARAID      ||
-			          filesystem_ptn.filesystem == FS_LVM2_PV         )
+			else if (filesystem_ptn.fstype == FS_LINUX_SWAP   ||
+			         filesystem_ptn.fstype == FS_LINUX_SWRAID ||
+			         filesystem_ptn.fstype == FS_ATARAID      ||
+			         filesystem_ptn.fstype == FS_LVM2_PV        )
 			{
 				/* TO TRANSLATORS:  Active
 				 * means that this linux swap, linux software raid partition, or
@@ -336,7 +336,7 @@ void Dialog_Partition_Info::Display_Info()
 				 */
 				str_temp = _("Active") ;
 			}
-			else if ( filesystem_ptn.filesystem == FS_LUKS )
+			else if (filesystem_ptn.fstype == FS_LUKS)
 			{
 				// NOTE: LUKS within LUKS
 				// Only ever display LUKS information in the file system
@@ -360,9 +360,9 @@ void Dialog_Partition_Info::Display_Info()
 			 */
 			str_temp = _("Not busy (There are no mounted logical partitions)") ;
 		}
-		else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP   ||
-		          filesystem_ptn.filesystem == FS_LINUX_SWRAID ||
-		          filesystem_ptn.filesystem == FS_ATARAID        )
+		else if (filesystem_ptn.fstype == FS_LINUX_SWAP   ||
+		         filesystem_ptn.fstype == FS_LINUX_SWRAID ||
+		         filesystem_ptn.fstype == FS_ATARAID        )
 		{
 			/* TO TRANSLATORS:  Not active
 			 *  means that this linux swap or linux software raid partition
@@ -370,12 +370,12 @@ void Dialog_Partition_Info::Display_Info()
 			 */
 			str_temp = _("Not active") ;
 		}
-		else if ( filesystem_ptn.filesystem == FS_LUKS )
+		else if (filesystem_ptn.fstype == FS_LUKS)
 		{
 			// NOTE: LUKS within LUKS
 			str_temp = luks_closed;
 		}
-		else if ( filesystem_ptn.filesystem == FS_LVM2_PV )
+		else if (filesystem_ptn.fstype == FS_LVM2_PV)
 		{
 			if ( vgname .empty() )
 				/* TO TRANSLATORS:  Not active (Not a member of any volume group)
@@ -411,7 +411,7 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	//Optional, LVM2 Volume Group name
-	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
+	if (filesystem_ptn.fstype == FS_LVM2_PV)
 	{
 		// Volume Group
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Volume Group:")) + "</b>"),
@@ -421,15 +421,15 @@ void Dialog_Partition_Info::Display_Info()
 	}
 
 	//Optional, members of multi-device file systems
-	if ( filesystem_ptn.filesystem == FS_LVM2_PV ||
-	     filesystem_ptn.filesystem == FS_BTRFS      )
+	if (filesystem_ptn.fstype == FS_LVM2_PV ||
+	    filesystem_ptn.fstype == FS_BTRFS     )
 	{
 		// Members
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Members:")) + "</b>", true, false, false, Gtk::ALIGN_START),
 		             1, top, 1, 1);
 
 		std::vector<Glib::ustring> members ;
-		switch ( filesystem_ptn.filesystem )
+		switch (filesystem_ptn.fstype)
 		{
 			case FS_BTRFS:
 				members = btrfs::get_members( filesystem_ptn.get_path() );
@@ -446,7 +446,7 @@ void Dialog_Partition_Info::Display_Info()
 		              2, top++, 1, 1);
 	}
 
-	if ( filesystem_ptn.filesystem == FS_LVM2_PV )
+	if (filesystem_ptn.fstype == FS_LVM2_PV)
 	{
 		// Logical Volumes
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Logical Volumes:")) + "</b>", true, false, false, Gtk::ALIGN_START),
@@ -508,7 +508,7 @@ void Dialog_Partition_Info::Display_Info()
 	// One blank line
 	grid->attach(*Utils::mk_label(""), 0, top++, 6, 1);
 
-	if ( partition.filesystem == FS_LUKS )
+	if (partition.fstype == FS_LUKS)
 	{
 		// ENCRYPTION DETAIL SECTION
 		// Encryption headline
@@ -518,7 +518,7 @@ void Dialog_Partition_Info::Display_Info()
 		// Encryption
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Encryption:")) + "</b>"),
 		             1, top, 1, 1);
-		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(partition.filesystem), true, false, true),
+		grid->attach(*Utils::mk_label(Utils::get_filesystem_string(partition.fstype), true, false, true),
 		             2, top++, 1, 1);
 
 		// LUKS path
@@ -564,7 +564,7 @@ void Dialog_Partition_Info::Display_Info()
 	grid->attach(*Utils::mk_label(partition.get_path(), true, false, true),
 	             2, top++, 1, 1);
 
-	if (partition.filesystem != FS_UNALLOCATED && partition.status != STAT_NEW)
+	if (partition.fstype != FS_UNALLOCATED && partition.status != STAT_NEW)
 	{
 		// Name
 		grid->attach(*Utils::mk_label("<b>" + Glib::ustring(_("Name:")) + "</b>"),

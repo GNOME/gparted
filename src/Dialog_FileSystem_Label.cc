@@ -43,7 +43,7 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	hbox->pack_start( *Utils::mk_label("<b>" + Glib::ustring( _("Label:") ) + "</b>"),
 	                  Gtk::PACK_SHRINK );
 	entry = manage( new Gtk::Entry() );
-	entry->set_max_length( Utils::get_filesystem_label_maxlength( partition.filesystem ) );
+	entry->set_max_length(Utils::get_filesystem_label_maxlength(partition.fstype));
 	entry->set_width_chars( 30 );
 	entry->set_activates_default( true );
 	entry->set_text( partition.get_filesystem_label() );

@@ -488,7 +488,7 @@ void Dialog_Progress::write_partition_details(const Partition& partition, std::o
 	    << "<td class='number_col'>" << partition.sector_end << "</td>"
 	    << "<td>" << Glib::build_path(", ", partition.flags) << "</td>"
 	    << "<td>" << partition.name << "</td>"
-	    << "<td>" << Utils::get_filesystem_string(partition.filesystem) << "</td>"
+	    << "<td>" << Utils::get_filesystem_string(partition.fstype) << "</td>"
 	    << "<td>" << partition.get_filesystem_label() << "</td>"
 	    << "<td>" << Glib::build_path(", ", partition.get_mountpoints()) << "</td>"
 	    << "</tr>" << std::endl;

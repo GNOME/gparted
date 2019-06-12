@@ -41,7 +41,7 @@ void Partition::Reset()
 	status = STAT_REAL;
 	type = TYPE_UNALLOCATED;
 	alignment = ALIGN_STRICT ;
-	filesystem = FS_UNALLOCATED;
+	fstype = FS_UNALLOCATED;
 	have_filesystem_label = false;
 	uuid .clear() ;
 	name.clear();
@@ -62,7 +62,7 @@ void Partition::Set( const Glib::ustring & device_path,
                      const Glib::ustring & partition,
                      int partition_number,
                      PartitionType type,
-                     FSType filesystem,
+                     FSType fstype,
                      Sector sector_start,
                      Sector sector_end,
                      Byte_Value sector_size,
@@ -73,7 +73,7 @@ void Partition::Set( const Glib::ustring & device_path,
 	this->path = partition;
 	this ->partition_number = partition_number;
 	this ->type = type;
-	this ->filesystem = filesystem;
+	this->fstype = fstype;
 	this ->sector_start = sector_start;
 	this ->sector_end = sector_end;
 	this ->sector_size = sector_size;

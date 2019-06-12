@@ -92,7 +92,7 @@ void DrawingAreaVisualDisk::set_static_data( const PartitionVector & partitions,
 		Sector partition_length = partitions[ t ] .get_sector_length() ;
 		visual_partitions .back() .fraction = partition_length / static_cast<double>( length ) ;
 
-		Glib::ustring color_str = Utils::get_color( partitions[t].get_filesystem_partition().filesystem );
+		Glib::ustring color_str = Utils::get_color(partitions[t].get_filesystem_partition().fstype);
 		visual_partitions.back().color.set( color_str );
 
 		if (partitions[t].type == TYPE_EXTENDED)
@@ -148,8 +148,8 @@ void DrawingAreaVisualDisk::calc_usage( std::vector<visual_partition> & visual_p
 {
 	for ( unsigned int t = 0 ; t < visual_partitions .size() ; t++ )
 	{
-		if ( visual_partitions[t].partition_ptr->filesystem != FS_UNALLOCATED &&
-		     visual_partitions[t].partition_ptr->type       != TYPE_EXTENDED     )
+		if (visual_partitions[t].partition_ptr->fstype != FS_UNALLOCATED &&
+		    visual_partitions[t].partition_ptr->type   != TYPE_EXTENDED    )
 		{
 			if ( visual_partitions[t].partition_ptr->sector_usage_known() )
 			{

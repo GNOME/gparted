@@ -187,7 +187,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 		show_names = true;
 
 	// file system
-	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf( filesystem_ptn.filesystem, 16, 16 );
+	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf(filesystem_ptn.fstype, 16, 16);
 	treerow[treeview_detail_columns.filesystem] = partition.get_filesystem_string();
 
 	// mount point

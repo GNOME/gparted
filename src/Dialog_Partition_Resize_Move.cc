@@ -62,7 +62,7 @@ void Dialog_Partition_Resize_Move::set_data( const Partition & selected_partitio
 	}
 
 	// Set partition color
-	Gdk::RGBA partition_color(Utils::get_color(selected_partition.filesystem));
+	Gdk::RGBA partition_color(Utils::get_color(selected_partition.fstype));
 	frame_resizer_base->set_rgb_partition_color( partition_color );
 
 	//store the original values
@@ -82,9 +82,9 @@ void Dialog_Partition_Resize_Move::Resize_Move_Normal( const PartitionVector & p
 
 	// Don't permit shrinking an existing file system (other than linux-swap) when the
 	// usage is unknown as that sets the minimum resize.
-	if ( ! new_partition->sector_usage_known()      &&
-	     new_partition->status     != STAT_NEW      &&
-	     new_partition->filesystem != FS_LINUX_SWAP    )
+	if (! new_partition->sector_usage_known()  &&
+	    new_partition->status != STAT_NEW      &&
+	    new_partition->fstype != FS_LINUX_SWAP   )
 		fs.shrink = FS::NONE;
 
 	//Disable resizing as it's currently disallowed for the file system in this partition.

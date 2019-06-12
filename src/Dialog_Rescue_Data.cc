@@ -111,18 +111,18 @@ void Dialog_Rescue_Data::create_list_of_fs()
 
 	for(unsigned int i=0;i<this->partitions.size();i++)
 	{
-		if (this->partitions[i].filesystem == FS_UNALLOCATED   ||
-		    this->partitions[i].filesystem == FS_UNKNOWN       ||
-		    this->partitions[i].filesystem == FS_UNFORMATTED   ||
-		    this->partitions[i].filesystem == FS_EXTENDED      ||
-		    this->partitions[i].type       == TYPE_EXTENDED    ||
-		    this->partitions[i].type       == TYPE_UNALLOCATED   )
+		if (this->partitions[i].fstype == FS_UNALLOCATED   ||
+		    this->partitions[i].fstype == FS_UNKNOWN       ||
+		    this->partitions[i].fstype == FS_UNFORMATTED   ||
+		    this->partitions[i].fstype == FS_EXTENDED      ||
+		    this->partitions[i].type   == TYPE_EXTENDED    ||
+		    this->partitions[i].type   == TYPE_UNALLOCATED   )
 		{
 			continue;
 		}
 
-		std::string fs_name=Utils::get_filesystem_string( this->partitions[i].filesystem );
-		if(this->partitions[i].filesystem==FS_EXT2)
+		std::string fs_name = Utils::get_filesystem_string(this->partitions[i].fstype);
+		if (this->partitions[i].fstype == FS_EXT2)
 		{
 			fs_name+="/3/4, ReiserFs or XFS";
 		}
