@@ -815,7 +815,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		libparted_messages .clear() ;
 		Partition * partition_temp = NULL;
 		bool partition_is_busy = false ;
-		FSType filesystem;
+		FSType fstype;
 		std::vector<Glib::ustring> detect_messages;
 		Glib::ustring partition_path;
 
@@ -837,7 +837,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		{
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
-				filesystem = detect_filesystem( lp_device, lp_partition, detect_messages );
+				fstype = detect_filesystem(lp_device, lp_partition, detect_messages);
 				partition_path = get_partition_path(lp_partition);
 
 #ifndef USE_LIBPARTED_DMRAID
@@ -847,19 +847,19 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				{
 					//Try device_name + partition_number
 					Glib::ustring dmraid_path = device .get_path() + Utils::num_to_str( lp_partition ->num ) ;
-					partition_is_busy = is_busy( filesystem, dmraid_path ) ;
+					partition_is_busy = is_busy(fstype, dmraid_path);
 
 					//Try device_name + p + partition_number
 					dmraid_path = device .get_path() + "p" + Utils::num_to_str( lp_partition ->num ) ;
-					partition_is_busy |= is_busy( filesystem, dmraid_path ) ;
+					partition_is_busy |= is_busy(fstype, dmraid_path);
 				}
 				else
 #endif
 				{
-					partition_is_busy = is_busy( filesystem, partition_path ) ;
+					partition_is_busy = is_busy(fstype, partition_path);
 				}
 
-				if ( filesystem == FS_LUKS )
+				if (fstype == FS_LUKS)
 					partition_temp = new PartitionLUKS();
 				else
 					partition_temp = new Partition();
@@ -868,7 +868,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				                     lp_partition->num,
 				                     ( lp_partition->type == PED_PARTITION_NORMAL ) ? TYPE_PRIMARY
 				                                                                    : TYPE_LOGICAL,
-				                     filesystem,
+				                     fstype,
 				                     lp_partition->geom.start,
 				                     lp_partition->geom.end,
 				                     device.sector_size,
@@ -878,7 +878,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 
 				set_flags( *partition_temp, lp_partition );
 
-				if ( filesystem == FS_LUKS )
+				if (fstype == FS_LUKS)
 					set_luks_partition( *dynamic_cast<PartitionLUKS *>( partition_temp ) );
 
 				if ( partition_temp->busy && partition_temp->partition_number > device.highest_busy )
