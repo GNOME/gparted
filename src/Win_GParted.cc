@@ -534,9 +534,9 @@ Gtk::Menu * Win_GParted::create_format_menu()
 
 	for ( unsigned int t = 0 ; t < fss .size() ; t++ )
 	{
-		if ( GParted_Core::supported_filesystem( fss[t].filesystem ) &&
-		     fss[t].filesystem != FS_LUKS                               )
-			create_format_menu_add_item( fss[t].filesystem, fss[t].create );
+		if (GParted_Core::supported_filesystem(fss[t].fstype) &&
+		    fss[t].fstype != FS_LUKS                            )
+			create_format_menu_add_item(fss[t].fstype, fss[t].create);
 	}
 	//Add cleared at the end of the list
 	create_format_menu_add_item( FS_CLEARED, true ) ;

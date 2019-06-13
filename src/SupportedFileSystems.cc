@@ -149,7 +149,7 @@ const FS& SupportedFileSystems::get_fs_support(FSType fstype) const
 {
 	for (unsigned int i = 0; i < m_fs_support.size(); i++)
 	{
-		if (m_fs_support[i].filesystem == fstype)
+		if (m_fs_support[i].fstype == fstype)
 			return m_fs_support[i];
 	}
 

@@ -107,7 +107,7 @@ FS fat16::get_filesystem_support()
 	fs.copy = FS::GPARTED;
 	fs .online_read = FS::GPARTED ;
 
-	if ( fs .filesystem == FS_FAT16 )
+	if (fs.fstype == FS_FAT16)
 	{
 		fs_limits.min_size = 16 * MEBIBYTE;
 		fs_limits.max_size = (4096 - 1) * MEBIBYTE;  // Maximum seems to be just less than 4096 MiB.

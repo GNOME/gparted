@@ -346,8 +346,8 @@ std::vector<FSType> SupportedFileSystemsTest::get_supported_fstypes()
 	const std::vector<FS>& fss = s_supported_filesystems->get_all_fs_support();
 	for (unsigned int i = 0; i < fss.size(); i++)
 	{
-		if (s_supported_filesystems->supported_filesystem(fss[i].filesystem))
-			v.push_back(fss[i].filesystem);
+		if (s_supported_filesystems->supported_filesystem(fss[i].fstype))
+			v.push_back(fss[i].fstype);
 	}
 	return v;
 }

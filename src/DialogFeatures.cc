@@ -170,14 +170,14 @@ void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 	// Fill the features chart with fully supported file systems.
 	for (unsigned i = 0; i < fss.size(); i++)
 	{
-		if (GParted_Core::supported_filesystem(fss[i].filesystem))
+		if (GParted_Core::supported_filesystem(fss[i].fstype))
 			load_one_filesystem(fss[i]);
 	}
 
 	// Find and add "other" at the end, for all the basic supported file systems.
 	for (unsigned i = 0; i < fss.size(); i++)
 	{
-		if (fss[i].filesystem == FS_OTHER)
+		if (fss[i].fstype == FS_OTHER)
 		{
 			load_one_filesystem(fss[i]);
 			break;
@@ -189,7 +189,7 @@ void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 void DialogFeatures::load_one_filesystem(const FS& fs)
 {
 	treerow = *( liststore_filesystems ->append() );
-	treerow[ treeview_filesystems_columns .filesystem ] = Utils::get_filesystem_string( fs .filesystem ) ;
+	treerow[treeview_filesystems_columns.filesystem] = Utils::get_filesystem_string(fs.fstype);
 
 	treerow[ treeview_filesystems_columns .create ] = fs .create ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .grow ] = fs .grow ? icon_yes : icon_no ; 
@@ -202,8 +202,9 @@ void DialogFeatures::load_one_filesystem(const FS& fs)
 	treerow[ treeview_filesystems_columns .label ] = fs .write_label ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .uuid ] = fs .write_uuid ? icon_yes : icon_no ;
 
-	treerow[ treeview_filesystems_columns .software ] = Utils::get_filesystem_software( fs .filesystem ) ;
+	treerow[treeview_filesystems_columns.software] = Utils::get_filesystem_software(fs.fstype);
 }
+
 
 DialogFeatures::~DialogFeatures() 
 {

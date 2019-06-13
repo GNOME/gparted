@@ -61,7 +61,7 @@ struct FS
 		EXTERNAL  = 3
 	};
 
-	FSType filesystem;
+	FSType fstype;
 	Support busy;               // How to determine if partition/file system is busy
 	Support read;               // Can and how to read sector usage while inactive
 	Support read_label;
@@ -80,7 +80,7 @@ struct FS
 	Support online_grow;
 	Support online_shrink;
 
-	FS( FSType fstype = FS_UNSUPPORTED ) : filesystem( fstype )
+	FS(FSType fstype_ = FS_UNSUPPORTED) : fstype(fstype_)
 	{
 		busy = read = read_label = write_label = read_uuid = write_uuid = create =
 		create_with_label = grow = shrink = move = check = copy = remove = online_read =

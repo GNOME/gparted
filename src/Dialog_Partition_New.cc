@@ -72,26 +72,26 @@ void Dialog_Partition_New::set_data( const Device & device,
 	this->FILESYSTEMS.clear();
 	for ( unsigned i = 0 ; i < FILESYSTEMS.size() ; i ++ )
 	{
-		if ( GParted_Core::supported_filesystem( FILESYSTEMS[i].filesystem ) &&
-		     FILESYSTEMS[i].filesystem != FS_LUKS                               )
+		if (GParted_Core::supported_filesystem(FILESYSTEMS[i].fstype) &&
+		    FILESYSTEMS[i].fstype != FS_LUKS                            )
 			this->FILESYSTEMS.push_back( FILESYSTEMS[i] );
 	}
 
 	FS fs_tmp ;
 	//... add FS_CLEARED
-	fs_tmp .filesystem = FS_CLEARED ;
+	fs_tmp.fstype = FS_CLEARED;
 	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	//... add FS_UNFORMATTED
-	fs_tmp.filesystem = FS_UNFORMATTED;
+	fs_tmp.fstype = FS_UNFORMATTED;
 	fs_tmp .create = FS::GPARTED ;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
 	// ... finally add FS_EXTENDED.  Needed so that when creating an extended
 	// partition it is identified correctly before the operation is applied.
 	fs_tmp = FS();
-	fs_tmp.filesystem = FS_EXTENDED;
+	fs_tmp.fstype = FS_EXTENDED;
 	fs_tmp.create = FS::NONE;
 	this ->FILESYSTEMS .push_back( fs_tmp ) ;
 
@@ -244,7 +244,7 @@ const Partition & Dialog_Partition_New::Get_New_Partition()
 	new_partition->Set( device_path,
 	                    Glib::ustring::compose( _("New Partition #%1"), new_count ),
 	                    new_count, part_type,
-	                    FILESYSTEMS[combo_filesystem.get_active_row_number()].filesystem,
+	                    FILESYSTEMS[combo_filesystem.get_active_row_number()].fstype,
 	                    new_start, new_end,
 	                    sector_size,
 	                    inside_extended, false );
@@ -352,7 +352,7 @@ void Dialog_Partition_New::combobox_changed(bool type)
 	if ( ! type )
 	{
 		fs = FILESYSTEMS[combo_filesystem.get_active_row_number()];
-		fs_limits = GParted_Core::get_filesystem_limits( fs.filesystem, *new_partition );
+		fs_limits = GParted_Core::get_filesystem_limits(fs.fstype, *new_partition);
 
 		if ( fs_limits.min_size < MEBIBYTE )
 			fs_limits.min_size = MEBIBYTE;
@@ -389,12 +389,12 @@ void Dialog_Partition_New::combobox_changed(bool type)
 		frame_resizer_base->override_default_rgb_unused_color(color_temp);
 
 		//Partition color
-		color_temp.set(Utils::get_color(fs.filesystem));
+		color_temp.set(Utils::get_color(fs.fstype));
 		frame_resizer_base->set_rgb_partition_color(color_temp);
 	}
 
 	// Maximum length of the file system label varies according to the selected file system type.
-	filesystem_label_entry.set_max_length( Utils::get_filesystem_label_maxlength( fs.filesystem ) );
+	filesystem_label_entry.set_max_length(Utils::get_filesystem_label_maxlength(fs.fstype));
 
 	frame_resizer_base->redraw();
 }
@@ -410,18 +410,18 @@ void Dialog_Partition_New::build_filesystems_combo(bool only_unformatted)
 	for ( unsigned int t = 0 ; t < FILESYSTEMS .size( ) ; t++ ) 
 	{
 		//skip extended
-		if (FILESYSTEMS[t].filesystem == FS_EXTENDED)
+		if (FILESYSTEMS[t].fstype == FS_EXTENDED)
 			continue ;
-		combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].filesystem));
+		combo_filesystem.items().push_back(Utils::get_filesystem_string(FILESYSTEMS[t].fstype));
 		combo_filesystem.items().back().set_sensitive(
 			! only_unformatted && FILESYSTEMS[ t ] .create &&
-			new_partition->get_byte_length() >= get_filesystem_min_limit( FILESYSTEMS[t].filesystem ) );
+			new_partition->get_byte_length() >= get_filesystem_min_limit(FILESYSTEMS[t].fstype));
 		//use ext4/3/2 as first/second/third choice default file system
 		//(Depends on ordering in FILESYSTEMS for preference)
-		if ( ( FILESYSTEMS[ t ] .filesystem == FS_EXT2 ||
-		       FILESYSTEMS[ t ] .filesystem == FS_EXT3 ||
-		       FILESYSTEMS[ t ] .filesystem == FS_EXT4    ) &&
-		     combo_filesystem.items().back().sensitive()       )
+		if ((FILESYSTEMS[t].fstype == FS_EXT2 ||
+		     FILESYSTEMS[t].fstype == FS_EXT3 ||
+		     FILESYSTEMS[t].fstype == FS_EXT4   )      &&
+		    combo_filesystem.items().back().sensitive()  )
 		{
 			first_creatable_fs = combo_filesystem.items().size() - 1;
 			set_first=true;
