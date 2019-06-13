@@ -145,9 +145,9 @@ Glib::ustring Utils::num_to_str( Sector number )
 // [*] Colour not from the GNOME palette.
 //     http://developer.gnome.org/hig-book/2.32/design-color.html.en
 //     http://web.archive.org/web/20130922173112/https://developer.gnome.org/hig-book/stable/design-color.html.en
-Glib::ustring Utils::get_color( FSType filesystem )
+Glib::ustring Utils::get_color(FSType fstype)
 {
-	switch( filesystem )
+	switch (fstype)
 	{
 		case FS_UNSUPPORTED:     return "#000000";  // Black (never displayed)
 		case FS_UNALLOCATED:     return "#A9A9A9";  // Medium Grey [*]
@@ -193,13 +193,14 @@ Glib::ustring Utils::get_color( FSType filesystem )
 	}
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf( FSType filesystem, int width, int height )
+
+Glib::RefPtr<Gdk::Pixbuf> Utils::get_color_as_pixbuf(FSType fstype, int width, int height)
 {
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, false, 8, width, height ) ;
 
 	if ( pixbuf )
 	{
-		std::stringstream hex( get_color( filesystem ) .substr( 1 ) + "00" ) ;
+		std::stringstream hex(get_color(fstype).substr(1) + "00");
 		unsigned long dec ;
 		hex >> std::hex >> dec ;
 
@@ -252,9 +253,10 @@ int Utils::get_max_partition_name_length( Glib::ustring & tabletype )
 	return 0;
 }
 
-int Utils::get_filesystem_label_maxlength( FSType filesystem )
+
+int Utils::get_filesystem_label_maxlength(FSType fstype)
 {
-	switch( filesystem )
+	switch (fstype)
 	{
 		//All file systems commented out are not supported for labelling
 		//  by either the new partition or label partition operations.
@@ -304,10 +306,11 @@ int Utils::get_filesystem_label_maxlength( FSType filesystem )
 	}
 }
 
+
 // Return libparted file system name / GParted display name
-Glib::ustring Utils::get_filesystem_string( FSType filesystem )
+Glib::ustring Utils::get_filesystem_string(FSType fstype)
 {
-	switch( filesystem )
+	switch (fstype)
 	{
 		case FS_UNSUPPORTED:     return "unsupported";  // Never displayed
 		case FS_UNALLOCATED:
@@ -424,9 +427,10 @@ const Glib::ustring Utils::get_filesystem_kernel_name( FSType fstype )
 	}
 }
 
-Glib::ustring Utils::get_filesystem_software( FSType filesystem )
+
+Glib::ustring Utils::get_filesystem_software(FSType fstype)
 {
-	switch( filesystem )
+	switch (fstype)
 	{
 		case FS_BTRFS       : return "btrfs-progs / btrfs-tools" ;
 		case FS_EXT2        : return "e2fsprogs" ;
