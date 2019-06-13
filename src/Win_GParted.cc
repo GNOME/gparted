@@ -544,25 +544,27 @@ Gtk::Menu * Win_GParted::create_format_menu()
 	return menu ;
 }
 
+
 //Add one entry to the Partition --> Format to --> (file system list) menu
-void Win_GParted::create_format_menu_add_item( FSType filesystem, bool activate )
+void Win_GParted::create_format_menu_add_item(FSType fstype, bool activate)
 {
 	hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 	//the colored square
-	hbox ->pack_start( * manage( new Gtk::Image( Utils::get_color_as_pixbuf( filesystem, 16, 16 ) ) ),
-	                   Gtk::PACK_SHRINK ) ;
+	hbox->pack_start(*manage(new Gtk::Image(Utils::get_color_as_pixbuf(fstype, 16, 16))),
+	                 Gtk::PACK_SHRINK);
 	//the label...
-	hbox ->pack_start( * Utils::mk_label( " " + Utils::get_filesystem_string( filesystem ) ),
-	                   Gtk::PACK_SHRINK ) ;
+	hbox->pack_start(*Utils::mk_label(" " + Utils::get_filesystem_string(fstype)),
+	                 Gtk::PACK_SHRINK);
 
 	Gtk::MenuItem *item = manage(new Gtk::MenuItem(*hbox));
 	menu->append(*item);
 	if ( activate )
 		item->signal_activate().connect(
-			sigc::bind<FSType>( sigc::mem_fun( *this, &Win_GParted::activate_format ), filesystem ) );
+			sigc::bind<FSType>(sigc::mem_fun(*this, &Win_GParted::activate_format), fstype));
 	else
 		item->set_sensitive(false);
 }
+
 
 void Win_GParted::init_device_info()
 {

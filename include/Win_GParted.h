@@ -61,7 +61,7 @@ private:
 	void init_toolbar() ;
 	void init_partition_menu() ;
 	Gtk::Menu * create_format_menu() ;
-	void create_format_menu_add_item( FSType filesystem, bool activate );
+	void create_format_menu_add_item(FSType fstype, bool activate);
 	void init_device_info() ;
 	void init_hpaned_main() ;
 	void add_custom_css();
