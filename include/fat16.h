@@ -44,6 +44,7 @@ public:
 
 private:
 	const Glib::ustring sanitize_label( const Glib::ustring & label ) const;
+	static Glib::ustring remove_spaces(const Glib::ustring& str);
 };
 
 } //GParted

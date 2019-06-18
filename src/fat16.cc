@@ -60,6 +60,13 @@ FS fat16::get_filesystem_support()
 
 	fs .busy = FS::GPARTED ;
 
+	if (! Glib::find_program_in_path("mdir").empty())
+	{
+		fs.read_uuid = FS::EXTERNAL;
+		if (! Glib::find_program_in_path("minfo").empty())
+			fs.read = FS::EXTERNAL;
+	}
+
 	//find out if we can create fat file systems
 	if ( ! Glib::find_program_in_path( "mkfs.fat" ) .empty() )
 	{
@@ -77,18 +84,13 @@ FS fat16::get_filesystem_support()
 	if ( ! Glib::find_program_in_path( "fsck.fat" ) .empty() )
 	{
 		fs.check = FS::EXTERNAL;
-		fs.read = FS::EXTERNAL;
 		check_cmd = "fsck.fat" ;
 	}
 	else if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
 	{
 		fs.check = FS::EXTERNAL;
-		fs.read = FS::EXTERNAL;
 		check_cmd = "dosfsck" ;
 	}
-
-	if ( ! Glib::find_program_in_path( "mdir" ) .empty() )
-		fs .read_uuid = FS::EXTERNAL ;
 
 	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
 		fs .read_label = FS::EXTERNAL ;
@@ -125,53 +127,81 @@ FS fat16::get_filesystem_support()
 
 void fat16::set_used_sectors( Partition & partition ) 
 {
-	exit_status = Utils::execute_command( check_cmd + " -n -v " + Glib::shell_quote( partition.get_path() ),
-	                                      output, error, true );
-	if ( exit_status == 0 || exit_status == 1 )
+	// Use mdir's scanning of the FAT to get the free space.
+	// https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#File_Allocation_Table
+	exit_status = Utils::execute_command("mdir -i " + Glib::shell_quote(partition.get_path()) + " ::/",
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		//total file system size in logical sectors
-		Glib::ustring::size_type index = output.rfind( "\n", output.find( "sectors total" ) ) + 1;
-		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &T ) != 1 )
-			T = -1 ;
-
-		//bytes per logical sector
-		index = output .rfind( "\n", output .find( "bytes per logical sector" ) ) +1 ;
-		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &S ) != 1 )
-			S = -1 ;
-
-		if ( T > -1 && S > -1 )
-			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
-
-		//free clusters
-		index = output .find( ",", output .find( partition .get_path() ) + partition .get_path() .length() ) +1 ;
-		if ( index < output.length() && sscanf( output.substr( index ).c_str(), "%lld/%lld", &S, &N ) == 2 )
-			N -= S ;
-		else
-			N = -1 ;
-
-		//bytes per cluster
-		index = output .rfind( "\n", output .find( "bytes per cluster" ) ) +1 ;
-		if ( index >= output.length() || sscanf( output.substr( index ).c_str(), "%lld", &S ) != 1 )
-			S = -1 ;
-	
-		if ( N > -1 && S > -1 )
-		{
-			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
-			partition.fs_block_size = S;
-		}
-
-		if ( T > -1 && N > -1 )
-			partition .set_sector_usage( T, N ) ;
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
+
+	// Bytes free.  Parse the value from the bottom of the directory listing by mdir.
+	// Example line "                        277 221 376 bytes free".
+	Glib::ustring spaced_number_str = Utils::regexp_label(output, "^ *([0-9 ]*) bytes free$");
+	Glib::ustring number_str = remove_spaces(spaced_number_str);
+	long long bytes_free = -1;
+	if (number_str.size() > 0)
+		bytes_free = atoll(number_str.c_str());
+
+	// Use minfo's reporting of the BPB (BIOS Parameter Block) to get the file system
+	// size and FS block (cluster) size.
+	// https://en.wikipedia.org/wiki/Design_of_the_FAT_file_system#BIOS_Parameter_Block
+	exit_status = Utils::execute_command("minfo -i " + Glib::shell_quote(partition.get_path()) + " ::",
+	                                     output, error, true);
+	if (exit_status != 0)
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	// FS logical sector size in bytes
+	long long logical_sector_size = -1;
+	Glib::ustring::size_type index = output.find("sector size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "sector size: %lld bytes", &logical_sector_size);
+
+	// Cluster size in FS logical sectors
+	long long cluster_size = -1;
+	index = output.find("cluster size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "cluster size: %lld sectors", &cluster_size);
+
+	// FS size in logical sectors if <= 65535, or 0 otherwise
+	long long small_size = -1;
+	index = output.find("small size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "small size: %lld sectors", &small_size);
+
+	// FS size in logical sectors if > 65535, or 0 otherwise
+	long long big_size = -1;
+	index = output.find("big size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "big size: %lld sectors", &big_size);
+
+	// FS size in logical sectors
+	long long logical_sectors = -1;
+	if (small_size > 0)
+		logical_sectors = small_size;
+	else if (big_size > 0)
+		logical_sectors = big_size;
+
+	if (bytes_free > -1 && logical_sector_size > -1 && cluster_size > -1 && logical_sectors > -1)
+	{
+		Sector fs_free = bytes_free / partition.sector_size;
+		Sector fs_size = logical_sectors * logical_sector_size / partition.sector_size;
+		partition.set_sector_usage(fs_size, fs_free);
+		partition.fs_block_size = logical_sector_size * cluster_size;
 	}
 }
+
 
 void fat16::read_label( Partition & partition )
 {
@@ -278,5 +308,20 @@ const Glib::ustring fat16::sanitize_label( const Glib::ustring &label ) const
 
 	return new_label ;
 }
+
+
+Glib::ustring fat16::remove_spaces(const Glib::ustring& str)
+{
+	Glib::ustring result;
+
+	for (unsigned int i = 0; i < str.size(); i++)
+	{
+		if (str[i] != ' ')
+			result += str[i];
+	}
+
+	return result;
+}
+
 
 } //GParted
