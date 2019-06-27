@@ -506,7 +506,7 @@ void Win_GParted::init_partition_menu()
 			GParted::Menu_Helpers::MenuElem(_("_Label File System"),
 			                             sigc::mem_fun(*this, &Win_GParted::activate_label_filesystem)));
 	menu_partition.append(*item);
-	partitionmenu_items[MENU_LABEL_PARTITION] = item;
+	partitionmenu_items[MENU_LABEL_FILESYSTEM] = item;
 
 	item = manage(new
 			GParted::Menu_Helpers::MenuElem(_("New UU_ID"),
