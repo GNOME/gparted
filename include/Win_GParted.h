@@ -122,7 +122,7 @@ private:
 		toggle_item( state, MENU_CHECK ) ; } 
 	
 	void allow_label_filesystem( bool state ) {
-		toggle_item( state, MENU_LABEL_PARTITION ) ; } 
+		toggle_item(state, MENU_LABEL_FILESYSTEM); }
 
 	void allow_name_partition( bool state ) {
 		toggle_item( state, MENU_NAME_PARTITION ); }
@@ -294,7 +294,7 @@ private:
 		MENU_NAME_PARTITION,
 		MENU_FLAGS,
 		MENU_CHECK,
-		MENU_LABEL_PARTITION,
+		MENU_LABEL_FILESYSTEM,
 		MENU_CHANGE_UUID,
 		MENU_INFO
 	};
