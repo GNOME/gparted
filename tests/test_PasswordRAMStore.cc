@@ -272,7 +272,7 @@ TEST_F( PasswordRAMStoreTest, TooLongPassword )
 	looked_up_pw = PasswordRAMStore::lookup( "key-too-long" );
 	EXPECT_TRUE( looked_up_pw == NULL );
 
-	EXPECT_FALSE( PasswordRAMStore::erase( "key-long" ) );
+	EXPECT_FALSE(PasswordRAMStore::erase("key-too-long"));
 	EXPECT_TRUE( mem_is_zero( protected_mem, ProtectedMemSize ) );
 }
 
