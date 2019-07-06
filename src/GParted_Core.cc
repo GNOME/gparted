@@ -76,7 +76,6 @@ const std::time_t SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS = 1;
 const std::time_t SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS = 10;
 
 static bool udevadm_found = false;
-static bool udevsettle_found = false;
 static bool hdparm_found = false;
 
 static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
@@ -130,7 +129,6 @@ Glib::ustring GParted_Core::get_version_and_config_string()
 void GParted_Core::find_supported_core()
 {
 	udevadm_found = ! Glib::find_program_in_path( "udevadm" ).empty();
-	udevsettle_found = ! Glib::find_program_in_path( "udevsettle" ).empty();
 	hdparm_found = ! Glib::find_program_in_path( "hdparm" ).empty();
 }
 
@@ -4218,9 +4216,7 @@ bool GParted_Core::commit_to_os( PedDisk* lp_disk, std::time_t timeout )
 
 void GParted_Core::settle_device( std::time_t timeout )
 {
-	if ( udevsettle_found )
-		Utils::execute_command( "udevsettle --timeout=" + Utils::num_to_str( timeout ) ) ;
-	else if ( udevadm_found )
+	if (udevadm_found)
 		Utils::execute_command( "udevadm settle --timeout=" + Utils::num_to_str( timeout ) ) ;
 	else
 		sleep( timeout ) ;
