@@ -4090,6 +4090,12 @@ bool GParted_Core::flush_device( PedDevice * lp_device )
 	{
 		success = ped_device_sync( lp_device ) ;
 		ped_device_close( lp_device ) ;
+
+		// (!46) Wait for udev rules to complete after this ped_device_open() and
+		// ped_device_close() pair to avoid busy /dev/DISK entry when running file
+		// system specific querying commands on the whole disk device in the call
+		// sequence after get_device() in set_device_from_disk().
+		settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
 	}
 	return success ;
 }
