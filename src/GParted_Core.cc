@@ -60,6 +60,7 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <glibmm/miscutils.h>
 #include <glibmm/fileutils.h>
 #include <glibmm/shell.h>
@@ -4051,12 +4052,12 @@ bool GParted_Core::useable_device( PedDevice * lp_device )
 	// Must be able to read from the first sector before the disk device is considered
 	// useable in GParted.
 	bool success = false;
-	if ( ped_device_open( lp_device )            &&
-	     ped_device_read( lp_device, buf, 0, 1 )    )
+	int fd = open(lp_device->path, O_RDONLY|O_NONBLOCK);
+	if (fd >= 0)
 	{
-		success = true;
-
-		ped_device_close( lp_device );
+		ssize_t bytes_read = read(fd, buf, lp_device->sector_size);
+		success = (bytes_read == lp_device->sector_size);
+		close(fd);
 	}
 
 	free( buf );
