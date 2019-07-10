@@ -4041,7 +4041,8 @@ void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail
 	}
 }
 
-bool GParted_Core::useable_device( PedDevice * lp_device )
+
+bool GParted_Core::useable_device(const PedDevice* lp_device)
 {
 	g_assert( lp_device != NULL );  // Bug: Not initialised by call to ped_device_get() or ped_device_get_next()
 
