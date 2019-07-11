@@ -89,7 +89,7 @@ private:
 	                               std::vector<Glib::ustring> & messages );
 	void set_luks_partition( PartitionLUKS & partition );
 	void set_partition_label_and_uuid( Partition & partition );
-	static FSType detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition );
+	static FSType detect_filesystem_internal(const Glib::ustring& path, const PedDevice* lp_device);
 	static FSType detect_filesystem( PedDevice * lp_device, PedPartition * lp_partition,
 	                                 std::vector<Glib::ustring> & messages );
 	void read_label( Partition & partition ) ;
