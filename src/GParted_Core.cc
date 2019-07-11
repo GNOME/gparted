@@ -1119,13 +1119,13 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 
 // GParted simple internal file system signature detection.  Use sparingly.  Only when
 // (old versions of) blkid and libparted don't recognise a signature.
-FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, const PedDevice* lp_device)
+FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_Value sector_size)
 {
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
 	FSType fstype = FS_UNKNOWN;
 
-	char * buf = static_cast<char *>( malloc( lp_device->sector_size ) );
+	char* buf = static_cast<char *>(malloc(sector_size));
 	if ( ! buf )
 		return FS_UNKNOWN;
 
@@ -1191,18 +1191,18 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, const
 		if ( len1 == 0UL || ( signatures[i].sig2 != NULL && len2 == 0UL ) )
 			continue;  // Don't allow 0 length signatures to match
 
-		Byte_Value read_offset = signatures[i].offset1 / lp_device->sector_size * lp_device->sector_size;
+		Byte_Value read_offset = signatures[i].offset1 / sector_size * sector_size;
 
-		memset( buf, 0, lp_device->sector_size );
-		if (lseek(fd, read_offset, SEEK_SET)      == read_offset            &&
-		    read(fd, buf, lp_device->sector_size) == lp_device->sector_size   )
+		memset(buf, 0, sector_size);
+		if (lseek(fd, read_offset, SEEK_SET) == read_offset &&
+		    read(fd, buf, sector_size)       == sector_size   )
 		{
-			memcpy( magic1, buf + signatures[i].offset1 % lp_device->sector_size, len1 );
+			memcpy(magic1, buf + signatures[i].offset1 % sector_size, len1);
 
 			// WARNING: This assumes offset2 is in the same sector as offset1
 			if ( signatures[i].sig2 != NULL )
 			{
-				memcpy( magic2, buf + signatures[i].offset2 % lp_device->sector_size, len2 );
+				memcpy(magic2, buf + signatures[i].offset2 % sector_size, len2);
 			}
 
 			if ( memcmp( magic1, signatures[i].sig1, len1 ) == 0     &&
@@ -1321,7 +1321,7 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 	}
 
 	// (Q4) Fallback to GParted simple internal file system detection
-	FSType fstype = detect_filesystem_internal(path, lp_device);
+	FSType fstype = detect_filesystem_internal(path, lp_device->sector_size);
 	if ( fstype != FS_UNKNOWN )
 		return fstype;
 
