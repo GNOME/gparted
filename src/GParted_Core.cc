@@ -1116,9 +1116,10 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	}
 }
 
+
 // GParted simple internal file system signature detection.  Use sparingly.  Only when
 // (old versions of) blkid and libparted don't recognise a signature.
-FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedPartition * lp_partition )
+FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, const PedDevice* lp_device)
 {
 	char magic1[16];  // Big enough for largest signatures[].sig1 or sig2
 	char magic2[16];
@@ -1128,7 +1129,8 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 	if ( ! buf )
 		return FS_UNKNOWN;
 
-	if ( ! ped_device_open( lp_device ) )
+	int fd = open(path.c_str(), O_RDONLY|O_NONBLOCK);
+	if (fd == -1)
 	{
 		free( buf );
 		return FS_UNKNOWN;
@@ -1189,13 +1191,11 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 		if ( len1 == 0UL || ( signatures[i].sig2 != NULL && len2 == 0UL ) )
 			continue;  // Don't allow 0 length signatures to match
 
-		Sector start = 0LL;
-		if ( lp_partition )
-			start = lp_partition->geom.start;
-		start += signatures[i].offset1 / lp_device->sector_size;
+		Byte_Value read_offset = signatures[i].offset1 / lp_device->sector_size * lp_device->sector_size;
 
 		memset( buf, 0, lp_device->sector_size );
-		if ( ped_device_read( lp_device, buf, start, 1 ) != 0 )
+		if (lseek(fd, read_offset, SEEK_SET)      == read_offset            &&
+		    read(fd, buf, lp_device->sector_size) == lp_device->sector_size   )
 		{
 			memcpy( magic1, buf + signatures[i].offset1 % lp_device->sector_size, len1 );
 
@@ -1215,7 +1215,7 @@ FSType GParted_Core::detect_filesystem_internal( PedDevice * lp_device, PedParti
 		}
 	}
 
-	ped_device_close( lp_device );
+	close(fd);
 	free( buf );
 
 	return fstype;
@@ -1321,7 +1321,7 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 	}
 
 	// (Q4) Fallback to GParted simple internal file system detection
-	FSType fstype = detect_filesystem_internal( lp_device, lp_partition );
+	FSType fstype = detect_filesystem_internal(path, lp_device);
 	if ( fstype != FS_UNKNOWN )
 		return fstype;
 
