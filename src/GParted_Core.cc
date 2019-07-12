@@ -1179,6 +1179,9 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 	// *   Apple File System Reference
 	//     https://developer.apple.com/support/apple-file-system/Apple-File-System-Reference.pdf
 
+	Byte_Value prev_read_offset = -1;
+	memset(buf, 0, sector_size);
+
 	for ( unsigned int i = 0 ; i < sizeof( signatures ) / sizeof( signatures[0] ) ; i ++ )
 	{
 		const size_t len1 = std::min( ( signatures[i].sig1 == NULL ) ? 0U : strlen( signatures[i].sig1 ),
@@ -1193,25 +1196,33 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 
 		Byte_Value read_offset = signatures[i].offset1 / sector_size * sector_size;
 
-		memset(buf, 0, sector_size);
-		if (lseek(fd, read_offset, SEEK_SET) == read_offset &&
-		    read(fd, buf, sector_size)       == sector_size   )
+		// Optimisation: only read new sector when it is different to the
+		// previously read sector.
+		if (read_offset != prev_read_offset)
 		{
-			memcpy(magic1, buf + signatures[i].offset1 % sector_size, len1);
-
-			// WARNING: This assumes offset2 is in the same sector as offset1
-			if ( signatures[i].sig2 != NULL )
+			if (lseek(fd, read_offset, SEEK_SET) == read_offset &&
+			    read(fd, buf, sector_size)       == sector_size   )
 			{
-				memcpy(magic2, buf + signatures[i].offset2 % sector_size, len2);
+				prev_read_offset = read_offset;
 			}
-
-			if ( memcmp( magic1, signatures[i].sig1, len1 ) == 0     &&
-			     ( signatures[i].sig2 == NULL ||
-			       memcmp( magic2, signatures[i].sig2, len2 ) == 0 )     )
+			else
 			{
-				fstype = signatures[i].fstype;
-				break;
+				// Outside block device boundaries or other error.
+				continue;
 			}
+		}
+
+		memcpy(magic1, buf + signatures[i].offset1 % sector_size, len1);
+
+		// WARNING: This assumes offset2 is in the same sector as offset1
+		if (signatures[i].sig2 != NULL)
+			memcpy(magic2, buf + signatures[i].offset2 % sector_size, len2);
+
+		if (memcmp(magic1, signatures[i].sig1, len1) == 0                                 &&
+		    (signatures[i].sig2 == NULL || memcmp(magic2, signatures[i].sig2, len2) == 0)   )
+		{
+			fstype = signatures[i].fstype;
+			break;
 		}
 	}
 
