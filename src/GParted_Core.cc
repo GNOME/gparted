@@ -1144,19 +1144,19 @@ FSType GParted_Core::detect_filesystem_internal(const Glib::ustring& path, Byte_
 		FSType       fstype;
 	} signatures[] = {
 		//offset1, sig1              , offset2, sig2  , fstype
-		{ 65536LL, "ReIsEr4"         ,     0LL, NULL  , FS_REISER4        },
-		{   512LL, "LABELONE"        ,   536LL, "LVM2", FS_LVM2_PV        },
 		{     0LL, "LUKS\xBA\xBE"    ,     0LL, NULL  , FS_LUKS           },
-		{ 65600LL, "_BHRfS_M"        ,     0LL, NULL  , FS_BTRFS          },
 		{     3LL, "-FVE-FS-"        ,     0LL, NULL  , FS_BITLOCKER      },
-		{  1030LL, "\x34\x34"        ,     0LL, NULL  , FS_NILFS2         },
 		{     0LL, "\x52\x56\xBE\x1B",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\x56\xBE\x6F",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\xE8\x28\x01",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\xBF\xF4\x81",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\x56\xBE\x63",     0LL, NULL  , FS_GRUB2_CORE_IMG },
 		{     0LL, "\x52\x56\xBE\x56",     0LL, NULL  , FS_GRUB2_CORE_IMG },
-		{    24LL, "\x01\x00"        ,    32LL, "NXSB", FS_APFS           }
+		{    24LL, "\x01\x00"        ,    32LL, "NXSB", FS_APFS           },
+		{   512LL, "LABELONE"        ,   536LL, "LVM2", FS_LVM2_PV        },
+		{  1030LL, "\x34\x34"        ,     0LL, NULL  , FS_NILFS2         },
+		{ 65536LL, "ReIsEr4"         ,     0LL, NULL  , FS_REISER4        },
+		{ 65600LL, "_BHRfS_M"        ,     0LL, NULL  , FS_BTRFS          }
 	};
 	// For simple BitLocker recognition consider validation of BIOS Parameter block
 	// fields unnecessary.
