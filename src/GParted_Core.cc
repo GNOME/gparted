@@ -3510,12 +3510,6 @@ bool GParted_Core::calibrate_partition( Partition & partition, OperationDetail &
 			destroy_device_and_disk( lp_device, lp_disk ) ;
 		}
 
-		// (#762941) Above libparted partition querying triggers udev >= 219 to
-		// remove and re-add all the partition specific /dev/ entries.  Wait for
-		// this to complete to avoid FS specific commands failing because they
-		// happen to run just when the needed /dev/PTN entry doesn't exist.
-		settle_device( SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS );
-
 		operationdetail.get_last_child().set_success_and_capture_errors( success );
 		return success;
 	}
@@ -4122,6 +4116,12 @@ bool GParted_Core::get_disk( PedDevice *& lp_device, PedDisk *& lp_disk, bool st
 	if ( lp_device )
 	{
 		lp_disk = ped_disk_new( lp_device );
+
+		// (#762941)(!46) After ped_disk_new() wait for triggered udev rules to
+		// to complete which remove and re-add all the partition specific /dev
+		// entries to avoid FS specific commands failing because they happen to
+		// be running when the needed /dev/PTN entries don't exist.
+		settle_device(SETTLE_DEVICE_PROBE_MAX_WAIT_SECONDS);
 
 		// if ! disk and writable it's probably a HD without disklabel.
 		// We return true here and deal with them in
