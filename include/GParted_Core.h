@@ -25,6 +25,7 @@
 #include "Partition.h"
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
+#include "SupportedFileSystems.h"
 #include "Utils.h"
 
 #include <parted/parted.h>
@@ -62,7 +63,7 @@ public:
 	bool toggle_flag( const Partition & partition, const Glib::ustring & flag, bool state ) ;
 	
 	const std::vector<FS> & get_filesystems() const ;
-	const FS & get_fs( FSType filesystem ) const;
+	const FS& get_fs(FSType fstype) const;
 	static std::vector<Glib::ustring> get_disklabeltypes() ;
 	std::map<Glib::ustring, bool> get_available_flags( const Partition & partition ) ;
 	Glib::ustring get_thread_status_message() ;
@@ -215,9 +216,6 @@ private:
 	bool update_bootsector( const Partition & partition, OperationDetail & operationdetail ) ;
 
 	//general..	
-	static void init_filesystems();
-	static void fini_filesystems();
-
 	void capture_libparted_messages( OperationDetail & operationdetail, bool success );
 
 	static bool flush_device( PedDevice * lp_device );
@@ -234,13 +232,12 @@ private:
 
 	static PedExceptionOption ped_exception_handler( PedException * e ) ;
 
-	std::vector<FS> FILESYSTEMS ;
-	static std::map< FSType, FileSystem * > FILESYSTEM_MAP;
 	std::vector<PedPartitionFlag> flags;
 	std::vector<Glib::ustring> device_paths ;
 	bool probe_devices ;
 	Glib::ustring thread_status_message;  //Used to pass data to show_pulsebar method
 	Glib::RefPtr<Glib::IOChannel> iocInput, iocOutput; // Used to send data to gpart command
+	static SupportedFileSystems* supported_filesystems;
 };
 
 } //GParted

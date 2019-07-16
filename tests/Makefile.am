@@ -43,6 +43,7 @@ test_ext2_LDADD   =  \
 	$(top_builddir)/src/PipeCapture.$(OBJEXT)           \
 	$(top_builddir)/src/Proc_Partitions_Info.$(OBJEXT)  \
 	$(top_builddir)/src/ProgressBar.$(OBJEXT)           \
+	$(top_builddir)/src/SupportedFileSystems.$(OBJEXT)  \
 	$(top_builddir)/src/SWRaid_Info.$(OBJEXT)           \
 	$(top_builddir)/src/Utils.$(OBJEXT)                 \
 	$(top_builddir)/src/btrfs.$(OBJEXT)                 \

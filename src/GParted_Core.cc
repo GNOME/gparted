@@ -31,28 +31,11 @@
 #include "PartitionLUKS.h"
 #include "PartitionVector.h"
 #include "Proc_Partitions_Info.h"
+#include "SupportedFileSystems.h"
 #include "SWRaid_Info.h"
 #include "Utils.h"
 #include "../config.h"
-
 #include "btrfs.h"
-#include "exfat.h"
-#include "ext2.h"
-#include "f2fs.h"
-#include "fat16.h"
-#include "linux_swap.h"
-#include "lvm2_pv.h"
-#include "luks.h"
-#include "reiserfs.h"
-#include "minix.h"
-#include "nilfs2.h"
-#include "ntfs.h"
-#include "xfs.h"
-#include "jfs.h"
-#include "hfs.h"
-#include "hfsplus.h"
-#include "reiser4.h"
-#include "udf.h"
 
 #include <parted/parted.h>
 #include <cerrno>
@@ -80,7 +63,7 @@ static bool hdparm_found = false;
 
 static const Glib::ustring GPARTED_BUG( _("GParted Bug") );
 
-GParted_Core::GParted_Core() 
+GParted_Core::GParted_Core()
 {
 	thread_status_message = "" ;
 
@@ -94,11 +77,10 @@ GParted_Core::GParted_Core()
 
 	find_supported_core();
 
-	//initialize file system list
-	init_filesystems() ;
+	supported_filesystems = new SupportedFileSystems();
 
 	//Determine file system support capabilities for the first time
-	find_supported_filesystems() ;
+	supported_filesystems->find_supported_filesystems();
 }
 
 
@@ -132,32 +114,12 @@ void GParted_Core::find_supported_core()
 	hdparm_found = ! Glib::find_program_in_path( "hdparm" ).empty();
 }
 
+
 void GParted_Core::find_supported_filesystems()
 {
-	std::map< FSType, FileSystem * >::iterator f;
-
-	// Iteration of std::map is ordered according to operator< of the key.  Hence the
-	// FILESYSTEMS vector is constructed in FSType enum order: FS_UNKNOWN, FS_BTRFS,
-	// ..., FS_XFS, ... .  This ultimately controls the default order of the file
-	// systems in the menus and dialogs.
-	FILESYSTEMS .clear() ;
-
-	for ( f = FILESYSTEM_MAP .begin() ; f != FILESYSTEM_MAP .end() ; f++ ) {
-		if ( f ->second )
-		{
-			FILESYSTEMS .push_back( f ->second ->get_filesystem_support() ) ;
-		}
-		else
-		{
-			// For basic supported file systems create the supported action
-			// set.
-			FS fs_basicsupp( f->first );
-			fs_basicsupp.move = FS::GPARTED;
-			fs_basicsupp.copy = FS::GPARTED;
-			FILESYSTEMS.push_back( fs_basicsupp );
-		}
-	}
+	supported_filesystems->find_supported_filesystems();
 }
+
 
 void GParted_Core::set_user_devices( const std::vector<Glib::ustring> & user_devices ) 
 {
@@ -603,22 +565,17 @@ bool GParted_Core::toggle_flag( const Partition & partition, const Glib::ustring
 
 const std::vector<FS> & GParted_Core::get_filesystems() const 
 {
-	return FILESYSTEMS ;
+	return supported_filesystems->get_all_fs_support();
 }
+
 
 // Return supported capabilities of the file system type or, if not found, not supported
 // capabilities set.
-const FS & GParted_Core::get_fs( FSType filesystem ) const
+const FS& GParted_Core::get_fs(FSType fstype) const
 {
-	for ( unsigned int t = 0 ; t < FILESYSTEMS .size() ; t++ )
-	{
-		if ( FILESYSTEMS[ t ] .filesystem == filesystem )
-			return FILESYSTEMS[ t ] ;
-	}
-
-	static FS fs_notsupp( FS_UNSUPPORTED );
-	return fs_notsupp;
+	return supported_filesystems->get_fs_support(fstype);
 }
+
 
 //Return all libparted's partition table types in it's preferred ordering,
 //  alphabetic except with "loop" last.
@@ -3619,24 +3576,23 @@ bool GParted_Core::update_dmraid_entry( const Partition & partition, OperationDe
 	return success;
 }
 
+
 FileSystem * GParted_Core::get_filesystem_object( FSType fstype )
 {
-	std::map<FSType, FileSystem *>::const_iterator fs_iter = FILESYSTEM_MAP.find( fstype );
-	if ( fs_iter == FILESYSTEM_MAP.end() )
-		return NULL;
-	else
-		return fs_iter->second;
+	return supported_filesystems->get_fs_object(fstype);
 }
+
 
 // Return true for file systems with an implementation class, false otherwise
 bool GParted_Core::supported_filesystem( FSType fstype )
 {
-	return get_filesystem_object( fstype ) != NULL;
+	return supported_filesystems->get_fs_object(fstype) != NULL;
 }
+
 
 FS_Limits GParted_Core::get_filesystem_limits( FSType fstype, const Partition & partition )
 {
-	FileSystem *p_filesystem = get_filesystem_object( fstype );
+	FileSystem* p_filesystem = supported_filesystems->get_fs_object(fstype);
 	FS_Limits fs_limits;
 	if ( p_filesystem != NULL )
 		fs_limits = p_filesystem->get_filesystem_limits( partition );
@@ -3980,62 +3936,6 @@ bool GParted_Core::update_bootsector( const Partition & partition, OperationDeta
 	return true ;
 }
 
-void GParted_Core::init_filesystems()
-{
-	// File system support falls into 3 categories determined by their entry in
-	// FILESYSTEM_MAP:
-	// 1)  Fully supported file systems have an entry pointing to the instance of
-	//     their derived FileSystem object, which determines and implements their
-	//     supported actions.
-	//     supported_filesystem() -> true
-	// 2)  Basic supported file systems have a NULL pointer entry, with
-	//     find_supported_filesystems() creating a basic set of supported actions.
-	//     supported_filesystem() -> false
-	// 3)  Unsupported file systems have no entry, and no supported actions.
-	//     supported_filesystem() -> false
-	FILESYSTEM_MAP[FS_UNKNOWN]         = NULL;
-	FILESYSTEM_MAP[FS_OTHER]           = NULL;
-	FILESYSTEM_MAP[FS_BTRFS]           = new btrfs();
-	FILESYSTEM_MAP[FS_EXFAT]           = new exfat();
-	FILESYSTEM_MAP[FS_EXT2]            = new ext2( FS_EXT2 );
-	FILESYSTEM_MAP[FS_EXT3]            = new ext2( FS_EXT3 );
-	FILESYSTEM_MAP[FS_EXT4]            = new ext2( FS_EXT4 );
-	FILESYSTEM_MAP[FS_F2FS]            = new f2fs();
-	FILESYSTEM_MAP[FS_FAT16]           = new fat16( FS_FAT16 );
-	FILESYSTEM_MAP[FS_FAT32]           = new fat16( FS_FAT32 );
-	FILESYSTEM_MAP[FS_HFS]             = new hfs();
-	FILESYSTEM_MAP[FS_HFSPLUS]         = new hfsplus();
-	FILESYSTEM_MAP[FS_JFS]             = new jfs();
-	FILESYSTEM_MAP[FS_LINUX_SWAP]      = new linux_swap();
-	FILESYSTEM_MAP[FS_LVM2_PV]         = new lvm2_pv();
-	FILESYSTEM_MAP[FS_LUKS]            = new luks();
-	FILESYSTEM_MAP[FS_MINIX]           = new minix();
-	FILESYSTEM_MAP[FS_NILFS2]          = new nilfs2();
-	FILESYSTEM_MAP[FS_NTFS]            = new ntfs();
-	FILESYSTEM_MAP[FS_REISER4]         = new reiser4();
-	FILESYSTEM_MAP[FS_REISERFS]        = new reiserfs();
-	FILESYSTEM_MAP[FS_UDF]             = new udf();
-	FILESYSTEM_MAP[FS_XFS]             = new xfs();
-	FILESYSTEM_MAP[FS_APFS]            = NULL;
-	FILESYSTEM_MAP[FS_BITLOCKER]       = NULL;
-	FILESYSTEM_MAP[FS_GRUB2_CORE_IMG]  = NULL;
-	FILESYSTEM_MAP[FS_ISO9660]         = NULL;
-	FILESYSTEM_MAP[FS_LINUX_SWRAID]    = NULL;
-	FILESYSTEM_MAP[FS_LINUX_SWSUSPEND] = NULL;
-	FILESYSTEM_MAP[FS_REFS]            = NULL;
-	FILESYSTEM_MAP[FS_UFS]             = NULL;
-	FILESYSTEM_MAP[FS_ZFS]             = NULL;
-}
-
-void GParted_Core::fini_filesystems()
-{
-	std::map<FSType, FileSystem *>::iterator fs_iter;
-	for ( fs_iter = FILESYSTEM_MAP.begin() ; fs_iter != FILESYSTEM_MAP.end() ; fs_iter ++ )
-	{
-		delete fs_iter->second;
-		fs_iter->second = NULL;
-	}
-}
 
 void GParted_Core::capture_libparted_messages( OperationDetail & operationdetail, bool success )
 {
@@ -4332,12 +4232,15 @@ PedExceptionOption GParted_Core::ped_exception_handler( PedException * e )
 
 GParted_Core::~GParted_Core() 
 {
-	// Delete file system map entries
-	fini_filesystems();
+	delete supported_filesystems;
+	supported_filesystems = NULL;
 }
+
 
 Glib::Thread *GParted_Core::mainthread;
 
-std::map< FSType, FileSystem * > GParted_Core::FILESYSTEM_MAP;
+
+SupportedFileSystems* GParted_Core::supported_filesystems;
+
 
 } //GParted

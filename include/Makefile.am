@@ -48,6 +48,7 @@ EXTRA_DIST = \
 	PipeCapture.h			\
 	Proc_Partitions_Info.h		\
 	ProgressBar.h			\
+	SupportedFileSystems.h		\
 	SWRaid_Info.h			\
 	TreeView_Detail.h		\
 	Utils.h				\
