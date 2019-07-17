@@ -10,6 +10,8 @@ stages:
     - yum install -y which gnome-common yelp-tools glib2-devel intltool
                      gcc-c++ libuuid-devel parted-devel gtkmm30-devel make
                      polkit file
+    # Extra packages only needed during the test stage.
+    - yum install -y e2fsprogs
     - cat /etc/os-release
 
 .ubuntu_image_template: &ubuntu_image_definition
@@ -20,6 +22,8 @@ stages:
     - apt-get install -y gnome-common yelp-tools libglib2.0-dev-bin
                          uuid-dev libparted-dev libgtkmm-3.0-dev make
                          policykit-1
+    # Extra packages only needed during the test stage.
+    - apt-get install -y e2fsprogs
     - cat /etc/os-release
 
 .build_stage_template: &build_stage_definition
