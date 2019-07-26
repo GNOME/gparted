@@ -343,6 +343,61 @@ TEST_F(ext2Test, CreateAndReadUUID)
 }
 
 
+TEST_F(ext2Test, CreateAndWriteLabel)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(write_label);
+
+	extra_setup();
+	m_partition.set_filesystem_label("FIRST");
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test writing a label is successful.
+	m_partition.set_filesystem_label("SECOND");
+	ASSERT_TRUE(s_ext2_obj->write_label(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndWriteUUID)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
+
+	extra_setup();
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test writing a new random UUID is successful.
+	ASSERT_TRUE(s_ext2_obj->write_uuid(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndCheck)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(check);
+
+	extra_setup();
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test checking the file system is successful.
+	ASSERT_TRUE(s_ext2_obj->check_repair(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndRemove)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(remove);
+
+	extra_setup();
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test removing the file system is successful.  Note that most file systems don't
+	// implement remove so will skip this test.
+	ASSERT_TRUE(s_ext2_obj->remove(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
 }  // namespace GParted
 
 
