@@ -43,6 +43,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -115,6 +116,17 @@ Glib::ustring strip_markup(const Glib::ustring& str)
 }
 
 
+// Print method for the messages in a Partition object.
+std::ostream& operator<<(std::ostream& out, const Partition& partition)
+{
+	const std::vector<Glib::ustring> messages = partition.get_messages();
+	out << "Partition messages:\n";
+	for (unsigned int i = 0; i < messages.size(); i++)
+		out << messages[i];
+	return out;
+}
+
+
 // Print method for OperationDetailStatus.
 std::ostream& operator<<(std::ostream& out, const OperationDetailStatus od_status)
 {
@@ -157,12 +169,12 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 //     Skipping tests at runtime with GTEST_SKIP() #1544
 //     https://github.com/google/googletest/pull/1544
 //     (Merged after Google Test 1.8.1)
-#define SKIP_IF_FS_DOESNT_SUPPORT(opt)                                           \
-	if (s_ext2_support.opt != FS::EXTERNAL)                                  \
-	{                                                                        \
-		std::cout << __FILE__ << ":" << __LINE__ << ": Skip test.  "     \
-		          << "Not supported or support not found" << std::endl;  \
-		return;                                                          \
+#define SKIP_IF_FS_DOESNT_SUPPORT(opt)                                                    \
+	if (s_ext2_support.opt != FS::EXTERNAL)                                           \
+	{                                                                                 \
+		std::cout << __FILE__ << ":" << __LINE__ << ": Skip test.  "              \
+		          << #opt << " not supported or support not found" << std::endl;  \
+		return;                                                                   \
 	}
 
 
@@ -251,6 +263,68 @@ TEST_F(ext2Test, Create)
 	extra_setup();
 	// Call create, check for success and print operation details on failure.
 	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndReadUsage)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(read);
+
+	extra_setup();
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	s_ext2_obj->set_used_sectors(m_partition);
+	// Test file system usage is reported correctly.
+	// Used is between 0 and length.
+	EXPECT_LE(0, m_partition.sectors_used);
+	EXPECT_LE(m_partition.sectors_used, m_partition.get_sector_length());
+	// Unused is between 0 and length.
+	EXPECT_LE(0, m_partition.sectors_unused);
+	EXPECT_LE(m_partition.sectors_unused, m_partition.get_sector_length());
+	// Unallocated is 0.
+	EXPECT_EQ(m_partition.sectors_unallocated, 0);
+	// Used + unused = length.
+	EXPECT_EQ(m_partition.sectors_used + m_partition.sectors_unused, m_partition.get_sector_length());
+
+	// Test messages from read operation are empty or print them.
+	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
+}
+
+
+TEST_F(ext2Test, CreateAndReadLabel)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
+
+	const char* fs_label = "TEST_LABEL";
+	extra_setup();
+	m_partition.set_filesystem_label(fs_label);
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test reading the label is successful.
+	s_ext2_obj->read_label(m_partition);
+	EXPECT_STREQ(fs_label, m_partition.get_filesystem_label().c_str());
+
+	// Test messages from read operation are empty or print them.
+	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
+}
+
+
+TEST_F(ext2Test, CreateAndReadUUID)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(read_uuid);
+
+	extra_setup();
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test reading the UUID is successful.
+	s_ext2_obj->read_uuid(m_partition);
+	EXPECT_EQ(m_partition.uuid.size(), 36U);
+
+	// Test messages from read operation are empty or print them.
+	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
 }
 
 
