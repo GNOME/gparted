@@ -178,19 +178,25 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 	}
 
 
+const Byte_Value IMAGESIZE_Default = 256*MEBIBYTE;
+const Byte_Value IMAGESIZE_Larger  = 512*MEBIBYTE;
+
+
 class ext2Test : public ::testing::Test
 {
 protected:
 	// Initialise top-level operation detail object with description ...
 	ext2Test() : m_operation_detail("Operation details:", STATUS_NONE)  {};
 
-	virtual void extra_setup();
+	virtual void extra_setup(Byte_Value size = IMAGESIZE_Default);
 	virtual void TearDown();
 
 	static void SetUpTestCase();
 	static void TearDownTestCase();
 
 	virtual void reload_partition();
+	virtual void resize_image(Byte_Value new_size);
+	virtual void shrink_partition(Byte_Value size);
 
 	static FileSystem* s_ext2_obj;
 	static FS          s_ext2_support;
@@ -206,17 +212,15 @@ FS          ext2Test::s_ext2_support;
 const char* ext2Test::s_image_name   = "test_ext2.img";
 
 
-void ext2Test::extra_setup()
+void ext2Test::extra_setup(Byte_Value size)
 {
-	const Byte_Value ImageSize = 256*MEBIBYTE;
-
-	// Create new 256M image file to work with.
+	// Create new image file to work with.
 	unlink(s_image_name);
 	int fd = open(s_image_name, O_WRONLY|O_CREAT|O_NONBLOCK, 0666);
 	ASSERT_GE(fd, 0) << "Failed to create image file '" << s_image_name << "'.  errno="
 	                 << errno << "," << strerror(errno);
-	ASSERT_EQ(ftruncate(fd, (off_t)ImageSize), 0) << "Failed to set image file '" << s_image_name << "' to size "
-	                                              << ImageSize << ".  errno=" << errno << "," << strerror(errno);
+	ASSERT_EQ(ftruncate(fd, (off_t)size), 0) << "Failed to set image file '" << s_image_name << "' to size "
+	                                         << size << ".  errno=" << errno << "," << strerror(errno);
 	close(fd);
 
 	reload_partition();
@@ -266,6 +270,25 @@ void ext2Test::reload_partition()
 
 	ped_device_destroy(lp_device);
 	lp_device = NULL;
+}
+
+
+void ext2Test::resize_image(Byte_Value new_size)
+{
+	int fd = open(s_image_name, O_WRONLY|O_NONBLOCK);
+	ASSERT_GE(fd, 0) << "Failed to open image file '" << s_image_name << "'.  errno="
+	                 << errno << "," << strerror(errno);
+	ASSERT_EQ(ftruncate(fd, (off_t)new_size), 0) << "Failed to resize image file '" << s_image_name << "' to size "
+	                                             << new_size << ".  errno=" << errno << "," << strerror(errno);
+	close(fd);
+}
+
+
+void ext2Test::shrink_partition(Byte_Value new_size)
+{
+	ASSERT_LE(new_size, m_partition.get_byte_length()) << __func__ << "(): TEST_BUG: Cannot grow Partition object size";
+	Sector new_sectors = (new_size + m_partition.sector_size - 1) / m_partition.sector_size;
+	m_partition.sector_end = new_sectors;
 }
 
 
@@ -395,6 +418,35 @@ TEST_F(ext2Test, CreateAndRemove)
 	// Test removing the file system is successful.  Note that most file systems don't
 	// implement remove so will skip this test.
 	ASSERT_TRUE(s_ext2_obj->remove(m_partition, m_operation_detail)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndGrow)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(grow);
+
+	extra_setup(IMAGESIZE_Default);
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test growing the file system is successful.
+	resize_image(IMAGESIZE_Larger);
+	reload_partition();
+	ASSERT_TRUE(s_ext2_obj->resize(m_partition, m_operation_detail, true)) << m_operation_detail;
+}
+
+
+TEST_F(ext2Test, CreateAndShrink)
+{
+	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_FS_DOESNT_SUPPORT(shrink);
+
+	extra_setup(IMAGESIZE_Larger);
+	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+
+	// Test shrinking the file system is successful.
+	shrink_partition(IMAGESIZE_Default);
+	ASSERT_TRUE(s_ext2_obj->resize(m_partition, m_operation_detail, false)) << m_operation_detail;
 }
 
 
