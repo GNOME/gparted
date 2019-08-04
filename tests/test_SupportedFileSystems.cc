@@ -163,6 +163,32 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 }
 
 
+// Printable file system type which meets the requirements for a Google Test name.
+// Use GParted's file system names except when they contains any non-alphabetic chars.
+// Reference:
+// *   Specifying Names for Value-Parameterized Test Parameters
+//     https://github.com/google/googletest/blob/v1.8.x/googletest/docs/advanced.md#specifying-names-for-value-parameterized-test-parameters
+//         "NOTE: test names must be non-empty, unique, and may only contain ASCII
+//         alphanumeric characters.  In particular, they should not contain underscores."
+const std::string test_fsname(FSType fstype)
+{
+	switch (fstype)
+	{
+		case FS_LINUX_SWAP:  return "linuxswap";
+		default:             break;
+	}
+	return std::string(Utils::get_filesystem_string(fstype));
+}
+
+
+// Function callable by INSTANTIATE_TEST_CASE_P() to get the file system type for printing
+// as part of the test name.
+const std::string param_fsname(const ::testing::TestParamInfo<FSType>& info)
+{
+	return test_fsname(info.param);
+}
+
+
 // Google Test 1.8.1 (and earlier) doesn't implement run-time test skipping so implement
 // our own for GParted run-time detected of unsupported file system features.
 // Ref:
@@ -228,7 +254,7 @@ void SupportedFileSystemsTest::SetUp()
 	// Lookup file system interface object.
 	m_fs_object = s_supported_filesystems->get_fs_object(m_fstype);
 	ASSERT_TRUE(m_fs_object != NULL) << __func__ << "(): TEST_BUG: Interface object not found for file system "
-	                                 << Utils::get_filesystem_string(m_fstype);
+	                                 << test_fsname(m_fstype);
 }
 
 
@@ -478,7 +504,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 // Reference:
 // *   Google Test, Advanced googletest Topics, How to Write Value-Parameterized Tests
 //     https://github.com/google/googletest/blob/v1.8.x/googletest/docs/advanced.md#how-to-write-value-parameterized-tests
-INSTANTIATE_TEST_CASE_P(My, SupportedFileSystemsTest, ::testing::Values(FS_EXT2, FS_LINUX_SWAP));
+INSTANTIATE_TEST_CASE_P(My, SupportedFileSystemsTest, ::testing::Values(FS_EXT2, FS_LINUX_SWAP), param_fsname);
 
 
 }  // namespace GParted
