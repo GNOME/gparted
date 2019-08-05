@@ -549,7 +549,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 	// Test reading the UUID is successful.
 	reload_partition();
 	m_fs_object->read_uuid(m_partition);
-	EXPECT_EQ(m_partition.uuid.size(), 36U);
+	EXPECT_GE(m_partition.uuid.size(), 9U);
 
 	// Test messages from read operation are empty or print them.
 	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
