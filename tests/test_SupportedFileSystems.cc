@@ -174,7 +174,9 @@ const std::string test_fsname(FSType fstype)
 {
 	switch (fstype)
 	{
+		case FS_HFSPLUS:     return "hfsplus";
 		case FS_LINUX_SWAP:  return "linuxswap";
+		case FS_LVM2_PV:     return "lvm2pv";
 		default:             break;
 	}
 	return std::string(Utils::get_filesystem_string(fstype));
@@ -221,7 +223,12 @@ public:
 	static void SetUpTestCase();
 	static void TearDownTestCase();
 
+	static std::vector<FSType> get_supported_fstypes();
+
 protected:
+	static void setup_supported_filesystems();
+	static void teardown_supported_filesystems();
+
 	virtual void reload_partition();
 	virtual void resize_image(Byte_Value new_size);
 	virtual void shrink_partition(Byte_Value size);
@@ -284,16 +291,48 @@ void SupportedFileSystemsTest::TearDown()
 // Common test case initialisation creating the supported file system interface object.
 void SupportedFileSystemsTest::SetUpTestCase()
 {
-	s_supported_filesystems = new SupportedFileSystems();
-
-	// Discover available file systems support capabilities, base on available file
-	// system specific tools.
-	s_supported_filesystems->find_supported_filesystems();
+	setup_supported_filesystems();
 }
 
 
 // Common test case teardown destroying the supported file systems interface object.
 void SupportedFileSystemsTest::TearDownTestCase()
+{
+	teardown_supported_filesystems();
+}
+
+
+std::vector<FSType> SupportedFileSystemsTest::get_supported_fstypes()
+{
+	setup_supported_filesystems();
+
+	std::vector<FSType> v;
+	const std::vector<FS>& fss = s_supported_filesystems->get_all_fs_support();
+	for (unsigned int i = 0; i < fss.size(); i++)
+	{
+		if (s_supported_filesystems->supported_filesystem(fss[i].filesystem))
+			v.push_back(fss[i].filesystem);
+	}
+	return v;
+}
+
+
+// Create the supported file system interface object.
+void SupportedFileSystemsTest::setup_supported_filesystems()
+{
+	if (s_supported_filesystems == NULL)
+	{
+		s_supported_filesystems = new SupportedFileSystems();
+
+		// Discover available file systems support capabilities, base on available
+		// file system specific tools.
+		s_supported_filesystems->find_supported_filesystems();
+	}
+}
+
+
+// Destroy the supported file systems interface object.
+void SupportedFileSystemsTest::teardown_supported_filesystems()
 {
 	delete s_supported_filesystems;
 	s_supported_filesystems = NULL;
@@ -504,7 +543,10 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 // Reference:
 // *   Google Test, Advanced googletest Topics, How to Write Value-Parameterized Tests
 //     https://github.com/google/googletest/blob/v1.8.x/googletest/docs/advanced.md#how-to-write-value-parameterized-tests
-INSTANTIATE_TEST_CASE_P(My, SupportedFileSystemsTest, ::testing::Values(FS_EXT2, FS_LINUX_SWAP), param_fsname);
+INSTANTIATE_TEST_CASE_P(My,
+                        SupportedFileSystemsTest,
+                        ::testing::ValuesIn(SupportedFileSystemsTest::get_supported_fstypes()),
+                        param_fsname);
 
 
 }  // namespace GParted
@@ -558,12 +600,13 @@ int main(int argc, char** argv)
 	}
 	printf("DISPLAY=\"%s\"\n", display);
 
-	testing::InitGoogleTest(&argc, argv);
-
 	// Initialise threading in GParted to allow FileSystem interface classes to
-	// successfully use Utils:: and Filesystem::execute_command().
+	// successfully use Utils:: and Filesystem::execute_command().  Must be before
+	// InitGoogleTest().
 	GParted::GParted_Core::mainthread = Glib::Thread::self();
 	Gtk::Main gtk_main = Gtk::Main();
+
+	testing::InitGoogleTest(&argc, argv);
 
 	return RUN_ALL_TESTS();
 }
