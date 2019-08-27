@@ -190,6 +190,8 @@ protected:
 	static void SetUpTestCase();
 	static void TearDownTestCase();
 
+	virtual void reload_partition();
+
 	static FileSystem* s_ext2_obj;
 	static FS          s_ext2_support;
 	static const char* s_image_name;
@@ -217,20 +219,7 @@ void ext2Test::extra_setup()
 	                                              << ImageSize << ".  errno=" << errno << "," << strerror(errno);
 	close(fd);
 
-	// Use libparted to get the sector size etc. of the image file.
-	PedDevice* lp_device = ped_device_get(s_image_name);
-	ASSERT_TRUE(lp_device != NULL);
-
-	// Prepare partition object spanning whole of the image file.
-	m_partition.set_unpartitioned(s_image_name,
-	                              lp_device->path,
-	                              FS_EXT2,
-	                              lp_device->length,
-	                              lp_device->sector_size,
-	                              false);
-
-	ped_device_destroy(lp_device);
-	lp_device = NULL;
+	reload_partition();
 }
 
 
@@ -257,6 +246,29 @@ void ext2Test::TearDownTestCase()
 }
 
 
+// (Re)initialise m_partition as a Partition object spanning the whole of the image file
+// with file system type only.  No file system usage, label or UUID.
+void ext2Test::reload_partition()
+{
+	m_partition.Reset();
+
+	// Use libparted to get the sector size etc. of the image file.
+	PedDevice* lp_device = ped_device_get(s_image_name);
+	ASSERT_TRUE(lp_device != NULL);
+
+	// Prepare partition object spanning whole of the image file.
+	m_partition.set_unpartitioned(s_image_name,
+	                              lp_device->path,
+	                              FS_EXT2,
+	                              lp_device->length,
+	                              lp_device->sector_size,
+	                              false);
+
+	ped_device_destroy(lp_device);
+	lp_device = NULL;
+}
+
+
 TEST_F(ext2Test, Create)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
@@ -274,6 +286,7 @@ TEST_F(ext2Test, CreateAndReadUsage)
 	extra_setup();
 	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
 
+	reload_partition();
 	s_ext2_obj->set_used_sectors(m_partition);
 	// Test file system usage is reported correctly.
 	// Used is between 0 and length.
@@ -303,6 +316,7 @@ TEST_F(ext2Test, CreateAndReadLabel)
 	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test reading the label is successful.
+	reload_partition();
 	s_ext2_obj->read_label(m_partition);
 	EXPECT_STREQ(fs_label, m_partition.get_filesystem_label().c_str());
 
@@ -320,6 +334,7 @@ TEST_F(ext2Test, CreateAndReadUUID)
 	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test reading the UUID is successful.
+	reload_partition();
 	s_ext2_obj->read_uuid(m_partition);
 	EXPECT_EQ(m_partition.uuid.size(), 36U);
 
