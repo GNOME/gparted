@@ -50,10 +50,15 @@ if test "x`id -u`" != "x0"; then
 	#  non-root to display the graphical error about needing root
 	#  privileges.
 	#
-	if test "x@gksuprog@" = "x"; then
+
+	run_noroot(){
 		echo "Root privileges are required for running gparted."
 		$BASE_CMD
 		exit 1
+	}
+
+	if test "x@gksuprog@" = "x" && test "x@gksuprog_fallback@" = "x"; then
+		run_noroot
 	fi
 
 	#
@@ -75,7 +80,15 @@ if test "x`id -u`" != "x0"; then
 	#
 	# Run gparted as root.
 	#
-	@gksuprog@ '@bindir@/gparted' "$@"
+	if [ -x "$(command -v @gksuprog@)" ]; then
+		GKSUPROG="@gksuprog@"
+	# check if fallback program was defined at build time and if it is available
+	elif [ -n "@gksuprog_fallback@" ] && [ -x "$(command -v @gksuprog_fallback@)" ]; then
+		GKSUPROG="@gksuprog_fallback@"
+	else
+		run_noroot
+	fi
+	${GKSUPROG} '@bindir@/gparted' "$@"
 	status=$?
 
 	#
