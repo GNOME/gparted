@@ -206,6 +206,19 @@ const std::string param_fsname(const ::testing::TestParamInfo<FSType>& info)
 	}
 
 
+#define SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(fstype)                                    \
+	if (m_fstype == fstype)                                                                 \
+	{                                                                                       \
+		if (getuid() != 0)                                                              \
+		{                                                                               \
+			std::cout << __FILE__ << ":" << __LINE__ << ": Skip test.  Not root "   \
+			          << "to be able to create required loop device" << std::endl;  \
+			return;                                                                 \
+		}                                                                               \
+		m_require_loopdev = true;                                                       \
+	}
+
+
 const Byte_Value IMAGESIZE_Default = 256*MEBIBYTE;
 const Byte_Value IMAGESIZE_Larger  = 512*MEBIBYTE;
 
@@ -229,6 +242,10 @@ protected:
 	static void setup_supported_filesystems();
 	static void teardown_supported_filesystems();
 
+	virtual const std::string create_loopdev(const std::string& image_name) const;
+	virtual void detach_loopdev(const std::string& loopdev_name) const;
+	virtual void reload_loopdev_size(const std::string& loopdev_name) const;
+
 	virtual void reload_partition();
 	virtual void resize_image(Byte_Value new_size);
 	virtual void shrink_partition(Byte_Value size);
@@ -238,6 +255,8 @@ protected:
 
 	FSType          m_fstype;
 	FileSystem*     m_fs_object;  // Alias pointer
+	bool            m_require_loopdev;
+	std::string     m_dev_name;
 	Partition       m_partition;
 	OperationDetail m_operation_detail;
 };
@@ -248,8 +267,9 @@ const char*           SupportedFileSystemsTest::s_image_name            = "test_
 
 
 SupportedFileSystemsTest::SupportedFileSystemsTest()
-                                            // Initialise top-level operation detail object with description ...
- : m_fstype(GetParam()), m_fs_object(NULL), m_operation_detail("Operation details:", STATUS_NONE)
+ : m_fstype(GetParam()), m_fs_object(NULL), m_require_loopdev(false),
+   // Initialise top-level operation detail object with description ...
+   m_operation_detail("Operation details:", STATUS_NONE)
 {
 }
 
@@ -276,12 +296,19 @@ void SupportedFileSystemsTest::extra_setup(Byte_Value size)
 	                                         << size << ".  errno=" << errno << "," << strerror(errno);
 	close(fd);
 
+	m_dev_name = s_image_name;
+	if (m_require_loopdev)
+		m_dev_name = create_loopdev(s_image_name);
+
 	reload_partition();
 }
 
 
 void SupportedFileSystemsTest::TearDown()
 {
+	if (m_require_loopdev)
+		detach_loopdev(m_dev_name);
+
 	unlink(s_image_name);
 
 	m_fs_object = NULL;
@@ -339,6 +366,66 @@ void SupportedFileSystemsTest::teardown_supported_filesystems()
 }
 
 
+// Create loop device over named image file and return the device name.
+const std::string SupportedFileSystemsTest::create_loopdev(const std::string& image_name) const
+{
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring cmd = "losetup --find --show " + Glib::shell_quote(image_name);
+	int exit_status = Utils::execute_command(cmd, output, error, true);
+	if (exit_status != 0)
+	{
+		ADD_FAILURE() << __func__ << "(): Execute: " << cmd << "\n"
+		              << error
+		              << __func__ << "(): Losetup failed with exit status " << exit_status << "\n"
+		              << __func__ << "(): Failed to create required loop device";
+		return "";
+	}
+
+	// Strip trailing New Line.
+	size_t len = output.length();
+	if (len > 0 && output[len-1] == '\n')
+		output.resize(len-1);
+
+	return output;
+}
+
+
+// Detach named loop device.
+void SupportedFileSystemsTest::detach_loopdev(const std::string& loopdev_name) const
+{
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring cmd = "losetup --detach " + Glib::shell_quote(loopdev_name);
+	int exit_status = Utils::execute_command(cmd, output, error, true);
+	if (exit_status != 0)
+	{
+		// Report losetup detach error but don't fail the test because of it.
+		std::cout << __func__ << "(): Execute: " << cmd << "\n"
+		          << error
+		          << __func__ << "(): Losetup failed with exit status " << exit_status << "\n"
+		          << __func__ << "(): Failed to detach loop device.  Test NOT affected" << std::endl;
+	}
+}
+
+
+// Instruct loop device to reload the size of the underlying image file.
+void SupportedFileSystemsTest::reload_loopdev_size(const std::string& loopdev_name) const
+{
+	Glib::ustring output;
+	Glib::ustring error;
+	Glib::ustring cmd = "losetup --set-capacity " + Glib::shell_quote(loopdev_name);
+	int exit_status = Utils::execute_command(cmd, output, error, true);
+	if (exit_status != 0)
+	{
+		ADD_FAILURE() << __func__ << "(): Execute: " << cmd << "\n"
+		              << error
+		              << __func__ << "(): Losetup failed with exit status " << exit_status << "\n"
+		              << __func__ << "(): Failed to reload loop device size";
+	}
+}
+
+
 // (Re)initialise m_partition as a Partition object spanning the whole of the image file
 // with file system type only.  No file system usage, label or UUID.
 void SupportedFileSystemsTest::reload_partition()
@@ -346,11 +433,11 @@ void SupportedFileSystemsTest::reload_partition()
 	m_partition.Reset();
 
 	// Use libparted to get the sector size etc. of the image file.
-	PedDevice* lp_device = ped_device_get(s_image_name);
+	PedDevice* lp_device = ped_device_get(m_dev_name.c_str());
 	ASSERT_TRUE(lp_device != NULL);
 
 	// Prepare partition object spanning whole of the image file.
-	m_partition.set_unpartitioned(s_image_name,
+	m_partition.set_unpartitioned(m_dev_name,
 	                              lp_device->path,
 	                              m_fstype,
 	                              lp_device->length,
@@ -370,6 +457,9 @@ void SupportedFileSystemsTest::resize_image(Byte_Value new_size)
 	ASSERT_EQ(ftruncate(fd, (off_t)new_size), 0) << "Failed to resize image file '" << s_image_name << "' to size "
 	                                             << new_size << ".  errno=" << errno << "," << strerror(errno);
 	close(fd);
+
+	if (m_require_loopdev)
+		reload_loopdev_size(m_dev_name);
 }
 
 
@@ -384,6 +474,8 @@ void SupportedFileSystemsTest::shrink_partition(Byte_Value new_size)
 TEST_P(SupportedFileSystemsTest, Create)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+
 	extra_setup();
 	// Call create, check for success and print operation details on failure.
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -394,6 +486,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUsage)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -421,6 +514,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadLabel)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	const char* fs_label = "TEST_LABEL";
 	extra_setup();
@@ -441,6 +535,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_uuid);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -459,6 +554,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteLabel)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_label);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	m_partition.set_filesystem_label("FIRST");
@@ -474,6 +570,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUID)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -487,6 +584,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndCheck)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(check);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -500,6 +598,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndRemove)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(remove);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -514,6 +613,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndGrow)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(grow);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup(IMAGESIZE_Default);
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -529,6 +629,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndShrink)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(shrink);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
 
 	extra_setup(IMAGESIZE_Larger);
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
