@@ -546,6 +546,14 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
+	if (m_fstype == FS_JFS)
+	{
+		// Write a new UUID to cause the jfs version to be updated from 1 to 2 so
+		// that jfs_tune can successfully report the UUID of the file system.
+		SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
+		ASSERT_TRUE(m_fs_object->write_uuid(m_partition, m_operation_detail)) << m_operation_detail;
+	}
+
 	// Test reading the UUID is successful.
 	reload_partition();
 	m_fs_object->read_uuid(m_partition);
