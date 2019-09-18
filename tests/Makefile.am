@@ -11,19 +11,19 @@ LDADD =  \
 
 # Programs to be built by "make check"
 check_PROGRAMS =  \
-	test_dummy             \
-	test_ext2              \
-	test_BlockSpecial      \
-	test_PasswordRAMStore  \
-	test_PipeCapture
+	test_dummy                 \
+	test_BlockSpecial          \
+	test_PasswordRAMStore      \
+	test_PipeCapture           \
+	test_SupportedFileSystems
 
 # Test cases to be run by "make check"
 TESTS = $(check_PROGRAMS)
 
 test_dummy_SOURCES        = test_dummy.cc
 
-test_ext2_SOURCES         = test_ext2.cc
-test_ext2_LDADD   =  \
+test_SupportedFileSystems_SOURCES = test_SupportedFileSystems.cc
+test_SupportedFileSystems_LDADD   =  \
 	$(top_builddir)/src/BlockSpecial.$(OBJEXT)          \
 	$(top_builddir)/src/CopyBlocks.$(OBJEXT)            \
 	$(top_builddir)/src/DMRaid.$(OBJEXT)                \

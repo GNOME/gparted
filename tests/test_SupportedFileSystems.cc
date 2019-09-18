@@ -14,11 +14,11 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Test ext2
+/* Test SupportedFileSystems
  *
  * Test the derived FileSystem interface classes which call the file system specific
- * executables.  Rather than mocking command execution and returned output just run real
- * commands, effectively making this integration testing.
+ * executables via the SupportedFileSystems class.  Rather than mocking command execution
+ * and returned output just run real commands, effectively making this integration testing.
  *
  * Test case setup determines the file system supported actions using
  * get_filesystem_support() and individual tests are skipped if a feature is not
@@ -38,7 +38,7 @@
 #include "OperationDetail.h"
 #include "Partition.h"
 #include "Utils.h"
-#include "ext2.h"
+#include "SupportedFileSystems.h"
 #include "gtest/gtest.h"
 
 #include <iostream>
@@ -170,7 +170,7 @@ std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 //     https://github.com/google/googletest/pull/1544
 //     (Merged after Google Test 1.8.1)
 #define SKIP_IF_FS_DOESNT_SUPPORT(opt)                                                    \
-	if (s_ext2_support.opt != FS::EXTERNAL)                                           \
+	if (s_supported_filesystems->get_fs_support(FS_EXT2).opt != FS::EXTERNAL)         \
 	{                                                                                 \
 		std::cout << __FILE__ << ":" << __LINE__ << ": Skip test.  "              \
 		          << #opt << " not supported or support not found" << std::endl;  \
@@ -182,11 +182,11 @@ const Byte_Value IMAGESIZE_Default = 256*MEBIBYTE;
 const Byte_Value IMAGESIZE_Larger  = 512*MEBIBYTE;
 
 
-class ext2Test : public ::testing::Test
+class SupportedFileSystemsTest : public ::testing::Test
 {
 protected:
 	// Initialise top-level operation detail object with description ...
-	ext2Test() : m_operation_detail("Operation details:", STATUS_NONE)  {};
+	SupportedFileSystemsTest() : m_operation_detail("Operation details:", STATUS_NONE)  {};
 
 	virtual void extra_setup(Byte_Value size = IMAGESIZE_Default);
 	virtual void TearDown();
@@ -198,21 +198,21 @@ protected:
 	virtual void resize_image(Byte_Value new_size);
 	virtual void shrink_partition(Byte_Value size);
 
-	static FileSystem* s_ext2_obj;
-	static FS          s_ext2_support;
-	static const char* s_image_name;
+	static SupportedFileSystems* s_supported_filesystems;  // Owning pointer
+	static FileSystem*           s_fs_object;              // Alias pointer
+	static const char*           s_image_name;
 
 	Partition       m_partition;
 	OperationDetail m_operation_detail;
 };
 
 
-FileSystem* ext2Test::s_ext2_obj     = NULL;
-FS          ext2Test::s_ext2_support;
-const char* ext2Test::s_image_name   = "test_ext2.img";
+SupportedFileSystems* SupportedFileSystemsTest::s_supported_filesystems = NULL;
+FileSystem*           SupportedFileSystemsTest::s_fs_object             = NULL;
+const char*           SupportedFileSystemsTest::s_image_name            = "test_SupportedFileSystems.img";
 
 
-void ext2Test::extra_setup(Byte_Value size)
+void SupportedFileSystemsTest::extra_setup(Byte_Value size)
 {
 	// Create new image file to work with.
 	unlink(s_image_name);
@@ -227,32 +227,39 @@ void ext2Test::extra_setup(Byte_Value size)
 }
 
 
-void ext2Test::TearDown()
+void SupportedFileSystemsTest::TearDown()
 {
 	unlink(s_image_name);
 }
 
 
-// Common test case initialisation creating ext2 interface object and querying supported
-// operations.
-void ext2Test::SetUpTestCase()
+// Common test case initialisation creating the supported file system interface object.
+void SupportedFileSystemsTest::SetUpTestCase()
 {
-	s_ext2_obj = new ext2(FS_EXT2);
-	s_ext2_support = s_ext2_obj->get_filesystem_support();
+	s_supported_filesystems = new SupportedFileSystems();
+
+	// Discover available file systems support capabilities, base on available file
+	// system specific tools.
+	s_supported_filesystems->find_supported_filesystems();
+
+	// Lookup ext2 derived FileSystem object.
+	s_fs_object = s_supported_filesystems->get_fs_object(FS_EXT2);
 }
 
 
-// Common test case teardown destroying the ext2 interface object.
-void ext2Test::TearDownTestCase()
+// Common test case teardown destroying the supported file systems interface object.
+void SupportedFileSystemsTest::TearDownTestCase()
 {
-	delete s_ext2_obj;
-	s_ext2_obj = NULL;
+	s_fs_object = NULL;
+
+	delete s_supported_filesystems;
+	s_supported_filesystems = NULL;
 }
 
 
 // (Re)initialise m_partition as a Partition object spanning the whole of the image file
 // with file system type only.  No file system usage, label or UUID.
-void ext2Test::reload_partition()
+void SupportedFileSystemsTest::reload_partition()
 {
 	m_partition.Reset();
 
@@ -273,7 +280,7 @@ void ext2Test::reload_partition()
 }
 
 
-void ext2Test::resize_image(Byte_Value new_size)
+void SupportedFileSystemsTest::resize_image(Byte_Value new_size)
 {
 	int fd = open(s_image_name, O_WRONLY|O_NONBLOCK);
 	ASSERT_GE(fd, 0) << "Failed to open image file '" << s_image_name << "'.  errno="
@@ -284,7 +291,7 @@ void ext2Test::resize_image(Byte_Value new_size)
 }
 
 
-void ext2Test::shrink_partition(Byte_Value new_size)
+void SupportedFileSystemsTest::shrink_partition(Byte_Value new_size)
 {
 	ASSERT_LE(new_size, m_partition.get_byte_length()) << __func__ << "(): TEST_BUG: Cannot grow Partition object size";
 	Sector new_sectors = (new_size + m_partition.sector_size - 1) / m_partition.sector_size;
@@ -292,25 +299,25 @@ void ext2Test::shrink_partition(Byte_Value new_size)
 }
 
 
-TEST_F(ext2Test, Create)
+TEST_F(SupportedFileSystemsTest, Create)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	extra_setup();
 	// Call create, check for success and print operation details on failure.
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndReadUsage)
+TEST_F(SupportedFileSystemsTest, CreateAndReadUsage)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read);
 
 	extra_setup();
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	reload_partition();
-	s_ext2_obj->set_used_sectors(m_partition);
+	s_fs_object->set_used_sectors(m_partition);
 	// Test file system usage is reported correctly.
 	// Used is between 0 and length.
 	EXPECT_LE(0, m_partition.sectors_used);
@@ -328,7 +335,7 @@ TEST_F(ext2Test, CreateAndReadUsage)
 }
 
 
-TEST_F(ext2Test, CreateAndReadLabel)
+TEST_F(SupportedFileSystemsTest, CreateAndReadLabel)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
@@ -336,11 +343,11 @@ TEST_F(ext2Test, CreateAndReadLabel)
 	const char* fs_label = "TEST_LABEL";
 	extra_setup();
 	m_partition.set_filesystem_label(fs_label);
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test reading the label is successful.
 	reload_partition();
-	s_ext2_obj->read_label(m_partition);
+	s_fs_object->read_label(m_partition);
 	EXPECT_STREQ(fs_label, m_partition.get_filesystem_label().c_str());
 
 	// Test messages from read operation are empty or print them.
@@ -348,17 +355,17 @@ TEST_F(ext2Test, CreateAndReadLabel)
 }
 
 
-TEST_F(ext2Test, CreateAndReadUUID)
+TEST_F(SupportedFileSystemsTest, CreateAndReadUUID)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(read_uuid);
 
 	extra_setup();
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test reading the UUID is successful.
 	reload_partition();
-	s_ext2_obj->read_uuid(m_partition);
+	s_fs_object->read_uuid(m_partition);
 	EXPECT_EQ(m_partition.uuid.size(), 36U);
 
 	// Test messages from read operation are empty or print them.
@@ -366,87 +373,87 @@ TEST_F(ext2Test, CreateAndReadUUID)
 }
 
 
-TEST_F(ext2Test, CreateAndWriteLabel)
+TEST_F(SupportedFileSystemsTest, CreateAndWriteLabel)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_label);
 
 	extra_setup();
 	m_partition.set_filesystem_label("FIRST");
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test writing a label is successful.
 	m_partition.set_filesystem_label("SECOND");
-	ASSERT_TRUE(s_ext2_obj->write_label(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->write_label(m_partition, m_operation_detail)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndWriteUUID)
+TEST_F(SupportedFileSystemsTest, CreateAndWriteUUID)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
 
 	extra_setup();
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test writing a new random UUID is successful.
-	ASSERT_TRUE(s_ext2_obj->write_uuid(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->write_uuid(m_partition, m_operation_detail)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndCheck)
+TEST_F(SupportedFileSystemsTest, CreateAndCheck)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(check);
 
 	extra_setup();
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test checking the file system is successful.
-	ASSERT_TRUE(s_ext2_obj->check_repair(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->check_repair(m_partition, m_operation_detail)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndRemove)
+TEST_F(SupportedFileSystemsTest, CreateAndRemove)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(remove);
 
 	extra_setup();
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test removing the file system is successful.  Note that most file systems don't
 	// implement remove so will skip this test.
-	ASSERT_TRUE(s_ext2_obj->remove(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->remove(m_partition, m_operation_detail)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndGrow)
+TEST_F(SupportedFileSystemsTest, CreateAndGrow)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(grow);
 
 	extra_setup(IMAGESIZE_Default);
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test growing the file system is successful.
 	resize_image(IMAGESIZE_Larger);
 	reload_partition();
-	ASSERT_TRUE(s_ext2_obj->resize(m_partition, m_operation_detail, true)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->resize(m_partition, m_operation_detail, true)) << m_operation_detail;
 }
 
 
-TEST_F(ext2Test, CreateAndShrink)
+TEST_F(SupportedFileSystemsTest, CreateAndShrink)
 {
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(shrink);
 
 	extra_setup(IMAGESIZE_Larger);
-	ASSERT_TRUE(s_ext2_obj->create(m_partition, m_operation_detail)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
 
 	// Test shrinking the file system is successful.
 	shrink_partition(IMAGESIZE_Default);
-	ASSERT_TRUE(s_ext2_obj->resize(m_partition, m_operation_detail, false)) << m_operation_detail;
+	ASSERT_TRUE(s_fs_object->resize(m_partition, m_operation_detail, false)) << m_operation_detail;
 }
 
 
