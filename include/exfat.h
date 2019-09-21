@@ -19,6 +19,7 @@
 #define GPARTED_EXFAT_H
 
 #include "FileSystem.h"
+#include "Partition.h"
 
 namespace GParted
 {
@@ -27,6 +28,11 @@ class exfat : public FileSystem
 {
 public:
 	FS get_filesystem_support() ;
+	bool create( const Partition & new_partition, OperationDetail & operationdetail ) ;
+	bool check_repair( const Partition & partition, OperationDetail & operationdetail );
+	void set_used_sectors( Partition & partition );
+	void read_label( Partition & partition );
+	bool write_label( const Partition & partition, OperationDetail & operationdetail );
 };
 
 } //GParted
