@@ -11,7 +11,7 @@ stages:
                      gcc-c++ libuuid-devel parted-devel gtkmm30-devel make
                      polkit file
     # Extra packages only needed during the test stage.
-    - yum install -y e2fsprogs
+    - yum install -y e2fsprogs xorg-x11-server-Xvfb
     - cat /etc/os-release
 
 .ubuntu_image_template: &ubuntu_image_definition
@@ -23,7 +23,7 @@ stages:
                          uuid-dev libparted-dev libgtkmm-3.0-dev make
                          policykit-1
     # Extra packages only needed during the test stage.
-    - apt-get install -y e2fsprogs
+    - apt-get install -y e2fsprogs xvfb
     - cat /etc/os-release
 
 .build_stage_template: &build_stage_definition

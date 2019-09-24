@@ -43,6 +43,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -203,6 +204,38 @@ TEST_F(ext2Test, Create)
 }  // namespace GParted
 
 
+// Re-execute current executable using xvfb-run so that it provides a virtual X11 display.
+void exec_using_xvfb_run(int argc, char** argv)
+{
+	// argc+2 = Space for "xvfb-run" command, existing argc strings plus NULL pointer.
+	size_t size = sizeof(char*) * (argc+2);
+	char** new_argv = (char**)malloc(size);
+	if (new_argv == NULL)
+	{
+		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
+			(unsigned long)size, errno, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+
+	new_argv[0] = strdup("xvfb-run");
+	if (new_argv[0] == NULL)
+	{
+		fprintf(stderr, "Failed to allocate %lu bytes of memory.  errno=%d,%s\n",
+		        (unsigned long)strlen(new_argv[0])+1, errno, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
+
+	// Copy argv pointers including final NULL pointer.
+	for (unsigned int i = 0; i <= (unsigned)argc; i++)
+		new_argv[i+1] = argv[i];
+
+	execvp(new_argv[0], new_argv);
+	fprintf(stderr, "Failed to execute '%s %s ...'.  errno=%d,%s\n", new_argv[0], new_argv[1],
+		errno, strerror(errno));
+	exit(EXIT_FAILURE);
+}
+
+
 // Custom Google Test main().
 // Reference:
 // *   Google Test, Primer, Writing the main() function
@@ -210,6 +243,15 @@ TEST_F(ext2Test, Create)
 int main(int argc, char** argv)
 {
 	printf("Running main() from %s\n", __FILE__);
+
+	const char* display = getenv("DISPLAY");
+	if (display == NULL)
+	{
+		printf("DISPLAY environment variable unset.  Executing 'xvfb-run %s ...'\n", argv[0]);
+		exec_using_xvfb_run(argc, argv);
+	}
+	printf("DISPLAY=\"%s\"\n", display);
+
 	testing::InitGoogleTest(&argc, argv);
 
 	// Initialise threading in GParted to allow FileSystem interface classes to
