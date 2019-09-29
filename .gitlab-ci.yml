@@ -4,7 +4,7 @@ stages:
 
 .centos_image_template: &centos_image_definition
   # Use official CentOS image https://hub.docker.com/_/centos/.
-  image: centos:latest
+  image: centos:centos7
   before_script:
     - yum update -y
     - yum install -y which gnome-common yelp-tools glib2-devel intltool
