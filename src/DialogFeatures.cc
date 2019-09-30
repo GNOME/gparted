@@ -21,7 +21,6 @@
 #include "GParted_Core.h"
 #include "Utils.h"
 
-#include <gtkmm/stock.h>
 #include <gdkmm/pixbuf.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
@@ -42,8 +41,8 @@ DialogFeatures::DialogFeatures()
 	set_size_request( -1, 500 ) ;
 
 	//initialize icons
-	icon_yes = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-	icon_no = Utils::mk_pixbuf(*this, Gtk::Stock::CANCEL, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_yes = Utils::mk_pixbuf("gtk-apply", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+	icon_no = Utils::mk_pixbuf("gtk-cancel", Gtk::ICON_SIZE_LARGE_TOOLBAR);
 	icon_blank = Gdk::Pixbuf::create( Gdk::COLORSPACE_RGB, true, 8,
 	                                  icon_yes ->get_width(), icon_yes ->get_height() );
 	icon_blank ->fill( 0xFFFFFF00 );
@@ -158,7 +157,13 @@ DialogFeatures::DialogFeatures()
 
 	/*TO TRANSLATORS: This is a button that will search for the software tools installed and then refresh the screen with the file system actions supported. */
 	add_button( _("Rescan For Supported Actions"), Gtk::RESPONSE_OK );
-	add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE ) ->grab_focus() ;
+
+	Gtk::Button *close_button = add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE);
+	close_button->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
+	close_button->grab_focus();
+
 	show_all_children() ;
 }
 

@@ -26,7 +26,6 @@
 #include "Partition.h"
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/label.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/grid.h>

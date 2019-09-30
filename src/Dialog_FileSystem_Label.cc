@@ -19,7 +19,6 @@
 
 #include <glibmm/ustring.h>
 #include <gtkmm/box.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/entry.h>
 
 namespace GParted
@@ -50,8 +49,16 @@ Dialog_FileSystem_Label::Dialog_FileSystem_Label( const Partition & partition )
 	entry->select_region( 0, entry->get_text_length() );
 	hbox->pack_start( *entry, Gtk::PACK_SHRINK );
 
-	this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ;
-	this ->add_button( Gtk::Stock::OK, Gtk::RESPONSE_OK ) ;
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::OK),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("gtk-ok", Gtk::ICON_SIZE_BUTTON));
+
 	this ->set_default_response( Gtk::RESPONSE_OK ) ;
 	this ->show_all_children() ;
 }

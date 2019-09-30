@@ -23,7 +23,6 @@
 #include <glibmm/shell.h>
 #include <gtk/gtk.h>
 #include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/checkbutton.h>
 #include <sstream>
 #include <cerrno>
@@ -38,7 +37,10 @@ Dialog_Rescue_Data::Dialog_Rescue_Data()
 {
 	this ->set_title( _("Search disk for file systems") );
 
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
 }
 
 //getters
@@ -86,7 +88,7 @@ void Dialog_Rescue_Data::draw_dialog()
 	info_txt+=_("All mounted views will be unmounted when you close this dialog.");
 
 	Gtk::Box *infoBox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
-	Gtk::Image *infoImg = Utils::mk_image(Gtk::Stock::DIALOG_INFO, Gtk::ICON_SIZE_DIALOG);
+	Gtk::Image *infoImg = Utils::mk_image("dialog-information", Gtk::ICON_SIZE_DIALOG);
 	Gtk::Label *infoLabel= manage(new Gtk::Label (info_txt));
 
 	infoBox->pack_start(*infoImg, Gtk::PACK_SHRINK, 5);

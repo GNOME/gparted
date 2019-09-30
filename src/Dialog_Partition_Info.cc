@@ -77,7 +77,7 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		frame = manage( new Gtk::Frame() );
 
 		{
-			Gtk::Image* image = Utils::mk_image(Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_BUTTON);
+			Gtk::Image *image = Utils::mk_image("dialog-warning", Gtk::ICON_SIZE_BUTTON);
 
 			hbox = manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL));
 			hbox->pack_start(*image, Gtk::PACK_SHRINK);
@@ -118,7 +118,11 @@ Dialog_Partition_Info::Dialog_Partition_Info( const Partition & partition ) : pa
 		info_msg_vbox .pack_start( *frame, Gtk::PACK_EXPAND_WIDGET ) ;
 	}
 
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_OK ) ;
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_OK)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
+
 	this ->show_all_children() ;
 }
 

@@ -26,7 +26,6 @@
 #include <glibmm/miscutils.h>
 #include <glibmm/main.h>
 #include <glibmm/ustring.h>
-#include <gtkmm/stock.h>
 #include <gtkmm/main.h>
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/filechooserdialog.h>
@@ -75,11 +74,11 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		vbox->pack_start(progressbar_all, Gtk::PACK_SHRINK);
 
 		//create some icons here, instead of recreating them every time
-		icon_execute = Utils::mk_pixbuf(*this, Gtk::Stock::EXECUTE, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_success = Utils::mk_pixbuf(*this, Gtk::Stock::APPLY, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_error = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_ERROR, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_info = Utils::mk_pixbuf(*this, Gtk::Stock::INFO, Gtk::ICON_SIZE_LARGE_TOOLBAR);
-		icon_warning = Utils::mk_pixbuf(*this, Gtk::Stock::DIALOG_WARNING, Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_execute = Utils::mk_pixbuf("system-run", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_success = Utils::mk_pixbuf("gtk-apply", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_error = Utils::mk_pixbuf("dialog-error", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_info = Utils::mk_pixbuf("dialog-information", Gtk::ICON_SIZE_LARGE_TOOLBAR);
+		icon_warning = Utils::mk_pixbuf("dialog-warning", Gtk::ICON_SIZE_LARGE_TOOLBAR);
 
 		treestore_operations = Gtk::TreeStore::create( treeview_operations_columns);
 		treeview_operations.set_model(treestore_operations);
@@ -119,8 +118,11 @@ Dialog_Progress::Dialog_Progress(const std::vector<Device>& devices, const std::
 		vbox ->set_spacing(5);
 	}
 
-	cancelbutton = this ->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
-	
+	cancelbutton = add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL);
+	cancelbutton->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 	this ->signal_show() .connect( sigc::mem_fun(*this, &Dialog_Progress::on_signal_show) );
 	this ->show_all_children() ;
 }
@@ -249,7 +251,11 @@ void Dialog_Progress::on_signal_show()
 	canceltimer.disconnect();
 	delete cancelbutton;
 	cancelbutton = 0;
-	this ->add_button( Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE );
+
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CLOSE),
+		Gtk::RESPONSE_CLOSE)
+	->set_image(*Utils::mk_image("window-close", Gtk::ICON_SIZE_BUTTON));
 
 	pulsetimer.disconnect();
 
@@ -369,8 +375,16 @@ void Dialog_Progress::on_save()
 	dialog .set_current_folder( Glib::get_home_dir() ) ;
 	dialog .set_current_name( "gparted_details.htm" ) ;
 	dialog .set_do_overwrite_confirmation( true ) ; 
-	dialog .add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL ) ; 
-	dialog .add_button( Gtk::Stock::SAVE, Gtk::RESPONSE_OK ) ; //there's no enum for SAVE
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
+	dialog.add_button(
+		Utils::get_stock_label(Gtk::Stock::SAVE),
+		Gtk::RESPONSE_OK) //there's no enum for SAVE
+	->set_image(*Utils::mk_image("document-save", Gtk::ICON_SIZE_BUTTON));
 
 	if ( dialog .run() == Gtk::RESPONSE_OK )
 	{

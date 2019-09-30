@@ -20,7 +20,6 @@
 #include <gtkmm/imagemenuitem.h>
 #include <gtkmm/checkmenuitem.h>
 #include <gtkmm/separatormenuitem.h>
-#include <gtkmm/stock.h>
 
 namespace GParted
 {
@@ -73,8 +72,8 @@ MenuElem::MenuElem(const Glib::ustring & label,
 
 
 ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
+                             const Glib::ustring& icon_name,
                              const Gtk::AccelKey& key,
-                             Gtk::Widget& image_widget,
                              const CallSlot& slot)
  : ImageMenuItem()
 {
@@ -83,7 +82,7 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 
 	set_accel_key(key);
 
-	set_image(image_widget);
+	set_image(*Utils::mk_image(icon_name, Gtk::ICON_SIZE_MENU));
 	set_label(label);
 	set_use_underline(true);
 	set_always_show_image(true);
@@ -93,14 +92,14 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 
 
 ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
-                             Gtk::Widget& image_widget,
+                             const Glib::ustring& icon_name,
                              const CallSlot& slot)
  : ImageMenuItem()
 {
 	if (slot)
 		signal_activate().connect(slot);
 
-	set_image(image_widget);
+	set_image(*Utils::mk_image(icon_name, Gtk::ICON_SIZE_MENU));
 	set_label(label);
 	set_use_underline(true);
 	set_always_show_image(true);
@@ -110,13 +109,13 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 
 
 ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
-                             Gtk::Widget& image_widget,
+                             const Glib::ustring& icon_name,
                              Gtk::Menu& submenu)
  : ImageMenuItem()
 {
 	set_submenu(submenu);
 
-	set_image(image_widget);
+	set_image(*Utils::mk_image(icon_name, Gtk::ICON_SIZE_MENU));
 	set_label(label);
 	set_use_underline(true);
 	set_always_show_image(true);
@@ -128,83 +127,6 @@ ImageMenuElem::ImageMenuElem(const Glib::ustring& label,
 SeparatorElem::SeparatorElem()
  : Gtk::SeparatorMenuItem()
 {
-	show_all();
-}
-
-
-StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
-                             const Gtk::AccelKey& key,
-                             const CallSlot& slot)
- : Gtk::ImageMenuItem()
-{
-	Gtk::StockItem stock;
-
-	if (slot)
-		signal_activate().connect(slot);
-
-	set_accel_key(key);
-
-	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
-	set_image(*image);
-	set_always_show_image(true);
-
-	if (Gtk::Stock::lookup(stock_id, stock))
-	{
-		set_label(Utils::get_stock_label(stock_id));
-		set_use_underline(true);
-	}
-
-	show_all();
-}
-
-
-StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
-                             const CallSlot& slot)
- : Gtk::ImageMenuItem()
-{
-	Gtk::StockItem stock;
-
-	if (slot)
-		signal_activate().connect(slot);
-
-	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
-	set_image(*image);
-	set_always_show_image(true);
-
-	if (Gtk::Stock::lookup(stock_id, stock))
-	{
-		set_accel_key(Gtk::AccelKey(stock.get_keyval(),
-		                            stock.get_modifier()));
-
-		set_label(Utils::get_stock_label(stock_id));
-		set_use_underline(true);
-	}
-
-	show_all();
-}
-
-
-StockMenuElem::StockMenuElem(const Gtk::StockID& stock_id,
-                             Gtk::Menu& submenu)
- : Gtk::ImageMenuItem()
-{
-	Gtk::StockItem stock;
-
-	set_submenu(submenu);
-
-	Gtk::Image *image = Utils::mk_image(stock_id, Gtk::ICON_SIZE_MENU);
-	set_image(*image);
-	set_always_show_image(true);
-
-	if (Gtk::Stock::lookup(stock_id, stock))
-	{
-		set_accel_key(Gtk::AccelKey(stock.get_keyval(),
-		                            stock.get_modifier()));
-
-		set_label(Utils::get_stock_label(stock_id));
-		set_use_underline(true);
-	}
-
 	show_all();
 }
 

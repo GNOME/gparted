@@ -125,7 +125,11 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	for (std::vector<Gtk::Widget*>::iterator it = children.begin(); it != children.end(); ++it)
 		(*it)->set_vexpand();
 
-	this->add_button( Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL );
+	add_button(
+		Utils::get_stock_label(Gtk::Stock::CANCEL),
+		Gtk::RESPONSE_CANCEL)
+	->set_image(*Utils::mk_image("gtk-cancel", Gtk::ICON_SIZE_BUTTON));
+
 	this ->show_all_children() ;
 }
 
@@ -454,12 +458,15 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 	switch( button_type )
 	{
 		case NEW	:
-			this ->add_button( Gtk::Stock::ADD, Gtk::RESPONSE_OK );
-			
+			add_button(
+				Utils::get_stock_label(Gtk::Stock::ADD),
+				Gtk::RESPONSE_OK)
+			->set_image(*Utils::mk_image("document-add", Gtk::ICON_SIZE_BUTTON));
+
 			break ;
 		case RESIZE_MOVE:
 			{
-				Gtk::Image* image_temp = Utils::mk_image(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_BUTTON);
+				Gtk::Image *image_temp = Utils::mk_image("go-last", Gtk::ICON_SIZE_BUTTON);
 				Gtk::Box* hbox_resize_move(manage(new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL)));
 
 				hbox_resize_move->pack_start(*image_temp, Gtk::PACK_EXPAND_PADDING);
@@ -473,8 +480,11 @@ void Dialog_Base_Partition::Set_Confirm_Button( CONFIRMBUTTON button_type )
 			
 			break ;
 		case PASTE	:
-			this ->add_button( Gtk::Stock::PASTE, Gtk::RESPONSE_OK );
-			
+			add_button(
+				Utils::get_stock_label(Gtk::Stock::PASTE),
+				Gtk::RESPONSE_OK)
+			->set_image(*Utils::mk_image("edit-paste", Gtk::ICON_SIZE_BUTTON));
+
 			break ;
 	}
 }
