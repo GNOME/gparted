@@ -219,6 +219,15 @@ const std::string param_fsname(const ::testing::TestParamInfo<FSType>& info)
 	}
 
 
+#define SKIP_IF_TEST_DISABLED_FOR_FS(fstype)                                  \
+	if (m_fstype == fstype)                                               \
+	{                                                                     \
+		std::cout << __FILE__ << ":" << __LINE__ << ": Skip test.  "  \
+		          << "Test disabled for file system" << std::endl;    \
+		return;                                                       \
+	}
+
+
 const Byte_Value IMAGESIZE_Default = 256*MEBIBYTE;
 const Byte_Value IMAGESIZE_Larger  = 512*MEBIBYTE;
 
@@ -601,6 +610,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndCheck)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(check);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_TEST_DISABLED_FOR_FS(FS_MINIX);  // FIXME: Enable when util-linux >= 2.27 is available everywhere
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
