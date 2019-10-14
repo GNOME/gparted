@@ -488,6 +488,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUsage)
 	SKIP_IF_FS_DOESNT_SUPPORT(read);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_BTRFS);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -517,6 +518,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadLabel)
 	SKIP_IF_FS_DOESNT_SUPPORT(read_label);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_BTRFS);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	const char* fs_label = "TEST_LABEL";
 	extra_setup();
@@ -539,6 +541,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUUID)
 	SKIP_IF_FS_DOESNT_SUPPORT(read_uuid);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_BTRFS);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
@@ -558,6 +561,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteLabel)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_label);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	extra_setup();
 	m_partition.set_filesystem_label("FIRST");
@@ -574,6 +578,7 @@ TEST_P(SupportedFileSystemsTest, CreateAndWriteUUID)
 	SKIP_IF_FS_DOESNT_SUPPORT(create);
 	SKIP_IF_FS_DOESNT_SUPPORT(write_uuid);
 	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_LVM2_PV);
+	SKIP_IF_NOT_ROOT_FOR_REQUIRED_LOOPDEV_FOR_FS(FS_NILFS2);
 
 	extra_setup();
 	ASSERT_TRUE(m_fs_object->create(m_partition, m_operation_detail)) << m_operation_detail;
