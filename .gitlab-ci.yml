@@ -16,7 +16,7 @@ stages:
     - yum install -y btrfs-progs e2fsprogs f2fs-tools dosfstools mtools
                      hfsplus-tools util-linux cryptsetup device-mapper lvm2
                      ntfsprogs udftools xfsprogs xfsdump
-                     xorg-x11-server-Xvfb
+                     xorg-x11-server-Xvfb kmod
     - cat /etc/os-release
 
 .ubuntu_image_template: &ubuntu_image_definition
@@ -31,7 +31,7 @@ stages:
     - apt-get install -y btrfs-progs e2fsprogs f2fs-tools dosfstools mtools
                          hfsutils hfsprogs jfsutils util-linux cryptsetup-bin
                          dmsetup lvm2 nilfs-tools ntfs-3g reiser4progs
-                         reiserfsprogs udftools xfsprogs xfsdump xvfb
+                         reiserfsprogs udftools xfsprogs xfsdump xvfb kmod
     - cat /etc/os-release
 
 .build_stage_template: &build_stage_definition
