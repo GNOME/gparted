@@ -506,15 +506,15 @@ TEST_P(SupportedFileSystemsTest, CreateAndReadUsage)
 	m_fs_object->set_used_sectors(m_partition);
 	// Test file system usage is reported correctly.
 	// Used is between 0 and length.
-	EXPECT_LE(0, m_partition.sectors_used);
-	EXPECT_LE(m_partition.sectors_used, m_partition.get_sector_length());
+	EXPECT_LE(0, m_partition.get_sectors_used());
+	EXPECT_LE(m_partition.get_sectors_used(), m_partition.get_sector_length());
 	// Unused is between 0 and length.
-	EXPECT_LE(0, m_partition.sectors_unused);
-	EXPECT_LE(m_partition.sectors_unused, m_partition.get_sector_length());
+	EXPECT_LE(0, m_partition.get_sectors_unused());
+	EXPECT_LE(m_partition.get_sectors_unused(), m_partition.get_sector_length());
 	// Unallocated is 0.
-	EXPECT_EQ(m_partition.sectors_unallocated, 0);
+	EXPECT_EQ(m_partition.get_sectors_unallocated(), 0);
 	// Used + unused = length.
-	EXPECT_EQ(m_partition.sectors_used + m_partition.sectors_unused, m_partition.get_sector_length());
+	EXPECT_EQ(m_partition.get_sectors_used() + m_partition.get_sectors_unused(), m_partition.get_sector_length());
 
 	// Test messages from read operation are empty or print them.
 	EXPECT_TRUE(m_partition.get_messages().empty()) << m_partition;
