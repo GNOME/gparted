@@ -61,6 +61,60 @@ namespace GParted
 {
 
 
+// Hacky XML parser which strips italic and bold markup added in
+// OperationDetail::set_description() and reverts just these 5 characters &<>'" encoded by
+// Glib::Markup::escape_text() -> g_markup_escape_text() -> append_escaped_text().
+Glib::ustring strip_markup(const Glib::ustring& str)
+{
+	size_t len = str.length();
+	size_t i = 0;
+	Glib::ustring ret;
+	ret.reserve(len);
+	while (i < len)
+	{
+		if (str.compare(i, 3, "<i>") == 0)
+			i += 3;
+		else if (str.compare(i, 4, "</i>") == 0)
+			i += 4;
+		else if (str.compare(i, 3, "<b>") == 0)
+			i += 3;
+		else if (str.compare(i, 4, "</b>") == 0)
+			i += 4;
+		else if (str.compare(i, 5, "&amp;") == 0)
+		{
+			ret.push_back('&');
+			i += 5;
+		}
+		else if (str.compare(i, 4, "&lt;") == 0)
+		{
+			ret.push_back('<');
+			i += 4;
+		}
+		else if (str.compare(i, 4, "&gt;") == 0)
+		{
+			ret.push_back('>');
+			i += 4;
+		}
+		else if (str.compare(i, 6, "&apos;") == 0)
+		{
+			ret.push_back('\'');
+			i += 6;
+		}
+		else if (str.compare(i, 6, "&quot;") == 0)
+		{
+			ret.push_back('"');
+			i += 6;
+		}
+		else
+		{
+			ret.push_back(str[i]);
+			i++;
+		}
+	}
+	return ret;
+}
+
+
 // Print method for OperationDetailStatus.
 std::ostream& operator<<(std::ostream& out, const OperationDetailStatus od_status)
 {
@@ -81,8 +135,7 @@ std::ostream& operator<<(std::ostream& out, const OperationDetailStatus od_statu
 // Print method for an OperationDetail object.
 std::ostream& operator<<(std::ostream& out, const OperationDetail& od)
 {
-	// FIXME: Strip markup from the printed description
-	out << od.get_description();
+	out << strip_markup(od.get_description());
 	Glib::ustring elapsed = od.get_elapsed_time();
 	if (! elapsed.empty())
 		out << "    " << elapsed;
