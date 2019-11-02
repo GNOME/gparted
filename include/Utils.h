@@ -95,18 +95,19 @@ enum FSType
 
 	// Other recognised file system types
 	FS_APFS            = 28,
-	FS_BITLOCKER       = 29,
-	FS_GRUB2_CORE_IMG  = 30,
-	FS_ISO9660         = 31,
-	FS_LINUX_SWRAID    = 32,
-	FS_LINUX_SWSUSPEND = 33,
-	FS_REFS            = 34,
-	FS_UFS             = 35,
-	FS_ZFS             = 36,
+	FS_ATARAID         = 29,
+	FS_BITLOCKER       = 30,
+	FS_GRUB2_CORE_IMG  = 31,
+	FS_ISO9660         = 32,
+	FS_LINUX_SWRAID    = 33,
+	FS_LINUX_SWSUSPEND = 34,
+	FS_REFS            = 35,
+	FS_UFS             = 36,
+	FS_ZFS             = 37,
 
 	// Partition space usage colours
-	FS_USED            = 37,
-	FS_UNUSED          = 38
+	FS_USED            = 38,
+	FS_UNUSED          = 39
 } ;
 
 enum SIZE_UNIT

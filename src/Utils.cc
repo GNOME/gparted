@@ -178,6 +178,7 @@ Glib::ustring Utils::get_color( FSType filesystem )
 		case FS_UDF:             return "#105210";  // Accent Green Shadow [+]
 		case FS_XFS:             return "#EED680";  // Accent Yellow
 		case FS_APFS:            return "#874986";  // Magenta Dark [*]
+		case FS_ATARAID:         return "#5A4733";  // Dark brown [*]
 		case FS_BITLOCKER:       return "#494066";  // Purple Shadow
 		case FS_GRUB2_CORE_IMG:  return "#666666";  // Dark Gray [*]
 		case FS_ISO9660:         return "#D3D3D3";  // Light Gray [*]
@@ -366,6 +367,7 @@ Glib::ustring Utils::get_filesystem_string( FSType filesystem )
 		case FS_UDF:             return "udf";
 		case FS_XFS:             return "xfs";
 		case FS_APFS:            return "apfs";
+		case FS_ATARAID:         return "ataraid";
 		case FS_BITLOCKER:       return "bitlocker";
 		case FS_GRUB2_CORE_IMG:  return "grub2 core.img";
 		case FS_ISO9660:         return "iso9660";

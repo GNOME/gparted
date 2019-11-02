@@ -1284,6 +1284,18 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 			return FS_REFS;
 		else if ( fsname == "zfs_member" )
 			return FS_ZFS;
+		else if (fsname == "adaptec_raid_member"           ||
+		         fsname == "ddf_raid_member"               ||
+		         fsname == "hpt45x_raid_member"            ||
+		         fsname == "hpt37x_raid_member"            ||
+		         fsname == "isw_raid_member"               ||
+		         fsname == "jmicron_raid_member"           ||
+		         fsname == "lsi_mega_raid_member"          ||
+		         fsname == "nvidia_raid_member"            ||
+		         fsname == "promise_fasttrack_raid_member" ||
+		         fsname == "silicon_medley_raid_member"    ||
+		         fsname == "via_raid_member"                 )
+			return FS_ATARAID;
 	}
 
 	// (Q4) Fallback to GParted simple internal file system detection
