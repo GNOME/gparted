@@ -78,46 +78,69 @@ FS jfs::get_filesystem_support()
 	return fs ;
 }
 
+
 void jfs::set_used_sectors( Partition & partition ) 
 {
-	const Glib::ustring jfs_debug_cmd = "jfs_debugfs " + Glib::shell_quote( partition.get_path() );
-	if (! Utils::execute_command(jfs_debug_cmd, "dmap\nx\nquit\n", output, error, true))
+	exit_status = Utils::execute_command("jfs_debugfs " + Glib::shell_quote(partition.get_path()),
+	                                     "superblock\nx\ndmap\nx\nquit\n", output, error, true);
+	if (exit_status != 0)
 	{
-		//blocksize
-		Glib::ustring::size_type index = output.find( "Block Size:" );
-		if ( index >= output .length() || 
-		     sscanf( output.substr( index ).c_str(), "Block Size: %lld", &S ) != 1 )
-			S = -1 ;
-
-		//total blocks
-		index = output .find( "dn_mapsize:" ) ;
-		if ( index >= output .length() ||
-		     sscanf( output.substr( index ).c_str(), "dn_mapsize: %llx", &T ) != 1 )
-			T = -1 ;
-
-		//free blocks
-		index = output .find( "dn_nfree:" ) ;
-		if ( index >= output .length() || 
-		     sscanf( output.substr( index ).c_str(), "dn_nfree: %llx", &N ) != 1 )
-			N = -1 ;
-
-		if ( T > -1 && N > -1 && S > -1 )
-		{
-			T = Utils::round( T * ( S / double(partition .sector_size) ) ) ;
-			N = Utils::round( N * ( S / double(partition .sector_size) ) ) ;
-			partition .set_sector_usage( T, N ) ;
-			partition.fs_block_size = S;
-		}
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
 	}
-	else
+
+	// s_size - Aggregate size in device (s_pbsize) blocks
+	long long agg_size = -1;
+	Glib::ustring::size_type index = output.find("s_size:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "s_size: %llx", &agg_size);
+
+	// s_bsize - Aggregate block (aka file system allocation) size in bytes
+	long long agg_block_size = -1;
+	index = output.find("s_bsize:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "s_bsize: %lld", &agg_block_size);
+
+	// s_pbsize - Physical (device) block size in bytes
+	long long phys_block_size = -1;
+	index = output.find("s_pbsize:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "s_pbsize: %lld", &phys_block_size);
+
+	// s_logpxd.len - Log (Journal) size in Aggregate (s_bsize) blocks
+	long long log_len = -1;
+	index = output.find("s_logpxd.len:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "s_logpxd.len: %lld", &log_len);
+
+	// s_fsckpxd.len - FSCK Working Space in Aggregate (s_bsize) blocks
+	long long fsck_len = -1;
+	index = output.find("s_fsckpxd.len:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "s_fsckpxd.len: %lld", &fsck_len);
+
+	// dn_nfree - Number of free (s_bsize) blocks in Aggregate
+	long long free_blocks = -1;
+	index = output.find("dn_nfree:");
+	if (index < output.length())
+		sscanf(output.substr(index).c_str(), "dn_nfree: %llx", &free_blocks);
+
+	if (agg_size > -1 && agg_block_size > -1 && phys_block_size > -1 &&
+	    log_len  > -1 && fsck_len       > -1 && free_blocks     > -1   )
 	{
-		if ( ! output .empty() )
-			partition.push_back_message( output );
-		
-		if ( ! error .empty() )
-			partition.push_back_message( error );
+		Sector fs_size_sectors = (  agg_size * phys_block_size
+		                          + log_len  * agg_block_size
+		                          + fsck_len * agg_block_size) / partition.sector_size;
+		Sector fs_free_sectors = free_blocks * agg_block_size / partition.sector_size;
+
+		partition.set_sector_usage(fs_size_sectors, fs_free_sectors);
+		partition.fs_block_size = agg_block_size;
 	}
 }
+
 
 void jfs::read_label( Partition & partition )
 {
