@@ -34,6 +34,7 @@ FS jfs::get_filesystem_support()
 
 	if ( ! Glib::find_program_in_path( "jfs_debugfs" ) .empty() ) {
 		fs.read = FS::EXTERNAL;
+		fs.online_read = FS::EXTERNAL;
 	}
 
 	if ( ! Glib::find_program_in_path( "jfs_tune" ) .empty() ) {
@@ -67,7 +68,6 @@ FS jfs::get_filesystem_support()
 		fs.copy = FS::GPARTED;
 	}
 
-	fs .online_read = FS::GPARTED ;
 #ifdef ENABLE_ONLINE_RESIZE
 	if ( Utils::kernel_version_at_least( 3, 6, 0 ) )
 		fs .online_grow = fs .grow ;
@@ -81,6 +81,11 @@ FS jfs::get_filesystem_support()
 
 void jfs::set_used_sectors( Partition & partition ) 
 {
+	// Called when the file system is unmounted *and* when mounted.  Always reads the
+	// on disk superblock using jfs_debugfs to accurately calculate the overall size
+	// of the file system.  Read free space from the kernel via statvfs() when mounted
+	// for the up to date figure, and from the on disk Aggregate Disk Map (dmap) when
+	// unmounted.
 	exit_status = Utils::execute_command("jfs_debugfs " + Glib::shell_quote(partition.get_path()),
 	                                     "superblock\nx\ndmap\nx\nquit\n", output, error, true);
 	if (exit_status != 0)
@@ -122,20 +127,43 @@ void jfs::set_used_sectors( Partition & partition )
 	if (index < output.length())
 		sscanf(output.substr(index).c_str(), "s_fsckpxd.len: %lld", &fsck_len);
 
-	// dn_nfree - Number of free (s_bsize) blocks in Aggregate
-	long long free_blocks = -1;
-	index = output.find("dn_nfree:");
-	if (index < output.length())
-		sscanf(output.substr(index).c_str(), "dn_nfree: %llx", &free_blocks);
-
-	if (agg_size > -1 && agg_block_size > -1 && phys_block_size > -1 &&
-	    log_len  > -1 && fsck_len       > -1 && free_blocks     > -1   )
+	Sector fs_size_sectors = -1;
+	if (agg_size > -1 && agg_block_size > -1 && phys_block_size > -1 && log_len > -1 && fsck_len > -1)
 	{
-		Sector fs_size_sectors = (  agg_size * phys_block_size
-		                          + log_len  * agg_block_size
-		                          + fsck_len * agg_block_size) / partition.sector_size;
-		Sector fs_free_sectors = free_blocks * agg_block_size / partition.sector_size;
+		fs_size_sectors = (  agg_size * phys_block_size
+		                   + log_len  * agg_block_size
+		                   + fsck_len * agg_block_size) / partition.sector_size;
+	}
 
+	Sector fs_free_sectors = -1;
+	if (partition.busy)
+	{
+		Byte_Value ignored;
+		Byte_Value fs_free_bytes;
+		if (Utils::get_mounted_filesystem_usage(partition.get_mountpoint(), ignored, fs_free_bytes, error) != 0)
+		{
+			partition.push_back_message(error);
+			return;
+		}
+
+		fs_free_sectors = fs_free_bytes / partition.sector_size;
+	}
+	else // (! partition.busy)
+	{
+		// dn_nfree - Number of free (s_bsize) blocks in Aggregate
+		long long free_blocks = -1;
+		index = output.find("dn_nfree:");
+		if (index < output.length())
+			sscanf(output.substr(index).c_str(), "dn_nfree: %llx", &free_blocks);
+
+		if (agg_block_size && free_blocks > -1)
+		{
+			fs_free_sectors = free_blocks * agg_block_size / partition.sector_size;
+		}
+	}
+
+	if (fs_size_sectors > -1 && fs_free_sectors > -1 && agg_block_size > -1)
+	{
 		partition.set_sector_usage(fs_size_sectors, fs_free_sectors);
 		partition.fs_block_size = agg_block_size;
 	}
