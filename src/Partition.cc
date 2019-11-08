@@ -426,13 +426,39 @@ const Glib::ustring Partition::get_partition_type_string(PartitionType type)
 }
 
 
-//Return threshold of sectors which is considered above the intrinsic
-//  level for a file system which "fills" the partition.  Calculation
-//  is:
+// Return threshold of unallocated sectors below which the file system is considered to
+// fill the partition, but at and above which is displayed to the user to show the file
+// system doesn't fill the partition.  Calculation is:
 //      %age of partition size           , when
 //      5%                               ,           ptn size <= 100 MiB
 //      linear scaling from 5% down to 2%, 100 MiB < ptn size <= 1 GiB
 //      2%                               , 1 GiB   < ptn size
+//
+// Quoting the commit message:
+//     "Enhance calculation of significant unallocated space (#499202)
+//
+//     Many file systems report differing percentages of unallocated space over
+//     a range of sizes, as well differing figures using their own specific
+//     tools or using statvfs() system call when mounted.
+//
+//     File systems reporting intrinsic unallocated space using their specific
+//     tools are: jfs, lvm2 pv and ntfs.  LVM2 PV has the largest amount of
+//     unallocated space with its default Physical Extent size of 4 MiB.  For a
+//     100 MiB partition it has 4.0% unallocated space.
+//
+//     File systems reporting intrinsic unallocated space using the statvfs()
+//     system call when mounted are: ext2/3/4, fat16/32, hfs, jfs, nilfs2,
+//     ntfs, reiserfs, and xfs.  Xfs has the worst identified unallocated space
+//     of ~4.7% in a 100 MiB partition.  Ext2/3 exhibit unusual behaviour by
+//     reporting unallocated space of ~4.6% in a 100 MiB partition falling to a
+//     constant percentage of ~1.8% for sizes of 1 GiB and above.
+//
+//     Update the calculation for used to estimate the maximum size of
+//     intrinsic unallocated space.  Limit is now 5% for partitions smaller
+//     than 100 MiB, 2% for partitions larger than 1 GiB and linear scaling of
+//     the percentage between.  Will still get false unallocated space warnings
+//     for mounted xfs file systems and lvm2 pvs smaller than 100 MiB.
+//     "
 Sector Partition::calc_significant_unallocated_sectors() const
 {
 	const double HIGHER_UNALLOCATED_FRACTION = 0.05 ;
