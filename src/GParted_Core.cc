@@ -1037,7 +1037,8 @@ void GParted_Core::set_partition_label_and_uuid( Partition & partition )
 	// For SWRaid members only get the label and UUID from SWRaid_Info.  Never use
 	// values from FS_Info to avoid showing incorrect information in cases where blkid
 	// reports the wrong values.
-	if ( partition.filesystem == FS_LINUX_SWRAID )
+	if (partition.filesystem == FS_LINUX_SWRAID ||
+	    partition.filesystem == FS_ATARAID        )
 	{
 		Glib::ustring label = SWRaid_Info::get_label( partition_path );
 		if ( ! label.empty() )
