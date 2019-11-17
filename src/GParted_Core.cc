@@ -1522,8 +1522,9 @@ bool GParted_Core::is_busy( FSType fstype, const Glib::ustring & path )
 		//  unknown file system is mounted
 		busy = Mount_Info::is_dev_mounted( path );
 
-		//Custom checks for recognised but other not-supported file system types
-		busy |= ( fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active( path ) );
+		// Custom checks for recognised but other not-supported file system types.
+		busy |= (fstype == FS_LINUX_SWRAID && SWRaid_Info::is_member_active(path));
+		busy |= (fstype == FS_ATARAID      && SWRaid_Info::is_member_active(path));
 	}
 
 	return busy ;

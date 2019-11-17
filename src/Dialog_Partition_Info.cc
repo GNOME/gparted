@@ -327,6 +327,7 @@ void Dialog_Partition_Info::Display_Info()
 			}
 			else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP   ||
 			          filesystem_ptn.filesystem == FS_LINUX_SWRAID ||
+			          filesystem_ptn.filesystem == FS_ATARAID      ||
 			          filesystem_ptn.filesystem == FS_LVM2_PV         )
 			{
 				/* TO TRANSLATORS:  Active
@@ -360,7 +361,8 @@ void Dialog_Partition_Info::Display_Info()
 			str_temp = _("Not busy (There are no mounted logical partitions)") ;
 		}
 		else if ( filesystem_ptn.filesystem == FS_LINUX_SWAP   ||
-		          filesystem_ptn.filesystem == FS_LINUX_SWRAID    )
+		          filesystem_ptn.filesystem == FS_LINUX_SWRAID ||
+		          filesystem_ptn.filesystem == FS_ATARAID        )
 		{
 			/* TO TRANSLATORS:  Not active
 			 *  means that this linux swap or linux software raid partition
