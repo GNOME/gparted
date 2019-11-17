@@ -1202,9 +1202,9 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 		// (Q4) internal
 		path = lp_device->path;
 
-	// (Q1) Linux Software RAID member detection
+	// (Q1) SWRaid_Info (mdadm) member detection.
 	if ( SWRaid_Info::is_member( path ) )
-		return FS_LINUX_SWRAID;
+		return SWRaid_Info::get_fstype(path);
 
 	// (Q2) FS_Info (blkid) file system detection
 	// Blkid detects more signatures and generally has less limitations so use before

@@ -58,6 +58,7 @@ public:
 	static void load_cache();
 	static bool is_member( const Glib::ustring & member_path );
 	static bool is_member_active( const Glib::ustring & member_path );
+	static FSType get_fstype(const Glib::ustring& member_path);
 	static Glib::ustring get_array( const Glib::ustring & member_path );
 	static Glib::ustring get_uuid( const Glib::ustring & member_path );
 	static Glib::ustring get_label( const Glib::ustring & member_path );

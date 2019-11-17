@@ -74,6 +74,16 @@ bool SWRaid_Info::is_member_active( const Glib::ustring & member_path )
 	return memb.active;
 }
 
+
+// Return "file system" type of the member, or FS_UNKNOWN if there is no such member.
+FSType SWRaid_Info::get_fstype(const Glib::ustring& member_path)
+{
+	initialise_if_required();
+	const SWRaid_Member& memb = get_cache_entry_by_member(member_path);
+	return memb.fstype;
+}
+
+
 // Return array /dev entry (e.g. "/dev/md1") containing the specified member, or "" if the
 // array is not running or there is no such member.
 Glib::ustring SWRaid_Info::get_array( const Glib::ustring & member_path )
