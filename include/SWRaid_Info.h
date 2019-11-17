@@ -17,24 +17,35 @@
 
 /* SWRaid_Info
  *
- * Cache of information about Linux Software RAID arrays so that the
- * mdadm command only needs to be executed once per refresh.
+ * Cache of information about RAID array members recognised by mdadm so
+ * the command only needs to be executed once per refresh.  This will
+ * include Linux Software RAID arrays and also IMSM and DDF type
+ * Firmware / BIOS / ATARAID arrays whether or not the distribution uses
+ * dmraid or mdadm to manage them.
+ *
+ * Note that ATARAID array members will only report as active in this
+ * module if they were started using mdadm and appear in /proc/mdstat.
  */
 
 #ifndef GPARTED_SWRAID_INFO_H
 #define GPARTED_SWRAID_INFO_H
 
+
 #include "BlockSpecial.h"
+#include "Utils.h"
 
 #include <glibmm/ustring.h>
 #include <vector>
 
+
 namespace GParted
 {
+
 
 struct SWRaid_Member
 {
 	BlockSpecial  member;
+	FSType        fstype;
 	Glib::ustring array;
 	Glib::ustring uuid;
 	Glib::ustring label;
@@ -62,6 +73,7 @@ private:
 	static bool mdadm_found;
 	static std::vector<SWRaid_Member> swraid_info_cache;
 };
+
 
 }//GParted
 

@@ -35,11 +35,13 @@ namespace GParted
 //                     *   Array is only displayed as the mount point to the user and
 //                         never compared so not constructing BlockSpecial object for it.
 //                     E.g.
-//                     //member         , array     , uuid                                  , label      , active
-//                     [{BS("/dev/sda1)", "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {BS("/dev/sda2"), "/dev/md1", "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
-//                      {BS("/dev/sda6"), ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
-//                      {BS("/dev/sdb6"), ""        , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false}
+//                     //member         , fstype         , array       , uuid                                  , label      , active
+//                     [{BS("/dev/sda1"), FS_LINUX_SWRAID, "/dev/md1"  , "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {BS("/dev/sdb1"), FS_LINUX_SWRAID, "/dev/md1"  , "15224a42-c25b-bcd9-15db-60004e5fe53a", "chimney:1", true },
+//                      {BS("/dev/sda2"), FS_LINUX_SWRAID, ""          , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
+//                      {BS("/dev/sdb2"), FS_LINUX_SWRAID, ""          , "8dc7483c-d74e-e0a8-b6a8-dc3ca57e43f8", ""         , false},
+//                      {BS("/dev/sdc") , FS_ATARAID     , "/dev/md126", "43060c4c-b0c0-c371-60bf-d43082e97d3c", ""         , true },
+//                      {BS("/dev/sdd") , FS_ATARAID     , "/dev/md126", "43060c4c-b0c0-c371-60bf-d43082e97d3c", ""         , true }
 //                     ]
 
 // Initialise static data elements
@@ -129,8 +131,7 @@ void SWRaid_Info::load_swraid_info_cache()
 	if ( mdadm_found                                                                         &&
 	     ! Utils::execute_command( "mdadm --examine --scan --verbose", output, error, true )    )
 	{
-		// Extract information from Linux Software RAID arrays only, excluding
-		// IMSM and DDF arrays.  Example output:
+		// Extract information about all array members.  Example output:
 		//     ARRAY metadata=imsm UUID=9a5e3477:e1e668ea:12066a1b:d3708608
 		//        devices=/dev/sdd,/dev/sdc,/dev/md/imsm0
 		//     ARRAY /dev/md/MyRaid container=9a5e3477:e1e668ea:12066a1b:d3708608 member=0 UUID=47518beb:cc6ef9e7:c80cd1c7:5f6ecb28
@@ -148,24 +149,41 @@ void SWRaid_Info::load_swraid_info_cache()
 			MDADM_LT_DEVICES = 2
 		};
 		MDADM_LINE_TYPE mdadm_line_type = MDADM_LT_OTHER;
+		FSType fstype = FS_UNKNOWN;
 		Glib::ustring uuid;
 		Glib::ustring label;
 		for ( unsigned int i = 0 ; i < lines.size() ; i ++ )
 		{
-			Glib::ustring metadata_type;
 			if ( lines[i].substr( 0, 6 ) == "ARRAY " )
 			{
 				mdadm_line_type = MDADM_LT_ARRAY;
-				Glib::ustring metadata_type = Utils::regexp_label( lines[i],
-				                                                   "metadata=([[:graph:]]+)" );
-				// Mdadm with these flags doesn't seem to print the
-				// metadata tag for 0.90 version arrays.  Accept no tag
-				// (or empty version) as well as "0.90".
-				if ( metadata_type != ""    && metadata_type != "0.90" &&
-				     metadata_type != "1.0" && metadata_type != "1.1"  &&
-				     metadata_type != "1.2"                               )
+
+				if (lines[i].find("container=") != Glib::ustring::npos)
 				{
-					// Skip mdadm reported non-Linux Software RAID arrays
+					// Skip mdadm array containers which don't have
+					// any members.
+					mdadm_line_type = MDADM_LT_OTHER;
+					continue;
+				}
+
+				fstype = FS_UNKNOWN;
+				Glib::ustring metadata = Utils::regexp_label(lines[i],
+				                                             "metadata=([[:graph:]]+)");
+
+				// Mdadm doesn't print a metadata tag for 0.90 version
+				// arrays, so accept empty.
+				if (metadata == ""    || metadata == "1.0" ||
+				    metadata == "1.1" || metadata == "1.2"   )
+				{
+					fstype = FS_LINUX_SWRAID;
+				}
+				else if (metadata == "imsm" || metadata == "ddf")
+				{
+					fstype = FS_ATARAID;
+				}
+				else
+				{
+					// Skip unexpected mdadm array line.
 					mdadm_line_type = MDADM_LT_OTHER;
 					continue;
 				}
@@ -186,6 +204,7 @@ void SWRaid_Info::load_swraid_info_cache()
 				{
 					SWRaid_Member memb;
 					memb.member = BlockSpecial( devices[j] );
+					memb.fstype = fstype;
 					memb.array = "";
 					memb.uuid = uuid;
 					memb.label = label;
@@ -202,13 +221,13 @@ void SWRaid_Info::load_swraid_info_cache()
 		}
 	}
 
-	// For active SWRaid members, set array and active flag.
+	// For active array members, set array and active flag.
 	std::string line;
 	std::ifstream input( "/proc/mdstat" );
 	if ( input )
 	{
-		// Read /proc/mdstat extracting information for Linux Software RAID arrays
-		// only, excluding external IMSM and DDF arrays.  Example /proc/mdstat:
+		// Read /proc/mdstat extracting information about all active array
+		// members.  Example /proc/mdstat:
 		//     Personalities : [raid1]
 		//     md127 : inactive sdd[1](S) sdc[0](S)
 		//           6306 blocks super external:imsm
@@ -230,6 +249,7 @@ void SWRaid_Info::load_swraid_info_cache()
 			MDSTAT_LT_BLOCKS = 2
 		};
 		MDSTAT_LINE_TYPE mdstat_line_type = MDSTAT_LT_OTHER;
+		FSType fstype = FS_UNKNOWN;
 		Glib::ustring array;
 		std::vector<Glib::ustring> members;
 		while ( getline( input, line ) )
@@ -259,16 +279,23 @@ void SWRaid_Info::load_swraid_info_cache()
 			{
 				mdstat_line_type = MDSTAT_LT_BLOCKS;
 				// Found a blocks line for an array.
-				Glib::ustring super_type = Utils::regexp_label( line, "super ([[:graph:]]+)" );
+				fstype = FS_UNKNOWN;
+				Glib::ustring super = Utils::regexp_label(line, "super ([[:graph:]]+)");
 
-				// Kernel doesn't seem to print the super block type for
-				// 0.90 version arrays.  Accept no tag (or empty version)
-				// as well as "0.90".
-				if ( super_type != ""    && super_type != "0.90" &&
-				     super_type != "1.0" && super_type != "1.1"  &&
-				     super_type != "1.2"                            )
+				// Kernel doesn't print the super type for 0.90 version
+				// arrays, so accept empty.
+				if (super == ""    || super == "1.0" ||
+				    super == "1.1" || super == "1.2"   )
 				{
-					// Skip /proc/mdstat reported non-Linux Software RAID arrays
+					fstype = FS_LINUX_SWRAID;
+				}
+				else if (super.compare(0, 9, "external:") == 0)
+				{
+					fstype = FS_ATARAID;
+				}
+				else
+				{
+					// Skip unrecognised super type.
 					mdstat_line_type = MDSTAT_LT_OTHER;
 					continue;
 				}
@@ -290,6 +317,7 @@ void SWRaid_Info::load_swraid_info_cache()
 						// Insert cache entry.
 						SWRaid_Member new_memb;
 						new_memb.member = BlockSpecial( members[i] );
+						new_memb.fstype = fstype;
 						new_memb.array = array;
 						new_memb.uuid = "";
 						new_memb.label = "";
@@ -319,7 +347,7 @@ SWRaid_Member & SWRaid_Info::get_cache_entry_by_member( const Glib::ustring & me
 		if ( bs == swraid_info_cache[i].member )
 			return swraid_info_cache[i];
 	}
-	static SWRaid_Member memb = {BlockSpecial(), "", "", "", false};
+	static SWRaid_Member memb = {BlockSpecial(), FS_UNKNOWN, "", "", "", false};
 	return memb;
 }
 
