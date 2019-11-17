@@ -1423,6 +1423,12 @@ void GParted_Core::set_mountpoints( Partition & partition )
 		if ( ! array_path.empty() )
 			partition.add_mountpoint( array_path );
 	}
+	else if (partition.filesystem == FS_ATARAID)
+	{
+		Glib::ustring array_path = SWRaid_Info::get_array(partition.get_path());
+		if (! array_path.empty())
+			partition.add_mountpoint(array_path);
+	}
 	else if ( partition.filesystem == FS_LUKS )
 	{
 		LUKS_Mapping mapping = LUKS_Info::get_cache_entry( partition.get_path() );
