@@ -1240,6 +1240,7 @@ void Win_GParted::set_valid_operations()
 	     && selected_partition_ptr->type   != TYPE_EXTENDED
 	     && selected_filesystem.filesystem != FS_LVM2_PV
 	     && selected_filesystem.filesystem != FS_LINUX_SWRAID
+	     && selected_filesystem.filesystem != FS_ATARAID
 	     && selected_filesystem.filesystem != FS_LUKS
 	     && (    selected_filesystem.busy
 	          || selected_filesystem.get_mountpoints().size() /* Have mount point(s) */
