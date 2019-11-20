@@ -66,6 +66,7 @@ public:
 	bool delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool purge_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool is_member(const Glib::ustring& member_path);
 	bool is_member_active(const Glib::ustring& member_path);
 	const Glib::ustring& get_array(const Glib::ustring& member_path);
 

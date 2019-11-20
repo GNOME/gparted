@@ -1193,19 +1193,22 @@ FSType GParted_Core::detect_filesystem( PedDevice * lp_device, PedPartition * lp
 {
 	Glib::ustring fsname = "";
 	Glib::ustring path;
+	DMRaid dmraid;
 
 	if ( lp_partition )
-		// Will query partition using methods: (Q1) SWRaid, (Q2) blkid,
+		// Will query partition using methods: (Q1) RAID, (Q2) blkid,
 		// (Q3) libparted, (Q4) internal
 		path = get_partition_path( lp_partition );
 	else
-		// Will query whole disk device using methods: (Q1) SWRaid, (Q2) blkid,
+		// Will query whole disk device using methods: (Q1) RAID, (Q2) blkid,
 		// (Q4) internal
 		path = lp_device->path;
 
-	// (Q1) SWRaid_Info (mdadm) member detection.
+	// (Q1) SWRaid_Info (mdadm) and DMRaid member detection.
 	if ( SWRaid_Info::is_member( path ) )
 		return SWRaid_Info::get_fstype(path);
+	if (dmraid.is_member(path))
+		return FS_ATARAID;
 
 	// (Q2) FS_Info (blkid) file system detection
 	// Blkid detects more signatures and generally has less limitations so use before

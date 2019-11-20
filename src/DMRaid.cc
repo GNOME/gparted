@@ -527,15 +527,23 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 }
 
 
-// Return whether the named device (e.g. "/dev/sdc") is a member of an active DMRaid array
-// or not.
-bool DMRaid::is_member_active(const Glib::ustring& member_path)
+// Return whether the named device (e.g. "/dev/sdc") is a member of a DMRaid array or not.
+bool DMRaid::is_member(const Glib::ustring& member_path)
 {
 	const DMRaid_Member& memb = get_cache_entry_by_member(member_path);
 	if (memb.member.m_name.length() > 0)
 		return true;
 
 	return false;
+}
+
+// Return whether the named device (e.g. "/dev/sdc") is a member of an *active* DMRaid
+// array or not.
+// As the cache only records members of active DMRaid arrays:
+//     is_member_active(x) == is_member(x)
+bool DMRaid::is_member_active(const Glib::ustring& member_path)
+{
+	return is_member(member_path);
 }
 
 
