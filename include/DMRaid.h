@@ -39,6 +39,13 @@ namespace GParted
 {
 
 
+struct DMRaid_Member
+{
+	BlockSpecial  member;
+	Glib::ustring array;
+};
+
+
 class DMRaid
 {
 public:
@@ -60,6 +67,7 @@ public:
 	bool purge_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool is_member_active(const Glib::ustring& member_path);
+	const Glib::ustring& get_array(const Glib::ustring& member_path);
 
 private:
 	void load_dmraid_cache() ;
@@ -68,13 +76,14 @@ private:
 	void get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries ) ;
 	void get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries ) ;
 	static std::vector<Glib::ustring> lookup_dmraid_members(const Glib::ustring& array);
+	static const DMRaid_Member& get_cache_entry_by_member(const Glib::ustring& member_path);
 
 	static bool dmraid_cache_initialized ;
 	static bool dmraid_found ;
 	static bool dmsetup_found ;
 	static bool udevadm_found ;
 	static std::vector<Glib::ustring> dmraid_devices ;
-	static std::vector<BlockSpecial>  dmraid_member_cache;
+	static std::vector<DMRaid_Member> dmraid_member_cache;
 };
 
 }//GParted

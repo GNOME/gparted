@@ -1408,9 +1408,7 @@ void GParted_Core::insert_unallocated( const Glib::ustring & device_path,
 
 void GParted_Core::set_mountpoints( Partition & partition )
 {
-#ifndef USE_LIBPARTED_DMRAID
 	DMRaid dmraid ;	//Use cache of dmraid device information
-#endif
 
 	if ( partition.filesystem == FS_LVM2_PV )
 	{
@@ -1428,7 +1426,15 @@ void GParted_Core::set_mountpoints( Partition & partition )
 	{
 		Glib::ustring array_path = SWRaid_Info::get_array(partition.get_path());
 		if (! array_path.empty())
+		{
 			partition.add_mountpoint(array_path);
+		}
+		else
+		{
+			array_path = dmraid.get_array(partition.get_path());
+			if (! array_path.empty())
+				partition.add_mountpoint(array_path);
+		}
 	}
 	else if ( partition.filesystem == FS_LUKS )
 	{

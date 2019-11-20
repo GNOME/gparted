@@ -40,7 +40,10 @@ namespace GParted
 //                            ["isw_ecccdhhiga_MyArray"]
 // dmraid_member_cache      - Vector of members of active DMRaid arrays.
 //                            E.g.
-//                            [BlockSpecial("/dev/sdc"), BlockSpecial("/dev/sdd")]
+//                            //member                  , array
+//                            [{BlockSpecial("/dev/sdc"), "/dev/mapper/isw_ecccdhhiga_MyArray"},
+//                             {BlockSpecial("/dev/sdd"), "/dev/mapper/isw_ecccdhhiga_MyArray"}
+//                            ]
 
 //Initialize static data elements
 bool DMRaid::dmraid_cache_initialized = false ;
@@ -48,7 +51,7 @@ bool DMRaid::dmraid_found  = false ;
 bool DMRaid::dmsetup_found = false ;
 bool DMRaid::udevadm_found  = false ;
 std::vector<Glib::ustring> DMRaid::dmraid_devices ;
-std::vector<BlockSpecial>  DMRaid::dmraid_member_cache;
+std::vector<DMRaid_Member> DMRaid::dmraid_member_cache;
 
 
 DMRaid::DMRaid()
@@ -102,7 +105,12 @@ void DMRaid::load_dmraid_cache()
 	{
 		std::vector<Glib::ustring> members = lookup_dmraid_members(DEV_MAPPER_PATH + dmraid_devices[i]);
 		for (unsigned int j = 0; j < members.size(); j++)
-			dmraid_member_cache.push_back(BlockSpecial(members[j]));
+		{
+			DMRaid_Member memb;
+			memb.member = BlockSpecial(members[j]);
+			memb.array  = DEV_MAPPER_PATH + dmraid_devices[i];
+			dmraid_member_cache.push_back(memb);
+		}
 	}
 }
 
@@ -523,14 +531,20 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 // or not.
 bool DMRaid::is_member_active(const Glib::ustring& member_path)
 {
-	BlockSpecial bs = BlockSpecial(member_path);
-	for (unsigned int i = 0; i < dmraid_member_cache.size(); i++)
-	{
-		if (bs == dmraid_member_cache[i])
-			return true;
-	}
+	const DMRaid_Member& memb = get_cache_entry_by_member(member_path);
+	if (memb.member.m_name.length() > 0)
+		return true;
 
 	return false;
+}
+
+
+// Return array device containing the specified member, or "" if the array is not running
+// or there is no such member.
+const Glib::ustring& DMRaid::get_array(const Glib::ustring& member_path)
+{
+	const DMRaid_Member& memb = get_cache_entry_by_member(member_path);
+	return memb.array;
 }
 
 
@@ -567,6 +581,22 @@ std::vector<Glib::ustring> DMRaid::lookup_dmraid_members(const Glib::ustring& ar
 	}
 
 	return members;
+}
+
+
+// Perform linear search of the cache to find the matching member.
+// Return found cache entry or not found substitute.
+const DMRaid_Member& DMRaid::get_cache_entry_by_member(const Glib::ustring& member_path)
+{
+	BlockSpecial bs = BlockSpecial(member_path);
+	for (unsigned int i = 0; i < dmraid_member_cache.size(); i++)
+	{
+		if (bs == dmraid_member_cache[i].member)
+			return dmraid_member_cache[i];
+	}
+
+	static const DMRaid_Member notfound_memb = {BlockSpecial(), ""};
+	return notfound_memb;
 }
 
 
