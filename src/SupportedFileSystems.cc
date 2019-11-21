@@ -81,6 +81,7 @@ SupportedFileSystems::SupportedFileSystems()
 	m_fs_objects[FS_UDF]             = new udf();
 	m_fs_objects[FS_XFS]             = new xfs();
 	m_fs_objects[FS_APFS]            = NULL;
+	m_fs_objects[FS_ATARAID]         = NULL;
 	m_fs_objects[FS_BITLOCKER]       = NULL;
 	m_fs_objects[FS_GRUB2_CORE_IMG]  = NULL;
 	m_fs_objects[FS_ISO9660]         = NULL;
