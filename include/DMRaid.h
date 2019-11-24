@@ -27,10 +27,13 @@
 #define GPARTED_DMRAID_H
 
 #include "Utils.h"
+#include "BlockSpecial.h"
 #include "Partition.h"
 #include "OperationDetail.h"
 
+#include <glibmm/ustring.h>
 #include <vector>
+
 
 namespace GParted
 {
@@ -56,17 +59,22 @@ public:
 	bool delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool purge_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
+	bool is_member_active(const Glib::ustring& member_path);
+
 private:
 	void load_dmraid_cache() ;
 	void set_commands_found() ;
 	void get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector<Glib::ustring> & dir_list ) ;
 	void get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries ) ;
 	void get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries ) ;
+	static std::vector<Glib::ustring> lookup_dmraid_members(const Glib::ustring& array);
+
 	static bool dmraid_cache_initialized ;
 	static bool dmraid_found ;
 	static bool dmsetup_found ;
 	static bool udevadm_found ;
 	static std::vector<Glib::ustring> dmraid_devices ;
+	static std::vector<BlockSpecial>  dmraid_member_cache;
 };
 
 }//GParted

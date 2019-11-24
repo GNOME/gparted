@@ -15,7 +15,9 @@
  */
 
 #include "DMRaid.h"
+#include "BlockSpecial.h"
 #include "Partition.h"
+#include "Utils.h"
 
 #include <limits.h>
 #include <stdlib.h>		//atoi function
@@ -28,12 +30,26 @@
 namespace GParted
 {
 
+// Data model:
+// dmraid_cache_initialized - Has the cache been loaded?
+// dmraid_found             - Is the "dmraid" command available?
+// dmsetup_found            - Is the "dmsetup" command available?
+// udevadm_found            - Is the "udevadm" command available?
+// dmraid_devices           - Vector of active array names.
+//                            E.g.
+//                            ["isw_ecccdhhiga_MyArray"]
+// dmraid_member_cache      - Vector of members of active DMRaid arrays.
+//                            E.g.
+//                            [BlockSpecial("/dev/sdc"), BlockSpecial("/dev/sdd")]
+
 //Initialize static data elements
 bool DMRaid::dmraid_cache_initialized = false ;
 bool DMRaid::dmraid_found  = false ;
 bool DMRaid::dmsetup_found = false ;
 bool DMRaid::udevadm_found  = false ;
 std::vector<Glib::ustring> DMRaid::dmraid_devices ;
+std::vector<BlockSpecial>  DMRaid::dmraid_member_cache;
+
 
 DMRaid::DMRaid()
 {
@@ -67,10 +83,11 @@ DMRaid::~DMRaid()
 
 void DMRaid::load_dmraid_cache()
 {
-	//Load data into dmraid structures
 	Glib::ustring output, error ;
 	dmraid_devices .clear() ;
+	dmraid_member_cache.clear();
 
+	// Load active DMRaid array names.
 	if ( dmraid_found )
 	{
 		if ( ! Utils::execute_command( "dmraid -sa -c", output, error, true ) )
@@ -79,7 +96,16 @@ void DMRaid::load_dmraid_cache()
 				Utils::tokenize( output, dmraid_devices, "\n" ) ;
 		}
 	}
+
+	// Load members of active DMRaid arrays.
+	for (unsigned int i = 0; i < dmraid_devices.size(); i++)
+	{
+		std::vector<Glib::ustring> members = lookup_dmraid_members(DEV_MAPPER_PATH + dmraid_devices[i]);
+		for (unsigned int j = 0; j < members.size(); j++)
+			dmraid_member_cache.push_back(BlockSpecial(members[j]));
+	}
 }
+
 
 void DMRaid::set_commands_found()
 {
@@ -491,5 +517,57 @@ bool DMRaid::update_dev_map_entry( const Partition & partition, OperationDetail 
 	operationdetail.get_last_child().set_success_and_capture_errors( exit_status );
 	return exit_status ;
 }
+
+
+// Return whether the named device (e.g. "/dev/sdc") is a member of an active DMRaid array
+// or not.
+bool DMRaid::is_member_active(const Glib::ustring& member_path)
+{
+	BlockSpecial bs = BlockSpecial(member_path);
+	for (unsigned int i = 0; i < dmraid_member_cache.size(); i++)
+	{
+		if (bs == dmraid_member_cache[i])
+			return true;
+	}
+
+	return false;
+}
+
+
+// Return vector of member devices of an active DMRaid array.
+// E.g. lookup_dmraid_members("/dev/mapper/isw_ecccdhhiga_MyArray") -> ["/dev/sdc", "/dev/sdd"]
+std::vector<Glib::ustring> DMRaid::lookup_dmraid_members(const Glib::ustring& array)
+{
+	// Method:
+	// (1) Query udev for the kernel device name;
+	// (2) List member names from the directory /sys/block/${name}/slaves.
+
+	std::vector<Glib::ustring> members;
+	if (! udevadm_found)
+		return members;  // Empty vector
+
+	Glib::ustring output;
+	Glib::ustring error;
+	Utils::execute_command("udevadm info --query=name " + Glib::shell_quote(array),
+	                       output, error, true);
+
+	// Strip terminating new line from output.
+	size_t len = output.length();
+	if (len > 0 && output[len-1] == '\n')
+		output.resize(len-1);
+
+	if (output.empty())
+		return members;  // Empty vector
+
+	Glib::ustring filename;
+	Glib::Dir dir("/sys/block/" + output + "/slaves");
+	while ((filename = dir.read_name()) != "")
+	{
+		members.push_back("/dev/" + filename);
+	}
+
+	return members;
+}
+
 
 }//GParted
