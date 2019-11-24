@@ -54,16 +54,12 @@ public:
 	~DMRaid() ;
 	bool is_dmraid_supported() ;
 	bool is_dmraid_device( const Glib::ustring & dev_path ) ;
-	int execute_command( const Glib::ustring & command, OperationDetail & operationdetail ) ;
 	void get_devices( std::vector<Glib::ustring> & dmraid_devices ) ;
 	Glib::ustring get_dmraid_name( const Glib::ustring & dev_path ) ;
-	int get_partition_number( const Glib::ustring & partition_name ) ;
-	Glib::ustring get_udev_dm_name( const Glib::ustring & dev_path ) ;
 	Glib::ustring make_path_dmraid_compatible( Glib::ustring partition_path ) ;
 	bool create_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool create_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool delete_affected_dev_map_entries( const Partition & partition, OperationDetail & operationdetail ) ;
-	bool delete_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool purge_dev_map_entries( const Glib::ustring & dev_path ) ;
 	bool update_dev_map_entry( const Partition & partition, OperationDetail & operationdetail ) ;
 	bool is_member(const Glib::ustring& member_path);
@@ -73,7 +69,11 @@ public:
 private:
 	void load_dmraid_cache() ;
 	void set_commands_found() ;
+	int execute_command(const Glib::ustring& command, OperationDetail& operationdetail);
 	void get_dmraid_dir_entries( const Glib::ustring & dev_path, std::vector<Glib::ustring> & dir_list ) ;
+	int get_partition_number(const Glib::ustring& partition_name);
+	Glib::ustring get_udev_dm_name(const Glib::ustring& dev_path);
+	bool delete_dev_map_entry(const Partition& partition, OperationDetail& operationdetail);
 	void get_affected_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & affected_entries ) ;
 	void get_partition_dev_map_entries( const Partition & partition, std::vector<Glib::ustring> & partition_entries ) ;
 	static std::vector<Glib::ustring> lookup_dmraid_members(const Glib::ustring& array);
