@@ -817,9 +817,7 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 		bool partition_is_busy = false ;
 		FSType filesystem;
 		std::vector<Glib::ustring> detect_messages;
-
-		//Retrieve partition path
-		Glib::ustring partition_path = get_partition_path( lp_partition );
+		Glib::ustring partition_path;
 
 		// NOTE: lp_partition->type bit field
 		// lp_partition->type is a bit field using enumerated names for each bit.
@@ -840,6 +838,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 			case PED_PARTITION_NORMAL:
 			case PED_PARTITION_LOGICAL:
 				filesystem = detect_filesystem( lp_device, lp_partition, detect_messages );
+				partition_path = get_partition_path(lp_partition);
+
 #ifndef USE_LIBPARTED_DMRAID
 				//Handle dmraid devices differently because the minor number might not
 				//  match the last number of the partition filename as shown by "ls -l /dev/mapper"
@@ -886,6 +886,8 @@ void GParted_Core::set_device_partitions( Device & device, PedDevice* lp_device,
 				break ;
 			
 			case PED_PARTITION_EXTENDED:
+				partition_path = get_partition_path(lp_partition);
+
 				partition_temp = new Partition();
 				partition_temp->Set( device.get_path(),
 				                     partition_path,
