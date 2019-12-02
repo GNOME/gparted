@@ -57,7 +57,7 @@ TreeView_Detail::TreeView_Detail()
 	get_column( 0 ) ->pack_start( treeview_detail_columns .icon1, false );
 
 	// Tree view column "File System"; add file system text cell.
-	get_column( 2 )->pack_start( treeview_detail_columns.filesystem, true );
+	get_column(2)->pack_start(treeview_detail_columns.fsname, true);
 	// Color pixbuf cell is left aligned.
 	get_column(2)->get_first_cell()->property_xalign() = Gtk::ALIGN_START;
 	// File system text cell is left aligned.
@@ -188,7 +188,7 @@ void TreeView_Detail::create_row( const Gtk::TreeRow & treerow,
 
 	// file system
 	treerow[treeview_detail_columns.color] = Utils::get_color_as_pixbuf(filesystem_ptn.fstype, 16, 16);
-	treerow[treeview_detail_columns.filesystem] = partition.get_filesystem_string();
+	treerow[treeview_detail_columns.fsname] = partition.get_filesystem_string();
 
 	// mount point
 	std::vector<Glib::ustring> temp_mountpoints = filesystem_ptn.get_mountpoints();

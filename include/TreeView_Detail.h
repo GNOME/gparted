@@ -74,7 +74,7 @@ private:
 	{
 		Gtk::TreeModelColumn<Glib::ustring> path;
 		Gtk::TreeModelColumn<Glib::ustring> name;
-		Gtk::TreeModelColumn<Glib::ustring> filesystem;
+		Gtk::TreeModelColumn<Glib::ustring> fsname;
 		Gtk::TreeModelColumn<Glib::ustring> mountpoint;
 		Gtk::TreeModelColumn<Glib::ustring> label ;
 		Gtk::TreeModelColumn<Glib::ustring> size;
@@ -89,7 +89,7 @@ private:
 
 		treeview_detail_Columns()
 		{
-			add( path ); add( name ); add( filesystem ); add( mountpoint ); add( label );
+			add( path ); add( name ); add(fsname); add( mountpoint ); add( label );
 			add( size ); add( used ); add( unused ); add( color );
 			add( icon1 ); add( icon2 ); add( flags ); add( partition_ptr );
 		}
