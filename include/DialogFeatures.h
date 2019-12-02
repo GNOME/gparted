@@ -53,7 +53,7 @@ private:
 	
 	struct treeview_filesystems_Columns : public Gtk::TreeModelColumnRecord             
 	{
-		Gtk::TreeModelColumn<Glib::ustring> filesystem;
+		Gtk::TreeModelColumn<Glib::ustring> fsname;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > create ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > grow ;
 		Gtk::TreeModelColumn< Glib::RefPtr<Gdk::Pixbuf> > online_grow ;
@@ -68,7 +68,7 @@ private:
 				
 		treeview_filesystems_Columns() 
 		{ 
-			add( filesystem );
+			add(fsname);
 			add( create ) ;
 			add( grow ) ;
 			add( online_grow ) ;

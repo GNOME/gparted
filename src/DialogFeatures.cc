@@ -52,7 +52,7 @@ DialogFeatures::DialogFeatures()
 	Gtk::TreeView::Column *col;
 	liststore_filesystems = Gtk::ListStore::create( treeview_filesystems_columns );
 	treeview_filesystems .set_model( liststore_filesystems );
-	treeview_filesystems .append_column( _("File System"), treeview_filesystems_columns .filesystem );
+	treeview_filesystems.append_column(_("File System"), treeview_filesystems_columns.fsname);
 	treeview_filesystems .append_column( _("Create"), treeview_filesystems_columns .create );
 	col = manage( new Gtk::TreeView::Column( _("Grow") ) );
 	col ->pack_start( treeview_filesystems_columns .grow, false );
@@ -189,7 +189,7 @@ void DialogFeatures::load_filesystems(const std::vector<FS>& fss)
 void DialogFeatures::load_one_filesystem(const FS& fs)
 {
 	treerow = *( liststore_filesystems ->append() );
-	treerow[treeview_filesystems_columns.filesystem] = Utils::get_filesystem_string(fs.fstype);
+	treerow[treeview_filesystems_columns.fsname] = Utils::get_filesystem_string(fs.fstype);
 
 	treerow[ treeview_filesystems_columns .create ] = fs .create ? icon_yes : icon_no ; 
 	treerow[ treeview_filesystems_columns .grow ] = fs .grow ? icon_yes : icon_no ; 
