@@ -17,6 +17,9 @@
 
 #include "Device.h"
 
+#include <glibmm/ustring.h>
+
+
 namespace GParted
 {
 

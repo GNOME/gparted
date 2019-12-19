@@ -20,6 +20,10 @@
 
 #include "Partition.h"
 #include "PartitionVector.h"
+#include "Utils.h"
+
+#include <glibmm/ustring.h>
+
 
 namespace GParted
 {
