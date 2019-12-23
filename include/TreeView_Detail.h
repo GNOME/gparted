@@ -27,7 +27,6 @@
 #include <gtkmm/stock.h>
 #include <gdkmm/pixbuf.h>
 
-#include <vector>
 
 namespace GParted
 {
