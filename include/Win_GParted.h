@@ -220,7 +220,6 @@ private:
 	Gtk::Box vbox_main;
 	Gtk::Box vbox_info;
 	Gtk::Box hbox_toolbar;
-	Gtk::Box *hbox;
 	Gtk::Toolbar toolbar_main;
 	Gtk::MenuBar menubar_main;
 	Gtk::ComboBox combo_devices ;
