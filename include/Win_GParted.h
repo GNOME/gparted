@@ -69,7 +69,6 @@ private:
 	void refresh_combo_devices() ;
 	void show_pulsebar( const Glib::ustring & status_message ) ;
 	void hide_pulsebar();
-	//Fill txtview_device_info_buffer with some information about the selected device
 	void Fill_Label_Device_Info( bool clear = false );
 
 	void Add_Operation( const Device & device, Operation * operation );
