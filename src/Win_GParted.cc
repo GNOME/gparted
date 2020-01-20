@@ -1863,8 +1863,8 @@ void Win_GParted::menu_help_about()
 	dialog .set_comments( _( "GNOME Partition Editor" ) ) ;
 	std::string names ;
 	names =    "Copyright © 2004-2006 Bart Hakvoort" ;
-	names += "\nCopyright © 2008-2019 Curtis Gedak" ;
-	names += "\nCopyright © 2011-2019 Mike Fleetwood" ;
+	names += "\nCopyright © 2008-2020 Curtis Gedak" ;
+	names += "\nCopyright © 2011-2020 Mike Fleetwood" ;
 	dialog .set_copyright( names ) ;
 
 	//authors
