@@ -1,4 +1,53 @@
 ============================
+GParted 1.1.0   (2020-01-20)
+============================
+
+Release Notes
+-------------
+  This release of GParted includes enhancements, bug fixes and
+  language translation updates.
+
+### Key changes include:
+
+  * Fix error when moving locked LUKS-encrypted partition
+  * Switch to faster minfo and mdir to read FAT16/32 usage
+  * Calculate JFS size accurately
+  * Recognise ATARAID members and detect their busy status
+
+Bug Fixes
+---------
+  * Fix test (dentry->d_name is invalidated by closedir...) (!41)
+  * Fix error when moving locked LUKS-encrypted partition (#48, !44)
+  * Add missing window title to Help Contents dialog (!45)
+  * Switch to faster minfo and mdir to read FAT16/32 usage (#569921)
+  * Whole device FAT32 file system reports device busy warning from mlabel (!46)
+  * Fix "invalid argument for seek()" error on very small (<=40KiB) drives (#16)
+  * Remain with CentOS 7 for GitLab CI (!48)
+  * Add file system interface tests (!49)
+  * Calculate JFS size accurately (!50)
+  * Recognise ATARAID members and detect their busy status (#75, !51)
+  * Rename members and variables currently named 'filesystem' (!52)
+
+Code Credits
+------------
+  Code enhancements are courtesy of Félix Piédallu, Mike Fleetwood,
+  and Curtis Gedak
+
+Translations (new/updated)
+--------------------------
+  ca(Jordi Mas), cs(Marek Černocký), de(Wolfgang Stöggl, Mathias L. Baumann),
+  en_GB(Bruce Cowan), es(Daniel Mustieles, Andre Klapper #80),
+  eu(Alexander Gabilondo, Asier Sarasua Garmendia ), fr(Claude Paroz),
+  hr(Goran Vidović), hu(Balázs Úr), id(Kukuh Syafaat), is(Sveinn í Felli),
+  lv(Rudolfs Mazurs), pa(A S Alam), pl(Piotr Drąg), pt_BR(Rafael Fontenelle),
+  ro(Daniel Șerbănescu), sv(Anders Jonsson), vi(Trần Ngọc Quân)
+
+Dependencies (new/updated)
+--------------------------
+  * xvfb-run command is required for 'make check' and 'make distcheck'
+
+
+============================
 GParted 1.0.0   (2019-05-29)
 ============================
 
