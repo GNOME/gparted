@@ -3872,6 +3872,13 @@ bool GParted_Core::erase_filesystem_signatures( const Partition & partition, Ope
 		{
 			flush_success = ped_device_sync( lp_device ) ;
 			ped_device_close( lp_device ) ;
+
+			// (#83) Wait for udev rules to complete after this
+			// ped_device_close() to avoid busy /dev/DISK entry when running
+			// following file system specific manipulation commands on the
+			// whole disk device in format(), after this
+			// erase_filesystem_signatures().
+			settle_device(SETTLE_DEVICE_APPLY_MAX_WAIT_SECONDS);
 		}
 		od.get_last_child().set_success_and_capture_errors( flush_success );
 		overall_success &= flush_success ;
