@@ -47,11 +47,11 @@ FS ext2::get_filesystem_support()
 		if ( specific_type == FS_EXT4 )
 		{
 			Utils::execute_command( mkfs_cmd + " -V", output, error, true );
-			int mke4fs_major_ver = 0;
-			int mke4fs_minor_ver = 0;
-			int mke4fs_patch_ver = 0;
+			int mke2fs_major_ver = 0;
+			int mke2fs_minor_ver = 0;
+			int mke2fs_patch_ver = 0;
 			if (sscanf(error.c_str(), "mke2fs %d.%d.%d",
-			           &mke4fs_major_ver, &mke4fs_minor_ver, &mke4fs_patch_ver) >= 2)
+			           &mke2fs_major_ver, &mke2fs_minor_ver, &mke2fs_patch_ver) >= 2)
 			{
 				// Ext4 64bit feature was added in e2fsprogs 1.42, but
 				// only enable large volumes from 1.42.9 when a large
@@ -60,9 +60,9 @@ FS ext2::get_filesystem_support()
 				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42
 				// *   Release notes, E2fsprogs 1.42.9 (December 28, 2013)
 				//     http://e2fsprogs.sourceforge.net/e2fsprogs-release.html#1.42.9
-				have_64bit_feature =    ( mke4fs_major_ver > 1 )
-				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver > 42 )
-				                     || ( mke4fs_major_ver == 1 && mke4fs_minor_ver == 42 && mke4fs_patch_ver >= 9 );
+				have_64bit_feature =    (mke2fs_major_ver > 1)
+				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver > 42)
+				                     || (mke2fs_major_ver == 1 && mke2fs_minor_ver == 42 && mke2fs_patch_ver >= 9);
 
 				// (#766910) E2fsprogs 1.43 creates 64bit ext4 file
 				// systems by default.  RHEL/CentOS 7 configured e2fsprogs
@@ -72,8 +72,8 @@ FS ext2::get_filesystem_support()
 				// removed mke2fs.conf(5) auto_64-bit_support option to
 				// avoid the issues with multiple boot loaders not working
 				// with 64bit ext4 file systems.
-				force_auto_64bit =    ( mke4fs_major_ver > 1 )
-				                   || ( mke4fs_major_ver == 1 && mke4fs_minor_ver >= 42 );
+				force_auto_64bit =    (mke2fs_major_ver > 1)
+				                   || (mke2fs_major_ver == 1 && mke2fs_minor_ver >= 42);
 			}
 		}
 	}
