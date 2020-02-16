@@ -72,24 +72,11 @@ FS fat16::get_filesystem_support()
 	{
 		fs.create = FS::EXTERNAL;
 		fs.create_with_label = FS::EXTERNAL;
-		create_cmd = "mkfs.fat" ;
-	}
-	else if ( ! Glib::find_program_in_path( "mkdosfs" ) .empty() )
-	{
-		fs.create = FS::EXTERNAL;
-		fs.create_with_label = FS::EXTERNAL;
-		create_cmd = "mkdosfs" ;
 	}
 
 	if ( ! Glib::find_program_in_path( "fsck.fat" ) .empty() )
 	{
 		fs.check = FS::EXTERNAL;
-		check_cmd = "fsck.fat" ;
-	}
-	else if ( ! Glib::find_program_in_path( "dosfsck" ) .empty() )
-	{
-		fs.check = FS::EXTERNAL;
-		check_cmd = "dosfsck" ;
 	}
 
 	if ( ! Glib::find_program_in_path( "mlabel" ) .empty() ) {
@@ -264,17 +251,17 @@ bool fat16::create( const Partition & new_partition, OperationDetail & operation
 	Glib::ustring fat_size = specific_type == FS_FAT16 ? "16" : "32" ;
 	Glib::ustring label_args = new_partition.get_filesystem_label().empty() ? "" :
 	                           "-n " + Glib::shell_quote( sanitize_label( new_partition.get_filesystem_label() ) ) + " ";
-	return ! execute_command( create_cmd + " -F" + fat_size + " -v -I " + label_args +
-	                          Glib::shell_quote( new_partition.get_path() ),
-	                          operationdetail,
-	                          EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE );
+	return ! execute_command("mkfs.fat -F" + fat_size + " -v -I " + label_args +
+	                         Glib::shell_quote(new_partition.get_path()),
+	                         operationdetail,
+	                         EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
 }
 
 bool fat16::check_repair( const Partition & partition, OperationDetail & operationdetail )
 {
-	exit_status = execute_command( check_cmd + " -a -w -v " + Glib::shell_quote( partition .get_path() ),
-	                               operationdetail,
-	                               EXEC_CANCEL_SAFE );
+	exit_status = execute_command("fsck.fat -a -w -v " + Glib::shell_quote(partition.get_path()),
+	                              operationdetail,
+	                              EXEC_CANCEL_SAFE);
 	bool success = ( exit_status == 0 || exit_status == 1 );
 	set_status( operationdetail, success );
 	return success;
