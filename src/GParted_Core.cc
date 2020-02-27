@@ -314,7 +314,8 @@ bool GParted_Core::valid_partition(const Device& device, Partition& partition, G
 		                /* TO TRANSLATORS: looks like   A partition cannot end (2099199)
 		                 * after the end of the device (2097151) */
 		                _("A partition cannot end (%1) after the end of the device (%2)"),
-		                partition.sector_start);
+		                partition.sector_end,
+		                device.length - 1);
 		return false;
 	}
 
