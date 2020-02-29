@@ -30,7 +30,7 @@
 #
 #  Only permit one instance of GParted to execute at a time
 #
-if test "z`ps -e | grep gpartedbin`" != "z"; then
+if pidof gpartedbin 1> /dev/null; then
 	echo "The process gpartedbin is already running."
 	echo "Only one gpartedbin process is permitted."
 	exit 1
@@ -94,7 +94,7 @@ fi
 HAVE_SYSTEMCTL=no
 for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 	if test -x "$k/systemctl"; then
-		if test "z`ps -e | grep systemd`" != "z"; then
+		if pidof systemd 1> /dev/null; then
 			HAVE_SYSTEMCTL=yes
 			break
 		fi
@@ -107,7 +107,7 @@ done
 #
 HAVE_UDISKS2_INHIBIT=no
 if test -x "/usr/lib/udisks2/udisks2-inhibit"; then
-	if test "z`ps -e | grep 'udisksd'`" != "z"; then
+	if pidof udisksd 1> /dev/null; then
 		HAVE_UDISKS2_INHIBIT=yes
 	fi
 fi
@@ -119,7 +119,7 @@ fi
 HAVE_UDISKS=no
 for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 	if test -x "$k/udisks"; then
-		if test "z`ps -e | grep udisks-daemon`" != "z"; then
+		if pidof udisks-daemon 1> /dev/null; then
 			HAVE_UDISKS=yes
 			break
 		fi
@@ -133,7 +133,7 @@ done
 HAVE_HAL_LOCK=no
 for k in '' `echo "$PATH" | sed 's,:, ,g'`; do
 	if test -x "$k/hal-lock"; then
-		if test "z`ps -e | grep hald`" != "z"; then
+		if pidof hald 1> /dev/null; then
 			HAVE_HAL_LOCK=yes
 			break
 		fi
