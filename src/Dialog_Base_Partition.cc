@@ -225,7 +225,7 @@ void Dialog_Base_Partition::prepare_new_partition()
 
 	// If the original before value has not changed, then set indicator to keep start sector unchanged.
 	if ( ORIG_BEFORE == spinbutton_before .get_value_as_int() )
-		new_partition->strict_start = TRUE;
+		new_partition->strict_start = true;
 
 	snap_to_alignment(m_device, *new_partition);
 
