@@ -60,6 +60,8 @@ stages:
     - make -j $nproc
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
+    # Create needed /dev entries for unit tests in Docker images.
+    - tests/makedev.sh
     - make check
     - make distcheck
   # Save all files on job failure for investigation.
