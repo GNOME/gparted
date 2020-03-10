@@ -58,11 +58,9 @@ stages:
     - nproc=`grep -c '^processor' /proc/cpuinfo` || nproc=1
     - echo nproc=$nproc
     - make -j $nproc
-    # Exclude specific unit test which fails without /dev/disk in Docker images.
-    - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
     # Exclude specific unit tests which fail without being able to create
     # loop devices in Docker images.
-    - GTEST_FILTER+=':My/SupportedFileSystemsTest.Create/lvm2pv'
+    - export GTEST_FILTER='-My/SupportedFileSystemsTest.Create/lvm2pv'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/btrfs'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/lvm2pv'
     - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/nilfs2'

@@ -22,3 +22,12 @@ do
 		chown root:disk "$name"
 	fi
 done
+
+# Create /dev/disk/by-id/SYMLINK to first block special device named in
+# /proc/partitions, if directory doesn't already exist, for
+# test_BlockSpecial.
+if test ! -e /dev/disk/by-id; then
+	mkdir -v -m 0755 -p /dev/disk/by-id/
+	dev=`awk '$1=="major" {next} NF==4 {print $4; exit}' /proc/partitions`
+	ln -v -s "/dev/$dev" "/dev/disk/by-id/gparted-$dev"
+fi
