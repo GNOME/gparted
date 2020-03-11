@@ -60,6 +60,25 @@ stages:
     - make -j $nproc
     # Exclude specific unit test which fails without /dev/disk in Docker images.
     - export GTEST_FILTER='-BlockSpecialTest.NamedBlockSpecialObjectBySymlinkMatches'
+    # Exclude specific unit tests which fail without being able to create
+    # loop devices in Docker images.
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.Create/lvm2pv'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/btrfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/lvm2pv'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUsage/nilfs2'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadLabel/btrfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadLabel/nilfs2'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUUID/btrfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndReadUUID/nilfs2'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndWriteLabel/nilfs2'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndWriteUUID/nilfs2'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndCheck/lvm2pv'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndRemove/lvm2pv'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndGrow/btrfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndGrow/lvm2pv'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndGrow/xfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/btrfs'
+    - GTEST_FILTER+=':My/SupportedFileSystemsTest.CreateAndShrink/lvm2pv'
     # Create needed /dev entries for unit tests in Docker images.
     - tests/makedev.sh
     - make check
