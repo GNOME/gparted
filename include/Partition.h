@@ -40,11 +40,13 @@ enum PartitionType {
 	TYPE_UNPARTITIONED = 4   // Unpartitioned whole drive
 };
 
+
 enum PartitionStatus {
-	STAT_REAL	=	0,
-	STAT_NEW	=	1,
-	STAT_COPY	=	2
+	STAT_REAL = 0,  // All other cases.  Read from drive or composed by all other operations
+	STAT_NEW  = 1,  // Composed by the Create New dialog, but not yet applied
+	STAT_COPY = 2   // Composed by the Paste into New dialog, but not yet applied
 };
+
 
 enum PartitionAlignment {
 	ALIGN_CYLINDER = 0,    //Align to nearest cylinder
