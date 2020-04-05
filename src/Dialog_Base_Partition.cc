@@ -210,14 +210,13 @@ void Dialog_Base_Partition::prepare_new_partition()
 		case 1:
 			new_partition->alignment = ALIGN_MEBIBYTE;
 			{
-				// If partition size is not an integer multiple of MiB or
-				// the start or end sectors are not MiB aligned, and space
-				// is available, then add 1 MiB to partition so requested
-				// size is kept after snap_to_mebibyte() method rounding.
+				// If partition start or end sectors are not MiB aligned,
+				// and space is available, then add 1 MiB to partition so
+				// requesting size is kept after snap_to_mebibyte() method
+				// rounding.
 				Sector partition_size = new_partition->sector_end - new_partition->sector_start + 1;
 				Sector sectors_in_mib = MEBIBYTE / new_partition->sector_size;
-				if (    (    ( partition_size % sectors_in_mib                    > 0 )
-				          || ( new_partition->sector_start % sectors_in_mib       > 0 )
+				if (    (    ( new_partition->sector_start % sectors_in_mib       > 0 )
 				          || ( ( new_partition->sector_end + 1 ) % sectors_in_mib > 0 )
 				        )
 				     && ( partition_size + sectors_in_mib < total_length )
