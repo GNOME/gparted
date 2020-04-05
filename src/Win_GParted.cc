@@ -2616,7 +2616,6 @@ void Win_GParted::activate_format( FSType new_fs )
 		// file system case apart from resize case.
 	}
 	temp_ptn->name = selected_partition_ptr->name;
-	temp_ptn->status = STAT_FORMATTED;
 
 	// Generate minimum and maximum partition size limits for the new file system.
 	FS_Limits fs_limits = gparted_core.get_filesystem_limits( new_fs, temp_ptn->get_filesystem_partition() );

@@ -330,12 +330,9 @@ void Dialog_Base_Partition::snap_to_mebibyte(const Device& device, Partition& pa
 		// (A) the Master Boot Record sector and the first primary/extended partition, and
 		// (B) the Extended Boot Record sector and the logical partition.
 
-		// If strict_start is set then do not adjust sector start.
-		// If this partition is not simply queued for a reformat then
-		// add space minimum to force alignment to next mebibyte.
-		if (! partition.strict_start                        &&
-		      partition.free_space_before == 0              &&
-		      partition.status            != STAT_FORMATTED   )
+		// If moving the starting sector and no preceding space then add minimum
+		// space to force alignment to next mebibyte.
+		if (! partition.strict_start && partition.free_space_before == 0)
 		{
 			// Unless specifically told otherwise, the Linux kernel considers extended
 			// boot records to be two sectors long, in order to "leave room for LILO".
