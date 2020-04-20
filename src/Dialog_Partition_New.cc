@@ -183,7 +183,7 @@ void Dialog_Partition_New::set_data( const Device & device,
 	//set some widely used values...
 	MIN_SPACE_BEFORE_MB = Dialog_Base_Partition::MB_Needed_for_Boot_Record( selected_partition );
 	START = selected_partition.sector_start;
-	total_length = selected_partition.sector_end - selected_partition.sector_start;
+	total_length = selected_partition.get_sector_length();
 	TOTAL_MB = Utils::round( Utils::sector_to_unit( selected_partition.get_sector_length(),
 	                                                selected_partition.sector_size, UNIT_MIB ) );
 	MB_PER_PIXEL = TOTAL_MB / 500.00 ;
