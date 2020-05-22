@@ -23,6 +23,7 @@ stages:
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
   image: ubuntu:latest
   before_script:
+    - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
     - apt-get install -y gnome-common yelp-tools libglib2.0-dev-bin
                          uuid-dev libparted-dev libgtkmm-3.0-dev make
