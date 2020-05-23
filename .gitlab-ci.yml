@@ -25,9 +25,9 @@ stages:
   before_script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install -y gnome-common yelp-tools libglib2.0-dev-bin
-                         uuid-dev libparted-dev libgtkmm-3.0-dev make
-                         policykit-1
+    - apt-get install -y build-essential gnome-common yelp-tools
+                         libglib2.0-dev-bin uuid-dev libparted-dev
+                         libgtkmm-3.0-dev policykit-1
     # Extra packages only needed during the test stage.
     - apt-get install -y btrfs-progs e2fsprogs f2fs-tools dosfstools mtools
                          hfsutils hfsprogs jfsutils util-linux cryptsetup-bin
