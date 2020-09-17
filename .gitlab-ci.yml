@@ -18,6 +18,7 @@ stages:
                      ntfsprogs udftools xfsprogs xfsdump
                      xorg-x11-server-Xvfb kmod
     - cat /etc/os-release
+    - systemd-machine-id-setup
 
 .ubuntu_image_template: &ubuntu_image_definition
   # Use official Ubuntu image https://hub.docker.com/_/ubuntu/.
