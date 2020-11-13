@@ -116,7 +116,11 @@ Dialog_Base_Partition::Dialog_Base_Partition(const Device& device)
 	/* TO TRANSLATORS: Option for combo box "Align to:" */
 	combo_alignment.items().push_back(_("None"));
 
-	combo_alignment.set_active(ALIGN_MEBIBYTE);  // Default setting
+	// Default setting for partition table alignment
+	if (device.disktype == "amiga")
+		combo_alignment.set_active(ALIGN_CYLINDER);
+	else
+		combo_alignment.set_active(ALIGN_MEBIBYTE);
 
 	grid_resize.attach(combo_alignment, 1, 3, 1, 1);
 
