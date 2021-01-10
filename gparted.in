@@ -144,16 +144,22 @@ done
 #  Use systemctl to prevent automount by masking currently unmasked mount points
 #
 if test "x$HAVE_SYSTEMCTL" = "xyes"; then
-	MOUNTLIST=`systemctl show --all --property=What,Id,LoadState '*.mount' | \
+	MOUNTLIST=`systemctl show --all --property=Where,What,Id,LoadState '*.mount' | \
 	awk '
 	function clear_properties() {
-		what = ""; id = ""; loadstate = ""
+		where = ""; what = ""; id = ""; loadstate = ""
 	}
 	function process_unit() {
-		if (substr(what,1,5) == "/dev/" && loadstate != "masked")
+		if (substr(what,1,5) == "/dev/"     &&
+		    loadstate        != "masked"    &&
+		    what             != "/dev/fuse" &&
+		    ! (substr(what,1,9) == "/dev/loop" && substr(where,1,6) == "/snap/"))
+		{
 			print id
+		}
 		clear_properties()
 	}
+	/^Where=/     { where     = substr($0,7) }
 	/^What=/      { what      = substr($0,6) }
 	/^Id=/        { id        = substr($0,4) }
 	/^LoadState=/ { loadstate = substr($0,11) }
