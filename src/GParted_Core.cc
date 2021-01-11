@@ -3356,11 +3356,19 @@ bool GParted_Core::set_partition_type( const Partition & partition, OperationDet
 			if (partition.fstype != FS_CLEARED)
 				lp_fs_type = ped_file_system_type_get(fs_type.c_str());
 
-			// If not found, and FS is udf, then try ntfs.
-			// Actually MBR 07 IFS (Microsoft Installable File System) or
-			// GPT BDP (Windows Basic Data Partition).
-			// Ref: https://serverfault.com/a/829172
-			if (! lp_fs_type && partition.fstype == FS_UDF)
+			// Ensure that UDF and exFAT get the required partition type even
+			// when libparted doesn't know, or is to old to know, about them.
+			// Required partition types:
+			// * [on MBR] 07 IFS (Installable File System)
+			// * [on GPT] BDP (Basic Data Partition)
+			// Use NTFS to achieve this.
+			// References:
+			// * What is the partition id / filesystem type for UDF?
+			//   https://serverfault.com/a/829172
+			// * exFAT file system specification
+			//   https://docs.microsoft.com/en-us/windows/win32/fileio/exfat-specification
+			//   10.2 Partition Tables
+			if (! lp_fs_type && (partition.fstype == FS_UDF || partition.fstype == FS_EXFAT))
 				lp_fs_type = ped_file_system_type_get( "ntfs" );
 
 			// default is Linux (83)
