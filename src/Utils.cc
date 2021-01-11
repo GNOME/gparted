@@ -432,31 +432,31 @@ Glib::ustring Utils::get_filesystem_software(FSType fstype)
 {
 	switch (fstype)
 	{
-		case FS_BTRFS       : return "btrfs-progs / btrfs-tools" ;
-		case FS_EXFAT       : return "exfatprogs";
-		case FS_EXT2        : return "e2fsprogs" ;
-		case FS_EXT3        : return "e2fsprogs" ;
-		case FS_EXT4        : return "e2fsprogs v1.41+" ;
-		case FS_F2FS        : return "f2fs-tools" ;
-		case FS_FAT16       : return "dosfstools, mtools" ;
-		case FS_FAT32       : return "dosfstools, mtools" ;
-		case FS_HFS         : return "hfsutils" ;
-		case FS_HFSPLUS     : return "hfsprogs" ;
-		case FS_JFS         : return "jfsutils" ;
-		case FS_LINUX_SWAP  : return "util-linux" ;
-		case FS_LVM2_PV     : return "lvm2" ;
-		case FS_LUKS        : return "cryptsetup, dmsetup";
-		case FS_MINIX       : return "util-linux";
-		case FS_NILFS2      : return "nilfs-utils / nilfs-tools";
-		case FS_NTFS        : return "ntfs-3g / ntfsprogs" ;
-		case FS_REISER4     : return "reiser4progs" ;
-		case FS_REISERFS    : return "reiserfsprogs / reiserfs-utils" ;
-		case FS_UDF         : return "udftools";
-		case FS_XFS         : return "xfsprogs, xfsdump" ;
-
-		default             : return "" ;
+		case FS_BTRFS:      return "btrfs-progs / btrfs-tools";
+		case FS_EXFAT:      return "exfatprogs";
+		case FS_EXT2:       return "e2fsprogs";
+		case FS_EXT3:       return "e2fsprogs";
+		case FS_EXT4:       return "e2fsprogs v1.41+";
+		case FS_F2FS:       return "f2fs-tools";
+		case FS_FAT16:      return "dosfstools, mtools";
+		case FS_FAT32:      return "dosfstools, mtools";
+		case FS_HFS:        return "hfsutils";
+		case FS_HFSPLUS:    return "hfsprogs";
+		case FS_JFS:        return "jfsutils";
+		case FS_LINUX_SWAP: return "util-linux";
+		case FS_LUKS:       return "cryptsetup, dmsetup";
+		case FS_LVM2_PV:    return "lvm2";
+		case FS_MINIX:      return "util-linux";
+		case FS_NILFS2:     return "nilfs-utils / nilfs-tools";
+		case FS_NTFS:       return "ntfs-3g / ntfsprogs";
+		case FS_REISER4:    return "reiser4progs";
+		case FS_REISERFS:   return "reiserfsprogs / reiserfs-utils";
+		case FS_UDF:        return "udftools";
+		case FS_XFS:        return "xfsprogs, xfsdump";
+		default:            return "";
 	}
 }
+
 
 //Report whether or not the kernel supports a particular file system
 bool Utils::kernel_supports_fs( const Glib::ustring & fs )
