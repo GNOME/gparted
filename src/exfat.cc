@@ -16,9 +16,17 @@
 
 #include "exfat.h"
 #include "FileSystem.h"
+#include "OperationDetail.h"
+#include "Partition.h"
+#include "Utils.h"
+
+#include <glibmm/miscutils.h>
+#include <glibmm/shell.h>
+
 
 namespace GParted
 {
+
 
 FS exfat::get_filesystem_support()
 {
@@ -28,8 +36,61 @@ FS exfat::get_filesystem_support()
 	fs .copy = FS::GPARTED ;
 	fs .move = FS::GPARTED ;
 	fs .online_read = FS::GPARTED ;
-	
-	return fs ;
+
+	if (! Glib::find_program_in_path("mkfs.exfat").empty())
+		fs.create = FS::EXTERNAL;
+
+	if (! Glib::find_program_in_path("tune.exfat").empty())
+	{
+		fs.read_label = FS::EXTERNAL;
+		fs.write_label = FS::EXTERNAL;
+	}
+
+	if (! Glib::find_program_in_path("fsck.exfat").empty())
+		fs.check = FS::EXTERNAL;
+
+	return fs;
 }
+
+
+bool exfat::create(const Partition& new_partition, OperationDetail& operationdetail)
+{
+	return ! execute_command("mkfs.exfat -L " + Glib::shell_quote(new_partition.get_filesystem_label()) +
+	                         " " + Glib::shell_quote(new_partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+}
+
+
+void exfat::read_label(Partition& partition)
+{
+	exit_status = Utils::execute_command("tune.exfat -l " + Glib::shell_quote(partition.get_path()),
+	                                     output, error, true);
+	if (exit_status != 0)
+	{
+		if (! output.empty())
+			partition.push_back_message(output);
+		if (! error.empty())
+			partition.push_back_message(error);
+		return;
+	}
+
+	partition.set_filesystem_label(Utils::regexp_label(output, "^label: ([^\n]*)"));
+}
+
+
+bool exfat::write_label(const Partition& partition, OperationDetail& operationdetail)
+{
+	return ! execute_command("tune.exfat -L " + Glib::shell_quote(partition.get_filesystem_label()) +
+	                         " " + Glib::shell_quote(partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+}
+
+
+bool exfat::check_repair(const Partition& partition, OperationDetail& operationdetail)
+{
+	return ! execute_command("fsck.exfat -v " + Glib::shell_quote(partition.get_path()),
+	                         operationdetail, EXEC_CHECK_STATUS|EXEC_CANCEL_SAFE);
+}
+
 
 } //GParted

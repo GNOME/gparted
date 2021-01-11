@@ -261,7 +261,7 @@ int Utils::get_filesystem_label_maxlength(FSType fstype)
 		//All file systems commented out are not supported for labelling
 		//  by either the new partition or label partition operations.
 		case FS_BTRFS		: return 255 ;
-		//case FS_EXFAT		: return  ;
+		case FS_EXFAT		: return 11;
 		case FS_EXT2		: return 16 ;
 		case FS_EXT3		: return 16 ;
 		case FS_EXT4		: return 16 ;
@@ -433,6 +433,7 @@ Glib::ustring Utils::get_filesystem_software(FSType fstype)
 	switch (fstype)
 	{
 		case FS_BTRFS       : return "btrfs-progs / btrfs-tools" ;
+		case FS_EXFAT       : return "exfatprogs";
 		case FS_EXT2        : return "e2fsprogs" ;
 		case FS_EXT3        : return "e2fsprogs" ;
 		case FS_EXT4        : return "e2fsprogs v1.41+" ;

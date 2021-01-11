@@ -14,20 +14,29 @@
  *  along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef GPARTED_EXFAT_H
 #define GPARTED_EXFAT_H
 
+
 #include "FileSystem.h"
+#include "OperationDetail.h"
+#include "Partition.h"
+
 
 namespace GParted
 {
 
+
 class exfat : public FileSystem
 {
 public:
-	FS get_filesystem_support() ;
+	FS get_filesystem_support();
+	bool create(const Partition& new_partition, OperationDetail& operationdetail);
+	void read_label(Partition& partition);
+	bool write_label(const Partition& partition, OperationDetail& operationdetail);
+	bool check_repair(const Partition& partition, OperationDetail& operationdetail);
 };
+
 
 } //GParted
 
