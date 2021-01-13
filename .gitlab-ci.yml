@@ -13,9 +13,9 @@ stages:
     # Extra packages only needed during the test stage.
     # Install EPEL repo first for f2fs-tools and ntfsprogs.
     - yum install -y epel-release
-    - yum install -y btrfs-progs e2fsprogs f2fs-tools dosfstools mtools
-                     hfsplus-tools util-linux cryptsetup device-mapper lvm2
-                     ntfsprogs udftools xfsprogs xfsdump
+    - yum install -y btrfs-progs e2fsprogs exfatprogs f2fs-tools dosfstools
+                     mtools hfsplus-tools util-linux cryptsetup device-mapper
+                     lvm2 ntfsprogs udftools xfsprogs xfsdump
                      xorg-x11-server-Xvfb kmod
     - cat /etc/os-release
     - systemd-machine-id-setup
