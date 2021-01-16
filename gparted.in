@@ -219,6 +219,7 @@ elif test "x$HAVE_HAL_LOCK" = "xyes"; then
 else
 	$BASE_CMD
 fi
+status=$?
 
 #
 # Clear any temporary override udev rules used to stop udev automatically
@@ -234,3 +235,5 @@ done
 if test "x$HAVE_SYSTEMCTL" = "xyes"; then
 	systemctl --runtime unmask --quiet -- $MOUNTLIST
 fi
+
+exit $status
