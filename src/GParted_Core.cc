@@ -248,17 +248,12 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 	}
 
 	// Initialise and load caches needed for content discovery.
-	FS_Info::load_cache();        // Cache of file system details from blkid.
+	FS_Info::load_cache_for_paths(device_paths);
 	Mount_Info::load_cache();
 	LVM2_PV_Info::clear_cache();
 	btrfs::clear_cache();
 	SWRaid_Info::load_cache();
 	LUKS_Info::clear_cache();
-
-	// Ensure all named paths have FS_Info blkid cache entries specifically so that
-	// command line named file system image files, which blkid can't otherwise know
-	// about, can be identified.
-	FS_Info::load_cache_for_paths( device_paths );
 
 	for ( unsigned int t = 0 ; t < device_paths .size() ; t++ ) 
 	{

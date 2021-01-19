@@ -49,16 +49,13 @@ bool FS_Info::need_blkid_vfat_cache_update_workaround = true;
 //     ]
 std::vector<FS_Entry> FS_Info::fs_info_cache;
 
-void FS_Info::load_cache()
+
+void FS_Info::load_cache_for_paths( const std::vector<Glib::ustring> &device_paths )
 {
 	set_commands_found();
 	load_fs_info_cache();
 	fs_info_cache_initialized = true;
-}
 
-void FS_Info::load_cache_for_paths( const std::vector<Glib::ustring> &device_paths )
-{
-	initialize_if_required();
 	const BlockSpecial empty_bs = BlockSpecial();
 	for ( unsigned int i = 0 ; i < device_paths.size() ; i ++ )
 	{
