@@ -146,19 +146,14 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 {
 	std::vector<Device> &devices = *pdevices;
 	devices .clear() ;
+
+	// Initialise and load caches needed for device discovery.
 	BlockSpecial::clear_cache();            // MUST BE FIRST.  Cache of name to major, minor
 	                                        // numbers incrementally loaded when BlockSpecial
 	                                        // objects are created in the following caches.
 	Proc_Partitions_Info::load_cache();     // SHOULD BE SECOND.  Caches /proc/partitions and
 	                                        // pre-populates BlockSpecial cache.
-	FS_Info::load_cache();                  // SHOULD BE THRID.  Caches file system details
-	                                        // from blkid output.
 	DMRaid dmraid( true ) ;    //Refresh cache of dmraid device information
-	LVM2_PV_Info::clear_cache();            // Cache automatically loaded if and when needed
-	btrfs::clear_cache();                   // Cache incrementally loaded if and when needed
-	SWRaid_Info::load_cache();
-	LUKS_Info::clear_cache();               // Cache automatically loaded if and when needed
-	Mount_Info::load_cache();
 
 	//only probe if no devices were specified as arguments..
 	if ( probe_devices )
@@ -251,6 +246,14 @@ void GParted_Core::set_devices_thread( std::vector<Device> * pdevices )
 			}
 		}
 	}
+
+	// Initialise and load caches needed for content discovery.
+	FS_Info::load_cache();        // Cache of file system details from blkid.
+	Mount_Info::load_cache();
+	LVM2_PV_Info::clear_cache();
+	btrfs::clear_cache();
+	SWRaid_Info::load_cache();
+	LUKS_Info::clear_cache();
 
 	// Ensure all named paths have FS_Info blkid cache entries specifically so that
 	// command line named file system image files, which blkid can't otherwise know
